@@ -1,0 +1,1694 @@
+Loading /workspace/Apollo-11/c64-port/build/waitlist.prg from 0801 to 843A (7C3A bytes)
+WATCH: 1  C:$c058  (Stop on store)
+WATCH: 2  C:$c060  (Stop on store)
+WATCH: 3  C:$c050  (Stop on store)
+Will ignore the next 1 hits of checkpoint #3
+Stopwatch reset to 0.
+#1 (Stop on store c058)  236/$0ec,  47/$2f
+.C:6292  8E 58 C0    STX $C058      - A:32 X:10 Y:00 SP:ed ..-..I..   66216321
+>C:c058  10 ff 00 00  00 00                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   66216321
+#1 (Stop on store c058)   50/$032,  46/$2e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   66224258
+>C:c058  20 ff 00 00  00 00                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   66224258
+#1 (Stop on store c058)  192/$0c0,  57/$39
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   66351151
+>C:c058  10 ff 00 00  00 01                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   66351151
+#1 (Stop on store c058)    4/$004,  42/$2a
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   66358948
+>C:c058  20 ff 00 00  00 01                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   66358948
+#1 (Stop on store c058)  140/$08c,  59/$3b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   66485469
+>C:c058  10 ff 00 00  00 02                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   66485469
+#1 (Stop on store c058)  274/$112,  31/$1f
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   66493883
+>C:c058  20 ff 00 00  00 02                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   66493883
+#1 (Stop on store c058)   95/$05f,  56/$38
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   66620223
+>C:c058  10 ff 00 00  00 03                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   66620223
+#1 (Stop on store c058)  233/$0e9,  22/$16
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   66628883
+>C:c058  20 ff 00 00  00 03                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   66628883
+#1 (Stop on store c058)   51/$033,   1/$01
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   66754988
+>C:c058  10 ff 00 00  00 04                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   66754988
+#1 (Stop on store c058)  120/$078,  34/$22
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   66759368
+>C:c058  20 ff 00 00  00 04                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   66759368
+#1 (Stop on store c058)  263/$107,  22/$16
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   66886301
+>C:c058  10 ff 00 00  00 05                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   66886301
+#1 (Stop on store c058)   14/$00e,  48/$30
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   66890296
+>C:c058  20 ff 00 00  00 05                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   66890296
+#1 (Stop on store c058)  158/$09e,   1/$01
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67017257
+>C:c058  10 ff 00 00  00 06                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67017257
+#1 (Stop on store c058)  284/$11c,   6/$06
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   67025200
+>C:c058  20 ff 00 00  00 06                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67025200
+#1 (Stop on store c058)  108/$06c,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67151758
+>C:c058  10 ff 00 00  00 07                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67151758
+#1 (Stop on store c058)  232/$0e8,   7/$07
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   67159517
+>C:c058  20 ff 00 00  00 07                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67159517
+#1 (Stop on store c058)   50/$032,  14/$0e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67285650
+>C:c058  10 ff 00 00  00 08                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67285650
+#1 (Stop on store c058)  174/$0ae,   3/$03
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   67293451
+>C:c058  20 ff 00 00  00 08                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67293451
+#1 (Stop on store c058)  308/$134,  17/$11
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67419843
+>C:c058  10 ff 00 00  00 09                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67419843
+#1 (Stop on store c058)  128/$080,  25/$19
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   67428167
+>C:c058  20 ff 00 00  00 09                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67428167
+#1 (Stop on store c058)  269/$10d,  30/$1e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67554991
+>C:c058  10 ff 00 00  00 0a                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67554991
+#1 (Stop on store c058)   79/$04f,   1/$01
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   67562648
+>C:c058  20 ff 00 00  00 0a                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67562648
+#1 (Stop on store c058)  221/$0dd,  26/$1a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67689555
+>C:c058  10 ff 00 00  00 0b                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67689555
+#1 (Stop on store c058)   24/$018,  20/$14
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   67696794
+>C:c058  20 ff 00 00  00 0b                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67696794
+#1 (Stop on store c058)  168/$0a8,   6/$06
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67823788
+>C:c058  10 ff 00 00  00 0c                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67823788
+#1 (Stop on store c058)  293/$125,  20/$14
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   67831677
+>C:c058  20 ff 00 00  00 0c                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67831677
+#1 (Stop on store c058)  118/$076,  39/$27
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   67958263
+>C:c058  10 ff 00 00  00 0d                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   67958263
+#1 (Stop on store c058)  248/$0f8,  57/$39
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   67966471
+>C:c058  20 ff 00 00  00 0d                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   67966471
+#1 (Stop on store c058)   69/$045,   8/$08
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   68092737
+>C:c058  10 ff 00 00  00 0e                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   68092737
+#1 (Stop on store c058)  137/$089,  60/$3c
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   68097073
+>C:c058  20 ff 00 00  00 0e                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   68097073
+#1 (Stop on store c058)  282/$11a,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   68224144
+>C:c058  10 ff 00 00  00 0f                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   68224144
+#1 (Stop on store c058)   34/$022,  23/$17
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   68228139
+>C:c058  20 ff 00 00  00 0f                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   68228139
+#1 (Stop on store c058)  179/$0b3,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   68355247
+>C:c058  10 ff 00 00  00 10                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   68355247
+#1 (Stop on store c058)  297/$129,  53/$35
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   68362674
+>C:c058  20 ff 00 00  00 10                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   68362674
+#1 (Stop on store c058)  121/$079,  53/$35
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   68489178
+>C:c058  10 ff 00 00  00 11                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   68489178
+#1 (Stop on store c058)  232/$0e8,   5/$05
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   68496123
+>C:c058  20 ff 00 00  00 11                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   68496123
+#1 (Stop on store c058)   53/$035,   5/$05
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   68622438
+>C:c058  10 ff 00 00  00 12                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   68622438
+#1 (Stop on store c058)  162/$0a2,  40/$28
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   68629340
+>C:c058  20 ff 00 00  00 12                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   68629340
+#1 (Stop on store c058)  300/$12c,  20/$14
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   68755950
+>C:c058  10 ff 00 00  00 13                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   68755950
+#1 (Stop on store c058)  112/$070,  35/$23
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   68763777
+>C:c058  20 ff 00 00  00 13                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   68763777
+#1 (Stop on store c058)  260/$104,  12/$0c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   68891014
+>C:c058  10 ff 00 00  00 14                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   68891014
+#1 (Stop on store c058)   62/$03e,  15/$0f
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   68898199
+>C:c058  20 ff 00 00  00 14                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   68898199
+#1 (Stop on store c058)  206/$0ce,  26/$1a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69025218
+>C:c058  10 ff 00 00  00 15                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69025218
+#1 (Stop on store c058)    4/$004,  36/$24
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   69032158
+>C:c058  20 ff 00 00  00 15                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69032158
+#1 (Stop on store c058)  144/$090,  31/$1f
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69158909
+>C:c058  10 ff 00 00  00 16                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69158909
+#1 (Stop on store c058)  265/$109,  40/$28
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   69166541
+>C:c058  20 ff 00 00  00 16                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69166541
+#1 (Stop on store c058)   89/$059,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69293065
+>C:c058  10 ff 00 00  00 17                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69293065
+#1 (Stop on store c058)  214/$0d6,   5/$05
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   69300885
+>C:c058  20 ff 00 00  00 17                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69300885
+#1 (Stop on store c058)   36/$024,  39/$27
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69427297
+>C:c058  10 ff 00 00  00 18                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69427297
+#1 (Stop on store c058)  104/$068,  50/$32
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   69431592
+>C:c058  20 ff 00 00  00 18                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69431592
+#1 (Stop on store c058)  254/$0fe,   8/$08
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69558936
+>C:c058  10 ff 00 00  00 19                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69558936
+#1 (Stop on store c058)    5/$005,  34/$22
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   69562931
+>C:c058  20 ff 00 00  00 19                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69562931
+#1 (Stop on store c058)  150/$096,  10/$0a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69689978
+>C:c058  10 ff 00 00  00 1a                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69689978
+#1 (Stop on store c058)  264/$108,  43/$2b
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   69697193
+>C:c058  20 ff 00 00  00 1a                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69697193
+#1 (Stop on store c058)   87/$057,  33/$21
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69823624
+>C:c058  10 ff 00 00  00 1b                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69823624
+#1 (Stop on store c058)  190/$0be,  62/$3e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   69830142
+>C:c058  20 ff 00 00  00 1b                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69830142
+#1 (Stop on store c058)   16/$010,   2/$02
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   69956712
+>C:c058  10 ff 00 00  00 1c                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   69956712
+#1 (Stop on store c058)  116/$074,  48/$30
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   69963058
+>C:c058  20 ff 00 00  00 1c                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   69963058
+#1 (Stop on store c058)  263/$107,   3/$03
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   70090210
+>C:c058  10 ff 00 00  00 1d                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   70090210
+#1 (Stop on store c058)   65/$041,   5/$05
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   70097394
+>C:c058  20 ff 00 00  00 1d                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   70097394
+#1 (Stop on store c058)  210/$0d2,  23/$17
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   70224483
+>C:c058  10 ff 00 00  00 1e                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   70224483
+#1 (Stop on store c058)    8/$008,  21/$15
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   70231411
+>C:c058  20 ff 00 00  00 1e                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   70231411
+#1 (Stop on store c058)  149/$095,  21/$15
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   70358230
+>C:c058  10 ff 00 00  00 1f                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   70358230
+#1 (Stop on store c058)  258/$102,   9/$09
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   70365085
+>C:c058  20 ff 00 00  00 1f                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   70365085
+#1 (Stop on store c058)   80/$050,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   70491514
+>C:c058  10 ff 00 00  00 20                                   ..... 
+>C:c060  ff                                                   .
+Stopwatch:   70491514
+#1 (Stop on store c058)  197/$0c5,  20/$14
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   70498845
+>C:c058  20 ff 00 00  00 20                                    .... 
+>C:c060  ff                                                   .
+Stopwatch:   70498845
+#1 (Stop on store c058)   22/$016,  28/$1c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   70625420
+>C:c058  10 ff 00 00  00 21                                   .....!
+>C:c060  ff                                                   .
+Stopwatch:   70625420
+#1 (Stop on store c058)  137/$089,   5/$05
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   70632642
+>C:c058  20 ff 00 00  00 21                                    ....!
+>C:c060  ff                                                   .
+Stopwatch:   70632642
+#1 (Stop on store c058)  278/$116,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   70759516
+>C:c058  10 ff 00 00  00 22                                   ....."
+>C:c060  ff                                                   .
+Stopwatch:   70759516
+#1 (Stop on store c058)   30/$01e,  22/$16
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   70763510
+>C:c058  20 ff 00 00  00 22                                    ...."
+>C:c060  ff                                                   .
+Stopwatch:   70763510
+#1 (Stop on store c058)  178/$0b2,  43/$2b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   70890791
+>C:c058  10 ff 00 00  00 23                                   .....#
+>C:c060  ff                                                   .
+Stopwatch:   70890791
+#1 (Stop on store c058)  248/$0f8,  14/$0e
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   70895172
+>C:c058  20 ff 00 00  00 23                                    ....#
+>C:c060  ff                                                   .
+Stopwatch:   70895172
+#1 (Stop on store c058)   74/$04a,  20/$14
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71021808
+>C:c058  10 ff 00 00  00 24                                   .....$
+>C:c060  ff                                                   .
+Stopwatch:   71021808
+#1 (Stop on store c058)  184/$0b8,   7/$07
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   71028725
+>C:c058  20 ff 00 00  00 24                                    ....$
+>C:c060  ff                                                   .
+Stopwatch:   71028725
+#1 (Stop on store c058)    9/$009,  16/$10
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71155301
+>C:c058  10 ff 00 00  00 25                                   .....%
+>C:c060  ff                                                   .
+Stopwatch:   71155301
+#1 (Stop on store c058)  102/$066,  33/$21
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   71161177
+>C:c058  20 ff 00 00  00 25                                    ....%
+>C:c060  ff                                                   .
+Stopwatch:   71161177
+#1 (Stop on store c058)  251/$0fb,   2/$02
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71288469
+>C:c058  10 ff 00 00  00 26                                   .....&
+>C:c060  ff                                                   .
+Stopwatch:   71288469
+#1 (Stop on store c058)   27/$01b,  33/$21
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   71294044
+>C:c058  20 ff 00 00  00 26                                    ....&
+>C:c060  ff                                                   .
+Stopwatch:   71294044
+#1 (Stop on store c058)  169/$0a9,  48/$30
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71420941
+>C:c058  10 ff 00 00  00 27                                   .....'
+>C:c060  ff                                                   .
+Stopwatch:   71420941
+#1 (Stop on store c058)  283/$11b,  10/$0a
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   71428085
+>C:c058  20 ff 00 00  00 27                                    ....'
+>C:c060  ff                                                   .
+Stopwatch:   71428085
+#1 (Stop on store c058)  110/$06e,  52/$34
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71554820
+>C:c058  10 ff 00 00  00 28                                   .....(
+>C:c060  ff                                                   .
+Stopwatch:   71554820
+#1 (Stop on store c058)  220/$0dc,  52/$34
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   71561750
+>C:c058  20 ff 00 00  00 28                                    ....(
+>C:c060  ff                                                   .
+Stopwatch:   71561750
+#1 (Stop on store c058)   44/$02c,  20/$14
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71688222
+>C:c058  10 ff 00 00  00 29                                   .....)
+>C:c060  ff                                                   .
+Stopwatch:   71688222
+#1 (Stop on store c058)  147/$093,   0/$00
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   71694691
+>C:c058  20 ff 00 00  00 29                                    ....)
+>C:c060  ff                                                   .
+Stopwatch:   71694691
+#1 (Stop on store c058)  290/$122,  13/$0d
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71821649
+>C:c058  10 ff 00 00  00 2a                                   .....*
+>C:c060  ff                                                   .
+Stopwatch:   71821649
+#1 (Stop on store c058)   81/$051,   0/$00
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   71828125
+>C:c058  20 ff 00 00  00 2a                                    ....*
+>C:c060  ff                                                   .
+Stopwatch:   71828125
+#1 (Stop on store c058)  226/$0e2,  38/$26
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   71955234
+>C:c058  10 ff 00 00  00 2b                                   .....+
+>C:c060  ff                                                   .
+Stopwatch:   71955234
+#1 (Stop on store c058)   17/$011,  43/$2b
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   71961728
+>C:c058  20 ff 00 00  00 2b                                    ....+
+>C:c060  ff                                                   .
+Stopwatch:   71961728
+#1 (Stop on store c058)  160/$0a0,  51/$33
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   72088681
+>C:c058  10 ff 00 00  00 2c                                   .....,
+>C:c060  ff                                                   .
+Stopwatch:   72088681
+#1 (Stop on store c058)  230/$0e6,  21/$15
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   72093061
+>C:c058  20 ff 00 00  00 2c                                    ....,
+>C:c060  ff                                                   .
+Stopwatch:   72093061
+#1 (Stop on store c058)   59/$03b,  62/$3e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   72219921
+>C:c058  10 ff 00 00  00 2d                                   .....-
+>C:c060  ff                                                   .
+Stopwatch:   72219921
+#1 (Stop on store c058)  128/$080,  52/$34
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   72224258
+>C:c058  20 ff 00 00  00 2d                                    ....-
+>C:c060  ff                                                   .
+Stopwatch:   72224258
+#1 (Stop on store c058)  276/$114,  19/$13
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   72351485
+>C:c058  10 ff 00 00  00 2e                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   72351485
+#1 (Stop on store c058)   59/$03b,   7/$07
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   72357458
+>C:c058  20 ff 00 00  00 2e                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   72357458
+#1 (Stop on store c058)  205/$0cd,  62/$3e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   72484647
+>C:c058  10 ff 00 00  00 2f                                   ...../
+>C:c060  ff                                                   .
+Stopwatch:   72484647
+#1 (Stop on store c058)  287/$11f,  27/$1b
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   72489778
+>C:c058  20 ff 00 00  00 2f                                    ..../
+>C:c060  ff                                                   .
+Stopwatch:   72489778
+#1 (Stop on store c058)  114/$072,  13/$0d
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   72616457
+>C:c058  10 ff 00 00  00 30                                   .....0
+>C:c060  ff                                                   .
+Stopwatch:   72616457
+#1 (Stop on store c058)  199/$0c7,  48/$30
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   72621847
+>C:c058  20 ff 00 00  00 30                                    ....0
+>C:c060  ff                                                   .
+Stopwatch:   72621847
+#1 (Stop on store c058)   25/$019,  11/$0b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   72748440
+>C:c058  10 ff 00 00  00 31                                   .....1
+>C:c060  ff                                                   .
+Stopwatch:   72748440
+#1 (Stop on store c058)  133/$085,   2/$02
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   72755235
+>C:c058  20 ff 00 00  00 31                                    ....1
+>C:c060  ff                                                   .
+Stopwatch:   72755235
+#1 (Stop on store c058)  280/$118,  51/$33
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   72882481
+>C:c058  10 ff 00 00  00 32                                   .....2
+>C:c060  ff                                                   .
+Stopwatch:   72882481
+#1 (Stop on store c058)   64/$040,  32/$20
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   72888510
+>C:c058  20 ff 00 00  00 32                                    ....2
+>C:c060  ff                                                   .
+Stopwatch:   72888510
+#1 (Stop on store c058)  210/$0d2,  30/$1e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73015642
+>C:c058  10 ff 00 00  00 33                                   .....3
+>C:c060  ff                                                   .
+Stopwatch:   73015642
+#1 (Stop on store c058)  302/$12e,  19/$13
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   73021427
+>C:c058  20 ff 00 00  00 33                                    ....3
+>C:c060  ff                                                   .
+Stopwatch:   73021427
+#1 (Stop on store c058)  132/$084,  24/$18
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73148314
+>C:c058  10 ff 00 00  00 34                                   .....4
+>C:c060  ff                                                   .
+Stopwatch:   73148314
+#1 (Stop on store c058)  234/$0ea,  33/$21
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   73154749
+>C:c058  20 ff 00 00  00 34                                    ....4
+>C:c060  ff                                                   .
+Stopwatch:   73154749
+#1 (Stop on store c058)   58/$03a,  41/$29
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73281261
+>C:c058  10 ff 00 00  00 35                                   .....5
+>C:c060  ff                                                   .
+Stopwatch:   73281261
+#1 (Stop on store c058)  162/$0a2,  27/$1b
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   73287799
+>C:c058  20 ff 00 00  00 35                                    ....5
+>C:c060  ff                                                   .
+Stopwatch:   73287799
+#1 (Stop on store c058)  303/$12f,  49/$31
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73414640
+>C:c058  10 ff 00 00  00 36                                   .....6
+>C:c060  ff                                                   .
+Stopwatch:   73414640
+#1 (Stop on store c058)   55/$037,  54/$36
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   73418677
+>C:c058  20 ff 00 00  00 36                                    ....6
+>C:c060  ff                                                   .
+Stopwatch:   73418677
+#1 (Stop on store c058)  207/$0cf,  55/$37
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73546190
+>C:c058  10 ff 00 00  00 37                                   .....7
+>C:c060  ff                                                   .
+Stopwatch:   73546190
+#1 (Stop on store c058)  274/$112,  44/$2c
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   73550400
+>C:c058  20 ff 00 00  00 37                                    ....7
+>C:c060  ff                                                   .
+Stopwatch:   73550400
+#1 (Stop on store c058)  105/$069,  16/$10
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73677317
+>C:c058  10 ff 00 00  00 38                                   .....8
+>C:c060  ff                                                   .
+Stopwatch:   73677317
+#1 (Stop on store c058)  201/$0c9,  28/$1c
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   73683377
+>C:c058  20 ff 00 00  00 38                                    ....8
+>C:c060  ff                                                   .
+Stopwatch:   73683377
+#1 (Stop on store c058)   27/$01b,  47/$2f
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73810026
+>C:c058  10 ff 00 00  00 39                                   .....9
+>C:c060  ff                                                   .
+Stopwatch:   73810026
+#1 (Stop on store c058)  102/$066,  53/$35
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   73814757
+>C:c058  20 ff 00 00  00 39                                    ....9
+>C:c060  ff                                                   .
+Stopwatch:   73814757
+#1 (Stop on store c058)  248/$0f8,  26/$1a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   73941864
+>C:c058  10 ff 00 00  00 3a                                   .....:
+>C:c060  ff                                                   .
+Stopwatch:   73941864
+#1 (Stop on store c058)    6/$006,  47/$2f
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   73946295
+>C:c058  20 ff 00 00  00 3a                                    ....:
+>C:c060  ff                                                   .
+Stopwatch:   73946295
+#1 (Stop on store c058)  149/$095,  31/$1f
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74073224
+>C:c058  10 ff 00 00  00 3b                                   .....;
+>C:c060  ff                                                   .
+Stopwatch:   74073224
+#1 (Stop on store c058)  251/$0fb,  62/$3e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   74079681
+>C:c058  20 ff 00 00  00 3b                                    ....;
+>C:c060  ff                                                   .
+Stopwatch:   74079681
+#1 (Stop on store c058)   76/$04c,  59/$3b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74206245
+>C:c058  10 ff 00 00  00 3c                                   .....<
+>C:c060  ff                                                   .
+Stopwatch:   74206245
+#1 (Stop on store c058)  173/$0ad,  22/$16
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   74212319
+>C:c058  20 ff 00 00  00 3c                                    ....<
+>C:c060  ff                                                   .
+Stopwatch:   74212319
+#1 (Stop on store c058)    1/$001,  10/$0a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74339063
+>C:c058  10 ff 00 00  00 3d                                   .....=
+>C:c060  ff                                                   .
+Stopwatch:   74339063
+#1 (Stop on store c058)   81/$051,  55/$37
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   74344148
+>C:c058  20 ff 00 00  00 3d                                    ....=
+>C:c060  ff                                                   .
+Stopwatch:   74344148
+#1 (Stop on store c058)  229/$0e5,  14/$0e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74471367
+>C:c058  10 ff 00 00  00 3e                                   .....>
+>C:c060  ff                                                   .
+Stopwatch:   74471367
+#1 (Stop on store c058)    6/$006,  27/$1b
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   74476987
+>C:c058  20 ff 00 00  00 3e                                    ....>
+>C:c060  ff                                                   .
+Stopwatch:   74476987
+#1 (Stop on store c058)  149/$095,   7/$07
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74603912
+>C:c058  10 ff 00 00  00 3f                                   .....?
+>C:c060  ff                                                   .
+Stopwatch:   74603912
+#1 (Stop on store c058)  246/$0f6,   6/$06
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   74610022
+>C:c058  20 ff 00 00  00 3f                                    ....?
+>C:c060  ff                                                   .
+Stopwatch:   74610022
+#1 (Stop on store c058)   69/$045,  57/$39
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74736514
+>C:c058  10 ff 00 00  00 40                                   .....@
+>C:c060  ff                                                   .
+Stopwatch:   74736514
+#1 (Stop on store c058)  138/$08a,  46/$2e
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   74740850
+>C:c058  20 ff 00 00  00 40                                    ....@
+>C:c060  ff                                                   .
+Stopwatch:   74740850
+#1 (Stop on store c058)  291/$123,   2/$02
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74868381
+>C:c058  10 ff 00 00  00 41                                   .....A
+>C:c060  ff                                                   .
+Stopwatch:   74868381
+#1 (Stop on store c058)   42/$02a,  28/$1c
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   74872376
+>C:c058  20 ff 00 00  00 41                                    ....A
+>C:c060  ff                                                   .
+Stopwatch:   74872376
+#1 (Stop on store c058)  192/$0c0,  24/$18
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   74999758
+>C:c058  10 ff 00 00  00 42                                   .....B
+>C:c060  ff                                                   .
+Stopwatch:   74999758
+#1 (Stop on store c058)  274/$112,  47/$2f
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   75004947
+>C:c058  20 ff 00 00  00 42                                    ....B
+>C:c060  ff                                                   .
+Stopwatch:   75004947
+#1 (Stop on store c058)  101/$065,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   75131653
+>C:c058  10 ff 00 00  00 43                                   .....C
+>C:c060  ff                                                   .
+Stopwatch:   75131653
+#1 (Stop on store c058)  171/$0ab,   4/$04
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   75136007
+>C:c058  20 ff 00 00  00 43                                    ....C
+>C:c060  ff                                                   .
+Stopwatch:   75136007
+#1 (Stop on store c058)  311/$137,  16/$10
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   75262775
+>C:c058  10 ff 00 00  00 44                                   .....D
+>C:c060  ff                                                   .
+Stopwatch:   75262775
+#1 (Stop on store c058)   64/$040,  17/$11
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   75266871
+>C:c058  20 ff 00 00  00 44                                    ....D
+>C:c060  ff                                                   .
+Stopwatch:   75266871
+#1 (Stop on store c058)  210/$0d2,  18/$12
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   75394006
+>C:c058  10 ff 00 00  00 45                                   .....E
+>C:c060  ff                                                   .
+Stopwatch:   75394006
+#1 (Stop on store c058)  301/$12d,  58/$3a
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   75399779
+>C:c058  20 ff 00 00  00 45                                    ....E
+>C:c060  ff                                                   .
+Stopwatch:   75399779
+#1 (Stop on store c058)  132/$084,  19/$13
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   75526685
+>C:c058  10 ff 00 00  00 46                                   .....F
+>C:c060  ff                                                   .
+Stopwatch:   75526685
+#1 (Stop on store c058)  216/$0d8,  59/$3b
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   75532017
+>C:c058  20 ff 00 00  00 46                                    ....F
+>C:c060  ff                                                   .
+Stopwatch:   75532017
+#1 (Stop on store c058)   41/$029,  39/$27
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   75658564
+>C:c058  10 ff 00 00  00 47                                   .....G
+>C:c060  ff                                                   .
+Stopwatch:   75658564
+#1 (Stop on store c058)  117/$075,  62/$3e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   75663375
+>C:c058  20 ff 00 00  00 47                                    ....G
+>C:c060  ff                                                   .
+Stopwatch:   75663375
+#1 (Stop on store c058)  263/$107,  50/$32
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   75790497
+>C:c058  10 ff 00 00  00 48                                   .....H
+>C:c060  ff                                                   .
+Stopwatch:   75790497
+#1 (Stop on store c058)   29/$01d,  13/$0d
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   75795374
+>C:c058  20 ff 00 00  00 48                                    ....H
+>C:c060  ff                                                   .
+Stopwatch:   75795374
+#1 (Stop on store c058)  174/$0ae,  27/$1b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   75922459
+>C:c058  10 ff 00 00  00 49                                   .....I
+>C:c060  ff                                                   .
+Stopwatch:   75922459
+#1 (Stop on store c058)  258/$102,  57/$39
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   75927781
+>C:c058  20 ff 00 00  00 49                                    ....I
+>C:c060  ff                                                   .
+Stopwatch:   75927781
+#1 (Stop on store c058)   84/$054,  27/$1b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76054381
+>C:c058  10 ff 00 00  00 4a                                   .....J
+>C:c060  ff                                                   .
+Stopwatch:   76054381
+#1 (Stop on store c058)  153/$099,  18/$12
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   76058719
+>C:c058  20 ff 00 00  00 4a                                    ....J
+>C:c060  ff                                                   .
+Stopwatch:   76058719
+#1 (Stop on store c058)  300/$12c,  53/$35
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76185951
+>C:c058  10 ff 00 00  00 4b                                   .....K
+>C:c060  ff                                                   .
+Stopwatch:   76185951
+#1 (Stop on store c058)   52/$034,  59/$3b
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   76189989
+>C:c058  20 ff 00 00  00 4b                                    ....K
+>C:c060  ff                                                   .
+Stopwatch:   76189989
+#1 (Stop on store c058)  203/$0cb,  11/$0b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76317390
+>C:c058  10 ff 00 00  00 4c                                   .....L
+>C:c060  ff                                                   .
+Stopwatch:   76317390
+#1 (Stop on store c058)  277/$115,   8/$08
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   76322049
+>C:c058  20 ff 00 00  00 4c                                    ....L
+>C:c060  ff                                                   .
+Stopwatch:   76322049
+#1 (Stop on store c058)  104/$068,  33/$21
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76448767
+>C:c058  10 ff 00 00  00 4d                                   .....M
+>C:c060  ff                                                   .
+Stopwatch:   76448767
+#1 (Stop on store c058)  174/$0ae,  19/$13
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   76453163
+>C:c058  20 ff 00 00  00 4d                                    ....M
+>C:c060  ff                                                   .
+Stopwatch:   76453163
+#1 (Stop on store c058)    2/$002,  21/$15
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76579921
+>C:c058  10 ff 00 00  00 4e                                   .....N
+>C:c060  ff                                                   .
+Stopwatch:   76579921
+#1 (Stop on store c058)   68/$044,   2/$02
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   76584060
+>C:c058  20 ff 00 00  00 4e                                    ....N
+>C:c060  ff                                                   .
+Stopwatch:   76584060
+#1 (Stop on store c058)  214/$0d6,  32/$20
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76711224
+>C:c058  10 ff 00 00  00 4f                                   .....O
+>C:c060  ff                                                   .
+Stopwatch:   76711224
+#1 (Stop on store c058)  295/$127,   3/$03
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   76716298
+>C:c058  20 ff 00 00  00 4f                                    ....O
+>C:c060  ff                                                   .
+Stopwatch:   76716298
+#1 (Stop on store c058)  125/$07d,  46/$2e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76843223
+>C:c058  10 ff 00 00  00 50                                   .....P
+>C:c060  ff                                                   .
+Stopwatch:   76843223
+#1 (Stop on store c058)  201/$0c9,  59/$3b
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   76848024
+>C:c058  20 ff 00 00  00 50                                    ....P
+>C:c060  ff                                                   .
+Stopwatch:   76848024
+#1 (Stop on store c058)   28/$01c,  62/$3e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   76974720
+>C:c058  10 ff 00 00  00 51                                   .....Q
+>C:c060  ff                                                   .
+Stopwatch:   76974720
+#1 (Stop on store c058)   96/$060,  27/$1b
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   76978969
+>C:c058  20 ff 00 00  00 51                                    ....Q
+>C:c060  ff                                                   .
+Stopwatch:   76978969
+#1 (Stop on store c058)  245/$0f5,  18/$12
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   77106283
+>C:c058  10 ff 00 00  00 52                                   .....R
+>C:c060  ff                                                   .
+Stopwatch:   77106283
+#1 (Stop on store c058)    2/$002,  61/$3d
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   77110673
+>C:c058  20 ff 00 00  00 52                                    ....R
+>C:c060  ff                                                   .
+Stopwatch:   77110673
+#1 (Stop on store c058)  146/$092,  14/$0e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   77237634
+>C:c058  10 ff 00 00  00 53                                   .....S
+>C:c060  ff                                                   .
+Stopwatch:   77237634
+#1 (Stop on store c058)  223/$0df,  44/$2c
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   77242515
+>C:c058  20 ff 00 00  00 53                                    ....S
+>C:c060  ff                                                   .
+Stopwatch:   77242515
+#1 (Stop on store c058)   48/$030,  56/$38
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   77369094
+>C:c058  10 ff 00 00  00 54                                   .....T
+>C:c060  ff                                                   .
+Stopwatch:   77369094
+#1 (Stop on store c058)  118/$076,  27/$1b
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   77373475
+>C:c058  20 ff 00 00  00 54                                    ....T
+>C:c060  ff                                                   .
+Stopwatch:   77373475
+#1 (Stop on store c058)  270/$10e,   2/$02
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   77500962
+>C:c058  10 ff 00 00  00 55                                   .....U
+>C:c060  ff                                                   .
+Stopwatch:   77500962
+#1 (Stop on store c058)   21/$015,  28/$1c
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   77504957
+>C:c058  20 ff 00 00  00 55                                    ....U
+>C:c060  ff                                                   .
+Stopwatch:   77504957
+#1 (Stop on store c058)  170/$0aa,  50/$32
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   77632302
+>C:c058  10 ff 00 00  00 56                                   .....V
+>C:c060  ff                                                   .
+Stopwatch:   77632302
+#1 (Stop on store c058)  240/$0f0,  20/$14
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   77636682
+>C:c058  20 ff 00 00  00 56                                    ....V
+>C:c060  ff                                                   .
+Stopwatch:   77636682
+#1 (Stop on store c058)   66/$042,   2/$02
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   77763294
+>C:c058  10 ff 00 00  00 57                                   .....W
+>C:c060  ff                                                   .
+Stopwatch:   77763294
+#1 (Stop on store c058)  135/$087,  50/$32
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   77767689
+>C:c058  20 ff 00 00  00 57                                    ....W
+>C:c060  ff                                                   .
+Stopwatch:   77767689
+#1 (Stop on store c058)  280/$118,   7/$07
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   77894717
+>C:c058  10 ff 00 00  00 58                                   .....X
+>C:c060  ff                                                   .
+Stopwatch:   77894717
+#1 (Stop on store c058)   31/$01f,  48/$30
+.C:62ac  8C 58 C0    STY $C058      - A:83 X:02 Y:20 SP:ed ..-..I..   77898727
+>C:c058  20 ff 00 00  00 58                                    ....X
+>C:c060  ff                                                   .
+Stopwatch:   77898727
+#1 (Stop on store c058)  177/$0b1,  48/$30
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78025861
+>C:c058  10 ff 00 00  00 59                                   .....Y
+>C:c060  ff                                                   .
+Stopwatch:   78025861
+#1 (Stop on store c058)  253/$0fd,  61/$3d
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   78030662
+>C:c058  20 ff 00 00  00 59                                    ....Y
+>C:c060  ff                                                   .
+Stopwatch:   78030662
+#1 (Stop on store c058)   53/$035,   1/$01
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78155594
+>C:c058  10 ff 00 00  00 5a                                   .....Z
+>C:c060  ff                                                   .
+Stopwatch:   78155594
+#1 (Stop on store c058)  182/$0b6,  62/$3e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   78163782
+>C:c058  20 ff 00 00  00 5a                                    ....Z
+>C:c060  ff                                                   .
+Stopwatch:   78163782
+#1 (Stop on store c058)  297/$129,  15/$0f
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78288916
+>C:c058  10 ff 00 00  00 5b                                   .....[
+>C:c060  ff                                                   .
+Stopwatch:   78288916
+#1 (Stop on store c058)  109/$06d,  20/$14
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   78296733
+>C:c058  20 ff 00 00  00 5b                                    ....[
+>C:c060  ff                                                   .
+Stopwatch:   78296733
+#1 (Stop on store c058)  229/$0e5,   1/$01
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78422210
+>C:c058  10 ff 00 00  00 5c                                   .....\
+>C:c060  ff                                                   .
+Stopwatch:   78422210
+#1 (Stop on store c058)   37/$025,   2/$02
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   78429771
+>C:c058  20 ff 00 00  00 5c                                    ....\
+>C:c060  ff                                                   .
+Stopwatch:   78429771
+#1 (Stop on store c058)  154/$09a,  41/$29
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78555117
+>C:c058  10 ff 00 00  00 5d                                   .....]
+>C:c060  ff                                                   .
+Stopwatch:   78555117
+#1 (Stop on store c058)  275/$113,  14/$0e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   78562713
+>C:c058  20 ff 00 00  00 5d                                    ....]
+>C:c060  ff                                                   .
+Stopwatch:   78562713
+#1 (Stop on store c058)   74/$04a,   2/$02
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78687630
+>C:c058  10 ff 00 00  00 5e                                   .....^
+>C:c060  ff                                                   .
+Stopwatch:   78687630
+#1 (Stop on store c058)   84/$054,  32/$20
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   78688290
+>C:c058  20 ff 00 00  00 5e                                    ....^
+>C:c060  ff                                                   .
+Stopwatch:   78688290
+#1 (Stop on store c058)  206/$0ce,  23/$17
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78813903
+>C:c058  10 ff 00 00  00 5f                                   ....._
+>C:c060  ff                                                   .
+Stopwatch:   78813903
+#1 (Stop on store c058)   22/$016,  60/$3c
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   78822004
+>C:c058  20 ff 00 00  00 5f                                    ...._
+>C:c060  ff                                                   .
+Stopwatch:   78822004
+#1 (Stop on store c058)  140/$08c,  62/$3e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   78947376
+>C:c058  10 ff 00 00  00 60                                   .....`
+>C:c060  ff                                                   .
+Stopwatch:   78947376
+#1 (Stop on store c058)  275/$113,   2/$02
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   78955821
+>C:c058  20 ff 00 00  00 60                                    ....`
+>C:c060  ff                                                   .
+Stopwatch:   78955821
+#1 (Stop on store c058)   76/$04c,  43/$2b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   79080917
+>C:c058  10 ff 00 00  00 61                                   .....a
+>C:c060  ff                                                   .
+Stopwatch:   79080917
+#1 (Stop on store c058)  213/$0d5,  27/$1b
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   79089532
+>C:c058  20 ff 00 00  00 61                                    ....a
+>C:c060  ff                                                   .
+Stopwatch:   79089532
+#1 (Stop on store c058)   14/$00e,   8/$08
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   79214568
+>C:c058  10 ff 00 00  00 62                                   .....b
+>C:c060  ff                                                   .
+Stopwatch:   79214568
+#1 (Stop on store c058)  133/$085,  57/$39
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   79222114
+>C:c058  20 ff 00 00  00 62                                    ....b
+>C:c060  ff                                                   .
+Stopwatch:   79222114
+#1 (Stop on store c058)  253/$0fd,  17/$11
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   79347570
+>C:c058  10 ff 00 00  00 63                                   .....c
+>C:c060  ff                                                   .
+Stopwatch:   79347570
+#1 (Stop on store c058)  262/$106,  24/$18
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   79348144
+>C:c058  20 ff 00 00  00 63                                    ....c
+>C:c060  ff                                                   .
+Stopwatch:   79348144
+#1 (Stop on store c058)   64/$040,  52/$34
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   79473290
+>C:c058  10 ff 00 00  00 64                                   .....d
+>C:c060  ff                                                   .
+Stopwatch:   79473290
+#1 (Stop on store c058)  194/$0c2,  37/$25
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   79481465
+>C:c058  20 ff 00 00  00 64                                    ....d
+>C:c060  ff                                                   .
+Stopwatch:   79481465
+#1 (Stop on store c058)  310/$136,  56/$38
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   79606728
+>C:c058  10 ff 00 00  00 65                                   .....e
+>C:c060  ff                                                   .
+Stopwatch:   79606728
+#1 (Stop on store c058)  124/$07c,  38/$26
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   79614648
+>C:c058  20 ff 00 00  00 65                                    ....e
+>C:c060  ff                                                   .
+Stopwatch:   79614648
+#1 (Stop on store c058)  247/$0f7,  10/$0a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   79740305
+>C:c058  10 ff 00 00  00 66                                   .....f
+>C:c060  ff                                                   .
+Stopwatch:   79740305
+#1 (Stop on store c058)   54/$036,  46/$2e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   79747838
+>C:c058  20 ff 00 00  00 66                                    ....f
+>C:c060  ff                                                   .
+Stopwatch:   79747838
+#1 (Stop on store c058)  176/$0b0,  24/$18
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   79873438
+>C:c058  10 ff 00 00  00 67                                   .....g
+>C:c060  ff                                                   .
+Stopwatch:   79873438
+#1 (Stop on store c058)  295/$127,  12/$0c
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   79880923
+>C:c058  20 ff 00 00  00 67                                    ....g
+>C:c060  ff                                                   .
+Stopwatch:   79880923
+#1 (Stop on store c058)   98/$062,  42/$2a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80006134
+>C:c058  10 ff 00 00  00 68                                   .....h
+>C:c060  ff                                                   .
+Stopwatch:   80006134
+#1 (Stop on store c058)  109/$06d,   8/$08
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   80006793
+>C:c058  20 ff 00 00  00 68                                    ....h
+>C:c060  ff                                                   .
+Stopwatch:   80006793
+#1 (Stop on store c058)  232/$0e8,  45/$2d
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80132515
+>C:c058  10 ff 00 00  00 69                                   .....i
+>C:c060  ff                                                   .
+Stopwatch:   80132515
+#1 (Stop on store c058)   40/$028,  61/$3d
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   80140091
+>C:c058  20 ff 00 00  00 69                                    ....i
+>C:c060  ff                                                   .
+Stopwatch:   80140091
+#1 (Stop on store c058)  162/$0a2,  25/$19
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80265677
+>C:c058  10 ff 00 00  00 6a                                   .....j
+>C:c060  ff                                                   .
+Stopwatch:   80265677
+#1 (Stop on store c058)  288/$120,  48/$30
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   80273638
+>C:c058  20 ff 00 00  00 6a                                    ....j
+>C:c060  ff                                                   .
+Stopwatch:   80273638
+#1 (Stop on store c058)   93/$05d,  37/$25
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80398934
+>C:c058  10 ff 00 00  00 6b                                   .....k
+>C:c060  ff                                                   .
+Stopwatch:   80398934
+#1 (Stop on store c058)  223/$0df,  22/$16
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   80407109
+>C:c058  20 ff 00 00  00 6b                                    ....k
+>C:c060  ff                                                   .
+Stopwatch:   80407109
+#1 (Stop on store c058)   25/$019,   8/$08
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80532213
+>C:c058  10 ff 00 00  00 6c                                   .....l
+>C:c060  ff                                                   .
+Stopwatch:   80532213
+#1 (Stop on store c058)  145/$091,  61/$3d
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   80539826
+>C:c058  20 ff 00 00  00 6c                                    ....l
+>C:c060  ff                                                   .
+Stopwatch:   80539826
+#1 (Stop on store c058)  270/$10e,  27/$1b
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80665603
+>C:c058  10 ff 00 00  00 6d                                   .....m
+>C:c060  ff                                                   .
+Stopwatch:   80665603
+#1 (Stop on store c058)  279/$117,  34/$22
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   80666177
+>C:c058  20 ff 00 00  00 6d                                    ....m
+>C:c060  ff                                                   .
+Stopwatch:   80666177
+#1 (Stop on store c058)   81/$051,  18/$12
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80791279
+>C:c058  10 ff 00 00  00 6e                                   .....n
+>C:c060  ff                                                   .
+Stopwatch:   80791279
+#1 (Stop on store c058)  211/$0d3,   5/$05
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   80799456
+>C:c058  20 ff 00 00  00 6e                                    ....n
+>C:c060  ff                                                   .
+Stopwatch:   80799456
+#1 (Stop on store c058)   15/$00f,  19/$13
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   80924714
+>C:c058  10 ff 00 00  00 6f                                   .....o
+>C:c060  ff                                                   .
+Stopwatch:   80924714
+#1 (Stop on store c058)  142/$08e,  23/$17
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   80932719
+>C:c058  20 ff 00 00  00 6f                                    ....o
+>C:c060  ff                                                   .
+Stopwatch:   80932719
+#1 (Stop on store c058)  264/$108,  42/$2a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81058360
+>C:c058  10 ff 00 00  00 70                                   .....p
+>C:c060  ff                                                   .
+Stopwatch:   81058360
+#1 (Stop on store c058)   73/$049,  38/$26
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   81065979
+>C:c058  20 ff 00 00  00 70                                    ....p
+>C:c060  ff                                                   .
+Stopwatch:   81065979
+#1 (Stop on store c058)  200/$0c8,  57/$39
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81191935
+>C:c058  10 ff 00 00  00 71                                   .....q
+>C:c060  ff                                                   .
+Stopwatch:   81191935
+#1 (Stop on store c058)    5/$005,  42/$2a
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   81199291
+>C:c058  20 ff 00 00  00 71                                    ....q
+>C:c060  ff                                                   .
+Stopwatch:   81199291
+#1 (Stop on store c058)  125/$07d,  10/$0a
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81324755
+>C:c058  10 ff 00 00  00 72                                   .....r
+>C:c060  ff                                                   .
+Stopwatch:   81324755
+#1 (Stop on store c058)  134/$086,  60/$3c
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   81325372
+>C:c058  20 ff 00 00  00 72                                    ....r
+>C:c060  ff                                                   .
+Stopwatch:   81325372
+#1 (Stop on store c058)  255/$0ff,  54/$36
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81450925
+>C:c058  10 ff 00 00  00 73                                   .....s
+>C:c060  ff                                                   .
+Stopwatch:   81450925
+#1 (Stop on store c058)   63/$03f,   5/$05
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   81458436
+>C:c058  20 ff 00 00  00 73                                    ....s
+>C:c060  ff                                                   .
+Stopwatch:   81458436
+#1 (Stop on store c058)  186/$0ba,  22/$16
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81584138
+>C:c058  10 ff 00 00  00 74                                   .....t
+>C:c060  ff                                                   .
+Stopwatch:   81584138
+#1 (Stop on store c058)  309/$135,  17/$11
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   81591882
+>C:c058  20 ff 00 00  00 74                                    ....t
+>C:c060  ff                                                   .
+Stopwatch:   81591882
+#1 (Stop on store c058)  121/$079,  14/$0e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81717627
+>C:c058  10 ff 00 00  00 75                                   .....u
+>C:c060  ff                                                   .
+Stopwatch:   81717627
+#1 (Stop on store c058)  249/$0f9,  37/$25
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   81725714
+>C:c058  20 ff 00 00  00 75                                    ....u
+>C:c060  ff                                                   .
+Stopwatch:   81725714
+#1 (Stop on store c058)   50/$032,  56/$38
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81850788
+>C:c058  10 ff 00 00  00 76                                   .....v
+>C:c060  ff                                                   .
+Stopwatch:   81850788
+#1 (Stop on store c058)  173/$0ad,   2/$02
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   81858483
+>C:c058  20 ff 00 00  00 76                                    ....v
+>C:c060  ff                                                   .
+Stopwatch:   81858483
+#1 (Stop on store c058)  292/$124,  30/$1e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   81983944
+>C:c058  10 ff 00 00  00 77                                   .....w
+>C:c060  ff                                                   .
+Stopwatch:   81983944
+#1 (Stop on store c058)  301/$12d,  37/$25
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   81984518
+>C:c058  20 ff 00 00  00 77                                    ....w
+>C:c060  ff                                                   .
+Stopwatch:   81984518
+#1 (Stop on store c058)  113/$071,  30/$1e
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   82110259
+>C:c058  10 ff 00 00  00 78                                   .....x
+>C:c060  ff                                                   .
+Stopwatch:   82110259
+#1 (Stop on store c058)  177/$0b1,  12/$0c
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   82114273
+>C:c058  20 ff 00 00  00 78                                    ....x
+>C:c060  ff                                                   .
+Stopwatch:   82114273
+#1 (Stop on store c058)  296/$128,  44/$2c
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   82239738
+>C:c058  10 ff 00 00  00 79                                   .....y
+>C:c060  ff                                                   .
+Stopwatch:   82239738
+#1 (Stop on store c058)   42/$02a,  62/$3e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   82243410
+>C:c058  20 ff 00 00  00 79                                    ....y
+>C:c060  ff                                                   .
+Stopwatch:   82243410
+#1 (Stop on store c058)  170/$0aa,  48/$30
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   82369396
+>C:c058  10 ff 00 00  00 7a                                   .....z
+>C:c060  ff                                                   .
+Stopwatch:   82369396
+#1 (Stop on store c058)  234/$0ea,  30/$1e
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   82373410
+>C:c058  20 ff 00 00  00 7a                                    ....z
+>C:c060  ff                                                   .
+Stopwatch:   82373410
+#1 (Stop on store c058)   40/$028,  50/$32
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   82498800
+>C:c058  10 ff 00 00  00 7b                                   .....{
+>C:c060  ff                                                   .
+Stopwatch:   82498800
+#1 (Stop on store c058)  103/$067,  54/$36
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   82502773
+>C:c058  20 ff 00 00  00 7b                                    ....{
+>C:c060  ff                                                   .
+Stopwatch:   82502773
+#1 (Stop on store c058)  231/$0e7,  39/$27
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   82628758
+>C:c058  10 ff 00 00  00 7c                                   .....|
+>C:c060  ff                                                   .
+Stopwatch:   82628758
+#1 (Stop on store c058)  291/$123,  19/$13
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   82632518
+>C:c058  20 ff 00 00  00 7c                                    ....|
+>C:c060  ff                                                   .
+Stopwatch:   82632518
+#1 (Stop on store c058)  102/$066,  29/$1d
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   82758213
+>C:c058  10 ff 00 00  00 7d                                   .....}
+>C:c060  ff                                                   .
+Stopwatch:   82758213
+#1 (Stop on store c058)  166/$0a6,  15/$0f
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   82762231
+>C:c058  20 ff 00 00  00 7d                                    ....}
+>C:c060  ff                                                   .
+Stopwatch:   82762231
+#1 (Stop on store c058)  290/$122,   2/$02
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   82887966
+>C:c058  10 ff 00 00  00 7e                                   .....~
+>C:c060  ff                                                   .
+Stopwatch:   82887966
+#1 (Stop on store c058)   36/$024,  22/$16
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   82891640
+>C:c058  20 ff 00 00  00 7e                                    ....~
+>C:c060  ff                                                   .
+Stopwatch:   82891640
+#1 (Stop on store c058)  164/$0a4,  16/$10
+.C:6292  8E 58 C0    STX $C058      - A:30 X:10 Y:00 SP:ed ..-..I..   83017634
+>C:c058  10 ff 00 00  00 7f                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83017634
+#1 (Stop on store c058)  228/$0e4,   1/$01
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83021651
+>C:c058  20 ff 00 00  00 7f                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83021651
+#1 (Stop on store c058)   34/$022,  11/$0b
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   83147031
+>C:c058  10 ff 00 00  00 80                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83147031
+#1 (Stop on store c058)   96/$060,  35/$23
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83150961
+>C:c058  20 ff 00 00  00 80                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83150961
+#1 (Stop on store c058)  224/$0e0,   6/$06
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   83276932
+>C:c058  10 ff 00 00  00 81                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83276932
+#1 (Stop on store c058)  284/$11c,  28/$1c
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83280734
+>C:c058  20 ff 00 00  00 81                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83280734
+#1 (Stop on store c058)   90/$05a,  53/$35
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   83406129
+>C:c058  10 ff 00 00  00 82                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83406129
+#1 (Stop on store c058)  154/$09a,  38/$26
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83410146
+>C:c058  20 ff 00 00  00 82                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83410146
+#1 (Stop on store c058)  279/$117,  37/$25
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   83535956
+>C:c058  10 ff 00 00  00 83                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83535956
+#1 (Stop on store c058)   25/$019,  57/$39
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83539630
+>C:c058  20 ff 00 00  00 83                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83539630
+#1 (Stop on store c058)  152/$098,  36/$24
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   83665546
+>C:c058  10 ff 00 00  00 84                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83665546
+#1 (Stop on store c058)  216/$0d8,  22/$16
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83669564
+>C:c058  20 ff 00 00  00 84                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83669564
+#1 (Stop on store c058)   23/$017,  61/$3d
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   83795036
+>C:c058  10 ff 00 00  00 85                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83795036
+#1 (Stop on store c058)   85/$055,  42/$2a
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83798923
+>C:c058  20 ff 00 00  00 85                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83798923
+#1 (Stop on store c058)  213/$0d5,  30/$1e
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   83924911
+>C:c058  10 ff 00 00  00 86                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   83924911
+#1 (Stop on store c058)  274/$112,  33/$21
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   83928757
+>C:c058  20 ff 00 00  00 86                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   83928757
+#1 (Stop on store c058)   84/$054,  35/$23
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84054381
+>C:c058  10 ff 00 00  00 87                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84054381
+#1 (Stop on store c058)  148/$094,  19/$13
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84058397
+>C:c058  20 ff 00 00  00 87                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84058397
+#1 (Stop on store c058)  273/$111,  23/$17
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84184212
+>C:c058  10 ff 00 00  00 88                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84184212
+#1 (Stop on store c058)   19/$013,  41/$29
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84187884
+>C:c058  20 ff 00 00  00 88                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84187884
+#1 (Stop on store c058)  145/$091,  35/$23
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84313752
+>C:c058  10 ff 00 00  00 89                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84313752
+#1 (Stop on store c058)  209/$0d1,  15/$0f
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84317764
+>C:c058  20 ff 00 00  00 89                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84317764
+#1 (Stop on store c058)   17/$011,  25/$19
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84443270
+>C:c058  10 ff 00 00  00 8a                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84443270
+#1 (Stop on store c058)   78/$04e,  26/$1a
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84447114
+>C:c058  20 ff 00 00  00 8a                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84447114
+#1 (Stop on store c058)  201/$0c9,  50/$32
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84572823
+>C:c058  10 ff 00 00  00 8b                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84572823
+#1 (Stop on store c058)  264/$108,   9/$09
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84576751
+>C:c058  20 ff 00 00  00 8b                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84576751
+#1 (Stop on store c058)   72/$048,  61/$3d
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84702299
+>C:c058  10 ff 00 00  00 8c                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84702299
+#1 (Stop on store c058)  136/$088,  45/$2d
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84706315
+>C:c058  20 ff 00 00  00 8c                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84706315
+#1 (Stop on store c058)  263/$107,   1/$01
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84832208
+>C:c058  10 ff 00 00  00 8d                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84832208
+#1 (Stop on store c058)    9/$009,  21/$15
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84835882
+>C:c058  20 ff 00 00  00 8d                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84835882
+#1 (Stop on store c058)  134/$086,  44/$2c
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   84961716
+>C:c058  10 ff 00 00  00 8e                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   84961716
+#1 (Stop on store c058)  198/$0c6,  29/$1d
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   84965733
+>C:c058  20 ff 00 00  00 8e                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   84965733
+#1 (Stop on store c058)    7/$007,  37/$25
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85091300
+>C:c058  10 ff 00 00  00 8f                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85091300
+#1 (Stop on store c058)   67/$043,  60/$3c
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   85095103
+>C:c058  20 ff 00 00  00 8f                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85095103
+#1 (Stop on store c058)  186/$0ba,  26/$1a
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85220502
+>C:c058  10 ff 00 00  00 90                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85220502
+#1 (Stop on store c058)  252/$0fc,  51/$33
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   85224685
+>C:c058  20 ff 00 00  00 90                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85224685
+#1 (Stop on store c058)   52/$034,  20/$14
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85349646
+>C:c058  10 ff 00 00  00 91                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85349646
+#1 (Stop on store c058)  118/$076,  49/$31
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   85353833
+>C:c058  20 ff 00 00  00 91                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85353833
+#1 (Stop on store c058)  237/$0ed,  58/$3a
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85479275
+>C:c058  10 ff 00 00  00 92                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85479275
+#1 (Stop on store c058)  299/$12b,  38/$26
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   85483161
+>C:c058  20 ff 00 00  00 92                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85483161
+#1 (Stop on store c058)  102/$066,  19/$13
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85608323
+>C:c058  10 ff 00 00  00 93                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85608323
+#1 (Stop on store c058)  168/$0a8,  48/$30
+.C:62ac  8C 58 C0    STY $C058      - A:00 X:00 Y:20 SP:ed ..-..I..   85612510
+>C:c058  20 ff 00 00  00 93                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85612510
+#1 (Stop on store c058)  280/$118,  60/$3c
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85737514
+>C:c058  10 ff 00 00  00 94                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85737514
+#1 (Stop on store c058)  285/$11d,  19/$13
+.C:62ac  8C 58 C0    STY $C058      - A:03 X:00 Y:20 SP:ed ..-..I..   85737788
+>C:c058  20 ff 00 00  00 94                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85737788
+#1 (Stop on store c058)   85/$055,  47/$2f
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85862808
+>C:c058  10 ff 00 00  00 95                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85862808
+#1 (Stop on store c058)   90/$05a,   6/$06
+.C:62ac  8C 58 C0    STY $C058      - A:03 X:00 Y:20 SP:ed ..-..I..   85863082
+>C:c058  20 ff 00 00  00 95                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85863082
+#1 (Stop on store c058)  210/$0d2,  55/$37
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   85988627
+>C:c058  10 ff 00 00  00 96                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   85988627
+#1 (Stop on store c058)  215/$0d7,  57/$39
+.C:62ac  8C 58 C0    STY $C058      - A:03 X:00 Y:20 SP:ed ..-..I..   85988944
+>C:c058  20 ff 00 00  00 96                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   85988944
+#1 (Stop on store c058)   11/$00b,  50/$32
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   86113677
+>C:c058  10 ff 00 00  00 97                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   86113677
+#1 (Stop on store c058)   16/$010,   9/$09
+.C:62ac  8C 58 C0    STY $C058      - A:03 X:00 Y:20 SP:ed ..-..I..   86113951
+>C:c058  20 ff 00 00  00 97                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   86113951
+#1 (Stop on store c058)  132/$084,  47/$2f
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   86239233
+>C:c058  10 ff 00 00  00 98                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   86239233
+#1 (Stop on store c058)  142/$08e,  24/$18
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   86239840
+>C:c058  20 ff 00 00  00 98                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   86239840
+#1 (Stop on store c058)  261/$105,  22/$16
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   86365271
+>C:c058  10 ff 00 00  00 99                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   86365271
+#1 (Stop on store c058)  270/$10e,  29/$1d
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   86365845
+>C:c058  20 ff 00 00  00 99                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   86365845
+#1 (Stop on store c058)   65/$041,  32/$20
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   86490525
+>C:c058  10 ff 00 00  00 9a                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   86490525
+#1 (Stop on store c058)   75/$04b,  60/$3c
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   86491183
+>C:c058  20 ff 00 00  00 9a                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   86491183
+#1 (Stop on store c058)  197/$0c5,   5/$05
+.C:6292  8E 58 C0    STX $C058      - A:B0 X:10 Y:00 SP:ed ..-..I..   86616750
+>C:c058  10 ff 00 00  00 9b                                   ......
+>C:c060  ff                                                   .
+Stopwatch:   86616750
+#1 (Stop on store c058)  206/$0ce,  57/$39
+.C:62ac  8C 58 C0    STY $C058      - A:84 X:02 Y:20 SP:ed ..-..I..   86617369
+>C:c058  20 ff 00 00  00 9b                                    .....
+>C:c060  ff                                                   .
+Stopwatch:   86617369
+#2 (Stop on store c060)  132/$084,  17/$11
+.C:083f  8D 60 C0    STA $C060      - A:81 X:D8 Y:71 SP:d8 N.-.DI.C   86769915
+>C:c058  20 ff 00 00  00 9b                                    .....
+>C:c060  81                                                   .
+Stopwatch:   86769915
+#2 (Stop on store c060)  170/$0aa,   0/$00
+.C:0873  8D 60 C0    STA $C060      - A:82 X:FF Y:10 SP:d8 N.-..I..   86772292
+>C:c058  20 ff 00 00  00 9b                                    .....
+>C:c060  82                                                   .
+Stopwatch:   86772292
+#1 (Stop on store c058)  226/$0e2,  16/$10
+.C:6384  8E 58 C0    STX $C058      - A:66 X:90 Y:10 SP:ed N.-....C   86834804
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   86834804
+#2 (Stop on store c060)  231/$0e7,  47/$2f
+.C:083f  8D 60 C0    STA $C060      - A:81 X:E7 Y:32 SP:e7 N.-..I..   86854806
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  81                                                   .
+Stopwatch:   86854806
+#2 (Stop on store c060)  261/$105,  10/$0a
+.C:0873  8D 60 C0    STA $C060      - A:82 X:FF Y:10 SP:e7 N.-..I..   86856659
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   86856659
+#2 (Stop on store c060)  232/$0e8,  34/$22
+.C:083f  8D 60 C0    STA $C060      - A:81 X:E7 Y:01 SP:e7 N.-..I..   86874512
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  81                                                   .
+Stopwatch:   86874512
+#2 (Stop on store c060)  261/$105,  60/$3c
+.C:0873  8D 60 C0    STA $C060      - A:82 X:FF Y:10 SP:e7 N.-..I..   86876365
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   86876365
+#2 (Stop on store c060)  233/$0e9,  20/$14
+.C:083f  8D 60 C0    STA $C060      - A:81 X:E7 Y:01 SP:e7 N.-..I..   86894217
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  81                                                   .
+Stopwatch:   86894217
+#2 (Stop on store c060)  262/$106,  47/$2f
+.C:0873  8D 60 C0    STA $C060      - A:82 X:FF Y:10 SP:e7 N.-..I..   86896071
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   86896071
+#2 (Stop on store c060)  234/$0ea,   5/$05
+.C:083f  8D 60 C0    STA $C060      - A:81 X:E7 Y:01 SP:e7 N.-..I.C   86913921
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  81                                                   .
+Stopwatch:   86913921
+#2 (Stop on store c060)  263/$107,  54/$36
+.C:0873  8D 60 C0    STA $C060      - A:82 X:FF Y:10 SP:e7 N.-..I..   86915797
+>C:c058  90 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   86915797
+#1 (Stop on store c058)  268/$10c,  27/$1b
+.C:6464  8E 58 C0    STX $C058      - A:F4 X:91 Y:09 SP:ed N.-....C   86916085
+>C:c058  91 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   86916085
+#1 (Stop on store c058)  266/$10a,  55/$37
+.C:6a0f  8E 58 C0    STX $C058      - A:00 X:92 Y:01 SP:ed N.-..I.C   87053579
+>C:c058  92 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   87053579
+#2 (Stop on store c060)  267/$10b,  55/$37
+.C:083f  8D 60 C0    STA $C060      - A:81 X:E7 Y:01 SP:e7 N.-..I.C   87073298
+>C:c058  92 ff 00 00  00 9b                                   ......
+>C:c060  81                                                   .
+Stopwatch:   87073298
+#2 (Stop on store c060)  296/$128,  18/$12
+.C:0873  8D 60 C0    STA $C060      - A:82 X:FF Y:10 SP:e7 N.-..I..   87075088
+>C:c058  92 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   87075088
+#1 (Stop on store c058)  297/$129,   6/$06
+.C:6a25  8E 58 C0    STX $C058      - A:00 X:93 Y:01 SP:ed N.-....C   87075139
+>C:c058  93 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   87075139
+#1 (Stop on store c058)  195/$0c3,  11/$0b
+.C:6bcf  8E 58 C0    STX $C058      - A:00 X:94 Y:02 SP:ed N.-....C   87127686
+>C:c058  94 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   87127686
+#1 (Stop on store c058)   17/$011,  10/$0a
+.C:6bfb  8E 58 C0    STX $C058      - A:03 X:95 Y:03 SP:ed N.-....C   87136127
+>C:c058  95 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   87136127
+#1 (Stop on store c058)  232/$0e8,  49/$31
+.C:6c3d  8E 58 C0    STX $C058      - A:03 X:96 Y:00 SP:ed N.-....C   87149711
+>C:c058  96 ff 00 00  00 9b                                   ......
+>C:c060  82                                                   .
+Stopwatch:   87149711
+#3 (Stop on store c050)  135/$087,  25/$19
+.C:6cd2  8E 50 C0    STX $C050      - A:00 X:A5 Y:00 SP:ed N.-.....   87163232
+>C:c050  a5 00 00 c4  32 01 0a 06  96 3a 00 05  00            ....2....:...
+Saving file `/workspace/Apollo-11/c64-port/build/waitlist-mailbox.bin' from $c050 to $c05c
+Saving file `/workspace/Apollo-11/c64-port/build/waitlist-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/waitlist-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/waitlist-isolated-stack.bin' from $8a3c to $8b3b
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO WAITLIST / CIA TIMER             
+0518  306 CHECKPOINTS + CIA TASK PASS         
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

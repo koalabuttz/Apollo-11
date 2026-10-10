@@ -6,7 +6,7 @@ CORE = src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c
 SCENARIOS = tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c
 HEADERS = include/agc_word.h include/executive.h tests/scenarios.h tests/state_digest.h tests/reference_vectors.h include/native_dispatch.h include/irq_delivery.h tests/dispatch_cases.h tests/dispatch_check.h
 .PHONY: all test c64 sanitize clean differential
-all: build/test-irq build/test-host build/test-lifecycle build/snapshot build/arithmetic-dump build/dispatch-snapshot build/lifecycle-snapshot
+all: build/test-waitlist build/waitlist-snapshot build/test-irq build/test-host build/test-lifecycle build/snapshot build/arithmetic-dump build/dispatch-snapshot build/lifecycle-snapshot
 build:
 	mkdir -p build
 build/test-host: $(CORE) $(SCENARIOS) tests/test_host.c $(HEADERS) | build
@@ -19,6 +19,7 @@ test: all
 	./build/test-host
 	./build/test-irq
 	./build/test-lifecycle
+	./build/test-waitlist
 sanitize: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CORE) $(SCENARIOS) tests/test_host.c -o build/test-sanitize
 	./build/test-sanitize
@@ -26,6 +27,8 @@ sanitize: | build
 	./build/test-irq-sanitize
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CORE) $(SCENARIOS) $(LIFECYCLE) tests/lifecycle_check.c tests/test_lifecycle.c -o build/test-lifecycle-sanitize
 	./build/test-lifecycle-sanitize
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(TASK_CORE) $(WAIT_TEST) tests/test_waitlist.c -o build/test-waitlist-sanitize
+	./build/test-waitlist-sanitize
 c64: build/executive.prg
 build/executive.prg: $(CORE) $(SCENARIOS) platform/c64/main.c $(HEADERS) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -Wall -Wextra -Werror -Wl,-Map,build/executive.map $(CORE) $(SCENARIOS) platform/c64/main.c -o $@
@@ -55,3 +58,16 @@ build/irq.prg: $(CORE) $(SCENARIOS) platform/c64/irq_diagnostic.c platform/c64/i
 c64-lifecycle: build/lifecycle.prg
 build/lifecycle.prg: $(CORE) $(SCENARIOS) $(LIFECYCLE) tests/lifecycle_check.c platform/c64/lifecycle_diagnostic.c platform/c64/irq_platform.c platform/c64/irq_platform.h platform/c64/irq_gate.S $(HEADERS) tests/lifecycle_cases.h tests/lifecycle_check.h tests/lifecycle_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -Iplatform/c64 -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lifecycle.map $(CORE) $(SCENARIOS) $(LIFECYCLE) tests/lifecycle_check.c platform/c64/lifecycle_diagnostic.c platform/c64/irq_platform.c platform/c64/irq_gate.S -o $@
+
+TASK_CORE = src/agc_word.c src/waitlist.c src/native_tasks.c
+WAIT_TEST = tests/waitlist_cases.c tests/waitlist_check.c
+WAIT_HEADERS = include/waitlist.h include/native_tasks.h tests/waitlist_cases.h tests/waitlist_check.h tests/waitlist_vectors.h
+build/test-waitlist: $(TASK_CORE) $(WAIT_TEST) tests/test_waitlist.c $(WAIT_HEADERS) $(HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(TASK_CORE) $(WAIT_TEST) tests/test_waitlist.c -o $@
+build/waitlist-snapshot: $(TASK_CORE) tests/waitlist_cases.c platform/host/waitlist_snapshot.c $(WAIT_HEADERS) $(HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(TASK_CORE) tests/waitlist_cases.c platform/host/waitlist_snapshot.c -o $@
+
+.PHONY: c64-waitlist
+c64-waitlist: build/waitlist.prg
+build/waitlist.prg: $(CORE) src/waitlist.c src/native_tasks.c $(WAIT_TEST) platform/c64/waitlist_diagnostic.c platform/c64/timer_platform.c platform/c64/timer_platform.h platform/c64/timer_gate.S $(HEADERS) $(WAIT_HEADERS) | build
+	$(MOS_CC) $(CPPFLAGS) -Iplatform/c64 -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/waitlist.map $(CORE) src/waitlist.c src/native_tasks.c $(WAIT_TEST) platform/c64/waitlist_diagnostic.c platform/c64/timer_platform.c platform/c64/timer_gate.S -o $@

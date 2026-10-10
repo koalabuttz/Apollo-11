@@ -1,4 +1,4 @@
-# Basic lifecycle milestone handoff
+# WAITLIST and CIA task timer milestone handoff
 
 ## Repository
 
@@ -20,17 +20,30 @@ make differential REFERENCE="$PWD/deps/fixture"
 make c64 MOS_CC=/path/to/mos-c64-clang
 make c64-irq MOS_CC=/path/to/mos-c64-clang
 make c64-lifecycle MOS_CC=/path/to/mos-c64-clang
+make c64-waitlist MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/waitlist_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
 ## Completed work
 
-The fourth milestone adds basic JOBSLEEP/JOBWAKE and PRIOCHNG, plus native
+The fifth milestone adds WAITLIST insertion, T3RUPT2 list/timer reload and
+TASKOVER, preserving nine tasks, both zeros and equal-deadline ordering. Native
+tasks run under restoring exclusion and may reschedule tasks/admit or wake jobs.
+A separate CIA1 Timer B gate publishes ticks only. The PAL diagnostic uses 20 ms
+periods/two-centisecond samples; source/mask/poll limits are explicit in WAITLIST.md.
+All 196 cases / 306 checkpoints match unchanged original assembly, including ten
+actual native task sequences. Six real CIA IRQs pass register/decimal, interrupted
+arithmetic, KERNAL clock and task/job integration checks. The task state is 58
+bytes and its clock-publication buffer is three bytes; no heap is used.
+
+The fourth milestone added basic JOBSLEEP/JOBWAKE and PRIOCHNG, plus native
 sleep/reprioritize callback actions and guarded foreground wake. Dormant jobs
 retain core/VAC ownership. Original CADR matching, bank reconstruction, priority
 low bits, CCS scan bias and scratch debris match 115 independent checkpoints.
@@ -62,7 +75,7 @@ Validation passes:
 - Host dispatch/fault tests and all eight native two-job executions.
 - 26 admission/completion plus 109 dispatch checkpoints, word-for-word against
   original assembly, and the separate Virtual AGC numerical helper comparisons.
-- AddressSanitizer and UndefinedBehaviorSanitizer (leak scanning disabled).
+- All four host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
 - PAL C64 VICE: zero failures, all 135 original-derived fingerprints, eight
   actual native two-job sequences and three repeated timed-path checks.
 - Host IRQ publication/FIFO tests over 600 starting-ticket cases, guards, idle
@@ -76,6 +89,11 @@ Validation passes:
 - Third PAL C64 diagnostic: all 115 lifecycle fingerprints, five sequences,
   real IRQ-admitted waker, retained VAC/MPAC/OVFIND checks, 76 guarded intervals,
   four integration intervals and compiler-ZP/stack checks.
+- WAITLIST host tests, exhaustive positive TIME3 overflow positions, source-buffer
+  saturation, ambiguous-phase rejection, guarded/native capacity and mapping faults.
+- 306 complete task-state/target comparisons, ten actual native task sequences;
+  fourth PAL C64 diagnostic checks all fingerprints, six CIA IRQs, three observed
+  20 ms periods, 156 primitive timings and retained stack/mailbox evidence.
 
 Retained executable, snapshots, logs, target mailbox/stack dumps, map and hashes
 are in `evidence/`; reproducible output is in `build/`. DISPATCH.md documents the
@@ -94,15 +112,15 @@ claimed. Idle dispatch uses a bounded A=2/L=0 convention, not Apollo self-check.
 
 The IRQ handler publishes through `exec_irq_post`; it must never mutate Executive
 state or invoke native dispatch. Foreground wrappers restore IRQ state and admit
-at declared safe points. The C64 IRQ build requires `-fno-static-stack -mlto-zp=0`;
+at declared safe points. The C64 IRQ/task builds require `-fno-static-stack -mlto-zp=0`;
 the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: WAITLIST and CIA task timers, then restart and selected guidance work.
+Next: bounded alarm/abort and protected restart behavior, then selected guidance work.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
-Acceptance for basic native dispatch, bounded IRQ delivery and basic lifecycle is met.
+Acceptance for basic dispatch, IRQ delivery, lifecycle and bounded WAITLIST is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host

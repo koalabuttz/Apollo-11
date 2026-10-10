@@ -146,5 +146,6 @@ is an integration/payload check, not a separate full-state assembly comparison
 of C64 interrupt hardware. Seventy-six guarded primitive intervals and stack
 observations are retained in `evidence/lifecycle-timing.json` (PERFORMANCE.md).
 
-WAITLIST/CIA task timers, interpreter sleep/resume, restart protection, mission
-replay and physical hardware are still outside this bounded milestone.
+The subsequent WAITLIST milestone adds basic native tasks and CIA clock events
+(WAITLIST.md). Interpreter sleep/resume, restart protection, mission replay and
+physical hardware remain outside the implemented scope.

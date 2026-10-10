@@ -15,7 +15,8 @@ scratch copy leaves ten unrelated assembly errors, including 1/ACCJOB, 1/ACCS,
 source was not repaired in the repository.
 
 Instead, `prepare_reference.py` uses the pinned Virtual AGC Luminary supporting
-files and overlays **only the requested upstream EXECUTIVE.agc, unchanged**.
+files and overlays **the requested upstream EXECUTIVE.agc, WAITLIST.agc and
+INTERRUPT_LEAD_INS.agc, unchanged**.
 It checks byte identity and selected symbol addresses. This is an executable
 fixture for the original Executive, not evidence that the requested full Apollo
 repository builds. A trial overlay of the requested ERASABLE_ASSIGNMENTS in the
@@ -38,10 +39,10 @@ paths. The portable commands are:
 
 | Command | Actual result | Evidence |
 |---|---|---|
-| `make test` | PASS; numerical/26 Executive tests, 53 dispatch cases / 109 checkpoints, eight dispatch sequences; IRQ suite; 81 lifecycle cases / 115 checkpoints and five lifecycle sequences | `evidence/host-test.txt` |
-| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; all three host suites under AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/sanitize.txt` |
+| `make test` | PASS; numerical/26 Executive tests, 53 dispatch cases / 109 checkpoints, eight dispatch sequences; IRQ suite; 81 lifecycle cases / 115 checkpoints and five lifecycle sequences; 196 WAITLIST cases / 306 checkpoints and ten native task sequences | `evidence/host-test.txt` |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; all four host suites under AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/sanitize.txt` |
 | `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, original Executive identity checked, fixture assembled | `evidence/prepare-reference.txt`, `evidence/assembly-summary.txt` |
-| `make differential REFERENCE=/path/to/fixture` | PASS; 26 admission/completion and 109 dispatch and 115 lifecycle full-state/target comparisons; numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
+| `make differential REFERENCE=/path/to/fixture` | PASS; 26 admission/completion and 109 dispatch, 115 lifecycle and 306 task-state/target comparisons; numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
 | `python3 tools/freeze_vectors.py` | 26 admission/completion and 109 dispatch fingerprints generated | Header records snapshot SHA256 |
 | `python3 tools/freeze_lifecycle.py` | 115 original-derived lifecycle fingerprints generated after exact equality | `tests/lifecycle_vectors.h` records snapshot SHA256 |
 | `make c64 MOS_CC=/path/to/mos-c64-clang` | PASS; native PRG + ELF + link map | `evidence/c64-build.txt`, `executive.prg`, `executive.map` |
@@ -50,6 +51,9 @@ paths. The portable commands are:
 | `python3 tools/irq_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; nine real raster IRQs, interrupted C, register/stack/decimal checks, eight reference checkpoints, overflow/masking and 74 timings | `evidence/irq-result.txt`, `irq-timing.json`, IRQ monitor/log/dumps |
 | `make c64-lifecycle MOS_CC=/path/to/mos-c64-clang` | PASS; dynamic-frame, restricted-ZP lifecycle PRG and map | `evidence/c64-build.txt`, `lifecycle.prg`, `lifecycle.map` |
 | `python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 115 fingerprints, five native sequences, real IRQ-admitted waker, retained VAC payload, 76 guarded timings | `evidence/lifecycle-result.txt`, `lifecycle-timing.json`, lifecycle monitor/log/dumps |
+| `python3 tools/freeze_waitlist.py` | 306 original-derived task fingerprints generated after exact equality | `tests/waitlist_vectors.h` |
+| `make c64-waitlist MOS_CC=/path/to/mos-c64-clang` | PASS; dynamic-frame, restricted-ZP task/timer PRG | `evidence/waitlist-build.txt`, `waitlist.prg`, `waitlist.map` |
+| `python3 tools/waitlist_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 306 fingerprints, ten native task sequences, six real CIA B IRQs, interrupted C, register/decimal/stack checks, task-admitted/woken jobs, 156 timings | `evidence/waitlist-result.txt`, `waitlist-timing.json`, monitor/log/dumps |
 | `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes | `evidence/source-preservation.txt` |
 
 LeakSanitizer's default process inspection failed in this container (`/proc/...`
@@ -237,6 +241,41 @@ lifecycle path with original assembly. The helper checks mailbox
 ZP allocations beyond the preserved 32 registers, and retains 76 primitive
 intervals, four bridge intervals and stack dumps. Its final trace is $04d2
 (decimal 1234). PERFORMANCE.md reports samples without a deadline claim.
+
+## WAITLIST and timer verification
+
+The independent host adapter executes public WAITLIST, the original fixed-fixed
+T3 lead-in, T3RUPT2 and TASKOVER. It links input constructors and Virtual AGC only.
+All 196 cases / 306 rows agree, including TIME3/LST1/LST2/RUPTAGN, exact retained
+1203/1204 state and bank-qualified transfers. Ten sequences execute actual native
+task callbacks, including rescheduling inside task B; order is A/B/D/C.
+WAITLIST snapshot SHA256:
+`bd71aad75050b3df0fb7753b9519599bda9ca2b22abcecdbd41984001841182b`.
+All previous snapshots and the rope hash remain unchanged. New fixture source
+SHA256 values are in versions.json; byte identity and listing labels are checked.
+
+Reference counter increments use the real CounterPINC; the engine scaler is held
+between bounded calls so target CPU time cannot introduce fixture ticks. Task
+transfer stops at actual target PC/physical bank. The original lead-in's saved
+BANKRUPT and return-path BBANK/SUPERBNK are independently checked. WAIT scratch,
+shared Executive scratch aliases and hardware RESUME are outside this comparison.
+Native alarm markers annotate entry to original alarm routines, not their bodies.
+
+The host adds exhaustive positive timer overflow positions, restoring guards,
+capacity/mapping/helper faults, clock publication saturation and the 128cs pending
+phase limit. All four suites pass ASan/UBSan. The C64 helper checks mailbox
+`a50000c432010a06963a000500`, all 331 markers and no extra compiler ZP allocation.
+Six CIA B events include a register/decimal poison canary, four events during
+live arithmetic and one event for task admission/wake of a sleeping job.
+It checks unchanged state before collection, masked task callbacks, retained VAC
+payload, final release, Timer A jiffy advancement and vector/Timer B restoration.
+The Executive bridge is an integration check; task state has its own full oracle.
+
+The PAL source uses 19705 cycles per two-centisecond sample. All three observed
+periods differ by at most one cycle. CIA coalescing and foreground/IRQ mask budgets
+remain explicit limits. No physical C64, continuous workload or flight deadline
+has been tested. WAITLIST.md records every case group and ABI/timing adaptation;
+PERFORMANCE.md gives the retained binary and timing measurements.
 
 ## Review limits and unavailable checks
 

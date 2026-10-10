@@ -1,0 +1,1342 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/waitlist.prg" 0
+watch store c058
+watch store c060
+watch store c050
+ignore 3 1
+stopwatch reset
+g 080d
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+g
+m c058 c05d
+m c060 c060
+stopwatch
+delete 1
+delete 2
+g
+m c050 c05c
+bsave "/workspace/Apollo-11/c64-port/build/waitlist-mailbox.bin" 0 c050 c05c
+bsave "/workspace/Apollo-11/c64-port/build/waitlist-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/waitlist-software-stack.bin" 0 c100 cfff
+bsave "/workspace/Apollo-11/c64-port/build/waitlist-isolated-stack.bin" 0 8a3c 8b3b
+screen
+quit

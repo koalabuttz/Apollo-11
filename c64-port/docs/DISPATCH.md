@@ -8,7 +8,8 @@ of the unchanged original Executive at 109 checkpoints.
 
 This executes small native C demonstration jobs. Apollo guidance jobs,
 interpreter continuations, idle self-check, activity
-lamp hardware, WAITLIST and restart/recovery remain outside this milestone.
+lamp hardware and restart/recovery remain outside the implemented scope. The
+subsequent task milestone is documented in WAITLIST.md.
 
 ## Context exchange
 

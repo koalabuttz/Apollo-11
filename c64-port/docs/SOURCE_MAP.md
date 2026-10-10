@@ -32,10 +32,32 @@ JOBSLEEP=5133; JOBWAKE=5137; PRIOCHNG=5146; JOBSLP1=bank 01,2776;
 JOBWAKE2=bank 01,3023; PRIOCH2=bank 01,3072; EJSCAN=bank 01,3120.
 The setup helper asserts selected symbol addresses against the assembler listing.
 
+## Task scheduler mapping
+
+| Original source / labels | Native implementation | Verification boundary |
+|---|---|---|
+| WAITLIST:129–144 public WAITLIST/DLY2/LVWTLIST; 203–240 WAIT2 | `wl_schedule` | Public entry to LVWTLIST before hardware return; TIME3/list words |
+| WAITLIST:245–271 WTLST4; 274–336 WTLST5/WTABORT/FILLED | `wl_schedule` | Ordered shifts/equal deadlines; original 1203 BAILOUT1 entry |
+| WAITLIST:348–361 WTLST2 | `wl_schedule` | Raw interval split and CCS zero branches |
+| INTERRUPT_LEAD_INS:47–50 T3 lead-in; WAITLIST:380–417 T3RUPT/T3RUPT2 | `wl_begin`, explicit native pending latch | Actual selected Z/BBANK/SUPERBNK; original BANKRUPT save checked |
+| WAITLIST:424–439 TASKOVER/RESUME | `wl_taskover` | Due task transfer or restored banks before RELINT/hardware RESUME |
+| WAITLIST:561–564 WAITPOOH/1204 | `wl_schedule` | POODOO1 entry before alarm body |
+| FRESH_START_AND_RESTART:399–400,475–505 | `wl_init` resource markers | Deterministic native initializer; SVCT3 body excluded |
+| yaAGC counter hardware model | `wl_advance` | Controlled PINCs against real CounterPINC, including positive overflow reset |
+
+Checked fixture addresses, octal: WAITLIST=5203; LVWTLIST=5215;
+WAIT2=bank 01,3231; ENDTASK=5236 (positive pair 5240/4063);
+T3 lead-in=4014; T3RUPT=bank 01,3407; T3RUPT2=bank 01,3414;
+TASKOVER=5261; original return stop=5275; LST1=E3,1400;
+LST2=E3,1410; TIME3=0026; RUPTAGN=0734.
+WAITLIST.md describes the excluded scratch aliases, native ABI and CIA adaptation.
+
 ## Deferred routines
 
 SPVAC, CHANG2, interpretive ENDPRCHG/INTRSM, NUCHANG2 race/activity handling,
-full DUMMYJOB/ADVAN polling/self-check, general SUPDXCHZ, ENDFIND's return and all alarm/restart code
+full DUMMYJOB/ADVAN polling/self-check, general SUPDXCHZ, ENDFIND's return,
+TWIDDLE/FIXDELAY/VARDELAY/LONGCALL wrappers, SVCT3's body, hardware interrupt
+RESUME and all alarm/restart code
 remain untranslated. `exec_endjob_select` is not ENDOFJOB's complete calling
 convention, and a selected index alone does not execute a routine. `exec_native` now runs
 explicitly mapped native demonstration jobs; see DISPATCH.md for the adapter

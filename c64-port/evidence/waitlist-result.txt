@@ -1,0 +1,10 @@
+PASS: PAL C64 196 WAITLIST cases / 306 reference fingerprints, ten native task sequences, six real CIA Timer B IRQs and task-admitted/woken jobs
+Mailbox: a50000c432010a06963a000500
+insert: 120 samples, maximum observed 8660 PAL cycles (case 3)
+dispatch: 24 samples, maximum observed 4018 PAL cycles (case 125)
+taskover: 8 samples, maximum observed 4187 PAL cycles (case 145)
+bad delay: 4 samples, maximum observed 658 PAL cycles (case 154)
+CIA IRQ intervals: [2377, 1853, 1853, 1854, 1876, 1790]
+Continuous timer periods: [19706, 19705, 19704]
+Task bridge: {'92_to_93': 21560, '93_to_94': 52547, '94_to_95': 8441, '95_to_96': 13584}
+Stack sentinel extents: {'hardware': 31, 'software': 105, 'isolated': 16}

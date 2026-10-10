@@ -46,19 +46,34 @@ callback/source/mask bounds are still application requirements, not flight proof
 Acceptance for this bounded milestone is met. LIFECYCLE.md records the entry
 scratch adaptations, physical bank checks, synthetic boundaries and exclusions.
 
-## Next bounded milestone: WAITLIST and task timers
+## Completed: WAITLIST and CIA task timer adapter
 
-Trace TIME3, the nine LST1 differential-time/LST2 2CADR slots, T3RUPT entry and
-TASKOVER against unchanged assembly. Define task completion and Executive job
-admission separately, including equal deadlines, capacity and timer rollover.
-Choose an explicit CIA timer adapter and interrupt/exclusion ownership contract
-before integrating native tasks. Extend the independent oracle and host/native
-C64 sequences with timer-ordering evidence and measured source/safe-point bounds.
-Do not infer timer semantics or delivery deadlines from the finite raster harness.
+- Nine LST2 task pairs, eight differential LST1 intervals, TIME3 and RUPTAGN
+  retain original insertion/reload/TASKOVER semantics and signed-zero behavior.
+- 1203 full-list mutation and 1204 delay boundaries match original execution.
+- Native task callbacks run excluded, reschedule inside a task and return through
+  TASKOVER; ten actual task sequences match independent assembly snapshots.
+- 196 cases / 306 checkpoints, four host/sanitizer suites and a fourth C64
+  diagnostic pass. Six real CIA B IRQs preserve registers and native arithmetic,
+  keep KERNAL Timer A service and drive task admission/wake of native jobs.
+- PAL CIA1 B samples two centiseconds per 19705-cycle event. Continuous-source
+  capacity, masks and polling remain application requirements (WAITLIST.md).
 
-Follow with BAILOUT1 and protected restart groups; required interpreter/multiword
-semantics; then one bounded landing-guidance computation. Flight feasibility
-remains a separate measurement milestone. Rust is optional for later components.
+Acceptance for this bounded milestone is met. Native foreground task delivery,
+per-call restoring I state, scratch separation and the excluded SVCT3 body are
+explicit adaptations; this does not complete Apollo interrupt/task hardware.
+
+## Next bounded milestone: alarm/abort and protected restart behavior
+
+Trace BAILOUT1/POODOO1 and the protected restart tables against unchanged source.
+Choose one bounded abort/reset path with explicit phase/device inputs, preserving
+alarm records and retained resources before recovery. Extend the original-assembly
+oracle before substituting native reset/re-entry actions. Resource alarm detection
+is already verified; the alarm body and restart routing remain untranslated.
+
+Follow with required interpreter/multiword semantics and one bounded
+landing-guidance computation. Flight feasibility remains a separate measurement
+milestone. Rust is optional for later components.
 
 ## Remaining design questions
 

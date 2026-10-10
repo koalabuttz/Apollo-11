@@ -9,3 +9,6 @@ Dispatch snapshot SHA256: 97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065
 PASS: 81 sleep/wake/priority cases / 115 checkpoints, including 5 native lifecycle sequences
 Full saved state and actual bank-qualified transfer match original JOBSLEEP/JOBWAKE/PRIOCHNG
 Lifecycle snapshot SHA256: 6e5c7afa4a31a2d7fde7b981d89f9ccecb1a6896866ef505432927ab3623c00b
+PASS: 196 WAITLIST cases / 306 checkpoints, including 10 actual native task sequences
+TIME3/LST1/LST2/RUPTAGN, retained 1203/1204 boundaries and physical task transfers match original assembly
+WAITLIST snapshot SHA256: bd71aad75050b3df0fb7753b9519599bda9ca2b22abcecdbd41984001841182b

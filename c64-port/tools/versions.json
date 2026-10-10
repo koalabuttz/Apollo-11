@@ -7,7 +7,9 @@
     "repository": "https://github.com/virtualagc/virtualagc",
     "commit": "1b5d6474841a7ab53237ead070f76f35f162f68d",
     "executive_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
-    "fixture_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+    "fixture_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "waitlist_sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+    "interrupt_lead_ins_sha256": "ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3"
   },
   "llvm_mos_sdk": {
     "version": "v23.3.0",

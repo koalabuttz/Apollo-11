@@ -17,8 +17,9 @@ snapshot transport. `platform/c64` provides diagnostic I/O and RAM mailboxes.
 `src/native_dispatch.c` provides a cooperative native callback trampoline.
 `src/irq_delivery.c` buffers IRQ-origin admission requests; optional platform
 guards protect foreground mutation. The C64 raster harness preserves compiler
-registers and uses a separate ISR stack (IRQ.md). There is no WAITLIST timer or
-general OS-service layer. Interfaces are explicit structures/functions suitable for later
+registers and uses a separate ISR stack (IRQ.md). `src/waitlist.c` retains WAITLIST/T3RUPT2/TASKOVER timer/list state;
+`src/native_tasks.c` runs mapped foreground tasks under exclusion. A CIA1 Timer B
+producer publishes clock ticks without dispatch. There is no general OS-service layer. Interfaces are explicit structures/functions suitable for later
 component-by-component Rust replacement; no Rust is included.
 
 ## Core sets and priority representation
@@ -112,8 +113,11 @@ bank/counter temporaries are outside the saved-state comparison boundary.
 WAITLIST is a distinct timer/task subsystem: TIME3 plus differential LST1 times
 and LST2 2CADRs, at most nine tasks, executed with interrupts inhibited; tasks
 finish via TASKOVER. T3RUPT is entered through INTERRUPT_LEAD_INS. A task may
-request an Executive job. Native CIA timer mapping and task/interrupt ordering
-are future work, not approximated here.
+request an Executive job. The bounded native translation now covers insertion, timer/list reload and
+basic task completion; CIA1 Timer B publishes two-centisecond samples in the PAL
+diagnostic. Foreground task delivery and per-call IRQ restoration adapt Apollo
+interrupt timing. WAITLIST.md defines the exact state boundary, ENDTASK body
+exclusion, scratch separation and ownership/source-rate limits.
 
 FINDVAC2 reaches BAILOUT1 with octal 1201 when no VAC is free. NOVAC's exhausted
 scan reaches BAILOUT1 with octal 1202 when all eight cores are occupied. The

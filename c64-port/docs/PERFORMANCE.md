@@ -5,7 +5,8 @@ ordinary ROMs. `executive.prg` is the unbound console regression; `irq.prg` and
 `lifecycle.prg` use `-fno-static-stack -mlto-zp=0` and the bounded raster gate.
 These are diagnostic samples, not flight-software bounds or AGC cycle equivalence.
 Exact binaries, maps, logs, mailbox/stack dumps and hashes are in `evidence/`.
-All figures below refer to the retained lifecycle-milestone binaries.
+The three existing artifacts are unchanged from the lifecycle milestone. The
+additional WAITLIST artifact and CIA measurements are recorded separately below.
 
 ## Image and RAM
 
@@ -159,3 +160,74 @@ and BSS, plus mailboxes $c000..$c00c (console), $c020..$c026 and $c030..$c032 (I
 and $c040..$c04d (lifecycle). Target `int`/pointers are 16 bits. The trampoline
 retains no suspended C stack; persistent job values belong in MPAC/VAC. Physical
 C64, NTSC, interpreter dispatch and guidance feasibility remain unmeasured.
+
+## WAITLIST diagnostic resources and timings
+
+The fourth artifact uses the same guarded compiler flags. Its retained file is
+31804 bytes; the loaded image is 31802 bytes at $0801..$843a, with SYS $080d.
+Text is 30315 bytes ($080d..$7e77), read-only data 1475 bytes ($7e78..$843a),
+BSS 1793 bytes ($843b..$8b3b), and `.noinit` one byte at $8b3c. Image plus BSS /
+noinit totals 33596 bytes, with heap start $8b3d; no heap is used. Compiler ZP is
+only the preserved 32 registers. This diagnostic fits stock C64 RAM.
+
+Task state is 58 bytes, task runtime 18 bytes and tick publication three bytes.
+The diagnostic includes two task states, two 648-byte Executive states, a 32-byte
+admission buffer for bound Executive helpers, saved IRQ registers and a 256-byte
+ISR stack. Foreground sentinel extent is 105 bytes, ISR extent 16, and hardware
+extent 31 below the protected 14-byte entry chain (about 45 total observed bytes).
+These are lower-bound observations with the same sentinel limits described above.
+
+156 isolated operations pair $10/$20 stores at $c058, with case at $c05d.
+Source is not armed during this suite. Setup and fingerprinting are outside each
+measured primitive interval; marker/call/VIC bus effects remain included.
+
+| Group | Samples | Maximum PAL cycles | Time | Case |
+|---|---:|---:|---:|---|
+| WAITLIST insertion, including capacity failures | 120 | 8660 | 8.790 ms | 3, full list displaced before 1203 |
+| T3RUPT2 dispatch/reload | 24 | 4018 | 4.078 ms | 125 |
+| TASKOVER chain/return | 8 | 4187 | 4.250 ms | 145 |
+| Invalid-delay alarm boundary | 4 | 658 | 0.668 ms | 154 |
+
+The complete fingerprint suite also checks synthetic multi-wrap PINC loops.
+Those large elapsed-time tests mask IRQs with the CIA B source stopped; they
+are correctness fixtures, not admissible continuous-timer service budgets.
+
+Six CIA IRQ marker intervals ($81/$82 at $c060) are 2377, 1853, 1853, 1854,
+1876 and 1790 PAL cycles. The first is a poison-register canary (2.413 ms);
+the five normal entries span 1790..1876 cycles (1.817..1.904 ms), including
+register/stack preservation, ISR locals, two tick publications and marker stores.
+CPU/KERNAL entry, ICR read/selection and final exit/chaining are excluded.
+Coincident Timer A service adds the stock KERNAL clock/keyboard routine after
+register restore. No universal interrupt-response bound is inferred.
+
+A 10 ms trial left insufficient margin between worst observed insertion and IRQ
+handling. The retained source uses 19705 cycles per event, approximately 20 ms,
+publishing two logical centiseconds. Four finite periodic events occur during
+unmasked checked native arithmetic. Their three start-marker periods are 19706,
+19705 and 19704 cycles; small entry-phase variation does not indicate tick loss.
+No elapsed tick is inferred for a coalesced CIA flag. The longest mask plus
+handler/entry/other-source delay must stay below the configured period.
+
+The separate one-event task/job bridge records:
+
+| Boundary | PAL cycles | Time |
+|---|---:|---:|
+| Pre-unmask marker to observed publication ($92..$93) | 21560 | 21.883 ms |
+| Observed publication to selected task ($93..$94) | 52547 | 53.334 ms |
+| Task callback admission/wake and TASKOVER ($94..$95) | 8441 | 8.567 ms |
+| Resumed sleeper and admitted-job completion ($95..$96) | 13584 | 13.787 ms |
+
+The 52547-cycle interval includes both unchanged-state comparisons (648-byte
+Executive and 58-byte task state), safety checks, clock collection and dispatch.
+It is not a scheduler-only latency measurement. Callback time includes guarded
+Executive helpers and assertions. The final interval covers two separate job
+steps with restoring I state, not one continuous mask. Source has a finite budget
+and stops after publication, so these bridge intervals do not prove continuous
+source capacity or application deadlines. Odd-centisecond deadlines additionally
+wait for two-centisecond sampling before foreground collection.
+
+The helper retains all events/intervals, verifies periodic spacing and rejects
+extra compiler ZP or exhaustion of instrumented stacks. Reserve $c050..$c05d and
+$c060 for mailbox/timing stores in addition to the earlier diagnostic regions.
+CIA ownership, stock-ROM restoration, callback/mask constraints, and unsupported
+NTSC/NMI/multi-source behavior are defined in WAITLIST.md.

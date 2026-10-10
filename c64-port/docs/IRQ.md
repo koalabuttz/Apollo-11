@@ -145,3 +145,11 @@ armed for one event, so it cannot overwhelm the buffer. Continuous raster input
 with the same callback could overflow. Four requests alone do not provide a
 real-time guarantee. CIA WAITLIST/task scheduling and guidance deadlines remain
 separate work.
+
+## Task clock source
+
+WAITLIST.md defines the separate CIA1 Timer B tick-publication contract. It uses
+a dedicated gate, stock Timer A chaining, foreground clock collection and native
+task callbacks under exclusion. Timer IRQs never dispatch jobs/tasks. The raster
+admission and CIA timer diagnostics own separate sources and vectors; simultaneous
+installation, multi-source integration and NMI remain unsupported.

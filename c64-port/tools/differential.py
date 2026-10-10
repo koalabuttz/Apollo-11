@@ -97,3 +97,28 @@ if errors: sys.exit('\n'.join(errors))
 print('PASS: 81 sleep/wake/priority cases / 115 checkpoints, including 5 native lifecycle sequences')
 print('Full saved state and actual bank-qualified transfer match original JOBSLEEP/JOBWAKE/PRIOCHNG')
 print('Lifecycle snapshot SHA256: '+hashlib.sha256((ROOT/'build/lifecycle-reference.snapshots').read_bytes()).hexdigest())
+
+for source in ['WAITLIST.agc','INTERRUPT_LEAD_INS.agc']:
+    if (ROOT.parent/'Luminary099'/source).read_bytes() != (reference/source).read_bytes():
+        sys.exit('FAIL: fixture '+source+' is not byte-identical to upstream')
+subprocess.run(['gcc','-std=c99','-O2','-DWAIT_INPUT_ONLY','-I'+str(engine),
+                '-Iinclude','-Itests','tools/waitlist_reference.c','tests/scenarios.c',
+                'tests/waitlist_cases.c',str(engine/'agc_engine.o'),
+                str(engine/'agc_engine_init.o'),str(engine/'rfopen.o'),'-o','build/waitlist-reference'],cwd=ROOT,check=True)
+outputs=[]
+for name,command in [('native',['./build/waitlist-snapshot']),
+                     ('reference',['./build/waitlist-reference',str(reference/'MAIN.agc.bin')])]:
+    run=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,check=True)
+    (ROOT/('build/waitlist-'+name+'.snapshots')).write_text(run.stdout)
+    if name=='reference': (ROOT/'build/waitlist-reference.trace').write_text(run.stderr)
+    outputs.append([list(map(int,row.split())) for row in run.stdout.splitlines()])
+if any(len(rows)!=306 for rows in outputs): sys.exit('FAIL: expected 306 WAITLIST checkpoints')
+errors=[]
+for row,(native_row,reference_row) in enumerate(zip(*outputs)):
+    if len(native_row)!=34 or len(reference_row)!=34: errors.append(f'WAITLIST row {row}: expected 34 fields')
+    for field,(nv,rv) in enumerate(zip(native_row,reference_row)):
+        if nv!=rv: errors.append(f'WAITLIST case/step {reference_row[:2]}, field {field}: native={nv}, reference={rv}')
+if errors: sys.exit('\n'.join(errors))
+print('PASS: 196 WAITLIST cases / 306 checkpoints, including 10 actual native task sequences')
+print('TIME3/LST1/LST2/RUPTAGN, retained 1203/1204 boundaries and physical task transfers match original assembly')
+print('WAITLIST snapshot SHA256: '+hashlib.sha256((ROOT/'build/waitlist-reference.snapshots').read_bytes()).hexdigest())

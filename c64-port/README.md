@@ -9,8 +9,9 @@ basic CHANG1/CHANJOB context exchange and completion through basic dispatch;
 explicit historical-2CADR mappings to native C continuations; platform interrupt
 exclusion and bounded IRQ admission requests; basic JOBSLEEP/JOBWAKE and
 PRIOCHNG. Native demonstration jobs run, sleep, wake, change priority, resume
-and complete. **Deferred:** Apollo guidance jobs, interpreter dispatch, WAITLIST
-and restart.
+and complete. WAITLIST now retains nine task slots, differential timer state
+and native task completion; a CIA Timer B adapter publishes clock events.
+**Deferred:** Apollo guidance jobs, interpreter dispatch and restart.
 
 26 original admission/completion scenarios and 53 dispatch cases (109 checkpoints,
 including eight sequential two-job executions) agree word-for-word with original
@@ -19,7 +20,10 @@ original-derived state fingerprints in VICE. A separate real raster-IRQ diagnost
 checks interrupted C, register preservation, bounded delivery and overflow.
 A third diagnostic checks 81 lifecycle cases / 115 checkpoints, five native
 sequences and an IRQ-admitted waker. These are bounded behavioral checks,
-not a complete flight Executive or real-time equivalence claim.
+not a complete flight Executive or real-time equivalence claim. WAITLIST adds
+196 cases / 306 checkpoints, ten native task sequences and a fourth C64
+diagnostic with six real CIA Timer B IRQs. The PAL adapter samples two
+centiseconds per event; foreground delivery and masking limits are documented.
 
 ## Repository
 
@@ -30,7 +34,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md` and `docs/LIFECYCLE.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/WAITLIST.md` for the current milestone.
 
 ## Build and run
 
@@ -42,10 +46,11 @@ ASAN_OPTIONS=detect_leaks=0 make sanitize
 make c64 MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-irq MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-lifecycle MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
+make c64-waitlist MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 ```
 
-The deliverables are `build/executive.prg`, `build/irq.prg` and
-`build/lifecycle.prg`
+The deliverables are `build/executive.prg`, `build/irq.prg`,
+`build/lifecycle.prg` and `build/waitlist.prg`
 (ordinary C64 PRGs with BASIC SYS stubs).
 Load a PRG on a C64 and RUN, or use VICE. The console diagnostic prints a test summary,
 not an interactive DSKY. Target compiler: LLVM-MOS SDK **v23.3.0**.
@@ -62,7 +67,8 @@ make differential REFERENCE="$PWD/deps/fixture"
 
 This builds pinned yaYUL/yaAGC and assembles a full reference fixture using
 Virtual AGC's corrected supporting transcription, with the requested upstream
-`EXECUTIVE.agc` copied **byte-for-byte**. The selected repository's full MAIN
+`EXECUTIVE.agc`, `WAITLIST.agc` and `INTERRUPT_LEAD_INS.agc` copied
+**byte-for-byte**. The selected repository's full MAIN
 cannot currently assemble unmodified; details are in `docs/VERIFICATION.md`.
 No native port implementation is linked into the Executive reference runner.
 
@@ -74,7 +80,8 @@ C64 fingerprints only after a successful differential test:
 ```sh
 python3 tools/freeze_vectors.py
 python3 tools/freeze_lifecycle.py
-make test c64 c64-irq c64-lifecycle
+python3 tools/freeze_waitlist.py
+make test c64 c64-irq c64-lifecycle c64-waitlist
 ```
 
 ### VICE verification
@@ -86,13 +93,15 @@ python3 tools/irq_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
+python3 tools/waitlist_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 ```
 
 Provide standard ROM files `kernal-901227-03.bin`, `basic-901226-01.bin`, and
 `chargen-901225-01.bin`. The helper uses the console monitor, loads the PRG after
 BASIC boot, runs native code, and checks a RAM completion mailbox. A cycle limit
 or missing completion record fails the test. The helpers record timing and stack
-sentinel observations; the IRQ and lifecycle helpers write structured timing
+sentinel observations; the IRQ, lifecycle and WAITLIST helpers write structured timing
 reports and reject unpreserved compiler ZP allocations. No display server is required.
 
 ## Engineering record
@@ -100,6 +109,7 @@ reports and reject unpreserved compiler ZP allocations. No display server is req
 - `docs/DISPATCH.md`: native callback API, context swaps, sequential reference boundaries.
 - `docs/IRQ.md`: exclusion, queue ownership, fault boundaries and C64 IRQ ABI.
 - `docs/LIFECYCLE.md`: sleep/wake, priority scans, callback actions and oracle boundaries.
+- `docs/WAITLIST.md`: task list/counter semantics, native callbacks, CIA ownership and limits.
 - `docs/ARCHITECTURE.md`: original structures, calling conventions, dependencies.
 - `docs/SOURCE_MAP.md`: original labels mapped to C and reference stop boundaries.
 - `docs/FIDELITY.md`: classifications, adaptations, and unsupported behavior.
