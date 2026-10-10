@@ -29,12 +29,12 @@
     {
       "group": "admission/endjob scan",
       "case": 0,
-      "cycles": 1872
+      "cycles": 1873
     },
     {
       "group": "admission/endjob scan",
       "case": 1,
-      "cycles": 1984
+      "cycles": 1942
     },
     {
       "group": "admission/endjob scan",
@@ -44,7 +44,7 @@
     {
       "group": "admission/endjob scan",
       "case": 3,
-      "cycles": 2321
+      "cycles": 2320
     },
     {
       "group": "admission/endjob scan",
@@ -69,7 +69,7 @@
     {
       "group": "admission/endjob scan",
       "case": 8,
-      "cycles": 2631
+      "cycles": 2673
     },
     {
       "group": "admission/endjob scan",
@@ -84,7 +84,7 @@
     {
       "group": "admission/endjob scan",
       "case": 11,
-      "cycles": 2749
+      "cycles": 2750
     },
     {
       "group": "admission/endjob scan",
@@ -94,17 +94,17 @@
     {
       "group": "admission/endjob scan",
       "case": 13,
-      "cycles": 3816
+      "cycles": 3820
     },
     {
       "group": "admission/endjob scan",
       "case": 14,
-      "cycles": 2778
+      "cycles": 2735
     },
     {
       "group": "admission/endjob scan",
       "case": 15,
-      "cycles": 3221
+      "cycles": 3308
     },
     {
       "group": "admission/endjob scan",
@@ -114,7 +114,7 @@
     {
       "group": "admission/endjob scan",
       "case": 17,
-      "cycles": 1210
+      "cycles": 1209
     },
     {
       "group": "admission/endjob scan",
@@ -129,17 +129,17 @@
     {
       "group": "admission/endjob scan",
       "case": 20,
-      "cycles": 1424
+      "cycles": 1340
     },
     {
       "group": "admission/endjob scan",
       "case": 21,
-      "cycles": 1416
+      "cycles": 1415
     },
     {
       "group": "admission/endjob scan",
       "case": 22,
-      "cycles": 2642
+      "cycles": 2643
     },
     {
       "group": "admission/endjob scan",
@@ -154,127 +154,127 @@
     {
       "group": "admission/endjob scan",
       "case": 25,
-      "cycles": 2704
+      "cycles": 2575
     },
     {
       "group": "basic exchange",
       "case": 0,
-      "cycles": 4057
+      "cycles": 4101
     },
     {
       "group": "basic exchange",
       "case": 1,
-      "cycles": 4046
-    },
-    {
-      "group": "basic exchange",
-      "case": 2,
-      "cycles": 3909
-    },
-    {
-      "group": "basic exchange",
-      "case": 3,
-      "cycles": 4354
-    },
-    {
-      "group": "basic exchange",
-      "case": 4,
-      "cycles": 4432
-    },
-    {
-      "group": "basic exchange",
-      "case": 5,
-      "cycles": 4346
-    },
-    {
-      "group": "basic exchange",
-      "case": 6,
-      "cycles": 4081
-    },
-    {
-      "group": "basic exchange",
-      "case": 7,
       "cycles": 4003
     },
     {
       "group": "basic exchange",
+      "case": 2,
+      "cycles": 3910
+    },
+    {
+      "group": "basic exchange",
+      "case": 3,
+      "cycles": 4269
+    },
+    {
+      "group": "basic exchange",
+      "case": 4,
+      "cycles": 4435
+    },
+    {
+      "group": "basic exchange",
+      "case": 5,
+      "cycles": 4431
+    },
+    {
+      "group": "basic exchange",
+      "case": 6,
+      "cycles": 4210
+    },
+    {
+      "group": "basic exchange",
+      "case": 7,
+      "cycles": 3790
+    },
+    {
+      "group": "basic exchange",
       "case": 8,
-      "cycles": 4335
+      "cycles": 4208
     },
     {
       "group": "basic exchange",
       "case": 9,
-      "cycles": 4327
+      "cycles": 4371
     },
     {
       "group": "basic exchange",
       "case": 10,
-      "cycles": 4087
+      "cycles": 4471
     },
     {
       "group": "basic exchange",
       "case": 11,
-      "cycles": 4251
+      "cycles": 4253
     },
     {
       "group": "basic exchange",
       "case": 12,
-      "cycles": 4508
+      "cycles": 4122
     },
     {
       "group": "basic exchange",
       "case": 13,
-      "cycles": 4542
+      "cycles": 4458
     },
     {
       "group": "basic exchange",
       "case": 14,
-      "cycles": 3818
+      "cycles": 4120
     },
     {
       "group": "basic exchange",
       "case": 15,
-      "cycles": 4022
+      "cycles": 4280
     },
     {
       "group": "basic exchange",
       "case": 16,
-      "cycles": 4357
+      "cycles": 4057
     },
     {
       "group": "basic exchange",
       "case": 17,
-      "cycles": 4459
+      "cycles": 4073
     },
     {
       "group": "basic exchange",
       "case": 18,
-      "cycles": 4236
+      "cycles": 4454
     },
     {
       "group": "basic exchange",
       "case": 19,
-      "cycles": 4151
+      "cycles": 4495
     },
     {
       "group": "basic exchange",
       "case": 20,
-      "cycles": 4530
+      "cycles": 4483
     },
     {
       "group": "basic exchange",
       "case": 21,
-      "cycles": 4236
+      "cycles": 3852
     },
     {
       "group": "basic exchange",
       "case": 22,
-      "cycles": 4141
+      "cycles": 4099
     },
     {
       "group": "basic exchange",
       "case": 23,
-      "cycles": 4047
+      "cycles": 4434
     },
     {
       "group": "basic exchange",
@@ -284,32 +284,32 @@
     {
       "group": "basic exchange",
       "case": 25,
-      "cycles": 4570
+      "cycles": 4444
     },
     {
       "group": "basic exchange",
       "case": 26,
-      "cycles": 4355
+      "cycles": 4184
     },
     {
       "group": "basic exchange",
       "case": 27,
-      "cycles": 4219
+      "cycles": 4433
     },
     {
       "group": "basic exchange",
       "case": 28,
-      "cycles": 4056
+      "cycles": 4058
     },
     {
       "group": "basic exchange",
       "case": 29,
-      "cycles": 4279
+      "cycles": 4280
     },
     {
       "group": "basic exchange",
       "case": 30,
-      "cycles": 4157
+      "cycles": 4115
     },
     {
       "group": "basic exchange",
@@ -319,7 +319,7 @@
     {
       "group": "basic exchange",
       "case": 32,
-      "cycles": 4439
+      "cycles": 4355
     },
     {
       "group": "basic exchange",
@@ -329,67 +329,67 @@
     {
       "group": "basic exchange",
       "case": 34,
-      "cycles": 4259
+      "cycles": 4475
     },
     {
       "group": "basic exchange",
       "case": 35,
-      "cycles": 3782
+      "cycles": 3783
     },
     {
       "group": "completion/dispatch",
       "case": 36,
-      "cycles": 6137
+      "cycles": 5845
     },
     {
       "group": "completion/dispatch",
       "case": 37,
-      "cycles": 6086
+      "cycles": 6179
     },
     {
       "group": "completion/dispatch",
       "case": 38,
-      "cycles": 5667
+      "cycles": 5931
     },
     {
       "group": "completion/dispatch",
       "case": 39,
-      "cycles": 6073
+      "cycles": 5650
     },
     {
       "group": "completion/dispatch",
       "case": 40,
-      "cycles": 6012
+      "cycles": 6143
     },
     {
       "group": "completion/dispatch",
       "case": 41,
-      "cycles": 2283
+      "cycles": 2504
     },
     {
       "group": "idle startup",
       "case": 50,
-      "cycles": 1041
+      "cycles": 1127
     },
     {
       "group": "idle startup",
       "case": 51,
-      "cycles": 4067
+      "cycles": 3723
     },
     {
       "group": "idle startup",
       "case": 52,
-      "cycles": 4115
+      "cycles": 3771
     },
     {
       "group": "four-request safe point",
       "case": 4,
-      "cycles": 12709
+      "cycles": 13012
     },
     {
       "group": "four-request safe point",
       "case": 8,
-      "cycles": 18357
+      "cycles": 18450
     },
     {
       "group": "exclusion enter/leave",
@@ -400,54 +400,54 @@
   "irq_samples": [
     {
       "group": 6,
-      "cycles": 2597
+      "cycles": 2630
     },
     {
       "group": 7,
-      "cycles": 2181
+      "cycles": 2214
     },
     {
       "group": 7,
-      "cycles": 2181
+      "cycles": 2214
     },
     {
       "group": 8,
-      "cycles": 2167
+      "cycles": 2199
     },
     {
       "group": 8,
-      "cycles": 2167
+      "cycles": 2199
     },
     {
       "group": 8,
-      "cycles": 2167
+      "cycles": 2199
     },
     {
       "group": 8,
-      "cycles": 2167
+      "cycles": 2199
     },
     {
       "group": 8,
-      "cycles": 2027
+      "cycles": 2060
     },
     {
       "group": 9,
-      "cycles": 2181
+      "cycles": 2214
     }
   ],
   "observed_latency": {
-    "irq_marker_to_poll_return": 152525,
-    "irq_return_marker_to_poll_return": 150344,
-    "callback_start_to_poll_return": 163271,
-    "poll_interval": 3748,
-    "poll_return_to_high_callback": 7768,
-    "masked_work": 463052,
-    "restore_marker_to_delivery_return": 2534
+    "irq_marker_to_poll_return": 152788,
+    "irq_return_marker_to_poll_return": 150574,
+    "callback_start_to_poll_return": 163309,
+    "poll_interval": 3789,
+    "poll_return_to_high_callback": 7811,
+    "masked_work": 463075,
+    "restore_marker_to_delivery_return": 2567
   },
   "stacks": {
     "hardware": {
       "top": 498,
-      "sentinel_extent": 37,
+      "sentinel_extent": 34,
       "instrumented": 242
     },
     "software": {
@@ -456,7 +456,7 @@
       "instrumented": 3840
     },
     "isolated": {
-      "top": 25000,
+      "top": 27407,
       "sentinel_extent": 16,
       "instrumented": 256
     }
@@ -466,109 +466,109 @@
       "marker": 129,
       "group": 6,
       "case": 0,
-      "cycle": 94436
+      "cycle": 94439
     },
     {
       "marker": 130,
       "group": 6,
       "case": 0,
-      "cycle": 97033
+      "cycle": 97069
     },
     {
       "marker": 144,
       "group": 7,
       "case": 1,
-      "cycle": 2695889
+      "cycle": 2695465
     },
     {
       "marker": 129,
       "group": 7,
       "case": 1,
-      "cycle": 2708685
+      "cycle": 2708684
     },
     {
       "marker": 130,
       "group": 7,
       "case": 1,
-      "cycle": 2710866
+      "cycle": 2710898
     },
     {
       "marker": 148,
       "group": 7,
       "case": 1,
-      "cycle": 2855179
+      "cycle": 2854737
     },
     {
       "marker": 149,
       "group": 7,
       "case": 1,
-      "cycle": 2859211
+      "cycle": 2858771
     },
     {
       "marker": 150,
       "group": 7,
       "case": 1,
-      "cycle": 5373537
+      "cycle": 5373391
     },
     {
       "marker": 151,
       "group": 7,
       "case": 1,
-      "cycle": 5374787
+      "cycle": 5374651
     },
     {
       "marker": 144,
       "group": 7,
       "case": 0,
-      "cycle": 10501369
+      "cycle": 10501596
     },
     {
       "marker": 129,
       "group": 7,
       "case": 0,
-      "cycle": 10512115
+      "cycle": 10512117
     },
     {
       "marker": 130,
       "group": 7,
       "case": 0,
-      "cycle": 10514296
+      "cycle": 10514331
     },
     {
       "marker": 148,
       "group": 7,
       "case": 0,
-      "cycle": 10660892
+      "cycle": 10661116
     },
     {
       "marker": 149,
       "group": 7,
       "case": 0,
-      "cycle": 10664640
+      "cycle": 10664905
     },
     {
       "marker": 150,
       "group": 7,
       "case": 0,
-      "cycle": 10671244
+      "cycle": 10671542
     },
     {
       "marker": 151,
       "group": 7,
       "case": 0,
-      "cycle": 10672408
+      "cycle": 10672716
     },
     {
       "marker": 129,
       "group": 8,
       "case": 5,
-      "cycle": 10826612
+      "cycle": 10826614
     },
     {
       "marker": 130,
       "group": 8,
       "case": 5,
-      "cycle": 10828779
+      "cycle": 10828813
     },
     {
       "marker": 129,
@@ -580,31 +580,31 @@
       "marker": 130,
       "group": 8,
       "case": 5,
-      "cycle": 10848436
+      "cycle": 10848468
     },
     {
       "marker": 129,
       "group": 8,
       "case": 5,
-      "cycle": 10865925
+      "cycle": 10865923
     },
     {
       "marker": 130,
       "group": 8,
       "case": 5,
-      "cycle": 10868092
+      "cycle": 10868122
     },
     {
       "marker": 129,
       "group": 8,
       "case": 5,
-      "cycle": 10885579
+      "cycle": 10885582
     },
     {
       "marker": 130,
       "group": 8,
       "case": 5,
-      "cycle": 10887746
+      "cycle": 10887781
     },
     {
       "marker": 129,
@@ -616,925 +616,925 @@
       "marker": 130,
       "group": 8,
       "case": 5,
-      "cycle": 10907264
+      "cycle": 10907297
     },
     {
       "marker": 145,
       "group": 9,
       "case": 0,
-      "cycle": 11034203
+      "cycle": 11033591
     },
     {
       "marker": 146,
       "group": 9,
       "case": 0,
-      "cycle": 11497255
+      "cycle": 11496666
     },
     {
       "marker": 129,
       "group": 9,
       "case": 0,
-      "cycle": 11497328
+      "cycle": 11496739
     },
     {
       "marker": 130,
       "group": 9,
       "case": 0,
-      "cycle": 11499509
+      "cycle": 11498953
     },
     {
       "marker": 147,
       "group": 9,
       "case": 0,
-      "cycle": 11499789
+      "cycle": 11499233
     },
     {
       "marker": 16,
       "group": 0,
       "case": 0,
-      "cycle": 11525538
+      "cycle": 11524941
     },
     {
       "marker": 32,
       "group": 0,
       "case": 0,
-      "cycle": 11527410
+      "cycle": 11526814
     },
     {
       "marker": 16,
       "group": 0,
       "case": 1,
-      "cycle": 12797552
+      "cycle": 12797079
     },
     {
       "marker": 32,
       "group": 0,
       "case": 1,
-      "cycle": 12799536
+      "cycle": 12799021
     },
     {
       "marker": 16,
       "group": 0,
       "case": 2,
-      "cycle": 14069951
+      "cycle": 14069576
     },
     {
       "marker": 32,
       "group": 0,
       "case": 2,
-      "cycle": 14071975
+      "cycle": 14071600
     },
     {
       "marker": 16,
       "group": 0,
       "case": 3,
-      "cycle": 15342282
+      "cycle": 15341936
     },
     {
       "marker": 32,
       "group": 0,
       "case": 3,
-      "cycle": 15344603
+      "cycle": 15344256
     },
     {
       "marker": 16,
       "group": 0,
       "case": 4,
-      "cycle": 16614489
+      "cycle": 16614301
     },
     {
       "marker": 32,
       "group": 0,
       "case": 4,
-      "cycle": 16616892
+      "cycle": 16616704
     },
     {
       "marker": 16,
       "group": 0,
       "case": 5,
-      "cycle": 17887261
+      "cycle": 17887207
     },
     {
       "marker": 32,
       "group": 0,
       "case": 5,
-      "cycle": 17889531
+      "cycle": 17889477
     },
     {
       "marker": 16,
       "group": 0,
       "case": 6,
-      "cycle": 19160083
+      "cycle": 19160111
     },
     {
       "marker": 32,
       "group": 0,
       "case": 6,
-      "cycle": 19161410
+      "cycle": 19161438
     },
     {
       "marker": 16,
       "group": 0,
       "case": 7,
-      "cycle": 20431971
+      "cycle": 20432037
     },
     {
       "marker": 32,
       "group": 0,
       "case": 7,
-      "cycle": 20434617
+      "cycle": 20434683
     },
     {
       "marker": 16,
       "group": 0,
       "case": 8,
-      "cycle": 21704820
+      "cycle": 21704958
     },
     {
       "marker": 32,
       "group": 0,
       "case": 8,
-      "cycle": 21707451
+      "cycle": 21707631
     },
     {
       "marker": 16,
       "group": 0,
       "case": 9,
-      "cycle": 22978189
+      "cycle": 22978391
     },
     {
       "marker": 32,
       "group": 0,
       "case": 9,
-      "cycle": 22980709
+      "cycle": 22980911
     },
     {
       "marker": 16,
       "group": 0,
       "case": 10,
-      "cycle": 24251562
+      "cycle": 24251830
     },
     {
       "marker": 32,
       "group": 0,
       "case": 10,
-      "cycle": 24254322
+      "cycle": 24254590
     },
     {
       "marker": 16,
       "group": 0,
       "case": 11,
-      "cycle": 25525042
+      "cycle": 25525467
     },
     {
       "marker": 32,
       "group": 0,
       "case": 11,
-      "cycle": 25527791
+      "cycle": 25528217
     },
     {
       "marker": 16,
       "group": 0,
       "case": 12,
-      "cycle": 26800328
+      "cycle": 26801141
     },
     {
       "marker": 32,
       "group": 0,
       "case": 12,
-      "cycle": 26803761
+      "cycle": 26804574
     },
     {
       "marker": 16,
       "group": 0,
       "case": 13,
-      "cycle": 28076420
+      "cycle": 28077022
     },
     {
       "marker": 32,
       "group": 0,
       "case": 13,
-      "cycle": 28080236
+      "cycle": 28080842
     },
     {
       "marker": 16,
       "group": 0,
       "case": 14,
-      "cycle": 29350623
+      "cycle": 29351335
     },
     {
       "marker": 32,
       "group": 0,
       "case": 14,
-      "cycle": 29353401
+      "cycle": 29354070
     },
     {
       "marker": 16,
       "group": 0,
       "case": 15,
-      "cycle": 30625524
+      "cycle": 30626211
     },
     {
       "marker": 32,
       "group": 0,
       "case": 15,
-      "cycle": 30628745
+      "cycle": 30629519
     },
     {
       "marker": 16,
       "group": 0,
       "case": 16,
-      "cycle": 31899495
+      "cycle": 31900292
     },
     {
       "marker": 32,
       "group": 0,
       "case": 16,
-      "cycle": 31900282
+      "cycle": 31901079
     },
     {
       "marker": 16,
       "group": 0,
       "case": 17,
-      "cycle": 33170719
+      "cycle": 33171694
     },
     {
       "marker": 32,
       "group": 0,
       "case": 17,
-      "cycle": 33171929
+      "cycle": 33172903
     },
     {
       "marker": 16,
       "group": 0,
       "case": 18,
-      "cycle": 34442599
+      "cycle": 34443660
     },
     {
       "marker": 32,
       "group": 0,
       "case": 18,
-      "cycle": 34443974
+      "cycle": 34445035
     },
     {
       "marker": 16,
       "group": 0,
       "case": 19,
-      "cycle": 35714838
+      "cycle": 35715899
     },
     {
       "marker": 32,
       "group": 0,
       "case": 19,
-      "cycle": 35716144
+      "cycle": 35717205
     },
     {
       "marker": 16,
       "group": 0,
       "case": 20,
-      "cycle": 36987697
+      "cycle": 36988894
     },
     {
       "marker": 32,
       "group": 0,
       "case": 20,
-      "cycle": 36989121
+      "cycle": 36990234
     },
     {
       "marker": 16,
       "group": 0,
       "case": 21,
-      "cycle": 38259713
+      "cycle": 38261079
     },
     {
       "marker": 32,
       "group": 0,
       "case": 21,
-      "cycle": 38261129
+      "cycle": 38262494
     },
     {
       "marker": 16,
       "group": 0,
       "case": 22,
-      "cycle": 39531429
+      "cycle": 39532900
     },
     {
       "marker": 32,
       "group": 0,
       "case": 22,
-      "cycle": 39534071
+      "cycle": 39535543
     },
     {
       "marker": 16,
       "group": 0,
       "case": 23,
-      "cycle": 40804525
+      "cycle": 40805902
     },
     {
       "marker": 32,
       "group": 0,
       "case": 23,
-      "cycle": 40806226
+      "cycle": 40807603
     },
     {
       "marker": 16,
       "group": 0,
       "case": 24,
-      "cycle": 42079798
+      "cycle": 42081213
     },
     {
       "marker": 32,
       "group": 0,
       "case": 24,
-      "cycle": 42082132
+      "cycle": 42083547
     },
     {
       "marker": 16,
       "group": 0,
       "case": 25,
-      "cycle": 43355569
+      "cycle": 43357195
     },
     {
       "marker": 32,
       "group": 0,
       "case": 25,
-      "cycle": 43358273
+      "cycle": 43359770
     },
     {
       "marker": 16,
       "group": 1,
       "case": 0,
-      "cycle": 44687435
+      "cycle": 44688352
     },
     {
       "marker": 32,
       "group": 1,
       "case": 0,
-      "cycle": 44691492
+      "cycle": 44692453
     },
     {
       "marker": 16,
       "group": 1,
       "case": 1,
-      "cycle": 46028288
+      "cycle": 46028604
     },
     {
       "marker": 32,
       "group": 1,
       "case": 1,
-      "cycle": 46032334
+      "cycle": 46032607
     },
     {
       "marker": 16,
       "group": 1,
       "case": 2,
-      "cycle": 47369352
+      "cycle": 47369008
     },
     {
       "marker": 32,
       "group": 1,
       "case": 2,
-      "cycle": 47373261
+      "cycle": 47372918
     },
     {
       "marker": 16,
       "group": 1,
       "case": 3,
-      "cycle": 48710261
+      "cycle": 48709311
     },
     {
       "marker": 32,
       "group": 1,
       "case": 3,
-      "cycle": 48714615
+      "cycle": 48713580
     },
     {
       "marker": 16,
       "group": 1,
       "case": 4,
-      "cycle": 50051376
+      "cycle": 50049699
     },
     {
       "marker": 32,
       "group": 1,
       "case": 4,
-      "cycle": 50055808
+      "cycle": 50054134
     },
     {
       "marker": 16,
       "group": 1,
       "case": 5,
-      "cycle": 51392888
+      "cycle": 51390490
     },
     {
       "marker": 32,
       "group": 1,
       "case": 5,
-      "cycle": 51397234
+      "cycle": 51394921
     },
     {
       "marker": 16,
       "group": 1,
       "case": 6,
-      "cycle": 52734285
+      "cycle": 52731349
     },
     {
       "marker": 32,
       "group": 1,
       "case": 6,
-      "cycle": 52738366
+      "cycle": 52735559
     },
     {
       "marker": 16,
       "group": 1,
       "case": 7,
-      "cycle": 54075192
+      "cycle": 54071781
     },
     {
       "marker": 32,
       "group": 1,
       "case": 7,
-      "cycle": 54079195
+      "cycle": 54075571
     },
     {
       "marker": 16,
       "group": 1,
       "case": 8,
-      "cycle": 55416314
+      "cycle": 55412010
     },
     {
       "marker": 32,
       "group": 1,
       "case": 8,
-      "cycle": 55420649
+      "cycle": 55416218
     },
     {
       "marker": 16,
       "group": 1,
       "case": 9,
-      "cycle": 56757759
+      "cycle": 56752365
     },
     {
       "marker": 32,
       "group": 1,
       "case": 9,
-      "cycle": 56762086
+      "cycle": 56756736
     },
     {
       "marker": 16,
       "group": 1,
       "case": 10,
-      "cycle": 58098977
+      "cycle": 58093114
     },
     {
       "marker": 32,
       "group": 1,
       "case": 10,
-      "cycle": 58103064
+      "cycle": 58097585
     },
     {
       "marker": 16,
       "group": 1,
       "case": 11,
-      "cycle": 59440102
+      "cycle": 59434054
     },
     {
       "marker": 32,
       "group": 1,
       "case": 11,
-      "cycle": 59444353
+      "cycle": 59438307
     },
     {
       "marker": 16,
       "group": 1,
       "case": 12,
-      "cycle": 60781450
+      "cycle": 60774547
     },
     {
       "marker": 32,
       "group": 1,
       "case": 12,
-      "cycle": 60785958
+      "cycle": 60778669
     },
     {
       "marker": 16,
       "group": 1,
       "case": 13,
-      "cycle": 62122828
+      "cycle": 62115114
     },
     {
       "marker": 32,
       "group": 1,
       "case": 13,
-      "cycle": 62127370
+      "cycle": 62119572
     },
     {
       "marker": 16,
       "group": 1,
       "case": 14,
-      "cycle": 63464604
+      "cycle": 63456089
     },
     {
       "marker": 32,
       "group": 1,
       "case": 14,
-      "cycle": 63468422
+      "cycle": 63460209
     },
     {
       "marker": 16,
       "group": 1,
       "case": 15,
-      "cycle": 64805631
+      "cycle": 64796554
     },
     {
       "marker": 32,
       "group": 1,
       "case": 15,
-      "cycle": 64809653
+      "cycle": 64800834
     },
     {
       "marker": 16,
       "group": 1,
       "case": 16,
-      "cycle": 66146564
+      "cycle": 66137380
     },
     {
       "marker": 32,
       "group": 1,
       "case": 16,
-      "cycle": 66150921
+      "cycle": 66141437
     },
     {
       "marker": 16,
       "group": 1,
       "case": 17,
-      "cycle": 67488117
+      "cycle": 67477710
     },
     {
       "marker": 32,
       "group": 1,
       "case": 17,
-      "cycle": 67492576
+      "cycle": 67481783
     },
     {
       "marker": 16,
       "group": 1,
       "case": 18,
-      "cycle": 68829883
+      "cycle": 68818428
     },
     {
       "marker": 32,
       "group": 1,
       "case": 18,
-      "cycle": 68834119
+      "cycle": 68822882
     },
     {
       "marker": 16,
       "group": 1,
       "case": 19,
-      "cycle": 70171062
+      "cycle": 70159439
     },
     {
       "marker": 32,
       "group": 1,
       "case": 19,
-      "cycle": 70175213
+      "cycle": 70163934
     },
     {
       "marker": 16,
       "group": 1,
       "case": 20,
-      "cycle": 71512458
+      "cycle": 71500247
     },
     {
       "marker": 32,
       "group": 1,
       "case": 20,
-      "cycle": 71516988
+      "cycle": 71504730
     },
     {
       "marker": 16,
       "group": 1,
       "case": 21,
-      "cycle": 72854263
+      "cycle": 72841322
     },
     {
       "marker": 32,
       "group": 1,
       "case": 21,
-      "cycle": 72858499
+      "cycle": 72845174
     },
     {
       "marker": 16,
       "group": 1,
       "case": 22,
-      "cycle": 74195732
+      "cycle": 74181689
     },
     {
       "marker": 32,
       "group": 1,
       "case": 22,
-      "cycle": 74199873
+      "cycle": 74185788
     },
     {
       "marker": 16,
       "group": 1,
       "case": 23,
-      "cycle": 75536874
+      "cycle": 75522037
     },
     {
       "marker": 32,
       "group": 1,
       "case": 23,
-      "cycle": 75540921
+      "cycle": 75526471
     },
     {
       "marker": 16,
       "group": 1,
       "case": 24,
-      "cycle": 76878148
+      "cycle": 76863022
     },
     {
       "marker": 32,
       "group": 1,
       "case": 24,
-      "cycle": 76882683
+      "cycle": 76867557
     },
     {
       "marker": 16,
       "group": 1,
       "case": 25,
-      "cycle": 78219928
+      "cycle": 78204121
     },
     {
       "marker": 32,
       "group": 1,
       "case": 25,
-      "cycle": 78224498
+      "cycle": 78208565
     },
     {
       "marker": 16,
       "group": 1,
       "case": 26,
-      "cycle": 79561530
+      "cycle": 79544876
     },
     {
       "marker": 32,
       "group": 1,
       "case": 26,
-      "cycle": 79565885
+      "cycle": 79549060
     },
     {
       "marker": 16,
       "group": 1,
       "case": 27,
-      "cycle": 80903065
+      "cycle": 80885607
     },
     {
       "marker": 32,
       "group": 1,
       "case": 27,
-      "cycle": 80907284
+      "cycle": 80890040
     },
     {
       "marker": 16,
       "group": 1,
       "case": 28,
-      "cycle": 82244644
+      "cycle": 82226677
     },
     {
       "marker": 32,
       "group": 1,
       "case": 28,
-      "cycle": 82248700
+      "cycle": 82230735
     },
     {
       "marker": 16,
       "group": 1,
       "case": 29,
-      "cycle": 83585814
+      "cycle": 83567146
     },
     {
       "marker": 32,
       "group": 1,
       "case": 29,
-      "cycle": 83590093
+      "cycle": 83571426
     },
     {
       "marker": 16,
       "group": 1,
       "case": 30,
-      "cycle": 84927494
+      "cycle": 84908192
     },
     {
       "marker": 32,
       "group": 1,
       "case": 30,
-      "cycle": 84931651
+      "cycle": 84912307
     },
     {
       "marker": 16,
       "group": 1,
       "case": 31,
-      "cycle": 86268936
+      "cycle": 86248914
     },
     {
       "marker": 32,
       "group": 1,
       "case": 31,
-      "cycle": 86273085
+      "cycle": 86253063
     },
     {
       "marker": 16,
       "group": 1,
       "case": 32,
-      "cycle": 87610200
+      "cycle": 87589516
     },
     {
       "marker": 32,
       "group": 1,
       "case": 32,
-      "cycle": 87614639
+      "cycle": 87593871
     },
     {
       "marker": 16,
       "group": 1,
       "case": 33,
-      "cycle": 88951964
+      "cycle": 88930574
     },
     {
       "marker": 32,
       "group": 1,
       "case": 33,
-      "cycle": 88956465
+      "cycle": 88935075
     },
     {
       "marker": 16,
       "group": 1,
       "case": 34,
-      "cycle": 90293764
+      "cycle": 90271451
     },
     {
       "marker": 32,
       "group": 1,
       "case": 34,
-      "cycle": 90298023
+      "cycle": 90275926
     },
     {
       "marker": 16,
       "group": 1,
       "case": 35,
-      "cycle": 91635333
+      "cycle": 91612571
     },
     {
       "marker": 32,
       "group": 1,
       "case": 35,
-      "cycle": 91639115
+      "cycle": 91616354
     },
     {
       "marker": 16,
       "group": 2,
       "case": 36,
-      "cycle": 92976289
+      "cycle": 92953048
     },
     {
       "marker": 32,
       "group": 2,
       "case": 36,
-      "cycle": 92982426
+      "cycle": 92958893
     },
     {
       "marker": 16,
       "group": 2,
       "case": 37,
-      "cycle": 94319931
+      "cycle": 94295745
     },
     {
       "marker": 32,
       "group": 2,
       "case": 37,
-      "cycle": 94326017
+      "cycle": 94301924
     },
     {
       "marker": 16,
       "group": 2,
       "case": 38,
-      "cycle": 95663389
+      "cycle": 95638489
     },
     {
       "marker": 32,
       "group": 2,
       "case": 38,
-      "cycle": 95669056
+      "cycle": 95644420
     },
     {
       "marker": 16,
       "group": 2,
       "case": 39,
-      "cycle": 97006524
+      "cycle": 96981259
     },
     {
       "marker": 32,
       "group": 2,
       "case": 39,
-      "cycle": 97012597
+      "cycle": 96986909
     },
     {
       "marker": 16,
       "group": 2,
       "case": 40,
-      "cycle": 98349866
+      "cycle": 98323727
     },
     {
       "marker": 32,
       "group": 2,
       "case": 40,
-      "cycle": 98355878
+      "cycle": 98329870
     },
     {
       "marker": 16,
       "group": 2,
       "case": 41,
-      "cycle": 99693246
+      "cycle": 99666618
     },
     {
       "marker": 32,
       "group": 2,
       "case": 41,
-      "cycle": 99695529
+      "cycle": 99669122
     },
     {
       "marker": 16,
       "group": 3,
       "case": 50,
-      "cycle": 101033902
+      "cycle": 101006697
     },
     {
       "marker": 32,
       "group": 3,
       "case": 50,
-      "cycle": 101034943
+      "cycle": 101007824
     },
     {
       "marker": 16,
       "group": 3,
       "case": 51,
-      "cycle": 102372075
+      "cycle": 102344549
     },
     {
       "marker": 32,
       "group": 3,
       "case": 51,
-      "cycle": 102376142
+      "cycle": 102348272
     },
     {
       "marker": 16,
       "group": 3,
       "case": 52,
-      "cycle": 103713505
+      "cycle": 103684707
     },
     {
       "marker": 32,
       "group": 3,
       "case": 52,
-      "cycle": 103717620
+      "cycle": 103688478
     },
     {
       "marker": 16,
       "group": 4,
       "case": 4,
-      "cycle": 105057750
+      "cycle": 105028117
     },
     {
       "marker": 32,
       "group": 4,
       "case": 4,
-      "cycle": 105070459
+      "cycle": 105041129
     },
     {
       "marker": 16,
       "group": 4,
       "case": 8,
-      "cycle": 105170795
+      "cycle": 105140699
     },
     {
       "marker": 32,
       "group": 4,
       "case": 8,
-      "cycle": 105189152
+      "cycle": 105159149
     },
     {
       "marker": 16,
       "group": 5,
       "case": 0,
-      "cycle": 105189207
+      "cycle": 105159204
     },
     {
       "marker": 32,
       "group": 5,
       "case": 0,
-      "cycle": 105189231
+      "cycle": 105159228
     }
   ]
 }

@@ -1,0 +1,7 @@
+PASS: PAL C64 81 lifecycle cases / 115 reference fingerprints, five native sequences and a real IRQ-admitted waking job
+Mailbox: a50000517305014c948802d204
+sleep: 22 samples, maximum observed 5280 PAL cycles (case 11)
+wake: 29 samples, maximum observed 4111 PAL cycles (case 37)
+priority: 25 samples, maximum observed 5537 PAL cycles (case 57)
+IRQ bridge: {'enable_marker_to_publication_observed': 2585, 'publication_observed_to_awakened_dispatch': 64076, 'awakened_completion': 10280, 'waker_completion': 6234}
+Stack sentinel extents: {'hardware': 35, 'software': 762, 'isolated': 16}

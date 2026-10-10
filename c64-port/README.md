@@ -7,16 +7,18 @@ is used only on the host as a verification oracle.
 **Implemented:** NOVAC/FINDVAC admission and allocation; ENDJOB1/EJSCAN;
 basic CHANG1/CHANJOB context exchange and completion through basic dispatch;
 explicit historical-2CADR mappings to native C continuations; platform interrupt
-exclusion and bounded IRQ admission requests. Two demonstration jobs actually
-run, yield, resume and complete. **Deferred:** Apollo guidance jobs, interpreter
-dispatch, sleep/wake, WAITLIST and restart.
+exclusion and bounded IRQ admission requests; basic JOBSLEEP/JOBWAKE and
+PRIOCHNG. Native demonstration jobs run, sleep, wake, change priority, resume
+and complete. **Deferred:** Apollo guidance jobs, interpreter dispatch, WAITLIST
+and restart.
 
 26 original admission/completion scenarios and 53 dispatch cases (109 checkpoints,
 including eight sequential two-job executions) agree word-for-word with original
 assembly. The native C64 diagnostic runs the same jobs and checks all 135
 original-derived state fingerprints in VICE. A separate real raster-IRQ diagnostic
 checks interrupted C, register preservation, bounded delivery and overflow.
-These are bounded behavioral checks,
+A third diagnostic checks 81 lifecycle cases / 115 checkpoints, five native
+sequences and an IRQ-admitted waker. These are bounded behavioral checks,
 not a complete flight Executive or real-time equivalence claim.
 
 ## Repository
@@ -28,7 +30,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md`, `docs/DISPATCH.md` and `docs/IRQ.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/LIFECYCLE.md` for the current milestone.
 
 ## Build and run
 
@@ -39,11 +41,13 @@ make test
 ASAN_OPTIONS=detect_leaks=0 make sanitize
 make c64 MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-irq MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
+make c64-lifecycle MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 ```
 
-The deliverables are `build/executive.prg` and `build/irq.prg`
+The deliverables are `build/executive.prg`, `build/irq.prg` and
+`build/lifecycle.prg`
 (ordinary C64 PRGs with BASIC SYS stubs).
-Load it on a C64 and RUN, or use VICE. This diagnostic prints a test summary,
+Load a PRG on a C64 and RUN, or use VICE. The console diagnostic prints a test summary,
 not an interactive DSKY. Target compiler: LLVM-MOS SDK **v23.3.0**.
 Download the pinned release from the URL in `tools/versions.json`, verify its
 SHA256, and extract with `tar --no-same-owner -xJf llvm-mos-linux.tar.xz`.
@@ -69,7 +73,8 @@ C64 fingerprints only after a successful differential test:
 
 ```sh
 python3 tools/freeze_vectors.py
-make test c64
+python3 tools/freeze_lifecycle.py
+make test c64 c64-irq c64-lifecycle
 ```
 
 ### VICE verification
@@ -79,19 +84,22 @@ python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
+python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 ```
 
 Provide standard ROM files `kernal-901227-03.bin`, `basic-901226-01.bin`, and
 `chargen-901225-01.bin`. The helper uses the console monitor, loads the PRG after
 BASIC boot, runs native code, and checks a RAM completion mailbox. A cycle limit
 or missing completion record fails the test. The helpers record timing and stack
-sentinel observations; the IRQ helper writes a structured timing report and
-rejects unpreserved compiler ZP allocations. No display server is required.
+sentinel observations; the IRQ and lifecycle helpers write structured timing
+reports and reject unpreserved compiler ZP allocations. No display server is required.
 
 ## Engineering record
 
 - `docs/DISPATCH.md`: native callback API, context swaps, sequential reference boundaries.
 - `docs/IRQ.md`: exclusion, queue ownership, fault boundaries and C64 IRQ ABI.
+- `docs/LIFECYCLE.md`: sleep/wake, priority scans, callback actions and oracle boundaries.
 - `docs/ARCHITECTURE.md`: original structures, calling conventions, dependencies.
 - `docs/SOURCE_MAP.md`: original labels mapped to C and reference stop boundaries.
 - `docs/FIDELITY.md`: classifications, adaptations, and unsupported behavior.

@@ -548,6 +548,6 @@ m c020 c026
 bsave "/workspace/Apollo-11/c64-port/build/irq-mailbox.bin" 0 c020 c026
 bsave "/workspace/Apollo-11/c64-port/build/irq-hardware-stack.bin" 0 0100 01f1
 bsave "/workspace/Apollo-11/c64-port/build/irq-software-stack.bin" 0 c100 cfff
-bsave "/workspace/Apollo-11/c64-port/build/irq-isolated-stack.bin" 0 60a8 61a7
+bsave "/workspace/Apollo-11/c64-port/build/irq-isolated-stack.bin" 0 6a0f 6b0e
 screen
 quit

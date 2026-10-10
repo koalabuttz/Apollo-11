@@ -22,13 +22,13 @@ a proof for arbitrary machine states or an assertion of timing equivalence.
 | Basic CHANJOB state exchange | Swaps twelve words, encodes overflow, updates FIXLOC and dispatch scratch | Same saved transitions and explicit returned 2CADR | Verified Behavioral Equivalent | 109 original-derived checkpoints, including all candidate positions and both zeros |
 | Native basic execution | DTCB transfers Z/BBANK and selected SUPERBNK | Complete 2CADR lookup calls ordinary C continuations | Approximate | Hardware transfers checked in oracle; C stack/ABI replaced explicitly; eight actual native two-job sequences pass host/C64 |
 | Interpreter dispatch | Negative saved LOC resumes through INTRSM | Rejected before core/resource mutation | Not Implemented | Basic-only domain is explicit |
-| Sleep/wake / priority change | Negative priorities, wake-address search, PRIOCH2 | Dormant contexts skipped in scans only | Not Implemented | Full lifecycle entry routines not translated |
+| Basic sleep/wake / priority change | Dormant encoding, first matching CADR, 2CADR reconstruction, packed PRIOCH2/CCS scan | Same saved transitions; explicit callback sleep/priority actions and foreground wake | Verified Behavioral Equivalent | 81 cases / 115 complete original checkpoints, five native sequences; C ABI/entry scratch adapted as documented in LIFECYCLE.md |
 | Interrupt exclusion / ordering | INHINT/RELINT, AGC hardware, polling/yield machinery | Restoring C64 IRQ guards; bounded publication then foreground admission; cooperative yield | Approximate | Real raster IRQs preserve compiler registers and interrupted C; not AGC interrupt/task timing |
 | IRQ admission buffer | Requests can originate in interrupt/task routines | Four FIFO requests, overflow fail-stop separate from 1201/1202 | Approximate | Explicit platform adaptation; host wrap/fault tests and real C64 overflow; no generic ready-job queue |
 | WAITLIST / timer mapping | TIME3, nine task slots, T3RUPT/TASKOVER | No implementation | Not Implemented | Deferred timer/task milestone |
 | Restart/recovery | Phase groups and protected jobs rebuilt after abort | No implementation | Not Implemented | Separate future validation milestone |
 | Fixed point / multiword math / special registers | Guidance-specific scales and register/instruction effects | No implementation | Not Implemented | Only initial Executive arithmetic is provided |
-| Real-time timing | AGC machine timing and task deadlines | Native code executes at C64 rate | Approximate | Four legacy and 74 guarded operation samples plus IRQ/latency observations; no proved worst-case or flight deadline |
+| Real-time timing | AGC machine timing and task deadlines | Native code executes at C64 rate | Approximate | Four console, 74 IRQ and 76 lifecycle guarded operation samples plus IRQ/latency observations; no proved worst-case or flight deadline |
 
 No Executive ready-job selection is replaced with a generic queue, dynamic allocator,
 host thread, or AGC emulator. Native test fingerprinting is diagnostic overhead

@@ -4,8 +4,8 @@ Target executive size: 648
 Target scenario size: 658
 VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/vice.mon -monlogname /workspace/Apollo-11/c64-port/build/vice-monitor.log -monlog -limitcycles 400000000
 idle NOVAC: 1187 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
-full-core FINDVAC/1202: 2183 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
-completion scan/slot-seven dispatch: 5305 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
-slot-seven CHANG1 exchange: 3668 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
-vice-hardware-stack.bin: measured sentinel extent 24 bytes
-vice-software-stack.bin: measured sentinel extent 89 bytes
+full-core FINDVAC/1202: 2129 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+completion scan/slot-seven dispatch: 5395 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+slot-seven CHANG1 exchange: 4011 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+vice-hardware-stack.bin: measured sentinel extent 25 bytes
+vice-software-stack.bin: measured sentinel extent 98 bytes

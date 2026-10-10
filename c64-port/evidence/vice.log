@@ -11,7 +11,7 @@ Error - Default keymap not found, this should be fixed. Going on anyway...
 Error - Default keymap not found, this should be fixed. Going on anyway...
 Error - Default keymap not found, this should be fixed. Going on anyway...
 Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
-VSP Bug: safe channels are: 045. Emulation of memory corruption is disabled.
+VSP Bug: safe channels are: 02456. Emulation of memory corruption is disabled.
 c64cartridge_reset changed: 1
 set_cartridge_type: -1
 Opening monitor command playback file: /workspace/Apollo-11/c64-port/build/vice.mon
@@ -29,7 +29,7 @@ Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
 This is free software with ABSOLUTELY NO WARRANTY.
 See the "About VICE" command for more info.
  
-random seed was: 0x6aca96ae
+random seed was: 0x6acaa847
 command line was: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/vice.mon -monlogname /workspace/Apollo-11/c64-port/build/vice-monitor.log -monlog -limitcycles 400000000
 Loading system file `/workspace/toolchains/roms/C64/kernal-901227-03.bin'.
 Loading system file `/workspace/toolchains/roms/C64/kernal-901227-03.bin'.
@@ -131,5 +131,5 @@ reconstructed commandline options (might be incomplete):
 VICE thread has been joined.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
-VIC-II: VSP Bug: safe channels are: 16. Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 12346. Emulation of memory corruption is disabled.
 Closed monitor command playback file: /workspace/Apollo-11/c64-port/build/vice.mon

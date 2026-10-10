@@ -1,33 +1,33 @@
-Loading /workspace/Apollo-11/c64-port/build/executive.prg from 0801 to 568F (4E8F bytes)
+Loading /workspace/Apollo-11/c64-port/build/executive.prg from 0801 to 5BBE (53BE bytes)
 WATCH: 1  C:$c008  (Stop on store)
 WATCH: 2  C:$c000  (Stop on store)
 Will ignore the next 1 hits of checkpoint #2
-#1 (Stop on store c008)  309/$135,  57/$39
-.C:3d3e  8E 08 C0    STX $C008      - A:00 X:10 Y:01 SP:ed ..-.....    2201340
+#1 (Stop on store c008)  309/$135,   7/$07
+.C:401d  8E 08 C0    STX $C008      - A:00 X:10 Y:01 SP:ed ..-.....    2201290
 Stopwatch reset to 0.
-#1 (Stop on store c008)   16/$010,  47/$2f
-.C:3c51  8E 08 C0    STX $C008      - A:00 X:20 Y:00 SP:ed ..-.....       1187
+#1 (Stop on store c008)   15/$00f,  60/$3c
+.C:3f33  8E 08 C0    STX $C008      - A:00 X:20 Y:00 SP:ed ..-.....       1187
 Stopwatch:       1187
-#1 (Stop on store c008)  304/$130,  53/$35
-.C:3d6e  8E 08 C0    STX $C008      - A:01 X:11 Y:00 SP:ed ..-....C   33080729
+#1 (Stop on store c008)  110/$06e,  12/$0c
+.C:404d  8E 08 C0    STX $C008      - A:01 X:11 Y:00 SP:ed ..-....C   33088172
 Stopwatch reset to 0.
-#1 (Stop on store c008)   27/$01b,  31/$1f
-.C:3dab  8C 08 C0    STY $C008      - A:82 X:02 Y:21 SP:ed ..-.....       2183
-Stopwatch:       2183
-#1 (Stop on store c008)  217/$0d9,  43/$2b
-.C:3dde  8E 08 C0    STX $C008      - A:32 X:12 Y:82 SP:ed ..-.....    1331117
+#1 (Stop on store c008)  143/$08f,  62/$3e
+.C:408a  8C 08 C0    STY $C008      - A:82 X:02 Y:21 SP:ed ..-.....       2129
+Stopwatch:       2129
+#1 (Stop on store c008)    7/$007,  25/$19
+.C:40bd  8E 08 C0    STX $C008      - A:35 X:12 Y:64 SP:ed ..-.....    1330132
 Stopwatch reset to 0.
-#1 (Stop on store c008)  301/$12d,  56/$38
-.C:3e1c  8C 08 C0    STY $C008      - A:00 X:00 Y:22 SP:ed ..-.....       5305
-Stopwatch:       5305
-#1 (Stop on store c008)  288/$120,  52/$34
-.C:3ed3  8E 08 C0    STX $C008      - A:00 X:13 Y:06 SP:ed ..-.....    1341090
+#1 (Stop on store c008)   93/$05d,   2/$02
+.C:40fb  8C 08 C0    STY $C008      - A:00 X:00 Y:22 SP:ed ..-.....       5395
+Stopwatch:       5395
+#1 (Stop on store c008)   72/$048,  10/$0a
+.C:41b2  8E 08 C0    STX $C008      - A:00 X:13 Y:06 SP:ed ..-.....    1340688
 Stopwatch reset to 0.
-#1 (Stop on store c008)   35/$023,   3/$03
-.C:3f18  8C 08 C0    STY $C008      - A:00 X:00 Y:23 SP:ed ..-.....       3668
-Stopwatch:       3668
-#2 (Stop on store c000)   73/$049,  44/$2c
-.C:4b1e  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:ed N.-.....  142747975
+#1 (Stop on store c008)  135/$087,  52/$34
+.C:41f7  8C 08 C0    STY $C008      - A:00 X:00 Y:23 SP:ed ..-.....       4011
+Stopwatch:       4011
+#2 (Stop on store c000)   74/$04a,  11/$0b
+.C:4e5d  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:ed N.-.....  142741999
 >C:c000  a5 00 1a 88  02 92 02 03  23 35 6d 08  00            ........#5m..
 Saving file `/workspace/Apollo-11/c64-port/build/vice-mailbox.bin' from $c000 to $c00c
 Saving file `/workspace/Apollo-11/c64-port/build/vice-hardware-stack.bin' from $0100 to $01f1

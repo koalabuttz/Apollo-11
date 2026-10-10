@@ -1,0 +1,251 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     6c9a     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/lifecycle.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       4e     1         /tmp/irq_gate-e7b2f2.o:(.text.c64_irq_gate)
+     830      830       4e     1                 c64_irq_gate
+     87e      87e       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     87e      87e       13     1                 __zero_bss
+     891      891        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     891      891        0     1                 __call_indir
+     894      894      73e     1         build/lifecycle.prg.lto.o:(.text.exec_admit)
+     894      894      73e     1                 exec_admit
+     fd2      fd2      191     1         build/lifecycle.prg.lto.o:(.text.exec_change_basic)
+     fd2      fd2      191     1                 exec_change_basic
+    1163     1163       ba     1         build/lifecycle.prg.lto.o:(.text.basic_slot)
+    1163     1163       ba     1                 basic_slot
+    121d     121d      37c     1         build/lifecycle.prg.lto.o:(.text.exchange_basic)
+    121d     121d      37c     1                 exchange_basic
+    1599     1599      3bc     1         build/lifecycle.prg.lto.o:(.text.exec_complete_basic)
+    1599     1599      3bc     1                 exec_complete_basic
+    1955     1955      1df     1         build/lifecycle.prg.lto.o:(.text.exec_start_basic)
+    1955     1955      1df     1                 exec_start_basic
+    1b34     1b34      381     1         build/lifecycle.prg.lto.o:(.text.exec_sleep_basic)
+    1b34     1b34      381     1                 exec_sleep_basic
+    1eb5     1eb5       7a     1         build/lifecycle.prg.lto.o:(.text.lifecycle_candidate)
+    1eb5     1eb5       7a     1                 lifecycle_candidate
+    1f2f     1f2f      666     1         build/lifecycle.prg.lto.o:(.text.exec_wake_basic)
+    1f2f     1f2f      666     1                 exec_wake_basic
+    2595     2595      35f     1         build/lifecycle.prg.lto.o:(.text.exec_priority_basic)
+    2595     2595      35f     1                 exec_priority_basic
+    28f4     28f4      2ca     1         build/lifecycle.prg.lto.o:(.text.exec_native_init)
+    28f4     28f4      2ca     1                 exec_native_init
+    2bbe     2bbe      1a9     1         build/lifecycle.prg.lto.o:(.text.exec_native_start)
+    2bbe     2bbe      1a9     1                 exec_native_start
+    2d67     2d67       77     1         build/lifecycle.prg.lto.o:(.text.start_locked)
+    2d67     2d67       77     1                 start_locked
+    2dde     2dde      111     1         build/lifecycle.prg.lto.o:(.text.settle)
+    2dde     2dde      111     1                 settle
+    2eef     2eef      229     1         build/lifecycle.prg.lto.o:(.text.exec_native_admit)
+    2eef     2eef      229     1                 exec_native_admit
+    3118     3118      8e9     1         build/lifecycle.prg.lto.o:(.text.exec_native_step)
+    3118     3118      8e9     1                 exec_native_step
+    3a01     3a01      306     1         build/lifecycle.prg.lto.o:(.text.exec_native_wake)
+    3a01     3a01      306     1                 exec_native_wake
+    3d07     3d07      190     1         build/lifecycle.prg.lto.o:(.text.exec_native_request_priority)
+    3d07     3d07      190     1                 exec_native_request_priority
+    3e97     3e97      29e     1         build/lifecycle.prg.lto.o:(.text.exec_irq_service_locked)
+    3e97     3e97      29e     1                 exec_irq_service_locked
+    4135     4135      4cc     1         build/lifecycle.prg.lto.o:(.text.dispatch_state_digest)
+    4135     4135      4cc     1                 dispatch_state_digest
+    4601     4601      119     1         build/lifecycle.prg.lto.o:(.text.dispatch_touch)
+    4601     4601      119     1                 dispatch_touch
+    471a     471a      a5d     1         build/lifecycle.prg.lto.o:(.text.lifecycle_prepare)
+    471a     471a      a5d     1                 lifecycle_prepare
+    5177     5177      242     1         build/lifecycle.prg.lto.o:(.text.lifecycle_event_prepare)
+    5177     5177      242     1                 lifecycle_event_prepare
+    53b9     53b9      201     1         build/lifecycle.prg.lto.o:(.text.lifecycle_apply)
+    53b9     53b9      201     1                 lifecycle_apply
+    55ba     55ba       4e     1         build/lifecycle.prg.lto.o:(.text.low_entry)
+    55ba     55ba       4e     1                 low_entry
+    5608     5608       e9     1         build/lifecycle.prg.lto.o:(.text.low_resume)
+    5608     5608       e9     1                 low_resume
+    56f1     56f1       2d     1         build/lifecycle.prg.lto.o:(.text.low_finish)
+    56f1     56f1       2d     1                 low_finish
+    571e     571e      191     1         build/lifecycle.prg.lto.o:(.text.high_entry)
+    571e     571e      191     1                 high_entry
+    58af     58af       2d     1         build/lifecycle.prg.lto.o:(.text.high_finish)
+    58af     58af       2d     1                 high_finish
+    58dc     58dc      149     1         build/lifecycle.prg.lto.o:(.text.payload)
+    58dc     58dc      149     1                 payload
+    5a25     5a25       fc     1         build/lifecycle.prg.lto.o:(.text.check)
+    5a25     5a25       fc     1                 check
+    5b21     5b21     12b5     1         build/lifecycle.prg.lto.o:(.text.main)
+    5b21     5b21     12b5     1                 main
+    6dd6     6dd6       5e     1         build/lifecycle.prg.lto.o:(.text.sleeper)
+    6dd6     6dd6       5e     1                 sleeper
+    6e34     6e34       83     1         build/lifecycle.prg.lto.o:(.text.awakened)
+    6e34     6e34       83     1                 awakened
+    6eb7     6eb7       a8     1         build/lifecycle.prg.lto.o:(.text.waker)
+    6eb7     6eb7       a8     1                 waker
+    6f5f     6f5f       66     1         build/lifecycle.prg.lto.o:(.text.finish)
+    6f5f     6f5f       66     1                 finish
+    6fc5     6fc5      199     1         build/lifecycle.prg.lto.o:(.text.c64_irq_producer)
+    6fc5     6fc5      199     1                 c64_irq_producer
+    715e     715e        4     1         build/lifecycle.prg.lto.o:(.text.enter)
+    715e     715e        4     1                 enter
+    7162     7162        8     1         build/lifecycle.prg.lto.o:(.text.leave)
+    7162     7162        8     1                 leave
+    716a     716a        6     1         build/lifecycle.prg.lto.o:(.text.exit)
+    716a     716a        6     1                 exit
+    7170     7170       4d     1         build/lifecycle.prg.lto.o:(.text.putchar)
+    7170     7170       4d     1                 putchar
+    71bd     71bd       65     1         build/lifecycle.prg.lto.o:(.text.puts)
+    71bd     71bd       65     1                 puts
+    7222     7222       34     1         build/lifecycle.prg.lto.o:(.text.memcpy)
+    7222     7222       34     1                 memcpy
+    7256     7256       47     1         build/lifecycle.prg.lto.o:(.text.memcmp)
+    7256     7256       47     1                 memcmp
+    729d     729d       22     1         build/lifecycle.prg.lto.o:(.text.__memset)
+    729d     729d       22     1                 __memset
+    72bf     72bf       c4     1         build/lifecycle.prg.lto.o:(.text.__udivhi3)
+    72bf     72bf       c4     1                 __udivhi3
+    7383     7383       40     1         build/lifecycle.prg.lto.o:(.text.__umodqi3)
+    7383     7383       40     1                 __umodqi3
+    73c3     73c3       7d     1         build/lifecycle.prg.lto.o:(.text.__udivmodqi4)
+    73c3     73c3       7d     1                 __udivmodqi4
+    7440     7440       67     1         build/lifecycle.prg.lto.o:(.text.__mulsi3)
+    7440     7440       67     1                 __mulsi3
+    74a7     74a7        0     1         __init_array_start = .
+    74a7     74a7        0     1         __init_array_end = .
+    74a7     74a7        0     1         __fini_array_start = .
+    74a7     74a7        0     1         __fini_array_end = .
+    74a7     74a7      2ab     1 .rodata
+    74a7     74a7        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    74a7     74a7        0     1                 __set_v
+    74a8     74a8       2c     1         build/lifecycle.prg.lto.o:(.rodata.lifecycle_prepare)
+    74d4     74d4        a     1         build/lifecycle.prg.lto.o:(.rodata.lifecycle_event_prepare)
+    74de     74de        a     1         build/lifecycle.prg.lto.o:(.rodata.lifecycle_apply)
+    74e8     74e8       1e     1         build/lifecycle.prg.lto.o:(.rodata.jobs)
+    74e8     74e8       1e     1                 jobs
+    7506     7506       5b     1         <internal>:(.rodata.str1.1)
+    7561     7561      1cc     1         build/lifecycle.prg.lto.o:(.rodata.lifecycle_reference_digest.16)
+    7561     7561      1cc     1                 lifecycle_reference_digest.16
+    772d     772d        7     1         build/lifecycle.prg.lto.o:(.rodata..L__const.irq_wakeup.request)
+    7734     7734       18     1         build/lifecycle.prg.lto.o:(.rodata.jobs.17)
+    7734     7734       18     1                 jobs.17
+    774c     774c        6     1         build/lifecycle.prg.lto.o:(.rodata.c64_exclusion)
+    774c     774c        6     1                 c64_exclusion
+    7752     7752        0     1 .data
+    7752     7752        0     1         __data_start = .
+    7752     7752        0     1         __data_end = .
+    7752     7752        0     1 __data_load_start = LOADADDR(.data)
+    7752     7752        0     1 __data_size = SIZEOF(.data)
+    7752     7752      67f     1 .bss
+    7752     7752        0     1         __bss_start = .
+    7752     7752       20     1         /tmp/irq_gate-e7b2f2.o:(.bss.c64_irq_saved)
+    7752     7752        0     1                 c64_irq_saved
+    7772     7772        2     1         build/lifecycle.prg.lto.o:(.bss.failures)
+    7772     7772        2     1                 failures
+    7774     7774      288     1         build/lifecycle.prg.lto.o:(.bss.state)
+    7774     7774      288     1                 state
+    79fc     79fc        2     1         build/lifecycle.prg.lto.o:(.bss.trace)
+    79fc     79fc        2     1                 trace
+    79fe     79fe       20     1         build/lifecycle.prg.lto.o:(.bss.queue)
+    79fe     79fe       20     1                 queue
+    7a1e     7a1e       15     1         build/lifecycle.prg.lto.o:(.bss.runtime)
+    7a1e     7a1e       15     1                 runtime
+    7a33     7a33      288     1         build/lifecycle.prg.lto.o:(.bss.before)
+    7a33     7a33      288     1                 before
+    7cbb     7cbb        1     1         build/lifecycle.prg.lto.o:(.bss.installed)
+    7cbb     7cbb        1     1                 installed
+    7cbc     7cbc        2     1         build/lifecycle.prg.lto.o:(.bss.destination)
+    7cbc     7cbc        2     1                 destination
+    7cbe     7cbe        7     1         build/lifecycle.prg.lto.o:(.bss.source)
+    7cbe     7cbe        7     1                 source
+    7cc5     7cc5        2     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_previous)
+    7cc5     7cc5        2     1                 c64_irq_previous
+    7cc7     7cc7        1     1         build/lifecycle.prg.lto.o:(.bss.old_mask)
+    7cc7     7cc7        1     1                 old_mask
+    7cc8     7cc8        1     1         build/lifecycle.prg.lto.o:(.bss.old_d011)
+    7cc8     7cc8        1     1                 old_d011
+    7cc9     7cc9        1     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_poison)
+    7cc9     7cc9        1     1                 c64_irq_poison
+    7cca     7cca        2     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_arithmetic)
+    7cca     7cca        2     1                 c64_irq_arithmetic
+    7ccc     7ccc        1     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_stack_fault)
+    7ccc     7ccc        1     1                 c64_irq_stack_fault
+    7ccd     7ccd        1     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_count)
+    7ccd     7ccd        1     1                 c64_irq_count
+    7cce     7cce        1     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_done)
+    7cce     7cce        1     1                 c64_irq_done
+    7ccf     7ccf        1     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_last_status)
+    7ccf     7ccf        1     1                 c64_irq_last_status
+    7cd0     7cd0        1     1         build/lifecycle.prg.lto.o:(.bss.remaining)
+    7cd0     7cd0        1     1                 remaining
+    7cd1     7cd1      100     1         build/lifecycle.prg.lto.o:(.bss.c64_irq_stack)
+    7cd1     7cd1      100     1                 c64_irq_stack
+    7dd1     7dd1        0     1         __bss_end = .
+    7dd1     7dd1        0     1 __bss_size = SIZEOF(.bss)
+    7dd1     7dd1        1     1 .noinit
+    7dd1     7dd1        1     1         build/lifecycle.prg.lto.o:(.noinit..Lstatic_stack)
+    7dd2     7dd2        0     1         __heap_start = ALIGN(., 2)
+    7dd2     7dd2        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0        f     1 .llvm_sympart
+       0        0        f     1         build/lifecycle.prg.lto.o:(.llvm_sympart)
+       0        0      ee0     4 .symtab
+       0        0      ee0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      93a     1 .strtab
+       0        0      93a     1         <internal>:(.strtab)

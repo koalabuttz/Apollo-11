@@ -63,8 +63,13 @@ corrupted core/VAC word.
    `{location, bank}` pairs and native C function pointers.
 2. Initialize the runtime, admit a basic job, then call `exec_native_start`.
 3. Call `exec_native_step` to run one callback and perform its returned action.
-4. A callback returns EXEC_YIELD with an explicit resume pair, or EXEC_FINISH.
-   EXEC_IDLE reports that all active jobs completed.
+4. A callback returns EXEC_YIELD or EXEC_SLEEP with an explicit resume pair,
+   EXEC_REPRIORITIZE with a staged priority and resume pair, or EXEC_FINISH.
+   EXEC_IDLE reports no active work; sleeping jobs may still own resources.
+
+LIFECYCLE.md defines sleep/wake CADRs, priority staging and their 115 additional
+reference checkpoints. The sleep/priority action takes effect after the callback
+returns. A foreground wake changes eligibility without dispatching a live frame.
 
 The five mappings in `tests/dispatch_cases.c` form a runnable example. The low
 job admits a higher-priority job, then yields. When it wins the full packed-word
@@ -132,7 +137,7 @@ for all eight sequences; it also repeats three representative timed paths.
 ## Interrupt and timing boundary
 
 The subsequent IRQ milestone adds optional bound platform guards and a four-entry
-admission-request buffer. IRQs publish only; foreground start/step/poll/admit
+admission-request buffer. IRQs publish only; foreground start/step/poll/admit/wake
 drain under exclusion. Admission preserves cooperative dispatch: callbacks still
 yield only at declared returns. Callback-owned admission uses `exec_native_admit`
 when IRQs are bound, and `exec_native_poll` provides an explicit admission safe
@@ -142,5 +147,5 @@ See IRQ.md for single-producer ownership, LLVM-MOS preservation and overflow /
 resource-fault behavior. The original console diagnostic leaves its runtime
 unbound; the separate raster diagnostic exercises real application IRQs.
 AGC INHINT/RELINT are not modeled as global C64 SEI/CLI. PERFORMANCE.md records
-both artifacts and timing boundaries. No unconditional request-latency deadline
+all three artifacts and timing boundaries. No unconditional request-latency deadline
 or flight worst-case execution bound is claimed.

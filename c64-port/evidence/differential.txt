@@ -6,3 +6,6 @@ Arithmetic binary stream SHA256: a96b7101bbd6394b7eeb6a33bc4c3f9ba255cda419f448d
 PASS: 53 dispatch cases / 109 checkpoints, including 8 sequential two-job native executions
 Full saved state and selected 2CADR match original basic dispatch; BBANK and SUPERBNK checked independently
 Dispatch snapshot SHA256: 97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065cd6f8a15bb
+PASS: 81 sleep/wake/priority cases / 115 checkpoints, including 5 native lifecycle sequences
+Full saved state and actual bank-qualified transfer match original JOBSLEEP/JOBWAKE/PRIOCHNG
+Lifecycle snapshot SHA256: 6e5c7afa4a31a2d7fde7b981d89f9ccecb1a6896866ef505432927ab3623c00b

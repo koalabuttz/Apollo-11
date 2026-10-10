@@ -1,4 +1,4 @@
-# Bounded interrupt delivery milestone handoff
+# Basic lifecycle milestone handoff
 
 ## Repository
 
@@ -19,15 +19,25 @@ python3 tools/prepare_reference.py
 make differential REFERENCE="$PWD/deps/fixture"
 make c64 MOS_CC=/path/to/mos-c64-clang
 make c64-irq MOS_CC=/path/to/mos-c64-clang
+make c64-lifecycle MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
 ## Completed work
 
-The third milestone adds restoring C64 exclusion guards, a four-entry IRQ
+The fourth milestone adds basic JOBSLEEP/JOBWAKE and PRIOCHNG, plus native
+sleep/reprioritize callback actions and guarded foreground wake. Dormant jobs
+retain core/VAC ownership. Original CADR matching, bank reconstruction, priority
+low bits, CCS scan bias and scratch debris match 115 independent checkpoints.
+Five native sequences run on host and PAL C64; a real raster IRQ admits a waker
+while a VAC-owning job sleeps. LIFECYCLE.md records exact semantics and boundaries.
+
+The third milestone added restoring C64 exclusion guards, a four-entry IRQ
 admission-request buffer and foreground delivery safe points. Actual raster IRQs
 preserve LLVM-MOS registers and interrupted C frames, while dispatch remains
 cooperative. Queue overflow and resource-fault behavior are documented in IRQ.md.
@@ -60,7 +70,12 @@ Validation passes:
 - Separate PAL C64 diagnostic: nine actual raster IRQs, register/decimal canary,
   isolated ISR locals, interrupted native C arithmetic, eight original-derived
   checkpoints, overflow, masked delivery, KERNAL timer advancement and removal.
-- 74 guarded operation intervals plus IRQ and hash-free latency observations.
+- 74 IRQ guarded intervals plus IRQ and hash-free latency observations.
+- Lifecycle host/fault/restoring-guard tests, 81 cases / 115 word-for-word assembly
+  checkpoints and five actual native callback sequences; ASan/UBSan pass.
+- Third PAL C64 diagnostic: all 115 lifecycle fingerprints, five sequences,
+  real IRQ-admitted waker, retained VAC/MPAC/OVFIND checks, 76 guarded intervals,
+  four integration intervals and compiler-ZP/stack checks.
 
 Retained executable, snapshots, logs, target mailbox/stack dumps, map and hashes
 are in `evidence/`; reproducible output is in `build/`. DISPATCH.md documents the
@@ -84,11 +99,10 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: sleep/wake and priority change. Follow with WAITLIST/timers, restart and selected guidance
-work. Interpreter dispatch, flight deadlines and physical hardware verification
-remain open. See ROADMAP.md.
+Next: WAITLIST and CIA task timers, then restart and selected guidance work.
+Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
-Acceptance for basic native dispatch and bounded interrupt delivery is met.
+Acceptance for basic native dispatch, bounded IRQ delivery and basic lifecycle is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host

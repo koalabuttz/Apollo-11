@@ -1,11 +1,11 @@
 PASS: PAL C64 register/decimal canary, interrupted C arithmetic, eight reference checkpoints, real IRQ overflow and deferred masked delivery
 Mailbox: a5000008094a20
-admission/endjob scan: 26 samples, maximum observed 3816 cycles (case 13)
-basic exchange: 36 samples, maximum observed 4570 cycles (case 25)
-completion/dispatch: 6 samples, maximum observed 6137 cycles (case 36)
-idle startup: 3 samples, maximum observed 4115 cycles (case 52)
-four-request safe point: 2 samples, maximum observed 18357 cycles (case 8)
+admission/endjob scan: 26 samples, maximum observed 3820 cycles (case 13)
+basic exchange: 36 samples, maximum observed 4535 cycles (case 24)
+completion/dispatch: 6 samples, maximum observed 6179 cycles (case 37)
+idle startup: 3 samples, maximum observed 3771 cycles (case 52)
+four-request safe point: 2 samples, maximum observed 18450 cycles (case 8)
 exclusion enter/leave: 1 samples, maximum observed 24 cycles (case 0)
-IRQ marker intervals: [2597, 2181, 2181, 2167, 2167, 2167, 2167, 2027, 2181]
-Observed latency: {'irq_marker_to_poll_return': 152525, 'irq_return_marker_to_poll_return': 150344, 'callback_start_to_poll_return': 163271, 'poll_interval': 3748, 'poll_return_to_high_callback': 7768, 'masked_work': 463052, 'restore_marker_to_delivery_return': 2534}
-Stack sentinel extents: {'hardware': 37, 'software': 1356, 'isolated': 16}
+IRQ marker intervals: [2630, 2214, 2214, 2199, 2199, 2199, 2199, 2060, 2214]
+Observed latency: {'irq_marker_to_poll_return': 152788, 'irq_return_marker_to_poll_return': 150574, 'callback_start_to_poll_return': 163309, 'poll_interval': 3789, 'poll_return_to_high_callback': 7811, 'masked_work': 463075, 'restore_marker_to_delivery_return': 2567}
+Stack sentinel extents: {'hardware': 34, 'software': 1356, 'isolated': 16}

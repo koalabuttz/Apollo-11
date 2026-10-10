@@ -1,2 +1,2 @@
-PASS: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ":!c64-port" (from repository root)
-No historical files changed.
+Command: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- :!c64-port
+PASS: historical source and all files outside c64-port are unchanged.

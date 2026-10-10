@@ -10,7 +10,8 @@ bank values remain historical words, mapped as a pair to native continuations.
 The live running pair is held in `exec_native.current`, because the original
 dispatch epilogue writes scratch debris into core-zero LOC/BANKSET.
 
-`src/executive.c` contains the allocation/selection logic. `src/agc_word.c`
+`src/executive.c` contains allocation, selection, context exchange and basic
+sleep/wake/priority-change logic. `src/agc_word.c`
 defines representations and necessary arithmetic. `platform/host` provides
 snapshot transport. `platform/c64` provides diagnostic I/O and RAM mailboxes.
 `src/native_dispatch.c` provides a cooperative native callback trampoline.
@@ -83,9 +84,9 @@ a VAC it writes the use address back to the preceding use word.
 | SPVAC | Priority already in NEWPRIO, 2CADR in A/L; caller inhibits interrupts; adjusts Q by -2 | Not implemented |
 | CHANG1 | Basic job yield; Q -> L; saves bank; CHANJOB | `exec_change_basic`; explicit resume pair, native C ABI |
 | CHANG2 | Interpreter yield; complement LOC; save banks; CHANJOB | Not implemented |
-| JOBSLEEP | Continuation location in A; marks current priority dormant; EJSCAN | Not implemented |
-| JOBWAKE | CADR in A; finds first matching dormant LOC; recomplements priority; repairs 2CADR | Not implemented |
-| PRIOCHNG | New priority in A; preserve low nine bits; EJSCAN may resume caller or change jobs | Not implemented |
+| JOBSLEEP | Fixed wake CADR in A; marks current priority dormant; EJSCAN | `exec_sleep_basic`; resources retained, explicit bank input |
+| JOBWAKE | CADR in A; finds first matching dormant LOC; recomplements priority; repairs 2CADR | `exec_wake_basic`; all eight positions, caller L=0 adaptation |
+| PRIOCHNG | New priority in A; preserve low nine bits; EJSCAN may resume caller or change jobs | `exec_priority_basic`; explicit resume pair and original CCS scan bias |
 | ENDOFJOB | Switch Executive bank; ENDJOB1 releases resources then selects/dispatches | `exec_complete_basic`; basic dispatch, explicit SUPERBNK |
 | DUMMYJOB / ADVAN | Idle flag, activity lamp, self-check execution, pending-job polling | Not implemented |
 | SUPDXCHZ | 2CADR in A/L; writes SUPERBNK, BBANK, transfers through L | Bounded NUDIRECT startup adaptation; native pair lookup |
@@ -140,6 +141,12 @@ core zero has NEWJOB=-0 or a positive queued candidate, never +0. The older `exe
 `exec_complete_basic` extends it through native basic dispatch; interpreter
 continuations remain rejected before release. See DISPATCH.md for the actual
 entry/epilogue register adaptations and verified scope.
+
+Sleeping contexts hold a fixed one-word CADR in LOC and current EBANK/SUPERBNK
+flags in BANKSET. Wake reconstructs the basic 2CADR. Sleep retains core/VAC
+ownership, so idle may contain dormant work and reserved VACs. Native callbacks
+return explicit sleep/reprioritize actions before exchange; LIFECYCLE.md records
+the API, scratch conventions and all 115 original-derived checkpoints.
 
 The deterministic initializer additionally zeroes unused working words for tests.
 That is not the full Apollo fresh-start routine and is not a promise to clear

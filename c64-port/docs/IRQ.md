@@ -3,7 +3,7 @@
 The third milestone adds platform exclusion and a four-entry admission-request
 buffer. A real VIC-II raster IRQ can interrupt native C, publish a request, and
 return without changing Executive state. The foreground admits requests at
-guarded safe points. Basic jobs still change through explicit yield/completion;
+guarded safe points. Basic jobs still change through explicit callback returns;
 an IRQ does not suspend a C call stack or dispatch another job.
 
 This is a bounded platform adaptation, not a translation of Apollo interrupt
@@ -38,13 +38,19 @@ Foreground entry points:
 
 - `exec_native_start` drains requests before bounded idle startup.
 - `exec_native_step` drains before callback entry and after callback return,
-  then performs yield/completion under the same guard. A request can start work
+  then performs the returned yield/sleep/priority/completion action under the same guard. A request can start work
   from idle on the next step. Before-entry admission alone does not switch an
   already running callback.
 - `exec_native_poll` drains at an explicit callback safe point, without yielding
   or invoking a callback.
 - `exec_native_admit` drains earlier IRQ requests, then admits the foreground
   request. Callbacks use this helper for their own admission when IRQs are bound.
+
+`exec_native_wake` also drains earlier IRQ admissions before its guarded
+foreground wake. `exec_native_request_priority` stages callback metadata under
+the guard; the matching returned action performs the mutation after frame return.
+The producer remains admission-only. LIFECYCLE.md documents these APIs and the
+real-IRQ integration check that admits a waker while a VAC-owning job sleeps.
 
 All guarded paths restore the caller's previous IRQ-enable state. An enabled
 caller runs callbacks enabled; an already masked caller stays masked. Nested
@@ -65,7 +71,7 @@ bailout blocks delivery. A failed resource admission retains its exact original
 boundary: 1202 can keep the VAC reserved before the full-core scan. The failed
 entry stays queued, earlier successful entries stay admitted, and subsequent
 native operations return the latched fault. A fault raised by a helper inside a
-callback also blocks its returned yield/completion. No transaction rollback,
+callback also blocks its returned action. No transaction rollback,
 retry or Apollo restart is implemented. Stop the source before explicit reset.
 
 ## C64 raster harness and ABI
@@ -132,7 +138,7 @@ exhaustive worst-case timing proofs.
 
 There is no unconditional delivery deadline: latency includes masked foreground
 work, any residual callback work until poll/return, ISR work, and the guarded
-admission batch. Dispatch adds the wait until yield/completion and next step.
+admission batch. Dispatch adds the wait until a callback action return and the next step.
 An application must bound each interval, its mapping-table size and source rate.
 Our arithmetic callback intentionally lasts several PAL frames; its source is
 armed for one event, so it cannot overwhelm the buffer. Continuous raster input

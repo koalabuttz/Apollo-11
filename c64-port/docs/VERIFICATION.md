@@ -38,15 +38,18 @@ paths. The portable commands are:
 
 | Command | Actual result | Evidence |
 |---|---|---|
-| `make test` | PASS; numerical/26 Executive tests, 53 dispatch cases / 109 checkpoints, eight native sequences; IRQ guards/FIFO/wrap/fault suite | `evidence/host-test.txt` |
-| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/sanitize.txt` |
+| `make test` | PASS; numerical/26 Executive tests, 53 dispatch cases / 109 checkpoints, eight dispatch sequences; IRQ suite; 81 lifecycle cases / 115 checkpoints and five lifecycle sequences | `evidence/host-test.txt` |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; all three host suites under AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/sanitize.txt` |
 | `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, original Executive identity checked, fixture assembled | `evidence/prepare-reference.txt`, `evidence/assembly-summary.txt` |
-| `make differential REFERENCE=/path/to/fixture` | PASS; 26 admission/completion and 109 dispatch full-state/target comparisons; numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
+| `make differential REFERENCE=/path/to/fixture` | PASS; 26 admission/completion and 109 dispatch and 115 lifecycle full-state/target comparisons; numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
 | `python3 tools/freeze_vectors.py` | 26 admission/completion and 109 dispatch fingerprints generated | Header records snapshot SHA256 |
+| `python3 tools/freeze_lifecycle.py` | 115 original-derived lifecycle fingerprints generated after exact equality | `tests/lifecycle_vectors.h` records snapshot SHA256 |
 | `make c64 MOS_CC=/path/to/mos-c64-clang` | PASS; native PRG + ELF + link map | `evidence/c64-build.txt`, `executive.prg`, `executive.map` |
 | `python3 tools/vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; native C64 execution, 135 state fingerprints, eight two-job sequences | `evidence/vice-result.txt`, `vice-monitor.log`, `vice.log`, RAM dumps |
 | `make c64-irq MOS_CC=/path/to/mos-c64-clang` | PASS; dynamic-frame, restricted-ZP IRQ PRG and map | `evidence/c64-build.txt`, `irq.prg`, `irq.map` |
 | `python3 tools/irq_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; nine real raster IRQs, interrupted C, register/stack/decimal checks, eight reference checkpoints, overflow/masking and 74 timings | `evidence/irq-result.txt`, `irq-timing.json`, IRQ monitor/log/dumps |
+| `make c64-lifecycle MOS_CC=/path/to/mos-c64-clang` | PASS; dynamic-frame, restricted-ZP lifecycle PRG and map | `evidence/c64-build.txt`, `lifecycle.prg`, `lifecycle.map` |
+| `python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 115 fingerprints, five native sequences, real IRQ-admitted waker, retained VAC payload, 76 guarded timings | `evidence/lifecycle-result.txt`, `lifecycle-timing.json`, lifecycle monitor/log/dumps |
 | `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes | `evidence/source-preservation.txt` |
 
 LeakSanitizer's default process inspection failed in this container (`/proc/...`
@@ -186,8 +189,8 @@ starting-ticket cases, byte wrap and FIFO order, admission only at safe points,
 idle startup, higher-priority exchange and restored job data. Overflow retains
 four entries and saturates rejected count; failed delivery preserves exact
 1201/1202 state, including the pre-1202 VAC reservation. Invalid/unmapped inputs,
-pending bailout and callbacks that fault through a helper are covered. Both
-the original host test and IRQ suite run under ASan/UBSan.
+pending bailout and callbacks that fault through a helper are covered. All
+three host suites run under ASan/UBSan.
 
 The separate target harness actually installs a finite VIC raster source through
 the stock KERNAL vector, then removes it. It records nine events: one register /
@@ -205,6 +208,35 @@ cycle limit or timeout. Linked extra ZP allocation fails the helper. JSON retain
 every operation interval, IRQ interval, latency boundary and stack observation.
 IRQ.md describes ownership/ABI constraints; PERFORMANCE.md reports the retained
 measurements and the excluded portions of hardware entry/exit.
+
+## Basic lifecycle verification
+
+The host-only `lifecycle_reference.c` executes public JOBSLEEP, JOBWAKE and
+PRIOCHNG in the unchanged assembled Executive. Shared fixtures compile in
+input-only mode; no native core, dispatcher, arithmetic or callback is linked.
+Each sequential case retains machine/scratch state. Signed wake CADRs are
+sign-extended into A, and target recognition checks physical bank as well as PC.
+Wake stops at ENDFIND; dispatch checks actual BBANK/SUPERBNK; idle stops after
+NEWJOB=-0 before RELINT. LIFECYCLE.md describes all 81 cases / 115 checkpoints,
+including the synthetic adjacent-priority and both-zero CADR boundaries.
+
+Native and original lifecycle snapshots both have SHA256
+`6e5c7afa4a31a2d7fde7b981d89f9ccecb1a6896866ef505432927ab3623c00b`.
+The host lifecycle suite adds malformed-input preflight, pending bailout, native
+action/staging/mapping faults, step re-entry rejection, nonfatal no-match wake
+and initially enabled/masked restoring guards. Five sequences run actual mapped
+callbacks and check restored MPAC/MODE/OVFIND/VAC payloads.
+
+The third C64 diagnostic checks all 115 frozen fingerprints and these sequences.
+A real raster IRQ then publishes a waker admission while a VAC-owning job sleeps.
+Foreground code verifies unchanged core state before admission, wakes the sleeper,
+lowers the waker priority, checks resumed payloads and completes both. This bridge
+is an integration check; foreground case 80 independently compares the same
+lifecycle path with original assembly. The helper checks mailbox
+`a50000517305014c948802d204` at $c040 and all 157 marker events, rejects compiler
+ZP allocations beyond the preserved 32 registers, and retains 76 primitive
+intervals, four bridge intervals and stack dumps. Its final trace is $04d2
+(decimal 1234). PERFORMANCE.md reports samples without a deadline claim.
 
 ## Review limits and unavailable checks
 

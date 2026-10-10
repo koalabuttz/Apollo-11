@@ -30,15 +30,33 @@ Acceptance for this bounded milestone is met. IRQ.md defines its ownership and
 reset contract. PERFORMANCE.md reports observed operation and latency samples;
 callback/source/mask bounds are still application requirements, not flight proof.
 
-## Next bounded milestone: sleep, wake and priority changes
+## Completed: basic sleep, wake and priority changes
 
-Translate JOBSLEEP/JOBWAKE and PRIOCHNG, including dormant-priority encoding,
-wake-address matching, packed low-bit preservation, scan/tie behavior and native
-continuation outcomes. Extend independent original-assembly comparisons and
-native C64 sequences before integrating timer tasks.
+- JOBSLEEP retains core/VAC ownership and complements dormant packed priorities.
+- JOBWAKE scans all eight contexts, wakes the first matching dormant CADR and
+  reconstructs the original 2CADR without dispatching a live callback.
+- PRIOCHNG preserves low bits and the original CCS threshold/tie behavior.
+- Native sleep/priority actions take effect after C frame return; foreground
+  wake and action mutation preserve previous IRQ permission.
+- 81 cases / 115 full-state/transfer checkpoints match original assembly.
+  Five native sequences, host fault/guard tests and sanitizers pass.
+- A third PAL C64 diagnostic checks every fingerprint, retained payloads, a real
+  IRQ-admitted waker and 76 guarded primitive intervals.
 
-Follow with WAITLIST task scheduling and CIA timer
-mapping; BAILOUT1 and protected restart groups; required interpreter/multiword
+Acceptance for this bounded milestone is met. LIFECYCLE.md records the entry
+scratch adaptations, physical bank checks, synthetic boundaries and exclusions.
+
+## Next bounded milestone: WAITLIST and task timers
+
+Trace TIME3, the nine LST1 differential-time/LST2 2CADR slots, T3RUPT entry and
+TASKOVER against unchanged assembly. Define task completion and Executive job
+admission separately, including equal deadlines, capacity and timer rollover.
+Choose an explicit CIA timer adapter and interrupt/exclusion ownership contract
+before integrating native tasks. Extend the independent oracle and host/native
+C64 sequences with timer-ordering evidence and measured source/safe-point bounds.
+Do not infer timer semantics or delivery deadlines from the finite raster harness.
+
+Follow with BAILOUT1 and protected restart groups; required interpreter/multiword
 semantics; then one bounded landing-guidance computation. Flight feasibility
 remains a separate measurement milestone. Rust is optional for later components.
 

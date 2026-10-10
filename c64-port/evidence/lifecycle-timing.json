@@ -1,0 +1,1220 @@
+{
+  "mailbox": "a50000517305014c948802d204",
+  "command": [
+    "/workspace/toolchains/vice/usr/bin/x64sc",
+    "-default",
+    "-console",
+    "-pal",
+    "-warp",
+    "+sound",
+    "-kernal",
+    "/workspace/toolchains/roms/C64/kernal-901227-03.bin",
+    "-basic",
+    "/workspace/toolchains/roms/C64/basic-901226-01.bin",
+    "-chargen",
+    "/workspace/toolchains/roms/C64/chargen-901225-01.bin",
+    "-directory",
+    "/workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms",
+    "-initbreak",
+    "ready",
+    "-moncommands",
+    "/workspace/Apollo-11/c64-port/build/lifecycle.mon",
+    "-monlogname",
+    "/workspace/Apollo-11/c64-port/build/lifecycle-monitor.log",
+    "-monlog",
+    "-limitcycles",
+    "400000000"
+  ],
+  "samples": [
+    {
+      "case": 0,
+      "group": "sleep",
+      "cycles": 4711
+    },
+    {
+      "case": 1,
+      "group": "sleep",
+      "cycles": 5044
+    },
+    {
+      "case": 2,
+      "group": "sleep",
+      "cycles": 5184
+    },
+    {
+      "case": 3,
+      "group": "sleep",
+      "cycles": 5215
+    },
+    {
+      "case": 4,
+      "group": "sleep",
+      "cycles": 4843
+    },
+    {
+      "case": 5,
+      "group": "sleep",
+      "cycles": 4829
+    },
+    {
+      "case": 6,
+      "group": "sleep",
+      "cycles": 5141
+    },
+    {
+      "case": 7,
+      "group": "sleep",
+      "cycles": 5277
+    },
+    {
+      "case": 8,
+      "group": "sleep",
+      "cycles": 5073
+    },
+    {
+      "case": 9,
+      "group": "sleep",
+      "cycles": 4847
+    },
+    {
+      "case": 10,
+      "group": "sleep",
+      "cycles": 5030
+    },
+    {
+      "case": 11,
+      "group": "sleep",
+      "cycles": 5280
+    },
+    {
+      "case": 12,
+      "group": "sleep",
+      "cycles": 5202
+    },
+    {
+      "case": 13,
+      "group": "sleep",
+      "cycles": 4933
+    },
+    {
+      "case": 14,
+      "group": "sleep",
+      "cycles": 1575
+    },
+    {
+      "case": 15,
+      "group": "sleep",
+      "cycles": 1575
+    },
+    {
+      "case": 16,
+      "group": "sleep",
+      "cycles": 1561
+    },
+    {
+      "case": 17,
+      "group": "sleep",
+      "cycles": 5188
+    },
+    {
+      "case": 18,
+      "group": "sleep",
+      "cycles": 5168
+    },
+    {
+      "case": 19,
+      "group": "sleep",
+      "cycles": 5086
+    },
+    {
+      "case": 20,
+      "group": "sleep",
+      "cycles": 4772
+    },
+    {
+      "case": 21,
+      "group": "sleep",
+      "cycles": 4976
+    },
+    {
+      "case": 22,
+      "group": "wake",
+      "cycles": 1957
+    },
+    {
+      "case": 23,
+      "group": "wake",
+      "cycles": 2854
+    },
+    {
+      "case": 24,
+      "group": "wake",
+      "cycles": 3137
+    },
+    {
+      "case": 25,
+      "group": "wake",
+      "cycles": 3316
+    },
+    {
+      "case": 26,
+      "group": "wake",
+      "cycles": 3385
+    },
+    {
+      "case": 27,
+      "group": "wake",
+      "cycles": 3393
+    },
+    {
+      "case": 28,
+      "group": "wake",
+      "cycles": 3719
+    },
+    {
+      "case": 29,
+      "group": "wake",
+      "cycles": 4110
+    },
+    {
+      "case": 30,
+      "group": "wake",
+      "cycles": 1957
+    },
+    {
+      "case": 31,
+      "group": "wake",
+      "cycles": 2897
+    },
+    {
+      "case": 32,
+      "group": "wake",
+      "cycles": 3138
+    },
+    {
+      "case": 33,
+      "group": "wake",
+      "cycles": 3272
+    },
+    {
+      "case": 34,
+      "group": "wake",
+      "cycles": 3299
+    },
+    {
+      "case": 35,
+      "group": "wake",
+      "cycles": 3393
+    },
+    {
+      "case": 36,
+      "group": "wake",
+      "cycles": 3762
+    },
+    {
+      "case": 37,
+      "group": "wake",
+      "cycles": 4111
+    },
+    {
+      "case": 38,
+      "group": "wake",
+      "cycles": 2663
+    },
+    {
+      "case": 39,
+      "group": "wake",
+      "cycles": 2949
+    },
+    {
+      "case": 40,
+      "group": "wake",
+      "cycles": 3266
+    },
+    {
+      "case": 41,
+      "group": "wake",
+      "cycles": 3105
+    },
+    {
+      "case": 42,
+      "group": "wake",
+      "cycles": 3015
+    },
+    {
+      "case": 43,
+      "group": "wake",
+      "cycles": 2997
+    },
+    {
+      "case": 44,
+      "group": "wake",
+      "cycles": 3744
+    },
+    {
+      "case": 45,
+      "group": "wake",
+      "cycles": 3840
+    },
+    {
+      "case": 46,
+      "group": "wake",
+      "cycles": 2699
+    },
+    {
+      "case": 47,
+      "group": "wake",
+      "cycles": 3316
+    },
+    {
+      "case": 48,
+      "group": "wake",
+      "cycles": 3267
+    },
+    {
+      "case": 49,
+      "group": "wake",
+      "cycles": 3052
+    },
+    {
+      "case": 50,
+      "group": "wake",
+      "cycles": 3068
+    },
+    {
+      "case": 51,
+      "group": "priority",
+      "cycles": 5408
+    },
+    {
+      "case": 52,
+      "group": "priority",
+      "cycles": 5402
+    },
+    {
+      "case": 53,
+      "group": "priority",
+      "cycles": 5449
+    },
+    {
+      "case": 54,
+      "group": "priority",
+      "cycles": 4929
+    },
+    {
+      "case": 55,
+      "group": "priority",
+      "cycles": 5324
+    },
+    {
+      "case": 56,
+      "group": "priority",
+      "cycles": 5358
+    },
+    {
+      "case": 57,
+      "group": "priority",
+      "cycles": 5537
+    },
+    {
+      "case": 58,
+      "group": "priority",
+      "cycles": 2013
+    },
+    {
+      "case": 59,
+      "group": "priority",
+      "cycles": 1971
+    },
+    {
+      "case": 60,
+      "group": "priority",
+      "cycles": 1971
+    },
+    {
+      "case": 61,
+      "group": "priority",
+      "cycles": 1971
+    },
+    {
+      "case": 62,
+      "group": "priority",
+      "cycles": 1971
+    },
+    {
+      "case": 63,
+      "group": "priority",
+      "cycles": 2099
+    },
+    {
+      "case": 64,
+      "group": "priority",
+      "cycles": 2184
+    },
+    {
+      "case": 65,
+      "group": "priority",
+      "cycles": 2143
+    },
+    {
+      "case": 66,
+      "group": "priority",
+      "cycles": 2184
+    },
+    {
+      "case": 67,
+      "group": "priority",
+      "cycles": 5475
+    },
+    {
+      "case": 68,
+      "group": "priority",
+      "cycles": 5114
+    },
+    {
+      "case": 69,
+      "group": "priority",
+      "cycles": 5073
+    },
+    {
+      "case": 70,
+      "group": "priority",
+      "cycles": 2087
+    },
+    {
+      "case": 71,
+      "group": "priority",
+      "cycles": 2173
+    },
+    {
+      "case": 72,
+      "group": "priority",
+      "cycles": 2109
+    },
+    {
+      "case": 73,
+      "group": "priority",
+      "cycles": 5537
+    },
+    {
+      "case": 74,
+      "group": "priority",
+      "cycles": 5192
+    },
+    {
+      "case": 75,
+      "group": "priority",
+      "cycles": 5030
+    }
+  ],
+  "stacks": {
+    "hardware": {
+      "top": 498,
+      "instrumented": 242,
+      "sentinel_extent": 35
+    },
+    "software": {
+      "top": 53248,
+      "instrumented": 3840,
+      "sentinel_extent": 762
+    },
+    "isolated": {
+      "top": 32209,
+      "instrumented": 256,
+      "sentinel_extent": 16
+    }
+  },
+  "irq_bridge": {
+    "enable_marker_to_publication_observed": 2585,
+    "publication_observed_to_awakened_dispatch": 64076,
+    "awakened_completion": 10280,
+    "waker_completion": 6234
+  },
+  "markers": [
+    {
+      "marker": 16,
+      "case": 0,
+      "cycle": 151524853
+    },
+    {
+      "marker": 32,
+      "case": 0,
+      "cycle": 151529564
+    },
+    {
+      "marker": 16,
+      "case": 1,
+      "cycle": 152865581
+    },
+    {
+      "marker": 32,
+      "case": 1,
+      "cycle": 152870625
+    },
+    {
+      "marker": 16,
+      "case": 2,
+      "cycle": 154206541
+    },
+    {
+      "marker": 32,
+      "case": 2,
+      "cycle": 154211725
+    },
+    {
+      "marker": 16,
+      "case": 3,
+      "cycle": 155547450
+    },
+    {
+      "marker": 32,
+      "case": 3,
+      "cycle": 155552665
+    },
+    {
+      "marker": 16,
+      "case": 4,
+      "cycle": 156888657
+    },
+    {
+      "marker": 32,
+      "case": 4,
+      "cycle": 156893500
+    },
+    {
+      "marker": 16,
+      "case": 5,
+      "cycle": 158229551
+    },
+    {
+      "marker": 32,
+      "case": 5,
+      "cycle": 158234380
+    },
+    {
+      "marker": 16,
+      "case": 6,
+      "cycle": 159570145
+    },
+    {
+      "marker": 32,
+      "case": 6,
+      "cycle": 159575286
+    },
+    {
+      "marker": 16,
+      "case": 7,
+      "cycle": 160911348
+    },
+    {
+      "marker": 32,
+      "case": 7,
+      "cycle": 160916625
+    },
+    {
+      "marker": 16,
+      "case": 8,
+      "cycle": 162252648
+    },
+    {
+      "marker": 32,
+      "case": 8,
+      "cycle": 162257721
+    },
+    {
+      "marker": 16,
+      "case": 9,
+      "cycle": 163593594
+    },
+    {
+      "marker": 32,
+      "case": 9,
+      "cycle": 163598441
+    },
+    {
+      "marker": 16,
+      "case": 10,
+      "cycle": 164934511
+    },
+    {
+      "marker": 32,
+      "case": 10,
+      "cycle": 164939541
+    },
+    {
+      "marker": 16,
+      "case": 11,
+      "cycle": 166275597
+    },
+    {
+      "marker": 32,
+      "case": 11,
+      "cycle": 166280877
+    },
+    {
+      "marker": 16,
+      "case": 12,
+      "cycle": 167616751
+    },
+    {
+      "marker": 32,
+      "case": 12,
+      "cycle": 167621953
+    },
+    {
+      "marker": 16,
+      "case": 13,
+      "cycle": 168957982
+    },
+    {
+      "marker": 32,
+      "case": 13,
+      "cycle": 168962915
+    },
+    {
+      "marker": 16,
+      "case": 14,
+      "cycle": 170298906
+    },
+    {
+      "marker": 32,
+      "case": 14,
+      "cycle": 170300481
+    },
+    {
+      "marker": 16,
+      "case": 15,
+      "cycle": 171636227
+    },
+    {
+      "marker": 32,
+      "case": 15,
+      "cycle": 171637802
+    },
+    {
+      "marker": 16,
+      "case": 16,
+      "cycle": 172974380
+    },
+    {
+      "marker": 32,
+      "case": 16,
+      "cycle": 172975941
+    },
+    {
+      "marker": 16,
+      "case": 17,
+      "cycle": 174311955
+    },
+    {
+      "marker": 32,
+      "case": 17,
+      "cycle": 174317143
+    },
+    {
+      "marker": 16,
+      "case": 18,
+      "cycle": 175653392
+    },
+    {
+      "marker": 32,
+      "case": 18,
+      "cycle": 175658560
+    },
+    {
+      "marker": 16,
+      "case": 19,
+      "cycle": 176994527
+    },
+    {
+      "marker": 32,
+      "case": 19,
+      "cycle": 176999613
+    },
+    {
+      "marker": 16,
+      "case": 20,
+      "cycle": 178335813
+    },
+    {
+      "marker": 32,
+      "case": 20,
+      "cycle": 178340585
+    },
+    {
+      "marker": 16,
+      "case": 21,
+      "cycle": 179676766
+    },
+    {
+      "marker": 32,
+      "case": 21,
+      "cycle": 179681742
+    },
+    {
+      "marker": 16,
+      "case": 22,
+      "cycle": 181017556
+    },
+    {
+      "marker": 32,
+      "case": 22,
+      "cycle": 181019513
+    },
+    {
+      "marker": 16,
+      "case": 23,
+      "cycle": 182355563
+    },
+    {
+      "marker": 32,
+      "case": 23,
+      "cycle": 182358417
+    },
+    {
+      "marker": 16,
+      "case": 24,
+      "cycle": 183694225
+    },
+    {
+      "marker": 32,
+      "case": 24,
+      "cycle": 183697362
+    },
+    {
+      "marker": 16,
+      "case": 25,
+      "cycle": 185033527
+    },
+    {
+      "marker": 32,
+      "case": 25,
+      "cycle": 185036843
+    },
+    {
+      "marker": 16,
+      "case": 26,
+      "cycle": 186372595
+    },
+    {
+      "marker": 32,
+      "case": 26,
+      "cycle": 186375980
+    },
+    {
+      "marker": 16,
+      "case": 27,
+      "cycle": 187712074
+    },
+    {
+      "marker": 32,
+      "case": 27,
+      "cycle": 187715467
+    },
+    {
+      "marker": 16,
+      "case": 28,
+      "cycle": 189051543
+    },
+    {
+      "marker": 32,
+      "case": 28,
+      "cycle": 189055262
+    },
+    {
+      "marker": 16,
+      "case": 29,
+      "cycle": 190391037
+    },
+    {
+      "marker": 32,
+      "case": 29,
+      "cycle": 190395147
+    },
+    {
+      "marker": 16,
+      "case": 30,
+      "cycle": 191731198
+    },
+    {
+      "marker": 32,
+      "case": 30,
+      "cycle": 191733155
+    },
+    {
+      "marker": 16,
+      "case": 31,
+      "cycle": 193068968
+    },
+    {
+      "marker": 32,
+      "case": 31,
+      "cycle": 193071865
+    },
+    {
+      "marker": 16,
+      "case": 32,
+      "cycle": 194407919
+    },
+    {
+      "marker": 32,
+      "case": 32,
+      "cycle": 194411057
+    },
+    {
+      "marker": 16,
+      "case": 33,
+      "cycle": 195746854
+    },
+    {
+      "marker": 32,
+      "case": 33,
+      "cycle": 195750126
+    },
+    {
+      "marker": 16,
+      "case": 34,
+      "cycle": 197086141
+    },
+    {
+      "marker": 32,
+      "case": 34,
+      "cycle": 197089440
+    },
+    {
+      "marker": 16,
+      "case": 35,
+      "cycle": 198425280
+    },
+    {
+      "marker": 32,
+      "case": 35,
+      "cycle": 198428673
+    },
+    {
+      "marker": 16,
+      "case": 36,
+      "cycle": 199764726
+    },
+    {
+      "marker": 32,
+      "case": 36,
+      "cycle": 199768488
+    },
+    {
+      "marker": 16,
+      "case": 37,
+      "cycle": 201104568
+    },
+    {
+      "marker": 32,
+      "case": 37,
+      "cycle": 201108679
+    },
+    {
+      "marker": 16,
+      "case": 38,
+      "cycle": 202444564
+    },
+    {
+      "marker": 32,
+      "case": 38,
+      "cycle": 202447227
+    },
+    {
+      "marker": 16,
+      "case": 39,
+      "cycle": 203783347
+    },
+    {
+      "marker": 32,
+      "case": 39,
+      "cycle": 203786296
+    },
+    {
+      "marker": 16,
+      "case": 40,
+      "cycle": 205122145
+    },
+    {
+      "marker": 32,
+      "case": 40,
+      "cycle": 205125411
+    },
+    {
+      "marker": 16,
+      "case": 41,
+      "cycle": 206461512
+    },
+    {
+      "marker": 32,
+      "case": 41,
+      "cycle": 206464617
+    },
+    {
+      "marker": 16,
+      "case": 42,
+      "cycle": 207800514
+    },
+    {
+      "marker": 32,
+      "case": 42,
+      "cycle": 207803529
+    },
+    {
+      "marker": 16,
+      "case": 43,
+      "cycle": 209139702
+    },
+    {
+      "marker": 32,
+      "case": 43,
+      "cycle": 209142699
+    },
+    {
+      "marker": 16,
+      "case": 44,
+      "cycle": 210478605
+    },
+    {
+      "marker": 32,
+      "case": 44,
+      "cycle": 210482349
+    },
+    {
+      "marker": 16,
+      "case": 45,
+      "cycle": 211818430
+    },
+    {
+      "marker": 32,
+      "case": 45,
+      "cycle": 211822270
+    },
+    {
+      "marker": 16,
+      "case": 46,
+      "cycle": 213158363
+    },
+    {
+      "marker": 32,
+      "case": 46,
+      "cycle": 213161062
+    },
+    {
+      "marker": 16,
+      "case": 47,
+      "cycle": 214496905
+    },
+    {
+      "marker": 32,
+      "case": 47,
+      "cycle": 214500221
+    },
+    {
+      "marker": 16,
+      "case": 48,
+      "cycle": 215836347
+    },
+    {
+      "marker": 32,
+      "case": 48,
+      "cycle": 215839614
+    },
+    {
+      "marker": 16,
+      "case": 49,
+      "cycle": 217175549
+    },
+    {
+      "marker": 32,
+      "case": 49,
+      "cycle": 217178601
+    },
+    {
+      "marker": 16,
+      "case": 50,
+      "cycle": 218514862
+    },
+    {
+      "marker": 32,
+      "case": 50,
+      "cycle": 218517930
+    },
+    {
+      "marker": 16,
+      "case": 51,
+      "cycle": 219853761
+    },
+    {
+      "marker": 32,
+      "case": 51,
+      "cycle": 219859169
+    },
+    {
+      "marker": 16,
+      "case": 52,
+      "cycle": 221195157
+    },
+    {
+      "marker": 32,
+      "case": 52,
+      "cycle": 221200559
+    },
+    {
+      "marker": 16,
+      "case": 53,
+      "cycle": 222536613
+    },
+    {
+      "marker": 32,
+      "case": 53,
+      "cycle": 222542062
+    },
+    {
+      "marker": 16,
+      "case": 54,
+      "cycle": 223877960
+    },
+    {
+      "marker": 32,
+      "case": 54,
+      "cycle": 223882889
+    },
+    {
+      "marker": 16,
+      "case": 55,
+      "cycle": 225219034
+    },
+    {
+      "marker": 32,
+      "case": 55,
+      "cycle": 225224358
+    },
+    {
+      "marker": 16,
+      "case": 56,
+      "cycle": 226560422
+    },
+    {
+      "marker": 32,
+      "case": 56,
+      "cycle": 226565780
+    },
+    {
+      "marker": 16,
+      "case": 57,
+      "cycle": 227901668
+    },
+    {
+      "marker": 32,
+      "case": 57,
+      "cycle": 227907205
+    },
+    {
+      "marker": 16,
+      "case": 58,
+      "cycle": 229243341
+    },
+    {
+      "marker": 32,
+      "case": 58,
+      "cycle": 229245354
+    },
+    {
+      "marker": 16,
+      "case": 59,
+      "cycle": 230581315
+    },
+    {
+      "marker": 32,
+      "case": 59,
+      "cycle": 230583286
+    },
+    {
+      "marker": 16,
+      "case": 60,
+      "cycle": 231919447
+    },
+    {
+      "marker": 32,
+      "case": 60,
+      "cycle": 231921418
+    },
+    {
+      "marker": 16,
+      "case": 61,
+      "cycle": 233257372
+    },
+    {
+      "marker": 32,
+      "case": 61,
+      "cycle": 233259343
+    },
+    {
+      "marker": 16,
+      "case": 62,
+      "cycle": 234595511
+    },
+    {
+      "marker": 32,
+      "case": 62,
+      "cycle": 234597482
+    },
+    {
+      "marker": 16,
+      "case": 63,
+      "cycle": 235933488
+    },
+    {
+      "marker": 32,
+      "case": 63,
+      "cycle": 235935587
+    },
+    {
+      "marker": 16,
+      "case": 64,
+      "cycle": 237271706
+    },
+    {
+      "marker": 32,
+      "case": 64,
+      "cycle": 237273890
+    },
+    {
+      "marker": 16,
+      "case": 65,
+      "cycle": 238609721
+    },
+    {
+      "marker": 32,
+      "case": 65,
+      "cycle": 238611864
+    },
+    {
+      "marker": 16,
+      "case": 66,
+      "cycle": 239947946
+    },
+    {
+      "marker": 32,
+      "case": 66,
+      "cycle": 239950130
+    },
+    {
+      "marker": 16,
+      "case": 67,
+      "cycle": 241285956
+    },
+    {
+      "marker": 32,
+      "case": 67,
+      "cycle": 241291431
+    },
+    {
+      "marker": 16,
+      "case": 68,
+      "cycle": 242627444
+    },
+    {
+      "marker": 32,
+      "case": 68,
+      "cycle": 242632558
+    },
+    {
+      "marker": 16,
+      "case": 69,
+      "cycle": 243968674
+    },
+    {
+      "marker": 32,
+      "case": 69,
+      "cycle": 243973747
+    },
+    {
+      "marker": 16,
+      "case": 70,
+      "cycle": 245309522
+    },
+    {
+      "marker": 32,
+      "case": 70,
+      "cycle": 245311609
+    },
+    {
+      "marker": 16,
+      "case": 71,
+      "cycle": 246647636
+    },
+    {
+      "marker": 32,
+      "case": 71,
+      "cycle": 246649809
+    },
+    {
+      "marker": 16,
+      "case": 72,
+      "cycle": 247985625
+    },
+    {
+      "marker": 32,
+      "case": 72,
+      "cycle": 247987734
+    },
+    {
+      "marker": 16,
+      "case": 73,
+      "cycle": 249324059
+    },
+    {
+      "marker": 32,
+      "case": 73,
+      "cycle": 249329596
+    },
+    {
+      "marker": 16,
+      "case": 74,
+      "cycle": 250665908
+    },
+    {
+      "marker": 32,
+      "case": 74,
+      "cycle": 250671100
+    },
+    {
+      "marker": 16,
+      "case": 75,
+      "cycle": 252007176
+    },
+    {
+      "marker": 32,
+      "case": 75,
+      "cycle": 252012206
+    },
+    {
+      "marker": 144,
+      "case": 75,
+      "cycle": 253335945
+    },
+    {
+      "marker": 145,
+      "case": 75,
+      "cycle": 253338530
+    },
+    {
+      "marker": 146,
+      "case": 75,
+      "cycle": 253402606
+    },
+    {
+      "marker": 147,
+      "case": 75,
+      "cycle": 253412886
+    },
+    {
+      "marker": 148,
+      "case": 75,
+      "cycle": 253419120
+    }
+  ]
+}

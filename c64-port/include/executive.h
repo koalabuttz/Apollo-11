@@ -15,7 +15,7 @@ enum exec_core_field { EXEC_MPAC=0, EXEC_MODE=7, EXEC_LOC=8, EXEC_BANK=9,
 enum exec_status { EXEC_OK=0, EXEC_NO_VAC=01201, EXEC_NO_CORE=01202,
                    EXEC_OUT_OF_SCOPE=1, EXEC_BAILOUT_PENDING=2,
                    EXEC_IDLE=3, EXEC_UNMAPPED=4, EXEC_INVALID_ACTION=5,
-                   EXEC_QUEUE_FULL=6 };
+                   EXEC_QUEUE_FULL=6, EXEC_NOT_FOUND=7 };
 typedef struct { agc_word location, bank; } exec_address;
 typedef struct {
     agc_word core[EXEC_CORE_COUNT][EXEC_CORE_WORDS];
@@ -47,4 +47,18 @@ enum exec_status exec_complete_basic(executive *state, agc_word superbank,
 /* Bounded idle entry: NUDIRECT or NUCHANG2/CHANJOB+4, with activity A=2
  * and scratch L=0. Does not translate idle self-check or channel-11 lamp I/O. */
 enum exec_status exec_start_basic(executive *state, exec_address *next);
+/* JOBSLEEP: wake_cadr is a one-word fixed CADR, not a basic location.
+ * bank is the current complete BBCON. Retains the core/VAC while dormant;
+ * dispatches a waiting basic job or returns idle without releasing resources. */
+enum exec_status exec_sleep_basic(executive *state, agc_word wake_cadr,
+                                 agc_word bank, exec_address *next);
+/* JOBWAKE: first matching dormant CADR across all eight cores. Returns
+ * EXEC_NOT_FOUND (nonfatal), with LOCCTR=-1, or OK with its displacement.
+ * Caller L scratch is adapted to +0 at SETLOC/SPECTEST. No dispatch. */
+enum exec_status exec_wake_basic(executive *state, agc_word wake_cadr);
+/* PRIOCHNG: change upper priority, retain low nine bits, then scan/dispatch.
+ * resume is the current caller's basic return pair. No-change keeps its physical
+ * SUPERBNK in next metadata; original LOC/BANKSET epilogue debris is preserved. */
+enum exec_status exec_priority_basic(executive *state, agc_word priority,
+                                    exec_address resume, exec_address *next);
 #endif

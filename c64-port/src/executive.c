@@ -193,3 +193,112 @@ enum exec_status exec_start_basic(executive *s, exec_address *next) {
     else *next=outgoing;
     return EXEC_OK;
 }
+static int lifecycle_bank(agc_word bank) {
+    return (bank & (agc_word)~UINT16_C(076167)) == 0;
+}
+static uint8_t lifecycle_candidate(const executive *s, agc_word threshold) {
+    uint8_t i,slot=0;
+    agc_word highest=threshold;
+    for (i=1;i<EXEC_CORE_COUNT;++i)
+        if (agc_classify(s->core[i][EXEC_PRIORITY]) == AGC_POSITIVE &&
+            s->core[i][EXEC_PRIORITY] > highest) {
+            highest=s->core[i][EXEC_PRIORITY]; slot=i;
+        }
+    return slot;
+}
+enum exec_status exec_sleep_basic(executive *s, agc_word cadr, agc_word bank,
+                                 exec_address *next) {
+    uint8_t slot;
+    exec_address outgoing;
+    if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
+    if (next == 0 || cadr > AGC_MASK || !lifecycle_bank(bank) ||
+        agc_classify(s->core[0][EXEC_PRIORITY]) != AGC_POSITIVE)
+        return EXEC_OUT_OF_SCOPE;
+    slot=lifecycle_candidate(s,0);
+    if (slot != 0 && !basic_slot(s,slot)) return EXEC_OUT_OF_SCOPE;
+    /* JOBSLEEP/JOBSLP1. FBANK has changed, but BBANK's low bits survive. */
+    s->core[0][EXEC_LOC]=cadr;
+    s->core[0][EXEC_PRIORITY]=agc_negate(s->core[0][EXEC_PRIORITY]);
+    s->core[0][EXEC_BANK]=(agc_word)(bank & 0177);
+    if (slot == 0) {
+        s->newjob=AGC_NEG_ZERO; next->location=0; next->bank=0;
+        return EXEC_IDLE;
+    }
+    s->newjob=(agc_word)(slot*EXEC_CORE_WORDS);
+    outgoing.location=cadr; outgoing.bank=s->core[0][EXEC_BANK];
+    exchange_basic(s,slot,outgoing,next);
+    return EXEC_OK;
+}
+enum exec_status exec_wake_basic(executive *s, agc_word cadr) {
+    uint8_t slot,candidate;
+    agc_word location,bank,scratch_a;
+    agc_register difference;
+    if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
+    if (cadr > AGC_MASK || (s->newjob != AGC_NEG_ZERO &&
+        (s->newjob > 84u || s->newjob % EXEC_CORE_WORDS != 0)))
+        return EXEC_OUT_OF_SCOPE;
+    for (slot=0;slot<EXEC_CORE_COUNT;++slot) {
+        agc_word loc=s->core[slot][EXEC_LOC];
+        if (agc_classify(s->core[slot][EXEC_PRIORITY]) == AGC_NEGATIVE &&
+            (loc==cadr || ((loc==0 || loc==AGC_NEG_ZERO) &&
+                           (cadr==0 || cadr==AGC_NEG_ZERO)))) break;
+    }
+    if (slot<EXEC_CORE_COUNT &&
+        (!lifecycle_bank(s->core[slot][EXEC_BANK]) ||
+         s->core[slot][EXEC_BANK]>0177 || (slot==0 && s->newjob==0)))
+        return EXEC_OUT_OF_SCOPE;
+    s->newloc[0]=cadr;
+    if (slot==EXEC_CORE_COUNT) {
+        s->locctr=UINT16_C(077776); /* CS ONE: -1, not free-core -0. */
+        return EXEC_NOT_FOUND;
+    }
+    s->locctr=(agc_word)(slot*EXEC_CORE_WORDS);
+    s->newprio=agc_negate(s->core[slot][EXEC_PRIORITY]);
+    s->core[slot][EXEC_PRIORITY]=s->newprio;
+    location=(agc_word)((cadr & 01777)+02000);
+    bank=agc_add_word((agc_word)(cadr & 076000),s->core[slot][EXEC_BANK]);
+    s->newloc[0]=location; s->newloc[1]=bank;
+    if (slot==0 && s->newjob==AGC_NEG_ZERO) {
+        /* WAKETEST enters SPECTEST directly, so FIXLOC/OVFIND are retained. */
+        s->newjob=0; s->core[0][EXEC_LOC]=location; s->core[0][EXEC_BANK]=bank;
+        s->newloc[0]=0; s->newloc[1]=0;
+        return EXEC_OK;
+    }
+    /* SETLOC with the adapted caller L=+0. CCS supplies displacement-1. */
+    scratch_a=agc_diminished_abs(slot==0 ? s->newjob : s->locctr);
+    s->core[slot][EXEC_LOC]=location; s->core[slot][EXEC_BANK]=bank;
+    s->newloc[0]=scratch_a; s->newloc[1]=0;
+    candidate=s->newjob==AGC_NEG_ZERO ? 0 : (uint8_t)(s->newjob/EXEC_CORE_WORDS);
+    difference=agc_add_register(agc_extend(agc_negate(s->core[candidate][EXEC_PRIORITY])),
+                               agc_extend(s->newprio));
+    if (difference!=0 && difference!=UINT16_C(0177777) &&
+        (difference & UINT16_C(0100000))==0) s->newjob=s->locctr;
+    return EXEC_OK;
+}
+enum exec_status exec_priority_basic(executive *s, agc_word priority,
+                                    exec_address resume, exec_address *next) {
+    uint8_t slot;
+    agc_word packed;
+    if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
+    if (next==0 || priority==0 || (priority & UINT16_C(0140777))!=0 ||
+        resume.location==0 || resume.location>07777 || !lifecycle_bank(resume.bank) ||
+        agc_classify(s->core[0][EXEC_PRIORITY])!=AGC_POSITIVE)
+        return EXEC_OUT_OF_SCOPE;
+    packed=(agc_word)(priority+(s->core[0][EXEC_PRIORITY] & EXEC_LOW9));
+    /* Initial BUF+1=-packed; EJ1 compares CCS's candidate priority-1.
+     * Thus a candidate only one raw unit above current does not displace it. */
+    slot=lifecycle_candidate(s,(agc_word)(packed+1u));
+    if (slot!=0 && !basic_slot(s,slot)) return EXEC_OUT_OF_SCOPE;
+    s->newprio=priority;
+    s->core[0][EXEC_PRIORITY]=packed;
+    s->core[0][EXEC_LOC]=resume.location;
+    s->core[0][EXEC_BANK]=(agc_word)(resume.bank & 076007);
+    if (slot==0) {
+        s->newjob=0; s->core[0][EXEC_LOC]=0; s->core[0][EXEC_BANK]=0;
+        *next=resume; /* Channel 7 persists; it is not in the stored BBANK word. */
+        return EXEC_OK;
+    }
+    s->newjob=(agc_word)(slot*EXEC_CORE_WORDS);
+    exchange_basic(s,slot,resume,next);
+    return EXEC_OK;
+}
