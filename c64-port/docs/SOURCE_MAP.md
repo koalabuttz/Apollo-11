@@ -12,6 +12,10 @@ All line numbers refer to upstream commit
 | EXECUTIVE:200–208 NEXTCORE / 1202 | `exec_admit`, capacity failure | BAILOUT1 entry; no rollback or restart |
 | EXECUTIVE:371–385 ENDJOB1 | `exec_endjob_select`, current core/VAC release | End of following selection, before dispatch |
 | EXECUTIVE:388–457 EJSCAN, EJ1, EJ2 | `exec_endjob_select`, ascending scan of positions 1..7 | CHANJOB-2 for a selected job; DUMMYJOB entry for idle |
+| EXECUTIVE:72–75 CHANG1; 212–273 CHANJOB/ENDPRCHG | `exec_change_basic`, `exchange_basic` | Original CHANG1 through DTCB; saved words and actual target banks |
+| EXECUTIVE:291–303 NUCHANG2; 483–486 NUDIRECT | `exec_start_basic` | Bounded idle start with explicit A=2/L=0 |
+| EXECUTIVE:371–457 ENDJOB1/EJSCAN plus CHANJOB-2 | `exec_complete_basic` | Original release, scan, swap and basic DTCB |
+| EXECUTIVE:464–465 DUMMYJOB initial stores | `exec_complete_basic` idle return | After NEWJOB=-0, before RELINT and idle activity |
 | FRESH_START_AND_RESTART:507–529 resource initialization stores | `exec_init` initial priority/use words | Adapted test initializer; zeroing extra words is separate adaptation |
 | ERASABLE_ASSIGNMENTS:376–383 | `executive.core[8][12]`, field constants | Matching logical layout, native physical addresses differ |
 | ERASABLE_ASSIGNMENTS:434–443 | `executive.vac[5][44]` | Historical use addresses retained as word values |
@@ -19,16 +23,19 @@ All line numbers refer to upstream commit
 
 Reference adapter addresses, all octal: NOVAC=5072; FINDVAC=5105;
 ENDFIND=5160; BAILOUT1=5716; ENDJOB1=bank 01,3103;
-CHANJOB-2=bank 01,2704; DUMMYJOB=bank 01,3206.
+CHANJOB-2=bank 01,2704; DUMMYJOB=bank 01,3206; CHANG1=5122;
+ENDPRCHG=bank 01,2765; NUCHANG2=bank 01,3011; NUDIRECT=bank 01,3225.
 The setup helper asserts selected symbol addresses against the assembler listing.
 
 ## Deferred routines
 
-SPVAC, CHANG1, CHANG2, CHANJOB, ENDPRCHG, JOBSLEEP/JOBSLP1/2,
-JOBWAKE/JOBWAKE2/3/4/WAKETEST, PRIOCHNG/PRIOCH2, NUCHANG2,
-DUMMYJOB/ADVAN/NUDIRECT, SUPDXCHZ, ENDFIND's return and all alarm/restart code
+SPVAC, CHANG2, interpretive ENDPRCHG/INTRSM, JOBSLEEP/JOBSLP1/2,
+JOBWAKE/JOBWAKE2/3/4/WAKETEST, PRIOCHNG/PRIOCH2, NUCHANG2 race/activity handling,
+full DUMMYJOB/ADVAN polling/self-check, general SUPDXCHZ, ENDFIND's return and all alarm/restart code
 remain untranslated. `exec_endjob_select` is not ENDOFJOB's complete calling
-convention, and a selected index does not execute an Apollo routine.
+convention, and a selected index alone does not execute a routine. `exec_native` now runs
+explicitly mapped native demonstration jobs; see DISPATCH.md for the adapter
+boundaries and the separate interpreter exclusion.
 
 ## Arithmetic mapping
 

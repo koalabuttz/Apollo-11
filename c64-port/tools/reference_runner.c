@@ -13,7 +13,10 @@
 #include "arithmetic_stream.h"
 void BacktraceAdd(agc_t *s,int cause) { (void)s; (void)cause; }
 int ChannelInput(agc_t *s) { (void)s; return 0; }
-void ChannelOutput(agc_t *s,int c,int v) { (void)s; (void)c; (void)v; }
+/* Same channel-7 storage behavior as Virtual AGC SocketAPI.c, without sockets. */
+void ChannelOutput(agc_t *s,int c,int v) {
+    if(c==7) s->InputChannel[7]=s->OutputChannel7=v & 0160;
+}
 void ChannelRoutine(agc_t *s) { (void)s; }
 void RequestRadarData(agc_t *s) { (void)s; }
 void ShiftToDeda(agc_t *s,int data) { (void)s; (void)data; }

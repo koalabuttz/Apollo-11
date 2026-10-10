@@ -5,6 +5,60 @@
 #include "scenarios.h"
 #include "state_digest.h"
 #include "reference_vectors.h"
+#include "dispatch_check.h"
+#include "dispatch_cases.h"
+static unsigned called;
+static enum exec_action unmapped_resume(executive *s,void *user,exec_address *resume) {
+    (void)s; (void)user; ++called;
+    resume->location=LOW_RESUME; resume->bank=HIGH_BANK; return EXEC_YIELD;
+}
+static enum exec_action invalid_action(executive *s,void *user,exec_address *resume) {
+    (void)s; (void)user; (void)resume; ++called; return (enum exec_action)99;
+}
+static void invalid_dispatch(void) {
+    executive s,before;
+    exec_address next={01234,0567},old_next=next,resume={02400,06122};
+    exec_native runtime;
+    exec_mapping map[2]={{{LOW_ENTRY,LOW_BANK},unmapped_resume},{{LOW_RESUME,LOW_BANK},invalid_action}};
+    dispatch_prepare(&s,0); before=s;
+    s.newjob=13; before=s;
+    assert(exec_change_basic(&s,resume,&next)==EXEC_OUT_OF_SCOPE);
+    assert(memcmp(&before,&s,sizeof s)==0 && memcmp(&old_next,&next,sizeof next)==0);
+    s.newjob=12; s.core[1][EXEC_LOC]=agc_negate(02345); before=s;
+    assert(exec_change_basic(&s,resume,&next)==EXEC_OUT_OF_SCOPE);
+    assert(memcmp(&before,&s,sizeof s)==0);
+    assert(exec_complete_basic(&s,0120,&next)==EXEC_OUT_OF_SCOPE);
+    assert(memcmp(&before,&s,sizeof s)==0); /* VAC not released */
+    assert(exec_start_basic(&s,&next)==EXEC_OUT_OF_SCOPE);
+    assert(memcmp(&before,&s,sizeof s)==0);
+    dispatch_prepare(&s,0); before=s; resume.location=010000;
+    assert(exec_change_basic(&s,resume,&next)==EXEC_OUT_OF_SCOPE);
+    assert(memcmp(&before,&s,sizeof s)==0);
+    assert(exec_complete_basic(&s,0200,&next)==EXEC_OUT_OF_SCOPE);
+    assert(memcmp(&before,&s,sizeof s)==0);
+    assert(exec_change_basic(&s,resume,0)==EXEC_OUT_OF_SCOPE);
+    s.alarm=01202; before=s;
+    assert(exec_change_basic(&s,resume,&next)==EXEC_BAILOUT_PENDING);
+    assert(exec_complete_basic(&s,0,&next)==EXEC_BAILOUT_PENDING);
+    assert(exec_start_basic(&s,&next)==EXEC_BAILOUT_PENDING);
+    assert(memcmp(&before,&s,sizeof s)==0);
+    map[1]=map[0];
+    assert(exec_native_init(&runtime,&s,map,2,0)==EXEC_OUT_OF_SCOPE);
+    assert(exec_native_step(&runtime)==EXEC_OUT_OF_SCOPE);
+    map[1].address.location=LOW_RESUME; map[1].call=invalid_action;
+    exec_init(&s); assert(exec_admit(&s,02000,LOW_ENTRY,LOW_BANK,0)==EXEC_OK);
+    assert(exec_native_init(&runtime,&s,map,2,0)==EXEC_OK);
+    assert(exec_native_start(&runtime)==EXEC_OK);
+    assert(exec_native_start(&runtime)==EXEC_OUT_OF_SCOPE);
+    called=0; assert(exec_native_step(&runtime)==EXEC_UNMAPPED);
+    assert(called==1); assert(exec_native_step(&runtime)==EXEC_UNMAPPED && called==1);
+    /* Same location, different bank never accidentally calls a continuation. */
+    exec_init(&s); assert(exec_admit(&s,02000,LOW_RESUME,LOW_BANK,0)==EXEC_OK);
+    assert(exec_native_init(&runtime,&s,map,2,0)==EXEC_OK);
+    assert(exec_native_start(&runtime)==EXEC_OK);
+    called=0; assert(exec_native_step(&runtime)==EXEC_INVALID_ACTION);
+    assert(exec_native_step(&runtime)==EXEC_INVALID_ACTION && called==1);
+}
 int main(void) {
     uint32_t a,b;
     uint8_t n;
@@ -49,6 +103,10 @@ int main(void) {
     }
     exec_init(&initialized);
     assert(exec_admit(&initialized,0,0,0,0)==EXEC_OUT_OF_SCOPE);
+    assert(dispatch_check(&initialized)==0);
+    assert(dispatch_demo(&initialized,42,0,0));
+    invalid_dispatch();
+    puts("PASS: 53 dispatch cases, 109 assembly-derived checkpoints, 8 native two-job sequences; dispatch fault checks");
     printf("PASS: 32768 word encodings, 65536 register encodings, %lu addition pairs, %u Executive scenarios\n",pairs,SCENARIO_COUNT);
     printf("sizeof(executive)=%lu bytes; sizeof(scenario)=%lu bytes (host)\n",
            (unsigned long)sizeof(executive),(unsigned long)sizeof(scenario));

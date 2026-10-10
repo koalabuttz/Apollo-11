@@ -1,52 +1,78 @@
 # Native C64 resource and timing findings
 
-These measurements cover the retained diagnostic build using LLVM-MOS SDK
-v23.3.0, `-Os`, normal PAL C64 emulation in x64sc 3.7.1. They are not worst-case
-flight-software bounds. The native core is aggressively inlined by LTO.
+The retained second-milestone diagnostic uses LLVM-MOS SDK v23.3.0, `-Os`, and
+PAL x64sc 3.7.1 with ordinary C64 ROMs. It contains the native basic dispatcher,
+actual mapped demonstration jobs and reference-fingerprint diagnostics. These
+are measured samples, not flight-software bounds or AGC cycle equivalence.
 
 | Quantity | Result | Evidence / limit |
 |---|---|---|
-| PRG file size | **5829 bytes** | Includes two-byte load address; `evidence/executive.prg` |
-| Loaded image | 5827 bytes, $0801..$1ec3 | BASIC SYS header, text, read-only data; VICE load log |
-| Native text | 5316 bytes | `.text`=$14c4, including runtime helpers |
-| Read-only data | 499 bytes | `.rodata`=$1f3; includes diagnostics and reference digests |
-| Linked BSS | **658 bytes** | `.bss`=$292, $1ec4..$2155; static diagnostic scenario |
-| Executive state alone | **648 bytes** | Target mailbox and host size agree |
-| Total image plus BSS | 6485 bytes | $0801..$2155; excludes zero page, stacks, ROMs, mailbox |
-| Zero-page use | 62 bytes, $02..$3f | 32 imaginary register bytes plus 30 `.zp.noinit` bytes in map |
-| Heap allocation | None | Native core/diagnostic has no allocator or heap calls |
-| Hardware stack observation | 19-byte sentinel extent below entry baseline; about 33 bytes including existing 14-byte BASIC/start chain | Instrumented $0100..$01f1; lowest changed sentinel=$01df; earlier run observed 21/35 bytes; varies with IRQ phase |
-| Software stack observation | 0 changed sentinel bytes in $c100..$cfff | SDK initializes downward stack at $d000; this LTO diagnostic did not touch instrumented region |
-| Diagnostic mailbox | 9 bytes at $c000..$c008 | Explicit platform test reservation, outside loaded image |
-| First idle NOVAC admission | **657 PAL cycles** (~0.667 ms at ~985248 Hz) | Monitor stopwatch between $c008 start/end stores; includes end-marker store/branch overhead |
-| Full scenario/fingerprint diagnostic | Roughly 33 million PAL cycles after first timing marker (~33.5 seconds of emulated time) | Monitor done-store stopwatch; dominated by FNV hashing, not Executive work |
+| PRG file size | **19043 bytes** | Includes two-byte load address; `evidence/executive.prg` |
+| Loaded image | 19041 bytes, $0801..$5261 | BASIC header, initialized zero-page table, text and read-only data |
+| Native text | 17995 bytes ($464b) | Includes Executive, dispatcher, callbacks, diagnostics and runtime helpers |
+| Read-only data | 1004 bytes ($3ec) | Includes 135 state fingerprints and diagnostic strings |
+| Initialized zero-page table | 30 bytes | Five historical-address/function-pointer mappings; copied from the image |
+| Linked BSS | 658 bytes, $5262..$54f3 | Static diagnostic scenario |
+| Linked `.noinit` static stack | 658 bytes, $54f4..$5785 | LLVM-MOS's static allocation for fixture preparation; must count as RAM |
+| Image plus BSS/noinit | 20357 bytes, $0801..$5785 | Excludes zero page, dynamic stacks, ROMs and mailbox |
+| Executive state | **648 bytes** | Host and C64 target mailbox agree |
+| Zero-page allocation | 89 bytes, $02..$5a | 32 imaginary-register bytes, 30 `.zp.data`, 27 `.zp.noinit` |
+| Heap allocation | None | Core, dispatcher and diagnostic do not allocate |
+| Hardware stack sentinel extent | 24 bytes below entry baseline | About 38 bytes with the 14-byte BASIC/start chain; lower-bound observation |
+| Software stack sentinel extent | 81 bytes below $d000 | Instrumented $c100..$cfff; separate from the 658-byte static fixture stack |
+| Diagnostic mailbox | 13 bytes, $c000..$c00c | Completion, failures, sizes/counts and timing markers |
 
-An earlier build measured 655 cycles; the final retained build is 657. The
-diagnostic's full-state hashing is intentionally expensive. Warp mode changes
-host execution speed, not the emulated target cycle count. The stopwatch includes
-VIC-II bus effects and any IRQ servicing in its interval. Only this one admission
-path is isolated and measured; no other native routine cost is asserted.
+The BASIC SYS entry is $082b. Initialized zero-page data precedes text, so the
+previous $080d entry is no longer executable code. `vice_test.py` reads the SYS
+address from the PRG itself. Startup, code and data all fit stock C64 RAM; the
+map is diagnostic-specific, not a complete flight-software memory plan.
 
-Stack sentinel observations are test-specific lower bounds, not a proved stack
-requirement. Sentinel collisions and untouched paths can hide deeper use. The
-initial 14 bytes of hardware stack are protected rather than overwritten. Normal
-C64 IRQs can increase the observed extent. Code ends the test before returning
-from main; no end-to-end BASIC return/exit stack bound is claimed. Keep the full
-hardware stack page available and reserve a conservative software stack until
-dispatch/interrupt tests establish stronger bounds.
+## Isolated timing samples
 
-C64 constraints: $0000/$0001 control the 6510 memory map; zero page also contains
-SDK/compiler state; $0100 is the hardware stack; screen RAM is $0400; the BASIC
-SYS image starts at $0801. The SDK exposes RAM under BASIC during execution,
-retains KERNAL/I/O for console calls, and sets software-stack top $d000. The
-mailbox consumes part of normally free $c000 RAM and must be removed or explicitly
-reserved in a production mapping. Future overlays cannot assume KERNAL, I/O,
-screen, or stack memory is freely available.
+The VICE monitor stops at paired stores to $c008 and measures the intervening
+PAL cycles. Setup, fingerprinting and screen output stay outside the intervals.
+The intervals include function/call and end-marker overhead, VIC-II bus effects
+and any stock IRQ service. IRQs remain enabled. At approximately 985248 cycles
+per second, the retained run records:
 
-Compiler considerations: target `int` and pointers are 16 bits, unlike the host;
-numerical data uses fixed-width unsigned types and wider explicit intermediates.
-The target includes compiler division/modulo and multiplication helpers. The
-32-bit multiplication helper in this diagnostic is for fingerprinting, not AGC
-guidance arithmetic. No MOS-specific assembly has been required yet. LLVM-MOS
-imaginary-register protection in IRQ/native continuation boundaries remains an
-open integration question. Stock hardware testing and NTSC timing are unavailable.
+| Path | PAL cycles | Approximate time | Fixture |
+|---|---:|---:|---|
+| First idle NOVAC | 1187 | 1.205 ms | Original scenario 0 |
+| FINDVAC with all eight cores full, retained VAC, 1202 boundary | 1957 | 1.986 ms | Original scenario 25 |
+| ENDJOB1/EJSCAN and slot-seven basic dispatch | 5387 | 5.468 ms | Dispatch case 38; includes native interpreter preflight scan |
+| Basic CHANG1 context exchange to slot seven | 3893 | 3.951 ms | Dispatch case 6 |
+
+The first milestone's 657-cycle admission applied to its smaller diagnostic
+and different LTO call graph. It does not describe this artifact. An intermediate
+build in this milestone also varied with code layout/IRQ phase; only the retained
+binary and run above are current evidence. The largest of these four samples is
+not a proved worst case. Case 38 scans all waiting positions but is not a search
+of every valid priority/state combination. The full diagnostic is dominated by
+FNV hashing; its completion time is not Executive scheduling cost.
+
+## Stack, IRQ and memory limits
+
+Sentinel observations are test-specific lower bounds: coincidental $cd values,
+untouched paths or IRQ phase can hide deeper use. The protected entry chain was
+not overwritten. The final store stops the test before returning to BASIC, so
+there is no complete BASIC exit-stack bound. Reserve the full hardware stack
+page and conservative software-stack space for future IRQ tests.
+
+The native trampoline does not preserve suspended C stacks. Every callback
+returns before another callback is dispatched; persistent job values reside in
+MPAC/VAC. The measured dynamic software stack includes callback/trampoline and
+observer calls. No recursion, host threads, generic ready queue or AGC instruction
+emulator is linked into the PRG.
+
+$0000/$0001 control the 6510 map, zero page also holds SDK/compiler state, $0100
+is the hardware stack, screen RAM is $0400 and the BASIC SYS image begins $0801.
+The SDK exposes RAM under BASIC, retains KERNAL/I/O for console calls, and sets
+software-stack top $d000. The mailbox is explicitly reserved from normal free
+$c000 RAM. Overlays must respect these regions and the added static fixture RAM.
+
+Target `int` and pointers are 16 bits; host sizes differ. The implementation uses
+fixed-width unsigned words. Compiler arithmetic helpers are included; 32-bit FNV
+multiplication is diagnostic overhead. Stock KERNAL IRQs do not request Executive
+jobs. Safe application IRQ delivery, LLVM-MOS register preservation, maximum
+request latency and safe-point bounds are the next milestone. No physical C64,
+NTSC timing, guidance deadline or mission feasibility measurement is claimed.

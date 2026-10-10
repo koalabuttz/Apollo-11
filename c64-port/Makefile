@@ -2,11 +2,11 @@ CC = cc
 MOS_CC ?= mos-c64-clang
 CFLAGS ?= -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic
 CPPFLAGS = -Iinclude -Itests
-CORE = src/agc_word.c src/executive.c
-SCENARIOS = tests/scenarios.c tests/state_digest.c
-HEADERS = include/agc_word.h include/executive.h tests/scenarios.h tests/state_digest.h tests/reference_vectors.h
+CORE = src/agc_word.c src/executive.c src/native_dispatch.c
+SCENARIOS = tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c
+HEADERS = include/agc_word.h include/executive.h tests/scenarios.h tests/state_digest.h tests/reference_vectors.h include/native_dispatch.h tests/dispatch_cases.h tests/dispatch_check.h
 .PHONY: all test c64 sanitize clean differential
-all: build/test-host build/snapshot build/arithmetic-dump
+all: build/test-host build/snapshot build/arithmetic-dump build/dispatch-snapshot
 build:
 	mkdir -p build
 build/test-host: $(CORE) $(SCENARIOS) tests/test_host.c $(HEADERS) | build
@@ -27,3 +27,6 @@ differential: all
 	python3 tools/differential.py --reference "$(REFERENCE)"
 clean:
 	rm -rf build
+
+build/dispatch-snapshot: $(CORE) $(SCENARIOS) platform/host/dispatch_snapshot.c $(HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(CORE) $(SCENARIOS) platform/host/dispatch_snapshot.c -o $@

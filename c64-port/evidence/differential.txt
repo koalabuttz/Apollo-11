@@ -1,7 +1,11 @@
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c tests/scenarios.c tests/state_digest.c tests/test_host.c -o build/test-host
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c tests/scenarios.c tests/state_digest.c platform/host/snapshot.c -o build/snapshot
-python3 tools/differential.py --reference "/workspace/scratch/81e2ab9955d9/reference/fixture"
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/test_host.c -o build/test-host
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/snapshot.c -o build/snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/dispatch_snapshot.c -o build/dispatch-snapshot
+python3 tools/differential.py --reference "/workspace/Apollo-11/c64-port/deps/fixture"
 PASS: 26 original-assembly scenarios; 323 AGC state words plus alarm and status per scenario agree
 Boundaries: ENDFIND / BAILOUT1 / CHANJOB-2 / DUMMYJOB entry; no restart or dispatch claim
 PASS: 32768 sign extensions, 65536 overflow corrections, 524288 accumulator additions against Virtual AGC helper API
 Arithmetic binary stream SHA256: a96b7101bbd6394b7eeb6a33bc4c3f9ba255cda419f448d3120a29e019401fe1
+PASS: 53 dispatch cases / 109 checkpoints, including 8 sequential two-job native executions
+Full saved state and selected 2CADR match original basic dispatch; BBANK and SUPERBNK checked independently
+Dispatch snapshot SHA256: 97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065cd6f8a15bb

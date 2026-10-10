@@ -4,15 +4,17 @@ This is a small native translation of actual Luminary 099 Executive paths.
 The C64 binary contains no AGC instruction decoder or AGC emulator. Virtual AGC
 is used only on the host as a verification oracle.
 
-**Implemented:** NOVAC/FINDVAC admission through ENDFIND; VAC/core allocation;
-packed-priority comparison; ENDJOB1 resource release and EJSCAN selection up to
-dispatch entry. **Not implemented:** context dispatch, running admitted Apollo
-jobs, sleep/wake, WAITLIST, interrupt adaptation, restart/recovery, guidance.
+**Implemented:** NOVAC/FINDVAC admission and allocation; ENDJOB1/EJSCAN;
+basic CHANG1/CHANJOB context exchange and completion through basic dispatch;
+explicit historical-2CADR mappings to native C continuations. Two demonstration
+jobs actually run, yield, resume and complete. **Deferred:** Apollo guidance jobs,
+interpreter dispatch, sleep/wake, WAITLIST, IRQ request delivery and restart.
 
-26 original-assembly scenarios agree word-for-word with the host translation.
-The native C64 diagnostic passes all 26 scenarios and checks their complete-state
-fingerprints against assembly-derived vectors in VICE. This is bounded behavioral
-evidence, not a claim of a complete Executive or real-time equivalence.
+26 original admission/completion scenarios and 53 dispatch cases (109 checkpoints,
+including eight sequential two-job executions) agree word-for-word with original
+assembly. The native C64 diagnostic runs the same jobs and checks all 135
+original-derived state fingerprints in VICE. These are bounded behavioral checks,
+not a complete flight Executive or real-time equivalence claim.
 
 ## Repository
 
@@ -21,8 +23,9 @@ Upstream: https://github.com/chrislgarry/Apollo-11
 Pinned base: `911e5c0283c629c50cb97666f34065e8c07d71a5`.
 Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
-No fork was created: the authenticated connector did not expose repository
-creation/forking, and no CLI credential was available. See `docs/HANDOFF.md`.
+Fork: https://github.com/koalabuttz/Apollo-11
+The development branch is published on that fork; master retains the pinned base.
+See `docs/HANDOFF.md` and `docs/DISPATCH.md` for the current milestone.
 
 ## Build and run
 
@@ -54,7 +57,8 @@ Virtual AGC's corrected supporting transcription, with the requested upstream
 cannot currently assemble unmodified; details are in `docs/VERIFICATION.md`.
 No native port implementation is linked into the Executive reference runner.
 
-The test checks full saved state, not just the small manual assertions. Arithmetic
+The test checks full saved state and selected basic dispatch addresses, including
+actual BBANK/SUPERBNK transfers, rather than just the small manual assertions. Arithmetic
 is also compared against Virtual AGC's numerical helper API. Regenerate frozen
 C64 fingerprints only after a successful differential test:
 
@@ -78,6 +82,7 @@ and stack sentinel observations. No display server is required.
 
 ## Engineering record
 
+- `docs/DISPATCH.md`: native callback API, context swaps, sequential reference boundaries.
 - `docs/ARCHITECTURE.md`: original structures, calling conventions, dependencies.
 - `docs/SOURCE_MAP.md`: original labels mapped to C and reference stop boundaries.
 - `docs/FIDELITY.md`: classifications, adaptations, and unsupported behavior.

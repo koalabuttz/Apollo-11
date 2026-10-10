@@ -105,3 +105,91 @@ int exec_endjob_select(executive *s) {
     /* DUMMYJOB's -0 store belongs to the next boundary, not this one. */
     return selected;
 }
+static int basic_slot(const executive *s, uint8_t slot) {
+    return agc_classify(s->core[slot][EXEC_PRIORITY]) == AGC_POSITIVE &&
+           s->core[slot][EXEC_LOC] > 0 && s->core[slot][EXEC_LOC] <= 07777 &&
+           s->core[slot][EXEC_BANK] <= AGC_MASK;
+}
+static void exchange_basic(executive *s, uint8_t slot, exec_address outgoing,
+                           exec_address *next) {
+    uint8_t j;
+    agc_word debris_bank=s->core[0][EXEC_BANK];
+    /* CHANJOB+4: outgoing LOC/BBCON arrive in A/L; current LOC/BANKSET
+     * are scratch, and need not equal that pair. */
+    next->location=s->core[slot][EXEC_LOC]; next->bank=s->core[slot][EXEC_BANK];
+    s->core[slot][EXEC_LOC]=outgoing.location;
+    s->core[slot][EXEC_BANK]=outgoing.bank;
+    for (j=0; j<8; ++j) {
+        agc_word old=s->core[0][j];
+        s->core[0][j]=s->core[slot][j]; s->core[slot][j]=old;
+    }
+    if (s->ovfind != 0 && s->ovfind != AGC_NEG_ZERO)
+        s->core[0][EXEC_PUSH]=agc_negate(s->core[0][EXEC_PUSH]);
+    for (j=EXEC_PUSH; j<=EXEC_PRIORITY; ++j) {
+        agc_word old=s->core[0][j];
+        s->core[0][j]=s->core[slot][j]; s->core[slot][j]=old;
+    }
+    s->fixloc=(agc_word)(s->core[0][EXEC_PRIORITY] & EXEC_LOW9);
+    s->ovfind=0;
+    if ((s->core[0][EXEC_PUSH] & AGC_SIGN) != 0) {
+        s->core[0][EXEC_PUSH]=agc_negate(s->core[0][EXEC_PUSH]); s->ovfind=1;
+    }
+    s->newjob=0;
+    /* ENDPRCHG DXCH LOC takes the selected pair into A/L for DTCB.
+     * A=+0 and L=the old current BANKSET at this boundary. */
+    s->core[0][EXEC_LOC]=0; s->core[0][EXEC_BANK]=debris_bank;
+}
+enum exec_status exec_change_basic(executive *s, exec_address resume,
+                                  exec_address *next) {
+    uint8_t slot;
+    if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
+    if (next == 0 || s->newjob == 0 || s->newjob > 84u ||
+        s->newjob % EXEC_CORE_WORDS != 0 ||
+        resume.location == 0 || resume.location > 07777 || resume.bank > AGC_MASK ||
+        agc_classify(s->core[0][EXEC_PRIORITY]) != AGC_POSITIVE)
+        return EXEC_OUT_OF_SCOPE;
+    slot=(uint8_t)(s->newjob / EXEC_CORE_WORDS);
+    if (!basic_slot(s,slot)) return EXEC_OUT_OF_SCOPE;
+    exchange_basic(s,slot,resume,next);
+    return EXEC_OK;
+}
+enum exec_status exec_complete_basic(executive *s, agc_word superbank,
+                                    exec_address *next) {
+    uint8_t i,slot=0;
+    agc_word highest=0;
+    exec_address outgoing;
+    if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
+    if (next == 0 || (superbank & (agc_word)~UINT16_C(0160)) != 0 ||
+        agc_classify(s->core[0][EXEC_PRIORITY]) != AGC_POSITIVE)
+        return EXEC_OUT_OF_SCOPE;
+    /* Preflight unsupported interpreter dispatch without partially completing
+     * a job. The mutation below still uses the original EJSCAN algorithm. */
+    for (i=1; i<EXEC_CORE_COUNT; ++i)
+        if (agc_classify(s->core[i][EXEC_PRIORITY]) == AGC_POSITIVE &&
+            s->core[i][EXEC_PRIORITY] > highest) {
+            highest=s->core[i][EXEC_PRIORITY]; slot=i;
+        }
+    if (slot != 0 && !basic_slot(s,slot)) return EXEC_OUT_OF_SCOPE;
+    outgoing.location=s->core[0][EXEC_LOC];
+    outgoing.bank=(agc_word)(s->core[0][EXEC_BANK] | superbank);
+    if (exec_endjob_select(s) < 0) {
+        s->newjob=AGC_NEG_ZERO; next->location=0; next->bank=0;
+        return EXEC_IDLE;
+    }
+    exchange_basic(s,slot,outgoing,next);
+    return EXEC_OK;
+}
+enum exec_status exec_start_basic(executive *s, exec_address *next) {
+    uint8_t slot;
+    exec_address outgoing;
+    if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
+    if (next == 0 || s->newjob > 84u || s->newjob % EXEC_CORE_WORDS != 0)
+        return EXEC_OUT_OF_SCOPE;
+    slot=(uint8_t)(s->newjob / EXEC_CORE_WORDS);
+    if (!basic_slot(s,slot)) return EXEC_OUT_OF_SCOPE;
+    outgoing.location=s->core[0][EXEC_LOC]; outgoing.bank=s->core[0][EXEC_BANK];
+    s->core[0][EXEC_LOC]=2; s->core[0][EXEC_BANK]=0;
+    if (slot != 0) exchange_basic(s,slot,outgoing,next);
+    else *next=outgoing;
+    return EXEC_OK;
+}

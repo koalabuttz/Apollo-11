@@ -1,81 +1,75 @@
-# First milestone handoff
+# Basic native dispatch milestone handoff
 
-## Repository and branch
+## Repository
 
-Local checkout preserves the full upstream history at
-`https://github.com/chrislgarry/Apollo-11`, based on
-`911e5c0283c629c50cb97666f34065e8c07d71a5`.
-Branch: **port/c64-native-c**. No merge into master has occurred.
-The final commit is recorded in the archive's `HANDOFF.txt`; recover it locally
-with `git rev-parse port/c64-native-c`.
-
-**GitHub blocker:** authentication identifies `koalabuttz`, but available GitHub
-actions do not include fork/repository creation; there is no gh CLI credential.
-No fork URL exists and no push was attempted. Remaining external action: fork
-chrislgarry/Apollo-11 into that account, add the fork as a push remote, and push
-this development branch. The local bundle preserves all commits and historical
-files, so this does not depend on the transient checkout.
+Fork: https://github.com/koalabuttz/Apollo-11
+Development branch: **port/c64-native-c**. Upstream and master remain based on
+`911e5c0283c629c50cb97666f34065e8c07d71a5`. Historical files are unchanged; all
+port changes live under `c64-port/`. Full upstream history is preserved.
+The first archived milestone ended at `a9edd173fdd269262f886c19ae983276bf4e7e6d`.
+Use `git rev-parse port/c64-native-c` to identify this milestone's current tip.
 
 ```sh
-git clone Apollo-11.bundle Apollo-11
+git clone --branch port/c64-native-c https://github.com/koalabuttz/Apollo-11.git
 cd Apollo-11
-git switch port/c64-native-c
-git remote rename origin bundle
 git remote add upstream https://github.com/chrislgarry/Apollo-11.git
-# After creating the GitHub fork and authenticating locally:
-git remote add origin https://github.com/koalabuttz/Apollo-11.git
-git push -u origin port/c64-native-c
+cd c64-port
+make test
+python3 tools/prepare_reference.py
+make differential REFERENCE="$PWD/deps/fixture"
+make c64 MOS_CC=/path/to/mos-c64-clang
+python3 tools/vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
-Do not create that origin remote until the fork actually exists. These are
-follow-up instructions, not a claim that the external actions succeeded.
+## Completed work
 
-## Implemented original paths
+The original bounded admission and release/selection paths remain verified.
+The second milestone implements basic CHANG1/CHANJOB context exchange and
+completion through basic dispatch. Historical two-word addresses map to native
+C continuations, with the original ascending packed-priority scans retained.
+All MPAC/MODE, LOC/BANKSET debris, PUSHLOC/PRIORITY, FIXLOC and OVFIND transitions
+are compared with unchanged original assembly. Interpreter dispatch is rejected
+before release or exchange; it has not been approximated with native callbacks.
 
-Native C translates NOVAC/FINDVAC, FINDVAC2/VACFOUND, NOVAC2/NOVAC3/NEXTCORE,
-CORFOUND/SPECTEST/SETLOC, and ENDJOB1/EJSCAN/EJ1/EJ2 at explicitly bounded saved
-state transitions. Resource exhaustion preserves the 1201/1202 trigger boundaries,
-including a retained VAC on 1202. Allocation uses all eight historical contexts.
-The reusable word layer preserves both zeros and required one's-complement
-representation, sign extension, carry and overflow correction.
+Two native demonstration jobs actually execute, yield, resume and complete.
+Eight sequences cover higher/equal/lower priorities, VAC/FAKEPRET low-bit ties,
+minimum/maximum priority and retained stale state. They check restored payloads
+inside the native callbacks. The 53 dispatch cases yield 109 full-state/target
+checkpoints. Original target Z/BBANK/SUPERBNK transfers are checked independently.
 
-`README.md` contains portable build/test commands. `evidence/executive.prg` is
-the retained 5829-byte native executable; reproducible output is
-`build/executive.prg`. The stock PAL C64 VICE run reports zero failures for
-26 scenarios and 26 assembly-derived state fingerprints. Host tests compare
-each saved word with original assembly and compare arithmetic separately against
-Virtual AGC helpers. Exact commands, results and limits are in `VERIFICATION.md`.
+Validation passes:
 
-This is a verified beginning, not a functioning flight OS. No admitted job is
-actually dispatched yet, and no WAITLIST/timer/interrupt/restart/guidance path is
-implemented. The 657-cycle measurement covers a single admission. Executive
-state occupies 648 bytes; the complete diagnostic has 658 bytes of BSS.
-Full fidelity and resource records are in `FIDELITY.md` and `PERFORMANCE.md`.
+- Host numerical tests and the original 26 admission/completion scenarios.
+- Host dispatch/fault tests and all eight native two-job executions.
+- 26 admission/completion plus 109 dispatch checkpoints, word-for-word against
+  original assembly, and the separate Virtual AGC numerical helper comparisons.
+- AddressSanitizer and UndefinedBehaviorSanitizer (leak scanning disabled).
+- PAL C64 VICE: zero failures, all 135 original-derived fingerprints, eight
+  actual native two-job sequences and three repeated timed-path checks.
 
-## Acceptance checklist
+Retained executable, snapshots, logs, target mailbox/stack dumps, map and hashes
+are in `evidence/`; reproducible output is in `build/`. DISPATCH.md documents the
+callback ABI, startup scratch convention, reference boundaries and fail-stop
+behavior. PERFORMANCE.md records the current image/RAM/stack and timing samples.
+The Executive state remains 648 bytes.
 
-- [x] Clearly documented local working branch with full upstream history.
-- [x] Historical source unchanged, verified against pinned base.
-- [x] `c64-port/` exists with reproducible instructions and dependency pins.
-- [x] Portable C builds/runs under host compiler.
-- [x] Native C64 PRG builds with LLVM-MOS.
-- [x] Native C64 diagnostic tested in VICE.
-- [x] Tested minimal AGC numerical foundation.
-- [x] Executive structures/dependencies/invariants documented.
-- [x] Genuine bounded Executive paths translated into C.
-- [x] Automated tests for translated paths.
-- [x] Source-to-C traceability recorded.
-- [x] Gaps/adaptations/unavailable verification recorded.
-- [x] Concrete next milestone defined.
-- [ ] Actual GitHub fork/push (local fallback criterion is met).
-- [ ] Physical C64 verification (not required for this assignment).
+## Limits and next milestone
 
-The recommended next milestone is **basic CHANJOB context exchange and native
-dispatch**, with sequential reference comparisons and actual native job execution.
-The unresolved continuation/IRQ/bank/restart questions are listed in ROADMAP.md.
+This is a cooperative basic-job translation with native demonstration routines,
+not a complete flight OS or translated guidance workload. Callbacks return to
+a trampoline; persistent values belong in MPAC/VAC, not suspended C stacks.
+An unmapped address latches a runtime fault. No rollback or Apollo recovery is
+claimed. Idle dispatch uses a bounded A=2/L=0 convention, not Apollo self-check.
 
-Review: executable independent assembly comparisons caught allocation and scratch
-state mistakes; numerical helper comparisons cover the initial layer. No second
-agent/human review occurred. License boundaries are explicit: native C is MIT /
-historical public-domain translation; the separate host-only reference adapter
-is GPL-2.0-or-later, with no AGC emulator linked into the native PRG.
+No IRQ handler may enqueue jobs or mutate the present single-threaded API.
+Next: platform-owned exclusion wrappers, LLVM-MOS register preservation,
+bounded interrupt request delivery and safe-point/latency measurements. Follow
+with sleep/wake and priority change, WAITLIST/timers, restart and selected guidance
+work. Interpreter dispatch, flight deadlines and physical hardware verification
+remain open. See ROADMAP.md.
+
+Acceptance for basic native dispatch is met. No master/upstream merge is needed.
+No second-agent/human review was performed. Native C is MIT/public-domain
+translation; the separate GPL-2.0-or-later original-assembly adapters are host
+verification tools and are never linked into the C64 executable.

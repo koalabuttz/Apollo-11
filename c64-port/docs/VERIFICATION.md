@@ -38,13 +38,13 @@ paths. The portable commands are:
 
 | Command | Actual result | Evidence |
 |---|---|---|
-| `make test` | PASS; 32768 word encodings, 65536 register encodings, 524288 word-addition pairs, 26 Executive scenarios | `evidence/host-test.txt` |
+| `make test` | PASS; 32768 word encodings, 65536 register encodings, 524288 word-addition pairs, 26 Executive scenarios, 53 dispatch cases / 109 checkpoints, eight native two-job sequences | `evidence/host-test.txt` |
 | `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/sanitize.txt` |
 | `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, original Executive identity checked, fixture assembled | `evidence/prepare-reference.txt`, `evidence/assembly-summary.txt` |
-| `make differential REFERENCE=/path/to/fixture` | PASS; 26 full saved-state comparisons and numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
-| `python3 tools/freeze_vectors.py` | 26 reference-derived fingerprints generated | Header records snapshot SHA256 |
+| `make differential REFERENCE=/path/to/fixture` | PASS; 26 admission/completion and 109 dispatch full-state/target comparisons; numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
+| `python3 tools/freeze_vectors.py` | 26 admission/completion and 109 dispatch fingerprints generated | Header records snapshot SHA256 |
 | `make c64 MOS_CC=/path/to/mos-c64-clang` | PASS; native PRG + ELF + link map | `evidence/c64-build.txt`, `executive.prg`, `executive.map` |
-| `python3 tools/vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; native C64 execution and 26 state fingerprints | `evidence/vice-result.txt`, `vice-monitor.log`, `vice.log`, RAM dumps |
+| `python3 tools/vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; native C64 execution, 135 state fingerprints, eight two-job sequences | `evidence/vice-result.txt`, `vice-monitor.log`, `vice.log`, RAM dumps |
 | `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes | `evidence/source-preservation.txt` |
 
 LeakSanitizer's default process inspection failed in this container (`/proc/...`
@@ -102,6 +102,48 @@ word comparisons. C64 checks use FNV-1a fingerprints of result plus saved state;
 hash collisions are possible, so they are a compact regression check rather than
 a substitute for host word-by-word comparison.
 
+## Sequential basic dispatch verification
+
+The new `dispatch_reference.c` adapter continues each two-job sequence in one
+Virtual AGC instance. The shared dispatch fixtures supply inputs only; they are
+compiled with `DISPATCH_INPUT_ONLY` and link neither the native Executive,
+dispatcher nor native numerical implementation. It executes CHANG1, CHANJOB,
+ENDPRCHG/DTCB, ENDJOB1/EJSCAN and bounded idle start paths. Native output for the
+eight sequences is produced by **actual mapped C callbacks**, including admission
+inside the low job, rather than replaying the event input script in native C.
+The script supplies equivalent calls and payload writes to the original engine.
+
+All 53 cases / 109 checkpoints match full saved state, result and selected 2CADR.
+Dispatch snapshot SHA256:
+`97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065cd6f8a15bb`.
+The old 26-scenario snapshot SHA256 remains
+`f2815915515cf792679f480d932b92d8a28296ba9907b2aa2606e613d03a23c0`.
+The oracle checks actual Z, BBANK and SUPERBNK at every successful dispatch.
+Idle stops at DUMMYJOB+2, after NEWJOB=-0 and before RELINT. Basic no-pending yields
+execute a real CCS NEWJOB poll in a tiny erasable fixture caller. Idle entry
+scratch A=2/L=0 is an explicit startup convention. A/L/Q and hardware return
+mechanisms are adapted to C; their saved LOC/BANKSET/NEWLOC debris is compared.
+
+The channel-7 output stub now retains Virtual AGC's SocketAPI.c channel-7 storage
+semantics. This is necessary for original bank transitions; the first admission
+fixture had no need to write that channel. Peripheral socket/trace callbacks
+remain disabled. The prepared rope and historical Executive hashes are unchanged.
+DISPATCH.md details every case group, ABI adaptation and excluded path.
+
+C64 verification checks the 109 dispatch fingerprints at the same boundaries,
+runs all eight native callback sequences, and checks restored MPAC/MODE/VAC data
+inside resumed jobs. Three representative timed paths repeat validated fixtures
+outside the full check loop. Four timing intervals exclude setup and hashing.
+The helper discovers the entry from the actual BASIC SYS header: initialized
+zero-page callback tables move it beyond the previous hard-coded $080d address.
+
+Host-only fault tests cover malformed NEWJOB, interpreter selection before
+resource release, invalid basic addresses/superbank bits, pending bailout,
+duplicate mappings, unmapped bank/address pairs, invalid callback actions and
+blocked callback repetition after a latched fault. Sanitizers exercise the full
+native test suite. Reference comparison, fingerprints and internal payload checks
+are complementary; none claims arbitrary-state or mission equivalence.
+
 ## Arithmetic validation
 
 The host tests exhaust word encoding, zero classification, complement,
@@ -123,11 +165,15 @@ The register-addition operand space is not exhaustively paired.
 The helper runs PAL x64sc 3.7.1 with unaccelerated C64 settings, standard ROMs,
 and warp enabled only to run emulation faster on the host. Native target CPU
 cycles remain normal PAL cycles. The monitor loads the PRG after BASIC is ready,
-starts its SYS entry, and waits for a native store of $a5 at $c000. The mailbox
-contains zero failures and scenario count $1a. Missing output, timeout, nonzero
+starts its SYS entry, and waits for a native store of $a5 at $c000. The 13-byte mailbox
+contains zero failures, scenario count $1a, dispatch case count $35, checkpoint
+count $6d and native sequence count $08. Byte 7 records three additional timed
+path checks; byte 8 contains the final timing marker $23; byte 12 is the high
+failure-count byte. Missing output, timeout, nonzero
 failure count, or emulator failure fails the helper.
 
-The screen prints `26 EXECUTIVE SCENARIOS PASS`. The latest ROM/PRG hashes and
+The screen prints `26 EXEC + 53 DISPATCH CASES PASS` and
+`8 NATIVE TWO-JOB SEQUENCES PASS`. The latest ROM/PRG hashes and
 link-map details accompany the evidence. No real C64 has been tested.
 
 ## Review limits and unavailable checks
@@ -137,7 +183,7 @@ comparison, DXCH debris, and non-rollback of a VAC on 1202. Executable independe
 reference tests exposed and corrected implementation mistakes before handoff.
 There was no independent human/second-agent review in this session.
 
-Unavailable: mission replay, actual landing computations, full job context
+Unavailable: mission replay, actual landing computations, interpreter context
 dispatch, concurrent interrupt integration, alarm side effects/restarts, exhaustive
 Executive state-space comparison, hardware run, and end-to-end flight deadlines.
 These remain explicitly incomplete rather than being replaced with passing mocks.

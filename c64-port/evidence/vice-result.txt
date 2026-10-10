@@ -1,9 +1,11 @@
-PASS: VICE PAL native execution, 26 scenarios and 26 assembly-derived state fingerprints
-Mailbox: a5001a88029202ff20
+PASS: VICE PAL native execution, 26 Executive scenarios, 53 dispatch cases / 109 fingerprints, 8 native two-job sequences
+Mailbox: a5001a880292020323356d0800
 Target executive size: 648
 Target scenario size: 658
-VICE command: /workspace/scratch/81e2ab9955d9/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/scratch/81e2ab9955d9/reference/vice-source/vice/data/C64/kernal-901227-03.bin -basic /workspace/scratch/81e2ab9955d9/reference/vice-source/vice/data/C64/basic-901226-01.bin -chargen /workspace/scratch/81e2ab9955d9/reference/vice-source/vice/data/C64/chargen-901225-01.bin -directory /workspace/scratch/81e2ab9955d9/toolchains/vice/usr/share/vice:/workspace/scratch/81e2ab9955d9/reference/vice-source/vice/data -initbreak ready -moncommands /workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice.mon -monlogname /workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice-monitor.log -monlog -limitcycles 200000000
-Stopwatch reset to 0.
-Stopwatch:        657
-vice-hardware-stack.bin: measured sentinel extent 19 bytes
-vice-software-stack.bin: measured sentinel extent 0 bytes
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/vice.mon -monlogname /workspace/Apollo-11/c64-port/build/vice-monitor.log -monlog -limitcycles 400000000
+idle NOVAC: 1187 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+full-core FINDVAC/1202: 1957 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+completion scan/slot-seven dispatch: 5387 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+slot-seven CHANG1 exchange: 3893 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+vice-hardware-stack.bin: measured sentinel extent 24 bytes
+vice-software-stack.bin: measured sentinel extent 81 bytes

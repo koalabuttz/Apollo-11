@@ -49,3 +49,27 @@ if len(native_arith)!=1245184 or native_arith!=reference_arith:
     sys.exit('FAIL: Virtual AGC arithmetic helper comparison')
 print('PASS: 32768 sign extensions, 65536 overflow corrections, 524288 accumulator additions against Virtual AGC helper API')
 print('Arithmetic binary stream SHA256: '+hashlib.sha256(reference_arith).hexdigest())
+
+subprocess.run(['gcc','-std=c99','-O2','-DDISPATCH_INPUT_ONLY','-I'+str(engine),
+                '-Iinclude','-Itests','tools/dispatch_reference.c','tests/scenarios.c',
+                'tests/dispatch_cases.c',str(engine/'agc_engine.o'),
+                str(engine/'agc_engine_init.o'),str(engine/'rfopen.o'),'-o','build/dispatch-reference'],
+               cwd=ROOT,check=True)
+outputs=[]
+for name,command in [('native',['./build/dispatch-snapshot']),
+                     ('reference',['./build/dispatch-reference',str(reference/'MAIN.agc.bin')])]:
+    run=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,check=True)
+    (ROOT/('build/dispatch-'+name+'.snapshots')).write_text(run.stdout)
+    if name=='reference': (ROOT/'build/dispatch-reference.trace').write_text(run.stderr)
+    outputs.append([list(map(int,row.split())) for row in run.stdout.splitlines()])
+if any(len(rows)!=109 for rows in outputs): sys.exit('FAIL: expected 109 dispatch checkpoints')
+errors=[]
+for row,(native_row,reference_row) in enumerate(zip(*outputs)):
+    if len(native_row)!=329 or len(reference_row)!=329:
+        errors.append(f'dispatch row {row}: expected 329 fields')
+    for field,(nv,rv) in enumerate(zip(native_row,reference_row)):
+        if nv!=rv: errors.append(f'dispatch case/step {reference_row[:2]}, field {field}: native={nv}, reference={rv}')
+if errors: sys.exit('\n'.join(errors))
+print('PASS: 53 dispatch cases / 109 checkpoints, including 8 sequential two-job native executions')
+print('Full saved state and selected 2CADR match original basic dispatch; BBANK and SUPERBNK checked independently')
+print('Dispatch snapshot SHA256: '+hashlib.sha256((ROOT/'build/dispatch-reference.snapshots').read_bytes()).hexdigest())

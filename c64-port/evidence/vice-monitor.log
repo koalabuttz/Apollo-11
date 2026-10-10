@@ -1,42 +1,60 @@
-Loading /workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/executive.prg from 0801 to 1EC3 (16C3 bytes)
+Loading /workspace/Apollo-11/c64-port/build/executive.prg from 0801 to 5261 (4A61 bytes)
 WATCH: 1  C:$c008  (Stop on store)
 WATCH: 2  C:$c000  (Stop on store)
 Will ignore the next 1 hits of checkpoint #2
-#1 (Stop on store c008)  272/$110,  62/$3e
-.C:0b70  8E 08 C0    STX $C008      - A:00 X:10 Y:00 SP:f1 ..-....C    2199014
+#1 (Stop on store c008)   17/$011,  22/$16
+.C:3a85  8E 08 C0    STX $C008      - A:00 X:10 Y:01 SP:ed ..-.....    2202565
 Stopwatch reset to 0.
-#1 (Stop on store c008)  283/$11b,  26/$1a
-.C:1111  8E 08 C0    STX $C008      - A:00 X:20 Y:00 SP:f1 ..-....C        657
-Stopwatch:        657
-#2 (Stop on store c000)  201/$0c9,  23/$17
-.C:159f  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:f1 N.-.....   33037224
->C:c000  a5 00 1a 88  02 92 02 ff  20                         ........ 
-Saving file `/workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice-mailbox.bin' from $c000 to $c008
-Saving file `/workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice-hardware-stack.bin' from $0100 to $01f1
-Saving file `/workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice-software-stack.bin' from $c100 to $cfff
+#1 (Stop on store c008)   36/$024,  12/$0c
+.C:3998  8E 08 C0    STX $C008      - A:00 X:20 Y:00 SP:ed ..-.....       1187
+Stopwatch:       1187
+#1 (Stop on store c008)  297/$129,  58/$3a
+.C:3ab5  8E 08 C0    STX $C008      - A:01 X:11 Y:00 SP:ed ..-....C   33098724
+Stopwatch reset to 0.
+#1 (Stop on store c008)   16/$010,  62/$3e
+.C:3af2  8C 08 C0    STY $C008      - A:82 X:02 Y:21 SP:ed ..-.....       1957
+Stopwatch:       1957
+#1 (Stop on store c008)  202/$0ca,  35/$23
+.C:3b25  8E 08 C0    STX $C008      - A:2F X:12 Y:C9 SP:ed ..-.....    1330600
+Stopwatch reset to 0.
+#1 (Stop on store c008)  288/$120,   4/$04
+.C:3b63  8C 08 C0    STY $C008      - A:00 X:00 Y:22 SP:ed ..-.....       5387
+Stopwatch:       5387
+#1 (Stop on store c008)  272/$110,   9/$09
+.C:3c1a  8E 08 C0    STX $C008      - A:00 X:13 Y:06 SP:ed ..-.....    1340992
+Stopwatch reset to 0.
+#1 (Stop on store c008)   21/$015,  59/$3b
+.C:3c5f  8C 08 C0    STY $C008      - A:00 X:00 Y:23 SP:ed ..-.....       3893
+Stopwatch:       3893
+#2 (Stop on store c000)  297/$129,  45/$2d
+.C:44ed  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:ed N.-.....  142704171
+>C:c000  a5 00 1a 88  02 92 02 03  23 35 6d 08  00            ........#5m..
+Saving file `/workspace/Apollo-11/c64-port/build/vice-mailbox.bin' from $c000 to $c00c
+Saving file `/workspace/Apollo-11/c64-port/build/vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/vice-software-stack.bin' from $c100 to $cfff
 Displaying 40x25 screen at $0400:
-0400                                          
-0428      **** commodore 64 basic v2 ****     
-0450                                          
-0478   64k ram system  38911 basic bytes free 
-04a0                                          
-04c8  ready.                                  
-04f0  APOLLO EXECUTIVE NATIVE C               
-0518  26 EXECUTIVE SCENARIOS PASS             
-0540  1201/1202 BAILOUT BOUNDARIES CHECKED    
-0568                                          
-0590                                          
-05b8                                          
-05e0                                          
-0608                                          
-0630                                          
-0658                                          
-0680                                          
-06a8                                          
-06d0                                          
-06f8                                          
-0720                                          
-0748                                          
-0770                                          
-0798                                          
-07c0                                          
+0400
+0428      **** commodore 64 basic v2 ****
+0450
+0478   64k ram system  38911 basic bytes free
+04a0
+04c8  ready.
+04f0  APOLLO EXECUTIVE NATIVE C
+0518  26 EXEC + 53 DISPATCH CASES PASS
+0540  8 NATIVE TWO-JOB SEQUENCES PASS
+0568  1201/1202 BAILOUT BOUNDARIES CHECKED
+0590
+05b8
+05e0
+0608
+0630
+0658
+0680
+06a8
+06d0
+06f8
+0720
+0748
+0770
+0798
+07c0

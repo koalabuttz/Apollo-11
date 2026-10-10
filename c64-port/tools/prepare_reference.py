@@ -32,7 +32,10 @@ assert (fixture/'EXECUTIVE.agc').read_bytes()==original.read_bytes()
 # The adapter uses these historical addresses; fail if the support changes them.
 listing=(fixture/'assembly.lst').read_text()
 for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
-                     ('ENDFIND','5160'),('BAILOUT1','5716')]:
+                     ('ENDFIND','5160'),('BAILOUT1','5716'),('CHANG1','5122'),
+                     ('CHANJOB','01,2706'),('ENDPRCHG','01,2765'),
+                     ('NUCHANG2','01,3011'),('NUDIRECT','01,3225'),
+                     ('ENDJOB1','01,3103'),('DUMMYJOB','01,3206')]:
     import re
     if not re.search(r'\b'+name+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)

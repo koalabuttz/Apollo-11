@@ -1,42 +1,44 @@
-# Next bounded milestone
+# Milestones and next work
 
-1. Translate **basic-job CHANJOB context exchange and dispatch**. Preserve
-   LOC/BANKSET, eight MPAC/MODE words, PUSHLOC/PRIORITY, FIXLOC and OVFIND behavior.
-   Use native callable continuations behind an explicit historical-2CADR mapping.
-   Document the C calling/continuation adaptation and retain the original scanning
-   algorithm. Do not introduce a generic ready queue.
-2. Extend the reference fixtures to sequential admission/completion/yield paths,
-   all priority combinations needed for basic dispatch, and retained stale state.
-   Compare original state before/after CHANJOB while excluding hardware return
-   registers only with explicit justification. Test native continuation order on
-   host and C64. Keep interpreter dispatch separately unimplemented.
-3. Establish platform-owned interrupt exclusion boundaries before accepting
-   interrupt-origin job requests. Measure safe points, stack bounds, and worst-case
-   admission/completion costs, not only the easiest idle admission.
+## Completed: basic context exchange and native dispatch
 
-Acceptance for that milestone: two native basic jobs with different priorities
-are actually executed, yielded and completed; resource/state exchanges and
-observed order match controlled original executions, with fresh C64 evidence.
+- Basic CHANG1/CHANJOB exchange, MPAC/MODE, LOC/BANKSET debris, PUSHLOC/PRIORITY,
+  FIXLOC and OVFIND behavior match controlled original assembly executions.
+- Historical two-word addresses map explicitly to native C continuations.
+- Eight sequential two-job executions cover admission, yielding, completion,
+  priority relations and stale core/VAC data; 53 cases / 109 checkpoints match.
+- Actual native callbacks run on host and PAL C64 VICE, with fresh evidence.
+- No generic ready queue or interpreter dispatch was introduced.
 
-Subsequent work: JOBSLEEP/JOBWAKE and PRIOCHNG; WAITLIST task scheduling; CIA
-timer/IRQ adaptation; BAILOUT1 and protected restart groups; needed interpreter
-and multiword numerical semantics; then one bounded landing-guidance computation.
-Real-time flight feasibility is a separate measurement milestone. Rust remains
-an optional later component translation.
+Acceptance for this milestone is met: two native basic jobs with different
+priorities are executed, yielded and completed, with resource/state exchanges
+and observed continuation order matching controlled original executions.
+See DISPATCH.md for the precise continuation and startup adaptations.
 
-Open technical questions:
+## Next bounded milestone: platform exclusion and interrupt request delivery
 
-- Which native continuation representation most faithfully preserves basic
-  Q/LOC yields and the distinct interpreter resume path without becoming an AGC
-  emulator?
-- Which job/bank identities must survive as historical metadata, and which can
-  be mapped to native function identifiers?
-- How should IRQ handlers protect LLVM-MOS imaginary registers, and how will
-  INHINT/RELINT ordering map onto C64 IRQ exclusion?
-- What is the worst-case cost of scans/context swaps with realistic interrupts?
-- What protected phase/restart groups are indispensable for one selected flight
-  routine, and how will abort side effects be verified independently?
-- Which fixed-point/multiword operations does the first guidance slice actually
-  require, and can its code/data be overlaid within stock C64 memory?
-- Should the upstream assembly transcription's build errors be repaired in a
-  separate provenance-preserving project? This branch deliberately leaves them.
+1. Define C64-owned interrupt exclusion wrappers that restore the caller's
+   previous interrupt-enable state. Verify LLVM-MOS imaginary-register and
+   hardware/software-stack preservation, including interrupted C callbacks.
+2. Admit requests from a bounded IRQ source at explicitly documented safe points.
+   Preserve the distinction between admission and cooperative basic yield.
+3. Measure maximum observed admission/completion/exchange costs over the admitted
+   domain, IRQ entry/exit and request latency, rather than extrapolating the four
+   current timing samples into a flight deadline claim.
+
+Do not accept interrupt-origin requests through the present single-threaded API.
+Follow with JOBSLEEP/JOBWAKE and PRIOCHNG; WAITLIST task scheduling and CIA timer
+mapping; BAILOUT1 and protected restart groups; required interpreter/multiword
+semantics; then one bounded landing-guidance computation. Flight feasibility
+remains a separate measurement milestone. Rust is optional for later components.
+
+## Remaining design questions
+
+- Which interpreter resume state requires a separate native representation?
+- Which IRQ source and request-buffer capacity are justified for the next bounded
+  test, and how should resource exhaustion interact with the pending bailout?
+- Which phase/restart groups are indispensable for one selected flight routine?
+- Which numerical operations and fixed-point scales does the first guidance slice
+  require, and can overlays fit stock C64 memory without losing native contexts?
+- Should upstream transcription build errors be repaired in a separate project?
+  This branch deliberately retains the historical sources unchanged.

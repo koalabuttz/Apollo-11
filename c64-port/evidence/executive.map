@@ -35,84 +35,141 @@
        0        0        0     1 __rc31 = __rc30 + 1
        0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
      801      801        c     1 .basic_header
-     801      801        c     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
      80b      80b        0     1                 next_line
-      22       22        0     1 .zp.data
-      22       22        0     1         __zp_data_start = .
-      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
-      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
-      22       22        0     1 .zp.bss
-      22       22        0     1         __zp_bss_start = .
-      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
-      22       22       1e     1 .zp
-      22       22       1e     1         build/executive.prg.lto.o:(.zp.noinit)
-     80d      80d     14c4     1 .text
-     80d      80d        0     1         _init = .
-     80d      80d        0     1         _start = .
-     80d      80d        8     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
-     815      815        8     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
-     815      815        0     1                 __do_init_stack
-     81d      81d        3     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
-     81d      81d        0     1                 __do_zero_bss
-     820      820        5     1         build/executive.prg.lto.o:(.init.250)
-     820      820        0     1                 shift
-     825      825        3     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
-     828      828        3     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
-     828      828        0     1                 __after_main
-     82b      82b        0     1         _fini = .
-     82b      82b        4     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
-     82f      82f        1     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
-     830      830       13     1         /workspace/scratch/81e2ab9955d9/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
-     830      830       13     1                 __zero_bss
-     843      843      1ab     1         build/executive.prg.lto.o:(.text.scenario_expected)
-     843      843      1ab     1                 scenario_expected
-     9ee      9ee     10d8     1         build/executive.prg.lto.o:(.text.main)
-     9ee      9ee     10d8     1                 main
-    1ac6     1ac6        6     1         build/executive.prg.lto.o:(.text.exit)
-    1ac6     1ac6        6     1                 exit
-    1acc     1acc       39     1         build/executive.prg.lto.o:(.text.putchar)
-    1acc     1acc       39     1                 putchar
-    1b05     1b05       3f     1         build/executive.prg.lto.o:(.text.puts)
-    1b05     1b05       3f     1                 puts
-    1b44     1b44       c4     1         build/executive.prg.lto.o:(.text.__udivhi3)
-    1b44     1b44       c4     1                 __udivhi3
-    1c08     1c08       40     1         build/executive.prg.lto.o:(.text.__umodqi3)
-    1c08     1c08       40     1                 __umodqi3
-    1c48     1c48       22     1         build/executive.prg.lto.o:(.text.__memset)
-    1c48     1c48       22     1                 __memset
-    1c6a     1c6a       67     1         build/executive.prg.lto.o:(.text.__mulsi3)
-    1c6a     1c6a       67     1                 __mulsi3
-    1cd1     1cd1        0     1         __init_array_start = .
-    1cd1     1cd1        0     1         __init_array_end = .
-    1cd1     1cd1        0     1         __fini_array_start = .
-    1cd1     1cd1        0     1         __fini_array_end = .
-    1cd1     1cd1      1f3     1 .rodata
-    1cd1     1cd1       12     1         build/executive.prg.lto.o:(.rodata.main)
-    1ce3     1ce3      179     1         <internal>:(.rodata.str1.1)
-    1e5c     1e5c       68     1         build/executive.prg.lto.o:(.rodata.reference_digest)
-    1e5c     1e5c       68     1                 reference_digest
-    1ec4     1ec4        0     1 .data
-    1ec4     1ec4        0     1         __data_start = .
-    1ec4     1ec4        0     1         __data_end = .
-    1ec4     1ec4        0     1 __data_load_start = LOADADDR(.data)
-    1ec4     1ec4        0     1 __data_size = SIZEOF(.data)
-    1ec4     1ec4      292     1 .bss
-    1ec4     1ec4        0     1         __bss_start = .
-    1ec4     1ec4      292     1         build/executive.prg.lto.o:(.bss.s)
-    1ec4     1ec4      292     1                 s
-    2156     2156        0     1         __bss_end = .
-    2156     2156        0     1 __bss_size = SIZEOF(.bss)
-    2156     2156        0     1 .noinit
-    2156     2156        0     1         __heap_start = ALIGN(., 2)
-    2156     2156        0     1 __stack = 0xD000
+      22      80d       1e     1 .zp.data
+      22      80d        0     1         __zp_data_start = .
+      22      80d       1e     1         build/executive.prg.lto.o:(.zp.data)
+      22      80d       1e     1                 jobs
+      40      82b        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      40      82b        0     1 __zp_data_size = SIZEOF(.zp.data)
+      40       40        0     1 .zp.bss
+      40       40        0     1         __zp_bss_start = .
+      40       40        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      40       40       1b     1 .zp
+      40       40       1b     1         build/executive.prg.lto.o:(.zp.noinit)
+     82b      82b     464b     1 .text
+     82b      82b        0     1         _init = .
+     82b      82b        0     1         _start = .
+     82b      82b        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     833      833        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     833      833        0     1                 __do_init_stack
+     83b      83b        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     83b      83b        0     1                 __do_zero_bss
+     83e      83e        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(copy-zp-data.c.obj):(.init.200)
+     83e      83e        0     1                 __do_copy_zp_data
+     841      841        5     1         build/executive.prg.lto.o:(.init.250)
+     841      841        0     1                 shift
+     846      846        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     849      849        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     849      849        0     1                 __after_main
+     84c      84c        0     1         _fini = .
+     84c      84c        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     850      850        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     851      851        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     851      851        0     1                 __call_indir
+     854      854       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     854      854       13     1                 __zero_bss
+     867      867       17     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(copy-zp-data.c.obj):(.text.__copy_zp_data)
+     867      867       17     1                 __copy_zp_data
+     87e      87e      64d     1         build/executive.prg.lto.o:(.text.exec_admit)
+     87e      87e      64d     1                 exec_admit
+     ecb      ecb      1ae     1         build/executive.prg.lto.o:(.text.exec_endjob_select)
+     ecb      ecb      1ae     1                 exec_endjob_select
+    1079     1079      182     1         build/executive.prg.lto.o:(.text.exec_change_basic)
+    1079     1079      182     1                 exec_change_basic
+    11fb     11fb       ba     1         build/executive.prg.lto.o:(.text.basic_slot)
+    11fb     11fb       ba     1                 basic_slot
+    12b5     12b5      2fd     1         build/executive.prg.lto.o:(.text.exchange_basic)
+    12b5     12b5      2fd     1                 exchange_basic
+    15b2     15b2      223     1         build/executive.prg.lto.o:(.text.exec_complete_basic)
+    15b2     15b2      223     1                 exec_complete_basic
+    17d5     17d5      161     1         build/executive.prg.lto.o:(.text.exec_start_basic)
+    17d5     17d5      161     1                 exec_start_basic
+    1936     1936      111     1         build/executive.prg.lto.o:(.text.settle)
+    1936     1936      111     1                 settle
+    1a47     1a47      c3b     1         build/executive.prg.lto.o:(.text.scenario_prepare)
+    1a47     1a47      c3b     1                 scenario_prepare
+    2682     2682      1ab     1         build/executive.prg.lto.o:(.text.scenario_expected)
+    2682     2682      1ab     1                 scenario_expected
+    282d     282d      3bc     1         build/executive.prg.lto.o:(.text.state_digest)
+    282d     282d      3bc     1                 state_digest
+    2be9     2be9      3fc     1         build/executive.prg.lto.o:(.text.dispatch_prepare)
+    2be9     2be9      3fc     1                 dispatch_prepare
+    2fe5     2fe5      32d     1         build/executive.prg.lto.o:(.text.dispatch_event_prepare)
+    2fe5     2fe5      32d     1                 dispatch_event_prepare
+    3312     3312      119     1         build/executive.prg.lto.o:(.text.dispatch_touch)
+    3312     3312      119     1                 dispatch_touch
+    342b     342b      19f     1         build/executive.prg.lto.o:(.text.low_entry)
+    342b     342b      19f     1                 low_entry
+    35ca     35ca       4c     1         build/executive.prg.lto.o:(.text.low_resume)
+    35ca     35ca       4c     1                 low_resume
+    3616     3616       1d     1         build/executive.prg.lto.o:(.text.low_finish)
+    3616     3616       1d     1                 low_finish
+    3633     3633       3b     1         build/executive.prg.lto.o:(.text.high_entry)
+    3633     3633       3b     1                 high_entry
+    366e     366e       1d     1         build/executive.prg.lto.o:(.text.high_finish)
+    366e     366e       1d     1                 high_finish
+    368b     368b      11b     1         build/executive.prg.lto.o:(.text.payload)
+    368b     368b      11b     1                 payload
+    37a6     37a6      133     1         build/executive.prg.lto.o:(.text.check)
+    37a6     37a6      133     1                 check
+    38d9     38d9     12e1     1         build/executive.prg.lto.o:(.text.main)
+    38d9     38d9     12e1     1                 main
+    4bba     4bba        6     1         build/executive.prg.lto.o:(.text.exit)
+    4bba     4bba        6     1                 exit
+    4bc0     4bc0       39     1         build/executive.prg.lto.o:(.text.putchar)
+    4bc0     4bc0       39     1                 putchar
+    4bf9     4bf9       3f     1         build/executive.prg.lto.o:(.text.puts)
+    4bf9     4bf9       3f     1                 puts
+    4c38     4c38       c4     1         build/executive.prg.lto.o:(.text.__udivhi3)
+    4c38     4c38       c4     1                 __udivhi3
+    4cfc     4cfc       40     1         build/executive.prg.lto.o:(.text.__umodqi3)
+    4cfc     4cfc       40     1                 __umodqi3
+    4d3c     4d3c       7d     1         build/executive.prg.lto.o:(.text.__udivmodqi4)
+    4d3c     4d3c       7d     1                 __udivmodqi4
+    4db9     4db9       34     1         build/executive.prg.lto.o:(.text.memcpy)
+    4db9     4db9       34     1                 memcpy
+    4ded     4ded       22     1         build/executive.prg.lto.o:(.text.__memset)
+    4ded     4ded       22     1                 __memset
+    4e0f     4e0f       67     1         build/executive.prg.lto.o:(.text.__mulsi3)
+    4e0f     4e0f       67     1                 __mulsi3
+    4e76     4e76        0     1         __init_array_start = .
+    4e76     4e76        0     1         __init_array_end = .
+    4e76     4e76        0     1         __fini_array_start = .
+    4e76     4e76        0     1         __fini_array_end = .
+    4e76     4e76      3ec     1 .rodata
+    4e76     4e76       12     1         build/executive.prg.lto.o:(.rodata.scenario_prepare)
+    4e88     4e88        a     1         build/executive.prg.lto.o:(.rodata.dispatch_prepare)
+    4e92     4e92       16     1         build/executive.prg.lto.o:(.rodata.dispatch_event_prepare)
+    4ea8     4ea8      19e     1         <internal>:(.rodata.str1.1)
+    5046     5046      1b4     1         build/executive.prg.lto.o:(.rodata.dispatch_reference_digest)
+    5046     5046      1b4     1                 dispatch_reference_digest
+    51fa     51fa       68     1         build/executive.prg.lto.o:(.rodata.reference_digest)
+    51fa     51fa       68     1                 reference_digest
+    5262     5262        0     1 .data
+    5262     5262        0     1         __data_start = .
+    5262     5262        0     1         __data_end = .
+    5262     5262        0     1 __data_load_start = LOADADDR(.data)
+    5262     5262        0     1 __data_size = SIZEOF(.data)
+    5262     5262      292     1 .bss
+    5262     5262        0     1         __bss_start = .
+    5262     5262      292     1         build/executive.prg.lto.o:(.bss.s)
+    5262     5262      292     1                 s
+    54f4     54f4        0     1         __bss_end = .
+    54f4     54f4        0     1 __bss_size = SIZEOF(.bss)
+    54f4     54f4      292     1 .noinit
+    54f4     54f4      292     1         build/executive.prg.lto.o:(.noinit..Lstatic_stack)
+    5786     5786        0     1         __heap_start = ALIGN(., 2)
+    5786     5786        0     1 __stack = 0xD000
        0        0       cc     1 .comment
        0        0       cc     1         <internal>:(.comment)
        0        0       1e     1 .llvm_sympart
        0        0        f     1         build/executive.prg.lto.o:(.llvm_sympart)
        f        f        f     1         build/executive.prg.lto.o:(.llvm_sympart)
-       0        0      ac0     4 .symtab
-       0        0      ac0     4         <internal>:(.symtab)
+       0        0      c80     4 .symtab
+       0        0      c80     4         <internal>:(.symtab)
        0        0       76     1 .shstrtab
        0        0       76     1         <internal>:(.shstrtab)
-       0        0      5d0     1 .strtab
-       0        0      5d0     1         <internal>:(.strtab)
+       0        0      750     1 .strtab
+       0        0      750     1         <internal>:(.strtab)

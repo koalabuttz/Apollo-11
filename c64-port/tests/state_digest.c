@@ -16,3 +16,7 @@ uint32_t state_digest(const executive *s,int result) {
     h=add(h,s->locctr); h=add(h,s->fixloc); h=add(h,s->ovfind);
     return add(h,s->alarm);
 }
+
+uint32_t dispatch_state_digest(const executive *s,int result,exec_address next) {
+    return add(add(state_digest(s,result),next.location),next.bank);
+}

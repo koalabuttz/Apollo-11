@@ -1,10 +1,10 @@
-make: Entering directory '/workspace/scratch/81e2ab9955d9/reference/virtualagc/yaYUL'
+make: Entering directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaYUL'
 make: 'yaYUL' is up to date.
-make: Leaving directory '/workspace/scratch/81e2ab9955d9/reference/virtualagc/yaYUL'
-make: Entering directory '/workspace/scratch/81e2ab9955d9/reference/virtualagc/yaAGC'
+make: Leaving directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaYUL'
+make: Entering directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaAGC'
 make: 'yaAGC' is up to date.
 make: 'libyaAGC.a' is up to date.
-make: Leaving directory '/workspace/scratch/81e2ab9955d9/reference/virtualagc/yaAGC'
-Fixture: /workspace/scratch/81e2ab9955d9/reference/fixture
+make: Leaving directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaAGC'
+Fixture: /workspace/Apollo-11/c64-port/deps/fixture
 Unchanged Executive SHA256: c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d
 Rope SHA256: 1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e

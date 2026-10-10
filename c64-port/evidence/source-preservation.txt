@@ -1,2 +1,2 @@
-$ git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- :!c64-port
-Exit status 0; no changes outside c64-port.
+PASS: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- . ":(exclude)c64-port" (from repository root)
+Historical source unchanged; all port changes confined to c64-port/.
