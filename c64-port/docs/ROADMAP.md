@@ -63,17 +63,31 @@ Acceptance for this bounded milestone is met. Native foreground task delivery,
 per-call restoring I state, scratch separation and the excluded SVCT3 body are
 explicit adaptations; this does not complete Apollo interrupt/task hardware.
 
-## Next bounded milestone: alarm/abort and protected restart behavior
+## Completed: bounded alarm recording and protected Type C job recovery
 
-Trace BAILOUT1/POODOO1 and the protected restart tables against unchanged source.
-Choose one bounded abort/reset path with explicit phase/device inputs, preserving
-alarm records and retained resources before recovery. Extend the original-assembly
-oracle before substituting native reset/re-entry actions. Resource alarm detection
-is already verified; the alarm body and restart routing remain untranslated.
+- ALARM1/BAILOUT1/POODOO1 record alarms through their explicit entry/return
+  boundaries, preserving history and lamp memory.
+- STARTSB1 cleanup retains payloads and phases while restoring scheduler resources
+  and modeled device inputs. Channel-13 trap latches are separate from readback.
+- GOPROG3 validates protected phase pairs; Type C variable job demands re-enter
+  through original FINDVAC/NOVAC semantics.
+- 190 cases / 226 checkpoints and five host/sanitizer suites pass. A fifth C64
+  diagnostic verifies all fingerprints and six recovered native job completions.
 
-Follow with required interpreter/multiword semantics and one bounded
-landing-guidance computation. Flight feasibility remains a separate measurement
-milestone. Rust is optional for later components.
+Acceptance for this bounded milestone is met. RESTART.md distinguishes the
+independently verified source stages from the composed native recovery adaptation.
+Complete ENEMA glue, table/timed/display/Type B/longcall routes, phase updates,
+POODOO phase/service cleanup and hardware restart remain untranslated.
+
+## Next bounded milestone: numerical requirements for selected guidance
+
+Select one bounded landing-guidance computation from unchanged source, identify
+its interpreter and multiword arithmetic requirements, then implement and verify
+the required numerical primitives before translating that computation. Preserve
+scale/signed-zero/overflow semantics and extend the independent assembly oracle.
+Flight feasibility and deadline proof remain separate measurement work. Rust is
+optional for later components. Restart-table expansion should follow a concrete
+selected workload requirement rather than an unbounded mission replay target.
 
 ## Remaining design questions
 

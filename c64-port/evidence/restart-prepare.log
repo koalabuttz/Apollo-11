@@ -1,0 +1,17 @@
+make: Entering directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaYUL'
+make: 'yaYUL' is up to date.
+make: Leaving directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaYUL'
+make: Entering directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaAGC'
+make: 'yaAGC' is up to date.
+make: 'libyaAGC.a' is up to date.
+make: Leaving directory '/workspace/Apollo-11/c64-port/deps/virtualagc/yaAGC'
+Fixture: /workspace/Apollo-11/c64-port/deps/fixture
+Unchanged Executive SHA256: c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d
+Unchanged WAITLIST.agc SHA256: ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0
+Unchanged INTERRUPT_LEAD_INS.agc SHA256: ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3
+Unchanged ALARM_AND_ABORT.agc SHA256: 74236d3b94048b14efb776d7fff5ae66acac2f950e5bc03ca375d4b90b4484a8
+Unchanged FRESH_START_AND_RESTART.agc SHA256: bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a
+Unchanged RESTARTS_ROUTINE.agc SHA256: 42f22e578939222d5b0645e85d4c89b578b5200fb998db7dd95938feeb20eb61
+Unchanged RESTART_TABLES.agc SHA256: 1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59
+Unchanged PHASE_TABLE_MAINTENANCE.agc SHA256: 2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293
+Rope SHA256: 1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e

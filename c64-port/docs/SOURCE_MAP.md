@@ -57,8 +57,8 @@ WAITLIST.md describes the excluded scratch aliases, native ABI and CIA adaptatio
 SPVAC, CHANG2, interpretive ENDPRCHG/INTRSM, NUCHANG2 race/activity handling,
 full DUMMYJOB/ADVAN polling/self-check, general SUPDXCHZ, ENDFIND's return,
 TWIDDLE/FIXDELAY/VARDELAY/LONGCALL wrappers, SVCT3's body, hardware interrupt
-RESUME and all alarm/restart code
-remain untranslated. `exec_endjob_select` is not ENDOFJOB's complete calling
+RESUME remains untranslated. Separate bounded alarm/cleanup/phase/job stages
+are mapped below and documented in RESTART.md. `exec_endjob_select` is not ENDOFJOB's complete calling
 convention, and a selected index alone does not execute a routine. `exec_native` now runs
 explicitly mapped native demonstration jobs; see DISPATCH.md for the adapter
 boundaries and the separate interpreter exclusion.
@@ -78,3 +78,17 @@ boundaries and the separate interpreter exclusion.
 Register CCS with overflow, TS skip effects, edit registers, multiword
 arithmetic, fixed-point guidance scales, multiplication/division and interpreter
 operations are not implemented. Normal bounded admission does not require them.
+
+## Alarm and protected Type C job stages
+
+| Original source/labels | Native entry | Oracle boundary |
+|---|---|---|
+| ALARM_AND_ABORT: ALARM1/ALMNCADR/BAILOUT1/POODOO1, BOTHABRT, CHKFAIL1/2, FAIL3, PROGLARM, MULTFAIL/MULTEXIT | `rs_record` | Q+1, WHIMPER, or OCT77770+1 before phase writes |
+| FRESH_START_AND_RESTART: STARTSB1/STARTSB2/DSPOFF | `rs_cleanup` | TC Q return, retained payloads/device readbacks/trap latches |
+| FRESH_START_AND_RESTART: GOPROG3/PCLOOP | `rs_validate` | MMDSPLAY or PTBAD entry |
+| RESTARTS_ROUTINE: RESTARTS/ITSAVAR/ITSAJOB/CHKNOVAC/ITSNOVAC, FINDVAC/NOVAC | `rs_job` | ENDFIND or BAILOUT1, with original MPAC/VAC5 GOLOC scratch |
+| Bounded native composition of these stages | `rs_recover` | Integration adaptation; not complete original ENEMA execution |
+
+RESTART_TABLES and PHASE_TABLE_MAINTENANCE are traced and included unchanged in
+the fixture; no table route or phase-update primitive is translated. RESTART.md
+records caller inputs, valid Type C encodings, exclusions and fixture addresses.

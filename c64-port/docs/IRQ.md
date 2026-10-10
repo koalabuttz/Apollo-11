@@ -72,7 +72,8 @@ boundary: 1202 can keep the VAC reserved before the full-core scan. The failed
 entry stays queued, earlier successful entries stay admitted, and subsequent
 native operations return the latched fault. A fault raised by a helper inside a
 callback also blocks its returned action. No transaction rollback,
-retry or Apollo restart is implemented. Stop the source before explicit reset.
+retry is implemented by IRQ delivery. Bounded caller-controlled recovery is
+separate (RESTART.md). Stop the source before explicit reset.
 
 ## C64 raster harness and ABI
 

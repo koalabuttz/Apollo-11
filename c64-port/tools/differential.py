@@ -122,3 +122,5 @@ if errors: sys.exit('\n'.join(errors))
 print('PASS: 196 WAITLIST cases / 306 checkpoints, including 10 actual native task sequences')
 print('TIME3/LST1/LST2/RUPTAGN, retained 1203/1204 boundaries and physical task transfers match original assembly')
 print('WAITLIST snapshot SHA256: '+hashlib.sha256((ROOT/'build/waitlist-reference.snapshots').read_bytes()).hexdigest())
+
+subprocess.run([sys.executable,'tools/restart_differential.py',str(reference)],cwd=ROOT,check=True)

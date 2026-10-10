@@ -129,9 +129,10 @@ BAILOUT1 (`ALARM_AND_ABORT`) records address/bank context, uses CHKFAIL1 and
 FAILREG, drives the alarm output, then follows the abort route through WHIMPER /
 ENEMA. FRESH_START_AND_RESTART, RESTARTS_ROUTINE, RESTART_TABLES, phase tables,
 and device state rebuild protected work. CCSHOLE also handles impossible CCS
-branches through a separate alarm path. None of those paths is translated.
-The diagnostic stops at BAILOUT1 entry; even alarm-display side effects are not
-claimed. A numeric marker in the port cannot stand in for Apollo recovery.
+branches through a separate alarm path. The admission diagnostic still stops at BAILOUT1 entry. Separate bounded alarm
+recording, STARTSB1 cleanup and protected Type C job stages are now implemented
+(RESTART.md); complete abort/restart glue remains untranslated. A numeric marker
+alone cannot stand in for recovery.
 
 ## Scope invariants
 
@@ -157,3 +158,15 @@ That is not the full Apollo fresh-start routine and is not a promise to clear
 VAC contents at admission. Neither code nor tests clear work areas when reusing
 resources. No allocation, recursion, OS threads, or whole-rope resident image is
 needed by the native core.
+
+## Explicit bounded recovery state
+
+`src/restart.c` records alarms, translates STARTSB1 cleanup with explicit device
+inputs, validates protected phase pairs and re-enters Type C variable jobs. It
+uses a separate 130-byte `restart_state` and 60-byte `restart_phases`; the existing
+648-byte Executive and 58-byte WAITLIST representations are unchanged. Raw stages
+require restoring exclusion and stopped custom publication sources. Cleanup
+preserves alarm history and payloads rather than calling the test initializer.
+Native runtime faults stay latched until explicit reinitialization. RESTART.md
+separates each original-assembly stop boundary from the composed native driver,
+which omits complete ENEMA/display/flag/return glue and remaining phase routes.

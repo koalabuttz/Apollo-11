@@ -231,3 +231,38 @@ extra compiler ZP or exhaustion of instrumented stacks. Reserve $c050..$c05d and
 $c060 for mailbox/timing stores in addition to the earlier diagnostic regions.
 CIA ownership, stock-ROM restoration, callback/mask constraints, and unsupported
 NTSC/NMI/multi-source behavior are defined in WAITLIST.md.
+
+## Sixth milestone: standalone alarm/restart diagnostic
+
+`evidence/restart.prg` is 21796 bytes including its load address; 21794 bytes load
+at $0801..$5d22, SYS $080d. The map reports 20712 bytes of text
+($080d..$58f4), 1070 of read-only data ($58f5..$5d22), 902 of BSS
+($5d23..$60a8) and one noinit byte at $60a9. Loaded image plus BSS/noinit is
+22697 bytes. Only the 32 LLVM-MOS imaginary-register ZP bytes are used; there
+is no additional ZP data/BSS allocation. Executive/task states remain 648/58
+bytes; added modeled restart state/phase records are 130/60 bytes. The full test
+case is 902 bytes. No heap allocation or custom IRQ stack is used by this PRG.
+
+The final PAL VICE run observes 29 bytes below the $01f2 hardware-stack baseline
+(43 bytes including the 14-byte pre-existing BASIC/KERNAL frame) and 146 bytes of
+instrumented dynamic software-stack extent. Sentinel extents are observations,
+not stack proofs. The diagnostic reserves $c080..$c08c for mailbox/markers and
+$c100..$cfff for software-stack instrumentation.
+
+| Sample | PAL cycles | At 985248 cycles/s |
+|---|---:|---:|
+| Fourth alarm recording, register history full | 332 | 0.337 ms |
+| STARTSB1 cleanup | 3735 | 3.791 ms |
+| Six protected phase-pair checks | 956 | 0.970 ms |
+| Type C NOVAC admission with a late free core | 4191 | 4.254 ms |
+| Complete recovery demo setup and six native completions | 135110 | 137.133 ms |
+
+The four primitive intervals are guarded; setup and fingerprint hashing are
+outside their markers. The integration interval includes input construction,
+failed-admission/runtime checks, bounded reconstruction, mapping initialization,
+six separate native job steps and outcome checks. It is not one continuous mask
+or a scheduler-only recovery measurement. VIC/IRQ timing and marker overhead are
+included. Source publication is stopped during recovery; this milestone makes no
+continuous CIA-source deadline guarantee. The full 226-case 448-word fingerprint
+workload takes many emulated cycles and uses a one-billion-cycle harness limit.
+RESTART.md defines the bounded recovery contract and remaining source exclusions.

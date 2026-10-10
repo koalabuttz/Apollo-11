@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/restart.c tests/restart_cases.c tests/restart_check.c tests/test_restart.c -o build/test-restart-sanitize
+./build/test-restart-sanitize
+PASS: 226 assembly fingerprints, recovery/resumption, phase/resource failures and restoring exclusion

@@ -21,7 +21,7 @@ typedef struct {
     agc_word core[EXEC_CORE_COUNT][EXEC_CORE_WORDS];
     agc_word vac[EXEC_VAC_COUNT][EXEC_VAC_WORDS];
     agc_word newjob, newprio, newloc[2], locctr, fixloc, ovfind;
-    agc_word alarm; /* Native bailout boundary marker; no restart implementation. */
+    agc_word alarm; /* Native boundary marker; explicit recovery stages are in restart.h. */
 } executive;
 /* Initializes only the Executive state; not a flight-computer fresh start. */
 void exec_init(executive *state);

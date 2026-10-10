@@ -71,3 +71,28 @@ build/waitlist-snapshot: $(TASK_CORE) tests/waitlist_cases.c platform/host/waitl
 c64-waitlist: build/waitlist.prg
 build/waitlist.prg: $(CORE) src/waitlist.c src/native_tasks.c $(WAIT_TEST) platform/c64/waitlist_diagnostic.c platform/c64/timer_platform.c platform/c64/timer_platform.h platform/c64/timer_gate.S $(HEADERS) $(WAIT_HEADERS) | build
 	$(MOS_CC) $(CPPFLAGS) -Iplatform/c64 -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/waitlist.map $(CORE) src/waitlist.c src/native_tasks.c $(WAIT_TEST) platform/c64/waitlist_diagnostic.c platform/c64/timer_platform.c platform/c64/timer_gate.S -o $@
+
+RESTART_CORE = src/agc_word.c src/executive.c src/waitlist.c src/restart.c
+RESTART_HEADERS = $(HEADERS) include/waitlist.h include/restart.h tests/restart_cases.h
+all: build/restart-snapshot
+build/restart-snapshot: $(RESTART_CORE) tests/restart_cases.c platform/host/restart_snapshot.c $(RESTART_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(RESTART_CORE) tests/restart_cases.c platform/host/restart_snapshot.c -o $@
+
+RESTART_TEST = tests/restart_cases.c tests/restart_check.c
+all: build/test-restart
+test: test-restart
+.PHONY: test-restart
+test-restart: build/test-restart
+	./build/test-restart
+build/test-restart: $(CORE) src/waitlist.c src/restart.c $(RESTART_TEST) tests/test_restart.c $(RESTART_HEADERS) tests/restart_vectors.h tests/restart_check.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(CORE) src/waitlist.c src/restart.c $(RESTART_TEST) tests/test_restart.c -o $@
+sanitize: sanitize-restart
+.PHONY: sanitize-restart
+sanitize-restart: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CORE) src/waitlist.c src/restart.c $(RESTART_TEST) tests/test_restart.c -o build/test-restart-sanitize
+	./build/test-restart-sanitize
+
+.PHONY: c64-restart
+c64-restart: build/restart.prg
+build/restart.prg: $(CORE) src/waitlist.c src/restart.c $(RESTART_TEST) platform/c64/restart_diagnostic.c $(RESTART_HEADERS) tests/restart_vectors.h tests/restart_check.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/restart.map $(CORE) src/waitlist.c src/restart.c $(RESTART_TEST) platform/c64/restart_diagnostic.c -o $@

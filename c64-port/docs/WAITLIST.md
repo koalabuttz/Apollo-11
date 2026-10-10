@@ -53,7 +53,8 @@ inside a full list can already have displaced the last task when it fails; an
 append after all nine can fail before list mutation. Both forms match assembly.
 Zero/negative delay reaches 1204, the original POODOO1 boundary. Positive delay
 above 16250 or malformed native address/bank is rejected before mutation.
-Alarm bodies, display changes, abort routing and recovery remain untranslated.
+WAITLIST stops before alarm bodies. Separate alarm recording and bounded
+BAILOUT1 recovery are implemented in RESTART.md; 1204 POODOO recovery is excluded.
 
 ## Native task API
 

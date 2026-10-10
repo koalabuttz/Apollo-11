@@ -1,0 +1,44 @@
+/* SPDX-License-Identifier: MIT; original erasable addresses, input/output mapping only. */
+static const unsigned rs_addresses[RS_WORD_COUNT]={
+    027, /* TIME4 */
+    030, /* TIME5 */
+    01273, /* RCSFLAGS */
+    03066, /* T6NEXT */
+    03065, /* NXT6ADR */
+    03072, /* NEXTP */
+    0111, /* DAPBOOLS */
+    01274, /* T5ADR */
+    01275, /* T5ADR1 */
+    077, /* FLAGWRD3 */
+    0110, /* RADMODES */
+    0101, /* FLAGWRD5 */
+    01313, /* DSRUPTSW */
+    01326, /* DELAYLOC */
+    01327, /* DELAYLOC1 */
+    01330, /* DELAYLOC2 */
+    01074, /* R1SAVE */
+    045, /* INLINK */
+    0776, /* DSPCNT */
+    01042, /* CADRSTOR */
+    01013, /* REQRET */
+    01015, /* CLPASS */
+    01012, /* DSPLOCK */
+    01020, /* MONSAVE */
+    01021, /* MONSAVE1 */
+    01001, /* VERBREG */
+    01002, /* NOUNREG */
+    01043, /* DSPLIST */
+    01312, /* MARKSTAT */
+    01044, /* EXTVBACT */
+    01304, /* IMUCADR */
+    01305, /* OPTCADR */
+    01306, /* RADCADR */
+    01307, /* ATTCADR */
+    01314, /* LGYRO */
+    0100, /* FLAGWRD4 */
+    01016, /* NOUT */
+    01100, /* SAMPLIM */
+    01303, /* IMODES33 */
+    01361, /* SELFRET */
+    0777, /* DSPCOUNT */
+};

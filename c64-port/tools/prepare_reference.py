@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build pinned Virtual AGC and a full fixture containing UNCHANGED upstream Executive/WAITLIST/interrupt lead-ins."""
+"""Build pinned Virtual AGC and a full fixture containing UNCHANGED upstream scheduler/alarm/restart source."""
 import argparse
 import hashlib
 import pathlib
@@ -25,11 +25,15 @@ for sub,targets in [('yaYUL',['yaYUL']),('yaAGC',['yaAGC','libyaAGC.a'])]:
 fixture=a.fixture.resolve(); fixture.mkdir(parents=True,exist_ok=True)
 for f in (v/'Luminary099').glob('*.agc'): shutil.copyfile(f,fixture/f.name)
 original=ROOT.parent/'Luminary099/EXECUTIVE.agc'
-for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc']:
+for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc',
+               'ALARM_AND_ABORT.agc','FRESH_START_AND_RESTART.agc',
+               'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc']:
     shutil.copyfile(ROOT.parent/'Luminary099'/source,fixture/source)
 with (fixture/'assembly.lst').open('w') as log:
     run([str(v/'yaYUL/yaYUL'),'MAIN.agc'],cwd=fixture,stdout=log,stderr=subprocess.STDOUT)
-for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc']:
+for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc',
+               'ALARM_AND_ABORT.agc','FRESH_START_AND_RESTART.agc',
+               'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc']:
     assert (fixture/source).read_bytes()==(ROOT.parent/'Luminary099'/source).read_bytes()
 # The adapter uses these historical addresses; fail if the support changes them.
 listing=(fixture/'assembly.lst').read_text()
@@ -44,12 +48,18 @@ for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
                      ('WAITLIST','5203'),('WAIT2','01,3231'),('LVWTLIST','5215'),
                      ('ENDTASK','5236'),('TASKOVER','5261'),('T3RUPT','01,3407'),
                      ('T3RUPT2','01,3414'),('LST1','E3,1400'),('LST2','E3,1410'),
-                     ('TIME3','0000026'),('RUPTAGN','0734')]:
+                     ('TIME3','0000026'),('RUPTAGN','0734'),
+                     ('ALARM1','5732'),('POODOO1','5726'),('WHIMPER','5644'),
+                     ('STARTSB1','05,3116'),('GOPROG3','05,2775'),
+                     ('PTBAD','05,3054'),('RESTARTS','01,3526'),
+                     ('PHSNAME1','E3,1436'),('PHSPRDT1','1054'),('GOLOC','0705')]:
     import re
     if not re.search(r'\b'+name+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)
 print('Fixture:',fixture)
 print('Unchanged Executive SHA256:',hashlib.sha256(original.read_bytes()).hexdigest())
-for source in ['WAITLIST.agc','INTERRUPT_LEAD_INS.agc']:
+for source in ['WAITLIST.agc','INTERRUPT_LEAD_INS.agc','ALARM_AND_ABORT.agc',
+               'FRESH_START_AND_RESTART.agc','RESTARTS_ROUTINE.agc',
+               'RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc']:
     print('Unchanged '+source+' SHA256:',hashlib.sha256((fixture/source).read_bytes()).hexdigest())
 print('Rope SHA256:',hashlib.sha256((fixture/'MAIN.agc.bin').read_bytes()).hexdigest())

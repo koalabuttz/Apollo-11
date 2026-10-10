@@ -285,6 +285,45 @@ reference tests exposed and corrected implementation mistakes before handoff.
 There was no independent human/second-agent review in this session.
 
 Unavailable: mission replay, actual landing computations, interpreter context
-dispatch, general/multi-source or NMI interrupt integration, alarm side effects/restarts, exhaustive
+dispatch, general/multi-source or NMI interrupt integration, remaining alarm/restart routes (RESTART.md), exhaustive
 Executive state-space comparison, hardware run, and end-to-end flight deadlines.
 These remain explicitly incomplete rather than being replaced with passing mocks.
+
+## Sixth milestone: bounded alarm and protected job recovery
+
+Executed `make test`, `ASAN_OPTIONS=detect_leaks=0 make sanitize`, the full
+`make differential REFERENCE=.../deps/fixture`, and `make c64-restart` using the
+existing pinned LLVM-MOS toolchain. All five host/sanitizer suites pass. Leak
+scanning is disabled because process inspection is unavailable in this executor;
+address and undefined-behavior instrumentation remain enabled.
+
+The independent `restart_reference.c` links only the real Virtual AGC engine and
+input-only constructors. Five additional alarm/restart source files are overlaid
+byte-identically; all eight selected source files assemble without errors and the
+rope SHA256 is still `1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e`.
+`restart_differential.py` compares 190 cases / 226 checkpoints, status and all
+448 modeled words (including two explicit native boundary markers). Protected
+phase/name/priority records are read back from original memory. Native/reference
+snapshot SHA256 is `81c884b026fbdd4ae8050cddc75f2d07a91a168ccf1d3cf324a8f60cc39631a8`.
+The four earlier snapshot hashes are unchanged. `freeze_restart.py` permits
+fingerprint generation only after exact independent agreement.
+
+Five suites include a failed FINDVAC's retained 1202 reservation, successful
+bounded reconstruction, six actual native job completions, retained alarm history,
+stale-runtime fail-stop, initially enabled/masked restoring guards, unsupported
+phase/POODOO/double-pending rejection without mutation, phase-corruption retention,
+and five-VAC exhaustion during six protected FINDVAC admissions.
+
+PAL VICE executes the fifth standalone PRG, checks all 226 frozen fingerprints,
+completes six recovered native jobs and verifies restoring I. Its mailbox is
+`a50000bee206823c2486038202`, with zero failures. The monitor retains five timed
+samples and instrumented hardware/software stack dumps. The helper rejects extra
+compiler ZP allocation or exhaustion of the instrumented stacks. The large full
+state hash workload requires a one-billion-cycle harness limit; this is a test
+budget, not an application runtime constraint. Performance is in PERFORMANCE.md.
+
+RESTART.md gives exact original entry/stop boundaries. The sequential oracle sets
+explicit register/bank inputs between stages and holds counter progress; it does
+not execute uninterrupted ENEMA glue. The composed recovery is a native adaptation.
+Original hardware GOJAM, fresh start, display/key/flag glue, phase updates, table,
+Type B, timed/longcall, servicer and guidance routes remain unimplemented.

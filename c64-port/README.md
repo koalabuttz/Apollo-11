@@ -11,7 +11,9 @@ exclusion and bounded IRQ admission requests; basic JOBSLEEP/JOBWAKE and
 PRIOCHNG. Native demonstration jobs run, sleep, wake, change priority, resume
 and complete. WAITLIST now retains nine task slots, differential timer state
 and native task completion; a CIA Timer B adapter publishes clock events.
-**Deferred:** Apollo guidance jobs, interpreter dispatch and restart.
+Bounded alarm recording, STARTSB1 cleanup and protected Type C job recovery
+are implemented. **Deferred:** Apollo guidance jobs, interpreter dispatch and
+remaining restart routes/glue (docs/RESTART.md).
 
 26 original admission/completion scenarios and 53 dispatch cases (109 checkpoints,
 including eight sequential two-job executions) agree word-for-word with original
@@ -34,7 +36,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md` and `docs/WAITLIST.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/RESTART.md` for the current milestone.
 
 ## Build and run
 
@@ -47,10 +49,11 @@ make c64 MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-irq MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-lifecycle MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-waitlist MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
+make c64-restart MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 ```
 
 The deliverables are `build/executive.prg`, `build/irq.prg`,
-`build/lifecycle.prg` and `build/waitlist.prg`
+`build/lifecycle.prg`, `build/waitlist.prg` and `build/restart.prg`
 (ordinary C64 PRGs with BASIC SYS stubs).
 Load a PRG on a C64 and RUN, or use VICE. The console diagnostic prints a test summary,
 not an interactive DSKY. Target compiler: LLVM-MOS SDK **v23.3.0**.
@@ -67,7 +70,7 @@ make differential REFERENCE="$PWD/deps/fixture"
 
 This builds pinned yaYUL/yaAGC and assembles a full reference fixture using
 Virtual AGC's corrected supporting transcription, with the requested upstream
-`EXECUTIVE.agc`, `WAITLIST.agc` and `INTERRUPT_LEAD_INS.agc` copied
+scheduler, interrupt, alarm and restart source files copied
 **byte-for-byte**. The selected repository's full MAIN
 cannot currently assemble unmodified; details are in `docs/VERIFICATION.md`.
 No native port implementation is linked into the Executive reference runner.
@@ -81,7 +84,8 @@ C64 fingerprints only after a successful differential test:
 python3 tools/freeze_vectors.py
 python3 tools/freeze_lifecycle.py
 python3 tools/freeze_waitlist.py
-make test c64 c64-irq c64-lifecycle c64-waitlist
+python3 tools/freeze_restart.py
+make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart
 ```
 
 ### VICE verification
@@ -95,6 +99,8 @@ python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 python3 tools/waitlist_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
+python3 tools/restart_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 ```
 
 Provide standard ROM files `kernal-901227-03.bin`, `basic-901226-01.bin`, and
@@ -104,11 +110,16 @@ or missing completion record fails the test. The helpers record timing and stack
 sentinel observations; the IRQ, lifecycle and WAITLIST helpers write structured timing
 reports and reject unpreserved compiler ZP allocations. No display server is required.
 
+The fifth diagnostic checks 190 alarm/restart cases / 226 checkpoints and six
+recovered native job completions. Original alarm records and protected phases
+are retained; this is a bounded recovery adaptation.
+
 ## Engineering record
 
 - `docs/DISPATCH.md`: native callback API, context swaps, sequential reference boundaries.
 - `docs/IRQ.md`: exclusion, queue ownership, fault boundaries and C64 IRQ ABI.
 - `docs/LIFECYCLE.md`: sleep/wake, priority scans, callback actions and oracle boundaries.
+- `docs/RESTART.md`: alarm history, cleanup, protected job re-entry and exclusions.
 - `docs/WAITLIST.md`: task list/counter semantics, native callbacks, CIA ownership and limits.
 - `docs/ARCHITECTURE.md`: original structures, calling conventions, dependencies.
 - `docs/SOURCE_MAP.md`: original labels mapped to C and reference stop boundaries.

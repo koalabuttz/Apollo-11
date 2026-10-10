@@ -18,7 +18,7 @@ a proof for arbitrary machine states or an assertion of timing equivalence.
 | Resource initialization | Fresh start marks cores free and use words with addresses | Same resource markers plus deterministic extra zeroing | Approximate | Test constructor is not Apollo fresh start |
 | 1201/1202 detection | Transfer to BAILOUT1 with inline octal code | Return octal enum, latch native marker; retain pre-bailout resource state | Verified Behavioral Equivalent | Both original trigger boundaries tested; this row covers detection only |
 | Alarm light / FAILREG / abort route | BAILOUT1 body, display state, WHIMPER/ENEMA | No implementation | Not Implemented | Tests stop before BAILOUT1 executes |
-| Native bailout latch | Apollo exits admission into abort/recovery | Further admission blocked until caller reinitializes | Approximate | Explicit fail-stop boundary protects unsupported continuation; no Apollo restart claim |
+| Native bailout latch | Apollo exits admission into abort/recovery | Further admission blocked until explicit bounded recovery or caller reinitialization | Approximate | Explicit fail-stop boundary protects unsupported continuation; bounded recovery is a separate adaptation (RESTART.md) |
 | Basic CHANJOB state exchange | Swaps twelve words, encodes overflow, updates FIXLOC and dispatch scratch | Same saved transitions and explicit returned 2CADR | Verified Behavioral Equivalent | 109 original-derived checkpoints, including all candidate positions and both zeros |
 | Native basic execution | DTCB transfers Z/BBANK and selected SUPERBNK | Complete 2CADR lookup calls ordinary C continuations | Approximate | Hardware transfers checked in oracle; C stack/ABI replaced explicitly; eight actual native two-job sequences pass host/C64 |
 | Interpreter dispatch | Negative saved LOC resumes through INTRSM | Rejected before core/resource mutation | Not Implemented | Basic-only domain is explicit |
@@ -27,7 +27,7 @@ a proof for arbitrary machine states or an assertion of timing equivalence.
 | IRQ admission buffer | Requests can originate in interrupt/task routines | Four FIFO requests, overflow fail-stop separate from 1201/1202 | Approximate | Explicit platform adaptation; host wrap/fault tests and real C64 overflow; no generic ready-job queue |
 | WAITLIST list / task completion | TIME3, nine task slots, differential intervals, T3RUPT2/TASKOVER | Same persistent list/counter state, ordered insertion and basic task transfers | Verified Behavioral Equivalent | 196 cases / 306 original checkpoints, ten native sequences; scratch/ABI boundary in WAITLIST.md |
 | CIA timer / native task timing | Centisecond counter, interrupt-task entry with I inhibited | CIA1 B publishes two-centisecond samples; foreground mapped callbacks run excluded | Approximate | Six actual CIA IRQs, register/decimal preservation, periodic sample and task/job bridge; SVCT3 body and hardware RESUME excluded |
-| Restart/recovery | Phase groups and protected jobs rebuilt after abort | No implementation | Not Implemented | Separate future validation milestone |
+| Bounded alarm/recovery stages | Alarm records, resource cleanup, protected phase/job demands | Explicit alarm/STARTSB1/Type C job translations and composed native recovery | Verified stages; composed adaptation | 190 cases / 226 full modeled-state checkpoints; remaining routes/glue excluded in RESTART.md |
 | Fixed point / multiword math / special registers | Guidance-specific scales and register/instruction effects | No implementation | Not Implemented | Only initial Executive arithmetic is provided |
 | Real-time timing | AGC machine timing and task deadlines | Native code executes at C64 rate | Approximate | Four console, 74 IRQ, 76 lifecycle and 156 WAITLIST operation samples plus IRQ/timer/latency observations; no proved worst-case or flight deadline |
 
@@ -41,3 +41,17 @@ and arbitrary concurrency are not equivalence claims. The documented one-IRQ /
 foreground publication contract is separately tested. The fixture initializes these states
 deliberately. No test purports to reproduce the Apollo 11 landing alarms in their
 mission context.
+
+## Alarm/recovery milestone classification
+
+| Behavior | Classification | Evidence/limit |
+|---|---|---|
+| Bounded ALARM1/BAILOUT1/POODOO1 recording | Faithful within stated entry/state domain | FAILREG/ALMCADR/lamp memory and full retained model match original; negative first/second FAILREG excluded |
+| STARTSB1 cleanup | Faithful modeled state | All modeled resource/display/service/device writes and retained payloads match original; no physical Apollo devices |
+| Channel-13 trap latches/readback | Faithful modeled device semantics | Real original instructions and Virtual AGC CPU I/O API, explicit separate latches |
+| Protected-pair loop and Type C variable job route | Faithful bounded stages | Original scratch, signed priority, VAC reservation and admission failures compared |
+| Composed `rs_recover` and runtime reinitialization | Adaptation | Omitted ENEMA/display/flag/bank-return glue; native callbacks restart from mappings |
+| POODOO phase/service cleanup, table/Type B/display/timed/longcall routes, phase updates and hardware GOJAM | Unimplemented | Unsupported forms rejected; phase corruption stops before PTBAD body |
+
+The original primitive bailout markers still do not imply recovery by themselves.
+Explicit bounded recovery and runtime ownership requirements are in RESTART.md.

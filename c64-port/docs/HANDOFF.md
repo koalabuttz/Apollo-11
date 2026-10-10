@@ -1,4 +1,4 @@
-# WAITLIST and CIA task timer milestone handoff
+# Bounded alarm and protected job recovery milestone handoff
 
 ## Repository
 
@@ -21,6 +21,7 @@ make c64 MOS_CC=/path/to/mos-c64-clang
 make c64-irq MOS_CC=/path/to/mos-c64-clang
 make c64-lifecycle MOS_CC=/path/to/mos-c64-clang
 make c64-waitlist MOS_CC=/path/to/mos-c64-clang
+make c64-restart MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
@@ -29,9 +30,20 @@ python3 tools/lifecycle_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/waitlist_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/restart_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
 ## Completed work
+
+The sixth milestone adds bounded ALARM1/BAILOUT1/POODOO1 alarm recording,
+STARTSB1 cleanup with explicit device inputs, phase-pair validation and Type C
+variable-job re-entry. 190 cases / 226 checkpoints match independent original
+assembly across all 448 modeled words. The fifth C64 PRG passes every fingerprint
+and completes six reconstructed native jobs after explicitly reinitializing a
+faulted runtime. Alarm history and unrelated payloads are retained. RESTART.md
+defines stage boundaries and excludes full ENEMA glue and other restart forms.
+
 
 The fifth milestone adds WAITLIST insertion, T3RUPT2 list/timer reload and
 TASKOVER, preserving nine tasks, both zeros and equal-deadline ordering. Native
@@ -75,7 +87,7 @@ Validation passes:
 - Host dispatch/fault tests and all eight native two-job executions.
 - 26 admission/completion plus 109 dispatch checkpoints, word-for-word against
   original assembly, and the separate Virtual AGC numerical helper comparisons.
-- All four host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
+- All five host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
 - PAL C64 VICE: zero failures, all 135 original-derived fingerprints, eight
   actual native two-job sequences and three repeated timed-path checks.
 - Host IRQ publication/FIFO tests over 600 starting-ticket cases, guards, idle
@@ -95,7 +107,10 @@ Validation passes:
   fourth PAL C64 diagnostic checks all fingerprints, six CIA IRQs, three observed
   20 ms periods, 156 primitive timings and retained stack/mailbox evidence.
 
-Retained executable, snapshots, logs, target mailbox/stack dumps, map and hashes
+Alarm/restart host tests and all 226 checkpoints, five ASan/UBSan suites and
+the fifth PAL diagnostic with six recovered jobs pass (RESTART.md).
+
+Retained executables, snapshots, logs, target mailbox/stack dumps, maps and hashes
 are in `evidence/`; reproducible output is in `build/`. DISPATCH.md documents the
 callback ABI, startup scratch convention, reference boundaries and fail-stop
 behavior. PERFORMANCE.md records the current image/RAM/stack and timing samples.
@@ -107,8 +122,9 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 This is a cooperative basic-job translation with native demonstration routines,
 not a complete flight OS or translated guidance workload. Callbacks return to
 a trampoline; persistent values belong in MPAC/VAC, not suspended C stacks.
-An unmapped address latches a runtime fault. No rollback or Apollo recovery is
-claimed. Idle dispatch uses a bounded A=2/L=0 convention, not Apollo self-check.
+An unmapped address latches a runtime fault. No rollback is claimed; bounded
+explicit recovery is documented in RESTART.md. Idle dispatch uses a bounded
+A=2/L=0 convention, not Apollo self-check.
 
 The IRQ handler publishes through `exec_irq_post`; it must never mutate Executive
 state or invoke native dispatch. Foreground wrappers restore IRQ state and admit
@@ -117,10 +133,12 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: bounded alarm/abort and protected restart behavior, then selected guidance work.
+Next: choose the numerical/interpreter operations required by one bounded
+landing-guidance computation, then translate and verify that slice.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
-Acceptance for basic dispatch, IRQ delivery, lifecycle and bounded WAITLIST is met.
+Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST and
+bounded Type C job recovery is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host

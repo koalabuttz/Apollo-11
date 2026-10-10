@@ -8,7 +8,8 @@ of the unchanged original Executive at 109 checkpoints.
 
 This executes small native C demonstration jobs. Apollo guidance jobs,
 interpreter continuations, idle self-check, activity
-lamp hardware and restart/recovery remain outside the implemented scope. The
+lamp hardware remains outside this dispatcher. Explicit bounded recovery is
+documented in RESTART.md; it does not resume a suspended callback. The
 subsequent task milestone is documented in WAITLIST.md.
 
 ## Context exchange
