@@ -1,0 +1,4 @@
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c tests/scenarios.c tests/state_digest.c tests/test_host.c -o build/test-sanitize
+./build/test-sanitize
+PASS: 32768 word encodings, 65536 register encodings, 524288 addition pairs, 26 Executive scenarios
+sizeof(executive)=648 bytes; sizeof(scenario)=664 bytes (host)

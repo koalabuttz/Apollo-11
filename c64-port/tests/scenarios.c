@@ -68,6 +68,8 @@ void scenario_prepare(scenario *s, uint8_t n) {
     } else if(n==23) {
         s->name="reuse-stale-location";
         s->state.core[0][EXEC_LOC]=07777; s->state.core[0][EXEC_BANK]=01234;
+        s->state.core[0][EXEC_MPAC]=07654; s->state.vac[0][1]=04321;
+        s->state.newloc[0]=05555; s->state.newloc[1]=0454;
     } else if(n==24 || n==25) {
         s->name=n==24 ? "core-1202" : "vac-reserved-on-1202";
         for(i=0;i<EXEC_ADMISSION_COUNT;++i) occupy(s,i,02000);

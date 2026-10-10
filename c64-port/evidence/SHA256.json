@@ -1,0 +1,21 @@
+{
+  "differential.txt": "81f1bd9a25987bbc60b0d950b23cde6de4dbeae75b31b75b945ab02bc71be4a5",
+  "vice-result.txt": "065b253c6c3d2f14bee6d2cd591c97c641725868d121ec9431c85e22ba7cb4aa",
+  "c64-build.txt": "db82ff08d3a41abe4c116ad7ffada161657b014cc40b13603d43ff7741cebc4e",
+  "vice-monitor.log": "af6ec01c2d633afce70b71823a49cd28f418cc5bf4e0a7ca4890addfcc85d6ed",
+  "vice-mailbox.bin": "431740e708292c7dfd4b846cff0956702454b2644b13ef4d330299f061b9203d",
+  "prepare-reference.txt": "ecf6be0e7aaa7689a4cebd25eecfde314e434a587b2e19c7afaa8c4dddd072e6",
+  "assembly-summary.txt": "74532a39ef08bea542a6cb92e4619ef0937aeea4bf85ed949626afd3f2d71cea",
+  "sanitize.txt": "d1479d37058f03b94b1e70e35d39fac5009d4f8b24f4db2400ba83ddb8ca505a",
+  "source-preservation.txt": "fdc414d94c97b28c41b6b7214cf70f9e0c0d54861b3f2630af9b98ada53c0545",
+  "executive.prg": "09bca7441edd62542f5577919013b67f34d9ccdf2d88d0ddf01e93e67ff549bb",
+  "native.snapshots": "f2815915515cf792679f480d932b92d8a28296ba9907b2aa2606e613d03a23c0",
+  "executive.map": "eaaef4fa82c5e25d576020c6fab954a470b1177eb02a6cd41e7ffc6eccc2e2e5",
+  "vice-software-stack.bin": "5f95dc793ec33c5ce6c59a89afc0584cc7df87c7593183936fc1beee1fa7df0e",
+  "host-test.txt": "c64a02bd78a3c66b3b5fde3a1b8c70e581b3860918c4e8bdd8e4d5052401ac3e",
+  "vice.mon": "01e5ae13c394162e5333caa43be6f7b76a2444004013ca3bbd04e8c0ab1ac239",
+  "reference.snapshots": "f2815915515cf792679f480d932b92d8a28296ba9907b2aa2606e613d03a23c0",
+  "reference.trace": "ed6e9f5f284e1c445776e3711bd13063ecc75bec444c525640e7331fdafdfd68",
+  "vice-hardware-stack.bin": "140ea0fcc6de5de036658b2e69f15d8b3f70ed86249b576fadc491c63b92eb70",
+  "vice.log": "a20027a0bef02796656ec0423989dc0e251da616af8a37b24dc4c6b634eb5d24"
+}

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "scenarios.h"
+#include "state_digest.h"
+#include "reference_vectors.h"
 int main(void) {
     uint32_t a,b;
     uint8_t n;
@@ -15,6 +17,8 @@ int main(void) {
         assert(agc_to_int((agc_word)a)==signed_value);
         assert(agc_correct(agc_extend((agc_word)a))==a);
         assert(agc_negate(agc_negate((agc_word)a))==a);
+        assert(agc_classify((agc_word)a)==(a==0 ? AGC_PLUS_ZERO :
+               a==32767u ? AGC_MINUS_ZERO : a>=16384u ? AGC_NEGATIVE : AGC_POSITIVE));
         assert(agc_diminished_abs((agc_word)a)==(magnitude ? magnitude-1u : 0));
         assert(agc_compare((agc_word)a,agc_from_int(signed_value))==0);
         for(b=0;b<16;++b) {
@@ -41,6 +45,7 @@ int main(void) {
         r=s.complete ? exec_endjob_select(&s.state) :
             (int)exec_admit(&s.state,s.priority,s.location,s.bank,s.needs_vac);
         assert(scenario_expected(n,&s.state,r));
+        assert(state_digest(&s.state,r)==reference_digest[n]);
     }
     exec_init(&initialized);
     assert(exec_admit(&initialized,0,0,0,0)==EXEC_OUT_OF_SCOPE);

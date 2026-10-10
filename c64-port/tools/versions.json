@@ -1,0 +1,35 @@
+{
+  "apollo_upstream": {
+    "repository": "https://github.com/chrislgarry/Apollo-11",
+    "commit": "911e5c0283c629c50cb97666f34065e8c07d71a5"
+  },
+  "virtualagc": {
+    "repository": "https://github.com/virtualagc/virtualagc",
+    "commit": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+    "executive_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+    "fixture_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+  },
+  "llvm_mos_sdk": {
+    "version": "v23.3.0",
+    "url": "https://github.com/llvm-mos/llvm-mos-sdk/releases/download/v23.3.0/llvm-mos-linux.tar.xz",
+    "sha256": "9f694497bc93a7c876d8c62325c7d74e7860346d80fbcd0555e19ba6856658c8",
+    "compiler_commit": "cd9145597347753c7cabd1c34d24722d4d8a8f96",
+    "compiler_version": "24.0.0git"
+  },
+  "vice": {
+    "version": "3.7.1",
+    "ubuntu_package": "3.7.1+dfsg1-2build3",
+    "rom_repository": "https://github.com/VICE-Team/svn-mirror",
+    "rom_commit": "e9dd3c16934a661abd83e4589b44d60240e84191",
+    "rom_sha256": {
+      "kernal-901227-03.bin": "83c60d47047d7beab8e5b7bf6f67f80daa088b7a6a27de0d7e016f6484042721",
+      "basic-901226-01.bin": "89878cea0a268734696de11c4bae593eaaa506465d2029d619c0e0cbccdfa62d",
+      "chargen-901225-01.bin": "fd0d53b8480e86163ac98998976c72cc58d5dd8eb824ed7b829774e74213b420"
+    }
+  },
+  "host": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "make": "GNU Make 4.3",
+    "python": "Python 3.12.14"
+  }
+}

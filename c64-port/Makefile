@@ -3,16 +3,18 @@ MOS_CC ?= mos-c64-clang
 CFLAGS ?= -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic
 CPPFLAGS = -Iinclude -Itests
 CORE = src/agc_word.c src/executive.c
-SCENARIOS = tests/scenarios.c
-HEADERS = include/agc_word.h include/executive.h tests/scenarios.h
+SCENARIOS = tests/scenarios.c tests/state_digest.c
+HEADERS = include/agc_word.h include/executive.h tests/scenarios.h tests/state_digest.h tests/reference_vectors.h
 .PHONY: all test c64 sanitize clean differential
-all: build/test-host build/snapshot
+all: build/test-host build/snapshot build/arithmetic-dump
 build:
 	mkdir -p build
 build/test-host: $(CORE) $(SCENARIOS) tests/test_host.c $(HEADERS) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CORE) $(SCENARIOS) tests/test_host.c -o $@
 build/snapshot: $(CORE) $(SCENARIOS) platform/host/snapshot.c $(HEADERS) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CORE) $(SCENARIOS) platform/host/snapshot.c -o $@
+build/arithmetic-dump: src/agc_word.c tests/arithmetic_dump.c tests/arithmetic_stream.h include/agc_word.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) src/agc_word.c tests/arithmetic_dump.c -o $@
 test: all
 	./build/test-host
 sanitize: | build

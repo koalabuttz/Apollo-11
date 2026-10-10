@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Compare native outputs with ORIGINAL Executive running in Virtual AGC."""
 import argparse
+import hashlib
 import pathlib
 import subprocess
 import sys
@@ -42,3 +43,9 @@ if errors:
     print('\n'.join(errors)); sys.exit(1)
 print('PASS: 26 original-assembly scenarios; 323 AGC state words plus alarm and status per scenario agree')
 print('Boundaries: ENDFIND / BAILOUT1 / CHANJOB-2 / DUMMYJOB entry; no restart or dispatch claim')
+native_arith=subprocess.run(['./build/arithmetic-dump'],cwd=ROOT,capture_output=True,check=True).stdout
+reference_arith=subprocess.run(['./build/reference-runner','--arithmetic'],cwd=ROOT,capture_output=True,check=True).stdout
+if len(native_arith)!=1245184 or native_arith!=reference_arith:
+    sys.exit('FAIL: Virtual AGC arithmetic helper comparison')
+print('PASS: 32768 sign extensions, 65536 overflow corrections, 524288 accumulator additions against Virtual AGC helper API')
+print('Arithmetic binary stream SHA256: '+hashlib.sha256(reference_arith).hexdigest())

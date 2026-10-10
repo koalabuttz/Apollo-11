@@ -1,0 +1,5 @@
+004536,000974:                                                                                          	# ACTIVE VEHICLERASABLE_ASSIGNMENTS.agc:1001: Warning: May overflow memory bank.
+Warning: May overflow memory bank.:
+Unresolved symbols:  0
+Fatal errors:  0
+Warnings:  1

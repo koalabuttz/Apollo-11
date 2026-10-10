@@ -1,0 +1,18 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/executive.prg" 0
+watch store c008
+watch store c000
+ignore 2 1
+g 080d
+stopwatch reset
+g
+stopwatch
+delete 1
+g
+m c000 c008
+bsave "/workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice-mailbox.bin" 0 c000 c008
+bsave "/workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/scratch/81e2ab9955d9/Apollo-11/c64-port/build/vice-software-stack.bin" 0 c100 cfff
+screen
+quit

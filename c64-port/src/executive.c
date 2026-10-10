@@ -19,7 +19,7 @@ void exec_init(executive *s) {
 enum exec_status exec_admit(executive *s, agc_word priority,
                            agc_word location, agc_word bank, int needs_vac) {
     uint8_t i, candidate;
-    agc_word scratch_l=0, scratch_a;
+    agc_word scratch_l=s->newloc[1], scratch_a;
     agc_register difference;
     if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
     if (priority == 0 || (priority & UINT16_C(0140777)) != 0 ||

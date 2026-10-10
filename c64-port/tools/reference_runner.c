@@ -7,6 +7,10 @@
 #include <string.h>
 #include "agc_engine.h"
 #include "scenarios.h"
+#define ARITH_EXTEND(x) SignExtend((int16_t)(x))
+#define ARITH_CORRECT(x) OverflowCorrected(x)
+#define ARITH_ADD(a,b) AddSP16(a,b)
+#include "arithmetic_stream.h"
 void BacktraceAdd(agc_t *s,int cause) { (void)s; (void)cause; }
 int ChannelInput(agc_t *s) { (void)s; return 0; }
 void ChannelOutput(agc_t *s,int c,int v) { (void)s; (void)c; (void)v; }
@@ -24,6 +28,7 @@ int main(int argc,char **argv) {
     scenario s;
     unsigned n,i,j;
     if(argc!=2) { fprintf(stderr,"usage: reference-runner ROM\n"); return 2; }
+    if(strcmp(argv[1],"--arithmetic")==0) return arithmetic_stream();
     for(n=0;n<SCENARIO_COUNT;++n) {
         unsigned alarm=0,pc=0;
         int result=0;
