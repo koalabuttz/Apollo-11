@@ -14,7 +14,10 @@ dispatch epilogue writes scratch debris into core-zero LOC/BANKSET.
 defines representations and necessary arithmetic. `platform/host` provides
 snapshot transport. `platform/c64` provides diagnostic I/O and RAM mailboxes.
 `src/native_dispatch.c` provides a cooperative native callback trampoline.
-There is no timer, general OS-service layer or IRQ bridge yet. Interfaces are explicit C structures/functions suitable for later
+`src/irq_delivery.c` buffers IRQ-origin admission requests; optional platform
+guards protect foreground mutation. The C64 raster harness preserves compiler
+registers and uses a separate ISR stack (IRQ.md). There is no WAITLIST timer or
+general OS-service layer. Interfaces are explicit structures/functions suitable for later
 component-by-component Rust replacement; no Rust is included.
 
 ## Core sets and priority representation
@@ -92,7 +95,8 @@ EXECTEM1/2, FIXLOC, OVFIND, BUF..BUF+2, and the saved context arrays. Full suppo
 also needs constants LOW9, TWO, NEG2, ZERO, bank masks, DSALMOUT, SELFRET, and
 SELFCHK. ENDFIND restores the caller's bank; it does not RELINT. A caller must
 restore interrupt permission according to its context. The native caller is
-responsible for exclusion; this milestone is single-threaded.
+responsible for exclusion at raw primitive entry; bound native wrappers provide
+it for one foreground caller and one non-nested IRQ producer. See IRQ.md.
 
 Implicit semantics that mattered in this translation: CCS distinguishes both
 zeros and sets diminished absolute value; INDEX accepts -0 as a zero index;

@@ -1,1 +1,4 @@
-/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -Wall -Wextra -Werror -Wl,-Map,build/executive.map src/agc_word.c src/executive.c src/native_dispatch.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/c64/main.c -o build/executive.prg
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -Wall -Wextra -Werror -Wl,-Map,build/executive.map src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/c64/main.c -o build/executive.prg
+make: Nothing to be done for 'c64-irq'.
+mkdir -p build
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -Iplatform/c64 -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/irq.map src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/c64/irq_diagnostic.c platform/c64/irq_platform.c platform/c64/irq_gate.S -o build/irq.prg

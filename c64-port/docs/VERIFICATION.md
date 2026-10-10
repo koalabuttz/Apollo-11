@@ -38,13 +38,15 @@ paths. The portable commands are:
 
 | Command | Actual result | Evidence |
 |---|---|---|
-| `make test` | PASS; 32768 word encodings, 65536 register encodings, 524288 word-addition pairs, 26 Executive scenarios, 53 dispatch cases / 109 checkpoints, eight native two-job sequences | `evidence/host-test.txt` |
+| `make test` | PASS; numerical/26 Executive tests, 53 dispatch cases / 109 checkpoints, eight native sequences; IRQ guards/FIFO/wrap/fault suite | `evidence/host-test.txt` |
 | `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/sanitize.txt` |
 | `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, original Executive identity checked, fixture assembled | `evidence/prepare-reference.txt`, `evidence/assembly-summary.txt` |
 | `make differential REFERENCE=/path/to/fixture` | PASS; 26 admission/completion and 109 dispatch full-state/target comparisons; numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
 | `python3 tools/freeze_vectors.py` | 26 admission/completion and 109 dispatch fingerprints generated | Header records snapshot SHA256 |
 | `make c64 MOS_CC=/path/to/mos-c64-clang` | PASS; native PRG + ELF + link map | `evidence/c64-build.txt`, `executive.prg`, `executive.map` |
 | `python3 tools/vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; native C64 execution, 135 state fingerprints, eight two-job sequences | `evidence/vice-result.txt`, `vice-monitor.log`, `vice.log`, RAM dumps |
+| `make c64-irq MOS_CC=/path/to/mos-c64-clang` | PASS; dynamic-frame, restricted-ZP IRQ PRG and map | `evidence/c64-build.txt`, `irq.prg`, `irq.map` |
+| `python3 tools/irq_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; nine real raster IRQs, interrupted C, register/stack/decimal checks, eight reference checkpoints, overflow/masking and 74 timings | `evidence/irq-result.txt`, `irq-timing.json`, IRQ monitor/log/dumps |
 | `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes | `evidence/source-preservation.txt` |
 
 LeakSanitizer's default process inspection failed in this container (`/proc/...`
@@ -176,6 +178,34 @@ The screen prints `26 EXEC + 53 DISPATCH CASES PASS` and
 `8 NATIVE TWO-JOB SEQUENCES PASS`. The latest ROM/PRG hashes and
 link-map details accompany the evidence. No real C64 has been tested.
 
+## Bounded IRQ delivery verification
+
+The IRQ host suite uses explicit simulated producer entry and exclusion, not
+host threads. It verifies full-state equality with ordinary admission over 600
+starting-ticket cases, byte wrap and FIFO order, admission only at safe points,
+idle startup, higher-priority exchange and restored job data. Overflow retains
+four entries and saturates rejected count; failed delivery preserves exact
+1201/1202 state, including the pre-1202 VAC reservation. Invalid/unmapped inputs,
+pending bailout and callbacks that fault through a helper are covered. Both
+the original host test and IRQ suite run under ASan/UBSan.
+
+The separate target harness actually installs a finite VIC raster source through
+the stock KERNAL vector, then removes it. It records nine events: one register /
+decimal poison probe, two interrupts during live C arithmetic, five events for
+overflow, and one delayed by masked foreground work. The source cannot mutate
+Executive state; only guarded foreground calls admit requests. The checked
+two-job run reuses eight original-derived saved-state fingerprints, while a
+second run excludes hashing from measured latency. ISR volatile locals exercise
+the isolated stack, and KERNAL jiffy advancement checks continued timer service.
+
+The helper checks `a5000008094a20` at $c020: done, two zero failure bytes, eight
+reference checkpoints, nine IRQs, 74 timing intervals and a 32-byte queue. All
+179 marker events must appear in order; missing delivery hits the emulator
+cycle limit or timeout. Linked extra ZP allocation fails the helper. JSON retains
+every operation interval, IRQ interval, latency boundary and stack observation.
+IRQ.md describes ownership/ABI constraints; PERFORMANCE.md reports the retained
+measurements and the excluded portions of hardware entry/exit.
+
 ## Review limits and unavailable checks
 
 The source review identified the inclusive CCS counter, complete packed-word
@@ -184,6 +214,6 @@ reference tests exposed and corrected implementation mistakes before handoff.
 There was no independent human/second-agent review in this session.
 
 Unavailable: mission replay, actual landing computations, interpreter context
-dispatch, concurrent interrupt integration, alarm side effects/restarts, exhaustive
+dispatch, general/multi-source or NMI interrupt integration, alarm side effects/restarts, exhaustive
 Executive state-space comparison, hardware run, and end-to-end flight deadlines.
 These remain explicitly incomplete rather than being replaced with passing mocks.

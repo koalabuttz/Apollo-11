@@ -14,7 +14,8 @@ enum exec_core_field { EXEC_MPAC=0, EXEC_MODE=7, EXEC_LOC=8, EXEC_BANK=9,
                        EXEC_PUSH=10, EXEC_PRIORITY=11 };
 enum exec_status { EXEC_OK=0, EXEC_NO_VAC=01201, EXEC_NO_CORE=01202,
                    EXEC_OUT_OF_SCOPE=1, EXEC_BAILOUT_PENDING=2,
-                   EXEC_IDLE=3, EXEC_UNMAPPED=4, EXEC_INVALID_ACTION=5 };
+                   EXEC_IDLE=3, EXEC_UNMAPPED=4, EXEC_INVALID_ACTION=5,
+                   EXEC_QUEUE_FULL=6 };
 typedef struct { agc_word location, bank; } exec_address;
 typedef struct {
     agc_word core[EXEC_CORE_COUNT][EXEC_CORE_WORDS];

@@ -7,7 +7,7 @@ The same saved state and selected historical 2CADRs match controlled executions
 of the unchanged original Executive at 109 checkpoints.
 
 This executes small native C demonstration jobs. Apollo guidance jobs,
-interpreter continuations, interrupt-origin requests, idle self-check, activity
+interpreter continuations, idle self-check, activity
 lamp hardware, WAITLIST and restart/recovery remain outside this milestone.
 
 ## Context exchange
@@ -131,14 +131,16 @@ for all eight sequences; it also repeats three representative timed paths.
 
 ## Interrupt and timing boundary
 
-This milestone is cooperative and single-threaded. The platform caller owns
-exclusion around Executive mutations; no application IRQ handler may call or
-mutate these APIs. Stock C64 KERNAL IRQs remain active for the console diagnostic
-and do not enqueue jobs. AGC INHINT/RELINT are not modeled as global C64 SEI/CLI.
-Callbacks execute ordinary C code and yield only at their declared returns.
+The subsequent IRQ milestone adds optional bound platform guards and a four-entry
+admission-request buffer. IRQs publish only; foreground start/step/poll/admit
+drain under exclusion. Admission preserves cooperative dispatch: callbacks still
+yield only at declared returns. Callback-owned admission uses `exec_native_admit`
+when IRQs are bound, and `exec_native_poll` provides an explicit admission safe
+point without dispatch. Raw Executive mutations require caller-owned exclusion.
 
-The next milestone must establish platform exclusion wrappers, preservation of
-LLVM-MOS imaginary registers, request delivery safe points and measured bounds
-before accepting interrupt-origin jobs. Four native timing samples and stack
-sentinels are recorded in PERFORMANCE.md. They cover long scans and an exchange,
-but do not prove a worst-case execution time or interrupt-latency bound.
+See IRQ.md for single-producer ownership, LLVM-MOS preservation and overflow /
+resource-fault behavior. The original console diagnostic leaves its runtime
+unbound; the separate raster diagnostic exercises real application IRQs.
+AGC INHINT/RELINT are not modeled as global C64 SEI/CLI. PERFORMANCE.md records
+both artifacts and timing boundaries. No unconditional request-latency deadline
+or flight worst-case execution bound is claimed.

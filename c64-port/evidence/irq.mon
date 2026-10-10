@@ -1,0 +1,553 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/irq.prg" 0
+watch store c030
+watch store c020
+ignore 2 1
+stopwatch reset
+g 080d
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+g
+m c030 c032
+stopwatch
+delete 1
+g
+m c020 c026
+bsave "/workspace/Apollo-11/c64-port/build/irq-mailbox.bin" 0 c020 c026
+bsave "/workspace/Apollo-11/c64-port/build/irq-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/irq-software-stack.bin" 0 c100 cfff
+bsave "/workspace/Apollo-11/c64-port/build/irq-isolated-stack.bin" 0 60a8 61a7
+screen
+quit

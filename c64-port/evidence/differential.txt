@@ -1,6 +1,3 @@
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/test_host.c -o build/test-host
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/snapshot.c -o build/snapshot
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/dispatch_snapshot.c -o build/dispatch-snapshot
 python3 tools/differential.py --reference "/workspace/Apollo-11/c64-port/deps/fixture"
 PASS: 26 original-assembly scenarios; 323 AGC state words plus alarm and status per scenario agree
 Boundaries: ENDFIND / BAILOUT1 / CHANJOB-2 / DUMMYJOB entry; no restart or dispatch claim
