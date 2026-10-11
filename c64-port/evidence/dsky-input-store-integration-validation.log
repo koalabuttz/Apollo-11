@@ -1,0 +1,5 @@
+build/test-dsky-input-store
+LM+CM input store:64 full source states,16 atomic guard states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_noun_check.c src/dsky_input_select.c src/dsky_input_store.c tests/p66_bias_cases.c tests/dsky_input_store_cases.c tests/dsky_input_store_check.c tests/test_dsky_input_store.c -o build/test-dsky-input-store-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-input-store-sanitize
+LM+CM input store:64 full source states,16 atomic guard states,0 failures

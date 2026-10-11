@@ -973,3 +973,5 @@ test: test-sband-length
 sanitize: sanitize-sband-length
 
 include tools/dsky_input_select.mk
+
+include tools/dsky_input_store.mk

@@ -1458,3 +1458,7 @@ Translate actual ABVAL vector length composition against327680 complete original
 ## Translate original operator scaling selectors and bit shifts
 
 Qualify8192 full original native sanitizer states and64 C64 states through actual scale selection helpers and raw overflow sensitive five-bit shifts. See `docs/DSKY-INPUT-SELECT.md`.
+
+## Translate original operator input component stores
+
+Qualify8192 full original native sanitizer states and64 C64 states through actual normal DP and indexed component stores retaining genuine decimal scaling and channel load frontiers. See `docs/DSKY-INPUT-STORE.md`.
