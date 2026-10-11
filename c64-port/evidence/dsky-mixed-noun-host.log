@@ -1,0 +1,3 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_mixed_noun.c tests/p66_bias_cases.c tests/dsky_mixed_noun_cases.c tests/dsky_mixed_noun_check.c tests/test_dsky_mixed_noun.c -o build/test-dsky-mixed-noun
+build/test-dsky-mixed-noun
+LM+CM mixed noun exchange:64 full source states,0 failures

@@ -1328,3 +1328,7 @@ A clean isolated export of exact commit`b1d8299` builds and passes every registe
 The generalized noun-table caller and source row pipeline match18,688 uninterrupted complete original/native/full-sanitizer states across512 noun40 and128 noun85 paths. All64 frozen caller states and108 unchanged guards pass, with actual C64 caller execution. Whole-chain host composition, downstream clock mission integration and display device acceptance remain separately identified. See `docs/COMANCHE-NORMAL-N40.md`.
 
 The authenticated GitHub branch reference was verified at `ce0b34613c05ae31ffc4eae5dc8364a053734d38`, including 217 exact milestone trees through normal Comanche noun40/noun85 display composition `206c1ae`. The immutable record is `evidence/github-milestone-publication-217-audit.json`. Native application completion remains governed by the coverage and integrated-application gates.
+
+## Translate original Luminary and Comanche mixed noun selection
+
+Actual MIXNOUN source scaling selection and noun addressing match8,192 complete original/native/full-sanitizer states and64 actual C64 states. The mission-specific routine13 difference is preserved: Luminary360-CDU uses a single word while Comanche DPFRACOT uses a double-word minor. Subsequent verb and request continuations remain separate. See `docs/DSKY-MIXED-NOUN.md`.

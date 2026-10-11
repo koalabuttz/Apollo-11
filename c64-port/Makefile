@@ -701,3 +701,5 @@ include tools/dsky_enter_zero.mk
 include tools/lm_recurrence_integration.mk
 
 include tools/cm_normal_display.mk
+
+include tools/dsky_mixed_noun.mk

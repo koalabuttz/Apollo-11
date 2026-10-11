@@ -982,3 +982,7 @@ Literal idle-to-basic, T3-vector-to-task and TASKOVER architectural RESUME trans
 ## Compose original Comanche normal noun40 and noun85 display source paths
 
 The generalized noun-table caller and source row pipeline match18,688 uninterrupted complete original/native/full-sanitizer states across512 noun40 and128 noun85 paths. All64 frozen caller states and108 unchanged guards pass, with actual C64 caller execution. Whole-chain host composition, downstream clock mission integration and display device acceptance remain separately identified. See `docs/COMANCHE-NORMAL-N40.md`.
+
+## Translate original Luminary and Comanche mixed noun selection
+
+Actual MIXNOUN source scaling selection and noun addressing match8,192 complete original/native/full-sanitizer states and64 actual C64 states. The mission-specific routine13 difference is preserved: Luminary360-CDU uses a single word while Comanche DPFRACOT uses a double-word minor. Subsequent verb and request continuations remain separate. See `docs/DSKY-MIXED-NOUN.md`.
