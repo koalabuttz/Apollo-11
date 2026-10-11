@@ -192,3 +192,5 @@ subprocess.run([sys.executable,'tools/projection_differential.py',str(reference)
 subprocess.run([sys.executable,'tools/hardware_divide_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/p66_initialization_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/throttle_feedback_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -335,3 +335,5 @@ include tools/projection.mk
 include tools/hardware_divide.mk
 
 include tools/p66_initialization.mk
+
+include tools/throttle_feedback.mk

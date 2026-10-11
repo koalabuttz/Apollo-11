@@ -326,3 +326,7 @@ The independently authored fixed-point recurrence matches 327,680 isolated origi
 ## Port source STOPRATE and FASTCHNG initialization services
 
 All 1,024 complete source checkpoints match including return-register debris, physical banks and IRQ state. Strict and sanitizer checks and 128 complete frozen C64 states pass. See `docs/P66_INITIALIZATION.md`.
+
+## Port original force feedback and throttle clamps
+
+All 16,384 complete force-feedback states match unchanged assembly with all three clamp paths covered. Full-state sanitizers and 64 complete frozen C64 cases pass. See `docs/THROTTLE_FEEDBACK.md`.
