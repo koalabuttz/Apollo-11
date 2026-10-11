@@ -610,3 +610,5 @@ subprocess.run([sys.executable,'tools/dsky_read_pair_differential.py',str(refere
 subprocess.run([sys.executable,'tools/dsky_load_request_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_two_integer_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_input_arithmetic_differential.py',str(reference)],cwd=ROOT,check=True)

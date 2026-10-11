@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_input_arithmetic-lm.prg from 0801 to 1EFD (16FD bytes)
+WATCH: 1  C:$3f06  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 3f06)   14/$00e,  57/$39
+.C:155e  8E 06 3F    STX $3F06      - A:40 X:A5 Y:00 SP:f1 N.-....C  150015531
+>C:3f06  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_arithmetic-lm-vice-mailbox.bin' from $3f06 to $3f0a
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_arithmetic-lm-vice-difference.bin' from $1efe to $1f05
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_arithmetic-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_arithmetic-lm-vice-software-stack.bin' from $c100 to $cfff

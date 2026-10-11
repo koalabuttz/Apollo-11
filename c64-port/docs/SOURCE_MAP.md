@@ -1395,3 +1395,7 @@ Translate original canonical DOT body against262144 complete original native san
 ## Compose original two-integer output and actual row handoff
 
 Qualify40960 complete original native sanitizer checkpoints and160 staged C64 states through actual fresh READLO sign blank and source even-position output controls. See `docs/DSKY-TWO-INTEGER.md`.
+
+## Translate original operator input shifts rounding and overflow tests
+
+Qualify8192 complete original native sanitizer states and64 C64 states with real retained banks raw registers signed zero and source return or alarm frontiers. See `docs/DSKY-INPUT-ARITHMETIC.md`.

@@ -960,3 +960,5 @@ test: test-sband-dot
 sanitize: sanitize-sband-dot
 
 include tools/dsky_two_integer_integration.mk
+
+include tools/dsky_input_arithmetic.mk
