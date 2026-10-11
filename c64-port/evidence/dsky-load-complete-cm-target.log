@@ -1,0 +1,5 @@
+PASS: VICE PAL, 32 complete original assembly cm dsky_load_complete states, zero failures
+Mailbox: a500002001
+PRG file/loaded bytes: 18223 18221
+hardware stack sentinel extent: 19
+software stack sentinel extent: 725

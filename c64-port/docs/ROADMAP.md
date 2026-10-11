@@ -1536,3 +1536,7 @@ Translate actual idle T3 interrupt and RESUME controls retaining2048 canonical w
 ## Compose original dormant core wake through idle interrupt and adoption
 
 Run uninterrupted JOBSLEEP idle T3 interrupt WAKER JOBWAKE core0 TASKOVER RESUME and actual CLOCKJOB adoption against4608 original strict sanitizer checkpoints and72 C64 states. See `docs/COMANCHE_IDLE_WAKE.md`.
+
+## Compose original operator load release recall wake and END lifecycle
+
+Run actual LOADLV RELDSP POSTJUMP RECALTST wake context stores and source END against8192 complete original strict sanitizer states and64 C64 checkpoints retaining matched unmatched and signed-zero paths. See `docs/DSKY-LOAD-COMPLETE.md`.

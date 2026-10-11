@@ -640,3 +640,5 @@ subprocess.run([sys.executable,'tools/dsky_input_time_differential.py',str(refer
 subprocess.run([sys.executable,'tools/cm_idle_interrupt_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_idle_wake_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_load_complete_differential.py',str(reference)],cwd=ROOT,check=True)
