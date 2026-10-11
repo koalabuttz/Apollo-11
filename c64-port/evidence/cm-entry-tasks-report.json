@@ -1,0 +1,41 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "15,3207 SETJTAG"
+  ],
+  "boundary": "actual 05324 TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "07cbe21373f1da5cc0bd13e1ed5ff3beac6f9c4da5c37c555d16c2611f1a1c0b",
+  "hardware_stack_bytes": 20,
+  "software_stack_bytes": 142,
+  "c64_cases": 1024,
+  "mailbox_hex": "a500000004",
+  "target": {
+    "prg_bytes": 22485,
+    ".text": {
+      "address": 2061,
+      "bytes": 10148
+    },
+    ".rodata": {
+      "address": 12209,
+      "bytes": 12323
+    },
+    ".data": {
+      "address": 24532,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 24532,
+      "bytes": 4204
+    },
+    ".noinit": {
+      "address": 28736,
+      "bytes": 0
+    },
+    "image_end": 28736
+  }
+}

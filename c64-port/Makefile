@@ -451,3 +451,5 @@ include tools/dsky_keycom.mk
 include tools/dsky_keyrupt.mk
 
 include tools/cm_tig5.mk
+
+include tools/cm_entry_tasks.mk

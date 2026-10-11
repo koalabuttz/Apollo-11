@@ -1,0 +1,4 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+./build/test-cm-entry-tasks
+1024 original SETJTAG full-image states, actual C callbacks and guards: PASS
+make: Leaving directory '/workspace/Apollo-11/c64-port'
