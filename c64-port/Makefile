@@ -776,3 +776,6 @@ all: build/cm-abort-snapshot-native
 
 include tools/cm_abort_whimper.mk
 all: build/cm-abort-whimper-native
+
+include tools/cm_phase_cleanup.mk
+all: build/cm-phase-cleanup-native

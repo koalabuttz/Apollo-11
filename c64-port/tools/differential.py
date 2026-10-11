@@ -520,3 +520,5 @@ subprocess.run([sys.executable,'tools/dsky_five_blank_differential.py',str(refer
 subprocess.run([sys.executable,'tools/cm_abort_snapshot_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_abort_whimper_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_phase_cleanup_differential.py',str(reference)],cwd=ROOT,check=True)

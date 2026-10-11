@@ -1,0 +1,21 @@
+{
+  "cases": 12288,
+  "checkpoints": 12288,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "MR.KLEAN05,2501",
+    "P00KLEAN05,2505",
+    "V37KLEAN05,2513"
+  ],
+  "context_cohorts": "three entries \u00d74096 randomized wholeimages, entry Ebank/SUPER/IRQ and rawregister domains",
+  "binary_bytes": 50479104,
+  "snapshot_sha256": "90642a1ec96733723fa3e586a86522e0a5e099513c9b073b5c8e0389ee8a472b",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual MR/P00/V37 cleanup, exact inactive phase(+0)/complement(-0) pairs and genuine ordinary return; selected recovery caller remains separate"
+}

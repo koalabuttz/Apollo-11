@@ -1130,3 +1130,7 @@ Qualify BAILOUT POODOO and CCSHOLE through actual VAC5 GENTRAN and BORTENT again
 ## Translate original Comanche WHIMPER resume and recovery handoff
 
 Qualify actual WHIMPER RESUME POSTJUMP and ENEMA handoff against8192 original whole-machine states and64 C64 states with explicit finite return metadata. See `docs/COMANCHE_ABORT_WHIMPER.md`.
+
+## Translate original Comanche phase cleanup recovery entries
+
+Qualify MR.KLEAN P00KLEAN and V37KLEAN source phase clearing against12288 full original native and sanitizer states plus48 C64 states preserving the inactive zero complement pair. See `docs/COMANCHE_PHASE_CLEANUP.md`.
