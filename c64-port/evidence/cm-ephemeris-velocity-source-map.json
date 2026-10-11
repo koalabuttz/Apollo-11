@@ -1,0 +1,222 @@
+{
+  "original_source": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+  "source_sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "source_line_word_map": [
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 179,
+      "label": "VEM",
+      "op": "AXT,1",
+      "arguments": "PDDL",
+      "assembled_address": "26,2173",
+      "physical_fixed_word": 22651,
+      "physical_erasable_word": null,
+      "words": [
+        27384
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 180,
+      "label": "",
+      "op": "48D",
+      "arguments": "",
+      "assembled_address": "26,2174",
+      "physical_fixed_word": 22652,
+      "physical_erasable_word": null,
+      "words": [
+        48
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 181,
+      "label": "",
+      "op": "NINEB4",
+      "arguments": "",
+      "assembled_address": "26,2175",
+      "physical_fixed_word": 22653,
+      "physical_erasable_word": null,
+      "words": [
+        6284
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 182,
+      "label": "",
+      "op": "PUSH",
+      "arguments": "VXSC",
+      "assembled_address": "26,2176",
+      "physical_fixed_word": 22654,
+      "physical_erasable_word": null,
+      "words": [
+        30854
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 183,
+      "label": "",
+      "op": "VECOEM",
+      "arguments": "",
+      "assembled_address": "26,2177",
+      "physical_fixed_word": 22655,
+      "physical_erasable_word": null,
+      "words": [
+        1055
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 184,
+      "label": "VEMA",
+      "op": "VXSC",
+      "arguments": "",
+      "assembled_address": "26,2200",
+      "physical_fixed_word": 22656,
+      "physical_erasable_word": null,
+      "words": [
+        32753
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 185,
+      "label": "",
+      "op": "0D",
+      "arguments": "",
+      "assembled_address": "26,2201",
+      "physical_fixed_word": 22657,
+      "physical_erasable_word": null,
+      "words": [
+        1
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 187,
+      "label": "",
+      "op": "STODL",
+      "arguments": "4D",
+      "assembled_address": "26,2202",
+      "physical_fixed_word": 22658,
+      "physical_erasable_word": null,
+      "words": [
+        6149
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 188,
+      "label": "",
+      "op": "DSU",
+      "arguments": "PUSH",
+      "assembled_address": "26,2203",
+      "physical_fixed_word": 22659,
+      "physical_erasable_word": null,
+      "words": [
+        17173
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 189,
+      "label": "",
+      "op": "ONEB4",
+      "arguments": "",
+      "assembled_address": "26,2204",
+      "physical_fixed_word": 22660,
+      "physical_erasable_word": null,
+      "words": [
+        6286
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 190,
+      "label": "",
+      "op": "VXSC*",
+      "arguments": "VAD",
+      "assembled_address": "26,2205",
+      "physical_fixed_word": 22661,
+      "physical_erasable_word": null,
+      "words": [
+        22255
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 191,
+      "label": "",
+      "op": "VECOEM",
+      "arguments": "+54D,1",
+      "assembled_address": "26,2206",
+      "physical_fixed_word": 22662,
+      "physical_erasable_word": null,
+      "words": [
+        1109
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 192,
+      "label": "",
+      "op": "4D",
+      "arguments": "",
+      "assembled_address": "26,2207",
+      "physical_fixed_word": 22663,
+      "physical_erasable_word": null,
+      "words": [
+        5
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 193,
+      "label": "",
+      "op": "TIX,1",
+      "arguments": "VSL2",
+      "assembled_address": "26,2210",
+      "physical_fixed_word": 22664,
+      "physical_erasable_word": null,
+      "words": [
+        30016
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 194,
+      "label": "",
+      "op": "VEMA",
+      "arguments": "",
+      "assembled_address": "26,2211",
+      "physical_fixed_word": 22665,
+      "physical_erasable_word": null,
+      "words": [
+        22656
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 195,
+      "label": "",
+      "op": "RVQ",
+      "arguments": "",
+      "assembled_address": "26,2212",
+      "physical_fixed_word": 22666,
+      "physical_erasable_word": null,
+      "words": [
+        32654
+      ]
+    }
+  ],
+  "group_words": 16,
+  "scope": "Original VEM/VEMA eighth-degree lunar derivative Horner loop, VSL2 and RVQ through actual orbital integration caller; earlier LUNPOS time path uses independently qualified composition. Other entry bodies remain open.",
+  "arithmetic_dependencies": [
+    "evidence/cm-ephemeris-time-proof.json",
+    "evidence/sband-linear-proof.json",
+    "evidence/sband-shift-proof.json"
+  ]
+}

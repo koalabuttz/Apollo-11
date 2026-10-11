@@ -1,0 +1,12 @@
+cc -Iinclude -Itests  tests/test_cm_ephemeris_velocity.c tests/cm_ephemeris_velocity_target.c tests/frozen_words.c src/cm_ephemeris_velocity.c src/cm_ephemeris_time.c src/ephemeris_time_scale.c src/ephemeris_shift.c src/ephemeris_add.c src/interpreted_sign.c src/sband_scalar.c src/sband_vector_linear.c src/sband_shift.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_ephemeris_time_cases.c -o build/test-cm-ephemeris-velocity
+./build/test-cm-ephemeris-velocity
+PASS64 complete original LUNPOS polynomial and return states and19 immutable image guards plus two null guards
+python3 tools/cm_ephemeris_velocity_host.py --cc "cc"
+PASS all retained source-state bytes: 269090816 SHA256 f2c3bc5523c28de6737ac8bf3b358e06c1eaeaf55d96ae3c8d8f7f704ca11572
+PASS65536 complete original LUNPOS polynomial and return states strict native
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_cm_ephemeris_velocity.c tests/cm_ephemeris_velocity_target.c tests/frozen_words.c src/cm_ephemeris_velocity.c src/cm_ephemeris_time.c src/ephemeris_time_scale.c src/ephemeris_shift.c src/ephemeris_add.c src/interpreted_sign.c src/sband_scalar.c src/sband_vector_linear.c src/sband_shift.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_ephemeris_time_cases.c -o build/test-cm-ephemeris-velocity-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-ephemeris-velocity-integrated-san
+PASS64 complete original LUNPOS polynomial and return states and19 immutable image guards plus two null guards
+python3 tools/cm_ephemeris_velocity_host.py --cc "cc" --sanitize
+PASS all retained source-state bytes: 269090816 SHA256 f2c3bc5523c28de6737ac8bf3b358e06c1eaeaf55d96ae3c8d8f7f704ca11572
+PASS65536 complete original LUNPOS polynomial and return states full ASAN/UBSAN

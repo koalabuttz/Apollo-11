@@ -1571,3 +1571,7 @@ Compose actual M/SOUT fresh read clamp SEPSEC SEPMIN signed displays middle blan
 ## Translate original IMU mode controls and return continuations
 
 Translate twenty original IMU local bodies per mission and actual source handoffs against2621440 complete original strict sanitizer states and1280 C64 checkpoints preserving asynchronous caller boundaries. See `docs/NATIVE-IMU-MODE-CONTROL.md`.
+
+## Compose original Comanche lunar velocity polynomial and orbital return
+
+Translate actual LUNVEL time entry eighth-degree derivative vector polynomial and original ORIGCHNG return against65536 complete original strict sanitizer states and64 C64 states without changing frozen arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-VELOCITY.md`.
