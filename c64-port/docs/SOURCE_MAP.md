@@ -1547,3 +1547,7 @@ Translate DSPFMEM DATACALL and ENDSPF across every physical fixed word against24
 ## Translate original operator load caller stores in both missions
 
 Translate genuine PUTXYZ PUTXY and single caller stores and noun7 flags against8192 complete original strict sanitizer states and64 C64 checkpoints preserving actual PUTCOM LOADLV and ALMCYCLE frontiers. See `docs/DSKY-LOAD-STORE.md`.
+
+## Translate original IMU standby and time recovery in both missions
+
+Translate every remaining79 local IMU source words per mission including standby flags scaler return ABI and time recovery against2752512 original strict sanitizer states and1344 C64 checkpoints with true external hardware and service frontiers. See `docs/NATIVE-IMU-STANDBY.md`.

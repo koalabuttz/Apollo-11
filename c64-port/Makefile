@@ -1073,3 +1073,5 @@ sanitize: sanitize-sband-plane
 include tools/dsky_fixed_display_integration.mk
 
 include tools/dsky_load_store.mk
+
+include tools/imu_standby_integration.mk

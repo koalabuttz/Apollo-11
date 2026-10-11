@@ -1,0 +1,1323 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [],
+    "source_group_words": 79,
+    "words": [
+      {
+        "original_line": 954,
+        "bank": "37",
+        "address": "3655",
+        "physical_fixed_word": 32685,
+        "raw_octal": "05504",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 955,
+        "bank": "37",
+        "address": "3656",
+        "physical_fixed_word": 32686,
+        "raw_octal": "00054",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 957,
+        "bank": "37",
+        "address": "3657",
+        "physical_fixed_word": 32687,
+        "raw_octal": "00004",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 958,
+        "bank": "37",
+        "address": "3660",
+        "physical_fixed_word": 32688,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 959,
+        "bank": "37",
+        "address": "3661",
+        "physical_fixed_word": 32689,
+        "raw_octal": "30025",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 960,
+        "bank": "37",
+        "address": "3662",
+        "physical_fixed_word": 32690,
+        "raw_octal": "52315",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 961,
+        "bank": "37",
+        "address": "3663",
+        "physical_fixed_word": 32691,
+        "raw_octal": "03714",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 962,
+        "bank": "37",
+        "address": "3664",
+        "physical_fixed_word": 32692,
+        "raw_octal": "03657",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 963,
+        "bank": "37",
+        "address": "3665",
+        "physical_fixed_word": 32693,
+        "raw_octal": "52155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 964,
+        "bank": "37",
+        "address": "3666",
+        "physical_fixed_word": 32694,
+        "raw_octal": "52317",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 965,
+        "bank": "37",
+        "address": "3667",
+        "physical_fixed_word": 32695,
+        "raw_octal": "00004",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 966,
+        "bank": "37",
+        "address": "3670",
+        "physical_fixed_word": 32696,
+        "raw_octal": "04616",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 967,
+        "bank": "37",
+        "address": "3671",
+        "physical_fixed_word": 32697,
+        "raw_octal": "17175",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 969,
+        "bank": "37",
+        "address": "3672",
+        "physical_fixed_word": 32698,
+        "raw_octal": "05516",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 970,
+        "bank": "37",
+        "address": "3673",
+        "physical_fixed_word": 32699,
+        "raw_octal": "00007",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 971,
+        "bank": "37",
+        "address": "3674",
+        "physical_fixed_word": 32700,
+        "raw_octal": "05516",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 972,
+        "bank": "37",
+        "address": "3675",
+        "physical_fixed_word": 32701,
+        "raw_octal": "00010",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 974,
+        "bank": "37",
+        "address": "3676",
+        "physical_fixed_word": 32702,
+        "raw_octal": "34741",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 975,
+        "bank": "37",
+        "address": "3677",
+        "physical_fixed_word": 32703,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 976,
+        "bank": "37",
+        "address": "3700",
+        "physical_fixed_word": 32704,
+        "raw_octal": "05013",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 978,
+        "bank": "37",
+        "address": "3701",
+        "physical_fixed_word": 32705,
+        "raw_octal": "05353",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 979,
+        "bank": "37",
+        "address": "3702",
+        "physical_fixed_word": 32706,
+        "raw_octal": "07024",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 980,
+        "bank": "37",
+        "address": "3703",
+        "physical_fixed_word": 32707,
+        "raw_octal": "20000",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 982,
+        "bank": "37",
+        "address": "3704",
+        "physical_fixed_word": 32708,
+        "raw_octal": "03734",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 982,
+        "bank": "37",
+        "address": "3705",
+        "physical_fixed_word": 32709,
+        "raw_octal": "76060",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 984,
+        "bank": "37",
+        "address": "3706",
+        "physical_fixed_word": 32710,
+        "raw_octal": "34774",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 985,
+        "bank": "37",
+        "address": "3707",
+        "physical_fixed_word": 32711,
+        "raw_octal": "04616",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 986,
+        "bank": "37",
+        "address": "3710",
+        "physical_fixed_word": 32712,
+        "raw_octal": "20623",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 987,
+        "bank": "37",
+        "address": "3711",
+        "physical_fixed_word": 32713,
+        "raw_octal": "13706",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 988,
+        "bank": "37",
+        "address": "3712",
+        "physical_fixed_word": 32714,
+        "raw_octal": "13706",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 989,
+        "bank": "37",
+        "address": "3713",
+        "physical_fixed_word": 32715,
+        "raw_octal": "13706",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1005,
+        "bank": "37",
+        "address": "3714",
+        "physical_fixed_word": 32716,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1006,
+        "bank": "37",
+        "address": "3715",
+        "physical_fixed_word": 32717,
+        "raw_octal": "22156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1007,
+        "bank": "37",
+        "address": "3716",
+        "physical_fixed_word": 32718,
+        "raw_octal": "04103",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1008,
+        "bank": "37",
+        "address": "3717",
+        "physical_fixed_word": 32719,
+        "raw_octal": "00003",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1009,
+        "bank": "37",
+        "address": "3720",
+        "physical_fixed_word": 32720,
+        "raw_octal": "52155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1010,
+        "bank": "37",
+        "address": "3721",
+        "physical_fixed_word": 32721,
+        "raw_octal": "34747",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1011,
+        "bank": "37",
+        "address": "3722",
+        "physical_fixed_word": 32722,
+        "raw_octal": "54001",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1012,
+        "bank": "37",
+        "address": "3723",
+        "physical_fixed_word": 32723,
+        "raw_octal": "34755",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1013,
+        "bank": "37",
+        "address": "3724",
+        "physical_fixed_word": 32724,
+        "raw_octal": "20155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1014,
+        "bank": "37",
+        "address": "3725",
+        "physical_fixed_word": 32725,
+        "raw_octal": "44346",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1015,
+        "bank": "37",
+        "address": "3726",
+        "physical_fixed_word": 32726,
+        "raw_octal": "70155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1016,
+        "bank": "37",
+        "address": "3727",
+        "physical_fixed_word": 32727,
+        "raw_octal": "56155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1017,
+        "bank": "37",
+        "address": "3730",
+        "physical_fixed_word": 32728,
+        "raw_octal": "74346",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1020,
+        "bank": "37",
+        "address": "3731",
+        "physical_fixed_word": 32729,
+        "raw_octal": "10000",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1021,
+        "bank": "37",
+        "address": "3732",
+        "physical_fixed_word": 32730,
+        "raw_octal": "24156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1022,
+        "bank": "37",
+        "address": "3733",
+        "physical_fixed_word": 32731,
+        "raw_octal": "00156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1033,
+        "bank": "37",
+        "address": "3734",
+        "physical_fixed_word": 32732,
+        "raw_octal": "44741",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1034,
+        "bank": "37",
+        "address": "3735",
+        "physical_fixed_word": 32733,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1035,
+        "bank": "37",
+        "address": "3736",
+        "physical_fixed_word": 32734,
+        "raw_octal": "03013",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1036,
+        "bank": "37",
+        "address": "3737",
+        "physical_fixed_word": 32735,
+        "raw_octal": "00004",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1037,
+        "bank": "37",
+        "address": "3740",
+        "physical_fixed_word": 32736,
+        "raw_octal": "34755",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1038,
+        "bank": "37",
+        "address": "3741",
+        "physical_fixed_word": 32737,
+        "raw_octal": "54001",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1039,
+        "bank": "37",
+        "address": "3742",
+        "physical_fixed_word": 32738,
+        "raw_octal": "52025",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1040,
+        "bank": "37",
+        "address": "3743",
+        "physical_fixed_word": 32739,
+        "raw_octal": "03714",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1041,
+        "bank": "37",
+        "address": "3744",
+        "physical_fixed_word": 32740,
+        "raw_octal": "03737",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1042,
+        "bank": "37",
+        "address": "3745",
+        "physical_fixed_word": 32741,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1043,
+        "bank": "37",
+        "address": "3746",
+        "physical_fixed_word": 32742,
+        "raw_octal": "40317",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1044,
+        "bank": "37",
+        "address": "3747",
+        "physical_fixed_word": 32743,
+        "raw_octal": "20155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1046,
+        "bank": "37",
+        "address": "3750",
+        "physical_fixed_word": 32744,
+        "raw_octal": "34742",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1047,
+        "bank": "37",
+        "address": "3751",
+        "physical_fixed_word": 32745,
+        "raw_octal": "07307",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1048,
+        "bank": "37",
+        "address": "3752",
+        "physical_fixed_word": 32746,
+        "raw_octal": "34755",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1049,
+        "bank": "37",
+        "address": "3753",
+        "physical_fixed_word": 32747,
+        "raw_octal": "54156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1050,
+        "bank": "37",
+        "address": "3754",
+        "physical_fixed_word": 32748,
+        "raw_octal": "07257",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1051,
+        "bank": "37",
+        "address": "3755",
+        "physical_fixed_word": 32749,
+        "raw_octal": "10154",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1052,
+        "bank": "37",
+        "address": "3756",
+        "physical_fixed_word": 32750,
+        "raw_octal": "03763",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1053,
+        "bank": "37",
+        "address": "3757",
+        "physical_fixed_word": 32751,
+        "raw_octal": "03763",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1054,
+        "bank": "37",
+        "address": "3760",
+        "physical_fixed_word": 32752,
+        "raw_octal": "03761",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1055,
+        "bank": "37",
+        "address": "3761",
+        "physical_fixed_word": 32753,
+        "raw_octal": "34742",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1056,
+        "bank": "37",
+        "address": "3762",
+        "physical_fixed_word": 32754,
+        "raw_octal": "26154",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1057,
+        "bank": "37",
+        "address": "3763",
+        "physical_fixed_word": 32755,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1058,
+        "bank": "37",
+        "address": "3764",
+        "physical_fixed_word": 32756,
+        "raw_octal": "30315",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1059,
+        "bank": "37",
+        "address": "3765",
+        "physical_fixed_word": 32757,
+        "raw_octal": "20155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1060,
+        "bank": "37",
+        "address": "3766",
+        "physical_fixed_word": 32758,
+        "raw_octal": "07257",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1061,
+        "bank": "37",
+        "address": "3767",
+        "physical_fixed_word": 32759,
+        "raw_octal": "52155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1062,
+        "bank": "37",
+        "address": "3770",
+        "physical_fixed_word": 32760,
+        "raw_octal": "20025",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1063,
+        "bank": "37",
+        "address": "3771",
+        "physical_fixed_word": 32761,
+        "raw_octal": "05516",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1064,
+        "bank": "37",
+        "address": "3772",
+        "physical_fixed_word": 32762,
+        "raw_octal": "00054",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1066,
+        "bank": "37",
+        "address": "3773",
+        "physical_fixed_word": 32763,
+        "raw_octal": "06001",
+        "native_group": "Standby local stages and data"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "FINETIME_plus1": "04103",
+      "UPFLAG": "05504",
+      "DOWNFLAG": "05516",
+      "BANKCALL": "04616",
+      "PHASCHNG": "05353",
+      "SHORTMP": "07307",
+      "TPAGREE": "07257",
+      "GOTOPOOH": "06001"
+    },
+    "remaining": [
+      "External FINETIME/SHORTMP/TPAGREE/flag/phase/bank/display bodies",
+      "Physical standby transition and live scaler producers"
+    ]
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "source_group_words": 79,
+    "words": [
+      {
+        "original_line": 954,
+        "bank": "26",
+        "address": "3660",
+        "physical_fixed_word": 23472,
+        "raw_octal": "05546",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 955,
+        "bank": "26",
+        "address": "3661",
+        "physical_fixed_word": 23473,
+        "raw_octal": "00054",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 957,
+        "bank": "26",
+        "address": "3662",
+        "physical_fixed_word": 23474,
+        "raw_octal": "00004",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 958,
+        "bank": "26",
+        "address": "3663",
+        "physical_fixed_word": 23475,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 959,
+        "bank": "26",
+        "address": "3664",
+        "physical_fixed_word": 23476,
+        "raw_octal": "30025",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 960,
+        "bank": "26",
+        "address": "3665",
+        "physical_fixed_word": 23477,
+        "raw_octal": "53151",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 961,
+        "bank": "26",
+        "address": "3666",
+        "physical_fixed_word": 23478,
+        "raw_octal": "03717",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 962,
+        "bank": "26",
+        "address": "3667",
+        "physical_fixed_word": 23479,
+        "raw_octal": "03662",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 963,
+        "bank": "26",
+        "address": "3670",
+        "physical_fixed_word": 23480,
+        "raw_octal": "52155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 964,
+        "bank": "26",
+        "address": "3671",
+        "physical_fixed_word": 23481,
+        "raw_octal": "53153",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 965,
+        "bank": "26",
+        "address": "3672",
+        "physical_fixed_word": 23482,
+        "raw_octal": "00004",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 966,
+        "bank": "26",
+        "address": "3673",
+        "physical_fixed_word": 23483,
+        "raw_octal": "04662",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 967,
+        "bank": "26",
+        "address": "3674",
+        "physical_fixed_word": 23484,
+        "raw_octal": "17060",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 969,
+        "bank": "26",
+        "address": "3675",
+        "physical_fixed_word": 23485,
+        "raw_octal": "05560",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 970,
+        "bank": "26",
+        "address": "3676",
+        "physical_fixed_word": 23486,
+        "raw_octal": "00007",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 971,
+        "bank": "26",
+        "address": "3677",
+        "physical_fixed_word": 23487,
+        "raw_octal": "05560",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 972,
+        "bank": "26",
+        "address": "3700",
+        "physical_fixed_word": 23488,
+        "raw_octal": "00010",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 974,
+        "bank": "26",
+        "address": "3701",
+        "physical_fixed_word": 23489,
+        "raw_octal": "35005",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 975,
+        "bank": "26",
+        "address": "3702",
+        "physical_fixed_word": 23490,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 976,
+        "bank": "26",
+        "address": "3703",
+        "physical_fixed_word": 23491,
+        "raw_octal": "05013",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 978,
+        "bank": "26",
+        "address": "3704",
+        "physical_fixed_word": 23492,
+        "raw_octal": "05412",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 979,
+        "bank": "26",
+        "address": "3705",
+        "physical_fixed_word": 23493,
+        "raw_octal": "07024",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 980,
+        "bank": "26",
+        "address": "3706",
+        "physical_fixed_word": 23494,
+        "raw_octal": "20000",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 982,
+        "bank": "26",
+        "address": "3707",
+        "physical_fixed_word": 23495,
+        "raw_octal": "03737",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 982,
+        "bank": "26",
+        "address": "3710",
+        "physical_fixed_word": 23496,
+        "raw_octal": "54062",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 984,
+        "bank": "26",
+        "address": "3711",
+        "physical_fixed_word": 23497,
+        "raw_octal": "35036",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 985,
+        "bank": "26",
+        "address": "3712",
+        "physical_fixed_word": 23498,
+        "raw_octal": "04662",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 986,
+        "bank": "26",
+        "address": "3713",
+        "physical_fixed_word": 23499,
+        "raw_octal": "21045",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 987,
+        "bank": "26",
+        "address": "3714",
+        "physical_fixed_word": 23500,
+        "raw_octal": "13711",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 988,
+        "bank": "26",
+        "address": "3715",
+        "physical_fixed_word": 23501,
+        "raw_octal": "13711",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 989,
+        "bank": "26",
+        "address": "3716",
+        "physical_fixed_word": 23502,
+        "raw_octal": "13711",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1005,
+        "bank": "26",
+        "address": "3717",
+        "physical_fixed_word": 23503,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1006,
+        "bank": "26",
+        "address": "3720",
+        "physical_fixed_word": 23504,
+        "raw_octal": "22156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1007,
+        "bank": "26",
+        "address": "3721",
+        "physical_fixed_word": 23505,
+        "raw_octal": "04554",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1008,
+        "bank": "26",
+        "address": "3722",
+        "physical_fixed_word": 23506,
+        "raw_octal": "00003",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1009,
+        "bank": "26",
+        "address": "3723",
+        "physical_fixed_word": 23507,
+        "raw_octal": "52155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1010,
+        "bank": "26",
+        "address": "3724",
+        "physical_fixed_word": 23508,
+        "raw_octal": "35013",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1011,
+        "bank": "26",
+        "address": "3725",
+        "physical_fixed_word": 23509,
+        "raw_octal": "54001",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1012,
+        "bank": "26",
+        "address": "3726",
+        "physical_fixed_word": 23510,
+        "raw_octal": "35021",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1013,
+        "bank": "26",
+        "address": "3727",
+        "physical_fixed_word": 23511,
+        "raw_octal": "20155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1014,
+        "bank": "26",
+        "address": "3730",
+        "physical_fixed_word": 23512,
+        "raw_octal": "44362",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1015,
+        "bank": "26",
+        "address": "3731",
+        "physical_fixed_word": 23513,
+        "raw_octal": "70155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1016,
+        "bank": "26",
+        "address": "3732",
+        "physical_fixed_word": 23514,
+        "raw_octal": "56155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1017,
+        "bank": "26",
+        "address": "3733",
+        "physical_fixed_word": 23515,
+        "raw_octal": "74362",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1020,
+        "bank": "26",
+        "address": "3734",
+        "physical_fixed_word": 23516,
+        "raw_octal": "10000",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1021,
+        "bank": "26",
+        "address": "3735",
+        "physical_fixed_word": 23517,
+        "raw_octal": "24156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1022,
+        "bank": "26",
+        "address": "3736",
+        "physical_fixed_word": 23518,
+        "raw_octal": "00156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1033,
+        "bank": "26",
+        "address": "3737",
+        "physical_fixed_word": 23519,
+        "raw_octal": "45005",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1034,
+        "bank": "26",
+        "address": "3740",
+        "physical_fixed_word": 23520,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1035,
+        "bank": "26",
+        "address": "3741",
+        "physical_fixed_word": 23521,
+        "raw_octal": "03013",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1036,
+        "bank": "26",
+        "address": "3742",
+        "physical_fixed_word": 23522,
+        "raw_octal": "00004",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1037,
+        "bank": "26",
+        "address": "3743",
+        "physical_fixed_word": 23523,
+        "raw_octal": "35021",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1038,
+        "bank": "26",
+        "address": "3744",
+        "physical_fixed_word": 23524,
+        "raw_octal": "54001",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1039,
+        "bank": "26",
+        "address": "3745",
+        "physical_fixed_word": 23525,
+        "raw_octal": "52025",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1040,
+        "bank": "26",
+        "address": "3746",
+        "physical_fixed_word": 23526,
+        "raw_octal": "03717",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1041,
+        "bank": "26",
+        "address": "3747",
+        "physical_fixed_word": 23527,
+        "raw_octal": "03742",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1042,
+        "bank": "26",
+        "address": "3750",
+        "physical_fixed_word": 23528,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1043,
+        "bank": "26",
+        "address": "3751",
+        "physical_fixed_word": 23529,
+        "raw_octal": "41153",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1044,
+        "bank": "26",
+        "address": "3752",
+        "physical_fixed_word": 23530,
+        "raw_octal": "20155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1046,
+        "bank": "26",
+        "address": "3753",
+        "physical_fixed_word": 23531,
+        "raw_octal": "35006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1047,
+        "bank": "26",
+        "address": "3754",
+        "physical_fixed_word": 23532,
+        "raw_octal": "07256",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1048,
+        "bank": "26",
+        "address": "3755",
+        "physical_fixed_word": 23533,
+        "raw_octal": "35021",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1049,
+        "bank": "26",
+        "address": "3756",
+        "physical_fixed_word": 23534,
+        "raw_octal": "54156",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1050,
+        "bank": "26",
+        "address": "3757",
+        "physical_fixed_word": 23535,
+        "raw_octal": "07226",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1051,
+        "bank": "26",
+        "address": "3760",
+        "physical_fixed_word": 23536,
+        "raw_octal": "10154",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1052,
+        "bank": "26",
+        "address": "3761",
+        "physical_fixed_word": 23537,
+        "raw_octal": "03766",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1053,
+        "bank": "26",
+        "address": "3762",
+        "physical_fixed_word": 23538,
+        "raw_octal": "03766",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1054,
+        "bank": "26",
+        "address": "3763",
+        "physical_fixed_word": 23539,
+        "raw_octal": "03764",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1055,
+        "bank": "26",
+        "address": "3764",
+        "physical_fixed_word": 23540,
+        "raw_octal": "35006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1056,
+        "bank": "26",
+        "address": "3765",
+        "physical_fixed_word": 23541,
+        "raw_octal": "26154",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1057,
+        "bank": "26",
+        "address": "3766",
+        "physical_fixed_word": 23542,
+        "raw_octal": "00006",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1058,
+        "bank": "26",
+        "address": "3767",
+        "physical_fixed_word": 23543,
+        "raw_octal": "31151",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1059,
+        "bank": "26",
+        "address": "3770",
+        "physical_fixed_word": 23544,
+        "raw_octal": "20155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1060,
+        "bank": "26",
+        "address": "3771",
+        "physical_fixed_word": 23545,
+        "raw_octal": "07226",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1061,
+        "bank": "26",
+        "address": "3772",
+        "physical_fixed_word": 23546,
+        "raw_octal": "52155",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1062,
+        "bank": "26",
+        "address": "3773",
+        "physical_fixed_word": 23547,
+        "raw_octal": "20025",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1063,
+        "bank": "26",
+        "address": "3774",
+        "physical_fixed_word": 23548,
+        "raw_octal": "05560",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1064,
+        "bank": "26",
+        "address": "3775",
+        "physical_fixed_word": 23549,
+        "raw_octal": "00054",
+        "native_group": "Standby local stages and data"
+      },
+      {
+        "original_line": 1066,
+        "bank": "26",
+        "address": "3776",
+        "physical_fixed_word": 23550,
+        "raw_octal": "04106",
+        "native_group": "Standby local stages and data"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "FINETIME_plus1": "04554",
+      "UPFLAG": "05546",
+      "DOWNFLAG": "05560",
+      "BANKCALL": "04662",
+      "PHASCHNG": "05412",
+      "SHORTMP": "07256",
+      "TPAGREE": "07226",
+      "GOTOPOOH": "04106"
+    },
+    "remaining": [
+      "External FINETIME/SHORTMP/TPAGREE/flag/phase/bank/display bodies",
+      "Physical standby transition and live scaler producers"
+    ]
+  }
+}

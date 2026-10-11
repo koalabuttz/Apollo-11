@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+#define main cm_reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "imu_standby_cases.h"
+static agc_t pristine;
+int main(int argc,char **argv){uint32_t n,limit=65536;unsigned mission,stage;if(argc<4||agc_load_binfile(&pristine,argv[1]))return 2;mission=(unsigned)strtoul(argv[2],NULL,0);stage=(unsigned)strtoul(argv[3],NULL,0);if(argc>4)limit=(uint32_t)strtoul(argv[4],NULL,0);InhibitAlarms=1;
+ for(n=0;n<limit;++n){apollo_overlay_state m;imu_standby_io io;unsigned i,cycles;uint16_t row[2057];enum imu_standby_status status=IMU_STANDBY_UNSUPPORTED;imu_standby_input(&m,&io,(enum rtb_mission)mission,(enum imu_standby_stage)stage,n);machine=pristine;for(i=0;i<2048u;++i)*memory(i)=(int16_t)m.words[i];machine.AllowInterrupt=io.pulse.latch.interrupt_enabled;machine.InputChannel[7]=machine.OutputChannel7=io.pulse.latch.superbank;machine.InputChannel[011]=io.pulse.channel11;machine.InputChannel[012]=io.pulse.channel12;machine.InputChannel[014]=io.pulse.channel14;machine.InputChannel[013]=io.channel13;
+  for(cycles=0;cycles<3000u;++cycles){if(cycles&&!machine.PendFlag&&!machine.ExtraDelay){unsigned pc=get(5);if(pc==(mission?05546u:05504u))status=IMU_STANDBY_UPFLAG;else if((stage==IMU_STANDBY_PRE_BEGIN||stage==IMU_STANDBY_POST_BEGIN||stage==IMU_STANDBY_POST_RETRY)&&pc==(mission?03717u:03714u))status=IMU_STANDBY_SCALPREP;else if(pc==(mission?03662u:03657u))status=IMU_STANDBY_PRESTAND;else if(pc==(mission?04662u:04616u))status=IMU_STANDBY_BANKCALL;else if(pc==(mission?05560u:05516u))status=IMU_STANDBY_DOWNFLAG;else if(pc==(mission?05412u:05353u))status=IMU_STANDBY_PHASE;else if(stage>=IMU_STANDBY_PRE_TERMINATE&&stage<=IMU_STANDBY_PRE_RECYCLE&&pc==(mission?03711u:03706u))status=IMU_STANDBY_PROMPT;else if(pc==(mission?04554u:04103u))status=IMU_STANDBY_FINETIME;else if(stage==IMU_STANDBY_SCAL_FINISH&&(pc==(mission?03667u:03664u)||pc==(mission?03747u:03744u)))status=IMU_STANDBY_RETRY;else if(stage==IMU_STANDBY_SCAL_FINISH&&(pc==(mission?03670u:03665u)||pc==(mission?03750u:03745u)))status=IMU_STANDBY_READY;else if(pc==(mission?07256u:07307u))status=IMU_STANDBY_SHORTMP;else if(pc==(mission?07226u:07257u))status=IMU_STANDBY_TPAGREE;else if(pc==(mission?04106u:06001u))status=IMU_STANDBY_GOTOPOOH;if(status!=IMU_STANDBY_UNSUPPORTED)break;}machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
+  if(cycles==3000u){fprintf(stderr,"coarse %u/%u/%u timeoutPC%o\n",mission,stage,n,get(5));return 2;}
+  row[0]=(uint16_t)n;row[1]=(uint16_t)(n>>16);row[2]=(uint16_t)machine.AllowInterrupt;row[3]=(uint16_t)machine.OutputChannel7;row[4]=(uint16_t)machine.InputChannel[011];row[5]=(uint16_t)machine.InputChannel[012];row[6]=(uint16_t)machine.InputChannel[014];row[7]=(uint16_t)machine.InputChannel[013];row[8]=(uint16_t)status;for(i=0;i<2048u;++i)row[i+9u]=(uint16_t)((unsigned)*memory(i)&(i<2u?0177777u:077777u));if(fwrite(row,sizeof row,1,stdout)!=1)return 2;
+ }
+ return 0;
+}
