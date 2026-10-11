@@ -1014,3 +1014,7 @@ Internal RELDSP executes actual JOBWAKE and the ordinary RELRET caller return ac
 ## Translate original Luminary and Comanche extended verb fanout
 
 Actual POSTJUMP and GOEXTVB execute all60 source-selected TC/TCF fanout branches with exact CPU, Q and bank effects. All8,192 complete original/native/full-sanitizer states and64 actual C64 states match. Mission-specific V96 and V49 return-Q differences are preserved; verb69 stops at its genuine restart entry. See `docs/DSKY-EXTENDED-DISPATCH.md`.
+
+## Translate complete original Luminary interbank communication source
+
+All14 source entries and76 emitted words, source control aliases and allfour negative-overflow BANKJUMP successors are mapped and independently reviewed. All921,088 complete original/native/full-sanitizer states and448 actual C64 states match. The invalid register-Q fault frontier is retained before any external instruction fetch, alongside ordinary compiled-caller/saved-return bounds and quiesced producers. See `docs/LUMINARY-INTERBANK.md`.

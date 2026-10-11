@@ -1,0 +1,232 @@
+[
+  {
+    "path": "docs/LUMINARY-INTERBANK.md",
+    "sha256": "4eb31aab156d3528b3136f78a8754dd2e3b4d7853096f1a11609f705b6b39e14",
+    "bytes": 7215
+  },
+  {
+    "path": "evidence/lm-interbank-c64.log",
+    "sha256": "e5b614c37c0ab8aa031afdf80c91169151f11009875cd493dce5f8154aa42ed8",
+    "bytes": 264
+  },
+  {
+    "path": "evidence/lm-interbank-coverage.json",
+    "sha256": "ce2b375d6ad96e4cd7dc22b6e9cae644190d001d3dac031b8c4ede943c1b778f",
+    "bytes": 2165
+  },
+  {
+    "path": "evidence/lm-interbank-independent-review.txt",
+    "sha256": "3056dd280e3361436d2626a1149a0876f860f8402c250c46f1fff2bbcbf47a2d",
+    "bytes": 2020
+  },
+  {
+    "path": "evidence/lm-interbank-mailbox.bin",
+    "sha256": "47c179593c1f45d1344400dd4593d1efa1ec43c3c7f042b50e7aee382e3da38c",
+    "bytes": 4
+  },
+  {
+    "path": "evidence/lm-interbank-monitor.log",
+    "sha256": "dbb3b7d9365a0c129730dda9772e77134c334e27b7a5f18752c5c163fb15e2e4",
+    "bytes": 1167
+  },
+  {
+    "path": "evidence/lm-interbank-proof.json",
+    "sha256": "7f1b219224219268585226f1e1b0e8a19e72935ab4ef69f31e2e5219a243a960",
+    "bytes": 3730
+  },
+  {
+    "path": "evidence/lm-interbank-sanitize-results.json",
+    "sha256": "2e7dab3c4cf80adb94d178bcd64a84432664a9ce1a318270d30d18d504c78ef2",
+    "bytes": 172
+  },
+  {
+    "path": "evidence/lm-interbank-sanitize.log",
+    "sha256": "d8955e321d93496221f0baf08969e15d505766d119dd765dc34a7f200bffda65",
+    "bytes": 959
+  },
+  {
+    "path": "evidence/lm-interbank-source-audit.json",
+    "sha256": "927a763f86480d66a87fd9a3d7d46d5eeae22ea2cbdd0243080cf300d1d636d0",
+    "bytes": 48656
+  },
+  {
+    "path": "evidence/lm-interbank-source-base.log",
+    "sha256": "b3618305c012e84baafd75e4bfaa191c12fc6e0ba97503b267f9a14c70c83ddc",
+    "bytes": 508
+  },
+  {
+    "path": "evidence/lm-interbank-source-base.snapshots.bin.xz",
+    "sha256": "9480f872a9fe431b6839464cc015d5a587410a9d626bd68a86202fbff77df3b6",
+    "bytes": 12202360
+  },
+  {
+    "path": "evidence/lm-interbank-source-extra.log",
+    "sha256": "8dba642290fd1af23abf08c406949929a03c791a9727cc2ff25cd46e422e4ca8",
+    "bytes": 157
+  },
+  {
+    "path": "evidence/lm-interbank-source-extra.snapshots.bin.xz",
+    "sha256": "03fe194219442fca484862aadb59ca9c10749d9684427b56e048b1a847f34294",
+    "bytes": 46348
+  },
+  {
+    "path": "evidence/lm-interbank-strict-results.json",
+    "sha256": "6ed42c340d2239ccc6ef57919e5590c769602d9820c1dfae44095f5eaddef6b9",
+    "bytes": 173
+  },
+  {
+    "path": "evidence/lm-interbank-strict.log",
+    "sha256": "3269c8eef004836b96505ced188b8fc9da81f120cfeff6013566ff8bf30c2e85",
+    "bytes": 974
+  },
+  {
+    "path": "evidence/lm-interbank-target-results.json",
+    "sha256": "6e191b30d7e6c3c94632115dbe99043f200a3b5592b04a41f1d7175fa833e162",
+    "bytes": 5605
+  },
+  {
+    "path": "evidence/lm-interbank-target-source.snapshots.bin.xz",
+    "sha256": "b29791c001f2128d630fa30c9819988a1d1fccfa716fbad4deed6f1ea754d0b7",
+    "bytes": 20840
+  },
+  {
+    "path": "evidence/lm-interbank-tests.log",
+    "sha256": "b1baf9b58d94ab6f7ca9da28cb6f94901d628ecc05ccca47c8e7a06c485ba5d2",
+    "bytes": 812
+  },
+  {
+    "path": "evidence/lm-interbank-vice-results.json",
+    "sha256": "55309196c9c0a962727b9a55fc61eb4c06671e64b18d72acf860ac8d6a165a18",
+    "bytes": 199
+  },
+  {
+    "path": "evidence/lm-interbank-vice.log",
+    "sha256": "3b1fb9a228ee8901910db381d012158aae8cad70356a4977154423d92694e16c",
+    "bytes": 6497
+  },
+  {
+    "path": "evidence/lm-interbank-vice.mon",
+    "sha256": "2aba8fe88057c8644a2d05ecb908fc4e9c0aa7f1c02da61dccca9eb4d62beeb9",
+    "bytes": 183
+  },
+  {
+    "path": "evidence/lm-interbank.map",
+    "sha256": "216bf795acf31c422d9099c51726f626ab4d53b867992340ba01c42493c84ba5",
+    "bytes": 9368
+  },
+  {
+    "path": "evidence/lm-interbank.prg",
+    "sha256": "92349a98b7427a04bc69614f3407ab7f1e4040f059c350afed7dfdb5a1f53ca9",
+    "bytes": 18218
+  },
+  {
+    "path": "include/lm_interbank.h",
+    "sha256": "9eae04a5f77310085c91b4a5f39fb37f5d780d7c81539afeb5548e721157c064",
+    "bytes": 1763
+  },
+  {
+    "path": "platform/c64/lm_interbank_diagnostic.c",
+    "sha256": "a0fbc5fd2f4de079f822fa585f3f291c7ae3957321f3161221bc552c0007a389",
+    "bytes": 438
+  },
+  {
+    "path": "src/lm_interbank.c",
+    "sha256": "b1653fe51d0c1ef5d0df7feedf3dabbf7a99b028273c624b62087cdb97d29838",
+    "bytes": 5649
+  },
+  {
+    "path": "tests/lm_interbank_cases.c",
+    "sha256": "fed0291d69f3b186d4ff09b8e4985e7f265235f8e40e06dc5f24d7c4a835a65a",
+    "bytes": 2267
+  },
+  {
+    "path": "tests/lm_interbank_cases.h",
+    "sha256": "50ece8ac12bda8525f190ee9c58b2511389f34afd8c612b74b72d917d0fad0eb",
+    "bytes": 437
+  },
+  {
+    "path": "tests/lm_interbank_inline_data.h",
+    "sha256": "133fb553abf7cd67b0354437a763bc579b71e5cd0c8e9e7d9ecb87d9daf6b835",
+    "bytes": 2032
+  },
+  {
+    "path": "tests/lm_interbank_target.c",
+    "sha256": "ac6db21c37b2b6c28f02fb70e2b8164702a45305a8c067a29ce2c7eb6e1928f9",
+    "bytes": 1769
+  },
+  {
+    "path": "tests/lm_interbank_target.h",
+    "sha256": "7a4de2852586cbe6c886056aa98f012e10e2c5e1b6deeb99bc484980a5adf637",
+    "bytes": 154
+  },
+  {
+    "path": "tests/lm_interbank_vectors.h",
+    "sha256": "9766d949c61a4f9632d08c4add9f167f82212c73e327fe35f68675ae806d0318",
+    "bytes": 31748
+  },
+  {
+    "path": "tests/test_lm_interbank.c",
+    "sha256": "9d96f1cf5326004b887708dba6ef5ffc187e996fd5c4262058a6822dc6f27e62",
+    "bytes": 1890
+  },
+  {
+    "path": "tools/freeze_lm_interbank.py",
+    "sha256": "ff40677b5baa45a04b58a4450dde4c30870efda3dc9cc5172f63e1acfa629d55",
+    "bytes": 2454
+  },
+  {
+    "path": "tools/lm_interbank_compare.py",
+    "sha256": "aae484ceefa75687ce732ef3f8cfb20f50fcd74ff6b71d7d66339ff77c2d1783",
+    "bytes": 2685
+  },
+  {
+    "path": "tools/lm_interbank_dump.h",
+    "sha256": "ed48cab57282c3c0ac746ef369d615f17235ccba9e6b793662f398086932c296",
+    "bytes": 577
+  },
+  {
+    "path": "tools/lm_interbank_host_test.py",
+    "sha256": "5bfa8d4a5c1ba22f0323f6e8969770e5ec4abf26cd4bab817dbbeaa68a90c289",
+    "bytes": 1900
+  },
+  {
+    "path": "tools/lm_interbank_input_dump.c",
+    "sha256": "686cdec7fab64f4b791d4384c2e65cb5316bec99c922e14caf6f72fe0914ec51",
+    "bytes": 436
+  },
+  {
+    "path": "tools/lm_interbank_port.mk",
+    "sha256": "2da1ab281c76c00c287082f4b6a4f300cba1ceb397fe2fee6a4c746c2e5cac61",
+    "bytes": 995
+  },
+  {
+    "path": "tools/lm_interbank_reference.c",
+    "sha256": "4ceaf22a8814602591aea4f76a55eed2e712b36d1acaec598104e00c86643c35",
+    "bytes": 1684
+  },
+  {
+    "path": "tools/lm_interbank_snapshot.c",
+    "sha256": "1a3cf61bacef394f5e176617c721b28c97fd21c9d67681085a0852f5a170d122",
+    "bytes": 767
+  },
+  {
+    "path": "tools/lm_interbank_source.py",
+    "sha256": "f0f9455def216fcb73c15f76311d9a23432d97fcca6e82829f7f959f1af10bca",
+    "bytes": 2356
+  },
+  {
+    "path": "tools/lm_interbank_verify_frozen.py",
+    "sha256": "3f32b6ab3422ddafacf1dbe042c05a793146ec662152597c36de0ea74bbfc313",
+    "bytes": 1231
+  },
+  {
+    "path": "tools/lm_interbank_vice_test.py",
+    "sha256": "a636c6ac0ee43040bf8af11750e96b8408a5122a513bad4cb2f8d75a1fc214ae",
+    "bytes": 2544
+  },
+  {
+    "path": "tools/package_lm_interbank.py",
+    "sha256": "7c7cb5178e290abe1c850fa4d23e0b90927dca82c0145a65a4201055aa78de11",
+    "bytes": 7003
+  }
+]

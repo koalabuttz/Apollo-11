@@ -1,0 +1,99 @@
+{
+  "source_file": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+  "source_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+  "source_edits": 0,
+  "original_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "emitted_words": 76,
+  "complete_source_line_map": "evidence/lm-interbank-source-audit.json",
+  "public_source_entries": 14,
+  "source_states": 921088,
+  "all_raw_A_L_per_entry": true,
+  "context_cross_products": "sampled; fixed and erasable callers, allEB/FB/SUPER/IRQ variants represented",
+  "negative_overflow_bankjump_excluded": false,
+  "negative_overflow_fault_frontier": {
+    "pc": 2,
+    "raw_Q": 65534,
+    "next_word_execution": "outside file, explicitly not decoded"
+  },
+  "aggregate_decoded_sha256": "e8b88d7c729a249635a0a997a88e82944be89624c249886b4be58c96bad3cd4c",
+  "source_corpora": [
+    {
+      "path": "evidence/lm-interbank-source-base.snapshots.bin.xz",
+      "sha256": "9480f872a9fe431b6839464cc015d5a587410a9d626bd68a86202fbff77df3b6"
+    },
+    {
+      "path": "evidence/lm-interbank-source-extra.snapshots.bin.xz",
+      "sha256": "03fe194219442fca484862aadb59ca9c10749d9684427b56e048b1a847f34294"
+    }
+  ],
+  "full_sanitizer_states": 921088,
+  "target": {
+    "states": 448,
+    "prg_bytes": 18218,
+    "load_end": 20265,
+    "bss_end": 28457,
+    "mailbox": "a5c00100",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "expected_state_comparison": "every2048 physical word plusSUPER/IRQ exactly; lossless sparse constructor/source delta retains untouched words",
+  "PRIO12": {
+    "physical_fixed_word": 2468,
+    "word": 5120,
+    "all_accessor_arguments": 65536
+  },
+  "runtime_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
+  "external_continuations": "actual compiled callees/callers; source interpreted-code handoff; invalid registerQ fault frontier",
+  "instruction_decoder": false,
+  "runtime_AGC_emulator": false,
+  "integrated_application_complete": false,
+  "dependencies": [
+    {
+      "path": "include/agc_word.h",
+      "sha256": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191"
+    },
+    {
+      "path": "src/agc_word.c",
+      "sha256": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679"
+    },
+    {
+      "path": "include/lm_fixed_compat.h",
+      "sha256": "f7adeec4ec607de38883aec2aab6396cc5ad42bf8b2bd558f91bbd2f4856df79"
+    },
+    {
+      "path": "src/lm_fixed_compat.c",
+      "sha256": "b953a66ff289ab766798c62faac28317e1744cca188ec4cb31b0aa2a9dce195b"
+    },
+    {
+      "path": "src/lm_fixed_compat_words.inc",
+      "sha256": "336c3bdd88c0b2959d81c2a69cfca7f070d2742de8d4947d6da6ba7619c6aec2"
+    },
+    {
+      "path": "tests/frozen_words.h",
+      "sha256": "4479b7985267c69392024f96bd9c740c844817b10ad1636fb989db283ab7c704"
+    },
+    {
+      "path": "tests/frozen_words.c",
+      "sha256": "f8ca1264ddd12de6768c7e148dbe5b02c39cda2a0fad905d536ea534b8a2b834"
+    },
+    {
+      "path": "tools/frozen_words.py",
+      "sha256": "542338895352036113578bad37a79e49a43f61dcef2834cbfb0fd7841f573724"
+    },
+    {
+      "path": "evidence/passive-storage-proof.json",
+      "sha256": "fad72a695112ecfbdf843e3892200bc499bf9b1cae30d64b876d1e50a8cc85f8"
+    },
+    {
+      "path": "evidence/passive-storage-SHA256.json",
+      "sha256": "ac32402cfa612516f3800e59f8605ab6fd58f7155f18c9be3598bea781d2ab26"
+    },
+    {
+      "path": "evidence/standard-lead-source-audit.json",
+      "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+    }
+  ]
+}

@@ -719,3 +719,5 @@ include tools/interpreted_square_port.mk
 include tools/dsky_display_release.mk
 
 include tools/dsky_extended_dispatch.mk
+
+include tools/lm_interbank_integration.mk
