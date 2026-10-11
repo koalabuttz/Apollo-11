@@ -1,0 +1,180 @@
+{
+  "local_source_words": {
+    "LM": [
+      {
+        "block": "2",
+        "pc": "4124",
+        "word": "34144"
+      },
+      {
+        "block": "2",
+        "pc": "4125",
+        "word": "71022"
+      },
+      {
+        "block": "2",
+        "pc": "4126",
+        "word": "00006"
+      },
+      {
+        "block": "2",
+        "pc": "4127",
+        "word": "14131"
+      },
+      {
+        "block": "2",
+        "pc": "4130",
+        "word": "04132"
+      },
+      {
+        "block": "2",
+        "pc": "4131",
+        "word": "31020"
+      },
+      {
+        "block": "2",
+        "pc": "4132",
+        "word": "54023"
+      },
+      {
+        "block": "2",
+        "pc": "4133",
+        "word": "30023"
+      },
+      {
+        "block": "2",
+        "pc": "4134",
+        "word": "04616"
+      },
+      {
+        "block": "2",
+        "pc": "4135",
+        "word": "62337"
+      },
+      {
+        "block": "2",
+        "pc": "4136",
+        "word": "34755"
+      },
+      {
+        "block": "2",
+        "pc": "4137",
+        "word": "55013"
+      },
+      {
+        "block": "2",
+        "pc": "4140",
+        "word": "31022"
+      },
+      {
+        "block": "2",
+        "pc": "4141",
+        "word": "04255"
+      },
+      {
+        "block": "2",
+        "pc": "4142",
+        "word": "04143"
+      },
+      {
+        "block": "2",
+        "pc": "4143",
+        "word": "05155"
+      }
+    ],
+    "CM": [
+      {
+        "block": "2",
+        "pc": "4140",
+        "word": "34160"
+      },
+      {
+        "block": "2",
+        "pc": "4141",
+        "word": "71022"
+      },
+      {
+        "block": "2",
+        "pc": "4142",
+        "word": "00006"
+      },
+      {
+        "block": "2",
+        "pc": "4143",
+        "word": "14145"
+      },
+      {
+        "block": "2",
+        "pc": "4144",
+        "word": "04146"
+      },
+      {
+        "block": "2",
+        "pc": "4145",
+        "word": "31020"
+      },
+      {
+        "block": "2",
+        "pc": "4146",
+        "word": "54023"
+      },
+      {
+        "block": "2",
+        "pc": "4147",
+        "word": "30023"
+      },
+      {
+        "block": "2",
+        "pc": "4150",
+        "word": "04662"
+      },
+      {
+        "block": "2",
+        "pc": "4151",
+        "word": "62337"
+      },
+      {
+        "block": "2",
+        "pc": "4152",
+        "word": "35021"
+      },
+      {
+        "block": "2",
+        "pc": "4153",
+        "word": "55013"
+      },
+      {
+        "block": "2",
+        "pc": "4154",
+        "word": "31022"
+      },
+      {
+        "block": "2",
+        "pc": "4155",
+        "word": "04271"
+      },
+      {
+        "block": "2",
+        "pc": "4156",
+        "word": "04157"
+      },
+      {
+        "block": "2",
+        "pc": "4157",
+        "word": "05217"
+      }
+    ]
+  },
+  "local_word_count_per_mission": 16,
+  "entry": "Actual ENTRET0136 known MONBACK or direct PASTEVB",
+  "actual_frontiers": [
+    "BANKCALL UPDATVB-1 41,2337",
+    "SWRETURN ->BLANKSUB04255LM/04271CM",
+    "blank source caller ->ENDO F JOB05155LM/05217CM"
+  ],
+  "shared_controls": [
+    "unchanged actual BANKCALL/SWRETURN qualified separately"
+  ],
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}

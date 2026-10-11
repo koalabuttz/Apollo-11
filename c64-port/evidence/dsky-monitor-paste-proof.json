@@ -1,0 +1,120 @@
+{
+  "source_files": {
+    "include/dsky_monitor_paste.h": "45531f11ef932100458ad992ddafe7ae0cad6dfa3a0a271017f5a7f20af9ac07",
+    "src/dsky_monitor_paste.c": "f257a7cac633503ad5f61344b0dcbb437284e0db9e8153826b9646976549f77b",
+    "tests/dsky_monitor_paste_cases.c": "785dba89c2fd9335cb427ceb932708094a5c311a48f4dc688b4149aeb517a835",
+    "tests/dsky_monitor_paste_cases.h": "d934c80514ae84e3fa93ecabaeab9489237c0b9c6925575f0e44c2390979b4c2",
+    "tests/dsky_monitor_paste_check.c": "47c031f1a45e05c3532e2ff32244a8b869eca154d81eb0a144dd2711b3aeae05",
+    "tests/dsky_monitor_paste_check.h": "4b12dc18cfc1fce8c06ac2a95af4c15a8d570a721be8e822581fc9979e32dbd4",
+    "tests/dsky_monitor_paste_vectors.h": "50c9694880749fc53a7ac094b0b19bc047693955d44be7d6cb65d8dafb23a307",
+    "tests/test_dsky_monitor_paste.c": "2d3f142bc6b7d63043a41074ae3a90761e589e394aef1b891f5f2e649957f9e0",
+    "tools/dsky_monitor_paste.mk": "b4ebae40125980fc9f3c0a622fa1d6d06ea544ca9aaff203d5fd2710d17a1650",
+    "tools/dsky_monitor_paste_build.py": "75a0b46f8ea99fb8b8dabaeab970665e28538796fce2bd06886253638b71c85c",
+    "tools/dsky_monitor_paste_diagnostic.c": "0d79668545c4a482bf819fb13792b320072d87fdba1179d1da8281f3d52edcfc",
+    "tools/dsky_monitor_paste_differential.py": "720f58037ab658d4d5a95e42946560b21b1f9868bd5d6b2807fd6a01f4fd1a5a",
+    "tools/dsky_monitor_paste_inputs.c": "d29e0e7092b02e67f0602f9fa1c0834b97285a962e5292f2c74a88e7f4d159a6",
+    "tools/dsky_monitor_paste_reference.c": "273bcbd9994230cf404d6c5660edeb7332ea27f55bcb741e620eace79f1e2f69",
+    "tools/dsky_monitor_paste_sanitize.py": "3ef3659b8675b4eed78142065ef27afeb2383b4b420b11a5da616da68bdeb699",
+    "tools/dsky_monitor_paste_snapshot.c": "801229b60da061229c0e572e539c081641a7afbffb1634a0f7e2f834f733b8fe",
+    "tools/dsky_monitor_paste_vice_test.py": "7446a4910fda1a713dec839d54fb73ae74745ae6f7ee6faa518f18da0962876f",
+    "tools/freeze_dsky_monitor_paste.py": "65fdd7410a5393cf1559f5c58484679ca9cdd3ddafb8403160d89fb0cc16f73f",
+    "docs/DSKY-MONITOR-PASTE.md": "1cfb2edda3f925c4bc9fb919a9712c207c12015c323fda011781b785d78d9db0"
+  },
+  "native_dependencies": {
+    "include/dsky_nv_admission.h": "cc6dbf21c7ed8ec1bae2a0ad30e4b1065f2821614ce23370e981ec5d47ab42e1",
+    "include/lm_interbank.h": "9eae04a5f77310085c91b4a5f39fb37f5d780d7c81539afeb5548e721157c064",
+    "src/lm_interbank.c": "b1653fe51d0c1ef5d0df7feedf3dabbf7a99b028273c624b62087cdb97d29838",
+    "include/cm_interbank_complete.h": "df6dd556b2e3694246f61ab5c59c6260d02d7d9b130edf427cc1234730f7db72",
+    "src/cm_interbank_complete.c": "d047ccfc84150c478b34efb35c028542116f607864db384808ca344bc381ce3d",
+    "include/cm_native_image.h": "c4fb2a437c17831bb00ccbc3220fbbb794c0001eac251e74d4ce9d6828a3895b",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "include/p66_bias.h": "ed594570c8fa6831498bd65b27a1da136feb9d18404dc1e8db084585c23f5c77",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39"
+  },
+  "original_sources": {
+    "../Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+    "../Luminary099/PINBALL_NOUN_TABLES.agc": "ec5e14a2647763b0136fc012d2648803183737e1e386daba1548158905c9b2b3",
+    "../Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "../Comanche055/PINBALL_NOUN_TABLES.agc": "d90a466da20a0811690c812b2af0a0c9338a589d2b18c2e0ef1054e9ce563e7f",
+    "deps/lm-powered-fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "host_reference_dependencies": {
+    "tools/cm_executive_reference.c": "f623e869cc420126c15d27a5749a1e4a38df27deb91b7f83a2fc1c7be6e6e448"
+  },
+  "artifacts": {
+    "evidence/dsky-monitor-paste-differential.log": "02c8cac2ca6c579d6962e4ebedd5df561a108616ffc9a4cc7e5deaaf2f680df4",
+    "evidence/dsky-monitor-paste-stream-sha.json": "ac3efaa794e077f9f6b330f46265c518debe2bcc8653079c8b2cc39dd89ec1ad",
+    "evidence/dsky-monitor-paste-reference.snapshots.xz": "6749b797ba9e7ed27d2b9fe3bef842ab6516d6954b4146971e28ba662a436f91",
+    "evidence/dsky-monitor-paste-sanitize.log": "e60ad94416701df7df601dc9e41626299dac16424ce11dcb9056436d0b6f3ae0",
+    "evidence/dsky-monitor-paste-freeze.log": "40c9c153e26e8994a8da046750b1730ad74d25a8980054800eea25e6b6375c4d",
+    "evidence/dsky-monitor-paste-build.log": "984a2d30514076a23b54977662a4edba1fe298e8755b3780229410fc03521108",
+    "evidence/dsky-monitor-paste-c64-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/dsky-monitor-paste-c64-0.log": "d2f63a324a6887124ca052b1481fcf9c787a8e350c93d7b39d22553cda44b471",
+    "evidence/dsky_monitor_paste_0.prg": "1e80873740ad7a587f83ed2e056ae6c2f6ff4802485be22cbe0757bc9c48e04d",
+    "evidence/dsky_monitor_paste_0.map": "c5f5670168f3de49f519981e36d8f6e431d68b842a441fd46eeec559ecfb56c9",
+    "evidence/dsky_monitor_paste_0-hardware-stack.bin": "c914c914624f997b1e4a302b2630a6be5f4a963e22b9143af52cec1898aa823a",
+    "evidence/dsky_monitor_paste_0-software-stack.bin": "b8f96b7afa1b91b1cb2e166559abc9caf7f9a92c33bb1b6d571ac37aa7be85a5",
+    "evidence/dsky_monitor_paste_0-vice-mailbox.bin": "3d79eef02b19c6d606c24d1aa4a2177c454b75508d524813efef561814ce65d9",
+    "evidence/dsky_monitor_paste_0-vice-monitor.log": "ac4fc95722608b1b20569f2907e5c7fba560a8b61b711c7f86c14777ecfcf7c5",
+    "evidence/dsky-monitor-paste-c64-1.log": "a7c0ad502041fb1f5d46df0d381b1da4e80cb043efe3cd74ee91313716604472",
+    "evidence/dsky_monitor_paste_1.prg": "951677919ad0b0b8d8a85267189e3149cd720e46c83b8e9a68801a726c4db615",
+    "evidence/dsky_monitor_paste_1.map": "c10d448fb59cb97e1a9ba2e936fc94863584785606a9f737b53ea02ab05c1734",
+    "evidence/dsky_monitor_paste_1-hardware-stack.bin": "5fd9d9c4c0c66af8088a85c48834b39c47567a0b90c8941eb3b283c8a7fd3182",
+    "evidence/dsky_monitor_paste_1-software-stack.bin": "173f8894afd2d7e5ef747ac230b48b6b38f7336e1fa54b97abac2f980fb78527",
+    "evidence/dsky_monitor_paste_1-vice-mailbox.bin": "96fdbf8a52083d8f2720a425b18ae6379bd4f803525370d93447df109a10e0b9",
+    "evidence/dsky_monitor_paste_1-vice-monitor.log": "d4c0cfd32817eb78e27deedef005f47b8301f111acd567695f4f546178a3977a",
+    "evidence/dsky-monitor-paste-c64-2.log": "582536cee8ff2e2c3ff503ce9a6b95113ae7ed0f87bade798cf047aeed734a70",
+    "evidence/dsky_monitor_paste_2.prg": "f5a6e7b279d121f93c6f3f885ff6b1e09ac29dd42759868e6e7475ca2445175d",
+    "evidence/dsky_monitor_paste_2.map": "7b46747eadd4c4591abac9c73d8888d68fbce53e0ae1c566ac6b05a91d55fd10",
+    "evidence/dsky_monitor_paste_2-hardware-stack.bin": "320cfd3fc3518baf93381df98ab194c788fc8f713d441df4bc45d9786c3f18e9",
+    "evidence/dsky_monitor_paste_2-software-stack.bin": "17426eaaa4758dd95cfb906e1f1e9927b232b685a995ae206aeb8de661a02c5b",
+    "evidence/dsky_monitor_paste_2-vice-mailbox.bin": "5f1db8c5930e774f98a00794ba77960e8ccfe67b32bc55c1cada0105df10e256",
+    "evidence/dsky_monitor_paste_2-vice-monitor.log": "a7ef2496d3b730c5aa7b47cb2112aa5f1d285d395fe447b0a662e3e5880ad193",
+    "evidence/dsky-monitor-paste-source-map.json": "4be13f9c6a8d0082ad4d8c7768949ed2336556125fbb5980af83ca163359de89"
+  },
+  "complete_source_states": 16384,
+  "record_fields": 2051,
+  "raw_source_sha256": "3a9ed867a6105c586afe39a351f7471130991b4e81c266463aa66531c3de068a",
+  "full_sanitizer_states": 16384,
+  "frozen_complete_states": 96,
+  "unchanged_invalid_guards": 66,
+  "target": [
+    {
+      "cohort": 0,
+      "complete_original_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 6976,
+      "hardware_stack_including_rom": 16,
+      "rom_stack_bytes": 14,
+      "software_stack": 31,
+      "additional_zero_page_bytes": 0
+    },
+    {
+      "cohort": 1,
+      "complete_original_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 6249,
+      "hardware_stack_including_rom": 14,
+      "rom_stack_bytes": 14,
+      "software_stack": 25,
+      "additional_zero_page_bytes": 0
+    },
+    {
+      "cohort": 2,
+      "complete_original_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 4938,
+      "hardware_stack_including_rom": 14,
+      "rom_stack_bytes": 14,
+      "software_stack": 27,
+      "additional_zero_page_bytes": 0
+    }
+  ],
+  "qualification_boundary": [
+    "BANKCALL UPDATVB-1 41,2337",
+    "SWRETURN ->BLANKSUB04255LM/04271CM",
+    "blank source caller ->ENDO F JOB05155LM/05217CM"
+  ]
+}

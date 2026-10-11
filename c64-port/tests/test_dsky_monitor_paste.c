@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "dsky_monitor_paste_check.h"
+static apollo_overlay_state s,before;
+int main(void){uint16_t n,fail=0;unsigned m,st,g;for(n=0;n<96u;++n)fail=(uint16_t)(fail+dsky_monitor_paste_checkpoint(n,&s,&before));for(m=0;m<2u;++m)for(st=0;st<3u;++st)for(g=0;g<11u;++g){p66_bias_io io,old;enum dsky_nv_mission mission;enum dsky_monitor_paste_stage stage;dsky_monitor_paste_input(&s,&io,(uint16_t)(m*8192u+st),&mission,&stage);switch(g){case 0:mission=(enum dsky_nv_mission)2;break;case 1:stage=(enum dsky_monitor_paste_stage)3;break;case 2:s.words[5]=0;break;case 3:s.words[4]=0;break;case 4:s.words[3]=1;break;case 5:s.words[6]^=1;break;case 6:s.words[7]=1;break;case 7:io.superbank=0;break;case 8:io.interrupt_enabled=2;break;case 9:s.words[0200]=0100000;break;default:if(st==0u){s.words[01022]=100u*128u;s.words[01020]=100u*128u;}else if(st==1u)s.words[0133]=0;else s.words[5]=(agc_word)(s.words[5]+2u);break;}before=s;old=io;if(dsky_monitor_paste(&s,&io,mission,stage)!=P66_BIAS_OUT_OF_SCOPE||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io))++fail;}printf("96 full original monitor paste states +66 unchanged invalid guards: %s\n",fail?"FAIL":"PASS");return fail?1:0;}

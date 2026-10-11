@@ -1658,3 +1658,7 @@ Qualify original antenna EXIT return against131072 complete original strict sani
 ## Translate original DSKY noun validation and dispatch controls
 
 Qualify actual TESTNN normal mixed and invalid noun controls against16384 complete original strict sanitizer states and256 C64 cases. See `docs/DSKY-TEST-NOUN.md`.
+
+## Translate DSKY monitor paste blank and completion controls
+
+Qualify actual monitor paste and blank source controls against16384 complete original strict sanitizer states and96 C64 cases. See `docs/DSKY-MONITOR-PASTE.md`.
