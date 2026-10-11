@@ -1,0 +1,38 @@
+[
+  {
+    "id": 150,
+    "filename": "S150",
+    "byte_count": 7464,
+    "crc16": 20188,
+    "sha256": "4098ac77e6320ab4c258294612971fa37d2a3a91098d6d13f11978388359aa2f",
+    "prg": "overlay-native-scheduler-150.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 151,
+    "filename": "S151",
+    "byte_count": 10202,
+    "crc16": 5063,
+    "sha256": "7d51c5b87e71cd74f34129f496855f18c3f735e13ab001e75542a04ef2e98b9f",
+    "prg": "overlay-native-scheduler-151.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 152,
+    "filename": "S152",
+    "byte_count": 12234,
+    "crc16": 59361,
+    "sha256": "3cceb4ebe81f4dd5ce16743d8341b9591cf1ae464643440251d56c51e42fcbab",
+    "prg": "overlay-native-scheduler-152.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 153,
+    "filename": "S153",
+    "byte_count": 4206,
+    "crc16": 54058,
+    "sha256": "53b549e4680e44baf5014cfd94257bf1cdb3bc4481654de4797949ce591e3635",
+    "prg": "overlay-native-scheduler-153.prg",
+    "mission_translation": true
+  }
+]

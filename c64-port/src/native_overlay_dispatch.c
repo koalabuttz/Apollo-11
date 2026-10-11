@@ -1,0 +1,9 @@
+/* SPDX-License-Identifier: MIT */
+#include "native_overlay_dispatch.h"
+static enum exec_status invoke(const exec_overlay_dispatch *service,exec_overlay_frame *frame,uint16_t stage){uint16_t result=service->invoke(service->user,frame,stage);if(result==0xffffu){frame->runtime->fault=EXEC_OUT_OF_SCOPE;frame->runtime->running=0;frame->runtime->in_callback=0;return EXEC_OUT_OF_SCOPE;}return(enum exec_status)result;}
+static enum exec_status prepare(void *user,exec_native *r,exec_continuation *call){const exec_overlay_dispatch *service=user;exec_overlay_frame frame;enum exec_status status;frame.runtime=r;frame.call=0;frame.resume.location=frame.resume.bank=0;frame.action=EXEC_YIELD;status=invoke(service,&frame,EXEC_OVERLAY_PREPARE);*call=frame.call;return status;}
+static enum exec_status finish(void *user,exec_native *r,enum exec_action action,exec_address resume){const exec_overlay_dispatch *service=user;exec_overlay_frame frame;frame.runtime=r;frame.call=0;frame.resume=resume;frame.action=action;return invoke(service,&frame,EXEC_OVERLAY_FINISH);}
+const exec_native_services exec_overlay_services={prepare,finish};
+enum exec_status exec_overlay_bind(exec_native *r,const exec_overlay_dispatch *service){if(r==0||service==0||service->invoke==0||r->exclusion==0||r->exclusion->enter==0||r->exclusion->leave==0)return EXEC_OUT_OF_SCOPE;return exec_native_bind_services(r,&exec_overlay_services,(void *)service);}
+
+uint8_t exec_overlay_module(uint16_t stage,enum exec_action action){if(stage==EXEC_OVERLAY_PREPARE)return 150;if(stage!=EXEC_OVERLAY_FINISH)return 0;switch(action){case EXEC_YIELD:case EXEC_ENTER_INTERPRETER:case EXEC_EXIT_INTERPRETER:return 151;case EXEC_FINISH:case EXEC_SLEEP:case EXEC_REPRIORITIZE:return 152;case EXEC_DISPATCHED_BASIC:case EXEC_DISPATCHED_INTERPRETER:return 153;default:return 0;}}

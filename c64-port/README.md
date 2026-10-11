@@ -706,3 +706,7 @@ Three qualified keyboard groups preserve fixed-vector KEYRUPT and RESUME, source
 ## Complete source display jobs through actual Luminary ENDOFJOB
 
 Display formatting, three rows and job completion match 11,776 original full states, 5,120 lifecycle checkpoints and 12,288 final states. Exact source streams, strict and sanitizer evidence, and 22 linked native overlays are retained. Combined disk execution is separately qualified; this does not certify either complete application. See `docs/P66-DISPLAY-JOB.md`.
+
+## Share resident scheduler services with returned overlay callbacks
+
+Resident scheduler adapters reuse the qualified core algorithm and preserve exact source-selected state. Strict and sanitizer checks cover display, lifecycle and final source corpora plus six seam guards. Four C64 scheduler overlays are linked and hashed; combined disk execution is a separate proof. See `docs/NATIVE-SCHEDULER-OVERLAYS.md`.
