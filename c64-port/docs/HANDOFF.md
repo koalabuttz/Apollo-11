@@ -1143,3 +1143,7 @@ All14 entries and76 emitted words, including allfour negative-overflow MAKECADR 
 ## Translate original Comanche blocked display REST source
 
 Original NVDSP blocked return, REST/RESTSLEP and UPENT2 alias effects match3072 complete original/native/full-sanitizer states,30 unchanged invalid-input guards and60 actual C64 states. Real ENDOFJOB and NVSUBUSY entries remain explicit source handoffs; selected lifecycle body execution is separate. See `docs/COMANCHE-DISPLAY-REST.md`.
+
+## Compose original Comanche clock display refusal and real sleeping job transfer
+
+Seven unchanged original clock mission paths preserve blocked NVMONOPT, actual REST/NVSUBUSY/JOBSLEEP and real restored-interpreter selection across175 uninterrupted full-source/native/sanitizer checkpoints. Actual C64 checks the seven original before-JOBSLEEP states through source transfer plus28 unchanged invalid guards; a combined resident disk/device proof remains separate. See `docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md`.

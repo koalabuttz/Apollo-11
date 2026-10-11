@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 7 complete cm_clock_blocked_display group original-assembly states; retained memory unchanged
+Mailbox: a500000700
+PRG bytes: 13333
+cm_clock_blocked_display-hardware-stack.bin: measured stack extent 26 bytes
+cm_clock_blocked_display-software-stack.bin: measured stack extent 1459 bytes
