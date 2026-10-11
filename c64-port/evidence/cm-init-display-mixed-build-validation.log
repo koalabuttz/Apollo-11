@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-init-display-mixed-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-init-display-mixed-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-INIT-DISPLAY-MIXED.PRG' as `RESIDENT' to unit 8
+writing file `CM-INIT-DISPLAY-MIXED-213.PRG' as `G213' to unit 8
+writing file `CM-INIT-DISPLAY-MIXED-254.PRG' as `G254' to unit 8
+writing file `CM-INIT-DISPLAY-MIXED-255.PRG' as `G255' to unit 8
+213 6116 loaded bytes
+254 7213 loaded bytes
+255 10723 loaded bytes

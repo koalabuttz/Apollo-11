@@ -983,3 +983,7 @@ All14 entries and76 emitted words, including allfour negative-overflow MAKECADR 
 ## Translate original display alarm and relay source paths
 
 Actual source alarm display, relay controls and monitor termination match8192 complete original/native/full-sanitizer states and64 actual C64 states. Keyboard, scheduler and abort continuations retain their actual source handoffs. See `docs/DSKY-SOURCE-ALARM.md`.
+
+## Translate original Comanche mixed display initialization and priority sequences
+
+Actual INITDSP prefixes and mixed source priority continuations match15360 complete original/native/full-sanitizer checkpoints across7168 sequences and120 actual C64 checkpoints across56 sequences. Selected job bodies remain explicit later continuations. See `docs/COMANCHE_INIT_DISPLAY_MIXED.md`.

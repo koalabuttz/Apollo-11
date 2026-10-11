@@ -1,0 +1,21 @@
+{
+  "cases": 7168,
+  "checkpoints": 15360,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "INITDSP03261",
+    "PRIOCHNG05210",
+    "INITDSP+6 03267"
+  ],
+  "context_cohorts": "current or all6 selectedcores \u00d7 basic/interpreter incoming \u00d7512 priority/raw-register/bank/OVFIND/PUSH/restore cases",
+  "binary_bytes": 63098880,
+  "snapshot_sha256": "f3faa2f98ec421c7c868185bb19e4107d8a04a1bbbbe789f3d562d4a3e4ab15f",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual INITDSP prefix, mixed priority and actual current3267 return; selected basic/interpreter application body execution remains separate"
+}
