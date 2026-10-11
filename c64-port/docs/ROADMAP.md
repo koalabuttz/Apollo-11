@@ -1532,3 +1532,7 @@ Compose actual body return vector stores LM mixing arithmetic and original UNIT 
 ## Translate original Comanche idle timer interrupt and hardware resume
 
 Translate actual idle T3 interrupt and RESUME controls retaining2048 canonical words all thirteen external latches and caller metadata against4096 full original strict sanitizer states and64 C64 checkpoints. See `docs/COMANCHE_IDLE_INTERRUPT.md`.
+
+## Compose original dormant core wake through idle interrupt and adoption
+
+Run uninterrupted JOBSLEEP idle T3 interrupt WAKER JOBWAKE core0 TASKOVER RESUME and actual CLOCKJOB adoption against4608 original strict sanitizer checkpoints and72 C64 states. See `docs/COMANCHE_IDLE_WAKE.md`.

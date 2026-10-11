@@ -1,0 +1,30 @@
+{
+  "scope": "Complete comparison detected omitted original engine InputChannel11 initialization/recapture in new composition oracle, at very first JOBSLEEP green-light clear. All other prior component fixtures already initialize11. Original engine had0 while native physical I/O constructor30447. Source oracle now initializes and records actual11 each group, no constructor/native behavior substitution. Initial failed outputs retained; acceptance requires fresh full original comparison.",
+  "files": [
+    {
+      "original": "tools/cm_idle_wake_reference.c",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/third-uninitialized-channel11-cm_idle_wake_reference.c",
+      "sha256": "ba5ddfa2a5867a6afa49b3746379c7c6afa77282c2e6507df69ee0f02bce0113"
+    },
+    {
+      "original": "build/cm-idle-wake-reference.snapshots.bin.gz",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/third-uninitialized-channel11-cm-idle-wake-reference.snapshots.bin.gz",
+      "sha256": "914d48dae9cc29203a67b9921104b2a37e479603382c5b3599a25de2249cb290"
+    },
+    {
+      "original": "build/cm-idle-wake-native.snapshots.bin.gz",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/third-uninitialized-channel11-cm-idle-wake-native.snapshots.bin.gz",
+      "sha256": "4e8e0ac663a28e114a36d8f7ef581a2a8927c919b0860f964bb7b45a0b7c9c38"
+    },
+    {
+      "original": "build/cm-idle-wake-reference.stream.json",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/third-uninitialized-channel11-cm-idle-wake-reference.stream.json",
+      "sha256": "36877a70dda75b4db382024c608dbe543a34a3943fa0603f8d7bf8b8b6959c8d"
+    },
+    {
+      "original": "build/cm-idle-wake-native.stream.json",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/third-uninitialized-channel11-cm-idle-wake-native.stream.json",
+      "sha256": "333e402a69a0460285368e42f627653fb9df76e9f81eb24803955e1ef830a140"
+    }
+  ]
+}

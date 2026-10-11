@@ -1047,3 +1047,6 @@ sanitize: sanitize-sband-navframe
 
 include tools/cm_idle_interrupt.mk
 all: build/cm-idle-interrupt-native
+
+include tools/cm_idle_wake.mk
+all: build/cm-idle-wake-native

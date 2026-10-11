@@ -1,0 +1,14 @@
+{
+  "cases": 512,
+  "checkpoints": 4608,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 19049472,
+  "snapshot_sha256": "50c6a671cd1bb667735d9b30c9890c43b3cb4cecbec48709af7af39d9134c1bf",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "control_metadata": [
+    "InIsr",
+    "pending_idle_ADVAN"
+  ],
+  "scope": "uninterrupted actual JOBSLEEP\u2192idle T3 interrupt\u2192WAKER\u2192JOBWAKE core0\u2192TASKOVER\u2192RESUME\u2192idle adoption of actual CLOCKJOB3332/050066; clock body remains external"
+}
