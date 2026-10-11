@@ -1366,3 +1366,7 @@ Qualify2048 uninterrupted source paths and12407 full original native sanitizer s
 ## Translate original direct display response recall controls
 
 Qualify actual direct RECAL1 RECAL2 RECAL3 DOPROC DOTERM and generic source wake returns against8192 full original native sanitizer states and64 C64 states including actual skipped loads and unmatched source indexing. See `docs/DSKY-RESPONSE-RECALL.md`.
+
+## Qualify direct operator response and sequential source wake domains
+
+Extend tested actual operator response controls with raw overflow and sequential wake guards against8192 full source native sanitizer states and64 C64 states keeping historical and frozen source bytes unchanged. See `docs/DSKY-OPERATOR-RESPONSE.md`.

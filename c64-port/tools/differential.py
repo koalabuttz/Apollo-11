@@ -588,3 +588,5 @@ subprocess.run([sys.executable,'tools/dsky_operator_release_differential.py',str
 subprocess.run([sys.executable,'tools/cm_r52_priority_alarm_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_response_recall_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_operator_response_differential.py',str(reference)],cwd=ROOT,check=True)

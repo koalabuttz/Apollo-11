@@ -1,0 +1,5 @@
+build/test-dsky-operator-response
+LM+CM operator response:64 full source states,16 atomic guard states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/lm_interbank.c src/cm_interbank_complete.c src/executive.c src/p66_native.c src/lm_basic_wake.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/cm_basic_wake.c src/dsky_display_release.c src/dsky_response_recall.c src/dsky_operator_response.c tests/p66_bias_cases.c tests/dsky_operator_response_cases.c tests/dsky_operator_response_check.c tests/test_dsky_operator_response.c -o build/test-dsky-operator-response-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-operator-response-sanitize
+LM+CM operator response:64 full source states,16 atomic guard states,0 failures

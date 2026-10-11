@@ -917,3 +917,5 @@ include tools/cm_r52_priority_alarm.mk
 all: build/cm-r52-priority-alarm-native
 
 include tools/dsky_response_recall.mk
+
+include tools/dsky_operator_response.mk
