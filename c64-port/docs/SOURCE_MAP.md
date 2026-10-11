@@ -199,3 +199,7 @@ All 49,152 complete original-assembly states match; 128 host/sanitizer/C64 state
 ## Translate arbitrary-factor vector scaling and unrounded DP products
 
 All 8,192 complete assembly checkpoints and 128 host/sanitizer/C64 states pass. See [PRODUCT.md](PRODUCT.md).
+
+## Translate scalar and vector shifts with original rounding and scratch effects
+
+All 26,880 complete assembly states and 168 host/sanitizer/C64 states pass. See [SHIFT.md](SHIFT.md).

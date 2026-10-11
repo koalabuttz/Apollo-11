@@ -285,3 +285,5 @@ include tools/executive_services.mk
 include tools/phase.mk
 
 include tools/product.mk
+
+include tools/shift.mk

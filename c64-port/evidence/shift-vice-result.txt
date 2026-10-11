@@ -1,0 +1,11 @@
+PASS: VICE PAL, 168 complete original-assembly scalar/vector shift states; every count/form, signed-zero/rounding/overflow cases; restoring I
+Mailbox: a50000a80003b55924
+Target state bytes / modeled words: 181 89
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/shift-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/shift-vice-monitor.log -monlog -limitcycles 1000000000
+scalar SL1: 1431 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+scalar SR14: 442 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+vector VSL2: 8697 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+vector VSR14: 3528 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+short vector VSR8: 10782 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+shift-vice-hardware-stack.bin: measured sentinel extent 27 bytes
+shift-vice-software-stack.bin: measured sentinel extent 274 bytes

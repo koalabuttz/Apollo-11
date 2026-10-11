@@ -1,0 +1,11 @@
+{
+  "pal_clock_hz": 985248,
+  "samples": {
+    "scalar_SL1": 1431,
+    "scalar_SR14": 442,
+    "vector_VSL2": 8697,
+    "vector_VSR14": 3528,
+    "short_vector_VSR8": 10782
+  },
+  "scope": "Finite excluded-call samples include marker overhead and VIC/IRQ effects; no WCET or live guidance deadline proof."
+}
