@@ -1,0 +1,147 @@
+{
+  "original_source": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+  "source_sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "source_line_word_map": [
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 169,
+      "label": "RESA",
+      "op": "STODL",
+      "arguments": "2D",
+      "assembled_address": "26,2161",
+      "physical_fixed_word": 22641,
+      "physical_erasable_word": null,
+      "words": [
+        6147
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 170,
+      "label": "REM",
+      "op": "AXT,1",
+      "arguments": "PDVL",
+      "assembled_address": "26,2162",
+      "physical_fixed_word": 22642,
+      "physical_erasable_word": null,
+      "words": [
+        26360
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 171,
+      "label": "",
+      "op": "54D",
+      "arguments": "",
+      "assembled_address": "26,2163",
+      "physical_fixed_word": 22643,
+      "physical_erasable_word": null,
+      "words": [
+        54
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 172,
+      "label": "",
+      "op": "VECOEM",
+      "arguments": "",
+      "assembled_address": "26,2164",
+      "physical_fixed_word": 22644,
+      "physical_erasable_word": null,
+      "words": [
+        1055
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 173,
+      "label": "REMA",
+      "op": "VXSC",
+      "arguments": "VAD*",
+      "assembled_address": "26,2165",
+      "physical_fixed_word": 22645,
+      "physical_erasable_word": null,
+      "words": [
+        22001
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 174,
+      "label": "",
+      "op": "0D",
+      "arguments": "",
+      "assembled_address": "26,2166",
+      "physical_fixed_word": 22646,
+      "physical_erasable_word": null,
+      "words": [
+        1
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 175,
+      "label": "",
+      "op": "VECOEM",
+      "arguments": "+60D,1",
+      "assembled_address": "26,2167",
+      "physical_fixed_word": 22647,
+      "physical_erasable_word": null,
+      "words": [
+        1115
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 176,
+      "label": "",
+      "op": "TIX,1",
+      "arguments": "VSL2",
+      "assembled_address": "26,2170",
+      "physical_fixed_word": 22648,
+      "physical_erasable_word": null,
+      "words": [
+        30016
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 177,
+      "label": "",
+      "op": "REMA",
+      "arguments": "",
+      "assembled_address": "26,2171",
+      "physical_fixed_word": 22649,
+      "physical_erasable_word": null,
+      "words": [
+        22645
+      ]
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "line": 178,
+      "label": "",
+      "op": "RVQ",
+      "arguments": "",
+      "assembled_address": "26,2172",
+      "physical_fixed_word": 22650,
+      "physical_erasable_word": null,
+      "words": [
+        32654
+      ]
+    }
+  ],
+  "group_words": 10,
+  "scope": "Original RESA solar vector store followed by REM lunar Horner polynomial and actual LSPOS caller returns. Whole LSPOS source state is uninterrupted from actual entry to original caller; frozen C64 checkpoints begin at true RESA state. Previously qualified lunar words overlap and are counted once in containing coverage.",
+  "arithmetic_dependencies": [
+    "evidence/cm-ephemeris-time-proof.json",
+    "evidence/sband-linear-proof.json",
+    "evidence/sband-shift-proof.json",
+    "evidence/sband-scalar-proof.json",
+    "evidence/sband-vector-proof.json",
+    "evidence/rtb-unit-proof.json"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "CM": {
+    "archive": "evidence/cm-ephemeris-positions-reference.snapshots.bin.xz",
+    "decoded_sha256": "1f97e8255b85c24af27ea9686a96f6e1ca52d12a6df15a20c2872c6b8851bfb3",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  }
+}

@@ -1084,3 +1084,5 @@ include tools/cm_admission_floor.mk
 all: build/cm-admission-floor-native
 
 include tools/cm_ephemeris_solar_integration.mk
+
+include tools/cm_ephemeris_positions_integration.mk

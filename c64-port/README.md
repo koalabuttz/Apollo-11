@@ -1606,3 +1606,7 @@ Translate allfour actual zero priority admission entries unavailable core scans 
 ## Translate original Comanche solar position through native C64 stages
 
 Translate actual RES solar calculation and LSPOS or declared SOLPOS controls against65536 full original strict sanitizer states and320 C64 phase checkpoints with independent caller guard review and preserved development trials. See `docs/NATIVE-CM-EPHEMERIS-SOLAR.md`.
+
+## Compose original Comanche combined Sun and Moon positions
+
+Translate uninterrupted actual LSPOS solar storage lunar polynomial and both true caller returns against65536 full original strict sanitizer states and64 C64 RESA checkpoints plus separately qualified solar phases. See `docs/NATIVE-CM-EPHEMERIS-POSITIONS.md`.
