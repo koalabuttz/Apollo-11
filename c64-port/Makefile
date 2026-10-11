@@ -443,3 +443,5 @@ include tools/p66_fine_phases.mk
 include tools/p66_basic.mk
 
 include tools/dsky_nv_key.mk
+
+include tools/dsky_charin_nv.mk

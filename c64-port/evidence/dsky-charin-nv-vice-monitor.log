@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_charin_nv.prg from 0801 to 347F (2C7F bytes)
+WATCH: 1  C:$5480  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5480)    8/$008,  59/$3b
+.C:114b  8E 80 54    STX $5480      - A:00 X:A5 Y:00 SP:f1 NV-....C  302015003
+>C:5480  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-mailbox.bin' from $5480 to $5484
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_charin_nv.prg from 0801 to 3480 (2C80 bytes)
+WATCH: 1  C:$5481  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5481)    1/$001,  13/$0d
+.C:114c  8E 81 54    STX $5481      - A:00 X:A5 Y:00 SP:f1 NV-....C  302014516
+>C:5481  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-mailbox.bin' from $5481 to $5485
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-software-stack.bin' from $c100 to $cfff

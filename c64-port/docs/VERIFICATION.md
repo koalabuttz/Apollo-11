@@ -837,3 +837,7 @@ The native basic binding executes DSPMMJB and ENDJOB, admits RODTASK at its actu
 ## Port original Luminary VERB and NOUN keyboard entries
 
 The real VERB and NOUN source entries preserve 4096 complete erasable and interrupt states, including signed-zero blanking, with matching sanitizer streams and 64 actual C64 cases. See `docs/DSKY-KEYBOARD-SERVICES.md`.
+
+## Port source CHARIN verb and noun admission effects
+
+The original CHARIN path preserves display locks, key-release channel events and real VERB or NOUN execution. All 4096 complete source states and sanitizer streams match; the native C64 diagnostic passes 64 cases. See `docs/DSKY-KEYBOARD-SERVICES.md`.
