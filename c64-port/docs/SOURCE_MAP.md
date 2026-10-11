@@ -1243,3 +1243,7 @@ Qualify uninterrupted original antenna time caller paths including actual Comanc
 ## Translate original Luminary radar sampling caller controls
 
 Qualify original radar local control eight entries actual supported WAITLIST NOVAC sample pointer loops and all six measurement CADRs against8192 complete original native sanitizer states and64 C64 states with17 immutable rejection domains and2 null checks retaining real hardware stall interbank oversized delay and task frontiers. See `docs/LM-RADAR-LEADIN.md`.
+
+## Translate original mode display job admission and caller return
+
+Qualify both original DSPMM source admission actual DSPMMJB task descriptor and caller or BAILOUT returns against8192 complete original native sanitizer states and64 C64 states preserving all mode banks source priority and resource effects. See `docs/DSKY-MODE-ADMIT.md`.

@@ -1,0 +1,5 @@
+build/test-dsky-mode-admit
+LM+CM DSPMM admission:64 full source states,16 atomic guard states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/executive.c src/p66_native.c src/lm_admission_image.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/cm_admission_complete.c src/dsky_mode_admit.c tests/p66_bias_cases.c tests/dsky_mode_admit_cases.c tests/dsky_mode_admit_check.c tests/test_dsky_mode_admit.c -o build/test-dsky-mode-admit-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-mode-admit-sanitize
+LM+CM DSPMM admission:64 full source states,16 atomic guard states,0 failures
