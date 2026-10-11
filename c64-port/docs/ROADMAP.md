@@ -536,3 +536,7 @@ The original SETJTAG body saves elapsed time, sets JETAG, changes phase and retu
 ## Preserve pending NEWJOB during real REGODSPR admission
 
 Actual REGODSPR NOVAC admission preserves or replaces the original pending priority request across 8192 complete source states, matching sanitizers and 64 C64 cases. No synthetic polling point or job-completion placeholder is introduced. See `docs/P66-RUNTIME-REGODSPR.md`.
+
+## Port actual throttle after-poll continuation fetch
+
+The original NEWOPS and LOC03507/03510 fetch routes resume THROTTLE+3 with exact CYR and control debris. All 8192 complete source states and sanitizer snapshots match; 64 native C64 cases pass. See `docs/P66-RUNTIME-FETCH.md`.

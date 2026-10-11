@@ -302,3 +302,5 @@ subprocess.run([sys.executable,'tools/cm_tig5_differential.py',str(reference)],c
 subprocess.run([sys.executable,'tools/cm_entry_tasks_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/runtime_regodspr_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/runtime_fetch_differential.py',str(reference)],cwd=ROOT,check=True)

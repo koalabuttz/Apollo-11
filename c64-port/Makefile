@@ -455,3 +455,5 @@ include tools/cm_tig5.mk
 include tools/cm_entry_tasks.mk
 
 include tools/runtime_regodspr.mk
+
+include tools/runtime_fetch.mk
