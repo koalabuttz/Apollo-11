@@ -1400,3 +1400,7 @@ Literal NOVAC/FINDVAC/SPVAC/SPVACIN and their real caller/BAILOUT handoffs match
 ## Translate original Comanche alarm recording and overflow recovery handoffs
 
 Actual ALARM/VARALARM/CURTAINS/BORTENT match16384 complete original/native/full-sanitizer states and64 actual C64 states. All1803 genuine MULTFAIL negative-overflow paths retain their inhibited-IRQ POODOO frontier; ordinary returns and later abort recovery bodies remain separately qualified. See `docs/COMANCHE_ALARM_RECORD.md`.
+
+## Fresh committed interbank and RCS monitor host check
+
+A clean isolated export of exact commit`fff603d` builds and passes every registered portable host `all`/`test` recipe, including whole Luminary interbank and RCS monitor, exhaustive inverse-trig supplement, source display admission/load controls, Comanche mixed initialization and archive-streamed P66 startup/recurrence bridges. The exporter uses exact Git objects and excludes uncommitted source. Its11,292-file snapshot has36 complete source files; the full-port gate correctly rejects139 remaining files and both integrated applications. See `evidence/integration-interbank-rcs-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
