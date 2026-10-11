@@ -1,0 +1,11 @@
+{
+  "outcome": "no completion mailbox; deliberately stopped under parent instruction to use representative target corpora",
+  "snapshot_sha256": "cfe2235de2d341266cbd3f6e953221ff12c2f49296864402412b87e88b6470e3",
+  "elapsed_run_has_no_pass_claim": true,
+  "processes": [
+    [
+      165268,
+      "/workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/cm-clocktask.mon -monlogname /workspace/Apollo-11/c64-port/build/cm-clocktask-monitor.log -monlog -limitcycles 30000000000 "
+    ]
+  ]
+}

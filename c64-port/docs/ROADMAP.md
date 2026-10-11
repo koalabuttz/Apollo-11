@@ -560,3 +560,7 @@ Original LONGCALL, LONGCYCL, LONGRTRN and GETCADR transitions pass complete-imag
 ## Port actual Comanche restart-table selection
 
 Original RESTARTS and phase-part selection use independently checked restart data; complete-image source, sanitizer and C64 checks pass. See `docs/COMANCHE_RESTART_SELECT.md`.
+
+## Port real Comanche clock-task source control
+
+Original timer cleanup, clock update and display admission transitions pass complete-image source, sanitizer and C64 checks. See `docs/COMANCHE_CLOCKTASK.md`.
