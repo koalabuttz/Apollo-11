@@ -507,3 +507,5 @@ include tools/lm_finish.mk
 include tools/cm_mysubs_port.mk
 
 include tools/cm_task_interrupt.mk
+
+include tools/cm_service_loop.mk

@@ -654,3 +654,7 @@ All original MYSUBS words, signed-zero and overflow paths, actual returns and fo
 ## Port actual Comanche timer-interrupt lead-in
 
 All 1024 complete original timer-interrupt states preserve registers, banks and external ISR/pending metadata; source, sanitizer and C64 checks pass. See `docs/COMANCHE_TASK_INTERRUPT.md`.
+
+## Execute continuous original Comanche task and service paths
+
+Actual continuous SETJTAG, CLOKTASK, SVCT3, WAITLIST, admission and delay paths match 1856 whole source states across384 cases; sanitizer and real C64 checks pass. See `docs/COMANCHE_SERVICE_LOOP.md`.

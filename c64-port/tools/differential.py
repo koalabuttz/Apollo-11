@@ -354,3 +354,5 @@ subprocess.run([sys.executable,'tools/lm_finish_differential.py',str(reference)]
 subprocess.run([sys.executable,'tools/cm_mysubs_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_task_interrupt_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_service_loop_differential.py',str(reference)],cwd=ROOT,check=True)

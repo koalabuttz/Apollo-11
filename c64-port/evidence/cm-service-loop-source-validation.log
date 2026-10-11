@@ -1,0 +1,28 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c platform/host/cm_service_loop_snapshot.c -o build/cm-service-loop-native
+python3 tools/cm_service_loop_differential.py
+PASS: original continuous CM tasks and services, all physical image words exact
+{
+  "cases": 384,
+  "checkpoints": 1856,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3423 T3RUPT2"
+  ],
+  "actual_tasks": [
+    "15,3207 SETJTAG",
+    "24,3260 CLOKTASK",
+    "05306 SVCT3"
+  ],
+  "actual_services": [
+    "WAITLIST",
+    "NOVAC",
+    "FIXDELAY",
+    "TASKOVER"
+  ],
+  "boundary": "continuous original ISR to05341 before hardware RESUME",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "fd6a0f1cdefdaa0e3d201e763976dd47c2e374a234bd018de6447ddd97284033"
+}
