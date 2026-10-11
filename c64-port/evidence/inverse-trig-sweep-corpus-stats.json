@@ -1,0 +1,34 @@
+[
+  {
+    "mission": "lm",
+    "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873",
+    "complete_states": 163834,
+    "phase_counts": [
+      65536,
+      32766,
+      32766,
+      32766
+    ],
+    "status_counts": {
+      "1": 32776,
+      "0": 98298,
+      "2": 32760
+    }
+  },
+  {
+    "mission": "cm",
+    "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4",
+    "complete_states": 163834,
+    "phase_counts": [
+      65536,
+      32766,
+      32766,
+      32766
+    ],
+    "status_counts": {
+      "1": 32776,
+      "0": 98298,
+      "2": 32760
+    }
+  }
+]

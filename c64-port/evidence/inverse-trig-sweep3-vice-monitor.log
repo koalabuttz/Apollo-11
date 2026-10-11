@@ -1,0 +1,36 @@
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig-sweep0.prg from 0801 to 1C97 (1497 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  242/$0f2,  38/$26
+.C:11ee  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-.....  144251012
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig-sweep1.prg from 0801 to 39AB (31AB bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  200/$0c8,   4/$04
+.C:121c  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-.....  144621796
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig-sweep2.prg from 0801 to 43A3 (3BA3 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  111/$06f,  14/$0e
+.C:1260  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-.....  146856983
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig-sweep3.prg from 0801 to 46E3 (3EE3 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  203/$0cb,  59/$3b
+.C:1291  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-.....  147413192
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-software-stack.bin' from $c100 to $cfff

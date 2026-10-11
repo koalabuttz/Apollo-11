@@ -683,3 +683,5 @@ all: build/cm-priority-complete-native
 include tools/standard_lead_integration.mk
 
 include tools/dsky_pinbranch.mk
+
+include tools/inverse_trig_sweep_port.mk

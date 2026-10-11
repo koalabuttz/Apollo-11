@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/inverse-trig-sweep5.prg" 0
+watch store c080
+ignore 1 1
+g 080d
+m c080 c084
+bsave "/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-vice-mailbox.bin" 0 c080 c084
+bsave "/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/inverse_trig_sweep-software-stack.bin" 0 c100 cfff
+quit

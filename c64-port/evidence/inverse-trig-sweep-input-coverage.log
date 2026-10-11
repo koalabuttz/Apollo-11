@@ -1,0 +1,1 @@
+[{'mission': 'lm', 'factory_inputs': 65536, 'arccos_distinct_high_words': 32768, 'arcsin_distinct_high_words': 32768, 'missing_high_words': []}, {'mission': 'cm', 'factory_inputs': 65536, 'arccos_distinct_high_words': 32768, 'arcsin_distinct_high_words': 32768, 'missing_high_words': []}]

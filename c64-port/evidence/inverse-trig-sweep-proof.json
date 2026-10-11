@@ -1,0 +1,193 @@
+{
+  "missions": [
+    {
+      "mission": "lm",
+      "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873",
+      "complete_states": 163834,
+      "phase_counts": [
+        65536,
+        32766,
+        32766,
+        32766
+      ],
+      "status_counts": {
+        "1": 32776,
+        "0": 98298,
+        "2": 32760
+      },
+      "logical_complete_streams": {
+        "original_assembly": {
+          "object": "evidence/inverse-trig-sweep-lm-complete.snapshots.xz",
+          "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873"
+        },
+        "strict_native": {
+          "object": "evidence/inverse-trig-sweep-lm-complete.snapshots.xz",
+          "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873"
+        },
+        "whole_ASAN_UBSAN": {
+          "object": "evidence/inverse-trig-sweep-lm-complete.snapshots.xz",
+          "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873"
+        }
+      },
+      "decoded_bytes": 673030072
+    },
+    {
+      "mission": "cm",
+      "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4",
+      "complete_states": 163834,
+      "phase_counts": [
+        65536,
+        32766,
+        32766,
+        32766
+      ],
+      "status_counts": {
+        "1": 32776,
+        "0": 98298,
+        "2": 32760
+      },
+      "logical_complete_streams": {
+        "original_assembly": {
+          "object": "evidence/inverse-trig-sweep-cm-complete.snapshots.xz",
+          "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4"
+        },
+        "strict_native": {
+          "object": "evidence/inverse-trig-sweep-cm-complete.snapshots.xz",
+          "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4"
+        },
+        "whole_ASAN_UBSAN": {
+          "object": "evidence/inverse-trig-sweep-cm-complete.snapshots.xz",
+          "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4"
+        }
+      },
+      "decoded_bytes": 673030072
+    }
+  ],
+  "input_coverage": [
+    {
+      "mission": "lm",
+      "factory_inputs": 65536,
+      "arccos_distinct_high_words": 32768,
+      "arcsin_distinct_high_words": 32768,
+      "missing_high_words": []
+    },
+    {
+      "mission": "cm",
+      "factory_inputs": 65536,
+      "arccos_distinct_high_words": 32768,
+      "arcsin_distinct_high_words": 32768,
+      "missing_high_words": []
+    }
+  ],
+  "total_complete_states": 327668,
+  "actual_C64": [
+    {
+      "selector": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 5273,
+      "loaded_end": "0x1c97",
+      "hardware_stack": 14,
+      "software_stack": 51,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    },
+    {
+      "selector": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 12717,
+      "loaded_end": "0x39ab",
+      "hardware_stack": 24,
+      "software_stack": 175,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    },
+    {
+      "selector": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "PRG_bytes": 15269,
+      "loaded_end": "0x43a3",
+      "hardware_stack": 24,
+      "software_stack": 192,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    },
+    {
+      "selector": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "PRG_bytes": 16101,
+      "loaded_end": "0x46e3",
+      "hardware_stack": 24,
+      "software_stack": 217,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    },
+    {
+      "selector": 4,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "PRG_bytes": 5273,
+      "loaded_end": "0x1c97",
+      "hardware_stack": 14,
+      "software_stack": 51,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    },
+    {
+      "selector": 5,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "PRG_bytes": 12710,
+      "loaded_end": "0x39a4",
+      "hardware_stack": 24,
+      "software_stack": 178,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    },
+    {
+      "selector": 6,
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "PRG_bytes": 15265,
+      "loaded_end": "0x439f",
+      "hardware_stack": 24,
+      "software_stack": 192,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    },
+    {
+      "selector": 7,
+      "complete_states": 32,
+      "mailbox": "a500002007",
+      "PRG_bytes": 16089,
+      "loaded_end": "0x46d7",
+      "hardware_stack": 24,
+      "software_stack": 217,
+      "compiler_ZP": 0,
+      "constants_checked": 36
+    }
+  ],
+  "total_actual_C64_states": 256,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "correction_to_frozen_claim": "The original158320-state-per-mission corner corpus has30723 distinct highwords per function and misses2045. Its wording claiming every highword was incorrect. This additional65536-input-per-mission sweep independently supplies every32768 ordinary MPAC.high word for each function. Original numerical/source/constants/target proof identities remain byte-unchanged.",
+  "qualified_core_sha256": {
+    "src/inverse_trig.c": "edf4d568d834fc50757575dd097adc8568039d4a31ee4c7ce771d6f68bcb8f30",
+    "include/inverse_trig.h": "134c7b612c5d457279af0ff661d7d7c2c08b3eb7229e4a82bf326f4d4c6735c5",
+    "tests/inverse_trig_cases.c": "0c14ecc4cb327ca6a117e51b41a71a181e028969dce20cfd052c9a5e1b4ac946",
+    "tools/inverse_trig_reference.c": "e034645211cbb48ad98ab34656b7dce35bebebcfadff8434aa2a73da6703f883",
+    "tools/inverse_trig_snapshot.c": "63abbfefe45817eff8ad66445d77dcf3f5698acf8fb47f93c67623023b30239a"
+  },
+  "original_source_proofs": [
+    "evidence/inverse-trig-lm-proof.json",
+    "evidence/inverse-trig-cm-proof.json"
+  ],
+  "independent_source_review": {
+    "path": "evidence/inverse-trig-independent-review.txt",
+    "sha256": "e1863507581b6580ebf7aaa337ecc620676b25089f8d71935f5bff92e91e57f2"
+  },
+  "scope": "Additive high-word input coverage for already qualified LM/CM ARCSIN/ARCCOS native stages only. Original alarm continuation, arbitrary producer overlap and whole INTERPRETER remain outside scope. All source/numeric states and externally retained IRQ compared at all four stages, pending EDOP and genuine DANZIG behavior unchanged. Cartesian operand combinations are sampled, not exhaustive."
+}
