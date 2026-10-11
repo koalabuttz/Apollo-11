@@ -111,15 +111,27 @@ Acceptance for this bounded milestone is met. PREPARATION.md defines ownership
 and the stop before TC INTPRET at 32,3353. No interpreter or complete P66 job is
 claimed; stable sensor/time inputs and native scratch remain explicit adaptations.
 
-## Next bounded milestone: first P66 interpreter vector operation
+## Completed: P66 VXSC KPIP1 scaling
 
-Trace VXSC KPIP1 from the current interpreter-entry boundary. Determine raw
-scaling, vector layout, multiword arithmetic and interpreter scratch effects,
-then translate one bounded vector operation directly to native C and extend the
-independent actual-assembly oracle. A mapped guidance job and count producer
-should follow defined scratch ownership and timing budgets. Flight feasibility
-and deadline proof remain separate measurement work. Rust is optional for later
-components; restart-table expansion should follow a concrete workload requirement.
+- Independent native DMPSUB/VROUND arithmetic preserves signed zeros, mixed signs,
+  intermediate correction, exact-half rounding and final MPAC/A/L scratch.
+- 3355 cases / 3364 original checkpoints match 41 modeled words. Genuine full
+  interpreter entries verify RELINT and constant-bank resolution.
+- Eight host/sanitizer suites pass; an eighth C64 PRG checks 292 full states.
+- Four added scratch bytes bring combined state to 82 bytes. The largest sampled
+  call is 26.122 ms; the sampled prefix plus scaling is 20.135 ms.
+
+Acceptance for one bounded vector operation is met. SCALING.md defines the
+numeric boundary and omitted interpreter machine-control state. A flight deadline
+and complete P66 interpreter continuation are not established.
+
+## Next bounded milestone: PDDL THISTPIP
+
+Trace the pending PDDL operation from DANZIG after scaling. Give the six scaled
+vector words explicit native pushdown ownership, load THISTPIP into DP MPAC,
+and verify MODE, pointer, scratch and A/L effects against original instructions.
+Then extend toward DSU PIPTIME. A mapped guidance job and live producer need
+explicit exclusion and measured scheduling budgets before integration.
 
 ## Remaining design questions
 

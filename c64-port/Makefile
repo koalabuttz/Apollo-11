@@ -140,3 +140,26 @@ sanitize-prepare: | build
 c64-prepare: build/prepare.prg
 build/prepare.prg: $(PREPARE_CORE) $(PREPARE_TEST) platform/c64/prepare_diagnostic.c $(PREPARE_HEADERS) tests/prepare_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/prepare.map $(PREPARE_CORE) $(PREPARE_TEST) platform/c64/prepare_diagnostic.c -o $@
+
+SCALE_CORE = $(PREPARE_CORE) src/guidance_scale.c
+SCALE_INPUT = $(PREPARE_INPUT) tests/scale_cases.c
+SCALE_HEADERS = $(PREPARE_HEADERS) include/guidance_scale.h tests/scale_cases.h
+all: build/scale-snapshot
+build/scale-snapshot: $(SCALE_CORE) $(SCALE_INPUT) platform/host/scale_snapshot.c $(SCALE_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(SCALE_CORE) $(SCALE_INPUT) platform/host/scale_snapshot.c -o $@
+
+SCALE_TEST = $(SCALE_INPUT) tests/scale_check.c
+all: build/test-scale
+test: test-scale
+.PHONY: test-scale sanitize-scale c64-scale
+test-scale: build/test-scale
+	./build/test-scale
+build/test-scale: $(SCALE_CORE) $(SCALE_TEST) tests/test_scale.c $(SCALE_HEADERS) tests/scale_vectors.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(SCALE_CORE) $(SCALE_TEST) tests/test_scale.c -o $@
+sanitize: sanitize-scale
+sanitize-scale: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(SCALE_CORE) $(SCALE_TEST) tests/test_scale.c -o build/test-scale-sanitize
+	./build/test-scale-sanitize
+c64-scale: build/scale.prg
+build/scale.prg: $(SCALE_CORE) $(SCALE_TEST) platform/c64/scale_diagnostic.c $(SCALE_HEADERS) tests/scale_vectors.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/scale.map $(SCALE_CORE) $(SCALE_TEST) platform/c64/scale_diagnostic.c -o $@

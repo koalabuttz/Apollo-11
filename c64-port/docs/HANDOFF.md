@@ -1,4 +1,4 @@
-# RODCOMP pre-interpreter preparation milestone handoff
+# P66 VXSC KPIP1 scaling milestone handoff
 
 ## Repository
 
@@ -24,6 +24,7 @@ make c64-waitlist MOS_CC=/path/to/mos-c64-clang
 make c64-restart MOS_CC=/path/to/mos-c64-clang
 make c64-guidance MOS_CC=/path/to/mos-c64-clang
 make c64-prepare MOS_CC=/path/to/mos-c64-clang
+make c64-scale MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
@@ -38,9 +39,22 @@ python3 tools/guidance_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/scale_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
 ## Completed work
+
+The ninth milestone translates VXSC KPIP1 into native partial-product arithmetic
+and signed AGC rounding, stopping at DANZIG before PDDL. All 41 modeled words
+match 3364 actual-assembly checkpoints over 3355 cases, including exact-half
+rounding, high-word propagation, full RODCOMP/interpreter entries, and three
+four-step histories. All eight host/sanitizer suites and earlier comparisons
+pass. The eighth C64 PRG checks 292 complete states with zero failures, restoring
+I and restricted ZP/stack checks. It uses 82 bytes of state; sampled scaling
+reaches 25737 PAL cycles (26.122 ms), and the sampled full prefix plus scaling
+takes 19838 (20.135 ms). These do not establish a live guidance deadline.
+SCALING.md documents the numeric contract and explicit interpreter-state adaptation.
 
 The eighth milestone extends RODCOMP through PIPA/time snapshot exchanges and
 vector-input preparation, stopping before TC INTPRET at bank 32,3353. All 39
@@ -156,7 +170,7 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 ## Limits and next milestone
 
 This cooperative basic-job translation includes native demonstration routines
-and P66 preparation through its interpreter-entry boundary. Complete flight OS and guidance workloads
+and P66 preparation through its first VXSC KPIP1 operation. Complete flight OS and guidance workloads
 remain future work. Callbacks return to a trampoline; persistent values belong
 in MPAC/VAC, not suspended C stacks.
 An unmapped address latches a runtime fault. No rollback is claimed; bounded
@@ -170,12 +184,12 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: trace the first interpreter VXSC KPIP1 operation, its scaling and native
-vector representation; translate and verify that bounded operation independently.
+Next: translate PDDL THISTPIP, preserving the six scaled words in an explicit
+native pushdown representation and verifying timestamp/MODE/scratch effects.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
 Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST,
-bounded Type C job recovery and pre-interpreter P66 preparation is met.
+bounded Type C job recovery, pre-interpreter P66 preparation and VXSC KPIP1 is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host

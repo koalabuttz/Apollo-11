@@ -335,3 +335,29 @@ composed interval. No custom sensor IRQ or continuous source runs in this PRG.
 These are finite samples, not a worst-case execution bound, full P66 timing or
 flight deadline evidence. PREPARATION.md documents ownership and the interpreter
 boundary.
+
+## VXSC KPIP1 diagnostic
+
+The eighth standalone PRG has 32979 file bytes / 32977 loaded bytes at
+$0801..$88d1, SYS $080d. Text is 8818 bytes, read-only data 24147 (23944 are
+292 full 41-word expectations), BSS 82 and noinit one byte. Total image plus
+BSS/noinit is 33060 bytes. It fits stock C64 RAM, uses 32 imaginary ZP registers
+and no extra compiler ZP, heap or floating point. Four new scratch bytes plus
+unchanged 78-byte preparation state give 82 target bytes.
+
+| Guarded sample | PAL cycles | Time |
+|---|---:|---:|
+| Below-half third word | 23415 | 23.766 ms |
+| Exact-half third word | 24297 | 24.661 ms |
+| Positive rounding propagation | 24799 | 25.170 ms |
+| Negative rounding propagation | 25737 | 26.122 ms |
+| Full RODCOMP prefix plus scaling, case 280 step 0 | 19838 | 20.135 ms |
+
+These include marker/call and VIC bus overhead, with inputs/checks outside the
+interval. The largest sample exceeds one PAL frame while interrupts are masked;
+a live guidance job requires explicit source-rate/exclusion and scheduling
+budgets. No WCET or flight-deadline conclusion follows from these five samples.
+Hardware-stack extent is 26 bytes below entry, 40 including the 14-byte ROM
+frame; software-stack extent is 187 bytes including diagnostic fixtures.
+`scale-timing.json`, the exact PRG/map and VICE logs/dumps are retained. Earlier
+seven PRGs and their measured evidence are unchanged. SCALING.md defines scope.

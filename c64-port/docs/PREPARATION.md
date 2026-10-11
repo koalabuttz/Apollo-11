@@ -66,8 +66,9 @@ copy MPAC into a saved job context or install a guidance callback.
 
 PIPATMP and TEM remain raw source words. No SI conversion, sensor calibration,
 arithmetic saturation, vector normalization or assumed uplink value is added.
-The next original interpreter instruction scales MPAC with KPIP1; that operation
-has not been approximated with floating point or included in this milestone.
+The next original interpreter instruction scales MPAC with KPIP1. The ninth
+milestone implements that bounded operation with integer arithmetic; see
+SCALING.md. The preparation API and its pre-interpreter stop remain as documented.
 
 ## Verification and evidence
 

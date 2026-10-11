@@ -13,8 +13,8 @@ and complete. WAITLIST now retains nine task slots, differential timer state
 and native task completion; a CIA Timer B adapter publishes clock events.
 Bounded alarm recording, STARTSB1 cleanup and protected Type C job recovery
 are implemented. P66 RODCOMP's rate update, PIPA/time snapshots and vector-input
-preparation through the pre-interpreter boundary are verified
-(docs/GUIDANCE.md, docs/PREPARATION.md). **Deferred:** complete Apollo
+preparation and the first VXSC KPIP1 operation are verified
+(docs/GUIDANCE.md, docs/PREPARATION.md, docs/SCALING.md). **Deferred:** complete Apollo
 guidance jobs, interpreter dispatch and
 remaining restart routes/glue (docs/RESTART.md).
 
@@ -39,7 +39,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md` and `docs/PREPARATION.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/SCALING.md` for the current milestone.
 
 ## Build and run
 
@@ -55,11 +55,12 @@ make c64-waitlist MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-restart MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-guidance MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-prepare MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
+make c64-scale MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 ```
 
 The deliverables are `build/executive.prg`, `build/irq.prg`,
 `build/lifecycle.prg`, `build/waitlist.prg`, `build/restart.prg`, `build/guidance.prg`
-and `build/prepare.prg`
+`build/prepare.prg` and `build/scale.prg`
 (ordinary C64 PRGs with BASIC SYS stubs).
 Load a PRG on a C64 and RUN, or use VICE. The console diagnostic prints a test summary,
 not an interactive DSKY. Target compiler: LLVM-MOS SDK **v23.3.0**.
@@ -88,6 +89,8 @@ P66 rate update add 12,856 actual-instruction checkpoints; the sixth C64 PRG
 checks 568 complete six-word states and three rate histories. PIPA/time and vector
 preparation add 3,396 checkpoints, including every six-TS skip combination;
 the seventh PRG checks 324 complete 39-word states and composed histories.
+VXSC KPIP1 adds 3364 complete 41-word checkpoints; the eighth PRG checks 292
+states, signed rounding boundaries and full-prefix histories.
 Regenerate frozen
 C64 expectations only after a successful differential test:
 
@@ -98,7 +101,8 @@ python3 tools/freeze_waitlist.py
 python3 tools/freeze_restart.py
 python3 tools/freeze_guidance.py
 python3 tools/freeze_prepare.py
-make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart c64-guidance c64-prepare
+python3 tools/freeze_scale.py
+make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart c64-guidance c64-prepare c64-scale
 ```
 
 ### VICE verification
@@ -118,6 +122,8 @@ python3 tools/guidance_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
+python3 tools/scale_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 ```
 
 Provide standard ROM files `kernal-901227-03.bin`, `basic-901226-01.bin`, and
@@ -134,6 +140,8 @@ The sixth diagnostic checks 568 complete numerical/rate states and three P66
 rate histories, with six measured call intervals and 12 bytes of rate state.
 The seventh diagnostic checks 324 complete preparation states, all six-TS skip
 combinations and three composed histories, with 78 bytes of modeled state.
+The eighth checks 292 complete scaling states with 82 bytes of total state.
+Its largest measured sample takes 26.122 ms; see docs/SCALING.md for timing limits.
 
 ## Engineering record
 
@@ -142,6 +150,7 @@ combinations and three composed histories, with 78 bytes of modeled state.
 - `docs/LIFECYCLE.md`: sleep/wake, priority scans, callback actions and oracle boundaries.
 - `docs/RESTART.md`: alarm history, cleanup, protected job re-entry and exclusions.
 - `docs/GUIDANCE.md`: P66 rate boundary, raw scales, multiword math and oracle domains.
+- `docs/SCALING.md`: VXSC KPIP1, partial products, signed rounding, scratch and interpreter-entry adaptations.
 - `docs/PREPARATION.md`: PIPA/time snapshots, vector scratch, TS skips and the pre-interpreter boundary.
 - `docs/WAITLIST.md`: task list/counter semantics, native callbacks, CIA ownership and limits.
 - `docs/ARCHITECTURE.md`: original structures, calling conventions, dependencies.

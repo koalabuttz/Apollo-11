@@ -192,3 +192,12 @@ implicitly. Snapshot register debris and final A/L remain explicit. The native
 return mask records six skips for observation, not as historical memory or an
 alarm. PREPARATION.md defines stage boundaries and producer ownership. The
 function stops before TC INTPRET, with no implicit Executive-context transfer.
+
+`src/guidance_scale.c` directly translates the first P66 VXSC KPIP1 operation.
+It reuses preparation MPAC/MODE/A/L and adds four scratch bytes for MPTEMP and
+OVFIND. Components use independent word signs and native MP/DAS partial products,
+then signed VROUND arithmetic; total combined state is 82 target bytes. Calls
+are explicit and stop before PDDL. Interpreter dispatch registers and original
+RELINT are adapted to native call/ownership and restoring platform guards.
+There is no decoded instruction stream or implicit Executive-context copy.
+SCALING.md defines all modeled and omitted state and the measured timing limits.

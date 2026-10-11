@@ -387,3 +387,32 @@ stack dumps are retained. PREPARATION.md specifies stable sensor/time inputs,
 MODE alias and native scratch/return adaptations; PERFORMANCE.md gives samples.
 Interpreter execution, complete guidance scheduling/restart, live sensor inputs,
 physical hardware and flight deadlines remain future work.
+
+## Ninth milestone: VXSC KPIP1
+
+The fixture now overlays 11 unchanged files, adding INTERPRETER.agc and
+CONTROLLED_CONSTANTS.agc. All earlier snapshots and the assembled rope hash
+remain unchanged. `scale_reference.c` links input constructors and Virtual AGC
+only. It executes direct VXSC calls and full RODCOMP/interpreter-entry calls,
+checks the resolved constant bytes/bank/address, LOC/BANKSET, RELINT permission,
+five memory guards and the stop at DANZIG before PDDL. All 41 modeled words match
+3355 cases / 3364 checkpoints. Original VROUND observations include exact half
+in both signs and six low-to-high carry events; no OVFIND event is claimed.
+SCALING.md lists the case domains and native control-state exclusions.
+
+| Command | Result | Evidence |
+|---|---|---|
+| `python3 tools/prepare_reference.py` | PASS; 11 source identities and unchanged rope | `scale-fixture.log` |
+| `make test` | PASS; eight host suites | `scale-host-tests.log` |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; ASan/UBSan, eight suites | `scale-sanitize.log` |
+| `make differential REFERENCE=/path/to/fixture` | PASS; all prior snapshots plus 3364 complete scaling states | `scale-differential.log`, `scale-*.snapshots`, `scale-reference.trace` |
+| `python3 tools/freeze_scale.py` | 292 complete expectations, gated on exact independent equality | `tests/scale_vectors.h` |
+| `make c64-scale MOS_CC=/path/to/mos-c64-clang` | PASS; eighth standalone PRG | `scale-c64-build.log`, `scale.prg`, `scale.map` |
+| `python3 tools/scale_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; zero errors, 292 full states and three four-step histories, restoring I | `scale-vice-result.txt`, monitor/log/mailbox/stack dumps, `scale-timing.json` |
+
+Snapshot SHA256 is
+`11993e66747e7685e964c555e08e72c73d9782d2674a46d3ec0b2d4b00c36f2a`.
+All 119 prior evidence files retain their hashes; historical files remain
+unchanged. Stack extents are finite diagnostic observations, not maximum call
+bounds. The largest timed sample is 26.122 ms under masking; this milestone
+makes no live P66 scheduling or hardware feasibility claim.

@@ -113,3 +113,17 @@ restoring native interrupt adaptation. The subsequent interpreter is excluded.
 PREPARATION.md records all physical addresses, MODE's alias, retained words and
 overflow effects. The original instructions execute independently in the host
 oracle; direct native assignments fold only unobservable exchange intermediates.
+
+## First P66 interpretive vector operation
+
+| Historical source | Native translation | Boundary |
+|---|---|---|
+| LUNAR_LANDING_GUIDANCE_EQUATIONS:1001..1003, ITRPNT1 VXSC PDDL / KPIP1 | `p66_scale_velocity` after `p66_prepare` | First arithmetic operation only, before PDDL |
+| CONTROLLED_CONSTANTS:175, KPIP1 | Fixed DP pair `{00321,26706}` | 33,2021; asserted original rope bytes |
+| INTERPRETER:902..926, DMPSUB | Private component partial-product arithmetic using MP/DAS | All original product ordering and corrections |
+| INTERPRETER:936..949, VROUND / SETOVF2 | Private component signed rounding | TS skip selection, low carry and A/L debris |
+| INTERPRETER:1190..1212, VXSC / VVXSC / VROTATEX | Three native component calls | DANZIG 6061 before its first instruction |
+
+LOC/BANKSET/ADDRWD/CYR/EDOP/Q/bank selectors are explicitly outside the native
+41-word arithmetic contract. Genuine integration cases execute the original
+interpreter entry; see SCALING.md for dispatch and interrupt adaptations.

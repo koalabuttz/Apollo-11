@@ -113,3 +113,6 @@ python3 tools/guidance_vice_test.py --vice /path/to/x64sc \
 Evidence includes matched snapshots, source/fixture hashes, traces, test logs,
 the PRG/map, VICE mailbox/stack dumps and measured intervals. Earlier evidence is
 retained unchanged. No hardware C64 or full landing trajectory has been tested.
+
+The later VXSC KPIP1 operation is now implemented independently; SCALING.md
+defines its numeric and interpreter-entry boundaries. This rate API is unchanged.

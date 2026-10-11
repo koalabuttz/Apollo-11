@@ -28,14 +28,14 @@ original=ROOT.parent/'Luminary099/EXECUTIVE.agc'
 for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc',
                'ALARM_AND_ABORT.agc','FRESH_START_AND_RESTART.agc',
                'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc',
-               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc']:
+               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc','INTERPRETER.agc','CONTROLLED_CONSTANTS.agc']:
     shutil.copyfile(ROOT.parent/'Luminary099'/source,fixture/source)
 with (fixture/'assembly.lst').open('w') as log:
     run([str(v/'yaYUL/yaYUL'),'MAIN.agc'],cwd=fixture,stdout=log,stderr=subprocess.STDOUT)
 for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc',
                'ALARM_AND_ABORT.agc','FRESH_START_AND_RESTART.agc',
                'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc',
-               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc']:
+               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc','INTERPRETER.agc','CONTROLLED_CONSTANTS.agc']:
     assert (fixture/source).read_bytes()==(ROOT.parent/'Luminary099'/source).read_bytes()
 # The adapter uses these historical addresses; fail if the support changes them.
 listing=(fixture/'assembly.lst').read_text()
@@ -59,7 +59,10 @@ for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
                      ('RODSCAL1','E7,1756'),('VDGVERT','E7,1644'),
                      ('OLDPIPAX','E7,1763'),('THISTPIP','E7,1761'),
                      ('DELVROD','E7,1766'),('PIPATMPX','1160'),
-                     ('TEMX','1254'),('MODE','0163')]:
+                     ('TEMX','1254'),('MODE','0163'),('VXSC','7401'),
+                     ('DANZIG','6061'),('VROUND','7140'),('DMPSUB','7107'),
+                     ('KPIP1','33,2021'),('MPTEMP','0135'),('OVFIND','0121'),
+                     ('LOC','0164'),('BANKSET','0165'),('ADDRWD','0116')]:
     import re
     if not re.search(r'\b'+name+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)
@@ -68,6 +71,6 @@ print('Unchanged Executive SHA256:',hashlib.sha256(original.read_bytes()).hexdig
 for source in ['WAITLIST.agc','INTERRUPT_LEAD_INS.agc','ALARM_AND_ABORT.agc',
                'FRESH_START_AND_RESTART.agc','RESTARTS_ROUTINE.agc',
                'RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc',
-               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc']:
+               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc','INTERPRETER.agc','CONTROLLED_CONSTANTS.agc']:
     print('Unchanged '+source+' SHA256:',hashlib.sha256((fixture/source).read_bytes()).hexdigest())
 print('Rope SHA256:',hashlib.sha256((fixture/'MAIN.agc.bin').read_bytes()).hexdigest())
