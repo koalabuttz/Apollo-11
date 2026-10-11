@@ -1,0 +1,94 @@
+{
+  "entry_bank": "40",
+  "entry_pcs": {
+    "LM": [
+      "03226 DSPDECWD",
+      "03262 DSPDECNR"
+    ],
+    "CM": [
+      "03133 DSPDECWD",
+      "03167 DSPDECNR"
+    ]
+  },
+  "clean_relay_handoff": {
+    "LM": "PC05705 Q03354 IRQ0",
+    "CM": "PC05747 Q03261 IRQ0"
+  },
+  "sign_relay_callers": {
+    "LM": [
+      "02426",
+      "02432"
+    ],
+    "CM": [
+      "02327",
+      "02333"
+    ]
+  },
+  "digit_caller": {
+    "LM": "03253",
+    "CM": "03160"
+  },
+  "complete_return": "PCoriginalcaller Q0116 A0177754 L0 DSPCOUNT077754",
+  "trace1_index_bound": [
+    -11,
+    11
+  ],
+  "reltab_addresses": {
+    "LM": "04066",
+    "CM": "04072"
+  },
+  "trace1_table_low5": {
+    "LM": [
+      29,
+      3,
+      21,
+      6,
+      3,
+      0,
+      7,
+      0,
+      0,
+      6,
+      2,
+      21,
+      3,
+      25,
+      27,
+      15,
+      30,
+      28,
+      19,
+      29,
+      31,
+      0,
+      0
+    ],
+    "CM": [
+      23,
+      16,
+      23,
+      16,
+      18,
+      16,
+      6,
+      31,
+      6,
+      11,
+      6,
+      21,
+      3,
+      25,
+      27,
+      15,
+      30,
+      28,
+      19,
+      29,
+      31,
+      0,
+      0
+    ]
+  },
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}

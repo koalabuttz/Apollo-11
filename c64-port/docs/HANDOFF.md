@@ -1371,3 +1371,7 @@ Qualify actual C64 checked metadata and split callbacks against310 full source c
 ## Compose returned antenna conic selection and ephemerides handoffs
 
 Qualify returned original antenna conic selection against131072 complete source native sanitizer states and64 C64 states retaining actual Earth UNIT or matrix and Moon LUNPOS frontiers. See `docs/NATIVE-SBAND-ORBIT-CALLERS.md`.
+
+## Qualify native decimal formatter for original mixed-sign operands
+
+Extend original raw double precision decimal formatting against262144 complete source native sanitizer states and128 C64 states preserving bounded passive table reads and exact formatter debris. See `docs/DSKY-DECIMAL-RAW.md`.

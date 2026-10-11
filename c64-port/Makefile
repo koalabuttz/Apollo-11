@@ -885,3 +885,5 @@ include tools/sband_orbit_integration.mk
 all: build/sband-orbit-integrated-stream
 test: test-sband-orbit
 sanitize: sanitize-sband-orbit
+
+include tools/dsky_decimal_raw_integration.mk

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete dsky_decimal_raw group original-assembly states; retained memory unchanged
+Mailbox: a500008000
+PRG bytes: 19048
+dsky_decimal_raw-hardware-stack.bin: measured stack extent 23 bytes
+dsky_decimal_raw-software-stack.bin: measured stack extent 68 bytes
