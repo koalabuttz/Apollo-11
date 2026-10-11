@@ -646,3 +646,5 @@ subprocess.run([sys.executable,'tools/dsky_load_complete_differential.py',str(re
 subprocess.run([sys.executable,'tools/dsky_monitor_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_fixed_display_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_load_store_differential.py',str(reference)],cwd=ROOT,check=True)

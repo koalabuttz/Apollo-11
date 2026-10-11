@@ -1,0 +1,23 @@
+/* SPDX-License-Identifier: MIT */
+#include "dsky_load_store.h"
+#include "noun_reader.h"
+static int dsky_caller_entry(uint16_t pc){static const uint16_t entries[]={02632,02714,02733,02750,02765,02641,02645,02651,02723,02727,02740,02755,02772,02660,02674,02701};uint8_t i;for(i=0;i<16u;++i)if(pc==entries[i])return i;return -1;}
+static uint16_t dsky_caller_address(const uint16_t *w,uint16_t k){uint16_t a=(uint16_t)(w[0145]+k);return a<01400u ? a : (uint16_t)(w[3]+(a&0377u));}
+static int dsky_caller_domain(const apollo_overlay_state *s,const dsky_lamp_io *io){const uint16_t *w;uint16_t address,k;int e;if(!s||!io)return 0;w=s->words;e=dsky_caller_entry(w[5]);if(e<0||w[7]||w[3]>03400u||(w[3]&0377u)||w[4]!=062000u||w[6]!=(uint16_t)(062000u|(w[3]>>8))||io->control.superbank<0100u||io->control.superbank>0160u||(io->control.superbank&017u)||io->control.interrupt_enabled>1u||io->restart_light>1u)return 0;
+ if(e<5)return w[01002]<=99u||w[01002]==077777u;
+ if(e>=5&&e<=12){k=(uint16_t)(e==6||e==9||e==11 ? 1u : e==7||e==12 ? 2u : 0u);address=dsky_caller_address(w,k);if(agc_overflow(w[0])||w[0145]+k>01777u||address<01100u||address>03777u)return 0;}
+ if(e==13||(e==7&&w[01002]==7u))return (w[01003]&03777u)>=0100u;
+ if(e==14){address=dsky_caller_address(w,0);return w[0145]<=01777u&&address>=0100u&&address<=03777u;}
+ return 1;
+}
+static void dsky_caller_component(uint16_t *w,uint16_t k,uint16_t q,enum dsky_load_store_route *route){w[0]=k;w[2]=q;w[5]=03075;*route=DSKY_LOAD_STORE_COMPONENT;}
+static void dsky_caller_complete(uint16_t *w,uint16_t q,enum dsky_load_store_route *route){w[2]=q;w[5]=02775;*route=DSKY_LOAD_STORE_COMPLETE;}
+static void dsky_caller_body(apollo_overlay_state *s,dsky_lamp_io *io,uint8_t cm,enum dsky_load_store_route *route){uint16_t *w=s->words,returnpc,bank,k,address,flag;int e=dsky_caller_entry(w[5]);apollo_noun_reader_io n;enum dsky_input_mode_route m;w[1]=agc_extend(agc_correct(w[1]));if(e<5){static const uint16_t resumed[]={02637,02721,02736,02753,02770},caller[]={02641,02723,02740,02755,02772};if(e<2){w[0]=agc_extend(agc_negate(e ? 5u : 6u));w[2]=e ? 02716u : 02634u;w[5]=03011;if(cm){cm_native_io c={0};c.superbank=io->control.superbank;c.interrupt_enabled=io->control.interrupt_enabled;(void)cm_input_mode(s,&c,&io->wrote_channels,&io->restart_light,&m);}else (void)dsky_input_mode(s,io,&m);if(m!=DSKY_INPUT_MODE_CALLER){*route=DSKY_LOAD_STORE_RECYCLE;return;}}
+  returnpc=resumed[e];bank=w[6];w[0]=returnpc;w[1]=agc_extend(bank);w[3]=0400;w[4]=064000;w[6]=064001;w[5]=cm ? 02062u : 02103u;n.superbank=io->control.superbank;n.interrupt_enabled=io->control.interrupt_enabled;(void)apollo_noun_reader(s,&n,cm ? APOLLO_FIXED_CM : APOLLO_FIXED_LM,APOLLO_LODNNTAB);dsky_caller_component(w,(uint16_t)(e==3 ? 1u : e==4 ? 2u : 0u),caller[e],route);return;}
+ if(e<=12){k=(uint16_t)(e==6||e==9||e==11 ? 1u : e==7||e==12 ? 2u : 0u);address=dsky_caller_address(w,k);w[address]=agc_correct(w[0]);if(e==5||e==6||e==8){dsky_caller_component(w,(uint16_t)(e==6 ? 2u : 1u),e==5 ? 02645u : e==6 ? 02651u : 02727u,route);return;}if(e!=7){dsky_caller_complete(w,e==9 ? 02732u : e==10 ? 02743u : e==11 ? 02760u : 02775u,route);return;}w[0]=agc_add_register(agc_extend(agc_negate(7)),agc_extend(w[01002]));if(w[0]!=0u&&w[0]!=0177777u){dsky_caller_complete(w,02660,route);return;}e=13;}
+ if(e==13){flag=w[01003];w[3]=(uint16_t)(flag&03400u);w[6]=(uint16_t)(062000u|(w[3]>>8));w[0145]=(uint16_t)(01400u+(flag&0377u));w[2]=3;w[0]=agc_extend(w[01005]);io->control.interrupt_enabled=0;address=(uint16_t)(flag&03777u);if(w[0]!=0u&&w[0]!=0177777u){w[0]=agc_extend((uint16_t)(agc_negate(w[address])&w[01004]));w[0]=agc_add_register(w[0],agc_extend(w[address]));w[address]=agc_correct(w[0]);w[2]=02674;e=15;}else e=14;}
+ if(e==14){address=dsky_caller_address(w,0);w[0]=agc_extend((uint16_t)(agc_negate(w[01004])&w[address]));w[address]=agc_correct(w[0]);}
+ io->control.interrupt_enabled=1;dsky_caller_complete(w,02703,route);
+}
+enum p66_bias_status dsky_load_store(apollo_overlay_state *s,dsky_lamp_io *io,enum dsky_load_store_route *route){if(!route||!dsky_caller_domain(s,io))return P66_BIAS_OUT_OF_SCOPE;dsky_caller_body(s,io,0,route);return P66_BIAS_OK;}
+enum exec_status cm_load_store(apollo_overlay_state *s,cm_native_io *io,uint16_t *events,uint16_t *restart,enum dsky_load_store_route *route){dsky_lamp_io p;if(!io||!events||!restart||!route)return EXEC_OUT_OF_SCOPE;p.control.superbank=io->superbank;p.control.interrupt_enabled=io->interrupt_enabled;p.restart_light=*restart;if(!dsky_caller_domain(s,&p))return EXEC_OUT_OF_SCOPE;dsky_caller_body(s,&p,1,route);io->superbank=p.control.superbank;io->interrupt_enabled=p.control.interrupt_enabled;return EXEC_OK;}

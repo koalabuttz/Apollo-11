@@ -1586,3 +1586,7 @@ Compose actual antenna PDVL plane projection reverse subtraction UNIT and BOV ag
 ## Compose original fixed memory display across both missions
 
 Translate DSPFMEM DATACALL and ENDSPF across every physical fixed word against245760 continuous original strict sanitizer states and96 C64 checkpoints with returned data page boundaries. See `docs/DSKY-FIXED-DISPLAY.md`.
+
+## Translate original operator load caller stores in both missions
+
+Translate genuine PUTXYZ PUTXY and single caller stores and noun7 flags against8192 complete original strict sanitizer states and64 C64 checkpoints preserving actual PUTCOM LOADLV and ALMCYCLE frontiers. See `docs/DSKY-LOAD-STORE.md`.
