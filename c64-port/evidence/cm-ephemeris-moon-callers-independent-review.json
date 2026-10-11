@@ -1,0 +1,27 @@
+{
+  "reviewer": "general_division",
+  "read_only": true,
+  "conclusion": "No discrepancy found. Additive Moon caller wrapper closes the concrete fixed-return breadth gap identified in prior whole-source review, with all three original LUNPOS caller frames explicitly qualified.",
+  "hashes": {
+    "src/cm_ephemeris_moon_callers.c": "b1e1d8307fde7950e477e183598c0b4686fd4ded88a605a4e466305495da0002",
+    "include/cm_ephemeris_moon_callers.h": "aa2f6ed88425fd42d1aee36cf0e91c4838981f67c018613725058e172699d74d",
+    "tools/cm_ephemeris_moon_callers_source.py": "2b61899450d16734db1397b185b4b0be3a4f475652603d91f0039ff48ee068ee",
+    "tools/cm_ephemeris_moon_callers_reference.c": "f66a4d2dca9e4dbc05a890905921fc17e7c1922a502096eeab8a584ac4c94be1",
+    "tools/cm_ephemeris_moon_callers_snapshot.c": "6413a5e6f15f6837c779a256c3d40e612f4475da182d5b8c77702be819a24fe3",
+    "tests/cm_ephemeris_time_cases.c": "b95e1d617ae96815f6e2956dd57b8c4ee6b3666b57c4063428980a4051457d38",
+    "build/cm-ephemeris-moon-callers-source-map.json": "4b5421cf7d9f14fa8e210b38d3930949d7f536884b8cbc01229b2c2f21353412",
+    "../Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b"
+  },
+  "source_checks": [
+    "Original three CALL LUNPOS instruction addresses31,2741/42,3672/11,3326 imply saved returns062742/065673/023327 respectively; new constructor and guard select these exact pairs.",
+    "Earlier time/Horner/native math remains identical to immutable S-band Moon body, including unrounded limb exchanges, nine coefficient loops, terminal TIX X1=6 and final VSL2.",
+    "RVQ derives actual FB=savedQPRET&076000, LOC02000+(savedQPRET&01777), BANKSET and INTBIT15/rawA from bank sign bit; retained EB, raw-normalized L, Q3, CYR7/EDOP0 and ADDR/LOC match original interpreter return.",
+    "Independently rechecked all71 distinct original containing words including both2DEC constant pairs against unchanged6e31 rope."
+  ],
+  "whole_local_source_recommendation": "Recommend whole local containing-file closure using time/Moon-callers/velocity/solar/positions and original constants under documented producer/caller domains. Preserve restricted SOLPOS declaredQ023377 and user restart/15-day physical validity responsibilities.",
+  "limits": [
+    "Reviewer did not independently rerun owners65536-state or C64 corpus.",
+    "No whole application/scheduler/physical timing acceptance claim; older frozen Moon and whole-review artifacts remain unchanged."
+  ]
+}

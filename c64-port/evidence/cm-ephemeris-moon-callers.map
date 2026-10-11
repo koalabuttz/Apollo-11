@@ -1,0 +1,168 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5d2a     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67     1199     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.cm_ephemeris_moon_callers)
+     a67      a67     1199     1                 cm_ephemeris_moon_callers
+    1c00     1c00      203     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.ephemeris_time_downscale)
+    1c00     1c00      203     1                 ephemeris_time_downscale
+    1e03     1e03      68e     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.ephemeris_scalar_left)
+    1e03     1e03      68e     1                 ephemeris_scalar_left
+    2491     2491      79c     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.ephemeris_triple_add)
+    2491     2491      79c     1                 ephemeris_triple_add
+    2c2d     2c2d      263     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.interpreted_sign)
+    2c2d     2c2d      263     1                 interpreted_sign
+    2e90     2e90      a8a     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.sband_vector_linear)
+    2e90     2e90      a8a     1                 sband_vector_linear
+    391a     391a       9b     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.exchange)
+    391a     391a       9b     1                 exchange
+    39b5     39b5      344     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.product)
+    39b5     39b5      344     1                 product
+    3cf9     3cf9      215     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.round_product)
+    3cf9     3cf9      215     1                 round_product
+    3f0e     3f0e      298     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.component_add)
+    3f0e     3f0e      298     1                 component_add
+    41a6     41a6      1c1     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.add_pair)
+    41a6     41a6      1c1     1                 add_pair
+    4367     4367      523     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.sband_shift_left)
+    4367     4367      523     1                 sband_shift_left
+    488a     488a      270     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.invokes_overflow)
+    488a     488a      270     1                 invokes_overflow
+    4afa     4afa      513     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.p66_vector_shift_left)
+    4afa     4afa      513     1                 p66_vector_shift_left
+    500d     500d       ca     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.agc_multiply)
+    500d     500d       ca     1                 agc_multiply
+    50d7     50d7      1bc     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.agc_double_add)
+    50d7     50d7      1bc     1                 agc_double_add
+    5293     5293      45c     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.cm_ephemeris_time_input)
+    5293     5293      45c     1                 cm_ephemeris_time_input
+    56ef     56ef      b01     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.main)
+    56ef     56ef      b01     1                 main
+    61f0     61f0        6     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.exit)
+    61f0     61f0        6     1                 exit
+    61f6     61f6       13     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.__ashlhi3)
+    61f6     61f6       13     1                 __ashlhi3
+    6209     6209       40     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.__umodqi3)
+    6209     6209       40     1                 __umodqi3
+    6249     6249       ae     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.__umodhi3)
+    6249     6249       ae     1                 __umodhi3
+    62f7     62f7      14f     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.__umodsi3)
+    62f7     62f7      14f     1                 __umodsi3
+    6446     6446       34     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.memcpy)
+    6446     6446       34     1                 memcpy
+    647a     647a       22     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.__memset)
+    647a     647a       22     1                 __memset
+    649c     649c       34     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.__mulhi3)
+    649c     649c       34     1                 __mulhi3
+    64d0     64d0       67     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.text.__mulsi3)
+    64d0     64d0       67     1                 __mulsi3
+    6537     6537        0     1         __init_array_start = .
+    6537     6537        0     1         __init_array_end = .
+    6537     6537        0     1         __fini_array_start = .
+    6537     6537        0     1         __fini_array_end = .
+    6537     6537     11e6     1 .rodata
+    6537     6537        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    6537     6537        0     1                 __set_v
+    6538     6538       fa     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.rodata.cm_ephemeris_moon_callers_reference_dictionary)
+    6538     6538       fa     1                 cm_ephemeris_moon_callers_reference_dictionary
+    6632     6632       82     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.rodata.cm_ephemeris_moon_callers_reference_offsets)
+    6632     6632       82     1                 cm_ephemeris_moon_callers_reference_offsets
+    66b4     66b4      ff8     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.rodata.cm_ephemeris_moon_callers_reference_stream)
+    66b4     66b4      ff8     1                 cm_ephemeris_moon_callers_reference_stream
+    76ac     76ac       40     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.rodata.cm_ephemeris_moon_callers_target_check.invalid)
+    76ac     76ac       40     1                 cm_ephemeris_moon_callers_target_check.invalid
+    76ec     76ec        6     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.rodata.cm_ephemeris_moon_callers.offsets)
+    76ec     76ec        6     1                 cm_ephemeris_moon_callers.offsets
+    76f2     76f2        3     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.rodata.p66_vector_shift_right.offsets)
+    76f2     76f2        3     1                 p66_vector_shift_right.offsets
+    76f5     76f5        8     1         <internal>:(.rodata.cst8)
+    76fd     76fd       20     1         <internal>:(.rodata.cst32)
+    771d     771d        0     1 .data
+    771d     771d        0     1         __data_start = .
+    771d     771d        0     1         __data_end = .
+    771d     771d        0     1 __data_load_start = LOADADDR(.data)
+    771d     771d        0     1 __data_size = SIZEOF(.data)
+    771d     771d     2000     1 .bss
+    771d     771d        0     1         __bss_start = .
+    771d     771d     1000     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.bss.state)
+    771d     771d     1000     1                 state
+    871d     871d     1000     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.bss.expected)
+    871d     871d     1000     1                 expected
+    971d     971d        0     1         __bss_end = .
+    971d     971d        0     1 __bss_size = SIZEOF(.bss)
+    971d     971d        0     1 .noinit
+    971d     971d        0     1         __heap_start = ALIGN(., 2)
+    971d     971d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg.lto.o:(.llvm_sympart)
+       0        0      c80     4 .symtab
+       0        0      c80     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      843     1 .strtab
+       0        0      843     1         <internal>:(.strtab)

@@ -1,0 +1,8 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers.prg from 0801 to 771C (6F1C bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   43/$02b,  58/$3a
+.C:5ba5  8D 00 C0    STA $C000      - A:A5 X:00 Y:06 SP:f1 N.-..I..  267776455
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers-mailbox.bin' from $c000 to $c003
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-moon-callers-software-stack.bin' from $c100 to $cfff

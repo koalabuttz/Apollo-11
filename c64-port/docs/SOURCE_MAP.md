@@ -1579,3 +1579,7 @@ Qualify all source priority floors fractions exception aliases and actual caller
 ## Translate Comanche idle interrupt recheck and dispatch
 
 Qualify genuine postinterrupt NUCHANG2 recheck and all six typed caller transfers against12288 complete original states strict sanitizers and64 C64 cases. See `docs/COMANCHE_IDLE_RECHECK.md`.
+
+## Qualify Comanche lunar positions for all original source callers
+
+Qualify original LUNPOS polynomial and all three saved caller bank and return contexts against65536 complete original strict sanitizer states and64 C64 states preserving historical Moon proofs and arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-MOON-CALLERS.md`.

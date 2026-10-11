@@ -1092,3 +1092,5 @@ all: build/cm-priority-full-native
 
 include tools/cm_idle_recheck.mk
 all: build/cm-idle-recheck-native
+
+include tools/cm_ephemeris_moon_callers_integration.mk

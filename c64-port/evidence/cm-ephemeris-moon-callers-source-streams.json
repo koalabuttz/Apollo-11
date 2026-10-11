@@ -1,0 +1,8 @@
+{
+  "CM": {
+    "archive": "evidence/cm-ephemeris-moon-callers-reference.snapshots.bin.xz",
+    "decoded_sha256": "262cd1158d2974577eafd1663b30076221d8903d0f98cc2434561ce4e225e9af",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  }
+}
