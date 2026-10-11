@@ -1,0 +1,623 @@
+[
+  {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "scope": "Basic antenna entry/INTPRET front and outer display caller controls. Interpreted arithmetic body remains pending native composition; external callee bodies not claimed.",
+    "containing_file_status": "partial",
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 77,
+        "label": "SBANDANT",
+        "op": "TC",
+        "arguments": "BANKCALL",
+        "assembled_address": "42,3606",
+        "physical_fixed_word": 35718,
+        "physical_erasable_word": null,
+        "words": [
+          2446
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 79,
+        "label": "",
+        "op": "CADR",
+        "arguments": "R02BOTH",
+        "assembled_address": "42,3607",
+        "physical_fixed_word": 35719,
+        "physical_erasable_word": null,
+        "words": [
+          4780
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 80,
+        "label": "",
+        "op": "TC",
+        "arguments": "INTPRET",
+        "assembled_address": "42,3610",
+        "physical_fixed_word": 35720,
+        "physical_erasable_word": null,
+        "words": [
+          3103
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 175,
+        "label": "",
+        "op": "CA",
+        "arguments": "EXTVBACT",
+        "assembled_address": "42,3746",
+        "physical_fixed_word": 35814,
+        "physical_erasable_word": null,
+        "words": [
+          12836
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 176,
+        "label": "",
+        "op": "MASK",
+        "arguments": "BIT5",
+        "assembled_address": "42,3747",
+        "physical_fixed_word": 35815,
+        "physical_erasable_word": null,
+        "words": [
+          31207
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 177,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "42,3750",
+        "physical_fixed_word": 35816,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 178,
+        "label": "",
+        "op": "BZF",
+        "arguments": "ENDEXT",
+        "assembled_address": "42,3751",
+        "physical_fixed_word": 35817,
+        "physical_erasable_word": null,
+        "words": [
+          6970
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 179,
+        "label": "",
+        "op": "CAF",
+        "arguments": "PRIO5",
+        "assembled_address": "42,3752",
+        "physical_fixed_word": 35818,
+        "physical_erasable_word": null,
+        "words": [
+          14863
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 181,
+        "label": "",
+        "op": "TC",
+        "arguments": "PRIOCHNG",
+        "assembled_address": "42,3753",
+        "physical_fixed_word": 35819,
+        "physical_erasable_word": null,
+        "words": [
+          2662
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 182,
+        "label": "",
+        "op": "CAF",
+        "arguments": "V06N51",
+        "assembled_address": "42,3754",
+        "physical_fixed_word": 35820,
+        "physical_erasable_word": null,
+        "words": [
+          14327
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 183,
+        "label": "",
+        "op": "TC",
+        "arguments": "BANKCALL",
+        "assembled_address": "42,3755",
+        "physical_fixed_word": 35821,
+        "physical_erasable_word": null,
+        "words": [
+          2446
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 184,
+        "label": "",
+        "op": "CADR",
+        "arguments": "GOMARKFR",
+        "assembled_address": "42,3756",
+        "physical_fixed_word": 35822,
+        "physical_erasable_word": null,
+        "words": [
+          8427
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 185,
+        "label": "",
+        "op": "TC",
+        "arguments": "B5OFF",
+        "assembled_address": "42,3757",
+        "physical_fixed_word": 35823,
+        "physical_erasable_word": null,
+        "words": [
+          2931
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 186,
+        "label": "",
+        "op": "TC",
+        "arguments": "B5OFF",
+        "assembled_address": "42,3760",
+        "physical_fixed_word": 35824,
+        "physical_erasable_word": null,
+        "words": [
+          2931
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 187,
+        "label": "",
+        "op": "TC",
+        "arguments": "ENDOFJOB",
+        "assembled_address": "42,3761",
+        "physical_fixed_word": 35825,
+        "physical_erasable_word": null,
+        "words": [
+          2669
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 188,
+        "label": "",
+        "op": "CAF",
+        "arguments": "BIT3",
+        "assembled_address": "42,3762",
+        "physical_fixed_word": 35826,
+        "physical_erasable_word": null,
+        "words": [
+          14825
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 189,
+        "label": "",
+        "op": "TC",
+        "arguments": "BLANKET",
+        "assembled_address": "42,3763",
+        "physical_fixed_word": 35827,
+        "physical_erasable_word": null,
+        "words": [
+          2868
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 190,
+        "label": "",
+        "op": "CAF",
+        "arguments": "PRIO4",
+        "assembled_address": "42,3764",
+        "physical_fixed_word": 35828,
+        "physical_erasable_word": null,
+        "words": [
+          14816
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 191,
+        "label": "",
+        "op": "TC",
+        "arguments": "PRIOCHNG",
+        "assembled_address": "42,3765",
+        "physical_fixed_word": 35829,
+        "physical_erasable_word": null,
+        "words": [
+          2662
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 192,
+        "label": "",
+        "op": "TC",
+        "arguments": "SBANDANT +2",
+        "assembled_address": "42,3766",
+        "physical_fixed_word": 35830,
+        "physical_erasable_word": null,
+        "words": [
+          1928
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 193,
+        "label": "V06N51",
+        "op": "VN",
+        "arguments": "0651",
+        "assembled_address": "42,3767",
+        "physical_fixed_word": 35831,
+        "physical_erasable_word": null,
+        "words": [
+          819
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 194,
+        "label": "1OVSQRT2",
+        "op": "2DEC",
+        "arguments": ".7071067815",
+        "assembled_address": "42,3770",
+        "physical_fixed_word": 35832,
+        "physical_erasable_word": null,
+        "words": [
+          11585,
+          3891
+        ]
+      }
+    ],
+    "bindings": [
+      1926,
+      2022,
+      2028,
+      2031,
+      2032,
+      2033,
+      2034,
+      2036,
+      2038,
+      2446,
+      1708,
+      4780,
+      2874,
+      1259,
+      8427,
+      2931,
+      2669,
+      2868,
+      2662,
+      2013,
+      0,
+      3103,
+      3128,
+      2560,
+      2048,
+      819
+    ]
+  },
+  {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "scope": "Basic antenna entry/INTPRET front and outer display caller controls. Interpreted arithmetic body remains pending native composition; external callee bodies not claimed.",
+    "containing_file_status": "partial",
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 41,
+        "label": "SBANDANT",
+        "op": "TC",
+        "arguments": "BANKCALL",
+        "assembled_address": "42,3652",
+        "physical_fixed_word": 35754,
+        "physical_erasable_word": null,
+        "words": [
+          2482
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 42,
+        "label": "",
+        "op": "CADR",
+        "arguments": "R02BOTH",
+        "assembled_address": "42,3653",
+        "physical_fixed_word": 35755,
+        "physical_erasable_word": null,
+        "words": [
+          8107
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 43,
+        "label": "",
+        "op": "TC",
+        "arguments": "INTPRET",
+        "assembled_address": "42,3654",
+        "physical_fixed_word": 35756,
+        "physical_erasable_word": null,
+        "words": [
+          3078
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 105,
+        "label": "",
+        "op": "CA",
+        "arguments": "EXTVBACT",
+        "assembled_address": "42,3751",
+        "physical_fixed_word": 35817,
+        "physical_erasable_word": null,
+        "words": [
+          12836
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 106,
+        "label": "",
+        "op": "MASK",
+        "arguments": "BIT5",
+        "assembled_address": "42,3752",
+        "physical_fixed_word": 35818,
+        "physical_erasable_word": null,
+        "words": [
+          31243
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 107,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "42,3753",
+        "physical_fixed_word": 35819,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 108,
+        "label": "",
+        "op": "BZF",
+        "arguments": "ENDEXT",
+        "assembled_address": "42,3754",
+        "physical_fixed_word": 35820,
+        "physical_erasable_word": null,
+        "words": [
+          7004
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 109,
+        "label": "",
+        "op": "CAF",
+        "arguments": "V06N51",
+        "assembled_address": "42,3755",
+        "physical_fixed_word": 35821,
+        "physical_erasable_word": null,
+        "words": [
+          14329
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 110,
+        "label": "",
+        "op": "TC",
+        "arguments": "BANKCALL",
+        "assembled_address": "42,3756",
+        "physical_fixed_word": 35822,
+        "physical_erasable_word": null,
+        "words": [
+          2482
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 111,
+        "label": "",
+        "op": "CADR",
+        "arguments": "GOMARKFR",
+        "assembled_address": "42,3757",
+        "physical_fixed_word": 35823,
+        "physical_erasable_word": null,
+        "words": [
+          8576
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 112,
+        "label": "",
+        "op": "TC",
+        "arguments": "B5OFF",
+        "assembled_address": "42,3760",
+        "physical_fixed_word": 35824,
+        "physical_erasable_word": null,
+        "words": [
+          2965
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 113,
+        "label": "",
+        "op": "TC",
+        "arguments": "B5OFF",
+        "assembled_address": "42,3761",
+        "physical_fixed_word": 35825,
+        "physical_erasable_word": null,
+        "words": [
+          2965
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 114,
+        "label": "",
+        "op": "TC",
+        "arguments": "ENDOFJOB",
+        "assembled_address": "42,3762",
+        "physical_fixed_word": 35826,
+        "physical_erasable_word": null,
+        "words": [
+          2703
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 115,
+        "label": "",
+        "op": "CAF",
+        "arguments": "BIT3",
+        "assembled_address": "42,3763",
+        "physical_fixed_word": 35827,
+        "physical_erasable_word": null,
+        "words": [
+          14861
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 116,
+        "label": "",
+        "op": "TC",
+        "arguments": "BLANKET",
+        "assembled_address": "42,3764",
+        "physical_fixed_word": 35828,
+        "physical_erasable_word": null,
+        "words": [
+          2902
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 117,
+        "label": "",
+        "op": "CAF",
+        "arguments": "BIT1",
+        "assembled_address": "42,3765",
+        "physical_fixed_word": 35829,
+        "physical_erasable_word": null,
+        "words": [
+          14863
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 118,
+        "label": "",
+        "op": "TC",
+        "arguments": "BANKCALL",
+        "assembled_address": "42,3766",
+        "physical_fixed_word": 35830,
+        "physical_erasable_word": null,
+        "words": [
+          2482
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 119,
+        "label": "",
+        "op": "CADR",
+        "arguments": "DELAYJOB",
+        "assembled_address": "42,3767",
+        "physical_fixed_word": 35831,
+        "physical_erasable_word": null,
+        "words": [
+          986
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 120,
+        "label": "",
+        "op": "TCF",
+        "arguments": "SBANDANT +2",
+        "assembled_address": "42,3770",
+        "physical_fixed_word": 35832,
+        "physical_erasable_word": null,
+        "words": [
+          6060
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 121,
+        "label": "V06N51",
+        "op": "VN",
+        "arguments": "0651",
+        "assembled_address": "42,3771",
+        "physical_fixed_word": 35833,
+        "physical_erasable_word": null,
+        "words": [
+          819
+        ]
+      }
+    ],
+    "bindings": [
+      1962,
+      2025,
+      0,
+      2032,
+      2033,
+      2034,
+      2035,
+      2037,
+      2040,
+      2482,
+      1963,
+      8107,
+      2908,
+      1408,
+      8576,
+      2965,
+      2703,
+      2902,
+      2696,
+      2010,
+      986,
+      3078,
+      3103,
+      2560,
+      2048,
+      819
+    ]
+  }
+]

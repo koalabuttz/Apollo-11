@@ -845,3 +845,8 @@ all: build/cm-priority-display-native
 include tools/dsky_decimal_general_integration.mk
 
 include tools/p66_elapsed_return_control_integration.mk
+
+include tools/sband_support_integration.mk
+all: build/sband-support-control-stream build/sband-support-trig-stream
+test: test-sband-support
+sanitize: sanitize-sband-support

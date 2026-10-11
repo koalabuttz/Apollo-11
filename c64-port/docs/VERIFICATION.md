@@ -1630,3 +1630,7 @@ Qualify both original DSPDECWD and DSPDECDNR sign digit relay output bodies with
 ## Qualify original elapsed arithmetic return Q for native job resume
 
 Qualify source DSU initial DAS return Q control over8192 complete original native sanitizer states and64 C64 frozen control records with full image mutation guards, including the actual higher job resume Q. Existing numerical kernels and application bytes remain unchanged. See `docs/P66-ELAPSED-RETURN-CONTROL.md`.
+
+## Qualify original S band control and canonical double precision trigonometry
+
+Qualify both original antenna control calls and complete DP sine cosine source bodies through actual return or numerical frontiers against339968 complete original native sanitizer states and432 C64 full states with unchanged original ropes and explicit external orbital display and scheduler boundaries. See `docs/NATIVE-SBAND-CALLERS.md`.

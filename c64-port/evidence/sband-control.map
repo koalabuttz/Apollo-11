@@ -1,0 +1,131 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      22       22       12     1 .zp
+      22       22       12     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.zp.noinit)
+     80d      80d     1d54     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67      79b     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.bankcall)
+     a67      a67      79b     1                 bankcall
+    1202     1202      1b1     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.service_routines_step)
+    1202     1202      1b1     1                 service_routines_step
+    13b3     13b3       a2     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.b5off)
+    13b3     13b3       a2     1                 b5off
+    1455     1455      ec6     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.main)
+    1455     1455      ec6     1                 main
+    231b     231b        6     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.exit)
+    231b     231b        6     1                 exit
+    2321     2321      14f     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.__umodsi3)
+    2321     2321      14f     1                 __umodsi3
+    2470     2470       34     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.memcpy)
+    2470     2470       34     1                 memcpy
+    24a4     24a4       22     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.__memset)
+    24a4     24a4       22     1                 __memset
+    24c6     24c6       34     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.__mulhi3)
+    24c6     24c6       34     1                 __mulhi3
+    24fa     24fa       67     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.text.__mulsi3)
+    24fa     24fa       67     1                 __mulsi3
+    2561     2561        0     1         __init_array_start = .
+    2561     2561        0     1         __init_array_end = .
+    2561     2561        0     1         __fini_array_start = .
+    2561     2561        0     1         __fini_array_end = .
+    2561     2561     1b2a     1 .rodata
+    2561     2561       38     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.rodata.main)
+    2599     2599       c2     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.rodata.sband_control_reference_dictionary)
+    2599     2599       c2     1                 sband_control_reference_dictionary
+    265b     265b      262     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.rodata.sband_control_reference_offsets)
+    265b     265b      262     1                 sband_control_reference_offsets
+    28bd     28bd     16e6     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.rodata.sband_control_reference_stream)
+    28bd     28bd     16e6     1                 sband_control_reference_stream
+    3fa3     3fa3       68     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.rodata.sband_control_source.11)
+    3fa3     3fa3       68     1                 sband_control_source.11
+    400b     400b       80     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.rodata.service_routines_source)
+    400b     400b       80     1                 service_routines_source
+    408b     408b        0     1 .data
+    408b     408b        0     1         __data_start = .
+    408b     408b        0     1         __data_end = .
+    408b     408b        0     1 __data_load_start = LOADADDR(.data)
+    408b     408b        0     1 __data_size = SIZEOF(.data)
+    408b     408b     2000     1 .bss
+    408b     408b        0     1         __bss_start = .
+    408b     408b     1000     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.bss.state)
+    408b     408b     1000     1                 state
+    508b     508b     1000     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.bss.expected)
+    508b     508b     1000     1                 expected
+    608b     608b        0     1         __bss_end = .
+    608b     608b        0     1 __bss_size = SIZEOF(.bss)
+    608b     608b        0     1 .noinit
+    608b     608b        0     1         __heap_start = ALIGN(., 2)
+    608b     608b        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/sband-control.prg.lto.o:(.llvm_sympart)
+       0        0      b30     4 .symtab
+       0        0      b30     4         <internal>:(.symtab)
+       0        0       76     1 .shstrtab
+       0        0       76     1         <internal>:(.shstrtab)
+       0        0      67c     1 .strtab
+       0        0      67c     1         <internal>:(.strtab)

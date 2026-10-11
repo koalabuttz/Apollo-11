@@ -1,0 +1,21 @@
+Independent read-only source inspections by sibling agents; not independent test reruns.
+
+Comanche Executive reviewer: current sband_control.c and both original basic
+fronts/tails have no concrete mismatch. CM/LM distinct restart controls
+(DELAYJOB vs PRIOCHNG), B5OFF to END, bit5 ENDEXT branch, genuine GOMARKFR calls,
+and interpreter source state remain explicit. CM metadata adapter copies only
+SUPER/IRQ into a fresh temporary cm_native_io. Numerical/callee bodies remain
+external as documented.
+
+Scalar/source-map reviewer: sband_trig.c/header has no concrete discrepancy.
+DP MODE0 guard matches the helper domain; eight MPAC words and the exact two
+scale scratch fields are initialized/gathered. VBUF preserves untouched
+aliases; BUF2/MAXDVSW/TEM1/POLISH follow original SINE/COSINE. LM final
+TEM103573/POLISH03560 and CM03572/03557 match original addresses. Final Q3 and
+mission DANZIG are true pending basic returns; banks/MODE/LOC/EDOP and external
+IRQ/SUPER are retained. Raw A/L remain uint16; ordinary RAM/Q guards precede
+mutation. Full-source proof outcomes are the owner’s separate acceptance
+evidence. Neither review certifies either complete antenna file.
+
+Exact reviewed source identities are recorded in sband-support-proof.json and
+the immutable sband-support-SHA256.json ledger generated after these reviews.

@@ -1,0 +1,91 @@
+{
+  "status": "qualified native support; both complete antenna files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 339968,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpora": {
+    "control": {
+      "states": 77824,
+      "start": 0,
+      "end": 81920,
+      "record_bytes": 4106,
+      "decoded_sha256": "46c0a6a19b96a4a29fb7798359d651d5d3e26b21edd0fb013aae0ba99686674c",
+      "sanitizer_exact": true,
+      "canonical_original_archive": "evidence/sband-control-source.snapshots.bin.xz",
+      "compressed_sha256": "00c1996723175451237a39436d583d04efebfd671a84f27c6d75fe7ff7a57ad9",
+      "decoded_bytes": 319545344
+    },
+    "trig-LM": {
+      "mission": "LM",
+      "states": 131072,
+      "record_bytes": 4106,
+      "decoded_sha256": "b76666013fa3ae38f4fefa778095f7543422bb3fc4ca8d1e9ba948c9b078d828",
+      "sanitizer_exact": true,
+      "canonical_original_archive": "evidence/sband-trig-LM-source.snapshots.bin.xz",
+      "compressed_sha256": "8935b740896cf8ed6f136372a6c16450c5c9b028f2331b7e299aff07116d68b9",
+      "decoded_bytes": 538181632
+    },
+    "trig-CM": {
+      "mission": "CM",
+      "states": 131072,
+      "record_bytes": 4106,
+      "decoded_sha256": "63345397946159eda20ae93508ec55f86616b7a6d250513092089881476196d2",
+      "sanitizer_exact": true,
+      "canonical_original_archive": "evidence/sband-trig-CM-source.snapshots.bin.xz",
+      "compressed_sha256": "3b37a12c92ef8a4249bc4d8f18aeede0913423776e38012f2ee9f500fa631cf6",
+      "decoded_bytes": 538181632
+    }
+  },
+  "target": {
+    "control": {
+      "states": 304,
+      "prg_bytes": 14476,
+      "load_end": 16523,
+      "bss_end": 24715,
+      "mailbox": "a5300100",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ]
+    },
+    "trig": {
+      "states": 128,
+      "prg_bytes": 14671,
+      "load_end": 16718,
+      "bss_end": 24910,
+      "mailbox": "a5800000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ]
+    }
+  },
+  "source_identities": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "src/sband_control.c": "ab4bfadf3928051870080b46b63ae20e37b9c3c8defbac6d5cee2203a6496b8c",
+    "include/sband_control.h": "b28d83b4b115ef78695d7834a6b95f10686c805ddeca5a1bd60a9dc935153daf",
+    "src/sband_trig.c": "00032964b5fe8af4984ac1556c64115e59c8a3ace1b54fa15477004142870a1d",
+    "include/sband_trig.h": "f5e613def1334cf12c184ecb226b930b089bc4fc55d540c34a7ba948c20b4108"
+  },
+  "source_maps": [
+    "evidence/sband-control-source-audit.json",
+    "evidence/sband-trig-source-map.json"
+  ],
+  "independent_review": "evidence/sband-support-independent-review.txt",
+  "dependency_vector_packet": "evidence/sband-vector-proof.json",
+  "limitations": [
+    "External orbital/display/Executive callee bodies are genuine source handoffs, not completed implementations.",
+    "Canonical SINE/COSINE bridge is DP MODE0 only; producer exclusion throughout each call.",
+    "No whole INTERPRETER or whole S-band claim; interpreted antenna sequence awaits composition.",
+    "Input marginals and varied contexts do not establish exhaustive Cartesian coverage.",
+    "Standalone diagnostic memory allocation is not integrated application memory."
+  ]
+}
