@@ -1131,3 +1131,7 @@ Actual JAMPROC/JAMTERM fixed entries, channel7 write event, REQRET controls and 
 ## Integrate actual native P66 timer dispatch and second descent iteration
 
 The111-module native C64 disk reproduces STARTP66, guidance, display and idle,100 actual timer pulses, original T3 RODTASK admission/TASKOVER resume and a second P66/display/idle iteration. All310 complete actual C64 source checkpoints and13926 clean strict/full-sanitizer source states match. Hardware stack77B, software785B, resident6f59 and171B control metadata fit the documented independent allocations. One-shot source task behavior and remaining application/device/recovery domains are explicit. See `docs/P66-APPLICATION-RECURRENCE.md`.
+
+## Translate complete original Comanche interbank communication source
+
+All14 source entries and76 emitted words, source control aliases and allfour negative-overflow BANKJUMP successors are mapped and independently reviewed. All921,088 complete original/native/full-sanitizer states and448 actual C64 states match. The invalid register-Q fault frontier is retained before any external instruction fetch, alongside hardened compiled-caller/saved-return bounds, quiesced producers and all11 unrelated CM I/O fields unchanged. The two-image target fixture establishes standalone stock C64 behavior; production overlay allocation remains separate. See `docs/COMANCHE-INTERBANK.md`.

@@ -1,0 +1,37 @@
+Independent read-only review of additive Comanche interbank source mapping
+Reviewer: /root/comanche_executive, owner of frozen CM interbank predecessors.
+Retained by /root/frozen_storage after final fresh original-source replay.
+
+The reviewer found no control mismatch against the unchanged original file's
+76 emitted words and 14 entry controls within the documented ordinary compiled
+caller ABI. Actual CM entry addresses, BUF2=0133, RUPTREG3=072, and PRIO12=04710
+are correct. Post-store erasable inline rereads, POSTJUMP saved raw A in Q,
+USPRCADR LOC/BANKSET/EDOP TS-skip effects, SUPDACAL overflow FB/SUPER restoration,
+and all four fixed CCS1777 successors into MAKECADR agree with source.
+
+Negative-overflow BANKJUMP reaches the exact PC2/raw Q0177776 fault frontier;
+it does not return successfully or execute the invalid held register word.
+New lower saved-descriptor and physical inline guards exclude reserved CPU
+register destinations. Historical cm_interbank/cm_interbank_extended and
+INITDSP callers remain byte unchanged. This review qualifies the source body
+and documented caller ABI, not arbitrary external caller bodies or a running
+complete application. Canonical RAM and bank aliases are shared storage.
+
+The retained final oracle requires real TC Q caller completion, not the
+transient instruction PC2. The fresh final replay covers 921088 complete
+original-source states and agrees with the earlier ordered source corpus,
+strict replay, and full ASAN/UBSAN replay: decoded SHA256
+ ea316c318b96d980e7d95dc875e1955ad78c7c5bd93174d01ac49bd21beb26ad.
+All eleven unrelated cm_native_io fields are checked unchanged for every host
+and target call. C64 checks 448 complete image/SUPER/IRQ states exactly.
+Context cross-products are sampled; raw A and raw L each cover all65536 values
+per entry. The standalone two-image diagnostic does not establish production
+resident/overlay RAM integration. External asynchronous producers are quiesced.
+
+Reviewed identities (SHA256):
+42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785  ../Comanche055/INTER-BANK_COMMUNICATION.agc
+d047ccfc84150c478b34efb35c028542116f607864db384808ca344bc381ce3d  src/cm_interbank_complete.c
+df6dd556b2e3694246f61ab5c59c6260d02d7d9b130edf427cc1234730f7db72  include/cm_interbank_complete.h
+fbcdcafd7ed3e2b2b19b6dd23451c14221c97898974fcb25e05c8f88a552d938  build/cm-interbank-complete-source-audit.json
+67c848142dc39c1a042f96ca04f5320cb0b8c892020b4cb9e76321bd4f5f1470  tools/cm_interbank_complete_reference.c
+bf32e1683113acc5fb92e892c2bbccbde315a6eb3d55002d01e536a20a9900c3  docs/COMANCHE-INTERBANK.md

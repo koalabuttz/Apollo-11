@@ -748,3 +748,5 @@ all: build/cm-vac5-store-native
 include tools/dsky_jam_control.mk
 
 include tools/p66_application_recurrence_integration.mk
+
+include tools/cm_interbank_complete_integration.mk

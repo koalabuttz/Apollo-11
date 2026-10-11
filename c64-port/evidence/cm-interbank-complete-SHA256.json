@@ -1,0 +1,242 @@
+[
+  {
+    "path": "docs/COMANCHE-INTERBANK.md",
+    "sha256": "bf32e1683113acc5fb92e892c2bbccbde315a6eb3d55002d01e536a20a9900c3",
+    "bytes": 7867
+  },
+  {
+    "path": "evidence/cm-interbank-complete-c64.log",
+    "sha256": "fa4fe7a15a5b805f457c3e171c97c3aed2ecd28e7c790a896542a18d30da3def",
+    "bytes": 264
+  },
+  {
+    "path": "evidence/cm-interbank-complete-coverage.json",
+    "sha256": "5a6861d0b1233228512e8657c5cea46610fd8d3fe6ade183efd71a9e9bee1ff0",
+    "bytes": 2200
+  },
+  {
+    "path": "evidence/cm-interbank-complete-final-source-results.json",
+    "sha256": "2f90382b45f5a7a7971c630b2048b6ac26ae64ede5a0a70dbe95cd72c7791f7e",
+    "bytes": 166
+  },
+  {
+    "path": "evidence/cm-interbank-complete-final-source.log",
+    "sha256": "c5e6e333e5509695b844468cddf220a8cf688c501a9f22413b3e2adda6ad1a94",
+    "bytes": 535
+  },
+  {
+    "path": "evidence/cm-interbank-complete-independent-review.txt",
+    "sha256": "3b6c886d45aa667874a445b290c59ebd13fe2083be4efb5a2a2a7cf313938421",
+    "bytes": 2602
+  },
+  {
+    "path": "evidence/cm-interbank-complete-mailbox.bin",
+    "sha256": "47c179593c1f45d1344400dd4593d1efa1ec43c3c7f042b50e7aee382e3da38c",
+    "bytes": 4
+  },
+  {
+    "path": "evidence/cm-interbank-complete-monitor.log",
+    "sha256": "b435b02df743c8b7d2352f8a5e3a675cc117965a5b7ddecc1bb35a913310691e",
+    "bytes": 407
+  },
+  {
+    "path": "evidence/cm-interbank-complete-proof.json",
+    "sha256": "569a7a6ea91ca69c4ad5d92d335c45ab38090285891fd901a7365d831b8510d9",
+    "bytes": 3988
+  },
+  {
+    "path": "evidence/cm-interbank-complete-sanitize-results.json",
+    "sha256": "9fa107adfd253e072313b79ace6b008b8b893888e1f590fa98fad433fea93a00",
+    "bytes": 181
+  },
+  {
+    "path": "evidence/cm-interbank-complete-sanitize.log",
+    "sha256": "d62c99c2c04326f3e0d5364bd9bebbcdb4d45924821e1f22eb84fc0038588a12",
+    "bytes": 1094
+  },
+  {
+    "path": "evidence/cm-interbank-complete-source-audit.json",
+    "sha256": "fbcdcafd7ed3e2b2b19b6dd23451c14221c97898974fcb25e05c8f88a552d938",
+    "bytes": 37418
+  },
+  {
+    "path": "evidence/cm-interbank-complete-source-base.log",
+    "sha256": "bf37b5cff22c60218cf2b1ceadf3290f3cc2e087813fcd8c6bd25c1ce996baf8",
+    "bytes": 535
+  },
+  {
+    "path": "evidence/cm-interbank-complete-source-base.snapshots.bin.xz",
+    "sha256": "26f3a4bf355c245f06dfd35a18959738e53a658c517572562ecff55de1e95cca",
+    "bytes": 12490200
+  },
+  {
+    "path": "evidence/cm-interbank-complete-source-extra.log",
+    "sha256": "0421b2b8bed9ff074115214bbe6194b02475bac5934e6d559d3b9a62465cefdb",
+    "bytes": 157
+  },
+  {
+    "path": "evidence/cm-interbank-complete-source-extra.snapshots.bin.xz",
+    "sha256": "de2ee71bcfc3e5d920712d6d2147cc44d97289544ebdaaca952f4a4b17622bcb",
+    "bytes": 46324
+  },
+  {
+    "path": "evidence/cm-interbank-complete-strict-results.json",
+    "sha256": "105834d241d895834f8a93c05037662524c2198c9ec2208ab7f15c3c3944e612",
+    "bytes": 182
+  },
+  {
+    "path": "evidence/cm-interbank-complete-strict.log",
+    "sha256": "91275bd68a51776b8042e087fa8f0a9bb235b0ec39f22d4ba1d15cfde092a5c3",
+    "bytes": 1109
+  },
+  {
+    "path": "evidence/cm-interbank-complete-target-results.json",
+    "sha256": "7f76442d63f64a5f70e2005d64f0473b493150faf3f7947706649482db00f99c",
+    "bytes": 5605
+  },
+  {
+    "path": "evidence/cm-interbank-complete-target-source.snapshots.bin.xz",
+    "sha256": "8569322a04c0de22a9eea30cfb3573c70951ad5befaf38cf7449ce6578019ad3",
+    "bytes": 20848
+  },
+  {
+    "path": "evidence/cm-interbank-complete-tests.log",
+    "sha256": "f6306f1bdcbf6645ce53e31301800ac991b72bc55049ce73b4a6ef12e09519e3",
+    "bytes": 920
+  },
+  {
+    "path": "evidence/cm-interbank-complete-vice-results.json",
+    "sha256": "0bb21f230f28c757ec6c8c82173dcb8da9435dc8353cfed60f1238a3952cb688",
+    "bytes": 199
+  },
+  {
+    "path": "evidence/cm-interbank-complete-vice.log",
+    "sha256": "f2f1c9dfcb248db567eacedfeb69310aad22cfbb8c38521292d1e366f7420d96",
+    "bytes": 6574
+  },
+  {
+    "path": "evidence/cm-interbank-complete-vice.mon",
+    "sha256": "b7a6691d2294a563cfcf8f6e101d60696127a51c0c5ca4ba7878880b6a4fc0da",
+    "bytes": 201
+  },
+  {
+    "path": "evidence/cm-interbank-complete.map",
+    "sha256": "d057b5dde242b90c9c7e223123503b4039f95601234592ed867229f022afb22a",
+    "bytes": 9656
+  },
+  {
+    "path": "evidence/cm-interbank-complete.prg",
+    "sha256": "7698b0c35592b6f4ae2933ce17bf873425e792f1b98047e834050238fa818e9d",
+    "bytes": 19534
+  },
+  {
+    "path": "include/cm_interbank_complete.h",
+    "sha256": "df6dd556b2e3694246f61ab5c59c6260d02d7d9b130edf427cc1234730f7db72",
+    "bytes": 1843
+  },
+  {
+    "path": "platform/c64/cm_interbank_complete_diagnostic.c",
+    "sha256": "befc40fe5001715329d308f0dcd9129fc8833dfc8eb04505c40dbc215f384b59",
+    "bytes": 456
+  },
+  {
+    "path": "src/cm_interbank_complete.c",
+    "sha256": "d047ccfc84150c478b34efb35c028542116f607864db384808ca344bc381ce3d",
+    "bytes": 5704
+  },
+  {
+    "path": "tests/cm_interbank_complete_cases.c",
+    "sha256": "d92a41c26be71b5c72b5e8836b58dc8e9b6cf17878f6a89ea81fd95e2a0c76e1",
+    "bytes": 2424
+  },
+  {
+    "path": "tests/cm_interbank_complete_cases.h",
+    "sha256": "ffe710e80af70200e46799ebd2a7769c14b73090a049891c1db345ac44f0cdb9",
+    "bytes": 519
+  },
+  {
+    "path": "tests/cm_interbank_complete_inline_data.h",
+    "sha256": "fbede9c72f29343d4672d4c57f76df96267e4af2c7e8d180862c4694249d3100",
+    "bytes": 2041
+  },
+  {
+    "path": "tests/cm_interbank_complete_target.c",
+    "sha256": "b680dd5ecb2848dd434704f78b00e324f38d00e9c65c198b3528fdcc53a36da2",
+    "bytes": 2290
+  },
+  {
+    "path": "tests/cm_interbank_complete_target.h",
+    "sha256": "971d72e81fe407dec6f1effac2535ca4bfab84610a229b400b06fcc97385c488",
+    "bytes": 181
+  },
+  {
+    "path": "tests/cm_interbank_complete_vectors.h",
+    "sha256": "53a409deb994517bc836c6409c12b2d5487dd4b0a8b5295783bf2d1bbf9ddde3",
+    "bytes": 31993
+  },
+  {
+    "path": "tests/test_cm_interbank_complete.c",
+    "sha256": "19d7a183cb0944202fecc35975ec1c781b90876686f58addb9ae4eaf17837db6",
+    "bytes": 2073
+  },
+  {
+    "path": "tools/cm_interbank_complete_compare.py",
+    "sha256": "09ade301c84c1f85a6bb3817431db0d0e96199d927120d5d5232787bf7cd353c",
+    "bytes": 2730
+  },
+  {
+    "path": "tools/cm_interbank_complete_dump.h",
+    "sha256": "82c63eb6eb8a0ff4b4d6218918f673b0b40176ee75114d4ad7cc72a5e6dab6ea",
+    "bytes": 587
+  },
+  {
+    "path": "tools/cm_interbank_complete_host_test.py",
+    "sha256": "7c38aff0bd352634a18e10979ae8b042cae202f8799f2e2054067bb1501ecdc7",
+    "bytes": 2098
+  },
+  {
+    "path": "tools/cm_interbank_complete_input_dump.c",
+    "sha256": "fc5273ebbccc763a229cb020f2f3de10fa93883f6dbb474ac62da5c4e9ef3e53",
+    "bytes": 482
+  },
+  {
+    "path": "tools/cm_interbank_complete_port.mk",
+    "sha256": "b4633f3911ac3ec6eceb834251c8fdcec2e2188a9c56653dd9860489af6fc7d7",
+    "bytes": 1094
+  },
+  {
+    "path": "tools/cm_interbank_complete_reference.c",
+    "sha256": "67c848142dc39c1a042f96ca04f5320cb0b8c892020b4cb9e76321bd4f5f1470",
+    "bytes": 1754
+  },
+  {
+    "path": "tools/cm_interbank_complete_snapshot.c",
+    "sha256": "d17015031529323492e3080db0267fb0589a8fb25db5684f61622088b69bcbfd",
+    "bytes": 1022
+  },
+  {
+    "path": "tools/cm_interbank_complete_source.py",
+    "sha256": "bd2b2b277d85f7aa9c297d9db86abe2839b195cd83e163df8c8bc6fb17c02414",
+    "bytes": 2365
+  },
+  {
+    "path": "tools/cm_interbank_complete_verify_frozen.py",
+    "sha256": "03a04807ef930e6a1e3abe0bd8311b35d46b588d472ec0b8533e1feffe708439",
+    "bytes": 1258
+  },
+  {
+    "path": "tools/cm_interbank_complete_vice_test.py",
+    "sha256": "d04967ab81719afacf04084f0f70c3616165eea0a4a7d08a07508cbcfbaced48",
+    "bytes": 2601
+  },
+  {
+    "path": "tools/freeze_cm_interbank_complete.py",
+    "sha256": "87802f5c2f32dd3b23d3f0f2cb80b4c965472e5d931b674c6efbc1d4a3e839b6",
+    "bytes": 2544
+  },
+  {
+    "path": "tools/package_cm_interbank_complete.py",
+    "sha256": "e01e14289e1da225c03803138308c6e95c72e3606f2e4607870d281a7186df11",
+    "bytes": 8200
+  }
+]
