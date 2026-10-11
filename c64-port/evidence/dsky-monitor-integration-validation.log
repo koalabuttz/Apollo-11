@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_monitor.c src/agc_word.c src/dsky_monitor.c tests/dsky_monitor_cases.c tests/dsky_monitor_check.c -o build/test-dsky-monitor-integrated
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_monitor_snapshot.c src/agc_word.c src/dsky_monitor.c tests/dsky_monitor_cases.c tests/dsky_monitor_check.c -o build/dsky-monitor-integrated-stream
+./build/test-dsky-monitor-integrated
+352 full original monitor states +26 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/dsky-monitor-reference.snapshots.xz --sha256 41a17bca3a940cbecd42a984a360ef67e8522afe8445e63506abc6d9e1758c39 --binary build/dsky-monitor-integrated-stream
+PASS all retained source-state bytes: 759489514 SHA256 41a17bca3a940cbecd42a984a360ef67e8522afe8445e63506abc6d9e1758c39
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_dsky_monitor.c src/agc_word.c src/dsky_monitor.c tests/dsky_monitor_cases.c tests/dsky_monitor_check.c -o build/test-dsky-monitor-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-monitor-integrated-san
+352 full original monitor states +26 unchanged invalid guards: PASS
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/dsky_monitor_snapshot.c src/agc_word.c src/dsky_monitor.c tests/dsky_monitor_cases.c tests/dsky_monitor_check.c -o build/dsky-monitor-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/dsky-monitor-reference.snapshots.xz --sha256 41a17bca3a940cbecd42a984a360ef67e8522afe8445e63506abc6d9e1758c39 --binary build/dsky-monitor-integrated-stream-san
+PASS all retained source-state bytes: 759489514 SHA256 41a17bca3a940cbecd42a984a360ef67e8522afe8445e63506abc6d9e1758c39

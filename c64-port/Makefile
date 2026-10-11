@@ -1052,3 +1052,5 @@ include tools/cm_idle_wake.mk
 all: build/cm-idle-wake-native
 
 include tools/dsky_load_complete.mk
+
+include tools/dsky_monitor_integration.mk

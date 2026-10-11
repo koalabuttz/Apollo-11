@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete dsky_monitor stage original-assembly states; retained memory unchanged
+Mailbox: a500002009
+PRG bytes: 4172
+dsky_monitor_9-hardware-stack.bin: measured stack extent 14 bytes
+dsky_monitor_9-software-stack.bin: measured stack extent 27 bytes
