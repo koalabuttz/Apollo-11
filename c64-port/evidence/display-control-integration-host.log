@@ -1,0 +1,3 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_display_control.c tests/display_control_check.c src/agc_word.c src/p66_display_control.c tests/throttle_bridge_cases.c tests/display_control_cases.c -o build/test-display-control
+build/test-display-control
+64 complete display control images and14 invalid boundaries: PASS
