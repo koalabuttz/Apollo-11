@@ -210,3 +210,7 @@ subprocess.run([sys.executable,'tools/p66_major_mode_differential.py',str(refere
 subprocess.run([sys.executable,'tools/p66_launch_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/horizontal_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/p66_mode_display_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/throttle_bridge_differential.py',str(reference)],cwd=ROOT,check=True)
