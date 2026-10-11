@@ -1,0 +1,30 @@
+{
+  "reviewer": "p66_source_map independent read-only source/control review",
+  "result": "No remaining concrete discrepancy found within corrected fixed-caller source frontier domains.",
+  "identities": {
+    "include/cm_ephemeris_solar.h": "401a6e33570c87edac78de24a857ed637670fa6bfbcbff54e8cab6fd0fdbd3ec",
+    "src/cm_ephemeris_solar.c": "92ef9830c2ef5a7b354721dd4f974856b611aff833dad846ef96d706c6feef5b",
+    "tools/cm_ephemeris_solar_source.py": "8ca10d43a51251bd151785f5620a0001f0ef31ce5eda2a1c5be4892840fc8631",
+    "tools/cm_ephemeris_solar_reference.c": "f4dc86029d15dda89eaaf875560ac93c476f5cebc316d5186e340bbd9f49cefd",
+    "tools/cm_ephemeris_solar_phase_reference.c": "f28ee8c0bb1b9845657be96440ae712edd986f063ad2c04e7617d52d72ce12fb",
+    "tools/cm_ephemeris_solar_inputs.c": "eaecea9be8b7c6974001fd82deef63fb0ed664c7670e8a1eae30ef77aaac2ee2",
+    "tests/cm_ephemeris_time_cases.c": "b95e1d617ae96815f6e2956dd57b8c4ee6b3666b57c4063428980a4051457d38",
+    "src/cm_ephemeris_time.c": "4858f2178e26266690db588111af8514d4ebc98f48c7531952f7489c800ec9cf",
+    "../Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+    "src/sband_scalar.c": "a808f24faeea93097242c60b7486fcc257154f44293bd1422bb3f4b1f82c3a47",
+    "src/sband_trig.c": "00032964b5fe8af4984ac1556c64115e59c8a3ace1b54fa15477004142870a1d",
+    "src/sband_vector_linear.c": "4b9931a334d54f09aa0892e77187843935b7ef93317fc9c7cb018932281ad727",
+    "src/sband_vector.c": "80a3a44a341f6c8821ea60449d654d3ecda771d52a63f5f6f91cd52bd416f5e9",
+    "src/sband_shift.c": "36207c8d688a66804e4c4a8f8914f153e7e07765dac7a09396a50d1c2e8a5506",
+    "src/rtb_unit.c": "3b44705bd44ec2d28c6846b9e47c0294454ae62fd425016677389cb22a4a2109"
+  },
+  "source_findings": [
+    "Original RES saves normalized time and phase angle, computes RESO*cos(angle), saves sine, forms UNIT(RESO), UNIT(cross(RESO,VESO)), then cross with saved RESO, VSL1, VXSC(sine), VAD(cosine-scaled vector), VSL1 and GOTO X2. Compiled canonical exchanges and phases follow this sequence without opcode dispatch.",
+    "Actual LSPOS caller words022557 (bank11,2556 call) and030231 (bank14,2230 call) are retained in QPRET; local X2 is054161/RESA. SOLPOS source STQ saves only declared023377 for the restricted public return. Actual final source banks/INTBIT15/NEWOPS/LOC agree with those two paths.",
+    "Detected an initial accepted SOLPOS context mismatch: begin accepted022557/030231 but finish hardcoded023377. Owner corrected atomic begin/frontier guards before freeze and added per-phase unchanged-context target checks. No edits by reviewer.",
+    "Fixed sourceRES 14 words stop before RESA, and include original addressesOMEGAES/RESO/VESO and compiled GOTO X2; no new solar passive data constants or credit for RESA/lunar continuation is inferred.",
+    "UNIT source alarm1302 propagates at its actual basic entry; no Executive seam is added at basic phased C returns. Stable matrix/vector/trig arithmetic dependencies retain their own producer/caller contracts."
+  ],
+  "verification_limit": "Read-only source/core/dependency/control/constructor inspection, no independent exhaustive original/native/SAN/C64 replay. Owner is rebuilding all final streams and targets after guard correction.",
+  "qualification": "Ordinary canonical image and exact saved caller/frontier tuples, coherent bank state, valid VAC and excluded producers. No arbitrary SOLPOS fixed caller or ephemerides containing-file/application completion claim."
+}

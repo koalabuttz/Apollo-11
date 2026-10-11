@@ -1602,3 +1602,7 @@ Translate genuine admission and wake NEWJOB positive zero exceptional prefixes a
 ## Translate genuine Comanche positive zero priority admission
 
 Translate allfour actual zero priority admission entries unavailable core scans and authentic resource paths against49152 complete original strict sanitizer states and64 C64 checkpoints preserving historical admission bodies. See `docs/COMANCHE_ADMISSION_FLOOR.md`.
+
+## Translate original Comanche solar position through native C64 stages
+
+Translate actual RES solar calculation and LSPOS or declared SOLPOS controls against65536 full original strict sanitizer states and320 C64 phase checkpoints with independent caller guard review and preserved development trials. See `docs/NATIVE-CM-EPHEMERIS-SOLAR.md`.

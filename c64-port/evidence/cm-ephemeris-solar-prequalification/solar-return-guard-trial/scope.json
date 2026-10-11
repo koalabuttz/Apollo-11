@@ -1,0 +1,105 @@
+{
+  "scope": "Independent review found SOLPOS wrongly accepted an additional return context it did not implement. All source cases used declared SOLPOSQ023377 and actual LSPOSQ022557/030231, so old trial bytes remain source-matching on that input corpus. Final native adds atomic domain guards before any mutation and tests unsupported SOLPOSQ022557 and030231. No frozen prior proof is modified.",
+  "files": [
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm_ephemeris_solar.c",
+      "sha256": "552c5c45d3da2fbc94412b91b56157cd54dec58fca486794ca369cbffbb84902"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-2-1.prg",
+      "sha256": "766ccbd2e333f1d7e7ff1a193a10f97ea7e4acd5977a574f24a2c62ec320c00d"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-1-0.prg",
+      "sha256": "2313235ff1609da04b7fee14a9ba21849dcbb05bd671b1f80319ba3087c056b9"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-3.prg",
+      "sha256": "9a3673eb6947bef885b46379620c06e1a7cf4557ea33cc4b5048b4a88bfed913"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-2-0.prg",
+      "sha256": "b2d301ffdad1907b5aa81236a5dddbaddf43a63b9711810f6ce500dc9f9c677a"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-1-1.prg",
+      "sha256": "8680073128fece4c798ebb9373dc2f660e4c42fd09e538952fce0f1acd0fee95"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-0.prg",
+      "sha256": "cdd5c4f346e65704521309f75cdb4a1797fa2a85ad9ce95c5b89574ab9ddc32a"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-4-0.prg",
+      "sha256": "a4e38329d1fe4f8713353ede697105a78d39c41273fbfe4e2fcff3c56ae5fdb3"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-4-1.prg",
+      "sha256": "3c6c850f99653997c6818fc8480fdbe8226efbd8f7b715d597bbbbdbf42f7611"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-1.prg",
+      "sha256": "31f4d1c2efc47cf10ca062b3e88a5fd372703913906fb1b6fa4a7ae946d783d9"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-2.prg",
+      "sha256": "ae1bff717cd4ed81f543c26d60db123b13da2e31acd3ba028369fa7e5828c496"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-0-0.prg",
+      "sha256": "b12999f50f82fd00c3e63695f2a7de64f6bb7b2558fbfe352ffa30d81847670a"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-0-1.prg",
+      "sha256": "56f55914f37edde4494a95cf5bc9fe6aaa0ff967ffa42da3508fcebbc1938203"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-1-0-vice-results.json",
+      "sha256": "67ccede1dcbfb42ad8a0f48e5503a3ca9d9617c0445c46cc7d482d5c988e5557"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-4-0-vice-results.json",
+      "sha256": "6cb37d8989c6ae32fd81c6afef309b46c327015f463476478d3f48e2f7973a73"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-2-0-vice-results.json",
+      "sha256": "5f6206733751983c97247dd7fff7e891097449886f93de298d154df9944dd302"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-0-1-vice-results.json",
+      "sha256": "af2feb1418f2d4d0a0edbedafb84fd163ba0cda32f192a208126526df5fb76be"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-1-vice-results.json",
+      "sha256": "080e37c628aa9f1565258dd2ccb76c46bae69b290bb798f89eb0f79d50522a02"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-2-1-vice-results.json",
+      "sha256": "bade7dd0055182809e89f01a0ef3d87c05fc1fb482631f8f956c63c518aa50f7"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-4-1-vice-results.json",
+      "sha256": "8409cf04c9326de1bafdadece66dc9070ebc69d7d17ba3cfd107be7d37ed096e"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-0-vice-results.json",
+      "sha256": "4963a410de5db10d39cfd3f78b3344d9503c5bd94f3aa28c4eb5efafd2ece76a"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-1-1-vice-results.json",
+      "sha256": "2707d67628b781d086e2f70c2d0e06ec54886b93c9df0b57eb28f5d52928d1a3"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-3-vice-results.json",
+      "sha256": "357c55049d466653357b04e884465c57913ae31bde2f19ae06c30b8c9899834e"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-3-2-vice-results.json",
+      "sha256": "29140dfd43eb0cb8a12ad9fb88a800cde1b01cf33b88f968eab289aa92adffbc"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/solar-return-guard-trial/cm-ephemeris-solar-0-0-vice-results.json",
+      "sha256": "8a5883ed58c58b182e17f0df80f2b4a0cb25f7976669ada9698f7c2df576fa87"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+Error - Default keymap not found, this should be fixed. Going on anyway...
+Error - Default keymap not found, this should be fixed. Going on anyway...
+Detecting ISA HardSID boards.
+Could not open '/dev/port'.
+Cannot get permission to access $300.
+Detecting PCI HardSID boards.
+No PCI HardSID boards found.
+CART: detach main -1: type: -1 id: -1
+CART: unset cart config
+Error - Default keymap not found, this should be fixed. Going on anyway...
+Error - Default keymap not found, this should be fixed. Going on anyway...
+Error - Default keymap not found, this should be fixed. Going on anyway...
+Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
+VSP Bug: safe channels are: 013457. Emulation of memory corruption is disabled.
+c64cartridge_reset changed: 1
+set_cartridge_type: -1
+Opening monitor command playback file: /workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-vice.mon
+ 
+*** VICE Version 3.7.1 ***
+ 
+Welcome to x64sc, the free portable C64 Emulator.
+ 
+Current VICE team members:
+Martin Pottendorfer, Marco van den Heuvel, Fabrizio Gennari, Groepaz, 
+Errol Smith, Ingo Korb, Olaf Seibert, Marcus Sutton, Kajtar Zsolt, AreaScout, 
+Bas Wassink, Michael C. Martin, Christopher Phillips, David Hogan, 
+Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
+ 
+This is free software with ABSOLUTELY NO WARRANTY.
+See the "About VICE" command for more info.
+ 
+random seed was: 0x6acbaac2
+command line was: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-monitor.log -monlog -limitcycles 1500000000
+Loading system file `/workspace/toolchains/roms/C64/kernal-901227-03.bin'.
+Loading system file `/workspace/toolchains/roms/C64/kernal-901227-03.bin'.
+Loading system file `/workspace/toolchains/roms/C64/basic-901226-01.bin'.
+Loading system file `/workspace/toolchains/roms/C64/chargen-901225-01.bin'.
+MPS-803: Error - Could not load MPS-803 charset 'mps803.bin'.
+Palette: Loading palette `/workspace/toolchains/vice/usr/share/vice/PRINTER/mps803.vpl'.
+NL10: Error - Could not load NL-10 ROM file 'nl10.bin'.
+Palette: Loading palette `/workspace/toolchains/vice/usr/share/vice/PRINTER/1520.vpl'.
+DriveROM: Error - 1540 ROM image not found. Hardware-level 1540 emulation is not available.
+DriveROM: Error - 1541 ROM image not found. Hardware-level 1541 emulation is not available.
+DriveROM: Error - 1541-II ROM image not found. Hardware-level 1541-II emulation is not available.
+DriveROM: Error - 1570 ROM image not found. Hardware-level 1570 emulation is not available.
+DriveROM: Error - 1571 ROM image not found. Hardware-level 1571 emulation is not available.
+DriveROM: Error - 1581 ROM image not found. Hardware-level 1581 emulation is not available.
+DriveROM: Error - 2000 ROM image not found. Hardware-level 2000 emulation is not available.
+DriveROM: Error - 4000 ROM image not found. Hardware-level 4000 emulation is not available.
+DriveROM: Error - CMDHD ROM image not found. Hardware-level CMDHD emulation is not available.
+DriveROM: Error - 2031 ROM image not found. Hardware-level 2031 emulation is not available.
+DriveROM: Error - 2040 ROM image not found. Hardware-level 2040 emulation is not available.
+DriveROM: Error - 3040 ROM image not found. Hardware-level 3040 emulation is not available.
+DriveROM: Error - 4040 ROM image not found. Hardware-level 4040 emulation is not available.
+DriveROM: Error - 1001/8050/8250 ROM image not found. Hardware-level 1001/8050/8250 emulation is not available.
+DriveROM: Error - D9090/9060 ROM image not found. Hardware-level D9090/9060 emulation is not available.
+Drive: Finished loading ROM images.
+VIC-II: Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
+opening dynamic library libmp3lame.so failed!
+ERROR setting up dynamic lame lib!
+Sound: Available sound devices: pulse alsa dummy fs dump wav voc iff aiff mp3 soundmovie
+Joystick: Linux joystick interface initialization...
+Joystick: Warning - Cannot open joystick device `/dev/input/js0'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js1'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js2'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js3'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js4'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js5'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js6'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js7'.
+GTK3MOUSE: Status changed: 0 (disabled)
+Loading keymap `/workspace/toolchains/vice/usr/share/vice/C64/gtk3_sym.vkm'.
+Main CPU: starting at ($FFFC).
+Main CPU: RESET.
+Sync reset
+Increasing trap_func array size to 1 with 1 to run
+Monitor playback command: fill 0100 01f1 cd
+Monitor playback command: fill c100 cfff cd
+Monitor playback command: load "/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1.prg" 0
+Monitor playback command: watch store c000
+Monitor playback command: ignore 1 1
+Monitor playback command: g 080d
+Sync reset
+Monitor playback command: bsave "/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-mailbox.bin" 0 c000 c003
+Monitor playback command: bsave "/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-hardware-stack.bin" 0 0100 01f1
+Monitor playback command: bsave "/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-software-stack.bin" 0 c100 cfff
+Monitor playback command: quit
+VICE thread initiating shutdown
+VICE thread is exiting
+
+Resources with non default values:
+Directory="/workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms"
+Sound=0
+ChargenName="/workspace/toolchains/roms/C64/chargen-901225-01.bin"
+BasicName="/workspace/toolchains/roms/C64/basic-901226-01.bin"
+Drive8Type=0
+MonitorLogFileName="/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-monitor.log"
+MonitorLogEnabled=1
+
+reconstructed commandline options (might be incomplete):
+-default -directory "/workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms" -monlogname "/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-monitor.log" -monlog +sound -basic "/workspace/toolchains/roms/C64/basic-901226-01.bin" -chargen "/workspace/toolchains/roms/C64/chargen-901225-01.bin" -drive8type "0"
+
+VICE thread has been joined.
+CART: detach main -1: type: -1 id: -1
+CART: unset cart config
+VIC-II: VSP Bug: safe channels are: 6. Emulation of memory corruption is disabled.
+Closed monitor command playback file: /workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-3-1-vice.mon

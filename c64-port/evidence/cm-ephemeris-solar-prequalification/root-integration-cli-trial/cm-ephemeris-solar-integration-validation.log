@@ -1,0 +1,10 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_ephemeris_solar.c tests/cm_ephemeris_solar_target.c tests/frozen_words.c src/guidance_product.c src/sband_trig.c src/guidance_trig.c src/sband_vector.c src/rtb_unit.c src/rtb_vector.c src/rtb_angles.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/cm_ephemeris_solar.c src/cm_ephemeris_time.c src/ephemeris_time_scale.c src/ephemeris_shift.c src/ephemeris_add.c src/interpreted_sign.c src/sband_scalar.c src/sband_vector_linear.c src/sband_shift.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_ephemeris_time_cases.c -o build/test-cm-ephemeris-solar
+./build/test-cm-ephemeris-solar
+PASS64 complete original LUNPOS polynomial and return states and19 immutable image guards plus two null guards
+python3 tools/cm_ephemeris_solar_host.py --cc "cc"
+PASS all retained source-state bytes: 269090816 SHA256 870592153dcedea29ee4d77f1ece872ebe13bcc43db5a8c2cff2d374dc32a916
+PASS65536 complete original LUNPOS polynomial and return states strict native
+python3 tools/cm_ephemeris_solar_phases_host.py --cc "cc"
+usage: cm_ephemeris_solar_phases_host.py [-h] [--sanitize]
+cm_ephemeris_solar_phases_host.py: error: unrecognized arguments: --cc cc
+make: *** [tools/cm_ephemeris_solar_integration.mk:12: test-cm-ephemeris-solar-integrated] Error 2

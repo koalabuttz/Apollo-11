@@ -1,0 +1,121 @@
+{
+  "scope": "Development fixed caller index trial. Original bank11 location2557 requires linear Q022557. TrialQ023557 was valid declared return but not that physical caller. All byte comparisons passed for the trial input; it is not the actual caller qualification. Final source and C64 runs are rebuilt for corrected actualQ022557.",
+  "files": [
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm_ephemeris_solar.c",
+      "sha256": "d4f3683b6aaacdd2fda830f0ce96404e2f161145325a63de0aa75026b0aa57a6"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm_ephemeris_solar_phase_vectors.h",
+      "sha256": "5382feef80d6b7a1b3ee48bfac10024d8fff3a5e4659386450992359ce5a4150"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm_ephemeris_solar_phase_reference.c",
+      "sha256": "44fc305d7d27716707ff9561f1ffaf4c2b52abe1d5e05dc08a69536eb798768f"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-reference.snapshots.bin.xz",
+      "sha256": "130d7acb59780d35be1246a4ca004acb99e12b14d1996bfde747ff5cd2824ca1"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-source-streams.json",
+      "sha256": "a1d17aa9dd7d94c83b4911ba64e4864e12cc231506b95d9aef2b9345ee74e9d5"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-2-1.prg",
+      "sha256": "d3ed0fb1227a8908a23d8127616c9968a9c510ad0a8731c755c764ab0624054c"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-1-0.prg",
+      "sha256": "0ff5dd7168658317dc7fa94821938db95ba09cb8e984215425b4304a33d048be"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-3.prg",
+      "sha256": "bbc05f18aa67812afc359a794c1ffad89aab5f42d77b7b036c4e8c2e7a15c4c6"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-2-0.prg",
+      "sha256": "2d0a0167423859cfa51742709d2a7d7cfb928e80348ca9c3b306a40810faaa20"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-1-1.prg",
+      "sha256": "1f668930c4dd0c1503231aedeb9213842234b953416370430ccd02c2419122cc"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-0.prg",
+      "sha256": "4b1570caa2dad5147e66787cdcb8c46b9914d0785a4df8f9cac237c2068a3e0b"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-4-0.prg",
+      "sha256": "83502d2ed0b6a5b09f55037158ac0b9b84dfb61aa34e7aea7e2c341c903aee59"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-4-1.prg",
+      "sha256": "c905d3c02fe4c9beae9661b4e10283aa6d93e9c27ff0966e9bbfa23ec4ccb1ab"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-1.prg",
+      "sha256": "b87f5883e8ca2ac93ee83c9efc933b6a3b6aa80609949405df7d5d9362b3e93e"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-2.prg",
+      "sha256": "c5e7a5b7ada3331ae22c6588c27ae30ccdf590ea48ed42c116f7650997a6d7e9"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-0-0.prg",
+      "sha256": "5164cb7476f51b1d502f65c640f25456fdc5115a4e6a0be0e22d33fc80868d1c"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-0-1.prg",
+      "sha256": "f6459268619b255698d027efe1db23ea6398ea8a6392d385aff7eb235e4be224"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-1-0-vice-results.json",
+      "sha256": "79ef8d1add8314b131038afd7ffc069bfa1f954883d7bd5c8ed6e3f2f2e4bab4"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-4-0-vice-results.json",
+      "sha256": "6cb37d8989c6ae32fd81c6afef309b46c327015f463476478d3f48e2f7973a73"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-2-0-vice-results.json",
+      "sha256": "5f6206733751983c97247dd7fff7e891097449886f93de298d154df9944dd302"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-0-1-vice-results.json",
+      "sha256": "af2feb1418f2d4d0a0edbedafb84fd163ba0cda32f192a208126526df5fb76be"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-1-vice-results.json",
+      "sha256": "080e37c628aa9f1565258dd2ccb76c46bae69b290bb798f89eb0f79d50522a02"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-2-1-vice-results.json",
+      "sha256": "bade7dd0055182809e89f01a0ef3d87c05fc1fb482631f8f956c63c518aa50f7"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-4-1-vice-results.json",
+      "sha256": "8409cf04c9326de1bafdadece66dc9070ebc69d7d17ba3cfd107be7d37ed096e"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-0-vice-results.json",
+      "sha256": "4963a410de5db10d39cfd3f78b3344d9503c5bd94f3aa28c4eb5efafd2ece76a"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-1-1-vice-results.json",
+      "sha256": "2e080b854d0e697686da179fad720faf91cad5a83076e8296ef4afd3d406cb4d"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-3-vice-results.json",
+      "sha256": "357c55049d466653357b04e884465c57913ae31bde2f19ae06c30b8c9899834e"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-3-2-vice-results.json",
+      "sha256": "29140dfd43eb0cb8a12ad9fb88a800cde1b01cf33b88f968eab289aa92adffbc"
+    },
+    {
+      "retained": "evidence/cm-ephemeris-solar-prequalification/fixed-caller-index-trial/cm-ephemeris-solar-0-0-vice-results.json",
+      "sha256": "8a5883ed58c58b182e17f0df80f2b4a0cb25f7976669ada9698f7c2df576fa87"
+    }
+  ]
+}

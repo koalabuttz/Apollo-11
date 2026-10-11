@@ -1,0 +1,8 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-2-0.prg from 0801 to 88B4 (80B4 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   76/$04c,  23/$17
+.C:6627  8D 00 C0    STA $C000      - A:A5 X:20 Y:11 SP:f1 N.-..I.C   51051443
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-2-0-mailbox.bin' from $c000 to $c003
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-2-0-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar-2-0-software-stack.bin' from $c100 to $cfff

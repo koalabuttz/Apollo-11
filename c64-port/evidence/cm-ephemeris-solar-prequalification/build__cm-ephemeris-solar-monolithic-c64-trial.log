@@ -1,0 +1,16 @@
+ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 9758 bytes
+ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 15928 bytes
+ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 15928 bytes
+ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 15928 bytes
+ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 24120 bytes
+ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 24122 bytes
+mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/cm_ephemeris_solar_vice_test.py", line 24, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/Apollo-11/c64-port/tools/cm_ephemeris_solar_vice_test.py", line 11, in main
+    subprocess.run([a.cc,'-Os','-fno-static-stack','-mlto-zp=0','-std=c99','-Wall','-Wextra','-Werror','-Iinclude','-Itests',*CORE,f'-Wl,-Map={mapfile}','-o',str(prg)],cwd=R,check=True)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/workspace/toolchains/llvm-mos/bin/mos-c64-clang', '-Os', '-fno-static-stack', '-mlto-zp=0', '-std=c99', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', 'tests/cm_ephemeris_solar_target.c', 'tests/frozen_words.c', 'src/guidance_product.c', 'src/sband_trig.c', 'src/guidance_trig.c', 'src/sband_vector.c', 'src/rtb_unit.c', 'src/rtb_vector.c', 'src/rtb_angles.c', 'src/guidance_unit_phased.c', 'src/guidance_length_phased.c', 'src/guidance_norm.c', 'src/cm_ephemeris_solar.c', 'src/cm_ephemeris_time.c', 'src/ephemeris_time_scale.c', 'src/ephemeris_shift.c', 'src/ephemeris_add.c', 'src/interpreted_sign.c', 'src/sband_scalar.c', 'src/sband_vector_linear.c', 'src/sband_shift.c', 'src/guidance_shift.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_ephemeris_time_cases.c', 'platform/c64/cm_ephemeris_solar_diagnostic.c', '-Wl,-Map=/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar.map', '-o', '/workspace/Apollo-11/c64-port/build/cm-ephemeris-solar.prg']' returned non-zero exit status 1.

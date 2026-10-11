@@ -1,0 +1,55 @@
+{
+  "scope": "Unqualified development builds. Stage3 cohort1 linked but rejected before execution: BSS0xc2c8 exceeds protected stack boundary0xc000. Monolithic linking failed; inherited prototype fixture is not a final solar proof.",
+  "files": [
+    {
+      "path": "build/cm-ephemeris-solar-3-1.prg",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/build__cm-ephemeris-solar-3-1.prg",
+      "sha256": "ce722161b6d5dbbd1c551b354696974859b6ce97aee8be26bf0428a44d1ee48e"
+    },
+    {
+      "path": "build/cm-ephemeris-solar-3-1.map",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/build__cm-ephemeris-solar-3-1.map",
+      "sha256": "df5a0a81d754015fd0494e78f8fbbfc9e07504542cf4f171b864fac04a40e487"
+    },
+    {
+      "path": "build/cm-ephemeris-solar-3-1-c64.log",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/build__cm-ephemeris-solar-3-1-c64.log",
+      "sha256": "52723723f3b7e16024ac754017d8f848a89f9e74d6039cf69aacf95f63c11f2b"
+    },
+    {
+      "path": "build/cm-ephemeris-solar-monolithic-c64-trial.log",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/build__cm-ephemeris-solar-monolithic-c64-trial.log",
+      "sha256": "3ffa8585dee12bb4bc9d557eac504e7ffee5d23413545b95a3baafcf89ffca50"
+    },
+    {
+      "path": "src/cm_ephemeris_solar.c",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/src__cm_ephemeris_solar.c",
+      "sha256": "7e94c546b926c0e8ca7e1ad38e67d1396ceda6e3885d9e3914f0f88c2d829616"
+    },
+    {
+      "path": "include/cm_ephemeris_solar.h",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/include__cm_ephemeris_solar.h",
+      "sha256": "401a6e33570c87edac78de24a857ed637670fa6bfbcbff54e8cab6fd0fdbd3ec"
+    },
+    {
+      "path": "tests/cm_ephemeris_solar_phase_target.c",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/tests__cm_ephemeris_solar_phase_target.c",
+      "sha256": "f798c0c2537bd663a880be8eb2fa3f389550a5d15b6d1e3a283f5be4544b23a7"
+    },
+    {
+      "path": "tests/cm_ephemeris_solar_phase_vectors.h",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/tests__cm_ephemeris_solar_phase_vectors.h",
+      "sha256": "6e0d0a2f5751e787bb6cfcb0bdbc8bfcd9450bef18a9814462b987a1a9636a67"
+    },
+    {
+      "path": "tools/cm_ephemeris_solar_phases_vice_test.py",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/tools__cm_ephemeris_solar_phases_vice_test.py",
+      "sha256": "0ec0c132c770c2e8868c2c5dee7601300fa11aee3a1dd226d29da3fb4928942c"
+    },
+    {
+      "path": "tools/cm_ephemeris_solar_phase_reference.c",
+      "retained": "evidence/cm-ephemeris-solar-prequalification/tools__cm_ephemeris_solar_phase_reference.c",
+      "sha256": "3ac6efa9badd8b878d4681c1cc2bc2d9e50f6dde43cefef4b15a03acc0493770"
+    }
+  ]
+}
