@@ -45,6 +45,11 @@
           "verification": "docs/P66-APPLICATION-STARTUP.md",
           "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
+        },
+        {
+          "verification": "docs/P66-APPLICATION-RECURRENCE.md",
+          "scope": "111-module native C64 STARTP66 guidance display idle actual hardware clock IRQ1 RODTASK RESUME and second guidance iteration,310 C64 checkpoints; complete flight program and ongoing periodic scheduling remain open.",
+          "reviewed_entire_program": false
         }
       ]
     },
@@ -61,6 +66,11 @@
         {
           "verification": "docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md",
           "scope": "Actual clock/T3/display source mission through normal N40 and real END on nine unchanged source-normal contexts; C64 proof partitions and blocked external-monitor contexts explicit.",
+          "reviewed_entire_program": false
+        },
+        {
+          "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md",
+          "scope": "Continuous source blocked clock display sleep restoration on seven genuine contexts; C64 final transitions separately proved, no entire disk chain acceptance.",
           "reviewed_entire_program": false
         }
       ]
@@ -90,6 +100,20 @@
           ],
           "scope": "ALARM/VARALARM/CURTAINS/BORTENT source recording and genuine MULTFAIL negative-overflow POODOO handoff; actual recovery and other entries remain separate.",
           "verification": "docs/COMANCHE_ALARM_RECORD.md"
+        },
+        {
+          "native_files": [
+            "src/cm_abort_snapshot.c"
+          ],
+          "scope": "Actual BAILOUT POODOO CCSHOLE snapshot alarm chronology; stops actual recovery entries.",
+          "verification": "docs/COMANCHE_ABORT_SNAPSHOT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_abort_whimper.c"
+          ],
+          "scope": "Actual WHIMPER RESUME POSTJUMP ENEMA handoff with finite compiled return metadata.",
+          "verification": "docs/COMANCHE_ABORT_WHIMPER.md"
         }
       ]
     },
@@ -256,6 +280,20 @@
           ],
           "scope": "Real source clock-selected display admission, priority/wake and normal noun40 consumer through canonical END; external-monitor branches and full application/device acceptance remain separate.",
           "verification": "docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_display_rest.c"
+          ],
+          "scope": "Actual blocked NVDSP REST RESTSLEP and UPENT2 source continuations to real ENDOFJOB or NVSUBUSY.",
+          "verification": "docs/COMANCHE-DISPLAY-REST.md"
+        },
+        {
+          "native_files": [
+            "src/cm_clock_blocked_display.c"
+          ],
+          "scope": "Blocked clock display continuation through REST NVSUBUSY and real JOBSLEEP; retained external monitor flags.",
+          "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md"
         }
       ]
     },
@@ -523,8 +561,16 @@
       "sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
       "bytes": 32186,
       "lines": 1480,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_vac5_store.c"
+          ],
+          "scope": "Actual VAC5STOR abort snapshot body through GENTRAN and source-selected SWRETURN entry, broader restart bodies remain separate.",
+          "verification": "docs/COMANCHE_VAC5_STORE.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
@@ -1056,6 +1102,13 @@
           ],
           "scope": "Actual timer/clock/display host mission and nine unchanged normal V06N40 contexts through true END-selected interpreter restoration; disk C64 clock/display-to-GOPLAY and separate linked normal consumer checks; no whole-chain C64 closure beyond retained proofs.",
           "verification": "docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_clock_blocked_display.c"
+          ],
+          "scope": "Uninterrupted original T3 clock blocked display and actual JOBSLEEP suspended interpreter restoration; C64 proof checks final transition only.",
+          "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md"
         }
       ]
     },
@@ -1092,8 +1145,16 @@
       "sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
       "bytes": 12224,
       "lines": 416,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_phase_cleanup.c"
+          ],
+          "scope": "Original MR.KLEAN P00KLEAN V37KLEAN phase clearing through true caller returns.",
+          "verification": "docs/COMANCHE_PHASE_CLEANUP.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
@@ -1221,6 +1282,83 @@
           ],
           "scope": "ENDIDLE/NVSUBUSY/PRENVBSY/NVSBWAIT/NVSUBSY1 through actual JOBSLEEP/POODOO/NVSBCOM entry; explicit DSPLIST negative-zero inline-data exclusion and separate selected service body execution.",
           "verification": "docs/DSKY-NV-BUSY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_continuation.c"
+          ],
+          "scope": "Original internal NVSUB paste dispatch and caller continuation bodies; selected consumer bodies separately qualified.",
+          "verification": "docs/DSKY-NV-CONTINUATION.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_update.c"
+          ],
+          "scope": "Original UPDATVB UPDATNN noun table and two-digit formatting source effects; caller domain and literal frontiers retained.",
+          "verification": "docs/DSKY-NV-UPDATE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_jam_control.c"
+          ],
+          "scope": "Original JAM shims through their literal Pinball source continuations.",
+          "verification": "docs/DSKY-JAM-CONTROL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_octal_display.c"
+          ],
+          "scope": "Original octal and bit display formatter bodies including signed zeros and overflow error routes.",
+          "verification": "docs/DSKY-OCTAL-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_machine_cadr.c"
+          ],
+          "scope": "Actual machine address display and decimal source continuation.",
+          "verification": "docs/DSKY-MACHINE-CADR.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_five_blank.c"
+          ],
+          "scope": "Actual numeric-only five-character blank entries and relay state changes.",
+          "verification": "docs/DSKY-FIVE-BLANK.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_address_request.c"
+          ],
+          "scope": "Actual address and data requests, fiveblank bankcall and noun transfer; decimal alarm cycle return boundaries retained.",
+          "verification": "docs/DSKY-ADDRESS-REQUEST.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_blank.c"
+          ],
+          "scope": "Actual internal BLANKDSP source through ENTSET minus2, distinct from numeric fiveblank.",
+          "verification": "docs/DSKY-NV-BLANK.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_consumer.c"
+          ],
+          "scope": "Continuous source display admission paste noun blank and saved caller return; combined VN actual ENTPAS0 remains explicit.",
+          "verification": "docs/DSKY-NV-CONSUMER.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_alarm_cycle.c"
+          ],
+          "scope": "Actual ALMCYCLE bankcall prefix and SWRETURN POSTJUMP ENTER return bridges; selected updater body separately qualified.",
+          "verification": "docs/DSKY-ALARM-CYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_update_general.c"
+          ],
+          "scope": "Additive generalized source updater supports both signed zeros all selecting SUPER banks and clean relay CCSHOLE error route.",
+          "verification": "docs/DSKY-NV-UPDATE-GENERAL.md"
         }
       ]
     },
@@ -1486,8 +1624,30 @@
       "sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
       "bytes": 7768,
       "lines": 358,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/rtb_angles.c"
+          ],
+          "scope": "Source angle converters CDU time and mission PIPA controls; other RTB bodies remain separate.",
+          "verification": "docs/RTB-ANGLES.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_agreement.c"
+          ],
+          "scope": "Actual source sign agreement and Comanche matrix transpose bodies, with explicit containing-file boundaries.",
+          "verification": "docs/RTB-AGREEMENT.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_vector.c"
+          ],
+          "scope": "Actual VECAGREE and complete VECSGNAG; UNIT and IMUPULSE literal handoffs, selected bodies remain separately open.",
+          "verification": "docs/RTB-VECTOR.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
@@ -2306,6 +2466,20 @@
           ],
           "scope": "Canonical NOVAC/FINDVAC/SPVAC/SPVACIN entries through real compiled caller return or BAILOUT1 entry; admission state and invalid domains proved, admitted job/recovery bodies remain separate.",
           "verification": "docs/LM-CANONICAL-ADMISSION.md"
+        },
+        {
+          "native_files": [
+            "src/lm_basic_change.c"
+          ],
+          "scope": "Canonical CHANG1 CHANJOB basic and interpreter source exchanges; selected application bodies remain separate.",
+          "verification": "docs/LM-BASIC-CHANGE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_danzig_change.c"
+          ],
+          "scope": "Actual completed pair DANZIG NOIBNKSW positive NEWJOB through canonical CHANG2, no decoder or additional scheduler poll.",
+          "verification": "docs/LM-DANZIG-CHANGE.md"
         }
       ]
     },
@@ -3201,6 +3375,83 @@
           ],
           "scope": "ENDIDLE/NVSUBUSY/PRENVBSY/NVSBWAIT/NVSUBSY1 through actual JOBSLEEP/POODOO/NVSBCOM entry; explicit DSPLIST negative-zero inline-data exclusion and separate selected service body execution.",
           "verification": "docs/DSKY-NV-BUSY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_continuation.c"
+          ],
+          "scope": "Original internal NVSUB paste dispatch and caller continuation bodies; selected consumer bodies separately qualified.",
+          "verification": "docs/DSKY-NV-CONTINUATION.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_update.c"
+          ],
+          "scope": "Original UPDATVB UPDATNN noun table and two-digit formatting source effects; caller domain and literal frontiers retained.",
+          "verification": "docs/DSKY-NV-UPDATE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_jam_control.c"
+          ],
+          "scope": "Original JAM shims through their literal Pinball source continuations.",
+          "verification": "docs/DSKY-JAM-CONTROL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_octal_display.c"
+          ],
+          "scope": "Original octal and bit display formatter bodies including signed zeros and overflow error routes.",
+          "verification": "docs/DSKY-OCTAL-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_machine_cadr.c"
+          ],
+          "scope": "Actual machine address display and decimal source continuation.",
+          "verification": "docs/DSKY-MACHINE-CADR.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_five_blank.c"
+          ],
+          "scope": "Actual numeric-only five-character blank entries and relay state changes.",
+          "verification": "docs/DSKY-FIVE-BLANK.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_address_request.c"
+          ],
+          "scope": "Actual address and data requests, fiveblank bankcall and noun transfer; decimal alarm cycle return boundaries retained.",
+          "verification": "docs/DSKY-ADDRESS-REQUEST.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_blank.c"
+          ],
+          "scope": "Actual internal BLANKDSP source through ENTSET minus2, distinct from numeric fiveblank.",
+          "verification": "docs/DSKY-NV-BLANK.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_consumer.c"
+          ],
+          "scope": "Continuous source display admission paste noun blank and saved caller return; combined VN actual ENTPAS0 remains explicit.",
+          "verification": "docs/DSKY-NV-CONSUMER.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_alarm_cycle.c"
+          ],
+          "scope": "Actual ALMCYCLE bankcall prefix and SWRETURN POSTJUMP ENTER return bridges; selected updater body separately qualified.",
+          "verification": "docs/DSKY-ALARM-CYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_update_general.c"
+          ],
+          "scope": "Additive generalized source updater supports both signed zeros all selecting SUPER banks and clean relay CCSHOLE error route.",
+          "verification": "docs/DSKY-NV-UPDATE-GENERAL.md"
         }
       ]
     },
@@ -3492,8 +3743,30 @@
       "sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
       "bytes": 5660,
       "lines": 236,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/rtb_angles.c"
+          ],
+          "scope": "Source angle converters CDU time and mission PIPA controls; other RTB bodies remain separate.",
+          "verification": "docs/RTB-ANGLES.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_agreement.c"
+          ],
+          "scope": "Actual source sign agreement and Comanche matrix transpose bodies, with explicit containing-file boundaries.",
+          "verification": "docs/RTB-AGREEMENT.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_vector.c"
+          ],
+          "scope": "Actual VECAGREE and complete VECSGNAG; UNIT and IMUPULSE literal handoffs, selected bodies remain separately open.",
+          "verification": "docs/RTB-VECTOR.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
@@ -3796,6 +4069,13 @@
           ],
           "scope": "Actual STARTP66 setup/bias/vertical fixed-call seams and direct source continuation without invented Executive poll. This is P66 startup only; the complete P63/P64/P65/P67 and remaining landing source is still unported.",
           "verification": "docs/P66-STARTUP-OVERLAYS.md"
+        },
+        {
+          "native_files": [
+            "src/p66_application_recurrence.c"
+          ],
+          "scope": "STARTP66 guidance display END idle hardware clock IRQ1 RODTASK and second P66 iteration with continuous canonical image; source one-shot RODTASK does not requeue itself.",
+          "verification": "docs/P66-APPLICATION-RECURRENCE.md"
         }
       ]
     },
@@ -3876,6 +4156,20 @@
           ],
           "scope": "Literal T3/vector TASKOVER-next task transfer under tested IRQ0 contract and saved architectural RESUME. Hardware IRQ1 dispatch, selected task bodies and SVCT3 remain separate.",
           "verification": "docs/LM-RECURRENCE-BRIDGES.md"
+        },
+        {
+          "native_files": [
+            "src/lm_waitlist_image.c"
+          ],
+          "scope": "Canonical original WAITLIST scheduling and invalid domains with actual task and overflow frontiers retained.",
+          "verification": "docs/LM-CANONICAL-WAITLIST.md"
+        },
+        {
+          "native_files": [
+            "src/lm_waitlist_irq_dispatch.c"
+          ],
+          "scope": "Actual source IRQ1 T3 dispatch, task admission and TASKOVER RESUME in P66 recurrence producer domain.",
+          "verification": "docs/P66-APPLICATION-RECURRENCE.md"
         }
       ]
     }
