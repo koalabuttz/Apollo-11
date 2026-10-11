@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/restart.c src/enema.c tests/restart_cases.c tests/enema_cases.c tests/enema_check.c tests/test_enema.c -o build/test-enema
+./build/test-enema
+PASS:128 whole457word original assembly ENEMA states; unsupported inputs retain state
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/waitlist.c src/restart.c src/enema.c tests/restart_cases.c tests/enema_cases.c tests/enema_check.c tests/test_enema.c -o build/test-enema-sanitize
+./build/test-enema-sanitize
+PASS:128 whole457word original assembly ENEMA states; unsupported inputs retain state

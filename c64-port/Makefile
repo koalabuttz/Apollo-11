@@ -305,3 +305,5 @@ coverage:
 	python3 tools/port_coverage.py
 
 include tools/interpreter_native.mk
+
+include tools/enema.mk

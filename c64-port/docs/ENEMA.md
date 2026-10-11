@@ -1,0 +1,17 @@
+# ENEMA restart-entry prefix
+
+Bounded original ENEMA prefix milestone. New enema.h/.c, tests/enema_cases/check/vectors/test, host/C64 diagnostic, oracle/differential/freezer/VICE tools. Existing phase/recovery/restart source, headers, shared Makefile/docs unchanged.
+
+Source FRESH_START_AND_RESTART.agc:281..307,367..381; calls complete verified STARTSB1:399..579 and GOPROG3 agreement:290..307. Original entry05,2765 -> STARTSB1 -> LIGHTSET -> mask RSFLGBTS20100 -> GOPROG3. Stops BEFORE MMDSPLAY5315, PTBAD05,3054 or STARTSUB05,3107 on mark-reject + reset fresh-start request. Does not display, execute a fresh start or restart job, or resume a C continuation. Full ENEMA remains partial beyond those boundaries.
+
+Native enema_begin composes rs_cleanup and rs_validate; preserves all457 modeled words including original register/channel outcomes, tables/saved payloads/alarms. Extra io fields: FLGWRD10, MAIN/NAV keys, A/L/Q/BBANK/SUPERBNK/IRQ. Caller supplies distinct objects, normal15bit stored fields, stopped counters/IRQ publishers and exclusion, source fixedbank5. Unsupported channel/bank inputs return before mutation. Native alarm markers clear as documented existing rs_cleanup adaptation; test input markers0.
+
+Original channel15 MAIN key and16 NAV key (BIT5 mark reject); keycode022 combined with markreject requests fresh start. LIGHTSET uses exact16-bit AD with -ELR=-022; signedzero branch retained. Fresh boundary A=-0,Q3104,L=oldT5ADR1,BB012003,IRQ0; FLGWRD10 remains unchanged. Otherwise clears bits7/14 in FLGWRD10 then phase agreement. Success A0,L=phase1,Q3015; failure A=CCS diminished absolute XOR pair,L=failed phase,Q3; BB012003,IRQ0. Phase loop preserves descending original group order and MPAC+5/+6 stores.
+
+Independent unchanged original assembly runs actual ENEMA entry; oracle links input constructors and pinned engine only, no native cleanup or validation. 4,096 complete457-word checkpoints with all six failure-group positions, XOR zero/positive/negative/signedzero classes, key condition corners/randoms, all8 input EBANK/SUPERBNK and IRQ both states.13 surrounding TBASE/LONGBASE/scratch guards unchanged. Snapshot SHA256 00d940ed957277e8ca71543042000e34ae99cf6ced5404fecf2bd67bdc6594c0.
+
+128 complete target states frozen losslessly (16 full source baselines +2,085 field replacements,23,478bytes), every one of457words compared directly on C64; this is not a digest or computation of native expected outputs. Host/sanitizer pass all128 plus unsupported input no-mutation. VICE128fullstates PASS mailboxa5000080c9 (lastbyte wordcount457mod256). PRG34,263bytes/34,261loaded. Text10,651,rodata23,598,BSS925,noinit78(static compiler stack); hardware/software dynamic sentinel16/44bytes belowROMbaseline. No extra ZP. Modeled state914bytes,case920bytes including metadata6.
+
+Makefile block build/enema-integration.mk. Differential python3 tools/enema_differential.py deps/fixture; freeze python3 tools/freeze_enema.py. VICE python3 tools/enema_vice_test.py --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice.
+
+Evidence build/enema-{differential,host-tests,sanitize,c64-build}.log, enema.prg/map, enema-vice-result.txt, enema-vice.log/monitor.log, enema-vice-mailbox.bin, hardware/software-stack.bin, enema-vice.mon. Raw native/reference snapshots10.33MB each; deterministic gzip variants2.05MB each and trace12.9KB precreated. Source lines/hashes in differential log, fixture unchanged.
