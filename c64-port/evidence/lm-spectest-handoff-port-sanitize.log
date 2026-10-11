@@ -1,0 +1,4 @@
+PASS:16384 original admission/wake/SPECTEST complete2050-word actual CCSHOLE5705 handoffs
+Snapshot SHA256: 71eac6f842fdd2e7769c8b61c8deae6909d3f6e1349365cdbcc285efeb57aae0
+PASS:13654 prior frozen admission/wake exclusions unchanged;21 all-object mutation guards and2 null interfaces
+PASS:retained SPECTEST handoff sanitize;16384 whole original states,13654 old excluded-domain checks,32 checked PRGs

@@ -1075,3 +1075,7 @@ include tools/dsky_fixed_display_integration.mk
 include tools/dsky_load_store.mk
 
 include tools/imu_standby_integration.mk
+
+include tools/lm_spectest_handoff_port_integration.mk
+test: lm-spectest-handoff-port-test
+sanitize: lm-spectest-handoff-port-sanitize

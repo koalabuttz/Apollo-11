@@ -1,0 +1,94 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 
+       0        0        0     1 __rc0 = 0x02
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 PROVIDE(__overlay_code_origin=0x8013)
+    8000     8000       10     1 .overlay_header
+    8000     8000        1     1         BYTE(0x4e)
+    8001     8001        1     1         BYTE(0x41)
+    8002     8002        1     1         BYTE(0x54)
+    8003     8003        1     1         BYTE(0x56)
+    8004     8004        1     1         BYTE(1)
+    8005     8005        1     1         BYTE(__overlay_module)
+    8006     8006        1     1         BYTE(16)
+    8007     8007        1     1         BYTE(0)
+    8008     8008        2     1         SHORT(0x8010)
+    800a     800a        2     1         SHORT(__overlay_bss_start)
+    800c     800c        2     1         SHORT(__overlay_bss_end-__overlay_bss_start)
+    800e     800e        2     1         SHORT(__overlay_load_end-0x8000)
+    8010     8010        3     1 .overlay_entry
+    8010     8010        3     1         /tmp/overlay_entry-470014.o:(.overlay_entry)
+    8010     8010        3     1                 apollo_overlay_jump
+    8013     8013      3ad     1 .text
+    8013     8013        0     1         _init = .
+    8013     8013        0     1         _start = .
+    8013     8013        5     1         /workspace/Apollo-11/c64-port/build/lm-spectest-handoff-2.prg.lto.o:(.init.250)
+    8013     8013        0     1                 shift
+    8018     8018        0     1         _fini = .
+    8018     8018       34     1         /workspace/Apollo-11/c64-port/build/lm-spectest-handoff-2.prg.lto.o:(.text.__mulhi3)
+    8018     8018       34     1                 __mulhi3
+    804c     804c       67     1         /workspace/Apollo-11/c64-port/build/lm-spectest-handoff-2.prg.lto.o:(.text.__mulsi3)
+    804c     804c       67     1                 __mulsi3
+    80b3     80b3      30d     1         /workspace/Apollo-11/c64-port/build/lm-spectest-handoff-2.prg.lto.o:(.text.apollo_overlay_main)
+    80b3     80b3      30d     1                 apollo_overlay_main
+    83c0     83c0        0     1         __init_array_start = .
+    83c0     83c0        0     1         __init_array_end = .
+    83c0     83c0        0     1         __fini_array_start = .
+    83c0     83c0        0     1         __fini_array_end = .
+    83c0     83c0     201c     1 .rodata
+    83c0     83c0     2014     1         /workspace/Apollo-11/c64-port/build/lm-spectest-handoff-2.prg.lto.o:(.rodata.initial)
+    83c0     83c0     2014     1                 initial
+    a3d4     a3d4        8     1         <internal>:(.rodata.cst8)
+    a3dc     a3dc        0     1 .data
+    a3dc     a3dc        0     1         __data_start = .
+    a3dc     a3dc        0     1         __data_end = .
+    a3dc     a3dc        0     1 __data_load_start = LOADADDR(.data)
+    a3dc     a3dc        0     1 __data_size = SIZEOF(.data)
+    a3dc     a3dc        0     1 __overlay_load_end = .
+    a3dc     a3dc        0     1 __overlay_bss_start = .
+    a3dc     a3dc        0     1 __overlay_bss_end = .
+    a3dc     a3dc        0     1 
+    a3dc     a3dc        0     1 
+    a3dc     a3dc        0     1 
+    a3dc     a3dc        0     1 
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/lm-spectest-handoff-2.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/lm-spectest-handoff-2.prg.lto.o:(.llvm_sympart)
+       0        0      980     4 .symtab
+       0        0      980     4         <internal>:(.symtab)
+       0        0       65     1 .shstrtab
+       0        0       65     1         <internal>:(.shstrtab)
+       0        0      504     1 .strtab
+       0        0      504     1         <internal>:(.strtab)
