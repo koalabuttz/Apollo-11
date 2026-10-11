@@ -366,3 +366,14 @@ include tools/cm_restart_native.mk
 include tools/cm_native_image.mk
 
 include tools/cm_enema.mk
+
+include tools/unit_phased.mk
+include tools/radial_phased.mk
+include tools/projection_phased.mk
+include tools/guidance_phased_frozen.mk
+.PHONY: test-guidance-phased
+test: test-guidance-phased
+test-guidance-phased:
+	$(MAKE) guidance-phased-host KIND=unit
+	$(MAKE) guidance-phased-host KIND=radial
+	$(MAKE) guidance-phased-host KIND=projection

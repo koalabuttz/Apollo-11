@@ -376,3 +376,7 @@ The sole 2,048-word image supplies CM Executive, WAITLIST, phase and restart vie
 ## Port Comanche ENEMA error and fresh-start paths
 
 All 4,096 complete original ENEMA states match across 439 owned words, including navigation/error combinations, counter startup and conditional TVCEXEC scheduling. Strict and sanitizer checks and stock C64 fingerprints plus full-state samples pass; downstream selected mission tasks remain separate translation work. See `docs/COMANCHE_ENEMA.md`.
+
+## Split source-faithful guidance into returning native phases
+
+All 97,558 complete UNIT/radial/projection source states and full sanitizer corpora match. All 480 C64 phase entry/exit cases pass with zero extra zero page. Internal C ABI returns retain ownership; scheduling occurs only at original source boundaries. See `docs/GUIDANCE_PHASED.md`.

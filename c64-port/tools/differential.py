@@ -222,3 +222,9 @@ subprocess.run([sys.executable,'tools/cm_restart_differential.py',str(reference)
 subprocess.run([sys.executable,'tools/cm_restart_native_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_enema_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/unit_phased_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/radial_phased_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/projection_phased_differential.py',str(reference)],cwd=ROOT,check=True)

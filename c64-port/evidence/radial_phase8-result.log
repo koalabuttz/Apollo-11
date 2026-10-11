@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete radial phase 8 original-assembly entry/exit states
+Mailbox: a500002008
+PRG bytes: 17749
+radial_phase8-hardware-stack.bin: measured stack extent 14 bytes
+radial_phase8-software-stack.bin: measured stack extent 115 bytes
