@@ -1118,3 +1118,7 @@ Actual INTMCTBS and plus-two entries, SETNCADR, verb5 bypass, real octal formatt
 ## Translate original shared five character numeric blank entries
 
 Actual5BLANK, minus-one, plus-two and CLR5 bodies match8192 complete original/native/full-sanitizer states and64 actual C64 states, covering all numeric row positions and source paired/isolated hole branches. The ordinary numeric calling domain and separate verb/noun blank controls remain explicit. See `docs/DSKY-FIVE-BLANK.md`.
+
+## Translate original RTB angle conversion time and PIPA source groups
+
+Both original mission converters, CDU controls and clock reads plus Comanche PIPA reads match1048576 complete original/native/full-sanitizer states and512 actual C64 states across16 targets. Source mapping and binary checks retain containing file boundaries:72 of130 Luminary words and97 of206 Comanche words are qualified; other RTB entries remain open. See `docs/RTB-ANGLES.md`.

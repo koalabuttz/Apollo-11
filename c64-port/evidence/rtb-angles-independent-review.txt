@@ -1,0 +1,19 @@
+Independent read-only RTB selected source group review
+Reviewer: /root/general_division
+Source: byte-original Luminary099/RTB_OP_CODES.agc and Comanche055/RT8_OP_CODES.agc
+Review conclusion communicated to /root/p66_source_map:
+No numerical/source-effect defect found within the stated domain. twos_word
+uses raw bit16 sign and diminished/complement conversion; DDOUBL applies low
+carry before high conversion and LIMITS uncorrection. Exchanges preserve source
+minor limb and MPAC5 staging. CDUINC reads the target only after the TEM2 store
+(including alias targets), recomputes the BUF target at final TS as source does.
+Vector offsets0/3/5 and CM INCRCDUS THETAD sequence agree. READPIPS retains PIPA
+source words and source RELINT IRQ1; LOADTIME pair exchange and MODE resets match
+SLOAD2/NEWMODE. Nonnull objects are a caller precondition; the public header
+now states this explicitly. Ordinary resolved targets exclude physical words
+below040 and therefore exclude register/editing aliases. Full-file scope remains
+explicitly unclaimed. Reviewer made no edits.
+ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56  src/rtb_angles.c
+16e2ea4ef4c1e4e43373fa48b7004f7ee6546eb262b5ad2a2590b562baae3a2a  include/rtb_angles.h
+0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d  ../Luminary099/RTB_OP_CODES.agc
+ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988  ../Comanche055/RT8_OP_CODES.agc

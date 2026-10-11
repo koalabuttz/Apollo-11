@@ -768,3 +768,5 @@ include tools/dsky_octal_display.mk
 include tools/dsky_machine_cadr.mk
 
 include tools/dsky_five_blank.mk
+
+include tools/rtb_angles_integration.mk

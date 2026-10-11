@@ -1,0 +1,20 @@
+{
+  "lm": {
+    "source_file": "Luminary099/RTB_OP_CODES.agc",
+    "original_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+    "assembled_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+    "source_edits": 0,
+    "assembly_include": "RTB_OP_CODES.agc",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "support_source_audit": "evidence/lm-powered-source-audit.json"
+  },
+  "cm": {
+    "source_file": "Comanche055/RT8_OP_CODES.agc",
+    "original_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+    "assembled_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+    "source_edits": 0,
+    "assembly_include": "RTB_OP_CODES.agc",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "support_source_audit": "evidence/cm-powered-source-audit.json"
+  }
+}

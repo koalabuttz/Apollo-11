@@ -4,8 +4,9 @@
 import argparse,hashlib,lzma,os,pathlib,subprocess
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--binary',required=True);p.add_argument('--archive',required=True);p.add_argument('--sha256',required=True);p.add_argument('--bytes',type=int)
+p.add_argument('--arg',action='append',default=[],help='Literal native producer argument; repeat as needed')
 a=p.parse_args();root=pathlib.Path(__file__).resolve().parents[1]
-child=subprocess.Popen([str(root/a.binary)],cwd=root,stdout=subprocess.PIPE,env=dict(os.environ,ASAN_OPTIONS='detect_leaks=0'))
+child=subprocess.Popen([str(root/a.binary)]+a.arg,cwd=root,stdout=subprocess.PIPE,env=dict(os.environ,ASAN_OPTIONS='detect_leaks=0'))
 h=hashlib.sha256();n=0
 try:
  with lzma.open(root/a.archive,'rb') as reference:
