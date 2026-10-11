@@ -12,7 +12,7 @@
     "agc_instruction_decoder": false,
     "program_subset": false,
     "platform": "stock Commodore 64 unless a documented requirement changes it",
-    "memory_and_overlay_architecture": "unresolved; disk overlays may be necessary",
+    "memory_and_overlay_architecture": "Verified native disk-overlay loader and canonical erasable image; complete-program module allocation, media layout and integration remain pending",
     "flight_inputs": "explicit tested C64 adapters for original hardware input roles",
     "flight_outputs": "native computed guidance/device outputs through tested C64 adapters"
   },

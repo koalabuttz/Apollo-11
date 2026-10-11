@@ -315,3 +315,5 @@ include tools/unit.mk
 include tools/radial.mk
 
 include tools/acceleration.mk
+
+include tools/overlay.mk

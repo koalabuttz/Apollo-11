@@ -1,0 +1,2 @@
+./build/test-overlay
+PASS: bounded native overlay loader; exact header/CRC; short/long/I/O failures preserve all2048words; cache, BSS reload, nested-call rejection and slot guards
