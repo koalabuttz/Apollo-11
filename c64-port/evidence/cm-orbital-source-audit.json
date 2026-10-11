@@ -1,0 +1,20 @@
+{
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+  "original_sources": {
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+      "normalized_lines": 36
+    },
+    "INTEGRATION_INITIALIZATION.agc": {
+      "original_sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
+      "normalized_sha256": "19aa53ca81e4e499882d144edb56501047775107ad0dcd840b5741758ecf54f9",
+      "normalized_lines": 1
+    },
+    "ORBITAL_INTEGRATION.agc": {
+      "original_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+      "normalized_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+      "normalized_lines": 0
+    }
+  }
+}

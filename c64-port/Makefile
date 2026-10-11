@@ -412,3 +412,5 @@ include tools/dsky_two_digit.mk
 include tools/cm_numeric.mk
 
 include tools/cm_rotation.mk
+
+include tools/cm_rectify.mk

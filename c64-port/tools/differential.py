@@ -261,3 +261,5 @@ subprocess.run([sys.executable,'tools/dsky_two_digit_differential.py',str(refere
 subprocess.run([sys.executable,'tools/cm_numeric_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_rotation_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_rectify_differential.py',str(reference)],cwd=ROOT,check=True)
