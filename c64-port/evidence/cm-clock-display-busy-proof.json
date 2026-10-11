@@ -1,0 +1,29 @@
+{
+  "cases": 64,
+  "checkpoints": 1216,
+  "full_physical_words": 2048,
+  "source_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "snapshot_sha256": "ce2a6fe603dea893e6e1ba202e267b581e37e0e7949444c7da22fe606b79f5fe",
+  "scope": "actual T3/CLOKTASK-admitted CLOCKJOB/QUICTRIG/MAKEPLAY/PRIOCHNG with matching busy TEMPFLSH051366/DSPLOCK1..7 through genuine END and restored interpreter; no noun40 conversion",
+  "groups": [
+    0,
+    1,
+    3,
+    4,
+    5,
+    12,
+    14,
+    100,
+    101,
+    102,
+    103,
+    200,
+    201,
+    202,
+    203,
+    204,
+    210,
+    211,
+    212
+  ]
+}

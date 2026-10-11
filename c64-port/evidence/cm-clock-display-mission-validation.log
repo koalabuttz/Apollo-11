@@ -1,0 +1,38 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c src/cm_mission_loop.c src/cm_mission_builtin.c src/cm_task_interrupt.c src/cm_danzig.c src/cm_basic_finish.c tests/cm_mission_loop_cases.c tests/cm_clock_mission_cases.c src/cm_clock_mission.c src/cm_clock_mission_builtin.c src/cm_clockjob.c src/cm_quictrig.c src/cm_display_control.c src/cm_idle_dispatch.c src/cm_clock_display_mission.c src/cm_priority_complete.c src/cm_makeplay.c src/cm_makeplay_sleep.c src/cm_basic_wake.c src/cm_basic_sleep.c tests/cm_clock_display_mission_cases.c platform/host/cm_clock_display_mission_snapshot.c -o build/cm-clock-display-mission-native
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_clock_display_mission_differential.py
+PASS: actual uninterrupted CM clock display source groups, all physical words and channel11 exact
+{
+  "cases": 64,
+  "checkpoints": 1344,
+  "full_physical_words": 2048,
+  "source_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "snapshot_sha256": "295f2ea42a6563b411a00f9c2254c2b8b5d9c284b7309e1edc10340200f2d4c2",
+  "scope": "actual T3/CLOKTASK-admitted CLOCKJOB/QUICTRIG/MAKEPLAY/PRIOCHNG/JOBWAKE/JOBSLEEP through genuine GOPLAY or restored interpreter; noun40 display conversion remains a separate consumer",
+  "groups": [
+    0,
+    1,
+    3,
+    4,
+    5,
+    12,
+    14,
+    100,
+    101,
+    102,
+    200,
+    201,
+    202,
+    203,
+    204,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217
+  ]
+}

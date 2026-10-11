@@ -705,3 +705,7 @@ include tools/cm_normal_display.mk
 include tools/dsky_mixed_noun.mk
 
 include tools/interpreted_sign_port.mk
+
+include tools/cm_clock_display_mission.mk
+include tools/cm_clock_display_busy.mk
+all: build/cm-clock-display-mission-native build/cm-clock-display-busy-native

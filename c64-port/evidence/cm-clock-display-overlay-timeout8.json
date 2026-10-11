@@ -1,0 +1,249 @@
+{
+  "verdict": null,
+  "outcome": "600-second bounded VICE process timeout before completion mailbox; no target correctness verdict",
+  "target_sequences": 16,
+  "target_checkpoints_planned": 336,
+  "scope": "Exact original eight representative normal/sleep target inputs and compiled artifact bytes retained; final target will use fewer representative sequences and add independently source-qualified matching busy branch",
+  "files": [
+    {
+      "original": "build/cm-clock-display-overlay-1.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-1.prg",
+      "bytes": 3017,
+      "sha256": "3e612b012682f77a77f588390dc166f14b7e2ec95c33bac44f1ef7f7041d2fc3"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-vice-monitor.log",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-vice-monitor.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-250.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-250.prg",
+      "bytes": 5066,
+      "sha256": "564ed9f4c9521c0e8735f88b29936369651fab1cbb40daaa9831af18c77fa97f"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-250.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-250.map",
+      "bytes": 6403,
+      "sha256": "c7035932d5eb0338e447272178a7182de5baa685981f8c549d6c59224a7802a3"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-7.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-7.map",
+      "bytes": 7665,
+      "sha256": "caac937641b695bc54a194ba93de5ba6a0d2a7e703a34ef9e58b22424082beb2"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-7.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-7.prg",
+      "bytes": 15663,
+      "sha256": "e7a7473733496a98c6fa65d5b60b81aced486981147f1daef93a5e97e88e7a9b"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-2.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-2.map",
+      "bytes": 6728,
+      "sha256": "5ffc228e94408589810a85cf667249cce7cfd285e6653f59e67ced7baf9b9889"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-3.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-3.map",
+      "bytes": 6017,
+      "sha256": "b8f3fad790453466fad5474c8dd7e826a02697ec0f9ca982007eddc8faebbb50"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-5.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-5.map",
+      "bytes": 6873,
+      "sha256": "4d9b72308a518496d5beecc8373b1f71ce24c0dab00cfd5e010464dc4035faa3"
+    },
+    {
+      "original": "build/cm-clock-display-overlay.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay.prg",
+      "bytes": 9626,
+      "sha256": "0ac7c93c835887a21545f3bc990dc21aca52ec466be1df4c1f382ba4d0d777b6"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-251.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-251.map",
+      "bytes": 6110,
+      "sha256": "9dc2d70f10802f0953642431f2f59233218ff66007286cb80cce06195deeec8f"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-build-validation.log",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-build-validation.log",
+      "bytes": 1255,
+      "sha256": "c3ac3ed5f01acd3a774c61fb3d9bb3d9d176901b60f607560b3cfbf43ae8b8e5"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-6.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-6.map",
+      "bytes": 6212,
+      "sha256": "198ba5db971ca4d2254e276daf1d2e70197012a66c3052e0c24a113e2e04536d"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-modules.json",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-modules.json",
+      "bytes": 2241,
+      "sha256": "f3d7bce77c7dd4e4be1a462aa95944bddb44fca3bb1396ca61499d1e5f375e42"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-6.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-6.prg",
+      "bytes": 5131,
+      "sha256": "091af271d121306250d1d9c177a58d802a3d3bb6edc08a4f2145c57bfa2c24b6"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-251.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-251.prg",
+      "bytes": 15980,
+      "sha256": "a2b34992906768bc8e12d63c42f03446f386e7c66d86b387a06ce90e6d19cb1c"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-1.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-1.map",
+      "bytes": 5446,
+      "sha256": "a03ab7437c5d7fe6e1c2675d867e0c30b9daea0cb7cf8808d144f41ff5c371ba"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-4.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-4.map",
+      "bytes": 5452,
+      "sha256": "4c814464af48a79deb27f2cf0d96b1276ad2312bbed63557cdad77d884bbe90b"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-vice.mon",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-vice.mon",
+      "bytes": 454,
+      "sha256": "506c580682fde767ce73035a67b0c1d5aa24a597edc62ab2e1980f48c3c2f698"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-vice.log",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-vice.log",
+      "bytes": 5505,
+      "sha256": "c76c02a87dd00bf358737e1bca841a7130dd112432ec349c1c3b9980193e99c9"
+    },
+    {
+      "original": "build/cm-clock-display-overlay.map",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay.map",
+      "bytes": 11345,
+      "sha256": "a87db20831a4f27b8811390f351f2d255490a0c8690ba113f8e2d15f668abc50"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-5.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-5.prg",
+      "bytes": 9673,
+      "sha256": "080a2c4283270ada897ee90f460b9bc23420412bff4a6f1e01c5601e5f2c418b"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-2.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-2.prg",
+      "bytes": 7770,
+      "sha256": "e5da47c54ba569677c2408eed43084a146e58845efac2d5d01a8858c5e328360"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-3.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-3.prg",
+      "bytes": 5355,
+      "sha256": "b18ddf6fb23a08b8d5d8d8cd8ca5deaf273d2e2340a63b90938aacd779f38465"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-c64-result.log",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-c64-result.log",
+      "bytes": 2217,
+      "sha256": "9968051303af121e08f0ef1988e706073dbeea2311b5a9a8d27ff90b33df917a"
+    },
+    {
+      "original": "build/cm-clock-display-overlay-4.prg",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay-4.prg",
+      "bytes": 4217,
+      "sha256": "756025375825895523c7c0f8efc39ed8672bf3eef3bd21b41927c2a7bc1455fb"
+    },
+    {
+      "original": "build/cm-clock-display-overlay.d64",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-overlay.d64",
+      "bytes": 174848,
+      "sha256": "a702e915183a2b25faca893058396551521c5fc15362a98bc9dc440bad9fa14e"
+    },
+    {
+      "original": "build/cm_clock_display_overlay_modules.h",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_modules.h",
+      "bytes": 303,
+      "sha256": "28faddb60b0c8aecaa72469db2b48b06d2d12e866d0e8e924e23c595a63f3b56"
+    },
+    {
+      "original": "build/cm-clock-display-mission-proof.json",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm-clock-display-mission-proof.json",
+      "bytes": 663,
+      "sha256": "bdaa6f4000fd70b1853541d50fc118c3a1d2fa46e7855d6bbd3156d7282700a9"
+    },
+    {
+      "original": "platform/c64/cm_clock_display_overlay_check.c",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_check.c",
+      "bytes": 1598,
+      "sha256": "9056c06911ff25666586433265f97adbabbd02c8a7bf728e60fa65970fad6bb7"
+    },
+    {
+      "original": "platform/c64/cm_clock_display_overlay_input.c",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_input.c",
+      "bytes": 490,
+      "sha256": "23a35f188036713920bdf2225746acb03c126eef98993ffb1a774dbeaad08197"
+    },
+    {
+      "original": "platform/c64/cm_clock_display_overlay_payload.c",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_payload.c",
+      "bytes": 4743,
+      "sha256": "3099ea7cbe9f7901df1e9b63a5bfd6a49babf7ade6a82bb7b72e4963e06be751"
+    },
+    {
+      "original": "platform/c64/cm_clock_display_overlay_binding.h",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_binding.h",
+      "bytes": 994,
+      "sha256": "353feaad7db3f678e5e4f620c142f0be9c1ff8c84aba7b89f5d9c659341dba04"
+    },
+    {
+      "original": "platform/c64/cm_clock_display_overlay_diagnostic.c",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_diagnostic.c",
+      "bytes": 3332,
+      "sha256": "bda7239f8c2ced1ec2ca6cd974e5740ec31de093b794b7b2ae6700161e12530a"
+    },
+    {
+      "original": "tests/cm_clock_display_overlay_vectors.h",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_vectors.h",
+      "bytes": 33866,
+      "sha256": "6dece9666dcd41b12b55c0e6eb08f68af3b1b93d3ad352b1fedd86f7b19845bd"
+    },
+    {
+      "original": "tests/cm_clock_display_mission_cases.h",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_mission_cases.h",
+      "bytes": 265,
+      "sha256": "9dc9d21240fc72cfeded883bad5df67063f9357d484fe29289f2ab0ac3f9ee1f"
+    },
+    {
+      "original": "tests/cm_clock_display_mission_cases.c",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_mission_cases.c",
+      "bytes": 394,
+      "sha256": "ae677a211dc65bbba5b9c6c8c4346e4ca1b2a2c54e8c4c0c11816436c004fa72"
+    },
+    {
+      "original": "tools/cm_clock_display_overlay_build.py",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_build.py",
+      "bytes": 3854,
+      "sha256": "3e046345c227eab67d8baa88e70ef7bbab3c8586487163dd74ef6c9eb21ea102"
+    },
+    {
+      "original": "tools/cm_clock_display_overlay_vice_test.py",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_clock_display_overlay_vice_test.py",
+      "bytes": 4448,
+      "sha256": "35c49d663ad4f17df12d39a328fd4ecebaa6ecf35fefb8990ceef852ca415694"
+    },
+    {
+      "original": "tools/cm_freeze_clock_display.py",
+      "retained": "evidence/cm-clock-display-overlay-timeout8/cm_freeze_clock_display.py",
+      "bytes": 1801,
+      "sha256": "0eb67591bc4c52bcc7356cb314033895b79089e2c4592256012fe6b6ab27334d"
+    }
+  ]
+}

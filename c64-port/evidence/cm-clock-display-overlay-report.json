@@ -1,0 +1,99 @@
+{
+  "source_cases": 128,
+  "source_checkpoints": 2560,
+  "source_snapshot_sha256": "295f2ea42a6563b411a00f9c2254c2b8b5d9c284b7309e1edc10340200f2d4c2",
+  "busy_source_snapshot_sha256": "ce2a6fe603dea893e6e1ba202e267b581e37e0e7949444c7da22fe606b79f5fe",
+  "canonical_words": 2048,
+  "c64_continuous_cases": 6,
+  "c64_checkpoints": 122,
+  "c64_complete_terminal_samples": 6,
+  "distinct_terminal_sample_contexts": 3,
+  "mailbox_hex": "a500007a03",
+  "software_stack_bytes": 1429,
+  "resident_prg_bytes": 9626,
+  "modules": [
+    {
+      "id": 1,
+      "filename": "C1",
+      "byte_count": 3015,
+      "crc16": 31152,
+      "sha256": "3e612b012682f77a77f588390dc166f14b7e2ec95c33bac44f1ef7f7041d2fc3",
+      "prg": "cm-clock-display-overlay-1.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 2,
+      "filename": "C2",
+      "byte_count": 7768,
+      "crc16": 40172,
+      "sha256": "e5da47c54ba569677c2408eed43084a146e58845efac2d5d01a8858c5e328360",
+      "prg": "cm-clock-display-overlay-2.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 3,
+      "filename": "C3",
+      "byte_count": 5353,
+      "crc16": 34745,
+      "sha256": "b18ddf6fb23a08b8d5d8d8cd8ca5deaf273d2e2340a63b90938aacd779f38465",
+      "prg": "cm-clock-display-overlay-3.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 4,
+      "filename": "C4",
+      "byte_count": 4215,
+      "crc16": 8646,
+      "sha256": "756025375825895523c7c0f8efc39ed8672bf3eef3bd21b41927c2a7bc1455fb",
+      "prg": "cm-clock-display-overlay-4.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 5,
+      "filename": "C5",
+      "byte_count": 9671,
+      "crc16": 19863,
+      "sha256": "080a2c4283270ada897ee90f460b9bc23420412bff4a6f1e01c5601e5f2c418b",
+      "prg": "cm-clock-display-overlay-5.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 6,
+      "filename": "C6",
+      "byte_count": 5129,
+      "crc16": 13730,
+      "sha256": "091af271d121306250d1d9c177a58d802a3d3bb6edc08a4f2145c57bfa2c24b6",
+      "prg": "cm-clock-display-overlay-6.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 7,
+      "filename": "C7",
+      "byte_count": 15661,
+      "crc16": 38242,
+      "sha256": "e7a7473733496a98c6fa65d5b60b81aced486981147f1daef93a5e97e88e7a9b",
+      "prg": "cm-clock-display-overlay-7.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 250,
+      "filename": "C250",
+      "byte_count": 5464,
+      "crc16": 57148,
+      "sha256": "ec1003bef43001bf0144c496f064e6b7e602a7e2a4be79c726193114ac7cb71b",
+      "prg": "cm-clock-display-overlay-250.prg",
+      "mission_translation": false
+    },
+    {
+      "id": 251,
+      "filename": "C251",
+      "byte_count": 15078,
+      "crc16": 62303,
+      "sha256": "fadb5a7846911a4aafef65edd13a1e89a1fa2f8c955e237da06fadce1a7bbfe5",
+      "prg": "cm-clock-display-overlay-251.prg",
+      "mission_translation": false
+    }
+  ],
+  "scope": "actual T3/CLOKTASK-admitted CLOCKJOB/trig/MAKEPLAY/priority/wake to GOPLAY, actual sleep/restored interpreter, or matchingTEMPFLSH051366/DSPLOCK1..7 busyEND/restored interpreter; noun40 displayconversion remains separate",
+  "complete_application_qualified": false
+}
