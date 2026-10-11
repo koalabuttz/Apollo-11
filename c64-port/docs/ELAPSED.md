@@ -139,6 +139,6 @@ python3 tools/elapsed_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
-Next: translate `STORE 30D`, preserving the elapsed pair in VAC-relative words
-30/31 and checking its MPAC, register, scratch and retained-vector effects
-against original assembly. Later `DDV 4SEC(28)` remains a separate boundary.
+`STORE 30D` is now implemented and verified in STORE.md, including old-word
+register effects and overlapping VAC saves. This DSU API keeps its pre-STORE
+boundary; DDV 4SEC(28) is the next pending arithmetic operation.

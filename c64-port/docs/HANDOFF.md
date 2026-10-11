@@ -1,4 +1,4 @@
-# P66 DSU PIPTIME milestone handoff
+# P66 STORE 30D milestone handoff
 
 ## Repository
 
@@ -27,6 +27,7 @@ make c64-prepare MOS_CC=/path/to/mos-c64-clang
 make c64-scale MOS_CC=/path/to/mos-c64-clang
 make c64-push MOS_CC=/path/to/mos-c64-clang
 make c64-elapsed MOS_CC=/path/to/mos-c64-clang
+make c64-store MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
@@ -43,6 +44,8 @@ python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/scale_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/store_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/elapsed_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/push_vice_test.py --vice /path/to/x64sc \
@@ -50,6 +53,18 @@ python3 tools/push_vice_test.py --vice /path/to/x64sc \
 ```
 
 ## Completed work
+
+The twelfth milestone translates STORE 30D, stopping before DDV/PDVL. It writes
+the elapsed DP pair to VAC-relative words 30/31, clears A through CCS MODE and
+retains the old word 31 in L. All 89 modeled words and prior DSU observations
+match 5044 original-assembly checkpoints over 3681 cases, including all 190
+VAC/push positions, 35 overlapping saves, 256 source/destination corners and
+three retained histories. All eleven host/sanitizer suites pass. The eleventh
+C64 PRG checks 176 complete states, restoring I, native scope rejection and
+reserved memory layout, with zero failures. Total state remains 178 bytes;
+STORE samples reach 317 PAL cycles (0.322 ms), full prefix 21841 (22.168 ms).
+Earlier 176 evidence hashes, twelve source overlays, rope and historical files
+remain unchanged. STORE.md defines the state/bank/control boundaries.
 
 The eleventh milestone translates DSU PIPTIME and its overflow realignment,
 stopping before STORE 30D. All 89 modeled words and observed TS 7 paths match
@@ -162,7 +177,7 @@ Validation passes:
 - Host dispatch/fault tests and all eight native two-job executions.
 - 26 admission/completion plus 109 dispatch checkpoints, word-for-word against
   original assembly, and the separate Virtual AGC numerical helper comparisons.
-- All ten host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
+- All eleven host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
 - PAL C64 VICE: zero failures, all 135 original-derived fingerprints, eight
   actual native two-job sequences and three repeated timed-path checks.
 - Host IRQ publication/FIFO tests over 600 starting-ticket cases, guards, idle
@@ -200,7 +215,7 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 ## Limits and next milestone
 
 This cooperative basic-job translation includes native demonstration routines
-and P66 preparation through DSU PIPTIME. Complete flight OS and guidance workloads
+and P66 preparation through STORE 30D. Complete flight OS and guidance workloads
 remain future work. Callbacks return to a trampoline; persistent values belong
 in MPAC/VAC, not suspended C stacks.
 An unmapped address latches a runtime fault. No rollback is claimed; bounded
@@ -214,12 +229,12 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: translate STORE 30D, preserving the elapsed DP pair in VAC-relative
-words 30/31 and independently verifying retained state and register/scratch effects.
+Next: translate DDV 4SEC(28), preserving raw quotient, rounding, signed zeros,
+overflow and scratch/register effects; stop before pending PDVL loads GDT/2.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
 Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST,
-bounded Type C job recovery, pre-interpreter P66 preparation, VXSC KPIP1, PDDL THISTPIP and DSU PIPTIME is met.
+bounded Type C job recovery, pre-interpreter P66 preparation, VXSC KPIP1, PDDL THISTPIP, DSU PIPTIME and STORE 30D is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host

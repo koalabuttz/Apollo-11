@@ -150,3 +150,13 @@ PUSHDOWN.md lists register/scratch preservation and excluded interpreter control
 
 All 89 modeled words and observed paths match 4664 original checkpoints;
 ELAPSED.md records the banked PIPTIME operand and excluded interpreter controls.
+
+## STORE 30D
+
+| Historical source | Native translation | Boundary |
+|---|---|---|
+| LUNAR_LANDING_GUIDANCE_EQUATIONS:1006, STORE 30D | `p66_store_elapsed` after DSU | STORE at 32,3361; stop DANZIG before DDV/PDVL at 32,3362 |
+| INTERPRETER:404..420,453..475, DOSTORE / STORJUMP / STORE / STARTSTO | Fixed relative offset, DP write, old-word L and clear A | Genuine dispatcher and store at 6362/6372/6422/6434 |
+
+The oracle asserts operand FIXLOC+30, MODE, LOC, BBANK and Q, reading all 89
+modeled words before/after the store. STORE.md describes omitted control state.

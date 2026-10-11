@@ -153,12 +153,25 @@ Acceptance for this bounded operation is met. ELAPSED.md defines stable PIPTIME,
 BUF/OVFIND ownership and the stop before STORE 30D. Live job integration still
 requires producer exclusion and a scheduling budget.
 
-## Next bounded milestone: STORE 30D
+## Completed: STORE 30D
 
-Translate the elapsed DP pair store into VAC-relative words 30/31. Independently
-verify stored data, retained vector/VAC words, MPAC, register and scratch effects
-against the original interpreter instructions. Keep later DDV 4SEC(28) separate
-until this storage boundary is verified.
+- DP MPAC stores to VAC-relative words 30/31; A clears and old word 31 remains
+  in L. All other modeled words, including PUSHLOC, are retained.
+- 3681 cases / 5044 checkpoints match original assembly, covering all 190
+  VAC/push positions, 35 overlapping saves and 256 source/destination corners.
+- Eleven host/sanitizer suites pass; the eleventh C64 PRG checks 176 full states,
+  native rejection, restoring I and reserved memory layout.
+- State stays 178 bytes; STORE samples reach 0.322 ms; full prefix 22.168 ms.
+
+Acceptance for this bounded operation is met. STORE.md defines the native scope
+check, old-word register effects and stop before DDV/PDVL.
+
+## Next bounded milestone: DDV 4SEC(28)
+
+Trace and translate DP division of the elapsed pair by the original constant.
+Preserve raw quotient, rounding, signed zeros, overflow and scratch/register
+effects; verify the boundary before pending PDVL loads GDT/2. Keep later vector
+loads separate until the arithmetic boundary is verified.
 
 ## Remaining design questions
 

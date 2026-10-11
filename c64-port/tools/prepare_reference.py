@@ -70,7 +70,9 @@ for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
                      ('PDDL','6523'),('ENDVPUSH','6540'),('PUSHLOC','0166'),
                      ('NO.WDS','6244'),('VAC1','0401'),('VAC5','0661'),('FIXLOC','0120'),
                      ('DSU','7005'),('ENDVXV','7000'),('OVERFLOW','7017'),
-                     ('PIPTIME','1234'),('BUF','0130'),('LIMITS','4734')]:
+                     ('PIPTIME','1234'),('BUF','0130'),('LIMITS','4734'),
+                     ('DOSTORE','6362'),('STORJUMP','6372'),('STORE','6422'),
+                     ('STARTSTO','6434'),('EDOP','0000023'),('NEWJOB','0067'),('DDV','7577')]:
     import re
     if not re.search(r'\b'+name+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)

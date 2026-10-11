@@ -469,3 +469,28 @@ underscore-named constant pool is copied byte-for-byte to the pinned fixture's
 hyphenated include path. The rope and every earlier snapshot remain unchanged.
 After expanding the oracle's memory guards, the elapsed differential comparison
 was rerun with the identical snapshot hash; no native code changed afterward.
+
+## Twelfth milestone: STORE 30D
+
+3681 cases / 5044 complete 89-word/prior-path checkpoints match genuine original
+DANZIG/DOSTORE/STORJUMP/STORE/STARTSTO execution. The adapter links input-only
+constructors and original engine objects, with no native store/arithmetic code.
+It counts all 190 VAC/push positions, including 35 overlapping saves, and checks
+nine memory guards, VAC bounds, banks, LOC, ADDRWD, MODE, Q and IRQ permission.
+STORE.md records the domain, corners, random cases and retained histories.
+
+| Command | Result | Evidence under `evidence/` |
+|---|---|---|
+| `python3 tools/prepare_reference.py` | PASS; 12 source identities and rope | `store-fixture.log` |
+| `make differential REFERENCE="$PWD/deps/fixture"` | PASS; earlier comparisons and 5044 STORE checkpoints | `store-differential.log`, matched snapshots/trace |
+| `make test` | PASS; eleven suites, complete states and native rejection | `store-host-tests.log` |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; eleven ASan/UBSan suites | `store-sanitize.log` |
+| `python3 tools/freeze_store.py` | PASS; 176 full final states and prior paths | `tests/store_vectors.h` |
+| `make c64-store MOS_CC=/path/to/mos-c64-clang` | PASS; native LLVM-MOS PRG | `store-c64-build.log`, PRG/map |
+| `python3 tools/store_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 176 states, restoring I, rejection, RAM/ZP/stack and five intervals | `store-vice-result.txt`, monitor/log/mailbox/stack dumps, timing JSON |
+| Historical-source diff and manifest | PASS; 176 earlier identities retained, 195 total | `store-source-preservation.txt`, `SHA256.json` |
+
+The initial larger expectation table overlapped diagnostic RAM. The final 176-row
+table retains all integrated skip inputs/histories and uniform corners; the host
+still checks all 5044 rows. The helper now rejects image/state overlap with
+reserved RAM before VICE launch. Final native code and final target checks pass.

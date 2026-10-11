@@ -74,3 +74,12 @@ owned scratch/stable PIPTIME and restoring platform guard are native adaptations
 Interpreter bank/control transfers are asserted by the oracle but are not native
 resume state. STORE 30D, DDV, live producers and full scheduling are outside this
 operation. See ELAPSED.md.
+
+## STORE 30D bounded fidelity
+
+The two stored raw words, retained MPAC/scratch/VAC state, clear A and old-word L
+match 5044 complete original-assembly checkpoints and 176 C64 expectations.
+All five VACs and legal push positions include deliberate overlaps at slots
+30/31. Unsupported MODE/FIXLOC rejection, object ownership and restoring I are
+native adaptations. PUSHLOC is unused. Interpreter dispatch/bank/control state
+is oracle-only; later DDV/PDVL and live flight scheduling are excluded (STORE.md).

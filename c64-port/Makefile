@@ -209,3 +209,26 @@ sanitize-elapsed: | build
 c64-elapsed: build/elapsed.prg
 build/elapsed.prg: $(ELAPSED_CORE) $(ELAPSED_TEST) platform/c64/elapsed_diagnostic.c $(ELAPSED_HEADERS) tests/elapsed_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/elapsed.map $(ELAPSED_CORE) $(ELAPSED_TEST) platform/c64/elapsed_diagnostic.c -o $@
+
+STORE_CORE = $(ELAPSED_CORE) src/guidance_store.c
+STORE_INPUT = $(ELAPSED_INPUT) tests/store_cases.c
+STORE_HEADERS = $(ELAPSED_HEADERS) include/guidance_store.h tests/store_cases.h
+all: build/store-snapshot
+build/store-snapshot: $(STORE_CORE) $(STORE_INPUT) platform/host/store_snapshot.c $(STORE_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(STORE_CORE) $(STORE_INPUT) platform/host/store_snapshot.c -o $@
+
+STORE_TEST = $(STORE_INPUT) tests/store_check.c
+all: build/test-store
+test: test-store
+.PHONY: test-store sanitize-store c64-store
+test-store: build/test-store
+	./build/test-store
+build/test-store: $(STORE_CORE) $(STORE_TEST) tests/test_store.c $(STORE_HEADERS) tests/store_vectors.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(STORE_CORE) $(STORE_TEST) tests/test_store.c -o $@
+sanitize: sanitize-store
+sanitize-store: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(STORE_CORE) $(STORE_TEST) tests/test_store.c -o build/test-store-sanitize
+	./build/test-store-sanitize
+c64-store: build/store.prg
+build/store.prg: $(STORE_CORE) $(STORE_TEST) platform/c64/store_diagnostic.c $(STORE_HEADERS) tests/store_vectors.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/store.map $(STORE_CORE) $(STORE_TEST) platform/c64/store_diagnostic.c -o $@

@@ -221,3 +221,12 @@ The caller excludes producers; target guards restore previous I. The VAC and
 saved vector remain intact. The path mask is a native observation, not original
 memory. No instruction decoder or live PIPTIME producer is introduced. The
 boundary is DANZIG before STORE 30D; ELAPSED.md defines scope and bank adaptation.
+
+## Elapsed-time storage
+
+`src/guidance_store.c` stores the elapsed DP pair into the existing owned VAC
+at decimal offsets 30/31, with old word 31 retained in L and A cleared. No new
+state is added; the modeled context stays 178 bytes. PUSHLOC is independent of
+this relative address. Caller exclusion and restoring target guards apply;
+unsupported MODE/FIXLOC rejects without mutation as a native scope adaptation.
+STORE.md defines overlap semantics and the boundary before DDV/PDVL.

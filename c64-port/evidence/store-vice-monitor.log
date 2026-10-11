@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/store.prg from 0801 to BE39 (B639 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)   81/$051,  52/$34
+.C:3ac7  8D 88 C0    STA $C088      - A:10 X:00 Y:00 SP:ed ..-..I..   44250811
+Stopwatch reset to 0.
+#1 (Stop on store c088)   86/$056,  16/$10
+.C:3ae9  8D 88 C0    STA $C088      - A:20 X:00 Y:00 SP:ed ..-..I..        279
+Stopwatch:        279
+#1 (Stop on store c088)  168/$0a8,   3/$03
+.C:3ac7  8D 88 C0    STA $C088      - A:11 X:01 Y:00 SP:ed ..-..I..     201992
+Stopwatch reset to 0.
+#1 (Stop on store c088)  173/$0ad,   5/$05
+.C:3ae9  8D 88 C0    STA $C088      - A:21 X:01 Y:00 SP:ed ..-..I..        317
+Stopwatch:        317
+#1 (Stop on store c088)  256/$100,  18/$12
+.C:3ac7  8D 88 C0    STA $C088      - A:12 X:02 Y:00 SP:ed ..-..I..     202119
+Stopwatch reset to 0.
+#1 (Stop on store c088)  260/$104,   2/$02
+.C:3ae9  8D 88 C0    STA $C088      - A:22 X:02 Y:00 SP:ed ..-..I..        236
+Stopwatch:        236
+#1 (Stop on store c088)   29/$01d,  16/$10
+.C:3ac7  8D 88 C0    STA $C088      - A:13 X:03 Y:00 SP:ed ..-..I..     201913
+Stopwatch reset to 0.
+#1 (Stop on store c088)   34/$022,  15/$0f
+.C:3ae9  8D 88 C0    STA $C088      - A:23 X:03 Y:00 SP:ed ..-..I..        314
+Stopwatch:        314
+#1 (Stop on store c088)   46/$02e,  38/$26
+.C:3ac7  8D 88 C0    STA $C088      - A:14 X:04 Y:00 SP:ed ..-..I..     236965
+Stopwatch reset to 0.
+#1 (Stop on store c088)   81/$051,  18/$12
+.C:3ae9  8D 88 C0    STA $C088      - A:24 X:04 Y:00 SP:ed ..-..I..      21841
+Stopwatch:      21841
+#2 (Stop on store c080)   31/$01f,  42/$2a
+.C:3ccf  8E 80 C0    STX $C080      - A:00 X:A5 Y:01 SP:ed N.-.....     451147
+>C:c080  a5 00 00 b0  00 03 b2 59  24                         .......Y$
+Saving file `/workspace/Apollo-11/c64-port/build/store-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/store-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/store-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 STORE 30D             
+0518  176 COMPLETE ASSEMBLY STATES PASS       
+0540  ELAPSED STORE AND RETAINED WORDS PASS   
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

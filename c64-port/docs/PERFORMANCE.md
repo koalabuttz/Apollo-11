@@ -414,3 +414,24 @@ uses `-fno-static-stack -mlto-zp=0`, 32 imaginary ZP registers and no extra ZP,
 heap or floating point. Total modeled state is 178 bytes; elapsed PIPTIME/BUF
 adds six bytes. Exact logs, map, PRG, dumps and timing JSON are in `elapsed-*`.
 ELAPSED.md defines arithmetic and ownership; STORE 30D remains next.
+
+## STORE 30D diagnostic
+
+The eleventh standalone C64 PRG checks 176 full 89-word/path states with zero
+failures. PRG file 46651 bytes / loaded 46649 at $0801..$be39; text 14792,
+rodata 31845 (31504 expectation bytes), BSS 178 and noinit one byte. Image plus
+BSS/noinit is 46828 bytes, ending at $beec. A preflight check keeps image/state
+below $c000, separate from the completion mailbox and instrumented stacks.
+
+| Guarded sample | PAL cycles | At 985248 Hz |
+|---|---:|---:|
+| Direct STORE cases 0 / 1 / 15 / 18 | 279 / 317 / 236 / 314 | 0.283 / 0.322 / 0.240 / 0.319 ms |
+| Full RODCOMP through STORE, history step 0 | 21841 | 22.168 ms |
+
+Marker/call and VIC bus costs are included, setup/full checks excluded. Full
+prefix masking exceeds one PAL frame. These finite samples are not WCET,
+source-rate or flight-deadline bounds. Observed hardware-stack extent is 44
+bytes below entry (58 including ROM frame); software-stack extent 498 includes
+full-state rejection fixtures. The build has 32 imaginary ZP registers, no
+extra ZP, heap or floating point. State stays 178 bytes. STORE.md defines scope;
+logs, PRG/map, dumps and timing JSON are retained under `store-*`.

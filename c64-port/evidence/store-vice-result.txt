@@ -1,0 +1,11 @@
+PASS: VICE PAL, 176 complete original-assembly final states and prior DSU paths; all integrated skip inputs and three retained histories; restoring I
+Mailbox: a50000b00003b25924
+Target state bytes / modeled words: 178 89
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/store-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/store-vice-monitor.log -monlog -limitcycles 1000000000
+direct STORE case 0: 279 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+direct STORE case 1: 317 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+direct STORE case 15: 236 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+direct STORE case 18: 314 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+complete RODCOMP through STORE: 21841 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+store-vice-hardware-stack.bin: measured sentinel extent 44 bytes
+store-vice-software-stack.bin: measured sentinel extent 498 bytes

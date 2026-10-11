@@ -119,4 +119,4 @@ frame); the diagnostic's software-stack extent is 187 bytes, including fixtures.
 
 PDDL THISTPIP is implemented in the following milestone; PUSHDOWN.md defines
 its VAC ownership and timestamp/exchange effects. This scaling API still stops
-before PDDL. DSU PIPTIME is now verified in ELAPSED.md; STORE 30D is next.
+before PDDL. DSU PIPTIME is now verified in ELAPSED.md; STORE 30D is verified in STORE.md; DDV is next.

@@ -1,0 +1,44 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/store_check.c tests/test_store.c -o build/test-store
+python3 tools/differential.py --reference "/workspace/Apollo-11/c64-port/deps/fixture"
+PASS: 190 cases / 226 checkpoints; status and all 448 modeled state words agree
+Boundaries: ALARM1 return / WHIMPER / POODOO phase-write entry; STARTSB1 return; MMDSPLAY/PTBAD; ENDFIND/BAILOUT1
+Four sequential 1202 -> alarm record -> cleanup -> phase check -> six protected job admissions
+Restart snapshot SHA256: 81c884b026fbdd4ae8050cddc75f2d07a91a168ccf1d3cf324a8f60cc39631a8
+PASS: 12835 cases / 12856 checkpoints; MP, DAS and original P66 RODCOMP rate update
+544 edge cases; three eight-step rate histories; 4096 deterministic cases per operation
+All six modeled words, including 16-bit A/L, agree; adjacent memory and physical bank preserved
+RODCOMP stop: bank 32,3303, before PIPA/interpreter work; original INHINT verified
+Guidance snapshot SHA256: 919925e42e327b9a0d426444be5f96af636bdf69812723f946db07ce086aed55
+PASS: 1171 cases / 3396 checkpoints; all 39 words and six TS-skip observations match original RODCOMP
+All 64 skip masks in both sign families; 16 word-edge cases; three four-step histories; 1024 full-prefix random cases
+Stops: bank 32,3303 / 3315 / 3353; snapshot A/L, MODE alias, retained low/scratch/input words, guards and INHINT verified
+Preparation snapshot SHA256: 50488aed2af58a9297f6f33b8c201f32497f710dbe1555b95d15105ff287f3be
+PASS: 3355 cases / 3364 checkpoints; all 41 modeled words match unchanged VXSC KPIP1
+144 DP edge pairs, 8 rounding-boundary cases, 128 integrated skip-mask inputs, three four-step histories, 2048 direct and 1024 integrated random cases
+Boundary: VXSC 7401 -> DANZIG 6061 before PDDL; integrated calls start at RODCOMP 32,3275; RELINT and operand-bank setup verified
+Scaling snapshot SHA256: 11993e66747e7685e964c555e08e72c73d9782d2674a46d3ec0b2d4b00c36f2a
+PASS: 2323 cases / 3496 checkpoints; all 86 modeled words match unchanged PDDL THISTPIP and integrated RODCOMP
+144 timestamp edge pairs, all five VACs and 38 valid offsets, 128 integrated skip inputs, three four-push histories, 1024 direct and 1024 integrated random cases
+Stops at DANZIG after scaling / after PDDL before DSU; genuine interpreter resolution, MODE, pointer and VAC guards verified
+Pushdown snapshot SHA256: 33fdd2b7febd6827521fc95b72f27732ab1653786a27b80fd020e567bf594f3c
+PASS: 3491 cases / 4664 checkpoints; all 89 modeled words and DSU path observations match original assembly
+16 signed-zero combinations, 16 arithmetic edges, 256 four-word corners, 128 integrated skip inputs, three four-step histories, 2048 direct / 1024 integrated random cases
+Stops after PDDL / after DSU before STORE 30D; operand bank, MODE, pointer, guards and both overflow signs/path families verified
+Elapsed snapshot SHA256: 20786b15499894dfc73baa4c23ef84ac801ff235c404affa293f958d133373b5
+PASS: 3681 cases / 5044 checkpoints; all 89 modeled words and retained DSU path observations match original assembly
+16 signed-zero inputs, 16 arithmetic edge inputs, 256 source/destination corners, all 190 VAC/push offsets, 128 integrated skip inputs, three four-step histories, 2048 direct / 1024 integrated random cases
+Stops after DSU / after STORE before DDV; relative destination, MODE, pointer, guards and both prior overflow signs/path families verified
+Store snapshot SHA256: 77f7decebaefea2b67883a6c3d062e6fd41b0c5633ebf0e31c284c7ef6357340
+PASS: 26 original-assembly scenarios; 323 AGC state words plus alarm and status per scenario agree
+Boundaries: ENDFIND / BAILOUT1 / CHANJOB-2 / DUMMYJOB entry; no restart or dispatch claim
+PASS: 32768 sign extensions, 65536 overflow corrections, 524288 accumulator additions against Virtual AGC helper API
+Arithmetic binary stream SHA256: a96b7101bbd6394b7eeb6a33bc4c3f9ba255cda419f448d3120a29e019401fe1
+PASS: 53 dispatch cases / 109 checkpoints, including 8 sequential two-job native executions
+Full saved state and selected 2CADR match original basic dispatch; BBANK and SUPERBNK checked independently
+Dispatch snapshot SHA256: 97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065cd6f8a15bb
+PASS: 81 sleep/wake/priority cases / 115 checkpoints, including 5 native lifecycle sequences
+Full saved state and actual bank-qualified transfer match original JOBSLEEP/JOBWAKE/PRIOCHNG
+Lifecycle snapshot SHA256: 6e5c7afa4a31a2d7fde7b981d89f9ccecb1a6896866ef505432927ab3623c00b
+PASS: 196 WAITLIST cases / 306 checkpoints, including 10 actual native task sequences
+TIME3/LST1/LST2/RUPTAGN, retained 1203/1204 boundaries and physical task transfers match original assembly
+WAITLIST snapshot SHA256: bd71aad75050b3df0fb7753b9519599bda9ca2b22abcecdbd41984001841182b
