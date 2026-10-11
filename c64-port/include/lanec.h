@@ -57,6 +57,18 @@ uint8_t lanec_ccs(apollo_overlay_state *, uint16_t word);
 uint8_t lanec_ccs_a(apollo_overlay_state *);
 /* Source MASK of A with a 15-bit word. */
 void lanec_mask(apollo_overlay_state *, uint16_t word);
+/* Source AD of a 15-bit memory word to the 16-bit accumulator. */
+void lanec_ad(apollo_overlay_state *, uint16_t word);
+/* Rewrite of erasable address k with its own value, as the double-word
+ * instructions do after reading it: CYR, SR, CYL and EDOP (020-023) edit the
+ * word again; every other address is unchanged. */
+void lanec_rewrite(apollo_overlay_state *, uint16_t k);
+/* Image index of erasable address 0-01777 under the current EB. */
+uint16_t lanec_erasable(const apollo_overlay_state *, uint16_t address);
+/* Source WRITE of A to channel 3-077 (not 7): the AGC's channel hardware
+ * keeps only bits 1-14 of 013, sets the latched bits 11-15 of 033 instead
+ * of storing, and clears 077. Channels 1 and 2 are L and Q. */
+void lanec_write(apollo_overlay_state *, lanec_io *, uint16_t channel);
 /* 15-bit memory word as A's sign-extended 16-bit register form. */
 uint16_t lanec_a16(uint16_t word);
 /* Source TS of A into erasable word k; returns 1 when A overflowed (A is then

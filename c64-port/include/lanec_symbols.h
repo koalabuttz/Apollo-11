@@ -94,6 +94,24 @@
   {0u, 02120u}, /* TC ALM/END */ \
   {0u, 02361u}, /* TC GOLOADLV */ \
 }
+#define LANEC_LM_DSPDPDEC 02771u /* DSPDPDEC F 40 */
+#define LANEC_LM_DSPDPDEC_BANK 040u
+#define LANEC_LM_ENDDPDEC 03007u /* ENDDPDEC F 40 */
+#define LANEC_LM_ENDDPDEC_BANK 040u
+#define LANEC_LM_CHANLOAD 03161u /* CHANLOAD F 41 */
+#define LANEC_LM_CHANLOAD_BANK 041u
+#define LANEC_LM_MIXBR 0140u /* MIXBR E fixed-fixed/unswitched */
+#define LANEC_LM_NOUNADD 0145u /* NOUNADD E fixed-fixed/unswitched */
+#define LANEC_LM_NOUNCADR 01017u /* NOUNCADR E fixed-fixed/unswitched */
+#define LANEC_LM_DSPCOUNT 0777u /* DSPCOUNT E fixed-fixed/unswitched */
+#define LANEC_LM_DSPALARM 03420u /* DSPALARM F 40 */
+#define LANEC_LM_DSPALARM_BANK 040u
+#define LANEC_LM_TPAGREE 07257u /* TPAGREE F fixed-fixed/unswitched */
+#define LANEC_LM_DSP2DEC 03273u /* DSP2DEC F 40 */
+#define LANEC_LM_DSP2DEC_BANK 040u
+#define LANEC_LM_ENTEXIT 0136u /* ENTEXIT E fixed-fixed/unswitched */
+#define LANEC_LM_LOADLV 02775u /* LOADLV F 41 */
+#define LANEC_LM_LOADLV_BANK 041u
 #define LANEC_CM_GOEXTVB 02000u /* GOEXTVB F 43 */
 #define LANEC_CM_GOEXTVB_BANK 043u
 #define LANEC_CM_LST2FAN 02002u /* LST2FAN F 43 */
@@ -184,4 +202,22 @@
   {0u, 02120u}, /* TC ALM/END */ \
   {0u, 02275u}, /* TC GOLOADLV */ \
 }
+#define LANEC_CM_DSPDPDEC 02677u /* DSPDPDEC F 40 */
+#define LANEC_CM_DSPDPDEC_BANK 040u
+#define LANEC_CM_ENDDPDEC 02715u /* ENDDPDEC F 40 */
+#define LANEC_CM_ENDDPDEC_BANK 040u
+#define LANEC_CM_CHANLOAD 03161u /* CHANLOAD F 41 */
+#define LANEC_CM_CHANLOAD_BANK 041u
+#define LANEC_CM_MIXBR 0140u /* MIXBR E fixed-fixed/unswitched */
+#define LANEC_CM_NOUNADD 0145u /* NOUNADD E fixed-fixed/unswitched */
+#define LANEC_CM_NOUNCADR 01017u /* NOUNCADR E fixed-fixed/unswitched */
+#define LANEC_CM_DSPCOUNT 0777u /* DSPCOUNT E fixed-fixed/unswitched */
+#define LANEC_CM_DSPALARM 03325u /* DSPALARM F 40 */
+#define LANEC_CM_DSPALARM_BANK 040u
+#define LANEC_CM_TPAGREE 07226u /* TPAGREE F fixed-fixed/unswitched */
+#define LANEC_CM_DSP2DEC 03200u /* DSP2DEC F 40 */
+#define LANEC_CM_DSP2DEC_BANK 040u
+#define LANEC_CM_ENTEXIT 0136u /* ENTEXIT E fixed-fixed/unswitched */
+#define LANEC_CM_LOADLV 02775u /* LOADLV F 41 */
+#define LANEC_CM_LOADLV_BANK 041u
 #endif

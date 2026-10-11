@@ -1795,6 +1795,16 @@
           ],
           "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
           "verification": "docs/DSKY-OPERATOR-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_pin_gaps.c",
+            "src/lanec.c",
+            "include/lanec_pin_gaps.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns) and CHANLOAD (channel 7 skip, WRITE of channels 0-77) to their callee boundaries, register-exact against the original program.",
+          "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]
     },
@@ -4239,6 +4249,16 @@
           ],
           "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
           "verification": "docs/DSKY-OPERATOR-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_pin_gaps.c",
+            "src/lanec.c",
+            "include/lanec_pin_gaps.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns) and CHANLOAD (channel 7 skip, WRITE of channels 0-77) to their callee boundaries, register-exact against the original program.",
+          "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]
     },

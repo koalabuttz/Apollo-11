@@ -68,3 +68,40 @@ uint8_t lanec_ts(apollo_overlay_state *s, uint16_t k)
     if ((a & 0140000u) == 0100000u) { s->words[LANEC_A] = 0177776u; return 1; }
     return 0;
 }
+
+void lanec_ad(apollo_overlay_state *s, uint16_t word)
+{
+    uint32_t sum = (uint32_t)s->words[LANEC_A] + lanec_a16(word);
+    if (sum & 0200000u) sum = (sum + 1u) & 0177777u;
+    s->words[LANEC_A] = (uint16_t)sum;
+}
+
+void lanec_rewrite(apollo_overlay_state *s, uint16_t k)
+{
+    uint16_t v = s->words[k];
+    switch (k) {
+    case 020u: v = (uint16_t)((v >> 1) | ((v & 1u) << 14)); break;            /* CYR */
+    case 021u: v = (uint16_t)((v >> 1) | (v & 040000u)); break;               /* SR */
+    case 022u: v = (uint16_t)(((v << 1) | (v >> 14)) & 077777u); break;       /* CYL */
+    case 023u: v = (uint16_t)((v >> 7) & 0177u); break;                       /* EDOP */
+    default: return;
+    }
+    s->words[k] = v;
+}
+
+uint16_t lanec_erasable(const apollo_overlay_state *s, uint16_t address)
+{
+    if (address < 01400u) return address;
+    return (uint16_t)(((s->words[LANEC_EB] >> 8) & 7u) * 0400u + (address & 0377u));
+}
+
+void lanec_write(apollo_overlay_state *s, lanec_io *io, uint16_t channel)
+{
+    uint16_t a = s->words[LANEC_A];
+    uint16_t v = (uint16_t)((a & 037777u) | ((a >> 1) & 040000u));
+    if (channel == 1u || channel == 2u) { s->words[channel] = a; return; }
+    if (channel == 013u) v &= 043777u;
+    if (channel == 033u) v = (uint16_t)(io->channel[033] | 076000u);
+    if (channel == 077u) v = 0;
+    io->channel[channel] = v;
+}

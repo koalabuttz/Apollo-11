@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include <string.h>
 #include "lanec_suites.h"
-static const lanec_suite *const suites[] = { &lanec_suite_ev_front };
+static const lanec_suite *const suites[] = { &lanec_suite_ev_front, &lanec_suite_pin_gaps };
 const lanec_suite *lanec_find_suite(const char *name)
 {
     unsigned i;
