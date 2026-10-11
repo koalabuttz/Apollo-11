@@ -512,3 +512,5 @@ subprocess.run([sys.executable,'tools/dsky_nv_continuation_differential.py',str(
 subprocess.run([sys.executable,'tools/dsky_nv_update_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_octal_display_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_machine_cadr_differential.py',str(reference)],cwd=ROOT,check=True)

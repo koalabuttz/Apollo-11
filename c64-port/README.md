@@ -1110,3 +1110,7 @@ Literal CHANG1/CHANJOB basic or interpreter exchanges match16384 complete2053-fi
 ## Translate original shared octal and bit display formatter bodies
 
 Actual DSPOCTWD/DSPOCTWO and DSP2BIT source bodies match8192 complete original/native/full-sanitizer states and64 actual C64 states across all coherent erasable banks and four upper SUPER forms. Clean positive-zero source branches retain the real CCSHOLE image; external exceptional recovery remains separate. See `docs/DSKY-OCTAL-DISPLAY.md`.
+
+## Translate original shared machine address display continuation
+
+Actual INTMCTBS and plus-two entries, SETNCADR, verb5 bypass, real octal formatting and source VERBFAN return match8192 complete original/native/full-sanitizer states and64 actual C64 states. Canonical registers, bank/control ownership and CCSHOLE propagation remain exact. See `docs/DSKY-MACHINE-CADR.md`.
