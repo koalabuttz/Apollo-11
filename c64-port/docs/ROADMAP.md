@@ -1388,3 +1388,7 @@ Qualify65536 complete original native sanitizer states and64 C64 states includin
 ## Translate original operator component and noun checks
 
 Qualify8192 full original native sanitizer states and64 C64 states preserving actual component noun and alarm frontiers. See `docs/DSKY-NOUN-CHECK.md`.
+
+## Qualify original ephemerides SR14 time downscale
+
+Translate actual scalar SR14 count14 and exact recursive TC skip preserving Q against131072 complete original strict sanitizer states and64 C64 states without changing existing frozen arithmetic kernels. See `docs/NATIVE-EPHEMERIS-TIME-SCALE.md`.
