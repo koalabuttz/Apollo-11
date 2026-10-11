@@ -584,3 +584,7 @@ Actual SVCT3 drift, IMU admission and delay recheck paths pass independent compl
 ## Port canonical Comanche fixed and variable delays
 
 Actual FIXDELAY and VARDELAY return effects pass whole-image original-source, sanitizer and C64 checks within their documented interrupt context. See `docs/COMANCHE_DELAY_IMAGE.md`.
+
+## Port original Comanche QUICTRIG and scalar trigonometry
+
+All 164096 original-source full-image scalar/vector trig states match native and sanitized outputs; 128 C64 state checks pass. See `docs/COMANCHE-QUICTRIG.md`.

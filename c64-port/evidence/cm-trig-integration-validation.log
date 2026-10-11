@@ -1,0 +1,5 @@
+./build/test-cm-trig
+128 complete2048word original SPSIN/SPCOS/QUICTRIG states including CLOCKJOB caller: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_trig.c tests/frozen_words.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_trig_cases.c -o build/test-cm-trig-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-trig-port-sanitize
+128 complete2048word original SPSIN/SPCOS/QUICTRIG states including CLOCKJOB caller: PASS

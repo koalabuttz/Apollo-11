@@ -1,0 +1,3 @@
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_trig_snapshot.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_trig_cases.c -o build/cm-trig-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-trig-sanitize > build/cm-trig-sanitize.snapshots
+cmp build/cm-trig-reference.snapshots build/cm-trig-sanitize.snapshots

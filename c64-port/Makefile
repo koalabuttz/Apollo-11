@@ -479,3 +479,5 @@ include tools/cm_admission_image.mk
 include tools/cm_svct3.mk
 
 include tools/cm_delay_image.mk
+
+include tools/cm_trig_port.mk

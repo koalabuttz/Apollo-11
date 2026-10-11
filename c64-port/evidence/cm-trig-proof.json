@@ -1,0 +1,121 @@
+{
+  "modeled_words": 2048,
+  "external_IRQ_word": 1,
+  "main_cases": {
+    "SPSIN": 65536,
+    "SPCOS": 65536,
+    "QUICTRIG": 33024
+  },
+  "main_complete_states": 164096,
+  "logical_main_streams": {
+    "reference": {
+      "sha256": "95f2750a112ceabad7b48790b9666e90eba250e5542fa02e24e73bce03b22e5f",
+      "object": "evidence/cm-trig-complete.snapshots.gz"
+    },
+    "native": {
+      "sha256": "95f2750a112ceabad7b48790b9666e90eba250e5542fa02e24e73bce03b22e5f",
+      "object": "evidence/cm-trig-complete.snapshots.gz"
+    },
+    "sanitize": {
+      "sha256": "95f2750a112ceabad7b48790b9666e90eba250e5542fa02e24e73bce03b22e5f",
+      "object": "evidence/cm-trig-complete.snapshots.gz"
+    }
+  },
+  "clockjob_cases": 512,
+  "logical_clockjob_streams": {
+    "reference": {
+      "sha256": "b0704e25c4f8edc7d2e2648e52d5dc9cacdd84256a1b45f2660915cdb420a420",
+      "object": "evidence/cm-clock-trig-reference.snapshots.gz"
+    },
+    "native": {
+      "sha256": "371b3c5baa2bc5fc6d1657f55b5e42272fbad9aa665d54269dc84bfe1eef30e7",
+      "object": "evidence/cm-clock-trig-native-sanitize.snapshots.gz"
+    },
+    "sanitize": {
+      "sha256": "371b3c5baa2bc5fc6d1657f55b5e42272fbad9aa665d54269dc84bfe1eef30e7",
+      "object": "evidence/cm-clock-trig-native-sanitize.snapshots.gz"
+    }
+  },
+  "whole_strict_and_sanitizer_streams_match": true,
+  "source_audit": {
+    "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+    "original_sources": {
+      "POWERED_FLIGHT_SUBROUTINES.agc": {
+        "original_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+        "normalized_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca",
+        "normalized_lines": 1
+      },
+      "SINGLE_PRECISION_SUBROUTINES.agc": {
+        "original_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+        "normalized_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+        "normalized_lines": 0
+      },
+      "P40-P47.agc": {
+        "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+        "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6",
+        "normalized_lines": 7
+      }
+    },
+    "erasable_domain": "Pinned-support assignments; translated groups do not use ALTVAR/R53FLBIT."
+  },
+  "target_images": [
+    {
+      "selector": 0,
+      "states": 32,
+      "prg_bytes": 4168,
+      "loaded_end": 14407,
+      "hardware_stack": 20,
+      "software_stack": 41,
+      "zero_page": 0,
+      "mailbox": "a500002000"
+    },
+    {
+      "selector": 1,
+      "states": 32,
+      "prg_bytes": 4197,
+      "loaded_end": 14436,
+      "hardware_stack": 20,
+      "software_stack": 41,
+      "zero_page": 0,
+      "mailbox": "a500002001"
+    },
+    {
+      "selector": 2,
+      "states": 32,
+      "prg_bytes": 6180,
+      "loaded_end": 16419,
+      "hardware_stack": 23,
+      "software_stack": 45,
+      "zero_page": 0,
+      "mailbox": "a500002002"
+    },
+    {
+      "selector": 3,
+      "states": 32,
+      "prg_bytes": 6848,
+      "loaded_end": 17087,
+      "hardware_stack": 23,
+      "software_stack": 45,
+      "zero_page": 0,
+      "mailbox": "a500002003"
+    }
+  ],
+  "coverage": {
+    "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc": {
+      "numeric_public_entries": [
+        "SPSIN",
+        "SPCOS"
+      ],
+      "internal_labels": [
+        "SPT",
+        "POLLEY",
+        "ARG90"
+      ],
+      "final_TC_Q_return": "Caller control continuation remains to qualify; not yet a complete whole-file control certificate."
+    },
+    "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc": {
+      "entry": "QUICTRIG",
+      "exit": "Before TC A at23,3605; caller owns BANKCALL/return control bridge."
+    }
+  }
+}

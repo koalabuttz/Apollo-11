@@ -326,3 +326,5 @@ subprocess.run([sys.executable,'tools/cm_admission_image_differential.py',str(re
 subprocess.run([sys.executable,'tools/cm_svct3_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_delay_image_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_trig_differential.py',str(reference)],cwd=ROOT,check=True)
