@@ -958,3 +958,5 @@ include tools/sband_dot_integration.mk
 all: build/sband-dot-integrated-stream
 test: test-sband-dot
 sanitize: sanitize-sband-dot
+
+include tools/dsky_two_integer_integration.mk

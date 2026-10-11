@@ -1,0 +1,156 @@
+{
+  "entries": {
+    "LM": "40,2732",
+    "CM": "40,2636"
+  },
+  "stages": [
+    "BLANK ->2733/2637",
+    "SIGN ->2734/2640",
+    "FIRST ->2736/2642",
+    "SECOND fresh READLO/digits ->2745/2651",
+    "RETURN POSTJUMP ->41,2570 Q0570"
+  ],
+  "containing_source_words": {
+    "LM": [
+      {
+        "bank": "40",
+        "pc": "2732",
+        "word": "02536"
+      },
+      {
+        "bank": "40",
+        "pc": "2733",
+        "word": "02413"
+      },
+      {
+        "bank": "40",
+        "pc": "2734",
+        "word": "30154"
+      },
+      {
+        "bank": "40",
+        "pc": "2735",
+        "word": "03306"
+      },
+      {
+        "bank": "40",
+        "pc": "2736",
+        "word": "46245"
+      },
+      {
+        "bank": "40",
+        "pc": "2737",
+        "word": "50117"
+      },
+      {
+        "bank": "40",
+        "pc": "2740",
+        "word": "64317"
+      },
+      {
+        "bank": "40",
+        "pc": "2741",
+        "word": "54777"
+      },
+      {
+        "bank": "40",
+        "pc": "2742",
+        "word": "02747"
+      },
+      {
+        "bank": "40",
+        "pc": "2743",
+        "word": "30155"
+      },
+      {
+        "bank": "40",
+        "pc": "2744",
+        "word": "03306"
+      },
+      {
+        "bank": "40",
+        "pc": "2745",
+        "word": "04635"
+      },
+      {
+        "bank": "40",
+        "pc": "2746",
+        "word": "62570"
+      }
+    ],
+    "CM": [
+      {
+        "bank": "40",
+        "pc": "2636",
+        "word": "02437"
+      },
+      {
+        "bank": "40",
+        "pc": "2637",
+        "word": "02314"
+      },
+      {
+        "bank": "40",
+        "pc": "2640",
+        "word": "30154"
+      },
+      {
+        "bank": "40",
+        "pc": "2641",
+        "word": "03213"
+      },
+      {
+        "bank": "40",
+        "pc": "2642",
+        "word": "46214"
+      },
+      {
+        "bank": "40",
+        "pc": "2643",
+        "word": "50117"
+      },
+      {
+        "bank": "40",
+        "pc": "2644",
+        "word": "64333"
+      },
+      {
+        "bank": "40",
+        "pc": "2645",
+        "word": "54777"
+      },
+      {
+        "bank": "40",
+        "pc": "2646",
+        "word": "02655"
+      },
+      {
+        "bank": "40",
+        "pc": "2647",
+        "word": "30155"
+      },
+      {
+        "bank": "40",
+        "pc": "2650",
+        "word": "03213"
+      },
+      {
+        "bank": "40",
+        "pc": "2651",
+        "word": "04701"
+      },
+      {
+        "bank": "40",
+        "pc": "2652",
+        "word": "62570"
+      }
+    ]
+  },
+  "containing_source_word_count_per_mission": 13,
+  "boundary": "actual DSPDCEND+2 before row continuation",
+  "continuous_original_inputs": 8192,
+  "complete_checkpoints": 40960,
+  "target_kind": "five independent complete-state stage fixtures",
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}
