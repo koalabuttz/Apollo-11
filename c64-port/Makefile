@@ -471,3 +471,5 @@ include tools/cm_restart_select.mk
 include tools/cm_clocktask.mk
 
 include tools/cm_waitlist_image.mk
+
+include tools/cm_task_transfer.mk

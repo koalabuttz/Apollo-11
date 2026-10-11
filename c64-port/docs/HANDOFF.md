@@ -639,3 +639,7 @@ Original timer cleanup, clock update and display admission transitions pass comp
 ## Port full-image Comanche WAITLIST return effects
 
 Canonical WAITLIST wrapper preserves source registers, banks, scratch and dynamic task destinations; independent source, sanitizer and C64 checks pass. See `docs/COMANCHE_WAITLIST_IMAGE.md`.
+
+## Port actual Comanche T3RUPT task transfer
+
+Original T3RUPT2 and TASKOVER complete-image transitions pass source, sanitizer and C64 checks up to their documented hardware-return boundary. See `docs/COMANCHE_TASK_TRANSFER.md`.

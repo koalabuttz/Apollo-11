@@ -1,0 +1,42 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3423 T3RUPT2",
+    "05324 TASKOVER"
+  ],
+  "boundary": "actual selected task DTCB transfer or05341 RESUME",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "f8c40a7278e11db040e58bc2fc012848df5e9c510e3fba2025120db4ebcec48b",
+  "hardware_stack_bytes": 20,
+  "software_stack_bytes": 151,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 17916,
+    ".text": {
+      "address": 2061,
+      "bytes": 5582
+    },
+    ".rodata": {
+      "address": 7643,
+      "bytes": 12320
+    },
+    ".data": {
+      "address": 19963,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 19963,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 24085,
+      "bytes": 0
+    },
+    "image_end": 24085
+  }
+}
