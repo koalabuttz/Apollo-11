@@ -349,3 +349,5 @@ include tools/cm_waitlist.mk
 include tools/cm_irq.mk
 
 include tools/p66_major_mode.mk
+
+include tools/p66_launch.mk
