@@ -766,3 +766,7 @@ Native Comanche fixed-vector KEYRUPT and KEYCOM match 12,288 original complete s
 ## Translate original Comanche verb and noun CHARIN paths
 
 Actual Comanche verb/noun CHARIN follows source editing and return effects through ENDOFJOB across all EB contexts. All 4,096 original complete states match strict and full sanitizer output; C64 verifies 64 complete states. Broader keyboard lifecycle is qualified separately. See `docs/COMANCHE-CHARIN-NV.md`.
+
+## Translate original Comanche TWIDDLE and remaining waitlist domains
+
+Extended waitlist control preserves 2,048 original complete states, including TWIDDLE, invalid-delay alarm routing, both full-list mutation paths and the previously excluded positive-delay range. Strict and sanitizer checks pass; C64 validates 128 fingerprints and two complete samples. Alarm bodies remain actual continuation boundaries. See `docs/COMANCHE_WAITLIST_EXTENDED.md`.

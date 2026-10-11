@@ -570,3 +570,5 @@ include tools/cm_wake_port.mk
 include tools/cm_keyboard_irq.mk
 
 include tools/cm_charin_nv.mk
+
+include tools/cm_waitlist_extended.mk

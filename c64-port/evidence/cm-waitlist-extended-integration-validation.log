@@ -1,0 +1,5 @@
+./build/test-cm-waitlist-extended
+2048 original CM WAITLIST/TWIDDLE/alarm-entry full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_waitlist_extended.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_waitlist_extended_cases.c tests/cm_waitlist_image_cases.c tests/cm_waitlist_extended_check.c tests/test_cm_waitlist_extended.c -o build/test-cm-waitlist-extended-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-waitlist-extended-sanitize
+2048 original CM WAITLIST/TWIDDLE/alarm-entry full-image states and guards: PASS
