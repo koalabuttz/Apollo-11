@@ -578,3 +578,5 @@ subprocess.run([sys.executable,'tools/dsky_mode_job_differential.py',str(referen
 subprocess.run([sys.executable,'tools/dsky_decimal_raw_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_decimal_consumer_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_lamp_lifecycle_differential.py',str(reference)],cwd=ROOT,check=True)

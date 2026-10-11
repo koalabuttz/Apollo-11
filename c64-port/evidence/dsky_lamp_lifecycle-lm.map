@@ -1,0 +1,176 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5e0a     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      7e7     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.lm_interbank)
+     843      843      7e7     1                 lm_interbank
+    102a     102a      5e5     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.dsky_lamp_test)
+    102a     102a      5e5     1                 dsky_lamp_test
+    160f     160f      5d5     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.exec_admit)
+    160f     160f      5d5     1                 exec_admit
+    1be4     1be4      655     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.exec_wake_basic)
+    1be4     1be4      655     1                 exec_wake_basic
+    2239     2239       73     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.p66_native_export_executive)
+    2239     2239       73     1                 p66_native_export_executive
+    22ac     22ac       25     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.source_copy)
+    22ac     22ac       25     1                 source_copy
+    22d1     22d1       9f     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.scalar_exchange)
+    22d1     22d1       9f     1                 scalar_exchange
+    2370     2370       73     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.p66_native_import_executive)
+    2370     2370       73     1                 p66_native_import_executive
+    23e3     23e3      613     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.lm_admission_image)
+    23e3     23e3      613     1                 lm_admission_image
+    29f6     29f6      6e1     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.wl_schedule)
+    29f6     29f6      6e1     1                 wl_schedule
+    30d7     30d7       51     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.reg_class)
+    30d7     30d7       51     1                 reg_class
+    3128     3128       51     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.kind)
+    3128     3128       51     1                 kind
+    3179     3179      4a5     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.lm_basic_wake)
+    3179     3179      4a5     1                 lm_basic_wake
+    361e     361e      38a     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.executive_words)
+    361e     361e      38a     1                 executive_words
+    39a8     39a8      16d     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.wake_domain)
+    39a8     39a8      16d     1                 wake_domain
+    3b15     3b15      1b0     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.resource)
+    3b15     3b15      1b0     1                 resource
+    3cc5     3cc5      146     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.wake)
+    3cc5     3cc5      146     1                 wake
+    3e0b     3e0b     2355     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.main)
+    3e0b     3e0b     2355     1                 main
+    6160     6160        6     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.exit)
+    6160     6160        6     1                 exit
+    6166     6166       13     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__lshrhi3)
+    6166     6166       13     1                 __lshrhi3
+    6179     6179       c4     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__udivhi3)
+    6179     6179       c4     1                 __udivhi3
+    623d     623d       40     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__umodqi3)
+    623d     623d       40     1                 __umodqi3
+    627d     627d       ae     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__umodhi3)
+    627d     627d       ae     1                 __umodhi3
+    632b     632b      14f     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__umodsi3)
+    632b     632b      14f     1                 __umodsi3
+    647a     647a       34     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.memcpy)
+    647a     647a       34     1                 memcpy
+    64ae     64ae       ac     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.memmove)
+    64ae     64ae       ac     1                 memmove
+    655a     655a       22     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__memset)
+    655a     655a       22     1                 __memset
+    657c     657c       34     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__mulhi3)
+    657c     657c       34     1                 __mulhi3
+    65b0     65b0       67     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.text.__mulsi3)
+    65b0     65b0       67     1                 __mulsi3
+    6617     6617        0     1         __init_array_start = .
+    6617     6617        0     1         __init_array_end = .
+    6617     6617        0     1         __fini_array_start = .
+    6617     6617        0     1         __fini_array_end = .
+    6617     6617     1fb5     1 .rodata
+    6617     6617        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    6617     6617        0     1                 __set_v
+    6618     6618        8     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.wl_schedule)
+    6620     6620       1a     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.main)
+    663a     663a       1c     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.pc)
+    663a     663a       1c     1                 pc
+    6656     6656       1c     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.executive_fields)
+    6656     6656       1c     1                 executive_fields
+    6672     6672       28     1         <internal>:(.rodata.cst8)
+    669a     669a       10     1         <internal>:(.rodata.cst16)
+    66aa     66aa        c     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.dsky_lamp_lifecycle_input.cadrs)
+    66aa     66aa        c     1                 dsky_lamp_lifecycle_input.cadrs
+    66b6     66b6       80     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.dsky_lamp_lifecycle_numbers)
+    66b6     66b6       80     1                 dsky_lamp_lifecycle_numbers
+    6736     6736       82     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.dsky_lamp_lifecycle_offsets)
+    6736     6736       82     1                 dsky_lamp_lifecycle_offsets
+    67b8     67b8     1e14     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.rodata.dsky_lamp_lifecycle_patch)
+    67b8     67b8     1e14     1                 dsky_lamp_lifecycle_patch
+    85cc     85cc        0     1 .data
+    85cc     85cc        0     1         __data_start = .
+    85cc     85cc        0     1         __data_end = .
+    85cc     85cc        0     1 __data_load_start = LOADADDR(.data)
+    85cc     85cc        0     1 __data_size = SIZEOF(.data)
+    85cc     85cc     200d     1 .bss
+    85cc     85cc        0     1         __bss_start = .
+    85cc     85cc        8     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.bss.dsky_lamp_lifecycle_difference)
+    85cc     85cc        8     1                 dsky_lamp_lifecycle_difference
+    85d4     85d4     1000     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.bss.image)
+    85d4     85d4     1000     1                 image
+    95d4     95d4     1000     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.bss.before)
+    95d4     95d4     1000     1                 before
+    a5d4     a5d4        5     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.bss.dsky_lamp_lifecycle_mailbox)
+    a5d4     a5d4        5     1                 dsky_lamp_lifecycle_mailbox
+    a5d9     a5d9        0     1         __bss_end = .
+    a5d9     a5d9        0     1 __bss_size = SIZEOF(.bss)
+    a5d9     a5d9        0     1 .noinit
+    a5d9     a5d9        0     1         __heap_start = ALIGN(., 2)
+    a5d9     a5d9        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_lamp_lifecycle-lm.prg.lto.o:(.llvm_sympart)
+       0        0      cf0     4 .symtab
+       0        0      cf0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      84c     1 .strtab
+       0        0      84c     1         <internal>:(.strtab)

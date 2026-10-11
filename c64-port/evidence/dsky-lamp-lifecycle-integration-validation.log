@@ -1,0 +1,5 @@
+build/test-dsky-lamp-lifecycle
+LM+CM lamp lifecycle:64 full source states,16 atomic guard states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/lm_interbank.c src/cm_interbank_complete.c src/dsky_source_alarm.c src/dsky_lamp_test.c src/executive.c src/p66_native.c src/lm_admission_image.c src/waitlist.c src/lm_waitlist_image.c src/lm_basic_wake.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/cm_basic_wake.c src/cm_admission_complete.c src/cm_waitlist_extended.c src/dsky_display_release.c src/dsky_lamp_release.c src/dsky_mode_admit.c src/dsky_lamp_lifecycle.c tests/p66_bias_cases.c tests/dsky_lamp_lifecycle_cases.c tests/dsky_lamp_lifecycle_check.c tests/test_dsky_lamp_lifecycle.c -o build/test-dsky-lamp-lifecycle-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-lamp-lifecycle-sanitize
+LM+CM lamp lifecycle:64 full source states,16 atomic guard states,0 failures

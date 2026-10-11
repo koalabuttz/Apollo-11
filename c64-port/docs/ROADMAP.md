@@ -1300,3 +1300,7 @@ Extend original raw double precision decimal formatting against262144 complete s
 ## Compose continuous original decimal display consumer
 
 Qualify4096 uninterrupted source display inputs and43932 complete source native sanitizer checkpoints through supported scaling formatting and row loops with224 C64 stage checks and explicit external scaler frontiers. See `docs/DSKY-DECIMAL-CONSUMER.md`.
+
+## Compose original lamp mode and release lifecycle
+
+Qualify8192 complete original native sanitizer states and64 C64 states through actual display queues source returns and alarm handoffs while preserving source pending-state behavior. See `docs/DSKY-LAMP-LIFECYCLE.md`.

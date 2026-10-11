@@ -1,0 +1,5 @@
+PASS: VICE PAL, 32 complete original assembly cm dsky_lamp_lifecycle states, zero failures
+Mailbox: a500002001
+PRG file/loaded bytes: 37029 37027
+hardware stack sentinel extent: 26
+software stack sentinel extent: 799

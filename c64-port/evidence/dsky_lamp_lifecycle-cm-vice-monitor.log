@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_lamp_lifecycle-cm.prg from 0801 to 98A3 (90A3 bytes)
+WATCH: 1  C:$b8ac  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store b8ac)   88/$058,   8/$08
+.C:609f  8E AC B8    STX $B8AC      - A:0D X:A5 Y:00 SP:f1 N.-....C  153440288
+>C:b8ac  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_lifecycle-cm-vice-mailbox.bin' from $b8ac to $b8b0
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_lifecycle-cm-vice-difference.bin' from $98a4 to $98ab
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_lifecycle-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_lifecycle-cm-vice-software-stack.bin' from $c100 to $cfff
