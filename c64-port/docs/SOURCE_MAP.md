@@ -843,3 +843,7 @@ All 267 original emitted source words and six constants now map to seven reviewe
 ## Complete original Luminary powered-flight subroutine source
 
 Independent review reconstructed every one of 267 original emitted words, verified all seven complete source/sanitizer qualification dependencies and 38 actual C64 diagnostics, and exhausted the six-word constant accessor. The whole source file is certified within its published numerical and return contracts, including composed normalized FLESHPOT return inputs. The inventory has 30 complete files (24 native/data/declaration and six comment-only files), with 145 source files and both integrated applications still requiring complete acceptance. See `docs/LUMINARY-POWERED-FLIGHT.md`.
+
+## Translate real Luminary and Comanche Key Release source continuations
+
+Actual KEYREL, RELDSP and display job wake paths match8,192 complete original source states under strict and full sanitizer comparison. Both CADRSTOR signed zeros, source literal-DAS fallthrough and true END/PINBRNCH/BLNKSUB1 continuations are retained. All64 complete target states pass; later continuation bodies remain active work. See `docs/DSKY-KEY-RELEASE.md`.

@@ -658,3 +658,5 @@ include tools/lm_powered_fixed_return_port.mk
 include tools/lm_fleshpot_port.mk
 
 include tools/lm_fleshpot_interface_port.mk
+
+include tools/dsky_charin_release.mk
