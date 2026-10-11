@@ -590,7 +590,7 @@ Actual DSPIN, 11DSPIN and 2BLANK source effects match all 8192 original states a
 
 ## Port original Comanche numeric display formatting
 
-All 12288 original complete-image numeric formatting states match native and sanitized outputs; C64 execution checks pass. See `docs/COMANCHE-FORMATTER.md`.
+All 12288 original complete-image numeric formatting states match native and sanitized outputs; C64 execution checks pass. See `docs/COMANCHE-FORMATTERS.md`.
 
 ## Complete original LM and CM noun-table readers
 
@@ -603,3 +603,7 @@ All five declaration source files map original aliases, allocation cursors and e
 ## Complete Luminary single-precision sine and cosine source paths
 
 Every raw sixteen-bit input and real source return path is independently qualified across 262144 whole original states; sanitizer and 128 C64 state checks pass. See `docs/LUMINARY-SINGLE-PRECISION.md`.
+
+## Reviewed whole-file coverage
+
+Both original scalar sine/cosine files, both noun-table reader files and five memory-declaration files now have reviewed complete-source certificates. The inventory totals18 complete AGC source files; bounded runtime and mission routines remain partial, and both complete C64 applications remain unverified.
