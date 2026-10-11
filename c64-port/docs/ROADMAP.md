@@ -788,3 +788,7 @@ Nonzero-NV source timer cohorts actually admit and execute CLOCKJOB through QUIC
 ## Adopt real P66 launch continuations without adding an Executive poll
 
 The separate direct-launch wrapper preserves the zero-pending STARTP66 domain and existing-pending vertical subentry, adopting actual RODCOMP without an extra source poll. All 2,048 complete original states and full sanitizer output agree; strict and C64 checks cover 24 callback/pending/IRQ cases. Production disk startup composition is a separate milestone. See `docs/P66-DIRECT-LAUNCH.md`.
+
+## Run physical Comanche keyboard input through genuine job lifecycle
+
+Actual Comanche fixed-vector keyboard IRQ, hardware RESUME, idle admission, CHARIN and canonical END preserve all 4,096 complete checkpoints across 1,024 source lifecycles. Full sanitizer output agrees; stock-ROM C64 physical GETIN replay verifies eight complete lifecycles and 32 states. Additional key bodies remain separate qualifications. See `docs/COMANCHE-KEYBOARD-RUNTIME.md`.

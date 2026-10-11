@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/cm_keyboard_runtime.prg" 0
+watch store 8d19
+ignore 1 1
+g 080d
+m 8d19 8d1d
+bsave "/workspace/Apollo-11/c64-port/build/cm_keyboard_runtime-vice-mailbox.bin" 0 8d19 8d1d
+bsave "/workspace/Apollo-11/c64-port/build/cm_keyboard_runtime-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/cm_keyboard_runtime-vice-software-stack.bin" 0 c100 cfff
+quit

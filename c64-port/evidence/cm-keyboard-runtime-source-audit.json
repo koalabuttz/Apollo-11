@@ -1,0 +1,33 @@
+{
+  "KEYRUPT_UPRUPT.agc": {
+    "original_sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
+    "indentation_repairs": 0,
+    "normalized_fixture": "KEYRUPT,_UPRUPT.agc"
+  },
+  "INTERRUPT_LEAD_INS.agc": {
+    "original_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+    "indentation_repairs": 0,
+    "normalized_fixture": "INTERRUPT_LEAD_INS.agc"
+  },
+  "EXECUTIVE.agc": {
+    "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "indentation_repairs": 5,
+    "normalized_fixture": "EXECUTIVE.agc"
+  },
+  "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": {
+    "original_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "indentation_repairs": 0,
+    "normalized_fixture": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc"
+  },
+  "T4RUPT_PROGRAM.agc": {
+    "original_sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
+    "indentation_repairs": 6,
+    "normalized_fixture": "T4RUPT_PROGRAM.agc"
+  },
+  "INTERPRETER.agc": {
+    "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "indentation_repairs": 36,
+    "normalized_fixture": "INTERPRETER.agc"
+  },
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
