@@ -81,8 +81,31 @@
       "sha256": "45d86ebb0dfd5bc5a49f3be7abb8876cb66da6823311446bac58a6795fc6c101",
       "bytes": 31234,
       "lines": 1010,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [],
+          "scope": "Byte-exact original comments and whitespace; zero native algorithms and emitted words.",
+          "verification": "docs/REMAINING-DOCUMENTATION.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "documentation_preservation",
+        "algorithms_translated": 0,
+        "emitted_words": 0,
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/remaining-documentation-certificates.json",
+            "sha256": "d2dfc9b5abfdad7248b7e4f9aabaa08b86899f7ba3d9c3ab9d93cc8df0eda868"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/remaining-documentation-audit.json",
+            "sha256": "f8a71633c994254b00c8e8c1773529d9e0c11fb7415a239925832347c498be49"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/AUTOMATIC_MANEUVERS.agc",
@@ -175,6 +198,13 @@
           ],
           "scope": "Actual INITDSP restart paths; complete interface consumers remain pending.",
           "verification": "docs/COMANCHE-DISPLAY-RESTART.md"
+        },
+        {
+          "native_files": [
+            "src/cm_display_control.c"
+          ],
+          "scope": "Actual REGODSP/CLOCPLAY/GOFLASH and SAVELOCS to canonical MAKEPLAY entry; remaining file paths require qualification.",
+          "verification": "docs/COMANCHE-DISPLAY-CONTROL.md"
         }
       ]
     },
@@ -235,8 +265,31 @@
       "sha256": "61dfe49679a2e60f45a737aeb1bbbc1114bbaee67d7ff30d47b9f35587f01e91",
       "bytes": 11121,
       "lines": 299,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [],
+          "scope": "Byte-exact original comments and whitespace; zero native algorithms and emitted words.",
+          "verification": "docs/REMAINING-DOCUMENTATION.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "documentation_preservation",
+        "algorithms_translated": 0,
+        "emitted_words": 0,
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/remaining-documentation-certificates.json",
+            "sha256": "d2dfc9b5abfdad7248b7e4f9aabaa08b86899f7ba3d9c3ab9d93cc8df0eda868"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/remaining-documentation-audit.json",
+            "sha256": "f8a71633c994254b00c8e8c1773529d9e0c11fb7415a239925832347c498be49"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/ERASABLE_ASSIGNMENTS.agc",
@@ -313,6 +366,14 @@
           ],
           "scope": "Actual job admission and priority transitions; canonical full ENDJOB and complete Executive caller composition remain pending.",
           "verification": "docs/COMANCHE_ADMISSION_IMAGE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_basic_finish.c",
+            "src/cm_danzig.c"
+          ],
+          "scope": "Canonical ENDOFJOB and DANZIG complete state selection; remaining admissions, change paths and full-file review remain pending.",
+          "verification": "docs/COMANCHE_BASIC_FINISH.md"
         }
       ]
     },
@@ -382,8 +443,17 @@
       "sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
       "bytes": 2157,
       "lines": 98,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/gimbal_stage.c",
+            "src/gimbal_data.inc"
+          ],
+          "scope": "Source-qualified entry stages and thirty original constants; external DELCOMP/MXV and later paths remain unported.",
+          "verification": "docs/GIMBAL_STAGES.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
@@ -513,8 +583,17 @@
       "sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
       "bytes": 2247,
       "lines": 122,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_task_interrupt.c",
+            "src/cm_mission_loop.c"
+          ],
+          "scope": "Canonical automatic T3 interrupt lead-in through real service and hardware RESUME/foreground composition; other interrupt entries remain unported.",
+          "verification": "docs/COMANCHE_MISSION_LOOP.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/JET_SELECTION_LOGIC.agc",
@@ -730,6 +809,13 @@
           ],
           "scope": "Actual clock task and display admission source groups; complete powered-flight application remains pending.",
           "verification": "docs/COMANCHE_CLOCKTASK.md"
+        },
+        {
+          "native_files": [
+            "src/cm_clockjob.c"
+          ],
+          "scope": "Actual CLOCKJOB BANKCALL, QUICTRIG return and display selection; other flight programs remain unported.",
+          "verification": "docs/COMANCHE-CLOCKJOB.md"
         }
       ]
     },
@@ -784,6 +870,13 @@
           ],
           "scope": "Actual relay, blanking and numeric formatter entries; complete key, scale, verb and display application paths remain pending.",
           "verification": "docs/COMANCHE-FORMATTERS.md"
+        },
+        {
+          "native_files": [
+            "src/cm_charin_number.c"
+          ],
+          "scope": "Actual numeric CHARIN/NUM arithmetic and mission-specific editing/return words; other source paths remain pending.",
+          "verification": "docs/COMANCHE-NUMERIC-ENTRY.md"
         }
       ]
     },
@@ -854,6 +947,13 @@
           ],
           "scope": "Actual QUICTRIG paths; all other powered-flight source routines remain pending.",
           "verification": "docs/COMANCHE-QUICTRIG.md"
+        },
+        {
+          "native_files": [
+            "src/cm_powered_trig.c"
+          ],
+          "scope": "CDUTRIGS and CD*TR*GS source phases and callers; axis, interfaces and SMCDURES remain separately pending.",
+          "verification": "docs/COMANCHE-POWERED-TRIG.md"
         }
       ]
     },
@@ -1352,8 +1452,31 @@
       "sha256": "b184fc58454158b607b9c5132ed88431603fe2617d2c56f80c22af49236eb0d6",
       "bytes": 31842,
       "lines": 1069,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [],
+          "scope": "Byte-exact original comments and whitespace; zero native algorithms and emitted words.",
+          "verification": "docs/REMAINING-DOCUMENTATION.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "documentation_preservation",
+        "algorithms_translated": 0,
+        "emitted_words": 0,
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/remaining-documentation-certificates.json",
+            "sha256": "d2dfc9b5abfdad7248b7e4f9aabaa08b86899f7ba3d9c3ab9d93cc8df0eda868"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/remaining-documentation-audit.json",
+            "sha256": "f8a71633c994254b00c8e8c1773529d9e0c11fb7415a239925832347c498be49"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
@@ -1622,6 +1745,15 @@
           ],
           "scope": "Canonical priority, wake and sleep groups; actual ENDOFJOB and remaining Executive source paths require subsequent qualifications.",
           "verification": "docs/LM-BASIC-SLEEP.md"
+        },
+        {
+          "native_files": [
+            "src/native_dispatch.c",
+            "src/native_overlay_dispatch.c",
+            "src/lm_basic_finish.c"
+          ],
+          "scope": "Source-selected dispatch adoption, canonical END and shared returned resident scheduler callbacks; remaining whole Executive source paths require review.",
+          "verification": "docs/NATIVE-SOURCE-DISPATCH.md"
         }
       ]
     },
@@ -1790,8 +1922,17 @@
       "sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
       "bytes": 2293,
       "lines": 76,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/gimbal_stage.c",
+            "src/gimbal_data.inc"
+          ],
+          "scope": "Source-qualified NOGIMLOC/WCALC entry stages and ten original constants; DELCOMP and subsequent arithmetic/control remain unported.",
+          "verification": "docs/GIMBAL_STAGES.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
@@ -1853,8 +1994,31 @@
       "sha256": "3b7a410d9af5de25e1aed779dd499bb63e199c63be815970e8902a2a575b6ad7",
       "bytes": 9400,
       "lines": 223,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [],
+          "scope": "Byte-exact original comments and whitespace; zero native algorithms and emitted words.",
+          "verification": "docs/REMAINING-DOCUMENTATION.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "documentation_preservation",
+        "algorithms_translated": 0,
+        "emitted_words": 0,
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/remaining-documentation-certificates.json",
+            "sha256": "d2dfc9b5abfdad7248b7e4f9aabaa08b86899f7ba3d9c3ab9d93cc8df0eda868"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/remaining-documentation-audit.json",
+            "sha256": "f8a71633c994254b00c8e8c1773529d9e0c11fb7415a239925832347c498be49"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/INTEGRATION_INITIALIZATION.agc",
@@ -2034,8 +2198,18 @@
       "sha256": "e7e1633ff1305e689451634bf6cba496219b63a4a12f3ae028c74e3b65d840c1",
       "bytes": 3833,
       "lines": 130,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/dsky_key_irq.c",
+            "src/dsky_keyboard.c",
+            "src/dsky_keyboard_number.c"
+          ],
+          "scope": "Fixed-vector keyboard KEYRUPT/KEYCOM/RESUME paths, admission and selected CHARIN lifecycle; UPRUPT and other complete-file paths remain unported.",
+          "verification": "docs/DSKY-KEYBOARD-RUNTIME.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",

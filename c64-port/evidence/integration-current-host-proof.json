@@ -1,0 +1,12 @@
+{
+  "snapshot_commit": "69801cb",
+  "isolated_checkout": true,
+  "commands": [
+    "make -j4 all test"
+  ],
+  "outcome": "PASS",
+  "header_omission_repaired": true,
+  "audit_harness_note": "Only required certificate artifacts retained in isolated checkout. Added the referenced torque XZ excluded by initial size filter, then complete host audit passed.",
+  "log_sha256": "d292384a2edd73be942be48056ce2e79768fe359d7f5f99a0250a60b99942e44",
+  "scope": "All committed portable host build and test recipes; no complete-application acceptance claim."
+}

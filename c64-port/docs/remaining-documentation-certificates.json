@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "qualification_kind": "documentation_preservation",
+  "reviewed_all_source_paths": true,
+  "files": [
+    {
+      "source_path": "Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+      "source_sha256": "45d86ebb0dfd5bc5a49f3be7abb8876cb66da6823311446bac58a6795fc6c101",
+      "preserved_original": "evidence/remaining-documentation-Comanche055-ASSEMBLY_AND_OPERATION_INFORMATION.agc.original",
+      "algorithms_translated": 0,
+      "emitted_words": 0,
+      "all_lines_mapped": "evidence/remaining-documentation-audit.json"
+    },
+    {
+      "source_path": "Comanche055/ENTRY_LEXICON.agc",
+      "source_sha256": "61dfe49679a2e60f45a737aeb1bbbc1114bbaee67d7ff30d47b9f35587f01e91",
+      "preserved_original": "evidence/remaining-documentation-Comanche055-ENTRY_LEXICON.agc.original",
+      "algorithms_translated": 0,
+      "emitted_words": 0,
+      "all_lines_mapped": "evidence/remaining-documentation-audit.json"
+    },
+    {
+      "source_path": "Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+      "source_sha256": "b184fc58454158b607b9c5132ed88431603fe2617d2c56f80c22af49236eb0d6",
+      "preserved_original": "evidence/remaining-documentation-Luminary099-ASSEMBLY_AND_OPERATION_INFORMATION.agc.original",
+      "algorithms_translated": 0,
+      "emitted_words": 0,
+      "all_lines_mapped": "evidence/remaining-documentation-audit.json"
+    },
+    {
+      "source_path": "Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+      "source_sha256": "3b7a410d9af5de25e1aed779dd499bb63e199c63be815970e8902a2a575b6ad7",
+      "preserved_original": "evidence/remaining-documentation-Luminary099-INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc.original",
+      "algorithms_translated": 0,
+      "emitted_words": 0,
+      "all_lines_mapped": "evidence/remaining-documentation-audit.json"
+    }
+  ]
+}

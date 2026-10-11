@@ -699,3 +699,7 @@ Canonical Comanche CHARIN and numeric arithmetic match 8,192 original complete s
 ## Run Comanche mission services through hardware RESUME and DANZIG on disk
 
 Returned native overlay callbacks execute real automatic T3 IRQ, qualified task services, hardware RESUME and canonical foreground selection. Host and full sanitizer evidence covers 384 original cases and 2,624 complete checkpoints; stock-ROM C64 D64 replay matches 82 checkpoints and a complete final image across 12 paths. Selected CLOCKJOB and NBDONLY flight bodies remain explicit continuation boundaries. See `docs/COMANCHE_MISSION_LOOP.md`.
+
+## Current integration and documentation coverage
+
+Complete portable host integration passed in an isolated committed checkout. Coverage records now include the qualified scheduler, keyboard, display, powered-flight and gimbal stages, retaining their partial scopes. Four remaining comment-only files are preserved byte-for-byte with fresh original-layout assembly equality. Whole-file accounting is now 20 native algorithm/data files plus six documentation files; both complete applications remain uncertified. See `docs/REMAINING-DOCUMENTATION.md` and `evidence/integration-current-host-proof.json`.

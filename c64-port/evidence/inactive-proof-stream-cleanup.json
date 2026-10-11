@@ -1,0 +1,240 @@
+[
+  {
+    "raw": "build/goplay-full-native.snapshots",
+    "committed_archive": "evidence/goplay-full-native.snapshots.gz",
+    "git_blob": "0f8ab323ef5528163461da16212c12c43cc5ade8",
+    "decompressed_sha256": "aa9fae39cf9cd916ce565bfb73ad771b41a91606a335c87505258a79d66044e4",
+    "bytes": 212213775
+  },
+  {
+    "raw": "build/goplay-full-reference.snapshots",
+    "committed_archive": "evidence/goplay-full-reference.snapshots.gz",
+    "git_blob": "0f8ab323ef5528163461da16212c12c43cc5ade8",
+    "decompressed_sha256": "aa9fae39cf9cd916ce565bfb73ad771b41a91606a335c87505258a79d66044e4",
+    "bytes": 212213775
+  },
+  {
+    "raw": "build/goplay-full-sanitize.snapshots",
+    "committed_archive": "evidence/goplay-full-sanitize.snapshots.gz",
+    "git_blob": "0f8ab323ef5528163461da16212c12c43cc5ade8",
+    "decompressed_sha256": "aa9fae39cf9cd916ce565bfb73ad771b41a91606a335c87505258a79d66044e4",
+    "bytes": 212213775
+  },
+  {
+    "raw": "build/goplay-native.snapshots",
+    "committed_archive": "evidence/goplay-native.snapshots.gz",
+    "git_blob": "b9f8a1eadb4f5baa94130cab02ef40deb13bf0bd",
+    "decompressed_sha256": "e291c7b650412a3cf3e27f46a74315104fcba180dedba38c785dd8f97ced23f1",
+    "bytes": 94762945
+  },
+  {
+    "raw": "build/goplay-reference.snapshots",
+    "committed_archive": "evidence/goplay-reference.snapshots.gz",
+    "git_blob": "b9f8a1eadb4f5baa94130cab02ef40deb13bf0bd",
+    "decompressed_sha256": "e291c7b650412a3cf3e27f46a74315104fcba180dedba38c785dd8f97ced23f1",
+    "bytes": 94762945
+  },
+  {
+    "raw": "build/goplay-sanitize.snapshots",
+    "committed_archive": "evidence/goplay-sanitize.snapshots.gz",
+    "git_blob": "b9f8a1eadb4f5baa94130cab02ef40deb13bf0bd",
+    "decompressed_sha256": "e291c7b650412a3cf3e27f46a74315104fcba180dedba38c785dd8f97ced23f1",
+    "bytes": 94762945
+  },
+  {
+    "raw": "build/lm-wake-native.snapshots",
+    "committed_archive": "evidence/lm-wake-native.snapshots.gz",
+    "git_blob": "fd0bc6fb56971fc9c21b513506396a5d4a9a6e30",
+    "decompressed_sha256": "0afd4d95a2421662a4937ba6af41e4272f0e5fc11b068664b0e5d607adce2fb6",
+    "bytes": 94719637
+  },
+  {
+    "raw": "build/lm-wake-reference-debug.snapshots",
+    "committed_archive": "evidence/lm-wake-reference-debug.snapshots.gz",
+    "git_blob": "f54322fa1d80547925843da61bd3566ce1d774cf",
+    "decompressed_sha256": "2fe6f3199b2b3646d50b374cd84959776931e5c70651e0e52b65bacff14c42dc",
+    "bytes": 11513
+  },
+  {
+    "raw": "build/lm-wake-reference.snapshots",
+    "committed_archive": "evidence/lm-wake-reference.snapshots.gz",
+    "git_blob": "fd0bc6fb56971fc9c21b513506396a5d4a9a6e30",
+    "decompressed_sha256": "0afd4d95a2421662a4937ba6af41e4272f0e5fc11b068664b0e5d607adce2fb6",
+    "bytes": 94719637
+  },
+  {
+    "raw": "build/lm-wake-sanitize.snapshots",
+    "committed_archive": "evidence/lm-wake-sanitize.snapshots.gz",
+    "git_blob": "fd0bc6fb56971fc9c21b513506396a5d4a9a6e30",
+    "decompressed_sha256": "0afd4d95a2421662a4937ba6af41e4272f0e5fc11b068664b0e5d607adce2fb6",
+    "bytes": 94719637
+  },
+  {
+    "raw": "build/makeplay-native.snapshots",
+    "committed_archive": "evidence/makeplay-native.snapshots.gz",
+    "git_blob": "759ce193f6b1cdae567e70091e62b5e6580b443e",
+    "decompressed_sha256": "64e5ec904a0bb5bda6c58a919ef96effa7914b05065b543b8dd54de5d6be722a",
+    "bytes": 142231287
+  },
+  {
+    "raw": "build/makeplay-reference.snapshots",
+    "committed_archive": "evidence/makeplay-reference.snapshots.gz",
+    "git_blob": "759ce193f6b1cdae567e70091e62b5e6580b443e",
+    "decompressed_sha256": "64e5ec904a0bb5bda6c58a919ef96effa7914b05065b543b8dd54de5d6be722a",
+    "bytes": 142231287
+  },
+  {
+    "raw": "build/makeplay-sanitize.snapshots",
+    "committed_archive": "evidence/makeplay-sanitize.snapshots.gz",
+    "git_blob": "759ce193f6b1cdae567e70091e62b5e6580b443e",
+    "decompressed_sha256": "64e5ec904a0bb5bda6c58a919ef96effa7914b05065b543b8dd54de5d6be722a",
+    "bytes": 142231287
+  },
+  {
+    "raw": "build/makeplay-sleep-native.snapshots",
+    "committed_archive": "evidence/makeplay-sleep-native.snapshots.gz",
+    "git_blob": "4338149f3d0422d639884bcb7fb4eec919864d63",
+    "decompressed_sha256": "e6a0591338811835b2788e312d8caf39aa2e0bb028a5494b00235c63ed2b5f1b",
+    "bytes": 189522062
+  },
+  {
+    "raw": "build/makeplay-sleep-reference.snapshots",
+    "committed_archive": "evidence/makeplay-sleep-reference.snapshots.gz",
+    "git_blob": "4338149f3d0422d639884bcb7fb4eec919864d63",
+    "decompressed_sha256": "e6a0591338811835b2788e312d8caf39aa2e0bb028a5494b00235c63ed2b5f1b",
+    "bytes": 189522062
+  },
+  {
+    "raw": "build/makeplay-sleep-sanitize.snapshots",
+    "committed_archive": "evidence/makeplay-sleep-sanitize.snapshots.gz",
+    "git_blob": "4338149f3d0422d639884bcb7fb4eec919864d63",
+    "decompressed_sha256": "e6a0591338811835b2788e312d8caf39aa2e0bb028a5494b00235c63ed2b5f1b",
+    "bytes": 189522062
+  },
+  {
+    "raw": "build/runtime-bridge-native.snapshots",
+    "committed_archive": "evidence/runtime-bridge-native.snapshots.gz",
+    "git_blob": "c95b6b3d6ac8b3c8eb0dfd531f8be8260fce336e",
+    "decompressed_sha256": "e9855784cd6054b430f8745d452ecb6a5a4eef304ea0c7e327ed7288cc094f01",
+    "bytes": 189815316
+  },
+  {
+    "raw": "build/runtime-bridge-reference.snapshots",
+    "committed_archive": "evidence/runtime-bridge-reference.snapshots.gz",
+    "git_blob": "c95b6b3d6ac8b3c8eb0dfd531f8be8260fce336e",
+    "decompressed_sha256": "e9855784cd6054b430f8745d452ecb6a5a4eef304ea0c7e327ed7288cc094f01",
+    "bytes": 189815316
+  },
+  {
+    "raw": "build/runtime-bridge-sanitize.snapshots",
+    "committed_archive": "evidence/runtime-bridge-sanitize.snapshots.gz",
+    "git_blob": "c95b6b3d6ac8b3c8eb0dfd531f8be8260fce336e",
+    "decompressed_sha256": "e9855784cd6054b430f8745d452ecb6a5a4eef304ea0c7e327ed7288cc094f01",
+    "bytes": 189815316
+  },
+  {
+    "raw": "build/runtime-fetch-native.snapshots",
+    "committed_archive": "evidence/runtime-fetch-native.snapshots.gz",
+    "git_blob": "8fb8c4b4b68d2ae8e2c9e42323f845ceb0000e6e",
+    "decompressed_sha256": "5e221fa7faa96b304b5654a513a09c839137949a16840cf37c680c7d449f4de4",
+    "bytes": 94901852
+  },
+  {
+    "raw": "build/runtime-fetch-reference.snapshots",
+    "committed_archive": "evidence/runtime-fetch-reference.snapshots.gz",
+    "git_blob": "8fb8c4b4b68d2ae8e2c9e42323f845ceb0000e6e",
+    "decompressed_sha256": "5e221fa7faa96b304b5654a513a09c839137949a16840cf37c680c7d449f4de4",
+    "bytes": 94901852
+  },
+  {
+    "raw": "build/runtime-fetch-sanitize.snapshots",
+    "committed_archive": "evidence/runtime-fetch-sanitize.snapshots.gz",
+    "git_blob": "8fb8c4b4b68d2ae8e2c9e42323f845ceb0000e6e",
+    "decompressed_sha256": "5e221fa7faa96b304b5654a513a09c839137949a16840cf37c680c7d449f4de4",
+    "bytes": 94901852
+  },
+  {
+    "raw": "build/cm-clockjob-reference.snapshots",
+    "committed_archive": "evidence/cm-clockjob-reference.snapshots.xz",
+    "git_blob": "bba4207d4ec42fa59a1d985917d2bf12e5f713ee",
+    "decompressed_sha256": "b2975daba408e3481a9a03529f4fa6583cc5ea1065bd44eef9f46739fbf7f206",
+    "bytes": 284623622
+  },
+  {
+    "raw": "build/cm-clockjob-native.snapshots",
+    "committed_archive": "evidence/cm-clockjob-reference.snapshots.xz",
+    "git_blob": "bba4207d4ec42fa59a1d985917d2bf12e5f713ee",
+    "decompressed_sha256": "b2975daba408e3481a9a03529f4fa6583cc5ea1065bd44eef9f46739fbf7f206",
+    "bytes": 284623622
+  },
+  {
+    "raw": "build/cm-clockjob-sanitize.snapshots",
+    "committed_archive": "evidence/cm-clockjob-reference.snapshots.xz",
+    "git_blob": "bba4207d4ec42fa59a1d985917d2bf12e5f713ee",
+    "decompressed_sha256": "b2975daba408e3481a9a03529f4fa6583cc5ea1065bd44eef9f46739fbf7f206",
+    "bytes": 284623622
+  },
+  {
+    "raw": "build/cm-clockjob-full-reference.snapshots",
+    "committed_archive": "evidence/cm-clockjob-full-reference.snapshots.xz",
+    "git_blob": "024664a8f69ad540f631d820d4e0d3d2f85f00c8",
+    "decompressed_sha256": "0d006971cdcca9ab596842abc5ed096bc35cbc22fe9af2fa204ba535a49a9b7d",
+    "bytes": 23668344
+  },
+  {
+    "raw": "build/cm-clockjob-full-native.snapshots",
+    "committed_archive": "evidence/cm-clockjob-full-reference.snapshots.xz",
+    "git_blob": "024664a8f69ad540f631d820d4e0d3d2f85f00c8",
+    "decompressed_sha256": "0d006971cdcca9ab596842abc5ed096bc35cbc22fe9af2fa204ba535a49a9b7d",
+    "bytes": 23668344
+  },
+  {
+    "raw": "build/cm-clockjob-full-sanitize.snapshots",
+    "committed_archive": "evidence/cm-clockjob-full-reference.snapshots.xz",
+    "git_blob": "024664a8f69ad540f631d820d4e0d3d2f85f00c8",
+    "decompressed_sha256": "0d006971cdcca9ab596842abc5ed096bc35cbc22fe9af2fa204ba535a49a9b7d",
+    "bytes": 23668344
+  },
+  {
+    "raw": "build/cm-display-control-reference.snapshots",
+    "committed_archive": "evidence/cm-display-control-reference.snapshots.xz",
+    "git_blob": "a437e5b116d20ab165bdc32033127d013c8ac529",
+    "decompressed_sha256": "c7571e875fe36442ae7e0bb5b1229089ce3f32b77154766b668a5859d7451673",
+    "bytes": 284480368
+  },
+  {
+    "raw": "build/cm-display-control-native.snapshots",
+    "committed_archive": "evidence/cm-display-control-reference.snapshots.xz",
+    "git_blob": "a437e5b116d20ab165bdc32033127d013c8ac529",
+    "decompressed_sha256": "c7571e875fe36442ae7e0bb5b1229089ce3f32b77154766b668a5859d7451673",
+    "bytes": 284480368
+  },
+  {
+    "raw": "build/cm-display-control-sanitize.snapshots",
+    "committed_archive": "evidence/cm-display-control-reference.snapshots.xz",
+    "git_blob": "a437e5b116d20ab165bdc32033127d013c8ac529",
+    "decompressed_sha256": "c7571e875fe36442ae7e0bb5b1229089ce3f32b77154766b668a5859d7451673",
+    "bytes": 284480368
+  },
+  {
+    "raw": "build/cm-display-control-full-reference.snapshots",
+    "committed_archive": "evidence/cm-display-control-full-reference.snapshots.xz",
+    "git_blob": "4343358e7205d5e4846e82773c68063473e8f2e8",
+    "decompressed_sha256": "275c1bccb176f151873feb44b92a976be40170463589309e6df2b8b16ca37a71",
+    "bytes": 29396117
+  },
+  {
+    "raw": "build/cm-display-control-full-native.snapshots",
+    "committed_archive": "evidence/cm-display-control-full-reference.snapshots.xz",
+    "git_blob": "4343358e7205d5e4846e82773c68063473e8f2e8",
+    "decompressed_sha256": "275c1bccb176f151873feb44b92a976be40170463589309e6df2b8b16ca37a71",
+    "bytes": 29396117
+  },
+  {
+    "raw": "build/cm-display-control-full-sanitize.snapshots",
+    "committed_archive": "evidence/cm-display-control-full-reference.snapshots.xz",
+    "git_blob": "4343358e7205d5e4846e82773c68063473e8f2e8",
+    "decompressed_sha256": "275c1bccb176f151873feb44b92a976be40170463589309e6df2b8b16ca37a71",
+    "bytes": 29396117
+  }
+]
