@@ -971,3 +971,5 @@ include tools/sband_length_integration.mk
 all: build/sband-length-integrated-stream
 test: test-sband-length
 sanitize: sanitize-sband-length
+
+include tools/dsky_input_select.mk

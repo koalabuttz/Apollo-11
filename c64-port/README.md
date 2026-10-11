@@ -1454,3 +1454,7 @@ Qualify524288 full original native sanitizer checkpoints and256 C64 states throu
 ## Qualify original canonical vector lengths and unnormalization
 
 Translate actual ABVAL vector length composition against327680 complete original native sanitizer states and224 C64 states including exhaustive tiny axis minor words and source count greater than14 return Q behavior. See `docs/NATIVE-SBAND-LENGTH.md`.
+
+## Translate original operator scaling selectors and bit shifts
+
+Qualify8192 full original native sanitizer states and64 C64 states through actual scale selection helpers and raw overflow sensitive five-bit shifts. See `docs/DSKY-INPUT-SELECT.md`.
