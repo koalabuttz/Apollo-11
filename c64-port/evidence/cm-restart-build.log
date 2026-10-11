@@ -1,0 +1,7 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_restart.c tests/cm_restart_cases.c tests/cm_restart_check.c tests/test_cm_restart.c -o build/test-cm-restart
+./build/test-cm-restart
+PASS:1280 CM original cleanup/startsub/phase/variablejob states,18 complete vectors and fail-closed inputs
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/cm_executive.c src/cm_restart.c tests/cm_restart_cases.c tests/cm_restart_check.c tests/test_cm_restart.c -o build/test-cm-restart-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-restart-sanitize
+PASS:1280 CM original cleanup/startsub/phase/variablejob states,18 complete vectors and fail-closed inputs
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-restart.map src/agc_word.c src/cm_executive.c src/cm_restart.c tests/cm_restart_cases.c tests/cm_restart_check.c platform/c64/cm_restart_diagnostic.c -o build/cm-restart.prg

@@ -357,3 +357,6 @@ include tools/horizontal.mk
 include tools/throttle_bridge.mk
 
 include tools/p66_mode_display.mk
+
+include tools/cm_phase.mk
+include tools/cm_restart.mk

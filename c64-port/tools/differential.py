@@ -215,3 +215,6 @@ subprocess.run([sys.executable,'tools/horizontal_differential.py',str(reference)
 subprocess.run([sys.executable,'tools/p66_mode_display_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/throttle_bridge_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_phase_differential.py',str(reference)],cwd=ROOT,check=True)
+subprocess.run([sys.executable,'tools/cm_restart_differential.py',str(reference)],cwd=ROOT,check=True)
