@@ -1,0 +1,3 @@
+PASS: stock-ROM PAL C64 executes LM+CM gimbal entry stages; 320 original source states and all40 constant words
+Every physical word and source SUPER/IRQ result compared exactly; external DELCOMP remains unexecuted
+Native PRG 16954 bytes; load end $4a39; BSS end $6a39; mailbox a54001

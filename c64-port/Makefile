@@ -549,3 +549,5 @@ include tools/dsky_keyboard_number_flow.mk
 include tools/cm_danzig.mk
 
 include tools/cm_powered_trig_port.mk
+
+include tools/gimbal_port.mk

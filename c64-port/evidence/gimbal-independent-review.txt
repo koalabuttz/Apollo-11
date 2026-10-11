@@ -1,0 +1,7 @@
+Independent read-only source/native review by p66_source_map, 2026-10-11:
+
+SET CALCMAN3 correctly sets STATE word2 bit3 for LM NOGIMLOC.
+The complemented RATEINDX write to VAC+046 and DP SR4 match both original entry sequences.
+CALL's saved positive source return formula (WCALC+5) agrees with the original operation-pair lengths.
+Fixed callee FCADR, original source bank22 and the DELCOMP call boundary are explicit.
+No discrepancy found in the compact native stage. This is not a review or qualification of DELCOMP or later stages.

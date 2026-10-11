@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "parent_inventory_merge_required": true,
+  "recommendations": [
+    {
+      "source_path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
+      "source_sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
+      "recommendation": "partial native translation; source-qualified entry stages and complete file constants",
+      "full_file_status": "partial",
+      "all_source_paths_reviewed": true,
+      "all_source_paths_translated": false,
+      "native_source": "src/gimbal_stage.c",
+      "native_data": "src/gimbal_data.inc",
+      "source_line_and_address_map": "evidence/gimbal-source-audit.json.gz",
+      "entry_points": [
+        "NOGIMLOC",
+        "WCALC"
+      ],
+      "qualified_boundary": "original NEWOPS at file entry through actual original DELCOMP entry and saved source QPRET",
+      "host_source_states": 1280,
+      "c64_source_states": 160,
+      "immutable_data_words": 10,
+      "unproved_external_helpers": [
+        "DELCOMP"
+      ],
+      "later_executable_words": "not yet translated/composed; map marks each incomplete word",
+      "verification": "all2048 words and SUPER/IRQ independently compared with assembled byte-original source; strict/sanitized host and stock-ROM C64",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "application_completion_claim": false
+    },
+    {
+      "source_path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
+      "source_sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
+      "recommendation": "partial native translation; source-qualified entry stages and complete file constants",
+      "full_file_status": "partial",
+      "all_source_paths_reviewed": true,
+      "all_source_paths_translated": false,
+      "native_source": "src/gimbal_stage.c",
+      "native_data": "src/gimbal_data.inc",
+      "source_line_and_address_map": "evidence/gimbal-source-audit.json.gz",
+      "entry_points": [
+        "WCALC"
+      ],
+      "qualified_boundary": "original NEWOPS at file entry through actual original DELCOMP entry and saved source QPRET",
+      "host_source_states": 1280,
+      "c64_source_states": 160,
+      "immutable_data_words": 30,
+      "unproved_external_helpers": [
+        "DELCOMP",
+        "MXV"
+      ],
+      "later_executable_words": "not yet translated/composed; map marks each incomplete word",
+      "verification": "all2048 words and SUPER/IRQ independently compared with assembled byte-original source; strict/sanitized host and stock-ROM C64",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "application_completion_claim": false
+    }
+  ]
+}

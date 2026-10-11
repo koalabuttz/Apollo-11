@@ -1,0 +1,7 @@
+PASS: byte-original LM/CM source; all 40 constant words independently match Decimal, listing, and rope
+PARTIAL: entry stages stop before DELCOMP; later arithmetic, matrices and final NEWANGL continuations remain unproven
+PASS: unsupported entries preserve image/latches; 131072 fixed-read probes expose exactly40 qualified words
+PASS: unsupported entries preserve image/latches; 131072 fixed-read probes expose exactly40 qualified words
+PASS: 320 source target states, 18 modified words and2030 unmodified physical words qualified exactly
+PASS: 2560 complete original-source/native/sanitized canonical entry states, all2048 words andSUPER/IRQ exact
+Uncompressed source/native SHA256: 2c6d87f32c9a68a1582859fa16043a8eeb8659b3c879a35c64c698385f518a38

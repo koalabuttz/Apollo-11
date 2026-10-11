@@ -712,3 +712,7 @@ Canonical DANZIG preserves all 4,096 original complete states through actual bas
 ## Translate canonical Comanche CDU trigonometry and source phases
 
 CDUTRIGS and CD*TR*GS match 655,360 original complete states across all CDU inputs, modes, return contexts and EB settings. Strict and full sanitizer streams agree; ten C64 PRGs validate 320 complete phase states. This retains original declaration identities and leaves the remaining powered-flight interfaces unclaimed. See `docs/COMANCHE-POWERED-TRIG.md`.
+
+## Qualify original Luminary and Comanche gimbal entry stages
+
+Both native gimbal entry stages match 2,560 complete original source states and sanitizer results; stock-ROM C64 validates 320 complete states and all 40 original constants. Independent review passed. Both files remain partial pending actual external helpers and downstream control paths. See `docs/GIMBAL_STAGES.md`.
