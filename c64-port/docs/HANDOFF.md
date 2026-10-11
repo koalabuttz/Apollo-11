@@ -831,3 +831,7 @@ Actual Comanche verb/noun CHARIN follows source editing and return effects throu
 ## Translate original Comanche TWIDDLE and remaining waitlist domains
 
 Extended waitlist control preserves 2,048 original complete states, including TWIDDLE, invalid-delay alarm routing, both full-list mutation paths and the previously excluded positive-delay range. Strict and sanitizer checks pass; C64 validates 128 fingerprints and two complete samples. Alarm bodies remain actual continuation boundaries. See `docs/COMANCHE_WAITLIST_EXTENDED.md`.
+
+## Broad current sanitizer audit
+
+The isolated committed snapshot `69801cb` passes all portable sanitizer recipes, including full decoded reference-stream comparisons. Retained compressed evidence avoids duplicate reference expansion; the audit compares every byte. See `evidence/integration-current-sanitize-proof.json` and retained logs. Later additive milestones retain their own source and sanitizer qualification. This does not certify either complete application.
