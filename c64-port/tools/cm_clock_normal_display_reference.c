@@ -1,0 +1,44 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later; continuous original CM task ISR services. */
+#define main admission_reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "cm_clock_display_mission.h"
+#include "cm_clock_display_mission_cases.h"
+#include "cm_clock_normal_display.h"
+static agc_t baseline;
+static const unsigned normal_pc[23]={04171,02337,03602,03604,02537,02623,02566,02570,02537,02623,02566,02570,02537,03216,03256,03262,03264,03274,03304,02570,03344,05217,06037};
+static const unsigned normal_fb[23]={020000,062000,062000,062000,062000,060000,062000,062000,062000,060000,062000,062000,062000,064000,064000,064000,064000,064000,064000,062000,020000,020000,0};
+static int boundary(enum cm_service_group g,unsigned caller,unsigned bb){unsigned pc=get(RegZ),bank=get(RegBB);
+ switch(g){
+ case CM_SERVICE_T3_BEGIN:return (pc==03207&&bank==032006)||(pc==03260&&bank==050007)||(pc==05306&&bank==004003);
+ case CM_SERVICE_TASK_FINISH:return pc==05341;
+ case CM_SERVICE_SETJTAG:case CM_SERVICE_CLOCK_ENTRY:return pc==05324||pc==05245;
+ case CM_SERVICE_CLOCK_FINISH:return pc==05324;
+ case CM_SERVICE_CLOCK_RETURN:return pc==05324||pc==05134||pc==05147;
+ case CM_SERVICE_SVCT3_ENTRY:return pc==05324||pc==05134||pc==05267;
+ case CM_SERVICE_SVCT3_RETURN:case CM_SERVICE_FIXDELAY:return pc==05324&&bank==bb;
+ case CM_SERVICE_WAITLIST:case CM_SERVICE_NOVAC:case CM_SERVICE_FINDVAC:return pc==caller+2u&&bank==bb;
+ default:return 0;
+ }
+}
+static const unsigned selected[9]={0,2,3,6,7,10,11,14,15};
+int main(int argc,char **argv){unsigned n,i,step,cycles,index;if(argc!=2)return 2;memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1]))return 2;baseline=machine;InhibitAlarms=1;
+ for(index=0;index<9u;++index){n=selected[index];apollo_overlay_state s;cm_native_io io;cm_mission_loop r={&s,&io,0,0,{0,0},{{0,0},0},0,1,0};machine=baseline;cm_clock_display_input(&s,&io,(uint16_t)n);r.pending_t3=1;for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];machine.InputChannel[7]=machine.OutputChannel7=io.superbank;machine.AllowInterrupt=io.interrupt_enabled;machine.InputChannel[011]=io.channel11;machine.InIsr=0;
+  for(step=0;step<40u;++step){cm_mission_call c;unsigned caller=get(RegQ),bb=get(RegBB);enum cm_service_status status;
+   for(i=0;i<2048u;++i){s.words[i]=(agc_word)((unsigned)*memory(i)&(i<=2u?0177777u:077777u));}io.superbank=(agc_word)machine.OutputChannel7;io.interrupt_enabled=(agc_word)machine.AllowInterrupt;r.irq.in_isr=(uint8_t)machine.InIsr;r.irq.pending_danzig=(uint8_t)machine.SubstituteInstruction;
+   status=cm_clock_display_identify(&r,&c);if(status!=CM_SERVICE_ADVANCED){fprintf(stderr,"CM mission unmapped %u/%u PC%05o BB%05o\n",n,step,get(RegZ),get(RegBB));return 2;}
+   if(c.group==CM_MISSION_INTERRUPT)machine.InterruptRequests[3]=1;
+   for(cycles=0;cycles<2000;++cycles){unsigned pc=get(RegZ);int ready=!machine.PendFlag&&!machine.ExtraDelay;
+    if(cycles&&ready&&((c.group==CM_MISSION_INTERRUPT&&pc==03423u&&get(RegBB)==02003u)||(c.group==CM_MISSION_RESUME&&machine.SubstituteInstruction)||(c.group==CM_MISSION_DANZIG&&(pc==06037u||(pc==03332u&&get(RegBB)==050006u)||(pc==03542u&&get(RegBB)==014003u)))||(c.group==CM_FLIGHT_CLOCK_ENTER&&pc==03555u&&get(RegBB)==046006u)||(c.group==CM_FLIGHT_CLOCK_TRIG&&pc==03605u&&get(RegBB)==046006u)||(c.group==CM_FLIGHT_CLOCK_RETURN&&pc==03342u&&get(RegBB)==050006u)||(c.group==CM_FLIGHT_CLOCK_SELECT&&(pc==05217u||pc==02707u||pc==02715u))||(c.group==CM_FLIGHT_DISPLAY_CONTROL&&pc==02770u)||(c.group==CM_MISSION_ENDJOB&&pc==06037u)||(c.group==CM_CLOCK_DISPLAY_MAKEPLAY&&pc==05210u)||(c.group==CM_CLOCK_DISPLAY_PRIORITY&&pc==02775u&&get(RegBB)==020006u)||(c.group==CM_CLOCK_DISPLAY_SELECT&&(pc==05201u||pc==03176u||pc==05217u||pc==05721u))||(c.group==CM_CLOCK_DISPLAY_WAKE&&pc==caller&&get(RegBB)==bb)||(c.group==CM_CLOCK_DISPLAY_WAKE_RETURN&&pc==03312u)||(c.group==CM_CLOCK_DISPLAY_SLEEP_ENTER&&pc==05201u)||(c.group==CM_CLOCK_DISPLAY_SLEEP_RETURN&&pc==05175u)||(c.group==CM_CLOCK_DISPLAY_SLEEP&&(pc==06037u||pc==03231u))||(c.group==CM_CLOCK_DISPLAY_SLEEP_RESUME&&pc==03312u)||(c.group<100u&&boundary(c.service.group,caller,bb))))break;
+    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
+   if(cycles==2000u){fprintf(stderr,"CM mission timeout %u/%u group%u PC%05o BB%05o\n",n,step,c.group,get(RegZ),get(RegBB));return 2;}
+   if(c.group==CM_MISSION_INTERRUPT)r.pending_t3=0;
+   if(c.group==CM_MISSION_DANZIG||c.group==CM_MISSION_ENDJOB||c.group==CM_CLOCK_DISPLAY_PRIORITY||c.group==CM_CLOCK_DISPLAY_SLEEP){r.transfer.interpretive=(uint8_t)(get(RegZ)==06037u);r.transfer.address.location=r.transfer.interpretive?get(0164):get(RegZ);r.transfer.address.bank=(agc_word)(get(RegBB)|(unsigned)machine.OutputChannel7);}
+   printf("%u %u %u %u",n,step,c.group,(unsigned)status);for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<=2u?0177777u:077777u));printf(" %u %u %u %u %u %u %u %u\n",(unsigned)machine.OutputChannel7,machine.AllowInterrupt,(unsigned)machine.InputChannel[011],machine.InIsr,machine.SubstituteInstruction,r.transfer.interpretive,r.transfer.address.location,r.transfer.address.bank);
+   if(get(RegZ)==03312u||(get(RegZ)==06037u&&!r.pending_t3&&!machine.InIsr))break;
+  }if(step==40u||get(RegZ)!=03312u)return 2;
+  for(step=7;step<=29u;++step){for(cycles=0;cycles<12000u;++cycles){if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&get(RegZ)==normal_pc[step-7u]&&(step==29u||get(4)==normal_fb[step-7u]))break;machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}if(cycles==12000u){fprintf(stderr,"normal source n%u p%u timeoutPC%oBB%o\n",n,step,get(RegZ),get(RegBB));return 2;}
+   if(step==29u){r.transfer.interpretive=1;r.transfer.address.location=get(0164);r.transfer.address.bank=(agc_word)(get(RegBB)|(unsigned)machine.OutputChannel7);}
+   printf("%u %u %u %u",n,step+40u,300u+step,(unsigned)CM_SERVICE_ADVANCED);for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<=2u?0177777u:077777u));printf(" %u %u %u %u %u %u %u %u\n",(unsigned)machine.OutputChannel7,machine.AllowInterrupt,(unsigned)machine.InputChannel[011],machine.InIsr,machine.SubstituteInstruction,r.transfer.interpretive,r.transfer.address.location,r.transfer.address.bank);
+  }
+ }return 0;}

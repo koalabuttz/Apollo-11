@@ -711,3 +711,5 @@ include tools/cm_clock_display_busy.mk
 all: build/cm-clock-display-mission-native build/cm-clock-display-busy-native
 
 include tools/dsky_verb_dispatch.mk
+
+include tools/cm_clock_normal_display.mk

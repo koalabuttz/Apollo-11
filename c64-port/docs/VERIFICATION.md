@@ -1344,3 +1344,7 @@ Actual timer admission, CLOCKJOB trigonometry, MAKEPLAY, mixed source priority a
 ## Translate original Luminary and Comanche verb dispatch selection
 
 Actual VERBFAN handles all40 first-list verbs through mission-specific passive CADR data and source BANKJUMP, while extended40..99 reaches the real RELDSP boundary. All8,192 complete original/native/full-sanitizer states and64 actual C64 states match. Selected verb bodies remain explicit external source continuations. See `docs/DSKY-VERB-DISPATCH.md`.
+
+## Compose genuine Comanche CLOCKJOB through noun40 display and actual Executive return
+
+Nine unchanged original clock mission contexts now run continuously through normal noun40 formatting and canonical END restoring the actual suspended interpreter. All387 complete2060-field original/native/full-sanitizer checkpoints match. Nine genuine END transitions and36 unchanged guards pass on C64. Whole continuous chain is host qualified; combined resident loading and display device acceptance remain separate. See `docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md`.
