@@ -95,16 +95,31 @@ Acceptance for this bounded numerical/guidance milestone is met. GUIDANCE.md
 defines raw scales, input domains and interrupt/scratch adaptations. This does
 not complete P66 or establish an application deadline.
 
-## Next bounded milestone: RODCOMP PIPA preparation
+## Completed: RODCOMP PIPA/time and vector-input preparation
 
-Extend the selected computation through its PIPA/time snapshot and vector-input
-preparation, stopping before TC INTPRET. Define retained sensor/scratch state and
-preserve DCA/DXCH exchange and AD/TS overflow/skip effects through that boundary.
-Then identify the first required interpreter vector operation for an explicit
-native translation. A mapped guidance job and count producer should follow
-defined scratch ownership and timing budgets. Flight feasibility and deadline
-proof remain separate measurement work. Rust is optional for later components;
-restart-table expansion should follow a concrete workload requirement.
+- Current and prior PIPA/time snapshots, RUPTREG exchange and retained A/L debris
+  match original source through the snapshot boundary.
+- Six AD/TS effects preserve skipped loads and skipped final CAF ZERO. MODE is
+  MPAC +7; untouched MPAC +2 and DELVROD low words remain intact.
+- 1171 cases / 3396 checkpoints match all 39 words and real next-PC skip effects,
+  including every skip mask in both sign families and three repeated histories.
+- Seven host/sanitizer suites pass. A seventh C64 PRG checks 324 complete states,
+  direct composed histories, restoring I, restricted ZP and stack sentinels.
+- State is 78 bytes; complete sampled preparation takes 6692 PAL cycles.
+
+Acceptance for this bounded milestone is met. PREPARATION.md defines ownership
+and the stop before TC INTPRET at 32,3353. No interpreter or complete P66 job is
+claimed; stable sensor/time inputs and native scratch remain explicit adaptations.
+
+## Next bounded milestone: first P66 interpreter vector operation
+
+Trace VXSC KPIP1 from the current interpreter-entry boundary. Determine raw
+scaling, vector layout, multiword arithmetic and interpreter scratch effects,
+then translate one bounded vector operation directly to native C and extend the
+independent actual-assembly oracle. A mapped guidance job and count producer
+should follow defined scratch ownership and timing budgets. Flight feasibility
+and deadline proof remain separate measurement work. Rust is optional for later
+components; restart-table expansion should follow a concrete workload requirement.
 
 ## Remaining design questions
 

@@ -56,7 +56,10 @@ for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
                      ('PTBAD','05,3054'),('RESTARTS','01,3526'),
                      ('PHSNAME1','E3,1436'),('PHSPRDT1','1054'),('GOLOC','0705'),
                      ('RODCOMP','32,3275'),('RODCOUNT','E7,1746'),
-                     ('RODSCAL1','E7,1756'),('VDGVERT','E7,1644')]:
+                     ('RODSCAL1','E7,1756'),('VDGVERT','E7,1644'),
+                     ('OLDPIPAX','E7,1763'),('THISTPIP','E7,1761'),
+                     ('DELVROD','E7,1766'),('PIPATMPX','1160'),
+                     ('TEMX','1254'),('MODE','0163')]:
     import re
     if not re.search(r'\b'+name+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)

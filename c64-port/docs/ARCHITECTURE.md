@@ -182,3 +182,13 @@ The caller owns the state and excludes a count producer. The standalone target
 uses restoring guards rather than carrying original INHINT into an untranslated
 continuation. There is no AGC instruction decoder, floating point or allocation.
 GUIDANCE.md defines the entry/stop boundary and excluded P66 work.
+
+`src/guidance_prepare.c` extends RODCOMP through PIPA/time exchanges and
+vector-input preparation. Its 78-byte state includes the rate state, stable
+sensor/time inputs, OLDPIPA/RUPTREG/THISTPIP, PIPATMP/TEM, eight MPAC words and
+six DELVROD words. MODE aliases MPAC +7. Selected TS stores carry their skip
+effect into the next load or final CAF ZERO; retained low words are not cleared
+implicitly. Snapshot register debris and final A/L remain explicit. The native
+return mask records six skips for observation, not as historical memory or an
+alarm. PREPARATION.md defines stage boundaries and producer ownership. The
+function stops before TC INTPRET, with no implicit Executive-context transfer.

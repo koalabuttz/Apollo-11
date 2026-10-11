@@ -1,11 +1,12 @@
 # P66 rate-of-descent update and multiword arithmetic
 
-The seventh milestone translates the first six instructions of `RODCOMP` in
+The seventh milestone translated the first six instructions of `RODCOMP` in
 unchanged `Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc`, lines 948..953:
 `INHINT`, `CAF ZERO`, `XCH RODCOUNT`, `EXTEND`, `MP RODSCAL1`, `DAS VDGVERT`.
 Entry is physical bank 32,3275; the oracle stops at 32,3303 before the following
 PIPA load. This is a real landing-guidance calculation with a small boundary.
-It does not include the remainder of RODCOMP or a complete P66 guidance job.
+That API remains bounded to the rate update. The pre-interpreter extension is
+now documented in PREPARATION.md; a complete P66 guidance job remains future work.
 
 ## Numerical contract
 
@@ -53,8 +54,9 @@ caller remains masked. Restoring permission at this native boundary is an
 explicit adaptation; no original RELINT/RESUME or live click IRQ is claimed.
 
 The native functions contain direct arithmetic and calls, with no opcode decoder,
-rope image or AGC engine. Full PIPA snapshot/delta preparation, interpreter vector
-operations, thrust calculation, throttle control, task scheduling of RODCOMP,
+rope image or AGC engine. PIPA snapshot/delta preparation is now translated
+(PREPARATION.md). Interpreter vector operations, thrust calculation, throttle
+control, task scheduling of RODCOMP,
 guidance restart protection and physical switch input remain future work.
 
 ## Independent verification

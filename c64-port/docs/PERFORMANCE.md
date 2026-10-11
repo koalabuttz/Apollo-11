@@ -299,3 +299,39 @@ maximum count/scale and an existing mixed-sign desired-rate pair. These samples
 are not worst-case bounds, whole P66 timing, continuous-source capacity or flight
 deadline evidence. The count producer is a test input, with no custom live IRQ.
 GUIDANCE.md records original inhibition versus the restoring native boundary.
+
+## Eighth milestone: standalone pre-interpreter preparation diagnostic
+
+`evidence/prepare.prg` is 34921 bytes including its load address; 34919 bytes
+load at $0801..$9067, SYS $080d. Text is 9148 bytes ($080d..$2bc8), read-only
+data is 25759 ($2bc9..$9067), BSS is 78 ($9068..$90b5), and noinit is one byte
+at $90b6. Loaded image plus BSS/noinit is 34998 bytes. Read-only data includes
+25272 bytes of complete expected words and 324 of expected skip masks. This
+standalone test image is not a combined flight image. The 78-byte preparation
+state includes the existing 12-byte rate state. No heap or floating point is
+used. Only the 32 compiler imaginary-register ZP bytes are allocated, with no
+additional ZP data/BSS.
+
+The PAL run observes 31 bytes below the $01f2 hardware-stack baseline (45
+including its existing BASIC/KERNAL frame) and 191 bytes of dynamic software-stack
+sentinel extent. These observed extents include full-state checking and its
+local composed case, not just the native preparation function. They are not stack
+proofs. Mailbox is $c080..$c088; software-stack instrumentation is $c100..$cfff.
+
+| Sample | PAL cycles | At 985248 cycles/s |
+|---|---:|---:|
+| PIPA/time snapshot | 1059 | 1.075 ms |
+| Vector inputs without TS skips | 4292 | 4.356 ms |
+| Six skips, negative final clear stores | 3984 | 4.044 ms |
+| Six skips, positive final clear stores | 3996 | 4.056 ms |
+| Complete rate/snapshot/vector preparation | 6692 | 6.792 ms |
+
+Calls are guarded; input setup, guard entry/exit and full-state comparisons are
+outside markers. The complete-call sample is the first step of history 144,
+with its explicit count/sensor/time inputs and preserved stale words. Marker
+overhead, sample dispatch and VIC bus effects are included. Separate stage calls
+use different inputs and bus phases, so their intervals need not sum to the
+composed interval. No custom sensor IRQ or continuous source runs in this PRG.
+These are finite samples, not a worst-case execution bound, full P66 timing or
+flight deadline evidence. PREPARATION.md documents ownership and the interpreter
+boundary.

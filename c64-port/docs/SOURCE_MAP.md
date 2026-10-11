@@ -77,7 +77,7 @@ boundaries and the separate interpreter exclusion.
 | MP with an ordinary memory operand | `agc_multiply` | Signed zeros, corrected A and DP product; actual opcode comparisons |
 | DAS to an ordinary erasable pair | `agc_double_add` | Low carry, independent word signs and returned overflow; actual opcode comparisons |
 
-Register CCS with overflow, general TS skip effects, edit registers, division
+Register CCS with overflow, register-target TS, edit registers, division
 and interpreter operations are not implemented. MP/DAS are bounded to normal
 memory operands; guidance scales remain raw words (GUIDANCE.md).
 
@@ -103,3 +103,13 @@ MP/DAS prefix to `p66_rate_update`, entering bank 32,3275 and stopping at
 STARTP66/STRTP66A and DESCBITS are traced for scale/count provenance, not ported.
 GUIDANCE.md defines full numerical domains, original register results and the
 restoring native interrupt adaptation. The subsequent interpreter is excluded.
+
+| Original RODCOMP instructions | Native entry | Checkpoint |
+|---|---|---|
+| Lines 955..966: EXTEND/DCA PIPAX, DXCH OLDPIPAX/RUPTREG1, CA/XCH PIPAZ/OLDPIPAZ/RUPTREG3, EXTEND/DCA TIME2, DXCH THISTPIP | `p66_snapshot` | 32,3315 before CA OLDPIPAX; prior time in A/L |
+| Lines 968..999: CA/AD/TS MPAC components, CS/AD/AD/TS DELVROD components, CAF/TS low/TEM stores, CS ONE/TS MODE | `p66_vector_inputs` | 32,3353 before TC INTPRET; raw A/L and all six skips |
+| Full basic RODCOMP prefix from line 948 | `p66_prepare` | 32,3353; composition of rate, snapshot and vector-input stages |
+
+PREPARATION.md records all physical addresses, MODE's alias, retained words and
+overflow effects. The original instructions execute independently in the host
+oracle; direct native assignments fold only unobservable exchange intermediates.

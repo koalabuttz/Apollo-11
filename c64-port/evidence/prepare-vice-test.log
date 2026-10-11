@@ -1,0 +1,11 @@
+PASS: VICE PAL, 324 complete original-assembly checkpoints; all TS-skip masks and three composed four-step histories; restoring I
+Mailbox: a500004401034e2724
+Target preparation bytes / modeled words: 78 39
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/prepare-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/prepare-vice-monitor.log -monlog -limitcycles 1000000000
+PIPA/time snapshot: 1059 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+vector inputs without skips: 4292 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+six skips with negative clear stores: 3984 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+six skips with positive clear stores: 3996 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+complete pre-interpreter preparation: 6692 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+prepare-vice-hardware-stack.bin: measured sentinel extent 31 bytes
+prepare-vice-software-stack.bin: measured sentinel extent 191 bytes

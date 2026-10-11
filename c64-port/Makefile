@@ -118,3 +118,25 @@ sanitize-guidance: | build
 c64-guidance: build/guidance.prg
 build/guidance.prg: $(GUIDANCE_CORE) $(GUIDANCE_TEST) platform/c64/guidance_diagnostic.c $(GUIDANCE_HEADERS) tests/guidance_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/guidance.map $(GUIDANCE_CORE) $(GUIDANCE_TEST) platform/c64/guidance_diagnostic.c -o $@
+
+PREPARE_CORE = $(GUIDANCE_CORE) src/guidance_prepare.c
+PREPARE_INPUT = tests/prepare_cases.c
+PREPARE_HEADERS = $(GUIDANCE_HEADERS) include/guidance_prepare.h tests/prepare_cases.h
+all: build/prepare-snapshot
+build/prepare-snapshot: $(PREPARE_CORE) $(PREPARE_INPUT) platform/host/prepare_snapshot.c $(PREPARE_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(PREPARE_CORE) $(PREPARE_INPUT) platform/host/prepare_snapshot.c -o $@
+PREPARE_TEST = $(PREPARE_INPUT) tests/prepare_check.c
+all: build/test-prepare
+test: test-prepare
+.PHONY: test-prepare sanitize-prepare c64-prepare
+test-prepare: build/test-prepare
+	./build/test-prepare
+build/test-prepare: $(PREPARE_CORE) $(PREPARE_TEST) tests/test_prepare.c $(PREPARE_HEADERS) tests/prepare_vectors.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(PREPARE_CORE) $(PREPARE_TEST) tests/test_prepare.c -o $@
+sanitize: sanitize-prepare
+sanitize-prepare: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(PREPARE_CORE) $(PREPARE_TEST) tests/test_prepare.c -o build/test-prepare-sanitize
+	./build/test-prepare-sanitize
+c64-prepare: build/prepare.prg
+build/prepare.prg: $(PREPARE_CORE) $(PREPARE_TEST) platform/c64/prepare_diagnostic.c $(PREPARE_HEADERS) tests/prepare_vectors.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/prepare.map $(PREPARE_CORE) $(PREPARE_TEST) platform/c64/prepare_diagnostic.c -o $@

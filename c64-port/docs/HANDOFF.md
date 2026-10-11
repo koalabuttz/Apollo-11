@@ -1,4 +1,4 @@
-# P66 rate-adjustment and multiword arithmetic milestone handoff
+# RODCOMP pre-interpreter preparation milestone handoff
 
 ## Repository
 
@@ -23,6 +23,7 @@ make c64-lifecycle MOS_CC=/path/to/mos-c64-clang
 make c64-waitlist MOS_CC=/path/to/mos-c64-clang
 make c64-restart MOS_CC=/path/to/mos-c64-clang
 make c64-guidance MOS_CC=/path/to/mos-c64-clang
+make c64-prepare MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
@@ -35,9 +36,24 @@ python3 tools/restart_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/guidance_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
 ## Completed work
+
+The eighth milestone extends RODCOMP through PIPA/time snapshot exchanges and
+vector-input preparation, stopping before TC INTPRET at bank 32,3353. All 39
+modeled words and six TS-skip observations agree with 3396 original-assembly
+checkpoints over 1171 cases, including every skip combination in both sign
+families. The final delta's overflow can skip CAF ZERO; its +/-1 is faithfully
+stored into low MPAC/TEM words. MODE aliases MPAC +7; MPAC +2 and DELVROD low
+words remain intact. Three four-step full-prefix histories compare both staged
+and direct composed calls with original final states. All seven host/sanitizer
+suites and prior comparisons pass. The seventh C64 PRG checks 324 complete
+states and histories, restoring I and ZP/stack canaries. State is 78 bytes and
+the complete sampled call takes 6692 PAL cycles (6.792 ms). PREPARATION.md gives
+the boundaries, stable-input/scratch ownership and remaining interpreter work.
 
 The seventh milestone translates RODCOMP's initial P66 rate adjustment and its
 required MP/DAS arithmetic. Count clearing, raw fixed-point scaling, both signed
@@ -48,7 +64,7 @@ pass; earlier snapshots and the rope are unchanged. The sixth C64 PRG checks
 568 complete six-word expectations and the histories in PAL VICE, with zero
 failures, restoring I and stack/ZP checks. State is 12 bytes; the larger sampled
 update is 2108 PAL cycles (2.140 ms). GUIDANCE.md defines the bank 32,3275..3302
-boundary and raw-scale/caller-exclusion contract. PIPA/interpreter continuation,
+boundary and raw-scale/caller-exclusion contract. Interpreter continuation,
 physical switch input and complete P66 scheduling/recovery remain untranslated.
 
 The sixth milestone adds bounded ALARM1/BAILOUT1/POODOO1 alarm recording,
@@ -102,7 +118,7 @@ Validation passes:
 - Host dispatch/fault tests and all eight native two-job executions.
 - 26 admission/completion plus 109 dispatch checkpoints, word-for-word against
   original assembly, and the separate Virtual AGC numerical helper comparisons.
-- All six host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
+- All seven host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
 - PAL C64 VICE: zero failures, all 135 original-derived fingerprints, eight
   actual native two-job sequences and three repeated timed-path checks.
 - Host IRQ publication/FIFO tests over 600 starting-ticket cases, guards, idle
@@ -126,6 +142,9 @@ Alarm/restart host tests and all 226 checkpoints, five ASan/UBSan suites and
 the fifth PAL diagnostic with six recovered jobs pass (RESTART.md).
 Numerical/P66 host checks and all 12,856 independent checkpoints pass; the sixth
 PAL diagnostic verifies 568 complete states and three rate histories (GUIDANCE.md).
+PIPA/time and vector preparation adds 3396 complete independent checkpoints;
+the seventh PAL diagnostic checks 324 states and three composed histories
+(PREPARATION.md). All earlier evidence and historical sources are unchanged.
 
 Retained executables, snapshots, logs, target mailbox/stack dumps, maps and hashes
 are in `evidence/`; reproducible output is in `build/`. DISPATCH.md documents the
@@ -137,7 +156,7 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 ## Limits and next milestone
 
 This cooperative basic-job translation includes native demonstration routines
-and one bounded P66 calculation. Complete flight OS and guidance workloads
+and P66 preparation through its interpreter-entry boundary. Complete flight OS and guidance workloads
 remain future work. Callbacks return to a trampoline; persistent values belong
 in MPAC/VAC, not suspended C stacks.
 An unmapped address latches a runtime fault. No rollback is claimed; bounded
@@ -151,12 +170,12 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: extend RODCOMP through PIPA/time snapshot and vector-input preparation,
-stopping before TC INTPRET; preserve exchange and overflow/skip effects.
+Next: trace the first interpreter VXSC KPIP1 operation, its scaling and native
+vector representation; translate and verify that bounded operation independently.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
 Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST,
-bounded Type C job recovery and initial P66 rate adjustment is met.
+bounded Type C job recovery and pre-interpreter P66 preparation is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host

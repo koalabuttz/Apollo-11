@@ -39,10 +39,10 @@ paths. The portable commands are:
 
 | Command | Actual result | Evidence |
 |---|---|---|
-| `make test` | PASS; all six host suites, including restart and numerical/P66 checks | `evidence/guidance-host.log`; earlier per-milestone logs retained |
-| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; all six host suites under AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/guidance-sanitize.log` |
-| `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, nine original source identities checked, fixture assembled | `evidence/guidance-fixture.log` |
-| `make differential REFERENCE=/path/to/fixture` | PASS; all earlier snapshots unchanged plus 12,856 numerical/P66 checkpoints | `evidence/guidance-differential.log`, guidance snapshots/trace and retained earlier snapshots |
+| `make test` | PASS; all seven host suites, including pre-interpreter preparation | `evidence/prepare-host.log`; earlier per-milestone logs retained |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; all seven host suites under AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/prepare-sanitize.log` |
+| `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, nine original source identities checked, fixture assembled | `evidence/prepare-fixture.log` |
+| `make differential REFERENCE=/path/to/fixture` | PASS; all earlier snapshots unchanged plus 3396 preparation checkpoints | `evidence/prepare-differential.log`, preparation snapshots/trace and retained earlier snapshots |
 | `python3 tools/freeze_vectors.py` | 26 admission/completion and 109 dispatch fingerprints generated | Header records snapshot SHA256 |
 | `python3 tools/freeze_lifecycle.py` | 115 original-derived lifecycle fingerprints generated after exact equality | `tests/lifecycle_vectors.h` records snapshot SHA256 |
 | `make c64 MOS_CC=/path/to/mos-c64-clang` | PASS; native PRG + ELF + link map | `evidence/c64-build.txt`, `executive.prg`, `executive.map` |
@@ -57,7 +57,10 @@ paths. The portable commands are:
 | `python3 tools/freeze_guidance.py` | 568 complete six-word expectations generated after exact equality | `tests/guidance_vectors.h` |
 | `make c64-guidance MOS_CC=/path/to/mos-c64-clang` | PASS; native numerical/P66 diagnostic and map | `evidence/guidance-c64-build.log`, `guidance.prg`, `guidance.map` |
 | `python3 tools/guidance_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 568 complete states, three rate histories, restoring I, six timings and stack/ZP checks | `evidence/guidance-vice-test.log`, guidance monitor/log/mailbox/stack dumps |
-| `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes (run from repository root) | `evidence/guidance-source-preservation.txt` |
+| `python3 tools/freeze_prepare.py` | 324 complete 39-word expectations and six-TS skip masks generated after exact equality | `tests/prepare_vectors.h` |
+| `make c64-prepare MOS_CC=/path/to/mos-c64-clang` | PASS; native snapshot/vector diagnostic and map | `evidence/prepare.prg`, `prepare.map` |
+| `python3 tools/prepare_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 324 complete states, three composed histories, all skip masks, restoring I and five timings | `evidence/prepare-vice-test.log`, preparation monitor/log/mailbox/stack dumps |
+| `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes (run from repository root) | `evidence/prepare-source-preservation.txt` |
 
 LeakSanitizer's default process inspection failed in this container (`/proc/...`
 unavailable). Only leak scanning was disabled; ASan memory checks and UBSan
@@ -357,3 +360,30 @@ intervals and target image/memory observations are retained (PERFORMANCE.md).
 No AGC engine or native opcode decoder enters the target binary. The entire
 RODCOMP/P66 interpreter continuation, live switch input, complete guidance task
 integration, physical hardware and deadline guarantees remain outside the test.
+
+## Eighth milestone: snapshots and pre-interpreter RODCOMP preparation
+
+All seven host and sanitizer suites pass. Full differential verification retains
+every earlier snapshot and rope hash, and adds 1171 cases / 3396 checkpoints over
+all 39 modeled words and six TS-skip observations. `prepare_reference.c` executes
+unchanged original basic instructions with the real engine and input-only
+constructors. It reads physical state and observes actual next-PC transitions,
+checks BBANK/INHINT and six adjacent-memory guards, and holds asynchronous counter
+progress. Source identity and the new data-address assertions pass.
+
+Checkpoints are before the snapshot stage at 32,3303, before vector preparation
+at 32,3315, and before TC INTPRET at 32,3353. All 64 skip masks occur in both sign
+families, with word-edge inputs, three four-step sequential histories and 1024
+full-prefix deterministic cases. Snapshot SHA256 is
+`50488aed2af58a9297f6f33b8c201f32497f710dbe1555b95d15105ff287f3be`.
+`freeze_prepare.py` requires exact native/reference equality before generating
+324 full 39-word expectations and skip masks. No target state hashing is used.
+
+Host/C64 checks include direct composed histories and preserved scratch/register
+debris. PAL VICE checks all states, both final-CAF overflow polarities, enabled
+and initially masked caller permission, compiler-ZP allocation and stack sentinels.
+Mailbox is `a500004401034e2724`, with zero failures. Five timed calls and maps/
+stack dumps are retained. PREPARATION.md specifies stable sensor/time inputs,
+MODE alias and native scratch/return adaptations; PERFORMANCE.md gives samples.
+Interpreter execution, complete guidance scheduling/restart, live sensor inputs,
+physical hardware and flight deadlines remain future work.
