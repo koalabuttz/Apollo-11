@@ -864,3 +864,5 @@ include tools/sband_flow_integration.mk
 all: build/sband-flow-integrated-stream
 test: test-sband-flow
 sanitize: sanitize-sband-flow
+
+include tools/lm_radar_source_leadin_integration.mk
