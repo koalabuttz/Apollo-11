@@ -1,7 +1,7 @@
 PRODUCT_CORE = src/agc_word.c src/agc_multiword.c src/guidance_product.c
 PRODUCT_INPUT = tests/prepare_cases.c tests/vector_cases.c tests/product_cases.c
 PRODUCT_TEST = $(PRODUCT_INPUT) tests/product_check.c
-PRODUCT_HEADERS = $(PREPARE_HEADERS) include/guidance_product.h tests/product_cases.h tests/product_products.h
+PRODUCT_HEADERS = $(PREPARE_HEADERS) include/guidance_product.h tests/product_cases.h tests/product_vectors.h
 PRODUCT_DEFINITIONS = -DPREPARE_INPUT_ONLY -DVECTOR_INPUT_ONLY
 all: build/product-snapshot build/test-product
 build/product-snapshot: $(PRODUCT_CORE) $(PRODUCT_INPUT) platform/host/product_snapshot.c $(PRODUCT_HEADERS) | build

@@ -1,0 +1,6 @@
+./build/test-product
+PASS: 128 complete original-assembly DMP1/VXSC states; all 32767 unsupported MODE words preserve complete state for both operations
+make: Nothing to be done for 'c64-product'.
+cc -Iinclude -Itests -DPREPARE_INPUT_ONLY -DVECTOR_INPUT_ONLY -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_product.c tests/prepare_cases.c tests/vector_cases.c tests/product_cases.c tests/product_check.c tests/test_product.c -o build/test-product-sanitize
+./build/test-product-sanitize
+PASS: 128 complete original-assembly DMP1/VXSC states; all 32767 unsupported MODE words preserve complete state for both operations

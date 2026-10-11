@@ -170,6 +170,7 @@
   "prepare-vice.mon": "e4a20c7caa5d5595c7bd0865cb6c1da25052cb6b86a0292b724414574f6443b3",
   "prepare.map": "e2949ef8ae5671011fa32641c75701fdf1eaedeccb0e328a4d58b6da7a172958",
   "prepare.prg": "c347e579a47e84d63499aa5c4f9309070525c0813524f8db86d0a7b536bc64e0",
+  "product-build-check.log": "68a2d34edf54c25ff50305d4fecfeebbf8b11cb96336d84359665c2097e715ea",
   "product-c64-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "product-differential.log": "9bbbe832d5e4b64e8f8f76f0c4355f15b14eec001ed4066543a4eac245e2fdf5",
   "product-host-tests.log": "28e1b884b608c405bfa8ce0351ee44c616613f859513572853058e8f557162c2",
