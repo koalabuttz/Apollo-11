@@ -320,3 +320,5 @@ subprocess.run([sys.executable,'tools/cm_clocktask_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/cm_waitlist_image_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_task_transfer_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_admission_image_differential.py',str(reference)],cwd=ROOT,check=True)

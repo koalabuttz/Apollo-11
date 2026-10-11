@@ -572,3 +572,7 @@ Canonical WAITLIST wrapper preserves source registers, banks, scratch and dynami
 ## Port actual Comanche T3RUPT task transfer
 
 Original T3RUPT2 and TASKOVER complete-image transitions pass source, sanitizer and C64 checks up to their documented hardware-return boundary. See `docs/COMANCHE_TASK_TRANSFER.md`.
+
+## Port canonical Comanche job-admission return effects
+
+Original NOVAC and FINDVAC complete-image effects, including the actual saved-Q return, pass source, sanitizer and C64 checks. See `docs/COMANCHE_ADMISSION_IMAGE.md`.

@@ -1,0 +1,7 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_admission_image.c src/cm_executive.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_admission_image_cases.c tests/cm_admission_image_check.c tests/test_cm_admission_image.c -o build/test-cm-admission-image
+./build/test-cm-admission-image
+1024 original CM admission full-image states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_admission_image.c src/cm_executive.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_admission_image_cases.c tests/cm_admission_image_check.c tests/test_cm_admission_image.c -o build/test-cm-admission-image-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-admission-image-sanitize
+1024 original CM admission full-image states: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-admission-image.map src/cm_admission_image.c src/cm_executive.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_admission_image_cases.c tests/cm_admission_image_check.c platform/c64/cm_admission_image_diagnostic.c -o build/cm-admission-image.prg
