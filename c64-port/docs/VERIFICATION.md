@@ -1286,3 +1286,7 @@ Original PINBRNCH and UPFLAG paths through ERASER, MARKPLAY, KEEPPRIO and PLAYJU
 ## Qualify exhaustive inverse trig high word inputs for both missions
 
 A separate supplementary corpus independently inspects all32,768 high-word values per function in both missions, closing the2,045-value omission in the original corpus. All327,668 complete original/native/full-sanitizer states match; eight actual C64 diagnostics pass256 states and all36 constants. Original frozen algorithms and proof identities are unchanged. See `docs/INVERSE-TRIG-SWEEP.md`.
+
+## Translate original Luminary and Comanche ordinary display blanking
+
+Actual BLANKSUB caller setup, source selected buffer and unchanged BLNKSUB1 bank return match8,192 complete source/full-sanitizer states and64 actual C64 checkpoints. The native return preserves actual busy Q and available Q+1 selection without an extra Executive poll. See `docs/DSKY-BLANKSUB.md`.

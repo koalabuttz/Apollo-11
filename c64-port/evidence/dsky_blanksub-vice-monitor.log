@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_blanksub.prg from 0801 to 2B7A (237A bytes)
+WATCH: 1  C:$4b7b  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 4b7b)  118/$076,  60/$3c
+.C:1f84  8E 7B 4B    STX $4B7B      - A:80 X:A5 Y:0D SP:f1 NV-....C  295201302
+>C:4b7b  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_blanksub-vice-mailbox.bin' from $4b7b to $4b7f
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_blanksub-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_blanksub-vice-software-stack.bin' from $c100 to $cfff
