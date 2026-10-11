@@ -127,3 +127,14 @@ oracle; direct native assignments fold only unobservable exchange intermediates.
 LOC/BANKSET/ADDRWD/CYR/EDOP/Q/bank selectors are explicitly outside the native
 41-word arithmetic contract. Genuine integration cases execute the original
 interpreter entry; see SCALING.md for dispatch and interrupt adaptations.
+
+## PDDL THISTPIP
+
+| Historical source | Native translation | Boundary |
+|---|---|---|
+| LUNAR_LANDING_GUIDANCE_EQUATIONS:1001..1004, pending PDDL / THISTPIP | `p66_push_timestamp` after scaling | DANZIG 6061 before DSU PIPTIME |
+| INTERPRETER:550..575, PDDL / ENDVPUSH | Six-word save, DP timestamp load, explicit exchange debris | Entry PDDL 6523, MODE=-1; exit MODE=+0 |
+| ERASABLE_ASSIGNMENTS:434 onward, VAC payloads; FIXLOC/PUSHLOC | `p66_pushdown` with 43 words and two pointer/base words | Five supported VAC mappings, six available words required |
+
+Native bounds rejection is an explicit scope adaptation, not an original alarm.
+PUSHDOWN.md lists register/scratch preservation and excluded interpreter control.

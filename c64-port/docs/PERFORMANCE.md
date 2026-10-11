@@ -361,3 +361,29 @@ Hardware-stack extent is 26 bytes below entry, 40 including the 14-byte ROM
 frame; software-stack extent is 187 bytes including diagnostic fixtures.
 `scale-timing.json`, the exact PRG/map and VICE logs/dumps are retained. Earlier
 seven PRGs and their measured evidence are unchanged. SCALING.md defines scope.
+
+## PDDL THISTPIP diagnostic
+
+The ninth standalone PRG is 46543 file bytes / 46541 loaded bytes at
+$0801..$bdcd, SYS $080d. Text is 11925 bytes, read-only data 34604 (34400 are
+200 full 86-word expectations), BSS 172 and noinit one byte. Image plus
+BSS/noinit is 46714 bytes, ending at $be7a. It fits stock C64 RAM with 32 imaginary
+ZP registers and no extra compiler ZP, heap or floating point. The owned VAC
+payload/FIXLOC/PUSHLOC add 90 bytes; combined modeled state is 172 bytes.
+
+| Guarded sample | PAL cycles | Time |
+|---|---:|---:|
+| PDDL at VAC start | 912 | 0.926 ms |
+| PDDL at final six-word slot | 1028 | 1.043 ms |
+| PDDL in fifth VAC | 1051 | 1.067 ms |
+| PDDL after scaled skip input | 1033 | 1.048 ms |
+| Full RODCOMP through PDDL, case 188 step 0 | 20790 | 21.101 ms |
+
+Intervals include marker/call and VIC bus overhead, with setup/checks outside.
+The sampled full prefix exceeds one PAL frame under masking; a live job still
+requires an exclusion/source-rate and scheduling budget. No WCET or deadline
+bound is inferred. Hardware-stack extent is 32 bytes below entry (46 including
+the 14-byte ROM frame); software-stack extent is 472 bytes, including full-state
+and rejection fixtures. Earlier eight PRGs and their measured evidence are
+unchanged; diagnostic images are not combined into a flight image. Exact
+binary/map, logs/dumps and `push-timing.json` are retained. See PUSHDOWN.md.

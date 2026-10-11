@@ -163,3 +163,26 @@ sanitize-scale: | build
 c64-scale: build/scale.prg
 build/scale.prg: $(SCALE_CORE) $(SCALE_TEST) platform/c64/scale_diagnostic.c $(SCALE_HEADERS) tests/scale_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/scale.map $(SCALE_CORE) $(SCALE_TEST) platform/c64/scale_diagnostic.c -o $@
+
+PUSH_CORE = $(SCALE_CORE) src/guidance_push.c
+PUSH_INPUT = $(SCALE_INPUT) tests/push_cases.c
+PUSH_HEADERS = $(SCALE_HEADERS) include/guidance_push.h tests/push_cases.h
+all: build/push-snapshot
+build/push-snapshot: $(PUSH_CORE) $(PUSH_INPUT) platform/host/push_snapshot.c $(PUSH_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(PUSH_CORE) $(PUSH_INPUT) platform/host/push_snapshot.c -o $@
+
+PUSH_TEST = $(PUSH_INPUT) tests/push_check.c
+all: build/test-push
+test: test-push
+.PHONY: test-push sanitize-push c64-push
+test-push: build/test-push
+	./build/test-push
+build/test-push: $(PUSH_CORE) $(PUSH_TEST) tests/test_push.c $(PUSH_HEADERS) tests/push_vectors.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(PUSH_CORE) $(PUSH_TEST) tests/test_push.c -o $@
+sanitize: sanitize-push
+sanitize-push: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(PUSH_CORE) $(PUSH_TEST) tests/test_push.c -o build/test-push-sanitize
+	./build/test-push-sanitize
+c64-push: build/push.prg
+build/push.prg: $(PUSH_CORE) $(PUSH_TEST) platform/c64/push_diagnostic.c $(PUSH_HEADERS) tests/push_vectors.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/push.map $(PUSH_CORE) $(PUSH_TEST) platform/c64/push_diagnostic.c -o $@

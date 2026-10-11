@@ -201,3 +201,12 @@ are explicit and stop before PDDL. Interpreter dispatch registers and original
 RELINT are adapted to native call/ownership and restoring platform guards.
 There is no decoded instruction stream or implicit Executive-context copy.
 SCALING.md defines all modeled and omitted state and the measured timing limits.
+
+`src/guidance_push.c` translates vector PDDL THISTPIP without interpreter decoding.
+Its 90-byte `p66_pushdown` owns 43 VAC payload words and raw FIXLOC/PUSHLOC, bringing
+combined preparation/scaling/pushdown state to 172 bytes. The bounded call saves
+six words, loads DP MPAC and retains old VAC data as exchange debris in MPAC/A/L.
+It validates vector mode, supported VAC base and six-word capacity before mutation;
+this is a native scope restriction. Objects are distinct from Executive storage
+until an explicit job adapter binds ownership. PUSHDOWN.md defines the complete
+state and control/interrupt adaptations and the stop before DSU PIPTIME.

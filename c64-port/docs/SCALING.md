@@ -117,7 +117,6 @@ needs an explicit producer exclusion and scheduling budget before integration.
 Hardware-stack sentinel extent is 26 bytes below entry (40 with the 14-byte ROM
 frame); the diagnostic's software-stack extent is 187 bytes, including fixtures.
 
-Next: translate `PDDL THISTPIP`, giving the six scaled vector words explicit
-pushdown ownership and loading the timestamp into DP MPAC. Verify retained
-scratch, MODE, A/L and pointer effects independently before continuing with
-`DSU PIPTIME` or installing a mapped guidance job.
+PDDL THISTPIP is implemented in the following milestone; PUSHDOWN.md defines
+its VAC ownership and timestamp/exchange effects. This scaling API still stops
+before PDDL. DSU PIPTIME is the next pending operation.

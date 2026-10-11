@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/push.prg from 0801 to BDCD (B5CD bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)   41/$029,  58/$3a
+.C:3008  8D 88 C0    STA $C088      - A:10 X:00 Y:00 SP:ed ..-..I..   48395713
+Stopwatch reset to 0.
+#1 (Stop on store c088)   56/$038,  25/$19
+.C:3028  8D 88 C0    STA $C088      - A:20 X:00 Y:00 SP:ed ..-..I..        912
+Stopwatch:        912
+#1 (Stop on store c088)   94/$05e,  62/$3e
+.C:3008  8D 88 C0    STA $C088      - A:11 X:01 Y:25 SP:ed ..-..I..     219559
+Stopwatch reset to 0.
+#1 (Stop on store c088)  111/$06f,  19/$13
+.C:3028  8D 88 C0    STA $C088      - A:21 X:01 Y:00 SP:ed ..-..I..       1028
+Stopwatch:       1028
+#1 (Stop on store c088)  201/$0c9,  57/$39
+.C:3008  8D 88 C0    STA $C088      - A:12 X:02 Y:3B SP:ed ..-..I..     222952
+Stopwatch reset to 0.
+#1 (Stop on store c088)  218/$0da,  37/$25
+.C:3028  8D 88 C0    STA $C088      - A:22 X:02 Y:00 SP:ed ..-..I..       1051
+Stopwatch:       1051
+#1 (Stop on store c088)  102/$066,   5/$05
+.C:3008  8D 88 C0    STA $C088      - A:13 X:03 Y:07 SP:ed ..-..I..     249239
+Stopwatch reset to 0.
+#1 (Stop on store c088)  118/$076,  30/$1e
+.C:3028  8D 88 C0    STA $C088      - A:23 X:03 Y:00 SP:ed ..-..I..       1033
+Stopwatch:       1033
+#1 (Stop on store c088)  293/$125,  33/$21
+.C:3008  8D 88 C0    STA $C088      - A:14 X:04 Y:00 SP:ed ..-..I.C     228277
+Stopwatch reset to 0.
+#1 (Stop on store c088)  311/$137,  33/$21
+.C:3028  8D 88 C0    STA $C088      - A:24 X:04 Y:00 SP:ed ..-..I..      20790
+Stopwatch:      20790
+#2 (Stop on store c080)  139/$08b,  10/$0a
+.C:319c  8E 80 C0    STX $C080      - A:00 X:A5 Y:08 SP:ed N.-.....     481675
+>C:c080  a5 00 00 c8  00 03 ac 56  24                         .......V$
+Saving file `/workspace/Apollo-11/c64-port/build/push-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/push-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/push-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 PDDL THISTPIP         
+0518  200 COMPLETE ASSEMBLY STATES PASS       
+0540  VECTOR SAVES AND TIMESTAMP LOADS PASS   
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

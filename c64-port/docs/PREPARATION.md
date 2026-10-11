@@ -118,3 +118,6 @@ make c64-prepare MOS_CC=/path/to/mos-c64-clang
 python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
+
+The later PDDL THISTPIP operation now saves the scaled vector and loads the
+timestamp; PUSHDOWN.md defines its owned VAC and native scope adaptation.

@@ -125,13 +125,28 @@ Acceptance for one bounded vector operation is met. SCALING.md defines the
 numeric boundary and omitted interpreter machine-control state. A flight deadline
 and complete P66 interpreter continuation are not established.
 
-## Next bounded milestone: PDDL THISTPIP
+## Completed: PDDL THISTPIP
 
-Trace the pending PDDL operation from DANZIG after scaling. Give the six scaled
-vector words explicit native pushdown ownership, load THISTPIP into DP MPAC,
-and verify MODE, pointer, scratch and A/L effects against original instructions.
-Then extend toward DSU PIPTIME. A mapped guidance job and live producer need
-explicit exclusion and measured scheduling budgets before integration.
+- An owned 43-word VAC payload plus raw FIXLOC/PUSHLOC preserve the six scaled
+  vector words, timestamp load, DP MODE and MPAC/A/L exchange debris.
+- All five VACs at all 38 legal offsets match original assembly: 2323 cases /
+  3496 complete 86-word checkpoints, with three retained four-push histories.
+- Nine host/sanitizer suites pass; the ninth C64 PRG checks 200 full final states.
+- Native scope rejection leaves owned objects unchanged. Total state is 172 bytes;
+  PDDL-only samples reach 1.067 ms, sampled full prefix 21.101 ms.
+
+Acceptance for this bounded operation is met. PUSHDOWN.md defines ownership and
+the stop before DSU. Interpreter resume, live producers and flight deadlines
+remain future work; the native VAC is not implicitly bound to an Executive job.
+
+## Next bounded milestone: DSU PIPTIME
+
+Trace elapsed PIPA time subtraction from the loaded timestamp. Translate the
+DP subtract with signed-zero, carry, scratch and register behavior; verify the
+boundary before STORE 30D against the unchanged original instructions, while
+retaining all saved vector/VAC words. Extend to storage and later division only
+after that bounded arithmetic contract is established. Live job integration
+still needs explicit exclusion and measured scheduling budgets.
 
 ## Remaining design questions
 

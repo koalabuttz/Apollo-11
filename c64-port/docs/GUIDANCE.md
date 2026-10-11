@@ -116,3 +116,6 @@ retained unchanged. No hardware C64 or full landing trajectory has been tested.
 
 The later VXSC KPIP1 operation is now implemented independently; SCALING.md
 defines its numeric and interpreter-entry boundaries. This rate API is unchanged.
+
+The later PDDL THISTPIP operation now saves the scaled vector and loads the
+timestamp; PUSHDOWN.md defines its owned VAC and native scope adaptation.

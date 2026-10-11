@@ -416,3 +416,30 @@ All 119 prior evidence files retain their hashes; historical files remain
 unchanged. Stack extents are finite diagnostic observations, not maximum call
 bounds. The largest timed sample is 26.122 ms under masking; this milestone
 makes no live P66 scheduling or hardware feasibility claim.
+
+## Tenth milestone: PDDL THISTPIP
+
+The independent adapter executes unchanged PDDL bytes directly and through
+original RODCOMP/interpreter dispatch, with two integrated boundaries: after
+scaling and after PDDL before DSU. It reads all 86 modeled physical words,
+including FIXLOC/PUSHLOC and the entire selected 43-word VAC. Operand/bank/LOC,
+MODE, pointer advance, RELINT and preparation/VAC guards are checked. An explicit
+coverage assertion requires all five VAC mappings at all 38 legal offsets.
+2323 cases / 3496 checkpoints match, including a 12 by 12 timestamp word-edge
+matrix, both skip-input sign families, random full VACs and retained histories.
+
+| Command | Result | Evidence |
+|---|---|---|
+| `python3 tools/prepare_reference.py` | PASS; same 11 source identities and rope | `push-fixture.log` |
+| `make test` | PASS; nine host suites, unchanged-on-scope-rejection checks | `push-host-tests.log` |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; ASan/UBSan, nine suites | `push-sanitize.log` |
+| `make differential REFERENCE=/path/to/fixture` | PASS; prior snapshots plus 3496 complete pushdown checkpoints | `push-differential.log`, `push-*.snapshots`, `push-reference.trace` |
+| `python3 tools/freeze_push.py` | 200 full final expectations after independent equality | `tests/push_vectors.h` |
+| `make c64-push MOS_CC=/path/to/mos-c64-clang` | PASS; ninth standalone PRG | `push-c64-build.log`, `push.prg`, `push.map` |
+| `python3 tools/push_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 200 full final states and three four-push histories, restoring I and capacity rejection | `push-vice-result.txt`, monitor/log/mailbox/stack dumps, `push-timing.json` |
+
+Snapshot SHA256:
+`33fdd2b7febd6827521fc95b72f27732ab1653786a27b80fd020e567bf594f3c`.
+Earlier 138 evidence hashes, all original files and the assembled rope remain
+unchanged. PUSHDOWN.md defines the native scope check and omitted machine-control
+state. Full-prefix timing is a finite 21.101 ms sample, not a live guidance deadline.

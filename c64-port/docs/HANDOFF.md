@@ -1,4 +1,4 @@
-# P66 VXSC KPIP1 scaling milestone handoff
+# P66 PDDL THISTPIP milestone handoff
 
 ## Repository
 
@@ -25,6 +25,7 @@ make c64-restart MOS_CC=/path/to/mos-c64-clang
 make c64-guidance MOS_CC=/path/to/mos-c64-clang
 make c64-prepare MOS_CC=/path/to/mos-c64-clang
 make c64-scale MOS_CC=/path/to/mos-c64-clang
+make c64-push MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
@@ -41,9 +42,23 @@ python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/scale_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/push_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
 ## Completed work
+
+The tenth milestone translates PDDL THISTPIP after scaling. It saves six vector
+words in an owned 43-word VAC payload, advances PUSHLOC, loads the timestamp
+and preserves original MPAC/A/L exchange debris with MODE=DP. All 86 modeled
+words match 3496 original-assembly checkpoints over 2323 cases, including all
+five VACs at all 38 legal offsets and three four-push retained histories. All
+nine host/sanitizer suites pass. The ninth C64 PRG checks 200 complete final
+states with zero failures, restoring I and verifying native capacity rejection.
+Total state is 172 bytes; sampled PDDL alone reaches 1051 cycles (1.067 ms),
+and the sampled full prefix through PDDL takes 20790 (21.101 ms). Earlier 138
+evidence files and historical sources remain unchanged. PUSHDOWN.md documents
+FIXLOC/PUSHLOC ownership, the native scope check and stop before DSU PIPTIME.
 
 The ninth milestone translates VXSC KPIP1 into native partial-product arithmetic
 and signed AGC rounding, stopping at DANZIG before PDDL. All 41 modeled words
@@ -170,7 +185,7 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 ## Limits and next milestone
 
 This cooperative basic-job translation includes native demonstration routines
-and P66 preparation through its first VXSC KPIP1 operation. Complete flight OS and guidance workloads
+and P66 preparation through PDDL THISTPIP. Complete flight OS and guidance workloads
 remain future work. Callbacks return to a trampoline; persistent values belong
 in MPAC/VAC, not suspended C stacks.
 An unmapped address latches a runtime fault. No rollback is claimed; bounded
@@ -184,12 +199,12 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: translate PDDL THISTPIP, preserving the six scaled words in an explicit
-native pushdown representation and verifying timestamp/MODE/scratch effects.
+Next: translate DSU PIPTIME, preserving DP signed-zero/carry effects while
+forming elapsed PIPA time; verify the boundary before STORE 30D.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
 Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST,
-bounded Type C job recovery, pre-interpreter P66 preparation and VXSC KPIP1 is met.
+bounded Type C job recovery, pre-interpreter P66 preparation, VXSC KPIP1 and PDDL THISTPIP is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host
