@@ -1,0 +1,14 @@
+Independent read-only source review by /root/p66_source_map.
+Native source SHA256: 9d234f6dc2d7d074130a3a485c8995b1aeca90378c3720fbe052b8637da8c532
+Native header SHA256: 49f7d62fd17b37e3585cf58fb14ee1944af28326ed9c09a42c7e2702c4550cf9
+
+Final review found no discrepancy within the declared actual caller, VAC,
+producer-exclusion and NEWJOB+0 domains. Original BOV CCS makes +0 fall
+through DANZIG, either nonzero sign branch through TS diminished OVFIND,
+and -0 skip TS while branching; native overflow_branch matches. Reverse-DAS
+Y/Z/X exchanges and the OVERFLOW signed BUF/low-carry/high-TS OVFIND/Q3
+chain match original BVSU. PDVL stack old-Z-minor L, fixed half-unit
+projection, VSL2, LM R-bank versus CM VAC, UNIT pending BOV, both first-BOV
+outcomes and final true NEWOPS/null tuple agree. This is source inspection,
+not a repeated exhaustive replay. Both containing antenna files remain
+partial; subsequent angle/display and external alarm bodies are not credited.

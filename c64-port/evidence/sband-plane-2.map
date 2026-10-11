@@ -1,0 +1,188 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      22       22       6e     1 .zp
+      22       22       6e     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.zp.noinit)
+     80d      80d     8352     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67      32f     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.reverse_component)
+     a67      a67      32f     1                 reverse_component
+     d96      d96     15e8     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.sband_vector_projection_fixed)
+     d96      d96     15e8     1                 sband_vector_projection_fixed
+    237e     237e      2f8     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.product)
+    237e     237e      2f8     1                 product
+    2676     2676       e2     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.add_pair)
+    2676     2676       e2     1                 add_pair
+    2758     2758      215     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.round_product)
+    2758     2758      215     1                 round_product
+    296d     296d      385     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.sband_shift_left)
+    296d     296d      385     1                 sband_shift_left
+    2cf2     2cf2      169     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.invokes_overflow)
+    2cf2     2cf2      169     1                 invokes_overflow
+    2e5b     2e5b      3e7     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.p66_vector_shift_left)
+    2e5b     2e5b      3e7     1                 p66_vector_shift_left
+    3242     3242      533     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.rtb_unit_phase)
+    3242     3242      533     1                 rtb_unit_phase
+    3775     3775      1c5     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.rtb_unit_begin)
+    3775     3775      1c5     1                 rtb_unit_begin
+    393a     393a      11f     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.rtb_vector)
+    393a     393a      11f     1                 rtb_vector
+    3a59     3a59       c6     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.vector)
+    3a59     3a59       c6     1                 vector
+    3b1f     3b1f      18d     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.pair)
+    3b1f     3b1f      18d     1                 pair
+    3cac     3cac      c3d     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.p66_unit_root_phase)
+    3cac     3cac      c3d     1                 p66_unit_root_phase
+    48e9     48e9     1345     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.p66_unit_finish_phase)
+    48e9     48e9     1345     1                 p66_unit_finish_phase
+    5c2e     5c2e      1f4     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.normalized_ratio)
+    5c2e     5c2e      1f4     1                 normalized_ratio
+    5e22     5e22      a5b     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.p66_length_square_phase)
+    5e22     5e22      a5b     1                 p66_length_square_phase
+    687d     687d      227     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.square)
+    687d     687d      227     1                 square
+    6aa4     6aa4      113     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.half_argument)
+    6aa4     6aa4      113     1                 half_argument
+    6bb7     6bb7      132     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.triple_left)
+    6bb7     6bb7      132     1                 triple_left
+    6ce9     6ce9      1f8     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.divide)
+    6ce9     6ce9      1f8     1                 divide
+    6ee1     6ee1       c0     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.agc_multiply)
+    6ee1     6ee1       c0     1                 agc_multiply
+    6fa1     6fa1      1bc     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.agc_double_add)
+    6fa1     6fa1      1bc     1                 agc_double_add
+    715d     715d     1558     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.main)
+    715d     715d     1558     1                 main
+    86b5     86b5        6     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.exit)
+    86b5     86b5        6     1                 exit
+    86bb     86bb       13     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.__lshrhi3)
+    86bb     86bb       13     1                 __lshrhi3
+    86ce     86ce       40     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.__umodqi3)
+    86ce     86ce       40     1                 __umodqi3
+    870e     870e       ae     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.__umodhi3)
+    870e     870e       ae     1                 __umodhi3
+    87bc     87bc      2b2     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.__divmodsi4)
+    87bc     87bc      2b2     1                 __divmodsi4
+    8a6e     8a6e       34     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.memcpy)
+    8a6e     8a6e       34     1                 memcpy
+    8aa2     8aa2       22     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.__memset)
+    8aa2     8aa2       22     1                 __memset
+    8ac4     8ac4       34     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.__mulhi3)
+    8ac4     8ac4       34     1                 __mulhi3
+    8af8     8af8       67     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.text.__mulsi3)
+    8af8     8af8       67     1                 __mulsi3
+    8b5f     8b5f        0     1         __init_array_start = .
+    8b5f     8b5f        0     1         __init_array_end = .
+    8b5f     8b5f        0     1         __fini_array_start = .
+    8b5f     8b5f        0     1         __fini_array_end = .
+    8b5f     8b5f      f03     1 .rodata
+    8b5f     8b5f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    8b5f     8b5f        0     1                 __set_v
+    8b60     8b60       fa     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.sband_plane_reference_dictionary)
+    8b60     8b60       fa     1                 sband_plane_reference_dictionary
+    8c5a     8c5a       42     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.sband_plane_reference_offsets)
+    8c5a     8c5a       42     1                 sband_plane_reference_offsets
+    8c9c     8c9c      d27     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.sband_plane_reference_stream)
+    8c9c     8c9c      d27     1                 sband_plane_reference_stream
+    99c3     99c3        8     1         <internal>:(.rodata.cst8)
+    99cb     99cb        6     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.sband_plane.positions)
+    99cb     99cb        6     1                 sband_plane.positions
+    99d1     99d1        c     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.sband_plane.unity)
+    99d1     99d1        c     1                 sband_plane.unity
+    99dd     99dd        c     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.sband_plane.unitz)
+    99dd     99dd        c     1                 sband_plane.unitz
+    99e9     99e9        3     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.p66_vector_shift_right.offsets)
+    99e9     99e9        3     1                 p66_vector_shift_right.offsets
+    99ec     99ec        6     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.rtb_unit_phase.entry)
+    99ec     99ec        6     1                 rtb_unit_phase.entry
+    99f2     99f2       70     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.rodata.fields)
+    99f2     99f2       70     1                 fields
+    9a62     9a62        0     1 .data
+    9a62     9a62        0     1         __data_start = .
+    9a62     9a62        0     1         __data_end = .
+    9a62     9a62        0     1 __data_load_start = LOADADDR(.data)
+    9a62     9a62        0     1 __data_size = SIZEOF(.data)
+    9a62     9a62     2000     1 .bss
+    9a62     9a62        0     1         __bss_start = .
+    9a62     9a62     1000     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.bss.state)
+    9a62     9a62     1000     1                 state
+    aa62     aa62     1000     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.bss.expected)
+    aa62     aa62     1000     1                 expected
+    ba62     ba62        0     1         __bss_end = .
+    ba62     ba62        0     1 __bss_size = SIZEOF(.bss)
+    ba62     ba62       fb     1 .noinit
+    ba62     ba62       fb     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.noinit..Lstatic_stack)
+    bb5d     bb5d        0     1         __heap_start = ALIGN(., 2)
+    bb5d     bb5d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/sband-plane-2.prg.lto.o:(.llvm_sympart)
+       0        0      d00     4 .symtab
+       0        0      d00     4         <internal>:(.symtab)
+       0        0       76     1 .shstrtab
+       0        0       76     1         <internal>:(.shstrtab)
+       0        0      829     1 .strtab
+       0        0      829     1         <internal>:(.strtab)

@@ -1,0 +1,250 @@
+{
+  "docs/NATIVE-SBAND-PLANE.md": {
+    "sha256": "36a65d868e549df221eefadc7aa623b3d27d704286cab27abf70aaa0b445015d",
+    "bytes": 3717
+  },
+  "evidence/sband-plane-0-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-plane-0-monitor.log": {
+    "sha256": "28f73743c91da2bedaf1ef2630688646260cc736371ceee96b872c7e19ccdcd6",
+    "bytes": 782
+  },
+  "evidence/sband-plane-0-vice-results.json": {
+    "sha256": "7f10f62a53ab75ee0c0ca396f104895c2bb3527f74c3e9e7217851aa89bff7b0",
+    "bytes": 243
+  },
+  "evidence/sband-plane-0-vice.log": {
+    "sha256": "27b446bbb18ef22a5a484ace876f627a13eb271dfb9081839e489dac172f3ee1",
+    "bytes": 6511
+  },
+  "evidence/sband-plane-0.map": {
+    "sha256": "4be4302b4916f093b83a2c442ed2ca60a063e85e7386bec7b0e196351409422c",
+    "bytes": 15035
+  },
+  "evidence/sband-plane-0.prg": {
+    "sha256": "57aa5c501ce20f48727aba6d11c3b47d66f5845164c63a47782afff72f908537",
+    "bytes": 37446
+  },
+  "evidence/sband-plane-1-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-plane-1-monitor.log": {
+    "sha256": "28dc56f71729bdb0f73f6fd8ca490ed8d21db9150561709df7e7d15920368ec3",
+    "bytes": 782
+  },
+  "evidence/sband-plane-1-vice-results.json": {
+    "sha256": "f119dd280c90e8a97174b0f521244485598e90d086d208309ca0bdcdac56e3ca",
+    "bytes": 243
+  },
+  "evidence/sband-plane-1-vice.log": {
+    "sha256": "f6bb0b7dd103bebe522de5713d5fdb39baaad4985e13db572411713227ad4f2e",
+    "bytes": 6510
+  },
+  "evidence/sband-plane-1.map": {
+    "sha256": "a5832b52ae57a0c8f814605abbf58c3a6ccbf11c5c73c272dcb458114e3b2cbc",
+    "bytes": 15035
+  },
+  "evidence/sband-plane-1.prg": {
+    "sha256": "3e2c979f3afb2ab0b700cd930123b094ae6054935aae9e4c62fe8bdee5166344",
+    "bytes": 37901
+  },
+  "evidence/sband-plane-2-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-plane-2-monitor.log": {
+    "sha256": "66aa23b14ee0ce28f708edcb07062c3a4f1c44cea605ebde16d357d92d28b981",
+    "bytes": 782
+  },
+  "evidence/sband-plane-2-vice-results.json": {
+    "sha256": "54cb5ba14eaf771f82d813316ffa6a3e6fed21c9dfc60a5c4ca84ca150f5ffd5",
+    "bytes": 243
+  },
+  "evidence/sband-plane-2-vice.log": {
+    "sha256": "dc35239dae2f36967fc1c4fba44285d39a0ccdf75adc893e3774d2fb2800f213",
+    "bytes": 6508
+  },
+  "evidence/sband-plane-2.map": {
+    "sha256": "0752a521876c4a9031b43b990fa4f322973ffe054145682eda9aa0d06e7ecfca",
+    "bytes": 15035
+  },
+  "evidence/sband-plane-2.prg": {
+    "sha256": "78757e8d4cfa24802ded59eb7c2370d92a8e21dfedc32aaf2a71fcb1137a15e5",
+    "bytes": 37475
+  },
+  "evidence/sband-plane-3-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-plane-3-monitor.log": {
+    "sha256": "71c78934ac0626a272002f6a29e0dd47779cdb7ee9a0f7a6d9e7e0ec0b6406b8",
+    "bytes": 782
+  },
+  "evidence/sband-plane-3-vice-results.json": {
+    "sha256": "744c3b4ca627dd361f63214e499232b6b782b5dcdd981555590cdb1bf352e9ad",
+    "bytes": 243
+  },
+  "evidence/sband-plane-3-vice.log": {
+    "sha256": "bf5ebf5465b383e15170a11fb09963d65dc20b3b9fcdef17bc87a3b838dae604",
+    "bytes": 6509
+  },
+  "evidence/sband-plane-3.map": {
+    "sha256": "8ddcd0826b7c4e01c067e6850aaa6ac1d739d7dd194e2c7c9b275d11bcfa3225",
+    "bytes": 15035
+  },
+  "evidence/sband-plane-3.prg": {
+    "sha256": "5c2196cf73614e1d82c1534e621eb015c735779a7835c345b657b38dee4d1e96",
+    "bytes": 37912
+  },
+  "evidence/sband-plane-frozen-validation.log": {
+    "sha256": "f358ff4402186ff365e0abee2d51d963541e2dbead874bd57e40ad2a4ba905cf",
+    "bytes": 194
+  },
+  "evidence/sband-plane-host-validation.log": {
+    "sha256": "4f4fcff653626d7bc0388934dbcda9cf7bd3904fb6e08e11da3e02e8064fee21",
+    "bytes": 909
+  },
+  "evidence/sband-plane-independent-review.txt": {
+    "sha256": "6833131886110649744e91ba477cebf7dfc987f314724e4d255563636096cc1c",
+    "bytes": 973
+  },
+  "evidence/sband-plane-native-results.json": {
+    "sha256": "e2bc152e793e7509b554080eaae7fbb17559a8bbaef19b1848137761e54d1102",
+    "bytes": 166
+  },
+  "evidence/sband-plane-proof.json": {
+    "sha256": "d2d8f4eca819e097af04226e270a9918b2afb656461556191cd895da8797b049",
+    "bytes": 3797
+  },
+  "evidence/sband-plane-sanitize-results.json": {
+    "sha256": "e2bc152e793e7509b554080eaae7fbb17559a8bbaef19b1848137761e54d1102",
+    "bytes": 166
+  },
+  "evidence/sband-plane-sanitize-validation.log": {
+    "sha256": "dab42681d3e7a70040e0b690e6101d06f586d93ba3d8990eb52c4de47aad7702",
+    "bytes": 652
+  },
+  "evidence/sband-plane-source-map.json": {
+    "sha256": "5ac3f02161a0784729b501b1b3c55195e2def6365f7e068076dca4a5c8294882",
+    "bytes": 11807
+  },
+  "evidence/sband-plane-source.snapshots.bin.xz": {
+    "sha256": "2234027f2b7b017bd77917cddbf5a633d853791b2384fa2d87c17e4621a48f73",
+    "bytes": 35287900
+  },
+  "evidence/sband-plane-target-results.json": {
+    "sha256": "b0cafd4c32b473f5b3cefd32c123d53941d28d10cbb30585b59d82515094e766",
+    "bytes": 1436
+  },
+  "evidence/sband-plane-target-source.snapshots.bin.xz": {
+    "sha256": "95a207b3ecc7d60b330b49a5ecf6d529ec6f26a6178aa15fa02929951a043de2",
+    "bytes": 124236
+  },
+  "evidence/sband-plane-target-validation.log": {
+    "sha256": "c96a30a54dcc26e8634429886f84db60ce85afc68c259fda1fd35196c61499df",
+    "bytes": 988
+  },
+  "evidence/sband-plane-vice-results.json": {
+    "sha256": "5efd4b1125394f3f8abf0ed683ab1a3d12dc4b63be64a458a1829cc52bc2c83c",
+    "bytes": 1238
+  },
+  "include/sband_plane.h": {
+    "sha256": "49f7d62fd17b37e3585cf58fb14ee1944af28326ed9c09a42c7e2702c4550cf9",
+    "bytes": 707
+  },
+  "platform/c64/sband_plane_diagnostic.c": {
+    "sha256": "019091905c4dbfd94a8ab16e3fe4d2cf78e998f6131317b9bfe2bce3786ad0ca",
+    "bytes": 436
+  },
+  "src/sband_plane.c": {
+    "sha256": "9d234f6dc2d7d074130a3a485c8995b1aeca90378c3720fbe052b8637da8c532",
+    "bytes": 4696
+  },
+  "tests/sband_plane_cases.c": {
+    "sha256": "b04885c9be527f7d4ed3ea5185a92400c435af2a0c982a15ec6950bf06f3d954",
+    "bytes": 1927
+  },
+  "tests/sband_plane_cases.h": {
+    "sha256": "ff526eb01e93ed6fd9ef0461877a6b3cec1632e0c462de6dde898f9bee43cba7",
+    "bytes": 222
+  },
+  "tests/sband_plane_target.c": {
+    "sha256": "bc123bf5ad4fcb9c679969375525f064fc027f6832399cbe7db1cd481ff7e377",
+    "bytes": 1710
+  },
+  "tests/sband_plane_target.h": {
+    "sha256": "1b947d6cd2996e057c40a1c6d751fb6ec81c251b397150506d2f314028946a37",
+    "bytes": 141
+  },
+  "tests/sband_plane_vectors.h": {
+    "sha256": "d6efcf6a83e7f7c0ce062ff3bb49d0527914943c6c2f4e3b78834c15eda7ac3f",
+    "bytes": 52542
+  },
+  "tests/sband_plane_vectors_0.h": {
+    "sha256": "22cd9d75dcb1ff2a81257b6685704301e700767179af9831a08394903cc96f07",
+    "bytes": 12558
+  },
+  "tests/sband_plane_vectors_1.h": {
+    "sha256": "64af11d1d0384b02dbe54fa6cb6f7acfd4a29036ee47c458264dc0426d7c072f",
+    "bytes": 14860
+  },
+  "tests/sband_plane_vectors_2.h": {
+    "sha256": "dcfa4f78ea7aa6d7f75d8a6783cb404882aef57aae8f2905533c730ab75de6e7",
+    "bytes": 12737
+  },
+  "tests/sband_plane_vectors_3.h": {
+    "sha256": "7b2fda23adeec53056775028158702e95e18644059bb063184f5a84c0e23b233",
+    "bytes": 14895
+  },
+  "tests/test_sband_plane.c": {
+    "sha256": "86eeb8de10cc02cf33f6b87814479a8b92b39617b96d46b94f46b09b0709656a",
+    "bytes": 1648
+  },
+  "tools/freeze_sband_plane.py": {
+    "sha256": "daafcaa60b199f301c838f1d098de77b43cd2e0709796f842c6f1db15a2194fb",
+    "bytes": 2463
+  },
+  "tools/package_sband_plane.py": {
+    "sha256": "190cf0ebcae264360e2c911b4b1328127e770dcc0f6a11efa8a1816aed6187e5",
+    "bytes": 4319
+  },
+  "tools/sband_plane.mk": {
+    "sha256": "924162cee98898080c10ca091aac566c20d4ee953fa2dfb8136073b03fe83efe",
+    "bytes": 1149
+  },
+  "tools/sband_plane_compare.py": {
+    "sha256": "8aa9f088b7df3299ef8c7154f2d5ce5f4892980f828fc3f74178fc0c244a7488",
+    "bytes": 1858
+  },
+  "tools/sband_plane_inputs.c": {
+    "sha256": "63d68b34583cd58b613da5667fa5cb523280d0d685b0619828e7508ac4825ab5",
+    "bytes": 494
+  },
+  "tools/sband_plane_integration.mk": {
+    "sha256": "e13ab548bbb903cdcc21223624e418149afb295f99961865dc69c94b7b446ceb",
+    "bytes": 1663
+  },
+  "tools/sband_plane_port_host.py": {
+    "sha256": "f5353a7a86b99c962d1450221dc3bbab7d14936059f1f608f1d33c1be9b7e564",
+    "bytes": 614
+  },
+  "tools/sband_plane_reference.c": {
+    "sha256": "1603575f86904248a195a0ce3445db6ab76982a6ca2f529d247dd7e84cd802ad",
+    "bytes": 1946
+  },
+  "tools/sband_plane_snapshot.c": {
+    "sha256": "7e6e2169931a182820f2ef8e00c9d30d357f718d52c2fc9e5ca30cc9c24f1758",
+    "bytes": 654
+  },
+  "tools/sband_plane_source.py": {
+    "sha256": "927e7ae5c21cb10100ff67c5f8955b08a9a60a75225f2e156d01fe3f674fc8a0",
+    "bytes": 3444
+  },
+  "tools/sband_plane_vice_test.py": {
+    "sha256": "3e34488918228c03c54f359c5303b4e6800cb05410efefbfd9f820e82b5b7aff",
+    "bytes": 3193
+  }
+}

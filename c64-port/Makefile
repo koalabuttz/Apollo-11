@@ -1064,3 +1064,8 @@ test: lm-wake-image-port-test
 sanitize: lm-wake-image-port-sanitize
 
 include tools/imu_attitude_admission_integration.mk
+
+include tools/sband_plane_integration.mk
+all: build/sband-plane-integrated-stream
+test: test-sband-plane
+sanitize: sanitize-sband-plane
