@@ -908,3 +908,5 @@ include tools/sband_frame_integration.mk
 all: build/sband-frame-integrated-stream
 test: test-sband-frame
 sanitize: sanitize-sband-frame
+
+include tools/dsky_operator_release.mk

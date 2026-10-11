@@ -1407,3 +1407,7 @@ Translate source vector-left continuation and overflow correction against524288 
 ## Compose original antenna unit rotation and frame continuations
 
 Join actual source unit trigonometric matrix and vector shift continuations against49152 complete original native sanitizer states and192 C64 states with honest remaining antenna and ephemerides boundaries. See `docs/NATIVE-SBAND-FRAME.md`.
+
+## Compose original operator release and monitor unsuspension
+
+Qualify8192 complete original native sanitizer states and64 C64 states through actual saved-lock signed-zero skips wake returns and opaque unused Executive data. See `docs/DSKY-OPERATOR-RELEASE.md`.
