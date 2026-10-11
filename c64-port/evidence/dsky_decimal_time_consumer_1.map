@@ -1,0 +1,237 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     1881     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      f91     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.main)
+     843      843      f91     1                 main
+    17d4     17d4      11d     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.apollo_noun_table_read)
+    17d4     17d4      11d     1                 apollo_noun_table_read
+    18f1     18f1      3e9     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.apollo_noun_reader)
+    18f1     18f1      3e9     1                 apollo_noun_reader
+    1cda     1cda        6     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.exit)
+    1cda     1cda        6     1                 exit
+    1ce0     1ce0       13     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__lshrhi3)
+    1ce0     1ce0       13     1                 __lshrhi3
+    1cf3     1cf3       c4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__udivhi3)
+    1cf3     1cf3       c4     1                 __udivhi3
+    1db7     1db7       40     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__umodqi3)
+    1db7     1db7       40     1                 __umodqi3
+    1df7     1df7       ae     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__umodhi3)
+    1df7     1df7       ae     1                 __umodhi3
+    1ea5     1ea5       f8     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__udivmodhi4)
+    1ea5     1ea5       f8     1                 __udivmodhi4
+    1f9d     1f9d       34     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.memcpy)
+    1f9d     1f9d       34     1                 memcpy
+    1fd1     1fd1       22     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__memset)
+    1fd1     1fd1       22     1                 __memset
+    1ff3     1ff3       34     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__mulhi3)
+    1ff3     1ff3       34     1                 __mulhi3
+    2027     2027       67     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.text.__mulsi3)
+    2027     2027       67     1                 __mulsi3
+    208e     208e        0     1         __init_array_start = .
+    208e     208e        0     1         __init_array_end = .
+    208e     208e        0     1         __fini_array_start = .
+    208e     208e        0     1         __fini_array_end = .
+    208e     208e     2906     1 .rodata
+    208e     208e       18     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_nouns)
+    208e     208e       18     1                 fixed_data_lm_nouns
+    20a6     20a6       18     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    20a6     20a6       18     1                 fixed_data_cm_nouns
+    20be     20be       d8     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    20be     20be       d8     1                 fixed_data_lm_spans
+    2196     2196       30     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    2196     2196       30     1                 fixed_data_cm_spans
+    21c6     21c6       20     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_0)
+    21c6     21c6       20     1                 fixed_data_lm_0
+    21e6     21e6       24     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_1)
+    21e6     21e6       24     1                 fixed_data_lm_1
+    220a     220a        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_2)
+    220a     220a        4     1                 fixed_data_lm_2
+    220e     220e        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_3)
+    220e     220e        4     1                 fixed_data_lm_3
+    2212     2212        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_4)
+    2212     2212        4     1                 fixed_data_lm_4
+    2216     2216        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_5)
+    2216     2216        4     1                 fixed_data_lm_5
+    221a     221a        2     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_6)
+    221a     221a        2     1                 fixed_data_lm_6
+    221c     221c        a     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_7)
+    221c     221c        a     1                 fixed_data_lm_7
+    2226     2226        2     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_8)
+    2226     2226        2     1                 fixed_data_lm_8
+    2228     2228        6     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_9)
+    2228     2228        6     1                 fixed_data_lm_9
+    222e     222e        8     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_10)
+    222e     222e        8     1                 fixed_data_lm_10
+    2236     2236       2e     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_11)
+    2236     2236       2e     1                 fixed_data_lm_11
+    2264     2264        c     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_12)
+    2264     2264        c     1                 fixed_data_lm_12
+    2270     2270        2     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_13)
+    2270     2270        2     1                 fixed_data_lm_13
+    2272     2272        2     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_14)
+    2272     2272        2     1                 fixed_data_lm_14
+    2274     2274        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_15)
+    2274     2274        4     1                 fixed_data_lm_15
+    2278     2278        6     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_16)
+    2278     2278        6     1                 fixed_data_lm_16
+    227e     227e        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_17)
+    227e     227e        4     1                 fixed_data_lm_17
+    2282     2282        8     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_18)
+    2282     2282        8     1                 fixed_data_lm_18
+    228a     228a        c     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_19)
+    228a     228a        c     1                 fixed_data_lm_19
+    2296     2296       18     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_20)
+    2296     2296       18     1                 fixed_data_lm_20
+    22ae     22ae       10     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_21)
+    22ae     22ae       10     1                 fixed_data_lm_21
+    22be     22be       28     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_22)
+    22be     22be       28     1                 fixed_data_lm_22
+    22e6     22e6       2c     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_23)
+    22e6     22e6       2c     1                 fixed_data_lm_23
+    2312     2312        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_24)
+    2312     2312        4     1                 fixed_data_lm_24
+    2316     2316        4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_25)
+    2316     2316        4     1                 fixed_data_lm_25
+    231a     231a      1be     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_26)
+    231a     231a      1be     1                 fixed_data_lm_26
+    24d8     24d8       68     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_27)
+    24d8     24d8       68     1                 fixed_data_lm_27
+    2540     2540       24     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_28)
+    2540     2540       24     1                 fixed_data_lm_28
+    2564     2564      1e4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_29)
+    2564     2564      1e4     1                 fixed_data_lm_29
+    2748     2748      108     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_30)
+    2748     2748      108     1                 fixed_data_lm_30
+    2850     2850       80     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_31)
+    2850     2850       80     1                 fixed_data_lm_31
+    28d0     28d0       40     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_32)
+    28d0     28d0       40     1                 fixed_data_lm_32
+    2910     2910       20     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_33)
+    2910     2910       20     1                 fixed_data_lm_33
+    2930     2930       26     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_34)
+    2930     2930       26     1                 fixed_data_lm_34
+    2956     2956      458     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_35)
+    2956     2956      458     1                 fixed_data_lm_35
+    2dae     2dae      1c4     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_0)
+    2dae     2dae      1c4     1                 fixed_data_cm_0
+    2f72     2f72       7c     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_1)
+    2f72     2f72       7c     1                 fixed_data_cm_1
+    2fee     2fee       40     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_2)
+    2fee     2fee       40     1                 fixed_data_cm_2
+    302e     302e       20     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_3)
+    302e     302e       20     1                 fixed_data_cm_3
+    304e     304e       26     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_4)
+    304e     304e       26     1                 fixed_data_cm_4
+    3074     3074      1be     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_5)
+    3074     3074      1be     1                 fixed_data_cm_5
+    3232     3232      1f2     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_6)
+    3232     3232      1f2     1                 fixed_data_cm_6
+    3424     3424      410     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_7)
+    3424     3424      410     1                 fixed_data_cm_7
+    3834     3834        6     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_select.row)
+    3834     3834        6     1                 dsky_decimal_select.row
+    383a     383a        c     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_select.displacement)
+    383a     383a        c     1                 dsky_decimal_select.displacement
+    3846     3846       38     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.scale_cadr)
+    3846     3846       38     1                 scale_cadr
+    387e     387e        6     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_time_consumer_input.routines)
+    387e     387e        6     1                 dsky_decimal_time_consumer_input.routines
+    3884     3884       10     1         <internal>:(.rodata.cst16)
+    3894     3894       40     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_time_consumer_numbers)
+    3894     3894       40     1                 dsky_decimal_time_consumer_numbers
+    38d4     38d4       42     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_time_consumer_before_offsets)
+    38d4     38d4       42     1                 dsky_decimal_time_consumer_before_offsets
+    3916     3916      934     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_time_consumer_before_patch)
+    3916     3916      934     1                 dsky_decimal_time_consumer_before_patch
+    424a     424a       42     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_time_consumer_after_offsets)
+    424a     424a       42     1                 dsky_decimal_time_consumer_after_offsets
+    428c     428c      708     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.rodata.dsky_decimal_time_consumer_after_patch)
+    428c     428c      708     1                 dsky_decimal_time_consumer_after_patch
+    4994     4994        0     1 .data
+    4994     4994        0     1         __data_start = .
+    4994     4994        0     1         __data_end = .
+    4994     4994        0     1 __data_load_start = LOADADDR(.data)
+    4994     4994        0     1 __data_size = SIZEOF(.data)
+    4994     4994     2000     1 .bss
+    4994     4994        0     1         __bss_start = .
+    4994     4994     1000     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.bss.s)
+    4994     4994     1000     1                 s
+    5994     5994     1000     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.bss.before)
+    5994     5994     1000     1                 before
+    6994     6994        0     1         __bss_end = .
+    6994     6994        0     1 __bss_size = SIZEOF(.bss)
+    6994     6994        0     1 .noinit
+    6994     6994        0     1         __heap_start = ALIGN(., 2)
+    6994     6994        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_decimal_time_consumer_1.prg.lto.o:(.llvm_sympart)
+       0        0      ea0     4 .symtab
+       0        0      ea0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      a88     1 .strtab
+       0        0      a88     1         <internal>:(.strtab)

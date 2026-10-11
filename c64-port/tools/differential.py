@@ -632,3 +632,5 @@ subprocess.run([sys.executable,'tools/dsky_fraction_pair_differential.py',str(re
 subprocess.run([sys.executable,'tools/dsky_minutes_output_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_input_angle_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_decimal_time_consumer_differential.py',str(reference)],cwd=ROOT,check=True)

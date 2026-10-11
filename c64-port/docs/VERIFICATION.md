@@ -1912,3 +1912,7 @@ Translate eleven source IMU local transfer bodies per mission including STALL an
 ## Translate original operator degree and optics input scaling
 
 Translate actual degree and optical CDU input arithmetic banks and source range alarm handoffs against8192 complete original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-ANGLE.md`.
+
+## Compose original continuous decimal time and integer display consumers
+
+Run uninterrupted original DECDSP through HMS M/S and two-integer display source rows against57316 full original strict sanitizer checkpoints and704 C64 states retaining actual row CCS controls and canonical state. See `docs/DSKY-DECIMAL-TIME-CONSUMER.md`.

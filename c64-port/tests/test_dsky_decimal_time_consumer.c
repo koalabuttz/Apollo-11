@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "dsky_decimal_time_consumer_check.h"
+static apollo_overlay_state s,before;
+int main(void){uint16_t n,failures=0;uint8_t g;for(n=0;n<704u;++n)failures=(uint16_t)(failures+dsky_decimal_time_consumer_checkpoint(n,&s,&before));for(g=0;g<11u;++g){p66_bias_io io,old;enum dsky_nv_mission mission;enum dsky_decimal_consumer_route route=(enum dsky_decimal_consumer_route)3;uint8_t stage=0;dsky_decimal_time_consumer_input(&s,&io,0,&mission);switch(g){case 0:mission=(enum dsky_nv_mission)2;break;case 1:stage=22;break;case 2:s.words[01000]=0100000;break;case 3:io.superbank=0;break;case 4:io.interrupt_enabled=2;break;case 5:s.words[5]=0;break;case 6:s.words[4]=0;break;case 7:s.words[3]=1;break;case 8:s.words[6]^=1;break;case 9:s.words[7]=1;break;default:s.words[0140]=0;break;}before=s;old=io;if(dsky_decimal_time_consumer(&s,&io,mission,stage,&route)!=P66_BIAS_OUT_OF_SCOPE||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io)||route!=(enum dsky_decimal_consumer_route)3)++failures;}printf("704 full original time/integer consumer stages plus11 unchanged invalid guards: %s\n",failures?"FAIL":"PASS");return failures?1:0;}
