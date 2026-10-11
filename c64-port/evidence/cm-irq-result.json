@@ -1,0 +1,42 @@
+{
+  "mailbox": "a50000070004",
+  "command": [
+    "/workspace/toolchains/vice/usr/bin/x64sc",
+    "-default",
+    "-console",
+    "-pal",
+    "-warp",
+    "+sound",
+    "-kernal",
+    "/workspace/toolchains/roms/C64/kernal-901227-03.bin",
+    "-basic",
+    "/workspace/toolchains/roms/C64/basic-901226-01.bin",
+    "-chargen",
+    "/workspace/toolchains/roms/C64/chargen-901225-01.bin",
+    "-directory",
+    "/workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms",
+    "-initbreak",
+    "ready",
+    "-moncommands",
+    "/workspace/Apollo-11/c64-port/build/cm-irq.mon",
+    "-monlogname",
+    "/workspace/Apollo-11/c64-port/build/cm-irq-monitor.log",
+    "-monlog",
+    "-limitcycles",
+    "6000000000"
+  ],
+  "stack_extents": {
+    "hardware": 59,
+    "software": 1552,
+    "isolated": 19
+  },
+  "irq_cycles": [
+    2566,
+    2150,
+    2135,
+    2135,
+    2135,
+    2135,
+    1959
+  ]
+}

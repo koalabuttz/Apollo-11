@@ -1,0 +1,132 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     39f1     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        5     1         build/cm-irq-admission.prg.lto.o:(.init.250)
+     81d      81d        0     1                 shift
+     822      822        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     825      825        0     1                 __after_main
+     828      828        0     1         _fini = .
+     828      828        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82c      82c        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     82d      82d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     82d      82d        0     1                 __call_indir
+     830      830      3b8     1         build/cm-irq-admission.prg.lto.o:(.text.callback)
+     830      830      3b8     1                 callback
+     be8      be8      c9a     1         build/cm-irq-admission.prg.lto.o:(.text.service)
+     be8      be8      c9a     1                 service
+    1882     1882      e06     1         build/cm-irq-admission.prg.lto.o:(.text.cm_case_base)
+    1882     1882      e06     1                 cm_case_base
+    2688     2688        3     1         build/cm-irq-admission.prg.lto.o:(.text.noop)
+    2688     2688        3     1                 noop
+    268b     268b        3     1         build/cm-irq-admission.prg.lto.o:(.text.enter)
+    268b     268b        3     1                 enter
+    268e     268e        1     1         build/cm-irq-admission.prg.lto.o:(.text.leave)
+    268e     268e        1     1                 leave
+    268f     268f     1848     1         build/cm-irq-admission.prg.lto.o:(.text.main)
+    268f     268f     1848     1                 main
+    3ed7     3ed7        6     1         build/cm-irq-admission.prg.lto.o:(.text.exit)
+    3ed7     3ed7        6     1                 exit
+    3edd     3edd       4d     1         build/cm-irq-admission.prg.lto.o:(.text.putchar)
+    3edd     3edd       4d     1                 putchar
+    3f2a     3f2a       65     1         build/cm-irq-admission.prg.lto.o:(.text.puts)
+    3f2a     3f2a       65     1                 puts
+    3f8f     3f8f       c4     1         build/cm-irq-admission.prg.lto.o:(.text.__udivhi3)
+    3f8f     3f8f       c4     1                 __udivhi3
+    4053     4053       40     1         build/cm-irq-admission.prg.lto.o:(.text.__umodqi3)
+    4053     4053       40     1                 __umodqi3
+    4093     4093       ae     1         build/cm-irq-admission.prg.lto.o:(.text.__umodhi3)
+    4093     4093       ae     1                 __umodhi3
+    4141     4141       22     1         build/cm-irq-admission.prg.lto.o:(.text.__memset)
+    4141     4141       22     1                 __memset
+    4163     4163       34     1         build/cm-irq-admission.prg.lto.o:(.text.__mulhi3)
+    4163     4163       34     1                 __mulhi3
+    4197     4197       67     1         build/cm-irq-admission.prg.lto.o:(.text.__mulsi3)
+    4197     4197       67     1                 __mulsi3
+    41fe     41fe        0     1         __init_array_start = .
+    41fe     41fe        0     1         __init_array_end = .
+    41fe     41fe        0     1         __fini_array_start = .
+    41fe     41fe        0     1         __fini_array_end = .
+    41fe     41fe     30aa     1 .rodata
+    41fe     41fe       12     1         build/cm-irq-admission.prg.lto.o:(.rodata.cm_case_base)
+    4210     4210      152     1         <internal>:(.rodata.str1.1)
+    4362     4362        6     1         build/cm-irq-admission.prg.lto.o:(.rodata.no_source)
+    4362     4362        6     1                 no_source
+    4368     4368      800     1         build/cm-irq-admission.prg.lto.o:(.rodata.cm_irq_admission_hashes)
+    4368     4368      800     1                 cm_irq_admission_hashes
+    4b68     4b68       20     1         <internal>:(.rodata.cst32)
+    4b88     4b88     2720     1         build/cm-irq-admission.prg.lto.o:(.rodata.cm_irq_admission_full)
+    4b88     4b88     2720     1                 cm_irq_admission_full
+    72a8     72a8        0     1 .data
+    72a8     72a8        0     1         __data_start = .
+    72a8     72a8        0     1         __data_end = .
+    72a8     72a8        0     1 __data_load_start = LOADADDR(.data)
+    72a8     72a8        0     1 __data_size = SIZEOF(.data)
+    72a8     72a8        0     1 .bss
+    72a8     72a8        0     1         __bss_start = .
+    72a8     72a8        0     1         __bss_end = .
+    72a8     72a8        0     1 __bss_size = SIZEOF(.bss)
+    72a8     72a8        1     1 .noinit
+    72a8     72a8        1     1         build/cm-irq-admission.prg.lto.o:(.noinit..Lstatic_stack)
+    72a9     72a9        0     1         __heap_start = ALIGN(., 2)
+    72a9     72a9        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-irq-admission.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-irq-admission.prg.lto.o:(.llvm_sympart)
+       0        0      b30     4 .symtab
+       0        0      b30     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      627     1 .strtab
+       0        0      627     1         <internal>:(.strtab)

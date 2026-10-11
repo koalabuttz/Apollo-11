@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c tests/cm_irq_check.c tests/test_cm_irq.c -o build/test-cm-irq
+./build/test-cm-irq
+PASS: CM IRQ: 512 source admissions, 32 actual callback sequences / 240 checkpoints, FIFO wrap, overflow, retained head, typed maps and restoring guards

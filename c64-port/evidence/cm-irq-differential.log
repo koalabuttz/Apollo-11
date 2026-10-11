@@ -1,0 +1,4 @@
+PASS: 512 valid CM IRQ payloads / all312owned words exact against original admission; native FIFO publication/ticket consumption checked; oracle16guards
+Snapshot SHA256: a63460f812f92be78d5cff5a12cd1aa5c4dff9507134a88f084832e0ff5dbaed
+PASS: eight actual CM IRQ callback sequences /64complete original dispatch states
+PASS: platform gate/producer/exclusion preserve original implementation after CM symbol/type adaptation
