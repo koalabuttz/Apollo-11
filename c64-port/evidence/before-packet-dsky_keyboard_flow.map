@@ -1,0 +1,216 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     6b29     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_keyboard_flow.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     830      830        0     1                 __call_indir
+     833      833       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     833      833       13     1                 __zero_bss
+     846      846      713     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exec_admit)
+     846      846      713     1                 exec_admit
+     f59      f59      1cb     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exec_endjob_select)
+     f59      f59      1cb     1                 exec_endjob_select
+    1124     1124       ba     1         build/dsky_keyboard_flow.prg.lto.o:(.text.basic_slot)
+    1124     1124       ba     1                 basic_slot
+    11de     11de      375     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exchange_basic)
+    11de     11de      375     1                 exchange_basic
+    1553     1553      28e     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exec_complete_basic)
+    1553     1553      28e     1                 exec_complete_basic
+    17e1     17e1      314     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exec_sleep_basic)
+    17e1     17e1      314     1                 exec_sleep_basic
+    1af5     1af5       7e     1         build/dsky_keyboard_flow.prg.lto.o:(.text.lifecycle_candidate)
+    1af5     1af5       7e     1                 lifecycle_candidate
+    1b73     1b73      33d     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exec_priority_basic)
+    1b73     1b73      33d     1                 exec_priority_basic
+    1eb0     1eb0      195     1         build/dsky_keyboard_flow.prg.lto.o:(.text.lookup_kind)
+    1eb0     1eb0      195     1                 lookup_kind
+    2045     2045      42c     1         build/dsky_keyboard_flow.prg.lto.o:(.text.start_locked)
+    2045     2045      42c     1                 start_locked
+    2471     2471      1c7     1         build/dsky_keyboard_flow.prg.lto.o:(.text.saved_target)
+    2471     2471      1c7     1                 saved_target
+    2638     2638      419     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exchange_saved)
+    2638     2638      419     1                 exchange_saved
+    2a51     2a51       df     1         build/dsky_keyboard_flow.prg.lto.o:(.text.settle)
+    2a51     2a51       df     1                 settle
+    2b30     2b30        d     1         build/dsky_keyboard_flow.prg.lto.o:(.text.lookup)
+    2b30     2b30        d     1                 lookup
+    2b3d     2b3d     1a68     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exec_native_step)
+    2b3d     2b3d     1a68     1                 exec_native_step
+    45a5     45a5       7e     1         build/dsky_keyboard_flow.prg.lto.o:(.text.candidate)
+    45a5     45a5       7e     1                 candidate
+    4623     4623      25f     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exec_irq_service_locked)
+    4623     4623      25f     1                 exec_irq_service_locked
+    4882     4882       73     1         build/dsky_keyboard_flow.prg.lto.o:(.text.p66_native_export_executive)
+    4882     4882       73     1                 p66_native_export_executive
+    48f5     48f5       28     1         build/dsky_keyboard_flow.prg.lto.o:(.text.source_copy)
+    48f5     48f5       28     1                 source_copy
+    491d     491d       9c     1         build/dsky_keyboard_flow.prg.lto.o:(.text.scalar_exchange)
+    491d     491d       9c     1                 scalar_exchange
+    49b9     49b9       73     1         build/dsky_keyboard_flow.prg.lto.o:(.text.p66_native_import_executive)
+    49b9     49b9       73     1                 p66_native_import_executive
+    4a2c     4a2c      37c     1         build/dsky_keyboard_flow.prg.lto.o:(.text.executive_words)
+    4a2c     4a2c      37c     1                 executive_words
+    4da8     4da8      946     1         build/dsky_keyboard_flow.prg.lto.o:(.text.charin)
+    4da8     4da8      946     1                 charin
+    56ee     56ee      2d0     1         build/dsky_keyboard_flow.prg.lto.o:(.text.checkpoint)
+    56ee     56ee      2d0     1                 checkpoint
+    59be     59be       20     1         build/dsky_keyboard_flow.prg.lto.o:(.text.observe)
+    59be     59be       20     1                 observe
+    59de     59de        9     1         build/dsky_keyboard_flow.prg.lto.o:(.text.enter)
+    59de     59de        9     1                 enter
+    59e7     59e7        f     1         build/dsky_keyboard_flow.prg.lto.o:(.text.leave)
+    59e7     59e7        f     1                 leave
+    59f6     59f6       ef     1         build/dsky_keyboard_flow.prg.lto.o:(.text.c64_dsky_keyboard_poll)
+    59f6     59f6       ef     1                 c64_dsky_keyboard_poll
+    5ae5     5ae5     14b8     1         build/dsky_keyboard_flow.prg.lto.o:(.text.main)
+    5ae5     5ae5     14b8     1                 main
+    6f9d     6f9d        6     1         build/dsky_keyboard_flow.prg.lto.o:(.text.exit)
+    6f9d     6f9d        6     1                 exit
+    6fa3     6fa3        3     1         build/dsky_keyboard_flow.prg.lto.o:(.text.cbm_k_getin)
+    6fa3     6fa3        3     1                 cbm_k_getin
+    6fa6     6fa6       13     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__lshrhi3)
+    6fa6     6fa6       13     1                 __lshrhi3
+    6fb9     6fb9       5d     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__udivqi3)
+    6fb9     6fb9       5d     1                 __udivqi3
+    7016     7016       c4     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__udivhi3)
+    7016     7016       c4     1                 __udivhi3
+    70da     70da       40     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__umodqi3)
+    70da     70da       40     1                 __umodqi3
+    711a     711a       ae     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__umodhi3)
+    711a     711a       ae     1                 __umodhi3
+    71c8     71c8       7d     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__udivmodqi4)
+    71c8     71c8       7d     1                 __udivmodqi4
+    7245     7245       34     1         build/dsky_keyboard_flow.prg.lto.o:(.text.memcpy)
+    7245     7245       34     1                 memcpy
+    7279     7279       22     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__memset)
+    7279     7279       22     1                 __memset
+    729b     729b       34     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__mulhi3)
+    729b     729b       34     1                 __mulhi3
+    72cf     72cf       67     1         build/dsky_keyboard_flow.prg.lto.o:(.text.__mulsi3)
+    72cf     72cf       67     1                 __mulsi3
+    7336     7336        0     1         __init_array_start = .
+    7336     7336        0     1         __init_array_end = .
+    7336     7336        0     1         __fini_array_start = .
+    7336     7336        0     1         __fini_array_end = .
+    7336     7336     243f     1 .rodata
+    7336     7336        8     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.exec_native_step)
+    733e     733e       1c     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.executive_fields)
+    733e     733e       1c     1                 executive_fields
+    735a     735a        8     1         <internal>:(.rodata.cst8)
+    7362     7362       40     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.dsky_keyboard_flow_numbers)
+    7362     7362       40     1                 dsky_keyboard_flow_numbers
+    73a2     73a2        6     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.guard)
+    73a2     73a2        6     1                 guard
+    73a8     73a8        7     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.dsky_keyboard_mappings)
+    73a8     73a8        7     1                 dsky_keyboard_mappings
+    73af     73af       c2     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.dsky_keyboard_flow_offsets)
+    73af     73af       c2     1                 dsky_keyboard_flow_offsets
+    7471     7471     22bc     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.dsky_keyboard_flow_patch)
+    7471     7471     22bc     1                 dsky_keyboard_flow_patch
+    972d     972d       18     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.characters)
+    972d     972d       18     1                 characters
+    9745     9745       30     1         build/dsky_keyboard_flow.prg.lto.o:(.rodata.codes)
+    9745     9745       30     1                 codes
+    9775     9775        0     1 .data
+    9775     9775        0     1         __data_start = .
+    9775     9775        0     1         __data_end = .
+    9775     9775        0     1 __data_load_start = LOADADDR(.data)
+    9775     9775        0     1 __data_size = SIZEOF(.data)
+    9775     9775     22e9     1 .bss
+    9775     9775        0     1         __bss_start = .
+    9775     9775       1e     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.binding)
+    9775     9775       1e     1                 binding
+    9793     9793        1     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.fixture)
+    9793     9793        1     1                 fixture
+    9794     9794        2     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.failures)
+    9794     9794        2     1                 failures
+    9796     9796        1     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.observed)
+    9796     9796        1     1                 observed
+    9797     9797        1     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.excluded)
+    9797     9797        1     1                 excluded
+    9798     9798     1000     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.image)
+    9798     9798     1000     1                 image
+    a798     a798     1000     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.before)
+    a798     a798     1000     1                 before
+    b798     b798      288     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.state)
+    b798     b798      288     1                 state
+    ba20     ba20       1d     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.display)
+    ba20     ba20       1d     1                 display
+    ba3d     ba3d       1c     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.runtime)
+    ba3d     ba3d       1c     1                 runtime
+    ba59     ba59        5     1         build/dsky_keyboard_flow.prg.lto.o:(.bss.dsky_keyboard_flow_mailbox)
+    ba59     ba59        5     1                 dsky_keyboard_flow_mailbox
+    ba5e     ba5e        0     1         __bss_end = .
+    ba5e     ba5e        0     1 __bss_size = SIZEOF(.bss)
+    ba5e     ba5e        0     1 .noinit
+    ba5e     ba5e        0     1         __heap_start = ALIGN(., 2)
+    ba5e     ba5e        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_keyboard_flow.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_keyboard_flow.prg.lto.o:(.llvm_sympart)
+       0        0      df0     4 .symtab
+       0        0      df0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      89e     1 .strtab
+       0        0      89e     1         <internal>:(.strtab)

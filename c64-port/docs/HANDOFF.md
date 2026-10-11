@@ -759,3 +759,7 @@ The native clock-job bridge matches 24,576 original full states and 2,048 contin
 ## Route Comanche display requests through canonical MAKEPLAY entry
 
 REGODSP, CLOCPLAY, GOFLASH and SAVELOCS preserve all original state through the actual MAKEPLAY entry. Evidence covers 24,576 direct states, 2,544 composed clock-job checkpoints, sanitizers and 64 C64 cases. The downstream consumer remains a separate milestone. See `docs/COMANCHE-DISPLAY-CONTROL.md`.
+
+## Run hardware keyboard IRQs through actual source job lifecycle
+
+Three qualified keyboard groups preserve fixed-vector KEYRUPT and RESUME, source Executive selection, CHARIN and job completion. Source, sanitizer and stock-ROM C64 proofs are retained with exact dependency identities; the compiled family fits C64 RAM and stack limits. Prior failed target sizing remains explicitly recorded. See `docs/DSKY-KEYBOARD-RUNTIME.md`.

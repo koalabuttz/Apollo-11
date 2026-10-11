@@ -535,3 +535,7 @@ include tools/dsky_charin_number.mk
 include tools/cm_clockjob_port.mk
 
 include tools/cm_display_control_port.mk
+
+include tools/dsky_key_irq.mk
+include tools/dsky_keyboard_flow.mk
+include tools/dsky_keyboard_irq_flow.mk

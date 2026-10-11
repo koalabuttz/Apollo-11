@@ -1,0 +1,36 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow.prg from 0801 to A0DF (98DF bytes)
+WATCH: 1  C:$b3c4  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store b3c4)  232/$0e8,  44/$2c
+.C:6f88  8E C4 B3    STX $B3C4      - A:00 X:A5 Y:2F SP:f1 N.-....C  341262476
+>C:b3c4  a5 00 00 10  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-mailbox.bin' from $b3c4 to $b3c8
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow.prg from 0801 to A0DF (98DF bytes)
+WATCH: 1  C:$b3c4  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store b3c4)  232/$0e8,  44/$2c
+.C:6f88  8E C4 B3    STX $B3C4      - A:00 X:A5 Y:2F SP:f1 N.-....C  341262476
+>C:b3c4  a5 00 00 10  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-mailbox.bin' from $b3c4 to $b3c8
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow.prg from 0801 to A5B4 (9DB4 bytes)
+WATCH: 1  C:$b8a1  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store b8a1)  208/$0d0,  12/$0c
+.C:7458  8E A1 B8    STX $B8A1      - A:00 X:A5 Y:2F SP:f1 N.-....C  338194596
+>C:b8a1  a5 00 00 10  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-mailbox.bin' from $b8a1 to $b8a5
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow.prg from 0801 to 971E (8F1E bytes)
+WATCH: 1  C:$aa0b  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store aa0b)  168/$0a8,  60/$3c
+.C:665b  8E 0B AA    STX $AA0B      - A:00 X:A5 Y:2F SP:f1 N.-....C  338192124
+>C:aa0b  a5 00 00 10  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-mailbox.bin' from $aa0b to $aa0f
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_irq_flow-vice-software-stack.bin' from $c100 to $cfff

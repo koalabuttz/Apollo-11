@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_keyboard_flow.prg" 0
+watch store bf2b
+ignore 1 1
+g 080d
+m bf2b bf2f
+bsave "/workspace/Apollo-11/c64-port/build/dsky_keyboard_flow-vice-mailbox.bin" 0 bf2b bf2f
+bsave "/workspace/Apollo-11/c64-port/build/dsky_keyboard_flow-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_keyboard_flow-vice-software-stack.bin" 0 c100 cfff
+quit
