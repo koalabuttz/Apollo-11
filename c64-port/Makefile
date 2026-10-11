@@ -439,3 +439,5 @@ include tools/runtime_bridge.mk
 include tools/fixed_data.mk
 
 include tools/p66_fine_phases.mk
+
+include tools/p66_basic.mk
