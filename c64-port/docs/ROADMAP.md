@@ -1060,3 +1060,7 @@ All14 source entries and76 emitted words, source control aliases and allfour neg
 ## Complete original Comanche interbank source
 
 All14 entries and76 emitted words, including allfour negative-overflow MAKECADR successors, are qualified by independent review,921088 complete source/native/sanitizer states and448 actual C64 states. The certificate uses the historical baseline and retains the compiled-caller domain and external return/fault boundaries.37 files are complete;138 files and both full applications remain open. See `docs/COMANCHE-INTERBANK.md`.
+
+## Translate original Comanche blocked display REST source
+
+Original NVDSP blocked return, REST/RESTSLEP and UPENT2 alias effects match3072 complete original/native/full-sanitizer states,30 unchanged invalid-input guards and60 actual C64 states. Real ENDOFJOB and NVSUBUSY entries remain explicit source handoffs; selected lifecycle body execution is separate. See `docs/COMANCHE-DISPLAY-REST.md`.

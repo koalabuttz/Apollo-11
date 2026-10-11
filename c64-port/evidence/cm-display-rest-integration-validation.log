@@ -1,0 +1,10 @@
+./build/test-cm-display-rest
+60 full CM display REST source states and30 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/cm-display-rest-reference.snapshots.xz --sha256 b50aeba703c0b9e1cf5b04bf8c9ee8099c38b2663e0026e8e9b86a40dc7e315f --binary build/cm-display-rest-route-port
+PASS all retained source-state bytes: 35592908 SHA256 b50aeba703c0b9e1cf5b04bf8c9ee8099c38b2663e0026e8e9b86a40dc7e315f
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -ffunction-sections -Wl,--gc-sections -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_cm_display_rest.c src/agc_word.c src/cm_display_rest.c tests/cm_display_rest_cases.c tests/cm_display_rest_check.c -o build/test-cm-display-rest-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-display-rest-integrated-san
+60 full CM display REST source states and30 unchanged invalid guards: PASS
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -ffunction-sections -Wl,--gc-sections -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/cm_display_rest_snapshot.c src/agc_word.c src/cm_display_rest.c tests/cm_display_rest_cases.c tests/cm_display_rest_check.c -o build/cm-display-rest-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/cm-display-rest-reference.snapshots.xz --sha256 b50aeba703c0b9e1cf5b04bf8c9ee8099c38b2663e0026e8e9b86a40dc7e315f --binary build/cm-display-rest-integrated-stream-san
+PASS all retained source-state bytes: 35592908 SHA256 b50aeba703c0b9e1cf5b04bf8c9ee8099c38b2663e0026e8e9b86a40dc7e315f

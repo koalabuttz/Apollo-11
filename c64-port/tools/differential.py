@@ -502,3 +502,5 @@ subprocess.run([sys.executable,'tools/dsky_nv_busy_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/cm_vac5_store_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_jam_control_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_display_rest_differential.py',str(reference)],cwd=ROOT,check=True)
