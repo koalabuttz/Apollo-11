@@ -8574,6 +8574,7 @@
   "radial_phase8-vice.log": "ef2c039a824e3e8e7f82e8bec201e7789e67be7f18d87bdfea327927dca4d591",
   "radial_phase8-vice.mon": "6ff396015f9b7f5fec59022353bb3a043d4ddcf927f3438c8476b22e5841ae05",
   "recovery-c64-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "recovery-consumer-partial-coverage-validation.log": "56b3e8c378d05fcfbab7eefeb63e3cfe6ba46a04d61e0181ecfabb692c4d64bb",
   "recovery-differential.log": "b7a949227148b0f19a0d58df1348cfaace31b3c4a58cb3498d3420b25367dc30",
   "recovery-host-tests.log": "b3ed0f0535ffd2bd37f11c7c71cc4d08b3d00625e24ea83a533f6feb77609187",
   "recovery-integration.log": "f28bb86b84d832cc730310bed5ab6f949b311d4daa31e533521e396ce8b499ad",

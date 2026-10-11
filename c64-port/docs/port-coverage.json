@@ -114,6 +114,13 @@
           ],
           "scope": "Actual WHIMPER RESUME POSTJUMP ENEMA handoff with finite compiled return metadata.",
           "verification": "docs/COMANCHE_ABORT_WHIMPER.md"
+        },
+        {
+          "native_files": [
+            "src/cm_abort_recovery.c"
+          ],
+          "scope": "Continuous POODOO mode test generic DOWNFLAG phase cleanup and true WHIMPER handoff; following recovery groups remain separately qualified.",
+          "verification": "docs/COMANCHE_ABORT_RECOVERY.md"
         }
       ]
     },
@@ -501,6 +508,13 @@
           ],
           "scope": "Real PRIOCHNG producer/consumer composition from INITDSP, retaining suspended contexts and actual current/basic/interpreter selected transfers.",
           "verification": "docs/COMANCHE_INIT_DISPLAY_MIXED.md"
+        },
+        {
+          "native_files": [
+            "src/cm_admission_zero.c"
+          ],
+          "scope": "Canonical original positive zero core admission scan; actual EXTEND BZF NEXTCORE behavior qualified, historical interpretation corrected additively.",
+          "verification": "docs/COMANCHE_ADMISSION_ZERO.md"
         }
       ]
     },
@@ -569,6 +583,13 @@
           ],
           "scope": "Actual VAC5STOR abort snapshot body through GENTRAN and source-selected SWRETURN entry, broader restart bodies remain separate.",
           "verification": "docs/COMANCHE_VAC5_STORE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_enema_image.c"
+          ],
+          "scope": "Canonical ENEMA full physical image source effects and exact MMDSPLAY PTBAD DOFSTART continuations; target scratch workaround and failed compiler evidence retained.",
+          "verification": "docs/COMANCHE_ENEMA_IMAGE.md"
         }
       ]
     },
@@ -1359,6 +1380,27 @@
           ],
           "scope": "Additive generalized source updater supports both signed zeros all selecting SUPER banks and clean relay CCSHOLE error route.",
           "verification": "docs/DSKY-NV-UPDATE-GENERAL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_load.c"
+          ],
+          "scope": "Original DECDSP fresh loads with CPU/editing aliases through actual DSPDCPUT; selected scale and formatting bodies remain separate.",
+          "verification": "docs/DSKY-DECIMAL-LOAD.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_major_request.c"
+          ],
+          "scope": "Actual MMCHANG REQMM validation blanking POSTJUMP and literal V37 or ALMCYCLE handoffs; selected program body remains separate.",
+          "verification": "docs/DSKY-MAJOR-REQUEST.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_alarm_recycle.c"
+          ],
+          "scope": "Continuous original ALMCYCLE lamp event generalized UPDATVB SWRETURN POSTJUMP ENTER or actual CCSHOLE path.",
+          "verification": "docs/DSKY-ALARM-RECYCLE.md"
         }
       ]
     },
@@ -3452,6 +3494,27 @@
           ],
           "scope": "Additive generalized source updater supports both signed zeros all selecting SUPER banks and clean relay CCSHOLE error route.",
           "verification": "docs/DSKY-NV-UPDATE-GENERAL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_load.c"
+          ],
+          "scope": "Original DECDSP fresh loads with CPU/editing aliases through actual DSPDCPUT; selected scale and formatting bodies remain separate.",
+          "verification": "docs/DSKY-DECIMAL-LOAD.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_major_request.c"
+          ],
+          "scope": "Actual MMCHANG REQMM validation blanking POSTJUMP and literal V37 or ALMCYCLE handoffs; selected program body remains separate.",
+          "verification": "docs/DSKY-MAJOR-REQUEST.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_alarm_recycle.c"
+          ],
+          "scope": "Continuous original ALMCYCLE lamp event generalized UPDATVB SWRETURN POSTJUMP ENTER or actual CCSHOLE path.",
+          "verification": "docs/DSKY-ALARM-RECYCLE.md"
         }
       ]
     },
