@@ -1,0 +1,3 @@
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_cm_angles_snapshot.c tests/sband_cm_angles_cases.c src/agc_word.c src/sband_cm_angles.c src/sband_dot.c src/sband_scalar.c src/inverse_trig.c src/guidance_shift.c src/guidance_product.c src/guidance_norm.c src/agc_multiword.c -o build/sband-cm-angles-sanitize
+python3 tools/sband_cm_angles_compare.py sanitize
+PASS {'states': 131072, 'start': 0, 'end': 131072, 'record_bytes': 4106, 'decoded_sha256': '13188990abf3c937551f01929bddc2120bc6a79e82f01bba6c1a6c26d6c48ac7'}

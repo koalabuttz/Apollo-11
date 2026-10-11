@@ -1102,3 +1102,8 @@ sanitize: lm-scan-exception-port-sanitize
 include tools/lm_core_fault_port_integration.mk
 test: lm-core-fault-port-test
 sanitize: lm-core-fault-port-sanitize
+
+include tools/sband_cm_angles_integration.mk
+all: build/sband-cm-angles-integrated-stream
+test: test-sband-cm-angles
+sanitize: sanitize-sband-cm-angles

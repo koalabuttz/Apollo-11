@@ -1,0 +1,12 @@
+./build/test-sband-cm-angles-integrated
+PASS original antenna CM yaw/pitch caller full-image fixtures and unchanged unsupported images
+python3 tools/sband_cm_angles_port_host.py --binary build/sband-cm-angles-integrated-stream
+PASS all retained source-state bytes: 538181632 SHA256 13188990abf3c937551f01929bddc2120bc6a79e82f01bba6c1a6c26d6c48ac7
+PASS all 131,072 original CM antenna full yaw/pitch calculation states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_cm_angles.c tests/sband_cm_angles_target.c tests/frozen_words.c tests/sband_cm_angles_cases.c src/agc_word.c src/sband_cm_angles.c src/sband_dot.c src/sband_scalar.c src/inverse_trig.c src/guidance_shift.c src/guidance_product.c src/guidance_norm.c src/agc_multiword.c -o build/test-sband-cm-angles-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-cm-angles-integrated-san
+PASS original antenna CM yaw/pitch caller full-image fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_cm_angles_snapshot.c tests/sband_cm_angles_cases.c src/agc_word.c src/sband_cm_angles.c src/sband_dot.c src/sband_scalar.c src/inverse_trig.c src/guidance_shift.c src/guidance_product.c src/guidance_norm.c src/agc_multiword.c -o build/sband-cm-angles-integrated-stream-san
+python3 tools/sband_cm_angles_port_host.py --binary build/sband-cm-angles-integrated-stream-san
+PASS all retained source-state bytes: 538181632 SHA256 13188990abf3c937551f01929bddc2120bc6a79e82f01bba6c1a6c26d6c48ac7
+PASS all 131,072 original CM antenna full yaw/pitch calculation states

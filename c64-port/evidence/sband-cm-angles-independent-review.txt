@@ -1,0 +1,13 @@
+Independent read-only source review by /root/p66_source_map.
+Native source SHA256: 7d14d6f3d702392698c0e893472eee46c58e54d746c4c9d48eb399b1555892f3
+Native header SHA256: f3528fc283a48c0b44c93ab34381c8920450df9966dd3532a3dc410a7cc8af47
+
+No discrepancy found within exact normal/null stack and source-caller domains.
+Original PUSH/PDVL exchanges, HIUNITX/Y/Z DOTs, SL1 SR/CYR editing, ACOS alarms,
+triple sign scan and actual BRANCH Q3/06710/06712 align. Negative DPPOSMAX,
+DSU/pop/PUSH retains the old stack minor. NOADJUST reloads UR; quarter DSU,
+STODL RHOSB/yaw load and STORE GAMMASB preserve actual destination-minor L and
+final source controls. Normal/null MODE and stack guards remain material.
+This review compared the new module against original antenna and BRANCH/BPL
+source without an exhaustive replay or edits. EXIT, display and alarm-handler
+bodies remain separate continuations; whole antenna-file credit is not granted.

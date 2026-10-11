@@ -1,0 +1,61 @@
+{
+  "states": 128,
+  "groups": [
+    {
+      "group": 0,
+      "states": 32,
+      "prg_bytes": 27578,
+      "load_end": 29625,
+      "bss_end": 37817,
+      "static_storage_end": 37917,
+      "mailbox": "a5200000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ]
+    },
+    {
+      "group": 1,
+      "states": 32,
+      "prg_bytes": 27553,
+      "load_end": 29600,
+      "bss_end": 37792,
+      "static_storage_end": 37892,
+      "mailbox": "a5200000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ]
+    },
+    {
+      "group": 2,
+      "states": 32,
+      "prg_bytes": 26598,
+      "load_end": 28645,
+      "bss_end": 36837,
+      "static_storage_end": 36937,
+      "mailbox": "a5200000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ]
+    },
+    {
+      "group": 3,
+      "states": 32,
+      "prg_bytes": 26926,
+      "load_end": 28973,
+      "bss_end": 37165,
+      "static_storage_end": 37265,
+      "mailbox": "a5200000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ]
+    }
+  ]
+}

@@ -1595,3 +1595,7 @@ Certify all71 original emitted words and all actual local caller return frames u
 ## Translate Luminary core fault fixed data frontiers
 
 Qualify actual reserved core admission and wake fixed word execution frontiers against16384 complete original states strict sanitizers and64 C64 cases without adding instruction decoding. See `docs/LM-CORE-FAULT.md`.
+
+## Translate Comanche antenna pitch and yaw angles
+
+Qualify actual normal and null plane pitch yaw outputs against131072 complete original strict sanitizer states and128 C64 cases. See `docs/NATIVE-SBAND-CM-ANGLES.md`.

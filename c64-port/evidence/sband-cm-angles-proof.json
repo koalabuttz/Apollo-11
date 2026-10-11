@@ -1,0 +1,122 @@
+{
+  "status": "qualified complete CM antenna yaw/pitch including actual null entry; containing antenna file remains partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 131072,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 131072,
+    "start": 0,
+    "end": 131072,
+    "record_bytes": 4106,
+    "decoded_sha256": "13188990abf3c937551f01929bddc2120bc6a79e82f01bba6c1a6c26d6c48ac7",
+    "decoded_bytes": 538181632,
+    "canonical_original_archive": "evidence/sband-cm-angles-source.snapshots.bin.xz",
+    "compressed_sha256": "ab265f6ee89a2948df365a17ed1d22bd22b18621cff295719b8b4dd03c778327",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 128,
+    "groups": [
+      {
+        "group": 0,
+        "states": 32,
+        "prg_bytes": 27578,
+        "load_end": 29625,
+        "bss_end": 37817,
+        "static_storage_end": 37917,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 1,
+        "states": 32,
+        "prg_bytes": 27553,
+        "load_end": 29600,
+        "bss_end": 37792,
+        "static_storage_end": 37892,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 2,
+        "states": 32,
+        "prg_bytes": 26598,
+        "load_end": 28645,
+        "bss_end": 36837,
+        "static_storage_end": 36937,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 3,
+        "states": 32,
+        "prg_bytes": 26926,
+        "load_end": 28973,
+        "bss_end": 37165,
+        "static_storage_end": 37265,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      }
+    ]
+  },
+  "groups": [
+    "CM original full yaw/pitch computation",
+    "CM original null-plane NOADJUST pitch computation"
+  ],
+  "source_map": "evidence/sband-cm-angles-source-map.json",
+  "original_sources": {
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "7d14d6f3d702392698c0e893472eee46c58e54d746c4c9d48eb399b1555892f3",
+  "native_header_sha256": "f3528fc283a48c0b44c93ab34381c8920450df9966dd3532a3dc410a7cc8af47",
+  "independent_review": {
+    "path": "evidence/sband-cm-angles-independent-review.txt",
+    "sha256": "ab594691376c3f37b95844bb7f16c4e621dbf6b61fd6454e908d595b1f089095"
+  },
+  "limitations": [
+    "Following original EXIT/display bodies not executed here.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/Q and raw16 A/L, producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ],
+  "dependencies": [
+    {
+      "path": "evidence/sband-dot-proof.json",
+      "sha256": "3ec9f3ee8f4dfdbbc2e4ab685a853b7566cef93893e2ad6582a31ef3b3e7148f"
+    },
+    {
+      "path": "evidence/sband-scalar-proof.json",
+      "sha256": "083f01d6efa5ed5733fdf7059dee80c50062bafee52ff17a8edcf5f93b45caad"
+    },
+    {
+      "path": "evidence/inverse-trig-cm-proof.json",
+      "sha256": "66221eed58a2760be1f6d9a81122a1e38c4e3d6f2f708b0dfd91b275c4708079"
+    },
+    {
+      "path": "evidence/inverse-trig-sweep-proof.json",
+      "sha256": "1239fa0997a9243bb1455a3a30b76a9b4d939aa0c8460ac54876e17a4df576f7"
+    }
+  ]
+}
