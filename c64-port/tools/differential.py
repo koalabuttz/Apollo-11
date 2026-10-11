@@ -540,3 +540,5 @@ subprocess.run([sys.executable,'tools/dsky_alarm_recycle_differential.py',str(re
 subprocess.run([sys.executable,'tools/dsky_decimal_load_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_abort_recovery_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_major_request_differential.py',str(reference)],cwd=ROOT,check=True)

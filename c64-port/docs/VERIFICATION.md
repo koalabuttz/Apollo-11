@@ -1550,3 +1550,7 @@ An additive RTB vector metadata erratum corrects PULSEIMU bank06/FB014000 text t
 ## Compose original uninterrupted Comanche POODOO recovery chronology
 
 Qualify actual POODOO mode test three DOWNFLAG operations BANKCALL MR.KLEAN SWRETURN and true WHIMPER over4096 uninterrupted original sequences with16384 complete native sanitizer checkpoints plus16 C64 sequences retaining harness failure proofs and unchanged native220. See `docs/COMANCHE_ABORT_RECOVERY.md`.
+
+## Translate original operator major mode request source controls
+
+Qualify actual MMCHANG REQMM validation numeric blank POSTJUMP and genuine V37 or alarm cycle handoff over8192 full original native sanitizer states plus64 C64 states preserving explicit selected program bodies. See `docs/DSKY-MAJOR-REQUEST.md`.

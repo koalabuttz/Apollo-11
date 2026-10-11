@@ -807,3 +807,5 @@ include tools/dsky_decimal_load_integration.mk
 
 include tools/cm_abort_recovery.mk
 all: build/cm-abort-recovery-native
+
+include tools/dsky_major_request.mk
