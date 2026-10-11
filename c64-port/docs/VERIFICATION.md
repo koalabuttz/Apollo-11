@@ -1614,3 +1614,7 @@ Qualify both original DSPDCEND BANKCALL and SWRETURN row control through actual 
 ## Translate original deferred gyro task arithmetic and registration
 
 Qualify original STRTGYRO GSELECT GMERGE LASTSEG LONGGYRO and8192AUG source task bodies and actual successful WAITLIST registration against524288 complete original native sanitizer states and256 C64 states. Pending hardware activity and true TASKOVER handoff remain explicit. See `docs/NATIVE-GYRO-TASKS.md`.
+
+## Fresh committed scheduler and IO host check
+
+A clean isolated export of exact commit`0f739a18d4e6f13dd23a212fc5b63f0968aecd40` builds and passes every registered portable host `all`/`test` recipe, including both whole interbank and service routine files, full P66 recurrence, complete UNIT numerical groups, positive-zero Executive admission, operator request composition and uninterrupted Comanche abort lifecycle, source PRIOLARM, both original V30/V31 complete scheduler paths, S-band vector helpers and IMUPULSE service registration. The exporter uses exact Git objects and excludes uncommitted source. Its committed snapshot has39 complete source files; the full-port gate correctly rejects136 remaining files and both integrated applications. See `evidence/integration-scheduler-io-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
