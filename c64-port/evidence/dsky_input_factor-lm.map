@@ -1,0 +1,215 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     18b9     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_input_factor-lm.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843       e9     1         build/dsky_input_factor-lm.prg.lto.o:(.text.apollo_noun_table_read)
+     843      843       e9     1                 apollo_noun_table_read
+     92c      92c      12e     1         build/dsky_input_factor-lm.prg.lto.o:(.text.dsky_select_cyclic)
+     92c      92c      12e     1                 dsky_select_cyclic
+     a5a      a5a      4b3     1         build/dsky_input_factor-lm.prg.lto.o:(.text.dsky_factor_select)
+     a5a      a5a      4b3     1                 dsky_factor_select
+     f0d      f0d      e45     1         build/dsky_input_factor-lm.prg.lto.o:(.text.main)
+     f0d      f0d      e45     1                 main
+    1d52     1d52        6     1         build/dsky_input_factor-lm.prg.lto.o:(.text.exit)
+    1d52     1d52        6     1                 exit
+    1d58     1d58       13     1         build/dsky_input_factor-lm.prg.lto.o:(.text.__lshrhi3)
+    1d58     1d58       13     1                 __lshrhi3
+    1d6b     1d6b       c4     1         build/dsky_input_factor-lm.prg.lto.o:(.text.__udivhi3)
+    1d6b     1d6b       c4     1                 __udivhi3
+    1e2f     1e2f       ae     1         build/dsky_input_factor-lm.prg.lto.o:(.text.__umodhi3)
+    1e2f     1e2f       ae     1                 __umodhi3
+    1edd     1edd       f8     1         build/dsky_input_factor-lm.prg.lto.o:(.text.__udivmodhi4)
+    1edd     1edd       f8     1                 __udivmodhi4
+    1fd5     1fd5       34     1         build/dsky_input_factor-lm.prg.lto.o:(.text.memcpy)
+    1fd5     1fd5       34     1                 memcpy
+    2009     2009       22     1         build/dsky_input_factor-lm.prg.lto.o:(.text.__memset)
+    2009     2009       22     1                 __memset
+    202b     202b       34     1         build/dsky_input_factor-lm.prg.lto.o:(.text.__mulhi3)
+    202b     202b       34     1                 __mulhi3
+    205f     205f       67     1         build/dsky_input_factor-lm.prg.lto.o:(.text.__mulsi3)
+    205f     205f       67     1                 __mulsi3
+    20c6     20c6        0     1         __init_array_start = .
+    20c6     20c6        0     1         __init_array_end = .
+    20c6     20c6        0     1         __fini_array_start = .
+    20c6     20c6        0     1         __fini_array_end = .
+    20c6     20c6     1646     1 .rodata
+    20c6     20c6        e     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.main)
+    20d4     20d4       d8     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    20d4     20d4       d8     1                 fixed_data_lm_spans
+    21ac     21ac       20     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_0)
+    21ac     21ac       20     1                 fixed_data_lm_0
+    21cc     21cc       24     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_1)
+    21cc     21cc       24     1                 fixed_data_lm_1
+    21f0     21f0        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_2)
+    21f0     21f0        4     1                 fixed_data_lm_2
+    21f4     21f4        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_3)
+    21f4     21f4        4     1                 fixed_data_lm_3
+    21f8     21f8        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_4)
+    21f8     21f8        4     1                 fixed_data_lm_4
+    21fc     21fc        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_5)
+    21fc     21fc        4     1                 fixed_data_lm_5
+    2200     2200        2     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_6)
+    2200     2200        2     1                 fixed_data_lm_6
+    2202     2202        a     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_7)
+    2202     2202        a     1                 fixed_data_lm_7
+    220c     220c        2     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_8)
+    220c     220c        2     1                 fixed_data_lm_8
+    220e     220e        6     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_9)
+    220e     220e        6     1                 fixed_data_lm_9
+    2214     2214        8     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_10)
+    2214     2214        8     1                 fixed_data_lm_10
+    221c     221c       2e     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_11)
+    221c     221c       2e     1                 fixed_data_lm_11
+    224a     224a        c     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_12)
+    224a     224a        c     1                 fixed_data_lm_12
+    2256     2256        2     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_13)
+    2256     2256        2     1                 fixed_data_lm_13
+    2258     2258        2     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_14)
+    2258     2258        2     1                 fixed_data_lm_14
+    225a     225a        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_15)
+    225a     225a        4     1                 fixed_data_lm_15
+    225e     225e        6     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_16)
+    225e     225e        6     1                 fixed_data_lm_16
+    2264     2264        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_17)
+    2264     2264        4     1                 fixed_data_lm_17
+    2268     2268        8     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_18)
+    2268     2268        8     1                 fixed_data_lm_18
+    2270     2270        c     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_19)
+    2270     2270        c     1                 fixed_data_lm_19
+    227c     227c       18     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_20)
+    227c     227c       18     1                 fixed_data_lm_20
+    2294     2294       10     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_21)
+    2294     2294       10     1                 fixed_data_lm_21
+    22a4     22a4       28     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_22)
+    22a4     22a4       28     1                 fixed_data_lm_22
+    22cc     22cc       2c     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_23)
+    22cc     22cc       2c     1                 fixed_data_lm_23
+    22f8     22f8        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_24)
+    22f8     22f8        4     1                 fixed_data_lm_24
+    22fc     22fc        4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_25)
+    22fc     22fc        4     1                 fixed_data_lm_25
+    2300     2300      1be     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_26)
+    2300     2300      1be     1                 fixed_data_lm_26
+    24be     24be       68     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_27)
+    24be     24be       68     1                 fixed_data_lm_27
+    2526     2526       24     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_28)
+    2526     2526       24     1                 fixed_data_lm_28
+    254a     254a      1e4     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_29)
+    254a     254a      1e4     1                 fixed_data_lm_29
+    272e     272e      108     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_30)
+    272e     272e      108     1                 fixed_data_lm_30
+    2836     2836       80     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_31)
+    2836     2836       80     1                 fixed_data_lm_31
+    28b6     28b6       40     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_32)
+    28b6     28b6       40     1                 fixed_data_lm_32
+    28f6     28f6       20     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_33)
+    28f6     28f6       20     1                 fixed_data_lm_33
+    2916     2916       26     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_34)
+    2916     2916       26     1                 fixed_data_lm_34
+    293c     293c      458     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.fixed_data_lm_35)
+    293c     293c      458     1                 fixed_data_lm_35
+    2d94     2d94       14     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.dsky_select_entry.lm)
+    2d94     2d94       14     1                 dsky_select_entry.lm
+    2da8     2da8       1c     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.dsky_factor_body.lm)
+    2da8     2da8       1c     1                 dsky_factor_body.lm
+    2dc4     2dc4        8     1         <internal>:(.rodata.cst8)
+    2dcc     2dcc       10     1         <internal>:(.rodata.cst16)
+    2ddc     2ddc        6     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.dsky_input_factor_input.pc)
+    2ddc     2ddc        6     1                 dsky_input_factor_input.pc
+    2de2     2de2       80     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.dsky_input_factor_numbers)
+    2de2     2de2       80     1                 dsky_input_factor_numbers
+    2e62     2e62       82     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.dsky_input_factor_offsets)
+    2e62     2e62       82     1                 dsky_input_factor_offsets
+    2ee4     2ee4      828     1         build/dsky_input_factor-lm.prg.lto.o:(.rodata.dsky_input_factor_patch)
+    2ee4     2ee4      828     1                 dsky_input_factor_patch
+    370c     370c        0     1 .data
+    370c     370c        0     1         __data_start = .
+    370c     370c        0     1         __data_end = .
+    370c     370c        0     1 __data_load_start = LOADADDR(.data)
+    370c     370c        0     1 __data_size = SIZEOF(.data)
+    370c     370c     200d     1 .bss
+    370c     370c        0     1         __bss_start = .
+    370c     370c        8     1         build/dsky_input_factor-lm.prg.lto.o:(.bss.dsky_input_factor_difference)
+    370c     370c        8     1                 dsky_input_factor_difference
+    3714     3714     1000     1         build/dsky_input_factor-lm.prg.lto.o:(.bss.image)
+    3714     3714     1000     1                 image
+    4714     4714     1000     1         build/dsky_input_factor-lm.prg.lto.o:(.bss.before)
+    4714     4714     1000     1                 before
+    5714     5714        5     1         build/dsky_input_factor-lm.prg.lto.o:(.bss.dsky_input_factor_mailbox)
+    5714     5714        5     1                 dsky_input_factor_mailbox
+    5719     5719        0     1         __bss_end = .
+    5719     5719        0     1 __bss_size = SIZEOF(.bss)
+    5719     5719        0     1 .noinit
+    5719     5719        0     1         __heap_start = ALIGN(., 2)
+    5719     5719        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_input_factor-lm.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_input_factor-lm.prg.lto.o:(.llvm_sympart)
+       0        0      df0     4 .symtab
+       0        0      df0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      979     1 .strtab
+       0        0      979     1         <internal>:(.strtab)

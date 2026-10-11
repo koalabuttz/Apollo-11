@@ -1531,3 +1531,7 @@ Run actual stock-ROM D81 higher-priority job dispatch and restored P66 recurrenc
 ## Compose original Comanche lunar position polynomial and S-band return
 
 Translate actual LUNPOS time entry ninth-degree vector polynomial and source return against65536 complete original strict sanitizer states and64 C64 states without changing frozen arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-MOON.md`.
+
+## Translate original mission-specific operator input factor dispatch
+
+Compose actual PUTDECSF PUTSFNOR PUTDCSF2 through immutable original factor tables and source scale routine handoffs against8192 original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-FACTOR.md`.
