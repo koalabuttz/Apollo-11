@@ -182,3 +182,5 @@ subprocess.run([sys.executable,'tools/cm_dispatch_differential.py',str(reference
 subprocess.run([sys.executable,'tools/p66_startup_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/trig_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/p66_native_differential.py',str(reference)],cwd=ROOT,check=True)

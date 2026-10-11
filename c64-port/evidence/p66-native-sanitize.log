@@ -1,0 +1,2 @@
+PASS: ASan/UBSan host frozen160states, all5,775 numerical and112 mixed fullstate snapshots; outputs identical to strictnative and unchangedsource oracle.
+ASAN_OPTIONS=detect_leaks=0: required because execution sandbox ptraces; native port has no allocation sites.

@@ -1,0 +1,4 @@
+PASS: stock PAL C64 ROMs + D64 virtual IEC; five actual arithmetic overlays + resident mixed Executive
+30 original117-word +42 original442-word fullstate fingerprints; two-real-P66-job preemptions and restoring I/$01
+Mailbox a500002402; measured softwarestack967/2048 bytes
+Residentsections {".text": {"start": 2061, "bytes": 25891}, ".rodata": {"start": 27952, "bytes": 232}, ".data": {"start": 28184, "bytes": 6}, ".bss": {"start": 28190, "bytes": 21}, ".noinit": {"start": 28211, "bytes": 0}, ".zp.data": {"start": 34, "bytes": 0}, ".zp.bss": {"start": 34, "bytes": 0}}

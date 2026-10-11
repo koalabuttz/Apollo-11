@@ -1,0 +1,96 @@
+{
+  "source_files": [
+    "Luminary099/EXECUTIVE.agc",
+    "Luminary099/INTERPRETER.agc",
+    "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc"
+  ],
+  "numeric_inputs": 1155,
+  "numeric_checkpoints": 5775,
+  "numeric_words": 117,
+  "mixed_inputs": 16,
+  "mixed_checkpoints": 112,
+  "mixed_words": 442,
+  "native_sources": [
+    "src/p66_native.c"
+  ],
+  "expected_source_sha256": {
+    "p66-native-reference.snapshots": "135ddf4e43a96963dfa5447a9cf4572f29a5a30bc4b33931be8d1d6635fdd3c6",
+    "p66-native-mixed-reference.snapshots": "e6bdd25f2bf1bff96d2dbdca0a650b80cf3beff9b21e714d05a3d7914772bd46"
+  },
+  "ownership": "canonical 2048-word source erasable image; transient numerical and Executive views; raw A/L arithmetic observations, not CPU-register emulation",
+  "bounded_stop": "before UNIT at03374, activejob/VAC retained",
+  "sanitizer": "ASan/UBSan full numeric and mixed snapshots match, LeakSanitizer disabled because execution sandbox ptraces and port has no allocation sites",
+  "target": {
+    "cases": [
+      0,
+      1,
+      4
+    ],
+    "normal117word_fingerprints": 30,
+    "mixed442word_fingerprints": 42,
+    "both_IRQ_states": true,
+    "mailbox": "a500002402",
+    "software_stack_sentinel_bytes": 967,
+    "resident_sections": {
+      ".text": {
+        "start": 2061,
+        "bytes": 25891
+      },
+      ".rodata": {
+        "start": 27952,
+        "bytes": 232
+      },
+      ".data": {
+        "start": 28184,
+        "bytes": 6
+      },
+      ".bss": {
+        "start": 28190,
+        "bytes": 21
+      },
+      ".noinit": {
+        "start": 28211,
+        "bytes": 0
+      },
+      ".zp.data": {
+        "start": 34,
+        "bytes": 0
+      },
+      ".zp.bss": {
+        "start": 34,
+        "bytes": 0
+      }
+    },
+    "canonical": "$7000..$7fff",
+    "slot": "$8000..$bfff",
+    "executive_transient_view": "$c100..$c3ff",
+    "native_metadata": "$c400..$c7ff",
+    "softwarestack": "$c800..$cfff",
+    "artifacts": [
+      "p66-native.prg",
+      "p66-native.map",
+      "p66-native.d64",
+      "p66-native-modules.json",
+      "p66-native-vice-mailbox.bin",
+      "p66-native-vice-shared.bin",
+      "p66-native-vice-stack.bin",
+      "p66-native-vice.mon",
+      "p66-native-vice.log",
+      "p66-native-vice-monitor.log",
+      "p66-native-fixture-250.prg",
+      "p66-native-fixture-250.map",
+      "p66-native-fixture-251.prg",
+      "p66-native-fixture-251.map",
+      "overlay-p66-1.prg",
+      "overlay-p66-1.map",
+      "overlay-p66-2.prg",
+      "overlay-p66-2.map",
+      "overlay-p66-3.prg",
+      "overlay-p66-3.map",
+      "overlay-p66-4.prg",
+      "overlay-p66-4.map",
+      "overlay-p66-5.prg",
+      "overlay-p66-5.map"
+    ]
+  }
+}

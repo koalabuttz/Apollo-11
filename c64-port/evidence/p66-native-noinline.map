@@ -1,0 +1,267 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     68d3     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/p66-native-noinline.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        9     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_chkin.s.obj):(.text)
+     830      830        0     1                 cbm_k_chkin
+     838      838        0     1                 some_error
+     839      839        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_open.s.obj):(.text)
+     839      839        0     1                 cbm_k_open
+     840      840        0     1                 some_error
+     841      841        5     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setlfs.s.obj):(.text)
+     841      841        0     1                 cbm_k_setlfs
+     846      846       14     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setnam.s.obj):(.text)
+     846      846        0     1                 cbm_k_setnam
+     85a      85a        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     85a      85a        0     1                 __call_indir
+     85d      85d       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     85d      85d       13     1                 __zero_bss
+     870      870        9     1         build/p66-native-noinline.prg.lto.o:(.text.agc_negate)
+     870      870        9     1                 agc_negate
+     879      879       33     1         build/p66-native-noinline.prg.lto.o:(.text.agc_add_word)
+     879      879       33     1                 agc_add_word
+     8ac      8ac        c     1         build/p66-native-noinline.prg.lto.o:(.text.agc_extend)
+     8ac      8ac        c     1                 agc_extend
+     8b8      8b8        f     1         build/p66-native-noinline.prg.lto.o:(.text.agc_correct)
+     8b8      8b8        f     1                 agc_correct
+     8c7      8c7       2a     1         build/p66-native-noinline.prg.lto.o:(.text.agc_add_register)
+     8c7      8c7       2a     1                 agc_add_register
+     8f1      8f1       1f     1         build/p66-native-noinline.prg.lto.o:(.text.agc_classify)
+     8f1      8f1       1f     1                 agc_classify
+     910      910       1d     1         build/p66-native-noinline.prg.lto.o:(.text.agc_diminished_abs)
+     910      910       1d     1                 agc_diminished_abs
+     92d      92d      79b     1         build/p66-native-noinline.prg.lto.o:(.text.exec_admit)
+     92d      92d      79b     1                 exec_admit
+    10c8     10c8      223     1         build/p66-native-noinline.prg.lto.o:(.text.exec_endjob_select)
+    10c8     10c8      223     1                 exec_endjob_select
+    12eb     12eb      18e     1         build/p66-native-noinline.prg.lto.o:(.text.exec_change_basic)
+    12eb     12eb      18e     1                 exec_change_basic
+    1479     1479      113     1         build/p66-native-noinline.prg.lto.o:(.text.basic_slot)
+    1479     1479      113     1                 basic_slot
+    158c     158c      398     1         build/p66-native-noinline.prg.lto.o:(.text.exchange_basic)
+    158c     158c      398     1                 exchange_basic
+    1924     1924      4a8     1         build/p66-native-noinline.prg.lto.o:(.text.exec_change_interpretive)
+    1924     1924      4a8     1                 exec_change_interpretive
+    1dcc     1dcc      261     1         build/p66-native-noinline.prg.lto.o:(.text.exec_complete_basic)
+    1dcc     1dcc      261     1                 exec_complete_basic
+    202d     202d      1df     1         build/p66-native-noinline.prg.lto.o:(.text.exec_start_basic)
+    202d     202d      1df     1                 exec_start_basic
+    220c     220c      324     1         build/p66-native-noinline.prg.lto.o:(.text.exec_sleep_basic)
+    220c     220c      324     1                 exec_sleep_basic
+    2530     2530       15     1         build/p66-native-noinline.prg.lto.o:(.text.lifecycle_bank)
+    2530     2530       15     1                 lifecycle_bank
+    2545     2545       da     1         build/p66-native-noinline.prg.lto.o:(.text.lifecycle_candidate)
+    2545     2545       da     1                 lifecycle_candidate
+    261f     261f      375     1         build/p66-native-noinline.prg.lto.o:(.text.exec_priority_basic)
+    261f     261f      375     1                 exec_priority_basic
+    2994     2994       25     1         build/p66-native-noinline.prg.lto.o:(.text.exec_native_is_mapped)
+    2994     2994       25     1                 exec_native_is_mapped
+    29b9     29b9      195     1         build/p66-native-noinline.prg.lto.o:(.text.lookup_kind)
+    29b9     29b9      195     1                 lookup_kind
+    2b4e     2b4e       fd     1         build/p66-native-noinline.prg.lto.o:(.text.exec_native_context_init)
+    2b4e     2b4e       fd     1                 exec_native_context_init
+    2c4b     2c4b       df     1         build/p66-native-noinline.prg.lto.o:(.text.settle)
+    2c4b     2c4b       df     1                 settle
+    2d2a     2d2a        d     1         build/p66-native-noinline.prg.lto.o:(.text.lookup)
+    2d2a     2d2a        d     1                 lookup
+    2d37     2d37      e38     1         build/p66-native-noinline.prg.lto.o:(.text.exec_native_step)
+    2d37     2d37      e38     1                 exec_native_step
+    3b6f     3b6f      2b6     1         build/p66-native-noinline.prg.lto.o:(.text.start_locked)
+    3b6f     3b6f      2b6     1                 start_locked
+    3e25     3e25       24     1         build/p66-native-noinline.prg.lto.o:(.text.fail)
+    3e25     3e25       24     1                 fail
+    3e49     3e49      217     1         build/p66-native-noinline.prg.lto.o:(.text.complete_mixed)
+    3e49     3e49      217     1                 complete_mixed
+    4060     4060      243     1         build/p66-native-noinline.prg.lto.o:(.text.saved_target)
+    4060     4060      243     1                 saved_target
+    42a3     42a3      1da     1         build/p66-native-noinline.prg.lto.o:(.text.change_mixed_basic)
+    42a3     42a3      1da     1                 change_mixed_basic
+    447d     447d      2ad     1         build/p66-native-noinline.prg.lto.o:(.text.sleep_mixed)
+    447d     447d      2ad     1                 sleep_mixed
+    472a     472a      330     1         build/p66-native-noinline.prg.lto.o:(.text.priority_mixed)
+    472a     472a      330     1                 priority_mixed
+    4a5a     4a5a       da     1         build/p66-native-noinline.prg.lto.o:(.text.candidate)
+    4a5a     4a5a       da     1                 candidate
+    4b34     4b34      46c     1         build/p66-native-noinline.prg.lto.o:(.text.exchange_saved)
+    4b34     4b34      46c     1                 exchange_saved
+    4fa0     4fa0       42     1         build/p66-native-noinline.prg.lto.o:(.text.exec_native_lock)
+    4fa0     4fa0       42     1                 exec_native_lock
+    4fe2     4fe2       4d     1         build/p66-native-noinline.prg.lto.o:(.text.exec_native_unlock)
+    4fe2     4fe2       4d     1                 exec_native_unlock
+    502f     502f      28e     1         build/p66-native-noinline.prg.lto.o:(.text.exec_irq_service_locked)
+    502f     502f      28e     1                 exec_irq_service_locked
+    52bd     52bd        3     1         build/p66-native-noinline.prg.lto.o:(.text.mapped)
+    52bd     52bd        3     1                 mapped
+    52c0     52c0      1f4     1         build/p66-native-noinline.prg.lto.o:(.text.p66_native_export_executive)
+    52c0     52c0      1f4     1                 p66_native_export_executive
+    54b4     54b4      1fe     1         build/p66-native-noinline.prg.lto.o:(.text.p66_native_import_executive)
+    54b4     54b4      1fe     1                 p66_native_import_executive
+    56b2     56b2      383     1         build/p66-native-noinline.prg.lto.o:(.text.p66_native_step)
+    56b2     56b2      383     1                 p66_native_step
+    5a35     5a35      3c4     1         build/p66-native-noinline.prg.lto.o:(.text.continuation)
+    5a35     5a35      3c4     1                 continuation
+    5df9     5df9       2d     1         build/p66-native-noinline.prg.lto.o:(.text.apollo_overlay_crc16)
+    5df9     5df9       2d     1                 apollo_overlay_crc16
+    5e26     5e26       3f     1         build/p66-native-noinline.prg.lto.o:(.text.apollo_overlay_init)
+    5e26     5e26       3f     1                 apollo_overlay_init
+    5e65     5e65      9c7     1         build/p66-native-noinline.prg.lto.o:(.text.apollo_overlay_call)
+    5e65     5e65      9c7     1                 apollo_overlay_call
+    682c     682c       4b     1         build/p66-native-noinline.prg.lto.o:(.text.byte)
+    682c     682c       4b     1                 byte
+    6877     6877        1     1         build/p66-native-noinline.prg.lto.o:(.text.le16)
+    6877     6877        1     1                 le16
+    6878     6878       78     1         build/p66-native-noinline.prg.lto.o:(.text.c64_overlay_backend)
+    6878     6878       78     1                 c64_overlay_backend
+    68f0     68f0       cb     1         build/p66-native-noinline.prg.lto.o:(.text.open_file)
+    68f0     68f0       cb     1                 open_file
+    69bb     69bb       59     1         build/p66-native-noinline.prg.lto.o:(.text.read_byte)
+    69bb     69bb       59     1                 read_byte
+    6a14     6a14       3a     1         build/p66-native-noinline.prg.lto.o:(.text.close_file)
+    6a14     6a14       3a     1                 close_file
+    6a4e     6a4e       49     1         build/p66-native-noinline.prg.lto.o:(.text.invoke)
+    6a4e     6a4e       49     1                 invoke
+    6a97     6a97        c     1         build/p66-native-noinline.prg.lto.o:(.text.restore)
+    6a97     6a97        c     1                 restore
+    6aa3     6aa3       bb     1         build/p66-native-noinline.prg.lto.o:(.text.main)
+    6aa3     6aa3       bb     1                 main
+    6b5e     6b5e      1de     1         build/p66-native-noinline.prg.lto.o:(.text.check)
+    6b5e     6b5e      1de     1                 check
+    6d3c     6d3c        4     1         build/p66-native-noinline.prg.lto.o:(.text.enter)
+    6d3c     6d3c        4     1                 enter
+    6d40     6d40        8     1         build/p66-native-noinline.prg.lto.o:(.text.leave)
+    6d40     6d40        8     1                 leave
+    6d48     6d48       78     1         build/p66-native-noinline.prg.lto.o:(.text.observe)
+    6d48     6d48       78     1                 observe
+    6dc0     6dc0       a2     1         build/p66-native-noinline.prg.lto.o:(.text.invoke.7)
+    6dc0     6dc0       a2     1                 invoke.7
+    6e62     6e62        6     1         build/p66-native-noinline.prg.lto.o:(.text.exit)
+    6e62     6e62        6     1                 exit
+    6e68     6e68        3     1         build/p66-native-noinline.prg.lto.o:(.text.cbm_k_chrin)
+    6e68     6e68        3     1                 cbm_k_chrin
+    6e6b     6e6b        5     1         build/p66-native-noinline.prg.lto.o:(.text.cbm_k_close)
+    6e6b     6e6b        5     1                 cbm_k_close
+    6e70     6e70        3     1         build/p66-native-noinline.prg.lto.o:(.text.cbm_k_clrch)
+    6e70     6e70        3     1                 cbm_k_clrch
+    6e73     6e73        3     1         build/p66-native-noinline.prg.lto.o:(.text.cbm_k_readst)
+    6e73     6e73        3     1                 cbm_k_readst
+    6e76     6e76       36     1         build/p66-native-noinline.prg.lto.o:(.text.strlen)
+    6e76     6e76       36     1                 strlen
+    6eac     6eac       5d     1         build/p66-native-noinline.prg.lto.o:(.text.__udivqi3)
+    6eac     6eac       5d     1                 __udivqi3
+    6f09     6f09       c4     1         build/p66-native-noinline.prg.lto.o:(.text.__udivhi3)
+    6f09     6f09       c4     1                 __udivhi3
+    6fcd     6fcd       40     1         build/p66-native-noinline.prg.lto.o:(.text.__umodqi3)
+    6fcd     6fcd       40     1                 __umodqi3
+    700d     700d       7d     1         build/p66-native-noinline.prg.lto.o:(.text.__udivmodqi4)
+    700d     700d       7d     1                 __udivmodqi4
+    708a     708a       34     1         build/p66-native-noinline.prg.lto.o:(.text.memcpy)
+    708a     708a       34     1                 memcpy
+    70be     70be       22     1         build/p66-native-noinline.prg.lto.o:(.text.__memset)
+    70be     70be       22     1                 __memset
+    70e0     70e0        0     1         __init_array_start = .
+    70e0     70e0        0     1         __init_array_end = .
+    70e0     70e0        0     1         __fini_array_start = .
+    70e0     70e0        0     1         __fini_array_end = .
+    70e0     70e0       e0     1 .rodata
+    70e0     70e0        8     1         build/p66-native-noinline.prg.lto.o:(.rodata.exec_native_step)
+    70e8     70e8       14     1         build/p66-native-noinline.prg.lto.o:(.rodata.continuation)
+    70fc     70fc       31     1         build/p66-native-noinline.prg.lto.o:(.rodata.p66_native_modules)
+    70fc     70fc       31     1                 p66_native_modules
+    712d     712d       2a     1         <internal>:(.rodata.str1.1)
+    7157     7157        6     1         build/p66-native-noinline.prg.lto.o:(.rodata.check.guard)
+    7157     7157        6     1                 check.guard
+    715d     715d        f     1         build/p66-native-noinline.prg.lto.o:(.rodata..L__const.check.binding)
+    716c     716c       54     1         build/p66-native-noinline.prg.lto.o:(.rodata.p66_native_mappings)
+    716c     716c       54     1                 p66_native_mappings
+    71c0     71c0        6     1 .data
+    71c0     71c0        0     1         __data_start = .
+    71c0     71c0        6     1         build/p66-native-noinline.prg.lto.o:(.data.io)
+    71c0     71c0        6     1                 io
+    71c6     71c6        0     1         __data_end = .
+    71c6     71c6        0     1 __data_load_start = LOADADDR(.data)
+    71c6     71c6        0     1 __data_size = SIZEOF(.data)
+    71c6     71c6      2b9     1 .bss
+    71c6     71c6        0     1         __bss_start = .
+    71c6     71c6       13     1         build/p66-native-noinline.prg.lto.o:(.bss.modules)
+    71c6     71c6       13     1                 modules
+    71d9     71d9        2     1         build/p66-native-noinline.prg.lto.o:(.bss.failures)
+    71d9     71d9        2     1                 failures
+    71db     71db       1c     1         build/p66-native-noinline.prg.lto.o:(.bss.runtime)
+    71db     71db       1c     1                 runtime
+    71f7     71f7      288     1         build/p66-native-noinline.prg.lto.o:(.bss.state)
+    71f7     71f7      288     1                 state
+    747f     747f        0     1         __bss_end = .
+    747f     747f        0     1 __bss_size = SIZEOF(.bss)
+    747f     747f        0     1 .noinit
+    747f     747f        0     1         __heap_start = ALIGN(., 2)
+    747f     747f        0     1 __stack = 0xd000
+    747f     747f        0     1 
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/p66-native-noinline.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/p66-native-noinline.prg.lto.o:(.llvm_sympart)
+       0        0      f70     4 .symtab
+       0        0      f70     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      9d7     1 .strtab
+       0        0      9d7     1         <internal>:(.strtab)
