@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_request_control.prg from 0801 to 1FFE (17FE bytes)
+WATCH: 1  C:$3fff  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 3fff)   92/$05c,  13/$0d
+.C:1884  8E FF 3F    STX $3FFF      - A:80 X:A5 Y:40 SP:f1 NV-....C  301902313
+>C:3fff  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_request_control-vice-mailbox.bin' from $3fff to $4003
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_request_control-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_request_control-vice-software-stack.bin' from $c100 to $cfff

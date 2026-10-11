@@ -544,3 +544,5 @@ subprocess.run([sys.executable,'tools/cm_abort_recovery_differential.py',str(ref
 subprocess.run([sys.executable,'tools/dsky_major_request_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_admission_zero_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_request_control_differential.py',str(reference)],cwd=ROOT,check=True)

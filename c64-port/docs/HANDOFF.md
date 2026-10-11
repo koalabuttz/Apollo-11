@@ -1259,3 +1259,7 @@ Extend canonical source admission to defined positive zero core scan paths over8
 ## Compose original RTB and UNIT numerical normalization continuations
 
 Qualify NORMUNIT NORMUNX1 and normal UNIT callers through complete125 word UNIT UNITDV and VSQSUB source group per mission against1179648 original native sanitizer states and576 C64 cases across eighteen targets. Generic interpreter and IMU output bodies remain separate. See `docs/RTB-UNIT.md`.
+
+## Translate original operator request and scheduler call source stages
+
+Qualify actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 dispatch through literal RELDSP NOVAC FINDVAC WAITLIST entry boundaries over8192 full original native sanitizer states plus64 C64 states retaining original downstream priority and delay values. See `docs/DSKY-REQUEST-CONTROL.md`.
