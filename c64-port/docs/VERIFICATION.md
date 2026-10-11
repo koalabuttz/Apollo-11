@@ -1584,3 +1584,7 @@ Qualify BAILOUT POODOO CCSHOLE snapshot BORTENT flag phase cleanup WHIMPER ENEMA
 ## Translate original shared vector cross product and projection dependencies
 
 Qualify native VXV and VPROJ with erasable aliases and immutable fixed operands over262144 complete original native sanitizer states and384 actual C64 states. Original source words and constants independently match baseline ropes; passive input injections and unexecuted reviewed overflow exit are explicit. Antenna and interpreter files remain partial. See `docs/NATIVE-SBAND-VECTORS.md`.
+
+## Fresh committed UNIT and recovery lifecycle host check
+
+A clean isolated export of exact commit`69975cb4258b52e6cdcb56d291bdb0622cee9aff` builds and passes every registered portable host `all`/`test` recipe, including both whole interbank and service routine files, full P66 recurrence, complete UNIT numerical groups, positive-zero Executive admission, operator request composition and uninterrupted Comanche abort lifecycle. The exporter uses exact Git objects and excludes uncommitted source. Its committed snapshot has39 complete source files; the full-port gate correctly rejects136 remaining files and both integrated applications. See `evidence/integration-unit-recovery-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
