@@ -382,3 +382,5 @@ subprocess.run([sys.executable,'tools/display_job_differential.py',str(reference
 subprocess.run([sys.executable,'tools/dsky_keyboard_number_flow_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_danzig_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_powered_trig_differential.py',str(reference)],cwd=ROOT,check=True)

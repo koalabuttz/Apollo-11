@@ -1,0 +1,27 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-powered-trig0.prg from 0801 to 1C65 (1465 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   64/$040,  29/$1d
+.C:10c4  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   43011389
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-powered-trig1.prg from 0801 to 34FA (2CFA bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  258/$102,   6/$06
+.C:110d  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   45244716
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-powered-trig2.prg from 0801 to 3D5C (355C bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  139/$08b,  56/$38
+.C:10bb  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   47517365
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_trig-software-stack.bin' from $c100 to $cfff

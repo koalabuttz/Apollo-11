@@ -1,0 +1,67 @@
+{
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_sources": {
+    "POWERED_FLIGHT_SUBROUTINES.agc": {
+      "original_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+      "normalized_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca",
+      "indentation_repair_lines": [
+        132
+      ]
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+      "indentation_repair_lines": [
+        51,
+        207,
+        247,
+        542,
+        588,
+        678,
+        681,
+        908,
+        941,
+        1376,
+        1504,
+        1551,
+        1553,
+        1600,
+        1735,
+        1739,
+        1830,
+        1921,
+        1940,
+        1986,
+        2002,
+        2014,
+        2028,
+        2058,
+        2561,
+        2646,
+        2661,
+        2901,
+        3018,
+        3023,
+        3028,
+        3034,
+        3042,
+        3047,
+        3054,
+        3062
+      ]
+    },
+    "RT8_OP_CODES.agc": {
+      "original_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+      "normalized_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+      "indentation_repair_lines": []
+    },
+    "SINGLE_PRECISION_SUBROUTINES.agc": {
+      "original_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+      "normalized_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+      "indentation_repair_lines": []
+    }
+  },
+  "declaration_data_domain": "Byte-original CM ERASABLE_ASSIGNMENTS and fixed data; ALTVAR01357/R53FLBITBIT8 preserved",
+  "declaration_dependency": "docs/FIXED_DATA.md",
+  "historical_source_edits": 0
+}
