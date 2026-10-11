@@ -800,3 +800,5 @@ include tools/rtb_vector_integration.mk
 
 include tools/cm_enema_image.mk
 all: build/cm-enema-image-native
+
+include tools/dsky_alarm_recycle.mk

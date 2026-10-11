@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_alarm_recycle.prg from 0801 to 45CC (3DCC bytes)
+WATCH: 1  C:$65cd  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 65cd)   70/$046,  36/$24
+.C:2918  8E CD 65    STX $65CD      - A:80 X:A5 Y:00 SP:f1 NV-....C  317330910
+>C:65cd  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_alarm_recycle-vice-mailbox.bin' from $65cd to $65d1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_alarm_recycle-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_alarm_recycle-vice-software-stack.bin' from $c100 to $cfff

@@ -1,0 +1,4 @@
+/* SPDX-License-Identifier: MIT */
+#include "dsky_alarm_recycle_cases.h"
+#include "p66_bias_cases.h"
+void dsky_alarm_recycle_input(apollo_overlay_state *s,dsky_charin_io *io,uint16_t n){static const uint16_t raw[]={0,077777,037777,040000,0100000,0177777,0140000,1},edges[]={0,077777,037777,040000,1,077776};p66_bias_prepare(s,n);s->words[3]=(uint16_t)((n/16u)%8u*0400u);s->words[4]=(uint16_t)((n/128u)%32u*02000u);s->words[6]=(uint16_t)(s->words[4]|(s->words[3]>>8));s->words[5]=n<4096u ? 04145u : 04161u;s->words[0]=raw[(n/32u)%8u];s->words[1]=raw[(n/64u)%8u];s->words[2]=raw[(n/128u)%8u];s->words[01041]=n%101u==100u ? 0 : agc_negate((uint16_t)(n%101u));s->words[01016]=edges[(n/8u)%6u];if((n/32u)%3u)s->words[01034]=0;else if(s->words[01034]==0)s->words[01034]=073777;io->control.superbank=(uint16_t)(0100u+(n/256u)%4u*020u);io->control.interrupt_enabled=(uint16_t)((n/128u)%2u);io->channel11=(uint16_t)(n*317u&077777u);io->wrote_channel11=0;}

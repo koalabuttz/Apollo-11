@@ -1156,3 +1156,7 @@ Qualify complete VECAGREE and VECSGNAG control plus literal UNIT and IMUPULSE ha
 ## Translate original Comanche canonical ENEMA recovery image
 
 Qualify actual ENEMA whole physical image recovery against4096 original native sanitizer states and32 C64 checkpoints with explicit MMDSPLAY PTBAD DOFSTART continuations retaining failed automatic stack build and qualified reset transient scratch workaround. See `docs/COMANCHE_ENEMA_IMAGE.md`.
+
+## Compose uninterrupted original alarm recycle and display update
+
+Qualify actual ALMCYCLE lamp event BANKCALL widened UPDATVB SWRETURN POSTJUMP and ENTER or CCSHOLE over8192 uninterrupted original native sanitizer images plus64 C64 states with all signed zero and selecting SUPER contexts. See `docs/DSKY-ALARM-RECYCLE.md`.
