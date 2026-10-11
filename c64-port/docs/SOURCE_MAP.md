@@ -1319,3 +1319,7 @@ Translate actual CSTODAY division basic body including source raw register and o
 ## Compose original R52 priority alarm and actual display job return
 
 Qualify2048 uninterrupted source paths and12407 full original native sanitizer states with32 C64 paths and200 full source checkpoints through actual alarm display and queued MAKEPLAY handoff. See `docs/COMANCHE_R52_PRIORITY_ALARM.md`.
+
+## Translate original direct display response recall controls
+
+Qualify actual direct RECAL1 RECAL2 RECAL3 DOPROC DOTERM and generic source wake returns against8192 full original native sanitizer states and64 C64 states including actual skipped loads and unmatched source indexing. See `docs/DSKY-RESPONSE-RECALL.md`.

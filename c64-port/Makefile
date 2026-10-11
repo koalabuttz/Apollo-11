@@ -915,3 +915,5 @@ include tools/ephemeris_day_integration.mk
 
 include tools/cm_r52_priority_alarm.mk
 all: build/cm-r52-priority-alarm-native
+
+include tools/dsky_response_recall.mk

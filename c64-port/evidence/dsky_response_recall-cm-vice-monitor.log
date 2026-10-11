@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_response_recall-cm.prg from 0801 to 42E5 (3AE5 bytes)
+WATCH: 1  C:$62ee  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 62ee)  120/$078,  51/$33
+.C:29e7  8E EE 62    STX $62EE      - A:40 X:A5 Y:00 SP:f1 N.-....C  152557827
+>C:62ee  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_response_recall-cm-vice-mailbox.bin' from $62ee to $62f2
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_response_recall-cm-vice-difference.bin' from $42e6 to $42ed
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_response_recall-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_response_recall-cm-vice-software-stack.bin' from $c100 to $cfff

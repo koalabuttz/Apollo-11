@@ -1,0 +1,12 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_response_recall-lm.prg" 0
+watch store 61bc
+ignore 1 1
+g 080d
+m 61bc 61c0
+bsave "/workspace/Apollo-11/c64-port/build/dsky_response_recall-lm-vice-mailbox.bin" 0 61bc 61c0
+bsave "/workspace/Apollo-11/c64-port/build/dsky_response_recall-lm-vice-difference.bin" 0 41b4 41bb
+bsave "/workspace/Apollo-11/c64-port/build/dsky_response_recall-lm-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_response_recall-lm-vice-software-stack.bin" 0 c100 cfff
+quit
