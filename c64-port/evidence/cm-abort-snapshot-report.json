@@ -1,0 +1,41 @@
+{
+  "actual_executed_source_states": 61440,
+  "source_stream_sha256": "c6707b3c620653ade83f61eb66e7b7bb8e70fc6b7d5febf19047f570c5cb9dfe",
+  "target_contexts": 18,
+  "target_checkpoints": 90,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500005a00",
+  "software_stack_bytes": 719,
+  "modules": [
+    {
+      "id": 216,
+      "filename": "G216",
+      "byte_count": 5372,
+      "crc16": 38561,
+      "sha256": "18dd57900c7922731d11b37d9ee6015ee87cb8c8e18b570d34afd4cdd751ecc4",
+      "prg": "cm-abort-snapshot-216.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 4843,
+      "crc16": 33131,
+      "sha256": "9e8f132a88e40e36cfca2288a7beeeec422254e8e7d220b52590248cdf467132",
+      "prg": "cm-abort-snapshot-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 9891,
+      "crc16": 37411,
+      "sha256": "2acdb23ee48da6359f51278dd435db3ac564529e367d4cf8f05dc1edc658b4a8",
+      "prg": "cm-abort-snapshot-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual continuous BAILOUT/POODOO/CCSHOLE snapshot and alarm recording through genuine WHIMPER/average-G recovery branch entry; later recovery remains separate"
+}

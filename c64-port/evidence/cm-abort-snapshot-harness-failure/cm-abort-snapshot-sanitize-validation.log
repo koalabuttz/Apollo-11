@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_abort_snapshot.c src/cm_alarm_record.c src/cm_vac5_store.c src/cm_interbank_extended.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_abort_snapshot_cases.c tests/cm_vac5_store_cases.c tests/cm_admission_complete_cases.c platform/host/cm_abort_snapshot_snapshot.c -o build/cm-abort-snapshot-sanitize
+python3 tools/cm_abort_snapshot_sanitize.py
+PASS: full ASAN/UBSAN abort snapshot corpus, all61440 actual source states

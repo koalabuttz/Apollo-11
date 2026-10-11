@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-abort-snapshot-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-abort-snapshot-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-ABORT-SNAPSHOT.PRG' as `RESIDENT' to unit 8
+writing file `CM-ABORT-SNAPSHOT-216.PRG' as `G216' to unit 8
+writing file `CM-ABORT-SNAPSHOT-254.PRG' as `G254' to unit 8
+writing file `CM-ABORT-SNAPSHOT-255.PRG' as `G255' to unit 8
+216 5372 loaded bytes
+254 4843 loaded bytes
+255 9907 loaded bytes

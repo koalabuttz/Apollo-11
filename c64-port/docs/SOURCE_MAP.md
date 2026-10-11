@@ -1079,3 +1079,7 @@ Actual5BLANK, minus-one, plus-two and CLR5 bodies match8192 complete original/na
 ## Translate original RTB angle conversion time and PIPA source groups
 
 Both original mission converters, CDU controls and clock reads plus Comanche PIPA reads match1048576 complete original/native/full-sanitizer states and512 actual C64 states across16 targets. Source mapping and binary checks retain containing file boundaries:72 of130 Luminary words and97 of206 Comanche words are qualified; other RTB entries remain open. See `docs/RTB-ANGLES.md`.
+
+## Translate original Comanche abort snapshot and alarm entry chronology
+
+Qualify BAILOUT POODOO and CCSHOLE through actual VAC5 GENTRAN and BORTENT against uninterrupted original machine checkpoints, retaining the corrected diagnostic failure evidence and explicit recovery frontiers. See `docs/COMANCHE_ABORT_SNAPSHOT.md`.

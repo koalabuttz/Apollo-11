@@ -770,3 +770,6 @@ include tools/dsky_machine_cadr.mk
 include tools/dsky_five_blank.mk
 
 include tools/rtb_angles_integration.mk
+
+include tools/cm_abort_snapshot.mk
+all: build/cm-abort-snapshot-native

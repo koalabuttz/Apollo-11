@@ -1,0 +1,149 @@
+{
+  "scope": "Failed diagnostic-only harness trial; native source image matches original at captured actual phase1, no algorithm verdict claimed",
+  "mailbox": "a526002600",
+  "cause": [
+    "Diagnostic copied variable 2/3-stage INITDSP loop rather than fixed five abort phases",
+    "Checker low-byte FNV mask accidentally217 rather than255 during identifier adaptation"
+  ],
+  "artifacts": [
+    {
+      "original_path": "build/cm-abort-snapshot-freeze.log",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-freeze.log",
+      "sha256": "06d0772f973309225dacffc6eefe3c78c2b96ee5b6d1cd6469d2985d6a99a188"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-build-validation.log",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-build-validation.log",
+      "sha256": "5f787513467c77216c97dccaa96a191a83a96c445aaa4807c5b891bbf1d2a138"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-vice-mailbox.bin",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-vice-mailbox.bin",
+      "sha256": "0c0ace06e7e4dfb8eeea54a477980eef433ffae8dd965073805cc9507263a3ac"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-255.map",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-255.map",
+      "sha256": "c91735dbd36f4ec49fcf3f4b4205c99b03cffb96740c6ebf6499e642736cff2a"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-vice-stack.bin",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-vice-stack.bin",
+      "sha256": "a7d814e12dc1e7f413eecfe498ec1cfcbf7468ca183ca54543802b0a671793da"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-native.stream.json",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-native.stream.json",
+      "sha256": "ed4c391939f080a770e0da85c3276fb48671cde70bfea336acc9cd33f9f3696e"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-c64-result.log",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-c64-result.log",
+      "sha256": "9fe1ac1238f4b8bbfed38a410f571a924cbab32049602abd1a6fa73a3a9bccc3"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-216.prg",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-216.prg",
+      "sha256": "18dd57900c7922731d11b37d9ee6015ee87cb8c8e18b570d34afd4cdd751ecc4"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-216.map",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-216.map",
+      "sha256": "d8e5535a76dee0cb4bd29f658e0748662fa0612ab1d0f923d78e0bb91d74127a"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-vice-shared.bin",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-vice-shared.bin",
+      "sha256": "8425880c900dd296260cec19ec000843cd5044a1dc7833fefd47aba34091d947"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-modules.json",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-modules.json",
+      "sha256": "9553ef0c45fc7d0bb0e5903fdd931f2218e37958f5dbd8fb6c513680c332fe78"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-sanitize-validation.log",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-sanitize-validation.log",
+      "sha256": "5850de63448d1bbfdce1133edbca139141d4223d3f6031a3b6110ea2d98b33c3"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-255.prg",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-255.prg",
+      "sha256": "82de03f3f0a84266578f91eb9a36047771d4f644ef3b9d9e52da000d3a85d88a"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-reference.stream.json",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-reference.stream.json",
+      "sha256": "ed4c391939f080a770e0da85c3276fb48671cde70bfea336acc9cd33f9f3696e"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-vice.log",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-vice.log",
+      "sha256": "302e5c0c2d760716f47de2d960c6cdb71c3a7839e410540f5e1bc727b271d269"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-final-source-sample.bin",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-final-source-sample.bin",
+      "sha256": "9770d4db8e6c538e8f7871fd6d2c3ce430ddf579ddd1e173c01664cd6e1dbd43"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-proof.json",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-proof.json",
+      "sha256": "9b30bb6007dd5fce11214977bb01c0b6f2d8558635bf449d1543aa7df502f59e"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-254.prg",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-254.prg",
+      "sha256": "9e8f132a88e40e36cfca2288a7beeeec422254e8e7d220b52590248cdf467132"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-validation.log",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-validation.log",
+      "sha256": "36dcd8e043a6be38f5501d38cb9226bf8603cbb074cc5b1f55c2b16f9b2b9e66"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-vice-monitor.log",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-vice-monitor.log",
+      "sha256": "a1106aa3c94e00d33aa80b0168eef6bd4f21b8c10d760246cdf063bcc5bbe5d7"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot-254.map",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot-254.map",
+      "sha256": "b5d704c6242b489c1b036c3f2d35363c8185bebd8a6a7a638db305438b50da45"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot.prg",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot.prg",
+      "sha256": "f9886e845bdfda86d63b560bcd1daf45f593ca7ec77e7c5afa21373ad8b882ae"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot.map",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot.map",
+      "sha256": "26905fa19f62b88624f7e35aa10e7bf308636709fe46206dc842d755286f88ae"
+    },
+    {
+      "original_path": "build/cm-abort-snapshot.d64",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm-abort-snapshot.d64",
+      "sha256": "1dbf11a499b6fa06de452eff4c5ae6918b008fe1e67d23354ffa6af020fdc6b2"
+    },
+    {
+      "original_path": "platform/c64/cm_abort_snapshot_diagnostic.c",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm_abort_snapshot_diagnostic.c",
+      "sha256": "b9ee41149671ca4601b36fab05625f9785b507b33278a20d0fd98ac4ef0cc6f6"
+    },
+    {
+      "original_path": "platform/c64/cm_abort_snapshot_check.c",
+      "retained_path": "evidence/cm-abort-snapshot-harness-failure/cm_abort_snapshot_check.c",
+      "sha256": "06e98e5815ca1b415981eac79fe9bf1f68a02c5ee1fef983b99ec06718051dca"
+    }
+  ],
+  "direct_complete_image_comparison": {
+    "source_case": 12287,
+    "phase": 1,
+    "source_record_index": 61436,
+    "source_stream_sha256": "c6707b3c620653ade83f61eb66e7b7bb8e70fc6b7d5febf19047f570c5cb9dfe",
+    "actual_and_original_image_sha256": "8425880c900dd296260cec19ec000843cd5044a1dc7833fefd47aba34091d947",
+    "all2048words_equal": true
+  },
+  "native_control_sha256_before_and_after": "18dd57900c7922731d11b37d9ee6015ee87cb8c8e18b570d34afd4cdd751ecc4"
+}

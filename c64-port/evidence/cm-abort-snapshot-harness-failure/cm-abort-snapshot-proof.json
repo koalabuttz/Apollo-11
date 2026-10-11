@@ -1,0 +1,24 @@
+{
+  "cases": 12288,
+  "checkpoints": 61440,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "BAILOUT07755",
+    "POODOO05721",
+    "CCSHOLE05747",
+    "VAC5STOR20,2000",
+    "SWRETURN04675",
+    "BORTENT05655"
+  ],
+  "context_cohorts": "three genuine abort entry producers, two original Executive alarm words, 4096 randomized snapshot/phase/FAILREG/bank cases",
+  "binary_bytes": 252395520,
+  "snapshot_sha256": "c6707b3c620653ade83f61eb66e7b7bb8e70fc6b7d5febf19047f570c5cb9dfe",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual abort entry through source snapshot and alarm record; stops at genuine WHIMPER/recovery branch entry"
+}
