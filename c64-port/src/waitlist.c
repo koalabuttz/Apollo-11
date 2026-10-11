@@ -48,14 +48,16 @@ enum wl_status wl_schedule(waitlist *s,agc_word delay,exec_address task) {
             kind=reg_class(a); a=reg_dabs(a);
             if(kind==AGC_NEGATIVE || kind==AGC_MINUS_ZERO) break;
             if(slot==WL_INTERVAL_COUNT) break;
-            a=add(a,s->interval[slot]);
+            /* CCS +0 skips AD LST1 and goes directly to the next CCS. */
+            if(kind==AGC_POSITIVE) a=add(a,s->interval[slot]);
         }
         if(slot==WL_TASK_COUNT || (slot==WL_INTERVAL_COUNT &&
-           kind!=AGC_NEGATIVE && kind!=AGC_MINUS_ZERO)) {
+           kind==AGC_POSITIVE)) {
             s->alarm=WL_FULL; return WL_FULL;
         }
-        /* WTLST2: split the existing interval, preserving raw zero encoding. */
-        if(kind==AGC_NEGATIVE) a=add(a,1);
+        /* Last CCS +0 skips FILLED via NOOP/AD ONE; -0 skips AD ONE.
+         * WTLST2 splits the interval, preserving raw zero encoding. */
+        if(kind==AGC_NEGATIVE || kind==AGC_PLUS_ZERO) a=add(a,1);
         insert=agc_correct(complement(a));
         s->interval[slot-1]=agc_correct(add(add(a,1),s->interval[slot-1]));
     } else {

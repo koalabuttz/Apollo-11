@@ -174,3 +174,5 @@ subprocess.run([sys.executable,'tools/radial_differential.py',str(reference)],cw
 subprocess.run([sys.executable,'tools/acceleration_prefix_differential.py'],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/acceleration_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/waitlist_zero_differential.py',str(reference)],cwd=ROOT,check=True)
