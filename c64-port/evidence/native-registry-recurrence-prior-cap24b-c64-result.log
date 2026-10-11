@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/native_registry_vice_test.py", line 78, in <module>
+    main()
+  File "/workspace/Apollo-11/c64-port/tools/native_registry_vice_test.py", line 58, in main
+    subprocess.run(command, stdout=log, stderr=subprocess.STDOUT,
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/workspace/toolchains/vice/usr/bin/x64sc', '-default', '-console', '-pal', '-warp', '+sound', '-kernal', '/workspace/toolchains/roms/C64/kernal-901227-03.bin', '-basic', '/workspace/toolchains/roms/C64/basic-901226-01.bin', '-chargen', '/workspace/toolchains/roms/C64/chargen-901225-01.bin', '-directory', '/workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms', '+drive8truedrive', '-virtualdev8', '-iecdevice8', '-device8', '1', '-drive8type', '1581', '-8', '/workspace/Apollo-11/c64-port/build/native-registry-recurrence.d81', '-initbreak', 'ready', '-moncommands', '/workspace/Apollo-11/c64-port/build/native-registry-recurrence-vice.mon', '-monlogname', '/workspace/Apollo-11/c64-port/build/native-registry-recurrence-vice-monitor.log', '-monlog', '-limitcycles', '24000000000']' returned non-zero exit status 1.

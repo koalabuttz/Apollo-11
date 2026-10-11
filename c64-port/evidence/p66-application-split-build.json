@@ -1,0 +1,54 @@
+{
+  "original_stages": 111,
+  "new_adapter_ids": [
+    155,
+    159
+  ],
+  "bootstrap": {
+    "id": 148,
+    "filename": "MINFO",
+    "byte_count": 2015,
+    "crc16": 7646,
+    "sha256": "e6bee81f6772e343622a226087ef22966474c7319c0f89ccc75a405c0e12b5cd",
+    "prg": "p66-application-split-148.prg",
+    "mission_translation": false,
+    "native_adapter": true
+  },
+  "sources": [
+    "src/agc_word.c",
+    "src/executive.c",
+    "src/native_dispatch.c",
+    "src/irq_delivery.c",
+    "src/p66_native.c",
+    "src/p66_native_guidance.c",
+    "src/p66_guidance_invoke.c",
+    "src/p66_basic.c",
+    "src/p66_descent_invoke.c",
+    "src/p66_descent_runtime.c",
+    "src/p66_descent_prefix_control.c",
+    "src/guidance_control_observer.c",
+    "src/native_overlay_dispatch.c",
+    "src/p66_display_job.c",
+    "src/overlay_runtime.c",
+    "platform/c64/overlay_platform.c",
+    "src/p66_application.c",
+    "src/p66_application_recurrence.c",
+    "src/lm_clock.c",
+    "src/p66_length_return_control.c",
+    "src/dsky_display.c",
+    "src/native_module_registry.c",
+    "src/p66_application_split.c",
+    "platform/c64/p66_application_split_recurrence_diagnostic.c"
+  ],
+  "defines": [
+    "P66_NATIVE_DISPATCH_ONLY",
+    "P66_GUIDANCE_DISPATCH_ONLY",
+    "P66_BASIC_DISPATCH_ONLY",
+    "P66_DISPLAY_JOB_DISPATCH_ONLY",
+    "P66_APPLICATION_DISPATCH_ONLY",
+    "P66_RECURRENCE_DISPATCH_ONLY",
+    "P66_DIRECT_LAUNCH_DISPATCH_ONLY",
+    "EXEC_NATIVE_RESIDENT_SERVICES",
+    "P66_APPLICATION_SPLIT_DISPATCH_ONLY"
+  ]
+}

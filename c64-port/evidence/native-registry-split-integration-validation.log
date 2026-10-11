@@ -1,0 +1,18 @@
+python3 tools/native_resident_port_host.py
+PASS:111 unchanged stages; 337 retained descriptors with full header/SHA256/CRC/BSS checks; 209 source-reader entries
+PASS: all111 frozen descriptors; bounded resident copies, unknown/stale/error/IRQ-state seams and unchanged2048-word source image
+PASS:196656 known-bank/context/location resolver comparisons; 144 mapped entries and unchanged unsupported service
+PASS: original1137 full2050-field higher-priority vertical fallthrough; prepare/body/finish frames return, pending NEWJOB and arriving IRQ retained
+PASS: job 13312 complete raw original states, SHA256 bab1ff892632cd9c90d139229a9af041913c697301567a7ee1ac7dc6690bb22e
+PASS: live 1226 complete raw original states, SHA256 9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc
+PASS: recurrence 2460 complete raw original states, SHA256 d1aa5f4de9e02bf126731818227c4bc7592e62bddbbd66a425cc56346683f186
+PASS:native resident port strict; 16998 complete original states, resolver/adoption and registry/error guards
+python3 tools/native_resident_port_host.py --sanitize
+PASS:111 unchanged stages; 337 retained descriptors with full header/SHA256/CRC/BSS checks; 209 source-reader entries
+PASS: all111 frozen descriptors; bounded resident copies, unknown/stale/error/IRQ-state seams and unchanged2048-word source image
+PASS:196656 known-bank/context/location resolver comparisons; 144 mapped entries and unchanged unsupported service
+PASS: original1137 full2050-field higher-priority vertical fallthrough; prepare/body/finish frames return, pending NEWJOB and arriving IRQ retained
+PASS: job 13312 complete raw original states, SHA256 bab1ff892632cd9c90d139229a9af041913c697301567a7ee1ac7dc6690bb22e
+PASS: live 1226 complete raw original states, SHA256 9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc
+PASS: recurrence 2460 complete raw original states, SHA256 d1aa5f4de9e02bf126731818227c4bc7592e62bddbbd66a425cc56346683f186
+PASS:native resident port sanitize; 16998 complete original states, resolver/adoption and registry/error guards

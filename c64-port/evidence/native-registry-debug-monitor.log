@@ -1,0 +1,22 @@
+Loading /workspace/Apollo-11/c64-port/build/native-registry-recurrence.prg from 0801 to 6F36 (6736 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+TRACE: 2  C:$c001  (Trace store)
+Setting checkpoint 2 command to: m c000 c003
+BREAK: 3  C:$fce2  (Stop on exec)
+#2 (Trace store c001)   27/$01b,  33/$21
+.C:81fc  8E 01 C0    STX $C001      - A:82 X:00 Y:01 SP:d5 ..-B.IZ.   25829718
+Executing: m c000 c003
+>C:c000  00 00 00 34                                          ...4
+#2 (Trace store c001)  137/$089,  23/$17
+.C:8432  8C 01 C0    STY $C001      - A:33 X:00 Y:01 SP:bd ..-B.I.C  120952022
+Executing: m c000 c003
+>C:c000  00 01 00 34                                          ...4
+#2 (Trace store c001)   68/$044,  37/$25
+.C:8432  8C 01 C0    STY $C001      - A:42 X:00 Y:02 SP:bd ..-B.I.C  190687177
+Executing: m c000 c003
+>C:c000  00 02 00 34                                          ...4
+#2 (Trace store c001)  160/$0a0,  41/$29
+.C:8432  8C 01 C0    STY $C001      - A:AC X:00 Y:03 SP:bd ..-B.I.C  278201489
+Executing: m c000 c003
+>C:c000  00 03 00 34                                          ...4

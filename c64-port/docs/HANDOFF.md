@@ -1363,3 +1363,7 @@ Qualify both mission gyro wake and selected helper admission against262144 compl
 ## Qualify original RTB gyro-call return continuations
 
 Translate both actual trailing PULSEIMU return words with raw-register normalization and original DANZIG handoffs against131072 complete source strict sanitizer states and64 C64 states. See `docs/NATIVE-RTB-PULSE-RETURN.md`.
+
+## Load native module metadata and split resident P66 callbacks
+
+Qualify actual C64 checked metadata and split callbacks against310 full source checkpoints per resident with111 unchanged stage binaries and16998 original strict sanitizer states leaving1034 bytes free for subsequent pending-job scheduling. See `docs/NATIVE-MODULE-REGISTRY.md`.
