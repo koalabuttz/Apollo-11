@@ -400,3 +400,5 @@ include tools/acceleration_store.mk
 include tools/nv_entry.mk
 
 include tools/nv_words.mk
+
+include tools/dsky_pinball.mk

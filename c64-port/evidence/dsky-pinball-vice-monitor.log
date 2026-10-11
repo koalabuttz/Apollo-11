@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_pinball.prg from 0801 to 2E7C (267C bytes)
+WATCH: 1  C:$4e7d  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 4e7d)  198/$0c6,  26/$1a
+.C:1148  8E 7D 4E    STX $4E7D      - A:00 X:A5 Y:00 SP:f1 NV-....C  302361092
+>C:4e7d  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-mailbox.bin' from $4e7d to $4e81
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_pinball.prg from 0801 to 2E81 (2681 bytes)
+WATCH: 1  C:$4e82  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 4e82)   11/$00b,  18/$12
+.C:114d  8E 82 4E    STX $4E82      - A:00 X:A5 Y:00 SP:f1 NV-....C  303469695
+>C:4e82  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-mailbox.bin' from $4e82 to $4e86
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-software-stack.bin' from $c100 to $cfff
