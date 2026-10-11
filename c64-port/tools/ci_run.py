@@ -25,7 +25,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 MISSING = re.compile(r"(?:No such file or directory|cannot open|not found)[^\n]*?(evidence/[A-Za-z0-9._/+-]+)"
                      r"|(evidence/[A-Za-z0-9._/+-]+)[^\n]*?(?:No such file or directory|not found)")
 BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[^']+)'|"
-                          r"cmp: (build/[^:]+): No such file")
+                          r"cmp: (build/[^:]+): No such file|"
+                          r"cannot open (build/[^:\s]+): No such file")
 LOCK = threading.Lock()
 
 
@@ -91,32 +92,70 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
     for name, (_, recipe) in rules.items():
         if name != target and re.search(r'(>|-o)\s*' + re.escape(path) + r'(\s|$)', recipe):
             candidates.append(('make', name))
-    stem = re.sub(r'(-(native|reference|sanitize|live|target))?(\.snapshots(\.gz)?|\.json|\.trace)?$', '',
-                  pathlib.PurePosixPath(path).name)
+    name = pathlib.PurePosixPath(path).name
+    stem = re.sub(r'(-(native|reference|sanitize|live|target|inputs))?(\.snapshots|\.json|\.trace)?(\.gz|\.xz)?$', '',
+                  name)
     script = ROOT / 'tools' / (stem.replace('-', '_') + '_differential.py')
-    if script.is_file():
-        candidates.append(('script', script))
+    scripts = [script] if script.is_file() else []
+    scripts += sorted(s for s in (ROOT / 'tools').glob('*_differential.py')
+                      if s != script and s.name != 'differential.py' and name in s.read_text(errors='replace'))
+    candidates += [('script', s) for s in scripts]
+    # Sub-makefiles run through `make -f tools/<x>.mk` are not in the main
+    # database; find the rule whose recipe writes the file.
+    included = set(re.findall(r'^-?include\s+(tools/\S+\.mk)', (ROOT / 'Makefile').read_text(), re.M))
+    for mk in sorted((ROOT / 'tools').glob('*.mk')):
+        if mk.relative_to(ROOT).as_posix() in included:
+            continue
+        rule = None
+        for line in mk.read_text(errors='replace').splitlines():
+            head = re.match(r'([A-Za-z0-9_.-]+)\s*:(?!=)', line)
+            if head:
+                rule = head[1]
+            elif rule and line.startswith('\t') and re.search(r'>\s*' + re.escape(path) + r'(\s|$)', line):
+                candidates.append(('submake', (mk.relative_to(ROOT).as_posix(), rule)))
+                break
     module = target
     for prefix in ('c64-', 'sanitize-', 'test-'):
         module = module[len(prefix):] if module.startswith(prefix) else module
-    for name in (f'differential-{module}', f'test-{module}'):
-        if name in rules and name != target:
-            candidates.append(('make', name))
+    for rule in (f'differential-{module}', f'test-{module}'):
+        if rule in rules and rule != target:
+            candidates.append(('make', rule))
     for kind, what in candidates:
-        print(f'  {target}: producing {path} via {getattr(what, "name", what)}', flush=True)
+        if kind == 'make' and what in stack:
+            continue
+        label = what.name if kind == 'script' else ' '.join(what) if kind == 'submake' else what
+        print(f'  {target}: producing {path} via {label}', flush=True)
         if kind == 'make':
-            if what in stack:
-                continue
-            run(what, log_dir, make_args, attempts, stack)
+            ok = run(what, log_dir, make_args, attempts, stack)[1]
         else:
-            text = what.read_text(errors='replace')
-            argv = [str(ROOT / 'deps/fixture')] if 'sys.argv[1]' in text else []
-            log = log_dir / (what.stem + '.log')
-            proc = subprocess.run([sys.executable, str(what), *argv], cwd=ROOT, stdout=subprocess.PIPE,
-                                  stderr=subprocess.STDOUT, text=True)
-            log.write_text(proc.stdout)
+            if kind == 'script':
+                argv = [str(ROOT / 'deps/fixture')] if 'sys.argv[1]' in what.read_text(errors='replace') else []
+                cmd, log = [sys.executable, str(what), *argv], log_dir / (what.stem + '.log')
+            else:
+                cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', what[0], what[1]]
+                log = log_dir / (pathlib.Path(what[0]).stem + '-' + what[1] + '.log')
+            ok = produce_with(cmd, log, label, log_dir, make_args, attempts, stack)
         if (ROOT / path).exists():
+            if ok:
+                return True
+            (ROOT / path).unlink()  # a failed producer may leave a truncated stream
+    return False
+
+
+def produce_with(cmd, log, label, log_dir, make_args, attempts, stack):
+    """Run a producer, first producing any build/ input it turns out to need."""
+    tried = set()
+    for _ in range(attempts):
+        proc = subprocess.run(cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        log.write_text(proc.stdout)
+        if proc.returncode == 0:
             return True
+        built = sorted({next(filter(None, m)) for m in BUILD_OUTPUT.findall(proc.stdout)} - tried)
+        if label in stack or not built:
+            return False
+        tried.update(built)
+        if not any([produce(path, label, log_dir, make_args, attempts, stack + (label,)) for path in built]):
+            return False
     return False
 
 
@@ -144,7 +183,7 @@ def run(target, log_dir, make_args, attempts, stack=()):
         log.write_text(proc.stdout)
         if proc.returncode == 0:
             return target, True, time.monotonic() - start, ''
-        built = sorted({a or b for a, b in BUILD_OUTPUT.findall(proc.stdout)} - tried)
+        built = sorted({next(filter(None, m)) for m in BUILD_OUTPUT.findall(proc.stdout)} - tried)
         if built:
             tried.update(built)
             ran = [produce(path, target, log_dir, make_args, attempts, stack + (target,)) for path in built]
