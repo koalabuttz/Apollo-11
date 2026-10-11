@@ -32,6 +32,8 @@ from fixed_data_generate import fixed_address, rope_word  # noqa: E402
 TABLES = {
     'cm-alarm': ('Comanche055', ('ALARM', 'ALARM2', 'BAILOUT', 'POODOO'),
                  'src/cm_alarm_sites.inc', 'cm_alarm_sites'),
+    'cm-interbank': ('Comanche055', ('BANKCALL', 'IBNKCALL', 'POSTJUMP', 'USPRCADR'),
+                     'src/cm_interbank_sites.inc', 'cm_interbank_sites'),
     'lm-interbank': ('Luminary099', ('BANKCALL', 'IBNKCALL', 'POSTJUMP', 'USPRCADR'),
                      'src/lm_interbank_sites.inc', 'lm_interbank_sites'),
 }

@@ -14,4 +14,9 @@ enum lm_interbank_entry lm_ibr_entry(agc_word callee);
 uint16_t lm_ibr_site(uint32_t n);
 /* The program under test: INTER-BANK routines and the compiled operand table. */
 extern const agc_native_program lm_ibr_program;
+/* One case as the C64 diagnostic runs it: the routine at the callee via the
+ * registry, then for BANKCALL/IBNKCALL the trampoline round trip through a
+ * native callee and SWRETURN/ISWRETRN. Returns a digest of status, steps,
+ * the final image and io (two 16-bit running word sums). */
+uint32_t lm_ibr_run(uint32_t n);
 #endif
