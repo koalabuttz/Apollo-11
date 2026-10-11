@@ -1,0 +1,4 @@
+text	   data	    bss	    dec	    hex	filename
+   3655	      0	      0	   3655	    e47	build/fixed-data-lm.o
+text	   data	    bss	    dec	    hex	filename
+   3133	      0	      0	   3133	    c3d	build/fixed-data-cm.o

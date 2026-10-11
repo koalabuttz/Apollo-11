@@ -161,8 +161,41 @@
       "sha256": "1a9814350cf0d8cd9bf3e4c5e6da3adfa617754c4c6d6efe7f1986644eba0e32",
       "bytes": 13544,
       "lines": 411,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_cm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Comanche055/ENTRY_LEXICON.agc",
@@ -225,8 +258,41 @@
       "sha256": "1e2f7706589fb469347fed55f294c867ffa7c7cb46f7873c0cb11deef5d48be8",
       "bytes": 6608,
       "lines": 263,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_cm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Comanche055/FRESH_START_AND_RESTART.agc",
@@ -324,8 +390,41 @@
       "sha256": "494c6ae0e8fc59eb6d896e51f3af791aae13bb66fbf55a798cb6e2b3c807570f",
       "bytes": 1920,
       "lines": 82,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_cm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Comanche055/INTERRUPT_LEAD_INS.agc",
@@ -702,8 +801,41 @@
       "sha256": "855789b2d7726487248812224bbe2edd4f6f6b1503e28aeb57254bf261111742",
       "bytes": 5473,
       "lines": 193,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_cm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Comanche055/SXTMARK.agc",
@@ -967,26 +1099,41 @@
       "sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
       "bytes": 14841,
       "lines": 558,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
-          "scope": "KPIP1 and other explicitly checked bounded-guidance operands; full native constant pool remains incomplete.",
-          "artifacts": [
-            {
-              "path": "src/guidance_scale.c",
-              "sha256": "f431339cc5b76dea0bd03727ac530e7f2695644f75a193d84e9dc305d0bae948"
-            },
-            {
-              "path": "tools/prepare_reference.py",
-              "sha256": "9311f657bfd7ad5fd0f1c9e3bbf237bd1571a5cf8711eba55e38c07578cb7481"
-            },
-            {
-              "path": "evidence/scale-reference.snapshots",
-              "sha256": "11993e66747e7685e964c555e08e72c73d9782d2674a46d3ec0b2d4b00c36f2a"
-            }
-          ]
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_lm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Luminary099/DAPIDLER_PROGRAM.agc",
@@ -1037,8 +1184,41 @@
       "sha256": "def08f047f1c2930f7067fe9b8cf480eb7d5783f47de7850c623836380c93e63",
       "bytes": 14597,
       "lines": 430,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_lm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Luminary099/DOWN_TELEMETRY_PROGRAM.agc",
@@ -1139,30 +1319,41 @@
       "sha256": "7f139c2b553ce60f8c0ab8cf6242abef390c6a28858e45a4f1d80f0ff2c646b7",
       "bytes": 6679,
       "lines": 264,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
-          "scope": "Selected constants used by verified scheduler/arithmetic/guidance services; full native pool remains incomplete.",
-          "artifacts": [
-            {
-              "path": "src/executive.c",
-              "sha256": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3"
-            },
-            {
-              "path": "src/recovery.c",
-              "sha256": "852737dd911c7203f28beeee93f1254dbde53a8ba69eb87803249591b337bc3d"
-            },
-            {
-              "path": "tools/prepare_reference.py",
-              "sha256": "9311f657bfd7ad5fd0f1c9e3bbf237bd1571a5cf8711eba55e38c07578cb7481"
-            },
-            {
-              "path": "evidence/restart-differential.log",
-              "sha256": "7fb53f94d0a29869bd1488d8d94352b95d66f5d2c58b2763edc53480cdc70d8a"
-            }
-          ]
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_lm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Luminary099/FLAGWORD_ASSIGNMENTS.agc",
@@ -1362,8 +1553,41 @@
       "sha256": "30f22813f6d6f33f8202b65fa5895ebf535232e0437aaa9d02aec5b81e08d627",
       "bytes": 1852,
       "lines": 81,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_lm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Luminary099/INTERRUPT_LEAD_INS.agc",
@@ -1797,8 +2021,41 @@
       "sha256": "1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59",
       "bytes": 7458,
       "lines": 293,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/fixed_data.c",
+            "src/fixed_data_lm.inc",
+            "include/fixed_data_symbols.h"
+          ],
+          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "verification": "docs/FIXED_DATA.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/fixed-data-certificates.json",
+            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/fixed-data-audit.json.gz",
+            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/fixed-data-host.log",
+            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/fixed-data-vice-result.txt",
+            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
+          }
+        },
+        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
+      }
     },
     {
       "path": "Luminary099/RTB_OP_CODES.agc",

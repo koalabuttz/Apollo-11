@@ -1,0 +1,3 @@
+PASS: stock-ROM PAL C64 executes native LM+CM table ABI; all2871 raw words match original source
+Native PRG6447 bytes; loaded end0x212e; mailboxa5370b
+Directly linked native data proof; no disk-overlay execution claim in this fixture.
