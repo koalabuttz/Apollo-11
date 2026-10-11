@@ -1,0 +1,149 @@
+FAIL: Remaining native source coverage: Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc
+FAIL: Remaining native source coverage: Comanche055/ANGLFIND.agc
+FAIL: Remaining native source coverage: Comanche055/AUTOMATIC_MANEUVERS.agc
+FAIL: Remaining native source coverage: Comanche055/CM_BODY_ATTITUDE.agc
+FAIL: Remaining native source coverage: Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc
+FAIL: Remaining native source coverage: Comanche055/CONIC_SUBROUTINES.agc
+FAIL: Remaining native source coverage: Comanche055/CSM_GEOMETRY.agc
+FAIL: Remaining native source coverage: Comanche055/DISPLAY_INTERFACE_ROUTINES.agc
+FAIL: Remaining native source coverage: Comanche055/DOWN-TELEMETRY_PROGRAM.agc
+FAIL: Remaining native source coverage: Comanche055/EXECUTIVE.agc
+FAIL: Remaining native source coverage: Comanche055/EXTENDED_VERBS.agc
+FAIL: Remaining native source coverage: Comanche055/FRESH_START_AND_RESTART.agc
+FAIL: Remaining native source coverage: Comanche055/GROUND_TRACKING_DETERMINATION_PROGRAM.agc
+FAIL: Remaining native source coverage: Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc
+FAIL: Remaining native source coverage: Comanche055/IMU_COMPENSATION_PACKAGE.agc
+FAIL: Remaining native source coverage: Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc
+FAIL: Remaining native source coverage: Comanche055/INTEGRATION_INITIALIZATION.agc
+FAIL: Remaining native source coverage: Comanche055/INTERPRETER.agc
+FAIL: Remaining native source coverage: Comanche055/INTERRUPT_LEAD_INS.agc
+FAIL: Remaining native source coverage: Comanche055/JET_SELECTION_LOGIC.agc
+FAIL: Remaining native source coverage: Comanche055/KALCMANU_STEERING.agc
+FAIL: Remaining native source coverage: Comanche055/KEYRUPT_UPRUPT.agc
+FAIL: Remaining native source coverage: Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc
+FAIL: Remaining native source coverage: Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc
+FAIL: Remaining native source coverage: Comanche055/MAIN.agc
+FAIL: Remaining native source coverage: Comanche055/MEASUREMENT_INCORPORATION.agc
+FAIL: Remaining native source coverage: Comanche055/ORBITAL_INTEGRATION.agc
+FAIL: Remaining native source coverage: Comanche055/P11.agc
+FAIL: Remaining native source coverage: Comanche055/P20-P25.agc
+FAIL: Remaining native source coverage: Comanche055/P30-P37.agc
+FAIL: Remaining native source coverage: Comanche055/P32-P33_P72-P73.agc
+FAIL: Remaining native source coverage: Comanche055/P34-35_P74-75.agc
+FAIL: Remaining native source coverage: Comanche055/P37_P70.agc
+FAIL: Remaining native source coverage: Comanche055/P40-P47.agc
+FAIL: Remaining native source coverage: Comanche055/P51-P53.agc
+FAIL: Remaining native source coverage: Comanche055/P61-P67.agc
+FAIL: Remaining native source coverage: Comanche055/P76.agc
+FAIL: Remaining native source coverage: Comanche055/PHASE_TABLE_MAINTENANCE.agc
+FAIL: Remaining native source coverage: Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc
+FAIL: Remaining native source coverage: Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc
+FAIL: Remaining native source coverage: Comanche055/R30.agc
+FAIL: Remaining native source coverage: Comanche055/R31.agc
+FAIL: Remaining native source coverage: Comanche055/R60_62.agc
+FAIL: Remaining native source coverage: Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc
+FAIL: Remaining native source coverage: Comanche055/REENTRY_CONTROL.agc
+FAIL: Remaining native source coverage: Comanche055/RESTARTS_ROUTINE.agc
+FAIL: Remaining native source coverage: Comanche055/RESTART_TABLES.agc
+FAIL: Remaining native source coverage: Comanche055/S-BAND_ANTENNA_FOR_CM.agc
+FAIL: Remaining native source coverage: Comanche055/SERVICER207.agc
+FAIL: Remaining native source coverage: Comanche055/STABLE_ORBIT.agc
+FAIL: Remaining native source coverage: Comanche055/SXTMARK.agc
+FAIL: Remaining native source coverage: Comanche055/T4RUPT_PROGRAM.agc
+FAIL: Remaining native source coverage: Comanche055/TIME_OF_FREE_FALL.agc
+FAIL: Remaining native source coverage: Comanche055/TPI_SEARCH.agc
+FAIL: Remaining native source coverage: Comanche055/TVCDAPS.agc
+FAIL: Remaining native source coverage: Comanche055/TVCEXECUTIVE.agc
+FAIL: Remaining native source coverage: Comanche055/TVCINITIALIZE.agc
+FAIL: Remaining native source coverage: Comanche055/TVCMASSPROP.agc
+FAIL: Remaining native source coverage: Comanche055/TVCRESTARTS.agc
+FAIL: Remaining native source coverage: Comanche055/TVCROLLDAP.agc
+FAIL: Remaining native source coverage: Comanche055/TVCSTROKETEST.agc
+FAIL: Remaining native source coverage: Comanche055/UPDATE_PROGRAM.agc
+FAIL: Remaining native source coverage: Comanche055/WAITLIST.agc
+FAIL: Remaining native source coverage: Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc
+FAIL: Remaining native source coverage: Luminary099/AGS_INITIALIZATION.agc
+FAIL: Remaining native source coverage: Luminary099/ALARM_AND_ABORT.agc
+FAIL: Remaining native source coverage: Luminary099/AOSTASK_AND_AOSJOB.agc
+FAIL: Remaining native source coverage: Luminary099/AOTMARK.agc
+FAIL: Remaining native source coverage: Luminary099/ASCENT_GUIDANCE.agc
+FAIL: Remaining native source coverage: Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc
+FAIL: Remaining native source coverage: Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc
+FAIL: Remaining native source coverage: Luminary099/CONIC_SUBROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/DAPIDLER_PROGRAM.agc
+FAIL: Remaining native source coverage: Luminary099/DAP_INTERFACE_SUBROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/DISPLAY_INTERFACE_ROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/DOWN_TELEMETRY_PROGRAM.agc
+FAIL: Remaining native source coverage: Luminary099/EXECUTIVE.agc
+FAIL: Remaining native source coverage: Luminary099/EXTENDED_VERBS.agc
+FAIL: Remaining native source coverage: Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc
+FAIL: Remaining native source coverage: Luminary099/FRESH_START_AND_RESTART.agc
+FAIL: Remaining native source coverage: Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc
+FAIL: Remaining native source coverage: Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc
+FAIL: Remaining native source coverage: Luminary099/IMU_COMPENSATION_PACKAGE.agc
+FAIL: Remaining native source coverage: Luminary099/IMU_PERFORMANCE_TESTS_4.agc
+FAIL: Remaining native source coverage: Luminary099/IMU_PERFORMANCE_TEST_2.agc
+FAIL: Remaining native source coverage: Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/INTEGRATION_INITIALIZATION.agc
+FAIL: Remaining native source coverage: Luminary099/INTERPRETER.agc
+FAIL: Remaining native source coverage: Luminary099/INTERRUPT_LEAD_INS.agc
+FAIL: Remaining native source coverage: Luminary099/KALCMANU_STEERING.agc
+FAIL: Remaining native source coverage: Luminary099/KEYRUPT_UPRUPT.agc
+FAIL: Remaining native source coverage: Luminary099/LANDING_ANALOG_DISPLAYS.agc
+FAIL: Remaining native source coverage: Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/LEM_GEOMETRY.agc
+FAIL: Remaining native source coverage: Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc
+FAIL: Remaining native source coverage: Luminary099/MAIN.agc
+FAIL: Remaining native source coverage: Luminary099/MEASUREMENT_INCORPORATION.agc
+FAIL: Remaining native source coverage: Luminary099/ORBITAL_INTEGRATION.agc
+FAIL: Remaining native source coverage: Luminary099/P-AXIS_RCS_AUTOPILOT.agc
+FAIL: Remaining native source coverage: Luminary099/P12.agc
+FAIL: Remaining native source coverage: Luminary099/P20-P25.agc
+FAIL: Remaining native source coverage: Luminary099/P30_P37.agc
+FAIL: Remaining native source coverage: Luminary099/P32-P35_P72-P75.agc
+FAIL: Remaining native source coverage: Luminary099/P34-35_P74-75.agc
+FAIL: Remaining native source coverage: Luminary099/P40-P47.agc
+FAIL: Remaining native source coverage: Luminary099/P51-P53.agc
+FAIL: Remaining native source coverage: Luminary099/P70-P71.agc
+FAIL: Remaining native source coverage: Luminary099/P76.agc
+FAIL: Remaining native source coverage: Luminary099/PHASE_TABLE_MAINTENANCE.agc
+FAIL: Remaining native source coverage: Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc
+FAIL: Remaining native source coverage: Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc
+FAIL: Remaining native source coverage: Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc
+FAIL: Remaining native source coverage: Luminary099/R30.agc
+FAIL: Remaining native source coverage: Luminary099/R31.agc
+FAIL: Remaining native source coverage: Luminary099/R60_62.agc
+FAIL: Remaining native source coverage: Luminary099/R63.agc
+FAIL: Remaining native source coverage: Luminary099/RADAR_LEADIN_ROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/RESTARTS_ROUTINE.agc
+FAIL: Remaining native source coverage: Luminary099/S-BAND_ANTENNA_FOR_LM.agc
+FAIL: Remaining native source coverage: Luminary099/SERVICER.agc
+FAIL: Remaining native source coverage: Luminary099/STABLE_ORBIT.agc
+FAIL: Remaining native source coverage: Luminary099/T4RUPT_PROGRAM.agc
+FAIL: Remaining native source coverage: Luminary099/T6-RUPT_PROGRAMS.agc
+FAIL: Remaining native source coverage: Luminary099/THE_LUNAR_LANDING.agc
+FAIL: Remaining native source coverage: Luminary099/THROTTLE_CONTROL_ROUTINES.agc
+FAIL: Remaining native source coverage: Luminary099/TIME_OF_FREE_FALL.agc
+FAIL: Remaining native source coverage: Luminary099/TJET_LAW.agc
+FAIL: Remaining native source coverage: Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc
+FAIL: Remaining native source coverage: Luminary099/UPDATE_PROGRAM.agc
+FAIL: Remaining native source coverage: Luminary099/WAITLIST.agc
+FAIL: Integrated C64 application acceptance missing: Luminary099
+FAIL: Luminary099: missing bootable_c64_application
+FAIL: Luminary099: missing integrated_program_tests
+FAIL: Luminary099: missing device_adapter_tests
+FAIL: Luminary099: missing native_output_tests
+FAIL: Luminary099: missing memory_and_overlay_validation
+FAIL: Luminary099: missing recovery_and_restart_tests
+FAIL: Integrated C64 application acceptance missing: Comanche055
+FAIL: Comanche055: missing bootable_c64_application
+FAIL: Comanche055: missing integrated_program_tests
+FAIL: Comanche055: missing device_adapter_tests
+FAIL: Comanche055: missing native_output_tests
+FAIL: Comanche055: missing memory_and_overlay_validation
+FAIL: Comanche055: missing recovery_and_restart_tests
+Luminary099: 90 AGC files, 64,838 source lines; 51 untranslated, 17 partial, 22 complete
+Comanche055: 85 AGC files, 65,348 source lines; 50 untranslated, 13 partial, 22 complete
+Remaining files requiring complete native coverage: 131
+Historical-source baseline: 911e5c0283c629c50cb97666f34065e8c07d71a5

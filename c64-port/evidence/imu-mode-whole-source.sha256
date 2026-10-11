@@ -1,0 +1,5 @@
+a109049c92bb16206a82ba8e66f977a724a3e1f73070bae6356976c818492052  docs/IMU-MODE-WHOLE-SOURCE.md
+c3e5de2e02bf8dc9002e1c5f334c503d0e3429baeeedc49dab92b060529105d3  tools/imu_mode_whole_source.py
+bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477  evidence/lm-imu-mode-whole-source-map.json
+68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9  evidence/cm-imu-mode-whole-source-map.json
+b1991c1b169decfa45212c8c1dae39e2b7087c4c843a13943a2a598d7e344402  evidence/imu-mode-whole-source-independent-review.json

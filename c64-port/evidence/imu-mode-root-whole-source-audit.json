@@ -1,0 +1,26 @@
+{
+  "scope": "Root independent raw-word original rope, immutable source, distinct compiled owner union and exact committed native/proof identities review. Root integrations replayed all new complete source and sanitizer streams. Hardware/domain limits and external service bodies remain separate.",
+  "reviewed_maps": [
+    {
+      "map": "evidence/lm-imu-mode-whole-source-map.json",
+      "map_sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477",
+      "original_words": 660,
+      "native_sources": 11,
+      "packet_proofs": 9,
+      "source_and_rope_unchanged": true,
+      "declared_frozen_domains_retained": true
+    },
+    {
+      "map": "evidence/cm-imu-mode-whole-source-map.json",
+      "map_sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9",
+      "original_words": 656,
+      "native_sources": 11,
+      "packet_proofs": 9,
+      "source_and_rope_unchanged": true,
+      "declared_frozen_domains_retained": true
+    }
+  ],
+  "source_review": "evidence/imu-mode-whole-source-independent-review.json",
+  "completed_source_files": 2,
+  "integrated_application_claim": false
+}

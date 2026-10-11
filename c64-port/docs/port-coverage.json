@@ -789,7 +789,7 @@
       "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
       "bytes": 23181,
       "lines": 1066,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -818,8 +818,61 @@
           ],
           "scope": "Original idle wake and selected helper admission through actual helper return; full asynchronous caller/device composition remains separate.",
           "verification": "docs/NATIVE-GYRO-WAKE.md"
+        },
+        {
+          "native_files": [
+            "src/imu_attitude_admission.c",
+            "src/imu_coarse.c",
+            "src/imu_mode_control.c",
+            "src/imu_mode_transfer.c",
+            "src/imu_pulse.c",
+            "src/imu_pulse_end.c",
+            "src/imu_pulse_service.c",
+            "src/imu_pulse_task.c",
+            "src/imu_pulse_task_register.c",
+            "src/imu_pulse_wake.c",
+            "src/imu_standby.c"
+          ],
+          "scope": "Complete local original IMU control arithmetic and data union (656 distinct words) under frozen canonical producer compiled-caller and typed hardware/service return contracts. External hardware and complete mission runtime remain separate.",
+          "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "2048 physical erasable words; source rawA/L and coherent banks/VAC frames within unchanged frozen helper contracts. Sole persistent native image ownership.",
+          "producer_ownership": "No producers during original computational stages; pulse/task/device and coarse contexts retain exact frozen idle/activity/counter contracts.",
+          "hardware_returns": "Readable source latches including channel13 excluding trap-enable bits; actual FINETIME SHORTMP TPAGREE return ABI at compiled return entries. Physical scaler sampling and standby transitions remain hardware adapter obligations.",
+          "entry_contracts": "Each independently qualified actual local entry and compiled caller/helper return. No arbitrary Cartesian RAM/code frame or opcode decoder."
+        },
+        "external_continuations": [
+          "Actual ALARM/POODOO and mode/flag/phase/display/bank services",
+          "Actual WAITLIST/task return/sleep/wake and interrupt scheduling services",
+          "Actual FINETIME scaler sampling and SHORTMP/TPAGREE helper bodies from other source files",
+          "Asynchronous device pulse/coarse transport and physical standby transition",
+          "Complete mission jobs, runtime registry, restart timing and integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-imu-mode-whole-source-map.json",
+            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/imu-mode-root-whole-source-audit.json",
+            "sha256": "1e1e86b96eed13fc37e14aa96851c61d1a769819ef2273f4638887dd0339e763"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-imu-mode-whole-source-map.json",
+            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-imu-mode-whole-source-map.json",
+            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc",
@@ -3107,7 +3160,7 @@
       "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
       "bytes": 23400,
       "lines": 1067,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3136,8 +3189,61 @@
           ],
           "scope": "Original idle wake and selected helper admission through actual helper return; full asynchronous caller/device composition remains separate.",
           "verification": "docs/NATIVE-GYRO-WAKE.md"
+        },
+        {
+          "native_files": [
+            "src/imu_attitude_admission.c",
+            "src/imu_coarse.c",
+            "src/imu_mode_control.c",
+            "src/imu_mode_transfer.c",
+            "src/imu_pulse.c",
+            "src/imu_pulse_end.c",
+            "src/imu_pulse_service.c",
+            "src/imu_pulse_task.c",
+            "src/imu_pulse_task_register.c",
+            "src/imu_pulse_wake.c",
+            "src/imu_standby.c"
+          ],
+          "scope": "Complete local original IMU control arithmetic and data union (660 distinct words) under frozen canonical producer compiled-caller and typed hardware/service return contracts. External hardware and complete mission runtime remain separate.",
+          "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "2048 physical erasable words; source rawA/L and coherent banks/VAC frames within unchanged frozen helper contracts. Sole persistent native image ownership.",
+          "producer_ownership": "No producers during original computational stages; pulse/task/device and coarse contexts retain exact frozen idle/activity/counter contracts.",
+          "hardware_returns": "Readable source latches including channel13 excluding trap-enable bits; actual FINETIME SHORTMP TPAGREE return ABI at compiled return entries. Physical scaler sampling and standby transitions remain hardware adapter obligations.",
+          "entry_contracts": "Each independently qualified actual local entry and compiled caller/helper return. No arbitrary Cartesian RAM/code frame or opcode decoder."
+        },
+        "external_continuations": [
+          "Actual ALARM/POODOO and mode/flag/phase/display/bank services",
+          "Actual WAITLIST/task return/sleep/wake and interrupt scheduling services",
+          "Actual FINETIME scaler sampling and SHORTMP/TPAGREE helper bodies from other source files",
+          "Asynchronous device pulse/coarse transport and physical standby transition",
+          "Complete mission jobs, runtime registry, restart timing and integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-imu-mode-whole-source-map.json",
+            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/imu-mode-root-whole-source-audit.json",
+            "sha256": "1e1e86b96eed13fc37e14aa96851c61d1a769819ef2273f4638887dd0339e763"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-imu-mode-whole-source-map.json",
+            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-imu-mode-whole-source-map.json",
+            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/IMU_PERFORMANCE_TESTS_4.agc",

@@ -1988,3 +1988,7 @@ Translate actual RES solar calculation and LSPOS or declared SOLPOS controls aga
 ## Compose original Comanche combined Sun and Moon positions
 
 Translate uninterrupted actual LSPOS solar storage lunar polynomial and both true caller returns against65536 full original strict sanitizer states and64 C64 RESA checkpoints plus separately qualified solar phases. See `docs/NATIVE-CM-EPHEMERIS-POSITIONS.md`.
+
+## Complete local IMU mode source in both missions
+
+Root and independent containing-file review certify all660 Luminary and656 Comanche original IMU mode words against unchanged ropes and nine qualified native packets, including full source/sanitizer and actual C64 proof. Frozen producer, caller, readable-I/O and external service domains remain binding. Both complete applications and the strict whole-port gate remain open. See `docs/IMU-MODE-WHOLE-SOURCE.md`.
