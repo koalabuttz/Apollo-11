@@ -1255,3 +1255,7 @@ Qualify both original TSTLTS4 RELDSP JOBWAKE and genuine END PINBRNCH or negativ
 ## Translate original deferred mode display task over its full mode domain
 
 Qualify both original generic DSPMMJB over every0 through99 mode negative or blank modes all EB selected SUPER and clean positive zero relay source CCSHOLE effects against8192 complete original native sanitizer states and64 C64 states. See `docs/DSKY-MODE-JOB.md`.
+
+## Compose original gyro idle wake and helper admission
+
+Qualify both mission gyro wake and selected helper admission against262144 complete original strict sanitizer states and128 C64 states while preserving genuine source handoffs and opaque unrelated memory. See `docs/NATIVE-GYRO-WAKE.md`.
