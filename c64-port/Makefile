@@ -303,3 +303,5 @@ include tools/sum.mk
 .PHONY: coverage
 coverage:
 	python3 tools/port_coverage.py
+
+include tools/interpreter_native.mk

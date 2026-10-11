@@ -37,11 +37,7 @@ void exec_native_unlock(exec_native *r, uint8_t token) {
     if (r->exclusion != 0) r->exclusion->leave(r->exclusion->user,token);
 }
 static int mapped(const exec_native *r, exec_address a) {
-    uint8_t i;
-    for (i=0;i<r->count;++i)
-        if (r->mapping[i].address.location == a.location &&
-            r->mapping[i].address.bank == a.bank) return 1;
-    return 0;
+    return exec_native_is_mapped(r,a,EXEC_CONTEXT_BASIC);
 }
 enum exec_status exec_irq_service_locked(exec_native *r) {
     exec_irq_queue *q=r->requests;

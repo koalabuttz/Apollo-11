@@ -1,0 +1,268 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     6e72     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/interpreter-native.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       4e     1         /tmp/irq_gate-757528.o:(.text.c64_irq_gate)
+     830      830       4e     1                 c64_irq_gate
+     87e      87e       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     87e      87e       13     1                 __zero_bss
+     891      891        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     891      891        0     1                 __call_indir
+     894      894      1ae     1         build/interpreter-native.prg.lto.o:(.text.exec_endjob_select)
+     894      894      1ae     1                 exec_endjob_select
+     a42      a42      180     1         build/interpreter-native.prg.lto.o:(.text.exec_change_basic)
+     a42      a42      180     1                 exec_change_basic
+     bc2      bc2       ba     1         build/interpreter-native.prg.lto.o:(.text.basic_slot)
+     bc2      bc2       ba     1                 basic_slot
+     c7c      c7c      37c     1         build/interpreter-native.prg.lto.o:(.text.exchange_basic)
+     c7c      c7c      37c     1                 exchange_basic
+     ff8      ff8      464     1         build/interpreter-native.prg.lto.o:(.text.exec_change_interpretive)
+     ff8      ff8      464     1                 exec_change_interpretive
+    145c     145c      243     1         build/interpreter-native.prg.lto.o:(.text.exec_complete_basic)
+    145c     145c      243     1                 exec_complete_basic
+    169f     169f      31f     1         build/interpreter-native.prg.lto.o:(.text.exec_sleep_basic)
+    169f     169f      31f     1                 exec_sleep_basic
+    19be     19be       7a     1         build/interpreter-native.prg.lto.o:(.text.lifecycle_candidate)
+    19be     19be       7a     1                 lifecycle_candidate
+    1a38     1a38      314     1         build/interpreter-native.prg.lto.o:(.text.exec_priority_basic)
+    1a38     1a38      314     1                 exec_priority_basic
+    1d4c     1d4c       f7     1         build/interpreter-native.prg.lto.o:(.text.lookup_kind)
+    1d4c     1d4c       f7     1                 lookup_kind
+    1e43     1e43      376     1         build/interpreter-native.prg.lto.o:(.text.start_locked)
+    1e43     1e43      376     1                 start_locked
+    21b9     21b9      1ba     1         build/interpreter-native.prg.lto.o:(.text.saved_target)
+    21b9     21b9      1ba     1                 saved_target
+    2373     2373      3cf     1         build/interpreter-native.prg.lto.o:(.text.exchange_saved)
+    2373     2373      3cf     1                 exchange_saved
+    2742     2742       57     1         build/interpreter-native.prg.lto.o:(.text.settle)
+    2742     2742       57     1                 settle
+    2799     2799       ff     1         build/interpreter-native.prg.lto.o:(.text.exec_native_poll)
+    2799     2799       ff     1                 exec_native_poll
+    2898     2898      22c     1         build/interpreter-native.prg.lto.o:(.text.complete_mixed)
+    2898     2898      22c     1                 complete_mixed
+    2ac4     2ac4      1dc     1         build/interpreter-native.prg.lto.o:(.text.change_mixed_basic)
+    2ac4     2ac4      1dc     1                 change_mixed_basic
+    2ca0     2ca0      2bd     1         build/interpreter-native.prg.lto.o:(.text.sleep_mixed)
+    2ca0     2ca0      2bd     1                 sleep_mixed
+    2f5d     2f5d      342     1         build/interpreter-native.prg.lto.o:(.text.priority_mixed)
+    2f5d     2f5d      342     1                 priority_mixed
+    329f     329f      15e     1         build/interpreter-native.prg.lto.o:(.text.exec_irq_post)
+    329f     329f      15e     1                 exec_irq_post
+    33fd     33fd      b14     1         build/interpreter-native.prg.lto.o:(.text.exec_irq_service_locked)
+    33fd     33fd      b14     1                 exec_irq_service_locked
+    3f11     3f11      6f1     1         build/interpreter-native.prg.lto.o:(.text.in_run_init)
+    3f11     3f11      6f1     1                 in_run_init
+    4602     4602       1b     1         build/interpreter-native.prg.lto.o:(.text.enter)
+    4602     4602       1b     1                 enter
+    461d     461d       14     1         build/interpreter-native.prg.lto.o:(.text.leave)
+    461d     461d       14     1                 leave
+    4631     4631       16     1         build/interpreter-native.prg.lto.o:(.text.low_entry)
+    4631     4631       16     1                 low_entry
+    4647     4647       24     1         build/interpreter-native.prg.lto.o:(.text.low_a)
+    4647     4647       24     1                 low_a
+    466b     466b       18     1         build/interpreter-native.prg.lto.o:(.text.low_b)
+    466b     466b       18     1                 low_b
+    4683     4683       18     1         build/interpreter-native.prg.lto.o:(.text.low_sleep)
+    4683     4683       18     1                 low_sleep
+    469b     469b       18     1         build/interpreter-native.prg.lto.o:(.text.low_wake)
+    469b     469b       18     1                 low_wake
+    46b3     46b3       18     1         build/interpreter-native.prg.lto.o:(.text.low_c)
+    46b3     46b3       18     1                 low_c
+    46cb     46cb       21     1         build/interpreter-native.prg.lto.o:(.text.low_finish)
+    46cb     46cb       21     1                 low_finish
+    46ec     46ec       18     1         build/interpreter-native.prg.lto.o:(.text.high_entry)
+    46ec     46ec       18     1                 high_entry
+    4704     4704       26     1         build/interpreter-native.prg.lto.o:(.text.high_a)
+    4704     4704       26     1                 high_a
+    472a     472a       1a     1         build/interpreter-native.prg.lto.o:(.text.high_b)
+    472a     472a       1a     1                 high_b
+    4744     4744       17     1         build/interpreter-native.prg.lto.o:(.text.high_finish)
+    4744     4744       17     1                 high_finish
+    475b     475b       24     1         build/interpreter-native.prg.lto.o:(.text.high_bridge)
+    475b     475b       24     1                 high_bridge
+    477f     477f       18     1         build/interpreter-native.prg.lto.o:(.text.high_sleep)
+    477f     477f       18     1                 high_sleep
+    4797     4797      267     1         build/interpreter-native.prg.lto.o:(.text.high_priority)
+    4797     4797      267     1                 high_priority
+    49fe     49fe      401     1         build/interpreter-native.prg.lto.o:(.text.action)
+    49fe     49fe      401     1                 action
+    4dff     4dff     175d     1         build/interpreter-native.prg.lto.o:(.text.in_run_step)
+    4dff     4dff     175d     1                 in_run_step
+    655c     655c      571     1         build/interpreter-native.prg.lto.o:(.text.in_checkpoint)
+    655c     655c      571     1                 in_checkpoint
+    6acd     6acd      67d     1         build/interpreter-native.prg.lto.o:(.text.main)
+    6acd     6acd      67d     1                 main
+    714a     714a        3     1         build/interpreter-native.prg.lto.o:(.text.c64_irq_status)
+    714a     714a        3     1                 c64_irq_status
+    714d     714d       aa     1         build/interpreter-native.prg.lto.o:(.text.c64_irq_producer)
+    714d     714d       aa     1                 c64_irq_producer
+    71f7     71f7        4     1         build/interpreter-native.prg.lto.o:(.text.enter.23)
+    71f7     71f7        4     1                 enter.23
+    71fb     71fb        8     1         build/interpreter-native.prg.lto.o:(.text.leave.24)
+    71fb     71fb        8     1                 leave.24
+    7203     7203        6     1         build/interpreter-native.prg.lto.o:(.text.exit)
+    7203     7203        6     1                 exit
+    7209     7209       4d     1         build/interpreter-native.prg.lto.o:(.text.putchar)
+    7209     7209       4d     1                 putchar
+    7256     7256       65     1         build/interpreter-native.prg.lto.o:(.text.puts)
+    7256     7256       65     1                 puts
+    72bb     72bb       34     1         build/interpreter-native.prg.lto.o:(.text.memcpy)
+    72bb     72bb       34     1                 memcpy
+    72ef     72ef       47     1         build/interpreter-native.prg.lto.o:(.text.memcmp)
+    72ef     72ef       47     1                 memcmp
+    7336     7336       22     1         build/interpreter-native.prg.lto.o:(.text.__memset)
+    7336     7336       22     1                 __memset
+    7358     7358       5d     1         build/interpreter-native.prg.lto.o:(.text.__udivqi3)
+    7358     7358       5d     1                 __udivqi3
+    73b5     73b5       c4     1         build/interpreter-native.prg.lto.o:(.text.__udivhi3)
+    73b5     73b5       c4     1                 __udivhi3
+    7479     7479       40     1         build/interpreter-native.prg.lto.o:(.text.__umodqi3)
+    7479     7479       40     1                 __umodqi3
+    74b9     74b9       ae     1         build/interpreter-native.prg.lto.o:(.text.__umodhi3)
+    74b9     74b9       ae     1                 __umodhi3
+    7567     7567       7d     1         build/interpreter-native.prg.lto.o:(.text.__udivmodqi4)
+    7567     7567       7d     1                 __udivmodqi4
+    75e4     75e4       34     1         build/interpreter-native.prg.lto.o:(.text.__mulhi3)
+    75e4     75e4       34     1                 __mulhi3
+    7618     7618       67     1         build/interpreter-native.prg.lto.o:(.text.__mulsi3)
+    7618     7618       67     1                 __mulsi3
+    767f     767f        0     1         __init_array_start = .
+    767f     767f        0     1         __init_array_end = .
+    767f     767f        0     1         __fini_array_start = .
+    767f     767f        0     1         __fini_array_end = .
+    767f     767f      331     1 .rodata
+    767f     767f        8     1         build/interpreter-native.prg.lto.o:(.rodata.in_run_step)
+    7687     7687       10     1         <internal>:(.rodata.cst16)
+    7697     7697       20     1         <internal>:(.rodata.cst32)
+    76b7     76b7       69     1         build/interpreter-native.prg.lto.o:(.rodata.mappings)
+    76b7     76b7       69     1                 mappings
+    7720     7720      230     1         build/interpreter-native.prg.lto.o:(.rodata.interpreter_native_vectors)
+    7720     7720      230     1                 interpreter_native_vectors
+    7950     7950       53     1         <internal>:(.rodata.str1.1)
+    79a3     79a3        7     1         build/interpreter-native.prg.lto.o:(.rodata.high)
+    79a3     79a3        7     1                 high
+    79aa     79aa        6     1         build/interpreter-native.prg.lto.o:(.rodata.c64_exclusion)
+    79aa     79aa        6     1                 c64_exclusion
+    79b0     79b0        0     1 .data
+    79b0     79b0        0     1         __data_start = .
+    79b0     79b0        0     1         __data_end = .
+    79b0     79b0        0     1 __data_load_start = LOADADDR(.data)
+    79b0     79b0        0     1 __data_size = SIZEOF(.data)
+    79b0     79b0      69a     1 .bss
+    79b0     79b0        0     1         __bss_start = .
+    79b0     79b0       20     1         /tmp/irq_gate-757528.o:(.bss.c64_irq_saved)
+    79b0     79b0        0     1                 c64_irq_saved
+    79d0     79d0        2     1         build/interpreter-native.prg.lto.o:(.bss.failures)
+    79d0     79d0        2     1                 failures
+    79d2     79d2        2     1         build/interpreter-native.prg.lto.o:(.bss.caseno)
+    79d2     79d2        2     1                 caseno
+    79d4     79d4      2d5     1         build/interpreter-native.prg.lto.o:(.bss.run)
+    79d4     79d4      2d5     1                 run
+    7ca9     7ca9        2     1         build/interpreter-native.prg.lto.o:(.bss.stepno)
+    7ca9     7ca9        2     1                 stepno
+    7cab     7cab      288     1         build/interpreter-native.prg.lto.o:(.bss.before)
+    7cab     7cab      288     1                 before
+    7f33     7f33        1     1         build/interpreter-native.prg.lto.o:(.bss.reason)
+    7f33     7f33        1     1                 reason
+    7f34     7f34        1     1         build/interpreter-native.prg.lto.o:(.bss.installed)
+    7f34     7f34        1     1                 installed
+    7f35     7f35        2     1         build/interpreter-native.prg.lto.o:(.bss.destination)
+    7f35     7f35        2     1                 destination
+    7f37     7f37        7     1         build/interpreter-native.prg.lto.o:(.bss.source)
+    7f37     7f37        7     1                 source
+    7f3e     7f3e        2     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_previous)
+    7f3e     7f3e        2     1                 c64_irq_previous
+    7f40     7f40        1     1         build/interpreter-native.prg.lto.o:(.bss.old_mask)
+    7f40     7f40        1     1                 old_mask
+    7f41     7f41        1     1         build/interpreter-native.prg.lto.o:(.bss.old_d011)
+    7f41     7f41        1     1                 old_d011
+    7f42     7f42        1     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_poison)
+    7f42     7f42        1     1                 c64_irq_poison
+    7f43     7f43        2     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_arithmetic)
+    7f43     7f43        2     1                 c64_irq_arithmetic
+    7f45     7f45        1     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_stack_fault)
+    7f45     7f45        1     1                 c64_irq_stack_fault
+    7f46     7f46        1     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_count)
+    7f46     7f46        1     1                 c64_irq_count
+    7f47     7f47        1     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_done)
+    7f47     7f47        1     1                 c64_irq_done
+    7f48     7f48        1     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_last_status)
+    7f48     7f48        1     1                 c64_irq_last_status
+    7f49     7f49        1     1         build/interpreter-native.prg.lto.o:(.bss.remaining)
+    7f49     7f49        1     1                 remaining
+    7f4a     7f4a      100     1         build/interpreter-native.prg.lto.o:(.bss.c64_irq_stack)
+    7f4a     7f4a      100     1                 c64_irq_stack
+    804a     804a        0     1         __bss_end = .
+    804a     804a        0     1 __bss_size = SIZEOF(.bss)
+    804a     804a        1     1 .noinit
+    804a     804a        1     1         build/interpreter-native.prg.lto.o:(.noinit..Lstatic_stack)
+    804b     804b        0     1         __heap_start = ALIGN(., 2)
+    804b     804b        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0        f     1 .llvm_sympart
+       0        0        f     1         build/interpreter-native.prg.lto.o:(.llvm_sympart)
+       0        0      f90     4 .symtab
+       0        0      f90     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      996     1 .strtab
+       0        0      996     1         <internal>:(.strtab)

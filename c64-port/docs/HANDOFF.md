@@ -323,3 +323,7 @@ The user explicitly requested complete Luminary 099 and Comanche 055 native
 C64 ports. PORT_SCOPE.md and port-coverage.json track both complete source
 trees; bounded milestones do not certify either complete application. Run
 `python3 tools/port_coverage.py` to audit progress and historical source identity.
+
+## Execute native basic and interpretive continuations through original context exchanges
+
+Native C callbacks now enter and exit interpretation, yield at completed operation pairs, restore interpreter payloads, and resume through the original Executive lifecycle. All 140 full original-assembly checkpoints agree; host and sanitizer tests and the PAL C64 diagnostic pass, including masked repeats and an actual raster IRQ admission. This milestone supplies scheduling plumbing; remaining guidance bodies still need translation and binding. See [INTERPRETER_NATIVE.md](INTERPRETER_NATIVE.md).

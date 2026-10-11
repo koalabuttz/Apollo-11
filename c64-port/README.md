@@ -20,7 +20,7 @@ preparation, VXSC KPIP1 scaling and PDDL THISTPIP vector pushdown/timestamp
 load, DSU PIPTIME elapsed-time subtraction, STORE 30D and fixed-divisor DDV 4SEC(28) are verified
 (docs/GUIDANCE.md, docs/PREPARATION.md, docs/SCALING.md,
 docs/PUSHDOWN.md, docs/ELAPSED.md, docs/STORE.md, docs/DIVIDE.md). PDVL GDT/2 now pushes the quotient and loads the gravity vector (docs/GRAVITY.md). **Deferred:** complete Apollo
-guidance jobs, interpreter dispatch and
+remaining guidance jobs, complete interpretive operation coverage and
 remaining restart routes/glue (docs/RESTART.md).
 
 26 original admission/completion scenarios and 53 dispatch cases (109 checkpoints,
@@ -262,3 +262,7 @@ All 10,272 complete assembly comparisons and 96 host/sanitizer/C64 states pass. 
 ## Translate scalar sums and backward vector subtraction with exact overflow effects
 
 All 27,200 complete assembly comparisons and 256 host/sanitizer/C64 states pass. See `docs/SUM.md`.
+
+## Execute native basic and interpretive continuations through original context exchanges
+
+Native C callbacks now enter and exit interpretation, yield at completed operation pairs, restore interpreter payloads, and resume through the original Executive lifecycle. All 140 full original-assembly checkpoints agree; host and sanitizer tests and the PAL C64 diagnostic pass, including masked repeats and an actual raster IRQ admission. This milestone supplies scheduling plumbing; remaining guidance bodies still need translation and binding. See `docs/INTERPRETER_NATIVE.md`.

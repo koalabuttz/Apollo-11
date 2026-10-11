@@ -1,0 +1,39 @@
+{
+  "cases": 35,
+  "checkpoints": 140,
+  "fields_per_row": 332,
+  "snapshot_sha256": "5129b28f03344d70358554c53bb9ccc8b341db676f94c5418f059388f1336041",
+  "target": {
+    "mailbox": "a500008c100191000000",
+    "fingerprints": 140,
+    "masked_repeat": 16,
+    "real_irq_posts": 1,
+    "stack_sentinel_extents": {
+      "hardware": 27,
+      "software": 89,
+      "isolated": 16
+    },
+    "scope": "Native continuations; frame payload restoration; producer publication followed by guarded foreground admission; no guidance deadline claim"
+  },
+  "prg_file_bytes": 29105,
+  "sections": {
+    "text": {
+      "address": 2061,
+      "bytes": 28274
+    },
+    "rodata": {
+      "address": 30335,
+      "bytes": 817
+    },
+    "bss": {
+      "address": 31152,
+      "bytes": 1690
+    },
+    "noinit": {
+      "address": 32842,
+      "bytes": 1
+    }
+  },
+  "tests": "Strict host, ASan/UBSan, typed-map/EDOP/unmapped/pending-alarm fault checks; prior Executive/IRQ/lifecycle/restart suites pass",
+  "scope": "Explicit source-native continuations through Executive and INTPRET/INTRSM/DANZIG/EXIT boundaries; no operation-word decoding or full mission claim"
+}

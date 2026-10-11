@@ -160,3 +160,5 @@ subprocess.run([sys.executable,'tools/recovery_differential.py',str(reference)],
 subprocess.run([sys.executable,'tools/dot_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/sum_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/interpreter_native_differential.py',str(reference)],cwd=ROOT,check=True)
