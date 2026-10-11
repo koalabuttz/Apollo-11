@@ -648,3 +648,7 @@ All 1024 complete original timer-interrupt states preserve registers, banks and 
 ## Execute continuous original Comanche task and service paths
 
 Actual continuous SETJTAG, CLOKTASK, SVCT3, WAITLIST, admission and delay paths match 1856 whole source states across384 cases; sanitizer and real C64 checks pass. See `docs/COMANCHE_SERVICE_LOOP.md`.
+
+## Run real Comanche task services from native C64 disk overlays
+
+The resident and four actual compiled mission/service bodies fit their memory slots; 12 real C64 paths verify58 source checkpoints, three complete source images and both caller interrupt masks. Rebuilding reproduces resident, modules and D64 byte-for-byte. See `docs/COMANCHE_SERVICE_OVERLAY.md`.

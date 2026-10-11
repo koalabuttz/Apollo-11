@@ -1,0 +1,69 @@
+{
+  "source_cases": 384,
+  "source_checkpoints": 1856,
+  "source_snapshot_sha256": "fd6a0f1cdefdaa0e3d201e763976dd47c2e374a234bd018de6447ddd97284033",
+  "canonical_words": 2048,
+  "c64_continuous_cases": 12,
+  "c64_checkpoints": 58,
+  "c64_full_samples": 3,
+  "mailbox_hex": "a500003a06",
+  "software_stack_bytes": 773,
+  "resident_prg_bytes": 6684,
+  "modules": [
+    {
+      "id": 1,
+      "filename": "C1",
+      "byte_count": 3015,
+      "crc16": 42495,
+      "sha256": "a3a90ded9a410f73247ea1a62dee4bcc7fc317aba14d95c0b10a242e5daedb62",
+      "prg": "cm-service-overlay-1.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 2,
+      "filename": "C2",
+      "byte_count": 7768,
+      "crc16": 25538,
+      "sha256": "0b3781224bde1e80fab84b3dc704299a4454a5469f34ff3379388e06ed405396",
+      "prg": "cm-service-overlay-2.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 3,
+      "filename": "C3",
+      "byte_count": 5353,
+      "crc16": 39556,
+      "sha256": "453c1e9580851e615ceb6b33d1507a88ab57ca5d531b7ca1ddc10e5ec1e2471c",
+      "prg": "cm-service-overlay-3.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 4,
+      "filename": "C4",
+      "byte_count": 4215,
+      "crc16": 3318,
+      "sha256": "b32734506076c49a0739553b8bbc43847b40486ea93a01f6804a219eba28f4d2",
+      "prg": "cm-service-overlay-4.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 250,
+      "filename": "C250",
+      "byte_count": 3338,
+      "crc16": 36887,
+      "sha256": "48b8bda5fc8cdcf8920f657101dabf2c148734b238b2540e42324e0ae017a22f",
+      "prg": "cm-service-overlay-250.prg",
+      "mission_translation": false
+    },
+    {
+      "id": 251,
+      "filename": "C251",
+      "byte_count": 7351,
+      "crc16": 49114,
+      "sha256": "f0fb4246d80e016252ba223c2e8a1f0ed6ab29eba7ac7cd9110b3d59472c2cae",
+      "prg": "cm-service-overlay-251.prg",
+      "mission_translation": false
+    }
+  ],
+  "scope": "actual source tasks/services to05341 before hardware RESUME; counter drivers zero/scaler frozen; no whole-flight completion claim"
+}
