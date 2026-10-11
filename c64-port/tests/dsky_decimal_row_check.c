@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include "dsky_decimal_row_check.h"
+#include "dsky_decimal_row_vectors.h"
+uint8_t dsky_decimal_row_checkpoint_input(uint8_t n,apollo_overlay_state *s,p66_bias_io *io,enum dsky_nv_mission *mission,enum dsky_decimal_row_entry *entry){if(n>=128u)return 0;dsky_decimal_row_input(s,io,dsky_decimal_row_numbers[n],mission,entry);return 1;}
+uint16_t dsky_decimal_row_checkpoint(uint8_t n,apollo_overlay_state *s,apollo_overlay_state *before){p66_bias_io io,old;enum dsky_nv_mission mission;enum dsky_decimal_row_entry entry;uint16_t f,p,end,failures=0;if(!dsky_decimal_row_checkpoint_input(n,s,&io,&mission,&entry))return 1;*before=*s;old=io;if(dsky_decimal_row(s,&io,mission,entry)!=P66_BIAS_OK)++failures;p=dsky_decimal_row_after_offsets[n];end=dsky_decimal_row_after_offsets[n+1u];for(f=0;f<2050u;++f){uint16_t expected=f<2048u?before->words[f]:f==2048u?old.superbank:old.interrupt_enabled;uint16_t actual=f<2048u?s->words[f]:f==2048u?io.superbank:io.interrupt_enabled;if(p<end&&dsky_decimal_row_after_patch[p][0]==f)expected=dsky_decimal_row_after_patch[p++][1];if(actual!=expected)++failures;}if(p!=end)++failures;return failures;}

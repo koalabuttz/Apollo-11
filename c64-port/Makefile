@@ -834,3 +834,5 @@ include tools/cm_priolarm.mk
 all: build/cm-priolarm-native
 
 include tools/dsky_operator_schedule.mk
+
+include tools/dsky_decimal_row_integration.mk

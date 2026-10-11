@@ -1216,3 +1216,7 @@ Qualify actual PRIOLARM raw registers and FAILREG recording through true PRIODSP
 ## Compose native operator requests through original scheduler outcomes
 
 Qualify both original V30 and V31 operator scheduling paths through actual core admission, task insertion, END or source recovery with8192 complete original native sanitizer states and64 C64 states including exhausted resources, full queues and invalid delays. See `docs/DSKY-OPERATOR-SCHEDULE.md`.
+
+## Translate original decimal row formatter call and return control
+
+Qualify both original DSPDCEND BANKCALL and SWRETURN row control through actual DSPDECWD entry, next output row or saved ENTRET frontier against8192 complete original native sanitizer states and128 C64 states preserving all source effects and unchanged guards. See `docs/DSKY-DECIMAL-ROW.md`.
