@@ -1,0 +1,7 @@
+# Higher-priority pending P66 transfer regression
+
+This supplements the released direct-launch packet with unchanged original VRTSTART case1137. NEWJOB names priority036110 while the active landing job has priority035531. The source reaches actual RODCOMP03275/064067 without exchanging that pending job. An external request ticket is also posted at the completed native service boundary. The real EXEC_DISPATCHED_BASIC action retains both the pending job and the ticket, preserving every source word, SUPER and IRQ.
+
+The complete2050-field expected checkpoint is extracted from the original2048-case stream SHA256 `56bd1037bd7ac328b5433be6e258fc9a76260b70ff8e4def4d5184eea2b9f274`. `tools/freeze_p66_direct_pending.py` verifies native/original stream equality and pinned identity before extraction. It can read retained committed gzip streams on a clean checkout. The native test has a mapped marker at the following real RODCOMP entry; that marker is never invoked and no following arithmetic or completion is claimed. The invoker executes the real vertical source body under restoring exclusion and the actual source-adoption trampoline.
+
+Strict host, sanitizer and native C64 pass. VICE PAL mailbox `a500000102`; PRG20492 bytes (loaded20490); hardware/software stack28/311 bytes. All loaded and allocated sections stay belowC000 and extra compiler zero-page storage is rejected. `tools/p66_direct_pending.mk` has portable host-only all/test/sanitize and explicit C64. Source and proof identities of the released direct-launch packet remain unchanged.

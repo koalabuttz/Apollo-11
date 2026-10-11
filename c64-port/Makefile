@@ -607,3 +607,5 @@ build/test-lm-interpreter-change: $(LM_INTERPRETER_CHANGE_CORE) $(LM_INTERPRETER
 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
 test: test-lm-interpreter-change
 sanitize: sanitize-lm-interpreter-change
+
+include tools/p66_direct_pending.mk
