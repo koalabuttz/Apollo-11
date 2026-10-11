@@ -178,3 +178,5 @@ subprocess.run([sys.executable,'tools/acceleration_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/waitlist_zero_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_dispatch_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/p66_startup_differential.py',str(reference)],cwd=ROOT,check=True)

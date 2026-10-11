@@ -1,0 +1,12 @@
+New files include/p66_startup.h src/p66_startup.c tests/p66_startup_* tests/test_p66_startup.c tools/p66_startup_* tools/freeze_p66_startup.py.
+
+Source boundaries Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc lines934..947 and1223..1228. DESCBITS operator count decrement/increment through RESUME entry. RODTASK priority022000 FINDVAC to TASKOVER entry (does not reschedule itself), original inline 2CADR03275/064067. P66VERTA terminatesphase3 through original PHASCHNG epilogue, thenTWIDDLE100centiseconds for RODTASK, and immediately reachesRODCOMP; full-list stopsBAILOUT1. Everywordincluding registers, BBCON/SUPERBNK,IRQ and physical shared scratch retained.
+STARTP66 initialization, interrupted context RESUME, TASKOVER nexttask/IRQ return and RODCOMP arithmetic continuation remain other services; Executive driver owns RODCOMP. No placeholder display/admissioncallback treatedasexecuted.
+73,728 complete original-entry comparisons:65,536 exhaustive RODCOUNTs atbothoperatorchoices (overflow/signedzero),4,096RODTASK resource/priority/bank/SUPER/IRQcases,4,096P66VERTA timer/interval/zero/fulltablecases. Modelwordcounts2/332/85 respectively. Eightguardspercaseunchanged.
+Original-reference binary links unchanged assembly fixture+engine and independent inputs only; no nativecode.
+SHA256 original snapshot ed7b3eb1eded2b573eaa8e9cf173e4115ba4da72eb22d5269c5472452fc21272
+GCCstrict/ASan/UBSan128wholefrozenstatespass. Losslessfixture15470bytes (24wholebaselines2063fieldreplacements), fullwordcomparisons nohashoracle.
+NativeLLVM-MOS/VICE128fullstatespassmailboxa500008003. PRG31765 loaded31763,text16145ro15606BSS670noinit78; hardware/softwarestack18/43bytes; extraZPzero.
+State uses physical phase scratch061..066 sharedwith Executive. Adapt canonical image before/after each service; no duplicated authoritativecontexts. p66_task_io exectem1/2 aliases061/062. Fixedbank32SUPERbit100 rejectedbecausephysicalbank42 isdifferent source.
+Makefile lines build/p66-startup-integration.mk; VICEcommand python3 tools/p66_startup_vice_test.py --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice
+No sharedMakefile/docs edits/commits performed.
