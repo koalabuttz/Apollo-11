@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_jam_control.prg" 0
+watch store 8a73
+ignore 1 1
+g 080d
+m 8a73 8a77
+bsave "/workspace/Apollo-11/c64-port/build/dsky_jam_control-vice-mailbox.bin" 0 8a73 8a77
+bsave "/workspace/Apollo-11/c64-port/build/dsky_jam_control-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_jam_control-vice-software-stack.bin" 0 c100 cfff
+quit

@@ -744,3 +744,5 @@ include tools/dsky_nv_busy_integration.mk
 
 include tools/cm_vac5_store.mk
 all: build/cm-vac5-store-native
+
+include tools/dsky_jam_control.mk
