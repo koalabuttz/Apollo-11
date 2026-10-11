@@ -160,3 +160,16 @@ ELAPSED.md records the banked PIPTIME operand and excluded interpreter controls.
 
 The oracle asserts operand FIXLOC+30, MODE, LOC, BBANK and Q, reading all 89
 modeled words before/after the store. STORE.md describes omitted control state.
+
+## DDV 4SEC(28)
+
+| Historical source | Native translation | Boundary |
+|---|---|---|
+| LUNAR_LANDING_GUIDANCE_EQUATIONS:1007..1009, DDV/PDVL / 4SEC(28) | `p66_divide_four_seconds` after STORE | DDV at 32,3362; stop DANZIG before PDVL GDT/2 |
+| INTERPRETER:1359..1371,1783..1905 | Fixed divisor load, BUFZERO/sign agreement, overflow and normalization | DDV 7577; bank 00 DDV/BDDV 2353, BUFZERO 2363, DVOVF 2405, DVNORM 2505 |
+| INTERPRETER:1068..1095,1976..2030 | TPAGREE word effects and two exact quotient stages | TPAGREE 7257; GENDDV 00,2570; FINALDV 00,2625 |
+| SERVICER:1095, 4SEC(28) | Raw constant {0,00620} | Original declaration/source hash and assembled 33,3152 pair verified separately |
+
+All 93 modeled words/results match 8098 assembly checkpoints using pinned
+hardware DV. DIVIDE.md defines the one-line host-oracle selection and audit;
+no claim of equality to the pinned fast-DV shortcut is made.

@@ -435,3 +435,27 @@ bytes below entry (58 including ROM frame); software-stack extent 498 includes
 full-state rejection fixtures. The build has 32 imaginary ZP registers, no
 extra ZP, heap or floating point. State stays 178 bytes. STORE.md defines scope;
 logs, PRG/map, dumps and timing JSON are retained under `store-*`.
+
+## DDV 4SEC(28) diagnostic
+
+The twelfth standalone PRG passes 156 complete 93-word/result expectations.
+File 46492 bytes / loaded 46490 at $0801..$bd9a; text 16907, rodata 29571
+(29172 expectation bytes), BSS 186 and noinit one byte. Image plus BSS/noinit
+is 46677 bytes, ending at $be55, below reserved diagnostic RAM. Full context
+is 186 bytes; the four new scratch words add eight bytes.
+
+| Guarded sample | PAL cycles | At 985248 Hz |
+|---|---:|---:|
+| Zero | 447 | 0.454 ms |
+| Positive quotient | 6236 | 6.329 ms |
+| Negative quotient | 6423 | 6.519 ms |
+| Overflow | 1222 | 1.240 ms |
+| Full RODCOMP through DDV, history step 0 | 27940 | 28.358 ms |
+
+Setup/full comparisons are excluded; marker/call and VIC bus costs included.
+Full prefix masking exceeds one PAL frame. No WCET, live producer-rate or flight
+budget follows. Hardware-stack extent is 44 bytes below entry (58 with ROM),
+software extent 324 including the full checker. Compiler uses 32 imaginary ZP
+registers and no extra ZP, heap or floating point. Separate diagnostics are not
+a combined flight image. Evidence is under `divide-*`; DIVIDE.md qualifies the
+hardware-DV oracle and scope. Pending PDVL GDT/2 remains next.

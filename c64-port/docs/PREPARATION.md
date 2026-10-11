@@ -124,4 +124,5 @@ timestamp; PUSHDOWN.md defines its owned VAC and native scope adaptation.
 
 DSU PIPTIME now forms elapsed time after PDDL; ELAPSED.md documents exact
 overflow realignment and retained words. STORE.md now verifies elapsed-pair
-storage before the next DDV boundary.
+storage. DIVIDE.md verifies fixed-divisor DDV and records its hardware-model
+oracle; pending PDVL GDT/2 is next.

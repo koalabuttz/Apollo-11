@@ -14,9 +14,9 @@ and native task completion; a CIA Timer B adapter publishes clock events.
 Bounded alarm recording, STARTSB1 cleanup and protected Type C job recovery
 are implemented. P66 RODCOMP's rate update, PIPA/time snapshots and vector-input
 preparation, VXSC KPIP1 scaling and PDDL THISTPIP vector pushdown/timestamp
-load, DSU PIPTIME elapsed-time subtraction and STORE 30D are verified
+load, DSU PIPTIME elapsed-time subtraction, STORE 30D and fixed-divisor DDV 4SEC(28) are verified
 (docs/GUIDANCE.md, docs/PREPARATION.md, docs/SCALING.md,
-docs/PUSHDOWN.md, docs/ELAPSED.md, docs/STORE.md). **Deferred:** complete Apollo
+docs/PUSHDOWN.md, docs/ELAPSED.md, docs/STORE.md, docs/DIVIDE.md). **Deferred:** complete Apollo
 guidance jobs, interpreter dispatch and
 remaining restart routes/glue (docs/RESTART.md).
 
@@ -41,7 +41,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md` and `docs/STORE.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/DIVIDE.md` for the current milestone.
 
 ## Build and run
 
@@ -61,11 +61,12 @@ make c64-scale MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-push MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-elapsed MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-store MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
+make c64-divide MOS_CC=/path/to/mos-c64-clang
 ```
 
 The deliverables are `build/executive.prg`, `build/irq.prg`,
 `build/lifecycle.prg`, `build/waitlist.prg`, `build/restart.prg`, `build/guidance.prg`,
-`build/prepare.prg`, `build/scale.prg`, `build/push.prg`, `build/elapsed.prg` and `build/store.prg`
+`build/prepare.prg`, `build/scale.prg`, `build/push.prg`, `build/elapsed.prg`, `build/store.prg` and `build/divide.prg`
 (ordinary C64 PRGs with BASIC SYS stubs).
 Load a PRG on a C64 and RUN, or use VICE. The console diagnostic prints a test summary,
 not an interactive DSKY. Target compiler: LLVM-MOS SDK **v23.3.0**.
@@ -102,6 +103,10 @@ DSU PIPTIME adds 4664 complete 89-word checkpoints and a tenth PRG with 172
 complete states, both signs of all overflow paths and three retained histories.
 STORE 30D adds 5044 complete 89-word checkpoints and an eleventh PRG with 176
 full final states, retained histories and source/destination signed-zero corners.
+DDV adds 8098 complete 93-word checkpoints and a twelfth PRG with 156 states.
+Its host oracle uses the pinned engine's hardware DV model; the fast-path signed-zero
+discrepancy and two-model audit are documented in docs/DIVIDE.md. Earlier oracles
+remain unchanged.
 Regenerate frozen
 C64 expectations only after a successful differential test:
 
@@ -116,7 +121,8 @@ python3 tools/freeze_scale.py
 python3 tools/freeze_push.py
 python3 tools/freeze_elapsed.py
 python3 tools/freeze_store.py
-make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart c64-guidance c64-prepare c64-scale c64-push c64-elapsed c64-store
+python3 tools/freeze_divide.py
+make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart c64-guidance c64-prepare c64-scale c64-push c64-elapsed c64-store c64-divide
 ```
 
 ### VICE verification
@@ -138,6 +144,8 @@ python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 python3 tools/scale_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
+python3 tools/divide_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/store_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/elapsed_vice_test.py --vice /path/to/x64sc \
@@ -170,6 +178,8 @@ DSU-only samples reach 1.402 ms; the full prefix takes 21.748 ms.
 See docs/ELAPSED.md for overflow correction and the boundary before STORE 30D.
 The eleventh checks 176 complete stored-time states with the same 178-byte context.
 STORE-only samples reach 0.322 ms; full prefix 22.168 ms. See docs/STORE.md.
+The twelfth checks 156 complete division states with 186 bytes of context.
+DDV samples reach 6.519 ms; full prefix 28.358 ms. See docs/DIVIDE.md.
 
 ## Engineering record
 
@@ -178,6 +188,7 @@ STORE-only samples reach 0.322 ms; full prefix 22.168 ms. See docs/STORE.md.
 - `docs/LIFECYCLE.md`: sleep/wake, priority scans, callback actions and oracle boundaries.
 - `docs/RESTART.md`: alarm history, cleanup, protected job re-entry and exclusions.
 - `docs/GUIDANCE.md`: P66 rate boundary, raw scales, multiword math and oracle domains.
+- `docs/DIVIDE.md`: fixed-divisor DDV, exact scratch/register effects and hardware-DV oracle audit.
 - `docs/STORE.md`: STORE 30D, relative destination, old-word register effects and overlap semantics.
 - `docs/ELAPSED.md`: DSU PIPTIME, signed-zero/carry behavior, overflow realignment and retained state.
 - `docs/PUSHDOWN.md`: PDDL THISTPIP, owned VAC payload, pointer bounds and exchange debris.

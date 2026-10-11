@@ -230,3 +230,14 @@ state is added; the modeled context stays 178 bytes. PUSHLOC is independent of
 this relative address. Caller exclusion and restoring target guards apply;
 unsupported MODE/FIXLOC rejects without mutation as a native scope adaptation.
 STORE.md defines overlap semantics and the boundary before DDV/PDVL.
+
+## Fixed four-second division
+
+`src/guidance_divide.c` specializes DDV for {0,400}, preserving sign agreement,
+word normalization, two quotient stages and source zero/overflow exits. BUF high
+aliases elapsed scratch, while BUF low/DVSIGN/DVNORMCT/MAXDVSW add eight bytes.
+The full owned context is 186 bytes. Caller exclusion and restoring I apply;
+MODE rejection is a native adaptation. The VAC/saved elapsed pair is retained.
+The DDV host oracle selects the pinned engine's existing hardware DV model;
+DIVIDE.md explains the fast-path signed-zero discrepancy. Native code is not
+linked to either oracle; interpreter control state and pending PDVL are omitted.

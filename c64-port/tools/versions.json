@@ -18,7 +18,8 @@
     "lunar_landing_guidance_equations_sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
     "interpreter_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
     "controlled_constants_sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
-    "fixed_fixed_constant_pool_sha256": "7f139c2b553ce60f8c0ab8cf6242abef390c6a28858e45a4f1d80f0ff2c646b7"
+    "fixed_fixed_constant_pool_sha256": "7f139c2b553ce60f8c0ab8cf6242abef390c6a28858e45a4f1d80f0ff2c646b7",
+    "servicer_constant_source_sha256": "4e3798d5dabcc7ecca813d762824f7dfc41ad352a9869a7526565fc3a05f4415"
   },
   "llvm_mos_sdk": {
     "version": "v23.3.0",
@@ -42,5 +43,13 @@
     "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
     "make": "GNU Make 4.4.1",
     "python": "Python 3.12.14"
+  },
+  "hardware_dv_oracle": {
+    "base_virtualagc_commit": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+    "pinned_engine_sha256": "9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef",
+    "generated_engine_sha256": "3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242",
+    "patch_sha256": "614df203d2fe85deb7e5b4fbe79aacc767af3c385a2981dc22f4c18d22536e8d",
+    "generator": "tools/prepare_hardware_dv.py",
+    "scope": "DDV oracle only; use existing SimulateDV for every DV; original engine checkout and earlier oracles unchanged"
   }
 }

@@ -494,3 +494,31 @@ The initial larger expectation table overlapped diagnostic RAM. The final 176-ro
 table retains all integrated skip inputs/histories and uniform corners; the host
 still checks all 5044 rows. The helper now rejects image/state overlap with
 reserved RAM before VICE launch. Final native code and final target checks pass.
+
+## Thirteenth milestone: DDV 4SEC(28)
+
+6735 cases / 8098 complete 93-word/result checkpoints match unchanged DDV and
+bank-zero divide assembly with the pinned engine's hardware DV model. A generated
+host-only engine copy selects existing SimulateDV via a one-line patch; the pinned
+fast-DV signed-zero discrepancy is independently audited, not translated into
+native arithmetic. No native code is linked to either oracle. DIVIDE.md details
+all boundaries, source identities, numerical domains and model qualifications.
+
+| Command | Result | Evidence under `evidence/` |
+|---|---|---|
+| `python3 tools/prepare_reference.py` | PASS; 12 overlays, original constant declaration, same rope | `divide-fixture.log` |
+| `make differential REFERENCE="$PWD/deps/fixture"` | PASS; earlier comparisons and DDV hardware-model checkpoints | `divide-differential.log`, matched snapshots/trace |
+| `python3 tools/divide_differential.py deps/fixture` | PASS; final 11 guards/bank/Q assertions, 8098 rows, two-model audit | `divide-standalone.log` |
+| `python3 tools/audit_divide_models.py` | PASS; 798 discrepancies only L/MPAC/+1, negative-zero reproducer | `divide-dv-model-audit.json`, audit log |
+| `python3 tools/prepare_hardware_dv.py` | PASS; original engine hash, one-line generated branch change | `divide-hardware-dv.patch`, logged source hashes, tools/versions.json |
+| `make test` | PASS; twelve suites; all unsupported modes reject unchanged | `divide-host-tests.log` |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; twelve ASan/UBSan suites | `divide-sanitize.log` |
+| `python3 tools/freeze_divide.py` | PASS; 156 full 93-word/result states | `tests/divide_vectors.h` |
+| `make c64-divide MOS_CC=/path/to/mos-c64-clang` | PASS; native LLVM-MOS PRG | `divide-c64-build.log`, PRG/map |
+| `python3 tools/divide_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; all 156 states, I/ZP/RAM/stack and five intervals | `divide-vice-result.txt`, logs/monitor/mailbox/stack dumps, timing JSON |
+| Source diff and evidence manifest | PASS; 195 earlier identities retained, 218 total | `divide-source-preservation.txt`, `SHA256.json` |
+
+The fixed divisor's declaration is checked in unchanged original SERVICER and its
+assembled words are asserted; the support fixture remains at its prior rope hash.
+All earlier comparisons continue to use the original unmodified pinned engine.
+No physical Apollo hardware/C64 or full trajectory/flight timing proof is claimed.

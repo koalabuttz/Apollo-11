@@ -141,4 +141,4 @@ python3 tools/elapsed_vice_test.py --vice /path/to/x64sc \
 
 `STORE 30D` is now implemented and verified in STORE.md, including old-word
 register effects and overlapping VAC saves. This DSU API keeps its pre-STORE
-boundary; DDV 4SEC(28) is the next pending arithmetic operation.
+boundary; DDV is now verified in DIVIDE.md using the hardware model. PDVL is next.

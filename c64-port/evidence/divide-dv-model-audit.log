@@ -1,0 +1,4 @@
+PASS: two independent pinned DV paths audited over 8098 original-assembly checkpoints
+798 rows differ, only L/MPAC/MPAC+1; sign-extended negative-zero reproducer confirmed
+Fast SHA256: a525b5369dc806ab9f2ae605734e1fe1a802b7480fdc577e402e88f30f37efdc
+Hardware SHA256: ae9ad539cb822f1f36ab85ac4bc12ae3dc1e7bc5eae786b63c6ac65202a9bb70

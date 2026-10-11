@@ -72,9 +72,11 @@ for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
                      ('DSU','7005'),('ENDVXV','7000'),('OVERFLOW','7017'),
                      ('PIPTIME','1234'),('BUF','0130'),('LIMITS','4734'),
                      ('DOSTORE','6362'),('STORJUMP','6372'),('STORE','6422'),
-                     ('STARTSTO','6434'),('EDOP','0000023'),('NEWJOB','0067'),('DDV','7577')]:
+                     ('STARTSTO','6434'),('EDOP','0000023'),('NEWJOB','0067'),('DDV','7577'),('DDV/BDDV','00,2353'),('BUFZERO','00,2363'),
+                     ('DVOVF','00,2405'),('DVNORM','00,2505'),('TPAGREE','7257'),
+                     ('DVSIGN','0136'),('DVNORMCT','0137'),('MAXDVSW','0140'),('4SEC(28)','33,3152')]:
     import re
-    if not re.search(r'\b'+name+r'\s+'+address+r'\b',listing):
+    if not re.search(r'(?<!\w)'+re.escape(name)+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)
 print('Fixture:',fixture)
 print('Unchanged Executive SHA256:',hashlib.sha256(original.read_bytes()).hexdigest())
@@ -84,4 +86,9 @@ for source in ['WAITLIST.agc','INTERRUPT_LEAD_INS.agc','ALARM_AND_ABORT.agc',
                'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc','INTERPRETER.agc','CONTROLLED_CONSTANTS.agc']:
     print('Unchanged '+source+' SHA256:',hashlib.sha256((fixture/source).read_bytes()).hexdigest())
 print('Unchanged FIXED_FIXED_CONSTANT_POOL.agc SHA256:',hashlib.sha256((fixture/'FIXED-FIXED_CONSTANT_POOL.agc').read_bytes()).hexdigest())
+# Verify the original constant declaration without overlaying unrelated SERVICER
+# transcription differences into the established full-rope fixture.
+servicer=ROOT.parent/'Luminary099/SERVICER.agc'
+assert re.search(r'^4SEC\(28\)\s+2DEC\s+400\s+B-28\s*(?:#.*)?$',servicer.read_text(),re.M)
+print('Original SERVICER constant-source SHA256:',hashlib.sha256(servicer.read_bytes()).hexdigest())
 print('Rope SHA256:',hashlib.sha256((fixture/'MAIN.agc.bin').read_bytes()).hexdigest())

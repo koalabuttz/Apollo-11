@@ -112,6 +112,6 @@ python3 tools/store_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
-Next: translate `DDV 4SEC(28)`, preserving raw DP quotient, rounding, signed
-zeros, overflow and scratch/register effects. Verify the boundary before the
-pending PDVL loads GDT/2. Live PIPTIME publication and P66 scheduling remain open.
+`DDV 4SEC(28)` is now implemented and verified using the hardware-DV oracle in
+DIVIDE.md, including the pinned fast-path discrepancy. This STORE API keeps its
+original pre-DDV boundary. Pending PDVL GDT/2 is next.

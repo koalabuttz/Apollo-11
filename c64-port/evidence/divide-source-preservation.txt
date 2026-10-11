@@ -1,0 +1,4 @@
+PASS: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'
+Historical sources unchanged; 195 earlier evidence hashes retained.
+Twelve original-source overlays and assembled rope unchanged. Original SERVICER constant declaration checked separately.
+Pinned engine checkout untouched. DDV-only host oracle uses its existing hardware DV path via the retained one-line patch; all earlier oracles unchanged.

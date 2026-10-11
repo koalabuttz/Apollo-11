@@ -232,3 +232,26 @@ sanitize-store: | build
 c64-store: build/store.prg
 build/store.prg: $(STORE_CORE) $(STORE_TEST) platform/c64/store_diagnostic.c $(STORE_HEADERS) tests/store_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/store.map $(STORE_CORE) $(STORE_TEST) platform/c64/store_diagnostic.c -o $@
+
+DIVIDE_CORE = $(STORE_CORE) src/guidance_divide.c
+DIVIDE_INPUT = $(STORE_INPUT) tests/divide_cases.c
+DIVIDE_HEADERS = $(STORE_HEADERS) include/guidance_divide.h tests/divide_cases.h
+all: build/divide-snapshot
+build/divide-snapshot: $(DIVIDE_CORE) $(DIVIDE_INPUT) platform/host/divide_snapshot.c $(DIVIDE_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(DIVIDE_CORE) $(DIVIDE_INPUT) platform/host/divide_snapshot.c -o $@
+
+DIVIDE_TEST = $(DIVIDE_INPUT) tests/divide_check.c
+all: build/test-divide
+test: test-divide
+.PHONY: test-divide sanitize-divide c64-divide
+test-divide: build/test-divide
+	./build/test-divide
+build/test-divide: $(DIVIDE_CORE) $(DIVIDE_TEST) tests/test_divide.c $(DIVIDE_HEADERS) tests/divide_vectors.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(DIVIDE_CORE) $(DIVIDE_TEST) tests/test_divide.c -o $@
+sanitize: sanitize-divide
+sanitize-divide: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(DIVIDE_CORE) $(DIVIDE_TEST) tests/test_divide.c -o build/test-divide-sanitize
+	./build/test-divide-sanitize
+c64-divide: build/divide.prg
+build/divide.prg: $(DIVIDE_CORE) $(DIVIDE_TEST) platform/c64/divide_diagnostic.c $(DIVIDE_HEADERS) tests/divide_vectors.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/divide.map $(DIVIDE_CORE) $(DIVIDE_TEST) platform/c64/divide_diagnostic.c -o $@

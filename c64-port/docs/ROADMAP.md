@@ -166,12 +166,24 @@ requires producer exclusion and a scheduling budget.
 Acceptance for this bounded operation is met. STORE.md defines the native scope
 check, old-word register effects and stop before DDV/PDVL.
 
-## Next bounded milestone: DDV 4SEC(28)
+## Completed: DDV 4SEC(28)
 
-Trace and translate DP division of the elapsed pair by the original constant.
-Preserve raw quotient, rounding, signed zeros, overflow and scratch/register
-effects; verify the boundary before pending PDVL loads GDT/2. Keep later vector
-loads separate until the arithmetic boundary is verified.
+- Fixed raw divisor {0,400}; exact sign agreement, word normalization, integer
+  quotient stages, signed-zero/overflow and retained register/scratch effects.
+- 6735 cases / 8098 complete 93-word/result checkpoints match original assembly
+  with pinned hardware DV. The fast-DV negative-zero discrepancy is audited;
+  a one-line host-only branch selects the existing hardware model.
+- Twelve host/sanitizer suites and the twelfth C64 PRG's 156 full states pass.
+- Total context 186 bytes; DDV samples 6.519 ms; full prefix 28.358 ms.
+
+Acceptance is met for the fixed-divisor domain and declared hardware-model
+oracle. DIVIDE.md records the model difference and explicit interpreter boundary.
+
+## Next bounded milestone: PDVL GDT/2
+
+Translate the pending quotient pushdown and vector load. Preserve saved elapsed
+VAC words 30/31, MODE/PUSHLOC, exchange and scratch effects; independently verify
+the boundary before VSU. Keep the later vector subtraction as a separate stage.
 
 ## Remaining design questions
 

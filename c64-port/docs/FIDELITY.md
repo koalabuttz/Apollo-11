@@ -83,3 +83,16 @@ All five VACs and legal push positions include deliberate overlaps at slots
 30/31. Unsupported MODE/FIXLOC rejection, object ownership and restoring I are
 native adaptations. PUSHLOC is unused. Interpreter dispatch/bank/control state
 is oracle-only; later DDV/PDVL and live flight scheduling are excluded (STORE.md).
+
+## Fixed-divisor DDV fidelity and oracle qualification
+
+TPAGREE, normalization, zero/ordinary/overflow exits and modeled register/scratch
+state are verified over 8098 complete checkpoints using the pinned hardware-DV
+model. That oracle uses unchanged assembly and a generated engine copy with one
+branch selecting existing SimulateDV for every DV. The pinned fast mathematical
+DV shortcut mishandles sign-extended L=-0; the audit records 798 differing rows,
+only quotient words and L. The pinned checkout and earlier oracles are unchanged.
+Native specialization for {0,400}, owned scratch/MODE rejection, path enum and
+platform restoring I are explicit adaptations. General divisors, interpreter
+resume, pending PDVL and physical Apollo hardware validation are outside scope.
+The twelfth C64 PRG passes 156 full 93-word states; see DIVIDE.md.

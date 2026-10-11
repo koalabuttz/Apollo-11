@@ -129,6 +129,6 @@ retained under `evidence/push-*`.
 
 `DSU PIPTIME` is now implemented and independently verified in ELAPSED.md,
 including overflow realignment and retained vector/VAC state. The next operation
-is `DDV 4SEC(28)` after the verified STORE in STORE.md; this PDDL API
+is `PDVL GDT/2` after STORE and DDV (STORE.md, DIVIDE.md); this PDDL API
 retains its original pre-DSU boundary. A mapped job still needs defined producer ownership and scheduling
 budgets before integration.

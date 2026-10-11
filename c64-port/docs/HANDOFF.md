@@ -1,4 +1,4 @@
-# P66 STORE 30D milestone handoff
+# P66 DDV 4SEC(28) milestone handoff
 
 ## Repository
 
@@ -28,6 +28,7 @@ make c64-scale MOS_CC=/path/to/mos-c64-clang
 make c64-push MOS_CC=/path/to/mos-c64-clang
 make c64-elapsed MOS_CC=/path/to/mos-c64-clang
 make c64-store MOS_CC=/path/to/mos-c64-clang
+make c64-divide MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
@@ -44,6 +45,8 @@ python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/scale_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/divide_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/store_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/elapsed_vice_test.py --vice /path/to/x64sc \
@@ -53,6 +56,20 @@ python3 tools/push_vice_test.py --vice /path/to/x64sc \
 ```
 
 ## Completed work
+
+The thirteenth milestone translates fixed-divisor DDV 4SEC(28), stopping before
+pending PDVL GDT/2. It preserves TPAGREE signed-zero/mixed-sign stores, both
+source overflow exits, exact quotient stages and register/scratch debris. All
+93 modeled words/results match 8098 checkpoints over 6735 cases, including every
+ordinary quotient and 1022 alternate mixed-sign boundary representations. The
+DDV oracle selects the pinned engine's hardware DV model via a retained one-line
+host-only patch: its fast path mishandles sign-extended negative zero. A two-model
+audit records 798 differing quotient/L rows; the checkout and earlier oracles
+are untouched. All twelve host/sanitizer suites and the twelfth C64 PRG's 156
+complete-state checks pass. Context is 186 bytes; measured DDV reaches 6423
+cycles (6.519 ms), full prefix 27940 (28.358 ms). Earlier 195 evidence identities,
+twelve overlays, rope and historical sources remain unchanged. DIVIDE.md records
+the numerical contract, model discrepancy and oracle provenance explicitly.
 
 The twelfth milestone translates STORE 30D, stopping before DDV/PDVL. It writes
 the elapsed DP pair to VAC-relative words 30/31, clears A through CCS MODE and
@@ -177,7 +194,7 @@ Validation passes:
 - Host dispatch/fault tests and all eight native two-job executions.
 - 26 admission/completion plus 109 dispatch checkpoints, word-for-word against
   original assembly, and the separate Virtual AGC numerical helper comparisons.
-- All eleven host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
+- All twelve host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
 - PAL C64 VICE: zero failures, all 135 original-derived fingerprints, eight
   actual native two-job sequences and three repeated timed-path checks.
 - Host IRQ publication/FIFO tests over 600 starting-ticket cases, guards, idle
@@ -215,7 +232,7 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 ## Limits and next milestone
 
 This cooperative basic-job translation includes native demonstration routines
-and P66 preparation through STORE 30D. Complete flight OS and guidance workloads
+and P66 preparation through DDV 4SEC(28). Complete flight OS and guidance workloads
 remain future work. Callbacks return to a trampoline; persistent values belong
 in MPAC/VAC, not suspended C stacks.
 An unmapped address latches a runtime fault. No rollback is claimed; bounded
@@ -229,12 +246,13 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: translate DDV 4SEC(28), preserving raw quotient, rounding, signed zeros,
-overflow and scratch/register effects; stop before pending PDVL loads GDT/2.
+Next: translate pending PDVL GDT/2, preserving quotient pushdown, vector load,
+MODE/PUSHLOC and exchange/scratch debris; stop before VSU.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
 Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST,
-bounded Type C job recovery, pre-interpreter P66 preparation, VXSC KPIP1, PDDL THISTPIP, DSU PIPTIME and STORE 30D is met.
+bounded Type C job recovery, pre-interpreter P66 preparation, VXSC KPIP1, PDDL THISTPIP, DSU PIPTIME, STORE 30D and fixed-divisor DDV is met using the hardware-DV oracle
+(see DIVIDE.md for the pinned fast-path discrepancy).
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host
