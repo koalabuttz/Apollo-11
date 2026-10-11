@@ -1,0 +1,5 @@
+python3 tools/sband_dot_compare.py
+PASS {'states': 262144, 'start': 0, 'end': 262144, 'record_bytes': 4106, 'decoded_sha256': 'a87ce12a75720f3b0e61416e58ff35ecb7ea9628e1e6ea85df1cebc1b5db3b52'}
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_dot_snapshot.c tests/sband_dot_cases.c src/agc_word.c src/sband_dot.c src/agc_multiword.c -o build/sband-dot-sanitize
+python3 tools/sband_dot_compare.py sanitize
+PASS {'states': 262144, 'start': 0, 'end': 262144, 'record_bytes': 4106, 'decoded_sha256': 'a87ce12a75720f3b0e61416e58ff35ecb7ea9628e1e6ea85df1cebc1b5db3b52'}

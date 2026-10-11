@@ -1,0 +1,9 @@
+Independent read-only source review by /root/p66_source_map, retained by /root/frozen_storage.
+Reviewed canonical vector DOT implementation against both byte-original interpreter source bodies within ordinary ERA/nonaliasing immutable fixed-six operand contracts. No concrete defect found.
+PREDOT/DOTSUB minor-first product and live major reread, Y/Z exchanges, triple-precision accumulation, overflow BUF/OVFIND correction, final TC DOTRET Q0140 and DMODE A0/MODE0 to actual mission DANZIG agree with original source. Guard excludes banked EB0 reserved aliases and bounds the full sixword fixed object.
+This is source inspection, not a claim that all instruction edges or arbitrary caller/context Cartesian products were executed. Host/SAN/C64 acceptance is independently retained. Whole containing INTERPRETER/antenna files remain partial.
+Reviewed identities:
+df82036fea2a87744669496549e0aff21ac0c6866aa5adc32d21504a1106237b  src/sband_dot.c
+cd83c710447be5ec6742ddabdc0643a8f37064944d87d68525d3b8af7036772c  include/sband_dot.h
+26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e  ../Luminary099/INTERPRETER.agc
+724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b  ../Comanche055/INTERPRETER.agc

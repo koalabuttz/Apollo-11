@@ -1487,3 +1487,7 @@ Qualify16384 complete original native sanitizer states and128 C64 states through
 ## Compose original operator load request prompts and continuations
 
 Qualify8192 complete original native sanitizer states and64 C64 states across five load verbs and component request continuations retaining actual END NVSUBEND PASTEVB and alarm frontiers. See `docs/DSKY-LOAD-REQUEST.md`.
+
+## Qualify original canonical vector dot products
+
+Translate original canonical DOT body against262144 complete original native sanitizer states and256 C64 states including source live alias and fixed vector operands. See `docs/NATIVE-SBAND-DOT.md`.

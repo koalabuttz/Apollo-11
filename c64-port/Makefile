@@ -953,3 +953,8 @@ include tools/dsky_sign_output_integration.mk
 include tools/dsky_read_pair_integration.mk
 
 include tools/dsky_load_request.mk
+
+include tools/sband_dot_integration.mk
+all: build/sband-dot-integrated-stream
+test: test-sband-dot
+sanitize: sanitize-sband-dot
