@@ -1,0 +1,12 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_input_time-cm.prg" 0
+watch store 5587
+ignore 1 1
+g 080d
+m 5587 558b
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_time-cm-vice-mailbox.bin" 0 5587 558b
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_time-cm-vice-difference.bin" 0 357f 3586
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_time-cm-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_time-cm-vice-software-stack.bin" 0 c100 cfff
+quit

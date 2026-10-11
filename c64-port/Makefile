@@ -1033,3 +1033,5 @@ include tools/imu_mode_transfer_integration.mk
 include tools/dsky_input_angle.mk
 
 include tools/dsky_decimal_time_consumer_integration.mk
+
+include tools/dsky_input_time.mk

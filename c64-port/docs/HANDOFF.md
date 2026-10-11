@@ -1595,3 +1595,7 @@ Translate actual degree and optical CDU input arithmetic banks and source range 
 ## Compose original continuous decimal time and integer display consumers
 
 Run uninterrupted original DECDSP through HMS M/S and two-integer display source rows against57316 full original strict sanitizer checkpoints and704 C64 states retaining actual row CCS controls and canonical state. See `docs/DSKY-DECIMAL-TIME-CONSUMER.md`.
+
+## Translate original hours minutes seconds operator input
+
+Translate actual HMSIN RND-TST MPACTST SIZETST source time contributions rounding range alarms and indexed final store through LOADLV against8192 original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-TIME.md`.
