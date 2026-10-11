@@ -1147,3 +1147,7 @@ Original NVDSP blocked return, REST/RESTSLEP and UPENT2 alias effects match3072 
 ## Compose original Comanche clock display refusal and real sleeping job transfer
 
 Seven unchanged original clock mission paths preserve blocked NVMONOPT, actual REST/NVSUBUSY/JOBSLEEP and real restored-interpreter selection across175 uninterrupted full-source/native/sanitizer checkpoints. Actual C64 checks the seven original before-JOBSLEEP states through source transfer plus28 unchanged invalid guards; a combined resident disk/device proof remains separate. See `docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md`.
+
+## Canonical Luminary waitlist source entries
+
+Literal WAITLIST/TWIDDLE and their real caller-return/1203 BAILOUT/1204 POODOO handoffs match16384 complete2050-field original/native/full-sanitizer states,17 unchanged guard domains and64 actual C64 disk-overlay states. Delay/longcall/SVCT3, selected task and recovery bodies remain separate. Retained-original checks require no emulator or stale build outputs. See `docs/LM-CANONICAL-WAITLIST.md`.

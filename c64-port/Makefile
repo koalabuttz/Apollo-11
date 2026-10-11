@@ -754,3 +754,5 @@ include tools/cm_interbank_complete_integration.mk
 include tools/cm_display_rest_integration.mk
 
 include tools/cm_clock_blocked_display_integration.mk
+
+include tools/lm_waitlist_image_integration.mk
