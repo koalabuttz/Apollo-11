@@ -1091,3 +1091,7 @@ Actual INITDSP prefixes and mixed source priority continuations match15360 compl
 ## Translate complete original Luminary RCS failure monitor source
 
 All69 original source words and18 fixed constants are mapped and binary-checked. Channel32 changes, both valve-mask directions and actual NOVAC admission match131072 complete original/native/full-sanitizer states and192 actual C64 states. External RESUME, resource-alarm processing and admitted ACCJOB bodies retain explicit source boundaries. See `docs/LUMINARY-RCS-MONITOR.md`.
+
+## Complete original Luminary RCS failure monitor source
+
+Independent arithmetic/control review, exact original69-word mapping, complete source/sanitizer comparisons and actual C64 execution certify the containing RCS failure monitor file within its canonical source entry, hardware channel32 and external RESUME/BAILOUT contracts. The inventory has36 complete files (30 native/data/declaration and six comment-only files), with139 source files and both integrated applications still requiring complete acceptance. See `docs/LUMINARY-RCS-MONITOR.md`.

@@ -5493,6 +5493,7 @@
   "lm-priority-vice.mon": "5ebfaf9b518ee4c8b4da333aaa14f806d66f0b4787d4d1a6c160228339b77cd9",
   "lm-priority.map": "11325fb8228d4ba7f4daf97d2a1b6e5d1de3ee369ad22fbab4076d56b798725f",
   "lm-priority.prg": "9f39a93dfee12076917bc9b7b7aad7a99fc9dd7d9d2fb2f0df69fff83ceef000",
+  "lm-rcs-monitor-certificate-validation.log": "5437738bbfc207a08fa86b76003ab470d96a470874606ed02f47cb6835015569",
   "lm-rcs-monitor-complete.snapshots.xz": "b3ae3bee0feab61530c3c0a2fd2063411d72eab8597815ed2094e2215301272a",
   "lm-rcs-monitor-corpus-stats.json": "4b7c1c034fb88dc9ccdfb24c6fc52f6cb334c833ace17e90e6c16a88a968b72c",
   "lm-rcs-monitor-evidence.sha256": "a62aefe83ef9518edcbac7206becdf934a2d2787890018c92eb5ddcc9940f4d2",

@@ -3083,8 +3083,40 @@
       "sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
       "bytes": 5834,
       "lines": 173,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_rcs_monitor.c"
+          ],
+          "scope": "All69 byte-original containing source words: actual06,3156 RCSMON/RCSMONIT entry, channel32 highest-changed-bit selection, both valve-mask directions, actual NOVAC admission and all18 containing data words. IRQ 0/canonical ordinary image, coherentEB/BB and valid Executive pool contract. Stops before external RESUME 05270 or BAILOUT1 05716; neither external service nor admitted ACCJOB executes here. Complete current/PVAL low8 combination sweep twice; other contexts varied, not Cartesian. No complete resident application claimed.",
+          "verification": "docs/LUMINARY-RCS-MONITOR.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "All69 byte-original containing source words: actual06,3156 RCSMON/RCSMONIT entry, channel32 highest-changed-bit selection, both valve-mask directions, actual NOVAC admission and all18 containing data words. IRQ 0/canonical ordinary image, coherentEB/BB and valid Executive pool contract. Stops before external RESUME 05270 or BAILOUT1 05716; neither external service nor admitted ACCJOB executes here. Complete current/PVAL low8 combination sweep twice; other contexts varied, not Cartesian. No complete resident application claimed.",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-rcs-monitor-source-map.json",
+            "sha256": "2ca6a15690ddfbea832b36b6c77952f0378ff752a211652171059246b50a1f8f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-rcs-monitor-independent-review.txt",
+            "sha256": "c49683325304d8b10376dfb7257f6f01bf772b9493833d6b380235a65c1d1342"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-rcs-monitor-proof.json",
+            "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-rcs-monitor-proof.json",
+            "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/README.md",
