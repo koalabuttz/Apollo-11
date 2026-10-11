@@ -1,0 +1,10 @@
+PASS: original/pinned CM Interpreter boundary instruction tokens agree
+PASS: CM dispatch: 109 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: 4e47a03548287871901e08b0feefaa3a4bfa4be65d741b923a20b9d30ca4f2ae
+PASS: CM lifecycle: 115 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: 155f0beb9fccee22a885d7ffceadc9f2b1449d44dbe39178ca7462e1f70e4e95
+PASS: CM interpreter: 512 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: c852a128cd217066aecd89188f5b06ed529dab7770c0e816332fc64499fe6227
+PASS: CM mixed: 140 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: 33f01e9117e0bee05d6b31687bbc4d40cf0ee0b69bb43fa4a6747e332fccdb30
+PASS: 876 CM context checkpoints; 8 basic, 5 lifecycle, and 7 mixed native callback sequences

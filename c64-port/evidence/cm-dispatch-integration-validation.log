@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_lifecycle_cases.c tests/cm_interpreter_cases.c tests/cm_mixed_cases.c tests/cm_dispatch_check.c tests/test_cm_dispatch.c -o build/test-cm-dispatch
+./build/test-cm-dispatch
+PASS: 876 CM full-state fingerprints, 16 complete samples, 20 actual callback sequences, invalid/pending boundaries
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_lifecycle_cases.c tests/cm_interpreter_cases.c tests/cm_mixed_cases.c tests/cm_dispatch_check.c tests/test_cm_dispatch.c -o build/test-cm-dispatch-sanitize
+./build/test-cm-dispatch-sanitize
+PASS: 876 CM full-state fingerprints, 16 complete samples, 20 actual callback sequences, invalid/pending boundaries

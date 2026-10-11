@@ -1,0 +1,10 @@
+{
+  "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+  "pinned_sha256": "d6a0707c5e58a82516b4cbca7d8941b7a7fb610b82c3da3cfc6103c2214ffd99",
+  "checked_boundaries": [
+    "INTPRET/INTRSM",
+    "DANZIG/NOIBNKSW",
+    "EXIT four instructions"
+  ],
+  "comparison": "All opcode/operand/label tokens agree; comments and pseudo-label indentation excluded."
+}

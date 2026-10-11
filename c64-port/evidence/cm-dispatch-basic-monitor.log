@@ -1,0 +1,35 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-dispatch-basic.prg from 0801 to 7D2F (752F bytes)
+WATCH: 1  C:$c040  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c040)  290/$122,  33/$21
+.C:576e  8E 40 C0    STX $C040      - A:00 X:A5 Y:00 SP:ed N.-.....  143998503
+>C:c040  a5 00 00 6d  00                                      ...m.
+Saving file `/workspace/Apollo-11/c64-port/build/cm-dispatch-basic-mailbox.bin' from $c040 to $c044
+Saving file `/workspace/Apollo-11/c64-port/build/cm-dispatch-basic-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-dispatch-basic-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  COMANCHE CONTEXTS / LIFECYCLE           
+0518  CM CONTEXT CHECKS PASS                  
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

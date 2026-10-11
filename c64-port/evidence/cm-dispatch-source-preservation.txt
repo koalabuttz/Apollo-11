@@ -1,0 +1,4 @@
+Original Comanche055 and Luminary099 source trees unchanged.
+CM Executive fixture uses five documented pseudo-label indentation repairs; complete rope equals pinned corrected Executive rope.
+Original CM INTPRET/INTRSM, DANZIG/NOIBNKSW, and EXIT boundary instruction tokens equal pinned supporting Interpreter source.
+Historical programs are not edited; native CM code is separate.
