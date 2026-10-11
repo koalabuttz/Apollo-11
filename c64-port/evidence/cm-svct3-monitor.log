@@ -1,0 +1,35 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-svct3.prg from 0801 to 486A (406A bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  200/$0c8,  58/$3a
+.C:0f23  8E 80 C0    STX $C080      - A:00 X:A5 Y:01 SP:f1 N.-....C 2278673770
+>C:c080  a5 00 00 c0  00                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/cm-svct3-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm-svct3-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-svct3-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0                                          
+0518                                          
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

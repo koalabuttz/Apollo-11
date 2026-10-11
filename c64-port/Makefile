@@ -475,3 +475,5 @@ include tools/cm_waitlist_image.mk
 include tools/cm_task_transfer.mk
 
 include tools/cm_admission_image.mk
+
+include tools/cm_svct3.mk

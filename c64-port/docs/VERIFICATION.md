@@ -910,3 +910,7 @@ Original T3RUPT2 and TASKOVER complete-image transitions pass source, sanitizer 
 ## Port canonical Comanche job-admission return effects
 
 Original NOVAC and FINDVAC complete-image effects, including the actual saved-Q return, pass source, sanitizer and C64 checks. See `docs/COMANCHE_ADMISSION_IMAGE.md`.
+
+## Port real Comanche SVCT3 housekeeping
+
+Actual SVCT3 drift, IMU admission and delay recheck paths pass independent complete-image source, sanitizer and C64 checks. See `docs/COMANCHE_SVCT3.md`.
