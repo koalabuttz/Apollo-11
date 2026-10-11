@@ -1,0 +1,45 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tools/rtb_vector_snapshot.c src/rtb_vector.c src/agc_word.c src/agc_multiword.c tests/rtb_vector_cases.c -o build/rtb-vector-integrated-stream
+python3 tools/rtb_vector_port_host.py --cc "cc"
+32 complete RTB vector/frontier states mission0 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 adb8e5ad79cde8f207a524f4bcf6d7b0ebe562c9d9129a8ff789db08ea4da113
+32 complete RTB vector/frontier states mission0 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 b4ed7f53f5b99fb8ec13709d82b01ab6a4de6af086a9f2c560ea97109ee5de7b
+32 complete RTB vector/frontier states mission0 entry2: PASS
+PASS all retained source-state bytes: 268959744 SHA256 a174a300d1c9533868988d1e8f72f900334fe72b1a0b38e1ecd15147ca804b89
+32 complete RTB vector/frontier states mission0 entry3: PASS
+PASS all retained source-state bytes: 268959744 SHA256 d0d023dd18fd16d248443496a1f6681311f10a230e42c44479eae521df04f033
+32 complete RTB vector/frontier states mission0 entry4: PASS
+PASS all retained source-state bytes: 268959744 SHA256 b6665bec1cef8c2a4593958ee86faa94d69ae4cccae4f66c02e047b4149688eb
+32 complete RTB vector/frontier states mission1 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 8c6f6a381065d4cb4b9964f9f3a295a526f2e4ec5b114f49a84e68c4660a3324
+32 complete RTB vector/frontier states mission1 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 aa58453e9da9d9002f3da6ed0bfbd00e35a222b53ac21be4608651f9a877e688
+32 complete RTB vector/frontier states mission1 entry2: PASS
+PASS all retained source-state bytes: 268959744 SHA256 39f47e4c4dd8ce495807b76b3ee7390660dcb191277737bb24dae750a198d477
+32 complete RTB vector/frontier states mission1 entry3: PASS
+PASS all retained source-state bytes: 268959744 SHA256 4496ad2a7d510e55125273d9d0f1bbaf6974c978e2d12fb72440114f756dae75
+32 complete RTB vector/frontier states mission1 entry4: PASS
+PASS all retained source-state bytes: 268959744 SHA256 a153e41f1e387360c37c5a0056834a120b59afb8d9db50b1f9e443b04395c9e7
+PASS all655360 complete RTB source states and320 frozen states
+python3 tools/rtb_vector_port_host.py --cc "cc" --sanitize
+32 complete RTB vector/frontier states mission0 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 adb8e5ad79cde8f207a524f4bcf6d7b0ebe562c9d9129a8ff789db08ea4da113
+32 complete RTB vector/frontier states mission0 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 b4ed7f53f5b99fb8ec13709d82b01ab6a4de6af086a9f2c560ea97109ee5de7b
+32 complete RTB vector/frontier states mission0 entry2: PASS
+PASS all retained source-state bytes: 268959744 SHA256 a174a300d1c9533868988d1e8f72f900334fe72b1a0b38e1ecd15147ca804b89
+32 complete RTB vector/frontier states mission0 entry3: PASS
+PASS all retained source-state bytes: 268959744 SHA256 d0d023dd18fd16d248443496a1f6681311f10a230e42c44479eae521df04f033
+32 complete RTB vector/frontier states mission0 entry4: PASS
+PASS all retained source-state bytes: 268959744 SHA256 b6665bec1cef8c2a4593958ee86faa94d69ae4cccae4f66c02e047b4149688eb
+32 complete RTB vector/frontier states mission1 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 8c6f6a381065d4cb4b9964f9f3a295a526f2e4ec5b114f49a84e68c4660a3324
+32 complete RTB vector/frontier states mission1 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 aa58453e9da9d9002f3da6ed0bfbd00e35a222b53ac21be4608651f9a877e688
+32 complete RTB vector/frontier states mission1 entry2: PASS
+PASS all retained source-state bytes: 268959744 SHA256 39f47e4c4dd8ce495807b76b3ee7390660dcb191277737bb24dae750a198d477
+32 complete RTB vector/frontier states mission1 entry3: PASS
+PASS all retained source-state bytes: 268959744 SHA256 4496ad2a7d510e55125273d9d0f1bbaf6974c978e2d12fb72440114f756dae75
+32 complete RTB vector/frontier states mission1 entry4: PASS
+PASS all retained source-state bytes: 268959744 SHA256 a153e41f1e387360c37c5a0056834a120b59afb8d9db50b1f9e443b04395c9e7
+PASS all655360 complete RTB source states and320 frozen states under full ASAN/UBSAN

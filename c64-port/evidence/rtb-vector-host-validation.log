@@ -1,0 +1,11 @@
+for mission in 0 1; do for entry in {0..4}; do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DVECTOR_MISSION=$mission -DVECTOR_ENTRY=$entry tests/test_rtb_vector.c tests/frozen_words.c src/rtb_vector.c src/agc_word.c src/agc_multiword.c tests/rtb_vector_cases.c -o build/test-rtb-vector-$mission-$entry; build/test-rtb-vector-$mission-$entry; done; done
+32 complete RTB vector/frontier states mission0 entry0: PASS
+32 complete RTB vector/frontier states mission0 entry1: PASS
+32 complete RTB vector/frontier states mission0 entry2: PASS
+32 complete RTB vector/frontier states mission0 entry3: PASS
+32 complete RTB vector/frontier states mission0 entry4: PASS
+32 complete RTB vector/frontier states mission1 entry0: PASS
+32 complete RTB vector/frontier states mission1 entry1: PASS
+32 complete RTB vector/frontier states mission1 entry2: PASS
+32 complete RTB vector/frontier states mission1 entry3: PASS
+32 complete RTB vector/frontier states mission1 entry4: PASS

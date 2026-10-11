@@ -1,0 +1,284 @@
+{
+  "complete_states": 655360,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER"
+  ],
+  "containing_file_status": "partial",
+  "qualified_containing_words": {
+    "lm": 45,
+    "cm": 45
+  },
+  "original_source_audit": "evidence/rtb-angles-source-audit.json",
+  "source_map": "evidence/rtb-vector-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-lm0-complete.snapshots.xz",
+        "decoded_sha256": "adb8e5ad79cde8f207a524f4bcf6d7b0ebe562c9d9129a8ff789db08ea4da113",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-lm0-complete.snapshots.xz",
+        "decoded_sha256": "adb8e5ad79cde8f207a524f4bcf6d7b0ebe562c9d9129a8ff789db08ea4da113",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-lm0-complete.snapshots.xz",
+        "decoded_sha256": "adb8e5ad79cde8f207a524f4bcf6d7b0ebe562c9d9129a8ff789db08ea4da113",
+        "decoded_bytes": 268959744
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-lm1-complete.snapshots.xz",
+        "decoded_sha256": "b4ed7f53f5b99fb8ec13709d82b01ab6a4de6af086a9f2c560ea97109ee5de7b",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-lm1-complete.snapshots.xz",
+        "decoded_sha256": "b4ed7f53f5b99fb8ec13709d82b01ab6a4de6af086a9f2c560ea97109ee5de7b",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-lm1-complete.snapshots.xz",
+        "decoded_sha256": "b4ed7f53f5b99fb8ec13709d82b01ab6a4de6af086a9f2c560ea97109ee5de7b",
+        "decoded_bytes": 268959744
+      }
+    },
+    "lm2": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-lm2-complete.snapshots.xz",
+        "decoded_sha256": "a174a300d1c9533868988d1e8f72f900334fe72b1a0b38e1ecd15147ca804b89",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-lm2-complete.snapshots.xz",
+        "decoded_sha256": "a174a300d1c9533868988d1e8f72f900334fe72b1a0b38e1ecd15147ca804b89",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-lm2-complete.snapshots.xz",
+        "decoded_sha256": "a174a300d1c9533868988d1e8f72f900334fe72b1a0b38e1ecd15147ca804b89",
+        "decoded_bytes": 268959744
+      }
+    },
+    "lm3": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-lm3-complete.snapshots.xz",
+        "decoded_sha256": "d0d023dd18fd16d248443496a1f6681311f10a230e42c44479eae521df04f033",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-lm3-complete.snapshots.xz",
+        "decoded_sha256": "d0d023dd18fd16d248443496a1f6681311f10a230e42c44479eae521df04f033",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-lm3-complete.snapshots.xz",
+        "decoded_sha256": "d0d023dd18fd16d248443496a1f6681311f10a230e42c44479eae521df04f033",
+        "decoded_bytes": 268959744
+      }
+    },
+    "lm4": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-lm4-complete.snapshots.xz",
+        "decoded_sha256": "b6665bec1cef8c2a4593958ee86faa94d69ae4cccae4f66c02e047b4149688eb",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-lm4-complete.snapshots.xz",
+        "decoded_sha256": "b6665bec1cef8c2a4593958ee86faa94d69ae4cccae4f66c02e047b4149688eb",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-lm4-complete.snapshots.xz",
+        "decoded_sha256": "b6665bec1cef8c2a4593958ee86faa94d69ae4cccae4f66c02e047b4149688eb",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-cm0-complete.snapshots.xz",
+        "decoded_sha256": "8c6f6a381065d4cb4b9964f9f3a295a526f2e4ec5b114f49a84e68c4660a3324",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-cm0-complete.snapshots.xz",
+        "decoded_sha256": "8c6f6a381065d4cb4b9964f9f3a295a526f2e4ec5b114f49a84e68c4660a3324",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-cm0-complete.snapshots.xz",
+        "decoded_sha256": "8c6f6a381065d4cb4b9964f9f3a295a526f2e4ec5b114f49a84e68c4660a3324",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-cm1-complete.snapshots.xz",
+        "decoded_sha256": "aa58453e9da9d9002f3da6ed0bfbd00e35a222b53ac21be4608651f9a877e688",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-cm1-complete.snapshots.xz",
+        "decoded_sha256": "aa58453e9da9d9002f3da6ed0bfbd00e35a222b53ac21be4608651f9a877e688",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-cm1-complete.snapshots.xz",
+        "decoded_sha256": "aa58453e9da9d9002f3da6ed0bfbd00e35a222b53ac21be4608651f9a877e688",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm2": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-cm2-complete.snapshots.xz",
+        "decoded_sha256": "39f47e4c4dd8ce495807b76b3ee7390660dcb191277737bb24dae750a198d477",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-cm2-complete.snapshots.xz",
+        "decoded_sha256": "39f47e4c4dd8ce495807b76b3ee7390660dcb191277737bb24dae750a198d477",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-cm2-complete.snapshots.xz",
+        "decoded_sha256": "39f47e4c4dd8ce495807b76b3ee7390660dcb191277737bb24dae750a198d477",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm3": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-cm3-complete.snapshots.xz",
+        "decoded_sha256": "4496ad2a7d510e55125273d9d0f1bbaf6974c978e2d12fb72440114f756dae75",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-cm3-complete.snapshots.xz",
+        "decoded_sha256": "4496ad2a7d510e55125273d9d0f1bbaf6974c978e2d12fb72440114f756dae75",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-cm3-complete.snapshots.xz",
+        "decoded_sha256": "4496ad2a7d510e55125273d9d0f1bbaf6974c978e2d12fb72440114f756dae75",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm4": {
+      "original_assembly": {
+        "object": "evidence/rtb-vector-cm4-complete.snapshots.xz",
+        "decoded_sha256": "a153e41f1e387360c37c5a0056834a120b59afb8d9db50b1f9e443b04395c9e7",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-vector-cm4-complete.snapshots.xz",
+        "decoded_sha256": "a153e41f1e387360c37c5a0056834a120b59afb8d9db50b1f9e443b04395c9e7",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-vector-cm4-complete.snapshots.xz",
+        "decoded_sha256": "a153e41f1e387360c37c5a0056834a120b59afb8d9db50b1f9e443b04395c9e7",
+        "decoded_bytes": 268959744
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 4866,
+      "loaded_end": "0x1b00",
+      "hardware_stack": 16,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 5252,
+      "loaded_end": "0x1c82",
+      "hardware_stack": 16,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "lm2": {
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "PRG_bytes": 6754,
+      "loaded_end": "0x2260",
+      "hardware_stack": 16,
+      "software_stack": 54,
+      "compiler_ZP": 0
+    },
+    "lm3": {
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "PRG_bytes": 6729,
+      "loaded_end": "0x2247",
+      "hardware_stack": 16,
+      "software_stack": 54,
+      "compiler_ZP": 0
+    },
+    "lm4": {
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "PRG_bytes": 4687,
+      "loaded_end": "0x1a4d",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "mailbox": "a500002010",
+      "PRG_bytes": 4870,
+      "loaded_end": "0x1b04",
+      "hardware_stack": 16,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "mailbox": "a500002011",
+      "PRG_bytes": 5242,
+      "loaded_end": "0x1c78",
+      "hardware_stack": 16,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "cm2": {
+      "complete_states": 32,
+      "mailbox": "a500002012",
+      "PRG_bytes": 6749,
+      "loaded_end": "0x225b",
+      "hardware_stack": 16,
+      "software_stack": 54,
+      "compiler_ZP": 0
+    },
+    "cm3": {
+      "complete_states": 32,
+      "mailbox": "a500002013",
+      "PRG_bytes": 6734,
+      "loaded_end": "0x224c",
+      "hardware_stack": 14,
+      "software_stack": 54,
+      "compiler_ZP": 0
+    },
+    "cm4": {
+      "complete_states": 32,
+      "mailbox": "a500002014",
+      "PRG_bytes": 4687,
+      "loaded_end": "0x1a4d",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    }
+  },
+  "independent_review": {
+    "path": "evidence/rtb-vector-independent-review.txt",
+    "sha256": "d5fb82d22ab453395077eb2003045dd2f295e006db11d4a2da302129e10ee4e1"
+  },
+  "scope": "Both mission direct VECAGREE and full VECSGNAG, NORMUNIT/NORMUNX1 frontiers through literal UNIT+1, PULSEIMU frontier through literal IMUPULSE entry. Source-exact bankcall/return/basic controls; explicit fixed source boundaries. Generic UNIT and actual IMUPULSE/hardware bodies remain external; no whole RTB file or resident application certified. Full vector words swept in varied joint contexts for direct and VECSGNAG; NORM major/minor patterns include separate zero-major branches without an exhaustive major claim."
+}

@@ -1148,3 +1148,7 @@ Extend separately native source qualified update bodies to either signed zero al
 ## Canonical Luminary DANZIG context change source entries
 
 Literal DANZIG/NOIBNKSW through CHANG2 basic or interpreter exchanges match16384 complete2053-field original/native/full-sanitizer states,25 unchanged guard domains and64 actual C64 disk-overlay states. Raw incoming L to Q overflow and actual selected transfers are retained. Selected application bodies remain separate. Retained-original checks require no emulator or stale build outputs. See `docs/LM-DANZIG-CHANGE.md`.
+
+## Translate original RTB vector agreement and literal normalization handoffs
+
+Qualify complete VECAGREE and VECSGNAG control plus literal UNIT and IMUPULSE handoffs against655360 complete original native and full sanitizer states plus320 actual C64 states across ten targets. Selected UNIT and IMUPULSE bodies remain separately open. See `docs/RTB-VECTOR.md`.
