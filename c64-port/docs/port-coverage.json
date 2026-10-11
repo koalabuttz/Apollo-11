@@ -570,8 +570,41 @@
       "sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
       "bytes": 2473,
       "lines": 93,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_mysubs.c",
+            "src/cm_quictrig.c",
+            "src/cm_single_return.c"
+          ],
+          "scope": "Every original emitted word, signed-zero/overflow branch, actual fixed-code return and exact scalar aliases.",
+          "verification": "docs/COMANCHE-MYSUBS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/COMANCHE-MYSUBS.md",
+            "sha256": "3b9e00c89a5038b3811cb1ac6ce3088b964e6043ebd5ef17d8cda671523d0fe2"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-mysubs-proof.json",
+            "sha256": "940e54bb21270ba4dbc39c46f694578560c720e84533969f68090923738c9603"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-mysubs-validation.log",
+            "sha256": "6305e82237263358c78d83f984ccc187edf9ab9328c5e28173d59a692d8d1bba"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-mysubs-proof.json",
+            "sha256": "940e54bb21270ba4dbc39c46f694578560c720e84533969f68090923738c9603"
+          }
+        },
+        "review_scope": "Complete original MYSUBS algorithms and declarations within original bank21/E6 fixed-code caller domain; no whole-application claim."
+      }
     },
     {
       "path": "Comanche055/ORBITAL_INTEGRATION.agc",

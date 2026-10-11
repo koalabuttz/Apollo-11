@@ -1,0 +1,5 @@
+Luminary099: 90 AGC files, 64,838 source lines; 66 untranslated, 14 partial, 10 complete
+Comanche055: 85 AGC files, 65,348 source lines; 67 untranslated, 9 partial, 9 complete
+Remaining files requiring complete native coverage: 156
+Historical-source baseline: 911e5c0283c629c50cb97666f34065e8c07d71a5
+PASS: inventory and immutable source checks (port completion is not certified)
