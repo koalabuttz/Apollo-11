@@ -977,3 +977,7 @@ include tools/dsky_input_select.mk
 include tools/dsky_input_store.mk
 
 include tools/dsky_hours_output_integration.mk
+
+include tools/p66_pending_port_integration.mk
+test: p66-pending-port-test
+sanitize: p66-pending-port-sanitize

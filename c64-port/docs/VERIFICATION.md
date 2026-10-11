@@ -1844,3 +1844,7 @@ Qualify8192 full original native sanitizer states and64 C64 states through actua
 ## Compose original hours minutes seconds display output
 
 Qualify65536 uninterrupted full original native sanitizer checkpoints and256 staged C64 states through actual HMSOUT scaling formatting and source bank returns. See `docs/DSKY-HOURS-OUTPUT.md`.
+
+## Validate deferred higher priority job and exact P66 resumption on C64
+
+Run actual stock-ROM D81 higher-priority job dispatch and restored P66 recurrence across312 full source checkpoints with119 descriptors preserving112 historical stage images plus2476 pending64 adoption2460 unchanged full host sanitizer checkpoints. Both full applications remain open. See `docs/P66-APPLICATION-PENDING.md`.

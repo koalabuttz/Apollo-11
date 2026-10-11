@@ -1,0 +1,278 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     6349     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/p66-pending-flight.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        9     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_chkin.s.obj):(.text)
+     830      830        0     1                 cbm_k_chkin
+     838      838        0     1                 some_error
+     839      839        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_open.s.obj):(.text)
+     839      839        0     1                 cbm_k_open
+     840      840        0     1                 some_error
+     841      841        5     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setlfs.s.obj):(.text)
+     841      841        0     1                 cbm_k_setlfs
+     846      846       14     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setnam.s.obj):(.text)
+     846      846        0     1                 cbm_k_setnam
+     85a      85a        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     85a      85a        0     1                 __call_indir
+     85d      85d       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     85d      85d       13     1                 __zero_bss
+     870      870       a4     1         build/p66-pending-flight.prg.lto.o:(.text.exec_native_resolver_init)
+     870      870       a4     1                 exec_native_resolver_init
+     914      914      49e     1         build/p66-pending-flight.prg.lto.o:(.text.exec_native_step)
+     914      914      49e     1                 exec_native_step
+     db2      db2       73     1         build/p66-pending-flight.prg.lto.o:(.text.p66_native_export_executive)
+     db2      db2       73     1                 p66_native_export_executive
+     e25      e25       28     1         build/p66-pending-flight.prg.lto.o:(.text.source_copy)
+     e25      e25       28     1                 source_copy
+     e4d      e4d       9c     1         build/p66-pending-flight.prg.lto.o:(.text.scalar_exchange)
+     e4d      e4d       9c     1                 scalar_exchange
+     ee9      ee9       73     1         build/p66-pending-flight.prg.lto.o:(.text.p66_native_import_executive)
+     ee9      ee9       73     1                 p66_native_import_executive
+     f5c      f5c      45e     1         build/p66-pending-flight.prg.lto.o:(.text.p66_native_run_group)
+     f5c      f5c      45e     1                 p66_native_run_group
+    13ba     13ba       c1     1         build/p66-pending-flight.prg.lto.o:(.text.continuation)
+    13ba     13ba       c1     1                 continuation
+    147b     147b      484     1         build/p66-pending-flight.prg.lto.o:(.text.basic)
+    147b     147b      484     1                 basic
+    18ff     18ff      207     1         build/p66-pending-flight.prg.lto.o:(.text.p66_descent_resolve)
+    18ff     18ff      207     1                 p66_descent_resolve
+    1b06     1b06      482     1         build/p66-pending-flight.prg.lto.o:(.text.continuation.5)
+    1b06     1b06      482     1                 continuation.5
+    1f88     1f88       8e     1         build/p66-pending-flight.prg.lto.o:(.text.control)
+    1f88     1f88       8e     1                 control
+    2016     2016      a49     1         build/p66-pending-flight.prg.lto.o:(.text.arithmetic)
+    2016     2016      a49     1                 arithmetic
+    2a5f     2a5f      229     1         build/p66-pending-flight.prg.lto.o:(.text.observe_source)
+    2a5f     2a5f      229     1                 observe_source
+    2c88     2c88      144     1         build/p66-pending-flight.prg.lto.o:(.text.canonical)
+    2c88     2c88      144     1                 canonical
+    2dcc     2dcc      16b     1         build/p66-pending-flight.prg.lto.o:(.text.prepare)
+    2dcc     2dcc      16b     1                 prepare
+    2f37     2f37      131     1         build/p66-pending-flight.prg.lto.o:(.text.finish)
+    2f37     2f37      131     1                 finish
+    3068     3068        9     1         build/p66-pending-flight.prg.lto.o:(.text.p66_display_job_finish)
+    3068     3068        9     1                 p66_display_job_finish
+    3071     3071      7a9     1         build/p66-pending-flight.prg.lto.o:(.text.execute)
+    3071     3071      7a9     1                 execute
+    381a     381a      19a     1         build/p66-pending-flight.prg.lto.o:(.text.continuation.10)
+    381a     381a      19a     1                 continuation.10
+    39b4     39b4       2d     1         build/p66-pending-flight.prg.lto.o:(.text.apollo_overlay_crc16)
+    39b4     39b4       2d     1                 apollo_overlay_crc16
+    39e1     39e1      a46     1         build/p66-pending-flight.prg.lto.o:(.text.apollo_overlay_call)
+    39e1     39e1      a46     1                 apollo_overlay_call
+    4427     4427       e4     1         build/p66-pending-flight.prg.lto.o:(.text.open_file)
+    4427     4427       e4     1                 open_file
+    450b     450b       59     1         build/p66-pending-flight.prg.lto.o:(.text.read_byte)
+    450b     450b       59     1                 read_byte
+    4564     4564       3a     1         build/p66-pending-flight.prg.lto.o:(.text.close_file)
+    4564     4564       3a     1                 close_file
+    459e     459e       49     1         build/p66-pending-flight.prg.lto.o:(.text.invoke.11)
+    459e     459e       49     1                 invoke.11
+    45e7     45e7      2f3     1         build/p66-pending-flight.prg.lto.o:(.text.p66_application_basic)
+    45e7     45e7      2f3     1                 p66_application_basic
+    48da     48da      28f     1         build/p66-pending-flight.prg.lto.o:(.text.native_registry_call)
+    48da     48da      28f     1                 native_registry_call
+    4b69     4b69       92     1         build/p66-pending-flight.prg.lto.o:(.text.p66_application_split_resolve)
+    4b69     4b69       92     1                 p66_application_split_resolve
+    4bfb     4bfb      4b5     1         build/p66-pending-flight.prg.lto.o:(.text.body)
+    4bfb     4bfb      4b5     1                 body
+    50b0     50b0       8e     1         build/p66-pending-flight.prg.lto.o:(.text.bridge)
+    50b0     50b0       8e     1                 bridge
+    513e     513e       65     1         build/p66-pending-flight.prg.lto.o:(.text.display)
+    513e     513e       65     1                 display
+    51a3     51a3      246     1         build/p66-pending-flight.prg.lto.o:(.text.p66_application_pending_step)
+    51a3     51a3      246     1                 p66_application_pending_step
+    53e9     53e9       43     1         build/p66-pending-flight.prg.lto.o:(.text.service)
+    53e9     53e9       43     1                 service
+    542c     542c       4f     1         build/p66-pending-flight.prg.lto.o:(.text.p66_application_pending_resolve)
+    542c     542c       4f     1                 p66_application_pending_resolve
+    547b     547b      1f6     1         build/p66-pending-flight.prg.lto.o:(.text.continuation.14)
+    547b     547b      1f6     1                 continuation.14
+    5671     5671      117     1         build/p66-pending-flight.prg.lto.o:(.text.math)
+    5671     5671      117     1                 math
+    5788     5788      12a     1         build/p66-pending-flight.prg.lto.o:(.text.main)
+    5788     5788      12a     1                 main
+    58b2     58b2      885     1         build/p66-pending-flight.prg.lto.o:(.text.run)
+    58b2     58b2      885     1                 run
+    6137     6137       95     1         build/p66-pending-flight.prg.lto.o:(.text.scheduler)
+    6137     6137       95     1                 scheduler
+    61cc     61cc       82     1         build/p66-pending-flight.prg.lto.o:(.text.observe)
+    61cc     61cc       82     1                 observe
+    624e     624e       df     1         build/p66-pending-flight.prg.lto.o:(.text.control.15)
+    624e     624e       df     1                 control.15
+    632d     632d      11d     1         build/p66-pending-flight.prg.lto.o:(.text.display.16)
+    632d     632d      11d     1                 display.16
+    644a     644a      223     1         build/p66-pending-flight.prg.lto.o:(.text.application)
+    644a     644a      223     1                 application
+    666d     666d      195     1         build/p66-pending-flight.prg.lto.o:(.text.recurrence)
+    666d     666d      195     1                 recurrence
+    6802     6802      10b     1         build/p66-pending-flight.prg.lto.o:(.text.pending)
+    6802     6802      10b     1                 pending
+    690d     690d      19d     1         build/p66-pending-flight.prg.lto.o:(.text.invoke.17)
+    690d     690d      19d     1                 invoke.17
+    6aaa     6aaa        4     1         build/p66-pending-flight.prg.lto.o:(.text.enter)
+    6aaa     6aaa        4     1                 enter
+    6aae     6aae        8     1         build/p66-pending-flight.prg.lto.o:(.text.leave)
+    6aae     6aae        8     1                 leave
+    6ab6     6ab6        6     1         build/p66-pending-flight.prg.lto.o:(.text.exit)
+    6ab6     6ab6        6     1                 exit
+    6abc     6abc        3     1         build/p66-pending-flight.prg.lto.o:(.text.cbm_k_chrin)
+    6abc     6abc        3     1                 cbm_k_chrin
+    6abf     6abf        5     1         build/p66-pending-flight.prg.lto.o:(.text.cbm_k_close)
+    6abf     6abf        5     1                 cbm_k_close
+    6ac4     6ac4        3     1         build/p66-pending-flight.prg.lto.o:(.text.cbm_k_clrch)
+    6ac4     6ac4        3     1                 cbm_k_clrch
+    6ac7     6ac7        3     1         build/p66-pending-flight.prg.lto.o:(.text.cbm_k_readst)
+    6ac7     6ac7        3     1                 cbm_k_readst
+    6aca     6aca       36     1         build/p66-pending-flight.prg.lto.o:(.text.strlen)
+    6aca     6aca       36     1                 strlen
+    6b00     6b00       34     1         build/p66-pending-flight.prg.lto.o:(.text.memcpy)
+    6b00     6b00       34     1                 memcpy
+    6b34     6b34       22     1         build/p66-pending-flight.prg.lto.o:(.text.__memset)
+    6b34     6b34       22     1                 __memset
+    6b56     6b56        0     1         __init_array_start = .
+    6b56     6b56        0     1         __init_array_end = .
+    6b56     6b56        0     1         __fini_array_start = .
+    6b56     6b56        0     1         __fini_array_end = .
+    6b56     6b56      45c     1 .rodata
+    6b56     6b56        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    6b56     6b56        0     1                 __set_v
+    6b57     6b57        c     1         build/p66-pending-flight.prg.lto.o:(.rodata.arithmetic)
+    6b63     6b63       5c     1         build/p66-pending-flight.prg.lto.o:(.rodata.observe_source)
+    6bbf     6bbf       28     1         build/p66-pending-flight.prg.lto.o:(.rodata.execute)
+    6be7     6be7       1c     1         build/p66-pending-flight.prg.lto.o:(.rodata.executive_fields)
+    6be7     6be7       1c     1                 executive_fields
+    6c03     6c03       17     1         build/p66-pending-flight.prg.lto.o:(.rodata.selectors)
+    6c03     6c03       17     1                 selectors
+    6c1a     6c1a        3     1         build/p66-pending-flight.prg.lto.o:(.rodata.p66_guidance_invoke.unit)
+    6c1a     6c1a        3     1                 p66_guidance_invoke.unit
+    6c1d     6c1d        3     1         build/p66-pending-flight.prg.lto.o:(.rodata.p66_guidance_invoke.projection)
+    6c1d     6c1d        3     1                 p66_guidance_invoke.projection
+    6c20     6c20        8     1         <internal>:(.rodata.cst4)
+    6c28     6c28        3     1         build/p66-pending-flight.prg.lto.o:(.rodata.p66_descent_invoke.length)
+    6c28     6c28        3     1                 p66_descent_invoke.length
+    6c2b     6c2b      150     1         build/p66-pending-flight.prg.lto.o:(.rodata.p66_native_guidance_mappings)
+    6c2b     6c2b      150     1                 p66_native_guidance_mappings
+    6d7b     6d7b       28     1         build/p66-pending-flight.prg.lto.o:(.rodata.feedback_entries)
+    6d7b     6d7b       28     1                 feedback_entries
+    6da3     6da3       10     1         <internal>:(.rodata.cst16)
+    6db3     6db3       15     1         build/p66-pending-flight.prg.lto.o:(.rodata.p66_basic_mappings)
+    6db3     6db3       15     1                 p66_basic_mappings
+    6dc8     6dc8        8     1         <internal>:(.rodata.cst8)
+    6dd0     6dd0        4     1         build/p66-pending-flight.prg.lto.o:(.rodata.exec_overlay_services)
+    6dd0     6dd0        4     1                 exec_overlay_services
+    6dd4     6dd4        a     1         build/p66-pending-flight.prg.lto.o:(.rodata..Lswitch.table.exec_overlay_module)
+    6dde     6dde      1a4     1         build/p66-pending-flight.prg.lto.o:(.rodata.p66_display_job_mappings)
+    6dde     6dde      1a4     1                 p66_display_job_mappings
+    6f82     6f82        7     1         build/p66-pending-flight.prg.lto.o:(.rodata.native_registry_bootstrap)
+    6f82     6f82        7     1                 native_registry_bootstrap
+    6f89     6f89        6     1         build/p66-pending-flight.prg.lto.o:(.rodata.guard)
+    6f89     6f89        6     1                 guard
+    6f8f     6f8f        9     1         <internal>:(.rodata.str1.1)
+    6f98     6f98       10     1         build/p66-pending-flight.prg.lto.o:(.rodata.initialize)
+    6f98     6f98       10     1                 initialize
+    6fa8     6fa8        4     1         build/p66-pending-flight.prg.lto.o:(.rodata..L__const.run.args)
+    6fac     6fac        4     1         build/p66-pending-flight.prg.lto.o:(.rodata.services)
+    6fac     6fac        4     1                 services
+    6fb0     6fb0        2     1         build/p66-pending-flight.prg.lto.o:(.rodata.prl_counts)
+    6fb0     6fb0        2     1                 prl_counts
+    6fb2     6fb2        a     1 .data
+    6fb2     6fb2        0     1         __data_start = .
+    6fb2     6fb2        6     1         build/p66-pending-flight.prg.lto.o:(.data.io)
+    6fb2     6fb2        6     1                 io
+    6fb8     6fb8        4     1         build/p66-pending-flight.prg.lto.o:(.data.modules)
+    6fb8     6fb8        4     1                 modules
+    6fbc     6fbc        0     1         __data_end = .
+    6fbc     6fbc        0     1 __data_load_start = LOADADDR(.data)
+    6fbc     6fbc        0     1 __data_size = SIZEOF(.data)
+    6fbc     6fbc       1e     1 .bss
+    6fbc     6fbc        0     1         __bss_start = .
+    6fbc     6fbc       13     1         build/p66-pending-flight.prg.lto.o:(.bss.loader)
+    6fbc     6fbc       13     1                 loader
+    6fcf     6fcf        2     1         build/p66-pending-flight.prg.lto.o:(.bss.registry.0)
+    6fcf     6fcf        2     1                 registry.0
+    6fd1     6fd1        2     1         build/p66-pending-flight.prg.lto.o:(.bss.registry.1)
+    6fd1     6fd1        2     1                 registry.1
+    6fd3     6fd3        2     1         build/p66-pending-flight.prg.lto.o:(.bss.registry.2)
+    6fd3     6fd3        2     1                 registry.2
+    6fd5     6fd5        1     1         build/p66-pending-flight.prg.lto.o:(.bss.registry.4)
+    6fd5     6fd5        1     1                 registry.4
+    6fd6     6fd6        2     1         build/p66-pending-flight.prg.lto.o:(.bss.failures)
+    6fd6     6fd6        2     1                 failures
+    6fd8     6fd8        2     1         build/p66-pending-flight.prg.lto.o:(.bss.checkpoints)
+    6fd8     6fd8        2     1                 checkpoints
+    6fda     6fda        0     1         __bss_end = .
+    6fda     6fda        0     1 __bss_size = SIZEOF(.bss)
+    6fda     6fda        0     1 .noinit
+    6fda     6fda        0     1         __heap_start = ALIGN(., 2)
+    6fda     6fda        0     1 __stack = 0xd000
+    6fda     6fda        0     1 
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/p66-pending-flight.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/p66-pending-flight.prg.lto.o:(.llvm_sympart)
+       0        0      fe0     4 .symtab
+       0        0      fe0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      a85     1 .strtab
+       0        0      a85     1         <internal>:(.strtab)
