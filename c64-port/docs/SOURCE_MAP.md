@@ -1211,3 +1211,7 @@ Qualify uninterrupted PRIOLARM priority display source calls through actual SPVA
 ## Qualify original generic decimal formatter and source recovery handoff
 
 Qualify both original DSPDECWD and DSPDECDNR sign digit relay output bodies with exact caller returns or clean relay CCSHOLE source recovery frontiers against16384 complete original native sanitizer states and128 C64 states retaining all physical image and source overflow effects. See `docs/DSKY-DECIMAL-GENERAL.md`.
+
+## Qualify original elapsed arithmetic return Q for native job resume
+
+Qualify source DSU initial DAS return Q control over8192 complete original native sanitizer states and64 C64 frozen control records with full image mutation guards, including the actual higher job resume Q. Existing numerical kernels and application bytes remain unchanged. See `docs/P66-ELAPSED-RETURN-CONTROL.md`.

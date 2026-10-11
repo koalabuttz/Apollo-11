@@ -1,0 +1,12 @@
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -ffunction-sections -fdata-sections -Wl,--gc-sections -DPREPARE_INPUT_ONLY -DSCALE_INPUT_ONLY -DPUSH_INPUT_ONLY -DELAPSED_INPUT_ONLY -O2 src/agc_word.c src/agc_multiword.c src/p66_elapsed_return_control.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/elapsed_return_control_cases.c tests/test_elapsed_return_control.c -o build/test-elapsed-return-control
+build/test-elapsed-return-control
+PASS:12 invalid source/control domains and null image preserve all2048 words
+python3 tools/elapsed_return_control_differential.py --retained
+PASS:8192 original DSU→DANZIG complete2050-word states; eight incoming Q values, signed-zero/corner/random inputs, both IRQ/SUPER forms
+Snapshot SHA256: 65eb3ca920095de18784edfa16ab46727a1dbe1ddf3e33bcb2d1640847de90a6
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -ffunction-sections -fdata-sections -Wl,--gc-sections -DPREPARE_INPUT_ONLY -DSCALE_INPUT_ONLY -DPUSH_INPUT_ONLY -DELAPSED_INPUT_ONLY -O1 -g -no-pie -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/p66_elapsed_return_control.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/elapsed_return_control_cases.c tests/test_elapsed_return_control.c -o build/test-elapsed-return-control-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-elapsed-return-control-sanitize
+PASS:12 invalid source/control domains and null image preserve all2048 words
+python3 tools/elapsed_return_control_differential.py --retained --sanitize
+PASS:8192 original DSU→DANZIG complete2050-word states; eight incoming Q values, signed-zero/corner/random inputs, both IRQ/SUPER forms
+Snapshot SHA256: 65eb3ca920095de18784edfa16ab46727a1dbe1ddf3e33bcb2d1640847de90a6

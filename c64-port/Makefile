@@ -843,3 +843,5 @@ include tools/cm_priority_display.mk
 all: build/cm-priority-display-native
 
 include tools/dsky_decimal_general_integration.mk
+
+include tools/p66_elapsed_return_control_integration.mk
