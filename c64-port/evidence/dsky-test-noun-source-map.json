@@ -1,0 +1,163 @@
+{
+  "local_source_words": {
+    "LM": [
+      {
+        "bank": "41",
+        "pc": "2046",
+        "word": "00006"
+      },
+      {
+        "bank": "41",
+        "pc": "2047",
+        "word": "32114"
+      },
+      {
+        "bank": "41",
+        "pc": "2050",
+        "word": "52006"
+      },
+      {
+        "bank": "41",
+        "pc": "2051",
+        "word": "50140"
+      },
+      {
+        "bank": "41",
+        "pc": "2052",
+        "word": "02052"
+      },
+      {
+        "bank": "41",
+        "pc": "2053",
+        "word": "02055"
+      },
+      {
+        "bank": "41",
+        "pc": "2054",
+        "word": "02221"
+      },
+      {
+        "bank": "41",
+        "pc": "2055",
+        "word": "10146"
+      },
+      {
+        "bank": "41",
+        "pc": "2056",
+        "word": "02131"
+      },
+      {
+        "bank": "41",
+        "pc": "2057",
+        "word": "02351"
+      },
+      {
+        "bank": "41",
+        "pc": "2060",
+        "word": "02064"
+      },
+      {
+        "bank": "41",
+        "pc": "2061",
+        "word": "25017"
+      },
+      {
+        "bank": "41",
+        "pc": "2062",
+        "word": "04311"
+      },
+      {
+        "bank": "41",
+        "pc": "2063",
+        "word": "02120"
+      }
+    ],
+    "CM": [
+      {
+        "bank": "41",
+        "pc": "2046",
+        "word": "00006"
+      },
+      {
+        "bank": "41",
+        "pc": "2047",
+        "word": "32114"
+      },
+      {
+        "bank": "41",
+        "pc": "2050",
+        "word": "52006"
+      },
+      {
+        "bank": "41",
+        "pc": "2051",
+        "word": "50140"
+      },
+      {
+        "bank": "41",
+        "pc": "2052",
+        "word": "02052"
+      },
+      {
+        "bank": "41",
+        "pc": "2053",
+        "word": "02055"
+      },
+      {
+        "bank": "41",
+        "pc": "2054",
+        "word": "02221"
+      },
+      {
+        "bank": "41",
+        "pc": "2055",
+        "word": "10146"
+      },
+      {
+        "bank": "41",
+        "pc": "2056",
+        "word": "02131"
+      },
+      {
+        "bank": "41",
+        "pc": "2057",
+        "word": "02351"
+      },
+      {
+        "bank": "41",
+        "pc": "2060",
+        "word": "02064"
+      },
+      {
+        "bank": "41",
+        "pc": "2061",
+        "word": "25017"
+      },
+      {
+        "bank": "41",
+        "pc": "2062",
+        "word": "04325"
+      },
+      {
+        "bank": "41",
+        "pc": "2063",
+        "word": "02120"
+      }
+    ]
+  },
+  "local_word_count_per_mission": 14,
+  "entry": "TESTNN41,2046",
+  "actual_frontiers": [
+    "VERBFAN41,2133",
+    "MIXNOUN41,2221",
+    "GODSPALM41,2351",
+    "REQADD41,2064",
+    "INTMCTBS+2 41,2120"
+  ],
+  "shared_controls": [
+    "fresh immutable LODNNTAB via original inline tuple/DXCH Z",
+    "VERBFAN-2/SETNCADR/SETNADD/SETEBANK already qualified in frozen ENTER-zero suffix"
+  ],
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}

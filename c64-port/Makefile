@@ -1122,3 +1122,5 @@ include tools/sband_exit_integration.mk
 all: build/sband-exit-integrated-stream
 test: test-sband-exit
 sanitize: sanitize-sband-exit
+
+include tools/dsky_test_noun_integration.mk

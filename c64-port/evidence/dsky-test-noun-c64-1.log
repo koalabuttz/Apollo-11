@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete directTESTNN original-assembly states; retained memory unchanged
+Mailbox: a500004001
+PRG bytes: 23734
+dsky_test_noun_1-hardware-stack.bin: measured stack extent 20 bytes
+dsky_test_noun_1-software-stack.bin: measured stack extent 47 bytes

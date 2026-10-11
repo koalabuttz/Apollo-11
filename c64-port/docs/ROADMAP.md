@@ -1632,3 +1632,7 @@ Qualify actual Luminary antenna yaw arithmetic against65536 complete original st
 ## Translate original antenna exit to basic display
 
 Qualify original antenna EXIT return against131072 complete original strict sanitizer states and128 C64 cases. See `docs/NATIVE-SBAND-EXIT.md`.
+
+## Translate original DSKY noun validation and dispatch controls
+
+Qualify actual TESTNN normal mixed and invalid noun controls against16384 complete original strict sanitizer states and256 C64 cases. See `docs/DSKY-TEST-NOUN.md`.

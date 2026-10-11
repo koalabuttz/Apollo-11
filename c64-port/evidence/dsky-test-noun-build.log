@@ -1,0 +1,4 @@
+cc  -O2 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_test_noun.c src/agc_word.c src/dsky_test_noun.c src/noun_reader.c src/fixed_data.c tests/dsky_test_noun_cases.c tests/dsky_test_noun_check.c -o build/test-dsky-test-noun
+cc  -O2 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_test_noun_snapshot.c src/agc_word.c src/dsky_test_noun.c src/noun_reader.c src/fixed_data.c tests/dsky_test_noun_cases.c -o build/dsky-test-noun-route-port
+build/test-dsky-test-noun
+256 full original direct TESTNN states +22 unchanged invalid guards: PASS

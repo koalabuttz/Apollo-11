@@ -654,3 +654,5 @@ subprocess.run([sys.executable,'tools/cm_admission_floor_differential.py',str(re
 subprocess.run([sys.executable,'tools/cm_priority_full_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_idle_recheck_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_test_noun_differential.py',str(reference)],cwd=ROOT,check=True)
