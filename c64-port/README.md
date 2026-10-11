@@ -986,3 +986,7 @@ The generalized noun-table caller and source row pipeline match18,688 uninterrup
 ## Translate original Luminary and Comanche mixed noun selection
 
 Actual MIXNOUN source scaling selection and noun addressing match8,192 complete original/native/full-sanitizer states and64 actual C64 states. The mission-specific routine13 difference is preserved: Luminary360-CDU uses a single word while Comanche DPFRACOT uses a double-word minor. Subsequent verb and request continuations remain separate. See `docs/DSKY-MIXED-NOUN.md`.
+
+## Translate original Luminary and Comanche scalar triple and vector sign operations
+
+Source SIGN and COMP preserve mission-specific entry and DANZIG handoffs, original complement/control effects and every retained image word. All262,144 complete original/native/full-sanitizer states match; four actual C64 diagnostics pass256 states. Independent factory audit exhausts admitted MODE and ordinary operand/high words. Caller operand binding and whole INTERPRETER completion remain separate. See `docs/INTERPRETED-SIGN.md`.

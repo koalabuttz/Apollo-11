@@ -1,0 +1,18 @@
+Independent read-only SIGN/COMP source review
+Reviewer: frozen_storage
+
+Reviewed original LM INTERPRETER lines1423..1453 and CM lines1431..1461 (27 emitted words each) against the compiled C control body. No concrete arithmetic or source-control discrepancy found within the documented canonical ordinary-memory/source-entry contract.
+
+SIGN selects COMP only for negative nonzero major, or for negative nonzero minor when major is either signed zero. CCS high negative-zero skips into the second INDEX rather than complementing immediately. DCS/DXCH complements the memory pair while restoring the original pair into A/L. CCS MODE routes nonnegative modes to scalar CS/TS of MPAC+2; negative nonzero modes complement both remaining vector pairs and preserve the last original pair in A/L. Invalid negative-zero MODE is explicitly rejected. Initial raw L normalization matches the first source instruction cycle; Q, pending EDOP, banks, and external IRQ are retained at the pre-DANZIG boundary.
+
+Coverage interpretation: SIGN major uses n&077777, with two copies per65536 cohort. Replacing the first4096 inputs with edge cases therefore retains every ordinary SIGN major via its second copy. MODE uses n>>1 with alternating complementation: the second mirrored signed half restores the values replaced in the first4096 records. Every ordinary MODE except excluded negative-zero remains represented. This is not exhaustive MODE/operand Cartesian-product proof or arbitrary effective operand mapping. The caller supplies a stable ordinary DP operand equal to the actual source-effective words. No generic instruction decoder, arbitrary operand register editing, whole INTERPRETER, or application completion is certified by this review.
+
+Source oracle identity audit preserves original LM bytes and original CM bytes with only the independently qualified36 indentation repairs; no numerical source word modifications are claimed. Existing complete-state/SAN/target proof belongs to the module owner; this review did not duplicate its numerical run.
+
+Reviewed identities:
+d5e2151b2a093d404662277a66d4a884131a7ce9c1fa54b5384d8e65f5f14c95  src/interpreted_sign.c
+f83f14d3f61d2db1a81fd46bfc48f3d6757ccd2bda29827e6bf497d99819fe66  include/interpreted_sign.h
+5ca847816d20d9bcaa5ba72911a3e6db86454be32aa74302420e9321675235bd  tests/interpreted_sign_cases.c
+79ec62d3cdb6fedd5c61d165445179192bfa5f024abf255cf479eec56ff3e692  build/interpreted-sign-source-audit.json
+26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e  ../Luminary099/INTERPRETER.agc
+724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b  ../Comanche055/INTERPRETER.agc

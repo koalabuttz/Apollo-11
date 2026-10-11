@@ -703,3 +703,5 @@ include tools/lm_recurrence_integration.mk
 include tools/cm_normal_display.mk
 
 include tools/dsky_mixed_noun.mk
+
+include tools/interpreted_sign_port.mk

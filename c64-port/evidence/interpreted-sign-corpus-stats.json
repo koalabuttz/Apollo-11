@@ -1,0 +1,12 @@
+[
+  {
+    "mission": "lm",
+    "decoded_sha256": "db6e0968790352901d4bdf29e9d27ce8cd90d22104c36ecbcdac7b40a487f05a",
+    "complete_states": 131072
+  },
+  {
+    "mission": "cm",
+    "decoded_sha256": "7a89253a610099b666d45387268c30db52ba4c6720a3986eda01d4c409b6b091",
+    "complete_states": 131072
+  }
+]

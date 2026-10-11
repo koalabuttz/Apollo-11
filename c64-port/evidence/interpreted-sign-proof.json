@@ -1,0 +1,136 @@
+{
+  "input_coverage": [
+    {
+      "entry": "COMP",
+      "inputs": 65536,
+      "distinct_MODE_words": 32767,
+      "missing_valid_MODE_words": 0,
+      "distinct_SIGN_high_words": 32768,
+      "distinct_MPAC_high_words": 32768,
+      "ordinary_high_word_values": 32768
+    },
+    {
+      "entry": "SIGN",
+      "inputs": 65536,
+      "distinct_MODE_words": 32767,
+      "missing_valid_MODE_words": 0,
+      "distinct_SIGN_high_words": 32768,
+      "distinct_MPAC_high_words": 32768,
+      "ordinary_high_word_values": 32768
+    }
+  ],
+  "missions": [
+    {
+      "mission": "lm",
+      "decoded_sha256": "db6e0968790352901d4bdf29e9d27ce8cd90d22104c36ecbcdac7b40a487f05a",
+      "complete_states": 131072,
+      "logical_complete_streams": {
+        "original_assembly": {
+          "object": "evidence/interpreted-sign-lm-complete.snapshots.xz",
+          "decoded_sha256": "db6e0968790352901d4bdf29e9d27ce8cd90d22104c36ecbcdac7b40a487f05a"
+        },
+        "strict_native": {
+          "object": "evidence/interpreted-sign-lm-complete.snapshots.xz",
+          "decoded_sha256": "db6e0968790352901d4bdf29e9d27ce8cd90d22104c36ecbcdac7b40a487f05a"
+        },
+        "whole_ASAN_UBSAN": {
+          "object": "evidence/interpreted-sign-lm-complete.snapshots.xz",
+          "decoded_sha256": "db6e0968790352901d4bdf29e9d27ce8cd90d22104c36ecbcdac7b40a487f05a"
+        }
+      },
+      "decoded_bytes": 537657344
+    },
+    {
+      "mission": "cm",
+      "decoded_sha256": "7a89253a610099b666d45387268c30db52ba4c6720a3986eda01d4c409b6b091",
+      "complete_states": 131072,
+      "logical_complete_streams": {
+        "original_assembly": {
+          "object": "evidence/interpreted-sign-cm-complete.snapshots.xz",
+          "decoded_sha256": "7a89253a610099b666d45387268c30db52ba4c6720a3986eda01d4c409b6b091"
+        },
+        "strict_native": {
+          "object": "evidence/interpreted-sign-cm-complete.snapshots.xz",
+          "decoded_sha256": "7a89253a610099b666d45387268c30db52ba4c6720a3986eda01d4c409b6b091"
+        },
+        "whole_ASAN_UBSAN": {
+          "object": "evidence/interpreted-sign-cm-complete.snapshots.xz",
+          "decoded_sha256": "7a89253a610099b666d45387268c30db52ba4c6720a3986eda01d4c409b6b091"
+        }
+      },
+      "decoded_bytes": 537657344
+    }
+  ],
+  "total_complete_states": 262144,
+  "source_footprint": {
+    "Luminary099": {
+      "original_source_file": "Luminary099/INTERPRETER.agc",
+      "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "emitted_words": 27,
+      "original_lines": [
+        1423,
+        1453
+      ]
+    },
+    "Comanche055": {
+      "original_source_file": "Comanche055/INTERPRETER.agc",
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "emitted_words": 27,
+      "original_lines": [
+        1431,
+        1461
+      ]
+    }
+  },
+  "source_audit": "evidence/interpreted-sign-source-audit.json",
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "actual_C64": [
+    {
+      "selector": 0,
+      "complete_states": 64,
+      "mailbox": "a500004000",
+      "PRG_bytes": 5671,
+      "loaded_end": "0x1e25",
+      "hardware_stack": 14,
+      "software_stack": 48,
+      "compiler_ZP": 0
+    },
+    {
+      "selector": 1,
+      "complete_states": 64,
+      "mailbox": "a500004001",
+      "PRG_bytes": 5844,
+      "loaded_end": "0x1ed2",
+      "hardware_stack": 14,
+      "software_stack": 50,
+      "compiler_ZP": 0
+    },
+    {
+      "selector": 2,
+      "complete_states": 64,
+      "mailbox": "a500004002",
+      "PRG_bytes": 5671,
+      "loaded_end": "0x1e25",
+      "hardware_stack": 14,
+      "software_stack": 48,
+      "compiler_ZP": 0
+    },
+    {
+      "selector": 3,
+      "complete_states": 64,
+      "mailbox": "a500004003",
+      "PRG_bytes": 5844,
+      "loaded_end": "0x1ed2",
+      "hardware_stack": 14,
+      "software_stack": 50,
+      "compiler_ZP": 0
+    }
+  ],
+  "total_actual_C64_states": 256,
+  "scope": "All27 emitted SIGN/COMP group words in each original mission interpreter. Ordinary MPAC/operand words, valid source MODE except negativezero, coherent EB/BB/sourceentryPC/REGZERO0. Explicit stable operand is source effective ordinary DP pair; caller owns fixed/erasable addressing binding. Ends at source DANZIG entry without executing dispatch or NEWJOB. Every unowned canonical word and external IRQ retained. No whole INTERPRETER or whole application certificate.",
+  "independent_review": {
+    "path": "evidence/interpreted-sign-independent-review.txt",
+    "sha256": "6aedde98d57c3b02f3802b664d204ddc69948679234e59967b83da215a0adac1"
+  }
+}
