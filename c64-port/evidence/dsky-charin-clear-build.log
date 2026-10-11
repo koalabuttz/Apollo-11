@@ -1,0 +1,18 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_charin_clear.c src/dsky_two_digit.c src/agc_multiword.c src/cm_formatter.c src/dsky_decimal.c tests/p66_bias_cases.c tests/dsky_charin_clear_cases.c tests/dsky_charin_clear_check.c tests/test_dsky_charin_clear.c -o build/test-dsky-charin-clear
+build/test-dsky-charin-clear
+LM+CM CHARIN CLEAR:64 full source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_charin_clear.c src/dsky_two_digit.c src/agc_multiword.c src/cm_formatter.c src/dsky_decimal.c tests/p66_bias_cases.c tests/dsky_charin_clear_cases.c tests/dsky_charin_clear_check.c tests/test_dsky_charin_clear.c -o build/test-dsky-charin-clear-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-charin-clear-sanitize
+LM+CM CHARIN CLEAR:64 full source states,0 failures
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_charin_clear.c src/dsky_two_digit.c src/agc_multiword.c src/cm_formatter.c src/dsky_decimal.c tests/p66_bias_cases.c tests/dsky_charin_clear_cases.c tests/dsky_charin_clear_check.c tools/dsky_charin_clear_diagnostic.c -Wl,-Map,build/dsky_charin_clear.map -o build/dsky_charin_clear.prg
+tools/dsky_charin_clear_diagnostic.c:3:10: error: unknown type name 'uncleared'
+    3 | volatile uncleared char dsky_charin_clear_mailbox[5];static apollo_overlay_state image,before;
+      |          ^
+tools/dsky_charin_clear_diagnostic.c:4:159: error: use of undeclared identifier 'uncleared'
+    4 | int main(void){uint16_t errors=0;uint8_t n;for(n=0;n<64;++n)errors=(uint16_t)(errors+dsky_charin_clear_check(n,&image,&before));dsky_charin_clear_mailbox[1]=(uncleared char)errors;dsky_charin_clear_mailbox[2]=(uncleared char)(errors>>8);dsky_charin_clear_mailbox[3]=64;dsky_charin_clear_mailbox[4]=2;dsky_charin_clear_mailbox[0]=0xa5;for(;;){}}
+      |                                                                                                                                                               ^~~~~~~~~
+tools/dsky_charin_clear_diagnostic.c:4:211: error: use of undeclared identifier 'uncleared'
+    4 | int main(void){uint16_t errors=0;uint8_t n;for(n=0;n<64;++n)errors=(uint16_t)(errors+dsky_charin_clear_check(n,&image,&before));dsky_charin_clear_mailbox[1]=(uncleared char)errors;dsky_charin_clear_mailbox[2]=(uncleared char)(errors>>8);dsky_charin_clear_mailbox[3]=64;dsky_charin_clear_mailbox[4]=2;dsky_charin_clear_mailbox[0]=0xa5;for(;;){}}
+      |                                                                                                                                                                                                                   ^~~~~~~~~
+3 errors generated.
+make: *** [tools/dsky_charin_clear.mk:14: c64-dsky-charin-clear] Error 1

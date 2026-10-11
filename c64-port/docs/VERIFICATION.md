@@ -1174,3 +1174,7 @@ Both original generic matrix/vector paths now match 65,536 complete source/nativ
 ## GitHub milestone publication through native matrix qualification
 
 The fork branch `koalabuttz/Apollo-11:port/c64-native-c` contains all 172 milestones through local snapshot `4bc6b7c957200541d23fcd527eb69d703a3b7225`. `evidence/github-milestone-publication-audit.json` verifies every local and published Git tree identity. Existing GitHub history is preserved; remote commit IDs can differ from local IDs because their parents differ. Large retained proof artifacts were transferred intact with standard authenticated Git after the connector request-size limit was reached. This is a publication audit, not complete-port acceptance.
+
+## Translate actual Luminary and Comanche DSKY Clear key editing
+
+Both original Clear paths now preserve negative-zero DIM semantics and perform CLPASS component backtracking and actual UPDATVB redisplay. 16,384 full source/native/sanitized states and 64 complete C64 checkpoints pass. Superseded diagnostic-build failure evidence is retained beside the successful target build. See `docs/DSKY-CLEAR-ENTRY.md`.

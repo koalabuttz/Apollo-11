@@ -803,3 +803,7 @@ STARTP66 setup, bias and vertical stages now load through fixed source-call seam
 ## Translate generic Luminary and Comanche MXV and VXM source phases
 
 Both original generic matrix/vector paths now match 65,536 complete source/native/sanitized states with raw overflow A and original scratch retained. Stock C64 execution passes 128 complete checkpoints and 66 transactional invalid-entry guards. Operand loading, DANZIG dispatch and full Interpreter/application coverage remain separate work. See `docs/NATIVE-MATRIX.md`.
+
+## Translate actual Luminary and Comanche DSKY Clear key editing
+
+Both original Clear paths now preserve negative-zero DIM semantics and perform CLPASS component backtracking and actual UPDATVB redisplay. 16,384 full source/native/sanitized states and 64 complete C64 checkpoints pass. Superseded diagnostic-build failure evidence is retained beside the successful target build. See `docs/DSKY-CLEAR-ENTRY.md`.

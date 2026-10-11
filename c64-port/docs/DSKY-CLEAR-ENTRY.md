@@ -1,0 +1,15 @@
+# Both-program CLEAR and backtracking key
+
+`dsky_charin_clear` and `cm_charin_clear` execute actual LM CHARIN40,2077 and CM CHARIN40,2000 for key036. They retain the original display lock, channel11 operator-error lamp gating, signed display position and CLEAR selection. Illegal V/N clears reach genuine ENDOFJOB. Legal component clears blank the isolated digit and two paired relay words, clear the component registers/decimal bits, reset its display position and increment CLPASS.
+
+Positive CLPASS follows actual CLPASHI: back up the component, increment REQRET by3, DIM VERBREG, call real UPDATVB/DSPDECVN through BANKCALL and restore the original clear selection before blanking. Initial ordinary VERBREG0..99 is qualified; DIM(+1) produces -0. The shared ordinary-value formatter draws equivalent zero digits while this fixed source bridge restores SHORTMP's negative-zero MPAC major. Every remaining source scratch/register store is independently checked. The original final INCR CLPASS is unconditional on the legal branch; the nearby source comment is not used to override the assembled instruction.
+
+The source domain includes ordinary signed display positions0..19 except15, including both zeros; all retained EB0..7, SUPER100, IRQ0/1 and raw L normalization. Legal isolated-digit relay words must be nonzero; paired 2BLANK words may be clean +0. Positive backtracking also requires the verb relay word nonzero. Unsupported inputs are rejected before mutating image or I/O. One canonical2048-word image and explicit metadata remain authoritative; the caller excludes producers.
+
+The independent oracle executes both complete original ropes through genuine ENDOFJOB5155/5217. It compares16,384 complete2052-field images (2048 physical words plus SUPER/IRQ/channel11/event), including nonpositive and positive CLPASS, all components and rejected V/N positions, signed zero, NOUT overflow, clean +0 blanks, verb decrement/redisplay and REQRET overflow. Full stream SHA256:
+`8413fc0a93576f27c789879403c3eb796a5618bf1c834af1e85bbf1a925271f1`.
+The complete ASan/UBSan stream equals the original byte for byte. The oracle links no native service body. Original Pinball/T4/Interpreter bytes, CM indentation-only assembler repairs and whole pinned-rope equality are recorded in the source audit and retained source listings/patches.
+
+Frozen64 full images pass strict host, ASan/UBSan and native C64. VICE PAL mailbox `a500004002`; PRG14511 bytes (loaded14509); hardware/software stack27/97 bytes. All text/data/BSS/noinit stay belowC000 and extra compiler zero-page storage is rejected. `tools/dsky_charin_clear.mk` provides portable host-only all/test/sanitize and explicit differential/C64 targets.
+
+Evidence uses build/dsky-charin-clear-* and build/dsky_charin_clear-*. This body reaches the real source ENDOFJOB entry. Actual queued Executive completion and C64 keyboard routing remain the application composition's responsibility; this package does not pretend that returning from a key body completes a native flight job.
