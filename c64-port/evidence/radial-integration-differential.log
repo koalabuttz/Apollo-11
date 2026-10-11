@@ -1,0 +1,8 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 2467 inputs / 4952 complete 134-word checkpoints match original radial group and hardware-DV full prefix
+Includes all 128 integrated skip inputs, three four-step histories, raw/error corners and 2048 random calls
+UNIT / STORE14 / DOT24 SL1 / STODLHDOT,30 / SL11 DMPHDOT / DAD36 DSULAND / STODLHCALC1,HDOT
+Paths: Counter({0: 2372, 3: 104})
+Snapshot SHA256: 7267aa699556e96da64ac25fb24149b08e15a7bd801232f686cecac87484acdd

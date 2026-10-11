@@ -168,3 +168,5 @@ subprocess.run([sys.executable,'tools/enema_differential.py',str(reference)],cwd
 subprocess.run([sys.executable,'tools/cm_executive_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/unit_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/radial_differential.py',str(reference)],cwd=ROOT,check=True)

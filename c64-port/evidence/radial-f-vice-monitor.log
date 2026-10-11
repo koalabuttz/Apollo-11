@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/radial-f.prg from 0801 to 8C69 (8469 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)  254/$0fe,  53/$35
+.C:5cdb  8D 88 C0    STA $C088      - A:10 X:80 Y:24 SP:ed ..-..I..    8016047
+Stopwatch reset to 0.
+#1 (Stop on store c088)  133/$085,  52/$34
+.C:5ce7  8D 88 C0    STA $C088      - A:20 X:03 Y:22 SP:ed ..-..I..     110312
+Stopwatch:     110312
+#1 (Stop on store c088)  103/$067,   3/$03
+.C:5cdb  8D 88 C0    STA $C088      - A:11 X:80 Y:24 SP:ed ..-..I..     265621
+Stopwatch reset to 0.
+#1 (Stop on store c088)  288/$120,  39/$27
+.C:5ce7  8D 88 C0    STA $C088      - A:21 X:03 Y:22 SP:ed ..-..I..     109971
+Stopwatch:     109971
+#1 (Stop on store c088)  270/$10e,  53/$35
+.C:5cdb  8D 88 C0    STA $C088      - A:12 X:80 Y:24 SP:ed ..-..I..     266099
+Stopwatch reset to 0.
+#1 (Stop on store c088)  136/$088,  43/$2b
+.C:5ce7  8D 88 C0    STA $C088      - A:22 X:03 Y:22 SP:ed ..-..I..     109484
+Stopwatch:     109484
+#1 (Stop on store c088)  112/$070,  18/$12
+.C:5cdb  8D 88 C0    STA $C088      - A:13 X:80 Y:24 SP:ed ..-..I..     265195
+Stopwatch reset to 0.
+#1 (Stop on store c088)   32/$020,  10/$0a
+.C:5ce7  8D 88 C0    STA $C088      - A:23 X:03 Y:22 SP:ed ..-..I..     152200
+Stopwatch:     152200
+#1 (Stop on store c088)   32/$020,  22/$16
+.C:5cdb  8D 88 C0    STA $C088      - A:14 X:80 Y:24 SP:ed ..-..I..     309460
+Stopwatch reset to 0.
+#1 (Stop on store c088)  224/$0e0,  55/$37
+.C:5ce7  8D 88 C0    STA $C088      - A:24 X:03 Y:22 SP:ed ..-..I..     149721
+Stopwatch:     149721
+#2 (Stop on store c080)  196/$0c4,  56/$38
+.C:61fb  8E 80 C0    STX $C080      - A:00 X:A5 Y:01 SP:ed N.-.....     246238
+>C:c080  a5 00 00 13  00 03 0c 86  24                         ........$
+Saving file `/workspace/Apollo-11/c64-port/build/radial-f-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/radial-f-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/radial-f-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 RADIAL ALTITUDE       
+0518  COMPLETE ASSEMBLY RADIAL STATE PASS     
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          
