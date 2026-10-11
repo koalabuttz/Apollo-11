@@ -148,3 +148,5 @@ subprocess.run([sys.executable,'tools/phase_differential.py',str(reference)],cwd
 subprocess.run([sys.executable,'tools/product_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/shift_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dp_divide_differential.py',str(reference)],cwd=ROOT,check=True)

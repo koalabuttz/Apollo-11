@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 573 complete DDV/BDDV original-assembly states; retained memory unchanged
+Mailbox: a500003d02
+PRG bytes: 29320
+dp-divide-hardware-stack.bin: measured stack extent 24 bytes
+dp-divide-software-stack.bin: measured stack extent 135 bytes

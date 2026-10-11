@@ -235,3 +235,7 @@ All 8,192 complete assembly checkpoints and 128 host/sanitizer/C64 states pass. 
 ## Translate scalar and vector shifts with original rounding and scratch effects
 
 All 26,880 complete assembly states and 168 host/sanitizer/C64 states pass. See `docs/SHIFT.md`.
+
+## Translate general double-precision DDV and backward division
+
+All 163,840 original-assembly comparisons and 573 host/sanitizer/C64 states pass using the hardware DV model. See `docs/GENERAL_DIVIDE.md`.
