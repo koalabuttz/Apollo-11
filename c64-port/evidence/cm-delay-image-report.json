@@ -1,0 +1,42 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "05267 FIXDELAY",
+    "05272 VARDELAY"
+  ],
+  "boundary": "actual source TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "6a394d3bd35723ce86d9565a2a16e7c426c2996e1ed276d196293ea758768a5a",
+  "hardware_stack_bytes": 18,
+  "software_stack_bytes": 84,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 19314,
+    ".text": {
+      "address": 2061,
+      "bytes": 6980
+    },
+    ".rodata": {
+      "address": 9041,
+      "bytes": 12320
+    },
+    ".data": {
+      "address": 21361,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 21361,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 25483,
+      "bytes": 0
+    },
+    "image_end": 25483
+  }
+}

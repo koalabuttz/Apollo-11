@@ -324,3 +324,5 @@ subprocess.run([sys.executable,'tools/cm_task_transfer_differential.py',str(refe
 subprocess.run([sys.executable,'tools/cm_admission_image_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_svct3_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_delay_image_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -1,0 +1,14 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "05267 FIXDELAY",
+    "05272 VARDELAY"
+  ],
+  "boundary": "actual source TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "6a394d3bd35723ce86d9565a2a16e7c426c2996e1ed276d196293ea758768a5a"
+}

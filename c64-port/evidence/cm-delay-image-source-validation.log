@@ -1,0 +1,17 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_delay_image.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_delay_image_cases.c platform/host/cm_delay_image_snapshot.c -o build/cm-delay-image-native
+python3 tools/cm_delay_image_differential.py
+PASS: 1024 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "05267 FIXDELAY",
+    "05272 VARDELAY"
+  ],
+  "boundary": "actual source TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "6a394d3bd35723ce86d9565a2a16e7c426c2996e1ed276d196293ea758768a5a"
+}

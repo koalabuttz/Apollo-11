@@ -651,3 +651,7 @@ Original NOVAC and FINDVAC complete-image effects, including the actual saved-Q 
 ## Port real Comanche SVCT3 housekeeping
 
 Actual SVCT3 drift, IMU admission and delay recheck paths pass independent complete-image source, sanitizer and C64 checks. See `docs/COMANCHE_SVCT3.md`.
+
+## Port canonical Comanche fixed and variable delays
+
+Actual FIXDELAY and VARDELAY return effects pass whole-image original-source, sanitizer and C64 checks within their documented interrupt context. See `docs/COMANCHE_DELAY_IMAGE.md`.
