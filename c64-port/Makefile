@@ -539,3 +539,5 @@ include tools/cm_display_control_port.mk
 include tools/dsky_key_irq.mk
 include tools/dsky_keyboard_flow.mk
 include tools/dsky_keyboard_irq_flow.mk
+
+include tools/display_job.mk

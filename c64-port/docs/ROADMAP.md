@@ -692,3 +692,7 @@ REGODSP, CLOCPLAY, GOFLASH and SAVELOCS preserve all original state through the 
 ## Run hardware keyboard IRQs through actual source job lifecycle
 
 Three qualified keyboard groups preserve fixed-vector KEYRUPT and RESUME, source Executive selection, CHARIN and job completion. Source, sanitizer and stock-ROM C64 proofs are retained with exact dependency identities; the compiled family fits C64 RAM and stack limits. Prior failed target sizing remains explicitly recorded. See `docs/DSKY-KEYBOARD-RUNTIME.md`.
+
+## Complete source display jobs through actual Luminary ENDOFJOB
+
+Display formatting, three rows and job completion match 11,776 original full states, 5,120 lifecycle checkpoints and 12,288 final states. Exact source streams, strict and sanitizer evidence, and 22 linked native overlays are retained. Combined disk execution is separately qualified; this does not certify either complete application. See `docs/P66-DISPLAY-JOB.md`.

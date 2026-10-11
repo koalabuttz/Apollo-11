@@ -376,3 +376,5 @@ subprocess.run([sys.executable,'tools/dsky_key_irq_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/dsky_keyboard_flow_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_keyboard_irq_flow_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/display_job_differential.py',str(reference)],cwd=ROOT,check=True)
