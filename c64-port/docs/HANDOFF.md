@@ -1655,3 +1655,7 @@ Translate every remaining79 local IMU source words per mission including standby
 ## Translate original LM SPECTEST exceptional control paths
 
 Translate genuine admission and wake NEWJOB positive zero exceptional prefixes and literal SPECTEST negative flag through actual CCSHOLE handoffs against16384 complete original strict sanitizer states and64 C64 checkpoints preserving historical helpers. See `docs/LM-SPECTEST-HANDOFF.md`.
+
+## Translate genuine Comanche positive zero priority admission
+
+Translate allfour actual zero priority admission entries unavailable core scans and authentic resource paths against49152 complete original strict sanitizer states and64 C64 checkpoints preserving historical admission bodies. See `docs/COMANCHE_ADMISSION_FLOOR.md`.
