@@ -766,3 +766,5 @@ include tools/lm_basic_change_integration.mk
 include tools/dsky_octal_display.mk
 
 include tools/dsky_machine_cadr.mk
+
+include tools/dsky_five_blank.mk

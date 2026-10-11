@@ -1092,3 +1092,7 @@ Actual DSPOCTWD/DSPOCTWO and DSP2BIT source bodies match8192 complete original/n
 ## Translate original shared machine address display continuation
 
 Actual INTMCTBS and plus-two entries, SETNCADR, verb5 bypass, real octal formatting and source VERBFAN return match8192 complete original/native/full-sanitizer states and64 actual C64 states. Canonical registers, bank/control ownership and CCSHOLE propagation remain exact. See `docs/DSKY-MACHINE-CADR.md`.
+
+## Translate original shared five character numeric blank entries
+
+Actual5BLANK, minus-one, plus-two and CLR5 bodies match8192 complete original/native/full-sanitizer states and64 actual C64 states, covering all numeric row positions and source paired/isolated hole branches. The ordinary numeric calling domain and separate verb/noun blank controls remain explicit. See `docs/DSKY-FIVE-BLANK.md`.
