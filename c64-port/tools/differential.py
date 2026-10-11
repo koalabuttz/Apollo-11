@@ -340,3 +340,5 @@ subprocess.run([sys.executable,'tools/lm_busy_differential.py',str(reference)],c
 subprocess.run([sys.executable,'tools/cm_display_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_pinball_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_formatter_differential.py',str(reference)],cwd=ROOT,check=True)

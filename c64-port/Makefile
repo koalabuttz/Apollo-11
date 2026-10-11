@@ -493,3 +493,5 @@ include tools/lm_busy.mk
 include tools/cm_display.mk
 
 include tools/cm_pinball.mk
+
+include tools/cm_formatter.mk

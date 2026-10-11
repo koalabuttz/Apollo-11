@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/cm_formatter.prg from 0801 to 4DA7 (45A7 bytes)
+WATCH: 1  C:$6da8  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 6da8)  198/$0c6,  11/$0b
+.C:1b80  8E A8 6D    STX $6DA8      - A:00 X:A5 Y:00 SP:f1 NV-....C  307923725
+>C:6da8  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/cm_formatter-vice-mailbox.bin' from $6da8 to $6dac
+Saving file `/workspace/Apollo-11/c64-port/build/cm_formatter-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_formatter-vice-software-stack.bin' from $c100 to $cfff

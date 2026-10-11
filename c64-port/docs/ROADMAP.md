@@ -612,3 +612,7 @@ All 12288 original complete-image display restart and priority states match nati
 ## Port Comanche Pinball relay formatting and blanking
 
 Actual DSPIN, 11DSPIN and 2BLANK source effects match all 8192 original states and sanitizer outputs; real C64 checks pass. See `docs/COMANCHE-PINBALL.md`.
+
+## Port original Comanche numeric display formatting
+
+All 12288 original complete-image numeric formatting states match native and sanitized outputs; C64 execution checks pass. See `docs/COMANCHE-FORMATTER.md`.
