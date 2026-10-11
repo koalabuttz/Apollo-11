@@ -1,0 +1,1 @@
+PASS: PAL C64 1536 Comanche state fingerprints / 40 full-state comparisons; mailbox a500000006

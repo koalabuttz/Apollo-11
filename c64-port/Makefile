@@ -307,3 +307,5 @@ coverage:
 include tools/interpreter_native.mk
 
 include tools/enema.mk
+
+include tools/cm_executive.mk

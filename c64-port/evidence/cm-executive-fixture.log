@@ -1,0 +1,6 @@
+PASS: five indentation-only normalizations; complete rope equals pinned corrected Comanche 055
+Virtual AGC pin: 1b5d6474841a7ab53237ead070f76f35f162f68d
+Original Comanche Executive SHA256: d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b
+Normalized Executive SHA256: 12827288def51cab29ff591dd2febb7a652237a8b2786c42ea7dc6bafa2e5356
+Rope SHA256: 2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79
+Fixture: /workspace/Apollo-11/c64-port/deps/comanche-fixture
