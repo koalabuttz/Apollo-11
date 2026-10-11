@@ -1732,3 +1732,7 @@ Qualify8192 complete original native sanitizer states and64 C64 states through a
 ## Qualify canonical scalar day conversion used by Luminary ephemerides
 
 Translate actual CSTODAY division basic body including source raw register and overflow returns against131072 complete original strict sanitizer states and64 C64 states without changing the frozen general native divider. See `docs/NATIVE-EPHEMERIS-DAY.md`.
+
+## Compose original R52 priority alarm and actual display job return
+
+Qualify2048 uninterrupted source paths and12407 full original native sanitizer states with32 C64 paths and200 full source checkpoints through actual alarm display and queued MAKEPLAY handoff. See `docs/COMANCHE_R52_PRIORITY_ALARM.md`.

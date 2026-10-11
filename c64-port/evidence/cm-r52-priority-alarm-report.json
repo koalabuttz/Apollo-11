@@ -1,0 +1,59 @@
+{
+  "actual_executed_source_states": 12407,
+  "source_stream_sha256": "3bd73e9332225c493b25bc96cccd1fde73af5b80c6e3cdef7ba34f3d6a458958",
+  "target_contexts": 32,
+  "target_checkpoints": 200,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a50000c800",
+  "software_stack_bytes": 719,
+  "modules": [
+    {
+      "id": 229,
+      "filename": "G229",
+      "byte_count": 10457,
+      "crc16": 10477,
+      "sha256": "cad0258c52d53ac0252476c415522ff70ae3648f8cc80b597f0ef37efd058aeb",
+      "prg": "cm-r52-priority-alarm-229.prg",
+      "native_control": true
+    },
+    {
+      "id": 230,
+      "filename": "G230",
+      "byte_count": 5349,
+      "crc16": 54447,
+      "sha256": "3b876dd8cbde198cdf772a90108201bc6785ed03f8d64142738d3adf2fcf1e21",
+      "prg": "cm-r52-priority-alarm-230.prg",
+      "native_control": true
+    },
+    {
+      "id": 231,
+      "filename": "G231",
+      "byte_count": 6046,
+      "crc16": 59706,
+      "sha256": "00deb372267d272af610492bc7def39b0e20857fd3657a0332bc694462aa3836",
+      "prg": "cm-r52-priority-alarm-231.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 5095,
+      "crc16": 57114,
+      "sha256": "6d011147b35028f26f58cb3f67bced882b9dca89e18fbc240bd2f4ab4ba36a68",
+      "prg": "cm-r52-priority-alarm-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10745,
+      "crc16": 40818,
+      "sha256": "ec1e9eebb7ebbc8ca12173a3c2eee8e5467195153fa636aedaf7bef66783698e",
+      "prg": "cm-r52-priority-alarm-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual sole P51/R52 CAF404 producer through PRIOLARM, SPVAC, immediate2202 return and realEND/selectedMAKEPLAY; upstream mission and queued payload bodies remain separate"
+}

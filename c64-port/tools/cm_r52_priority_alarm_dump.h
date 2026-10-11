@@ -1,0 +1,3 @@
+/* SPDX-License-Identifier: MIT; host-only proof stream. */
+#include <stdio.h>
+static void cm_r52_priority_alarm_dump(uint32_t n,unsigned phase,unsigned status,const apollo_overlay_state *s,const cm_native_io *io){unsigned i;unsigned char bytes[4130];uint16_t v[2065];v[0]=(uint16_t)n;v[1]=(uint16_t)(n>>16);v[2]=(uint16_t)phase;v[3]=(uint16_t)status;for(i=0;i<2048u;++i)v[4u+i]=s->words[i];for(i=0;i<13u;++i)v[2052u+i]=((const uint16_t*)io)[i];for(i=0;i<2065u;++i){bytes[2u*i]=(unsigned char)v[i];bytes[2u*i+1u]=(unsigned char)(v[i]>>8);}if(fwrite(bytes,1,sizeof bytes,stdout)!=sizeof bytes)exit(2);}

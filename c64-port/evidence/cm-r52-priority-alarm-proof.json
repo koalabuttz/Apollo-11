@@ -1,0 +1,21 @@
+{
+  "cases": 2048,
+  "checkpoints": 12407,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "actual P51/R52 CAF40414,2174\u2192BANKCALL PRIOLARM10,3766",
+    "PRIOLARM\u2192PRIODSPR2726\u2192SPVAC5160",
+    "BOTHJOBS3107\u2192immediate caller2202\u2192END5217\u2192genuine queued MAKEPLAY2770"
+  ],
+  "context_cohorts": "genuine source404 producer; all8EB/SUPER, priorities, all occupied core counts and fiveVAC/full resource exhaustion, current callerVAC0 allocated and queuedMAKEPLAY real VAC admission; no invented flight payload completion",
+  "binary_bytes": 51240910,
+  "snapshot_sha256": "3bd73e9332225c493b25bc96cccd1fde73af5b80c6e3cdef7ba34f3d6a458958",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048physicalwords,13 cm_native_io latches",
+  "scope": "uninterrupted actual sole P51/R52 priority-alarm caller from CAF404 through genuine immediate return and END selection, stopping BAILOUT on resource failure; upstream R52 test and queued MAKEPLAY body separate"
+}

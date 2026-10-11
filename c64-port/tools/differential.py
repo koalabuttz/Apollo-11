@@ -584,3 +584,5 @@ subprocess.run([sys.executable,'tools/dsky_lamp_lifecycle_differential.py',str(r
 subprocess.run([sys.executable,'tools/cm_abort_word_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_operator_release_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_r52_priority_alarm_differential.py',str(reference)],cwd=ROOT,check=True)
