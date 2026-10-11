@@ -1,0 +1,13 @@
+Independent read-only source review by /root/p66_source_map.
+Native source SHA256: f70e156caf3f80a1b78890ce35ef5cf8c4cc38b5fa15016b2e65d89b936b125b
+Native header SHA256: dd1dce510d7271e9bd030062d12fbfdd8ce04f1837bc65bf86617c3ef9a5fc6c
+
+No discrepancy found within actual normal-plane/VAC/push/producer domains.
+Original PUSH/VXV HIUNITZ/VSL1/VCOMP/STORE RLM, DOT HIUNITY/PDVL, ABVAL/SIGN
+implicit pop/ASIN, STOVL pitch/reload URP, DOT/BPL and negative HIDPHALF-DSU
+store match canonical exchanges and true source controls. Triple signed-zero
+sign scan and BRANCH Q3/06741/06743 agree. Helper alarm1301/1302 stops remain
+genuine. Guard closure to unchanged helper entries is consistent. This is
+read-only source inspection, without exhaustive replay or source edits.
+Subsequent yaw/display and external alarm bodies are not credited here;
+containing LM antenna file remains partial.

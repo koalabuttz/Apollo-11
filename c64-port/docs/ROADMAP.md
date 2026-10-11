@@ -1620,3 +1620,7 @@ Qualify actual reserved core admission and wake fixed word execution frontiers a
 ## Translate Comanche antenna pitch and yaw angles
 
 Qualify actual normal and null plane pitch yaw outputs against131072 complete original strict sanitizer states and128 C64 cases. See `docs/NATIVE-SBAND-CM-ANGLES.md`.
+
+## Translate Luminary antenna pitch calculation
+
+Qualify actual Luminary antenna pitch arithmetic against65536 complete original strict sanitizer states and64 C64 cases. See `docs/NATIVE-SBAND-LM-PITCH.md`.

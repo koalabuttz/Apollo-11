@@ -1,0 +1,12 @@
+./build/test-sband-lm-pitch-integrated
+PASS original antenna LM pitch caller full-image fixtures and unchanged unsupported images
+python3 tools/sband_lm_pitch_port_host.py --binary build/sband-lm-pitch-integrated-stream
+PASS all retained source-state bytes: 269090816 SHA256 f2991f476c1e987facf1178efc5f5f68b1553fd2b7d9b13b69c4901ae0f76030
+PASS all 65,536 original LM antenna full pitch calculation states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_lm_pitch.c tests/sband_lm_pitch_target.c tests/frozen_words.c tests/sband_lm_pitch_cases.c src/agc_word.c src/sband_lm_pitch.c src/sband_vector.c src/sband_shift.c src/sband_length.c src/guidance_length_phased.c src/interpreted_sign.c src/sband_dot.c src/sband_scalar.c src/inverse_trig.c src/guidance_shift.c src/guidance_product.c src/guidance_norm.c src/agc_multiword.c -o build/test-sband-lm-pitch-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-lm-pitch-integrated-san
+PASS original antenna LM pitch caller full-image fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_lm_pitch_snapshot.c tests/sband_lm_pitch_cases.c src/agc_word.c src/sband_lm_pitch.c src/sband_vector.c src/sband_shift.c src/sband_length.c src/guidance_length_phased.c src/interpreted_sign.c src/sband_dot.c src/sband_scalar.c src/inverse_trig.c src/guidance_shift.c src/guidance_product.c src/guidance_norm.c src/agc_multiword.c -o build/sband-lm-pitch-integrated-stream-san
+python3 tools/sband_lm_pitch_port_host.py --binary build/sband-lm-pitch-integrated-stream-san
+PASS all retained source-state bytes: 269090816 SHA256 f2991f476c1e987facf1178efc5f5f68b1553fd2b7d9b13b69c4901ae0f76030
+PASS all 65,536 original LM antenna full pitch calculation states

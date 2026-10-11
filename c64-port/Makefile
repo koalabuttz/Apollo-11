@@ -1107,3 +1107,8 @@ include tools/sband_cm_angles_integration.mk
 all: build/sband-cm-angles-integrated-stream
 test: test-sband-cm-angles
 sanitize: sanitize-sband-cm-angles
+
+include tools/sband_lm_pitch_integration.mk
+all: build/sband-lm-pitch-integrated-stream
+test: test-sband-lm-pitch
+sanitize: sanitize-sband-lm-pitch
