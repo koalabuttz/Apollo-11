@@ -1,0 +1,6 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/cm_executive.c src/cm_native_image.c src/cm_admission_image.c src/cm_keyboard_irq.c tests/cm_keyboard_irq_cases.c tests/test_cm_keyboard_irq.c tests/cm_keyboard_irq_check.c -o build/test-cm-keyboard-irq
+build/test-cm-keyboard-irq
+CM keyboard IRQ:64 complete2051-field original states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/cm_executive.c src/cm_native_image.c src/cm_admission_image.c src/cm_keyboard_irq.c tests/cm_keyboard_irq_cases.c tests/test_cm_keyboard_irq.c tests/cm_keyboard_irq_check.c -o build/test-cm-keyboard-irq-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-keyboard-irq-sanitize
+CM keyboard IRQ:64 complete2051-field original states,0 failures

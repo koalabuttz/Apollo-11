@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/cm_keyboard_irq.prg from 0801 to 3B18 (3318 bytes)
+WATCH: 1  C:$5b19  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5b19)  160/$0a0,   6/$06
+.C:2388  8E 19 5B    STX $5B19      - A:00 X:A5 Y:80 SP:f1 NV-....C  318397974
+>C:5b19  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/cm_keyboard_irq-vice-mailbox.bin' from $5b19 to $5b1d
+Saving file `/workspace/Apollo-11/c64-port/build/cm_keyboard_irq-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_keyboard_irq-vice-software-stack.bin' from $c100 to $cfff

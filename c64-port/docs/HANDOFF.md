@@ -819,3 +819,7 @@ MAKEPLAY priority, clock and normal display routes match 24,576 original complet
 ## Execute canonical Comanche JOBWAKE with exact scheduler image
 
 Source JOBWAKE matches 8,192 complete original states including register, bank, scan and caller effects. Full sanitizer output agrees; strict tests cover 19 unchanged invalid contexts and C64 validates 64 complete states. No full Executive coverage claim is made. See `docs/COMANCHE-BASIC-WAKE.md`.
+
+## Deliver Comanche keyboard IRQs through genuine source RESUME and NOVAC
+
+Native Comanche fixed-vector KEYRUPT and KEYCOM match 12,288 original complete states through genuine hardware RESUME and source CHARIN admission. Full sanitizer output agrees; C64 validates 64 complete states with the mission-specific ISR and seven-core scheduler image. UPRUPT and full keyboard composition remain separate source domains. See `docs/COMANCHE-KEYBOARD-IRQ.md`.

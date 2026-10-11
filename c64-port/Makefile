@@ -566,3 +566,5 @@ include tools/cm_powered_interface_port.mk
 include tools/cm_makeplay_port.mk
 
 include tools/cm_wake_port.mk
+
+include tools/cm_keyboard_irq.mk
