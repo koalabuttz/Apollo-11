@@ -410,3 +410,5 @@ include tools/dsky_scale.mk
 include tools/dsky_two_digit.mk
 
 include tools/cm_numeric.mk
+
+include tools/cm_rotation.mk

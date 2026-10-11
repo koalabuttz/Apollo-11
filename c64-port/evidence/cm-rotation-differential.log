@@ -1,0 +1,24 @@
+python3 tools/cm_rotation_differential.py
+{
+  "pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "sources": {
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+      "indentation_repairs": 36,
+      "source_original_byte_identical": true
+    },
+    "POWERED_FLIGHT_SUBROUTINES.agc": {
+      "original_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+      "normalized_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca",
+      "indentation_repairs": 1,
+      "source_original_byte_identical": true
+    }
+  },
+  "semantic_source_edits": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: original CM interpreter/powered helpers, pseudo-label indentation only; complete rope equals independent pinned assembly and existing CM fixture
+PASS: 32768 original CM AX*SR*T checkpoints/all 131 modeled words+status exact; raw overflow domain and both directions
+CM TERM1TMP=BUF2 at 0133, MPAC+3/+4 retained; entry 23,3650; source guards and physical bank transfers intact
+Snapshot SHA256: 7e5179f3fe6fe5ce4b36f06678e78fcb947bf1d7ce94dc3602ba00a9da1c5d68
