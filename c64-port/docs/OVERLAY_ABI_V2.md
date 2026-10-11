@@ -34,7 +34,7 @@ module's 7.8 KB.
 
 ## Decisions
 
-1. **Runtime module store is a 17xx REU, 2 MB recommended.** At boot, the
+1. **Runtime module store is a 17xx REU of 2 MB (David decided this on 2026-10-11).** At boot, the
    program's packed module store goes into the REU. At runtime, a module swap
    is one DMA at one byte per cycle. On the target, a cold load and call of a
    14 KB module measured 23.9 ms, and a cached call 2.2 ms. A 1 MB REU fits the mid estimate. 2 MB
