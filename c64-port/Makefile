@@ -987,3 +987,8 @@ include tools/cm_ephemeris_moon_integration.mk
 include tools/dsky_input_factor.mk
 
 include tools/dsky_input_scale.mk
+
+include tools/sband_bodyframe_integration.mk
+all: build/sband-bodyframe-integrated-stream
+test: test-sband-bodyframe
+sanitize: sanitize-sband-bodyframe

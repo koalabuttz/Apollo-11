@@ -1,0 +1,6 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-bodyframe.prg from 0801 to 8126 (7926 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   98/$062,  15/$0f
+.C:4135  8D 00 C0    STA $C000      - A:A5 X:00 Y:10 SP:f1 N.-..I.C  191259069
+Saving file `/workspace/Apollo-11/c64-port/build/sband-bodyframe-mailbox.bin' from $c000 to $c003

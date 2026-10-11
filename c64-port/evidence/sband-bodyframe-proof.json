@@ -1,0 +1,70 @@
+{
+  "status": "qualified actual antenna zero-angle setup and complete SMNB caller; both containing antenna files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 131072,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 131072,
+    "start": 0,
+    "end": 131072,
+    "record_bytes": 4106,
+    "decoded_sha256": "142cd9b8645868683883d044360830fdbd09319bc46e1547ae71eccc48727b34",
+    "decoded_bytes": 538181632,
+    "canonical_original_archive": "evidence/sband-bodyframe-source.snapshots.bin.xz",
+    "compressed_sha256": "7ec23b26615af704390d065fc6cec94edcc513312cf8bafd6d2b2333c5e3731b",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 128,
+    "prg_bytes": 31016,
+    "load_end": 33063,
+    "bss_end": 41255,
+    "mailbox": "a5800000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups": [
+    "LM original PUSH/zero angles/pop and completeSMNB",
+    "CM original PDDL/zero yaw/RCM and completeSMNB"
+  ],
+  "source_map": "evidence/sband-bodyframe-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "a9ce7ed05de565d979d3110ac3c7edd6115c060540a46c74b9d4acd4ece6d4a2",
+  "native_header_sha256": "e1f54029abc2aa85bb34f871ba2e8007575aea6fdb1ff909311d67abbb3a82f1",
+  "independent_review": {
+    "path": "evidence/sband-bodyframe-independent-review.txt",
+    "sha256": "65c983f61aa4ff22af20477bb25010c9d7c58187ba0a9f65a8c34b90a14624c1"
+  },
+  "limitations": [
+    "Following original store/projection/angle/display bodies not executed here.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/Q and raw16 A/L, producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ],
+  "dependencies": [
+    {
+      "path": "evidence/lm-powered-file-proof.json",
+      "sha256": "ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9"
+    },
+    {
+      "path": "evidence/cm-powered-file-proof.json",
+      "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
+    },
+    {
+      "path": "evidence/sband-frame-proof.json",
+      "sha256": "f87029bbdcb11a569c16b11bec399b6e77344ef147fdf557e7025109c93a9333"
+    }
+  ]
+}

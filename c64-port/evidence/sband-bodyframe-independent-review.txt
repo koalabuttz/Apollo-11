@@ -1,0 +1,9 @@
+Independent read-only source review by /root/p66_source_map, retained by /root/frozen_storage.
+No concrete discrepancy found in the fixed original source contract. LM PUSH saves sixwords, scalarzero STOREPITCHANG/STOVLYAWANG restores savedvector/PUSHbase. CM PDDL old stack+3 correctly supplies savedZ-low debris before reloadRCM, with PUSHbase+010 retained. Actual QPRET/POLISH/calleeLOC/banks match *SMNB* interface, AX original return, INTPRET reentry, VLOADpendingRVQ and true mission caller returnLOC3654/3712.
+Existing helper raw ordinary/trig/caller guards are closed by preflight and stable producer ownership; no extra AX magnitude restriction beyond stable caller data is needed. The original physical arithmetic guarantee is not enlarged by raw comparisons. NEWJOB067+0 is material: this owned monolithic composition exposes no new scheduler yields or pending-job contract.
+This review is source inspection; fresh original/strict/SAN/C64 proofs are separate acceptance evidence. Containing antenna files remain partial.
+Reviewed identities:
+a9ce7ed05de565d979d3110ac3c7edd6115c060540a46c74b9d4acd4ece6d4a2  src/sband_bodyframe.c
+e1f54029abc2aa85bb34f871ba2e8007575aea6fdb1ff909311d67abbb3a82f1  include/sband_bodyframe.h
+db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2  ../Luminary099/S-BAND_ANTENNA_FOR_LM.agc
+0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061  ../Comanche055/S-BAND_ANTENNA_FOR_CM.agc

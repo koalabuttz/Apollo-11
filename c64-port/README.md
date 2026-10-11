@@ -1482,3 +1482,7 @@ Compose actual PUTDECSF PUTSFNOR PUTDCSF2 through immutable original factor tabl
 ## Translate original scalar and double precision operator input scaling
 
 Compose actual ARTHINSF BINROUND ARTIN1SF DPINSF and DPFRACIN scaling and original stores through POSTJUMP PUTCOM2 against8192 complete original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-SCALE.md`.
+
+## Compose original S-band body frame transformation and return
+
+Compose actual zero-angle S-band body frame source path and matrix transformation against131072 complete original strict sanitizer states and128 C64 checkpoints. See `docs/NATIVE-SBAND-BODY-FRAME.md`.
