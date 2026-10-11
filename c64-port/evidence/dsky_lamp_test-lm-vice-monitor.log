@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_lamp_test-lm.prg from 0801 to 3062 (2862 bytes)
+WATCH: 1  C:$506b  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 506b)  275/$113,  51/$33
+.C:20f0  8E 6B 50    STX $506B      - A:40 X:A5 Y:00 SP:f1 N.-....C  154081104
+>C:506b  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_test-lm-vice-mailbox.bin' from $506b to $506f
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_test-lm-vice-difference.bin' from $3063 to $306a
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_test-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_test-lm-vice-software-stack.bin' from $c100 to $cfff

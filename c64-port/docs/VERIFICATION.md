@@ -1634,3 +1634,7 @@ Qualify source DSU initial DAS return Q control over8192 complete original nativ
 ## Qualify original S band control and canonical double precision trigonometry
 
 Qualify both original antenna control calls and complete DP sine cosine source bodies through actual return or numerical frontiers against339968 complete original native sanitizer states and432 C64 full states with unchanged original ropes and explicit external orbital display and scheduler boundaries. See `docs/NATIVE-SBAND-CALLERS.md`.
+
+## Translate original Verb35 lamp controls and source checker returns
+
+Qualify both original VBTSTLTS and TSTLTS source on off scheduled and display-control stages including actual Comanche CHKPOOH and literal SWRETURN effects against8192 complete original native sanitizer states and64 C64 states preserving channel dirty relay and scheduler frontiers. See `docs/DSKY-LAMP-TEST.md`.

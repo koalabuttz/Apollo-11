@@ -564,3 +564,5 @@ subprocess.run([sys.executable,'tools/dsky_decimal_row_differential.py',str(refe
 subprocess.run([sys.executable,'tools/cm_priority_display_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_decimal_general_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_lamp_test_differential.py',str(reference)],cwd=ROOT,check=True)

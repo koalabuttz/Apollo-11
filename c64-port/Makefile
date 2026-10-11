@@ -850,3 +850,5 @@ include tools/sband_support_integration.mk
 all: build/sband-support-control-stream build/sband-support-trig-stream
 test: test-sband-support
 sanitize: sanitize-sband-support
+
+include tools/dsky_lamp_test.mk
