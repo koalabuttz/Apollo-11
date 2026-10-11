@@ -1,0 +1,8 @@
+{
+  "CM": {
+    "archive": "evidence/cm-ephemeris-moon-reference.snapshots.bin.xz",
+    "decoded_sha256": "14295a5c37b33c886ba2bb181e5b2523611db488c9f0c165cb650df749597bd6",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  }
+}

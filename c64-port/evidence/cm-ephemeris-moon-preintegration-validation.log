@@ -1,0 +1,14 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+cc -Iinclude -Itests -std=c99 -O2 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_ephemeris_moon.c tests/cm_ephemeris_moon_target.c tests/frozen_words.c src/cm_ephemeris_moon.c src/cm_ephemeris_time.c src/ephemeris_time_scale.c src/ephemeris_shift.c src/ephemeris_add.c src/interpreted_sign.c src/sband_vector_linear.c src/sband_shift.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_ephemeris_time_cases.c -o build/test-cm-ephemeris-moon
+./build/test-cm-ephemeris-moon
+PASS64 complete original LUNPOS polynomial and return states and19 immutable image guards plus two null guards
+python3 tools/cm_ephemeris_moon_host.py --cc "cc"
+PASS all retained source-state bytes: 269090816 SHA256 14295a5c37b33c886ba2bb181e5b2523611db488c9f0c165cb650df749597bd6
+PASS65536 complete original LUNPOS polynomial and return states strict native
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_cm_ephemeris_moon.c tests/cm_ephemeris_moon_target.c tests/frozen_words.c src/cm_ephemeris_moon.c src/cm_ephemeris_time.c src/ephemeris_time_scale.c src/ephemeris_shift.c src/ephemeris_add.c src/interpreted_sign.c src/sband_vector_linear.c src/sband_shift.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_ephemeris_time_cases.c -o build/test-cm-ephemeris-moon-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-ephemeris-moon-integrated-san
+PASS64 complete original LUNPOS polynomial and return states and19 immutable image guards plus two null guards
+python3 tools/cm_ephemeris_moon_host.py --cc "cc" --sanitize
+PASS all retained source-state bytes: 269090816 SHA256 14295a5c37b33c886ba2bb181e5b2523611db488c9f0c165cb650df749597bd6
+PASS65536 complete original LUNPOS polynomial and return states full ASAN/UBSAN
+make: Leaving directory '/workspace/Apollo-11/c64-port'

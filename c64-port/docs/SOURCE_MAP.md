@@ -1427,3 +1427,7 @@ Qualify65536 uninterrupted full original native sanitizer checkpoints and256 sta
 ## Validate deferred higher priority job and exact P66 resumption on C64
 
 Run actual stock-ROM D81 higher-priority job dispatch and restored P66 recurrence across312 full source checkpoints with119 descriptors preserving112 historical stage images plus2476 pending64 adoption2460 unchanged full host sanitizer checkpoints. Both full applications remain open. See `docs/P66-APPLICATION-PENDING.md`.
+
+## Compose original Comanche lunar position polynomial and S-band return
+
+Translate actual LUNPOS time entry ninth-degree vector polynomial and source return against65536 complete original strict sanitizer states and64 C64 states without changing frozen arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-MOON.md`.

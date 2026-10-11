@@ -1,0 +1,22 @@
+{
+  "reviewer": "p66_source_map",
+  "result": "No concrete source arithmetic/control discrepancy in the stated fixed original S-band LUNPOS caller domain.",
+  "reviewed_sha256": {
+    "src/cm_ephemeris_moon.c": "80cb368bbb60ae6a55570c059f39fe0f443a3509a29756e08830e9b0671e0c64",
+    "include/cm_ephemeris_moon.h": "935f0ed2e898940906fecaca491911b90f569d115dbada2521b1e949e122c69e",
+    "tools/cm_ephemeris_moon_reference.c": "d527663a480bf5edb7e968462ad3a32a960099f4d25d1605e18c4fd7466e1582",
+    "tools/cm_ephemeris_moon_snapshot.c": "f75cd390452ae271b3247ea868cf1ce27657aa21524c8f8a0e537065ee4dd827",
+    "src/cm_ephemeris_time.c": "4858f2178e26266690db588111af8514d4ebc98f48c7531952f7489c800ec9cf",
+    "src/sband_vector_linear.c": "4b9931a334d54f09aa0892e77187843935b7ef93317fc9c7cb018932281ad727",
+    "src/sband_shift.c": "36207c8d688a66804e4c4a8f8914f153e7e07765dac7a09396a50d1c2e8a5506",
+    "../Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa"
+  },
+  "domain": "Original CM LUNPOS via NEWOPS bank26, scalarMODE0, fiveVACs, fixed actual S-band QPRET065673, ordinary canonical RAM/rawA/L, coherentbanks, excluded producers. Ends before source S-band STORE at real NEWOPS LOC03673.",
+  "findings": [
+    "Validated time pipeline supplies exact source REM entry, then PDVL saves DP time inVAC0/1 and loads six actual VECOEM coefficient words before changing MODE tovector. OldMPAC.Z-low supplies L debris.",
+    "Nine compiled Horner steps follow VXSC0D then indexed VAD VECOEM+60D,1 against sequential actual erasable coefficient vectors. Live immutable helper arithmetic rereads source operands, no expected flight outputs or coefficient decoder.",
+    "TIX leaves X1=6 on its final zero-decrement path because source BZMF DANZIG skips the XCHX1 store. Native only changes X1 for the first8 iterations, as required.",
+    "Final source VSL2 and fixed RVQ restore actual S-band bank/EB/BANKSET/POLISH/LOC/EDOP/A/L without executing caller STORE; source oracle independently runs all bodies to that actual return.",
+    "Closed guard preconditions ensure both source-equivalent helper descriptors are valid before composition. Caller QPRET restricted to actual original S-band target, not arbitrary interpreted return. No solar/velocity or full ephemerides source credit."
+  ]
+}

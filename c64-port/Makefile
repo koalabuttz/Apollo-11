@@ -981,3 +981,5 @@ include tools/dsky_hours_output_integration.mk
 include tools/p66_pending_port_integration.mk
 test: p66-pending-port-test
 sanitize: p66-pending-port-sanitize
+
+include tools/cm_ephemeris_moon_integration.mk
