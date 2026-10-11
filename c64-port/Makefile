@@ -633,3 +633,10 @@ test: test-native-exchange
 sanitize: sanitize-native-exchange
 
 include tools/cm_interbank_extended.mk
+
+# The complete original fixed-memory caller proofs require this fresh host
+# assembly fixture, including in a clean checkout. It is never target code.
+.PHONY: prepare-cm-original-rope
+prepare-cm-original-rope: | build
+	python3 tools/prepare_cm_original_rope.py
+cm-fixed-compat-differential cm-interbank-extended-differential: prepare-cm-original-rope

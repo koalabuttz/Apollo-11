@@ -1200,3 +1200,5 @@ Native scheduler adoption now preserves the exact source-selected CHANG2 context
 ## Translate remaining original Comanche extended interbank control groups
 
 Fourteen original interbank groups are qualified across 901,120 source-executed complete states and 16,384 explicitly rejected invalid typed BANKJUMP inputs, with full sanitizer equality and 56 actual C64 contexts. Ordinary caller return contracts and whole-file completion remain separate work. See `docs/COMANCHE_INTERBANK_EXTENDED.md`.
+
+A clean isolated checkout exposed the missing original-Comanche assembly prerequisite in the fixed-memory caller differentials. `prepare-cm-original-rope` now independently assembles and compares the byte-original fixture before those recipes. The initial failed audit is retained in `evidence/cm-original-rope-clean-prerequisite.log`; full suite validation follows separately.
