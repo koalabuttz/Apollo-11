@@ -1392,3 +1392,7 @@ Both original NVSUB/NVMONOPT and NVSUB1/2 selection bodies match8192 complete or
 ## Translate original shared load response recall and job wake paths
 
 Actual VBPROC/VBTERM/VBRESEQ/PROCKEY and direct RECALTST match8192 complete original/native/full-sanitizer states and64 actual C64 states, including source-signed-zero load status and not-found LOCCTR minus one fixed-data exchanges. Both internal RELDSP calls and real JOBWAKE preserve source effects and actual END handoffs. See `docs/DSKY-LOAD-CONTROL.md`.
+
+## Canonical Luminary admission source entries
+
+Literal NOVAC/FINDVAC/SPVAC/SPVACIN and their real caller/BAILOUT handoffs match16384 complete2050-field original/native/full-sanitizer states,22 unchanged guard domains and64 actual C64 disk-overlay states. Admitted bodies and recovery remain separate. Retained-original checks require no emulator or stale build outputs. See `docs/LM-CANONICAL-ADMISSION.md`.
