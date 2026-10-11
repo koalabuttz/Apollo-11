@@ -891,3 +891,7 @@ Both containing source files are translated with every original entry and bank-r
 ## Complete original system test lead-in sources
 
 Independent original-source review, complete source/sanitizer comparisons and actual C64 execution certify both SYSTEM_TEST_STANDARD_LEAD_INS files within their original caller and external continuation contracts. The inventory has33 complete files (27 native/data/declaration and six comment-only files), with142 source files and both integrated applications still requiring complete acceptance. See `docs/SYSTEM_TEST_LEAD_INS.md`.
+
+## Comanche scheduler and inter-bank source domain inventories
+
+The original Executive/Waitlist inventory records589 assembled words and every source line while preserving explicit unfinished caller, body, recovery and IRQ domains. The separate inter-bank inventory records passive SUPDACAL address closure and its source/C64 evidence without granting instruction execution credit. Neither inventory certifies a complete containing file. See `COMANCHE_SCHEDULER_SOURCE_INVENTORY.md` and `COMANCHE_INTERBANK_DOMAINS.md`.
