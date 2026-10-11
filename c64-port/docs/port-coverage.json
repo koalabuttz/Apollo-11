@@ -2700,7 +2700,7 @@
       "sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
       "bytes": 10932,
       "lines": 447,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2709,8 +2709,46 @@
           ],
           "scope": "AX*SR*T and THROTTLE+3 through THDUMP verified across full modeled state; remaining source paths and enclosing return bridge not certified.",
           "verification": "docs/THROTTLE-SERVICE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_powered_trig.c",
+            "src/lm_powered_axis.c",
+            "src/lm_powered_quick.c",
+            "src/lm_powered_interface.c",
+            "src/lm_powered_fixed_return.c",
+            "src/lm_powered_constants.c",
+            "src/lm_fleshpot.c",
+            "src/lm_fleshpot_interface.c"
+          ],
+          "scope": "All emitted containing-source words mapped to reviewed native arithmetic, explicit source controls/returns and immutable constants. Source entry contracts are canonical ordinary words and documented fixed returns; mathematical routines retain raw signed zero/overflow semantics. This is whole-file numerical/control qualification, not a completed resident application. Original AX line288 positive-zero TC RTNSAVER is unreachable under documented +3/-3 DIM direction contract; both directions reach negative zero and execute line290. FLESHPOT bank return uses composed normalized FINISH outputs only. External scheduler and producer ownership remain application requirements.",
+          "verification": "docs/LUMINARY-POWERED-FLIGHT.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "All emitted containing-source words mapped to reviewed native arithmetic, explicit source controls/returns and immutable constants. Source entry contracts are canonical ordinary words and documented fixed returns; mathematical routines retain raw signed zero/overflow semantics. This is whole-file numerical/control qualification, not a completed resident application. FLESHPOT bank return requires normalized FINISH output; arbitrary raw-overflow entries are excluded. Original AX line288 positive-zero TC RTNSAVER is unreachable under documented +3/-3 DIM direction contract; both directions reach negative zero and execute line290.",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-powered-file-source-map.json",
+            "sha256": "1e7e81ea7807499271faf437e844c363c73bfaa709249667eb55a1e456a0e2fb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-powered-file-independent-review.txt",
+            "sha256": "d2f5dc8eca8364e6799b7d3db65ff4bcd0ff5dad61df5377615f571bd2b34a46"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-powered-file-proof.json",
+            "sha256": "ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-powered-file-proof.json",
+            "sha256": "ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc",
