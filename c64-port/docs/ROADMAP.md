@@ -772,3 +772,7 @@ Native Comanche inter-bank call and return entries preserve 7,168 original whole
 ## Resume canonical Comanche idle and selected basic jobs
 
 Source idle dispatch matches 4,096 original complete states with actual register, bank and interpreter effects. Strict and sanitizer checks pass; C64 validates 128 fingerprints and two complete samples. This is additive Executive coverage; whole-file completion is separately audited. See `docs/COMANCHE_IDLE_DISPATCH.md`.
+
+## Translate canonical Comanche display sleep control and wake continuation
+
+CM GOSLEEPS and UPENT2 preserve all 6,144 original complete states, including mission-specific ITEMP1 and L effects. Strict tests cover 39 unchanged invalid boundaries; full sanitizer output and 64-state C64 proof pass. Canonical scheduler JOBSLEEP and rendering bodies remain separate qualifications. See `docs/COMANCHE-MAKEPLAY-SLEEP.md`.
