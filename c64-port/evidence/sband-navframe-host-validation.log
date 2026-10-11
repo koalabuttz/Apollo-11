@@ -1,0 +1,2 @@
+python3 tools/sband_navframe_compare.py
+PASS {'states': 131072, 'start': 0, 'end': 131072, 'record_bytes': 4106, 'decoded_sha256': 'e4eadc33249608b6fe174d9aaef85abd7292b83276b5367166fb21a35de25767'}

@@ -1039,3 +1039,8 @@ include tools/dsky_input_time.mk
 include tools/lm_admission_raw_port_integration.mk
 test: lm-admission-raw-port-test
 sanitize: lm-admission-raw-port-sanitize
+
+include tools/sband_navframe_integration.mk
+all: build/sband-navframe-integrated-stream
+test: test-sband-navframe
+sanitize: sanitize-sband-navframe

@@ -1603,3 +1603,7 @@ Translate actual HMSIN RND-TST MPACTST SIZETST source time contributions roundin
 ## Translate original raw LM priority admission controls
 
 Translate actual NOVAC FINDVAC raw positive zero and low-bit priorities real inline descriptor aliases and pending core0 admission against16384 complete original strict sanitizer states and64 C64 checkpoints preserving historical helpers. See `docs/LM-RAW-ADMISSION.md`.
+
+## Compose original antenna navigation frame vector normalization
+
+Compose actual body return vector stores LM mixing arithmetic and original UNIT source phases against131072 complete original strict sanitizer states and128 C64 checkpoints retaining true overflow and abort frontiers. See `docs/NATIVE-SBAND-NAV-FRAME.md`.

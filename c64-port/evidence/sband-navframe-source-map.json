@@ -1,0 +1,268 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_navframe.c",
+    "source_words": 13,
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 116,
+        "label": "",
+        "op": "STODL",
+        "arguments": "RLM",
+        "assembled_address": "42,3654",
+        "physical_fixed_word": 35756,
+        "physical_erasable_word": null,
+        "words": [
+          7301
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 117,
+        "label": "",
+        "op": "RLM",
+        "arguments": "+2",
+        "assembled_address": "42,3655",
+        "physical_fixed_word": 35757,
+        "physical_erasable_word": null,
+        "words": [
+          1159
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 118,
+        "label": "",
+        "op": "PUSH",
+        "arguments": "DSU",
+        "assembled_address": "42,3656",
+        "physical_fixed_word": 35758,
+        "physical_erasable_word": null,
+        "words": [
+          19078
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 119,
+        "label": "",
+        "op": "RLM",
+        "arguments": "",
+        "assembled_address": "42,3657",
+        "physical_fixed_word": 35759,
+        "physical_erasable_word": null,
+        "words": [
+          1157
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 120,
+        "label": "",
+        "op": "DMP",
+        "arguments": "",
+        "assembled_address": "42,3660",
+        "physical_fixed_word": 35760,
+        "physical_erasable_word": null,
+        "words": [
+          32645
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 121,
+        "label": "",
+        "op": "1OVSQRT2",
+        "arguments": "",
+        "assembled_address": "42,3661",
+        "physical_fixed_word": 35761,
+        "physical_erasable_word": null,
+        "words": [
+          11257
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 122,
+        "label": "",
+        "op": "STODL",
+        "arguments": "RLM +2",
+        "assembled_address": "42,3662",
+        "physical_fixed_word": 35762,
+        "physical_erasable_word": null,
+        "words": [
+          7303
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 123,
+        "label": "",
+        "op": "DAD",
+        "arguments": "DMP",
+        "assembled_address": "42,3663",
+        "physical_fixed_word": 35763,
+        "physical_erasable_word": null,
+        "words": [
+          17037
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 124,
+        "label": "",
+        "op": "RLM",
+        "arguments": "",
+        "assembled_address": "42,3664",
+        "physical_fixed_word": 35764,
+        "physical_erasable_word": null,
+        "words": [
+          1157
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 125,
+        "label": "",
+        "op": "1OVSQRT2",
+        "arguments": "",
+        "assembled_address": "42,3665",
+        "physical_fixed_word": 35765,
+        "physical_erasable_word": null,
+        "words": [
+          11257
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 126,
+        "label": "",
+        "op": "STOVL",
+        "arguments": "RLM",
+        "assembled_address": "42,3666",
+        "physical_fixed_word": 35766,
+        "physical_erasable_word": null,
+        "words": [
+          11397
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 127,
+        "label": "",
+        "op": "RLM",
+        "arguments": "",
+        "assembled_address": "42,3667",
+        "physical_fixed_word": 35767,
+        "physical_erasable_word": null,
+        "words": [
+          1157
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 128,
+        "label": "",
+        "op": "UNIT",
+        "arguments": "PDVL",
+        "assembled_address": "42,3670",
+        "physical_fixed_word": 35768,
+        "physical_erasable_word": null,
+        "words": [
+          26286
+        ]
+      }
+    ],
+    "constants": {
+      "label": "1OVSQRT2",
+      "address": "42,3770",
+      "physical_fixed_word": 35832,
+      "words": [
+        11585,
+        3891
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+          "line": 194,
+          "label": "1OVSQRT2",
+          "op": "2DEC",
+          "arguments": ".7071067815",
+          "assembled_address": "42,3770",
+          "physical_fixed_word": 35832,
+          "physical_erasable_word": null,
+          "words": [
+            11585,
+            3891
+          ]
+        }
+      ],
+      "usage": "Both original DP words consumed by the two true DMP kernels; no padded instruction data."
+    },
+    "bindings": {
+      "NEWOPS": "6070",
+      "DANZIG": "6061",
+      "UNIT": "00,3023",
+      "SQRTABRT": "00,3402",
+      "PDVL": "6557"
+    },
+    "scope": "Actual returnedSMNB vector STORE; LM full STODL/PUSH/DSU/DMP/pop/DAD/DMP/STOVL body mixing; complete unchanged normal UNIT prologue and three arithmetic phases. Stops pendingPDVL or beforeSQRTABRT; PDVL operand and later antenna bodies not executed.",
+    "alias_contract": "LM originalY pushed then popped; STODL keeps old resultminorL and final VLOAD keeps oldZminorL. CMSTORE exchanges oldtargetZminor intoL. Single canonical2048word image; no authoritative module snapshots.",
+    "caller_controls": "Actual original NEWOPS LOC3654LM/3712CM, sourceBANKSET/FB064000 plus SUPERbit100; coherentEBBB, MODE-1, fiveVAC/PUSHbaseLM/base+010CM, NEWJOB+0 and producer exclusion.",
+    "coverage": "65536inputs/mission, complete raw16A/L and ordinaryQ marginals, fiveVAC/eightEB/four bank42SUPERforms/bothIRQ, varied ordinary/signedzero vectors. No Cartesian or every instruction edge claim."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_navframe.c",
+    "source_words": 2,
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 73,
+        "label": "",
+        "op": "STORE",
+        "arguments": "R",
+        "assembled_address": "42,3712",
+        "physical_fixed_word": 35786,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 74,
+        "label": "",
+        "op": "UNIT",
+        "arguments": "PDVL",
+        "assembled_address": "42,3713",
+        "physical_fixed_word": 35787,
+        "physical_erasable_word": null,
+        "words": [
+          26286
+        ]
+      }
+    ],
+    "constants": {},
+    "bindings": {
+      "NEWOPS": "6037",
+      "DANZIG": "6030",
+      "UNIT": "00,3023",
+      "SQRTABRT": "00,3402",
+      "PDVL": "6526"
+    },
+    "scope": "Actual returnedSMNB vector STORE; LM full STODL/PUSH/DSU/DMP/pop/DAD/DMP/STOVL body mixing; complete unchanged normal UNIT prologue and three arithmetic phases. Stops pendingPDVL or beforeSQRTABRT; PDVL operand and later antenna bodies not executed.",
+    "alias_contract": "LM originalY pushed then popped; STODL keeps old resultminorL and final VLOAD keeps oldZminorL. CMSTORE exchanges oldtargetZminor intoL. Single canonical2048word image; no authoritative module snapshots.",
+    "caller_controls": "Actual original NEWOPS LOC3654LM/3712CM, sourceBANKSET/FB064000 plus SUPERbit100; coherentEBBB, MODE-1, fiveVAC/PUSHbaseLM/base+010CM, NEWJOB+0 and producer exclusion.",
+    "coverage": "65536inputs/mission, complete raw16A/L and ordinaryQ marginals, fiveVAC/eightEB/four bank42SUPERforms/bothIRQ, varied ordinary/signedzero vectors. No Cartesian or every instruction edge claim."
+  }
+}

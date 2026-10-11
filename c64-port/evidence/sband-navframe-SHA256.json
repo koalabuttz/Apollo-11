@@ -1,0 +1,202 @@
+{
+  "docs/NATIVE-SBAND-NAV-FRAME.md": {
+    "sha256": "37f7ca1b9b042403dfa55246b1752e65bc914eb326b5de3ba812b5ffc0a5946f",
+    "bytes": 3772
+  },
+  "evidence/sband-navframe-0-mailbox.bin": {
+    "sha256": "84f5afa7698faa66a1295472852ee63e55174a088e90c8ecaf245117f1d6c525",
+    "bytes": 4
+  },
+  "evidence/sband-navframe-0-monitor.log": {
+    "sha256": "cb297f239255b1b2fbf1389554ab6d7fad3e656770b86f1e1d06ca26cf5984cd",
+    "bytes": 397
+  },
+  "evidence/sband-navframe-0-vice-results.json": {
+    "sha256": "d49bdae40da3ef4830b347f75b378fc14df3d4cd43967592e098407282565442",
+    "bytes": 243
+  },
+  "evidence/sband-navframe-0-vice.log": {
+    "sha256": "309eec8651b2d2537c0d674202c4ab1e3d9f84a51d44cf1b3c27fc5e7617430c",
+    "bytes": 6531
+  },
+  "evidence/sband-navframe-0.map": {
+    "sha256": "dc18e1f412f51b4a81b9a63bf3c4563178a0f3f1f569b48c129076a306f25594",
+    "bytes": 13550
+  },
+  "evidence/sband-navframe-0.prg": {
+    "sha256": "4d426972b5136d1ab70c11a8ef381103025407487f7baf6f148d653851595039",
+    "bytes": 32305
+  },
+  "evidence/sband-navframe-1-mailbox.bin": {
+    "sha256": "84f5afa7698faa66a1295472852ee63e55174a088e90c8ecaf245117f1d6c525",
+    "bytes": 4
+  },
+  "evidence/sband-navframe-1-monitor.log": {
+    "sha256": "755fb5582095a2f2a10e536efbc81ea6b75aa0a9ab1a92fe280cbbedc925dfb6",
+    "bytes": 397
+  },
+  "evidence/sband-navframe-1-vice-results.json": {
+    "sha256": "da6d54325718b10ba4589fee4a42a13a45602a796f1d076b1963ad3ae057901e",
+    "bytes": 243
+  },
+  "evidence/sband-navframe-1-vice.log": {
+    "sha256": "3ff55d7a4927c1f53c22e9833010a62fb1a7f1676b2a86b0b3bc5e8e153e7e49",
+    "bytes": 6532
+  },
+  "evidence/sband-navframe-1.map": {
+    "sha256": "aee5ec75e6c9bcf151755f09fc42285e670fe5478cfdd7bce830f13ba1aa0456",
+    "bytes": 13550
+  },
+  "evidence/sband-navframe-1.prg": {
+    "sha256": "fcd10a1fb3552fa7599455d3c17972c191da37c9d4cc78d09b690f997f640202",
+    "bytes": 31536
+  },
+  "evidence/sband-navframe-frozen-validation.log": {
+    "sha256": "7b28b3668eff03bf1f8cef74b6a7d6200be75d47a8510504c2b404c5c06b4bf7",
+    "bytes": 238
+  },
+  "evidence/sband-navframe-host-validation.log": {
+    "sha256": "af50e288218cc5ad261ac44373019421d0c6e6cd95d09cc26c7c066ab64b5026",
+    "bytes": 199
+  },
+  "evidence/sband-navframe-independent-review.txt": {
+    "sha256": "3a7f04d9fbf50f2a3c608b69b76d582cd1434d61df4d0cf51f389d8f0439eeb8",
+    "bytes": 1401
+  },
+  "evidence/sband-navframe-initial-memory-trial.log": {
+    "sha256": "6b4dd59c8e99c0798311869e258b0abaa03fb6d800cb642114e0545213012f1a",
+    "bytes": 766
+  },
+  "evidence/sband-navframe-initial-memory-trial.map": {
+    "sha256": "1fd28aba9304b4ae3ab090486458c8f07c10f6e4fc889862c927dfcc4938066a",
+    "bytes": 13466
+  },
+  "evidence/sband-navframe-native-results.json": {
+    "sha256": "c6b806e6f1ba81fe146c30a574df218dbf2fca04ff8f911c8587ffa6bad1369c",
+    "bytes": 166
+  },
+  "evidence/sband-navframe-proof.json": {
+    "sha256": "fd1d20abac82b3ee17799987a0d8cbccf6d36d4610d0a84a6f8c3b646b04249d",
+    "bytes": 3179
+  },
+  "evidence/sband-navframe-sanitize-results.json": {
+    "sha256": "c6b806e6f1ba81fe146c30a574df218dbf2fca04ff8f911c8587ffa6bad1369c",
+    "bytes": 166
+  },
+  "evidence/sband-navframe-sanitize-validation.log": {
+    "sha256": "7221b9a065beabba7b505617552a84016d2518ba442beb0e51f86a5f28e9c173",
+    "bytes": 628
+  },
+  "evidence/sband-navframe-source-map.json": {
+    "sha256": "70413b9a26e8a18987c4f336d006ec9f1b0322b11315cef02b79671fe1eee6ff",
+    "bytes": 8578
+  },
+  "evidence/sband-navframe-source.snapshots.bin.xz": {
+    "sha256": "cdc47662df66f036885a0af0282f37cdfc0e51df78da43b0b1646bf0506beb23",
+    "bytes": 33988820
+  },
+  "evidence/sband-navframe-target-results.json": {
+    "sha256": "327d670dbdfa5ef7ab74db85c7690dce5076943a2eb682300dc44aa4569bf8a3",
+    "bytes": 1436
+  },
+  "evidence/sband-navframe-target-source.snapshots.bin.xz": {
+    "sha256": "d5f40b87f890d083a249e33e5a3b1f2e556ee0012d5c1de620e8fc1f4009c2b2",
+    "bytes": 123024
+  },
+  "evidence/sband-navframe-target-validation.log": {
+    "sha256": "ab846d24ff0c0518cade450064209168872465b3716836d27baee6eee5576dd7",
+    "bytes": 543
+  },
+  "evidence/sband-navframe-vice-results.json": {
+    "sha256": "44915dcf120bb4a3c82a7850edb7f87d4d924a5ec2ceaf96665416626af430a6",
+    "bytes": 638
+  },
+  "include/sband_navframe.h": {
+    "sha256": "552d4d4860f1910338d2e63f72990b27aaebf12f520890de34dc5ff5c09a34e8",
+    "bytes": 691
+  },
+  "platform/c64/sband_navframe_diagnostic.c": {
+    "sha256": "a2f0a36d2ff2eda1111b1ad582800e029f49728367a3067de89b62f7b2ae302a",
+    "bytes": 442
+  },
+  "src/sband_navframe.c": {
+    "sha256": "709fe923a845fbe34939ea3ca5f6a009fae9c58639a0c9f9c3800d27eb77c6cb",
+    "bytes": 3551
+  },
+  "tests/sband_navframe_cases.c": {
+    "sha256": "eafee7f0681a66749f6eade48f9eb3270481b965222bf47d5e316877f8ba3a57",
+    "bytes": 1397
+  },
+  "tests/sband_navframe_cases.h": {
+    "sha256": "b4019aef7579f7f37bf7d4e337950a05eef5be5c47af949342fb96f05e17af87",
+    "bytes": 234
+  },
+  "tests/sband_navframe_target.c": {
+    "sha256": "7455d6866769489e707635e110f3c08466aaccfb131001c443821dc5687d3499",
+    "bytes": 1675
+  },
+  "tests/sband_navframe_target.h": {
+    "sha256": "b37cd1451e0e1bc911126b22b69421b3d058fccfdbf2e1c9c3c0d873793ea9b8",
+    "bytes": 150
+  },
+  "tests/sband_navframe_vectors.h": {
+    "sha256": "7c9e475701aa9d38189905069e610d8c42387e13a74f59376387a273996b9592",
+    "bytes": 50040
+  },
+  "tests/sband_navframe_vectors_0.h": {
+    "sha256": "6ab15c6168aa22bedc088cc6ba6784ae7843beef47b32c9ceb280950dd4b826f",
+    "bytes": 26290
+  },
+  "tests/sband_navframe_vectors_1.h": {
+    "sha256": "4f5eb5da077032dc5e6db66f80dbd2719d8312819a4764585a6f8333f838d8d0",
+    "bytes": 23190
+  },
+  "tests/test_sband_navframe.c": {
+    "sha256": "cfedab242cbfaa736a81cc9294ce131e47b3bdd2f1354ab083c6a42c886cc165",
+    "bytes": 1688
+  },
+  "tools/freeze_sband_navframe.py": {
+    "sha256": "da3d1b49838857beffdc676e2d9b1917e105e79b4398cccd6dab4cbc518e996d",
+    "bytes": 2505
+  },
+  "tools/package_sband_navframe.py": {
+    "sha256": "e82eb6baf7438f813b562b5a75ab11a4051523632e3d72f4b728999bedcc7cba",
+    "bytes": 4623
+  },
+  "tools/sband_navframe.mk": {
+    "sha256": "261968c553fec17636691e970e84db2e6bd3ff3d6de3221a500a2d76e4a695b8",
+    "bytes": 1146
+  },
+  "tools/sband_navframe_compare.py": {
+    "sha256": "39693ba3e682ccefa8b6b480ccb0832188fa4692663459474f7aaae92f8ee705",
+    "bytes": 1870
+  },
+  "tools/sband_navframe_inputs.c": {
+    "sha256": "73237f4eb9db119f13038270e09bdb4b2934837cc95d85dd162c642ee2d38fea",
+    "bytes": 500
+  },
+  "tools/sband_navframe_integration.mk": {
+    "sha256": "af1ca43a2ed583562e338a441bc8349eba007a24e6b0f0bfe5ebf2ad4c93f1dc",
+    "bytes": 1714
+  },
+  "tools/sband_navframe_port_host.py": {
+    "sha256": "9328a53fd95ceb0d29263380f6514e7ea584ce64a81c4d92a6387cfeca727d0e",
+    "bytes": 602
+  },
+  "tools/sband_navframe_reference.c": {
+    "sha256": "e05774d25afcae8dafcafa2b06182dec56ba925f632336e10ec5ffd07d913c3a",
+    "bytes": 1845
+  },
+  "tools/sband_navframe_snapshot.c": {
+    "sha256": "49833a1436e24b43f6e98d349ca050d78b1a24f59b60beb221f40ea4016098af",
+    "bytes": 663
+  },
+  "tools/sband_navframe_source.py": {
+    "sha256": "73a33a5c8d587d440fc1240c0195774dc9c5e936142943c706562a0ef6b04b6d",
+    "bytes": 3126
+  },
+  "tools/sband_navframe_vice_test.py": {
+    "sha256": "85179a10a437ebf0830de94afd4d32014adcb237d9175008d1b385b93dab177d",
+    "bytes": 3166
+  }
+}
