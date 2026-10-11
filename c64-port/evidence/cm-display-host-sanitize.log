@@ -1,0 +1,6 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_display.c tests/cm_display_check.c src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/cm_basic_priority.c src/cm_init_display.c tests/cm_display_cases.c -o build/test-cm-display
+build/test-cm-display
+CM display restart/priority: 64 complete2050-field original states, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_display.c tests/cm_display_check.c src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/cm_basic_priority.c src/cm_init_display.c tests/cm_display_cases.c -o build/test-cm-display-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-display-sanitize
+CM display restart/priority: 64 complete2050-field original states, 0 failures

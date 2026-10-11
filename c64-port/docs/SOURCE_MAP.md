@@ -579,3 +579,7 @@ All 16384 complete original states qualify the true GOSLEEPS, wake and busy path
 ## Port Luminary Pinball busy-state source control
 
 All 8192 complete original-image busy transitions match native and sanitized outputs; C64 checks pass with exact scratch and register effects. See `docs/LM-PINBALL-BUSY.md`.
+
+## Port actual Comanche INITDSP and priority transitions
+
+All 12288 original complete-image display restart and priority states match native and sanitized outputs; genuine C64 checks pass. See `docs/COMANCHE-DISPLAY-RESTART.md`.

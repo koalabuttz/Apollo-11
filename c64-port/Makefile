@@ -489,3 +489,5 @@ include tools/lm_sleep.mk
 include tools/makeplay_sleep.mk
 
 include tools/lm_busy.mk
+
+include tools/cm_display.mk
