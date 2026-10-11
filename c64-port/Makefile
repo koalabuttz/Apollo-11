@@ -691,3 +691,5 @@ include tools/dsky_blanksub.mk
 include tools/dsky_enter.mk
 
 include tools/cm_minutes_seconds_port.mk
+
+include tools/p66_application_integration.mk

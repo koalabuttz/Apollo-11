@@ -1298,3 +1298,7 @@ Actual CHARIN34 and ENTER through pass selection, source FLASHOFF and physical R
 ## Translate original Comanche minutes and seconds display scaling
 
 Actual M/SOUT scaling, separation, signed two-character formatting and middle blanking match512 continuous paths and3,072 complete source/full-sanitizer states; the reusable decimal pair matches1,024 additional states. Actual C64 checks112 complete frozen states plus63 unchanged guards. Surrounding noun40 caller composition remains separate. See `docs/COMANCHE-MINUTES-SECONDS.md`.
+
+## Run genuine Luminary P66 startup guidance and display jobs through native C64 application routing
+
+Actual STARTP66, guidance, deferred mode and display jobs, canonical END and idle pass16,586 complete original/native/full-sanitizer host states. A104-module native C64 disk application passes156 complete source fingerprints with resident end$6810 and2,032 bytes remaining below canonical RAM. Clean host verification streams retained original archives. Keyboard bodies, recurrence and full Luminary flight application acceptance remain separate. See `docs/P66-APPLICATION-STARTUP.md`.

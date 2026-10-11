@@ -1,0 +1,249 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     56b2     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/p66-application-live.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        9     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_chkin.s.obj):(.text)
+     830      830        0     1                 cbm_k_chkin
+     838      838        0     1                 some_error
+     839      839        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_open.s.obj):(.text)
+     839      839        0     1                 cbm_k_open
+     840      840        0     1                 some_error
+     841      841        5     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setlfs.s.obj):(.text)
+     841      841        0     1                 cbm_k_setlfs
+     846      846       14     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setnam.s.obj):(.text)
+     846      846        0     1                 cbm_k_setnam
+     85a      85a        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     85a      85a        0     1                 __call_indir
+     85d      85d       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     85d      85d       13     1                 __zero_bss
+     870      870       a4     1         build/p66-application-live.prg.lto.o:(.text.exec_native_resolver_init)
+     870      870       a4     1                 exec_native_resolver_init
+     914      914      49e     1         build/p66-application-live.prg.lto.o:(.text.exec_native_step)
+     914      914      49e     1                 exec_native_step
+     db2      db2       73     1         build/p66-application-live.prg.lto.o:(.text.p66_native_export_executive)
+     db2      db2       73     1                 p66_native_export_executive
+     e25      e25       28     1         build/p66-application-live.prg.lto.o:(.text.source_copy)
+     e25      e25       28     1                 source_copy
+     e4d      e4d       9c     1         build/p66-application-live.prg.lto.o:(.text.scalar_exchange)
+     e4d      e4d       9c     1                 scalar_exchange
+     ee9      ee9       73     1         build/p66-application-live.prg.lto.o:(.text.p66_native_import_executive)
+     ee9      ee9       73     1                 p66_native_import_executive
+     f5c      f5c      45e     1         build/p66-application-live.prg.lto.o:(.text.p66_native_run_group)
+     f5c      f5c      45e     1                 p66_native_run_group
+    13ba     13ba       c1     1         build/p66-application-live.prg.lto.o:(.text.continuation)
+    13ba     13ba       c1     1                 continuation
+    147b     147b      484     1         build/p66-application-live.prg.lto.o:(.text.basic)
+    147b     147b      484     1                 basic
+    18ff     18ff      207     1         build/p66-application-live.prg.lto.o:(.text.p66_descent_resolve)
+    18ff     18ff      207     1                 p66_descent_resolve
+    1b06     1b06      482     1         build/p66-application-live.prg.lto.o:(.text.continuation.5)
+    1b06     1b06      482     1                 continuation.5
+    1f88     1f88       8e     1         build/p66-application-live.prg.lto.o:(.text.control)
+    1f88     1f88       8e     1                 control
+    2016     2016      a49     1         build/p66-application-live.prg.lto.o:(.text.arithmetic)
+    2016     2016      a49     1                 arithmetic
+    2a5f     2a5f      229     1         build/p66-application-live.prg.lto.o:(.text.observe_source)
+    2a5f     2a5f      229     1                 observe_source
+    2c88     2c88      144     1         build/p66-application-live.prg.lto.o:(.text.canonical)
+    2c88     2c88      144     1                 canonical
+    2dcc     2dcc      16b     1         build/p66-application-live.prg.lto.o:(.text.prepare)
+    2dcc     2dcc      16b     1                 prepare
+    2f37     2f37      131     1         build/p66-application-live.prg.lto.o:(.text.finish)
+    2f37     2f37      131     1                 finish
+    3068     3068        9     1         build/p66-application-live.prg.lto.o:(.text.p66_display_job_finish)
+    3068     3068        9     1                 p66_display_job_finish
+    3071     3071      7a9     1         build/p66-application-live.prg.lto.o:(.text.execute)
+    3071     3071      7a9     1                 execute
+    381a     381a      19a     1         build/p66-application-live.prg.lto.o:(.text.continuation.10)
+    381a     381a      19a     1                 continuation.10
+    39b4     39b4       2d     1         build/p66-application-live.prg.lto.o:(.text.apollo_overlay_crc16)
+    39b4     39b4       2d     1                 apollo_overlay_crc16
+    39e1     39e1      7c6     1         build/p66-application-live.prg.lto.o:(.text.apollo_overlay_call)
+    39e1     39e1      7c6     1                 apollo_overlay_call
+    41a7     41a7       e4     1         build/p66-application-live.prg.lto.o:(.text.open_file)
+    41a7     41a7       e4     1                 open_file
+    428b     428b       59     1         build/p66-application-live.prg.lto.o:(.text.read_byte)
+    428b     428b       59     1                 read_byte
+    42e4     42e4       3a     1         build/p66-application-live.prg.lto.o:(.text.close_file)
+    42e4     42e4       3a     1                 close_file
+    431e     431e       49     1         build/p66-application-live.prg.lto.o:(.text.invoke.11)
+    431e     431e       49     1                 invoke.11
+    4367     4367      2f3     1         build/p66-application-live.prg.lto.o:(.text.p66_application_basic)
+    4367     4367      2f3     1                 p66_application_basic
+    465a     465a       e7     1         build/p66-application-live.prg.lto.o:(.text.p66_application_resolve)
+    465a     465a       e7     1                 p66_application_resolve
+    4741     4741      4f5     1         build/p66-application-live.prg.lto.o:(.text.body)
+    4741     4741      4f5     1                 body
+    4c36     4c36       65     1         build/p66-application-live.prg.lto.o:(.text.display_resolve)
+    4c36     4c36       65     1                 display_resolve
+    4c9b     4c9b      43b     1         build/p66-application-live.prg.lto.o:(.text.p66_direct_launch_callback)
+    4c9b     4c9b      43b     1                 p66_direct_launch_callback
+    50d6     50d6       e8     1         build/p66-application-live.prg.lto.o:(.text.main)
+    50d6     50d6       e8     1                 main
+    51be     51be      78a     1         build/p66-application-live.prg.lto.o:(.text.run)
+    51be     51be      78a     1                 run
+    5948     5948       82     1         build/p66-application-live.prg.lto.o:(.text.observe)
+    5948     5948       82     1                 observe
+    59ca     59ca       df     1         build/p66-application-live.prg.lto.o:(.text.control.16)
+    59ca     59ca       df     1                 control.16
+    5aa9     5aa9      11d     1         build/p66-application-live.prg.lto.o:(.text.display)
+    5aa9     5aa9      11d     1                 display
+    5bc6     5bc6      154     1         build/p66-application-live.prg.lto.o:(.text.application)
+    5bc6     5bc6      154     1                 application
+    5d1a     5d1a       99     1         build/p66-application-live.prg.lto.o:(.text.scheduler)
+    5d1a     5d1a       99     1                 scheduler
+    5db3     5db3       94     1         build/p66-application-live.prg.lto.o:(.text.invoke.17)
+    5db3     5db3       94     1                 invoke.17
+    5e47     5e47        4     1         build/p66-application-live.prg.lto.o:(.text.enter)
+    5e47     5e47        4     1                 enter
+    5e4b     5e4b        8     1         build/p66-application-live.prg.lto.o:(.text.leave)
+    5e4b     5e4b        8     1                 leave
+    5e53     5e53        6     1         build/p66-application-live.prg.lto.o:(.text.exit)
+    5e53     5e53        6     1                 exit
+    5e59     5e59        3     1         build/p66-application-live.prg.lto.o:(.text.cbm_k_chrin)
+    5e59     5e59        3     1                 cbm_k_chrin
+    5e5c     5e5c        5     1         build/p66-application-live.prg.lto.o:(.text.cbm_k_close)
+    5e5c     5e5c        5     1                 cbm_k_close
+    5e61     5e61        3     1         build/p66-application-live.prg.lto.o:(.text.cbm_k_clrch)
+    5e61     5e61        3     1                 cbm_k_clrch
+    5e64     5e64        3     1         build/p66-application-live.prg.lto.o:(.text.cbm_k_readst)
+    5e64     5e64        3     1                 cbm_k_readst
+    5e67     5e67       36     1         build/p66-application-live.prg.lto.o:(.text.strlen)
+    5e67     5e67       36     1                 strlen
+    5e9d     5e9d       22     1         build/p66-application-live.prg.lto.o:(.text.__memset)
+    5e9d     5e9d       22     1                 __memset
+    5ebf     5ebf        0     1         __init_array_start = .
+    5ebf     5ebf        0     1         __init_array_end = .
+    5ebf     5ebf        0     1         __fini_array_start = .
+    5ebf     5ebf        0     1         __fini_array_end = .
+    5ebf     5ebf      930     1 .rodata
+    5ebf     5ebf        c     1         build/p66-application-live.prg.lto.o:(.rodata.arithmetic)
+    5ecb     5ecb       5c     1         build/p66-application-live.prg.lto.o:(.rodata.observe_source)
+    5f27     5f27       28     1         build/p66-application-live.prg.lto.o:(.rodata.execute)
+    5f4f     5f4f       1c     1         build/p66-application-live.prg.lto.o:(.rodata.executive_fields)
+    5f4f     5f4f       1c     1                 executive_fields
+    5f6b     5f6b       17     1         build/p66-application-live.prg.lto.o:(.rodata.selectors)
+    5f6b     5f6b       17     1                 selectors
+    5f82     5f82        3     1         build/p66-application-live.prg.lto.o:(.rodata.p66_guidance_invoke.unit)
+    5f82     5f82        3     1                 p66_guidance_invoke.unit
+    5f85     5f85        3     1         build/p66-application-live.prg.lto.o:(.rodata.p66_guidance_invoke.projection)
+    5f85     5f85        3     1                 p66_guidance_invoke.projection
+    5f88     5f88        8     1         <internal>:(.rodata.cst4)
+    5f90     5f90        3     1         build/p66-application-live.prg.lto.o:(.rodata.p66_descent_invoke.length)
+    5f90     5f90        3     1                 p66_descent_invoke.length
+    5f93     5f93      150     1         build/p66-application-live.prg.lto.o:(.rodata.p66_native_guidance_mappings)
+    5f93     5f93      150     1                 p66_native_guidance_mappings
+    60e3     60e3       28     1         build/p66-application-live.prg.lto.o:(.rodata.feedback_entries)
+    60e3     60e3       28     1                 feedback_entries
+    610b     610b       10     1         <internal>:(.rodata.cst16)
+    611b     611b       15     1         build/p66-application-live.prg.lto.o:(.rodata.p66_basic_mappings)
+    611b     611b       15     1                 p66_basic_mappings
+    6130     6130        8     1         <internal>:(.rodata.cst8)
+    6138     6138        4     1         build/p66-application-live.prg.lto.o:(.rodata.exec_overlay_services)
+    6138     6138        4     1                 exec_overlay_services
+    613c     613c        a     1         build/p66-application-live.prg.lto.o:(.rodata..Lswitch.table.exec_overlay_module)
+    6146     6146      1a4     1         build/p66-application-live.prg.lto.o:(.rodata.p66_display_job_mappings)
+    6146     6146      1a4     1                 p66_display_job_mappings
+    62ea     62ea       38     1         build/p66-application-live.prg.lto.o:(.rodata.p66_direct_launch_mappings)
+    62ea     62ea       38     1                 p66_direct_launch_mappings
+    6322     6322      2d8     1         build/p66-application-live.prg.lto.o:(.rodata.p66_application_disk_modules)
+    6322     6322      2d8     1                 p66_application_disk_modules
+    65fa     65fa      1e9     1         <internal>:(.rodata.str1.1)
+    67e3     67e3        6     1         build/p66-application-live.prg.lto.o:(.rodata.guard)
+    67e3     67e3        6     1                 guard
+    67e9     67e9        4     1         build/p66-application-live.prg.lto.o:(.rodata.services)
+    67e9     67e9        4     1                 services
+    67ed     67ed        2     1         build/p66-application-live.prg.lto.o:(.rodata.pal_counts)
+    67ed     67ed        2     1                 pal_counts
+    67ef     67ef        a     1 .data
+    67ef     67ef        0     1         __data_start = .
+    67ef     67ef        6     1         build/p66-application-live.prg.lto.o:(.data.io)
+    67ef     67ef        6     1                 io
+    67f5     67f5        4     1         build/p66-application-live.prg.lto.o:(.data.modules)
+    67f5     67f5        4     1                 modules
+    67f9     67f9        0     1         __data_end = .
+    67f9     67f9        0     1 __data_load_start = LOADADDR(.data)
+    67f9     67f9        0     1 __data_size = SIZEOF(.data)
+    67f9     67f9       17     1 .bss
+    67f9     67f9        0     1         __bss_start = .
+    67f9     67f9       13     1         build/p66-application-live.prg.lto.o:(.bss.loader)
+    67f9     67f9       13     1                 loader
+    680c     680c        2     1         build/p66-application-live.prg.lto.o:(.bss.failures)
+    680c     680c        2     1                 failures
+    680e     680e        2     1         build/p66-application-live.prg.lto.o:(.bss.checkpoints)
+    680e     680e        2     1                 checkpoints
+    6810     6810        0     1         __bss_end = .
+    6810     6810        0     1 __bss_size = SIZEOF(.bss)
+    6810     6810        0     1 .noinit
+    6810     6810        0     1         __heap_start = ALIGN(., 2)
+    6810     6810        0     1 __stack = 0xd000
+    6810     6810        0     1 
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/p66-application-live.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/p66-application-live.prg.lto.o:(.llvm_sympart)
+       0        0      f00     4 .symtab
+       0        0      f00     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      9ee     1 .strtab
+       0        0      9ee     1         <internal>:(.strtab)
