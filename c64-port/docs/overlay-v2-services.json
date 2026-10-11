@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "comment": "ABI 2 resident service table. Append-only within a major version: add entries at the end and bump minor; removing or reordering bumps major and requires every module to be rebuilt. Lane A owns the contents; Lane H owns the mechanism.",
+  "major": 2,
+  "minor": 1,
+  "base": 28416,
+  "entry_bytes": 3,
+  "services": [
+    "agc_negate",
+    "agc_to_int",
+    "agc_from_int",
+    "agc_compare",
+    "agc_add_word",
+    "agc_extend",
+    "agc_correct",
+    "agc_add_register",
+    "agc_overflow",
+    "agc_classify",
+    "agc_diminished_abs",
+    "agc_multiply",
+    "agc_double_add"
+  ]
+}
