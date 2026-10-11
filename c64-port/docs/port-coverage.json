@@ -1422,8 +1422,44 @@
       "sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
       "bytes": 3827,
       "lines": 150,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/standard_lead.c",
+            "src/standard_lead_interp.c",
+            "src/standard_lead_bank.c",
+            "src/standard_lead_wake.c",
+            "src/standard_lead_cm.c"
+          ],
+          "scope": "All containing-source public entries, internal paths and original constants within reviewed caller contracts; external source continuations retain their actual handoffs.",
+          "verification": "docs/SYSTEM_TEST_LEAD_INS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/SYSTEM_TEST_LEAD_INS.md",
+            "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/standard-lead-source-audit.json",
+            "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/standard-lead-host.log",
+            "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/standard-lead-proof.json",
+            "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/T4RUPT_PROGRAM.agc",
@@ -3139,8 +3175,44 @@
       "sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
       "bytes": 3636,
       "lines": 125,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/standard_lead.c",
+            "src/standard_lead_interp.c",
+            "src/standard_lead_bank.c",
+            "src/standard_lead_wake.c",
+            "src/standard_lead_cm.c"
+          ],
+          "scope": "All containing-source public entries, internal paths and original constants within reviewed caller contracts; external source continuations retain their actual handoffs.",
+          "verification": "docs/SYSTEM_TEST_LEAD_INS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/SYSTEM_TEST_LEAD_INS.md",
+            "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/standard-lead-source-audit.json",
+            "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/standard-lead-host.log",
+            "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/standard-lead-proof.json",
+            "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/T4RUPT_PROGRAM.agc",
