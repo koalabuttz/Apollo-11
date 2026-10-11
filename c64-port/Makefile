@@ -396,3 +396,5 @@ include tools/display_control.mk
 include tools/regodspr.mk
 
 include tools/acceleration_store.mk
+
+include tools/nv_entry.mk

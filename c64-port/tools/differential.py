@@ -245,3 +245,5 @@ subprocess.run([sys.executable,'tools/display_control_differential.py',str(refer
 subprocess.run([sys.executable,'tools/regodspr_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/acceleration_store_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/nv_entry_differential.py',str(reference)],cwd=ROOT,check=True)
