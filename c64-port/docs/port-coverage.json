@@ -1868,7 +1868,7 @@
       "sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
       "bytes": 7768,
       "lines": 358,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1897,8 +1897,53 @@
           ],
           "scope": "Actual NORMUNIT NORMUNX1 numerical UNIT continuations through true source DANZIG or division overflow; gyro hardware and other RTB bodies remain separate.",
           "verification": "docs/RTB-UNIT.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
+            "src/rtb_vector.c",
+            "src/rtb_unit.c",
+            "src/rtb_pulse_return.c",
+            "src/cm_quality.c"
+          ],
+          "scope": "Every206 original local emitted word with ordinary canonical RAM/rawA,L, coherent source banks, legal VAC and explicit fixed return/producer contracts. Actual UNIT numerical helper is composed; external DANZIG bank07 IMUPULSE and ORBITAL_INTEGRATION continuations stay explicit. No whole application or physical device acceptance.",
+          "verification": "docs/CM-RT8-WHOLE-SOURCE.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Every206 original local emitted word with ordinary canonical RAM/rawA,L, coherent source banks, legal VAC and explicit fixed return/producer contracts. Actual UNIT numerical helper is composed; external DANZIG bank07 IMUPULSE and ORBITAL_INTEGRATION continuations stay explicit. No whole application or physical device acceptance.",
+        "external_continuations": [
+          "DANZIG",
+          "IMUPULSE",
+          "ORBITAL_INTEGRATION"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-rtb-whole-source-map.json",
+            "sha256": "16ee52cbd29a68a6bbeaf7e1d7966f4d2656d491deb73d71156173a4015f9c99"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-rtb-root-independent-review.json",
+            "sha256": "766b6a8f4b387aa97620990649a995eeca9327ec17c7a5c2b9fce16f3e2a7a13"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-rtb-whole-source-map.json",
+            "sha256": "16ee52cbd29a68a6bbeaf7e1d7966f4d2656d491deb73d71156173a4015f9c99"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-rtb-whole-source-map.json",
+            "sha256": "16ee52cbd29a68a6bbeaf7e1d7966f4d2656d491deb73d71156173a4015f9c99"
+          },
+          "independent_review": {
+            "path": "evidence/cm-rtb-whole-source-review.txt",
+            "sha256": "6e8723dd150b29125b0858fe33805e79b49f4a3c98998d9725efae4517468688"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",

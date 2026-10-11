@@ -1435,3 +1435,7 @@ Qualify actual octal display component selection channels and row return against
 ## Translate complete original Comanche QUALITY numerical and control bodies
 
 Qualify65536 original inputs and688128 full canonical native sanitizer checkpoints across all20 source phases with640 C64 states and180 atomic rejection checks retaining actual branch and pending return boundaries. See `docs/NATIVE-CM-QUALITY.md`.
+
+## Whole Comanche RT8 source translation
+
+All206 local emitted words now have independently checked native ownership, original source, complete sanitizer and real C64 evidence. Genuine outside-file handoffs remain explicit; both full applications stay unverified. See `docs/CM-RT8-WHOLE-SOURCE.md`.
