@@ -1040,3 +1040,7 @@ Both original NVSUBEND entries and SUPDXCHZ saved fixed-caller return match8192 
 ## Translate original shared blocked display sleep admission source
 
 Both original ENDIDLE/NVSUBUSY/PRENVBSY/NVSBWAIT/NVSUBSY1 bodies match10240 complete original/native/full-sanitizer states,120 unchanged invalid-input guards and80 actual C64 states. Actual JOBSLEEP/POODOO/NVSBCOM entries remain explicit, including the original CADRSTOR negative-zero behavior; selected service execution remains separate. See `docs/DSKY-NV-BUSY.md`.
+
+## Translate original Comanche abort snapshot and GENTRAN copy source
+
+Actual VAC5STOR and containing GENTRAN copy effects match8192 complete original/native/full-sanitizer states and64 actual C64 states, preserving canonical scratch aliases and the source-selected SWRETURN entry. Abort producers and recovery bodies are separate source-qualified continuations. See `docs/COMANCHE_VAC5_STORE.md`.

@@ -741,3 +741,6 @@ all: build/cm-alarm-record-native
 include tools/dsky_nv_return_integration.mk
 
 include tools/dsky_nv_busy_integration.mk
+
+include tools/cm_vac5_store.mk
+all: build/cm-vac5-store-native
