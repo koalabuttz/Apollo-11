@@ -1,0 +1,7 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -pedantic -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -Ideps/virtualagc/yaAGC tools/sband_length_reference.c tests/sband_length_cases.c src/agc_word.c build/agc_engine_hardware_dv.o deps/virtualagc/yaAGC/agc_engine_init.o deps/virtualagc/yaAGC/rfopen.o -o build/sband-length-reference
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/sband_length_snapshot.c tests/sband_length_cases.c src/agc_word.c src/sband_length.c src/guidance_length_phased.c src/guidance_norm.c src/agc_multiword.c -o build/sband-length-native
+python3 tools/sband_length_compare.py
+PASS {'states': 327680, 'start': 0, 'end': 327680, 'record_bytes': 4106, 'decoded_sha256': '2bcfaa5669b9eb09c87278861bb48116bcba344ecedb1c9ce8365c69ebe8cb2c'}
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_length_snapshot.c tests/sband_length_cases.c src/agc_word.c src/sband_length.c src/guidance_length_phased.c src/guidance_norm.c src/agc_multiword.c -o build/sband-length-sanitize
+python3 tools/sband_length_compare.py sanitize
+PASS {'states': 327680, 'start': 0, 'end': 327680, 'record_bytes': 4106, 'decoded_sha256': '2bcfaa5669b9eb09c87278861bb48116bcba344ecedb1c9ce8365c69ebe8cb2c'}

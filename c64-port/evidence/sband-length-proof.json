@@ -1,0 +1,83 @@
+{
+  "status": "qualified canonical vector ABVAL; both complete antenna and INTERPRETER files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 327680,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 327680,
+    "start": 0,
+    "end": 327680,
+    "record_bytes": 4106,
+    "decoded_sha256": "2bcfaa5669b9eb09c87278861bb48116bcba344ecedb1c9ce8365c69ebe8cb2c",
+    "decoded_bytes": 1345454080,
+    "canonical_original_archive": "evidence/sband-length-source.snapshots.bin.xz",
+    "compressed_sha256": "07b0a7b533e19d73385914ecfec011cc954ddc9bdb72c40afe973a872c4ba034",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 224,
+    "prg_bytes": 26178,
+    "load_end": 28225,
+    "bss_end": 36417,
+    "mailbox": "a5e00000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups": [
+    "LM random/vector corners",
+    "CM random/vector corners",
+    "both missions each axis all32768 ordinary minors"
+  ],
+  "source_map": "evidence/sband-length-source-map.json",
+  "original_sources": {
+    "Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b"
+  },
+  "native_source_sha256": "956bc7cd7ef27c14a44ed5662a109af7a60586afd5cb0c8c8fd2911f7727f848",
+  "native_header_sha256": "4eb5e481750ef8af88ff1a33a0286b247027b754ef2c2c523d846356a1a66e76",
+  "independent_review": {
+    "path": "evidence/sband-length-independent-review.txt",
+    "sha256": "6418a83c51e34b6cab7b3ef4330cb0c1478152f26a4ab949533db61d55db848f"
+  },
+  "limitations": [
+    "Only vector ABVAL through square/root/finish, before DANZIG or SQRTABRT; no alarmhandler/later antenna/fullinterpreter body.",
+    "VectorMODE-1, five valid VAC bases, ordinary RAM/Q and raw16 A/L, coherent banks/ZERO; producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ],
+  "dependencies": [
+    {
+      "path": "src/guidance_length_phased.c",
+      "sha256": "9e63d23ffe69b8f4c24d5ff5bd9dce729426b4471e61c7ae290d59d62c6ebf21"
+    },
+    {
+      "path": "include/guidance_length_phased.h",
+      "sha256": "af5f483c057ed23c4ebdcf428f4e58b64b85dd7d96c61a6a6e877bb095bca821"
+    },
+    {
+      "path": "src/guidance_norm.c",
+      "sha256": "e6efb1e6394bbedad6ad5b6aedd99ee2d56f8c9ad0186ede928942c1fb24d3fe"
+    },
+    {
+      "path": "include/guidance_norm.h",
+      "sha256": "9e3ce6d50d8a50ba4aaff380a01b30a1c5e9adaf285e0fabe031bd84e5855303"
+    },
+    {
+      "path": "src/agc_multiword.c",
+      "sha256": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e"
+    },
+    {
+      "path": "include/agc_multiword.h",
+      "sha256": "102bb860395c3bdc2293d7846fa08a4b9d191515ccdaa0af7ca7eb4980e91795"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+Independent read-only source review by /root/p66_source_map, retained by /root/frozen_storage.
+Initial review found a concrete long-unnormalization Q gap: tiny vector minor128 gives original Q02314 instead of Q3. The unfrozen wrapper was corrected, and an exhaustive per-axis minor-word supplement added before final packaging. Earlier host/target results are superseded by final expanded evidence.
+Final reviewed body stores root shift count before finish. Count>14 executes original TC GENSCR+1 and leaves Q02314; count14 negative-zero CCS termination avoids this call, retaining Q3; shorter cases take direct MPACSHR+3/Q3. Actual SQRTABRT Q03210 has priority. Both original missions share these addresses.
+No further discrepancy found in canonical field/VAC ownership, source ABVAL/LXCH MODE/length-square/root/finish handoffs. Whole alarmhandler, interpreter or antenna completion and all Cartesian context combinations are not claimed. Fresh source/strict/SAN/C64 proofs are separate acceptance evidence.
+Reviewed final identities:
+956bc7cd7ef27c14a44ed5662a109af7a60586afd5cb0c8c8fd2911f7727f848  src/sband_length.c
+4eb5e481750ef8af88ff1a33a0286b247027b754ef2c2c523d846356a1a66e76  include/sband_length.h
+9e63d23ffe69b8f4c24d5ff5bd9dce729426b4471e61c7ae290d59d62c6ebf21  src/guidance_length_phased.c
+e6efb1e6394bbedad6ad5b6aedd99ee2d56f8c9ad0186ede928942c1fb24d3fe  src/guidance_norm.c
+26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e  ../Luminary099/INTERPRETER.agc
+724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b  ../Comanche055/INTERPRETER.agc

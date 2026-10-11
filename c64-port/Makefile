@@ -966,3 +966,8 @@ include tools/dsky_input_arithmetic.mk
 include tools/cm_ephemeris_time_integration.mk
 
 include tools/imu_coarse_integration.mk
+
+include tools/sband_length_integration.mk
+all: build/sband-length-integrated-stream
+test: test-sband-length
+sanitize: sanitize-sband-length

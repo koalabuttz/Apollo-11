@@ -1428,3 +1428,7 @@ Compose actual LSPOS LUNPOS LUNVEL and SOLPOS through LSTIME and source RES REM 
 ## Translate original IMU coarse alignment control bodies
 
 Qualify524288 full original native sanitizer checkpoints and256 C64 states through120 new original words per mission including rounding signed192 pulse segments and post-settle checks with genuine external device and delay handoffs. See `docs/NATIVE-IMU-COARSE.md`.
+
+## Qualify original canonical vector lengths and unnormalization
+
+Translate actual ABVAL vector length composition against327680 complete original native sanitizer states and224 C64 states including exhaustive tiny axis minor words and source count greater than14 return Q behavior. See `docs/NATIVE-SBAND-LENGTH.md`.
