@@ -715,3 +715,7 @@ Basic AX source control and reused rotation arithmetic match 131,072 original co
 ## Compose Comanche powered-flight interfaces through actual source RVQ
 
 Eight CDU trigonometry and six transformation interfaces match 868,352 original complete state images, including real internal calls and source RVQ control. Full sanitizer streams agree; eight C64 PRGs verify 256 composed returns. SMCDURES and NBSM remain pending before whole-file certification. See `docs/COMANCHE-POWERED-INTERFACE.md`.
+
+## Translate Comanche MAKEPLAY priority and canonical display selection
+
+MAKEPLAY priority, clock and normal display routes match 24,576 original complete states and full sanitizer output. Strict frozen tests include 34 unchanged invalid contexts; C64 validates 64 complete states. The actual wake/sleep consumers are qualified separately. See `docs/COMANCHE-MAKEPLAY.md`.

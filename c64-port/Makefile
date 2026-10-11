@@ -562,3 +562,5 @@ include tools/p66_complete.mk
 include tools/cm_powered_axis_port.mk
 
 include tools/cm_powered_interface_port.mk
+
+include tools/cm_makeplay_port.mk

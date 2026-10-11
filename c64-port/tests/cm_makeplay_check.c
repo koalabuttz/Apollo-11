@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include <string.h>
+#include "cm_makeplay_check.h"
+#include "cm_makeplay_vectors.h"
+uint16_t cm_makeplay_check(uint8_t n,apollo_overlay_state *s,apollo_overlay_state *before){uint16_t f,patch,end,failures=0;cm_native_io io,old;if(n>=64u)return 1;cm_makeplay_input(s,&io,cm_makeplay_numbers[n]);memcpy(before,s,sizeof *s);old=io;if(cm_makeplay_apply(s,&io,cm_makeplay_numbers[n])!=cm_makeplay_results[n])++failures;patch=cm_makeplay_offsets[n];end=cm_makeplay_offsets[n+1u];for(f=0;f<2051u;++f){uint16_t expected=f<2048u?before->words[f]:f==2048u?old.superbank:f==2049u?old.interrupt_enabled:old.channel11;uint16_t actual=f<2048u?s->words[f]:f==2048u?io.superbank:f==2049u?io.interrupt_enabled:io.channel11;if(patch<end&&cm_makeplay_patch[patch][0]==f)expected=cm_makeplay_patch[patch++][1];if(actual!=expected)++failures;}if(patch!=end)++failures;old.superbank=io.superbank;old.interrupt_enabled=io.interrupt_enabled;old.channel11=io.channel11;if(memcmp(&old,&io,sizeof io))++failures;return failures;}
