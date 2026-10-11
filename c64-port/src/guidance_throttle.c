@@ -14,7 +14,7 @@ static void push_load(p66_preparation *s,p66_pushdown *p,agc_dp source,uint8_t l
 static agc_dp pop(p66_pushdown *p){p->pushloc=(agc_word)(p->pushloc-2u);return pair(p,(uint8_t)(p->pushloc-p->base));}
 static void load(p66_preparation *s,agc_dp source){agc_word low=s->mpac[1];s->mpac[0]=source.high;s->mpac[1]=source.low;s->mpac[2]=0;s->mpac[7]=0;s->rate.registers.a=0;s->rate.registers.l=agc_extend(low);}
 static void store_load(p66_preparation *s,agc_dp *destination,agc_dp source){destination->high=s->mpac[0];destination->low=s->mpac[1];load(s,source);}
-static uint8_t negative(const p66_preparation *s){uint8_t i;for(i=0;i<3u;++i){int value=agc_to_int(s->mpac[i]);if(value)return (uint8_t)(value<0);}return 0;}
+static uint8_t negative(const p66_preparation *s){uint8_t i;for(i=0;i<3u;++i){agc_word value=s->mpac[i];if(value!=0&&value!=AGC_NEG_ZERO)return (uint8_t)((value&AGC_SIGN)!=0);}return 0;}
 enum p66_feedback_status p66_throttle_feedback_compute(p66_preparation *s,p66_scale_scratch *sc,
     p66_elapsed_state *el,p66_divide_scratch *d,p66_norm_scratch *n,p66_pushdown *p,
     p66_throttle_feedback *f,const p66_throttle_inputs *in,const agc_word bias[6]){

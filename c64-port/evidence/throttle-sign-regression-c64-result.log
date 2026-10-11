@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete throttle_feedback group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 42835
+throttle_feedback-hardware-stack.bin: measured stack extent 30 bytes
+throttle_feedback-software-stack.bin: measured stack extent 328 bytes
