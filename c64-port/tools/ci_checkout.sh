@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Lean checkout for CI and fresh cloud sessions: every file except legacy
 # evidence blobs over 1 MB, plus the commit graph (no old trees or blobs).
+# Other large tracked files (generated vector headers) are fetched normally.
 #
 # Bootstrap from an empty directory (CI does exactly this):
 #   git init -q . && git remote add origin https://github.com/OWNER/REPO
@@ -22,9 +23,9 @@ git rev-list --objects --no-walk --missing=print "$commit" | sed -n 's/^?//p' | 
 {
   echo '/*'
   git ls-tree -r --format='%(objectname) %(path)' "$commit" \
-    | sort | join - "$missing" | cut -d' ' -f2- | sed 's|^|!/|'
+    | sort | join - "$missing" | cut -d' ' -f2- | grep '^c64-port/evidence/' | sed 's|^|!/|'
 } > "$(git rev-parse --git-path info/sparse-checkout)"
-echo "skipping $(wc -l < "$missing") blobs over 1 MB"
+echo "skipping legacy evidence blobs over 1 MB"
 rm -f "$missing"
 git checkout -q --detach "$commit"
 # Commit graph only, so merge-base and diffs against the port branch work.

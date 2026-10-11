@@ -24,7 +24,8 @@ import time
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 MISSING = re.compile(r"(?:No such file or directory|cannot open|not found)[^\n]*?(evidence/[A-Za-z0-9._/+-]+)"
                      r"|(evidence/[A-Za-z0-9._/+-]+)[^\n]*?(?:No such file or directory|not found)")
-BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*/build/")
+BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[^']+)'|"
+                          r"cmp: (build/[^:]+): No such file")
 LOCK = threading.Lock()
 
 
@@ -51,10 +52,88 @@ def restore(path):
         return False
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(blob.stdout)
+    for sibling in siblings(path):
+        restore(sibling)
     return True
 
 
-def run(target, log_dir, make_args, attempts):
+def siblings(path):
+    """Skipped files that differ from `path` only in their numbers.
+
+    Chunked evidence (`foo-source-11.snapshots.bin.xz`) is read part by part,
+    so one missing chunk means the rest are missing too; fetch them together
+    instead of one failing rerun per chunk."""
+    sparse = ROOT.parent / '.git' / 'info' / 'sparse-checkout'
+    if not sparse.is_file():
+        return []
+    shape = re.compile(re.sub(r'\\d+|\d+', r'\\d+', re.escape(path)) + '$')
+    found = []
+    for line in sparse.read_text().splitlines():
+        if line.startswith('!/c64-port/'):
+            other = line[len('!/c64-port/'):]
+            if other != path and shape.match(other) and not (ROOT / other).exists():
+                found.append(other)
+    return found
+
+
+def produce(path, target, log_dir, make_args, attempts, stack=()):
+    """Recreate a build/ input that the old serial loop left behind.
+
+    Legacy targets read streams written by the oracle differentials
+    (`make differential`), by their own module's differential target, or by
+    another target's recipe. Try those producers in that order."""
+    if (ROOT / path).exists():
+        return True
+    rules = ci_rules()
+    candidates = []
+    if path in rules:
+        candidates.append(('make', path))
+    for name, (_, recipe) in rules.items():
+        if name != target and re.search(r'(>|-o)\s*' + re.escape(path) + r'(\s|$)', recipe):
+            candidates.append(('make', name))
+    stem = re.sub(r'(-(native|reference|sanitize|live|target))?(\.snapshots(\.gz)?|\.json|\.trace)?$', '',
+                  pathlib.PurePosixPath(path).name)
+    script = ROOT / 'tools' / (stem.replace('-', '_') + '_differential.py')
+    if script.is_file():
+        candidates.append(('script', script))
+    module = target
+    for prefix in ('c64-', 'sanitize-', 'test-'):
+        module = module[len(prefix):] if module.startswith(prefix) else module
+    for name in (f'differential-{module}', f'test-{module}'):
+        if name in rules and name != target:
+            candidates.append(('make', name))
+    for kind, what in candidates:
+        print(f'  {target}: producing {path} via {getattr(what, "name", what)}', flush=True)
+        if kind == 'make':
+            if what in stack:
+                continue
+            run(what, log_dir, make_args, attempts, stack)
+        else:
+            text = what.read_text(errors='replace')
+            argv = [str(ROOT / 'deps/fixture')] if 'sys.argv[1]' in text else []
+            log = log_dir / (what.stem + '.log')
+            proc = subprocess.run([sys.executable, str(what), *argv], cwd=ROOT, stdout=subprocess.PIPE,
+                                  stderr=subprocess.STDOUT, text=True)
+            log.write_text(proc.stdout)
+        if (ROOT / path).exists():
+            return True
+    return False
+
+
+_RULES = None
+
+
+def ci_rules():
+    global _RULES
+    with LOCK:
+        if _RULES is None:
+            sys.path.insert(0, str(ROOT / 'tools'))
+            import ci_affected
+            _RULES = ci_affected.database()
+    return _RULES
+
+
+def run(target, log_dir, make_args, attempts, stack=()):
     log = log_dir / (re.sub(r'[^A-Za-z0-9._-]', '_', target) + '.log')
     start = time.monotonic()
     tried = set()
@@ -65,18 +144,12 @@ def run(target, log_dir, make_args, attempts):
         log.write_text(proc.stdout)
         if proc.returncode == 0:
             return target, True, time.monotonic() - start, ''
-        if BUILD_OUTPUT.search(proc.stdout) and target.startswith('c64-') and 'producers' not in tried:
-            # Legacy C64 builds read reference streams that the module's own
-            # differential (or host test) target writes into build/.
-            tried.add('producers')
-            stem = target[len('c64-'):]
-            for producer in (f'differential-{stem}', f'test-{stem}'):
-                if subprocess.run(['make', '-q', 'SKIP_EVIDENCE_RESTORE=1', producer], cwd=ROOT,
-                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 2:
-                    print(f'  {target}: running {producer} for its build/ inputs', flush=True)
-                    run(producer, log_dir, make_args, attempts)
-                    break
-            continue
+        built = sorted({a or b for a, b in BUILD_OUTPUT.findall(proc.stdout)} - tried)
+        if built:
+            tried.update(built)
+            ran = [produce(path, target, log_dir, make_args, attempts, stack + (target,)) for path in built]
+            if any(ran):
+                continue
         wanted = {(a or b).rstrip("'.,:)") for a, b in MISSING.findall(proc.stdout)} - tried
         tried |= wanted
         with LOCK:
@@ -95,7 +168,7 @@ def main():
     parser.add_argument('--group', action='append', default=[])
     parser.add_argument('-j', '--jobs', type=int, default=os.cpu_count() or 2)
     parser.add_argument('--log-dir', type=pathlib.Path, default=ROOT / 'build/ci-logs')
-    parser.add_argument('--attempts', type=int, default=6)
+    parser.add_argument('--attempts', type=int, default=30)
     parser.add_argument('--make-arg', action='append', default=[])
     parser.add_argument('--summary', type=pathlib.Path)
     args = parser.parse_args()
