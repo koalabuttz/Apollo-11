@@ -1,0 +1,11 @@
+{
+  "audits": [
+    "evidence/cm-inactive-build-cleanup.json",
+    "evidence/inactive-proof-stream-cleanup-next.json",
+    "evidence/p66-source-map-finalized-stream-cleanup.json"
+  ],
+  "unique_archives_independently_decoded": 21,
+  "verified_reclaimed_bytes": 1676949870,
+  "original_archives_retained": true,
+  "raw_duplicates_absent": true
+}
