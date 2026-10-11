@@ -463,3 +463,5 @@ include tools/lm_wake.mk
 include tools/makeplay.mk
 
 include tools/cm_restart_timing.mk
+
+include tools/cm_longcall.mk

@@ -1,0 +1,40 @@
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "entries": [
+    "5342 LONGCALL",
+    "01,3465 LONGCYCL",
+    "01,3505 LONGRTRN",
+    "01,3515 GETCADR"
+  ],
+  "boundary": "original WAITLIST entry or actual DTCB target",
+  "snapshot_sha256": "d4db0aa74ba278caef567921265eaa387e4aa060a61c907d81beae225eb42c41",
+  "hardware_stack_bytes": 10,
+  "software_stack_bytes": 9,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 36026,
+    ".text": {
+      "address": 2061,
+      "bytes": 3212
+    },
+    ".rodata": {
+      "address": 5273,
+      "bytes": 32800
+    },
+    ".data": {
+      "address": 38073,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 38073,
+      "bytes": 4096
+    },
+    ".noinit": {
+      "address": 42169,
+      "bytes": 0
+    },
+    "image_end": 42169
+  }
+}

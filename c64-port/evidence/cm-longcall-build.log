@@ -1,0 +1,22 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_longcall.c src/agc_word.c src/agc_multiword.c tests/cm_longcall_cases.c platform/host/cm_longcall_snapshot.c -o build/cm-longcall-native
+python3 tools/cm_longcall_differential.py
+PASS: 4096 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "entries": [
+    "5342 LONGCALL",
+    "01,3465 LONGCYCL",
+    "01,3505 LONGRTRN",
+    "01,3515 GETCADR"
+  ],
+  "boundary": "original WAITLIST entry or actual DTCB target",
+  "snapshot_sha256": "d4db0aa74ba278caef567921265eaa387e4aa060a61c907d81beae225eb42c41"
+}
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_longcall.c src/agc_word.c src/agc_multiword.c tests/cm_longcall_cases.c tests/cm_longcall_check.c tests/test_cm_longcall.c -o build/test-cm-longcall
+./build/test-cm-longcall
+4096 original CM long-call full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_longcall.c src/agc_word.c src/agc_multiword.c tests/cm_longcall_cases.c tests/cm_longcall_check.c tests/test_cm_longcall.c -o build/test-cm-longcall-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-longcall-sanitize
+4096 original CM long-call full-image states and guards: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-longcall.map src/cm_longcall.c src/agc_word.c src/agc_multiword.c tests/cm_longcall_cases.c tests/cm_longcall_check.c platform/c64/cm_longcall_diagnostic.c -o build/cm-longcall.prg
