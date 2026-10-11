@@ -1364,3 +1364,7 @@ Actual POSTJUMP and GOEXTVB execute all60 source-selected TC/TCF fanout branches
 ## Translate complete original Luminary interbank communication source
 
 All14 source entries and76 emitted words, source control aliases and allfour negative-overflow BANKJUMP successors are mapped and independently reviewed. All921,088 complete original/native/full-sanitizer states and448 actual C64 states match. The invalid register-Q fault frontier is retained before any external instruction fetch, alongside ordinary compiled-caller/saved-return bounds and quiesced producers. See `docs/LUMINARY-INTERBANK.md`.
+
+## Complete original Luminary interbank source
+
+All14 entries and76 emitted words, including allfour negative-overflow MAKECADR successors, are qualified by independent review,921088 complete source/native/sanitizer states and448 actual C64 states. The certificate uses the historical baseline and retains the compiled-caller domain and external return/fault boundaries.35 files are complete;140 files and both full applications remain open. See `docs/LUMINARY-INTERBANK.md`.

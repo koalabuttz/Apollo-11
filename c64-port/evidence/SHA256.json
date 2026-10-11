@@ -5023,6 +5023,8 @@
   "lm-idle-start-sanitize-check.log": "8854c4fc90609d26e64a4609f7297f4bf53eaebe7e64bd8d90ac11cfc6d2bae4",
   "lm-interbank-SHA256.json": "71015ea3d1dce6e0d4c4ca3fb21337d69084b25d87c4b4795722d9280e27e257",
   "lm-interbank-c64.log": "e5b614c37c0ab8aa031afdf80c91169151f11009875cd493dce5f8154aa42ed8",
+  "lm-interbank-certificate-revision-clarification.json": "2c94d6176236bc35ea7df425f7e60f287e758dac8d6c47e0b46f6d953cf0a8b9",
+  "lm-interbank-certificate-validation.log": "da844911ca31d91b8d6bba9394dbd98cfbeb9b5e8db1e873b46760d8a722941e",
   "lm-interbank-coverage.json": "ce2b375d6ad96e4cd7dc22b6e9cae644190d001d3dac031b8c4ede943c1b778f",
   "lm-interbank-independent-review.txt": "3056dd280e3361436d2626a1149a0876f860f8402c250c46f1fff2bbcbf47a2d",
   "lm-interbank-integration-validation.log": "c27c3c7ea5ae0e255aa7f10b71445421755bfc50993a4cf8a9bb5ef05f298153",
