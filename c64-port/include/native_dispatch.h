@@ -4,7 +4,8 @@
 #include "executive.h"
 enum exec_action { EXEC_YIELD, EXEC_FINISH, EXEC_SLEEP, EXEC_REPRIORITIZE,
                    EXEC_ENTER_INTERPRETER, EXEC_EXIT_INTERPRETER,
-                   EXEC_DISPATCHED_BASIC, EXEC_DISPATCHED_INTERPRETER };
+                   EXEC_DISPATCHED_BASIC, EXEC_DISPATCHED_INTERPRETER,
+                   EXEC_EXCHANGED_BASIC, EXEC_EXCHANGED_INTERPRETER };
 enum exec_context_kind { EXEC_CONTEXT_BASIC=0, EXEC_CONTEXT_INTERPRETIVE=1 };
 /* A callback returns to this trampoline; locals on its C stack do not survive
  * a context change. Store persistent job data in MPAC/VAC. resume is an explicit 2CADR. */
@@ -88,6 +89,12 @@ enum exec_status exec_native_bind_services(exec_native *,const exec_native_servi
  * interpretive pair. The callback imports INTBIT15/EDOP explicitly; positive
  * active priority, a mapped interpretive pair, EDOP0 and matching bank bit are
  * required. It never performs another exchange, poll or IRQ admission. */
+/* EXCHANGED_BASIC/INTERPRETER adopt a canonical CHANG2 result from an
+ * INTERPRETIVE caller. The source body has already exchanged the completed
+ * pair, imported Executive state and selected a positive mapped context;
+ * interpreter selection imports INTBIT15/EDOP explicitly. Idle is prohibited.
+ * No lifecycle, NEWJOB poll or post-return IRQ admission is repeated. These
+ * actions preserve the existing BASIC-origin DISPATCHED guards unchanged. */
 /* Foreground helpers for a callback's own admission or explicit safe-point poll.
  * With an IRQ binding these restore the platform caller's previous IRQ state.
  * Errors latch a native fault; neither helper invokes a continuation. */

@@ -1,0 +1,220 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     90ff     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/native-exchange-keyboard-number.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     830      830        0     1                 __call_indir
+     833      833       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     833      833       13     1                 __zero_bss
+     846      846       ca     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.agc_multiply)
+     846      846       ca     1                 agc_multiply
+     910      910      1b3     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.agc_double_add)
+     910      910      1b3     1                 agc_double_add
+     ac3      ac3      713     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exec_admit)
+     ac3      ac3      713     1                 exec_admit
+    11d6     11d6      1cb     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exec_endjob_select)
+    11d6     11d6      1cb     1                 exec_endjob_select
+    13a1     13a1      28e     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exec_complete_basic)
+    13a1     13a1      28e     1                 exec_complete_basic
+    162f     162f       ba     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.basic_slot)
+    162f     162f       ba     1                 basic_slot
+    16e9     16e9      375     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exchange_basic)
+    16e9     16e9      375     1                 exchange_basic
+    1a5e     1a5e      314     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exec_sleep_basic)
+    1a5e     1a5e      314     1                 exec_sleep_basic
+    1d72     1d72       7e     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.lifecycle_candidate)
+    1d72     1d72       7e     1                 lifecycle_candidate
+    1df0     1df0      33d     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exec_priority_basic)
+    1df0     1df0      33d     1                 exec_priority_basic
+    212d     212d      1e5     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.lookup_kind)
+    212d     212d      1e5     1                 lookup_kind
+    2312     2312      43d     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.start_locked)
+    2312     2312      43d     1                 start_locked
+    274f     274f      1c7     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.saved_target)
+    274f     274f      1c7     1                 saved_target
+    2916     2916      419     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exchange_saved)
+    2916     2916      419     1                 exchange_saved
+    2d2f     2d2f       df     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.settle)
+    2d2f     2d2f       df     1                 settle
+    2e0e     2e0e        d     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.lookup)
+    2e0e     2e0e        d     1                 lookup
+    2e1b     2e1b       7e     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.candidate)
+    2e1b     2e1b       7e     1                 candidate
+    2e99     2e99     10d4     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exec_native_step)
+    2e99     2e99     10d4     1                 exec_native_step
+    3f6d     3f6d      25f     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exec_irq_service_locked)
+    3f6d     3f6d      25f     1                 exec_irq_service_locked
+    41cc     41cc       73     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.p66_native_export_executive)
+    41cc     41cc       73     1                 p66_native_export_executive
+    423f     423f       28     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.source_copy)
+    423f     423f       28     1                 source_copy
+    4267     4267       9c     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.scalar_exchange)
+    4267     4267       9c     1                 scalar_exchange
+    4303     4303       73     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.p66_native_import_executive)
+    4303     4303       73     1                 p66_native_import_executive
+    4376     4376      4d5     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.executive_words)
+    4376     4376      4d5     1                 executive_words
+    484b     484b     1cba     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.number_charin)
+    484b     484b     1cba     1                 number_charin
+    6505     6505      8dd     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.checkpoint)
+    6505     6505      8dd     1                 checkpoint
+    6de2     6de2       20     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.observe)
+    6de2     6de2       20     1                 observe
+    6e02     6e02        9     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.enter)
+    6e02     6e02        9     1                 enter
+    6e0b     6e0b        f     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.leave)
+    6e0b     6e0b        f     1                 leave
+    6e1a     6e1a       ef     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.c64_dsky_keyboard_poll)
+    6e1a     6e1a       ef     1                 c64_dsky_keyboard_poll
+    6f09     6f09     2603     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.main)
+    6f09     6f09     2603     1                 main
+    950c     950c        6     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.exit)
+    950c     950c        6     1                 exit
+    9512     9512        3     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.cbm_k_getin)
+    9512     9512        3     1                 cbm_k_getin
+    9515     9515       13     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__lshrhi3)
+    9515     9515       13     1                 __lshrhi3
+    9528     9528       c4     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__udivhi3)
+    9528     9528       c4     1                 __udivhi3
+    95ec     95ec       40     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__umodqi3)
+    95ec     95ec       40     1                 __umodqi3
+    962c     962c       ae     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__umodhi3)
+    962c     962c       ae     1                 __umodhi3
+    96da     96da       7d     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__udivmodqi4)
+    96da     96da       7d     1                 __udivmodqi4
+    9757     9757       f8     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__udivmodhi4)
+    9757     9757       f8     1                 __udivmodhi4
+    984f     984f       22     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__memset)
+    984f     984f       22     1                 __memset
+    9871     9871       34     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__mulhi3)
+    9871     9871       34     1                 __mulhi3
+    98a5     98a5       67     1         build/native-exchange-keyboard-number.prg.lto.o:(.text.__mulsi3)
+    98a5     98a5       67     1                 __mulsi3
+    990c     990c        0     1         __init_array_start = .
+    990c     990c        0     1         __init_array_end = .
+    990c     990c        0     1         __fini_array_start = .
+    990c     990c        0     1         __fini_array_end = .
+    990c     990c      cd4     1 .rodata
+    990c     990c        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    990c     990c        0     1                 __set_v
+    990d     990d        e     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.checkpoint)
+    991b     991b       1c     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.executive_fields)
+    991b     991b       1c     1                 executive_fields
+    9937     9937       18     1         <internal>:(.rodata.cst8)
+    994f     994f       14     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.dsky_charin_number.relay)
+    994f     994f       14     1                 dsky_charin_number.relay
+    9963     9963        a     1         <internal>:(.rodata.str2.1)
+    996d     996d       20     1         <internal>:(.rodata.cst16)
+    998d     998d        6     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.guard)
+    998d     998d        6     1                 guard
+    9993     9993        7     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.dsky_keyboard_number_mappings)
+    9993     9993        7     1                 dsky_keyboard_number_mappings
+    999a     999a       32     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.dsky_keyboard_number_flow_offsets)
+    999a     999a       32     1                 dsky_keyboard_number_flow_offsets
+    99cc     99cc      bcc     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.dsky_keyboard_number_flow_patch)
+    99cc     99cc      bcc     1                 dsky_keyboard_number_flow_patch
+    a598     a598       18     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.characters)
+    a598     a598       18     1                 characters
+    a5b0     a5b0       30     1         build/native-exchange-keyboard-number.prg.lto.o:(.rodata.codes)
+    a5b0     a5b0       30     1                 codes
+    a5e0     a5e0        0     1 .data
+    a5e0     a5e0        0     1         __data_start = .
+    a5e0     a5e0        0     1         __data_end = .
+    a5e0     a5e0        0     1 __data_load_start = LOADADDR(.data)
+    a5e0     a5e0        0     1 __data_size = SIZEOF(.data)
+    a5e0     a5e0     12f1     1 .bss
+    a5e0     a5e0        0     1         __bss_start = .
+    a5e0     a5e0       1e     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.binding)
+    a5e0     a5e0       1e     1                 binding
+    a5fe     a5fe        1     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.fixture)
+    a5fe     a5fe        1     1                 fixture
+    a5ff     a5ff        2     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.failures)
+    a5ff     a5ff        2     1                 failures
+    a601     a601        1     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.observed)
+    a601     a601        1     1                 observed
+    a602     a602        1     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.excluded)
+    a602     a602        1     1                 excluded
+    a603     a603     1000     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.image)
+    a603     a603     1000     1                 image
+    b603     b603      288     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.state)
+    b603     b603      288     1                 state
+    b88b     b88b       1d     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.display)
+    b88b     b88b       1d     1                 display
+    b8a8     b8a8       24     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.runtime)
+    b8a8     b8a8       24     1                 runtime
+    b8cc     b8cc        5     1         build/native-exchange-keyboard-number.prg.lto.o:(.bss.dsky_keyboard_number_flow_mailbox)
+    b8cc     b8cc        5     1                 dsky_keyboard_number_flow_mailbox
+    b8d1     b8d1        0     1         __bss_end = .
+    b8d1     b8d1        0     1 __bss_size = SIZEOF(.bss)
+    b8d1     b8d1        0     1 .noinit
+    b8d1     b8d1        0     1         __heap_start = ALIGN(., 2)
+    b8d1     b8d1        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/native-exchange-keyboard-number.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/native-exchange-keyboard-number.prg.lto.o:(.llvm_sympart)
+       0        0      e50     4 .symtab
+       0        0      e50     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      94a     1 .strtab
+       0        0      94a     1         <internal>:(.strtab)

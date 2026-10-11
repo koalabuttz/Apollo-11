@@ -1192,3 +1192,7 @@ Actual DSPFMEM and COMADRS lead-ins now read the entire 40,960-address original 
 Both original RSET/ERROR paths now preserve their differing failure registers and restart-light effects, including the negative-zero CADRSTOR key-release corner. 8,192 complete source/native/sanitized states and 64 complete C64 checkpoints pass. See `docs/DSKY-RESET-ENTRY.md`.
 
 The isolated committed release at `e4ccffc` passed every portable host build and test recipe; see `evidence/integration-release-host-proof.json`. The Comanche fixed caller source/native/sanitizer streams also passed an independent every-byte comparison of 673,054,720 bytes; see `evidence/cm-fixed-compat-integration-byte-comparison.json`. These audit results do not certify complete applications.
+
+## Adopt source-selected canonical interpreter exchanges in the native scheduler
+
+Native scheduler adoption now preserves the exact source-selected CHANG2 context without repeating exchange or admitting pending IRQs. All 16,384 complete source transitions and 64 real three-overlay C64 cases are qualified; historical scheduler and complete P66 regressions pass. Remaining application bodies and live scheduling paths retain separate completion gates. See `docs/NATIVE-CANONICAL-EXCHANGE.md`.

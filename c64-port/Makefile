@@ -624,3 +624,10 @@ include tools/cm_fixed_compat.mk
 all: build/cm-fixed-compat-native
 
 include tools/dsky_charin_reset.mk
+
+include tools/native_exchange.mk
+all: build/test-native-exchange
+build/test-native-exchange: $(NATIVE_EXCHANGE_CORE) $(NATIVE_EXCHANGE_TEST) tests/test_native_exchange.c | build
+	$(CC) -O2 $(NATIVE_EXCHANGE_FLAGS) $^ -o $@
+test: test-native-exchange
+sanitize: sanitize-native-exchange

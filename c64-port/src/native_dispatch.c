@@ -313,17 +313,20 @@ enum exec_status exec_native_finish(exec_native *r,enum exec_action action,exec_
     /* A callback helper may already have latched a fault. Preserve its exact
      * boundary/status; never complete or exchange that failed running job. */
     status=r->fault != EXEC_OK ? r->fault :
-        (action==EXEC_DISPATCHED_BASIC||action==EXEC_DISPATCHED_INTERPRETER) ? EXEC_OK : exec_irq_service_locked(r);
+        (action==EXEC_DISPATCHED_BASIC||action==EXEC_DISPATCHED_INTERPRETER||
+         action==EXEC_EXCHANGED_BASIC||action==EXEC_EXCHANGED_INTERPRETER) ? EXEC_OK : exec_irq_service_locked(r);
     if (status==EXEC_OK && r->requested_priority!=0 && action!=EXEC_REPRIORITIZE)
         status=EXEC_INVALID_ACTION;
     if (status == EXEC_OK) {
         if (0) {status=EXEC_INVALID_ACTION;}
 #if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==3
-        else if (action == EXEC_DISPATCHED_BASIC||action==EXEC_DISPATCHED_INTERPRETER) {
-            enum exec_context_kind kind=action==EXEC_DISPATCHED_BASIC?EXEC_CONTEXT_BASIC:EXEC_CONTEXT_INTERPRETIVE;
-            if(r->current_kind!=EXEC_CONTEXT_BASIC) status=EXEC_INVALID_ACTION;
+        else if (action == EXEC_DISPATCHED_BASIC||action==EXEC_DISPATCHED_INTERPRETER||
+                 action == EXEC_EXCHANGED_BASIC||action==EXEC_EXCHANGED_INTERPRETER) {
+            uint8_t exchanged=(uint8_t)(action==EXEC_EXCHANGED_BASIC||action==EXEC_EXCHANGED_INTERPRETER);
+            enum exec_context_kind kind=(action==EXEC_DISPATCHED_BASIC||action==EXEC_EXCHANGED_BASIC)?EXEC_CONTEXT_BASIC:EXEC_CONTEXT_INTERPRETIVE;
+            if(r->current_kind!=(exchanged?EXEC_CONTEXT_INTERPRETIVE:EXEC_CONTEXT_BASIC)) status=EXEC_INVALID_ACTION;
             else if(resume.location==0 && resume.bank==0) {
-                if(kind!=EXEC_CONTEXT_BASIC || r->state->newjob!=AGC_NEG_ZERO ||
+                if(exchanged || kind!=EXEC_CONTEXT_BASIC || r->state->newjob!=AGC_NEG_ZERO ||
                    agc_classify(r->state->core[0][EXEC_PRIORITY])==AGC_POSITIVE)
                     status=EXEC_OUT_OF_SCOPE;
                 else {r->current=resume;status=EXEC_IDLE;}

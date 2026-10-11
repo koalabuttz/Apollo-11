@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/native-exchange-keyboard-number.prg from 0801 to A5DF (9DDF bytes)
+WATCH: 1  C:$b8cc  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store b8cc)  245/$0f5,   5/$05
+.C:7eeb  8E CC B8    STX $B8CC      - A:00 X:A5 Y:2F SP:f1 N.-....C  176565632
+>C:b8cc  a5 00 00 08  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/native-exchange-keyboard-number-vice-mailbox.bin' from $b8cc to $b8d0
+Saving file `/workspace/Apollo-11/c64-port/build/native-exchange-keyboard-number-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/native-exchange-keyboard-number-vice-software-stack.bin' from $c100 to $cfff

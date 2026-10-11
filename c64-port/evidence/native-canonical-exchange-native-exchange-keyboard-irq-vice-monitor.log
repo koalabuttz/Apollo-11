@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/native-exchange-keyboard-irq.prg from 0801 to 971C (8F1C bytes)
+WATCH: 1  C:$aa09  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store aa09)  164/$0a4,  38/$26
+.C:6659  8E 09 AA    STX $AA09      - A:00 X:A5 Y:2F SP:f1 N.-....C  338191850
+>C:aa09  a5 00 00 10  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/native-exchange-keyboard-irq-vice-mailbox.bin' from $aa09 to $aa0d
+Saving file `/workspace/Apollo-11/c64-port/build/native-exchange-keyboard-irq-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/native-exchange-keyboard-irq-vice-software-stack.bin' from $c100 to $cfff
