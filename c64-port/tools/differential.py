@@ -208,3 +208,5 @@ subprocess.run([sys.executable,'tools/cm_irq_differential.py',str(reference)],cw
 subprocess.run([sys.executable,'tools/p66_major_mode_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/p66_launch_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/horizontal_differential.py',str(reference)],cwd=ROOT,check=True)

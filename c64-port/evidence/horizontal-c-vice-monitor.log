@@ -1,0 +1,90 @@
+Loading /workspace/Apollo-11/c64-port/build/horizontal-c.prg from 0801 to A824 (A024 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)  114/$072,   8/$08
+.C:69a3  8D 88 C0    STA $C088      - A:10 X:00 Y:00 SP:ed ..-..I..    8950670
+Stopwatch reset to 0.
+#1 (Stop on store c088)  123/$07b,  62/$3e
+.C:69b7  8D 88 C0    STA $C088      - A:20 X:00 Y:00 SP:ed ..-..I..        621
+Stopwatch:        621
+#1 (Stop on store c088)  137/$089,  34/$22
+.C:69a3  8D 88 C0    STA $C088      - A:11 X:00 Y:01 SP:ed ..-..I..      80099
+Stopwatch reset to 0.
+#1 (Stop on store c088)   24/$018,   9/$09
+.C:69b7  8D 88 C0    STA $C088      - A:21 X:00 Y:01 SP:ed ..-..I..      12512
+Stopwatch:      12512
+#1 (Stop on store c088)   36/$024,  41/$29
+.C:69a3  8D 88 C0    STA $C088      - A:12 X:00 Y:02 SP:ed ..-..I..      91924
+Stopwatch reset to 0.
+#1 (Stop on store c088)  258/$102,  59/$3b
+.C:69b7  8D 88 C0    STA $C088      - A:22 X:00 Y:02 SP:ed ..-..I..      14004
+Stopwatch:      14004
+#1 (Stop on store c088)  264/$108,  41/$29
+.C:69a3  8D 88 C0    STA $C088      - A:13 X:00 Y:03 SP:ed ..-..I..      92988
+Stopwatch reset to 0.
+#1 (Stop on store c088)  146/$092,  17/$11
+.C:69b7  8D 88 C0    STA $C088      - A:23 X:00 Y:03 SP:ed ..-..I..      71166
+Stopwatch:      71166
+#1 (Stop on store c088)  141/$08d,  30/$1e
+.C:69a3  8D 88 C0    STA $C088      - A:14 X:00 Y:04 SP:ed ..-..I..     149488
+Stopwatch reset to 0.
+#1 (Stop on store c088)  270/$10e,  32/$20
+.C:69b7  8D 88 C0    STA $C088      - A:24 X:00 Y:04 SP:ed ..-..I..       8129
+Stopwatch:       8129
+#1 (Stop on store c088)  291/$123,  52/$34
+.C:69a3  8D 88 C0    STA $C088      - A:15 X:00 Y:05 SP:ed ..-..I..      88096
+Stopwatch reset to 0.
+#1 (Stop on store c088)  164/$0a4,  60/$3c
+.C:69b7  8D 88 C0    STA $C088      - A:25 X:00 Y:05 SP:ed ..-..I..      50975
+Stopwatch:      50975
+#1 (Stop on store c088)  186/$0ba,  59/$3b
+.C:69a3  8D 88 C0    STA $C088      - A:16 X:00 Y:06 SP:ed ..-..I..     130984
+Stopwatch reset to 0.
+#1 (Stop on store c088)  194/$0c2,  39/$27
+.C:69b7  8D 88 C0    STA $C088      - A:26 X:00 Y:06 SP:ed ..-..I..        484
+Stopwatch:        484
+#1 (Stop on store c088)  199/$0c7,  60/$3c
+.C:69a3  8D 88 C0    STA $C088      - A:17 X:00 Y:07 SP:ed ..-..I..      79444
+Stopwatch reset to 0.
+#1 (Stop on store c088)  206/$0ce,   7/$07
+.C:69b7  8D 88 C0    STA $C088      - A:27 X:00 Y:07 SP:ed ..-..I..        388
+Stopwatch:        388
+#1 (Stop on store c088)    1/$001,  50/$32
+.C:69e0  8E 88 C0    STX $C088      - A:00 X:18 Y:00 SP:ed ..-..I..     144764
+Stopwatch reset to 0.
+#1 (Stop on store c088)  132/$084,  41/$29
+.C:6a18  8E 88 C0    STX $C088      - A:FF X:28 Y:FF SP:ed ..-..I.C     106524
+Stopwatch:     106524
+#2 (Stop on store c080)  170/$0aa,  32/$20
+.C:6ad7  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-.....     423405
+>C:c080  a5 00 00 40  00 03 f0 78  28                         ...@...x(
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal-c-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal-c-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal-c-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 HORIZONTAL            
+0518  64 COMPLETE ORIGINAL STATES PASS        
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

@@ -419,3 +419,7 @@ NEWMODEX matches 1,024 complete original erasable images, admitting the actual D
 ## Compose complete native STARTP66 through RODCOMP
 
 The complete source landing-start sequence matches 1,024 whole-memory entry states, with actual display-job and timer admission and both resource bailouts. Strict and sanitizer checks and 32 complete C64 images pass. Deferred display execution and the remaining landing cycle are separately tracked. See [P66_LAUNCH.md](P66_LAUNCH.md).
+
+## Port complete native horizontal velocity arithmetic
+
+All 65,536 original horizontal-velocity checkpoints match, preserving UNIT overflow continuations and physical bank effects. Strict and all-state sanitizer checks and all 256 complete frozen C64 states pass. See [HORIZONTAL.md](HORIZONTAL.md).

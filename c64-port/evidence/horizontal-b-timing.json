@@ -1,0 +1,15 @@
+{
+  "pal_clock_hz": 985248,
+  "samples": {
+    "VLOAD24": 619,
+    "surface_correction": 12281,
+    "PDVL_R": 14015,
+    "UNIT_VXSC": 23371,
+    "VSL1_BVSU": 8296,
+    "ABVAL": 50721,
+    "STORE_VHORIZ": 524,
+    "EXIT": 428,
+    "full_horizontal": 149312
+  },
+  "scope": "Finite excluded-call samples include marker overhead and VIC/IRQ effects; no WCET or live guidance deadline proof."
+}
