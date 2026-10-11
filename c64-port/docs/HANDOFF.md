@@ -451,3 +451,7 @@ All 4,096 complete original ENEMA states match across 439 owned words, including
 ## Split source-faithful guidance into returning native phases
 
 All 97,558 complete UNIT/radial/projection source states and full sanitizer corpora match. All 480 C64 phase entry/exit cases pass with zero extra zero page. Internal C ABI returns retain ownership; scheduling occurs only at original source boundaries. See `docs/GUIDANCE_PHASED.md`.
+
+## Port original DSKY relay drain and channel10 output
+
+All 1,024 whole-memory DSPOUTSB source states and actual channel10 output events match. Strict and sanitizer checks and 64 complete C64 images pass; the native screen adapter and live application wiring remain separate integrations. See [DSKY_RELAY.md](DSKY_RELAY.md).

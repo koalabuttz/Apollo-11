@@ -377,3 +377,5 @@ test-guidance-phased:
 	$(MAKE) guidance-phased-host KIND=unit
 	$(MAKE) guidance-phased-host KIND=radial
 	$(MAKE) guidance-phased-host KIND=projection
+
+include tools/dsky_relay.mk
