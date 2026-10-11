@@ -1,0 +1,1272 @@
+{
+  "schema": 1,
+  "repository": "koalabuttz/Apollo-11",
+  "branch": "port/c64-native-c",
+  "local_head": "206c1ae06cfaf25097665cdc6b6cf8f2f2c367dd",
+  "remote_head": "ce0b34613c05ae31ffc4eae5dc8364a053734d38",
+  "authority": "Exact Git tree identity for each milestone; remote commit parents preserve pre-existing GitHub history.",
+  "records": [
+    {
+      "local": "d44e265eea04d861a797bae381b74cf78b7bc205",
+      "remote": "ec7d36b2022985ad69a4fd6076c19e2578018841",
+      "tree": "8e60a5f217ac56e1a599f42dd92888bb499c94f4"
+    },
+    {
+      "local": "3929014619117c19058386b324710d961ba3517a",
+      "remote": "2f3e4f370f65e67ce0da85feaa242be100357ce0",
+      "tree": "e3e41e99d0ac1666939a7d5c4f863eaf3d3ecc25"
+    },
+    {
+      "local": "776ee2953e1ad57a7b1fba61c9dfe265fe4d5e32",
+      "remote": "385d0906212f90e2667aae38f177df5cba49edd7",
+      "tree": "1205e68f7ed55035b174eee12ee21f80f9cefc84"
+    },
+    {
+      "local": "5ff475dfdca8b0d8e17f6b7993a06437f462f8f0",
+      "remote": "3595c202581aa687a9458e82291855290b69bc2f",
+      "tree": "90a6d0faed84eba9d4cf86a10353ed33775b1968"
+    },
+    {
+      "local": "633c88d3b5926ffcfa106f83f3266c44b230f900",
+      "remote": "e44d90f2a496e4b88094ffbff5647aa459074dae",
+      "tree": "7d64f08e827e7d356fbfb21ae12e065ecede4f39"
+    },
+    {
+      "local": "88bebcc746c7f68a619de323222e171334000dfd",
+      "remote": "04dfeda45bade22e74f699acbf1c95db95849973",
+      "tree": "03e7792b08cda3e152cd59acb399d13831e18694"
+    },
+    {
+      "local": "9e31cbdd9c24e06cc6337ffbdd95fa3376a3b2ef",
+      "remote": "6356fe6adf7b112c66188751c1d3a829f3304acd",
+      "tree": "a3ebcbb6aa68afeba6039a36265684b4fe1efb22"
+    },
+    {
+      "local": "0b02b27b7fa22cc93f1514c01c13151afb53ccaf",
+      "remote": "30f49aed62b37eb286455d20af947c84f52ed91a",
+      "tree": "23778dea02d9442ac4e415c605a928e79bb9ea29"
+    },
+    {
+      "local": "4cef3b99f07a8ccd38435658fddb33e5118e97f1",
+      "remote": "078e1e8124785e212dc097e3f97700184108cac8",
+      "tree": "c48f0ac1818fb5d26a135c148149452b7b92b4ab"
+    },
+    {
+      "local": "c8cfda193980aef0550aea56711d0b5a59150fef",
+      "remote": "e0cd16c5e129a2ed400e99b7d4be70c6503f9dc1",
+      "tree": "bdea828f34d309894742efe85e1d728310e7e3aa"
+    },
+    {
+      "local": "8339025bcf10727852e02f52d962f81bcaa8b50e",
+      "remote": "fa3e374554ddf2a01f9b867d034e8a654e335644",
+      "tree": "3608770eeeda03acf9ac82ca7b8a5f7598b2c084"
+    },
+    {
+      "local": "a6443bfbc436be17d1cd8a62178329d91dbd0917",
+      "remote": "96f98fab0f8196c615c8f6d991a597d65366d515",
+      "tree": "6615b2202a6586f065a789e6477cd86b850999be"
+    },
+    {
+      "local": "782a9b6915228919dfb34311858ef906538f820b",
+      "remote": "20abd1e002e6366bc8623a1e5a5719a2d824d415",
+      "tree": "80021a959c2f3dd9cb20fabc1b04833effa4d1e5"
+    },
+    {
+      "local": "6f316061e185ebf0cfff941348cb4a0f951860a1",
+      "remote": "2ed8792de6a3832a0efaeef75bf7937d04208327",
+      "tree": "ebffb36758de7e3e3e4c4fd8f556d1f52ed12571"
+    },
+    {
+      "local": "fd1ea228d46c1e99c19e97a4f2542426dabf7df9",
+      "remote": "0835e69cdeb2ec3aa1193df57c4a9cf62f281a4f",
+      "tree": "40a7233c3cf6ef8e05f0fa020ade13af971d3727"
+    },
+    {
+      "local": "4cd24f3052806d37811fef6b01f20a883dc9c869",
+      "remote": "597f3726563145a34debc503a7df7a287fa46e73",
+      "tree": "17cd12aac8bf09ec458de0efb6c09d3d728259d3"
+    },
+    {
+      "local": "39ef4987b422161cfb04354098b4a76181379a6c",
+      "remote": "2e8d081a9551e1d6f9463c38bfef34c72cdb43fe",
+      "tree": "c74af8e57cc002043fae44b8491539f27143af64"
+    },
+    {
+      "local": "bb63cf58b97e2f8e21c2802ddc851a646a36c739",
+      "remote": "1fb97c5d14e7b752e6628ae47435d4342df0aec4",
+      "tree": "bda01e2b0d035f091618666661e6757cfc8bfa7e"
+    },
+    {
+      "local": "d1ba85891947b10c9b71d73e9f3e5ab1148376ea",
+      "remote": "b13abf68a04132e7aadde8614ffa074ff2673776",
+      "tree": "42f7e11dd235d4eb0540981b74faaa689cc0842f"
+    },
+    {
+      "local": "ce35f1e1226fdea1111bc99c83f978ae6577f1cb",
+      "remote": "20a2cfa7cb3ea51e329e1e3aaa2be3b52776113b",
+      "tree": "8244e5e44eb22a56441a3508068d09548c431b31"
+    },
+    {
+      "local": "93bf764a6a2d98f27d3d306b858b7de80c321cbf",
+      "remote": "b2e0ba8ba521382f34dc0e24d1e67e6fc816e64a",
+      "tree": "0131b3515939debffed3df894d19c15a6b0528c5"
+    },
+    {
+      "local": "30c344c98367f8f24115c3dd5d1c625d7b2b333b",
+      "remote": "2dc12c6e74310503cf8af30ae9f6fad2c7013e1d",
+      "tree": "7dbabe578cfad54e37907dfef1caea7579527031"
+    },
+    {
+      "local": "243754e7456fad982b82b479d255ec5bad48b2c2",
+      "remote": "3b1ab58b4bbde2db3a74654b7516d4050cee99cf",
+      "tree": "e5f27227c3e9ed3718efb8b6ea7d544ea00664cd"
+    },
+    {
+      "local": "857deb9954e46fa84bf0d1e17815638f393238da",
+      "remote": "cb58c7ad7946fc36ef314c3467c5a413409a46ed",
+      "tree": "e9500748af28784a96f082a0601b41a348e6b362"
+    },
+    {
+      "local": "ddc4dbba7346d9cb2f3f8b10d52e2ce09f1c0e74",
+      "remote": "410093d22d10165ab2615fd56c2241490cc50139",
+      "tree": "277cb0a498262e4f20c3810120ee3e93141c8cb0"
+    },
+    {
+      "local": "7055cd786928ca5ab9b939e1493759db49978a7f",
+      "remote": "2e2051b48211ac703d838837b625158692a1e627",
+      "tree": "d681e2ab929713138e455ddddc813ef8cdb78993"
+    },
+    {
+      "local": "280a6997488996f1aae3353cd0b44c8f4b6d7d8b",
+      "remote": "7b69df9c3631aeacd6a61a9b2600fe0ef6a63e9f",
+      "tree": "892a7c19e32b4c8575e6011b7711efecb0a1b271"
+    },
+    {
+      "local": "8eb69241dfe8d0891988922f2c9f5d64c24481d9",
+      "remote": "1fa8b14ded1369416b5a2b9293df759fbd7502b3",
+      "tree": "ea3fa69fe80201b5c545a9628e1d898628b3f468"
+    },
+    {
+      "local": "567e58cc5ca107c05110cf067bbe322f8dee8249",
+      "remote": "33a3b71ca362e3c5745c3ce718155660bd9a922b",
+      "tree": "0646144cee7ff78061d5f9ffa146e2ca3c2ae4e0"
+    },
+    {
+      "local": "7d7a8de09b617e38c965b6a1e3462e347a83e662",
+      "remote": "4f76f8c04f90044fb05dd4bdddac595a681278bc",
+      "tree": "4d0638c5f202ef9025fc0523f5dc51fde0c98aa2"
+    },
+    {
+      "local": "7c2043f186ff536eefcebe83a408f83cf9f5a9a1",
+      "remote": "d2ed29c18a515d4374619f91f02dcbc9488e8c25",
+      "tree": "790ca40009ac684a0bf640273b1da45e9db0c5fc"
+    },
+    {
+      "local": "c297a769a007ba992ff19acdf3e0da50a25e8a72",
+      "remote": "8d5d664f259b6c08a4f91aef2cafe1edd27bf6f5",
+      "tree": "2309b70a813968f1b0786e86c35c65e981d17faa"
+    },
+    {
+      "local": "01f075444bac1c08cf4ecbd57686184d566679d3",
+      "remote": "2b1e6e99246f9d3d08c5ff52316be8cdc0ebf7b0",
+      "tree": "d2fb904d4e4a19f844780d7425472ba8f0ba8bf8"
+    },
+    {
+      "local": "f2deb3e3cd5389eb5dce07e8593087eec64c8d36",
+      "remote": "5a171d53de348c054453803faf13799b9acacb6d",
+      "tree": "3f24c9cc03324d83788d212c64c2b9728ef52b42"
+    },
+    {
+      "local": "9c7c4edbdc72e9e6207923e5ae186d34dc86ffc7",
+      "remote": "980771c42d0aee2dd10e60aa6de6b08678e888ee",
+      "tree": "04a322d10bca0a35ecb152c7fec5b8d6521b22cf"
+    },
+    {
+      "local": "f474c77b9fab3c49f89ee3fd6d706ffbb4734f90",
+      "remote": "98175c40c736dfe2f519c39c9140f6d289fe2738",
+      "tree": "7a6e6bc6d379e2282d90205fd42f560469f6a051"
+    },
+    {
+      "local": "645757931a6058082d9352764e1265bb4a1c1952",
+      "remote": "7e6026a5f12591fa81e305fcfa7a488f9573c27e",
+      "tree": "c037bd0fe985e0eeb76fc4d5ba6cd362cda373df"
+    },
+    {
+      "local": "93a8775150c0ac6b330f029e889b1a4378d0dd44",
+      "remote": "16ca87eae8a585e409919909fe2102d1eba259ef",
+      "tree": "1b161144f104e3b6668d28482f4a7089e16f3450"
+    },
+    {
+      "local": "7ab94422e453ceda900379f4011160c5eb953dad",
+      "remote": "29412fac2db64fa0e018ba142ac218d0e3ee367f",
+      "tree": "54900dc83a955d37dde7df7354d6dc0190db0a8b"
+    },
+    {
+      "local": "905bef9c4c2f4e1ee1981a7d79f0d15267d88135",
+      "remote": "618d69647dcb9871fca22fd54209dfe7692fd1e6",
+      "tree": "f0dc2118cf73fd44373e3d1d391641a9aec592ef"
+    },
+    {
+      "local": "da335b9f39cee4aecf6f9995c95849d36db3bdfe",
+      "remote": "a3d566f8b1811a39d08237557ff1664521f5440e",
+      "tree": "36a55fefc7e85889dd19c8186414710784700f78"
+    },
+    {
+      "local": "c66f36cf40a96f15e076a321b8a32c02fa7e2db6",
+      "remote": "645ad8b435a05fa785f198c5e9de5b9defa724bd",
+      "tree": "99c369eb34eaf332a277d089755c283d8c051ab5",
+      "message": "Port native major-mode display and canonical throttle bridges"
+    },
+    {
+      "local": "ca5ae1c60b8273a1480d4ec7d141e6def4c8ee66",
+      "remote": "0357adba28884bf90e0986b58bbc1713e89d5580",
+      "tree": "bf5b011319661738032b6f1240b57263879c00bc",
+      "message": "Repair full-prefix differential runner integration"
+    },
+    {
+      "local": "311ad42333eca3844c44792dbdb3976ce99ab1fe",
+      "remote": "d35d314139b35a430752127a26f34d5ee2ba942e",
+      "tree": "652ea97f9b41c17f05258cedf1106aa2d3684642",
+      "message": "Port Comanche phase records and restart foundation"
+    },
+    {
+      "local": "5d52eae6e63e7fca42d5a906c1399ef1a63916f8",
+      "remote": "5464737b4ffcde400c733a7d504de0395b83a6e2",
+      "tree": "335f45ffd0f887a03611b866a85f19e5def3590a",
+      "message": "Execute Comanche restart-selected native callbacks"
+    },
+    {
+      "local": "27290405696a8df5779a8cbdc850d6c6862d9017",
+      "remote": "883e40995a1e403ae998d7013df17399385dd6ce",
+      "tree": "a00c4b967c062249d1cb1a27bf3f8aed090f50e1",
+      "message": "Bind Comanche runtime to the canonical erasable image"
+    },
+    {
+      "local": "128331e1ad3b082390ce5fab83c8971c897b1953",
+      "remote": "82ee1569b49dd63253cea57c64ee6af40d686a77",
+      "tree": "5f485c2819a26a35b20330b02af94af7d223979d",
+      "message": "Port Comanche ENEMA error and fresh-start paths"
+    },
+    {
+      "local": "11d0154da67820e93ed295a06fc869d7dfd2ec8a",
+      "remote": "563899238b04e3aca6cb9249a049f7f68f80a346",
+      "tree": "96b7ec81eb951f8919b520a38c12afe0bd670789",
+      "message": "Use explicit original sign bits for force-clamp selection"
+    },
+    {
+      "local": "6c9f4f51df18aacb1ba61e6f99509d8dec713abe",
+      "remote": "5ef7472963fb6892c926d7369bfe6285f38e2cb1",
+      "tree": "620f6ba1f22b2078bc943d3b2627f1b832f4cddb",
+      "message": "Split source-faithful guidance into returning native phases"
+    },
+    {
+      "local": "4d0830e0cc871a540b829ca902f2e6bbd3aa683f",
+      "remote": "197081c1550753fd26e771655ca5cb4e5e29d160",
+      "tree": "f156023f0b1550a7c75fdf5f07cb574df53260d2",
+      "message": "Port original DSKY relay drain and channel10 output"
+    },
+    {
+      "local": "9f50297fb6ef168ab20593ce560f1943caf3d2d9",
+      "remote": "4cda4faea3606194cbbb3dd5c1854cf77b6593b7",
+      "tree": "705d4cfcf68fa0d95d027db41aaf5cbceac338a1",
+      "message": "Render actual native DSKY relay output on the C64"
+    },
+    {
+      "local": "d87feac7aa5c8b034d9a79f21ca0f6709c225ca0",
+      "remote": "5dd941836d8d75ef5ce9ac5c30188fdc8c2246fb",
+      "tree": "b81030730fb673344c71ef2b063277fd826aba68",
+      "message": "Port original Comanche startup and cleanup entries"
+    },
+    {
+      "local": "1f691a1f0d86c30accdccb413e030e9a1204afc8",
+      "remote": "4f3409429432ac85871cffd383dde0baae866b3c",
+      "tree": "b88a2195441066ea1ce2ceddb1b03feba600926e",
+      "message": "Split acceleration at source boundaries and preserve return control"
+    },
+    {
+      "local": "00509c4a80f00e4bd3ce086a058dd4186418bb35",
+      "remote": "359f335cd95a62cdf08a605b165173cefbc81f8d",
+      "tree": "28d31b3ee8c2069ada9ddac71defb7538743b2af",
+      "message": "Port genuine P66 velocity scheduling boundaries"
+    },
+    {
+      "local": "bc7cd45ca00d45bc88412e9e36928cec01f47478",
+      "remote": "e71091e7accb06f0bb76394bfc6fbabe8ef6c38a",
+      "tree": "f55cfe91889a4ee8b8c57f19394b03800e3e6403",
+      "message": "Port P66 feedback through six source-aligned overlays"
+    },
+    {
+      "local": "3e9cf07e7a303acbb2a1ee55ff4256545bc38c2f",
+      "remote": "e7b4d8949c6a156d8316579699dd5ad9ef9aa158",
+      "tree": "6b47bdc90262da243616067749f609f36a03243a",
+      "message": "Port P66 horizontal-exit display control"
+    },
+    {
+      "local": "f454c486750523bb9c313ccbad187a7e20b84bd8",
+      "remote": "d20b2f0bba8e57a8c7084253738e2a8364d88e27",
+      "tree": "367719ab61c20cfb15594e4847c5cce06116d5bf",
+      "message": "Port actual P66 REGODSPR display-job admission"
+    },
+    {
+      "local": "1204961006a1b5d4084b1b57fc8a4927c332fd2f",
+      "remote": "357f7366787c60481fb5c3739b79659f9a12ba0b",
+      "tree": "605656cd0a1225712ee8be4ecf5d826db464aa97",
+      "message": "Preserve separate P66 STORE20 and acceleration-add handoffs"
+    },
+    {
+      "local": "6330bc5f76384122fcbbb8d61ef7730c28cae03a",
+      "remote": "9453c19fa26be83309cfbb8aab8764ca334c4321",
+      "tree": "b66b057690320d9305ad14ad9d4ca271f08588d6",
+      "message": "Port original P66 noun-verb entry dispatch"
+    },
+    {
+      "local": "c7ac31f9e95c65d2e0df92357b4a9f48d698206b",
+      "remote": "a734135f00ec45287baffb1a775d6d9e5d18040f",
+      "tree": "e1b4745c592706186a5114fc3ac8060163dbdb87",
+      "message": "Port source P66 verb and noun update services"
+    },
+    {
+      "local": "44ceb96d5d6d6c1935d7978d8831a5d94153d0b6",
+      "remote": "f6ee3a077eec2f79f21b07f26aa30cfe80f1eac7",
+      "tree": "0119a0ba9dae4e75140d6c49fffe62f8ccf3a245",
+      "message": "Port original DSKY relay character and blanking services"
+    },
+    {
+      "local": "93df8d5bc9d1179099ece29a9baef7f1f17682ed",
+      "remote": "1f1e22477b0cc846de91c8647e45c7ad80425b3e",
+      "tree": "efa331552ad5d6ba379c9abdf43d9778d2216ae7",
+      "message": "Port source five-digit signed DSKY decimal formatting"
+    },
+    {
+      "local": "98f6b226d4f52b4362b3038b1e72560e39760e94",
+      "remote": "6fd4441d7e0aabd2d7f3228f213555e3699a84af",
+      "tree": "5114b03a0791762f69ef60de671e684ea2cc6591",
+      "message": "Port source DSKY double-precision output scaling"
+    },
+    {
+      "local": "ece594fc4bdb75944c66ce7070c492226ed4a1d8",
+      "remote": "333c7a9960c33650209e92a60c9425d334ecec1e",
+      "tree": "e550bd44afd85dd7265ae0aa32c4798a1c8a1637",
+      "message": "Port original DSKY two-digit noun-verb formatter"
+    },
+    {
+      "local": "e9201b1c8454916034af32d4b1fe3da254f3e040",
+      "remote": "545c3a478e5e2225a6a153abd9479bae4aaedb19",
+      "tree": "ce1b80625dd730162d44c11b6840b0859cbeb7ec",
+      "message": "Qualify shared native arithmetic against original Comanche assembly"
+    },
+    {
+      "local": "ba032c0181614177972a5e1ee35ea9c0a0e7da18",
+      "remote": "869c4f048c32674ac04f70de1eb41ab0397a3ee6",
+      "tree": "69384c424ad4ec27e4cedddcd27c34e68575443f",
+      "message": "Port Comanche-specific AX*SR*T rotation scratch semantics"
+    },
+    {
+      "local": "01dd31bcd6bfdc33b793fad629436bc9fbafa4f4",
+      "remote": "681c9e232e3d40e8453ed98e9ee9933308678a8c",
+      "tree": "b8b284c765f37c41923e77680bb75f7145c677a2",
+      "message": "Retain actual C64 binaries for Comanche numerical proofs"
+    },
+    {
+      "local": "e7e4800276799c1c22d8f4de8eb77b523e5c0ad5",
+      "remote": "360b57394cc6d38c14db42dc318b0a80690bed2f",
+      "tree": "bfd800a4e0d4bf167661eb1301b4ad728e8cd1f5",
+      "message": "Port original Comanche RECTIFY and MINIRECT conic reset"
+    },
+    {
+      "local": "ba60869ff18a603b4e4e276d7d2cc794385e3e69",
+      "remote": "96cd714698c8161995d42caf79fa531976aa75a2",
+      "tree": "266bbd54c448fc1e4b04cd2d9bffb31044372131",
+      "message": "Run live P66 overlays at every original Executive handoff"
+    },
+    {
+      "local": "32c0bc0054ab085d90309757aaca1bc5de53f8a1",
+      "remote": "dceb54819d4261328b288267232ac23eb4864788",
+      "tree": "2ef859f62bc8f1b28f549e0b1572f6458ad2f773",
+      "message": "Port Comanche DIFEQ Nystrom numerical phases"
+    },
+    {
+      "local": "f38860dc5cc3edf9f82316e2d66e5803a27f31f5",
+      "remote": "0b389bea286f60950bee8fc56e33e85393fe310c",
+      "tree": "2dced10c402c73859258d28b3790d489ccdf2a9e",
+      "message": "Port Comanche DIFEQ0 initialization and source JSWITCH routing"
+    },
+    {
+      "local": "dd9418a9abb2dd200a9865999a5ce91a36ed12c7",
+      "remote": "51c99adb917953059db525250c89af21db9c939e",
+      "tree": "23c55f17999c305e200a577442401d68311a66fe",
+      "message": "Correct DSKY positive-zero blanking and NOUT increment overflow"
+    },
+    {
+      "local": "06727afbaccba3b3d9530309243957110afbfbb9",
+      "remote": "55230920a553b98bcbb26963a478ecb48ef7ce54",
+      "tree": "d6d11071478f31ceb3d587ee7747a957beaedc72",
+      "message": "Preserve full-width P66 native callback alarms"
+    },
+    {
+      "local": "2e613d745d144709f52a1733bc5c461060bb0409",
+      "remote": "a1d52b509008fafb93dcada95bc81f6919dc158a",
+      "tree": "03d3da3637ffacf9bff3410645f1c381cfd6bc7d",
+      "message": "Port source V06N60 display-data preparation"
+    },
+    {
+      "local": "ba776ebf5721133d13d87e0023551add39f823d9",
+      "remote": "dbbb01ca610c0a83f8f63cc2f1c7cbc2081fa685",
+      "tree": "47b6d9cda30871ef3033ab21f27f11dd10e1e05a",
+      "message": "Port original V06N60 scaling and three-row display consumer"
+    },
+    {
+      "local": "82b09ac0f20c81186d1e67985c2f3d890fdacb21",
+      "remote": "57c2fdb7ee53df838324d0e3fd6efbb7fbe493f8",
+      "tree": "ebf66141c4cdcbb1d97e88a4033c8f2b7fd08847",
+      "message": "Port original GOPLAY display completion and flag services"
+    },
+    {
+      "local": "89c1acf83cbeaccfe84c3e9e3d70d59bb541ccad",
+      "remote": "737d825bd0286a4a4a8f0027db365c677736e65a",
+      "tree": "d527b86f8dc9bdb47209fc34d3571acba4952195",
+      "message": "Port original LM BASIC PRIOCHNG service"
+    },
+    {
+      "local": "c42bb918e5e1ca8dd56d387dc54d89bfb5592d02",
+      "remote": "17d46ba0a023e199adeaf55956753ffa63f3eba3",
+      "tree": "544e937405b09592bba9fd9fcf24722dc1fbfdba",
+      "message": "Share the native resident Executive step under LLVM-MOS LTO"
+    },
+    {
+      "local": "9c44308b64ebe9ff0a88d5f513f917e878ef36e6",
+      "remote": "dc82cc132d608e61e4f8ce546ba9e1102a46f808",
+      "tree": "b7f86308dfd4aca3a7d5c5e53e6fb971f6ed5d46",
+      "message": "Port source P66 entry and completed-pair runtime bridges"
+    },
+    {
+      "local": "3f68f7b6f7a35d8f06a738b5d298100356e04a90",
+      "remote": "c6a39fc17199a5989650fb06a90a7fd2602703b8",
+      "tree": "735b10952ec71ca8a2a9fbbb4a288175be6e47a0",
+      "message": "Port original LM and CM immutable data with nine complete file certificates"
+    },
+    {
+      "local": "08e1f02513ecea1588a2387d3aa3a1fa50b656b1",
+      "remote": "3521e4041db2ee8f521fdb8092358aa418a0a8a3",
+      "tree": "74dc46d77f7bd0fabf9b48e940b45987c05e89df",
+      "message": "Port genuine P66 feedback handoffs and horizontal internal phases"
+    },
+    {
+      "local": "b01cb01b35e0caa049e6d660fc13aff622d542e8",
+      "remote": "a90d8fc299244e96e476b1b83a3f65cefa639ce0",
+      "tree": "a81fa42409a6a2a33bd2cde3b712a9c77af7c33d",
+      "message": "Keep source qualification records outside the artifact checksum namespace"
+    },
+    {
+      "local": "1d553f89d8cf2d6f196046c591d26e2765be1f71",
+      "remote": "b5a4fda7fc39c0f39810a5d2b28d434e9d29796b",
+      "tree": "180f25665def874250ba682e0a0f1f3cc745ba00",
+      "message": "Compose real P66 basic jobs, task admission and display output"
+    },
+    {
+      "local": "eb879b9acf67111b9c5baa09c07411e8c85e4ffa",
+      "remote": "165eb612104e0644647c802d526b1d750b3d6a8d",
+      "tree": "564874471222de0bc3fe0d0047ccb4e455cd659f",
+      "message": "Record final P66 basic dependencies and simplify display selector defaults"
+    },
+    {
+      "local": "addde0be2ba5e4f7a49e56f6ee5b173e05cce5bb",
+      "remote": "642b935c7301e79abd0d90ea87383750d4f36490",
+      "tree": "94bf94866d6d110e07e3e267635caeeb8a392352",
+      "message": "Port original Luminary VERB and NOUN keyboard entries"
+    },
+    {
+      "local": "227a0b2b21a38815a74d2f1af6e43c6ff01570df",
+      "remote": "bebf5ef3b40d9531ae1120d0d4b14da01b31cbe9",
+      "tree": "99ea3fada256ab7cbac2ef5fc25972af62e4e5c3",
+      "message": "Port source CHARIN verb and noun admission effects"
+    },
+    {
+      "local": "54d3df2e5a5bd87f8bcd3df3a645185a1130c347",
+      "remote": "0f0a3cf92f89e87cdc4640e01db6061bf601d462",
+      "tree": "dec047b0089acfa37d7678ef425858930bb7cdc7",
+      "message": "Port source KEYCOM admission of real CHARIN jobs"
+    },
+    {
+      "local": "14251d3bd95db560ae76181d334de23c6556ec65",
+      "remote": "11146ecb2d57331670ae2136a41a9ef8c51500f2",
+      "tree": "355674c270bcd4906e9800e09cfdbea6a46b4f76",
+      "message": "Port original KEYRUPT register saves and time sampling"
+    },
+    {
+      "local": "1800a5563dab636021eb8474d2e0cfc3a438f6bb",
+      "remote": "839e7960d1024416b8f40d2bc94fd83a39b802e4",
+      "tree": "d661d27421723a197a492b29e109ef0099af509b",
+      "message": "Port original Comanche TIG-5 task and phase scheduling"
+    },
+    {
+      "local": "a727be447d20435a224a291ffc753f2135a5e578",
+      "remote": "ab70ff6dab5369b027e415f4d1df3357d4387968",
+      "tree": "bf6cfa311161fec2f369ac320ec8faae026a0cf7",
+      "message": "Port actual Comanche SETJTAG task and native callback"
+    },
+    {
+      "local": "f943ed437638d13386d5c60c77b29eb5d513dca0",
+      "remote": "c30a203347fa6e95d8fed26e4b1557397c4cabf6",
+      "tree": "ff0dfd8674318c65dda85adb59620915c7ab20ad",
+      "message": "Preserve pending NEWJOB during real REGODSPR admission"
+    },
+    {
+      "local": "eaccca80bd54e226ba3a18e7089ac16aad9a0dd1",
+      "remote": "05839f0667161eeb845569fbb6935b6ef8d52ede",
+      "tree": "2bf670d612e2207b1af1d34b90d8a33b4386c1b1",
+      "message": "Port actual throttle after-poll continuation fetch"
+    },
+    {
+      "local": "637a4a8c850037a19503dbbe91c06676efe7c932",
+      "remote": "592c08fbc948acfd54877cea2c7f956f6ab147a4",
+      "tree": "ddcb7b16684458f5a0f25e284b9692e18ce1e4a4",
+      "message": "Port canonical LM JOBWAKE source effects"
+    },
+    {
+      "local": "a392a6b1bfea96ccaf640c012d066f3e72392714",
+      "remote": "7501ff3e6be795c05f5961f2dafdc4a705249d3b",
+      "tree": "28bb40e95118249c915a31b807fcae7bc5110762",
+      "message": "Port real MAKEPLAY priority and wake prelude"
+    },
+    {
+      "local": "6f8ec27b27b0fd425ed9eaaf05adffabb88810c8",
+      "remote": "95d37be1132e3e26b8f92e90bad01ed36e965c1e",
+      "tree": "07f6ae44436ce4f8860ece8a28f5fad4bd1f8094",
+      "message": "Make the combined native host build reproducible from a clean checkout"
+    },
+    {
+      "local": "554391427b5b46c9a1a9d2bf6fd95828c0b35d32",
+      "remote": "0275022758132dc6189bb5509cbe9b7f9a095a56",
+      "tree": "be8b6589e1891215b6c3c241676aa587eea7568c",
+      "message": "Port canonical Comanche restart timing services"
+    },
+    {
+      "local": "74c8a967a6d7506d7dc99e3e3bfbf54f2933efa2",
+      "remote": "f0fa06600e3609be635d135e3d27e02a12bab8f1",
+      "tree": "1150c338ad7970ed1449c05ade19cea89ef6f074",
+      "message": "Port canonical Comanche long-call bank transfers"
+    },
+    {
+      "local": "b29db9163215b819863b1517ce9a2a0c664e8e54",
+      "remote": "2f80ea87ffcc26988bbcae60c5d3caab5dfb3df5",
+      "tree": "55d75137b66d1833112e43e818635ab027a0d67b",
+      "message": "Port actual Comanche restart-table selection"
+    },
+    {
+      "local": "689e74fe940665a8d65efc44730f542b909ce59e",
+      "remote": "3ed1bfa433e01893b783fd2b637dc6975a95a79f",
+      "tree": "3b838f0d2fc3594313099a43b35e4e54bf27e9ac",
+      "message": "Port real Comanche clock-task source control"
+    },
+    {
+      "local": "ef80a0e8aca5620461b8be285240ec23f40a8024",
+      "remote": "427d99151b6d9631577d4d3c3c2ac361dc0ea633",
+      "tree": "e38163da0d70e6539077f46e03c6c76879fb8f66",
+      "message": "Port full-image Comanche WAITLIST return effects"
+    },
+    {
+      "local": "385172e07558bfac36a653d69a572537d774c897",
+      "remote": "547a061b11bc0a0389ccb88dcdda354fc32ecc7b",
+      "tree": "2e602737559ef8ae4f9aae141a7ea08b5c15d544",
+      "message": "Port actual Comanche T3RUPT task transfer"
+    },
+    {
+      "local": "5a2b5d80f69d2c1965e4a96335cb2b9965b3f7a0",
+      "remote": "2e624e8e0a0fbdfdd14a8c5ae8a948310ad02b9c",
+      "tree": "1aaad25c4a153ca241c2cd5f1addabcb81817271",
+      "message": "Port canonical Comanche job-admission return effects"
+    },
+    {
+      "local": "43bd0c70e218d3454fb619b9172d183b66deb174",
+      "remote": "ac7d3d450250c54149fa4393b2a03a18752dbad6",
+      "tree": "4819482fe7badc5ce608cdc180349be3a8089818",
+      "message": "Port real Comanche SVCT3 housekeeping"
+    },
+    {
+      "local": "61dea643b63c7e77cfd4eeeeaf3f87a76b63a821",
+      "remote": "9e106418fa575300904753962d82f27b6d05a2c6",
+      "tree": "3c937f41b6a1e193904a6edec08c6d2de3659ea4",
+      "message": "Port canonical Comanche fixed and variable delays"
+    },
+    {
+      "local": "08fd64f1ce4e001874f1b480fcf48d79c2beb81f",
+      "remote": "efea843a516776342c51f3bb3240b4fac0219ccc",
+      "tree": "b7f361de4ec3d03f8499f50e7563d83957b6e37f",
+      "message": "Port original Comanche QUICTRIG and scalar trigonometry"
+    },
+    {
+      "local": "9cebae10a82a6f0ecdf6ff02b342540a4e6cd913",
+      "remote": "0ea5f94302bc7feb570da2616e24e7b09eb98182",
+      "tree": "a058511e3c99f6f380c8f1a394fa4e427b384ddd",
+      "message": "Complete Comanche single-precision source return paths"
+    },
+    {
+      "local": "aee023247f96048d73bb53e2d6f0fd110a804101",
+      "remote": "9091719b3a438a6268026a0276355a86e9a6efd2",
+      "tree": "b7f361bd221d0464aefb70a8d0018a62e61c0662",
+      "message": "Port original Luminary JOBSLEEP state transitions"
+    },
+    {
+      "local": "580ae58cbe0a6d423bc2bac05c81dfa1aa649e36",
+      "remote": "a39241eb4c133e201092c56a40593921d3e9deb9",
+      "tree": "aeec55a845fb97d4230b43561be3bfea4efc0c32",
+      "message": "Port actual MAKEPLAY sleep and wake control"
+    },
+    {
+      "local": "c5be550857da1531471ffdf4e85c21d283395911",
+      "remote": "417f548e1f12f801e90fc9406837803d606ea7b2",
+      "tree": "66ed41e6825bec245ac3b5bc6317b164e1f789b1",
+      "message": "Port Luminary Pinball busy-state source control"
+    },
+    {
+      "local": "a665daf7487511f748707f4d6d056b873c6eb159",
+      "remote": "2325d5bdf06f89cb4dd5f90d426ea9c1a7f5863b",
+      "tree": "60cf5b3ccd01a42a9de040ba48947caf4462a594",
+      "message": "Port actual Comanche INITDSP and priority transitions"
+    },
+    {
+      "local": "a16dbbacc91978c3690ac9c7f5505982cf9fd368",
+      "remote": "3aaff2c085798000a95533b032fd140165e773c3",
+      "tree": "e9f3622348e899fa3eb0ed359e059a23d4affef7",
+      "message": "Port Comanche Pinball relay formatting and blanking"
+    },
+    {
+      "local": "abd64c25b42fb617504415e39d17358b51f20f36",
+      "remote": "bcede6d7dc886bfe4493c280b280e917cf351600",
+      "tree": "74b242d7e7f8a8673b1412f34d51111facd70f80",
+      "message": "Port original Comanche numeric display formatting"
+    },
+    {
+      "local": "0277b5cf78483d83e8405a123a625de9f0a9eca7",
+      "remote": "3746f173fb545d0b3a81d3fcc8fb0da135e347c9",
+      "tree": "147e78de7addff7de59f0e23061d23825656429f",
+      "message": "Complete original LM and CM noun-table readers"
+    },
+    {
+      "local": "a3e8cfd52544936381e6bc83f9964fd95853f6ae",
+      "remote": "7506aa9771c9f1e1098e5ec6c7d7d94df3ff854c",
+      "tree": "d6ecf11f5164fdc17bc15d58df00c4478e4e8177",
+      "message": "Complete original LM and CM memory declarations and layouts"
+    },
+    {
+      "local": "e8b416cda50f309b2530f55652559b9882d7a63b",
+      "remote": "763539e85446469c36d5b8a8913ab63b11ca8c61",
+      "tree": "ba3d5a6f7d84580eace73368b93ed9f54522a388",
+      "message": "Complete Luminary single-precision sine and cosine source paths"
+    },
+    {
+      "local": "ce9f537c19c19b89d92c69135f804d6c16c6494d",
+      "remote": "983d0ba5d8b40a2ae8cf07a6fd790e24e64cd272",
+      "tree": "32c79056ba0fa847865c7f1267943b027d15c2b4",
+      "message": "Certify eighteen reviewed original source files and refresh bounded coverage"
+    },
+    {
+      "local": "fac0b5812c7aef4c9b9461202d1600030182e37a",
+      "remote": "8761d7d2dc64560337c1d3d95ff2e48e28923d3e",
+      "tree": "b6c943e7e0412356f0d87ec030e67fcdc55fb1a3",
+      "message": "Verify combined host build with eighteen reviewed source domains"
+    },
+    {
+      "local": "57d0266d28b34d2418151559c8215c4e8ba9a535",
+      "remote": "8a36dfc1245a93d24e04ee9e262bcd15cddc94b1",
+      "tree": "38527c86165f1784d57e8c87d0514b7370e89072",
+      "message": "Port canonical Luminary ENDOFJOB register and resume effects"
+    },
+    {
+      "local": "1d128611f3de8e7b84547cdec515be686219cb12",
+      "remote": "7dd4654f3c2b7d601f3d71a70e7d7e349e71c51a",
+      "tree": "bf3366eab5a78918b9add86285896c0bbbf25652",
+      "message": "Complete original Comanche SMALLMP and DPADD routines"
+    },
+    {
+      "local": "07c110ef5c64baf4a3ace956f947058a7b347b54",
+      "remote": "ac31ae63692aa89d4d625788cab2a1442b5cd6c7",
+      "tree": "dd6117a79a3d545d6408b880c49f8f8011544f5f",
+      "message": "Certify complete original Comanche MYSUBS coverage"
+    },
+    {
+      "local": "858f4924ee038fbbcbe3984a50b2843157c20cef",
+      "remote": "6c699641fca2dae651f4a2fc52e2f2362ebf54d0",
+      "tree": "81f11d33001d15cb745ca4deaa61408864cb438b",
+      "message": "Port actual Comanche timer-interrupt lead-in"
+    },
+    {
+      "local": "8f54aafec1bfd7ee57114f80237248db64d996e1",
+      "remote": "26ef188f2d353b8c661506daa939f79deeee3640",
+      "tree": "e8775c8c80a82f88e00aaa38286d2ce65b229d1c",
+      "message": "Execute continuous original Comanche task and service paths"
+    },
+    {
+      "local": "0c0d9b0c7e018201007e1699ca90feabe539984d",
+      "remote": "85a75f7e9931c4f6b362bef76b091db6afe53f46",
+      "tree": "f43db8adefdc15a2f7fe7985da4458b9d1717d18",
+      "message": "Run real Comanche task services from native C64 disk overlays"
+    },
+    {
+      "local": "05e032a07b2bf360aabbd5111fe125b9e72c2772",
+      "remote": "64456352582729fc01cf285adce2023b4af4ca68",
+      "tree": "145ce3786139dbcbb55625a78f814db49d574842",
+      "message": "Port original Comanche relay scan and physical display output"
+    },
+    {
+      "local": "7861f0d230cc823a1aaa76eb182b076cffac0698",
+      "remote": "7683141f94016624a4cf11d82c7dba12526eafea",
+      "tree": "0ebc2e7d9913f2caff1d48262710f490abfd1aab",
+      "message": "Port Comanche numerical display-scale wrappers"
+    },
+    {
+      "local": "9e82ad8a5466f651b81e5ef181ffde237bccca97",
+      "remote": "b9f49bd6b95bb2398fc90300e1d672936f451768",
+      "tree": "da014c47ed3066df3ee36d0258d9fd4524c11551",
+      "message": "Complete original Luminary three-axis torque integration"
+    },
+    {
+      "local": "5c16be56f2043db873ca90154c6db6d688898421",
+      "remote": "9bccfd3f3970ff9cf35ad73e16eff645fcc48faa",
+      "tree": "62e03b9e7c318a6fc5a18a6598e27c66564bf934",
+      "message": "Certify original torque coverage and preserve nonexecutable CM documentation"
+    },
+    {
+      "local": "68bc014b92cc0672f0771728fc882afe81f3fa85",
+      "remote": "dfc38d0018da8c518fe893018c02fb515a7a1a04",
+      "tree": "657057cab4ee5e9f0fbf40e2c4c80172fd3e054b",
+      "message": "Adopt source-selected native continuations without repeating scheduling"
+    },
+    {
+      "local": "c3a3ad6cb03bce06ddaeeb8fd675767722041de8",
+      "remote": "af959869e77771b1ec1806669f4127eb2ca32c31",
+      "tree": "d9299afbd06199d6421bb6f5cdc89d3f8569b17c",
+      "message": "Execute canonical Comanche ENDOFJOB selection and returns"
+    },
+    {
+      "local": "fa167bb97005d41be1d2022de82cdae0015e6714",
+      "remote": "2a12e5bed9d8ef6962bcf10f492ebddacaec4240",
+      "tree": "e85423f3335d7efa71e04b6213af55494aa53510",
+      "message": "Translate numeric CHARIN entries through original NUM arithmetic"
+    },
+    {
+      "local": "f1c184d976ab289a94021cf39d255821713bbf42",
+      "remote": "ba67d36533c7a032703183e1eed092ed0e2a6b67",
+      "tree": "3caf88d55b11fb776ebc8922806d022b3e1d44c0",
+      "message": "Translate original Comanche clock-job call and display routing"
+    },
+    {
+      "local": "6f8c2db65f88d955b3c9f592ce7c752013c4719a",
+      "remote": "3c904e40ddd56e8d19ee6e26d69ec621997b0b1f",
+      "tree": "bc2654b9890ca6ee1a1f4875c0888d85e9baa796",
+      "message": "Route Comanche display requests through canonical MAKEPLAY entry"
+    },
+    {
+      "local": "eb04cf4cd55e3940b8bdf231468916ef5da5ae57",
+      "remote": "83fbf3f99fca8371dd0242399e47e96c83ccdaec",
+      "tree": "34711e88905e84156de504962b16b091694e7ee4",
+      "message": "Run hardware keyboard IRQs through actual source job lifecycle"
+    },
+    {
+      "local": "8164f82e883c93eb06a8734f38892c32fc816bbd",
+      "remote": "2b0fb3a49d24964770018c64cd587218e4d58823",
+      "tree": "5d8326866dc24f29180c7c10ee5e169dae09d8a8",
+      "message": "Complete source display jobs through actual Luminary ENDOFJOB"
+    },
+    {
+      "local": "3432404eb96a5b71cfb48e7814092a25e1c2984d",
+      "remote": "29c1769f4e2093876e5038927f40dd65f9cd622d",
+      "tree": "f202388b966bb8197d98298bcdbc09289736e512",
+      "message": "Share resident scheduler services with returned overlay callbacks"
+    },
+    {
+      "local": "c073a781d25196dd21b3fb305f8aeed3b5448fcf",
+      "remote": "350933bf56b5b7da015f9cac859efaafc3974c0f",
+      "tree": "0e06ebefcb5fd70a180eb11a4893a2129de12ab0",
+      "message": "Run numeric entry through hardware IRQ and canonical job completion"
+    },
+    {
+      "local": "da18554c715f3565c9952565bb1c7d4c4ab352ab",
+      "remote": "554dfecf08be21844653442e61a4fafcf823368e",
+      "tree": "a9c39c46cf377b8b5d40c16b66326a3b70a17578",
+      "message": "Execute original Comanche DANZIG foreground selection"
+    },
+    {
+      "local": "1cc5c75e81a2990214463ee36c05c1b8b0ea78dd",
+      "remote": "a89f21d3c8a5bce7b1b562bcfb6d8761b2e871fb",
+      "tree": "a7402180569cdc0e3bec0da04ba63e1ff402dfc2",
+      "message": "Translate canonical Comanche CDU trigonometry and source phases"
+    },
+    {
+      "local": "c493da870b4199598ac65c6a7d6b5fa35b48dd21",
+      "remote": "f272e1c503a97f18b86fea695ee30c6cccf6a1ab",
+      "tree": "762af579107601640ff6d1a7a65e115bc3d57616",
+      "message": "Qualify original Luminary and Comanche gimbal entry stages"
+    },
+    {
+      "local": "0a43f15298341b8cf01d2759cdb932533cfd14bc",
+      "remote": "20e1f6e9b73a3ae77df34693d122bd279a5d85f4",
+      "tree": "85c9e88d3b332250e2264bb32a580174e153baa8",
+      "message": "Translate actual Comanche numeric keyboard entry through NUM"
+    },
+    {
+      "local": "3af87b32bf869ee3bda4cac91758e507b3563356",
+      "remote": "8f2aa6db0405f32e38d517bbd0ae796862e0cecf",
+      "tree": "679893a54a935192a254d1a67295ad175deb017c",
+      "message": "Run Comanche mission services through hardware RESUME and DANZIG on disk"
+    },
+    {
+      "local": "69801cbdee6d64e83aee8bdd63b92b3a884c9798",
+      "remote": "9ded3ef615ffc537b36145f765871825d6f1626a",
+      "tree": "883e90e6206ec7401e5578874ef03d3bedc0d430",
+      "message": "Retain public descent ABI dependencies required by display jobs"
+    },
+    {
+      "local": "27523959e4fc23e30441007e472a1428c06c1535",
+      "remote": "aa80fa8889fbba39c511e679e33749c98104c965",
+      "tree": "57f43aa45020fc2f93cddf40f1368b6c7d30c44f",
+      "message": "Verify current host integration and preserve all comment-only source files"
+    },
+    {
+      "local": "41f7163a85bc0872f40cea10299f6a47ad08b1b3",
+      "remote": "c7b5efdb6eb68a9193f5e8a16367e5854ea9c048",
+      "tree": "96e09353f46ba9c0e810d40dd3664347a50fafec",
+      "message": "Run original manual P66 descent through display and job completion on C64"
+    },
+    {
+      "local": "04196f430220ece9b97e6fe439db2ee48c83ee49",
+      "remote": "ce687fec362c73c58a35bab9a6ab15e175f55552",
+      "tree": "8317752a9b22909c36392dbf64735236e337cef1",
+      "message": "Translate canonical Comanche axis selection through actual caller return"
+    },
+    {
+      "local": "c3a3584a6e2850265f3ee3bfb04634315a8e12bc",
+      "remote": "9f5293db67a93a11bbb01b1af751077636d0ef6c",
+      "tree": "6fd743e1b239d1bc5506dd33551a16b39b202f7c",
+      "message": "Compose Comanche powered-flight interfaces through actual source RVQ"
+    },
+    {
+      "local": "96cd256aa1a5f6dcccf892d5ac727881b9b67fa1",
+      "remote": "d4db4c1ea8e0ced8fa2f3ddf79e48a545172d514",
+      "tree": "85ecc5c8cb01ad6568e6ab72cb0493b1664ccda7",
+      "message": "Translate Comanche MAKEPLAY priority and canonical display selection"
+    },
+    {
+      "local": "52b8679f91e4c174493eefd2d9532c8efc1ac925",
+      "remote": "690abe5e780aa64e10d7ad72c94a84748d2dec12",
+      "tree": "d922cf1641ed27e96239a39d0a245a157d1b49b7",
+      "message": "Execute canonical Comanche JOBWAKE with exact scheduler image"
+    },
+    {
+      "local": "6fd2544db0507567d808ca6af91a4a55cb21d317",
+      "remote": "85e7f4e45337902bdac50907edbc53b9993bfbb9",
+      "tree": "2152d223a40935c28ef69d20ef206ce2ffb3c08b",
+      "message": "Deliver Comanche keyboard IRQs through genuine source RESUME and NOVAC"
+    },
+    {
+      "local": "4598ed7359a359de09d7853d727562a731a5e7d2",
+      "remote": "60200d88c3ba96b98485f9b4152e6622683da40f",
+      "tree": "e7b8daf32b6afa4c4ccc5bf3363a42ae8ddfc77f",
+      "message": "Translate original Comanche verb and noun CHARIN paths"
+    },
+    {
+      "local": "1eb8ecaf35d960d7f9ac33195a534e11e4e33514",
+      "remote": "8ad03088b8d98ffc6229266c7b719ac49f8a297b",
+      "tree": "ed17441b5dd945681c5487cd335d886ad49a8044",
+      "message": "Translate original Comanche TWIDDLE and remaining waitlist domains"
+    },
+    {
+      "local": "d01ef279184468124e803f49ec097fa7fb570e34",
+      "remote": "5f194b23372e379b76b97e3d7f4b75fa5d5379ef",
+      "tree": "b7f55d3fcc562469f61da93b396986654c9237a0",
+      "message": "Verify all current portable sanitizer recipes against retained full streams"
+    },
+    {
+      "local": "85cba33043f483096f68ebf0a7599c6b14594f66",
+      "remote": "937b8df6f95d8e6cd3db9ed540719ebdaba9165e",
+      "tree": "af63535190220049e61ec2314ff68fe3a2e64a72",
+      "message": "Correct Comanche mission clock coverage from actual source outcomes"
+    },
+    {
+      "local": "5480500010bf13b0dfd8ce469c161ad37472ad3d",
+      "remote": "d041d58476f18ffd4074ccc8a7c51e4539c6ae7a",
+      "tree": "4f0a8476a23eb6c82fee39a474301522aff7ab39",
+      "message": "Translate actual DELCOMP helpers for both mission attitude domains"
+    },
+    {
+      "local": "fd2a816d8ac231294ec1ecdac4cad6c65fc8bedc",
+      "remote": "326f389674628114370cbc16bf51cbf5861440c7",
+      "tree": "5b37a98cb4a7162e99688c1713ba035bf1427537",
+      "message": "Translate actual Comanche inter-bank source control and returns"
+    },
+    {
+      "local": "6d36d280e8beda7cd9261f055c61881b030797a1",
+      "remote": "171b38e02dfb77d2a942b9bb275cd7ef8ccc3760",
+      "tree": "f4205a3854a7d6db9c111e7cc308197c8e8b7506",
+      "message": "Resume canonical Comanche idle and selected basic jobs"
+    },
+    {
+      "local": "1be621f49618e15add93b0212296c59f54c18dd1",
+      "remote": "25d502ab65676a0ed855334f66c5d2813d34e9e8",
+      "tree": "d579d1168f0d6c1ccb44e63f18d5f91edb13dd07",
+      "message": "Translate canonical Comanche display sleep control and wake continuation"
+    },
+    {
+      "local": "e4468c42b1452f934cc9f0aa59443c1c50f42384",
+      "remote": "90f89ec9938b688eedf636f7bc095f2e59dfabe7",
+      "tree": "6ff09c1612c3cd9627745e596bbf44a2fac1013e",
+      "message": "Execute canonical Comanche JOBSLEEP and real successor dispatch"
+    },
+    {
+      "local": "dbc2f99e7528f2e45812778c8368c1317bc12dd7",
+      "remote": "a2ba39c18dce25b588cd332b8c5ec3161cb49d23",
+      "tree": "f91fce094182ae4b9105d613b8dd651a096481d4",
+      "message": "Run actual Comanche CLOCKJOB admission and source bodies on C64 disk"
+    },
+    {
+      "local": "f375da4de39e68930517482930ac325175994e9a",
+      "remote": "a149ebd410a8033852eae2ee8641f4753cd0cb3c",
+      "tree": "acb0f9f92eb7aec99d8f1ce7d6583fffaafd346f",
+      "message": "Adopt real P66 launch continuations without adding an Executive poll"
+    },
+    {
+      "local": "772f2826f82d92c98938081c6626cee8f5883be6",
+      "remote": "c22caac3ab046e73933cbf8841114f6f3cb317c4",
+      "tree": "767c876e3d2d3591eb781d25d2373ceb83075dfe",
+      "message": "Run physical Comanche keyboard input through genuine job lifecycle"
+    },
+    {
+      "local": "a5ee29753be67a6a7b8e1ddbe1c92bf11504d2e5",
+      "remote": "bd2a66347731da51e7c1816540a94edd94b8b6c0",
+      "tree": "1b6ff06190267d0b8cb7999b30d3eb301c4997f2",
+      "message": "Describe all qualified DELCOMP latch forms and retain cleanup audits"
+    },
+    {
+      "local": "fe4da0d3d5f51f8cf9ccdd97ac7216ee3f7c26bd",
+      "remote": "23afe0a9549b1ab6f23154557301ed686dd97883",
+      "tree": "7cdcf1c5628762fd8b58c463045d8178762801fc",
+      "message": "Complete native Luminary and Comanche gimbal source files"
+    },
+    {
+      "local": "7262ec0eab2905469dec852b668fcb29c12341ae",
+      "remote": "9e28453c63d4ece5438ef5661c3b9f6efc073545",
+      "tree": "05639e5096d749a3be3219e0384de3c2f8fe0497",
+      "message": "Compose actual Comanche display sleep wake and successor lifecycle"
+    },
+    {
+      "local": "aa0031edb68a1c0478ba875c9d73694defec320c",
+      "remote": "9003fd5bc06ec312431bb7f1bb0c8773e0ab3344",
+      "tree": "1f08f73eaf21fe79f6c352bb4b538ca110e4071c",
+      "message": "Close original Comanche powered flight numerical and fixed return groups"
+    },
+    {
+      "local": "cf4b3c9f9428ec524187f6fc7b2afa0983b453a1",
+      "remote": "9c0b1d7d2998ad81d68865585d45d09566496650",
+      "tree": "e0d42822895b0722bbb4e5e044a72fb2c836c343",
+      "message": "Translate canonical Luminary CHANG2 to genuine basic and interpreter returns"
+    },
+    {
+      "local": "4c1bd63c1d37203dc7453b4fefdf10f81fc68b56",
+      "remote": "3380810a115c363dcf858600f255b96dc60b0132",
+      "tree": "0271a3364335da4b03e83bd15e25243b419d783b",
+      "message": "Preserve genuine higher priority and pending IRQ through P66 direct launch"
+    },
+    {
+      "local": "ec32fe67a27b6cb4c90271ef3676bf092d4a3159",
+      "remote": "854545154986efb601319c0e881672c0db2cdfad",
+      "tree": "58c61ebbbbf9e90a34b9e6132722f71d933b1e44",
+      "message": "Certify complete original Comanche powered flight subroutine source"
+    },
+    {
+      "local": "6b7b168eeb509a746329893557deb03e624054cf",
+      "remote": "37004330aa4c1582207586575d9e86da000f2a0e",
+      "tree": "b04d14ac26595e2554d5a26d0ef3921d07b8b841",
+      "message": "Translate actual Luminary and Comanche DSKY plus and minus key entry"
+    },
+    {
+      "local": "14e62402a8f8ce67cff0047358a15debf15d32de",
+      "remote": "bbe0ea8138fb2be23db430f414615443015d798a",
+      "tree": "286df0ca523cf942be93f30ea544ec4af07cbe27",
+      "message": "Fit genuine Luminary P66 startup seams into native C64 disk overlays"
+    },
+    {
+      "local": "d49c3933b890d2642dcca31fa7541c5d852fea17",
+      "remote": "2071a1209add40052d99cd59957e040393c0de74",
+      "tree": "6fb1c607b99bd3a3b1f103a2c741e24a14d912bb",
+      "message": "Record qualified keyboard interpreter and startup partial coverage"
+    },
+    {
+      "local": "4bc6b7c957200541d23fcd527eb69d703a3b7225",
+      "remote": "81b9cb05b900d2f1f7b8c3139e22dfd957506930",
+      "tree": "a07f912402f3d9fddc859bc3e2e12e1d6d32cef8",
+      "message": "Translate generic Luminary and Comanche MXV and VXM source phases"
+    },
+    {
+      "local": "4c1587afc26616c439e2cd557815444215496f95",
+      "remote": "135dfbbcc5d9c7f87a90e544bb1afbccbffa188c",
+      "tree": "dd41038aaaebff9cc8bb05f956e23574c5153cc1",
+      "message": "Verify exact GitHub publication of every retained native milestone"
+    },
+    {
+      "local": "62db3de9cb2a03a3828f6d11eb33980fc6bb0762",
+      "remote": "c7bb74d4dcf79079147c8c00b0388021277f0e11",
+      "tree": "3f7dad4d1a952f7fad073759beb60ebb86fb4a73",
+      "message": "Translate actual Luminary and Comanche DSKY Clear key editing"
+    },
+    {
+      "local": "e4ccffc60021adbba56474ced0ab6a6369768e5f",
+      "remote": "dd3903ebfd73dd768d5f566050a0b487c90b574a",
+      "tree": "7ef40a5c423e5bbdfc985ad575772e5b953e56d8",
+      "message": "Qualify exact passive original fixed word storage for both applications"
+    },
+    {
+      "local": "e27f69302f9eae307b218dc213ecb4722f893218",
+      "remote": "08b0bf022a2aec454ae68b8403c77cbb622a73ff",
+      "tree": "116e4dc0086d9418d8dd8d47e455811a930b2af1",
+      "message": "Run original Comanche fixed memory display and checksum call prefixes"
+    },
+    {
+      "local": "5499f3798445446f42cd03c9f2013533a1369f62",
+      "remote": "6b585ba06ad07a323290553f95216d569597b6e2",
+      "tree": "842a3781b45c532a5b5d84caa9f6ca122706c8a8",
+      "message": "Translate actual Luminary and Comanche Reset and Error key behavior"
+    },
+    {
+      "local": "ccccc2fdba2e81f5485a75cd8a9e9d38b1542cdc",
+      "remote": "3e3f5f53b2ba3abbd05c67bcba293f88c176624f",
+      "tree": "91ad0a0051c3ffa04b47c26eb1c9839576043317",
+      "message": "Retain isolated full host audit and fixed caller byte comparison"
+    },
+    {
+      "local": "9e138ef71d9640a21a789a737010ce4bc2cf1c94",
+      "remote": "f3a606c1814ec8166a44d9415bd8c07bf125312f",
+      "tree": "b7a62927ad9064f96a0f899e81cc7414668c7013",
+      "message": "Adopt source-selected canonical interpreter exchanges in the native scheduler"
+    },
+    {
+      "local": "efde0fd1c851e20d31773d257e4c8fb0353e8248",
+      "remote": "8dc70befa9291590f7ba0609785f09dc81e091ea",
+      "tree": "f80420c7c0e9e22b3c4aa5355193287ff75de1b3",
+      "message": "Translate remaining original Comanche extended interbank control groups"
+    },
+    {
+      "local": "cc037996ff5439e8f7001025680f6495cc201471",
+      "remote": "a1b873185e38608d431069a132e7ef6f68a06c85",
+      "tree": "4ab3371e3bc929fd43320722b5e285b6a4f8251b",
+      "message": "Prepare original Comanche oracle fixture in clean host builds"
+    },
+    {
+      "local": "42bec868311d887a0379c9a7fe7c2d9f2eb89947",
+      "remote": "2241a4d8b4ddb2cb39294cd938f9d60452e92c06",
+      "tree": "daac3813579e27bff80d9f36db1d5da9987123ac",
+      "message": "Translate original Comanche dynamic display numerical caller and callee route"
+    },
+    {
+      "local": "4ea315d7e06ce427812cf301db04b6e4b8ba64b2",
+      "remote": "a858f047425d9a133d1e1739824f75f04741456e",
+      "tree": "62a3db4d1f415639617a2f28701ed4846c2d9b31",
+      "message": "Translate original Luminary and Comanche invalid keyboard alarms"
+    },
+    {
+      "local": "d6496fc988e025289b0eabe25ed69b902466a5f8",
+      "remote": "bfe79ba5b6c51f64fb26727ef33dfa351ab3119d",
+      "tree": "b882c594031f08d073589237afa9df04b64ddddf",
+      "message": "Translate all original Luminary powered flight numerical and return groups"
+    },
+    {
+      "local": "3140fc1ae49e92cdae48ae66d5eef65bb95592f1",
+      "remote": "4878b9ada7fde3a56bc14ee4375195c93cd3da54",
+      "tree": "f6c25e4939c9bae27b7b2a2640773f4286cc2627",
+      "message": "Certify complete original Luminary powered flight subroutine source"
+    },
+    {
+      "local": "7f398360170fbccff80234d9ca20f2e6e01eb5be",
+      "remote": "3dc3bffcc309375d7457f87688cd632a1dc0616e",
+      "tree": "1cfed5c385097754858b92f02bf8256b1dd2e6a8",
+      "message": "Verify 185 exact milestone trees on the GitHub fork"
+    },
+    {
+      "local": "2309cda83622359caffdb1e531bbc3e17efaaf03",
+      "remote": "1500a5bbc4e855b39e492c36250cfff95588fda6",
+      "tree": "4a98be3a2de77ccf99a9c99ad5a94eac661b0000",
+      "message": "Translate real Luminary and Comanche Key Release source continuations"
+    },
+    {
+      "local": "1f0f445b95280e6a47452d999d846d222db941d6",
+      "remote": "cb59bee9d306d2671827e073ade50ac74ae1769e",
+      "tree": "5a6d849bdb38f2e87b75298e415b35da27ac77ac",
+      "message": "Retain clean complete host release audit through both powered source certificates"
+    },
+    {
+      "local": "288c103871a88fd186de5fb799bd2c4dd4ffc216",
+      "remote": "5f5249d302d690829ceb140ad7a46e4a8c7f0215",
+      "tree": "cedeec833fb31b3b460bb1a44e5f472532dc143e",
+      "message": "Compose actual Comanche normal noun85 display and Executive completion"
+    },
+    {
+      "local": "38580d0571da824fb59dd6e6f6a0b92a87f11d93",
+      "remote": "b43ad4d9e0cefbc13127d035491471835a083d16",
+      "tree": "0c5e033abaf5d43a5eace15f88e7a1a42101e9bd",
+      "message": "Translate actual Comanche canonical CHANG1 and CHANG2 context exchanges"
+    },
+    {
+      "local": "e764b97272cbef874ced51af8cdbd9475a8d7ed6",
+      "remote": "0d52b0d4fd96e46db17479833f6636275584f593",
+      "tree": "59d1d39d641c80b1a05ca9f959deb7b9cdd745ca",
+      "message": "Translate original Luminary and Comanche inverse trigonometric source stages"
+    },
+    {
+      "local": "16770ef4e7588fa99a9e48ebcb56052ee9f8fc6a",
+      "remote": "84f26da278d0beabd942a4a419e8557d9a0caa5e",
+      "tree": "c047600f9875907dab3cb11f1323a4147c0a097c",
+      "message": "Compose uninterrupted original Comanche dynamic display through actual job completion"
+    },
+    {
+      "local": "efcd6c23b311e3210eaa4a17d3b21b16e283b86b",
+      "remote": "d020488d913e8fb087a46fbc7758dc6a98449b5f",
+      "tree": "d5b0718cc0a3ffe1ad6ef2fcf78ed36bb5cd02d5",
+      "message": "Translate original Comanche job and VAC admission including resource exhaustion"
+    },
+    {
+      "local": "6c3687141513450c26d4229f04a7996a61462a45",
+      "remote": "07c3efa6b14a75a8893a19816e7c5d8734778d37",
+      "tree": "975dd1e5178906135bcc16eb8857fabe886e8546",
+      "message": "Translate complete original Comanche RCS matrix update job source"
+    },
+    {
+      "local": "f0319e57e916139f45303fbf4035b58d0ffbbc84",
+      "remote": "a243836d323a153113eafdca40349aeb8d4d6165",
+      "tree": "42bb71c312d6449b79b40a2d1dc7cbb61719d1f4",
+      "message": "Certify complete original Comanche RCS matrix update source"
+    },
+    {
+      "local": "8a39c1f28085e8353e72e376d3e5117e051517ae",
+      "remote": "88b9d867ee7add6dc983eaec864218cea065ddcd",
+      "tree": "4aa8be424de25dfe01c87417d41d9c31fed303dd",
+      "message": "Translate original Luminary and Comanche display blanking and banked return"
+    },
+    {
+      "local": "6ed159ac57bd9558071a66a3a46c4cd2ec8fa48f",
+      "remote": "0f4be727ee4ac42d877bb108cc387c606e18e5d7",
+      "tree": "54bad15e717a098563bc9e2d7b56d8c53d18fa2e",
+      "message": "Retain complete exchange archive and verify inactive operator proof cleanup"
+    },
+    {
+      "local": "5f2f46ff8b81d767a313d4913226aefdccbb20a6",
+      "remote": "4990a92ecc7a3cbe52735c18f0016290a4f2d00c",
+      "tree": "3264759266145720b5d222c5f0de6e05bcb705ce",
+      "message": "Record qualified operator, display and canonical runtime partial source coverage"
+    },
+    {
+      "local": "164a06f704900535523ff27df330c8eed11c395a",
+      "remote": "ef948956e27b84273d95e62729c7da125312ce39",
+      "tree": "e63189b73511cdfc666ec3899d97f4922c1793ed",
+      "message": "Translate original Comanche priority changes through mixed source context switches"
+    },
+    {
+      "local": "20d8202588848c610ba291b1d08023726b645c37",
+      "remote": "879abe1dcf402d690b5a0410c4db882e3151626b",
+      "tree": "a052ac6f52029398437c99480ee9475553c2f969",
+      "message": "Correct inverse trig corpus coverage claim and retain independent review"
+    },
+    {
+      "local": "a36ecea499e06b3bafc4875ef040d966c937da67",
+      "remote": "dd372cda6912e7f96038239c97d67c5acb4fb9de",
+      "tree": "8bdfda07aef241824d8e916f40367d6f86adf844",
+      "message": "Translate complete original Luminary and Comanche system test lead ins"
+    },
+    {
+      "local": "69fcadacc7bcb02eaeff6ca9d701eeaa01783c84",
+      "remote": "03ab3e525f51d8eb7571befdba901465ce3337ea",
+      "tree": "0cf596ca2ef195313593c29fdd4a225a51e1679c",
+      "message": "Certify both complete original system test lead in source files"
+    },
+    {
+      "local": "36442bb9e19e7d46058748456a671f6cc4fa3675",
+      "remote": "aa657c75e5aae9c41609794fff84a695c6389e10",
+      "tree": "de894e6517eb2be93a810676393c8cc3d4863e15",
+      "message": "Record remaining Comanche scheduler and inter bank source domains"
+    },
+    {
+      "local": "5506fcce2c9afc0cd946e2f1fb62a7a527c31b64",
+      "remote": "dcf1d528315200b3a6316f9ef7eb27636c0d6e6d",
+      "tree": "0beb50aeed97f109597d9dd63888dade9ad7d075",
+      "message": "Translate original Luminary and Comanche display branch selection"
+    },
+    {
+      "local": "410cce79447d9ec68e0069a137a965466be47f48",
+      "remote": "dfc79aac3283f976629ba4639ca1c18a8563bf08",
+      "tree": "cf7197f43e1e56c74552d77d455c1aed53aa7d58",
+      "message": "Qualify exhaustive inverse trig high word inputs for both missions"
+    },
+    {
+      "local": "b38a0f9dadb010e73be55f23970f2d5de445d3e2",
+      "remote": "b7f5b08003dbbbdc9d9c6f65206f102a1a33e90c",
+      "tree": "417e3f2757e3e2a292152f97b42986148ebc0d02",
+      "message": "Keep original and supplementary inverse trig sanitizer targets independent"
+    },
+    {
+      "local": "20eee175d73efdd0893858b0b3ccdab8b4d01d04",
+      "remote": "3a62d0a6872ebc060612d823561f3773cfba6ec4",
+      "tree": "b6fef5e6ffed52d465ef393772898f869eba8dbc",
+      "message": "Translate original Luminary and Comanche ordinary display blanking"
+    },
+    {
+      "local": "d14d0fb544dfa83130bd319510b105291d3634ad",
+      "remote": "332931c834b0330647057725f260219dbbff7956",
+      "tree": "2c86dfcd37d02dabce3bdd291df66234706bcdd1",
+      "message": "Translate original Luminary and Comanche ENTER pass selection"
+    },
+    {
+      "local": "dc924e528431b687083a2620d903130d7676f491",
+      "remote": "615aa66a64c01f742e39b412c4feae5a8223c558",
+      "tree": "09deaae86555f809a4b028aa9c6ee5c92589cf3c",
+      "message": "Translate original Comanche minutes and seconds display scaling"
+    },
+    {
+      "local": "ef06bed3402e80fdb9ed61efd1a9507edab2630c",
+      "remote": "b960306ed0697164e5cb33956c8aa000e14bec7a",
+      "tree": "9c0305e536319f67f2af90756fdade1694155bc9",
+      "message": "Verify retained archives before removing inactive native proof duplicates"
+    },
+    {
+      "local": "cfbaaaf1c519c66eddb0c03e2852b560f6a55517",
+      "remote": "80ab1f1b49ba05a404ece0e0154f17884a8b4932",
+      "tree": "b62b024f7d5017f343dcffa08a78cbcb129e1221",
+      "message": "Run genuine Luminary P66 startup guidance and display jobs through native C64 application routing"
+    },
+    {
+      "local": "0bed30cba695d69b919b55d7660997e99857f34b",
+      "remote": "6f83982446cc3786c9e3362d494dac74905eb1a0",
+      "tree": "40dd6127d1eded6b1575779ca24f711b95c93e6e",
+      "message": "Translate complete original Luminary SPS backup RCS source"
+    },
+    {
+      "local": "1dfc4cb2c1f2dd4ddcd35bc32cf6260b413eaa2d",
+      "remote": "7c9dc89fa4c4b05ad7a08f00b2470f6f7bab7272",
+      "tree": "92f3a6f3e6f558b37a1afebeb43ea3dca148439f",
+      "message": "Certify complete original Luminary SPS backup RCS source"
+    },
+    {
+      "local": "b1d829941e35fe838716987063d104ecc201cfc3",
+      "remote": "b29326773f9a795b02203e760201fa1a8c38b08f",
+      "tree": "97c045126298c08b2aef9b34293f0885c846249f",
+      "message": "Translate original Luminary and Comanche ENTER noun admission"
+    },
+    {
+      "local": "8e877fcacf5392fa4857e22eff22a3f2611f48fc",
+      "remote": "56a36f6670e89fcd78363861a28ea2d948ed6e0a",
+      "tree": "0e878f1e59b316b5a0b2b9d65dee0d1c6fcfc5c8",
+      "message": "Translate original Luminary idle task dispatch and saved frame resume bridges"
+    },
+    {
+      "local": "385730c7270561b988bcb9381029b5647bccaa50",
+      "remote": "ef9281850b16e71e58126228040dc2361761659b",
+      "tree": "adb22d283476427605c0646e60a1c5ca8807ce25",
+      "message": "Verify clean committed host build through system lead ins and P66 startup"
+    },
+    {
+      "local": "206c1ae06cfaf25097665cdc6b6cf8f2f2c367dd",
+      "remote": "ce0b34613c05ae31ffc4eae5dc8364a053734d38",
+      "tree": "b11dbfd7b5ccb5952d77eea25303daceb98429d0",
+      "message": "Compose original Comanche normal noun40 and noun85 display source paths"
+    }
+  ],
+  "github_ref_api_verified": "ce0b34613c05ae31ffc4eae5dc8364a053734d38"
+}
