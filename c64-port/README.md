@@ -838,3 +838,7 @@ Independent review reconstructed every one of 187 original emitted words, checke
 ## Translate actual Luminary and Comanche DSKY plus and minus key entry
 
 Both original CHARIN paths now execute SIGNTEST, +ON/-ON, DSPIN/FIXCLPAS and genuine ENDOJOB. 8,192 complete source/native/sanitized states and 64 complete C64 checkpoints pass; numeric display input remains source-owned. See `docs/DSKY-SIGN-ENTRY.md`.
+
+## Fit genuine Luminary P66 startup seams into native C64 disk overlays
+
+STARTP66 setup, bias and vertical stages now load through fixed source-call seams without an added Executive poll. Strict and full sanitizer runs match 2,816 complete original states. A stock C64 disk proof passes 88 complete checkpoints across 32 cases; all eight application service payloads fit, with three startup stages executed in this packet. See `docs/P66-STARTUP-OVERLAYS.md`.

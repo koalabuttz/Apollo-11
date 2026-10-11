@@ -1,0 +1,13 @@
+# Fixed-slot P66 startup calls
+
+The original STARTP66 startup is split at compiled source-call seams so each real C payload fits the fixed16KB slot. Setup module50 executes FASTCHNG, NEWMODEX/display-job admission and the original DCA/DXCH desired-rate capture, returning at STRTP66A2505. Bias module83 executes the verified STRTP66A body through VRTSTART2536. Vertical module52 executes STOPRATE, flag changes, phase cancellation and the actual+100cs RODTASK schedule, reaching immediate RODCOMP3275 or the real BAILOUT1 route.
+
+Every module returns normally to resident C before another load. These disk returns preserve source state and job ownership and introduce no Executive scheduling point. Startup retains the source-qualified uninterrupted NEWJOB0 domain, because STRTP66A contains genuine interpreter checks. The separately qualified VRTSTART direct-entry body can retain an already pending job; it must use source-selected adoption rather than adding a poll at RODCOMP fallthrough.
+
+New source APIs `p66_launch_setup_phase` and `p66_launch_bias_phase` compare against the unchanged original assembly at each intermediate return. All2816 complete2050-word checkpoints match in strict and full ASAN/UBSAN streams, SHA256 `5fbd97c1e816257da3411c71c78938b0246198329a371e85bd1f66887a15b935`. The corpus includes actual no-core and waitlist-full source alarms.
+
+The stock PAL C64/D81 test loads16 frozen-input modules and the three actual startup services, checks88 original2050-word fingerprints across32 contexts, and alternates native IRQ enabled/masked. Mailbox `a50000580002`, measured software stack752 bytes and hardware32 bytes, no extra zero page; I and $01 are restored. Resident ends$1B45. Canonical$7000, slot$8000 and stack$C800 contracts remain unchanged. Module sizes: setup5057 bytes, bias4846, vertical9375.
+
+The application service builder also links the existing source-qualified deferred mode display, KEYIRQ, CHARIN VERB/NOUN, CHARIN digit and DSPOUTSB relay bodies in modules51,53,54,55,56, respectively. Their loaded sizes3615,5838,1167,6889,1343 all fit. This startup target test executes50/83/52; it does not claim that the other five services or the complete startup/descent/keyboard recurrence were exercised here. Those integrations require their own application proof. `p66_application.c` work is separate from this packet.
+
+Reproduce with `tools/p66_launch_phased_differential.py`, followed by `--sanitize`; build with `tools/p66_application_service_build.py` and `tools/p66_launch_phased_target_build.py`; run `tools/p66_launch_phased_vice_test.py`. `tools/p66_launch_phased.mk` provides explicit build targets. Artifact identities and tested dependencies are in `evidence/p66-launch-phased-proof.json`.

@@ -1,0 +1,157 @@
+[
+  {
+    "id": 1,
+    "filename": "L1",
+    "byte_count": 8713,
+    "crc16": 46612,
+    "prg": "p66-launch-phased-fixture-1.prg",
+    "sha256": "538e32c2442043da27eb2fd57123bd6c3cf7ef78c0fdb5fcd91d07d1667e4e33"
+  },
+  {
+    "id": 2,
+    "filename": "L2",
+    "byte_count": 8713,
+    "crc16": 31160,
+    "prg": "p66-launch-phased-fixture-2.prg",
+    "sha256": "efb5a368a5f9d828f9fe7e22db0bca858d04c1149aeefb184eb827f752e069a2"
+  },
+  {
+    "id": 3,
+    "filename": "L3",
+    "byte_count": 8713,
+    "crc16": 60946,
+    "prg": "p66-launch-phased-fixture-3.prg",
+    "sha256": "c0e20b4da8b91a5ee770f07b34e5b4ee82abf76327930f756986f2c8ac9ecd48"
+  },
+  {
+    "id": 4,
+    "filename": "L4",
+    "byte_count": 8713,
+    "crc16": 15550,
+    "prg": "p66-launch-phased-fixture-4.prg",
+    "sha256": "43013e512dfc3dbce564292c816960bf942564b0c4136dd879f354db6a1dc0ab"
+  },
+  {
+    "id": 5,
+    "filename": "L5",
+    "byte_count": 8713,
+    "crc16": 5443,
+    "prg": "p66-launch-phased-fixture-5.prg",
+    "sha256": "9880f8002d9a3fdea2877bf60ffc258b677b66ecfe05c51180bac6592c12f4f5"
+  },
+  {
+    "id": 6,
+    "filename": "L6",
+    "byte_count": 8713,
+    "crc16": 11677,
+    "prg": "p66-launch-phased-fixture-6.prg",
+    "sha256": "8896f987d9e331a61d0b78dfea5e6e63e0ea78f3c7780385162c706cd002845a"
+  },
+  {
+    "id": 7,
+    "filename": "L7",
+    "byte_count": 8713,
+    "crc16": 6365,
+    "prg": "p66-launch-phased-fixture-7.prg",
+    "sha256": "c5cf23dbfec12842cd254aead1ce9432fb7be8636ba00c56c0996dd9b1d97dff"
+  },
+  {
+    "id": 8,
+    "filename": "L8",
+    "byte_count": 8713,
+    "crc16": 42638,
+    "prg": "p66-launch-phased-fixture-8.prg",
+    "sha256": "a6ee0b309a98230ce06449b5dcbe900c11c6a5e0b03148b2168b72c91ffcbd74"
+  },
+  {
+    "id": 9,
+    "filename": "L9",
+    "byte_count": 8713,
+    "crc16": 31698,
+    "prg": "p66-launch-phased-fixture-9.prg",
+    "sha256": "3d7b39c30cfc0fae3e52c763e01e1c27fbba7e3d4c0ddf2c5f7f6b23061d4101"
+  },
+  {
+    "id": 10,
+    "filename": "L10",
+    "byte_count": 8713,
+    "crc16": 7254,
+    "prg": "p66-launch-phased-fixture-10.prg",
+    "sha256": "06fe15d05b7a38f10f800fc60e9268e1da11ab5a5333209b864c239c3ae0f7a9"
+  },
+  {
+    "id": 11,
+    "filename": "L11",
+    "byte_count": 8713,
+    "crc16": 59090,
+    "prg": "p66-launch-phased-fixture-11.prg",
+    "sha256": "54e44fbfb1abd17752d07e517acbea78cc5d5570f8f4fe56b7c1a737bf207b35"
+  },
+  {
+    "id": 12,
+    "filename": "L12",
+    "byte_count": 8713,
+    "crc16": 56163,
+    "prg": "p66-launch-phased-fixture-12.prg",
+    "sha256": "f0e44872926b25490b9d85d8d2f53860e8dd64f7e71bda04e67f2d4da11b9f5d"
+  },
+  {
+    "id": 13,
+    "filename": "L13",
+    "byte_count": 8713,
+    "crc16": 64913,
+    "prg": "p66-launch-phased-fixture-13.prg",
+    "sha256": "2a540f93dd1f05022a2c774469570a878aa667bfc2c97410109d8815af0eb26f"
+  },
+  {
+    "id": 14,
+    "filename": "L14",
+    "byte_count": 8713,
+    "crc16": 712,
+    "prg": "p66-launch-phased-fixture-14.prg",
+    "sha256": "7809f392ca635562ee0180c8a9ac01cd16c83910633d1bd4c22a0a1964f680b8"
+  },
+  {
+    "id": 15,
+    "filename": "L15",
+    "byte_count": 8713,
+    "crc16": 64080,
+    "prg": "p66-launch-phased-fixture-15.prg",
+    "sha256": "a12746bf3943c231b07340e5bf02f9e142ed7807712aac55a743c48a2ad9f60d"
+  },
+  {
+    "id": 16,
+    "filename": "L16",
+    "byte_count": 8713,
+    "crc16": 638,
+    "prg": "p66-launch-phased-fixture-16.prg",
+    "sha256": "2c706a7b357bf7983ffbf6111618a87661660b884d6c2f35aaf11493f18d1d9b"
+  },
+  {
+    "id": 50,
+    "filename": "A50",
+    "byte_count": 5057,
+    "crc16": 55882,
+    "sha256": "ce984296c55ec98a697d22cdccfbae10305f323bd8e568adec41b17bd432e7f1",
+    "prg": "overlay-p66-application-50.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 83,
+    "filename": "A83",
+    "byte_count": 4846,
+    "crc16": 16840,
+    "sha256": "e1c5227fa7b74981bb83743a073f96da0fed9f3d73293a8d7f2f96f9e1010c42",
+    "prg": "overlay-p66-application-83.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 52,
+    "filename": "A52",
+    "byte_count": 9375,
+    "crc16": 10559,
+    "sha256": "6648b57e668a0a298d61ef73cbd99582e3943b3c5952fefd53a1a299cbb81cff",
+    "prg": "overlay-p66-application-52.prg",
+    "mission_translation": true
+  }
+]

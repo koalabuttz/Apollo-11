@@ -1,0 +1,22 @@
+formatting in unit 8 ...
+writing file `P66-LAUNCH-PHASED-TARGET.PRG' as `RESIDENT' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-1.PRG' as `L1' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-2.PRG' as `L2' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-3.PRG' as `L3' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-4.PRG' as `L4' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-5.PRG' as `L5' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-6.PRG' as `L6' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-7.PRG' as `L7' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-8.PRG' as `L8' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-9.PRG' as `L9' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-10.PRG' as `L10' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-11.PRG' as `L11' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-12.PRG' as `L12' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-13.PRG' as `L13' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-14.PRG' as `L14' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-15.PRG' as `L15' to unit 8
+writing file `P66-LAUNCH-PHASED-FIXTURE-16.PRG' as `L16' to unit 8
+writing file `OVERLAY-P66-APPLICATION-50.PRG' as `A50' to unit 8
+writing file `OVERLAY-P66-APPLICATION-83.PRG' as `A83' to unit 8
+writing file `OVERLAY-P66-APPLICATION-52.PRG' as `A52' to unit 8
+Built32 frozen cases, 88 full2050-word source checkpoints through actual startup disk calls; SHA256 f01ca9898eb2eedf356b591fb40444abe974f151917ec1a2abb8ed085fda5022
