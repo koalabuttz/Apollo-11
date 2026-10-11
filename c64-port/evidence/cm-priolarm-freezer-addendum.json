@@ -1,0 +1,12 @@
+{
+  "scope": "Add the actual PRIOLARM vector freezer omitted by the adapted original collector; original runtime/source/proof artifacts and original collector remain unchanged.",
+  "original_allowlist_sha256": "fc716254c29a74a5d591dad9b7abcf5a5596d1fb27fdadf5b7602296249f63ec",
+  "original_ledger_sha256": "d573f641f411ee073eee26795a9183149971abf9acf838000d45011e6221eb10",
+  "freezer": {
+    "path": "tools/cm_freeze_priolarm.py",
+    "sha256": "9e0057ea83f17b35ed94db2f552e9d9d93c5eaebe914bc4e53dc61252cf94a29"
+  },
+  "original_collector_sha256": "f75bcd0f842ceed8d213c33976a1ddc1f088c6af7a2e04ba81bf22da8fba0acb",
+  "source_stream_sha256": "fe216e60aa5c53c34c6be48a9028ca2e9881cd35004a565ceae4d28ef7437abb",
+  "target_mailbox_hex": "a500002000"
+}

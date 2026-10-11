@@ -1604,3 +1604,5 @@ Qualify actual PRIOLARM raw registers and FAILREG recording through true PRIODSP
 ## Compose native operator requests through original scheduler outcomes
 
 Qualify both original V30 and V31 operator scheduling paths through actual core admission, task insertion, END or source recovery with8192 complete original native sanitizer states and64 C64 states including exhausted resources, full queues and invalid delays. See `docs/DSKY-OPERATOR-SCHEDULE.md`.
+
+The original frozen PRIOLARM collector accidentally listed the older ENEMA freezer instead of its actual vector freezer. The additive `evidence/cm-priolarm-freezer-addendum.json` and SHA256 ledger preserve the omitted freezer and pin the unchanged original collector, allowlist, ledger, source comparison and C64 mailbox. The original packet remains immutable. The independent `evidence/phase-octal-cadr-blank-cleanup-independent-review.json` decodes all three retained original archives and checks all nine removed temporary mirrors against their committed Git blobs, validating851918058 reclaimed duplicate bytes without deleting source or evidence.
