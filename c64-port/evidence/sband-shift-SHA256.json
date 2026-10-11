@@ -1,0 +1,158 @@
+{
+  "docs/NATIVE-SBAND-VECTOR-SHIFT.md": {
+    "sha256": "0909497cb9c23f0a781eefeadb44324293c75e223a6d7bb81d58e7ccb964d160",
+    "bytes": 2066
+  },
+  "evidence/sband-shift-frozen-validation.log": {
+    "sha256": "ed89e52ae5c01348a801112049d453a4933b683f9946c257b2ba04afaa515f7d",
+    "bytes": 80
+  },
+  "evidence/sband-shift-host-validation.log": {
+    "sha256": "3324d7b745104bb33d199acdb3647502da1683792dbbf8c79cc9cd451f943563",
+    "bytes": 703
+  },
+  "evidence/sband-shift-independent-review.txt": {
+    "sha256": "534aa906feab0e90d6edbbd02facff577bd68e130c2275cd7cae0b8c2bcf5d5a",
+    "bytes": 1288
+  },
+  "evidence/sband-shift-mailbox.bin": {
+    "sha256": "d54c1268cce44f361878a4f6db009986bbd581c9d2f19fa5e6c360c3ca491a8d",
+    "bytes": 4
+  },
+  "evidence/sband-shift-monitor.log": {
+    "sha256": "abcecac7a2f3d1cb291ce118758dfc0889eb154029e17e468f2ea8a0b21c2c2a",
+    "bytes": 387
+  },
+  "evidence/sband-shift-native-results.json": {
+    "sha256": "7790de10fc211ccd3450c4bb2ed6b0ae18e62d037ae482f9a552ef74a5feb063",
+    "bytes": 166
+  },
+  "evidence/sband-shift-proof.json": {
+    "sha256": "6179f534b2728cbac998deb7a972db6a40418d02f0c493181ba993340381bdad",
+    "bytes": 2702
+  },
+  "evidence/sband-shift-sanitize-results.json": {
+    "sha256": "7790de10fc211ccd3450c4bb2ed6b0ae18e62d037ae482f9a552ef74a5feb063",
+    "bytes": 166
+  },
+  "evidence/sband-shift-source-0.snapshots.bin.xz": {
+    "sha256": "57decd9b6e0466dac96d5a46c29a85f197b09ff48790ce7cd79e0b52ab2417f4",
+    "bytes": 36270136
+  },
+  "evidence/sband-shift-source-1.snapshots.bin.xz": {
+    "sha256": "e647902a19128d825358e9112a07d612f30d9569dcfff6d36abf43b0da7d7b44",
+    "bytes": 36283848
+  },
+  "evidence/sband-shift-source-map.json": {
+    "sha256": "2c9bdea68499c64de23aa177e60b9af308432f1c21dbafb492005fd976a21934",
+    "bytes": 35635
+  },
+  "evidence/sband-shift-target-results.json": {
+    "sha256": "0ef045390e0e19694ca4ab6522c849f894fe465c32d9ca2463ba83c4fc139a18",
+    "bytes": 4627
+  },
+  "evidence/sband-shift-target-source.snapshots.bin.xz": {
+    "sha256": "432da4430cc47109cf5af5c11e399910bcae15a98864d83f5909253745a81923",
+    "bytes": 47772
+  },
+  "evidence/sband-shift-target-validation.log": {
+    "sha256": "b41224e9fbb0c97b8d89dd233aae5c0299f11074264a84e89ce9a5b16e9d15fd",
+    "bytes": 1137
+  },
+  "evidence/sband-shift-vice-results.json": {
+    "sha256": "b60047f70ee59a44f6d4687deeb880c8465abab063b65975fa49122b70b60911",
+    "bytes": 199
+  },
+  "evidence/sband-shift-vice.log": {
+    "sha256": "e2721224dec06f623353dfee71a8a25190b7103548899dc66f43280ee8112ab2",
+    "bytes": 6489
+  },
+  "evidence/sband-shift.map": {
+    "sha256": "bac5416cc20b06e413a618b0e68f698ff30ad8d3fd02427afaf85d1061c5b5ab",
+    "bytes": 9780
+  },
+  "evidence/sband-shift.prg": {
+    "sha256": "a257e09676a75c0d358171ca230e2c37745cf038d86f15a89176b1277c55e60f",
+    "bytes": 19978
+  },
+  "include/sband_shift.h": {
+    "sha256": "5c173b6f8b86e749e856b2347c3c310a901c22d33b26ea52dc3a860085c19549",
+    "bytes": 628
+  },
+  "platform/c64/sband_shift_diagnostic.c": {
+    "sha256": "50e44915c9a240f88a2806d20572f36fe7889785f744fa3ba43ed4ab4df23332",
+    "bytes": 436
+  },
+  "src/sband_shift.c": {
+    "sha256": "36207c8d688a66804e4c4a8f8914f153e7e07765dac7a09396a50d1c2e8a5506",
+    "bytes": 1881
+  },
+  "tests/sband_shift_cases.c": {
+    "sha256": "cf5abeab2c714cef55c45f6017ebc5edbd30ad0fb77c3db601c0bd8a0602fdbb",
+    "bytes": 1057
+  },
+  "tests/sband_shift_cases.h": {
+    "sha256": "4daa9187d807f094626e5307344786d446ed7afb521361339dfbf7916e13ac34",
+    "bytes": 277
+  },
+  "tests/sband_shift_target.c": {
+    "sha256": "6c04f286c3e05f50daf82f7be70df7d59d8a90924f1a81d33d496cf9da8f13ea",
+    "bytes": 1504
+  },
+  "tests/sband_shift_target.h": {
+    "sha256": "a61d626fb40b42a668bf9464d659e87f3c6da6f0a388b8b9b402b47db830cf87",
+    "bytes": 141
+  },
+  "tests/sband_shift_vectors.h": {
+    "sha256": "6f5ad768d9e67a6c595be766913eadf241a2167847d7eaeaedc7923c771d5017",
+    "bytes": 43508
+  },
+  "tests/test_sband_shift.c": {
+    "sha256": "2e1bdb446863722abd6f811c0c8db9a63a7011c2c2f6a7d3ca26a1322340499d",
+    "bytes": 1252
+  },
+  "tools/freeze_sband_shift.py": {
+    "sha256": "f70289dae78912bafa9c193292183a74dc2d2320d46901c6c752f28cbac9bc55",
+    "bytes": 1859
+  },
+  "tools/package_sband_shift.py": {
+    "sha256": "a4592a0b4571577d451f923ff60ae0ddd243d098c5cb65c95771957f54cd348b",
+    "bytes": 4120
+  },
+  "tools/sband_shift.mk": {
+    "sha256": "ef770b63d6026c3f3ba5fb89e930985ea30c27802baee8894cabb1ccdf23d7ff",
+    "bytes": 1651
+  },
+  "tools/sband_shift_compare.py": {
+    "sha256": "542ad6f576507e77651200796cad0464a65f72f3cb02c9e93a8b8dda80b74fdb",
+    "bytes": 1811
+  },
+  "tools/sband_shift_inputs.c": {
+    "sha256": "1e79423141deb26e6c89976213d371c7486e68623b299e121bfe7ca85c34fb05",
+    "bytes": 503
+  },
+  "tools/sband_shift_integration.mk": {
+    "sha256": "fbedd0e3036aa614503d92ba0e74761bc37dc98ee9653d5f605234e446b9aa72",
+    "bytes": 1518
+  },
+  "tools/sband_shift_port_host.py": {
+    "sha256": "6001a8676d6ca6f31f26f95427aa26ccc24df4f77b11126df24ea1a8709e7457",
+    "bytes": 1367
+  },
+  "tools/sband_shift_reference.c": {
+    "sha256": "1cf20e41125a9cda4aec8f43d18644fe5a55141af49766b7651056a3f7d43357",
+    "bytes": 1493
+  },
+  "tools/sband_shift_snapshot.c": {
+    "sha256": "9c790c50f8d179eb9cc108885f4032cb881d811076f3b639fefac1897c56adc1",
+    "bytes": 660
+  },
+  "tools/sband_shift_source.py": {
+    "sha256": "a4577288e3dee2b0ee1dbc4bba6a70abae7df36862c820e01cc871631494d983",
+    "bytes": 2482
+  },
+  "tools/sband_shift_vice_test.py": {
+    "sha256": "671e92b54eafb80eb06f84f38351a2e44b65dc3bf7ec55343ddabb079aa544ec",
+    "bytes": 2620
+  }
+}

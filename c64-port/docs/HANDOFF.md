@@ -1399,3 +1399,7 @@ Qualify262144 complete original peripheral strict sanitizer states and128 C64 st
 ## Qualify canonical scalar shifts used by both ephemerides algorithms
 
 Translate actual scalar no-round shifts5 8 and16 including both CYR edits and source overflow behavior against131072 complete original strict sanitizer states and64 C64 states without changing existing frozen arithmetic kernels. See `docs/NATIVE-EPHEMERIS-SHIFT.md`.
+
+## Qualify canonical vector shifts used by antenna calculations
+
+Translate source vector-left continuation and overflow correction against524288 complete original native sanitizer states and384 C64 states with preserved canonical aliases and producer contracts. See `docs/NATIVE-SBAND-VECTOR-SHIFT.md`.

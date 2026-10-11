@@ -898,3 +898,8 @@ all: build/cm-abort-word-native
 include tools/imu_gyro_device_integration.mk
 
 include tools/ephemeris_shift_integration.mk
+
+include tools/sband_shift_integration.mk
+all: build/sband-shift-integrated-stream
+test: test-sband-shift
+sanitize: sanitize-sband-shift

@@ -1,0 +1,10 @@
+./build/test-sband-shift-integrated
+PASS exact original short vector-left fixtures and unchanged unsupported images
+python3 tools/sband_shift_port_host.py --binary build/sband-shift-integrated-stream
+PASS all 524,288 original short vector-left states; 2152726528 bytes; 577912addfd1b6fa6543a6a6ddebcedd87f379d1f13b05272f2c0e9ca3c609b4
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_shift.c tests/sband_shift_target.c tests/frozen_words.c tests/sband_shift_cases.c src/agc_word.c src/sband_shift.c src/agc_multiword.c src/guidance_shift.c -o build/test-sband-shift-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-shift-integrated-san
+PASS exact original short vector-left fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_shift_snapshot.c tests/sband_shift_cases.c src/agc_word.c src/sband_shift.c src/agc_multiword.c src/guidance_shift.c -o build/sband-shift-integrated-stream-san
+python3 tools/sband_shift_port_host.py --binary build/sband-shift-integrated-stream-san
+PASS all 524,288 original short vector-left states; 2152726528 bytes; 577912addfd1b6fa6543a6a6ddebcedd87f379d1f13b05272f2c0e9ca3c609b4

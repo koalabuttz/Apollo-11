@@ -1,0 +1,132 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22      80d        3     1 .zp.data
+      22      80d        0     1         __zp_data_start = .
+      22      80d        3     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.zp.data)
+      22      80d        3     1                 p66_vector_shift_right.offsets
+      25      810        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      25      810        0     1 __zp_data_size = SIZEOF(.zp.data)
+      25       25        0     1 .zp.bss
+      25       25        0     1         __zp_bss_start = .
+      25       25        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      25       25       2d     1 .zp
+      25       25       2d     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.zp.noinit)
+     810      810     1603     1 .text
+     810      810        0     1         _init = .
+     810      810        0     1         _start = .
+     810      810        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     818      818        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     818      818        0     1                 __do_init_stack
+     820      820        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     820      820        0     1                 __do_zero_bss
+     823      823        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(copy-zp-data.c.obj):(.init.200)
+     823      823        0     1                 __do_copy_zp_data
+     826      826        5     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.init.250)
+     826      826        0     1                 shift
+     82b      82b        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     82e      82e        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     82e      82e        0     1                 __after_main
+     831      831        0     1         _fini = .
+     831      831        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     835      835        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     836      836       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     836      836       13     1                 __zero_bss
+     849      849       17     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(copy-zp-data.c.obj):(.text.__copy_zp_data)
+     849      849       17     1                 __copy_zp_data
+     860      860      224     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.frozen_words_next)
+     860      860      224     1                 frozen_words_next
+     a84      a84      158     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.invokes_overflow)
+     a84      a84      158     1                 invokes_overflow
+     bdc      bdc      1bc     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.agc_double_add)
+     bdc      bdc      1bc     1                 agc_double_add
+     d98      d98      3df     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.p66_vector_shift_left)
+     d98      d98      3df     1                 p66_vector_shift_left
+    1177     1177      ba5     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.main)
+    1177     1177      ba5     1                 main
+    1d1c     1d1c        6     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.exit)
+    1d1c     1d1c        6     1                 exit
+    1d22     1d22       34     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.memcpy)
+    1d22     1d22       34     1                 memcpy
+    1d56     1d56       22     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.__memset)
+    1d56     1d56       22     1                 __memset
+    1d78     1d78       34     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.__mulhi3)
+    1d78     1d78       34     1                 __mulhi3
+    1dac     1dac       67     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.text.__mulsi3)
+    1dac     1dac       67     1                 __mulsi3
+    1e13     1e13        0     1         __init_array_start = .
+    1e13     1e13        0     1         __init_array_end = .
+    1e13     1e13        0     1         __fini_array_start = .
+    1e13     1e13        0     1         __fini_array_end = .
+    1e13     1e13     37f6     1 .rodata
+    1e13     1e13        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    1e13     1e13        0     1                 __set_v
+    1e14     1e14       fa     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.rodata.sband_shift_reference_dictionary)
+    1e14     1e14       fa     1                 sband_shift_reference_dictionary
+    1f0e     1f0e      302     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.rodata.sband_shift_reference_offsets)
+    1f0e     1f0e      302     1                 sband_shift_reference_offsets
+    2210     2210     33f9     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.rodata.sband_shift_reference_stream)
+    2210     2210     33f9     1                 sband_shift_reference_stream
+    5609     5609        0     1 .data
+    5609     5609        0     1         __data_start = .
+    5609     5609        0     1         __data_end = .
+    5609     5609        0     1 __data_load_start = LOADADDR(.data)
+    5609     5609        0     1 __data_size = SIZEOF(.data)
+    5609     5609     2000     1 .bss
+    5609     5609        0     1         __bss_start = .
+    5609     5609     1000     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.bss.state)
+    5609     5609     1000     1                 state
+    6609     6609     1000     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.bss.expected)
+    6609     6609     1000     1                 expected
+    7609     7609        0     1         __bss_end = .
+    7609     7609        0     1 __bss_size = SIZEOF(.bss)
+    7609     7609        0     1 .noinit
+    7609     7609        0     1         __heap_start = ALIGN(., 2)
+    7609     7609        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/sband-shift.prg.lto.o:(.llvm_sympart)
+       0        0      b50     4 .symtab
+       0        0      b50     4         <internal>:(.symtab)
+       0        0       76     1 .shstrtab
+       0        0       76     1         <internal>:(.shstrtab)
+       0        0      6a4     1 .strtab
+       0        0      6a4     1         <internal>:(.strtab)
