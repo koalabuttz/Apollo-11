@@ -9640,6 +9640,7 @@
   "scale-vice.mon": "8807d533189fd79dc6b30d02593bbe2ffd6cf7f201a8a99f6874f3559e4d9b6d",
   "scale.map": "37d6cae3a9bcf56653a692c9ccd2228c5894b1f5744d330ca5c8eb01e9e0c8ca",
   "scale.prg": "3bc38b075e517421dc456afc5da63efae06aea4aea3b4236e3193ef3c8c55a13",
+  "scheduler-io-recovery-partial-coverage-validation.log": "c757cb30d909ba821802f2bc135821df791aebfd95bbfae3e93570b1b5c1ed38",
   "service-routines-SHA256.json": "7b1d131847f68ace00da2b1b1112998e78a75ae1c2f6d227db97d78f41fde510",
   "service-routines-c64.log": "e25e0eed0f429e4b9330e73c3d590ba54021555d8ccd544876a04372fb000d8e",
   "service-routines-certificate-validation.log": "6cb5c697dd053d2feea0123838bb14ba828cd8bf9002c9c0fbc40737491276b1",

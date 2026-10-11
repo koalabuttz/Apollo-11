@@ -72,6 +72,11 @@
           "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md",
           "scope": "Continuous source blocked clock display sleep restoration on seven genuine contexts; C64 final transitions separately proved, no entire disk chain acceptance.",
           "reviewed_entire_program": false
+        },
+        {
+          "verification": "docs/COMANCHE_ABORT_LIFECYCLE.md",
+          "scope": "Continuous native original alarm cleanup restart selection with1536 original paths and12 C64 paths; complete application and remaining entry/device/display acceptance remain open.",
+          "reviewed_entire_program": false
         }
       ]
     }
@@ -121,6 +126,20 @@
           ],
           "scope": "Continuous POODOO mode test generic DOWNFLAG phase cleanup and true WHIMPER handoff; following recovery groups remain separately qualified.",
           "verification": "docs/COMANCHE_ABORT_RECOVERY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_abort_lifecycle.c"
+          ],
+          "scope": "Uninterrupted actual alarm abort cleanup WHIMPER ENEMA recovery through source-selected display or startup frontiers, preserving full physical image and IRQ state; remaining alarm entry domains and full consumers stay open.",
+          "verification": "docs/COMANCHE_ABORT_LIFECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_priolarm.c"
+          ],
+          "scope": "Actual PRIOLARM raw register recording and source PRIODSPR or POODOO selection; priority-display consumer and broad alarm caller closure remain separate.",
+          "verification": "docs/COMANCHE_PRIOLARM.md"
         }
       ]
     },
@@ -590,6 +609,13 @@
           ],
           "scope": "Canonical ENEMA full physical image source effects and exact MMDSPLAY PTBAD DOFSTART continuations; target scratch workaround and failed compiler evidence retained.",
           "verification": "docs/COMANCHE_ENEMA_IMAGE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_abort_lifecycle.c"
+          ],
+          "scope": "Actual ENEMA restart portion within continuous alarm lifecycle, retaining source MMDSPLAY PTBAD or DOFSTART frontier; broader restart program remains open.",
+          "verification": "docs/COMANCHE_ABORT_LIFECYCLE.md"
         }
       ]
     },
@@ -684,8 +710,16 @@
       "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
       "bytes": 23181,
       "lines": 1066,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/imu_pulse.c"
+          ],
+          "scope": "Actual IMUPULSE mode lead in and successful WAITLIST registration with free command reservation, TPAGREE and source MODEEXIT return; deferred gyro tasks, busy sleep and hardware delivery remain open.",
+          "verification": "docs/NATIVE-IMUPULSE.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc",
@@ -820,6 +854,13 @@
           ],
           "scope": "Complete125 word UNIT UNITDV and VSQSUB numerical source group under explicit vector VAC contract; other interpreter bodies remain open.",
           "verification": "docs/RTB-UNIT.md"
+        },
+        {
+          "native_files": [
+            "src/sband_vector.c"
+          ],
+          "scope": "Original VXV and VPROJ numerical helper bodies with exact erasable aliases and passive fixed operands; other interpreter groups remain open.",
+          "verification": "docs/NATIVE-SBAND-VECTORS.md"
         }
       ]
     },
@@ -1415,6 +1456,27 @@
           ],
           "scope": "Actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 source call stages to genuine RELDSP NOVAC FINDVAC WAITLIST boundaries, retaining downstream parameters.",
           "verification": "docs/DSKY-REQUEST-CONTROL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_select.c"
+          ],
+          "scope": "Original DSPDCPUT factor and output scaling routine selection through true selected scaler entry, retaining mission-specific tables.",
+          "verification": "docs/DSKY-DECIMAL-SELECT.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_scalar_output.c"
+          ],
+          "scope": "Original scalar output scaling from fresh READLO through true DSPDCEND; formatter and next-row consumers remain separate.",
+          "verification": "docs/DSKY-SCALAR-OUTPUT.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_operator_schedule.c"
+          ],
+          "scope": "Uninterrupted original V30 and V31 release wakeup scheduling through actual NOVAC FINDVAC or WAITLIST and END or source recovery, including resource exhaustion and invalid delays.",
+          "verification": "docs/DSKY-OPERATOR-SCHEDULE.md"
         }
       ]
     },
@@ -2787,8 +2849,16 @@
       "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
       "bytes": 23400,
       "lines": 1067,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/imu_pulse.c"
+          ],
+          "scope": "Actual IMUPULSE mode lead in and successful WAITLIST registration with free command reservation, TPAGREE and source MODEEXIT return; deferred gyro tasks, busy sleep and hardware delivery remain open.",
+          "verification": "docs/NATIVE-IMUPULSE.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/IMU_PERFORMANCE_TESTS_4.agc",
@@ -2975,6 +3045,13 @@
           ],
           "scope": "Complete125 word UNIT UNITDV and VSQSUB numerical source group under explicit vector VAC contract; other interpreter bodies remain open.",
           "verification": "docs/RTB-UNIT.md"
+        },
+        {
+          "native_files": [
+            "src/sband_vector.c"
+          ],
+          "scope": "Original VXV and VPROJ numerical helper bodies with exact erasable aliases and passive fixed operands; other interpreter groups remain open.",
+          "verification": "docs/NATIVE-SBAND-VECTORS.md"
         }
       ]
     },
@@ -3550,6 +3627,27 @@
           ],
           "scope": "Actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 source call stages to genuine RELDSP NOVAC FINDVAC WAITLIST boundaries, retaining downstream parameters.",
           "verification": "docs/DSKY-REQUEST-CONTROL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_select.c"
+          ],
+          "scope": "Original DSPDCPUT factor and output scaling routine selection through true selected scaler entry, retaining mission-specific tables.",
+          "verification": "docs/DSKY-DECIMAL-SELECT.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_scalar_output.c"
+          ],
+          "scope": "Original scalar output scaling from fresh READLO through true DSPDCEND; formatter and next-row consumers remain separate.",
+          "verification": "docs/DSKY-SCALAR-OUTPUT.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_operator_schedule.c"
+          ],
+          "scope": "Uninterrupted original V30 and V31 release wakeup scheduling through actual NOVAC FINDVAC or WAITLIST and END or source recovery, including resource exhaustion and invalid delays.",
+          "verification": "docs/DSKY-OPERATOR-SCHEDULE.md"
         }
       ]
     },
