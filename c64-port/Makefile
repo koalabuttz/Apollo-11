@@ -379,3 +379,5 @@ test-guidance-phased:
 	$(MAKE) guidance-phased-host KIND=projection
 
 include tools/dsky_relay.mk
+
+include tools/dsky_display.mk

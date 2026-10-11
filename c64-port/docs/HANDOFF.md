@@ -455,3 +455,7 @@ All 97,558 complete UNIT/radial/projection source states and full sanitizer corp
 ## Port original DSKY relay drain and channel10 output
 
 All 1,024 whole-memory DSPOUTSB source states and actual channel10 output events match. Strict and sanitizer checks and 64 complete C64 images pass; the native screen adapter and live application wiring remain separate integrations. See [DSKY_RELAY.md](DSKY_RELAY.md).
+
+## Render actual native DSKY relay output on the C64
+
+The source mode66 display job and channel10 relay drain now drive real C64 screen/color RAM. Host, sanitizer and target checks verify numeric/sign latches, lights, blanking and the128cs flash cycle; live application keyboard/device integration remains pending. See [DSKY_DISPLAY.md](DSKY_DISPLAY.md).

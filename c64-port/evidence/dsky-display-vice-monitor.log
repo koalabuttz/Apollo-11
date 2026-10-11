@@ -1,0 +1,33 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_display.prg from 0801 to 1A0E (120E bytes)
+WATCH: 1  C:$2a2b  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 2a2b)  308/$134,  29/$1d
+.C:17e1  8E 2B 2A    STX $2A2B      - A:CF X:A5 Y:06 SP:f1 N.-....C    2751617
+>C:2a2b  a5 01 00 01  01                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-mailbox.bin' from $2a2b to $2a2f
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-color.bin' from $d800 to $dbe7
+Loading /workspace/Apollo-11/c64-port/build/dsky_display.prg from 0801 to 1A1E (121E bytes)
+WATCH: 1  C:$2a3b  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 2a3b)  308/$134,  42/$2a
+.C:17f1  8E 3B 2A    STX $2A3B      - A:CF X:A5 Y:06 SP:f1 N.-....C    2751630
+>C:2a3b  a5 00 00 01  01                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-mailbox.bin' from $2a3b to $2a3f
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-color.bin' from $d800 to $dbe7
+Loading /workspace/Apollo-11/c64-port/build/dsky_display.prg from 0801 to 1A41 (1241 bytes)
+WATCH: 1  C:$2a5f  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 2a5f)  304/$130,  62/$3e
+.C:178c  8E 5F 2A    STX $2A5F      - A:CF X:A5 Y:06 SP:f1 N.-....C    2751398
+>C:2a5f  a5 00 00 01  01                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-mailbox.bin' from $2a5f to $2a63
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_display-vice-color.bin' from $d800 to $dbe7
