@@ -1,0 +1,3 @@
+/* SPDX-License-Identifier: MIT; host-only complete binary checkpoint output. */
+#include <stdio.h>
+static void cm_fixed_dump(uint32_t n,uint16_t phase,unsigned status,const apollo_overlay_state *s,const cm_native_io *io){unsigned i;unsigned char bytes[4108];uint16_t words[2054];words[0]=(uint16_t)n;words[1]=(uint16_t)(n>>16);words[2]=phase;words[3]=(uint16_t)status;for(i=0;i<2048u;++i)words[i+4u]=s->words[i];words[2052]=io->superbank;words[2053]=io->interrupt_enabled;for(i=0;i<2054u;++i){bytes[i*2u]=(unsigned char)words[i];bytes[i*2u+1u]=(unsigned char)(words[i]>>8);}if(fwrite(bytes,1,sizeof bytes,stdout)!=sizeof bytes)exit(2);}

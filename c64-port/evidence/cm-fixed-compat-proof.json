@@ -1,0 +1,29 @@
+{
+  "cases": 81920,
+  "checkpoints": 163840,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "40960 actual DSPFMEM41,3353 entries",
+    "40960 actual COMADRS43,3535 entries"
+  ],
+  "data_domain": "every physical original fixed word in banks0..35 plus all unpopulated bank36..39 zero words, both actual callers",
+  "boundaries": [
+    "actual SUPDACAL04715 entry",
+    "actual caller return3361 or3542 after original SUPDACAL"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "binary_record_format": "2054 little-endian uint16: case low/high,phase,status,2048 physical words,SUPERBNK,IRQ",
+  "binary_bytes": 673054720,
+  "snapshot_sha256": "3d1f53fedcc1c1cd107c16b9034609552bfe4f7a17d9451d45d21b0f7a14fd0c",
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": "caller lead-ins and SUPDACAL control only; fixed words remain data; later octal-display/checksum bodies not executed"
+}

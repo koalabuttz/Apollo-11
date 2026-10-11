@@ -1,0 +1,92 @@
+[
+  {
+    "id": 200,
+    "filename": "F200",
+    "byte_count": 14483,
+    "crc16": 62851,
+    "sha256": "cfbe4d32f919538cd398724f3ef12f1091de4011e77c53bf814f17ae4b4c8c56",
+    "prg": "cm-fixed-compat-200.prg",
+    "passive_fixed_word_data": true,
+    "actual_native_caller_control": false
+  },
+  {
+    "id": 201,
+    "filename": "F201",
+    "byte_count": 14528,
+    "crc16": 35387,
+    "sha256": "1762287da00769644de30e2475de96b85043af151065bf260c02fcbd6a87b51c",
+    "prg": "cm-fixed-compat-201.prg",
+    "passive_fixed_word_data": true,
+    "actual_native_caller_control": false
+  },
+  {
+    "id": 202,
+    "filename": "F202",
+    "byte_count": 14528,
+    "crc16": 21478,
+    "sha256": "723cfa924ffb4f40dee347a59162d12e7dbaabd11f4346ec1dc1f0d7e01a86ff",
+    "prg": "cm-fixed-compat-202.prg",
+    "passive_fixed_word_data": true,
+    "actual_native_caller_control": false
+  },
+  {
+    "id": 203,
+    "filename": "F203",
+    "byte_count": 14528,
+    "crc16": 34880,
+    "sha256": "4471ce302f6794acf1f0987f6d9880f5cb6221dc6bccd795a58fe4d2b8e27a82",
+    "prg": "cm-fixed-compat-203.prg",
+    "passive_fixed_word_data": true,
+    "actual_native_caller_control": false
+  },
+  {
+    "id": 204,
+    "filename": "F204",
+    "byte_count": 14528,
+    "crc16": 39848,
+    "sha256": "fb94aaabc7201fef2265e7798f4dc6c01a55b574c14ff513d935dd101950d082",
+    "prg": "cm-fixed-compat-204.prg",
+    "passive_fixed_word_data": true,
+    "actual_native_caller_control": false
+  },
+  {
+    "id": 205,
+    "filename": "F205",
+    "byte_count": 2207,
+    "crc16": 14101,
+    "sha256": "012b224cdfc38657720d34852b9cbc2d9fcaa30eca845d2a827a0b0cd2e11025",
+    "prg": "cm-fixed-compat-205.prg",
+    "passive_fixed_word_data": true,
+    "actual_native_caller_control": false
+  },
+  {
+    "id": 206,
+    "filename": "F206",
+    "byte_count": 1164,
+    "crc16": 56225,
+    "sha256": "5a2a149f7b38fa81d7ba0f1e141666ba8ae14ec22a50169f52eb5c564e3e1355",
+    "prg": "cm-fixed-compat-206.prg",
+    "passive_fixed_word_data": false,
+    "actual_native_caller_control": true
+  },
+  {
+    "id": 240,
+    "filename": "F240",
+    "byte_count": 1833,
+    "crc16": 23875,
+    "sha256": "0bb49a643cd17f6c2b13a0123fa34404096083ba384fdd442f57d83e803f5435",
+    "prg": "cm-fixed-compat-240.prg",
+    "passive_fixed_word_data": false,
+    "actual_native_caller_control": false
+  },
+  {
+    "id": 241,
+    "filename": "F241",
+    "byte_count": 10207,
+    "crc16": 62891,
+    "sha256": "751a92d8dac99c239dbac201b51672f25488d4866cf2d41ffa16598c2284f0f5",
+    "prg": "cm-fixed-compat-241.prg",
+    "passive_fixed_word_data": false,
+    "actual_native_caller_control": false
+  }
+]

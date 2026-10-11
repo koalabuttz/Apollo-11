@@ -915,3 +915,7 @@ Both original Clear paths now preserve negative-zero DIM semantics and perform C
 ## Qualify exact passive original fixed word storage for both applications
 
 Both original fixed-word datasets now have data-only native readers: 36 populated banks and four zero banks per mission. Strict and sanitizer audits exhaust all 65,536 reader arguments per link group. Stock C64 reads match all 81,920 individual words per mission across both IRQ states while preserving the canonical image and ROM mapping. The LM allocation-only disk retains every existing file; executable registry allocation and source caller controls remain separate work. See `docs/PASSIVE_FIXED_STORAGE.md`.
+
+## Run original Comanche fixed memory display and checksum call prefixes
+
+Actual DSPFMEM and COMADRS lead-ins now read the entire 40,960-address original fixed-word domain through native SUPDACAL and return to genuine callers. 81,920 source sequences and 163,840 complete source/native/sanitized checkpoints pass; stock C64 verifies 64 sequences and 128 checkpoints with full-state samples. Passive data is separately exact-word qualified. Later octal display/checksum bodies and whole application acceptance remain pending. See `docs/COMANCHE_FIXED_CALLERS.md`.

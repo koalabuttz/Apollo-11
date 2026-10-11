@@ -619,3 +619,6 @@ include tools/matrix_port.mk
 include tools/dsky_charin_clear.mk
 
 include tools/passive_storage_port.mk
+
+include tools/cm_fixed_compat.mk
+all: build/cm-fixed-compat-native
