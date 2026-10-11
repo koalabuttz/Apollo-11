@@ -1,0 +1,28 @@
+{
+  "fixture_rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+  "engine_source_sha256": "9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef",
+  "hardware_dv_variant_sha256": "3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242",
+  "kernels": {
+    "norm": {
+      "cases": 132096,
+      "modeled_words": 20,
+      "snapshot_sha256": "cb141db0803cd747bc022b65f779e71df0590eace82af5fe037ffb0fa0b311d2",
+      "frozen_vector_header": "tests/norm_vectors.h",
+      "frozen_header_sha256": "152ae48bc4c9ca83fb0667d92d518aea1011dd4103d7f112ef52c291e1d9cb77"
+    },
+    "dp-divide": {
+      "cases": 163840,
+      "modeled_words": 17,
+      "snapshot_sha256": "43f40a751558ac2f30deb014d24925940f91c449c5f0e1c3fa74f043ac8c9c42",
+      "frozen_vector_header": "tests/dp_divide_vectors.h",
+      "frozen_header_sha256": "d4d6c380a96e36fd9e8c961c63b5c27c76126689e45a629d6f4633d51edb86ba"
+    },
+    "unit": {
+      "cases": 50736,
+      "modeled_words": 104,
+      "snapshot_sha256": "fdeebfdb5b7d2d1aeb707df1beb1bc5a538a2f7af1ef2ff0bf865db3e7f32e28",
+      "frozen_vector_header": "tests/unit_vectors.h",
+      "frozen_header_sha256": "03e69c6a0202cfd14ae7a6c39db0a4e7462a76e7cdb44e5cac785fdf6fc6d1b8"
+    }
+  }
+}

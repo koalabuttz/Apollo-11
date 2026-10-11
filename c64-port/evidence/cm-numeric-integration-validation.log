@@ -1,0 +1,9 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic  src/agc_word.c src/agc_multiword.c src/guidance_norm.c  tests/test_norm.c tests/frozen_words.c -o build/test-cm-norm
+./build/test-cm-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic  src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c  tests/test_dp_divide.c tests/frozen_words.c -o build/test-cm-dp-divide
+./build/test-cm-dp-divide
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_unit.c src/guidance_norm.c src/guidance_dp_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/test_unit.c tests/frozen_words.c -o build/test-cm-unit
+./build/test-cm-unit
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS

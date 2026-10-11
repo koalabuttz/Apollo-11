@@ -1,0 +1,98 @@
+{
+  "cm-norm": {
+    "prg_bytes": 35536,
+    ".text": {
+      "address": 2061,
+      "bytes": 8769
+    },
+    ".rodata": {
+      "address": 10830,
+      "bytes": 26753
+    },
+    ".data": {
+      "address": 37583,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 37583,
+      "bytes": 236
+    },
+    ".noinit": {
+      "address": 37819,
+      "bytes": 2
+    },
+    "image_end": 37821
+  },
+  "cm-dp-divide": {
+    "prg_bytes": 29320,
+    ".text": {
+      "address": 2061,
+      "bytes": 11223
+    },
+    ".rodata": {
+      "address": 13284,
+      "bytes": 18083
+    },
+    ".data": {
+      "address": 31367,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 31367,
+      "bytes": 180
+    },
+    ".noinit": {
+      "address": 31547,
+      "bytes": 2
+    },
+    "image_end": 31549
+  },
+  "cm-unit": {
+    "prg_bytes": 44655,
+    ".text": {
+      "address": 2061,
+      "bytes": 21853
+    },
+    ".rodata": {
+      "address": 23914,
+      "bytes": 22788
+    },
+    ".data": {
+      "address": 46702,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 46702,
+      "bytes": 208
+    },
+    ".noinit": {
+      "address": 46910,
+      "bytes": 2
+    },
+    "image_end": 46912
+  },
+  "cm-rotation": {
+    "prg_bytes": 45659,
+    ".text": {
+      "address": 2061,
+      "bytes": 15467
+    },
+    ".rodata": {
+      "address": 17528,
+      "bytes": 30178
+    },
+    ".data": {
+      "address": 47706,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 47706,
+      "bytes": 262
+    },
+    ".noinit": {
+      "address": 47968,
+      "bytes": 0
+    },
+    "image_end": 47968
+  }
+}
