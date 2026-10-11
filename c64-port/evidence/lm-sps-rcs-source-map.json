@@ -1,0 +1,683 @@
+{
+  "source_file": "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+  "original_sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
+  "emitted_words": 82,
+  "words": [
+    {
+      "original_line": 102,
+      "bank": "21",
+      "address": "3646",
+      "physical_fixed_word": 18342,
+      "raw_octal": "00632",
+      "native_group": "source_constant"
+    },
+    {
+      "original_line": 103,
+      "bank": "21",
+      "address": "3647",
+      "physical_fixed_word": 18343,
+      "raw_octal": "34736",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 105,
+      "bank": "21",
+      "address": "3650",
+      "physical_fixed_word": 18344,
+      "raw_octal": "51505",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 106,
+      "bank": "21",
+      "address": "3651",
+      "physical_fixed_word": 18345,
+      "raw_octal": "55525",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 107,
+      "bank": "21",
+      "address": "3652",
+      "physical_fixed_word": 18346,
+      "raw_octal": "11745",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 108,
+      "bank": "21",
+      "address": "3653",
+      "physical_fixed_word": 18347,
+      "raw_octal": "13673",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 109,
+      "bank": "21",
+      "address": "3654",
+      "physical_fixed_word": 18348,
+      "raw_octal": "13676",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 110,
+      "bank": "21",
+      "address": "3655",
+      "physical_fixed_word": 18349,
+      "raw_octal": "51505",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 111,
+      "bank": "21",
+      "address": "3656",
+      "physical_fixed_word": 18350,
+      "raw_octal": "41525",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 112,
+      "bank": "21",
+      "address": "3657",
+      "physical_fixed_word": 18351,
+      "raw_octal": "10000",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 113,
+      "bank": "21",
+      "address": "3660",
+      "physical_fixed_word": 18352,
+      "raw_octal": "00002",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 114,
+      "bank": "21",
+      "address": "3661",
+      "physical_fixed_word": 18353,
+      "raw_octal": "13663",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 115,
+      "bank": "21",
+      "address": "3662",
+      "physical_fixed_word": 18354,
+      "raw_octal": "13663",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 116,
+      "bank": "21",
+      "address": "3663",
+      "physical_fixed_word": 18355,
+      "raw_octal": "51505",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 117,
+      "bank": "21",
+      "address": "3664",
+      "physical_fixed_word": 18356,
+      "raw_octal": "33705",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 119,
+      "bank": "21",
+      "address": "3665",
+      "physical_fixed_word": 18357,
+      "raw_octal": "51505",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 120,
+      "bank": "21",
+      "address": "3666",
+      "physical_fixed_word": 18358,
+      "raw_octal": "55770",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 121,
+      "bank": "21",
+      "address": "3667",
+      "physical_fixed_word": 18359,
+      "raw_octal": "34755",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 122,
+      "bank": "21",
+      "address": "3670",
+      "physical_fixed_word": 18360,
+      "raw_octal": "51505",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 123,
+      "bank": "21",
+      "address": "3671",
+      "physical_fixed_word": 18361,
+      "raw_octal": "55525",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 124,
+      "bank": "21",
+      "address": "3672",
+      "physical_fixed_word": 18362,
+      "raw_octal": "00002",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 125,
+      "bank": "21",
+      "address": "3673",
+      "physical_fixed_word": 18363,
+      "raw_octal": "51505",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 126,
+      "bank": "21",
+      "address": "3674",
+      "physical_fixed_word": 18364,
+      "raw_octal": "31525",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 127,
+      "bank": "21",
+      "address": "3675",
+      "physical_fixed_word": 18365,
+      "raw_octal": "13657",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 128,
+      "bank": "21",
+      "address": "3676",
+      "physical_fixed_word": 18366,
+      "raw_octal": "51505",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 129,
+      "bank": "21",
+      "address": "3677",
+      "physical_fixed_word": 18367,
+      "raw_octal": "11770",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 130,
+      "bank": "21",
+      "address": "3700",
+      "physical_fixed_word": 18368,
+      "raw_octal": "13702",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 131,
+      "bank": "21",
+      "address": "3701",
+      "physical_fixed_word": 18369,
+      "raw_octal": "00002",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 132,
+      "bank": "21",
+      "address": "3702",
+      "physical_fixed_word": 18370,
+      "raw_octal": "13667",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 133,
+      "bank": "21",
+      "address": "3703",
+      "physical_fixed_word": 18371,
+      "raw_octal": "00002",
+      "native_group": "inhibition_and_store"
+    },
+    {
+      "original_line": 134,
+      "bank": "21",
+      "address": "3704",
+      "physical_fixed_word": 18372,
+      "raw_octal": "00004",
+      "native_group": "source_constant"
+    },
+    {
+      "original_line": 135,
+      "bank": "21",
+      "address": "3705",
+      "physical_fixed_word": 18373,
+      "raw_octal": "00012",
+      "native_group": "source_constant"
+    },
+    {
+      "original_line": 136,
+      "bank": "21",
+      "address": "3706",
+      "physical_fixed_word": 18374,
+      "raw_octal": "00012",
+      "native_group": "source_constant"
+    },
+    {
+      "original_line": 138,
+      "bank": "21",
+      "address": "3707",
+      "physical_fixed_word": 18375,
+      "raw_octal": "44753",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 139,
+      "bank": "21",
+      "address": "3710",
+      "physical_fixed_word": 18376,
+      "raw_octal": "55745",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 140,
+      "bank": "21",
+      "address": "3711",
+      "physical_fixed_word": 18377,
+      "raw_octal": "31427",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 141,
+      "bank": "21",
+      "address": "3712",
+      "physical_fixed_word": 18378,
+      "raw_octal": "13716",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 142,
+      "bank": "21",
+      "address": "3713",
+      "physical_fixed_word": 18379,
+      "raw_octal": "34753",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 143,
+      "bank": "21",
+      "address": "3714",
+      "physical_fixed_word": 18380,
+      "raw_octal": "55745",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 144,
+      "bank": "21",
+      "address": "3715",
+      "physical_fixed_word": 18381,
+      "raw_octal": "41427",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 145,
+      "bank": "21",
+      "address": "3716",
+      "physical_fixed_word": 18382,
+      "raw_octal": "22000",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 146,
+      "bank": "21",
+      "address": "3717",
+      "physical_fixed_word": 18383,
+      "raw_octal": "40111",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 147,
+      "bank": "21",
+      "address": "3720",
+      "physical_fixed_word": 18384,
+      "raw_octal": "74744",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 148,
+      "bank": "21",
+      "address": "3721",
+      "physical_fixed_word": 18385,
+      "raw_octal": "10000",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 149,
+      "bank": "21",
+      "address": "3722",
+      "physical_fixed_word": 18386,
+      "raw_octal": "34767",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 150,
+      "bank": "21",
+      "address": "3723",
+      "physical_fixed_word": 18387,
+      "raw_octal": "60001",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 151,
+      "bank": "21",
+      "address": "3724",
+      "physical_fixed_word": 18388,
+      "raw_octal": "00006",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 152,
+      "bank": "21",
+      "address": "3725",
+      "physical_fixed_word": 18389,
+      "raw_octal": "63735",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 153,
+      "bank": "21",
+      "address": "3726",
+      "physical_fixed_word": 18390,
+      "raw_octal": "13652",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 155,
+      "bank": "21",
+      "address": "3727",
+      "physical_fixed_word": 18391,
+      "raw_octal": "51505",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 156,
+      "bank": "21",
+      "address": "3730",
+      "physical_fixed_word": 18392,
+      "raw_octal": "11525",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 157,
+      "bank": "21",
+      "address": "3731",
+      "physical_fixed_word": 18393,
+      "raw_octal": "13713",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 158,
+      "bank": "21",
+      "address": "3732",
+      "physical_fixed_word": 18394,
+      "raw_octal": "13734",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 159,
+      "bank": "21",
+      "address": "3733",
+      "physical_fixed_word": 18395,
+      "raw_octal": "13707",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 160,
+      "bank": "21",
+      "address": "3734",
+      "physical_fixed_word": 18396,
+      "raw_octal": "55745",
+      "native_group": "jet_sense_and_deadband"
+    },
+    {
+      "original_line": 161,
+      "bank": "21",
+      "address": "3735",
+      "physical_fixed_word": 18397,
+      "raw_octal": "31427",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 162,
+      "bank": "21",
+      "address": "3736",
+      "physical_fixed_word": 18398,
+      "raw_octal": "00006",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 163,
+      "bank": "21",
+      "address": "3737",
+      "physical_fixed_word": 18399,
+      "raw_octal": "74766",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 164,
+      "bank": "21",
+      "address": "3740",
+      "physical_fixed_word": 18400,
+      "raw_octal": "10000",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 165,
+      "bank": "21",
+      "address": "3741",
+      "physical_fixed_word": 18401,
+      "raw_octal": "13760",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 166,
+      "bank": "21",
+      "address": "3742",
+      "physical_fixed_word": 18402,
+      "raw_octal": "13744",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 167,
+      "bank": "21",
+      "address": "3743",
+      "physical_fixed_word": 18403,
+      "raw_octal": "13647",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 168,
+      "bank": "21",
+      "address": "3744",
+      "physical_fixed_word": 18404,
+      "raw_octal": "31427",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 170,
+      "bank": "21",
+      "address": "3745",
+      "physical_fixed_word": 18405,
+      "raw_octal": "61752",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 171,
+      "bank": "21",
+      "address": "3746",
+      "physical_fixed_word": 18406,
+      "raw_octal": "00006",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 172,
+      "bank": "21",
+      "address": "3747",
+      "physical_fixed_word": 18407,
+      "raw_octal": "71411",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 173,
+      "bank": "21",
+      "address": "3750",
+      "physical_fixed_word": 18408,
+      "raw_octal": "00006",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 174,
+      "bank": "21",
+      "address": "3751",
+      "physical_fixed_word": 18409,
+      "raw_octal": "13766",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 176,
+      "bank": "21",
+      "address": "3752",
+      "physical_fixed_word": 18410,
+      "raw_octal": "00006",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 177,
+      "bank": "21",
+      "address": "3753",
+      "physical_fixed_word": 18411,
+      "raw_octal": "63762",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 178,
+      "bank": "21",
+      "address": "3754",
+      "physical_fixed_word": 18412,
+      "raw_octal": "31427",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 179,
+      "bank": "21",
+      "address": "3755",
+      "physical_fixed_word": 18413,
+      "raw_octal": "63646",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 180,
+      "bank": "21",
+      "address": "3756",
+      "physical_fixed_word": 18414,
+      "raw_octal": "00006",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 181,
+      "bank": "21",
+      "address": "3757",
+      "physical_fixed_word": 18415,
+      "raw_octal": "63766",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 182,
+      "bank": "21",
+      "address": "3760",
+      "physical_fixed_word": 18416,
+      "raw_octal": "44736",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 183,
+      "bank": "21",
+      "address": "3761",
+      "physical_fixed_word": 18417,
+      "raw_octal": "13650",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 184,
+      "bank": "21",
+      "address": "3762",
+      "physical_fixed_word": 18418,
+      "raw_octal": "43646",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 185,
+      "bank": "21",
+      "address": "3763",
+      "physical_fixed_word": 18419,
+      "raw_octal": "61427",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 186,
+      "bank": "21",
+      "address": "3764",
+      "physical_fixed_word": 18420,
+      "raw_octal": "00006",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 187,
+      "bank": "21",
+      "address": "3765",
+      "physical_fixed_word": 18421,
+      "raw_octal": "63647",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 188,
+      "bank": "21",
+      "address": "3766",
+      "physical_fixed_word": 18422,
+      "raw_octal": "34755",
+      "native_group": "outer_rate_and_coast"
+    },
+    {
+      "original_line": 189,
+      "bank": "21",
+      "address": "3767",
+      "physical_fixed_word": 18423,
+      "raw_octal": "13650",
+      "native_group": "outer_rate_and_coast"
+    }
+  ],
+  "containing_constants": {
+    "18342": 410,
+    "18372": 4,
+    "18373": 10,
+    "18374": 10
+  },
+  "external_fixed_aliases": {
+    "RATELIM1": {
+      "source_alias": "CALLCODE",
+      "source_address": "04766",
+      "raw_octal": "00032"
+    },
+    "RATEDB1": {
+      "source_alias": "TBUILDFX",
+      "source_address": "04767",
+      "raw_octal": "00045"
+    }
+  },
+  "source_entry": "SPSRCS21,3727/E6",
+  "source_return": "TCQ completes at saved fixed Q, Q becomes3. Internal labels have no external callers in original mission source."
+}

@@ -693,3 +693,5 @@ include tools/dsky_enter.mk
 include tools/cm_minutes_seconds_port.mk
 
 include tools/p66_application_integration.mk
+
+include tools/lm_sps_rcs_port.mk

@@ -1,0 +1,9 @@
+{
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "source_file": "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+  "original_sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
+  "assembled_sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
+  "source_edits": 0,
+  "support_source_audit": "evidence/lm-powered-source-audit.json",
+  "declaration_data_domain": "Byte-original LM declaration/data baseline"
+}

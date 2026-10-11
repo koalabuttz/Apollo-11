@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_sps_rcs.c src/lm_sps_rcs.c src/agc_word.c src/agc_multiword.c tests/lm_sps_rcs_cases.c tests/frozen_words.c -o build/test-lm-sps-rcs-port
+./build/test-lm-sps-rcs-port
+96 complete original LM SPS controller states and constants: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_sps_rcs.c src/lm_sps_rcs.c src/agc_word.c src/agc_multiword.c tests/lm_sps_rcs_cases.c tests/frozen_words.c -o build/test-lm-sps-rcs-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-sps-rcs-port-san
+96 complete original LM SPS controller states and constants: PASS

@@ -919,3 +919,7 @@ Actual M/SOUT scaling, separation, signed two-character formatting and middle bl
 ## Run genuine Luminary P66 startup guidance and display jobs through native C64 application routing
 
 Actual STARTP66, guidance, deferred mode and display jobs, canonical END and idle pass16,586 complete original/native/full-sanitizer host states. A104-module native C64 disk application passes156 complete source fingerprints with resident end$6810 and2,032 bytes remaining below canonical RAM. Clean host verification streams retained original archives. Keyboard bodies, recurrence and full Luminary flight application acceptance remain separate. See `docs/P66-APPLICATION-STARTUP.md`.
+
+## Translate complete original Luminary SPS backup RCS source
+
+All82 byte-original emitted words including jet-sense, deadband, outer-rate, coast and inhibition paths plus four constants are reviewed and mapped. All196,608 complete original states match strict and full sanitizer execution;96 actual C64 states and every constant pass. No complete docked autopilot or flight application acceptance is claimed. See `docs/LUMINARY-SPS-RCS.md`.

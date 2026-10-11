@@ -1,0 +1,7 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_sps_rcs_snapshot.c src/lm_sps_rcs.c src/agc_word.c src/agc_multiword.c tests/lm_sps_rcs_cases.c -o build/lm-sps-rcs-native
+build/lm-sps-rcs-reference deps/lm-sps-rcs-fixture/MAIN.agc.bin | gzip -n -9 > build/lm-sps-rcs-reference.snapshots.gz
+build/lm-sps-rcs-native | gzip -n -9 > build/lm-sps-rcs-native.snapshots.gz
+cmp build/lm-sps-rcs-reference.snapshots.gz build/lm-sps-rcs-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_sps_rcs_snapshot.c src/lm_sps_rcs.c src/agc_word.c src/agc_multiword.c tests/lm_sps_rcs_cases.c -o build/lm-sps-rcs-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-sps-rcs-sanitize | gzip -n -9 > build/lm-sps-rcs-sanitize.snapshots.gz
+cmp build/lm-sps-rcs-reference.snapshots.gz build/lm-sps-rcs-sanitize.snapshots.gz

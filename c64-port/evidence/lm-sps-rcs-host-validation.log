@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_sps_rcs.c tests/frozen_words.c src/lm_sps_rcs.c src/agc_word.c src/agc_multiword.c tests/lm_sps_rcs_cases.c -o build/test-lm-sps-rcs
+build/test-lm-sps-rcs
+96 complete original LM SPS controller states and constants: PASS
