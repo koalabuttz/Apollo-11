@@ -1115,3 +1115,7 @@ Both mission SERVICE_ROUTINES bodies including flags delays wake and generic GEN
 ## Complete original mission service routines
 
 Both original SERVICE_ROUTINES files are certified for their compiled caller domains: all219 emitted words independently match the unchanged original ropes,106496 full source/native/sanitizer states and416 actual C64 states pass, and independent reviewers checked every source path. External scheduler, alarm and caller continuations remain explicit.39 source files are complete;136 files and both full applications remain open. See `docs/NATIVE-SERVICE-ROUTINES.md`.
+
+## Translate original shared alarm recycle call and return source bridges
+
+Qualify actual ALMCYCLE prefix BANKCALL UPDATVB minus1 selection and SWRETURN ENTER bridges against8192 complete original native sanitizer states plus64 C64 states leaving the selected update body separately qualified. See `docs/DSKY-ALARM-CYCLE.md`.
