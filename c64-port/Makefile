@@ -1058,3 +1058,7 @@ include tools/dsky_monitor_integration.mk
 include tools/lm_super_dispatch_port_integration.mk
 test: lm-super-dispatch-port-test
 sanitize: lm-super-dispatch-port-sanitize
+
+include tools/lm_wake_image_port_integration.mk
+test: lm-wake-image-port-test
+sanitize: lm-wake-image-port-sanitize

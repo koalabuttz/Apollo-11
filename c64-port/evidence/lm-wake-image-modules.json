@@ -1,0 +1,290 @@
+[
+  {
+    "id": 160,
+    "filename": "R0",
+    "byte_count": 9180,
+    "crc16": 12079,
+    "sha256": "0fa2c65b0f95d92210e6e5e501dc21e4350561a573db2cd0cc82d28f6e7babea",
+    "prg": "lm-wake-image-0.prg",
+    "retained_prg": "evidence/lm-wake-image-0.prg"
+  },
+  {
+    "id": 161,
+    "filename": "R1",
+    "byte_count": 9180,
+    "crc16": 8891,
+    "sha256": "c4ff7eaeba122efff5da9b247e19b19e7d34cdf33ab72367b56f5013fb9788eb",
+    "prg": "lm-wake-image-1.prg",
+    "retained_prg": "evidence/lm-wake-image-1.prg"
+  },
+  {
+    "id": 162,
+    "filename": "R2",
+    "byte_count": 9180,
+    "crc16": 5488,
+    "sha256": "f5d16c354322a45855b3031062d65b1c043b34b77952313b3fbb31a59000a254",
+    "prg": "lm-wake-image-2.prg",
+    "retained_prg": "evidence/lm-wake-image-2.prg"
+  },
+  {
+    "id": 163,
+    "filename": "R3",
+    "byte_count": 9180,
+    "crc16": 18697,
+    "sha256": "09ea0a8991f6276221744c58d0870f7869b16e040b47b2c7dddbe0a2306fdb7e",
+    "prg": "lm-wake-image-3.prg",
+    "retained_prg": "evidence/lm-wake-image-3.prg"
+  },
+  {
+    "id": 164,
+    "filename": "R4",
+    "byte_count": 9180,
+    "crc16": 26869,
+    "sha256": "9af99b197eeca439c1803b45fd88191d9d0f6cdec412e2f04716169237b98bf5",
+    "prg": "lm-wake-image-4.prg",
+    "retained_prg": "evidence/lm-wake-image-4.prg"
+  },
+  {
+    "id": 165,
+    "filename": "R5",
+    "byte_count": 9180,
+    "crc16": 46060,
+    "sha256": "3b57b22160ad2de0b5bac772912c6d5d8a8d2f679bc93165ee1c495d4f69cd99",
+    "prg": "lm-wake-image-5.prg",
+    "retained_prg": "evidence/lm-wake-image-5.prg"
+  },
+  {
+    "id": 166,
+    "filename": "R6",
+    "byte_count": 9180,
+    "crc16": 37753,
+    "sha256": "c824d8ff9c90b33a7c4fcc40e4dd290f3c265663a3d005485a595e5f78a3275f",
+    "prg": "lm-wake-image-6.prg",
+    "retained_prg": "evidence/lm-wake-image-6.prg"
+  },
+  {
+    "id": 167,
+    "filename": "R7",
+    "byte_count": 9180,
+    "crc16": 600,
+    "sha256": "3f53f443b86116e16872b14c781835ccd52734a0754d749bedff19c4ecef28a9",
+    "prg": "lm-wake-image-7.prg",
+    "retained_prg": "evidence/lm-wake-image-7.prg"
+  },
+  {
+    "id": 168,
+    "filename": "R8",
+    "byte_count": 9180,
+    "crc16": 4017,
+    "sha256": "12e9b3d78f3b7335bda1538c97e416a7e8e934a8b5e0d3b45ea1a442bf19f20d",
+    "prg": "lm-wake-image-8.prg",
+    "retained_prg": "evidence/lm-wake-image-8.prg"
+  },
+  {
+    "id": 169,
+    "filename": "R9",
+    "byte_count": 9180,
+    "crc16": 23706,
+    "sha256": "71619527ef8f33942b36f1a1066339045a1dbef534b8c0a6f9488e975d340cfe",
+    "prg": "lm-wake-image-9.prg",
+    "retained_prg": "evidence/lm-wake-image-9.prg"
+  },
+  {
+    "id": 170,
+    "filename": "R10",
+    "byte_count": 9180,
+    "crc16": 53894,
+    "sha256": "654a9fea34018a2880ff0281c714bdbe208cb592b5e2fa0bef62eb7609f650c2",
+    "prg": "lm-wake-image-10.prg",
+    "retained_prg": "evidence/lm-wake-image-10.prg"
+  },
+  {
+    "id": 171,
+    "filename": "R11",
+    "byte_count": 9180,
+    "crc16": 58027,
+    "sha256": "e6e0f2a912e77df9cc03f34da55a63875e11f61de0724ad034cefadf168aa33e",
+    "prg": "lm-wake-image-11.prg",
+    "retained_prg": "evidence/lm-wake-image-11.prg"
+  },
+  {
+    "id": 172,
+    "filename": "R12",
+    "byte_count": 9180,
+    "crc16": 50265,
+    "sha256": "3890e1bc99f556e96c2860c2fed2624e13b4ce07055f18ecb4422bf0aef94b32",
+    "prg": "lm-wake-image-12.prg",
+    "retained_prg": "evidence/lm-wake-image-12.prg"
+  },
+  {
+    "id": 173,
+    "filename": "R13",
+    "byte_count": 9180,
+    "crc16": 14288,
+    "sha256": "3a74964871723ff41eb60632d07b92137be90ac91a41123aa786959b1a798e86",
+    "prg": "lm-wake-image-13.prg",
+    "retained_prg": "evidence/lm-wake-image-13.prg"
+  },
+  {
+    "id": 174,
+    "filename": "R14",
+    "byte_count": 9180,
+    "crc16": 27611,
+    "sha256": "8bd7be6d735e363256eef9029f57ceb4c4d14fc668e79b9df2cff70dff0f71c3",
+    "prg": "lm-wake-image-14.prg",
+    "retained_prg": "evidence/lm-wake-image-14.prg"
+  },
+  {
+    "id": 175,
+    "filename": "R15",
+    "byte_count": 9180,
+    "crc16": 321,
+    "sha256": "329a0b7a13467d449f2abaccca80577a6bd545125b1e0b7ea4ef2b3bd11acd3d",
+    "prg": "lm-wake-image-15.prg",
+    "retained_prg": "evidence/lm-wake-image-15.prg"
+  },
+  {
+    "id": 176,
+    "filename": "R16",
+    "byte_count": 9180,
+    "crc16": 64580,
+    "sha256": "4408d0f7ee18a7fcb9b2061d62c20ce30076d11d5a21f3db3715f6c22806c367",
+    "prg": "lm-wake-image-16.prg",
+    "retained_prg": "evidence/lm-wake-image-16.prg"
+  },
+  {
+    "id": 177,
+    "filename": "R17",
+    "byte_count": 9180,
+    "crc16": 45423,
+    "sha256": "971e81561140ec7e1d7b4815d0373d8b7bc8d160371f69c6504f7b73738f31f4",
+    "prg": "lm-wake-image-17.prg",
+    "retained_prg": "evidence/lm-wake-image-17.prg"
+  },
+  {
+    "id": 178,
+    "filename": "R18",
+    "byte_count": 9180,
+    "crc16": 4861,
+    "sha256": "e1a17789ec8db9ec9ed181a572e5f445aaecc47f763e7c8540bf27102f2538b3",
+    "prg": "lm-wake-image-18.prg",
+    "retained_prg": "evidence/lm-wake-image-18.prg"
+  },
+  {
+    "id": 179,
+    "filename": "R19",
+    "byte_count": 9180,
+    "crc16": 21682,
+    "sha256": "ba3007a754da4b683093e3e82bc0182dbc16a4f6a028f790e0122a775c60e2dc",
+    "prg": "lm-wake-image-19.prg",
+    "retained_prg": "evidence/lm-wake-image-19.prg"
+  },
+  {
+    "id": 180,
+    "filename": "R20",
+    "byte_count": 9180,
+    "crc16": 51586,
+    "sha256": "909db45444f359aa82f7ad74797906cce7d4682cddcb0bb5286cee7e15cc3c5a",
+    "prg": "lm-wake-image-20.prg",
+    "retained_prg": "evidence/lm-wake-image-20.prg"
+  },
+  {
+    "id": 181,
+    "filename": "R21",
+    "byte_count": 9180,
+    "crc16": 39087,
+    "sha256": "1adad16c9839dfddbccb01586e3e017bcdb1a207dd94a38c16b6a96f4e3ff37e",
+    "prg": "lm-wake-image-21.prg",
+    "retained_prg": "evidence/lm-wake-image-21.prg"
+  },
+  {
+    "id": 182,
+    "filename": "R22",
+    "byte_count": 9180,
+    "crc16": 36858,
+    "sha256": "43243fc1bc6cde91c092010bf6104b45e0cbbc877810f7f7f5d275181daa6f91",
+    "prg": "lm-wake-image-22.prg",
+    "retained_prg": "evidence/lm-wake-image-22.prg"
+  },
+  {
+    "id": 183,
+    "filename": "R23",
+    "byte_count": 9180,
+    "crc16": 48236,
+    "sha256": "a64812dceddb694f22b0b4cee453f6bfcb3f948eb28934e15216d444d546f349",
+    "prg": "lm-wake-image-23.prg",
+    "retained_prg": "evidence/lm-wake-image-23.prg"
+  },
+  {
+    "id": 184,
+    "filename": "R24",
+    "byte_count": 9180,
+    "crc16": 9678,
+    "sha256": "a116e2d564e5cc1e8fc08a4353ae7dd67545836ac40b2436b958c6bd83e40ec5",
+    "prg": "lm-wake-image-24.prg",
+    "retained_prg": "evidence/lm-wake-image-24.prg"
+  },
+  {
+    "id": 185,
+    "filename": "R25",
+    "byte_count": 9180,
+    "crc16": 45159,
+    "sha256": "ec8cd226ae4327dc8bbb1d6d1e774eff9e8dbfc47b7955f917738640d8f95914",
+    "prg": "lm-wake-image-25.prg",
+    "retained_prg": "evidence/lm-wake-image-25.prg"
+  },
+  {
+    "id": 186,
+    "filename": "R26",
+    "byte_count": 9180,
+    "crc16": 50116,
+    "sha256": "fb7d8f224e45ea9db3b971e590b1e983c13fa2438fdd3b3729b12e2ddbb5c0f2",
+    "prg": "lm-wake-image-26.prg",
+    "retained_prg": "evidence/lm-wake-image-26.prg"
+  },
+  {
+    "id": 187,
+    "filename": "R27",
+    "byte_count": 9180,
+    "crc16": 21155,
+    "sha256": "abf20777af79d5ee722037b6c08684971df725ad087d0a87d45f382fcf0d3df7",
+    "prg": "lm-wake-image-27.prg",
+    "retained_prg": "evidence/lm-wake-image-27.prg"
+  },
+  {
+    "id": 188,
+    "filename": "R28",
+    "byte_count": 9180,
+    "crc16": 33918,
+    "sha256": "c5b569710d1dd2be204dd54632c453701e8b3f7e65d69b0e70ccac049b189192",
+    "prg": "lm-wake-image-28.prg",
+    "retained_prg": "evidence/lm-wake-image-28.prg"
+  },
+  {
+    "id": 189,
+    "filename": "R29",
+    "byte_count": 9180,
+    "crc16": 14664,
+    "sha256": "e974788d48b1d02a2c71c724047dd960769a9c157e9cad246ba45215d7ce10e8",
+    "prg": "lm-wake-image-29.prg",
+    "retained_prg": "evidence/lm-wake-image-29.prg"
+  },
+  {
+    "id": 190,
+    "filename": "R30",
+    "byte_count": 9180,
+    "crc16": 20800,
+    "sha256": "cd47a0f4b8e17ebf7c927b96077a70e285d2dcd30750305ff8739bfaf41d32fc",
+    "prg": "lm-wake-image-30.prg",
+    "retained_prg": "evidence/lm-wake-image-30.prg"
+  },
+  {
+    "id": 191,
+    "filename": "R31",
+    "byte_count": 9180,
+    "crc16": 55211,
+    "sha256": "1631d75fe0eecb9b566af063180f18247a64b15f5a54dc12100f3fe4041513ab",
+    "prg": "lm-wake-image-31.prg",
+    "retained_prg": "evidence/lm-wake-image-31.prg"
+  }
+]

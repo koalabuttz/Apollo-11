@@ -1527,3 +1527,7 @@ Translate actual MONITOR MONREQ KILLMON MONDO MONBUSY and genuine service releas
 ## Translate generic original LM superbank dispatch
 
 Translate original generic SUPDXCHZ and SUPDXCHZ+1 dispatch with real2CADR and full16384 original strict sanitizer states plus64 C64 checkpoints preserving historical helpers. See `docs/LM-SUPER-DISPATCH.md`.
+
+## Translate generic original LM wake image controls
+
+Translate actual JOBWAKE dormantcore0 and pending positive request through SPECTEST and SETLOC against16384 complete original strict sanitizer states plus64 C64 checkpoints and8192 legacy compatibility states. See `docs/LM-WAKE-IMAGE.md`.
