@@ -13,7 +13,7 @@ nv_render-sanitize:
 	ASAN_OPTIONS=detect_leaks=0 build/nv-render-full-native-sanitize > build/nv-render-full-sanitize.snapshots
 	cmp build/nv-render-full-sanitize.snapshots build/nv-render-full-reference.snapshots
 nv_render-c64:
-	$(MOS_CC) -Os -fno-static-stack -mlto-zp=0 -DNV_RENDER_SELECTED=$(if $(if $(PHASE),$(PHASE),0),$(if $(PHASE),$(PHASE),0),0) $(NVRE_FLAGS) tools/nv_render_diagnostic.c tests/nv_render_check.c $(NVRE_CORE) -Wl,-Map,build/nv_render$(if $(PHASE),$(PHASE),0).map -o build/nv_render$(if $(PHASE),$(PHASE),0).prg
+	$(MOS_CC) -Os -fno-static-stack -mlto-zp=0 -DNV_RENDER_SELECTED=$(if $(PHASE),$(PHASE),0) $(NVRE_FLAGS) tools/nv_render_diagnostic.c tests/nv_render_check.c $(NVRE_CORE) -Wl,-Map,build/nv_render$(if $(PHASE),$(PHASE),0).map -o build/nv_render$(if $(PHASE),$(PHASE),0).prg
 nv_render-differential:
 	python3 tools/nv_render_differential.py
 	python3 tools/nv_render_full_differential.py

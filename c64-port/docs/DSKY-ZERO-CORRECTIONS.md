@@ -54,7 +54,8 @@ sanitizer tests pass, and C64 again matches all eight complete original display
 images, performs real ENDOFJOB dispatch and queued 100cs RODTASK admission, and
 writes mode 66 to actual screen/color RAM through original DSPOUTSB stores.
 Mailbox: `a500000802`; PRG: 42386 bytes; hardware/software stack extents: 22/139.
-Current artifact SHA256:
+Zero-correction baseline artifact SHA256 (preserved under
+`build/zero-before-width-*` after subsequent shared-driver changes):
 
 - PRG: `71d674fcd1285d0c8065a487598875fe1d6bdd750f74dbfaa32d8b8fb7a41958`
 - map: `9579fde42ca793cb8694fb14889c280104553f83af69e8a59c1567255b3e67da`
@@ -63,3 +64,14 @@ Current artifact SHA256:
 This correction does not claim full Pinball keyboard translation or a complete
 LM/CM application. CHARIN key bodies and actual hardware input integration are
 separate ongoing milestones.
+
+After the shared native driver status-width and noinline trampoline changes,
+strict/sanitizer tests and the actual C64 diagnostic were rerun. Its diagnostic
+callback counter uses one byte for at most 64 fixture callbacks; failure counts
+remain 16-bit. Current mailbox is again `a500000802`, PRG 42686 bytes,
+hardware/software stack extents 28/139, and BSS ends at `BFD8` below `C000`.
+Proof logs use `build/p66-basic-current-*`. Current SHA256:
+
+- PRG: `d80823a71bf2f65559d66ed10656808e91138929fe8e55f138f7070d977e91be`
+- map: `28f5392d1d8957cb7762b2bc290f83dcaeca6ee14539e89fb96dc4d62e163c5c`
+- mailbox: `a8c578965eca5befe617cca64aa80f005e9605bc2b8e9ad7ebd62f7b349fe9fc`
