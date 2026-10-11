@@ -1140,3 +1140,7 @@ Both original SERVICE_ROUTINES files are certified for their compiled caller dom
 ## Translate original shared alarm recycle call and return source bridges
 
 Qualify actual ALMCYCLE prefix BANKCALL UPDATVB minus1 selection and SWRETURN ENTER bridges against8192 complete original native sanitizer states plus64 C64 states leaving the selected update body separately qualified. See `docs/DSKY-ALARM-CYCLE.md`.
+
+## Qualify generalized original verb noun update signed zero paths
+
+Extend separately native source qualified update bodies to either signed zero all source selecting SUPER banks and actual clean relay CCSHOLE branches with8192 full original native sanitizer states and128 C64 states preserving prior frozen updater. See `docs/DSKY-NV-UPDATE-GENERAL.md`.

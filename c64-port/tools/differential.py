@@ -530,3 +530,5 @@ subprocess.run([sys.executable,'tools/dsky_nv_blank_differential.py',str(referen
 subprocess.run([sys.executable,'tools/dsky_nv_consumer_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_alarm_cycle_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_nv_update_general_differential.py',str(reference)],cwd=ROOT,check=True)
