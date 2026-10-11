@@ -1142,3 +1142,7 @@ Both complete original gimbal files now have reviewed native mappings, 10,240 ex
 ## Compose actual Comanche display sleep wake and successor lifecycle
 
 The actual GOSLEEPS, JOBWAKE, XCHTOEND/XCHSLEEP and JOBSLEEP sequence now matches 2,048 complete source/native/sanitized checkpoints across 512 continuous paths. Stock C64 execution verifies 64 complete checkpoints across 16 paths; whole application acceptance remains pending. See `docs/COMANCHE-DISPLAY-SLEEP-LIFECYCLE.md`.
+
+## Close original Comanche powered flight numerical and fixed return groups
+
+The remaining SMCDURES, legacy NBSM, original QUICTRIG return and all-bank RVQ groups now have source-exact native C proofs. Seven cumulative packets compare 2,187,264 full source/native/sanitized states and 1,600 C64 states across 50 diagnostic PRGs. All 187 emitted source words, including five mixed-file constants, are mapped; whole-file inventory certification awaits independent review. See `docs/COMANCHE-POWERED-FLIGHT.md`.

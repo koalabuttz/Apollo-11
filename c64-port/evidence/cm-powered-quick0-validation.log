@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_powered_quick group original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 5971
+cm_powered_quick-hardware-stack.bin: measured stack extent 23 bytes
+cm_powered_quick-software-stack.bin: measured stack extent 38 bytes

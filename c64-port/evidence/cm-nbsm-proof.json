@@ -1,0 +1,93 @@
+{
+  "source_file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+  "source_audit_dependency": {
+    "path": "evidence/cm-powered-trig-source-audit.json",
+    "sha256": "7cc6a856e60c0070c793b560aac0ca8785eea8c3133bac1bdab2611c1a8ec71a"
+  },
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "native_group": "legacy NBSM",
+  "calls": 8192,
+  "complete_states": 188416,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "decoded_state_bytes": 772882432,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/cm-nbsm-complete.snapshots.xz",
+      "decoded_sha256": "321c3c03452a94c8e962433c20bc7d3148c8d8f58721d84b0cbc085867f3fa9b"
+    },
+    "strict_native": {
+      "object": "evidence/cm-nbsm-complete.snapshots.xz",
+      "decoded_sha256": "321c3c03452a94c8e962433c20bc7d3148c8d8f58721d84b0cbc085867f3fa9b"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/cm-nbsm-complete.snapshots.xz",
+      "decoded_sha256": "321c3c03452a94c8e962433c20bc7d3148c8d8f58721d84b0cbc085867f3fa9b"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 6318,
+      "loaded_end_hex": "0x20ac",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 61,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 7090,
+      "loaded_end_hex": "0x23b0",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 61,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 7706,
+      "loaded_end_hex": "0x2618",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 61,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 8883,
+      "loaded_end_hex": "0x2ab1",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 61,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 4,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "prg_bytes": 8790,
+      "loaded_end_hex": "0x2a54",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 61,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 5,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "prg_bytes": 26388,
+      "loaded_end_hex": "0x6f12",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 333,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "The legacy NBSM source saves QPRET in X2, loads the S1-indexed six-word CDU angle vector, stores it into CDUSPOT, loads VAC32D, calls the qualified TRG*NBSM composition and finally performs source STCALL32D/X2. Source angle arrays cover sixteen physical addresses across all erasable-bank contexts, including actual P51 MARKDOWN/MARK2DWN addresses. The saved indirect fixed FCADR must be >=004000 because source GOTO classifies lower words as erasable indirection. The input includes the actual P51 return036052 and P20 return047126. INTBIT15/A are computed for both lower and upper fixed banks. The source interpreter genuine EDOP0 checks in the leading stages are exposed; pending VLOAD and internal CALL/NEWOPS remain under the same canonical owner."
+}

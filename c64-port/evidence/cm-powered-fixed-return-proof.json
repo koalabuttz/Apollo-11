@@ -1,0 +1,73 @@
+{
+  "source_file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+  "source_audit_dependency": {
+    "path": "evidence/cm-powered-trig-source-audit.json",
+    "sha256": "7cc6a856e60c0070c793b560aac0ca8785eea8c3133bac1bdab2611c1a8ec71a"
+  },
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "native_group": "fixed RVQ return closure",
+  "calls": 32768,
+  "complete_states": 131072,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "decoded_state_bytes": 537657344,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/cm-powered-fixed-return-complete.snapshots.xz",
+      "decoded_sha256": "d2802cca2175a03a4482eaca096b9a222a965201ce9909bdccaecc1eef57296b"
+    },
+    "strict_native": {
+      "object": "evidence/cm-powered-fixed-return-complete.snapshots.xz",
+      "decoded_sha256": "d2802cca2175a03a4482eaca096b9a222a965201ce9909bdccaecc1eef57296b"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/cm-powered-fixed-return-complete.snapshots.xz",
+      "decoded_sha256": "d2802cca2175a03a4482eaca096b9a222a965201ce9909bdccaecc1eef57296b"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 5337,
+      "loaded_end_hex": "0x1cd7",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 5337,
+      "loaded_end_hex": "0x1cd7",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 5478,
+      "loaded_end_hex": "0x1d64",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 5406,
+      "loaded_end_hex": "0x1d1c",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "A separate extension completes actual RVQ from CDUTRIG, CD*TR*G, transformed VLOAD/pendingRVQ and SMCDURES return boundaries. It qualifies every one of32768 ordinary saved FCADR words at each of four source origins, including fixed banks0/1: unlike indirect GOTO, RVQ explicitly enters GOTO+4 and skips erasable classification. It restores EB from BANKSET, records POLISH, derives FB/BB/BANKSET/LOC/INTBIT15, normalizes the raw L register exactly as source dispatch does, and returns at NEWOPS06037. The older immutable permanent-interface proof remains scoped to its >=040000 saved-return domain. Pending RVQ retains canonical ownership; the completed SMCDURES EDOP0 boundary permits the external source Executive check before this call."
+}

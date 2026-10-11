@@ -424,3 +424,5 @@ subprocess.run([sys.executable,'tools/cm_keyboard_runtime_differential.py',str(r
 subprocess.run([sys.executable,'tools/gimbal_complete_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_display_sleep_lifecycle_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_powered_completion_differential.py',str(reference)],cwd=ROOT,check=True)

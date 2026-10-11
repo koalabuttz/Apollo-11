@@ -1,0 +1,64 @@
+{
+  "source_file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "reviewed_source_words": 187,
+  "immutable_data_words": 5,
+  "native_groups": [
+    "CDUTRIG/CD*TR*G permanent interfaces",
+    "CDUTRIGS/CD*TR*GS basic CDU trigonometry",
+    "QUICTRIG and actual TC A",
+    "legacy NBSM including actualP51/P20 fixed returns",
+    "CDU*SMNB/TRG*SMNB/CDU*NBSM/TRG*NBSM/*SMNB*/*NBSM*",
+    "AX*SR*T and stored RTNSAVER return",
+    "SMCDURES and RVQ",
+    "all-bank fixed RVQ source return closure",
+    "SINESLOC/INDEXI constants"
+  ],
+  "qualification_dependencies": [
+    {
+      "path": "evidence/cm-powered-trig-proof.json",
+      "sha256": "502bedca9770d8dc68465511fb80fda0637d8b2eb917ebd7e4b8d3615e52848c"
+    },
+    {
+      "path": "evidence/cm-powered-axis-proof.json",
+      "sha256": "13ea668c17a977c5ae70a53da904a7feee29e48c99bd1bcfb54897ab2ff33e5b"
+    },
+    {
+      "path": "evidence/cm-powered-interface-proof.json",
+      "sha256": "a0ff638b2480a755350e6cf1adb24894838db49a4eb14c50535357b764c1f850"
+    },
+    {
+      "path": "evidence/cm-smcdure-proof.json",
+      "sha256": "ef6d9a525d19a0b165a1fec7281aacd52f1e3fa7f38d8b467b4e736f99bce8b2"
+    },
+    {
+      "path": "evidence/cm-nbsm-proof.json",
+      "sha256": "f1417dcf4345df578ce5bf23975cc6dc768f4dad8e5ef90e1d3da613f3473058"
+    },
+    {
+      "path": "evidence/cm-powered-quick-proof.json",
+      "sha256": "3c7dcb884b9e692040c342c4cc02dd045a0e136d2367a44226996e17231c0221"
+    },
+    {
+      "path": "evidence/cm-powered-fixed-return-proof.json",
+      "sha256": "a5e8a1ad3dd849805aa01c680c0e934237939211566bb1c8f1c5216427503772"
+    }
+  ],
+  "complete_original_native_sanitized_checkpoints": 2187264,
+  "actual_C64_images": 50,
+  "actual_C64_complete_states": 1600,
+  "source_word_map": "evidence/cm-powered-file-source-map.json",
+  "source_contracts": {
+    "axis_rotation": "A signextended+3/-3, VBUF vector; original physical safety guarantee magnitude belowunity unchanged",
+    "basic_saved_return": "fixed direct code Q02000..07777",
+    "interpreter": "five source VACbases, ordinaryMODE, original bank23 entry and coherent controlwords; no-queued-job arithmetic oracle NEWJOB+0",
+    "legacy_nbsm": "stable S1 sixword erasable angle array0400..3772; final indirect saved fixedFCADR004000..077777",
+    "rvq": "all ordinary saved fixedFCADR000000..077777 (source entersGOTO+4 directly)",
+    "SMCDURES": "stable ordinaryraw DTHETASM/trig pairs, source stack offsetbase, exact raw zero/overflow division behavior",
+    "scheduling": "genuineEDOP0DANZIG checkpoints are exposed as source phases; Executive/producer ownership and live overlay admission remain caller obligations"
+  },
+  "unreachable_code": "TC RTNSAVER at source line312 takes positive-zero CCS skip; DIM preserves sign and reaches negative zero from either documented +3/-3 direction, so valid AX callers execute line314 instead.",
+  "whole_file_arithmetic_and_return_review_complete": true,
+  "whole_resident_application_complete": false
+}

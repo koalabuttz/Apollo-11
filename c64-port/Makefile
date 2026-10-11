@@ -592,3 +592,11 @@ include tools/cm_keyboard_runtime.mk
 include tools/gimbal_complete_port.mk
 
 include tools/cm_display_sleep_lifecycle_port.mk
+
+include tools/cm_smcdure_port.mk
+
+include tools/cm_nbsm_port.mk
+
+include tools/cm_powered_quick_port.mk
+
+include tools/cm_powered_fixed_return_port.mk

@@ -1,0 +1,7 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_powered_fixed_return_snapshot.c src/cm_powered_fixed_return.c src/agc_word.c tests/cm_powered_fixed_return_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c -o build/cm-powered-fixed-return-native
+build/cm-powered-fixed-return-reference deps/cm-powered-fixture/MAIN.agc.bin 2> build/cm-powered-fixed-return-reference.trace | gzip -n -9 > build/cm-powered-fixed-return-reference.snapshots.gz
+build/cm-powered-fixed-return-native | gzip -n -9 > build/cm-powered-fixed-return-native.snapshots.gz
+cmp build/cm-powered-fixed-return-reference.snapshots.gz build/cm-powered-fixed-return-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_powered_fixed_return_snapshot.c src/cm_powered_fixed_return.c src/agc_word.c tests/cm_powered_fixed_return_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c -o build/cm-powered-fixed-return-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-powered-fixed-return-sanitize | gzip -n -9 > build/cm-powered-fixed-return-sanitize.snapshots.gz
+cmp build/cm-powered-fixed-return-reference.snapshots.gz build/cm-powered-fixed-return-sanitize.snapshots.gz

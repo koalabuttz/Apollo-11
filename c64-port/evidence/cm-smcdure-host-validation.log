@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_smcdure.c tests/frozen_words.c src/cm_smcdure.c src/guidance_product.c src/guidance_dp_divide.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_smcdure_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c -o build/test-cm-smcdure
+build/test-cm-smcdure
+576 complete2048-word original CM SMCDURES source operation states: PASS

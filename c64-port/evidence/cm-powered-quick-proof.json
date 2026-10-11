@@ -1,0 +1,53 @@
+{
+  "source_file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+  "source_audit_dependency": {
+    "path": "evidence/cm-powered-trig-source-audit.json",
+    "sha256": "7cc6a856e60c0070c793b560aac0ca8785eea8c3133bac1bdab2611c1a8ec71a"
+  },
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "native_group": "QUICTRIG and TC A",
+  "calls": 32768,
+  "complete_states": 65536,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "decoded_state_bytes": 268828672,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/cm-powered-quick-complete.snapshots.xz",
+      "decoded_sha256": "962b550c4168de54861a1b41792c89d6caaa3a0a217e56aa4f9e35953e15f658"
+    },
+    "strict_native": {
+      "object": "evidence/cm-powered-quick-complete.snapshots.xz",
+      "decoded_sha256": "962b550c4168de54861a1b41792c89d6caaa3a0a217e56aa4f9e35953e15f658"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/cm-powered-quick-complete.snapshots.xz",
+      "decoded_sha256": "962b550c4168de54861a1b41792c89d6caaa3a0a217e56aa4f9e35953e15f658"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 5971,
+      "loaded_end_hex": "0x1f51",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 38,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 6107,
+      "loaded_end_hex": "0x1fd9",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 38,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "The existing immutable QUICTRIG integer polynomial implementation is qualified anew against the byte-original declaration rope. A separate generic cm_powered_quick_return executes the actual final TC A at23,3605, setting PC to saved A and Q1 before caller code executes. Source INHINT/RELINT, raw register and scratch effects are included. Every 15-bit input count, ordinary MODE, all eight EB contexts and all fixed basic saved Q02000..07777 occur. There is no Executive check inside the basic routine. This generic return is separate from the qualified CLOCKJOB SWRETURN/BUF2 composition. The five source POWERED constants are also checked on both target images."
+}

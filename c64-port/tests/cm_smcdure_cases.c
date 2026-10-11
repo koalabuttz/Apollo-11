@@ -1,0 +1,4 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_smcdure_cases.h"
+#include "cm_powered_interface_cases.h"
+void cm_smcdure_input(apollo_overlay_state *m,agc_word *irq,uint16_t n){static const agc_word edge[8]={0,077777,1,077776,020000,057777,037777,040000};uint32_t seed=UINT32_C(0x53115a)+n;uint8_t i;cm_powered_interface_input(m,irq,n,0);m->words[m->words[0120]+052u]=(agc_word)(((uint32_t)n*5u)&077777u);m->words[0164]=03742;m->words[067]=0;for(i=0;i<6u;++i){seed=seed*UINT32_C(1664525)+UINT32_C(1013904223);m->words[03211u+i]=(agc_word)((seed>>8)&077777u);if(n<4096u)m->words[03211u+i]=edge[((uint32_t)n>>(2u*(i%5u)))&7u];}m->words[0746]=(agc_word)(010000u+(n&07777u));m->words[0747]=(agc_word)((uint32_t)n*37u&077777u);if(n<4096u){m->words[0746]=edge[((uint32_t)n>>3)&7u];m->words[0747]=edge[((uint32_t)n>>6)&7u];}}

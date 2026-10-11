@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_smcdure group original-assembly states; retained memory unchanged
+Mailbox: a50000200d
+PRG bytes: 22979
+cm_smcdure-hardware-stack.bin: measured stack extent 30 bytes
+cm_smcdure-software-stack.bin: measured stack extent 203 bytes

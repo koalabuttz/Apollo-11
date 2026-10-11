@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_nbsm group original-assembly states; retained memory unchanged
+Mailbox: a500002005
+PRG bytes: 26388
+cm_nbsm-hardware-stack.bin: measured stack extent 35 bytes
+cm_nbsm-software-stack.bin: measured stack extent 333 bytes

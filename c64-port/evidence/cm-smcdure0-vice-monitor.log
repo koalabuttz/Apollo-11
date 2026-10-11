@@ -1,0 +1,171 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure0.prg from 0801 to 1EB5 (16B5 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   16/$010,  49/$31
+.C:1658  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44403961
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure1.prg from 0801 to 2BED (23ED bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  143/$08f,  17/$11
+.C:1686  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44981954
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure2.prg from 0801 to 318E (298E bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   62/$03e,  60/$3c
+.C:168f  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   45389670
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure3.prg from 0801 to 5DC9 (55C9 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  266/$10a,  20/$14
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   45736634
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure4.prg from 0801 to 5CFA (54FA bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  311/$137,  58/$3a
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   45936067
+>C:c080  a5 00 00 20  04                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure5.prg from 0801 to 5F58 (5758 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  164/$0a4,  15/$0f
+.C:16b4  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   46713003
+>C:c080  a5 00 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure6.prg from 0801 to 5FAD (57AD bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  236/$0ec,  58/$3a
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   46894486
+>C:c080  a5 00 00 20  06                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure7.prg from 0801 to 5FE3 (57E3 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  103/$067,  33/$21
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   47377482
+>C:c080  a5 00 00 20  07                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure8.prg from 0801 to 5FE0 (57E0 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   41/$029,  23/$17
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   47688062
+>C:c080  a5 00 00 20  08                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure9.prg from 0801 to 6087 (5887 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  110/$06e,  48/$30
+.C:16be  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   48242802
+>C:c080  a5 00 00 20  09                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure10.prg from 0801 to 611A (591A bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   64/$040,  12/$0c
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   48475740
+>C:c080  a5 00 00 20  0a                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure11.prg from 0801 to 6163 (5963 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   63/$03f,  20/$14
+.C:16be  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   48986741
+>C:c080  a5 00 00 20  0b                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure12.prg from 0801 to 616A (596A bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  264/$108,  33/$21
+.C:16b4  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   49156665
+>C:c080  a5 00 00 20  0c                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure13.prg from 0801 to 61AF (59AF bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  294/$126,   1/$01
+.C:16be  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   49669579
+>C:c080  a5 00 00 20  0d                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure14.prg from 0801 to 60E1 (58E1 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   31/$01f,   5/$05
+.C:16be  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   49692326
+>C:c080  a5 00 00 20  0e                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure15.prg from 0801 to 615D (595D bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  265/$109,  15/$0f
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   50080542
+>C:c080  a5 00 00 20  0f                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure16.prg from 0801 to 6221 (5A21 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   71/$047,  14/$0e
+.C:16b4  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   50323847
+>C:c080  a5 00 00 20  10                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure17.prg from 0801 to 622E (5A2E bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  186/$0ba,  38/$26
+.C:16b5  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   50468708
+>C:c080  a5 00 00 20  11                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-smcdure0.prg from 0801 to 1ECF (16CF bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  304/$130,  33/$21
+.C:166c  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44402433
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_smcdure-software-stack.bin' from $c100 to $cfff
