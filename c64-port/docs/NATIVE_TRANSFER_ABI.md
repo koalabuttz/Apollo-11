@@ -72,8 +72,8 @@ transferring file.
 | Comanche055 ALARM_AND_ABORT | entries through `cm_alarm_site_call`, `cm_alarm2_site_call`, `cm_abort_site_call` | `cm_alarm_sites` (62 sites: ALARM, ALARM2, BAILOUT, POODOO) | `cm-alarm-sites` |
 | Luminary099 INTER-BANK_COMMUNICATION | 13 entries in `lm_interbank_routines` | `lm_interbank_sites` (448 sites: BANKCALL, IBNKCALL, POSTJUMP, USPRCADR) | `lm-interbank-transfer` |
 | Luminary099 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only: the flight program has no E/BKCALL or E/CALL caller | `lm-standard-lead-transfer` |
+| Comanche055 INTER-BANK_COMMUNICATION | 13 entries in `cm_interbank_routines` | `cm_interbank_sites` (354 sites: BANKCALL, IBNKCALL, POSTJUMP, USPRCADR) | `cm-interbank-transfer` |
+| Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only, as in Luminary | `cm-standard-lead-transfer` |
 
 Luminary099 RESTART_TABLES is back to `partial` until the native RESTARTS
 consumer selects its entries and transfers to their 2CADRs through this ABI.
-Comanche055 INTER-BANK_COMMUNICATION and SYSTEM_TEST_STANDARD_LEAD_INS still
-take fixed operands from their callers' data readers and are next.
