@@ -381,3 +381,5 @@ test-guidance-phased:
 include tools/dsky_relay.mk
 
 include tools/dsky_display.mk
+
+include tools/cm_startup.mk

@@ -230,3 +230,5 @@ subprocess.run([sys.executable,'tools/radial_phased_differential.py',str(referen
 subprocess.run([sys.executable,'tools/projection_phased_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_relay_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_startup_differential.py',str(reference)],cwd=ROOT,check=True)

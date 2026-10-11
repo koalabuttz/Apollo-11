@@ -1,0 +1,20 @@
+{
+  "cases": 640,
+  "image_words": 2047,
+  "external_io_words": 15,
+  "row_values_with_status": 2063,
+  "excluded_source_addresses": [
+    "0005 Z"
+  ],
+  "hardware_drive_counters_held_zero": [
+    "0035",
+    "0036",
+    "0047",
+    "0050",
+    "0051",
+    "0052",
+    "0053",
+    "0054"
+  ],
+  "snapshot_sha256": "663782ee79df657ba2ab0038cee83c740e1f2eba31aa638610689fe68f173ebd"
+}
