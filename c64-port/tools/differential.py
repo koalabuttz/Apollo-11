@@ -243,3 +243,5 @@ subprocess.run([sys.executable,'tools/throttle_feedback_phased_differential.py',
 subprocess.run([sys.executable,'tools/display_control_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/regodspr_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/acceleration_store_differential.py',str(reference)],cwd=ROOT,check=True)
