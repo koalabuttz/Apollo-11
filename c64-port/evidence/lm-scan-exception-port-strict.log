@@ -1,0 +1,4 @@
+PASS:16384 original EJSCAN complete2050-word actual CCSHOLE handoffs
+Snapshot SHA256: b059fd79f694ee7ba639bb04e8316e04c484c3ffa980539a7c94d63b1728e7e1
+PASS:12288 frozen lifecycle/END exclusions unchanged;21 all-object mutation guards and2 null interfaces
+PASS:retained EJSCAN exception strict;16384 whole original states,12288 prior lifecycle/END exclusions,32 checked PRGs

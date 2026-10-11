@@ -1604,3 +1604,7 @@ Qualify genuine postinterrupt NUCHANG2 recheck and all six typed caller transfer
 ## Qualify Comanche lunar positions for all original source callers
 
 Qualify original LUNPOS polynomial and all three saved caller bank and return contexts against65536 complete original strict sanitizer states and64 C64 states preserving historical Moon proofs and arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-MOON-CALLERS.md`.
+
+## Translate Luminary priority scan exception branches
+
+Qualify source positive zero candidates dead data alias and actual exception returns against16384 complete original states strict sanitizers and64 C64 cases. See `docs/LM-SCAN-EXCEPTION.md`.
