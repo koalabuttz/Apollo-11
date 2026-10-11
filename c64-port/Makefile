@@ -662,3 +662,6 @@ include tools/lm_fleshpot_interface_port.mk
 include tools/dsky_charin_release.mk
 
 include tools/cm_nv85_port.mk
+
+include tools/cm_context_change.mk
+all: build/cm-context-change-native

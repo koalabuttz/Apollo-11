@@ -876,3 +876,7 @@ Actual KEYREL, RELDSP and display job wake paths match8,192 complete original so
 ## Compose actual Comanche normal noun85 display and Executive completion
 
 Actual normal V06N85 now composes source display selection, priority and job wake, NVSUB, fresh three-row scaling and decimal formatting, and original Executive completion. All 13,312 uninterrupted complete host source states match full sanitizer output; 60 frozen caller states pass on C64. Flashing, busy, monitor and relay-drain paths remain separate work. See `docs/COMANCHE-NORMAL-N85.md`.
+
+## Translate actual Comanche canonical CHANG1 and CHANG2 context exchanges
+
+All outgoing and selected basic/interpreter combinations now preserve the original CHANG1 and CHANG2 registers, canonical image and selected return tuple. All12,288 complete original states match strict and full sanitizer output, and96 actual fixed-slot C64 states pass. Selected application bodies and whole Executive completion remain separate work. See `docs/COMANCHE_CONTEXT_CHANGE.md`.
