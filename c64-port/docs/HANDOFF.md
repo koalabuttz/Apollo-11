@@ -1391,3 +1391,7 @@ Qualify96720 full original native sanitizer states and64 C64 states resolving ac
 ## Whole Luminary RTB source translation
 
 All130 local emitted words are independently accounted for by frozen native source, sanitizer and C64 proofs. Genuine external service handoffs remain explicit; both full applications remain unverified. See `docs/LM-RTB-WHOLE-SOURCE.md`.
+
+## Bind native simulated gyro counter and output transport
+
+Qualify262144 complete original peripheral strict sanitizer states and128 C64 states with24 rejection invariants for explicit timed or burst gyro output without claiming source instruction completion or wallclock hardware acceptance. See `docs/NATIVE-GYRO-DEVICE.md`.

@@ -1,0 +1,10 @@
+Independent read-only device law review by /root/general_division, 2026-10-11.
+
+No arithmetic/ordering discrepancy found in declared positive counter/excluded-producer domain. Timed phase<160 plus6 permits exactly one divider crossing; pending<=799 may increment to800 then flush. Selector change/final activity clearing follows source hardware order. Burst preflush bound is ceil(16383/2047)=9 old events plus at most1 immediate new1024-unit batch, hence10; allocated18 is conservative. Selected0740 shifted6 remains ordinary15-bit. Native burst selection uses an explicit unshifted representation with equivalent output payload. This is source reference-backend transport qualification, not CPU cycle/wall-clock/physical hardware timing. Nonnull/distinct objects remain caller preconditions, not NULL-rejection guarantees. No native kernel/frozen source edits requested.
+
+Reviewed identities:
+1bc64c48465e74c9e509dea624086618b80ca1048ff7e16ead809a412c86ede1  src/imu_gyro_device.c
+1495a7ef0223776b2f0bdc98000335fa04ac20769a3ddc6b95f6357c6f7fb7a3  include/imu_gyro_device.h
+a3b79bad6631e3d88775ff735e883db8abccacc0b87020232d1cb1c225a7fdc3  tools/imu_gyro_device_reference.c
+4a9d80db42a5c0c8372b44be6a5a36330ea520a9c9a73d9b7c0211d7f3ab8d7a  tests/imu_gyro_device_cases.c
+9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef  deps/virtualagc/yaAGC/agc_engine.c

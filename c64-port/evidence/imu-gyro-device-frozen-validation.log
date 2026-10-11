@@ -1,0 +1,6 @@
+262144 complete peripheral states; 128 target states
+for mission in 0 1; do for mode in 0 1; do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DIMUD_MISSION=$mission -DIMUD_MODE=$mode tests/test_imu_gyro_device.c tests/frozen_words.c src/imu_gyro_device.c src/agc_word.c src/agc_multiword.c tests/imu_gyro_device_cases.c tests/imu_pulse_cases.c -o build/test-imu-gyro-device-$mission-$mode; build/test-imu-gyro-device-$mission-$mode; done; done
+32 complete gyro peripheral states mission0 mode0: PASS
+32 complete gyro peripheral states mission0 mode1: PASS
+32 complete gyro peripheral states mission1 mode0: PASS
+32 complete gyro peripheral states mission1 mode1: PASS

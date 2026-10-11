@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <stdlib.h>
+#include "imu_gyro_device_cases.h"
+int main(int argc,char **argv){uint32_t n,limit=IMU_GYRO_DEVICE_CASES;unsigned mission,mode;if(argc<3)return 2;mission=(unsigned)strtoul(argv[1],0,0);mode=(unsigned)strtoul(argv[2],0,0);if(argc>3)limit=(uint32_t)strtoul(argv[3],0,0);for(n=0;n<limit;++n){apollo_overlay_state m;imu_pulse_io io;imu_gyro_device d;agc_word events[18];uint8_t count=0;uint16_t row[2078];unsigned i;imu_gyro_device_input(&m,&io,&d,(enum rtb_mission)mission,(enum imu_gyro_clock_mode)mode,n);for(i=0;i<18u;++i)events[i]=(agc_word)(010000u+i);if(!imu_gyro_device_step(&m,&io,&d,(enum imu_gyro_clock_mode)mode,events,&count))return 2;row[0]=(uint16_t)n;row[1]=(uint16_t)(n>>16);row[2]=io.latch.interrupt_enabled;row[3]=io.latch.superbank;row[4]=io.channel11;row[5]=io.channel12;row[6]=io.channel14;row[7]=count;row[8]=(uint16_t)d.phase;row[9]=(uint16_t)(d.phase>>16);row[10]=d.pending;row[11]=d.selection;for(i=0;i<18u;++i)row[i+12u]=events[i];for(i=0;i<2048u;++i)row[i+30u]=m.words[i];if(fwrite(row,sizeof row,1,stdout)!=1)return 2;}return 0;}

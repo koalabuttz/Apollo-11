@@ -1,0 +1,1 @@
+PASS: final peripheral oracle observes actual incoming IRQ unchanged across all262144 states
