@@ -1262,3 +1262,7 @@ Actual BLNKSUB1 and SUPDXCHZ+1 return phases match8,192 complete original states
 ## Translate original Comanche priority changes through mixed source context switches
 
 Actual PRIOCHNG now reaches genuine current and selected basic or interpreter source returns with complete register and canonical state preservation. All14,336 complete source states match strict and full sanitizer output, and112 disk-backed C64 contexts pass. Source CCSHOLE/+0 faults and selected application body execution remain separate work. See `docs/COMANCHE_PRIORITY_COMPLETE.md`.
+
+## Inverse-trig corpus coverage correction
+
+The original inverse-trig comparison remains valid, but its exhaustive high-word wording omitted2,045 values per function. The authoritative correction is `docs/INVERSE-TRIG-COVERAGE-ERRATUM.md`; a separate supplement is being qualified.

@@ -4077,6 +4077,8 @@
   "inverse-trig-evidence.sha256": "cb553671e65e5f0010e52cd59f5583ff6b6ebffb287acd8127ce53de1250007b",
   "inverse-trig-frozen-validation.log": "da54bf79cb55a5059159a34e8e792029bfbc604766a56dd0e4865fa630ffc5d9",
   "inverse-trig-host-validation.log": "ed127c440bb49335c6f5c48d5d52c5e556acbda88c92c4c72172eca64101a94d",
+  "inverse-trig-independent-review.txt": "e1863507581b6580ebf7aaa337ecc620676b25089f8d71935f5bff92e91e57f2",
+  "inverse-trig-input-coverage-erratum.json": "db8008dc8b0833fa3bab0a27873e897e6abc2e07120c9bbaadc65a630267f76b",
   "inverse-trig-integration-validation.log": "b239d254fdf86cd8d011a46135c323bcf4864ab836ba209a04f1a0efd4858dac",
   "inverse-trig-lm-complete.snapshots.xz": "8a7fabc7c9a437260c8e0972221a892cb92990d96b749f79b7d91309f854a099",
   "inverse-trig-lm-proof.json": "5b9db8c7763b5ef538a8fdfe905d7887c507ca82c3a659bfc3082d61587a20d5",

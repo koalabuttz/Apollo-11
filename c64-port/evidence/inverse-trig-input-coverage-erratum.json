@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "original_milestone": "e764b97272cbef874ced51af8cdbd9475a8d7ed6",
+  "original_packet_unchanged": true,
+  "original_comparison_states": 316640,
+  "comparison_results_remain_valid": true,
+  "incorrect_claim": "Every ordinary high-word input for both routines is covered by the original preparation corpus.",
+  "actual_distinct_high_words_per_routine": 30723,
+  "missing_high_words_per_routine": 2045,
+  "cause": "The corner input replacement for indices below4096 overwrites ordinary high words0..2047; only0,1,2 of those high words survive in that cohort.",
+  "corrected_scope": "The original corpus covers all ordinary MODE values and all recorded checkpoints, but does not exhaust all32768 high words for either function.",
+  "independent_review": {
+    "path": "evidence/inverse-trig-independent-review.txt",
+    "sha256": "e1863507581b6580ebf7aaa337ecc620676b25089f8d71935f5bff92e91e57f2"
+  },
+  "supplement": "Separate exhaustive high-word qualification in preparation. No supplementary completion is claimed by this erratum."
+}
