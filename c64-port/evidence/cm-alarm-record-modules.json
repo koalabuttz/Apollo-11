@@ -1,0 +1,29 @@
+[
+  {
+    "id": 214,
+    "filename": "G214",
+    "byte_count": 2232,
+    "crc16": 61287,
+    "sha256": "615e16f16131c962434a84fc5221a84a7c39985c44cdad41ca26741302a8e4d8",
+    "prg": "cm-alarm-record-214.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 4685,
+    "crc16": 53187,
+    "sha256": "ac3d813a52323474608c56b8f361a0bf1734083ad7835bc74e5fd2006d614baa",
+    "prg": "cm-alarm-record-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10052,
+    "crc16": 50794,
+    "sha256": "3effb7dff8c825e6748067f19dfc25f13c7f95dafb6f9922b27872aa038f42d0",
+    "prg": "cm-alarm-record-255.prg",
+    "native_control": false
+  }
+]

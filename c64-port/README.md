@@ -1050,3 +1050,7 @@ Actual VBPROC/VBTERM/VBRESEQ/PROCKEY and direct RECALTST match8192 complete orig
 ## Canonical Luminary admission source entries
 
 Literal NOVAC/FINDVAC/SPVAC/SPVACIN and their real caller/BAILOUT handoffs match16384 complete2050-field original/native/full-sanitizer states,22 unchanged guard domains and64 actual C64 disk-overlay states. Admitted bodies and recovery remain separate. Retained-original checks require no emulator or stale build outputs. See `docs/LM-CANONICAL-ADMISSION.md`.
+
+## Translate original Comanche alarm recording and overflow recovery handoffs
+
+Actual ALARM/VARALARM/CURTAINS/BORTENT match16384 complete original/native/full-sanitizer states and64 actual C64 states. All1803 genuine MULTFAIL negative-overflow paths retain their inhibited-IRQ POODOO frontier; ordinary returns and later abort recovery bodies remain separately qualified. See `docs/COMANCHE_ALARM_RECORD.md`.

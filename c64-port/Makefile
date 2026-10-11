@@ -734,3 +734,6 @@ include tools/dsky_nv_admission_integration.mk
 include tools/dsky_load_control.mk
 
 include tools/lm_admission_image_integration.mk
+
+include tools/cm_alarm_record.mk
+all: build/cm-alarm-record-native

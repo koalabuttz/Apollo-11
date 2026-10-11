@@ -492,3 +492,5 @@ subprocess.run([sys.executable,'tools/cm_init_display_mixed_differential.py',str
 subprocess.run([sys.executable,'tools/dsky_nv_admission_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_load_control_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_alarm_record_differential.py',str(reference)],cwd=ROOT,check=True)
