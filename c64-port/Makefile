@@ -921,3 +921,5 @@ include tools/dsky_response_recall.mk
 include tools/dsky_operator_response.mk
 
 include tools/dsky_octal_verb_integration.mk
+
+include tools/cm_quality_integration.mk

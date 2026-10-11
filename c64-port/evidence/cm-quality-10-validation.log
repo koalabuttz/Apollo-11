@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_quality group original-assembly states; retained memory unchanged
+Mailbox: a50000200a
+PRG bytes: 11839
+cm-quality-10-hardware-stack.bin: measured stack extent 29 bytes
+cm-quality-10-software-stack.bin: measured stack extent 179 bytes

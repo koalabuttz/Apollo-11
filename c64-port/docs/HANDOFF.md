@@ -1431,3 +1431,7 @@ Extend tested actual operator response controls with raw overflow and sequential
 ## Translate original octal display verb and channel staging
 
 Qualify actual octal display component selection channels and row return against16384 complete original native sanitizer states and128 C64 states with72 unsupported guards and genuine formatter alarm or ENTRET boundaries. See `docs/DSKY-OCTAL-VERB.md`.
+
+## Translate complete original Comanche QUALITY numerical and control bodies
+
+Qualify65536 original inputs and688128 full canonical native sanitizer checkpoints across all20 source phases with640 C64 states and180 atomic rejection checks retaining actual branch and pending return boundaries. See `docs/NATIVE-CM-QUALITY.md`.

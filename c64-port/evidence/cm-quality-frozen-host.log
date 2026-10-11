@@ -1,0 +1,21 @@
+for phase in $(seq 0 19); do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DCMQ_PHASE=$phase tests/test_cm_quality.c tests/frozen_words.c tests/cm_quality_cases.c src/cm_quality.c src/interpreted_square.c src/guidance_product.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c -o build/test-cm-quality-$phase; build/test-cm-quality-$phase; done
+32 complete QUALITY phase0 original states: PASS
+32 complete QUALITY phase1 original states: PASS
+32 complete QUALITY phase2 original states: PASS
+32 complete QUALITY phase3 original states: PASS
+32 complete QUALITY phase4 original states: PASS
+32 complete QUALITY phase5 original states: PASS
+32 complete QUALITY phase6 original states: PASS
+32 complete QUALITY phase7 original states: PASS
+32 complete QUALITY phase8 original states: PASS
+32 complete QUALITY phase9 original states: PASS
+32 complete QUALITY phase10 original states: PASS
+32 complete QUALITY phase11 original states: PASS
+32 complete QUALITY phase12 original states: PASS
+32 complete QUALITY phase13 original states: PASS
+32 complete QUALITY phase14 original states: PASS
+32 complete QUALITY phase15 original states: PASS
+32 complete QUALITY phase16 original states: PASS
+32 complete QUALITY phase17 original states: PASS
+32 complete QUALITY phase18 original states: PASS
+32 complete QUALITY phase19 original states: PASS

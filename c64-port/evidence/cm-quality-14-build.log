@@ -1,0 +1,7 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -DCM_QUALITY_CHECK_ONLY -DCMQ_PHASE=14 -DCM_QUALITY_ONLY_PHASE=14 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_quality.c tests/frozen_words.c tools/cm_quality_diagnostic.c tests/cm_quality_cases.c src/cm_quality.c src/interpreted_square.c src/guidance_product.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c -Wl,-Map,build/cm-quality-14.map -o build/cm-quality-14.prg
+python3 tools/cm_quality_vice_test.py --phase 14 --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice | tee build/cm-quality-14-validation.log
+PASS: VICE PAL C64, 32 complete cm_quality group original-assembly states; retained memory unchanged
+Mailbox: a50000200e
+PRG bytes: 11863
+cm-quality-14-hardware-stack.bin: measured stack extent 20 bytes
+cm-quality-14-software-stack.bin: measured stack extent 188 bytes
