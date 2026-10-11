@@ -1023,3 +1023,7 @@ Actual STARTP66, guidance, deferred mode and display jobs, canonical END and idl
 ## Translate complete original Luminary SPS backup RCS source
 
 All82 byte-original emitted words including jet-sense, deadband, outer-rate, coast and inhibition paths plus four constants are reviewed and mapped. All196,608 complete original states match strict and full sanitizer execution;96 actual C64 states and every constant pass. No complete docked autopilot or flight application acceptance is claimed. See `docs/LUMINARY-SPS-RCS.md`.
+
+## Complete original Luminary SPS backup RCS source
+
+Independent arithmetic/control review, exact original82-word mapping, complete source/sanitizer comparisons and actual C64 execution certify the containing SPS backup RCS file within its canonical source entry and external END contracts. The inventory has34 complete files (28 native/data/declaration and six comment-only files), with141 source files and both integrated applications still requiring complete acceptance. See `docs/LUMINARY-SPS-RCS.md`.

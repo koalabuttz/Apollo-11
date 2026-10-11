@@ -5037,6 +5037,7 @@
   "lm-sleep-vice.mon": "3ad29a9b7d4b6eca7cdc42e8b20c7ec0fc87b2fe9c61080129120fde7c37bc4b",
   "lm-sleep.map": "c1d1fcaec6010fd1463686dc09651e7dab0a883b55bc5c4d40b33bab025c2a33",
   "lm-sleep.prg": "1758b3cda82559e10c1d5743036b3e0befe709332c009a65b58430787d70a58f",
+  "lm-sps-rcs-certificate-validation.log": "e8335d84adbea4b4187370787b0e544f6d3236e477cfb6b48c455753cc2330cd",
   "lm-sps-rcs-complete.snapshots.xz": "b683d0323e2197b2a2e4ec4880c0bec1ae5dd248380318e77cb79b4b135f87ff",
   "lm-sps-rcs-corpus-stats.json": "5c5565c83fb732a0c7773b909dea9a5939bfda2046cca9ed786ad53c2c53d69a",
   "lm-sps-rcs-evidence.sha256": "ca7488f0b7f7ab38b45cb49ee73ef951cd3fbe42707b16c5281c6a9a010f77b0",

@@ -3157,8 +3157,40 @@
       "sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
       "bytes": 5909,
       "lines": 196,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_sps_rcs.c"
+          ],
+          "scope": "All82 byte-original source words: SPSRCS public entry and complete source jet-sense, deadband, outer-rate, coast and inhibition paths plus4 constants. Fixed basic Q02000..07777, E6/coherentbanks, REGZERO0, axis-1/bothzeros/+1. Completes actual TCQ transfer with Q3. IRQ retained externally; no Executive check. Every raw ordinary TJ and supported axis is represented; sampled multidimensional combinations are not exhaustive Cartesian coverage. No complete resident docked DAP or complete flight application claimed.",
+          "verification": "docs/LUMINARY-SPS-RCS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "All82 byte-original source words: SPSRCS public entry and complete source jet-sense, deadband, outer-rate, coast and inhibition paths plus4 constants. Fixed basic Q02000..07777, E6/coherentbanks, REGZERO0, axis-1/bothzeros/+1. Completes actual TCQ transfer with Q3. IRQ retained externally; no Executive check. Every raw ordinary TJ and supported axis is represented; sampled multidimensional combinations are not exhaustive Cartesian coverage. No complete resident docked DAP or complete flight application claimed.",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-sps-rcs-source-map.json",
+            "sha256": "628688fa3a3fab0e1f6912c73c1384a39d17cbdff33b2177865c1f5d0fbd6257"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-sps-rcs-independent-review.txt",
+            "sha256": "609ff0fd243b801f7c25957a889f3d20aab6fc1362aa172a9463f59c70bf9fa3"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-sps-rcs-proof.json",
+            "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-sps-rcs-proof.json",
+            "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/STABLE_ORBIT.agc",
