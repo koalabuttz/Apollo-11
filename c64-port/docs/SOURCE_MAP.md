@@ -1363,3 +1363,7 @@ Qualify ALLDC OC ALL3DEC and FORCEV25 local algorithms against8192 full source n
 ## Translate original ALARM2 body and diagnostic producer
 
 Qualify65536 complete original native sanitizer states and64 C64 states including every diagnostic producer word and source counter overflow with the initial failed target preserved. See `docs/COMANCHE_ALARM2_IMAGE.md`.
+
+## Translate original operator component and noun checks
+
+Qualify8192 full original native sanitizer states and64 C64 states preserving actual component noun and alarm frontiers. See `docs/DSKY-NOUN-CHECK.md`.

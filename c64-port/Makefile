@@ -943,3 +943,5 @@ include tools/dsky_input_mode.mk
 
 include tools/cm_alarm2_image.mk
 all: build/cm-alarm2-image-native
+
+include tools/dsky_noun_check.mk

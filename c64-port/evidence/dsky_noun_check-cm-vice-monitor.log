@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_noun_check-cm.prg from 0801 to 1D49 (1549 bytes)
+WATCH: 1  C:$3d52  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 3d52)  218/$0da,  20/$14
+.C:13f1  8E 52 3D    STX $3D52      - A:40 X:A5 Y:00 SP:f1 N.-....C  152701562
+>C:3d52  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_noun_check-cm-vice-mailbox.bin' from $3d52 to $3d56
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_noun_check-cm-vice-difference.bin' from $1d4a to $1d51
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_noun_check-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_noun_check-cm-vice-software-stack.bin' from $c100 to $cfff
