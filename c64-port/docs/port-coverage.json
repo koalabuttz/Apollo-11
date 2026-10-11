@@ -3687,8 +3687,60 @@
       "sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
       "bytes": 6098,
       "lines": 183,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_ephemeris.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "All 74 words: LSPOS/LUNPOS and LUNVEL from the original entry frontier to every actual caller frontier, as nine native steps between original NEWOPS frontiers. Every source path is translated; the complete certificate below awaits the auditor review.",
+          "verification": "docs/LM-EPHEMERIS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; coherent original entry banks, BANKSET = BB, five VACs, ordinary 15-bit words.",
+          "caller_returns": {
+            "LSPOS": [
+              "022563",
+              "023273",
+              "023373",
+              "030512",
+              "065627 under SUPER 0100"
+            ],
+            "LUNVEL": [
+              "023417"
+            ]
+          },
+          "data_validity": "Original ephemeris polynomial validity; no widened claim."
+        },
+        "external_continuations": [
+          "Caller entry/resume services and application scheduling",
+          "Overlay ABI 2 modules for the whole routine on the C64 (phases verified separately)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
+            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
+            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-checks.log",
+            "sha256": "31fe7d0fee2daddcc969fc72fc6ceba25ba47620c5b2d62d12dd52099be995ed"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-results.json",
+            "sha256": "f336006417ac182a4f83fd84c4322b5aa192d96196d015781e1f3bdd28d3c097"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",

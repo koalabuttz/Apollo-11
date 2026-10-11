@@ -17,6 +17,7 @@ build/test-lm-ephemeris: $(LM_EPHEMERIS_SRC) $(LM_EPHEMERIS_TARGET) tests/test_l
 test-lm-ephemeris: build/test-lm-ephemeris build/lm-ephemeris-reference.snapshots.bin.xz
 	./build/test-lm-ephemeris
 	python3 tools/lm_ephemeris_host.py --cc "$(CC)"
+	python3 tools/lm_ephemeris_source.py
 sanitize-lm-ephemeris: build/lm-ephemeris-reference.snapshots.bin.xz | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-omit-frame-pointer $(LM_EPHEMERIS_SRC) $(LM_EPHEMERIS_TARGET) tests/test_lm_ephemeris.c -o build/test-lm-ephemeris-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-ephemeris-sanitize

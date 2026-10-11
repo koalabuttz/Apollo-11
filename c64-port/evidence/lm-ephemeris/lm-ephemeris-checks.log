@@ -1,0 +1,10 @@
+PASS 16 frozen original LSPOS/LUNVEL states, 21 admission guards and 54 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 c3617d869ff44fc782f71184975346d6edc90c298c03d01600df756efda5c466
+PASS65536 original LSPOS/LUNVEL states strict native
+PASS 16 frozen original LSPOS/LUNVEL states, 21 admission guards and 54 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 c3617d869ff44fc782f71184975346d6edc90c298c03d01600df756efda5c466
+PASS65536 original LSPOS/LUNVEL states full ASAN/UBSAN
+PASS: VICE PAL lm-ephemeris-1.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-ephemeris-2.prg: 30 checks, 0 failures
+PASS: VICE PAL lm-ephemeris-3.prg: 12 checks, 0 failures
+PASS 74 assembled words on 74 source lines map to native literals in 8 functions

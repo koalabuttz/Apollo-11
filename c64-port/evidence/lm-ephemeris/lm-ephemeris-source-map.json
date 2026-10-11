@@ -1,0 +1,703 @@
+{
+ "source_path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+ "source_sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_ephemeris.c",
+ "native_sha256": "8c1430b16119903c774c6ce2fc8228816f781b735bb96c09016a8c35411fcf22",
+ "source_words": 74,
+ "source_lines": 74,
+ "symbols": {
+  "LSPOS": "15,3664",
+  "LUNPOS": "15,3664",
+  "LUNVEL": "15,3775",
+  "POSITA": "15,3700",
+  "POSITB": "15,3703",
+  "POSITD": "15,3722",
+  "POSITE": "15,3770",
+  "POSITF": "15,3743",
+  "STMP": "0000020",
+  "GTMP": "0000026",
+  "TIMEP": "0000030",
+  "TEPHEM": "E3,1706",
+  "KONMAT": "05,2001",
+  "RATESP": "05,2027",
+  "VAL67": "05,2043",
+  "CSTODAY": "05,2023",
+  "VMOON": "E5,1722",
+  "VSUN": "E5,1714",
+  "TAD": "7071",
+  "SETOVF": "7003",
+  "OVERFLOW": "7017",
+  "SETOVF2": "7152",
+  "DANZIG": "6061"
+ },
+ "line_map": [
+  {
+   "line": 98,
+   "address": "15,3664",
+   "source": "LSPOS SETPD SR",
+   "words": [
+    "54201"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 99,
+   "address": "15,3665",
+   "source": "0",
+   "words": [
+    "00001"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 100,
+   "address": "15,3666",
+   "source": "14D",
+   "words": [
+    "20617"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 101,
+   "address": "15,3667",
+   "source": "TAD DDV",
+   "words": [
+    "56371"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 103,
+   "address": "15,3670",
+   "source": "TEPHEM",
+   "words": [
+    "01707"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 104,
+   "address": "15,3671",
+   "source": "CSTODAY",
+   "words": [
+    "12024"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 105,
+   "address": "15,3672",
+   "source": "STORE TIMEP",
+   "words": [
+    "00031"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 106,
+   "address": "15,3673",
+   "source": "AXT,1 AXT,2",
+   "words": [
+    "77170"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 107,
+   "address": "15,3674",
+   "source": "0",
+   "words": [
+    "00000"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 108,
+   "address": "15,3675",
+   "source": "0",
+   "words": [
+    "00000"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 109,
+   "address": "15,3676",
+   "source": "CLEAR",
+   "words": [
+    "77614"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 110,
+   "address": "15,3677",
+   "source": "FREEFLAG",
+   "words": [
+    "00274"
+   ],
+   "native": "lme_entry"
+  },
+  {
+   "line": 111,
+   "address": "15,3700",
+   "source": "POSITA DLOAD",
+   "words": [
+    "77745"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 112,
+   "address": "15,3701",
+   "source": "KONMAT +2",
+   "words": [
+    "12004"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 113,
+   "address": "15,3702",
+   "source": "STORE GTMP",
+   "words": [
+    "00027"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 114,
+   "address": "15,3703",
+   "source": "POSITB DLOAD DMP*",
+   "words": [
+    "40745"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 115,
+   "address": "15,3704",
+   "source": "TIMEP",
+   "words": [
+    "00031"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 116,
+   "address": "15,3705",
+   "source": "VAL67 +4,1",
+   "words": [
+    "12050"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 118,
+   "address": "15,3706",
+   "source": "SL DAD*",
+   "words": [
+    "42661"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 119,
+   "address": "15,3707",
+   "source": "8D",
+   "words": [
+    "20211"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 120,
+   "address": "15,3710",
+   "source": "VAL67 +2,1",
+   "words": [
+    "12046"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 121,
+   "address": "15,3711",
+   "source": "SIN DMP*",
+   "words": [
+    "40756"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 122,
+   "address": "15,3712",
+   "source": "VAL67,1",
+   "words": [
+    "12044"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 123,
+   "address": "15,3713",
+   "source": "DAD INCR,1",
+   "words": [
+    "62015"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 124,
+   "address": "15,3714",
+   "source": "GTMP",
+   "words": [
+    "00027"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 125,
+   "address": "15,3715",
+   "source": "DEC -6",
+   "words": [
+    "77771"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 126,
+   "address": "15,3716",
+   "source": "STORE GTMP",
+   "words": [
+    "00027"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 127,
+   "address": "15,3717",
+   "source": "BOFSET",
+   "words": [
+    "77614"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 128,
+   "address": "15,3720",
+   "source": "FREEFLAG",
+   "words": [
+    "00054"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 129,
+   "address": "15,3721",
+   "source": "POSITB",
+   "words": [
+    "33703"
+   ],
+   "native": "lme_posita"
+  },
+  {
+   "line": 130,
+   "address": "15,3722",
+   "source": "POSITD DLOAD DMP*",
+   "words": [
+    "40745"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 131,
+   "address": "15,3723",
+   "source": "TIMEP",
+   "words": [
+    "00031"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 132,
+   "address": "15,3724",
+   "source": "RATESP,2",
+   "words": [
+    "65747"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 133,
+   "address": "15,3725",
+   "source": "SL DAD*",
+   "words": [
+    "42661"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 134,
+   "address": "15,3726",
+   "source": "5D",
+   "words": [
+    "20206"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 135,
+   "address": "15,3727",
+   "source": "RATESP +6,2",
+   "words": [
+    "65741"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 136,
+   "address": "15,3730",
+   "source": "DSU",
+   "words": [
+    "77625"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 137,
+   "address": "15,3731",
+   "source": "GTMP",
+   "words": [
+    "00027"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 138,
+   "address": "15,3732",
+   "source": "STORE STMP,2",
+   "words": [
+    "10021"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 139,
+   "address": "15,3733",
+   "source": "SLOAD INCR,2",
+   "words": [
+    "63135"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 140,
+   "address": "15,3734",
+   "source": "X2",
+   "words": [
+    "00050"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 141,
+   "address": "15,3735",
+   "source": "DEC -2",
+   "words": [
+    "77775"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 142,
+   "address": "15,3736",
+   "source": "DAD BZE",
+   "words": [
+    "53015"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 143,
+   "address": "15,3737",
+   "source": "RCB-13",
+   "words": [
+    "12026"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 144,
+   "address": "15,3740",
+   "source": "POSITE",
+   "words": [
+    "33770"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 145,
+   "address": "15,3741",
+   "source": "BPL",
+   "words": [
+    "77644"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 146,
+   "address": "15,3742",
+   "source": "POSITA",
+   "words": [
+    "33700"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 147,
+   "address": "15,3743",
+   "source": "POSITF DLOAD DSU",
+   "words": [
+    "45345"
+   ],
+   "native": "lme_positf"
+  },
+  {
+   "line": 148,
+   "address": "15,3744",
+   "source": "STMP",
+   "words": [
+    "00021"
+   ],
+   "native": "lme_positf"
+  },
+  {
+   "line": 149,
+   "address": "15,3745",
+   "source": "STMP +4",
+   "words": [
+    "00025"
+   ],
+   "native": "lme_positf"
+  },
+  {
+   "line": 150,
+   "address": "15,3746",
+   "source": "SIN PDDL",
+   "words": [
+    "65356"
+   ],
+   "native": "lme_positf"
+  },
+  {
+   "line": 151,
+   "address": "15,3747",
+   "source": "STMP",
+   "words": [
+    "00021"
+   ],
+   "native": "lme_positf"
+  },
+  {
+   "line": 152,
+   "address": "15,3750",
+   "source": "SIN PDDL",
+   "words": [
+    "65356"
+   ],
+   "native": "lme_positf"
+  },
+  {
+   "line": 153,
+   "address": "15,3751",
+   "source": "STMP",
+   "words": [
+    "00021"
+   ],
+   "native": "lme_positf"
+  },
+  {
+   "line": 154,
+   "address": "15,3752",
+   "source": "COS VDEF",
+   "words": [
+    "55546"
+   ],
+   "native": "vdef"
+  },
+  {
+   "line": 155,
+   "address": "15,3753",
+   "source": "MXV UNIT",
+   "words": [
+    "53521"
+   ],
+   "native": "lme_moon_unit"
+  },
+  {
+   "line": 156,
+   "address": "15,3754",
+   "source": "KONMAT",
+   "words": [
+    "12002"
+   ],
+   "native": "lme_moon_unit"
+  },
+  {
+   "line": 157,
+   "address": "15,3755",
+   "source": "STORE VMOON",
+   "words": [
+    "02723"
+   ],
+   "native": "lme_moon_unit"
+  },
+  {
+   "line": 158,
+   "address": "15,3756",
+   "source": "DLOAD PDDL",
+   "words": [
+    "65345"
+   ],
+   "native": "lme_sun_angles"
+  },
+  {
+   "line": 159,
+   "address": "15,3757",
+   "source": "KONMAT +2",
+   "words": [
+    "12004"
+   ],
+   "native": "lme_sun_angles"
+  },
+  {
+   "line": 160,
+   "address": "15,3760",
+   "source": "STMP +2",
+   "words": [
+    "00023"
+   ],
+   "native": "lme_sun_angles"
+  },
+  {
+   "line": 161,
+   "address": "15,3761",
+   "source": "SIN PDDL",
+   "words": [
+    "65356"
+   ],
+   "native": "lme_sun_angles"
+  },
+  {
+   "line": 162,
+   "address": "15,3762",
+   "source": "STMP +2",
+   "words": [
+    "00023"
+   ],
+   "native": "lme_sun_angles"
+  },
+  {
+   "line": 163,
+   "address": "15,3763",
+   "source": "COS VDEF",
+   "words": [
+    "55546"
+   ],
+   "native": "vdef"
+  },
+  {
+   "line": 164,
+   "address": "15,3764",
+   "source": "MXV UNIT",
+   "words": [
+    "53521"
+   ],
+   "native": "lme_sun_unit"
+  },
+  {
+   "line": 165,
+   "address": "15,3765",
+   "source": "KONMAT",
+   "words": [
+    "12002"
+   ],
+   "native": "lme_sun_unit"
+  },
+  {
+   "line": 166,
+   "address": "15,3766",
+   "source": "STORE VSUN",
+   "words": [
+    "02715"
+   ],
+   "native": "lme_sun_unit"
+  },
+  {
+   "line": 167,
+   "address": "15,3767",
+   "source": "RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "lme_sun_unit"
+  },
+  {
+   "line": 169,
+   "address": "15,3770",
+   "source": "POSITE DLOAD",
+   "words": [
+    "77745"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 170,
+   "address": "15,3771",
+   "source": "KONMAT +2",
+   "words": [
+    "12004"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 171,
+   "address": "15,3772",
+   "source": "STORE GTMP",
+   "words": [
+    "00027"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 172,
+   "address": "15,3773",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 173,
+   "address": "15,3774",
+   "source": "POSITD",
+   "words": [
+    "33722"
+   ],
+   "native": "lme_positd"
+  },
+  {
+   "line": 174,
+   "address": "15,3775",
+   "source": "LUNVEL RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "lme_entry"
+  }
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file equals the retained map; every word is a literal bookkeeping argument of the native function owning its address. Constants (KONMAT, RATESP, VAL67, CSTODAY, RCB-13) are read from the certified fixed-data tables, not copied."
+}
