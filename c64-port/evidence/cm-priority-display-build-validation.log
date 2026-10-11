@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-priority-display-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-priority-display-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-PRIORITY-DISPLAY.PRG' as `RESIDENT' to unit 8
+writing file `CM-PRIORITY-DISPLAY-226.PRG' as `G226' to unit 8
+writing file `CM-PRIORITY-DISPLAY-254.PRG' as `G254' to unit 8
+writing file `CM-PRIORITY-DISPLAY-255.PRG' as `G255' to unit 8
+226 7455 loaded bytes
+254 4741 loaded bytes
+255 10228 loaded bytes

@@ -1224,3 +1224,7 @@ Qualify both original DSPDCEND BANKCALL and SWRETURN row control through actual 
 ## Translate original deferred gyro task arithmetic and registration
 
 Qualify original STRTGYRO GSELECT GMERGE LASTSEG LONGGYRO and8192AUG source task bodies and actual successful WAITLIST registration against524288 complete original native sanitizer states and256 C64 states. Pending hardware activity and true TASKOVER handoff remain explicit. See `docs/NATIVE-GYRO-TASKS.md`.
+
+## Compose original Comanche priority display admission and caller returns
+
+Qualify uninterrupted PRIOLARM priority display source calls through actual SPVAC allocation failures positive zero occupied scans and true saved caller returns with8192 original paths22362 complete native sanitizer states and32 C64 paths70 complete states preserving source bank and raw register behavior. See `docs/COMANCHE_PRIORITY_DISPLAY.md`.

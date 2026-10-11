@@ -1618,3 +1618,7 @@ Qualify original STRTGYRO GSELECT GMERGE LASTSEG LONGGYRO and8192AUG source task
 ## Fresh committed scheduler and IO host check
 
 A clean isolated export of exact commit`0f739a18d4e6f13dd23a212fc5b63f0968aecd40` builds and passes every registered portable host `all`/`test` recipe, including both whole interbank and service routine files, full P66 recurrence, complete UNIT numerical groups, positive-zero Executive admission, operator request composition and uninterrupted Comanche abort lifecycle, source PRIOLARM, both original V30/V31 complete scheduler paths, S-band vector helpers and IMUPULSE service registration. The exporter uses exact Git objects and excludes uncommitted source. Its committed snapshot has39 complete source files; the full-port gate correctly rejects136 remaining files and both integrated applications. See `evidence/integration-scheduler-io-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
+
+## Compose original Comanche priority display admission and caller returns
+
+Qualify uninterrupted PRIOLARM priority display source calls through actual SPVAC allocation failures positive zero occupied scans and true saved caller returns with8192 original paths22362 complete native sanitizer states and32 C64 paths70 complete states preserving source bank and raw register behavior. See `docs/COMANCHE_PRIORITY_DISPLAY.md`.
