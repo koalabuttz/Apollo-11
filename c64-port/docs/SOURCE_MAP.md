@@ -507,3 +507,7 @@ All 1536 complete original-source states agree on the host and under sanitizers;
 ## Port actual Comanche SETJTAG task and native callback
 
 The original SETJTAG body saves elapsed time, sets JETAG, changes phase and returns through TASKOVER. All 1024 complete source states and real native callback sequences pass host, sanitizer and C64 checks; the initial harness failure and corrected proof remain retained. See `docs/COMANCHE_ENTRY_TASKS.md`.
+
+## Preserve pending NEWJOB during real REGODSPR admission
+
+Actual REGODSPR NOVAC admission preserves or replaces the original pending priority request across 8192 complete source states, matching sanitizers and 64 C64 cases. No synthetic polling point or job-completion placeholder is introduced. See `docs/P66-RUNTIME-REGODSPR.md`.

@@ -1,0 +1,5 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_regodspr.c tests/runtime_regodspr_check.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/test-runtime_regodspr
+build/test-runtime_regodspr
+64 complete RUNTIME_REGODSPR images and21 invalid boundaries: PASS
+make: Leaving directory '/workspace/Apollo-11/c64-port'

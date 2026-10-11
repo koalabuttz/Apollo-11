@@ -1,0 +1,10 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_regodspr.c tests/runtime_regodspr_check.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/test-runtime_regodspr
+build/test-runtime_regodspr
+64 complete RUNTIME_REGODSPR images and21 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_regodspr.c tests/runtime_regodspr_check.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/test-runtime_regodspr-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-runtime_regodspr-sanitize
+64 complete RUNTIME_REGODSPR images and21 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_regodspr_snapshot.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/runtime_regodspr-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/runtime_regodspr-native-sanitize > build/runtime_regodspr-sanitize.snapshots
+cmp build/runtime_regodspr-sanitize.snapshots build/runtime_regodspr-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_regodspr_diagnostic.c tests/runtime_regodspr_check.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -Wl,-Map,build/runtime_regodspr.map -o build/runtime_regodspr.prg
