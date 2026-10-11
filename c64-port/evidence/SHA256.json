@@ -10,6 +10,7 @@
   "acceleration-prefix-native.snapshots.gz": "89263871e1af7b303f5eda75c683176455a87c6bb627599117498e1c0b50faab",
   "acceleration-prefix-reference.snapshots.gz": "89263871e1af7b303f5eda75c683176455a87c6bb627599117498e1c0b50faab",
   "acceleration-prefix-reference.trace": "a09c9187317ea42aba37568857a9eb0ce0b260d696fd8aa3612f377f75ce4dea",
+  "acceleration-prefix-runner-validation.log": "c8a11277437fc35255998983386df8c0b73fb02ef5c552a2d7b5435052bc5000",
   "acceleration-reference.snapshots.gz": "8787dce6a7ed4dbeeed9090a06872f2c84c34a6f8d784cfd00f8e796781e60b1",
   "acceleration-sanitize.log": "dbd1b3e4467f91b11623f351330f9bd362e3b028703987448a01bdb7a588d952",
   "acceleration-sanitize.snapshots.gz": "8787dce6a7ed4dbeeed9090a06872f2c84c34a6f8d784cfd00f8e796781e60b1",
