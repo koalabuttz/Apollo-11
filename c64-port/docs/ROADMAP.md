@@ -328,3 +328,7 @@ THROTTLE+3 through THDUMP matches all 16,384 complete 147-word source states, in
 ## Port canonical whole-image P66 bias initialization
 
 All 1,024 original STRTP66A entry cases match the complete 2,048-word erasable image plus physical SUPERBNK/IRQ. Strict and sanitizer ownership checks and 64 complete whole-image C64 states pass. See [P66_BIAS.md](P66_BIAS.md).
+
+## Port canonical vertical-guidance startup through RODCOMP
+
+All 1,024 complete original source images match through STOPRATE, flag updates, phase termination, timer admission and POSTJUMP. Strict and sanitizer checks and 64 whole-image C64 cases pass, including source resource bailouts. See [P66_VERTICAL_START.md](P66_VERTICAL_START.md).

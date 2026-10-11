@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/p66_vertical_start.prg" 0
+watch store 8982
+ignore 1 1
+g 080d
+m 8982 8986
+bsave "/workspace/Apollo-11/c64-port/build/p66_vertical_start-vice-mailbox.bin" 0 8982 8986
+bsave "/workspace/Apollo-11/c64-port/build/p66_vertical_start-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/p66_vertical_start-vice-software-stack.bin" 0 c100 cfff
+quit

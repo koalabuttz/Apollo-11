@@ -341,3 +341,5 @@ include tools/throttle_feedback.mk
 include tools/throttle_service.mk
 
 include tools/p66_bias.mk
+
+include tools/p66_vertical_start.mk

@@ -1,0 +1,155 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     37d2     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/p66_vertical_start.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      5e1     1         build/p66_vertical_start.prg.lto.o:(.text.wl_schedule)
+     843      843      5e1     1                 wl_schedule
+     e24      e24       51     1         build/p66_vertical_start.prg.lto.o:(.text.reg_class)
+     e24      e24       51     1                 reg_class
+     e75      e75      4e8     1         build/p66_vertical_start.prg.lto.o:(.text.phase_change)
+     e75      e75      4e8     1                 phase_change
+    135d     135d       4a     1         build/p66_vertical_start.prg.lto.o:(.text.kind)
+    135d     135d       4a     1                 kind
+    13a7     13a7      4af     1         build/p66_vertical_start.prg.lto.o:(.text.phases)
+    13a7     13a7      4af     1                 phases
+    1856     1856     149b     1         build/p66_vertical_start.prg.lto.o:(.text.main)
+    1856     1856     149b     1                 main
+    2cf1     2cf1        6     1         build/p66_vertical_start.prg.lto.o:(.text.exit)
+    2cf1     2cf1        6     1                 exit
+    2cf7     2cf7       c9     1         build/p66_vertical_start.prg.lto.o:(.text.vfprintf)
+    2cf7     2cf7       c9     1                 vfprintf
+    2dc0     2dc0      cc3     1         build/p66_vertical_start.prg.lto.o:(.text._ZN12_GLOBAL__N_15printEPKcP6Status)
+    2dc0     2dc0      cc3     1                 (anonymous namespace)::print(char const*, Status*)
+    3a83     3a83       ed     1         build/p66_vertical_start.prg.lto.o:(.text._ZN12_GLOBAL__N_13putEcP6Status)
+    3a83     3a83       ed     1                 (anonymous namespace)::put(char, Status*)
+    3b70     3b70      162     1         build/p66_vertical_start.prg.lto.o:(.text._ZN12_GLOBAL__N_112print_stringEPKcP6Status)
+    3b70     3b70      162     1                 (anonymous namespace)::print_string(char const*, Status*)
+    3cd2     3cd2       18     1         build/p66_vertical_start.prg.lto.o:(.text.printf)
+    3cd2     3cd2       18     1                 printf
+    3cea     3cea       4d     1         build/p66_vertical_start.prg.lto.o:(.text.putchar)
+    3cea     3cea       4d     1                 putchar
+    3d37     3d37       13     1         build/p66_vertical_start.prg.lto.o:(.text.__lshrhi3)
+    3d37     3d37       13     1                 __lshrhi3
+    3d4a     3d4a       f8     1         build/p66_vertical_start.prg.lto.o:(.text.__udivmodhi4)
+    3d4a     3d4a       f8     1                 __udivmodhi4
+    3e42     3e42       34     1         build/p66_vertical_start.prg.lto.o:(.text.memcpy)
+    3e42     3e42       34     1                 memcpy
+    3e76     3e76       ac     1         build/p66_vertical_start.prg.lto.o:(.text.memmove)
+    3e76     3e76       ac     1                 memmove
+    3f22     3f22       22     1         build/p66_vertical_start.prg.lto.o:(.text.__memset)
+    3f22     3f22       22     1                 __memset
+    3f44     3f44       34     1         build/p66_vertical_start.prg.lto.o:(.text.__mulhi3)
+    3f44     3f44       34     1                 __mulhi3
+    3f78     3f78       67     1         build/p66_vertical_start.prg.lto.o:(.text.__mulsi3)
+    3f78     3f78       67     1                 __mulsi3
+    3fdf     3fdf        0     1         __init_array_start = .
+    3fdf     3fdf        0     1         __init_array_end = .
+    3fdf     3fdf        0     1         __fini_array_start = .
+    3fdf     3fdf        0     1         __fini_array_end = .
+    3fdf     3fdf     29a3     1 .rodata
+    3fdf     3fdf        8     1         build/p66_vertical_start.prg.lto.o:(.rodata.wl_schedule)
+    3fe7     3fe7        8     1         build/p66_vertical_start.prg.lto.o:(.rodata.main)
+    3fef     3fef       3a     1         build/p66_vertical_start.prg.lto.o:(.rodata._ZN12_GLOBAL__N_15printEPKcP6Status)
+    4029     4029       12     1         build/p66_vertical_start.prg.lto.o:(.rodata.controls)
+    4029     4029       12     1                 controls
+    403b     403b       10     1         <internal>:(.rodata.cst8)
+    404b     404b       10     1         <internal>:(.rodata.cst16)
+    405b     405b       80     1         build/p66_vertical_start.prg.lto.o:(.rodata.p66_vertical_start_numbers)
+    405b     405b       80     1                 p66_vertical_start_numbers
+    40db     40db       80     1         build/p66_vertical_start.prg.lto.o:(.rodata.p66_vertical_start_results)
+    40db     40db       80     1                 p66_vertical_start_results
+    415b     415b       82     1         build/p66_vertical_start.prg.lto.o:(.rodata.p66_vertical_start_offsets)
+    415b     415b       82     1                 p66_vertical_start_offsets
+    41dd     41dd     2774     1         build/p66_vertical_start.prg.lto.o:(.rodata.p66_vertical_start_patch)
+    41dd     41dd     2774     1                 p66_vertical_start_patch
+    6951     6951       31     1         <internal>:(.rodata.str1.1)
+    6982     6982        0     1 .data
+    6982     6982        0     1         __data_start = .
+    6982     6982        0     1         __data_end = .
+    6982     6982        0     1 __data_load_start = LOADADDR(.data)
+    6982     6982        0     1 __data_size = SIZEOF(.data)
+    6982     6982     2005     1 .bss
+    6982     6982        0     1         __bss_start = .
+    6982     6982     1000     1         build/p66_vertical_start.prg.lto.o:(.bss.state)
+    6982     6982     1000     1                 state
+    7982     7982     1000     1         build/p66_vertical_start.prg.lto.o:(.bss.before)
+    7982     7982     1000     1                 before
+    8982     8982        5     1         build/p66_vertical_start.prg.lto.o:(.bss.p66_vertical_start_mailbox)
+    8982     8982        5     1                 p66_vertical_start_mailbox
+    8987     8987        0     1         __bss_end = .
+    8987     8987        0     1 __bss_size = SIZEOF(.bss)
+    8987     8987       4e     1 .noinit
+    8987     8987       4e     1         build/p66_vertical_start.prg.lto.o:(.noinit..Lstatic_stack)
+    89d5     89d5        0     1         __heap_start = ALIGN(., 2)
+    89d5     89d5        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/p66_vertical_start.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/p66_vertical_start.prg.lto.o:(.llvm_sympart)
+       0        0      bf0     4 .symtab
+       0        0      bf0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      746     1 .strtab
+       0        0      746     1         <internal>:(.strtab)

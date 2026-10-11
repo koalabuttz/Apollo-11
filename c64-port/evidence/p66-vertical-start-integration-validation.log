@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_vertical_start.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_vertical_start_check.c tests/test_p66_vertical_start.c -o build/test-p66-vertical-start
+./build/test-p66-vertical-start
+P66 VERTICAL START: 64 FULL 2050-WORD IMAGES, 0 FAILURES

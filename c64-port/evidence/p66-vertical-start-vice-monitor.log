@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/p66_vertical_start.prg from 0801 to 6981 (6181 bytes)
+WATCH: 1  C:$8982  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 8982)   23/$017,  27/$1b
+.C:298c  8E 82 89    STX $8982      - A:00 X:A5 Y:00 SP:f1 NV-....C  305141220
+>C:8982  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/p66_vertical_start-vice-mailbox.bin' from $8982 to $8986
+Saving file `/workspace/Apollo-11/c64-port/build/p66_vertical_start-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_vertical_start-vice-software-stack.bin' from $c100 to $cfff
