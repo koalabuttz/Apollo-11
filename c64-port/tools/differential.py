@@ -255,3 +255,5 @@ subprocess.run([sys.executable,'tools/dsky_pinball_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/dsky_decimal_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_scale_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_two_digit_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -406,3 +406,5 @@ include tools/dsky_pinball.mk
 include tools/dsky_decimal.mk
 
 include tools/dsky_scale.mk
+
+include tools/dsky_two_digit.mk
