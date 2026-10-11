@@ -392,3 +392,5 @@ include tools/velocity_phased.mk
 include tools/throttle_feedback_phased.mk
 
 include tools/display_control.mk
+
+include tools/regodspr.mk
