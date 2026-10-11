@@ -1023,3 +1023,7 @@ include tools/cm_ephemeris_velocity_integration.mk
 include tools/lm_context_lifecycle_port_integration.mk
 test: lm-context-lifecycle-port-test
 sanitize: lm-context-lifecycle-port-sanitize
+
+include tools/lm_idle_dispatch_port_integration.mk
+test: lm-idle-dispatch-port-test
+sanitize: lm-idle-dispatch-port-sanitize

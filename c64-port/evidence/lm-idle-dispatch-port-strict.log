@@ -1,0 +1,3 @@
+PASS:16384 complete original mixed BASIC/INTRSM/idle lifecycle states; SHA256 426ebc9bd21a5f4c864d907aa6e369ef93e1bf023159c527d1eed4d6deb5b979
+PASS:1024 old ready-basic idle states unchanged;14 mutation guards and null guard
+PASS:retained mixed lifecycle strict;16384 full original states, 1024 historical comparisons,32 checked PRGs

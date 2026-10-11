@@ -1900,3 +1900,7 @@ Translate actual LUNVEL time entry eighth-degree derivative vector polynomial an
 ## Translate original mixed LM job sleep and priority lifecycle
 
 Compose actual PRIOCHNG and JOBSLEEP basic and interpreter context exchanges through source idle or NEWOPS against32768 full original strict sanitizer states and64 C64 checkpoints preserving existing Executive helpers. See `docs/LM-CONTEXT-LIFECYCLE.md`.
+
+## Translate original LM idle adoption and pending job controls
+
+Translate literal ADVAN NUCHANG2 NUDIRECT and source BASIC INTRSM SELFRET transfers against16384 complete original strict sanitizer states and64 C64 checkpoints preserving the actual pending NEWJOB value and source polling locations. See `docs/LM-IDLE-DISPATCH.md`.
