@@ -5439,6 +5439,7 @@
   "horizontal-reference.trace": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "horizontal-sanitize.snapshots.gz": "ee41dbf70b2d6abbc41b398844687fe582aac54f952d9214cd65837375d40f66",
   "host-test.txt": "5fce6f4bbe8b68b4f207e6c0b574ce390c364c1a721d0c99953d0fab470cbfc7",
+  "immutable-evidence-archive-storage-deduplication.json": "f83125fb6b29d78a407413719ad9f3a5dc2412c941c94846956259e6c11dd467",
   "inactive-committed-archive-mirror-cleanup.json": "cd5454a4bcc2f67a905d520ccf1a18fb4a3af68a31fb3129dda9e531963587f6",
   "inactive-committed-archive-mirror-cleanup.log": "ed319c82dccec55509ea723ce2d14d5be41d139e9ccb3dc83dace91f045aa3a2",
   "inactive-owned-display-stream-cleanup-20261012.json": "61e3aa7037f4fa8b5defffe0ef2590e764ff4902873d6338643382e5378df1a9",
