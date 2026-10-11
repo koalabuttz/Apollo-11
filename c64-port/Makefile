@@ -1,7 +1,10 @@
 # Restore immutable oversized evidence from ordinary GitHub transport parts.
+# Sparse checkouts without the legacy evidence set SKIP_EVIDENCE_RESTORE=1.
+ifneq ($(SKIP_EVIDENCE_RESTORE),1)
 GITHUB_EVIDENCE_RESTORE := $(shell python3 tools/restore_github_evidence.py 2>&1 || echo GITHUB_EVIDENCE_RESTORE_FAILED)
 ifneq ($(findstring GITHUB_EVIDENCE_RESTORE_FAILED,$(GITHUB_EVIDENCE_RESTORE)),)
 $(error $(GITHUB_EVIDENCE_RESTORE))
+endif
 endif
 CC = cc
 MOS_CC ?= mos-c64-clang
@@ -1135,3 +1138,8 @@ all: build/cm-waitlist-internal-native
 include tools/lm_delay_image_port_integration.mk
 test: lm-delay-image-port-test
 sanitize: lm-delay-image-port-sanitize
+
+# Per-milestone build fragments. This Makefile is frozen: a new milestone adds
+# tools/mk/<id>.mk (see CONTRIBUTING-port.md) and hooks its targets into
+# all/test/sanitize/c64 from there.
+include $(sort $(wildcard tools/mk/*.mk))
