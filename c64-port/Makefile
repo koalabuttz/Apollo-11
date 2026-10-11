@@ -1086,3 +1086,6 @@ all: build/cm-admission-floor-native
 include tools/cm_ephemeris_solar_integration.mk
 
 include tools/cm_ephemeris_positions_integration.mk
+
+include tools/cm_priority_full.mk
+all: build/cm-priority-full-native

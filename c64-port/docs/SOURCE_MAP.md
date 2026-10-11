@@ -1571,3 +1571,7 @@ Translate uninterrupted actual LSPOS solar storage lunar polynomial and both tru
 ## Complete local IMU mode source in both missions
 
 Root and independent containing-file review certify all660 Luminary and656 Comanche original IMU mode words against unchanged ropes and nine qualified native packets, including full source/sanitizer and actual C64 proof. Frozen producer, caller, readable-I/O and external service domains remain binding. Both complete applications and the strict whole-port gate remain open. See `docs/IMU-MODE-WHOLE-SOURCE.md`.
+
+## Translate complete Comanche raw priority scan and transfer
+
+Qualify all source priority floors fractions exception aliases and actual caller transfers against75264 original full states strict sanitizers and64 C64 cases. See `docs/COMANCHE_PRIORITY_FULL.md`.

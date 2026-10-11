@@ -650,3 +650,5 @@ subprocess.run([sys.executable,'tools/dsky_fixed_display_differential.py',str(re
 subprocess.run([sys.executable,'tools/dsky_load_store_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_admission_floor_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_priority_full_differential.py',str(reference)],cwd=ROOT,check=True)
