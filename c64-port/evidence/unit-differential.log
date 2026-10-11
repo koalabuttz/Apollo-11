@@ -1,0 +1,7 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS:50736 ABS/ABVAL/UNIT cases, all104 complete modeled raw words and paths match unchanged assembly/hardware DV
+Operation/path counts: {(0, 0): 16912, (1, 0): 16912, (2, 0): 14044, (2, 3): 2868}
+Successful UNIT raw MPTEMP counts: {32747: 2508, 32754: 1610, 32755: 1360, 32756: 900, 32757: 4, 32758: 8, 32759: 16, 32760: 32, 32761: 64, 32762: 256, 32763: 516, 32764: 541, 32765: 1275, 32766: 2002, 32767: 2952}
+Snapshot SHA256: fdeebfdb5b7d2d1aeb707df1beb1bc5a538a2f7af1ef2ff0bf865db3e7f32e28

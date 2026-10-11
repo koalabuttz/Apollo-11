@@ -1,0 +1,27 @@
+Loading /workspace/Apollo-11/c64-port/build/unit.prg from 0801 to B845 (B045 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  104/$068,   4/$04
+.C:3e68  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   34699396
+>C:c080  a5 00 00 66  00                                      ...f.
+Saving file `/workspace/Apollo-11/c64-port/build/unit-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/unit-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/unit-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/unit.prg from 0801 to B7F7 (AFF7 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  118/$076,   5/$05
+.C:3ed8  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   34759247
+>C:c080  a5 00 00 66  00                                      ...f.
+Saving file `/workspace/Apollo-11/c64-port/build/unit-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/unit-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/unit-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/unit.prg from 0801 to B66D (AE6D bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   68/$044,  32/$20
+.C:311c  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   40534988
+>C:c080  a5 00 00 76  00                                      ...v.
+Saving file `/workspace/Apollo-11/c64-port/build/unit-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/unit-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/unit-software-stack.bin' from $c100 to $cfff
