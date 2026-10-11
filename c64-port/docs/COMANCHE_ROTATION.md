@@ -11,3 +11,8 @@ The original POWERED_FLIGHT_SUBROUTINES overlay, its one indentation-only pseudo
 Host and ASan/UBSan pass 128 complete frozen 132-value states, encoded losslessly in 29662 bytes plus 256 index bytes, and all unsupported direction/return words remain unchanged. Stock PAL C64 passes those same 128 states: mailbox `a500008000`, PRG 45659 bytes, text 15467, rodata 30178, BSS 262, image end `$bb60`, hardware/software stack extents 23/570 bytes, no extra zero-page sections. This standalone diagnostic fits below `$c000`; it does not demonstrate whole-application overlay fit or WCET. Application callers must gather and commit views to the sole canonical image and keep producers excluded through the source group.
 
 Reproduce with `make cm-rotation-differential`, `python3 tools/cm_freeze_rotation.py`, `make test-cm-rotation sanitize-cm-rotation c64-cm-rotation`, then `python3 tools/cm_rotation_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/vice`. Before shared Makefile integration, add `-f Makefile -f tools/cm_rotation.mk`. Differential preparation independently builds the original CM numerical fixture and host hardware-DV variant. Evidence hashes are `evidence/cm-rotation-evidence.sha256`.
+
+The exact target binaries are retained as `evidence/cm-norm.prg`,
+`evidence/cm-dp-divide.prg`, `evidence/cm-unit.prg` and
+`evidence/cm-rotation.prg`; the complete evidence manifest records their
+SHA256 identities alongside the original maps, mailboxes and stack dumps.

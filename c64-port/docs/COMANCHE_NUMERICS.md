@@ -17,3 +17,8 @@ The host oracle selects the pinned engine's existing `SimulateDV` path for all D
 Stock PAL C64 passes all 1328 complete frozen vectors. SQRT mailbox `a500007d02`, PRG 35536 bytes, final image end `$93bd`, hardware/software stack extents 30/158 bytes. DDV mailbox `a500003d02`, PRG 29320, end `$7b3d`, stacks 24/135. UNIT mailbox `a500007600`, PRG 44655, end `$b740`, stacks 30/293. Each diagnostic fits below `$c000` with no additional zero-page sections. These standalone diagnostic sizes do not establish whole-application overlay fit or WCET; UNIT application integration must retain its existing explicit split groups to fit the 16KB slot.
 
 Reproduce with `make cm-numeric-differential test-cm-numeric sanitize-cm-numeric c64-cm-numeric`, then the three `tools/cm_{norm,dp_divide,unit}_vice_test.py` scripts with `--vice`, `--rom-dir` and `--data-dir`. Before shared Makefile integration, add `-f Makefile -f tools/cm_numeric.mk`. Differential preparation can bootstrap the audited CM service fixture. Evidence hashes are `evidence/cm-numeric-evidence.sha256`.
+
+The exact target binaries are retained as `evidence/cm-norm.prg`,
+`evidence/cm-dp-divide.prg`, `evidence/cm-unit.prg` and
+`evidence/cm-rotation.prg`; the complete evidence manifest records their
+SHA256 identities alongside the original maps, mailboxes and stack dumps.
