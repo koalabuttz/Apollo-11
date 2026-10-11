@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/sband_lm_yaw_vice_test.py", line 26, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/Apollo-11/c64-port/tools/sband_lm_yaw_vice_test.py", line 10, in main
+    results=[run(a,g)for g in range(4)]
+             ^^^^^^^^
+  File "/workspace/Apollo-11/c64-port/tools/sband_lm_yaw_vice_test.py", line 16, in run
+    image=prg.read_bytes();assert int.from_bytes(image[:2],'little')==0x801;end=0x801+len(image)-2;bss=int(re.search(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__bss_end =',mapfile.read_text(),re.M)[1],16);heap_end=int(re.search(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__heap_start =',mapfile.read_text(),re.M)[1],16);assert max(end,bss,heap_end)<0xc000
+                                                                                                                                                                                                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

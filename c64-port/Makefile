@@ -1112,3 +1112,8 @@ include tools/sband_lm_pitch_integration.mk
 all: build/sband-lm-pitch-integrated-stream
 test: test-sband-lm-pitch
 sanitize: sanitize-sband-lm-pitch
+
+include tools/sband_lm_yaw_integration.mk
+all: build/sband-lm-yaw-integrated-stream
+test: test-sband-lm-yaw
+sanitize: sanitize-sband-lm-yaw

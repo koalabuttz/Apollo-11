@@ -1,0 +1,77 @@
+{
+  "states": 64,
+  "groups": [
+    {
+      "group": 0,
+      "states": 16,
+      "prg_bytes": 44931,
+      "load_end": 46978,
+      "bss_end": 46978,
+      "static_storage_end": 47280,
+      "mailbox": "a5100000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ],
+      "canonical_image_address": 53248,
+      "expected_image_address": 57344,
+      "diagnostic_cpu_port_mask": 252,
+      "software_stack_top": 53248
+    },
+    {
+      "group": 1,
+      "states": 16,
+      "prg_bytes": 44981,
+      "load_end": 47028,
+      "bss_end": 47028,
+      "static_storage_end": 47330,
+      "mailbox": "a5100000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ],
+      "canonical_image_address": 53248,
+      "expected_image_address": 57344,
+      "diagnostic_cpu_port_mask": 252,
+      "software_stack_top": 53248
+    },
+    {
+      "group": 2,
+      "states": 16,
+      "prg_bytes": 45098,
+      "load_end": 47145,
+      "bss_end": 47145,
+      "static_storage_end": 47447,
+      "mailbox": "a5100000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ],
+      "canonical_image_address": 53248,
+      "expected_image_address": 57344,
+      "diagnostic_cpu_port_mask": 252,
+      "software_stack_top": 53248
+    },
+    {
+      "group": 3,
+      "states": 16,
+      "prg_bytes": 45093,
+      "load_end": 47140,
+      "bss_end": 47140,
+      "static_storage_end": 47442,
+      "mailbox": "a5100000",
+      "words_each": 2048,
+      "external_fields": [
+        "superbank",
+        "interrupt_enabled"
+      ],
+      "canonical_image_address": 53248,
+      "expected_image_address": 57344,
+      "diagnostic_cpu_port_mask": 252,
+      "software_stack_top": 53248
+    }
+  ]
+}

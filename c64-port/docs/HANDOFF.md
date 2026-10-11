@@ -1703,3 +1703,7 @@ Qualify actual normal and null plane pitch yaw outputs against131072 complete or
 ## Translate Luminary antenna pitch calculation
 
 Qualify actual Luminary antenna pitch arithmetic against65536 complete original strict sanitizer states and64 C64 cases. See `docs/NATIVE-SBAND-LM-PITCH.md`.
+
+## Translate Luminary antenna yaw calculation
+
+Qualify actual Luminary antenna yaw arithmetic against65536 complete original strict sanitizer states and64 C64 cases with explicitly diagnostic RAM placement. See `docs/NATIVE-SBAND-LM-YAW.md`.

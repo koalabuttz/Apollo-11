@@ -1,0 +1,157 @@
+{
+  "status": "qualified complete original LM antenna yaw from returned-pitch NOADJUST; containing antenna file remains partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 65536,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 65536,
+    "start": 0,
+    "end": 65536,
+    "record_bytes": 4106,
+    "decoded_sha256": "65e29e136e79a854b28dc82850910101a77fbeb73a3b5567c34de80e70b7b1ff",
+    "decoded_bytes": 269090816,
+    "canonical_original_archive": "evidence/sband-lm-yaw-source.snapshots.bin.xz",
+    "compressed_sha256": "07053a513db332b3f58bb93d050257171243c88dd02e3047902e6242ee4772ca",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 64,
+    "groups": [
+      {
+        "group": 0,
+        "states": 16,
+        "prg_bytes": 44931,
+        "load_end": 46978,
+        "bss_end": 46978,
+        "static_storage_end": 47280,
+        "mailbox": "a5100000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ],
+        "canonical_image_address": 53248,
+        "expected_image_address": 57344,
+        "diagnostic_cpu_port_mask": 252,
+        "software_stack_top": 53248
+      },
+      {
+        "group": 1,
+        "states": 16,
+        "prg_bytes": 44981,
+        "load_end": 47028,
+        "bss_end": 47028,
+        "static_storage_end": 47330,
+        "mailbox": "a5100000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ],
+        "canonical_image_address": 53248,
+        "expected_image_address": 57344,
+        "diagnostic_cpu_port_mask": 252,
+        "software_stack_top": 53248
+      },
+      {
+        "group": 2,
+        "states": 16,
+        "prg_bytes": 45098,
+        "load_end": 47145,
+        "bss_end": 47145,
+        "static_storage_end": 47447,
+        "mailbox": "a5100000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ],
+        "canonical_image_address": 53248,
+        "expected_image_address": 57344,
+        "diagnostic_cpu_port_mask": 252,
+        "software_stack_top": 53248
+      },
+      {
+        "group": 3,
+        "states": 16,
+        "prg_bytes": 45093,
+        "load_end": 47140,
+        "bss_end": 47140,
+        "static_storage_end": 47442,
+        "mailbox": "a5100000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ],
+        "canonical_image_address": 53248,
+        "expected_image_address": 57344,
+        "diagnostic_cpu_port_mask": 252,
+        "software_stack_top": 53248
+      }
+    ]
+  },
+  "groups": [
+    "LM original complete yaw computation"
+  ],
+  "source_map": "evidence/sband-lm-yaw-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2"
+  },
+  "native_source_sha256": "3137f429a746d54ba9e177501e479df83d690c4fec34d07f001df03eb2c041d3",
+  "native_header_sha256": "5567a3d4c6636e2329890e9018b46596f6e0cc14dc53e30da4ddfc16130925f4",
+  "independent_review": {
+    "path": "evidence/sband-lm-yaw-independent-review.txt",
+    "sha256": "11ac8e8686402176e030f4ded3fbeec49156bf160705e88c5575cf8bbb326cc4"
+  },
+  "limitations": [
+    "Following original EXIT/display bodies not executed here.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/Q and raw16 A/L, producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ],
+  "dependencies": [
+    {
+      "path": "evidence/sband-dot-proof.json",
+      "sha256": "3ec9f3ee8f4dfdbbc2e4ab685a853b7566cef93893e2ad6582a31ef3b3e7148f"
+    },
+    {
+      "path": "evidence/sband-support-proof.json",
+      "sha256": "5976147153d20c8a42c0d42286b23704e17773177a74018db303b03acf652d05"
+    },
+    {
+      "path": "evidence/sband-linear-proof.json",
+      "sha256": "4d9ff88bf8a260e147110b354d4204327b8f07a149f7678f04c3d8cf14af6477"
+    },
+    {
+      "path": "evidence/inverse-trig-lm-proof.json",
+      "sha256": "5b9db8c7763b5ef538a8fdfe905d7887c507ca82c3a659bfc3082d61587a20d5"
+    },
+    {
+      "path": "evidence/sband-length-proof.json",
+      "sha256": "42996aaae21d1b31fea1f9d6b5dbca9dd93416df1eb99c035395798ac710a781"
+    },
+    {
+      "path": "evidence/sband-vector-proof.json",
+      "sha256": "aca586010a05e274eabd594a23001b37f40af8251d35acbb594e5e6f9fe04957"
+    },
+    {
+      "path": "evidence/sband-shift-proof.json",
+      "sha256": "6179f534b2728cbac998deb7a972db6a40418d02f0c493181ba993340381bdad"
+    },
+    {
+      "path": "evidence/interpreted-sign-proof.json",
+      "sha256": "74e0cdad6ea268345d5f9b8dc94dd4db5471101978c339523a1366fa97b75b52"
+    },
+    {
+      "path": "evidence/inverse-trig-sweep-proof.json",
+      "sha256": "1239fa0997a9243bb1455a3a30b76a9b4d939aa0c8460ac54876e17a4df576f7"
+    }
+  ]
+}

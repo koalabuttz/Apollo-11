@@ -1,0 +1,13 @@
+Independent read-only source review by /root/p66_source_map.
+Native source SHA256: 3137f429a746d54ba9e177501e479df83d690c4fec34d07f001df03eb2c041d3
+Native header SHA256: 5567a3d4c6636e2329890e9018b46596f6e0cc14dc53e30da4ddfc16130925f4
+
+No discrepancy found in exact NOADJUST/VAC/stack/producer domains. Original
+VLOAD UR/VXV URP/VSL1/STODL RLM,pitch load,SIN/VXSC UZ, vectorPDDL with old
+stackXminor/Ypair debris,COS/VXSC UX, implicit pop/VSU, DOT/PDVL RLM,
+ABVAL/SIGN/ASIN and final YAWANG store match raw source exchange/control
+ordering. Actual alarm services remain typed exits. No exhaustive replay or
+edits performed. Separate target RAM-under-ROM arrangement is a diagnostic
+capacity qualification, not production-overlay allocation. Remaining EXIT,
+display and alarm handlers are external continuations; containing antenna
+file credit is not granted by this review alone.
