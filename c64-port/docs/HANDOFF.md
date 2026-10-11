@@ -1451,3 +1451,7 @@ Join actual returned LUNPOS vector arithmetic and frame handoffs against131072 f
 ## Compose continuous original octal display and row loop
 
 Qualify4096 original inputs and8544 uninterrupted full source native sanitizer checkpoints through actual octal formatting and row loops with128 C64 staged checks and explicit ENTRET and alarm frontiers. See `docs/DSKY-OCTAL-CONSUMER.md`.
+
+## Correct genuine alarm overflow versus ordinary return IRQ semantics
+
+Qualify32240 complete source native sanitizer states and64 C64 states across all normal source return addresses and both IRQ values distinguishing ordinary BORTENT return at POODOO address from real overflow. See `docs/COMANCHE_ALARM_RETURNS.md`.

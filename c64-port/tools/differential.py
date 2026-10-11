@@ -594,3 +594,5 @@ subprocess.run([sys.executable,'tools/dsky_operator_response_differential.py',st
 subprocess.run([sys.executable,'tools/dsky_octal_verb_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_octal_consumer_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_alarm_complete_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -1,0 +1,35 @@
+{
+  "source_cases": [
+    23683,
+    23687
+  ],
+  "sourceQ_octal": "05720",
+  "true_returnPC_octal": "05721",
+  "true_returnA_octal": "05720",
+  "true_returnQ_octal": "05715",
+  "source_virtualIRQ_result": 1,
+  "old_difference": "Only first case incomingIRQ0: frozen cm_alarm_image restores0 because PC equals POODOO entry; source has executed RELINT and normally returned there. IncomingIRQ1 case matches. No frozen helper or artifact was changed.",
+  "corrected_condition": "A true TS FAILREG+2 overflow to POODOO has rawA=+1 or -1; normal return has rawA=ordinary callerQ>=0100. New cm_alarm_complete retainsIRQ1 on ordinary collision.",
+  "actual_target_failure": false,
+  "earlier_ALARM2_draft_failure": {
+    "case": 15050,
+    "native_stream_sha256": "d2f0963c582abe37aaaac3d883e450fe6f1a0dd18f9371b7a8947a5e9e3bc166",
+    "original_stream_sha256": "78c839a668ba4d764ac3c60a0152103554c641d234d48c7132adbc29fe61963e",
+    "preserved_failing_row_correction": "same normal-return collision; new ALARM2 calls unchanged record kernel and distinguishes source TS overflow by A, preserving IRQ only there"
+  },
+  "source_reference_proof": {
+    "path": "build/cm-alarm-complete-proof.json",
+    "sha256": "fd42056446edbefbd7acb9901bad47ab081c78a59fb2c2f5005a10b509a69a67"
+  },
+  "files": {
+    "src/cm_alarm_image.c": "6b1509d481bddefc4273d72a0782ddd4bcc99da15cd4cf554e667b3a62dc78d3",
+    "src/cm_alarm_record.c": "34e2c7429cf62ab459ab8935e14def10f3ade37a3306a20cdc88a8ac8b876174",
+    "src/cm_alarm_complete.c": "454330f8202276ce5446d4896537c3737870a87900f578bfaef11830dce14f0e",
+    "src/cm_alarm2_image.c": "252fe32b101ee51ce76a85f2065f1d6b114abaa2e1abc8cc790d971ded72dad0"
+  },
+  "snapshots": {
+    "frozen-helper": "139b81349fea31375371c29959fd63749657efbd9ab56bb09bb640f686c20339",
+    "corrected-helper": "fe82043d627719076435075aef4f08c84e9ea4e9b8e2c4ee52c26799603ed04d",
+    "original-source": "fe82043d627719076435075aef4f08c84e9ea4e9b8e2c4ee52c26799603ed04d"
+  }
+}
