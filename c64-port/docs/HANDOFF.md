@@ -1,4 +1,4 @@
-# P66 PDDL THISTPIP milestone handoff
+# P66 DSU PIPTIME milestone handoff
 
 ## Repository
 
@@ -26,6 +26,7 @@ make c64-guidance MOS_CC=/path/to/mos-c64-clang
 make c64-prepare MOS_CC=/path/to/mos-c64-clang
 make c64-scale MOS_CC=/path/to/mos-c64-clang
 make c64-push MOS_CC=/path/to/mos-c64-clang
+make c64-elapsed MOS_CC=/path/to/mos-c64-clang
 python3 tools/vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/irq_vice_test.py --vice /path/to/x64sc \
@@ -42,11 +43,25 @@ python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/scale_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
+python3 tools/elapsed_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/push_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 ```
 
 ## Completed work
+
+The eleventh milestone translates DSU PIPTIME and its overflow realignment,
+stopping before STORE 30D. All 89 modeled words and observed TS 7 paths match
+4664 original-assembly checkpoints over 3491 cases. Both overflow signs,
+resolved initial overflow retaining OVFIND, signed-zero/carry corners and three
+four-step histories are covered. All ten host/sanitizer suites pass. The tenth
+C64 PRG checks 172 full final states, restoring I and stack/ZP checks, with zero
+failures. Total state is 178 bytes; DSU samples reach 1381 PAL cycles (1.402 ms),
+and the sampled full prefix takes 21427 (21.748 ms). Earlier 157 evidence hashes
+remain intact. The twelfth byte-identical source overlay supplies LIMITS, with
+unchanged rope and historical sources. ELAPSED.md records the ownership,
+overflow semantics, physical bank assertions and next STORE 30D boundary.
 
 The tenth milestone translates PDDL THISTPIP after scaling. It saves six vector
 words in an owned 43-word VAC payload, advances PUSHLOC, loads the timestamp
@@ -147,7 +162,7 @@ Validation passes:
 - Host dispatch/fault tests and all eight native two-job executions.
 - 26 admission/completion plus 109 dispatch checkpoints, word-for-word against
   original assembly, and the separate Virtual AGC numerical helper comparisons.
-- All seven host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
+- All ten host suites under AddressSanitizer/UndefinedBehaviorSanitizer (leak scanning disabled).
 - PAL C64 VICE: zero failures, all 135 original-derived fingerprints, eight
   actual native two-job sequences and three repeated timed-path checks.
 - Host IRQ publication/FIFO tests over 600 starting-ticket cases, guards, idle
@@ -185,7 +200,7 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 ## Limits and next milestone
 
 This cooperative basic-job translation includes native demonstration routines
-and P66 preparation through PDDL THISTPIP. Complete flight OS and guidance workloads
+and P66 preparation through DSU PIPTIME. Complete flight OS and guidance workloads
 remain future work. Callbacks return to a trampoline; persistent values belong
 in MPAC/VAC, not suspended C stacks.
 An unmapped address latches a runtime fault. No rollback is claimed; bounded
@@ -199,12 +214,12 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: translate DSU PIPTIME, preserving DP signed-zero/carry effects while
-forming elapsed PIPA time; verify the boundary before STORE 30D.
+Next: translate STORE 30D, preserving the elapsed DP pair in VAC-relative
+words 30/31 and independently verifying retained state and register/scratch effects.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
 Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST,
-bounded Type C job recovery, pre-interpreter P66 preparation, VXSC KPIP1 and PDDL THISTPIP is met.
+bounded Type C job recovery, pre-interpreter P66 preparation, VXSC KPIP1, PDDL THISTPIP and DSU PIPTIME is met.
 No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host

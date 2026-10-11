@@ -1,0 +1,73 @@
+{
+  "platform": "VICE 3.7.1 PAL C64",
+  "clock_hz": 985248,
+  "prg_file_bytes": 44887,
+  "loaded_bytes": 44885,
+  "load_address": 2049,
+  "sections": {
+    "text": {
+      "address": 2061,
+      "bytes": 13748
+    },
+    "rodata": {
+      "address": 15809,
+      "bytes": 31125
+    },
+    "bss": {
+      "address": 46934,
+      "bytes": 178
+    },
+    "noinit": {
+      "address": 47112,
+      "bytes": 1
+    },
+    "data": {
+      "address": 46934,
+      "bytes": 0
+    }
+  },
+  "modeled_words": 89,
+  "state_bytes": 178,
+  "elapsed_state_bytes": 6,
+  "expectation_word_bytes": 30616,
+  "expectation_path_bytes": 172,
+  "mailbox": "a50000ac0003b25924",
+  "samples": [
+    {
+      "case": 0,
+      "name": "DSU without overflow",
+      "cycles": 861,
+      "milliseconds": 0.874
+    },
+    {
+      "case": 18,
+      "name": "resolved positive overflow",
+      "cycles": 1251,
+      "milliseconds": 1.27
+    },
+    {
+      "case": 20,
+      "name": "positive final-only skip",
+      "cycles": 1381,
+      "milliseconds": 1.402
+    },
+    {
+      "case": 17,
+      "name": "negative two-skip overflow",
+      "cycles": 1304,
+      "milliseconds": 1.324
+    },
+    {
+      "case": 160,
+      "name": "complete RODCOMP through DSU",
+      "cycles": 21427,
+      "milliseconds": 21.748
+    }
+  ],
+  "hardware_stack_below_entry": 38,
+  "hardware_stack_including_rom_frame": 52,
+  "software_stack_sentinel_extent": 313,
+  "compiler_zp_register_bytes": 32,
+  "extra_compiler_zp_bytes": 0,
+  "measurement_limit": "Finite samples include marker/call and VIC bus costs; no WCET or live guidance/source-rate deadline proof."
+}

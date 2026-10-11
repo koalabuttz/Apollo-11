@@ -1,0 +1,11 @@
+PASS: VICE PAL, 172 complete original-assembly final states and DSU paths; all integrated skip inputs and three retained histories; restoring I
+Mailbox: a50000ac0003b25924
+Target state bytes / modeled words: 178 89
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/elapsed-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/elapsed-vice-monitor.log -monlog -limitcycles 1000000000
+DSU without overflow: 861 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+resolved positive overflow: 1251 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+positive final-only skip: 1381 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+negative two-skip overflow: 1304 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+complete RODCOMP through DSU: 21427 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+elapsed-vice-hardware-stack.bin: measured sentinel extent 38 bytes
+elapsed-vice-software-stack.bin: measured sentinel extent 313 bytes

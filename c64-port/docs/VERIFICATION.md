@@ -443,3 +443,29 @@ Snapshot SHA256:
 Earlier 138 evidence hashes, all original files and the assembled rope remain
 unchanged. PUSHDOWN.md defines the native scope check and omitted machine-control
 state. Full-prefix timing is a finite 21.101 ms sample, not a live guidance deadline.
+
+## Eleventh milestone: DSU PIPTIME
+
+The independent adapter executes actual DSU/ENDVXV/OVERFLOW/SETOVF2 bytes,
+with no native arithmetic linked into the oracle. 3491 cases yield 4664 exact
+89-word/path checkpoints, including both signs of overflow masks 1/5/7, all
+signed-zero corners and three retained full-prefix histories. It asserts the
+E2 PIPTIME operand, final BBANK, MODE, ZERO register, nine adjacent memory guards
+and VAC bounds. ELAPSED.md records the full domain and numerical contract.
+
+| Command | Result | Evidence under `evidence/` |
+|---|---|---|
+| `python3 tools/prepare_reference.py` | PASS; 12 unchanged overlays and rope | `elapsed-fixture.log` |
+| `make test` | PASS; ten host suites and explicit resolved-overflow tests | `elapsed-host-tests.log` |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; ten ASan/UBSan suites | `elapsed-sanitize.log` |
+| `make differential REFERENCE="$PWD/deps/fixture"` | PASS; earlier comparisons plus 4664 elapsed checkpoints | `elapsed-differential.log`, matched snapshots and trace |
+| `python3 tools/freeze_elapsed.py` | PASS; 172 complete final states and paths after snapshot equality | `tests/elapsed_vectors.h` |
+| `make c64-elapsed MOS_CC=/path/to/mos-c64-clang` | PASS; LLVM-MOS native PRG | `elapsed-c64-build.log`, `elapsed.prg`, `elapsed.map` |
+| `python3 tools/elapsed_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 172 complete states, restoring I, ZP/stack, five intervals | `elapsed-vice-result.txt`, monitor/log/mailbox/stack dumps, timing JSON |
+| Historical-source diff and evidence hashes | PASS; 157 earlier identities preserved, 176 total | `elapsed-source-preservation.txt`, `SHA256.json` |
+
+New source pool hash is recorded in tools/versions.json. The unchanged repository
+underscore-named constant pool is copied byte-for-byte to the pinned fixture's
+hyphenated include path. The rope and every earlier snapshot remain unchanged.
+After expanding the oracle's memory guards, the elapsed differential comparison
+was rerun with the identical snapshot hash; no native code changed afterward.

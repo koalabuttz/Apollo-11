@@ -127,8 +127,7 @@ frame); software-stack extent is 472 bytes, including full-state checker and
 unchanged-on-rejection fixtures. Logs, binary/map, dumps and timing JSON are
 retained under `evidence/push-*`.
 
-Next: translate `DSU PIPTIME`, preserving double-precision signed-zero and carry
-behavior when forming elapsed PIPA time. Verify the boundary before `STORE 30D`
-and retain the saved vector/VAC state; then consider the stored result and later
-division. A mapped job still needs defined producer ownership and scheduling
+`DSU PIPTIME` is now implemented and independently verified in ELAPSED.md,
+including overflow realignment and retained vector/VAC state. The next operation
+is `STORE 30D`; this PDDL API retains its original pre-DSU boundary. A mapped job still needs defined producer ownership and scheduling
 budgets before integration.

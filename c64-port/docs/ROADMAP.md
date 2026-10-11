@@ -139,14 +139,26 @@ Acceptance for this bounded operation is met. PUSHDOWN.md defines ownership and
 the stop before DSU. Interpreter resume, live producers and flight deadlines
 remain future work; the native VAC is not implicitly bound to an Executive job.
 
-## Next bounded milestone: DSU PIPTIME
+## Completed: DSU PIPTIME
 
-Trace elapsed PIPA time subtraction from the loaded timestamp. Translate the
-DP subtract with signed-zero, carry, scratch and register behavior; verify the
-boundary before STORE 30D against the unchanged original instructions, while
-retaining all saved vector/VAC words. Extend to storage and later division only
-after that bounded arithmetic contract is established. Live job integration
-still needs explicit exclusion and measured scheduling budgets.
+- DP subtraction preserves signed zeros, word carry, mixed signs and the exact
+  OVERFLOW realignment, including initial overflow resolved without OVFIND write.
+- 3491 cases / 4664 complete 89-word checkpoints match original assembly and
+  actual TS 7 skips; three retained histories preserve saved vectors/VAC state.
+- Ten host/sanitizer suites pass; the tenth C64 PRG checks 172 complete states.
+- Total state is 178 bytes. DSU samples reach 1.402 ms; full prefix 21.748 ms.
+- Twelve byte-identical source overlays retain the same assembled rope.
+
+Acceptance for this bounded operation is met. ELAPSED.md defines stable PIPTIME,
+BUF/OVFIND ownership and the stop before STORE 30D. Live job integration still
+requires producer exclusion and a scheduling budget.
+
+## Next bounded milestone: STORE 30D
+
+Translate the elapsed DP pair store into VAC-relative words 30/31. Independently
+verify stored data, retained vector/VAC words, MPAC, register and scratch effects
+against the original interpreter instructions. Keep later DDV 4SEC(28) separate
+until this storage boundary is verified.
 
 ## Remaining design questions
 

@@ -138,3 +138,15 @@ interpreter entry; see SCALING.md for dispatch and interrupt adaptations.
 
 Native bounds rejection is an explicit scope adaptation, not an original alarm.
 PUSHDOWN.md lists register/scratch preservation and excluded interpreter control.
+
+## DSU PIPTIME
+
+| Historical source | Native translation | Boundary |
+|---|---|---|
+| LUNAR_LANDING_GUIDANCE_EQUATIONS:1004..1006, DSU / PIPTIME | `p66_elapsed_time` after PDDL | DSU at 32,3357; stop DANZIG before STORE 30D at 32,3361 |
+| INTERPRETER:800..815, DSU / ENDVXV / SETOVF | Word complements plus verified DP addition | DSU 7005, ENDVXV 7000, SETOVF 7003 |
+| INTERPRETER:825..839,947..949, OVERFLOW / SETOVF2 | Exact BUF/sign realignment and conditional OVFIND write | OVERFLOW 7017; actual TS 7 skips at 7026/7033 |
+| FIXED_FIXED_CONSTANT_POOL, LIMITS / POSMAX / NEGMAX | Same-sign maxima 037777/040000 | Assembled constants 04733/04735 independently asserted |
+
+All 89 modeled words and observed paths match 4664 original checkpoints;
+ELAPSED.md records the banked PIPTIME operand and excluded interpreter controls.

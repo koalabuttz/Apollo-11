@@ -62,3 +62,15 @@ mission context.
 
 The original primitive bailout markers still do not imply recovery by themselves.
 Explicit bounded recovery and runtime ownership requirements are in RESTART.md.
+
+## DSU PIPTIME bounded fidelity
+
+The arithmetic and modeled memory/register effects are verified for the declared
+DP raw-word domain: 4664 complete 89-word checkpoints and 172 C64 final states.
+Signed zeros, low carry, independent word signs, BUF, conditional OVFIND writes
+and raw A/L match actual original execution. Both signs of initial overflow
+resolved without OVFIND writes are explicitly covered. A returned path mask,
+owned scratch/stable PIPTIME and restoring platform guard are native adaptations.
+Interpreter bank/control transfers are asserted by the oracle but are not native
+resume state. STORE 30D, DDV, live producers and full scheduling are outside this
+operation. See ELAPSED.md.

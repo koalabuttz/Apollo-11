@@ -130,3 +130,5 @@ subprocess.run([sys.executable,'tools/prepare_differential.py',str(reference)],c
 subprocess.run([sys.executable,'tools/scale_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/push_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/elapsed_differential.py',str(reference)],cwd=ROOT,check=True)

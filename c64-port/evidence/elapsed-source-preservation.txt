@@ -1,0 +1,3 @@
+PASS: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'
+All historical files unchanged; all port changes confined to c64-port/.
+Earlier 157 evidence identities retained unchanged. Twelve original-source overlays checked; assembled rope unchanged.

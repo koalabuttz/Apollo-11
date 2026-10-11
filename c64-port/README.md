@@ -14,8 +14,9 @@ and native task completion; a CIA Timer B adapter publishes clock events.
 Bounded alarm recording, STARTSB1 cleanup and protected Type C job recovery
 are implemented. P66 RODCOMP's rate update, PIPA/time snapshots and vector-input
 preparation, VXSC KPIP1 scaling and PDDL THISTPIP vector pushdown/timestamp
-load are verified (docs/GUIDANCE.md, docs/PREPARATION.md, docs/SCALING.md,
-docs/PUSHDOWN.md). **Deferred:** complete Apollo
+load and DSU PIPTIME elapsed-time subtraction are verified
+(docs/GUIDANCE.md, docs/PREPARATION.md, docs/SCALING.md,
+docs/PUSHDOWN.md, docs/ELAPSED.md). **Deferred:** complete Apollo
 guidance jobs, interpreter dispatch and
 remaining restart routes/glue (docs/RESTART.md).
 
@@ -40,7 +41,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md` and `docs/PUSHDOWN.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/ELAPSED.md` for the current milestone.
 
 ## Build and run
 
@@ -58,11 +59,12 @@ make c64-guidance MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-prepare MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-scale MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-push MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
+make c64-elapsed MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 ```
 
 The deliverables are `build/executive.prg`, `build/irq.prg`,
-`build/lifecycle.prg`, `build/waitlist.prg`, `build/restart.prg`, `build/guidance.prg`
-`build/prepare.prg`, `build/scale.prg` and `build/push.prg`
+`build/lifecycle.prg`, `build/waitlist.prg`, `build/restart.prg`, `build/guidance.prg`,
+`build/prepare.prg`, `build/scale.prg`, `build/push.prg` and `build/elapsed.prg`
 (ordinary C64 PRGs with BASIC SYS stubs).
 Load a PRG on a C64 and RUN, or use VICE. The console diagnostic prints a test summary,
 not an interactive DSKY. Target compiler: LLVM-MOS SDK **v23.3.0**.
@@ -95,6 +97,8 @@ VXSC KPIP1 adds 3364 complete 41-word checkpoints; the eighth PRG checks 292
 states, signed rounding boundaries and full-prefix histories.
 PDDL THISTPIP adds 3496 complete 86-word checkpoints and a ninth PRG with 200
 complete final-state checks, all integrated skip inputs and retained vector histories.
+DSU PIPTIME adds 4664 complete 89-word checkpoints and a tenth PRG with 172
+complete states, both signs of all overflow paths and three retained histories.
 Regenerate frozen
 C64 expectations only after a successful differential test:
 
@@ -107,7 +111,8 @@ python3 tools/freeze_guidance.py
 python3 tools/freeze_prepare.py
 python3 tools/freeze_scale.py
 python3 tools/freeze_push.py
-make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart c64-guidance c64-prepare c64-scale c64-push
+python3 tools/freeze_elapsed.py
+make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart c64-guidance c64-prepare c64-scale c64-push c64-elapsed
 ```
 
 ### VICE verification
@@ -129,6 +134,8 @@ python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 python3 tools/scale_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
+python3 tools/elapsed_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/C64 --data-dir /path/to/VICE/data
 python3 tools/push_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 ```
@@ -152,6 +159,9 @@ Its largest measured sample takes 26.122 ms; see docs/SCALING.md for timing limi
 The ninth checks 200 final pushdown/timestamp states with 172 bytes of total state.
 PDDL-only samples reach 1.067 ms; the sampled full prefix takes 21.101 ms.
 See docs/PUSHDOWN.md for scope, scratch and ownership.
+The tenth checks 172 final elapsed-time states with 178 bytes of total state.
+DSU-only samples reach 1.402 ms; the full prefix takes 21.748 ms.
+See docs/ELAPSED.md for overflow correction and the boundary before STORE 30D.
 
 ## Engineering record
 
@@ -160,6 +170,7 @@ See docs/PUSHDOWN.md for scope, scratch and ownership.
 - `docs/LIFECYCLE.md`: sleep/wake, priority scans, callback actions and oracle boundaries.
 - `docs/RESTART.md`: alarm history, cleanup, protected job re-entry and exclusions.
 - `docs/GUIDANCE.md`: P66 rate boundary, raw scales, multiword math and oracle domains.
+- `docs/ELAPSED.md`: DSU PIPTIME, signed-zero/carry behavior, overflow realignment and retained state.
 - `docs/PUSHDOWN.md`: PDDL THISTPIP, owned VAC payload, pointer bounds and exchange debris.
 - `docs/SCALING.md`: VXSC KPIP1, partial products, signed rounding, scratch and interpreter-entry adaptations.
 - `docs/PREPARATION.md`: PIPA/time snapshots, vector scratch, TS skips and the pre-interpreter boundary.

@@ -17,7 +17,8 @@
     "phase_table_maintenance_sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
     "lunar_landing_guidance_equations_sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
     "interpreter_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
-    "controlled_constants_sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc"
+    "controlled_constants_sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
+    "fixed_fixed_constant_pool_sha256": "7f139c2b553ce60f8c0ab8cf6242abef390c6a28858e45a4f1d80f0ff2c646b7"
   },
   "llvm_mos_sdk": {
     "version": "v23.3.0",

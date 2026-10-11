@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/elapsed.prg from 0801 to B755 (AF55 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)  220/$0dc,  24/$18
+.C:37e8  8D 88 C0    STA $C088      - A:10 X:00 Y:01 SP:ed ..-..I..   43355364
+Stopwatch reset to 0.
+#1 (Stop on store c088)  234/$0ea,   3/$03
+.C:3801  8D 88 C0    STA $C088      - A:20 X:00 Y:01 SP:ed ..-..I..        861
+Stopwatch:        861
+#1 (Stop on store c088)   23/$017,  27/$1b
+.C:37e8  8D 88 C0    STA $C088      - A:11 X:01 Y:01 SP:ed ..-..I..     203808
+Stopwatch reset to 0.
+#1 (Stop on store c088)   43/$02b,  18/$12
+.C:3801  8D 88 C0    STA $C088      - A:21 X:01 Y:FF SP:ed ..-..I..       1251
+Stopwatch:       1251
+#1 (Stop on store c088)  151/$097,   1/$01
+.C:37e8  8D 88 C0    STA $C088      - A:12 X:02 Y:01 SP:ed ..-..I..     204598
+Stopwatch reset to 0.
+#1 (Stop on store c088)  172/$0ac,  59/$3b
+.C:3801  8D 88 C0    STA $C088      - A:22 X:02 Y:01 SP:ed ..-..I..       1381
+Stopwatch:       1381
+#1 (Stop on store c088)  277/$115,  55/$37
+.C:37e8  8D 88 C0    STA $C088      - A:13 X:03 Y:01 SP:ed ..-..I..     204552
+Stopwatch reset to 0.
+#1 (Stop on store c088)  298/$12a,  36/$24
+.C:3801  8D 88 C0    STA $C088      - A:23 X:03 Y:FE SP:ed ..-..I..       1304
+Stopwatch:       1304
+#1 (Stop on store c088)   21/$015,  35/$23
+.C:37e8  8D 88 C0    STA $C088      - A:14 X:04 Y:00 SP:ed ..-..I..     239380
+Stopwatch reset to 0.
+#1 (Stop on store c088)   49/$031,  42/$2a
+.C:3801  8D 88 C0    STA $C088      - A:24 X:04 Y:01 SP:ed ..-..I..      21427
+Stopwatch:      21427
+#2 (Stop on store c080)  202/$0ca,  51/$33
+.C:38bb  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-.....     247291
+>C:c080  a5 00 00 ac  00 03 b2 59  24                         .......Y$
+Saving file `/workspace/Apollo-11/c64-port/build/elapsed-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/elapsed-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/elapsed-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 DSU PIPTIME           
+0518  172 COMPLETE ASSEMBLY STATES PASS       
+0540  OVERFLOW PATHS AND SAVED VECTORS PASS   
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

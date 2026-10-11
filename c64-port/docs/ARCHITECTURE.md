@@ -210,3 +210,14 @@ It validates vector mode, supported VAC base and six-word capacity before mutati
 this is a native scope restriction. Objects are distinct from Executive storage
 until an explicit job adapter binds ownership. PUSHDOWN.md defines the complete
 state and control/interrupt adaptations and the stop before DSU PIPTIME.
+
+## Elapsed PIPA time
+
+`src/guidance_elapsed.c` translates DSU PIPTIME as explicit DP complement/add
+and original overflow realignment. The additional owned object contains stable
+PIPTIME and BUF (six bytes); shared MPAC/MODE/A/L and OVFIND remain in the
+existing preparation/scaling objects. Total bounded test state is 178 bytes.
+The caller excludes producers; target guards restore previous I. The VAC and
+saved vector remain intact. The path mask is a native observation, not original
+memory. No instruction decoder or live PIPTIME producer is introduced. The
+boundary is DANZIG before STORE 30D; ELAPSED.md defines scope and bank adaptation.

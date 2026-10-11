@@ -387,3 +387,30 @@ the 14-byte ROM frame); software-stack extent is 472 bytes, including full-state
 and rejection fixtures. Earlier eight PRGs and their measured evidence are
 unchanged; diagnostic images are not combined into a flight image. Exact
 binary/map, logs/dumps and `push-timing.json` are retained. See PUSHDOWN.md.
+
+## DSU PIPTIME diagnostic
+
+The tenth standalone PRG passes 172 complete 89-word/path checks in PAL VICE,
+including rare resolved overflows, all integrated skip inputs and three retained
+histories. File size is 44887 bytes, loaded image 44885 at $0801..$b755;
+text 13748, rodata 31125, BSS 178 and noinit one byte. Image plus BSS/noinit
+is 45064 bytes, ending at $b808. Frozen expected words/masks occupy 30788 bytes.
+These standalone diagnostic images are not a combined flight workload.
+
+| Guarded sample | PAL cycles | At 985248 Hz |
+|---|---:|---:|
+| No overflow | 861 | 0.874 ms |
+| Resolved positive overflow | 1251 | 1.270 ms |
+| Positive final-only skip | 1381 | 1.402 ms |
+| Negative two-skip overflow | 1304 | 1.324 ms |
+| Full RODCOMP through DSU, history step 0 | 21427 | 21.748 ms |
+
+Marker/call and VIC bus effects are included; setup/full comparisons are outside
+these intervals. Full-prefix masking exceeds a PAL frame. No WCET, continuous
+source-rate or flight-deadline guarantee follows from these samples. Observed
+hardware-stack extent is 38 bytes below entry (52 including ROM's 14-byte frame);
+software-stack extent is 313, including the complete fixture/checker. The build
+uses `-fno-static-stack -mlto-zp=0`, 32 imaginary ZP registers and no extra ZP,
+heap or floating point. Total modeled state is 178 bytes; elapsed PIPTIME/BUF
+adds six bytes. Exact logs, map, PRG, dumps and timing JSON are in `elapsed-*`.
+ELAPSED.md defines arithmetic and ownership; STORE 30D remains next.

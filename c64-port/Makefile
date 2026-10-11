@@ -186,3 +186,26 @@ sanitize-push: | build
 c64-push: build/push.prg
 build/push.prg: $(PUSH_CORE) $(PUSH_TEST) platform/c64/push_diagnostic.c $(PUSH_HEADERS) tests/push_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/push.map $(PUSH_CORE) $(PUSH_TEST) platform/c64/push_diagnostic.c -o $@
+
+ELAPSED_CORE = $(PUSH_CORE) src/guidance_elapsed.c
+ELAPSED_INPUT = $(PUSH_INPUT) tests/elapsed_cases.c
+ELAPSED_HEADERS = $(PUSH_HEADERS) include/guidance_elapsed.h tests/elapsed_cases.h
+all: build/elapsed-snapshot
+build/elapsed-snapshot: $(ELAPSED_CORE) $(ELAPSED_INPUT) platform/host/elapsed_snapshot.c $(ELAPSED_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(ELAPSED_CORE) $(ELAPSED_INPUT) platform/host/elapsed_snapshot.c -o $@
+
+ELAPSED_TEST = $(ELAPSED_INPUT) tests/elapsed_check.c
+all: build/test-elapsed
+test: test-elapsed
+.PHONY: test-elapsed sanitize-elapsed c64-elapsed
+test-elapsed: build/test-elapsed
+	./build/test-elapsed
+build/test-elapsed: $(ELAPSED_CORE) $(ELAPSED_TEST) tests/test_elapsed.c $(ELAPSED_HEADERS) tests/elapsed_vectors.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(ELAPSED_CORE) $(ELAPSED_TEST) tests/test_elapsed.c -o $@
+sanitize: sanitize-elapsed
+sanitize-elapsed: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(ELAPSED_CORE) $(ELAPSED_TEST) tests/test_elapsed.c -o build/test-elapsed-sanitize
+	./build/test-elapsed-sanitize
+c64-elapsed: build/elapsed.prg
+build/elapsed.prg: $(ELAPSED_CORE) $(ELAPSED_TEST) platform/c64/elapsed_diagnostic.c $(ELAPSED_HEADERS) tests/elapsed_vectors.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/elapsed.map $(ELAPSED_CORE) $(ELAPSED_TEST) platform/c64/elapsed_diagnostic.c -o $@

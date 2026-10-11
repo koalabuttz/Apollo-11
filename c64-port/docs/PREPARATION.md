@@ -121,3 +121,6 @@ python3 tools/prepare_vice_test.py --vice /path/to/x64sc \
 
 The later PDDL THISTPIP operation now saves the scaled vector and loads the
 timestamp; PUSHDOWN.md defines its owned VAC and native scope adaptation.
+
+DSU PIPTIME now forms elapsed time after PDDL; ELAPSED.md documents exact
+overflow realignment, retained words and the next STORE 30D boundary.
