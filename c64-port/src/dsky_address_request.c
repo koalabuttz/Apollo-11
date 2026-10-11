@@ -1,0 +1,25 @@
+/* SPDX-License-Identifier: MIT */
+#include "dsky_address_request.h"
+static enum p66_bias_status request(apollo_overlay_state *s,dsky_charin_io *io,enum dsky_request_route *route,uint8_t cm){uint16_t *w=s->words,pc=w[5],end=cm ? 05217u : 05155u,nv_end=cm ? 04216u : 04202u,paste=cm ? 04140u : 04124u,caller=w[2],count=0,rel=0,i,bank,previous;uint8_t numeric=(uint8_t)(pc==02303u||pc==02305u||pc==02307u||pc==02310u),use=(uint8_t)(pc==02105u||(pc==02074u&&(w[01000]==0||w[01000]>=040000u)));enum dsky_five_blank_route blank;enum dsky_machine_route machine;enum p66_bias_status status;apollo_noun_reader_io reader;
+ if(route==0||(!numeric&&pc!=02064u&&pc!=02074u&&pc!=02105u)||w[3]>03400u||(w[3]&0377u)||w[4]!=062000u||w[6]!=(uint16_t)(062000u|(w[3]>>8))||w[7]!=0||io->control.superbank>0160u||(io->control.superbank&017u)||(io->control.superbank&0100u)==0||io->control.interrupt_enabled>1u||io->channel11>077777u)return P66_BIAS_OUT_OF_SCOPE;
+ for(i=3;i<2048u;++i)if(w[i]>077777u)return P66_BIAS_OUT_OF_SCOPE;
+ if(use&&w[01002]!=077777u&&w[01002]>99u)return P66_BIAS_OUT_OF_SCOPE;
+ if(numeric){count=pc==02303u ? 14u : pc==02305u ? 9u : pc==02307u ? 4u : agc_correct(w[0]);if(pc==02310u&&(w[0]!=agc_extend(count)||count>14u))return P66_BIAS_OUT_OF_SCOPE;rel=count<5u ? 4u : count<10u ? 3u : 2u;if(caller<0100u||caller>07777u)return P66_BIAS_OUT_OF_SCOPE;
+  if(w[01023u+(rel==2u ? 7u : 2u)]!=0&&w[0136]!=end&&w[0136]!=nv_end&&w[0136]!=paste)return P66_BIAS_OUT_OF_SCOPE;
+ }
+ w[1]=agc_extend(agc_correct(w[1]));io->wrote_channel11=0;
+ if(pc==02064u){w[01015]=040000;w[0]=agc_add_register(agc_extend(agc_negate(end)),agc_extend(w[0136]));
+  if(w[0]!=0&&w[0]!=0177777u){w[2]=02073;w[5]=02116;status=cm ? P66_BIAS_OK : dsky_machine_cadr(s,&io->control,&machine);if(cm){cm_native_io view={0};view.superbank=io->control.superbank;view.interrupt_enabled=io->control.interrupt_enabled;status=cm_machine_cadr(s,&view,&machine)==EXEC_OK ? P66_BIAS_OK : P66_BIAS_OUT_OF_SCOPE;io->control.superbank=view.superbank;io->control.interrupt_enabled=view.interrupt_enabled;}if(status!=P66_BIAS_OK)return status;*route=machine==DSKY_MACHINE_CCS_HOLE ? DSKY_REQUEST_CCS_HOLE : DSKY_REQUEST_VERB;return P66_BIAS_OK;}
+  numeric=1;count=4;caller=02074;
+ }
+ if(numeric){w[0777]=count;w[01013]=agc_negate(caller);w[0]=agc_extend(w[01013]);w[0133]=02315;w[0134]=062000;w[2]=cm ? 04675u : 04631u;w[4]=060000;w[6]=(uint16_t)(060000u|(w[3]>>8));w[5]=cm ? 02437u : 02536u;
+  if(cm){cm_native_io view={0};view.superbank=io->control.superbank;view.interrupt_enabled=io->control.interrupt_enabled;status=cm_five_blank(s,&view,&blank)==EXEC_OK ? P66_BIAS_OK : P66_BIAS_OUT_OF_SCOPE;io->control.superbank=view.superbank;io->control.interrupt_enabled=view.interrupt_enabled;}else status=dsky_five_blank(s,&io->control,&blank);
+  if(status!=P66_BIAS_OK)return status;
+  if(blank==DSKY_FIVE_BLANK_CCS_HOLE){*route=DSKY_REQUEST_CCS_HOLE;return P66_BIAS_OK;}
+  w[0134]=060000;w[4]=062000;w[6]=(uint16_t)(062000u|(w[3]>>8));io->channel11=(uint16_t)(io->channel11|040u);io->wrote_channel11=1;w[0]=agc_extend(io->channel11);w[2]=0137;w[5]=w[0136];*route=w[0136]==end ? DSKY_REQUEST_END : w[0136]==nv_end ? DSKY_REQUEST_NVSUB_END : DSKY_REQUEST_PASTE;return P66_BIAS_OK;
+ }
+ if(pc==02074u){w[0]=agc_extend(agc_diminished_abs(w[01000]));if(w[01000]!=0&&w[01000]<040000u){w[2]=02076;w[5]=cm ? 04161u : 04145u;*route=DSKY_REQUEST_ALMCYCLE;return P66_BIAS_OK;}if(w[01000]==0)w[0777]=077754;else if(w[01000]!=077777u)w[0777]=agc_correct(w[0]);w[0]=agc_extend(agc_diminished_abs(w[01042]));if(w[01042]!=0){io->channel11=(uint16_t)(io->channel11|040u);io->wrote_channel11=1;w[0]=agc_extend(io->channel11);} }
+ previous=agc_correct(w[0]);w[0]=agc_extend(w[01005]);w[01005]=previous;w[01017]=agc_correct(w[0]);w[3]=(uint16_t)(w[01017]&03400u);w[6]=(uint16_t)(062000u|(w[3]>>8));w[0145]=(uint16_t)(01400u+(w[01017]&0377u));bank=w[6];w[0]=02112;w[1]=agc_extend(bank);w[3]=0400;w[4]=064000;w[6]=064001;w[5]=cm ? 02062u : 02103u;reader.superbank=io->control.superbank;reader.interrupt_enabled=io->control.interrupt_enabled;(void)apollo_noun_reader(s,&reader,cm ? APOLLO_FIXED_CM : APOLLO_FIXED_LM,APOLLO_LODNNTAB);io->control.superbank=reader.superbank;io->control.interrupt_enabled=reader.interrupt_enabled;w[2]=02113;w[5]=02133;*route=DSKY_REQUEST_VERB;return P66_BIAS_OK;
+}
+enum p66_bias_status dsky_address_request(apollo_overlay_state *s,dsky_charin_io *io,enum dsky_request_route *route){return request(s,io,route,0);}
+enum exec_status cm_address_request(apollo_overlay_state *s,cm_native_io *io,uint16_t *wrote,enum dsky_request_route *route){dsky_charin_io view;enum p66_bias_status status;if(wrote==0)return EXEC_OUT_OF_SCOPE;view.control.superbank=io->superbank;view.control.interrupt_enabled=io->interrupt_enabled;view.channel11=io->channel11;view.wrote_channel11=0;status=request(s,&view,route,1);if(status!=P66_BIAS_OK)return EXEC_OUT_OF_SCOPE;io->superbank=view.control.superbank;io->interrupt_enabled=view.control.interrupt_enabled;io->channel11=view.channel11;*wrote=view.wrote_channel11;return EXEC_OK;}

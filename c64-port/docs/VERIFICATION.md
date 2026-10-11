@@ -1488,3 +1488,7 @@ Qualify MR.KLEAN P00KLEAN and V37KLEAN source phase clearing against12288 full o
 ## Translate original RTB sign agreement and Comanche matrix transpose entries
 
 Qualify original sign agreement and Comanche transpose entries against393216 complete original native and full sanitizer states plus192 actual C64 states across six targets. Remaining RTB entries stay open. See `docs/RTB-AGREEMENT.md`.
+
+## Translate original shared address and data request source paths
+
+Qualify REQADD USEADD REQDAT and REQCOM with actual BANKCALL five blank SWRETURN and saved data transfers against8192 complete original native sanitizer states plus64 C64 states preserving real alarm cycle boundaries. See `docs/DSKY-ADDRESS-REQUEST.md`.

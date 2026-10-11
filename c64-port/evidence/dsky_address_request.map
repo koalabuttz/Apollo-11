@@ -1,0 +1,256 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     3844     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_address_request.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      4cd     1         build/dsky_address_request.prg.lto.o:(.text.dsky_pinball_write)
+     843      843      4cd     1                 dsky_pinball_write
+     d10      d10      651     1         build/dsky_address_request.prg.lto.o:(.text.octal)
+     d10      d10      651     1                 octal
+    1361     1361      3bb     1         build/dsky_address_request.prg.lto.o:(.text.machine_cadr)
+    1361     1361      3bb     1                 machine_cadr
+    171c     171c      69e     1         build/dsky_address_request.prg.lto.o:(.text.five_blank)
+    171c     171c      69e     1                 five_blank
+    1dba     1dba      17f     1         build/dsky_address_request.prg.lto.o:(.text.apollo_noun_table_read)
+    1dba     1dba      17f     1                 apollo_noun_table_read
+    1f39     1f39      488     1         build/dsky_address_request.prg.lto.o:(.text.apollo_noun_reader)
+    1f39     1f39      488     1                 apollo_noun_reader
+    23c1     23c1      bca     1         build/dsky_address_request.prg.lto.o:(.text.request)
+    23c1     23c1      bca     1                 request
+    2f8b     2f8b      d34     1         build/dsky_address_request.prg.lto.o:(.text.main)
+    2f8b     2f8b      d34     1                 main
+    3cbf     3cbf        6     1         build/dsky_address_request.prg.lto.o:(.text.exit)
+    3cbf     3cbf        6     1                 exit
+    3cc5     3cc5       13     1         build/dsky_address_request.prg.lto.o:(.text.__ashlhi3)
+    3cc5     3cc5       13     1                 __ashlhi3
+    3cd8     3cd8        b     1         build/dsky_address_request.prg.lto.o:(.text.__lshrqi3)
+    3cd8     3cd8        b     1                 __lshrqi3
+    3ce3     3ce3       13     1         build/dsky_address_request.prg.lto.o:(.text.__lshrhi3)
+    3ce3     3ce3       13     1                 __lshrhi3
+    3cf6     3cf6       c4     1         build/dsky_address_request.prg.lto.o:(.text.__udivhi3)
+    3cf6     3cf6       c4     1                 __udivhi3
+    3dba     3dba       ae     1         build/dsky_address_request.prg.lto.o:(.text.__umodhi3)
+    3dba     3dba       ae     1                 __umodhi3
+    3e68     3e68       f8     1         build/dsky_address_request.prg.lto.o:(.text.__udivmodhi4)
+    3e68     3e68       f8     1                 __udivmodhi4
+    3f60     3f60       34     1         build/dsky_address_request.prg.lto.o:(.text.memcpy)
+    3f60     3f60       34     1                 memcpy
+    3f94     3f94       22     1         build/dsky_address_request.prg.lto.o:(.text.__memset)
+    3f94     3f94       22     1                 __memset
+    3fb6     3fb6       34     1         build/dsky_address_request.prg.lto.o:(.text.__mulhi3)
+    3fb6     3fb6       34     1                 __mulhi3
+    3fea     3fea       67     1         build/dsky_address_request.prg.lto.o:(.text.__mulsi3)
+    3fea     3fea       67     1                 __mulsi3
+    4051     4051        0     1         __init_array_start = .
+    4051     4051        0     1         __init_array_end = .
+    4051     4051        0     1         __fini_array_start = .
+    4051     4051        0     1         __fini_array_end = .
+    4051     4051     2cd7     1 .rodata
+    4051     4051        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    4051     4051        0     1                 __set_v
+    4052     4052        8     1         build/dsky_address_request.prg.lto.o:(.rodata.main)
+    405a     405a       10     1         <internal>:(.rodata.cst8)
+    406a     406a       30     1         <internal>:(.rodata.cst16)
+    409a     409a        6     1         build/dsky_address_request.prg.lto.o:(.rodata.five_blank.singular)
+    409a     409a        6     1                 five_blank.singular
+    40a0     40a0        6     1         build/dsky_address_request.prg.lto.o:(.rodata.five_blank.paired)
+    40a0     40a0        6     1                 five_blank.paired
+    40a6     40a6        6     1         build/dsky_address_request.prg.lto.o:(.rodata.five_blank.first)
+    40a6     40a6        6     1                 five_blank.first
+    40ac     40ac        6     1         build/dsky_address_request.prg.lto.o:(.rodata.five_blank.bit)
+    40ac     40ac        6     1                 five_blank.bit
+    40b2     40b2       18     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_nouns)
+    40b2     40b2       18     1                 fixed_data_lm_nouns
+    40ca     40ca       18     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    40ca     40ca       18     1                 fixed_data_cm_nouns
+    40e2     40e2       d8     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    40e2     40e2       d8     1                 fixed_data_lm_spans
+    41ba     41ba       30     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    41ba     41ba       30     1                 fixed_data_cm_spans
+    41ea     41ea       20     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_0)
+    41ea     41ea       20     1                 fixed_data_lm_0
+    420a     420a       24     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_1)
+    420a     420a       24     1                 fixed_data_lm_1
+    422e     422e        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_2)
+    422e     422e        4     1                 fixed_data_lm_2
+    4232     4232        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_3)
+    4232     4232        4     1                 fixed_data_lm_3
+    4236     4236        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_4)
+    4236     4236        4     1                 fixed_data_lm_4
+    423a     423a        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_5)
+    423a     423a        4     1                 fixed_data_lm_5
+    423e     423e        2     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_6)
+    423e     423e        2     1                 fixed_data_lm_6
+    4240     4240        a     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_7)
+    4240     4240        a     1                 fixed_data_lm_7
+    424a     424a        2     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_8)
+    424a     424a        2     1                 fixed_data_lm_8
+    424c     424c        6     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_9)
+    424c     424c        6     1                 fixed_data_lm_9
+    4252     4252        8     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_10)
+    4252     4252        8     1                 fixed_data_lm_10
+    425a     425a       2e     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_11)
+    425a     425a       2e     1                 fixed_data_lm_11
+    4288     4288        c     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_12)
+    4288     4288        c     1                 fixed_data_lm_12
+    4294     4294        2     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_13)
+    4294     4294        2     1                 fixed_data_lm_13
+    4296     4296        2     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_14)
+    4296     4296        2     1                 fixed_data_lm_14
+    4298     4298        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_15)
+    4298     4298        4     1                 fixed_data_lm_15
+    429c     429c        6     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_16)
+    429c     429c        6     1                 fixed_data_lm_16
+    42a2     42a2        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_17)
+    42a2     42a2        4     1                 fixed_data_lm_17
+    42a6     42a6        8     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_18)
+    42a6     42a6        8     1                 fixed_data_lm_18
+    42ae     42ae        c     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_19)
+    42ae     42ae        c     1                 fixed_data_lm_19
+    42ba     42ba       18     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_20)
+    42ba     42ba       18     1                 fixed_data_lm_20
+    42d2     42d2       10     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_21)
+    42d2     42d2       10     1                 fixed_data_lm_21
+    42e2     42e2       28     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_22)
+    42e2     42e2       28     1                 fixed_data_lm_22
+    430a     430a       2c     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_23)
+    430a     430a       2c     1                 fixed_data_lm_23
+    4336     4336        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_24)
+    4336     4336        4     1                 fixed_data_lm_24
+    433a     433a        4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_25)
+    433a     433a        4     1                 fixed_data_lm_25
+    433e     433e      1be     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_26)
+    433e     433e      1be     1                 fixed_data_lm_26
+    44fc     44fc       68     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_27)
+    44fc     44fc       68     1                 fixed_data_lm_27
+    4564     4564       24     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_28)
+    4564     4564       24     1                 fixed_data_lm_28
+    4588     4588      1e4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_29)
+    4588     4588      1e4     1                 fixed_data_lm_29
+    476c     476c      108     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_30)
+    476c     476c      108     1                 fixed_data_lm_30
+    4874     4874       80     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_31)
+    4874     4874       80     1                 fixed_data_lm_31
+    48f4     48f4       40     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_32)
+    48f4     48f4       40     1                 fixed_data_lm_32
+    4934     4934       20     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_33)
+    4934     4934       20     1                 fixed_data_lm_33
+    4954     4954       26     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_34)
+    4954     4954       26     1                 fixed_data_lm_34
+    497a     497a      458     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_lm_35)
+    497a     497a      458     1                 fixed_data_lm_35
+    4dd2     4dd2      1c4     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_0)
+    4dd2     4dd2      1c4     1                 fixed_data_cm_0
+    4f96     4f96       7c     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_1)
+    4f96     4f96       7c     1                 fixed_data_cm_1
+    5012     5012       40     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_2)
+    5012     5012       40     1                 fixed_data_cm_2
+    5052     5052       20     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_3)
+    5052     5052       20     1                 fixed_data_cm_3
+    5072     5072       26     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_4)
+    5072     5072       26     1                 fixed_data_cm_4
+    5098     5098      1be     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_5)
+    5098     5098      1be     1                 fixed_data_cm_5
+    5256     5256      1f2     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_6)
+    5256     5256      1f2     1                 fixed_data_cm_6
+    5448     5448      410     1         build/dsky_address_request.prg.lto.o:(.rodata.fixed_data_cm_7)
+    5448     5448      410     1                 fixed_data_cm_7
+    5858     5858        e     1         build/dsky_address_request.prg.lto.o:(.rodata.dsky_address_request_input.entry)
+    5858     5858        e     1                 dsky_address_request_input.entry
+    5866     5866        c     1         build/dsky_address_request.prg.lto.o:(.rodata.dsky_address_request_input.ordinary)
+    5866     5866        c     1                 dsky_address_request_input.ordinary
+    5872     5872        c     1         build/dsky_address_request.prg.lto.o:(.rodata..Lswitch.table.dsky_address_request_input)
+    587e     587e       80     1         build/dsky_address_request.prg.lto.o:(.rodata.dsky_address_request_numbers)
+    587e     587e       80     1                 dsky_address_request_numbers
+    58fe     58fe       82     1         build/dsky_address_request.prg.lto.o:(.rodata.dsky_address_request_offsets)
+    58fe     58fe       82     1                 dsky_address_request_offsets
+    5980     5980     13a8     1         build/dsky_address_request.prg.lto.o:(.rodata.dsky_address_request_patch)
+    5980     5980     13a8     1                 dsky_address_request_patch
+    6d28     6d28        0     1 .data
+    6d28     6d28        0     1         __data_start = .
+    6d28     6d28        0     1         __data_end = .
+    6d28     6d28        0     1 __data_load_start = LOADADDR(.data)
+    6d28     6d28        0     1 __data_size = SIZEOF(.data)
+    6d28     6d28     2005     1 .bss
+    6d28     6d28        0     1         __bss_start = .
+    6d28     6d28     1000     1         build/dsky_address_request.prg.lto.o:(.bss.image)
+    6d28     6d28     1000     1                 image
+    7d28     7d28     1000     1         build/dsky_address_request.prg.lto.o:(.bss.before)
+    7d28     7d28     1000     1                 before
+    8d28     8d28        5     1         build/dsky_address_request.prg.lto.o:(.bss.dsky_address_request_mailbox)
+    8d28     8d28        5     1                 dsky_address_request_mailbox
+    8d2d     8d2d        0     1         __bss_end = .
+    8d2d     8d2d        0     1 __bss_size = SIZEOF(.bss)
+    8d2d     8d2d        0     1 .noinit
+    8d2d     8d2d        0     1         __heap_start = ALIGN(., 2)
+    8d2d     8d2d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_address_request.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_address_request.prg.lto.o:(.llvm_sympart)
+       0        0      f60     4 .symtab
+       0        0      f60     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      af4     1 .strtab
+       0        0      af4     1         <internal>:(.strtab)
