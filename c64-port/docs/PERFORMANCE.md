@@ -465,3 +465,8 @@ hardware-DV oracle and scope. Pending PDVL GDT/2 remains next.
 PRG40690 bytes; text19665/rodata21011/BSS198/noinit1, highestRAM$a7b7.
 ZeroextraZP; stack50 below$01f2/software371. Four sampledPDVL intervals615..736
 PALcycles; fullprefix28164 (28.586ms). Lossless fixture20649 bytes. NoWCET claim.
+
+## Verified native VAD/VSU
+
+Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
+128 complete states pass host, sanitizer and C64 diagnostics. See [VECTOR.md](VECTOR.md).

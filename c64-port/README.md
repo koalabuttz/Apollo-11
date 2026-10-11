@@ -211,3 +211,8 @@ GPL-2.0-or-later; it is never linked into the C64 PRG. See `LICENSE`.
 PDVL build/test: `make test-gravity c64-gravity`; original comparison:
 `python3 tools/gravity_differential.py deps/fixture`. The C64 diagnostic compares
 156 complete 99-word states using lossless compact expectations.
+
+## Verified native VAD/VSU
+
+Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
+128 complete states pass host, sanitizer and C64 diagnostics. See `docs/VECTOR.md`.

@@ -1,4 +1,4 @@
-# P66 PDVL GDT/2 milestone handoff
+# Native Apollo port handoff
 
 ## Repository
 
@@ -268,3 +268,8 @@ No master/upstream merge is needed.
 No second-agent/human review was performed. Native C is MIT/public-domain
 translation; the separate GPL-2.0-or-later original-assembly adapters are host
 verification tools and are never linked into the C64 executable.
+
+## Verified native VAD/VSU
+
+Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
+128 complete states pass host, sanitizer and C64 diagnostics. See [VECTOR.md](VECTOR.md).

@@ -204,3 +204,8 @@ force clamps, throttle, horizontal-speed display and live scheduling/recovery.
   require, and can overlays fit stock C64 memory without losing native contexts?
 - Should upstream transcription build errors be repaired in a separate project?
   This branch deliberately retains the historical sources unchanged.
+
+## Verified native VAD/VSU
+
+Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
+128 complete states pass host, sanitizer and C64 diagnostics. See [VECTOR.md](VECTOR.md).

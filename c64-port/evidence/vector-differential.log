@@ -1,0 +1,4 @@
+PASS: 6800 inputs x VAD/VSU = 13600 checkpoints; all 50 modeled words and overflow observations match unchanged assembly
+Complete input preservation, both signed zeros, mixed signs, ordinary DP corners, retained scratch, and all OVERFLOW paths across X/Y/Z
+Boundary: VAD 6751 / VSU 6747 -> DANZIG 6061; historical Y,Z,X order and unchanged MODE verified
+Snapshot SHA256: 406e7bd75f6baaf3c6ddfdc3218d1aae32099249820be3073be53b9bb5d321a9

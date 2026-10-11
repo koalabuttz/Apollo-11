@@ -179,3 +179,8 @@ no claim of equality to the pinned fast-DV shortcut is made.
 INTERPRETER:589..602 and531..543 -> src/guidance_gravity.c.
 PDVL6557/ENDVLOAD6511/VMODE6521 -> DANZIG6061 beforeVSU; operand physical1236
 becomesADDRWD1636/EBANK01000. All99 modeled words independently verified.
+
+## Verified native VAD/VSU
+
+Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
+128 complete states pass host, sanitizer and C64 diagnostics. See [VECTOR.md](VECTOR.md).

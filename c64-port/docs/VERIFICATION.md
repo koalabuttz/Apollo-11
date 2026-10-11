@@ -529,3 +529,8 @@ All 5218 complete99-word checkpoints match original assembly; all13 host and
 sanitizer suites pass. PAL VICE checks156 exact states with mailbox
 a500009c0003c66324. See GRAVITY.md and evidence/gravity-* (snapshots gzip).
 All218 earlier hashes retained; manifest239 entries.
+
+## Verified native VAD/VSU
+
+Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
+128 complete states pass host, sanitizer and C64 diagnostics. See [VECTOR.md](VECTOR.md).
