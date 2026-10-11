@@ -496,3 +496,5 @@ subprocess.run([sys.executable,'tools/dsky_load_control_differential.py',str(ref
 subprocess.run([sys.executable,'tools/cm_alarm_record_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_nv_return_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_nv_busy_differential.py',str(reference)],cwd=ROOT,check=True)

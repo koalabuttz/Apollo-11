@@ -1115,3 +1115,7 @@ Actual ALARM/VARALARM/CURTAINS/BORTENT match16384 complete original/native/full-
 ## Translate original shared saved display caller return source
 
 Both original NVSUBEND entries and SUPDXCHZ saved fixed-caller return match8192 complete original/native/full-sanitizer states,22 unchanged invalid-input guards and64 actual C64 states. Raw registers, all saved bank/EB/SUPER combinations and actual source caller entries are retained; caller body execution remains separate. See `docs/DSKY-NV-RETURN.md`.
+
+## Translate original shared blocked display sleep admission source
+
+Both original ENDIDLE/NVSUBUSY/PRENVBSY/NVSBWAIT/NVSUBSY1 bodies match10240 complete original/native/full-sanitizer states,120 unchanged invalid-input guards and80 actual C64 states. Actual JOBSLEEP/POODOO/NVSBCOM entries remain explicit, including the original CADRSTOR negative-zero behavior; selected service execution remains separate. See `docs/DSKY-NV-BUSY.md`.

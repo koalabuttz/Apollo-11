@@ -739,3 +739,5 @@ include tools/cm_alarm_record.mk
 all: build/cm-alarm-record-native
 
 include tools/dsky_nv_return_integration.mk
+
+include tools/dsky_nv_busy_integration.mk
