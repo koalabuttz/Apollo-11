@@ -1368,3 +1368,7 @@ All14 source entries and76 emitted words, source control aliases and allfour neg
 ## Complete original Luminary interbank source
 
 All14 entries and76 emitted words, including allfour negative-overflow MAKECADR successors, are qualified by independent review,921088 complete source/native/sanitizer states and448 actual C64 states. The certificate uses the historical baseline and retains the compiled-caller domain and external return/fault boundaries.35 files are complete;140 files and both full applications remain open. See `docs/LUMINARY-INTERBANK.md`.
+
+## Translate original display alarm and relay source paths
+
+Actual source alarm display, relay controls and monitor termination match8192 complete original/native/full-sanitizer states and64 actual C64 states. Keyboard, scheduler and abort continuations retain their actual source handoffs. See `docs/DSKY-SOURCE-ALARM.md`.

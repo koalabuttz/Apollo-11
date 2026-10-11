@@ -484,3 +484,5 @@ subprocess.run([sys.executable,'tools/cm_clock_normal_display_differential.py',s
 subprocess.run([sys.executable,'tools/dsky_display_release_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_extended_dispatch_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_source_alarm_differential.py',str(reference)],cwd=ROOT,check=True)

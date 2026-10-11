@@ -721,3 +721,5 @@ include tools/dsky_display_release.mk
 include tools/dsky_extended_dispatch.mk
 
 include tools/lm_interbank_integration.mk
+
+include tools/dsky_source_alarm.mk
