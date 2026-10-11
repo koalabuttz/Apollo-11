@@ -1,0 +1,508 @@
+{
+ "mission": "Comanche055",
+ "callees": [
+  "ALARM",
+  "ALARM2",
+  "BAILOUT",
+  "POODOO"
+ ],
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "sites": [
+  {
+   "physical": 771,
+   "word": 706,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "INTERPRETER.agc:2548",
+   "operand": "OCT 1302"
+  },
+  {
+   "physical": 979,
+   "word": 705,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "INTERPRETER.agc:2803",
+   "operand": "OCT 1301"
+  },
+  {
+   "physical": 997,
+   "word": 580,
+   "callee": "BAILOUT",
+   "callee_address": 4077,
+   "caller": "SERVICE_ROUTINES.agc:168",
+   "operand": "OCT 1104"
+  },
+  {
+   "physical": 1442,
+   "word": 641,
+   "callee": "BAILOUT",
+   "callee_address": 4077,
+   "caller": "EXECUTIVE.agc:145",
+   "operand": "OCT 1201"
+  },
+  {
+   "physical": 1492,
+   "word": 642,
+   "callee": "BAILOUT",
+   "callee_address": 4077,
+   "caller": "EXECUTIVE.agc:204",
+   "operand": "OCT 1202"
+  },
+  {
+   "physical": 1790,
+   "word": 643,
+   "callee": "BAILOUT",
+   "callee_address": 4077,
+   "caller": "WAITLIST.agc:339",
+   "operand": "OCT 1203"
+  },
+  {
+   "physical": 2212,
+   "word": 646,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:3209",
+   "operand": "OCT 01206"
+  },
+  {
+   "physical": 2738,
+   "word": 644,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "WAITLIST.agc:151",
+   "operand": "OCT 1204"
+  },
+  {
+   "physical": 3058,
+   "word": 143,
+   "callee": "ALARM2",
+   "callee_address": 2986,
+   "caller": "ALARM_AND_ABORT.agc:211",
+   "operand": "OCT 00217"
+  },
+  {
+   "physical": 4154,
+   "word": 848,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "FRESH_START_AND_RESTART.agc:871",
+   "operand": "OCT 1520"
+  },
+  {
+   "physical": 4936,
+   "word": 393,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P32-P33,_P72-P73.agc:503",
+   "operand": "OCT 611"
+  },
+  {
+   "physical": 5607,
+   "word": 583,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "FRESH_START_AND_RESTART.agc:467",
+   "operand": "OCT 1107"
+  },
+  {
+   "physical": 6319,
+   "word": 139,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:406",
+   "operand": "OCT 213"
+  },
+  {
+   "physical": 6503,
+   "word": 135,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:752",
+   "operand": "OCT 207"
+  },
+  {
+   "physical": 6547,
+   "word": 140,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:858",
+   "operand": "OCT 214"
+  },
+  {
+   "physical": 6569,
+   "word": 138,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:908",
+   "operand": "OCT 212"
+  },
+  {
+   "physical": 6574,
+   "word": 581,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:938",
+   "operand": "OCT 1105"
+  },
+  {
+   "physical": 6579,
+   "word": 582,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:945",
+   "operand": "OCT 1106"
+  },
+  {
+   "physical": 6690,
+   "word": 78,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:1123",
+   "operand": "OCT 00116"
+  },
+  {
+   "physical": 6698,
+   "word": 78,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:1134",
+   "operand": "OCT 00116"
+  },
+  {
+   "physical": 7180,
+   "word": 649,
+   "callee": "BAILOUT",
+   "callee_address": 4077,
+   "caller": "SXTMARK.agc:100",
+   "operand": "OCT 01211"
+  },
+  {
+   "physical": 7192,
+   "word": 647,
+   "callee": "BAILOUT",
+   "callee_address": 4077,
+   "caller": "SXTMARK.agc:112",
+   "operand": "OCT 01207"
+  },
+  {
+   "physical": 7273,
+   "word": 75,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "SXTMARK.agc:272",
+   "operand": "OCT 113"
+  },
+  {
+   "physical": 7312,
+   "word": 82,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "SXTMARK.agc:370",
+   "operand": "OCT 122"
+  },
+  {
+   "physical": 7315,
+   "word": 76,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "SXTMARK.agc:373",
+   "operand": "OCT 114"
+  },
+  {
+   "physical": 7371,
+   "word": 74,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "SXTMARK.agc:473",
+   "operand": "OCT 112"
+  },
+  {
+   "physical": 7380,
+   "word": 72,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "SXTMARK.agc:485",
+   "operand": "OCT 110"
+  },
+  {
+   "physical": 7557,
+   "word": 134,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:75",
+   "operand": "OCT 00206"
+  },
+  {
+   "physical": 7583,
+   "word": 136,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:113",
+   "operand": "OCT 210"
+  },
+  {
+   "physical": 7679,
+   "word": 137,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:241",
+   "operand": "OCT 211"
+  },
+  {
+   "physical": 7811,
+   "word": 138,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:423",
+   "operand": "OCT 212"
+  },
+  {
+   "physical": 8083,
+   "word": 648,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:838",
+   "operand": "OCT 1210"
+  },
+  {
+   "physical": 8091,
+   "word": 648,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:855",
+   "operand": "OCT 1210"
+  },
+  {
+   "physical": 8221,
+   "word": 80,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "T4RUPT_PROGRAM.agc:1351",
+   "operand": "OCT 00120"
+  },
+  {
+   "physical": 8349,
+   "word": 81,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "SXTMARK.agc:674",
+   "operand": "OCT 00121"
+  },
+  {
+   "physical": 8720,
+   "word": 834,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:822",
+   "operand": "OCT 1502"
+  },
+  {
+   "physical": 9735,
+   "word": 280,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "ORBITAL_INTEGRATION.agc:327",
+   "operand": "OCT 00430"
+  },
+  {
+   "physical": 10161,
+   "word": 273,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "ORBITAL_INTEGRATION.agc:797",
+   "operand": "OCT 421"
+  },
+  {
+   "physical": 11243,
+   "word": 391,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "CONIC_SUBROUTINES.agc:1763",
+   "operand": "OCT 00607"
+  },
+  {
+   "physical": 12224,
+   "word": 963,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "INTEGRATION_INITIALIZATION.agc:1101",
+   "operand": "OCT 1703"
+  },
+  {
+   "physical": 12382,
+   "word": 263,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P51-P53.agc:518",
+   "operand": "OCT 407"
+  },
+  {
+   "physical": 12860,
+   "word": 136,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P51-P53.agc:1461",
+   "operand": "OCT 210"
+  },
+  {
+   "physical": 13416,
+   "word": 261,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P51-P53.agc:255",
+   "operand": "OCT 405"
+  },
+  {
+   "physical": 16526,
+   "word": 775,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P40-P47.agc:1781",
+   "operand": "OCT 01407"
+  },
+  {
+   "physical": 20219,
+   "word": 257,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "INFLIGHT_ALIGNMENT_ROUTINES.agc:208",
+   "operand": "OCT 00401"
+  },
+  {
+   "physical": 22935,
+   "word": 790,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P61-P67.agc:640",
+   "operand": "OCT 01426"
+  },
+  {
+   "physical": 22938,
+   "word": 791,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P61-P67.agc:644",
+   "operand": "OCT 01427"
+  },
+  {
+   "physical": 27207,
+   "word": 392,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "P37,P70.agc:1313",
+   "operand": "OCT 00610"
+  },
+  {
+   "physical": 28224,
+   "word": 896,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:836",
+   "operand": "OCT 1600"
+  },
+  {
+   "physical": 28227,
+   "word": 897,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:839",
+   "operand": "OCT 1601"
+  },
+  {
+   "physical": 28254,
+   "word": 849,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:875",
+   "operand": "OCT 1521"
+  },
+  {
+   "physical": 28571,
+   "word": 898,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1248",
+   "operand": "OCT 01602"
+  },
+  {
+   "physical": 29736,
+   "word": 393,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "P34-P35,_P74-P75.agc:233",
+   "operand": "OCT 611"
+  },
+  {
+   "physical": 30383,
+   "word": 84,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "TPI_SEARCH.agc:556",
+   "operand": "OCT 00124"
+  },
+  {
+   "physical": 32049,
+   "word": 649,
+   "callee": "BAILOUT",
+   "callee_address": 4077,
+   "caller": "P20-P25.agc:502",
+   "operand": "OCT 01211"
+  },
+  {
+   "physical": 32336,
+   "word": 133,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "SERVICER207.agc:447",
+   "operand": "OCT 00205"
+  },
+  {
+   "physical": 33508,
+   "word": 833,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2784",
+   "operand": "OCT 01501"
+  },
+  {
+   "physical": 35975,
+   "word": 77,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "EXTENDED_VERBS.agc:293",
+   "operand": "OCT 00115"
+  },
+  {
+   "physical": 35981,
+   "word": 79,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "EXTENDED_VERBS.agc:301",
+   "operand": "OCT 00117"
+  },
+  {
+   "physical": 36086,
+   "word": 849,
+   "callee": "POODOO",
+   "callee_address": 3025,
+   "caller": "EXTENDED_VERBS.agc:497",
+   "operand": "OCT 1521"
+  },
+  {
+   "physical": 36260,
+   "word": 262,
+   "callee": "ALARM",
+   "callee_address": 2984,
+   "caller": "EXTENDED_VERBS.agc:923",
+   "operand": "OCT 00406"
+  },
+  {
+   "physical": 36535,
+   "word": 578,
+   "callee": "ALARM2",
+   "callee_address": 2986,
+   "caller": "AGC_BLOCK_TWO_SELF-CHECK.agc:175",
+   "operand": "OCT 01102"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "milestone": "lm-interbank-transfer",
+ "lane": "A",
+ "commit": "7900c29c2f42042b52504f69df765bfb24871da5",
+ "interface": "docs/NATIVE_TRANSFER_ABI.md",
+ "host_strict": "lm-interbank-transfer: 1792 cases, 15826 checks, 0 failures",
+ "host_sanitizer": "lm-interbank-transfer: 1792 cases, 15826 checks, 0 failures",
+ "c64_vice": "PASS: VICE PAL lm-interbank-transfer.prg: 448 checks, 0 failures",
+ "native_files": {
+  "src/agc_transfer.c": "2ef6da5015ed204ff790dd86c343e61882230704f02eb07b8d45c3789af6010f",
+  "src/lm_interbank_routines.c": "963d791ffaedf1eb3ae523d9a8fe776eefb28c72ee22a124f15477f6b6c02384",
+  "src/lm_interbank_sites.inc": "326e3f5d3f8ed9a06ce9c6e69cacc249ee3aac393a34fd8c61b4f786028ca8f2",
+  "src/lm_interbank.c": "b1653fe51d0c1ef5d0df7feedf3dabbf7a99b028273c624b62087cdb97d29838"
+ }
+}

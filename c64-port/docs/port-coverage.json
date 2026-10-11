@@ -179,6 +179,15 @@
           ],
           "scope": "Complete containing ALARM_AND_ABORT local source body recommendation within reviewed valid original compiled caller/data contracts. Authentic external callee/source-return handoffs preserved. Full applications and external bodies are separate acceptance requirements.",
           "verification": "docs/COMANCHE_ALARM_BODY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_alarm_sites.c",
+            "src/cm_alarm_sites.inc",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Inline alarm codes after all 62 genuine TC ALARM/ALARM2/BAILOUT/POODOO sites as compiled constants generated from the source listing; native entries take them from the site table, never from the rope. Non-site fixed Q is out of scope.",
+          "verification": "docs/CM-ALARM-SITES.md"
         }
       ],
       "complete_native_coverage": {
@@ -189,7 +198,7 @@
           "sole_persistent_state": "2048 canonical physical erasable words; A/L/Q raw16, other words15, coherent EB/FB/BB and ZERO=0",
           "ordinary_TC_inline_or_return": "Q0100..7775, banked physical code storage>=0100. These are compiled program descriptors; no decoder/reserved CPU word execution. Caller owns frame/producer exclusion across internal overlay swaps.",
           "alarm_codes": "normal15-bit codes from inline original words, CA MPAC, T4 CCS result, or actual R02 BIT4/OCT220 arithmetic. Raw overflowing VARALARM/BORTENT A would skip source caller-save and target reserved CPU descriptors; no original mission producer supplies it. PRIOLARM broader raw16 behavior separately proved.",
-          "fixed_read_domain": "all40 physical banks/40960 addresses through original-layout passive immutable reader, including zero unpopulated banks. No executable credit from those words.",
+          "fixed_read_domain": "inline alarm words at fixed Q come from the compiled cm_alarm_sites table (62 genuine call sites, checked against source text and rope at generation); a fixed Q that is no genuine site is out of scope. No runtime rope reader is linked.",
           "ISR_metadata": "ALARM entries preserve separate caller ISR metadata; full original complete-entry/directALARM2 oracles assert both contexts where applicable. WHIMPER explicitly clears actualISR via passed metadata and preserves real RESUME frame semantics.",
           "diagnostic_failure_locations": "ALARM2 surviving A is recorded data, all normal15 values certified. Actual selfcheck ERRORS producer independently records all normal15 oldQ register values including low descriptors/negative/-0, then genuineTC overwritesQ3267 before returning. The old data is never program dispatch.",
           "priority_display_caller": "actualBANKCALL PRIOLARM pair with ordinary saved fixed caller and coherent saved bank; genuine sourceP51 CAF404 caller accepts immediate2202return and actualEND admission, including resource failure. Its upstream mission and queued payload bodies are external to this file.",
@@ -218,6 +227,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-alarm-wholefile-review.json",
             "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/cm-alarm-sites/cm-alarm-sites-proof.json",
+            "sha256": "138ef51a1d5bdc8ecbbd3c51ccc69ee50fa3eb16b8c42b54576f83f8f7011f8d"
           }
         }
       }
@@ -920,6 +933,15 @@
           ],
           "scope": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced; all14 entries/all76 emitted words including negative-overflow register-Q fault frontier before external fetch",
           "verification": "docs/COMANCHE-INTERBANK.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interbank_routines.c",
+            "src/cm_interbank_sites.inc",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 354 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "verification": "docs/CM-INTERBANK-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -952,6 +974,10 @@
           "independent_review": {
             "path": "evidence/cm-interbank-complete-independent-review.txt",
             "sha256": "3b6c886d45aa667874a445b290c59ebd13fe2083be4efb5a2a2a7cf313938421"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/cm-interbank-transfer/cm-interbank-transfer-proof.json",
+            "sha256": "14dfcb95ab08b75cf44ceb690fc961448d9d8b9a6ef517a58b451a26298d2a3b"
           }
         }
       }
@@ -2340,6 +2366,14 @@
           ],
           "scope": "All containing-source public entries, internal paths and original constants within reviewed caller contracts; external source continuations retain their actual handoffs.",
           "verification": "docs/SYSTEM_TEST_LEAD_INS.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "E/BKCALL, its returns, E/CALL, resume, E/JOBWAK, EXIT and the INTPRET forms registered as native routines; E/BKCALL and E/CALL round trips run through the trampoline into a native callee and back.",
+          "verification": "docs/CM-STANDARD-LEAD-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -2363,6 +2397,10 @@
           "c64_execution_results": {
             "path": "evidence/standard-lead-proof.json",
             "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/cm-standard-lead-transfer/cm-standard-lead-transfer-proof.json",
+            "sha256": "a784add92f43a1763ce30c103b46f931a9ac612c356fb4b0eb30085a9f373c66"
           }
         }
       }
@@ -3382,6 +3420,15 @@
           ],
           "scope": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced; all14 entries/all76 emitted words including negative-overflow register-Q fault frontier before external fetch",
           "verification": "docs/LUMINARY-INTERBANK.md"
+        },
+        {
+          "native_files": [
+            "src/lm_interbank_routines.c",
+            "src/lm_interbank_sites.inc",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 448 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "verification": "docs/LM-INTERBANK-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -3414,6 +3461,10 @@
           "independent_review": {
             "path": "evidence/lm-interbank-independent-review.txt",
             "sha256": "3056dd280e3361436d2626a1149a0876f860f8402c250c46f1fff2bbcbf47a2d"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/lm-interbank-transfer/lm-interbank-transfer-proof.json",
+            "sha256": "b235d6f6f38ca482201f7ba7b8f245d6b9f37ded04cdb6671fad07bd4a50df3d"
           }
         }
       }
@@ -4436,7 +4487,7 @@
       "sha256": "1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59",
       "bytes": 7458,
       "lines": 293,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -4444,33 +4495,10 @@
             "src/fixed_data_lm.inc",
             "include/fixed_data_symbols.h"
           ],
-          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "scope": "Every data-emitting source line and alias mapped as constants. Not complete: no native RESTARTS consumer selects these entries and transfers to their 2CADRs (auditor 2026-10-11, finding 4); see docs/NATIVE_TRANSFER_ABI.md.",
           "verification": "docs/FIXED_DATA.md"
         }
-      ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/fixed-data-certificates.json",
-            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/fixed-data-audit.json.gz",
-            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/fixed-data-host.log",
-            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
-          },
-          "c64_execution_results": {
-            "path": "evidence/fixed-data-vice-result.txt",
-            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
-          }
-        },
-        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
-      }
+      ]
     },
     {
       "path": "Luminary099/RTB_OP_CODES.agc",
@@ -4781,6 +4809,14 @@
           ],
           "scope": "All containing-source public entries, internal paths and original constants within reviewed caller contracts; external source continuations retain their actual handoffs.",
           "verification": "docs/SYSTEM_TEST_LEAD_INS.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "E/BKCALL, its returns, E/CALL, resume, E/JOBWAK, EXIT and the INTPRET forms registered as native routines; E/BKCALL and E/CALL round trips run through the trampoline into a native callee and back.",
+          "verification": "docs/LM-STANDARD-LEAD-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -4804,6 +4840,10 @@
           "c64_execution_results": {
             "path": "evidence/standard-lead-proof.json",
             "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/lm-standard-lead-transfer/lm-standard-lead-transfer-proof.json",
+            "sha256": "b409f3f3d3175ebca780db93644e398390315f64e6fb2ea0bcc9ddcf3b9ce8bf"
           }
         }
       }

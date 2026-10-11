@@ -1,0 +1,17 @@
+{
+ "milestone": "lm-standard-lead-transfer",
+ "lane": "A",
+ "commit": "7900c29c2f42042b52504f69df765bfb24871da5",
+ "interface": "docs/NATIVE_TRANSFER_ABI.md",
+ "host_strict": "lm-standard-lead-transfer: 4096 cases (3072 stages accepted, 511 E/BKCALL and 384 E/CALL round trips), 10241 checks, 0 failures",
+ "host_sanitizer": "lm-standard-lead-transfer: 4096 cases (3072 stages accepted, 511 E/BKCALL and 384 E/CALL round trips), 10241 checks, 0 failures",
+ "c64_vice": "PASS: VICE PAL lm-standard-lead-transfer.prg: 896 checks, 0 failures",
+ "native_files": {
+  "src/agc_transfer.c": "2ef6da5015ed204ff790dd86c343e61882230704f02eb07b8d45c3789af6010f",
+  "src/standard_lead_routines.c": "7f5eefa01de50044a8eff53303da3e2ef796407ea9626ccfdda276a45a75e3c0",
+  "src/standard_lead.c": "9c6424c15aaaf69aba30c8686dda587a5fc178584504c42fb2b9a9d21a7856a7",
+  "src/standard_lead_interp.c": "21265369e4e4b3ec19e60e5e97db75c3fddd54606659bc156082f225131e91f6",
+  "src/standard_lead_bank.c": "080da0b2dfa6c35407ce3616d4e55909b0a6b23dec4f0b78bb7d0276b0e764e3",
+  "src/standard_lead_wake.c": "2e50af7784d5a2f223f04a4c80dfd31e2c1591e376ce4f8bec1bab2c6a725377"
+ }
+}

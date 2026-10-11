@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-interbank-transfer",
+  "release": "evidence-cm-interbank-transfer",
+  "files": {
+    "cm-interbank-transfer-host.log": {
+      "sha256": "6896d80f5635d36e783596e127bbd2734c183546cdaa7829a18fb21fb6920f8f",
+      "bytes": 779,
+      "store": "release"
+    },
+    "cm-interbank-transfer-proof.json": {
+      "sha256": "14dfcb95ab08b75cf44ceb690fc961448d9d8b9a6ef517a58b451a26298d2a3b",
+      "bytes": 813,
+      "store": "tree"
+    },
+    "cm-interbank-transfer-sites.json": {
+      "sha256": "422e1ef654ed73cc70f5f28bc6ca184a5467750f797dbfe5b5fd6aba6b033955",
+      "bytes": 60296,
+      "store": "tree"
+    },
+    "cm-interbank-transfer-vice.log": {
+      "sha256": "2584d35c60eb780e17290ded4392db02eea29303ef25d7109d26025d0c9e32b5",
+      "bytes": 964,
+      "store": "release"
+    }
+  }
+}
