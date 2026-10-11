@@ -441,3 +441,5 @@ include tools/fixed_data.mk
 include tools/p66_fine_phases.mk
 
 include tools/p66_basic.mk
+
+include tools/dsky_nv_key.mk
