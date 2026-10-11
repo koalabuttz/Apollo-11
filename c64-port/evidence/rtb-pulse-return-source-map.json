@@ -1,0 +1,40 @@
+{
+  "lm": {
+    "source_file": "Luminary099/RTB_OP_CODES.agc",
+    "original_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/rtb-angles-source-audit.json",
+    "source_group_words": 1,
+    "words": [
+      {
+        "original_line": 157,
+        "bank": "10",
+        "address": "3711",
+        "physical_fixed_word": 9161,
+        "raw_octal": "16061",
+        "native_group": "outside_group",
+        "status": "outside_this_packet"
+      }
+    ],
+    "frontier": "Original trailing PULSEIMU TCF DANZIG after external bank return. Preserved pending interpreter state; no DANZIG instruction fetched."
+  },
+  "cm": {
+    "source_file": "Comanche055/RT8_OP_CODES.agc",
+    "original_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/rtb-angles-source-audit.json",
+    "source_group_words": 1,
+    "words": [
+      {
+        "original_line": 200,
+        "bank": "22",
+        "address": "3657",
+        "physical_fixed_word": 19375,
+        "raw_octal": "16030",
+        "native_group": "outside_group",
+        "status": "outside_this_packet"
+      }
+    ],
+    "frontier": "Original trailing PULSEIMU TCF DANZIG after external bank return. Preserved pending interpreter state; no DANZIG instruction fetched."
+  }
+}

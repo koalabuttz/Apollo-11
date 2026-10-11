@@ -1359,3 +1359,7 @@ Qualify both original generic DSPMMJB over every0 through99 mode negative or bla
 ## Compose original gyro idle wake and helper admission
 
 Qualify both mission gyro wake and selected helper admission against262144 complete original strict sanitizer states and128 C64 states while preserving genuine source handoffs and opaque unrelated memory. See `docs/NATIVE-GYRO-WAKE.md`.
+
+## Qualify original RTB gyro-call return continuations
+
+Translate both actual trailing PULSEIMU return words with raw-register normalization and original DANZIG handoffs against131072 complete source strict sanitizer states and64 C64 states. See `docs/NATIVE-RTB-PULSE-RETURN.md`.

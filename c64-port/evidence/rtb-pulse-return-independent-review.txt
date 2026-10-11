@@ -1,0 +1,9 @@
+Independent read-only source review by /root/general_division, 2026-10-11.
+
+No discrepancy found. Original trailing PULSEIMU word is literally TCF DANZIG (LM line157 bank10,3711 raw16061; CM3657 raw16030). Native preserves A/Q/LOC/EDOP/IRQ/SUPER and unowned canonical words, normalizes L as original engine, and stops true DANZIG06061/06030. No decoder or new Executive check. Reviewed within declared nonnull ordinary canonical/fixed source bank/producer domain. No external gyro callee or hardware body claimed.
+
+Reviewed identities:
+482bed6da8150322c1effdf55811960be3dec5713d7417baff3a643b34d3cca6  src/rtb_pulse_return.c
+b000c161efbbc3319bad9d88f53a56f7a360104b2ed23ca4ea076963998adc29  include/rtb_pulse_return.h
+c54fbda42eb735925b76a548bb738862b01877714223e22ed7a811c4ff2e9e10  tests/rtb_pulse_return_cases.c
+582f9e5c27f43c0eccc54a5e6f828397c3e1bd29c188be923d50a0e179b33fac  build/rtb-pulse-return-source-map.json

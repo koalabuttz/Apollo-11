@@ -1,0 +1,76 @@
+{
+  "complete_states": 131072,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER"
+  ],
+  "source_group_words": {
+    "lm": 1,
+    "cm": 1
+  },
+  "source_map": "evidence/rtb-pulse-return-source-map.json",
+  "logical_complete_streams": {
+    "lm": {
+      "original_assembly": {
+        "object": "evidence/rtb-pulse-return-lm-complete.states.xz",
+        "decoded_sha256": "0cad3b032a3ef77b5958f32c54bb8a09c069bd457a07cfe500a749492d1b61d4",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-pulse-return-lm-complete.states.xz",
+        "decoded_sha256": "0cad3b032a3ef77b5958f32c54bb8a09c069bd457a07cfe500a749492d1b61d4",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-pulse-return-lm-complete.states.xz",
+        "decoded_sha256": "0cad3b032a3ef77b5958f32c54bb8a09c069bd457a07cfe500a749492d1b61d4",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm": {
+      "original_assembly": {
+        "object": "evidence/rtb-pulse-return-cm-complete.states.xz",
+        "decoded_sha256": "00fd9cc64ce25ea8cb68c6c00b21760c754c343a908868dfd1b6d9eae97ef459",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-pulse-return-cm-complete.states.xz",
+        "decoded_sha256": "00fd9cc64ce25ea8cb68c6c00b21760c754c343a908868dfd1b6d9eae97ef459",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-pulse-return-cm-complete.states.xz",
+        "decoded_sha256": "00fd9cc64ce25ea8cb68c6c00b21760c754c343a908868dfd1b6d9eae97ef459",
+        "decoded_bytes": 269090816
+      }
+    }
+  },
+  "actual_C64": {
+    "lm": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 3512,
+      "loaded_end": "0x15b6",
+      "hardware_stack": 14,
+      "software_stack": 51,
+      "compiler_ZP": 0
+    },
+    "cm": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 3512,
+      "loaded_end": "0x15b6",
+      "hardware_stack": 14,
+      "software_stack": 51,
+      "compiler_ZP": 0
+    }
+  },
+  "source_audit_dependency": "evidence/rtb-angles-source-audit.json",
+  "independent_review": {
+    "path": "evidence/rtb-pulse-return-independent-review.txt",
+    "sha256": "daf658cf66d31c531df14e88991ff819dc6d48f9c3ce7865af9df357e9203efe"
+  },
+  "qualification": "Original trailing PULSEIMU TCF DANZIG after actual external return; ordinary canonical/source bank coherent registers, rawA/L, externalIRQ/SUPER, excluded producers. Pending interpreter controls retained; DANZIG body and external IMUPULSE not executed.",
+  "decoded_stream_identity": "Each mission original stream is retained once as deterministic XZ. Strict and full sanitized streams directly compared with decoded original under pipefail."
+}

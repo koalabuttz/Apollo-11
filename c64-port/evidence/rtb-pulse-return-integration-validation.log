@@ -1,0 +1,12 @@
+python3 tools/rtb_pulse_return_port_host.py --cc "cc"
+32 complete original PULSEIMU return states mission0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 0cad3b032a3ef77b5958f32c54bb8a09c069bd457a07cfe500a749492d1b61d4
+32 complete original PULSEIMU return states mission1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 00fd9cc64ce25ea8cb68c6c00b21760c754c343a908868dfd1b6d9eae97ef459
+PASS full retained original source states and frozen states
+python3 tools/rtb_pulse_return_port_host.py --cc "cc" --sanitize
+32 complete original PULSEIMU return states mission0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 0cad3b032a3ef77b5958f32c54bb8a09c069bd457a07cfe500a749492d1b61d4
+32 complete original PULSEIMU return states mission1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 00fd9cc64ce25ea8cb68c6c00b21760c754c343a908868dfd1b6d9eae97ef459
+PASS full retained original source states and frozen states under full ASAN/UBSAN

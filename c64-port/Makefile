@@ -874,3 +874,5 @@ include tools/dsky_lamp_release.mk
 include tools/dsky_mode_job.mk
 
 include tools/imu_pulse_wake_integration.mk
+
+include tools/rtb_pulse_return_integration.mk
