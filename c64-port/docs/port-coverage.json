@@ -374,6 +374,15 @@
           ],
           "scope": "Canonical ENDOFJOB and DANZIG complete state selection; remaining admissions, change paths and full-file review remain pending.",
           "verification": "docs/COMANCHE_BASIC_FINISH.md"
+        },
+        {
+          "native_files": [
+            "src/cm_basic_sleep.c",
+            "src/cm_basic_wake.c",
+            "src/cm_idle_dispatch.c"
+          ],
+          "scope": "Actual JOBWAKE, JOBSLEEP and idle/positive job successor selection, including continuous display sleep/wake/sleep composition. Whole Executive admission/exchange and source review still pending.",
+          "verification": "docs/COMANCHE-DISPLAY-SLEEP-LIFECYCLE.md"
         }
       ]
     },
@@ -563,6 +572,13 @@
           ],
           "scope": "Actual LONGCALL/LONGCYCL/LONGRTRN/GETCADR bank transfers; remaining interbank entries require coverage.",
           "verification": "docs/COMANCHE_LONGCALL.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interbank.c"
+          ],
+          "scope": "All fourteen named interbank groups in their qualified nonoverflow/caller address domains. Arbitrary DSPFMEM/self-check fixed data, TS-overflow branches and remaining full-domain closure are still pending.",
+          "verification": "docs/COMANCHE_INTERBANK.md"
         }
       ]
     },
@@ -572,8 +588,18 @@
       "sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
       "bytes": 78524,
       "lines": 3063,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_danzig.c",
+            "src/cm_rotation.c",
+            "src/cm_powered_fixed_return.c"
+          ],
+          "scope": "Actual DANZIG/NEWOPS reentry and selected source arithmetic/GOTO+4 return helpers under qualified caller contracts. Complete interpreter operation/control and scheduling coverage remains pending.",
+          "verification": "docs/COMANCHE-POWERED-FLIGHT.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
@@ -659,8 +685,17 @@
       "sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
       "bytes": 3853,
       "lines": 136,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_keyboard_irq.c",
+            "src/cm_keyboard_runtime.c"
+          ],
+          "scope": "Actual KEYRUPT/KEYCOM admission, hardware RESUME and physical GETIN to genuine CHARIN/ENDOJOB lifecycle. UPRUPT and remaining source paths still need coverage.",
+          "verification": "docs/COMANCHE-KEYBOARD-RUNTIME.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
@@ -917,6 +952,13 @@
           ],
           "scope": "Actual numeric CHARIN/NUM arithmetic and mission-specific editing/return words; other source paths remain pending.",
           "verification": "docs/COMANCHE-NUMERIC-ENTRY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_charin_sign.c"
+          ],
+          "scope": "Actual +/- SIGNTEST, sign lamps, DSPIN/FIXCLPAS and source ENDOJOB. Complete Pinball operator routines and fixed-memory display formatting still pending.",
+          "verification": "docs/DSKY-SIGN-ENTRY.md"
         }
       ]
     },
@@ -1454,6 +1496,13 @@
           ],
           "scope": "Actual WAITLIST, task transfer, enabled housekeeping and delay returns; remaining pending/alarm/twiddle paths and hardware resume require separate coverage.",
           "verification": "docs/COMANCHE_WAITLIST_IMAGE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_waitlist_extended.c"
+          ],
+          "scope": "Actual TWIDDLE and full ordinary positive delay domain, with source alarm target transfers. Alarm continuation bodies and complete timed service coverage remain pending.",
+          "verification": "docs/COMANCHE_WAITLIST_EXTENDED.md"
         }
       ]
     },
@@ -2582,6 +2631,13 @@
           ],
           "scope": "Actual busy and keyboard entry groups; full Pinball source remains pending.",
           "verification": "docs/LM-PINBALL-BUSY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_charin_sign.c"
+          ],
+          "scope": "Actual +/- SIGNTEST, sign lamps, DSPIN/FIXCLPAS and source ENDOJOB. Numeric/VN bodies and physical keyboard groups separately qualify; complete Pinball operator routines still pending.",
+          "verification": "docs/DSKY-SIGN-ENTRY.md"
         }
       ]
     },
@@ -2984,8 +3040,17 @@
       "sha256": "8c5c8b125bad79fdce8838bea3871481942d9b75694dc538bd032d54e63e952f",
       "bytes": 7460,
       "lines": 335,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/p66_launch_phased.c",
+            "src/p66_direct_launch.c"
+          ],
+          "scope": "Actual STARTP66 setup/bias/vertical fixed-call seams and direct source continuation without invented Executive poll. This is P66 startup only; the complete P63/P64/P65/P67 and remaining landing source is still unported.",
+          "verification": "docs/P66-STARTUP-OVERLAYS.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
