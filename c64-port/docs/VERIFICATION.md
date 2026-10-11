@@ -1760,3 +1760,7 @@ A clean isolated export of exact commit`358be42603f2df3c51ffe5be9ad0560ca1f56be6
 ## Whole Comanche RT8 source translation
 
 All206 local emitted words now have independently checked native ownership, original source, complete sanitizer and real C64 evidence. Genuine outside-file handoffs remain explicit; both full applications stay unverified. See `docs/CM-RT8-WHOLE-SOURCE.md`.
+
+## Qualify canonical vector products sums and differences
+
+Translate original VXSC VAD and VSU basic bodies including live canonical aliases and passive fixed operands against131072 complete source native sanitizer states and512 C64 states. See `docs/NATIVE-SBAND-LINEAR-VECTORS.md`.

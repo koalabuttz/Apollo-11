@@ -1,0 +1,55 @@
+{
+  "status": "qualified canonical VXSC/VAD/VSU; both containing antenna and INTERPRETER files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 131072,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 131072,
+    "start": 0,
+    "end": 131072,
+    "record_bytes": 4106,
+    "decoded_sha256": "ae2d253c3c7fc090ef81373f426d1a06258a58f479cb0adfac2a008916b59c3f",
+    "decoded_bytes": 538181632,
+    "canonical_original_archive": "evidence/sband-linear-source.snapshots.bin.xz",
+    "compressed_sha256": "aad0186c14c6d61f6e57b70b16f2fb04a806cbfa63d47f2413dacb2b5d20f104",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 512,
+    "prg_bytes": 29511,
+    "load_end": 31558,
+    "bss_end": 39750,
+    "mailbox": "a5000200",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups": [
+    "Both missions, vector/scalar multiply, add/subtract, live ERA/fixed input data; sixteen groups"
+  ],
+  "source_map": "evidence/sband-linear-source-map.json",
+  "original_sources": {
+    "Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b"
+  },
+  "native_source_sha256": "4b9931a334d54f09aa0892e77187843935b7ef93317fc9c7cb018932281ad727",
+  "native_header_sha256": "ab84842eae873f97cfdeeeef775a8602dfb55d6a00f35b5ab504e35dc64b4002",
+  "independent_review": {
+    "path": "evidence/sband-linear-independent-review.txt",
+    "sha256": "d7f8aa828acf368a52d7621a2f12d8c5e8ee9b2efa4372987bd34a2ad2b24e78"
+  },
+  "limitations": [
+    "Only explicit original VXSC/VAD/VSU bodies plus their numerical helpers; no containing-file completion.",
+    "MODE0/-1 multiply or MODE-1 add/subtract, ordinary RAM/Q and raw16 A/L, coherent banks/ZERO; producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ]
+}
