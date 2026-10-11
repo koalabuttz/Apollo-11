@@ -1,0 +1,215 @@
+{
+  "complete_states": 393216,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14"
+  ],
+  "source_group_words": {
+    "lm": 51,
+    "cm": 51
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/imu-pulse-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-lm0-complete.states.xz",
+        "decoded_sha256": "9cbf8e1c0fd602ea6b5c7f31a874565fbf93e2536429099eb7cfd0edf08a4c7a",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-lm0-complete.states.xz",
+        "decoded_sha256": "9cbf8e1c0fd602ea6b5c7f31a874565fbf93e2536429099eb7cfd0edf08a4c7a",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-lm0-complete.states.xz",
+        "decoded_sha256": "9cbf8e1c0fd602ea6b5c7f31a874565fbf93e2536429099eb7cfd0edf08a4c7a",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-lm1-complete.states.xz",
+        "decoded_sha256": "f1b1b50cdb849410638fa063f8ae1d3362a8248a228c3e7267ff06247f73a92a",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-lm1-complete.states.xz",
+        "decoded_sha256": "f1b1b50cdb849410638fa063f8ae1d3362a8248a228c3e7267ff06247f73a92a",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-lm1-complete.states.xz",
+        "decoded_sha256": "f1b1b50cdb849410638fa063f8ae1d3362a8248a228c3e7267ff06247f73a92a",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm2": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-lm2-complete.states.xz",
+        "decoded_sha256": "8d5e73d2174890caa45ca451aa6ca51d3e2128cf7a719909fe2f4aac88e826ee",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-lm2-complete.states.xz",
+        "decoded_sha256": "8d5e73d2174890caa45ca451aa6ca51d3e2128cf7a719909fe2f4aac88e826ee",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-lm2-complete.states.xz",
+        "decoded_sha256": "8d5e73d2174890caa45ca451aa6ca51d3e2128cf7a719909fe2f4aac88e826ee",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-cm0-complete.states.xz",
+        "decoded_sha256": "0002a77d7d2a8d8480a09b74ec8832a48eafb990161a776e4072dc2f6f6cab7c",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-cm0-complete.states.xz",
+        "decoded_sha256": "0002a77d7d2a8d8480a09b74ec8832a48eafb990161a776e4072dc2f6f6cab7c",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-cm0-complete.states.xz",
+        "decoded_sha256": "0002a77d7d2a8d8480a09b74ec8832a48eafb990161a776e4072dc2f6f6cab7c",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-cm1-complete.states.xz",
+        "decoded_sha256": "0cbaf0c81bfd0c02aae3dc8209e563b60dc28a0e4649f6b8d845e80e1f0f39dc",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-cm1-complete.states.xz",
+        "decoded_sha256": "0cbaf0c81bfd0c02aae3dc8209e563b60dc28a0e4649f6b8d845e80e1f0f39dc",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-cm1-complete.states.xz",
+        "decoded_sha256": "0cbaf0c81bfd0c02aae3dc8209e563b60dc28a0e4649f6b8d845e80e1f0f39dc",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm2": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-cm2-complete.states.xz",
+        "decoded_sha256": "04597f4a7e85df984e9b925d0cc528eff96e834ae27dfc80d873a8afb1b9f59b",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-cm2-complete.states.xz",
+        "decoded_sha256": "04597f4a7e85df984e9b925d0cc528eff96e834ae27dfc80d873a8afb1b9f59b",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-cm2-complete.states.xz",
+        "decoded_sha256": "04597f4a7e85df984e9b925d0cc528eff96e834ae27dfc80d873a8afb1b9f59b",
+        "decoded_bytes": 269484032
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 5169,
+      "loaded_end": "0x1c2f",
+      "hardware_stack": 14,
+      "software_stack": 76,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 9997,
+      "loaded_end": "0x2f0b",
+      "hardware_stack": 19,
+      "software_stack": 146,
+      "compiler_ZP": 0
+    },
+    "lm2": {
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "PRG_bytes": 12857,
+      "loaded_end": "0x3a37",
+      "hardware_stack": 19,
+      "software_stack": 153,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "mailbox": "a500002020",
+      "PRG_bytes": 5163,
+      "loaded_end": "0x1c29",
+      "hardware_stack": 14,
+      "software_stack": 76,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "mailbox": "a500002021",
+      "PRG_bytes": 10037,
+      "loaded_end": "0x2f33",
+      "hardware_stack": 22,
+      "software_stack": 155,
+      "compiler_ZP": 0
+    },
+    "cm2": {
+      "complete_states": 32,
+      "mailbox": "a500002022",
+      "PRG_bytes": 12879,
+      "loaded_end": "0x3a4d",
+      "hardware_stack": 22,
+      "software_stack": 165,
+      "compiler_ZP": 0
+    }
+  },
+  "source_branches": {
+    "lm0": {
+      "1": 16384,
+      "0": 16384,
+      "2": 32768
+    },
+    "lm1": {
+      "0": 65536
+    },
+    "lm2": {
+      "2": 65536
+    },
+    "cm0": {
+      "1": 16384,
+      "0": 16384,
+      "2": 32768
+    },
+    "cm1": {
+      "0": 65536
+    },
+    "cm2": {
+      "2": 65536
+    }
+  },
+  "independent_review": {
+    "path": "evidence/imu-pulse-independent-review.txt",
+    "sha256": "91038b66f76dd5c6a5c2cbd718baa2b498998dc4459eb30c3d194d7d0d68f063"
+  },
+  "immutable_service_dependencies": {
+    "src/lm_waitlist_image.c": "cb71a02a022487ab647188310765da3f7ca75def5e563918d02f07da6c286fbf",
+    "src/cm_waitlist_image.c": "f8d1e9a4ec972803ff9cb71fbbdfc65138637fdabae41ed5acb80ec5d23df080",
+    "src/waitlist.c": "f714a30118227cd6f9d4dd4f613694cfcb89b089c504666903906a7a9f651d51",
+    "src/cm_waitlist.c": "ff80e11e7934a3d494a3a85144925335af0234d1f036be6f072c778d05b45d45",
+    "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d"
+  },
+  "qualification": "Both original IMUPULSE lead-ins through WAITLIST/JOBSLEEP/caged return, successful literal WAITLIST registration, and complete free gyro reservation/three sign-agreement exchanges/MODEEXIT/SWRETURN return. Idle optics/gyro/coarse output counters, coherent ordinary banks, initialized nonnegative LGYRO. Suffix six words within E4..E7 and valid nonfull queue; corpus uses empty initialized queues with varied TIME3. No busy sleeper lifecycle or deferred hardware task body claim. No whole RTB/RT8, whole IMU, or resident executable certificate.",
+  "target_warning_exception": "Frozen WAITLIST helper enum status signedness warnings remain visible under -Wno-error=sign-conversion; all host warnings remain errors.",
+  "decoded_stream_identity": "Each of six originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with pipefail; no duplicate raw full streams retained."
+}

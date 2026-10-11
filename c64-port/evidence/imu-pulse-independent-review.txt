@@ -1,0 +1,22 @@
+Read-only independent review by /root/general_division, 2026-10-11.
+
+Reviewed include/imu_pulse.h, src/imu_pulse.c and src/imu_pulse_service.c
+against both byte-original IMU_MODE_SWITCHING_ROUTINES source files.
+No arithmetic/control discrepancy found within declared domains.
+Busy saved BUF2→MPAC and old MPAC minor→L debris matches GYROBUSY;
+caged RELINT/SWRETURN exchange preserves source caller; successful WAITLIST
+literal task pairs and GWAKE2 return addresses are mission-specific.
+Reservation correctly swaps/saves EB, LGYRO keeps original command ECADR,
+descending three TPAGREE/DXCH exchanges retain source MPAC/signum/return
+debris; final MODEEXIT/SWRETURN restores old EB and caller FB, A=oldEB,
+Q0134. Header excludes busy sleep/deferred gyro task bodies and initialized
+negative-LGYRO/non-idle counter contexts. Existing frozen modules untouched.
+Nonnull/exclusion and command-disjointness are caller preconditions,
+not runtime-checked claims. No reviewer file edits.
+
+Reviewed implementation/source identities:
+3d67eabc8585c0df7f268ed23d7942899f3966ea3126c9f0fbda03c723f3de05  include/imu_pulse.h
+0ff9507e10dbf280c458c1ca2c6c806fc09dcc6f9fec459c58a53707fd90ffe4  src/imu_pulse.c
+174ce483ff6f24823d6e1282986012dbe136fd556c40240ba6997a4a816178cf  src/imu_pulse_service.c
+351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb  ../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc
+bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb  ../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc

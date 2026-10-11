@@ -1588,3 +1588,7 @@ Qualify native VXV and VPROJ with erasable aliases and immutable fixed operands 
 ## Fresh committed UNIT and recovery lifecycle host check
 
 A clean isolated export of exact commit`69975cb4258b52e6cdcb56d291bdb0622cee9aff` builds and passes every registered portable host `all`/`test` recipe, including both whole interbank and service routine files, full P66 recurrence, complete UNIT numerical groups, positive-zero Executive admission, operator request composition and uninterrupted Comanche abort lifecycle. The exporter uses exact Git objects and excludes uncommitted source. Its committed snapshot has39 complete source files; the full-port gate correctly rejects136 remaining files and both integrated applications. See `evidence/integration-unit-recovery-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
+
+## Compose original IMUPULSE lead in reservation and source returns
+
+Qualify original IMUPULSE lead in actual successful WAITLIST registration free command reservation TPAGREE exchanges and MODEEXIT SWRETURN against393216 complete original native sanitizer states plus192 C64 states. Root stream wrapper argument ordering was corrected before release and initial failure evidence retained; frozen service bytes are unchanged. Busy sleep and deferred gyro output tasks remain separate. See `docs/NATIVE-IMUPULSE.md`.

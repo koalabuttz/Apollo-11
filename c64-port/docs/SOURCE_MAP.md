@@ -1179,3 +1179,7 @@ Qualify BAILOUT POODOO CCSHOLE snapshot BORTENT flag phase cleanup WHIMPER ENEMA
 ## Translate original shared vector cross product and projection dependencies
 
 Qualify native VXV and VPROJ with erasable aliases and immutable fixed operands over262144 complete original native sanitizer states and384 actual C64 states. Original source words and constants independently match baseline ropes; passive input injections and unexecuted reviewed overflow exit are explicit. Antenna and interpreter files remain partial. See `docs/NATIVE-SBAND-VECTORS.md`.
+
+## Compose original IMUPULSE lead in reservation and source returns
+
+Qualify original IMUPULSE lead in actual successful WAITLIST registration free command reservation TPAGREE exchanges and MODEEXIT SWRETURN against393216 complete original native sanitizer states plus192 C64 states. Root stream wrapper argument ordering was corrected before release and initial failure evidence retained; frozen service bytes are unchanged. Busy sleep and deferred gyro output tasks remain separate. See `docs/NATIVE-IMUPULSE.md`.

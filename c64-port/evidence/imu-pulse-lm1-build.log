@@ -1,0 +1,40 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Wno-error=sign-conversion -Os -fno-static-stack -mlto-zp=0 -DIMU_PULSE_CHECK_ONLY -DIMUP_MISSION=0 -DIMUP_STAGE=1 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_imu_pulse.c tests/frozen_words.c tools/imu_pulse_diagnostic.c src/imu_pulse.c src/imu_pulse_service.c src/lm_waitlist_image.c src/waitlist.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_multiword.c src/agc_word.c tests/imu_pulse_cases.c -Wl,-Map,build/imu-pulse-lm1.map -o build/imu-pulse-lm1.prg
+src/imu_pulse_service.c:29:25: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   29 |  if(mission==RTB_LM){if(lm_waitlist_image(m,&io->latch,LM_WAITLIST_ENTRY,task)!=WL_OK)return IMU_PULSE_OUT_OF_SCOPE;}
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/imu_pulse_service.c:30:132: warning: implicit conversion changes signedness: 'enum cm_wl_status' to 'int' [-Wsign-conversion]
+   30 |  else{cm_native_io cm;memset(&cm,0,sizeof cm);cm.superbank=io->latch.superbank;cm.interrupt_enabled=io->latch.interrupt_enabled;if(cm_waitlist_image(m,&cm,task)!=CM_WL_OK)return IMU_PULSE_OUT_OF_SCOPE;io->latch.superbank=cm.superbank;io->latch.interrupt_enabled=cm.interrupt_enabled;}
+      |                                                                                                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.
+src/lm_waitlist_image.c:29:37: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   29 |  if(status!=WL_OK&&status!=WL_FULL&&status!=WL_BAD_DELAY)return status;
+      |                                     ^~~~~~~~
+src/lm_waitlist_image.c:29:20: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   29 |  if(status!=WL_OK&&status!=WL_FULL&&status!=WL_BAD_DELAY)return status;
+      |                    ^~~~~~~~
+src/lm_waitlist_image.c:29:5: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   29 |  if(status!=WL_OK&&status!=WL_FULL&&status!=WL_BAD_DELAY)return status;
+      |     ^~~~~~~~
+src/lm_waitlist_image.c:32:42: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   32 |  w[061]=agc_correct(a);w[062]=(inserted&&status!=WL_BAD_DELAY)?discarded.bank:task.bank;
+      |                                          ^~~~~~~~
+src/lm_waitlist_image.c:33:5: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   33 |  if(status==WL_OK){w[0]=05220;w[1]=02003;w[2]=slot;w[5]=(agc_word)(caller+2u);w[6]=bank;w[3]=(agc_word)((bank&7u)<<8);w[4]=(agc_word)(bank&076000u);}
+      |     ^~~~~~~~
+src/lm_waitlist_image.c:34:91: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   34 |  else{w[0]=agc_extend(caller);w[1]=agc_extend(bank);w[4]=02000;w[3]=01400;w[6]=02003;w[2]=status==WL_FULL?03373:03525;w[5]=status==WL_FULL?05716:05726;}
+      |                                                                                           ^~~~~~~~
+src/lm_waitlist_image.c:34:124: warning: implicit conversion changes signedness: 'enum wl_status' to 'int' [-Wsign-conversion]
+   34 |  else{w[0]=agc_extend(caller);w[1]=agc_extend(bank);w[4]=02000;w[3]=01400;w[6]=02003;w[2]=status==WL_FULL?03373:03525;w[5]=status==WL_FULL?05716:05726;}
+      |                                                                                                                            ^~~~~~~~
+7 warnings generated.
+src/cm_waitlist_image.c:22:42: warning: implicit conversion changes signedness: 'enum cm_wl_status' to 'int' [-Wsign-conversion]
+   22 |  status=cm_wl_schedule(&w,delay,task);if(status!=CM_WL_OK)return status;
+      |                                          ^~~~~~~~
+1 warning generated.
+python tools/imu_pulse_vice_test.py --mission 0 --stage 1 --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice | tee build/imu-pulse-lm1-validation.log
+PASS: VICE PAL C64, 32 complete imu_pulse group original-assembly states; retained memory unchanged
+Mailbox: a500002001
+PRG bytes: 9997
+imu-pulse-lm1-hardware-stack.bin: measured stack extent 19 bytes
+imu-pulse-lm1-software-stack.bin: measured stack extent 146 bytes

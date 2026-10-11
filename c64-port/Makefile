@@ -825,3 +825,5 @@ include tools/cm_abort_lifecycle.mk
 all: build/cm-abort-lifecycle-native
 
 include tools/sband_vector_integration.mk
+
+include tools/imu_pulse_integration.mk

@@ -1,0 +1,15 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tools/imu_pulse_snapshot.c src/imu_pulse.c src/imu_pulse_service.c src/lm_waitlist_image.c src/waitlist.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_multiword.c src/agc_word.c tests/imu_pulse_cases.c -o build/imu-pulse-integrated-stream
+python3 tools/imu_pulse_port_host.py --cc "cc"
+32 complete IMUPULSE original states mission0 stage0: PASS
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/qualified_stream_host.py", line 15, in <module>
+    if actual!=expected:raise RuntimeError('Full source-state stream differs at or after byte '+str(n))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Full source-state stream differs at or after byte 0
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/imu_pulse_port_host.py", line 17, in <module>
+    subprocess.run(['python3','tools/qualified_stream_host.py','--binary',binary,'--archive',state['object'],'--sha256',state['decoded_sha256'],'--bytes',str(state['decoded_bytes']),'--arg',str(mission),'--arg',str(entry)],cwd=R,check=True)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['python3', 'tools/qualified_stream_host.py', '--binary', 'build/imu-pulse-integrated-stream', '--archive', 'evidence/imu-pulse-lm0-complete.states.xz', '--sha256', '9cbf8e1c0fd602ea6b5c7f31a874565fbf93e2536429099eb7cfd0edf08a4c7a', '--bytes', '269484032', '--arg', '0', '--arg', '0']' returned non-zero exit status 1.
+make: *** [tools/imu_pulse_integration.mk:8: test-imu-pulse-integrated] Error 1
