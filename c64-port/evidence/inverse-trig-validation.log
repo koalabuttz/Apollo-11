@@ -1,0 +1,15 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/inverse_trig_snapshot.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_cases.c -o build/inverse-trig-native
+build/inverse-trig-reference deps/lm-powered-fixture/MAIN.agc.bin 0 2> build/inverse-trig-lm-reference.trace | gzip -n -9 > build/inverse-trig-lm-reference.snapshots.gz
+build/inverse-trig-native 0 | gzip -n -9 > build/inverse-trig-lm-native.snapshots.gz
+cmp build/inverse-trig-lm-reference.snapshots.gz build/inverse-trig-lm-native.snapshots.gz
+build/inverse-trig-reference deps/cm-powered-fixture/MAIN.agc.bin 1 2> build/inverse-trig-cm-reference.trace | gzip -n -9 > build/inverse-trig-cm-reference.snapshots.gz
+build/inverse-trig-native 1 | gzip -n -9 > build/inverse-trig-cm-native.snapshots.gz
+cmp build/inverse-trig-cm-reference.snapshots.gz build/inverse-trig-cm-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/inverse_trig_snapshot.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_cases.c -o build/inverse-trig-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/inverse-trig-sanitize 0 | gzip -n -9 > build/inverse-trig-lm-sanitize.snapshots.gz
+cmp build/inverse-trig-lm-reference.snapshots.gz build/inverse-trig-lm-sanitize.snapshots.gz
+ASAN_OPTIONS=detect_leaks=0 build/inverse-trig-sanitize 1 | gzip -n -9 > build/inverse-trig-cm-sanitize.snapshots.gz
+cmp build/inverse-trig-cm-reference.snapshots.gz build/inverse-trig-cm-sanitize.snapshots.gz
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_inverse_trig.c tests/frozen_words.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_cases.c -o build/test-inverse-trig
+build/test-inverse-trig
+256 complete original LM/CM inverse-trig states: PASS

@@ -1,0 +1,99 @@
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig0.prg from 0801 to 1A01 (1201 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  176/$0b0,  33/$21
+.C:10a2  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  144069945
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig1.prg from 0801 to 37FA (2FFA bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  180/$0b4,  55/$37
+.C:10ef  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  144797491
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig2.prg from 0801 to 4155 (3955 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  218/$0da,  43/$2b
+.C:1153  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  149301097
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig3.prg from 0801 to 44E0 (3CE0 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  127/$07f,   7/$07
+.C:117a  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  147644224
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig4.prg from 0801 to 1A01 (1201 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  176/$0b0,  33/$21
+.C:10a2  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  144069945
+>C:c080  a5 00 00 20  04                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig5.prg from 0801 to 37F3 (2FF3 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  288/$120,  49/$31
+.C:10ef  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  144666697
+>C:c080  a5 00 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig6.prg from 0801 to 415B (395B bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  213/$0d5,  11/$0b
+.C:1151  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  149300750
+>C:c080  a5 00 00 20  06                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig7.prg from 0801 to 44DD (3CDD bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  306/$132,   9/$09
+.C:1175  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  147635847
+>C:c080  a5 00 00 20  07                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig0.prg from 0801 to 1C27 (1427 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   14/$00e,  20/$14
+.C:11d1  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-.....  144079382
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig1.prg from 0801 to 39E3 (31E3 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  296/$128,  24/$18
+.C:123f  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-.....  144667176
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/inverse-trig2.prg from 0801 to 437E (3B7E bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  173/$0ad,  31/$1f
+.C:126e  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-.....  147096778
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/inverse_trig-software-stack.bin' from $c100 to $cfff

@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_inverse_trig.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_cases.c tests/frozen_words.c -o build/test-inverse-trig-port
+./build/test-inverse-trig-port
+256 complete original LM/CM inverse-trig states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_inverse_trig.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_cases.c tests/frozen_words.c -o build/test-inverse-trig-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-inverse-trig-port-san
+256 complete original LM/CM inverse-trig states: PASS

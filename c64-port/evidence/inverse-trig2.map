@@ -1,0 +1,146 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     3378     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/inverse-trig2.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         build/inverse-trig2.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67     22c1     1         build/inverse-trig2.prg.lto.o:(.text.main)
+     a67      a67     22c1     1                 main
+    2d28     2d28       4c     1         build/inverse-trig2.prg.lto.o:(.text.valid)
+    2d28     2d28       4c     1                 valid
+    2d74     2d74       49     1         build/inverse-trig2.prg.lto.o:(.text.epilogue)
+    2d74     2d74       49     1                 epilogue
+    2dbd     2dbd       a2     1         build/inverse-trig2.prg.lto.o:(.text.subtract_from)
+    2dbd     2dbd       a2     1                 subtract_from
+    2e5f     2e5f       42     1         build/inverse-trig2.prg.lto.o:(.text.continuation)
+    2e5f     2e5f       42     1                 continuation
+    2ea1     2ea1      192     1         build/inverse-trig2.prg.lto.o:(.text.half_argument)
+    2ea1     2ea1      192     1                 half_argument
+    3033     3033      21a     1         build/inverse-trig2.prg.lto.o:(.text.triple_left)
+    3033     3033      21a     1                 triple_left
+    324d     324d      283     1         build/inverse-trig2.prg.lto.o:(.text.divide)
+    324d     324d      283     1                 divide
+    34d0     34d0       ca     1         build/inverse-trig2.prg.lto.o:(.text.agc_multiply)
+    34d0     34d0       ca     1                 agc_multiply
+    359a     359a      1bc     1         build/inverse-trig2.prg.lto.o:(.text.agc_double_add)
+    359a     359a      1bc     1                 agc_double_add
+    3756     3756        6     1         build/inverse-trig2.prg.lto.o:(.text.exit)
+    3756     3756        6     1                 exit
+    375c     375c       34     1         build/inverse-trig2.prg.lto.o:(.text.memcpy)
+    375c     375c       34     1                 memcpy
+    3790     3790       47     1         build/inverse-trig2.prg.lto.o:(.text.memcmp)
+    3790     3790       47     1                 memcmp
+    37d7     37d7       22     1         build/inverse-trig2.prg.lto.o:(.text.__memset)
+    37d7     37d7       22     1                 __memset
+    37f9     37f9       13     1         build/inverse-trig2.prg.lto.o:(.text.__lshrhi3)
+    37f9     37f9       13     1                 __lshrhi3
+    380c     380c      2de     1         build/inverse-trig2.prg.lto.o:(.text.__divmodsi4)
+    380c     380c      2de     1                 __divmodsi4
+    3aea     3aea       34     1         build/inverse-trig2.prg.lto.o:(.text.__mulhi3)
+    3aea     3aea       34     1                 __mulhi3
+    3b1e     3b1e       67     1         build/inverse-trig2.prg.lto.o:(.text.__mulsi3)
+    3b1e     3b1e       67     1                 __mulsi3
+    3b85     3b85        0     1         __init_array_start = .
+    3b85     3b85        0     1         __init_array_end = .
+    3b85     3b85        0     1         __fini_array_start = .
+    3b85     3b85        0     1         __fini_array_end = .
+    3b85     3b85      7fa     1 .rodata
+    3b85     3b85        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    3b85     3b85        0     1                 __set_v
+    3b86     3b86       76     1         build/inverse-trig2.prg.lto.o:(.rodata.inverse_trig2_reference_dictionary)
+    3b86     3b86       76     1                 inverse_trig2_reference_dictionary
+    3bfc     3bfc       42     1         build/inverse-trig2.prg.lto.o:(.rodata.inverse_trig2_reference_offsets)
+    3bfc     3bfc       42     1                 inverse_trig2_reference_offsets
+    3c3e     3c3e      629     1         build/inverse-trig2.prg.lto.o:(.rodata.inverse_trig2_reference_stream)
+    3c3e     3c3e      629     1                 inverse_trig2_reference_stream
+    4267     4267       d8     1         build/inverse-trig2.prg.lto.o:(.rodata.inverse_trig_constants)
+    4267     4267       d8     1                 inverse_trig_constants
+    433f     433f       40     1         <internal>:(.rodata.cst32)
+    437f     437f        0     1 .data
+    437f     437f        0     1         __data_start = .
+    437f     437f        0     1         __data_end = .
+    437f     437f        0     1 __data_load_start = LOADADDR(.data)
+    437f     437f        0     1 __data_size = SIZEOF(.data)
+    437f     437f     2000     1 .bss
+    437f     437f        0     1         __bss_start = .
+    437f     437f     1000     1         build/inverse-trig2.prg.lto.o:(.bss.image)
+    437f     437f     1000     1                 image
+    537f     537f     1000     1         build/inverse-trig2.prg.lto.o:(.bss.expected)
+    537f     537f     1000     1                 expected
+    637f     637f        0     1         __bss_end = .
+    637f     637f        0     1 __bss_size = SIZEOF(.bss)
+    637f     637f        2     1 .noinit
+    637f     637f        2     1         build/inverse-trig2.prg.lto.o:(.noinit..Lstatic_stack)
+    6381     6381        0     1         __heap_start = ALIGN(., 2)
+    6381     6381        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/inverse-trig2.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/inverse-trig2.prg.lto.o:(.llvm_sympart)
+       0        0      bd0     4 .symtab
+       0        0      bd0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      6e4     1 .strtab
+       0        0      6e4     1         <internal>:(.strtab)

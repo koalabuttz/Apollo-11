@@ -880,3 +880,7 @@ Actual normal V06N85 now composes source display selection, priority and job wak
 ## Translate actual Comanche canonical CHANG1 and CHANG2 context exchanges
 
 All outgoing and selected basic/interpreter combinations now preserve the original CHANG1 and CHANG2 registers, canonical image and selected return tuple. All12,288 complete original states match strict and full sanitizer output, and96 actual fixed-slot C64 states pass. Selected application bodies and whole Executive completion remain separate work. See `docs/COMANCHE_CONTEXT_CHANGE.md`.
+
+## Translate original Luminary and Comanche inverse trigonometric source stages
+
+Native ARCSIN and ARCCOS sign, clamp, root, polynomial and epilogue stages match316,640 complete original states under strict and full sanitizer comparison. Eight actual C64 diagnostics pass256 complete states and every original coefficient. Root independently checked168 original emitted audit words and131,072 constant-access arguments. Original alarm handler, post-alarm continuation and whole INTERPRETER completion remain separate work. See `docs/INVERSE-TRIG.md`.
