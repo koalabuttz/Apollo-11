@@ -1,0 +1,6 @@
+262144 complete states; 128 target states
+for mission in 0 1; do for entry in 0 1; do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DIMUE_MISSION=$mission -DIMUE_ENTRY=$entry tests/test_imu_pulse_end.c tests/frozen_words.c src/imu_pulse_end.c src/lm_basic_wake.c src/executive.c src/cm_basic_wake.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/imu_pulse_end_cases.c tests/imu_pulse_cases.c -o build/test-imu-pulse-end-$mission-$entry; build/test-imu-pulse-end-$mission-$entry; done; done
+32 complete IMUPULSE task original states mission0 entry0: PASS
+32 complete IMUPULSE task original states mission0 entry1: PASS
+32 complete IMUPULSE task original states mission1 entry0: PASS
+32 complete IMUPULSE task original states mission1 entry1: PASS

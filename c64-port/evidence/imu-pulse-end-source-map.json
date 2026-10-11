@@ -1,0 +1,675 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [],
+    "source_group_words": 40,
+    "words": [
+      {
+        "original_line": 337,
+        "bank": "07",
+        "address": "3232",
+        "physical_fixed_word": 7834,
+        "raw_octal": "03641",
+        "native_group": "IMUFINED"
+      },
+      {
+        "original_line": 338,
+        "bank": "07",
+        "address": "3233",
+        "physical_fixed_word": 7835,
+        "raw_octal": "13631",
+        "native_group": "IMUFINED"
+      },
+      {
+        "original_line": 517,
+        "bank": "07",
+        "address": "3430",
+        "physical_fixed_word": 7960,
+        "raw_octal": "13232",
+        "native_group": "NORESET"
+      },
+      {
+        "original_line": 681,
+        "bank": "07",
+        "address": "3631",
+        "physical_fixed_word": 8089,
+        "raw_octal": "00006",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 682,
+        "bank": "07",
+        "address": "3632",
+        "physical_fixed_word": 8090,
+        "raw_octal": "00011",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 683,
+        "bank": "07",
+        "address": "3633",
+        "physical_fixed_word": 8091,
+        "raw_octal": "74753",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 684,
+        "bank": "07",
+        "address": "3634",
+        "physical_fixed_word": 8092,
+        "raw_octal": "10000",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 685,
+        "bank": "07",
+        "address": "3635",
+        "physical_fixed_word": 8093,
+        "raw_octal": "13637",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 687,
+        "bank": "07",
+        "address": "3636",
+        "physical_fixed_word": 8094,
+        "raw_octal": "13665",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 689,
+        "bank": "07",
+        "address": "3637",
+        "physical_fixed_word": 8095,
+        "raw_octal": "34755",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 690,
+        "bank": "07",
+        "address": "3640",
+        "physical_fixed_word": 8096,
+        "raw_octal": "13662",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 692,
+        "bank": "07",
+        "address": "3641",
+        "physical_fixed_word": 8097,
+        "raw_octal": "34746",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 693,
+        "bank": "07",
+        "address": "3642",
+        "physical_fixed_word": 8098,
+        "raw_octal": "71302",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 694,
+        "bank": "07",
+        "address": "3643",
+        "physical_fixed_word": 8099,
+        "raw_octal": "10000",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 695,
+        "bank": "07",
+        "address": "3644",
+        "physical_fixed_word": 8100,
+        "raw_octal": "13637",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 696,
+        "bank": "07",
+        "address": "3645",
+        "physical_fixed_word": 8101,
+        "raw_octal": "00002",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 717,
+        "bank": "07",
+        "address": "3662",
+        "physical_fixed_word": 8114,
+        "raw_octal": "54071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 718,
+        "bank": "07",
+        "address": "3663",
+        "physical_fixed_word": 8115,
+        "raw_octal": "44755",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 719,
+        "bank": "07",
+        "address": "3664",
+        "physical_fixed_word": 8116,
+        "raw_octal": "13667",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 721,
+        "bank": "07",
+        "address": "3665",
+        "physical_fixed_word": 8117,
+        "raw_octal": "54071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 722,
+        "bank": "07",
+        "address": "3666",
+        "physical_fixed_word": 8118,
+        "raw_octal": "44753",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 724,
+        "bank": "07",
+        "address": "3667",
+        "physical_fixed_word": 8119,
+        "raw_octal": "54072",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 725,
+        "bank": "07",
+        "address": "3670",
+        "physical_fixed_word": 8120,
+        "raw_octal": "50071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 726,
+        "bank": "07",
+        "address": "3671",
+        "physical_fixed_word": 8121,
+        "raw_octal": "11304",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 727,
+        "bank": "07",
+        "address": "3672",
+        "physical_fixed_word": 8122,
+        "raw_octal": "13676",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 728,
+        "bank": "07",
+        "address": "3673",
+        "physical_fixed_word": 8123,
+        "raw_octal": "13706",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 730,
+        "bank": "07",
+        "address": "3674",
+        "physical_fixed_word": 8124,
+        "raw_octal": "00006",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 731,
+        "bank": "07",
+        "address": "3675",
+        "physical_fixed_word": 8125,
+        "raw_octal": "13707",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 733,
+        "bank": "07",
+        "address": "3676",
+        "physical_fixed_word": 8126,
+        "raw_octal": "34755",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 734,
+        "bank": "07",
+        "address": "3677",
+        "physical_fixed_word": 8127,
+        "raw_octal": "50071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 735,
+        "bank": "07",
+        "address": "3700",
+        "physical_fixed_word": 8128,
+        "raw_octal": "57304",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 736,
+        "bank": "07",
+        "address": "3701",
+        "physical_fixed_word": 8129,
+        "raw_octal": "05137",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 738,
+        "bank": "07",
+        "address": "3702",
+        "physical_fixed_word": 8130,
+        "raw_octal": "40072",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 739,
+        "bank": "07",
+        "address": "3703",
+        "physical_fixed_word": 8131,
+        "raw_octal": "50064",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 740,
+        "bank": "07",
+        "address": "3704",
+        "physical_fixed_word": 8132,
+        "raw_octal": "26164",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 742,
+        "bank": "07",
+        "address": "3705",
+        "physical_fixed_word": 8133,
+        "raw_octal": "15261",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 744,
+        "bank": "07",
+        "address": "3706",
+        "physical_fixed_word": 8134,
+        "raw_octal": "30072",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 745,
+        "bank": "07",
+        "address": "3707",
+        "physical_fixed_word": 8135,
+        "raw_octal": "50071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 746,
+        "bank": "07",
+        "address": "3710",
+        "physical_fixed_word": 8136,
+        "raw_octal": "55304",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 747,
+        "bank": "07",
+        "address": "3711",
+        "physical_fixed_word": 8137,
+        "raw_octal": "15261",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "JOBWAKE": "05137",
+      "IMUBAD": "03637",
+      "TASKOVER": "05261"
+    },
+    "remaining": [
+      "literal TASKOVER scheduler/interrupt continuation",
+      "asynchronous gyro pulse delivery and active-channel augmentation backend",
+      "other containing-file entries"
+    ]
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "source_group_words": 38,
+    "words": [
+      {
+        "original_line": 341,
+        "bank": "07",
+        "address": "3115",
+        "physical_fixed_word": 7757,
+        "raw_octal": "03524",
+        "native_group": "IMUFINED"
+      },
+      {
+        "original_line": 342,
+        "bank": "07",
+        "address": "3116",
+        "physical_fixed_word": 7758,
+        "raw_octal": "13514",
+        "native_group": "IMUFINED"
+      },
+      {
+        "original_line": 521,
+        "bank": "07",
+        "address": "3313",
+        "physical_fixed_word": 7883,
+        "raw_octal": "13115",
+        "native_group": "NORESET"
+      },
+      {
+        "original_line": 685,
+        "bank": "07",
+        "address": "3514",
+        "physical_fixed_word": 8012,
+        "raw_octal": "00006",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 686,
+        "bank": "07",
+        "address": "3515",
+        "physical_fixed_word": 8013,
+        "raw_octal": "00011",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 687,
+        "bank": "07",
+        "address": "3516",
+        "physical_fixed_word": 8014,
+        "raw_octal": "75017",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 688,
+        "bank": "07",
+        "address": "3517",
+        "physical_fixed_word": 8015,
+        "raw_octal": "10000",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 689,
+        "bank": "07",
+        "address": "3520",
+        "physical_fixed_word": 8016,
+        "raw_octal": "13522",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 691,
+        "bank": "07",
+        "address": "3521",
+        "physical_fixed_word": 8017,
+        "raw_octal": "13550",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 693,
+        "bank": "07",
+        "address": "3522",
+        "physical_fixed_word": 8018,
+        "raw_octal": "35021",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 694,
+        "bank": "07",
+        "address": "3523",
+        "physical_fixed_word": 8019,
+        "raw_octal": "13545",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 696,
+        "bank": "07",
+        "address": "3524",
+        "physical_fixed_word": 8020,
+        "raw_octal": "35012",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 697,
+        "bank": "07",
+        "address": "3525",
+        "physical_fixed_word": 8021,
+        "raw_octal": "71320",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 698,
+        "bank": "07",
+        "address": "3526",
+        "physical_fixed_word": 8022,
+        "raw_octal": "10000",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 699,
+        "bank": "07",
+        "address": "3527",
+        "physical_fixed_word": 8023,
+        "raw_octal": "13522",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 700,
+        "bank": "07",
+        "address": "3530",
+        "physical_fixed_word": 8024,
+        "raw_octal": "00002",
+        "native_group": "ENDIMU/IMUGOOD/IMUBAD/CAGETEST"
+      },
+      {
+        "original_line": 721,
+        "bank": "07",
+        "address": "3545",
+        "physical_fixed_word": 8037,
+        "raw_octal": "54071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 722,
+        "bank": "07",
+        "address": "3546",
+        "physical_fixed_word": 8038,
+        "raw_octal": "45021",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 723,
+        "bank": "07",
+        "address": "3547",
+        "physical_fixed_word": 8039,
+        "raw_octal": "13552",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 725,
+        "bank": "07",
+        "address": "3550",
+        "physical_fixed_word": 8040,
+        "raw_octal": "54071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 726,
+        "bank": "07",
+        "address": "3551",
+        "physical_fixed_word": 8041,
+        "raw_octal": "45017",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 728,
+        "bank": "07",
+        "address": "3552",
+        "physical_fixed_word": 8042,
+        "raw_octal": "54072",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 729,
+        "bank": "07",
+        "address": "3553",
+        "physical_fixed_word": 8043,
+        "raw_octal": "50071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 730,
+        "bank": "07",
+        "address": "3554",
+        "physical_fixed_word": 8044,
+        "raw_octal": "11322",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 731,
+        "bank": "07",
+        "address": "3555",
+        "physical_fixed_word": 8045,
+        "raw_octal": "13557",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 732,
+        "bank": "07",
+        "address": "3556",
+        "physical_fixed_word": 8046,
+        "raw_octal": "13567",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 734,
+        "bank": "07",
+        "address": "3557",
+        "physical_fixed_word": 8047,
+        "raw_octal": "35021",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 735,
+        "bank": "07",
+        "address": "3560",
+        "physical_fixed_word": 8048,
+        "raw_octal": "50071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 736,
+        "bank": "07",
+        "address": "3561",
+        "physical_fixed_word": 8049,
+        "raw_octal": "57322",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 737,
+        "bank": "07",
+        "address": "3562",
+        "physical_fixed_word": 8050,
+        "raw_octal": "05201",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 739,
+        "bank": "07",
+        "address": "3563",
+        "physical_fixed_word": 8051,
+        "raw_octal": "40072",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 740,
+        "bank": "07",
+        "address": "3564",
+        "physical_fixed_word": 8052,
+        "raw_octal": "50064",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 741,
+        "bank": "07",
+        "address": "3565",
+        "physical_fixed_word": 8053,
+        "raw_octal": "26164",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 743,
+        "bank": "07",
+        "address": "3566",
+        "physical_fixed_word": 8054,
+        "raw_octal": "15324",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 745,
+        "bank": "07",
+        "address": "3567",
+        "physical_fixed_word": 8055,
+        "raw_octal": "30072",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 746,
+        "bank": "07",
+        "address": "3570",
+        "physical_fixed_word": 8056,
+        "raw_octal": "50071",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 747,
+        "bank": "07",
+        "address": "3571",
+        "physical_fixed_word": 8057,
+        "raw_octal": "55322",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      },
+      {
+        "original_line": 748,
+        "bank": "07",
+        "address": "3572",
+        "physical_fixed_word": 8058,
+        "raw_octal": "15324",
+        "native_group": "BADEND/GOODEND/ENDMODE"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "JOBWAKE": "05201",
+      "IMUBAD": "03522",
+      "TASKOVER": "05324"
+    },
+    "remaining": [
+      "literal TASKOVER scheduler/interrupt continuation",
+      "asynchronous gyro pulse delivery and active-channel augmentation backend",
+      "other containing-file entries"
+    ]
+  }
+}

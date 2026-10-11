@@ -857,3 +857,5 @@ include tools/cm_alarm_image.mk
 all: build/cm-alarm-image-native
 
 include tools/ephemeris_add_integration.mk
+
+include tools/imu_pulse_end_integration.mk

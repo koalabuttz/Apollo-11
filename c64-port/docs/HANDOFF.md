@@ -1331,3 +1331,7 @@ Qualify actual ALARM VARALARM CURTAINS BORTENT source producer domains over ever
 ## Translate original ephemerides triple time addition arithmetic
 
 Qualify both original TAD and exact overflow call return arithmetic against131072 complete original strict native sanitizer states and72 C64 states plus13 full image rejection guards and null. Retain original scratch alias ordering actual Q3 debris original source maps and failed diagnostic guard evidence. Complete ephemerides programs remain open. See `docs/NATIVE-EPHEMERIS-ADD.md`.
+
+## Compose original gyro completion wake and mode return paths
+
+Qualify actual JOBWAKE NORESET IMUFINED GOODEND BADEND and ENDMODE source control including mission specific signed sentinel behavior against262144 complete original native sanitizer states and128 C64 states through genuine TASKOVER entry. See `docs/NATIVE-GYRO-COMPLETION.md`.

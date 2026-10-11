@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete imu_pulse_end group original-assembly states; retained memory unchanged
+Mailbox: a500002021
+PRG bytes: 10870
+imu-pulse-end-cm1-hardware-stack.bin: measured stack extent 24 bytes
+imu-pulse-end-cm1-software-stack.bin: measured stack extent 762 bytes

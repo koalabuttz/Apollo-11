@@ -1,0 +1,10 @@
+Independent read-only source review by /root/general_division, 2026-10-11.
+
+No discrepancy found within the declared IMU device0 and source basic-wake helper domain. Reviewed both byte-original NORESET/IMUFINED/ENDIMU/IMUBAD and GOODEND/ENDMODE through literal TASKOVER. LM negative sentinel CCS skips EXTEND or enters it, then BZF/TCF routes to ENDMODE+1 storing A0 and avoids the second wake. CM omits those two words and performs XCH/JOBWAKE even for -0/-1. CM NOT_FOUND leaves LOCCTR=-1; INDEX/ADS LOC writes physical MODE0163, retained by the signed native displacement. +0 stores source -0/-1 completion. Positive CADR clears/wakes then CS RUPTREG3 advances selected LOC only for success. IRQ/source L/Q retain source effects or actual wake outputs. No scheduler TASKOVER body or physical pulse delivery claim. Valid complete Executive/wake domain is a caller requirement; unsupported downstream helper results do not promise transactional rollback. No frozen dependency edits requested.
+
+Reviewed identities:
+9691225dff392d78449341fd1de93b9bd78556eed5d7e6f3b228f23e6e051dc3  src/imu_pulse_end.c
+86c21f491f7db1dce15cc212c44748d3c6bdaa8d015c2e84735cbf305ace26dc  include/imu_pulse_end.h
+54b7ded69d77871ad7ec55db2005381681f283b8d91655c628daf128d8151c76  tests/imu_pulse_end_cases.c
+96b224fd8d05686d8e4c443d1ecc4c2964925467262a80df3a59de79fb3f7cd9  tools/imu_pulse_end_reference.c
+08eaf1f732d59440d7f1bc97a9b06192cb5af50993ebed5b75e58485892b4a31  build/imu-pulse-end-source-map.json

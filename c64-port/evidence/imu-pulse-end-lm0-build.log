@@ -1,0 +1,24 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Wno-error=sign-conversion -Os -fno-static-stack -mlto-zp=0 -DIMU_PULSE_END_CHECK_ONLY -DIMUE_MISSION=0 -DIMUE_ENTRY=0 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_imu_pulse_end.c tests/frozen_words.c tools/imu_pulse_end_diagnostic.c src/imu_pulse_end.c src/lm_basic_wake.c src/executive.c src/cm_basic_wake.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/imu_pulse_end_cases.c tests/imu_pulse_cases.c -Wl,-Map,build/imu-pulse-end-lm0.map -o build/imu-pulse-end-lm0.prg
+src/imu_pulse_end.c:11:35: warning: implicit conversion changes signedness: 'enum exec_status' to 'int' [-Wsign-conversion]
+   11 |  return(uint8_t)(result==EXEC_OK||result==EXEC_NOT_FOUND);
+      |                                   ^~~~~~~~
+src/imu_pulse_end.c:11:18: warning: implicit conversion changes signedness: 'enum exec_status' to 'int' [-Wsign-conversion]
+   11 |  return(uint8_t)(result==EXEC_OK||result==EXEC_NOT_FOUND);
+      |                  ^~~~~~~~
+2 warnings generated.
+src/lm_basic_wake.c:9:78: warning: implicit conversion changes signedness: 'enum exec_status' to 'int' [-Wsign-conversion]
+    9 |  executive_words(&e,w,1);status=exec_wake_basic(&e,wake);if(status!=EXEC_OK&&status!=EXEC_NOT_FOUND)return status;
+      |                                                                              ^~~~~~~~
+src/lm_basic_wake.c:9:61: warning: implicit conversion changes signedness: 'enum exec_status' to 'int' [-Wsign-conversion]
+    9 |  executive_words(&e,w,1);status=exec_wake_basic(&e,wake);if(status!=EXEC_OK&&status!=EXEC_NOT_FOUND)return status;
+      |                                                             ^~~~~~~~
+src/lm_basic_wake.c:10:5: warning: implicit conversion changes signedness: 'enum exec_status' to 'int' [-Wsign-conversion]
+   10 |  if(status==EXEC_OK)e.newloc[1]=agc_correct(oldl);
+      |     ^~~~~~~~
+3 warnings generated.
+python tools/imu_pulse_end_vice_test.py --mission 0 --entry 0 --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice | tee build/imu-pulse-end-lm0-validation.log
+PASS: VICE PAL C64, 32 complete imu_pulse_end group original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 10796
+imu-pulse-end-lm0-hardware-stack.bin: measured stack extent 20 bytes
+imu-pulse-end-lm0-software-stack.bin: measured stack extent 756 bytes
