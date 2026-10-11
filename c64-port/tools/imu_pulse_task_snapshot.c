@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <stdlib.h>
+#include "imu_pulse_task_cases.h"
+int main(int argc,char **argv){uint32_t n,limit=IMU_PULSE_TASK_CASES;unsigned mission,augment,stage=0;if(argc<3)return 2;mission=(unsigned)strtoul(argv[1],0,0);augment=(unsigned)strtoul(argv[2],0,0);if(argc>3)limit=(uint32_t)strtoul(argv[3],0,0);if(argc>4)stage=(unsigned)strtoul(argv[4],0,0);for(n=0;n<limit;++n){apollo_overlay_state m;imu_pulse_io io;uint16_t row[2056];unsigned i;enum imu_gyro_task_status status;imu_pulse_task_input(&m,&io,(enum rtb_mission)mission,(uint8_t)augment,n);status=imu_gyro_task(&m,&io,(enum rtb_mission)mission,(uint8_t)augment);if(stage&&status==IMU_GYRO_WAITLIST)status=imu_gyro_register(&m,&io,(enum rtb_mission)mission);if(status==IMU_GYRO_UNSUPPORTED){fprintf(stderr,"rejected%u\n",n);return 2;}row[0]=(uint16_t)n;row[1]=(uint16_t)(n>>16);row[2]=io.latch.interrupt_enabled;row[3]=io.latch.superbank;row[4]=io.channel11;row[5]=io.channel12;row[6]=io.channel14;row[7]=(uint16_t)status;for(i=0;i<2048u;++i)row[i+8u]=m.words[i];if(fwrite(row,sizeof row,1,stdout)!=1)return 2;}return 0;}

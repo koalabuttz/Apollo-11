@@ -1242,3 +1242,7 @@ Qualify both original V30 and V31 operator scheduling paths through actual core 
 ## Translate original decimal row formatter call and return control
 
 Qualify both original DSPDCEND BANKCALL and SWRETURN row control through actual DSPDECWD entry, next output row or saved ENTRET frontier against8192 complete original native sanitizer states and128 C64 states preserving all source effects and unchanged guards. See `docs/DSKY-DECIMAL-ROW.md`.
+
+## Translate original deferred gyro task arithmetic and registration
+
+Qualify original STRTGYRO GSELECT GMERGE LASTSEG LONGGYRO and8192AUG source task bodies and actual successful WAITLIST registration against524288 complete original native sanitizer states and256 C64 states. Pending hardware activity and true TASKOVER handoff remain explicit. See `docs/NATIVE-GYRO-TASKS.md`.

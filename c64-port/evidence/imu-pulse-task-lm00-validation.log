@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete imu_pulse_task group original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 9875
+imu-pulse-task-lm00-hardware-stack.bin: measured stack extent 18 bytes
+imu-pulse-task-lm00-software-stack.bin: measured stack extent 76 bytes

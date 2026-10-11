@@ -1,0 +1,283 @@
+{
+  "complete_states": 524288,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14"
+  ],
+  "source_group_words": {
+    "lm": 153,
+    "cm": 153
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/imu-pulse-task-source-map.json",
+  "logical_complete_streams": {
+    "lm00": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-lm00-complete.states.xz",
+        "decoded_sha256": "5803b0266b5f327b2240bde942fb4b2d44697da42931845cf95a21efd7cdf76d",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-lm00-complete.states.xz",
+        "decoded_sha256": "5803b0266b5f327b2240bde942fb4b2d44697da42931845cf95a21efd7cdf76d",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-lm00-complete.states.xz",
+        "decoded_sha256": "5803b0266b5f327b2240bde942fb4b2d44697da42931845cf95a21efd7cdf76d",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm01": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-lm01-complete.states.xz",
+        "decoded_sha256": "40b9cb92f1ca3a8cdd5dc11020dc0a8ca0314fb866e50dfa0d31420af1b284d0",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-lm01-complete.states.xz",
+        "decoded_sha256": "40b9cb92f1ca3a8cdd5dc11020dc0a8ca0314fb866e50dfa0d31420af1b284d0",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-lm01-complete.states.xz",
+        "decoded_sha256": "40b9cb92f1ca3a8cdd5dc11020dc0a8ca0314fb866e50dfa0d31420af1b284d0",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm10": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-lm10-complete.states.xz",
+        "decoded_sha256": "b2d0c6c7d91fb72bc254f92688fe7847c8139bc3580a75f9b906d5b4f6cc60f4",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-lm10-complete.states.xz",
+        "decoded_sha256": "b2d0c6c7d91fb72bc254f92688fe7847c8139bc3580a75f9b906d5b4f6cc60f4",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-lm10-complete.states.xz",
+        "decoded_sha256": "b2d0c6c7d91fb72bc254f92688fe7847c8139bc3580a75f9b906d5b4f6cc60f4",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm11": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-lm11-complete.states.xz",
+        "decoded_sha256": "06186b3d4a059341981fae67d69ad6d6ed43463983ba0d6ca4fa413a63d64c58",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-lm11-complete.states.xz",
+        "decoded_sha256": "06186b3d4a059341981fae67d69ad6d6ed43463983ba0d6ca4fa413a63d64c58",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-lm11-complete.states.xz",
+        "decoded_sha256": "06186b3d4a059341981fae67d69ad6d6ed43463983ba0d6ca4fa413a63d64c58",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm00": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-cm00-complete.states.xz",
+        "decoded_sha256": "82bb18d56367e2fd928c8ba699a05c7902b1f9fdfc34bc31afaadbe09c52e127",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-cm00-complete.states.xz",
+        "decoded_sha256": "82bb18d56367e2fd928c8ba699a05c7902b1f9fdfc34bc31afaadbe09c52e127",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-cm00-complete.states.xz",
+        "decoded_sha256": "82bb18d56367e2fd928c8ba699a05c7902b1f9fdfc34bc31afaadbe09c52e127",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm01": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-cm01-complete.states.xz",
+        "decoded_sha256": "d1a5ccb2a3ffb742ab7ff0fa72d8e7b0e1d93ee729b9820b3243e38cd45edd5d",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-cm01-complete.states.xz",
+        "decoded_sha256": "d1a5ccb2a3ffb742ab7ff0fa72d8e7b0e1d93ee729b9820b3243e38cd45edd5d",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-cm01-complete.states.xz",
+        "decoded_sha256": "d1a5ccb2a3ffb742ab7ff0fa72d8e7b0e1d93ee729b9820b3243e38cd45edd5d",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm10": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-cm10-complete.states.xz",
+        "decoded_sha256": "d5f00e72eee6ae99ceeab209c28a08c30320157bc9a282e75bfb64c7d760ca0b",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-cm10-complete.states.xz",
+        "decoded_sha256": "d5f00e72eee6ae99ceeab209c28a08c30320157bc9a282e75bfb64c7d760ca0b",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-cm10-complete.states.xz",
+        "decoded_sha256": "d5f00e72eee6ae99ceeab209c28a08c30320157bc9a282e75bfb64c7d760ca0b",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm11": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-task-cm11-complete.states.xz",
+        "decoded_sha256": "31fd8702ba0083901f8777f6e58d66ff30005da3dffe60e7c1155e2bee1f03ce",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-task-cm11-complete.states.xz",
+        "decoded_sha256": "31fd8702ba0083901f8777f6e58d66ff30005da3dffe60e7c1155e2bee1f03ce",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-task-cm11-complete.states.xz",
+        "decoded_sha256": "31fd8702ba0083901f8777f6e58d66ff30005da3dffe60e7c1155e2bee1f03ce",
+        "decoded_bytes": 269484032
+      }
+    }
+  },
+  "actual_C64": {
+    "lm00": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 9875,
+      "loaded_end": "0x2e91",
+      "hardware_stack": 18,
+      "software_stack": 76,
+      "compiler_ZP": 0
+    },
+    "lm01": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 14501,
+      "loaded_end": "0x40a3",
+      "hardware_stack": 20,
+      "software_stack": 159,
+      "compiler_ZP": 0
+    },
+    "lm10": {
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "PRG_bytes": 7699,
+      "loaded_end": "0x2611",
+      "hardware_stack": 15,
+      "software_stack": 73,
+      "compiler_ZP": 0
+    },
+    "lm11": {
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "PRG_bytes": 12587,
+      "loaded_end": "0x3929",
+      "hardware_stack": 19,
+      "software_stack": 158,
+      "compiler_ZP": 0
+    },
+    "cm00": {
+      "complete_states": 32,
+      "mailbox": "a500002020",
+      "PRG_bytes": 9873,
+      "loaded_end": "0x2e8f",
+      "hardware_stack": 20,
+      "software_stack": 76,
+      "compiler_ZP": 0
+    },
+    "cm01": {
+      "complete_states": 32,
+      "mailbox": "a500002021",
+      "PRG_bytes": 13987,
+      "loaded_end": "0x3ea1",
+      "hardware_stack": 22,
+      "software_stack": 165,
+      "compiler_ZP": 0
+    },
+    "cm10": {
+      "complete_states": 32,
+      "mailbox": "a500002024",
+      "PRG_bytes": 7698,
+      "loaded_end": "0x2610",
+      "hardware_stack": 15,
+      "software_stack": 73,
+      "compiler_ZP": 0
+    },
+    "cm11": {
+      "complete_states": 32,
+      "mailbox": "a500002025",
+      "PRG_bytes": 12333,
+      "loaded_end": "0x382b",
+      "hardware_stack": 22,
+      "software_stack": 166,
+      "compiler_ZP": 0
+    }
+  },
+  "source_branches": {
+    "lm00": {
+      "2": 3856,
+      "0": 43823,
+      "1": 17857
+    },
+    "lm01": {
+      "2": 3856,
+      "4": 43823,
+      "1": 17857
+    },
+    "lm10": {
+      "2": 6538,
+      "0": 58998
+    },
+    "lm11": {
+      "2": 6538,
+      "4": 58998
+    },
+    "cm00": {
+      "2": 3856,
+      "0": 43823,
+      "1": 17857
+    },
+    "cm01": {
+      "2": 3856,
+      "4": 43823,
+      "1": 17857
+    },
+    "cm10": {
+      "2": 6538,
+      "0": 58998
+    },
+    "cm11": {
+      "2": 6538,
+      "4": 58998
+    }
+  },
+  "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+  "source_fixture_tool": "tools/imu_pulse_prepare_reference.py",
+  "independent_review": {
+    "path": "evidence/imu-pulse-task-independent-review.txt",
+    "sha256": "17f4e9688c16e8f1ab0f01c215f68778afbe4e42e4e19aabba73e3b94ee49999"
+  },
+  "immutable_service_dependencies": {
+    "src/lm_waitlist_image.c": "cb71a02a022487ab647188310765da3f7ca75def5e563918d02f07da6c286fbf",
+    "src/cm_waitlist_image.c": "f8d1e9a4ec972803ff9cb71fbbdfc65138637fdabae41ed5acb80ec5d23df080",
+    "src/waitlist.c": "f714a30118227cd6f9d4dd4f613694cfcb89b089c504666903906a7a9f651d51",
+    "src/cm_waitlist.c": "ff80e11e7934a3d494a3a85144925335af0234d1f036be6f072c778d05b45d45",
+    "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d"
+  },
+  "qualification": "Both original deferred STRTGYRO/8192AUG through literal WAITLIST/JOBWAKE/IMUBAD, plus successful next-task WAITLIST registration and channel14 activation before literal TCF TASKOVER. Ordinary canonical banks/phase0..3/E4..E7 command pairs, idle output counters. Augment input activity01000 clear; no active-channel or asynchronous pulse-consumption claim. Empty initialized queues with variedTIME3 corpus. No callee wake/alarm/scheduler continuation or whole IMU/RTB/file/application claim.",
+  "target_warning_exception": "Frozen WAITLIST helper enum status signedness warnings remain visible under -Wno-error=sign-conversion; all host warnings remain errors.",
+  "decoded_stream_identity": "Each of eight originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with pipefail; no duplicate raw full streams retained."
+}

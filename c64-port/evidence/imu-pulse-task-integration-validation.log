@@ -1,0 +1,37 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tools/imu_pulse_task_snapshot.c src/imu_pulse_task.c src/imu_pulse_task_register.c src/lm_waitlist_image.c src/waitlist.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_multiword.c src/agc_word.c tests/imu_pulse_cases.c tests/imu_pulse_task_cases.c -o build/imu-pulse-task-integrated-stream
+python3 tools/imu_pulse_task_port_host.py --cc "cc"
+32 complete IMUPULSE task original states mission0 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 5803b0266b5f327b2240bde942fb4b2d44697da42931845cf95a21efd7cdf76d
+32 complete IMUPULSE task original states mission0 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 40b9cb92f1ca3a8cdd5dc11020dc0a8ca0314fb866e50dfa0d31420af1b284d0
+32 complete IMUPULSE task original states mission0 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 b2d0c6c7d91fb72bc254f92688fe7847c8139bc3580a75f9b906d5b4f6cc60f4
+32 complete IMUPULSE task original states mission0 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 06186b3d4a059341981fae67d69ad6d6ed43463983ba0d6ca4fa413a63d64c58
+32 complete IMUPULSE task original states mission1 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 82bb18d56367e2fd928c8ba699a05c7902b1f9fdfc34bc31afaadbe09c52e127
+32 complete IMUPULSE task original states mission1 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 d1a5ccb2a3ffb742ab7ff0fa72d8e7b0e1d93ee729b9820b3243e38cd45edd5d
+32 complete IMUPULSE task original states mission1 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 d5f00e72eee6ae99ceeab209c28a08c30320157bc9a282e75bfb64c7d760ca0b
+32 complete IMUPULSE task original states mission1 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 31fd8702ba0083901f8777f6e58d66ff30005da3dffe60e7c1155e2bee1f03ce
+PASS all524288 complete RTB source states and256 frozen states
+python3 tools/imu_pulse_task_port_host.py --cc "cc" --sanitize
+32 complete IMUPULSE task original states mission0 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 5803b0266b5f327b2240bde942fb4b2d44697da42931845cf95a21efd7cdf76d
+32 complete IMUPULSE task original states mission0 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 40b9cb92f1ca3a8cdd5dc11020dc0a8ca0314fb866e50dfa0d31420af1b284d0
+32 complete IMUPULSE task original states mission0 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 b2d0c6c7d91fb72bc254f92688fe7847c8139bc3580a75f9b906d5b4f6cc60f4
+32 complete IMUPULSE task original states mission0 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 06186b3d4a059341981fae67d69ad6d6ed43463983ba0d6ca4fa413a63d64c58
+32 complete IMUPULSE task original states mission1 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 82bb18d56367e2fd928c8ba699a05c7902b1f9fdfc34bc31afaadbe09c52e127
+32 complete IMUPULSE task original states mission1 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 d1a5ccb2a3ffb742ab7ff0fa72d8e7b0e1d93ee729b9820b3243e38cd45edd5d
+32 complete IMUPULSE task original states mission1 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 d5f00e72eee6ae99ceeab209c28a08c30320157bc9a282e75bfb64c7d760ca0b
+32 complete IMUPULSE task original states mission1 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 31fd8702ba0083901f8777f6e58d66ff30005da3dffe60e7c1155e2bee1f03ce
+PASS all524288 complete RTB source states and256 frozen states under full ASAN/UBSAN

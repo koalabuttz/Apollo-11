@@ -1,0 +1,110 @@
+{
+  "lm00": {
+    "mission": 0,
+    "augment": 0,
+    "stage": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "5803b0266b5f327b2240bde942fb4b2d44697da42931845cf95a21efd7cdf76d",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1456,
+    "source_branches": {
+      "2": 3856,
+      "0": 43823,
+      "1": 17857
+    }
+  },
+  "lm01": {
+    "mission": 0,
+    "augment": 0,
+    "stage": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "40b9cb92f1ca3a8cdd5dc11020dc0a8ca0314fb866e50dfa0d31420af1b284d0",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1693,
+    "source_branches": {
+      "2": 3856,
+      "4": 43823,
+      "1": 17857
+    }
+  },
+  "lm10": {
+    "mission": 0,
+    "augment": 1,
+    "stage": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "b2d0c6c7d91fb72bc254f92688fe7847c8139bc3580a75f9b906d5b4f6cc60f4",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1062,
+    "source_branches": {
+      "2": 6538,
+      "0": 58998
+    }
+  },
+  "lm11": {
+    "mission": 0,
+    "augment": 1,
+    "stage": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "06186b3d4a059341981fae67d69ad6d6ed43463983ba0d6ca4fa413a63d64c58",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1541,
+    "source_branches": {
+      "2": 6538,
+      "4": 58998
+    }
+  },
+  "cm00": {
+    "mission": 1,
+    "augment": 0,
+    "stage": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "82bb18d56367e2fd928c8ba699a05c7902b1f9fdfc34bc31afaadbe09c52e127",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1456,
+    "source_branches": {
+      "2": 3856,
+      "0": 43823,
+      "1": 17857
+    }
+  },
+  "cm01": {
+    "mission": 1,
+    "augment": 0,
+    "stage": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "d1a5ccb2a3ffb742ab7ff0fa72d8e7b0e1d93ee729b9820b3243e38cd45edd5d",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1693,
+    "source_branches": {
+      "2": 3856,
+      "4": 43823,
+      "1": 17857
+    }
+  },
+  "cm10": {
+    "mission": 1,
+    "augment": 1,
+    "stage": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "d5f00e72eee6ae99ceeab209c28a08c30320157bc9a282e75bfb64c7d760ca0b",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1061,
+    "source_branches": {
+      "2": 6538,
+      "0": 58998
+    }
+  },
+  "cm11": {
+    "mission": 1,
+    "augment": 1,
+    "stage": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "31fd8702ba0083901f8777f6e58d66ff30005da3dffe60e7c1155e2bee1f03ce",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1541,
+    "source_branches": {
+      "2": 6538,
+      "4": 58998
+    }
+  }
+}

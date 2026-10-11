@@ -1,0 +1,9 @@
+for mission in 0 1; do for augment in 0 1; do for stage in 0 1; do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DIMUG_MISSION=$mission -DIMUG_AUGMENT=$augment -DIMUG_STAGE=$stage tests/test_imu_pulse_task.c tests/frozen_words.c src/imu_pulse_task.c src/imu_pulse_task_register.c src/lm_waitlist_image.c src/waitlist.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/imu_pulse_task_cases.c tests/imu_pulse_cases.c -o build/test-imu-pulse-task-$mission-$augment-$stage; build/test-imu-pulse-task-$mission-$augment-$stage; done; done; done
+32 complete IMUPULSE task original states mission0 stage0: PASS
+32 complete IMUPULSE task original states mission0 stage1: PASS
+32 complete IMUPULSE task original states mission0 stage0: PASS
+32 complete IMUPULSE task original states mission0 stage1: PASS
+32 complete IMUPULSE task original states mission1 stage0: PASS
+32 complete IMUPULSE task original states mission1 stage1: PASS
+32 complete IMUPULSE task original states mission1 stage0: PASS
+32 complete IMUPULSE task original states mission1 stage1: PASS
