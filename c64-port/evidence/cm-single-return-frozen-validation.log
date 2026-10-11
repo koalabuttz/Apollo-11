@@ -1,0 +1,6 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_single_return.c tests/frozen_words.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c -o build/test-cm-single-return
+build/test-cm-single-return
+64 complete2048word source SPSIN/SPCOS TCQ return states: PASS
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DCM_SINGLE_RETURN_COMPLETE tests/test_cm_single_return.c tests/frozen_words.c src/cm_quictrig.c src/agc_multiword.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c -o build/test-cm-single-complete
+build/test-cm-single-complete
+64 complete2048word source SPSIN/SPCOS TCQ return states: PASS

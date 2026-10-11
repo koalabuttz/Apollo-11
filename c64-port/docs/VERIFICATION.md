@@ -922,3 +922,7 @@ Actual FIXDELAY and VARDELAY return effects pass whole-image original-source, sa
 ## Port original Comanche QUICTRIG and scalar trigonometry
 
 All 164096 original-source full-image scalar/vector trig states match native and sanitized outputs; 128 C64 state checks pass. See `docs/COMANCHE-QUICTRIG.md`.
+
+## Complete Comanche single-precision source return paths
+
+Every original SINGLE_PRECISION_SUBROUTINES path is mapped through real source TCQ returns; all fixed return addresses and banks pass independent source, sanitizer and C64 checks. See `docs/COMANCHE-SINGLE-PRECISION.md`.
