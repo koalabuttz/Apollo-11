@@ -1403,3 +1403,7 @@ Translate actual scalar no-round shifts5 8 and16 including both CYR edits and so
 ## Qualify canonical vector shifts used by antenna calculations
 
 Translate source vector-left continuation and overflow correction against524288 complete original native sanitizer states and384 C64 states with preserved canonical aliases and producer contracts. See `docs/NATIVE-SBAND-VECTOR-SHIFT.md`.
+
+## Compose original antenna unit rotation and frame continuations
+
+Join actual source unit trigonometric matrix and vector shift continuations against49152 complete original native sanitizer states and192 C64 states with honest remaining antenna and ephemerides boundaries. See `docs/NATIVE-SBAND-FRAME.md`.

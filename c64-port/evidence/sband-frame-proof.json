@@ -1,0 +1,157 @@
+{
+  "status": "qualified explicit antenna UNIT/CDUTRIG/MXV/VSL1 continuations; both complete files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 49152,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 49152,
+    "start": 0,
+    "end": 49152,
+    "record_bytes": 4106,
+    "decoded_sha256": "3640c3ebc1087ead1cbd743cea1242b64de4b3f5ad86f73493bae08d2c66f3b7",
+    "decoded_bytes": 201818112,
+    "canonical_original_archive": "evidence/sband-frame-source.snapshots.bin.xz",
+    "compressed_sha256": "1c869c04c44abc94f0f4c838abe517741e680654157151814eca87f13691c447",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 192,
+    "groups": [
+      {
+        "group": 0,
+        "states": 32,
+        "prg_bytes": 23193,
+        "load_end": 25240,
+        "bss_end": 33432,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 1,
+        "states": 32,
+        "prg_bytes": 18021,
+        "load_end": 20068,
+        "bss_end": 28260,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 2,
+        "states": 32,
+        "prg_bytes": 14958,
+        "load_end": 17005,
+        "bss_end": 25197,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 3,
+        "states": 32,
+        "prg_bytes": 14947,
+        "load_end": 16994,
+        "bss_end": 25186,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 4,
+        "states": 32,
+        "prg_bytes": 8740,
+        "load_end": 10787,
+        "bss_end": 18979,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 5,
+        "states": 32,
+        "prg_bytes": 8812,
+        "load_end": 10859,
+        "bss_end": 19051,
+        "mailbox": "a5200000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      }
+    ]
+  },
+  "groups": [
+    "LM UNIT",
+    "LM AFTER_UNIT/CDUTRIG",
+    "LM MATRIX",
+    "CM MATRIX",
+    "LM SHIFT",
+    "CM SHIFT"
+  ],
+  "source_map": "evidence/sband-frame-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "0bcfd5f6c4fccc0ac11d4a8ac0a2c7c2f499e44095a67a5b7e2e6d7570f66ed7",
+  "native_header_sha256": "4a297d1ad78d1837c9a8a4f1ba897f26e3228428dffabb1a96dcfbe539f222f6",
+  "independent_review": {
+    "path": "evidence/sband-frame-independent-review.txt",
+    "sha256": "974a5a8b86f53c5b912fc9c457057708f710524fba4f9d525487a01902a323a1"
+  },
+  "limitations": [
+    "Moon-return vector math, remaining body/pitch/yaw calculations, and display lifecycle pending.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/Q and raw16 A/L, producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ],
+  "dependencies": [
+    {
+      "path": "evidence/rtb-unit-proof.json",
+      "sha256": "fcc5a0f782d7fa6d2788ada03e7363c94e211db751f411f6471601f88c5b906a"
+    },
+    {
+      "path": "evidence/lm-powered-interface-proof.json",
+      "sha256": "203f9b8db35346c05eb0cd564f303bb16f8d66a5673b3d67e77b386448e92730"
+    },
+    {
+      "path": "evidence/lm-powered-trig-proof.json",
+      "sha256": "bb83ff8b720b6c9cbfaa701e90f3924a05e0adf45fec6c2aa4a00178c29baf84"
+    },
+    {
+      "path": "evidence/matrix-proof.json",
+      "sha256": "c1870740179e329edb32d17c34bcdde4aaf6f27b55ab3463c0cd0fc04a019516"
+    },
+    {
+      "path": "evidence/sband-orbit-proof.json",
+      "sha256": "a677e86e668ddb06b18483b1e7bcfa7f93a7877654b9a59415d976e163ab46c6"
+    },
+    {
+      "path": "evidence/sband-shift-proof.json",
+      "sha256": "6179f534b2728cbac998deb7a972db6a40418d02f0c493181ba993340381bdad"
+    }
+  ]
+}

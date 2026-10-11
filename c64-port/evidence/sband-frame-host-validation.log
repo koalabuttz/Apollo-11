@@ -1,0 +1,5 @@
+python3 tools/sband_frame_compare.py
+PASS {'states': 49152, 'start': 0, 'end': 49152, 'record_bytes': 4106, 'decoded_sha256': '3640c3ebc1087ead1cbd743cea1242b64de4b3f5ad86f73493bae08d2c66f3b7'}
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_frame_snapshot.c tests/sband_frame_cases.c src/agc_word.c src/sband_frame.c src/rtb_unit.c src/rtb_vector.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/lm_powered_interface.c src/lm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/matrix_native.c src/sband_shift.c src/guidance_shift.c -o build/sband-frame-sanitize
+python3 tools/sband_frame_compare.py sanitize
+PASS {'states': 49152, 'start': 0, 'end': 49152, 'record_bytes': 4106, 'decoded_sha256': '3640c3ebc1087ead1cbd743cea1242b64de4b3f5ad86f73493bae08d2c66f3b7'}

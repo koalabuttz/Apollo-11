@@ -903,3 +903,8 @@ include tools/sband_shift_integration.mk
 all: build/sband-shift-integrated-stream
 test: test-sband-shift
 sanitize: sanitize-sband-shift
+
+include tools/sband_frame_integration.mk
+all: build/sband-frame-integrated-stream
+test: test-sband-frame
+sanitize: sanitize-sband-frame

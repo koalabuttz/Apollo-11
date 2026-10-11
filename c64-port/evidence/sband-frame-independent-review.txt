@@ -1,0 +1,11 @@
+Independent source review by peer /root/p66_source_map; retained by /root/frozen_storage.
+
+Reviewed identities:
+src/sband_frame.c SHA256 0bcfd5f6c4fccc0ac11d4a8ac0a2c7c2f499e44095a67a5b7e2e6d7570f66ed7
+include/sband_frame.h SHA256 4a297d1ad78d1837c9a8a4f1ba897f26e3228428dffabb1a96dcfbe539f222f6
+../Luminary099/S-BAND_ANTENNA_FOR_LM.agc SHA256 db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2
+../Comanche055/S-BAND_ANTENNA_FOR_CM.agc SHA256 0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061
+
+Peer conclusion: No concrete discrepancy found in the declared explicit source continuations. UNIT delegates the actual prologue and three owned arithmetic phases without a new scheduling check. LM VCOMP/CALL saves true QPRET and CDUTRIG return, then restores caller bank before actual REFSMMAT MXV. Matrix eighteen-word gather precedes all four row phases. Terminal VSL1 selector preserves LM pending EDOP5 and CM pending PDDL0052 as source. Internal POWERED/UNIT return-status calls rely on the documented valid composed caller domain. No callee edits or whole containing-file credit inferred.
+
+Independent source inspection is separate from the retained original-source execution corpus. External conic/ephemerides/display and remaining antenna calculations are not claimed executed.

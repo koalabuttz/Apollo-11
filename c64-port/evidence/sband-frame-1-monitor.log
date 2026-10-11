@@ -1,0 +1,6 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-frame-1.prg from 0801 to 4E63 (4663 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   74/$04a,  27/$1b
+.C:376a  8D 00 C0    STA $C000      - A:A5 X:00 Y:0F SP:f1 N.-..I.C   58107825
+Saving file `/workspace/Apollo-11/c64-port/build/sband-frame-1-mailbox.bin' from $c000 to $c003
