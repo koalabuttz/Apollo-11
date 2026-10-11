@@ -990,3 +990,7 @@ The resident and four actual compiled mission/service bodies fit their memory sl
 ## Port original Comanche relay scan and physical display output
 
 All4096 complete original DSPOUTSB and channel10 states match native and sanitized outputs; real C64 checks include actual screen and color RAM. See `docs/COMANCHE-RELAY.md`.
+
+## Port Comanche numerical display-scale wrappers
+
+All4096 complete original scale-wrapper states match native and sanitized outputs through the real decimal continuation; C64 execution checks pass. See `docs/COMANCHE-SCALE.md`.

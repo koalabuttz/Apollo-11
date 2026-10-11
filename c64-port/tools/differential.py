@@ -358,3 +358,5 @@ subprocess.run([sys.executable,'tools/cm_task_interrupt_differential.py',str(ref
 subprocess.run([sys.executable,'tools/cm_service_loop_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_relay_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_scale_differential.py',str(reference)],cwd=ROOT,check=True)

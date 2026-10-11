@@ -513,3 +513,5 @@ include tools/cm_service_loop.mk
 include tools/cm_service_overlay.mk
 
 include tools/cm_relay.mk
+
+include tools/cm_scale.mk
