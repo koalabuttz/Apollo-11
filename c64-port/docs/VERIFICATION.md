@@ -1752,3 +1752,7 @@ Qualify actual octal display component selection channels and row return against
 ## Translate complete original Comanche QUALITY numerical and control bodies
 
 Qualify65536 original inputs and688128 full canonical native sanitizer checkpoints across all20 source phases with640 C64 states and180 atomic rejection checks retaining actual branch and pending return boundaries. See `docs/NATIVE-CM-QUALITY.md`.
+
+## Fresh committed orbital display and device host check
+
+A clean isolated export of exact commit`358be42603f2df3c51ffe5be9ad0560ca1f56be6` builds and passes every registered portable host `all`/`test` recipe, including both whole interbank and service routine files, full P66 recurrence, complete UNIT numerical groups, positive-zero Executive admission, operator request composition and uninterrupted Comanche abort lifecycle, source PRIOLARM, both original V30/V31 complete scheduler paths, S-band vector helpers and IMUPULSE service registration. The exporter uses exact Git objects and excludes uncommitted source. Its committed snapshot has40 complete source files; the full-port gate correctly rejects135 remaining files and both integrated applications. See `evidence/integration-orbital-display-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
