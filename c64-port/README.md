@@ -1078,3 +1078,7 @@ The111-module native C64 disk reproduces STARTP66, guidance, display and idle,10
 ## Translate complete original Comanche interbank communication source
 
 All14 source entries and76 emitted words, source control aliases and allfour negative-overflow BANKJUMP successors are mapped and independently reviewed. All921,088 complete original/native/full-sanitizer states and448 actual C64 states match. The invalid register-Q fault frontier is retained before any external instruction fetch, alongside hardened compiled-caller/saved-return bounds, quiesced producers and all11 unrelated CM I/O fields unchanged. The two-image target fixture establishes standalone stock C64 behavior; production overlay allocation remains separate. See `docs/COMANCHE-INTERBANK.md`.
+
+## Complete original Comanche interbank source
+
+All14 entries and76 emitted words, including allfour negative-overflow MAKECADR successors, are qualified by independent review,921088 complete source/native/sanitizer states and448 actual C64 states. The certificate uses the historical baseline and retains the compiled-caller domain and external return/fault boundaries.37 files are complete;138 files and both full applications remain open. See `docs/COMANCHE-INTERBANK.md`.

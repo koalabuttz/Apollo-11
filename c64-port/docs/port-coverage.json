@@ -644,7 +644,7 @@
       "sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
       "bytes": 5747,
       "lines": 183,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -659,8 +659,48 @@
           ],
           "scope": "All fourteen named interbank groups in their qualified nonoverflow/caller address domains. Arbitrary DSPFMEM/self-check fixed data, TS-overflow branches and remaining full-domain closure are still pending.",
           "verification": "docs/COMANCHE_INTERBANK.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interbank_complete.c"
+          ],
+          "scope": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced; all14 entries/all76 emitted words including negative-overflow register-Q fault frontier before external fetch",
+          "verification": "docs/COMANCHE-INTERBANK.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
+        "external_continuations": [
+          "caller-owned compiled sourcecallee/caller",
+          "interpretedcoding nativecontinuation",
+          "PC2/Q-1 invalidregisterfaultfrontier beforeexternalwordfetch"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/COMANCHE-INTERBANK.md",
+            "sha256": "bf32e1683113acc5fb92e892c2bbccbde315a6eb3d55002d01e536a20a9900c3"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-interbank-complete-source-audit.json",
+            "sha256": "fbcdcafd7ed3e2b2b19b6dd23451c14221c97898974fcb25e05c8f88a552d938"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-interbank-complete-proof.json",
+            "sha256": "569a7a6ea91ca69c4ad5d92d335c45ab38090285891fd901a7365d831b8510d9"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-interbank-complete-vice-results.json",
+            "sha256": "0bb21f230f28c757ec6c8c82173dcb8da9435dc8353cfed60f1238a3952cb688"
+          },
+          "independent_review": {
+            "path": "evidence/cm-interbank-complete-independent-review.txt",
+            "sha256": "3b6c886d45aa667874a445b290c59ebd13fe2083be4efb5a2a2a7cf313938421"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/INTERPRETER.agc",

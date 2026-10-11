@@ -1,0 +1,8 @@
+{
+  "frozen_recommendation": "evidence/cm-interbank-complete-coverage.json",
+  "frozen_recommendation_sha256": "5a6861d0b1233228512e8657c5cea46610fd8d3fe6ade183efd71a9e9bee1ff0",
+  "recommendation_snapshot_revision": "04d9e7248353c7c432b0512e3f6dc7ff8e7a12ee",
+  "certified_original_source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+  "explanation": "Recommendation records the native work snapshot. The original source is byte-identical to the immutable historical baseline, which the certificate uses."
+}

@@ -1140,6 +1140,8 @@
   "cm-interbank-c64-result.log": "7ac7f76efd3667aa7b29dc0a56c62ad8583fec194c23a4c0d2a001b25c17b2a6",
   "cm-interbank-complete-SHA256.json": "1190e08b3c851d1d97a5d38786b79f9dcc70fd42943f53400cba9c6d06113679",
   "cm-interbank-complete-c64.log": "fa4fe7a15a5b805f457c3e171c97c3aed2ecd28e7c790a896542a18d30da3def",
+  "cm-interbank-complete-certificate-revision-clarification.json": "745d6815f5e5068845a202d6b51aa241399fb7d92d9078bf73b939ffa79d8ed0",
+  "cm-interbank-complete-certificate-validation.log": "c2c2bb08f145f95e3c2379092a7262c04caf7cee7ceb2be1ad395904d00af749",
   "cm-interbank-complete-coverage.json": "5a6861d0b1233228512e8657c5cea46610fd8d3fe6ade183efd71a9e9bee1ff0",
   "cm-interbank-complete-final-source-results.json": "2f90382b45f5a7a7971c630b2048b6ac26ae64ede5a0a70dbe95cd72c7791f7e",
   "cm-interbank-complete-final-source.log": "c5e6e333e5509695b844468cddf220a8cf688c501a9f22413b3e2adda6ad1a94",
