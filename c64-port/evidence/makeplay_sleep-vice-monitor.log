@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/makeplay_sleep.prg from 0801 to 1ACA (12CA bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  207/$0cf,  62/$3e
+.C:111b  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed NV-....C  295835903
+>C:c080  a5 00 00 40  00                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/makeplay_sleep-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/makeplay_sleep-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/makeplay_sleep-software-stack.bin' from $c100 to $cfff

@@ -1,0 +1,10 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_makeplay.c tests/makeplay_check.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -o build/test-makeplay
+build/test-makeplay
+64 complete MAKEPLAY images and45 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_makeplay.c tests/makeplay_check.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -o build/test-makeplay-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-makeplay-sanitize
+64 complete MAKEPLAY images and45 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/makeplay_snapshot.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -o build/makeplay-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/makeplay-native-sanitize > build/makeplay-sanitize.snapshots
+cmp build/makeplay-sanitize.snapshots build/makeplay-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/makeplay_diagnostic.c tests/makeplay_check.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -Wl,-Map,build/makeplay.map -o build/makeplay.prg

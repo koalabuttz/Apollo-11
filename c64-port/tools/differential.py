@@ -306,3 +306,5 @@ subprocess.run([sys.executable,'tools/runtime_regodspr_differential.py',str(refe
 subprocess.run([sys.executable,'tools/runtime_fetch_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/lm_wake_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/makeplay_differential.py',str(reference)],cwd=ROOT,check=True)

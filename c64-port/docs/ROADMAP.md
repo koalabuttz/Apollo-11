@@ -544,3 +544,7 @@ The original NEWOPS and LOC03507/03510 fetch routes resume THROTTLE+3 with exact
 ## Port canonical LM JOBWAKE source effects
 
 The original JOBWAKE service preserves raw L, bank and scheduling effects in 8192 complete source states, including first wake, no match and both signed zeros. Strict host, sanitizer and 64 C64 comparisons pass. See `docs/LM-BASIC-WAKE.md`.
+
+## Port real MAKEPLAY priority and wake prelude
+
+Native MAKEPLAY follows the actual PRIOCHNG, JOBWAKE, GOSLEEPS, GOPLAY and duplicate ENDOFJOB routes with source XCHTOEND replacement. Original comparisons cover 12288 complete states, matching sanitizer streams and 64 C64 cases; the sleep and resumed lifecycle remains separately qualified. See `docs/P66-MAKEPLAY.md`.
