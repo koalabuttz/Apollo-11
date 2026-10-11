@@ -793,3 +793,5 @@ include tools/service_routines_integration.mk
 include tools/dsky_alarm_cycle.mk
 
 include tools/dsky_nv_update_general_integration.mk
+
+include tools/lm_danzig_change_integration.mk

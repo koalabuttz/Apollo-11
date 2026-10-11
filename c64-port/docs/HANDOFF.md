@@ -1223,3 +1223,7 @@ Qualify actual ALMCYCLE prefix BANKCALL UPDATVB minus1 selection and SWRETURN EN
 ## Qualify generalized original verb noun update signed zero paths
 
 Extend separately native source qualified update bodies to either signed zero all source selecting SUPER banks and actual clean relay CCSHOLE branches with8192 full original native sanitizer states and128 C64 states preserving prior frozen updater. See `docs/DSKY-NV-UPDATE-GENERAL.md`.
+
+## Canonical Luminary DANZIG context change source entries
+
+Literal DANZIG/NOIBNKSW through CHANG2 basic or interpreter exchanges match16384 complete2053-field original/native/full-sanitizer states,25 unchanged guard domains and64 actual C64 disk-overlay states. Raw incoming L to Q overflow and actual selected transfers are retained. Selected application bodies remain separate. Retained-original checks require no emulator or stale build outputs. See `docs/LM-DANZIG-CHANGE.md`.
