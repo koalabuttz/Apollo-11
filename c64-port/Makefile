@@ -556,3 +556,5 @@ include tools/cm_charin_number.mk
 
 include tools/cm_mission_loop.mk
 all: build/cm-mission-loop-native
+
+include tools/p66_complete.mk

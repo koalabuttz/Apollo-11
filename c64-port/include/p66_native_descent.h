@@ -1,0 +1,19 @@
+/* SPDX-License-Identifier: MIT */
+#ifndef P66_NATIVE_DESCENT_H
+#define P66_NATIVE_DESCENT_H
+#include "p66_native.h"
+/* Concrete native numerical entries. Source control and scheduler callbacks
+ * are bound separately at independently qualified source boundaries. Every
+ * entry uses one authoritative source image and transient physical views. */
+enum p66_descent_selector {
+ P66_DESCENT_HORIZONTAL_LOAD=220,P66_DESCENT_HORIZONTAL_SURFACE=221,
+ P66_DESCENT_HORIZONTAL_POSITION=222,P66_DESCENT_HORIZONTAL_RADIAL=223,
+ P66_DESCENT_HORIZONTAL_TANGENTIAL=224,P66_DESCENT_HORIZONTAL_LENGTH=225,
+ P66_DESCENT_HORIZONTAL_STORE=226,P66_DESCENT_HORIZONTAL_EXIT=227,
+ P66_DESCENT_HORIZONTAL_UNIT_SQUARE=230,P66_DESCENT_HORIZONTAL_UNIT_ROOT=231,
+ P66_DESCENT_HORIZONTAL_UNIT_FINISH=232,P66_DESCENT_HORIZONTAL_VXSC=233,
+ P66_DESCENT_HORIZONTAL_LENGTH_SQUARE=234,P66_DESCENT_HORIZONTAL_LENGTH_ROOT=235,
+ P66_DESCENT_HORIZONTAL_LENGTH_FINISH=236
+};
+uint16_t p66_native_descent_entry(apollo_overlay_state *,uint16_t selector);
+#endif

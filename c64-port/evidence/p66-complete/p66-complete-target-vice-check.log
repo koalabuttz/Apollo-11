@@ -1,0 +1,5 @@
+PASS: stock PAL C64 ROMs + D81 virtual IEC; real resident scheduler, arithmetic and basic service overlays
+148 original-source2052-word checkpoints; RODCOMP through feedback, THROTTLE, horizontal speed, enabled DISPEXIT, three-row V06N60 formatting and actual source idle
+Two frozen input cases, bothSUPER forms, Ienabled/masked and $01 restored; full raw canonical image through ENDOFJOB and ADVAN3214
+Mailbox: a50000940002 softwarestack measured extent: 772 hardwarestack extent: 70
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms +drive8truedrive -virtualdev8 -iecdevice8 -device8 1 -drive8type 1581 -8 /workspace/Apollo-11/c64-port/build/p66-complete.d81 -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/p66-complete-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/p66-complete-vice-monitor.log -monlog -limitcycles 16000000000
