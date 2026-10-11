@@ -1,0 +1,16 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-abort-word-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-abort-word-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-ABORT-WORD.PRG' as `RESIDENT' to unit 8
+writing file `CM-ABORT-WORD-228.PRG' as `G228' to unit 8
+writing file `CM-ABORT-WORD-254.PRG' as `G254' to unit 8
+writing file `CM-ABORT-WORD-255.PRG' as `G255' to unit 8
+writing file `CM-FIXED-COMPAT-200.PRG' as `F200' to unit 8
+writing file `CM-FIXED-COMPAT-201.PRG' as `F201' to unit 8
+writing file `CM-FIXED-COMPAT-202.PRG' as `F202' to unit 8
+writing file `CM-FIXED-COMPAT-203.PRG' as `F203' to unit 8
+writing file `CM-FIXED-COMPAT-204.PRG' as `F204' to unit 8
+writing file `CM-FIXED-COMPAT-205.PRG' as `F205' to unit 8
+228 1181 loaded bytes
+254 5337 loaded bytes
+255 9981 loaded bytes

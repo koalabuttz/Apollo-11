@@ -1,0 +1,4 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_abort_word_cases.h"
+#include "cm_admission_complete_cases.h"
+void cm_abort_word_input(apollo_overlay_state *s,cm_native_io *io,uint32_t n){static const agc_word pc[3]={07762,05726,05754};unsigned caller=(n/3u)%4030u;(void)cm_admission_complete_input(s,io,n%CM_ADMISSION_COMPLETE_CASES);s->words[5]=pc[n%3u];s->words[2]=0134;s->words[01363]=(agc_word)(0100u+caller);s->words[3]=(agc_word)((n/12090u)*0400u);if(n%3u!=2u&&s->words[01363]>=01400u&&s->words[01363]<01500u&&!s->words[3])s->words[3]=0400;s->words[4]=(agc_word)((caller%32u)*02000u);s->words[6]=(agc_word)(s->words[4]|(s->words[3]>>8));s->words[0133]=s->words[5];s->words[0134]=040000;s->words[0]=(agc_register)(n*97u);s->words[1]=(agc_register)n;io->superbank=(agc_word)((caller/32u%8u)*020u);io->interrupt_enabled=0;}

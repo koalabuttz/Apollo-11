@@ -1,0 +1,11 @@
+# Comanche post-snapshot abort caller word
+
+`cm_abort_word` executes the actual post-VAC5/SWRETURN BAILOUT7762, POODOO5726 and CCSHOLE5754 groups through BORTENT5655. The original ALMCADR identifies the ordinary caller0100..7775. BAILOUT/POODOO resolve and read their inline alarm word using the banks that exist **after** the snapshot returns; VAC5 has changed EB to1400. Erasable words, including snapshot-overwritten aliases, come directly from the sole canonical image. CCSHOLE uses the original constant1103.
+
+The fixed-address resolver selects immutable original-layout words strictly as data. On C64, each resolver, passive data read and native body returns before swapping the slot; producer exclusion spans the sequence. No word is decoded or used for executable dispatch. The six existing data payloads200..205 and their retained hashes remain byte unchanged. Ordinary program storage excludes banked physical hardware/control addresses below0100. This additive helper preserves all older snapshot and alarm-record bytes.
+
+Fresh original rope6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061 yields96720 complete2048-word+13-I/O states: all4030 caller descriptors, all three post-snapshot entries and all eight EB values, with raw A/L cohorts, RAM aliases and all passive fixed pages. Only EB1400 is the genuine VAC5 post-snapshot producer; the other banks independently expand the isolated group domain. Virtual IRQ0 is the original snapshot contract. Full strict/source and ASAN/UBSAN comparisons pass. The399453600-byte stream SHA256 is4d790089a4b358e367c1a6333c90715344cea06bf053df7c2917b5b988490b0b.
+
+The stock PAL C64 executes64 actual source-derived caller states under both incoming hardware I contexts. Two full2061-word samples and the final2048-word image compare directly; every checkpoint also compares the complete source fingerprint. Mailboxa500004000; measured software-stack extent718 bytes. Exact PRGs, maps, disk, inputs, source streams and results are retained by the module report. Downstream BORTENT recording and actual abort recovery remain separate source-qualified groups.
+
+Run `make -f Makefile -f tools/cm_abort_word.mk test-cm-abort-word` and `sanitize-cm-abort-word`.

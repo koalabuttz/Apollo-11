@@ -580,3 +580,5 @@ subprocess.run([sys.executable,'tools/dsky_decimal_raw_differential.py',str(refe
 subprocess.run([sys.executable,'tools/dsky_decimal_consumer_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_lamp_lifecycle_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_abort_word_differential.py',str(reference)],cwd=ROOT,check=True)

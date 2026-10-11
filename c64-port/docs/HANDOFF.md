@@ -1383,3 +1383,7 @@ Qualify4096 uninterrupted source display inputs and43932 complete source native 
 ## Compose original lamp mode and release lifecycle
 
 Qualify8192 complete original native sanitizer states and64 C64 states through actual display queues source returns and alarm handoffs while preserving source pending-state behavior. See `docs/DSKY-LAMP-LIFECYCLE.md`.
+
+## Resolve original abort caller data after canonical snapshot changes
+
+Qualify96720 full original native sanitizer states and64 C64 states resolving actual inline alarm words after source VAC and bank changes with passive fixed data and preserved canonical aliases. See `docs/COMANCHE_ABORT_WORD.md`.

@@ -1,0 +1,16 @@
+[
+  {
+    "removed_raw": "build/cm-abort-word-reference.snapshots.bin",
+    "retained_archive": "build/cm-abort-word-reference.snapshots.bin.gz",
+    "raw_bytes": 399453600,
+    "raw_sha256": "4d790089a4b358e367c1a6333c90715344cea06bf053df7c2917b5b988490b0b",
+    "archive_sha256": "117b186ca70c7bf08e59136dee7b29494b5ae93036cea1a26692c51057cbbab0"
+  },
+  {
+    "removed_raw": "build/cm-abort-word-native.snapshots.bin",
+    "retained_archive": "build/cm-abort-word-native.snapshots.bin.gz",
+    "raw_bytes": 399453600,
+    "raw_sha256": "4d790089a4b358e367c1a6333c90715344cea06bf053df7c2917b5b988490b0b",
+    "archive_sha256": "117b186ca70c7bf08e59136dee7b29494b5ae93036cea1a26692c51057cbbab0"
+  }
+]
