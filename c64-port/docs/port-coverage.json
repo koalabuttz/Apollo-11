@@ -205,6 +205,15 @@
           ],
           "scope": "Actual REGODSP/CLOCPLAY/GOFLASH and SAVELOCS to canonical MAKEPLAY entry; remaining file paths require qualification.",
           "verification": "docs/COMANCHE-DISPLAY-CONTROL.md"
+        },
+        {
+          "native_files": [
+            "src/cm_nv85.c",
+            "src/cm_nv85_route.c",
+            "src/cm_dynamic_display.c"
+          ],
+          "scope": "Normal CKNVWRD1/REGODSP and MAKEPLAY/GOPLAY continuation for source V06N85, original priority/wake and actual END/idle composition. Busy, flashing, monitor and noun40 paths remain separate work.",
+          "verification": "docs/COMANCHE-NORMAL-N85.md"
         }
       ]
     },
@@ -383,6 +392,21 @@
           ],
           "scope": "Actual JOBWAKE, JOBSLEEP and idle/positive job successor selection, including continuous display sleep/wake/sleep composition. Whole Executive admission/exchange and source review still pending.",
           "verification": "docs/COMANCHE-DISPLAY-SLEEP-LIFECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_blank.c"
+          ],
+          "scope": "Actual SUPDXCHZ+1 saved-bank return boundary used by display blanking, within its valid saved tuple domain. This is neither the whole Executive nor generic arbitrary source dispatch.",
+          "verification": "docs/DSKY-BLANK-RETURN.md"
+        },
+        {
+          "native_files": [
+            "src/cm_admission_complete.c",
+            "src/cm_context_change.c"
+          ],
+          "scope": "Actual NOVAC/FINDVAC/SPVAC/SPVACIN success and resource-exhaustion side effects plus canonical CHANG1/CHANG2 for all basic/interpreter context combinations. BAILOUT bodies and selected application bodies are excluded.",
+          "verification": "docs/COMANCHE_CONTEXT_CHANGE.md"
         }
       ]
     },
@@ -598,6 +622,13 @@
           ],
           "scope": "Actual DANZIG/NEWOPS reentry and selected source arithmetic/GOTO+4 return helpers under qualified caller contracts. Complete interpreter operation/control and scheduling coverage remains pending.",
           "verification": "docs/COMANCHE-POWERED-FLIGHT.md"
+        },
+        {
+          "native_files": [
+            "src/inverse_trig.c"
+          ],
+          "scope": "Original ARCSIN/ARCCOS sign, clamp, normalized root, rounded shift, polynomial and epilogues through completed DANZIG or pre1301 service boundary. Alarm handler, post-alarm continuation and remaining interpreter source are excluded.",
+          "verification": "docs/INVERSE-TRIG.md"
         }
       ]
     },
@@ -891,6 +922,15 @@
           ],
           "scope": "Actual CLOCKJOB BANKCALL, QUICTRIG return and display selection; other flight programs remain unported.",
           "verification": "docs/COMANCHE-CLOCKJOB.md"
+        },
+        {
+          "native_files": [
+            "src/cm_dyndisp.c",
+            "src/cm_dyndisp_route.c",
+            "src/cm_dynamic_display.c"
+          ],
+          "scope": "Actual DYNDISP/P40CNV85/S41.1 numerical route composed through normal V06N85 display and allocated-VAC/core release. Remaining P40-P47 program paths and live resident scheduling are excluded.",
+          "verification": "docs/COMANCHE-DYNAMIC-DISPLAY.md"
         }
       ]
     },
@@ -959,6 +999,27 @@
           ],
           "scope": "Actual +/- SIGNTEST, sign lamps, DSPIN/FIXCLPAS and source ENDOJOB. Complete Pinball operator routines and fixed-memory display formatting still pending.",
           "verification": "docs/DSKY-SIGN-ENTRY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_charin_sign.c",
+            "src/dsky_charin_clear.c",
+            "src/dsky_charin_reset.c",
+            "src/dsky_charin_alarm.c",
+            "src/dsky_charin_release.c",
+            "src/dsky_blank.c"
+          ],
+          "scope": "Actual operator sign, Clear, Reset, invalid-key alarm, Key Release/RELDSP and BLNKSUB1 bodies with original signed-zero and source-selected continuation behavior. Broader ENTER/PINBRNCH/blanking caller and remaining Pinball paths remain open.",
+          "verification": "docs/DSKY-KEY-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_nv85.c",
+            "src/cm_nv85_route.c",
+            "src/cm_dynamic_display.c"
+          ],
+          "scope": "Actual normal V06N85 NVSUB/table/scaling/three decimal rows through source completion, supplied with fresh transformed VGBODY from uninterrupted DYNDISP. Relay drain and other noun/operator paths are excluded.",
+          "verification": "docs/COMANCHE-DYNAMIC-DISPLAY.md"
         }
       ]
     },
@@ -1924,6 +1985,22 @@
           ],
           "scope": "Source-selected dispatch adoption, canonical END and shared returned resident scheduler callbacks; remaining whole Executive source paths require review.",
           "verification": "docs/NATIVE-SOURCE-DISPATCH.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_blank.c"
+          ],
+          "scope": "Actual SUPDXCHZ+1 saved-bank return boundary used by display blanking, within its valid saved tuple domain. This is neither the whole Executive nor generic arbitrary source dispatch.",
+          "verification": "docs/DSKY-BLANK-RETURN.md"
+        },
+        {
+          "native_files": [
+            "src/lm_interpreter_change.c",
+            "src/native_dispatch.c",
+            "src/native_overlay_dispatch.c"
+          ],
+          "scope": "Canonical source CHANG2 and native source-selected basic/interpreter adoption without repeated exchange or pending IRQ admission. Generic admission, CHANG1 and whole Executive remain separate coverage work.",
+          "verification": "docs/NATIVE-CANONICAL-EXCHANGE.md"
         }
       ]
     },
@@ -2280,6 +2357,13 @@
               "sha256": "c05cb797b5435c5a63187b5d755b4a4a018c438c0b7fd29e7b0a2717865c2237"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/inverse_trig.c"
+          ],
+          "scope": "Original ARCSIN/ARCCOS sign, clamp, normalized root, rounded shift, polynomial and epilogues through completed DANZIG or pre1301 service boundary. Alarm handler, post-alarm continuation and remaining interpreter source are excluded.",
+          "verification": "docs/INVERSE-TRIG.md"
         }
       ]
     },
@@ -2672,6 +2756,18 @@
           ],
           "scope": "Actual +/- SIGNTEST, sign lamps, DSPIN/FIXCLPAS and source ENDOJOB. Numeric/VN bodies and physical keyboard groups separately qualify; complete Pinball operator routines still pending.",
           "verification": "docs/DSKY-SIGN-ENTRY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_charin_sign.c",
+            "src/dsky_charin_clear.c",
+            "src/dsky_charin_reset.c",
+            "src/dsky_charin_alarm.c",
+            "src/dsky_charin_release.c",
+            "src/dsky_blank.c"
+          ],
+          "scope": "Actual operator sign, Clear, Reset, invalid-key alarm, Key Release/RELDSP and BLNKSUB1 bodies with original signed-zero and source-selected continuation behavior. Broader ENTER/PINBRNCH/blanking caller and remaining Pinball paths remain open.",
+          "verification": "docs/DSKY-KEY-RELEASE.md"
         }
       ]
     },
