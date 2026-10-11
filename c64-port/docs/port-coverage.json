@@ -198,6 +198,15 @@
           "scope": "FINDVAC/NOVAC admission and ENDOFJOB release through CHANJOB or idle selection; remaining source paths untranslated",
           "verification": "docs/COMANCHE_EXECUTIVE.md",
           "oracle_qualification": "Generated five-line indentation normalization; historical original unchanged; corrected complete rope identity verified."
+        },
+        {
+          "native_files": [
+            "src/cm_dispatch.c",
+            "src/cm_native_dispatch.c",
+            "src/cm_irq.c"
+          ],
+          "scope": "Compiled dispatch/lifecycle, CHANG1/CHANJOB native adaptation and IRQ publication/admission. C64 interrupt evidence does not certify all original AGC ISR programs.",
+          "verification": "docs/COMANCHE_IRQ.md"
         }
       ]
     },
@@ -828,8 +837,17 @@
       "sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
       "bytes": 14011,
       "lines": 556,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_waitlist.c",
+            "src/cm_waitlist_native.c"
+          ],
+          "scope": "WAITLIST through LVWTLIST return; ENDTASK dummy tuple; T3RUPT/T3RUPT2 actual bank transfer; TASKOVER next transfer or RESUME. Source error paths 01203/01204 retained. Remaining task/IMU/alarm source paths not certified.",
+          "verification": "docs/COMANCHE_WAITLIST.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
@@ -985,8 +1003,16 @@
       "sha256": "1156271d55ea1f47bf20602da2cefa9388a908b3dca5231650cc7f10895db776",
       "bytes": 4811,
       "lines": 176,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/p66_initialization.c"
+          ],
+          "scope": "STOPRATE nine rate/error clears, exact basic return and physical-bank/IRQ effects; remaining DAP services not certified.",
+          "verification": "docs/P66_INITIALIZATION.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
@@ -994,8 +1020,16 @@
       "sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
       "bytes": 40245,
       "lines": 1459,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/p66_major_mode.c"
+          ],
+          "scope": "Fixed STARTP66 NEWMODEX major-mode selection and actual DSPMMJB NOVAC admission; deferred formatting/device drain still pending.",
+          "verification": "docs/P66_MAJOR_MODE.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/DOWNLINK_LISTS.agc",
@@ -1453,6 +1487,19 @@
               "sha256": "85629c7753513f3e2dd9a951f31c1ae4139e9dc83381e3a193453a9afb94c1c9"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/p66_launch.c",
+            "src/p66_native.c",
+            "src/guidance_radial.c",
+            "src/guidance_acceleration.c",
+            "src/guidance_projection.c",
+            "src/guidance_throttle.c",
+            "src/guidance_horizontal.c"
+          ],
+          "scope": "Complete STARTP66 entry-domain composition through RODCOMP, separately verified landing-cycle radial/acceleration/live CDU projection/force feedback/horizontal kernels. Live disk driver currently ends before UNIT; complete cycle/application integration and other landing programs remain pending.",
+          "verification": "docs/P66_NATIVE_DRIVER.md"
         }
       ]
     },
@@ -1633,8 +1680,17 @@
       "sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
       "bytes": 10932,
       "lines": 447,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/guidance_rotation.c",
+            "src/guidance_throttle_service.c"
+          ],
+          "scope": "AX*SR*T and THROTTLE+3 through THDUMP verified across full modeled state; remaining source paths and enclosing return bridge not certified.",
+          "verification": "docs/THROTTLE-SERVICE.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc",
