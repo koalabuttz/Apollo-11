@@ -1,0 +1,12 @@
+Loading /workspace/Apollo-11/c64-port/build/delcomp.prg from 0801 to 920F (8A0F bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+Loading /workspace/Apollo-11/c64-port/build/delcomp.prg from 0801 to 991E (911E bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+Loading /workspace/Apollo-11/c64-port/build/delcomp.prg from 0801 to 991E (911E bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   74/$04a,  58/$3a
+.C:4bf0  8E 00 C0    STX $C000      - A:40 X:A5 Y:01 SP:f1 N.-..I.C  421232800
+Saving file `/workspace/Apollo-11/c64-port/build/delcomp-mailbox.bin' from $c000 to $c002

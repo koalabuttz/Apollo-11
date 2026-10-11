@@ -760,3 +760,7 @@ Actual Comanche verb/noun CHARIN follows source editing and return effects throu
 ## Translate original Comanche TWIDDLE and remaining waitlist domains
 
 Extended waitlist control preserves 2,048 original complete states, including TWIDDLE, invalid-delay alarm routing, both full-list mutation paths and the previously excluded positive-delay range. Strict and sanitizer checks pass; C64 validates 128 fingerprints and two complete samples. Alarm bodies remain actual continuation boundaries. See `docs/COMANCHE_WAITLIST_EXTENDED.md`.
+
+## Translate actual DELCOMP helpers for both mission attitude domains
+
+Both original DELCOMP routines match 10,240 complete canonical states and full sanitizer output through actual source RVQ, including bank and editing-word effects. Stock-ROM C64 validates 320 complete states. Containing attitude and angle files remain partial; whole gimbal compositions are being qualified separately. See `docs/DELCOMP.md`.

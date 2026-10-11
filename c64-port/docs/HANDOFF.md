@@ -839,3 +839,7 @@ The isolated committed snapshot `69801cb` passes all portable sanitizer recipes,
 ## Comanche mission scope correction
 
 The retained NVWORD=0 CLOKTASK cohort updates TBASE and reschedules; it does not admit or execute CLOCKJOB. All 384 retained original source outcomes confirm this. Corrected metadata preserves prior byte copies and all source/native/C64 fidelity identities. Actual covered foreground outcomes are NBDONLY and unchanged interpreted NEWOPS. Separate clock-job body qualifications remain valid. See `evidence/cm-mission-scope-correction.json`.
+
+## Translate actual DELCOMP helpers for both mission attitude domains
+
+Both original DELCOMP routines match 10,240 complete canonical states and full sanitizer output through actual source RVQ, including bank and editing-word effects. Stock-ROM C64 validates 320 complete states. Containing attitude and angle files remain partial; whole gimbal compositions are being qualified separately. See `docs/DELCOMP.md`.

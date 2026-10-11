@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_delcomp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c src/guidance_sum.c src/guidance_trig.c src/delcomp.c tests/delcomp_cases.c -o build/test-delcomp-port
+./build/test-delcomp-port
+PASS: 25 unsupported DELCOMP contexts preserve the complete image and latches
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_delcomp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c src/guidance_sum.c src/guidance_trig.c src/delcomp.c tests/delcomp_cases.c -o build/test-delcomp-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-delcomp-port-sanitize
+PASS: 25 unsupported DELCOMP contexts preserve the complete image and latches

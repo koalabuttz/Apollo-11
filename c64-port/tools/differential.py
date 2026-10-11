@@ -404,3 +404,5 @@ subprocess.run([sys.executable,'tools/cm_keyboard_irq_differential.py',str(refer
 subprocess.run([sys.executable,'tools/cm_charin_nv_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_waitlist_extended_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/delcomp_differential.py',str(reference)],cwd=ROOT,check=True)
