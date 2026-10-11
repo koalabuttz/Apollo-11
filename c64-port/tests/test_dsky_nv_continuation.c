@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "dsky_nv_continuation_check.h"
+static apollo_overlay_state s,before;
+int main(void){p66_bias_io io,old;enum dsky_nv_mission mission;enum dsky_nv_continuation_entry entry;uint16_t failures=0;uint8_t n,g;for(n=0;n<72u;++n)failures=(uint16_t)(failures+dsky_nv_continuation_checkpoint(n,&s,&before));for(n=0;n<18u;++n)for(g=0;g<10u;++g){if(!dsky_nv_continuation_checkpoint_input((uint8_t)(n*4u),&s,&io,&mission,&entry))return 2;switch(g){case 0:s.words[5]=0;break;case 1:s.words[4]=1;break;case 2:s.words[3]=1;break;case 3:s.words[6]^=1;break;case 4:s.words[7]=1;break;case 5:io.superbank=1;break;case 6:io.interrupt_enabled=2;break;case 7:mission=(enum dsky_nv_mission)2;break;case 8:entry=(enum dsky_nv_continuation_entry)9;break;default:if(entry==DSKY_NV_COMMON)s.words[0]=2;else if(entry==DSKY_NV_KILL)s.words[2]=01777;else if(entry>=DSKY_NV_ENTSET&&entry<=DSKY_NV_NOUN_RETURN)s.words[01040]|=010;else if(entry>=DSKY_NV_ENTSET)io.superbank=0;else s.words[5]=0;break;}before=s;old=io;if(dsky_nv_continue(&s,&io,mission,entry)!=P66_BIAS_OUT_OF_SCOPE||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io))++failures;}printf("72 full LM/CM internal NVSUB source states and180 unchanged invalid guards: %s\n",failures?"FAIL":"PASS");return failures?1:0;}

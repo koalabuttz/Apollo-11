@@ -506,3 +506,5 @@ subprocess.run([sys.executable,'tools/dsky_jam_control_differential.py',str(refe
 subprocess.run([sys.executable,'tools/cm_display_rest_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_clock_blocked_display_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_nv_continuation_differential.py',str(reference)],cwd=ROOT,check=True)
