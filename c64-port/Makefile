@@ -386,3 +386,5 @@ include tools/cm_startup.mk
 
 include tools/acceleration_phased.mk
 include tools/control_observer.mk
+
+include tools/velocity_phased.mk

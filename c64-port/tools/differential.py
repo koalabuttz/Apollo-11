@@ -235,3 +235,5 @@ subprocess.run([sys.executable,'tools/cm_startup_differential.py',str(reference)
 
 subprocess.run([sys.executable,'tools/acceleration_phased_differential.py',str(reference)],cwd=ROOT,check=True)
 subprocess.run([sys.executable,'tools/acceleration_control_differential.py'],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/velocity_phased_differential.py',str(reference)],cwd=ROOT,check=True)
