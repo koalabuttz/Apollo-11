@@ -1,0 +1,3 @@
+PASS: 4,096 complete DSPIN/11DSPIN/2BLANK zero/INCR edge source-entry checkpoints, all2,048erasablewords plusSUPERBNK/IRQ
+All8 retained erasablebanks: original generic Pinball relay writes; stops actual caller
+Snapshot SHA256: ed0303c54b0c1dfc3cefe865042175538e150031190a9135ca288d036412faea

@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/p66_mode_zero.prg from 0801 to 34B6 (2CB6 bytes)
+WATCH: 1  C:$54b7  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 54b7)  173/$0ad,  48/$30
+.C:1540  8E B7 54    STX $54B7      - A:00 X:A5 Y:00 SP:f1 NV-....C  302615067
+>C:54b7  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_zero-vice-mailbox.bin' from $54b7 to $54bb
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_zero-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_zero-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/p66_mode_zero.prg from 0801 to 34BE (2CBE bytes)
+WATCH: 1  C:$54bf  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 54bf)  142/$08e,  57/$39
+.C:1540  8E BF 54    STX $54BF      - A:00 X:A5 Y:00 SP:f1 NV-....C  301551699
+>C:54bf  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_zero-vice-mailbox.bin' from $54bf to $54c3
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_zero-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_zero-vice-software-stack.bin' from $c100 to $cfff
