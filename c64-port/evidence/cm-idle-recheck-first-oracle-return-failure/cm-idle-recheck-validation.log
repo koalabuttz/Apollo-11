@@ -1,0 +1,6 @@
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/cm_idle_recheck_differential.py", line 21, in <module>
+    a=json.loads((B/'cm-idle-recheck-reference.stream.json').read_text());b=json.loads((B/'cm-idle-recheck-native.stream.json').read_text());assert a==b,(a,b);assert a['bytes']==12288*4136
+                                                                                                                                                    ^^^^
+AssertionError: ({'bytes': 50823168, 'sha256': '1930f77982a564ad0de3214195e9e56930df9b1ef2c57fa04f9594f01b537fc5'}, {'bytes': 50823168, 'sha256': 'b9553cc1c9711ecd840c8a62460c86e25f6aa5266847447a3fb719f36a99eb41'})

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 240,
+    "filename": "G240",
+    "byte_count": 5547,
+    "crc16": 14415,
+    "sha256": "9f17f61a6fafdfacd0cbbb754a859b6b0ab9649483891cb05a89ab5ce3a6f144",
+    "prg": "cm-idle-recheck-240.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 4659,
+    "crc16": 3496,
+    "sha256": "bfcd80961f6689b1b6a326def6f45037c6e753c7da10a6f083911ab1385334b7",
+    "prg": "cm-idle-recheck-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10371,
+    "crc16": 34968,
+    "sha256": "e0aa8c7c49b89b18f2c458af5fb80e60aa6191bb0fd1248dfd3576a99636225b",
+    "prg": "cm-idle-recheck-255.prg",
+    "native_control": false
+  }
+]

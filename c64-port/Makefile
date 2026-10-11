@@ -1089,3 +1089,6 @@ include tools/cm_ephemeris_positions_integration.mk
 
 include tools/cm_priority_full.mk
 all: build/cm-priority-full-native
+
+include tools/cm_idle_recheck.mk
+all: build/cm-idle-recheck-native

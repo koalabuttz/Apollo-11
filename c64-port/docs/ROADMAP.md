@@ -1596,3 +1596,7 @@ Root and independent containing-file review certify all660 Luminary and656 Coman
 ## Translate complete Comanche raw priority scan and transfer
 
 Qualify all source priority floors fractions exception aliases and actual caller transfers against75264 original full states strict sanitizers and64 C64 cases. See `docs/COMANCHE_PRIORITY_FULL.md`.
+
+## Translate Comanche idle interrupt recheck and dispatch
+
+Qualify genuine postinterrupt NUCHANG2 recheck and all six typed caller transfers against12288 complete original states strict sanitizers and64 C64 cases. See `docs/COMANCHE_IDLE_RECHECK.md`.
