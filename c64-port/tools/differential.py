@@ -454,3 +454,5 @@ subprocess.run([sys.executable,'tools/dsky_charin_release_differential.py',str(r
 subprocess.run([sys.executable,'tools/cm_nv85_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_context_change_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_dynamic_display_differential.py',str(reference)],cwd=ROOT,check=True)
