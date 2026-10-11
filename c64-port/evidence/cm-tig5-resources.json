@@ -1,0 +1,24 @@
+{
+  "prg_bytes": 18406,
+  ".text": {
+    "address": 2061,
+    "bytes": 4040
+  },
+  ".rodata": {
+    "address": 6101,
+    "bytes": 14352
+  },
+  ".data": {
+    "address": 20453,
+    "bytes": 0
+  },
+  ".bss": {
+    "address": 20453,
+    "bytes": 4122
+  },
+  ".noinit": {
+    "address": 24575,
+    "bytes": 0
+  },
+  "image_end": 24575
+}

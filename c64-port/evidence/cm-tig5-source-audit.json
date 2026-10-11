@@ -1,0 +1,16 @@
+{
+  "sources": {
+    "CM_ENTRY_DIGITAL_AUTOPILOT.agc": {
+      "original_sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+      "normalized_sha256": "82aef32507d8b595667877ff2375883f8187bfc04b726ebde728a8842074b24a",
+      "indentation_repairs": 1
+    },
+    "P40-P47.agc": {
+      "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6",
+      "indentation_repairs": 7
+    }
+  },
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}

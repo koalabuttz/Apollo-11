@@ -1,0 +1,34 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_tig5.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_tig5_cases.c platform/host/cm_tig5_snapshot.c -o build/cm-tig5-native
+python3 tools/cm_tig5_differential.py
+{
+  "sources": {
+    "CM_ENTRY_DIGITAL_AUTOPILOT.agc": {
+      "original_sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+      "normalized_sha256": "82aef32507d8b595667877ff2375883f8187bfc04b726ebde728a8842074b24a",
+      "indentation_repairs": 1
+    },
+    "P40-P47.agc": {
+      "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6",
+      "indentation_repairs": 7
+    }
+  },
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: 1536 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1536,
+  "full_physical_words": 2048,
+  "entries": [
+    "24,2574 TIG-5",
+    "24,2600 after WAITLIST",
+    "24,2611 TASKOVER continuation"
+  ],
+  "boundary": "actual WAITLIST/FINDVAC/TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "7cba69981a6c9c5c79f4097d9d7fb6e776049e93222094bcb8523d0d0d1991d7"
+}
