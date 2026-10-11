@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-priority-complete-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-priority-complete-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-PRIORITY-COMPLETE.PRG' as `RESIDENT' to unit 8
+writing file `CM-PRIORITY-COMPLETE-212.PRG' as `G212' to unit 8
+writing file `CM-PRIORITY-COMPLETE-248.PRG' as `G248' to unit 8
+writing file `CM-PRIORITY-COMPLETE-249.PRG' as `G249' to unit 8
+212 5639 loaded bytes
+248 7223 loaded bytes
+249 11125 loaded bytes

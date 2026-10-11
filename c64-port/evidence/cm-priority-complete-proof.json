@@ -1,0 +1,19 @@
+{
+  "cases": 14336,
+  "checkpoints": 14336,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "PRIOCHNG05210"
+  ],
+  "context_cohorts": "current orall6 selectedcores \u00d7 basic/interpreter incoming \u00d71024 priority/raw-register/bank/OVFIND/PUSH cases",
+  "binary_bytes": 58892288,
+  "snapshot_sha256": "46d674a39e37a28a73763529014a18edba7fd0f2d66f88b4da3270df050eafb3",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual priority change through current/selected basicDTCB or interpretedINTRSM NEWOPS; no selected application body execution"
+}

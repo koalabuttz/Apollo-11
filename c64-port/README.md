@@ -922,3 +922,7 @@ Independent arithmetic/control review, exact original33-word mapping, complete s
 ## Translate original Luminary and Comanche display blanking and banked return
 
 Actual BLNKSUB1 and SUPDXCHZ+1 return phases match8,192 complete original states under strict and full sanitizer comparison, including both zero forms, opaque BUF inputs, all erase banks and supported saved bank tuples. All64 frozen complete C64 states pass. Normal BLANKSUB entry and PINBRNCH/ENTER continuations remain active work. See `docs/DSKY-BLANK-RETURN.md`.
+
+## Translate original Comanche priority changes through mixed source context switches
+
+Actual PRIOCHNG now reaches genuine current and selected basic or interpreter source returns with complete register and canonical state preservation. All14,336 complete source states match strict and full sanitizer output, and112 disk-backed C64 contexts pass. Source CCSHOLE/+0 faults and selected application body execution remain separate work. See `docs/COMANCHE_PRIORITY_COMPLETE.md`.
