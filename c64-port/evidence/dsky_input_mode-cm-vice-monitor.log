@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_input_mode-cm.prg from 0801 to 1BE6 (13E6 bytes)
+WATCH: 1  C:$3bef  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 3bef)  240/$0f0,  20/$14
+.C:1214  8E EF 3B    STX $3BEF      - A:40 X:A5 Y:00 SP:f1 N.-....C  152545700
+>C:3bef  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_mode-cm-vice-mailbox.bin' from $3bef to $3bf3
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_mode-cm-vice-difference.bin' from $1be7 to $1bee
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_mode-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_mode-cm-vice-software-stack.bin' from $c100 to $cfff

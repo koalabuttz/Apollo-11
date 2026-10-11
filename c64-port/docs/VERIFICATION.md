@@ -1776,3 +1776,7 @@ Qualify4096 original inputs and8544 uninterrupted full source native sanitizer c
 ## Correct genuine alarm overflow versus ordinary return IRQ semantics
 
 Qualify32240 complete source native sanitizer states and64 C64 states across all normal source return addresses and both IRQ values distinguishing ordinary BORTENT return at POODOO address from real overflow. See `docs/COMANCHE_ALARM_RETURNS.md`.
+
+## Translate original operator input mode selection and recycle
+
+Qualify ALLDC OC ALL3DEC and FORCEV25 local algorithms against8192 full source native sanitizer states and64 C64 states retaining raw overflow and source edit registers through genuine return or alarm handoffs. See `docs/DSKY-INPUT-MODE.md`.

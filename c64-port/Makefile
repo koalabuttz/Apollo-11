@@ -938,3 +938,5 @@ include tools/dsky_octal_consumer_integration.mk
 
 include tools/cm_alarm_complete.mk
 all: build/cm-alarm-complete-native
+
+include tools/dsky_input_mode.mk
