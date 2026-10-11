@@ -287,3 +287,7 @@ Live native trig and rotation feed DOT14 and AFC with original source scheduling
 ## Implement exact native hardware divide recurrence
 
 The independently authored fixed-point recurrence matches 327,680 isolated original hardware-DV instruction states, including raw register overflow and signed zero. Full-state sanitizers and all 255 frozen C64 register-pair checks pass. See [HARDWARE-DIVIDE.md](HARDWARE-DIVIDE.md).
+
+## Port source STOPRATE and FASTCHNG initialization services
+
+All 1,024 complete source checkpoints match including return-register debris, physical banks and IRQ state. Strict and sanitizer checks and 128 complete frozen C64 states pass. See [P66_INITIALIZATION.md](P66_INITIALIZATION.md).

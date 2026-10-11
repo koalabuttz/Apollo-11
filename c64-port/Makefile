@@ -333,3 +333,5 @@ include tools/rotation.mk
 include tools/projection.mk
 
 include tools/hardware_divide.mk
+
+include tools/p66_initialization.mk

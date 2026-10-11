@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/p66_initialization.prg from 0801 to 30C9 (28C9 bytes)
+WATCH: 1  C:$30ed  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 30ed)   34/$022,   8/$08
+.C:0e45  8E ED 30    STX $30ED      - A:00 X:A5 Y:00 SP:f1 N.-....C    5584454
+>C:30ed  a5 00 00 80  11                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_initialization-vice-mailbox.bin' from $30ed to $30f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_initialization-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_initialization-vice-software-stack.bin' from $c100 to $cfff

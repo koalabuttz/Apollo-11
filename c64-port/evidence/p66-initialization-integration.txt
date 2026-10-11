@@ -1,0 +1,8 @@
+New files include/p66_initialization.h src/p66_initialization.c tests/p66_initialization_* tests/test_p66_initialization.c tools/p66_initialization_*.
+Basic source services: STOPRATE DAP_INTERFACE_SUBROUTINES.agc124..139 through caller return, FASTCHNG LUNAR_LANDING_GUIDANCE_EQUATIONS.agc1423..1429 through caller return.
+STOPRATE clears OMEGAPD/QD/RD, DELCDUX/Y/Z, DELPEROR/QEROR/REROR, restores callerEBANK, preservesIRQ/SUPERBNK. FASTCHNG writes callerQ to PHSNAME3 restart-location at01442 and retains pairedBBCON01443. It does not update phase/complement at0756/0757. Both exact sourceA/L/Q return debris retained.
+1,024 full17word independent-original checkpoints,512eachservice coveringallEBANK values,256returnaddresses,allphysicalSUPERBNKvaluesandIRQ states; nine unrelatederasableguardsunchanged. NoAGCdecoder/native linkedinoracle.
+Original fixture DAP differs historicalcomments. New differential createsprivatebuild/p66-initialization-fixture containingbyte-identicaloriginalDAPsource, assembleswithpinnedyaYUL, and provesentireropebyte-identicalretainedfixture. Retaineddeps/fixture untouched.
+Snapshot503953025ca3dae1c7bbbb50b3531c7f4c43881ae7393db4cd0c4b6986eb5857.
+Hoststrict+ASan/UBSan128fullstates+bad-bank/returnguards pass. NativeLLVM-MOS/VICE128full17wordstates passmailboxa500008011. PRG10443 loaded10441; hardware/softwarestack10/10; extraZPzero. Makefilelines build/p66-initialization-integration.mk.
+STARTP66 interpretivebiasinitialization, NEWMODEX/DSPMMJB display jobs and DAP actuation still separatecontinuations; these two concrete services removeFASTCHNG/STOPRATE blockers, withoutclaimingallstartupcomplete.
