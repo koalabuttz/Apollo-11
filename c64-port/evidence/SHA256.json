@@ -9544,6 +9544,8 @@
   "phase-host-tests.log": "6ca8b4dd812db37704a580d278d8d7bc65bf5f3bacc799a574770e78ec1d4bdb",
   "phase-integration.log": "6c759924a03ab1316c4cf25ce2ca4be0a2448986612d969075e4e54e15f94542",
   "phase-integration.txt": "39c0feef9190c2b4f9782cf920f918edd71b6244d162903ef57d31ca2ee9ce72",
+  "phase-lamp-mode-cleanup-independent-review.json": "2ca5b911e89e71fa0a3106722c85541e9b6f318a4f2bcdaeccf5b39a0eaeb984",
+  "phase-lamp-mode-raw-cleanup-20261012.json": "2e36267acf63ac16139b97e9e2be255b0aa3ec4527bad811ef4a38ec5a9bfa54",
   "phase-math-cleanup-independent-review.json": "93f6544987b3057d602a8b646c1db32b0fd496e12c15ecb94ddcdf6e9504a547",
   "phase-math-cleanup-independent-review.log": "5c1a6a4fa060ba39a8b966f329d45c0c702f64700b9eb6f854d49c3dde091e19",
   "phase-native.snapshots.gz": "f138cb750a1945113af7a208aa217b563e2abeb5d8a68b50e3ce92da976d93c1",

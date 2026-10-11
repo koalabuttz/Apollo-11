@@ -1,0 +1,152 @@
+{
+  "verified_head": "74eaba22e58b66d4caec889728abcaa98125e6f9",
+  "utc": "2026-10-11T13:17:18.639836+00:00",
+  "scope": "Only inactive owned committed lamp/mode raw snapshots; no source, retained evidence, build compressed copies, active lifecycle or queued inputs removed. Each retained archive matches its committed Git blob and fully decoded SHA/size equals the removed raw stream.",
+  "reclaimed_bytes": 1138554864,
+  "files": [
+    {
+      "removed_path": "build/dsky-lamp-test-reference.snapshots",
+      "removed_sha256": "8bbaf867f5a5c449e76f04e9c46e294d816a340e5ad6d583d06cbaf274429b14",
+      "removed_bytes": 95059227,
+      "retained_archive": "evidence/dsky-lamp-test-reference.snapshots.gz",
+      "retained_archive_sha256": "cf938b72d49c582b30b81fd62c0e1441c796322c0d17eedfdb164e8f9f549f94",
+      "archive_bytes": 41512647,
+      "git_blob": "d825dee43a153ca16df81eee07856a6167a21770",
+      "git_path": "c64-port/evidence/dsky-lamp-test-reference.snapshots.gz",
+      "decoded_sha256": "8bbaf867f5a5c449e76f04e9c46e294d816a340e5ad6d583d06cbaf274429b14",
+      "decoded_bytes": 95059227
+    },
+    {
+      "removed_path": "build/dsky-lamp-test-native.snapshots",
+      "removed_sha256": "8bbaf867f5a5c449e76f04e9c46e294d816a340e5ad6d583d06cbaf274429b14",
+      "removed_bytes": 95059227,
+      "retained_archive": "evidence/dsky-lamp-test-native.snapshots.gz",
+      "retained_archive_sha256": "cf938b72d49c582b30b81fd62c0e1441c796322c0d17eedfdb164e8f9f549f94",
+      "archive_bytes": 41512647,
+      "git_blob": "d825dee43a153ca16df81eee07856a6167a21770",
+      "git_path": "c64-port/evidence/dsky-lamp-test-native.snapshots.gz",
+      "decoded_sha256": "8bbaf867f5a5c449e76f04e9c46e294d816a340e5ad6d583d06cbaf274429b14",
+      "decoded_bytes": 95059227
+    },
+    {
+      "removed_path": "build/dsky-lamp-test-sanitize.snapshots",
+      "removed_sha256": "8bbaf867f5a5c449e76f04e9c46e294d816a340e5ad6d583d06cbaf274429b14",
+      "removed_bytes": 95059227,
+      "retained_archive": "evidence/dsky-lamp-test-sanitize.snapshots.gz",
+      "retained_archive_sha256": "cf938b72d49c582b30b81fd62c0e1441c796322c0d17eedfdb164e8f9f549f94",
+      "archive_bytes": 41512647,
+      "git_blob": "d825dee43a153ca16df81eee07856a6167a21770",
+      "git_path": "c64-port/evidence/dsky-lamp-test-sanitize.snapshots.gz",
+      "decoded_sha256": "8bbaf867f5a5c449e76f04e9c46e294d816a340e5ad6d583d06cbaf274429b14",
+      "decoded_bytes": 95059227
+    },
+    {
+      "removed_path": "build/dsky-mode-admit-reference.snapshots",
+      "removed_sha256": "0a88efd4d370676aba5d2313e909eb5b7f26a8cc1badc9b2eb7fab70754fbe16",
+      "removed_bytes": 94776144,
+      "retained_archive": "evidence/dsky-mode-admit-reference.snapshots.gz",
+      "retained_archive_sha256": "6dfe7983c3b0ac2c24685dba8e3ce59952d29b82e5b35712e036d59e0bc069cf",
+      "archive_bytes": 41268653,
+      "git_blob": "c01693964ddb90561ee4cf82cb3472e708c7d814",
+      "git_path": "c64-port/evidence/dsky-mode-admit-reference.snapshots.gz",
+      "decoded_sha256": "0a88efd4d370676aba5d2313e909eb5b7f26a8cc1badc9b2eb7fab70754fbe16",
+      "decoded_bytes": 94776144
+    },
+    {
+      "removed_path": "build/dsky-mode-admit-native.snapshots",
+      "removed_sha256": "0a88efd4d370676aba5d2313e909eb5b7f26a8cc1badc9b2eb7fab70754fbe16",
+      "removed_bytes": 94776144,
+      "retained_archive": "evidence/dsky-mode-admit-native.snapshots.gz",
+      "retained_archive_sha256": "6dfe7983c3b0ac2c24685dba8e3ce59952d29b82e5b35712e036d59e0bc069cf",
+      "archive_bytes": 41268653,
+      "git_blob": "c01693964ddb90561ee4cf82cb3472e708c7d814",
+      "git_path": "c64-port/evidence/dsky-mode-admit-native.snapshots.gz",
+      "decoded_sha256": "0a88efd4d370676aba5d2313e909eb5b7f26a8cc1badc9b2eb7fab70754fbe16",
+      "decoded_bytes": 94776144
+    },
+    {
+      "removed_path": "build/dsky-mode-admit-sanitize.snapshots",
+      "removed_sha256": "0a88efd4d370676aba5d2313e909eb5b7f26a8cc1badc9b2eb7fab70754fbe16",
+      "removed_bytes": 94776144,
+      "retained_archive": "evidence/dsky-mode-admit-sanitize.snapshots.gz",
+      "retained_archive_sha256": "6dfe7983c3b0ac2c24685dba8e3ce59952d29b82e5b35712e036d59e0bc069cf",
+      "archive_bytes": 41268653,
+      "git_blob": "c01693964ddb90561ee4cf82cb3472e708c7d814",
+      "git_path": "c64-port/evidence/dsky-mode-admit-sanitize.snapshots.gz",
+      "decoded_sha256": "0a88efd4d370676aba5d2313e909eb5b7f26a8cc1badc9b2eb7fab70754fbe16",
+      "decoded_bytes": 94776144
+    },
+    {
+      "removed_path": "build/dsky-lamp-release-reference.snapshots",
+      "removed_sha256": "787eaf80de5967dcf41cbd0935a7f3e3ea972df95b8aa97041ca037fca6dcb4e",
+      "removed_bytes": 94954706,
+      "retained_archive": "evidence/dsky-lamp-release-reference.snapshots.gz",
+      "retained_archive_sha256": "792b013a6112d149ddf1e84cc91cbc9119207e691eb479633f25d65f19f1a6c7",
+      "archive_bytes": 41446286,
+      "git_blob": "36c58fd56c1de83353e1b5193197451da21f4938",
+      "git_path": "c64-port/evidence/dsky-lamp-release-reference.snapshots.gz",
+      "decoded_sha256": "787eaf80de5967dcf41cbd0935a7f3e3ea972df95b8aa97041ca037fca6dcb4e",
+      "decoded_bytes": 94954706
+    },
+    {
+      "removed_path": "build/dsky-lamp-release-native.snapshots",
+      "removed_sha256": "787eaf80de5967dcf41cbd0935a7f3e3ea972df95b8aa97041ca037fca6dcb4e",
+      "removed_bytes": 94954706,
+      "retained_archive": "evidence/dsky-lamp-release-native.snapshots.gz",
+      "retained_archive_sha256": "792b013a6112d149ddf1e84cc91cbc9119207e691eb479633f25d65f19f1a6c7",
+      "archive_bytes": 41446286,
+      "git_blob": "36c58fd56c1de83353e1b5193197451da21f4938",
+      "git_path": "c64-port/evidence/dsky-lamp-release-native.snapshots.gz",
+      "decoded_sha256": "787eaf80de5967dcf41cbd0935a7f3e3ea972df95b8aa97041ca037fca6dcb4e",
+      "decoded_bytes": 94954706
+    },
+    {
+      "removed_path": "build/dsky-lamp-release-sanitize.snapshots",
+      "removed_sha256": "787eaf80de5967dcf41cbd0935a7f3e3ea972df95b8aa97041ca037fca6dcb4e",
+      "removed_bytes": 94954706,
+      "retained_archive": "evidence/dsky-lamp-release-sanitize.snapshots.gz",
+      "retained_archive_sha256": "792b013a6112d149ddf1e84cc91cbc9119207e691eb479633f25d65f19f1a6c7",
+      "archive_bytes": 41446286,
+      "git_blob": "36c58fd56c1de83353e1b5193197451da21f4938",
+      "git_path": "c64-port/evidence/dsky-lamp-release-sanitize.snapshots.gz",
+      "decoded_sha256": "787eaf80de5967dcf41cbd0935a7f3e3ea972df95b8aa97041ca037fca6dcb4e",
+      "decoded_bytes": 94954706
+    },
+    {
+      "removed_path": "build/dsky-mode-job-reference.snapshots",
+      "removed_sha256": "7e946d90991c6fdda4fe96153a8540653ec60b41adc3c4ef3effdf8801d58333",
+      "removed_bytes": 94728211,
+      "retained_archive": "evidence/dsky-mode-job-reference.snapshots.gz",
+      "retained_archive_sha256": "06e67f933526bc588343d57332a58499c985020dd19101f26df4a50c7c752ece",
+      "archive_bytes": 41293126,
+      "git_blob": "fb9e6ffcef4b7a9081d06c0c97898674e3614d68",
+      "git_path": "c64-port/evidence/dsky-mode-job-reference.snapshots.gz",
+      "decoded_sha256": "7e946d90991c6fdda4fe96153a8540653ec60b41adc3c4ef3effdf8801d58333",
+      "decoded_bytes": 94728211
+    },
+    {
+      "removed_path": "build/dsky-mode-job-native.snapshots",
+      "removed_sha256": "7e946d90991c6fdda4fe96153a8540653ec60b41adc3c4ef3effdf8801d58333",
+      "removed_bytes": 94728211,
+      "retained_archive": "evidence/dsky-mode-job-native.snapshots.gz",
+      "retained_archive_sha256": "06e67f933526bc588343d57332a58499c985020dd19101f26df4a50c7c752ece",
+      "archive_bytes": 41293126,
+      "git_blob": "fb9e6ffcef4b7a9081d06c0c97898674e3614d68",
+      "git_path": "c64-port/evidence/dsky-mode-job-native.snapshots.gz",
+      "decoded_sha256": "7e946d90991c6fdda4fe96153a8540653ec60b41adc3c4ef3effdf8801d58333",
+      "decoded_bytes": 94728211
+    },
+    {
+      "removed_path": "build/dsky-mode-job-sanitize.snapshots",
+      "removed_sha256": "7e946d90991c6fdda4fe96153a8540653ec60b41adc3c4ef3effdf8801d58333",
+      "removed_bytes": 94728211,
+      "retained_archive": "evidence/dsky-mode-job-sanitize.snapshots.gz",
+      "retained_archive_sha256": "06e67f933526bc588343d57332a58499c985020dd19101f26df4a50c7c752ece",
+      "archive_bytes": 41293126,
+      "git_blob": "fb9e6ffcef4b7a9081d06c0c97898674e3614d68",
+      "git_path": "c64-port/evidence/dsky-mode-job-sanitize.snapshots.gz",
+      "decoded_sha256": "7e946d90991c6fdda4fe96153a8540653ec60b41adc3c4ef3effdf8801d58333",
+      "decoded_bytes": 94728211
+    }
+  ]
+}

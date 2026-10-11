@@ -1,0 +1,10 @@
+{
+  "audited_record": "evidence/phase-lamp-mode-raw-cleanup-20261012.json",
+  "audited_record_sha256": "2e36267acf63ac16139b97e9e2be255b0aa3ec4527bad811ef4a38ec5a9bfa54",
+  "fully_decoded_archives": 12,
+  "verified_removed_paths": 12,
+  "reclaimed_bytes": 1138554864,
+  "independent_gzip_decoded_sha_and_length": true,
+  "committed_git_blob_identity": true,
+  "all_removed_paths_absent": true
+}
