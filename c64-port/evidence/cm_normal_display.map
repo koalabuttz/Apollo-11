@@ -1,0 +1,173 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     29d7     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm_normal_display.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843     13ce     1         build/cm_normal_display.prg.lto.o:(.text.main)
+     843      843     13ce     1                 main
+    1c11     1c11      23e     1         build/cm_normal_display.prg.lto.o:(.text.tables)
+    1c11     1c11      23e     1                 tables
+    1e4f     1e4f      131     1         build/cm_normal_display.prg.lto.o:(.text.apollo_noun_table_read)
+    1e4f     1e4f      131     1                 apollo_noun_table_read
+    1f80     1f80      662     1         build/cm_normal_display.prg.lto.o:(.text.cm_two_digit)
+    1f80     1f80      662     1                 cm_two_digit
+    25e2     25e2      325     1         build/cm_normal_display.prg.lto.o:(.text.shortmp)
+    25e2     25e2      325     1                 shortmp
+    2907     2907      455     1         build/cm_normal_display.prg.lto.o:(.text.dsky_pinball_write)
+    2907     2907      455     1                 dsky_pinball_write
+    2d5c     2d5c       ca     1         build/cm_normal_display.prg.lto.o:(.text.agc_multiply)
+    2d5c     2d5c       ca     1                 agc_multiply
+    2e26     2e26      1bc     1         build/cm_normal_display.prg.lto.o:(.text.agc_double_add)
+    2e26     2e26      1bc     1                 agc_double_add
+    2fe2     2fe2        6     1         build/cm_normal_display.prg.lto.o:(.text.exit)
+    2fe2     2fe2        6     1                 exit
+    2fe8     2fe8       13     1         build/cm_normal_display.prg.lto.o:(.text.__lshrhi3)
+    2fe8     2fe8       13     1                 __lshrhi3
+    2ffb     2ffb       f8     1         build/cm_normal_display.prg.lto.o:(.text.__udivmodhi4)
+    2ffb     2ffb       f8     1                 __udivmodhi4
+    30f3     30f3       34     1         build/cm_normal_display.prg.lto.o:(.text.memcpy)
+    30f3     30f3       34     1                 memcpy
+    3127     3127       22     1         build/cm_normal_display.prg.lto.o:(.text.__memset)
+    3127     3127       22     1                 __memset
+    3149     3149       34     1         build/cm_normal_display.prg.lto.o:(.text.__mulhi3)
+    3149     3149       34     1                 __mulhi3
+    317d     317d       67     1         build/cm_normal_display.prg.lto.o:(.text.__mulsi3)
+    317d     317d       67     1                 __mulsi3
+    31e4     31e4        0     1         __init_array_start = .
+    31e4     31e4        0     1         __init_array_end = .
+    31e4     31e4        0     1         __fini_array_start = .
+    31e4     31e4        0     1         __fini_array_end = .
+    31e4     31e4     57a9     1 .rodata
+    31e4     31e4        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    31e4     31e4        0     1                 __set_v
+    31e5     31e5        a     1         build/cm_normal_display.prg.lto.o:(.rodata.main)
+    31ef     31ef        c     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_caller.pc)
+    31ef     31ef        c     1                 cm_normal_display_caller.pc
+    31fb     31fb        c     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_caller.fb)
+    31fb     31fb        c     1                 cm_normal_display_caller.fb
+    3207     3207        6     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_caller.displacement)
+    3207     3207        6     1                 cm_normal_display_caller.displacement
+    320d     320d       18     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    320d     320d       18     1                 fixed_data_cm_nouns
+    3225     3225       30     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    3225     3225       30     1                 fixed_data_cm_spans
+    3255     3255      1c4     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_0)
+    3255     3255      1c4     1                 fixed_data_cm_0
+    3419     3419       7c     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_1)
+    3419     3419       7c     1                 fixed_data_cm_1
+    3495     3495       40     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_2)
+    3495     3495       40     1                 fixed_data_cm_2
+    34d5     34d5       20     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_3)
+    34d5     34d5       20     1                 fixed_data_cm_3
+    34f5     34f5       26     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_4)
+    34f5     34f5       26     1                 fixed_data_cm_4
+    351b     351b      1be     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_5)
+    351b     351b      1be     1                 fixed_data_cm_5
+    36d9     36d9      1f2     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_6)
+    36d9     36d9      1f2     1                 fixed_data_cm_6
+    38cb     38cb      410     1         build/cm_normal_display.prg.lto.o:(.rodata.fixed_data_cm_7)
+    38cb     38cb      410     1                 fixed_data_cm_7
+    3cdb     3cdb       14     1         build/cm_normal_display.prg.lto.o:(.rodata.dsky_two_digit.codes)
+    3cdb     3cdb       14     1                 dsky_two_digit.codes
+    3cef     3cef        8     1         <internal>:(.rodata.cst8)
+    3cf7     3cf7       40     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_input.time)
+    3cf7     3cf7       40     1                 cm_normal_display_input.time
+    3d37     3d37       20     1         <internal>:(.rodata.cst32)
+    3d57     3d57       80     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_numbers)
+    3d57     3d57       80     1                 cm_normal_display_numbers
+    3dd7     3dd7       82     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_before_offsets)
+    3dd7     3dd7       82     1                 cm_normal_display_before_offsets
+    3e59     3e59     3ca8     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_before_patch)
+    3e59     3e59     3ca8     1                 cm_normal_display_before_patch
+    7b01     7b01       1e     1         build/cm_normal_display.prg.lto.o:(.rodata.control)
+    7b01     7b01       1e     1                 control
+    7b1f     7b1f       82     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_after_offsets)
+    7b1f     7b1f       82     1                 cm_normal_display_after_offsets
+    7ba1     7ba1      dec     1         build/cm_normal_display.prg.lto.o:(.rodata.cm_normal_display_after_patch)
+    7ba1     7ba1      dec     1                 cm_normal_display_after_patch
+    898d     898d        0     1 .data
+    898d     898d        0     1         __data_start = .
+    898d     898d        0     1         __data_end = .
+    898d     898d        0     1 __data_load_start = LOADADDR(.data)
+    898d     898d        0     1 __data_size = SIZEOF(.data)
+    898d     898d     2000     1 .bss
+    898d     898d        0     1         __bss_start = .
+    898d     898d     1000     1         build/cm_normal_display.prg.lto.o:(.bss.s)
+    898d     898d     1000     1                 s
+    998d     998d     1000     1         build/cm_normal_display.prg.lto.o:(.bss.before)
+    998d     998d     1000     1                 before
+    a98d     a98d        0     1         __bss_end = .
+    a98d     a98d        0     1 __bss_size = SIZEOF(.bss)
+    a98d     a98d        0     1 .noinit
+    a98d     a98d        0     1         __heap_start = ALIGN(., 2)
+    a98d     a98d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm_normal_display.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm_normal_display.prg.lto.o:(.llvm_sympart)
+       0        0      ca0     4 .symtab
+       0        0      ca0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      828     1 .strtab
+       0        0      828     1         <internal>:(.strtab)

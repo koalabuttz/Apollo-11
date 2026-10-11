@@ -1322,3 +1322,7 @@ Literal idle-to-basic, T3-vector-to-task and TASKOVER architectural RESUME trans
 ## Fresh committed system release host check
 
 A clean isolated export of exact commit`b1d8299` builds and passes every registered portable host `all`/`test` recipe, including complete system lead-ins, exhaustive inverse-trig supplement, source display controls, SPS controller and archive-streamed P66 startup. The exporter uses exact Git objects and excludes uncommitted source. Its10,282-file snapshot has34 complete source files; the full-port gate correctly rejects141 remaining files and both integrated applications. See `evidence/integration-system-release-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
+
+## Compose original Comanche normal noun40 and noun85 display source paths
+
+The generalized noun-table caller and source row pipeline match18,688 uninterrupted complete original/native/full-sanitizer states across512 noun40 and128 noun85 paths. All64 frozen caller states and108 unchanged guards pass, with actual C64 caller execution. Whole-chain host composition, downstream clock mission integration and display device acceptance remain separately identified. See `docs/COMANCHE-NORMAL-N40.md`.

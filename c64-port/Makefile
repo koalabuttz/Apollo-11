@@ -699,3 +699,5 @@ include tools/lm_sps_rcs_port.mk
 include tools/dsky_enter_zero.mk
 
 include tools/lm_recurrence_integration.mk
+
+include tools/cm_normal_display.mk
