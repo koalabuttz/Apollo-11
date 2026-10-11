@@ -1546,3 +1546,7 @@ A clean isolated export of exact commit`93c7e11ffc910a6e80717c9b679c4870cd875651
 Qualify both actual DECDSP loads to DSPDCPUT with normal mixed nouns CPU and editing aliases over8192 complete original native sanitizer images plus128 C64 states keeping scale factor and formatter selection separate. See `docs/DSKY-DECIMAL-LOAD.md`.
 
 An additive RTB vector metadata erratum corrects PULSEIMU bank06/FB014000 text to actual bank07/FB016000. The source and native code were correct: root read-only decoding checks all131072 immutable complete frontier states and verifies all prior proof/source hashes unchanged. See `docs/RTB-VECTOR-BANK-ERRATUM.md`.
+
+## Compose original uninterrupted Comanche POODOO recovery chronology
+
+Qualify actual POODOO mode test three DOWNFLAG operations BANKCALL MR.KLEAN SWRETURN and true WHIMPER over4096 uninterrupted original sequences with16384 complete native sanitizer checkpoints plus16 C64 sequences retaining harness failure proofs and unchanged native220. See `docs/COMANCHE_ABORT_RECOVERY.md`.

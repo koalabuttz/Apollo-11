@@ -1,0 +1,91 @@
+{
+  "verdict": "harness failure, no accepted target PASS",
+  "mailbox": "a508004000",
+  "checkpoints": 64,
+  "final_fixture_source_failures": 0,
+  "whole_final_original_image_matches": true,
+  "cause": "Diagnostic enters hardware I using (run>>1)&1 to cross both source branches with both incoming I; stale assertion expected run&1, giving exactly8 of16 artificial I failures. Native source payload and source corpus unchanged.",
+  "native_payload_sha256": "48192bc6c6f0d478551b15117e26eb7087ccd67c2012eedc2265552b357de918",
+  "files": [
+    {
+      "path": "platform/c64/cm_abort_recovery_diagnostic.c",
+      "copy": "platform__c64__cm_abort_recovery_diagnostic.c",
+      "sha256": "bb4710c274019ae4940de1dc1582491cf6684c340a30cfa7173897a29c76de34"
+    },
+    {
+      "path": "build/cm-abort-recovery-255.prg",
+      "copy": "build__cm-abort-recovery-255.prg",
+      "sha256": "dab0699f2e90b7a85547ca043fe1db6c89519be6e50214e2b66c82ccdaed0f40"
+    },
+    {
+      "path": "build/cm-abort-recovery-254.prg",
+      "copy": "build__cm-abort-recovery-254.prg",
+      "sha256": "9b65111880b83f8dc1ddd156f05ae4927e5aeea633f8d7b49493d2c1c99f20ad"
+    },
+    {
+      "path": "build/cm-abort-recovery-220.prg",
+      "copy": "build__cm-abort-recovery-220.prg",
+      "sha256": "48192bc6c6f0d478551b15117e26eb7087ccd67c2012eedc2265552b357de918"
+    },
+    {
+      "path": "build/cm-abort-recovery-220.map",
+      "copy": "build__cm-abort-recovery-220.map",
+      "sha256": "dd7cf2a0c6b243c6db939455a37fcea4e7b1794b9d73bf5a2289481770585650"
+    },
+    {
+      "path": "build/cm-abort-recovery-255.map",
+      "copy": "build__cm-abort-recovery-255.map",
+      "sha256": "a450a9e86243a8af004c320d4753848b831c5284668838d4715d18b7eaff68fd"
+    },
+    {
+      "path": "build/cm-abort-recovery-254.map",
+      "copy": "build__cm-abort-recovery-254.map",
+      "sha256": "0934bf3d3b2c0906e3f690b42edcea872f514bb7d3a76eb74e4b4716de13ef90"
+    },
+    {
+      "path": "build/cm-abort-recovery-vice-monitor.log",
+      "copy": "build__cm-abort-recovery-vice-monitor.log",
+      "sha256": "39eec272df34fe9731b2baa4621007b2db37679a74cf65dbabf27ca16869b186"
+    },
+    {
+      "path": "build/cm-abort-recovery-vice-shared.bin",
+      "copy": "build__cm-abort-recovery-vice-shared.bin",
+      "sha256": "303f4a2ab23a55a8a7d3acc8c3eea3106af7adcd65f99a51d42d4340947b922a"
+    },
+    {
+      "path": "build/cm-abort-recovery-vice-mailbox.bin",
+      "copy": "build__cm-abort-recovery-vice-mailbox.bin",
+      "sha256": "022403dd98176de5d153fea273bc6ddf376ade51d7f950f5772d4188a4c009c6"
+    },
+    {
+      "path": "build/cm-abort-recovery-vice-stack.bin",
+      "copy": "build__cm-abort-recovery-vice-stack.bin",
+      "sha256": "56c601edb713efa47b10431417479e3d7270fb476b814573707a3fdb5579d6c4"
+    },
+    {
+      "path": "build/cm-abort-recovery-modules.json",
+      "copy": "build__cm-abort-recovery-modules.json",
+      "sha256": "dd2e36c653398aff87e7cdf867a1004da8cdf5616f9d2b3fe37b9cbaa3625f81"
+    },
+    {
+      "path": "build/cm-abort-recovery-c64-result.log",
+      "copy": "build__cm-abort-recovery-c64-result.log",
+      "sha256": "b8d9d5ba38e074380fb8adc9f931b02ae25c0e8f171dd970636c6ebe3c8f2ba4"
+    },
+    {
+      "path": "build/cm-abort-recovery.prg",
+      "copy": "build__cm-abort-recovery.prg",
+      "sha256": "cb7a5984782ca4d5567fbb9a04379459e81d332e62088b4a4579e89841ff2bb7"
+    },
+    {
+      "path": "build/cm-abort-recovery.map",
+      "copy": "build__cm-abort-recovery.map",
+      "sha256": "98cb431727f7d9cb39f773307b904e8691c5fef38a2e91e25f16471857d15993"
+    },
+    {
+      "path": "build/cm-abort-recovery.d64",
+      "copy": "build__cm-abort-recovery.d64",
+      "sha256": "26e61e8b5fff37cd3f9cb583712d675cea29245bafbc189782a7b4ae2be4663b"
+    }
+  ]
+}

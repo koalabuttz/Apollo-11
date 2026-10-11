@@ -804,3 +804,6 @@ all: build/cm-enema-image-native
 include tools/dsky_alarm_recycle.mk
 
 include tools/dsky_decimal_load_integration.mk
+
+include tools/cm_abort_recovery.mk
+all: build/cm-abort-recovery-native

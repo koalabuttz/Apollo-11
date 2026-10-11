@@ -1164,3 +1164,7 @@ Qualify actual ALMCYCLE lamp event BANKCALL widened UPDATVB SWRETURN POSTJUMP an
 ## Translate original generic decimal display fresh data load
 
 Qualify both actual DECDSP loads to DSPDCPUT with normal mixed nouns CPU and editing aliases over8192 complete original native sanitizer images plus128 C64 states keeping scale factor and formatter selection separate. See `docs/DSKY-DECIMAL-LOAD.md`.
+
+## Compose original uninterrupted Comanche POODOO recovery chronology
+
+Qualify actual POODOO mode test three DOWNFLAG operations BANKCALL MR.KLEAN SWRETURN and true WHIMPER over4096 uninterrupted original sequences with16384 complete native sanitizer checkpoints plus16 C64 sequences retaining harness failure proofs and unchanged native220. See `docs/COMANCHE_ABORT_RECOVERY.md`.

@@ -1,0 +1,22 @@
+{
+  "cases": 4096,
+  "checkpoints": 16384,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "POODOO/CCSHOLE continuation05732",
+    "DOWNFLAG05560 \u00d73",
+    "MR.KLEAN05,2501",
+    "actual WHIMPER-1/WHIMPER entry"
+  ],
+  "context_cohorts": "4096 uninterrupted randomized legal images, both V37FLBIT branches, seven source boundaries for cleanup route and one actualWHIMPER-1 boundary otherwise; all13 external latches",
+  "binary_bytes": 67665920,
+  "snapshot_sha256": "00626b6308bc79fc2c29f7fc5bced43e7e6fc821f82f76cfe6e544b18cf3ba9b",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048 physical words,13 cm_native_io latches",
+  "scope": "actual POODOO/CCSHOLE after BORTENT through real selected WHIMPER entry; source WHIMPER/ENEMA bodies remain explicit following groups"
+}
