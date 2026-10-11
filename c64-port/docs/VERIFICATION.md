@@ -1218,3 +1218,5 @@ All 267 original emitted source words and six constants now map to seven reviewe
 ## Complete original Luminary powered-flight subroutine source
 
 Independent review reconstructed every one of 267 original emitted words, verified all seven complete source/sanitizer qualification dependencies and 38 actual C64 diagnostics, and exhausted the six-word constant accessor. The whole source file is certified within its published numerical and return contracts, including composed normalized FLESHPOT return inputs. The inventory has 30 complete files (24 native/data/declaration and six comment-only files), with 145 source files and both integrated applications still requiring complete acceptance. See `docs/LUMINARY-POWERED-FLIGHT.md`.
+
+The authenticated GitHub branch reference was verified at `4878b9ada7fde3a56bc14ee4375195c93cd3da54`, including 185 exact milestone trees through the Luminary powered-flight certificate `3140fc1`. The immutable record is `evidence/github-milestone-publication-185-audit.json`. Native application completion remains governed by the coverage and integrated-application gates.
