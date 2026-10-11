@@ -1188,3 +1188,7 @@ Qualify actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 dispatch through literal R
 ## Translate original decimal display factor and scale selection
 
 Qualify actual DSPDCPUT factor selection across all fourteen routines both noun tables all rows normal mixed contexts and signed zero limits with8192 original native sanitizer whole images plus128 C64 states retaining selected scale body frontier. See `docs/DSKY-DECIMAL-SELECT.md`.
+
+## Compose original uninterrupted operator request and display release
+
+Qualify actual operator request RELDSP JOBWAKE and genuine scheduler entry over8192 original native sanitizer full images plus64 C64 states preserving source wake variants unused Executive fields and true downstream service boundaries. See `docs/DSKY-OPERATOR-REQUEST.md`.

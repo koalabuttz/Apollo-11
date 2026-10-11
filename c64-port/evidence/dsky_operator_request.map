@@ -1,0 +1,155 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     3de2     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_operator_request.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      655     1         build/dsky_operator_request.prg.lto.o:(.text.exec_wake_basic)
+     843      843      655     1                 exec_wake_basic
+     e98      e98      4a5     1         build/dsky_operator_request.prg.lto.o:(.text.lm_basic_wake)
+     e98      e98      4a5     1                 lm_basic_wake
+    133d     133d      38a     1         build/dsky_operator_request.prg.lto.o:(.text.executive_words)
+    133d     133d      38a     1                 executive_words
+    16c7     16c7      655     1         build/dsky_operator_request.prg.lto.o:(.text.cm_exec_wake_basic)
+    16c7     16c7      655     1                 cm_exec_wake_basic
+    1d1c     1d1c      255     1         build/dsky_operator_request.prg.lto.o:(.text.cm_native_gather_executive)
+    1d1c     1d1c      255     1                 cm_native_gather_executive
+    1f71     1f71      226     1         build/dsky_operator_request.prg.lto.o:(.text.cm_native_commit_executive)
+    1f71     1f71      226     1                 cm_native_commit_executive
+    2197     2197      4f6     1         build/dsky_operator_request.prg.lto.o:(.text.cm_basic_wake)
+    2197     2197      4f6     1                 cm_basic_wake
+    268d     268d      3c9     1         build/dsky_operator_request.prg.lto.o:(.text.release_body)
+    268d     268d      3c9     1                 release_body
+    2a56     2a56      1ba     1         build/dsky_operator_request.prg.lto.o:(.text.wake_domain)
+    2a56     2a56      1ba     1                 wake_domain
+    2c10     2c10      4e7     1         build/dsky_operator_request.prg.lto.o:(.text.request)
+    2c10     2c10      4e7     1                 request
+    30f7     30f7      1d7     1         build/dsky_operator_request.prg.lto.o:(.text.cm_request_control)
+    30f7     30f7      1d7     1                 cm_request_control
+    32ce     32ce      1ca     1         build/dsky_operator_request.prg.lto.o:(.text.selected_wake)
+    32ce     32ce      1ca     1                 selected_wake
+    3498     3498      e88     1         build/dsky_operator_request.prg.lto.o:(.text.main)
+    3498     3498      e88     1                 main
+    4320     4320        6     1         build/dsky_operator_request.prg.lto.o:(.text.exit)
+    4320     4320        6     1                 exit
+    4326     4326       13     1         build/dsky_operator_request.prg.lto.o:(.text.__ashlhi3)
+    4326     4326       13     1                 __ashlhi3
+    4339     4339       13     1         build/dsky_operator_request.prg.lto.o:(.text.__lshrhi3)
+    4339     4339       13     1                 __lshrhi3
+    434c     434c       c4     1         build/dsky_operator_request.prg.lto.o:(.text.__udivhi3)
+    434c     434c       c4     1                 __udivhi3
+    4410     4410       40     1         build/dsky_operator_request.prg.lto.o:(.text.__umodqi3)
+    4410     4410       40     1                 __umodqi3
+    4450     4450       ae     1         build/dsky_operator_request.prg.lto.o:(.text.__umodhi3)
+    4450     4450       ae     1                 __umodhi3
+    44fe     44fe       34     1         build/dsky_operator_request.prg.lto.o:(.text.memcpy)
+    44fe     44fe       34     1                 memcpy
+    4532     4532       22     1         build/dsky_operator_request.prg.lto.o:(.text.__memset)
+    4532     4532       22     1                 __memset
+    4554     4554       34     1         build/dsky_operator_request.prg.lto.o:(.text.__mulhi3)
+    4554     4554       34     1                 __mulhi3
+    4588     4588       67     1         build/dsky_operator_request.prg.lto.o:(.text.__mulsi3)
+    4588     4588       67     1                 __mulsi3
+    45ef     45ef        0     1         __init_array_start = .
+    45ef     45ef        0     1         __init_array_end = .
+    45ef     45ef        0     1         __fini_array_start = .
+    45ef     45ef        0     1         __fini_array_end = .
+    45ef     45ef     1366     1 .rodata
+    45ef     45ef        8     1         build/dsky_operator_request.prg.lto.o:(.rodata.main)
+    45f7     45f7       10     1         <internal>:(.rodata.cst8)
+    4607     4607       10     1         <internal>:(.rodata.cst16)
+    4617     4617        c     1         build/dsky_operator_request.prg.lto.o:(.rodata.dsky_operator_request_input.ordinary)
+    4617     4617        c     1                 dsky_operator_request_input.ordinary
+    4623     4623       80     1         build/dsky_operator_request.prg.lto.o:(.rodata.dsky_operator_request_numbers)
+    4623     4623       80     1                 dsky_operator_request_numbers
+    46a3     46a3       82     1         build/dsky_operator_request.prg.lto.o:(.rodata.dsky_operator_request_offsets)
+    46a3     46a3       82     1                 dsky_operator_request_offsets
+    4725     4725     1230     1         build/dsky_operator_request.prg.lto.o:(.rodata.dsky_operator_request_patch)
+    4725     4725     1230     1                 dsky_operator_request_patch
+    5955     5955        0     1 .data
+    5955     5955        0     1         __data_start = .
+    5955     5955        0     1         __data_end = .
+    5955     5955        0     1 __data_load_start = LOADADDR(.data)
+    5955     5955        0     1 __data_size = SIZEOF(.data)
+    5955     5955     2005     1 .bss
+    5955     5955        0     1         __bss_start = .
+    5955     5955     1000     1         build/dsky_operator_request.prg.lto.o:(.bss.image)
+    5955     5955     1000     1                 image
+    6955     6955     1000     1         build/dsky_operator_request.prg.lto.o:(.bss.before)
+    6955     6955     1000     1                 before
+    7955     7955        5     1         build/dsky_operator_request.prg.lto.o:(.bss.dsky_operator_request_mailbox)
+    7955     7955        5     1                 dsky_operator_request_mailbox
+    795a     795a        0     1         __bss_end = .
+    795a     795a        0     1 __bss_size = SIZEOF(.bss)
+    795a     795a        0     1 .noinit
+    795a     795a        0     1         __heap_start = ALIGN(., 2)
+    795a     795a        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_operator_request.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_operator_request.prg.lto.o:(.llvm_sympart)
+       0        0      c20     4 .symtab
+       0        0      c20     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      796     1 .strtab
+       0        0      796     1         <internal>:(.strtab)

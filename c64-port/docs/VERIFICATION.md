@@ -1572,3 +1572,7 @@ Qualify actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 dispatch through literal R
 Qualify actual DSPDCPUT factor selection across all fourteen routines both noun tables all rows normal mixed contexts and signed zero limits with8192 original native sanitizer whole images plus128 C64 states retaining selected scale body frontier. See `docs/DSKY-DECIMAL-SELECT.md`.
 
 For workspace capacity,155 groups of byte-identical immutable committed evidence archives now share storage through hard links. Every path, compressed byte hash, mode and exact Git blob was independently verified before and after replacement; source, active build files and WIP were excluded. The operation reclaimed approximately5,532,584,705 duplicate-content bytes without changing historical proof bytes. Future writes to released artifacts remain prohibited by the established frozen-evidence policy. See `evidence/immutable-evidence-archive-storage-deduplication.json`.
+
+## Compose original uninterrupted operator request and display release
+
+Qualify actual operator request RELDSP JOBWAKE and genuine scheduler entry over8192 original native sanitizer full images plus64 C64 states preserving source wake variants unused Executive fields and true downstream service boundaries. See `docs/DSKY-OPERATOR-REQUEST.md`.

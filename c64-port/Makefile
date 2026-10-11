@@ -818,3 +818,5 @@ include tools/rtb_unit_integration.mk
 include tools/dsky_request_control.mk
 
 include tools/dsky_decimal_select_integration.mk
+
+include tools/dsky_operator_request.mk
