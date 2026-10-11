@@ -1,0 +1,10 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_sleep.c tests/lm_sleep_check.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/test-lm-sleep
+build/test-lm-sleep
+64 complete JOBSLEEP images and17 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_sleep.c tests/lm_sleep_check.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/test-lm-sleep-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-sleep-sanitize
+64 complete JOBSLEEP images and17 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_sleep_snapshot.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/lm-sleep-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-sleep-native-sanitize > build/lm-sleep-sanitize.snapshots
+cmp build/lm-sleep-sanitize.snapshots build/lm-sleep-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_sleep_diagnostic.c tests/lm_sleep_check.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -Wl,-Map,build/lm_sleep.map -o build/lm_sleep.prg

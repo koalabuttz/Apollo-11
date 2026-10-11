@@ -330,3 +330,5 @@ subprocess.run([sys.executable,'tools/cm_delay_image_differential.py',str(refere
 subprocess.run([sys.executable,'tools/cm_trig_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_single_return_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/lm_sleep_differential.py',str(reference)],cwd=ROOT,check=True)

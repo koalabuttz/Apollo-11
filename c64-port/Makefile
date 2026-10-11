@@ -483,3 +483,5 @@ include tools/cm_delay_image.mk
 include tools/cm_trig_port.mk
 
 include tools/cm_single_return_port.mk
+
+include tools/lm_sleep.mk

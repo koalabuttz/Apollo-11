@@ -567,3 +567,7 @@ All 164096 original-source full-image scalar/vector trig states match native and
 ## Complete Comanche single-precision source return paths
 
 Every original SINGLE_PRECISION_SUBROUTINES path is mapped through real source TCQ returns; all fixed return addresses and banks pass independent source, sanitizer and C64 checks. See `docs/COMANCHE-SINGLE-PRECISION.md`.
+
+## Port original Luminary JOBSLEEP state transitions
+
+All 8192 whole original-image JOBSLEEP transitions match native and sanitizer outputs; real C64 checks preserve scheduler ownership and source return effects. See `docs/LM-BASIC-SLEEP.md`.
