@@ -746,3 +746,5 @@ include tools/cm_vac5_store.mk
 all: build/cm-vac5-store-native
 
 include tools/dsky_jam_control.mk
+
+include tools/p66_application_recurrence_integration.mk

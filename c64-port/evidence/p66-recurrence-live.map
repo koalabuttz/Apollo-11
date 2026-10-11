@@ -1,0 +1,253 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5dae     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/p66-recurrence-live.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        9     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_chkin.s.obj):(.text)
+     830      830        0     1                 cbm_k_chkin
+     838      838        0     1                 some_error
+     839      839        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_open.s.obj):(.text)
+     839      839        0     1                 cbm_k_open
+     840      840        0     1                 some_error
+     841      841        5     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setlfs.s.obj):(.text)
+     841      841        0     1                 cbm_k_setlfs
+     846      846       14     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setnam.s.obj):(.text)
+     846      846        0     1                 cbm_k_setnam
+     85a      85a        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     85a      85a        0     1                 __call_indir
+     85d      85d       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     85d      85d       13     1                 __zero_bss
+     870      870       a4     1         build/p66-recurrence-live.prg.lto.o:(.text.exec_native_resolver_init)
+     870      870       a4     1                 exec_native_resolver_init
+     914      914      49e     1         build/p66-recurrence-live.prg.lto.o:(.text.exec_native_step)
+     914      914      49e     1                 exec_native_step
+     db2      db2       73     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_native_export_executive)
+     db2      db2       73     1                 p66_native_export_executive
+     e25      e25       28     1         build/p66-recurrence-live.prg.lto.o:(.text.source_copy)
+     e25      e25       28     1                 source_copy
+     e4d      e4d       9c     1         build/p66-recurrence-live.prg.lto.o:(.text.scalar_exchange)
+     e4d      e4d       9c     1                 scalar_exchange
+     ee9      ee9       73     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_native_import_executive)
+     ee9      ee9       73     1                 p66_native_import_executive
+     f5c      f5c      45e     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_native_run_group)
+     f5c      f5c      45e     1                 p66_native_run_group
+    13ba     13ba       c1     1         build/p66-recurrence-live.prg.lto.o:(.text.continuation)
+    13ba     13ba       c1     1                 continuation
+    147b     147b      37e     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_basic_step)
+    147b     147b      37e     1                 p66_basic_step
+    17f9     17f9      484     1         build/p66-recurrence-live.prg.lto.o:(.text.basic)
+    17f9     17f9      484     1                 basic
+    1c7d     1c7d      207     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_descent_resolve)
+    1c7d     1c7d      207     1                 p66_descent_resolve
+    1e84     1e84      482     1         build/p66-recurrence-live.prg.lto.o:(.text.continuation.5)
+    1e84     1e84      482     1                 continuation.5
+    2306     2306       8e     1         build/p66-recurrence-live.prg.lto.o:(.text.control)
+    2306     2306       8e     1                 control
+    2394     2394      a49     1         build/p66-recurrence-live.prg.lto.o:(.text.arithmetic)
+    2394     2394      a49     1                 arithmetic
+    2ddd     2ddd      229     1         build/p66-recurrence-live.prg.lto.o:(.text.observe_source)
+    2ddd     2ddd      229     1                 observe_source
+    3006     3006      144     1         build/p66-recurrence-live.prg.lto.o:(.text.canonical)
+    3006     3006      144     1                 canonical
+    314a     314a      16b     1         build/p66-recurrence-live.prg.lto.o:(.text.prepare)
+    314a     314a      16b     1                 prepare
+    32b5     32b5      131     1         build/p66-recurrence-live.prg.lto.o:(.text.finish)
+    32b5     32b5      131     1                 finish
+    33e6     33e6        9     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_display_job_finish)
+    33e6     33e6        9     1                 p66_display_job_finish
+    33ef     33ef      7a9     1         build/p66-recurrence-live.prg.lto.o:(.text.execute)
+    33ef     33ef      7a9     1                 execute
+    3b98     3b98      19a     1         build/p66-recurrence-live.prg.lto.o:(.text.continuation.10)
+    3b98     3b98      19a     1                 continuation.10
+    3d32     3d32       2d     1         build/p66-recurrence-live.prg.lto.o:(.text.apollo_overlay_crc16)
+    3d32     3d32       2d     1                 apollo_overlay_crc16
+    3d5f     3d5f      7c6     1         build/p66-recurrence-live.prg.lto.o:(.text.apollo_overlay_call)
+    3d5f     3d5f      7c6     1                 apollo_overlay_call
+    4525     4525       e4     1         build/p66-recurrence-live.prg.lto.o:(.text.open_file)
+    4525     4525       e4     1                 open_file
+    4609     4609       59     1         build/p66-recurrence-live.prg.lto.o:(.text.read_byte)
+    4609     4609       59     1                 read_byte
+    4662     4662       3a     1         build/p66-recurrence-live.prg.lto.o:(.text.close_file)
+    4662     4662       3a     1                 close_file
+    469c     469c       49     1         build/p66-recurrence-live.prg.lto.o:(.text.invoke.11)
+    469c     469c       49     1                 invoke.11
+    46e5     46e5      2f3     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_application_basic)
+    46e5     46e5      2f3     1                 p66_application_basic
+    49d8     49d8       e7     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_application_resolve)
+    49d8     49d8       e7     1                 p66_application_resolve
+    4abf     4abf      4f5     1         build/p66-recurrence-live.prg.lto.o:(.text.body)
+    4abf     4abf      4f5     1                 body
+    4fb4     4fb4       65     1         build/p66-recurrence-live.prg.lto.o:(.text.display_resolve)
+    4fb4     4fb4       65     1                 display_resolve
+    5019     5019      43b     1         build/p66-recurrence-live.prg.lto.o:(.text.p66_direct_launch_callback)
+    5019     5019      43b     1                 p66_direct_launch_callback
+    5454     5454       e8     1         build/p66-recurrence-live.prg.lto.o:(.text.main)
+    5454     5454       e8     1                 main
+    553c     553c      857     1         build/p66-recurrence-live.prg.lto.o:(.text.run)
+    553c     553c      857     1                 run
+    5d93     5d93       82     1         build/p66-recurrence-live.prg.lto.o:(.text.observe)
+    5d93     5d93       82     1                 observe
+    5e15     5e15       df     1         build/p66-recurrence-live.prg.lto.o:(.text.control.16)
+    5e15     5e15       df     1                 control.16
+    5ef4     5ef4      11d     1         build/p66-recurrence-live.prg.lto.o:(.text.display)
+    5ef4     5ef4      11d     1                 display
+    6011     6011      154     1         build/p66-recurrence-live.prg.lto.o:(.text.application)
+    6011     6011      154     1                 application
+    6165     6165      195     1         build/p66-recurrence-live.prg.lto.o:(.text.recurrence)
+    6165     6165      195     1                 recurrence
+    62fa     62fa       99     1         build/p66-recurrence-live.prg.lto.o:(.text.scheduler)
+    62fa     62fa       99     1                 scheduler
+    6393     6393      1b0     1         build/p66-recurrence-live.prg.lto.o:(.text.invoke.17)
+    6393     6393      1b0     1                 invoke.17
+    6543     6543        4     1         build/p66-recurrence-live.prg.lto.o:(.text.enter)
+    6543     6543        4     1                 enter
+    6547     6547        8     1         build/p66-recurrence-live.prg.lto.o:(.text.leave)
+    6547     6547        8     1                 leave
+    654f     654f        6     1         build/p66-recurrence-live.prg.lto.o:(.text.exit)
+    654f     654f        6     1                 exit
+    6555     6555        3     1         build/p66-recurrence-live.prg.lto.o:(.text.cbm_k_chrin)
+    6555     6555        3     1                 cbm_k_chrin
+    6558     6558        5     1         build/p66-recurrence-live.prg.lto.o:(.text.cbm_k_close)
+    6558     6558        5     1                 cbm_k_close
+    655d     655d        3     1         build/p66-recurrence-live.prg.lto.o:(.text.cbm_k_clrch)
+    655d     655d        3     1                 cbm_k_clrch
+    6560     6560        3     1         build/p66-recurrence-live.prg.lto.o:(.text.cbm_k_readst)
+    6560     6560        3     1                 cbm_k_readst
+    6563     6563       36     1         build/p66-recurrence-live.prg.lto.o:(.text.strlen)
+    6563     6563       36     1                 strlen
+    6599     6599       22     1         build/p66-recurrence-live.prg.lto.o:(.text.__memset)
+    6599     6599       22     1                 __memset
+    65bb     65bb        0     1         __init_array_start = .
+    65bb     65bb        0     1         __init_array_end = .
+    65bb     65bb        0     1         __fini_array_start = .
+    65bb     65bb        0     1         __fini_array_end = .
+    65bb     65bb      97d     1 .rodata
+    65bb     65bb        c     1         build/p66-recurrence-live.prg.lto.o:(.rodata.arithmetic)
+    65c7     65c7       5c     1         build/p66-recurrence-live.prg.lto.o:(.rodata.observe_source)
+    6623     6623       28     1         build/p66-recurrence-live.prg.lto.o:(.rodata.execute)
+    664b     664b       1c     1         build/p66-recurrence-live.prg.lto.o:(.rodata.executive_fields)
+    664b     664b       1c     1                 executive_fields
+    6667     6667       17     1         build/p66-recurrence-live.prg.lto.o:(.rodata.selectors)
+    6667     6667       17     1                 selectors
+    667e     667e        3     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_guidance_invoke.unit)
+    667e     667e        3     1                 p66_guidance_invoke.unit
+    6681     6681        3     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_guidance_invoke.projection)
+    6681     6681        3     1                 p66_guidance_invoke.projection
+    6684     6684        8     1         <internal>:(.rodata.cst4)
+    668c     668c        3     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_descent_invoke.length)
+    668c     668c        3     1                 p66_descent_invoke.length
+    668f     668f      150     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_native_guidance_mappings)
+    668f     668f      150     1                 p66_native_guidance_mappings
+    67df     67df       28     1         build/p66-recurrence-live.prg.lto.o:(.rodata.feedback_entries)
+    67df     67df       28     1                 feedback_entries
+    6807     6807       10     1         <internal>:(.rodata.cst16)
+    6817     6817       15     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_basic_mappings)
+    6817     6817       15     1                 p66_basic_mappings
+    682c     682c        8     1         <internal>:(.rodata.cst8)
+    6834     6834        4     1         build/p66-recurrence-live.prg.lto.o:(.rodata.exec_overlay_services)
+    6834     6834        4     1                 exec_overlay_services
+    6838     6838        a     1         build/p66-recurrence-live.prg.lto.o:(.rodata..Lswitch.table.exec_overlay_module)
+    6842     6842      1a4     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_display_job_mappings)
+    6842     6842      1a4     1                 p66_display_job_mappings
+    69e6     69e6       38     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_direct_launch_mappings)
+    69e6     69e6       38     1                 p66_direct_launch_mappings
+    6a1e     6a1e      309     1         build/p66-recurrence-live.prg.lto.o:(.rodata.p66_recurrence_disk_modules)
+    6a1e     6a1e      309     1                 p66_recurrence_disk_modules
+    6d27     6d27      205     1         <internal>:(.rodata.str1.1)
+    6f2c     6f2c        6     1         build/p66-recurrence-live.prg.lto.o:(.rodata.guard)
+    6f2c     6f2c        6     1                 guard
+    6f32     6f32        4     1         build/p66-recurrence-live.prg.lto.o:(.rodata.services)
+    6f32     6f32        4     1                 services
+    6f36     6f36        2     1         build/p66-recurrence-live.prg.lto.o:(.rodata.prl_counts)
+    6f36     6f36        2     1                 prl_counts
+    6f38     6f38        a     1 .data
+    6f38     6f38        0     1         __data_start = .
+    6f38     6f38        6     1         build/p66-recurrence-live.prg.lto.o:(.data.io)
+    6f38     6f38        6     1                 io
+    6f3e     6f3e        4     1         build/p66-recurrence-live.prg.lto.o:(.data.modules)
+    6f3e     6f3e        4     1                 modules
+    6f42     6f42        0     1         __data_end = .
+    6f42     6f42        0     1 __data_load_start = LOADADDR(.data)
+    6f42     6f42        0     1 __data_size = SIZEOF(.data)
+    6f42     6f42       17     1 .bss
+    6f42     6f42        0     1         __bss_start = .
+    6f42     6f42       13     1         build/p66-recurrence-live.prg.lto.o:(.bss.loader)
+    6f42     6f42       13     1                 loader
+    6f55     6f55        2     1         build/p66-recurrence-live.prg.lto.o:(.bss.failures)
+    6f55     6f55        2     1                 failures
+    6f57     6f57        2     1         build/p66-recurrence-live.prg.lto.o:(.bss.checkpoints)
+    6f57     6f57        2     1                 checkpoints
+    6f59     6f59        0     1         __bss_end = .
+    6f59     6f59        0     1 __bss_size = SIZEOF(.bss)
+    6f59     6f59        0     1 .noinit
+    6f59     6f59        0     1         __heap_start = ALIGN(., 2)
+    6f59     6f59        0     1 __stack = 0xd000
+    6f59     6f59        0     1 
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/p66-recurrence-live.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/p66-recurrence-live.prg.lto.o:(.llvm_sympart)
+       0        0      f20     4 .symtab
+       0        0      f20     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      a07     1 .strtab
+       0        0      a07     1         <internal>:(.strtab)

@@ -1,0 +1,3 @@
+cc -std=c99 -O2 -ffunction-sections -fdata-sections -Wl,--gc-sections -DP66_NATIVE_DISPATCH_ONLY -Iinclude -Itests -Ideps/virtualagc/yaAGC tools/lm_clock_reference_test.c src/agc_word.c src/lm_clock.c tests/scenarios.c deps/virtualagc/yaAGC/agc_engine.o deps/virtualagc/yaAGC/agc_engine_init.o deps/virtualagc/yaAGC/rfopen.o -o build/lm-clock-reference-current
+./build/lm-clock-reference-current
+PASS:32768 hardware PINC raw signed-word transitions; 1024 complete2048-word TIME1/TIME2 carry/TIME3 latch sequences, 0..65535 pulses; rejected domains unchanged

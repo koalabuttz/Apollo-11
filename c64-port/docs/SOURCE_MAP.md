@@ -1027,3 +1027,7 @@ Actual VAC5STOR and containing GENTRAN copy effects match8192 complete original/
 ## Translate original shared load response interrupt shims
 
 Actual JAMPROC/JAMTERM fixed entries, channel7 write event, REQRET controls and unchanged load/wake/END composition match8192 complete original/native/full-sanitizer states and64 actual C64 states. Producer exclusion and real source IRQ/channel ownership remain explicit. See `docs/DSKY-JAM-CONTROL.md`.
+
+## Integrate actual native P66 timer dispatch and second descent iteration
+
+The111-module native C64 disk reproduces STARTP66, guidance, display and idle,100 actual timer pulses, original T3 RODTASK admission/TASKOVER resume and a second P66/display/idle iteration. All310 complete actual C64 source checkpoints and13926 clean strict/full-sanitizer source states match. Hardware stack77B, software785B, resident6f59 and171B control metadata fit the documented independent allocations. One-shot source task behavior and remaining application/device/recovery domains are explicit. See `docs/P66-APPLICATION-RECURRENCE.md`.

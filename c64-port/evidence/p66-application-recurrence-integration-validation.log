@@ -1,0 +1,16 @@
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -O2 src/agc_word.c src/executive.c src/waitlist.c src/p66_native.c src/p66_startup.c src/p66_rodtask_image.c src/lm_waitlist_dispatch.c src/lm_waitlist_irq_dispatch.c src/lm_taskover_resume.c src/lm_idle_start.c src/lm_clock.c src/p66_application_recurrence.c src/dsky_display.c tests/test_p66_recurrence.c -o build/test-p66-recurrence-integrated
+./build/test-p66-recurrence-integrated
+PASS:20 recurrence preflight rejects preserve full source/native state;2 null interfaces;zero/99/1 tick request prefix and exact architectural capture
+python3 tools/p66_recurrence_port_host.py
+PASS: p66-recurrence-live 2460 complete original states, SHA256 d1aa5f4de9e02bf126731818227c4bc7592e62bddbbd66a425cc56346683f186
+PASS: p66-recurrence-prior 1226 complete original states, SHA256 9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc
+PASS: lm-waitlist-irq-recurrence 8192 complete original states, SHA256 28399982b6a4a2d694a1ee160e934c4f92afcfe49514864ff820fea432d492d3
+PASS: p66-rodtask-image 2048 complete original states, SHA256 cec29ff5972ca5b57e2f257fee3c7a9762f3198cf3d58431284a2e05fc62d2df
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie src/agc_word.c src/executive.c src/waitlist.c src/p66_native.c src/p66_startup.c src/p66_rodtask_image.c src/lm_waitlist_dispatch.c src/lm_waitlist_irq_dispatch.c src/lm_taskover_resume.c src/lm_idle_start.c src/lm_clock.c src/p66_application_recurrence.c src/dsky_display.c tests/test_p66_recurrence.c -o build/test-p66-recurrence-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-p66-recurrence-integrated-san
+PASS:20 recurrence preflight rejects preserve full source/native state;2 null interfaces;zero/99/1 tick request prefix and exact architectural capture
+python3 tools/p66_recurrence_port_host.py --sanitize
+PASS: p66-recurrence-live 2460 complete original states, SHA256 d1aa5f4de9e02bf126731818227c4bc7592e62bddbbd66a425cc56346683f186
+PASS: p66-recurrence-prior 1226 complete original states, SHA256 9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc
+PASS: lm-waitlist-irq-recurrence 8192 complete original states, SHA256 28399982b6a4a2d694a1ee160e934c4f92afcfe49514864ff820fea432d492d3
+PASS: p66-rodtask-image 2048 complete original states, SHA256 cec29ff5972ca5b57e2f257fee3c7a9762f3198cf3d58431284a2e05fc62d2df

@@ -1,0 +1,58 @@
+[
+  {
+    "id": 57,
+    "filename": "A57",
+    "byte_count": 4176,
+    "crc16": 24041,
+    "sha256": "68db97aebe43684affa8901dd580f7123923e3017ef202a92ff5bbbb1d2f664b",
+    "prg": "overlay-p66-recurrence-57.prg"
+  },
+  {
+    "id": 58,
+    "filename": "A58",
+    "byte_count": 3518,
+    "crc16": 1006,
+    "sha256": "eb04e843686a57f6db6d95f22072653f181eb1978806b75c3462e67f30bf2ed9",
+    "prg": "overlay-p66-recurrence-58.prg"
+  },
+  {
+    "id": 59,
+    "filename": "A59",
+    "byte_count": 1269,
+    "crc16": 23477,
+    "sha256": "daae30690b3b693ae394a2ab9e19fea2676e97efefeca04017c0155c6a1be2b0",
+    "prg": "overlay-p66-recurrence-59.prg"
+  },
+  {
+    "id": 84,
+    "filename": "A84",
+    "byte_count": 1277,
+    "crc16": 7813,
+    "sha256": "191f8db3bb75da5b58eda8d026f93ce3b0e39250c2db30322d439e890669bdc9",
+    "prg": "overlay-p66-recurrence-84.prg"
+  },
+  {
+    "id": 85,
+    "filename": "A85",
+    "byte_count": 1893,
+    "crc16": 16247,
+    "sha256": "263f05b6d676ca3e29c715ce769ea76124706e945caf0a26c4a4c366e1db2f53",
+    "prg": "overlay-p66-recurrence-85.prg"
+  },
+  {
+    "id": 86,
+    "filename": "A86",
+    "byte_count": 920,
+    "crc16": 6918,
+    "sha256": "855299b963d1155eaa5a4e1c73a83c83b5acc2330a1420099e97df93cb366700",
+    "prg": "overlay-p66-recurrence-86.prg"
+  },
+  {
+    "id": 87,
+    "filename": "A87",
+    "byte_count": 656,
+    "crc16": 39493,
+    "sha256": "446df47fd28f6972620ac2efb29da824baee83f2aa184c30160920e3c93e9932",
+    "prg": "overlay-p66-recurrence-87.prg"
+  }
+]
