@@ -368,7 +368,7 @@
             "src/cm_nv85_route.c",
             "src/cm_dynamic_display.c"
           ],
-          "scope": "Normal CKNVWRD1/REGODSP and MAKEPLAY/GOPLAY continuation for source V06N85, original priority/wake and actual END/idle composition. Busy, flashing, monitor and noun40 paths remain separate work.",
+          "scope": "REGODSP and MAKEPLAY/GOPLAY continuation for source V06N85 entered from CKNVWRD1 (CKNVWRD1 itself is P40-P47), original priority/wake and actual END/idle composition. Busy, flashing, monitor and noun40 paths remain separate work.",
           "verification": "docs/COMANCHE-NORMAL-N85.md"
         },
         {
@@ -390,14 +390,14 @@
           "native_files": [
             "src/cm_display_rest.c"
           ],
-          "scope": "Actual blocked NVDSP REST RESTSLEP and UPENT2 source continuations to real ENDOFJOB or NVSUBUSY.",
+          "scope": "Blocked NVDSP REST/RESTSLEP source continuation to real ENDOFJOB or NVSUBUSY; UPENT2 (SERVICE_ROUTINES), NVSUBUSY (PINBALL) and ENDOFJOB (EXECUTIVE) are callees, not claimed here.",
           "verification": "docs/COMANCHE-DISPLAY-REST.md"
         },
         {
           "native_files": [
             "src/cm_clock_blocked_display.c"
           ],
-          "scope": "Blocked clock display continuation through REST NVSUBUSY and real JOBSLEEP; retained external monitor flags.",
+          "scope": "Blocked clock display continuation into NVSUBUSY (PINBALL) and JOBSLEEP (EXECUTIVE); only the DISPLAY_INTERFACE side is claimed here. Retained external monitor flags.",
           "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md"
         }
       ]
@@ -2752,16 +2752,8 @@
       "sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
       "bytes": 40245,
       "lines": 1459,
-      "status": "partial",
-      "native_coverage": [
-        {
-          "native_files": [
-            "src/p66_major_mode.c"
-          ],
-          "scope": "Fixed STARTP66 NEWMODEX major-mode selection and actual DSPMMJB NOVAC admission; deferred formatting/device drain still pending.",
-          "verification": "docs/P66_MAJOR_MODE.md"
-        }
-      ]
+      "status": "untranslated",
+      "native_coverage": []
     },
     {
       "path": "Luminary099/DOWNLINK_LISTS.agc",
@@ -3872,7 +3864,7 @@
       "status": "partial",
       "native_coverage": [
         {
-          "scope": "PHASCHNG/2PHSCHNG A/B/C table maintenance for groups 1..6; DSKY NEWMODE/MMDSPLAY services remain untranslated.",
+          "scope": "PHASCHNG/2PHSCHNG A/B/C table maintenance for groups 1..6; NEWMODEX/MMDSPLAY covered only on the STARTP66 path below.",
           "artifacts": [
             {
               "path": "src/phase.c",
@@ -3887,6 +3879,13 @@
               "sha256": "ffc0309d935570799859a507c8bbd6b9019c937fde066db3437b483f26b72423"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/p66_major_mode.c"
+          ],
+          "scope": "Fixed NEWMODEX/MMDSPLAY/SETUPDSP path as called from STARTP66 (LUNAR_LANDING_GUIDANCE_EQUATIONS), through Executive NOVAC admission of the DSPMMJB job; the DSPMMJB body (PINBALL_GAME_BUTTONS_AND_LIGHTS) and other NEWMODEX callers remain separate.",
+          "verification": "docs/P66_MAJOR_MODE.md"
         }
       ]
     },
