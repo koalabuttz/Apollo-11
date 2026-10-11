@@ -1,0 +1,62 @@
+{
+  "status": "qualified antenna leading time/CDU composition; both complete files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 32768,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 32768,
+    "start": 0,
+    "end": 40960,
+    "record_bytes": 4106,
+    "decoded_sha256": "e727d88186e37d8aadded891b639ada5e738734b173146fbd304d65394334fe6",
+    "decoded_bytes": 134545408,
+    "canonical_original_archive": "evidence/sband-flow-source.snapshots.bin.xz",
+    "compressed_sha256": "819abd3160c6803f0b2af48bbc4e132fd9a760df217f768dc4f59e16b94ad580",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 128,
+    "prg_bytes": 26900,
+    "load_end": 28947,
+    "bss_end": 37139,
+    "mailbox": "a5800000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups": [
+    "LM TIME_FRONT",
+    "LM AFTER_TIME",
+    "LM TIME_PIPELINE",
+    "CM TIME_FRONT",
+    "CM AFTER_TIME",
+    "CM TIME_PIPELINE",
+    "CM AFTER_CDU",
+    "CM CM_TIME_TRIG"
+  ],
+  "source_map": "evidence/sband-flow-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "be52330c8b8cedf651bac978e9f3245df7d4b6137ad4abfa7b912e4d6368bbc6",
+  "native_header_sha256": "4ad55c11dd10deecccb6f16121611d95af943742c6b4a37f3c102a698f856378",
+  "independent_review": {
+    "path": "evidence/sband-flow-independent-review.txt",
+    "sha256": "831dbc6cdd844954f22de1f2f3c684c3863c0e2f7dd9233b9c4c17f5f422ebf2"
+  },
+  "limitations": [
+    "External conic bodies not executed; full antenna coordinate/angle sequence remains pending.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/raw16 A/L/Q and producer exclusion throughout each call.",
+    "Delegated stable native helper bodies are composed at actual source controls; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ]
+}

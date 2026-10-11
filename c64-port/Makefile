@@ -859,3 +859,8 @@ all: build/cm-alarm-image-native
 include tools/ephemeris_add_integration.mk
 
 include tools/imu_pulse_end_integration.mk
+
+include tools/sband_flow_integration.mk
+all: build/sband-flow-integrated-stream
+test: test-sband-flow
+sanitize: sanitize-sband-flow

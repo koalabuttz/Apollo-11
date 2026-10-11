@@ -1,0 +1,11 @@
+python3 tools/sband_flow_compare.py
+PASS {'states': 32768, 'start': 0, 'end': 40960, 'record_bytes': 4106, 'decoded_sha256': 'e727d88186e37d8aadded891b639ada5e738734b173146fbd304d65394334fe6'}
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_flow_snapshot.c tests/sband_flow_cases.c src/agc_word.c src/sband_flow.c src/lm_interbank.c src/cm_interbank_complete.c src/rtb_angles.c src/cm_powered_interface.c src/cm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/sband-flow-sanitize
+python3 tools/sband_flow_compare.py sanitize
+PASS {'states': 32768, 'start': 0, 'end': 40960, 'record_bytes': 4106, 'decoded_sha256': 'e727d88186e37d8aadded891b639ada5e738734b173146fbd304d65394334fe6'}
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/sband_flow_inputs.c tests/sband_flow_cases.c src/agc_word.c -o build/sband-flow-inputs
+python3 tools/freeze_sband_flow.py
+PASS 128 frozen states; 6991 fixture bytes
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_sband_flow.c tests/sband_flow_target.c tests/frozen_words.c tests/sband_flow_cases.c src/agc_word.c src/sband_flow.c src/lm_interbank.c src/cm_interbank_complete.c src/rtb_angles.c src/cm_powered_interface.c src/cm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/test-sband-flow
+./build/test-sband-flow
+PASS original control full-image fixtures and unchanged unsupported images

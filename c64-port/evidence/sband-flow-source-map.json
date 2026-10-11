@@ -1,0 +1,216 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "native_source": "src/sband_flow.c",
+    "scope": "Explicit leading antenna pairs through true interpreted orbital handoff. CM joined caller executes frozen CDUTRIG and genuine RVQ before STCALL CSMCONIC. External conic bodies not executed.",
+    "containing_file_status": "partial",
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 81,
+        "label": "",
+        "op": "SETPD",
+        "arguments": "RTB",
+        "assembled_address": "42,3611",
+        "physical_fixed_word": 35721,
+        "physical_erasable_word": null,
+        "words": [
+          19969
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 82,
+        "label": "",
+        "op": "0D",
+        "arguments": "",
+        "assembled_address": "42,3612",
+        "physical_fixed_word": 35722,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 83,
+        "label": "",
+        "op": "LOADTIME",
+        "arguments": "",
+        "assembled_address": "42,3613",
+        "physical_fixed_word": 35723,
+        "physical_erasable_word": null,
+        "words": [
+          9083
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 84,
+        "label": "",
+        "op": "STCALL",
+        "arguments": "TDEC1",
+        "assembled_address": "42,3614",
+        "physical_fixed_word": 35724,
+        "physical_erasable_word": null,
+        "words": [
+          14369
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 85,
+        "label": "",
+        "op": "LEMCONIC",
+        "arguments": "",
+        "assembled_address": "42,3615",
+        "physical_fixed_word": 35725,
+        "physical_erasable_word": null,
+        "words": [
+          11840
+        ]
+      }
+    ],
+    "original_bindings": {
+      "SBANDANT": "42,3606",
+      "LOADTIME": "10,3573",
+      "LEMCONIC": "13,3100",
+      "CDUTRIG": "23,3537",
+      "NEWOPS": "6070",
+      "DANZIG": "6061",
+      "RTB": "01,2450",
+      "SWCALL": "4622",
+      "SWRETURN": "4631",
+      "SETPD": "7613",
+      "CALL": "6640",
+      "BANKMASK": "4350",
+      "TDEC1": "0000040",
+      "QPRET": "0000052",
+      "PUSHLOC": "0166"
+    },
+    "compiled_tuple": [
+      1929,
+      1323,
+      9083,
+      11840,
+      3979,
+      3488
+    ],
+    "dependencies": [
+      "include/rtb_angles.h",
+      "include/cm_powered_interface.h",
+      "include/cm_powered_trig.h"
+    ],
+    "caller_domain": "Five valid VAC bases; NEWJOB+0; coherent original banks; ordinary image/raw16 A/L/Q; producer exclusion throughout all composed phases."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "native_source": "src/sband_flow.c",
+    "scope": "Explicit leading antenna pairs through true interpreted orbital handoff. CM joined caller executes frozen CDUTRIG and genuine RVQ before STCALL CSMCONIC. External conic bodies not executed.",
+    "containing_file_status": "partial",
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 44,
+        "label": "",
+        "op": "RTB",
+        "arguments": "CALL",
+        "assembled_address": "42,3655",
+        "physical_fixed_word": 35757,
+        "physical_erasable_word": null,
+        "words": [
+          18972
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 45,
+        "label": "",
+        "op": "LOADTIME",
+        "arguments": "",
+        "assembled_address": "42,3656",
+        "physical_fixed_word": 35758,
+        "physical_erasable_word": null,
+        "words": [
+          19272
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 46,
+        "label": "",
+        "op": "CDUTRIG",
+        "arguments": "",
+        "assembled_address": "42,3657",
+        "physical_fixed_word": 35759,
+        "physical_erasable_word": null,
+        "words": [
+          20287
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 47,
+        "label": "",
+        "op": "STCALL",
+        "arguments": "TDEC1",
+        "assembled_address": "42,3660",
+        "physical_fixed_word": 35760,
+        "physical_erasable_word": null,
+        "words": [
+          14369
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 48,
+        "label": "",
+        "op": "CSMCONIC",
+        "arguments": "",
+        "assembled_address": "42,3661",
+        "physical_fixed_word": 35761,
+        "physical_erasable_word": null,
+        "words": [
+          11852
+        ]
+      }
+    ],
+    "original_bindings": {
+      "SBANDANT": "42,3652",
+      "LOADTIME": "22,3510",
+      "CSMCONIC": "13,3114",
+      "CDUTRIG": "23,3477",
+      "NEWOPS": "6037",
+      "DANZIG": "6030",
+      "RTB": "01,2475",
+      "SWCALL": "4666",
+      "SWRETURN": "4675",
+      "SETPD": "7562",
+      "CALL": "6607",
+      "BANKMASK": "4364",
+      "TDEC1": "0000040",
+      "QPRET": "0000052",
+      "PUSHLOC": "0166"
+    },
+    "compiled_tuple": [
+      1965,
+      1344,
+      19272,
+      11852,
+      3954,
+      3463
+    ],
+    "dependencies": [
+      "include/rtb_angles.h",
+      "include/cm_powered_interface.h",
+      "include/cm_powered_trig.h"
+    ],
+    "caller_domain": "Five valid VAC bases; NEWJOB+0; coherent original banks; ordinary image/raw16 A/L/Q; producer exclusion throughout all composed phases."
+  }
+}

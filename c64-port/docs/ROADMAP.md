@@ -1256,3 +1256,7 @@ Qualify both original TAD and exact overflow call return arithmetic against13107
 ## Compose original gyro completion wake and mode return paths
 
 Qualify actual JOBWAKE NORESET IMUFINED GOODEND BADEND and ENDMODE source control including mission specific signed sentinel behavior against262144 complete original native sanitizer states and128 C64 states through genuine TASKOVER entry. See `docs/NATIVE-GYRO-COMPLETION.md`.
+
+## Compose native antenna time load and original orbital caller handoffs
+
+Qualify uninterrupted original antenna time caller paths including actual Comanche LOADTIME CDUTRIG all three axes RVQ and STCALL CSMCONIC plus Luminary LEMCONIC entry against32768 complete original native sanitizer states and128 C64 states with real source banks and caller data. See `docs/NATIVE-SBAND-TIME-FLOW.md`.
