@@ -1,0 +1,13 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_goplay.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/test-goplay
+build/test-goplay
+64 complete GOPLAY boundary images;24 invalid inputs: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_goplay.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/test-goplay-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-goplay-sanitize
+64 complete GOPLAY boundary images;24 invalid inputs: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/goplay_snapshot.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/goplay-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/goplay-native-sanitize > build/goplay-sanitize.snapshots
+cmp build/goplay-sanitize.snapshots build/goplay-reference.snapshots
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/goplay_full_snapshot.c src/p66_nv_render.c src/dsky_scale.c src/guidance_product.c src/p66_nv_words.c src/p66_nv_rows.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/dsky_decimal.c src/agc_multiword.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/goplay-full-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/goplay-full-native-sanitize > build/goplay-full-sanitize.snapshots
+cmp build/goplay-full-sanitize.snapshots build/goplay-full-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/goplay_diagnostic.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -Wl,-Map,build/goplay.map -o build/goplay.prg

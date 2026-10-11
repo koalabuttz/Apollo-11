@@ -429,3 +429,5 @@ include tools/p66_status.mk
 include tools/nv_rows.mk
 
 include tools/nv_render.mk
+
+include tools/goplay.mk

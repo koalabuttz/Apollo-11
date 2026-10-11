@@ -276,3 +276,7 @@ subprocess.run([sys.executable,'tools/nv_rows_differential.py',str(reference)],c
 subprocess.run([sys.executable,'tools/nv_render_full_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/nv_render_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,"tools/goplay_full_differential.py",str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/goplay_differential.py',str(reference)],cwd=ROOT,check=True)
