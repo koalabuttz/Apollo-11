@@ -485,3 +485,5 @@ include tools/cm_trig_port.mk
 include tools/cm_single_return_port.mk
 
 include tools/lm_sleep.mk
+
+include tools/makeplay_sleep.mk

@@ -606,3 +606,7 @@ Every original SINGLE_PRECISION_SUBROUTINES path is mapped through real source T
 ## Port original Luminary JOBSLEEP state transitions
 
 All 8192 whole original-image JOBSLEEP transitions match native and sanitizer outputs; real C64 checks preserve scheduler ownership and source return effects. See `docs/LM-BASIC-SLEEP.md`.
+
+## Port actual MAKEPLAY sleep and wake control
+
+All 16384 complete original states qualify the true GOSLEEPS, wake and busy paths; native sanitizer and C64 checks pass. See `docs/P66-MAKEPLAY-SLEEP.md`.
