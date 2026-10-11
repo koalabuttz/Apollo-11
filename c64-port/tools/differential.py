@@ -196,3 +196,5 @@ subprocess.run([sys.executable,'tools/p66_initialization_differential.py',str(re
 subprocess.run([sys.executable,'tools/throttle_feedback_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/throttle_service_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/p66_bias_differential.py',str(reference)],cwd=ROOT,check=True)

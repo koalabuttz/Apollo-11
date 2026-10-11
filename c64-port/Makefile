@@ -339,3 +339,5 @@ include tools/p66_initialization.mk
 include tools/throttle_feedback.mk
 
 include tools/throttle_service.mk
+
+include tools/p66_bias.mk

@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/p66_bias.prg from 0801 to 5ECA (56CA bytes)
+WATCH: 1  C:$7ecb  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 7ecb)  292/$124,  49/$31
+.C:1b82  8E CB 7E    STX $7ECB      - A:00 X:A5 Y:00 SP:f1 NV-....C  310406341
+>C:7ecb  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/p66_bias-vice-mailbox.bin' from $7ecb to $7ecf
+Saving file `/workspace/Apollo-11/c64-port/build/p66_bias-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_bias-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/p66_bias.prg from 0801 to 5EE5 (56E5 bytes)
+WATCH: 1  C:$7ee6  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 7ee6)  186/$0ba,   9/$09
+.C:1b9d  8E E6 7E    STX $7EE6      - A:00 X:A5 Y:00 SP:f1 NV-....C  311972103
+>C:7ee6  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/p66_bias-vice-mailbox.bin' from $7ee6 to $7eea
+Saving file `/workspace/Apollo-11/c64-port/build/p66_bias-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_bias-vice-software-stack.bin' from $c100 to $cfff
