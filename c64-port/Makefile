@@ -323,3 +323,5 @@ include tools/waitlist_zero.mk
 include tools/cm_dispatch.mk
 
 include tools/p66_startup.mk
+
+include tools/trig.mk

@@ -1,0 +1,11 @@
+{
+  "pal_clock_hz": 985248,
+  "samples": {
+    "CDULOGIC": 1953,
+    "SIN": 28637,
+    "BSIN": 42095,
+    "CDUTRIGS_cardinal": 217621,
+    "CDUTRIGS_random": 326404
+  },
+  "scope": "Finite excluded-call samples include marker overhead and VIC/IRQ effects; no WCET or live guidance deadline proof."
+}
