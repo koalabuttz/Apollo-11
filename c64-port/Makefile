@@ -327,3 +327,5 @@ include tools/p66_startup.mk
 include tools/trig.mk
 
 include tools/p66_native.mk
+
+include tools/rotation.mk
