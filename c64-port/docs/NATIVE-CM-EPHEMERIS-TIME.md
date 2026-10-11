@@ -1,0 +1,9 @@
+# Native Comanche ephemerides time caller
+
+`cm_ephemeris_time` composes the original LSPOS, LUNPOS, LUNVEL and SOLPOS entries through LSTIME in compiled C, ending at genuine RES, REM or VEM NEWOPS. It sets source X1/X2 and push storage, performs SR14, TAD TEPHEM/COMP, TAD TIMEMO/COMP, SL16, SSP S1=6 and GOTO X1. Existing frozen arithmetic helpers remain unchanged. Their restricted public descriptors use equivalent arithmetic bits inside this fixed caller; complete source states independently verify the resulting source control values. No instruction decoder or private authoritative machine image exists.
+
+The caller requires ordinary canonical storage, raw A/L, coherent source bank26, scalar MODE0, EDOP0, INTPRET flag040000, one of five declared VACs and exclusion of original producers. Invalid context leaves the complete image unchanged. External IRQ and SUPER are retained. The constructor cohort varies all four entries, signs/zeros/overflow, five VACs, eight EB banks and both IRQ contexts. It is a sampled cohort, not an exhaustive Cartesian proof.
+
+All65536 complete2053-word original checkpoints match strict native and full ASAN/UBSAN: decoded SHA256 b4f9c103501b1689adaa54366da821a12d2a1eee3788b59bd57d0af62f163b0d. Sixty-four lossless frozen source states also pass stock-ROM PAL C64, mailbox a5400000. PRG15897bytes, load end$4618/BSS$6618, hardware stack12/software94, compiler ZP0. Eighteen malformed-image/metadata cases and two null guards are unchanged. Independent peer review checks exact source entries and closed helper domains.
+
+Fresh assembly matches the original Comanche rope byte for byte and retains every local time-caller source word. Original GPL engine is a host oracle only. Sun position, lunar polynomial position/velocity and the whole ephemerides file remain open.

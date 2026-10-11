@@ -1399,3 +1399,7 @@ Qualify40960 complete original native sanitizer checkpoints and160 staged C64 st
 ## Translate original operator input shifts rounding and overflow tests
 
 Qualify8192 complete original native sanitizer states and64 C64 states with real retained banks raw registers signed zero and source return or alarm frontiers. See `docs/DSKY-INPUT-ARITHMETIC.md`.
+
+## Compose all original Comanche ephemerides time entries
+
+Compose actual LSPOS LUNPOS LUNVEL and SOLPOS through LSTIME and source RES REM VEM handoffs against65536 full original native sanitizer states and64 C64 states preserving all existing frozen arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-TIME.md`.

@@ -1,0 +1,19 @@
+{
+  "reviewer": "p66_source_map",
+  "result": "No concrete source arithmetic/control discrepancy within declared four-entry CM LSTIME composition domain.",
+  "reviewed_sha256": {
+    "src/cm_ephemeris_time.c": "4858f2178e26266690db588111af8514d4ebc98f48c7531952f7489c800ec9cf",
+    "include/cm_ephemeris_time.h": "34efd4491164ffb0b8def37812d2e62d277661be1d68abcf4593f37135cf36dd",
+    "tests/cm_ephemeris_time_cases.c": "b95e1d617ae96815f6e2956dd57b8c4ee6b3666b57c4063428980a4051457d38",
+    "tools/cm_ephemeris_time_reference.c": "594515369277d5682a52c535f8381f78bda3e31612aab4926e6b1a9a7a55b00d",
+    "../Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa"
+  },
+  "domain": "Original CM NEWOPS caller at LSPOS/LUNPOS/LUNVEL/SOLPOS, scalar MODE0, coherent bank26 source context, five VACs, ordinary canonical RAM/raw A/L, excluded producers and unchanged external IRQ/SUPER. Ends at actual RES/REM/VEM NEWOPS before polynomial/vector body.",
+  "findings": [
+    "AXT1/2 and STQ preserve actual source X1/X2 addresses, SOLPOS uses source QPRET as X2, LSTIME SETPD resets PUSHLOC and BUF to FIXLOC.",
+    "SR14 then TAD TEPHEM/DCOMP and TAD TIMEMO/DCOMP then SL16 exactly follows original scalar sequence. Restricted immutable arithmetic descriptors supplied internally are replaced only with source-exact canonical controls at completed boundaries; no private authoritative machine state or opcode decoder.",
+    "SSP writes original S1=6 and GOTO X1 restores source BANKSET EB and bank26 FB, keeps exact caller LOC/EDOP/CYR/POLISH and A/L.",
+    "Guards bound mission entry, source banks, VAC, ordinary fields and retained latches before mutation; downstream helpers have validated closed arithmetic entry domains.",
+    "Reference executes unchanged original rope from source entry to actual target NEWOPS, and does not import native arithmetic or expected flight outputs. Constructor cohort is not an exhaustive Cartesian claim; no ephemerides polynomial or whole-file closure credit."
+  ]
+}
