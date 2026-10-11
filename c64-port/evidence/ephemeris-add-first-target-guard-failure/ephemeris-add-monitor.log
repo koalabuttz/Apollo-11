@@ -1,0 +1,6 @@
+Loading /workspace/Apollo-11/c64-port/build/ephemeris-add.prg from 0801 to 2BC6 (23C6 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   74/$04a,  10/$0a
+.C:1e2f  8D 00 C0    STA $C000      - A:EE X:07 Y:00 SP:f1 ..-..I..  112456648
+Saving file `/workspace/Apollo-11/c64-port/build/ephemeris-add-mailbox.bin' from $c000 to $c003

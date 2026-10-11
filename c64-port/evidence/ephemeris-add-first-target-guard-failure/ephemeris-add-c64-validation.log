@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/ephemeris_add_vice_test.py", line 21, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/Apollo-11/c64-port/tools/ephemeris_add_vice_test.py", line 17, in main
+    states=json.loads((R/'build/ephemeris-add-target-results.json').read_text())['states'];assert box.read_bytes()==bytes((0xa5,states&255,states>>8,0)),box.read_bytes().hex()
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ee480007

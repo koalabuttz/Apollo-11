@@ -1327,3 +1327,7 @@ Qualify both original VBTSTLTS and TSTLTS source on off scheduled and display-co
 ## Qualify original Comanche alarm callers and physical inline data reads
 
 Qualify actual ALARM VARALARM CURTAINS BORTENT source producer domains over every ordinary Q0100 through7775 all8 EB mappings post store scratch aliases and actual passive fixed data against128960 complete original native sanitizer states and64 C64 states holding producer exclusion across all real data page and native body loads. See `docs/COMANCHE_ALARM_IMAGE.md`.
+
+## Translate original ephemerides triple time addition arithmetic
+
+Qualify both original TAD and exact overflow call return arithmetic against131072 complete original strict native sanitizer states and72 C64 states plus13 full image rejection guards and null. Retain original scratch alias ordering actual Q3 debris original source maps and failed diagnostic guard evidence. Complete ephemerides programs remain open. See `docs/NATIVE-EPHEMERIS-ADD.md`.
