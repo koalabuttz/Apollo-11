@@ -24,6 +24,7 @@ import time
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 MISSING = re.compile(r"(?:No such file or directory|cannot open|not found)[^\n]*?(evidence/[A-Za-z0-9._/+-]+)"
                      r"|(evidence/[A-Za-z0-9._/+-]+)[^\n]*?(?:No such file or directory|not found)")
+BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*/build/")
 LOCK = threading.Lock()
 
 
@@ -64,6 +65,18 @@ def run(target, log_dir, make_args, attempts):
         log.write_text(proc.stdout)
         if proc.returncode == 0:
             return target, True, time.monotonic() - start, ''
+        if BUILD_OUTPUT.search(proc.stdout) and target.startswith('c64-') and 'producers' not in tried:
+            # Legacy C64 builds read reference streams that the module's own
+            # differential (or host test) target writes into build/.
+            tried.add('producers')
+            stem = target[len('c64-'):]
+            for producer in (f'differential-{stem}', f'test-{stem}'):
+                if subprocess.run(['make', '-q', 'SKIP_EVIDENCE_RESTORE=1', producer], cwd=ROOT,
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 2:
+                    print(f'  {target}: running {producer} for its build/ inputs', flush=True)
+                    run(producer, log_dir, make_args, attempts)
+                    break
+            continue
         wanted = {(a or b).rstrip("'.,:)") for a, b in MISSING.findall(proc.stdout)} - tried
         tried |= wanted
         with LOCK:

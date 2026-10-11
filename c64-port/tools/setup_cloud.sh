@@ -90,5 +90,9 @@ export MOS_CC="$PWD/deps/llvm-mos/bin/mos-c64-clang"
 export VICE="$(command -v x64sc)"
 export VICE_ROM_DIR="$PWD/deps/vice-data/C64"
 export VICE_DATA_DIR="$PWD/deps/vice-data"
+# Names the legacy tools/*.mk recipes use for the same things.
+export ROM_DIR="$PWD/deps/vice-data/C64"
+export C64_ROM_DIR="$PWD/deps/vice-data/C64"
+export C1541="$(command -v c1541)"
 EOF
 echo "READY: source deps/env.sh"
