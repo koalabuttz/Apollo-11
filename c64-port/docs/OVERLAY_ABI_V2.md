@@ -10,7 +10,10 @@ generator pass host checks, strict and under ASan/UBSan
 (`make -f tools/overlay_v2.mk overlay-v2-test`). The linker scripts, the
 service jump table, the REU hooks and the RAM-vector runtime configuration also
 pass a target proof on stock PAL ROMs in VICE 3.7.1 with an emulated REU
-(`make -f tools/overlay_v2.mk overlay-v2-target`, see "Verification").
+(`make -f tools/overlay_v2.mk overlay-v2-target`, see "Verification"). The
+CM service overlay proof has been rebuilt as ABI 2 modules and replays to the
+same final image as under ABI 1 (`make -f tools/overlay_v2.mk overlay-v2-cm`,
+see "Reference port"); lanes copy that build as their template.
 
 ## Why ABI 1 is not enough for the whole program
 
@@ -51,10 +54,13 @@ module's 7.8 KB.
    out, leaving RAM under both slots, and I/O stays visible. The resident owns
    the RAM vectors at `$FFFA..$FFFF`. KERNAL is banked in only for boot-time
    disk work.
-4. **Resident services through a jump table.** Shared arithmetic (and later the
-   interpreter's hot core) is linked once in the resident. Modules reach it
-   through 3-byte `JMP` entries at `$6F00`, using the normal C ABI. They stop
-   linking private copies of it.
+4. **Resident services through a jump table.** Large shared arithmetic (and
+   later the interpreter's hot core) is linked once in the resident. Modules
+   reach it through 3-byte `JMP` entries at `$6F00`, using the normal C ABI.
+   Only functions whose body is larger than a call to them are exported: the
+   word operations in `agc_word.c` stay linked into each module, because LTO
+   inlines them there and a call through the table costs more bytes than it
+   saves (measured in "Reference port").
 5. **Lane-owned 16-bit module identities.** High byte is the lane, low byte is
    the lane's own number. Lanes allocate without coordinating.
 6. **Continuations are explicit.** A module never calls another module. It
@@ -271,9 +277,11 @@ body.
 3. Return to the trampoline between AGC routines. Use `CALL`/`RET` only to split
    one routine, and store every address the original stores in erasable as its
    historical words.
-4. Import shared arithmetic from the service table; do not link
-   `agc_word.c`/`agc_multiword.c` into a module. New services are appended to
-   `docs/overlay-v2-services.json` (minor version bump) in a PR Lane A reviews.
+4. Import exported arithmetic (today `agc_multiply`, `agc_double_add`) from the
+   service table; do not link `agc_multiword.c` into a module. Link `agc_word.c`
+   privately. New services are appended to `docs/overlay-v2-services.json`
+   (minor version bump) in a PR Lane A reviews, and only for functions larger
+   than a call.
 5. Register each continuation the original can reach by historical address in
    the lane's resolver list for the packer.
 6. Report each module's loaded size and selector count in its evidence, so the
@@ -313,7 +321,7 @@ then runs in `$01=$35` with its own RAM IRQ/NMI vectors and CIA1 interrupts
 live, and does the following:
 
 - opens and boot-verifies the store from the REU
-- calls a resident service (`agc_add_word`) through the `$6F00` jump table from
+- calls a resident service (`agc_multiply`) through the `$6F00` jump table from
   a job module
 - `CALL`s from the job slot into a task module at `$E000` and `RET`s back
 - resolves a historical address to a 14 KB job module, which returns a kernel
@@ -325,10 +333,10 @@ on the target:
 
 | Measurement | Cycles | At PAL clock |
 |---|---:|---:|
-| Cold load and call, 14,225-byte job module | 23,558 | 23.9 ms |
-| Cached call of the same module | 2,190 | 2.2 ms |
-| Cold load and call, 181-byte task module | 9,555 | 9.7 ms |
-| Boot verification of a 3-module store | 7,980,407 | 8.1 s |
+| Cold load and call, 14,225-byte job module | 23,644 | 24.0 ms |
+| Cached call of the same module | 1,976 | 2.0 ms |
+| Cold load and call, 181-byte task module | 9,341 | 9.5 ms |
+| Boot verification of a 3-module store | 7,994,148 | 8.1 s |
 | Software-stack extent | 93 bytes | |
 
 The fixed cost of a cold load (about 7,000 cycles of directory and header work
@@ -337,10 +345,43 @@ about 250 cycles per byte plus a scan of the 4,096-entry index. A 0.8 MB store
 would take minutes to verify, so a table-driven CRC is the first optimisation
 to make before whole-program stores exist.
 
+### Reference port
+
+`tools/cm_service_overlay_v2_build.py` rebuilds the ABI 1 CM service overlay
+proof as ABI 2 modules without touching its sources. Each ABI 1 module body is
+wrapped by `platform/c64/overlay_v2_adapter.c`, which turns
+`apollo_overlay_main` into `apollo_ov2_main` returning `DONE`. The packer puts
+all six modules in a 128 KB REU image. `platform/c64/cm_service_overlay_v2_diagnostic.c`
+runs the same replay as the ABI 1 diagnostic, with modules from the store,
+`$01=$35`, RAM vectors and live CIA1 interrupts. It runs the replay once with
+interrupts enabled and once masked. Interrupt-level bodies (lane A modules
+below 4) run in the task context. `tools/cm_service_overlay_v2_vice_test.py`
+checks the result in VICE:
+
+- mailbox `a5 0000 3a 06`: no failures, 58 checkpoints, 6 replays
+- 59 module loads, 16,407 IRQs taken, software stack 821 bytes
+- the final 2,048-word canonical image is byte-identical to the ABI 1 run;
+  with `build/cm-service-loop-reference.snapshots` present it is also compared
+  with original case 320
+
+| Module | ABI 1 | Slot | ABI 2 bytes | ABI 1 bytes |
+|---|---:|---|---:|---:|
+| `$0101` | 1 | task | 3,240 | 3,015 |
+| `$0102` | 2 | task | 8,113 | 7,768 |
+| `$0103` | 3 | task | 5,603 | 5,353 |
+| `$0104` | 4 | job | 4,460 | 4,215 |
+| `$0F01` | 250 | job | 3,391 | 3,338 |
+| `$0F02` | 251 | job | 7,426 | 7,351 |
+
+ABI 2 modules are 1 to 8 percent larger. The 24-byte header and the adapter
+explain part of that; the rest is not yet accounted for. `$0102` is 73 bytes
+under the 8,186-byte task slot. With the eleven `agc_word.c` helpers exported
+as services it was 35 bytes over, because LTO could no longer inline them; that
+is why rule 4 keeps them private. Lane A should plan task bodies against about
+8 KB and split larger interrupt work with `CALL`/`RET`.
+
 Not yet done, in order:
 
-1. Port one existing ABI 1 proof (the CM service overlay) to ABI 2, as the
-   reference module set the other lanes copy.
-2. Measure true-drive-emulation serial load speed, to replace the disk estimate.
-3. Table-driven CRC for boot verification, and a disk-to-REU boot loader for
+1. Measure true-drive-emulation serial load speed, to replace the disk estimate.
+2. Table-driven CRC for boot verification, and a disk-to-REU boot loader for
    real hardware.

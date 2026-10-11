@@ -28,3 +28,8 @@ overlay-v2-plan:
 overlay-v2-target:
 	python3 tools/overlay_v2_target_build.py --cc $(MOS_CC)
 	python3 tools/overlay_v2_vice_test.py --vice $(VICE) --rom-dir $(VICE_ROM_DIR) --data-dir $(VICE_DATA_DIR)
+# Reference port: the CM service overlay proof rebuilt as ABI 2 modules.
+.PHONY: overlay-v2-cm
+overlay-v2-cm:
+	python3 tools/cm_service_overlay_v2_build.py --cc $(MOS_CC)
+	python3 tools/cm_service_overlay_v2_vice_test.py --vice $(VICE) --rom-dir $(VICE_ROM_DIR) --data-dir $(VICE_DATA_DIR)

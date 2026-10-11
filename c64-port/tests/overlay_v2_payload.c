@@ -2,7 +2,7 @@
  * Test-only ABI 2 module bodies (lane $0F); none translates an AGC routine.
  * OV2_MODULE selects 1 (job), 2 (large job) or 3 (task). */
 #include "overlay_v2.h"
-#include "agc_word.h"
+#include "agc_multiword.h"
 #ifndef OV2_MODULE
 #error OV2_MODULE required
 #endif
@@ -25,8 +25,11 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector) {
     if(runtime_config()!=5u || transient!=0) { f->value=0xdead; return APOLLO_OV2_DONE; }
 #if OV2_MODULE==1
     switch(selector) {
-    case 0:   /* resident service through the $6F00 jump table */
-        s->words[0300]=agc_add_word(s->words[0300],1u); f->value=s->words[0300];
+    case 0: { /* resident service through the $6F00 jump table: MP by one */
+        agc_register_pair p=agc_multiply(s->words[0300],1u);
+        if(p.a!=0u) { f->value=0xdead; return APOLLO_OV2_DONE; }
+        s->words[0300]=(uint16_t)(p.l+1u); f->value=s->words[0300];
+    }
         return APOLLO_OV2_DONE;
     case 1:   /* split routine: call into the task slot, resume at selector 2 */
         f->next.module=APOLLO_OV2_ID(APOLLO_LANE_PROOF,3); f->next.selector=0;

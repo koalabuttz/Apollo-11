@@ -32,7 +32,7 @@ def main():
             f'-Wl,--defsym=__ov2_slot={slot},--defsym=__ov2_mission=1,'
             f'--defsym=__ov2_id={0x0F00 | number},--defsym=__ov2_services={SERVICES},'
             f'--defsym=__ov2_selectors={selectors},-Map,{OUT}/m{number}.map',
-            'tests/overlay_v2_payload.c', 'platform/c64/overlay_v2_entry.S', '-lcrt',
+            'tests/overlay_v2_payload.c', 'src/agc_word.c', 'platform/c64/overlay_v2_entry.S', '-lcrt',
             '-o', str(prg)], cwd=ROOT, check=True)
         prgs.append(str(prg))
     subprocess.run(common + ['-T', 'platform/c64/overlay_v2_resident.ld', f'-Wl,-Map,{OUT}/resident.map',
