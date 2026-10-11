@@ -1007,3 +1007,7 @@ A separate supplementary corpus independently inspects all32,768 high-word value
 ## Translate original Luminary and Comanche ordinary display blanking
 
 Actual BLANKSUB caller setup, source selected buffer and unchanged BLNKSUB1 bank return match8,192 complete source/full-sanitizer states and64 actual C64 checkpoints. The native return preserves actual busy Q and available Q+1 selection without an extra Executive poll. See `docs/DSKY-BLANKSUB.md`.
+
+## Translate original Luminary and Comanche ENTER pass selection
+
+Actual CHARIN34 and ENTER through pass selection, source FLASHOFF and physical REQRET return match8,192 complete original/full-sanitizer states and64 actual C64 checkpoints. Signed-zero request/count contexts and the actual MMCHANG request-count exception are preserved; subsequent noun and verb bodies remain separate. See `docs/DSKY-ENTER-PASS.md`.

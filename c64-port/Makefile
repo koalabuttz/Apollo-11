@@ -687,3 +687,5 @@ include tools/dsky_pinbranch.mk
 include tools/inverse_trig_sweep_port.mk
 
 include tools/dsky_blanksub.mk
+
+include tools/dsky_enter.mk
