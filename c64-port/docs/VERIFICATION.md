@@ -1384,3 +1384,7 @@ All69 original source words and18 fixed constants are mapped and binary-checked.
 ## Complete original Luminary RCS failure monitor source
 
 Independent arithmetic/control review, exact original69-word mapping, complete source/sanitizer comparisons and actual C64 execution certify the containing RCS failure monitor file within its canonical source entry, hardware channel32 and external RESUME/BAILOUT contracts. The inventory has36 complete files (30 native/data/declaration and six comment-only files), with139 source files and both integrated applications still requiring complete acceptance. See `docs/LUMINARY-RCS-MONITOR.md`.
+
+## Translate original shared verb noun display admission source
+
+Both original NVSUB/NVMONOPT and NVSUB1/2 selection bodies match8192 complete original/native/full-sanitizer states,80 unchanged invalid-input guards and64 actual C64 states. Source-selected callee and blocked caller boundaries remain explicit; formatter and selected callee bodies have separate qualifications. See `docs/DSKY-NV-ADMISSION.md`.

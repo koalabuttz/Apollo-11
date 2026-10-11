@@ -1,0 +1,13 @@
+# Original LM/CM NVSUB admission
+
+`dsky_nv_admit` translates the actual Luminary099 and Comanche055 fixed-fixed `NVSUB`/`NVMONOPT` and bank-41 `NVSUB1`/`NVSUB2` bodies. It reads and writes the sole canonical 2,048-word image, with SUPERBNK and interrupt enable supplied explicitly in `p66_bias_io`. Callers exclude concurrent producers. This MIT integer implementation has no instruction decoder, emulator, floating point, or heap.
+
+The return route identifies the actual source continuation: blocked caller return, verb formatter entry, noun formatter entry, combined verb/noun formatter entry, BLANKDSP, or GODSPALM. Formatter, blank, alarm, and later NVSUBEND execution remain separate services. The LM and CM saved NVSUBEND addresses differ and are retained exactly.
+
+Admission accepts ordinary fixed caller Q 02000..07777 and DSPLOCK 0..7. Available requests accept packed seven-bit noun/verb fields, either signed zero, and the source blank requests -1..-4. Blocked requests accept any sign-agreed accumulator. Internal entry NVSUB1 accepts those same available requests; NVSUB2 accepts generated seven-bit noun and verb words. Coherent banks, REGZERO zero, ordinary scratch/flag words and valid explicit SUPER/IRQ are required. Unsupported contexts preserve the image, IO and output route. No scheduler or interrupt request is polled.
+
+The original assembly comparison covers 8,192 complete states, each containing every erasable word, SUPERBNK, interrupt enable and the selected continuation route. It spans both missions, all four entries, all eight EBs, source SUPER settings, both interrupt states, all seven-bit noun and verb values, both signed zeros, blank requests, keyboard/monitor blocking and raw L overflow patterns. Strict host and full ASAN/UBSAN streams agree byte for byte with original source SHA256 `6f5e35295a2e05aaf29058e032e0db5830b64f5b77e2e117a9565f5e899b0eee`.
+
+The frozen checker compares 64 complete original states and 80 unchanged invalid-context guards. The same 64 states pass on PAL C64 in VICE: mailbox `a500004000`, PRG 6,078 bytes, hardware stack 14 bytes including 14 ROM bytes, software stack 18 bytes, and no additional zero-page allocation. This is a standalone routine proof, not a complete Pinball/display application certificate.
+
+Build and host checks use `tools/dsky_nv_admission.mk`; the complete differential and sanitizer scripts retain compressed source streams. `evidence/dsky-nv-admission-proof.json` records exact source, dependency, original-fixture and target artifact identities. The GPL original-engine runner is host-only. Both selected NVSUB source bodies are asserted identical to the unchanged originals; pre-existing fixture repairs outside those bodies remain explicitly checked by the runner.

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete dsky_nv_admission group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 6078
+dsky_nv_admission-hardware-stack.bin: measured stack extent 14 bytes
+dsky_nv_admission-software-stack.bin: measured stack extent 18 bytes
