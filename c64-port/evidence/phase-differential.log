@@ -1,0 +1,5 @@
+PASS: 49,152 checkpoints; every raw phase word with groups 1..6 at PHASCHNG and 2PHSCHNG
+All 56 modeled words, exact final A/L/Q/BBANK and interrupt enable agree at original RELINT/DTCB return
+Stable counters; no restart execution or display service; 2PHSCHNG first word Type A
+Original source SHA256: 2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293
+Snapshot SHA256: db5766d2d5738ac4c0110f9baa0c00283fee31e844c8ac7876da278e17467dab

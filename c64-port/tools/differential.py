@@ -142,3 +142,5 @@ subprocess.run([sys.executable,'tools/gravity_differential.py',str(reference)],c
 subprocess.run([sys.executable,'tools/vector_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/executive_service_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/phase_differential.py',str(reference)],cwd=ROOT,check=True)

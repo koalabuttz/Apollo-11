@@ -1,0 +1,4 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/phase.c tests/phase_cases.c tests/phase_check.c tests/test_phase.c -o build/test-phase
+./build/test-phase
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/phase.map src/phase.c tests/phase_cases.c tests/phase_check.c platform/c64/phase_diagnostic.c -o build/phase.prg

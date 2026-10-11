@@ -191,3 +191,7 @@ Staged VAC admission and interpretive context exchange match 768 complete
 original-assembly checkpoints. Host/sanitizer tests and all 768 C64 state
 fingerprints pass. Native mixed-context execution is a separate integration
 stage. See [EXECUTIVE_SERVICES.md](EXECUTIVE_SERVICES.md).
+
+## Translate native single and double phase-table changes
+
+All 49,152 complete original-assembly states match; 128 host/sanitizer/C64 states pass. See [PHASE.md](PHASE.md).

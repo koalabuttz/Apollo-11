@@ -281,3 +281,5 @@ build/gravity.prg: $(GRAVITY_CORE) $(GRAVITY_TEST) platform/c64/gravity_diagnost
 include tools/vector.mk
 
 include tools/executive_services.mk
+
+include tools/phase.mk
