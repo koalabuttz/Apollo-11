@@ -674,3 +674,5 @@ include tools/cm_admission_complete.mk
 all: build/cm-admission-complete-native
 
 include tools/cm_rcs_matrix_port.mk
+
+include tools/dsky_blank.mk

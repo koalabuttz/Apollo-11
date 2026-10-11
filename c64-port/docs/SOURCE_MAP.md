@@ -875,3 +875,7 @@ All33 emitted words of the RCS matrix update file now map to reviewed native gat
 ## Complete original Comanche RCS matrix-update source
 
 Independent arithmetic/control review, exact original33-word mapping, complete source/sanitizer comparisons and actual C64 execution certify the containing RCS matrix-update file within its canonical source entry and external END contracts. The inventory has31 complete files (25 native/data/declaration and six comment-only files), with144 source files and both integrated applications still requiring complete acceptance. See `docs/COMANCHE-RCS-MATRIX.md`.
+
+## Translate original Luminary and Comanche display blanking and banked return
+
+Actual BLNKSUB1 and SUPDXCHZ+1 return phases match8,192 complete original states under strict and full sanitizer comparison, including both zero forms, opaque BUF inputs, all erase banks and supported saved bank tuples. All64 frozen complete C64 states pass. Normal BLANKSUB entry and PINBRNCH/ENTER continuations remain active work. See `docs/DSKY-BLANK-RETURN.md`.
