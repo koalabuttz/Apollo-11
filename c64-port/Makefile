@@ -868,3 +868,5 @@ sanitize: sanitize-sband-flow
 include tools/lm_radar_source_leadin_integration.mk
 
 include tools/dsky_mode_admit.mk
+
+include tools/dsky_lamp_release.mk

@@ -1,0 +1,2 @@
+PASS: complete ASan/UBSan stream equals original byte for byte
+SHA256 787eaf80de5967dcf41cbd0935a7f3e3ea972df95b8aa97041ca037fca6dcb4e

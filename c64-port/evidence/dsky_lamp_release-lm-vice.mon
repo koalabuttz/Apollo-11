@@ -1,0 +1,12 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm.prg" 0
+watch store 5caa
+ignore 1 1
+g 080d
+m 5caa 5cae
+bsave "/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-mailbox.bin" 0 5caa 5cae
+bsave "/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-difference.bin" 0 3ca2 3ca9
+bsave "/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-software-stack.bin" 0 c100 cfff
+quit

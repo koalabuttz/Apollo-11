@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm.prg from 0801 to 3CA1 (34A1 bytes)
+WATCH: 1  C:$5caa  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5caa)   64/$040,  35/$23
+.C:2939  8E AA 5C    STX $5CAA      - A:0D X:A5 Y:00 SP:f1 N.-....C  156013739
+>C:5caa  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-mailbox.bin' from $5caa to $5cae
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-difference.bin' from $3ca2 to $3ca9
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_lamp_release-lm-vice-software-stack.bin' from $c100 to $cfff
