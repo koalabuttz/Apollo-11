@@ -717,3 +717,5 @@ include tools/cm_clock_normal_display.mk
 include tools/interpreted_square_port.mk
 
 include tools/dsky_display_release.mk
+
+include tools/dsky_extended_dispatch.mk

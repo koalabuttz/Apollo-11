@@ -1,0 +1,854 @@
+{
+  "lm": {
+    "source_sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
+    "representation": "explicit compiled native source branches, no source opcode storage or runtime decoder",
+    "branches": [
+      {
+        "verb": 40,
+        "source_pc": "2002",
+        "mnemonic": "TC",
+        "source_label": "VBZERO",
+        "target_pc": "2130"
+      },
+      {
+        "verb": 41,
+        "source_pc": "2003",
+        "mnemonic": "TC",
+        "source_label": "VBCOARK",
+        "target_pc": "2171"
+      },
+      {
+        "verb": 42,
+        "source_pc": "2004",
+        "mnemonic": "TC",
+        "source_label": "IMUFINEK",
+        "target_pc": "2330"
+      },
+      {
+        "verb": 43,
+        "source_pc": "2005",
+        "mnemonic": "TC",
+        "source_label": "IMUATTCK",
+        "target_pc": "2707"
+      },
+      {
+        "verb": 44,
+        "source_pc": "2006",
+        "mnemonic": "TC",
+        "source_label": "RRDESEND",
+        "target_pc": "2302"
+      },
+      {
+        "verb": 45,
+        "source_pc": "2007",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 46,
+        "source_pc": "2010",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 47,
+        "source_pc": "2011",
+        "mnemonic": "TC",
+        "source_label": "V47TXACT",
+        "target_pc": "2367"
+      },
+      {
+        "verb": 48,
+        "source_pc": "2012",
+        "mnemonic": "TC",
+        "source_label": "DAPDISP",
+        "target_pc": "3135"
+      },
+      {
+        "verb": 49,
+        "source_pc": "2013",
+        "mnemonic": "TCF",
+        "source_label": "CREWMANU",
+        "target_pc": "3015"
+      },
+      {
+        "verb": 50,
+        "source_pc": "2014",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2361"
+      },
+      {
+        "verb": 51,
+        "source_pc": "2015",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 52,
+        "source_pc": "2016",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2361"
+      },
+      {
+        "verb": 53,
+        "source_pc": "2017",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2361"
+      },
+      {
+        "verb": 54,
+        "source_pc": "2020",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2361"
+      },
+      {
+        "verb": 55,
+        "source_pc": "2021",
+        "mnemonic": "TC",
+        "source_label": "ALINTIME",
+        "target_pc": "2401"
+      },
+      {
+        "verb": 56,
+        "source_pc": "2022",
+        "mnemonic": "TC",
+        "source_label": "TRMTRACK",
+        "target_pc": "3024"
+      },
+      {
+        "verb": 57,
+        "source_pc": "2023",
+        "mnemonic": "TC",
+        "source_label": "LRON",
+        "target_pc": "2322"
+      },
+      {
+        "verb": 58,
+        "source_pc": "2024",
+        "mnemonic": "TC",
+        "source_label": "LROFF",
+        "target_pc": "2325"
+      },
+      {
+        "verb": 59,
+        "source_pc": "2025",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 60,
+        "source_pc": "2026",
+        "mnemonic": "TC",
+        "source_label": "LRPOS2K",
+        "target_pc": "2151"
+      },
+      {
+        "verb": 61,
+        "source_pc": "2027",
+        "mnemonic": "TC",
+        "source_label": "DAPATTER",
+        "target_pc": "2163"
+      },
+      {
+        "verb": 62,
+        "source_pc": "2030",
+        "mnemonic": "TC",
+        "source_label": "TOTATTER",
+        "target_pc": "2166"
+      },
+      {
+        "verb": 63,
+        "source_pc": "2031",
+        "mnemonic": "TC",
+        "source_label": "R04",
+        "target_pc": "2414"
+      },
+      {
+        "verb": 64,
+        "source_pc": "2032",
+        "mnemonic": "TC",
+        "source_label": "VB64",
+        "target_pc": "2700"
+      },
+      {
+        "verb": 65,
+        "source_pc": "2033",
+        "mnemonic": "TC",
+        "source_label": "SNUFFOUT",
+        "target_pc": "3221"
+      },
+      {
+        "verb": 66,
+        "source_pc": "2034",
+        "mnemonic": "TC",
+        "source_label": "ATTACHED",
+        "target_pc": "3142"
+      },
+      {
+        "verb": 67,
+        "source_pc": "2035",
+        "mnemonic": "TC",
+        "source_label": "V67",
+        "target_pc": "3213"
+      },
+      {
+        "verb": 68,
+        "source_pc": "2036",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 69,
+        "source_pc": "2037",
+        "mnemonic": "TC",
+        "source_label": "VERB69",
+        "target_pc": "2037"
+      },
+      {
+        "verb": 70,
+        "source_pc": "2040",
+        "mnemonic": "TC",
+        "source_label": "V70UPDAT",
+        "target_pc": "3724"
+      },
+      {
+        "verb": 71,
+        "source_pc": "2041",
+        "mnemonic": "TC",
+        "source_label": "V71UPDAT",
+        "target_pc": "3726"
+      },
+      {
+        "verb": 72,
+        "source_pc": "2042",
+        "mnemonic": "TC",
+        "source_label": "V72UPDAT",
+        "target_pc": "3730"
+      },
+      {
+        "verb": 73,
+        "source_pc": "2043",
+        "mnemonic": "TC",
+        "source_label": "V73UPDAT",
+        "target_pc": "3732"
+      },
+      {
+        "verb": 74,
+        "source_pc": "2044",
+        "mnemonic": "TC",
+        "source_label": "DNEDUMP",
+        "target_pc": "3045"
+      },
+      {
+        "verb": 75,
+        "source_pc": "2045",
+        "mnemonic": "TC",
+        "source_label": "OUTSNUFF",
+        "target_pc": "3224"
+      },
+      {
+        "verb": 76,
+        "source_pc": "2046",
+        "mnemonic": "TC",
+        "source_label": "MINIMP",
+        "target_pc": "3001"
+      },
+      {
+        "verb": 77,
+        "source_pc": "2047",
+        "mnemonic": "TC",
+        "source_label": "NOMINIMP",
+        "target_pc": "3006"
+      },
+      {
+        "verb": 78,
+        "source_pc": "2050",
+        "mnemonic": "TC",
+        "source_label": "R77",
+        "target_pc": "2404"
+      },
+      {
+        "verb": 79,
+        "source_pc": "2051",
+        "mnemonic": "TC",
+        "source_label": "R77END",
+        "target_pc": "2617"
+      },
+      {
+        "verb": 80,
+        "source_pc": "2052",
+        "mnemonic": "TC",
+        "source_label": "LEMVEC",
+        "target_pc": "3051"
+      },
+      {
+        "verb": 81,
+        "source_pc": "2053",
+        "mnemonic": "TC",
+        "source_label": "CSMVEC",
+        "target_pc": "3054"
+      },
+      {
+        "verb": 82,
+        "source_pc": "2054",
+        "mnemonic": "TC",
+        "source_label": "V82PERF",
+        "target_pc": "2746"
+      },
+      {
+        "verb": 83,
+        "source_pc": "2055",
+        "mnemonic": "TC",
+        "source_label": "V83PERF",
+        "target_pc": "2756"
+      },
+      {
+        "verb": 84,
+        "source_pc": "2056",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 85,
+        "source_pc": "2057",
+        "mnemonic": "TC",
+        "source_label": "VERB85",
+        "target_pc": "3227"
+      },
+      {
+        "verb": 86,
+        "source_pc": "2060",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 87,
+        "source_pc": "2061",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 88,
+        "source_pc": "2062",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 89,
+        "source_pc": "2063",
+        "mnemonic": "TC",
+        "source_label": "V89PERF",
+        "target_pc": "2764"
+      },
+      {
+        "verb": 90,
+        "source_pc": "2064",
+        "mnemonic": "TC",
+        "source_label": "V90PERF",
+        "target_pc": "2773"
+      },
+      {
+        "verb": 91,
+        "source_pc": "2065",
+        "mnemonic": "TC",
+        "source_label": "GOSHOSUM",
+        "target_pc": "3100"
+      },
+      {
+        "verb": 92,
+        "source_pc": "2066",
+        "mnemonic": "TC",
+        "source_label": "SYSTEST",
+        "target_pc": "3064"
+      },
+      {
+        "verb": 93,
+        "source_pc": "2067",
+        "mnemonic": "TC",
+        "source_label": "WMATRXNG",
+        "target_pc": "3073"
+      },
+      {
+        "verb": 94,
+        "source_pc": "2070",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 95,
+        "source_pc": "2071",
+        "mnemonic": "TC",
+        "source_label": "UPDATOFF",
+        "target_pc": "3061"
+      },
+      {
+        "verb": 96,
+        "source_pc": "2072",
+        "mnemonic": "TC",
+        "source_label": "VERB96",
+        "target_pc": "3206"
+      },
+      {
+        "verb": 97,
+        "source_pc": "2073",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2361"
+      },
+      {
+        "verb": 98,
+        "source_pc": "2074",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 99,
+        "source_pc": "2075",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2361"
+      }
+    ]
+  },
+  "cm": {
+    "source_sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
+    "representation": "explicit compiled native source branches, no source opcode storage or runtime decoder",
+    "branches": [
+      {
+        "verb": 40,
+        "source_pc": "2002",
+        "mnemonic": "TC",
+        "source_label": "VBZERO",
+        "target_pc": "2124"
+      },
+      {
+        "verb": 41,
+        "source_pc": "2003",
+        "mnemonic": "TC",
+        "source_label": "VBCOARK",
+        "target_pc": "2150"
+      },
+      {
+        "verb": 42,
+        "source_pc": "2004",
+        "mnemonic": "TC",
+        "source_label": "IMUFINEK",
+        "target_pc": "2240"
+      },
+      {
+        "verb": 43,
+        "source_pc": "2005",
+        "mnemonic": "TC",
+        "source_label": "IMUATTCK",
+        "target_pc": "2420"
+      },
+      {
+        "verb": 44,
+        "source_pc": "2006",
+        "mnemonic": "TC",
+        "source_label": "SETSURF",
+        "target_pc": "3207"
+      },
+      {
+        "verb": 45,
+        "source_pc": "2007",
+        "mnemonic": "TC",
+        "source_label": "RESTSRF",
+        "target_pc": "3212"
+      },
+      {
+        "verb": 46,
+        "source_pc": "2010",
+        "mnemonic": "TC",
+        "source_label": "STABLISH",
+        "target_pc": "2524"
+      },
+      {
+        "verb": 47,
+        "source_pc": "2011",
+        "mnemonic": "TC",
+        "source_label": "LMTOCMSV",
+        "target_pc": "3102"
+      },
+      {
+        "verb": 48,
+        "source_pc": "2012",
+        "mnemonic": "TC",
+        "source_label": "DAPDISP",
+        "target_pc": "2552"
+      },
+      {
+        "verb": 49,
+        "source_pc": "2013",
+        "mnemonic": "TCF",
+        "source_label": "CREWMANU",
+        "target_pc": "2543"
+      },
+      {
+        "verb": 50,
+        "source_pc": "2014",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2275"
+      },
+      {
+        "verb": 51,
+        "source_pc": "2015",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2275"
+      },
+      {
+        "verb": 52,
+        "source_pc": "2016",
+        "mnemonic": "TC",
+        "source_label": "V52",
+        "target_pc": "3157"
+      },
+      {
+        "verb": 53,
+        "source_pc": "2017",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2275"
+      },
+      {
+        "verb": 54,
+        "source_pc": "2020",
+        "mnemonic": "TC",
+        "source_label": "GOTOR23",
+        "target_pc": "2612"
+      },
+      {
+        "verb": 55,
+        "source_pc": "2021",
+        "mnemonic": "TC",
+        "source_label": "ALINTIME",
+        "target_pc": "2326"
+      },
+      {
+        "verb": 56,
+        "source_pc": "2022",
+        "mnemonic": "TC",
+        "source_label": "TRACKTRM",
+        "target_pc": "2653"
+      },
+      {
+        "verb": 57,
+        "source_pc": "2023",
+        "mnemonic": "TC",
+        "source_label": "GOTOR21",
+        "target_pc": "2607"
+      },
+      {
+        "verb": 58,
+        "source_pc": "2024",
+        "mnemonic": "TC",
+        "source_label": "ENATMA",
+        "target_pc": "2510"
+      },
+      {
+        "verb": 59,
+        "source_pc": "2025",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2275"
+      },
+      {
+        "verb": 60,
+        "source_pc": "2026",
+        "mnemonic": "TC",
+        "source_label": "V60",
+        "target_pc": "2303"
+      },
+      {
+        "verb": 61,
+        "source_pc": "2027",
+        "mnemonic": "TC",
+        "source_label": "V61",
+        "target_pc": "2311"
+      },
+      {
+        "verb": 62,
+        "source_pc": "2030",
+        "mnemonic": "TC",
+        "source_label": "V62",
+        "target_pc": "2314"
+      },
+      {
+        "verb": 63,
+        "source_pc": "2031",
+        "mnemonic": "TC",
+        "source_label": "V63",
+        "target_pc": "2321"
+      },
+      {
+        "verb": 64,
+        "source_pc": "2032",
+        "mnemonic": "TC",
+        "source_label": "VB64",
+        "target_pc": "2500"
+      },
+      {
+        "verb": 65,
+        "source_pc": "2033",
+        "mnemonic": "TC",
+        "source_label": "CKOPTVB",
+        "target_pc": "2375"
+      },
+      {
+        "verb": 66,
+        "source_pc": "2034",
+        "mnemonic": "TC",
+        "source_label": "ATTACHED",
+        "target_pc": "3034"
+      },
+      {
+        "verb": 67,
+        "source_pc": "2035",
+        "mnemonic": "TC",
+        "source_label": "V67",
+        "target_pc": "3201"
+      },
+      {
+        "verb": 68,
+        "source_pc": "2036",
+        "mnemonic": "TC",
+        "source_label": "STROKON",
+        "target_pc": "2513"
+      },
+      {
+        "verb": 69,
+        "source_pc": "2037",
+        "mnemonic": "TC",
+        "source_label": "VERB69",
+        "target_pc": "2037"
+      },
+      {
+        "verb": 70,
+        "source_pc": "2040",
+        "mnemonic": "TC",
+        "source_label": "V70UPDAT",
+        "target_pc": "3726"
+      },
+      {
+        "verb": 71,
+        "source_pc": "2041",
+        "mnemonic": "TC",
+        "source_label": "V71UPDAT",
+        "target_pc": "3730"
+      },
+      {
+        "verb": 72,
+        "source_pc": "2042",
+        "mnemonic": "TC",
+        "source_label": "V72UPDAT",
+        "target_pc": "3732"
+      },
+      {
+        "verb": 73,
+        "source_pc": "2043",
+        "mnemonic": "TC",
+        "source_label": "V73UPDAT",
+        "target_pc": "3734"
+      },
+      {
+        "verb": 74,
+        "source_pc": "2044",
+        "mnemonic": "TC",
+        "source_label": "DNEDUMP",
+        "target_pc": "2721"
+      },
+      {
+        "verb": 75,
+        "source_pc": "2045",
+        "mnemonic": "TC",
+        "source_label": "LFTFLGON",
+        "target_pc": "2725"
+      },
+      {
+        "verb": 76,
+        "source_pc": "2046",
+        "mnemonic": "TC",
+        "source_label": "SETPRFLG",
+        "target_pc": "3015"
+      },
+      {
+        "verb": 77,
+        "source_pc": "2047",
+        "mnemonic": "TC",
+        "source_label": "RESETPRF",
+        "target_pc": "3020"
+      },
+      {
+        "verb": 78,
+        "source_pc": "2050",
+        "mnemonic": "TC",
+        "source_label": "CHAZFOGC",
+        "target_pc": "2406"
+      },
+      {
+        "verb": 79,
+        "source_pc": "2051",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 80,
+        "source_pc": "2052",
+        "mnemonic": "TC",
+        "source_label": "LEMVEC",
+        "target_pc": "2713"
+      },
+      {
+        "verb": 81,
+        "source_pc": "2053",
+        "mnemonic": "TC",
+        "source_label": "CSMVEC",
+        "target_pc": "2716"
+      },
+      {
+        "verb": 82,
+        "source_pc": "2054",
+        "mnemonic": "TC",
+        "source_label": "V82PERF",
+        "target_pc": "2562"
+      },
+      {
+        "verb": 83,
+        "source_pc": "2055",
+        "mnemonic": "TC",
+        "source_label": "V83PERF",
+        "target_pc": "2567"
+      },
+      {
+        "verb": 84,
+        "source_pc": "2056",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 85,
+        "source_pc": "2057",
+        "mnemonic": "TC",
+        "source_label": "V85PERF",
+        "target_pc": "2601"
+      },
+      {
+        "verb": 86,
+        "source_pc": "2060",
+        "mnemonic": "TC",
+        "source_label": "V86PERF",
+        "target_pc": "2646"
+      },
+      {
+        "verb": 87,
+        "source_pc": "2061",
+        "mnemonic": "TC",
+        "source_label": "SETVHFLG",
+        "target_pc": "3023"
+      },
+      {
+        "verb": 88,
+        "source_pc": "2062",
+        "mnemonic": "TC",
+        "source_label": "RESETVHF",
+        "target_pc": "3027"
+      },
+      {
+        "verb": 89,
+        "source_pc": "2063",
+        "mnemonic": "TC",
+        "source_label": "V89PERF",
+        "target_pc": "2745"
+      },
+      {
+        "verb": 90,
+        "source_pc": "2064",
+        "mnemonic": "TC",
+        "source_label": "V90PERF",
+        "target_pc": "3142"
+      },
+      {
+        "verb": 91,
+        "source_pc": "2065",
+        "mnemonic": "TC",
+        "source_label": "GOSHOSUM",
+        "target_pc": "2762"
+      },
+      {
+        "verb": 92,
+        "source_pc": "2066",
+        "mnemonic": "TC",
+        "source_label": "SYSTEST",
+        "target_pc": "2360"
+      },
+      {
+        "verb": 93,
+        "source_pc": "2067",
+        "mnemonic": "TC",
+        "source_label": "WMATRXNG",
+        "target_pc": "2755"
+      },
+      {
+        "verb": 94,
+        "source_pc": "2070",
+        "mnemonic": "TC",
+        "source_label": "VERB94",
+        "target_pc": "3126"
+      },
+      {
+        "verb": 95,
+        "source_pc": "2071",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 96,
+        "source_pc": "2072",
+        "mnemonic": "TCF",
+        "source_label": "VERB96",
+        "target_pc": "3150"
+      },
+      {
+        "verb": 97,
+        "source_pc": "2073",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2275"
+      },
+      {
+        "verb": 98,
+        "source_pc": "2074",
+        "mnemonic": "TC",
+        "source_label": "ALM/END",
+        "target_pc": "2120"
+      },
+      {
+        "verb": 99,
+        "source_pc": "2075",
+        "mnemonic": "TC",
+        "source_label": "GOLOADLV",
+        "target_pc": "2275"
+      }
+    ]
+  }
+}

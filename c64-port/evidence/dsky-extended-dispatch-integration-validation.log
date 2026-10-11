@@ -1,0 +1,6 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_extended_dispatch.c tests/p66_bias_cases.c tests/dsky_extended_dispatch_cases.c tests/dsky_extended_dispatch_check.c tests/test_dsky_extended_dispatch.c -o build/test-dsky-extended-dispatch
+build/test-dsky-extended-dispatch
+LM+CM extended verb fanout:64 full source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_extended_dispatch.c tests/p66_bias_cases.c tests/dsky_extended_dispatch_cases.c tests/dsky_extended_dispatch_check.c tests/test_dsky_extended_dispatch.c -o build/test-dsky-extended-dispatch-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-extended-dispatch-sanitize
+LM+CM extended verb fanout:64 full source states,0 failures
