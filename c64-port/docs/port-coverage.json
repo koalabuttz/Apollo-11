@@ -188,8 +188,18 @@
       "sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
       "bytes": 11541,
       "lines": 496,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_executive.c",
+            "include/cm_executive.h"
+          ],
+          "scope": "FINDVAC/NOVAC admission and ENDOFJOB release through CHANJOB or idle selection; remaining source paths untranslated",
+          "verification": "docs/COMANCHE_EXECUTIVE.md",
+          "oracle_qualification": "Generated five-line indentation normalization; historical original unchanged; corrected complete rope identity verified."
+        }
+      ]
     },
     {
       "path": "Comanche055/EXTENDED_VERBS.agc",

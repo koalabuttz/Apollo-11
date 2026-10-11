@@ -65,6 +65,8 @@ def evidence_ok(records, required, errors, label):
 
 def audit(manifest, require_complete):
     errors = []
+    if manifest.get("schema_version") != 1:
+        errors.append("Unsupported inventory schema version")
     original = baseline()
     files = manifest.get('files', [])
     entries = {entry['path']: entry for entry in files}
