@@ -1,0 +1,29 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tools/rtb_agreement_snapshot.c src/rtb_agreement.c src/agc_word.c src/agc_multiword.c tests/rtb_agreement_cases.c -o build/rtb-agreement-integrated-stream
+python3 tools/rtb_agreement_port_host.py --cc "cc"
+32 complete original RTB angle states mission0 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 42cd5b7b6469777bf87d316b0b18a03d0e6a3913f6d737fee4d4ae1ea79efedf
+32 complete original RTB angle states mission0 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 76c0a503ea1ce1f585dc06877cee9859abbdd5b9c319dc145151a526247bddf2
+32 complete original RTB angle states mission1 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 0a5f3798959d8674414d819db4c3db572198049003ebdc5cf1bbefa4200cd375
+32 complete original RTB angle states mission1 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 ec47b91e2fbcbceeb29d99323f29df1a32faf6170d615b42a739b13738d2b2b8
+32 complete original RTB angle states mission1 entry2: PASS
+PASS all retained source-state bytes: 268959744 SHA256 215b80d3536d0c40b549baa9336abd6c31b0d0ad5524130c3ef452b11a301551
+32 complete original RTB angle states mission1 entry3: PASS
+PASS all retained source-state bytes: 268959744 SHA256 78cb29b823f22e35d04204662fd71e77b926f667fd795083ed25f7888c626674
+PASS all393216 complete RTB source states and192 frozen states
+python3 tools/rtb_agreement_port_host.py --cc "cc" --sanitize
+32 complete original RTB angle states mission0 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 42cd5b7b6469777bf87d316b0b18a03d0e6a3913f6d737fee4d4ae1ea79efedf
+32 complete original RTB angle states mission0 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 76c0a503ea1ce1f585dc06877cee9859abbdd5b9c319dc145151a526247bddf2
+32 complete original RTB angle states mission1 entry0: PASS
+PASS all retained source-state bytes: 268959744 SHA256 0a5f3798959d8674414d819db4c3db572198049003ebdc5cf1bbefa4200cd375
+32 complete original RTB angle states mission1 entry1: PASS
+PASS all retained source-state bytes: 268959744 SHA256 ec47b91e2fbcbceeb29d99323f29df1a32faf6170d615b42a739b13738d2b2b8
+32 complete original RTB angle states mission1 entry2: PASS
+PASS all retained source-state bytes: 268959744 SHA256 215b80d3536d0c40b549baa9336abd6c31b0d0ad5524130c3ef452b11a301551
+32 complete original RTB angle states mission1 entry3: PASS
+PASS all retained source-state bytes: 268959744 SHA256 78cb29b823f22e35d04204662fd71e77b926f667fd795083ed25f7888c626674
+PASS all393216 complete RTB source states and192 frozen states under full ASAN/UBSAN

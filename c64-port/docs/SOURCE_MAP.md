@@ -1091,3 +1091,7 @@ Qualify actual WHIMPER RESUME POSTJUMP and ENEMA handoff against8192 original wh
 ## Translate original Comanche phase cleanup recovery entries
 
 Qualify MR.KLEAN P00KLEAN and V37KLEAN source phase clearing against12288 full original native and sanitizer states plus48 C64 states preserving the inactive zero complement pair. See `docs/COMANCHE_PHASE_CLEANUP.md`.
+
+## Translate original RTB sign agreement and Comanche matrix transpose entries
+
+Qualify original sign agreement and Comanche transpose entries against393216 complete original native and full sanitizer states plus192 actual C64 states across six targets. Remaining RTB entries stay open. See `docs/RTB-AGREEMENT.md`.

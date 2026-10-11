@@ -1,0 +1,479 @@
+{
+  "lm": {
+    "source_file": "Luminary099/RTB_OP_CODES.agc",
+    "original_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "qualified_containing_words": 12,
+    "words": [
+      {
+        "original_line": 62,
+        "bank": "10",
+        "address": "3612",
+        "physical_fixed_word": 9098,
+        "raw_octal": "07257",
+        "native_group": "SGNAGREE",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 63,
+        "bank": "10",
+        "address": "3613",
+        "physical_fixed_word": 9099,
+        "raw_octal": "16061",
+        "native_group": "SGNAGREE",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 172,
+        "bank": "10",
+        "address": "3712",
+        "physical_fixed_word": 9162,
+        "raw_octal": "00006",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 173,
+        "bank": "10",
+        "address": "3713",
+        "physical_fixed_word": 9163,
+        "raw_octal": "34733",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 174,
+        "bank": "10",
+        "address": "3714",
+        "physical_fixed_word": 9164,
+        "raw_octal": "52155",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 175,
+        "bank": "10",
+        "address": "3715",
+        "physical_fixed_word": 9165,
+        "raw_octal": "10000",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 176,
+        "bank": "10",
+        "address": "3716",
+        "physical_fixed_word": 9166,
+        "raw_octal": "34755",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 177,
+        "bank": "10",
+        "address": "3717",
+        "physical_fixed_word": 9167,
+        "raw_octal": "16057",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 178,
+        "bank": "10",
+        "address": "3720",
+        "physical_fixed_word": 9168,
+        "raw_octal": "13721",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 179,
+        "bank": "10",
+        "address": "3721",
+        "physical_fixed_word": 9169,
+        "raw_octal": "00006",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 180,
+        "bank": "10",
+        "address": "3722",
+        "physical_fixed_word": 9170,
+        "raw_octal": "44733",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 181,
+        "bank": "10",
+        "address": "3723",
+        "physical_fixed_word": 9171,
+        "raw_octal": "16055",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      }
+    ],
+    "prior_group_immutable": "evidence/rtb-angles-source-map.json",
+    "containing_status": "partial",
+    "source_helper": "Actual TPAGREE including BRANCH and returnviaL(Q2); SIGNMPAC sourceSLOAD2/NEWMODE; sourceDANZIGentry notexecuted",
+    "fixed_data": {}
+  },
+  "cm": {
+    "source_file": "Comanche055/RT8_OP_CODES.agc",
+    "original_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "qualified_containing_words": 38,
+    "words": [
+      {
+        "original_line": 83,
+        "bank": "22",
+        "address": "3544",
+        "physical_fixed_word": 19300,
+        "raw_octal": "07226",
+        "native_group": "SGNAGREE",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 87,
+        "bank": "22",
+        "address": "3545",
+        "physical_fixed_word": 19301,
+        "raw_octal": "16030",
+        "native_group": "SGNAGREE",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 207,
+        "bank": "22",
+        "address": "3660",
+        "physical_fixed_word": 19376,
+        "raw_octal": "02713",
+        "native_group": "XNB_ECADR_data",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 208,
+        "bank": "22",
+        "address": "3661",
+        "physical_fixed_word": 19377,
+        "raw_octal": "02554",
+        "native_group": "XNB_ECADR_data",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 212,
+        "bank": "22",
+        "address": "3662",
+        "physical_fixed_word": 19378,
+        "raw_octal": "33660",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 213,
+        "bank": "22",
+        "address": "3663",
+        "physical_fixed_word": 19379,
+        "raw_octal": "54003",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 214,
+        "bank": "22",
+        "address": "3664",
+        "physical_fixed_word": 19380,
+        "raw_octal": "53716",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 215,
+        "bank": "22",
+        "address": "3665",
+        "physical_fixed_word": 19381,
+        "raw_octal": "53722",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 216,
+        "bank": "22",
+        "address": "3666",
+        "physical_fixed_word": 19382,
+        "raw_octal": "53716",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 218,
+        "bank": "22",
+        "address": "3667",
+        "physical_fixed_word": 19383,
+        "raw_octal": "53720",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 219,
+        "bank": "22",
+        "address": "3670",
+        "physical_fixed_word": 19384,
+        "raw_octal": "53730",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 220,
+        "bank": "22",
+        "address": "3671",
+        "physical_fixed_word": 19385,
+        "raw_octal": "53720",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 222,
+        "bank": "22",
+        "address": "3672",
+        "physical_fixed_word": 19386,
+        "raw_octal": "53726",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 223,
+        "bank": "22",
+        "address": "3673",
+        "physical_fixed_word": 19387,
+        "raw_octal": "53732",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 224,
+        "bank": "22",
+        "address": "3674",
+        "physical_fixed_word": 19388,
+        "raw_octal": "53726",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 225,
+        "bank": "22",
+        "address": "3675",
+        "physical_fixed_word": 19389,
+        "raw_octal": "16030",
+        "native_group": "TRANSP1",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 230,
+        "bank": "22",
+        "address": "3676",
+        "physical_fixed_word": 19390,
+        "raw_octal": "33661",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 231,
+        "bank": "22",
+        "address": "3677",
+        "physical_fixed_word": 19391,
+        "raw_octal": "54003",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 232,
+        "bank": "22",
+        "address": "3700",
+        "physical_fixed_word": 19392,
+        "raw_octal": "53557",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 233,
+        "bank": "22",
+        "address": "3701",
+        "physical_fixed_word": 19393,
+        "raw_octal": "53563",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 234,
+        "bank": "22",
+        "address": "3702",
+        "physical_fixed_word": 19394,
+        "raw_octal": "53557",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 236,
+        "bank": "22",
+        "address": "3703",
+        "physical_fixed_word": 19395,
+        "raw_octal": "53561",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 237,
+        "bank": "22",
+        "address": "3704",
+        "physical_fixed_word": 19396,
+        "raw_octal": "53571",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 238,
+        "bank": "22",
+        "address": "3705",
+        "physical_fixed_word": 19397,
+        "raw_octal": "53561",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 240,
+        "bank": "22",
+        "address": "3706",
+        "physical_fixed_word": 19398,
+        "raw_octal": "53567",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 241,
+        "bank": "22",
+        "address": "3707",
+        "physical_fixed_word": 19399,
+        "raw_octal": "53573",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 242,
+        "bank": "22",
+        "address": "3710",
+        "physical_fixed_word": 19400,
+        "raw_octal": "53567",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 243,
+        "bank": "22",
+        "address": "3711",
+        "physical_fixed_word": 19401,
+        "raw_octal": "16030",
+        "native_group": "TRANSP2",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 258,
+        "bank": "22",
+        "address": "3712",
+        "physical_fixed_word": 19402,
+        "raw_octal": "00006",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 259,
+        "bank": "22",
+        "address": "3713",
+        "physical_fixed_word": 19403,
+        "raw_octal": "34777",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 260,
+        "bank": "22",
+        "address": "3714",
+        "physical_fixed_word": 19404,
+        "raw_octal": "52155",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 261,
+        "bank": "22",
+        "address": "3715",
+        "physical_fixed_word": 19405,
+        "raw_octal": "10000",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 262,
+        "bank": "22",
+        "address": "3716",
+        "physical_fixed_word": 19406,
+        "raw_octal": "35021",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 263,
+        "bank": "22",
+        "address": "3717",
+        "physical_fixed_word": 19407,
+        "raw_octal": "16026",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 264,
+        "bank": "22",
+        "address": "3720",
+        "physical_fixed_word": 19408,
+        "raw_octal": "13721",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 265,
+        "bank": "22",
+        "address": "3721",
+        "physical_fixed_word": 19409,
+        "raw_octal": "00006",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 266,
+        "bank": "22",
+        "address": "3722",
+        "physical_fixed_word": 19410,
+        "raw_octal": "44777",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      },
+      {
+        "original_line": 267,
+        "bank": "22",
+        "address": "3723",
+        "physical_fixed_word": 19411,
+        "raw_octal": "16024",
+        "native_group": "SIGNMPAC",
+        "status": "qualified_agreement"
+      }
+    ],
+    "prior_group_immutable": "evidence/rtb-angles-source-map.json",
+    "containing_status": "partial",
+    "source_helper": "Actual TPAGREE including BRANCH and returnviaL(Q2); SIGNMPAC sourceSLOAD2/NEWMODE; sourceDANZIGentry notexecuted",
+    "fixed_data": {
+      "19376": "02713",
+      "19377": "02554"
+    }
+  }
+}

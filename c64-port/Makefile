@@ -779,3 +779,5 @@ all: build/cm-abort-whimper-native
 
 include tools/cm_phase_cleanup.mk
 all: build/cm-phase-cleanup-native
+
+include tools/rtb_agreement_integration.mk

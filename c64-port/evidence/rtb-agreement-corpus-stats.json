@@ -1,0 +1,50 @@
+{
+  "lm0": {
+    "mission": 0,
+    "entry": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "42cd5b7b6469777bf87d316b0b18a03d0e6a3913f6d737fee4d4ae1ea79efedf",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 715
+  },
+  "lm1": {
+    "mission": 0,
+    "entry": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "76c0a503ea1ce1f585dc06877cee9859abbdd5b9c319dc145151a526247bddf2",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 739
+  },
+  "cm0": {
+    "mission": 1,
+    "entry": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "0a5f3798959d8674414d819db4c3db572198049003ebdc5cf1bbefa4200cd375",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 715
+  },
+  "cm1": {
+    "mission": 1,
+    "entry": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "ec47b91e2fbcbceeb29d99323f29df1a32faf6170d615b42a739b13738d2b2b8",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 739
+  },
+  "cm2": {
+    "mission": 1,
+    "entry": 2,
+    "complete_states": 65536,
+    "decoded_sha256": "215b80d3536d0c40b549baa9336abd6c31b0d0ad5524130c3ef452b11a301551",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1789
+  },
+  "cm3": {
+    "mission": 1,
+    "entry": 3,
+    "complete_states": 65536,
+    "decoded_sha256": "78cb29b823f22e35d04204662fd71e77b926f667fd795083ed25f7888c626674",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1789
+  }
+}
