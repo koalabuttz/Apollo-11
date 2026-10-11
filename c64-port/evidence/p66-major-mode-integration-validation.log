@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/p66_major_mode.c tests/p66_bias_cases.c tests/p66_major_mode_cases.c tests/p66_major_mode_check.c tests/test_p66_major_mode.c -o build/test-p66-major-mode
+./build/test-p66-major-mode
+P66 MAJOR MODE: 64 FULL 2050-WORD IMAGES, 0 FAILURES
