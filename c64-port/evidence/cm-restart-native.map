@@ -1,0 +1,172 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     726e     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm-restart-native.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     830      830        0     1                 __call_indir
+     833      833       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     833      833       13     1                 __zero_bss
+     846      846      73e     1         build/cm-restart-native.prg.lto.o:(.text.cm_exec_admit)
+     846      846      73e     1                 cm_exec_admit
+     f84      f84      1ae     1         build/cm-restart-native.prg.lto.o:(.text.cm_exec_endjob_select)
+     f84      f84      1ae     1                 cm_exec_endjob_select
+    1132     1132      180     1         build/cm-restart-native.prg.lto.o:(.text.cm_exec_change_basic)
+    1132     1132      180     1                 cm_exec_change_basic
+    12b2     12b2       ba     1         build/cm-restart-native.prg.lto.o:(.text.basic_slot)
+    12b2     12b2       ba     1                 basic_slot
+    136c     136c      37c     1         build/cm-restart-native.prg.lto.o:(.text.exchange_basic)
+    136c     136c      37c     1                 exchange_basic
+    16e8     16e8      464     1         build/cm-restart-native.prg.lto.o:(.text.cm_exec_change_interpretive)
+    16e8     16e8      464     1                 cm_exec_change_interpretive
+    1b4c     1b4c      243     1         build/cm-restart-native.prg.lto.o:(.text.cm_exec_complete_basic)
+    1b4c     1b4c      243     1                 cm_exec_complete_basic
+    1d8f     1d8f      31f     1         build/cm-restart-native.prg.lto.o:(.text.cm_exec_sleep_basic)
+    1d8f     1d8f      31f     1                 cm_exec_sleep_basic
+    20ae     20ae       7a     1         build/cm-restart-native.prg.lto.o:(.text.lifecycle_candidate)
+    20ae     20ae       7a     1                 lifecycle_candidate
+    2128     2128      30e     1         build/cm-restart-native.prg.lto.o:(.text.cm_exec_priority_basic)
+    2128     2128      30e     1                 cm_exec_priority_basic
+    2436     2436      124     1         build/cm-restart-native.prg.lto.o:(.text.lookup_kind)
+    2436     2436      124     1                 lookup_kind
+    255a     255a      409     1         build/cm-restart-native.prg.lto.o:(.text.start_owned)
+    255a     255a      409     1                 start_owned
+    2963     2963      1c7     1         build/cm-restart-native.prg.lto.o:(.text.saved_target)
+    2963     2963      1c7     1                 saved_target
+    2b2a     2b2a      438     1         build/cm-restart-native.prg.lto.o:(.text.exchange_saved)
+    2b2a     2b2a      438     1                 exchange_saved
+    2f62     2f62       ef     1         build/cm-restart-native.prg.lto.o:(.text.settle)
+    2f62     2f62       ef     1                 settle
+    3051     3051      23f     1         build/cm-restart-native.prg.lto.o:(.text.complete_mixed)
+    3051     3051      23f     1                 complete_mixed
+    3290     3290      1eb     1         build/cm-restart-native.prg.lto.o:(.text.change_mixed_basic)
+    3290     3290      1eb     1                 change_mixed_basic
+    347b     347b      2d4     1         build/cm-restart-native.prg.lto.o:(.text.sleep_mixed)
+    347b     347b      2d4     1                 sleep_mixed
+    374f     374f      33e     1         build/cm-restart-native.prg.lto.o:(.text.priority_mixed)
+    374f     374f      33e     1                 priority_mixed
+    3a8d     3a8d      132     1         build/cm-restart-native.prg.lto.o:(.text.callback)
+    3a8d     3a8d      132     1                 callback
+    3bbf     3bbf     3aa8     1         build/cm-restart-native.prg.lto.o:(.text.main)
+    3bbf     3bbf     3aa8     1                 main
+    7667     7667        6     1         build/cm-restart-native.prg.lto.o:(.text.exit)
+    7667     7667        6     1                 exit
+    766d     766d       4d     1         build/cm-restart-native.prg.lto.o:(.text.putchar)
+    766d     766d       4d     1                 putchar
+    76ba     76ba       65     1         build/cm-restart-native.prg.lto.o:(.text.puts)
+    76ba     76ba       65     1                 puts
+    771f     771f       13     1         build/cm-restart-native.prg.lto.o:(.text.__ashlhi3)
+    771f     771f       13     1                 __ashlhi3
+    7732     7732       5d     1         build/cm-restart-native.prg.lto.o:(.text.__udivqi3)
+    7732     7732       5d     1                 __udivqi3
+    778f     778f       c4     1         build/cm-restart-native.prg.lto.o:(.text.__udivhi3)
+    778f     778f       c4     1                 __udivhi3
+    7853     7853       40     1         build/cm-restart-native.prg.lto.o:(.text.__umodqi3)
+    7853     7853       40     1                 __umodqi3
+    7893     7893       ae     1         build/cm-restart-native.prg.lto.o:(.text.__umodhi3)
+    7893     7893       ae     1                 __umodhi3
+    7941     7941       7d     1         build/cm-restart-native.prg.lto.o:(.text.__udivmodqi4)
+    7941     7941       7d     1                 __udivmodqi4
+    79be     79be       22     1         build/cm-restart-native.prg.lto.o:(.text.__memset)
+    79be     79be       22     1                 __memset
+    79e0     79e0       34     1         build/cm-restart-native.prg.lto.o:(.text.__mulhi3)
+    79e0     79e0       34     1                 __mulhi3
+    7a14     7a14       67     1         build/cm-restart-native.prg.lto.o:(.text.__mulsi3)
+    7a14     7a14       67     1                 __mulsi3
+    7a7b     7a7b        0     1         __init_array_start = .
+    7a7b     7a7b        0     1         __init_array_end = .
+    7a7b     7a7b        0     1         __fini_array_start = .
+    7a7b     7a7b        0     1         __fini_array_end = .
+    7a7b     7a7b     20ad     1 .rodata
+    7a7b     7a7b        8     1         build/cm-restart-native.prg.lto.o:(.rodata.main)
+    7a83     7a83       24     1         build/cm-restart-native.prg.lto.o:(.rodata.map)
+    7a83     7a83       24     1                 map
+    7aa7     7aa7       10     1         <internal>:(.rodata.cst16)
+    7ab7     7ab7     1b20     1         build/cm-restart-native.prg.lto.o:(.rodata.cm_rn_full)
+    7ab7     7ab7     1b20     1                 cm_rn_full
+    95d7     95d7      500     1         build/cm-restart-native.prg.lto.o:(.rodata.cm_rn_hashes)
+    95d7     95d7      500     1                 cm_rn_hashes
+    9ad7     9ad7       51     1         <internal>:(.rodata.str1.1)
+    9b28     9b28        0     1 .data
+    9b28     9b28        0     1         __data_start = .
+    9b28     9b28        0     1         __data_end = .
+    9b28     9b28        0     1 __data_load_start = LOADADDR(.data)
+    9b28     9b28        0     1 __data_size = SIZEOF(.data)
+    9b28     9b28      376     1 .bss
+    9b28     9b28        0     1         __bss_start = .
+    9b28     9b28      376     1         build/cm-restart-native.prg.lto.o:(.bss.run)
+    9b28     9b28      376     1                 run
+    9e9e     9e9e        0     1         __bss_end = .
+    9e9e     9e9e        0     1 __bss_size = SIZEOF(.bss)
+    9e9e     9e9e        1     1 .noinit
+    9e9e     9e9e        1     1         build/cm-restart-native.prg.lto.o:(.noinit..Lstatic_stack)
+    9e9f     9e9f        0     1         __heap_start = ALIGN(., 2)
+    9e9f     9e9f        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-restart-native.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-restart-native.prg.lto.o:(.llvm_sympart)
+       0        0      c80     4 .symtab
+       0        0      c80     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      760     1 .strtab
+       0        0      760     1         <internal>:(.strtab)

@@ -218,3 +218,5 @@ subprocess.run([sys.executable,'tools/throttle_bridge_differential.py',str(refer
 
 subprocess.run([sys.executable,'tools/cm_phase_differential.py',str(reference)],cwd=ROOT,check=True)
 subprocess.run([sys.executable,'tools/cm_restart_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_restart_native_differential.py',str(reference)],cwd=ROOT,check=True)

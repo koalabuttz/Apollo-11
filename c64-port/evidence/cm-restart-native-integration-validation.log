@@ -1,0 +1,2 @@
+./build/test-cm-restart-native
+PASS:64CMrestart sequences/320source checkpoints;192actualCcallbacks;unsupported maps/types/reentry retain state
