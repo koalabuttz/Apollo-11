@@ -1,0 +1,81 @@
+{
+  "source_files": {
+    "include/cm_display_control.h": "b6f0a3b733c6e3db1e9477598ae633c6cf492cbffde6daace1e3c4f37e9051ca",
+    "src/cm_display_control.c": "a5496ec81c86a88bf9409bc4fd1fe975717c024420de7775ec22bff056f8a38f",
+    "docs/COMANCHE-DISPLAY-CONTROL.md": "7ce24c3115d73ef4a5fe270a9a6852eabdf66317b957cb80cc1d3dd015d2dc8d",
+    "tests/cm_display_control_check.c": "1ae8df371df48739c0598cd879c3c09d7bb96270d9112de2183d6ba56eaa7564",
+    "tests/cm_display_control_vectors.h": "c4e099a853f8536bbc76154b94550c986eec97720cac38b2f3c930f37a64ebef",
+    "tests/cm_display_control_cases.c": "124ce7b2ec4079f3f32f163fe6208b594342a6e58c509f02e47bfc6f7b615e20",
+    "tests/test_cm_display_control.c": "a9b3ff3cf144cc10da4028be697c27c775bfece41aff15fc4928d6348c7e5d74",
+    "tests/cm_display_control_cases.h": "5540ae8e5d8e60dcf8cc60c571676fa125476c2f3f04fb08fcd17d8c33087edc",
+    "tests/cm_display_control_check.h": "85701c46e719d676a0eb3130e20e1aaeb3b203519dc667c259d8b0e52581dfc7",
+    "tools/cm_display_control_snapshot.c": "c3f58fa3acbf0b9b8b152b92f1d50e76bc5cfe0fa41886bef4ee8150095e8337",
+    "tools/cm_display_control_full_reference.c": "9ea81c2579a28a90988ef55b088fa0443eec371bf6627885ca60be7dcfb998e0",
+    "tools/cm_display_control_inputs.c": "c76a02cbd67fa34e696f7c31849a7bca98fd4ad850b785f6bb9d869111487873",
+    "tools/cm_display_control_full_snapshot.c": "a1dff2fefd84e7bb0c47fafa87c1f220fca2e4f8ed7ec8b01609e08719c75f16",
+    "tools/cm_display_control_full_differential.py": "2681c561acdb40bdd181b2b77f1cd52ec57569335272764a5766de1a3ca801de",
+    "tools/cm_display_control_diagnostic.c": "e68cb4e83f6b1cf4c3baa073168919d19675f7b9c4212c7d14af6e8cdb8af16b",
+    "tools/cm_display_control_reference.c": "0b5d5f6494775b35c813b0c3a3c6b59ebf02bee7b84e2ffdd44290d05afe686c",
+    "tools/freeze_cm_display_control.py": "9753ead9a3cb6a59b20aac3f15c7c9b8d6eed6f99882e19e4e8872051013f56b",
+    "tools/cm_display_control.mk": "b8cebb9328dceb422e5417456b0f6819aad53a441e34d0975852177df3e313de",
+    "tools/cm_display_control_vice_test.py": "7f86ddbe697d2d4cb8cc079101f7428d7c7afda57351f1ff0c262355c04483ad",
+    "tools/cm_display_control_differential.py": "a0736cfac0dabb1761ac63c8f570c36ff241e17e9c8439b6c398f75b416f1aa1"
+  },
+  "native_dependencies": {
+    "src/cm_clockjob.c": "8cc8e34edbb8bd7d5d7ca4032b0af2a3caadf7a720476a8140c5b1be283a8185",
+    "src/cm_quictrig.c": "4d934bdaa6afbd4cd92b4474450bcd35b73c2f03f2c55c60937c6e0cf17040a0",
+    "tests/cm_trig_cases.c": "b39716b836fe437dfac5087f862445620548b89f95ff1b6c29dd04186eaf60c2",
+    "tests/cm_clockjob_cases.c": "d8bd07bfee1a77f57a660dcac5395f5a832db6bbcba43c700f95efd34713b66e",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e"
+  },
+  "original_sources": {
+    "../Comanche055/DISPLAY_INTERFACE_ROUTINES.agc": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+    "../Comanche055/P40-P47.agc": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+    "../Comanche055/INTER-BANK_COMMUNICATION.agc": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+    "deps/cm-services-fixture/MAIN.agc.bin": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "source_identity": "Every executed instruction in REGODSP..PRIODSPR, SAVELOCS..COPYNORM and MAKECADR..SUPDACAL is identical to the original. Unexecuted fixture CAF/CA repair before these slices is excluded.",
+  "artifacts": {
+    "evidence/cm-display-control-reference.snapshots.xz": "8d002c7b9928ff1c77ec649ea4f3fc38a0c69fa78eeaf010fbaef521804c3947",
+    "evidence/cm-display-control-full-reference.snapshots.xz": "c51ece3633b4334fabba2f61b15cf111287fd0331b462cd0bc6fbf7c96eed6d9",
+    "evidence/cm-display-control-differential.log": "750a5db39ec87d946224d7df0ae783b42883e26b8772684e276b3a15bbcbd072",
+    "evidence/cm-display-control-validation.log": "f9bed7c4555f268c5107825c4b47ac24085215ac9ca3fbdb3bbcf29fffb664a2",
+    "evidence/cm-display-control-c64-result.log": "43b741d548be6470debdff6285f275bdd7f634b8e200a95f7a178826596ff210",
+    "evidence/cm-display-control-full-differential.log": "3a930cf0e44141f173c98c7b5ff5b6443165ac2743c12efb576694ce689e53d2",
+    "evidence/cm-display-control-full-validation.log": "078057c4a589b6ea89a3610bdb2b0d93d9ed2b14acf9774c5428508fc9a1c47f",
+    "evidence/cm_display_control.prg": "9875079139e16f760ffddaf7d8f230daad683efbeabf1392120d8f52b5fcc0a5",
+    "evidence/cm_display_control.map": "f90c71d27ca6245199a89fe2490ce799ced13b48126dfd7ee9c9efb495e2015c",
+    "evidence/cm_display_control-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "evidence/cm_display_control-hardware-stack.bin": "60d7e50fe495e4d93856f69d494b85e6bbb1fd7b7975618c8737427d61b7f73b",
+    "evidence/cm_display_control-software-stack.bin": "dd14cc1cf6ad4a3d5ba11a4e86c06ed2cccc6a33bf0d900db10256c693f523b6",
+    "evidence/cm_display_control-vice.log": "0a91de7aabbb74f3572353fd4e255b7def98592fca604469ec0ee286264c292b",
+    "evidence/cm_display_control-vice-monitor.log": "a20a640a4e213407b1fddd62f1870a3ce053b43e3852f95a3ab98d9b2c5bbd1d",
+    "evidence/cm_display_control-vice.mon": "4cb780967650de91df3853ad95514f246c980a16a443c68f7cc461764f948042"
+  },
+  "raw_streams": {
+    "build/cm-display-control-reference.snapshots": "c7571e875fe36442ae7e0bb5b1229089ce3f32b77154766b668a5859d7451673",
+    "build/cm-display-control-native.snapshots": "c7571e875fe36442ae7e0bb5b1229089ce3f32b77154766b668a5859d7451673",
+    "build/cm-display-control-sanitize.snapshots": "c7571e875fe36442ae7e0bb5b1229089ce3f32b77154766b668a5859d7451673",
+    "build/cm-display-control-full-reference.snapshots": "275c1bccb176f151873feb44b92a976be40170463589309e6df2b8b16ca37a71",
+    "build/cm-display-control-full-native.snapshots": "275c1bccb176f151873feb44b92a976be40170463589309e6df2b8b16ca37a71",
+    "build/cm-display-control-full-sanitize.snapshots": "275c1bccb176f151873feb44b92a976be40170463589309e6df2b8b16ca37a71"
+  },
+  "states": {
+    "individual_entries": 24576,
+    "continuous_CLOCKJOB": 2544,
+    "state_words": 2050,
+    "frozen": 64,
+    "invalid_boundaries": 42,
+    "strict_and_SAN": "all complete original states byte-identical"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 5241,
+    "hardware_stack_bytes": 14,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 75,
+    "extra_zero_page_bytes": 0
+  },
+  "boundary": "before actual MAKEPLAY10,2770; no downstream priority/display execution claim"
+}

@@ -368,3 +368,5 @@ subprocess.run([sys.executable,'tools/cm_basic_finish_differential.py',str(refer
 subprocess.run([sys.executable,'tools/dsky_charin_number_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_clockjob_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_display_control_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -533,3 +533,5 @@ include tools/cm_basic_finish.mk
 include tools/dsky_charin_number.mk
 
 include tools/cm_clockjob_port.mk
+
+include tools/cm_display_control_port.mk
