@@ -1218,3 +1218,7 @@ Qualify actual operator request RELDSP JOBWAKE and genuine scheduler entry over8
 ## Compose original uninterrupted Comanche abort and restart lifecycle
 
 Qualify BAILOUT POODOO CCSHOLE snapshot BORTENT flag phase cleanup WHIMPER ENEMA over1536 uninterrupted original paths with14848 complete native sanitizer states and12 C64 sequences retaining MMDSPLAY PTBAD DOFSTART as genuine selected program entries. See `docs/COMANCHE_ABORT_LIFECYCLE.md`.
+
+## Translate original shared vector cross product and projection dependencies
+
+Qualify native VXV and VPROJ with erasable aliases and immutable fixed operands over262144 complete original native sanitizer states and384 actual C64 states. Original source words and constants independently match baseline ropes; passive input injections and unexecuted reviewed overflow exit are explicit. Antenna and interpreter files remain partial. See `docs/NATIVE-SBAND-VECTORS.md`.

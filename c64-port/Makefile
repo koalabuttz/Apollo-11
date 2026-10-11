@@ -823,3 +823,5 @@ include tools/dsky_operator_request.mk
 
 include tools/cm_abort_lifecycle.mk
 all: build/cm-abort-lifecycle-native
+
+include tools/sband_vector_integration.mk

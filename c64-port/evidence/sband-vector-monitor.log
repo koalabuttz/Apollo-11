@@ -1,0 +1,12 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-vector.prg from 0801 to 6DB6 (65B6 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   49/$031,  47/$2f
+.C:1cdb  8E 00 C0    STX $C000      - A:01 X:A5 Y:00 SP:f1 ..-..IZC  439511294
+Saving file `/workspace/Apollo-11/c64-port/build/sband-vector-mailbox.bin' from $c000 to $c003
+Loading /workspace/Apollo-11/c64-port/build/sband-vector.prg from 0801 to 7CD1 (74D1 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  285/$11d,   9/$09
+.C:2972  8E 00 C0    STX $C000      - A:00 X:A5 Y:01 SP:f1 ..-..IZC  534956004
+Saving file `/workspace/Apollo-11/c64-port/build/sband-vector-mailbox.bin' from $c000 to $c003

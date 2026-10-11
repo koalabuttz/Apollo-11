@@ -1,0 +1,162 @@
+{
+  "docs/NATIVE-SBAND-VECTORS.md": {
+    "sha256": "abd5559b84c4246d42451ce6ac5f858b5c07b25b79f3943f1de779e3cf460a92",
+    "bytes": 4607
+  },
+  "evidence/sband-original-source-audit.json": {
+    "sha256": "8b798b7338ac1fe1482fa2977a077c1fca55870da1a9e9186207ebd7007d894c",
+    "bytes": 72715
+  },
+  "evidence/sband-vector-CM-native-results.json": {
+    "sha256": "3c1180e349ebe5bc0c1fa64a53c72f62f0433f9024521ba5e56d3a9aaf13d2a3",
+    "bytes": 154
+  },
+  "evidence/sband-vector-CM-reference.trace": {
+    "sha256": "9bfa28cec1a37534ec331d7ece0ba306449c0a43f7e67af5aae459d1a91478dc",
+    "bytes": 1002
+  },
+  "evidence/sband-vector-CM-sanitize-results.json": {
+    "sha256": "3c1180e349ebe5bc0c1fa64a53c72f62f0433f9024521ba5e56d3a9aaf13d2a3",
+    "bytes": 154
+  },
+  "evidence/sband-vector-CM-source.snapshots.bin.xz": {
+    "sha256": "3fcdd8cb548679c26375b94f3712269e13d0d6bb4d544a5b5f0ba72e48da52d8",
+    "bytes": 18239472
+  },
+  "evidence/sband-vector-LM-native-results.json": {
+    "sha256": "21622c7ba5729a0ea6aff18f5d6c6538f0a2c9a67a0d2508b324c35ecab8d747",
+    "bytes": 154
+  },
+  "evidence/sband-vector-LM-reference.trace": {
+    "sha256": "b4a1e08beeb9cb98a7f665dd317549aff601ab31c7e338a7739837729fb882fe",
+    "bytes": 1002
+  },
+  "evidence/sband-vector-LM-sanitize-results.json": {
+    "sha256": "21622c7ba5729a0ea6aff18f5d6c6538f0a2c9a67a0d2508b324c35ecab8d747",
+    "bytes": 154
+  },
+  "evidence/sband-vector-LM-source.snapshots.bin.xz": {
+    "sha256": "2328e1524dc28b52eb753399d8254382f8c194e2087c11ec76729422bc97f237",
+    "bytes": 18244180
+  },
+  "evidence/sband-vector-independent-review.txt": {
+    "sha256": "28efc55c5cec8893777d0dd432e76e80da731c9e43f1aa2f0caebb591f5da38a",
+    "bytes": 1853
+  },
+  "evidence/sband-vector-mailbox.bin": {
+    "sha256": "d54c1268cce44f361878a4f6db009986bbd581c9d2f19fa5e6c360c3ca491a8d",
+    "bytes": 4
+  },
+  "evidence/sband-vector-monitor.log": {
+    "sha256": "a0c155666123d735e91e64504f72bed62d65cc1c88c4f39e9eb344783e147fbe",
+    "bytes": 778
+  },
+  "evidence/sband-vector-proof.json": {
+    "sha256": "aca586010a05e274eabd594a23001b37f40af8251d35acbb594e5e6f9fe04957",
+    "bytes": 2607
+  },
+  "evidence/sband-vector-source-map.json": {
+    "sha256": "75b65311ef8a2c051118a2b35af18ea9b6aba28823dc64c4d67381b4ff34a964",
+    "bytes": 135320
+  },
+  "evidence/sband-vector-target-results.json": {
+    "sha256": "70522d632f1fe968848cfb63a4c598ecea1adcb2d45db3bd3dfec3a906619f67",
+    "bytes": 4449
+  },
+  "evidence/sband-vector-target-source.snapshots.bin.xz": {
+    "sha256": "fe4411aad938fdbed9045dc692ee96ad710545392f1b16b4d6fef00f189a2248",
+    "bytes": 114912
+  },
+  "evidence/sband-vector-validation.txt": {
+    "sha256": "854ba6988dd24bf6ccdd35e6c435ae5e7020a2b5f80bd2f13f7d1b5e1f3bc6bf",
+    "bytes": 1314
+  },
+  "evidence/sband-vector-vice-results.json": {
+    "sha256": "f85c68ef7675c849ab3852dd1d4e15238f77288a82c8e47dd5a82f1190291bb6",
+    "bytes": 199
+  },
+  "evidence/sband-vector-vice.log": {
+    "sha256": "ed9af3a99d0a47bedf882fac85d89796af76e9849f49a6da194bf723ce05bd33",
+    "bytes": 6501
+  },
+  "include/sband_vector.h": {
+    "sha256": "2c04a6c05db875d726fd7066a762b230d3d7d08216f1216c5e1a60beb941e648",
+    "bytes": 1480
+  },
+  "platform/c64/sband_vector_diagnostic.c": {
+    "sha256": "c2d4f2c87dc6ff0b1ab188c2b2e34ae2b4ed9545e541d77b48cc0f4c5d39357e",
+    "bytes": 438
+  },
+  "src/sband_vector.c": {
+    "sha256": "80a3a44a341f6c8821ea60449d654d3ecda771d52a63f5f6f91cd52bd416f5e9",
+    "bytes": 7996
+  },
+  "tests/sband_vector_cases.c": {
+    "sha256": "5659f357bd1400acd7750a1b8cfad5b6724608d979616eb27bba48a0acc887d2",
+    "bytes": 2256
+  },
+  "tests/sband_vector_cases.h": {
+    "sha256": "13f8cd9c343bcd5f1aaf632ce248abf85fa7eb42a1b86be3a9df7c7dad1245c5",
+    "bytes": 291
+  },
+  "tests/sband_vector_target.c": {
+    "sha256": "76f72f137abaef858cafcacc1dd450c0594f3d50ac3f4f65fcbedaab892d2b22",
+    "bytes": 1761
+  },
+  "tests/sband_vector_target.h": {
+    "sha256": "e72d2162a992d41b3b7863914908020482ecc2a033b19b25514bd87803516adf",
+    "bytes": 144
+  },
+  "tests/sband_vector_vectors.h": {
+    "sha256": "b5d93bd773c1c6cd1595d42db3bcc0cc54f1c5fdad7376b34cd725832c6d1df6",
+    "bytes": 63133
+  },
+  "tests/test_sband_vector.c": {
+    "sha256": "501cd816b8a47702dd629feb0e01c2ab945d9b504f60a5fee9c691dabf5cc4ea",
+    "bytes": 1415
+  },
+  "tools/freeze_sband_vector.py": {
+    "sha256": "0f88f6c4eed5b9e0f0da91487ead9f75e9f2435131ffc1a4749cfe1495f4474c",
+    "bytes": 2159
+  },
+  "tools/package_sband_vector.py": {
+    "sha256": "72aca0e8eb2bd6e548ffd820639829dc171dccf4269313b5e61e4984ddb84486",
+    "bytes": 5001
+  },
+  "tools/sband_source.py": {
+    "sha256": "ab4ed7d490222d4cead07d42cef1bec1aa6ba2bf8f6da93364ecac794c0054a2",
+    "bytes": 2142
+  },
+  "tools/sband_vector.mk": {
+    "sha256": "7fe0d15371d09ee8371fb8f183f0240a06447d1ebb6ff3ad625d5cb1422b8463",
+    "bytes": 1638
+  },
+  "tools/sband_vector_compare.py": {
+    "sha256": "9256dfc4ab43083f765288ddfb9d0105baa244405f8cdd63702a8febac121adf",
+    "bytes": 1889
+  },
+  "tools/sband_vector_inputs.c": {
+    "sha256": "5053aa0db10d93f0f4ea094a854c9640c6cfb966cc772ef1af52691ea843f69b",
+    "bytes": 495
+  },
+  "tools/sband_vector_reference.c": {
+    "sha256": "285576c7c7662a2d46d425b7deb80776b1b4c9332b68b5c63913f13b7c2fa4fe",
+    "bytes": 1924
+  },
+  "tools/sband_vector_snapshot.c": {
+    "sha256": "4e0bac75c0d290cc3796eb8ed02e80fe9ddcf1ba1fefc990b42149ffbe556c30",
+    "bytes": 847
+  },
+  "tools/sband_vector_source.py": {
+    "sha256": "14a637ba9b376b19a7310482cdf803a3be30db295608bab6e2ac3709f2be13d1",
+    "bytes": 3855
+  },
+  "tools/sband_vector_trace.py": {
+    "sha256": "621479a13a4bab6e8556da4afdb80fd36ecf342bcafc6a4d5feb3b048761e590",
+    "bytes": 890
+  },
+  "tools/sband_vector_vice_test.py": {
+    "sha256": "deff73f9a799a1bcb1bf786f944e2d1323831755e9d79aafcce017d1d09bfa8e",
+    "bytes": 2572
+  }
+}
