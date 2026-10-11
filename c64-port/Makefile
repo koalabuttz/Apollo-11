@@ -402,3 +402,5 @@ include tools/nv_entry.mk
 include tools/nv_words.mk
 
 include tools/dsky_pinball.mk
+
+include tools/dsky_decimal.mk
