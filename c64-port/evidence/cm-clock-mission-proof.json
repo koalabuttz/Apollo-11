@@ -1,0 +1,39 @@
+{
+  "cases": 448,
+  "checkpoints": 3392,
+  "full_physical_words": 2048,
+  "entries": [
+    "384 automatic T3 interrupt sequences at06030 DANZIG",
+    "64 actual CLOCKJOB03332/050066 entries with NV0"
+  ],
+  "actual_tasks": [
+    "15,3207 SETJTAG",
+    "24,3260 CLOKTASK",
+    "05306 SVCT3"
+  ],
+  "actual_services": [
+    "WAITLIST",
+    "NOVAC",
+    "FIXDELAY",
+    "TASKOVER"
+  ],
+  "boundary": "continuous task IRQ/services/RESUME/DANZIG, actual CLOCKJOB/QUICTRIG/SWRETURN/ENDJOB and suspended interpreter restoration",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "control_metadata": [
+    "InIsr",
+    "pending_DANZIG"
+  ],
+  "actual_foreground": [
+    "unchanged interpreted NEWOPS",
+    "64 source-selected CLOCKJOB03332/050066 after nonzero-NV CLOKTASK",
+    "NBDONLY03542/014063 selected tuple only",
+    "64 separate actual CLOCKJOB entries with NV0 and original END/interpreter restoration"
+  ],
+  "actual_clockjob_body_cases": 128,
+  "actual_display_makeplay_boundary_cases": 64,
+  "actual_end_interpreter_restore_cases": 64,
+  "snapshot_sha256": "e188e160109500ca7907c129d62d79f23b8ecca485d87de260b4d37daf1dd4f5"
+}

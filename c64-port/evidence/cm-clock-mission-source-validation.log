@@ -1,0 +1,82 @@
+{
+  "sources": {
+    "EXECUTIVE.agc": {
+      "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+      "normalized_sha256": "12827288def51cab29ff591dd2febb7a652237a8b2786c42ea7dc6bafa2e5356"
+    },
+    "WAITLIST.agc": {
+      "original_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+      "normalized_sha256": "85335058feda6297569d28b8ca6e077fccb85d52eb5c14fd7e36db73aef4bb85"
+    },
+    "INTERRUPT_LEAD_INS.agc": {
+      "original_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+      "normalized_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0"
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff"
+    },
+    "P40-P47.agc": {
+      "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6"
+    },
+    "CM_ENTRY_DIGITAL_AUTOPILOT.agc": {
+      "original_sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+      "normalized_sha256": "82aef32507d8b595667877ff2375883f8187bfc04b726ebde728a8842074b24a"
+    },
+    "POWERED_FLIGHT_SUBROUTINES.agc": {
+      "original_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+      "normalized_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca"
+    },
+    "SINGLE_PRECISION_SUBROUTINES.agc": {
+      "original_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+      "normalized_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64"
+    },
+    "INTER-BANK_COMMUNICATION.agc": {
+      "original_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+      "normalized_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785"
+    }
+  },
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: original continuous CM tasks and services, all physical image words exact
+{
+  "cases": 448,
+  "checkpoints": 3392,
+  "full_physical_words": 2048,
+  "entries": [
+    "384 automatic T3 interrupt sequences at06030 DANZIG",
+    "64 actual CLOCKJOB03332/050066 entries with NV0"
+  ],
+  "actual_tasks": [
+    "15,3207 SETJTAG",
+    "24,3260 CLOKTASK",
+    "05306 SVCT3"
+  ],
+  "actual_services": [
+    "WAITLIST",
+    "NOVAC",
+    "FIXDELAY",
+    "TASKOVER"
+  ],
+  "boundary": "continuous task IRQ/services/RESUME/DANZIG, actual CLOCKJOB/QUICTRIG/SWRETURN/ENDJOB and suspended interpreter restoration",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "control_metadata": [
+    "InIsr",
+    "pending_DANZIG"
+  ],
+  "actual_foreground": [
+    "unchanged interpreted NEWOPS",
+    "64 source-selected CLOCKJOB03332/050066 after nonzero-NV CLOKTASK",
+    "NBDONLY03542/014063 selected tuple only",
+    "64 separate actual CLOCKJOB entries with NV0 and original END/interpreter restoration"
+  ],
+  "actual_clockjob_body_cases": 128,
+  "actual_display_makeplay_boundary_cases": 64,
+  "actual_end_interpreter_restore_cases": 64,
+  "snapshot_sha256": "e188e160109500ca7907c129d62d79f23b8ecca485d87de260b4d37daf1dd4f5"
+}

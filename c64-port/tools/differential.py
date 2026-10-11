@@ -414,3 +414,5 @@ subprocess.run([sys.executable,'tools/cm_idle_dispatch_differential.py',str(refe
 subprocess.run([sys.executable,'tools/cm_makeplay_sleep_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_sleep_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_clock_mission_differential.py',str(reference)],cwd=ROOT,check=True)
