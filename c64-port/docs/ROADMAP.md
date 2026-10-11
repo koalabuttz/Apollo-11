@@ -1496,3 +1496,7 @@ Translate twenty original IMU local bodies per mission and actual source handoff
 ## Compose original Comanche lunar velocity polynomial and orbital return
 
 Translate actual LUNVEL time entry eighth-degree derivative vector polynomial and original ORIGCHNG return against65536 complete original strict sanitizer states and64 C64 states without changing frozen arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-VELOCITY.md`.
+
+## Translate original mixed LM job sleep and priority lifecycle
+
+Compose actual PRIOCHNG and JOBSLEEP basic and interpreter context exchanges through source idle or NEWOPS against32768 full original strict sanitizer states and64 C64 checkpoints preserving existing Executive helpers. See `docs/LM-CONTEXT-LIFECYCLE.md`.

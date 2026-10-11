@@ -1019,3 +1019,7 @@ include tools/dsky_minutes_output_integration.mk
 include tools/imu_mode_control_integration.mk
 
 include tools/cm_ephemeris_velocity_integration.mk
+
+include tools/lm_context_lifecycle_port_integration.mk
+test: lm-context-lifecycle-port-test
+sanitize: lm-context-lifecycle-port-sanitize
