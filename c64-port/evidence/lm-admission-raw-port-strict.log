@@ -1,0 +1,4 @@
+PASS:16384 original NOVAC/FINDVAC/SPVAC/SPVACIN complete2050-word success/caller-return/resource-alarm states
+Snapshot SHA256: f138a921dce7c848be2b6b1fb51c6685760cab41fe0609dfc92f717997288a84
+PASS:16384 immutable old admission comparisons;22 invalid admission domains and2 null interfaces preserve complete canonical state and external I/O
+PASS:retained raw admission strict;16384 whole original states,16384 old wrapper comparisons,32 checked PRGs

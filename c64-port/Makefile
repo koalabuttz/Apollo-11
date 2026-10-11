@@ -1035,3 +1035,7 @@ include tools/dsky_input_angle.mk
 include tools/dsky_decimal_time_consumer_integration.mk
 
 include tools/dsky_input_time.mk
+
+include tools/lm_admission_raw_port_integration.mk
+test: lm-admission-raw-port-test
+sanitize: lm-admission-raw-port-sanitize

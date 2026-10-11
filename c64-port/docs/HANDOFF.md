@@ -1599,3 +1599,7 @@ Run uninterrupted original DECDSP through HMS M/S and two-integer display source
 ## Translate original hours minutes seconds operator input
 
 Translate actual HMSIN RND-TST MPACTST SIZETST source time contributions rounding range alarms and indexed final store through LOADLV against8192 original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-TIME.md`.
+
+## Translate original raw LM priority admission controls
+
+Translate actual NOVAC FINDVAC raw positive zero and low-bit priorities real inline descriptor aliases and pending core0 admission against16384 complete original strict sanitizer states and64 C64 checkpoints preserving historical helpers. See `docs/LM-RAW-ADMISSION.md`.
