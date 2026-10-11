@@ -1,0 +1,8 @@
+{
+  "frozen_recommendation": "evidence/cm-service-routines-coverage.json",
+  "frozen_recommendation_sha256": "9094ce1707f6347dbf68fc9f9bd4097d2e45bd43235e016d13817b27687429ee",
+  "recommendation_snapshot_revision": "b13fd665a4f1253d90fc2694280c2841510a5979",
+  "certified_original_source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+  "explanation": "Recommendation records the native work snapshot. Original source is byte-identical to the immutable historical baseline used by this certificate."
+}
