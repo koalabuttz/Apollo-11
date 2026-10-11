@@ -796,3 +796,7 @@ Actual Comanche fixed-vector keyboard IRQ, hardware RESUME, idle admission, CHAR
 ## Complete native Luminary and Comanche gimbal source files
 
 Both complete original gimbal files now have reviewed native mappings, 10,240 exact complete source/native/sanitized states and 80 C64 states per application with all 40 constants checked. NEWANGL continuation bodies and live scheduling remain application integration work. See `docs/GIMBAL_COMPLETE.md`.
+
+## Compose actual Comanche display sleep wake and successor lifecycle
+
+The actual GOSLEEPS, JOBWAKE, XCHTOEND/XCHSLEEP and JOBSLEEP sequence now matches 2,048 complete source/native/sanitized checkpoints across 512 continuous paths. Stock C64 execution verifies 64 complete checkpoints across 16 paths; whole application acceptance remains pending. See `docs/COMANCHE-DISPLAY-SLEEP-LIFECYCLE.md`.

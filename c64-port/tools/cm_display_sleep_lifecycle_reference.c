@@ -1,0 +1,8 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+#define main cm_reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "cm_display_sleep_lifecycle_cases.h"
+static apollo_overlay_state s;static agc_t pristine;
+int main(int argc,char **argv){unsigned n,i,cycles,pc,phase;if(argc!=2||agc_load_binfile(&pristine,argv[1]))return 2;InhibitAlarms=1;for(n=0;n<CM_DISPLAY_SLEEP_LIFECYCLE_CASES;++n){cm_native_io io;cm_display_sleep_lifecycle_input(&s,&io,(uint16_t)n);machine=pristine;for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];machine.OutputChannel7=machine.InputChannel[7]=io.superbank;machine.AllowInterrupt=io.interrupt_enabled;machine.InputChannel[011]=io.channel11;for(phase=0;phase<4u;++phase){unsigned target=phase==0?05201u:phase==1?03212u:05175u,high=0,bank=0,status=phase==2?1u:0u;if(phase==3){target=03231;for(i=1;i<7u;++i){unsigned priority=get(0167u+12u*i);if(priority>1u&&priority<040000u&&priority-1u>high){high=priority-1u;target=get(0164u+12u*i);bank=get(0165u+12u*i)&076000u;}}if(target&040000u)target=06037;}
+for(cycles=0;cycles<2000u;++cycles){pc=get(RegZ);if(!machine.PendFlag&&!machine.ExtraDelay&&pc==target&&(phase!=3||target==06037u||target==03231u||get(RegFB)==bank))break;machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}if(cycles==2000u){fprintf(stderr,"lifecycle%u phase%u timeout%05o\n",n,phase,pc);return 2;}if(phase==1&&get(064)==077776u)status=EXEC_NOT_FOUND;if(phase==3&&pc==03231u)status=EXEC_IDLE;printf("%u %u",n*4u+phase,status);for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<=2u?0177777u:077777u));printf(" %u %u %u\n",(unsigned)machine.OutputChannel7,(unsigned)machine.AllowInterrupt,(unsigned)machine.InputChannel[011]);}}return 0;}

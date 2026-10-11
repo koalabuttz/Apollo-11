@@ -590,3 +590,5 @@ include tools/p66_direct_launch.mk
 include tools/cm_keyboard_runtime.mk
 
 include tools/gimbal_complete_port.mk
+
+include tools/cm_display_sleep_lifecycle_port.mk
