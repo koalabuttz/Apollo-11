@@ -1,0 +1,284 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_moon.c",
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 95,
+        "label": "",
+        "op": "VLOAD",
+        "arguments": "VXSC",
+        "assembled_address": "42,3627",
+        "physical_fixed_word": 35735,
+        "physical_erasable_word": null,
+        "words": [
+          30973
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 96,
+        "label": "",
+        "op": "VMOON",
+        "arguments": "",
+        "assembled_address": "42,3630",
+        "physical_fixed_word": 35736,
+        "physical_erasable_word": null,
+        "words": [
+          1491
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 97,
+        "label": "",
+        "op": "REMDIST",
+        "arguments": "",
+        "assembled_address": "42,3631",
+        "physical_fixed_word": 35737,
+        "physical_erasable_word": null,
+        "words": [
+          10241
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 98,
+        "label": "",
+        "op": "VSL1",
+        "arguments": "VAD",
+        "assembled_address": "42,3632",
+        "physical_fixed_word": 35738,
+        "physical_erasable_word": null,
+        "words": [
+          22266
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 99,
+        "label": "",
+        "op": "RLM",
+        "arguments": "",
+        "assembled_address": "42,3633",
+        "physical_fixed_word": 35739,
+        "physical_erasable_word": null,
+        "words": [
+          1157
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 100,
+        "label": "",
+        "op": "GOTO",
+        "arguments": "",
+        "assembled_address": "42,3634",
+        "physical_fixed_word": 35740,
+        "physical_erasable_word": null,
+        "words": [
+          32680
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 101,
+        "label": "",
+        "op": "CONV5",
+        "arguments": "",
+        "assembled_address": "42,3635",
+        "physical_fixed_word": 35741,
+        "physical_erasable_word": null,
+        "words": [
+          27552
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 104,
+        "label": "CONV5",
+        "op": "SETPD",
+        "arguments": "UNIT",
+        "assembled_address": "42,3640",
+        "physical_fixed_word": 35744,
+        "physical_erasable_word": null,
+        "words": [
+          22273
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 105,
+        "label": "",
+        "op": "0D",
+        "arguments": "",
+        "assembled_address": "42,3641",
+        "physical_fixed_word": 35745,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      }
+    ],
+    "scope": "Actual returned-LUNPOS caller through native Moon-return vector arithmetic/GOTO/SETPD into LM UNIT or CM MXV before helper bodies.",
+    "constants": {
+      "source_path": "Luminary099/CONTROLLED_CONSTANTS.agc",
+      "original_sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
+      "assembled_sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/CONTROLLED_CONSTANTS.agc",
+          "line": 344,
+          "label": "REMDIST",
+          "op": "2DEC",
+          "arguments": "384402000 B-29",
+          "assembled_address": "42,2000",
+          "physical_fixed_word": 34816,
+          "physical_erasable_word": null,
+          "words": [
+            11731,
+            296
+          ]
+        }
+      ],
+      "address": "42,2000",
+      "words": [
+        11731,
+        296
+      ],
+      "unused_preflight_padding": [
+        14865,
+        2662,
+        13340,
+        2446
+      ],
+      "padding_scope": "Exact four source instruction words immediately following REMDIST are passive unused padding required by six-word kernel preflight, never decoded/executed/credited as algorithm translation."
+    },
+    "entry_bindings": {
+      "VMOON": "E5,1722",
+      "UNIT": "00,3023",
+      "MXV": "7334",
+      "NEWOPS": "6070",
+      "DANZIG": "6061",
+      "RLM": "E4,1604"
+    },
+    "unmapped_remaining": "LUNPOS callee numerical body, following body-frame and pitch/yaw computations and display lifecycle."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_moon.c",
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 58,
+        "label": "",
+        "op": "VAD",
+        "arguments": "VCOMP",
+        "assembled_address": "42,3673",
+        "physical_fixed_word": 35771,
+        "physical_erasable_word": null,
+        "words": [
+          24365
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 59,
+        "label": "",
+        "op": "RCM",
+        "arguments": "",
+        "assembled_address": "42,3674",
+        "physical_fixed_word": 35772,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 60,
+        "label": "",
+        "op": "GOTO",
+        "arguments": "",
+        "assembled_address": "42,3675",
+        "physical_fixed_word": 35773,
+        "physical_erasable_word": null,
+        "words": [
+          32680
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 61,
+        "label": "",
+        "op": "EISOI",
+        "arguments": "+2",
+        "assembled_address": "42,3676",
+        "physical_fixed_word": 35774,
+        "physical_erasable_word": null,
+        "words": [
+          27585
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 64,
+        "label": "",
+        "op": "SETPD",
+        "arguments": "MXV",
+        "assembled_address": "42,3701",
+        "physical_fixed_word": 35777,
+        "physical_erasable_word": null,
+        "words": [
+          26753
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 65,
+        "label": "",
+        "op": "2D",
+        "arguments": "",
+        "assembled_address": "42,3702",
+        "physical_fixed_word": 35778,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 66,
+        "label": "",
+        "op": "REFSMMAT",
+        "arguments": "",
+        "assembled_address": "42,3703",
+        "physical_fixed_word": 35779,
+        "physical_erasable_word": null,
+        "words": [
+          990
+        ]
+      }
+    ],
+    "scope": "Actual returned-LUNPOS caller through native Moon-return vector arithmetic/GOTO/SETPD into LM UNIT or CM MXV before helper bodies.",
+    "constants": {},
+    "entry_bindings": {
+      "VMOON": "E5,1751",
+      "UNIT": "00,3023",
+      "MXV": "7303",
+      "NEWOPS": "6037",
+      "DANZIG": "6030",
+      "RCM": "0000002"
+    },
+    "unmapped_remaining": "LUNPOS callee numerical body, following body-frame and pitch/yaw computations and display lifecycle."
+  }
+}

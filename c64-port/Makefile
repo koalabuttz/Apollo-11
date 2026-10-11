@@ -928,3 +928,8 @@ include tools/sband_linear_integration.mk
 all: build/sband-linear-integrated-stream
 test: test-sband-linear
 sanitize: sanitize-sband-linear
+
+include tools/sband_moon_integration.mk
+all: build/sband-moon-integrated-stream
+test: test-sband-moon
+sanitize: sanitize-sband-moon

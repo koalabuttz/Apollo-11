@@ -1,0 +1,8 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/sband_moon_inputs.c tests/sband_moon_cases.c src/agc_word.c -o build/sband-moon-inputs
+python3 tools/freeze_sband_moon.py
+PASS 64 frozen states; 3469 fixture bytes
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_sband_moon.c tests/sband_moon_target.c tests/frozen_words.c tests/sband_moon_cases.c src/agc_word.c src/sband_moon.c src/sband_vector_linear.c src/sband_shift.c src/guidance_shift.c src/agc_multiword.c -o build/test-sband-moon
+./build/test-sband-moon
+PASS original orbital caller full-image fixtures and unchanged unsupported images
+python3 tools/sband_moon_vice_test.py --cc /workspace/toolchains/llvm-mos/bin/mos-c64-clang --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice
+PASS64 complete original/native states on stock-ROM C64; every2048word plusSUPER/IRQ exact; {'states': 64, 'prg_bytes': 16646, 'load_end': 18693, 'bss_end': 26885, 'mailbox': 'a5400000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}

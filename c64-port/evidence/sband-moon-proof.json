@@ -1,0 +1,66 @@
+{
+  "status": "qualified actual returned-LUNPOS antenna Moon vector caller; both complete files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 131072,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 131072,
+    "start": 0,
+    "end": 131072,
+    "record_bytes": 4106,
+    "decoded_sha256": "37c78e7c1cccfad46c50e67bc47b1fb5995a70a044f2f4c641dc184d433bda7e",
+    "decoded_bytes": 538181632,
+    "canonical_original_archive": "evidence/sband-moon-source.snapshots.bin.xz",
+    "compressed_sha256": "ce844c272e069efe91b30932891467a59e75eb4a295b674d36d1427a22a4740b",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 64,
+    "prg_bytes": 16646,
+    "load_end": 18693,
+    "bss_end": 26885,
+    "mailbox": "a5400000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups": [
+    "LM returned-LUNPOS vector through actual UNIT",
+    "CM returned-LUNPOS vector through actual MXV"
+  ],
+  "source_map": "evidence/sband-moon-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "81caf6480a5fbbe8797a580ff068ed1a6370c6207fa7fad36402948e96ec9faf",
+  "native_header_sha256": "c3d416b01d6a28f456adc00fb9e20be15898b844def0b1da8ce33e4e9f9ba64e",
+  "independent_review": {
+    "path": "evidence/sband-moon-independent-review.txt",
+    "sha256": "9c81416cf3edf8f97ff96f1d369ef46295050f821eeae34728b5300eb1718f45"
+  },
+  "limitations": [
+    "LUNPOS, final UNIT/MXV bodies and later antenna frame/angle/display continuation not executed here.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/Q and raw16 A/L, producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ],
+  "dependencies": [
+    {
+      "path": "evidence/sband-linear-proof.json",
+      "sha256": "4d9ff88bf8a260e147110b354d4204327b8f07a149f7678f04c3d8cf14af6477"
+    },
+    {
+      "path": "evidence/sband-shift-proof.json",
+      "sha256": "6179f534b2728cbac998deb7a972db6a40418d02f0c493181ba993340381bdad"
+    }
+  ]
+}

@@ -1443,3 +1443,7 @@ All206 local emitted words now have independently checked native ownership, orig
 ## Qualify canonical vector products sums and differences
 
 Translate original VXSC VAD and VSU basic bodies including live canonical aliases and passive fixed operands against131072 complete source native sanitizer states and512 C64 states. See `docs/NATIVE-SBAND-LINEAR-VECTORS.md`.
+
+## Compose original antenna Moon position return calculations
+
+Join actual returned LUNPOS vector arithmetic and frame handoffs against131072 full original native sanitizer states and64 C64 states preserving literal source data and actual UNIT or matrix frontiers without claiming ephemerides body completion. See `docs/NATIVE-SBAND-MOON-RETURN.md`.
