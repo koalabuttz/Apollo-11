@@ -436,3 +436,5 @@ subprocess.run([sys.executable,'tools/p66_launch_phased_differential.py',str(ref
 subprocess.run([sys.executable,'tools/matrix_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_charin_clear_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/passive_storage_differential.py',str(reference)],cwd=ROOT,check=True)

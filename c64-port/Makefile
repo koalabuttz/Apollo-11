@@ -617,3 +617,5 @@ include tools/p66_launch_phased_port.mk
 include tools/matrix_port.mk
 
 include tools/dsky_charin_clear.mk
+
+include tools/passive_storage_port.mk

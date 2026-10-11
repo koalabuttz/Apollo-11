@@ -1,0 +1,328 @@
+Loading /workspace/Apollo-11/c64-port/build/passive-storage-lm.prg from 0801 to 15D2 (0DD2 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   33/$021,  48/$30
+.C:0d14  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C   33987351
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-0.bin' from $6000 to $67ff
+>C:c080  a5 00 00 00  00                                      .....
+#1 (Stop on store c080)  164/$0a4,  52/$34
+.C:0d14  8E 80 C0    STX $C080      - A:01 X:A5 Y:00 SP:ed N.-....C   35332216
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-1.bin' from $6000 to $67ff
+>C:c080  a5 00 00 01  00                                      .....
+#1 (Stop on store c080)  288/$120,  33/$21
+.C:0d14  8E 80 C0    STX $C080      - A:02 X:A5 Y:00 SP:ed N.-....C   36676617
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-2.bin' from $6000 to $67ff
+>C:c080  a5 00 00 02  00                                      .....
+#1 (Stop on store c080)  103/$067,  32/$20
+.C:0d14  8E 80 C0    STX $C080      - A:03 X:A5 Y:00 SP:ed N.-....C   38021225
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-3.bin' from $6000 to $67ff
+>C:c080  a5 00 00 03  00                                      .....
+#1 (Stop on store c080)  234/$0ea,  59/$3b
+.C:0d14  8E 80 C0    STX $C080      - A:04 X:A5 Y:00 SP:ed N.-....C   39366113
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-4.bin' from $6000 to $67ff
+>C:c080  a5 00 00 04  00                                      .....
+#1 (Stop on store c080)   44/$02c,  59/$3b
+.C:0d14  8E 80 C0    STX $C080      - A:05 X:A5 Y:00 SP:ed N.-....C   40710407
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-5.bin' from $6000 to $67ff
+>C:c080  a5 00 00 05  00                                      .....
+#1 (Stop on store c080)  176/$0b0,  34/$22
+.C:0d14  8E 80 C0    STX $C080      - A:06 X:A5 Y:00 SP:ed N.-....C   42055306
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-6.bin' from $6000 to $67ff
+>C:c080  a5 00 00 06  00                                      .....
+#1 (Stop on store c080)   61/$03d,  40/$28
+.C:0d14  8E 80 C0    STX $C080      - A:07 X:A5 Y:00 SP:ed N.-....C   73851475
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-7.bin' from $6000 to $67ff
+>C:c080  a5 00 00 07  00                                      .....
+#1 (Stop on store c080)  218/$0da,  57/$39
+.C:0d14  8E 80 C0    STX $C080      - A:08 X:A5 Y:00 SP:ed N.-....C   75237303
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-8.bin' from $6000 to $67ff
+>C:c080  a5 00 00 08  00                                      .....
+#1 (Stop on store c080)   49/$031,   7/$07
+.C:0d14  8E 80 C0    STX $C080      - A:09 X:A5 Y:00 SP:ed N.-....C   76622182
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-9.bin' from $6000 to $67ff
+>C:c080  a5 00 00 09  00                                      .....
+#1 (Stop on store c080)  201/$0c9,  57/$39
+.C:0d14  8E 80 C0    STX $C080      - A:0A X:A5 Y:00 SP:ed N.-....C   78007728
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-10.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0a  00                                      .....
+#1 (Stop on store c080)   37/$025,  24/$18
+.C:0d14  8E 80 C0    STX $C080      - A:0B X:A5 Y:00 SP:ed N.-....C   79392939
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-11.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0b  00                                      .....
+#1 (Stop on store c080)  189/$0bd,  31/$1f
+.C:0d14  8E 80 C0    STX $C080      - A:0C X:A5 Y:00 SP:ed N.-....C   80778442
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-12.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0c  00                                      .....
+#1 (Stop on store c080)   22/$016,  55/$37
+.C:0d14  8E 80 C0    STX $C080      - A:0D X:A5 Y:00 SP:ed N.-....C   82163521
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-13.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0d  00                                      .....
+#1 (Stop on store c080)  305/$131,  21/$15
+.C:0d14  8E 80 C0    STX $C080      - A:0E X:A5 Y:00 SP:ed N.-....C  113965068
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-14.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0e  00                                      .....
+#1 (Stop on store c080)  142/$08e,  40/$28
+.C:0d14  8E 80 C0    STX $C080      - A:0F X:A5 Y:00 SP:ed N.-....C  115350394
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-15.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0f  00                                      .....
+#1 (Stop on store c080)  296/$128,  28/$1c
+.C:0d14  8E 80 C0    STX $C080      - A:10 X:A5 Y:00 SP:ed N.-....C  116736004
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-16.bin' from $6000 to $67ff
+>C:c080  a5 00 00 10  00                                      .....
+#1 (Stop on store c080)  134/$086,  22/$16
+.C:0d14  8E 80 C0    STX $C080      - A:11 X:A5 Y:00 SP:ed N.-....C  118121368
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-17.bin' from $6000 to $67ff
+>C:c080  a5 00 00 11  00                                      .....
+#1 (Stop on store c080)  285/$11d,  43/$2b
+.C:0d14  8E 80 C0    STX $C080      - A:12 X:A5 Y:00 SP:ed N.-....C  119506822
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-18.bin' from $6000 to $67ff
+>C:c080  a5 00 00 12  00                                      .....
+#1 (Stop on store c080)  126/$07e,  10/$0a
+.C:0d14  8E 80 C0    STX $C080      - A:13 X:A5 Y:00 SP:ed N.-....C  120892348
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-19.bin' from $6000 to $67ff
+>C:c080  a5 00 00 13  00                                      .....
+#1 (Stop on store c080)  278/$116,  19/$13
+.C:0d14  8E 80 C0    STX $C080      - A:14 X:A5 Y:00 SP:ed N.-....C  122277853
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-20.bin' from $6000 to $67ff
+>C:c080  a5 00 00 14  00                                      .....
+#1 (Stop on store c080)  182/$0b6,  25/$19
+.C:0d14  8E 80 C0    STX $C080      - A:15 X:A5 Y:00 SP:ed N.-....C  154075219
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-21.bin' from $6000 to $67ff
+>C:c080  a5 00 00 15  00                                      .....
+#1 (Stop on store c080)   21/$015,  25/$19
+.C:0d14  8E 80 C0    STX $C080      - A:16 X:A5 Y:00 SP:ed N.-....C  155460652
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-22.bin' from $6000 to $67ff
+>C:c080  a5 00 00 16  00                                      .....
+#1 (Stop on store c080)  176/$0b0,  21/$15
+.C:0d14  8E 80 C0    STX $C080      - A:17 X:A5 Y:00 SP:ed N.-....C  156846333
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-23.bin' from $6000 to $67ff
+>C:c080  a5 00 00 17  00                                      .....
+#1 (Stop on store c080)   12/$00c,  35/$23
+.C:0d14  8E 80 C0    STX $C080      - A:18 X:A5 Y:00 SP:ed N.-....C  158231591
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-24.bin' from $6000 to $67ff
+>C:c080  a5 00 00 18  00                                      .....
+#1 (Stop on store c080)  168/$0a8,  18/$12
+.C:0d14  8E 80 C0    STX $C080      - A:19 X:A5 Y:00 SP:ed N.-....C  159617322
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-25.bin' from $6000 to $67ff
+>C:c080  a5 00 00 19  00                                      .....
+#1 (Stop on store c080)    5/$005,  34/$22
+.C:0d14  8E 80 C0    STX $C080      - A:1A X:A5 Y:00 SP:ed N.-....C  161002645
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-26.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1a  00                                      .....
+#1 (Stop on store c080)  157/$09d,  12/$0c
+.C:0d14  8E 80 C0    STX $C080      - A:1B X:A5 Y:00 SP:ed N.-....C  162388119
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-27.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1b  00                                      .....
+#1 (Stop on store c080)  257/$101,  39/$27
+.C:0d14  8E 80 C0    STX $C080      - A:1C X:A5 Y:00 SP:ed N.-....C  194178198
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-28.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1c  00                                      .....
+#1 (Stop on store c080)   97/$061,   4/$04
+.C:0d14  8E 80 C0    STX $C080      - A:1D X:A5 Y:00 SP:ed N.-....C  195563659
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-29.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1d  00                                      .....
+#1 (Stop on store c080)  252/$0fc,  60/$3c
+.C:0d14  8E 80 C0    STX $C080      - A:1E X:A5 Y:00 SP:ed N.-....C  196949400
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-30.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1e  00                                      .....
+#1 (Stop on store c080)   87/$057,   8/$08
+.C:0d14  8E 80 C0    STX $C080      - A:1F X:A5 Y:00 SP:ed N.-....C  198334529
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-31.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1f  00                                      .....
+#1 (Stop on store c080)  247/$0f7,   8/$08
+.C:0d14  8E 80 C0    STX $C080      - A:20 X:A5 Y:00 SP:ed N.-....C  199720529
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-32.bin' from $6000 to $67ff
+>C:c080  a5 00 00 20  00                                      ... .
+#1 (Stop on store c080)   80/$050,  57/$39
+.C:0d14  8E 80 C0    STX $C080      - A:21 X:A5 Y:00 SP:ed N.-....C  201105633
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-33.bin' from $6000 to $67ff
+>C:c080  a5 00 00 21  00                                      ...!.
+#1 (Stop on store c080)  242/$0f2,  53/$35
+.C:0d14  8E 80 C0    STX $C080      - A:22 X:A5 Y:00 SP:ed N.-....C  202491755
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-34.bin' from $6000 to $67ff
+>C:c080  a5 00 00 22  00                                      ...".
+#1 (Stop on store c080)  264/$108,  28/$1c
+.C:0d14  8E 80 C0    STX $C080      - A:23 X:A5 Y:00 SP:ed N.-....C  208507852
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-35.bin' from $6000 to $67ff
+>C:c080  a5 00 00 23  00                                      ...#.
+#1 (Stop on store c080)  177/$0b1,  48/$30
+.C:0d14  8E 80 C0    STX $C080      - A:24 X:A5 Y:00 SP:ed N.-....C  209780031
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-36.bin' from $6000 to $67ff
+>C:c080  a5 00 00 24  00                                      ...$.
+#1 (Stop on store c080)   94/$05e,   3/$03
+.C:0d14  8E 80 C0    STX $C080      - A:25 X:A5 Y:00 SP:ed N.-....C  211052397
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-37.bin' from $6000 to $67ff
+>C:c080  a5 00 00 25  00                                      ...%.
+#1 (Stop on store c080)    9/$009,  24/$18
+.C:0d14  8E 80 C0    STX $C080      - A:26 X:A5 Y:00 SP:ed N.-....C  212324703
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-38.bin' from $6000 to $67ff
+>C:c080  a5 00 00 26  00                                      ...&.
+#1 (Stop on store c080)  242/$0f2,  46/$2e
+.C:0d14  8E 80 C0    STX $C080      - A:27 X:A5 Y:00 SP:ed N.-....C  213597388
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-0-39.bin' from $6000 to $67ff
+>C:c080  a5 00 00 27  00                                      ...'.
+#1 (Stop on store c080)  286/$11e,  52/$34
+.C:0d14  8E 80 C0    STX $C080      - A:00 X:A5 Y:01 SP:ed N.-B.I.C  245246326
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-0.bin' from $6000 to $67ff
+>C:c080  a5 00 00 00  01                                      .....
+#1 (Stop on store c080)   58/$03a,  55/$37
+.C:0d14  8E 80 C0    STX $C080      - A:01 X:A5 Y:01 SP:ed N.-B.I.C  246568573
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-1.bin' from $6000 to $67ff
+>C:c080  a5 00 00 01  01                                      .....
+#1 (Stop on store c080)  150/$096,  22/$16
+.C:0d14  8E 80 C0    STX $C080      - A:02 X:A5 Y:01 SP:ed N.-B.I.C  247891288
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-2.bin' from $6000 to $67ff
+>C:c080  a5 00 00 02  01                                      .....
+#1 (Stop on store c080)  241/$0f1,  24/$18
+.C:0d14  8E 80 C0    STX $C080      - A:03 X:A5 Y:01 SP:ed N.-B.I.C  249213975
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-3.bin' from $6000 to $67ff
+>C:c080  a5 00 00 03  01                                      .....
+#1 (Stop on store c080)   13/$00d,  39/$27
+.C:0d14  8E 80 C0    STX $C080      - A:04 X:A5 Y:01 SP:ed N.-B.I.C  250536234
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-4.bin' from $6000 to $67ff
+>C:c080  a5 00 00 04  01                                      .....
+#1 (Stop on store c080)  101/$065,  58/$3a
+.C:0d14  8E 80 C0    STX $C080      - A:05 X:A5 Y:01 SP:ed N.-B.I.C  251858749
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-5.bin' from $6000 to $67ff
+>C:c080  a5 00 00 05  01                                      .....
+#1 (Stop on store c080)  192/$0c0,  42/$2a
+.C:0d14  8E 80 C0    STX $C080      - A:06 X:A5 Y:01 SP:ed N.-B.I.C  253181418
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-6.bin' from $6000 to $67ff
+>C:c080  a5 00 00 06  01                                      .....
+#1 (Stop on store c080)  118/$076,  42/$2a
+.C:0d14  8E 80 C0    STX $C080      - A:07 X:A5 Y:01 SP:ed N.-B.I.C  284960508
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-7.bin' from $6000 to $67ff
+>C:c080  a5 00 00 07  01                                      .....
+#1 (Stop on store c080)  223/$0df,  47/$2f
+.C:0d14  8E 80 C0    STX $C080      - A:08 X:A5 Y:01 SP:ed N.-B.I.C  286323392
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-8.bin' from $6000 to $67ff
+>C:c080  a5 00 00 08  01                                      .....
+#1 (Stop on store c080)   10/$00a,   0/$00
+.C:0d14  8E 80 C0    STX $C080      - A:09 X:A5 Y:01 SP:ed N.-B.I.C  287685846
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-9.bin' from $6000 to $67ff
+>C:c080  a5 00 00 09  01                                      .....
+#1 (Stop on store c080)  111/$06f,  41/$29
+.C:0d14  8E 80 C0    STX $C080      - A:0A X:A5 Y:01 SP:ed N.-B.I.C  289048514
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-10.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0a  01                                      .....
+#1 (Stop on store c080)  216/$0d8,  34/$22
+.C:0d14  8E 80 C0    STX $C080      - A:0B X:A5 Y:01 SP:ed N.-B.I.C  290411386
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-11.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0b  01                                      .....
+#1 (Stop on store c080)    3/$003,  33/$21
+.C:0d14  8E 80 C0    STX $C080      - A:0C X:A5 Y:01 SP:ed N.-B.I.C  291773886
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-12.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0c  01                                      .....
+#1 (Stop on store c080)  104/$068,  29/$1d
+.C:0d14  8E 80 C0    STX $C080      - A:0D X:A5 Y:01 SP:ed N.-B.I.C  293136509
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-13.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0d  01                                      .....
+#1 (Stop on store c080)  276/$114,  24/$18
+.C:0d14  8E 80 C0    STX $C080      - A:0E X:A5 Y:01 SP:ed N.-B.I.C  324911436
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-14.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0e  01                                      .....
+#1 (Stop on store c080)   63/$03f,  59/$3b
+.C:0d14  8E 80 C0    STX $C080      - A:0F X:A5 Y:01 SP:ed N.-B.I.C  326273972
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-15.bin' from $6000 to $67ff
+>C:c080  a5 00 00 0f  01                                      .....
+#1 (Stop on store c080)  170/$0aa,  41/$29
+.C:0d14  8E 80 C0    STX $C080      - A:10 X:A5 Y:01 SP:ed N.-B.I.C  327636959
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-16.bin' from $6000 to $67ff
+>C:c080  a5 00 00 10  01                                      .....
+#1 (Stop on store c080)  275/$113,  24/$18
+.C:0d14  8E 80 C0    STX $C080      - A:11 X:A5 Y:01 SP:ed N.-B.I.C  328999821
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-17.bin' from $6000 to $67ff
+>C:c080  a5 00 00 11  01                                      .....
+#1 (Stop on store c080)   62/$03e,  41/$29
+.C:0d14  8E 80 C0    STX $C080      - A:12 X:A5 Y:01 SP:ed N.-B.I.C  330362339
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-18.bin' from $6000 to $67ff
+>C:c080  a5 00 00 12  01                                      .....
+#1 (Stop on store c080)  169/$0a9,  30/$1e
+.C:0d14  8E 80 C0    STX $C080      - A:13 X:A5 Y:01 SP:ed N.-B.I.C  331725333
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-19.bin' from $6000 to $67ff
+>C:c080  a5 00 00 13  01                                      .....
+#1 (Stop on store c080)  274/$112,  35/$23
+.C:0d14  8E 80 C0    STX $C080      - A:14 X:A5 Y:01 SP:ed N.-B.I.C  333088217
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-20.bin' from $6000 to $67ff
+>C:c080  a5 00 00 14  01                                      .....
+#1 (Stop on store c080)  129/$081,  12/$0c
+.C:0d14  8E 80 C0    STX $C080      - A:15 X:A5 Y:01 SP:ed N.-B.I.C  364862811
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-21.bin' from $6000 to $67ff
+>C:c080  a5 00 00 15  01                                      .....
+#1 (Stop on store c080)  237/$0ed,  35/$23
+.C:0d14  8E 80 C0    STX $C080      - A:16 X:A5 Y:01 SP:ed N.-B.I.C  366225902
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-22.bin' from $6000 to $67ff
+>C:c080  a5 00 00 16  01                                      .....
+#1 (Stop on store c080)   24/$018,  62/$3e
+.C:0d14  8E 80 C0    STX $C080      - A:17 X:A5 Y:01 SP:ed N.-B.I.C  367588430
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-23.bin' from $6000 to $67ff
+>C:c080  a5 00 00 17  01                                      .....
+#1 (Stop on store c080)  130/$082,  33/$21
+.C:0d14  8E 80 C0    STX $C080      - A:18 X:A5 Y:01 SP:ed N.-B.I.C  368951343
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-24.bin' from $6000 to $67ff
+>C:c080  a5 00 00 18  01                                      .....
+#1 (Stop on store c080)  238/$0ee,  52/$34
+.C:0d14  8E 80 C0    STX $C080      - A:19 X:A5 Y:01 SP:ed N.-B.I.C  370314430
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-25.bin' from $6000 to $67ff
+>C:c080  a5 00 00 19  01                                      .....
+#1 (Stop on store c080)   26/$01a,  18/$12
+.C:0d14  8E 80 C0    STX $C080      - A:1A X:A5 Y:01 SP:ed N.-B.I.C  371676960
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-26.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1a  01                                      .....
+#1 (Stop on store c080)  132/$084,  34/$22
+.C:0d14  8E 80 C0    STX $C080      - A:1B X:A5 Y:01 SP:ed N.-B.I.C  373039918
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-27.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1b  01                                      .....
+#1 (Stop on store c080)  274/$112,  38/$26
+.C:0d14  8E 80 C0    STX $C080      - A:1C X:A5 Y:01 SP:ed N.-B.I.C  404812964
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-28.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1c  01                                      .....
+#1 (Stop on store c080)   63/$03f,   1/$01
+.C:0d14  8E 80 C0    STX $C080      - A:1D X:A5 Y:01 SP:ed N.-B.I.C  406175554
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-29.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1d  01                                      .....
+#1 (Stop on store c080)  170/$0aa,  50/$32
+.C:0d14  8E 80 C0    STX $C080      - A:1E X:A5 Y:01 SP:ed N.-B.I.C  407538608
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-30.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1e  01                                      .....
+#1 (Stop on store c080)  276/$114,  15/$0f
+.C:0d14  8E 80 C0    STX $C080      - A:1F X:A5 Y:01 SP:ed N.-B.I.C  408901515
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-31.bin' from $6000 to $67ff
+>C:c080  a5 00 00 1f  01                                      .....
+#1 (Stop on store c080)   63/$03f,  59/$3b
+.C:0d14  8E 80 C0    STX $C080      - A:20 X:A5 Y:01 SP:ed N.-B.I.C  410264060
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-32.bin' from $6000 to $67ff
+>C:c080  a5 00 00 20  01                                      ... .
+#1 (Stop on store c080)  172/$0ac,  13/$0d
+.C:0d14  8E 80 C0    STX $C080      - A:21 X:A5 Y:01 SP:ed N.-B.I.C  411627145
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-33.bin' from $6000 to $67ff
+>C:c080  a5 00 00 21  01                                      ...!.
+#1 (Stop on store c080)  276/$114,  51/$33
+.C:0d14  8E 80 C0    STX $C080      - A:22 X:A5 Y:01 SP:ed N.-B.I.C  412989999
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-34.bin' from $6000 to $67ff
+>C:c080  a5 00 00 22  01                                      ...".
+#1 (Stop on store c080)  285/$11d,   0/$00
+.C:0d14  8E 80 C0    STX $C080      - A:23 X:A5 Y:01 SP:ed N.-B.I.C  418985595
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-35.bin' from $6000 to $67ff
+>C:c080  a5 00 00 23  01                                      ...#.
+#1 (Stop on store c080)  181/$0b5,  22/$16
+.C:0d14  8E 80 C0    STX $C080      - A:24 X:A5 Y:01 SP:ed N.-B.I.C  420237049
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-36.bin' from $6000 to $67ff
+>C:c080  a5 00 00 24  01                                      ...$.
+#1 (Stop on store c080)   73/$049,  36/$24
+.C:0d14  8E 80 C0    STX $C080      - A:25 X:A5 Y:01 SP:ed N.-B.I.C  421488243
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-37.bin' from $6000 to $67ff
+>C:c080  a5 00 00 25  01                                      ...%.
+#1 (Stop on store c080)  285/$11d,  21/$15
+.C:0d14  8E 80 C0    STX $C080      - A:26 X:A5 Y:01 SP:ed N.-B.I.C  422739912
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-38.bin' from $6000 to $67ff
+>C:c080  a5 00 00 26  01                                      ...&.
+#1 (Stop on store c080)  181/$0b5,  40/$28
+.C:0d14  8E 80 C0    STX $C080      - A:27 X:A5 Y:01 SP:ed N.-B.I.C  423991363
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-capture-1-39.bin' from $6000 to $67ff
+>C:c080  a5 00 00 27  01                                      ...'.
+#1 (Stop on store c080)  186/$0ba,  13/$0d
+.C:0f28  8E 80 C0    STX $C080      - A:00 X:5A Y:14 SP:ed ..-....C  423991651
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-shared.bin' from $7000 to $7fff
+Saving file `/workspace/Apollo-11/c64-port/build/passive-storage-lm-stack.bin' from $c800 to $cfff

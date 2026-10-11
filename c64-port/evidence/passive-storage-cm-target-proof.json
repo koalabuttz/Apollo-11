@@ -1,0 +1,19 @@
+{
+  "mission": "cm",
+  "exact_returned_word_comparisons": 81920,
+  "ordinary_and_masked_IRQ_restored": true,
+  "canonical_2048_word_image_preserved": true,
+  "native_RO_mapping_preserved": true,
+  "word_stream_sha256_each_IRQ_run": [
+    "bbac0c931841713fe8f41208be9ac14a3083f78371011db804e4b4698f4e13c5",
+    "bbac0c931841713fe8f41208be9ac14a3083f78371011db804e4b4698f4e13c5"
+  ],
+  "software_stack_extent": 43,
+  "mailbox": "5a00002701",
+  "prg_sha256": "232fc5182faf18461119127de643e537fac7fe0e473c900cc207c2e9baba3d7f",
+  "map_sha256": "9b4f22c2bef55773a221c2dfc4c36ce592a5c03a56b043b75ac9ad34d77d0060",
+  "source_instructions_decoded": false,
+  "retained_return_stream": "evidence/passive-storage-cm-returned.words.bin.xz",
+  "retained_return_stream_decoded_bytes": 163840,
+  "retained_return_stream_decoded_sha256": "68628038f0afe96876af40a2b32360b5f5ee6f92eea10394bfebe2d59b0996f8"
+}
