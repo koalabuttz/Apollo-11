@@ -711,3 +711,7 @@ All 16384 whole original-image ENDOFJOB states match native and sanitized output
 ## Complete original Comanche SMALLMP and DPADD routines
 
 All original MYSUBS words, signed-zero and overflow paths, actual returns and four scalar aliases are mapped; 294912 whole original states match native and sanitizer outputs, and 128 C64 state checks pass. See `docs/COMANCHE-MYSUBS.md`.
+
+## Port actual Comanche timer-interrupt lead-in
+
+All 1024 complete original timer-interrupt states preserve registers, banks and external ISR/pending metadata; source, sanitizer and C64 checks pass. See `docs/COMANCHE_TASK_INTERRUPT.md`.

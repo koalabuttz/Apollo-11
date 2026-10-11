@@ -1,0 +1,7 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_task_interrupt.c src/cm_native_image.c src/agc_word.c tests/cm_task_interrupt_cases.c tests/cm_task_interrupt_check.c tests/test_cm_task_interrupt.c -o build/test-cm-task-interrupt
+./build/test-cm-task-interrupt
+1024 original CM automatic interrupt/RESUME full-image states and deferral guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_task_interrupt.c src/cm_native_image.c src/agc_word.c tests/cm_task_interrupt_cases.c tests/cm_task_interrupt_check.c tests/test_cm_task_interrupt.c -o build/test-cm-task-interrupt-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-task-interrupt-sanitize
+1024 original CM automatic interrupt/RESUME full-image states and deferral guards: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-task-interrupt.map src/cm_task_interrupt.c src/cm_native_image.c src/agc_word.c tests/cm_task_interrupt_cases.c tests/cm_task_interrupt_check.c platform/c64/cm_task_interrupt_diagnostic.c -o build/cm-task-interrupt.prg
