@@ -1390,3 +1390,7 @@ Translate original VXSC VAD and VSU basic bodies including live canonical aliase
 ## Compose original antenna Moon position return calculations
 
 Join actual returned LUNPOS vector arithmetic and frame handoffs against131072 full original native sanitizer states and64 C64 states preserving literal source data and actual UNIT or matrix frontiers without claiming ephemerides body completion. See `docs/NATIVE-SBAND-MOON-RETURN.md`.
+
+## Compose continuous original octal display and row loop
+
+Qualify4096 original inputs and8544 uninterrupted full source native sanitizer checkpoints through actual octal formatting and row loops with128 C64 staged checks and explicit ENTRET and alarm frontiers. See `docs/DSKY-OCTAL-CONSUMER.md`.

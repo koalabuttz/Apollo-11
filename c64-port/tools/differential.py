@@ -592,3 +592,5 @@ subprocess.run([sys.executable,'tools/dsky_response_recall_differential.py',str(
 subprocess.run([sys.executable,'tools/dsky_operator_response_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_octal_verb_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_octal_consumer_differential.py',str(reference)],cwd=ROOT,check=True)

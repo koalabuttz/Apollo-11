@@ -1,0 +1,5 @@
+tests/dsky_octal_consumer_vectors_0.h 32 states 0 before/ 262 after patches
+tests/dsky_octal_consumer_vectors_1.h 32 states 160 before/ 190 after patches
+tests/dsky_octal_consumer_vectors_2.h 32 states 481 before/ 515 after patches
+tests/dsky_octal_consumer_vectors_3.h 32 states 739 before/ 168 after patches
+tests/dsky_octal_consumer_vectors_all.h 128 states 1380 before/ 1135 after patches

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete dsky_octal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002002
+PRG bytes: 11446
+dsky_octal_consumer_2-hardware-stack.bin: measured stack extent 22 bytes
+dsky_octal_consumer_2-software-stack.bin: measured stack extent 64 bytes
