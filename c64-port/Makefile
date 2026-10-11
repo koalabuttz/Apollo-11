@@ -726,3 +726,5 @@ include tools/dsky_source_alarm.mk
 
 include tools/cm_init_display_mixed.mk
 all: build/cm-init-display-mixed-native
+
+include tools/lm_rcs_monitor_integration.mk

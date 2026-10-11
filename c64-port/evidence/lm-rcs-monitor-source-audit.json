@@ -1,0 +1,9 @@
+{
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "source_file": "Luminary099/RCS_FAILURE_MONITOR.agc",
+  "original_sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
+  "assembled_sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
+  "source_edits": 0,
+  "support_source_audit": "evidence/lm-powered-source-audit.json",
+  "declaration_data_domain": "Byte-original LM declaration/data baseline"
+}

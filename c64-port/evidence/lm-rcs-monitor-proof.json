@@ -1,0 +1,99 @@
+{
+  "complete_states": 131072,
+  "decoded_sha256": "7081319c4e0305be2f3f4589c16399ff5775b454e3f232e2ac06fcbe35da60f5",
+  "handoff_counts": {
+    "resume": 118832,
+    "bailout1202": 12240
+  },
+  "highest_changed_bit_counts": {
+    "-1": 512,
+    "0": 512,
+    "1": 1024,
+    "2": 2048,
+    "3": 4096,
+    "4": 8192,
+    "5": 16384,
+    "6": 32768,
+    "7": 65536
+  },
+  "direction_counts": {
+    "unchanged": 512,
+    "closing": 65280,
+    "opening": 65280
+  },
+  "pool_context_counts": {
+    "0": 16384,
+    "1": 16384,
+    "2": 16384,
+    "3": 16384,
+    "4": 16384,
+    "5": 12288,
+    "6": 12288,
+    "7": 12288,
+    "8": 12288
+  },
+  "EB_counts": {
+    "0": 16384,
+    "256": 16384,
+    "512": 16384,
+    "768": 16384,
+    "1024": 16384,
+    "1280": 16384,
+    "1536": 16384,
+    "1792": 16384
+  },
+  "SUPER_counts": {
+    "0": 16384,
+    "16": 16384,
+    "32": 16384,
+    "48": 16384,
+    "64": 16384,
+    "80": 16384,
+    "96": 16384,
+    "112": 16384
+  },
+  "frozen_states": 192,
+  "frozen_storage_bytes": 8931,
+  "original_source_file": "Luminary099/RCS_FAILURE_MONITOR.agc",
+  "original_source_sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
+  "whole_containing_emitted_words": 69,
+  "source_map": "evidence/lm-rcs-monitor-source-map.json",
+  "source_audit": "evidence/lm-rcs-monitor-source-audit.json",
+  "support_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-rcs-monitor-complete.snapshots.xz",
+      "decoded_sha256": "7081319c4e0305be2f3f4589c16399ff5775b454e3f232e2ac06fcbe35da60f5"
+    },
+    "strict_native": {
+      "object": "evidence/lm-rcs-monitor-complete.snapshots.xz",
+      "decoded_sha256": "7081319c4e0305be2f3f4589c16399ff5775b454e3f232e2ac06fcbe35da60f5"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-rcs-monitor-complete.snapshots.xz",
+      "decoded_sha256": "7081319c4e0305be2f3f4589c16399ff5775b454e3f232e2ac06fcbe35da60f5"
+    }
+  },
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "channel32"
+  ],
+  "decoded_bytes": 538181632,
+  "actual_C64": {
+    "complete_states": 192,
+    "mailbox": "a50000c000",
+    "PRG_bytes": 16927,
+    "loaded_end": "0x4a1d",
+    "hardware_stack": 20,
+    "software_stack": 711,
+    "compiler_ZP": 0,
+    "containing_source_constants": 18
+  },
+  "scope": "All69 byte-original containing source words: actual06,3156 RCSMON/RCSMONIT entry, channel32 highest-changed-bit selection, both valve-mask directions, actual NOVAC admission and all18 containing data words. IRQ 0/canonical ordinary image, coherentEB/BB and valid Executive pool contract. Stops before external RESUME 05270 or BAILOUT1 05716; neither external service nor admitted ACCJOB executes here. Complete current/PVAL low8 combination sweep twice; other contexts varied, not Cartesian. No complete resident application claimed.",
+  "independent_review": {
+    "path": "evidence/lm-rcs-monitor-independent-review.txt",
+    "sha256": "c49683325304d8b10376dfb7257f6f01bf772b9493833d6b380235a65c1d1342"
+  }
+}

@@ -1087,3 +1087,7 @@ Actual source alarm display, relay controls and monitor termination match8192 co
 ## Translate original Comanche mixed display initialization and priority sequences
 
 Actual INITDSP prefixes and mixed source priority continuations match15360 complete original/native/full-sanitizer checkpoints across7168 sequences and120 actual C64 checkpoints across56 sequences. Selected job bodies remain explicit later continuations. See `docs/COMANCHE_INIT_DISPLAY_MIXED.md`.
+
+## Translate complete original Luminary RCS failure monitor source
+
+All69 original source words and18 fixed constants are mapped and binary-checked. Channel32 changes, both valve-mask directions and actual NOVAC admission match131072 complete original/native/full-sanitizer states and192 actual C64 states. External RESUME, resource-alarm processing and admitted ACCJOB bodies retain explicit source boundaries. See `docs/LUMINARY-RCS-MONITOR.md`.

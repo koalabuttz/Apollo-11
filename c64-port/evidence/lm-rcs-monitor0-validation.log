@@ -1,0 +1,7 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -DLM_RCS_MONITOR_CHECK_ONLY -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_rcs_monitor.c tests/frozen_words.c tools/lm_rcs_monitor_diagnostic.c src/lm_rcs_monitor.c src/executive.c src/agc_word.c tests/lm_rcs_monitor_cases.c -Wl,-Map,build/lm-rcs-monitor0.map -o build/lm-rcs-monitor0.prg
+python tools/lm_rcs_monitor_vice_test.py --phase 0 --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice
+PASS: VICE PAL C64, 192 complete lm_rcs_monitor group original-assembly states; retained memory unchanged
+Mailbox: a50000c000
+PRG bytes: 16927
+lm_rcs_monitor-hardware-stack.bin: measured stack extent 20 bytes
+lm_rcs_monitor-software-stack.bin: measured stack extent 711 bytes
