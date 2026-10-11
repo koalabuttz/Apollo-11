@@ -291,3 +291,5 @@ include tools/shift.mk
 include tools/dp_divide.mk
 
 include tools/velocity.mk
+
+include tools/norm.mk

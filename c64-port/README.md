@@ -243,3 +243,7 @@ All 163,840 original-assembly comparisons and 573 host/sanitizer/C64 states pass
 ## Translate complete P66 updated-velocity calculation through STOVL and position load
 
 All 4,648 complete assembly checkpoints pass; all 156 C64 states pass across two RAM-safe images. See `docs/VELOCITY.md`.
+
+## Translate scalar square root and normalized root with source error boundary
+
+All 132,096 assembly comparisons and 637 host/sanitizer/C64 states pass; negative inputs stop at the declared pre-1302 boundary. See `docs/NORM.md`.
