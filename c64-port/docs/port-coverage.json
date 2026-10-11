@@ -917,6 +917,13 @@
           ],
           "scope": "Original positive scalar no-round SL5 SL8 SL16 canonical shift with both CYR edits; other shifts and interpreter bodies remain separate.",
           "verification": "docs/NATIVE-EPHEMERIS-SHIFT.md"
+        },
+        {
+          "native_files": [
+            "src/sband_shift.c"
+          ],
+          "scope": "Canonical original vector-left shift through true DANZIG with actual overflow and all source scratch; other interpreter bodies remain open.",
+          "verification": "docs/NATIVE-SBAND-VECTOR-SHIFT.md"
         }
       ]
     },
@@ -1589,6 +1596,13 @@
           ],
           "scope": "Whole tested lamp mode/release control composition including actual caller bank data and queues; hardware 500cs runtime scheduling separate.",
           "verification": "docs/DSKY-LAMP-LIFECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_operator_release.c"
+          ],
+          "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
+          "verification": "docs/DSKY-OPERATOR-RELEASE.md"
         }
       ]
     },
@@ -1914,6 +1928,13 @@
           ],
           "scope": "Actual returned conic Earth versus Moon selection through source UNIT MXV or LUNPOS entry; following numerical bodies remain separate.",
           "verification": "docs/NATIVE-SBAND-ORBIT-CALLERS.md"
+        },
+        {
+          "native_files": [
+            "src/sband_frame.c"
+          ],
+          "scope": "Actual unit trig matrix and shift continuations in antenna frame calculation; Moon-return and final angle branches remain open.",
+          "verification": "docs/NATIVE-SBAND-FRAME.md"
         }
       ]
     },
@@ -3221,6 +3242,13 @@
           ],
           "scope": "Original positive scalar no-round SL5 SL8 SL16 canonical shift with both CYR edits; other shifts and interpreter bodies remain separate.",
           "verification": "docs/NATIVE-EPHEMERIS-SHIFT.md"
+        },
+        {
+          "native_files": [
+            "src/sband_shift.c"
+          ],
+          "scope": "Canonical original vector-left shift through true DANZIG with actual overflow and all source scratch; other interpreter bodies remain open.",
+          "verification": "docs/NATIVE-SBAND-VECTOR-SHIFT.md"
         }
       ]
     },
@@ -3873,6 +3901,13 @@
           ],
           "scope": "Whole tested lamp mode/release control composition including actual caller bank data and queues; hardware 500cs runtime scheduling separate.",
           "verification": "docs/DSKY-LAMP-LIFECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_operator_release.c"
+          ],
+          "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
+          "verification": "docs/DSKY-OPERATOR-RELEASE.md"
         }
       ]
     },
@@ -4275,6 +4310,13 @@
           ],
           "scope": "Actual returned conic Earth versus Moon selection through source UNIT MXV or LUNPOS entry; following numerical bodies remain separate.",
           "verification": "docs/NATIVE-SBAND-ORBIT-CALLERS.md"
+        },
+        {
+          "native_files": [
+            "src/sband_frame.c"
+          ],
+          "scope": "Actual unit trig matrix and shift continuations in antenna frame calculation; Moon-return and final angle branches remain open.",
+          "verification": "docs/NATIVE-SBAND-FRAME.md"
         }
       ]
     },
