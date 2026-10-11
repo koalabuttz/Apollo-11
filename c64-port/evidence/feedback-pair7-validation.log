@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete feedback_pair group original-assembly states; retained memory unchanged
+Mailbox: a500002007
+PRG bytes: 24382
+feedback_pair-hardware-stack.bin: measured stack extent 14 bytes
+feedback_pair-software-stack.bin: measured stack extent 365 bytes

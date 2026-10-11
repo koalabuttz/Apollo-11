@@ -1,0 +1,8 @@
+/* SPDX-License-Identifier: MIT */
+#include "throttle_feedback_pairs_cases.h"
+uint8_t tfp_next(agc_word loc){switch(loc){case 03433:return 0;case 03436:return 1;case 03440:return 2;case 03443:return 3;case 03444:return 4;case 03446:return 5;case 03451:return 6;case 03454:return 7;case 03457:return 8;case 03461:return 9;case 03464:return 10;case 03467:return 11;case 03472:return 12;case 03474:return 13;case 03476:return 14;case 03477:return 15;case 03502:return 16;case 03503:return 17;case 03504:return 18;case 03506:return 19;default:return 255;}}
+void tfp_input(throttle_feedback_pairs_case *c,uint16_t n){p66_feedback_pair_control *p=&c->control;tf_input(&c->source,n);p->pc=06061;p->q=01030;p->fb=064000;p->eb=03400;p->bb=064007;p->loc=03433;p->bankset=064007;p->cyr=0;p->edop=0;p->intbit15=040000;p->interrupt_enabled=(agc_word)(n&1u);p->polish=0;p->next_pair=0;}
+void tfp_words(const throttle_feedback_pairs_case *c,uint16_t w[TFP_WORDS]){const p66_feedback_pair_control *p=&c->control;tf_words(&c->source,w);w[124]=p->pc;w[125]=p->q;w[126]=p->fb;w[127]=p->eb;w[128]=p->bb;w[129]=p->loc;w[130]=p->bankset;w[131]=p->cyr;w[132]=p->edop;w[133]=p->intbit15;w[134]=p->interrupt_enabled;w[135]=p->polish;w[136]=p->next_pair;}
+#ifndef FEEDBACK_PAIRS_INPUT_ONLY
+unsigned tfp_apply(throttle_feedback_pairs_case *c){throttle_feedback_case *x=&c->source;return (unsigned)p66_feedback_pair(&x->previous.base.previous.previous.previous.preparation,&x->previous.base.previous.previous.previous.scratch,&x->previous.base.previous.elapsed,&x->previous.base.scratch,&x->previous.norm,&x->previous.base.previous.previous.push,&x->feedback,&x->input,x->bias,&c->control,c->control.next_pair);}
+#endif

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete horizontal_phase group original-assembly states; retained memory unchanged
+Mailbox: a500002004
+PRG bytes: 25361
+horizontal_phase-hardware-stack.bin: measured stack extent 24 bytes
+horizontal_phase-software-stack.bin: measured stack extent 319 bytes
