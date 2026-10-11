@@ -1,0 +1,4 @@
+PASS: 6800 inputs x DAD/DSU/BDSU/BVSU = 27,200 complete 50-word states and original overflow observations
+256 four-word raw corners, 16 explicit signed overflow/skip families, 128 further arithmetic edges, 4096 cross-component corners and 2304 deterministic random cases per operation
+Both signed zeros/mixed signs, all paths0/1/5/7 for every active component, stable operands/PIPTIME, MODE/MPAC2/scratch and A/L preserved exactly
+Sum snapshot SHA256: 0e192daed2bc0a4e61994a757f2e29220190e7fd2c87722df7c4125bde466fe3

@@ -1,0 +1,3 @@
+./build/test-sum
+PASS: 256 complete original DAD/DSU/BDSU/BVSU states and overflow paths; all unsupported MODEs reject unchanged
+make: Nothing to be done for 'c64-sum'.

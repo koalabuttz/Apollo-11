@@ -223,3 +223,7 @@ All 49,152 complete assembly comparisons and 128 host/sanitizer/C64 states pass.
 ## Translate unrounded triple-precision dot product and overflow accumulation
 
 All 10,272 complete assembly comparisons and 96 host/sanitizer/C64 states pass. See [DOT.md](DOT.md).
+
+## Translate scalar sums and backward vector subtraction with exact overflow effects
+
+All 27,200 complete assembly comparisons and 256 host/sanitizer/C64 states pass. See [SUM.md](SUM.md).

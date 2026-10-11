@@ -1,0 +1,11 @@
+PASS: VICE PAL, 256 complete original-assembly DAD/DSU/BDSU/BVSU states and overflow paths; restoring I
+Mailbox: a50000000103643224
+Target state bytes / modeled words: 100 50
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/sum-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/sum-vice-monitor.log -monlog -limitcycles 1000000000
+DAD resolved overflow: 1476 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+DSU overflow: 1480 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+BDSU overflow: 1319 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+BVSU overflow: 3807 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+BVSU independent random: 2816 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+sum-vice-hardware-stack.bin: measured sentinel extent 27 bytes
+sum-vice-software-stack.bin: measured sentinel extent 222 bytes
