@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/velocity-a.prg from 0801 to 9DC2 (95C2 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)  292/$124,  28/$1c
+.C:5c17  8D 88 C0    STA $C088      - A:10 X:00 Y:00 SP:ed ..-..I..   34141240
+Stopwatch reset to 0.
+#1 (Stop on store c088)  106/$06a,  40/$28
+.C:5c2c  8D 88 C0    STA $C088      - A:20 X:00 Y:07 SP:ed ..-..I..      27606
+Stopwatch:      27606
+#1 (Stop on store c088)   19/$013,  45/$2d
+.C:5c17  8D 88 C0    STA $C088      - A:11 X:01 Y:02 SP:ed ..-..I..     336626
+Stopwatch reset to 0.
+#1 (Stop on store c088)  151/$097,  14/$0e
+.C:5c2c  8D 88 C0    STA $C088      - A:21 X:01 Y:07 SP:ed ..-..I..      27941
+Stopwatch:      27941
+#1 (Stop on store c088)   67/$043,   1/$01
+.C:5c17  8D 88 C0    STA $C088      - A:12 X:02 Y:03 SP:ed ..-..I..     337132
+Stopwatch reset to 0.
+#1 (Stop on store c088)  201/$0c9,  17/$11
+.C:5c2c  8D 88 C0    STA $C088      - A:22 X:02 Y:07 SP:ed ..-..I..      28114
+Stopwatch:      28114
+#1 (Stop on store c088)  136/$088,  36/$24
+.C:5c17  8D 88 C0    STA $C088      - A:13 X:03 Y:06 SP:ed ..-..I..     338534
+Stopwatch reset to 0.
+#1 (Stop on store c088)  268/$10c,  11/$0b
+.C:5c2c  8D 88 C0    STA $C088      - A:23 X:03 Y:07 SP:ed ..-..I..      27947
+Stopwatch:      27947
+#1 (Stop on store c088)  259/$103,  33/$21
+.C:5e77  8E 88 C0    STX $C088      - A:33 X:14 Y:00 SP:ed ..-..I.C     361554
+Stopwatch reset to 0.
+#1 (Stop on store c088)  217/$0d9,   7/$07
+.C:5c2c  8D 88 C0    STA $C088      - A:24 X:04 Y:07 SP:ed ..-..I..      75952
+Stopwatch:      75952
+#2 (Stop on store c080)  183/$0b7,  13/$0d
+.C:5ef8  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-.....     427624
+>C:c080  a5 00 00 50  00 03 ea 75  24                         ...P...u$
+Saving file `/workspace/Apollo-11/c64-port/build/velocity-a-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/velocity-a-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/velocity-a-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 STOVL24D / R          
+0518  COMPLETE ASSEMBLY STATE HALF PASS       
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

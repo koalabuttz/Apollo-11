@@ -1,0 +1,11 @@
+PASS: VICE PAL, complete original-assembly velocity states, split fixture half 0; combined halves cover all128 integrated skip inputs and three retained histories; restoring I
+Mailbox: a50000500003ea7524
+Target state bytes / modeled words: 234 117
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/velocity-a-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/velocity-a-vice-monitor.log -monlog -limitcycles 1000000000
+velocity sample 0: 27606 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+velocity sample 1: 27941 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+velocity sample 2: 28114 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+velocity sample 3: 27947 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+full prefix through STOVL24D,R: 75952 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+velocity-a-vice-hardware-stack.bin: measured sentinel extent 50 bytes
+velocity-a-vice-software-stack.bin: measured sentinel extent 412 bytes

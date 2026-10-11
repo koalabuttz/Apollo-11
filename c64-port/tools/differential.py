@@ -150,3 +150,5 @@ subprocess.run([sys.executable,'tools/product_differential.py',str(reference)],c
 subprocess.run([sys.executable,'tools/shift_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dp_divide_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/velocity_differential.py',str(reference)],cwd=ROOT,check=True)
