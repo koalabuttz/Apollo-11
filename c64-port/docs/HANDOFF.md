@@ -304,3 +304,7 @@ All 4,648 complete assembly checkpoints pass; all 156 C64 states pass across two
 ## Translate scalar square root and normalized root with source error boundary
 
 All 132,096 assembly comparisons and 637 host/sanitizer/C64 states pass; negative inputs stop at the declared pre-1302 boundary. See [NORM.md](NORM.md).
+
+## Translate abort flags and selected restart-group cleanup paths
+
+All 49,152 complete assembly comparisons and 128 host/sanitizer/C64 states pass. See [RECOVERY_CLEANUP.md](RECOVERY_CLEANUP.md).

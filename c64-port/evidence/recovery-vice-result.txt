@@ -1,0 +1,5 @@
+PASS: VICE PAL, 128 complete original assembly recovery states, zero failures
+Mailbox: a50000802f
+PRG file/loaded bytes: 19299 19297
+hardware stack sentinel extent: 10
+software stack sentinel extent: 6

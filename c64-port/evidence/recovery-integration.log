@@ -1,0 +1,3 @@
+./build/test-recovery
+PASS: 128 complete original assembly abort-cleanup states; unsupported routes retain state
+make: Nothing to be done for 'c64-recovery'.

@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/recovery.prg from 0801 to 535A (4B5A bytes)
+WATCH: 1  C:$53ba  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 53ba)  110/$06e,  19/$13
+.C:11f3  8E BA 53    STX $53BA      - A:00 X:A5 Y:00 SP:f1 N.-....C   12350917
+>C:53ba  a5 00 00 80  2f                                      ..../
+Saving file `/workspace/Apollo-11/c64-port/build/recovery-vice-mailbox.bin' from $53ba to $53be
+Saving file `/workspace/Apollo-11/c64-port/build/recovery-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/recovery-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/recovery.prg from 0801 to 5361 (4B61 bytes)
+WATCH: 1  C:$53c1  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 53c1)  132/$084,  50/$32
+.C:11fa  8E C1 53    STX $53C1      - A:00 X:A5 Y:00 SP:f1 N.-....C   12352334
+>C:53c1  a5 00 00 80  2f                                      ..../
+Saving file `/workspace/Apollo-11/c64-port/build/recovery-vice-mailbox.bin' from $53c1 to $53c5
+Saving file `/workspace/Apollo-11/c64-port/build/recovery-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/recovery-vice-software-stack.bin' from $c100 to $cfff

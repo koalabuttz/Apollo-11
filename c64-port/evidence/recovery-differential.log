@@ -1,0 +1,6 @@
+PASS: 49,152 complete-state abort cleanup checkpoints; all 32,768 raw flag patterns plus four phase-cleanup routes
+All 47 modeled words and 14 surrounding guards agree at original TC Q / GOPOODOO entry
+FLAGS, MR.KLEAN, P00KLEAN, V37KLEAN, POODOO phase-4 write; no live SERVICER/restart execution
+ALARM_AND_ABORT.agc SHA256: 74236d3b94048b14efb776d7fff5ae66acac2f950e5bc03ca375d4b90b4484a8
+FRESH_START_AND_RESTART.agc SHA256: bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a
+Snapshot SHA256: 21de976a77f90373f7a4b2e9044034bfa126859742fb8cb67c2bf5ce0f5a8c6b
