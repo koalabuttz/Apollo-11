@@ -314,3 +314,7 @@ The canonical 2,048-word image drives actual compiled arithmetic callbacks throu
 ## Port original native axis rotations
 
 All 32,768 complete AX*SR*T source states match; strict and all-state sanitizer checks pass. C64 verification compares 128 full frozen states with source scratch aliases and both rotation directions preserved. See `docs/ROTATION.md`.
+
+## Port live CDU projection and acceleration feedback
+
+Live native trig and rotation feed DOT14 and AFC with original source scheduling boundaries. All 39,432 direct and full-prefix checkpoints match; entire-corpus sanitizers and all 144 frozen C64 checkpoints pass. See `docs/PROJECTION.md`.

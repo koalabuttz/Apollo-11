@@ -186,3 +186,5 @@ subprocess.run([sys.executable,'tools/trig_differential.py',str(reference)],cwd=
 subprocess.run([sys.executable,'tools/p66_native_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/rotation_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/projection_differential.py',str(reference)],cwd=ROOT,check=True)

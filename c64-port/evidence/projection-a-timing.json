@@ -1,0 +1,10 @@
+{
+  "pal_clock_hz": 985248,
+  "samples": {
+    "DOT_projection": 299223,
+    "STORE22": 416,
+    "AFC_divide_load": 1405,
+    "full_projection": 321988
+  },
+  "scope": "Finite excluded-call samples include marker overhead and VIC/IRQ effects; no WCET or live guidance deadline proof."
+}
