@@ -1,0 +1,405 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "native_source": "src/sband_orbit.c",
+    "containing_file_status": "partial",
+    "scope": "Original returned-conic SLOAD/BHIZ sphere selection. Earth reaches actual LM UNIT or CM MXV before helper executes; Moon saves RATT and loads TAT before actual LUNPOS interpreted entry. LUNPOS body and its following vector math are not executed.",
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 86,
+        "label": "",
+        "op": "SLOAD",
+        "arguments": "BHIZ",
+        "assembled_address": "42,3616",
+        "physical_fixed_word": 35726,
+        "physical_erasable_word": null,
+        "words": [
+          19549
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 87,
+        "label": "",
+        "op": "X2",
+        "arguments": "",
+        "assembled_address": "42,3617",
+        "physical_fixed_word": 35727,
+        "physical_erasable_word": null,
+        "words": [
+          40
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 88,
+        "label": "",
+        "op": "CONV4",
+        "arguments": "",
+        "assembled_address": "42,3620",
+        "physical_fixed_word": 35728,
+        "physical_erasable_word": null,
+        "words": [
+          27550
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 89,
+        "label": "",
+        "op": "VLOAD",
+        "arguments": "",
+        "assembled_address": "42,3621",
+        "physical_fixed_word": 35729,
+        "physical_erasable_word": null,
+        "words": [
+          32765
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 90,
+        "label": "",
+        "op": "RATT",
+        "arguments": "",
+        "assembled_address": "42,3622",
+        "physical_fixed_word": 35730,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 91,
+        "label": "",
+        "op": "STODL",
+        "arguments": "RLM",
+        "assembled_address": "42,3623",
+        "physical_fixed_word": 35731,
+        "physical_erasable_word": null,
+        "words": [
+          7301
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 92,
+        "label": "",
+        "op": "TAT",
+        "arguments": "",
+        "assembled_address": "42,3624",
+        "physical_fixed_word": 35732,
+        "physical_erasable_word": null,
+        "words": [
+          13
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 93,
+        "label": "CONV3",
+        "op": "CALL",
+        "arguments": "",
+        "assembled_address": "42,3625",
+        "physical_fixed_word": 35733,
+        "physical_erasable_word": null,
+        "words": [
+          32660
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 94,
+        "label": "",
+        "op": "LUNPOS",
+        "arguments": "",
+        "assembled_address": "42,3626",
+        "physical_fixed_word": 35734,
+        "physical_erasable_word": null,
+        "words": [
+          14260
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 102,
+        "label": "CONV4",
+        "op": "VLOAD",
+        "arguments": "",
+        "assembled_address": "42,3636",
+        "physical_fixed_word": 35742,
+        "physical_erasable_word": null,
+        "words": [
+          32765
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 103,
+        "label": "",
+        "op": "RATT",
+        "arguments": "",
+        "assembled_address": "42,3637",
+        "physical_fixed_word": 35743,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 104,
+        "label": "CONV5",
+        "op": "SETPD",
+        "arguments": "UNIT",
+        "assembled_address": "42,3640",
+        "physical_fixed_word": 35744,
+        "physical_erasable_word": null,
+        "words": [
+          22273
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 105,
+        "label": "",
+        "op": "0D",
+        "arguments": "",
+        "assembled_address": "42,3641",
+        "physical_fixed_word": 35745,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      }
+    ],
+    "original_bindings": {
+      "SBANDANT": "42,3606",
+      "X2": "0000047",
+      "RATT": "0000000",
+      "TAT": "0000014",
+      "RLM": "E4,1604",
+      "LUNPOS": "15,3664",
+      "UNIT": "00,3023",
+      "MXV": "7334",
+      "REFSMMAT": "E3,1733",
+      "CONV4": "42,3636",
+      "NEWOPS": "6070",
+      "DANZIG": "6061"
+    },
+    "sphere_domain": "All32768 ordinary X2 words occur in actual factory, with both zero representations taking Earth and all nonzero representations taking Moon. Other source contexts varied, not exhaustively Cartesian."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "native_source": "src/sband_orbit.c",
+    "containing_file_status": "partial",
+    "scope": "Original returned-conic SLOAD/BHIZ sphere selection. Earth reaches actual LM UNIT or CM MXV before helper executes; Moon saves RATT and loads TAT before actual LUNPOS interpreted entry. LUNPOS body and its following vector math are not executed.",
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 49,
+        "label": "",
+        "op": "SLOAD",
+        "arguments": "BHIZ",
+        "assembled_address": "42,3662",
+        "physical_fixed_word": 35762,
+        "physical_erasable_word": null,
+        "words": [
+          19549
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 50,
+        "label": "",
+        "op": "X2",
+        "arguments": "",
+        "assembled_address": "42,3663",
+        "physical_fixed_word": 35763,
+        "physical_erasable_word": null,
+        "words": [
+          40
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 51,
+        "label": "",
+        "op": "EISOI",
+        "arguments": "",
+        "assembled_address": "42,3664",
+        "physical_fixed_word": 35764,
+        "physical_erasable_word": null,
+        "words": [
+          27583
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 52,
+        "label": "",
+        "op": "VLOAD",
+        "arguments": "",
+        "assembled_address": "42,3665",
+        "physical_fixed_word": 35765,
+        "physical_erasable_word": null,
+        "words": [
+          32765
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 53,
+        "label": "",
+        "op": "RATT",
+        "arguments": "",
+        "assembled_address": "42,3666",
+        "physical_fixed_word": 35766,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 54,
+        "label": "",
+        "op": "STORE",
+        "arguments": "RCM",
+        "assembled_address": "42,3667",
+        "physical_fixed_word": 35767,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 55,
+        "label": "",
+        "op": "DLOAD",
+        "arguments": "CALL",
+        "assembled_address": "42,3670",
+        "physical_fixed_word": 35768,
+        "physical_erasable_word": null,
+        "words": [
+          19045
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 56,
+        "label": "",
+        "op": "TAT",
+        "arguments": "",
+        "assembled_address": "42,3671",
+        "physical_fixed_word": 35769,
+        "physical_erasable_word": null,
+        "words": [
+          13
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 57,
+        "label": "",
+        "op": "LUNPOS",
+        "arguments": "",
+        "assembled_address": "42,3672",
+        "physical_fixed_word": 35770,
+        "physical_erasable_word": null,
+        "words": [
+          22605
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 62,
+        "label": "EISOI",
+        "op": "VLOAD",
+        "arguments": "VCOMP",
+        "assembled_address": "42,3677",
+        "physical_fixed_word": 35775,
+        "physical_erasable_word": null,
+        "words": [
+          24445
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 63,
+        "label": "",
+        "op": "RATT",
+        "arguments": "",
+        "assembled_address": "42,3700",
+        "physical_fixed_word": 35776,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 64,
+        "label": "",
+        "op": "SETPD",
+        "arguments": "MXV",
+        "assembled_address": "42,3701",
+        "physical_fixed_word": 35777,
+        "physical_erasable_word": null,
+        "words": [
+          26753
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 65,
+        "label": "",
+        "op": "2D",
+        "arguments": "",
+        "assembled_address": "42,3702",
+        "physical_fixed_word": 35778,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 66,
+        "label": "",
+        "op": "REFSMMAT",
+        "arguments": "",
+        "assembled_address": "42,3703",
+        "physical_fixed_word": 35779,
+        "physical_erasable_word": null,
+        "words": [
+          990
+        ]
+      }
+    ],
+    "original_bindings": {
+      "SBANDANT": "42,3652",
+      "X2": "0000047",
+      "RATT": "0000000",
+      "TAT": "0000014",
+      "RCM": "0000002",
+      "LUNPOS": "26,2115",
+      "UNIT": "00,3023",
+      "MXV": "7303",
+      "REFSMMAT": "E3,1735",
+      "EISOI": "42,3677",
+      "NEWOPS": "6037",
+      "DANZIG": "6030"
+    },
+    "sphere_domain": "All32768 ordinary X2 words occur in actual factory, with both zero representations taking Earth and all nonzero representations taking Moon. Other source contexts varied, not exhaustively Cartesian."
+  }
+}

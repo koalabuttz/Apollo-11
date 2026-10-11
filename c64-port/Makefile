@@ -880,3 +880,8 @@ include tools/rtb_pulse_return_integration.mk
 include tools/native_resident_port_integration.mk
 test: native-resident-port-test
 sanitize: native-resident-port-sanitize
+
+include tools/sband_orbit_integration.mk
+all: build/sband-orbit-integrated-stream
+test: test-sband-orbit
+sanitize: sanitize-sband-orbit

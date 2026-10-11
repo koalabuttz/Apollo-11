@@ -1,0 +1,6 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-orbit.prg from 0801 to 29AB (21AB bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  285/$11d,  16/$10
+.C:11ac  8E 00 C0    STX $C000      - A:40 X:A5 Y:00 SP:f1 NV-..I.C   87644419
+Saving file `/workspace/Apollo-11/c64-port/build/sband-orbit-mailbox.bin' from $c000 to $c003
