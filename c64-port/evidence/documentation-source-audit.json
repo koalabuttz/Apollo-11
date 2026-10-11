@@ -1,0 +1,577 @@
+{
+  "schema": 1,
+  "source_files": [
+    {
+      "source_path": "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+      "source_sha256": "e8c35fcbdcaa3692cac397e54ab92271ef47df137bc6b939f9fe243162ddf515",
+      "preserved_original": "evidence/documentation-source-LUNAR_LANDMARK_SELECTION_FOR_CM.agc.original",
+      "byte_count": 1356,
+      "line_count": 35,
+      "source_lines": [
+        {
+          "line": 1,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 2,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 3,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 4,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 5,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 6,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 7,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 8,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 9,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 10,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 11,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 12,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 13,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 14,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 15,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 16,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 17,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 18,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 19,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 20,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 21,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 22,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 23,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 24,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 25,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 26,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 27,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 28,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 29,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 30,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 31,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 32,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 33,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 34,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 35,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        }
+      ],
+      "emitted_code_words": 0,
+      "emitted_data_words": 0,
+      "declarations": 0,
+      "algorithms_translated": 0
+    },
+    {
+      "source_path": "Comanche055/CONTRACT_AND_APPROVALS.agc",
+      "source_sha256": "769c1db20e0a9cb511ee16987700db047996dbec46f1a57b3eec4919f81a321d",
+      "preserved_original": "evidence/documentation-source-CONTRACT_AND_APPROVALS.agc.original",
+      "byte_count": 3432,
+      "line_count": 73,
+      "source_lines": [
+        {
+          "line": 1,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 2,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 3,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 4,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 5,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 6,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 7,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 8,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 9,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 10,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 11,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 12,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 13,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 14,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 15,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 16,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 17,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 18,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 19,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 20,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 21,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 22,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 23,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 24,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 25,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 26,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 27,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 28,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 29,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 30,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 31,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 32,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 33,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 34,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 35,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 36,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 37,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 38,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 39,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 40,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 41,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 42,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 43,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 44,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 45,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 46,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 47,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 48,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 49,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 50,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 51,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 52,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 53,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 54,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 55,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 56,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 57,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 58,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 59,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 60,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 61,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 62,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 63,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 64,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 65,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 66,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 67,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 68,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 69,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 70,
+          "kind": "blank",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 71,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 72,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        },
+        {
+          "line": 73,
+          "kind": "comment",
+          "mapping": "byte-exact retained documentation; no native operation"
+        }
+      ],
+      "emitted_code_words": 0,
+      "emitted_data_words": 0,
+      "declarations": 0,
+      "algorithms_translated": 0
+    }
+  ],
+  "fresh_original_comments_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "whole_rope_identical_to_existing_original_layout_baseline": true,
+  "runtime_code_added": false,
+  "native_algorithm_translation_claim": false,
+  "instruction_decoder": false,
+  "application_completion_claim": false
+}

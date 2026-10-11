@@ -1,0 +1,3 @@
+PASS: both original CM files contain comments/blank lines only; no code, data or declarations
+PASS: original bytes preserved; fresh assembly emits a byte-identical complete CM rope
+CM rope SHA256: 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061

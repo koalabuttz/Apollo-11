@@ -517,3 +517,8 @@ include tools/cm_relay.mk
 include tools/cm_scale.mk
 
 include tools/lm_torque.mk
+
+test: test-documentation-coverage
+test-documentation-coverage:
+	python3 tests/test_documentation_coverage.py
+.PHONY: test-documentation-coverage

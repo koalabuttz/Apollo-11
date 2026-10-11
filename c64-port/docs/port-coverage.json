@@ -32,7 +32,8 @@
       "recovery_and_restart_tests"
     ],
     "certificate_review": "Every original source path needs a reviewed native mapping; bounded primitives never certify a complete file.",
-    "physical_flight_hardware_testing": "Separate from native C64 acceptance; never inferred from an emulator model."
+    "physical_flight_hardware_testing": "Separate from native C64 acceptance; never inferred from an emulator model.",
+    "documentation_only_qualification": "Only byte-original files with every line blank or a full-line comment can qualify through documentation preservation and assembly equivalence; zero algorithms/emitted words mandatory. Other AGC source still needs all four native/C64 evidence categories."
   },
   "integrated_applications": {
     "Luminary099": {
@@ -125,8 +126,31 @@
       "sha256": "769c1db20e0a9cb511ee16987700db047996dbec46f1a57b3eec4919f81a321d",
       "bytes": 3432,
       "lines": 73,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [],
+          "scope": "Byte-exact original comments/whitespace preservation; no native algorithms, code, constants or declarations.",
+          "verification": "docs/CM_SOURCE_DOCUMENTATION.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "documentation_preservation",
+        "algorithms_translated": 0,
+        "emitted_words": 0,
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/documentation-source-certificates.json",
+            "sha256": "e31afe7ac6ee0dc8862de0ac6d5321a54bae1023212c63a10017a2af8a98c558"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/documentation-source-audit.json",
+            "sha256": "620d4f505a63dd79afac68d4f1975886e64d5df0a7ad317a071bd7c454347087"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/CSM_GEOMETRY.agc",
@@ -543,8 +567,31 @@
       "sha256": "e8c35fcbdcaa3692cac397e54ab92271ef47df137bc6b939f9fe243162ddf515",
       "bytes": 1356,
       "lines": 35,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [],
+          "scope": "Byte-exact original comments/whitespace preservation; no native algorithms, code, constants or declarations.",
+          "verification": "docs/CM_SOURCE_DOCUMENTATION.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "documentation_preservation",
+        "algorithms_translated": 0,
+        "emitted_words": 0,
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/documentation-source-certificates.json",
+            "sha256": "e31afe7ac6ee0dc8862de0ac6d5321a54bae1023212c63a10017a2af8a98c558"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/documentation-source-audit.json",
+            "sha256": "620d4f505a63dd79afac68d4f1975886e64d5df0a7ad317a071bd7c454347087"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/MAIN.agc",
@@ -1946,8 +1993,40 @@
       "sha256": "f5f4df8e50c47d5fa54c7e51b756303ad484cb7b0aaa54fefa2e05b395588c8e",
       "bytes": 2261,
       "lines": 101,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_torque.c",
+            "include/lm_torque.h"
+          ],
+          "scope": "All RATELOOP paths, constants and declarations through real BACKP external continuation, without claiming its body.",
+          "verification": "docs/LM_TORQUE.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "review_scope": "Complete torque integration source under documented canonical-image bank/alias/producers-excluded ABI. BACKP body belongs to P-AXIS_RCS_AUTOPILOT and remains separate.",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/lm-torque-certificates.json",
+            "sha256": "e403a7363d227cb2ef5d107aaffe89cf87a2af3a6f6a2be8098feb31661720da"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-torque-reference.snapshots.xz",
+            "sha256": "36d85fe5021d4eca2f870363734ba7e847e735269d506688b19444942a133e2b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-torque-host.log",
+            "sha256": "22ff224e306a98590c38e75b7bb695d67692187c293078b7c925fdd2c05a657d"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-torque-vice-result.txt",
+            "sha256": "ffcbe3877d5f4fd6f723f44d484e13f559c233f24e174d4748929a823e64cc02"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/KEYRUPT_UPRUPT.agc",

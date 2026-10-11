@@ -664,3 +664,7 @@ All4096 complete original scale-wrapper states match native and sanitized output
 ## Complete original Luminary three-axis torque integration
 
 All original torque routine paths, data and declarations are mapped through the actual external BACKP continuation; 36864 complete source and sanitizer states plus2048 real C64 state checks pass. See `docs/LM_TORQUE.md`.
+
+## Torque and documentation coverage
+
+The inventory now records20 complete native algorithm/data/declaration files and two comment-only CM documents preserved byte-for-byte. Documentation cannot qualify executable source: the acceptance gate independently checks every original line and requires zero translated algorithms and emitted words. Both full applications remain unverified;153 original AGC files still need complete native coverage.

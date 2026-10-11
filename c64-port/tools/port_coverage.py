@@ -107,7 +107,19 @@ def audit(manifest, require_complete):
             certificate = entry.get('complete_native_coverage', {})
             if certificate.get('reviewed_all_source_paths') is not True or certificate.get('source_revision') != BASE:
                 errors.append('Missing reviewed full-source certificate: ' + path)
-            evidence_ok(certificate.get('evidence'), FILE_EVIDENCE, errors, path)
+            if certificate.get('qualification_kind') == 'documentation_preservation':
+                # Verify original bytes directly. This exception cannot certify
+                # an executable word, constant, allocation or other declaration.
+                comment_only = all(not line.strip() or line.lstrip().startswith(b'#')
+                                   for line in data.splitlines())
+                if not comment_only:
+                    errors.append('Documentation-only certificate contains executable/data/declaration source: ' + path)
+                if certificate.get('algorithms_translated') != 0 or certificate.get('emitted_words') != 0:
+                    errors.append('Documentation-only certificate must claim zero algorithms and emitted words: ' + path)
+                evidence_ok(certificate.get('evidence'),
+                            ('source_to_native_map', 'independent_assembly_comparison'), errors, path)
+            else:
+                evidence_ok(certificate.get('evidence'), FILE_EVIDENCE, errors, path)
         elif require_complete:
             errors.append('Remaining native source coverage: ' + path)
     if require_complete:
