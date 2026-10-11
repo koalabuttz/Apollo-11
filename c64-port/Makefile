@@ -431,3 +431,5 @@ include tools/nv_rows.mk
 include tools/nv_render.mk
 
 include tools/goplay.mk
+
+include tools/lm_priority.mk

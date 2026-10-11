@@ -484,3 +484,7 @@ Native scale selection, DSPDCEND BANKCALL/decimal/SWRETURN, row-loop and NVSUBEN
 ## Port original GOPLAY display completion and flag services
 
 The original GOPLAY consumer now carries V06N60 through all three display rows and the original return, flash, copy, flag and ENDJOB paths. Source comparisons retain 8192 direct and 18432 full-consumer states, sanitizer streams and the actual C64 PRG, mailbox and stack measurements. See `docs/P66-GOPLAY.md`.
+
+## Port original LM BASIC PRIOCHNG service
+
+The original PRIOCHNG service preserves all source registers, banks and scheduling effects across 8192 complete original states, host and sanitizer checks, and 64 C64 cases. This is a scheduling service milestone; complete LM application acceptance remains pending. See `docs/LM-BASIC-PRIORITY.md`.
