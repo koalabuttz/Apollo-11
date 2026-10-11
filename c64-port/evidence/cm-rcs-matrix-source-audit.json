@@ -1,0 +1,23 @@
+{
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_sources": {
+    "RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc": {
+      "original_sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
+      "assembled_source_sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
+      "indentation_repairs": []
+    },
+    "MYSUBS.agc": {
+      "original_sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+      "assembled_source_sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+      "indentation_repairs": []
+    }
+  },
+  "support_source_audit": "evidence/cm-powered-trig-source-audit.json",
+  "native_aliases": {
+    "SPSIN1": "SPSIN",
+    "SPSIN2": "SPSIN",
+    "SPCOS1": "SPCOS",
+    "SPCOS2": "SPCOS"
+  },
+  "declaration_data_domain": "Byte-original CM declaration/data baseline"
+}

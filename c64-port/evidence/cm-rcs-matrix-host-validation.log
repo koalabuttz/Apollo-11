@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_rcs_matrix.c tests/frozen_words.c src/cm_rcs_matrix.c src/cm_single_return.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_rcs_matrix_cases.c -o build/test-cm-rcs-matrix
+build/test-cm-rcs-matrix
+64 complete original CM RCS matrix states andQUADANGL: PASS

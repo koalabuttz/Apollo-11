@@ -1,0 +1,6 @@
+build/cm-rcs-matrix-reference deps/cm-rcs-matrix-fixture/MAIN.agc.bin | gzip -n -9 > build/cm-rcs-matrix-reference.snapshots.gz
+build/cm-rcs-matrix-native | gzip -n -9 > build/cm-rcs-matrix-native.snapshots.gz
+cmp build/cm-rcs-matrix-reference.snapshots.gz build/cm-rcs-matrix-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_rcs_matrix_snapshot.c src/cm_rcs_matrix.c src/cm_single_return.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_rcs_matrix_cases.c -o build/cm-rcs-matrix-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-rcs-matrix-sanitize | gzip -n -9 > build/cm-rcs-matrix-sanitize.snapshots.gz
+cmp build/cm-rcs-matrix-reference.snapshots.gz build/cm-rcs-matrix-sanitize.snapshots.gz

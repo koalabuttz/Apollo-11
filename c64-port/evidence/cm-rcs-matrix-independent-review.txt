@@ -1,0 +1,19 @@
+Independent read-only review by /root/general_division, 2026-10-11 UTC.
+
+Reviewed src/cm_rcs_matrix.c and include/cm_rcs_matrix.h against the complete
+byte-original Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc.
+
+Reviewer report:
+"Read-only review of cm_rcs_matrix.c/header against all original
+RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc: gate order, four source trig arguments/return
+words, CAPSI/AMGB stores, MP/COM ordering and actual ENDOFJOB entry align.
+QUADANGL660 encoded01224 is exact; two's-complement MSU plus negative diminution
+and final COM is consistent with modulo CDU offset. No defect found.
+Whole-file scope correctly stops at source END entry and keeps external IRQ
+ownership; no implicit Executive completion claim."
+
+The arithmetic/control proof and actual target evidence remain separate:
+131,072 complete original/strict/full-ASAN-UBSAN states plus64 actual C64 frozen
+states and original QUADANGLconstant. The containing-source map lists all33
+emitted words; original RCS/MYSUBS fixture copies have zero edits and retain
+original-declaration rope6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061.
