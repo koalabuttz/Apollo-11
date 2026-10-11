@@ -1,0 +1,1936 @@
+{
+  "schema_version": 1,
+  "source_baseline": {
+    "revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+    "trees": [
+      "Luminary099",
+      "Comanche055"
+    ]
+  },
+  "target_constraints": {
+    "language": "native C",
+    "agc_instruction_decoder": false,
+    "program_subset": false,
+    "platform": "stock Commodore 64 unless a documented requirement changes it",
+    "memory_and_overlay_architecture": "unresolved; disk overlays may be necessary",
+    "flight_inputs": "explicit tested C64 adapters for original hardware input roles",
+    "flight_outputs": "native computed guidance/device outputs through tested C64 adapters"
+  },
+  "completion_requirements": {
+    "file_evidence_categories": [
+      "source_to_native_map",
+      "independent_assembly_comparison",
+      "host_and_sanitizer_results",
+      "c64_execution_results"
+    ],
+    "application_evidence_categories": [
+      "bootable_c64_application",
+      "integrated_program_tests",
+      "device_adapter_tests",
+      "native_output_tests",
+      "memory_and_overlay_validation",
+      "recovery_and_restart_tests"
+    ],
+    "certificate_review": "Every original source path needs a reviewed native mapping; bounded primitives never certify a complete file.",
+    "physical_flight_hardware_testing": "Separate from native C64 acceptance; never inferred from an emulator model."
+  },
+  "integrated_applications": {
+    "Luminary099": {
+      "status": "unverified",
+      "reviewed_entire_program": false,
+      "evidence": {}
+    },
+    "Comanche055": {
+      "status": "unverified",
+      "reviewed_entire_program": false,
+      "evidence": {}
+    }
+  },
+  "files": [
+    {
+      "path": "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
+      "kind": "agc",
+      "sha256": "f86f1a02856b29a2cd01186a1a807fe4455b576624f8c4cb5876408677c83868",
+      "bytes": 13911,
+      "lines": 513,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/ALARM_AND_ABORT.agc",
+      "kind": "agc",
+      "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
+      "bytes": 4448,
+      "lines": 230,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/ANGLFIND.agc",
+      "kind": "agc",
+      "sha256": "827f457bf6dd722ed1432991623dcb6165e4ddc74dcf2c8ce531f5c2d21c5487",
+      "bytes": 11682,
+      "lines": 626,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+      "kind": "agc",
+      "sha256": "45d86ebb0dfd5bc5a49f3be7abb8876cb66da6823311446bac58a6795fc6c101",
+      "bytes": 31234,
+      "lines": 1010,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/AUTOMATIC_MANEUVERS.agc",
+      "kind": "agc",
+      "sha256": "b7803a69b1702f90b89d8ae1510d646569cee23876bb113db51aec9c315f990e",
+      "bytes": 10787,
+      "lines": 504,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/CM_BODY_ATTITUDE.agc",
+      "kind": "agc",
+      "sha256": "187481b79cf3ff3c911b724c34084b0471ab62e06b52726fbde7d0d59786475c",
+      "bytes": 6926,
+      "lines": 301,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+      "kind": "agc",
+      "sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+      "bytes": 31099,
+      "lines": 1273,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/CONIC_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "b71ca76c2835831676ed58e7708132fe30a239fedffaf8a17decea177569d6af",
+      "bytes": 47233,
+      "lines": 1922,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/CONTRACT_AND_APPROVALS.agc",
+      "kind": "agc",
+      "sha256": "769c1db20e0a9cb511ee16987700db047996dbec46f1a57b3eec4919f81a321d",
+      "bytes": 3432,
+      "lines": 73,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/CSM_GEOMETRY.agc",
+      "kind": "agc",
+      "sha256": "93414cefa5c6ed833b4bc0610c5055a2ded393aea6938dc65d13cf2b717bc101",
+      "bytes": 9913,
+      "lines": 415,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+      "bytes": 40070,
+      "lines": 1476,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/DOWN-TELEMETRY_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "d8babb9b0e0677f441411eed3ab6919a70a6aa95cbb49388813731e6c2348e74",
+      "bytes": 17718,
+      "lines": 441,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/DOWNLINK_LISTS.agc",
+      "kind": "agc",
+      "sha256": "1a9814350cf0d8cd9bf3e4c5e6da3adfa617754c4c6d6efe7f1986644eba0e32",
+      "bytes": 13544,
+      "lines": 411,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/ENTRY_LEXICON.agc",
+      "kind": "agc",
+      "sha256": "61dfe49679a2e60f45a737aeb1bbbc1114bbaee67d7ff30d47b9f35587f01e91",
+      "bytes": 11121,
+      "lines": 299,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/ERASABLE_ASSIGNMENTS.agc",
+      "kind": "agc",
+      "sha256": "f62df826c0cd678f4788ca7275d8ffccec229f9859c02839f1d944359c01ee58",
+      "bytes": 102170,
+      "lines": 3785,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/EXECUTIVE.agc",
+      "kind": "agc",
+      "sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+      "bytes": 11541,
+      "lines": 496,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/EXTENDED_VERBS.agc",
+      "kind": "agc",
+      "sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
+      "bytes": 31075,
+      "lines": 1315,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/FIXED_FIXED_CONSTANT_POOL.agc",
+      "kind": "agc",
+      "sha256": "1e2f7706589fb469347fed55f294c867ffa7c7cb46f7873c0cb11deef5d48be8",
+      "bytes": 6608,
+      "lines": 263,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/FRESH_START_AND_RESTART.agc",
+      "kind": "agc",
+      "sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
+      "bytes": 32186,
+      "lines": 1480,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
+      "kind": "agc",
+      "sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
+      "bytes": 2157,
+      "lines": 98,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "78875ef9f79433fa096eb975dd9658709cd2e4ea09cff47e2165c74251489f1b",
+      "bytes": 4642,
+      "lines": 205,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
+      "kind": "agc",
+      "sha256": "0f912428b5bde06a8bae27432f9c56679cfe5cfc2d1ee5eeadf80a37cf98185c",
+      "bytes": 23871,
+      "lines": 1406,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/IMU_COMPENSATION_PACKAGE.agc",
+      "kind": "agc",
+      "sha256": "fe2e800173b6c7e607d03c0b06a58b517b4faae2f8400e74b98b36b54e10cf19",
+      "bytes": 9277,
+      "lines": 368,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+      "bytes": 23181,
+      "lines": 1066,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "91635bbc0cf874075cdeeb9c8f7da291f340f8114841c0f34c9d1067d250b440",
+      "bytes": 7027,
+      "lines": 304,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/INTEGRATION_INITIALIZATION.agc",
+      "kind": "agc",
+      "sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
+      "bytes": 26531,
+      "lines": 1174,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "kind": "agc",
+      "sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+      "bytes": 5747,
+      "lines": 183,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/INTERPRETER.agc",
+      "kind": "agc",
+      "sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "bytes": 78524,
+      "lines": 3063,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+      "kind": "agc",
+      "sha256": "494c6ae0e8fc59eb6d896e51f3af791aae13bb66fbf55a798cb6e2b3c807570f",
+      "bytes": 1920,
+      "lines": 82,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/INTERRUPT_LEAD_INS.agc",
+      "kind": "agc",
+      "sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+      "bytes": 2247,
+      "lines": 122,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/JET_SELECTION_LOGIC.agc",
+      "kind": "agc",
+      "sha256": "e626c5273e96df95e3e0f243842bd32005537910554475e3dde3e2f48bdffbd4",
+      "bytes": 21978,
+      "lines": 920,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/KALCMANU_STEERING.agc",
+      "kind": "agc",
+      "sha256": "06e71db5a48ba879b3cf730693a7a6e4db3f433a2ed95dcfceaf23dee11487fa",
+      "bytes": 5059,
+      "lines": 265,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/KEYRUPT_UPRUPT.agc",
+      "kind": "agc",
+      "sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
+      "bytes": 3853,
+      "lines": 136,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "4536be1087aa877bffde066a745cdd139e7a7edb5433647cff8a143923c143b2",
+      "bytes": 7119,
+      "lines": 317,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+      "bytes": 5394,
+      "lines": 198,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+      "kind": "agc",
+      "sha256": "e8c35fcbdcaa3692cac397e54ab92271ef47df137bc6b939f9fe243162ddf515",
+      "bytes": 1356,
+      "lines": 35,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/MAIN.agc",
+      "kind": "agc",
+      "sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
+      "bytes": 3545,
+      "lines": 99,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/MEASUREMENT_INCORPORATION.agc",
+      "kind": "agc",
+      "sha256": "07939648f0f52a6b3dae03f6246acbbf28d66d36cf51c98936cc00b0d1e070a9",
+      "bytes": 8790,
+      "lines": 496,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/MYSUBS.agc",
+      "kind": "agc",
+      "sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+      "bytes": 2473,
+      "lines": 93,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/ORBITAL_INTEGRATION.agc",
+      "kind": "agc",
+      "sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+      "bytes": 14885,
+      "lines": 944,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P11.agc",
+      "kind": "agc",
+      "sha256": "6e4354e10fb62c7db74c60293ae3442136d6886fd6301c24966b974846985a99",
+      "bytes": 21763,
+      "lines": 928,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P20-P25.agc",
+      "kind": "agc",
+      "sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
+      "bytes": 71348,
+      "lines": 3529,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P30-P37.agc",
+      "kind": "agc",
+      "sha256": "e758ec3710c3f82e7e243a85552f20b8ea25028d621b6f62276b88326869fc8d",
+      "bytes": 12085,
+      "lines": 611,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P32-P33_P72-P73.agc",
+      "kind": "agc",
+      "sha256": "60a18e541426e952deea775bd0ae625d2345c284ac9726a2647032ee9ce4ccc3",
+      "bytes": 26843,
+      "lines": 1415,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P34-35_P74-75.agc",
+      "kind": "agc",
+      "sha256": "d37b58d887c59bfaaca5506a13a9a7761d4e44ad7bcfeab34c8a59e47863f106",
+      "bytes": 35303,
+      "lines": 1739,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P37_P70.agc",
+      "kind": "agc",
+      "sha256": "c91e95ca3befe5cf49b39c78af6f38758b115726a5fc7a3c28a3006abcfccf86",
+      "bytes": 37716,
+      "lines": 1950,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P40-P47.agc",
+      "kind": "agc",
+      "sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "bytes": 50844,
+      "lines": 2429,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P51-P53.agc",
+      "kind": "agc",
+      "sha256": "8ca37189556a5030fe1d42037a2c97a8e6b4163b185f8e1d663cad61ca234120",
+      "bytes": 40894,
+      "lines": 2213,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P61-P67.agc",
+      "kind": "agc",
+      "sha256": "49cc72bb29fceae82c5a40ffd2e8d1dd62264e9a55f920e81c8f3ae8d5d20172",
+      "bytes": 34115,
+      "lines": 1225,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/P76.agc",
+      "kind": "agc",
+      "sha256": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a",
+      "bytes": 4804,
+      "lines": 162,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
+      "kind": "agc",
+      "sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
+      "bytes": 12224,
+      "lines": 416,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "kind": "agc",
+      "sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+      "bytes": 100080,
+      "lines": 3809,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/PINBALL_NOUN_TABLES.agc",
+      "kind": "agc",
+      "sha256": "d90a466da20a0811690c812b2af0a0c9338a589d2b18c2e0ef1054e9ce563e7f",
+      "bytes": 26827,
+      "lines": 861,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc",
+      "kind": "agc",
+      "sha256": "cea7b46a08c28f155428fbdfbc22a378fecdabed1390b053fa883d145cdcfef7",
+      "bytes": 9496,
+      "lines": 386,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+      "bytes": 10390,
+      "lines": 371,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/R30.agc",
+      "kind": "agc",
+      "sha256": "412fbc54a7f99ea193e85c3ea739319eaf8ab489558ba5165a6482d6c51c6d9b",
+      "bytes": 15336,
+      "lines": 485,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/R31.agc",
+      "kind": "agc",
+      "sha256": "94af1db0793427cefee250133313bb00cdbf92274d01e67dafa7ae8b82d14118",
+      "bytes": 5840,
+      "lines": 290,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/R60_62.agc",
+      "kind": "agc",
+      "sha256": "d3357adf3da2436167e2db289813ad0411b206623c0117ba8679b998b7c81c6f",
+      "bytes": 10521,
+      "lines": 385,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+      "kind": "agc",
+      "sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
+      "bytes": 2352,
+      "lines": 85,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc",
+      "kind": "agc",
+      "sha256": "9b4c9acb5836870ceb53a4203b8db334728e96b8ce2b1ea02da151d17b5f0966",
+      "bytes": 24477,
+      "lines": 975,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/README.md",
+      "kind": "source_documentation",
+      "sha256": "c6b567614d5cfe014d223b09c4fce59d3b9f7c2974bb4e0852947a66b7051abc",
+      "bytes": 17160,
+      "lines": 229,
+      "status": "documentation",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/REENTRY_CONTROL.agc",
+      "kind": "agc",
+      "sha256": "47788f4f2139d31f9f87f63c33518b49b193ff762f9b3c1259d76f2074dcf408",
+      "bytes": 31542,
+      "lines": 1609,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/RESTARTS_ROUTINE.agc",
+      "kind": "agc",
+      "sha256": "490811f02cb07b69e98d9c558ed156f82e95d8735f29827edf8fe2fd6366efcc",
+      "bytes": 7809,
+      "lines": 337,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/RESTART_TABLES.agc",
+      "kind": "agc",
+      "sha256": "4ed25b96c1e8582bf1656b433e0212eb6c9f5528348b40f5c7117a1964ab9994",
+      "bytes": 11852,
+      "lines": 549,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/RT8_OP_CODES.agc",
+      "kind": "agc",
+      "sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+      "bytes": 7768,
+      "lines": 358,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "kind": "agc",
+      "sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+      "bytes": 3698,
+      "lines": 128,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/SERVICER207.agc",
+      "kind": "agc",
+      "sha256": "35ca5c1acce244eabdca91039a121c13b7207a24433f860c0cb14878e8366fb2",
+      "bytes": 19665,
+      "lines": 824,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/SERVICE_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+      "bytes": 6410,
+      "lines": 279,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+      "bytes": 1813,
+      "lines": 67,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/STABLE_ORBIT.agc",
+      "kind": "agc",
+      "sha256": "ced73fe04353aa9e58b875714fc8f4769e75b776622f7d6994e929b68374fc55",
+      "bytes": 9172,
+      "lines": 422,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/STAR_TABLES.agc",
+      "kind": "agc",
+      "sha256": "855789b2d7726487248812224bbe2edd4f6f6b1503e28aeb57254bf261111742",
+      "bytes": 5473,
+      "lines": 193,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/SXTMARK.agc",
+      "kind": "agc",
+      "sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
+      "bytes": 15461,
+      "lines": 659,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+      "kind": "agc",
+      "sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
+      "bytes": 3827,
+      "lines": 150,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/T4RUPT_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
+      "bytes": 38224,
+      "lines": 1467,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+      "kind": "agc",
+      "sha256": "c62e691808a6cbaa72d4f7850df8c943d77dee33e78c002ed88c944de2c01054",
+      "bytes": 7368,
+      "lines": 435,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TIME_OF_FREE_FALL.agc",
+      "kind": "agc",
+      "sha256": "f33bb7ec69f9d83aa2af7dadefc8e474632e73315d91133e5d4ac8f7825f9ff5",
+      "bytes": 23513,
+      "lines": 683,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TPI_SEARCH.agc",
+      "kind": "agc",
+      "sha256": "7e07913f963e312eb5145dfa71832012a2f9ab2d699ada4ddd397bde518e5ec2",
+      "bytes": 10653,
+      "lines": 552,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TVCDAPS.agc",
+      "kind": "agc",
+      "sha256": "21d54203ecc6dae03f693943305486215212989ff907250f04e16d850b47c633",
+      "bytes": 16414,
+      "lines": 784,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TVCEXECUTIVE.agc",
+      "kind": "agc",
+      "sha256": "db23079b9f12369d550b9658a5fb9a9adf52b798735c17e408cd36ff1aed5594",
+      "bytes": 7926,
+      "lines": 276,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TVCINITIALIZE.agc",
+      "kind": "agc",
+      "sha256": "ddc0ee4a00a30a7145d4204350833182658aacfbd38dccf84171a22adc81aee8",
+      "bytes": 10796,
+      "lines": 414,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TVCMASSPROP.agc",
+      "kind": "agc",
+      "sha256": "21b48d0bb13356fe66517c4210f3d45cdabb0a5e67c88ef6327de4b3e4da4b47",
+      "bytes": 6897,
+      "lines": 245,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TVCRESTARTS.agc",
+      "kind": "agc",
+      "sha256": "eb36e5be74c986022d1cb1adbab3da3de222d9e9675a13d75992f621e5738ac1",
+      "bytes": 9821,
+      "lines": 256,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TVCROLLDAP.agc",
+      "kind": "agc",
+      "sha256": "e428b4f8811ab77ba4088c91dd170effb016b3dc9f46998ba59bb3ff48cf14c9",
+      "bytes": 18686,
+      "lines": 619,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/TVCSTROKETEST.agc",
+      "kind": "agc",
+      "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
+      "bytes": 8776,
+      "lines": 260,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/UPDATE_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "d41dbe2cafed15061ac3744bd6fabc0da30aee43d0210c7d2011a0f07f75fe6d",
+      "bytes": 16798,
+      "lines": 555,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Comanche055/WAITLIST.agc",
+      "kind": "agc",
+      "sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+      "bytes": 14011,
+      "lines": 556,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
+      "kind": "agc",
+      "sha256": "fce563bb8f9c943a3c90242491f002f2b2ebd0b7610d47105ecb669312fcaa9c",
+      "bytes": 13695,
+      "lines": 513,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/AGS_INITIALIZATION.agc",
+      "kind": "agc",
+      "sha256": "658648f1bdac76929efdfe98fc23676e467d167645310c685bf1479c97da77fa",
+      "bytes": 6146,
+      "lines": 228,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/ALARM_AND_ABORT.agc",
+      "kind": "agc",
+      "sha256": "74236d3b94048b14efb776d7fff5ae66acac2f950e5bc03ca375d4b90b4484a8",
+      "bytes": 5079,
+      "lines": 251,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "ALARM1/BAILOUT1/POODOO1 recording, FLAGS and POODOO phase-4 pair write; display/SERVICER/live abort glue remains incomplete.",
+          "artifacts": [
+            {
+              "path": "src/restart.c",
+              "sha256": "951b5b3f50ee1028ed42fd2e4641442cc73d7a85a625c94f96fc5a498e7fd9aa"
+            },
+            {
+              "path": "src/recovery.c",
+              "sha256": "852737dd911c7203f28beeee93f1254dbde53a8ba69eb87803249591b337bc3d"
+            },
+            {
+              "path": "tools/recovery_reference.c",
+              "sha256": "6169d90218ab8e1f9d93d6eb4f651cb91c316fa4f357f4e42ec127d076841be0"
+            },
+            {
+              "path": "tests/recovery_vectors.h",
+              "sha256": "910b1ebf5332b619683d48be205e084929377278bcbb541977e273fc13a1a949"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
+      "kind": "agc",
+      "sha256": "f6bf6c63faf9895681da9fecc7a0c8531644140cb71e15c331ff8a990e6bacbe",
+      "bytes": 28653,
+      "lines": 1069,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/AOTMARK.agc",
+      "kind": "agc",
+      "sha256": "2feea8e6e449cd1eb814a482dcdb75f4b0ff4364058095f28efd7ce1df5db25a",
+      "bytes": 16963,
+      "lines": 695,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/ASCENT_GUIDANCE.agc",
+      "kind": "agc",
+      "sha256": "bfcd1300884bc8ab69748562fe287178f56bdfe9b7f13460b6ae73a1db3406a2",
+      "bytes": 11209,
+      "lines": 647,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+      "kind": "agc",
+      "sha256": "b184fc58454158b607b9c5132ed88431603fe2617d2c56f80c22af49236eb0d6",
+      "bytes": 31842,
+      "lines": 1069,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
+      "kind": "agc",
+      "sha256": "ce059a77e621dc2b0df032410206e3da672d88d065114b533fa3e74a997f0443",
+      "bytes": 27087,
+      "lines": 1027,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+      "kind": "agc",
+      "sha256": "7ed744d09332db172eaad0ca8432c243479d6d293ed387ee83eb0dd67c77f041",
+      "bytes": 22306,
+      "lines": 1059,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/CONIC_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "26409d71cdac421bef8dd11aa336abb0abda64f5ebf994c825eecfa866640581",
+      "bytes": 47595,
+      "lines": 1864,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/CONTROLLED_CONSTANTS.agc",
+      "kind": "agc",
+      "sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
+      "bytes": 14841,
+      "lines": 558,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "KPIP1 and other explicitly checked bounded-guidance operands; full native constant pool remains incomplete.",
+          "artifacts": [
+            {
+              "path": "src/guidance_scale.c",
+              "sha256": "f431339cc5b76dea0bd03727ac530e7f2695644f75a193d84e9dc305d0bae948"
+            },
+            {
+              "path": "tools/prepare_reference.py",
+              "sha256": "9311f657bfd7ad5fd0f1c9e3bbf237bd1571a5cf8711eba55e38c07578cb7481"
+            },
+            {
+              "path": "evidence/scale-reference.snapshots",
+              "sha256": "11993e66747e7685e964c555e08e72c73d9782d2674a46d3ec0b2d4b00c36f2a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "f86c480485f55088649ec83f35d950a5e8d95233ee480edc35fb5c4e8277b7e3",
+      "bytes": 13220,
+      "lines": 494,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/DAP_INTERFACE_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "1156271d55ea1f47bf20602da2cefa9388a908b3dca5231650cc7f10895db776",
+      "bytes": 4811,
+      "lines": 176,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
+      "bytes": 40245,
+      "lines": 1459,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/DOWNLINK_LISTS.agc",
+      "kind": "agc",
+      "sha256": "def08f047f1c2930f7067fe9b8cf480eb7d5783f47de7850c623836380c93e63",
+      "bytes": 14597,
+      "lines": 430,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/DOWN_TELEMETRY_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "34ee428bb987e1826148083af7c6879c33ed577a0eb415ae08ce4a7ad0453d9b",
+      "bytes": 17768,
+      "lines": 455,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/ERASABLE_ASSIGNMENTS.agc",
+      "kind": "agc",
+      "sha256": "29d4d6d4c16b3ea2c00f6d29bc77ee6dbd7a236eaefb5d4384a0168ba0196139",
+      "bytes": 77905,
+      "lines": 2635,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "Selected scheduler/VAC/restart/guidance layouts represented by C state; complete common erasable state remains incomplete.",
+          "artifacts": [
+            {
+              "path": "include/executive.h",
+              "sha256": "55b4ad6d2b3c422adbcf13860901eb91f5686399bbe31ccee41fefde8653aa16"
+            },
+            {
+              "path": "include/restart.h",
+              "sha256": "4461a1700b875e8b2ba46e09661a9407fde8f086b216166feaf502a2110deec2"
+            },
+            {
+              "path": "include/phase.h",
+              "sha256": "604459602293bd8d7577d3f98dbb64597679483768314f94e4149e91ba808e43"
+            },
+            {
+              "path": "tools/prepare_reference.py",
+              "sha256": "9311f657bfd7ad5fd0f1c9e3bbf237bd1571a5cf8711eba55e38c07578cb7481"
+            },
+            {
+              "path": "docs/SOURCE_MAP.md",
+              "sha256": "08a94ee0c36e28a5fad4ef5cb6de23b2d508d37167d99324c05ebf84baa01ff6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/EXECUTIVE.agc",
+      "kind": "agc",
+      "sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+      "bytes": 11697,
+      "lines": 503,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "Bounded admission, selection, basic dispatch/lifecycle, SPVAC/CHANG2; interpreter continuation and full live scheduling remain incomplete.",
+          "artifacts": [
+            {
+              "path": "src/executive.c",
+              "sha256": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3"
+            },
+            {
+              "path": "src/native_dispatch.c",
+              "sha256": "c4106ad10baeb34d96591446bb0214131a9c315beec5cac8a10861f14c4aac40"
+            },
+            {
+              "path": "tools/executive_service_reference.c",
+              "sha256": "3cf6c2d35e9f4dd6fb78f08af4203c44185ee1977f13223a4b798c11826c7102"
+            },
+            {
+              "path": "evidence/executive-services-differential.log",
+              "sha256": "d2175ebd9b738b39a55ba049ddd602a10014802e07dbc7055dd0c5205da5207e"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/EXTENDED_VERBS.agc",
+      "kind": "agc",
+      "sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
+      "bytes": 37260,
+      "lines": 1681,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc",
+      "kind": "agc",
+      "sha256": "d749732ada1c3221d526fadcabf062a652dfb1d01e22bf6bab55bd02b8937d7f",
+      "bytes": 18500,
+      "lines": 743,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",
+      "kind": "agc",
+      "sha256": "7f139c2b553ce60f8c0ab8cf6242abef390c6a28858e45a4f1d80f0ff2c646b7",
+      "bytes": 6679,
+      "lines": 264,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "Selected constants used by verified scheduler/arithmetic/guidance services; full native pool remains incomplete.",
+          "artifacts": [
+            {
+              "path": "src/executive.c",
+              "sha256": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3"
+            },
+            {
+              "path": "src/recovery.c",
+              "sha256": "852737dd911c7203f28beeee93f1254dbde53a8ba69eb87803249591b337bc3d"
+            },
+            {
+              "path": "tools/prepare_reference.py",
+              "sha256": "9311f657bfd7ad5fd0f1c9e3bbf237bd1571a5cf8711eba55e38c07578cb7481"
+            },
+            {
+              "path": "evidence/restart-differential.log",
+              "sha256": "7fb53f94d0a29869bd1488d8d94352b95d66f5d2c58b2763edc53480cdc70d8a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/FLAGWORD_ASSIGNMENTS.agc",
+      "kind": "agc",
+      "sha256": "a863fbb2aebd05b98dd15773ad24f370a8efd7ace6a3e8f44ee35300e3613332",
+      "bytes": 36824,
+      "lines": 1269,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "NODOBIT/STATEBIT/REINTBIT masks used by verified native abort FLAGS; complete flag layout remains incomplete.",
+          "artifacts": [
+            {
+              "path": "src/recovery.c",
+              "sha256": "852737dd911c7203f28beeee93f1254dbde53a8ba69eb87803249591b337bc3d"
+            },
+            {
+              "path": "tools/recovery_reference.c",
+              "sha256": "6169d90218ab8e1f9d93d6eb4f651cb91c316fa4f357f4e42ec127d076841be0"
+            },
+            {
+              "path": "tests/recovery_vectors.h",
+              "sha256": "910b1ebf5332b619683d48be205e084929377278bcbb541977e273fc13a1a949"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/FRESH_START_AND_RESTART.agc",
+      "kind": "agc",
+      "sha256": "bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a",
+      "bytes": 27861,
+      "lines": 1242,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "STARTSB1 cleanup, phase agreement validation and MR.KLEAN/P00KLEAN/V37KLEAN; complete ENEMA/fresh-start/device initialization remain incomplete.",
+          "artifacts": [
+            {
+              "path": "src/restart.c",
+              "sha256": "951b5b3f50ee1028ed42fd2e4641442cc73d7a85a625c94f96fc5a498e7fd9aa"
+            },
+            {
+              "path": "src/recovery.c",
+              "sha256": "852737dd911c7203f28beeee93f1254dbde53a8ba69eb87803249591b337bc3d"
+            },
+            {
+              "path": "tools/restart_reference.c",
+              "sha256": "eb3e5306279293bbd0658524db1b6b4cc85601b14910b73b9ec2a924bc590ff5"
+            },
+            {
+              "path": "tests/recovery_vectors.h",
+              "sha256": "910b1ebf5332b619683d48be205e084929377278bcbb541977e273fc13a1a949"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+      "kind": "agc",
+      "sha256": "6e440a29d56167c2f48b7bc58c0d53491d596c61e8e7137dc3b349ad90c1dc10",
+      "bytes": 4308,
+      "lines": 168,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
+      "kind": "agc",
+      "sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
+      "bytes": 2293,
+      "lines": 76,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "97cba32a43d7de44db0db00e5785f2d9c4bebbc4a6d7f058c0c3c13113855140",
+      "bytes": 4796,
+      "lines": 208,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/IMU_COMPENSATION_PACKAGE.agc",
+      "kind": "agc",
+      "sha256": "0b5c62e140514e58767ef3950fc3f3f381d607166f198f11348c3765c07f4ae8",
+      "bytes": 10414,
+      "lines": 417,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+      "bytes": 23400,
+      "lines": 1067,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/IMU_PERFORMANCE_TESTS_4.agc",
+      "kind": "agc",
+      "sha256": "5fb543ce6aebfbc6d2e83f576b78b1d61ece37e88a2229b734d5c094aef6ea56",
+      "bytes": 6228,
+      "lines": 362,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/IMU_PERFORMANCE_TEST_2.agc",
+      "kind": "agc",
+      "sha256": "80d973122d8212c2a0d6dbedfc061b0b91b44467422abe8a487b85137fa4c490",
+      "bytes": 6936,
+      "lines": 421,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "9d5e5d467f4eeedd9aee8a2f068e646a5d43ba3ec93a83cec565554b0c3fa52c",
+      "bytes": 6931,
+      "lines": 300,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+      "kind": "agc",
+      "sha256": "3b7a410d9af5de25e1aed779dd499bb63e199c63be815970e8902a2a575b6ad7",
+      "bytes": 9400,
+      "lines": 223,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/INTEGRATION_INITIALIZATION.agc",
+      "kind": "agc",
+      "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
+      "bytes": 25139,
+      "lines": 1102,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "kind": "agc",
+      "sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+      "bytes": 5886,
+      "lines": 177,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/INTERPRETER.agc",
+      "kind": "agc",
+      "sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "bytes": 78662,
+      "lines": 3075,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "Selected native numerics/push/load/store, including fixed400 DDV; interpreter control and remaining operation paths remain untranslated.",
+          "artifacts": [
+            {
+              "path": "src/guidance_scale.c",
+              "sha256": "f431339cc5b76dea0bd03727ac530e7f2695644f75a193d84e9dc305d0bae948"
+            },
+            {
+              "path": "src/guidance_divide.c",
+              "sha256": "7a298280b7d14142d5608b2995eb835a85cb3e9c17a40c165c5011e4ab3dc330"
+            },
+            {
+              "path": "src/guidance_gravity.c",
+              "sha256": "6b5762e772955f7a24e48cde531892a453e54b74f3d2917ea3cd8485475ea194"
+            },
+            {
+              "path": "src/guidance_vector.c",
+              "sha256": "3fefc0c96fd9dc2e200a93bf348f9911af17e1d074cd5702c66e7024ddabd5ce"
+            },
+            {
+              "path": "evidence/vector-differential.log",
+              "sha256": "c05cb797b5435c5a63187b5d755b4a4a018c438c0b7fd29e7b0a2717865c2237"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+      "kind": "agc",
+      "sha256": "30f22813f6d6f33f8202b65fa5895ebf535232e0437aaa9d02aec5b81e08d627",
+      "bytes": 1852,
+      "lines": 81,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/INTERRUPT_LEAD_INS.agc",
+      "kind": "agc",
+      "sha256": "ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3",
+      "bytes": 2343,
+      "lines": 117,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "T3 lead-in and explicit native pending/IRQ delivery only; remaining hardware interrupt services remain untranslated.",
+          "artifacts": [
+            {
+              "path": "src/irq_delivery.c",
+              "sha256": "83a2fab0989f7a8e88c5a8b972f276f76a09c3eb3fba4f9625814c3448fe8609"
+            },
+            {
+              "path": "tools/waitlist_reference.c",
+              "sha256": "1f00c7ace9988c3b5e2fbb95daa56ced37dae9cf43981328364d7c6824afb12f"
+            },
+            {
+              "path": "docs/IRQ.md",
+              "sha256": "dc8962bd64ad1b926587e0e476b4e51dab4194cd06298b6ccc388bbbbde41c5c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/KALCMANU_STEERING.agc",
+      "kind": "agc",
+      "sha256": "6a330bb23cb8f6c15cd50ffe8550ffd7599d19fcd9b9c03f0b2fbe8f081c21da",
+      "bytes": 4807,
+      "lines": 221,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/KALMAN_FILTER.agc",
+      "kind": "agc",
+      "sha256": "f5f4df8e50c47d5fa54c7e51b756303ad484cb7b0aaa54fefa2e05b395588c8e",
+      "bytes": 2261,
+      "lines": 101,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/KEYRUPT_UPRUPT.agc",
+      "kind": "agc",
+      "sha256": "e7e1633ff1305e689451634bf6cba496219b63a4a12f3ae028c74e3b65d840c1",
+      "bytes": 3833,
+      "lines": 130,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+      "kind": "agc",
+      "sha256": "c07d1ef6d1a83375b0aa0f7be87ef4d496d396621501298932aa46466d2db34c",
+      "bytes": 11726,
+      "lines": 533,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "5781f21292603392fc38aec45edbf8905ac7471c17c51c6dfe77593ba695bd46",
+      "bytes": 7080,
+      "lines": 306,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/LEM_GEOMETRY.agc",
+      "kind": "agc",
+      "sha256": "6793dddb22af8b0ae7f73d735fabbc4336a0f6743c5d1965e5dab3350c1ce6d6",
+      "bytes": 5084,
+      "lines": 206,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
+      "bytes": 6098,
+      "lines": 183,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+      "kind": "agc",
+      "sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
+      "bytes": 31942,
+      "lines": 1474,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "Bounded P66 RODCOMP prefix through PDVL GDT/2; complete P66 and other landing guidance routines remain incomplete.",
+          "artifacts": [
+            {
+              "path": "src/guidance.c",
+              "sha256": "fa72345f891130d83d22355849231f83848ab7e2dfd295c0a2c3069d6f5b162b"
+            },
+            {
+              "path": "src/guidance_prepare.c",
+              "sha256": "7825ee3a100d3ef1225aff9a82359b633111d71e4ddae1f09667c498805266ba"
+            },
+            {
+              "path": "src/guidance_gravity.c",
+              "sha256": "6b5762e772955f7a24e48cde531892a453e54b74f3d2917ea3cd8485475ea194"
+            },
+            {
+              "path": "tools/gravity_reference.c",
+              "sha256": "c56048904447cd6dd6c796d5b360283691d2687e5b5637b57abdd39654eb6de1"
+            },
+            {
+              "path": "evidence/gravity-differential.log",
+              "sha256": "85629c7753513f3e2dd9a951f31c1ae4139e9dc83381e3a193453a9afb94c1c9"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/MAIN.agc",
+      "kind": "agc",
+      "sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
+      "bytes": 3815,
+      "lines": 91,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/MEASUREMENT_INCORPORATION.agc",
+      "kind": "agc",
+      "sha256": "735aebaba4df4159e83d48b4cbe509479a9d29fb66ce05adf4bcb79076302fdc",
+      "bytes": 8613,
+      "lines": 495,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+      "kind": "agc",
+      "sha256": "5fc234cd27586bf25918a05692b3e6849a433e0b62bfb1327c96ae06e2231b14",
+      "bytes": 15916,
+      "lines": 977,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P-AXIS_RCS_AUTOPILOT.agc",
+      "kind": "agc",
+      "sha256": "6aa46513dcd7f1b77b41cbf847ce98dcdaec5a95bf4327d0a7c2df8adf937775",
+      "bytes": 21026,
+      "lines": 1056,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P12.agc",
+      "kind": "agc",
+      "sha256": "92061c017abffeac794f349bee080dcb01186b1188d95679ace07fecf6bc85de",
+      "bytes": 4407,
+      "lines": 243,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P20-P25.agc",
+      "kind": "agc",
+      "sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f",
+      "bytes": 121255,
+      "lines": 5182,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P30_P37.agc",
+      "kind": "agc",
+      "sha256": "2ea604772395dcae064d0a23f4f475845cef39b3528d62d4adeac8e3aab9b573",
+      "bytes": 4937,
+      "lines": 185,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P32-P35_P72-P75.agc",
+      "kind": "agc",
+      "sha256": "0fc78a6c5bcfd461bf1e9e7ffd11e5e4f93950595daf275bb2df2a9a08f149ec",
+      "bytes": 25575,
+      "lines": 1394,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P34-35_P74-75.agc",
+      "kind": "agc",
+      "sha256": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
+      "bytes": 34716,
+      "lines": 1764,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P40-P47.agc",
+      "kind": "agc",
+      "sha256": "a030d323c75c05e3492e81522ab2a5c2ac493f7bc25c44686e6cb1c492c4540b",
+      "bytes": 30910,
+      "lines": 1471,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P51-P53.agc",
+      "kind": "agc",
+      "sha256": "becc16af5767c23bc14bcce9f89456f3f93fe7c81a0e00455cd5ca757ca4b0c2",
+      "bytes": 43690,
+      "lines": 2341,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P70-P71.agc",
+      "kind": "agc",
+      "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
+      "bytes": 7797,
+      "lines": 439,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/P76.agc",
+      "kind": "agc",
+      "sha256": "b94d0907e3d64318a3fd225ac8d0106109182d40646e3dcbdcffa354e3f08925",
+      "bytes": 4400,
+      "lines": 161,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
+      "kind": "agc",
+      "sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
+      "bytes": 12373,
+      "lines": 411,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "PHASCHNG/2PHSCHNG A/B/C table maintenance for groups 1..6; DSKY NEWMODE/MMDSPLAY services remain untranslated.",
+          "artifacts": [
+            {
+              "path": "src/phase.c",
+              "sha256": "41884b1915004810ecff77260b39a6b9f997150c4bc6c15692f7b88be1b98de1"
+            },
+            {
+              "path": "tools/phase_reference.c",
+              "sha256": "1c3bf21ed2cf8210431493c4f0c36e3ce5d7119caef79c0108a1b6f78bb25027"
+            },
+            {
+              "path": "tests/phase_vectors.h",
+              "sha256": "ffc0309d935570799859a507c8bbd6b9019c937fde066db3437b483f26b72423"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "kind": "agc",
+      "sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+      "bytes": 102264,
+      "lines": 3798,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/PINBALL_NOUN_TABLES.agc",
+      "kind": "agc",
+      "sha256": "ec5e14a2647763b0136fc012d2648803183737e1e386daba1548158905c9b2b3",
+      "bytes": 28087,
+      "lines": 906,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc",
+      "kind": "agc",
+      "sha256": "a107b96fddaa1ea7fbbee375705d071ab1800f40e02803aeda39b89e895a1128",
+      "bytes": 9233,
+      "lines": 385,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+      "bytes": 10932,
+      "lines": 447,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc",
+      "kind": "agc",
+      "sha256": "c79584213ddacc0bdf6ceebb0b9bfe84c85eac69c124e28c5554a5585e5cdf3f",
+      "bytes": 17289,
+      "lines": 860,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/R30.agc",
+      "kind": "agc",
+      "sha256": "76b904d389476022d9c6dcef6788737385a4603cff81d1c9af1fd17d82dc76bd",
+      "bytes": 14653,
+      "lines": 464,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/R31.agc",
+      "kind": "agc",
+      "sha256": "cf6d473c416217944c5868907c26bdb1fa970b8020a3198cb0cbc991c0c0926f",
+      "bytes": 5012,
+      "lines": 266,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/R60_62.agc",
+      "kind": "agc",
+      "sha256": "23cf6099c20b0dacdb54b377db1208214f8fb9fee1fb09a6e1ae0337d14c83f6",
+      "bytes": 15295,
+      "lines": 577,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/R63.agc",
+      "kind": "agc",
+      "sha256": "e67df75ca6b4ad422e875f2b7924266d09a675172c1fd626555455f5a6fd62c6",
+      "bytes": 4925,
+      "lines": 156,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/RADAR_LEADIN_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "f27f4f9372e56e41ad44a810945ce6247e1f931bfa4d3b5d114089732d80e0ad",
+      "bytes": 2538,
+      "lines": 103,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/RCS_FAILURE_MONITOR.agc",
+      "kind": "agc",
+      "sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
+      "bytes": 5834,
+      "lines": 173,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/README.md",
+      "kind": "source_documentation",
+      "sha256": "4b30e210f06dd4adae6b3aa4c1c9d9a4233c30b3fe7c96414ac796a15e28ff9a",
+      "bytes": 19648,
+      "lines": 223,
+      "status": "documentation",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/RESTARTS_ROUTINE.agc",
+      "kind": "agc",
+      "sha256": "42f22e578939222d5b0645e85d4c89b578b5200fb998db7dd95938feeb20eb61",
+      "bytes": 7689,
+      "lines": 323,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "Protected Type C job restart admission only; table, Type B, timed-task and LONGCALL routes remain untranslated.",
+          "artifacts": [
+            {
+              "path": "src/restart.c",
+              "sha256": "951b5b3f50ee1028ed42fd2e4641442cc73d7a85a625c94f96fc5a498e7fd9aa"
+            },
+            {
+              "path": "tools/restart_reference.c",
+              "sha256": "eb3e5306279293bbd0658524db1b6b4cc85601b14910b73b9ec2a924bc590ff5"
+            },
+            {
+              "path": "evidence/restart-differential.log",
+              "sha256": "7fb53f94d0a29869bd1488d8d94352b95d66f5d2c58b2763edc53480cdc70d8a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/RESTART_TABLES.agc",
+      "kind": "agc",
+      "sha256": "1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59",
+      "bytes": 7458,
+      "lines": 293,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/RTB_OP_CODES.agc",
+      "kind": "agc",
+      "sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+      "bytes": 5660,
+      "lines": 236,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "kind": "agc",
+      "sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+      "bytes": 4670,
+      "lines": 200,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/SERVICER.agc",
+      "kind": "agc",
+      "sha256": "4e3798d5dabcc7ecca813d762824f7dfc41ad352a9869a7526565fc3a05f4415",
+      "bytes": 34569,
+      "lines": 1715,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "4SEC(28)=400 B-28 declaration verified separately; actual SERVICER producers/control remain untranslated.",
+          "artifacts": [
+            {
+              "path": "src/guidance_divide.c",
+              "sha256": "7a298280b7d14142d5608b2995eb835a85cb3e9c17a40c165c5011e4ab3dc330"
+            },
+            {
+              "path": "tools/prepare_reference.py",
+              "sha256": "9311f657bfd7ad5fd0f1c9e3bbf237bd1571a5cf8711eba55e38c07578cb7481"
+            },
+            {
+              "path": "evidence/divide-fixture.log",
+              "sha256": "883113784f5174c7abcbf93c2360f99d6b0ea7756805593ecb4ee09015ae2837"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "Luminary099/SERVICE_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+      "bytes": 5418,
+      "lines": 221,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc",
+      "kind": "agc",
+      "sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+      "bytes": 1726,
+      "lines": 69,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+      "kind": "agc",
+      "sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
+      "bytes": 5909,
+      "lines": 196,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/STABLE_ORBIT.agc",
+      "kind": "agc",
+      "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
+      "bytes": 9235,
+      "lines": 436,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+      "kind": "agc",
+      "sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
+      "bytes": 3636,
+      "lines": 125,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/T4RUPT_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
+      "bytes": 37085,
+      "lines": 1354,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/T6-RUPT_PROGRAMS.agc",
+      "kind": "agc",
+      "sha256": "76f234ba5ac0e8e3516f935e674761cb4bba455b07543cd10e16c9d1f5caaa87",
+      "bytes": 4500,
+      "lines": 163,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+      "kind": "agc",
+      "sha256": "cbffb67643bfefe4b19f5d9f7e800ec9a60bf3cf9dce9ce096e2f4effe641f5d",
+      "bytes": 5620,
+      "lines": 347,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/THE_LUNAR_LANDING.agc",
+      "kind": "agc",
+      "sha256": "8c5c8b125bad79fdce8838bea3871481942d9b75694dc538bd032d54e63e952f",
+      "bytes": 7460,
+      "lines": 335,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+      "kind": "agc",
+      "sha256": "68a812f18e678248d64ea62a56284e6a8a415925ea41ab8e35293f94a0c22efe",
+      "bytes": 5906,
+      "lines": 224,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/TIME_OF_FREE_FALL.agc",
+      "kind": "agc",
+      "sha256": "e49235d5d0b1de4082524112a7dd7ac1df1d99e5ba9ee86e9e607ad54b15fa67",
+      "bytes": 23387,
+      "lines": 721,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/TJET_LAW.agc",
+      "kind": "agc",
+      "sha256": "10c99519ea474da9b969dd64652ea6a2a6f739be0cc3fdb6a30e3bb619b80e2c",
+      "bytes": 17211,
+      "lines": 519,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+      "kind": "agc",
+      "sha256": "13da16e475f7d0610ee90d73b5676d2ff0704fb8b79f7651c97e0a32e16b256a",
+      "bytes": 17459,
+      "lines": 617,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/UPDATE_PROGRAM.agc",
+      "kind": "agc",
+      "sha256": "5f54e9c63cf0af039a8a435aa3ba86ad933e3b921366388ee115460da5c9f7f6",
+      "bytes": 17802,
+      "lines": 556,
+      "status": "untranslated",
+      "native_coverage": []
+    },
+    {
+      "path": "Luminary099/WAITLIST.agc",
+      "kind": "agc",
+      "sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+      "bytes": 14816,
+      "lines": 564,
+      "status": "partial",
+      "native_coverage": [
+        {
+          "scope": "Bounded WAITLIST admission/T3 task transfer/completion; complete timed wrappers/LONGCALL/live producer integration remain incomplete.",
+          "artifacts": [
+            {
+              "path": "src/waitlist.c",
+              "sha256": "198ae3ca98977c70624b81cc68dc5bc2f3ce80ae902ba5807bda1268ba4c4b80"
+            },
+            {
+              "path": "tools/waitlist_reference.c",
+              "sha256": "1f00c7ace9988c3b5e2fbb95daa56ced37dae9cf43981328364d7c6824afb12f"
+            },
+            {
+              "path": "evidence/waitlist-reference.snapshots",
+              "sha256": "bd71aad75050b3df0fb7753b9519599bda9ca2b22abcecdbd41984001841182b"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -19,9 +19,9 @@ Independent code review found no blocking defect.
 
 128 frozen complete states pass host, ASan/UBSan and PAL C64 VICE.
 All 32,767 unsupported modes preserve every owned word for both APIs.
-C64 mailbox `a50000800003643224` records zero failures. PRG20,579 bytes,
-text7,381/rodata13,184/BSS100/noinit1, ending at $58c6; no extra compiler ZP.
-Measured hardware/software stack extents31/231 bytes; finite call samples
+C64 mailbox `a50000800003643224` records zero failures. PRG 20,579 bytes,
+text 7,381/rodata 13,184/BSS 100/noinit 1, ending at $58c6; no extra compiler ZP.
+Measured hardware/software stack extents 31/231 bytes; finite call samples
 2,585/2,284/2,332/2,923/2,890 PAL cycles include marker and VIC/IRQ effects.
 These samples establish neither worst-case execution time nor a flight budget.
 
@@ -29,7 +29,7 @@ Use `make test-vector`, `ASAN_OPTIONS=detect_leaks=0 make sanitize-vector`,
 `python3 tools/vector_differential.py deps/fixture`, and `make c64-vector`.
 Run `tools/vector_vice_test.py` with the usual VICE/ROM arguments.
 Retained `evidence/vector-*` includes deterministic gzip full snapshots,
-logs, PRG/map, timings and target dumps. All239 earlier hashes are preserved;
+logs, PRG/map, timings and target dumps. All 239 earlier hashes are preserved;
 manifest256 entries. Historical source remains unchanged.
 
 The composed P66 updated-velocity sequence and complete flight applications

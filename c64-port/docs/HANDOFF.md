@@ -316,3 +316,10 @@ All 10,272 complete assembly comparisons and 96 host/sanitizer/C64 states pass. 
 ## Translate scalar sums and backward vector subtraction with exact overflow effects
 
 All 27,200 complete assembly comparisons and 256 host/sanitizer/C64 states pass. See [SUM.md](SUM.md).
+
+## Full project endpoint
+
+The user explicitly requested complete Luminary 099 and Comanche 055 native
+C64 ports. PORT_SCOPE.md and port-coverage.json track both complete source
+trees; bounded milestones do not certify either complete application. Run
+`python3 tools/port_coverage.py` to audit progress and historical source identity.

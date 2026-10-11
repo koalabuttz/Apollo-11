@@ -15,7 +15,7 @@ introduced. The oracle separately asserts source ADDRWD01400->01404 and
 unchanged banks; those control words are outside the native data interface.
 
 All 10,272 complete100-word checkpoints match unchanged original assembly.
-There are4,096 six-word corners with same/opposite vectors and2,048 random
+There are4,096 six-word corners with same/opposite vectors and 2,048 random
 input pairs. Intermediate overflow has1,056 positive/1,059 negative cases;
 final overflow1,610 positive/1,580 negative. Snapshot SHA256:
 `0a4638514865244d92a22331253a946794fdf3461991d59dbb6c46c39597ae15`.
@@ -24,8 +24,8 @@ link, and historical source remains unchanged.
 
 96 frozen complete states pass PAL C64 VICE; mailbox `a50000600003c86424`.
 Diagnostic state200 bytes includes12 operand bytes; image/state end at$72ab.
-No extra compiler ZP; measured hardware/software stack extents29/294 bytes.
-Five finite PAL samples15,200/20,620/31,575/31,974/28,551 cycles include
+No extra compiler ZP; measured hardware/software stack extents 29/294 bytes.
+Five finite PAL samples 15,200/20,620/31,575/31,974/28,551 cycles include
 markers/VIC/IRQ effects and establish no worst-case or flight budget.
 
 Use `make test-dot`, `ASAN_OPTIONS=detect_leaks=0 make sanitize-dot`,

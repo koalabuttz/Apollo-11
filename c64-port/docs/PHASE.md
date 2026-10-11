@@ -17,11 +17,11 @@ The GPL host oracle links input construction and original engine only.
 Snapshot SHA256:
 `db5766d2d5738ac4c0110f9baa0c00283fee31e844c8ac7876da278e17467dab`.
 
-128 frozen complete states pass host, ASan/UBSan and PAL C64 VICE. All8,192
+128 frozen complete states pass host, ASan/UBSan and PAL C64 VICE. All 8,192
 invalid group words reject unchanged; malformed stream/register cases pass.
-Mailbox `a500008038` records zero failures. PRG23,066 bytes; text8,614,
-rodata14,438, BSS129, noinit78 including compiler static stack. Measured
-dynamic hardware/software stack extents10/13 bytes exclude static storage;
+Mailbox `a500008038` records zero failures. PRG 23,066 bytes; text 8,614,
+rodata 14,438, BSS 129, noinit 78 including compiler static stack. Measured
+dynamic hardware/software stack extents 10/13 bytes exclude static storage;
 no extra compiler ZP. This is isolated diagnostic capacity, not a full
 application timing or memory result.
 

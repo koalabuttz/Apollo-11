@@ -1,6 +1,9 @@
-# Apollo 11 Executive — native Commodore 64 C port
+# Apollo 11 — native Commodore 64 ports
 
-This is a small native translation of actual Luminary 099 Executive paths.
+The target is complete native C64 implementations of both Luminary 099 and
+Comanche 055. Verified Executive and arithmetic paths are implemented; the
+complete mission applications remain under development. See
+[the full scope and coverage inventory](docs/PORT_SCOPE.md).
 The C64 binary contains no AGC instruction decoder or AGC emulator. Virtual AGC
 is used only on the host as a verification oracle.
 

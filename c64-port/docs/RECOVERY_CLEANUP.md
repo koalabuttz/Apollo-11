@@ -8,8 +8,8 @@ Address/priority/base payloads remain intact. A/L/Q/BBANK and interrupt
 permission retain original stores and return debris. Caller owns ordinary
 word state and excludes scheduler/restart readers and producers.
 
-All 49,152 original-assembly checkpoints compare all47 modeled words plus
-14 surrounding guards. Every raw32768-bit-pattern flag word is tested,
+All 49,152 original-assembly checkpoints compare all 47 modeled words plus
+14 surrounding guards. Every one of the 32,768 raw 15-bit flag words is tested,
 with4,096 cases per phase route, signed zeros, eight E/S bank values and
 256 return-Q addresses. Snapshot SHA256:
 `21de976a77f90373f7a4b2e9044034bfa126859742fb8cb67c2bf5ce0f5a8c6b`.
@@ -18,9 +18,9 @@ Original source remains unchanged. This is bounded abort cleanup, not full
 ENEMA, SERVICER, display or restart execution.
 
 128 frozen complete states pass host, ASan/UBSan and PAL C64 VICE.
-Mailbox `a50000802f` records zero failures. PRG19,299 bytes; text7,142,
-rodata12,143/BSS100/static-stack78. Measured dynamic hardware/software
-stack extents10/6 bytes exclude static storage; no extra compiler ZP.
+Mailbox `a50000802f` records zero failures. PRG 19,299 bytes; text 7,142,
+rodata 12,143/BSS 100/static-stack78. Measured dynamic hardware/software
+stack extents 10/6 bytes exclude static storage; no extra compiler ZP.
 No application timing or full-image memory budget is claimed.
 
 Use `make test-recovery`, `ASAN_OPTIONS=detect_leaks=0 make sanitize-recovery`,

@@ -299,3 +299,7 @@ include tools/recovery.mk
 include tools/dot.mk
 
 include tools/sum.mk
+
+.PHONY: coverage
+coverage:
+	python3 tools/port_coverage.py
