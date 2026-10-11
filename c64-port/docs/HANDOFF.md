@@ -1063,3 +1063,7 @@ Nine unchanged original clock mission contexts now run continuously through norm
 ## Translate original Luminary and Comanche double precision square source operations
 
 Original DSQ and direct DSQSUB preserve source arithmetic, caller-Q and mission-specific DANZIG handoffs across17 emitted words per interpreter. All262,144 complete original/native/full-sanitizer states match; four actual C64 diagnostics pass256 complete states. Independent review finds no discrepancy. Whole INTERPRETER and caller operand dispatch remain separate. See `docs/INTERPRETED-SQUARE.md`.
+
+## Translate original Luminary and Comanche internal display release
+
+Internal RELDSP executes actual JOBWAKE and the ordinary RELRET caller return across arbitrary DSPLOCK and signed core lists. All8,192 complete original/native/full-sanitizer states and64 actual C64 states match, retaining branch-sensitive unused Executive fields and source producer exclusion. Extended verb fanout and selected body execution remain separate. See `docs/DSKY-INTERNAL-RELEASE.md`.
