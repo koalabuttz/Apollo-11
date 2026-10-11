@@ -545,3 +545,5 @@ include tools/display_job.mk
 include tools/native_scheduler.mk
 
 include tools/dsky_keyboard_number_flow.mk
+
+include tools/cm_danzig.mk

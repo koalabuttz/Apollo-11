@@ -704,3 +704,7 @@ Resident scheduler adapters reuse the qualified core algorithm and preserve exac
 ## Run numeric entry through hardware IRQ and canonical job completion
 
 The NUM-only runtime mapping preserves hardware keyboard delivery, source IRQ return, Executive selection, numeric entry and completion across 3,072 full source checkpoints. Strict and sanitizer streams match; C64 validates eight complete pipelines covering every EB and SUPER context within the fixed RAM limit. Broader numeric body target coverage is retained separately. See `docs/DSKY-NUMERIC-RUNTIME.md`.
+
+## Execute original Comanche DANZIG foreground selection
+
+Canonical DANZIG preserves all 4,096 original complete states through actual basic/interpreter selection, bank and editing-register behavior. Strict and sanitizer checks pass; C64 verifies 128 fingerprints and two complete state samples. Unsupported malformed NEWJOB input is explicitly rejected. See `docs/COMANCHE_DANZIG.md`.
