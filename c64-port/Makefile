@@ -940,3 +940,6 @@ include tools/cm_alarm_complete.mk
 all: build/cm-alarm-complete-native
 
 include tools/dsky_input_mode.mk
+
+include tools/cm_alarm2_image.mk
+all: build/cm-alarm2-image-native

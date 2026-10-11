@@ -1,0 +1,37 @@
+[
+  {
+    "source": "build/cm-alarm2-image-c64-result.log",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-c64-result.log",
+    "sha256": "34ae78cf8ff920b3c0bafe0cf8513ec24e2ea106fa97a46028331bb7dceaa2b9"
+  },
+  {
+    "source": "build/cm-alarm2-image-vice-mailbox.bin",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-vice-mailbox.bin",
+    "sha256": "1936b0f807fb8e7871b8abe96e04846d21161d56fd9455c3bd4b21cd2eb3bfb5"
+  },
+  {
+    "source": "build/cm-alarm2-image-vice-shared.bin",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-vice-shared.bin",
+    "sha256": "c38214b93b7f00794ae08b44df4ffdf00fdc3bc163512f16585dcfb05e35c137"
+  },
+  {
+    "source": "build/cm-alarm2-image-vice-stack.bin",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-vice-stack.bin",
+    "sha256": "b129be02c09e563f0625ac4fe451ff27e02286fa2aef9840f3919f60e356c6d4"
+  },
+  {
+    "source": "build/cm-alarm2-image-vice-monitor.log",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-vice-monitor.log",
+    "sha256": "20f6ef84e6374eaa83023c42c08d59cf0c42be5d0ffec00b99d925adef119eec"
+  },
+  {
+    "source": "build/cm-alarm2-image-vice.log",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-vice.log",
+    "sha256": "3dbc853e347594cc8d44317092afea77905194c397a897d7523c142684f3d643"
+  },
+  {
+    "source": "build/cm-alarm2-image-vice.mon",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-vice.mon",
+    "sha256": "57534d5f5767ad61facc0cb51fe4c179ae487a02adcd49deb6ff891438c68563"
+  }
+]

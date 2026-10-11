@@ -598,3 +598,5 @@ subprocess.run([sys.executable,'tools/dsky_octal_consumer_differential.py',str(r
 subprocess.run([sys.executable,'tools/cm_alarm_complete_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_input_mode_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_alarm2_image_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -1459,3 +1459,7 @@ Qualify32240 complete source native sanitizer states and64 C64 states across all
 ## Translate original operator input mode selection and recycle
 
 Qualify ALLDC OC ALL3DEC and FORCEV25 local algorithms against8192 full source native sanitizer states and64 C64 states retaining raw overflow and source edit registers through genuine return or alarm handoffs. See `docs/DSKY-INPUT-MODE.md`.
+
+## Translate original ALARM2 body and diagnostic producer
+
+Qualify65536 complete original native sanitizer states and64 C64 states including every diagnostic producer word and source counter overflow with the initial failed target preserved. See `docs/COMANCHE_ALARM2_IMAGE.md`.
