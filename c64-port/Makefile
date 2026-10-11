@@ -975,3 +975,5 @@ sanitize: sanitize-sband-length
 include tools/dsky_input_select.mk
 
 include tools/dsky_input_store.mk
+
+include tools/dsky_hours_output_integration.mk

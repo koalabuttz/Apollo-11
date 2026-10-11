@@ -1,0 +1,9 @@
+tests/dsky_hours_output_vectors_0.h 32 states 0 before/ 496 after patches
+tests/dsky_hours_output_vectors_1.h 32 states 496 before/ 282 after patches
+tests/dsky_hours_output_vectors_2.h 32 states 528 before/ 750 after patches
+tests/dsky_hours_output_vectors_3.h 32 states 960 before/ 348 after patches
+tests/dsky_hours_output_vectors_4.h 32 states 960 before/ 574 after patches
+tests/dsky_hours_output_vectors_5.h 32 states 1024 before/ 254 after patches
+tests/dsky_hours_output_vectors_6.h 32 states 992 before/ 542 after patches
+tests/dsky_hours_output_vectors_7.h 32 states 1120 before/ 64 after patches
+tests/dsky_hours_output_vectors_all.h 256 states 6080 before/ 3310 after patches

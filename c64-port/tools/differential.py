@@ -616,3 +616,5 @@ subprocess.run([sys.executable,'tools/dsky_input_arithmetic_differential.py',str
 subprocess.run([sys.executable,'tools/dsky_input_select_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_input_store_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_hours_output_differential.py',str(reference)],cwd=ROOT,check=True)

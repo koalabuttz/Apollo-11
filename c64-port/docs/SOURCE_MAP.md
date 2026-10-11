@@ -1419,3 +1419,7 @@ Qualify8192 full original native sanitizer states and64 C64 states through actua
 ## Translate original operator input component stores
 
 Qualify8192 full original native sanitizer states and64 C64 states through actual normal DP and indexed component stores retaining genuine decimal scaling and channel load frontiers. See `docs/DSKY-INPUT-STORE.md`.
+
+## Compose original hours minutes seconds display output
+
+Qualify65536 uninterrupted full original native sanitizer checkpoints and256 staged C64 states through actual HMSOUT scaling formatting and source bank returns. See `docs/DSKY-HOURS-OUTPUT.md`.
