@@ -4,3 +4,5 @@ __pycache__/
 
 /evidence/cm-super-dispatch-native.snapshots.bin.gz
 /evidence/cm-super-dispatch-reference.snapshots.bin.gz
+/evidence/cm-wake-complete-native.snapshots.bin.gz
+/evidence/cm-wake-complete-reference.snapshots.bin.gz

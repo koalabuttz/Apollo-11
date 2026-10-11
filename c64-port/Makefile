@@ -1008,3 +1008,6 @@ all: build/cm-super-dispatch-native
 
 include tools/cm_scan_zero.mk
 all: build/cm-scan-zero-native
+
+include tools/cm_wake_complete.mk
+all: build/cm-wake-complete-native

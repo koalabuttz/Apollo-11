@@ -1476,3 +1476,7 @@ Translate actual SUPDXCHZ plus one and GOTOV56 compiled caller controls against3
 ## Translate original Executive scans through positive zero priority candidates
 
 Compose actual END JOBSLEEP and PRIOCHNG scans against12288 full original strict sanitizer states and72 C64 checkpoints preserving immutable original frozen packet and additive explicit cast correction with byte-identical executed payloads. See `docs/COMANCHE_SCAN_ZERO.md`.
+
+## Translate original Comanche wake candidate scans and idle hints
+
+Translate complete NOVAC VAC and core0 dormant wake scans and actual fault handoffs against32768 original strict sanitizer states and64 C64 checkpoints. See `docs/COMANCHE_WAKE_COMPLETE.md`.
