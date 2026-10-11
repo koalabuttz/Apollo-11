@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete lm_finish group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 15996
+lm_finish-hardware-stack.bin: measured stack extent 17 bytes
+lm_finish-software-stack.bin: measured stack extent 694 bytes

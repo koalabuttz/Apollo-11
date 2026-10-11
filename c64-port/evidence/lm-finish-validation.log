@@ -1,0 +1,10 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_finish.c tests/lm_finish_check.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/test-lm-finish
+build/test-lm-finish
+64 complete ENDOFJOB states and21 unchanged invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_finish.c tests/lm_finish_check.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/test-lm-finish-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-finish-sanitize
+64 complete ENDOFJOB states and21 unchanged invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_finish_snapshot.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/lm-finish-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-finish-native-sanitize > build/lm-finish-sanitize.snapshots
+cmp build/lm-finish-sanitize.snapshots build/lm-finish-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_finish_diagnostic.c tests/lm_finish_check.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -Wl,-Map,build/lm_finish.map -o build/lm_finish.prg

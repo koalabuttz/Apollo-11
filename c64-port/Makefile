@@ -501,3 +501,5 @@ include tools/noun_reader.mk
 include tools/layout.mk
 
 include tools/lm_single_trig_port.mk
+
+include tools/lm_finish.mk

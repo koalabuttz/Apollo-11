@@ -632,3 +632,7 @@ Every raw sixteen-bit input and real source return path is independently qualifi
 ## Reviewed whole-file coverage
 
 Both original scalar sine/cosine files, both noun-table reader files and five memory-declaration files now have reviewed complete-source certificates. The inventory totals18 complete AGC source files; bounded runtime and mission routines remain partial, and both complete C64 applications remain unverified.
+
+## Port canonical Luminary ENDOFJOB register and resume effects
+
+All 16384 whole original-image ENDOFJOB states match native and sanitized outputs through actual basic, interpreted and idle resume entries; 64 real C64 state checks pass. See `docs/LM-BASIC-FINISH.md`.

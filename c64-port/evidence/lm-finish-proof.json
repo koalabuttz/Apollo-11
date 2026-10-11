@@ -1,0 +1,60 @@
+{
+  "complete_states": 16384,
+  "state_words": 2051,
+  "routes": {
+    "basic": 9018,
+    "interpreter": 3206,
+    "idle": 4160
+  },
+  "frozen_states": 64,
+  "invalid_boundaries": 21,
+  "source_files": {
+    "include/lm_basic_finish.h": "b70cc49410aeb4457e677c884a986f7b1c6cf71cd12a50da8f6fe2e77ea4548d",
+    "src/lm_basic_finish.c": "bbcc6b9d9ef840d7c9eb36007528ab7212aba9a6c3389a010b9cbe515dc3bb6a",
+    "tests/lm_finish_cases.h": "7e2f23a043484442ebd7d4eda6f4f04a4cff80b1c484c7eac161e6ed1dc4b336",
+    "tests/lm_finish_cases.c": "2715bae884812a5651e05480e1dd227faad771f2b3548a4dce4f1026d9bcc5b1",
+    "tests/lm_finish_check.h": "81e8718e901aa6972d8495b3dcf225ce3272384e85da3d8013b954a77dd649eb",
+    "tests/lm_finish_check.c": "ff69a27b6efe8c60a86fe2283018a6734d54027c0b2784997d77997b69c4f7bb",
+    "tests/lm_finish_vectors.h": "ee99b340004e09b82eaa6d3b9ba02e8030438c2e8e394c473242a600467cee1b",
+    "tests/test_lm_finish.c": "954e7860bf38dda4ae82cac6c2aea83cc70f76fbd5c4e1867c40f7c53901a7dc",
+    "tools/lm_finish_snapshot.c": "37ee987d802b47699934a140854d5d426b2c8b110cbfee1e87e8feac825ce140",
+    "tools/lm_finish_reference.c": "fc16ab1766af610fda201ff302647a3b99f982862d942b6e2812b7330d55df1b",
+    "tools/lm_finish_differential.py": "16a33fcf6c33f10ba14aca021b74931b17d5f872289cda8ed54e0bbe77ce0b17",
+    "tools/lm_finish_inputs.c": "d811740a7fb36a47592f94832fe290ea9bd1c3704f4e31c54748effe20841fa7",
+    "tools/freeze_lm_finish.py": "ba2525cede2f197b54f62431aecf5c8c7375366020dd7b1b63755b17f8502c40",
+    "tools/lm_finish_diagnostic.c": "19865fe0df94e3152005caa9e8ff5d7d484c0f36a45447f732c05c1c24425a02",
+    "tools/lm_finish_vice_test.py": "c220047ef00def3d02957437467fdeb7c262c57116b8f53403ce596fd85c76d4",
+    "tools/lm_finish.mk": "2746d429bfc7530970f24ce06eb017700407230f6aa5539fadd255aa3a19a747",
+    "docs/LM-BASIC-FINISH.md": "5c1b0b69727b2d148c28a69d4a18674cdfcebfdf3b0c380828b352a7c115afdc"
+  },
+  "original_sources": {
+    "../Luminary099/EXECUTIVE.agc": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+    "../Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "deps/fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+  },
+  "artifacts": {
+    "build/lm-finish-native.snapshots": "e4c3eebee9c76eef5c54c5badad7efec475ba0f7ccaa2e55546e60d6336b8500",
+    "build/lm-finish-reference.snapshots": "e4c3eebee9c76eef5c54c5badad7efec475ba0f7ccaa2e55546e60d6336b8500",
+    "build/lm-finish-sanitize.snapshots": "e4c3eebee9c76eef5c54c5badad7efec475ba0f7ccaa2e55546e60d6336b8500",
+    "build/lm-finish-check.log": "350c8b3c2e4171ad928d8a4b5670063466903107e4d127b39ad3520311110af9",
+    "build/lm-finish-validation.log": "59b0a2ecebf3b9a13b577d725fb25199f1c04ab801590dbbfc7dea19826c9ea3",
+    "build/lm-finish-c64-check.log": "8c3edca381a148b9309c6c941d5f8be44f08965f22874cc4feab7a3d86be49c4",
+    "build/lm_finish.prg": "710a7ed19dbbbaa0004ed9c4c7dc5c2d761ddc26e6a35a25075668bc112d1b32",
+    "build/lm_finish.map": "e2a750a4defbf8f080108a4ca4bee46c55cefca3a5ff51155f4f5297bcbabac6",
+    "build/lm_finish-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "build/lm_finish-hardware-stack.bin": "1b5f6d0e1551f9f0984f7b163a5e54c703d417a8a9785d61e69ee0160de6d40f",
+    "build/lm_finish-software-stack.bin": "9f777bd1931062fb754b93c4e00a0e678eea9e31df1232e9547d17b701d21bec",
+    "build/lm_finish-vice.log": "25550dd6775b3ea4cdb0a7853970652a7b84cf7b163e55c3711df21a2f33dc98",
+    "build/lm_finish-vice-monitor.log": "4847c0ff9168eac52ffe1cfe6b570c8f3470c825d6cd0605eff2019ad5af5249",
+    "build/lm_finish-vice.mon": "5e89f17569800cb04c2a03d83d9f60fa5bac0b8a2ce8aabd1c34222a34609636"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 15996,
+    "hardware_stack_bytes": 17,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 694,
+    "extra_zero_page_bytes": 0
+  },
+  "boundary": "before actual basic selected entry, interpreted NEWOPS fetch, or idle ADVAN"
+}
