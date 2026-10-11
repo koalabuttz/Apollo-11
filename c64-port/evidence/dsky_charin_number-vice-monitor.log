@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_charin_number.prg from 0801 to 4E61 (4661 bytes)
+WATCH: 1  C:$6e62  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 6e62)   19/$013,  48/$30
+.C:254a  8E 62 6E    STX $6E62      - A:00 X:A5 Y:00 SP:f1 NV-....C  302231901
+>C:6e62  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_number-vice-mailbox.bin' from $6e62 to $6e66
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_number-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_charin_number-vice-software-stack.bin' from $c100 to $cfff

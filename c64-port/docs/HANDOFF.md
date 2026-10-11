@@ -747,3 +747,7 @@ Verified scheduler adoption preserves original source state and queued interrupt
 ## Execute canonical Comanche ENDOFJOB selection and returns
 
 Comanche ENDOFJOB matches 16,384 original full-state transitions through basic, interpreter, and idle returns. Strict host and sanitizer checks pass; C64 verifies 128 fingerprints and two complete state samples. This is bounded Executive coverage. See `docs/COMANCHE_BASIC_FINISH.md`.
+
+## Translate numeric CHARIN entries through original NUM arithmetic
+
+Native octal and decimal entry matches 8,192 complete original source states across verb, noun and three register fields, signs and digit counts. Strict host, sanitizer and 64-case C64 proofs pass. This certifies the numeric entry body; hardware IRQ composition is a separate milestone. See `docs/DSKY-NUMERIC-ENTRY.md`.

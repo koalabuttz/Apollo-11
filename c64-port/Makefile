@@ -529,3 +529,5 @@ test: native_source_adoption-host
 sanitize: native_source_adoption-sanitize
 
 include tools/cm_basic_finish.mk
+
+include tools/dsky_charin_number.mk

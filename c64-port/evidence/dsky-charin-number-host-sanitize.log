@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c  src/dsky_pinball.c src/agc_multiword.c src/dsky_charin_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_number_cases.c tests/dsky_charin_number_check.c tests/test_dsky_charin_number.c -o build/test-dsky-charin-number
+./build/test-dsky-charin-number
+DSKY numeric entry:64 complete2052-field states, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c  src/dsky_pinball.c src/agc_multiword.c src/dsky_charin_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_number_cases.c tests/dsky_charin_number_check.c tests/test_dsky_charin_number.c -o build/test-dsky-charin-number-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-charin-number-san
+DSKY numeric entry:64 complete2052-field states, 0 failures
