@@ -1106,3 +1106,7 @@ Actual UPDATVB/UPDATNN and minus-one entries, immutable noun table selection, re
 ## Canonical Luminary basic context change source entries
 
 Literal CHANG1/CHANJOB basic or interpreter exchanges match16384 complete2053-field original/native/full-sanitizer states,25 unchanged guard domains and64 actual C64 disk-overlay states. Raw incoming L to Q overflow and actual selected transfers are retained. Selected application bodies remain separate. Retained-original checks require no emulator or stale build outputs. See `docs/LM-BASIC-CHANGE.md`.
+
+## Translate original shared octal and bit display formatter bodies
+
+Actual DSPOCTWD/DSPOCTWO and DSP2BIT source bodies match8192 complete original/native/full-sanitizer states and64 actual C64 states across all coherent erasable banks and four upper SUPER forms. Clean positive-zero source branches retain the real CCSHOLE image; external exceptional recovery remains separate. See `docs/DSKY-OCTAL-DISPLAY.md`.

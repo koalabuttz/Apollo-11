@@ -762,3 +762,5 @@ include tools/dsky_nv_continuation_integration.mk
 include tools/dsky_nv_update_integration.mk
 
 include tools/lm_basic_change_integration.mk
+
+include tools/dsky_octal_display.mk

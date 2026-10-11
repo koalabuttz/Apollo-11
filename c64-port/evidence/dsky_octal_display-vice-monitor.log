@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_octal_display.prg from 0801 to 2DD5 (25D5 bytes)
+WATCH: 1  C:$4dd6  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 4dd6)  132/$084,  16/$10
+.C:19ad  8E D6 4D    STX $4DD6      - A:80 X:A5 Y:40 SP:f1 NV-....C  303732844
+>C:4dd6  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_octal_display-vice-mailbox.bin' from $4dd6 to $4dda
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_octal_display-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_octal_display-vice-software-stack.bin' from $c100 to $cfff

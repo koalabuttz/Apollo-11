@@ -510,3 +510,5 @@ subprocess.run([sys.executable,'tools/cm_clock_blocked_display_differential.py',
 subprocess.run([sys.executable,'tools/dsky_nv_continuation_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_nv_update_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_octal_display_differential.py',str(reference)],cwd=ROOT,check=True)
