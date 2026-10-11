@@ -1158,3 +1158,7 @@ The direct P66 launch preserves the original higher-priority job and pending IRQ
 ## Complete original Comanche powered-flight subroutine source
 
 Independent review reconstructed every one of 187 original emitted words, checked all seven qualification dependencies and exhaustively validated the five-word constant accessor. The whole source file is now certified within its documented numerical and return contracts. The inventory has 29 complete files (23 native/data/declaration and six comment-only files), with 146 source files and both integrated applications still requiring complete acceptance. See `docs/COMANCHE-POWERED-FLIGHT.md`.
+
+## Translate actual Luminary and Comanche DSKY plus and minus key entry
+
+Both original CHARIN paths now execute SIGNTEST, +ON/-ON, DSPIN/FIXCLPAS and genuine ENDOJOB. 8,192 complete source/native/sanitized states and 64 complete C64 checkpoints pass; numeric display input remains source-owned. See `docs/DSKY-SIGN-ENTRY.md`.

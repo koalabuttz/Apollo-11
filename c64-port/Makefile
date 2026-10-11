@@ -609,3 +609,5 @@ test: test-lm-interpreter-change
 sanitize: sanitize-lm-interpreter-change
 
 include tools/p66_direct_pending.mk
+
+include tools/dsky_charin_sign.mk
