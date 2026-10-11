@@ -1,0 +1,3 @@
+cc  -O2 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_sign_output.c src/agc_word.c src/dsky_pinball.c src/dsky_sign_output.c tests/dsky_sign_output_cases.c tests/dsky_sign_output_check.c -o build/test-dsky-sign-output
+cc  -O2 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_sign_output_snapshot.c src/agc_word.c src/dsky_pinball.c src/dsky_sign_output.c tests/dsky_sign_output_cases.c tests/dsky_sign_output_check.c -o build/dsky-sign-output-route-port
+128 complete original data-row sign output states + 32 unchanged invalid guards: PASS

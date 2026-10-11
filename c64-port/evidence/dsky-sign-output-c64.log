@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete dsky_sign_output group original-assembly states; retained memory unchanged
+Mailbox: a500008000
+PRG bytes: 11113
+dsky_sign_output-hardware-stack.bin: measured stack extent 18 bytes
+dsky_sign_output-software-stack.bin: measured stack extent 26 bytes

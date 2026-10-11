@@ -1475,3 +1475,7 @@ Translate actual scalar SR14 count14 and exact recursive TC skip preserving Q ag
 ## Complete original Comanche alarm body
 
 All108 emitted words and230 original lines are independently reviewed and qualified within actual compiled caller, normal code, data producer and resume frame contracts. Fourteen source/native/sanitizer and C64 proof packets retain genuine external handoffs.42 source files are complete;133 files and both full applications remain open. See `docs/COMANCHE_ALARM_BODY.md`.
+
+## Translate original DSKY sign output row handling
+
+Qualify16384 complete original native sanitizer states and128 C64 states through actual plus and minus relay row updates including internal return address collisions. See `docs/DSKY-SIGN-OUTPUT.md`.
