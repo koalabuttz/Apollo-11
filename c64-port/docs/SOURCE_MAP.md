@@ -523,3 +523,7 @@ The original JOBWAKE service preserves raw L, bank and scheduling effects in 819
 ## Port real MAKEPLAY priority and wake prelude
 
 Native MAKEPLAY follows the actual PRIOCHNG, JOBWAKE, GOSLEEPS, GOPLAY and duplicate ENDOFJOB routes with source XCHTOEND replacement. Original comparisons cover 12288 complete states, matching sanitizer streams and 64 C64 cases; the sleep and resumed lifecycle remains separately qualified. See `docs/P66-MAKEPLAY.md`.
+
+## Port canonical Comanche restart timing services
+
+Complete original-image FINDTIME and ITSLGCL2 source effects; independent source, sanitizer and 192 C64 state checks pass. See `docs/COMANCHE_RESTART_TIMING.md`.

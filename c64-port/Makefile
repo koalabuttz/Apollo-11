@@ -461,3 +461,5 @@ include tools/runtime_fetch.mk
 include tools/lm_wake.mk
 
 include tools/makeplay.mk
+
+include tools/cm_restart_timing.mk

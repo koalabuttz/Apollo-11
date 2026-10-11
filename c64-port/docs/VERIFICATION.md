@@ -882,3 +882,7 @@ aliases, a checker-variable collision, absent build-time rope fixtures and three
 omitted basic test/freezer sources. All failures and the successful rerun are
 retained with exact patch hashes in `evidence/integration-a727-host-proof.json`.
 The target recipes and production kernels retain their qualified behavior.
+
+## Port canonical Comanche restart timing services
+
+Complete original-image FINDTIME and ITSLGCL2 source effects; independent source, sanitizer and 192 C64 state checks pass. See `docs/COMANCHE_RESTART_TIMING.md`.

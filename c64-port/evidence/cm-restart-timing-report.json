@@ -1,0 +1,38 @@
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3573 FINDTIME",
+    "01,3701 ITSLGCL2"
+  ],
+  "boundary": "0704 GOLOC-1",
+  "snapshot_sha256": "10dff4b83861388a33312d91a2b589257c8d991d5a8801a046113d93d221adf3",
+  "hardware_stack_bytes": 10,
+  "software_stack_bytes": 20,
+  "c64_cases": 192,
+  "mailbox_hex": "a50000c000",
+  "target": {
+    "prg_bytes": 28172,
+    ".text": {
+      "address": 2061,
+      "bytes": 3547
+    },
+    ".rodata": {
+      "address": 5608,
+      "bytes": 24611
+    },
+    ".data": {
+      "address": 30219,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 30219,
+      "bytes": 4096
+    },
+    ".noinit": {
+      "address": 34315,
+      "bytes": 0
+    },
+    "image_end": 34315
+  }
+}
