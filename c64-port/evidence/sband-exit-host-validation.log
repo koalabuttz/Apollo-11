@@ -1,0 +1,3 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/sband_exit_snapshot.c tests/sband_exit_cases.c src/agc_word.c src/sband_exit.c -o build/sband-exit-native
+python3 tools/sband_exit_compare.py
+PASS {'states': 131072, 'start': 0, 'end': 131072, 'record_bytes': 4106, 'decoded_sha256': 'bb0e92dbb435eb20eac2aebf87f890357cb07af22c89d9b07e9a3f3eb62bfc86'}

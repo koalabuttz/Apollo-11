@@ -1,0 +1,12 @@
+./build/test-sband-exit-integrated
+PASS both original antenna EXIT full-image fixtures and unchanged unsupported states
+python3 tools/sband_exit_port_host.py --binary build/sband-exit-integrated-stream
+PASS all retained source-state bytes: 538181632 SHA256 bb0e92dbb435eb20eac2aebf87f890357cb07af22c89d9b07e9a3f3eb62bfc86
+PASS all 131,072 original LM/CM antenna EXIT states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_exit.c tests/sband_exit_target.c tests/frozen_words.c tests/sband_exit_cases.c src/agc_word.c src/sband_exit.c -o build/test-sband-exit-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-exit-integrated-san
+PASS both original antenna EXIT full-image fixtures and unchanged unsupported states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_exit_snapshot.c tests/sband_exit_cases.c src/agc_word.c src/sband_exit.c -o build/sband-exit-integrated-stream-san
+python3 tools/sband_exit_port_host.py --binary build/sband-exit-integrated-stream-san
+PASS all retained source-state bytes: 538181632 SHA256 bb0e92dbb435eb20eac2aebf87f890357cb07af22c89d9b07e9a3f3eb62bfc86
+PASS all 131,072 original LM/CM antenna EXIT states

@@ -1,0 +1,52 @@
+{
+  "status": "qualified both original antenna EXIT to first basic display instruction",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 131072,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 131072,
+    "start": 0,
+    "end": 131072,
+    "record_bytes": 4106,
+    "decoded_sha256": "bb0e92dbb435eb20eac2aebf87f890357cb07af22c89d9b07e9a3f3eb62bfc86",
+    "decoded_bytes": 538181632,
+    "canonical_original_archive": "evidence/sband-exit-source.snapshots.bin.xz",
+    "compressed_sha256": "b817ff72ea263c5b87429d0f16759746da091115c2366d3159e744cb15101071",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 128,
+    "prg_bytes": 5081,
+    "load_end": 7128,
+    "bss_end": 15320,
+    "static_storage_end": 15320,
+    "mailbox": "a5800000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "source_map": "evidence/sband-exit-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "0bfcceab84d9a5e234e95335be0a9f621ea12402bfc66226e17a84f51eda2e86",
+  "native_header_sha256": "03f0c3e358e9751f18f7871665608ed36888064fdea746152087b3d3a46b7214",
+  "independent_review": {
+    "path": "evidence/sband-exit-independent-review.txt",
+    "sha256": "cffd6bbdbb765372a753bacb79b5431e4c5a176aeb1892217501fdd481459eef"
+  },
+  "limitations": [
+    "No display/Executive/callee body executes.",
+    "Actual original compiled antenna context, ordinaryRAM/Q/rawA/L and producer exclusion.",
+    "Varied contexts are not exhaustive Cartesian.",
+    "Diagnostic memory does not establish full application allocation."
+  ]
+}

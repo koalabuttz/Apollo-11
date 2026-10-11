@@ -1650,3 +1650,7 @@ Qualify actual Luminary antenna pitch arithmetic against65536 complete original 
 ## Translate Luminary antenna yaw calculation
 
 Qualify actual Luminary antenna yaw arithmetic against65536 complete original strict sanitizer states and64 C64 cases with explicitly diagnostic RAM placement. See `docs/NATIVE-SBAND-LM-YAW.md`.
+
+## Translate original antenna exit to basic display
+
+Qualify original antenna EXIT return against131072 complete original strict sanitizer states and128 C64 cases. See `docs/NATIVE-SBAND-EXIT.md`.

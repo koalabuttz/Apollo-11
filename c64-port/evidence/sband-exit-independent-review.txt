@@ -1,0 +1,7 @@
+Independent read-only review by /root/p66_source_map
+src/sband_exit.c SHA256 0bfcceab84d9a5e234e95335be0a9f621ea12402bfc66226e17a84f51eda2e86
+include/sband_exit.h SHA256 03f0c3e358e9751f18f7871665608ed36888064fdea746152087b3d3a46b7214
+../Luminary099/INTERPRETER.agc SHA256 26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e
+../Comanche055/INTERPRETER.agc SHA256 724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b
+
+Original NEWOPS CCS on the negative EXIT pair yields EDOP/CYR +0; raw L receives ordinary source normalization. EXIT CA BANKSET/TS BBANK retains the coherent bank tuple and A=extended BANKSET. INDEX LOC/TC1 leaves Q06747 LM /06716 CM and reaches basic display PC3746/3751. No discrepancy found within the documented compiled antenna context. Header stops before display body. No edits or independent full-corpus replay.

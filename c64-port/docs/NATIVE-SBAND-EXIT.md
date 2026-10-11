@@ -1,0 +1,9 @@
+# Original antenna interpreter exit
+
+`sband_exit` executes the original antenna's pending `EXIT` through actual interpreter `NEWOPS` and `EXIT`, then stops at the first basic display instruction: LM `42,3746` or CM `42,3751`. It consumes the original `077776` pair, clears EDOP/CYR, normalizes raw L as the source machine does, restores BANKSET and retains the genuine TC return Q (`06747` LM, `06716` CM). MODE and all other canonical RAM remain unchanged. External SUPER and IRQ remain unchanged.
+
+The compiled entry requires the antenna's actual NEWOPS/LOC, MODE0 or vector MODE-1, coherent original FB064000/EB/BB/BANKSET, ZERO0, EDOP0, NEWJOB+0, ordinary RAM/Q and raw16 A/L. All four bank42-selecting SUPER forms are supported. The caller excludes producers throughout the group. No display, scheduler, alarm or selected application body executes here; this is an explicit source continuation, with no AGC decoder or native dependency on the GPL oracle.
+
+131,072 fresh-original states cover both programs with complete raw16 A/L and ordinary Q marginals, both modes, eight EB banks, all four SUPER forms and both IRQ states. Every2048-word canonical image and external latch matches exactly under strict C99 and full ASAN/UBSAN. The decoded538,181,632-byte stream SHA256 is `bb0e92dbb435eb20eac2aebf87f890357cb07af22c89d9b07e9a3f3eb62bfc86`. Context coverage is varied rather than exhaustive Cartesian. The input-only GPL oracle executes the unchanged original-layout LM1f5326/CM6e3150 ropes; source/interpreter identities and original statements are retained in the source map.
+
+The standalone stock-ROM PAL C64 diagnostic compares all2048 words and latches for128 source-imported states. It uses ordinary low RAM and reports mailbox `a5800000`. Its PRG/map and actual VICE logs are retained; this allocation is a diagnostic, not a complete application's memory layout.

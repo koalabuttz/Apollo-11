@@ -1117,3 +1117,8 @@ include tools/sband_lm_yaw_integration.mk
 all: build/sband-lm-yaw-integrated-stream
 test: test-sband-lm-yaw
 sanitize: sanitize-sband-lm-yaw
+
+include tools/sband_exit_integration.mk
+all: build/sband-exit-integrated-stream
+test: test-sband-exit
+sanitize: sanitize-sband-exit
