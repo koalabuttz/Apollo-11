@@ -1,0 +1,1365 @@
+{
+  "original_source_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+  "fixture_source_byte_identical": true,
+  "indentation_repairs": 0,
+  "instruction_count": 76,
+  "directive_count": 2,
+  "lines": [
+    {
+      "line": 1,
+      "original_text": "# Copyright:    Public domain.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 2,
+      "original_text": "# Filename:     INTER-BANK_COMMUNICATION.agc",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 3,
+      "original_text": "# Purpose:      Part of the source code for Comanche, build 055. It",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 4,
+      "original_text": "#               is part of the source code for the Command Module's",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 5,
+      "original_text": "#               (CM) Apollo Guidance Computer (AGC), Apollo 11.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 6,
+      "original_text": "# Assembler:    yaYUL",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 7,
+      "original_text": "# Reference:    pp. 1103-1106",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 8,
+      "original_text": "# Contact:      Ron Burkey <info@sandroid.org>",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 9,
+      "original_text": "# Website:      http://www.ibiblio.org/apollo.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 10,
+      "original_text": "# Mod history:  2009-05-08 RSB\tAdapted from Colossus249/ file of same name",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 11,
+      "original_text": "#\t\t\t\tand page images. Corrected various typos",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 12,
+      "original_text": "#\t\t\t\tin the transcription of program comments,",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 13,
+      "original_text": "#\t\t\t\tand these should be back-ported to",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 14,
+      "original_text": "#\t\t\t\tColossus249.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 15,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 16,
+      "original_text": "# The contents of the \"Comanche055\" files, in general, are transcribed",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 17,
+      "original_text": "# from scanned documents.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 18,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 19,
+      "original_text": "#       Assemble revision 055 of AGC program Comanche by NASA",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 20,
+      "original_text": "#       2021113-051.  April 1, 1969.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 21,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 22,
+      "original_text": "#       This AGC program shall also be referred to as Colossus 2A",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 23,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 24,
+      "original_text": "#       Prepared by",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 25,
+      "original_text": "#                       Massachusetts Institute of Technology",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 26,
+      "original_text": "#                       75 Cambridge Parkway",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 27,
+      "original_text": "#                       Cambridge, Massachusetts",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 28,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 29,
+      "original_text": "#       under NASA contract NAS 9-4065.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 30,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 31,
+      "original_text": "# Refer directly to the online document mentioned above for further",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 32,
+      "original_text": "# information.  Please report any errors to info@sandroid.org.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 33,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 34,
+      "original_text": "# Page 1103",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 35,
+      "original_text": "# THE FOLLOWING ROUTINE CAN BE USED TO CALL A SUBROUTINE IN ANOTHER BANK. IN THE BANKCALL VERSION, THE",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 36,
+      "original_text": "# CADR OF THE SUBROUTINE IMMEDIATELY FOLLOWS THE TC BANKCALL INSTRUCTION, WITH C(A) AND C(L) PRESERVED.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 37,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 38,
+      "original_text": "\t\tBLOCK\t02",
+      "kind": "assembler directive"
+    },
+    {
+      "line": 39,
+      "original_text": "\t\tCOUNT\t02/BANK",
+      "kind": "assembler directive"
+    },
+    {
+      "line": 40,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 41,
+      "original_text": "BANKCALL\tDXCH\tBUF2\t\t# SAVE INCOMING A,L.",
+      "source_address_octal": "4662",
+      "assembled_word_octal": "52134",
+      "kind": "executable instruction",
+      "compiled_group": "BANKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 42,
+      "original_text": "\t\tINDEX\tQ\t\t# PICK UP CADR.",
+      "source_address_octal": "4663",
+      "assembled_word_octal": "50002",
+      "kind": "executable instruction",
+      "compiled_group": "BANKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 43,
+      "original_text": "\t\tCA\t0",
+      "source_address_octal": "4664",
+      "assembled_word_octal": "30000",
+      "kind": "executable instruction",
+      "compiled_group": "BANKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 44,
+      "original_text": "\t\tINCR\tQ\t\t# SO WE RETURN TO THE LOC. AFTER THE CADR.",
+      "source_address_octal": "4665",
+      "assembled_word_octal": "24002",
+      "kind": "executable instruction",
+      "compiled_group": "BANKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 45,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 46,
+      "original_text": "# SWCALL IS  IDENTICAL TO BANKCALL, EXCEPT THAT THE CADR ARRIVES IN A.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 47,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 48,
+      "original_text": "SWCALL\t\tTS\tL",
+      "source_address_octal": "4666",
+      "assembled_word_octal": "54001",
+      "kind": "executable instruction",
+      "compiled_group": "SWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 49,
+      "original_text": "\t\tLXCH\tFBANK\t\t# SWITCH BANKS, SAVING RETURN.",
+      "source_address_octal": "4667",
+      "assembled_word_octal": "22004",
+      "kind": "executable instruction",
+      "compiled_group": "SWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 50,
+      "original_text": "\t\tMASK\tLOW10\t\t# GET SUB-ADDRESS OF CADR.",
+      "source_address_octal": "4670",
+      "assembled_word_octal": "75054",
+      "kind": "executable instruction",
+      "compiled_group": "SWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 51,
+      "original_text": "\t\tXCH\tQ\t\t# A,L NOW CONTAINS DP RETURN.",
+      "source_address_octal": "4671",
+      "assembled_word_octal": "56002",
+      "kind": "executable instruction",
+      "compiled_group": "SWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 52,
+      "original_text": "\t\tDXCH\tBUF2\t\t# RESTORING INPUTS IF THIS IS A BANKCALL.",
+      "source_address_octal": "4672",
+      "assembled_word_octal": "52134",
+      "kind": "executable instruction",
+      "compiled_group": "SWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 53,
+      "original_text": "\t\tINDEX\tQ",
+      "source_address_octal": "4673",
+      "assembled_word_octal": "50002",
+      "kind": "executable instruction",
+      "compiled_group": "SWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 54,
+      "original_text": "\t\tTC\t10000\t\t# SETTING Q TO SWRETURN",
+      "source_address_octal": "4674",
+      "assembled_word_octal": "02000",
+      "kind": "executable instruction",
+      "compiled_group": "SWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 55,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 56,
+      "original_text": "SWRETURN\tXCH\tBUF2 +1\t\t# COMES HERE TO RETURN TO CALLER. C(A,L)",
+      "source_address_octal": "4675",
+      "assembled_word_octal": "56134",
+      "kind": "executable instruction",
+      "compiled_group": "SWRETURN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 57,
+      "original_text": "\t\tXCH\tFBANK\t\t# ARE PRESERVED FOR RETURN.",
+      "source_address_octal": "4676",
+      "assembled_word_octal": "56004",
+      "kind": "executable instruction",
+      "compiled_group": "SWRETURN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 58,
+      "original_text": "\t\tXCH\tBUF2 +1",
+      "source_address_octal": "4677",
+      "assembled_word_octal": "56134",
+      "kind": "executable instruction",
+      "compiled_group": "SWRETURN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 59,
+      "original_text": "\t\tTC\tBUF2",
+      "source_address_octal": "4700",
+      "assembled_word_octal": "00133",
+      "kind": "executable instruction",
+      "compiled_group": "SWRETURN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 60,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 61,
+      "original_text": "# THE FOLLOWING ROUTINE CAN BE USED AS A UNILATERAL JUMP WITH C(A,L) PRESERVED AND THE CADR IMMEDIATELY",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 62,
+      "original_text": "# FOLLOWING THE TC POSTJUMP INSTRUCTION.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 63,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 64,
+      "original_text": "POSTJUMP\tXCH\tQ\t\t# SAVE INCOMING C(A).",
+      "source_address_octal": "4701",
+      "assembled_word_octal": "56002",
+      "kind": "executable instruction",
+      "compiled_group": "POSTJUMP",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 65,
+      "original_text": "\t\tINDEX\tA\t\t# GET CADR.",
+      "source_address_octal": "4702",
+      "assembled_word_octal": "50000",
+      "kind": "executable instruction",
+      "compiled_group": "POSTJUMP",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 66,
+      "original_text": "\t\tCA\t0",
+      "source_address_octal": "4703",
+      "assembled_word_octal": "30000",
+      "kind": "executable instruction",
+      "compiled_group": "POSTJUMP",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 67,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 68,
+      "original_text": "# BANKJUMP IS THE SAME AS POSTJUMP, EXCEPT THAT THE CADR ARRIVES IN A.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 69,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 70,
+      "original_text": "BANKJUMP\tTS\tFBANK",
+      "source_address_octal": "4704",
+      "assembled_word_octal": "54004",
+      "kind": "executable instruction",
+      "compiled_group": "BANKJUMP",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 71,
+      "original_text": "\t\tMASK\tLOW10",
+      "source_address_octal": "4705",
+      "assembled_word_octal": "75054",
+      "kind": "executable instruction",
+      "compiled_group": "BANKJUMP",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 72,
+      "original_text": "\t\tXCH\tQ\t\t# RESTORING INPUT C(A) IF THIS WAS A",
+      "source_address_octal": "4706",
+      "assembled_word_octal": "56002",
+      "kind": "executable instruction",
+      "compiled_group": "BANKJUMP",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 73,
+      "original_text": "Q+10000\t\tINDEX\tQ\t\t# POSTJUMP.",
+      "source_address_octal": "4707",
+      "assembled_word_octal": "50002",
+      "kind": "executable instruction",
+      "compiled_group": "Q+10000",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 74,
+      "original_text": "PRIO12\t\tTCF\t10000\t\t# PRIO12 = TCF\t10000 = 12000",
+      "source_address_octal": "4710",
+      "assembled_word_octal": "12000",
+      "kind": "executable instruction",
+      "compiled_group": "PRIO12",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate",
+      "data_alias": "PRIO12 instruction also supplies immutable constant012000"
+    },
+    {
+      "line": 75,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 76,
+      "original_text": "# Page 1104",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 77,
+      "original_text": "# THE FOLLOWING ROUTINE GETS THE RETURN CADR SAVED BY SWCALL OR BANKCALL AND LEAVES IT IN A.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 78,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 79,
+      "original_text": "MAKECADR\tCAF\tLOW10",
+      "source_address_octal": "4711",
+      "assembled_word_octal": "35054",
+      "kind": "executable instruction",
+      "compiled_group": "MAKECADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 80,
+      "original_text": "\t\tMASK\tBUF2",
+      "source_address_octal": "4712",
+      "assembled_word_octal": "70133",
+      "kind": "executable instruction",
+      "compiled_group": "MAKECADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 81,
+      "original_text": "\t\tAD\tBUF2 +1",
+      "source_address_octal": "4713",
+      "assembled_word_octal": "60134",
+      "kind": "executable instruction",
+      "compiled_group": "MAKECADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 82,
+      "original_text": "\t\tTC\tQ",
+      "source_address_octal": "4714",
+      "assembled_word_octal": "00002",
+      "kind": "executable instruction",
+      "compiled_group": "MAKECADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 83,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 84,
+      "original_text": "SUPDACAL\tTS\tMPTEMP",
+      "source_address_octal": "4715",
+      "assembled_word_octal": "54135",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 85,
+      "original_text": "\t\tXCH\tFBANK\t\t# SET FBANK FOR DATA.",
+      "source_address_octal": "4716",
+      "assembled_word_octal": "56004",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 86,
+      "original_text": "\t\tEXTEND",
+      "source_address_octal": "4717",
+      "assembled_word_octal": "00006",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 87,
+      "original_text": "\t\tROR\tSUPERBNK\t# SAVE FBANK IN BITS 15-11, AND",
+      "source_address_octal": "4720",
+      "assembled_word_octal": "04007",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 88,
+      "original_text": "\t\tXCH\tMPTEMP\t\t# SUPERBANK IN BITS 7-5.",
+      "source_address_octal": "4721",
+      "assembled_word_octal": "56135",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 89,
+      "original_text": "\t\tMASK\tLOW10",
+      "source_address_octal": "4722",
+      "assembled_word_octal": "75054",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 90,
+      "original_text": "\t\tXCH\tL\t\t# SAVE REL. ADR. IN BANK, FETCH SUPERBITS.",
+      "source_address_octal": "4723",
+      "assembled_word_octal": "56001",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 91,
+      "original_text": "\t\tINHINT\t\t\t# BECAUSE RUPT DOES NOT SAVE SUPERBANK.",
+      "source_address_octal": "4724",
+      "assembled_word_octal": "00004",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 92,
+      "original_text": "\t\tEXTEND",
+      "source_address_octal": "4725",
+      "assembled_word_octal": "00006",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 93,
+      "original_text": "\t\tWRITE\tSUPERBNK\t# SET SUPERBANK FOR DATA.",
+      "source_address_octal": "4726",
+      "assembled_word_octal": "01007",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 94,
+      "original_text": "\t\tINDEX\tL",
+      "source_address_octal": "4727",
+      "assembled_word_octal": "50001",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 95,
+      "original_text": "\t\tCA\t10000\t\t# PINBALL (FIX MEM DISP) PREVENTS DCA HERE",
+      "source_address_octal": "4730",
+      "assembled_word_octal": "32000",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 96,
+      "original_text": "\t\tXCH\tMPTEMP\t\t# SAVE 1ST WD, FETCH OLD FBANK AND SBANK.",
+      "source_address_octal": "4731",
+      "assembled_word_octal": "56135",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 97,
+      "original_text": "\t\tEXTEND",
+      "source_address_octal": "4732",
+      "assembled_word_octal": "00006",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 98,
+      "original_text": "\t\tWRITE\tSUPERBNK\t# RESTORE SUPERBANK.",
+      "source_address_octal": "4733",
+      "assembled_word_octal": "01007",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 99,
+      "original_text": "\t\tRELINT",
+      "source_address_octal": "4734",
+      "assembled_word_octal": "00003",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 100,
+      "original_text": "\t\tTS\tFBANK\t\t# RESTORE FBANK.",
+      "source_address_octal": "4735",
+      "assembled_word_octal": "54004",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 101,
+      "original_text": "\t\tCA\tMPTEMP\t\t# RECOVER FIRST WORD OF DATA.",
+      "source_address_octal": "4736",
+      "assembled_word_octal": "30135",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 102,
+      "original_text": "\t\tRETURN\t\t\t# 24 WDS. DATACALL 516 MU, SUPDACAL 432 MU",
+      "source_address_octal": "4737",
+      "assembled_word_octal": "00002",
+      "kind": "executable instruction",
+      "compiled_group": "SUPDACAL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 103,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 104,
+      "original_text": "# Page 1105",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 105,
+      "original_text": "# THE FOLLOWING ROUTINES ARE IDENTICAL TO BANKCALL AND SWCALL EXCEPT THAT THEY ARE USED IN INTERRUPT.",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 106,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 107,
+      "original_text": "IBNKCALL\tDXCH\tRUPTREG3\t# USES RUPTREG3,4 FOR DP RETURN ADDRESS.",
+      "source_address_octal": "4740",
+      "assembled_word_octal": "52073",
+      "kind": "executable instruction",
+      "compiled_group": "IBNKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 108,
+      "original_text": "\t\tINDEX\tQ",
+      "source_address_octal": "4741",
+      "assembled_word_octal": "50002",
+      "kind": "executable instruction",
+      "compiled_group": "IBNKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 109,
+      "original_text": "\t\t# Was CAF --- RSB 2009",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 110,
+      "original_text": "\t\tCA\t0",
+      "source_address_octal": "4742",
+      "assembled_word_octal": "30000",
+      "kind": "executable instruction",
+      "compiled_group": "IBNKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 111,
+      "original_text": "\t\tINCR\tQ",
+      "source_address_octal": "4743",
+      "assembled_word_octal": "24002",
+      "kind": "executable instruction",
+      "compiled_group": "IBNKCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 112,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 113,
+      "original_text": "ISWCALL\t\tTS\tL",
+      "source_address_octal": "4744",
+      "assembled_word_octal": "54001",
+      "kind": "executable instruction",
+      "compiled_group": "ISWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 114,
+      "original_text": "\t\tLXCH\tFBANK",
+      "source_address_octal": "4745",
+      "assembled_word_octal": "22004",
+      "kind": "executable instruction",
+      "compiled_group": "ISWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 115,
+      "original_text": "\t\tMASK\tLOW10",
+      "source_address_octal": "4746",
+      "assembled_word_octal": "75054",
+      "kind": "executable instruction",
+      "compiled_group": "ISWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 116,
+      "original_text": "\t\tXCH\tQ",
+      "source_address_octal": "4747",
+      "assembled_word_octal": "56002",
+      "kind": "executable instruction",
+      "compiled_group": "ISWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 117,
+      "original_text": "\t\tDXCH\tRUPTREG3",
+      "source_address_octal": "4750",
+      "assembled_word_octal": "52073",
+      "kind": "executable instruction",
+      "compiled_group": "ISWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 118,
+      "original_text": "\t\tINDEX\tQ",
+      "source_address_octal": "4751",
+      "assembled_word_octal": "50002",
+      "kind": "executable instruction",
+      "compiled_group": "ISWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 119,
+      "original_text": "\t\tTC\t10000",
+      "source_address_octal": "4752",
+      "assembled_word_octal": "02000",
+      "kind": "executable instruction",
+      "compiled_group": "ISWCALL",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 120,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 121,
+      "original_text": "ISWRETRN\tXCH\tRUPTREG4",
+      "source_address_octal": "4753",
+      "assembled_word_octal": "56073",
+      "kind": "executable instruction",
+      "compiled_group": "ISWRETRN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 122,
+      "original_text": "\t\tXCH\tFBANK",
+      "source_address_octal": "4754",
+      "assembled_word_octal": "56004",
+      "kind": "executable instruction",
+      "compiled_group": "ISWRETRN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 123,
+      "original_text": "\t\tXCH\tRUPTREG4",
+      "source_address_octal": "4755",
+      "assembled_word_octal": "56073",
+      "kind": "executable instruction",
+      "compiled_group": "ISWRETRN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 124,
+      "original_text": "\t\tTC\tRUPTREG3",
+      "source_address_octal": "4756",
+      "assembled_word_octal": "00072",
+      "kind": "executable instruction",
+      "compiled_group": "ISWRETRN",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 125,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 126,
+      "original_text": "# 2. USPRCADR ACCESSES INTERPRETIVE CODING IN OTHER THAN THE USER'S FBANK.  THE CALLING SEQUENCE IS AS FOLLOWS:",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 127,
+      "original_text": "#\tL\tTC\tUSPRCADR",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 128,
+      "original_text": "#\tL+1\tCADR\tINTPRETX\t# INTPRETX IS THE INTERPRETIVE CODING",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 129,
+      "original_text": "#\t\t\t\t\t# RETURN IS TO L+2",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 130,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 131,
+      "original_text": "USPRCADR\tTS\tLOC\t\t# SAVE A",
+      "source_address_octal": "4757",
+      "assembled_word_octal": "54164",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 132,
+      "original_text": "\t\tCA\tBIT8",
+      "source_address_octal": "4760",
+      "assembled_word_octal": "35010",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 133,
+      "original_text": "\t\tTS\tEDOP\t\t# EXIT INSTRUCTION TO EDOP",
+      "source_address_octal": "4761",
+      "assembled_word_octal": "54023",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 134,
+      "original_text": "\t\tCA\tBBANK",
+      "source_address_octal": "4762",
+      "assembled_word_octal": "30006",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 135,
+      "original_text": "\t\tTS\tBANKSET\t\t# USER'S BBANK TO BANKSET",
+      "source_address_octal": "4763",
+      "assembled_word_octal": "54165",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 136,
+      "original_text": "\t\tINDEX\tQ",
+      "source_address_octal": "4764",
+      "assembled_word_octal": "50002",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 137,
+      "original_text": "\t\tCA\t0",
+      "source_address_octal": "4765",
+      "assembled_word_octal": "30000",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 138,
+      "original_text": "\t\tTS\tFBANK\t\t# INTERPRETIVE BANK TO FBANK",
+      "source_address_octal": "4766",
+      "assembled_word_octal": "54004",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 139,
+      "original_text": "\t\tMASK\tLOW10\t\t# YIELDS INTERPRETIVE RELATIVE ADDRESS",
+      "source_address_octal": "4767",
+      "assembled_word_octal": "75054",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 140,
+      "original_text": "\t\tXCH\tQ\t\t# INTERPRETIVE ADDRESS TO Q, FETCHING L+1",
+      "source_address_octal": "4770",
+      "assembled_word_octal": "56002",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 141,
+      "original_text": "\t\tXCH\tLOC\t\t# L+1 TO LOC, RETRIEVING ORIGINAL A",
+      "source_address_octal": "4771",
+      "assembled_word_octal": "56164",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 142,
+      "original_text": "\t\tTCF\tQ+10000",
+      "source_address_octal": "4772",
+      "assembled_word_octal": "14707",
+      "kind": "executable instruction",
+      "compiled_group": "USPRCADR",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 143,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 144,
+      "original_text": "# Page 1106",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 145,
+      "original_text": "# THERE ARE FOUR POSSIBLE SETTINGS FOR CHANNEL 07.  (CHANNEL 07 CONTAINS SUPERBANK SETTING.)",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 146,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 147,
+      "original_text": "#\t\t\t\t\tPSEUDO-FIXED\t OCTAL PSEUDO",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 148,
+      "original_text": "# SUPERBANK\tSETTING\tS-REG. VALUE\tBANK NUMBERS\t ADDRESSES",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 149,
+      "original_text": "# ----------\t-------\t------------\t------------ \t  ------------",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 150,
+      "original_text": "# SUPERBANK 3\t  0XX\t2000 - 3777\t   30 - 37\t 70000 - 107777\t\t(WHERE XX CAN BE ANYTHING AND",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 151,
+      "original_text": "#\t\t\t\t\t\t\t\t\t\tWILL USUALLY BE SEEN AS 11)",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 152,
+      "original_text": "# SUPERBANK 4\t  100\t2000 - 3777\t   40 - 47\t 110000 - 127777\t(AS FAR AS IT CAN BE SEEN,",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 153,
+      "original_text": "#\t\t\t\t\t\t\t\t\t\tONLY BANKS 40-43 WILL EVER BE",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 154,
+      "original_text": "#\t\t\t\t\t\t\t\t\t\tAND ARE PRESENTLY AVAILABLE)",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 155,
+      "original_text": "# SUPERBANK 5\t  101\t2000 - 3777\t   50 - 57\t 130000 - 147777\t(PRESENTLY NOT AVAILABLE TO",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 156,
+      "original_text": "#\t\t\t\t\t\t\t\t\t\tTHE USER)",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 157,
+      "original_text": "# SUPERBANK 6\t  110\t2000 - 3777\t   60 - 67\t 150000 - 167777\t(PRESENTLY NOT AVAILABLE TO",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 158,
+      "original_text": "#\t\t\t\t\t\t\t\t\t\tTHE USER)",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 159,
+      "original_text": "# ***  THIS ROUTINE MAYBE CALLED BY ANY PROGRAM LOCATED IN BANKS 00 - 27.  I.E., NO PROGRAM LIVING IN ANY",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 160,
+      "original_text": "# SUPERBANK SHOULD USE SUPERSW.  ***",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 161,
+      "original_text": "#",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 162,
+      "original_text": "# SUPERSW MAYBE CALLED IN THIS FASHION:",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 163,
+      "original_text": "#\tCAF\tABBCON\t\tWHERE  --  ABBCON   BBCON  SOMETHIN  --",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 164,
+      "original_text": "#\tTCR\tSUPERSW\t\t(THE SUPERBNK BITS ARE IN THE BBCON)",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 165,
+      "original_text": "#\t...\t  ...",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 166,
+      "original_text": "#\t .\t   .",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 167,
+      "original_text": "#\t .\t   .",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 168,
+      "original_text": "# OR IN THIS FASHION :",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 169,
+      "original_text": "#\tCAF\tSUPERSET\tWHERE SUPERSET IS ONE OF THE FOUR AVAILABLE",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 170,
+      "original_text": "#\tTCR\tSUPERSW\t\tSUPERBANK BIT CONSTANTS:",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 171,
+      "original_text": "#\t...\t  ...\t\t\tSUPER011 OCTAL  60",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 172,
+      "original_text": "#\t .\t   .\t\t\tSUPER100 OCTAL 100",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 173,
+      "original_text": "#\t .\t   .\t\t\tSUPER101 OCTAL 120",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 174,
+      "original_text": "#\t\t\t\t\tSUPER110 OCTAL 140",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 175,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 176,
+      "original_text": "SUPERSW\t\tEXTEND",
+      "source_address_octal": "4773",
+      "assembled_word_octal": "00006",
+      "kind": "executable instruction",
+      "compiled_group": "SUPERSW",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 177,
+      "original_text": "\t\tWRITE\tSUPERBNK\t# WRITE BITS 7-6-5 OF THE ACCUMULATOR INTO",
+      "source_address_octal": "4774",
+      "assembled_word_octal": "01007",
+      "kind": "executable instruction",
+      "compiled_group": "SUPERSW",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 178,
+      "original_text": "\t\t\t\t\t# CHANNEL 07",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 179,
+      "original_text": "\t\tTC\tQ\t\t# TC TO INSTRUCTION FOLLOWING",
+      "source_address_octal": "4775",
+      "assembled_word_octal": "00002",
+      "kind": "executable instruction",
+      "compiled_group": "SUPERSW",
+      "qualification": "bounded original source/native whole-image proof; not complete valid caller-domain certificate"
+    },
+    {
+      "line": 180,
+      "original_text": "\t\t\t\t\t# \tTC SUPERSW",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 181,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 182,
+      "original_text": "",
+      "kind": "comment or blank"
+    },
+    {
+      "line": 183,
+      "original_text": "",
+      "kind": "comment or blank"
+    }
+  ],
+  "native_control_entries": [
+    [
+      "BANKCALL",
+      2482
+    ],
+    [
+      "SWCALL",
+      2486
+    ],
+    [
+      "SWRETURN",
+      2493
+    ],
+    [
+      "POSTJUMP",
+      2497
+    ],
+    [
+      "BANKJUMP",
+      2500
+    ],
+    [
+      "Q+10000",
+      2503
+    ],
+    [
+      "PRIO12",
+      2504
+    ],
+    [
+      "MAKECADR",
+      2505
+    ],
+    [
+      "SUPDACAL",
+      2509
+    ],
+    [
+      "IBNKCALL",
+      2528
+    ],
+    [
+      "ISWCALL",
+      2532
+    ],
+    [
+      "ISWRETRN",
+      2539
+    ],
+    [
+      "USPRCADR",
+      2543
+    ],
+    [
+      "SUPERSW",
+      2555
+    ]
+  ],
+  "direct_whole_image_source_proof": "evidence/cm-interbank-proof.json",
+  "direct_cases": 7168,
+  "direct_entry_cohorts": 14,
+  "cases_per_entry": 512,
+  "direct_SUPDACAL_data_scope": "100 NNTYPTAB words, repeated across512 direct cases; separate fixed-data packet qualifies other listed spans",
+  "certified_spans": [
+    {
+      "physical_fixed_word": 5120,
+      "word_count": 226,
+      "native_array": "fixed_data_cm_0"
+    },
+    {
+      "physical_fixed_word": 2558,
+      "word_count": 62,
+      "native_array": "fixed_data_cm_1"
+    },
+    {
+      "physical_fixed_word": 4015,
+      "word_count": 32,
+      "native_array": "fixed_data_cm_2"
+    },
+    {
+      "physical_fixed_word": 23252,
+      "word_count": 16,
+      "native_array": "fixed_data_cm_3"
+    },
+    {
+      "physical_fixed_word": 4975,
+      "word_count": 19,
+      "native_array": "fixed_data_cm_4"
+    },
+    {
+      "physical_fixed_word": 13074,
+      "word_count": 223,
+      "native_array": "fixed_data_cm_5"
+    },
+    {
+      "physical_fixed_word": 1024,
+      "word_count": 249,
+      "native_array": "fixed_data_cm_6"
+    },
+    {
+      "physical_fixed_word": 34907,
+      "word_count": 520,
+      "native_array": "fixed_data_cm_7"
+    }
+  ],
+  "SUPDACAL_actual_mission_callers": [
+    {
+      "file": "AGC_BLOCK_TWO_SELF-CHECK.agc",
+      "line": 386,
+      "source_sha256": "f86f1a02856b29a2cd01186a1a807fe4455b576624f8c4cb5876408677c83868",
+      "original_text": "\t\tTC\tSUPDACAL\t# SUPER DATA CALL",
+      "entry": "COMADRS",
+      "data_address_domain": "all assembled common-fixed rope words visited by ROPECHK/SHOWSUM; source includes instruction words as checksum data",
+      "closed_by_current_certified_spans": false
+    },
+    {
+      "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 2470,
+      "source_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+      "original_text": "\t\tTC\tSUPDACAL\t# CALL WITH FCADR IN A, SUPERBITS IN L.",
+      "entry": "DSPFMEM",
+      "data_address_domain": "operator supplied NOUNCADR and DSPTEM1+2 SUPERBITS; arbitrary valid fixed address",
+      "closed_by_current_certified_spans": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "open_domain_gaps": [
+    "SUPDACAL valid mission callers read outside certified immutable spans",
+    "global guard rejects overflowing raw A although individual original entries may have defined overflow behavior",
+    "global Q guard rejects raw or high return/index values beyond07775; no whole-caller-domain proof",
+    "saved SWRETURN/ISWRETRN descriptors limited to simple PC<=07777 and FBANK bits076000",
+    "no proof of interruption between SUPDACAL source instructions; native producer exclusion is caller-owned",
+    "512 direct cases per entry cover all individual FBANK/EBANK/SUPERBNK values, not every cross-product or every A/L/Q value"
+  ],
+  "directive_qualification": "BLOCK02 and COUNT02/BANK layout are reflected by actual assembled original addresses; no runtime instruction",
+  "instruction_data_alias_qualification": "PRIO12 raw012000 constant represented by explicit native continuation; other checksum/display instruction-word reads remain outside certified data closure"
+}

@@ -1,0 +1,19 @@
+{
+  "cases": 917504,
+  "checkpoints": 917504,
+  "actual_source_executed_cases": 901120,
+  "rejected_invalid_BANKJUMP_negative_overflow": 16384,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": 14,
+  "raw_A_inputs_per_entry": 65536,
+  "binary_bytes": 3769106432,
+  "snapshot_sha256": "90cf6b53444bfceb559c27492594066289fa5fa8930e6e661f22454e868d2661",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "all raw16 A input preflights for every control group, 901120 executed original source boundaries, 16384 negative-overflow BANKJUMP invalid typed transfers explicitly rejected before mutation; rawL bijective variation; ordinary compiled Q0705; passive original words only; no decoder"
+}

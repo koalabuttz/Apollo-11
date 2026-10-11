@@ -631,3 +631,5 @@ build/test-native-exchange: $(NATIVE_EXCHANGE_CORE) $(NATIVE_EXCHANGE_TEST) test
 	$(CC) -O2 $(NATIVE_EXCHANGE_FLAGS) $^ -o $@
 test: test-native-exchange
 sanitize: sanitize-native-exchange
+
+include tools/cm_interbank_extended.mk

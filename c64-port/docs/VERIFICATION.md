@@ -1196,3 +1196,7 @@ The isolated committed release at `e4ccffc` passed every portable host build and
 ## Adopt source-selected canonical interpreter exchanges in the native scheduler
 
 Native scheduler adoption now preserves the exact source-selected CHANG2 context without repeating exchange or admitting pending IRQs. All 16,384 complete source transitions and 64 real three-overlay C64 cases are qualified; historical scheduler and complete P66 regressions pass. Remaining application bodies and live scheduling paths retain separate completion gates. See `docs/NATIVE-CANONICAL-EXCHANGE.md`.
+
+## Translate remaining original Comanche extended interbank control groups
+
+Fourteen original interbank groups are qualified across 901,120 source-executed complete states and 16,384 explicitly rejected invalid typed BANKJUMP inputs, with full sanitizer equality and 56 actual C64 contexts. Ordinary caller return contracts and whole-file completion remain separate work. See `docs/COMANCHE_INTERBANK_EXTENDED.md`.

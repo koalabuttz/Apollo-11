@@ -442,3 +442,5 @@ subprocess.run([sys.executable,'tools/passive_storage_differential.py',str(refer
 subprocess.run([sys.executable,'tools/cm_fixed_compat_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_charin_reset_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_interbank_extended_differential.py',str(reference)],cwd=ROOT,check=True)

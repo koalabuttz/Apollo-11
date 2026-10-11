@@ -1,0 +1,101 @@
+{
+  "actual_executed_source_states": 901120,
+  "rejected_invalid_typed_inputs": 16384,
+  "source_stream_sha256": "90cf6b53444bfceb559c27492594066289fa5fa8930e6e661f22454e868d2661",
+  "target_contexts": 56,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500003800",
+  "software_stack_bytes": 65,
+  "modules": [
+    {
+      "id": 200,
+      "filename": "F200",
+      "byte_count": 14483,
+      "crc16": 62851,
+      "sha256": "cfbe4d32f919538cd398724f3ef12f1091de4011e77c53bf814f17ae4b4c8c56",
+      "prg": "cm-fixed-compat-200.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 201,
+      "filename": "F201",
+      "byte_count": 14528,
+      "crc16": 35387,
+      "sha256": "1762287da00769644de30e2475de96b85043af151065bf260c02fcbd6a87b51c",
+      "prg": "cm-fixed-compat-201.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 202,
+      "filename": "F202",
+      "byte_count": 14528,
+      "crc16": 21478,
+      "sha256": "723cfa924ffb4f40dee347a59162d12e7dbaabd11f4346ec1dc1f0d7e01a86ff",
+      "prg": "cm-fixed-compat-202.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 203,
+      "filename": "F203",
+      "byte_count": 14528,
+      "crc16": 34880,
+      "sha256": "4471ce302f6794acf1f0987f6d9880f5cb6221dc6bccd795a58fe4d2b8e27a82",
+      "prg": "cm-fixed-compat-203.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 204,
+      "filename": "F204",
+      "byte_count": 14528,
+      "crc16": 39848,
+      "sha256": "fb94aaabc7201fef2265e7798f4dc6c01a55b574c14ff513d935dd101950d082",
+      "prg": "cm-fixed-compat-204.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 205,
+      "filename": "F205",
+      "byte_count": 2207,
+      "crc16": 14101,
+      "sha256": "012b224cdfc38657720d34852b9cbc2d9fcaa30eca845d2a827a0b0cd2e11025",
+      "prg": "cm-fixed-compat-205.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 207,
+      "filename": "G207",
+      "byte_count": 3990,
+      "crc16": 59733,
+      "sha256": "9d46e3884f91850ed350abcb414ac93649b00af165422e5927a1a700326366b6",
+      "prg": "cm-interbank-extended-207.prg",
+      "native_control": true
+    },
+    {
+      "id": 242,
+      "filename": "G242",
+      "byte_count": 2158,
+      "crc16": 22807,
+      "sha256": "114aad24581d38c9b39cae4b8fe3f354f87a4b8ae5ed6a213f0a1937e2032970",
+      "prg": "cm-interbank-extended-242.prg",
+      "native_control": false
+    },
+    {
+      "id": 243,
+      "filename": "G243",
+      "byte_count": 10030,
+      "crc16": 29946,
+      "sha256": "b0be4bc891302732935826a18ea301a8414ca7d21697e86b5110ff28a6593b93",
+      "prg": "cm-interbank-extended-243.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "fourteen compiled control groups; rawA exhaustive except invalid negative-overflow BANKJUMP transfer; ordinary Q bounds and explicit saved return descriptors; passive fixed words only"
+}
