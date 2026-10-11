@@ -1327,3 +1327,7 @@ Qualify actual direct RECAL1 RECAL2 RECAL3 DOPROC DOTERM and generic source wake
 ## Qualify direct operator response and sequential source wake domains
 
 Extend tested actual operator response controls with raw overflow and sequential wake guards against8192 full source native sanitizer states and64 C64 states keeping historical and frozen source bytes unchanged. See `docs/DSKY-OPERATOR-RESPONSE.md`.
+
+## Translate original octal display verb and channel staging
+
+Qualify actual octal display component selection channels and row return against16384 complete original native sanitizer states and128 C64 states with72 unsupported guards and genuine formatter alarm or ENTRET boundaries. See `docs/DSKY-OCTAL-VERB.md`.

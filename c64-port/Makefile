@@ -919,3 +919,5 @@ all: build/cm-r52-priority-alarm-native
 include tools/dsky_response_recall.mk
 
 include tools/dsky_operator_response.mk
+
+include tools/dsky_octal_verb_integration.mk

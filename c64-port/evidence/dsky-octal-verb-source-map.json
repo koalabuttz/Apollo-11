@@ -1,0 +1,42 @@
+{
+  "mission": "original LM+CM",
+  "entries": {
+    "DSPA": "41,2365",
+    "DSPB": "41,2373",
+    "DSPC": "41,2400",
+    "DSPAB": "41,2360",
+    "DSPABC": "41,2353",
+    "CHANDSP": "41,2504",
+    "row_return": "41,2422"
+  },
+  "boundaries": {
+    "FORMAT": "41,3363 Q02422",
+    "CHANNEL": "41,2504 rawQ=normalized incomingL",
+    "component_alarm": "41,2351 Q02436",
+    "decimal_alarm": "41,2351 Q02451",
+    "ENTRET": "PC0136 Q02412 before saved instruction"
+  },
+  "dp_minor_codes": {
+    "LM": [
+      4,
+      5,
+      7,
+      10
+    ],
+    "CM": [
+      4,
+      5,
+      7,
+      10,
+      13
+    ]
+  },
+  "source_channel_binding": {
+    "1": "canonical L",
+    "2": "canonical Q",
+    "7": "retained SUPER",
+    "others": "stable external ordinary resolved channel word"
+  },
+  "whole_file_claim": false,
+  "native_decoder": false
+}
