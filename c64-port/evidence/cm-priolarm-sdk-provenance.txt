@@ -1,0 +1,2 @@
+SDK libcrt.a SHA256 a8f868d322542d64de7ed25bb3d8f3b70a549acd10981b175e4f8d47131eef53
+Only function target-features changed to -static-stack; SDK helper instructions and source algorithms retained.

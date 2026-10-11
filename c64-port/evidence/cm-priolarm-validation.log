@@ -1,0 +1,40 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_priolarm_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original PRIOLARM/PRIOENT+1 complete image and all13 external latches
+{
+  "cases": 65536,
+  "checkpoints": 65536,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "PRIOLARM10,3766\u2192PRIOENT+1",
+    "real PRIODSPR10,2726 or MULTFAIL\u2192POODOO05721"
+  ],
+  "context_cohorts": "every rawA16/rawQ16 entry value, all source FAILREG corner classes, original TSoverflow skip, all erasable banks, saved caller BBCON/SUPER and actual V05N09; thirteen external fields compared",
+  "binary_bytes": 270663680,
+  "snapshot_sha256": "fe216e60aa5c53c34c6be48a9028ca2e9881cd35004a565ceae4d28ef7437abb",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048 physical words,13 cm_native_io latches",
+  "scope": "actual PRIOLARM through genuine PRIODSPR or overflow POODOO entry; downstream display/recovery remains separate, raw TSoverflow may retain an invalid caller descriptor without fabricating a return"
+}

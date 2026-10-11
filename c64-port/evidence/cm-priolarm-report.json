@@ -1,0 +1,40 @@
+{
+  "actual_executed_source_states": 65536,
+  "source_stream_sha256": "fe216e60aa5c53c34c6be48a9028ca2e9881cd35004a565ceae4d28ef7437abb",
+  "target_contexts": 32,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500002000",
+  "software_stack_bytes": 708,
+  "modules": [
+    {
+      "id": 225,
+      "filename": "G225",
+      "byte_count": 1699,
+      "crc16": 45543,
+      "sha256": "df17cac19556788089cecd3232fa35cb9e1b0c59d350a41984ec445e0c0a30f1",
+      "prg": "cm-priolarm-225.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 4725,
+      "crc16": 4382,
+      "sha256": "78385720deeaf8da172c379f1a52040bb1af5922dc4e8bced0aba92ff156c877",
+      "prg": "cm-priolarm-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 9725,
+      "crc16": 61912,
+      "sha256": "675ab446b340b5c88b069c4689478cab75aabec6b09989064f00a66e6922ec8b",
+      "prg": "cm-priolarm-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual original PRIOLARM through PRIODSPR or overflow POODOO entry; downstream display/recovery remains separate"
+}

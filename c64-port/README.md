@@ -1230,3 +1230,7 @@ Qualify original IMUPULSE lead in actual successful WAITLIST registration free c
 ## Translate original shared scalar display output scaling bodies
 
 Qualify source degree arc and fractional output scaling plus mission specific CDU landing radar and optics scales through true DSPDCEND with20480 complete original native sanitizer states and160 C64 states preserving source channel33 and fresh READLO effects. See `docs/DSKY-SCALAR-OUTPUT.md`.
+
+## Translate original Comanche priority alarm source lead in
+
+Qualify actual PRIOLARM raw registers and FAILREG recording through true PRIODSPR or POODOO selection against65536 complete original native sanitizer states and32 C64 states preserving actual incoming register patterns and explicit display recovery continuations. See `docs/COMANCHE_PRIOLARM.md`.

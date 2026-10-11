@@ -1,0 +1,4 @@
+PASS: stock PAL C64, actual PRIOLARM slot swaps, both incoming I, original complete image preserved at each source boundary
+Actual canonical PRIOLARM:32 complete source checkpoints, two full2061word samples and finalwhole2048word image
+Mailbox: a500002000 softwarestack measured extent: 708
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms +drive8truedrive -virtualdev8 -iecdevice8 -device8 1 -8 /workspace/Apollo-11/c64-port/build/cm-priolarm.d64 -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/cm-priolarm-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/cm-priolarm-vice-monitor.log -monlog -limitcycles 16000000000

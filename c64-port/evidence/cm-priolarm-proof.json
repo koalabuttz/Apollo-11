@@ -1,0 +1,20 @@
+{
+  "cases": 65536,
+  "checkpoints": 65536,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "PRIOLARM10,3766\u2192PRIOENT+1",
+    "real PRIODSPR10,2726 or MULTFAIL\u2192POODOO05721"
+  ],
+  "context_cohorts": "every rawA16/rawQ16 entry value, all source FAILREG corner classes, original TSoverflow skip, all erasable banks, saved caller BBCON/SUPER and actual V05N09; thirteen external fields compared",
+  "binary_bytes": 270663680,
+  "snapshot_sha256": "fe216e60aa5c53c34c6be48a9028ca2e9881cd35004a565ceae4d28ef7437abb",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048 physical words,13 cm_native_io latches",
+  "scope": "actual PRIOLARM through genuine PRIODSPR or overflow POODOO entry; downstream display/recovery remains separate, raw TSoverflow may retain an invalid caller descriptor without fabricating a return"
+}
