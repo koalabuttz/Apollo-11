@@ -1013,3 +1013,5 @@ include tools/cm_wake_complete.mk
 all: build/cm-wake-complete-native
 
 include tools/dsky_fraction_pair_integration.mk
+
+include tools/dsky_minutes_output_integration.mk

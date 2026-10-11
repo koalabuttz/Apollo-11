@@ -1563,3 +1563,7 @@ Translate complete NOVAC VAC and core0 dormant wake scans and actual fault hando
 ## Translate generic signed fractional display pairs
 
 Compose actual DSPDC2NR source entry across six positions both missions all SUPER states and original caller return controls against16384 complete original strict sanitizer states and128 C64 checkpoints. See `docs/DSKY-FRACTION-PAIR.md`.
+
+## Compose original generic minutes and seconds display output
+
+Compose actual M/SOUT fresh read clamp SEPSEC SEPMIN signed displays middle blank and source POSTJUMP return against49152 original strict sanitizer checkpoints and192 C64 states. See `docs/DSKY-MINUTES-OUTPUT.md`.

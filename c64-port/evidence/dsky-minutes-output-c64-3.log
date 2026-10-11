@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete dsky_minutes_output stage original-assembly states; retained memory unchanged
+Mailbox: a500002003
+PRG bytes: 9616
+dsky_minutes_output_3-hardware-stack.bin: measured stack extent 15 bytes
+dsky_minutes_output_3-software-stack.bin: measured stack extent 25 bytes
