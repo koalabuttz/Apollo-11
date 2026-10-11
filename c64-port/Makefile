@@ -560,3 +560,5 @@ all: build/cm-mission-loop-native
 include tools/p66_complete.mk
 
 include tools/cm_powered_axis_port.mk
+
+include tools/cm_powered_interface_port.mk

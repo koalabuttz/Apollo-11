@@ -736,3 +736,7 @@ The coherent Luminary manual P66 path matches 1,204 complete raw 2,052-word sour
 ## Translate canonical Comanche axis selection through actual caller return
 
 Basic AX source control and reused rotation arithmetic match 131,072 original complete states and full sanitizer output. Two C64 PRGs verify 64 complete phase states. Source register, bank and return effects are retained; remaining powered-flight interfaces are separate domains. See `docs/COMANCHE-POWERED-AXIS.md`.
+
+## Compose Comanche powered-flight interfaces through actual source RVQ
+
+Eight CDU trigonometry and six transformation interfaces match 868,352 original complete state images, including real internal calls and source RVQ control. Full sanitizer streams agree; eight C64 PRGs verify 256 composed returns. SMCDURES and NBSM remain pending before whole-file certification. See `docs/COMANCHE-POWERED-INTERFACE.md`.

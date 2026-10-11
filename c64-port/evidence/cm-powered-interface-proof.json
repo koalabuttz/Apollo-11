@@ -1,0 +1,139 @@
+{
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_audit_dependency": {
+    "path": "evidence/cm-powered-trig-source-audit.json",
+    "sha256": "7cc6a856e60c0070c793b560aac0ca8785eea8c3133bac1bdab2611c1a8ec71a"
+  },
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "native_entries": [
+    "CDUTRIG",
+    "CD*TR*G",
+    "CDU*SMNB",
+    "TRG*SMNB",
+    "CDU*NBSM",
+    "TRG*NBSM",
+    "*SMNB*",
+    "*NBSM*"
+  ],
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "calls": 65536,
+  "complete_states": 868352,
+  "calls_per_entry": 8192,
+  "phase_counts_per_entry": [
+    13,
+    13,
+    17,
+    17,
+    17,
+    17,
+    6,
+    6
+  ],
+  "all8_EBANK_contexts": true,
+  "fiveVACbases": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/cm-powered-interface-complete.snapshots.xz",
+      "decoded_sha256": "6e4dcf0daeb1d83abb294a3105fc540fd3d87660ae9dbd88d8a9036e2dd0b33f"
+    },
+    "strict_native": {
+      "object": "evidence/cm-powered-interface-complete.snapshots.xz",
+      "decoded_sha256": "6e4dcf0daeb1d83abb294a3105fc540fd3d87660ae9dbd88d8a9036e2dd0b33f"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/cm-powered-interface-complete.snapshots.xz",
+      "decoded_sha256": "6e4dcf0daeb1d83abb294a3105fc540fd3d87660ae9dbd88d8a9036e2dd0b33f"
+    }
+  },
+  "whole_strict_and_sanitizer_streams_match": true,
+  "target_images": [
+    {
+      "selector": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 16911,
+      "loaded_end_hex": "0x4a0d",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 335,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 16793,
+      "loaded_end_hex": "0x4997",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 329,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 22914,
+      "loaded_end_hex": "0x6180",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 339,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 22821,
+      "loaded_end_hex": "0x6123",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 334,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 4,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "prg_bytes": 22911,
+      "loaded_end_hex": "0x617d",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 339,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 5,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "prg_bytes": 22812,
+      "loaded_end_hex": "0x611a",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 334,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 6,
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "prg_bytes": 13416,
+      "loaded_end_hex": "0x3c66",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 284,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 7,
+      "complete_states": 32,
+      "mailbox": "a500002007",
+      "prg_bytes": 13453,
+      "loaded_end_hex": "0x3c8b",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 284,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "dependencies": [
+    "evidence/cm-powered-trig-proof.json",
+    "evidence/cm-powered-axis-proof.json"
+  ],
+  "continuation": "source EXIT\u2192basic trig/rotation\u2192TCINTPRET RELINT\u2192VLOAD pendingRVQ EDOP0161\u2192actualQPRETfixedFCADRreturn/NEWOPS06037; noExecutivecheckinsidecall",
+  "scope": "All8 permanent trig andtransform interface entries; legacyNBSM andSMCDURES remain separate pending qualification; completePOWEREDfile/applicationnotyetclaimed"
+}
