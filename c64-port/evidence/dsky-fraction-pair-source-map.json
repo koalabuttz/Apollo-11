@@ -1,0 +1,26 @@
+{
+  "entries": {
+    "LM": "40,3266",
+    "CM": "40,3173"
+  },
+  "ordinary_return": "actual TC WDRET via physical0115, Q0116",
+  "recovery": {
+    "LM": "40,5705 Q3354 IRQ0",
+    "CM": "40,5747 Q3261 IRQ0"
+  },
+  "positions": [
+    14,
+    11,
+    9,
+    6,
+    4,
+    1
+  ],
+  "limbs": "arbitrary ordinary TP raw signs",
+  "trace_data_index_bound": [
+    -11,
+    11
+  ],
+  "native_instruction_decoder": false,
+  "whole_file_claim": false
+}

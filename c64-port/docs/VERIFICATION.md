@@ -1880,3 +1880,7 @@ Compose actual END JOBSLEEP and PRIOCHNG scans against12288 full original strict
 ## Translate original Comanche wake candidate scans and idle hints
 
 Translate complete NOVAC VAC and core0 dormant wake scans and actual fault handoffs against32768 original strict sanitizer states and64 C64 checkpoints. See `docs/COMANCHE_WAKE_COMPLETE.md`.
+
+## Translate generic signed fractional display pairs
+
+Compose actual DSPDC2NR source entry across six positions both missions all SUPER states and original caller return controls against16384 complete original strict sanitizer states and128 C64 checkpoints. See `docs/DSKY-FRACTION-PAIR.md`.

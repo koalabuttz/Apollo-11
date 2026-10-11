@@ -626,3 +626,5 @@ subprocess.run([sys.executable,'tools/dsky_input_scale_differential.py',str(refe
 subprocess.run([sys.executable,'tools/cm_super_dispatch_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_wake_complete_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_fraction_pair_differential.py',str(reference)],cwd=ROOT,check=True)
