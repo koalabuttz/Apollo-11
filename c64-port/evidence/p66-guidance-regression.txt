@@ -1,0 +1,38 @@
+$ make test-p66-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/p66_native_cases.c tests/p66_native_check.c tests/test_p66_native.c -o build/test-p66-native
+./build/test-p66-native
+P66 native driver: 0 failures, 160 original-source fingerprints
+$ make sanitize-p66-native
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/p66_native_cases.c tests/p66_native_check.c tests/test_p66_native.c -o build/test-p66-native-sanitize
+./build/test-p66-native-sanitize
+P66 native driver: 0 failures, 160 original-source fingerprints
+$ python3 tools/p66_native_differential.py deps/fixture
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/p66_native_cases.c platform/host/p66_native_snapshot.c -o build/p66-native-snapshot
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 1155 source inputs, 5775 complete117-word arithmetic snapshots through five compiled native callbacks
+Snapshot SHA256: 135ddf4e43a96963dfa5447a9cf4572f29a5a30bc4b33931be8d1d6635fdd3c6
+PASS: 16 two-P66-job preemptions, 112 complete442-word arithmetic/core/VAC checkpoints
+Preempted lower MPAC/MODE/PUSH/OVFIND encoded state survives while higher executes real arithmetic; both SUPERBNK forms
+Mixed SHA256: e6bdd25f2bf1bff96d2dbdca0a650b80cf3beff9b21e714d05a3d7914772bd46
+tools/p66_native.mk:8: warning: overriding recipe for target 'build/p66-native-snapshot'
+tools/p66_native.mk:8: warning: ignoring old recipe for target 'build/p66-native-snapshot'
+tools/p66_native.mk:10: warning: overriding recipe for target 'build/test-p66-native'
+tools/p66_native.mk:10: warning: ignoring old recipe for target 'build/test-p66-native'
+tools/p66_native.mk:13: warning: overriding recipe for target 'test-p66-native'
+tools/p66_native.mk:13: warning: ignoring old recipe for target 'test-p66-native'
+tools/p66_native.mk:15: warning: overriding recipe for target 'sanitize-p66-native'
+tools/p66_native.mk:15: warning: ignoring old recipe for target 'sanitize-p66-native'
+tools/p66_native.mk:19: warning: overriding recipe for target 'build/p66-native.prg'
+tools/p66_native.mk:19: warning: ignoring old recipe for target 'build/p66-native.prg'
+$ python3 tools/p66_guidance_canonical_differential.py
+PASS 43436 canonical numerical checkpoints preserve complete source-owned fields and all unowned image words; SHA256 051e84bff5207b57cdc454b6221e5934b108615009aef36df20772d36d1ee512
+$ python3 tools/p66_guidance_canonical_differential.py --sanitize
+PASS 43436 canonical numerical checkpoints preserve complete source-owned fields and all unowned image words; SHA256 051e84bff5207b57cdc454b6221e5934b108615009aef36df20772d36d1ee512
+$ python3 tools/p66_guidance_live_differential.py --sanitize
+PASS128 source constructor inputs/2944 complete493-word live Executive/arithmetic states match unchanged assembly through AFC3433, bothSUPER forms
+Snapshot SHA256: 7b96007dec941c9dd2dbaa7948e8bc96e1e33bcf5897b5b7b0edaf1360d63eee
+PASS16 two-real-P66-job preemptions/400 complete493-word states through higher-priority AFC; SHA256 46d33f2753d474198bc25f5cf95c676292739acbc777ce63538fae4c73753776
+$ python3 tools/p66_guidance_pending_differential.py --sanitize
+PASS352 pending NEWJOB injections at22 source-safe boundaries:704 complete493-word source/native checkpoints; SHA256 3bfaec3084a82dbd57a10cf7a53031aa3aa0986ed68a1102369c38194c9e1de1

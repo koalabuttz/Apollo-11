@@ -1,0 +1,7 @@
+PASS: tools/p66_guidance_vice_test.py validated stock PAL C64 ROMs and D81 virtual IEC.
+27 actual arithmetic modules +2 streamed proof modules, resident mixed Executive.
+192 independent493-word original-source fingerprints:2 frozen cases, bothSUPER forms, normal and two-real-P66-job preemption, native Ienabled/masked; I/$01 restored.
+Mailbox a50000c00002
+Softwarestack extent736/2048, zero extraZP. Resident .text25733 +rodata759 +data25 +BSS23, ends$6fb9.
+PRG SHA256 bba2b58bd7cb67d2dde6534a4cbb6354a567231033c5924c564f4363027ead47
+D81 SHA256 05ec5c439ee25291d44e19a9466c130b1f3dc0d181cd4c4b09f28e380d9c213f

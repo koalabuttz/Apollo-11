@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include "p66_native.h"
 #include <string.h>
+#include <stddef.h>
 #include "guidance_velocity.h"
 #include "guidance_divide.h"
 #include "guidance_store.h"
@@ -100,31 +101,42 @@ uint16_t p66_native_entry(apollo_overlay_state *image,uint16_t selector) {
 }
 #endif
 #ifndef P66_NATIVE_ARITH_ONLY
+/* Keep the canonical byte copy compact on a6502. Volatile stores prevent
+ * whole-program unrolling into hundreds of fixed-address load/store pairs;
+ * all copied words retain their raw bits. */
+static __attribute__((noinline)) void source_copy(void *to,const void *from,uint16_t bytes){
+ volatile unsigned char *d=to;const unsigned char *p=from;
+ while(bytes!=0){*d++=*p++;--bytes;}
+}
+typedef struct{uint16_t address,offset;} executive_field;
+#define EF(a,m) {a,(uint16_t)offsetof(executive,m)}
+static const executive_field executive_fields[]={
+ EF(0067,newjob),EF(0063,newprio),EF(0065,newloc[0]),EF(0066,newloc[1]),
+ EF(0064,locctr),EF(0120,fixloc),EF(0121,ovfind)
+};
+#undef EF
+static __attribute__((noinline)) void scalar_exchange(apollo_overlay_state *m,executive *s,uint8_t to_image){
+ uint8_t i;
+ for(i=0;i<sizeof executive_fields/sizeof executive_fields[0];++i){
+  const executive_field *f=&executive_fields[i];
+  uint16_t *v=(uint16_t *)((unsigned char *)s+f->offset);
+  if(to_image)m->words[f->address]=*v;else *v=m->words[f->address];
+ }
+}
 void p66_native_export_executive(apollo_overlay_state *m,const executive *s) {
-    memcpy(&m->words[0154],s->core,sizeof s->core);
-    memcpy(&m->words[0400],s->vac,sizeof s->vac);
-    m->words[0067]=s->newjob;m->words[0063]=s->newprio;
-    m->words[0065]=s->newloc[0];m->words[0066]=s->newloc[1];
-    m->words[0064]=s->locctr;m->words[0120]=s->fixloc;m->words[0121]=s->ovfind;
+ source_copy(&m->words[0154],s->core,sizeof s->core);
+ source_copy(&m->words[0400],s->vac,sizeof s->vac);
+ scalar_exchange(m,(executive *)s,1);
 }
 void p66_native_import_executive(executive *s,const apollo_overlay_state *m) {
-    memcpy(s->core,&m->words[0154],sizeof s->core);
-    memcpy(s->vac,&m->words[0400],sizeof s->vac);
-    s->newjob=m->words[0067];s->newprio=m->words[0063];
-    s->newloc[0]=m->words[0065];s->newloc[1]=m->words[0066];
-    s->locctr=m->words[0064];s->fixloc=m->words[0120];s->ovfind=m->words[0121];
+ source_copy(s->core,&m->words[0154],sizeof s->core);
+ source_copy(s->vac,&m->words[0400],sizeof s->vac);
+ scalar_exchange((apollo_overlay_state *)m,s,0);
 }
-static enum exec_action continuation(executive *s,void *user,exec_address *resume) {
-    p66_native_binding *b=user;uint16_t selector=0;agc_word completed=0;
+__attribute__((noinline)) enum exec_action p66_native_run_group(executive *s,p66_native_binding *b,
+    exec_address *resume,uint16_t selector,agc_word completed,agc_word next) {
     uint8_t token=b->producers->enter(b->producers->user);
-    switch(b->runtime->current.location) {
-    case 03275:selector=1;completed=03353;resume->location=03354;break;
-    case 03354:selector=2;completed=03356;resume->location=03357;break;
-    case 03357:selector=3;completed=03361;resume->location=03362;break;
-    case 03362:selector=4;completed=03364;resume->location=03365;break;
-    case 03365:selector=5;completed=03373;resume->location=03374;break;
-    default:b->status=P66_NATIVE_BOUNDARY;break;
-    }
+    resume->location=next;
     if(selector!=0) {
         p66_native_export_executive(b->image,s);
         if(b->invoke!=0)b->status=(enum p66_native_status)b->invoke(b->modules,b->image,selector);
@@ -133,19 +145,31 @@ static enum exec_action continuation(executive *s,void *user,exec_address *resum
 #else
         else b->status=P66_NATIVE_UNSUPPORTED;
 #endif
+        p66_native_import_executive(s,b->image);
         if(b->status==P66_NATIVE_OK) {
-            p66_native_import_executive(s,b->image);
             if(selector!=1) {
                 s->core[0][EXEC_LOC]=completed;
                 p66_native_export_executive(b->image,s);
             }
             if(b->observe!=0)b->observe(b->observer,b->image,completed);
         }
-    }
+    }else b->status=P66_NATIVE_BOUNDARY;
     if(b->status!=P66_NATIVE_OK)b->runtime->fault=EXEC_OUT_OF_SCOPE;
     resume->bank=b->runtime->current.bank;
     b->producers->leave(b->producers->user,token);
     return selector==1 ? EXEC_ENTER_INTERPRETER : EXEC_YIELD;
+}
+static enum exec_action continuation(executive *s,void *user,exec_address *resume) {
+    p66_native_binding *b=user;uint16_t selector=0;agc_word completed=0,next=resume->location;
+    switch(b->runtime->current.location) {
+    case 03275:selector=1;completed=03353;next=03354;break;
+    case 03354:selector=2;completed=03356;next=03357;break;
+    case 03357:selector=3;completed=03361;next=03362;break;
+    case 03362:selector=4;completed=03364;next=03365;break;
+    case 03365:selector=5;completed=03373;next=03374;break;
+    default:break;
+    }
+    return p66_native_run_group(s,b,resume,selector,completed,next);
 }
 #define PAIR(bank) \
  {{03275,bank},EXEC_CONTEXT_BASIC,continuation},\
@@ -165,6 +189,15 @@ enum exec_status p66_native_step(p66_native_binding *b) {
     status=exec_native_step(b->runtime);
     token=b->producers->enter(b->producers->user);
     p66_native_export_executive(b->image,b->runtime->state);
+    if(status==EXEC_OK){
+        /* DANZIG restores BANKSET before its NEWJOB check. Materialize the
+         * selected source bank after the callback observation, so a pending
+         * basic job inherits the actual entry bank rather than the kernel's
+         * pre-DANZIG fixed/erasable scratch bank. */
+        agc_word bank=(agc_word)(b->runtime->current.bank&076007u);
+        b->image->words[6]=bank;b->image->words[3]=(agc_word)((bank&7u)<<8);
+        b->image->words[4]=(agc_word)(bank&076000u);
+    }
     b->image->words[0115]=b->runtime->interpreter_control.intbit15;
     b->image->words[023]=b->runtime->interpreter_control.edop;
     b->producers->leave(b->producers->user,token);

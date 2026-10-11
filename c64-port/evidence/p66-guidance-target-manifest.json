@@ -1,0 +1,359 @@
+[
+  {
+    "id": 1,
+    "filename": "P66G1",
+    "name": "prepare",
+    "selector": 1,
+    "boundary": "03275 -> before INTPRET at03353",
+    "byte_count": 5524,
+    "crc16": 31100,
+    "bss_size": 0,
+    "sha256": "06fd675b2653c35b923ce655d3349b8becc2d37b4306baa0d800eac25ce9e4ab",
+    "prg": "overlay-p66-1.prg",
+    "shared_state": "canonical2048word erasable image",
+    "mission_translation": true,
+    "native_sources": [
+      "platform/c64/p66_overlay_payload.c",
+      "src/agc_word.c",
+      "src/agc_multiword.c",
+      "src/p66_native.c",
+      "src/guidance.c",
+      "src/guidance_acceleration.c",
+      "src/guidance_divide.c",
+      "src/guidance_dot.c",
+      "src/guidance_dp_divide.c",
+      "src/guidance_elapsed.c",
+      "src/guidance_gravity.c",
+      "src/guidance_norm.c",
+      "src/guidance_prepare.c",
+      "src/guidance_product.c",
+      "src/guidance_projection.c",
+      "src/guidance_push.c",
+      "src/guidance_radial.c",
+      "src/guidance_rotation.c",
+      "src/guidance_scale.c",
+      "src/guidance_shift.c",
+      "src/guidance_store.c",
+      "src/guidance_sum.c",
+      "src/guidance_throttle.c",
+      "src/guidance_throttle_service.c",
+      "src/guidance_trig.c",
+      "src/guidance_unit.c",
+      "src/guidance_vector.c",
+      "src/guidance_velocity.c"
+    ],
+    "compile_defines": [
+      "P66_NATIVE_ARITH_ONLY",
+      "P66_NATIVE_ONLY_GROUP=1"
+    ],
+    "scope": "one bounded Luminary099 RODCOMP group; no complete-program claim"
+  },
+  {
+    "id": 2,
+    "filename": "P66G2",
+    "name": "scale-time",
+    "selector": 2,
+    "boundary": "VXSC/PDDL THISTPIP -> DANZIG03356",
+    "byte_count": 7772,
+    "crc16": 18737,
+    "bss_size": 0,
+    "sha256": "016c4c82a0dac4bfec5c227648b01c92381c8992af199b76a869fb0b9de84d88",
+    "prg": "overlay-p66-2.prg",
+    "shared_state": "canonical2048word erasable image",
+    "mission_translation": true,
+    "native_sources": [
+      "platform/c64/p66_overlay_payload.c",
+      "src/agc_word.c",
+      "src/agc_multiword.c",
+      "src/p66_native.c",
+      "src/guidance.c",
+      "src/guidance_acceleration.c",
+      "src/guidance_divide.c",
+      "src/guidance_dot.c",
+      "src/guidance_dp_divide.c",
+      "src/guidance_elapsed.c",
+      "src/guidance_gravity.c",
+      "src/guidance_norm.c",
+      "src/guidance_prepare.c",
+      "src/guidance_product.c",
+      "src/guidance_projection.c",
+      "src/guidance_push.c",
+      "src/guidance_radial.c",
+      "src/guidance_rotation.c",
+      "src/guidance_scale.c",
+      "src/guidance_shift.c",
+      "src/guidance_store.c",
+      "src/guidance_sum.c",
+      "src/guidance_throttle.c",
+      "src/guidance_throttle_service.c",
+      "src/guidance_trig.c",
+      "src/guidance_unit.c",
+      "src/guidance_vector.c",
+      "src/guidance_velocity.c"
+    ],
+    "compile_defines": [
+      "P66_NATIVE_ARITH_ONLY",
+      "P66_NATIVE_ONLY_GROUP=2"
+    ],
+    "scope": "one bounded Luminary099 RODCOMP group; no complete-program claim"
+  },
+  {
+    "id": 4,
+    "filename": "P66G4",
+    "name": "divide-gravity",
+    "selector": 4,
+    "boundary": "DDV4SEC(28)/PDVL GDT/2 -> DANZIG03364",
+    "byte_count": 7608,
+    "crc16": 62861,
+    "bss_size": 0,
+    "sha256": "21ab00ccd0f96f0866b50d592762e661c97cbd8eb337848b6b2aa37121e13289",
+    "prg": "overlay-p66-4.prg",
+    "shared_state": "canonical2048word erasable image",
+    "mission_translation": true,
+    "native_sources": [
+      "platform/c64/p66_overlay_payload.c",
+      "src/agc_word.c",
+      "src/agc_multiword.c",
+      "src/p66_native.c",
+      "src/guidance.c",
+      "src/guidance_acceleration.c",
+      "src/guidance_divide.c",
+      "src/guidance_dot.c",
+      "src/guidance_dp_divide.c",
+      "src/guidance_elapsed.c",
+      "src/guidance_gravity.c",
+      "src/guidance_norm.c",
+      "src/guidance_prepare.c",
+      "src/guidance_product.c",
+      "src/guidance_projection.c",
+      "src/guidance_push.c",
+      "src/guidance_radial.c",
+      "src/guidance_rotation.c",
+      "src/guidance_scale.c",
+      "src/guidance_shift.c",
+      "src/guidance_store.c",
+      "src/guidance_sum.c",
+      "src/guidance_throttle.c",
+      "src/guidance_throttle_service.c",
+      "src/guidance_trig.c",
+      "src/guidance_unit.c",
+      "src/guidance_vector.c",
+      "src/guidance_velocity.c"
+    ],
+    "compile_defines": [
+      "P66_NATIVE_ARITH_ONLY",
+      "P66_NATIVE_ONLY_GROUP=4"
+    ],
+    "scope": "one bounded Luminary099 RODCOMP group; no complete-program claim"
+  },
+  {
+    "id": 103,
+    "filename": "G103",
+    "byte_count": 3492,
+    "crc16": 840,
+    "prg": "overlay-p66-extended-103.prg",
+    "sha256": "68fdae46bb139d8df6266f595bfd04d27d8154eeed9a41bf36ad96738ce2755a"
+  },
+  {
+    "id": 113,
+    "filename": "G113",
+    "byte_count": 2555,
+    "crc16": 11815,
+    "prg": "overlay-p66-extended-113.prg",
+    "sha256": "dfdda97d1c9ebbeb505a95ff1088178aa1a55837e61739fcb26f50538c1fa350"
+  },
+  {
+    "id": 105,
+    "filename": "G105",
+    "byte_count": 6494,
+    "crc16": 50029,
+    "prg": "overlay-p66-extended-105.prg",
+    "sha256": "b8abfab4b0525afaca11f5ba5fa15a2bcb827a1321991773ea18ac216ed9a5ec"
+  },
+  {
+    "id": 115,
+    "filename": "G115",
+    "byte_count": 5576,
+    "crc16": 35896,
+    "prg": "overlay-p66-extended-115.prg",
+    "sha256": "698837a5126bd6c34d40c67165bd88b2247e41aa3d93a0579fbd53466fcc6bd0"
+  },
+  {
+    "id": 125,
+    "filename": "G125",
+    "byte_count": 5213,
+    "crc16": 48291,
+    "prg": "overlay-p66-extended-125.prg",
+    "sha256": "5fb4d312e466493845614f28f2eca843c017857924fa562f8c100d6e115c0a7a"
+  },
+  {
+    "id": 106,
+    "filename": "G106",
+    "byte_count": 7664,
+    "crc16": 25727,
+    "prg": "overlay-p66-extended-106.prg",
+    "sha256": "178e815ce2c4c404543183a9fde2e7a2850f25af606f225c63b39e69ca5bea97"
+  },
+  {
+    "id": 116,
+    "filename": "G116",
+    "byte_count": 9047,
+    "crc16": 14793,
+    "prg": "overlay-p66-extended-116.prg",
+    "sha256": "4b95c3e4e41d56f858ef26b8621fbaaecf5c294a3f91b95295235b5017e4f6bb"
+  },
+  {
+    "id": 126,
+    "filename": "G126",
+    "byte_count": 9139,
+    "crc16": 19888,
+    "prg": "overlay-p66-extended-126.prg",
+    "sha256": "1812ef84d7c001f547f2f072b06f6530386d7a45173123ae56e27cc889160782"
+  },
+  {
+    "id": 136,
+    "filename": "G136",
+    "byte_count": 2783,
+    "crc16": 14351,
+    "prg": "overlay-p66-extended-136.prg",
+    "sha256": "0cf4103928e6621f19bab32c837edb1dfdaf8a5574fd4a02287487ae2334412c"
+  },
+  {
+    "id": 146,
+    "filename": "G146",
+    "byte_count": 8452,
+    "crc16": 59668,
+    "prg": "overlay-p66-extended-146.prg",
+    "sha256": "d5366a6c9136abb17e79182671166d7ecacdd8fc6c94ffebbf410b915c4e23b0"
+  },
+  {
+    "id": 156,
+    "filename": "G156",
+    "byte_count": 2447,
+    "crc16": 17479,
+    "prg": "overlay-p66-extended-156.prg",
+    "sha256": "b702c910a70ee212c1ef5da0ccd3ef245e771e2b5f772dc6073da7c46bdfbb9f"
+  },
+  {
+    "id": 166,
+    "filename": "G166",
+    "byte_count": 4862,
+    "crc16": 59525,
+    "prg": "overlay-p66-extended-166.prg",
+    "sha256": "3f797b3a5eb58196a74723e2ac0ded2da5fbebb24e31f631cad9da71d6730fda"
+  },
+  {
+    "id": 176,
+    "filename": "G176",
+    "byte_count": 3629,
+    "crc16": 851,
+    "prg": "overlay-p66-extended-176.prg",
+    "sha256": "53c3ea3b03f55641110c58186bcb41ff659f4a5d4ca4ec7224489d1d98406667"
+  },
+  {
+    "id": 186,
+    "filename": "G186",
+    "byte_count": 2415,
+    "crc16": 60333,
+    "prg": "overlay-p66-extended-186.prg",
+    "sha256": "e2cc58cbb0276c578ae65bec8a566820c4c6d4465c83e109459b8c28afa86ce0"
+  },
+  {
+    "id": 107,
+    "filename": "G107",
+    "byte_count": 15301,
+    "crc16": 55756,
+    "prg": "overlay-p66-extended-107.prg",
+    "sha256": "a4d13346fbec362dc0435cb8127ef640c29e9768906ee2a3049c94fd5d451ff3"
+  },
+  {
+    "id": 117,
+    "filename": "G117",
+    "byte_count": 14555,
+    "crc16": 54471,
+    "prg": "overlay-p66-extended-117.prg",
+    "sha256": "21b492e04e537795009ec94691dc863d367921e970d8625550cd2dd723b1c0b6"
+  },
+  {
+    "id": 127,
+    "filename": "G127",
+    "byte_count": 11075,
+    "crc16": 60906,
+    "prg": "overlay-p66-extended-127.prg",
+    "sha256": "3729d8476f89567585780b1c5512da1d7428ea804e32144262a09370406a4cf2"
+  },
+  {
+    "id": 137,
+    "filename": "G137",
+    "byte_count": 2489,
+    "crc16": 61000,
+    "prg": "overlay-p66-extended-137.prg",
+    "sha256": "48ae69bddaa52c7101192cf63e0543f8928ba75a5bd1220c6ed9a32af8608b24"
+  },
+  {
+    "id": 147,
+    "filename": "G147",
+    "byte_count": 3556,
+    "crc16": 48364,
+    "prg": "overlay-p66-extended-147.prg",
+    "sha256": "b637b356aafb679ff5e99509561f4e54f2cd98e197ee0cb84eb082456ca28a57"
+  },
+  {
+    "id": 108,
+    "filename": "G108",
+    "byte_count": 10549,
+    "crc16": 65140,
+    "prg": "overlay-p66-extended-108.prg",
+    "sha256": "1500856b969ad1b5442ff88b790835d53d1392976e5a2e0d87e23fc362a94a20"
+  },
+  {
+    "id": 118,
+    "filename": "G118",
+    "byte_count": 7374,
+    "crc16": 29473,
+    "prg": "overlay-p66-extended-118.prg",
+    "sha256": "d661d0d584e1c56bf03d1b6279e4f234f2a45d8bbc00668db60abfb07b13bbda"
+  },
+  {
+    "id": 128,
+    "filename": "G128",
+    "byte_count": 7906,
+    "crc16": 27752,
+    "prg": "overlay-p66-extended-128.prg",
+    "sha256": "070facda11a3255601acf505ec61624e40b61d6a2a3e513827d4a6a3d5a82eb6"
+  },
+  {
+    "id": 9,
+    "filename": "G9",
+    "byte_count": 2490,
+    "crc16": 31896,
+    "prg": "overlay-p66-extended-9.prg",
+    "sha256": "f17de8c7b316d8eca15b4d992d2bfaa86e5e8b0e8dbdc26e19c159f6ac05f5f7"
+  },
+  {
+    "id": 10,
+    "filename": "G10",
+    "byte_count": 11088,
+    "crc16": 32720,
+    "prg": "overlay-p66-extended-10.prg",
+    "sha256": "38492d07d64f19053f17c650dd8662848c19cce311176de60cb23faebf09ec22"
+  },
+  {
+    "id": 248,
+    "filename": "P66INX",
+    "byte_count": 3870,
+    "crc16": 46162,
+    "sha256": "0c0fb0cd6f562cfaf8f46fa344c56785326c9b5217f2c3ec4fde7c227e5d5c0d",
+    "prg": "p66-guidance-fixture-248.prg",
+    "mission_translation": false
+  },
+  {
+    "id": 249,
+    "filename": "P66CKX",
+    "byte_count": 3144,
+    "crc16": 49708,
+    "sha256": "1cd47746efcd1f354b5272d996c8eb77c3a0f6cab4e0da1d3c5d87047591f8fa",
+    "prg": "p66-guidance-fixture-249.prg",
+    "mission_translation": false
+  }
+]

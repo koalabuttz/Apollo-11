@@ -414,3 +414,5 @@ include tools/cm_numeric.mk
 include tools/cm_rotation.mk
 
 include tools/cm_rectify.mk
+
+include tools/p66_guidance.mk
