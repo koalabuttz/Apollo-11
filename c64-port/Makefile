@@ -580,3 +580,5 @@ include tools/cm_interbank.mk
 include tools/cm_idle_dispatch.mk
 
 include tools/cm_makeplay_sleep_port.mk
+
+include tools/cm_sleep_port.mk

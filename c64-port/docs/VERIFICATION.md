@@ -1118,3 +1118,7 @@ Source idle dispatch matches 4,096 original complete states with actual register
 ## Translate canonical Comanche display sleep control and wake continuation
 
 CM GOSLEEPS and UPENT2 preserve all 6,144 original complete states, including mission-specific ITEMP1 and L effects. Strict tests cover 39 unchanged invalid boundaries; full sanitizer output and 64-state C64 proof pass. Canonical scheduler JOBSLEEP and rendering bodies remain separate qualifications. See `docs/COMANCHE-MAKEPLAY-SLEEP.md`.
+
+## Execute canonical Comanche JOBSLEEP and real successor dispatch
+
+Canonical Comanche JOBSLEEP matches 16,384 complete original states through basic, interpreted and idle successors while retaining the dormant VAC. Strict tests cover 23 invalid unchanged contexts and explicit source transfers; full sanitizer output and 64-state C64 proof pass. This extends bounded Executive coverage. See `docs/COMANCHE-BASIC-SLEEP.md`.
