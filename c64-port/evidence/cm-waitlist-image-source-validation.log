@@ -1,0 +1,15 @@
+python3 tools/cm_waitlist_image_differential.py
+PASS: 1024 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "05245 WAITLIST"
+  ],
+  "boundary": "actual caller DTCB return",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "dba29296c26af57eac8cc99c6a96d4939e0342ba62c7ea8244ae50a7952c6f87"
+}

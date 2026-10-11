@@ -469,3 +469,5 @@ include tools/cm_longcall.mk
 include tools/cm_restart_select.mk
 
 include tools/cm_clocktask.mk
+
+include tools/cm_waitlist_image.mk

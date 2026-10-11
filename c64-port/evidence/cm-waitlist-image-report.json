@@ -1,0 +1,41 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "05245 WAITLIST"
+  ],
+  "boundary": "actual caller DTCB return",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "dba29296c26af57eac8cc99c6a96d4939e0342ba62c7ea8244ae50a7952c6f87",
+  "hardware_stack_bytes": 12,
+  "software_stack_bytes": 83,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 19226,
+    ".text": {
+      "address": 2061,
+      "bytes": 6892
+    },
+    ".rodata": {
+      "address": 8953,
+      "bytes": 12320
+    },
+    ".data": {
+      "address": 21273,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 21273,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 25395,
+      "bytes": 0
+    },
+    "image_end": 25395
+  }
+}

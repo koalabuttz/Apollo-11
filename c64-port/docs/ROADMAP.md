@@ -564,3 +564,7 @@ Original RESTARTS and phase-part selection use independently checked restart dat
 ## Port real Comanche clock-task source control
 
 Original timer cleanup, clock update and display admission transitions pass complete-image source, sanitizer and C64 checks. See `docs/COMANCHE_CLOCKTASK.md`.
+
+## Port full-image Comanche WAITLIST return effects
+
+Canonical WAITLIST wrapper preserves source registers, banks, scratch and dynamic task destinations; independent source, sanitizer and C64 checks pass. See `docs/COMANCHE_WAITLIST_IMAGE.md`.

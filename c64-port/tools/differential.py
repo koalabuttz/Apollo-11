@@ -316,3 +316,5 @@ subprocess.run([sys.executable,'tools/cm_longcall_differential.py',str(reference
 subprocess.run([sys.executable,'tools/cm_restart_select_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_clocktask_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_waitlist_image_differential.py',str(reference)],cwd=ROOT,check=True)
