@@ -1,0 +1,166 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5c6b     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/rtb-unit-lm22.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         build/rtb-unit-lm22.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67     13bc     1         build/rtb-unit-lm22.prg.lto.o:(.text.main)
+     a67      a67     13bc     1                 main
+    1e23     1e23       9a     1         build/rtb-unit-lm22.prg.lto.o:(.text.rtb_vector)
+    1e23     1e23       9a     1                 rtb_vector
+    1ebd     1ebd       7b     1         build/rtb-unit-lm22.prg.lto.o:(.text.vector)
+    1ebd     1ebd       7b     1                 vector
+    1f38     1f38      18d     1         build/rtb-unit-lm22.prg.lto.o:(.text.pair)
+    1f38     1f38      18d     1                 pair
+    20c5     20c5       ca     1         build/rtb-unit-lm22.prg.lto.o:(.text.agc_multiply)
+    20c5     20c5       ca     1                 agc_multiply
+    218f     218f      1bc     1         build/rtb-unit-lm22.prg.lto.o:(.text.agc_double_add)
+    218f     218f      1bc     1                 agc_double_add
+    234b     234b      192     1         build/rtb-unit-lm22.prg.lto.o:(.text.half_argument)
+    234b     234b      192     1                 half_argument
+    24dd     24dd      21a     1         build/rtb-unit-lm22.prg.lto.o:(.text.triple_left)
+    24dd     24dd      21a     1                 triple_left
+    26f7     26f7      283     1         build/rtb-unit-lm22.prg.lto.o:(.text.divide)
+    26f7     26f7      283     1                 divide
+    297a     297a      dc2     1         build/rtb-unit-lm22.prg.lto.o:(.text.p66_unit_root_phase)
+    297a     297a      dc2     1                 p66_unit_root_phase
+    373c     373c     16c6     1         build/rtb-unit-lm22.prg.lto.o:(.text.p66_unit_finish_phase)
+    373c     373c     16c6     1                 p66_unit_finish_phase
+    4e02     4e02      281     1         build/rtb-unit-lm22.prg.lto.o:(.text.normalized_ratio)
+    4e02     4e02      281     1                 normalized_ratio
+    5083     5083      a9f     1         build/rtb-unit-lm22.prg.lto.o:(.text.p66_length_square_phase)
+    5083     5083      a9f     1                 p66_length_square_phase
+    5b22     5b22      364     1         build/rtb-unit-lm22.prg.lto.o:(.text.square)
+    5b22     5b22      364     1                 square
+    5e86     5e86        6     1         build/rtb-unit-lm22.prg.lto.o:(.text.exit)
+    5e86     5e86        6     1                 exit
+    5e8c     5e8c       34     1         build/rtb-unit-lm22.prg.lto.o:(.text.memcpy)
+    5e8c     5e8c       34     1                 memcpy
+    5ec0     5ec0       47     1         build/rtb-unit-lm22.prg.lto.o:(.text.memcmp)
+    5ec0     5ec0       47     1                 memcmp
+    5f07     5f07       22     1         build/rtb-unit-lm22.prg.lto.o:(.text.__memset)
+    5f07     5f07       22     1                 __memset
+    5f29     5f29       13     1         build/rtb-unit-lm22.prg.lto.o:(.text.__lshrhi3)
+    5f29     5f29       13     1                 __lshrhi3
+    5f3c     5f3c       17     1         build/rtb-unit-lm22.prg.lto.o:(.text.__lshrsi3)
+    5f3c     5f3c       17     1                 __lshrsi3
+    5f53     5f53       5d     1         build/rtb-unit-lm22.prg.lto.o:(.text.__udivqi3)
+    5f53     5f53       5d     1                 __udivqi3
+    5fb0     5fb0      14f     1         build/rtb-unit-lm22.prg.lto.o:(.text.__umodsi3)
+    5fb0     5fb0      14f     1                 __umodsi3
+    60ff     60ff      2de     1         build/rtb-unit-lm22.prg.lto.o:(.text.__divmodsi4)
+    60ff     60ff      2de     1                 __divmodsi4
+    63dd     63dd       34     1         build/rtb-unit-lm22.prg.lto.o:(.text.__mulhi3)
+    63dd     63dd       34     1                 __mulhi3
+    6411     6411       67     1         build/rtb-unit-lm22.prg.lto.o:(.text.__mulsi3)
+    6411     6411       67     1                 __mulsi3
+    6478     6478        0     1         __init_array_start = .
+    6478     6478        0     1         __init_array_end = .
+    6478     6478        0     1         __fini_array_start = .
+    6478     6478        0     1         __fini_array_end = .
+    6478     6478      a13     1 .rodata
+    6478     6478        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    6478     6478        0     1                 __set_v
+    6479     6479       94     1         build/rtb-unit-lm22.prg.lto.o:(.rodata.rtb_unit_reference_dictionary)
+    6479     6479       94     1                 rtb_unit_reference_dictionary
+    650d     650d       42     1         build/rtb-unit-lm22.prg.lto.o:(.rodata.rtb_unit_reference_offsets)
+    650d     650d       42     1                 rtb_unit_reference_offsets
+    654f     654f      876     1         build/rtb-unit-lm22.prg.lto.o:(.rodata.rtb_unit_reference_stream)
+    654f     654f      876     1                 rtb_unit_reference_stream
+    6dc5     6dc5        6     1         build/rtb-unit-lm22.prg.lto.o:(.rodata.rtb_unit_phase.entry)
+    6dc5     6dc5        6     1                 rtb_unit_phase.entry
+    6dcb     6dcb       70     1         build/rtb-unit-lm22.prg.lto.o:(.rodata.fields)
+    6dcb     6dcb       70     1                 fields
+    6e3b     6e3b       40     1         <internal>:(.rodata.cst32)
+    6e7b     6e7b        6     1         build/rtb-unit-lm22.prg.lto.o:(.rodata.rtb_unit_input.at)
+    6e7b     6e7b        6     1                 rtb_unit_input.at
+    6e81     6e81        a     1         build/rtb-unit-lm22.prg.lto.o:(.rodata.rtb_vector_input.bases)
+    6e81     6e81        a     1                 rtb_vector_input.bases
+    6e8b     6e8b        0     1 .data
+    6e8b     6e8b        0     1         __data_start = .
+    6e8b     6e8b        0     1         __data_end = .
+    6e8b     6e8b        0     1 __data_load_start = LOADADDR(.data)
+    6e8b     6e8b        0     1 __data_size = SIZEOF(.data)
+    6e8b     6e8b     2000     1 .bss
+    6e8b     6e8b        0     1         __bss_start = .
+    6e8b     6e8b     1000     1         build/rtb-unit-lm22.prg.lto.o:(.bss.image)
+    6e8b     6e8b     1000     1                 image
+    7e8b     7e8b     1000     1         build/rtb-unit-lm22.prg.lto.o:(.bss.expected)
+    7e8b     7e8b     1000     1                 expected
+    8e8b     8e8b        0     1         __bss_end = .
+    8e8b     8e8b        0     1 __bss_size = SIZEOF(.bss)
+    8e8b     8e8b        2     1 .noinit
+    8e8b     8e8b        2     1         build/rtb-unit-lm22.prg.lto.o:(.noinit..Lstatic_stack)
+    8e8d     8e8d        0     1         __heap_start = ALIGN(., 2)
+    8e8d     8e8d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/rtb-unit-lm22.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/rtb-unit-lm22.prg.lto.o:(.llvm_sympart)
+       0        0      c70     4 .symtab
+       0        0      c70     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      770     1 .strtab
+       0        0      770     1         <internal>:(.strtab)

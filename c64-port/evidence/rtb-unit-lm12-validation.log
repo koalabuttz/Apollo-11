@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete rtb_unit group original-assembly states; retained memory unchanged
+Mailbox: a500002006
+PRG bytes: 27065
+rtb-unit-lm12-hardware-stack.bin: measured stack extent 30 bytes
+rtb-unit-lm12-software-stack.bin: measured stack extent 351 bytes

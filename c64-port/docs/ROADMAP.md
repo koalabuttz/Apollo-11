@@ -1176,3 +1176,7 @@ Qualify actual MMCHANG REQMM validation numeric blank POSTJUMP and genuine V37 o
 ## Qualify original Comanche positive zero core admission scan
 
 Extend canonical source admission to defined positive zero core scan paths over86016 complete original native sanitizer states plus56 C64 cases correcting earlier NO.CORES interpretation additively while preserving frozen proofs. See `docs/COMANCHE_ADMISSION_ZERO.md`.
+
+## Compose original RTB and UNIT numerical normalization continuations
+
+Qualify NORMUNIT NORMUNX1 and normal UNIT callers through complete125 word UNIT UNITDV and VSQSUB source group per mission against1179648 original native sanitizer states and576 C64 cases across eighteen targets. Generic interpreter and IMU output bodies remain separate. See `docs/RTB-UNIT.md`.

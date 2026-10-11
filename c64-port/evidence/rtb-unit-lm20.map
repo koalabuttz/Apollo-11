@@ -1,0 +1,147 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     2a53     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/rtb-unit-lm20.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         build/rtb-unit-lm20.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67     11cd     1         build/rtb-unit-lm20.prg.lto.o:(.text.main)
+     a67      a67     11cd     1                 main
+    1c34     1c34       9a     1         build/rtb-unit-lm20.prg.lto.o:(.text.rtb_vector)
+    1c34     1c34       9a     1                 rtb_vector
+    1cce     1cce       7b     1         build/rtb-unit-lm20.prg.lto.o:(.text.vector)
+    1cce     1cce       7b     1                 vector
+    1d49     1d49      18d     1         build/rtb-unit-lm20.prg.lto.o:(.text.pair)
+    1d49     1d49      18d     1                 pair
+    1ed6     1ed6       ca     1         build/rtb-unit-lm20.prg.lto.o:(.text.agc_multiply)
+    1ed6     1ed6       ca     1                 agc_multiply
+    1fa0     1fa0      1bc     1         build/rtb-unit-lm20.prg.lto.o:(.text.agc_double_add)
+    1fa0     1fa0      1bc     1                 agc_double_add
+    215c     215c      a9f     1         build/rtb-unit-lm20.prg.lto.o:(.text.p66_length_square_phase)
+    215c     215c      a9f     1                 p66_length_square_phase
+    2bfb     2bfb      364     1         build/rtb-unit-lm20.prg.lto.o:(.text.square)
+    2bfb     2bfb      364     1                 square
+    2f5f     2f5f        6     1         build/rtb-unit-lm20.prg.lto.o:(.text.exit)
+    2f5f     2f5f        6     1                 exit
+    2f65     2f65       34     1         build/rtb-unit-lm20.prg.lto.o:(.text.memcpy)
+    2f65     2f65       34     1                 memcpy
+    2f99     2f99       47     1         build/rtb-unit-lm20.prg.lto.o:(.text.memcmp)
+    2f99     2f99       47     1                 memcmp
+    2fe0     2fe0       22     1         build/rtb-unit-lm20.prg.lto.o:(.text.__memset)
+    2fe0     2fe0       22     1                 __memset
+    3002     3002       17     1         build/rtb-unit-lm20.prg.lto.o:(.text.__lshrsi3)
+    3002     3002       17     1                 __lshrsi3
+    3019     3019       5d     1         build/rtb-unit-lm20.prg.lto.o:(.text.__udivqi3)
+    3019     3019       5d     1                 __udivqi3
+    3076     3076      14f     1         build/rtb-unit-lm20.prg.lto.o:(.text.__umodsi3)
+    3076     3076      14f     1                 __umodsi3
+    31c5     31c5       34     1         build/rtb-unit-lm20.prg.lto.o:(.text.__mulhi3)
+    31c5     31c5       34     1                 __mulhi3
+    31f9     31f9       67     1         build/rtb-unit-lm20.prg.lto.o:(.text.__mulsi3)
+    31f9     31f9       67     1                 __mulsi3
+    3260     3260        0     1         __init_array_start = .
+    3260     3260        0     1         __init_array_end = .
+    3260     3260        0     1         __fini_array_start = .
+    3260     3260        0     1         __fini_array_end = .
+    3260     3260      7ca     1 .rodata
+    3260     3260        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    3260     3260        0     1                 __set_v
+    3261     3261       4a     1         build/rtb-unit-lm20.prg.lto.o:(.rodata.rtb_unit_reference_dictionary)
+    3261     3261       4a     1                 rtb_unit_reference_dictionary
+    32ab     32ab       42     1         build/rtb-unit-lm20.prg.lto.o:(.rodata.rtb_unit_reference_offsets)
+    32ab     32ab       42     1                 rtb_unit_reference_offsets
+    32ed     32ed      67d     1         build/rtb-unit-lm20.prg.lto.o:(.rodata.rtb_unit_reference_stream)
+    32ed     32ed      67d     1                 rtb_unit_reference_stream
+    396a     396a       70     1         build/rtb-unit-lm20.prg.lto.o:(.rodata.fields)
+    396a     396a       70     1                 fields
+    39da     39da       40     1         <internal>:(.rodata.cst32)
+    3a1a     3a1a        6     1         build/rtb-unit-lm20.prg.lto.o:(.rodata.rtb_unit_input.at)
+    3a1a     3a1a        6     1                 rtb_unit_input.at
+    3a20     3a20        a     1         build/rtb-unit-lm20.prg.lto.o:(.rodata.rtb_vector_input.bases)
+    3a20     3a20        a     1                 rtb_vector_input.bases
+    3a2a     3a2a        0     1 .data
+    3a2a     3a2a        0     1         __data_start = .
+    3a2a     3a2a        0     1         __data_end = .
+    3a2a     3a2a        0     1 __data_load_start = LOADADDR(.data)
+    3a2a     3a2a        0     1 __data_size = SIZEOF(.data)
+    3a2a     3a2a     2000     1 .bss
+    3a2a     3a2a        0     1         __bss_start = .
+    3a2a     3a2a     1000     1         build/rtb-unit-lm20.prg.lto.o:(.bss.image)
+    3a2a     3a2a     1000     1                 image
+    4a2a     4a2a     1000     1         build/rtb-unit-lm20.prg.lto.o:(.bss.expected)
+    4a2a     4a2a     1000     1                 expected
+    5a2a     5a2a        0     1         __bss_end = .
+    5a2a     5a2a        0     1 __bss_size = SIZEOF(.bss)
+    5a2a     5a2a        0     1 .noinit
+    5a2a     5a2a        0     1         __heap_start = ALIGN(., 2)
+    5a2a     5a2a        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/rtb-unit-lm20.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/rtb-unit-lm20.prg.lto.o:(.llvm_sympart)
+       0        0      be0     4 .symtab
+       0        0      be0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      6e9     1 .strtab
+       0        0      6e9     1         <internal>:(.strtab)

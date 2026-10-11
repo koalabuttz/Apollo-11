@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <stdlib.h>
+#include "rtb_unit_cases.h"
+int main(int argc,char **argv){uint32_t n,limit=RTB_UNIT_CASES;unsigned mission,x1,phase;if(argc<4)return 2;mission=(unsigned)strtoul(argv[1],0,0);x1=(unsigned)strtoul(argv[2],0,0);phase=(unsigned)strtoul(argv[3],0,0);if(argc>4)limit=(uint32_t)strtoul(argv[4],0,0);for(n=0;n<limit;++n){apollo_overlay_state m;p66_bias_io io;uint16_t row[2053];unsigned i,p;enum rtb_unit_status status=RTB_UNIT_OK;rtb_unit_input(&m,&io,(enum rtb_mission)mission,(uint8_t)x1,n);if(x1==2u){if(rtb_unit_begin(&m,&io,(enum rtb_mission)mission)!=RTB_UNIT_OK)return 2;}else if(rtb_vector(&m,&io,(enum rtb_mission)mission,x1?RTB_NORMUNX1_FRONT:RTB_NORMUNIT_FRONT)!=RTB_OK)return 2;for(p=0;p<=phase&&status==RTB_UNIT_OK;++p)status=rtb_unit_phase(&m,&io,(enum rtb_mission)mission,(uint8_t)p);if(status==RTB_UNIT_OUT_OF_SCOPE)return 2;row[0]=(uint16_t)n;row[1]=(uint16_t)(n>>16);row[2]=io.interrupt_enabled;row[3]=io.superbank;row[4]=(uint16_t)status;for(i=0;i<2048u;++i)row[i+5u]=m.words[i];if(fwrite(row,sizeof row,1,stdout)!=1)return 2;}return 0;}

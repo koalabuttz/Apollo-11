@@ -1,0 +1,10 @@
+Independent read-only canonical UNIT review
+Reviewer: /root/general_division
+
+No defect found in the declared domain. Normal prologue performs VECAGREE once. UNIT+1 copies agreed raw pairs to VBUF, preserves/saves OVFIND, and invokes the unrounded VSQSUB path with actual DOTRET03031. Canonical field mapping and complete VAC gather/commit match source scratch ownership. Root/finish reuse immutable qualified arithmetic with no invented scheduling seam. Phase PC/Q choices and distinct overflow/1302 selected boundaries agree with original UNIT sequence. Nonnull image/io is a caller precondition as in adjacent APIs. Reviewer made no edits.
+
+Reviewed byte identities:
+92fa415ed8b926f7c531ecd19ac2084b200bc6f9ca2c1d0b506f6cc2f2842ddc  include/rtb_unit.h
+3b44705bd44ec2d28c6846b9e47c0294454ae62fd425016677389cb22a4a2109  src/rtb_unit.c
+fabe4d54d6e4a20f63e148fa8946d5833899542a00399197b109f5ae9dfc5b47  tests/rtb_unit_cases.c
+4e9b96d976f5fa7fb20a0178fd4481fe0420237bef4651832830f3e96b230fc0  build/rtb-unit-source-map.json

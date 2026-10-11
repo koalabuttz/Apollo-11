@@ -1,0 +1,497 @@
+{
+  "complete_states": 1179648,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER"
+  ],
+  "additional_observation": "Source path0 normal /2 division overflow; abort1 API exists but no1302 checkpoint reached by this corpus.",
+  "source_group_words": {
+    "lm": 125,
+    "cm": 125
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/rtb-unit-source-map.json",
+  "logical_complete_streams": {
+    "lm00": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm00-complete.snapshots.xz",
+        "decoded_sha256": "22cf5510e106f416089347c53f1362a3d275fe70599c69f3b021d3e08d67e31d",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm00-complete.snapshots.xz",
+        "decoded_sha256": "22cf5510e106f416089347c53f1362a3d275fe70599c69f3b021d3e08d67e31d",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm00-complete.snapshots.xz",
+        "decoded_sha256": "22cf5510e106f416089347c53f1362a3d275fe70599c69f3b021d3e08d67e31d",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm01": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm01-complete.snapshots.xz",
+        "decoded_sha256": "a597842ae5fd4d341681361a8273dbc347a7a5abe0f0c372462187e8ecd42112",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm01-complete.snapshots.xz",
+        "decoded_sha256": "a597842ae5fd4d341681361a8273dbc347a7a5abe0f0c372462187e8ecd42112",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm01-complete.snapshots.xz",
+        "decoded_sha256": "a597842ae5fd4d341681361a8273dbc347a7a5abe0f0c372462187e8ecd42112",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm02": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm02-complete.snapshots.xz",
+        "decoded_sha256": "c38d4f97083864d909fa297a5b40acc0a8b09a08c4207a7c43da654ff2905dbd",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm02-complete.snapshots.xz",
+        "decoded_sha256": "c38d4f97083864d909fa297a5b40acc0a8b09a08c4207a7c43da654ff2905dbd",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm02-complete.snapshots.xz",
+        "decoded_sha256": "c38d4f97083864d909fa297a5b40acc0a8b09a08c4207a7c43da654ff2905dbd",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm10": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm10-complete.snapshots.xz",
+        "decoded_sha256": "a425df18f6353e7eb2ba65f44cdfcf20c32fbf413f726cc64dc92f4ef1e01a9c",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm10-complete.snapshots.xz",
+        "decoded_sha256": "a425df18f6353e7eb2ba65f44cdfcf20c32fbf413f726cc64dc92f4ef1e01a9c",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm10-complete.snapshots.xz",
+        "decoded_sha256": "a425df18f6353e7eb2ba65f44cdfcf20c32fbf413f726cc64dc92f4ef1e01a9c",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm11": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm11-complete.snapshots.xz",
+        "decoded_sha256": "34a607c913209353d93a7ac93d570893c9c6b97610b9629d2d8021b916d74c7b",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm11-complete.snapshots.xz",
+        "decoded_sha256": "34a607c913209353d93a7ac93d570893c9c6b97610b9629d2d8021b916d74c7b",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm11-complete.snapshots.xz",
+        "decoded_sha256": "34a607c913209353d93a7ac93d570893c9c6b97610b9629d2d8021b916d74c7b",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm12": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm12-complete.snapshots.xz",
+        "decoded_sha256": "9d6556d06c2139afd5aec5bdc7f08703f0fc3b9fcf4b7156f266663cfc80c503",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm12-complete.snapshots.xz",
+        "decoded_sha256": "9d6556d06c2139afd5aec5bdc7f08703f0fc3b9fcf4b7156f266663cfc80c503",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm12-complete.snapshots.xz",
+        "decoded_sha256": "9d6556d06c2139afd5aec5bdc7f08703f0fc3b9fcf4b7156f266663cfc80c503",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm20": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm20-complete.snapshots.xz",
+        "decoded_sha256": "c8032e6d64b1f612eb5f0a8f5af75baf1afd29d5edc3b331f9baea42087f44b7",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm20-complete.snapshots.xz",
+        "decoded_sha256": "c8032e6d64b1f612eb5f0a8f5af75baf1afd29d5edc3b331f9baea42087f44b7",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm20-complete.snapshots.xz",
+        "decoded_sha256": "c8032e6d64b1f612eb5f0a8f5af75baf1afd29d5edc3b331f9baea42087f44b7",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm21": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm21-complete.snapshots.xz",
+        "decoded_sha256": "1691c97100a37a3dce3e3bb63ba697bfa3ddbf205fb117ab974c367870af1e42",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm21-complete.snapshots.xz",
+        "decoded_sha256": "1691c97100a37a3dce3e3bb63ba697bfa3ddbf205fb117ab974c367870af1e42",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm21-complete.snapshots.xz",
+        "decoded_sha256": "1691c97100a37a3dce3e3bb63ba697bfa3ddbf205fb117ab974c367870af1e42",
+        "decoded_bytes": 269090816
+      }
+    },
+    "lm22": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-lm22-complete.snapshots.xz",
+        "decoded_sha256": "8290d54d9dcaa12b8daa9004995a65fd157241e68798a6fb10d23bfd22a9fb1a",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-lm22-complete.snapshots.xz",
+        "decoded_sha256": "8290d54d9dcaa12b8daa9004995a65fd157241e68798a6fb10d23bfd22a9fb1a",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-lm22-complete.snapshots.xz",
+        "decoded_sha256": "8290d54d9dcaa12b8daa9004995a65fd157241e68798a6fb10d23bfd22a9fb1a",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm00": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm00-complete.snapshots.xz",
+        "decoded_sha256": "90f247865dd8874dad67da2e1d04be56e1f271cc060d234d93b73faa4cfb7a9f",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm00-complete.snapshots.xz",
+        "decoded_sha256": "90f247865dd8874dad67da2e1d04be56e1f271cc060d234d93b73faa4cfb7a9f",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm00-complete.snapshots.xz",
+        "decoded_sha256": "90f247865dd8874dad67da2e1d04be56e1f271cc060d234d93b73faa4cfb7a9f",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm01": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm01-complete.snapshots.xz",
+        "decoded_sha256": "52167df0e9f0b20c4a10410804d89e2bd0b1460ea58f26956a24186e6abf42e1",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm01-complete.snapshots.xz",
+        "decoded_sha256": "52167df0e9f0b20c4a10410804d89e2bd0b1460ea58f26956a24186e6abf42e1",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm01-complete.snapshots.xz",
+        "decoded_sha256": "52167df0e9f0b20c4a10410804d89e2bd0b1460ea58f26956a24186e6abf42e1",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm02": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm02-complete.snapshots.xz",
+        "decoded_sha256": "8cc9879dd1018ccaa1082064ce2f2cb0fb0b7bbb2075fa1ba9006b28ecb5954b",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm02-complete.snapshots.xz",
+        "decoded_sha256": "8cc9879dd1018ccaa1082064ce2f2cb0fb0b7bbb2075fa1ba9006b28ecb5954b",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm02-complete.snapshots.xz",
+        "decoded_sha256": "8cc9879dd1018ccaa1082064ce2f2cb0fb0b7bbb2075fa1ba9006b28ecb5954b",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm10": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm10-complete.snapshots.xz",
+        "decoded_sha256": "9c5b8126579e9a6146ea8ed2f134fe0ff6638c17f6efa50237befab779ab8c8f",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm10-complete.snapshots.xz",
+        "decoded_sha256": "9c5b8126579e9a6146ea8ed2f134fe0ff6638c17f6efa50237befab779ab8c8f",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm10-complete.snapshots.xz",
+        "decoded_sha256": "9c5b8126579e9a6146ea8ed2f134fe0ff6638c17f6efa50237befab779ab8c8f",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm11": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm11-complete.snapshots.xz",
+        "decoded_sha256": "4956677ba98dafe5b710c50bffc6896fe3fd20b1920728a18f767edd76d76480",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm11-complete.snapshots.xz",
+        "decoded_sha256": "4956677ba98dafe5b710c50bffc6896fe3fd20b1920728a18f767edd76d76480",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm11-complete.snapshots.xz",
+        "decoded_sha256": "4956677ba98dafe5b710c50bffc6896fe3fd20b1920728a18f767edd76d76480",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm12": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm12-complete.snapshots.xz",
+        "decoded_sha256": "e1fa32843a6a36b745278273fbfc213ad8395dd5a6ad4a39aca836f3ad220aad",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm12-complete.snapshots.xz",
+        "decoded_sha256": "e1fa32843a6a36b745278273fbfc213ad8395dd5a6ad4a39aca836f3ad220aad",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm12-complete.snapshots.xz",
+        "decoded_sha256": "e1fa32843a6a36b745278273fbfc213ad8395dd5a6ad4a39aca836f3ad220aad",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm20": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm20-complete.snapshots.xz",
+        "decoded_sha256": "5373c1b1d0a54bca8b596dd0a80070b09326aa08675a563d39a548156a45bc47",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm20-complete.snapshots.xz",
+        "decoded_sha256": "5373c1b1d0a54bca8b596dd0a80070b09326aa08675a563d39a548156a45bc47",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm20-complete.snapshots.xz",
+        "decoded_sha256": "5373c1b1d0a54bca8b596dd0a80070b09326aa08675a563d39a548156a45bc47",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm21": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm21-complete.snapshots.xz",
+        "decoded_sha256": "1885f5ed04e43681078c01a96d9e72e2657c769a7e69351af9136bfdbb3e8044",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm21-complete.snapshots.xz",
+        "decoded_sha256": "1885f5ed04e43681078c01a96d9e72e2657c769a7e69351af9136bfdbb3e8044",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm21-complete.snapshots.xz",
+        "decoded_sha256": "1885f5ed04e43681078c01a96d9e72e2657c769a7e69351af9136bfdbb3e8044",
+        "decoded_bytes": 269090816
+      }
+    },
+    "cm22": {
+      "original_assembly": {
+        "object": "evidence/rtb-unit-cm22-complete.snapshots.xz",
+        "decoded_sha256": "77b2bb9900b8ddbdffe51654613722f3b770747ce132f153e203a2fece212cf3",
+        "decoded_bytes": 269090816
+      },
+      "strict_native": {
+        "object": "evidence/rtb-unit-cm22-complete.snapshots.xz",
+        "decoded_sha256": "77b2bb9900b8ddbdffe51654613722f3b770747ce132f153e203a2fece212cf3",
+        "decoded_bytes": 269090816
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-unit-cm22-complete.snapshots.xz",
+        "decoded_sha256": "77b2bb9900b8ddbdffe51654613722f3b770747ce132f153e203a2fece212cf3",
+        "decoded_bytes": 269090816
+      }
+    }
+  },
+  "actual_C64": {
+    "lm00": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 13915,
+      "loaded_end": "0x3e59",
+      "hardware_stack": 29,
+      "software_stack": 361,
+      "compiler_ZP": 0
+    },
+    "lm01": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 20217,
+      "loaded_end": "0x56f7",
+      "hardware_stack": 35,
+      "software_stack": 344,
+      "compiler_ZP": 0
+    },
+    "lm02": {
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "PRG_bytes": 26974,
+      "loaded_end": "0x715c",
+      "hardware_stack": 30,
+      "software_stack": 351,
+      "compiler_ZP": 0
+    },
+    "lm10": {
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "PRG_bytes": 13920,
+      "loaded_end": "0x3e5e",
+      "hardware_stack": 29,
+      "software_stack": 361,
+      "compiler_ZP": 0
+    },
+    "lm11": {
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "PRG_bytes": 20215,
+      "loaded_end": "0x56f5",
+      "hardware_stack": 35,
+      "software_stack": 344,
+      "compiler_ZP": 0
+    },
+    "lm12": {
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "PRG_bytes": 27065,
+      "loaded_end": "0x71b7",
+      "hardware_stack": 30,
+      "software_stack": 351,
+      "compiler_ZP": 0
+    },
+    "lm20": {
+      "complete_states": 32,
+      "mailbox": "a500002008",
+      "PRG_bytes": 12843,
+      "loaded_end": "0x3a29",
+      "hardware_stack": 29,
+      "software_stack": 356,
+      "compiler_ZP": 0
+    },
+    "lm21": {
+      "complete_states": 32,
+      "mailbox": "a500002009",
+      "PRG_bytes": 19197,
+      "loaded_end": "0x52fb",
+      "hardware_stack": 35,
+      "software_stack": 337,
+      "compiler_ZP": 0
+    },
+    "lm22": {
+      "complete_states": 32,
+      "mailbox": "a50000200a",
+      "PRG_bytes": 26252,
+      "loaded_end": "0x6e8a",
+      "hardware_stack": 30,
+      "software_stack": 350,
+      "compiler_ZP": 0
+    },
+    "cm00": {
+      "complete_states": 32,
+      "mailbox": "a500002020",
+      "PRG_bytes": 13915,
+      "loaded_end": "0x3e59",
+      "hardware_stack": 29,
+      "software_stack": 361,
+      "compiler_ZP": 0
+    },
+    "cm01": {
+      "complete_states": 32,
+      "mailbox": "a500002021",
+      "PRG_bytes": 20208,
+      "loaded_end": "0x56ee",
+      "hardware_stack": 35,
+      "software_stack": 344,
+      "compiler_ZP": 0
+    },
+    "cm02": {
+      "complete_states": 32,
+      "mailbox": "a500002022",
+      "PRG_bytes": 26981,
+      "loaded_end": "0x7163",
+      "hardware_stack": 30,
+      "software_stack": 353,
+      "compiler_ZP": 0
+    },
+    "cm10": {
+      "complete_states": 32,
+      "mailbox": "a500002024",
+      "PRG_bytes": 13922,
+      "loaded_end": "0x3e60",
+      "hardware_stack": 29,
+      "software_stack": 361,
+      "compiler_ZP": 0
+    },
+    "cm11": {
+      "complete_states": 32,
+      "mailbox": "a500002025",
+      "PRG_bytes": 20223,
+      "loaded_end": "0x56fd",
+      "hardware_stack": 35,
+      "software_stack": 344,
+      "compiler_ZP": 0
+    },
+    "cm12": {
+      "complete_states": 32,
+      "mailbox": "a500002026",
+      "PRG_bytes": 27064,
+      "loaded_end": "0x71b6",
+      "hardware_stack": 30,
+      "software_stack": 353,
+      "compiler_ZP": 0
+    },
+    "cm20": {
+      "complete_states": 32,
+      "mailbox": "a500002028",
+      "PRG_bytes": 12843,
+      "loaded_end": "0x3a29",
+      "hardware_stack": 29,
+      "software_stack": 356,
+      "compiler_ZP": 0
+    },
+    "cm21": {
+      "complete_states": 32,
+      "mailbox": "a500002029",
+      "PRG_bytes": 19197,
+      "loaded_end": "0x52fb",
+      "hardware_stack": 35,
+      "software_stack": 337,
+      "compiler_ZP": 0
+    },
+    "cm22": {
+      "complete_states": 32,
+      "mailbox": "a50000202a",
+      "PRG_bytes": 26250,
+      "loaded_end": "0x6e88",
+      "hardware_stack": 30,
+      "software_stack": 350,
+      "compiler_ZP": 0
+    }
+  },
+  "immutable_numeric_dependencies": {
+    "src/guidance_length_phased.c": "9e63d23ffe69b8f4c24d5ff5bd9dce729426b4471e61c7ae290d59d62c6ebf21",
+    "src/guidance_unit_phased.c": "0f4db597d27bdc0fe3b5388b1e14535b9d7554badcf80c68b8ddded016ec8600",
+    "src/guidance_norm.c": "e6efb1e6394bbedad6ad5b6aedd99ee2d56f8c9ad0186ede928942c1fb24d3fe"
+  },
+  "independent_review": {
+    "path": "evidence/rtb-unit-independent-review.txt",
+    "sha256": "3389b61125c9b3d15c425bd38b40b437514b0e3389a3458ce366fc707b7f6cd7"
+  },
+  "scope": "Both normal UNIT TC VECAGREE prologue and UNIT+1 numerical phases; complete NORMUNIT/NORMUNX1 callers through actual DANZIG. Ordinary canonical inputs/vector MODE-1 and initialized five VAC bases. UNIT phases retain canonical ownership; no added scheduling checks. All input cases compared through original full caller prefix at each of three subroutine phases. Generic unsupported caller modes/invalidVAC outside contract. No complete INTERPRETER file or resident application certified; RTB closure still requires IMUPULSE/hardware body and CMQUALITY groups."
+}
