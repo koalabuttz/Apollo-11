@@ -1,0 +1,136 @@
+{
+  "mailbox": "a501000000",
+  "source_case0_whole_image_matches": true,
+  "measured_stack_extent": 1115,
+  "verdict": "FAIL; diagnosis ongoing; no accepted target proof",
+  "files": [
+    {
+      "path": "platform/c64/cm_enema_image_input.c",
+      "copy": "platform__c64__cm_enema_image_input.c",
+      "sha256": "e8af0cb7546ddefe49f64bd2b5e29e1a2bd37119c0bd8e50b69cd09093a092cb"
+    },
+    {
+      "path": "platform/c64/cm_enema_image_diagnostic.c",
+      "copy": "platform__c64__cm_enema_image_diagnostic.c",
+      "sha256": "551ca6a7425a92a55b4f69be909e64f0181744267d9af5905d4ba758325d877a"
+    },
+    {
+      "path": "platform/c64/cm_enema_image_check.c",
+      "copy": "platform__c64__cm_enema_image_check.c",
+      "sha256": "14f65ee2e2c9cf3fbc12f964d9ce415eb2190396261289a77e851a0b6181d6c8"
+    },
+    {
+      "path": "platform/c64/cm_enema_image_binding.h",
+      "copy": "platform__c64__cm_enema_image_binding.h",
+      "sha256": "4d8cc9201e6894d0533a074e6345f86d3ce95ae8a83b9c25bfddcfd4dcb4dd7c"
+    },
+    {
+      "path": "platform/c64/cm_enema_image_control.c",
+      "copy": "platform__c64__cm_enema_image_control.c",
+      "sha256": "9745f0140888089be76fd5aec9c6cdf5c0c3d071c050b855e889fb3fa23e9485"
+    },
+    {
+      "path": "build/cm-enema-image-254.prg",
+      "copy": "build__cm-enema-image-254.prg",
+      "sha256": "60cee3e8231d8ba9a5f6271691ed882850f665c5c3cbe367f9ebf46e03f45501"
+    },
+    {
+      "path": "build/cm-enema-image-219.prg",
+      "copy": "build__cm-enema-image-219.prg",
+      "sha256": "cdfa57545609f3f61df9743828b541108eb68a8146fe335c29d8cd3c9c2a42ed"
+    },
+    {
+      "path": "build/cm-enema-image-255.prg",
+      "copy": "build__cm-enema-image-255.prg",
+      "sha256": "f1c54fe6161440b6569c1b3d63652eb5f5a4ad39b190b57406b907e755974be3"
+    },
+    {
+      "path": "build/cm-enema-image-219.map",
+      "copy": "build__cm-enema-image-219.map",
+      "sha256": "f683698da8421e7f6fec3bd0e5581af18a07cc2ff7ccc3d4e94c37e260f53972"
+    },
+    {
+      "path": "build/cm-enema-image-254.map",
+      "copy": "build__cm-enema-image-254.map",
+      "sha256": "f755d3bff85f80cad3b76d760db51b390505fd5be9e85158ec142c952551aa79"
+    },
+    {
+      "path": "build/cm-enema-image-255.map",
+      "copy": "build__cm-enema-image-255.map",
+      "sha256": "15fcb64588007958b0e9520526a288cdeba3947865622656bf5b5728b74249a9"
+    },
+    {
+      "path": "build/cm-enema-image-vice-mailbox.bin",
+      "copy": "build__cm-enema-image-vice-mailbox.bin",
+      "sha256": "39f44497cf947b81d5cc1e18220f0559ecf271393f9b8908bf3d59babe0ffcf6"
+    },
+    {
+      "path": "build/cm-enema-image-vice-stack.bin",
+      "copy": "build__cm-enema-image-vice-stack.bin",
+      "sha256": "343e62b0b42ceda77c8b324762683ac467058f961c2476bafaa9fa5dd402df2d"
+    },
+    {
+      "path": "build/cm-enema-image-vice-monitor.log",
+      "copy": "build__cm-enema-image-vice-monitor.log",
+      "sha256": "f86769f3c50b5b4377e1cb80d454e8ac719ca84b048fb316a5e0f2084974e900"
+    },
+    {
+      "path": "build/cm-enema-image-vice-shared.bin",
+      "copy": "build__cm-enema-image-vice-shared.bin",
+      "sha256": "4974882c2532341e29b99e7e3645f20632c8a68a3696ef6b33f5213bddce7510"
+    },
+    {
+      "path": "build/cm-enema-image-modules.json",
+      "copy": "build__cm-enema-image-modules.json",
+      "sha256": "669bff3fa9c4ec75ce8344f623eb2eee6fa1519ad73ceed760bfb84d718c6943"
+    },
+    {
+      "path": "build/cm-enema-image-c64-result.log",
+      "copy": "build__cm-enema-image-c64-result.log",
+      "sha256": "8bf208e7c791f5c93d83724abddadf0b57f4a9bcd878f478762a6590523eaf22"
+    },
+    {
+      "path": "build/cm-enema-image.d64",
+      "copy": "build__cm-enema-image.d64",
+      "sha256": "053caa54d4ce884c5544975aa8ed203033d87b0fd4cc7cdb96aeb80bb13b898c"
+    },
+    {
+      "path": "build/cm-enema-image.prg",
+      "copy": "build__cm-enema-image.prg",
+      "sha256": "d5f9d900247e0f3977c54d3c868e80755662b0731bd3e649594f68e200579b33"
+    },
+    {
+      "path": "build/cm-enema-image.map",
+      "copy": "build__cm-enema-image.map",
+      "sha256": "49a40ff616e656c1cd0c70d92b3a2e61abc84b4d680c7aa94dc734ed2aafb037"
+    },
+    {
+      "path": "reconstructed diagnostic/cm_enema_image_automatic.c",
+      "copy": "cm_enema_image_automatic.c",
+      "sha256": "2e7b37184fe81be2063202df691f0895d5cf3c1e3f13e9e36a249239ac20bf08"
+    },
+    {
+      "path": "reconstructed diagnostic/reconstructed-native.map",
+      "copy": "reconstructed-native.map",
+      "sha256": "32ebd080fdcbb468a844a0d0ae9def81d101c825fa79a3b90bcee40360018c0a"
+    },
+    {
+      "path": "reconstructed diagnostic/reconstructed-native.prg",
+      "copy": "reconstructed-native.prg",
+      "sha256": "cdfa57545609f3f61df9743828b541108eb68a8146fe335c29d8cd3c9c2a42ed"
+    },
+    {
+      "path": "reconstructed diagnostic/reconstructed-native.prg.elf",
+      "copy": "reconstructed-native.prg.elf",
+      "sha256": "e16d09d12b140e3a3d611ae2e88bc1d366b361be7206233d02afea58f333acec"
+    },
+    {
+      "path": "reconstructed diagnostic/reconstructed-native-disassembly.txt",
+      "copy": "reconstructed-native-disassembly.txt",
+      "sha256": "91129083d865cc63438c600f8a6f4cbae9322d5b413dcf23900c7f37f3ce98e9"
+    }
+  ],
+  "compiler_observation": "MOS large automatic frame epilogue 80b5 lda __rc1 / adc #3 / 80b9 lda __rc17 / sta __rc1 overwrites computed stack high with return status low; candidate root cause, target image case0 remains byte-identical source.",
+  "reconstructed_failed_prg_byte_identical": true,
+  "reconstructed_compiler_trigger": "same original automatic view implementation and exact compiler/link flags produce byte-identical failed native219 PRG"
+}

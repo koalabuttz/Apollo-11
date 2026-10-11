@@ -1,0 +1,8 @@
+{
+  "failed_prg_reconstruction_byte_identical": true,
+  "failed_artifact_count": 26,
+  "all_nested_audit_hashes_verified": true,
+  "epilogue_review": "80b5 loads __rc1;80b7 adds frame high;80b9 loads return status from __rc17 before80bb stores __rc1. This overwrites the computed stack high. Source image equality and accepted scratch workaround remain separate target evidence.",
+  "original_release_boundary": "93c7e11",
+  "additive_failure_provenance_only": true
+}

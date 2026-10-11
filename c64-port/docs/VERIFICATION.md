@@ -1534,3 +1534,5 @@ Qualify actual ENEMA whole physical image recovery against4096 original native s
 ## Compose uninterrupted original alarm recycle and display update
 
 Qualify actual ALMCYCLE lamp event BANKCALL widened UPDATVB SWRETURN POSTJUMP and ENTER or CCSHOLE over8192 uninterrupted original native sanitizer images plus64 C64 states with all signed zero and selecting SUPER contexts. See `docs/DSKY-ALARM-RECYCLE.md`.
+
+The ENEMA release93c7e11 omitted the26 failure/reconstruction artifacts from its collector list. The separate addendum now retains them with independently checked nested hashes, byte-identical failed PRG reconstruction and direct epilogue review; existing release bytes remain unchanged. Independent cleanup reviews also confirm1,990,868,847 bytes of inactive display/alarm/request and LM-busy raw duplicates were removed after their canonical committed compressed originals were verified. See the corresponding failure addendum and cleanup review JSON files.

@@ -1,0 +1,7 @@
+{
+  "owner_audit_sha256": "1cbd86ccb5081a65a64154eb5742bf3acc3d813e8fe6d891c967d6568c1e4b1d",
+  "reclaimed_bytes": 284886345,
+  "unique_archives_independently_decoded": 1,
+  "all_three_committed_git_objects_verified": true,
+  "removed_inactive_duplicates_absent": true
+}
