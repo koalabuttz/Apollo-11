@@ -416,3 +416,5 @@ subprocess.run([sys.executable,'tools/cm_makeplay_sleep_differential.py',str(ref
 subprocess.run([sys.executable,'tools/cm_sleep_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_clock_mission_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/p66_direct_launch_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -863,3 +863,7 @@ Canonical Comanche JOBSLEEP matches 16,384 complete original states through basi
 ## Run actual Comanche CLOCKJOB admission and source bodies on C64 disk
 
 Nonzero-NV source timer cohorts actually admit and execute CLOCKJOB through QUICTRIG, SWRETURN and display control to MAKEPLAY. Separate zero-NV CLOCKJOB entries finish and restore the suspended interpreter. All 448 source sequences and 3,392 complete checkpoints match host and full sanitizers; real C64 D64 replay matches 106 checkpoints across fourteen paths plus the complete final image. Downstream MAKEPLAY/rendering and other flight programs remain pending. See `docs/COMANCHE_CLOCK_MISSION.md`.
+
+## Adopt real P66 launch continuations without adding an Executive poll
+
+The separate direct-launch wrapper preserves the zero-pending STARTP66 domain and existing-pending vertical subentry, adopting actual RODCOMP without an extra source poll. All 2,048 complete original states and full sanitizer output agree; strict and C64 checks cover 24 callback/pending/IRQ cases. Production disk startup composition is a separate milestone. See `docs/P66-DIRECT-LAUNCH.md`.

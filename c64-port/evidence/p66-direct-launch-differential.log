@@ -1,0 +1,3 @@
+PASS:2048 complete original STARTP66/VRTSTART checkpoints, all2048 erasablewords plusSUPERBNK/IRQ
+STARTP66 retains NEWJOB0 bias domain; VRTSTART retains valid pendingNEWJOB; stops real RODCOMP/BAILOUT1
+Snapshot SHA256: 56bd1037bd7ac328b5433be6e258fc9a76260b70ff8e4def4d5184eea2b9f274

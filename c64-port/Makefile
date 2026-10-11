@@ -584,3 +584,5 @@ include tools/cm_makeplay_sleep_port.mk
 include tools/cm_sleep_port.mk
 
 include tools/cm_clock_mission.mk
+
+include tools/p66_direct_launch.mk
