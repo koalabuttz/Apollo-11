@@ -1,0 +1,21 @@
+{
+  "pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "sources": {
+    "EXECUTIVE.agc": {
+      "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+      "normalized_sha256": "12827288def51cab29ff591dd2febb7a652237a8b2786c42ea7dc6bafa2e5356",
+      "normalized_lines": 5
+    },
+    "WAITLIST.agc": {
+      "original_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+      "normalized_sha256": "85335058feda6297569d28b8ca6e077fccb85d52eb5c14fd7e36db73aef4bb85",
+      "normalized_lines": 9
+    },
+    "INTERRUPT_LEAD_INS.agc": {
+      "original_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+      "normalized_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+      "normalized_lines": 0
+    }
+  },
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}

@@ -1,0 +1,165 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     36e9     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm-waitlist.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     830      830        0     1                 __call_indir
+     833      833       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     833      833       13     1                 __zero_bss
+     846      846      719     1         build/cm-waitlist.prg.lto.o:(.text.cm_wl_schedule)
+     846      846      719     1                 cm_wl_schedule
+     f5f      f5f       51     1         build/cm-waitlist.prg.lto.o:(.text.reg_class)
+     f5f      f5f       51     1                 reg_class
+     fb0      fb0      2d1     1         build/cm-waitlist.prg.lto.o:(.text.cm_wl_begin)
+     fb0      fb0      2d1     1                 cm_wl_begin
+    1281     1281       ad     1         build/cm-waitlist.prg.lto.o:(.text.cm_wl_taskover)
+    1281     1281       ad     1                 cm_wl_taskover
+    132e     132e      2d2     1         build/cm-waitlist.prg.lto.o:(.text.cm_wl_native_schedule)
+    132e     132e      2d2     1                 cm_wl_native_schedule
+    1600     1600      1bc     1         build/cm-waitlist.prg.lto.o:(.text.start_locked)
+    1600     1600      1bc     1                 start_locked
+    17bc     17bc      5ca     1         build/cm-waitlist.prg.lto.o:(.text.cm_wl_native_step)
+    17bc     17bc      5ca     1                 cm_wl_native_step
+    1d86     1d86      353     1         build/cm-waitlist.prg.lto.o:(.text.cm_wait_prepare)
+    1d86     1d86      353     1                 cm_wait_prepare
+    20d9     20d9      3ca     1         build/cm-waitlist.prg.lto.o:(.text.cm_wait_event_prepare)
+    20d9     20d9      3ca     1                 cm_wait_event_prepare
+    24a3     24a3       3b     1         build/cm-waitlist.prg.lto.o:(.text.task_a)
+    24a3     24a3       3b     1                 task_a
+    24de     24de      178     1         build/cm-waitlist.prg.lto.o:(.text.task_b)
+    24de     24de      178     1                 task_b
+    2656     2656       42     1         build/cm-waitlist.prg.lto.o:(.text.task_c)
+    2656     2656       42     1                 task_c
+    2698     2698       40     1         build/cm-waitlist.prg.lto.o:(.text.task_d)
+    2698     2698       40     1                 task_d
+    26d8     26d8      3c6     1         build/cm-waitlist.prg.lto.o:(.text.observe)
+    26d8     26d8      3c6     1                 observe
+    2a9e     2a9e     1012     1         build/cm-waitlist.prg.lto.o:(.text.main)
+    2a9e     2a9e     1012     1                 main
+    3ab0     3ab0        6     1         build/cm-waitlist.prg.lto.o:(.text.exit)
+    3ab0     3ab0        6     1                 exit
+    3ab6     3ab6       4d     1         build/cm-waitlist.prg.lto.o:(.text.putchar)
+    3ab6     3ab6       4d     1                 putchar
+    3b03     3b03       65     1         build/cm-waitlist.prg.lto.o:(.text.puts)
+    3b03     3b03       65     1                 puts
+    3b68     3b68       5d     1         build/cm-waitlist.prg.lto.o:(.text.__udivqi3)
+    3b68     3b68       5d     1                 __udivqi3
+    3bc5     3bc5       c4     1         build/cm-waitlist.prg.lto.o:(.text.__udivhi3)
+    3bc5     3bc5       c4     1                 __udivhi3
+    3c89     3c89       40     1         build/cm-waitlist.prg.lto.o:(.text.__umodqi3)
+    3c89     3c89       40     1                 __umodqi3
+    3cc9     3cc9       ae     1         build/cm-waitlist.prg.lto.o:(.text.__umodhi3)
+    3cc9     3cc9       ae     1                 __umodhi3
+    3d77     3d77       7d     1         build/cm-waitlist.prg.lto.o:(.text.__udivmodqi4)
+    3d77     3d77       7d     1                 __udivmodqi4
+    3df4     3df4       34     1         build/cm-waitlist.prg.lto.o:(.text.memcpy)
+    3df4     3df4       34     1                 memcpy
+    3e28     3e28       ac     1         build/cm-waitlist.prg.lto.o:(.text.memmove)
+    3e28     3e28       ac     1                 memmove
+    3ed4     3ed4       22     1         build/cm-waitlist.prg.lto.o:(.text.__memset)
+    3ed4     3ed4       22     1                 __memset
+    3ef6     3ef6        0     1         __init_array_start = .
+    3ef6     3ef6        0     1         __init_array_end = .
+    3ef6     3ef6        0     1         __fini_array_start = .
+    3ef6     3ef6        0     1         __fini_array_end = .
+    3ef6     3ef6     4d45     1 .rodata
+    3ef6     3ef6        8     1         build/cm-waitlist.prg.lto.o:(.rodata.cm_wl_schedule)
+    3efe     3efe        e     1         build/cm-waitlist.prg.lto.o:(.rodata.cm_wait_prepare)
+    3f0c     3f0c       1a     1         build/cm-waitlist.prg.lto.o:(.rodata.cm_wait_event_prepare)
+    3f26     3f26        c     1         build/cm-waitlist.prg.lto.o:(.rodata.timer_cases)
+    3f26     3f26        c     1                 timer_cases
+    3f32     3f32       10     1         <internal>:(.rodata.cst16)
+    3f42     3f42        a     1         build/cm-waitlist.prg.lto.o:(.rodata.cm_wait_event_prepare.ticks)
+    3f42     3f42        a     1                 cm_wait_event_prepare.ticks
+    3f4c     3f4c        a     1         build/cm-waitlist.prg.lto.o:(.rodata.cm_wait_event_prepare.delay)
+    3f4c     3f4c        a     1                 cm_wait_event_prepare.delay
+    3f56     3f56        8     1         <internal>:(.rodata.cst8)
+    3f5e     3f5e       18     1         build/cm-waitlist.prg.lto.o:(.rodata.task_mapping)
+    3f5e     3f5e       18     1                 task_mapping
+    3f76     3f76     4c80     1         build/cm-waitlist.prg.lto.o:(.rodata.cm_waitlist_reference)
+    3f76     3f76     4c80     1                 cm_waitlist_reference
+    8bf6     8bf6       45     1         <internal>:(.rodata.str1.1)
+    8c3b     8c3b        0     1 .data
+    8c3b     8c3b        0     1         __data_start = .
+    8c3b     8c3b        0     1         __data_end = .
+    8c3b     8c3b        0     1 __data_load_start = LOADADDR(.data)
+    8c3b     8c3b        0     1 __data_size = SIZEOF(.data)
+    8c3b     8c3b       3a     1 .bss
+    8c3b     8c3b        0     1         __bss_start = .
+    8c3b     8c3b       3a     1         build/cm-waitlist.prg.lto.o:(.bss.state)
+    8c3b     8c3b       3a     1                 state
+    8c75     8c75        0     1         __bss_end = .
+    8c75     8c75        0     1 __bss_size = SIZEOF(.bss)
+    8c75     8c75        1     1 .noinit
+    8c75     8c75        1     1         build/cm-waitlist.prg.lto.o:(.noinit..Lstatic_stack)
+    8c76     8c76        0     1         __heap_start = ALIGN(., 2)
+    8c76     8c76        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-waitlist.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-waitlist.prg.lto.o:(.llvm_sympart)
+       0        0      c40     4 .symtab
+       0        0      c40     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      728     1 .strtab
+       0        0      728     1         <internal>:(.strtab)
