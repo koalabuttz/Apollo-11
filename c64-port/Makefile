@@ -404,3 +404,5 @@ include tools/nv_words.mk
 include tools/dsky_pinball.mk
 
 include tools/dsky_decimal.mk
+
+include tools/dsky_scale.mk

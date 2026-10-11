@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_scale.prg from 0801 to 40BF (38BF bytes)
+WATCH: 1  C:$60c0  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 60c0)  153/$099,  42/$2a
+.C:13bf  8E C0 60    STX $60C0      - A:00 X:A5 Y:00 SP:f1 NV-....C  298505697
+>C:60c0  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_scale-vice-mailbox.bin' from $60c0 to $60c4
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_scale-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_scale-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_scale.prg from 0801 to 40AA (38AA bytes)
+WATCH: 1  C:$60ab  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 60ab)  238/$0ee,   1/$01
+.C:13b0  8E AB 60    STX $60AB      - A:00 X:A5 Y:00 SP:f1 NV-....C  302737051
+>C:60ab  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_scale-vice-mailbox.bin' from $60ab to $60af
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_scale-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_scale-vice-software-stack.bin' from $c100 to $cfff
