@@ -1,0 +1,132 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     1944     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/imu-coarse-lm0.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         build/imu-coarse-lm0.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67      9ed     1         build/imu-coarse-lm0.prg.lto.o:(.text.main)
+     a67      a67      9ed     1                 main
+    1454     1454      31e     1         build/imu-coarse-lm0.prg.lto.o:(.text.imu_coarse)
+    1454     1454      31e     1                 imu_coarse
+    1772     1772       90     1         build/imu-coarse-lm0.prg.lto.o:(.text.set_bits)
+    1772     1772       90     1                 set_bits
+    1802     1802      716     1         build/imu-coarse-lm0.prg.lto.o:(.text.imu_coarse_input)
+    1802     1802      716     1                 imu_coarse_input
+    1f18     1f18        6     1         build/imu-coarse-lm0.prg.lto.o:(.text.exit)
+    1f18     1f18        6     1                 exit
+    1f1e     1f1e       34     1         build/imu-coarse-lm0.prg.lto.o:(.text.memcpy)
+    1f1e     1f1e       34     1                 memcpy
+    1f52     1f52       47     1         build/imu-coarse-lm0.prg.lto.o:(.text.memcmp)
+    1f52     1f52       47     1                 memcmp
+    1f99     1f99       22     1         build/imu-coarse-lm0.prg.lto.o:(.text.__memset)
+    1f99     1f99       22     1                 __memset
+    1fbb     1fbb       13     1         build/imu-coarse-lm0.prg.lto.o:(.text.__ashlhi3)
+    1fbb     1fbb       13     1                 __ashlhi3
+    1fce     1fce      14f     1         build/imu-coarse-lm0.prg.lto.o:(.text.__umodsi3)
+    1fce     1fce      14f     1                 __umodsi3
+    211d     211d       34     1         build/imu-coarse-lm0.prg.lto.o:(.text.__mulhi3)
+    211d     211d       34     1                 __mulhi3
+    2151     2151        0     1         __init_array_start = .
+    2151     2151        0     1         __init_array_end = .
+    2151     2151        0     1         __fini_array_start = .
+    2151     2151        0     1         __fini_array_end = .
+    2151     2151      434     1 .rodata
+    2151     2151       16     1         build/imu-coarse-lm0.prg.lto.o:(.rodata.main)
+    2167     2167       2c     1         build/imu-coarse-lm0.prg.lto.o:(.rodata.imu_coarse_reference_dictionary)
+    2167     2167       2c     1                 imu_coarse_reference_dictionary
+    2193     2193       42     1         build/imu-coarse-lm0.prg.lto.o:(.rodata.imu_coarse_reference_offsets)
+    2193     2193       42     1                 imu_coarse_reference_offsets
+    21d5     21d5      36c     1         build/imu-coarse-lm0.prg.lto.o:(.rodata.imu_coarse_reference_stream)
+    21d5     21d5      36c     1                 imu_coarse_reference_stream
+    2541     2541       18     1         build/imu-coarse-lm0.prg.lto.o:(.rodata.imu_coarse_literal.at)
+    2541     2541       18     1                 imu_coarse_literal.at
+    2559     2559        c     1         build/imu-coarse-lm0.prg.lto.o:(.rodata.imu_coarse_literal.values)
+    2559     2559        c     1                 imu_coarse_literal.values
+    2565     2565       20     1         <internal>:(.rodata.cst32)
+    2585     2585        0     1 .data
+    2585     2585        0     1         __data_start = .
+    2585     2585        0     1         __data_end = .
+    2585     2585        0     1 __data_load_start = LOADADDR(.data)
+    2585     2585        0     1 __data_size = SIZEOF(.data)
+    2585     2585     2000     1 .bss
+    2585     2585        0     1         __bss_start = .
+    2585     2585     1000     1         build/imu-coarse-lm0.prg.lto.o:(.bss.image)
+    2585     2585     1000     1                 image
+    3585     3585     1000     1         build/imu-coarse-lm0.prg.lto.o:(.bss.expected)
+    3585     3585     1000     1                 expected
+    4585     4585        0     1         __bss_end = .
+    4585     4585        0     1 __bss_size = SIZEOF(.bss)
+    4585     4585        0     1 .noinit
+    4585     4585        0     1         __heap_start = ALIGN(., 2)
+    4585     4585        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/imu-coarse-lm0.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/imu-coarse-lm0.prg.lto.o:(.llvm_sympart)
+       0        0      b50     4 .symtab
+       0        0      b50     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      693     1 .strtab
+       0        0      693     1         <internal>:(.strtab)

@@ -1503,3 +1503,7 @@ Qualify8192 complete original native sanitizer states and64 C64 states with real
 ## Compose all original Comanche ephemerides time entries
 
 Compose actual LSPOS LUNPOS LUNVEL and SOLPOS through LSTIME and source RES REM VEM handoffs against65536 full original native sanitizer states and64 C64 states preserving all existing frozen arithmetic kernels. See `docs/NATIVE-CM-EPHEMERIS-TIME.md`.
+
+## Translate original IMU coarse alignment control bodies
+
+Qualify524288 full original native sanitizer checkpoints and256 C64 states through120 new original words per mission including rounding signed192 pulse segments and post-settle checks with genuine external device and delay handoffs. See `docs/NATIVE-IMU-COARSE.md`.

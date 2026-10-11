@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/imu-coarse-cm2.prg from 0801 to 212A (192A bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  247/$0f7,  34/$22
+.C:127a  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   26276011
+>C:c080  a5 00 00 20  22                                      ... "
+Saving file `/workspace/Apollo-11/c64-port/build/imu-coarse-cm2-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/imu-coarse-cm2-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/imu-coarse-cm2-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/imu-coarse-cm2.prg from 0801 to 2786 (1F86 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  262/$106,  41/$29
+.C:0fd0  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   34689731
+>C:c080  a5 00 00 20  22                                      ... "
+Saving file `/workspace/Apollo-11/c64-port/build/imu-coarse-cm2-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/imu-coarse-cm2-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/imu-coarse-cm2-software-stack.bin' from $c100 to $cfff

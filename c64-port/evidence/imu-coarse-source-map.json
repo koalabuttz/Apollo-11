@@ -1,0 +1,1979 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [],
+    "source_group_words": 120,
+    "words": [
+      {
+        "original_line": 144,
+        "bank": "07",
+        "address": "3010",
+        "physical_fixed_word": 7688,
+        "raw_octal": "03641",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 145,
+        "bank": "07",
+        "address": "3011",
+        "physical_fixed_word": 7689,
+        "raw_octal": "34746",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 146,
+        "bank": "07",
+        "address": "3012",
+        "physical_fixed_word": 7690,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 147,
+        "bank": "07",
+        "address": "3013",
+        "physical_fixed_word": 7691,
+        "raw_octal": "05012",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 149,
+        "bank": "07",
+        "address": "3014",
+        "physical_fixed_word": 7692,
+        "raw_octal": "34752",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 150,
+        "bank": "07",
+        "address": "3015",
+        "physical_fixed_word": 7693,
+        "raw_octal": "55474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 152,
+        "bank": "07",
+        "address": "3016",
+        "physical_fixed_word": 7694,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 153,
+        "bank": "07",
+        "address": "3017",
+        "physical_fixed_word": 7695,
+        "raw_octal": "30321",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 154,
+        "bank": "07",
+        "address": "3020",
+        "physical_fixed_word": 7696,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 155,
+        "bank": "07",
+        "address": "3021",
+        "physical_fixed_word": 7697,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 156,
+        "bank": "07",
+        "address": "3022",
+        "physical_fixed_word": 7698,
+        "raw_octal": "20032",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 157,
+        "bank": "07",
+        "address": "3023",
+        "physical_fixed_word": 7699,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 158,
+        "bank": "07",
+        "address": "3024",
+        "physical_fixed_word": 7700,
+        "raw_octal": "74737",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 159,
+        "bank": "07",
+        "address": "3025",
+        "physical_fixed_word": 7701,
+        "raw_octal": "56001",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 160,
+        "bank": "07",
+        "address": "3026",
+        "physical_fixed_word": 7702,
+        "raw_octal": "60000",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 161,
+        "bank": "07",
+        "address": "3027",
+        "physical_fixed_word": 7703,
+        "raw_octal": "54061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 162,
+        "bank": "07",
+        "address": "3030",
+        "physical_fixed_word": 7704,
+        "raw_octal": "13032",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 163,
+        "bank": "07",
+        "address": "3031",
+        "physical_fixed_word": 7705,
+        "raw_octal": "26001",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 165,
+        "bank": "07",
+        "address": "3032",
+        "physical_fixed_word": 7706,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 166,
+        "bank": "07",
+        "address": "3033",
+        "physical_fixed_word": 7707,
+        "raw_octal": "23471",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 167,
+        "bank": "07",
+        "address": "3034",
+        "physical_fixed_word": 7708,
+        "raw_octal": "11474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 168,
+        "bank": "07",
+        "address": "3035",
+        "physical_fixed_word": 7709,
+        "raw_octal": "03015",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 170,
+        "bank": "07",
+        "address": "3036",
+        "physical_fixed_word": 7710,
+        "raw_octal": "34752",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 171,
+        "bank": "07",
+        "address": "3037",
+        "physical_fixed_word": 7711,
+        "raw_octal": "05224",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 174,
+        "bank": "07",
+        "address": "3040",
+        "physical_fixed_word": 7712,
+        "raw_octal": "03641",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 175,
+        "bank": "07",
+        "address": "3041",
+        "physical_fixed_word": 7713,
+        "raw_octal": "54061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 176,
+        "bank": "07",
+        "address": "3042",
+        "physical_fixed_word": 7714,
+        "raw_octal": "34752",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 177,
+        "bank": "07",
+        "address": "3043",
+        "physical_fixed_word": 7715,
+        "raw_octal": "55474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 179,
+        "bank": "07",
+        "address": "3044",
+        "physical_fixed_word": 7716,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 180,
+        "bank": "07",
+        "address": "3045",
+        "physical_fixed_word": 7717,
+        "raw_octal": "11471",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 181,
+        "bank": "07",
+        "address": "3046",
+        "physical_fixed_word": 7718,
+        "raw_octal": "03052",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 182,
+        "bank": "07",
+        "address": "3047",
+        "physical_fixed_word": 7719,
+        "raw_octal": "03061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 183,
+        "bank": "07",
+        "address": "3050",
+        "physical_fixed_word": 7720,
+        "raw_octal": "03117",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 184,
+        "bank": "07",
+        "address": "3051",
+        "physical_fixed_word": 7721,
+        "raw_octal": "03061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 186,
+        "bank": "07",
+        "address": "3052",
+        "physical_fixed_word": 7722,
+        "raw_octal": "63745",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 187,
+        "bank": "07",
+        "address": "3053",
+        "physical_fixed_word": 7723,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 188,
+        "bank": "07",
+        "address": "3054",
+        "physical_fixed_word": 7724,
+        "raw_octal": "63127",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 189,
+        "bank": "07",
+        "address": "3055",
+        "physical_fixed_word": 7725,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 190,
+        "bank": "07",
+        "address": "3056",
+        "physical_fixed_word": 7726,
+        "raw_octal": "55471",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 191,
+        "bank": "07",
+        "address": "3057",
+        "physical_fixed_word": 7727,
+        "raw_octal": "43746",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 193,
+        "bank": "07",
+        "address": "3060",
+        "physical_fixed_word": 7728,
+        "raw_octal": "24061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 194,
+        "bank": "07",
+        "address": "3061",
+        "physical_fixed_word": 7729,
+        "raw_octal": "64754",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 195,
+        "bank": "07",
+        "address": "3062",
+        "physical_fixed_word": 7730,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 196,
+        "bank": "07",
+        "address": "3063",
+        "physical_fixed_word": 7731,
+        "raw_octal": "54050",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 198,
+        "bank": "07",
+        "address": "3064",
+        "physical_fixed_word": 7732,
+        "raw_octal": "11474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 199,
+        "bank": "07",
+        "address": "3065",
+        "physical_fixed_word": 7733,
+        "raw_octal": "03043",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 201,
+        "bank": "07",
+        "address": "3066",
+        "physical_fixed_word": 7734,
+        "raw_octal": "10061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 202,
+        "bank": "07",
+        "address": "3067",
+        "physical_fixed_word": 7735,
+        "raw_octal": "13133",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 204,
+        "bank": "07",
+        "address": "3070",
+        "physical_fixed_word": 7736,
+        "raw_octal": "05221",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 205,
+        "bank": "07",
+        "address": "3071",
+        "physical_fixed_word": 7737,
+        "raw_octal": "00226",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 207,
+        "bank": "07",
+        "address": "3072",
+        "physical_fixed_word": 7738,
+        "raw_octal": "34752",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 208,
+        "bank": "07",
+        "address": "3073",
+        "physical_fixed_word": 7739,
+        "raw_octal": "54061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 209,
+        "bank": "07",
+        "address": "3074",
+        "physical_fixed_word": 7740,
+        "raw_octal": "50000",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 210,
+        "bank": "07",
+        "address": "3075",
+        "physical_fixed_word": 7741,
+        "raw_octal": "30032",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 211,
+        "bank": "07",
+        "address": "3076",
+        "physical_fixed_word": 7742,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 212,
+        "bank": "07",
+        "address": "3077",
+        "physical_fixed_word": 7743,
+        "raw_octal": "50061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 213,
+        "bank": "07",
+        "address": "3100",
+        "physical_fixed_word": 7744,
+        "raw_octal": "20321",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 214,
+        "bank": "07",
+        "address": "3101",
+        "physical_fixed_word": 7745,
+        "raw_octal": "10000",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 215,
+        "bank": "07",
+        "address": "3102",
+        "physical_fixed_word": 7746,
+        "raw_octal": "13110",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 216,
+        "bank": "07",
+        "address": "3103",
+        "physical_fixed_word": 7747,
+        "raw_octal": "13105",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 217,
+        "bank": "07",
+        "address": "3104",
+        "physical_fixed_word": 7748,
+        "raw_octal": "13110",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 220,
+        "bank": "07",
+        "address": "3105",
+        "physical_fixed_word": 7749,
+        "raw_octal": "10061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 221,
+        "bank": "07",
+        "address": "3106",
+        "physical_fixed_word": 7750,
+        "raw_octal": "13073",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 222,
+        "bank": "07",
+        "address": "3107",
+        "physical_fixed_word": 7751,
+        "raw_octal": "13631",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 224,
+        "bank": "07",
+        "address": "3110",
+        "physical_fixed_word": 7752,
+        "raw_octal": "63116",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 225,
+        "bank": "07",
+        "address": "3111",
+        "physical_fixed_word": 7753,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 226,
+        "bank": "07",
+        "address": "3112",
+        "physical_fixed_word": 7754,
+        "raw_octal": "63105",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 228,
+        "bank": "07",
+        "address": "3113",
+        "physical_fixed_word": 7755,
+        "raw_octal": "05567",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 229,
+        "bank": "07",
+        "address": "3114",
+        "physical_fixed_word": 7756,
+        "raw_octal": "00211",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 233,
+        "bank": "07",
+        "address": "3116",
+        "physical_fixed_word": 7758,
+        "raw_octal": "77511",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 235,
+        "bank": "07",
+        "address": "3117",
+        "physical_fixed_word": 7759,
+        "raw_octal": "63745",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 236,
+        "bank": "07",
+        "address": "3120",
+        "physical_fixed_word": 7760,
+        "raw_octal": "00006",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 237,
+        "bank": "07",
+        "address": "3121",
+        "physical_fixed_word": 7761,
+        "raw_octal": "63127",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 238,
+        "bank": "07",
+        "address": "3122",
+        "physical_fixed_word": 7762,
+        "raw_octal": "40000",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 239,
+        "bank": "07",
+        "address": "3123",
+        "physical_fixed_word": 7763,
+        "raw_octal": "51474",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 240,
+        "bank": "07",
+        "address": "3124",
+        "physical_fixed_word": 7764,
+        "raw_octal": "55471",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 241,
+        "bank": "07",
+        "address": "3125",
+        "physical_fixed_word": 7765,
+        "raw_octal": "33746",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 242,
+        "bank": "07",
+        "address": "3126",
+        "physical_fixed_word": 7766,
+        "raw_octal": "03060",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 244,
+        "bank": "07",
+        "address": "3127",
+        "physical_fixed_word": 7767,
+        "raw_octal": "34755",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 245,
+        "bank": "07",
+        "address": "3130",
+        "physical_fixed_word": 7768,
+        "raw_octal": "51474",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 246,
+        "bank": "07",
+        "address": "3131",
+        "physical_fixed_word": 7769,
+        "raw_octal": "57471",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 247,
+        "bank": "07",
+        "address": "3132",
+        "physical_fixed_word": 7770,
+        "raw_octal": "03060",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 261,
+        "bank": "07",
+        "address": "3144",
+        "physical_fixed_word": 7780,
+        "raw_octal": "34750",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 262,
+        "bank": "07",
+        "address": "3145",
+        "physical_fixed_word": 7781,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 263,
+        "bank": "07",
+        "address": "3146",
+        "physical_fixed_word": 7782,
+        "raw_octal": "02012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 264,
+        "bank": "07",
+        "address": "3147",
+        "physical_fixed_word": 7783,
+        "raw_octal": "10000",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 265,
+        "bank": "07",
+        "address": "3150",
+        "physical_fixed_word": 7784,
+        "raw_octal": "00002",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 267,
+        "bank": "07",
+        "address": "3151",
+        "physical_fixed_word": 7785,
+        "raw_octal": "44746",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 268,
+        "bank": "07",
+        "address": "3152",
+        "physical_fixed_word": 7786,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 269,
+        "bank": "07",
+        "address": "3153",
+        "physical_fixed_word": 7787,
+        "raw_octal": "03012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 271,
+        "bank": "07",
+        "address": "3154",
+        "physical_fixed_word": 7788,
+        "raw_octal": "44742",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 272,
+        "bank": "07",
+        "address": "3155",
+        "physical_fixed_word": 7789,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 273,
+        "bank": "07",
+        "address": "3156",
+        "physical_fixed_word": 7790,
+        "raw_octal": "03014",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 274,
+        "bank": "07",
+        "address": "3157",
+        "physical_fixed_word": 7791,
+        "raw_octal": "44755",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 275,
+        "bank": "07",
+        "address": "3160",
+        "physical_fixed_word": 7792,
+        "raw_octal": "54047",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 277,
+        "bank": "07",
+        "address": "3161",
+        "physical_fixed_word": 7793,
+        "raw_octal": "34750",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 278,
+        "bank": "07",
+        "address": "3162",
+        "physical_fixed_word": 7794,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 279,
+        "bank": "07",
+        "address": "3163",
+        "physical_fixed_word": 7795,
+        "raw_octal": "05012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 281,
+        "bank": "07",
+        "address": "3164",
+        "physical_fixed_word": 7796,
+        "raw_octal": "41036",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 282,
+        "bank": "07",
+        "address": "3165",
+        "physical_fixed_word": 7797,
+        "raw_octal": "73207",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 283,
+        "bank": "07",
+        "address": "3166",
+        "physical_fixed_word": 7798,
+        "raw_octal": "27036",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 285,
+        "bank": "07",
+        "address": "3167",
+        "physical_fixed_word": 7799,
+        "raw_octal": "41303",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 286,
+        "bank": "07",
+        "address": "3170",
+        "physical_fixed_word": 7800,
+        "raw_octal": "74746",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 287,
+        "bank": "07",
+        "address": "3171",
+        "physical_fixed_word": 7801,
+        "raw_octal": "27303",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 289,
+        "bank": "07",
+        "address": "3172",
+        "physical_fixed_word": 7802,
+        "raw_octal": "41302",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 290,
+        "bank": "07",
+        "address": "3173",
+        "physical_fixed_word": 7803,
+        "raw_octal": "74750",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 291,
+        "bank": "07",
+        "address": "3174",
+        "physical_fixed_word": 7804,
+        "raw_octal": "27302",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 293,
+        "bank": "07",
+        "address": "3175",
+        "physical_fixed_word": 7805,
+        "raw_octal": "44747",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 294,
+        "bank": "07",
+        "address": "3176",
+        "physical_fixed_word": 7806,
+        "raw_octal": "70075",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 295,
+        "bank": "07",
+        "address": "3177",
+        "physical_fixed_word": 7807,
+        "raw_octal": "54075",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 297,
+        "bank": "07",
+        "address": "3200",
+        "physical_fixed_word": 7808,
+        "raw_octal": "44735",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 298,
+        "bank": "07",
+        "address": "3201",
+        "physical_fixed_word": 7809,
+        "raw_octal": "70076",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 299,
+        "bank": "07",
+        "address": "3202",
+        "physical_fixed_word": 7810,
+        "raw_octal": "54076",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 301,
+        "bank": "07",
+        "address": "3203",
+        "physical_fixed_word": 7811,
+        "raw_octal": "44737",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 302,
+        "bank": "07",
+        "address": "3204",
+        "physical_fixed_word": 7812,
+        "raw_octal": "70077",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 303,
+        "bank": "07",
+        "address": "3205",
+        "physical_fixed_word": 7813,
+        "raw_octal": "54077",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 305,
+        "bank": "07",
+        "address": "3206",
+        "physical_fixed_word": 7814,
+        "raw_octal": "00002",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 307,
+        "bank": "07",
+        "address": "3207",
+        "physical_fixed_word": 7815,
+        "raw_octal": "40010",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 840,
+        "bank": "07",
+        "address": "3745",
+        "physical_fixed_word": 8165,
+        "raw_octal": "77500",
+        "native_group": "coarse limits"
+      },
+      {
+        "original_line": 841,
+        "bank": "07",
+        "address": "3746",
+        "physical_fixed_word": 8166,
+        "raw_octal": "77477",
+        "native_group": "coarse limits"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "VARDELAY": "05224",
+      "FIXDELAY": "05221",
+      "SENDPULS": "03133",
+      "ENDIMU": "03631",
+      "ALARM": "05567",
+      "IMUBAD": "03637"
+    },
+    "remaining": [
+      "IMUCOARS/WAITLIST admission",
+      "SENDPULS channel14 activation and asynchronous CDU hardware delivery",
+      "Post-alarm TCF IMUBAD after external ALARM return",
+      "init/fine/mode/standby and other containing-file entries"
+    ]
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "source_group_words": 120,
+    "words": [
+      {
+        "original_line": 145,
+        "bank": "07",
+        "address": "2673",
+        "physical_fixed_word": 7611,
+        "raw_octal": "03524",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 146,
+        "bank": "07",
+        "address": "2674",
+        "physical_fixed_word": 7612,
+        "raw_octal": "35012",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 147,
+        "bank": "07",
+        "address": "2675",
+        "physical_fixed_word": 7613,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 148,
+        "bank": "07",
+        "address": "2676",
+        "physical_fixed_word": 7614,
+        "raw_octal": "05012",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 150,
+        "bank": "07",
+        "address": "2677",
+        "physical_fixed_word": 7615,
+        "raw_octal": "35016",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 151,
+        "bank": "07",
+        "address": "2700",
+        "physical_fixed_word": 7616,
+        "raw_octal": "55474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 153,
+        "bank": "07",
+        "address": "2701",
+        "physical_fixed_word": 7617,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 154,
+        "bank": "07",
+        "address": "2702",
+        "physical_fixed_word": 7618,
+        "raw_octal": "31155",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 155,
+        "bank": "07",
+        "address": "2703",
+        "physical_fixed_word": 7619,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 156,
+        "bank": "07",
+        "address": "2704",
+        "physical_fixed_word": 7620,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 157,
+        "bank": "07",
+        "address": "2705",
+        "physical_fixed_word": 7621,
+        "raw_octal": "20032",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 158,
+        "bank": "07",
+        "address": "2706",
+        "physical_fixed_word": 7622,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 159,
+        "bank": "07",
+        "address": "2707",
+        "physical_fixed_word": 7623,
+        "raw_octal": "75003",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 160,
+        "bank": "07",
+        "address": "2710",
+        "physical_fixed_word": 7624,
+        "raw_octal": "56001",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 161,
+        "bank": "07",
+        "address": "2711",
+        "physical_fixed_word": 7625,
+        "raw_octal": "60000",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 162,
+        "bank": "07",
+        "address": "2712",
+        "physical_fixed_word": 7626,
+        "raw_octal": "54061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 163,
+        "bank": "07",
+        "address": "2713",
+        "physical_fixed_word": 7627,
+        "raw_octal": "12715",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 164,
+        "bank": "07",
+        "address": "2714",
+        "physical_fixed_word": 7628,
+        "raw_octal": "26001",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 166,
+        "bank": "07",
+        "address": "2715",
+        "physical_fixed_word": 7629,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 167,
+        "bank": "07",
+        "address": "2716",
+        "physical_fixed_word": 7630,
+        "raw_octal": "23471",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 168,
+        "bank": "07",
+        "address": "2717",
+        "physical_fixed_word": 7631,
+        "raw_octal": "11474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 169,
+        "bank": "07",
+        "address": "2720",
+        "physical_fixed_word": 7632,
+        "raw_octal": "02700",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 171,
+        "bank": "07",
+        "address": "2721",
+        "physical_fixed_word": 7633,
+        "raw_octal": "35016",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 172,
+        "bank": "07",
+        "address": "2722",
+        "physical_fixed_word": 7634,
+        "raw_octal": "05272",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 175,
+        "bank": "07",
+        "address": "2723",
+        "physical_fixed_word": 7635,
+        "raw_octal": "03524",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 176,
+        "bank": "07",
+        "address": "2724",
+        "physical_fixed_word": 7636,
+        "raw_octal": "54061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 177,
+        "bank": "07",
+        "address": "2725",
+        "physical_fixed_word": 7637,
+        "raw_octal": "35016",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 178,
+        "bank": "07",
+        "address": "2726",
+        "physical_fixed_word": 7638,
+        "raw_octal": "55474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 180,
+        "bank": "07",
+        "address": "2727",
+        "physical_fixed_word": 7639,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 181,
+        "bank": "07",
+        "address": "2730",
+        "physical_fixed_word": 7640,
+        "raw_octal": "11471",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 182,
+        "bank": "07",
+        "address": "2731",
+        "physical_fixed_word": 7641,
+        "raw_octal": "02735",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 183,
+        "bank": "07",
+        "address": "2732",
+        "physical_fixed_word": 7642,
+        "raw_octal": "02744",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 184,
+        "bank": "07",
+        "address": "2733",
+        "physical_fixed_word": 7643,
+        "raw_octal": "03002",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 185,
+        "bank": "07",
+        "address": "2734",
+        "physical_fixed_word": 7644,
+        "raw_octal": "02744",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 187,
+        "bank": "07",
+        "address": "2735",
+        "physical_fixed_word": 7645,
+        "raw_octal": "63624",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 188,
+        "bank": "07",
+        "address": "2736",
+        "physical_fixed_word": 7646,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 189,
+        "bank": "07",
+        "address": "2737",
+        "physical_fixed_word": 7647,
+        "raw_octal": "63012",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 190,
+        "bank": "07",
+        "address": "2740",
+        "physical_fixed_word": 7648,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 191,
+        "bank": "07",
+        "address": "2741",
+        "physical_fixed_word": 7649,
+        "raw_octal": "55471",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 192,
+        "bank": "07",
+        "address": "2742",
+        "physical_fixed_word": 7650,
+        "raw_octal": "43625",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 194,
+        "bank": "07",
+        "address": "2743",
+        "physical_fixed_word": 7651,
+        "raw_octal": "24061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 195,
+        "bank": "07",
+        "address": "2744",
+        "physical_fixed_word": 7652,
+        "raw_octal": "65020",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 196,
+        "bank": "07",
+        "address": "2745",
+        "physical_fixed_word": 7653,
+        "raw_octal": "51474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 197,
+        "bank": "07",
+        "address": "2746",
+        "physical_fixed_word": 7654,
+        "raw_octal": "54050",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 199,
+        "bank": "07",
+        "address": "2747",
+        "physical_fixed_word": 7655,
+        "raw_octal": "11474",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 200,
+        "bank": "07",
+        "address": "2750",
+        "physical_fixed_word": 7656,
+        "raw_octal": "02726",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 202,
+        "bank": "07",
+        "address": "2751",
+        "physical_fixed_word": 7657,
+        "raw_octal": "10061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 203,
+        "bank": "07",
+        "address": "2752",
+        "physical_fixed_word": 7658,
+        "raw_octal": "13016",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 205,
+        "bank": "07",
+        "address": "2753",
+        "physical_fixed_word": 7659,
+        "raw_octal": "05267",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 206,
+        "bank": "07",
+        "address": "2754",
+        "physical_fixed_word": 7660,
+        "raw_octal": "00226",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 209,
+        "bank": "07",
+        "address": "2755",
+        "physical_fixed_word": 7661,
+        "raw_octal": "35016",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 210,
+        "bank": "07",
+        "address": "2756",
+        "physical_fixed_word": 7662,
+        "raw_octal": "54061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 211,
+        "bank": "07",
+        "address": "2757",
+        "physical_fixed_word": 7663,
+        "raw_octal": "50000",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 212,
+        "bank": "07",
+        "address": "2760",
+        "physical_fixed_word": 7664,
+        "raw_octal": "30032",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 213,
+        "bank": "07",
+        "address": "2761",
+        "physical_fixed_word": 7665,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 214,
+        "bank": "07",
+        "address": "2762",
+        "physical_fixed_word": 7666,
+        "raw_octal": "50061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 215,
+        "bank": "07",
+        "address": "2763",
+        "physical_fixed_word": 7667,
+        "raw_octal": "21155",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 216,
+        "bank": "07",
+        "address": "2764",
+        "physical_fixed_word": 7668,
+        "raw_octal": "10000",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 217,
+        "bank": "07",
+        "address": "2765",
+        "physical_fixed_word": 7669,
+        "raw_octal": "12773",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 218,
+        "bank": "07",
+        "address": "2766",
+        "physical_fixed_word": 7670,
+        "raw_octal": "12770",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 219,
+        "bank": "07",
+        "address": "2767",
+        "physical_fixed_word": 7671,
+        "raw_octal": "12773",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 222,
+        "bank": "07",
+        "address": "2770",
+        "physical_fixed_word": 7672,
+        "raw_octal": "10061",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 223,
+        "bank": "07",
+        "address": "2771",
+        "physical_fixed_word": 7673,
+        "raw_octal": "12756",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 224,
+        "bank": "07",
+        "address": "2772",
+        "physical_fixed_word": 7674,
+        "raw_octal": "13514",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 226,
+        "bank": "07",
+        "address": "2773",
+        "physical_fixed_word": 7675,
+        "raw_octal": "63001",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 227,
+        "bank": "07",
+        "address": "2774",
+        "physical_fixed_word": 7676,
+        "raw_octal": "00006",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 228,
+        "bank": "07",
+        "address": "2775",
+        "physical_fixed_word": 7677,
+        "raw_octal": "62770",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 230,
+        "bank": "07",
+        "address": "2776",
+        "physical_fixed_word": 7678,
+        "raw_octal": "05650",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 231,
+        "bank": "07",
+        "address": "2777",
+        "physical_fixed_word": 7679,
+        "raw_octal": "00211",
+        "native_group": "COARS/COARS2/CHECK"
+      },
+      {
+        "original_line": 235,
+        "bank": "07",
+        "address": "3001",
+        "physical_fixed_word": 7681,
+        "raw_octal": "77511",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 238,
+        "bank": "07",
+        "address": "3002",
+        "physical_fixed_word": 7682,
+        "raw_octal": "63624",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 239,
+        "bank": "07",
+        "address": "3003",
+        "physical_fixed_word": 7683,
+        "raw_octal": "00006",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 240,
+        "bank": "07",
+        "address": "3004",
+        "physical_fixed_word": 7684,
+        "raw_octal": "63012",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 241,
+        "bank": "07",
+        "address": "3005",
+        "physical_fixed_word": 7685,
+        "raw_octal": "40000",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 242,
+        "bank": "07",
+        "address": "3006",
+        "physical_fixed_word": 7686,
+        "raw_octal": "51474",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 243,
+        "bank": "07",
+        "address": "3007",
+        "physical_fixed_word": 7687,
+        "raw_octal": "55471",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 244,
+        "bank": "07",
+        "address": "3010",
+        "physical_fixed_word": 7688,
+        "raw_octal": "33625",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 245,
+        "bank": "07",
+        "address": "3011",
+        "physical_fixed_word": 7689,
+        "raw_octal": "02743",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 247,
+        "bank": "07",
+        "address": "3012",
+        "physical_fixed_word": 7690,
+        "raw_octal": "35021",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 248,
+        "bank": "07",
+        "address": "3013",
+        "physical_fixed_word": 7691,
+        "raw_octal": "51474",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 249,
+        "bank": "07",
+        "address": "3014",
+        "physical_fixed_word": 7692,
+        "raw_octal": "57471",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 250,
+        "bank": "07",
+        "address": "3015",
+        "physical_fixed_word": 7693,
+        "raw_octal": "02743",
+        "native_group": "COARSTOL/COMNEG/COMZERO"
+      },
+      {
+        "original_line": 265,
+        "bank": "07",
+        "address": "3027",
+        "physical_fixed_word": 7703,
+        "raw_octal": "35014",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 266,
+        "bank": "07",
+        "address": "3030",
+        "physical_fixed_word": 7704,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 267,
+        "bank": "07",
+        "address": "3031",
+        "physical_fixed_word": 7705,
+        "raw_octal": "02012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 268,
+        "bank": "07",
+        "address": "3032",
+        "physical_fixed_word": 7706,
+        "raw_octal": "10000",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 269,
+        "bank": "07",
+        "address": "3033",
+        "physical_fixed_word": 7707,
+        "raw_octal": "00002",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 271,
+        "bank": "07",
+        "address": "3034",
+        "physical_fixed_word": 7708,
+        "raw_octal": "45012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 272,
+        "bank": "07",
+        "address": "3035",
+        "physical_fixed_word": 7709,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 273,
+        "bank": "07",
+        "address": "3036",
+        "physical_fixed_word": 7710,
+        "raw_octal": "03012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 275,
+        "bank": "07",
+        "address": "3037",
+        "physical_fixed_word": 7711,
+        "raw_octal": "45006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 276,
+        "bank": "07",
+        "address": "3040",
+        "physical_fixed_word": 7712,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 277,
+        "bank": "07",
+        "address": "3041",
+        "physical_fixed_word": 7713,
+        "raw_octal": "03014",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 278,
+        "bank": "07",
+        "address": "3042",
+        "physical_fixed_word": 7714,
+        "raw_octal": "45021",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 279,
+        "bank": "07",
+        "address": "3043",
+        "physical_fixed_word": 7715,
+        "raw_octal": "54047",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 281,
+        "bank": "07",
+        "address": "3044",
+        "physical_fixed_word": 7716,
+        "raw_octal": "35014",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 282,
+        "bank": "07",
+        "address": "3045",
+        "physical_fixed_word": 7717,
+        "raw_octal": "00006",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 283,
+        "bank": "07",
+        "address": "3046",
+        "physical_fixed_word": 7718,
+        "raw_octal": "05012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 285,
+        "bank": "07",
+        "address": "3047",
+        "physical_fixed_word": 7719,
+        "raw_octal": "41036",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 286,
+        "bank": "07",
+        "address": "3050",
+        "physical_fixed_word": 7720,
+        "raw_octal": "73072",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 287,
+        "bank": "07",
+        "address": "3051",
+        "physical_fixed_word": 7721,
+        "raw_octal": "27036",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 289,
+        "bank": "07",
+        "address": "3052",
+        "physical_fixed_word": 7722,
+        "raw_octal": "41321",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 290,
+        "bank": "07",
+        "address": "3053",
+        "physical_fixed_word": 7723,
+        "raw_octal": "75012",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 291,
+        "bank": "07",
+        "address": "3054",
+        "physical_fixed_word": 7724,
+        "raw_octal": "27321",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 293,
+        "bank": "07",
+        "address": "3055",
+        "physical_fixed_word": 7725,
+        "raw_octal": "41320",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 294,
+        "bank": "07",
+        "address": "3056",
+        "physical_fixed_word": 7726,
+        "raw_octal": "75014",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 295,
+        "bank": "07",
+        "address": "3057",
+        "physical_fixed_word": 7727,
+        "raw_octal": "27320",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 297,
+        "bank": "07",
+        "address": "3060",
+        "physical_fixed_word": 7728,
+        "raw_octal": "45013",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 298,
+        "bank": "07",
+        "address": "3061",
+        "physical_fixed_word": 7729,
+        "raw_octal": "70075",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 299,
+        "bank": "07",
+        "address": "3062",
+        "physical_fixed_word": 7730,
+        "raw_octal": "54075",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 301,
+        "bank": "07",
+        "address": "3063",
+        "physical_fixed_word": 7731,
+        "raw_octal": "45001",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 302,
+        "bank": "07",
+        "address": "3064",
+        "physical_fixed_word": 7732,
+        "raw_octal": "70076",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 303,
+        "bank": "07",
+        "address": "3065",
+        "physical_fixed_word": 7733,
+        "raw_octal": "54076",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 305,
+        "bank": "07",
+        "address": "3066",
+        "physical_fixed_word": 7734,
+        "raw_octal": "45003",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 306,
+        "bank": "07",
+        "address": "3067",
+        "physical_fixed_word": 7735,
+        "raw_octal": "70077",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 307,
+        "bank": "07",
+        "address": "3070",
+        "physical_fixed_word": 7736,
+        "raw_octal": "54077",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 309,
+        "bank": "07",
+        "address": "3071",
+        "physical_fixed_word": 7737,
+        "raw_octal": "00002",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 311,
+        "bank": "07",
+        "address": "3072",
+        "physical_fixed_word": 7738,
+        "raw_octal": "40010",
+        "native_group": "SETCOARS/RNDREFDR/OCT40010"
+      },
+      {
+        "original_line": 840,
+        "bank": "07",
+        "address": "3624",
+        "physical_fixed_word": 8084,
+        "raw_octal": "77500",
+        "native_group": "coarse limits"
+      },
+      {
+        "original_line": 841,
+        "bank": "07",
+        "address": "3625",
+        "physical_fixed_word": 8085,
+        "raw_octal": "77477",
+        "native_group": "coarse limits"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "VARDELAY": "05272",
+      "FIXDELAY": "05267",
+      "SENDPULS": "03016",
+      "ENDIMU": "03514",
+      "ALARM": "05650",
+      "IMUBAD": "03522"
+    },
+    "remaining": [
+      "IMUCOARS/WAITLIST admission",
+      "SENDPULS channel14 activation and asynchronous CDU hardware delivery",
+      "Post-alarm TCF IMUBAD after external ALARM return",
+      "init/fine/mode/standby and other containing-file entries"
+    ]
+  }
+}

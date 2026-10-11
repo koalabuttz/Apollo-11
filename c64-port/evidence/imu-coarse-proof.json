@@ -1,0 +1,295 @@
+{
+  "literal_accessor_arguments": 131072,
+  "unchanged_target_guards": 96,
+  "complete_states": 524288,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14"
+  ],
+  "source_group_words": {
+    "lm": 120,
+    "cm": 120
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/imu-coarse-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-lm0-complete.states.xz",
+        "decoded_sha256": "19396c6a6f394c8be4aa54942c3bca96658bf11e50e3e63b4c71b3926f67cfaf",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-lm0-complete.states.xz",
+        "decoded_sha256": "19396c6a6f394c8be4aa54942c3bca96658bf11e50e3e63b4c71b3926f67cfaf",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-lm0-complete.states.xz",
+        "decoded_sha256": "19396c6a6f394c8be4aa54942c3bca96658bf11e50e3e63b4c71b3926f67cfaf",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-lm1-complete.states.xz",
+        "decoded_sha256": "f7ca1c0ad68c77387513306727a028966766857e9f1ac6506684ae26adf51de6",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-lm1-complete.states.xz",
+        "decoded_sha256": "f7ca1c0ad68c77387513306727a028966766857e9f1ac6506684ae26adf51de6",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-lm1-complete.states.xz",
+        "decoded_sha256": "f7ca1c0ad68c77387513306727a028966766857e9f1ac6506684ae26adf51de6",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm2": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-lm2-complete.states.xz",
+        "decoded_sha256": "37e59f72ed2056be4e3982a5b070c43f6f5d892a136f0e5dfe209bbe29c90003",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-lm2-complete.states.xz",
+        "decoded_sha256": "37e59f72ed2056be4e3982a5b070c43f6f5d892a136f0e5dfe209bbe29c90003",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-lm2-complete.states.xz",
+        "decoded_sha256": "37e59f72ed2056be4e3982a5b070c43f6f5d892a136f0e5dfe209bbe29c90003",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm3": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-lm3-complete.states.xz",
+        "decoded_sha256": "511cb1a2b76aa42f3e2c3f786b6dc368efe151ff7276e2ea38aea1964756c2b1",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-lm3-complete.states.xz",
+        "decoded_sha256": "511cb1a2b76aa42f3e2c3f786b6dc368efe151ff7276e2ea38aea1964756c2b1",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-lm3-complete.states.xz",
+        "decoded_sha256": "511cb1a2b76aa42f3e2c3f786b6dc368efe151ff7276e2ea38aea1964756c2b1",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-cm0-complete.states.xz",
+        "decoded_sha256": "d943243e22c33a2c8165552ef0708453ec1f198e99c7b13767d7465401036a91",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-cm0-complete.states.xz",
+        "decoded_sha256": "d943243e22c33a2c8165552ef0708453ec1f198e99c7b13767d7465401036a91",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-cm0-complete.states.xz",
+        "decoded_sha256": "d943243e22c33a2c8165552ef0708453ec1f198e99c7b13767d7465401036a91",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-cm1-complete.states.xz",
+        "decoded_sha256": "8186bd99d0bd8e7367100af34f689980cf654eea107cdb25db9749c488eb7663",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-cm1-complete.states.xz",
+        "decoded_sha256": "8186bd99d0bd8e7367100af34f689980cf654eea107cdb25db9749c488eb7663",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-cm1-complete.states.xz",
+        "decoded_sha256": "8186bd99d0bd8e7367100af34f689980cf654eea107cdb25db9749c488eb7663",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm2": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-cm2-complete.states.xz",
+        "decoded_sha256": "586d0ee0d405582893f2c52c40e88fac23c0bd1a0ca4261dba81b7609d6d2114",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-cm2-complete.states.xz",
+        "decoded_sha256": "586d0ee0d405582893f2c52c40e88fac23c0bd1a0ca4261dba81b7609d6d2114",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-cm2-complete.states.xz",
+        "decoded_sha256": "586d0ee0d405582893f2c52c40e88fac23c0bd1a0ca4261dba81b7609d6d2114",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm3": {
+      "original_assembly": {
+        "object": "evidence/imu-coarse-cm3-complete.states.xz",
+        "decoded_sha256": "7607fa05eeb44613d2840690a3b537d20b51f8eb7c0c24978ab34e41619e4658",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-coarse-cm3-complete.states.xz",
+        "decoded_sha256": "7607fa05eeb44613d2840690a3b537d20b51f8eb7c0c24978ab34e41619e4658",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-coarse-cm3-complete.states.xz",
+        "decoded_sha256": "7607fa05eeb44613d2840690a3b537d20b51f8eb7c0c24978ab34e41619e4658",
+        "decoded_bytes": 269484032
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002000",
+      "PRG_bytes": 7558,
+      "loaded_end": "0x2584",
+      "hardware_stack": 20,
+      "software_stack": 84,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002001",
+      "PRG_bytes": 7988,
+      "loaded_end": "0x2732",
+      "hardware_stack": 20,
+      "software_stack": 84,
+      "compiler_ZP": 0
+    },
+    "lm2": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002002",
+      "PRG_bytes": 8106,
+      "loaded_end": "0x27a8",
+      "hardware_stack": 20,
+      "software_stack": 84,
+      "compiler_ZP": 0
+    },
+    "lm3": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002003",
+      "PRG_bytes": 7396,
+      "loaded_end": "0x24e2",
+      "hardware_stack": 20,
+      "software_stack": 85,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002020",
+      "PRG_bytes": 7524,
+      "loaded_end": "0x2562",
+      "hardware_stack": 20,
+      "software_stack": 84,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002021",
+      "PRG_bytes": 7994,
+      "loaded_end": "0x2738",
+      "hardware_stack": 20,
+      "software_stack": 84,
+      "compiler_ZP": 0
+    },
+    "cm2": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002022",
+      "PRG_bytes": 8072,
+      "loaded_end": "0x2786",
+      "hardware_stack": 20,
+      "software_stack": 84,
+      "compiler_ZP": 0
+    },
+    "cm3": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002023",
+      "PRG_bytes": 7359,
+      "loaded_end": "0x24bd",
+      "hardware_stack": 20,
+      "software_stack": 85,
+      "compiler_ZP": 0
+    }
+  },
+  "source_branches": {
+    "lm0": {
+      "0": 65536
+    },
+    "lm1": {
+      "1": 32768,
+      "6": 32768
+    },
+    "lm2": {
+      "2": 32768,
+      "6": 32768
+    },
+    "lm3": {
+      "5": 65386,
+      "4": 150
+    },
+    "cm0": {
+      "0": 65536
+    },
+    "cm1": {
+      "1": 32768,
+      "6": 32768
+    },
+    "cm2": {
+      "2": 32768,
+      "6": 32768
+    },
+    "cm3": {
+      "5": 65386,
+      "4": 150
+    }
+  },
+  "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+  "source_fixture_tool": "tools/imu_pulse_prepare_reference.py",
+  "independent_review": {
+    "path": "evidence/imu-coarse-independent-review.txt",
+    "sha256": "366677540203f5bbce234f5cd38cd1d60525a586a173baa12a44831b0d0433d9"
+  },
+  "immutable_service_dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "tests/imu_pulse_cases.c": "ac783d198a79c77d8db4d7a1b1893780c096bb8209807acb3315bdf825a9fee5",
+    "tools/frozen_words.py": "542338895352036113578bad37a79e49a43f61dcef2834cbfb0fd7841f573724",
+    "tests/frozen_words.c": "f8ca1264ddd12de6768c7e148dbe5b02c39cda2a0fad905d536ea534b8a2b834"
+  },
+  "qualification": "Original SETCOARS/RNDREFDR, COARS angular rounding, COARS2 three-axis signed192 segmentation and post-settle check. Coherent bank07/EB3, ordinary canonical RAM/raw A/L, fixed Q02000..07777, idle signedzero command counters, excluded producers; negativezero gyro additionally activityclear and coarse CDU activityclear. Stops actual TCQ, VARDELAY/FIXDELAY/SENDPULS/ALARM/IMUBAD/ENDIMU frontiers. No external delay/scheduling/alarm bodies, post-alarm continuation or asynchronous coarse transport. Containing file partial.",
+  "target_warning_exception": "None. Host and target strict warnings are errors.",
+  "decoded_stream_identity": "Each of eight originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with checked subprocess completion; no duplicate raw full streams retained."
+}

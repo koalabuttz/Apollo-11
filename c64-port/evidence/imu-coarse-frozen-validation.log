@@ -1,0 +1,9 @@
+for mission in 0 1; do for entry in 0 1 2 3; do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DIMUC_MISSION=$mission -DIMUC_ENTRY=$entry tests/test_imu_coarse.c tests/frozen_words.c src/imu_coarse.c src/agc_word.c src/agc_multiword.c tests/imu_coarse_cases.c tests/imu_pulse_cases.c -o build/test-imu-coarse-$mission-$entry; build/test-imu-coarse-$mission-$entry; done; done
+32 complete coarse original states + 12 immutable guards + 6 constants mission0 entry0: PASS
+32 complete coarse original states + 12 immutable guards + 6 constants mission0 entry1: PASS
+32 complete coarse original states + 12 immutable guards + 6 constants mission0 entry2: PASS
+32 complete coarse original states + 12 immutable guards + 6 constants mission0 entry3: PASS
+32 complete coarse original states + 12 immutable guards + 6 constants mission1 entry0: PASS
+32 complete coarse original states + 12 immutable guards + 6 constants mission1 entry1: PASS
+32 complete coarse original states + 12 immutable guards + 6 constants mission1 entry2: PASS
+32 complete coarse original states + 12 immutable guards + 6 constants mission1 entry3: PASS
