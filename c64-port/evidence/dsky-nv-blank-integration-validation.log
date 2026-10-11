@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_nv_blank.c src/agc_word.c src/dsky_nv_blank.c tests/dsky_nv_blank_cases.c tests/dsky_nv_blank_check.c -o build/test-dsky-nv-blank-integrated
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_nv_blank_snapshot.c src/agc_word.c src/dsky_nv_blank.c tests/dsky_nv_blank_cases.c tests/dsky_nv_blank_check.c -o build/dsky-nv-blank-integrated-stream
+./build/test-dsky-nv-blank-integrated
+128 full LM/CM BLANKDSP source states and112 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/dsky-nv-blank-reference.snapshots.xz --sha256 2bc6ef4cec4c58d850eaa9ea91bde4a8050eb9e42b4e5e1efb796382a1e88dbc --binary build/dsky-nv-blank-integrated-stream
+PASS all retained source-state bytes: 94919362 SHA256 2bc6ef4cec4c58d850eaa9ea91bde4a8050eb9e42b4e5e1efb796382a1e88dbc
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_dsky_nv_blank.c src/agc_word.c src/dsky_nv_blank.c tests/dsky_nv_blank_cases.c tests/dsky_nv_blank_check.c -o build/test-dsky-nv-blank-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-nv-blank-integrated-san
+128 full LM/CM BLANKDSP source states and112 unchanged invalid guards: PASS
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/dsky_nv_blank_snapshot.c src/agc_word.c src/dsky_nv_blank.c tests/dsky_nv_blank_cases.c tests/dsky_nv_blank_check.c -o build/dsky-nv-blank-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/dsky-nv-blank-reference.snapshots.xz --sha256 2bc6ef4cec4c58d850eaa9ea91bde4a8050eb9e42b4e5e1efb796382a1e88dbc --binary build/dsky-nv-blank-integrated-stream-san
+PASS all retained source-state bytes: 94919362 SHA256 2bc6ef4cec4c58d850eaa9ea91bde4a8050eb9e42b4e5e1efb796382a1e88dbc

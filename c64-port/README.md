@@ -1142,3 +1142,7 @@ Qualify original sign agreement and Comanche transpose entries against393216 com
 ## Translate original shared address and data request source paths
 
 Qualify REQADD USEADD REQDAT and REQCOM with actual BANKCALL five blank SWRETURN and saved data transfers against8192 complete original native sanitizer states plus64 C64 states preserving real alarm cycle boundaries. See `docs/DSKY-ADDRESS-REQUEST.md`.
+
+## Translate original internal display blank source continuation
+
+Qualify original BLANKDSP through ENTSET minus2 with source relay CCS and NOUT wrapping against8192 complete original native sanitizer states and128 C64 states without resetting canonical machine state. See `docs/DSKY-NV-BLANK.md`.

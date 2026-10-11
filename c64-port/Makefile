@@ -783,3 +783,5 @@ all: build/cm-phase-cleanup-native
 include tools/rtb_agreement_integration.mk
 
 include tools/dsky_address_request.mk
+
+include tools/dsky_nv_blank_integration.mk

@@ -1,0 +1,9 @@
+# Original LM/CM blank-display consumer
+
+`dsky_nv_blank` executes original BLANKDSP41,3516 through FLASHOFF and reaches actual ENTSET-2 PC03566/Q03544. The authoritative image retains CODE0124, relay changes, NOUT, verb/noun/CLPASS clearing, DSPCOUNT, raw registers and IRQ effects; channel11 is explicit. Negative-zero relay words retain the actual CCS skip into the CODE-zero loop. NOUT uses source overflow-corrected INCR, including037777 wrap to+0. MODREG is preserved even for source full-blank requests.
+
+The bounded entry accepts NVTEMP-1..-4 and matching A=abs(NVTEMP)-1, coherent bank41/EB/BB, SUPER100 selecting the source bank, legal IRQ/channel11 and ordinary erasable words. Caller excludes producers. Unsupported contexts preserve the entire image, IO and channel. ENTSET-2 is a separately translated continuation. No instruction decoder, floating point, heap or extra scheduler poll is present.
+
+All8,192 complete original LM/CM source states match strict native and full ASAN/UBSAN, raw SHA256 `2bc6ef4cec4c58d850eaa9ea91bde4a8050eb9e42b4e5e1efb796382a1e88dbc`. Frozen checks cover128 complete states and112 unchanged invalid guards. The same128 cases pass PAL C64 in VICE: mailbox `a500008000`, PRG12,473 bytes, hardware stack14 bytes including14 ROM bytes, software stack15 bytes, no additional zero-page allocation. Both mission fixtures preserve the actual selected BLANKDSP/FLASHOFF source bodies; original-engine execution is host-only.
+
+`tools/dsky_nv_blank.mk` provides frozen host tests, full-route snapshot/all, complete-stream sanitizers and target builds. Exact source/dependency/target identities are retained in `evidence/dsky-nv-blank-proof.json`. This closes BLANKDSP through its real selected continuation entry, not the whole Pinball file or an integrated application.

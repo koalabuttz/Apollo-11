@@ -524,3 +524,5 @@ subprocess.run([sys.executable,'tools/cm_abort_whimper_differential.py',str(refe
 subprocess.run([sys.executable,'tools/cm_phase_cleanup_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_address_request_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_nv_blank_differential.py',str(reference)],cwd=ROOT,check=True)
