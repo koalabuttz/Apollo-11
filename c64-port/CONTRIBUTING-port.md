@@ -105,6 +105,8 @@ scripts are not yet run in CI; the auditor runs them.
 A file flips to `complete` in `docs/port-coverage.json` only with all four
 evidence categories (source-to-native map, independent assembly comparison,
 host and sanitizer results, C64 execution results) and after the auditor's
-review. Interfaces have owners: Lane A owns the interpreter and executive ABI,
+review. The two results categories must be records of actual runs:
+`port_coverage.py` rejects a certificate whose host or C64 results point at
+its source-to-native map. Interfaces have owners: Lane A owns the interpreter and executive ABI,
 Lane H owns the overlay and module ABI; change them through a PR the owner
 reviews.
