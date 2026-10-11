@@ -468,3 +468,5 @@ subprocess.run([sys.executable,'tools/dsky_pinbranch_differential.py',str(refere
 subprocess.run([sys.executable,'tools/dsky_blanksub_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_enter_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_minutes_seconds_differential.py',str(reference)],cwd=ROOT,check=True)

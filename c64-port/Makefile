@@ -689,3 +689,5 @@ include tools/inverse_trig_sweep_port.mk
 include tools/dsky_blanksub.mk
 
 include tools/dsky_enter.mk
+
+include tools/cm_minutes_seconds_port.mk

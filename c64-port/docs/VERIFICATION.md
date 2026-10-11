@@ -1294,3 +1294,7 @@ Actual BLANKSUB caller setup, source selected buffer and unchanged BLNKSUB1 bank
 ## Translate original Luminary and Comanche ENTER pass selection
 
 Actual CHARIN34 and ENTER through pass selection, source FLASHOFF and physical REQRET return match8,192 complete original/full-sanitizer states and64 actual C64 checkpoints. Signed-zero request/count contexts and the actual MMCHANG request-count exception are preserved; subsequent noun and verb bodies remain separate. See `docs/DSKY-ENTER-PASS.md`.
+
+## Translate original Comanche minutes and seconds display scaling
+
+Actual M/SOUT scaling, separation, signed two-character formatting and middle blanking match512 continuous paths and3,072 complete source/full-sanitizer states; the reusable decimal pair matches1,024 additional states. Actual C64 checks112 complete frozen states plus63 unchanged guards. Surrounding noun40 caller composition remains separate. See `docs/COMANCHE-MINUTES-SECONDS.md`.

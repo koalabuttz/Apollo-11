@@ -1,0 +1,14 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_minutes_seconds.c src/cm_minutes_seconds.c src/cm_decimal_pair.c src/cm_pinball.c src/dsky_pinball.c src/cm_interbank.c src/fixed_data.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_minutes_seconds_cases.c tests/cm_decimal_pair_cases.c tests/cm_minutes_seconds_check.c -o build/test-cm-minutes-seconds
+build/test-cm-minutes-seconds
+112 full CM signed decimal/M-S states and 63 unchanged invalid guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_minutes_seconds.c src/cm_minutes_seconds.c src/cm_decimal_pair.c src/cm_pinball.c src/dsky_pinball.c src/cm_interbank.c src/fixed_data.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_minutes_seconds_cases.c tests/cm_decimal_pair_cases.c tests/cm_minutes_seconds_check.c -o build/test-cm-minutes-seconds-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-minutes-seconds-sanitize
+112 full CM signed decimal/M-S states and 63 unchanged invalid guards: PASS
+python3 tools/cm_decimal_pair_sanitize_stream.py
+PASS all1024 complete original cm_decimal_pair source states under ASAN/UBSAN, SHA256 83332c4c578a79af68653ad4b16395e3253406046d482e45fd177a0cf232bae7
+python3 tools/cm_minutes_seconds_sanitize_stream.py
+PASS all3072 complete original cm_minutes_seconds source states under ASAN/UBSAN, SHA256 ba081ba5b6885ae0578a8f178e2c505c15e8cc23cd547fbc206f5479992250d4
+python3 tools/cm_decimal_pair_differential.py
+1024 0 83332c4c578a79af68653ad4b16395e3253406046d482e45fd177a0cf232bae7 83332c4c578a79af68653ad4b16395e3253406046d482e45fd177a0cf232bae7
+python3 tools/cm_minutes_seconds_differential.py
+3072 0 ba081ba5b6885ae0578a8f178e2c505c15e8cc23cd547fbc206f5479992250d4 ba081ba5b6885ae0578a8f178e2c505c15e8cc23cd547fbc206f5479992250d4

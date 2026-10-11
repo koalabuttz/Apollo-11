@@ -1,0 +1,7 @@
+/* SPDX-License-Identifier: MIT */
+#include <string.h>
+#include "cm_minutes_seconds_check.h"
+#include "cm_minutes_seconds_vectors.h"
+static void patch(apollo_overlay_state *s,cm_native_io *io,uint16_t field,uint16_t value){if(field<2048u)s->words[field]=value;else if(field==2048u)io->superbank=value;else io->interrupt_enabled=value;}
+uint8_t cm_ms_checkpoint_input(uint8_t n,apollo_overlay_state *s,cm_native_io *io){uint16_t i;if(n>=112u)return 255;if(cm_ms_numbers[n]<1024u)cm_decimal_pair_input(s,io,cm_ms_numbers[n]);else cm_minutes_seconds_input(s,io,(uint16_t)((cm_ms_numbers[n]-1024u)/6u));for(i=cm_ms_before_offsets[n];i<cm_ms_before_offsets[n+1u];++i)patch(s,io,cm_ms_before_patch[i][0],cm_ms_before_patch[i][1]);return cm_ms_numbers[n]<1024u?254u:(uint8_t)((cm_ms_numbers[n]-1024u)%6u);}
+uint16_t cm_ms_checkpoint_check(uint8_t n,apollo_overlay_state *s,apollo_overlay_state *before){cm_native_io io,old;uint16_t failures=0,f,p,end;uint8_t phase=cm_ms_checkpoint_input(n,s,&io);if(phase==255u)return 1;memcpy(before,s,sizeof *s);old=io;if(phase==254u){if((unsigned)cm_decimal_pair(s,&io)!=(unsigned)EXEC_OK)++failures;}else if(!cm_minutes_seconds_phase(s,&io,phase))++failures;p=cm_ms_after_offsets[n];end=cm_ms_after_offsets[n+1u];for(f=0;f<2050u;++f){uint16_t expected=f<2048u?before->words[f]:f==2048u?old.superbank:old.interrupt_enabled;uint16_t actual=f<2048u?s->words[f]:f==2048u?io.superbank:io.interrupt_enabled;if(p<end&&cm_ms_after_patch[p][0]==f)expected=cm_ms_after_patch[p++][1];if(actual!=expected)++failures;}if(p!=end)++failures;return failures;}
