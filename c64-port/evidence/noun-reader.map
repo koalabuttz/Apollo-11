@@ -1,0 +1,219 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      22       22       2e     1 .zp
+      22       22       2e     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.zp.noinit)
+     80d      80d      cff     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      17f     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.apollo_noun_table_read)
+     843      843      17f     1                 apollo_noun_table_read
+     9c2      9c2      948     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.main)
+     9c2      9c2      948     1                 main
+    130a     130a        6     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.exit)
+    130a     130a        6     1                 exit
+    1310     1310       c4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.__udivhi3)
+    1310     1310       c4     1                 __udivhi3
+    13d4     13d4       ae     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.__umodhi3)
+    13d4     13d4       ae     1                 __umodhi3
+    1482     1482       34     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.memcpy)
+    1482     1482       34     1                 memcpy
+    14b6     14b6       22     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.__memset)
+    14b6     14b6       22     1                 __memset
+    14d8     14d8       34     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.text.__mulhi3)
+    14d8     14d8       34     1                 __mulhi3
+    150c     150c        0     1         __init_array_start = .
+    150c     150c        0     1         __init_array_end = .
+    150c     150c        0     1         __fini_array_start = .
+    150c     150c        0     1         __fini_array_end = .
+    150c     150c     403e     1 .rodata
+    150c     150c       18     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_nouns)
+    150c     150c       18     1                 fixed_data_lm_nouns
+    1524     1524       18     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    1524     1524       18     1                 fixed_data_cm_nouns
+    153c     153c       d8     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    153c     153c       d8     1                 fixed_data_lm_spans
+    1614     1614       30     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    1614     1614       30     1                 fixed_data_cm_spans
+    1644     1644       20     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_0)
+    1644     1644       20     1                 fixed_data_lm_0
+    1664     1664       24     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_1)
+    1664     1664       24     1                 fixed_data_lm_1
+    1688     1688        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_2)
+    1688     1688        4     1                 fixed_data_lm_2
+    168c     168c        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_3)
+    168c     168c        4     1                 fixed_data_lm_3
+    1690     1690        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_4)
+    1690     1690        4     1                 fixed_data_lm_4
+    1694     1694        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_5)
+    1694     1694        4     1                 fixed_data_lm_5
+    1698     1698        2     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_6)
+    1698     1698        2     1                 fixed_data_lm_6
+    169a     169a        a     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_7)
+    169a     169a        a     1                 fixed_data_lm_7
+    16a4     16a4        2     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_8)
+    16a4     16a4        2     1                 fixed_data_lm_8
+    16a6     16a6        6     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_9)
+    16a6     16a6        6     1                 fixed_data_lm_9
+    16ac     16ac        8     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_10)
+    16ac     16ac        8     1                 fixed_data_lm_10
+    16b4     16b4       2e     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_11)
+    16b4     16b4       2e     1                 fixed_data_lm_11
+    16e2     16e2        c     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_12)
+    16e2     16e2        c     1                 fixed_data_lm_12
+    16ee     16ee        2     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_13)
+    16ee     16ee        2     1                 fixed_data_lm_13
+    16f0     16f0        2     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_14)
+    16f0     16f0        2     1                 fixed_data_lm_14
+    16f2     16f2        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_15)
+    16f2     16f2        4     1                 fixed_data_lm_15
+    16f6     16f6        6     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_16)
+    16f6     16f6        6     1                 fixed_data_lm_16
+    16fc     16fc        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_17)
+    16fc     16fc        4     1                 fixed_data_lm_17
+    1700     1700        8     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_18)
+    1700     1700        8     1                 fixed_data_lm_18
+    1708     1708        c     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_19)
+    1708     1708        c     1                 fixed_data_lm_19
+    1714     1714       18     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_20)
+    1714     1714       18     1                 fixed_data_lm_20
+    172c     172c       10     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_21)
+    172c     172c       10     1                 fixed_data_lm_21
+    173c     173c       28     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_22)
+    173c     173c       28     1                 fixed_data_lm_22
+    1764     1764       2c     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_23)
+    1764     1764       2c     1                 fixed_data_lm_23
+    1790     1790        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_24)
+    1790     1790        4     1                 fixed_data_lm_24
+    1794     1794        4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_25)
+    1794     1794        4     1                 fixed_data_lm_25
+    1798     1798      1be     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_26)
+    1798     1798      1be     1                 fixed_data_lm_26
+    1956     1956       68     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_27)
+    1956     1956       68     1                 fixed_data_lm_27
+    19be     19be       24     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_28)
+    19be     19be       24     1                 fixed_data_lm_28
+    19e2     19e2      1e4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_29)
+    19e2     19e2      1e4     1                 fixed_data_lm_29
+    1bc6     1bc6      108     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_30)
+    1bc6     1bc6      108     1                 fixed_data_lm_30
+    1cce     1cce       80     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_31)
+    1cce     1cce       80     1                 fixed_data_lm_31
+    1d4e     1d4e       40     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_32)
+    1d4e     1d4e       40     1                 fixed_data_lm_32
+    1d8e     1d8e       20     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_33)
+    1d8e     1d8e       20     1                 fixed_data_lm_33
+    1dae     1dae       26     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_34)
+    1dae     1dae       26     1                 fixed_data_lm_34
+    1dd4     1dd4      458     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_lm_35)
+    1dd4     1dd4      458     1                 fixed_data_lm_35
+    222c     222c      1c4     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_0)
+    222c     222c      1c4     1                 fixed_data_cm_0
+    23f0     23f0       7c     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_1)
+    23f0     23f0       7c     1                 fixed_data_cm_1
+    246c     246c       40     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_2)
+    246c     246c       40     1                 fixed_data_cm_2
+    24ac     24ac       20     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_3)
+    24ac     24ac       20     1                 fixed_data_cm_3
+    24cc     24cc       26     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_4)
+    24cc     24cc       26     1                 fixed_data_cm_4
+    24f2     24f2      1be     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_5)
+    24f2     24f2      1be     1                 fixed_data_cm_5
+    26b0     26b0      1f2     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_6)
+    26b0     26b0      1f2     1                 fixed_data_cm_6
+    28a2     28a2      410     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.fixed_data_cm_7)
+    28a2     28a2      410     1                 fixed_data_cm_7
+    2cb2     2cb2        c     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.noun_reader_prepare.callers)
+    2cb2     2cb2        c     1                 noun_reader_prepare.callers
+    2cbe     2cbe        c     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.noun_reader_prepare.banks)
+    2cbe     2cbe        c     1                 noun_reader_prepare.banks
+    2cca     2cca      260     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.noun_reader_target_ids)
+    2cca     2cca      260     1                 noun_reader_target_ids
+    2f2a     2f2a       20     1         <internal>:(.rodata.cst32)
+    2f4a     2f4a     2600     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.rodata.noun_reader_expected)
+    2f4a     2f4a     2600     1                 noun_reader_expected
+    554a     554a        0     1 .data
+    554a     554a        0     1         __data_start = .
+    554a     554a        0     1         __data_end = .
+    554a     554a        0     1 __data_load_start = LOADADDR(.data)
+    554a     554a        0     1 __data_size = SIZEOF(.data)
+    554a     554a     2000     1 .bss
+    554a     554a        0     1         __bss_start = .
+    554a     554a     1000     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.bss.state)
+    554a     554a     1000     1                 state
+    654a     654a     1000     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.bss.before)
+    654a     654a     1000     1                 before
+    754a     754a        0     1         __bss_end = .
+    754a     754a        0     1 __bss_size = SIZEOF(.bss)
+    754a     754a        0     1 .noinit
+    754a     754a        0     1         __heap_start = ALIGN(., 2)
+    754a     754a        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/noun-reader.prg.lto.o:(.llvm_sympart)
+       0        0      e00     4 .symtab
+       0        0      e00     4         <internal>:(.symtab)
+       0        0       76     1 .shstrtab
+       0        0       76     1         <internal>:(.shstrtab)
+       0        0      969     1 .strtab
+       0        0      969     1         <internal>:(.strtab)

@@ -1,0 +1,6 @@
+PASS: 58368 supported noun-reader contexts; 100 unsupported contexts preserve every word and I/O
+PASS: 58368 supported noun-reader contexts; 100 unsupported contexts preserve every word and I/O
+PASS: frozen 304 source states; each noun and scale pair in both missions
+PASS: 58368 native and sanitized complete 2048-word images match independently assembled original LM/CM source
+Snapshot little-endian words: case, success, 2048 physical words, SUPER, IRQ
+Reference/native SHA256: 9f13c8b9b6f7488bcb5189e583bb5cfe391621bae6b178678627e1da8d9c011b

@@ -591,3 +591,7 @@ Actual DSPIN, 11DSPIN and 2BLANK source effects match all 8192 original states a
 ## Port original Comanche numeric display formatting
 
 All 12288 original complete-image numeric formatting states match native and sanitized outputs; C64 execution checks pass. See `docs/COMANCHE-FORMATTER.md`.
+
+## Complete original LM and CM noun-table readers
+
+All three reader algorithms and six tables in each original source file are mapped; 58368 full original images match native and sanitizer outputs, with 1216 actual C64 state checks. See `docs/NOUN_READERS.md`.

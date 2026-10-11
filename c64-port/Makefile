@@ -495,3 +495,5 @@ include tools/cm_display.mk
 include tools/cm_pinball.mk
 
 include tools/cm_formatter.mk
+
+include tools/noun_reader.mk

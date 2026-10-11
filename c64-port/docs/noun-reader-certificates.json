@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "parent_inventory_merge_required": true,
+  "recommendations": [
+    {
+      "source_path": "Luminary099/PINBALL_NOUN_TABLES.agc",
+      "source_sha256": "ec5e14a2647763b0136fc012d2648803183737e1e386daba1548158905c9b2b3",
+      "recommendation": "complete native translation within original documented caller domain",
+      "complete_file_kind": "three noun/scale reader algorithms, all six tables and placement/alias declarations",
+      "entry_points": [
+        "LODNNTAB",
+        "GTSFOUT",
+        "GTSFIN"
+      ],
+      "all_source_paths_reviewed": true,
+      "native_source": "src/noun_reader.c",
+      "native_data": "src/fixed_data.c",
+      "source_line_and_address_map": "evidence/noun-reader-audit.json.gz",
+      "supported_domain": "noun 0..99, both signs of zero, every original even scale-pair index; source DXCH-Z return context as specified by include/noun_reader.h",
+      "host_source_states": 30912,
+      "c64_source_states": 644,
+      "verification": "all 2048 physical words and SUPER/IRQ match independently assembled byte-original source; sanitizer and target native execution",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "continuations": [],
+      "out_of_domain_behavior": "rejected transactionally; not an assertion of original illegal-index behavior",
+      "application_completion_claim": false
+    },
+    {
+      "source_path": "Comanche055/PINBALL_NOUN_TABLES.agc",
+      "source_sha256": "d90a466da20a0811690c812b2af0a0c9338a589d2b18c2e0ef1054e9ce563e7f",
+      "recommendation": "complete native translation within original documented caller domain",
+      "complete_file_kind": "three noun/scale reader algorithms, all six tables and placement/alias declarations",
+      "entry_points": [
+        "LODNNTAB",
+        "GTSFOUT",
+        "GTSFIN"
+      ],
+      "all_source_paths_reviewed": true,
+      "native_source": "src/noun_reader.c",
+      "native_data": "src/fixed_data.c",
+      "source_line_and_address_map": "evidence/noun-reader-audit.json.gz",
+      "supported_domain": "noun 0..99, both signs of zero, every original even scale-pair index; source DXCH-Z return context as specified by include/noun_reader.h",
+      "host_source_states": 27456,
+      "c64_source_states": 572,
+      "verification": "all 2048 physical words and SUPER/IRQ match independently assembled byte-original source; sanitizer and target native execution",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "continuations": [],
+      "out_of_domain_behavior": "rejected transactionally; not an assertion of original illegal-index behavior",
+      "application_completion_claim": false
+    }
+  ]
+}
