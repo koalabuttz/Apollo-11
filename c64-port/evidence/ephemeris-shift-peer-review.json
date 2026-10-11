@@ -1,0 +1,19 @@
+{
+  "reviewer": "p66_source_map",
+  "result": "No concrete source/arithmetic/control discrepancy found within the documented positive scalar no-round count5/8/16 GENSHIFT domain.",
+  "files": {
+    "src/ephemeris_shift.c": "d233633761616c987534ee14956821b96504203f06709045008d91b662ee3b45",
+    "include/ephemeris_shift.h": "80e5becf0900b78b413df60605f91f21c6cb21cdee7aa56c8e359eda65b1ab3e",
+    "tools/ephemeris_shift_reference.c": "58c03ecab60a2363bbaffa746d9e6e2a2b101a85082412314f14119c6220d031",
+    "tools/ephemeris_shift_host.py": "22e424b5619978d10c670b55ad9495987a98f344c7b6124c0e17ccddf8ae6d29",
+    "tools/ephemeris_shift_source.py": "40ba6aae095951846758f596a26eaf461d7b32777cf0017c17a1cb9d97c1432a",
+    "tests/ephemeris_shift_cases.c": "53b3b4f6764c7029792d89f0c4fcd9df4b8075a0e64bbbaf245ea10c3b7c53ce"
+  },
+  "findings": [
+    "GENSHIFT count extraction and decremented loop match original positive scalar path; GENSCL MP BIT6, CYR TS edit, and terminal CCS read edit are both modeled.",
+    "Each low pair DCA/DAS preserves signed zeros and carry before two AD MPAC operations; source TS overflow updates OVFIND only when actual overflow occurred.",
+    "Final zero MPTEMP, A diminished CYR, L zero from final DAS, and mission DANZIG TCF agree; pending LOC/EDOP/Q/bank controls remain retained.",
+    "Guards reject unsupported input before mutation, retaining ordinary RAM and raw A/L domains; no interpreter or ephemerides whole-file completion credit."
+  ],
+  "source_review": "Compared against byte-original Luminary099 and Comanche055 INTERPRETER GENSHIFT/GENSHFT2/LEFT/GENSCL/TSSL bodies and agc_multiword DAS/MP kernels."
+}

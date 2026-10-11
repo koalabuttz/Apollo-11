@@ -896,3 +896,5 @@ include tools/cm_abort_word.mk
 all: build/cm-abort-word-native
 
 include tools/imu_gyro_device_integration.mk
+
+include tools/ephemeris_shift_integration.mk

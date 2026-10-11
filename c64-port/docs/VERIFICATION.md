@@ -1712,3 +1712,7 @@ All130 local emitted words are independently accounted for by frozen native sour
 ## Bind native simulated gyro counter and output transport
 
 Qualify262144 complete original peripheral strict sanitizer states and128 C64 states with24 rejection invariants for explicit timed or burst gyro output without claiming source instruction completion or wallclock hardware acceptance. See `docs/NATIVE-GYRO-DEVICE.md`.
+
+## Qualify canonical scalar shifts used by both ephemerides algorithms
+
+Translate actual scalar no-round shifts5 8 and16 including both CYR edits and source overflow behavior against131072 complete original strict sanitizer states and64 C64 states without changing existing frozen arithmetic kernels. See `docs/NATIVE-EPHEMERIS-SHIFT.md`.

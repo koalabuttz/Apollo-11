@@ -1,0 +1,95 @@
+{
+  "scope": "Original scalar SL5/SL8/SL16 dependency only; no ephemerides program or whole interpreter credit",
+  "source_states": 131072,
+  "state_words": 2053,
+  "strict_native": "PASS",
+  "full_ASAN_UBSAN": "PASS",
+  "source_streams": {
+    "LM": {
+      "archive": "evidence/ephemeris-shift-LM-reference.snapshots.bin.xz",
+      "decoded_sha256": "85f780c3a912c6686c3ba16f08ff0770a854a42041e3b45f0da22699bbdf04f6",
+      "decoded_bytes": 269090816,
+      "states": 65536
+    },
+    "CM": {
+      "archive": "evidence/ephemeris-shift-CM-reference.snapshots.bin.xz",
+      "decoded_sha256": "b3cfa25778d2371fff1b02e108fd63574662b6795ceb88f82a3c3c1219bfbb7b",
+      "decoded_bytes": 269090816,
+      "states": 65536
+    }
+  },
+  "c64": {
+    "measured_stack_bytes": {
+      "hardware": 8,
+      "software": 72
+    },
+    "additional_zero_page": 0,
+    "invalid_image_guards": 13,
+    "null_guard": 1,
+    "states": 64,
+    "prg_bytes": 8508,
+    "load_end": 10555,
+    "bss_end": 18747,
+    "mailbox": "a5400000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "source_map": "evidence/ephemeris-shift-source-map.json",
+  "whole_containing_files_certified": false,
+  "native_instruction_decoder": false,
+  "dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "tests/frozen_words.c": "f8ca1264ddd12de6768c7e148dbe5b02c39cda2a0fad905d536ea534b8a2b834",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/agc_multiword.h": "102bb860395c3bdc2293d7846fa08a4b9d191515ccdaa0af7ca7eb4980e91795",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "tools/qualified_stream_host.py": "76a0e8ac50e1914cc4c7f58e00ec23afdde271632ad2a924848ff4e16a655abd",
+    "tools/frozen_words.py": "542338895352036113578bad37a79e49a43f61dcef2834cbfb0fd7841f573724",
+    "evidence/ephemeris-source-map.json": "34833e26a0f5f915288f8eaa6d0c44f23d8a6cdbb608056a01c09c822a432f55"
+  },
+  "files": {
+    "docs/NATIVE-EPHEMERIS-SHIFT.md": "ce893d01bfb01cf02decdc8f67e5a943365b6bf9fcde0cb47fc8bbd3772b90e3",
+    "evidence/ephemeris-shift-CM-reference.snapshots.bin.xz": "03eda22d45cd203882e142860290bf5d47f35e91f303427d9564062eae436881",
+    "evidence/ephemeris-shift-LM-reference.snapshots.bin.xz": "33850151f2e0ed7f3613287acee9c3b75e5a36452f7ebf65b362d7d3b590a808",
+    "evidence/ephemeris-shift-c64.log": "1262630680312d1a51a33c765afb617ddef43c3892340d69ea2dd24502a4f541",
+    "evidence/ephemeris-shift-hardware-stack.bin": "be23371defd7ff600f106abce0994514fe39cf088f268de2ba1844f0abdbe610",
+    "evidence/ephemeris-shift-mailbox.bin": "84f5afa7698faa66a1295472852ee63e55174a088e90c8ecaf245117f1d6c525",
+    "evidence/ephemeris-shift-monitor.log": "018d63ee26424ac42c14fce6fa9d20066155f36229109cbf1f8d258fde1f0f71",
+    "evidence/ephemeris-shift-peer-review.json": "ba1e93370b0ceec969f5f76fe96855e4b8ed8540d6a60c2c865557a60ad10d71",
+    "evidence/ephemeris-shift-sanitize.log": "5fb4c0b5a06b56d170aa02416506f3b90ace83649e2ea91d921915708d0c1c59",
+    "evidence/ephemeris-shift-software-stack.bin": "e47a743a62df9495774e0b6ff43d7adcd44a94120cc4744f81132b5113ff8244",
+    "evidence/ephemeris-shift-source-audit.log": "12b8536d6218cbbe28f541a0f6f697eb260ef51983ae4dc1b1adaf63d44ccbdc",
+    "evidence/ephemeris-shift-source-map.json": "8ff0f0e3a0ac4e29ca2dc66c90eaa315d6f90208f4803d909fc84cf9c0ff140a",
+    "evidence/ephemeris-shift-source-streams.json": "c3107c043abd882216eff5202a2d4845fdf80d25bb5d646554ab1b9985f0d7aa",
+    "evidence/ephemeris-shift-strict.log": "d91fa70e02533c99c562d966da2ca4f940ef6607ca56976aee92242a9ba2c072",
+    "evidence/ephemeris-shift-target-results.json": "1b963b2b098d9a8660407a9c2894241b8c5555aa9f82787888c9be6a256d3156",
+    "evidence/ephemeris-shift-target-source.snapshots.bin.xz": "c9ac9c81d99371337ec9ddf0b1b98dbfa14623bc14f01c18620986885bd3ba4d",
+    "evidence/ephemeris-shift-vice-results.json": "c3d9457ea1cc2e9f5ed80b3d32285aa898dd083c482f42dde2a2e842079af88e",
+    "evidence/ephemeris-shift-vice.log": "393960fe21790cf06537bcb73b062b362c3a415f7d68274f29f19fb9db5a0a2d",
+    "evidence/ephemeris-shift-vice.mon": "83d39cae6594e434bbf50ee288b89e230c275d6ea1895e0937bb43e50bc6adbc",
+    "evidence/ephemeris-shift.map": "700a0fb4303b5714de71cccd0d4188db96a703049a9dec707057df88db5ce059",
+    "evidence/ephemeris-shift.prg": "f0673b418c25a87a5fa825597e2e2a04f671c48478fdaa31560a272c00e76d61",
+    "include/ephemeris_shift.h": "80e5becf0900b78b413df60605f91f21c6cb21cdee7aa56c8e359eda65b1ab3e",
+    "platform/c64/ephemeris_shift_diagnostic.c": "c22c9553d40782305a79b25d9ca3a2459e8765ecbebe1bc4293f12e92136f7d0",
+    "src/ephemeris_shift.c": "d233633761616c987534ee14956821b96504203f06709045008d91b662ee3b45",
+    "tests/ephemeris_shift_cases.c": "53b3b4f6764c7029792d89f0c4fcd9df4b8075a0e64bbbaf245ea10c3b7c53ce",
+    "tests/ephemeris_shift_cases.h": "d94e253448fea431e7ba20e38f26d17a39c2baf8d02b82edf9e3ee294097f5d3",
+    "tests/ephemeris_shift_target.c": "322907380f0a7ae2bb3aabb52454eee5e7c9599ad1c099ef234bb60942433b1c",
+    "tests/ephemeris_shift_target.h": "fd73f144b626d950eba860098d4b96e5b811549c70f25dc1b199ff9719657525",
+    "tests/ephemeris_shift_vectors.h": "72a02e7d76b38f6ee27ab959474394991c0ddefba7232ff9d16a267397e1623c",
+    "tests/test_ephemeris_shift.c": "288d255e911480208d8e6e74c38a527ce4ddc39a50c6ed0819c7a7cee1a21cf3",
+    "tools/ephemeris_shift_host.py": "22e424b5619978d10c670b55ad9495987a98f344c7b6124c0e17ccddf8ae6d29",
+    "tools/ephemeris_shift_inputs.c": "2bb8087269da2d8aed1f5ba241a3e869dd812d11bb79e2bffa64c91644940fb6",
+    "tools/ephemeris_shift_integration.mk": "7faceb9bc20326d886675334fa698a12f9a673fb330a452294a3c69b7d46cd5f",
+    "tools/ephemeris_shift_reference.c": "58c03ecab60a2363bbaffa746d9e6e2a2b101a85082412314f14119c6220d031",
+    "tools/ephemeris_shift_snapshot.c": "3168e7604d3ff8ffb5a161f0324a35ccb827069ab632d6bc17c7af0c6e1c8e09",
+    "tools/ephemeris_shift_source.py": "40ba6aae095951846758f596a26eaf461d7b32777cf0017c17a1cb9d97c1432a",
+    "tools/ephemeris_shift_vice_test.py": "9af85d80f5ede83a166f51148aa5db9f6380591df28df8f719f5aa9ccdc13988",
+    "tools/freeze_ephemeris_shift.py": "e5bac1c46b6485c8faf9e47b524a4b8421096b4bab1fa3307729ca73dc5459f8",
+    "tools/package_ephemeris_shift.py": "6a6b895d18ac7740b0581870d253099f4f7db1da94f5be94a50d3cfa729f435a"
+  }
+}
