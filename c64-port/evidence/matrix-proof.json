@@ -1,0 +1,68 @@
+{
+  "source_files": {
+    "include/matrix_native.h": "0038724aabc9dff2f5f2d6d9f5c281c801b1466e0d058b1679dfafaf5be6e048",
+    "src/matrix_native.c": "a6dd5d997ae24b41c12270ff4427f1c5cdce9195e4c2bd9cca339c03f18910de",
+    "docs/NATIVE-MATRIX.md": "979aacf3b0a5748960de61365e4ef6d130f178a4537d90cf304931e8da984433",
+    "tests/test_matrix.c": "b017acfa587c376dc865cb1d6e6cfe818250ff21883d3e14404ddf41b15a120b",
+    "tests/matrix_vectors.h": "0202771f3e66a69b9cc2a24a5635c5bcd544f22bec0b8dee9b7bddf68d06e28a",
+    "tests/matrix_cases.c": "14f4e46312b10c5b1ada3b7023ff8b4dfbb4769c5994d84f14c22d3b42b4fbbf",
+    "tests/matrix_cases.h": "860f3b9bbe2fd183d1ad1a2dea1f068ee9452a008e525e309b441dc7e698bb9c",
+    "tests/matrix_check.c": "865db5f369342bbbbcb5fec5c11f61e37fc3df3f3d9def9b740c9f499f8434b2",
+    "tests/matrix_check.h": "8332d4c93cde7d47341788f712607126c9fb79a37dcd9bcb84dc47465523caf8",
+    "tools/matrix.mk": "87720e57311040bcbc682359718ac1b37209b9d551c4f0f5822475f0929b41f3",
+    "tools/matrix_reference.c": "090e30a6b7815242fac01b57555c4523caa99376622ba70a3472190f8dddb387",
+    "tools/matrix_sanitize_stream.py": "3f60f656ef027cf4ee09cf0794a11614b90e6a19d36205b3eab023d48aa00095",
+    "tools/matrix_inputs.c": "9f3a18af8d36f2d22c036047d090281a9dfbc360d8442cf66eca7fbecbab5e24",
+    "tools/matrix_diagnostic.c": "0731af41af086a92a68c1ecd2fe19e6cb6c06c10fd179be2bf0d03b58fc3981d",
+    "tools/matrix_differential.py": "b1509ffc871ba21ae47571f9b0fe105dc06dba0d2d09fc1d11eef867ecd759d2",
+    "tools/matrix_vice_test.py": "e11d9cd6acb9f799e8ee4caf0741a0e8a11465aa02755409e1c97777ff1499a5",
+    "tools/freeze_matrix.py": "bba6243a82ae26d1696a59b123b6f886b742d40294278667309df1a6f76f6728",
+    "tools/matrix_snapshot.c": "b9e25417d23086ce37931764b3b5a1432cc0375c539da61f02e11625bc4693af"
+  },
+  "native_dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "src/guidance_product.c": "d2eb52ed11d6fe51d0810fd783b68de39fd6ea91d40d8002e093493166923d18",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/agc_multiword.h": "102bb860395c3bdc2293d7846fa08a4b9d191515ccdaa0af7ca7eb4980e91795",
+    "include/guidance_product.h": "ef40aabac6423eef64606cb6dd36756d64e5f318eb63986988299cb227575e75",
+    "include/guidance_norm.h": "9e3ce6d50d8a50ba4aaff380a01b30a1c5e9adaf285e0fabe031bd84e5855303",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "include/fixed_data.h": "d435ce1ee3051ae6ee7162040223e1f3c6238199870c5873a0213b41faa531f1"
+  },
+  "original_sources": {
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "../Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "deps/fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+  },
+  "artifacts": {
+    "evidence/matrix-differential.log": "5e1d826c950a0829d8583d0f540cab9f2b9fd29a5cc4e901dff456de927e1712",
+    "evidence/matrix-freeze.log": "1a70267818aa641ac9ddd9f667bd3862c5c5c1d418944e61af971f3b70cd51ad",
+    "evidence/matrix-validation.log": "ecebf1262087d04b5c83cc035874fa639e2febce68eb0b63f22037856daeec22",
+    "evidence/matrix-c64-result.log": "8ed4dd6cd10b33f424a78a22f51e2955d305406dac2568caf74c2d52c3ff9760",
+    "evidence/matrix.prg": "f3d4e24409525234fd275bf52d7c062f26da7a2e4cdc45d9735841cb384b1cc3",
+    "evidence/matrix.map": "0f2ed381fa378ff314157d067b46aaf00d75a6a5716ee8c9174750911cf73fcd",
+    "evidence/matrix-CM-reference.snapshots.xz": "6ab19be17b9de88cca8f9424cd14206b55fa17e60bc26c0b8515105b449c2a6c",
+    "evidence/matrix-CM-stream-sha.json": "ce3ed58e2400b082faeff1266a7d71a5cae9d45ee32f5a4da29ed3eadb24fd32",
+    "evidence/matrix-CM-reference.trace": "309f345368f4dbdb092869aa1db1c1808fd336cb9cd64f2ae36e5d3251115684",
+    "evidence/matrix-LM-reference.snapshots.xz": "990f8e2dab482822cdb3915bf0228865c6ce2d4a8d654d4abf3e4dd5ba0b1a2d",
+    "evidence/matrix-LM-stream-sha.json": "1ba0713cfb07542c446c41c7fab8fabe3af191df15e0b10562e4dc68ac8a0a31",
+    "evidence/matrix-LM-reference.trace": "2296de3e0c967fdfa3cb882d2bc497e324519817d67820145aa94328555f54ed"
+  },
+  "states_per_mission": 32768,
+  "frozen_states": 128,
+  "invalid_guards": 66,
+  "reference_raw_sha": {
+    "CM": "479604a96cff10daf5b0ba5febfd0c9c1b6bf2abb88b9eecd250e041a89daaa2",
+    "LM": "9f5b3f2e23199eb38e9f1a6e708f60eb92ec62617dcd83133132d7b86c120bd6"
+  },
+  "target": {
+    "prg_bytes": 24364,
+    "mailbox": "a500008000",
+    "hardware_stack_excluding_rom": 29,
+    "software_stack": 287,
+    "additional_zp_bytes": 0
+  },
+  "boundary": "MXV/VXM entry through DANZIG entry, excluding operand loading and DANZIG dispatch"
+}

@@ -1,0 +1,8 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+#define main cm_reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "matrix_cases.h"
+static apollo_overlay_state s;static agc_t pristine;static uint8_t seen[010000];
+int main(int argc,char **argv){unsigned n,i,cycles,pc,column,phase;enum apollo_fixed_mission mission;if(argc!=3||agc_load_binfile(&pristine,argv[1]))return 2;mission=argv[2][0]=='L'?APOLLO_FIXED_LM:APOLLO_FIXED_CM;InhibitAlarms=1;for(n=0;n<MATRIX_CASES;++n)for(column=0;column<2u;++column){agc_word irq,super;matrix_input(&s,&irq,&super,(uint16_t)n,mission,(uint8_t)column);machine=pristine;for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];machine.OutputChannel7=machine.InputChannel[7]=super;machine.AllowInterrupt=irq;for(phase=0;phase<4u;++phase){unsigned first=mission==APOLLO_FIXED_CM?07313u:07344u,target=phase==0?first:phase==1?first+015u:phase==2?first+026u:mission==APOLLO_FIXED_CM?06030u:06061u;
+for(cycles=0;cycles<4000u;++cycles){pc=get(RegZ);if(!machine.PendFlag&&!machine.ExtraDelay&&pc==target)break;if(!machine.PendFlag&&!machine.ExtraDelay)seen[pc]=1;machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}if(cycles==4000u){fprintf(stderr,"matrix%u col%u phase%u timeout%05o\n",n,column,phase,pc);return 2;}printf("%u 1",n*8u+column*4u+phase);for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<=2u?0177777u:077777u));printf(" %u %u\n",(unsigned)machine.OutputChannel7,(unsigned)machine.AllowInterrupt);}}{FILE *f=fopen(mission==APOLLO_FIXED_CM?"build/matrix-CM-reference.trace":"build/matrix-LM-reference.trace","w");if(f==0)return 2;for(i=0;i<010000u;++i)if(seen[i])fprintf(f,"%05o\n",i);if(fclose(f))return 2;}return 0;}

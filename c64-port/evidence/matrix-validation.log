@@ -1,0 +1,10 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_matrix.c tests/matrix_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/matrix_native.c tests/matrix_cases.c -o build/test-matrix
+build/test-matrix
+128 complete LM/CM matrix checkpoints and66 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_matrix.c tests/matrix_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/matrix_native.c tests/matrix_cases.c -o build/test-matrix-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-matrix-sanitize
+128 complete LM/CM matrix checkpoints and66 unchanged invalid boundaries: PASS
+python3 tools/matrix_sanitize_stream.py
+PASS all32768 complete CM MXV/VXM states under ASAN/UBSAN, SHA256 479604a96cff10daf5b0ba5febfd0c9c1b6bf2abb88b9eecd250e041a89daaa2
+PASS all32768 complete LM MXV/VXM states under ASAN/UBSAN, SHA256 9f5b3f2e23199eb38e9f1a6e708f60eb92ec62617dcd83133132d7b86c120bd6
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/matrix_diagnostic.c tests/matrix_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/matrix_native.c tests/matrix_cases.c -Wl,-Map,build/matrix.map -o build/matrix.prg

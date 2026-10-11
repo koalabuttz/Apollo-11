@@ -1,0 +1,7 @@
+/* SPDX-License-Identifier: MIT */
+#include "matrix_cases.h"
+void matrix_input(apollo_overlay_state *s,agc_word *irq,agc_word *super,uint16_t n,enum apollo_fixed_mission mission,uint8_t column){static const agc_word edge[16]={0,077777,1,077776,037777,040000,037776,040001,020000,057777,017777,060000,2,077775,012345,065432};static const uint8_t map[6]={0,1,3,4,5,6};uint32_t seed=UINT32_C(0x7303055)+(n/32u)*UINT32_C(0x9e3779b9);uint16_t i;
+ for(i=0;i<2048u;++i){seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;s->words[i]=(agc_word)(seed&AGC_MASK);}s->words[0]=(agc_register)((uint32_t)n*257u);s->words[1]=(agc_register)((uint32_t)n*977u);s->words[2]=(agc_register)((uint32_t)n*983u);s->words[3]=(agc_word)((n%8u)*0400u);s->words[4]=(agc_word)(((n/8u)%32u)*02000u);s->words[6]=(agc_word)(s->words[4]|(s->words[3]>>8));s->words[5]=mission==APOLLO_FIXED_CM?(column?07306:07303):(column?07337:07334);s->words[7]=0;s->words[035]=s->words[036]=s->words[047]=0;for(i=050;i<=054;++i)s->words[i]=0;s->words[0116]=01000;s->words[0163]=077776;*irq=(agc_word)(n&1u);*super=(agc_word)(((n/32u)%8u)*020u);
+ seed^=(uint32_t)n*UINT32_C(0x85ebca6b);
+ for(i=0;i<6u;++i){seed=seed*1664525u+1013904223u;s->words[0154u+map[i]]=n<64u?edge[n%16u]:n<128u?edge[(n+i*3u)%16u]:(agc_word)((seed>>11)&AGC_MASK);}
+ for(i=0;i<18u;++i){seed=seed*1664525u+1013904223u;s->words[01000u+i]=n<64u?edge[(n/16u)==0u?4u:(n/16u)==1u?5u:(n/16u)==2u?0u:1u]:n<128u?edge[(n*7u+i*3u)%16u]:(agc_word)((seed>>11)&AGC_MASK);}}

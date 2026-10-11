@@ -432,3 +432,5 @@ subprocess.run([sys.executable,'tools/lm_interpreter_change_differential.py',str
 subprocess.run([sys.executable,'tools/dsky_charin_sign_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/p66_launch_phased_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/matrix_differential.py',str(reference)],cwd=ROOT,check=True)

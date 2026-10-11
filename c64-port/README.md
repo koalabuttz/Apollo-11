@@ -842,3 +842,7 @@ Both original CHARIN paths now execute SIGNTEST, +ON/-ON, DSPIN/FIXCLPAS and gen
 ## Fit genuine Luminary P66 startup seams into native C64 disk overlays
 
 STARTP66 setup, bias and vertical stages now load through fixed source-call seams without an added Executive poll. Strict and full sanitizer runs match 2,816 complete original states. A stock C64 disk proof passes 88 complete checkpoints across 32 cases; all eight application service payloads fit, with three startup stages executed in this packet. See `docs/P66-STARTUP-OVERLAYS.md`.
+
+## Translate generic Luminary and Comanche MXV and VXM source phases
+
+Both original generic matrix/vector paths now match 65,536 complete source/native/sanitized states with raw overflow A and original scratch retained. Stock C64 execution passes 128 complete checkpoints and 66 transactional invalid-entry guards. Operand loading, DANZIG dispatch and full Interpreter/application coverage remain separate work. See `docs/NATIVE-MATRIX.md`.
