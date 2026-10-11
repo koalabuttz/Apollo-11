@@ -1126,3 +1126,5 @@ sanitize: sanitize-sband-exit
 include tools/dsky_test_noun_integration.mk
 
 include tools/dsky_monitor_paste_integration.mk
+
+include tools/dsky_monitor_consumer_integration.mk

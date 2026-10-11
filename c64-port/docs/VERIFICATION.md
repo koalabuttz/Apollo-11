@@ -2040,3 +2040,7 @@ Qualify actual TESTNN normal mixed and invalid noun controls against16384 comple
 ## Translate DSKY monitor paste blank and completion controls
 
 Qualify actual monitor paste and blank source controls against16384 complete original strict sanitizer states and96 C64 cases. See `docs/DSKY-MONITOR-PASTE.md`.
+
+## Compose uninterrupted original DSKY monitor consumers
+
+Qualify256 continuous original monitor sequences with4872 complete strict sanitizer source checkpoints and336 actual C64 stage pairs preserving source state between modules. See `docs/DSKY-MONITOR-CONSUMER.md`.
