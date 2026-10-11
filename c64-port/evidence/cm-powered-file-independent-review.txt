@@ -1,0 +1,35 @@
+Independent read-only review of complete original Comanche055 POWERED_FLIGHT_SUBROUTINES.agc
+Reviewer: frozen_storage (separate from implementing agent)
+
+Conclusion: no concrete source/native discrepancy found within the stated source caller contracts. All 187 emitted source words are mapped: 182 executable words and five passive data words. This qualifies the numerical/control file, not a complete resident application or live Executive/producer scheduling.
+
+Independent checks performed:
+* Reconstructed every emitted word/address/source line using listing_records on deps/cm-powered-fixture/assembly.lst and the byte-original source. Compared all 187 records with the final source map and separately read their words from the original 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061 rope. No duplicate physical addresses or unmapped emitted words. PASS.
+* Verified all seven qualification-dependency file SHA256 identities recorded by cm-powered-file-proof.json. PASS.
+* Compiled a separate exhaustive accessor check against src/cm_powered_constants.c using strict C99 warnings. Tested all 65536 address arguments, exact five original constants at physical 20445..20449, rejection of null output, and untouched invalid output. PASS. Values: octal 00736, 4, 2, 0, 4 (SINESLOC and INDEXI).
+* Read permanent/trig/axis/interface/NBSM/SMCDURES/quick/fixed-return source mappings against the original file and inspected explicit compiled return boundaries. Existing host/SAN/C64 packet identities were inspected, not all numerical suites rerun by this review.
+
+Boundary findings:
+* RVQ enters source GOTO+4 and bypasses erasable classification. The new fixed-return extension covers all ordinary FCADR 000000..077777, including lower banks 0/1, with exact FB, INTBIT15, A/L correction, saved EBANK, POLISH/LOC/CYR/EDOP/PC. Old high-bank interface remains immutable; the separately proved extension closes its original source domain.
+* Legacy NBSM final indirect STCALL/GOTO retains the distinct fixed-return contract 004000..077777; low words are erasable there. Actual original P51/P20 returns are included. Basic indirect returns stop at the saved code caller; external caller bodies are not claimed as translated by this file.
+* AX*SR*T uses sign-preserving DIM on documented directions +3/-3. Both reach negative zero. Thus source line 312 positive-zero TC RTNSAVER is unreachable for valid AX directions, while line 314 is the actual saved return. Source magnitude-below-unity physical guarantee is retained despite extra raw numerical tests.
+* Five passive literals are not instruction mappings. Source routines use explicit compiled native phases and native arithmetic, with no runtime opcode decoder or source-instruction dispatch.
+* Fresh source qualification retains original declaration layout ALTVAR01357/R53FLBIT bit8. CM INTERPRETER has only the documented 36 indentation repairs and the original assembled rope remains unchanged.
+* Producer exclusion, canonical image ownership, stable input arrays, ordinary MODE and genuine EDOP0 Executive checkpoints remain explicit caller obligations. No new live-scheduler, producer-interleaving, or whole-resident-application claim is inferred from whole-call arithmetic proofs.
+
+Reviewed file identities (SHA256):
+dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766  ../Comanche055/POWERED_FLIGHT_SUBROUTINES.agc
+47fad195f300018aaeb404ef0781127f37b05ce7cb7d63f5ef3fe982dfef3650  src/cm_powered_interface.c
+1d0973b6581b8c32fd17513c0d13ca060949286db7782a72667f66d81f1ab105  src/cm_powered_trig.c
+ffa5ea311d3940bf2802e55bc888dd1b760a57b2e2cd428944644c9eddd2e207  src/cm_powered_axis.c
+12ccf0008297b43d03de8a82e826b785e2da03ed00009db9ce0bbaadd9341c64  src/cm_rotation.c
+7fd46ddc32659d9718334bd3ea68b5abf64489714475b0715bab138b29323f57  src/cm_powered_quick_return.c
+2d325c711a93c23837c2dcf91c13374155ce9c607a28edc50811831fb41ce8e5  src/cm_powered_fixed_return.c
+74b103f6a30006065e74e4fff5fdb262267323799729f5b4efc2d6decb3279c2  src/cm_powered_constants.c
+b892204c7e66f324bf962a8c5c88fa13a7b026efbdd4b44fdd48b2dda8532705  src/cm_nbsm.c
+2ae0b401e4380aac44966c916f5c75ee7c118fa740ab8893f5570dfad27883df  src/cm_smcdure.c
+cb508369582e2d6be149e439554c89887f3ab33e464ea4dbe8ed96e5d660f307  tools/cm_powered_file_review.py
+8b0fcebee12d35881d29702c0e718a8b485125f73811392b26f3f54b4ae950ee  tools/cm_powered_prepare_reference.py
+127acd8bc3d2c81849df9b132e518c6dacb9ddb0dda2b76be373d0b968e8b711  tools/cm_powered_fixed_return_reference.c
+ba492f1ab6929c568940ab49fb74abf5967d4decaf5e10afb84405953be599de  evidence/cm-powered-file-source-map.json
+755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f  evidence/cm-powered-file-proof.json

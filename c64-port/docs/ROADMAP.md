@@ -812,3 +812,7 @@ The source CHANG2 helper matches 16,384 complete 2052-word source/native/sanitiz
 ## Preserve genuine higher priority and pending IRQ through P66 direct launch
 
 The direct P66 launch preserves the original higher-priority job and pending IRQ rather than inserting an extra Executive poll. A complete original-source case is unchanged across strict host, sanitizer and actual C64 execution. See `docs/P66-DIRECT-PENDING.md`.
+
+## Complete original Comanche powered-flight subroutine source
+
+Independent review reconstructed every one of 187 original emitted words, checked all seven qualification dependencies and exhaustively validated the five-word constant accessor. The whole source file is now certified within its documented numerical and return contracts. The inventory has 29 complete files (23 native/data/declaration and six comment-only files), with 146 source files and both integrated applications still requiring complete acceptance. See `docs/COMANCHE-POWERED-FLIGHT.md`.

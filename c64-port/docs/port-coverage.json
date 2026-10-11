@@ -979,7 +979,7 @@
       "sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
       "bytes": 10390,
       "lines": 371,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -994,8 +994,55 @@
           ],
           "scope": "CDUTRIGS and CD*TR*GS source phases and callers; axis, interfaces and SMCDURES remain separately pending.",
           "verification": "docs/COMANCHE-POWERED-TRIG.md"
+        },
+        {
+          "native_files": [
+            "src/cm_powered_interface.c",
+            "src/cm_powered_trig.c",
+            "src/cm_powered_axis.c",
+            "src/cm_rotation.c",
+            "src/cm_powered_quick_return.c",
+            "src/cm_powered_fixed_return.c",
+            "src/cm_powered_constants.c",
+            "src/cm_nbsm.c",
+            "src/cm_smcdure.c"
+          ],
+          "scope": "All original emitted executable and data words, all documented entry and numerical/return paths; source line312 positive-zero return unreachable from documented +/-3 AX input. Producer ownership, live scheduling and external continuation bodies remain application work.",
+          "verification": "docs/COMANCHE-POWERED-FLIGHT.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "axis_rotation": "A signextended+3/-3, VBUF vector; original physical safety guarantee magnitude belowunity unchanged",
+          "basic_saved_return": "fixed direct code Q02000..07777",
+          "interpreter": "five source VACbases, ordinaryMODE, original bank23 entry and coherent controlwords; no-queued-job arithmetic oracle NEWJOB+0",
+          "legacy_nbsm": "stable S1 sixword erasable angle array0400..3772; final indirect saved fixedFCADR004000..077777",
+          "rvq": "all ordinary saved fixedFCADR000000..077777 (source entersGOTO+4 directly)",
+          "SMCDURES": "stable ordinaryraw DTHETASM/trig pairs, source stack offsetbase, exact raw zero/overflow division behavior",
+          "scheduling": "genuineEDOP0DANZIG checkpoints are exposed as source phases; Executive/producer ownership and live overlay admission remain caller obligations"
+        },
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-powered-file-source-map.json",
+            "sha256": "ba492f1ab6929c568940ab49fb74abf5967d4decaf5e10afb84405953be599de"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-powered-file-independent-review.txt",
+            "sha256": "cf1038a71e79f0c7d848b64d23b5845f517b6d7431009f201208d1481405d4f8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-powered-file-proof.json",
+            "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-powered-file-proof.json",
+            "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/R30.agc",
