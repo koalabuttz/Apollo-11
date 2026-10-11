@@ -1054,3 +1054,7 @@ all: build/cm-idle-wake-native
 include tools/dsky_load_complete.mk
 
 include tools/dsky_monitor_integration.mk
+
+include tools/lm_super_dispatch_port_integration.mk
+test: lm-super-dispatch-port-test
+sanitize: lm-super-dispatch-port-sanitize

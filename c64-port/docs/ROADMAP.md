@@ -1544,3 +1544,7 @@ Run actual LOADLV RELDSP POSTJUMP RECALTST wake context stores and source END ag
 ## Translate original operator monitor request and release family
 
 Translate actual MONITOR MONREQ KILLMON MONDO MONBUSY and genuine service release update noun and END handoffs against65536 complete original strict sanitizer states and352 C64 checkpoints. See `docs/DSKY-MONITOR.md`.
+
+## Translate generic original LM superbank dispatch
+
+Translate original generic SUPDXCHZ and SUPDXCHZ+1 dispatch with real2CADR and full16384 original strict sanitizer states plus64 C64 checkpoints preserving historical helpers. See `docs/LM-SUPER-DISPATCH.md`.

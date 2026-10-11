@@ -1,0 +1,4 @@
+PASS:16384 original SUPDXCHZ/+1 complete2050-word actual source basic-transfer states
+Snapshot SHA256: a0f821105c45b65e2225610c728a76b8af4e245395482cb00742ee8fb5b77b61
+PASS:16384 actual transfer payloads;13 all-object mutation guards and3 null interfaces
+PASS:retained superbank transfer strict;16384 whole original states,16384 transfer metadata checks,32 checked PRGs
