@@ -1622,3 +1622,7 @@ A clean isolated export of exact commit`0f739a18d4e6f13dd23a212fc5b63f0968aecd40
 ## Compose original Comanche priority display admission and caller returns
 
 Qualify uninterrupted PRIOLARM priority display source calls through actual SPVAC allocation failures positive zero occupied scans and true saved caller returns with8192 original paths22362 complete native sanitizer states and32 C64 paths70 complete states preserving source bank and raw register behavior. See `docs/COMANCHE_PRIORITY_DISPLAY.md`.
+
+## Qualify original generic decimal formatter and source recovery handoff
+
+Qualify both original DSPDECWD and DSPDECDNR sign digit relay output bodies with exact caller returns or clean relay CCSHOLE source recovery frontiers against16384 complete original native sanitizer states and128 C64 states retaining all physical image and source overflow effects. See `docs/DSKY-DECIMAL-GENERAL.md`.

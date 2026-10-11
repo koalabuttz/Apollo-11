@@ -841,3 +841,5 @@ include tools/imu_pulse_task_integration.mk
 
 include tools/cm_priority_display.mk
 all: build/cm-priority-display-native
+
+include tools/dsky_decimal_general_integration.mk
