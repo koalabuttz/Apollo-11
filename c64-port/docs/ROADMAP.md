@@ -368,3 +368,7 @@ CM PHASCHNG phase handling, STARTSB2/STARTSUB cleanup, GOPROG3 and Type C restar
 ## Execute Comanche restart-selected native callbacks
 
 All 320 complete original restart/dispatch states match across 64 source sequences and 192 actual native callbacks. Strict, sanitizer and stock C64 checks preserve caller frames and channel11 readback. The documented test callback bodies establish runtime composition; arbitrary mission bodies still require translation. See `docs/COMANCHE_RESTART_NATIVE.md`.
+
+## Bind Comanche runtime to the canonical erasable image
+
+The sole 2,048-word image supplies CM Executive, WAITLIST, phase and restart views. Poison/regather tests preserve all 320 source checkpoints and execute 192 native callbacks; strict, sanitizer and stock C64 checks pass without a second persistent guidance image. See `docs/COMANCHE_NATIVE_IMAGE.md`.
