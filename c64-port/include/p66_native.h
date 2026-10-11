@@ -26,7 +26,10 @@ typedef struct {
      * Observer must not dispatch, publish producers or retain transient views. */
     void (*observe)(void *,const apollo_overlay_state *,agc_word completed_loc);
     void *observer;
-    enum p66_native_status status;
+    /* Numerical callbacks also return raw AGC alarm words (for example
+     * 01302). LLVM-MOS uses a one-byte enum for the small native statuses,
+     * so this metadata must retain the complete 16-bit entry ABI result. */
+    uint16_t status;
     /* Resident overlay invoker returns only after its C frame has unwound.
      * No scheduling occurs inside this hook. Null uses linked host kernels. */
     uint16_t (*invoke)(void *,apollo_overlay_state *,uint16_t);

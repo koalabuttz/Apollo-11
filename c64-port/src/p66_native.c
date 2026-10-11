@@ -139,9 +139,9 @@ __attribute__((noinline)) enum exec_action p66_native_run_group(executive *s,p66
     resume->location=next;
     if(selector!=0) {
         p66_native_export_executive(b->image,s);
-        if(b->invoke!=0)b->status=(enum p66_native_status)b->invoke(b->modules,b->image,selector);
+        if(b->invoke!=0)b->status=b->invoke(b->modules,b->image,selector);
 #ifndef P66_NATIVE_DISPATCH_ONLY
-        else b->status=(enum p66_native_status)p66_native_entry(b->image,selector);
+        else b->status=p66_native_entry(b->image,selector);
 #else
         else b->status=P66_NATIVE_UNSUPPORTED;
 #endif

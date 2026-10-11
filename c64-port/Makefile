@@ -423,3 +423,5 @@ include tools/cm_orbital_initial.mk
 
 include tools/dsky_pinball_zero.mk
 include tools/p66_mode_zero.mk
+
+include tools/p66_status.mk
