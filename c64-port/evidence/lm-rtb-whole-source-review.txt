@@ -1,0 +1,12 @@
+Independent read-only whole containing-source closure review by /root/general_division, 2026-10-11.
+
+Read the whole byte-original Luminary099 RTB_OP_CODES.agc and all corresponding native entry protocols. Independently recomputed local emitted-word union angles72+agreement12+vector45=129 DISTINCT of130; sole omitted word was physical9161/line157 literalTCFDANZIG, now source-qualified by additive return. All130 local words represented, including branches/local aliases/inline constants. LOADTIME/converters/CDULOGIC/CDUINC, SGNAGREE/SIGNMPAC, tiny NORM fronts, VECSGNAG and PULSE entries agree with source. Complete NORM UNIT+1 helper is represented by separately reviewed immutable rtb_unit. External IMUPULSE/DANZIG are genuine actual service handoffs, not missing local instruction bodies. Necessary original bank07 erratum must accompany earlier frozen metadata. No discrepancy found within declared ordinary canonical/fixed-return/VAC/producer domains. Honest whole local-source closure must not imply arbitrary caller opcodes, asynchronous pulse backend or complete application. No source/kernel/frozen edits requested.
+
+Reviewed identities:
+0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d  ../Luminary099/RTB_OP_CODES.agc
+560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228  evidence/lm-rtb-whole-source-map.json
+ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56  src/rtb_angles.c
+1b5a434bdcb5ade9579495d1d24936b08681965b8d2ca195b8b288c71c556be8  src/rtb_agreement.c
+d0cdd03869ffc05b7b1d5712b6bb28957c97c7944328bfca2eb3d6677daab70f  src/rtb_vector.c
+3b44705bd44ec2d28c6846b9e47c0294454ae62fd425016677389cb22a4a2109  src/rtb_unit.c
+482bed6da8150322c1effdf55811960be3dec5713d7417baff3a643b34d3cca6  src/rtb_pulse_return.c

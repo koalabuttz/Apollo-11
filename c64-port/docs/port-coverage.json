@@ -3939,7 +3939,7 @@
       "sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
       "bytes": 5660,
       "lines": 236,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3968,8 +3968,51 @@
           ],
           "scope": "Actual NORMUNIT NORMUNX1 numerical UNIT continuations through true source DANZIG or division overflow; gyro hardware and other RTB bodies remain separate.",
           "verification": "docs/RTB-UNIT.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
+            "src/rtb_vector.c",
+            "src/rtb_unit.c",
+            "src/rtb_pulse_return.c"
+          ],
+          "scope": "Every130 original local emitted instruction and inline-data word; ordinary canonical RAM/rawA,L, coherent banks, source-return/VAC and quiesced producer contracts stated by frozen groups. Actual external DANZIG and IMUPULSE continuations are explicit source handoffs; no whole application or physical gyro acceptance.",
+          "verification": "docs/LM-RTB-WHOLE-SOURCE.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Every130 original local emitted instruction and inline-data word; ordinary canonical RAM/rawA,L, coherent banks, source-return/VAC and quiesced producer contracts stated by frozen groups. Actual external DANZIG and IMUPULSE continuations are explicit source handoffs; no whole application or physical gyro acceptance.",
+        "external_continuations": [
+          "DANZIG",
+          "IMUPULSE"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-rtb-whole-source-map.json",
+            "sha256": "560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-rtb-root-independent-review.json",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-rtb-whole-source-map.json",
+            "sha256": "560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-rtb-whole-source-map.json",
+            "sha256": "560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228"
+          },
+          "independent_review": {
+            "path": "evidence/lm-rtb-whole-source-review.txt",
+            "sha256": "a4ba7c9aa1a83f412b7e9e9545601aee7d9cc2e1a2a361873e1b71fec7e002ea"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",

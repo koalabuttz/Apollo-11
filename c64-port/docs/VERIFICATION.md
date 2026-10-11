@@ -1704,3 +1704,7 @@ Qualify8192 complete original native sanitizer states and64 C64 states through a
 ## Resolve original abort caller data after canonical snapshot changes
 
 Qualify96720 full original native sanitizer states and64 C64 states resolving actual inline alarm words after source VAC and bank changes with passive fixed data and preserved canonical aliases. See `docs/COMANCHE_ABORT_WORD.md`.
+
+## Whole Luminary RTB source translation
+
+All130 local emitted words are independently accounted for by frozen native source, sanitizer and C64 proofs. Genuine external service handoffs remain explicit; both full applications remain unverified. See `docs/LM-RTB-WHOLE-SOURCE.md`.
