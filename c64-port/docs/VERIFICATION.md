@@ -1388,3 +1388,7 @@ Independent arithmetic/control review, exact original69-word mapping, complete s
 ## Translate original shared verb noun display admission source
 
 Both original NVSUB/NVMONOPT and NVSUB1/2 selection bodies match8192 complete original/native/full-sanitizer states,80 unchanged invalid-input guards and64 actual C64 states. Source-selected callee and blocked caller boundaries remain explicit; formatter and selected callee bodies have separate qualifications. See `docs/DSKY-NV-ADMISSION.md`.
+
+## Translate original shared load response recall and job wake paths
+
+Actual VBPROC/VBTERM/VBRESEQ/PROCKEY and direct RECALTST match8192 complete original/native/full-sanitizer states and64 actual C64 states, including source-signed-zero load status and not-found LOCCTR minus one fixed-data exchanges. Both internal RELDSP calls and real JOBWAKE preserve source effects and actual END handoffs. See `docs/DSKY-LOAD-CONTROL.md`.

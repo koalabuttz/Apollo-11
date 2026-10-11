@@ -730,3 +730,5 @@ all: build/cm-init-display-mixed-native
 include tools/lm_rcs_monitor_integration.mk
 
 include tools/dsky_nv_admission_integration.mk
+
+include tools/dsky_load_control.mk
