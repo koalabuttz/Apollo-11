@@ -1,0 +1,9 @@
+build/test-dsky-nv-return
+64 full LM/CM NVSUBEND source states and22 unchanged invalid guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_nv_return.c src/agc_word.c src/dsky_nv_return.c tests/dsky_nv_return_cases.c tests/dsky_nv_return_check.c -o build/test-dsky-nv-return-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-nv-return-sanitize
+64 full LM/CM NVSUBEND source states and22 unchanged invalid guards: PASS
+python3 tools/dsky_nv_return_sanitize.py
+PASS all8192 complete original LM/CM NVSUBEND/SUPDXCHZ source states under ASAN/UBSAN, SHA256 23af05ed89e8039eef66bd809b8a384556a2dc8b67d0b3c0be5b7aa5f879e944
+make: 'build/dsky-nv-return-route-port' is up to date.
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_nv_return_diagnostic.c src/agc_word.c src/dsky_nv_return.c tests/dsky_nv_return_cases.c tests/dsky_nv_return_check.c -Wl,-Map,build/dsky_nv_return.map -o build/dsky_nv_return.prg

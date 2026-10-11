@@ -1032,3 +1032,7 @@ Literal NOVAC/FINDVAC/SPVAC/SPVACIN and their real caller/BAILOUT handoffs match
 ## Translate original Comanche alarm recording and overflow recovery handoffs
 
 Actual ALARM/VARALARM/CURTAINS/BORTENT match16384 complete original/native/full-sanitizer states and64 actual C64 states. All1803 genuine MULTFAIL negative-overflow paths retain their inhibited-IRQ POODOO frontier; ordinary returns and later abort recovery bodies remain separately qualified. See `docs/COMANCHE_ALARM_RECORD.md`.
+
+## Translate original shared saved display caller return source
+
+Both original NVSUBEND entries and SUPDXCHZ saved fixed-caller return match8192 complete original/native/full-sanitizer states,22 unchanged invalid-input guards and64 actual C64 states. Raw registers, all saved bank/EB/SUPER combinations and actual source caller entries are retained; caller body execution remains separate. See `docs/DSKY-NV-RETURN.md`.

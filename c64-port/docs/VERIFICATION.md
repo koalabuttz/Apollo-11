@@ -1404,3 +1404,7 @@ Actual ALARM/VARALARM/CURTAINS/BORTENT match16384 complete original/native/full-
 ## Fresh committed interbank and RCS monitor host check
 
 A clean isolated export of exact commit`fff603d` builds and passes every registered portable host `all`/`test` recipe, including whole Luminary interbank and RCS monitor, exhaustive inverse-trig supplement, source display admission/load controls, Comanche mixed initialization and archive-streamed P66 startup/recurrence bridges. The exporter uses exact Git objects and excludes uncommitted source. Its11,292-file snapshot has36 complete source files; the full-port gate correctly rejects139 remaining files and both integrated applications. See `evidence/integration-interbank-rcs-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
+
+## Translate original shared saved display caller return source
+
+Both original NVSUBEND entries and SUPDXCHZ saved fixed-caller return match8192 complete original/native/full-sanitizer states,22 unchanged invalid-input guards and64 actual C64 states. Raw registers, all saved bank/EB/SUPER combinations and actual source caller entries are retained; caller body execution remains separate. See `docs/DSKY-NV-RETURN.md`.

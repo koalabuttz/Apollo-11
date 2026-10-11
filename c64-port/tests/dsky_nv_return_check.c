@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include "dsky_nv_return_check.h"
+#include "dsky_nv_return_vectors.h"
+uint8_t dsky_nv_return_checkpoint_input(uint8_t n,apollo_overlay_state *s,p66_bias_io *io,enum dsky_nv_mission *mission){if(n>=64u)return 0;dsky_nv_return_input(s,io,dsky_nv_return_numbers[n],mission);return 1;}
+uint16_t dsky_nv_return_checkpoint(uint8_t n,apollo_overlay_state *s,apollo_overlay_state *before){p66_bias_io io,old;enum dsky_nv_mission mission;uint16_t f,p,end,failures=0;if(!dsky_nv_return_checkpoint_input(n,s,&io,&mission))return 1;*before=*s;old=io;if(dsky_nv_return(s,&io,mission)!=P66_BIAS_OK)++failures;p=dsky_nv_return_after_offsets[n];end=dsky_nv_return_after_offsets[n+1u];for(f=0;f<2050u;++f){uint16_t expected=f<2048u?before->words[f]:f==2048u?old.superbank:old.interrupt_enabled;uint16_t actual=f<2048u?s->words[f]:f==2048u?io.superbank:io.interrupt_enabled;if(p<end&&dsky_nv_return_after_patch[p][0]==f)expected=dsky_nv_return_after_patch[p++][1];if(actual!=expected)++failures;}if(p!=end)++failures;return failures;}
