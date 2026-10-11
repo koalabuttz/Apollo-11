@@ -34,7 +34,7 @@ rows_n, rows_o = native.splitlines(), oracle.splitlines()
 bad = [i for i, (x, y) in enumerate(zip(rows_n, rows_o)) if x != y]
 for i in bad[:10]:
     xs, ys = rows_n[i].split(), rows_o[i].split()
-    print('DIFF case', xs[0], [(oct(k - 1) if k <= 2048 else f'io{k - 2049}', xs[k], ys[k])
+    print('DIFF case', xs[0], [(oct(k - 1) if k <= 2048 else f'io{k - 2049:o}', xs[k], ys[k])
                                for k in range(1, len(xs)) if xs[k] != ys[k]][:12])
 tag = pathlib.Path(a.native).name.replace('lanec-native', '') or ''
 for name, data in (('native' + tag, native), ('oracle', oracle)):
@@ -48,5 +48,5 @@ summary = dict(suite=a.suite, cases=len(rows_o), differing=len(bad) + abs(len(ro
 print(json.dumps(summary))
 if summary['differing'] or not rows_o:
     sys.exit('FAIL: native and original results differ')
-print(f'PASS: {len(rows_o)} complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 10-14, '
+print(f'PASS: {len(rows_o)} complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, '
       'superbank, IRQ) identical to the original program in Virtual AGC')

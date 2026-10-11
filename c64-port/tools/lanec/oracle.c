@@ -54,7 +54,8 @@ int main(int argc, char **argv)
         suite->make(n, &s, &io, &meta);
         m = rope[meta.mission];
         for (i = 0; i < APOLLO_SHARED_WORDS; ++i) m.Erasable[i / 0400][i % 0400] = (int16_t)s.words[i];
-        for (i = 0; i < LANEC_CHANNELS; ++i) m.InputChannel[010 + i] = (int16_t)io.channel[i];
+        for (i = 0; i < LANEC_CHANNELS; ++i)
+            if (i != 1u && i != 2u && i != 7u) m.InputChannel[i] = (int16_t)io.channel[i];
         m.OutputChannel7 = m.InputChannel[7] = (int16_t)io.superbank;
         m.AllowInterrupt = io.interrupt_enabled;
         for (steps = 0; steps < 4000u; ++steps) {
@@ -65,7 +66,8 @@ int main(int argc, char **argv)
         if (steps == 4000u) { fprintf(stderr, "%s case %lu: no boundary, Z=%o\n", suite->name, (unsigned long)n, word(RegZ)); return 2; }
         printf("%lu", (unsigned long)n);
         for (i = 0; i < APOLLO_SHARED_WORDS; ++i) printf(" %u", word(i));
-        for (i = 0; i < LANEC_CHANNELS; ++i) printf(" %u", (unsigned)m.InputChannel[010 + i] & 077777u);
+        for (i = 0; i < LANEC_CHANNELS; ++i)
+            printf(" %u", i == 1u || i == 2u || i == 7u ? 0u : (unsigned)m.InputChannel[i] & 077777u);
         printf(" %u %u 0\n", (unsigned)m.OutputChannel7 & 0160u, (unsigned)m.AllowInterrupt);
     }
     return 0;

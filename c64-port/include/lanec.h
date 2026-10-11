@@ -21,7 +21,8 @@
 #define LANEC_FB 4u
 #define LANEC_Z 5u
 #define LANEC_BB 6u
-#define LANEC_CHANNELS 5u /* output channels 010..014 */
+#define LANEC_CHANNELS 0100u /* I/O channels 0..077 by number; 1, 2 (L, Q) and
+                               * 7 (the superbank, kept below) are unused */
 
 typedef struct {
     uint16_t superbank;          /* channel 7 */

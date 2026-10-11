@@ -4,18 +4,18 @@
   "release": "evidence-lanec-ev-front",
   "files": {
     "lanec-ev-front-diff.json": {
-      "sha256": "da5b4847d5cc3bee81eedb23aaaf6750498d12b331f32d33ac042535fb5ea2cd",
+      "sha256": "6a33b920c51d12bd4e802b0a0d8cb786a82e369d27afa69ba842c1eeab322554",
       "bytes": 235,
       "store": "tree"
     },
     "lanec-ev-front-oracle.crc": {
-      "sha256": "5f2271a93c09d17a32058add080745610d16013253fd47affe8cd4076a3e8580",
+      "sha256": "e10f992c2c2ce6954ac7c9188ef4334533b66cfc2737e17d7b9649908b76533a",
       "bytes": 79530,
       "store": "tree"
     },
     "lanec-ev-front-sanitize.txt": {
-      "sha256": "f6a8639a79596a99bf83442ec3346a03bef4983a34242c2ff8699d054d7733e8",
-      "bytes": 148,
+      "sha256": "5bb2631811a2f7b522ace62faa863746a911183f226592ff438c0dc390e5fd96",
+      "bytes": 147,
       "store": "tree"
     },
     "lanec-ev-front-vice.txt": {

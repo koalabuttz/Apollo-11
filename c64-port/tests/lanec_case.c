@@ -23,7 +23,8 @@ void lanec_fill(apollo_overlay_state *s, lanec_io *io, uint32_t seed)
     eb = (uint16_t)((lanec_rand(&r) & 7u) << 8);
     s->words[LANEC_EB] = eb;
     s->words[7] = 0;
-    for (i = 0; i < LANEC_CHANNELS; ++i) io->channel[i] = (uint16_t)(lanec_rand(&r) & 077777u);
+    for (i = 0; i < LANEC_CHANNELS; ++i)
+        io->channel[i] = (uint16_t)(i == 0 || i == 1u || i == 2u || i == 7u ? 0u : lanec_rand(&r) & 077777u);
     io->interrupt_enabled = (uint16_t)(lanec_rand(&r) & 1u);
     io->superbank = (uint16_t)(lanec_rand(&r) & 0160u);
 }
