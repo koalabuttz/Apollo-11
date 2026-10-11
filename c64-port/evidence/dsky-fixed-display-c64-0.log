@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete dsky_fixed_display stage original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 3880
+dsky_fixed_display_0-hardware-stack.bin: measured stack extent 14 bytes
+dsky_fixed_display_0-software-stack.bin: measured stack extent 20 bytes

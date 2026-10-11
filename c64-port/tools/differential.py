@@ -644,3 +644,5 @@ subprocess.run([sys.executable,'tools/cm_idle_wake_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/dsky_load_complete_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_monitor_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_fixed_display_differential.py',str(reference)],cwd=ROOT,check=True)

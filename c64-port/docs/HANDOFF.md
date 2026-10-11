@@ -1639,3 +1639,7 @@ Translate GOMANUR and R02 local attitude admission against655360 complete origin
 ## Compose original antenna plane projection and unit vector
 
 Compose actual antenna PDVL plane projection reverse subtraction UNIT and BOV against131072 complete original strict sanitizer states and128 C64 checkpoints retaining authentic null outcomes and inherited abort boundaries. See `docs/NATIVE-SBAND-PLANE.md`.
+
+## Compose original fixed memory display across both missions
+
+Translate DSPFMEM DATACALL and ENDSPF across every physical fixed word against245760 continuous original strict sanitizer states and96 C64 checkpoints with returned data page boundaries. See `docs/DSKY-FIXED-DISPLAY.md`.

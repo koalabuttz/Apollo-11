@@ -1069,3 +1069,5 @@ include tools/sband_plane_integration.mk
 all: build/sband-plane-integrated-stream
 test: test-sband-plane
 sanitize: sanitize-sband-plane
+
+include tools/dsky_fixed_display_integration.mk

@@ -1,0 +1,4 @@
+cc  -O2 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_fixed_display.c src/agc_word.c src/dsky_fixed_display.c src/lm_interbank.c src/cm_fixed_callers.c src/dsky_octal_display.c src/dsky_pinball.c tests/dsky_fixed_display_cases.c tests/dsky_fixed_display_check.c -o build/test-dsky-fixed-display
+cc  -O2 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_fixed_display_snapshot.c src/agc_word.c src/dsky_fixed_display.c src/lm_interbank.c src/cm_fixed_callers.c src/dsky_octal_display.c src/dsky_pinball.c tests/dsky_fixed_display_cases.c src/dsky_fixed_display_data.c src/lm_fixed_compat.c src/cm_fixed_compat.c -o build/dsky-fixed-display-route-port
+build/test-dsky-fixed-display
+96 full original fixed-memory display states +32 unchanged invalid guards: PASS
