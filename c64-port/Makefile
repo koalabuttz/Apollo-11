@@ -568,3 +568,5 @@ include tools/cm_makeplay_port.mk
 include tools/cm_wake_port.mk
 
 include tools/cm_keyboard_irq.mk
+
+include tools/cm_charin_nv.mk

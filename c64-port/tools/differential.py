@@ -400,3 +400,5 @@ subprocess.run([sys.executable,'tools/cm_makeplay_differential.py',str(reference
 subprocess.run([sys.executable,'tools/cm_wake_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_keyboard_irq_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_charin_nv_differential.py',str(reference)],cwd=ROOT,check=True)

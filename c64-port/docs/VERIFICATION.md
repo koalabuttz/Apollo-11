@@ -1086,3 +1086,7 @@ Source JOBWAKE matches 8,192 complete original states including register, bank, 
 ## Deliver Comanche keyboard IRQs through genuine source RESUME and NOVAC
 
 Native Comanche fixed-vector KEYRUPT and KEYCOM match 12,288 original complete states through genuine hardware RESUME and source CHARIN admission. Full sanitizer output agrees; C64 validates 64 complete states with the mission-specific ISR and seven-core scheduler image. UPRUPT and full keyboard composition remain separate source domains. See `docs/COMANCHE-KEYBOARD-IRQ.md`.
+
+## Translate original Comanche verb and noun CHARIN paths
+
+Actual Comanche verb/noun CHARIN follows source editing and return effects through ENDOFJOB across all EB contexts. All 4,096 original complete states match strict and full sanitizer output; C64 verifies 64 complete states. Broader keyboard lifecycle is qualified separately. See `docs/COMANCHE-CHARIN-NV.md`.
