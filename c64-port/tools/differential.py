@@ -294,3 +294,5 @@ subprocess.run([sys.executable,'tools/dsky_nv_key_differential.py',str(reference
 subprocess.run([sys.executable,'tools/dsky_charin_nv_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_keycom_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_keyrupt_differential.py',str(reference)],cwd=ROOT,check=True)

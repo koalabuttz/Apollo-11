@@ -1,0 +1,1 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror src/agc_word.c src/executive.c src/dsky_keycom.c src/dsky_keyrupt.c tests/dsky_keyrupt_cases.c tests/dsky_keyrupt_check.c tools/dsky_keyrupt_diagnostic.c -Wl,-Map,build/dsky_keyrupt.map -o build/dsky_keyrupt.prg

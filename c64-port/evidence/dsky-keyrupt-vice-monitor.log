@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_keyrupt.prg from 0801 to 433D (3B3D bytes)
+WATCH: 1  C:$633e  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 633e)  112/$070,  16/$10
+.C:1a78  8E 3E 63    STX $633E      - A:00 X:A5 Y:00 SP:f1 NV-....C  307269664
+>C:633e  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyrupt-vice-mailbox.bin' from $633e to $6342
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyrupt-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyrupt-vice-software-stack.bin' from $c100 to $cfff

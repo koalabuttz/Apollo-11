@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly dsky_keyrupt states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 15167 15165
+hardware stack sentinel extent: 15
+software stack sentinel extent: 679
