@@ -1,0 +1,1494 @@
+{
+  "LM": {
+    "source_path": "Luminary099/INTERPRETER.agc",
+    "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "assembled_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": "LM none; CM previously audited indentation-only pseudo-label repairs",
+    "containing_file_status": "partial",
+    "native_source": "src/sband_scalar.c",
+    "source_words": 54,
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 800,
+        "label": "DAD",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "6775",
+        "physical_fixed_word": 3581,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 801,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "6776",
+        "physical_fixed_word": 3582,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 802,
+        "label": "",
+        "op": "DCA",
+        "arguments": "0",
+        "assembled_address": "6777",
+        "physical_fixed_word": 3583,
+        "physical_erasable_word": null,
+        "words": [
+          12289
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 803,
+        "label": "ENDVXV",
+        "op": "DAS",
+        "arguments": "MPAC",
+        "assembled_address": "7000",
+        "physical_fixed_word": 3584,
+        "physical_erasable_word": null,
+        "words": [
+          8301
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 804,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7001",
+        "physical_fixed_word": 3585,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 805,
+        "label": "",
+        "op": "BZF",
+        "arguments": "DANZIG",
+        "assembled_address": "7002",
+        "physical_fixed_word": 3586,
+        "physical_erasable_word": null,
+        "words": [
+          7217
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 808,
+        "label": "SETOVF",
+        "op": "TC",
+        "arguments": "OVERFLOW",
+        "assembled_address": "7003",
+        "physical_fixed_word": 3587,
+        "physical_erasable_word": null,
+        "words": [
+          3599
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 809,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DANZIG",
+        "assembled_address": "7004",
+        "physical_fixed_word": 3588,
+        "physical_erasable_word": null,
+        "words": [
+          7217
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 812,
+        "label": "DSU",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7005",
+        "physical_fixed_word": 3589,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 813,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "7006",
+        "physical_fixed_word": 3590,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 814,
+        "label": "",
+        "op": "DCS",
+        "arguments": "0",
+        "assembled_address": "7007",
+        "physical_fixed_word": 3591,
+        "physical_erasable_word": null,
+        "words": [
+          16385
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 815,
+        "label": "",
+        "op": "TCF",
+        "arguments": "ENDVXV",
+        "assembled_address": "7010",
+        "physical_fixed_word": 3592,
+        "physical_erasable_word": null,
+        "words": [
+          7680
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 825,
+        "label": "OVERFLOW",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "7017",
+        "physical_fixed_word": 3599,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 826,
+        "label": "",
+        "op": "CS",
+        "arguments": "LIMITS",
+        "assembled_address": "7020",
+        "physical_fixed_word": 3600,
+        "physical_erasable_word": null,
+        "words": [
+          18908
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 827,
+        "label": "",
+        "op": "TS",
+        "arguments": "BUF",
+        "assembled_address": "7021",
+        "physical_fixed_word": 3601,
+        "physical_erasable_word": null,
+        "words": [
+          22616
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 828,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7022",
+        "physical_fixed_word": 3602,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 829,
+        "label": "",
+        "op": "AUG",
+        "arguments": "A",
+        "assembled_address": "7023",
+        "physical_fixed_word": 3603,
+        "physical_erasable_word": null,
+        "words": [
+          10240
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 830,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "L",
+        "assembled_address": "7024",
+        "physical_fixed_word": 3604,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 831,
+        "label": "",
+        "op": "ADS",
+        "arguments": "MPAC +1",
+        "assembled_address": "7025",
+        "physical_fixed_word": 3605,
+        "physical_erasable_word": null,
+        "words": [
+          11373
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 832,
+        "label": "",
+        "op": "TS",
+        "arguments": "7",
+        "assembled_address": "7026",
+        "physical_fixed_word": 3606,
+        "physical_erasable_word": null,
+        "words": [
+          22535
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 833,
+        "label": "",
+        "op": "CAF",
+        "arguments": "ZERO",
+        "assembled_address": "7027",
+        "physical_fixed_word": 3607,
+        "physical_erasable_word": null,
+        "words": [
+          14829
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 834,
+        "label": "",
+        "op": "AD",
+        "arguments": "BUF",
+        "assembled_address": "7030",
+        "physical_fixed_word": 3608,
+        "physical_erasable_word": null,
+        "words": [
+          24664
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 835,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "L",
+        "assembled_address": "7031",
+        "physical_fixed_word": 3609,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 836,
+        "label": "",
+        "op": "ADS",
+        "arguments": "MPAC",
+        "assembled_address": "7032",
+        "physical_fixed_word": 3610,
+        "physical_erasable_word": null,
+        "words": [
+          11372
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 837,
+        "label": "",
+        "op": "TS",
+        "arguments": "7",
+        "assembled_address": "7033",
+        "physical_fixed_word": 3611,
+        "physical_erasable_word": null,
+        "words": [
+          22535
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 838,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7034",
+        "physical_fixed_word": 3612,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 839,
+        "label": "",
+        "op": "TCF",
+        "arguments": "SETOVF2",
+        "assembled_address": "7035",
+        "physical_fixed_word": 3613,
+        "physical_erasable_word": null,
+        "words": [
+          7786
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 902,
+        "label": "DMPSUB",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "7107",
+        "physical_fixed_word": 3655,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 903,
+        "label": "",
+        "op": "CA",
+        "arguments": "1",
+        "assembled_address": "7110",
+        "physical_fixed_word": 3656,
+        "physical_erasable_word": null,
+        "words": [
+          12289
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 904,
+        "label": "",
+        "op": "TS",
+        "arguments": "MPAC +2",
+        "assembled_address": "7111",
+        "physical_fixed_word": 3657,
+        "physical_erasable_word": null,
+        "words": [
+          22638
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 905,
+        "label": "",
+        "op": "CAF",
+        "arguments": "ZERO",
+        "assembled_address": "7112",
+        "physical_fixed_word": 3658,
+        "physical_erasable_word": null,
+        "words": [
+          14829
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 906,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPAC +1",
+        "assembled_address": "7113",
+        "physical_fixed_word": 3659,
+        "physical_erasable_word": null,
+        "words": [
+          23661
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 907,
+        "label": "",
+        "op": "TS",
+        "arguments": "MPTEMP",
+        "assembled_address": "7114",
+        "physical_fixed_word": 3660,
+        "physical_erasable_word": null,
+        "words": [
+          22621
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 908,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7115",
+        "physical_fixed_word": 3661,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 909,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPAC +2",
+        "assembled_address": "7116",
+        "physical_fixed_word": 3662,
+        "physical_erasable_word": null,
+        "words": [
+          28782
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 911,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPAC +2",
+        "assembled_address": "7117",
+        "physical_fixed_word": 3663,
+        "physical_erasable_word": null,
+        "words": [
+          23662
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 912,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7120",
+        "physical_fixed_word": 3664,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 913,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPAC",
+        "assembled_address": "7121",
+        "physical_fixed_word": 3665,
+        "physical_erasable_word": null,
+        "words": [
+          28780
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 914,
+        "label": "",
+        "op": "DAS",
+        "arguments": "MPAC +1",
+        "assembled_address": "7122",
+        "physical_fixed_word": 3666,
+        "physical_erasable_word": null,
+        "words": [
+          8302
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 916,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "7123",
+        "physical_fixed_word": 3667,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 917,
+        "label": "",
+        "op": "CA",
+        "arguments": "0",
+        "assembled_address": "7124",
+        "physical_fixed_word": 3668,
+        "physical_erasable_word": null,
+        "words": [
+          12288
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 918,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPTEMP",
+        "assembled_address": "7125",
+        "physical_fixed_word": 3669,
+        "physical_erasable_word": null,
+        "words": [
+          23645
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 919,
+        "label": "DMPSUB2",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7126",
+        "physical_fixed_word": 3670,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 920,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPTEMP",
+        "assembled_address": "7127",
+        "physical_fixed_word": 3671,
+        "physical_erasable_word": null,
+        "words": [
+          28765
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 921,
+        "label": "",
+        "op": "DAS",
+        "arguments": "MPAC +1",
+        "assembled_address": "7130",
+        "physical_fixed_word": 3672,
+        "physical_erasable_word": null,
+        "words": [
+          8302
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 923,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPAC",
+        "assembled_address": "7131",
+        "physical_fixed_word": 3673,
+        "physical_erasable_word": null,
+        "words": [
+          23660
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 924,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7132",
+        "physical_fixed_word": 3674,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 925,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPTEMP",
+        "assembled_address": "7133",
+        "physical_fixed_word": 3675,
+        "physical_erasable_word": null,
+        "words": [
+          28765
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 926,
+        "label": "",
+        "op": "DAS",
+        "arguments": "MPAC",
+        "assembled_address": "7134",
+        "physical_fixed_word": 3676,
+        "physical_erasable_word": null,
+        "words": [
+          8301
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 927,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7135",
+        "physical_fixed_word": 3677,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 948,
+        "label": "SETOVF2",
+        "op": "TS",
+        "arguments": "OVFIND",
+        "assembled_address": "7152",
+        "physical_fixed_word": 3690,
+        "physical_erasable_word": null,
+        "words": [
+          22609
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 949,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7153",
+        "physical_fixed_word": 3691,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 1352,
+        "label": "DMP1",
+        "op": "TC",
+        "arguments": "DMPSUB",
+        "assembled_address": "7572",
+        "physical_fixed_word": 3962,
+        "physical_erasable_word": null,
+        "words": [
+          3655
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 1353,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DANZIG",
+        "assembled_address": "7573",
+        "physical_fixed_word": 3963,
+        "physical_erasable_word": null,
+        "words": [
+          7217
+        ]
+      }
+    ],
+    "constants": {
+      "ZERO": {
+        "address": "4755",
+        "physical_fixed_word": 2541,
+        "word": 0
+      },
+      "LIMITS": {
+        "address": "4734",
+        "physical_fixed_word": 2524,
+        "word": 24575
+      },
+      "LIMITS_neighbors": {
+        "physical_fixed_word": 2523,
+        "words": [
+          16383,
+          24575,
+          16384
+        ],
+        "role": "OVERFLOW selects neighbor-1/+1 then complements; center passive word unused by this entry"
+      }
+    },
+    "entry_bindings": {
+      "DMP1": "7572",
+      "DAD": "6775",
+      "DSU": "7005",
+      "DMPSUB": "7107",
+      "DANZIG": "6061",
+      "HIUNITX": "23,2517"
+    },
+    "scope": "Actual scalar DMP1/DAD/DSU through complete DMPSUB/OVERFLOW numerical controls to pending mission DANZIG. No opcode decoder or whole INTERPRETER/antenna claim.",
+    "fixed_argument_provenance": "Fixed groups inject only two ordinary input data words at original HIUNITX passive table region; instruction/control/scalar-constant words stay original. Baseline rope identity and supplied input data are distinct.",
+    "coverage": "Every65536 raw A/L and all32768 ordinary incoming Q values occur per group. Fixed component ordinary marginals retained in mirrored second half. Varied scratch/ERA aliases, EB, all8SUPER latch forms and both IRQ. No Cartesian or allinstruction-edge execution claim."
+  },
+  "CM": {
+    "source_path": "Comanche055/INTERPRETER.agc",
+    "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "assembled_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": "LM none; CM previously audited indentation-only pseudo-label repairs",
+    "containing_file_status": "partial",
+    "native_source": "src/sband_scalar.c",
+    "source_words": 54,
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 807,
+        "label": "DAD",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "6744",
+        "physical_fixed_word": 3556,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 808,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "6745",
+        "physical_fixed_word": 3557,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 809,
+        "label": "",
+        "op": "DCA",
+        "arguments": "0",
+        "assembled_address": "6746",
+        "physical_fixed_word": 3558,
+        "physical_erasable_word": null,
+        "words": [
+          12289
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 810,
+        "label": "ENDVXV",
+        "op": "DAS",
+        "arguments": "MPAC",
+        "assembled_address": "6747",
+        "physical_fixed_word": 3559,
+        "physical_erasable_word": null,
+        "words": [
+          8301
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 811,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "6750",
+        "physical_fixed_word": 3560,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 812,
+        "label": "",
+        "op": "BZF",
+        "arguments": "DANZIG",
+        "assembled_address": "6751",
+        "physical_fixed_word": 3561,
+        "physical_erasable_word": null,
+        "words": [
+          7192
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 815,
+        "label": "SETOVF",
+        "op": "TC",
+        "arguments": "OVERFLOW",
+        "assembled_address": "6752",
+        "physical_fixed_word": 3562,
+        "physical_erasable_word": null,
+        "words": [
+          3574
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 816,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DANZIG",
+        "assembled_address": "6753",
+        "physical_fixed_word": 3563,
+        "physical_erasable_word": null,
+        "words": [
+          7192
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 819,
+        "label": "DSU",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "6754",
+        "physical_fixed_word": 3564,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 820,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "6755",
+        "physical_fixed_word": 3565,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 821,
+        "label": "",
+        "op": "DCS",
+        "arguments": "0",
+        "assembled_address": "6756",
+        "physical_fixed_word": 3566,
+        "physical_erasable_word": null,
+        "words": [
+          16385
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 822,
+        "label": "",
+        "op": "TCF",
+        "arguments": "ENDVXV",
+        "assembled_address": "6757",
+        "physical_fixed_word": 3567,
+        "physical_erasable_word": null,
+        "words": [
+          7655
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 832,
+        "label": "OVERFLOW",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "6766",
+        "physical_fixed_word": 3574,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 833,
+        "label": "",
+        "op": "CS",
+        "arguments": "LIMITS",
+        "assembled_address": "6767",
+        "physical_fixed_word": 3575,
+        "physical_erasable_word": null,
+        "words": [
+          18944
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 834,
+        "label": "",
+        "op": "TS",
+        "arguments": "BUF",
+        "assembled_address": "6770",
+        "physical_fixed_word": 3576,
+        "physical_erasable_word": null,
+        "words": [
+          22616
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 835,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "6771",
+        "physical_fixed_word": 3577,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 836,
+        "label": "",
+        "op": "AUG",
+        "arguments": "A",
+        "assembled_address": "6772",
+        "physical_fixed_word": 3578,
+        "physical_erasable_word": null,
+        "words": [
+          10240
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 837,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "L",
+        "assembled_address": "6773",
+        "physical_fixed_word": 3579,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 838,
+        "label": "",
+        "op": "ADS",
+        "arguments": "MPAC +1",
+        "assembled_address": "6774",
+        "physical_fixed_word": 3580,
+        "physical_erasable_word": null,
+        "words": [
+          11373
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 839,
+        "label": "",
+        "op": "TS",
+        "arguments": "7",
+        "assembled_address": "6775",
+        "physical_fixed_word": 3581,
+        "physical_erasable_word": null,
+        "words": [
+          22535
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 840,
+        "label": "",
+        "op": "CAF",
+        "arguments": "ZERO",
+        "assembled_address": "6776",
+        "physical_fixed_word": 3582,
+        "physical_erasable_word": null,
+        "words": [
+          14865
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 841,
+        "label": "",
+        "op": "AD",
+        "arguments": "BUF",
+        "assembled_address": "6777",
+        "physical_fixed_word": 3583,
+        "physical_erasable_word": null,
+        "words": [
+          24664
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 842,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "L",
+        "assembled_address": "7000",
+        "physical_fixed_word": 3584,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 843,
+        "label": "",
+        "op": "ADS",
+        "arguments": "MPAC",
+        "assembled_address": "7001",
+        "physical_fixed_word": 3585,
+        "physical_erasable_word": null,
+        "words": [
+          11372
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 844,
+        "label": "",
+        "op": "TS",
+        "arguments": "7",
+        "assembled_address": "7002",
+        "physical_fixed_word": 3586,
+        "physical_erasable_word": null,
+        "words": [
+          22535
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 845,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7003",
+        "physical_fixed_word": 3587,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 846,
+        "label": "",
+        "op": "TCF",
+        "arguments": "SETOVF2",
+        "assembled_address": "7004",
+        "physical_fixed_word": 3588,
+        "physical_erasable_word": null,
+        "words": [
+          7761
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 910,
+        "label": "DMPSUB",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "7056",
+        "physical_fixed_word": 3630,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 911,
+        "label": "",
+        "op": "CA",
+        "arguments": "1",
+        "assembled_address": "7057",
+        "physical_fixed_word": 3631,
+        "physical_erasable_word": null,
+        "words": [
+          12289
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 912,
+        "label": "",
+        "op": "TS",
+        "arguments": "MPAC +2",
+        "assembled_address": "7060",
+        "physical_fixed_word": 3632,
+        "physical_erasable_word": null,
+        "words": [
+          22638
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 913,
+        "label": "",
+        "op": "CAF",
+        "arguments": "ZERO",
+        "assembled_address": "7061",
+        "physical_fixed_word": 3633,
+        "physical_erasable_word": null,
+        "words": [
+          14865
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 914,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPAC +1",
+        "assembled_address": "7062",
+        "physical_fixed_word": 3634,
+        "physical_erasable_word": null,
+        "words": [
+          23661
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 915,
+        "label": "",
+        "op": "TS",
+        "arguments": "MPTEMP",
+        "assembled_address": "7063",
+        "physical_fixed_word": 3635,
+        "physical_erasable_word": null,
+        "words": [
+          22621
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 916,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7064",
+        "physical_fixed_word": 3636,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 917,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPAC +2",
+        "assembled_address": "7065",
+        "physical_fixed_word": 3637,
+        "physical_erasable_word": null,
+        "words": [
+          28782
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 919,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPAC +2",
+        "assembled_address": "7066",
+        "physical_fixed_word": 3638,
+        "physical_erasable_word": null,
+        "words": [
+          23662
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 920,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7067",
+        "physical_fixed_word": 3639,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 921,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPAC",
+        "assembled_address": "7070",
+        "physical_fixed_word": 3640,
+        "physical_erasable_word": null,
+        "words": [
+          28780
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 922,
+        "label": "",
+        "op": "DAS",
+        "arguments": "MPAC +1",
+        "assembled_address": "7071",
+        "physical_fixed_word": 3641,
+        "physical_erasable_word": null,
+        "words": [
+          8302
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 924,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ADDRWD",
+        "assembled_address": "7072",
+        "physical_fixed_word": 3642,
+        "physical_erasable_word": null,
+        "words": [
+          20558
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 925,
+        "label": "",
+        "op": "CA",
+        "arguments": "0",
+        "assembled_address": "7073",
+        "physical_fixed_word": 3643,
+        "physical_erasable_word": null,
+        "words": [
+          12288
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 926,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPTEMP",
+        "assembled_address": "7074",
+        "physical_fixed_word": 3644,
+        "physical_erasable_word": null,
+        "words": [
+          23645
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 927,
+        "label": "DMPSUB2",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7075",
+        "physical_fixed_word": 3645,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 928,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPTEMP",
+        "assembled_address": "7076",
+        "physical_fixed_word": 3646,
+        "physical_erasable_word": null,
+        "words": [
+          28765
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 929,
+        "label": "",
+        "op": "DAS",
+        "arguments": "MPAC +1",
+        "assembled_address": "7077",
+        "physical_fixed_word": 3647,
+        "physical_erasable_word": null,
+        "words": [
+          8302
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 931,
+        "label": "",
+        "op": "XCH",
+        "arguments": "MPAC",
+        "assembled_address": "7100",
+        "physical_fixed_word": 3648,
+        "physical_erasable_word": null,
+        "words": [
+          23660
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 932,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "7101",
+        "physical_fixed_word": 3649,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 933,
+        "label": "",
+        "op": "MP",
+        "arguments": "MPTEMP",
+        "assembled_address": "7102",
+        "physical_fixed_word": 3650,
+        "physical_erasable_word": null,
+        "words": [
+          28765
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 934,
+        "label": "",
+        "op": "DAS",
+        "arguments": "MPAC",
+        "assembled_address": "7103",
+        "physical_fixed_word": 3651,
+        "physical_erasable_word": null,
+        "words": [
+          8301
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 935,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7104",
+        "physical_fixed_word": 3652,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 956,
+        "label": "SETOVF2",
+        "op": "TS",
+        "arguments": "OVFIND",
+        "assembled_address": "7121",
+        "physical_fixed_word": 3665,
+        "physical_erasable_word": null,
+        "words": [
+          22609
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 957,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7122",
+        "physical_fixed_word": 3666,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 1360,
+        "label": "DMP1",
+        "op": "TC",
+        "arguments": "DMPSUB",
+        "assembled_address": "7541",
+        "physical_fixed_word": 3937,
+        "physical_erasable_word": null,
+        "words": [
+          3630
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 1361,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DANZIG",
+        "assembled_address": "7542",
+        "physical_fixed_word": 3938,
+        "physical_erasable_word": null,
+        "words": [
+          7192
+        ]
+      }
+    ],
+    "constants": {
+      "ZERO": {
+        "address": "5021",
+        "physical_fixed_word": 2577,
+        "word": 0
+      },
+      "LIMITS": {
+        "address": "5000",
+        "physical_fixed_word": 2560,
+        "word": 24575
+      },
+      "LIMITS_neighbors": {
+        "physical_fixed_word": 2559,
+        "words": [
+          16383,
+          24575,
+          16384
+        ],
+        "role": "OVERFLOW selects neighbor-1/+1 then complements; center passive word unused by this entry"
+      }
+    },
+    "entry_bindings": {
+      "DMP1": "7541",
+      "DAD": "6744",
+      "DSU": "6754",
+      "DMPSUB": "7056",
+      "DANZIG": "6030",
+      "HIUNITX": "26,3332"
+    },
+    "scope": "Actual scalar DMP1/DAD/DSU through complete DMPSUB/OVERFLOW numerical controls to pending mission DANZIG. No opcode decoder or whole INTERPRETER/antenna claim.",
+    "fixed_argument_provenance": "Fixed groups inject only two ordinary input data words at original HIUNITX passive table region; instruction/control/scalar-constant words stay original. Baseline rope identity and supplied input data are distinct.",
+    "coverage": "Every65536 raw A/L and all32768 ordinary incoming Q values occur per group. Fixed component ordinary marginals retained in mirrored second half. Varied scratch/ERA aliases, EB, all8SUPER latch forms and both IRQ. No Cartesian or allinstruction-edge execution claim."
+  }
+}

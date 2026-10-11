@@ -1,0 +1,202 @@
+{
+  "docs/NATIVE-SBAND-SCALAR.md": {
+    "sha256": "99384ab49576f62d180933fd141580fe2915389b73b4d9241cd18f205dc83961",
+    "bytes": 3749
+  },
+  "evidence/sband-scalar-frozen-validation.log": {
+    "sha256": "fc885c87cb4a717ec15c051c90139dea2251bba720133427749a14180132cba1",
+    "bytes": 199
+  },
+  "evidence/sband-scalar-host-validation.log": {
+    "sha256": "a77f6dff5c740be746e80f49e24d15c74081a939a08cd4674a59b6b5af02e80c",
+    "bytes": 197
+  },
+  "evidence/sband-scalar-independent-review.txt": {
+    "sha256": "bc923af8f2ee89087a7fcc4eaa34c0a8d3dd55094672a5518bbf2c5cadb09ee4",
+    "bytes": 1276
+  },
+  "evidence/sband-scalar-mailbox.bin": {
+    "sha256": "d54c1268cce44f361878a4f6db009986bbd581c9d2f19fa5e6c360c3ca491a8d",
+    "bytes": 4
+  },
+  "evidence/sband-scalar-monitor.log": {
+    "sha256": "103eca6ab277097423c20e3768e8bf7c6d360e16811ed89ee62816736b1498c3",
+    "bytes": 389
+  },
+  "evidence/sband-scalar-native-results.json": {
+    "sha256": "3d8c88c0aa80267f11e75fc107de9f853083bf7d19ae37abd605d73b00e42b12",
+    "bytes": 166
+  },
+  "evidence/sband-scalar-proof.json": {
+    "sha256": "083f01d6efa5ed5733fdf7059dee80c50062bafee52ff17a8edcf5f93b45caad",
+    "bytes": 6335
+  },
+  "evidence/sband-scalar-sanitize-results.json": {
+    "sha256": "3d8c88c0aa80267f11e75fc107de9f853083bf7d19ae37abd605d73b00e42b12",
+    "bytes": 166
+  },
+  "evidence/sband-scalar-sanitize-validation.log": {
+    "sha256": "3c37597d2ae7247069e63c8fb1c6df81d9e05c9f998d11bea35c5c1d307fb880",
+    "bytes": 491
+  },
+  "evidence/sband-scalar-source-0.snapshots.bin.xz": {
+    "sha256": "83426d966a471eb2b33f7b48d5f104d741c7688d917aced763c4235658c96c0e",
+    "bytes": 17352620
+  },
+  "evidence/sband-scalar-source-1.snapshots.bin.xz": {
+    "sha256": "02c2337554f66db423aa882e1f7fd9e04e559ef5f977dfaea933534e8c92eee9",
+    "bytes": 17045400
+  },
+  "evidence/sband-scalar-source-10.snapshots.bin.xz": {
+    "sha256": "4bff5e8f90f13d835a2ca644a30da02a77f5a9c998f37eb8216438f04a80eb65",
+    "bytes": 17215860
+  },
+  "evidence/sband-scalar-source-11.snapshots.bin.xz": {
+    "sha256": "cea24eb4724716c81b91d4c9e894067ebcf3a6fa107cd91f8964303529f4757c",
+    "bytes": 16811804
+  },
+  "evidence/sband-scalar-source-2.snapshots.bin.xz": {
+    "sha256": "6529457cdc4b552bd83862744147cf38ca8f1dbbcaf5073200c8ce68bf7ba011",
+    "bytes": 17217080
+  },
+  "evidence/sband-scalar-source-3.snapshots.bin.xz": {
+    "sha256": "50c8cbf0583d083eb7cc54fac736b20154684620d05e80e91c8f42ec7a4e0c6d",
+    "bytes": 16818280
+  },
+  "evidence/sband-scalar-source-4.snapshots.bin.xz": {
+    "sha256": "4b5fc063c88878d3a875aa96e4401f682ce5c4f1d7f29000c26ead62e1e68506",
+    "bytes": 17215808
+  },
+  "evidence/sband-scalar-source-5.snapshots.bin.xz": {
+    "sha256": "2e64e888fcb3aadc7aa6a54ddaea9f6b1163af03fd9ed1907026adeacb643a98",
+    "bytes": 16812080
+  },
+  "evidence/sband-scalar-source-6.snapshots.bin.xz": {
+    "sha256": "48cee14d45e6f5cde20a814d1fcac251022e0aec1b51fa86feab17978b9e352d",
+    "bytes": 17352112
+  },
+  "evidence/sband-scalar-source-7.snapshots.bin.xz": {
+    "sha256": "ff36bbc2d3d386b51eaf6601443552e9931c051fe98d102fb14855bd779aae45",
+    "bytes": 17046960
+  },
+  "evidence/sband-scalar-source-8.snapshots.bin.xz": {
+    "sha256": "bf758c9470b6b07723f9510b0e223a253735793d48684f57409d2f3ac93b264e",
+    "bytes": 17216996
+  },
+  "evidence/sband-scalar-source-9.snapshots.bin.xz": {
+    "sha256": "08c2c7dc30a2110d1f28e716f9d64a81f3fcb16a9ff2c426e05e62dfa496838d",
+    "bytes": 16816916
+  },
+  "evidence/sband-scalar-source-map.json": {
+    "sha256": "65674dfdfb48de0d4cbaa70d7931cff97b79463fd1e9a4ac22f51844364b1eae",
+    "bytes": 37943
+  },
+  "evidence/sband-scalar-target-results.json": {
+    "sha256": "0f7380dbf417543c4aae975294e493c34e23edb6bad93351f82a9f7a9b5c0895",
+    "bytes": 4638
+  },
+  "evidence/sband-scalar-target-source.snapshots.bin.xz": {
+    "sha256": "7b75f2d2f0709ba471dcc5dbffe287de182632006372b146a05c8858511c5ebb",
+    "bytes": 63236
+  },
+  "evidence/sband-scalar-target-validation.log": {
+    "sha256": "c6a9af49fd09f6ce5f04b175f03bbdfc67ed52764b13ef74c7cdf10596a84121",
+    "bytes": 264
+  },
+  "evidence/sband-scalar-vice-results.json": {
+    "sha256": "d8b23f108bed86e132406f5e50a4149fe4b62b4c62735a43be6d096c9c7bbf0e",
+    "bytes": 199
+  },
+  "evidence/sband-scalar-vice.log": {
+    "sha256": "6ac6b5550f6c71f426a5789bec07a694f28895ec450d67880b62069f7bd74b35",
+    "bytes": 6499
+  },
+  "evidence/sband-scalar.map": {
+    "sha256": "ac71272d13e4a383bac486c491956b4063cc216415f497bcba3a68f09b76fef7",
+    "bytes": 9541
+  },
+  "evidence/sband-scalar.prg": {
+    "sha256": "43d9bd5d26b36f1404d9b2f54abcdbbcca5bf0293db4db89902de4b925ba477d",
+    "bytes": 16237
+  },
+  "include/sband_scalar.h": {
+    "sha256": "35aad524c23945a696268361662c1ab94232c85c08142f5f299cb5e6e9250e99",
+    "bytes": 892
+  },
+  "platform/c64/sband_scalar_diagnostic.c": {
+    "sha256": "3596d26fa0cb35f8b0d757d0dcdb4f997d325204182284516aade9da61cb1875",
+    "bytes": 438
+  },
+  "src/sband_scalar.c": {
+    "sha256": "a808f24faeea93097242c60b7486fcc257154f44293bd1422bb3f4b1f82c3a47",
+    "bytes": 4203
+  },
+  "tests/sband_scalar_cases.c": {
+    "sha256": "6bac6f6f6dfbd0fd6562bfe6a18b414ea2fbd30dcf78ba27ea9847c231d3b67e",
+    "bytes": 1940
+  },
+  "tests/sband_scalar_cases.h": {
+    "sha256": "5abf7d883cc1f9c663384d33214801397328e497942125935070e899835d2eea",
+    "bytes": 286
+  },
+  "tests/sband_scalar_target.c": {
+    "sha256": "762d27185cb4d2bee209a749ff9f92caededebe0394ec5cc537bc566d474a1ac",
+    "bytes": 1573
+  },
+  "tests/sband_scalar_target.h": {
+    "sha256": "a560db10b4ba3f1c0be1214277645968b2e3cdd216a2a68a468b8c8901371a52",
+    "bytes": 144
+  },
+  "tests/sband_scalar_vectors.h": {
+    "sha256": "d954a477073cf0b9dcd636929b2aefeee5c72baf78de9b53c3bdbb779de65261",
+    "bytes": 26220
+  },
+  "tests/test_sband_scalar.c": {
+    "sha256": "7901f7fbcb23dc37fa784d26ffbaed15f97bbb0ab4a63b11b62660391459926f",
+    "bytes": 1954
+  },
+  "tools/freeze_sband_scalar.py": {
+    "sha256": "e42509341a5c6da332ee63b74f2b9107d7c2bd6aa10915891154a7ac8722d74b",
+    "bytes": 1912
+  },
+  "tools/package_sband_scalar.py": {
+    "sha256": "2a2df3346e1c0636bc48dac573618a1ad71a18267a1642cc54fd92ce104417b7",
+    "bytes": 4008
+  },
+  "tools/sband_scalar.mk": {
+    "sha256": "a01d5c3924d802b9fdceaabbaa2d651cf2b2517b619967545618703fd1feb8b5",
+    "bytes": 995
+  },
+  "tools/sband_scalar_compare.py": {
+    "sha256": "884ec6347ef9a4a217cbf8ab08b22f6f8c2513348f4135f492179c243937ab06",
+    "bytes": 2026
+  },
+  "tools/sband_scalar_inputs.c": {
+    "sha256": "968d01695c84408629f7fd71f750105e44dc541ac9621f98d789a85533a4842b",
+    "bytes": 572
+  },
+  "tools/sband_scalar_integration.mk": {
+    "sha256": "f6493185beefadfa89c718372f6b0ef391b9a2db128054f9ae76c12abea30733",
+    "bytes": 1527
+  },
+  "tools/sband_scalar_port_host.py": {
+    "sha256": "4476b0fc9a339fadd21b8bd73881de53ac5816429996b33e05e1a62dac61c4ba",
+    "bytes": 1379
+  },
+  "tools/sband_scalar_reference.c": {
+    "sha256": "7a410c2a9b74135b73f6241634fa0ffe41a6eff4ec5c0d9aaaef30d4b534a775",
+    "bytes": 1730
+  },
+  "tools/sband_scalar_snapshot.c": {
+    "sha256": "afad4130d048e1bb250a29b6da403693e9ef3dd721ac5aca6efe530628cea6e3",
+    "bytes": 740
+  },
+  "tools/sband_scalar_source.py": {
+    "sha256": "a556dfb55777ef7d7486e1ea008abc1a5a09b6172f6516cef3fa6ea2acf74bd4",
+    "bytes": 2966
+  },
+  "tools/sband_scalar_vice_test.py": {
+    "sha256": "f79c74910a4a0a480724c30f044b7ce0c652a8f47bbe9f657a56f3818306e20f",
+    "bytes": 2585
+  }
+}

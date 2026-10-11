@@ -992,3 +992,8 @@ include tools/sband_bodyframe_integration.mk
 all: build/sband-bodyframe-integrated-stream
 test: test-sband-bodyframe
 sanitize: sanitize-sband-bodyframe
+
+include tools/sband_scalar_integration.mk
+all: build/sband-scalar-integrated-stream
+test: test-sband-scalar
+sanitize: sanitize-sband-scalar

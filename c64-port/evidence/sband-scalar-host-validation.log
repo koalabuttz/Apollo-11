@@ -1,0 +1,2 @@
+python3 tools/sband_scalar_compare.py
+PASS {'states': 786432, 'start': 0, 'end': 786432, 'record_bytes': 4106, 'decoded_sha256': '4ac60285caa2f2afe4294955789694619bf109a9336d5844015cf245c6535cb8'}

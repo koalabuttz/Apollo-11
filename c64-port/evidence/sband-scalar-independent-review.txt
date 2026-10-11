@@ -1,0 +1,10 @@
+Independent read-only review of native original LM/CM scalar DMP1/DAD/DSU.
+Reviewer: /root/p66_source_map; retained by /root/frozen_storage.
+
+src/sband_scalar.c SHA256 a808f24faeea93097242c60b7486fcc257154f44293bd1422bb3f4b1f82c3a47
+include/sband_scalar.h SHA256 35aad524c23945a696268361662c1ab94232c85c08142f5f299cb5e6e9250e99
+../Luminary099/INTERPRETER.agc SHA256 26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e
+../Comanche055/INTERPRETER.agc SHA256 724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b
+
+No concrete discrepancy found within the documented ordinary DP caller domain. DMP1 minor-first/major-live reread sequence preserves MPAC/MPTEMP/BUF aliases and unrounded TP. DAD/DSU DCA/DCS reads both limbs before DAS, retains incoming Q on no overflow and Q3 only after OVERFLOW TC Q. Signed limit/AUG, low/high TS carry/OVFIND branches match originals. True mission DANZIG metadata leaves MODE/LOC/EDOP unchanged. ERA physical-bank guard excludes CPU/editing registers and the immutable fixed two-word no-bank-crossing domain is explicit.
+This is independent source inspection, not a second execution of the source corpus. Containing INTERPRETER and antenna files remain partial; no generic opcode decoder or scheduling body is inferred.

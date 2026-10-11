@@ -1864,3 +1864,7 @@ Compose actual ARTHINSF BINROUND ARTIN1SF DPINSF and DPFRACIN scaling and origin
 ## Compose original S-band body frame transformation and return
 
 Compose actual zero-angle S-band body frame source path and matrix transformation against131072 complete original strict sanitizer states and128 C64 checkpoints. See `docs/NATIVE-SBAND-BODY-FRAME.md`.
+
+## Translate original double precision scalar arithmetic entries
+
+Translate actual DMP DAD and DSU interpreter entries for both missions against786432 complete original strict sanitizer states and384 C64 checkpoints preserving selected fixed banks and live scratch alias ordering. See `docs/NATIVE-SBAND-SCALAR.md`.

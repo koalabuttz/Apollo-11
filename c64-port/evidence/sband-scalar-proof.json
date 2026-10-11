@@ -1,0 +1,147 @@
+{
+  "status": "qualified actual original DMP1/DAD/DSU scalar entries; containing INTERPRETER and antenna files remain partial",
+  "instruction_decoder": false,
+  "source_states": 786432,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 786432,
+    "start": 0,
+    "end": 786432,
+    "record_bytes": 4106,
+    "decoded_sha256": "4ac60285caa2f2afe4294955789694619bf109a9336d5844015cf245c6535cb8",
+    "decoded_bytes": 3229089792,
+    "canonical_original_archives": [
+      {
+        "path": "evidence/sband-scalar-source-0.snapshots.bin.xz",
+        "compressed_sha256": "83426d966a471eb2b33f7b48d5f104d741c7688d917aced763c4235658c96c0e",
+        "decoded_sha256": "b304cb27a51b86bbe2d8cce3f2e0ebe6f47bbb959bdef5adc6774c337b533128",
+        "decoded_bytes": 269090816,
+        "first_case": 0,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-1.snapshots.bin.xz",
+        "compressed_sha256": "02c2337554f66db423aa882e1f7fd9e04e559ef5f977dfaea933534e8c92eee9",
+        "decoded_sha256": "c2c7ac831bc0349656a4a10e35fdfa81bcb32211ddbcfd564b979e644312ef73",
+        "decoded_bytes": 269090816,
+        "first_case": 65536,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-2.snapshots.bin.xz",
+        "compressed_sha256": "6529457cdc4b552bd83862744147cf38ca8f1dbbcaf5073200c8ce68bf7ba011",
+        "decoded_sha256": "e6febd278dbcfc37ac75a75feb759aa8c6ab566a2a98186f42a911b78b9005e1",
+        "decoded_bytes": 269090816,
+        "first_case": 131072,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-3.snapshots.bin.xz",
+        "compressed_sha256": "50c8cbf0583d083eb7cc54fac736b20154684620d05e80e91c8f42ec7a4e0c6d",
+        "decoded_sha256": "46920c55a91be17fb909f8107c3cb30bcfa544bb0a90fc2a3afd7faf52ec17d4",
+        "decoded_bytes": 269090816,
+        "first_case": 196608,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-4.snapshots.bin.xz",
+        "compressed_sha256": "4b5fc063c88878d3a875aa96e4401f682ce5c4f1d7f29000c26ead62e1e68506",
+        "decoded_sha256": "7a3ff7ef6a8f14a0a098df6d0d64bb4944279a9b074ef872bd47818ae94f5469",
+        "decoded_bytes": 269090816,
+        "first_case": 262144,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-5.snapshots.bin.xz",
+        "compressed_sha256": "2e64e888fcb3aadc7aa6a54ddaea9f6b1163af03fd9ed1907026adeacb643a98",
+        "decoded_sha256": "19de505fef363953b4dd66daf33a9114aa26382897d195dbf2934a1af0147fa1",
+        "decoded_bytes": 269090816,
+        "first_case": 327680,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-6.snapshots.bin.xz",
+        "compressed_sha256": "48cee14d45e6f5cde20a814d1fcac251022e0aec1b51fa86feab17978b9e352d",
+        "decoded_sha256": "6f25dd872bf13fe85b0b99b981667720b82046c3a4312987165916182e7f09bf",
+        "decoded_bytes": 269090816,
+        "first_case": 393216,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-7.snapshots.bin.xz",
+        "compressed_sha256": "ff36bbc2d3d386b51eaf6601443552e9931c051fe98d102fb14855bd779aae45",
+        "decoded_sha256": "c50277ae1330fd1930a71468b24b478d7f20909464f3798c7d0e233f3e8f6717",
+        "decoded_bytes": 269090816,
+        "first_case": 458752,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-8.snapshots.bin.xz",
+        "compressed_sha256": "bf758c9470b6b07723f9510b0e223a253735793d48684f57409d2f3ac93b264e",
+        "decoded_sha256": "c36c907e6dbad7a22e078b47e0a54254e7178052f7d477ae8dbea88165805968",
+        "decoded_bytes": 269090816,
+        "first_case": 524288,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-9.snapshots.bin.xz",
+        "compressed_sha256": "08c2c7dc30a2110d1f28e716f9d64a81f3fcb16a9ff2c426e05e62dfa496838d",
+        "decoded_sha256": "6f726e3d0e828e5734f050f57f98a94050f47c4f2d137af958aebab90ef18828",
+        "decoded_bytes": 269090816,
+        "first_case": 589824,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-10.snapshots.bin.xz",
+        "compressed_sha256": "4bff5e8f90f13d835a2ca644a30da02a77f5a9c998f37eb8216438f04a80eb65",
+        "decoded_sha256": "68b1b0b9053e829771f61e0fa229f883c0c4dbbcf8163be1db7f20b6a622d785",
+        "decoded_bytes": 269090816,
+        "first_case": 655360,
+        "states": 65536
+      },
+      {
+        "path": "evidence/sband-scalar-source-11.snapshots.bin.xz",
+        "compressed_sha256": "cea24eb4724716c81b91d4c9e894067ebcf3a6fa107cd91f8964303529f4757c",
+        "decoded_sha256": "748671bcffec68819f20d03dd3f85b745ba770dd706db1ce22729b08c173aa99",
+        "decoded_bytes": 269090816,
+        "first_case": 720896,
+        "states": 65536
+      }
+    ],
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 384,
+    "prg_bytes": 16237,
+    "load_end": 18284,
+    "bss_end": 26476,
+    "mailbox": "a5800100",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "native_source_sha256": "a808f24faeea93097242c60b7486fcc257154f44293bd1422bb3f4b1f82c3a47",
+  "native_header_sha256": "35aad524c23945a696268361662c1ab94232c85c08142f5f299cb5e6e9250e99",
+  "source_map": "evidence/sband-scalar-source-map.json",
+  "original_sources": {
+    "Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b"
+  },
+  "independent_review": {
+    "path": "evidence/sband-scalar-independent-review.txt",
+    "sha256": "bc923af8f2ee89087a7fcc4eaa34c0a8d3dd55094672a5518bbf2c5cadb09ee4"
+  },
+  "limitations": [
+    "MODE0/coherent ordinary image/Q/raw16A/L, producer exclusion.",
+    "Live ERA pair excludes CPU/editing registers; fixed operand requires two immutable nonaliasing ordinary words, no bank crossing.",
+    "Varied contexts and complete raw A/L/Q marginals, not exhaustive Cartesian or every source instruction edge.",
+    "Stops pending original mission DANZIG without scheduling or source decoding.",
+    "Diagnostic images/fixture allocation does not establish whole application memory."
+  ]
+}
