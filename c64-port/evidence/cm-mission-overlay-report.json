@@ -74,5 +74,11 @@
       "mission_translation": false
     }
   ],
-  "scope": "actual automatic IRQ/task services/hardware RESUME/DANZIG to genuine selected foreground continuation; counter drivers zero/scaler frozen; no whole-flight completion claim"
+  "scope": "actual automatic IRQ/task services/hardware RESUME/DANZIG to genuine selected foreground continuation; counter drivers zero/scaler frozen; no whole-flight completion claim",
+  "actual_foreground": [
+    "unchanged interpreted NEWOPS",
+    "NBDONLY03542/014063"
+  ],
+  "actual_clockjob_selected_cases": 0,
+  "scope_correction": "Retained source tuples confirm no CLOCKJOB admission/execution in this replay; original fidelity artifacts are unchanged."
 }

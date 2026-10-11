@@ -27,8 +27,9 @@
   ],
   "actual_foreground": [
     "unchanged interpreted NEWOPS",
-    "CLOCKJOB03332/050066",
     "NBDONLY03542/014063"
   ],
-  "snapshot_sha256": "3d56d8023cc2264d042a4bf08e1246c54e807feba422398a0094d2e4d98e3503"
+  "snapshot_sha256": "3d56d8023cc2264d042a4bf08e1246c54e807feba422398a0094d2e4d98e3503",
+  "actual_clockjob_selected_cases": 0,
+  "scope_correction": "NVWORD=0 CLOKTASK cohort reschedules and updates TBASE without admitting CLOCKJOB."
 }

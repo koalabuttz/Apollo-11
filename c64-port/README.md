@@ -774,3 +774,7 @@ Extended waitlist control preserves 2,048 original complete states, including TW
 ## Broad current sanitizer audit
 
 The isolated committed snapshot `69801cb` passes all portable sanitizer recipes, including full decoded reference-stream comparisons. Retained compressed evidence avoids duplicate reference expansion; the audit compares every byte. See `evidence/integration-current-sanitize-proof.json` and retained logs. Later additive milestones retain their own source and sanitizer qualification. This does not certify either complete application.
+
+## Comanche mission scope correction
+
+The retained NVWORD=0 CLOKTASK cohort updates TBASE and reschedules; it does not admit or execute CLOCKJOB. All 384 retained original source outcomes confirm this. Corrected metadata preserves prior byte copies and all source/native/C64 fidelity identities. Actual covered foreground outcomes are NBDONLY and unchanged interpreted NEWOPS. Separate clock-job body qualifications remain valid. See `evidence/cm-mission-scope-correction.json`.
