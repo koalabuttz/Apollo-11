@@ -1,0 +1,7 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_hardware_divide.c src/agc_word.c src/agc_hardware_divide.c tests/hardware_divide_cases.c -o build/test-hardware-divide
+build/test-hardware-divide
+255 complete hardware-DV register states: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/hardware_divide_snapshot.c src/agc_word.c src/agc_hardware_divide.c tests/hardware_divide_cases.c -o build/hardware-divide-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/hardware-divide-native-sanitize > build/hardware-divide-sanitize.snapshots
+cmp build/hardware-divide-sanitize.snapshots build/hardware-divide-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -DHARDWARE_DIVIDE_CHECK_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/hardware_divide_diagnostic.c tests/test_hardware_divide.c src/agc_word.c src/agc_hardware_divide.c tests/hardware_divide_cases.c -Wl,-Map,build/hardware_divide.map -o build/hardware_divide.prg

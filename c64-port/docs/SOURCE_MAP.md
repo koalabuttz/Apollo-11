@@ -283,3 +283,7 @@ All 32,768 complete AX*SR*T source states match; strict and all-state sanitizer 
 ## Port live CDU projection and acceleration feedback
 
 Live native trig and rotation feed DOT14 and AFC with original source scheduling boundaries. All 39,432 direct and full-prefix checkpoints match; entire-corpus sanitizers and all 144 frozen C64 checkpoints pass. See [PROJECTION.md](PROJECTION.md).
+
+## Implement exact native hardware divide recurrence
+
+The independently authored fixed-point recurrence matches 327,680 isolated original hardware-DV instruction states, including raw register overflow and signed zero. Full-state sanitizers and all 255 frozen C64 register-pair checks pass. See [HARDWARE-DIVIDE.md](HARDWARE-DIVIDE.md).

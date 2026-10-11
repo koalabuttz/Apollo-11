@@ -1,0 +1,3 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_hardware_divide.c src/agc_word.c src/agc_hardware_divide.c tests/hardware_divide_cases.c -o build/test-hardware-divide
+build/test-hardware-divide
+255 complete hardware-DV register states: PASS

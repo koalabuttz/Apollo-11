@@ -331,3 +331,5 @@ include tools/p66_native.mk
 include tools/rotation.mk
 
 include tools/projection.mk
+
+include tools/hardware_divide.mk

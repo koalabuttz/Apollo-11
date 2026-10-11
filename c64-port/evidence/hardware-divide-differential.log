@@ -1,0 +1,5 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS:327680 full16-bit hardwareDV states, including zero/mixedsign/overflow operands
+Snapshot SHA256: 54786d89def2ea21d8bd990d6ed9966b87a08f8c150bc6d5cfdd03c246648edc
