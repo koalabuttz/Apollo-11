@@ -1131,3 +1131,7 @@ include tools/dsky_monitor_consumer_integration.mk
 
 include tools/cm_waitlist_internal.mk
 all: build/cm-waitlist-internal-native
+
+include tools/lm_delay_image_port_integration.mk
+test: lm-delay-image-port-test
+sanitize: lm-delay-image-port-sanitize

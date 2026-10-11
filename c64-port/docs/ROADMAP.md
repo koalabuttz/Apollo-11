@@ -1648,3 +1648,7 @@ Qualify256 continuous original monitor sequences with4872 complete strict saniti
 ## Translate complete internal Comanche delay insertion controls
 
 Qualify actual DLY2 VARDELAY FIXDELAY insertion overflow and real task completion frontiers against24576 complete original strict sanitizer states and64 C64 cases. See `docs/COMANCHE_WAITLIST_INTERNAL.md`.
+
+## Translate Luminary internal WAIT2 and delay task insertion
+
+Qualify actual WAIT2 FIXDELAY VARDELAY insertion and original TASKOVER and alarm frontiers against16384 complete original states strict sanitizers and64 C64 cases preserving frozen helpers. See `docs/LM-DELAY-IMAGE.md`.
