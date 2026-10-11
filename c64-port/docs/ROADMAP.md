@@ -948,3 +948,7 @@ All82 byte-original emitted words including jet-sense, deadband, outer-rate, coa
 ## Complete original Luminary SPS backup RCS source
 
 Independent arithmetic/control review, exact original82-word mapping, complete source/sanitizer comparisons and actual C64 execution certify the containing SPS backup RCS file within its canonical source entry and external END contracts. The inventory has34 complete files (28 native/data/declaration and six comment-only files), with141 source files and both integrated applications still requiring complete acceptance. See `docs/LUMINARY-SPS-RCS.md`.
+
+## Translate original Luminary and Comanche ENTER noun admission
+
+Actual ENTPAS0 noun selection composes the unchanged fixed-data noun reader and original SETNCADR stores through source-selected VERBFAN, MIXNOUN, GODSPALM, REQADD and INTMCTBS boundaries. All8,192 complete original/full-sanitizer states and64 actual C64 checkpoints match, including all nouns0..99, signed zero and retained bank contexts. Subsequent verb and mixed-noun bodies remain separate. See `docs/DSKY-ENTER-ZERO.md`.
