@@ -334,3 +334,5 @@ subprocess.run([sys.executable,'tools/cm_single_return_differential.py',str(refe
 subprocess.run([sys.executable,'tools/lm_sleep_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/makeplay_sleep_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/lm_busy_differential.py',str(reference)],cwd=ROOT,check=True)

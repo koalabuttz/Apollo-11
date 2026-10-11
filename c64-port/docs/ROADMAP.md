@@ -600,3 +600,7 @@ All 8192 whole original-image JOBSLEEP transitions match native and sanitizer ou
 ## Port actual MAKEPLAY sleep and wake control
 
 All 16384 complete original states qualify the true GOSLEEPS, wake and busy paths; native sanitizer and C64 checks pass. See `docs/P66-MAKEPLAY-SLEEP.md`.
+
+## Port Luminary Pinball busy-state source control
+
+All 8192 complete original-image busy transitions match native and sanitized outputs; C64 checks pass with exact scratch and register effects. See `docs/LM-PINBALL-BUSY.md`.
