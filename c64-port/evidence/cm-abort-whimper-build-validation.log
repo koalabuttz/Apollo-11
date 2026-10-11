@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-abort-whimper-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-abort-whimper-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-ABORT-WHIMPER.PRG' as `RESIDENT' to unit 8
+writing file `CM-ABORT-WHIMPER-217.PRG' as `G217' to unit 8
+writing file `CM-ABORT-WHIMPER-254.PRG' as `G254' to unit 8
+writing file `CM-ABORT-WHIMPER-255.PRG' as `G255' to unit 8
+217 893 loaded bytes
+254 4807 loaded bytes
+255 10065 loaded bytes

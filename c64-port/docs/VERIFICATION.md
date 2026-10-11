@@ -1476,3 +1476,7 @@ Both original mission converters, CDU controls and clock reads plus Comanche PIP
 ## Translate original Comanche abort snapshot and alarm entry chronology
 
 Qualify BAILOUT POODOO and CCSHOLE through actual VAC5 GENTRAN and BORTENT against uninterrupted original machine checkpoints, retaining the corrected diagnostic failure evidence and explicit recovery frontiers. See `docs/COMANCHE_ABORT_SNAPSHOT.md`.
+
+## Translate original Comanche WHIMPER resume and recovery handoff
+
+Qualify actual WHIMPER RESUME POSTJUMP and ENEMA handoff against8192 original whole-machine states and64 C64 states with explicit finite return metadata. See `docs/COMANCHE_ABORT_WHIMPER.md`.
