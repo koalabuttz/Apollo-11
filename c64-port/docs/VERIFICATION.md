@@ -1640,3 +1640,7 @@ Qualify both original antenna control calls and complete DP sine cosine source b
 Qualify both original VBTSTLTS and TSTLTS source on off scheduled and display-control stages including actual Comanche CHKPOOH and literal SWRETURN effects against8192 complete original native sanitizer states and64 C64 states preserving channel dirty relay and scheduler frontiers. See `docs/DSKY-LAMP-TEST.md`.
 
 The authenticated GitHub branch reference was verified at `a768a80b63ee546e8d99efe14bf2b66588c5c7af`, including 307 exact milestone trees through both mission native lamp controls `8d27854e`. The immutable record is `evidence/github-milestone-publication-307-audit.json`. Native application completion remains governed by the coverage and integrated-application gates.
+
+## Qualify original Comanche alarm callers and physical inline data reads
+
+Qualify actual ALARM VARALARM CURTAINS BORTENT source producer domains over every ordinary Q0100 through7775 all8 EB mappings post store scratch aliases and actual passive fixed data against128960 complete original native sanitizer states and64 C64 states holding producer exclusion across all real data page and native body loads. See `docs/COMANCHE_ALARM_IMAGE.md`.

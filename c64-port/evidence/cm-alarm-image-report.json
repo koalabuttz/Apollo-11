@@ -1,0 +1,100 @@
+{
+  "actual_executed_source_states": 128960,
+  "source_stream_sha256": "20469071c694ccc82694f9278f300cdddd9a7be79b98c2c79ab834b3b33738cf",
+  "target_contexts": 64,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004000",
+  "software_stack_bytes": 712,
+  "modules": [
+    {
+      "id": 227,
+      "filename": "G227",
+      "byte_count": 3097,
+      "crc16": 12968,
+      "sha256": "65b6198851db7496a63bb1b236135e631de09a3cf628077f06f64331c60f31ca",
+      "prg": "cm-alarm-image-227.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 5058,
+      "crc16": 49222,
+      "sha256": "fb64e695522949fbf0acf9b9676d68125b2eb8cf9cb9d301eb29c97e8b3e40a8",
+      "prg": "cm-alarm-image-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 9981,
+      "crc16": 20828,
+      "sha256": "98108d77b846d9446d86491b8b44f5a1110ee66003fcf83125e34e9f4577c2da",
+      "prg": "cm-alarm-image-255.prg",
+      "native_control": false
+    },
+    {
+      "id": 200,
+      "filename": "F200",
+      "byte_count": 14483,
+      "crc16": 62851,
+      "sha256": "cfbe4d32f919538cd398724f3ef12f1091de4011e77c53bf814f17ae4b4c8c56",
+      "prg": "cm-fixed-compat-200.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 201,
+      "filename": "F201",
+      "byte_count": 14528,
+      "crc16": 35387,
+      "sha256": "1762287da00769644de30e2475de96b85043af151065bf260c02fcbd6a87b51c",
+      "prg": "cm-fixed-compat-201.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 202,
+      "filename": "F202",
+      "byte_count": 14528,
+      "crc16": 21478,
+      "sha256": "723cfa924ffb4f40dee347a59162d12e7dbaabd11f4346ec1dc1f0d7e01a86ff",
+      "prg": "cm-fixed-compat-202.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 203,
+      "filename": "F203",
+      "byte_count": 14528,
+      "crc16": 34880,
+      "sha256": "4471ce302f6794acf1f0987f6d9880f5cb6221dc6bccd795a58fe4d2b8e27a82",
+      "prg": "cm-fixed-compat-203.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 204,
+      "filename": "F204",
+      "byte_count": 14528,
+      "crc16": 39848,
+      "sha256": "fb94aaabc7201fef2265e7798f4dc6c01a55b574c14ff513d935dd101950d082",
+      "prg": "cm-fixed-compat-204.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 205,
+      "filename": "F205",
+      "byte_count": 2207,
+      "crc16": 14101,
+      "sha256": "012b224cdfc38657720d34852b9cbc2d9fcaa30eca845d2a827a0b0cd2e11025",
+      "prg": "cm-fixed-compat-205.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual ALARM caller-data/read aliases through genuine return or POODOO frontier; no decoder or fixed-word executable credit, selected recovery/display bodies separate"
+}

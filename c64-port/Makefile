@@ -852,3 +852,6 @@ test: test-sband-support
 sanitize: sanitize-sband-support
 
 include tools/dsky_lamp_test.mk
+
+include tools/cm_alarm_image.mk
+all: build/cm-alarm-image-native
