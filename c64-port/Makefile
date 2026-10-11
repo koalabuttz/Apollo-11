@@ -433,3 +433,5 @@ include tools/nv_render.mk
 include tools/goplay.mk
 
 include tools/lm_priority.mk
+
+include tools/runtime_bridge.mk

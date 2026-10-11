@@ -1,0 +1,4 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+build/test-runtime-bridge
+64 complete runtime bridge images and56 invalid boundaries: PASS
+make: Leaving directory '/workspace/Apollo-11/c64-port'

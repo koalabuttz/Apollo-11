@@ -282,3 +282,5 @@ subprocess.run([sys.executable,"tools/goplay_full_differential.py",str(reference
 subprocess.run([sys.executable,'tools/goplay_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/lm_priority_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/runtime_bridge_differential.py',str(reference)],cwd=ROOT,check=True)
