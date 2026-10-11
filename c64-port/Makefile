@@ -640,3 +640,5 @@ include tools/cm_interbank_extended.mk
 prepare-cm-original-rope: | build
 	python3 tools/prepare_cm_original_rope.py
 cm-fixed-compat-differential cm-interbank-extended-differential: prepare-cm-original-rope
+
+include tools/cm_dyndisp_port.mk

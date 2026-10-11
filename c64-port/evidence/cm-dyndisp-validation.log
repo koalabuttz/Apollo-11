@@ -1,0 +1,9 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_dyndisp.c src/cm_dyndisp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c tests/cm_dyndisp_cases.c tests/matrix_cases.c tests/cm_dyndisp_check.c -o build/test-cm-dyndisp
+build/test-cm-dyndisp
+68 complete CM DYNDISP caller states and204 unchanged invalid guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_dyndisp.c src/cm_dyndisp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c tests/cm_dyndisp_cases.c tests/matrix_cases.c tests/cm_dyndisp_check.c -o build/test-cm-dyndisp-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-dyndisp-sanitize
+68 complete CM DYNDISP caller states and204 unchanged invalid guards: PASS
+python3 tools/cm_dyndisp_sanitize_stream.py
+PASS all13824 complete original DYNDISP source states under ASAN/UBSAN, SHA256 b83a36e103510d48f0c61af4daa6c1121b82e6a325e5828fe81835affe7c4667
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_dyndisp_diagnostic.c src/cm_dyndisp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c tests/cm_dyndisp_cases.c tests/matrix_cases.c tests/cm_dyndisp_check.c -Wl,-Map,build/cm_dyndisp.map -o build/cm_dyndisp.prg

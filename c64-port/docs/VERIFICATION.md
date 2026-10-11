@@ -1202,3 +1202,7 @@ Native scheduler adoption now preserves the exact source-selected CHANG2 context
 Fourteen original interbank groups are qualified across 901,120 source-executed complete states and 16,384 explicitly rejected invalid typed BANKJUMP inputs, with full sanitizer equality and 56 actual C64 contexts. Ordinary caller return contracts and whole-file completion remain separate work. See `docs/COMANCHE_INTERBANK_EXTENDED.md`.
 
 A clean isolated checkout exposed the missing original-Comanche assembly prerequisite in the fixed-memory caller differentials. `prepare-cm-original-rope` now independently assembles and compares the byte-original fixture before those recipes. The initial failed audit is retained in `evidence/cm-original-rope-clean-prerequisite.log`; full suite validation follows separately.
+
+## Translate original Comanche dynamic display numerical caller and callee route
+
+Original DYNDISP, P40CNV85 and S41.1 now compose CDU, matrix and rotation helpers through 27 native stages. All 13,824 complete uninterrupted host source states match strict and full sanitizer output; 68 frozen caller transitions pass on C64. Noun85 display formatting and live Executive scheduling remain separate integration work. See `docs/COMANCHE-DYNDISP-NUMERICS.md`.

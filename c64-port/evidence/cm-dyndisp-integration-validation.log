@@ -1,0 +1,8 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/cm_dyndisp_snapshot.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c src/cm_dyndisp.c src/cm_dyndisp_route.c src/matrix_native.c src/gimbal_stage.c src/cm_powered_interface.c src/cm_powered_axis.c src/cm_powered_trig.c src/cm_rotation.c src/guidance_trig.c tests/matrix_cases.c tests/cm_dyndisp_cases.c tests/cm_dyndisp_apply.c -o build/cm-dyndisp-route-port
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_dyndisp.c src/cm_dyndisp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c tests/cm_dyndisp_cases.c tests/matrix_cases.c tests/cm_dyndisp_check.c -o build/test-cm-dyndisp
+build/test-cm-dyndisp
+68 complete CM DYNDISP caller states and204 unchanged invalid guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_dyndisp.c src/cm_dyndisp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c tests/cm_dyndisp_cases.c tests/matrix_cases.c tests/cm_dyndisp_check.c -o build/test-cm-dyndisp-port-san
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-dyndisp-port-san
+68 complete CM DYNDISP caller states and204 unchanged invalid guards: PASS
+PASS all13824 complete original DYNDISP source states under ASAN/UBSAN, SHA256 b83a36e103510d48f0c61af4daa6c1121b82e6a325e5828fe81835affe7c4667
