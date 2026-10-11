@@ -1,0 +1,41 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_admission_complete.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_admission_complete_cases.c platform/host/cm_admission_complete_snapshot.c -o build/cm-admission-complete-native
+python3 tools/cm_admission_complete_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original canonical admission/resource failures and SPVAC entries
+{
+  "cases": 12288,
+  "checkpoints": 12288,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "NOVAC05134",
+    "FINDVAC05147",
+    "SPVAC05160",
+    "SPVACIN05154"
+  ],
+  "resource_cohorts": "all8 first-free-core outcomes including exhaustion \u00d7 all6 first-free-VAC outcomes including exhaustion,64 banks/priorities/background sets",
+  "binary_bytes": 50479104,
+  "snapshot_sha256": "d5791aa9a0204191d463cd192875e9fad306e0b2a4a1fc2911ba2467b0f73a33",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "successful source returns and exact BAILOUT entry with resource reservations preserved; no alarm-body execution; caller-valid positive priority and ordinary source addresses"
+}

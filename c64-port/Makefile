@@ -669,3 +669,6 @@ all: build/cm-context-change-native
 include tools/inverse_trig_port.mk
 
 include tools/cm_dynamic_display_port.mk
+
+include tools/cm_admission_complete.mk
+all: build/cm-admission-complete-native

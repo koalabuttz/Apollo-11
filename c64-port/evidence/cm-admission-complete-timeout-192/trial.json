@@ -1,0 +1,108 @@
+{
+  "outcome": "600second VICE walltime budget expired without completion mailbox; no native pass/failure verdict",
+  "unchanged_source_proof": "12288 complete original states across all resource cohorts",
+  "prior_target_cases": 192,
+  "representative_target_cases": 96,
+  "files": [
+    {
+      "original_path": "build/cm-admission-complete.prg",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete.prg",
+      "sha256": "602c11ed0e38b90cdfc4bb375d7774777aae585c71d4d4d621f5ff287e50b9ce"
+    },
+    {
+      "original_path": "build/cm-admission-complete.map",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete.map",
+      "sha256": "41c382dcac9804c770d116b1354be5a06ad9b42da2de12c0e4f89ad4f929681e"
+    },
+    {
+      "original_path": "build/cm-admission-complete.d64",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete.d64",
+      "sha256": "755cf4a3bdae247997812295fa1f4a794ca54a31159066150d3c5f7ddccfbf03"
+    },
+    {
+      "original_path": "build/cm-admission-complete-210.prg",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-210.prg",
+      "sha256": "5ce23db531682ab20f77b03084d3566c1c710471e3e48e046f6691023d7292dd"
+    },
+    {
+      "original_path": "build/cm-admission-complete-210.map",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-210.map",
+      "sha256": "af4c9744d541c6fd11305824ba0297d271ce0dfb20d2a06f6f13b58a75b5064b"
+    },
+    {
+      "original_path": "build/cm-admission-complete-244.prg",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-244.prg",
+      "sha256": "1983439d6e3636069b1f1b094f7267196b29c81410c415732a4c7e62d4c16224"
+    },
+    {
+      "original_path": "build/cm-admission-complete-244.map",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-244.map",
+      "sha256": "f9e2654ae4f9806f71edea9b23668bb7eb05c5ead7542bd9f33468868346140e"
+    },
+    {
+      "original_path": "build/cm-admission-complete-245.prg",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-245.prg",
+      "sha256": "486bba2dd0a509dff076855e539a5fadd95def9981e57932938ad049573dacd4"
+    },
+    {
+      "original_path": "build/cm-admission-complete-245.map",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-245.map",
+      "sha256": "c2ea7ff2dde838d7a461b4075dfc00947870197c232a0a5cdd36ba04112ce9a2"
+    },
+    {
+      "original_path": "build/cm-admission-complete-c64-result.log",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-c64-result.log",
+      "sha256": "a7647758c014416c041f3b5c7fa0d177b21cca490010302454065b48c2548a8b"
+    },
+    {
+      "original_path": "build/cm-admission-complete-vice.log",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-vice.log",
+      "sha256": "732e5ae43649fcc4931452a203fed55bb4e2a88e510123cc3c312445c984b43c"
+    },
+    {
+      "original_path": "build/cm-admission-complete-vice.mon",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-vice.mon",
+      "sha256": "9ab6c8988393f0ac817a8a5fdbc0dc356385b9fe18e34becfa18a57b1c3020ac"
+    },
+    {
+      "original_path": "build/cm-admission-complete-vice-monitor.log",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-vice-monitor.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original_path": "build/cm-admission-complete-modules.json",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm-admission-complete-modules.json",
+      "sha256": "c4575b7df1c50da54e1f00c297314b00b40eaf43d4a5d1d4c61a3aedc9d3b310"
+    },
+    {
+      "original_path": "tests/cm_admission_complete_vectors.h",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm_admission_complete_vectors.h",
+      "sha256": "854134a9c0e63fd32f768bddabdf294261e5a1fb399058782ea70d7379f4226f"
+    },
+    {
+      "original_path": "tools/cm_freeze_admission_complete.py",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm_freeze_admission_complete.py",
+      "sha256": "b69cbf4261e712edbad5a45de9cc16b6fd8a002bd9bdcd65ee550fb36c0225cc"
+    },
+    {
+      "original_path": "tools/cm_admission_complete_vice_test.py",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm_admission_complete_vice_test.py",
+      "sha256": "6010d8228f38f15c0711b0f289e245c0cd73cec045e5c470bab82a501830d89a"
+    },
+    {
+      "original_path": "platform/c64/cm_admission_complete_diagnostic.c",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm_admission_complete_diagnostic.c",
+      "sha256": "14f5b8f61731708a2978e2c00b9beba7dec2178f81b5a7af8b47a9b1c164900a"
+    },
+    {
+      "original_path": "platform/c64/cm_admission_complete_input.c",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm_admission_complete_input.c",
+      "sha256": "84130f68a3af926aae4cca9e28e7dc5980027b17b2dc579a2555511f2e4815fc"
+    },
+    {
+      "original_path": "platform/c64/cm_admission_complete_check.c",
+      "retained_path": "evidence/cm-admission-complete-timeout-192/cm_admission_complete_check.c",
+      "sha256": "23f0f13dd7b33a1e870f6df9f31117a47db6e6c406850135c50d176df1f35af1"
+    }
+  ]
+}

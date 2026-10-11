@@ -1,0 +1,40 @@
+{
+  "actual_executed_source_states": 12288,
+  "source_stream_sha256": "d5791aa9a0204191d463cd192875e9fad306e0b2a4a1fc2911ba2467b0f73a33",
+  "target_contexts": 96,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500006000",
+  "software_stack_bytes": 719,
+  "modules": [
+    {
+      "id": 210,
+      "filename": "G210",
+      "byte_count": 5704,
+      "crc16": 12512,
+      "sha256": "5ce23db531682ab20f77b03084d3566c1c710471e3e48e046f6691023d7292dd",
+      "prg": "cm-admission-complete-210.prg",
+      "native_control": true
+    },
+    {
+      "id": 244,
+      "filename": "G244",
+      "byte_count": 4274,
+      "crc16": 11026,
+      "sha256": "44a214010350b9ca182e4050fd0979d5fd0d7b94726424c74bfccd9bd66ddc5f",
+      "prg": "cm-admission-complete-244.prg",
+      "native_control": false
+    },
+    {
+      "id": 245,
+      "filename": "G245",
+      "byte_count": 10339,
+      "crc16": 33560,
+      "sha256": "ace8bd6b656d568aa6ecbb0f272b3828b9e8e2f7bd013508af9cc5444623445d",
+      "prg": "cm-admission-complete-245.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual canonical source entry boundaries with complete physical image and explicit I/O; selected application/alarm bodies remain later continuations"
+}
