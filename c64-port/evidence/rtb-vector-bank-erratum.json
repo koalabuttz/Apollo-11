@@ -1,0 +1,75 @@
+{
+  "erratum_scope": "Correct textual metadata only; all prior source/native/sanitizer proofs and bytes remain authoritative and immutable.",
+  "superseded_fields": {
+    "docs/RTB-VECTOR.md": "PULSEIMU IMUPULSE bank06 -> bank07",
+    "evidence/rtb-vector-source-map.json": "lm/cm actual_boundaries.PULSEIMU FB014000 -> FB016000"
+  },
+  "original_CADR": {
+    "lm": "17323",
+    "cm": "17206"
+  },
+  "expected_FB": "016000",
+  "expected_bank": "07",
+  "corpora": {
+    "lm": {
+      "path": "evidence/rtb-vector-lm4-complete.snapshots.xz",
+      "records": 65536,
+      "decoded_sha256": "b6665bec1cef8c2a4593958ee86faa94d69ae4cccae4f66c02e047b4149688eb",
+      "PC": "03323",
+      "FB": "016000",
+      "EB_classes": [
+        "00000",
+        "00400",
+        "01000",
+        "01400",
+        "02000",
+        "02400",
+        "03000",
+        "03400"
+      ],
+      "SUPER_classes": [
+        "00000",
+        "00020",
+        "00040",
+        "00060",
+        "00100",
+        "00120",
+        "00140",
+        "00160"
+      ]
+    },
+    "cm": {
+      "path": "evidence/rtb-vector-cm4-complete.snapshots.xz",
+      "records": 65536,
+      "decoded_sha256": "a153e41f1e387360c37c5a0056834a120b59afb8d9db50b1f9e443b04395c9e7",
+      "PC": "03206",
+      "FB": "016000",
+      "EB_classes": [
+        "00000",
+        "00400",
+        "01000",
+        "01400",
+        "02000",
+        "02400",
+        "03000",
+        "03400"
+      ],
+      "SUPER_classes": [
+        "00000",
+        "00020",
+        "00040",
+        "00060",
+        "00100",
+        "00120",
+        "00140",
+        "00160"
+      ]
+    }
+  },
+  "unchanged_byte_identities": {
+    "docs/RTB-VECTOR.md": "0f8035372edb7f56e928d4fd627b03b5644a251c7b47a0e016be9ac62b8aa05f",
+    "evidence/rtb-vector-source-map.json": "a710ded06af9ff7a0f451731c296e4db8ae725a2e2da8cfa2fe26b429ab8a62b",
+    "src/rtb_vector.c": "d0cdd03869ffc05b7b1d5712b6bb28957c97c7944328bfca2eb3d6677daab70f",
+    "evidence/rtb-vector-proof.json": "870722d4c4e244b4b84668e72c09865ba023b7c41059168fa94370bf98856639"
+  }
+}

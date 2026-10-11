@@ -1544,3 +1544,5 @@ A clean isolated export of exact commit`93c7e11ffc910a6e80717c9b679c4870cd875651
 ## Translate original generic decimal display fresh data load
 
 Qualify both actual DECDSP loads to DSPDCPUT with normal mixed nouns CPU and editing aliases over8192 complete original native sanitizer images plus128 C64 states keeping scale factor and formatter selection separate. See `docs/DSKY-DECIMAL-LOAD.md`.
+
+An additive RTB vector metadata erratum corrects PULSEIMU bank06/FB014000 text to actual bank07/FB016000. The source and native code were correct: root read-only decoding checks all131072 immutable complete frontier states and verifies all prior proof/source hashes unchanged. See `docs/RTB-VECTOR-BANK-ERRATUM.md`.
