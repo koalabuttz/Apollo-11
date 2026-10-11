@@ -1098,3 +1098,7 @@ include tools/cm_ephemeris_moon_callers_integration.mk
 include tools/lm_scan_exception_port_integration.mk
 test: lm-scan-exception-port-test
 sanitize: lm-scan-exception-port-sanitize
+
+include tools/lm_core_fault_port_integration.mk
+test: lm-core-fault-port-test
+sanitize: lm-core-fault-port-sanitize

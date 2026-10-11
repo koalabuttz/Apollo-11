@@ -1691,3 +1691,7 @@ Qualify source positive zero candidates dead data alias and actual exception ret
 ## Complete local Comanche ephemerides
 
 Certify all71 original emitted words and all actual local caller return frames using five frozen native source compositions, independent review and fresh unchanged-rope comparison. Caller scheduling, restart, physical validity and complete mission applications remain open. See `docs/CM-EPHEMERIS-COMPLETE.md`.
+
+## Translate Luminary core fault fixed data frontiers
+
+Qualify actual reserved core admission and wake fixed word execution frontiers against16384 complete original states strict sanitizers and64 C64 cases without adding instruction decoding. See `docs/LM-CORE-FAULT.md`.

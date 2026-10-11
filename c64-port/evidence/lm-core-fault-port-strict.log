@@ -1,0 +1,4 @@
+PASS:16384 original admission/wake complete2050-word actual TC7/TC014 handoffs
+Snapshot SHA256: 3bff87507487120c938fdb00b85da072fae91f51c59b4ee8f606b2a2ff2d9f78
+PASS:16384 frozen admission/wake exclusions unchanged;23 all-object mutation guards and2 null interfaces
+PASS:retained admission/wake fault aliases strict;16384 whole original states,16384 prior admission/wake exclusions,32 checked PRGs
