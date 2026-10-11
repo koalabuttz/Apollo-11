@@ -1,0 +1,128 @@
+{
+  "verified_head": "04d9e7248353c7c432b0512e3f6dc7ff8e7a12ee",
+  "prior_record": "build/phase-committed-fanout-raw-cleanup.json",
+  "prior_record_sha256": "29ab855480365f423175571f4ab97cf988df871c622312324823eac4055155e4",
+  "total_reclaimed_bytes": 1138219749,
+  "records": [
+    {
+      "removed_raw": "build/dsky-mixed-noun-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-mixed-noun-sanitize.snapshots.gz",
+      "decoded_sha256": "f0b6477250524cb1c723e600f97757ce1161d20f0f40537413f7aec6e94bf361",
+      "reclaimed_bytes": 94844245,
+      "archive_sha256": "7c687cfb35c6de9986e53b6fd84c23406333a41746b7e7bcf91ba9e7374a84d4",
+      "archive_git_blob": "7e6f008a156b11d41391a10e892d5b8dce84f6a0",
+      "archive_bytes": 41342474,
+      "decoded_bytes": 94844245
+    },
+    {
+      "removed_raw": "build/dsky-mixed-noun-native.snapshots",
+      "retained_committed": "evidence/dsky-mixed-noun-native.snapshots.gz",
+      "decoded_sha256": "f0b6477250524cb1c723e600f97757ce1161d20f0f40537413f7aec6e94bf361",
+      "reclaimed_bytes": 94844245,
+      "archive_sha256": "7c687cfb35c6de9986e53b6fd84c23406333a41746b7e7bcf91ba9e7374a84d4",
+      "archive_git_blob": "7e6f008a156b11d41391a10e892d5b8dce84f6a0",
+      "archive_bytes": 41342474,
+      "decoded_bytes": 94844245
+    },
+    {
+      "removed_raw": "build/dsky-mixed-noun-reference.snapshots",
+      "retained_committed": "evidence/dsky-mixed-noun-reference.snapshots.gz",
+      "decoded_sha256": "f0b6477250524cb1c723e600f97757ce1161d20f0f40537413f7aec6e94bf361",
+      "reclaimed_bytes": 94844245,
+      "archive_sha256": "7c687cfb35c6de9986e53b6fd84c23406333a41746b7e7bcf91ba9e7374a84d4",
+      "archive_git_blob": "7e6f008a156b11d41391a10e892d5b8dce84f6a0",
+      "archive_bytes": 41342474,
+      "decoded_bytes": 94844245
+    },
+    {
+      "removed_raw": "build/dsky-verb-dispatch-reference.snapshots",
+      "retained_committed": "evidence/dsky-verb-dispatch-reference.snapshots.gz",
+      "decoded_sha256": "b9e2a15a34556d4a99b7001209fe57ec7c5af5052c480a4ca2a2954e5900e5ef",
+      "reclaimed_bytes": 94875108,
+      "archive_sha256": "cd7e78b5201d02cb77befe8050f3697f612d29c77e748a0cbf46a7436165dff8",
+      "archive_git_blob": "a16614075f69ec1f1d49f50ada4530a0799292f3",
+      "archive_bytes": 41384618,
+      "decoded_bytes": 94875108
+    },
+    {
+      "removed_raw": "build/dsky-verb-dispatch-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-verb-dispatch-sanitize.snapshots.gz",
+      "decoded_sha256": "b9e2a15a34556d4a99b7001209fe57ec7c5af5052c480a4ca2a2954e5900e5ef",
+      "reclaimed_bytes": 94875108,
+      "archive_sha256": "cd7e78b5201d02cb77befe8050f3697f612d29c77e748a0cbf46a7436165dff8",
+      "archive_git_blob": "a16614075f69ec1f1d49f50ada4530a0799292f3",
+      "archive_bytes": 41384618,
+      "decoded_bytes": 94875108
+    },
+    {
+      "removed_raw": "build/dsky-verb-dispatch-native.snapshots",
+      "retained_committed": "evidence/dsky-verb-dispatch-native.snapshots.gz",
+      "decoded_sha256": "b9e2a15a34556d4a99b7001209fe57ec7c5af5052c480a4ca2a2954e5900e5ef",
+      "reclaimed_bytes": 94875108,
+      "archive_sha256": "cd7e78b5201d02cb77befe8050f3697f612d29c77e748a0cbf46a7436165dff8",
+      "archive_git_blob": "a16614075f69ec1f1d49f50ada4530a0799292f3",
+      "archive_bytes": 41384618,
+      "decoded_bytes": 94875108
+    },
+    {
+      "removed_raw": "build/dsky-display-release-native.snapshots",
+      "retained_committed": "evidence/dsky-display-release-native.snapshots.gz",
+      "decoded_sha256": "8723a623a2480ba28a3998701f19da01bb0bb4d6f9c141441b599446556b3004",
+      "reclaimed_bytes": 94801108,
+      "archive_sha256": "c75a15bb0e43252705eeb481d86147e2f776a656457320c1cbee59d6f84bd863",
+      "archive_git_blob": "4f00c2b9f48c2b266867e70994617e25b482fbd0",
+      "archive_bytes": 41365058,
+      "decoded_bytes": 94801108
+    },
+    {
+      "removed_raw": "build/dsky-display-release-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-display-release-sanitize.snapshots.gz",
+      "decoded_sha256": "8723a623a2480ba28a3998701f19da01bb0bb4d6f9c141441b599446556b3004",
+      "reclaimed_bytes": 94801108,
+      "archive_sha256": "c75a15bb0e43252705eeb481d86147e2f776a656457320c1cbee59d6f84bd863",
+      "archive_git_blob": "4f00c2b9f48c2b266867e70994617e25b482fbd0",
+      "archive_bytes": 41365058,
+      "decoded_bytes": 94801108
+    },
+    {
+      "removed_raw": "build/dsky-display-release-reference.snapshots",
+      "retained_committed": "evidence/dsky-display-release-reference.snapshots.gz",
+      "decoded_sha256": "8723a623a2480ba28a3998701f19da01bb0bb4d6f9c141441b599446556b3004",
+      "reclaimed_bytes": 94801108,
+      "archive_sha256": "c75a15bb0e43252705eeb481d86147e2f776a656457320c1cbee59d6f84bd863",
+      "archive_git_blob": "4f00c2b9f48c2b266867e70994617e25b482fbd0",
+      "archive_bytes": 41365058,
+      "decoded_bytes": 94801108
+    },
+    {
+      "removed_raw": "build/dsky-extended-dispatch-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-extended-dispatch-sanitize.snapshots.gz",
+      "decoded_sha256": "1cb51342a5c0ab17f9d491f39c37eadad4e02d27a37d8594fb7237e2b02f0dd7",
+      "reclaimed_bytes": 94886122,
+      "archive_sha256": "5b6f1f9fe6db3111e44e02dbc21908b0a290aa438a8995af197a480e0eb8dd43",
+      "archive_git_blob": "5e0e0e8be6c90aceeb95fd74d46e5d468056b2e8",
+      "archive_bytes": 41411500,
+      "decoded_bytes": 94886122
+    },
+    {
+      "removed_raw": "build/dsky-extended-dispatch-native.snapshots",
+      "retained_committed": "evidence/dsky-extended-dispatch-native.snapshots.gz",
+      "decoded_sha256": "1cb51342a5c0ab17f9d491f39c37eadad4e02d27a37d8594fb7237e2b02f0dd7",
+      "reclaimed_bytes": 94886122,
+      "archive_sha256": "5b6f1f9fe6db3111e44e02dbc21908b0a290aa438a8995af197a480e0eb8dd43",
+      "archive_git_blob": "5e0e0e8be6c90aceeb95fd74d46e5d468056b2e8",
+      "archive_bytes": 41411500,
+      "decoded_bytes": 94886122
+    },
+    {
+      "removed_raw": "build/dsky-extended-dispatch-reference.snapshots",
+      "retained_committed": "evidence/dsky-extended-dispatch-reference.snapshots.gz",
+      "decoded_sha256": "1cb51342a5c0ab17f9d491f39c37eadad4e02d27a37d8594fb7237e2b02f0dd7",
+      "reclaimed_bytes": 94886122,
+      "archive_sha256": "5b6f1f9fe6db3111e44e02dbc21908b0a290aa438a8995af197a480e0eb8dd43",
+      "archive_git_blob": "5e0e0e8be6c90aceeb95fd74d46e5d468056b2e8",
+      "archive_bytes": 41411500,
+      "decoded_bytes": 94886122
+    }
+  ]
+}

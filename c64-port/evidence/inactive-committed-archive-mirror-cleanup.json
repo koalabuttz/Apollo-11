@@ -1,0 +1,1557 @@
+{
+  "checked_git_snapshot": "04d9e7248353c7c432b0512e3f6dc7ff8e7a12ee",
+  "checked_at_utc": "2026-10-11T11:28:44.409461+00:00",
+  "scope": "Inactive compressed build mirrors only; all owners confirmed historical archive dependencies and active prefixes excluded. Committed canonical evidence bytes and Git blobs are unchanged. No source, target program, raw proof or active artifact removed.",
+  "exclusions": [
+    "build/lm-admission-image-",
+    "build/lm-waitlist-image-",
+    "build/lm-waitlist-irq-dispatch",
+    "build/p66-recurrence",
+    "build/p66-application-recurrence",
+    "build/cm-abort-snapshot",
+    "build/cm-clock-blocked-display",
+    "build/cm-display-rest",
+    "build/dsky-nv-admission",
+    "build/dsky-nv-return",
+    "build/dsky-nv-busy",
+    "build/dsky-jam-control",
+    "build/dsky-octal-display",
+    "build/rtb-angles"
+  ],
+  "removed_files": [
+    {
+      "build": "build/recovery-reference.trace.gz",
+      "evidence": "evidence/recovery-reference.trace.gz",
+      "bytes": 228106,
+      "compressed_sha256": "bd6b05737800e459abb62fd223b055e9a70d4268c3de84b7eb49c0ce8ff035ac",
+      "retained_git_blob": "a3c9c50fa29ce7195e6ea6d1d8e36429e865ad1f"
+    },
+    {
+      "build": "build/dsky-charin-alarm-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-alarm-cm-assembly.lst.gz",
+      "bytes": 1298786,
+      "compressed_sha256": "05a58ee52aa82bf9d3f46b2284070f9d2013499409f22bb4fa8f888cf0861c0c",
+      "retained_git_blob": "4ebbab3dd0ffe6ae197ddf1a4ff52a46245bfc5b"
+    },
+    {
+      "build": "build/cm-keyboard-irq-reference.snapshots.gz",
+      "evidence": "evidence/cm-keyboard-irq-reference.snapshots.gz",
+      "bytes": 61812593,
+      "compressed_sha256": "7c3ccbb0bd10f96a80ecef50b4cfab4ede9c548ec0d1ccd5a74e26b56402ee67",
+      "retained_git_blob": "7c808179e91a0517e3cb0dbaa72099463fcfcf9d"
+    },
+    {
+      "build": "build/dsky-mixed-noun-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-mixed-noun-cm-assembly.lst.gz",
+      "bytes": 1298810,
+      "compressed_sha256": "bd525432df01eb79781a29a797c6e4cca4b0079df82fe0ea4095b30857240b39",
+      "retained_git_blob": "15e20a99a15a32df8f509126f66c83f24b00d69b"
+    },
+    {
+      "build": "build/dsky-enter-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-enter-lm-assembly.lst.gz",
+      "bytes": 1298611,
+      "compressed_sha256": "1c0c44305fbf4e64feaa1e5c994bf92cd5b438015e25675c4f4b003a22e85d58",
+      "retained_git_blob": "8b88d6a726103f1bf54b0f7b0beed760bb9bc13f"
+    },
+    {
+      "build": "build/dsky-decimal-native.snapshots.gz",
+      "evidence": "evidence/dsky-decimal-native.snapshots.gz",
+      "bytes": 20650555,
+      "compressed_sha256": "a2a9fd75b612de75349b4ce9485f5a0a9336fa6d2759822f62575c679d38895b",
+      "retained_git_blob": "67c9138e9ba7e3cd2b3dcdbc030fc0c4f517866c"
+    },
+    {
+      "build": "build/dsky-enter-zero-reference.snapshots.gz",
+      "evidence": "evidence/dsky-enter-zero-reference.snapshots.gz",
+      "bytes": 41307374,
+      "compressed_sha256": "2cfcef06361f45ced719a96f24ffa67a454cf08caa3c006c24cfd79a7e59e5c9",
+      "retained_git_blob": "25f5939abf5a05007b7781b012c52a5564717c9c"
+    },
+    {
+      "build": "build/lm-interpreter-change-target-full.snapshots.gz",
+      "evidence": "evidence/lm-interpreter-change-target-full.snapshots.gz",
+      "bytes": 335535,
+      "compressed_sha256": "cade4e41cf3911f59500480a20d772834eb389bd86d80345d7a71dbbda69e2f1",
+      "retained_git_blob": "4090baff14d3ca5a6f111ae6cc0c41d9e06930da"
+    },
+    {
+      "build": "build/cm-orbital-initial-reference.snapshots.gz",
+      "evidence": "evidence/cm-orbital-initial-reference.snapshots.gz",
+      "bytes": 4422561,
+      "compressed_sha256": "abeac7b21af64537512cb9824f71406a8df4af864765dfbe14bd811ea8693784",
+      "retained_git_blob": "da54cd9c116a0cde2d3cec7b563f2cef49b12b74"
+    },
+    {
+      "build": "build/dsky-verb-dispatch-reference.snapshots.gz",
+      "evidence": "evidence/dsky-verb-dispatch-reference.snapshots.gz",
+      "bytes": 41384618,
+      "compressed_sha256": "cd7e78b5201d02cb77befe8050f3697f612d29c77e748a0cbf46a7436165dff8",
+      "retained_git_blob": "a16614075f69ec1f1d49f50ada4530a0799292f3"
+    },
+    {
+      "build": "build/dsky-decimal-reference.snapshots.gz",
+      "evidence": "evidence/dsky-decimal-reference.snapshots.gz",
+      "bytes": 20650558,
+      "compressed_sha256": "3fda96b5638518c7a8842269fdff9ba5fef44d84f0b91eae239aeb606a264f69",
+      "retained_git_blob": "816e3ecd957e60128a7e85a9d08e67d4c5394e13"
+    },
+    {
+      "build": "build/matrix-CM-reference.snapshots.xz",
+      "evidence": "evidence/matrix-CM-reference.snapshots.xz",
+      "bytes": 2232816,
+      "compressed_sha256": "6ab19be17b9de88cca8f9424cd14206b55fa17e60bc26c0b8515105b449c2a6c",
+      "retained_git_blob": "c97ba404dd1f74d0fee0d16c8441c8289b4c84ec"
+    },
+    {
+      "build": "build/dsky-charin-clear-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-clear-cm-assembly.lst.gz",
+      "bytes": 1298786,
+      "compressed_sha256": "05a58ee52aa82bf9d3f46b2284070f9d2013499409f22bb4fa8f888cf0861c0c",
+      "retained_git_blob": "4ebbab3dd0ffe6ae197ddf1a4ff52a46245bfc5b"
+    },
+    {
+      "build": "build/dsky-load-control-native.snapshots.gz",
+      "evidence": "evidence/dsky-load-control-native.snapshots.gz",
+      "bytes": 41303999,
+      "compressed_sha256": "d0d99aea40add3d7d6ac181d72615bf058009d429e81299e025f891d740e24bf",
+      "retained_git_blob": "fe1962e6fc984525f765ad61245c6513ba8375a8"
+    },
+    {
+      "build": "build/cm-alarm-record-native.snapshots.bin.gz",
+      "evidence": "evidence/cm-alarm-record-native.snapshots.bin.gz",
+      "bytes": 2708611,
+      "compressed_sha256": "148c4f49a58730941f2103813ad8dd9469f827de0c4c7b632cccc0a3f0d02043",
+      "retained_git_blob": "343aa88d09e14b8cf3a8b15430a849d1bf4eb5cb"
+    },
+    {
+      "build": "build/dsky-keyrupt-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-keyrupt-sanitize.snapshots.gz",
+      "bytes": 20630247,
+      "compressed_sha256": "64b5dfd6fd3c8305526589c8611ab19aef3981be5a2a11849293d595a6d2689f",
+      "retained_git_blob": "ef0760f103b0300ca7b1cc307044dbc9f76aecd5"
+    },
+    {
+      "build": "build/dsky-verb-dispatch-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-verb-dispatch-sanitize.snapshots.gz",
+      "bytes": 41384618,
+      "compressed_sha256": "cd7e78b5201d02cb77befe8050f3697f612d29c77e748a0cbf46a7436165dff8",
+      "retained_git_blob": "a16614075f69ec1f1d49f50ada4530a0799292f3"
+    },
+    {
+      "build": "build/cm-context-change-native.snapshots.bin.gz",
+      "evidence": "evidence/cm-context-change-native.snapshots.bin.gz",
+      "bytes": 3304444,
+      "compressed_sha256": "68709d102e212df0abf8b38247fe0858ff87c4d15911e83e9e6e8116128af8d9",
+      "retained_git_blob": "5056a53d57a4b48d47175e11d1ce697821d53029"
+    },
+    {
+      "build": "build/dsky-mixed-noun-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-mixed-noun-lm-assembly.lst.gz",
+      "bytes": 1298529,
+      "compressed_sha256": "cf2ac14ea997b933ec238900913a9d1f2e629772ee00bb2d95d8e9caeff63d7a",
+      "retained_git_blob": "3eef15dde8df6aed332a8c0608a7d4d9d5ebc33f"
+    },
+    {
+      "build": "build/dsky-charin-reset-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-charin-reset-sanitize.snapshots.gz",
+      "bytes": 41268760,
+      "compressed_sha256": "d60cd5ef5ab8d9870982631cafae11913edf4253a7543543360b078fefcd8d07",
+      "retained_git_blob": "c33d3eab7b9a79f66b8120445ae115332b178a7a"
+    },
+    {
+      "build": "build/dsky-charin-number-native.snapshots.gz",
+      "evidence": "evidence/dsky-charin-number-native.snapshots.gz",
+      "bytes": 41304984,
+      "compressed_sha256": "00fb815ffc3b7e6ebb0e3a866499cdef6bc69c3f1136206c7efdc86d4c0ae313",
+      "retained_git_blob": "617b528fcee406304dccd1ba5144931fb2df556f"
+    },
+    {
+      "build": "build/cm-pinball-native.snapshots.gz",
+      "evidence": "evidence/cm-pinball-native.snapshots.gz",
+      "bytes": 41335287,
+      "compressed_sha256": "8fc939a240fdd37cca90825e60eb8215e27cde7558831d8b8ac26ccb299a6751",
+      "retained_git_blob": "8edceed066c980e357b0c1ad3844194609c37722"
+    },
+    {
+      "build": "build/cm-context-change-reference.snapshots.bin.gz",
+      "evidence": "evidence/cm-context-change-reference.snapshots.bin.gz",
+      "bytes": 3304444,
+      "compressed_sha256": "68709d102e212df0abf8b38247fe0858ff87c4d15911e83e9e6e8116128af8d9",
+      "retained_git_blob": "5056a53d57a4b48d47175e11d1ce697821d53029"
+    },
+    {
+      "build": "build/dsky-blanksub-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-blanksub-sanitize.snapshots.gz",
+      "bytes": 41275291,
+      "compressed_sha256": "bd9bf088e462712840d73c758d88652924f5f7c6787b9b3c61b518fa543cb79c",
+      "retained_git_blob": "55f1a14448c91c5bd8923f3c9c41a07b20828053"
+    },
+    {
+      "build": "build/p66-direct-launch-sanitize.snapshots.gz",
+      "evidence": "evidence/p66-direct-launch-sanitize.snapshots.gz",
+      "bytes": 10129937,
+      "compressed_sha256": "299857a11240e44ebbd6082a276cdc33e118a2b6727c0235ca046ee52d789878",
+      "retained_git_blob": "0a00054e922f59bf32e178b9b4eed1e9b9514b7f"
+    },
+    {
+      "build": "build/cm-fixed-compat-native.snapshots.bin.gz",
+      "evidence": "evidence/cm-fixed-compat-native.snapshots.bin.gz",
+      "bytes": 19509113,
+      "compressed_sha256": "4acefa945f3d459d27c5eb3dc357016bd70ad469dd1e44e8c2d0e4eb7d7a6bfa",
+      "retained_git_blob": "a391727640ec2868e136956bd41ba544ca344564"
+    },
+    {
+      "build": "build/dsky-charin-release-native.snapshots.gz",
+      "evidence": "evidence/dsky-charin-release-native.snapshots.gz",
+      "bytes": 41340166,
+      "compressed_sha256": "ac6b3eb4173a52c6390bb2855fbf35ad1e836c3e52bc2a598df6f0bee390710d",
+      "retained_git_blob": "f0ea55289155dca0900cac1feca08a4594b88c34"
+    },
+    {
+      "build": "build/dsky-keyboard-current-source.tar.gz",
+      "evidence": "evidence/dsky-keyboard-current-source.tar.gz",
+      "bytes": 165298,
+      "compressed_sha256": "01648fb9eb68eb6bb5c92ce9353c46ece656e24e0329384cf86577eaeaf90c45",
+      "retained_git_blob": "85fd3aa8252ed5c87177f09a674556d0e3290ba3"
+    },
+    {
+      "build": "build/dsky-enter-zero-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-enter-zero-lm-assembly.lst.gz",
+      "bytes": 1298529,
+      "compressed_sha256": "cf2ac14ea997b933ec238900913a9d1f2e629772ee00bb2d95d8e9caeff63d7a",
+      "retained_git_blob": "3eef15dde8df6aed332a8c0608a7d4d9d5ebc33f"
+    },
+    {
+      "build": "build/dsky-extended-dispatch-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-extended-dispatch-cm-assembly.lst.gz",
+      "bytes": 1298237,
+      "compressed_sha256": "41cd3104b87cfbe27ab24cb12172b37387e88da04c11fd6f5a159e8132deb4f5",
+      "retained_git_blob": "7eadf7e698a8b00195be9ee7d2c0d743f3134999"
+    },
+    {
+      "build": "build/cm-charin-number-original-source-assembly.lst.gz",
+      "evidence": "evidence/cm-charin-number-original-source-assembly.lst.gz",
+      "bytes": 1298008,
+      "compressed_sha256": "6d65a002f4186f111c332a5b714e9ef28275b234bbd768010b333b93a21ff236",
+      "retained_git_blob": "f5b8f1612bcce6e87194c435d69bf9681e59078a"
+    },
+    {
+      "build": "build/dsky-keycom-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-keycom-sanitize.snapshots.gz",
+      "bytes": 20633704,
+      "compressed_sha256": "93e55cc64eed59580d7f535f1a705d91ba949ba71fbb9110aac97c3b372961ed",
+      "retained_git_blob": "52e4bc121ee726fda6d04f139bc4685493cad37c"
+    },
+    {
+      "build": "build/dsky-enter-zero-native.snapshots.gz",
+      "evidence": "evidence/dsky-enter-zero-native.snapshots.gz",
+      "bytes": 41307374,
+      "compressed_sha256": "2cfcef06361f45ced719a96f24ffa67a454cf08caa3c006c24cfd79a7e59e5c9",
+      "retained_git_blob": "25f5939abf5a05007b7781b012c52a5564717c9c"
+    },
+    {
+      "build": "build/dsky-mixed-noun-reference.snapshots.gz",
+      "evidence": "evidence/dsky-mixed-noun-reference.snapshots.gz",
+      "bytes": 41342474,
+      "compressed_sha256": "7c687cfb35c6de9986e53b6fd84c23406333a41746b7e7bcf91ba9e7374a84d4",
+      "retained_git_blob": "7e6f008a156b11d41391a10e892d5b8dce84f6a0"
+    },
+    {
+      "build": "build/cm-scale-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-scale-sanitize.snapshots.gz",
+      "bytes": 20656107,
+      "compressed_sha256": "ee776cbb254e211ed59d33aed2f9850f7db5143b32bea1cf6a06612f2472a36a",
+      "retained_git_blob": "bf339ec6bcf0f6a229ea96e72f55dc4f963dd858"
+    },
+    {
+      "build": "build/p66-direct-launch-native.snapshots.gz",
+      "evidence": "evidence/p66-direct-launch-native.snapshots.gz",
+      "bytes": 10129937,
+      "compressed_sha256": "299857a11240e44ebbd6082a276cdc33e118a2b6727c0235ca046ee52d789878",
+      "retained_git_blob": "0a00054e922f59bf32e178b9b4eed1e9b9514b7f"
+    },
+    {
+      "build": "build/cm-formatter-native.snapshots.gz",
+      "evidence": "evidence/cm-formatter-native.snapshots.gz",
+      "bytes": 61903068,
+      "compressed_sha256": "8929a96fbd8bc5f21175292cd4514eea09f09ae689f2035807eaa8bb9173388d",
+      "retained_git_blob": "5efad984f255a35981f3601ff6152d9e89b70834"
+    },
+    {
+      "build": "build/dsky-enter-zero-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-enter-zero-cm-assembly.lst.gz",
+      "bytes": 1298810,
+      "compressed_sha256": "bd525432df01eb79781a29a797c6e4cca4b0079df82fe0ea4095b30857240b39",
+      "retained_git_blob": "15e20a99a15a32df8f509126f66c83f24b00d69b"
+    },
+    {
+      "build": "build/dsky-blank-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-blank-sanitize.snapshots.gz",
+      "bytes": 41281379,
+      "compressed_sha256": "6494981e84686ac1829f18f93c1df1926065dd7e537cb2447c849ad4d5b4f667",
+      "retained_git_blob": "b2220fe15fb89b2bd2a430f288863966f6a6f818"
+    },
+    {
+      "build": "build/cm-decimal-pair-reference.snapshots.xz",
+      "evidence": "evidence/cm-decimal-pair-reference.snapshots.xz",
+      "bytes": 5167124,
+      "compressed_sha256": "086a3df83f14bea954cb3f5d907a283ae483226601b3c87ad3951c71d2e94006",
+      "retained_git_blob": "83a0eea9afe2ad310c342b5fd282258c1f7f9c76"
+    },
+    {
+      "build": "build/waitlist-zero-native.snapshots.gz",
+      "evidence": "evidence/waitlist-zero-native.snapshots.gz",
+      "bytes": 1801,
+      "compressed_sha256": "098d2782f09addff9a984a032a0554e4c23b9198c9399a9aa7348a23b6c77f1b",
+      "retained_git_blob": "b33ed185668ed28a2940558b398c1ab0a160b5ea"
+    },
+    {
+      "build": "build/cm-pinball-reference.snapshots.gz",
+      "evidence": "evidence/cm-pinball-reference.snapshots.gz",
+      "bytes": 41335287,
+      "compressed_sha256": "8fc939a240fdd37cca90825e60eb8215e27cde7558831d8b8ac26ccb299a6751",
+      "retained_git_blob": "8edceed066c980e357b0c1ad3844194609c37722"
+    },
+    {
+      "build": "build/recovery-reference.snapshots.gz",
+      "evidence": "evidence/recovery-reference.snapshots.gz",
+      "bytes": 5252904,
+      "compressed_sha256": "47e2e4c19b0f378a959d1718c83429b18a63e69d737a115e5f3ea03f05ff6c1c",
+      "retained_git_blob": "4d29dc8db254ee3cd7fd6fd3d9291613f85178ba"
+    },
+    {
+      "build": "build/dsky-two-digit-native.snapshots.gz",
+      "evidence": "evidence/dsky-two-digit-native.snapshots.gz",
+      "bytes": 20649142,
+      "compressed_sha256": "9f0a8b2639d80675815799eeac1d27b7a187b5ed3e1b33dff811a8ff31af63be",
+      "retained_git_blob": "9e993980e25e3bb9824d2ac5ac5d376bf35c04d1"
+    },
+    {
+      "build": "build/p66-initialization-native.snapshots.gz",
+      "evidence": "evidence/p66-initialization-native.snapshots.gz",
+      "bytes": 24604,
+      "compressed_sha256": "5abb7718ca9feae85a23c24110895de34e18d80dc407b36692fb1073be218808",
+      "retained_git_blob": "9414b12fe1915b2e2124d647196872ee16a0fef1"
+    },
+    {
+      "build": "build/dsky-charin-clear-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-clear-lm-assembly.lst.gz",
+      "bytes": 1298332,
+      "compressed_sha256": "b5fb81655e61bcc0ee2b96d78bfc6c9cfc246315cea47e2935077060a189fa42",
+      "retained_git_blob": "a89b35f63773899d80c4fbb4377c6931582f9871"
+    },
+    {
+      "build": "build/cm-difeq-native.snapshots.gz",
+      "evidence": "evidence/cm-difeq-native.snapshots.gz",
+      "bytes": 8481850,
+      "compressed_sha256": "4a09d45b016389a8009e2f760a03d36d4573e1a51aced95cba4d059a003fc7e5",
+      "retained_git_blob": "b30a5887bc5e199d9f621d214c557fd35c3dd97b"
+    },
+    {
+      "build": "build/dsky-charin-release-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-release-lm-assembly.lst.gz",
+      "bytes": 1298611,
+      "compressed_sha256": "1c0c44305fbf4e64feaa1e5c994bf92cd5b438015e25675c4f4b003a22e85d58",
+      "retained_git_blob": "8b88d6a726103f1bf54b0f7b0beed760bb9bc13f"
+    },
+    {
+      "build": "build/dsky-charin-sign-native.snapshots.gz",
+      "evidence": "evidence/dsky-charin-sign-native.snapshots.gz",
+      "bytes": 41386211,
+      "compressed_sha256": "00ec65051f1deded1f6300f19e5eaec5345527af62451d8840733916915e723d",
+      "retained_git_blob": "3213bb9644fa4b03b6c9026333dcd8490ee1c6d4"
+    },
+    {
+      "build": "build/dsky-charin-sign-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-charin-sign-sanitize.snapshots.gz",
+      "bytes": 41386211,
+      "compressed_sha256": "00ec65051f1deded1f6300f19e5eaec5345527af62451d8840733916915e723d",
+      "retained_git_blob": "3213bb9644fa4b03b6c9026333dcd8490ee1c6d4"
+    },
+    {
+      "build": "build/dsky-blank-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-blank-cm-assembly.lst.gz",
+      "bytes": 1298958,
+      "compressed_sha256": "f6c2d995005bb252e3d6b4f24118df643214dec0b484d05e6d5006c17b7db119",
+      "retained_git_blob": "4fd09e4f2cd39a37a4d26c8d3aa5a7b324da4f10"
+    },
+    {
+      "build": "build/p66-startup-native.snapshots.gz",
+      "evidence": "evidence/p66-startup-native.snapshots.gz",
+      "bytes": 806780,
+      "compressed_sha256": "8da125e1ea713241a0a0de6fde51adc284b60a4bdd64318dfd9d4826dd1bf1c9",
+      "retained_git_blob": "f5ab631045acea8856d9964bd1816fd55374ad4d"
+    },
+    {
+      "build": "build/p66-mode-zero-native.snapshots.gz",
+      "evidence": "evidence/p66-mode-zero-native.snapshots.gz",
+      "bytes": 5168683,
+      "compressed_sha256": "61279461ebcee09f3091f20ab556b6facb57796959ddab37175ccdbb0b08425d",
+      "retained_git_blob": "4e4ccb5fb6d19b71c6454e75475d1169a1417b22"
+    },
+    {
+      "build": "build/p66-bias-reference.snapshots.gz",
+      "evidence": "evidence/p66-bias-reference.snapshots.gz",
+      "bytes": 5125117,
+      "compressed_sha256": "2edeb02a012c88b5e3792b8f1c5715a4c7da0a7f41b7a288fd599f394bf7798a",
+      "retained_git_blob": "5d83cd33938097f5f9bb3d053ceb05dc1ea15a64"
+    },
+    {
+      "build": "build/lm-interbank-target-source.snapshots.bin.xz",
+      "evidence": "evidence/lm-interbank-target-source.snapshots.bin.xz",
+      "bytes": 20840,
+      "compressed_sha256": "b29791c001f2128d630fa30c9819988a1d1fccfa716fbad4deed6f1ea754d0b7",
+      "retained_git_blob": "a02b9a7451f336980bbf58d351efb3696805f8bb"
+    },
+    {
+      "build": "build/dsky-keycom-native.snapshots.gz",
+      "evidence": "evidence/dsky-keycom-native.snapshots.gz",
+      "bytes": 20633704,
+      "compressed_sha256": "93e55cc64eed59580d7f535f1a705d91ba949ba71fbb9110aac97c3b372961ed",
+      "retained_git_blob": "52e4bc121ee726fda6d04f139bc4685493cad37c"
+    },
+    {
+      "build": "build/cm-scale-native.snapshots.gz",
+      "evidence": "evidence/cm-scale-native.snapshots.gz",
+      "bytes": 20656105,
+      "compressed_sha256": "8a2b1ef4380aeceba5ca8941cd878035d627101d91a9a4345bfa1588806bb0fb",
+      "retained_git_blob": "8b4ae3b0e147a1a811f08be1b35015651d1bb792"
+    },
+    {
+      "build": "build/cm-difeq-reference.snapshots.gz",
+      "evidence": "evidence/cm-difeq-reference.snapshots.gz",
+      "bytes": 8481850,
+      "compressed_sha256": "4a09d45b016389a8009e2f760a03d36d4573e1a51aced95cba4d059a003fc7e5",
+      "retained_git_blob": "b30a5887bc5e199d9f621d214c557fd35c3dd97b"
+    },
+    {
+      "build": "build/dsky-keyboard-irq-flow-reference.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-irq-flow-reference.snapshots.gz",
+      "bytes": 5626370,
+      "compressed_sha256": "578dcc2aaf7a4b06a7c714393ed440a46e384093635a43f230c7617d604b3903",
+      "retained_git_blob": "2ddc8a09bbc5ae2a3ed26b91432fc1f20e5ef8c7"
+    },
+    {
+      "build": "build/dsky-source-alarm-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-source-alarm-lm-assembly.lst.gz",
+      "bytes": 1298754,
+      "compressed_sha256": "63554d44c2911ed71a6006e106730c742898d96080a6fc331707470575e25b42",
+      "retained_git_blob": "7cddad9251b0cdae0b02a0c7eed60965ff3dad39"
+    },
+    {
+      "build": "build/dsky-keyrupt-reference.snapshots.gz",
+      "evidence": "evidence/dsky-keyrupt-reference.snapshots.gz",
+      "bytes": 20630247,
+      "compressed_sha256": "64b5dfd6fd3c8305526589c8611ab19aef3981be5a2a11849293d595a6d2689f",
+      "retained_git_blob": "ef0760f103b0300ca7b1cc307044dbc9f76aecd5"
+    },
+    {
+      "build": "build/dsky-pinball-native.snapshots.gz",
+      "evidence": "evidence/dsky-pinball-native.snapshots.gz",
+      "bytes": 20659075,
+      "compressed_sha256": "dca7ba5caee9725f7dc2bf7ca66c2a81dda1fcdb389a6a44df6662e5501cd0bc",
+      "retained_git_blob": "6cb8cd5b78b8bc3d5ae377918f0f2c5e4a7f5378"
+    },
+    {
+      "build": "build/dsky-blank-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-blank-lm-assembly.lst.gz",
+      "bytes": 1298611,
+      "compressed_sha256": "1c0c44305fbf4e64feaa1e5c994bf92cd5b438015e25675c4f4b003a22e85d58",
+      "retained_git_blob": "8b88d6a726103f1bf54b0f7b0beed760bb9bc13f"
+    },
+    {
+      "build": "build/dsky-pinbranch-native.snapshots.gz",
+      "evidence": "evidence/dsky-pinbranch-native.snapshots.gz",
+      "bytes": 82823442,
+      "compressed_sha256": "ebc94d57ab56bffb52d59b9a97b52cc19989212e50853ca4e50eb1c7de8dab38",
+      "retained_git_blob": "ba8caa3a181ea317858d0161b94a3f79346c1740"
+    },
+    {
+      "build": "build/cm-pinball-original-source-assembly.lst.gz",
+      "evidence": "evidence/cm-pinball-original-source-assembly.lst.gz",
+      "bytes": 1297046,
+      "compressed_sha256": "bfb2048a68d0dc649608994ca196d672339d5bfac91d2cdeebd3a11709e72ead",
+      "retained_git_blob": "8a827d358955beb8b44e35015299916ce6d443a5"
+    },
+    {
+      "build": "build/cm-relay-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-relay-sanitize.snapshots.gz",
+      "bytes": 20644204,
+      "compressed_sha256": "92e373d8d9d247c1d65f04a17404bea53a3b0b9132f92496d73bdd042f79ae80",
+      "retained_git_blob": "2b1d0dfa0908ae7bfe7b3a06f07505ac3f18ceee"
+    },
+    {
+      "build": "build/dsky-keyboard-number-flow-source.tar.gz",
+      "evidence": "evidence/dsky-keyboard-number-flow-source.tar.gz",
+      "bytes": 173210,
+      "compressed_sha256": "83d166b0971850927d00197ed0bdcbbc1f41485306daaeafca26d32c37ad54dc",
+      "retained_git_blob": "36f2cb8a712e62b1adef44ff65edf96190ddbd62"
+    },
+    {
+      "build": "build/dsky-pinball-reference.snapshots.gz",
+      "evidence": "evidence/dsky-pinball-reference.snapshots.gz",
+      "bytes": 20659078,
+      "compressed_sha256": "f765ea292698a752b1079970b69ed5fc6cdf08ed8eb0b645e34e7acc04c4397a",
+      "retained_git_blob": "44c598b36b5a9a5ffc1da8be9812ef830cf1dec0"
+    },
+    {
+      "build": "build/dsky-keyboard-number-flow-reference.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-number-flow-reference.snapshots.gz",
+      "bytes": 5645205,
+      "compressed_sha256": "60205d05cd9ddc077c1b68d092182ca0b19b140f41959f0d263b8555c8b468d8",
+      "retained_git_blob": "3c6f8eaa2b88056210b68fff8fa6a5bf007743ec"
+    },
+    {
+      "build": "build/dsky-charin-sign-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-sign-lm-assembly.lst.gz",
+      "bytes": 1298332,
+      "compressed_sha256": "b5fb81655e61bcc0ee2b96d78bfc6c9cfc246315cea47e2935077060a189fa42",
+      "retained_git_blob": "a89b35f63773899d80c4fbb4377c6931582f9871"
+    },
+    {
+      "build": "build/dsky-charin-nv-native.snapshots.gz",
+      "evidence": "evidence/dsky-charin-nv-native.snapshots.gz",
+      "bytes": 20668101,
+      "compressed_sha256": "682aa0d225cf0751644b631c9be2024c4e205b277a2fa8c2d483f244ad0f3b85",
+      "retained_git_blob": "ec56e1228aac9ffde54ed22d6dd29a187dfddab3"
+    },
+    {
+      "build": "build/dsky-enter-reference.snapshots.gz",
+      "evidence": "evidence/dsky-enter-reference.snapshots.gz",
+      "bytes": 41411735,
+      "compressed_sha256": "fb5cb6116a8b1560c72f4bad1b9854690711d111534c615c9727f8c0e636cdf2",
+      "retained_git_blob": "fc77ba9ef7319ca8c115c82e0e7831417b633c3a"
+    },
+    {
+      "build": "build/p66-vertical-start-reference.snapshots.gz",
+      "evidence": "evidence/p66-vertical-start-reference.snapshots.gz",
+      "bytes": 5092928,
+      "compressed_sha256": "446d68083dbcb5a5c3766949dfe79eb3216a09cf814ba02c650112b967868d7d",
+      "retained_git_blob": "c9169173ce037a5955a56d60e93bdf0880be4e5c"
+    },
+    {
+      "build": "build/cm-admission-complete-native.snapshots.bin.gz",
+      "evidence": "evidence/cm-admission-complete-native.snapshots.bin.gz",
+      "bytes": 2367044,
+      "compressed_sha256": "50fc3a604f43ca90100d7781e91ca2989147647c4aa59c9ea4d976489124972d",
+      "retained_git_blob": "e7f44ccb1c3118c753c60cef9e6b967736bc74ff"
+    },
+    {
+      "build": "build/p66-mode-zero-reference.snapshots.gz",
+      "evidence": "evidence/p66-mode-zero-reference.snapshots.gz",
+      "bytes": 5168683,
+      "compressed_sha256": "61279461ebcee09f3091f20ab556b6facb57796959ddab37175ccdbb0b08425d",
+      "retained_git_blob": "4e4ccb5fb6d19b71c6454e75475d1169a1417b22"
+    },
+    {
+      "build": "build/cm-charin-number-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-charin-number-sanitize.snapshots.gz",
+      "bytes": 41304966,
+      "compressed_sha256": "4df74a718a1f296f576ec2b3193c4c0c7b7870f15f428c4d1b96f79668a527e8",
+      "retained_git_blob": "1f5bd297436f353649a67d931384aec09bd6c388"
+    },
+    {
+      "build": "build/dsky-two-digit-reference.snapshots.gz",
+      "evidence": "evidence/dsky-two-digit-reference.snapshots.gz",
+      "bytes": 20649145,
+      "compressed_sha256": "a096de86b023646afad74c76fc363c10c0bfdd24c604b24d28c16bd37da84704",
+      "retained_git_blob": "13f443d891558f1bf41d396264e0043bb9f3c33f"
+    },
+    {
+      "build": "build/dsky-mixed-noun-native.snapshots.gz",
+      "evidence": "evidence/dsky-mixed-noun-native.snapshots.gz",
+      "bytes": 41342474,
+      "compressed_sha256": "7c687cfb35c6de9986e53b6fd84c23406333a41746b7e7bcf91ba9e7374a84d4",
+      "retained_git_blob": "7e6f008a156b11d41391a10e892d5b8dce84f6a0"
+    },
+    {
+      "build": "build/dsky-pinball-zero-native.snapshots.gz",
+      "evidence": "evidence/dsky-pinball-zero-native.snapshots.gz",
+      "bytes": 20641251,
+      "compressed_sha256": "b98e3678b2622cf044f2f6a81eaa468a0dcb5efd9414cdc5518a61f5b5cb514d",
+      "retained_git_blob": "0203dba39cbe3445e6a29a4520715f46fb461c3e"
+    },
+    {
+      "build": "build/p66-direct-pending-reference.snapshots.gz",
+      "evidence": "evidence/p66-direct-pending-reference.snapshots.gz",
+      "bytes": 5483,
+      "compressed_sha256": "0602cc13dddbcfad25e1037812c4bfa6953ea4233c21f297ac0540bae3a3d955",
+      "retained_git_blob": "e63c94cec0cf9e5eb18494015a20b0d096728e97"
+    },
+    {
+      "build": "build/cm-formatter-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-formatter-sanitize.snapshots.gz",
+      "bytes": 61903068,
+      "compressed_sha256": "8929a96fbd8bc5f21175292cd4514eea09f09ae689f2035807eaa8bb9173388d",
+      "retained_git_blob": "5efad984f255a35981f3601ff6152d9e89b70834"
+    },
+    {
+      "build": "build/dsky-source-alarm-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-source-alarm-cm-assembly.lst.gz",
+      "bytes": 1298237,
+      "compressed_sha256": "41cd3104b87cfbe27ab24cb12172b37387e88da04c11fd6f5a159e8132deb4f5",
+      "retained_git_blob": "7eadf7e698a8b00195be9ee7d2c0d743f3134999"
+    },
+    {
+      "build": "build/dsky-charin-clear-reference.snapshots.gz",
+      "evidence": "evidence/dsky-charin-clear-reference.snapshots.gz",
+      "bytes": 82615104,
+      "compressed_sha256": "89eb43d59ae6bea938cfbf05e412a0c52d1fcf7a91a5155b20545dac83e10b98",
+      "retained_git_blob": "ad06c55ca59b851a29ee63e371443b728d8ce453"
+    },
+    {
+      "build": "build/dsky-source-alarm-native.snapshots.gz",
+      "evidence": "evidence/dsky-source-alarm-native.snapshots.gz",
+      "bytes": 41465269,
+      "compressed_sha256": "e48215215926f24d9798548b20f745e044e9133a39ffd3723c2ca588d39894e5",
+      "retained_git_blob": "9a8c78c44bf3e15618862fb80c056765c2bdcab1"
+    },
+    {
+      "build": "build/dsky-pinball-zero-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-pinball-zero-sanitize.snapshots.gz",
+      "bytes": 20641251,
+      "compressed_sha256": "b98e3678b2622cf044f2f6a81eaa468a0dcb5efd9414cdc5518a61f5b5cb514d",
+      "retained_git_blob": "0203dba39cbe3445e6a29a4520715f46fb461c3e"
+    },
+    {
+      "build": "build/cm-keyboard-runtime-native.snapshots.gz",
+      "evidence": "evidence/cm-keyboard-runtime-native.snapshots.gz",
+      "bytes": 5789668,
+      "compressed_sha256": "f0e52493b2df5d9140d19cf91e77ad69c38b056dde0ce5724147822cf513d42e",
+      "retained_git_blob": "6ddb5db6b4b91a8a910311b08d4281818847f92b"
+    },
+    {
+      "build": "build/dsky-charin-reset-reference.snapshots.gz",
+      "evidence": "evidence/dsky-charin-reset-reference.snapshots.gz",
+      "bytes": 41268760,
+      "compressed_sha256": "d60cd5ef5ab8d9870982631cafae11913edf4253a7543543360b078fefcd8d07",
+      "retained_git_blob": "c33d3eab7b9a79f66b8120445ae115332b178a7a"
+    },
+    {
+      "build": "build/dsky-keyboard-number-flow-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-number-flow-sanitize.snapshots.gz",
+      "bytes": 5645204,
+      "compressed_sha256": "2734ae88eb820f1af26dd4f4a0a161e8fc9e3d66208134811a3aa420a235671d",
+      "retained_git_blob": "2340668c43fd48fc600f84ed28b88ba8f6fde1fd"
+    },
+    {
+      "build": "build/dsky-enter-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-enter-cm-assembly.lst.gz",
+      "bytes": 1298958,
+      "compressed_sha256": "f6c2d995005bb252e3d6b4f24118df643214dec0b484d05e6d5006c17b7db119",
+      "retained_git_blob": "4fd09e4f2cd39a37a4d26c8d3aa5a7b324da4f10"
+    },
+    {
+      "build": "build/dsky-charin-reset-native.snapshots.gz",
+      "evidence": "evidence/dsky-charin-reset-native.snapshots.gz",
+      "bytes": 41268760,
+      "compressed_sha256": "d60cd5ef5ab8d9870982631cafae11913edf4253a7543543360b078fefcd8d07",
+      "retained_git_blob": "c33d3eab7b9a79f66b8120445ae115332b178a7a"
+    },
+    {
+      "build": "build/cm-alarm-record-reference.snapshots.bin.gz",
+      "evidence": "evidence/cm-alarm-record-reference.snapshots.bin.gz",
+      "bytes": 2708611,
+      "compressed_sha256": "148c4f49a58730941f2103813ad8dd9469f827de0c4c7b632cccc0a3f0d02043",
+      "retained_git_blob": "343aa88d09e14b8cf3a8b15430a849d1bf4eb5cb"
+    },
+    {
+      "build": "build/cm-charin-nv-reference.snapshots.gz",
+      "evidence": "evidence/cm-charin-nv-reference.snapshots.gz",
+      "bytes": 20666214,
+      "compressed_sha256": "5b90a61e17e0010aff20a003612c45ff21e5c54f358504c19d523e9bb97e85df",
+      "retained_git_blob": "c8791d216e757d1f7ab50e56f70bce31535732c8"
+    },
+    {
+      "build": "build/cm-formatter-original-source-assembly.lst.gz",
+      "evidence": "evidence/cm-formatter-original-source-assembly.lst.gz",
+      "bytes": 1297046,
+      "compressed_sha256": "bfb2048a68d0dc649608994ca196d672339d5bfac91d2cdeebd3a11709e72ead",
+      "retained_git_blob": "8a827d358955beb8b44e35015299916ce6d443a5"
+    },
+    {
+      "build": "build/dsky-blank-native.snapshots.gz",
+      "evidence": "evidence/dsky-blank-native.snapshots.gz",
+      "bytes": 41281379,
+      "compressed_sha256": "6494981e84686ac1829f18f93c1df1926065dd7e537cb2447c849ad4d5b4f667",
+      "retained_git_blob": "b2220fe15fb89b2bd2a430f288863966f6a6f818"
+    },
+    {
+      "build": "build/dsky-extended-dispatch-native.snapshots.gz",
+      "evidence": "evidence/dsky-extended-dispatch-native.snapshots.gz",
+      "bytes": 41411500,
+      "compressed_sha256": "5b6f1f9fe6db3111e44e02dbc21908b0a290aa438a8995af197a480e0eb8dd43",
+      "retained_git_blob": "5e0e0e8be6c90aceeb95fd74d46e5d468056b2e8"
+    },
+    {
+      "build": "build/dsky-pinbranch-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-pinbranch-cm-assembly.lst.gz",
+      "bytes": 1298958,
+      "compressed_sha256": "f6c2d995005bb252e3d6b4f24118df643214dec0b484d05e6d5006c17b7db119",
+      "retained_git_blob": "4fd09e4f2cd39a37a4d26c8d3aa5a7b324da4f10"
+    },
+    {
+      "build": "build/p66-mode-zero-sanitize.snapshots.gz",
+      "evidence": "evidence/p66-mode-zero-sanitize.snapshots.gz",
+      "bytes": 5168683,
+      "compressed_sha256": "61279461ebcee09f3091f20ab556b6facb57796959ddab37175ccdbb0b08425d",
+      "retained_git_blob": "4e4ccb5fb6d19b71c6454e75475d1169a1417b22"
+    },
+    {
+      "build": "build/dsky-charin-alarm-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-charin-alarm-sanitize.snapshots.gz",
+      "bytes": 41422169,
+      "compressed_sha256": "776933f54973223103bba1446198d8e7ee9242c6a685fde7ff0a7b9837ce067c",
+      "retained_git_blob": "cacd5dbcbbcc707caa991ae0ea3c497979e97d5c"
+    },
+    {
+      "build": "build/cm-rectify-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-rectify-sanitize.snapshots.gz",
+      "bytes": 9701404,
+      "compressed_sha256": "5c2bbf98360759f28444e5408b06bddedf500748c5948f44e0e5f72418d58cd5",
+      "retained_git_blob": "76164593699454d86796a035f969cb3fcf4c07c0"
+    },
+    {
+      "build": "build/cm-rectify-native.snapshots.gz",
+      "evidence": "evidence/cm-rectify-native.snapshots.gz",
+      "bytes": 9701404,
+      "compressed_sha256": "5c2bbf98360759f28444e5408b06bddedf500748c5948f44e0e5f72418d58cd5",
+      "retained_git_blob": "76164593699454d86796a035f969cb3fcf4c07c0"
+    },
+    {
+      "build": "build/p66-direct-launch-reference.snapshots.gz",
+      "evidence": "evidence/p66-direct-launch-reference.snapshots.gz",
+      "bytes": 10129937,
+      "compressed_sha256": "299857a11240e44ebbd6082a276cdc33e118a2b6727c0235ca046ee52d789878",
+      "retained_git_blob": "0a00054e922f59bf32e178b9b4eed1e9b9514b7f"
+    },
+    {
+      "build": "build/dsky-load-control-reference.snapshots.gz",
+      "evidence": "evidence/dsky-load-control-reference.snapshots.gz",
+      "bytes": 41303999,
+      "compressed_sha256": "d0d99aea40add3d7d6ac181d72615bf058009d429e81299e025f891d740e24bf",
+      "retained_git_blob": "fe1962e6fc984525f765ad61245c6513ba8375a8"
+    },
+    {
+      "build": "build/dsky-display-release-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-display-release-sanitize.snapshots.gz",
+      "bytes": 41365058,
+      "compressed_sha256": "c75a15bb0e43252705eeb481d86147e2f776a656457320c1cbee59d6f84bd863",
+      "retained_git_blob": "4f00c2b9f48c2b266867e70994617e25b482fbd0"
+    },
+    {
+      "build": "build/cm-interbank-extended-reference.snapshots.bin.gz",
+      "evidence": "evidence/cm-interbank-extended-reference.snapshots.bin.gz",
+      "bytes": 94480155,
+      "compressed_sha256": "359180521b2fd0cce3de574a1435ecbe9a3e2eaa99f1b5773a8f2d27df0043a2",
+      "retained_git_blob": "42ab80407bd04d1fd1c6491a420e04bc3f608b94"
+    },
+    {
+      "build": "build/dsky-charin-reset-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-reset-cm-assembly.lst.gz",
+      "bytes": 1298786,
+      "compressed_sha256": "05a58ee52aa82bf9d3f46b2284070f9d2013499409f22bb4fa8f888cf0861c0c",
+      "retained_git_blob": "4ebbab3dd0ffe6ae197ddf1a4ff52a46245bfc5b"
+    },
+    {
+      "build": "build/cm-keyboard-runtime-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-keyboard-runtime-sanitize.snapshots.gz",
+      "bytes": 5789668,
+      "compressed_sha256": "f0e52493b2df5d9140d19cf91e77ad69c38b056dde0ce5724147822cf513d42e",
+      "retained_git_blob": "6ddb5db6b4b91a8a910311b08d4281818847f92b"
+    },
+    {
+      "build": "build/cm-display-original-source-assembly.lst.gz",
+      "evidence": "evidence/cm-display-original-source-assembly.lst.gz",
+      "bytes": 1297537,
+      "compressed_sha256": "92a0209e8fe4b64fb9eaee715ece6e5db44c81beac1f148d6435033386c4c1be",
+      "retained_git_blob": "032d1b92a906b68315e4cf5132c9742cbfd76672"
+    },
+    {
+      "build": "build/dsky-blank-reference.snapshots.gz",
+      "evidence": "evidence/dsky-blank-reference.snapshots.gz",
+      "bytes": 41281379,
+      "compressed_sha256": "6494981e84686ac1829f18f93c1df1926065dd7e537cb2447c849ad4d5b4f667",
+      "retained_git_blob": "b2220fe15fb89b2bd2a430f288863966f6a6f818"
+    },
+    {
+      "build": "build/dsky-keyboard-flow-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-flow-sanitize.snapshots.gz",
+      "bytes": 5633061,
+      "compressed_sha256": "443d30abd8942b8c78dce4bafcf0837441766bed7a78416c4bcd82e1b9400969",
+      "retained_git_blob": "662089060f357f1ee1c26229333a833329384d00"
+    },
+    {
+      "build": "build/cm-fixed-compat-reference.snapshots.bin.gz",
+      "evidence": "evidence/cm-fixed-compat-reference.snapshots.bin.gz",
+      "bytes": 19509113,
+      "compressed_sha256": "4acefa945f3d459d27c5eb3dc357016bd70ad469dd1e44e8c2d0e4eb7d7a6bfa",
+      "retained_git_blob": "a391727640ec2868e136956bd41ba544ca344564"
+    },
+    {
+      "build": "build/cm-keyboard-runtime-reference.snapshots.gz",
+      "evidence": "evidence/cm-keyboard-runtime-reference.snapshots.gz",
+      "bytes": 5789668,
+      "compressed_sha256": "f0e52493b2df5d9140d19cf91e77ad69c38b056dde0ce5724147822cf513d42e",
+      "retained_git_blob": "6ddb5db6b4b91a8a910311b08d4281818847f92b"
+    },
+    {
+      "build": "build/dsky-blanksub-native.snapshots.gz",
+      "evidence": "evidence/dsky-blanksub-native.snapshots.gz",
+      "bytes": 41275291,
+      "compressed_sha256": "bd9bf088e462712840d73c758d88652924f5f7c6787b9b3c61b518fa543cb79c",
+      "retained_git_blob": "55f1a14448c91c5bd8923f3c9c41a07b20828053"
+    },
+    {
+      "build": "build/dsky-charin-release-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-release-cm-assembly.lst.gz",
+      "bytes": 1298958,
+      "compressed_sha256": "f6c2d995005bb252e3d6b4f24118df643214dec0b484d05e6d5006c17b7db119",
+      "retained_git_blob": "4fd09e4f2cd39a37a4d26c8d3aa5a7b324da4f10"
+    },
+    {
+      "build": "build/cm-charin-nv-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-charin-nv-sanitize.snapshots.gz",
+      "bytes": 20666214,
+      "compressed_sha256": "5b90a61e17e0010aff20a003612c45ff21e5c54f358504c19d523e9bb97e85df",
+      "retained_git_blob": "c8791d216e757d1f7ab50e56f70bce31535732c8"
+    },
+    {
+      "build": "build/p66-direct-launch-assembly.lst.gz",
+      "evidence": "evidence/p66-direct-launch-assembly.lst.gz",
+      "bytes": 1298518,
+      "compressed_sha256": "31a98c360201f71f3ec44cc37149530e6346360c9d815a3aa3ad43a1e624b55c",
+      "retained_git_blob": "d9c89f062f5a6c74c0bc8fb74dd6d4c442e0fe10"
+    },
+    {
+      "build": "build/dsky-key-irq-reference.snapshots.gz",
+      "evidence": "evidence/dsky-key-irq-reference.snapshots.gz",
+      "bytes": 20650164,
+      "compressed_sha256": "eea40a2dd062bfe06acaa6e9e986576b363f53fc77a9fc2dfd0938f4e4704716",
+      "retained_git_blob": "80711cdaf08a241aac59db0924c8350cfae16cc4"
+    },
+    {
+      "build": "build/cm-relay-reference.snapshots.gz",
+      "evidence": "evidence/cm-relay-reference.snapshots.gz",
+      "bytes": 20644205,
+      "compressed_sha256": "feb75c23d6b75958e744b633b9f7acfb2b3d91ba2a8a1b12cec0a57404e78c72",
+      "retained_git_blob": "863528128345514a3e0efb9d823d68bbf4d448ca"
+    },
+    {
+      "build": "build/dsky-charin-clear-native.snapshots.gz",
+      "evidence": "evidence/dsky-charin-clear-native.snapshots.gz",
+      "bytes": 82615104,
+      "compressed_sha256": "89eb43d59ae6bea938cfbf05e412a0c52d1fcf7a91a5155b20545dac83e10b98",
+      "retained_git_blob": "ad06c55ca59b851a29ee63e371443b728d8ce453"
+    },
+    {
+      "build": "build/dsky-pinball-eb2-reference.snapshots.gz",
+      "evidence": "evidence/dsky-pinball-eb2-reference.snapshots.gz",
+      "bytes": 20653656,
+      "compressed_sha256": "c5bfc437309e69074b7b6799b23e34cee3727e29eb0f4e15d609191bb183af24",
+      "retained_git_blob": "835baa8d6fec8047d72363f5a5331e75d17145a8"
+    },
+    {
+      "build": "build/cm-relay-native.snapshots.gz",
+      "evidence": "evidence/cm-relay-native.snapshots.gz",
+      "bytes": 20644202,
+      "compressed_sha256": "19d199d3ba5cdb957e58de99eea82a72de65329b75b9dcacacce33143ab9a8f0",
+      "retained_git_blob": "1e45695da742ea25d1e8d3aba7f3d6e461022186"
+    },
+    {
+      "build": "build/cm-keyboard-irq-native.snapshots.gz",
+      "evidence": "evidence/cm-keyboard-irq-native.snapshots.gz",
+      "bytes": 61812590,
+      "compressed_sha256": "ddda8ec6de055ec624f6c928bfa67ec4ef632dd16b5ce635a082764f3af4d4f4",
+      "retained_git_blob": "e61e8a8d3cedb016cfd061b6b3a6c17f9d2785a4"
+    },
+    {
+      "build": "build/dsky-verb-dispatch-native.snapshots.gz",
+      "evidence": "evidence/dsky-verb-dispatch-native.snapshots.gz",
+      "bytes": 41384618,
+      "compressed_sha256": "cd7e78b5201d02cb77befe8050f3697f612d29c77e748a0cbf46a7436165dff8",
+      "retained_git_blob": "a16614075f69ec1f1d49f50ada4530a0799292f3"
+    },
+    {
+      "build": "build/dsky-load-control-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-load-control-cm-assembly.lst.gz",
+      "bytes": 1298810,
+      "compressed_sha256": "bd525432df01eb79781a29a797c6e4cca4b0079df82fe0ea4095b30857240b39",
+      "retained_git_blob": "15e20a99a15a32df8f509126f66c83f24b00d69b"
+    },
+    {
+      "build": "build/cm-charin-nv-assembly.lst.gz",
+      "evidence": "evidence/cm-charin-nv-assembly.lst.gz",
+      "bytes": 1297962,
+      "compressed_sha256": "4abc4641eb1c2bc5d3d0b41d76e384ae9412c78cdbe454429099b59a8e39c382",
+      "retained_git_blob": "880b423fdaac37af9d930da7c4a9bb8e86fe527c"
+    },
+    {
+      "build": "build/p66-startup-reference.snapshots.gz",
+      "evidence": "evidence/p66-startup-reference.snapshots.gz",
+      "bytes": 806780,
+      "compressed_sha256": "8da125e1ea713241a0a0de6fde51adc284b60a4bdd64318dfd9d4826dd1bf1c9",
+      "retained_git_blob": "f5ab631045acea8856d9964bd1816fd55374ad4d"
+    },
+    {
+      "build": "build/phase-reference.trace.gz",
+      "evidence": "evidence/phase-reference.trace.gz",
+      "bytes": 220202,
+      "compressed_sha256": "7406fb024ee5c294959ef583bc27c93f11b39c014cb869911cc8f7ac6acf3641",
+      "retained_git_blob": "81a5dffdd66f73cd25d9dcb4e09370285c4559d6"
+    },
+    {
+      "build": "build/dsky-nv-key-reference.snapshots.gz",
+      "evidence": "evidence/dsky-nv-key-reference.snapshots.gz",
+      "bytes": 20663140,
+      "compressed_sha256": "b6f2439fe64727f37398083168d2a93fb595b252fc44b86de539bb63f8520e68",
+      "retained_git_blob": "adee71bd45f70f5268bae8c507af057768a001ac"
+    },
+    {
+      "build": "build/dsky-display-release-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-display-release-cm-assembly.lst.gz",
+      "bytes": 1298810,
+      "compressed_sha256": "bd525432df01eb79781a29a797c6e4cca4b0079df82fe0ea4095b30857240b39",
+      "retained_git_blob": "15e20a99a15a32df8f509126f66c83f24b00d69b"
+    },
+    {
+      "build": "build/dsky-display-release-reference.snapshots.gz",
+      "evidence": "evidence/dsky-display-release-reference.snapshots.gz",
+      "bytes": 41365058,
+      "compressed_sha256": "c75a15bb0e43252705eeb481d86147e2f776a656457320c1cbee59d6f84bd863",
+      "retained_git_blob": "4f00c2b9f48c2b266867e70994617e25b482fbd0"
+    },
+    {
+      "build": "build/dsky-load-control-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-load-control-sanitize.snapshots.gz",
+      "bytes": 41303999,
+      "compressed_sha256": "d0d99aea40add3d7d6ac181d72615bf058009d429e81299e025f891d740e24bf",
+      "retained_git_blob": "fe1962e6fc984525f765ad61245c6513ba8375a8"
+    },
+    {
+      "build": "build/cm-charin-number-native.snapshots.gz",
+      "evidence": "evidence/cm-charin-number-native.snapshots.gz",
+      "bytes": 41304964,
+      "compressed_sha256": "20d5e9c70b80bbf94f0a49cf35fd136e7b69cdc82835503bf72953fdca643d9e",
+      "retained_git_blob": "c1286ada15d0babefce4d3a26bd1ed41470086df"
+    },
+    {
+      "build": "build/cm-relay-original-source-assembly.lst.gz",
+      "evidence": "evidence/cm-relay-original-source-assembly.lst.gz",
+      "bytes": 1297084,
+      "compressed_sha256": "e1f27d892baa8d0e1985edda3f4168a72dd90aead201816b90805ada7e6a7c98",
+      "retained_git_blob": "9d6170cffac486d5925d06b8e8cde4a6a986a399"
+    },
+    {
+      "build": "build/dsky-charin-number-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-charin-number-sanitize.snapshots.gz",
+      "bytes": 41304986,
+      "compressed_sha256": "197e07a855bb9dc39e9410e289b903db39090a3d459f6a20fddcf903b780a0bb",
+      "retained_git_blob": "4507ed4ce1c63f3505088a15776acd7359385a4f"
+    },
+    {
+      "build": "build/cm-dyndisp-reference.snapshots.xz",
+      "evidence": "evidence/cm-dyndisp-reference.snapshots.xz",
+      "bytes": 333580,
+      "compressed_sha256": "8fce54b2c8f2c46f81ba3af963c659b8a2e016c4e191ae8304939c103e504c03",
+      "retained_git_blob": "c15d4e5614ac8d0dfe897bd30fa97d856e6310f2"
+    },
+    {
+      "build": "build/cm-orbital-initial-native.snapshots.gz",
+      "evidence": "evidence/cm-orbital-initial-native.snapshots.gz",
+      "bytes": 4422561,
+      "compressed_sha256": "abeac7b21af64537512cb9824f71406a8df4af864765dfbe14bd811ea8693784",
+      "retained_git_blob": "da54cd9c116a0cde2d3cec7b563f2cef49b12b74"
+    },
+    {
+      "build": "build/cm-scale-original-source-assembly.lst.gz",
+      "evidence": "evidence/cm-scale-original-source-assembly.lst.gz",
+      "bytes": 1298076,
+      "compressed_sha256": "4d42722d4bd5842570518ef74a2d57e70248c432ff3e29a51f17c1f0fa1bd53c",
+      "retained_git_blob": "09719998f40a5919a3411cad8d245740c0af5133"
+    },
+    {
+      "build": "build/dsky-charin-release-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-charin-release-sanitize.snapshots.gz",
+      "bytes": 41340166,
+      "compressed_sha256": "ac6b3eb4173a52c6390bb2855fbf35ad1e836c3e52bc2a598df6f0bee390710d",
+      "retained_git_blob": "f0ea55289155dca0900cac1feca08a4594b88c34"
+    },
+    {
+      "build": "build/dsky-source-alarm-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-source-alarm-sanitize.snapshots.gz",
+      "bytes": 41465269,
+      "compressed_sha256": "e48215215926f24d9798548b20f745e044e9133a39ffd3723c2ca588d39894e5",
+      "retained_git_blob": "9a8c78c44bf3e15618862fb80c056765c2bdcab1"
+    },
+    {
+      "build": "build/dsky-pinball-zero-reference.snapshots.gz",
+      "evidence": "evidence/dsky-pinball-zero-reference.snapshots.gz",
+      "bytes": 20641251,
+      "compressed_sha256": "b98e3678b2622cf044f2f6a81eaa468a0dcb5efd9414cdc5518a61f5b5cb514d",
+      "retained_git_blob": "0203dba39cbe3445e6a29a4520715f46fb461c3e"
+    },
+    {
+      "build": "build/dsky-blanksub-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-blanksub-lm-assembly.lst.gz",
+      "bytes": 1298611,
+      "compressed_sha256": "1c0c44305fbf4e64feaa1e5c994bf92cd5b438015e25675c4f4b003a22e85d58",
+      "retained_git_blob": "8b88d6a726103f1bf54b0f7b0beed760bb9bc13f"
+    },
+    {
+      "build": "build/dsky-charin-alarm-native.snapshots.gz",
+      "evidence": "evidence/dsky-charin-alarm-native.snapshots.gz",
+      "bytes": 41422169,
+      "compressed_sha256": "776933f54973223103bba1446198d8e7ee9242c6a685fde7ff0a7b9837ce067c",
+      "retained_git_blob": "cacd5dbcbbcc707caa991ae0ea3c497979e97d5c"
+    },
+    {
+      "build": "build/dsky-enter-native.snapshots.gz",
+      "evidence": "evidence/dsky-enter-native.snapshots.gz",
+      "bytes": 41411735,
+      "compressed_sha256": "fb5cb6116a8b1560c72f4bad1b9854690711d111534c615c9727f8c0e636cdf2",
+      "retained_git_blob": "fc77ba9ef7319ca8c115c82e0e7831417b633c3a"
+    },
+    {
+      "build": "build/cm-powered-quick-complete.snapshots.xz",
+      "evidence": "evidence/cm-powered-quick-complete.snapshots.xz",
+      "bytes": 1646196,
+      "compressed_sha256": "f56ab26b6cd5148169d92e1ff9ec0232b292f51b5f63a021174c83f120bd3a13",
+      "retained_git_blob": "1197543a2203366f5552d61517dc8bc7dd87ab02"
+    },
+    {
+      "build": "build/dsky-charin-sign-reference.snapshots.gz",
+      "evidence": "evidence/dsky-charin-sign-reference.snapshots.gz",
+      "bytes": 41386211,
+      "compressed_sha256": "00ec65051f1deded1f6300f19e5eaec5345527af62451d8840733916915e723d",
+      "retained_git_blob": "3213bb9644fa4b03b6c9026333dcd8490ee1c6d4"
+    },
+    {
+      "build": "build/p66-vertical-start-native.snapshots.gz",
+      "evidence": "evidence/p66-vertical-start-native.snapshots.gz",
+      "bytes": 5092928,
+      "compressed_sha256": "446d68083dbcb5a5c3766949dfe79eb3216a09cf814ba02c650112b967868d7d",
+      "retained_git_blob": "c9169173ce037a5955a56d60e93bdf0880be4e5c"
+    },
+    {
+      "build": "build/p66-basic-task-native.snapshots.gz",
+      "evidence": "evidence/p66-basic-task-native.snapshots.gz",
+      "bytes": 10322145,
+      "compressed_sha256": "564fb59d575f847374c22bd95998a05e5726712fd98f1d24d8be543394faf513",
+      "retained_git_blob": "fd4b5cf928839a3be4aa969b68eb09e8132d1a1b"
+    },
+    {
+      "build": "build/phase-native.snapshots.gz",
+      "evidence": "evidence/phase-native.snapshots.gz",
+      "bytes": 5871072,
+      "compressed_sha256": "f138cb750a1945113af7a208aa217b563e2abeb5d8a68b50e3ce92da976d93c1",
+      "retained_git_blob": "b204dcd20630f137d81b15e9b4756c1c6089472d"
+    },
+    {
+      "build": "build/dsky-extended-dispatch-reference.snapshots.gz",
+      "evidence": "evidence/dsky-extended-dispatch-reference.snapshots.gz",
+      "bytes": 41411500,
+      "compressed_sha256": "5b6f1f9fe6db3111e44e02dbc21908b0a290aa438a8995af197a480e0eb8dd43",
+      "retained_git_blob": "5e0e0e8be6c90aceeb95fd74d46e5d468056b2e8"
+    },
+    {
+      "build": "build/waitlist-zero-reference.snapshots.gz",
+      "evidence": "evidence/waitlist-zero-reference.snapshots.gz",
+      "bytes": 1801,
+      "compressed_sha256": "098d2782f09addff9a984a032a0554e4c23b9198c9399a9aa7348a23b6c77f1b",
+      "retained_git_blob": "b33ed185668ed28a2940558b398c1ab0a160b5ea"
+    },
+    {
+      "build": "build/dsky-keycom-reference.snapshots.gz",
+      "evidence": "evidence/dsky-keycom-reference.snapshots.gz",
+      "bytes": 20633704,
+      "compressed_sha256": "93e55cc64eed59580d7f535f1a705d91ba949ba71fbb9110aac97c3b372961ed",
+      "retained_git_blob": "52e4bc121ee726fda6d04f139bc4685493cad37c"
+    },
+    {
+      "build": "build/dsky-blanksub-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-blanksub-cm-assembly.lst.gz",
+      "bytes": 1298958,
+      "compressed_sha256": "f6c2d995005bb252e3d6b4f24118df643214dec0b484d05e6d5006c17b7db119",
+      "retained_git_blob": "4fd09e4f2cd39a37a4d26c8d3aa5a7b324da4f10"
+    },
+    {
+      "build": "build/dsky-pinbranch-reference.snapshots.gz",
+      "evidence": "evidence/dsky-pinbranch-reference.snapshots.gz",
+      "bytes": 82823442,
+      "compressed_sha256": "ebc94d57ab56bffb52d59b9a97b52cc19989212e50853ca4e50eb1c7de8dab38",
+      "retained_git_blob": "ba8caa3a181ea317858d0161b94a3f79346c1740"
+    },
+    {
+      "build": "build/cm-clock-normal-display-reference.snapshots.xz",
+      "evidence": "evidence/cm-clock-normal-display-reference.snapshots.xz",
+      "bytes": 55560,
+      "compressed_sha256": "fcd256ec5ae6114dc61d8c3f397058e5392593c2651c2c5e0f082f53be0d2d14",
+      "retained_git_blob": "241379f3e8fe5b2cbce33e1e1cf69041efe76d1f"
+    },
+    {
+      "build": "build/dsky-pinbranch-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-pinbranch-lm-assembly.lst.gz",
+      "bytes": 1298611,
+      "compressed_sha256": "1c0c44305fbf4e64feaa1e5c994bf92cd5b438015e25675c4f4b003a22e85d58",
+      "retained_git_blob": "8b88d6a726103f1bf54b0f7b0beed760bb9bc13f"
+    },
+    {
+      "build": "build/dsky-keyrupt-native.snapshots.gz",
+      "evidence": "evidence/dsky-keyrupt-native.snapshots.gz",
+      "bytes": 20630247,
+      "compressed_sha256": "64b5dfd6fd3c8305526589c8611ab19aef3981be5a2a11849293d595a6d2689f",
+      "retained_git_blob": "ef0760f103b0300ca7b1cc307044dbc9f76aecd5"
+    },
+    {
+      "build": "build/dsky-key-irq-native.snapshots.gz",
+      "evidence": "evidence/dsky-key-irq-native.snapshots.gz",
+      "bytes": 20650164,
+      "compressed_sha256": "eea40a2dd062bfe06acaa6e9e986576b363f53fc77a9fc2dfd0938f4e4704716",
+      "retained_git_blob": "80711cdaf08a241aac59db0924c8350cfae16cc4"
+    },
+    {
+      "build": "build/dsky-keyboard-irq-flow-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-irq-flow-sanitize.snapshots.gz",
+      "bytes": 5626370,
+      "compressed_sha256": "578dcc2aaf7a4b06a7c714393ed440a46e384093635a43f230c7617d604b3903",
+      "retained_git_blob": "2ddc8a09bbc5ae2a3ed26b91432fc1f20e5ef8c7"
+    },
+    {
+      "build": "build/enema-reference.snapshots.gz",
+      "evidence": "evidence/enema-reference.snapshots.gz",
+      "bytes": 2053310,
+      "compressed_sha256": "3edf83f63114c8d0618e8b28b6aa21ea7e4cb18fe9d4743ed532534bd17ff806",
+      "retained_git_blob": "776cfc17256ad97f89fa8e0bd07286a8d682f97a"
+    },
+    {
+      "build": "build/dsky-extended-dispatch-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-extended-dispatch-lm-assembly.lst.gz",
+      "bytes": 1298754,
+      "compressed_sha256": "63554d44c2911ed71a6006e106730c742898d96080a6fc331707470575e25b42",
+      "retained_git_blob": "7cddad9251b0cdae0b02a0c7eed60965ff3dad39"
+    },
+    {
+      "build": "build/dsky-decimal-eb2-reference.snapshots.gz",
+      "evidence": "evidence/dsky-decimal-eb2-reference.snapshots.gz",
+      "bytes": 20642508,
+      "compressed_sha256": "6e38f5819667c8c34134a9ce45eaecbf406e00d0dab0faa5cb33f2a922b64d71",
+      "retained_git_blob": "d24dd79e5c30b5c226925bf272472045615c89c3"
+    },
+    {
+      "build": "build/dsky-keyboard-number-flow-native.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-number-flow-native.snapshots.gz",
+      "bytes": 5645202,
+      "compressed_sha256": "f0e236d1431c00f6c420e2439706f801161802526cfc7dee884f374b154ff8b4",
+      "retained_git_blob": "5e96fec75c37985e608615c5f43e629743356b40"
+    },
+    {
+      "build": "build/dsky-mixed-noun-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-mixed-noun-sanitize.snapshots.gz",
+      "bytes": 41342474,
+      "compressed_sha256": "7c687cfb35c6de9986e53b6fd84c23406333a41746b7e7bcf91ba9e7374a84d4",
+      "retained_git_blob": "7e6f008a156b11d41391a10e892d5b8dce84f6a0"
+    },
+    {
+      "build": "build/dsky-nv-key-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-nv-key-sanitize.snapshots.gz",
+      "bytes": 20663140,
+      "compressed_sha256": "b6f2439fe64727f37398083168d2a93fb595b252fc44b86de539bb63f8520e68",
+      "retained_git_blob": "adee71bd45f70f5268bae8c507af057768a001ac"
+    },
+    {
+      "build": "build/cm-vac5-store-native.snapshots.bin.gz",
+      "evidence": "evidence/cm-vac5-store-native.snapshots.bin.gz",
+      "bytes": 31986622,
+      "compressed_sha256": "f96b2d0e92d7f8609310692fdbc1feeee6a9f2d81a811640d00b8422b4386469",
+      "retained_git_blob": "0c5940dded166a671f5b211b4c83c9988cb81c83"
+    },
+    {
+      "build": "build/phase-reference.snapshots.gz",
+      "evidence": "evidence/phase-reference.snapshots.gz",
+      "bytes": 5871072,
+      "compressed_sha256": "f138cb750a1945113af7a208aa217b563e2abeb5d8a68b50e3ce92da976d93c1",
+      "retained_git_blob": "b204dcd20630f137d81b15e9b4756c1c6089472d"
+    },
+    {
+      "build": "build/p66-initialization-reference.snapshots.gz",
+      "evidence": "evidence/p66-initialization-reference.snapshots.gz",
+      "bytes": 24604,
+      "compressed_sha256": "5abb7718ca9feae85a23c24110895de34e18d80dc407b36692fb1073be218808",
+      "retained_git_blob": "9414b12fe1915b2e2124d647196872ee16a0fef1"
+    },
+    {
+      "build": "build/cm-charin-number-reference.snapshots.gz",
+      "evidence": "evidence/cm-charin-number-reference.snapshots.gz",
+      "bytes": 41304967,
+      "compressed_sha256": "6ce890235348637072430083ea218382e22fd5d10a6346599e3954fc1219aa01",
+      "retained_git_blob": "57ae563c1b2526f094de311f9149a5f7928cbb80"
+    },
+    {
+      "build": "build/dsky-charin-alarm-reference.snapshots.gz",
+      "evidence": "evidence/dsky-charin-alarm-reference.snapshots.gz",
+      "bytes": 41422169,
+      "compressed_sha256": "776933f54973223103bba1446198d8e7ee9242c6a685fde7ff0a7b9837ce067c",
+      "retained_git_blob": "cacd5dbcbbcc707caa991ae0ea3c497979e97d5c"
+    },
+    {
+      "build": "build/dsky-pinbranch-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-pinbranch-sanitize.snapshots.gz",
+      "bytes": 82823442,
+      "compressed_sha256": "ebc94d57ab56bffb52d59b9a97b52cc19989212e50853ca4e50eb1c7de8dab38",
+      "retained_git_blob": "ba8caa3a181ea317858d0161b94a3f79346c1740"
+    },
+    {
+      "build": "build/cm-difeq-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-difeq-sanitize.snapshots.gz",
+      "bytes": 8481850,
+      "compressed_sha256": "4a09d45b016389a8009e2f760a03d36d4573e1a51aced95cba4d059a003fc7e5",
+      "retained_git_blob": "b30a5887bc5e199d9f621d214c557fd35c3dd97b"
+    },
+    {
+      "build": "build/recovery-native.snapshots.gz",
+      "evidence": "evidence/recovery-native.snapshots.gz",
+      "bytes": 5252904,
+      "compressed_sha256": "47e2e4c19b0f378a959d1718c83429b18a63e69d737a115e5f3ea03f05ff6c1c",
+      "retained_git_blob": "4d29dc8db254ee3cd7fd6fd3d9291613f85178ba"
+    },
+    {
+      "build": "build/cm-keyboard-irq-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-keyboard-irq-sanitize.snapshots.gz",
+      "bytes": 61812592,
+      "compressed_sha256": "e2f16ad150012191eadde9d74c61c135fd3df7753d7042b0bf901cf928135d7b",
+      "retained_git_blob": "86972bd5243d575a98957d5a468b3882c6d0cb4e"
+    },
+    {
+      "build": "build/dsky-charin-number-reference.snapshots.gz",
+      "evidence": "evidence/dsky-charin-number-reference.snapshots.gz",
+      "bytes": 41304987,
+      "compressed_sha256": "564163664c5e97389fcc10c529dac2df4875d3c8b753617af0612bd0b289f54e",
+      "retained_git_blob": "8a705615d58a8101b8b1cd451945f533b2e04d55"
+    },
+    {
+      "build": "build/p66-launch-phased-target-full.snapshots.gz",
+      "evidence": "evidence/p66-launch-phased-target-full.snapshots.gz",
+      "bytes": 182268,
+      "compressed_sha256": "ac346886bf8e3cdbdad7851fb58a5c20d871e27c186eef29cffe29f02024371b",
+      "retained_git_blob": "9400090c1e71774140d7a096baf9597eaac28702"
+    },
+    {
+      "build": "build/dsky-keyboard-irq-flow-native.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-irq-flow-native.snapshots.gz",
+      "bytes": 5626370,
+      "compressed_sha256": "578dcc2aaf7a4b06a7c714393ed440a46e384093635a43f230c7617d604b3903",
+      "retained_git_blob": "2ddc8a09bbc5ae2a3ed26b91432fc1f20e5ef8c7"
+    },
+    {
+      "build": "build/dsky-scale-native.snapshots.gz",
+      "evidence": "evidence/dsky-scale-native.snapshots.gz",
+      "bytes": 20656008,
+      "compressed_sha256": "596ea3da8dfaf19c9022bef2a3db0bb6c2ead876cf38ea74c86fbaed23755708",
+      "retained_git_blob": "3abe9e75b1ff0f3672485117b027084e1d445ce1"
+    },
+    {
+      "build": "build/dsky-charin-nv-reference.snapshots.gz",
+      "evidence": "evidence/dsky-charin-nv-reference.snapshots.gz",
+      "bytes": 20668101,
+      "compressed_sha256": "682aa0d225cf0751644b631c9be2024c4e205b277a2fa8c2d483f244ad0f3b85",
+      "retained_git_blob": "ec56e1228aac9ffde54ed22d6dd29a187dfddab3"
+    },
+    {
+      "build": "build/p66-bias-native.snapshots.gz",
+      "evidence": "evidence/p66-bias-native.snapshots.gz",
+      "bytes": 5125117,
+      "compressed_sha256": "2edeb02a012c88b5e3792b8f1c5715a4c7da0a7f41b7a288fd599f394bf7798a",
+      "retained_git_blob": "5d83cd33938097f5f9bb3d053ceb05dc1ea15a64"
+    },
+    {
+      "build": "build/dsky-extended-dispatch-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-extended-dispatch-sanitize.snapshots.gz",
+      "bytes": 41411500,
+      "compressed_sha256": "5b6f1f9fe6db3111e44e02dbc21908b0a290aa438a8995af197a480e0eb8dd43",
+      "retained_git_blob": "5e0e0e8be6c90aceeb95fd74d46e5d468056b2e8"
+    },
+    {
+      "build": "build/dsky-scale-reference.snapshots.gz",
+      "evidence": "evidence/dsky-scale-reference.snapshots.gz",
+      "bytes": 20656011,
+      "compressed_sha256": "372d7d4a60e89f84f2a6c4be05dce3b3a4a26c703dc30f521d73f02fd5c2ddfb",
+      "retained_git_blob": "bdbe20e056556b14d6367f3e27cb6ccb85d32d9c"
+    },
+    {
+      "build": "build/p66-basic-task-reference.snapshots.gz",
+      "evidence": "evidence/p66-basic-task-reference.snapshots.gz",
+      "bytes": 10322148,
+      "compressed_sha256": "c51f43e95fd06e13fcfca2bd248b9028c06b22975e6a38d14b79d28b962f1c37",
+      "retained_git_blob": "06ff6c5b18b9a6a26a8eb131bdcf5c948e63ddae"
+    },
+    {
+      "build": "build/cm-keyboard-runtime-assembly.lst.gz",
+      "evidence": "evidence/cm-keyboard-runtime-assembly.lst.gz",
+      "bytes": 1298729,
+      "compressed_sha256": "5d3276ec8ecc93a7f9a4e89e2e2d78c234338098bfd70e894644e294c5763e9e",
+      "retained_git_blob": "ae3b444c06499fa846808a20e75eddb89ca975c4"
+    },
+    {
+      "build": "build/matrix-LM-reference.snapshots.xz",
+      "evidence": "evidence/matrix-LM-reference.snapshots.xz",
+      "bytes": 2232916,
+      "compressed_sha256": "990f8e2dab482822cdb3915bf0228865c6ce2d4a8d654d4abf3e4dd5ba0b1a2d",
+      "retained_git_blob": "87a58648a2d22252f0747f3414fd78dd66f09288"
+    },
+    {
+      "build": "build/cm-init-display-mixed-reference.snapshots.bin.gz",
+      "evidence": "evidence/cm-init-display-mixed-reference.snapshots.bin.gz",
+      "bytes": 3859039,
+      "compressed_sha256": "11fe2c4289746a2f3a09129ae7cce708f1a6afb6f421b242bf73a5d3401b438b",
+      "retained_git_blob": "416a7f5423b01ec462cbe52e24ef35c7a4bfbd54"
+    },
+    {
+      "build": "build/dsky-display-release-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-display-release-lm-assembly.lst.gz",
+      "bytes": 1298529,
+      "compressed_sha256": "cf2ac14ea997b933ec238900913a9d1f2e629772ee00bb2d95d8e9caeff63d7a",
+      "retained_git_blob": "3eef15dde8df6aed332a8c0608a7d4d9d5ebc33f"
+    },
+    {
+      "build": "build/dsky-charin-clear-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-charin-clear-sanitize.snapshots.gz",
+      "bytes": 82615104,
+      "compressed_sha256": "89eb43d59ae6bea938cfbf05e412a0c52d1fcf7a91a5155b20545dac83e10b98",
+      "retained_git_blob": "ad06c55ca59b851a29ee63e371443b728d8ce453"
+    },
+    {
+      "build": "build/dsky-enter-zero-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-enter-zero-sanitize.snapshots.gz",
+      "bytes": 41307374,
+      "compressed_sha256": "2cfcef06361f45ced719a96f24ffa67a454cf08caa3c006c24cfd79a7e59e5c9",
+      "retained_git_blob": "25f5939abf5a05007b7781b012c52a5564717c9c"
+    },
+    {
+      "build": "build/cm-vac5-store-reference.snapshots.bin.gz",
+      "evidence": "evidence/cm-vac5-store-reference.snapshots.bin.gz",
+      "bytes": 31986622,
+      "compressed_sha256": "f96b2d0e92d7f8609310692fdbc1feeee6a9f2d81a811640d00b8422b4386469",
+      "retained_git_blob": "0c5940dded166a671f5b211b4c83c9988cb81c83"
+    },
+    {
+      "build": "build/dsky-keyboard-flow-reference.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-flow-reference.snapshots.gz",
+      "bytes": 5633061,
+      "compressed_sha256": "443d30abd8942b8c78dce4bafcf0837441766bed7a78416c4bcd82e1b9400969",
+      "retained_git_blob": "662089060f357f1ee1c26229333a833329384d00"
+    },
+    {
+      "build": "build/dsky-verb-dispatch-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-verb-dispatch-cm-assembly.lst.gz",
+      "bytes": 1298810,
+      "compressed_sha256": "bd525432df01eb79781a29a797c6e4cca4b0079df82fe0ea4095b30857240b39",
+      "retained_git_blob": "15e20a99a15a32df8f509126f66c83f24b00d69b"
+    },
+    {
+      "build": "build/dsky-charin-nv-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-charin-nv-sanitize.snapshots.gz",
+      "bytes": 20668101,
+      "compressed_sha256": "682aa0d225cf0751644b631c9be2024c4e205b277a2fa8c2d483f244ad0f3b85",
+      "retained_git_blob": "ec56e1228aac9ffde54ed22d6dd29a187dfddab3"
+    },
+    {
+      "build": "build/dsky-pinball-eb2-native.snapshots.gz",
+      "evidence": "evidence/dsky-pinball-eb2-native.snapshots.gz",
+      "bytes": 20653653,
+      "compressed_sha256": "a6ee8d414c47a6e6d6869e156bc24aa8aae5e24f17aaf85f09c2a2e380ca0af6",
+      "retained_git_blob": "06ebe31c106c329e6e5251580f96c93de8edc1be"
+    },
+    {
+      "build": "build/dsky-blanksub-reference.snapshots.gz",
+      "evidence": "evidence/dsky-blanksub-reference.snapshots.gz",
+      "bytes": 41275291,
+      "compressed_sha256": "bd9bf088e462712840d73c758d88652924f5f7c6787b9b3c61b518fa543cb79c",
+      "retained_git_blob": "55f1a14448c91c5bd8923f3c9c41a07b20828053"
+    },
+    {
+      "build": "build/dsky-nv-key-native.snapshots.gz",
+      "evidence": "evidence/dsky-nv-key-native.snapshots.gz",
+      "bytes": 20663140,
+      "compressed_sha256": "b6f2439fe64727f37398083168d2a93fb595b252fc44b86de539bb63f8520e68",
+      "retained_git_blob": "adee71bd45f70f5268bae8c507af057768a001ac"
+    },
+    {
+      "build": "build/dsky-keyboard-flow-native.snapshots.gz",
+      "evidence": "evidence/dsky-keyboard-flow-native.snapshots.gz",
+      "bytes": 5633061,
+      "compressed_sha256": "443d30abd8942b8c78dce4bafcf0837441766bed7a78416c4bcd82e1b9400969",
+      "retained_git_blob": "662089060f357f1ee1c26229333a833329384d00"
+    },
+    {
+      "build": "build/dsky-source-alarm-reference.snapshots.gz",
+      "evidence": "evidence/dsky-source-alarm-reference.snapshots.gz",
+      "bytes": 41465269,
+      "compressed_sha256": "e48215215926f24d9798548b20f745e044e9133a39ffd3723c2ca588d39894e5",
+      "retained_git_blob": "9a8c78c44bf3e15618862fb80c056765c2bdcab1"
+    },
+    {
+      "build": "build/cm-init-display-mixed-native.snapshots.bin.gz",
+      "evidence": "evidence/cm-init-display-mixed-native.snapshots.bin.gz",
+      "bytes": 3859039,
+      "compressed_sha256": "11fe2c4289746a2f3a09129ae7cce708f1a6afb6f421b242bf73a5d3401b438b",
+      "retained_git_blob": "416a7f5423b01ec462cbe52e24ef35c7a4bfbd54"
+    },
+    {
+      "build": "build/dsky-charin-release-reference.snapshots.gz",
+      "evidence": "evidence/dsky-charin-release-reference.snapshots.gz",
+      "bytes": 41340166,
+      "compressed_sha256": "ac6b3eb4173a52c6390bb2855fbf35ad1e836c3e52bc2a598df6f0bee390710d",
+      "retained_git_blob": "f0ea55289155dca0900cac1feca08a4594b88c34"
+    },
+    {
+      "build": "build/cm-interbank-extended-native.snapshots.bin.gz",
+      "evidence": "evidence/cm-interbank-extended-native.snapshots.bin.gz",
+      "bytes": 94480155,
+      "compressed_sha256": "359180521b2fd0cce3de574a1435ecbe9a3e2eaa99f1b5773a8f2d27df0043a2",
+      "retained_git_blob": "42ab80407bd04d1fd1c6491a420e04bc3f608b94"
+    },
+    {
+      "build": "build/dsky-verb-dispatch-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-verb-dispatch-lm-assembly.lst.gz",
+      "bytes": 1298529,
+      "compressed_sha256": "cf2ac14ea997b933ec238900913a9d1f2e629772ee00bb2d95d8e9caeff63d7a",
+      "retained_git_blob": "3eef15dde8df6aed332a8c0608a7d4d9d5ebc33f"
+    },
+    {
+      "build": "build/dsky-charin-reset-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-reset-lm-assembly.lst.gz",
+      "bytes": 1298332,
+      "compressed_sha256": "b5fb81655e61bcc0ee2b96d78bfc6c9cfc246315cea47e2935077060a189fa42",
+      "retained_git_blob": "a89b35f63773899d80c4fbb4377c6931582f9871"
+    },
+    {
+      "build": "build/dsky-enter-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-enter-sanitize.snapshots.gz",
+      "bytes": 41411735,
+      "compressed_sha256": "fb5cb6116a8b1560c72f4bad1b9854690711d111534c615c9727f8c0e636cdf2",
+      "retained_git_blob": "fc77ba9ef7319ca8c115c82e0e7831417b633c3a"
+    },
+    {
+      "build": "build/cm-formatter-reference.snapshots.gz",
+      "evidence": "evidence/cm-formatter-reference.snapshots.gz",
+      "bytes": 61903068,
+      "compressed_sha256": "8929a96fbd8bc5f21175292cd4514eea09f09ae689f2035807eaa8bb9173388d",
+      "retained_git_blob": "5efad984f255a35981f3601ff6152d9e89b70834"
+    },
+    {
+      "build": "build/p66-basic-task-sanitize-full.snapshots.gz",
+      "evidence": "evidence/p66-basic-task-sanitize-full.snapshots.gz",
+      "bytes": 10322152,
+      "compressed_sha256": "ce4822e8c1ec7c55d14c8bd5ac6eb827f775fb7d16451d17b9254acc7c958272",
+      "retained_git_blob": "c483f5f8f31f4e628ea080191e8b741d2a25f093"
+    },
+    {
+      "build": "build/dsky-load-control-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-load-control-lm-assembly.lst.gz",
+      "bytes": 1298529,
+      "compressed_sha256": "cf2ac14ea997b933ec238900913a9d1f2e629772ee00bb2d95d8e9caeff63d7a",
+      "retained_git_blob": "3eef15dde8df6aed332a8c0608a7d4d9d5ebc33f"
+    },
+    {
+      "build": "build/dsky-charin-sign-cm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-sign-cm-assembly.lst.gz",
+      "bytes": 1298786,
+      "compressed_sha256": "05a58ee52aa82bf9d3f46b2284070f9d2013499409f22bb4fa8f888cf0861c0c",
+      "retained_git_blob": "4ebbab3dd0ffe6ae197ddf1a4ff52a46245bfc5b"
+    },
+    {
+      "build": "build/cm-scale-reference.snapshots.gz",
+      "evidence": "evidence/cm-scale-reference.snapshots.gz",
+      "bytes": 20656108,
+      "compressed_sha256": "0b0511bf08752ec388abd782b2900a9815a8f4775b968f305be847235a45b5f5",
+      "retained_git_blob": "9a1b3c8d9b8c27031a03051530310c5f3cc0beb7"
+    },
+    {
+      "build": "build/cm-rectify-reference.snapshots.gz",
+      "evidence": "evidence/cm-rectify-reference.snapshots.gz",
+      "bytes": 9701404,
+      "compressed_sha256": "5c2bbf98360759f28444e5408b06bddedf500748c5948f44e0e5f72418d58cd5",
+      "retained_git_blob": "76164593699454d86796a035f969cb3fcf4c07c0"
+    },
+    {
+      "build": "build/cm-pinball-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-pinball-sanitize.snapshots.gz",
+      "bytes": 41335287,
+      "compressed_sha256": "8fc939a240fdd37cca90825e60eb8215e27cde7558831d8b8ac26ccb299a6751",
+      "retained_git_blob": "8edceed066c980e357b0c1ad3844194609c37722"
+    },
+    {
+      "build": "build/cm-keyboard-irq-original-source-assembly.lst.gz",
+      "evidence": "evidence/cm-keyboard-irq-original-source-assembly.lst.gz",
+      "bytes": 1297430,
+      "compressed_sha256": "84afd6ac43755a542733de65f14fce8f09596afbcc46727fe56c579ecdb1a007",
+      "retained_git_blob": "601c00afcf1c2a128e2343cf75ea6973e21cb40f"
+    },
+    {
+      "build": "build/cm-minutes-seconds-reference.snapshots.xz",
+      "evidence": "evidence/cm-minutes-seconds-reference.snapshots.xz",
+      "bytes": 2847672,
+      "compressed_sha256": "4f4e776f76a416026d61acc26ac4e902547b2f4b09716c8f05a788e49cb11553",
+      "retained_git_blob": "32340101559371a27c8ff190089f3d0955809e91"
+    },
+    {
+      "build": "build/cm-charin-nv-native.snapshots.gz",
+      "evidence": "evidence/cm-charin-nv-native.snapshots.gz",
+      "bytes": 20666214,
+      "compressed_sha256": "5b90a61e17e0010aff20a003612c45ff21e5c54f358504c19d523e9bb97e85df",
+      "retained_git_blob": "c8791d216e757d1f7ab50e56f70bce31535732c8"
+    },
+    {
+      "build": "build/cm-admission-complete-reference.snapshots.bin.gz",
+      "evidence": "evidence/cm-admission-complete-reference.snapshots.bin.gz",
+      "bytes": 2367044,
+      "compressed_sha256": "50fc3a604f43ca90100d7781e91ca2989147647c4aa59c9ea4d976489124972d",
+      "retained_git_blob": "e7f44ccb1c3118c753c60cef9e6b967736bc74ff"
+    },
+    {
+      "build": "build/cm-orbital-initial-sanitize.snapshots.gz",
+      "evidence": "evidence/cm-orbital-initial-sanitize.snapshots.gz",
+      "bytes": 4422561,
+      "compressed_sha256": "abeac7b21af64537512cb9824f71406a8df4af864765dfbe14bd811ea8693784",
+      "retained_git_blob": "da54cd9c116a0cde2d3cec7b563f2cef49b12b74"
+    },
+    {
+      "build": "build/enema-native.snapshots.gz",
+      "evidence": "evidence/enema-native.snapshots.gz",
+      "bytes": 2053310,
+      "compressed_sha256": "3edf83f63114c8d0618e8b28b6aa21ea7e4cb18fe9d4743ed532534bd17ff806",
+      "retained_git_blob": "776cfc17256ad97f89fa8e0bd07286a8d682f97a"
+    },
+    {
+      "build": "build/dsky-display-release-native.snapshots.gz",
+      "evidence": "evidence/dsky-display-release-native.snapshots.gz",
+      "bytes": 41365058,
+      "compressed_sha256": "c75a15bb0e43252705eeb481d86147e2f776a656457320c1cbee59d6f84bd863",
+      "retained_git_blob": "4f00c2b9f48c2b266867e70994617e25b482fbd0"
+    },
+    {
+      "build": "build/dsky-key-irq-sanitize.snapshots.gz",
+      "evidence": "evidence/dsky-key-irq-sanitize.snapshots.gz",
+      "bytes": 20650164,
+      "compressed_sha256": "eea40a2dd062bfe06acaa6e9e986576b363f53fc77a9fc2dfd0938f4e4704716",
+      "retained_git_blob": "80711cdaf08a241aac59db0924c8350cfae16cc4"
+    },
+    {
+      "build": "build/dsky-decimal-eb2-native.snapshots.gz",
+      "evidence": "evidence/dsky-decimal-eb2-native.snapshots.gz",
+      "bytes": 20642505,
+      "compressed_sha256": "16202166551036622019a833f4148d0fbdb0fc75fba1b6fb45e8a919ed29985f",
+      "retained_git_blob": "b12e911a8fcc5417003955acddc7ffb9641232ff"
+    },
+    {
+      "build": "build/dsky-charin-alarm-lm-assembly.lst.gz",
+      "evidence": "evidence/dsky-charin-alarm-lm-assembly.lst.gz",
+      "bytes": 1298332,
+      "compressed_sha256": "b5fb81655e61bcc0ee2b96d78bfc6c9cfc246315cea47e2935077060a189fa42",
+      "retained_git_blob": "a89b35f63773899d80c4fbb4377c6931582f9871"
+    }
+  ],
+  "reclaimed_bytes": 4429608611
+}

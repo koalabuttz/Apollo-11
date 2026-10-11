@@ -1,0 +1,9 @@
+{
+  "reviewed_record": "evidence/phase-fanout-raw-cleanup-20261012.json",
+  "record_sha256": "e48b95a806b28e5d4529d58efa550eb33046c00be4fd12f6889fb2334f9f3c36",
+  "reviewed_records": 12,
+  "unique_decoded_archives": 4,
+  "reclaimed_bytes": 1138219749,
+  "source_and_evidence_unchanged": true,
+  "log_sha256": "3a24e9c061a5f241c5f433468df177fa609b4bac7406238ec45eb9186d73adc3"
+}

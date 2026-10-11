@@ -1,0 +1,13 @@
+PASS evidence/dsky-mixed-noun-sanitize.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-mixed-noun-native.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-mixed-noun-reference.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-verb-dispatch-reference.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-verb-dispatch-sanitize.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-verb-dispatch-native.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-display-release-native.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-display-release-sanitize.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-display-release-reference.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-extended-dispatch-sanitize.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-extended-dispatch-native.snapshots.gz full decoded identity and original Git blob
+PASS evidence/dsky-extended-dispatch-reference.snapshots.gz full decoded identity and original Git blob
+PASS all12 raw removals,4 unique compressed objects, all exact canonical source/native/sanitizer streams retained
