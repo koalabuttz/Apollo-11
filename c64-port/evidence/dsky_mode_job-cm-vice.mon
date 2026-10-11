@@ -1,0 +1,12 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm.prg" 0
+watch store 57ef
+ignore 1 1
+g 080d
+m 57ef 57f3
+bsave "/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-mailbox.bin" 0 57ef 57f3
+bsave "/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-difference.bin" 0 37e7 37ee
+bsave "/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-software-stack.bin" 0 c100 cfff
+quit

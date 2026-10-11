@@ -572,3 +572,5 @@ subprocess.run([sys.executable,'tools/cm_alarm_image_differential.py',str(refere
 subprocess.run([sys.executable,'tools/dsky_mode_admit_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_lamp_release_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_mode_job_differential.py',str(reference)],cwd=ROOT,check=True)
