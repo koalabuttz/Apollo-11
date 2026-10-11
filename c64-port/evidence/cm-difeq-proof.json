@@ -1,0 +1,485 @@
+{
+  "scope": "Original ORBITAL_INTEGRATION DIFEQ+0/+1 including DIFEQCOM through STORE ALPHAV; DIFEQ+2 through STORE ZV. This is not the complete orbital integrator or complete Comanche application.",
+  "binary_format": "Little-endian uint16 case, phase, complete2048-word physical erasable image; phase255 is input.",
+  "source_audit": {
+    "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+    "original_sources": {
+      "INTERPRETER.agc": {
+        "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+        "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+        "normalized_lines": 36
+      },
+      "INTEGRATION_INITIALIZATION.agc": {
+        "original_sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
+        "normalized_sha256": "19aa53ca81e4e499882d144edb56501047775107ad0dcd840b5741758ecf54f9",
+        "normalized_lines": 1
+      },
+      "ORBITAL_INTEGRATION.agc": {
+        "original_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+        "normalized_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+        "normalized_lines": 0
+      }
+    }
+  },
+  "calls": 1792,
+  "original_stage_calls": 1536,
+  "additional_direct_index_corners": 256,
+  "checkpoints": 19840,
+  "complete_state_words": 2048,
+  "sha256": "9b8b544ee7eac53ad9ac77fa6f27e4d980a23b0e3dcf22d7843e9ff4607a3ecf",
+  "input_constructor_sha256": "e92e1ac11cb134230a99da9e8c0fa172d9bbb0cdcc4434e704e26e3b9c2e5543",
+  "sanitizers": "Entire full-image corpus ASAN/UBSAN equals unchanged original source",
+  "c64": [
+    {
+      "stage": 0,
+      "phase": 0,
+      "selector": 0,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002000",
+      "image_end": "4512",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03447",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 0,
+      "phase": 1,
+      "selector": 1,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002001",
+      "image_end": "4276",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03626",
+      "source_pc": "06037",
+      "executive_check_allowed": false
+    },
+    {
+      "stage": 0,
+      "phase": 2,
+      "selector": 2,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002002",
+      "image_end": "4844",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03630",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 0,
+      "phase": 3,
+      "selector": 3,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002003",
+      "image_end": "4368",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03633",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 0,
+      "phase": 4,
+      "selector": 4,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002004",
+      "image_end": "432d",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03634",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 0,
+      "phase": 5,
+      "selector": 5,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002005",
+      "image_end": "5acb",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 161
+      },
+      "source_loc": "03636",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 0,
+      "phase": 6,
+      "selector": 6,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002006",
+      "image_end": "57d4",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 177
+      },
+      "source_loc": "03641",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 0,
+      "phase": 7,
+      "selector": 7,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002007",
+      "image_end": "4dbf",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03643",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 0,
+      "phase": 8,
+      "selector": 8,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002008",
+      "image_end": "45af",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03644",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 0,
+      "selector": 16,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002010",
+      "image_end": "450d",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03453",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 1,
+      "selector": 17,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002011",
+      "image_end": "4ca8",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03455",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 2,
+      "selector": 18,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002012",
+      "image_end": "46f2",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03456",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 3,
+      "selector": 19,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002013",
+      "image_end": "539e",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 153
+      },
+      "source_loc": "03460",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 4,
+      "selector": 20,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002014",
+      "image_end": "4721",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03626",
+      "source_pc": "06037",
+      "executive_check_allowed": false
+    },
+    {
+      "stage": 1,
+      "phase": 5,
+      "selector": 21,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002015",
+      "image_end": "4cb2",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03630",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 6,
+      "selector": 22,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002016",
+      "image_end": "47bf",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03633",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 7,
+      "selector": 23,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002017",
+      "image_end": "47ba",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03634",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 8,
+      "selector": 24,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002018",
+      "image_end": "5f36",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 161
+      },
+      "source_loc": "03636",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 9,
+      "selector": 25,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002019",
+      "image_end": "5ce6",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 175
+      },
+      "source_loc": "03641",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 10,
+      "selector": 26,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a50000201a",
+      "image_end": "529b",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03643",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 1,
+      "phase": 11,
+      "selector": 27,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a50000201b",
+      "image_end": "4a73",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03644",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 0,
+      "selector": 32,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002020",
+      "image_end": "474f",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 157
+      },
+      "source_loc": "03465",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 1,
+      "selector": 33,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002021",
+      "image_end": "5379",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 161
+      },
+      "source_loc": "03467",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 2,
+      "selector": 34,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002022",
+      "image_end": "518d",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 156
+      },
+      "source_loc": "03471",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 3,
+      "selector": 35,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002023",
+      "image_end": "543f",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 176
+      },
+      "source_loc": "03474",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 4,
+      "selector": 36,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002024",
+      "image_end": "4515",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03476",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 5,
+      "selector": 37,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002025",
+      "image_end": "52ba",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 153
+      },
+      "source_loc": "03500",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 6,
+      "selector": 38,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002026",
+      "image_end": "566d",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 171
+      },
+      "source_loc": "03501",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 7,
+      "selector": 39,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002027",
+      "image_end": "4c1c",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 140
+      },
+      "source_loc": "03503",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    },
+    {
+      "stage": 2,
+      "phase": 8,
+      "selector": 40,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002028",
+      "image_end": "4356",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 48
+      },
+      "source_loc": "03504",
+      "source_pc": "06030",
+      "executive_check_allowed": true
+    }
+  ],
+  "compressed_snapshot_bytes": 8481850
+}

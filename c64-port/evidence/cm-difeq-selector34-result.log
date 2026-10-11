@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm-difeq phase 34 original-assembly entry/exit states
+Mailbox: a500002022
+PRG bytes: 10638
+cm-difeq_selector34-hardware-stack.bin: measured stack extent 20 bytes
+cm-difeq_selector34-software-stack.bin: measured stack extent 156 bytes
