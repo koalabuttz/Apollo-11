@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 96 complete throttle_service group original-assembly states; retained memory unchanged
+Mailbox: a500006000
+PRG bytes: 43775
+throttle_service-hardware-stack.bin: measured stack extent 27 bytes
+throttle_service-software-stack.bin: measured stack extent 597 bytes

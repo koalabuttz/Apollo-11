@@ -1,0 +1,17 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+THROTTLE source instruction/data rows unchanged; historical fixture comments differ
+Source PC02241 reached in 2049 cases
+Source PC02265 reached in 4287 cases
+Source PC02267 reached in 2880 cases
+Source PC02276 reached in 4770 cases
+Source PC02331 reached in 4096 cases
+Source PC02413 reached in 9634 cases
+Source PC02415 reached in 8117 cases
+Source PC02315 reached in 16368 cases
+Source PC02351 reached in 16384 cases
+Source PC02365 reached in 16384 cases
+PASS:16384 throttle_service group cases, all147 complete modeled raw words and paths match unchanged assembly/hardware DV
+Paths: Counter({1: 16384})
+Snapshot SHA256: 4e2d490f0256e4ddb9110e42ad2278ae74acfe06164ac6bd4b17c361fafff37a

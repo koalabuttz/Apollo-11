@@ -337,3 +337,5 @@ include tools/hardware_divide.mk
 include tools/p66_initialization.mk
 
 include tools/throttle_feedback.mk
+
+include tools/throttle_service.mk
