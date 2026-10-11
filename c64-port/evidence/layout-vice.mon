@@ -1,0 +1,9 @@
+load "/workspace/Apollo-11/c64-port/build/layout.prg" 0
+watch store c000
+ignore 1 1
+g 080d
+bank ram
+bsave "/workspace/Apollo-11/c64-port/build/layout-mailbox.bin" 0 c000 c002
+bsave "/workspace/Apollo-11/c64-port/build/layout-bindings.bin" 0 8000 a10f
+bsave "/workspace/Apollo-11/c64-port/build/layout-image.bin" 0 7000 7fff
+quit

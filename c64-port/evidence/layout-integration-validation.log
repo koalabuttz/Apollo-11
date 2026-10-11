@@ -1,0 +1,9 @@
+./build/test-layout
+PASS: 4232 original bindings, 8192 bank contexts, 79 fixed metadata words; raw single-image aliases and original CM emission
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/layout.c tests/layout_check.c tests/test_layout.c -o build/test-layout-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-layout-sanitize
+PASS: 4232 original bindings, 8192 bank contexts, 79 fixed metadata words; raw single-image aliases and original CM emission
+PASS: 4232 original bindings, 8192 bank contexts, 79 fixed metadata words; raw single-image aliases and original CM emission
+PASS: 4232 original bindings, 8192 bank contexts, 79 fixed metadata words; raw single-image aliases and original CM emission
+PASS: all 131072 mission/address probes expose exactly 79 independently decoded original rope metadata words
+Original CM ALTVAR physical01357; R53FLBIT points at BIT8 (05010, raw00200); stray emission01356=021356

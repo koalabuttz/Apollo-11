@@ -954,3 +954,7 @@ All 12288 original complete-image numeric formatting states match native and san
 ## Complete original LM and CM noun-table readers
 
 All three reader algorithms and six tables in each original source file are mapped; 58368 full original images match native and sanitizer outputs, with 1216 actual C64 state checks. See `docs/NOUN_READERS.md`.
+
+## Complete original LM and CM memory declarations and layouts
+
+All five declaration source files map original aliases, allocation cursors and emitted metadata into the sole canonical image; independent original-rope checks, sanitizer and C64 execution pass. See `docs/LAYOUT.md`.
