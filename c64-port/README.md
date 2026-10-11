@@ -690,3 +690,7 @@ Comanche ENDOFJOB matches 16,384 original full-state transitions through basic, 
 ## Translate numeric CHARIN entries through original NUM arithmetic
 
 Native octal and decimal entry matches 8,192 complete original source states across verb, noun and three register fields, signs and digit counts. Strict host, sanitizer and 64-case C64 proofs pass. This certifies the numeric entry body; hardware IRQ composition is a separate milestone. See `docs/DSKY-NUMERIC-ENTRY.md`.
+
+## Translate original Comanche clock-job call and display routing
+
+The native clock-job bridge matches 24,576 original full states and 2,048 continuous QUICTRIG compositions. Strict and sanitizer comparisons pass; C64 validates 64 frozen complete-state cases. Downstream display and job bodies are separate source domains. See `docs/COMANCHE-CLOCKJOB.md`.

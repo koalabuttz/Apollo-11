@@ -1,0 +1,78 @@
+{
+  "source_files": {
+    "include/cm_clockjob.h": "c341ac0126d7a5115e7cb709491d08ce97247699f8fec520a04e1e1e15d63eac",
+    "src/cm_clockjob.c": "8cc8e34edbb8bd7d5d7ca4032b0af2a3caadf7a720476a8140c5b1be283a8185",
+    "docs/COMANCHE-CLOCKJOB.md": "8f18ef4f821e1d978570216ca3960afb3311227dceafeb18508d80c65514f1f4",
+    "tests/cm_clockjob_cases.h": "22830eb32f36fce58db91199c9eb569497818bf26ed2b641c14a4038285a460b",
+    "tests/cm_clockjob_check.h": "40a4e182eefad81c39b3772f5569ee84e898d8bc96b97aa0477e8a50c834af7a",
+    "tests/cm_clockjob_check.c": "cd4b7db0e4b517a2f0ce68adf2a2b67f2ff331a3e72073cb6858c931e0a3c8b1",
+    "tests/cm_clockjob_vectors.h": "a30591900a6aec13291c767455654d77838d3945c4fc4f913afebebfd8c0a9f6",
+    "tests/test_cm_clockjob.c": "bce76fe6594d22288622b1a820b7b2877e8ece913c0f1c82297520d59f1c93f1",
+    "tests/cm_clockjob_cases.c": "d8bd07bfee1a77f57a660dcac5395f5a832db6bbcba43c700f95efd34713b66e",
+    "tools/cm_clockjob_full_differential.py": "4db587fcd38007f09aadd895255ea4d1cc901abece94221671c281e622987b4b",
+    "tools/cm_clockjob_full_snapshot.c": "34c7a1a7836a29b531097cd0dec0d14a11f682f5264549673f0b831cb517fd74",
+    "tools/freeze_cm_clockjob.py": "fc0be9a868bc6b13fbd6cd2b4c72fae15cf44a7d8366b4def2a93b162abb5206",
+    "tools/cm_clockjob_diagnostic.c": "e0a0cafd4e463870ec3bc2659c9e8dfaba353f8f13cf8539f3668d12d31f2c2e",
+    "tools/cm_clockjob.mk": "0fcf5bcfd802b0a27f646005b5e0efe53e01e32a9586d4e27ca56d56b58c20b0",
+    "tools/cm_clockjob_inputs.c": "4d7a5909e952ae733ac59076b22a74d1a7b82a25db8789a12bf880b922902aba",
+    "tools/cm_clockjob_snapshot.c": "abb2938fb9beea515b132bb1ba7308d1a3be2144fb75ae98ddcfc685a65d09e6",
+    "tools/cm_clockjob_vice_test.py": "42fa896f2e47503375754be888ff2391819543b7625f7331abde8aa90480e93e",
+    "tools/cm_clockjob_reference.c": "148fa383b25b0073233b6e4c1689d17d5432c2433cd0562b80cf1610f9c2df22",
+    "tools/cm_clockjob_full_reference.c": "47b11b1c4dfbec2cbd799972fc730c3755063184055670bb7c8c036fa08a183d",
+    "tools/cm_clockjob_differential.py": "a09280222409a31ea67a5654b49ee372e08bfdd2988d829440e778104fbd8731"
+  },
+  "native_dependencies": {
+    "src/cm_quictrig.c": "4d934bdaa6afbd4cd92b4474450bcd35b73c2f03f2c55c60937c6e0cf17040a0",
+    "tests/cm_trig_cases.c": "b39716b836fe437dfac5087f862445620548b89f95ff1b6c29dd04186eaf60c2",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e"
+  },
+  "original_sources": {
+    "../Comanche055/P40-P47.agc": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+    "../Comanche055/INTER-BANK_COMMUNICATION.agc": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+    "../Comanche055/POWERED_FLIGHT_SUBROUTINES.agc": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+    "deps/cm-services-fixture/MAIN.agc.bin": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "artifacts": {
+    "evidence/cm-clockjob-reference.snapshots.xz": "8568b00e5b6a89a0a1d97304afd54bb6bb1f14fa27d53a5473325ef77756fec8",
+    "evidence/cm-clockjob-full-reference.snapshots.xz": "6a44da02bfdcaf2379b4d6b7a12be48fd69232c43bc752d12c29d3a9ad4a504f",
+    "evidence/cm-clockjob-differential.log": "2991356818b2be487367d7692333dcf16d8cbbf1ccd557ea8c1a33e5148c3010",
+    "evidence/cm-clockjob-validation.log": "a31a6c7be4c6802b2b71f800e271d6635769900060cad05b95c6e3885da2d9ad",
+    "evidence/cm-clockjob-c64-result.log": "5a55f6f4ca426759e3640bf4f22253ac918469475d6d689f725a27aee4b0931d",
+    "evidence/cm-clockjob-full-differential.log": "b1095d9fb96c85fdb6ef5167672ae98d8769c41dd5fa59bb93599bd827a2182e",
+    "evidence/cm-clockjob-full-validation.log": "73d0f3eae5835e6be8862622b4bb2155a5f3db92ff7709f375cf957102783aa7",
+    "evidence/cm_clockjob.prg": "5f33d46829af934c01e8ba6c86ade7b847ee604ce43f9c6ec4af3026ac9ab4ee",
+    "evidence/cm_clockjob.map": "258c3eec5f5bcee360ede71f0f9fcacecbce23121da7ddad029a9bf77e1c16b5",
+    "evidence/cm_clockjob-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "evidence/cm_clockjob-hardware-stack.bin": "2338e921261215c20a4efa8cb0e94d227b134e23a594a4c120845a0216cf688e",
+    "evidence/cm_clockjob-software-stack.bin": "bc29c480a05e9799b6e03698cdd1de502e4525e36b2720bf75abd2576806bf5d",
+    "evidence/cm_clockjob-vice.log": "259e886be5ec2fcf2ce1e24bc2419b8cbad506ad1023e7790fe655d22ab9e9a9",
+    "evidence/cm_clockjob-vice-monitor.log": "5d267bf02aca2c26dda414c4d99883c40679b27c753619a5f02549a85d6ccbf8",
+    "evidence/cm_clockjob-vice.mon": "db7bd2b4f24a345e3278bc4d69e78702f28d077846a2f68409b5e575b7a67187"
+  },
+  "raw_streams": {
+    "build/cm-clockjob-reference.snapshots": "b2975daba408e3481a9a03529f4fa6583cc5ea1065bd44eef9f46739fbf7f206",
+    "build/cm-clockjob-native.snapshots": "b2975daba408e3481a9a03529f4fa6583cc5ea1065bd44eef9f46739fbf7f206",
+    "build/cm-clockjob-sanitize.snapshots": "b2975daba408e3481a9a03529f4fa6583cc5ea1065bd44eef9f46739fbf7f206",
+    "build/cm-clockjob-full-reference.snapshots": "0d006971cdcca9ab596842abc5ed096bc35cbc22fe9af2fa204ba535a49a9b7d",
+    "build/cm-clockjob-full-native.snapshots": "0d006971cdcca9ab596842abc5ed096bc35cbc22fe9af2fa204ba535a49a9b7d",
+    "build/cm-clockjob-full-sanitize.snapshots": "0d006971cdcca9ab596842abc5ed096bc35cbc22fe9af2fa204ba535a49a9b7d"
+  },
+  "states": {
+    "individual_bridges": 24576,
+    "continuous_CLOCKJOB": 2048,
+    "state_words": 2050,
+    "frozen": 64,
+    "invalid_boundaries": 31,
+    "strict_and_SAN": "all complete original states byte-identical"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 5690,
+    "hardware_stack_bytes": 14,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 74,
+    "extra_zero_page_bytes": 0
+  },
+  "boundary": "before actual QUICTRIG, CKNVWRD1, REGODSP/CLOCPLAY/ENDOFJOB entries; continuous corpus executes QUICTRIG between bridges"
+}

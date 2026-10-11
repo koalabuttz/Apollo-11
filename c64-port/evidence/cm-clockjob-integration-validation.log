@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_clockjob.c tests/cm_clockjob_check.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/test-cm-clockjob
+build/test-cm-clockjob
+64 complete CM CLOCKJOB states and31 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_clockjob.c tests/cm_clockjob_check.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/test-cm-clockjob-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-clockjob-frozen-sanitize
+64 complete CM CLOCKJOB states and31 unchanged invalid boundaries: PASS
