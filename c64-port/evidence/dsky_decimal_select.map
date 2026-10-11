@@ -1,0 +1,235 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     13af     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_decimal_select.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      aac     1         build/dsky_decimal_select.prg.lto.o:(.text.main)
+     843      843      aac     1                 main
+    12ef     12ef      11d     1         build/dsky_decimal_select.prg.lto.o:(.text.apollo_noun_table_read)
+    12ef     12ef      11d     1                 apollo_noun_table_read
+    140c     140c      3e9     1         build/dsky_decimal_select.prg.lto.o:(.text.apollo_noun_reader)
+    140c     140c      3e9     1                 apollo_noun_reader
+    17f5     17f5        6     1         build/dsky_decimal_select.prg.lto.o:(.text.exit)
+    17f5     17f5        6     1                 exit
+    17fb     17fb       13     1         build/dsky_decimal_select.prg.lto.o:(.text.__ashlhi3)
+    17fb     17fb       13     1                 __ashlhi3
+    180e     180e       13     1         build/dsky_decimal_select.prg.lto.o:(.text.__lshrhi3)
+    180e     180e       13     1                 __lshrhi3
+    1821     1821       c4     1         build/dsky_decimal_select.prg.lto.o:(.text.__udivhi3)
+    1821     1821       c4     1                 __udivhi3
+    18e5     18e5       40     1         build/dsky_decimal_select.prg.lto.o:(.text.__umodqi3)
+    18e5     18e5       40     1                 __umodqi3
+    1925     1925       ae     1         build/dsky_decimal_select.prg.lto.o:(.text.__umodhi3)
+    1925     1925       ae     1                 __umodhi3
+    19d3     19d3       f8     1         build/dsky_decimal_select.prg.lto.o:(.text.__udivmodhi4)
+    19d3     19d3       f8     1                 __udivmodhi4
+    1acb     1acb       34     1         build/dsky_decimal_select.prg.lto.o:(.text.memcpy)
+    1acb     1acb       34     1                 memcpy
+    1aff     1aff       22     1         build/dsky_decimal_select.prg.lto.o:(.text.__memset)
+    1aff     1aff       22     1                 __memset
+    1b21     1b21       34     1         build/dsky_decimal_select.prg.lto.o:(.text.__mulhi3)
+    1b21     1b21       34     1                 __mulhi3
+    1b55     1b55       67     1         build/dsky_decimal_select.prg.lto.o:(.text.__mulsi3)
+    1b55     1b55       67     1                 __mulsi3
+    1bbc     1bbc        0     1         __init_array_start = .
+    1bbc     1bbc        0     1         __init_array_end = .
+    1bbc     1bbc        0     1         __fini_array_start = .
+    1bbc     1bbc        0     1         __fini_array_end = .
+    1bbc     1bbc     3573     1 .rodata
+    1bbc     1bbc        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    1bbc     1bbc        0     1                 __set_v
+    1bbd     1bbd       18     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_nouns)
+    1bbd     1bbd       18     1                 fixed_data_lm_nouns
+    1bd5     1bd5       18     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    1bd5     1bd5       18     1                 fixed_data_cm_nouns
+    1bed     1bed       d8     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    1bed     1bed       d8     1                 fixed_data_lm_spans
+    1cc5     1cc5       30     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    1cc5     1cc5       30     1                 fixed_data_cm_spans
+    1cf5     1cf5       20     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_0)
+    1cf5     1cf5       20     1                 fixed_data_lm_0
+    1d15     1d15       24     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_1)
+    1d15     1d15       24     1                 fixed_data_lm_1
+    1d39     1d39        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_2)
+    1d39     1d39        4     1                 fixed_data_lm_2
+    1d3d     1d3d        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_3)
+    1d3d     1d3d        4     1                 fixed_data_lm_3
+    1d41     1d41        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_4)
+    1d41     1d41        4     1                 fixed_data_lm_4
+    1d45     1d45        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_5)
+    1d45     1d45        4     1                 fixed_data_lm_5
+    1d49     1d49        2     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_6)
+    1d49     1d49        2     1                 fixed_data_lm_6
+    1d4b     1d4b        a     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_7)
+    1d4b     1d4b        a     1                 fixed_data_lm_7
+    1d55     1d55        2     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_8)
+    1d55     1d55        2     1                 fixed_data_lm_8
+    1d57     1d57        6     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_9)
+    1d57     1d57        6     1                 fixed_data_lm_9
+    1d5d     1d5d        8     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_10)
+    1d5d     1d5d        8     1                 fixed_data_lm_10
+    1d65     1d65       2e     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_11)
+    1d65     1d65       2e     1                 fixed_data_lm_11
+    1d93     1d93        c     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_12)
+    1d93     1d93        c     1                 fixed_data_lm_12
+    1d9f     1d9f        2     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_13)
+    1d9f     1d9f        2     1                 fixed_data_lm_13
+    1da1     1da1        2     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_14)
+    1da1     1da1        2     1                 fixed_data_lm_14
+    1da3     1da3        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_15)
+    1da3     1da3        4     1                 fixed_data_lm_15
+    1da7     1da7        6     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_16)
+    1da7     1da7        6     1                 fixed_data_lm_16
+    1dad     1dad        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_17)
+    1dad     1dad        4     1                 fixed_data_lm_17
+    1db1     1db1        8     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_18)
+    1db1     1db1        8     1                 fixed_data_lm_18
+    1db9     1db9        c     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_19)
+    1db9     1db9        c     1                 fixed_data_lm_19
+    1dc5     1dc5       18     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_20)
+    1dc5     1dc5       18     1                 fixed_data_lm_20
+    1ddd     1ddd       10     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_21)
+    1ddd     1ddd       10     1                 fixed_data_lm_21
+    1ded     1ded       28     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_22)
+    1ded     1ded       28     1                 fixed_data_lm_22
+    1e15     1e15       2c     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_23)
+    1e15     1e15       2c     1                 fixed_data_lm_23
+    1e41     1e41        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_24)
+    1e41     1e41        4     1                 fixed_data_lm_24
+    1e45     1e45        4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_25)
+    1e45     1e45        4     1                 fixed_data_lm_25
+    1e49     1e49      1be     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_26)
+    1e49     1e49      1be     1                 fixed_data_lm_26
+    2007     2007       68     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_27)
+    2007     2007       68     1                 fixed_data_lm_27
+    206f     206f       24     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_28)
+    206f     206f       24     1                 fixed_data_lm_28
+    2093     2093      1e4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_29)
+    2093     2093      1e4     1                 fixed_data_lm_29
+    2277     2277      108     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_30)
+    2277     2277      108     1                 fixed_data_lm_30
+    237f     237f       80     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_31)
+    237f     237f       80     1                 fixed_data_lm_31
+    23ff     23ff       40     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_32)
+    23ff     23ff       40     1                 fixed_data_lm_32
+    243f     243f       20     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_33)
+    243f     243f       20     1                 fixed_data_lm_33
+    245f     245f       26     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_34)
+    245f     245f       26     1                 fixed_data_lm_34
+    2485     2485      458     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_lm_35)
+    2485     2485      458     1                 fixed_data_lm_35
+    28dd     28dd      1c4     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_0)
+    28dd     28dd      1c4     1                 fixed_data_cm_0
+    2aa1     2aa1       7c     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_1)
+    2aa1     2aa1       7c     1                 fixed_data_cm_1
+    2b1d     2b1d       40     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_2)
+    2b1d     2b1d       40     1                 fixed_data_cm_2
+    2b5d     2b5d       20     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_3)
+    2b5d     2b5d       20     1                 fixed_data_cm_3
+    2b7d     2b7d       26     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_4)
+    2b7d     2b7d       26     1                 fixed_data_cm_4
+    2ba3     2ba3      1be     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_5)
+    2ba3     2ba3      1be     1                 fixed_data_cm_5
+    2d61     2d61      1f2     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_6)
+    2d61     2d61      1f2     1                 fixed_data_cm_6
+    2f53     2f53      410     1         build/dsky_decimal_select.prg.lto.o:(.rodata.fixed_data_cm_7)
+    2f53     2f53      410     1                 fixed_data_cm_7
+    3363     3363        6     1         build/dsky_decimal_select.prg.lto.o:(.rodata.dsky_decimal_select.row)
+    3363     3363        6     1                 dsky_decimal_select.row
+    3369     3369        c     1         build/dsky_decimal_select.prg.lto.o:(.rodata.dsky_decimal_select.displacement)
+    3369     3369        c     1                 dsky_decimal_select.displacement
+    3375     3375       38     1         build/dsky_decimal_select.prg.lto.o:(.rodata.scale_cadr)
+    3375     3375       38     1                 scale_cadr
+    33ad     33ad       10     1         <internal>:(.rodata.cst16)
+    33bd     33bd      100     1         build/dsky_decimal_select.prg.lto.o:(.rodata.dsky_decimal_select_numbers)
+    33bd     33bd      100     1                 dsky_decimal_select_numbers
+    34bd     34bd      102     1         build/dsky_decimal_select.prg.lto.o:(.rodata.dsky_decimal_select_after_offsets)
+    34bd     34bd      102     1                 dsky_decimal_select_after_offsets
+    35bf     35bf     1b70     1         build/dsky_decimal_select.prg.lto.o:(.rodata.dsky_decimal_select_after_patch)
+    35bf     35bf     1b70     1                 dsky_decimal_select_after_patch
+    512f     512f        0     1 .data
+    512f     512f        0     1         __data_start = .
+    512f     512f        0     1         __data_end = .
+    512f     512f        0     1 __data_load_start = LOADADDR(.data)
+    512f     512f        0     1 __data_size = SIZEOF(.data)
+    512f     512f     2000     1 .bss
+    512f     512f        0     1         __bss_start = .
+    512f     512f     1000     1         build/dsky_decimal_select.prg.lto.o:(.bss.s)
+    512f     512f     1000     1                 s
+    612f     612f     1000     1         build/dsky_decimal_select.prg.lto.o:(.bss.before)
+    612f     612f     1000     1                 before
+    712f     712f        0     1         __bss_end = .
+    712f     712f        0     1 __bss_size = SIZEOF(.bss)
+    712f     712f        0     1 .noinit
+    712f     712f        0     1         __heap_start = ALIGN(., 2)
+    712f     712f        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_decimal_select.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_decimal_select.prg.lto.o:(.llvm_sympart)
+       0        0      e90     4 .symtab
+       0        0      e90     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      a02     1 .strtab
+       0        0      a02     1         <internal>:(.strtab)

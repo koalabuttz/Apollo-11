@@ -1206,3 +1206,7 @@ Qualify NORMUNIT NORMUNX1 and normal UNIT callers through complete125 word UNIT 
 ## Translate original operator request and scheduler call source stages
 
 Qualify actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 dispatch through literal RELDSP NOVAC FINDVAC WAITLIST entry boundaries over8192 full original native sanitizer states plus64 C64 states retaining original downstream priority and delay values. See `docs/DSKY-REQUEST-CONTROL.md`.
+
+## Translate original decimal display factor and scale selection
+
+Qualify actual DSPDCPUT factor selection across all fourteen routines both noun tables all rows normal mixed contexts and signed zero limits with8192 original native sanitizer whole images plus128 C64 states retaining selected scale body frontier. See `docs/DSKY-DECIMAL-SELECT.md`.

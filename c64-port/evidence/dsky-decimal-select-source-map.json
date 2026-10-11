@@ -1,0 +1,68 @@
+{
+  "entry": {
+    "bank": "41",
+    "pc": "02537"
+  },
+  "frontier": "Before execution of selected scale body; source BANKJUMP completed",
+  "rows": [
+    "00016",
+    "00011",
+    "00004"
+  ],
+  "factor_pairs": {
+    "LM": 29,
+    "CM": 20
+  },
+  "source_cadrs": {
+    "LM": [
+      "061416",
+      "062566",
+      "060615",
+      "060677",
+      "060710",
+      "060715",
+      "060635",
+      "060717",
+      "065230",
+      "065303",
+      "060715",
+      "060704",
+      "060732",
+      "060623"
+    ],
+    "CM": [
+      "061323",
+      "062566",
+      "060516",
+      "060603",
+      "060614",
+      "060621",
+      "060524",
+      "060623",
+      "065143",
+      "065216",
+      "060621",
+      "060610",
+      "060636",
+      "060653"
+    ]
+  },
+  "source_labels": [
+    "DSPDCPUT",
+    "DSPSFNOR",
+    "SFCONUM",
+    "CONUMNOR",
+    "SFRET",
+    "SFRUTNOR",
+    "SFRUTMIX",
+    "SFRET1",
+    "DECDSP3",
+    "SFOUTABR"
+  ],
+  "native_helpers": [
+    "dsky_decimal_select",
+    "apollo_noun_reader(APOLLO_GTSFOUT)"
+  ],
+  "native_instruction_decoder": false,
+  "whole_file_claim": false
+}
