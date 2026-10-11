@@ -1191,3 +1191,7 @@ Qualify source degree arc and fractional output scaling plus mission specific CD
 ## Translate original Comanche priority alarm source lead in
 
 Qualify actual PRIOLARM raw registers and FAILREG recording through true PRIODSPR or POODOO selection against65536 complete original native sanitizer states and32 C64 states preserving actual incoming register patterns and explicit display recovery continuations. See `docs/COMANCHE_PRIOLARM.md`.
+
+## Compose native operator requests through original scheduler outcomes
+
+Qualify both original V30 and V31 operator scheduling paths through actual core admission, task insertion, END or source recovery with8192 complete original native sanitizer states and64 C64 states including exhausted resources, full queues and invalid delays. See `docs/DSKY-OPERATOR-SCHEDULE.md`.

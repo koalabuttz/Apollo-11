@@ -1,0 +1,12 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm.prg" 0
+watch store 8fe9
+ignore 1 1
+g 080d
+m 8fe9 8fed
+bsave "/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-mailbox.bin" 0 8fe9 8fed
+bsave "/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-difference.bin" 0 6fe1 6fe8
+bsave "/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-software-stack.bin" 0 c100 cfff
+quit

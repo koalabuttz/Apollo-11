@@ -832,3 +832,5 @@ include tools/dsky_scalar_output_integration.mk
 
 include tools/cm_priolarm.mk
 all: build/cm-priolarm-native
+
+include tools/dsky_operator_schedule.mk

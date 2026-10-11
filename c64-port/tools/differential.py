@@ -556,3 +556,5 @@ subprocess.run([sys.executable,'tools/cm_abort_lifecycle_differential.py',str(re
 subprocess.run([sys.executable,'tools/dsky_scalar_output_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_priolarm_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_operator_schedule_differential.py',str(reference)],cwd=ROOT,check=True)

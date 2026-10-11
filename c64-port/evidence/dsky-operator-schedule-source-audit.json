@@ -1,0 +1,98 @@
+{
+  "lm": {
+    "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": {
+      "original_sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+      "normalized_fixture": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "indentation_repairs": 0
+    },
+    "T4RUPT_PROGRAM.agc": {
+      "original_sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
+      "normalized_fixture": "T4RUPT_PROGRAM.agc",
+      "indentation_repairs": 0
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "normalized_fixture": "INTERPRETER.agc",
+      "indentation_repairs": 0
+    },
+    "EXECUTIVE.agc": {
+      "original_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+      "normalized_fixture": "EXECUTIVE.agc",
+      "indentation_repairs": 0
+    },
+    "DISPLAY_INTERFACE_ROUTINES.agc": {
+      "original_sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
+      "normalized_fixture": "DISPLAY_INTERFACE_ROUTINES.agc",
+      "indentation_repairs": 0
+    },
+    "FRESH_START_AND_RESTART.agc": {
+      "original_sha256": "bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a",
+      "normalized_fixture": "FRESH_START_AND_RESTART.agc",
+      "indentation_repairs": 0
+    },
+    "PINBALL_NOUN_TABLES.agc": {
+      "original_sha256": "ec5e14a2647763b0136fc012d2648803183737e1e386daba1548158905c9b2b3",
+      "normalized_fixture": "PINBALL_NOUN_TABLES.agc",
+      "indentation_repairs": 0
+    },
+    "INTER-BANK_COMMUNICATION.agc": {
+      "original_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+      "normalized_fixture": "INTER-BANK_COMMUNICATION.agc",
+      "indentation_repairs": 0
+    },
+    "WAITLIST.agc": {
+      "original_sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+      "normalized_fixture": "WAITLIST.agc",
+      "indentation_repairs": 0
+    },
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+  },
+  "cm": {
+    "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": {
+      "original_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+      "normalized_fixture": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc",
+      "indentation_repairs": 0
+    },
+    "T4RUPT_PROGRAM.agc": {
+      "original_sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
+      "normalized_fixture": "T4RUPT_PROGRAM.agc",
+      "indentation_repairs": 6
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_fixture": "INTERPRETER.agc",
+      "indentation_repairs": 36
+    },
+    "EXECUTIVE.agc": {
+      "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+      "normalized_fixture": "EXECUTIVE.agc",
+      "indentation_repairs": 5
+    },
+    "DISPLAY_INTERFACE_ROUTINES.agc": {
+      "original_sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+      "normalized_fixture": "DISPLAY_INTERFACE_ROUTINES.agc",
+      "indentation_repairs": 1
+    },
+    "FRESH_START_AND_RESTART.agc": {
+      "original_sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
+      "normalized_fixture": "FRESH_START_AND_RESTART.agc",
+      "indentation_repairs": 3
+    },
+    "PINBALL_NOUN_TABLES.agc": {
+      "original_sha256": "d90a466da20a0811690c812b2af0a0c9338a589d2b18c2e0ef1054e9ce563e7f",
+      "normalized_fixture": "PINBALL_NOUN_TABLES.agc",
+      "indentation_repairs": 0
+    },
+    "INTER-BANK_COMMUNICATION.agc": {
+      "original_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+      "normalized_fixture": "INTER-BANK_COMMUNICATION.agc",
+      "indentation_repairs": 0
+    },
+    "WAITLIST.agc": {
+      "original_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+      "normalized_fixture": "WAITLIST.agc",
+      "indentation_repairs": 9
+    },
+    "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  }
+}
