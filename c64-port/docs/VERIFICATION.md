@@ -1526,3 +1526,7 @@ Literal DANZIG/NOIBNKSW through CHANG2 basic or interpreter exchanges match16384
 Qualify complete VECAGREE and VECSGNAG control plus literal UNIT and IMUPULSE handoffs against655360 complete original native and full sanitizer states plus320 actual C64 states across ten targets. Selected UNIT and IMUPULSE bodies remain separately open. See `docs/RTB-VECTOR.md`.
 
 The authenticated GitHub branch reference was verified at `fdacaea0b7f22e4d7d9306566b9dbc1e82a59b18`, including 271 exact milestone trees through canonical Luminary DANZIG context exchange `293b1fe4`. The immutable record is `evidence/github-milestone-publication-271-audit.json`. Native application completion remains governed by the coverage and integrated-application gates.
+
+## Translate original Comanche canonical ENEMA recovery image
+
+Qualify actual ENEMA whole physical image recovery against4096 original native sanitizer states and32 C64 checkpoints with explicit MMDSPLAY PTBAD DOFSTART continuations retaining failed automatic stack build and qualified reset transient scratch workaround. See `docs/COMANCHE_ENEMA_IMAGE.md`.

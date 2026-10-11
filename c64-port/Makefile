@@ -797,3 +797,6 @@ include tools/dsky_nv_update_general_integration.mk
 include tools/lm_danzig_change_integration.mk
 
 include tools/rtb_vector_integration.mk
+
+include tools/cm_enema_image.mk
+all: build/cm-enema-image-native

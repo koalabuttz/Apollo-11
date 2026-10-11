@@ -1174,3 +1174,7 @@ Literal DANZIG/NOIBNKSW through CHANG2 basic or interpreter exchanges match16384
 ## Translate original RTB vector agreement and literal normalization handoffs
 
 Qualify complete VECAGREE and VECSGNAG control plus literal UNIT and IMUPULSE handoffs against655360 complete original native and full sanitizer states plus320 actual C64 states across ten targets. Selected UNIT and IMUPULSE bodies remain separately open. See `docs/RTB-VECTOR.md`.
+
+## Translate original Comanche canonical ENEMA recovery image
+
+Qualify actual ENEMA whole physical image recovery against4096 original native sanitizer states and32 C64 checkpoints with explicit MMDSPLAY PTBAD DOFSTART continuations retaining failed automatic stack build and qualified reset transient scratch workaround. See `docs/COMANCHE_ENEMA_IMAGE.md`.

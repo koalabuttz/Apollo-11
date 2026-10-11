@@ -1,0 +1,19 @@
+{
+  "cases": 4096,
+  "checkpoints": 4096,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "ENEMA05,2651 through actualMMDSPLAY/PTBAD/DOFSTART entry"
+  ],
+  "context_cohorts": "4096 randomized complete images, fresh/ordinary/TVC/phase-fault routes, all entry Ebank/SUPER/IRQ/rawregisters and13 external latches",
+  "binary_bytes": 16916480,
+  "snapshot_sha256": "cf5e45baa06b836b97f38a957ad4275cf5857b36136344a1803767d57af61dfb",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048 physical words,13 cm_native_io latches",
+  "scope": "actual canonical ENEMA through source-selected MMDSPLAY/PTBAD/DOFSTART entry; selected subsequent display/recovery body remains separate"
+}
