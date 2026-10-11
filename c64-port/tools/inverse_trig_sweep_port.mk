@@ -6,8 +6,8 @@ build/test-inverse-trig-sweep-port: $(INVERSE_TRIG_SWEEP_PORT_CORE) tests/test_i
 test: test-inverse-trig-sweep-port
 test-inverse-trig-sweep-port: build/test-inverse-trig-sweep-port
 	./build/test-inverse-trig-sweep-port
-sanitize: sanitize-inverse-trig-port
-sanitize-inverse-trig-port: | build
+sanitize: sanitize-inverse-trig-sweep-port
+sanitize-inverse-trig-sweep-port: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_inverse_trig_sweep.c $(INVERSE_TRIG_SWEEP_PORT_CORE) -o build/test-inverse-trig-sweep-port-san
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-inverse-trig-sweep-port-san
-.PHONY: test-inverse-trig-sweep-port sanitize-inverse-trig-port
+.PHONY: test-inverse-trig-sweep-port sanitize-inverse-trig-sweep-port
