@@ -576,3 +576,5 @@ include tools/cm_waitlist_extended.mk
 include tools/delcomp_port.mk
 
 include tools/cm_interbank.mk
+
+include tools/cm_idle_dispatch.mk

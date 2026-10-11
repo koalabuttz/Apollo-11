@@ -1,0 +1,50 @@
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entry": "01,3231 ADVAN",
+  "boundaries": [
+    "selected basic dispatch",
+    "06037 NEWOPS after interpreted INTRSM",
+    "SELFRET selfcheck continuation"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ",
+    "channel11"
+  ],
+  "selected_native_continuation": "actual basic/interpreted pair or idle",
+  "snapshot_sha256": "9a7693e6159056f89a624255e96ce997d34120aabdd3f9e1eabd2bf4bc3a40e6",
+  "hardware_stack_bytes": 16,
+  "software_stack_bytes": 666,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 17683,
+    ".text": {
+      "address": 2061,
+      "bytes": 8645
+    },
+    ".rodata": {
+      "address": 10706,
+      "bytes": 9024
+    },
+    ".data": {
+      "address": 19730,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 19730,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 23852,
+      "bytes": 0
+    },
+    "image_end": 23852
+  }
+}

@@ -408,3 +408,5 @@ subprocess.run([sys.executable,'tools/cm_waitlist_extended_differential.py',str(
 subprocess.run([sys.executable,'tools/delcomp_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_interbank_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_idle_dispatch_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -768,3 +768,7 @@ Both original DELCOMP routines match 10,240 complete canonical states and full s
 ## Translate actual Comanche inter-bank source control and returns
 
 Native Comanche inter-bank call and return entries preserve 7,168 original whole-image states. Strict and sanitizer checks pass; C64 validates 112 fingerprints and two full-state samples. Actual external targets remain typed continuations, with unsupported entries rejected. See `docs/COMANCHE_INTERBANK.md`.
+
+## Resume canonical Comanche idle and selected basic jobs
+
+Source idle dispatch matches 4,096 original complete states with actual register, bank and interpreter effects. Strict and sanitizer checks pass; C64 validates 128 fingerprints and two complete samples. This is additive Executive coverage; whole-file completion is separately audited. See `docs/COMANCHE_IDLE_DISPATCH.md`.

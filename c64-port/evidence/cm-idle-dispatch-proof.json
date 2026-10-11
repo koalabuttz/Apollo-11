@@ -1,0 +1,22 @@
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entry": "01,3231 ADVAN",
+  "boundaries": [
+    "selected basic dispatch",
+    "06037 NEWOPS after interpreted INTRSM",
+    "SELFRET selfcheck continuation"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ",
+    "channel11"
+  ],
+  "selected_native_continuation": "actual basic/interpreted pair or idle",
+  "snapshot_sha256": "9a7693e6159056f89a624255e96ce997d34120aabdd3f9e1eabd2bf4bc3a40e6"
+}
