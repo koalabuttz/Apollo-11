@@ -1,0 +1,5 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/dsky_keycom.c tests/dsky_keycom_cases.c tests/dsky_keycom_check.c tests/test_dsky_keycom.c -o build/test-dsky-keycom
+./build/test-dsky-keycom
+DSKY KEYCOM: 64 complete2050word original images, 0 failures
+make: Leaving directory '/workspace/Apollo-11/c64-port'

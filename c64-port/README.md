@@ -526,3 +526,7 @@ The real VERB and NOUN source entries preserve 4096 complete erasable and interr
 ## Port source CHARIN verb and noun admission effects
 
 The original CHARIN path preserves display locks, key-release channel events and real VERB or NOUN execution. All 4096 complete source states and sanitizer streams match; the native C64 diagnostic passes 64 cases. See `docs/DSKY-KEYBOARD-SERVICES.md`.
+
+## Port source KEYCOM admission of real CHARIN jobs
+
+KEYCOM admits the actual historical CHARIN priority and address pair into all eight Executive contexts, retaining source bailout and RESUME entry boundaries. Original-source and sanitizer comparisons cover 4096 complete states; 64 C64 cases pass. See `docs/DSKY-KEYBOARD-SERVICES.md`.

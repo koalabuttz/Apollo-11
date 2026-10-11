@@ -445,3 +445,5 @@ include tools/p66_basic.mk
 include tools/dsky_nv_key.mk
 
 include tools/dsky_charin_nv.mk
+
+include tools/dsky_keycom.mk
