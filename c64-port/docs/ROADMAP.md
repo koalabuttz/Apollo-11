@@ -1160,3 +1160,7 @@ Qualify actual ENEMA whole physical image recovery against4096 original native s
 ## Compose uninterrupted original alarm recycle and display update
 
 Qualify actual ALMCYCLE lamp event BANKCALL widened UPDATVB SWRETURN POSTJUMP and ENTER or CCSHOLE over8192 uninterrupted original native sanitizer images plus64 C64 states with all signed zero and selecting SUPER contexts. See `docs/DSKY-ALARM-RECYCLE.md`.
+
+## Translate original generic decimal display fresh data load
+
+Qualify both actual DECDSP loads to DSPDCPUT with normal mixed nouns CPU and editing aliases over8192 complete original native sanitizer images plus128 C64 states keeping scale factor and formatter selection separate. See `docs/DSKY-DECIMAL-LOAD.md`.

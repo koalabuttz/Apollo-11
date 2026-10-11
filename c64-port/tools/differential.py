@@ -536,3 +536,5 @@ subprocess.run([sys.executable,'tools/dsky_nv_update_general_differential.py',st
 subprocess.run([sys.executable,'tools/cm_enema_image_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_alarm_recycle_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_decimal_load_differential.py',str(reference)],cwd=ROOT,check=True)

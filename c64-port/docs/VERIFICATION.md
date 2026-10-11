@@ -1540,3 +1540,7 @@ The ENEMA release93c7e11 omitted the26 failure/reconstruction artifacts from its
 ## Fresh committed recovery and display host check
 
 A clean isolated export of exact commit`93c7e11ffc910a6e80717c9b679c4870cd875651` builds and passes every registered portable host `all`/`test` recipe, including both whole interbank and service routine files, full P66 recurrence, RTB numerical groups, canonical context exchanges, source display consumers and Comanche abort recovery. The exporter uses exact Git objects and excludes uncommitted source. Its committed snapshot has39 complete source files; the full-port gate correctly rejects136 remaining files and both integrated applications. See `evidence/integration-recovery-display-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
+
+## Translate original generic decimal display fresh data load
+
+Qualify both actual DECDSP loads to DSPDCPUT with normal mixed nouns CPU and editing aliases over8192 complete original native sanitizer images plus128 C64 states keeping scale factor and formatter selection separate. See `docs/DSKY-DECIMAL-LOAD.md`.
