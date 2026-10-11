@@ -279,3 +279,5 @@ build/gravity.prg: $(GRAVITY_CORE) $(GRAVITY_TEST) platform/c64/gravity_diagnost
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/gravity.map $(GRAVITY_CORE) $(GRAVITY_TEST) platform/c64/gravity_diagnostic.c -o $@
 
 include tools/vector.mk
+
+include tools/executive_services.mk

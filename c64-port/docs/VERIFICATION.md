@@ -534,3 +534,10 @@ All218 earlier hashes retained; manifest239 entries.
 
 Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
 128 complete states pass host, sanitizer and C64 diagnostics. See [VECTOR.md](VECTOR.md).
+
+## Verified SPVAC and CHANG2
+
+Staged VAC admission and interpretive context exchange match 768 complete
+original-assembly checkpoints. Host/sanitizer tests and all 768 C64 state
+fingerprints pass. Native mixed-context execution is a separate integration
+stage. See [EXECUTIVE_SERVICES.md](EXECUTIVE_SERVICES.md).

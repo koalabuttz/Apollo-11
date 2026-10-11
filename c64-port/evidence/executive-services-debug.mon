@@ -1,0 +1,9 @@
+load "/workspace/Apollo-11/c64-port/build/executive-services.prg" 0
+watch store c046
+g 080d
+r
+m c040 c046
+g
+r
+m c040 c046
+quit

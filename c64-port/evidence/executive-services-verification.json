@@ -1,0 +1,32 @@
+{
+  "checkpoints": 768,
+  "spvac": 256,
+  "chang2": 512,
+  "row_fields": 332,
+  "snapshot_sha256": "da0a757ef8b59588af0eb0c177cb2da6591f2b9b4eccbd834e6d519167a7cbf3",
+  "mailbox": "a500000003",
+  "prg_file_bytes": 17600,
+  "sections": {
+    "text": {
+      "address": 2061,
+      "bytes": 14154
+    },
+    "rodata": {
+      "address": 16215,
+      "bytes": 3432
+    },
+    "bss": {
+      "address": 19647,
+      "bytes": 0
+    },
+    "noinit": {
+      "address": 19647,
+      "bytes": 1
+    }
+  },
+  "host": "768 frozen state checks; all unsupported nonzero EDOP values and malformed NEWJOB displacements rejected without mutation",
+  "sanitizers": "ASan/UBSan pass; leak scanning disabled",
+  "regressions": "Executive/dispatch, IRQ, lifecycle and restart host suites passed",
+  "scope": "SPVAC to ENDFIND/BAILOUT1; CHANG2 to basic DTCB or interpreter INTRSM pre-NEWOPS; basic native trampoline unchanged",
+  "timing": "No guidance deadline or worst-case execution bound claimed; full-state hashing is diagnostic overhead"
+}

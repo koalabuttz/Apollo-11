@@ -216,3 +216,10 @@ PDVL build/test: `make test-gravity c64-gravity`; original comparison:
 
 Reusable vector arithmetic now matches 13,600 original-assembly checkpoints.
 128 complete states pass host, sanitizer and C64 diagnostics. See `docs/VECTOR.md`.
+
+## Verified SPVAC and CHANG2
+
+Staged VAC admission and interpretive context exchange match 768 complete
+original-assembly checkpoints. Host/sanitizer tests and all 768 C64 state
+fingerprints pass. Native mixed-context execution is a separate integration
+stage. See `docs/EXECUTIVE_SERVICES.md`.

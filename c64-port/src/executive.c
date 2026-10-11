@@ -79,6 +79,18 @@ enum exec_status exec_admit(executive *s, agc_word priority,
         (difference & UINT16_C(0100000)) == 0) s->newjob=s->locctr;
     return EXEC_OK;
 }
+enum exec_status exec_spvac(executive *s, exec_address address, agc_word *q) {
+    agc_word priority=s->newprio;
+    if (s->alarm != 0) return EXEC_BAILOUT_PENDING;
+    if (q==0 || *q>07777 || priority==0 ||
+        (priority & UINT16_C(0140777))!=0 || address.location>AGC_MASK ||
+        address.bank>AGC_MASK || (s->newjob!=AGC_NEG_ZERO &&
+        (s->newjob>84u || s->newjob%EXEC_CORE_WORDS!=0)))
+        return EXEC_OUT_OF_SCOPE;
+    /* XCH Q / AD NEG2 / XCH Q restores the supplied A and changes Q. */
+    *q=agc_add_word(*q,UINT16_C(077775));
+    return exec_admit(s,priority,address.location,address.bank,1);
+}
 int exec_endjob_select(executive *s) {
     uint8_t i;
     agc_word base;
@@ -151,6 +163,45 @@ enum exec_status exec_change_basic(executive *s, exec_address resume,
     slot=(uint8_t)(s->newjob / EXEC_CORE_WORDS);
     if (!basic_slot(s,slot)) return EXEC_OUT_OF_SCOPE;
     exchange_basic(s,slot,resume,next);
+    return EXEC_OK;
+}
+enum exec_status exec_change_interpretive(executive *s, agc_word superbank,
+                                         exec_interpreter *control,
+                                         exec_transfer *next) {
+    uint8_t slot,interpretive;
+    exec_address outgoing,incoming;
+    if (s->alarm!=0) return EXEC_BAILOUT_PENDING;
+    if (control==0 || next==0 || control->edop!=0 ||
+        (superbank & (agc_word)~UINT16_C(0160))!=0 || s->newjob==0 ||
+        s->newjob>84u || s->newjob%EXEC_CORE_WORDS!=0 ||
+        s->core[0][EXEC_LOC]==0 || s->core[0][EXEC_LOC]>07777 ||
+        (s->core[0][EXEC_BANK] & (agc_word)~UINT16_C(076167))!=0 ||
+        agc_classify(s->core[0][EXEC_PRIORITY])!=AGC_POSITIVE)
+        return EXEC_OUT_OF_SCOPE;
+    slot=(uint8_t)(s->newjob/EXEC_CORE_WORDS);
+    incoming.location=s->core[slot][EXEC_LOC];
+    incoming.bank=s->core[slot][EXEC_BANK];
+    interpretive=(uint8_t)((incoming.location & AGC_SIGN)!=0);
+    if (agc_classify(s->core[slot][EXEC_PRIORITY])!=AGC_POSITIVE ||
+        (incoming.bank & (agc_word)~UINT16_C(076167))!=0 ||
+        (!interpretive && (incoming.location==0 || incoming.location>07777)) ||
+        (interpretive && agc_negate(incoming.location)>=07777))
+        return EXEC_OUT_OF_SCOPE;
+    /* CHANG2 complements LOC; CHANJOB-1 combines BANKSET with SUPERBNK. */
+    outgoing.location=agc_negate(s->core[0][EXEC_LOC]);
+    outgoing.bank=(agc_word)(s->core[0][EXEC_BANK] | superbank);
+    exchange_basic(s,slot,outgoing,&incoming);
+    next->interpretive=interpretive;
+    if (interpretive) {
+        /* ENDPRCHG COM / AD ONE / TS LOC, then INTRSM's LXCH BBANK and
+         * INTPRET+3. EDOP's right-shift edit strips BIT15 to +0. */
+        incoming.location=agc_add_word(agc_negate(incoming.location),1);
+        s->core[0][EXEC_LOC]=incoming.location;
+        s->core[0][EXEC_BANK]=(agc_word)(incoming.bank & 076007);
+        control->intbit15=(agc_word)(incoming.bank & 040000);
+        control->edop=0;
+    }
+    next->address=incoming;
     return EXEC_OK;
 }
 enum exec_status exec_complete_basic(executive *s, agc_word superbank,

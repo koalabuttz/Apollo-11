@@ -31,6 +31,21 @@ void exec_init(executive *state);
  * Interrupt exclusion is the platform caller's responsibility. */
 enum exec_status exec_admit(executive *state, agc_word priority,
                            agc_word location, agc_word bank, int needs_vac);
+/* SPVAC entry: priority is already staged in NEWPRIO; A/L supply address.
+ * Stops at ENDFIND or BAILOUT1 as exec_admit does. q is the caller's Q,
+ * adjusted by -2 even on a resource bailout. q must be distinct from state;
+ * caller owns IRQ exclusion. */
+enum exec_status exec_spvac(executive *state, exec_address address, agc_word *q);
+typedef struct { agc_word intbit15, edop; } exec_interpreter;
+typedef struct { exec_address address; uint8_t interpretive; } exec_transfer;
+/* CHANG2 from DANZIG's EDOP=+0 safe point. Core-zero LOC is the completed
+ * interpretive word's address, BANKSET its BBCON. Dispatches a basic context
+ * through DTCB, or resumes an interpretive context through INTRSM, stopping
+ * before NEWOPS fetch. control and next must be distinct owned objects.
+ * Caller owns IRQ exclusion. No opcode decoder or suspended native C stack. */
+enum exec_status exec_change_interpretive(executive *state, agc_word superbank,
+                                         exec_interpreter *control,
+                                         exec_transfer *next);
 /* ENDJOB1 and EJSCAN, stopping before CHANJOB/DUMMYJOB dispatch.
  * Returns a slot index 1..7, or -1 for idle. Does not execute or swap jobs. */
 int exec_endjob_select(executive *state);
