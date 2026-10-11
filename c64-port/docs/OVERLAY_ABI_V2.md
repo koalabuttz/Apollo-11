@@ -5,12 +5,12 @@ integrated LM and CM applications builds them against it. Changes go through a
 PR that Lane H reviews. ABI 1 ([OVERLAYS.md](OVERLAYS.md)) stays in place for
 the retained single-slot proofs; nothing in this document changes them.
 
-Status: the runtime, the REU store, the packer, the allocation plan and the
-service-table generator pass their host checks, both strict and under
-ASan/UBSan (`make -f tools/overlay_v2.mk overlay-v2-test`). The C64 linker
-scripts and the REU register hooks are written but have **not** been linked or
-run on the target yet. llvm-mos was not available in the environment that
-produced this revision, so that is the next Lane H step (see "Verification").
+Status: the runtime, REU store, packer, allocation plan and service-table
+generator pass host checks, strict and under ASan/UBSan
+(`make -f tools/overlay_v2.mk overlay-v2-test`). The linker scripts, the
+service jump table, the REU hooks and the RAM-vector runtime configuration also
+pass a target proof on stock PAL ROMs in VICE 3.7.1 with an emulated REU
+(`make -f tools/overlay_v2.mk overlay-v2-target`, see "Verification").
 
 ## Why ABI 1 is not enough for the whole program
 
@@ -36,8 +36,8 @@ module's 7.8 KB.
 
 1. **Runtime module store is a 17xx REU, 2 MB recommended.** At boot, the
    program's packed module store goes into the REU. At runtime, a module swap
-   is one DMA at one byte per cycle: about 16.6 ms for a full job slot and
-   8.3 ms for a full task slot on PAL. A 1 MB REU fits the mid estimate. 2 MB
+   is one DMA at one byte per cycle. On the target, a cold load and call of a
+   14 KB module measured 23.9 ms, and a cached call 2.2 ms. A 1 MB REU fits the mid estimate. 2 MB
    covers the high estimate for either program. VICE emulates REUs up to 16 MB
    (`-reu -reusize 2048 -reuimage lm.reu`), and so do the Ultimate family and
    current REU clones. A disk-only build still works for module-level proofs
@@ -151,8 +151,9 @@ stores are separate, so the same id can name different modules in each.
 Lookup is one 16-byte DMA. A historical-continuation lookup is a binary search
 of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present
 module's header and CRC16-CCITT and the resolver's order and targets. Per-load
-CRC is off in the REU build, because a bitwise CRC over 16 KB costs about a
-second on the 6502. The disk build keeps per-load verification on.
+CRC is off in the REU build, because a bitwise CRC costs about 250 cycles per
+byte (four seconds for a full slot). A disk-backed store keeps per-load
+verification on.
 
 ### Disk layout
 
@@ -304,12 +305,42 @@ status clearing). It covers:
 - store open and boot verification against each corruption class
 - service-table version compatibility
 
+Target proof (`tools/overlay_v2_target_build.py`, then
+`tools/overlay_v2_vice_test.py`; llvm-mos SDK v23.3.0, VICE 3.7.1, stock PAL
+ROMs, 128 KB REU). The resident and three proof modules are linked with the ABI
+2 scripts, and the packer accepts the headers the linker emitted. The resident
+then runs in `$01=$35` with its own RAM IRQ/NMI vectors and CIA1 interrupts
+live, and does the following:
+
+- opens and boot-verifies the store from the REU
+- calls a resident service (`agc_add_word`) through the `$6F00` jump table from
+  a job module
+- `CALL`s from the job slot into a task module at `$E000` and `RET`s back
+- resolves a historical address to a 14 KB job module, which returns a kernel
+  action that is then resumed
+- faults on an unmapped id and recovers on restart
+
+All 2,048 canonical words other than the four test words are unchanged. Measured
+on the target:
+
+| Measurement | Cycles | At PAL clock |
+|---|---:|---:|
+| Cold load and call, 14,225-byte job module | 23,558 | 23.9 ms |
+| Cached call of the same module | 2,190 | 2.2 ms |
+| Cold load and call, 181-byte task module | 9,555 | 9.7 ms |
+| Boot verification of a 3-module store | 7,980,407 | 8.1 s |
+| Software-stack extent | 93 bytes | |
+
+The fixed cost of a cold load (about 7,000 cycles of directory and header work
+in C) dominates small modules. Boot verification with the bitwise CRC costs
+about 250 cycles per byte plus a scan of the 4,096-entry index. A 0.8 MB store
+would take minutes to verify, so a table-driven CRC is the first optimisation
+to make before whole-program stores exist.
+
 Not yet done, in order:
 
-1. Link the resident and a module with llvm-mos against the ABI 2 scripts, and
-   check the header bytes the linker emits against the packer.
-2. Run a REU-backed resident in VICE with stock ROMs and `-reu -reusize 2048
-   -reuimage`, executing real job and task modules and measuring swap cycles.
-3. Measure true-drive-emulation serial load speed, to replace the disk estimate.
-4. Port one existing ABI 1 proof (the CM service overlay) to ABI 2, as the
+1. Port one existing ABI 1 proof (the CM service overlay) to ABI 2, as the
    reference module set the other lanes copy.
+2. Measure true-drive-emulation serial load speed, to replace the disk estimate.
+3. Table-driven CRC for boot verification, and a disk-to-REU boot loader for
+   real hardware.

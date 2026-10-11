@@ -206,7 +206,7 @@ int main(int argc,char **argv) {
     check_loaded(0x0101,0x8000,300,16); assert(state->words[0300]==(0300^0x7376u)+1u);
     before=dmas; ram[0x8000u+24u+300u]=0x33;   /* BSS write survives a cached call */
     assert(run(0,0x0101,0,&value,&action,&resume)==APOLLO_OV2_OK && value==43);
-    assert(dmas-before==1u && ram[0x8000u+24u+300u]==0x33);     /* directory read only */
+    assert(dmas==before && ram[0x8000u+24u+300u]==0x33);     /* no DMA at all */
     assert(run(0,0x0102,0,&value,&action,&resume)==APOLLO_OV2_OK && value==44);  /* swap J twice */
     check_loaded(0x0101,0x8000,300,16); guards();
 

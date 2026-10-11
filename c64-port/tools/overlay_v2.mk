@@ -23,3 +23,8 @@ overlay-v2-test: build/overlay-v2/selftest.reu build/overlay-v2/test build/overl
 	cmp build/overlay-v2/allocation.json docs/overlay-allocation.json
 overlay-v2-plan:
 	python3 tools/overlay_allocation.py
+# Target proof: needs MOS_CC, VICE, VICE_ROM_DIR, VICE_DATA_DIR (tools/setup_cloud.sh).
+.PHONY: overlay-v2-target
+overlay-v2-target:
+	python3 tools/overlay_v2_target_build.py --cc $(MOS_CC)
+	python3 tools/overlay_v2_vice_test.py --vice $(VICE) --rom-dir $(VICE_ROM_DIR) --data-dir $(VICE_DATA_DIR)

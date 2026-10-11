@@ -89,20 +89,25 @@ enum apollo_ov2_status apollo_ov2_run(apollo_ov2_runtime *r,uint8_t context,
         apollo_ov2_dirent d;
         enum apollo_ov2_status status;
         uint16_t result;
+        uint8_t slot;
         if(++chain>APOLLO_OV2_CHAIN_LIMIT) return fail(r,APOLLO_OV2_RUNAWAY);
         if(!at.module) return fail(r,APOLLO_OV2_UNMAPPED);
-        if(!r->store.lookup(r->store.user,at.module,&d) || d.id!=at.module)
-            return fail(r,APOLLO_OV2_UNMAPPED);
-        if(d.slot>=APOLLO_OV2_SLOTS) return fail(r,APOLLO_OV2_BAD_DIRECTORY);
-        if(r->loaded[d.slot]!=at.module) {
+        /* A cached module needs no directory read. */
+        if(r->loaded[APOLLO_OV2_SLOT_JOB]==at.module) slot=APOLLO_OV2_SLOT_JOB;
+        else if(r->loaded[APOLLO_OV2_SLOT_TASK]==at.module) slot=APOLLO_OV2_SLOT_TASK;
+        else {
+            if(!r->store.lookup(r->store.user,at.module,&d) || d.id!=at.module)
+                return fail(r,APOLLO_OV2_UNMAPPED);
+            if(d.slot>=APOLLO_OV2_SLOTS) return fail(r,APOLLO_OV2_BAD_DIRECTORY);
             status=load(r,&d);
             if(status) return fail(r,status);
+            slot=d.slot;
         }
-        if(at.selector>=r->selectors[d.slot]) return fail(r,APOLLO_OV2_BAD_SELECTOR);
+        if(at.selector>=r->selectors[slot]) return fail(r,APOLLO_OV2_BAD_SELECTOR);
         r->frame.state=r->state; r->frame.context=context; r->frame.reserved=0;
         r->frame.next.module=0; r->frame.next.selector=0;
         r->frame.ret.module=0; r->frame.ret.selector=0;
-        result=r->store.invoke(r->store.user,r->slot[d.slot],&r->frame,at.selector);
+        result=r->store.invoke(r->store.user,r->slot[slot],&r->frame,at.selector);
         switch(result) {
         case APOLLO_OV2_DONE:
             *value=r->frame.value; *action=APOLLO_OV2_DONE;
