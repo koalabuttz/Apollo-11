@@ -813,6 +813,13 @@
           ],
           "scope": "Source DSQ/DSQSUB double-precision square paths through original epilogue and caller handoff; all source-qualified state comparisons and actual C64 evidence retained.",
           "verification": "docs/INTERPRETED-SQUARE.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_unit.c"
+          ],
+          "scope": "Complete125 word UNIT UNITDV and VSQSUB numerical source group under explicit vector VAC contract; other interpreter bodies remain open.",
+          "verification": "docs/RTB-UNIT.md"
         }
       ]
     },
@@ -1401,6 +1408,13 @@
           ],
           "scope": "Continuous original ALMCYCLE lamp event generalized UPDATVB SWRETURN POSTJUMP ENTER or actual CCSHOLE path.",
           "verification": "docs/DSKY-ALARM-RECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_request_control.c"
+          ],
+          "scope": "Actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 source call stages to genuine RELDSP NOVAC FINDVAC WAITLIST boundaries, retaining downstream parameters.",
+          "verification": "docs/DSKY-REQUEST-CONTROL.md"
         }
       ]
     },
@@ -1688,6 +1702,13 @@
           ],
           "scope": "Actual VECAGREE and complete VECSGNAG; UNIT and IMUPULSE literal handoffs, selected bodies remain separately open.",
           "verification": "docs/RTB-VECTOR.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_unit.c"
+          ],
+          "scope": "Actual NORMUNIT NORMUNX1 numerical UNIT continuations through true source DANZIG or division overflow; gyro hardware and other RTB bodies remain separate.",
+          "verification": "docs/RTB-UNIT.md"
         }
       ]
     },
@@ -2947,6 +2968,13 @@
           ],
           "scope": "Source DSQ/DSQSUB double-precision square paths through original epilogue and caller handoff; all source-qualified state comparisons and actual C64 evidence retained.",
           "verification": "docs/INTERPRETED-SQUARE.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_unit.c"
+          ],
+          "scope": "Complete125 word UNIT UNITDV and VSQSUB numerical source group under explicit vector VAC contract; other interpreter bodies remain open.",
+          "verification": "docs/RTB-UNIT.md"
         }
       ]
     },
@@ -3515,6 +3543,13 @@
           ],
           "scope": "Continuous original ALMCYCLE lamp event generalized UPDATVB SWRETURN POSTJUMP ENTER or actual CCSHOLE path.",
           "verification": "docs/DSKY-ALARM-RECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_request_control.c"
+          ],
+          "scope": "Actual VBRQEXEC VBRQWAIT REQUESTC and V30 V31 source call stages to genuine RELDSP NOVAC FINDVAC WAITLIST boundaries, retaining downstream parameters.",
+          "verification": "docs/DSKY-REQUEST-CONTROL.md"
         }
       ]
     },
@@ -3828,6 +3863,13 @@
           ],
           "scope": "Actual VECAGREE and complete VECSGNAG; UNIT and IMUPULSE literal handoffs, selected bodies remain separately open.",
           "verification": "docs/RTB-VECTOR.md"
+        },
+        {
+          "native_files": [
+            "src/rtb_unit.c"
+          ],
+          "scope": "Actual NORMUNIT NORMUNX1 numerical UNIT continuations through true source DANZIG or division overflow; gyro hardware and other RTB bodies remain separate.",
+          "verification": "docs/RTB-UNIT.md"
         }
       ]
     },
