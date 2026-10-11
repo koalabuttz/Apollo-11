@@ -1,0 +1,40 @@
+{
+  "actual_executed_source_states": 86016,
+  "source_stream_sha256": "e59ca10fabf23d895a3ea4803d696f30e44ae4d39347199fc2a708337eaedb48",
+  "target_contexts": 56,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500003800",
+  "software_stack_bytes": 719,
+  "modules": [
+    {
+      "id": 221,
+      "filename": "G221",
+      "byte_count": 5536,
+      "crc16": 2842,
+      "sha256": "5ca9546ef47cdaa5ce5177a193f31ab83bc666b041bf34d63ded398842a79749",
+      "prg": "cm-admission-zero-221.prg",
+      "native_control": false
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 4842,
+      "crc16": 9550,
+      "sha256": "38f39763b44e46738bc894d593f02a3f2924bc05720c7fc941bd8b59eb25a185",
+      "prg": "cm-admission-zero-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10019,
+      "crc16": 44247,
+      "sha256": "0baa206dc68b810a665beb82feaedf72dbbee5a3f9c221c70f9eabac00f37fa2",
+      "prg": "cm-admission-zero-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual defined CCS+0 unavailable-core admission scan through real ordinary source return or resource BAILOUT; selected alarm/application groups and whole Executive closure remain separate"
+}

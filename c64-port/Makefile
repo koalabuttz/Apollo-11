@@ -809,3 +809,6 @@ include tools/cm_abort_recovery.mk
 all: build/cm-abort-recovery-native
 
 include tools/dsky_major_request.mk
+
+include tools/cm_admission_zero.mk
+all: build/cm-admission-zero-native

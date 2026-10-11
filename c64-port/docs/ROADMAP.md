@@ -1172,3 +1172,7 @@ Qualify actual POODOO mode test three DOWNFLAG operations BANKCALL MR.KLEAN SWRE
 ## Translate original operator major mode request source controls
 
 Qualify actual MMCHANG REQMM validation numeric blank POSTJUMP and genuine V37 or alarm cycle handoff over8192 full original native sanitizer states plus64 C64 states preserving explicit selected program bodies. See `docs/DSKY-MAJOR-REQUEST.md`.
+
+## Qualify original Comanche positive zero core admission scan
+
+Extend canonical source admission to defined positive zero core scan paths over86016 complete original native sanitizer states plus56 C64 cases correcting earlier NO.CORES interpretation additively while preserving frozen proofs. See `docs/COMANCHE_ADMISSION_ZERO.md`.
