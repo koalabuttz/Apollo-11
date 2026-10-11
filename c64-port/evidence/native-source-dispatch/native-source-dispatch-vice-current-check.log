@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete source priority/sleep basic adoptions and4 domain guards; retained memory unchanged
+Mailbox: a50000800004
+PRG bytes: 33236
+native-source-dispatch-hardware-stack.bin: measured stack extent 25 bytes
+native-source-dispatch-software-stack.bin: measured stack extent 1540 bytes

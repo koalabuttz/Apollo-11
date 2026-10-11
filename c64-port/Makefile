@@ -522,3 +522,8 @@ test: test-documentation-coverage
 test-documentation-coverage:
 	python3 tests/test_documentation_coverage.py
 .PHONY: test-documentation-coverage
+
+include tools/native_source_adoption.mk
+all: native_source_adoption-host
+test: native_source_adoption-host
+sanitize: native_source_adoption-sanitize

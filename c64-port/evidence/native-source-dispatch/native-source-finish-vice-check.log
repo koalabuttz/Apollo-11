@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete source ENDOFJOB basic/interpreter/idle adoptions and7 domain guards; retained memory unchanged
+Mailbox: a500008007
+PRG bytes: 31281
+native-source-finish-hardware-stack.bin: measured stack extent 25 bytes
+native-source-finish-software-stack.bin: measured stack extent 1527 bytes

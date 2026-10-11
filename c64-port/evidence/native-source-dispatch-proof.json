@@ -1,0 +1,138 @@
+{
+  "scope": "native source-selected continuation adoption and shared resident scheduler seams",
+  "host_original_full_state_rows": 384,
+  "host_domain_rejections": 11,
+  "c64_full_state_rows": 256,
+  "c64_domain_rejections": 11,
+  "target_family": 3,
+  "extra_zp_bytes": 0,
+  "stack_software_bytes": {
+    "priority_sleep": 1540,
+    "end": 1527
+  },
+  "stack_hardware_bytes": 25,
+  "source_files": {
+    "include/native_dispatch.h": "b2d3dadaed326c7b6d5bc7ecec1174c237620664ad8ea4d0a1db383559c98738",
+    "src/native_dispatch.c": "4f30df266be218f19637760ada628cd7e2da37a1d92f93f1324d87961c1fe94d",
+    "tests/native_source_dispatch_check.c": "bd0355bb59ad9a69c949334c510e3ecf445c3c009898dcffe3a1667e4ee878a2",
+    "tests/native_source_dispatch_check.h": "1ec9b792f062fd2df58886946acd7b36ce0a191ae293e98c64e41fc3f49731d3",
+    "tests/test_native_source_dispatch.c": "7840eabd53221882d43338f9c21e8742e73c154e2843999f252fb067fb6e6d38",
+    "platform/c64/native_source_dispatch_diagnostic.c": "2a79c2efa4aa7dbbece2a2566529940ee05361608cd8498637c7148bdbb2730d",
+    "tests/native_source_dispatch_priority_vectors.h": "1c010e14522f07ac0e17ea96a1dec69abc5895c1a385080f3f6a88138753a59a",
+    "tests/native_source_dispatch_sleep_vectors.h": "83e0609ba813dce20a099d8d14b040b3e88c8152ce7ea5f7dfbed057279e3cd8",
+    "tools/freeze_native_source_dispatch.py": "480a7fb5e67e4800d5e0e32601eee0b2f21eff4ca2d476b1ed44a88bdcd6fd0a",
+    "tests/native_source_finish_check.c": "28b7422c5065fbca1917e408e96f07171a60de39815f5a987d6ad5437046e624",
+    "tests/native_source_finish_check.h": "0c545b56d5c00f78e707d59834f1e61e2b18c6b76a7b00a8a87910667eb43f4e",
+    "tests/test_native_source_finish.c": "5779618c3eb1e9708ad888f8595cba903fbfa545067c075e8011f8aee1985d0f",
+    "platform/c64/native_source_finish_diagnostic.c": "8a47af78ed87b27377eea017c9aa00f171b27ad7df637c34e06633422e04446f",
+    "tools/native_source_dispatch_vice_test.py": "f64319521c116ea71ed0981dd19ff955b438bcb7e7e67af10772ffa0867cbf2d",
+    "tools/native_source_finish_vice_test.py": "137450054a7ae1d5b8b04d8f16895b4fa27cc81772becc317872f1933287e4c9",
+    "tools/native_source_adoption_build.py": "a05e435a75799e218809151c9a2b2a08f554e76e6455c684b0936f89ab21f2b0",
+    "tools/native_source_adoption_test.py": "7dddc03a55dd4d01272bf3ad29ec418975424adc0c6e3d016c7ebaa71597fa01",
+    "tools/native_source_adoption.mk": "d8be7b8d087725c911989de17e8ee9a43f73bf01a087d5947fc5690eeb73fa41",
+    "docs/NATIVE-SOURCE-DISPATCH.md": "21221349b7b52545b274d3b0179df4c29989f8d8798e8a225ec1bc9489885379"
+  },
+  "dependencies": {
+    "include/executive.h": "55b4ad6d2b3c422adbcf13860901eb91f5686399bbe31ccee41fefde8653aa16",
+    "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
+    "include/irq_delivery.h": "1014cb192c024d11a599d4800b0178b6226fd73d60f59cf4f7a75c7a09d6370e",
+    "src/irq_delivery.c": "83a2fab0989f7a8e88c5a8b972f276f76a09c3eb3fba4f9625814c3448fe8609",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "src/p66_native.c": "bbcb6cc6e4cb1c6bd5e10efa888eb38b762255975bd522bb4146bdf968c0447a",
+    "include/p66_native.h": "0a6cd0a00640e6da9bf053df3cc0c79ba36bb7d756e6c9b348c199b792e8aad5",
+    "src/lm_basic_priority.c": "171b82202052dd49977ce06502e1ce5e565cb27c298d09e1655e7250e9d30f47",
+    "src/lm_basic_sleep.c": "d7ad6b83618968bf5943307b9b4f54c12bab0e326c06b1965f8abeab6969edc2",
+    "src/lm_basic_finish.c": "bbcc6b9d9ef840d7c9eb36007528ab7212aba9a6c3389a010b9cbe515dc3bb6a",
+    "include/lm_basic_finish.h": "b70cc49410aeb4457e677c884a986f7b1c6cf71cd12a50da8f6fe2e77ea4548d",
+    "tests/lm_priority_cases.c": "01277b6b24d7c396a5749aa38f4c19e625f922ac2a2c002ad8df69416273ec15",
+    "tests/lm_sleep_cases.c": "20fdccde739805f4dcdc32c010946c393ec98b6ad23b13fd41f6f84a59a4d9fa",
+    "tests/lm_finish_cases.c": "2715bae884812a5651e05480e1dd227faad771f2b3548a4dce4f1026d9bcc5b1",
+    "tests/throttle_bridge_cases.c": "ff017285d26479485fd3896ea4d21b2d7692eafa0b4f187a603c1d7fe8396e14",
+    "tests/lm_priority_vectors.h": "a970f530c3ac0fc1f5c1b6ef038774225e7482d19efb79cf193fcdfe0cd0daa5",
+    "tests/lm_sleep_vectors.h": "58d3af4f905777ca30e4eedb00e6e57018c55064ae04fbbbe7ffe036aef74504",
+    "tests/lm_finish_vectors.h": "ee99b340004e09b82eaa6d3b9ba02e8030438c2e8e394c473242a600467cee1b"
+  },
+  "retained_snapshot_sha256": {
+    "mixed": "5129b28f03344d70358554c53bb9ccc8b341db676f94c5418f059388f1336041",
+    "guidance_prefix": "7b96007dec941c9dd2dbaa7948e8bc96e1e33bcf5897b5b7b0edaf1360d63eee",
+    "guidance_two_job": "46d33f2753d474198bc25f5cf95c676292739acbc777ce63538fae4c73753776"
+  },
+  "artifacts": {
+    "evidence/native-source-dispatch/native-source-dispatch.prg": {
+      "sha256": "3c94ad1b97b7e3a6fd87af5642a1cbc14640c537e20b3d70ae43a5a6cc96c65e",
+      "bytes": 33236
+    },
+    "evidence/native-source-dispatch/native-source-dispatch.map": {
+      "sha256": "f6ef49e0a3bed4835b8c9a163d1f668eb6cc381ee5886cea5d3d393bd07ed4d6",
+      "bytes": 13464
+    },
+    "evidence/native-source-dispatch/native-source-dispatch-vice-mailbox.bin": {
+      "sha256": "b4a4a532d3dd1e8506113c239699bbb70ac45fee971d5908d8147db26cff4e15",
+      "bytes": 6
+    },
+    "evidence/native-source-dispatch/native-source-dispatch-hardware-stack.bin": {
+      "sha256": "6e99a18478786acfcc43d6c217ca2e3fb436c2f935d2c3af55fd09cdee4c467c",
+      "bytes": 242
+    },
+    "evidence/native-source-dispatch/native-source-dispatch-software-stack.bin": {
+      "sha256": "b07f76a4a3753bb809d36a57a0b3b9aff37b29244010ee27776c9e5d726e90e0",
+      "bytes": 3840
+    },
+    "evidence/native-source-dispatch/native-source-dispatch-vice-current-check.log": {
+      "sha256": "5ba2c5b471054dbecfa9c78acd8d6db0741cf6ab64c926dde326caa5480bac20",
+      "bytes": 306
+    },
+    "evidence/native-source-dispatch/native-source-finish.prg": {
+      "sha256": "8a989990c0cbb35426a26ce96da9cce66d2f680bdcafda8039a9b5c6a1199a24",
+      "bytes": 31281
+    },
+    "evidence/native-source-dispatch/native-source-finish.map": {
+      "sha256": "b2b867bedea8c808a302a6ae9f68e7ca63d86d106fe473dc16b1d3ff08322510",
+      "bytes": 12531
+    },
+    "evidence/native-source-dispatch/native-source-finish-vice-mailbox.bin": {
+      "sha256": "b78beef22dc6556e326bddea065d3a5ab0cd2b0ab795feb9c1fd0138c9337e34",
+      "bytes": 5
+    },
+    "evidence/native-source-dispatch/native-source-finish-hardware-stack.bin": {
+      "sha256": "7b2017140911119759d08f2d09760978466805af94b4ef28091d9eea05b8c497",
+      "bytes": 242
+    },
+    "evidence/native-source-dispatch/native-source-finish-software-stack.bin": {
+      "sha256": "8b99e062165996e3352d356aceb0ff83ad5b48303097e679e414cde840b2b73d",
+      "bytes": 3840
+    },
+    "evidence/native-source-dispatch/native-source-finish-vice-check.log": {
+      "sha256": "6e1720e06569e2736d62ed86e3c3c8094842d282381ac6e7b3909bac967ae5e7",
+      "bytes": 311
+    },
+    "evidence/native-source-dispatch/native-core-prefix-regression.log": {
+      "sha256": "e6481a506253514d301ccf34c26e01e6ab3bddc760d9ed7622ca06151b90626b",
+      "bytes": 654
+    },
+    "evidence/native-source-dispatch/native-core-prefix-sanitize-regression.log": {
+      "sha256": "535e1f055e08ee8b4c7a49a9bd13485ef11898983c62cf4f8cd91e22770cff61",
+      "bytes": 394
+    },
+    "evidence/native-source-dispatch/native-core-mixed-regression.log": {
+      "sha256": "c742ecb96fd118b3d52505f8d533dac23cf9ae52be9866a2f650572f5ee06312",
+      "bytes": 316
+    },
+    "evidence/native-source-dispatch/native-source-adoption-default-check.log": {
+      "sha256": "ba37fbbb7af8c671c9b46cda6f3ba92066a8411384adb20ab5a8c016eed7b5b2",
+      "bytes": 214
+    },
+    "evidence/native-source-dispatch/native-source-adoption-default-sanitize.log": {
+      "sha256": "ba37fbbb7af8c671c9b46cda6f3ba92066a8411384adb20ab5a8c016eed7b5b2",
+      "bytes": 214
+    }
+  },
+  "commands": [
+    "python3 tools/native_source_adoption_test.py",
+    "python3 tools/native_source_adoption_test.py --sanitize",
+    "python3 tools/native_source_adoption_build.py --cc /workspace/toolchains/llvm-mos/bin/mos-c64-clang",
+    "python3 tools/native_source_dispatch_vice_test.py --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice",
+    "python3 tools/native_source_finish_vice_test.py --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice"
+  ]
+}

@@ -147,6 +147,7 @@ __attribute__((noinline)) enum exec_action p66_native_run_group(executive *s,p66
 #endif
         p66_native_import_executive(s,b->image);
         if(b->status==P66_NATIVE_OK) {
+            if(next==0){completed=b->image->words[0164];resume->location=(agc_word)(completed+1u);}
             if(selector!=1) {
                 s->core[0][EXEC_LOC]=completed;
                 p66_native_export_executive(b->image,s);

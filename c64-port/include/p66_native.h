@@ -45,7 +45,9 @@ extern const exec_context_mapping p66_native_mappings[12];
  * All calls must use caller exclusion; bindings require restoring hooks. */
 enum exec_status p66_native_step(p66_native_binding *);
 /* Shared compiled continuation execution. Explicit selector/locations name
- * translated C entries; no source instruction is fetched or decoded. */
+ * translated C entries; no source instruction is fetched or decoded. With
+ * next=0, a qualified entry commits its completed source LOC and this helper
+ * resumes at LOC+1. Branch routing comes from translated C control flow. */
 enum exec_action p66_native_run_group(executive *,p66_native_binding *,
     exec_address *,uint16_t selector,agc_word completed,agc_word next);
 #endif

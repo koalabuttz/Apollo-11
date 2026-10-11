@@ -1,0 +1,3 @@
+PASS: 140 mixed-context original-assembly checkpoints; all 324 Executive words, status, continuation kind, address and interpreter control match
+Actual basic/interpretive transfers checked at original destinations with BBANK/SUPERBNK
+Snapshot SHA256: 5129b28f03344d70358554c53bb9ccc8b341db676f94c5418f059388f1336041

@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 #include "irq_delivery.h"
+static int mixed(const exec_native *r){return r->context_mapping!=0 || r->resolve!=0;}
 static exec_continuation lookup_kind(const exec_native *r, exec_address a,
                                      enum exec_context_kind kind) {
     uint8_t i;
+    if(r->resolve!=0)return r->resolve(r->registry_user,a,kind);
     if (r->context_mapping!=0) {
         for(i=0;i<r->count;++i)
             if(r->context_mapping[i].address.location==a.location &&
@@ -35,6 +37,8 @@ enum exec_status exec_native_init(exec_native *r, executive *s,
     if (r == 0 || s == 0 || m == 0 || count == 0) return EXEC_OUT_OF_SCOPE;
     r->state=s; r->mapping=m; r->count=count; r->user=user;
     r->requests=0; r->exclusion=0;
+    r->services=0; r->service_user=0;
+    r->resolve=0; r->registry_user=0;
     r->requested_priority=0; r->in_callback=0;
     r->context_mapping=0; r->current_kind=EXEC_CONTEXT_BASIC;
     r->interpreter_control.intbit15=0; r->interpreter_control.edop=0;
@@ -56,6 +60,8 @@ enum exec_status exec_native_context_init(exec_native *r,executive *s,
     if(r==0 || s==0 || m==0 || count==0) return EXEC_OUT_OF_SCOPE;
     r->state=s; r->mapping=0; r->context_mapping=m; r->count=count; r->user=user;
     r->requests=0; r->exclusion=0; r->requested_priority=0; r->in_callback=0;
+    r->services=0; r->service_user=0;
+    r->resolve=0; r->registry_user=0;
     r->current.location=0; r->current.bank=0; r->running=0; r->fault=EXEC_OK;
     r->current_kind=EXEC_CONTEXT_BASIC;
     r->interpreter_control.intbit15=0; r->interpreter_control.edop=0;
@@ -71,10 +77,27 @@ enum exec_status exec_native_context_init(exec_native *r,executive *s,
     }
     return EXEC_OK;
 }
+enum exec_status exec_native_resolver_init(exec_native *r,executive *s,
+ exec_continuation (*resolve)(void *,exec_address,enum exec_context_kind),void *registry_user,void *callback_user){
+    if(r==0 || s==0 || resolve==0)return EXEC_OUT_OF_SCOPE;
+    r->state=s;r->mapping=0;r->context_mapping=0;r->count=0;r->user=callback_user;
+    r->requests=0;r->exclusion=0;r->services=0;r->service_user=0;
+    r->resolve=resolve;r->registry_user=registry_user;
+    r->requested_priority=0;r->in_callback=0;r->current.location=0;r->current.bank=0;
+    r->running=0;r->fault=EXEC_OK;r->current_kind=EXEC_CONTEXT_BASIC;
+    r->interpreter_control.intbit15=0;r->interpreter_control.edop=0;
+    return EXEC_OK;
+}
 static enum exec_status fail(exec_native *r, enum exec_status status) {
     if (status != EXEC_OK) { r->fault=status; r->running=0; }
     return status;
 }
+enum exec_status exec_native_bind_services(exec_native *r,const exec_native_services *services,void *user) {
+    if(r==0 || services==0 || services->prepare==0 || services->finish==0 ||
+       r->running!=0 || r->in_callback!=0 || r->fault!=EXEC_OK)return EXEC_OUT_OF_SCOPE;
+    r->services=services;r->service_user=user;return EXEC_OK;
+}
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==2
 static uint8_t candidate(const executive *s,agc_word threshold) {
     uint8_t i,slot=0;
     for(i=1;i<EXEC_CORE_COUNT;++i)
@@ -84,6 +107,7 @@ static uint8_t candidate(const executive *s,agc_word threshold) {
         }
     return slot;
 }
+#endif
 static enum exec_status saved_target(const exec_native *r,uint8_t slot,
                                      exec_address *a,enum exec_context_kind *kind) {
     const executive *s=r->state;
@@ -131,6 +155,7 @@ static void exchange_saved(exec_native *r,uint8_t slot,exec_address outgoing,
     }
     r->current=incoming; r->current_kind=kind;
 }
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==1
 static enum exec_status change_mixed_basic(exec_native *r,exec_address resume) {
     uint8_t slot;
     exec_address incoming;
@@ -146,6 +171,8 @@ static enum exec_status change_mixed_basic(exec_native *r,exec_address resume) {
     exchange_saved(r,slot,resume,incoming,kind);
     return EXEC_OK;
 }
+#endif
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==2
 static enum exec_status complete_mixed(exec_native *r) {
     executive *s=r->state;
     uint8_t slot=candidate(s,0);
@@ -202,11 +229,12 @@ static enum exec_status priority_mixed(exec_native *r,exec_address resume) {
     exchange_saved(r,slot,resume,incoming,kind);
     return EXEC_OK;
 }
+#endif
 static enum exec_status start_locked(exec_native *r) {
     enum exec_status status;
     if(r->state->alarm!=0) return fail(r,EXEC_BAILOUT_PENDING);
     if (r->state->newjob == AGC_NEG_ZERO) return EXEC_IDLE;
-    if(r->context_mapping!=0 && r->state->newjob!=0 &&
+    if(mixed(r) && r->state->newjob!=0 &&
        r->state->newjob<=84u && r->state->newjob%EXEC_CORE_WORDS==0 &&
        (r->state->core[r->state->newjob/EXEC_CORE_WORDS][EXEC_LOC]&AGC_SIGN)) {
         uint8_t slot=(uint8_t)(r->state->newjob/EXEC_CORE_WORDS);
@@ -254,7 +282,7 @@ enum exec_status exec_native_admit(exec_native *r, agc_word priority,
     if (r->fault != EXEC_OK) return r->fault;
     token=exec_native_lock(r);
     status=exec_irq_service_locked(r);
-    if(status==EXEC_OK && r->context_mapping!=0 &&
+    if(status==EXEC_OK && mixed(r) &&
        lookup_kind(r,address,EXEC_CONTEXT_BASIC)==0) status=EXEC_UNMAPPED;
     if (status == EXEC_OK)
         status=exec_admit(r->state,priority,address.location,address.bank,needs_vac);
@@ -262,17 +290,12 @@ enum exec_status exec_native_admit(exec_native *r, agc_word priority,
     exec_native_unlock(r,token);
     return status;
 }
-/* This trampoline is shared by arithmetic and basic resident bindings. Keep
- * one C ABI body rather than duplicating all lifecycle actions under LTO. */
-__attribute__((noinline)) enum exec_status exec_native_step(exec_native *r) {
-    exec_address resume={0,0};
-    exec_continuation call=0;
-    enum exec_action action;
+/* These stages assume the resident caller owns the producer guard. Each
+ * service frame returns normally before the callback or another disk module
+ * runs. The callback pointer always refers to the resident registry. */
+enum exec_status exec_native_prepare(exec_native *r,exec_continuation *selected) {
     enum exec_status status;
-    uint8_t token;
-    if (r->fault != EXEC_OK) return r->fault;
-    if (r->in_callback != 0) return EXEC_OUT_OF_SCOPE;
-    token=exec_native_lock(r);
+    exec_continuation call=0;
     status=exec_irq_service_locked(r);
     if (status == EXEC_OK && r->running == 0) status=start_locked(r);
     if (status == EXEC_OK) {
@@ -281,22 +304,48 @@ __attribute__((noinline)) enum exec_status exec_native_step(exec_native *r) {
     }
     if (status != EXEC_OK && status != EXEC_IDLE) status=fail(r,status);
     if (status==EXEC_OK) { r->requested_priority=0; r->in_callback=1; }
-    exec_native_unlock(r,token);
-    if (status != EXEC_OK) return status;
-    action=call(r->state,r->user,&resume); /* IRQs follow the caller's state. */
-    token=exec_native_lock(r);
+    *selected=call;
+    return status;
+}
+enum exec_status exec_native_finish(exec_native *r,enum exec_action action,exec_address resume) {
+    enum exec_status status;
     r->in_callback=0;
     /* A callback helper may already have latched a fault. Preserve its exact
      * boundary/status; never complete or exchange that failed running job. */
-    status=r->fault != EXEC_OK ? r->fault : exec_irq_service_locked(r);
+    status=r->fault != EXEC_OK ? r->fault :
+        (action==EXEC_DISPATCHED_BASIC||action==EXEC_DISPATCHED_INTERPRETER) ? EXEC_OK : exec_irq_service_locked(r);
     if (status==EXEC_OK && r->requested_priority!=0 && action!=EXEC_REPRIORITIZE)
         status=EXEC_INVALID_ACTION;
     if (status == EXEC_OK) {
-        if (action == EXEC_FINISH) {
+        if (0) {status=EXEC_INVALID_ACTION;}
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==3
+        else if (action == EXEC_DISPATCHED_BASIC||action==EXEC_DISPATCHED_INTERPRETER) {
+            enum exec_context_kind kind=action==EXEC_DISPATCHED_BASIC?EXEC_CONTEXT_BASIC:EXEC_CONTEXT_INTERPRETIVE;
             if(r->current_kind!=EXEC_CONTEXT_BASIC) status=EXEC_INVALID_ACTION;
-            else status=r->context_mapping!=0 ? complete_mixed(r) :
+            else if(resume.location==0 && resume.bank==0) {
+                if(kind!=EXEC_CONTEXT_BASIC || r->state->newjob!=AGC_NEG_ZERO ||
+                   agc_classify(r->state->core[0][EXEC_PRIORITY])==AGC_POSITIVE)
+                    status=EXEC_OUT_OF_SCOPE;
+                else {r->current=resume;status=EXEC_IDLE;}
+            } else if(resume.location==0 || resume.location>07777 ||
+                      (resume.bank & (agc_word)~UINT16_C(076167))!=0 ||
+                      agc_classify(r->state->core[0][EXEC_PRIORITY])!=AGC_POSITIVE)
+                status=EXEC_OUT_OF_SCOPE;
+            else if(kind==EXEC_CONTEXT_INTERPRETIVE &&
+                    (resume.location<2u || r->interpreter_control.edop!=0 ||
+                     r->interpreter_control.intbit15!=(resume.bank&040000u)))status=EXEC_OUT_OF_SCOPE;
+            else if(lookup_kind(r,resume,kind)==0) status=EXEC_UNMAPPED;
+            else {r->current=resume;r->current_kind=kind;}
+        }
+#endif
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==2
+        else if (action == EXEC_FINISH) {
+            if(r->current_kind!=EXEC_CONTEXT_BASIC) status=EXEC_INVALID_ACTION;
+            else status=mixed(r) ? complete_mixed(r) :
                 exec_complete_basic(r->state,(agc_word)(r->current.bank & 0160),&r->current);
         }
+#endif
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==1
         else if (action == EXEC_YIELD) {
             if (resume.location == 0 || resume.location > 07777 || resume.bank > AGC_MASK)
                 status=EXEC_OUT_OF_SCOPE;
@@ -332,12 +381,15 @@ __attribute__((noinline)) enum exec_status exec_native_step(exec_native *r) {
                         }
                     }
                 }
-            } else if(r->context_mapping!=0 && lookup_kind(r,resume,EXEC_CONTEXT_BASIC)==0)
+            } else if(mixed(r) && lookup_kind(r,resume,EXEC_CONTEXT_BASIC)==0)
                 status=EXEC_UNMAPPED;
             else if (r->state->newjob == 0) { r->current=resume; status=EXEC_OK; }
-            else status=r->context_mapping!=0 ? change_mixed_basic(r,resume) :
+            else status=mixed(r) ? change_mixed_basic(r,resume) :
                 exec_change_basic(r->state,resume,&r->current);
-        } else if (action==EXEC_SLEEP) {
+        }
+#endif
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==2
+        else if (action==EXEC_SLEEP) {
             if(r->current_kind!=EXEC_CONTEXT_BASIC) status=EXEC_INVALID_ACTION;
             else if (resume.location<02000 || resume.location>03777 ||
                 (resume.bank & (agc_word)~UINT16_C(076167))!=0 ||
@@ -345,18 +397,21 @@ __attribute__((noinline)) enum exec_status exec_native_step(exec_native *r) {
             else if (lookup(r,resume)==0) status=EXEC_UNMAPPED;
             else {
                 agc_word cadr=(agc_word)((resume.location-02000) | (resume.bank & 076000));
-                status=r->context_mapping!=0 ? sleep_mixed(r,cadr) :
+                status=mixed(r) ? sleep_mixed(r,cadr) :
                     exec_sleep_basic(r->state,cadr,r->current.bank,&r->current);
             }
         } else if (action==EXEC_REPRIORITIZE) {
             if (r->current_kind!=EXEC_CONTEXT_BASIC || r->requested_priority==0) status=EXEC_INVALID_ACTION;
             else if (lookup(r,resume)==0) status=EXEC_UNMAPPED;
-            else status=r->context_mapping!=0 ? priority_mixed(r,resume) :
+            else status=mixed(r) ? priority_mixed(r,resume) :
                 exec_priority_basic(r->state,r->requested_priority,resume,&r->current);
-        } else if(action==EXEC_ENTER_INTERPRETER || action==EXEC_EXIT_INTERPRETER) {
+        }
+#endif
+#if !defined(EXEC_NATIVE_FINISH_FAMILY)||EXEC_NATIVE_FINISH_FAMILY==1
+        else if(action==EXEC_ENTER_INTERPRETER || action==EXEC_EXIT_INTERPRETER) {
             enum exec_context_kind next_kind=action==EXEC_ENTER_INTERPRETER ?
                 EXEC_CONTEXT_INTERPRETIVE : EXEC_CONTEXT_BASIC;
-            if(r->context_mapping==0 || r->current_kind==next_kind ||
+            if(!mixed(r) || r->current_kind==next_kind ||
                resume.location==0 || resume.location>07777 ||
                resume.bank!=r->current.bank ||
                (action==EXEC_EXIT_INTERPRETER && (resume.location<2 ||
@@ -373,9 +428,45 @@ __attribute__((noinline)) enum exec_status exec_native_step(exec_native *r) {
                 }
                 r->current=resume; r->current_kind=next_kind;
             }
-        } else status=EXEC_INVALID_ACTION;
+        }
+#endif
+        else status=EXEC_INVALID_ACTION;
     }
     status=settle(r,status);
+    return status;
+}
+/* The resident trampoline holds no frame in an unloadable service slot. */
+__attribute__((noinline)) enum exec_status exec_native_step(exec_native *r) {
+    exec_address resume={0,0};
+    exec_continuation call=0;
+    enum exec_action action;
+    enum exec_status status;
+    uint8_t token;
+    if(r->fault!=EXEC_OK)return r->fault;
+    if(r->in_callback!=0)return EXEC_OUT_OF_SCOPE;
+    token=exec_native_lock(r);
+    if(r->services!=0)status=r->services->prepare(r->service_user,r,&call);
+    else {
+#ifdef EXEC_NATIVE_RESIDENT_SERVICES
+        status=fail(r,EXEC_OUT_OF_SCOPE);
+#else
+        status=exec_native_prepare(r,&call);
+#endif
+    }
+    if(status==EXEC_OK&&call==0)status=fail(r,EXEC_UNMAPPED);
+    exec_native_unlock(r,token);
+    if(status!=EXEC_OK)return status;
+    action=call(r->state,r->user,&resume);
+    token=exec_native_lock(r);
+    if(r->services!=0)status=r->services->finish(r->service_user,r,action,resume);
+    else {
+#ifdef EXEC_NATIVE_RESIDENT_SERVICES
+        status=fail(r,EXEC_OUT_OF_SCOPE);
+#else
+        status=exec_native_finish(r,action,resume);
+#endif
+    }
+    if(status!=EXEC_OK&&status!=EXEC_IDLE)status=fail(r,status);
     exec_native_unlock(r,token);
     return status;
 }

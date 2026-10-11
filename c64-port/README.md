@@ -678,3 +678,7 @@ All original torque routine paths, data and declarations are mapped through the 
 ## Torque and documentation coverage
 
 The inventory now records20 complete native algorithm/data/declaration files and two comment-only CM documents preserved byte-for-byte. Documentation cannot qualify executable source: the acceptance gate independently checks every original line and requires zero translated algorithms and emitted words. Both full applications remain unverified;153 original AGC files still need complete native coverage.
+
+## Adopt source-selected native continuations without repeating scheduling
+
+Verified scheduler adoption preserves original source state and queued interrupts. Host and sanitizer checks cover 384 full states and 11 rejection cases; stock-ROM C64 proofs cover 256 full states. The shared compiled guidance continuation supports qualified source LOC+1 routing. This certifies these scheduler seams, not the complete Executive or either application. See `docs/NATIVE-SOURCE-DISPATCH.md`.

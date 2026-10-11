@@ -1,0 +1,3 @@
+PASS128 source constructor inputs/2944 complete493-word live Executive/arithmetic states match unchanged assembly through AFC3433, bothSUPER forms
+Snapshot SHA256: 7b96007dec941c9dd2dbaa7948e8bc96e1e33bcf5897b5b7b0edaf1360d63eee
+PASS16 two-real-P66-job preemptions/400 complete493-word states through higher-priority AFC; SHA256 46d33f2753d474198bc25f5cf95c676292739acbc777ce63538fae4c73753776
