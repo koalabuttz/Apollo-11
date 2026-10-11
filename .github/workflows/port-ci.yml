@@ -1,0 +1,166 @@
+# Native C64 port CI. See c64-port/CONTRIBUTING-port.md.
+name: port-ci
+on:
+  push:
+    branches: ['port/**']
+    paths: ['c64-port/**', 'Luminary099/**', 'Comanche055/**', '.github/workflows/port-*.yml']
+  pull_request:
+    branches: ['port/**']
+  workflow_dispatch:
+    inputs:
+      full:
+        description: Run every host, sanitizer and C64 target
+        type: boolean
+        default: true
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        default: port/c64-native-c
+      full:
+        type: boolean
+        default: true
+
+concurrency:
+  group: port-ci-${{ github.event.pull_request.number || inputs.ref || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  REF: ${{ inputs.ref || github.sha }}
+  FULL: ${{ inputs.full && '1' || '0' }}
+  SKIP_EVIDENCE_RESTORE: '1'
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      base: ${{ steps.plan.outputs.base }}
+      shared: ${{ steps.plan.outputs.shared }}
+      affected: ${{ steps.plan.outputs.affected }}
+      host: ${{ steps.plan.outputs.host }}
+      c64: ${{ steps.plan.outputs.c64 }}
+    steps:
+      - &checkout
+        name: Lean checkout
+        run: |
+          git init -q .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}"
+          git config http.https://github.com/.extraheader \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
+          git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
+          git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      - id: plan
+        working-directory: c64-port
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD_REF: ${{ github.head_ref || github.ref_name }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then base=$PR_BASE
+          elif [ "$EVENT" = push ] && [ "$HEAD_REF" = port/c64-native-c ] && [ -n "$BEFORE" ] \
+               && [ "$BEFORE" != 0000000000000000000000000000000000000000 ]; then base=$BEFORE
+          else base=$(git merge-base HEAD origin/port/c64-native-c)
+          fi
+          case "$HEAD_REF" in port/pipeline/*) shared=1 ;; *) shared=0 ;; esac
+          if [ "$FULL" = 1 ] || [ "$EVENT" = schedule ]; then
+            affected='{"full": true}'
+          else
+            affected=$(python3 tools/ci_affected.py --base "$base" | tr -d '\n')
+          fi
+          echo "$affected"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "shared=$shared" >> "$GITHUB_OUTPUT"
+          echo "affected=$affected" >> "$GITHUB_OUTPUT"
+          echo "host=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["test"] or a["sanitize"])))')" >> "$GITHUB_OUTPUT"
+          echo "c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')" >> "$GITHUB_OUTPUT"
+
+  ledgers-and-coverage:
+    needs: plan
+    runs-on: ubuntu-24.04
+    steps:
+      - *checkout
+      - name: Shared-ledger guard
+        if: github.event_name == 'pull_request'
+        working-directory: c64-port
+        run: |
+          python3 tools/ci_guard.py --base "${{ needs.plan.outputs.base }}" --remote \
+            ${{ needs.plan.outputs.shared == '1' && '--allow-shared' || '' }}
+      - name: Milestone files render
+        working-directory: c64-port
+        run: python3 tools/ledgers.py --validate
+      - name: Coverage audit
+        working-directory: c64-port
+        run: |
+          python3 tools/evidence.py fetch --coverage
+          python3 tools/port_coverage.py
+
+  host:
+    needs: plan
+    if: needs.plan.outputs.host == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - *checkout
+      - &deps
+        name: Toolchain cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - &setup
+        name: Install pinned toolchain
+        working-directory: c64-port
+        run: tools/setup_cloud.sh
+      - name: Host and sanitizer targets
+        working-directory: c64-port
+        env:
+          AFFECTED: ${{ needs.plan.outputs.affected }}
+        run: |
+          source deps/env.sh
+          targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("test",[])+a.get("sanitize",[])))')
+          if echo "$AFFECTED" | grep -q '"full": true'; then
+            python3 tools/ci_run.py --group test --group sanitize --summary build/ci-summary.json
+          else
+            python3 tools/ci_run.py $targets --summary build/ci-summary.json
+          fi
+      - &logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.job }}-logs
+          path: |
+            c64-port/build/ci-logs
+            c64-port/build/ci-summary.json
+          if-no-files-found: ignore
+
+  c64:
+    needs: plan
+    if: needs.plan.outputs.c64 == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Build C64 PRGs and run VICE checks
+        working-directory: c64-port
+        env:
+          AFFECTED: ${{ needs.plan.outputs.affected }}
+        run: |
+          source deps/env.sh
+          if echo "$AFFECTED" | grep -q '"full": true'; then
+            targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | sort -u)
+          else
+            targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))')
+          fi
+          python3 tools/ci_run.py --make-arg "MOS_CC=$MOS_CC" $targets --summary build/ci-summary.json
+          make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
+      - *logs
