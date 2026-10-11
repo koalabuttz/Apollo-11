@@ -1,0 +1,57 @@
+{
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_audit_dependency": {
+    "path": "evidence/cm-powered-trig-source-audit.json",
+    "sha256": "7cc6a856e60c0070c793b560aac0ca8785eea8c3133bac1bdab2611c1a8ec71a"
+  },
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "native_entry": "AX*SR*T23,3650",
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "calls": 65536,
+  "complete_states": 131072,
+  "each_direction_calls": 32768,
+  "all32768_ordinary_MODE_words_per_direction": true,
+  "all8_EBANK_contexts": true,
+  "fixed_saved_Q_domain": "02000..07777",
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/cm-powered-axis-complete.snapshots.xz",
+      "decoded_sha256": "8242dc90fdc411a703e2dea2ccb0eafbce1b46d3a1ac6f3e4413ada942e73fa6"
+    },
+    "strict_native": {
+      "object": "evidence/cm-powered-axis-complete.snapshots.xz",
+      "decoded_sha256": "8242dc90fdc411a703e2dea2ccb0eafbce1b46d3a1ac6f3e4413ada942e73fa6"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/cm-powered-axis-complete.snapshots.xz",
+      "decoded_sha256": "8242dc90fdc411a703e2dea2ccb0eafbce1b46d3a1ac6f3e4413ada942e73fa6"
+    }
+  },
+  "whole_strict_and_sanitizer_streams_match": true,
+  "target_images": [
+    {
+      "phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 12083,
+      "loaded_end_hex": "0x3731",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 294,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 12276,
+      "loaded_end_hex": "0x37f2",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 293,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "continuation": "preTC RTNSAVER PC0145/Q03735; explicit TC0145 return PC=savedRTNSAVER/Q0146; same sourceowner/noExecutivecheck",
+  "scope": "Canonical basic CM AX*SR*T and its fixed-code return only; interpretedtransform interfaces and SMCDURES remain independent work"
+}

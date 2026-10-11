@@ -1,0 +1,10 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_powered_axis.h"
+#include "cm_rotation.h"
+static uint8_t valid(const apollo_overlay_state *m){return (uint8_t)(m->words[7]==0&&m->words[0163]<=077777u&&m->words[3]<=03400u&&(m->words[3]&0377u)==0&&m->words[4]==046000u&&m->words[6]==(046000u|(m->words[3]>>8)));}
+enum cm_powered_axis_status cm_powered_axis(apollo_overlay_state *m){p66_preparation s={0};p66_scale_scratch sc;p66_elapsed_state el={0};p66_divide_scratch d={0};p66_norm_scratch n={0};p66_trig_scratch t={0};p66_rotation_scratch rot;uint8_t i;agc_word direction;
+if(!valid(m)||m->words[5]!=03650u||(m->words[0]!=3u&&m->words[0]!=0177774u)||m->words[2]<02000u||m->words[2]>07777u)return CM_POWERED_AXIS_OUT_OF_SCOPE;
+direction=agc_correct(m->words[0]);for(i=0;i<8u;++i)s.mpac[i]=m->words[0154u+i];s.rate.registers.a=m->words[0];s.rate.registers.l=m->words[1];sc.mptemp=m->words[0135];sc.ovfind=m->words[0121];el.buf=m->words[0130];d.buf_low=m->words[0131];n.addrwd=m->words[0116];for(i=0;i<6u;++i){n.vbuf[i]=m->words[0122u+i];t.sin[i]=m->words[0736u+i];t.cos[i]=m->words[0744u+i];}t.buf2.high=m->words[0133];t.buf2.low=m->words[0134];t.tem2=m->words[0142];t.tem3=m->words[0143];rot.dex2=m->words[0144];rot.rtnsaver=m->words[0145];
+(void)cm_axis_rotate(&s,&sc,&el,&d,&n,&t,&rot,direction,m->words[2]);
+for(i=0;i<8u;++i){m->words[0154u+i]=s.mpac[i];}m->words[0]=s.rate.registers.a;m->words[1]=s.rate.registers.l;m->words[0135]=sc.mptemp;m->words[0121]=sc.ovfind;m->words[0130]=el.buf;m->words[0131]=d.buf_low;m->words[0116]=n.addrwd;for(i=0;i<6u;++i){m->words[0122u+i]=n.vbuf[i];}m->words[0133]=t.buf2.high;m->words[0134]=t.buf2.low;m->words[0142]=t.tem2;m->words[0143]=t.tem3;m->words[0144]=rot.dex2;m->words[0145]=rot.rtnsaver;m->words[5]=0145;m->words[2]=03735;return CM_POWERED_AXIS_OK;}
+enum cm_powered_axis_status cm_powered_axis_return(apollo_overlay_state *m){if(!valid(m)||m->words[5]!=0145u||m->words[2]!=03735u||m->words[0145]<02000u||m->words[0145]>07777u)return CM_POWERED_AXIS_OUT_OF_SCOPE;m->words[5]=m->words[0145];m->words[2]=0146;return CM_POWERED_AXIS_OK;}

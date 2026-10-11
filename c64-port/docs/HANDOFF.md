@@ -803,3 +803,7 @@ Complete portable host integration passed in an isolated committed checkout. Cov
 ## Run original manual P66 descent through display and job completion on C64
 
 The coherent Luminary manual P66 path matches 1,204 complete raw 2,052-word source checkpoints on host and under sanitizers. A real resident plus 96-module D81 reproduces 148 checkpoints through enabled V06N60 rows and actual ENDOFJOB idle, with zero additional zero-page storage and measured 772-byte software stack. Separately identified pending-job evidence covers 404 injections and 808 modeled-state checkpoints. Other flight programs and arbitrary full-CPU multi-job preemption remain outside this milestone. See `docs/P66-COMPLETE-DESCENT.md`.
+
+## Translate canonical Comanche axis selection through actual caller return
+
+Basic AX source control and reused rotation arithmetic match 131,072 original complete states and full sanitizer output. Two C64 PRGs verify 64 complete phase states. Source register, bank and return effects are retained; remaining powered-flight interfaces are separate domains. See `docs/COMANCHE-POWERED-AXIS.md`.

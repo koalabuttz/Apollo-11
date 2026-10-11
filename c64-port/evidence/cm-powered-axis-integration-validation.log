@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_axis.c src/cm_powered_axis.c src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-axis-port
+./build/test-cm-powered-axis-port
+64 complete2048-word original CM axis numeric/return states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_powered_axis.c src/cm_powered_axis.c src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-axis-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-powered-axis-port-sanitize
+64 complete2048-word original CM axis numeric/return states: PASS
