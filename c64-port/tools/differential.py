@@ -620,3 +620,5 @@ subprocess.run([sys.executable,'tools/dsky_input_store_differential.py',str(refe
 subprocess.run([sys.executable,'tools/dsky_hours_output_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_input_factor_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_input_scale_differential.py',str(reference)],cwd=ROOT,check=True)

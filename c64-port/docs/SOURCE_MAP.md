@@ -1435,3 +1435,7 @@ Translate actual LUNPOS time entry ninth-degree vector polynomial and source ret
 ## Translate original mission-specific operator input factor dispatch
 
 Compose actual PUTDECSF PUTSFNOR PUTDCSF2 through immutable original factor tables and source scale routine handoffs against8192 original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-FACTOR.md`.
+
+## Translate original scalar and double precision operator input scaling
+
+Compose actual ARTHINSF BINROUND ARTIN1SF DPINSF and DPFRACIN scaling and original stores through POSTJUMP PUTCOM2 against8192 complete original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-SCALE.md`.

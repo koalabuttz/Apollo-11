@@ -985,3 +985,5 @@ sanitize: p66-pending-port-sanitize
 include tools/cm_ephemeris_moon_integration.mk
 
 include tools/dsky_input_factor.mk
+
+include tools/dsky_input_scale.mk
