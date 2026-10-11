@@ -262,7 +262,9 @@ enum exec_status exec_native_admit(exec_native *r, agc_word priority,
     exec_native_unlock(r,token);
     return status;
 }
-enum exec_status exec_native_step(exec_native *r) {
+/* This trampoline is shared by arithmetic and basic resident bindings. Keep
+ * one C ABI body rather than duplicating all lifecycle actions under LTO. */
+__attribute__((noinline)) enum exec_status exec_native_step(exec_native *r) {
     exec_address resume={0,0};
     exec_continuation call=0;
     enum exec_action action;
