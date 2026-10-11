@@ -1,0 +1,42 @@
+STAGE 0
+PASS: VICE PAL C64, 32 complete dsky_decimal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 5072
+dsky_decimal_consumer_0-hardware-stack.bin: measured stack extent 14 bytes
+dsky_decimal_consumer_0-software-stack.bin: measured stack extent 24 bytes
+STAGE 1
+PASS: VICE PAL C64, 32 complete dsky_decimal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002001
+PRG bytes: 16737
+dsky_decimal_consumer_1-hardware-stack.bin: measured stack extent 19 bytes
+dsky_decimal_consumer_1-software-stack.bin: measured stack extent 37 bytes
+STAGE 2
+PASS: VICE PAL C64, 32 complete dsky_decimal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002002
+PRG bytes: 12835
+dsky_decimal_consumer_2-hardware-stack.bin: measured stack extent 29 bytes
+dsky_decimal_consumer_2-software-stack.bin: measured stack extent 76 bytes
+STAGE 3
+PASS: VICE PAL C64, 32 complete dsky_decimal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002003
+PRG bytes: 14708
+dsky_decimal_consumer_3-hardware-stack.bin: measured stack extent 26 bytes
+dsky_decimal_consumer_3-software-stack.bin: measured stack extent 168 bytes
+STAGE 4
+PASS: VICE PAL C64, 32 complete dsky_decimal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002004
+PRG bytes: 8166
+dsky_decimal_consumer_4-hardware-stack.bin: measured stack extent 14 bytes
+dsky_decimal_consumer_4-software-stack.bin: measured stack extent 21 bytes
+STAGE 5
+PASS: VICE PAL C64, 32 complete dsky_decimal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002005
+PRG bytes: 15201
+dsky_decimal_consumer_5-hardware-stack.bin: measured stack extent 23 bytes
+dsky_decimal_consumer_5-software-stack.bin: measured stack extent 70 bytes
+STAGE 6
+PASS: VICE PAL C64, 32 complete dsky_decimal_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002006
+PRG bytes: 9462
+dsky_decimal_consumer_6-hardware-stack.bin: measured stack extent 14 bytes
+dsky_decimal_consumer_6-software-stack.bin: measured stack extent 20 bytes

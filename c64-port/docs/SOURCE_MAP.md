@@ -1275,3 +1275,7 @@ Qualify returned original antenna conic selection against131072 complete source 
 ## Qualify native decimal formatter for original mixed-sign operands
 
 Extend original raw double precision decimal formatting against262144 complete source native sanitizer states and128 C64 states preserving bounded passive table reads and exact formatter debris. See `docs/DSKY-DECIMAL-RAW.md`.
+
+## Compose continuous original decimal display consumer
+
+Qualify4096 uninterrupted source display inputs and43932 complete source native sanitizer checkpoints through supported scaling formatting and row loops with224 C64 stage checks and explicit external scaler frontiers. See `docs/DSKY-DECIMAL-CONSUMER.md`.

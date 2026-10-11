@@ -887,3 +887,5 @@ test: test-sband-orbit
 sanitize: sanitize-sband-orbit
 
 include tools/dsky_decimal_raw_integration.mk
+
+include tools/dsky_decimal_consumer_integration.mk

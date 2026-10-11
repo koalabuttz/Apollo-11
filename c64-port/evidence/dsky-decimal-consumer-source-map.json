@@ -1,0 +1,38 @@
+{
+  "entry": "bank41 PC02523 DECDSP",
+  "stage_entries": {
+    "0": "02523 DECDSP",
+    "1": "02537 DSPDCPUT",
+    "2": "mission-specific scalar scale entry",
+    "3": "mission-specific DP scale entry",
+    "4": "02566 DSPDCEND",
+    "5": "bank40 PC03226LM/03133CM DSPDECWD",
+    "6": "SWRETURN04631LM/04675CM"
+  },
+  "terminal_routes": {
+    "ENTRET": "bank41 PC0136 before saved return instruction",
+    "RECOVERY": "PC05705LM/05747CM before CCSHOLE IRQ0"
+  },
+  "supported_routine_codes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    10,
+    11,
+    13
+  ],
+  "remaining_scale_codes": [
+    0,
+    8,
+    9,
+    12
+  ],
+  "native_instruction_decoder": false,
+  "whole_file_claim": false,
+  "source_states_continuous": true,
+  "target_states_independent_stages": true
+}
