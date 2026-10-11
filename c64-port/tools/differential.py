@@ -265,3 +265,5 @@ subprocess.run([sys.executable,'tools/cm_rotation_differential.py',str(reference
 subprocess.run([sys.executable,'tools/cm_rectify_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_difeq_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_orbital_initial_differential.py',str(reference)],cwd=ROOT,check=True)

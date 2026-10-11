@@ -1,0 +1,74 @@
+{
+  "scope": "ORBITAL_INTEGRATION DIFEQ0 initialization and JSWITCH branch to ACCOMP/DOW, four explicit source phases; not the complete orbital integrator or Comanche application.",
+  "binary_format": "Little-endian uint16 case, phase, complete2048-word erasable image; IRQ latch follows the image; phase255 is input, phases0..3 source returns.",
+  "source_audit": {
+    "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+    "original_sources": {
+      "INTERPRETER.agc": {
+        "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+        "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+        "normalized_lines": 36
+      },
+      "INTEGRATION_INITIALIZATION.agc": {
+        "original_sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
+        "normalized_sha256": "19aa53ca81e4e499882d144edb56501047775107ad0dcd840b5741758ecf54f9",
+        "normalized_lines": 1
+      },
+      "ORBITAL_INTEGRATION.agc": {
+        "original_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+        "normalized_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+        "normalized_lines": 0
+      }
+    }
+  },
+  "cases": 1024,
+  "checkpoints": 5120,
+  "complete_state_words": 2048,
+  "external_state_words": 1,
+  "sha256": "5a0688f511a9c6097a5aeafe9b8ac628c6ff9598345b029c40e0471e0d1cb37c",
+  "input_constructor_sha256": "4c06b011af1bd98c4b5efc5c96a60d4f66a6c606e57107b813ba437ffa39d657",
+  "sanitizers": "Entire complete-image corpus ASAN/UBSAN equals unchanged source",
+  "c64": [
+    {
+      "phase": 0,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002000",
+      "image_end": "3b0b",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 44
+      }
+    },
+    {
+      "phase": 1,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002001",
+      "image_end": "4048",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 44
+      }
+    },
+    {
+      "phase": 2,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002002",
+      "image_end": "3f15",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 44
+      }
+    },
+    {
+      "phase": 3,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002003",
+      "image_end": "409b",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 44
+      }
+    }
+  ],
+  "compressed_snapshot_bytes": 4422561
+}

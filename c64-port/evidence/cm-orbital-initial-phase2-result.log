@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm-orbital-initial phase 2 original-assembly entry/exit states
+Mailbox: a500002002
+PRG bytes: 5906
+cm-orbital-initial_phase2-hardware-stack.bin: measured stack extent 20 bytes
+cm-orbital-initial_phase2-software-stack.bin: measured stack extent 44 bytes
