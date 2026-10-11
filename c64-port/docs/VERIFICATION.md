@@ -873,3 +873,12 @@ The original JOBWAKE service preserves raw L, bank and scheduling effects in 819
 ## Port real MAKEPLAY priority and wake prelude
 
 Native MAKEPLAY follows the actual PRIOCHNG, JOBWAKE, GOSLEEPS, GOPLAY and duplicate ENDOFJOB routes with source XCHTOEND replacement. Original comparisons cover 12288 complete states, matching sanitizer streams and 64 C64 cases; the sleep and resumed lifecycle remains separately qualified. See `docs/P66-MAKEPLAY.md`.
+
+## Combined host build after the basic and keyboard milestones
+
+The isolated a727be4 checkout plus the recorded build/test patches passes the
+complete `make -j2 all test` suite. The first attempts exposed portable-target
+aliases, a checker-variable collision, absent build-time rope fixtures and three
+omitted basic test/freezer sources. All failures and the successful rerun are
+retained with exact patch hashes in `evidence/integration-a727-host-proof.json`.
+The target recipes and production kernels retain their qualified behavior.

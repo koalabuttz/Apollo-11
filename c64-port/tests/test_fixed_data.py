@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 """Compare every accessible native table word with original assembled rope."""
 import ctypes
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -15,7 +16,9 @@ class Table(ctypes.Structure):
 
 
 def main():
-    audit = json.loads((ROOT / 'build/fixed-data/audit.json').read_text())
+    fresh = ROOT / 'build/fixed-data/audit.json'
+    audit = json.loads(fresh.read_text() if fresh.exists() else
+                       gzip.decompress((ROOT / 'evidence/fixed-data-audit.json.gz').read_bytes()))
     target = ROOT / 'build/fixed-data-host.so'
     subprocess.run(['cc', '-std=c99', '-O2', '-Wall', '-Wextra', '-Werror',
                     '-Wconversion', '-pedantic', '-shared', '-fPIC', '-Iinclude',
@@ -34,7 +37,10 @@ def main():
     count = 0
     for mission_id, mission in enumerate(audit['missions']):
         directory = ROOT / 'build/fixed-data' / mission['mission']
-        rope = (directory / 'MAIN.agc.bin').read_bytes()
+        candidate = directory / 'MAIN.agc.bin'
+        if not candidate.exists():
+            candidate = ROOT / f'evidence/fixed-data-{"lm" if mission_id == 0 else "cm"}-original.rope.bin'
+        rope = candidate.read_bytes()
         assert hashlib.sha256(rope).hexdigest() == mission['assembled_rope_sha256']
         for source in mission['source_audit']:
             assert hashlib.sha256((ROOT.parent / source['path']).read_bytes()).hexdigest() == source['sha256']

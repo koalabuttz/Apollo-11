@@ -1,0 +1,253 @@
+make: Entering directory '/tmp/apollo-current-audit/c64-port'
+make: Nothing to be done for 'all'.
+./build/test-restart
+./build/test-guidance
+PASS: 568 complete original-assembly checkpoints; all 65536 SP/memory-zero products; carry and overflow contracts
+./build/test-prepare
+PASS: 226 assembly fingerprints, recovery/resumption, phase/resource failures and restoring exclusion
+./build/test-scale
+PASS: 324 complete preparation states, all TS-skip masks, snapshot debris, MODE alias, retained scratch and composed histories
+./build/test-push
+PASS: 292 complete scaling states, signed-zero/mixed-sign DP pairs, all integrated TS-skip inputs, three retained four-step histories
+./build/test-elapsed
+PASS: 200 complete PDDL states, five VAC mappings, retained exchange debris, composed four-push histories; invalid scope leaves both objects unchanged
+./build/test-store
+PASS: 172 complete elapsed-time states and skip paths, signed zeros, overflow realignment and retained OVFIND, preserved VAC/vector histories
+./build/test-divide
+PASS: 176 complete STORE states/paths; signed-zero source/destination corners, overlapping slots, retained histories; unchanged-on-scope-rejection and unused PUSHLOC
+./build/test-gravity
+PASS: 156 complete DDV states/paths; signed zero, raw sign agreement, quotient/overflow and retained histories; all unsupported modes reject unchanged
+./build/test-vector
+PASS: 156 complete PDVL states; all unsupported modes, VAC bases and push pointers reject unchanged
+./build/test-executive-services
+PASS: 128 complete original-assembly VAD/VSU states; all 32767 unsupported MODE words preserve complete state for both operations
+./build/test-phase
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+./build/test-product
+PASS: 128 complete original-assembly DMP1/VXSC states; all 32767 unsupported MODE words preserve complete state for both operations
+./build/test-shift
+PASS: 768 original-derived SPVAC/CHANG2 state checks and unsupported safe-point rejection
+./build/test-dp-divide
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+./build/test-velocity
+PASS: 156 complete original-assembly velocity-group states; all unsupported MODE/base/pointer ordinary words preserve all 117 state/input words
+./build/test-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+./build/test-recovery
+PASS: 128 complete original assembly abort-cleanup states; unsupported routes retain state
+./build/test-dot
+PASS: 168 complete original scalar/vector shift states; all unsupported MODEs and count boundaries reject unchanged
+./build/test-sum
+PASS: 96 complete unrounded original DOT states and exact scratch/overflow exchanges; all unsupported MODEs reject unchanged
+./build/test-interpreter-native
+PASS: 140 mixed native/assembly state checkpoints, frame/payload/guard and typed mapping fault checks
+./build/test-enema
+PASS:128 whole457word original assembly ENEMA states; unsupported inputs retain state
+./build/test-cm-executive
+PASS: 1536 CM state fingerprints, 40 complete-state samples, unsupported/pending boundaries
+./build/test-unit
+PASS: 256 complete original DAD/DSU/BDSU/BVSU states and overflow paths; all unsupported MODEs reject unchanged
+./build/test-radial
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration.c tests/frozen_words.c src/guidance_acceleration.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c -o build/test-acceleration
+PASS: complete original radial states, source errors and all unsupported MODE/VAC/pointer words unchanged
+./build/test-overlay
+PASS: bounded native overlay loader; exact header/CRC; short/long/I/O failures preserve all2048words; cache, BSS reload, nested-call rejection and slot guards
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c tests/waitlist_zero_cases.c tests/waitlist_zero_check.c tests/test_waitlist_zero.c -o build/test-waitlist-zero
+./build/test-waitlist-zero
+WAITLIST ZERO: 256 FULL STATES, 0 FAILURES
+./build/test-cm-dispatch
+PASS: 876 CM full-state fingerprints, 16 complete samples, 20 actual callback sequences, invalid/pending boundaries
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c tests/p66_startup_cases.c tests/p66_startup_check.c tests/test_p66_startup.c -o build/test-p66-startup
+./build/test-p66-startup
+P66 STARTUP: 128 FULL STATES, 0 FAILURES
+./build/test-trig
+PASS128 complete original trig states and all unsupported MODE words reject unchanged
+./build/test-p66-native
+P66 native driver: 0 failures, 160 original-source fingerprints
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_rotation.c tests/frozen_words.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/rotation_cases.c -o build/test-rotation
+build/test-acceleration
+96 complete acceleration states, unsupported MODE/VAC/pointer unchanged: PASS
+./build/test-projection
+PASS144 complete original phased projection states; unsupported MODE/VAC/pointer shapes reject unchanged
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_hardware_divide.c src/agc_word.c src/agc_hardware_divide.c tests/hardware_divide_cases.c -o build/test-hardware-divide
+build/test-hardware-divide
+255 complete hardware-DV register states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/p66_initialization.c tests/p66_initialization_cases.c tests/p66_initialization_check.c tests/test_p66_initialization.c -o build/test-p66-initialization
+./build/test-p66-initialization
+P66 INITIALIZATION: 128 FULL STATES, 0 FAILURES
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback.c tests/frozen_words.c src/guidance_throttle.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c -o build/test-throttle_feedback
+build/test-rotation
+128 complete rotation states, unsupported direction/return unchanged: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_service.c tests/frozen_words.c src/guidance_throttle.c src/guidance_throttle_service.c src/agc_hardware_divide.c src/p66_initialization.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_service_cases.c -o build/test-throttle_service
+build/test-throttle_feedback
+64 complete throttle_feedback states, unsupported MODE/VAC/pointer unchanged: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_product.c src/p66_bias.c tests/p66_bias_cases.c tests/p66_bias_check.c tests/test_p66_bias.c -o build/test-p66-bias
+./build/test-p66-bias
+P66 BIAS: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_vertical_start.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_vertical_start_check.c tests/test_p66_vertical_start.c -o build/test-p66-vertical-start
+build/test-throttle_service
+96 complete throttle_service states, unsupported Q/SUPER/BB/IRQ unchanged: PASS
+./build/test-cm-waitlist
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests
+./build/test-cm-irq
+PASS: CM IRQ: 512 source admissions, 32 actual callback sequences / 240 checkpoints, FIFO wrap, overflow, retained head, typed maps and restoring guards
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/p66_major_mode.c tests/p66_bias_cases.c tests/p66_major_mode_cases.c tests/p66_major_mode_check.c tests/test_p66_major_mode.c -o build/test-p66-major-mode
+./build/test-p66-major-mode
+P66 MAJOR MODE: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_product.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_bias.c src/p66_major_mode.c src/p66_vertical_start.c src/p66_launch.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tests/p66_launch_check.c tests/test_p66_launch.c -o build/test-p66-launch
+./build/test-p66-vertical-start
+P66 VERTICAL START: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+./build/test-horizontal
+PASS256 complete original phased horizontal states; unsupported MODE/VAC/pointer shapes reject unchanged
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_throttle_bridge.c tests/throttle_bridge_check.c src/agc_word.c src/p66_throttle_bridge.c tests/throttle_bridge_cases.c -o build/test-throttle-bridge
+build/test-throttle-bridge
+64 complete throttle bridge images and26 invalid boundaries: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/p66_mode_display.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_mode_display_check.c tests/test_p66_mode_display.c -o build/test-p66-mode-display
+./build/test-p66-mode-display
+P66 MODE DISPLAY: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+./build/test-cm-phase
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+./build/test-cm-restart
+PASS:1280 CM original cleanup/startsub/phase/variablejob states,18 complete vectors and fail-closed inputs
+./build/test-cm-restart-native
+PASS:64CMrestart sequences/320source checkpoints;192actualCcallbacks;unsupported maps/types/reentry retain state
+./build/test-cm-native-image
+PASS:sole2048wordCMimage;64restart sequences/320source states;poison/regather each boundary;rawA/L, physicalbanks and scratch aliases
+./build/test-cm-enema
+PASS:4096 CM original ENEMA states,8 full boundary vectors, unsupported inputs retain state
+make guidance-phased-host KIND=unit
+make[1]: Entering directory '/tmp/apollo-current-audit/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -DPROJECTION_INPUT_ONLY -DRADIAL_INPUT_ONLY -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_norm.c src/guidance_unit_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/unit_phased_cases.c tests/frozen_words.c tests/test_unit_phased.c -o build/test-unit-phased
+./build/test-p66-launch
+P66 LAUNCH: 32 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/dsky_relay.c tests/p66_bias_cases.c tests/dsky_relay_cases.c tests/dsky_relay_check.c tests/test_dsky_relay.c -o build/test-dsky-relay
+./build/test-dsky-relay
+DSKY RELAY: 64 FULL 2052-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c tests/dsky_display_check.c tests/test_dsky_display.c -o build/test-dsky-display
+./build/test-dsky-display
+DSKY NATIVE SCREEN: SOURCE MODE66, RELAY WIRING/SIGNS/BLANK/FLASH/LAMPS, 0 FAILURES
+./build/test-cm-startup
+PASS:640originalCMstartup/cleanup whole-image states; all2047image words+15I/O values;5fullsamples andinvalid-entry/bank preservation
+gcc -O2 -Wconversion -pedantic -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration_phased.c tests/frozen_words.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/test-acceleration-phased
+build/test-unit-phased
+96 complete source unit phase entry/exit states: PASS
+make[1]: Leaving directory '/tmp/apollo-current-audit/c64-port'
+make guidance-phased-host KIND=radial
+make[1]: Entering directory '/tmp/apollo-current-audit/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -DPROJECTION_INPUT_ONLY -DRADIAL_INPUT_ONLY -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_norm.c src/guidance_unit_phased.c src/guidance_dot.c src/guidance_shift.c src/guidance_sum.c src/guidance_radial_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/radial_cases.c tests/radial_phased_cases.c tests/frozen_words.c tests/test_radial_phased.c -o build/test-radial-phased
+build/test-acceleration-phased
+128 original acceleration phase entry/exit states;131068 bad MODE states unchanged: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_control_observer.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -o build/test-control-observer
+build/test-radial-phased
+288 complete source radial phase entry/exit states: PASS
+make[1]: Leaving directory '/tmp/apollo-current-audit/c64-port'
+make guidance-phased-host KIND=projection
+make[1]: Entering directory '/tmp/apollo-current-audit/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -DPROJECTION_INPUT_ONLY -DRADIAL_INPUT_ONLY -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/guidance_dot.c src/guidance_rotation.c src/guidance_projection_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tests/projection_cases.c tests/projection_phased_cases.c tests/frozen_words.c tests/test_projection_phased.c -o build/test-projection-phased
+build/test-control-observer
+65 complete original arithmetic Q states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_phased_cases.c tests/frozen_words.c tests/test_velocity_phased.c -o build/test-velocity-phased
+build/test-velocity-phased
+96 complete source velocity phase entry/exit states: PASS
+gcc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback_phased.c tests/frozen_words.c src/guidance_throttle_phased.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_phased_cases.c -o build/test-throttle_feedback_phased
+build/test-projection-phased
+96 complete source projection phase entry/exit states: PASS
+make[1]: Leaving directory '/tmp/apollo-current-audit/c64-port'
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_display_control.c tests/display_control_check.c src/agc_word.c src/p66_display_control.c tests/throttle_bridge_cases.c tests/display_control_cases.c -o build/test-display-control
+build/test-display-control
+64 complete display control images and14 invalid boundaries: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_regodspr.c tests/regodspr_check.c src/agc_word.c src/p66_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c -o build/test-regodspr
+build/test-regodspr
+64 complete REGODSPR images and18 invalid boundaries: PASS
+gcc -O2 -Wconversion -pedantic -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration_store.c tests/frozen_words.c src/guidance_acceleration_store.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/test-acceleration-store
+build/test-throttle_feedback_phased
+192 original feedback phase entry/exit states;196602 bad MODE states unchanged: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_entry.c tests/nv_entry_check.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/test-nv-entry
+build/test-nv-entry
+64 complete NVMONOPT images and13 invalid boundaries: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_words.c tests/nv_words_check.c src/agc_word.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c -o build/test-nv-words
+build/test-acceleration-store
+64 original acceleration phase entry/exit states;65534 bad MODE states unchanged: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/dsky_pinball.c tests/p66_bias_cases.c tests/dsky_pinball_cases.c tests/dsky_pinball_check.c tests/test_dsky_pinball.c -o build/test-dsky-pinball
+build/test-nv-words
+64 complete verb/noun images and20 invalid boundaries: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_decimal.c tests/p66_bias_cases.c tests/dsky_decimal_cases.c tests/dsky_decimal_check.c tests/test_dsky_decimal.c -o build/test-dsky-decimal
+./build/test-dsky-pinball
+DSKY PINBALL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_product.c src/dsky_scale.c tests/p66_bias_cases.c tests/dsky_scale_cases.c tests/dsky_scale_check.c tests/test_dsky_scale.c -o build/test-dsky-scale
+./build/test-dsky-decimal
+DSKY DECIMAL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c tests/p66_bias_cases.c tests/dsky_two_digit_cases.c tests/dsky_two_digit_check.c tests/test_dsky_two_digit.c -o build/test-dsky-two-digit
+./build/test-dsky-scale
+DSKY SCALE: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+./build/test-cm-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+./build/test-cm-dp-divide
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+./build/test-cm-unit
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS
+./build/test-cm-rotation
+128 complete rotation states, unsupported direction/return unchanged: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/cm_rectify.c tests/cm_rectify_cases.c tests/frozen_words.c tests/test_cm_rectify.c -o build/test-cm-rectify
+./build/test-dsky-two-digit
+DSKY DSPDECVN: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/guidance_product.c src/guidance_sum.c src/cm_difeq.c tests/cm_difeq_cases.c tests/frozen_words.c tests/test_cm_difeq.c -o build/test-cm-difeq
+build/test-cm-rectify
+384 complete2048word source RECTIFY phase entry/exit pairs: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_orbital_initial.c tests/cm_orbital_initial_cases.c tests/frozen_words.c tests/test_cm_orbital_initial.c -o build/test-cm-orbital-initial
+build/test-cm-orbital-initial
+128 complete2048word+IRQ source DIFEQ0 phase entry/exit pairs: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/dsky_pinball.c tests/p66_bias_cases.c tests/dsky_pinball_cases.c tests/dsky_pinball_zero_cases.c tests/dsky_pinball_zero_check.c tests/test_dsky_pinball_zero.c -o build/test-dsky-pinball-zero
+build/test-cm-difeq
+960 complete2048word original DIFEQ phase entry/exit pairs and unchanged scope rejections: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/p66_mode_display.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_mode_zero_cases.c tests/p66_mode_zero_check.c tests/test_p66_mode_zero.c -o build/test-p66-mode-zero
+./build/test-dsky-pinball-zero
+DSKY PINBALL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DP66_NATIVE_DISPATCH_ONLY -O2 -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/p66_status_check.c tests/test_p66_status.c -o build/test-p66-status
+./build/test-p66-mode-zero
+P66 MODE DISPLAY: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_rows.c tests/nv_rows_check.c src/agc_word.c src/p66_nv_rows.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c -o build/test-nv-rows
+build/test-p66-status
+P66 full-width status: 0 failures; five raw results, committed alarm payload and fault retention
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_render.c tests/nv_render_check.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/test-nv-render
+build/test-nv-rows
+64 complete data preparation images and10 invalid boundaries: PASS
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_goplay.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/test-goplay
+build/test-goplay
+64 complete GOPLAY boundary images;24 invalid inputs: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_priority.c tests/lm_priority_check.c src/agc_word.c src/lm_basic_priority.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c -o build/test-lm-priority
+build/test-nv-render
+64 original rendering boundary images and30 invalid inputs: PASS
+build/test-runtime-bridge
+64 complete runtime bridge images and56 invalid boundaries: PASS
+./build/test-fixed-data
+PASS: independent noun60 source values, both missions, table bounds and unchanged failure outputs
+python3 tests/test_fixed_data.py
+build/test-lm-priority
+64 complete original PRIOCHNG images;16 invalid inputs: PASS
+make -f tools/throttle_feedback_pairs.mk check-host length-check-host
+make[1]: Entering directory '/tmp/apollo-current-audit/c64-port'
+gcc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback_pairs.c tests/frozen_words.c src/guidance_feedback_pairs.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_pairs_cases.c -o build/test-feedback-pairs
+PASS: all 2871 native data words match independently decoded original ropes; all 131072 address probes and six tables per mission obey coverage/bounds
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_basic_check.c tests/test_p66_basic.c -o build/test-p66-basic
+build/test-feedback-pairs
+640 complete original feedback pair entries/exits: PASS
+gcc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_feedback_length.c tests/frozen_words.c src/guidance_length_phased.c src/guidance_feedback_pairs.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_pairs_cases.c -o build/test-feedback-length
+./build/test-p66-basic
+P66 BASIC: 64 full original display checkpoints, real ENDJOB/relay and 100cs RODTASK admission: 0 failures
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c src/guidance_product.c src/p66_initialization.c src/p66_bias.c src/p66_major_mode.c src/p66_vertical_start.c src/p66_launch.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tests/test_p66_basic_launch.c -o build/test-p66-basic-launch
+build/test-feedback-length
+128 complete original feedback length entries/exits: PASS
+make[1]: Leaving directory '/tmp/apollo-current-audit/c64-port'
+make -f tools/horizontal_phased.mk check-host
+make[1]: Entering directory '/tmp/apollo-current-audit/c64-port'
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_horizontal_phased.c tests/frozen_words.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_vector.c src/guidance_sum.c src/guidance_shift.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_horizontal.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/horizontal_cases.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_horizontal_phased.c tests/horizontal_phased_cases.c -o build/test-horizontal-phased
+cc1: fatal error: tests/test_p66_basic_launch.c: No such file or directory
+compilation terminated.
+make: *** [tools/p66_basic.mk:20: test-p66-basic-launch] Error 1
+make: *** Waiting for unfinished jobs....
+build/test-horizontal-phased
+416 complete original horizontal phase entries/exits: PASS
+make[1]: Leaving directory '/tmp/apollo-current-audit/c64-port'
+make: Leaving directory '/tmp/apollo-current-audit/c64-port'

@@ -1,0 +1,49 @@
+{
+  "base_revision": "a727be447d20435a224a291ffc753f2135a5e578",
+  "patches": {
+    "tools/dsky_nv_key.mk": "e0deef998c065cdc966b634cd45b7b705455bc6ff463f28a9f757afd9609be35",
+    "tools/dsky_charin_nv.mk": "08ef646337e49af7d9bb8631bebb8cb95796a709f6d4d86cbc6820e9e6237665",
+    "tools/dsky_keycom.mk": "7b64438d3009b2adefd9d847ae259865d2086b2bb9728f9f3efbf2c6af00ae41",
+    "tools/dsky_keyrupt.mk": "200aafbcf6c54bcc4d4ef0611f657720a9aac9358b9b3df9f6ccd7c2bf26933d",
+    "tools/p66_mode_zero.mk": "d2019e3621ea35ad2520a362d194449bffc1927c591c6f947bfe35a9c434b801",
+    "tests/test_fixed_data.py": "26b97f333097f90f1a7cde42bdee5a51208bc1beea6fb2dfb76750fcd2c33b4a",
+    "tests/test_p66_basic_launch.c": "efebf4c61df879c669780ab380c1137040bb179721ec7f49d2070ab2f4cc7f3a",
+    "tests/test_p66_basic_task.c": "d751c6d8f1e269cabab41df6e314134e6ab6b7aca456b95d94b4b76199d259d1",
+    "tools/freeze_p66_basic_task.py": "e02afd0fb1e16fb2d7d8d8b93718b091267adbbb247dc87eedc9d354c3e99549"
+  },
+  "command": "make -j2 all test",
+  "results": {
+    "initial": {
+      "path": "evidence/integration-a727-host-initial.log",
+      "sha256": "a8c9250646f3830dc9140ef7f3c1b92a84deb8d900ac33ec609dd11fed76b8cf",
+      "result": "failed; diagnosed and corrected below"
+    },
+    "retry1": {
+      "path": "evidence/integration-a727-host-retry1.log",
+      "sha256": "7c50a80f526f3932acf6fa3b7a11d4f6fa751bcca9326600249a341ace2cd235",
+      "result": "failed; diagnosed and corrected below"
+    },
+    "retry2": {
+      "path": "evidence/integration-a727-host-retry2.log",
+      "sha256": "2d5d2eb0001549d974bb20ee9a3276ba55a8db9155a3e3e57b39eec16b84dbed",
+      "result": "failed; diagnosed and corrected below"
+    },
+    "retry3": {
+      "path": "evidence/integration-a727-host-retry3.log",
+      "sha256": "9969f82c0ae049895be5176cff0d75bd1c5741a357c37c84f38ae80655d46c96",
+      "result": "failed; diagnosed and corrected below"
+    },
+    "retry4": {
+      "path": "evidence/integration-a727-host-retry4.log",
+      "sha256": "3a7e3c20d1dc1fe59ab616c761aa33e07d8af2dcec4d2319d8cb683c5bbaf8a3",
+      "result": "pass"
+    }
+  },
+  "resolved_failures": [
+    "C64 compiler required by four keyboard all aliases; use portable host targets",
+    "P66 zero-mode fragment overrode legacy checker list; isolate variables",
+    "Independent data rope fixture absent in clean build; retain source-audited original ropes",
+    "Basic launch/task tests and task freezer omitted from integration allowlist; include them"
+  ],
+  "qualification": "Final complete host suite passed in isolated committed checkout plus exactly these patches. Production kernels and qualified target PRGs unchanged."
+}

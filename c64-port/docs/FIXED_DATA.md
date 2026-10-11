@@ -112,3 +112,9 @@ VICE executes the native API and dumps every returned word for exact comparison:
 mailbox a5370b, PRG6,447 bytes, loaded end $212e. This target proof links both
 datasets directly; native disk-overlay execution is qualified separately by
 the overlay framework milestone.
+
+Clean-checkout host tests use the retained independently assembled full LM/CM ropes
+when build-time fixtures are absent. Their complete SHA256 values must match
+the original assembly audit before any word comparison. Fresh generated ropes
+remain preferred when present. `make all test` therefore needs only the host C
+compiler; reassembling the original audit remains a separate documented check.

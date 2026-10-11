@@ -1,8 +1,9 @@
 DSKY_KEYRUPT_CORE = src/agc_word.c src/executive.c src/dsky_keycom.c src/dsky_keyrupt.c
 DSKY_KEYRUPT_TEST = tests/dsky_keyrupt_cases.c tests/dsky_keyrupt_check.c
 .PHONY: test-dsky-keyrupt sanitize-dsky-keyrupt c64-dsky-keyrupt differential-dsky-keyrupt
-test-dsky-keyrupt:
+build/test-dsky-keyrupt: $(DSKY_KEYRUPT_CORE) $(DSKY_KEYRUPT_TEST) tests/test_dsky_keyrupt.c $(wildcard include/*.h tests/*.h) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DSKY_KEYRUPT_CORE) $(DSKY_KEYRUPT_TEST) tests/test_dsky_keyrupt.c -o build/test-dsky-keyrupt
+test-dsky-keyrupt: build/test-dsky-keyrupt
 	./build/test-dsky-keyrupt
 sanitize-dsky-keyrupt:
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined $(DSKY_KEYRUPT_CORE) $(DSKY_KEYRUPT_TEST) tests/test_dsky_keyrupt.c -o build/test-dsky-keyrupt-san
@@ -16,4 +17,4 @@ test: test-dsky-keyrupt
 sanitize: sanitize-dsky-keyrupt
 
 .PHONY: all
-all: c64-dsky-keyrupt
+all: build/test-dsky-keyrupt
