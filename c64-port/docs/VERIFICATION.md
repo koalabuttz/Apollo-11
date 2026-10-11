@@ -1224,3 +1224,5 @@ The authenticated GitHub branch reference was verified at `4878b9ada7fde3a56bc14
 ## Translate real Luminary and Comanche Key Release source continuations
 
 Actual KEYREL, RELDSP and display job wake paths match8,192 complete original source states under strict and full sanitizer comparison. Both CADRSTOR signed zeros, source literal-DAS fallthrough and true END/PINBRNCH/BLNKSUB1 continuations are retained. All64 complete target states pass; later continuation bodies remain active work. See `docs/DSKY-KEY-RELEASE.md`.
+
+The corrected isolated committed release at `3140fc1` passed all portable host build and test recipes, including both original fixed-memory caller differentials, all seven Luminary powered groups and canonical scheduler exchange. Exact log and exporter identities are retained in `evidence/integration-powered-release-host-proof.json`. This result does not certify complete resident application behavior.
