@@ -425,3 +425,5 @@ include tools/dsky_pinball_zero.mk
 include tools/p66_mode_zero.mk
 
 include tools/p66_status.mk
+
+include tools/nv_rows.mk

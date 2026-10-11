@@ -270,3 +270,5 @@ subprocess.run([sys.executable,'tools/cm_orbital_initial_differential.py',str(re
 
 subprocess.run([sys.executable,'tools/dsky_pinball_zero_differential.py',str(reference)],cwd=ROOT,check=True)
 subprocess.run([sys.executable,'tools/p66_mode_zero_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/nv_rows_differential.py',str(reference)],cwd=ROOT,check=True)
