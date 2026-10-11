@@ -1,0 +1,4 @@
+/* SPDX-License-Identifier: MIT */
+#include "lm_waitlist_dispatch_cases.h"
+#include "lm_taskover_resume_cases.h"
+void lm_waitlist_dispatch_input(apollo_overlay_state *s,p66_bias_io *io,agc_word *c11,agc_word *c14,uint16_t n){uint8_t i;static const uint16_t times[8]={0,1,037777,037776,020000,037635,0100,037700};static const uint16_t intervals[8]={WL_DEFAULT_INTERVAL,1,0,077777,040000,037777,077776,040001};lm_taskover_resume_input(s,io,c11,c14,n);io->interrupt_enabled=0;s->words[5]=(n&1u)?05261u:04014u;s->words[0734]=(n&1u)?1u:AGC_NEG_ZERO;s->words[026]=times[(n/2u)%8u];for(i=0;i<8u;++i)s->words[01400u+i]=intervals[(n/16u+i)%8u];for(i=0;i<9u;++i){s->words[01410u+2u*i]=(uint16_t)(02001u+i);s->words[01411u+2u*i]=(uint16_t)(((n/128u+i)%32u)*02000u+(n+i)%8u+((n/1024u+i)%8u)*020u);}if(n%8u==0){s->words[01410]=03263;s->words[01411]=064067;}}

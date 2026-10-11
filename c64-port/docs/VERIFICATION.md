@@ -1314,3 +1314,7 @@ Independent arithmetic/control review, exact original82-word mapping, complete s
 ## Translate original Luminary and Comanche ENTER noun admission
 
 Actual ENTPAS0 noun selection composes the unchanged fixed-data noun reader and original SETNCADR stores through source-selected VERBFAN, MIXNOUN, GODSPALM, REQADD and INTMCTBS boundaries. All8,192 complete original/full-sanitizer states and64 actual C64 checkpoints match, including all nouns0..99, signed zero and retained bank contexts. Subsequent verb and mixed-noun bodies remain separate. See `docs/DSKY-ENTER-ZERO.md`.
+
+## Translate original Luminary idle task dispatch and saved frame resume bridges
+
+Literal idle-to-basic, T3-vector-to-task and TASKOVER architectural RESUME transfers match24,576 complete original/native/full-sanitizer states and128 actual C64 states across two stock-ROM disk proofs. The dispatch packet retains its tested IRQ0 contract; production hardware IRQ1 dispatch and generic selected task bodies remain separate. See `docs/LM-RECURRENCE-BRIDGES.md`.
