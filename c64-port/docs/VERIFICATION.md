@@ -1034,3 +1034,7 @@ Display formatting, three rows and job completion match 11,776 original full sta
 ## Share resident scheduler services with returned overlay callbacks
 
 Resident scheduler adapters reuse the qualified core algorithm and preserve exact source-selected state. Strict and sanitizer checks cover display, lifecycle and final source corpora plus six seam guards. Four C64 scheduler overlays are linked and hashed; combined disk execution is a separate proof. See `docs/NATIVE-SCHEDULER-OVERLAYS.md`.
+
+## Run numeric entry through hardware IRQ and canonical job completion
+
+The NUM-only runtime mapping preserves hardware keyboard delivery, source IRQ return, Executive selection, numeric entry and completion across 3,072 full source checkpoints. Strict and sanitizer streams match; C64 validates eight complete pipelines covering every EB and SUPER context within the fixed RAM limit. Broader numeric body target coverage is retained separately. See `docs/DSKY-NUMERIC-RUNTIME.md`.

@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow.prg from 0801 to A5E1 (9DE1 bytes)
+WATCH: 1  C:$b8ce  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store b8ce)  129/$081,  22/$16
+.C:7eed  8E CE B8    STX $B8CE      - A:00 X:A5 Y:2F SP:f1 N.-....C  176558341
+>C:b8ce  a5 00 00 08  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow-vice-mailbox.bin' from $b8ce to $b8d2
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow.prg from 0801 to A5E1 (9DE1 bytes)
+WATCH: 1  C:$b8ce  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store b8ce)  129/$081,  22/$16
+.C:7eed  8E CE B8    STX $B8CE      - A:00 X:A5 Y:2F SP:f1 N.-....C  176558341
+>C:b8ce  a5 00 00 08  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow-vice-mailbox.bin' from $b8ce to $b8d2
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_keyboard_number_flow-vice-software-stack.bin' from $c100 to $cfff
