@@ -1630,3 +1630,7 @@ Qualify original LUNPOS polynomial and all three saved caller bank and return co
 ## Translate Luminary priority scan exception branches
 
 Qualify source positive zero candidates dead data alias and actual exception returns against16384 complete original states strict sanitizers and64 C64 cases. See `docs/LM-SCAN-EXCEPTION.md`.
+
+## Complete local Comanche ephemerides
+
+Certify all71 original emitted words and all actual local caller return frames using five frozen native source compositions, independent review and fresh unchanged-rope comparison. Caller scheduling, restart, physical validity and complete mission applications remain open. See `docs/CM-EPHEMERIS-COMPLETE.md`.

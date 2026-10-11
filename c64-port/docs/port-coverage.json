@@ -1149,8 +1149,71 @@
       "sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
       "bytes": 5394,
       "lines": 198,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_ephemeris_time.c",
+            "src/cm_ephemeris_moon_callers.c",
+            "src/cm_ephemeris_velocity.c",
+            "src/cm_ephemeris_solar.c",
+            "src/cm_ephemeris_positions.c"
+          ],
+          "scope": "Complete local71-word source union and all actual caller return frames under frozen compiled producer/canonical state contracts.",
+          "verification": "docs/CM-EPHEMERIS-COMPLETE.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical2048-word image; ordinary live time/coefficient words, coherent original entry banks and five VACs.",
+          "producer_ownership": "Quiesced computational producers throughout explicit native source stages; source NEWJOB and BANK/IRQ controls retain frozen guards.",
+          "caller_returns": {
+            "LSPOS": [
+              "022557",
+              "030231"
+            ],
+            "LUNPOS": [
+              "065673",
+              "062742",
+              "023327"
+            ],
+            "LUNVEL": [
+              "023377"
+            ],
+            "SOLPOS": [
+              "023377 declared public entry; no original CALL sites"
+            ]
+          },
+          "data_validity": "Original prelaunch and15-day physical validity requirements; no widened validity claim."
+        },
+        "external_continuations": [
+          "Caller entry/resume services and application scheduling",
+          "Restart policy and physical timing",
+          "Prelaunch coefficients and original 15-day validity",
+          "Complete native C64 mission application and restart acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-ephemeris-complete-root-review.json",
+            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-ephemeris-complete-root-review.json",
+            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-ephemeris-complete-root-review.json",
+            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-ephemeris-complete-root-review.json",
+            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
