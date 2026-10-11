@@ -388,3 +388,5 @@ include tools/acceleration_phased.mk
 include tools/control_observer.mk
 
 include tools/velocity_phased.mk
+
+include tools/throttle_feedback_phased.mk

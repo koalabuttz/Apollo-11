@@ -1,0 +1,102 @@
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase0.prg from 0801 to 65A6 (5DA6 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   26/$01a,  32/$20
+.C:2475  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7726478
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase1.prg from 0801 to 7594 (6D94 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   54/$036,  35/$23
+.C:1ff6  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    8612765
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase2.prg from 0801 to 7684 (6E84 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  267/$10b,  14/$0e
+.C:200d  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7702331
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase3.prg from 0801 to 7A38 (7238 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  307/$133,  31/$1f
+.C:1ffd  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    8255236
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase4.prg from 0801 to 7192 (6992 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  150/$096,  25/$19
+.C:1ffc  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7655659
+>C:c080  a5 00 00 20  04                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase5.prg from 0801 to 5FCA (57CA bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   44/$02c,  46/$2e
+.C:204f  8E 80 C0    STX $C080      - A:04 X:A5 Y:00 SP:ed N.-....C    7196914
+>C:c080  a5 04 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase5.prg from 0801 to 6205 (5A05 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   61/$03d,  37/$25
+.C:2264  8C 80 C0    STY $C080      - A:30 X:30 Y:A5 SP:ed N.-....C    7099696
+>C:c080  a5 04 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback-clamp-debug.bin' from $c090 to $c0bf
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase5.prg from 0801 to 62F9 (5AF9 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  125/$07d,  42/$2a
+.C:2289  8C 80 C0    STY $C080      - A:10 X:10 Y:A5 SP:ed N.-....C    7103733
+>C:c080  a5 04 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback-clamp-debug.bin' from $c090 to $c0cf
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase5.prg from 0801 to 6010 (5810 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  164/$0a4,  52/$34
+.C:2040  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7145512
+>C:c080  a5 00 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase5.prg from 0801 to 62F9 (5AF9 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  125/$07d,  42/$2a
+.C:2289  8C 80 C0    STY $C080      - A:10 X:10 Y:A5 SP:ed N.-....C    7103733
+>C:c080  a5 04 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback-clamp-debug.bin' from $c090 to $c0cf
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-phase5.prg from 0801 to 6010 (5810 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  164/$0a4,  52/$34
+.C:2040  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7145512
+>C:c080  a5 00 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_phase-software-stack.bin' from $c100 to $cfff
