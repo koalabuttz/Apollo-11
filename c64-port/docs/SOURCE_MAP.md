@@ -1371,3 +1371,7 @@ Qualify8192 full original native sanitizer states and64 C64 states preserving ac
 ## Qualify original ephemerides SR14 time downscale
 
 Translate actual scalar SR14 count14 and exact recursive TC skip preserving Q against131072 complete original strict sanitizer states and64 C64 states without changing existing frozen arithmetic kernels. See `docs/NATIVE-EPHEMERIS-TIME-SCALE.md`.
+
+## Complete original Comanche alarm body
+
+All108 emitted words and230 original lines are independently reviewed and qualified within actual compiled caller, normal code, data producer and resume frame contracts. Fourteen source/native/sanitizer and C64 proof packets retain genuine external handoffs.42 source files are complete;133 files and both full applications remain open. See `docs/COMANCHE_ALARM_BODY.md`.

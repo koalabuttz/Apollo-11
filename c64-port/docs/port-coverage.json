@@ -97,7 +97,7 @@
       "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
       "bytes": 4448,
       "lines": 230,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -161,8 +161,66 @@
           ],
           "scope": "Original alarm snapshot image domains, with additive complete-entry wrapper addressing newly identified ordinary-return address collision. Whole alarm closure remains open.",
           "verification": "docs/COMANCHE_ALARM_IMAGE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_alarm2_image.c",
+            "src/cm_vac5_store.c",
+            "src/cm_abort_lifecycle.c",
+            "src/cm_enema_image.c",
+            "src/cm_alarm_complete.c",
+            "src/cm_priolarm.c",
+            "src/cm_alarm_image.c",
+            "src/cm_alarm_record.c",
+            "src/cm_abort_whimper.c",
+            "src/cm_abort_word.c",
+            "src/cm_abort_snapshot.c",
+            "src/cm_abort_recovery.c"
+          ],
+          "scope": "Complete containing ALARM_AND_ABORT local source body recommendation within reviewed valid original compiled caller/data contracts. Authentic external callee/source-return handoffs preserved. Full applications and external bodies are separate acceptance requirements.",
+          "verification": "docs/COMANCHE_ALARM_BODY.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "sole_persistent_state": "2048 canonical physical erasable words; A/L/Q raw16, other words15, coherent EB/FB/BB and ZERO=0",
+          "ordinary_TC_inline_or_return": "Q0100..7775, banked physical code storage>=0100. These are compiled program descriptors; no decoder/reserved CPU word execution. Caller owns frame/producer exclusion across internal overlay swaps.",
+          "alarm_codes": "normal15-bit codes from inline original words, CA MPAC, T4 CCS result, or actual R02 BIT4/OCT220 arithmetic. Raw overflowing VARALARM/BORTENT A would skip source caller-save and target reserved CPU descriptors; no original mission producer supplies it. PRIOLARM broader raw16 behavior separately proved.",
+          "fixed_read_domain": "all40 physical banks/40960 addresses through original-layout passive immutable reader, including zero unpopulated banks. No executable credit from those words.",
+          "ISR_metadata": "ALARM entries preserve separate caller ISR metadata; full original complete-entry/directALARM2 oracles assert both contexts where applicable. WHIMPER explicitly clears actualISR via passed metadata and preserves real RESUME frame semantics.",
+          "diagnostic_failure_locations": "ALARM2 surviving A is recorded data, all normal15 values certified. Actual selfcheck ERRORS producer independently records all normal15 oldQ register values including low descriptors/negative/-0, then genuineTC overwritesQ3267 before returning. The old data is never program dispatch.",
+          "priority_display_caller": "actualBANKCALL PRIOLARM pair with ordinary saved fixed caller and coherent saved bank; genuine sourceP51 CAF404 caller accepts immediate2202return and actualEND admission, including resource failure. Its upstream mission and queued payload bodies are external to this file.",
+          "resume_frame": "WHIMPER ZRUPT is a genuine source12-bit interruptedPC<=7777; source BRUPT substitution and InISR clearing are explicitly modeled. Malformed hardware frames outside normal source execution excluded."
+        },
+        "external_continuations": [
+          "full P51/P32/P37/T4/selfcheck upstream algorithms",
+          "queued flashing MAKEPLAY and all astronaut callbacks after PRIODSPR",
+          "ENEMA selected MMDSPLAY/PTBAD/DOFSTART bodies beyond their genuine entry",
+          "final resident mission registry, recurring time/control/event processing and both complete applications",
+          "arbitrary asynchronous interruption outside compiled source safepoints or malformed hardware/code-storage execution"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-alarm-wholefile-review.json",
+            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-alarm-root-independent-review.json",
+            "sha256": "3ec296a8f1387db947ab1aedea7f9661edf90979d44b97a078dbf93a34c68ef2"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-alarm-wholefile-review.json",
+            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-alarm-wholefile-review.json",
+            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/ANGLFIND.agc",
