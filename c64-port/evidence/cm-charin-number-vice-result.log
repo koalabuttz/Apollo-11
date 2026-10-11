@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly cm_charin_number states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 18256 18254
+hardware stack sentinel extent: 19
+software stack sentinel extent: 51

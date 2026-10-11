@@ -551,3 +551,5 @@ include tools/cm_danzig.mk
 include tools/cm_powered_trig_port.mk
 
 include tools/gimbal_port.mk
+
+include tools/cm_charin_number.mk

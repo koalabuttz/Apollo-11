@@ -787,3 +787,7 @@ CDUTRIGS and CD*TR*GS match 655,360 original complete states across all CDU inpu
 ## Qualify original Luminary and Comanche gimbal entry stages
 
 Both native gimbal entry stages match 2,560 complete original source states and sanitizer results; stock-ROM C64 validates 320 complete states and all 40 original constants. Independent review passed. Both files remain partial pending actual external helpers and downstream control paths. See `docs/GIMBAL_STAGES.md`.
+
+## Translate actual Comanche numeric keyboard entry through NUM
+
+Canonical Comanche CHARIN and numeric arithmetic match 8,192 original complete states with the mission-specific register and return layout. Strict and full sanitizer comparisons agree; C64 validates 64 complete-state cases. Hardware keyboard admission and interrupt composition are separate pending domains. See `docs/COMANCHE-NUMERIC-ENTRY.md`.
