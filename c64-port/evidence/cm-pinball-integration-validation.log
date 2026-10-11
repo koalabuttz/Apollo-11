@@ -1,0 +1,5 @@
+build/test-cm-pinball
+CM source relay writes: 64 complete2050-field original states, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_pinball.c tests/cm_pinball_check.c src/agc_word.c src/dsky_pinball.c src/cm_pinball.c tests/cm_pinball_cases.c -o build/test-cm-pinball-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-pinball-sanitize
+CM source relay writes: 64 complete2050-field original states, 0 failures

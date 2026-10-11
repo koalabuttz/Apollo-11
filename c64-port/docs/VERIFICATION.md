@@ -942,3 +942,7 @@ All 8192 complete original-image busy transitions match native and sanitized out
 ## Port actual Comanche INITDSP and priority transitions
 
 All 12288 original complete-image display restart and priority states match native and sanitized outputs; genuine C64 checks pass. See `docs/COMANCHE-DISPLAY-RESTART.md`.
+
+## Port Comanche Pinball relay formatting and blanking
+
+Actual DSPIN, 11DSPIN and 2BLANK source effects match all 8192 original states and sanitizer outputs; real C64 checks pass. See `docs/COMANCHE-PINBALL.md`.

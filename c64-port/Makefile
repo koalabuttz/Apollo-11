@@ -491,3 +491,5 @@ include tools/makeplay_sleep.mk
 include tools/lm_busy.mk
 
 include tools/cm_display.mk
+
+include tools/cm_pinball.mk

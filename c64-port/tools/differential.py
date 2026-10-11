@@ -338,3 +338,5 @@ subprocess.run([sys.executable,'tools/makeplay_sleep_differential.py',str(refere
 subprocess.run([sys.executable,'tools/lm_busy_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_display_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_pinball_differential.py',str(reference)],cwd=ROOT,check=True)
