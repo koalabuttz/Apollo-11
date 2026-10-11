@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_waitlist.c src/cm_restart.c src/cm_enema.c tests/cm_restart_cases.c tests/cm_enema_cases.c platform/host/cm_enema_snapshot.c -o build/cm-enema-snapshot
+python3 tools/cm_enema_differential.py
+PASS:4096CMENEMA original checkpoints/all439owned words exact; sixteen guard words intact
+LIGHTSET main/nav resets, STARTSUB/STARTSB2 differences, TVCEXEC queue/WAIT aliases, rawA/L/Q/BBANK/SUPERBNK/IRQ and phase agreement
+Snapshot SHA256: ea9d5d06fa5c2e564f9c841ac3aa5aa73ddcdefa56d7564b6b656623b8b0fad8
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_waitlist.c src/cm_restart.c src/cm_enema.c tests/cm_restart_cases.c tests/cm_enema_cases.c tests/cm_enema_check.c tests/test_cm_enema.c -o build/test-cm-enema
+./build/test-cm-enema
+PASS:4096 CM original ENEMA states,8 full boundary vectors, unsupported inputs retain state
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/cm_executive.c src/cm_waitlist.c src/cm_restart.c src/cm_enema.c tests/cm_restart_cases.c tests/cm_enema_cases.c tests/cm_enema_check.c tests/test_cm_enema.c -o build/test-cm-enema-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-enema-sanitize
+PASS:4096 CM original ENEMA states,8 full boundary vectors, unsupported inputs retain state
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-enema.map src/agc_word.c src/cm_executive.c src/cm_waitlist.c src/cm_restart.c src/cm_enema.c tests/cm_restart_cases.c tests/cm_enema_cases.c tests/cm_enema_check.c platform/c64/cm_enema_diagnostic.c -o build/cm-enema.prg

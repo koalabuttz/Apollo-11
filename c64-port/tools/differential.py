@@ -220,3 +220,5 @@ subprocess.run([sys.executable,'tools/cm_phase_differential.py',str(reference)],
 subprocess.run([sys.executable,'tools/cm_restart_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_restart_native_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_enema_differential.py',str(reference)],cwd=ROOT,check=True)

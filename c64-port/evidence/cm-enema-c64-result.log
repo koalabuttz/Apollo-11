@@ -1,0 +1,3 @@
+PASS: PAL C64 CM ENEMA: 4096 source fingerprints plus 8 full state samples; mailbox a500000010
+hardware stack measured sentinel extent: 27 bytes
+software stack measured sentinel extent: 23 bytes

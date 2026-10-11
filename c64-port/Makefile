@@ -364,3 +364,5 @@ include tools/cm_restart.mk
 include tools/cm_restart_native.mk
 
 include tools/cm_native_image.mk
+
+include tools/cm_enema.mk
