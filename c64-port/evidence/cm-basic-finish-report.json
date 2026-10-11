@@ -1,0 +1,50 @@
+{
+  "cases": 16384,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entry": "05217 ENDOFJOB",
+  "boundaries": [
+    "selected basic DTCB",
+    "06037 NEWOPS after interpreted INTRSM",
+    "03231 ADVAN idle"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ",
+    "channel11"
+  ],
+  "selected_native_continuation": "actual basic/interpreted pair or idle",
+  "snapshot_sha256": "bc9551d9da8468e9339ad3e707981c13c38615bdb44aeb93506e95f79f97246a",
+  "hardware_stack_bytes": 13,
+  "software_stack_bytes": 669,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 17422,
+    ".text": {
+      "address": 2061,
+      "bytes": 8372
+    },
+    ".rodata": {
+      "address": 10433,
+      "bytes": 9036
+    },
+    ".data": {
+      "address": 19469,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 19469,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 23591,
+      "bytes": 0
+    },
+    "image_end": 23591
+  }
+}

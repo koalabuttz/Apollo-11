@@ -1,0 +1,22 @@
+{
+  "cases": 16384,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entry": "05217 ENDOFJOB",
+  "boundaries": [
+    "selected basic DTCB",
+    "06037 NEWOPS after interpreted INTRSM",
+    "03231 ADVAN idle"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ",
+    "channel11"
+  ],
+  "selected_native_continuation": "actual basic/interpreted pair or idle",
+  "snapshot_sha256": "bc9551d9da8468e9339ad3e707981c13c38615bdb44aeb93506e95f79f97246a"
+}

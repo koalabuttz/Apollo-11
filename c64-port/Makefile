@@ -527,3 +527,5 @@ include tools/native_source_adoption.mk
 all: native_source_adoption-host
 test: native_source_adoption-host
 sanitize: native_source_adoption-sanitize
+
+include tools/cm_basic_finish.mk
