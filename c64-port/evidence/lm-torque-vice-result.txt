@@ -1,0 +1,3 @@
+PASS: stock-ROM PAL C64 executes complete LM KALMAN_FILTER; 2048 original source states under all eight EB alias contexts
+Every physical word compared exactly, including unchanged words; SUPER/IRQ preserved
+Native PRG 13760 bytes; load end $3dbf; BSS end $5dbf; mailbox a50008

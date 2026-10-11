@@ -360,3 +360,5 @@ subprocess.run([sys.executable,'tools/cm_service_loop_differential.py',str(refer
 subprocess.run([sys.executable,'tools/cm_relay_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_scale_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/lm_torque_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -515,3 +515,5 @@ include tools/cm_service_overlay.mk
 include tools/cm_relay.mk
 
 include tools/cm_scale.mk
+
+include tools/lm_torque.mk

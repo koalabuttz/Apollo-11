@@ -670,3 +670,7 @@ All4096 complete original DSPOUTSB and channel10 states match native and sanitiz
 ## Port Comanche numerical display-scale wrappers
 
 All4096 complete original scale-wrapper states match native and sanitized outputs through the real decimal continuation; C64 execution checks pass. See `docs/COMANCHE-SCALE.md`.
+
+## Complete original Luminary three-axis torque integration
+
+All original torque routine paths, data and declarations are mapped through the actual external BACKP continuation; 36864 complete source and sanitizer states plus2048 real C64 state checks pass. See `docs/LM_TORQUE.md`.

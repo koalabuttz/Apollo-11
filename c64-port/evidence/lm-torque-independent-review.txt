@@ -1,0 +1,9 @@
+Independent review by p66_source_map, 2026-10-11:
+
+No correctness issues found in requested source/native paths.
+CCS(-0 TJP) skips TCF/TCF/AD into EXTEND/BZMF with A+0, hence SMALLTJU; omitting AD for minus zero is correct.
+The diminished-absolute-value subtraction makes SMALLTJU accept magnitude <=161. Magnitude162 starts clipping and leaves residual2. Fixtures include octal0240/0241/0242 and their negatives.
+BZMF on rescaled torque routes both +0 and negative zero through NEGTORK; complementing +0 gives -0 and Q increments. Native a==0 || sign-bit condition matches.
+Initial +0 bypasses SMALLTJU to LOOPRATE. Final-axis Q0/1 survives ROTORQUE. Subtraction/addition constants match original source roles.
+
+This read-only review complements, and does not replace, independent original-source full-image and stock-ROM native C64 evidence.

@@ -1,0 +1,6 @@
+Loading /workspace/Apollo-11/c64-port/build/lm-torque.prg from 0801 to 3DBE (35BE bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   14/$00e,   4/$04
+.C:145f  8E 00 C0    STX $C000      - A:08 X:A5 Y:00 SP:f1 N.-....C 1607940310
+Saving file `/workspace/Apollo-11/c64-port/build/lm-torque-mailbox.bin' from $c000 to $c002
