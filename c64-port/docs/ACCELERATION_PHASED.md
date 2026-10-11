@@ -1,0 +1,7 @@
+# Source acceleration phases and return control
+
+Four independently compiled acceleration APIs preserve complete numerical state at original completed-pair LOC03414/03416/03420/03422. They match65,536 original112-word checkpoints, SHA256 `9ab27856741364bdc52d5fd802bf026c77515897a65704f8192d88db2977e676`. Strict128frozen entry/exit pairs and131,068invalidMODE checks pass; entire ASan/UBSan corpora match. Four C64 diagnostics compare32 full source pairs each, mailbox `a500002000` through `a500002003`; additional zero page0. Diagnostic text sizes13,675/13,176/11,665/8,341bytes.
+
+A separate pure arithmetic observer preserves source Q debris needed by real subsequent control transfers without decoding instructions or writing numerical state. All65,536 original Q observations agree, SHA256 `217608c6f09909f94b43efa34d7f1c4eb63f743176680cb0b2d00c8c3ed9ba99`. Strict65frozen source states, full-state sanitizers and all65C64 cases pass, mailbox `a500004100`, PRG5,056bytes, hardware/software stacks20/17bytes excluding the separate ROM frame. The source-trace control corpus is produced independently of the observer. Verification checks committed frozen expectations; regeneration requires explicit --freeze after review.
+
+These APIs return at original safe points; the native Executive owns scheduling and producer exclusion. C64 phase fixtures establish bounded source-state equivalence, while actual disk-overlays and fullapplication scheduling/recovery remain separate integration requirements.

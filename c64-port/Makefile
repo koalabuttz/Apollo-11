@@ -383,3 +383,6 @@ include tools/dsky_relay.mk
 include tools/dsky_display.mk
 
 include tools/cm_startup.mk
+
+include tools/acceleration_phased.mk
+include tools/control_observer.mk

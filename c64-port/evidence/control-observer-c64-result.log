@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 65 complete control_observer group original-assembly states; retained memory unchanged
+Mailbox: a500004100
+PRG bytes: 5056
+control_observer-hardware-stack.bin: measured stack extent 20 bytes
+control_observer-software-stack.bin: measured stack extent 17 bytes
