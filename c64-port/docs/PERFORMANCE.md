@@ -266,3 +266,36 @@ included. Source publication is stopped during recovery; this milestone makes no
 continuous CIA-source deadline guarantee. The full 226-case 448-word fingerprint
 workload takes many emulated cycles and uses a one-billion-cycle harness limit.
 RESTART.md defines the bounded recovery contract and remaining source exclusions.
+
+## Seventh milestone: standalone P66 rate and arithmetic diagnostic
+
+`evidence/guidance.prg` is 10902 bytes including the load address; 10900 bytes
+load at $0801..$3294, SYS $080d. Text is 3891 bytes ($080d..$173f), read-only
+data is 6997 ($1740..$3294), BSS is 13 ($3295..$32a1), and noinit is one byte
+at $32a2. Loaded image plus BSS/noinit is 10914 bytes. Read-only data includes
+6816 bytes of complete expected output words. The native rate state is 12 bytes,
+and the test case is 13. No heap, custom IRQ stack or floating point is used.
+The compiler uses its 32 imaginary-register ZP bytes with no extra ZP data/BSS.
+
+The final PAL run observes 23 bytes below the $01f2 hardware-stack baseline
+(37 including the existing 14-byte BASIC/KERNAL frame) and 26 bytes of dynamic
+software-stack sentinel extent. These are observed extents, not stack proofs.
+The diagnostic reserves $c080..$c088 and instruments $c100..$cfff.
+
+| Sample | PAL cycles | At 985248 cycles/s |
+|---|---:|---:|
+| Positive maximum MP product | 1711 | 1.737 ms |
+| Negative maximum MP product | 1920 | 1.949 ms |
+| DAS low-word carry | 478 | 0.485 ms |
+| DAS high-word overflow | 345 | 0.350 ms |
+| Zero-count P66 rate update | 553 | 0.561 ms |
+| Maximum-count P66 rate update | 2108 | 2.140 ms |
+
+Each interval covers `gn_apply` operation selection and the native call between
+marker stores under exclusion. State construction, guard entry/exit and complete
+word comparisons lie outside the markers; marker overhead and VIC bus effects
+are included. Zero-count uses a zero scale; the larger sample uses negative
+maximum count/scale and an existing mixed-sign desired-rate pair. These samples
+are not worst-case bounds, whole P66 timing, continuous-source capacity or flight
+deadline evidence. The count producer is a test input, with no custom live IRQ.
+GUIDANCE.md records original inhibition versus the restoring native boundary.

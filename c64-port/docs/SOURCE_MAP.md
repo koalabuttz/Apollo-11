@@ -74,10 +74,12 @@ boundaries and the separate interpreter exclusion.
 | CCS's word class and diminished absolute value | `agc_classify`, `agc_diminished_abs` | Exhaustive analytical checks, Executive execution comparisons |
 | BZMF accumulator sign / both zeros | Explicit `exec_admit` branch test | Tested packed-priority comparisons |
 | Word-sized one's-complement addition | `agc_add_word` | Separate analytical modular-arithmetic oracle; not a substitute for AD/TS |
+| MP with an ordinary memory operand | `agc_multiply` | Signed zeros, corrected A and DP product; actual opcode comparisons |
+| DAS to an ordinary erasable pair | `agc_double_add` | Low carry, independent word signs and returned overflow; actual opcode comparisons |
 
-Register CCS with overflow, TS skip effects, edit registers, multiword
-arithmetic, fixed-point guidance scales, multiplication/division and interpreter
-operations are not implemented. Normal bounded admission does not require them.
+Register CCS with overflow, general TS skip effects, edit registers, division
+and interpreter operations are not implemented. MP/DAS are bounded to normal
+memory operands; guidance scales remain raw words (GUIDANCE.md).
 
 ## Alarm and protected Type C job stages
 
@@ -92,3 +94,12 @@ operations are not implemented. Normal bounded admission does not require them.
 RESTART_TABLES and PHASE_TABLE_MAINTENANCE are traced and included unchanged in
 the fixture; no table route or phase-update primitive is translated. RESTART.md
 records caller inputs, valid Type C encodings, exclusions and fixture addresses.
+
+## P66 rate adjustment
+
+`LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:948` maps RODCOMP's INHINT/CAF/XCH/EXTEND/
+MP/DAS prefix to `p66_rate_update`, entering bank 32,3275 and stopping at
+32,3303 before PIPA work. RODCOUNT/RODSCAL1/VDGVERT are E7,1746/E7,1756/E7,1644.
+STARTP66/STRTP66A and DESCBITS are traced for scale/count provenance, not ported.
+GUIDANCE.md defines full numerical domains, original register results and the
+restoring native interrupt adaptation. The subsequent interpreter is excluded.

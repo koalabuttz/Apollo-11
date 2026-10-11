@@ -170,3 +170,15 @@ preserves alarm history and payloads rather than calling the test initializer.
 Native runtime faults stay latched until explicit reinitialization. RESTART.md
 separates each original-assembly stop boundary from the composed native driver,
 which omits complete ENEMA/display/flag/return glue and remaining phase routes.
+
+## Bounded guidance arithmetic
+
+`src/agc_multiword.c` adds normal-memory MP and erasable-pair DAS with signed
+zeros, low-word carry, independent word signs and full accumulator overflow
+results. `src/guidance.c` directly translates RODCOMP's initial rate adjustment.
+Its separate 12-byte state retains count, raw scale, desired-rate words and A/L;
+it does not modify Executive scratch or assume a complete interpreter context.
+The caller owns the state and excludes a count producer. The standalone target
+uses restoring guards rather than carrying original INHINT into an untranslated
+continuation. There is no AGC instruction decoder, floating point or allocation.
+GUIDANCE.md defines the entry/stop boundary and excluded P66 work.

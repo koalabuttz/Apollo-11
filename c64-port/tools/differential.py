@@ -124,3 +124,4 @@ print('TIME3/LST1/LST2/RUPTAGN, retained 1203/1204 boundaries and physical task 
 print('WAITLIST snapshot SHA256: '+hashlib.sha256((ROOT/'build/waitlist-reference.snapshots').read_bytes()).hexdigest())
 
 subprocess.run([sys.executable,'tools/restart_differential.py',str(reference)],cwd=ROOT,check=True)
+subprocess.run([sys.executable,'tools/guidance_differential.py',str(reference)],cwd=ROOT,check=True)

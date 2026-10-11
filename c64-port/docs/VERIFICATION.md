@@ -39,10 +39,10 @@ paths. The portable commands are:
 
 | Command | Actual result | Evidence |
 |---|---|---|
-| `make test` | PASS; numerical/26 Executive tests, 53 dispatch cases / 109 checkpoints, eight dispatch sequences; IRQ suite; 81 lifecycle cases / 115 checkpoints and five lifecycle sequences; 196 WAITLIST cases / 306 checkpoints and ten native task sequences | `evidence/host-test.txt` |
-| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; all four host suites under AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/sanitize.txt` |
-| `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, original Executive identity checked, fixture assembled | `evidence/prepare-reference.txt`, `evidence/assembly-summary.txt` |
-| `make differential REFERENCE=/path/to/fixture` | PASS; 26 admission/completion and 109 dispatch, 115 lifecycle and 306 task-state/target comparisons; numerical helper comparison | `evidence/differential.txt`, both `.snapshots`, `reference.trace` |
+| `make test` | PASS; all six host suites, including restart and numerical/P66 checks | `evidence/guidance-host.log`; earlier per-milestone logs retained |
+| `ASAN_OPTIONS=detect_leaks=0 make sanitize` | PASS; all six host suites under AddressSanitizer and UndefinedBehaviorSanitizer | `evidence/guidance-sanitize.log` |
+| `python3 tools/prepare_reference.py --virtualagc /path/to/pinned/virtualagc --fixture /path/to/fixture` | PASS; tools built, nine original source identities checked, fixture assembled | `evidence/guidance-fixture.log` |
+| `make differential REFERENCE=/path/to/fixture` | PASS; all earlier snapshots unchanged plus 12,856 numerical/P66 checkpoints | `evidence/guidance-differential.log`, guidance snapshots/trace and retained earlier snapshots |
 | `python3 tools/freeze_vectors.py` | 26 admission/completion and 109 dispatch fingerprints generated | Header records snapshot SHA256 |
 | `python3 tools/freeze_lifecycle.py` | 115 original-derived lifecycle fingerprints generated after exact equality | `tests/lifecycle_vectors.h` records snapshot SHA256 |
 | `make c64 MOS_CC=/path/to/mos-c64-clang` | PASS; native PRG + ELF + link map | `evidence/c64-build.txt`, `executive.prg`, `executive.map` |
@@ -54,7 +54,10 @@ paths. The portable commands are:
 | `python3 tools/freeze_waitlist.py` | 306 original-derived task fingerprints generated after exact equality | `tests/waitlist_vectors.h` |
 | `make c64-waitlist MOS_CC=/path/to/mos-c64-clang` | PASS; dynamic-frame, restricted-ZP task/timer PRG | `evidence/waitlist-build.txt`, `waitlist.prg`, `waitlist.map` |
 | `python3 tools/waitlist_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 306 fingerprints, ten native task sequences, six real CIA B IRQs, interrupted C, register/decimal/stack checks, task-admitted/woken jobs, 156 timings | `evidence/waitlist-result.txt`, `waitlist-timing.json`, monitor/log/dumps |
-| `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes | `evidence/source-preservation.txt` |
+| `python3 tools/freeze_guidance.py` | 568 complete six-word expectations generated after exact equality | `tests/guidance_vectors.h` |
+| `make c64-guidance MOS_CC=/path/to/mos-c64-clang` | PASS; native numerical/P66 diagnostic and map | `evidence/guidance-c64-build.log`, `guidance.prg`, `guidance.map` |
+| `python3 tools/guidance_vice_test.py --vice /path/to/x64sc --rom-dir /path/to/C64 --data-dir /path/to/data` | PASS; 568 complete states, three rate histories, restoring I, six timings and stack/ZP checks | `evidence/guidance-vice-test.log`, guidance monitor/log/mailbox/stack dumps |
+| `git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'` | PASS; no historical changes (run from repository root) | `evidence/guidance-source-preservation.txt` |
 
 LeakSanitizer's default process inspection failed in this container (`/proc/...`
 unavailable). Only leak scanning was disabled; ASan memory checks and UBSan
@@ -284,7 +287,7 @@ comparison, DXCH debris, and non-rollback of a VAC on 1202. Executable independe
 reference tests exposed and corrected implementation mistakes before handoff.
 There was no independent human/second-agent review in this session.
 
-Unavailable: mission replay, actual landing computations, interpreter context
+Unavailable: mission replay, complete landing computations, interpreter context
 dispatch, general/multi-source or NMI interrupt integration, remaining alarm/restart routes (RESTART.md), exhaustive
 Executive state-space comparison, hardware run, and end-to-end flight deadlines.
 These remain explicitly incomplete rather than being replaced with passing mocks.
@@ -327,3 +330,30 @@ explicit register/bank inputs between stages and holds counter progress; it does
 not execute uninterrupted ENEMA glue. The composed recovery is a native adaptation.
 Original hardware GOJAM, fresh start, display/key/flag glue, phase updates, table,
 Type B, timed/longcall, servicer and guidance routes remain unimplemented.
+
+## Seventh milestone: real P66 rate adjustment and multiword arithmetic
+
+All six host suites pass `make test` and ASan/UBSan with
+`ASAN_OPTIONS=detect_leaks=0 make sanitize`. The full differential command passes
+all earlier comparisons with unchanged snapshots, plus 12,835 numerical/rate
+cases / 12,856 checkpoints. The fixture now overlays nine selected historical
+files byte-identically, including LUNAR_LANDING_GUIDANCE_EQUATIONS, with the
+same rope hash. The new source SHA256 is in tools/versions.json.
+
+`guidance_reference.c` links only Virtual AGC and input constructors. It executes
+actual MP/DAS opcodes for primitive tests and original RODCOMP's six-instruction
+prefix for rate tests. Complete count/scale/desired-high/desired-low/raw-A/raw-L
+output agrees; adjacent memory, BBANK and original INHINT are checked separately.
+Scalers are held during these bounded calls. Three histories retain desired rate
+for eight steps each. GUIDANCE.md lists the exact cases and valid input domain.
+Snapshot SHA256 is
+`919925e42e327b9a0d426444be5f96af636bdf69812723f946db07ce086aed55`.
+
+`freeze_guidance.py` freezes 568 full six-word expectations only after exact
+native/reference equality. The PAL VICE diagnostic checks these words directly,
+all three histories, restoring I, no extra compiler ZP and stack sentinels.
+Its mailbox is `a500003802030c0d25`, with zero errors. Six numerical/rate call
+intervals and target image/memory observations are retained (PERFORMANCE.md).
+No AGC engine or native opcode decoder enters the target binary. The entire
+RODCOMP/P66 interpreter continuation, live switch input, complete guidance task
+integration, physical hardware and deadline guarantees remain outside the test.

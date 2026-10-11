@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build pinned Virtual AGC and a full fixture containing UNCHANGED upstream scheduler/alarm/restart source."""
+"""Build pinned Virtual AGC and a full fixture containing UNCHANGED upstream scheduler/alarm/restart/guidance source."""
 import argparse
 import hashlib
 import pathlib
@@ -27,13 +27,15 @@ for f in (v/'Luminary099').glob('*.agc'): shutil.copyfile(f,fixture/f.name)
 original=ROOT.parent/'Luminary099/EXECUTIVE.agc'
 for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc',
                'ALARM_AND_ABORT.agc','FRESH_START_AND_RESTART.agc',
-               'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc']:
+               'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc',
+               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc']:
     shutil.copyfile(ROOT.parent/'Luminary099'/source,fixture/source)
 with (fixture/'assembly.lst').open('w') as log:
     run([str(v/'yaYUL/yaYUL'),'MAIN.agc'],cwd=fixture,stdout=log,stderr=subprocess.STDOUT)
 for source in ['EXECUTIVE.agc','WAITLIST.agc','INTERRUPT_LEAD_INS.agc',
                'ALARM_AND_ABORT.agc','FRESH_START_AND_RESTART.agc',
-               'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc']:
+               'RESTARTS_ROUTINE.agc','RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc',
+               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc']:
     assert (fixture/source).read_bytes()==(ROOT.parent/'Luminary099'/source).read_bytes()
 # The adapter uses these historical addresses; fail if the support changes them.
 listing=(fixture/'assembly.lst').read_text()
@@ -52,7 +54,9 @@ for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
                      ('ALARM1','5732'),('POODOO1','5726'),('WHIMPER','5644'),
                      ('STARTSB1','05,3116'),('GOPROG3','05,2775'),
                      ('PTBAD','05,3054'),('RESTARTS','01,3526'),
-                     ('PHSNAME1','E3,1436'),('PHSPRDT1','1054'),('GOLOC','0705')]:
+                     ('PHSNAME1','E3,1436'),('PHSPRDT1','1054'),('GOLOC','0705'),
+                     ('RODCOMP','32,3275'),('RODCOUNT','E7,1746'),
+                     ('RODSCAL1','E7,1756'),('VDGVERT','E7,1644')]:
     import re
     if not re.search(r'\b'+name+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)
@@ -60,6 +64,7 @@ print('Fixture:',fixture)
 print('Unchanged Executive SHA256:',hashlib.sha256(original.read_bytes()).hexdigest())
 for source in ['WAITLIST.agc','INTERRUPT_LEAD_INS.agc','ALARM_AND_ABORT.agc',
                'FRESH_START_AND_RESTART.agc','RESTARTS_ROUTINE.agc',
-               'RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc']:
+               'RESTART_TABLES.agc','PHASE_TABLE_MAINTENANCE.agc',
+               'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc']:
     print('Unchanged '+source+' SHA256:',hashlib.sha256((fixture/source).read_bytes()).hexdigest())
 print('Rope SHA256:',hashlib.sha256((fixture/'MAIN.agc.bin').read_bytes()).hexdigest())

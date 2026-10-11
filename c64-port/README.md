@@ -12,7 +12,9 @@ PRIOCHNG. Native demonstration jobs run, sleep, wake, change priority, resume
 and complete. WAITLIST now retains nine task slots, differential timer state
 and native task completion; a CIA Timer B adapter publishes clock events.
 Bounded alarm recording, STARTSB1 cleanup and protected Type C job recovery
-are implemented. **Deferred:** Apollo guidance jobs, interpreter dispatch and
+are implemented. The first P66 RODCOMP rate update and its MP/DAS arithmetic
+are implemented and verified (docs/GUIDANCE.md). **Deferred:** complete Apollo
+guidance jobs, interpreter dispatch and
 remaining restart routes/glue (docs/RESTART.md).
 
 26 original admission/completion scenarios and 53 dispatch cases (109 checkpoints,
@@ -36,7 +38,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md` and `docs/RESTART.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/GUIDANCE.md` for the current milestone.
 
 ## Build and run
 
@@ -50,10 +52,11 @@ make c64-irq MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-lifecycle MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-waitlist MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 make c64-restart MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
+make c64-guidance MOS_CC=/path/to/llvm-mos/bin/mos-c64-clang
 ```
 
 The deliverables are `build/executive.prg`, `build/irq.prg`,
-`build/lifecycle.prg`, `build/waitlist.prg` and `build/restart.prg`
+`build/lifecycle.prg`, `build/waitlist.prg`, `build/restart.prg` and `build/guidance.prg`
 (ordinary C64 PRGs with BASIC SYS stubs).
 Load a PRG on a C64 and RUN, or use VICE. The console diagnostic prints a test summary,
 not an interactive DSKY. Target compiler: LLVM-MOS SDK **v23.3.0**.
@@ -70,22 +73,25 @@ make differential REFERENCE="$PWD/deps/fixture"
 
 This builds pinned yaYUL/yaAGC and assembles a full reference fixture using
 Virtual AGC's corrected supporting transcription, with the requested upstream
-scheduler, interrupt, alarm and restart source files copied
+scheduler, interrupt, alarm, restart and selected guidance source files copied
 **byte-for-byte**. The selected repository's full MAIN
 cannot currently assemble unmodified; details are in `docs/VERIFICATION.md`.
 No native port implementation is linked into the Executive reference runner.
 
 The test checks full saved state and selected basic dispatch addresses, including
 actual BBANK/SUPERBNK transfers, rather than just the small manual assertions. Arithmetic
-is also compared against Virtual AGC's numerical helper API. Regenerate frozen
-C64 fingerprints only after a successful differential test:
+is also compared against Virtual AGC's numerical helper API. MP/DAS and the
+P66 rate update add 12,856 actual-instruction checkpoints; the sixth C64 PRG
+checks 568 complete six-word states and three rate histories. Regenerate frozen
+C64 expectations only after a successful differential test:
 
 ```sh
 python3 tools/freeze_vectors.py
 python3 tools/freeze_lifecycle.py
 python3 tools/freeze_waitlist.py
 python3 tools/freeze_restart.py
-make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart
+python3 tools/freeze_guidance.py
+make test c64 c64-irq c64-lifecycle c64-waitlist c64-restart c64-guidance
 ```
 
 ### VICE verification
@@ -101,6 +107,8 @@ python3 tools/waitlist_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 python3 tools/restart_vice_test.py --vice /path/to/x64sc \
   --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
+python3 tools/guidance_vice_test.py --vice /path/to/x64sc \
+  --rom-dir /path/to/VICE/data/C64 --data-dir /path/to/VICE/data
 ```
 
 Provide standard ROM files `kernal-901227-03.bin`, `basic-901226-01.bin`, and
@@ -113,6 +121,8 @@ reports and reject unpreserved compiler ZP allocations. No display server is req
 The fifth diagnostic checks 190 alarm/restart cases / 226 checkpoints and six
 recovered native job completions. Original alarm records and protected phases
 are retained; this is a bounded recovery adaptation.
+The sixth diagnostic checks 568 complete numerical/rate states and three P66
+rate histories, with six measured call intervals and 12 bytes of rate state.
 
 ## Engineering record
 
@@ -120,6 +130,7 @@ are retained; this is a bounded recovery adaptation.
 - `docs/IRQ.md`: exclusion, queue ownership, fault boundaries and C64 IRQ ABI.
 - `docs/LIFECYCLE.md`: sleep/wake, priority scans, callback actions and oracle boundaries.
 - `docs/RESTART.md`: alarm history, cleanup, protected job re-entry and exclusions.
+- `docs/GUIDANCE.md`: P66 rate boundary, raw scales, multiword math and oracle domains.
 - `docs/WAITLIST.md`: task list/counter semantics, native callbacks, CIA ownership and limits.
 - `docs/ARCHITECTURE.md`: original structures, calling conventions, dependencies.
 - `docs/SOURCE_MAP.md`: original labels mapped to C and reference stop boundaries.

@@ -96,3 +96,25 @@ sanitize-restart: | build
 c64-restart: build/restart.prg
 build/restart.prg: $(CORE) src/waitlist.c src/restart.c $(RESTART_TEST) platform/c64/restart_diagnostic.c $(RESTART_HEADERS) tests/restart_vectors.h tests/restart_check.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/restart.map $(CORE) src/waitlist.c src/restart.c $(RESTART_TEST) platform/c64/restart_diagnostic.c -o $@
+
+GUIDANCE_CORE = src/agc_word.c src/agc_multiword.c src/guidance.c
+GUIDANCE_INPUT = tests/guidance_cases.c
+GUIDANCE_HEADERS = include/agc_word.h include/agc_multiword.h include/guidance.h tests/guidance_cases.h
+all: build/guidance-snapshot
+build/guidance-snapshot: $(GUIDANCE_CORE) $(GUIDANCE_INPUT) platform/host/guidance_snapshot.c $(GUIDANCE_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(GUIDANCE_CORE) $(GUIDANCE_INPUT) platform/host/guidance_snapshot.c -o $@
+GUIDANCE_TEST = $(GUIDANCE_INPUT) tests/guidance_check.c
+all: build/test-guidance
+test: test-guidance
+.PHONY: test-guidance sanitize-guidance c64-guidance
+test-guidance: build/test-guidance
+	./build/test-guidance
+build/test-guidance: $(GUIDANCE_CORE) $(GUIDANCE_TEST) tests/test_guidance.c $(GUIDANCE_HEADERS) tests/guidance_vectors.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(GUIDANCE_CORE) $(GUIDANCE_TEST) tests/test_guidance.c -o $@
+sanitize: sanitize-guidance
+sanitize-guidance: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(GUIDANCE_CORE) $(GUIDANCE_TEST) tests/test_guidance.c -o build/test-guidance-sanitize
+	./build/test-guidance-sanitize
+c64-guidance: build/guidance.prg
+build/guidance.prg: $(GUIDANCE_CORE) $(GUIDANCE_TEST) platform/c64/guidance_diagnostic.c $(GUIDANCE_HEADERS) tests/guidance_vectors.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/guidance.map $(GUIDANCE_CORE) $(GUIDANCE_TEST) platform/c64/guidance_diagnostic.c -o $@

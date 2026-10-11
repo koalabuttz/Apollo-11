@@ -79,15 +79,32 @@ independently verified source stages from the composed native recovery adaptatio
 Complete ENEMA glue, table/timed/display/Type B/longcall routes, phase updates,
 POODOO phase/service cleanup and hardware restart remain untranslated.
 
-## Next bounded milestone: numerical requirements for selected guidance
+## Completed: P66 rate adjustment and required multiword arithmetic
 
-Select one bounded landing-guidance computation from unchanged source, identify
-its interpreter and multiword arithmetic requirements, then implement and verify
-the required numerical primitives before translating that computation. Preserve
-scale/signed-zero/overflow semantics and extend the independent assembly oracle.
-Flight feasibility and deadline proof remain separate measurement work. Rust is
-optional for later components. Restart-table expansion should follow a concrete
-selected workload requirement rather than an unbounded mission replay target.
+- RODCOMP's first six instructions consume RODCOUNT, multiply RODSCAL1 and add
+  the double-word product to VDGVERT; the boundary precedes PIPA/interpreter work.
+- MP preserves memory-zero/accumulator-zero distinctions. DAS preserves low-word
+  carry, independent result signs and full 16-bit A/L overflow indicators.
+- 12,835 cases / 12,856 checkpoints match actual Virtual AGC instructions and
+  unchanged original RODCOMP; earlier snapshots and the rope remain unchanged.
+- Six host/sanitizer suites pass. A sixth C64 diagnostic checks 568 complete
+  states and three repeated rate histories, restoring I, ZP and stack canaries.
+- State is 12 target bytes; larger sampled rate update is 2108 PAL cycles.
+
+Acceptance for this bounded numerical/guidance milestone is met. GUIDANCE.md
+defines raw scales, input domains and interrupt/scratch adaptations. This does
+not complete P66 or establish an application deadline.
+
+## Next bounded milestone: RODCOMP PIPA preparation
+
+Extend the selected computation through its PIPA/time snapshot and vector-input
+preparation, stopping before TC INTPRET. Define retained sensor/scratch state and
+preserve DCA/DXCH exchange and AD/TS overflow/skip effects through that boundary.
+Then identify the first required interpreter vector operation for an explicit
+native translation. A mapped guidance job and count producer should follow
+defined scratch ownership and timing budgets. Flight feasibility and deadline
+proof remain separate measurement work. Rust is optional for later components;
+restart-table expansion should follow a concrete workload requirement.
 
 ## Remaining design questions
 

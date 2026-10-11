@@ -1,0 +1,2 @@
+PASS: run from repository root: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port'
+All historical files unchanged; all modifications confined to c64-port/.
