@@ -1,0 +1,51 @@
+{
+  "source_file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+  "source_audit_dependency": "evidence/lm-powered-source-audit.json",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "native_group": "QUICTRIG and TC A",
+  "calls": 32768,
+  "complete_states": 65536,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "header_words": 3,
+  "decoded_state_bytes": 268828672,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-powered-quick-complete.snapshots.xz",
+      "decoded_sha256": "8607290c3b6438944bd0c4a52b84c79bad0923daca25580718532a8e8dbf7ba0"
+    },
+    "strict_native": {
+      "object": "evidence/lm-powered-quick-complete.snapshots.xz",
+      "decoded_sha256": "8607290c3b6438944bd0c4a52b84c79bad0923daca25580718532a8e8dbf7ba0"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-powered-quick-complete.snapshots.xz",
+      "decoded_sha256": "8607290c3b6438944bd0c4a52b84c79bad0923daca25580718532a8e8dbf7ba0"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 6129,
+      "loaded_end_hex": "0x1fef",
+      "hardware_stack_bytes": 22,
+      "software_stack_bytes": 41,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 6269,
+      "loaded_end_hex": "0x207b",
+      "hardware_stack_bytes": 22,
+      "software_stack_bytes": 41,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "Every 15-bit CDU word is qualified through original SPSIN/SPCOS with LM TEMK01076/SQ01077 aliases and the source INHINT/RELINT effects. The final TC A is a separate compiled source return. Canonical ordinary MODE is retained. Every basic saved-Q address02000..07777 is exercised. Both C64 diagnostics also read and compare all six original POWERED constants."
+}

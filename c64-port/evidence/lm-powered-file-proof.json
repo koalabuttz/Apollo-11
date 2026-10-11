@@ -1,0 +1,37 @@
+{
+  "original_file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+  "original_file_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+  "original_emitted_words": 267,
+  "source_word_map": "evidence/lm-powered-file-source-map.json",
+  "source_audit": "evidence/lm-powered-source-audit.json",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "native_source_group_proofs": [
+    "evidence/lm-powered-trig-proof.json",
+    "evidence/lm-powered-axis-proof.json",
+    "evidence/lm-powered-quick-proof.json",
+    "evidence/lm-powered-interface-proof.json",
+    "evidence/lm-powered-fixed-return-proof.json",
+    "evidence/lm-fleshpot-proof.json",
+    "evidence/lm-fleshpot-interface-proof.json"
+  ],
+  "whole_original_strict_sanitizer_states": 1982464,
+  "actual_C64_PRGs": 38,
+  "actual_C64_complete_frozen_states": 1216,
+  "whole_file_scope": "All emitted containing-source words mapped to reviewed native arithmetic, explicit source controls/returns and immutable constants. Source entry contracts are canonical ordinary words and documented fixed returns; mathematical routines retain raw signed zero/overflow semantics. This is whole-file numerical/control qualification, not a completed resident application.",
+  "unreachable_source": "Original AX line288 positive-zero TC RTNSAVER is unreachable under documented +3/-3 DIM direction contract; both directions reach negative zero and execute line290.",
+  "external_requirements": [
+    "Source Executive scheduling only at genuine completed-operation EDOP0 checks; internal numerical/basic stages retain canonical ownership.",
+    "Producer exclusion and shared scratch/VAC ownership across source operation phases.",
+    "Resident overlay allocation and application sensor/actuator integration remain separately qualified.",
+    "No arbitrary erasable indirect RVQ/caller classification or invalid ECADR source entry is claimed."
+  ],
+  "proof_sha256": {
+    "evidence/lm-powered-trig-proof.json": "bb83ff8b720b6c9cbfaa701e90f3924a05e0adf45fec6c2aa4a00178c29baf84",
+    "evidence/lm-powered-axis-proof.json": "1d76c9c056bc000dcbcb7b56f482725b39e53a871fed3e930c822c00bea9716e",
+    "evidence/lm-powered-quick-proof.json": "4aefa35117a2b2d29a24c1608f0a5ccef5ecba73ed51d383cb9e8fa7cd9cc3f4",
+    "evidence/lm-powered-interface-proof.json": "203f9b8db35346c05eb0cd564f303bb16f8d66a5673b3d67e77b386448e92730",
+    "evidence/lm-powered-fixed-return-proof.json": "75d002a3da410530260a4122f4c5c3f114e23094d459a45602c9f93a9d66986c",
+    "evidence/lm-fleshpot-proof.json": "9e0f99fb5d9ab76be2b6b45dab5f7be9c6899af6e6d56406a06a04ff1ea536b9",
+    "evidence/lm-fleshpot-interface-proof.json": "f5798a30f4ac54b397f475f0d4598a52604cb02757f054fb017bfbf6663bd120"
+  }
+}

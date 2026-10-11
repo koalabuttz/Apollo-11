@@ -1,0 +1,111 @@
+{
+  "source_file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+  "source_audit_dependency": "evidence/lm-powered-source-audit.json",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "native_group": "Eight permanent interfaces",
+  "calls": 65536,
+  "complete_states": 868352,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "header_words": 4,
+  "decoded_state_bytes": 3563716608,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-powered-interface-complete.snapshots.xz",
+      "decoded_sha256": "729b6924bba78120a4e6b0d4e4fddee58cd71e8355bc5c2f0f359adfa882f623"
+    },
+    "strict_native": {
+      "object": "evidence/lm-powered-interface-complete.snapshots.xz",
+      "decoded_sha256": "729b6924bba78120a4e6b0d4e4fddee58cd71e8355bc5c2f0f359adfa882f623"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-powered-interface-complete.snapshots.xz",
+      "decoded_sha256": "729b6924bba78120a4e6b0d4e4fddee58cd71e8355bc5c2f0f359adfa882f623"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 17193,
+      "loaded_end_hex": "0x4b27",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 338,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 17084,
+      "loaded_end_hex": "0x4aba",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 332,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 23498,
+      "loaded_end_hex": "0x63c8",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 342,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 23413,
+      "loaded_end_hex": "0x6373",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 337,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 4,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "prg_bytes": 23492,
+      "loaded_end_hex": "0x63c2",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 342,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 5,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "prg_bytes": 23394,
+      "loaded_end_hex": "0x6360",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 337,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 6,
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "prg_bytes": 13520,
+      "loaded_end_hex": "0x3cce",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 290,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 7,
+      "complete_states": 32,
+      "mailbox": "a500002007",
+      "prg_bytes": 13537,
+      "loaded_end_hex": "0x3cdf",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 290,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "Selectors0..7 implement CDUTRIG, CD*TR*G, CDU*SMNB, TRG*SMNB, CDU*NBSM, TRG*NBSM, *SMNB*, and *NBSM*. Explicit EXIT, basic call, source axis, INTPRET reentry, VLOAD/pendingRVQ and fixed RVQ stages preserve all canonical words and bank controls. All ordinary saved FCADR banks are accepted. Basic internal returns retain ownership, and VLOAD returns EDOP0161: an Executive handoff there would be an invented source check."
+}

@@ -939,3 +939,7 @@ Original DYNDISP, P40CNV85 and S41.1 now compose CDU, matrix and rotation helper
 ## Translate original Luminary and Comanche invalid keyboard alarms
 
 Actual CHARALRM and FALTON behavior, octal8/9 rejection and blocked negative-count editing match 8,192 complete original states under strict and full sanitizer comparison. All64 frozen complete states pass on C64. Wider Pinball continuation composition remains ongoing. See `docs/DSKY-INVALID-KEY.md`.
+
+## Translate all original Luminary powered flight numerical and return groups
+
+All 267 original emitted source words and six constants now map to seven reviewed native groups. Complete source/native/full sanitizer proofs cover 1,982,464 states; 38 actual C64 diagnostics qualify 1,216 complete states. Independent whole-file review includes exact composed FLESHPOT return contracts. The whole-file certificate and application runtime acceptance remain separate steps. See `docs/LUMINARY-POWERED-FLIGHT.md`.

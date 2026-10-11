@@ -1,0 +1,111 @@
+{
+  "source_file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+  "source_audit_dependency": "evidence/lm-powered-source-audit.json",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "native_group": "CALCSMSC and FLESHPOT-1 return composition",
+  "calls": 8192,
+  "complete_states": 65536,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "header_words": 3,
+  "decoded_state_bytes": 268828672,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-fleshpot-interface-complete.snapshots.xz",
+      "decoded_sha256": "4daa190db35fe7737ae2c0d9abc957ccc69e7911984155bc9fa0788fee1e3696"
+    },
+    "strict_native": {
+      "object": "evidence/lm-fleshpot-interface-complete.snapshots.xz",
+      "decoded_sha256": "4daa190db35fe7737ae2c0d9abc957ccc69e7911984155bc9fa0788fee1e3696"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-fleshpot-interface-complete.snapshots.xz",
+      "decoded_sha256": "4daa190db35fe7737ae2c0d9abc957ccc69e7911984155bc9fa0788fee1e3696"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 5143,
+      "loaded_end_hex": "0x1c15",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 62,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 8847,
+      "loaded_end_hex": "0x2a8d",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 175,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 11524,
+      "loaded_end_hex": "0x3502",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 176,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 13061,
+      "loaded_end_hex": "0x3b03",
+      "hardware_stack_bytes": 25,
+      "software_stack_bytes": 176,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 4,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "prg_bytes": 13833,
+      "loaded_end_hex": "0x3e07",
+      "hardware_stack_bytes": 25,
+      "software_stack_bytes": 176,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 5,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "prg_bytes": 13893,
+      "loaded_end_hex": "0x3e43",
+      "hardware_stack_bytes": 25,
+      "software_stack_bytes": 176,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 6,
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "prg_bytes": 13877,
+      "loaded_end_hex": "0x3e33",
+      "hardware_stack_bytes": 25,
+      "software_stack_bytes": 175,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 7,
+      "complete_states": 32,
+      "mailbox": "a500002007",
+      "prg_bytes": 14930,
+      "loaded_end_hex": "0x4250",
+      "hardware_stack_bytes": 25,
+      "software_stack_bytes": 175,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "The original bank10 interpreted CALCSMSC source executes EXIT, actual BANKCALL and FLESHPOT-1 default ECADR selection, constructs XNB, executes actual SWRETURN using BUF2, reenters INTPRET and performs all-bank fixed RVQ. The canonical source state exposes eight explicit stage checkpoints, including the body and pending EXIT stages. Saved fixed basic addresses02000..07777 and coherent bank words are the source return domain. FLESHPOT-1 is also a standalone default-entry API. No numerical stage return invents a scheduling check. The standalone bank-return API is a FLESHPOT_FINISH-output continuation: its A/L registers must already be normalized as that original body produces. Arbitrary raw-register overflow inputs at this return boundary are not part of the qualification."
+}

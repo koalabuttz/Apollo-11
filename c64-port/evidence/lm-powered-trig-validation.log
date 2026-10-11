@@ -1,0 +1,7 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_powered_trig_snapshot.c src/lm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_trig_cases.c -o build/lm-powered-trig-native
+build/lm-powered-trig-reference deps/lm-powered-fixture/MAIN.agc.bin 2> build/lm-powered-trig-reference.trace | gzip -n -9 > build/lm-powered-trig-reference.snapshots.gz
+build/lm-powered-trig-native | gzip -n -9 > build/lm-powered-trig-native.snapshots.gz
+cmp build/lm-powered-trig-reference.snapshots.gz build/lm-powered-trig-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_powered_trig_snapshot.c src/lm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_trig_cases.c -o build/lm-powered-trig-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-powered-trig-sanitize | gzip -n -9 > build/lm-powered-trig-sanitize.snapshots.gz
+cmp build/lm-powered-trig-reference.snapshots.gz build/lm-powered-trig-sanitize.snapshots.gz

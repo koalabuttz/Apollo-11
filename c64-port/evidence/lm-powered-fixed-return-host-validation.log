@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_powered_fixed_return.c tests/frozen_words.c src/lm_powered_fixed_return.c src/agc_word.c tests/lm_powered_fixed_return_cases.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c -o build/test-lm-powered-fixed-return
+build/test-lm-powered-fixed-return
+128 complete2048-word original LM fixed RVQ source states: PASS

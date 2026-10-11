@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete lm_powered_trig group original-assembly states; retained memory unchanged
+Mailbox: a500002003
+PRG bytes: 14319
+lm_powered_trig-hardware-stack.bin: measured stack extent 35 bytes
+lm_powered_trig-software-stack.bin: measured stack extent 318 bytes

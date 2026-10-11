@@ -1,0 +1,8 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_powered_quick_snapshot.c src/lm_powered_quick.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_powered_quick_cases.c tests/lm_powered_trig_cases.c -o build/lm-powered-quick-native
+gcc -O2 -std=c99 -Iinclude -Itests -Ideps/virtualagc/yaAGC tools/lm_powered_quick_reference.c tests/lm_powered_quick_cases.c tests/lm_powered_trig_cases.c tests/cm_executive_cases.c src/agc_word.c build/agc_engine_hardware_dv.o deps/virtualagc/yaAGC/agc_engine_init.o deps/virtualagc/yaAGC/rfopen.o -o build/lm-powered-quick-reference
+build/lm-powered-quick-reference deps/lm-powered-fixture/MAIN.agc.bin | gzip -n -9 > build/lm-powered-quick-reference.snapshots.gz
+build/lm-powered-quick-native | gzip -n -9 > build/lm-powered-quick-native.snapshots.gz
+cmp build/lm-powered-quick-reference.snapshots.gz build/lm-powered-quick-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_powered_quick_snapshot.c src/lm_powered_quick.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_powered_quick_cases.c tests/lm_powered_trig_cases.c -o build/lm-powered-quick-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-powered-quick-sanitize | gzip -n -9 > build/lm-powered-quick-sanitize.snapshots.gz
+cmp build/lm-powered-quick-reference.snapshots.gz build/lm-powered-quick-sanitize.snapshots.gz

@@ -1,0 +1,71 @@
+{
+  "source_file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+  "source_audit_dependency": "evidence/lm-powered-source-audit.json",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "native_group": "All-bank fixed RVQ closure",
+  "calls": 32768,
+  "complete_states": 131072,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "header_words": 3,
+  "decoded_state_bytes": 537657344,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-powered-fixed-return-complete.snapshots.xz",
+      "decoded_sha256": "a15b41cbe3bd92533948acb47e68a9d3f8d30aa2a63449a0ee904e39c2850d40"
+    },
+    "strict_native": {
+      "object": "evidence/lm-powered-fixed-return-complete.snapshots.xz",
+      "decoded_sha256": "a15b41cbe3bd92533948acb47e68a9d3f8d30aa2a63449a0ee904e39c2850d40"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-powered-fixed-return-complete.snapshots.xz",
+      "decoded_sha256": "a15b41cbe3bd92533948acb47e68a9d3f8d30aa2a63449a0ee904e39c2850d40"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 5337,
+      "loaded_end_hex": "0x1cd7",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 5338,
+      "loaded_end_hex": "0x1cd8",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 5472,
+      "loaded_end_hex": "0x1d5e",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 5344,
+      "loaded_end_hex": "0x1cde",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 59,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "All32768 ordinary saved FCADR words are qualified at four original origins: CDUTRIG, CD*TR*G, transformed VLOAD/pendingRVQ, and CALCSMSC. RVQ enters GOTO+4 and skips erasable classification, so even fixed banks0/1 are valid. The source return restores EB from BANKSET, normalizes raw L, derives FB/BB/BANKSET/LOC/INTBIT15 and POLISH, and reaches original NEWOPS06070. CALCSMSC uses bank10/INTBIT15=0. Erasable indirect return is outside this fixed-entry contract."
+}

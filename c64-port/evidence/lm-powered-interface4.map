@@ -1,0 +1,166 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     48a9     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/lm-powered-interface4.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         build/lm-powered-interface4.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67     10f8     1         build/lm-powered-interface4.prg.lto.o:(.text.main)
+     a67      a67     10f8     1                 main
+    1b5f     1b5f       bc     1         build/lm-powered-interface4.prg.lto.o:(.text.valid)
+    1b5f     1b5f       bc     1                 valid
+    1c1b     1c1b      102     1         build/lm-powered-interface4.prg.lto.o:(.text.lm_powered_interface_reentry)
+    1c1b     1c1b      102     1                 lm_powered_interface_reentry
+    1d1d     1d1d      126     1         build/lm-powered-interface4.prg.lto.o:(.text.lm_powered_interface_load)
+    1d1d     1d1d      126     1                 lm_powered_interface_load
+    1e43     1e43      16b     1         build/lm-powered-interface4.prg.lto.o:(.text.lm_powered_interface_return)
+    1e43     1e43      16b     1                 lm_powered_interface_return
+    1fae     1fae      fb5     1         build/lm-powered-interface4.prg.lto.o:(.text.lm_powered_axis)
+    1fae     1fae      fb5     1                 lm_powered_axis
+    2f63     2f63       4e     1         build/lm-powered-interface4.prg.lto.o:(.text.valid.19)
+    2f63     2f63       4e     1                 valid.19
+    2fb1     2fb1       59     1         build/lm-powered-interface4.prg.lto.o:(.text.lm_powered_axis_return)
+    2fb1     2fb1       59     1                 lm_powered_axis_return
+    300a     300a       5a     1         build/lm-powered-interface4.prg.lto.o:(.text.valid.24)
+    300a     300a       5a     1                 valid.24
+    3064     3064      1ff     1         build/lm-powered-interface4.prg.lto.o:(.text.loop)
+    3064     3064      1ff     1                 loop
+    3263     3263       ba     1         build/lm-powered-interface4.prg.lto.o:(.text.internal)
+    3263     3263       ba     1                 internal
+    331d     331d      71f     1         build/lm-powered-interface4.prg.lto.o:(.text.polynomial)
+    331d     331d      71f     1                 polynomial
+    3a3c     3a3c      a26     1         build/lm-powered-interface4.prg.lto.o:(.text.p66_sine)
+    3a3c     3a3c      a26     1                 p66_sine
+    4462     4462       d9     1         build/lm-powered-interface4.prg.lto.o:(.text.doubled)
+    4462     4462       d9     1                 doubled
+    453b     453b      220     1         build/lm-powered-interface4.prg.lto.o:(.text.triple_double)
+    453b     453b      220     1                 triple_double
+    475b     475b      492     1         build/lm-powered-interface4.prg.lto.o:(.text.p66_scalar_product)
+    475b     475b      492     1                 p66_scalar_product
+    4bed     4bed       ca     1         build/lm-powered-interface4.prg.lto.o:(.text.agc_multiply)
+    4bed     4bed       ca     1                 agc_multiply
+    4cb7     4cb7      1bc     1         build/lm-powered-interface4.prg.lto.o:(.text.agc_double_add)
+    4cb7     4cb7      1bc     1                 agc_double_add
+    4e73     4e73        6     1         build/lm-powered-interface4.prg.lto.o:(.text.exit)
+    4e73     4e73        6     1                 exit
+    4e79     4e79       34     1         build/lm-powered-interface4.prg.lto.o:(.text.memcpy)
+    4e79     4e79       34     1                 memcpy
+    4ead     4ead       47     1         build/lm-powered-interface4.prg.lto.o:(.text.memcmp)
+    4ead     4ead       47     1                 memcmp
+    4ef4     4ef4       22     1         build/lm-powered-interface4.prg.lto.o:(.text.__memset)
+    4ef4     4ef4       22     1                 __memset
+    4f16     4f16       17     1         build/lm-powered-interface4.prg.lto.o:(.text.__lshrsi3)
+    4f16     4f16       17     1                 __lshrsi3
+    4f2d     4f2d       40     1         build/lm-powered-interface4.prg.lto.o:(.text.__umodqi3)
+    4f2d     4f2d       40     1                 __umodqi3
+    4f6d     4f6d       ae     1         build/lm-powered-interface4.prg.lto.o:(.text.__umodhi3)
+    4f6d     4f6d       ae     1                 __umodhi3
+    501b     501b       34     1         build/lm-powered-interface4.prg.lto.o:(.text.__mulhi3)
+    501b     501b       34     1                 __mulhi3
+    504f     504f       67     1         build/lm-powered-interface4.prg.lto.o:(.text.__mulsi3)
+    504f     504f       67     1                 __mulsi3
+    50b6     50b6        0     1         __init_array_start = .
+    50b6     50b6        0     1         __init_array_end = .
+    50b6     50b6        0     1         __fini_array_start = .
+    50b6     50b6        0     1         __fini_array_end = .
+    50b6     50b6     130d     1 .rodata
+    50b6     50b6        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    50b6     50b6        0     1                 __set_v
+    50b7     50b7       c6     1         build/lm-powered-interface4.prg.lto.o:(.rodata.lm_powered_interface4_reference_dictionary)
+    50b7     50b7       c6     1                 lm_powered_interface4_reference_dictionary
+    517d     517d       42     1         build/lm-powered-interface4.prg.lto.o:(.rodata.lm_powered_interface4_reference_offsets)
+    517d     517d       42     1                 lm_powered_interface4_reference_offsets
+    51bf     51bf     11d6     1         build/lm-powered-interface4.prg.lto.o:(.rodata.lm_powered_interface4_reference_stream)
+    51bf     51bf     11d6     1                 lm_powered_interface4_reference_stream
+    6395     6395        6     1         build/lm-powered-interface4.prg.lto.o:(.rodata.vector_copy.pos)
+    6395     6395        6     1                 vector_copy.pos
+    639b     639b       14     1         build/lm-powered-interface4.prg.lto.o:(.rodata.p66_sine.coefficient)
+    639b     639b       14     1                 p66_sine.coefficient
+    63af     63af        4     1         <internal>:(.rodata.cst4)
+    63b3     63b3       10     1         <internal>:(.rodata.cst16)
+    63c3     63c3        0     1 .data
+    63c3     63c3        0     1         __data_start = .
+    63c3     63c3        0     1         __data_end = .
+    63c3     63c3        0     1 __data_load_start = LOADADDR(.data)
+    63c3     63c3        0     1 __data_size = SIZEOF(.data)
+    63c3     63c3     2000     1 .bss
+    63c3     63c3        0     1         __bss_start = .
+    63c3     63c3     1000     1         build/lm-powered-interface4.prg.lto.o:(.bss.image)
+    63c3     63c3     1000     1                 image
+    73c3     73c3     1000     1         build/lm-powered-interface4.prg.lto.o:(.bss.expected)
+    73c3     73c3     1000     1                 expected
+    83c3     83c3        0     1         __bss_end = .
+    83c3     83c3        0     1 __bss_size = SIZEOF(.bss)
+    83c3     83c3        0     1 .noinit
+    83c3     83c3        0     1         __heap_start = ALIGN(., 2)
+    83c3     83c3        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/lm-powered-interface4.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/lm-powered-interface4.prg.lto.o:(.llvm_sympart)
+       0        0      c70     4 .symtab
+       0        0      c70     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      7b3     1 .strtab
+       0        0      7b3     1         <internal>:(.strtab)

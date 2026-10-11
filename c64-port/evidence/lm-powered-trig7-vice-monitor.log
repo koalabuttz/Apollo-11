@@ -1,0 +1,72 @@
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig0.prg from 0801 to 1C63 (1463 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   64/$040,  29/$1d
+.C:10c4  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   43011389
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig1.prg from 0801 to 34FE (2CFE bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  122/$07a,  20/$14
+.C:110b  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   45255818
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig2.prg from 0801 to 3DDC (35DC bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  198/$0c6,  26/$1a
+.C:10bb  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   47658644
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig3.prg from 0801 to 3FED (37ED bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   38/$026,  40/$28
+.C:1077  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   47707546
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig4.prg from 0801 to 4125 (3925 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  121/$079,  56/$38
+.C:1077  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   49953575
+>C:c080  a5 00 00 20  04                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig5.prg from 0801 to 41CC (39CC bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   74/$04a,  60/$3c
+.C:1077  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   52112778
+>C:c080  a5 00 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig6.prg from 0801 to 424D (3A4D bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  157/$09d,   6/$06
+.C:1077  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   52294857
+>C:c080  a5 00 00 20  06                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-trig7.prg from 0801 to 429B (3A9B bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   97/$061,  48/$30
+.C:1077  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   54453279
+>C:c080  a5 00 00 20  07                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_trig-software-stack.bin' from $c100 to $cfff

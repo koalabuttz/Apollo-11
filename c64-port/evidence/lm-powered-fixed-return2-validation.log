@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete lm_powered_fixed_return group original-assembly states; retained memory unchanged
+Mailbox: a500002002
+PRG bytes: 5472
+lm_powered_fixed_return-hardware-stack.bin: measured stack extent 14 bytes
+lm_powered_fixed_return-software-stack.bin: measured stack extent 59 bytes

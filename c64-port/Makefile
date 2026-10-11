@@ -644,3 +644,17 @@ cm-fixed-compat-differential cm-interbank-extended-differential: prepare-cm-orig
 include tools/cm_dyndisp_port.mk
 
 include tools/dsky_charin_alarm.mk
+
+include tools/lm_powered_trig_port.mk
+
+include tools/lm_powered_axis_port.mk
+
+include tools/lm_powered_quick_port.mk
+
+include tools/lm_powered_interface_port.mk
+
+include tools/lm_powered_fixed_return_port.mk
+
+include tools/lm_fleshpot_port.mk
+
+include tools/lm_fleshpot_interface_port.mk
