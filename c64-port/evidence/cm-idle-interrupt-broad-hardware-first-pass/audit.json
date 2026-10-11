@@ -1,0 +1,191 @@
+{
+  "scope": "Unpublished initial broader hardware-frame first PASS. Final ordinary mission contract narrows restored FB to02000 for genuine ADVAN3231 continuation; no initial producer substitution or source failure. Original full source streams/target bytes retained here before fresh narrower source and target replay.",
+  "files": [
+    {
+      "original_path": "src/cm_idle_interrupt.c",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm_idle_interrupt.c",
+      "bytes": 1725,
+      "sha256": "a3f79e7e11effa9d72bf9c0fbfe2076946e92076604d31f60e5d27b2b7cafbc0"
+    },
+    {
+      "original_path": "include/cm_idle_interrupt.h",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm_idle_interrupt.h",
+      "bytes": 1187,
+      "sha256": "53b231cf2c4ab639a579a8d497dad14ec42c5590798217a966e083fa832f8d90"
+    },
+    {
+      "original_path": "tests/cm_idle_interrupt_cases.c",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm_idle_interrupt_cases.c",
+      "bytes": 1138,
+      "sha256": "fe8793e3909008c0ca1f59d2bd65df931b1befea0eeec5d9a3d5a4ef7cd657d0"
+    },
+    {
+      "original_path": "tests/cm_idle_interrupt_vectors.h",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm_idle_interrupt_vectors.h",
+      "bytes": 24928,
+      "sha256": "93146a8a2aebf31294fc2000b17c5f7208b4395ecc3267f149b8ad8681bc56f3"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-246.prg",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-246.prg",
+      "bytes": 1321,
+      "sha256": "86093eae30c98822a6ed9137c99e13d3ceedbe1c9a047edda3cbe54f0e2863c7"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-final-source-sample.bin",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-final-source-sample.bin",
+      "bytes": 4096,
+      "sha256": "9aa8939ae25f9ef4867ae6fca6587950cbde42f7babc8e39052889e775fd44e5"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-vice-monitor.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-vice-monitor.log",
+      "bytes": 2115,
+      "sha256": "cb440d276a53193021940e67461e4893533fa143c2af10b7310cd6cd2d958fe1"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-modules.json",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-modules.json",
+      "bytes": 728,
+      "sha256": "572d5c5b70ef523c245c6e0efe38a4716619faf45fea162297c6f6021f53aef8"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-255.prg",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-255.prg",
+      "bytes": 10219,
+      "sha256": "73687c3827fca784da5a31a078bcfb72e05f0af94b60a7d0dbf72cc8dbcf1592"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-vice.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-vice.log",
+      "bytes": 7121,
+      "sha256": "2519db11dfe92238b8f3e05882b680ab42bc114d638a413a90fab6e29006eeaf"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-freeze.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-freeze.log",
+      "bytes": 63,
+      "sha256": "62e71a53740fb753dee0ec3060a3b61c853ac60f563eeae68fe2eb3706922f70"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-proof.json",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-proof.json",
+      "bytes": 509,
+      "sha256": "67bf21c220644e7a17076d5ed6a781e168afd0750a924abdfc3e630cadc9e93b"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-vice-shared.bin",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-vice-shared.bin",
+      "bytes": 4096,
+      "sha256": "9aa8939ae25f9ef4867ae6fca6587950cbde42f7babc8e39052889e775fd44e5"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-native.snapshots.bin.gz",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-native.snapshots.bin.gz",
+      "bytes": 16615758,
+      "sha256": "3de14589b19f9cfe7d8df13868fba7f4d1430d5c55d993767b2d27b92b8604d2"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt.d64",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt.d64",
+      "bytes": 174848,
+      "sha256": "6ccf3fa755b1aa62307278e5fc6a35c4c98fac975535201928a0376ddea54af1"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt.prg",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt.prg",
+      "bytes": 3350,
+      "sha256": "0b7584b9a6623e0194db26ab85ef4af4d2bd39c48d4625b81b803cab35b8cadc"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-source-preparation.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-source-preparation.log",
+      "bytes": 127,
+      "sha256": "8c765c17741f82971f17dff534cbacf337bdfc7a8422f862a100fac8819d6f3a"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-vice-stack.bin",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-vice-stack.bin",
+      "bytes": 2048,
+      "sha256": "d1bbea5816b9a311c78dd1f4a8b91c60e54a23eb83ba7233862513444aff83d0"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-254.map",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-254.map",
+      "bytes": 5543,
+      "sha256": "1a7ded235543bcf82212a8d15bf28d25b6729f671c08359b12b49b79ae738e1a"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-native.stream.json",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-native.stream.json",
+      "bytes": 98,
+      "sha256": "416f60d31f3fade782fc50ad4587537164a23eaa8708d8e1f9066eb9f0bcba62"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-sanitize-validation.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-sanitize-validation.log",
+      "bytes": 107,
+      "sha256": "ebc6956fa300ce6232ba0ae959a5c087079de02754d6f7c8ce714416cf5efe93"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-validation.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-validation.log",
+      "bytes": 732,
+      "sha256": "5b1aa7d9de90b1f764e0311f0f0aab5c8900fd48afc603556aa01af18dbacdb3"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-246.map",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-246.map",
+      "bytes": 5228,
+      "sha256": "3efeb85745c8d43bdf74afd8a01a22e5a906998e8338cab3163c10569e61bc46"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-254.prg",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-254.prg",
+      "bytes": 1657,
+      "sha256": "44b59b36ad83416198996a161ad283ae720fa1b73d7a439297d8e4343f046bc9"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-reference.stream.json",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-reference.stream.json",
+      "bytes": 98,
+      "sha256": "416f60d31f3fade782fc50ad4587537164a23eaa8708d8e1f9066eb9f0bcba62"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-build-validation.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-build-validation.log",
+      "bytes": 614,
+      "sha256": "a703ab410d0991a504abf0284404185eb881fb105701ca969d63a471e235cf02"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-reference.snapshots.bin.gz",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-reference.snapshots.bin.gz",
+      "bytes": 16615758,
+      "sha256": "3de14589b19f9cfe7d8df13868fba7f4d1430d5c55d993767b2d27b92b8604d2"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-255.map",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-255.map",
+      "bytes": 6053,
+      "sha256": "928d952a0fb00e719132cca5e276e8efbb54b3127cea3d4c9458c8307ee9426c"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-c64-result.log",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-c64-result.log",
+      "bytes": 1000,
+      "sha256": "fbf14da1376e82aed79837f4cd24f0f9bfefa371326f843d065178e98832ca92"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt-vice-mailbox.bin",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt-vice-mailbox.bin",
+      "bytes": 5,
+      "sha256": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5"
+    },
+    {
+      "original_path": "build/cm-idle-interrupt.map",
+      "retained": "evidence/cm-idle-interrupt-broad-hardware-first-pass/cm-idle-interrupt.map",
+      "bytes": 10075,
+      "sha256": "d3b48ea5572b1a241e1cbff080b77a75583184e2430a00b061c8ab55c3d514b3"
+    }
+  ]
+}

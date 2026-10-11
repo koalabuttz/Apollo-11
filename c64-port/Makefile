@@ -1044,3 +1044,6 @@ include tools/sband_navframe_integration.mk
 all: build/sband-navframe-integrated-stream
 test: test-sband-navframe
 sanitize: sanitize-sband-navframe
+
+include tools/cm_idle_interrupt.mk
+all: build/cm-idle-interrupt-native

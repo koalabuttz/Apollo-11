@@ -1928,3 +1928,7 @@ Translate actual NOVAC FINDVAC raw positive zero and low-bit priorities real inl
 ## Compose original antenna navigation frame vector normalization
 
 Compose actual body return vector stores LM mixing arithmetic and original UNIT source phases against131072 complete original strict sanitizer states and128 C64 checkpoints retaining true overflow and abort frontiers. See `docs/NATIVE-SBAND-NAV-FRAME.md`.
+
+## Translate original Comanche idle timer interrupt and hardware resume
+
+Translate actual idle T3 interrupt and RESUME controls retaining2048 canonical words all thirteen external latches and caller metadata against4096 full original strict sanitizer states and64 C64 checkpoints. See `docs/COMANCHE_IDLE_INTERRUPT.md`.

@@ -1,0 +1,23 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_idle_interrupt_differential.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+PASS: original idle T3 interrupt and hardware RESUME, complete image and all13 external latches
+{
+  "cases": 4096,
+  "checkpoints": 4096,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 16932864,
+  "snapshot_sha256": "2089ff7deb06d344af6fa6a8327de0b27ba5cafb5d477b10a6bad390f381a408",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "control_metadata": [
+    "InIsr",
+    "pending_idle_ADVAN"
+  ],
+  "scope": "actual automatic T3 interrupt from idle ADVAN3231 and RESUME5341 to authentic compiled ADVAN3231 continuation"
+}
+./build/test-cm-idle-interrupt
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/cm_idle_interrupt.c src/agc_word.c tests/cm_idle_interrupt_cases.c platform/host/cm_idle_interrupt_snapshot.c -o build/cm-idle-interrupt-sanitize
+python3 tools/cm_idle_interrupt_sanitize.py
+PASS: full ASAN/UBSAN complete idle automatic T3 interrupt/hardware RESUME, all4096 complete source states
