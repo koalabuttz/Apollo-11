@@ -1,0 +1,7 @@
+{
+  "suite": "ev-front",
+  "cases": 5760,
+  "differing": 0,
+  "native_sha256": "870dcaea3fff0dba79ea72582b29569aaefde7a23f25d4843a696c2d64daf537",
+  "oracle_sha256": "870dcaea3fff0dba79ea72582b29569aaefde7a23f25d4843a696c2d64daf537"
+}
