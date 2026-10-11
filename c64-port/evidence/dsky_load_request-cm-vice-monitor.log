@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_load_request-cm.prg from 0801 to 5472 (4C72 bytes)
+WATCH: 1  C:$747b  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 747b)  208/$0d0,  61/$3d
+.C:3296  8E 7B 74    STX $747B      - A:40 X:A5 Y:00 SP:f1 N.-....C  159462637
+>C:747b  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_load_request-cm-vice-mailbox.bin' from $747b to $747f
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_load_request-cm-vice-difference.bin' from $5473 to $547a
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_load_request-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_load_request-cm-vice-software-stack.bin' from $c100 to $cfff

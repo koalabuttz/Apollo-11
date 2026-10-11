@@ -1404,3 +1404,7 @@ Qualify16384 complete original native sanitizer states and128 C64 states through
 ## Translate original fresh DSKY paired operand read
 
 Qualify16384 complete original native sanitizer states and128 C64 states through actual READLO mixed bank and scratch alias handling. See `docs/DSKY-READ-PAIR.md`.
+
+## Compose original operator load request prompts and continuations
+
+Qualify8192 complete original native sanitizer states and64 C64 states across five load verbs and component request continuations retaining actual END NVSUBEND PASTEVB and alarm frontiers. See `docs/DSKY-LOAD-REQUEST.md`.
