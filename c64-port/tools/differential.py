@@ -420,3 +420,5 @@ subprocess.run([sys.executable,'tools/cm_clock_mission_differential.py',str(refe
 subprocess.run([sys.executable,'tools/p66_direct_launch_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_keyboard_runtime_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/gimbal_complete_differential.py',str(reference)],cwd=ROOT,check=True)

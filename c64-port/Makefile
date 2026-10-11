@@ -588,3 +588,5 @@ include tools/cm_clock_mission.mk
 include tools/p66_direct_launch.mk
 
 include tools/cm_keyboard_runtime.mk
+
+include tools/gimbal_complete_port.mk

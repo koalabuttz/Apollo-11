@@ -1,0 +1,11 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_gimbal_complete.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c src/guidance_sum.c src/guidance_trig.c src/guidance_dot.c src/guidance_dp_divide.c src/delcomp.c src/gimbal_stage.c src/gimbal_complete.c tests/delcomp_cases.c tests/gimbal_complete_cases.c -o build/test-gimbal-complete-port
+./build/test-gimbal-complete-port
+PASS: 25 unsupported complete gimbal entries preserve the entire image and latches
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_gimbal_complete.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c src/guidance_sum.c src/guidance_trig.c src/guidance_dot.c src/guidance_dp_divide.c src/delcomp.c src/gimbal_stage.c src/gimbal_complete.c tests/delcomp_cases.c tests/gimbal_complete_cases.c -o build/test-gimbal-complete-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-gimbal-complete-port-sanitize
+PASS: 25 unsupported complete gimbal entries preserve the entire image and latches
+Luminary099: 90 AGC files, 64,838 source lines; 61 untranslated, 15 partial, 14 complete
+Comanche055: 85 AGC files, 65,348 source lines; 61 untranslated, 10 partial, 14 complete
+Remaining files requiring complete native coverage: 147
+Historical-source baseline: 911e5c0283c629c50cb97666f34065e8c07d71a5
+PASS: inventory and immutable source checks (port completion is not certified)

@@ -1,0 +1,6 @@
+Independent read-only review by p66_source_map agent.
+Reviewed src/gimbal_complete.c and both original GIMBAL_LOCK_AVOIDANCE.agc files.
+
+No concrete numerical/source-mapping issue found: the fixed bounded QUADROT helper restores DOTSUB A before the second/third DXCH sequences rather than claiming generic DOT output, preserves vector MODE, and source SETGO sets CALCMAN2 bit2 with saved Q/latches matching explicit final metadata. Entry validation guarantees bounded rate table and coherent base; delegated DELCOMP source return is the fixed high-bank caller installed by the entry. Whole-call completion remains distinct from live scheduling proof: the module composes genuine EDOP0 pairs without exposed yields. Generic MXV belongs to the separate broader matrix qualification.
+
+Reviewed native source SHA256: db140d505279c3e3bed5c2d9ba6b7cc6a5118949c9336c26be6b4c1a8169a180

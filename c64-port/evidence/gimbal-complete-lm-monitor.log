@@ -1,0 +1,12 @@
+Loading /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg from 0801 to A3CA (9BCA bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)    3/$003,  60/$3c
+.C:5116  8E 00 C0    STX $C000      - A:A0 X:A5 Y:14 SP:f1 N.-..I.C  141208953
+Saving file `/workspace/Apollo-11/c64-port/build/gimbal-complete-lm-mailbox.bin' from $c000 to $c002
+Loading /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg from 0801 to 953B (8D3B bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  149/$095,   5/$05
+.C:6c66  8E 00 C0    STX $C000      - A:A0 X:A5 Y:00 SP:f1 N.-..I.C  161404808
+Saving file `/workspace/Apollo-11/c64-port/build/gimbal-complete-lm-mailbox.bin' from $c000 to $c002

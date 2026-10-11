@@ -871,3 +871,7 @@ The separate direct-launch wrapper preserves the zero-pending STARTP66 domain an
 ## Run physical Comanche keyboard input through genuine job lifecycle
 
 Actual Comanche fixed-vector keyboard IRQ, hardware RESUME, idle admission, CHARIN and canonical END preserve all 4,096 complete checkpoints across 1,024 source lifecycles. Full sanitizer output agrees; stock-ROM C64 physical GETIN replay verifies eight complete lifecycles and 32 states. Additional key bodies remain separate qualifications. See `docs/COMANCHE-KEYBOARD-RUNTIME.md`.
+
+## Complete native Luminary and Comanche gimbal source files
+
+Both complete original gimbal files now have reviewed native mappings, 10,240 exact complete source/native/sanitized states and 80 C64 states per application with all 40 constants checked. NEWANGL continuation bodies and live scheduling remain application integration work. See `docs/GIMBAL_COMPLETE.md`.

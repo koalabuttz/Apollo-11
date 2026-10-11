@@ -1,0 +1,8 @@
+PASS: original complete gimbal files/helper routines assemble; unchanged original-layout ropes, disclosed36 CM indentation-only repairs
+PASS: 25 unsupported complete gimbal entries preserve the entire image and latches
+PASS: 25 unsupported complete gimbal entries preserve the entire image and latches
+lm : 80 source target states; 8057 lossless bytes
+cm : 80 source target states; 7308 lossless bytes
+PASS: all10240 full source states preserve1969 unowned physical words; two C64 fixtures compare every word exactly
+PASS: 10240 complete original-source/native/sanitized whole gimbal states, all2048 words andSUPER/IRQ exact
+Uncompressed source/native SHA256: 458021bb3db857b93e49db1026fa9f3c757eb40ea87165c723a47d42b819489d
