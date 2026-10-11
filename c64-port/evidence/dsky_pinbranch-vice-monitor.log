@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_pinbranch.prg from 0801 to 1D03 (1503 bytes)
+WATCH: 1  C:$3d04  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 3d04)  308/$134,  14/$0e
+.C:14af  8E 04 3D    STX $3D04      - A:80 X:A5 Y:40 SP:f1 NV-....C  300107570
+>C:3d04  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinbranch-vice-mailbox.bin' from $3d04 to $3d08
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinbranch-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_pinbranch-vice-software-stack.bin' from $c100 to $cfff

@@ -462,3 +462,5 @@ subprocess.run([sys.executable,'tools/cm_admission_complete_differential.py',str
 subprocess.run([sys.executable,'tools/dsky_blank_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_priority_complete_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_pinbranch_differential.py',str(reference)],cwd=ROOT,check=True)

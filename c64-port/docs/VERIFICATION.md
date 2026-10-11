@@ -1278,3 +1278,7 @@ Independent original-source review, complete source/sanitizer comparisons and ac
 ## Comanche scheduler and inter-bank source domain inventories
 
 The original Executive/Waitlist inventory records589 assembled words and every source line while preserving explicit unfinished caller, body, recovery and IRQ domains. The separate inter-bank inventory records passive SUPDACAL address closure and its source/C64 evidence without granting instruction execution credit. Neither inventory certifies a complete containing file. See `COMANCHE_SCHEDULER_SOURCE_INVENTORY.md` and `COMANCHE_INTERBANK_DOMAINS.md`.
+
+## Translate original Luminary and Comanche display branch selection
+
+Original PINBRNCH and UPFLAG paths through ERASER, MARKPLAY, KEEPPRIO and PLAYJUM1 match16,384 complete original and full-sanitizer states, with64 actual C64 checkpoints. Each retains the source-selected GOPLAY continuation and original register and IRQ ownership. See `docs/DSKY-PINBRANCH.md`.

@@ -938,3 +938,7 @@ Both containing source files are translated with every original entry and bank-r
 ## Complete original system test lead-in sources
 
 Independent original-source review, complete source/sanitizer comparisons and actual C64 execution certify both SYSTEM_TEST_STANDARD_LEAD_INS files within their original caller and external continuation contracts. The inventory has33 complete files (27 native/data/declaration and six comment-only files), with142 source files and both integrated applications still requiring complete acceptance. See `docs/SYSTEM_TEST_LEAD_INS.md`.
+
+## Translate original Luminary and Comanche display branch selection
+
+Original PINBRNCH and UPFLAG paths through ERASER, MARKPLAY, KEEPPRIO and PLAYJUM1 match16,384 complete original and full-sanitizer states, with64 actual C64 checkpoints. Each retains the source-selected GOPLAY continuation and original register and IRQ ownership. See `docs/DSKY-PINBRANCH.md`.
