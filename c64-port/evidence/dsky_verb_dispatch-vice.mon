@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_verb_dispatch.prg" 0
+watch store 3717
+ignore 1 1
+g 080d
+m 3717 371b
+bsave "/workspace/Apollo-11/c64-port/build/dsky_verb_dispatch-vice-mailbox.bin" 0 3717 371b
+bsave "/workspace/Apollo-11/c64-port/build/dsky_verb_dispatch-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_verb_dispatch-vice-software-stack.bin" 0 c100 cfff
+quit

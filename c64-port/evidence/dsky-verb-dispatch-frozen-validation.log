@@ -1,0 +1,7 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_verb_dispatch.c tests/p66_bias_cases.c tests/dsky_verb_dispatch_cases.c tests/dsky_verb_dispatch_check.c tests/test_dsky_verb_dispatch.c -o build/test-dsky-verb-dispatch
+build/test-dsky-verb-dispatch
+LM+CM VERBFAN dispatch:64 full source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_verb_dispatch.c tests/p66_bias_cases.c tests/dsky_verb_dispatch_cases.c tests/dsky_verb_dispatch_check.c tests/test_dsky_verb_dispatch.c -o build/test-dsky-verb-dispatch-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-verb-dispatch-sanitize
+LM+CM VERBFAN dispatch:64 full source states,0 failures
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_verb_dispatch.c tests/p66_bias_cases.c tests/dsky_verb_dispatch_cases.c tests/dsky_verb_dispatch_check.c tools/dsky_verb_dispatch_diagnostic.c -Wl,-Map,build/dsky_verb_dispatch.map -o build/dsky_verb_dispatch.prg

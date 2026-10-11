@@ -1,0 +1,5 @@
+build/test-dsky-verb-dispatch
+LM+CM VERBFAN dispatch:64 full source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_verb_dispatch.c tests/p66_bias_cases.c tests/dsky_verb_dispatch_cases.c tests/dsky_verb_dispatch_check.c tests/test_dsky_verb_dispatch.c -o build/test-dsky-verb-dispatch-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-verb-dispatch-sanitize
+LM+CM VERBFAN dispatch:64 full source states,0 failures

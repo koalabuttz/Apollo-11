@@ -476,3 +476,5 @@ subprocess.run([sys.executable,'tools/dsky_enter_zero_differential.py',str(refer
 subprocess.run([sys.executable,'tools/cm_normal_display_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_mixed_noun_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_verb_dispatch_differential.py',str(reference)],cwd=ROOT,check=True)

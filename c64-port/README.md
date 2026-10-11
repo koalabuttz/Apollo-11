@@ -994,3 +994,7 @@ Source SIGN and COMP preserve mission-specific entry and DANZIG handoffs, origin
 ## Run actual Comanche clock display normal sleep and busy paths on native C64 disk
 
 Actual timer admission, CLOCKJOB trigonometry, MAKEPLAY, mixed source priority and normal GOPLAY, sleep or matching-TEMPFLSH busy END match128 complete host/source sequences and2,560 full-sanitizer checkpoints. A stock C64 disk passes6 continuous sequences and122 full boundaries plus6 complete terminal images. The earlier timed-out8context trial is retained explicitly. Noun40 conversion and complete application acceptance remain separate. See `docs/COMANCHE_CLOCK_DISPLAY_MISSION.md`.
+
+## Translate original Luminary and Comanche verb dispatch selection
+
+Actual VERBFAN handles all40 first-list verbs through mission-specific passive CADR data and source BANKJUMP, while extended40..99 reaches the real RELDSP boundary. All8,192 complete original/native/full-sanitizer states and64 actual C64 states match. Selected verb bodies remain explicit external source continuations. See `docs/DSKY-VERB-DISPATCH.md`.

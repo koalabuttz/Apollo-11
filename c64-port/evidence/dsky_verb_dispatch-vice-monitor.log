@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_verb_dispatch.prg from 0801 to 1716 (0F16 bytes)
+WATCH: 1  C:$3717  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 3717)  230/$0e6,  45/$2d
+.C:0f2f  8E 17 37    STX $3717      - A:80 X:A5 Y:00 SP:f1 NV-....C  293871735
+>C:3717  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_verb_dispatch-vice-mailbox.bin' from $3717 to $371b
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_verb_dispatch-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_verb_dispatch-vice-software-stack.bin' from $c100 to $cfff
