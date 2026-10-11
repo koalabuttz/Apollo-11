@@ -1,0 +1,13 @@
+{
+  "path": "tests/interpreted_square_cases.c",
+  "line": 22,
+  "finding": "Whitespace on an otherwise empty line.",
+  "reason": "Preserve already frozen input-factory bytes and its independently reviewed evidence identities.",
+  "file_sha256": "18d7a9efc795d36d50bfb735a1a7f790458a6c0841d49ac3ddbe01d1fd533a8e",
+  "algorithm_or_input_change": false,
+  "strict_and_full_sanitizer_checks_passed": true,
+  "diff_check_exclusions": [
+    "evidence/",
+    "tests/interpreted_square_cases.c"
+  ]
+}

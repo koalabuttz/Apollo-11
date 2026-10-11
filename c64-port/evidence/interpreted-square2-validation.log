@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete interpreted_square group original-assembly states; retained memory unchanged
+Mailbox: a500004002
+PRG bytes: 6549
+interpreted_square-hardware-stack.bin: measured stack extent 17 bytes
+interpreted_square-software-stack.bin: measured stack extent 53 bytes

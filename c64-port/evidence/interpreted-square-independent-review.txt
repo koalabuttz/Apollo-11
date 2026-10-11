@@ -1,0 +1,21 @@
+Independent read-only DSQ/DSQSUB review by /root/general_division, retained
+from the collaboration result. Both original17-word source groups reviewed.
+
+No concrete defect found. Minor-square high limb preserves signed-zero MP.
+Cross MP and DDOUBL propagate corrected low plus signed overflowcarry into
+high. The first DAS retains the unrounded third limb. Source XCH saves the
+net DAS indicator in major before major SQUARE, and final DAS matches raw
+A/L and stored MPAC0/1. Direct savedfixed TCQ gives PCsavedQ/Q3. DSQ adds only
+the mission DANZIG TCF with Q3. MODE/OVFIND/other source scratch are retained.
+Header domain and actual source return boundaries are explicit.
+
+All262144 complete2048-word-plus-IRQ original/strict/fullSAN states match;
+actual C64 fourPRGs pass256 source-only complete frozen states. This proves
+the complete DSQ/DSQSUB arithmetic group, not the entire interpreter,
+Executive dispatch, arbitrary erasable return or either complete application.
+
+Reviewed identities:
+5d363991089543146532505e34b1fe3ebfba775ddc38f215622158ae718f4138  src/interpreted_square.c
+c08f701c535d0cb9e276b5a6f7f6d4798bb307711e712cf306f65adb0de65ec7  include/interpreted_square.h
+26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e  ../Luminary099/INTERPRETER.agc
+724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b  ../Comanche055/INTERPRETER.agc

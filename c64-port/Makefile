@@ -713,3 +713,5 @@ all: build/cm-clock-display-mission-native build/cm-clock-display-busy-native
 include tools/dsky_verb_dispatch.mk
 
 include tools/cm_clock_normal_display.mk
+
+include tools/interpreted_square_port.mk

@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_interpreted_square.c tests/frozen_words.c src/interpreted_square.c src/agc_word.c src/agc_multiword.c tests/interpreted_square_cases.c -o build/test-interpreted-square
+build/test-interpreted-square
+256 complete original LM/CM DSQ/DSQSUB states: PASS

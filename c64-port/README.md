@@ -1002,3 +1002,7 @@ Actual VERBFAN handles all40 first-list verbs through mission-specific passive C
 ## Compose genuine Comanche CLOCKJOB through noun40 display and actual Executive return
 
 Nine unchanged original clock mission contexts now run continuously through normal noun40 formatting and canonical END restoring the actual suspended interpreter. All387 complete2060-field original/native/full-sanitizer checkpoints match. Nine genuine END transitions and36 unchanged guards pass on C64. Whole continuous chain is host qualified; combined resident loading and display device acceptance remain separate. See `docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md`.
+
+## Translate original Luminary and Comanche double precision square source operations
+
+Original DSQ and direct DSQSUB preserve source arithmetic, caller-Q and mission-specific DANZIG handoffs across17 emitted words per interpreter. All262,144 complete original/native/full-sanitizer states match; four actual C64 diagnostics pass256 complete states. Independent review finds no discrepancy. Whole INTERPRETER and caller operand dispatch remain separate. See `docs/INTERPRETED-SQUARE.md`.
