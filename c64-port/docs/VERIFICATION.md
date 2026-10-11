@@ -1318,3 +1318,7 @@ Actual ENTPAS0 noun selection composes the unchanged fixed-data noun reader and 
 ## Translate original Luminary idle task dispatch and saved frame resume bridges
 
 Literal idle-to-basic, T3-vector-to-task and TASKOVER architectural RESUME transfers match24,576 complete original/native/full-sanitizer states and128 actual C64 states across two stock-ROM disk proofs. The dispatch packet retains its tested IRQ0 contract; production hardware IRQ1 dispatch and generic selected task bodies remain separate. See `docs/LM-RECURRENCE-BRIDGES.md`.
+
+## Fresh committed system release host check
+
+A clean isolated export of exact commit`b1d8299` builds and passes every registered portable host `all`/`test` recipe, including complete system lead-ins, exhaustive inverse-trig supplement, source display controls, SPS controller and archive-streamed P66 startup. The exporter uses exact Git objects and excludes uncommitted source. Its10,282-file snapshot has34 complete source files; the full-port gate correctly rejects141 remaining files and both integrated applications. See `evidence/integration-system-release-host-proof.json` and its retained log/exporter. Later milestones retain their individual source/sanitizer/C64 checks.
