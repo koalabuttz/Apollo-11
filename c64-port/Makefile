@@ -679,3 +679,5 @@ include tools/dsky_blank.mk
 
 include tools/cm_priority_complete.mk
 all: build/cm-priority-complete-native
+
+include tools/standard_lead_integration.mk

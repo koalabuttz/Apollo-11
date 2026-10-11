@@ -1,0 +1,2 @@
+PASS: lead-in caller guards preserve complete image and latches, including invalid VAC base/producer state, Executive pointer and physical bank selection
+PASS: lead-in caller guards preserve complete image and latches, including invalid VAC base/producer state, Executive pointer and physical bank selection

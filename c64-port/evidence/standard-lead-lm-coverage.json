@@ -1,0 +1,49 @@
+{
+  "source_file": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+  "source_sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "reviewed_all_source_paths": true,
+  "public_entries": [
+    "E/BKCALL",
+    "E/CALL",
+    "E/JOBWAK"
+  ],
+  "internal_paths": [
+    "all3 bank return branches",
+    "E/SWITCH/DTCB",
+    "original indirect CALL",
+    "original RVQ/EXIT",
+    "INTPRET+2 basic LXCH LOC without RELINT",
+    "JOBWAKE found/no-match"
+  ],
+  "caller_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
+  "external_continuations": [
+    "caller-owned native fixed routine",
+    "compiled erasable caller NEWOPS before fetch",
+    "GCOMPVER",
+    "GTSCPSS",
+    "IMUTEST",
+    "DSPMMJOB",
+    "BAILOUT recovery"
+  ],
+  "emitted_words": 32,
+  "evidence": {
+    "source_to_native_map": {
+      "path": "docs/SYSTEM_TEST_LEAD_INS.md",
+      "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
+    },
+    "independent_assembly_comparison": {
+      "path": "evidence/standard-lead-source-audit.json",
+      "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+    },
+    "host_and_sanitizer_results": {
+      "path": "evidence/standard-lead-host.log",
+      "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
+    },
+    "c64_execution_results": {
+      "path": "evidence/standard-lead-proof.json",
+      "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+    }
+  },
+  "integrated_application_complete": false
+}

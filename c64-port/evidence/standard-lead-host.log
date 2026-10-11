@@ -1,0 +1,16 @@
+PASS: both byte-original lead-in files and fresh original interbank/Executive/interpreter/phase helper support, unchanged original-layout ropes
+Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc 32 emitted words
+Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc 36 emitted words
+PASS lm stage 3584 complete source/native/sanitized images
+PASS lm bank 6144 complete source/native/sanitized images
+PASS lm interp 4096 complete source/native/sanitized images
+PASS lm wake 2048 complete source/native/sanitized images
+PASS lm resume 1024 complete source/native/sanitized images
+PASS cm stage 3584 complete source/native/sanitized images
+PASS cm bank 6144 complete source/native/sanitized images
+PASS cm interp 4096 complete source/native/sanitized images
+PASS cm wake 2048 complete source/native/sanitized images
+PASS cm resume 1024 complete source/native/sanitized images
+PASS cm extra 1536 complete source/native/sanitized images
+lm 164 target whole images; 15 maximum changed words; 5760 lossless fixture bytes
+cm 188 target whole images; 19 maximum changed words; 6592 lossless fixture bytes

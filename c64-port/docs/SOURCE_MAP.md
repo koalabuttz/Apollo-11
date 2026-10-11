@@ -883,3 +883,7 @@ Actual BLNKSUB1 and SUPDXCHZ+1 return phases match8,192 complete original states
 ## Translate original Comanche priority changes through mixed source context switches
 
 Actual PRIOCHNG now reaches genuine current and selected basic or interpreter source returns with complete register and canonical state preservation. All14,336 complete source states match strict and full sanitizer output, and112 disk-backed C64 contexts pass. Source CCSHOLE/+0 faults and selected application body execution remain separate work. See `docs/COMANCHE_PRIORITY_COMPLETE.md`.
+
+## Translate complete original Luminary and Comanche system test lead ins
+
+Both containing source files are translated with every original entry and bank-return branch,35,328 complete original/source/full-sanitizer states and352 actual C64 checkpoints. Independent review corrected and separately tested the inherited IRQ state at INTPRET+2. External caller, display and recovery bodies remain separate. See `docs/SYSTEM_TEST_LEAD_INS.md`.

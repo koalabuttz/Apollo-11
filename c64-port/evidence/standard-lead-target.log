@@ -1,0 +1,2 @@
+PASS lm 164 complete canonical states on stock-ROM C64; every2048words andSUPER/IRQ exact; PRG 21193 load_end 0x5ac8 bss_end 0x7ac8
+PASS cm 188 complete canonical states on stock-ROM C64; every2048words andSUPER/IRQ exact; PRG 25642 load_end 0x6c29 bss_end 0x8c29

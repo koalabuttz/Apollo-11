@@ -1266,3 +1266,7 @@ Actual PRIOCHNG now reaches genuine current and selected basic or interpreter so
 ## Inverse-trig corpus coverage correction
 
 The original inverse-trig comparison remains valid, but its exhaustive high-word wording omitted2,045 values per function. The authoritative correction is `docs/INVERSE-TRIG-COVERAGE-ERRATUM.md`; a separate supplement is being qualified.
+
+## Translate complete original Luminary and Comanche system test lead ins
+
+Both containing source files are translated with every original entry and bank-return branch,35,328 complete original/source/full-sanitizer states and352 actual C64 checkpoints. Independent review corrected and separately tested the inherited IRQ state at INTPRET+2. External caller, display and recovery bodies remain separate. See `docs/SYSTEM_TEST_LEAD_INS.md`.

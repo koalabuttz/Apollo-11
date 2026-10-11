@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "whole_original_source_files": [
+    "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+    "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc"
+  ],
+  "source_emitted_words": [
+    32,
+    36
+  ],
+  "canonical_words": 2048,
+  "complete_host_native_full_sanitizer_checkpoints": 35328,
+  "host_groups": [
+    {
+      "mission": "lm",
+      "family": "stage",
+      "input_cases": 3584,
+      "complete_image_checkpoints": 3584,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "7ae80ffb30920805bb0057c66ac4e19c87053d1208c3d110f4f15252a0a182dc",
+      "lossless_snapshot": "evidence/standard-lead-lm-stage.snapshots.xz",
+      "compressed_sha256": "c669c293fcf5dc6aca2f383d06cb5bed7b9866d120e34d7547fda6b3e3788109"
+    },
+    {
+      "mission": "lm",
+      "family": "bank",
+      "input_cases": 2048,
+      "complete_image_checkpoints": 6144,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "45f35025a441def3d226905d6ea8249da40b661b8cc67045af8677fc88b66b98",
+      "lossless_snapshot": "evidence/standard-lead-lm-bank.snapshots.xz",
+      "compressed_sha256": "4cf15539166c937406a34ca8a977b6726262757d0576aa03aa989b73d8fab9a6"
+    },
+    {
+      "mission": "lm",
+      "family": "interp",
+      "input_cases": 1024,
+      "complete_image_checkpoints": 4096,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "4b27153c596fde49657dc975ee41c0cc417eeb20200a18493b85ec64f9cab6b2",
+      "lossless_snapshot": "evidence/standard-lead-lm-interp.snapshots.xz",
+      "compressed_sha256": "a5f7f2a0330743bbd4b023aab16f45ac9d91321721d2afd28c97b9eaa4e39207"
+    },
+    {
+      "mission": "lm",
+      "family": "wake",
+      "input_cases": 2048,
+      "complete_image_checkpoints": 2048,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "8fef920cd8f002ef59e413fcfec06751c87cf79a7fc82369a313beae37d1de1e",
+      "lossless_snapshot": "evidence/standard-lead-lm-wake.snapshots.xz",
+      "compressed_sha256": "2397a765acd36a8fd80c95c8b4c1313853e466749e6b444d6fbaac4a1f49072a"
+    },
+    {
+      "mission": "lm",
+      "family": "resume",
+      "input_cases": 1024,
+      "complete_image_checkpoints": 1024,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "647291a8155963359085fc7aade43328a19ee86eceae187ea354c21ee1afb9a1",
+      "lossless_snapshot": "evidence/standard-lead-lm-resume.snapshots.xz",
+      "compressed_sha256": "57d30cfd36193c91546c8c8a3c81d14e056053edd9f4f2afa1226fef249e4bb5"
+    },
+    {
+      "mission": "cm",
+      "family": "stage",
+      "input_cases": 3584,
+      "complete_image_checkpoints": 3584,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "7dcfa32a30d8436849e9ec3b5813e4ab325dfdf24a2b43d54ba4b81166419642",
+      "lossless_snapshot": "evidence/standard-lead-cm-stage.snapshots.xz",
+      "compressed_sha256": "581f4b4090253ed636da61c7d766990403bbf292e425b984b090121d562e5ea9"
+    },
+    {
+      "mission": "cm",
+      "family": "bank",
+      "input_cases": 2048,
+      "complete_image_checkpoints": 6144,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "aa35267ded624e4a74154173919adf35f33d74495813cd6763fdcb6881a6bc90",
+      "lossless_snapshot": "evidence/standard-lead-cm-bank.snapshots.xz",
+      "compressed_sha256": "9e0d304afaffbeed7bffa7efc4de89217f75bfca80e14b306525e72cac0eb9e7"
+    },
+    {
+      "mission": "cm",
+      "family": "interp",
+      "input_cases": 1024,
+      "complete_image_checkpoints": 4096,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "0d65c937da9bd409f15492a0aedd48340c166c1cc849c0cc1e092c1288216354",
+      "lossless_snapshot": "evidence/standard-lead-cm-interp.snapshots.xz",
+      "compressed_sha256": "722a932a7b1bc44ae4a90728a139449abd644b173ba334c0c20dfbc1711bf050"
+    },
+    {
+      "mission": "cm",
+      "family": "wake",
+      "input_cases": 2048,
+      "complete_image_checkpoints": 2048,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "883019c3d636df0d55992bf59a895a160ae65323ca8e684bf782f8e8c9922e9f",
+      "lossless_snapshot": "evidence/standard-lead-cm-wake.snapshots.xz",
+      "compressed_sha256": "bcbeaaf10344e20617d8b29cb09f9c0963d39060e41386252a09a1e72205454c"
+    },
+    {
+      "mission": "cm",
+      "family": "resume",
+      "input_cases": 1024,
+      "complete_image_checkpoints": 1024,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "eec72031dde578cc38e9beb91527a6da7b98240187a38305d356b79ffadb1ba0",
+      "lossless_snapshot": "evidence/standard-lead-cm-resume.snapshots.xz",
+      "compressed_sha256": "5dd0d93fbbb281d71a0927dac87976d37ffa19da2d116ae3d48613d5a6e17236"
+    },
+    {
+      "mission": "cm",
+      "family": "extra",
+      "input_cases": 1536,
+      "complete_image_checkpoints": 1536,
+      "words_each": 2048,
+      "source_native_sanitized_sha256": "ab83aea7a9c25e4eff2bfd2a8e4e86d6f2b98006b0f6a2168a12b27b3989a086",
+      "lossless_snapshot": "evidence/standard-lead-cm-extra.snapshots.xz",
+      "compressed_sha256": "2ac6200a5f056233152416efd876062d33b7a0552a2228558105a13cb8c8ab32"
+    }
+  ],
+  "original_source_audit": {
+    "path": "evidence/standard-lead-source-audit.json",
+    "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+  },
+  "actual_c64": [
+    {
+      "mission": "lm",
+      "complete_states": 164,
+      "words_each": 2048,
+      "mailbox_hex": "a5a400",
+      "actual_prg_bytes": 21193,
+      "load_start": 2049,
+      "load_end_exclusive": 23240,
+      "bss_end_exclusive": 31432,
+      "prg": {
+        "path": "evidence/standard-lead-lm.prg",
+        "sha256": "f533a5149f30e31a2a41eb3f1feaa1077349058218fd61a62f77fedf8f059d5f"
+      },
+      "map": {
+        "path": "evidence/standard-lead-lm.map",
+        "sha256": "cd8312b8fdee01c68bcef21f25e5982def9523a0d5b5c76176cf819a0d911ec2"
+      }
+    },
+    {
+      "mission": "cm",
+      "complete_states": 188,
+      "words_each": 2048,
+      "mailbox_hex": "a5bc00",
+      "actual_prg_bytes": 25642,
+      "load_start": 2049,
+      "load_end_exclusive": 27689,
+      "bss_end_exclusive": 35881,
+      "prg": {
+        "path": "evidence/standard-lead-cm.prg",
+        "sha256": "b0e545fed8318cffcc331c6a3a8a1a11908d3bf819c5c3f18047df62d478c515"
+      },
+      "map": {
+        "path": "evidence/standard-lead-cm.map",
+        "sha256": "f57ca0d62c2259d74bab1c3bd1d92568da8d6f53c0b1d8378bd426ded0026b9b"
+      }
+    }
+  ],
+  "target_full_image_checkpoints": 352,
+  "instruction_decoder": false,
+  "integrated_application_complete": false,
+  "external_source_continuations": [
+    "caller-owned native fixed routine",
+    "compiled erasable caller NEWOPS before fetch",
+    "GCOMPVER",
+    "GTSCPSS",
+    "IMUTEST",
+    "DSPMMJOB",
+    "BAILOUT recovery"
+  ],
+  "producer_contract": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
+  "source_review": {
+    "path": "evidence/standard-lead-independent-review.txt",
+    "sha256": "c686b5172c09df3272d3c1aeea7d923caf6e6497c8d29d1a447672e730dc92af"
+  },
+  "documented_scope": {
+    "path": "docs/SYSTEM_TEST_LEAD_INS.md",
+    "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
+  },
+  "frozen_helper_dependencies": [
+    {
+      "path": "include/cm_interbank_extended.h",
+      "sha256": "03f9fe42e11966a2b4e0d0f498d71ffdc550f78e44409d263e94b4fb19b6a981"
+    },
+    {
+      "path": "src/cm_interbank_extended.c",
+      "sha256": "3671b9fb193c745d67992bc5dbc381b2daf1b01fd00ef99144aa951ca5a6877c"
+    },
+    {
+      "path": "evidence/cm-interbank-extended-proof.json",
+      "sha256": "9e4b91d4b2fce5d668f6ef1a64b3c34768905721181cca00e1328c3cb06a400c"
+    },
+    {
+      "path": "src/cm_executive.c",
+      "sha256": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c"
+    },
+    {
+      "path": "src/lm_basic_wake.c",
+      "sha256": "7f5028de5a13a63448dd2d35d6eb45042876b5835d5dcba5594ea646a260e355"
+    },
+    {
+      "path": "src/cm_basic_wake.c",
+      "sha256": "4cb62726c6ec07d283e463ca508b27642365b60344e387fb985416f81f5b7979"
+    },
+    {
+      "path": "src/executive.c",
+      "sha256": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3"
+    },
+    {
+      "path": "src/cm_native_image.c",
+      "sha256": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d"
+    }
+  ]
+}
