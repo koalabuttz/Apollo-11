@@ -1,3 +1,8 @@
+# Restore immutable oversized evidence from ordinary GitHub transport parts.
+GITHUB_EVIDENCE_RESTORE := $(shell python3 tools/restore_github_evidence.py 2>&1 || echo GITHUB_EVIDENCE_RESTORE_FAILED)
+ifneq ($(findstring GITHUB_EVIDENCE_RESTORE_FAILED,$(GITHUB_EVIDENCE_RESTORE)),)
+$(error $(GITHUB_EVIDENCE_RESTORE))
+endif
 CC = cc
 MOS_CC ?= mos-c64-clang
 CFLAGS ?= -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic
@@ -997,3 +1002,6 @@ include tools/sband_scalar_integration.mk
 all: build/sband-scalar-integrated-stream
 test: test-sband-scalar
 sanitize: sanitize-sband-scalar
+
+include tools/cm_super_dispatch.mk
+all: build/cm-super-dispatch-native

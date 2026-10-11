@@ -1,0 +1,10 @@
+{
+  "cases": 32768,
+  "checkpoints": 32768,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 135331840,
+  "snapshot_sha256": "215e251abd3256d33cd40b51c680dbea40a0481d3db1ff762ba323bc1d913ab9",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "scope": "actual SUPDXCHZ/+1 transfers and original GOTOV56 caller; target compiled mission body separate"
+}

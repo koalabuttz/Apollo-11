@@ -1,0 +1,31 @@
+{
+  "files": {
+    "evidence/cm-super-dispatch-native.snapshots.bin.gz": "ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc",
+    "evidence/cm-super-dispatch-reference.snapshots.bin.gz": "ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc"
+  },
+  "objects": {
+    "ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc": {
+      "bytes": 132898309,
+      "parts": [
+        {
+          "bytes": 50331648,
+          "path": "evidence/github-transport/ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc.part00",
+          "sha256": "f9889e1bd2b05a8f6397f098b2d6fec277608cea8e0a43c6b59439da88efd7c6"
+        },
+        {
+          "bytes": 50331648,
+          "path": "evidence/github-transport/ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc.part01",
+          "sha256": "0af87f43950d3f070dc41e43964908141de1b7d47c91ac0e1f949dc303710332"
+        },
+        {
+          "bytes": 32235013,
+          "path": "evidence/github-transport/ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc.part02",
+          "sha256": "8836e839e32cdc4d8e6d3418e5d145cddeee1d462eb30d334130700e957a6bee"
+        }
+      ],
+      "sha256": "ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc"
+    }
+  },
+  "schema": 1,
+  "scope": "GitHub transport for immutable compressed evidence bytes exceeding100MiB; byte-exact concatenation restores original paths, no change to frozen source/target proof identities."
+}

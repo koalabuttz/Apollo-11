@@ -1,0 +1,91 @@
+{
+  "original_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_executive_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+  "entries": [
+    "SUPDXCHZ05227",
+    "SUPDXCHZ+105230",
+    "actual GOTOV5604622"
+  ],
+  "exact_original_words": [
+    {
+      "fixed_address_octal": "05227",
+      "word_octal": "56001"
+    },
+    {
+      "fixed_address_octal": "05230",
+      "word_octal": "00006"
+    },
+    {
+      "fixed_address_octal": "05231",
+      "word_octal": "01007"
+    },
+    {
+      "fixed_address_octal": "05232",
+      "word_octal": "54006"
+    },
+    {
+      "fixed_address_octal": "05233",
+      "word_octal": "00001"
+    },
+    {
+      "fixed_address_octal": "04622",
+      "word_octal": "00006"
+    },
+    {
+      "fixed_address_octal": "04623",
+      "word_octal": "34626"
+    },
+    {
+      "fixed_address_octal": "04624",
+      "word_octal": "15227"
+    },
+    {
+      "fixed_address_octal": "04625",
+      "word_octal": "02653"
+    },
+    {
+      "fixed_address_octal": "04626",
+      "word_octal": "66107"
+    }
+  ],
+  "actual_callers": [
+    {
+      "file": "EXECUTIVE.agc",
+      "original_line": 469,
+      "source": "\t\tTCF\tSUPDXCHZ + 1\t# AND DISPATCH JOB.",
+      "source_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b"
+    },
+    {
+      "file": "EXECUTIVE.agc",
+      "original_line": 477,
+      "source": "\t\tTCF\tSUPDXCHZ",
+      "source_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b"
+    },
+    {
+      "file": "P20-P25.agc",
+      "original_line": 3412,
+      "source": "\t\tTCF\tSUPDXCHZ",
+      "source_sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5"
+    },
+    {
+      "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 3042,
+      "source": "\t\tTC\tSUPDXCHZ\t# DTCB WITH SUPERBIT SWITCHING",
+      "source_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac"
+    },
+    {
+      "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 3261,
+      "source": "\t\tTC\tSUPDXCHZ +1\t# DTCB WITH SUPERBIT SWITCHING",
+      "source_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac"
+    }
+  ],
+  "source_data_tuple": {
+    "VB56CADR": [
+      "02653",
+      "66107"
+    ],
+    "source_target": "TRACKTRM"
+  },
+  "scope": "exact source-word/data/caller provenance; native executable proof separately retained. Other containing callers and TRACKTRM are not certified by this inventory. No runtime decoder."
+}

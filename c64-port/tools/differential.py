@@ -622,3 +622,5 @@ subprocess.run([sys.executable,'tools/dsky_hours_output_differential.py',str(ref
 subprocess.run([sys.executable,'tools/dsky_input_factor_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_input_scale_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_super_dispatch_differential.py',str(reference)],cwd=ROOT,check=True)

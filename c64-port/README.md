@@ -1490,3 +1490,7 @@ Compose actual zero-angle S-band body frame source path and matrix transformatio
 ## Translate original double precision scalar arithmetic entries
 
 Translate actual DMP DAD and DSU interpreter entries for both missions against786432 complete original strict sanitizer states and384 C64 checkpoints preserving selected fixed banks and live scratch alias ordering. See `docs/NATIVE-SBAND-SCALAR.md`.
+
+## Translate original Comanche SUPER bank dispatch
+
+Translate actual SUPDXCHZ plus one and GOTOV56 compiled caller controls against32768 complete original strict sanitizer states and64 C64 checkpoints. See `docs/COMANCHE_SUPER_DISPATCH.md`.

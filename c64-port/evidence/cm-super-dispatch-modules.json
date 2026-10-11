@@ -1,0 +1,29 @@
+[
+  {
+    "id": 244,
+    "filename": "G244",
+    "byte_count": 924,
+    "crc16": 64166,
+    "sha256": "9e080bf5eca43ae79889731778228a1812ae4299137e0f17b74ec65a01d53d08",
+    "prg": "cm-super-dispatch-244.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 2058,
+    "crc16": 42175,
+    "sha256": "5318c888131f56940a78ae96a077c67e5a2a73e9973da8ec763986c42df6ee93",
+    "prg": "cm-super-dispatch-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10145,
+    "crc16": 64720,
+    "sha256": "b2196dc48fd8b3a7ed0179500f2a2d3d8df8024eadea115933f7c8f418d24885",
+    "prg": "cm-super-dispatch-255.prg",
+    "native_control": false
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "actual_executed_source_states": 32768,
+  "source_stream_sha256": "215e251abd3256d33cd40b51c680dbea40a0481d3db1ff762ba323bc1d913ab9",
+  "target_contexts": 64,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004000",
+  "software_stack_bytes": 56,
+  "modules": [
+    {
+      "id": 244,
+      "filename": "G244",
+      "byte_count": 924,
+      "crc16": 64166,
+      "sha256": "9e080bf5eca43ae79889731778228a1812ae4299137e0f17b74ec65a01d53d08",
+      "prg": "cm-super-dispatch-244.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 2058,
+      "crc16": 42175,
+      "sha256": "5318c888131f56940a78ae96a077c67e5a2a73e9973da8ec763986c42df6ee93",
+      "prg": "cm-super-dispatch-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10145,
+      "crc16": 64720,
+      "sha256": "b2196dc48fd8b3a7ed0179500f2a2d3d8df8024eadea115933f7c8f418d24885",
+      "prg": "cm-super-dispatch-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual public SUPDXCHZ/+1 and original GOTOV56 transfer; selected compiled target body remains authentic continuation"
+}
