@@ -396,3 +396,5 @@ subprocess.run([sys.executable,'tools/cm_powered_axis_differential.py',str(refer
 subprocess.run([sys.executable,'tools/cm_powered_interface_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_makeplay_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_wake_differential.py',str(reference)],cwd=ROOT,check=True)

@@ -815,3 +815,7 @@ Eight CDU trigonometry and six transformation interfaces match 868,352 original 
 ## Translate Comanche MAKEPLAY priority and canonical display selection
 
 MAKEPLAY priority, clock and normal display routes match 24,576 original complete states and full sanitizer output. Strict frozen tests include 34 unchanged invalid contexts; C64 validates 64 complete states. The actual wake/sleep consumers are qualified separately. See `docs/COMANCHE-MAKEPLAY.md`.
+
+## Execute canonical Comanche JOBWAKE with exact scheduler image
+
+Source JOBWAKE matches 8,192 complete original states including register, bank, scan and caller effects. Full sanitizer output agrees; strict tests cover 19 unchanged invalid contexts and C64 validates 64 complete states. No full Executive coverage claim is made. See `docs/COMANCHE-BASIC-WAKE.md`.
