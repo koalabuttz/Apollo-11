@@ -1,0 +1,258 @@
+[
+  {
+    "id": 160,
+    "filename": "R0",
+    "byte_count": 9199,
+    "crc16": 19035,
+    "sha256": "f9205d31bf83f62010d26f1231b091385eef8a36795e304e20fc44ef9817b459",
+    "prg": "lm-basic-change-0.prg"
+  },
+  {
+    "id": 161,
+    "filename": "R1",
+    "byte_count": 9199,
+    "crc16": 27086,
+    "sha256": "52cbb229baaa89e37b71d856621a1a33d067339e5290c6c5aeaf18d9077c6bb9",
+    "prg": "lm-basic-change-1.prg"
+  },
+  {
+    "id": 162,
+    "filename": "R2",
+    "byte_count": 9199,
+    "crc16": 39666,
+    "sha256": "ede0fdb338ea4c028b68ce1344530816eba1aff5ee612dec9a7c76002217a965",
+    "prg": "lm-basic-change-2.prg"
+  },
+  {
+    "id": 163,
+    "filename": "R3",
+    "byte_count": 9199,
+    "crc16": 61011,
+    "sha256": "8645824196b3856ca3c0efc0e095369a1a3c26b1c1e3160923386cca69bd4be2",
+    "prg": "lm-basic-change-3.prg"
+  },
+  {
+    "id": 164,
+    "filename": "R4",
+    "byte_count": 9199,
+    "crc16": 16613,
+    "sha256": "452097fe589bab65c694c38ba1b9e12ba5a01f5dd47c1525dcd70ef19d437f99",
+    "prg": "lm-basic-change-4.prg"
+  },
+  {
+    "id": 165,
+    "filename": "R5",
+    "byte_count": 9199,
+    "crc16": 32968,
+    "sha256": "018ac4283e47cc441045e1a2ffffb08ff5e8966f458ab556ebd67367c6012d93",
+    "prg": "lm-basic-change-5.prg"
+  },
+  {
+    "id": 166,
+    "filename": "R6",
+    "byte_count": 9199,
+    "crc16": 52653,
+    "sha256": "b9fc2f317137cf8a5c381f2f9b23684671216b6ae80580f0bd060476a298dbba",
+    "prg": "lm-basic-change-6.prg"
+  },
+  {
+    "id": 167,
+    "filename": "R7",
+    "byte_count": 9199,
+    "crc16": 55376,
+    "sha256": "1aa48b6a85e5792d44b43a0e91972529f09934dd3f764e23647af5a37d02bafa",
+    "prg": "lm-basic-change-7.prg"
+  },
+  {
+    "id": 168,
+    "filename": "R8",
+    "byte_count": 9199,
+    "crc16": 57031,
+    "sha256": "b473d83c2dc6f21377409b9e66a13a9241a0e5e7a2b5732206bcfa4a27c713a4",
+    "prg": "lm-basic-change-8.prg"
+  },
+  {
+    "id": 169,
+    "filename": "R9",
+    "byte_count": 9199,
+    "crc16": 35460,
+    "sha256": "acc80f2c1b0a92af05e5ec177bb7c96dc6ba00362a91ccf0aa69e9b8fefa8ca6",
+    "prg": "lm-basic-change-9.prg"
+  },
+  {
+    "id": 170,
+    "filename": "R10",
+    "byte_count": 9199,
+    "crc16": 32441,
+    "sha256": "c59220a7405ed6904a1dfcd62bdaeeb9f7e3f76609c9f0d1e847868d01e76912",
+    "prg": "lm-basic-change-10.prg"
+  },
+  {
+    "id": 171,
+    "filename": "R11",
+    "byte_count": 9199,
+    "crc16": 63538,
+    "sha256": "3222383e74af508f64f1c77913d24380994bdd4d82bbed1d685feadd0fc249fc",
+    "prg": "lm-basic-change-11.prg"
+  },
+  {
+    "id": 172,
+    "filename": "R12",
+    "byte_count": 9199,
+    "crc16": 33436,
+    "sha256": "23f842d22fbb02c82c0dc35cfd3c71ac5126d4b0fe2dbf54f9ebb5a39856d453",
+    "prg": "lm-basic-change-12.prg"
+  },
+  {
+    "id": 173,
+    "filename": "R13",
+    "byte_count": 9199,
+    "crc16": 11546,
+    "sha256": "64be6e44f3f8cf10aaa783a3336c01ec9ee3034d2526a41e3d2d32deb3f5c197",
+    "prg": "lm-basic-change-13.prg"
+  },
+  {
+    "id": 174,
+    "filename": "R14",
+    "byte_count": 9199,
+    "crc16": 1894,
+    "sha256": "a91456c77207da1ea7dd2ea619a7032f7b2e759643eba4c074ee480977fe484b",
+    "prg": "lm-basic-change-14.prg"
+  },
+  {
+    "id": 175,
+    "filename": "R15",
+    "byte_count": 9199,
+    "crc16": 35326,
+    "sha256": "e959019006e352195d910b91d27614aef973ac4e3aebce821cf450e71bf925fb",
+    "prg": "lm-basic-change-15.prg"
+  },
+  {
+    "id": 176,
+    "filename": "R16",
+    "byte_count": 9199,
+    "crc16": 10822,
+    "sha256": "69dc38030c699380a0b9856c130fd2fc81229c97f4d5b611d7970f331e764a41",
+    "prg": "lm-basic-change-16.prg"
+  },
+  {
+    "id": 177,
+    "filename": "R17",
+    "byte_count": 9199,
+    "crc16": 36569,
+    "sha256": "778eceb262f459349940441fc5693e3b9afc4b0de20c85529747288a27caa323",
+    "prg": "lm-basic-change-17.prg"
+  },
+  {
+    "id": 178,
+    "filename": "R18",
+    "byte_count": 9199,
+    "crc16": 18928,
+    "sha256": "d3aaf0b073ed83d18d935a2fc0e5d8f437c9afe96fb31ab1d79a534cd68f3200",
+    "prg": "lm-basic-change-18.prg"
+  },
+  {
+    "id": 179,
+    "filename": "R19",
+    "byte_count": 9199,
+    "crc16": 21269,
+    "sha256": "b51ffb710eff592bd3f1f86346f1ebd029e5fa3bfea6a3e7ebf5ccbd837657cc",
+    "prg": "lm-basic-change-19.prg"
+  },
+  {
+    "id": 180,
+    "filename": "R20",
+    "byte_count": 9199,
+    "crc16": 4856,
+    "sha256": "ccc3cecfb62f057a606738051a122423c09aed2f9cb83fd70d7a32cf484e5d5f",
+    "prg": "lm-basic-change-20.prg"
+  },
+  {
+    "id": 181,
+    "filename": "R21",
+    "byte_count": 9199,
+    "crc16": 38483,
+    "sha256": "4c9b522152a4d5fc6bfce415a1fa822119df60ef534bffd375346f3c219e9323",
+    "prg": "lm-basic-change-21.prg"
+  },
+  {
+    "id": 182,
+    "filename": "R22",
+    "byte_count": 9199,
+    "crc16": 3434,
+    "sha256": "bb862a9fac1e5bcea70c1eb433faa539e0aa358fbf2c403b92baf6b4ef458027",
+    "prg": "lm-basic-change-22.prg"
+  },
+  {
+    "id": 183,
+    "filename": "R23",
+    "byte_count": 9199,
+    "crc16": 333,
+    "sha256": "1c467c4eede9f05e2c8dc4a8720ade7c4cea2a7b27aaba0b6b6fabcd0e8101d7",
+    "prg": "lm-basic-change-23.prg"
+  },
+  {
+    "id": 184,
+    "filename": "R24",
+    "byte_count": 9199,
+    "crc16": 44558,
+    "sha256": "a85a9cb06cf91da9d485c068f5230ea4bbffc6ee65dbd84a9221031a21c52f61",
+    "prg": "lm-basic-change-24.prg"
+  },
+  {
+    "id": 185,
+    "filename": "R25",
+    "byte_count": 9199,
+    "crc16": 29975,
+    "sha256": "f12002de922faf91f8943715284e08eb8013ac7c8d7d3890789141f3fa54981d",
+    "prg": "lm-basic-change-25.prg"
+  },
+  {
+    "id": 186,
+    "filename": "R26",
+    "byte_count": 9199,
+    "crc16": 43157,
+    "sha256": "bedb4269a9af1c481ed1eacd0959c8171ad5bff119e7db848978a9838078f7c0",
+    "prg": "lm-basic-change-26.prg"
+  },
+  {
+    "id": 187,
+    "filename": "R27",
+    "byte_count": 9199,
+    "crc16": 23321,
+    "sha256": "83bea13a6e5c53cbac645993f5f815845a27a5195e8b234aa8694eac16774a16",
+    "prg": "lm-basic-change-27.prg"
+  },
+  {
+    "id": 188,
+    "filename": "R28",
+    "byte_count": 9199,
+    "crc16": 62885,
+    "sha256": "e36f926fa3931c50ad2dd4d6be62db128a67d0f5f33d19d84931bfe686ea9770",
+    "prg": "lm-basic-change-28.prg"
+  },
+  {
+    "id": 189,
+    "filename": "R29",
+    "byte_count": 9199,
+    "crc16": 19113,
+    "sha256": "8d6d8ac0a15627f452de15587e62acaed9cebc49ceb9919ca7612be0addbc11a",
+    "prg": "lm-basic-change-29.prg"
+  },
+  {
+    "id": 190,
+    "filename": "R30",
+    "byte_count": 9199,
+    "crc16": 41644,
+    "sha256": "5bbde01c05b888bfad2dd07f1b08d095867b7445cc494ea9c8f9d9072aeb117c",
+    "prg": "lm-basic-change-30.prg"
+  },
+  {
+    "id": 191,
+    "filename": "R31",
+    "byte_count": 9199,
+    "crc16": 10077,
+    "sha256": "cd16526dce9f5cc07fd4e3b112bb0929958327b1c14022d1725d7eba25b96f5e",
+    "prg": "lm-basic-change-31.prg"
+  }
+]

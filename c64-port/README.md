@@ -1102,3 +1102,7 @@ Nine original internal NVSUB continuation entries per mission match18432 complet
 ## Translate original shared verb noun display update source bodies
 
 Actual UPDATVB/UPDATNN and minus-one entries, immutable noun table selection, real mission two-digit formatters and original caller return match8192 complete original/native/full-sanitizer states,96 unchanged guards and128 actual C64 states. All source verb/noun values0..99 and canonical bank/control effects are retained. See `docs/DSKY-NV-UPDATE.md`.
+
+## Canonical Luminary basic context change source entries
+
+Literal CHANG1/CHANJOB basic or interpreter exchanges match16384 complete2053-field original/native/full-sanitizer states,25 unchanged guard domains and64 actual C64 disk-overlay states. Raw incoming L to Q overflow and actual selected transfers are retained. Selected application bodies remain separate. Retained-original checks require no emulator or stale build outputs. See `docs/LM-BASIC-CHANGE.md`.
