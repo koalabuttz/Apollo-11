@@ -1,0 +1,9 @@
+/* SPDX-License-Identifier: MIT */
+#include <string.h>
+#include "cm_nv85_check.h"
+#include "cm_nv85_vectors.h"
+static const uint8_t control[26]={255,255,255,255,255,255,255,0,1,2,3,4,5,254,6,7,5,254,6,7,5,254,6,7,8,255};
+uint8_t cm_nv85_caller(apollo_overlay_state *s,cm_native_io *io,uint8_t phase){switch(phase){case 0:return cm_nv85_goplay(s,io);case 1:return cm_nv85_enter(s,io);case 2:return cm_nv85_verb(s,io);case 3:return cm_nv85_noun(s,io);case 4:return cm_nv85_rows(s,io);case 5:return cm_nv85_select(s,io);case 6:return cm_nv85_decimal(s,io);case 7:return cm_nv85_next(s,io);case 8:return cm_nv85_finish(s,io);default:return 0;}}
+static void patch(apollo_overlay_state *s,cm_native_io *io,uint16_t field,uint16_t value){if(field<2048u)s->words[field]=value;else if(field==2048u)io->superbank=value;else if(field==2049u)io->interrupt_enabled=value;else io->channel11=value;}
+uint8_t cm_nv85_checkpoint_input(uint8_t n,apollo_overlay_state *s,cm_native_io *io){uint16_t i;if(n>=60u)return 255;cm_nv85_input(s,io,(uint16_t)(cm_nv85_numbers[n]/26u));for(i=cm_nv85_before_offsets[n];i<cm_nv85_before_offsets[n+1u];++i)patch(s,io,cm_nv85_before_patch[i][0],cm_nv85_before_patch[i][1]);return control[cm_nv85_numbers[n]%26u];}
+uint16_t cm_nv85_checkpoint_check(uint8_t n,apollo_overlay_state *s,apollo_overlay_state *before){cm_native_io io,old;uint16_t failures=0,f,p,end;uint8_t phase=cm_nv85_checkpoint_input(n,s,&io);if(phase==255u)return 1;memcpy(before,s,sizeof *s);old=io;if(!cm_nv85_caller(s,&io,phase))++failures;p=cm_nv85_after_offsets[n];end=cm_nv85_after_offsets[n+1u];for(f=0;f<2051u;++f){uint16_t expected=f<2048u?before->words[f]:f==2048u?old.superbank:f==2049u?old.interrupt_enabled:old.channel11;uint16_t actual=f<2048u?s->words[f]:f==2048u?io.superbank:f==2049u?io.interrupt_enabled:io.channel11;if(p<end&&cm_nv85_after_patch[p][0]==f)expected=cm_nv85_after_patch[p++][1];if(actual!=expected)++failures;}if(p!=end)++failures;return failures;}

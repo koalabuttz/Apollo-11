@@ -872,3 +872,7 @@ Independent review reconstructed every one of 267 original emitted words, verifi
 ## Translate real Luminary and Comanche Key Release source continuations
 
 Actual KEYREL, RELDSP and display job wake paths match8,192 complete original source states under strict and full sanitizer comparison. Both CADRSTOR signed zeros, source literal-DAS fallthrough and true END/PINBRNCH/BLNKSUB1 continuations are retained. All64 complete target states pass; later continuation bodies remain active work. See `docs/DSKY-KEY-RELEASE.md`.
+
+## Compose actual Comanche normal noun85 display and Executive completion
+
+Actual normal V06N85 now composes source display selection, priority and job wake, NVSUB, fresh three-row scaling and decimal formatting, and original Executive completion. All 13,312 uninterrupted complete host source states match full sanitizer output; 60 frozen caller states pass on C64. Flashing, busy, monitor and relay-drain paths remain separate work. See `docs/COMANCHE-NORMAL-N85.md`.

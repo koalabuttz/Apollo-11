@@ -1,0 +1,5 @@
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_nv85.c src/cm_nv85.c src/cm_formatter.c src/cm_pinball.c src/dsky_two_digit.c src/dsky_decimal.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/cm_nv85_cases.c tests/cm_clockjob_cases.c tests/cm_trig_cases.c tests/cm_nv85_check.c -o build/test-cm-nv85-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-nv85-sanitize
+60 complete CM V06N85 caller states and 81 unchanged invalid guards: PASS
+python3 tools/cm_nv85_sanitize_stream.py
+PASS all13312 complete original V06N85 source states under ASAN/UBSAN, SHA256 0a203ba3c2affb31004cd0341777ff6cea5d513489afd31bb3585dd84ac21b6c

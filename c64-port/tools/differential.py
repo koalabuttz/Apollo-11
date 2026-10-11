@@ -450,3 +450,5 @@ subprocess.run([sys.executable,'tools/cm_dyndisp_differential.py',str(reference)
 subprocess.run([sys.executable,'tools/dsky_charin_alarm_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_charin_release_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_nv85_differential.py',str(reference)],cwd=ROOT,check=True)

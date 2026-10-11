@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "cm_nv85_check.h"
+static apollo_overlay_state s,before;
+int main(void){static const uint8_t cases[9]={0,1,2,3,4,5,6,7,14};cm_native_io io,old;uint16_t failures=0,n;uint8_t guard,phase;for(n=0;n<60u;++n)failures=(uint16_t)(failures+cm_nv85_checkpoint_check((uint8_t)n,&s,&before));for(n=0;n<9u;++n)for(guard=0;guard<9u;++guard){phase=cm_nv85_checkpoint_input(cases[n],&s,&io);switch(guard){case 0:s.words[5]=0;break;case 1:s.words[4]=1;break;case 2:s.words[3]=1;break;case 3:s.words[6]^=1;break;case 4:s.words[7]=1;break;case 5:io.interrupt_enabled=2;break;case 6:io.superbank=1;break;case 7:phase=9;break;default:switch(phase){case 0:s.words[0164]=0;break;case 1:s.words[0]=0;break;case 2:s.words[01034]=0;break;case 3:s.words[0157]=0;break;case 4:s.words[01001]=0;break;case 5:s.words[0117]=3;break;case 6:s.words[0777]=0;break;case 7:s.words[0117]=3;break;default:io.channel11=0100000;break;}break;}before=s;old=io;if(cm_nv85_caller(&s,&io,phase)||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io))++failures;}printf("60 complete CM V06N85 caller states and 81 unchanged invalid guards: %s\n",failures?"FAIL":"PASS");return failures?1:0;}
