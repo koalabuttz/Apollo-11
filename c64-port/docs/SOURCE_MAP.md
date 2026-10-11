@@ -1055,3 +1055,7 @@ Literal WAITLIST/TWIDDLE and their real caller-return/1203 BAILOUT/1204 POODOO h
 ## Translate original shared internal verb noun display continuations
 
 Nine original internal NVSUB continuation entries per mission match18432 complete original/native/full-sanitizer states,180 unchanged invalid-input guards and72 actual C64 states. Actual noun admission, formatter returns, bank selection and saved source control handoffs remain explicit; selected external bodies retain their separate qualifications. See `docs/DSKY-NV-CONTINUATION.md`.
+
+## Translate original shared verb noun display update source bodies
+
+Actual UPDATVB/UPDATNN and minus-one entries, immutable noun table selection, real mission two-digit formatters and original caller return match8192 complete original/native/full-sanitizer states,96 unchanged guards and128 actual C64 states. All source verb/noun values0..99 and canonical bank/control effects are retained. See `docs/DSKY-NV-UPDATE.md`.
