@@ -1,0 +1,742 @@
+{
+  "literal_accessor_arguments": 131072,
+  "unchanged_target_guards": 264,
+  "complete_states": 1441792,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14"
+  ],
+  "source_group_words": {
+    "lm": 37,
+    "cm": 36
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/imu-mode-transfer-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm0-complete.states.xz",
+        "decoded_sha256": "dd3f7f33264a35a56df117f134b32630106b5cb82fd60279af4b5e9f508a2f99",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm0-complete.states.xz",
+        "decoded_sha256": "dd3f7f33264a35a56df117f134b32630106b5cb82fd60279af4b5e9f508a2f99",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm0-complete.states.xz",
+        "decoded_sha256": "dd3f7f33264a35a56df117f134b32630106b5cb82fd60279af4b5e9f508a2f99",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm1-complete.states.xz",
+        "decoded_sha256": "e888689aaf5c8aacd1f12e14d9a3adcfb88f97e38477983fb5293bd92a8c075a",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm1-complete.states.xz",
+        "decoded_sha256": "e888689aaf5c8aacd1f12e14d9a3adcfb88f97e38477983fb5293bd92a8c075a",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm1-complete.states.xz",
+        "decoded_sha256": "e888689aaf5c8aacd1f12e14d9a3adcfb88f97e38477983fb5293bd92a8c075a",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm2": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm2-complete.states.xz",
+        "decoded_sha256": "8a9481f70811cac9162c48f039891e1068ff22899e4a0d9941b6d5451090eda5",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm2-complete.states.xz",
+        "decoded_sha256": "8a9481f70811cac9162c48f039891e1068ff22899e4a0d9941b6d5451090eda5",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm2-complete.states.xz",
+        "decoded_sha256": "8a9481f70811cac9162c48f039891e1068ff22899e4a0d9941b6d5451090eda5",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm3": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm3-complete.states.xz",
+        "decoded_sha256": "bb62ffc63bc715dd49bc0d6416d6e499baaa10cd4cd602ba6c4b24bd415cdd90",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm3-complete.states.xz",
+        "decoded_sha256": "bb62ffc63bc715dd49bc0d6416d6e499baaa10cd4cd602ba6c4b24bd415cdd90",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm3-complete.states.xz",
+        "decoded_sha256": "bb62ffc63bc715dd49bc0d6416d6e499baaa10cd4cd602ba6c4b24bd415cdd90",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm4": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm4-complete.states.xz",
+        "decoded_sha256": "03f6da4923fcfee1be12849289a2a1ceebdac87563590da7b73072cdeb14e9ec",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm4-complete.states.xz",
+        "decoded_sha256": "03f6da4923fcfee1be12849289a2a1ceebdac87563590da7b73072cdeb14e9ec",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm4-complete.states.xz",
+        "decoded_sha256": "03f6da4923fcfee1be12849289a2a1ceebdac87563590da7b73072cdeb14e9ec",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm5": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm5-complete.states.xz",
+        "decoded_sha256": "09575fe766b2f1412511aaf08801f00d8aea78a373c244cdf7748f76c05f6e9a",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm5-complete.states.xz",
+        "decoded_sha256": "09575fe766b2f1412511aaf08801f00d8aea78a373c244cdf7748f76c05f6e9a",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm5-complete.states.xz",
+        "decoded_sha256": "09575fe766b2f1412511aaf08801f00d8aea78a373c244cdf7748f76c05f6e9a",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm6": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm6-complete.states.xz",
+        "decoded_sha256": "e6c7d895e3a5df76954f70a25c4441bbf6e0fc4b4e380018d9f630c1879ca022",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm6-complete.states.xz",
+        "decoded_sha256": "e6c7d895e3a5df76954f70a25c4441bbf6e0fc4b4e380018d9f630c1879ca022",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm6-complete.states.xz",
+        "decoded_sha256": "e6c7d895e3a5df76954f70a25c4441bbf6e0fc4b4e380018d9f630c1879ca022",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm7": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm7-complete.states.xz",
+        "decoded_sha256": "99b3b4608d45748605c7bddcae8d5dfc0ca1c44c7cff402539c91ca400e45c1b",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm7-complete.states.xz",
+        "decoded_sha256": "99b3b4608d45748605c7bddcae8d5dfc0ca1c44c7cff402539c91ca400e45c1b",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm7-complete.states.xz",
+        "decoded_sha256": "99b3b4608d45748605c7bddcae8d5dfc0ca1c44c7cff402539c91ca400e45c1b",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm8": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm8-complete.states.xz",
+        "decoded_sha256": "a85e9c57e1e3d1a08aef28153e619f22f8d48f1fae7a873f936f73487ff6e433",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm8-complete.states.xz",
+        "decoded_sha256": "a85e9c57e1e3d1a08aef28153e619f22f8d48f1fae7a873f936f73487ff6e433",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm8-complete.states.xz",
+        "decoded_sha256": "a85e9c57e1e3d1a08aef28153e619f22f8d48f1fae7a873f936f73487ff6e433",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm9": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm9-complete.states.xz",
+        "decoded_sha256": "2ae04a3677ddf6fee57d669393cec71d6864c5548897781703e89dd6b8b040d6",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm9-complete.states.xz",
+        "decoded_sha256": "2ae04a3677ddf6fee57d669393cec71d6864c5548897781703e89dd6b8b040d6",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm9-complete.states.xz",
+        "decoded_sha256": "2ae04a3677ddf6fee57d669393cec71d6864c5548897781703e89dd6b8b040d6",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm10": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-lm10-complete.states.xz",
+        "decoded_sha256": "889b4da1c612eff190863c3dc1d1e0b6c4c3d616c0ccd671797573ecf9415d16",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-lm10-complete.states.xz",
+        "decoded_sha256": "889b4da1c612eff190863c3dc1d1e0b6c4c3d616c0ccd671797573ecf9415d16",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-lm10-complete.states.xz",
+        "decoded_sha256": "889b4da1c612eff190863c3dc1d1e0b6c4c3d616c0ccd671797573ecf9415d16",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm0-complete.states.xz",
+        "decoded_sha256": "48f6fef8b9636ac46c112f5b93f4a26cd06ec1fce547351bfed22a1b3a490ceb",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm0-complete.states.xz",
+        "decoded_sha256": "48f6fef8b9636ac46c112f5b93f4a26cd06ec1fce547351bfed22a1b3a490ceb",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm0-complete.states.xz",
+        "decoded_sha256": "48f6fef8b9636ac46c112f5b93f4a26cd06ec1fce547351bfed22a1b3a490ceb",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm1-complete.states.xz",
+        "decoded_sha256": "000db2860714380346b2f0c06393df94b242689b9ea1f5d9f834bc2f230e5ebe",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm1-complete.states.xz",
+        "decoded_sha256": "000db2860714380346b2f0c06393df94b242689b9ea1f5d9f834bc2f230e5ebe",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm1-complete.states.xz",
+        "decoded_sha256": "000db2860714380346b2f0c06393df94b242689b9ea1f5d9f834bc2f230e5ebe",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm2": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm2-complete.states.xz",
+        "decoded_sha256": "45411f3cc240b77ab14d0eda2af07f688551d12dc8b5e730e4933b3dca0b846c",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm2-complete.states.xz",
+        "decoded_sha256": "45411f3cc240b77ab14d0eda2af07f688551d12dc8b5e730e4933b3dca0b846c",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm2-complete.states.xz",
+        "decoded_sha256": "45411f3cc240b77ab14d0eda2af07f688551d12dc8b5e730e4933b3dca0b846c",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm3": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm3-complete.states.xz",
+        "decoded_sha256": "690914ea49f0bfbd6f336375f99b35e73074c664f636b664b2d9ff79b5add872",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm3-complete.states.xz",
+        "decoded_sha256": "690914ea49f0bfbd6f336375f99b35e73074c664f636b664b2d9ff79b5add872",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm3-complete.states.xz",
+        "decoded_sha256": "690914ea49f0bfbd6f336375f99b35e73074c664f636b664b2d9ff79b5add872",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm4": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm4-complete.states.xz",
+        "decoded_sha256": "72ae664a2834ec4319c4767f3fc7a8bc76bbb7ebe94e2825d7370960c069d207",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm4-complete.states.xz",
+        "decoded_sha256": "72ae664a2834ec4319c4767f3fc7a8bc76bbb7ebe94e2825d7370960c069d207",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm4-complete.states.xz",
+        "decoded_sha256": "72ae664a2834ec4319c4767f3fc7a8bc76bbb7ebe94e2825d7370960c069d207",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm5": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm5-complete.states.xz",
+        "decoded_sha256": "270d0dd001f9e5ea42f05ea6be3bfe00cbc414d2d24664fe0d6500c09587e225",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm5-complete.states.xz",
+        "decoded_sha256": "270d0dd001f9e5ea42f05ea6be3bfe00cbc414d2d24664fe0d6500c09587e225",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm5-complete.states.xz",
+        "decoded_sha256": "270d0dd001f9e5ea42f05ea6be3bfe00cbc414d2d24664fe0d6500c09587e225",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm6": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm6-complete.states.xz",
+        "decoded_sha256": "dcde47bef1e8b7f86c222d965ce778b2a3108776393158d0ccd4954e2afa31ed",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm6-complete.states.xz",
+        "decoded_sha256": "dcde47bef1e8b7f86c222d965ce778b2a3108776393158d0ccd4954e2afa31ed",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm6-complete.states.xz",
+        "decoded_sha256": "dcde47bef1e8b7f86c222d965ce778b2a3108776393158d0ccd4954e2afa31ed",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm7": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm7-complete.states.xz",
+        "decoded_sha256": "c2a70333726de439bce5fe14810cad002fc9a7668e2d619f440d90afd1146dee",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm7-complete.states.xz",
+        "decoded_sha256": "c2a70333726de439bce5fe14810cad002fc9a7668e2d619f440d90afd1146dee",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm7-complete.states.xz",
+        "decoded_sha256": "c2a70333726de439bce5fe14810cad002fc9a7668e2d619f440d90afd1146dee",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm8": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm8-complete.states.xz",
+        "decoded_sha256": "4a131bc65bb7e18056b0f857db8c2269969e0447b0442adc8712a506254d133d",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm8-complete.states.xz",
+        "decoded_sha256": "4a131bc65bb7e18056b0f857db8c2269969e0447b0442adc8712a506254d133d",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm8-complete.states.xz",
+        "decoded_sha256": "4a131bc65bb7e18056b0f857db8c2269969e0447b0442adc8712a506254d133d",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm9": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm9-complete.states.xz",
+        "decoded_sha256": "dc591f9ff0e2d1cb194582503c647342825ad9fb19e2959b3c80dda7013f52b2",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm9-complete.states.xz",
+        "decoded_sha256": "dc591f9ff0e2d1cb194582503c647342825ad9fb19e2959b3c80dda7013f52b2",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm9-complete.states.xz",
+        "decoded_sha256": "dc591f9ff0e2d1cb194582503c647342825ad9fb19e2959b3c80dda7013f52b2",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm10": {
+      "original_assembly": {
+        "object": "evidence/imu-mode-transfer-cm10-complete.states.xz",
+        "decoded_sha256": "398b801e45b8bdfd0cd5865f7e0ed5d07b1b99fe7ee6372976086755cf7e8df6",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-mode-transfer-cm10-complete.states.xz",
+        "decoded_sha256": "398b801e45b8bdfd0cd5865f7e0ed5d07b1b99fe7ee6372976086755cf7e8df6",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-mode-transfer-cm10-complete.states.xz",
+        "decoded_sha256": "398b801e45b8bdfd0cd5865f7e0ed5d07b1b99fe7ee6372976086755cf7e8df6",
+        "decoded_bytes": 269484032
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002000",
+      "PRG_bytes": 7434,
+      "loaded_end": "0x2508",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002001",
+      "PRG_bytes": 7435,
+      "loaded_end": "0x2509",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm2": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002002",
+      "PRG_bytes": 7205,
+      "loaded_end": "0x2423",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm3": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002003",
+      "PRG_bytes": 8127,
+      "loaded_end": "0x27bd",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm4": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002004",
+      "PRG_bytes": 8118,
+      "loaded_end": "0x27b4",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm5": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002005",
+      "PRG_bytes": 8100,
+      "loaded_end": "0x27a2",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm6": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002006",
+      "PRG_bytes": 8110,
+      "loaded_end": "0x27ac",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm7": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002007",
+      "PRG_bytes": 7429,
+      "loaded_end": "0x2503",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm8": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002008",
+      "PRG_bytes": 7864,
+      "loaded_end": "0x26b6",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm9": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002009",
+      "PRG_bytes": 7614,
+      "loaded_end": "0x25bc",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "lm10": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a50000200a",
+      "PRG_bytes": 7693,
+      "loaded_end": "0x260b",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002020",
+      "PRG_bytes": 7442,
+      "loaded_end": "0x2510",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002021",
+      "PRG_bytes": 7434,
+      "loaded_end": "0x2508",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm2": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002022",
+      "PRG_bytes": 7193,
+      "loaded_end": "0x2417",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm3": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002023",
+      "PRG_bytes": 7917,
+      "loaded_end": "0x26eb",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm4": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002024",
+      "PRG_bytes": 7906,
+      "loaded_end": "0x26e0",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm5": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002025",
+      "PRG_bytes": 7904,
+      "loaded_end": "0x26de",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm6": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002026",
+      "PRG_bytes": 7968,
+      "loaded_end": "0x271e",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm7": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002027",
+      "PRG_bytes": 7429,
+      "loaded_end": "0x2503",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm8": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002028",
+      "PRG_bytes": 7648,
+      "loaded_end": "0x25de",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm9": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a500002029",
+      "PRG_bytes": 7614,
+      "loaded_end": "0x25bc",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    },
+    "cm10": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 2,
+      "mailbox": "a50000202a",
+      "PRG_bytes": 7368,
+      "loaded_end": "0x24c6",
+      "hardware_stack": 20,
+      "software_stack": 103,
+      "compiler_ZP": 0
+    }
+  },
+  "source_branches": {
+    "lm0": {
+      "0": 65536
+    },
+    "lm1": {
+      "1": 65536
+    },
+    "lm2": {
+      "2": 65536
+    },
+    "lm3": {
+      "5": 65472,
+      "3": 64
+    },
+    "lm4": {
+      "5": 65470,
+      "3": 66
+    },
+    "lm5": {
+      "4": 65,
+      "5": 65471
+    },
+    "lm6": {
+      "4": 65,
+      "3": 132,
+      "5": 65339
+    },
+    "lm7": {
+      "3": 65536
+    },
+    "lm8": {
+      "3": 4,
+      "5": 65532
+    },
+    "lm9": {
+      "4": 65536
+    },
+    "lm10": {
+      "5": 65536
+    },
+    "cm0": {
+      "0": 65536
+    },
+    "cm1": {
+      "1": 65536
+    },
+    "cm2": {
+      "2": 65536
+    },
+    "cm3": {
+      "5": 65472,
+      "3": 64
+    },
+    "cm4": {
+      "5": 65470,
+      "3": 66
+    },
+    "cm5": {
+      "4": 65,
+      "5": 65471
+    },
+    "cm6": {
+      "4": 65,
+      "3": 132,
+      "5": 65339
+    },
+    "cm7": {
+      "3": 65536
+    },
+    "cm8": {
+      "3": 4,
+      "5": 65532
+    },
+    "cm9": {
+      "4": 65536
+    },
+    "cm10": {
+      "5": 65536
+    }
+  },
+  "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+  "source_fixture_tool": "tools/imu_pulse_prepare_reference.py",
+  "independent_review": {
+    "path": "evidence/imu-mode-transfer-independent-review.json",
+    "sha256": "59a95a0a1f5e7c2a9eb6a8a29315f1c3e4144c2d71f5d34a1f0d09e77c1eff0b"
+  },
+  "immutable_service_dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "tests/imu_pulse_cases.c": "ac783d198a79c77d8db4d7a1b1893780c096bb8209807acb3315bdf825a9fee5",
+    "src/imu_coarse.c": "6bd450e3934a8fe4f5805492e47632afc0850a729d50e872086b89ca263668fc",
+    "include/imu_coarse.h": "f3da4a810eead277c82ab5d17b409d545513ba864e02ed093352e4cc041f4bad",
+    "tests/imu_coarse_cases.c": "12d2ce726888506b75eb23e77b0a22add2e7772a6e1d9839033576839af66ecd",
+    "tests/imu_mode_control_cases.c": "2b611df4ee6370920e2daca854fee3dd6f334a4a952897155fb887c9e93a0a74",
+    "src/imu_mode_control.c": "484b0133bff479b374bd1d8f61cd2bb4d1ac547f1c0a5043cbd743f89250bde7",
+    "include/imu_mode_control.h": "cd1fd8481972d634d6db0f66ff3aa4bfcc229b8fa2d1b637e652f9fe747cb134",
+    "include/imu_mode_control_literals.h": "5aa221cf4679ff4111e9faa47ce55bb99831423326e96758a9fb4377d0cf8794",
+    "tools/frozen_words.py": "542338895352036113578bad37a79e49a43f61dcef2834cbfb0fd7841f573724",
+    "tests/frozen_words.c": "f8ca1264ddd12de6768c7e148dbe5b02c39cda2a0fad905d536ea534b8a2b834"
+  },
+  "qualification": "Original coarse error/pulse activation plus complete local stalling paths. Coherent bank07/EB3, ordinary canonical RAM/raw A/L, fixedQ, quiescent gyro/coarse activity and excluded producers; SEND requires +zeroCDU command counters. Compiled direct STALL/FAILED/GOOD/SLEEP contexts have bounded device/diminished A and saved fixed caller/bank. Actual VARDELAY/TASKOVER/IMUBAD/MODEEXIT/JOBSLEEP/BAILOUT1/POODOO entries are typed callee frontiers. MAKECADR source helper body composed explicitly. No active-counter transport or external service/job body or containing-file/application credit.",
+  "target_warning_exception": "None. Host and target strict warnings are errors.",
+  "decoded_stream_identity": "Each of twenty-two originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with checked subprocess completion; no duplicate raw full streams retained."
+}

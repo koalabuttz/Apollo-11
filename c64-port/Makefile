@@ -1027,3 +1027,5 @@ sanitize: lm-context-lifecycle-port-sanitize
 include tools/lm_idle_dispatch_port_integration.mk
 test: lm-idle-dispatch-port-test
 sanitize: lm-idle-dispatch-port-sanitize
+
+include tools/imu_mode_transfer_integration.mk

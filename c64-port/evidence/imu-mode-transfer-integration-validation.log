@@ -1,0 +1,92 @@
+python3 tools/imu_mode_transfer_port_host.py --cc "cc"
+32 complete coarse original states + 12 immutable guards mission0 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 dd3f7f33264a35a56df117f134b32630106b5cb82fd60279af4b5e9f508a2f99
+32 complete coarse original states + 12 immutable guards mission0 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 e888689aaf5c8aacd1f12e14d9a3adcfb88f97e38477983fb5293bd92a8c075a
+32 complete coarse original states + 12 immutable guards mission0 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 8a9481f70811cac9162c48f039891e1068ff22899e4a0d9941b6d5451090eda5
+32 complete coarse original states + 12 immutable guards mission0 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 bb62ffc63bc715dd49bc0d6416d6e499baaa10cd4cd602ba6c4b24bd415cdd90
+32 complete coarse original states + 12 immutable guards mission0 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 03f6da4923fcfee1be12849289a2a1ceebdac87563590da7b73072cdeb14e9ec
+32 complete coarse original states + 12 immutable guards mission0 entry5: PASS
+PASS all retained source-state bytes: 269484032 SHA256 09575fe766b2f1412511aaf08801f00d8aea78a373c244cdf7748f76c05f6e9a
+32 complete coarse original states + 12 immutable guards mission0 entry6: PASS
+PASS all retained source-state bytes: 269484032 SHA256 e6c7d895e3a5df76954f70a25c4441bbf6e0fc4b4e380018d9f630c1879ca022
+32 complete coarse original states + 12 immutable guards mission0 entry7: PASS
+PASS all retained source-state bytes: 269484032 SHA256 99b3b4608d45748605c7bddcae8d5dfc0ca1c44c7cff402539c91ca400e45c1b
+32 complete coarse original states + 12 immutable guards mission0 entry8: PASS
+PASS all retained source-state bytes: 269484032 SHA256 a85e9c57e1e3d1a08aef28153e619f22f8d48f1fae7a873f936f73487ff6e433
+32 complete coarse original states + 12 immutable guards mission0 entry9: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2ae04a3677ddf6fee57d669393cec71d6864c5548897781703e89dd6b8b040d6
+32 complete coarse original states + 12 immutable guards mission0 entry10: PASS
+PASS all retained source-state bytes: 269484032 SHA256 889b4da1c612eff190863c3dc1d1e0b6c4c3d616c0ccd671797573ecf9415d16
+32 complete coarse original states + 12 immutable guards mission1 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 48f6fef8b9636ac46c112f5b93f4a26cd06ec1fce547351bfed22a1b3a490ceb
+32 complete coarse original states + 12 immutable guards mission1 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 000db2860714380346b2f0c06393df94b242689b9ea1f5d9f834bc2f230e5ebe
+32 complete coarse original states + 12 immutable guards mission1 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 45411f3cc240b77ab14d0eda2af07f688551d12dc8b5e730e4933b3dca0b846c
+32 complete coarse original states + 12 immutable guards mission1 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 690914ea49f0bfbd6f336375f99b35e73074c664f636b664b2d9ff79b5add872
+32 complete coarse original states + 12 immutable guards mission1 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 72ae664a2834ec4319c4767f3fc7a8bc76bbb7ebe94e2825d7370960c069d207
+32 complete coarse original states + 12 immutable guards mission1 entry5: PASS
+PASS all retained source-state bytes: 269484032 SHA256 270d0dd001f9e5ea42f05ea6be3bfe00cbc414d2d24664fe0d6500c09587e225
+32 complete coarse original states + 12 immutable guards mission1 entry6: PASS
+PASS all retained source-state bytes: 269484032 SHA256 dcde47bef1e8b7f86c222d965ce778b2a3108776393158d0ccd4954e2afa31ed
+32 complete coarse original states + 12 immutable guards mission1 entry7: PASS
+PASS all retained source-state bytes: 269484032 SHA256 c2a70333726de439bce5fe14810cad002fc9a7668e2d619f440d90afd1146dee
+32 complete coarse original states + 12 immutable guards mission1 entry8: PASS
+PASS all retained source-state bytes: 269484032 SHA256 4a131bc65bb7e18056b0f857db8c2269969e0447b0442adc8712a506254d133d
+32 complete coarse original states + 12 immutable guards mission1 entry9: PASS
+PASS all retained source-state bytes: 269484032 SHA256 dc591f9ff0e2d1cb194582503c647342825ad9fb19e2959b3c80dda7013f52b2
+32 complete coarse original states + 12 immutable guards mission1 entry10: PASS
+PASS all retained source-state bytes: 269484032 SHA256 398b801e45b8bdfd0cd5865f7e0ed5d07b1b99fe7ee6372976086755cf7e8df6
+PASS full retained original source states and frozen states
+python3 tools/imu_mode_transfer_port_host.py --cc "cc" --sanitize
+32 complete coarse original states + 12 immutable guards mission0 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 dd3f7f33264a35a56df117f134b32630106b5cb82fd60279af4b5e9f508a2f99
+32 complete coarse original states + 12 immutable guards mission0 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 e888689aaf5c8aacd1f12e14d9a3adcfb88f97e38477983fb5293bd92a8c075a
+32 complete coarse original states + 12 immutable guards mission0 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 8a9481f70811cac9162c48f039891e1068ff22899e4a0d9941b6d5451090eda5
+32 complete coarse original states + 12 immutable guards mission0 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 bb62ffc63bc715dd49bc0d6416d6e499baaa10cd4cd602ba6c4b24bd415cdd90
+32 complete coarse original states + 12 immutable guards mission0 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 03f6da4923fcfee1be12849289a2a1ceebdac87563590da7b73072cdeb14e9ec
+32 complete coarse original states + 12 immutable guards mission0 entry5: PASS
+PASS all retained source-state bytes: 269484032 SHA256 09575fe766b2f1412511aaf08801f00d8aea78a373c244cdf7748f76c05f6e9a
+32 complete coarse original states + 12 immutable guards mission0 entry6: PASS
+PASS all retained source-state bytes: 269484032 SHA256 e6c7d895e3a5df76954f70a25c4441bbf6e0fc4b4e380018d9f630c1879ca022
+32 complete coarse original states + 12 immutable guards mission0 entry7: PASS
+PASS all retained source-state bytes: 269484032 SHA256 99b3b4608d45748605c7bddcae8d5dfc0ca1c44c7cff402539c91ca400e45c1b
+32 complete coarse original states + 12 immutable guards mission0 entry8: PASS
+PASS all retained source-state bytes: 269484032 SHA256 a85e9c57e1e3d1a08aef28153e619f22f8d48f1fae7a873f936f73487ff6e433
+32 complete coarse original states + 12 immutable guards mission0 entry9: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2ae04a3677ddf6fee57d669393cec71d6864c5548897781703e89dd6b8b040d6
+32 complete coarse original states + 12 immutable guards mission0 entry10: PASS
+PASS all retained source-state bytes: 269484032 SHA256 889b4da1c612eff190863c3dc1d1e0b6c4c3d616c0ccd671797573ecf9415d16
+32 complete coarse original states + 12 immutable guards mission1 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 48f6fef8b9636ac46c112f5b93f4a26cd06ec1fce547351bfed22a1b3a490ceb
+32 complete coarse original states + 12 immutable guards mission1 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 000db2860714380346b2f0c06393df94b242689b9ea1f5d9f834bc2f230e5ebe
+32 complete coarse original states + 12 immutable guards mission1 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 45411f3cc240b77ab14d0eda2af07f688551d12dc8b5e730e4933b3dca0b846c
+32 complete coarse original states + 12 immutable guards mission1 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 690914ea49f0bfbd6f336375f99b35e73074c664f636b664b2d9ff79b5add872
+32 complete coarse original states + 12 immutable guards mission1 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 72ae664a2834ec4319c4767f3fc7a8bc76bbb7ebe94e2825d7370960c069d207
+32 complete coarse original states + 12 immutable guards mission1 entry5: PASS
+PASS all retained source-state bytes: 269484032 SHA256 270d0dd001f9e5ea42f05ea6be3bfe00cbc414d2d24664fe0d6500c09587e225
+32 complete coarse original states + 12 immutable guards mission1 entry6: PASS
+PASS all retained source-state bytes: 269484032 SHA256 dcde47bef1e8b7f86c222d965ce778b2a3108776393158d0ccd4954e2afa31ed
+32 complete coarse original states + 12 immutable guards mission1 entry7: PASS
+PASS all retained source-state bytes: 269484032 SHA256 c2a70333726de439bce5fe14810cad002fc9a7668e2d619f440d90afd1146dee
+32 complete coarse original states + 12 immutable guards mission1 entry8: PASS
+PASS all retained source-state bytes: 269484032 SHA256 4a131bc65bb7e18056b0f857db8c2269969e0447b0442adc8712a506254d133d
+32 complete coarse original states + 12 immutable guards mission1 entry9: PASS
+PASS all retained source-state bytes: 269484032 SHA256 dc591f9ff0e2d1cb194582503c647342825ad9fb19e2959b3c80dda7013f52b2
+32 complete coarse original states + 12 immutable guards mission1 entry10: PASS
+PASS all retained source-state bytes: 269484032 SHA256 398b801e45b8bdfd0cd5865f7e0ed5d07b1b99fe7ee6372976086755cf7e8df6
+PASS full retained original source states and frozen states under full ASAN/UBSAN

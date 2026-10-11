@@ -1,0 +1,647 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [],
+    "source_group_words": 37,
+    "words": [
+      {
+        "original_line": 231,
+        "bank": "07",
+        "address": "3115",
+        "physical_fixed_word": 7757,
+        "raw_octal": "13637",
+        "native_group": "COARSERR"
+      },
+      {
+        "original_line": 249,
+        "bank": "07",
+        "address": "3133",
+        "physical_fixed_word": 7771,
+        "raw_octal": "37740",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 250,
+        "bank": "07",
+        "address": "3134",
+        "physical_fixed_word": 7772,
+        "raw_octal": "00006",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 251,
+        "bank": "07",
+        "address": "3135",
+        "physical_fixed_word": 7773,
+        "raw_octal": "05014",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 252,
+        "bank": "07",
+        "address": "3136",
+        "physical_fixed_word": 7774,
+        "raw_octal": "33747",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 253,
+        "bank": "07",
+        "address": "3137",
+        "physical_fixed_word": 7775,
+        "raw_octal": "13037",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 255,
+        "bank": "07",
+        "address": "3140",
+        "physical_fixed_word": 7776,
+        "raw_octal": "34746",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 256,
+        "bank": "07",
+        "address": "3141",
+        "physical_fixed_word": 7777,
+        "raw_octal": "00006",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 257,
+        "bank": "07",
+        "address": "3142",
+        "physical_fixed_word": 7778,
+        "raw_octal": "05012",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 258,
+        "bank": "07",
+        "address": "3143",
+        "physical_fixed_word": 7779,
+        "raw_octal": "05261",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 795,
+        "bank": "07",
+        "address": "3712",
+        "physical_fixed_word": 8138,
+        "raw_octal": "34753",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 796,
+        "bank": "07",
+        "address": "3713",
+        "physical_fixed_word": 8139,
+        "raw_octal": "03717",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 798,
+        "bank": "07",
+        "address": "3714",
+        "physical_fixed_word": 8140,
+        "raw_octal": "34752",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 799,
+        "bank": "07",
+        "address": "3715",
+        "physical_fixed_word": 8141,
+        "raw_octal": "13717",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 804,
+        "bank": "07",
+        "address": "3716",
+        "physical_fixed_word": 8142,
+        "raw_octal": "34755",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 806,
+        "bank": "07",
+        "address": "3717",
+        "physical_fixed_word": 8143,
+        "raw_octal": "00004",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 807,
+        "bank": "07",
+        "address": "3720",
+        "physical_fixed_word": 8144,
+        "raw_octal": "54071",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 808,
+        "bank": "07",
+        "address": "3721",
+        "physical_fixed_word": 8145,
+        "raw_octal": "50000",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 809,
+        "bank": "07",
+        "address": "3722",
+        "physical_fixed_word": 8146,
+        "raw_octal": "11304",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 810,
+        "bank": "07",
+        "address": "3723",
+        "physical_fixed_word": 8147,
+        "raw_octal": "13741",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 811,
+        "bank": "07",
+        "address": "3724",
+        "physical_fixed_word": 8148,
+        "raw_octal": "13735",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 812,
+        "bank": "07",
+        "address": "3725",
+        "physical_fixed_word": 8149,
+        "raw_octal": "13731",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 814,
+        "bank": "07",
+        "address": "3726",
+        "physical_fixed_word": 8150,
+        "raw_octal": "50071",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 815,
+        "bank": "07",
+        "address": "3727",
+        "physical_fixed_word": 8151,
+        "raw_octal": "55304",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 816,
+        "bank": "07",
+        "address": "3730",
+        "physical_fixed_word": 8152,
+        "raw_octal": "12755",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 818,
+        "bank": "07",
+        "address": "3731",
+        "physical_fixed_word": 8153,
+        "raw_octal": "10000",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 819,
+        "bank": "07",
+        "address": "3732",
+        "physical_fixed_word": 8154,
+        "raw_octal": "13741",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 821,
+        "bank": "07",
+        "address": "3733",
+        "physical_fixed_word": 8155,
+        "raw_octal": "24133",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 822,
+        "bank": "07",
+        "address": "3734",
+        "physical_fixed_word": 8156,
+        "raw_octal": "13726",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 824,
+        "bank": "07",
+        "address": "3735",
+        "physical_fixed_word": 8157,
+        "raw_octal": "04645",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 825,
+        "bank": "07",
+        "address": "3736",
+        "physical_fixed_word": 8158,
+        "raw_octal": "50071",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 826,
+        "bank": "07",
+        "address": "3737",
+        "physical_fixed_word": 8159,
+        "raw_octal": "55304",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 827,
+        "bank": "07",
+        "address": "3740",
+        "physical_fixed_word": 8160,
+        "raw_octal": "15133",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 829,
+        "bank": "07",
+        "address": "3741",
+        "physical_fixed_word": 8161,
+        "raw_octal": "52134",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 830,
+        "bank": "07",
+        "address": "3742",
+        "physical_fixed_word": 8162,
+        "raw_octal": "05716",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 831,
+        "bank": "07",
+        "address": "3743",
+        "physical_fixed_word": 8163,
+        "raw_octal": "01210",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 842,
+        "bank": "07",
+        "address": "3747",
+        "physical_fixed_word": 8167,
+        "raw_octal": "00074",
+        "native_group": "600MS"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_helpers": {
+      "MAKECADR": "04645"
+    },
+    "compiled_boundaries": {
+      "VARDELAY": "05224",
+      "FIXDELAY": "05221",
+      "SENDPULS": "03133",
+      "ENDIMU": "03631",
+      "ALARM": "05567",
+      "IMUBAD": "03637"
+    },
+    "remaining": [
+      "Actual device-counter consumption/coarse transport",
+      "External JOBSLEEP/VARDELAY/TASKOVER/BAILOUT bodies",
+      "Attitude/R02/standby remaining local groups"
+    ]
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "source_group_words": 36,
+    "words": [
+      {
+        "original_line": 233,
+        "bank": "07",
+        "address": "3000",
+        "physical_fixed_word": 7680,
+        "raw_octal": "13522",
+        "native_group": "COARSERR"
+      },
+      {
+        "original_line": 252,
+        "bank": "07",
+        "address": "3016",
+        "physical_fixed_word": 7694,
+        "raw_octal": "37707",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 253,
+        "bank": "07",
+        "address": "3017",
+        "physical_fixed_word": 7695,
+        "raw_octal": "00006",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 254,
+        "bank": "07",
+        "address": "3020",
+        "physical_fixed_word": 7696,
+        "raw_octal": "05014",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 255,
+        "bank": "07",
+        "address": "3021",
+        "physical_fixed_word": 7697,
+        "raw_octal": "33626",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 256,
+        "bank": "07",
+        "address": "3022",
+        "physical_fixed_word": 7698,
+        "raw_octal": "12722",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 259,
+        "bank": "07",
+        "address": "3023",
+        "physical_fixed_word": 7699,
+        "raw_octal": "35012",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 260,
+        "bank": "07",
+        "address": "3024",
+        "physical_fixed_word": 7700,
+        "raw_octal": "00006",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 261,
+        "bank": "07",
+        "address": "3025",
+        "physical_fixed_word": 7701,
+        "raw_octal": "05012",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 262,
+        "bank": "07",
+        "address": "3026",
+        "physical_fixed_word": 7702,
+        "raw_octal": "05324",
+        "native_group": "SENDPULS/CA+ECE"
+      },
+      {
+        "original_line": 796,
+        "bank": "07",
+        "address": "3573",
+        "physical_fixed_word": 8059,
+        "raw_octal": "35017",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 797,
+        "bank": "07",
+        "address": "3574",
+        "physical_fixed_word": 8060,
+        "raw_octal": "03600",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 799,
+        "bank": "07",
+        "address": "3575",
+        "physical_fixed_word": 8061,
+        "raw_octal": "35016",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 800,
+        "bank": "07",
+        "address": "3576",
+        "physical_fixed_word": 8062,
+        "raw_octal": "13600",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 805,
+        "bank": "07",
+        "address": "3577",
+        "physical_fixed_word": 8063,
+        "raw_octal": "35021",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 807,
+        "bank": "07",
+        "address": "3600",
+        "physical_fixed_word": 8064,
+        "raw_octal": "00004",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 808,
+        "bank": "07",
+        "address": "3601",
+        "physical_fixed_word": 8065,
+        "raw_octal": "54071",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 809,
+        "bank": "07",
+        "address": "3602",
+        "physical_fixed_word": 8066,
+        "raw_octal": "50000",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 810,
+        "bank": "07",
+        "address": "3603",
+        "physical_fixed_word": 8067,
+        "raw_octal": "11322",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 811,
+        "bank": "07",
+        "address": "3604",
+        "physical_fixed_word": 8068,
+        "raw_octal": "13622",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 812,
+        "bank": "07",
+        "address": "3605",
+        "physical_fixed_word": 8069,
+        "raw_octal": "13616",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 813,
+        "bank": "07",
+        "address": "3606",
+        "physical_fixed_word": 8070,
+        "raw_octal": "13612",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 815,
+        "bank": "07",
+        "address": "3607",
+        "physical_fixed_word": 8071,
+        "raw_octal": "50071",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 816,
+        "bank": "07",
+        "address": "3610",
+        "physical_fixed_word": 8072,
+        "raw_octal": "55322",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 817,
+        "bank": "07",
+        "address": "3611",
+        "physical_fixed_word": 8073,
+        "raw_octal": "12640",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 819,
+        "bank": "07",
+        "address": "3612",
+        "physical_fixed_word": 8074,
+        "raw_octal": "10000",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 820,
+        "bank": "07",
+        "address": "3613",
+        "physical_fixed_word": 8075,
+        "raw_octal": "13622",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 822,
+        "bank": "07",
+        "address": "3614",
+        "physical_fixed_word": 8076,
+        "raw_octal": "24133",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 823,
+        "bank": "07",
+        "address": "3615",
+        "physical_fixed_word": 8077,
+        "raw_octal": "13607",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 825,
+        "bank": "07",
+        "address": "3616",
+        "physical_fixed_word": 8078,
+        "raw_octal": "04711",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 826,
+        "bank": "07",
+        "address": "3617",
+        "physical_fixed_word": 8079,
+        "raw_octal": "50071",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 827,
+        "bank": "07",
+        "address": "3620",
+        "physical_fixed_word": 8080,
+        "raw_octal": "55322",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 828,
+        "bank": "07",
+        "address": "3621",
+        "physical_fixed_word": 8081,
+        "raw_octal": "15175",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 830,
+        "bank": "07",
+        "address": "3622",
+        "physical_fixed_word": 8082,
+        "raw_octal": "05721",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 831,
+        "bank": "07",
+        "address": "3623",
+        "physical_fixed_word": 8083,
+        "raw_octal": "01210",
+        "native_group": "STALL and continuations"
+      },
+      {
+        "original_line": 842,
+        "bank": "07",
+        "address": "3626",
+        "physical_fixed_word": 8086,
+        "raw_octal": "00074",
+        "native_group": "600MS"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_helpers": {
+      "MAKECADR": "04711"
+    },
+    "compiled_boundaries": {
+      "VARDELAY": "05272",
+      "FIXDELAY": "05267",
+      "SENDPULS": "03016",
+      "ENDIMU": "03514",
+      "ALARM": "05650",
+      "IMUBAD": "03522"
+    },
+    "remaining": [
+      "Actual device-counter consumption/coarse transport",
+      "External JOBSLEEP/VARDELAY/TASKOVER/BAILOUT bodies",
+      "Attitude/R02/standby remaining local groups"
+    ]
+  }
+}

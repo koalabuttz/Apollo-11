@@ -1,0 +1,23 @@
+for mission in 0 1; do for entry in $(seq 0 10); do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DIMUT_MISSION=$mission -DIMUT_ENTRY=$entry tests/test_imu_mode_transfer.c tests/frozen_words.c src/imu_mode_transfer.c src/imu_mode_control.c src/imu_coarse.c src/agc_word.c src/agc_multiword.c tests/imu_mode_transfer_cases.c tests/imu_mode_control_cases.c tests/imu_coarse_cases.c tests/imu_pulse_cases.c -o build/test-imu-mode-transfer-$mission-$entry; build/test-imu-mode-transfer-$mission-$entry; done; done
+32 complete coarse original states + 12 immutable guards mission0 entry0: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry1: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry2: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry3: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry4: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry5: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry6: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry7: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry8: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry9: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry10: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry0: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry1: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry2: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry3: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry4: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry5: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry6: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry7: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry8: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry9: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry10: PASS

@@ -1,0 +1,7 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -DIMU_MODE_TRANSFER_CHECK_ONLY -DIMUT_MISSION=1 -DIMUT_ENTRY=1 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_imu_mode_transfer.c tests/frozen_words.c tools/imu_mode_transfer_diagnostic.c src/imu_mode_transfer.c src/imu_mode_control.c src/imu_coarse.c src/agc_word.c src/agc_multiword.c tests/imu_mode_transfer_cases.c tests/imu_mode_control_cases.c tests/imu_coarse_cases.c tests/imu_pulse_cases.c -Wl,-Map,build/imu-mode-transfer-cm1.map -o build/imu-mode-transfer-cm1.prg
+python tools/imu_mode_transfer_vice_test.py --mission 1 --entry 1 --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice | tee build/imu-mode-transfer-cm1-validation.log
+PASS: VICE PAL C64, 32 complete imu_mode_transfer group original-assembly states; retained memory unchanged
+Mailbox: a500002021
+PRG bytes: 7434
+imu-mode-transfer-cm1-hardware-stack.bin: measured stack extent 20 bytes
+imu-mode-transfer-cm1-software-stack.bin: measured stack extent 103 bytes

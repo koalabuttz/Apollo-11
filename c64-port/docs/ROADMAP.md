@@ -1504,3 +1504,7 @@ Compose actual PRIOCHNG and JOBSLEEP basic and interpreter context exchanges thr
 ## Translate original LM idle adoption and pending job controls
 
 Translate literal ADVAN NUCHANG2 NUDIRECT and source BASIC INTRSM SELFRET transfers against16384 complete original strict sanitizer states and64 C64 checkpoints preserving the actual pending NEWJOB value and source polling locations. See `docs/LM-IDLE-DISPATCH.md`.
+
+## Translate original IMU stall and control transfers
+
+Translate eleven source IMU local transfer bodies per mission including STALL and actual service caller controls against1441792 complete original strict sanitizer states and704 C64 checkpoints with immutable guard cases. See `docs/NATIVE-IMU-MODE-TRANSFER.md`.

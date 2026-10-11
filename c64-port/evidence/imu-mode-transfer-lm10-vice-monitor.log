@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/imu-mode-transfer-lm10.prg from 0801 to 260B (1E0B bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   34/$022,  32/$20
+.C:0f48  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   34478798
+>C:c080  a5 00 00 20  0a                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/imu-mode-transfer-lm10-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/imu-mode-transfer-lm10-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/imu-mode-transfer-lm10-software-stack.bin' from $c100 to $cfff
