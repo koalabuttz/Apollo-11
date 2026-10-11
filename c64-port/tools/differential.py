@@ -446,3 +446,5 @@ subprocess.run([sys.executable,'tools/dsky_charin_reset_differential.py',str(ref
 subprocess.run([sys.executable,'tools/cm_interbank_extended_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_dyndisp_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dsky_charin_alarm_differential.py',str(reference)],cwd=ROOT,check=True)

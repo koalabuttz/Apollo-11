@@ -831,3 +831,7 @@ Fourteen original interbank groups are qualified across 901,120 source-executed 
 ## Translate original Comanche dynamic display numerical caller and callee route
 
 Original DYNDISP, P40CNV85 and S41.1 now compose CDU, matrix and rotation helpers through 27 native stages. All 13,824 complete uninterrupted host source states match strict and full sanitizer output; 68 frozen caller transitions pass on C64. Noun85 display formatting and live Executive scheduling remain separate integration work. See `docs/COMANCHE-DYNDISP-NUMERICS.md`.
+
+## Translate original Luminary and Comanche invalid keyboard alarms
+
+Actual CHARALRM and FALTON behavior, octal8/9 rejection and blocked negative-count editing match 8,192 complete original states under strict and full sanitizer comparison. All64 frozen complete states pass on C64. Wider Pinball continuation composition remains ongoing. See `docs/DSKY-INVALID-KEY.md`.

@@ -642,3 +642,5 @@ prepare-cm-original-rope: | build
 cm-fixed-compat-differential cm-interbank-extended-differential: prepare-cm-original-rope
 
 include tools/cm_dyndisp_port.mk
+
+include tools/dsky_charin_alarm.mk
