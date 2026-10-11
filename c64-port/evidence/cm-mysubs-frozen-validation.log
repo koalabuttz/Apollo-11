@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_mysubs.c tests/frozen_words.c src/cm_mysubs.c src/agc_word.c src/agc_multiword.c tests/cm_mysubs_cases.c -o build/test-cm-mysubs
+build/test-cm-mysubs
+128 complete2048-word original CM SMALLMP/DPADD numerical/full-return states: PASS

@@ -970,3 +970,7 @@ Both original scalar sine/cosine files, both noun-table reader files and five me
 ## Port canonical Luminary ENDOFJOB register and resume effects
 
 All 16384 whole original-image ENDOFJOB states match native and sanitized outputs through actual basic, interpreted and idle resume entries; 64 real C64 state checks pass. See `docs/LM-BASIC-FINISH.md`.
+
+## Complete original Comanche SMALLMP and DPADD routines
+
+All original MYSUBS words, signed-zero and overflow paths, actual returns and four scalar aliases are mapped; 294912 whole original states match native and sanitizer outputs, and 128 C64 state checks pass. See `docs/COMANCHE-MYSUBS.md`.

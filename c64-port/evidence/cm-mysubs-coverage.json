@@ -1,0 +1,47 @@
+{
+  "source_file": "Comanche055/MYSUBS.agc",
+  "source_sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+  "reviewed_all_source_paths": true,
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "public_entries": [
+    "SMALLMP",
+    "DPADD",
+    "SPCOS1",
+    "SPCOS2",
+    "SPSIN1",
+    "SPSIN2"
+  ],
+  "internal_paths": [
+    "TSK",
+    "DPADD+",
+    "DPADD-",
+    "DPADD2+"
+  ],
+  "native_services": [
+    "cm_smallmp",
+    "cm_dpadd",
+    "cm_mysubs_return",
+    "cm_single_trig",
+    "cm_single_return"
+  ],
+  "all35_emitted_words_independently_executed": true,
+  "evidence": {
+    "source_to_native_map": {
+      "path": "docs/COMANCHE-MYSUBS.md",
+      "sha256": "3b9e00c89a5038b3811cb1ac6ce3088b964e6043ebd5ef17d8cda671523d0fe2"
+    },
+    "independent_assembly_comparison": {
+      "path": "evidence/cm-mysubs-proof.json",
+      "sha256": "940e54bb21270ba4dbc39c46f694578560c720e84533969f68090923738c9603"
+    },
+    "host_and_sanitizer_results": {
+      "path": "evidence/cm-mysubs-validation.log",
+      "sha256": "6305e82237263358c78d83f984ccc187edf9ab9328c5e28173d59a692d8d1bba"
+    },
+    "c64_execution_results": {
+      "path": "evidence/cm-mysubs-proof.json",
+      "sha256": "940e54bb21270ba4dbc39c46f694578560c720e84533969f68090923738c9603"
+    }
+  },
+  "integrated_application_complete": false
+}

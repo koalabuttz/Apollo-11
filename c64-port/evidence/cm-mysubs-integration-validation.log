@@ -1,0 +1,5 @@
+./build/test-cm-mysubs
+128 complete2048-word original CM SMALLMP/DPADD numerical/full-return states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_mysubs.c tests/frozen_words.c src/cm_mysubs.c src/agc_word.c src/agc_multiword.c tests/cm_mysubs_cases.c -o build/test-cm-mysubs-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-mysubs-port-sanitize
+128 complete2048-word original CM SMALLMP/DPADD numerical/full-return states: PASS

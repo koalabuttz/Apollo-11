@@ -1,0 +1,275 @@
+{
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_file": "Comanche055/MYSUBS.agc",
+  "source_audit": {
+    "original_source": "Comanche055/MYSUBS.agc",
+    "original_sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+    "assembled_source_sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+    "source_edits": 0,
+    "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+    "pinned_support_fixture": "deps/cm-trig-fixture"
+  },
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "calls": 147456,
+  "complete_states": 294912,
+  "raw16bit_A_cases_per_entry": 65536,
+  "targeted_raw_edge_cases_per_entry": 8192,
+  "fixed_saved_Q_addresses_per_entry": 3072,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/cm-mysubs-complete.snapshots.gz",
+      "sha256": "c58c2195e3a66cdde01a15e953d6b067facd1b957c3baf3e64fdaafcedebfe35"
+    },
+    "native": {
+      "object": "evidence/cm-mysubs-complete.snapshots.gz",
+      "sha256": "c58c2195e3a66cdde01a15e953d6b067facd1b957c3baf3e64fdaafcedebfe35"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/cm-mysubs-complete.snapshots.gz",
+      "sha256": "c58c2195e3a66cdde01a15e953d6b067facd1b957c3baf3e64fdaafcedebfe35"
+    }
+  },
+  "whole_strict_and_sanitizer_streams_match": true,
+  "all35_emitted_source_words_executed": true,
+  "source_path_visits": [
+    {
+      "source_PC_octal": "2042",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2043",
+      "visits": 36864,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2044",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2045",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2046",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2047",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2050",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2051",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2052",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2053",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2054",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2055",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2056",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2057",
+      "visits": 36842,
+      "first_case": 126
+    },
+    {
+      "source_PC_octal": "2060",
+      "visits": 18265,
+      "first_case": 126
+    },
+    {
+      "source_PC_octal": "2061",
+      "visits": 152,
+      "first_case": 65604
+    },
+    {
+      "source_PC_octal": "2062",
+      "visits": 18243,
+      "first_case": 16638
+    },
+    {
+      "source_PC_octal": "2063",
+      "visits": 334,
+      "first_case": 65604
+    },
+    {
+      "source_PC_octal": "2064",
+      "visits": 158,
+      "first_case": 66052
+    },
+    {
+      "source_PC_octal": "2065",
+      "visits": 12,
+      "first_case": 65604
+    },
+    {
+      "source_PC_octal": "2066",
+      "visits": 146,
+      "first_case": 66132
+    },
+    {
+      "source_PC_octal": "2067",
+      "visits": 176,
+      "first_case": 65604
+    },
+    {
+      "source_PC_octal": "2070",
+      "visits": 176,
+      "first_case": 65604
+    },
+    {
+      "source_PC_octal": "2071",
+      "visits": 176,
+      "first_case": 65604
+    },
+    {
+      "source_PC_octal": "2072",
+      "visits": 36842,
+      "first_case": 126
+    },
+    {
+      "source_PC_octal": "2073",
+      "visits": 73728,
+      "first_case": 0
+    },
+    {
+      "source_PC_octal": "2074",
+      "visits": 18265,
+      "first_case": 126
+    },
+    {
+      "source_PC_octal": "2075",
+      "visits": 18265,
+      "first_case": 126
+    },
+    {
+      "source_PC_octal": "2076",
+      "visits": 18243,
+      "first_case": 16638
+    },
+    {
+      "source_PC_octal": "2077",
+      "visits": 18243,
+      "first_case": 16638
+    },
+    {
+      "source_PC_octal": "2100",
+      "visits": 18243,
+      "first_case": 16638
+    },
+    {
+      "source_PC_octal": "2101",
+      "visits": 158,
+      "first_case": 66052
+    },
+    {
+      "source_PC_octal": "2102",
+      "visits": 158,
+      "first_case": 66052
+    },
+    {
+      "source_PC_octal": "2103",
+      "visits": 158,
+      "first_case": 66052
+    },
+    {
+      "source_PC_octal": "2104",
+      "visits": 158,
+      "first_case": 66052
+    }
+  ],
+  "alias_numerical_dependency": {
+    "path": "evidence/cm-trig-proof.json",
+    "sha256": "8f6cc5b3e0e48db0720cfc22b7c9219a259e1351e5bb18aab5dea6fdedd0900c",
+    "source_aliases": {
+      "SPCOS1": "SPCOS",
+      "SPCOS2": "SPCOS",
+      "SPSIN1": "SPSIN",
+      "SPSIN2": "SPSIN"
+    }
+  },
+  "target_images": [
+    {
+      "selector": 0,
+      "states": 32,
+      "mode": "numerical",
+      "mailbox": "a500002000",
+      "prg_bytes": 5044,
+      "loaded_end_hex": "0x3bb3",
+      "hardware_stack_bytes": 17,
+      "software_stack_bytes": 49,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 1,
+      "states": 32,
+      "mode": "numerical",
+      "mailbox": "a500002001",
+      "prg_bytes": 4781,
+      "loaded_end_hex": "0x3aac",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 47,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 2,
+      "states": 32,
+      "mode": "numerical_plus_actual_return",
+      "mailbox": "a500002002",
+      "prg_bytes": 5203,
+      "loaded_end_hex": "0x3c52",
+      "hardware_stack_bytes": 17,
+      "software_stack_bytes": 51,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 3,
+      "states": 32,
+      "mode": "numerical_plus_actual_return",
+      "mailbox": "a500002003",
+      "prg_bytes": 4868,
+      "loaded_end_hex": "0x3b03",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 49,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "input_binding": "Actual21,2042/2054 bank21E6; physicalKMPAC03110/11 KMPTEMP03112; raw16-bitA/L",
+  "continuation": "TCQ02053/02073 retained until explicit fixed-code saved return, PC=savedQ/Q3; samecanonicalowner and noExecutivecheck",
+  "scope": "Whole original MYSUBS numerical and fixed-code return paths plus exactSP aliases; complete residentApolloapplicationsstillincomplete",
+  "alias_return_dependency": {
+    "path": "evidence/cm-single-return-proof.json",
+    "sha256": "6ab9d7a1b700592a38dc64b2a7c416cd64d2004a23771eb8909f0974c9aa3a80"
+  }
+}
