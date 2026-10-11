@@ -804,3 +804,7 @@ The actual GOSLEEPS, JOBWAKE, XCHTOEND/XCHSLEEP and JOBSLEEP sequence now matche
 ## Close original Comanche powered flight numerical and fixed return groups
 
 The remaining SMCDURES, legacy NBSM, original QUICTRIG return and all-bank RVQ groups now have source-exact native C proofs. Seven cumulative packets compare 2,187,264 full source/native/sanitized states and 1,600 C64 states across 50 diagnostic PRGs. All 187 emitted source words, including five mixed-file constants, are mapped; whole-file inventory certification awaits independent review. See `docs/COMANCHE-POWERED-FLIGHT.md`.
+
+## Translate canonical Luminary CHANG2 to genuine basic and interpreter returns
+
+The source CHANG2 helper matches 16,384 complete 2052-word source/native/sanitized transitions and 64 complete disk-backed C64 checkpoints. Transactional invalid-entry guards are verified. Scheduler action adoption and live multijob integration remain separate work. See `docs/LM-INTERPRETER-CHANGE.md`.

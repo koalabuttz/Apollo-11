@@ -600,3 +600,10 @@ include tools/cm_nbsm_port.mk
 include tools/cm_powered_quick_port.mk
 
 include tools/cm_powered_fixed_return_port.mk
+
+include tools/lm_interpreter_change.mk
+all: build/test-lm-interpreter-change
+build/test-lm-interpreter-change: $(LM_INTERPRETER_CHANGE_CORE) $(LM_INTERPRETER_CHANGE_TEST) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
+test: test-lm-interpreter-change
+sanitize: sanitize-lm-interpreter-change
