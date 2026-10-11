@@ -1,0 +1,43 @@
+{
+  "correction": "explicit agc_word cast of positive-priority diminished result; implicit assignment already did same conversion. No numerical/control algorithm change. Original strict-Wconversion compilation rejected missing explicit cast.",
+  "original_frozen_source_sha256": "29c1a5e6b0f9a270c7d41c308aa251e4134f62cf3638786b11788ce7a0faeeae",
+  "corrected_source_sha256": "f948fa6faa3c753cab066b3c25bfb3471a0d6ae22113abd7b2c5edc915c36036",
+  "original_ledger_sha256": "93578e65fe8440b87bc20154d0102b8f16d1ed5cf99040dc9a45bc2a2b3d8779",
+  "original_allowlist_sha256": "1e32f5dcb2e26660ae4b5c724c6d85ca4dd16bcecd37565399615008575d35e5",
+  "strict_and_full_san": [
+    {
+      "role": "native",
+      "complete_states": 12288,
+      "bytes": 50749440,
+      "source_stream_sha256": "90bbea0c97f7ea7a81f19adb70c581804da25b82c36205e9f784d0bb9fdafbb9"
+    },
+    {
+      "role": "sanitize",
+      "complete_states": 12288,
+      "bytes": 50749440,
+      "source_stream_sha256": "90bbea0c97f7ea7a81f19adb70c581804da25b82c36205e9f784d0bb9fdafbb9"
+    }
+  ],
+  "fresh_c64_payload_identity_checks": [
+    {
+      "rebuilt_payload": "build/cm-scan-zero-243.prg",
+      "previous_actual_c64_payload": "evidence/cm-scan-zero-243.prg",
+      "sha256": "fa1917c64df0877dca3266e541212137de0ba4a972859ad3e8b5d29ade9c615d",
+      "byte_identical": true
+    },
+    {
+      "rebuilt_payload": "build/cm-scan-zero-254.prg",
+      "previous_actual_c64_payload": "evidence/cm-scan-zero-254.prg",
+      "sha256": "23949649e5a3ff8fcaa9e7bf50eadf63fd45dcd6b389be2fbb815ed9756c2a8b",
+      "byte_identical": true
+    },
+    {
+      "rebuilt_payload": "build/cm-scan-zero-255.prg",
+      "previous_actual_c64_payload": "evidence/cm-scan-zero-255.prg",
+      "sha256": "a927c15044f7e32f6abd29dceb3eff31e3b516867f9e73d3de0ae2ac2ea5dc20",
+      "byte_identical": true
+    }
+  ],
+  "actual_c64_verdict_unchanged": "a500004800",
+  "scope": "additive source/compiler bookkeeping correction. Historical source/ledger/allowlist retained byte-identically, every original state and actual target artifact identity unchanged. Run historical exporter only with its retained original source; this additive script validates corrected source without rewriting historical ledger."
+}

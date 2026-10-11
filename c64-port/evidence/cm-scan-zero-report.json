@@ -1,0 +1,40 @@
+{
+  "actual_executed_source_states": 12288,
+  "source_stream_sha256": "90bbea0c97f7ea7a81f19adb70c581804da25b82c36205e9f784d0bb9fdafbb9",
+  "target_contexts": 72,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004800",
+  "software_stack_bytes": 713,
+  "modules": [
+    {
+      "id": 243,
+      "filename": "G243",
+      "byte_count": 13545,
+      "crc16": 981,
+      "sha256": "fa1917c64df0877dca3266e541212137de0ba4a972859ad3e8b5d29ade9c615d",
+      "prg": "cm-scan-zero-243.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 3177,
+      "crc16": 52169,
+      "sha256": "23949649e5a3ff8fcaa9e7bf50eadf63fd45dcd6b389be2fbb815ed9756c2a8b",
+      "prg": "cm-scan-zero-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10209,
+      "crc16": 54852,
+      "sha256": "a927c15044f7e32f6abd29dceb3eff31e3b516867f9e73d3de0ae2ac2ea5dc20",
+      "prg": "cm-scan-zero-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual END/JOBSLEEP/PRIOCHNG zero-candidate scan, genuine CCSHOLE or ordinary source-selected transfer; selected application/alarm bodies are authentic separate continuations"
+}

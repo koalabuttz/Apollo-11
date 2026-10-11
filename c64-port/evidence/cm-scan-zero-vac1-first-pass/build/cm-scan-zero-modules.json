@@ -1,0 +1,29 @@
+[
+  {
+    "id": 243,
+    "filename": "G243",
+    "byte_count": 13545,
+    "crc16": 981,
+    "sha256": "fa1917c64df0877dca3266e541212137de0ba4a972859ad3e8b5d29ade9c615d",
+    "prg": "cm-scan-zero-243.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 2603,
+    "crc16": 19777,
+    "sha256": "a2c289709edeca9ecb6690f4d0c9ffcd15d3ff699fc07fc7079d133a5fe0bd88",
+    "prg": "cm-scan-zero-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10209,
+    "crc16": 42810,
+    "sha256": "3826b9eef22d14275c5e71c0560d3bf05b85af0ed54dae57cfc4342977aa86dc",
+    "prg": "cm-scan-zero-255.prg",
+    "native_control": false
+  }
+]

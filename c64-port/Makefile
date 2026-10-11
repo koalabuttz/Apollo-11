@@ -1005,3 +1005,6 @@ sanitize: sanitize-sband-scalar
 
 include tools/cm_super_dispatch.mk
 all: build/cm-super-dispatch-native
+
+include tools/cm_scan_zero.mk
+all: build/cm-scan-zero-native

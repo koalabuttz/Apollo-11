@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-scan-zero-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-scan-zero-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-SCAN-ZERO.PRG' as `RESIDENT' to unit 8
+writing file `CM-SCAN-ZERO-243.PRG' as `G243' to unit 8
+writing file `CM-SCAN-ZERO-254.PRG' as `G254' to unit 8
+writing file `CM-SCAN-ZERO-255.PRG' as `G255' to unit 8
+243 13545 loaded bytes
+254 3177 loaded bytes
+255 10209 loaded bytes

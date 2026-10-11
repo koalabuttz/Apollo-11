@@ -1,0 +1,5 @@
+evidence/cm-scan-zero-strict-cast-original.c: In function ‘cm_scan_zero’:
+evidence/cm-scan-zero-strict-cast-original.c:40:91: error: conversion from ‘unsigned int’ to ‘agc_word’ {aka ‘short unsigned int’} may change value [-Werror=conversion]
+   40 |  for(i=1;i<hole;++i){agc_word priority=w[0167u+i*12u];if(priority&&priority<040000u){buf2=priority-1u;if(buf2>highest){highest=buf2;buf1=agc_negate(buf2);buf0=calls[i-1u];q=03223;}else q=03216;}}
+      |                                                                                           ^~~~~~~~
+cc1: all warnings being treated as errors

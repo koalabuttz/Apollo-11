@@ -1,0 +1,166 @@
+{
+  "scope": "successful initial VAC1-only source/fullSAN/stockC64 test, retained before expanding source-active ownership to NOVAC and all fiveVAC bases; no failed verdict",
+  "original_source_stream_sha256": "a68efff6e6511723432b61cd56974c1e21f384a3819a7491c09b1a53ec9bf729",
+  "files": [
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/tests/cm_scan_zero_cases.c",
+      "sha256": "385ce218cdddc08ad960bb138add37d09aa685cc4bf52e5dbafed289a85f1c03"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/tests/cm_scan_zero_vectors.h",
+      "sha256": "6bb20865c5a6e838e5dc47fb4542bcb70de2aa8083f78a8ba3d58ebee6e3df1f"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/platform/c64/cm_scan_zero_binding.h",
+      "sha256": "9da2db1695716a1ac3d04363e31fa28222810fe944509ead7512ecb07f2cd0ac"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-native.stream.json",
+      "sha256": "0f1dc7e9b1fd8e4582e2506adf2ce11468b9ae9b5fd4a2553792365be5e5d9f8"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-sanitize-validation.log",
+      "sha256": "db0cfe5efc5be8498fa83e0d81512641196e0c0ae6e164d9a5ac676d44fc0780"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-native",
+      "sha256": "1fe8c3843a49017520ae2c8642f2c7330d60b92bb24500a814bac47b4f801849"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-vice-shared.bin",
+      "sha256": "c846df26a165b26ae28d6bfa4a78b33c1a26bcada65e1e5c50fa7158c4768c78"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-vice-monitor.log",
+      "sha256": "16a5f6e46cf14e1930c3872a42b9a6e5ccd952bebf893f53712b9f567e386605"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-255.prg.elf",
+      "sha256": "33babc79140929c5779c396847e841a5bdc840331db3529fe1ac8aeb8e1e5a2d"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-native.snapshots.bin.gz",
+      "sha256": "22369dcfdbe032832528e74c3e0c0906ff5d5c1eb34c4d87179512ba1e040a18"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-vice.log",
+      "sha256": "9dcc7fee25c5577796edc489f5eb0fc37e27316bd3ee68cb1390f7e2366a8730"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero.map",
+      "sha256": "e6f69acf18d6a9b22e0c89a9e7e67d3b12f5fa11f5fdc2c15be841407e1460d3"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-final-source-sample.bin",
+      "sha256": "c846df26a165b26ae28d6bfa4a78b33c1a26bcada65e1e5c50fa7158c4768c78"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero.prg",
+      "sha256": "064790d22285e7712af2c0dde071aa572c1a0f42807e7d899ddc4d1acbbe948e"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-vice-mailbox.bin",
+      "sha256": "7388eafbb6be426ea6e5db2c96063b5fa7f007a5750eeec178f01944e4c3b03d"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-validation.log",
+      "sha256": "bda74fa5eb9eecc60886593c1ce707624c85db669a6f6ea812fec9ea0b1692d6"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-254.map",
+      "sha256": "133e67471141e72ffd854b347f1b4936215dcd652af8d700821b6cc3d73e27c3"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-native.trace",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-255.prg",
+      "sha256": "3826b9eef22d14275c5e71c0560d3bf05b85af0ed54dae57cfc4342977aa86dc"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-sanitize",
+      "sha256": "87070f5bd6983d0b1312de614b3cfcbe85a14933f09a4d61a19794a197d99868"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-reference",
+      "sha256": "2a08451b01db531254a50c1eec027383f9089d305c795ce0469ce4f6249e180c"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-243.map",
+      "sha256": "638b947dab341601ec9d268a35ca88315176e15c4bd98213b8359c61987e762c"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-vice.mon",
+      "sha256": "f98b6b20f3f8bc226d1c36fb251d9a892ae7f7357e7bedd2373a5217818ed43f"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-254.prg.elf",
+      "sha256": "02c1f995084d7c56e41352914533f1fbb1a41d0f38e86c680a971cc3b6be2809"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-proof.json",
+      "sha256": "cb6ff5144e23c379df49dffbbaa5748a5a9c52e34aa8b7b5827d0ea545737d27"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-vice-stack.bin",
+      "sha256": "4fce4326d012cacbfa8f01274a3f5b3b02cccd8a52e649f3eb43981ab75d340e"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero.prg.elf",
+      "sha256": "d9a1981a5b0a695b045fe50b9af70ce0aa4e34fa65d72dfc8345c3c8368595e4"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-modules.json",
+      "sha256": "72e69aaefc9a9c050d3177d7efa2707b6a17a96f3280e2054476ec4de355e9b2"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-255.map",
+      "sha256": "521adf4db8217cc5b9c46b5c69b337c92793570cd4b66b5a5a3983e6b300ae25"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-254.prg",
+      "sha256": "a2c289709edeca9ecb6690f4d0c9ffcd15d3ff699fc07fc7079d133a5fe0bd88"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-243.prg.elf",
+      "sha256": "09e4d33e1e03335c0d5b498782e1a0cb798a80bbe18593a064a872bbf193c077"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-freeze.log",
+      "sha256": "57d212911b42cbe2f72d4d47e81f3f075001abc60a4fa2f8af54e526dc518fe3"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero.d64",
+      "sha256": "86006469e17064d2a25aeab05f8401029457b8f8f993c6d9e5848ed3a11e3f93"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-243.prg",
+      "sha256": "fa1917c64df0877dca3266e541212137de0ba4a972859ad3e8b5d29ade9c615d"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-c64-result.log",
+      "sha256": "aef05aac700722c26e795a19ebc91b66c6af5ac716f30add77f423585b15cec0"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-build-validation.log",
+      "sha256": "14d248f35cf7bee1574d485fd006bc432ad16cf5fa154081faff7cefb5668542"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-reference.stream.json",
+      "sha256": "0f1dc7e9b1fd8e4582e2506adf2ce11468b9ae9b5fd4a2553792365be5e5d9f8"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-reference.trace",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm-scan-zero-reference.snapshots.bin.gz",
+      "sha256": "22369dcfdbe032832528e74c3e0c0906ff5d5c1eb34c4d87179512ba1e040a18"
+    },
+    {
+      "path": "evidence/cm-scan-zero-vac1-first-pass/build/cm_scan_zero_modules.h",
+      "sha256": "4230d4c5183cf4d725cf3d8d902fb4454a4db9cf08d74a5ab5a4cb73224de2e4"
+    }
+  ]
+}
