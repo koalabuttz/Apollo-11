@@ -1,0 +1,5 @@
+./build/test-cm-interbank
+7168 original CM interbank full states and guards: PASS
+cc -Iinclude -Itests -DAPOLLO_FIXED_CM_ONLY -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_interbank.c src/fixed_data.c src/cm_native_image.c src/cm_waitlist.c src/agc_word.c tests/cm_interbank_cases.c tests/cm_waitlist_image_cases.c tests/cm_interbank_check.c tests/test_cm_interbank.c -o build/test-cm-interbank-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-interbank-sanitize
+7168 original CM interbank full states and guards: PASS

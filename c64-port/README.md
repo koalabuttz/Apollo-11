@@ -782,3 +782,7 @@ The retained NVWORD=0 CLOKTASK cohort updates TBASE and reschedules; it does not
 ## Translate actual DELCOMP helpers for both mission attitude domains
 
 Both original DELCOMP routines match 10,240 complete canonical states and full sanitizer output through actual source RVQ, including bank and editing-word effects. Stock-ROM C64 validates 320 complete states. Containing attitude and angle files remain partial; whole gimbal compositions are being qualified separately. See `docs/DELCOMP.md`.
+
+## Translate actual Comanche inter-bank source control and returns
+
+Native Comanche inter-bank call and return entries preserve 7,168 original whole-image states. Strict and sanitizer checks pass; C64 validates 112 fingerprints and two full-state samples. Actual external targets remain typed continuations, with unsupported entries rejected. See `docs/COMANCHE_INTERBANK.md`.

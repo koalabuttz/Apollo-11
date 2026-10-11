@@ -406,3 +406,5 @@ subprocess.run([sys.executable,'tools/cm_charin_nv_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/cm_waitlist_extended_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/delcomp_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_interbank_differential.py',str(reference)],cwd=ROOT,check=True)

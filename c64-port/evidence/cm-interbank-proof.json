@@ -1,0 +1,35 @@
+{
+  "cases": 7168,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entries": [
+    "BANKCALL",
+    "SWCALL",
+    "SWRETURN",
+    "POSTJUMP",
+    "BANKJUMP",
+    "MAKECADR",
+    "SUPDACAL",
+    "IBNKCALL",
+    "ISWCALL",
+    "ISWRETRN",
+    "USPRCADR",
+    "SUPERSW",
+    "Q+10000",
+    "PRIO12"
+  ],
+  "boundaries": [
+    "actual compiled target",
+    "actual source return"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "24ccdc52b0a11ec6fba29668131e2f8763e32b86fe015aa876adcbbe3f46211f",
+  "data_scope": "certified immutable fixed spans; all100 CM NNTYPTAB words directly exercised"
+}
