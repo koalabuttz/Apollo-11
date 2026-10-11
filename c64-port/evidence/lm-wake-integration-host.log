@@ -1,0 +1,5 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_wake.c tests/lm_wake_check.c src/agc_word.c src/lm_basic_wake.c src/executive.c tests/throttle_bridge_cases.c tests/lm_wake_cases.c -o build/test-lm-wake
+build/test-lm-wake
+64 complete JOBWAKE images and20 invalid boundaries: PASS
+make: Leaving directory '/workspace/Apollo-11/c64-port'

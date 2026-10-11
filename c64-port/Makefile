@@ -457,3 +457,5 @@ include tools/cm_entry_tasks.mk
 include tools/runtime_regodspr.mk
 
 include tools/runtime_fetch.mk
+
+include tools/lm_wake.mk

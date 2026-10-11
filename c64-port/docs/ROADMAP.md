@@ -540,3 +540,7 @@ Actual REGODSPR NOVAC admission preserves or replaces the original pending prior
 ## Port actual throttle after-poll continuation fetch
 
 The original NEWOPS and LOC03507/03510 fetch routes resume THROTTLE+3 with exact CYR and control debris. All 8192 complete source states and sanitizer snapshots match; 64 native C64 cases pass. See `docs/P66-RUNTIME-FETCH.md`.
+
+## Port canonical LM JOBWAKE source effects
+
+The original JOBWAKE service preserves raw L, bank and scheduling effects in 8192 complete source states, including first wake, no match and both signed zeros. Strict host, sanitizer and 64 C64 comparisons pass. See `docs/LM-BASIC-WAKE.md`.
