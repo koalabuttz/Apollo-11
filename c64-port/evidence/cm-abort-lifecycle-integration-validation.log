@@ -1,0 +1,46 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_abort_lifecycle_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original uninterrupted abort lifecycle, complete image/all13 latches/ISR
+{
+  "cases": 1536,
+  "checkpoints": 14848,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "BAILOUT7755/POODOO5721/CCSHOLE5747",
+    "VAC5STOR\u2192SWRETURN\u2192BORTENT",
+    "V37FLBIT/threeDOWNFLAG/MR.KLEAN",
+    "WHIMPER\u2192RESUME\u2192POSTJUMP",
+    "ENEMA\u2192actualMMDSPLAY/PTBAD/DOFSTART"
+  ],
+  "context_cohorts": "512 legal original ENEMA input cohorts \u00d73 actualabort entries, source FAILREG+0 baseline and V37 both branches, actual Executive alarm producers, ISR0/1; uninterrupted7/8/14 checkpoint paths",
+  "binary_bytes": 61351936,
+  "snapshot_sha256": "202dbbcf4cdf746728cfcc39326237684f15e9ddb6cd7ec904297dcba34a12cb",
+  "binary_record_format": "2066littleendian uint16: case low/high,phase,status,2048 physical words,13 cm_native_io latches and ISR",
+  "scope": "actual uninterrupted abort snapshot/alarm/flag/phase/WHIMPER/ENEMA chain through genuine selected program frontier; following selected application body remains separate"
+}
+cc -Iinclude -Itests -DCM_RESTART_INPUT_ONLY -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_abort_lifecycle.c src/cm_abort_snapshot.c src/cm_vac5_store.c src/cm_alarm_record.c src/cm_abort_recovery.c src/cm_abort_whimper.c src/cm_enema_image.c src/cm_enema.c src/cm_restart.c src/service_routines.c src/cm_phase_cleanup.c src/cm_interbank_extended.c src/cm_fixed_compat.c src/cm_native_image.c src/agc_word.c src/cm_executive.c src/cm_waitlist.c tests/cm_abort_lifecycle_cases.c tests/cm_enema_image_cases.c tests/cm_enema_cases.c tests/cm_restart_cases.c platform/host/cm_abort_lifecycle_snapshot.c -o build/cm-abort-lifecycle-sanitize
+python3 tools/cm_abort_lifecycle_sanitize.py
+PASS: full ASAN/UBSAN uninterrupted abort lifecycle corpus, all14848 actual source states

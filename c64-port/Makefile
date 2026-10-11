@@ -820,3 +820,6 @@ include tools/dsky_request_control.mk
 include tools/dsky_decimal_select_integration.mk
 
 include tools/dsky_operator_request.mk
+
+include tools/cm_abort_lifecycle.mk
+all: build/cm-abort-lifecycle-native

@@ -550,3 +550,5 @@ subprocess.run([sys.executable,'tools/dsky_request_control_differential.py',str(
 subprocess.run([sys.executable,'tools/dsky_decimal_select_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_operator_request_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_abort_lifecycle_differential.py',str(reference)],cwd=ROOT,check=True)
