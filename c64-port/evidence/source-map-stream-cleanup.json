@@ -1,0 +1,104 @@
+[
+  {
+    "removed": "build/cm-powered-trig-complete.snapshots.xz",
+    "retained": "evidence/cm-powered-trig-complete.snapshots.xz",
+    "decoded_sha256": "f6adc3115163b9f79414a2089b6effdf32eea18913e26cfbbd559185435d3114",
+    "bytes": 15364304
+  },
+  {
+    "removed": "build/cm-powered-trig-sanitize.snapshots.gz",
+    "retained": "evidence/cm-powered-trig-complete.snapshots.xz",
+    "decoded_sha256": "f6adc3115163b9f79414a2089b6effdf32eea18913e26cfbbd559185435d3114",
+    "bytes": 44178237
+  },
+  {
+    "removed": "build/cm-powered-trig-reference.snapshots.gz",
+    "retained": "evidence/cm-powered-trig-complete.snapshots.xz",
+    "decoded_sha256": "f6adc3115163b9f79414a2089b6effdf32eea18913e26cfbbd559185435d3114",
+    "bytes": 44178237
+  },
+  {
+    "removed": "build/cm-powered-trig-native.snapshots.gz",
+    "retained": "evidence/cm-powered-trig-complete.snapshots.xz",
+    "decoded_sha256": "f6adc3115163b9f79414a2089b6effdf32eea18913e26cfbbd559185435d3114",
+    "bytes": 44178237
+  },
+  {
+    "removed": "build/cm-powered-axis-reference.snapshots.gz",
+    "retained": "evidence/cm-powered-axis-complete.snapshots.xz",
+    "decoded_sha256": "8242dc90fdc411a703e2dea2ccb0eafbce1b46d3a1ac6f3e4413ada942e73fa6",
+    "bytes": 10257645
+  },
+  {
+    "removed": "build/cm-powered-axis-complete.snapshots.xz",
+    "retained": "evidence/cm-powered-axis-complete.snapshots.xz",
+    "decoded_sha256": "8242dc90fdc411a703e2dea2ccb0eafbce1b46d3a1ac6f3e4413ada942e73fa6",
+    "bytes": 4998948
+  },
+  {
+    "removed": "build/cm-powered-axis-sanitize.snapshots.gz",
+    "retained": "evidence/cm-powered-axis-complete.snapshots.xz",
+    "decoded_sha256": "8242dc90fdc411a703e2dea2ccb0eafbce1b46d3a1ac6f3e4413ada942e73fa6",
+    "bytes": 10257645
+  },
+  {
+    "removed": "build/cm-powered-axis-native.snapshots.gz",
+    "retained": "evidence/cm-powered-axis-complete.snapshots.xz",
+    "decoded_sha256": "8242dc90fdc411a703e2dea2ccb0eafbce1b46d3a1ac6f3e4413ada942e73fa6",
+    "bytes": 10257645
+  },
+  {
+    "removed": "build/cm-powered-interface-sanitize.snapshots.gz",
+    "retained": "evidence/cm-powered-interface-complete.snapshots.xz",
+    "decoded_sha256": "6e4dcf0daeb1d83abb294a3105fc540fd3d87660ae9dbd88d8a9036e2dd0b33f",
+    "bytes": 63525077
+  },
+  {
+    "removed": "build/cm-powered-interface-reference.snapshots.gz",
+    "retained": "evidence/cm-powered-interface-complete.snapshots.xz",
+    "decoded_sha256": "6e4dcf0daeb1d83abb294a3105fc540fd3d87660ae9dbd88d8a9036e2dd0b33f",
+    "bytes": 63525077
+  },
+  {
+    "removed": "build/cm-powered-interface-complete.snapshots.xz",
+    "retained": "evidence/cm-powered-interface-complete.snapshots.xz",
+    "decoded_sha256": "6e4dcf0daeb1d83abb294a3105fc540fd3d87660ae9dbd88d8a9036e2dd0b33f",
+    "bytes": 26727680
+  },
+  {
+    "removed": "build/cm-powered-interface-native.snapshots.gz",
+    "retained": "evidence/cm-powered-interface-complete.snapshots.xz",
+    "decoded_sha256": "6e4dcf0daeb1d83abb294a3105fc540fd3d87660ae9dbd88d8a9036e2dd0b33f",
+    "bytes": 63525077
+  },
+  {
+    "removed": "build/cm-mysubs-reference.snapshots.gz",
+    "retained": "evidence/cm-mysubs-complete.snapshots.gz",
+    "decoded_sha256": "c58c2195e3a66cdde01a15e953d6b067facd1b957c3baf3e64fdaafcedebfe35",
+    "bytes": 13873402
+  },
+  {
+    "removed": "build/cm-mysubs-native.snapshots.gz",
+    "retained": "evidence/cm-mysubs-complete.snapshots.gz",
+    "decoded_sha256": "c58c2195e3a66cdde01a15e953d6b067facd1b957c3baf3e64fdaafcedebfe35",
+    "bytes": 13873402
+  },
+  {
+    "removed": "build/cm-mysubs-sanitize.snapshots.gz",
+    "retained": "evidence/cm-mysubs-complete.snapshots.gz",
+    "decoded_sha256": "c58c2195e3a66cdde01a15e953d6b067facd1b957c3baf3e64fdaafcedebfe35",
+    "bytes": 13873402
+  },
+  {
+    "removed": "build/cm-trig-reference.snapshots",
+    "retained": "evidence/cm-trig-complete.snapshots.gz",
+    "decoded_sha256": "95f2750a112ceabad7b48790b9666e90eba250e5542fa02e24e73bce03b22e5f",
+    "bytes": 673121792
+  },
+  {
+    "removed": "build/cm-single-return-reference.snapshots",
+    "retained": "evidence/cm-single-return-reference.snapshots.gz",
+    "decoded_sha256": "09a3b3a38a1065ebe5045d5896b26079aa983f88206e28a9ed651fab0a80b37b",
+    "bytes": 50429952
+  }
+]

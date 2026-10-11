@@ -36,8 +36,8 @@ register SR0. Original CM polynomial return03572 differs from LM03573.
 Run `python3 tools/delcomp_host_test.py` after the original fixed-data and
 gimbal-source fixtures are available. The input-only constructors enumerate
 10240 states: sixteen angles, sixteen raw COF patterns, four overflow flags,
-five VAC bases and both missions, with all eight EBANK selectors, all four
-superbank forms and both source interrupt latch states. Inputs include both
+five VAC bases and both missions, with all eight EBANK selectors, all eight
+superbank latch forms and both source interrupt latch states. Inputs include both
 signed zeros, independent DP signs, overflow-sized and ordinary normalized
 axis directions, two actual fixed return banks and varying unowned words.
 Every source/native/sanitized 2048-word image and both external latches agree
