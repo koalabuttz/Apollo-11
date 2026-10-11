@@ -871,3 +871,7 @@ Actual NOVAC, FINDVAC, SPVAC and SPVACIN success and resource-exhaustion effects
 ## Translate complete original Comanche RCS matrix update job source
 
 All33 emitted words of the RCS matrix update file now map to reviewed native gates, trigonometric calls, angular offset, products, stores, actual END entry and constant. All131,072 complete original states match strict and full sanitizer output; 64 actual C64 states pass. Independent review confirms source behavior; whole containing-file certification follows separately. See `docs/COMANCHE-RCS-MATRIX.md`.
+
+## Complete original Comanche RCS matrix-update source
+
+Independent arithmetic/control review, exact original33-word mapping, complete source/sanitizer comparisons and actual C64 execution certify the containing RCS matrix-update file within its canonical source entry and external END contracts. The inventory has31 complete files (25 native/data/declaration and six comment-only files), with144 source files and both integrated applications still requiring complete acceptance. See `docs/COMANCHE-RCS-MATRIX.md`.

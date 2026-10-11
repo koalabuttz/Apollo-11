@@ -1119,8 +1119,42 @@
       "sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
       "bytes": 2352,
       "lines": 85,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_rcs_matrix.c",
+            "src/cm_quictrig.c",
+            "src/cm_single_return.c"
+          ],
+          "scope": "All33 original containing-source words mapped: two FLAGWRD6 gates, all source trig calls/offset/products/stores, actual ENDOFJOB transfer and QUADANGLconstant. Stops at external ENDOFJOB05217 before native Executive completion. Original RCS job entrybank22,3447 requires E6 and coherentBB,REGZERO0. No arbitrarywrongbank/producercoherence, completeRCSautopilot or eitherfullflight application claimed.",
+          "verification": "docs/COMANCHE-RCS-MATRIX.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "All33 original containing-source words mapped: two FLAGWRD6 gates, all source trig calls/offset/products/stores, actual ENDOFJOB transfer and QUADANGLconstant. Stops at external ENDOFJOB05217 before native Executive completion. Original RCS job entrybank22,3447 requires E6 and coherentBB,REGZERO0. No arbitrarywrongbank/producercoherence, completeRCSautopilot or eitherfullflight application claimed.",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-rcs-matrix-source-map.json",
+            "sha256": "ed21bc702714acb813d64a090caa1503d7dce5238546061809a7a6fcd246b3c1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-rcs-matrix-independent-review.txt",
+            "sha256": "afa1dff575ad162c28c8e53cf8e7445a8003d51d47d71d9241345903311cda26"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-rcs-matrix-proof.json",
+            "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-rcs-matrix-proof.json",
+            "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc",
