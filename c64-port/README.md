@@ -1510,3 +1510,7 @@ Compose actual DSPDC2NR source entry across six positions both missions all SUPE
 ## Compose original generic minutes and seconds display output
 
 Compose actual M/SOUT fresh read clamp SEPSEC SEPMIN signed displays middle blank and source POSTJUMP return against49152 original strict sanitizer checkpoints and192 C64 states. See `docs/DSKY-MINUTES-OUTPUT.md`.
+
+## Translate original IMU mode controls and return continuations
+
+Translate twenty original IMU local bodies per mission and actual source handoffs against2621440 complete original strict sanitizer states and1280 C64 checkpoints preserving asynchronous caller boundaries. See `docs/NATIVE-IMU-MODE-CONTROL.md`.

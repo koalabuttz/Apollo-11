@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete imu_mode_control group original-assembly states; retained memory unchanged
+Mailbox: a50000200c
+PRG bytes: 6694
+imu-mode-control-lm12-hardware-stack.bin: measured stack extent 20 bytes
+imu-mode-control-lm12-software-stack.bin: measured stack extent 85 bytes
