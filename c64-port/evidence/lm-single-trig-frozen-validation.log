@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_single_trig.c tests/frozen_words.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_single_trig_cases.c -o build/test-lm-single-trig
+build/test-lm-single-trig
+128 complete2048-word original LM SPSIN/SPCOS numerical/full-return states: PASS

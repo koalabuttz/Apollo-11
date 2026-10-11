@@ -634,3 +634,7 @@ All three reader algorithms and six tables in each original source file are mapp
 ## Complete original LM and CM memory declarations and layouts
 
 All five declaration source files map original aliases, allocation cursors and emitted metadata into the sole canonical image; independent original-rope checks, sanitizer and C64 execution pass. See `docs/LAYOUT.md`.
+
+## Complete Luminary single-precision sine and cosine source paths
+
+Every raw sixteen-bit input and real source return path is independently qualified across 262144 whole original states; sanitizer and 128 C64 state checks pass. See `docs/LUMINARY-SINGLE-PRECISION.md`.

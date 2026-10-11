@@ -1,0 +1,8 @@
+{
+  "original_source": "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc",
+  "original_sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+  "assembled_source_sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+  "source_edits": 0,
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "pinned_support_fixture": "deps/fixture"
+}

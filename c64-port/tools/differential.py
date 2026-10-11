@@ -346,3 +346,5 @@ subprocess.run([sys.executable,'tools/cm_formatter_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/noun_reader_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/layout_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/lm_single_trig_differential.py',str(reference)],cwd=ROOT,check=True)
