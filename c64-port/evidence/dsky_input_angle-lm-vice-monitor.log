@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_input_angle-lm.prg from 0801 to 31BB (29BB bytes)
+WATCH: 1  C:$51c4  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 51c4)  198/$0c6,  51/$33
+.C:2573  8E C4 51    STX $51C4      - A:40 X:A5 Y:00 SP:f1 N.-....C  152641365
+>C:51c4  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-mailbox.bin' from $51c4 to $51c8
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-difference.bin' from $31bc to $31c3
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-software-stack.bin' from $c100 to $cfff

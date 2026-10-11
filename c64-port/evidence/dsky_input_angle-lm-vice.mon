@@ -1,0 +1,12 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm.prg" 0
+watch store 51c4
+ignore 1 1
+g 080d
+m 51c4 51c8
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-mailbox.bin" 0 51c4 51c8
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-difference.bin" 0 31bc 31c3
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_angle-lm-vice-software-stack.bin" 0 c100 cfff
+quit

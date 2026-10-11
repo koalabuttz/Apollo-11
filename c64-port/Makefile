@@ -1029,3 +1029,5 @@ test: lm-idle-dispatch-port-test
 sanitize: lm-idle-dispatch-port-sanitize
 
 include tools/imu_mode_transfer_integration.mk
+
+include tools/dsky_input_angle.mk

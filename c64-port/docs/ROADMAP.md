@@ -1508,3 +1508,7 @@ Translate literal ADVAN NUCHANG2 NUDIRECT and source BASIC INTRSM SELFRET transf
 ## Translate original IMU stall and control transfers
 
 Translate eleven source IMU local transfer bodies per mission including STALL and actual service caller controls against1441792 complete original strict sanitizer states and704 C64 checkpoints with immutable guard cases. See `docs/NATIVE-IMU-MODE-TRANSFER.md`.
+
+## Translate original operator degree and optics input scaling
+
+Translate actual degree and optical CDU input arithmetic banks and source range alarm handoffs against8192 complete original strict sanitizer states and64 C64 checkpoints. See `docs/DSKY-INPUT-ANGLE.md`.
