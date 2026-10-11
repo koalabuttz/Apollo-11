@@ -662,3 +662,7 @@ Actual continuous SETJTAG, CLOKTASK, SVCT3, WAITLIST, admission and delay paths 
 ## Run real Comanche task services from native C64 disk overlays
 
 The resident and four actual compiled mission/service bodies fit their memory slots; 12 real C64 paths verify58 source checkpoints, three complete source images and both caller interrupt masks. Rebuilding reproduces resident, modules and D64 byte-for-byte. See `docs/COMANCHE_SERVICE_OVERLAY.md`.
+
+## Port original Comanche relay scan and physical display output
+
+All4096 complete original DSPOUTSB and channel10 states match native and sanitized outputs; real C64 checks include actual screen and color RAM. See `docs/COMANCHE-RELAY.md`.

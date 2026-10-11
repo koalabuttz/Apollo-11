@@ -1,0 +1,5 @@
+build/test-cm-relay
+CM relay channel10:64 complete2052-field states and real MODE89 screen, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_relay.c tests/cm_relay_check.c src/agc_word.c src/dsky_relay.c src/dsky_display.c src/cm_relay.c tests/cm_pinball_cases.c tests/cm_relay_cases.c -o build/test-cm-relay-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-relay-sanitize
+CM relay channel10:64 complete2052-field states and real MODE89 screen, 0 failures

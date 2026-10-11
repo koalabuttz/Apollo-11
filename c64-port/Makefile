@@ -511,3 +511,5 @@ include tools/cm_task_interrupt.mk
 include tools/cm_service_loop.mk
 
 include tools/cm_service_overlay.mk
+
+include tools/cm_relay.mk
