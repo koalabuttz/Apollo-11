@@ -910,3 +910,5 @@ test: test-sband-frame
 sanitize: sanitize-sband-frame
 
 include tools/dsky_operator_release.mk
+
+include tools/ephemeris_day_integration.mk

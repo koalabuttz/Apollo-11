@@ -1,0 +1,11 @@
+# Native ephemerides day conversion dependency
+
+`ephemeris_day_divide` translates the original scalar DDV/BDDV body at bank0 PC02353 with CSTODAY already staged in BUF. Luminary's ephemerides caller uses the immutable divisor{020,017260}, representing8640000 centiseconds/day at the original scale. Both mission division bodies are qualified; this does not establish a Comanche ephemerides day-division caller.
+
+The canonical wrapper gathers and commits the existing frozen native double-precision divider's complete arithmetic aliases. Its explicit body-entry contract differs from the original operand-fetch prologue: zero and positive-overflow paths retain normalized incoming rawL, quotient returns Q3, overflow returns Q02413, and zero retains callerQ. Negative overflow retains the source FINALDV L037777. Actual mission DANZIG is the boundary; no pending continuation, device, timer or instruction decoder runs here. ADDRWD is opaque retained caller debris.
+
+All131072 complete2053-word original/strict/full-ASAN/UBSAN states match. Each mission has65536 sampled inputs covering rawL and ordinaryQ sweeps, all8 EB banks, selectedSUPER values, bothIRQ states, triple-word zero/sign/overflow edges and poisoned unowned RAM. IncomingA is fixed at0177 in this cohort and is overwritten by the original initial CS ONE. The cohort is not an exhaustive Cartesian proof. Exact decoded SHA256 is LM77aef043825ce5b54e18883f118a38d2f5a8d2cd03b420c5782bac67a0dcb562 and CM5f445d22fce2dae5334456446dee86657d02b00a95f71eef9a9b00f3834bb253.
+
+Sixty-four lossless source-only vectors pass stock-ROM PAL C64: mailbox a5400000, PRG13847bytes, loaded end$3e16/BSS$5e16, hardware stack24/software224, compilerZP0. Thirteen invalid canonical/mode/divisor cases and null preserve the full image. The public header specifies ordinary RAM/Q, raw16 A/L, MODE+0, exact PC/divisor, coherent bank0 and excluded producers.
+
+Fresh assemblies of both audited interpreter fixtures remain byte-identical to original mission ropes. The surrounding division line/word map is context, including branches not selected by the positive literal divisor; it does not certify the entire interpreter. The original GPL engine remains a host-only independent reference. Both complete ephemerides algorithms remain open.

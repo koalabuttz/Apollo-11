@@ -1354,3 +1354,7 @@ Join actual source unit trigonometric matrix and vector shift continuations agai
 ## Compose original operator release and monitor unsuspension
 
 Qualify8192 complete original native sanitizer states and64 C64 states through actual saved-lock signed-zero skips wake returns and opaque unused Executive data. See `docs/DSKY-OPERATOR-RELEASE.md`.
+
+## Qualify canonical scalar day conversion used by Luminary ephemerides
+
+Translate actual CSTODAY division basic body including source raw register and overflow returns against131072 complete original strict sanitizer states and64 C64 states without changing the frozen general native divider. See `docs/NATIVE-EPHEMERIS-DAY.md`.

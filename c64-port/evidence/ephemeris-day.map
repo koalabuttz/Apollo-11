@@ -1,0 +1,143 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     2da7     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      452     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.ephemeris_day_input)
+     843      843      452     1                 ephemeris_day_input
+     c95      c95      224     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.frozen_words_next)
+     c95      c95      224     1                 frozen_words_next
+     eb9      eb9      7d3     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.ephemeris_day_divide)
+     eb9      eb9      7d3     1                 ephemeris_day_divide
+    168c     168c      dc2     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.p66_dp_divide)
+    168c     168c      dc2     1                 p66_dp_divide
+    244e     244e      10b     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.canonical_positive)
+    244e     244e      10b     1                 canonical_positive
+    2559     2559       f9     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.double_pair)
+    2559     2559       f9     1                 double_pair
+    2652     2652      283     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.ratio)
+    2652     2652      283     1                 ratio
+    28d5     28d5      7a4     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.main)
+    28d5     28d5      7a4     1                 main
+    3079     3079        6     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.exit)
+    3079     3079        6     1                 exit
+    307f     307f       17     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.__lshrsi3)
+    307f     307f       17     1                 __lshrsi3
+    3096     3096      14f     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.__umodsi3)
+    3096     3096      14f     1                 __umodsi3
+    31e5     31e5      2de     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.__divmodsi4)
+    31e5     31e5      2de     1                 __divmodsi4
+    34c3     34c3       34     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.memcpy)
+    34c3     34c3       34     1                 memcpy
+    34f7     34f7       22     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.__memset)
+    34f7     34f7       22     1                 __memset
+    3519     3519       34     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.__mulhi3)
+    3519     3519       34     1                 __mulhi3
+    354d     354d       67     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.text.__mulsi3)
+    354d     354d       67     1                 __mulsi3
+    35b4     35b4        0     1         __init_array_start = .
+    35b4     35b4        0     1         __init_array_end = .
+    35b4     35b4        0     1         __fini_array_start = .
+    35b4     35b4        0     1         __fini_array_end = .
+    35b4     35b4      862     1 .rodata
+    35b4     35b4        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    35b4     35b4        0     1                 __set_v
+    35b5     35b5        8     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.rodata.ephemeris_day_divide)
+    35bd     35bd       46     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.rodata.ephemeris_day_reference_dictionary)
+    35bd     35bd       46     1                 ephemeris_day_reference_dictionary
+    3603     3603       82     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.rodata.ephemeris_day_reference_offsets)
+    3603     3603       82     1                 ephemeris_day_reference_offsets
+    3685     3685      737     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.rodata.ephemeris_day_reference_stream)
+    3685     3685      737     1                 ephemeris_day_reference_stream
+    3dbc     3dbc       34     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.rodata.ephemeris_day_target_check.invalid)
+    3dbc     3dbc       34     1                 ephemeris_day_target_check.invalid
+    3df0     3df0        6     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.rodata.ephemeris_day_input.count)
+    3df0     3df0        6     1                 ephemeris_day_input.count
+    3df6     3df6       20     1         <internal>:(.rodata.cst32)
+    3e16     3e16        0     1 .data
+    3e16     3e16        0     1         __data_start = .
+    3e16     3e16        0     1         __data_end = .
+    3e16     3e16        0     1 __data_load_start = LOADADDR(.data)
+    3e16     3e16        0     1 __data_size = SIZEOF(.data)
+    3e16     3e16     2000     1 .bss
+    3e16     3e16        0     1         __bss_start = .
+    3e16     3e16     1000     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.bss.state)
+    3e16     3e16     1000     1                 state
+    4e16     4e16     1000     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.bss.expected)
+    4e16     4e16     1000     1                 expected
+    5e16     5e16        0     1         __bss_end = .
+    5e16     5e16        0     1 __bss_size = SIZEOF(.bss)
+    5e16     5e16        2     1 .noinit
+    5e16     5e16        2     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.noinit..Lstatic_stack)
+    5e18     5e18        0     1         __heap_start = ALIGN(., 2)
+    5e18     5e18        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/ephemeris-day.prg.lto.o:(.llvm_sympart)
+       0        0      ba0     4 .symtab
+       0        0      ba0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      6f7     1 .strtab
+       0        0      6f7     1         <internal>:(.strtab)
