@@ -156,3 +156,5 @@ subprocess.run([sys.executable,'tools/velocity_differential.py',str(reference)],
 subprocess.run([sys.executable,'tools/norm_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/recovery_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/dot_differential.py',str(reference)],cwd=ROOT,check=True)

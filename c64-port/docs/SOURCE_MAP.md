@@ -219,3 +219,7 @@ All 132,096 assembly comparisons and 637 host/sanitizer/C64 states pass; negativ
 ## Translate abort flags and selected restart-group cleanup paths
 
 All 49,152 complete assembly comparisons and 128 host/sanitizer/C64 states pass. See [RECOVERY_CLEANUP.md](RECOVERY_CLEANUP.md).
+
+## Translate unrounded triple-precision dot product and overflow accumulation
+
+All 10,272 complete assembly comparisons and 96 host/sanitizer/C64 states pass. See [DOT.md](DOT.md).

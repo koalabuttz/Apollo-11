@@ -1,0 +1,34 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dot.prg" 0
+watch store c088
+watch store c080
+ignore 2 1
+g 080d
+stopwatch reset
+g
+stopwatch
+g
+stopwatch reset
+g
+stopwatch
+g
+stopwatch reset
+g
+stopwatch
+g
+stopwatch reset
+g
+stopwatch
+g
+stopwatch reset
+g
+stopwatch
+delete 1
+g
+m c080 c088
+bsave "/workspace/Apollo-11/c64-port/build/dot-vice-mailbox.bin" 0 c080 c088
+bsave "/workspace/Apollo-11/c64-port/build/dot-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dot-vice-software-stack.bin" 0 c100 cfff
+screen
+quit

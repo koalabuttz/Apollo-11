@@ -295,3 +295,5 @@ include tools/velocity.mk
 include tools/norm.mk
 
 include tools/recovery.mk
+
+include tools/dot.mk
