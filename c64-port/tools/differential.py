@@ -247,3 +247,5 @@ subprocess.run([sys.executable,'tools/regodspr_differential.py',str(reference)],
 subprocess.run([sys.executable,'tools/acceleration_store_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/nv_entry_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/nv_words_differential.py',str(reference)],cwd=ROOT,check=True)

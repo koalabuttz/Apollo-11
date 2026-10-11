@@ -398,3 +398,5 @@ include tools/regodspr.mk
 include tools/acceleration_store.mk
 
 include tools/nv_entry.mk
+
+include tools/nv_words.mk

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete nv_words group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 11091
+nv_words-hardware-stack.bin: measured stack extent 33 bytes
+nv_words-software-stack.bin: measured stack extent 47 bytes
