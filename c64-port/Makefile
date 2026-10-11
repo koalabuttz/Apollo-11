@@ -949,3 +949,5 @@ include tools/dsky_noun_check.mk
 include tools/ephemeris_time_scale_integration.mk
 
 include tools/dsky_sign_output_integration.mk
+
+include tools/dsky_read_pair_integration.mk

@@ -1400,3 +1400,7 @@ All108 emitted words and230 original lines are independently reviewed and qualif
 ## Translate original DSKY sign output row handling
 
 Qualify16384 complete original native sanitizer states and128 C64 states through actual plus and minus relay row updates including internal return address collisions. See `docs/DSKY-SIGN-OUTPUT.md`.
+
+## Translate original fresh DSKY paired operand read
+
+Qualify16384 complete original native sanitizer states and128 C64 states through actual READLO mixed bank and scratch alias handling. See `docs/DSKY-READ-PAIR.md`.

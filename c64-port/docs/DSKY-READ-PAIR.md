@@ -1,0 +1,7 @@
+# Original READLO fresh ordinary pair
+
+`dsky_read_pair` implements the original LM and CM source entry. Actual source READLO accepts MIXBR1 normal NOUNADD with retained EB or MIXBR2 selected IDAD1TEM[DECOUNT] fresh ECADR. DECOUNT0..2, physical pair0100..3776 without bank crossing, coherent bank40/anyEB, selecting SUPER100/120/140/160, ordinary caller Q0100..7777, legal IRQ, raw A/L and ordinary RAM are required. The helper saves TEM4 before reading the selected pair, preserving scratch aliases, writes fresh MPAC0/1, clears MPAC2 without TPAGREE, and preserves actual old MPAC minor in L. Mixed reads select the source EB/BB. It stops before the saved caller instruction; no device-counter reads are supported.
+
+Caller excludes producers and supplies distinct canonical image/IO/output objects. Invalid declared control inputs preserve those objects. Native arithmetic uses integer operations without an instruction decoder, heap or floating point. The original engine is a host-only reference.
+
+All16,384 complete original states match strict native and full ASAN/UBSAN, raw SHA256 `e986d47143a7f3ea681bc3f1533ed885661fbbffd401604ca1661600e54d2155`. Frozen tests retain128 complete states plus36 unchanged invalid guards. Stock PAL C64 passes128, mailbox `a500008000`; PRG7870 bytes, hardware stack14 including14 ROM bytes, software stack12, no extra zero-page allocation. Exact dependencies and artifacts are recorded in `evidence/dsky-read-pair-proof.json`. External callers/recovery bodies and whole Pinball/application completion are unclaimed.

@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_read_pair.c src/agc_word.c src/dsky_read_pair.c tests/dsky_read_pair_cases.c tests/dsky_read_pair_check.c -o build/test-dsky-read-pair-integrated
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_read_pair_snapshot.c src/agc_word.c src/dsky_read_pair.c tests/dsky_read_pair_cases.c tests/dsky_read_pair_check.c -o build/dsky-read-pair-integrated-stream
+./build/test-dsky-read-pair-integrated
+128 complete original fresh READLO pair states + 36 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/dsky-read-pair-reference.snapshots.xz --sha256 e986d47143a7f3ea681bc3f1533ed885661fbbffd401604ca1661600e54d2155 --binary build/dsky-read-pair-integrated-stream
+PASS all retained source-state bytes: 189608774 SHA256 e986d47143a7f3ea681bc3f1533ed885661fbbffd401604ca1661600e54d2155
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_dsky_read_pair.c src/agc_word.c src/dsky_read_pair.c tests/dsky_read_pair_cases.c tests/dsky_read_pair_check.c -o build/test-dsky-read-pair-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-read-pair-integrated-san
+128 complete original fresh READLO pair states + 36 unchanged invalid guards: PASS
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/dsky_read_pair_snapshot.c src/agc_word.c src/dsky_read_pair.c tests/dsky_read_pair_cases.c tests/dsky_read_pair_check.c -o build/dsky-read-pair-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/dsky-read-pair-reference.snapshots.xz --sha256 e986d47143a7f3ea681bc3f1533ed885661fbbffd401604ca1661600e54d2155 --binary build/dsky-read-pair-integrated-stream-san
+PASS all retained source-state bytes: 189608774 SHA256 e986d47143a7f3ea681bc3f1533ed885661fbbffd401604ca1661600e54d2155
