@@ -16,7 +16,7 @@ for number,name,sources,flags in [(250,'P66IN',['platform/c64/p66_native_fixture
 (build/'p66-native-modules.json').write_text(json.dumps(manifest,indent=2)+'\n')
 header='#include "overlay_runtime.h"\nstatic const apollo_overlay_module p66_native_modules[7]={\n'+''.join('{%d,"%s",%d,%d},\n'%(m['id'],m['filename'],m['byte_count'],m['crc16']) for m in manifest)+'};\n'
 (build/'p66_native_modules.h').write_text(header)
-subprocess.run(common+['-DP66_NATIVE_DISPATCH_ONLY',f'-DP66_NATIVE_DIAGNOSTIC_CASES={a.cases}','-T','platform/c64/overlay_resident.ld','-Wl,-Map,build/p66-native.map','src/agc_word.c','src/executive.c','src/native_dispatch.c','src/irq_delivery.c','src/p66_native.c','src/overlay_runtime.c','platform/c64/overlay_platform.c','platform/c64/p66_native_diagnostic.c','-o','build/p66-native.prg'],cwd=root,check=True)
+subprocess.run(common+['-DEXEC_NATIVE_FINISH_FAMILY=1','-DP66_NATIVE_DISPATCH_ONLY',f'-DP66_NATIVE_DIAGNOSTIC_CASES={a.cases}','-T','platform/c64/overlay_resident.ld','-Wl,-Map,build/p66-native.map','src/agc_word.c','src/executive.c','src/native_dispatch.c','src/irq_delivery.c','src/p66_native.c','src/overlay_runtime.c','platform/c64/overlay_platform.c','platform/c64/p66_native_diagnostic.c','-o','build/p66-native.prg'],cwd=root,check=True)
 disk=build/'p66-native.d64';disk.unlink(missing_ok=True);cmd=[a.c1541,'-format','APOLLO P66,11','d64',str(disk),'-write',str(build/'p66-native.prg'),'resident']
 for m in manifest:cmd+=['-write',str(build/m['prg']),m['filename'].lower()]
 env=dict(os.environ,XDG_CACHE_HOME=str(build/'vice-cache'),XDG_CONFIG_HOME=str(build/'vice-config'))
