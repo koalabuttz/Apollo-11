@@ -57,6 +57,11 @@
           "verification": "docs/COMANCHE-NORMAL-N40.md",
           "scope": "Uninterrupted normal noun40/85 host source composition and independent C64 caller checks; complete resident program/device/recovery acceptance pending.",
           "reviewed_entire_program": false
+        },
+        {
+          "verification": "docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md",
+          "scope": "Actual clock/T3/display source mission through normal N40 and real END on nine unchanged source-normal contexts; C64 proof partitions and blocked external-monitor contexts explicit.",
+          "reviewed_entire_program": false
         }
       ]
     }
@@ -77,8 +82,16 @@
       "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
       "bytes": 4448,
       "lines": 230,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_alarm_record.c"
+          ],
+          "scope": "ALARM/VARALARM/CURTAINS/BORTENT source recording and genuine MULTFAIL negative-overflow POODOO handoff; actual recovery and other entries remain separate.",
+          "verification": "docs/COMANCHE_ALARM_RECORD.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/ANGLFIND.agc",
@@ -228,6 +241,21 @@
           ],
           "scope": "Normal CKNVWRD1/REGODSP and MAKEPLAY/GOPLAY continuation for source V06N85, original priority/wake and actual END/idle composition. Busy, flashing, monitor and noun40 paths remain separate work.",
           "verification": "docs/COMANCHE-NORMAL-N85.md"
+        },
+        {
+          "native_files": [
+            "src/cm_init_display_mixed.c"
+          ],
+          "scope": "Actual INITDSP prefix, mixed PRIOCHNG selection and source INITDSP+6 banked caller return; selected job/interpreter bodies remain separate.",
+          "verification": "docs/COMANCHE_INIT_DISPLAY_MIXED.md"
+        },
+        {
+          "native_files": [
+            "src/cm_clock_display_mission.c",
+            "src/cm_clock_normal_display.c"
+          ],
+          "scope": "Real source clock-selected display admission, priority/wake and normal noun40 consumer through canonical END; external-monitor branches and full application/device acceptance remain separate.",
+          "verification": "docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md"
         }
       ]
     },
@@ -421,6 +449,20 @@
           ],
           "scope": "Actual NOVAC/FINDVAC/SPVAC/SPVACIN success and resource-exhaustion side effects plus canonical CHANG1/CHANG2 for all basic/interpreter context combinations. BAILOUT bodies and selected application bodies are excluded.",
           "verification": "docs/COMANCHE_CONTEXT_CHANGE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_return.c"
+          ],
+          "scope": "Source SUPDXCHZ body within the actual mission NVSUBEND saved fixed caller producer domain; caller body execution and other generic Executive domains remain separate.",
+          "verification": "docs/DSKY-NV-RETURN.md"
+        },
+        {
+          "native_files": [
+            "src/cm_init_display_mixed.c"
+          ],
+          "scope": "Real PRIOCHNG producer/consumer composition from INITDSP, retaining suspended contexts and actual current/basic/interpreter selected transfers.",
+          "verification": "docs/COMANCHE_INIT_DISPLAY_MIXED.md"
         }
       ]
     },
@@ -650,6 +692,20 @@
           ],
           "scope": "The additive inverse-trig sweep closes original missing2,045 high words per function; it exhausts all32,768 high words independently for ARCSIN/ARCCOS and preserves frozen numeric source boundaries. No whole INTERPRETER or alarm-handler acceptance.",
           "verification": "docs/INVERSE-TRIG-SWEEP.md"
+        },
+        {
+          "native_files": [
+            "src/interpreted_sign.c"
+          ],
+          "scope": "Source COMP/SIGN raw-register and MPAC signed-zero transformations, original epilogues and genuine return controls; no whole interpreter or caller body claim.",
+          "verification": "docs/INTERPRETED-SIGN.md"
+        },
+        {
+          "native_files": [
+            "src/interpreted_square.c"
+          ],
+          "scope": "Source DSQ/DSQSUB double-precision square paths through original epilogue and caller handoff; all source-qualified state comparisons and actual C64 evidence retained.",
+          "verification": "docs/INTERPRETED-SQUARE.md"
         }
       ]
     },
@@ -952,6 +1008,14 @@
           ],
           "scope": "Actual DYNDISP/P40CNV85/S41.1 numerical route composed through normal V06N85 display and allocated-VAC/core release. Remaining P40-P47 program paths and live resident scheduling are excluded.",
           "verification": "docs/COMANCHE-DYNAMIC-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_clock_display_mission.c",
+            "src/cm_clock_normal_display.c"
+          ],
+          "scope": "Actual timer/clock/display host mission and nine unchanged normal V06N40 contexts through true END-selected interpreter restoration; disk C64 clock/display-to-GOPLAY and separate linked normal consumer checks; no whole-chain C64 closure beyond retained proofs.",
+          "verification": "docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md"
         }
       ]
     },
@@ -1061,6 +1125,62 @@
           ],
           "scope": "Source signed two-character and minutes/seconds output plus uninterrupted normal V06N40/N85 caller/row/END host compositions; actual C64 caller and reusable primitive checks. Complete resident composition and relay/device acceptance remain separate.",
           "verification": "docs/COMANCHE-NORMAL-N40.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_mixed_noun.c"
+          ],
+          "scope": "Actual MIXNOUN address selection and signed-zero paths; selected load/display continuations remain separate.",
+          "verification": "docs/DSKY-MIXED-NOUN.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_verb_dispatch.c"
+          ],
+          "scope": "Actual first40 and extended60 verb fanout, source-selected bank transfer and bounded caller/control interfaces; selected verb bodies remain separate.",
+          "verification": "docs/DSKY-VERB-DISPATCH.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_display_release.c"
+          ],
+          "scope": "Original internal RELDSP source path and returned channel/lamp control; bounded caller ownership retained.",
+          "verification": "docs/DSKY-INTERNAL-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_source_alarm.c"
+          ],
+          "scope": "Original alarm-display and callable relay lamp entries with actual monitor/keyboard/POODOO/Pinball handoffs; abort and selected caller body execution remain separate.",
+          "verification": "docs/DSKY-SOURCE-ALARM.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_load_control.c"
+          ],
+          "scope": "Original VBPROC/VBTERM/VBRESEQ/PROCKEY and direct RECALTST through actual RELDSP/JOBWAKE/END source effects, including canonical scratch/index aliases.",
+          "verification": "docs/DSKY-LOAD-CONTROL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_admission.c"
+          ],
+          "scope": "NVSUB/NVMONOPT/NVSUB1/2 actual admission/selection through source-selected callee or blocked fixed caller; selected bodies remain separately qualified.",
+          "verification": "docs/DSKY-NV-ADMISSION.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_return.c"
+          ],
+          "scope": "Original NVSUBEND and SUPDXCHZ saved fixed caller return, preserving raw registers and all saved bank/EB/SUPER contexts.",
+          "verification": "docs/DSKY-NV-RETURN.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_busy.c"
+          ],
+          "scope": "ENDIDLE/NVSUBUSY/PRENVBSY/NVSBWAIT/NVSUBSY1 through actual JOBSLEEP/POODOO/NVSBCOM entry; explicit DSPLIST negative-zero inline-data exclusion and separate selected service body execution.",
+          "verification": "docs/DSKY-NV-BUSY.md"
         }
       ]
     },
@@ -2086,6 +2206,20 @@
           ],
           "scope": "Actual admitted positive idle ADVAN into source BASIC and P66 startup/deferred source jobs through canonical END/idle. Other generic Executive entries/caller domains remain unqualified here.",
           "verification": "docs/LM-RECURRENCE-BRIDGES.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_return.c"
+          ],
+          "scope": "Source SUPDXCHZ body within the actual mission NVSUBEND saved fixed caller producer domain; caller body execution and other generic Executive domains remain separate.",
+          "verification": "docs/DSKY-NV-RETURN.md"
+        },
+        {
+          "native_files": [
+            "src/lm_admission_image.c"
+          ],
+          "scope": "Canonical NOVAC/FINDVAC/SPVAC/SPVACIN entries through real compiled caller return or BAILOUT1 entry; admission state and invalid domains proved, admitted job/recovery bodies remain separate.",
+          "verification": "docs/LM-CANONICAL-ADMISSION.md"
         }
       ]
     },
@@ -2497,6 +2631,20 @@
           ],
           "scope": "The additive inverse-trig sweep closes original missing2,045 high words per function; it exhausts all32,768 high words independently for ARCSIN/ARCCOS and preserves frozen numeric source boundaries. No whole INTERPRETER or alarm-handler acceptance.",
           "verification": "docs/INVERSE-TRIG-SWEEP.md"
+        },
+        {
+          "native_files": [
+            "src/interpreted_sign.c"
+          ],
+          "scope": "Source COMP/SIGN raw-register and MPAC signed-zero transformations, original epilogues and genuine return controls; no whole interpreter or caller body claim.",
+          "verification": "docs/INTERPRETED-SIGN.md"
+        },
+        {
+          "native_files": [
+            "src/interpreted_square.c"
+          ],
+          "scope": "Source DSQ/DSQSUB double-precision square paths through original epilogue and caller handoff; all source-qualified state comparisons and actual C64 evidence retained.",
+          "verification": "docs/INTERPRETED-SQUARE.md"
         }
       ]
     },
@@ -2911,6 +3059,62 @@
           ],
           "scope": "Qualified original display branch selection, ordinary blank caller, ENTER pass selection and ENTPAS0 noun admission with original bank/IRQ/register ownership. Actual external verb, mixed-noun, request and display bodies retain separate source boundaries.",
           "verification": "docs/DSKY-ENTER-ZERO.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_mixed_noun.c"
+          ],
+          "scope": "Actual MIXNOUN address selection and signed-zero paths; selected load/display continuations remain separate.",
+          "verification": "docs/DSKY-MIXED-NOUN.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_verb_dispatch.c"
+          ],
+          "scope": "Actual first40 and extended60 verb fanout, source-selected bank transfer and bounded caller/control interfaces; selected verb bodies remain separate.",
+          "verification": "docs/DSKY-VERB-DISPATCH.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_display_release.c"
+          ],
+          "scope": "Original internal RELDSP source path and returned channel/lamp control; bounded caller ownership retained.",
+          "verification": "docs/DSKY-INTERNAL-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_source_alarm.c"
+          ],
+          "scope": "Original alarm-display and callable relay lamp entries with actual monitor/keyboard/POODOO/Pinball handoffs; abort and selected caller body execution remain separate.",
+          "verification": "docs/DSKY-SOURCE-ALARM.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_load_control.c"
+          ],
+          "scope": "Original VBPROC/VBTERM/VBRESEQ/PROCKEY and direct RECALTST through actual RELDSP/JOBWAKE/END source effects, including canonical scratch/index aliases.",
+          "verification": "docs/DSKY-LOAD-CONTROL.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_admission.c"
+          ],
+          "scope": "NVSUB/NVMONOPT/NVSUB1/2 actual admission/selection through source-selected callee or blocked fixed caller; selected bodies remain separately qualified.",
+          "verification": "docs/DSKY-NV-ADMISSION.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_return.c"
+          ],
+          "scope": "Original NVSUBEND and SUPDXCHZ saved fixed caller return, preserving raw registers and all saved bank/EB/SUPER contexts.",
+          "verification": "docs/DSKY-NV-RETURN.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_nv_busy.c"
+          ],
+          "scope": "ENDIDLE/NVSUBUSY/PRENVBSY/NVSBWAIT/NVSUBSY1 through actual JOBSLEEP/POODOO/NVSBCOM entry; explicit DSPLIST negative-zero inline-data exclusion and separate selected service body execution.",
+          "verification": "docs/DSKY-NV-BUSY.md"
         }
       ]
     },

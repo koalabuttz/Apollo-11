@@ -3003,6 +3003,7 @@
   "dispatch-native.snapshots": "97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065cd6f8a15bb",
   "dispatch-reference.snapshots": "97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065cd6f8a15bb",
   "dispatch-reference.trace": "d03b155b9c671ff3e06a81427cb002314cb8963b6bd78b8fd0c2e39a9beb8c01",
+  "display-alarm-partial-coverage-validation.log": "2f2910ebf3461f18cfcdefdeded7614f198fc55d781a2b6a12b723c086f75d89",
   "display-control-c64-result.log": "bcd588605408f8ee38f325dfe5bb8a543a2f84dfdbdb661e562a137e105d88a2",
   "display-control-differential.log": "17b094c6a17c899803898bf9afad5eb00fd0f0544087bf6885f19cafcbe3dc9a",
   "display-control-hardware-stack.bin": "30c660ac6d75de22e2e57c516713ab8f091fafdf530762f28e27b1fe5528f581",
