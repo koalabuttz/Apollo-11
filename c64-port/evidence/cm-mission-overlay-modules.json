@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "filename": "C1",
+    "byte_count": 3015,
+    "crc16": 31152,
+    "sha256": "3e612b012682f77a77f588390dc166f14b7e2ec95c33bac44f1ef7f7041d2fc3",
+    "prg": "cm-mission-overlay-1.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 2,
+    "filename": "C2",
+    "byte_count": 7768,
+    "crc16": 40172,
+    "sha256": "e5da47c54ba569677c2408eed43084a146e58845efac2d5d01a8858c5e328360",
+    "prg": "cm-mission-overlay-2.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 3,
+    "filename": "C3",
+    "byte_count": 5353,
+    "crc16": 34745,
+    "sha256": "b18ddf6fb23a08b8d5d8d8cd8ca5deaf273d2e2340a63b90938aacd779f38465",
+    "prg": "cm-mission-overlay-3.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 4,
+    "filename": "C4",
+    "byte_count": 4215,
+    "crc16": 8646,
+    "sha256": "756025375825895523c7c0f8efc39ed8672bf3eef3bd21b41927c2a7bc1455fb",
+    "prg": "cm-mission-overlay-4.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 5,
+    "filename": "C5",
+    "byte_count": 9671,
+    "crc16": 19863,
+    "sha256": "080a2c4283270ada897ee90f460b9bc23420412bff4a6f1e01c5601e5f2c418b",
+    "prg": "cm-mission-overlay-5.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 250,
+    "filename": "C250",
+    "byte_count": 3605,
+    "crc16": 10011,
+    "sha256": "ae610c57d9c2d0e972eb18c250e1bd64afd8340b200446ec975aeb2948592f98",
+    "prg": "cm-mission-overlay-250.prg",
+    "mission_translation": false
+  },
+  {
+    "id": 251,
+    "filename": "C251",
+    "byte_count": 6051,
+    "crc16": 39595,
+    "sha256": "17774d297281ccd6e289ed3ca7f763bfc2f18939817f3785c0e99fd8356cc579",
+    "prg": "cm-mission-overlay-251.prg",
+    "mission_translation": false
+  }
+]

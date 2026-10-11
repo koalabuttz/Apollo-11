@@ -1,0 +1,30 @@
+{
+  "sources": {
+    "EXECUTIVE.agc": {
+      "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+      "normalized_sha256": "12827288def51cab29ff591dd2febb7a652237a8b2786c42ea7dc6bafa2e5356"
+    },
+    "WAITLIST.agc": {
+      "original_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+      "normalized_sha256": "85335058feda6297569d28b8ca6e077fccb85d52eb5c14fd7e36db73aef4bb85"
+    },
+    "INTERRUPT_LEAD_INS.agc": {
+      "original_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+      "normalized_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0"
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff"
+    },
+    "P40-P47.agc": {
+      "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6"
+    },
+    "CM_ENTRY_DIGITAL_AUTOPILOT.agc": {
+      "original_sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+      "normalized_sha256": "82aef32507d8b595667877ff2375883f8187bfc04b726ebde728a8842074b24a"
+    }
+  },
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}

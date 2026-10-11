@@ -1,0 +1,27 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_mission_loop_cases.h"
+#include "cm_mission_loop_check.h"
+#include "cm_mission_loop_vectors.h"
+static apollo_overlay_state s;static cm_native_io io;
+static uint32_t fold(uint32_t h,uint16_t v){h=(h^(v&255u))*16777619u;return (h^(v>>8))*16777619u;}
+unsigned cm_mission_loop_check(void){unsigned run,n,step,i,fail=0;
+ for(run=0;run<
+#ifdef __mos__
+ 64u
+#else
+ 384u
+#endif
+ ;++run){cm_mission_loop r={&s,&io,cm_mission_builtin_invoke,0,{0,0},{{0,0},0},0,1,0};
+#ifdef __mos__
+ n=cm_mission_loop_indices[run];
+#else
+ n=run;
+#endif
+ cm_mission_loop_input(&s,&io,(uint16_t)n);
+ for(step=0;step<cm_mission_loop_count[n];++step){cm_mission_call call;enum cm_service_status status;uint32_t h;
+ status=cm_mission_identify(&r,&call);if(status!=CM_SERVICE_ADVANCED){++fail;break;}status=cm_mission_step(&r);
+ h=fold(2166136261u,(uint16_t)call.group);h=fold(h,(uint16_t)status);for(i=0;i<2048u;++i)h=fold(h,s.words[i]);h=fold(h,io.superbank);h=fold(h,io.interrupt_enabled);h=fold(h,r.irq.in_isr);h=fold(h,r.irq.pending_danzig);h=fold(h,r.transfer.interpretive);h=fold(h,r.transfer.address.location);h=fold(h,r.transfer.address.bank);
+ if(h!=cm_mission_loop_hash[run][step]||status!=CM_SERVICE_ADVANCED)++fail;
+ if(n==0&&step+1u==cm_mission_loop_count[0]){if(cm_mission_loop_sample[0]!=call.group||cm_mission_loop_sample[1]!=(unsigned)status)++fail;for(i=0;i<2048u;++i)if(cm_mission_loop_sample[i+2u]!=s.words[i])++fail;if(cm_mission_loop_sample[2050]!=io.superbank||cm_mission_loop_sample[2051]!=io.interrupt_enabled||cm_mission_loop_sample[2052]!=r.irq.in_isr||cm_mission_loop_sample[2053]!=r.irq.pending_danzig||cm_mission_loop_sample[2054]!=r.transfer.interpretive||cm_mission_loop_sample[2055]!=r.transfer.address.location||cm_mission_loop_sample[2056]!=r.transfer.address.bank)++fail;}
+ }if(r.in_callback||r.completed_groups!=cm_mission_loop_count[n]||r.irq.in_isr||r.irq.pending_danzig||r.pending_t3)++fail;
+ }return fail;}

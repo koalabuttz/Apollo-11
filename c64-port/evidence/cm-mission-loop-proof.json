@@ -1,0 +1,34 @@
+{
+  "cases": 384,
+  "checkpoints": 2624,
+  "full_physical_words": 2048,
+  "entries": [
+    "automatic T3 interrupt at06030 DANZIG"
+  ],
+  "actual_tasks": [
+    "15,3207 SETJTAG",
+    "24,3260 CLOKTASK",
+    "05306 SVCT3"
+  ],
+  "actual_services": [
+    "WAITLIST",
+    "NOVAC",
+    "FIXDELAY",
+    "TASKOVER"
+  ],
+  "boundary": "continuous automatic IRQ through task ISR, real RESUME, pending DANZIG and actual selected foreground tuple",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "control_metadata": [
+    "InIsr",
+    "pending_DANZIG"
+  ],
+  "actual_foreground": [
+    "unchanged interpreted NEWOPS",
+    "CLOCKJOB03332/050066",
+    "NBDONLY03542/014063"
+  ],
+  "snapshot_sha256": "3d56d8023cc2264d042a4bf08e1246c54e807feba422398a0094d2e4d98e3503"
+}

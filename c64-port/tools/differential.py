@@ -388,3 +388,5 @@ subprocess.run([sys.executable,'tools/cm_powered_trig_differential.py',str(refer
 subprocess.run([sys.executable,'tools/gimbal_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/cm_charin_number_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_mission_loop_differential.py',str(reference)],cwd=ROOT,check=True)
