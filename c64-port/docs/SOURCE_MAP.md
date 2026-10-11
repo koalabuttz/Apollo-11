@@ -173,3 +173,9 @@ modeled words before/after the store. STORE.md describes omitted control state.
 All 93 modeled words/results match 8098 assembly checkpoints using pinned
 hardware DV. DIVIDE.md defines the one-line host-oracle selection and audit;
 no claim of equality to the pinned fast-DV shortcut is made.
+
+## PDVL GDT/2
+
+INTERPRETER:589..602 and531..543 -> src/guidance_gravity.c.
+PDVL6557/ENDVLOAD6511/VMODE6521 -> DANZIG6061 beforeVSU; operand physical1236
+becomesADDRWD1636/EBANK01000. All99 modeled words independently verified.

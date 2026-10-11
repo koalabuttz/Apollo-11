@@ -459,3 +459,9 @@ software extent 324 including the full checker. Compiler uses 32 imaginary ZP
 registers and no extra ZP, heap or floating point. Separate diagnostics are not
 a combined flight image. Evidence is under `divide-*`; DIVIDE.md qualifies the
 hardware-DV oracle and scope. Pending PDVL GDT/2 remains next.
+
+## PDVL GDT/2
+
+PRG40690 bytes; text19665/rodata21011/BSS198/noinit1, highestRAM$a7b7.
+ZeroextraZP; stack50 below$01f2/software371. Four sampledPDVL intervals615..736
+PALcycles; fullprefix28164 (28.586ms). Lossless fixture20649 bytes. NoWCET claim.

@@ -1,0 +1,24 @@
+{
+  "pal_hz": 985248,
+  "samples_cycles": [
+    619,
+    736,
+    696,
+    615,
+    28164
+  ],
+  "samples_ms": [
+    0.628,
+    0.747,
+    0.706,
+    0.624,
+    28.586
+  ],
+  "scope": "Finite marker/call intervals; no WCET or integrated flight deadline claim",
+  "prg_bytes": 40690,
+  "context_bytes": 198,
+  "hardware_stack_below_01f2": 50,
+  "software_stack_bytes": 371,
+  "frozen_storage_bytes": 20649,
+  "image_and_state_last_address": "a7b7"
+}

@@ -179,11 +179,20 @@ check, old-word register effects and stop before DDV/PDVL.
 Acceptance is met for the fixed-divisor domain and declared hardware-model
 oracle. DIVIDE.md records the model difference and explicit interpreter boundary.
 
-## Next bounded milestone: PDVL GDT/2
+## Completed: PDVL GDT/2
 
-Translate the pending quotient pushdown and vector load. Preserve saved elapsed
-VAC words 30/31, MODE/PUSHLOC, exchange and scratch effects; independently verify
-the boundary before VSU. Keep the later vector subtraction as a separate stage.
+Quotient pushdown and gravity-vector load match all 99 words over 5218 original
+checkpoints. Every legal DP push position, integrated skip inputs and retained
+histories pass; 156 complete states pass on C64. Lossless compressed expectations
+reduce fixture storage while retaining exact comparison. See GRAVITY.md.
+
+## Next guidance group: updated velocity
+
+VSU VBIAS, implicit quotient-fed VXSC, VSL2, VAD V, implicit vector VAD and
+STOVL 24D/R. Reusable arithmetic, Executive and phase services proceed as
+separate independently verified commits. Complete P66 then requires UNIT/DOT,
+altitude and acceleration arithmetic, CDU rotation, measured acceleration,
+force clamps, throttle, horizontal-speed display and live scheduling/recovery.
 
 ## Remaining design questions
 

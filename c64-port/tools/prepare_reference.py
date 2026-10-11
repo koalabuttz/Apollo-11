@@ -74,7 +74,7 @@ for name,address in [('MPAC','0154'),('PRIORITY','0167'),('VAC1USE','0400'),
                      ('DOSTORE','6362'),('STORJUMP','6372'),('STORE','6422'),
                      ('STARTSTO','6434'),('EDOP','0000023'),('NEWJOB','0067'),('DDV','7577'),('DDV/BDDV','00,2353'),('BUFZERO','00,2363'),
                      ('DVOVF','00,2405'),('DVNORM','00,2505'),('TPAGREE','7257'),
-                     ('DVSIGN','0136'),('DVNORMCT','0137'),('MAXDVSW','0140'),('4SEC(28)','33,3152')]:
+                     ('DVSIGN','0136'),('DVNORMCT','0137'),('MAXDVSW','0140'),('4SEC(28)','33,3152'),('PDVL','6557'),('ENDVLOAD','6511'),('GDT/2','1236'),('VMODE','6521'),('VSU','6747')]:
     import re
     if not re.search(r'(?<!\w)'+re.escape(name)+r'\s+'+address+r'\b',listing):
         raise SystemExit('fixture address mismatch: '+name)

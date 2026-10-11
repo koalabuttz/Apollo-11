@@ -241,3 +241,9 @@ MODE rejection is a native adaptation. The VAC/saved elapsed pair is retained.
 The DDV host oracle selects the pinned engine's existing hardware DV model;
 DIVIDE.md explains the fast-path signed-zero discrepancy. Native code is not
 linked to either oracle; interpreter control state and pending PDVL are omitted.
+
+## Quotient push/gravity load
+
+src/guidance_gravity.c adds DP PDVL without opcode decoding; caller owns
+six stableGDT/2 words and VAC. tests/frozen_words.c provides lossless shared
+expected streams for target verification. See GRAVITY.md.

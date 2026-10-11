@@ -255,3 +255,25 @@ sanitize-divide: | build
 c64-divide: build/divide.prg
 build/divide.prg: $(DIVIDE_CORE) $(DIVIDE_TEST) platform/c64/divide_diagnostic.c $(DIVIDE_HEADERS) tests/divide_vectors.h | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/divide.map $(DIVIDE_CORE) $(DIVIDE_TEST) platform/c64/divide_diagnostic.c -o $@
+
+GRAVITY_CORE = $(DIVIDE_CORE) src/guidance_gravity.c
+GRAVITY_INPUT = $(DIVIDE_INPUT) tests/gravity_cases.c
+GRAVITY_HEADERS = $(DIVIDE_HEADERS) include/guidance_gravity.h tests/gravity_cases.h
+all: build/gravity-snapshot
+build/gravity-snapshot: $(GRAVITY_CORE) $(GRAVITY_INPUT) platform/host/gravity_snapshot.c $(GRAVITY_HEADERS) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAVITY_CORE) $(GRAVITY_INPUT) platform/host/gravity_snapshot.c -o $@
+GRAVITY_TEST = $(GRAVITY_INPUT) tests/gravity_check.c tests/frozen_words.c
+all: build/test-gravity
+test: test-gravity
+.PHONY: test-gravity sanitize-gravity c64-gravity
+test-gravity: build/test-gravity
+	./build/test-gravity
+build/test-gravity: $(GRAVITY_CORE) $(GRAVITY_TEST) tests/test_gravity.c $(GRAVITY_HEADERS) tests/gravity_vectors.h tests/frozen_words.h | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(GRAVITY_CORE) $(GRAVITY_TEST) tests/test_gravity.c -o $@
+sanitize: sanitize-gravity
+sanitize-gravity: | build
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(GRAVITY_CORE) $(GRAVITY_TEST) tests/test_gravity.c -o build/test-gravity-sanitize
+	./build/test-gravity-sanitize
+c64-gravity: build/gravity.prg
+build/gravity.prg: $(GRAVITY_CORE) $(GRAVITY_TEST) platform/c64/gravity_diagnostic.c $(GRAVITY_HEADERS) tests/gravity_vectors.h tests/frozen_words.h | build
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/gravity.map $(GRAVITY_CORE) $(GRAVITY_TEST) platform/c64/gravity_diagnostic.c -o $@

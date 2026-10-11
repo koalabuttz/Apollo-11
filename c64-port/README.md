@@ -16,7 +16,7 @@ are implemented. P66 RODCOMP's rate update, PIPA/time snapshots and vector-input
 preparation, VXSC KPIP1 scaling and PDDL THISTPIP vector pushdown/timestamp
 load, DSU PIPTIME elapsed-time subtraction, STORE 30D and fixed-divisor DDV 4SEC(28) are verified
 (docs/GUIDANCE.md, docs/PREPARATION.md, docs/SCALING.md,
-docs/PUSHDOWN.md, docs/ELAPSED.md, docs/STORE.md, docs/DIVIDE.md). **Deferred:** complete Apollo
+docs/PUSHDOWN.md, docs/ELAPSED.md, docs/STORE.md, docs/DIVIDE.md). PDVL GDT/2 now pushes the quotient and loads the gravity vector (docs/GRAVITY.md). **Deferred:** complete Apollo
 guidance jobs, interpreter dispatch and
 remaining restart routes/glue (docs/RESTART.md).
 
@@ -41,7 +41,7 @@ Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
-See `docs/HANDOFF.md` and `docs/DIVIDE.md` for the current milestone.
+See `docs/HANDOFF.md` and `docs/GRAVITY.md` for the current milestone.
 
 ## Build and run
 
@@ -207,3 +207,7 @@ DDV samples reach 6.519 ms; full prefix 28.358 ms. See docs/DIVIDE.md.
 The historical source remains public domain with its original attribution.
 New native port code is MIT licensed. The host-only Virtual AGC adapter is
 GPL-2.0-or-later; it is never linked into the C64 PRG. See `LICENSE`.
+
+PDVL build/test: `make test-gravity c64-gravity`; original comparison:
+`python3 tools/gravity_differential.py deps/fixture`. The C64 diagnostic compares
+156 complete 99-word states using lossless compact expectations.

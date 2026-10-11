@@ -522,3 +522,10 @@ The fixed divisor's declaration is checked in unchanged original SERVICER and it
 assembled words are asserted; the support fixture remains at its prior rope hash.
 All earlier comparisons continue to use the original unmodified pinned engine.
 No physical Apollo hardware/C64 or full trajectory/flight timing proof is claimed.
+
+## PDVL GDT/2
+
+All 5218 complete99-word checkpoints match original assembly; all13 host and
+sanitizer suites pass. PAL VICE checks156 exact states with mailbox
+a500009c0003c66324. See GRAVITY.md and evidence/gravity-* (snapshots gzip).
+All218 earlier hashes retained; manifest239 entries.

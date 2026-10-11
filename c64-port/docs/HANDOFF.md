@@ -1,4 +1,4 @@
-# P66 DDV 4SEC(28) milestone handoff
+# P66 PDVL GDT/2 milestone handoff
 
 ## Repository
 
@@ -56,6 +56,16 @@ python3 tools/push_vice_test.py --vice /path/to/x64sc \
 ```
 
 ## Completed work
+
+The fourteenth milestone translates PDVL GDT/2 after the quotient. All 99
+modeled words match 5218 original checkpoints over 3865 cases. All legal DP
+push positions, complete-prefix positions, skip inputs and retained histories
+are covered. Host/sanitizer suites pass; the thirteenth C64 PRG checks 156
+complete states with zero failures. Lossless expected-state storage keeps the
+40690-byte PRG below $c000. Context is 198 bytes. PDVL samples reach 0.747 ms;
+full prefix 28.586 ms. GRAVITY.md records contracts, original bank digestion,
+compression and evidence. Earlier 218 evidence hashes remain unchanged.
+
 
 The thirteenth milestone translates fixed-divisor DDV 4SEC(28), stopping before
 pending PDVL GDT/2. It preserves TPAGREE signed-zero/mixed-sign stores, both
@@ -232,7 +242,7 @@ The Executive state remains 648 bytes; the target request buffer is 32 bytes.
 ## Limits and next milestone
 
 This cooperative basic-job translation includes native demonstration routines
-and P66 preparation through DDV 4SEC(28). Complete flight OS and guidance workloads
+and P66 preparation through PDVL GDT/2. Complete flight OS and guidance workloads
 remain future work. Callbacks return to a trampoline; persistent values belong
 in MPAC/VAC, not suspended C stacks.
 An unmapped address latches a runtime fault. No rollback is claimed; bounded
@@ -246,8 +256,9 @@ the legacy console build is unbound and uses the usual compiler defaults.
 Source rate, callbacks and masked intervals still need application bounds;
 finite raster testing does not establish an unconditional delivery deadline.
 
-Next: translate pending PDVL GDT/2, preserving quotient pushdown, vector load,
-MODE/PUSHLOC and exchange/scratch debris; stop before VSU.
+Next guidance stage: VSU VBIAS, implicit quotient-fed VXSC, shifts and velocity
+accumulation through STOVL 24D/R. Parallel work adds reusable vector arithmetic,
+Executive services, phase maintenance and general scalar arithmetic.
 Interpreter dispatch, flight deadlines and physical hardware verification remain open. See ROADMAP.md.
 
 Acceptance for basic dispatch, IRQ delivery, lifecycle, bounded WAITLIST,
