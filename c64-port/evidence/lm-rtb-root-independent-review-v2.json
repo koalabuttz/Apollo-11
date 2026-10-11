@@ -1,0 +1,20 @@
+{
+  "original_source_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "unique_original_local_words": 130,
+  "word_ownership": {
+    "evidence/rtb-angles-proof.json": 72,
+    "evidence/rtb-agreement-proof.json": 12,
+    "evidence/rtb-vector-proof.json": 45,
+    "evidence/rtb-pulse-return-proof.json": 1
+  },
+  "source_unchanged_from_baseline": true,
+  "dependency_hashes_verified": true,
+  "whole_local_source_translation": true,
+  "whole_application_translation": false,
+  "reviewed_boundaries": [
+    "Actual DANZIG Executive/interpreter continuation outside containing source",
+    "Actual IMUPULSE bank07 service; physical gyro/device backend not a containing-file instruction"
+  ],
+  "qualification": "All original containing-file local entry/instruction/data words are represented by source-qualified compiled native operations within documented ordinary canonical/fixed-return/VAC/producer domains. NORMUNIT+1 helper fully composed by immutable UNIT packet; PULSEIMU real BANKCALL and trailing return qualified, external IMUPULSE is an explicit actual service boundary. Direct source helper returns and genuine DANZIG boundaries retain pending state; no arbitrary interpreter decoder or invented scheduling seam."
+}

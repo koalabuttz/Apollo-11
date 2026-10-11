@@ -3996,8 +3996,8 @@
             "sha256": "560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/lm-rtb-root-independent-review.json",
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            "path": "evidence/lm-rtb-root-independent-review-v2.json",
+            "sha256": "d2600a6c0e9f1560b0ff4ef55e6eb210e3af30e5855da519c2af7631506a627e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-rtb-whole-source-map.json",

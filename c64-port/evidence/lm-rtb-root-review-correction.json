@@ -1,0 +1,8 @@
+{
+  "previous_commit": "650547ef",
+  "cause": "First root review script used a Python2-style octal literal and exited before producing output. The shell continued to the certificate step, which checked file hashes but failed to require a nonempty successful root review.",
+  "previous_empty_review_preserved": "evidence/lm-rtb-root-independent-review.json",
+  "corrected_root_review": "evidence/lm-rtb-root-independent-review-v2.json",
+  "successful_independent_original_word_count": 130,
+  "native_agent_frozen_proofs_changed": false
+}
