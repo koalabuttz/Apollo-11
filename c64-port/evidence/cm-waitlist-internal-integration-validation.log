@@ -1,0 +1,26 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_waitlist_internal.c src/cm_native_image.c src/cm_waitlist.c src/agc_word.c tests/cm_waitlist_internal_cases.c tests/cm_waitlist_image_cases.c platform/host/cm_waitlist_internal_snapshot.c -o build/cm-waitlist-internal-native
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_waitlist_internal_differential.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+PASS: original internal WAITLIST insertion and exact raw interval frontiers, complete image and all13 external metadata fields
+{
+  "cases": 24576,
+  "checkpoints": 24576,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 101498880,
+  "snapshot_sha256": "6587e4ac93aeeac4c831455533b352c31275a3124368f132ec1958ae98f74d89",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "DLY2-1",
+    "VARDELAY",
+    "FIXDELAY"
+  ],
+  "scope": "actual DLY2-1/VARDELAY/FIXDELAY and original WAIT2 insertion/full-list caller or TASKOVER/BAILOUT handoff"
+}
+./build/test-cm-waitlist-internal
+PASS: internal WAITLIST invalid caller/delay/task/bank contracts unchanged
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/cm_waitlist_internal.c src/cm_native_image.c src/cm_waitlist.c src/agc_word.c tests/cm_waitlist_internal_cases.c tests/cm_waitlist_image_cases.c platform/host/cm_waitlist_internal_snapshot.c -o build/cm-waitlist-internal-sanitize
+python3 tools/cm_waitlist_internal_sanitize.py
+PASS: full ASAN/UBSAN complete original internal WAITLIST source paths and interval/TS overflow frontiers, all24576 complete source states

@@ -1,0 +1,36 @@
+{
+  "reason": "First actual timeout is original last WTLST5 CCS+A-zero executing literal01203 as TC1203 instead of BAILOUT; native copied bounded insertion treated this as ordinary insertion. Newly mapped fixed literal frontier stops at truePC1203/Q3377, no unknown instruction execution. Independently found first constructor also could index beyond2048-word physicalimage at later caller cases; corrected ordinary RAM caller0100..1376. No failed stream accepted.",
+  "files": [
+    {
+      "path": "tests/cm_waitlist_internal_cases.c",
+      "bytes": 1232,
+      "sha256": "d8f179b8722c7be9d385c2e0bf83856dd72b4da1fe7f75e2c1d2ce4f4ccd41be"
+    },
+    {
+      "path": "tools/cm_waitlist_internal_reference.c",
+      "bytes": 1408,
+      "sha256": "fef25ed1033975f920c08e2f430e24b742a3d6f528e4b3afba633ea7ada1dddb"
+    },
+    {
+      "path": "build/cm-waitlist-internal-validation.log",
+      "bytes": 374,
+      "sha256": "c14f19ae21d49104e4c94b7de55c5733e86ca6f3d7cec78d8624a2e34f1a2532"
+    },
+    {
+      "path": "build/cm-waitlist-internal-reference.trace",
+      "bytes": 37,
+      "sha256": "540cc5fa3f303ff9bd1d201a8629d6a7481d583c7cb99763c96ced7e22b01d16"
+    },
+    {
+      "path": "build/cm-waitlist-internal-native.snapshots.bin.gz",
+      "bytes": 7839398,
+      "sha256": "b2b86f218565f88ce9aa6e557f5b32856eee34316b3b2cd0d4204d809952d7f8"
+    },
+    {
+      "path": "build/cm-waitlist-internal-reference.snapshots.bin.gz",
+      "bytes": 38565,
+      "sha256": "f6bcd2362f4a672172643547dd6352ffa9b5ba50476f65974799e45b03753178"
+    }
+  ],
+  "initial_recorded_reason": "Unaccepted first constructor used literal RAM indexed by logical source caller up to07776, beyond2048-word physicalimage, and ignored banked RAM mapping. Original oracle failed; no accepted state/target/algorithm credit. Corrected ordinary RAM caller is0100..1376 or actual original fixed caller with passive compiled literal."
+}

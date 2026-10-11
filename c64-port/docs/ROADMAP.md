@@ -1644,3 +1644,7 @@ Qualify actual monitor paste and blank source controls against16384 complete ori
 ## Compose uninterrupted original DSKY monitor consumers
 
 Qualify256 continuous original monitor sequences with4872 complete strict sanitizer source checkpoints and336 actual C64 stage pairs preserving source state between modules. See `docs/DSKY-MONITOR-CONSUMER.md`.
+
+## Translate complete internal Comanche delay insertion controls
+
+Qualify actual DLY2 VARDELAY FIXDELAY insertion overflow and real task completion frontiers against24576 complete original strict sanitizer states and64 C64 cases. See `docs/COMANCHE_WAITLIST_INTERNAL.md`.

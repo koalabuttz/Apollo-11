@@ -1,0 +1,6 @@
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/cm_waitlist_internal_differential.py", line 19, in <module>
+    assert p.wait()==0,role+' runner failed'
+           ^^^^^^^^^^^
+AssertionError: reference runner failed

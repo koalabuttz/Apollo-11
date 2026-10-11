@@ -660,3 +660,5 @@ subprocess.run([sys.executable,'tools/dsky_test_noun_differential.py',str(refere
 subprocess.run([sys.executable,'tools/dsky_monitor_paste_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/dsky_monitor_consumer_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/cm_waitlist_internal_differential.py',str(reference)],cwd=ROOT,check=True)

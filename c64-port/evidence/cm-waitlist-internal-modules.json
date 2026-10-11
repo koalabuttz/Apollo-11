@@ -1,0 +1,29 @@
+[
+  {
+    "id": 239,
+    "filename": "G239",
+    "byte_count": 6739,
+    "crc16": 4207,
+    "sha256": "edb6142315ea653877fe0d5a187796d4697a2268e284d7286f1374f579bc0001",
+    "prg": "cm-waitlist-internal-239.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 3166,
+    "crc16": 48687,
+    "sha256": "1af884a3ab5a377f7e64f687a6830a061f4ec31b66bc3ef066d152e93da5533b",
+    "prg": "cm-waitlist-internal-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 9981,
+    "crc16": 56425,
+    "sha256": "4c689f28629df67c04be3b2e40488ba16ba170833716bc59bd4992c8391989db",
+    "prg": "cm-waitlist-internal-255.prg",
+    "native_control": false
+  }
+]
