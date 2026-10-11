@@ -1,0 +1,27 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_select.c src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_select_cases.c platform/host/cm_restart_select_snapshot.c -o build/cm-restart-select-native
+python3 tools/cm_restart_select_differential.py
+{
+  "pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "original_source_sha256": "4ed25b96c1e8582bf1656b433e0212eb6c9f5528348b40f5c7117a1964ab9994",
+  "source_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: 6144 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 6144,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3520 RESTARTS",
+    "01,3755 PHSPART2",
+    "01,3533 GETPART2"
+  ],
+  "boundary": "0704 GOLOC-1 or actual INITDSP FINDVAC service entry",
+  "snapshot_sha256": "17ba77cdbbe47d6c913c9a3ee3044d0cfc9dddbad8947d10570a0bc1a7468cc1"
+}
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_select.c src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_select_cases.c tests/cm_restart_select_check.c tests/test_cm_restart_select.c -o build/test-cm-restart-select
+./build/test-cm-restart-select
+6144 original CM restart selection full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_restart_select.c src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_select_cases.c tests/cm_restart_select_check.c tests/test_cm_restart_select.c -o build/test-cm-restart-select-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-restart-select-sanitize
+6144 original CM restart selection full-image states and guards: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-restart-select.map src/cm_restart_select.c src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_select_cases.c tests/cm_restart_select_check.c platform/c64/cm_restart_select_diagnostic.c -o build/cm-restart-select.prg

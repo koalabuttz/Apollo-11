@@ -890,3 +890,7 @@ Complete original-image FINDTIME and ITSLGCL2 source effects; independent source
 ## Port canonical Comanche long-call bank transfers
 
 Original LONGCALL, LONGCYCL, LONGRTRN and GETCADR transitions pass complete-image source and sanitizer comparisons plus C64 checks. See `docs/COMANCHE_LONGCALL.md`.
+
+## Port actual Comanche restart-table selection
+
+Original RESTARTS and phase-part selection use independently checked restart data; complete-image source, sanitizer and C64 checks pass. See `docs/COMANCHE_RESTART_SELECT.md`.

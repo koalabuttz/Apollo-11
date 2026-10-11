@@ -465,3 +465,5 @@ include tools/makeplay.mk
 include tools/cm_restart_timing.mk
 
 include tools/cm_longcall.mk
+
+include tools/cm_restart_select.mk
