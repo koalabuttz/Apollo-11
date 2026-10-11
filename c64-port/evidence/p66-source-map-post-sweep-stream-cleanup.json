@@ -1,0 +1,59 @@
+{
+  "reclaimed_bytes": 73890327,
+  "files": [
+    {
+      "path": "build/inverse-trig-sweep-lm-reference.snapshots.gz",
+      "bytes": 6932910,
+      "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873",
+      "retained": "evidence/inverse-trig-sweep-lm-complete.snapshots.xz"
+    },
+    {
+      "path": "build/inverse-trig-sweep-lm-native.snapshots.gz",
+      "bytes": 6932910,
+      "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873",
+      "retained": "evidence/inverse-trig-sweep-lm-complete.snapshots.xz"
+    },
+    {
+      "path": "build/inverse-trig-sweep-lm-sanitize.snapshots.gz",
+      "bytes": 6932910,
+      "decoded_sha256": "12a6f3b42709477e81f7a245c16269fa4ce5ed5d6725151d272fd060d655e873",
+      "retained": "evidence/inverse-trig-sweep-lm-complete.snapshots.xz"
+    },
+    {
+      "path": "build/inverse-trig-sweep-cm-reference.snapshots.gz",
+      "bytes": 6932767,
+      "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4",
+      "retained": "evidence/inverse-trig-sweep-cm-complete.snapshots.xz"
+    },
+    {
+      "path": "build/inverse-trig-sweep-cm-native.snapshots.gz",
+      "bytes": 6932767,
+      "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4",
+      "retained": "evidence/inverse-trig-sweep-cm-complete.snapshots.xz"
+    },
+    {
+      "path": "build/inverse-trig-sweep-cm-sanitize.snapshots.gz",
+      "bytes": 6932767,
+      "decoded_sha256": "71a4132cf359159a4208c4438ee46b2cdacfa7ac77e16534aa102f76f37eb2e4",
+      "retained": "evidence/inverse-trig-sweep-cm-complete.snapshots.xz"
+    },
+    {
+      "path": "build/lm-sps-rcs-reference.snapshots.gz",
+      "bytes": 10764432,
+      "decoded_sha256": "c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05",
+      "retained": "evidence/lm-sps-rcs-complete.snapshots.xz"
+    },
+    {
+      "path": "build/lm-sps-rcs-native.snapshots.gz",
+      "bytes": 10764432,
+      "decoded_sha256": "c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05",
+      "retained": "evidence/lm-sps-rcs-complete.snapshots.xz"
+    },
+    {
+      "path": "build/lm-sps-rcs-sanitize.snapshots.gz",
+      "bytes": 10764432,
+      "decoded_sha256": "c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05",
+      "retained": "evidence/lm-sps-rcs-complete.snapshots.xz"
+    }
+  ]
+}

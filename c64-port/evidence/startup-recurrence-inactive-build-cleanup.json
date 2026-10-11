@@ -1,0 +1,108 @@
+{
+  "scope": "Only inactive owned raw streams matching retained immutable original XZ archives; live recurrence WIP untouched",
+  "removed": [
+    {
+      "path": "build/p66-application-start-sanitize.snapshots",
+      "size": 23472489,
+      "sha256": "56bd1037bd7ac328b5433be6e258fc9a76260b70ff8e4def4d5184eea2b9f274",
+      "verified_archive": "evidence/p66-application-start-source.snapshots.xz"
+    },
+    {
+      "path": "build/p66-application-start-native.snapshots",
+      "size": 23472489,
+      "sha256": "56bd1037bd7ac328b5433be6e258fc9a76260b70ff8e4def4d5184eea2b9f274",
+      "verified_archive": "evidence/p66-application-start-source.snapshots.xz"
+    },
+    {
+      "path": "build/p66-application-job-sanitize.snapshots",
+      "size": 153879699,
+      "sha256": "bab1ff892632cd9c90d139229a9af041913c697301567a7ee1ac7dc6690bb22e",
+      "verified_archive": "evidence/p66-application-job-source.snapshots.xz"
+    },
+    {
+      "path": "build/p66-application-job-native.snapshots",
+      "size": 153879699,
+      "sha256": "bab1ff892632cd9c90d139229a9af041913c697301567a7ee1ac7dc6690bb22e",
+      "verified_archive": "evidence/p66-application-job-source.snapshots.xz"
+    },
+    {
+      "path": "build/p66-application-job-reference.snapshots",
+      "size": 153879699,
+      "sha256": "bab1ff892632cd9c90d139229a9af041913c697301567a7ee1ac7dc6690bb22e",
+      "verified_archive": "evidence/p66-application-job-source.snapshots.xz"
+    },
+    {
+      "path": "build/p66-application-live-native.snapshots",
+      "size": 12697297,
+      "sha256": "9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc",
+      "verified_archive": "evidence/p66-application-live-source.snapshots.xz"
+    },
+    {
+      "path": "build/p66-application-live-sanitize.snapshots",
+      "size": 12697297,
+      "sha256": "9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc",
+      "verified_archive": "evidence/p66-application-live-source.snapshots.xz"
+    },
+    {
+      "path": "build/p66-application-live-reference.snapshots",
+      "size": 12697297,
+      "sha256": "9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc",
+      "verified_archive": "evidence/p66-application-live-source.snapshots.xz"
+    },
+    {
+      "path": "build/lm-idle-start-reference.snapshots",
+      "size": 95007751,
+      "sha256": "14f00f0c2a34da0ca9775f06adcdaa249f185d73ac867ba7bbfbeb9edc59cfa7",
+      "verified_archive": "evidence/lm-idle-start-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-idle-start-sanitize.snapshots",
+      "size": 95007751,
+      "sha256": "14f00f0c2a34da0ca9775f06adcdaa249f185d73ac867ba7bbfbeb9edc59cfa7",
+      "verified_archive": "evidence/lm-idle-start-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-idle-start-native.snapshots",
+      "size": 95007751,
+      "sha256": "14f00f0c2a34da0ca9775f06adcdaa249f185d73ac867ba7bbfbeb9edc59cfa7",
+      "verified_archive": "evidence/lm-idle-start-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-taskover-resume-native.snapshots",
+      "size": 95040432,
+      "sha256": "db52eeeac28448be12c8dfa8aecfa4f8fcbf3577efbcc67e90e4ea1847a2f141",
+      "verified_archive": "evidence/lm-taskover-resume-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-taskover-resume-reference.snapshots",
+      "size": 95040432,
+      "sha256": "db52eeeac28448be12c8dfa8aecfa4f8fcbf3577efbcc67e90e4ea1847a2f141",
+      "verified_archive": "evidence/lm-taskover-resume-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-taskover-resume-sanitize.snapshots",
+      "size": 95040432,
+      "sha256": "db52eeeac28448be12c8dfa8aecfa4f8fcbf3577efbcc67e90e4ea1847a2f141",
+      "verified_archive": "evidence/lm-taskover-resume-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-waitlist-dispatch-reference.snapshots",
+      "size": 94924831,
+      "sha256": "05552495e64b4df5f4cec63a77df444e95e46b56862e26e5745db51a18bb3017",
+      "verified_archive": "evidence/lm-waitlist-dispatch-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-waitlist-dispatch-native.snapshots",
+      "size": 94924831,
+      "sha256": "05552495e64b4df5f4cec63a77df444e95e46b56862e26e5745db51a18bb3017",
+      "verified_archive": "evidence/lm-waitlist-dispatch-reference.snapshots.xz"
+    },
+    {
+      "path": "build/lm-waitlist-dispatch-sanitize.snapshots",
+      "size": 94924831,
+      "sha256": "05552495e64b4df5f4cec63a77df444e95e46b56862e26e5745db51a18bb3017",
+      "verified_archive": "evidence/lm-waitlist-dispatch-reference.snapshots.xz"
+    }
+  ],
+  "freed_bytes": 1401595008
+}
