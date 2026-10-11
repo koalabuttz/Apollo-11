@@ -622,3 +622,5 @@ include tools/passive_storage_port.mk
 
 include tools/cm_fixed_compat.mk
 all: build/cm-fixed-compat-native
+
+include tools/dsky_charin_reset.mk

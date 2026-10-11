@@ -1186,3 +1186,7 @@ Both original fixed-word datasets now have data-only native readers: 36 populate
 ## Run original Comanche fixed memory display and checksum call prefixes
 
 Actual DSPFMEM and COMADRS lead-ins now read the entire 40,960-address original fixed-word domain through native SUPDACAL and return to genuine callers. 81,920 source sequences and 163,840 complete source/native/sanitized checkpoints pass; stock C64 verifies 64 sequences and 128 checkpoints with full-state samples. Passive data is separately exact-word qualified. Later octal display/checksum bodies and whole application acceptance remain pending. See `docs/COMANCHE_FIXED_CALLERS.md`.
+
+## Translate actual Luminary and Comanche Reset and Error key behavior
+
+Both original RSET/ERROR paths now preserve their differing failure registers and restart-light effects, including the negative-zero CADRSTOR key-release corner. 8,192 complete source/native/sanitized states and 64 complete C64 checkpoints pass. See `docs/DSKY-RESET-ENTRY.md`.
