@@ -140,6 +140,27 @@
           ],
           "scope": "Actual PRIOLARM raw register recording and source PRIODSPR or POODOO selection; priority-display consumer and broad alarm caller closure remain separate.",
           "verification": "docs/COMANCHE_PRIOLARM.md"
+        },
+        {
+          "native_files": [
+            "src/cm_abort_word.c"
+          ],
+          "scope": "Actual post-VAC/EB inline alarm data resolution through passive source words and canonical aliases; remaining direct ALARM2/caller entry correction in progress.",
+          "verification": "docs/COMANCHE_ABORT_WORD.md"
+        },
+        {
+          "native_files": [
+            "src/cm_priority_display.c"
+          ],
+          "scope": "Original priority display and generic SPVAC immediate-return paths with actual source task admission.",
+          "verification": "docs/COMANCHE_PRIORITY_DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_alarm_image.c"
+          ],
+          "scope": "Original alarm snapshot image domains, with additive complete-entry wrapper addressing newly identified ordinary-return address collision. Whole alarm closure remains open.",
+          "verification": "docs/COMANCHE_ALARM_IMAGE.md"
         }
       ]
     },
@@ -718,6 +739,27 @@
           ],
           "scope": "Actual IMUPULSE mode lead in and successful WAITLIST registration with free command reservation, TPAGREE and source MODEEXIT return; deferred gyro tasks, busy sleep and hardware delivery remain open.",
           "verification": "docs/NATIVE-IMUPULSE.md"
+        },
+        {
+          "native_files": [
+            "src/imu_pulse_task.c"
+          ],
+          "scope": "Deferred original gyro task generation and IMUPULSE continuations; broader mode switching and application/device timing remain separate.",
+          "verification": "docs/NATIVE-GYRO-TASKS.md"
+        },
+        {
+          "native_files": [
+            "src/imu_pulse_end.c"
+          ],
+          "scope": "Original gyro completion wake mode-return and TASKOVER frontiers with signed sentinels.",
+          "verification": "docs/NATIVE-GYRO-COMPLETION.md"
+        },
+        {
+          "native_files": [
+            "src/imu_pulse_wake.c"
+          ],
+          "scope": "Original idle wake and selected helper admission through actual helper return; full asynchronous caller/device composition remains separate.",
+          "verification": "docs/NATIVE-GYRO-WAKE.md"
         }
       ]
     },
@@ -861,6 +903,20 @@
           ],
           "scope": "Original VXV and VPROJ numerical helper bodies with exact erasable aliases and passive fixed operands; other interpreter groups remain open.",
           "verification": "docs/NATIVE-SBAND-VECTORS.md"
+        },
+        {
+          "native_files": [
+            "src/ephemeris_add.c"
+          ],
+          "scope": "Canonical original TAD triple addition prerequisite including aliases and overflow; remaining interpreter bodies and ephemerides algorithms stay open.",
+          "verification": "docs/NATIVE-EPHEMERIS-ADD.md"
+        },
+        {
+          "native_files": [
+            "src/ephemeris_shift.c"
+          ],
+          "scope": "Original positive scalar no-round SL5 SL8 SL16 canonical shift with both CYR edits; other shifts and interpreter bodies remain separate.",
+          "verification": "docs/NATIVE-EPHEMERIS-SHIFT.md"
         }
       ]
     },
@@ -1477,6 +1533,62 @@
           ],
           "scope": "Uninterrupted original V30 and V31 release wakeup scheduling through actual NOVAC FINDVAC or WAITLIST and END or source recovery, including resource exhaustion and invalid delays.",
           "verification": "docs/DSKY-OPERATOR-SCHEDULE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_row.c"
+          ],
+          "scope": "Original decimal row and formatter-return controls retaining pending canonical state.",
+          "verification": "docs/DSKY-DECIMAL-ROW.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_raw.c"
+          ],
+          "scope": "Source decimal formatter for ordinary raw mixed-sign DP with bounded passive table operands.",
+          "verification": "docs/DSKY-DECIMAL-RAW.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_consumer.c"
+          ],
+          "scope": "Continuous original DECDSP selection supported scale formatting and rows; remaining external scalers and other Pinball bodies open.",
+          "verification": "docs/DSKY-DECIMAL-CONSUMER.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_lamp_test.c"
+          ],
+          "scope": "Original lamp-test control and source scheduler handoffs.",
+          "verification": "docs/DSKY-LAMP-TEST.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_mode_admit.c"
+          ],
+          "scope": "Original mode display job admission with real caller return and actual queue behavior.",
+          "verification": "docs/DSKY-MODE-ADMIT.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_lamp_release.c"
+          ],
+          "scope": "Lamp release through genuine JOBWAKE with signed-zero returns.",
+          "verification": "docs/DSKY-LAMP-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_mode_job.c"
+          ],
+          "scope": "Generic actual deferred DSPMMJB across complete mode domain and true END or alarm handoffs.",
+          "verification": "docs/DSKY-MODE-JOB.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_lamp_lifecycle.c"
+          ],
+          "scope": "Whole tested lamp mode/release control composition including actual caller bank data and queues; hardware 500cs runtime scheduling separate.",
+          "verification": "docs/DSKY-LAMP-LIFECYCLE.md"
         }
       ]
     },
@@ -1780,8 +1892,30 @@
       "sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
       "bytes": 3698,
       "lines": 128,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/sband_control.c"
+          ],
+          "scope": "Original antenna numerical support and helper handoffs; full antenna control remains open.",
+          "verification": "docs/NATIVE-SBAND-CALLERS.md"
+        },
+        {
+          "native_files": [
+            "src/sband_flow.c"
+          ],
+          "scope": "Original time load and conic caller controls through true conic entry.",
+          "verification": "docs/NATIVE-SBAND-TIME-FLOW.md"
+        },
+        {
+          "native_files": [
+            "src/sband_orbit.c"
+          ],
+          "scope": "Actual returned conic Earth versus Moon selection through source UNIT MXV or LUNPOS entry; following numerical bodies remain separate.",
+          "verification": "docs/NATIVE-SBAND-ORBIT-CALLERS.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/SERVICER207.agc",
@@ -2857,6 +2991,27 @@
           ],
           "scope": "Actual IMUPULSE mode lead in and successful WAITLIST registration with free command reservation, TPAGREE and source MODEEXIT return; deferred gyro tasks, busy sleep and hardware delivery remain open.",
           "verification": "docs/NATIVE-IMUPULSE.md"
+        },
+        {
+          "native_files": [
+            "src/imu_pulse_task.c"
+          ],
+          "scope": "Deferred original gyro task generation and IMUPULSE continuations; broader mode switching and application/device timing remain separate.",
+          "verification": "docs/NATIVE-GYRO-TASKS.md"
+        },
+        {
+          "native_files": [
+            "src/imu_pulse_end.c"
+          ],
+          "scope": "Original gyro completion wake mode-return and TASKOVER frontiers with signed sentinels.",
+          "verification": "docs/NATIVE-GYRO-COMPLETION.md"
+        },
+        {
+          "native_files": [
+            "src/imu_pulse_wake.c"
+          ],
+          "scope": "Original idle wake and selected helper admission through actual helper return; full asynchronous caller/device composition remains separate.",
+          "verification": "docs/NATIVE-GYRO-WAKE.md"
         }
       ]
     },
@@ -3052,6 +3207,20 @@
           ],
           "scope": "Original VXV and VPROJ numerical helper bodies with exact erasable aliases and passive fixed operands; other interpreter groups remain open.",
           "verification": "docs/NATIVE-SBAND-VECTORS.md"
+        },
+        {
+          "native_files": [
+            "src/ephemeris_add.c"
+          ],
+          "scope": "Canonical original TAD triple addition prerequisite including aliases and overflow; remaining interpreter bodies and ephemerides algorithms stay open.",
+          "verification": "docs/NATIVE-EPHEMERIS-ADD.md"
+        },
+        {
+          "native_files": [
+            "src/ephemeris_shift.c"
+          ],
+          "scope": "Original positive scalar no-round SL5 SL8 SL16 canonical shift with both CYR edits; other shifts and interpreter bodies remain separate.",
+          "verification": "docs/NATIVE-EPHEMERIS-SHIFT.md"
         }
       ]
     },
@@ -3648,6 +3817,62 @@
           ],
           "scope": "Uninterrupted original V30 and V31 release wakeup scheduling through actual NOVAC FINDVAC or WAITLIST and END or source recovery, including resource exhaustion and invalid delays.",
           "verification": "docs/DSKY-OPERATOR-SCHEDULE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_row.c"
+          ],
+          "scope": "Original decimal row and formatter-return controls retaining pending canonical state.",
+          "verification": "docs/DSKY-DECIMAL-ROW.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_raw.c"
+          ],
+          "scope": "Source decimal formatter for ordinary raw mixed-sign DP with bounded passive table operands.",
+          "verification": "docs/DSKY-DECIMAL-RAW.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_decimal_consumer.c"
+          ],
+          "scope": "Continuous original DECDSP selection supported scale formatting and rows; remaining external scalers and other Pinball bodies open.",
+          "verification": "docs/DSKY-DECIMAL-CONSUMER.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_lamp_test.c"
+          ],
+          "scope": "Original lamp-test control and source scheduler handoffs.",
+          "verification": "docs/DSKY-LAMP-TEST.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_mode_admit.c"
+          ],
+          "scope": "Original mode display job admission with real caller return and actual queue behavior.",
+          "verification": "docs/DSKY-MODE-ADMIT.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_lamp_release.c"
+          ],
+          "scope": "Lamp release through genuine JOBWAKE with signed-zero returns.",
+          "verification": "docs/DSKY-LAMP-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_mode_job.c"
+          ],
+          "scope": "Generic actual deferred DSPMMJB across complete mode domain and true END or alarm handoffs.",
+          "verification": "docs/DSKY-MODE-JOB.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_lamp_lifecycle.c"
+          ],
+          "scope": "Whole tested lamp mode/release control composition including actual caller bank data and queues; hardware 500cs runtime scheduling separate.",
+          "verification": "docs/DSKY-LAMP-LIFECYCLE.md"
         }
       ]
     },
@@ -3811,8 +4036,16 @@
       "sha256": "f27f4f9372e56e41ad44a810945ce6247e1f931bfa4d3b5d114089732d80e0ad",
       "bytes": 2538,
       "lines": 103,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_radar_leadin.c"
+          ],
+          "scope": "Original radar sampling lead-in selection and source failure controls through true scheduling/device frontiers.",
+          "verification": "docs/LM-RADAR-LEADIN.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/RCS_FAILURE_MONITOR.agc",
@@ -4020,8 +4253,30 @@
       "sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
       "bytes": 4670,
       "lines": 200,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/sband_control.c"
+          ],
+          "scope": "Original antenna numerical support and helper handoffs; full antenna control remains open.",
+          "verification": "docs/NATIVE-SBAND-CALLERS.md"
+        },
+        {
+          "native_files": [
+            "src/sband_flow.c"
+          ],
+          "scope": "Original time load and conic caller controls through true conic entry.",
+          "verification": "docs/NATIVE-SBAND-TIME-FLOW.md"
+        },
+        {
+          "native_files": [
+            "src/sband_orbit.c"
+          ],
+          "scope": "Actual returned conic Earth versus Moon selection through source UNIT MXV or LUNPOS entry; following numerical bodies remain separate.",
+          "verification": "docs/NATIVE-SBAND-ORBIT-CALLERS.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/SERVICER.agc",
