@@ -39,12 +39,26 @@
     "Luminary099": {
       "status": "unverified",
       "reviewed_entire_program": false,
-      "evidence": {}
+      "evidence": {},
+      "qualified_partial_milestones": [
+        {
+          "verification": "docs/P66-APPLICATION-STARTUP.md",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "reviewed_entire_program": false
+        }
+      ]
     },
     "Comanche055": {
       "status": "unverified",
       "reviewed_entire_program": false,
-      "evidence": {}
+      "evidence": {},
+      "qualified_partial_milestones": [
+        {
+          "verification": "docs/COMANCHE-NORMAL-N40.md",
+          "scope": "Uninterrupted normal noun40/85 host source composition and independent C64 caller checks; complete resident program/device/recovery acceptance pending.",
+          "reviewed_entire_program": false
+        }
+      ]
     }
   },
   "files": [
@@ -629,6 +643,13 @@
           ],
           "scope": "Original ARCSIN/ARCCOS sign, clamp, normalized root, rounded shift, polynomial and epilogues through completed DANZIG or pre1301 service boundary. Alarm handler, post-alarm continuation and remaining interpreter source are excluded.",
           "verification": "docs/INVERSE-TRIG.md"
+        },
+        {
+          "native_files": [
+            "src/inverse_trig.c"
+          ],
+          "scope": "The additive inverse-trig sweep closes original missing2,045 high words per function; it exhausts all32,768 high words independently for ARCSIN/ARCCOS and preserves frozen numeric source boundaries. No whole INTERPRETER or alarm-handler acceptance.",
+          "verification": "docs/INVERSE-TRIG-SWEEP.md"
         }
       ]
     },
@@ -1020,6 +1041,26 @@
           ],
           "scope": "Actual normal V06N85 NVSUB/table/scaling/three decimal rows through source completion, supplied with fresh transformed VGBODY from uninterrupted DYNDISP. Relay drain and other noun/operator paths are excluded.",
           "verification": "docs/COMANCHE-DYNAMIC-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_pinbranch.c",
+            "src/dsky_blanksub.c",
+            "src/dsky_enter.c",
+            "src/dsky_enter_zero.c"
+          ],
+          "scope": "Qualified original display branch selection, ordinary blank caller, ENTER pass selection and ENTPAS0 noun admission with original bank/IRQ/register ownership. Actual external verb, mixed-noun, request and display bodies retain separate source boundaries.",
+          "verification": "docs/DSKY-ENTER-ZERO.md"
+        },
+        {
+          "native_files": [
+            "src/cm_decimal_pair.c",
+            "src/cm_minutes_seconds.c",
+            "src/cm_normal_display.c",
+            "src/cm_normal_display_route.c"
+          ],
+          "scope": "Source signed two-character and minutes/seconds output plus uninterrupted normal V06N40/N85 caller/row/END host compositions; actual C64 caller and reusable primitive checks. Complete resident composition and relay/device acceptance remain separate.",
+          "verification": "docs/COMANCHE-NORMAL-N40.md"
         }
       ]
     },
@@ -2037,6 +2078,14 @@
           ],
           "scope": "Canonical source CHANG2 and native source-selected basic/interpreter adoption without repeated exchange or pending IRQ admission. Generic admission, CHANG1 and whole Executive remain separate coverage work.",
           "verification": "docs/NATIVE-CANONICAL-EXCHANGE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_idle_start.c",
+            "src/p66_application.c"
+          ],
+          "scope": "Actual admitted positive idle ADVAN into source BASIC and P66 startup/deferred source jobs through canonical END/idle. Other generic Executive entries/caller domains remain unqualified here.",
+          "verification": "docs/LM-RECURRENCE-BRIDGES.md"
         }
       ]
     },
@@ -2400,6 +2449,13 @@
           ],
           "scope": "Original ARCSIN/ARCCOS sign, clamp, normalized root, rounded shift, polynomial and epilogues through completed DANZIG or pre1301 service boundary. Alarm handler, post-alarm continuation and remaining interpreter source are excluded.",
           "verification": "docs/INVERSE-TRIG.md"
+        },
+        {
+          "native_files": [
+            "src/inverse_trig.c"
+          ],
+          "scope": "The additive inverse-trig sweep closes original missing2,045 high words per function; it exhausts all32,768 high words independently for ARCSIN/ARCCOS and preserves frozen numeric source boundaries. No whole INTERPRETER or alarm-handler acceptance.",
+          "verification": "docs/INVERSE-TRIG-SWEEP.md"
         }
       ]
     },
@@ -2804,6 +2860,16 @@
           ],
           "scope": "Actual operator sign, Clear, Reset, invalid-key alarm, Key Release/RELDSP and BLNKSUB1 bodies with original signed-zero and source-selected continuation behavior. Broader ENTER/PINBRNCH/blanking caller and remaining Pinball paths remain open.",
           "verification": "docs/DSKY-KEY-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_pinbranch.c",
+            "src/dsky_blanksub.c",
+            "src/dsky_enter.c",
+            "src/dsky_enter_zero.c"
+          ],
+          "scope": "Qualified original display branch selection, ordinary blank caller, ENTER pass selection and ENTPAS0 noun admission with original bank/IRQ/register ownership. Actual external verb, mixed-noun, request and display bodies retain separate source boundaries.",
+          "verification": "docs/DSKY-ENTER-ZERO.md"
         }
       ]
     },
@@ -3393,6 +3459,14 @@
               "sha256": "bd71aad75050b3df0fb7753b9519599bda9ca2b22abcecdbd41984001841182b"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/lm_waitlist_dispatch.c",
+            "src/lm_taskover_resume.c"
+          ],
+          "scope": "Literal T3/vector TASKOVER-next task transfer under tested IRQ0 contract and saved architectural RESUME. Hardware IRQ1 dispatch, selected task bodies and SVCT3 remain separate.",
+          "verification": "docs/LM-RECURRENCE-BRIDGES.md"
         }
       ]
     }

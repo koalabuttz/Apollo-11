@@ -6848,6 +6848,7 @@
   "sum-vice.mon": "1960fbbdd1ae3ad328255d7e02d356ab019c54be40fd20639219bee73179551f",
   "sum.map": "5cbefa391becbb4722756d2c6fcefe11d116de2f9393e3916d93eea979a037c4",
   "sum.prg": "0250126a9ee409d91c932d399d23381d8c84a932d54cd326dd9bc314123250d4",
+  "system-partial-coverage-validation.log": "e8335d84adbea4b4187370787b0e544f6d3236e477cfb6b48c455753cc2330cd",
   "throttle-bridge-differential.log": "73af049ad296472e2be170ac8be6dba67b7ec6ad6b83e56c5fe5e7dbdefb2bb5",
   "throttle-bridge-freeze.log": "21670a0155bd68c6c301edc0e867dbc8f01591506ec7fd5e4a68a7426f06c080",
   "throttle-bridge-hardware-stack.bin": "832039b07448705482d178371d8ce4ebb25615159891a7d40ee912722efe4a2a",
