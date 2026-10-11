@@ -1062,3 +1062,5 @@ sanitize: lm-super-dispatch-port-sanitize
 include tools/lm_wake_image_port_integration.mk
 test: lm-wake-image-port-test
 sanitize: lm-wake-image-port-sanitize
+
+include tools/imu_attitude_admission_integration.mk

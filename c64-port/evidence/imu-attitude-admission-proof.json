@@ -1,0 +1,362 @@
+{
+  "literal_accessor_arguments": 131072,
+  "unchanged_target_guards": 120,
+  "complete_states": 655360,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14"
+  ],
+  "source_group_words": {
+    "lm": 36,
+    "cm": 36
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/imu-attitude-admission-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-lm0-complete.states.xz",
+        "decoded_sha256": "92a0f224e9fb776556cb37e1bbaae7a2d34597f01ed89c12e3bd83d399407da5",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-lm0-complete.states.xz",
+        "decoded_sha256": "92a0f224e9fb776556cb37e1bbaae7a2d34597f01ed89c12e3bd83d399407da5",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-lm0-complete.states.xz",
+        "decoded_sha256": "92a0f224e9fb776556cb37e1bbaae7a2d34597f01ed89c12e3bd83d399407da5",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-lm1-complete.states.xz",
+        "decoded_sha256": "8f2bf9e961c9e124952639c2e481a9b277cc290a73b5aba20fa6d86038f4e807",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-lm1-complete.states.xz",
+        "decoded_sha256": "8f2bf9e961c9e124952639c2e481a9b277cc290a73b5aba20fa6d86038f4e807",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-lm1-complete.states.xz",
+        "decoded_sha256": "8f2bf9e961c9e124952639c2e481a9b277cc290a73b5aba20fa6d86038f4e807",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm2": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-lm2-complete.states.xz",
+        "decoded_sha256": "70802ae3fcdbdc83117fc7909cfef5c1097f8100c521e9f7060e5744562a8578",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-lm2-complete.states.xz",
+        "decoded_sha256": "70802ae3fcdbdc83117fc7909cfef5c1097f8100c521e9f7060e5744562a8578",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-lm2-complete.states.xz",
+        "decoded_sha256": "70802ae3fcdbdc83117fc7909cfef5c1097f8100c521e9f7060e5744562a8578",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm3": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-lm3-complete.states.xz",
+        "decoded_sha256": "9894001aa5907988a061423846c4074609169fe58c8642ec3d76a0bc07522ae1",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-lm3-complete.states.xz",
+        "decoded_sha256": "9894001aa5907988a061423846c4074609169fe58c8642ec3d76a0bc07522ae1",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-lm3-complete.states.xz",
+        "decoded_sha256": "9894001aa5907988a061423846c4074609169fe58c8642ec3d76a0bc07522ae1",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm4": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-lm4-complete.states.xz",
+        "decoded_sha256": "12cfae744581cad454d80d81eca3919b22f90f2b7747f18c6a2cbbf0e4b1cf7e",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-lm4-complete.states.xz",
+        "decoded_sha256": "12cfae744581cad454d80d81eca3919b22f90f2b7747f18c6a2cbbf0e4b1cf7e",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-lm4-complete.states.xz",
+        "decoded_sha256": "12cfae744581cad454d80d81eca3919b22f90f2b7747f18c6a2cbbf0e4b1cf7e",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-cm0-complete.states.xz",
+        "decoded_sha256": "2b038fb64f46dbea116662df445e64de106ddd7d7b787d111568c9907af81ef2",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-cm0-complete.states.xz",
+        "decoded_sha256": "2b038fb64f46dbea116662df445e64de106ddd7d7b787d111568c9907af81ef2",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-cm0-complete.states.xz",
+        "decoded_sha256": "2b038fb64f46dbea116662df445e64de106ddd7d7b787d111568c9907af81ef2",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-cm1-complete.states.xz",
+        "decoded_sha256": "58555b4cb3fcc6f4dbf3c79b307e73b410981b415e6405f1720182536c8de252",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-cm1-complete.states.xz",
+        "decoded_sha256": "58555b4cb3fcc6f4dbf3c79b307e73b410981b415e6405f1720182536c8de252",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-cm1-complete.states.xz",
+        "decoded_sha256": "58555b4cb3fcc6f4dbf3c79b307e73b410981b415e6405f1720182536c8de252",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm2": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-cm2-complete.states.xz",
+        "decoded_sha256": "2a6891973f63787a1a773182e8d03672fcdd8a7adc52cdcef982f01f2f0d46d5",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-cm2-complete.states.xz",
+        "decoded_sha256": "2a6891973f63787a1a773182e8d03672fcdd8a7adc52cdcef982f01f2f0d46d5",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-cm2-complete.states.xz",
+        "decoded_sha256": "2a6891973f63787a1a773182e8d03672fcdd8a7adc52cdcef982f01f2f0d46d5",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm3": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-cm3-complete.states.xz",
+        "decoded_sha256": "2eabc70f0ca14f25f69ddcbc3139b6fbc7eee276f2cf54158fb3dc2b7ab3cb8b",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-cm3-complete.states.xz",
+        "decoded_sha256": "2eabc70f0ca14f25f69ddcbc3139b6fbc7eee276f2cf54158fb3dc2b7ab3cb8b",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-cm3-complete.states.xz",
+        "decoded_sha256": "2eabc70f0ca14f25f69ddcbc3139b6fbc7eee276f2cf54158fb3dc2b7ab3cb8b",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm4": {
+      "original_assembly": {
+        "object": "evidence/imu-attitude-admission-cm4-complete.states.xz",
+        "decoded_sha256": "4d92bbed83d99b0c661253dc13c55c3baaebf3a488e0da9dd3e74029e8dc311d",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-attitude-admission-cm4-complete.states.xz",
+        "decoded_sha256": "4d92bbed83d99b0c661253dc13c55c3baaebf3a488e0da9dd3e74029e8dc311d",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-attitude-admission-cm4-complete.states.xz",
+        "decoded_sha256": "4d92bbed83d99b0c661253dc13c55c3baaebf3a488e0da9dd3e74029e8dc311d",
+        "decoded_bytes": 269484032
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002000",
+      "PRG_bytes": 7849,
+      "loaded_end": "0x26a7",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002001",
+      "PRG_bytes": 7526,
+      "loaded_end": "0x2564",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "lm2": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002002",
+      "PRG_bytes": 7358,
+      "loaded_end": "0x24bc",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "lm3": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002003",
+      "PRG_bytes": 7283,
+      "loaded_end": "0x2471",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "lm4": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002004",
+      "PRG_bytes": 7358,
+      "loaded_end": "0x24bc",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002020",
+      "PRG_bytes": 7857,
+      "loaded_end": "0x26af",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002021",
+      "PRG_bytes": 7511,
+      "loaded_end": "0x2555",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "cm2": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002022",
+      "PRG_bytes": 7366,
+      "loaded_end": "0x24c4",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "cm3": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002023",
+      "PRG_bytes": 7290,
+      "loaded_end": "0x2478",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    },
+    "cm4": {
+      "complete_states": 32,
+      "unchanged_guard_calls": 12,
+      "constant_checks": 6,
+      "mailbox": "a500002024",
+      "PRG_bytes": 7366,
+      "loaded_end": "0x24c4",
+      "hardware_stack": 20,
+      "software_stack": 105,
+      "compiler_ZP": 0
+    }
+  },
+  "source_branches": {
+    "lm0": {
+      "0": 131,
+      "1": 65405
+    },
+    "lm1": {
+      "3": 32768,
+      "2": 32768
+    },
+    "lm2": {
+      "2": 65536
+    },
+    "lm3": {
+      "4": 65536
+    },
+    "lm4": {
+      "5": 65536
+    },
+    "cm0": {
+      "0": 131,
+      "1": 65405
+    },
+    "cm1": {
+      "3": 32768,
+      "2": 32768
+    },
+    "cm2": {
+      "2": 65536
+    },
+    "cm3": {
+      "4": 65536
+    },
+    "cm4": {
+      "5": 65536
+    }
+  },
+  "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+  "source_fixture_tool": "tools/imu_pulse_prepare_reference.py",
+  "independent_review": {
+    "path": "evidence/imu-attitude-admission-independent-review.json",
+    "sha256": "88d49f8d5ecc6afdf55515a4c7d6efcb9c55409802ad037b9ca3983cbd7a6e51"
+  },
+  "immutable_service_dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "tests/imu_pulse_cases.c": "ac783d198a79c77d8db4d7a1b1893780c096bb8209807acb3315bdf825a9fee5",
+    "src/imu_coarse.c": "6bd450e3934a8fe4f5805492e47632afc0850a729d50e872086b89ca263668fc",
+    "include/imu_coarse.h": "f3da4a810eead277c82ab5d17b409d545513ba864e02ed093352e4cc041f4bad",
+    "tests/imu_coarse_cases.c": "12d2ce726888506b75eb23e77b0a22add2e7772a6e1d9839033576839af66ecd",
+    "tests/imu_mode_control_cases.c": "2b611df4ee6370920e2daca854fee3dd6f334a4a952897155fb887c9e93a0a74",
+    "src/imu_mode_control.c": "484b0133bff479b374bd1d8f61cd2bb4d1ac547f1c0a5043cbd743f89250bde7",
+    "include/imu_mode_control.h": "cd1fd8481972d634d6db0f66ff3aa4bfcc229b8fa2d1b637e652f9fe747cb134",
+    "include/imu_mode_control_literals.h": "5aa221cf4679ff4111e9faa47ce55bb99831423326e96758a9fb4377d0cf8794",
+    "tools/frozen_words.py": "542338895352036113578bad37a79e49a43f61dcef2834cbfb0fd7841f573724",
+    "tests/frozen_words.c": "f8ca1264ddd12de6768c7e148dbe5b02c39cda2a0fad905d536ea534b8a2b834"
+  },
+  "qualification": "Original GOMANUR/R02 admission and local alarm/flag/return source bodies. Coherent actual bank07 or LM R02 bank04/EB3, ordinary canonical RAM/raw A/L, fixed Q, ordinary latches, quiet channel14 and excluded producers. GOMANUR saved fixed caller/aligned bank bounds. Typed POSTJUMP/POODOO/UPFLAG/VARALARM/SWRETURN/GOTOPOOH frontiers preserve actual source registers. No external callee body, arbitrary opcode or whole application claim.",
+  "target_warning_exception": "None. Host and target strict warnings are errors.",
+  "decoded_stream_identity": "Each of ten originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with checked subprocess completion; no duplicate raw full streams retained."
+}

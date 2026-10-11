@@ -1531,3 +1531,7 @@ Translate original generic SUPDXCHZ and SUPDXCHZ+1 dispatch with real2CADR and f
 ## Translate generic original LM wake image controls
 
 Translate actual JOBWAKE dormantcore0 and pending positive request through SPECTEST and SETLOC against16384 complete original strict sanitizer states plus64 C64 checkpoints and8192 legacy compatibility states. See `docs/LM-WAKE-IMAGE.md`.
+
+## Translate original IMU attitude admission in both missions
+
+Translate GOMANUR and R02 local attitude admission against655360 complete original strict sanitizer states and320 C64 checkpoints with typed original external callee frontiers. See `docs/NATIVE-IMU-ATTITUDE-ADMISSION.md`.
