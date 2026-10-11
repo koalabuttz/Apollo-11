@@ -227,3 +227,7 @@ stage. See `docs/EXECUTIVE_SERVICES.md`.
 ## Translate native single and double phase-table changes
 
 All 49,152 complete original-assembly states match; 128 host/sanitizer/C64 states pass. See `docs/PHASE.md`.
+
+## Translate arbitrary-factor vector scaling and unrounded DP products
+
+All 8,192 complete assembly checkpoints and 128 host/sanitizer/C64 states pass. See `docs/PRODUCT.md`.

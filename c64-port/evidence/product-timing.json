@@ -1,0 +1,18 @@
+{
+  "clock_hz": 985248,
+  "sample_names": [
+    "DMP1 corner 0",
+    "VXSC corner 8",
+    "DMP1 corner 120",
+    "VXSC corner 248",
+    "DMP1 edge 395"
+  ],
+  "cycles": [
+    3385,
+    10919,
+    5249,
+    21733,
+    8830
+  ],
+  "scope": "finite samples; marker and VIC effects included; no WCET proof"
+}

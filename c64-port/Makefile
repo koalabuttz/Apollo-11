@@ -283,3 +283,5 @@ include tools/vector.mk
 include tools/executive_services.mk
 
 include tools/phase.mk
+
+include tools/product.mk

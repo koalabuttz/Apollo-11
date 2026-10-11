@@ -1,0 +1,11 @@
+PASS: VICE PAL, 128 complete original-assembly DMP1/VXSC states and raw product/rounding effects; restoring I
+Mailbox: a50000800003643224
+Target state bytes / modeled words: 100 50
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/product-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/product-vice-monitor.log -monlog -limitcycles 1000000000
+DMP1 corner 0: 3385 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+VXSC corner 8: 10919 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+DMP1 corner 120: 5249 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+VXSC corner 248: 21733 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+DMP1 edge 395: 8830 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+product-vice-hardware-stack.bin: measured sentinel extent 29 bytes
+product-vice-software-stack.bin: measured sentinel extent 229 bytes
