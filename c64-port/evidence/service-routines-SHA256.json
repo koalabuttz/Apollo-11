@@ -1,0 +1,242 @@
+[
+  {
+    "path": "docs/NATIVE-SERVICE-ROUTINES.md",
+    "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194",
+    "bytes": 7144
+  },
+  {
+    "path": "evidence/cm-service-routines-coverage.json",
+    "sha256": "9094ce1707f6347dbf68fc9f9bd4097d2e45bd43235e016d13817b27687429ee",
+    "bytes": 2475
+  },
+  {
+    "path": "evidence/lm-service-routines-coverage.json",
+    "sha256": "0411c9719e341163fafe810082da821a57d2eb5c0c476df70baec697af87afdf",
+    "bytes": 2442
+  },
+  {
+    "path": "evidence/service-routines-c64.log",
+    "sha256": "e25e0eed0f429e4b9330e73c3d590ba54021555d8ccd544876a04372fb000d8e",
+    "bytes": 264
+  },
+  {
+    "path": "evidence/service-routines-differential-results.json",
+    "sha256": "7bfd557cf703f81dab86a8c835fdf395ed4502de7e0a85e9eac62c79b5ad1d61",
+    "bytes": 166
+  },
+  {
+    "path": "evidence/service-routines-differential.log",
+    "sha256": "46bef1989e7f64171da733d1a834409c39151c057e547ad53a7b2e17e54f01c5",
+    "bytes": 180
+  },
+  {
+    "path": "evidence/service-routines-freeze.log",
+    "sha256": "246bbd585aa39416c4d6451eaa41380bf29ee51601fabcd9d2324d7c1487f767",
+    "bytes": 58
+  },
+  {
+    "path": "evidence/service-routines-independent-review.txt",
+    "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb",
+    "bytes": 3217
+  },
+  {
+    "path": "evidence/service-routines-mailbox.bin",
+    "sha256": "26258a28a41c742d2ffbdf3e6145faec38a381466cb400e94d9cab454139db14",
+    "bytes": 4
+  },
+  {
+    "path": "evidence/service-routines-monitor.log",
+    "sha256": "ae4f71b1df9c367454337db3d0e331bd3a685a6c2c4095cdf68b564fcd569518",
+    "bytes": 794
+  },
+  {
+    "path": "evidence/service-routines-proof.json",
+    "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2",
+    "bytes": 3916
+  },
+  {
+    "path": "evidence/service-routines-reference.snapshots.bin.xz",
+    "sha256": "ad4e3cffe17d8e91d4e63dcc38294d1889c1e9b62c931e8faec77fd5a6e3a188",
+    "bytes": 1041600
+  },
+  {
+    "path": "evidence/service-routines-sanitize-results.json",
+    "sha256": "05f569e03f8d29808ef2a042e5826bd0173856c7f45ed4e5d8ad5764afa9f98d",
+    "bytes": 176
+  },
+  {
+    "path": "evidence/service-routines-sanitize.log",
+    "sha256": "2f161b7a35205da1894f9d8ed957f6baac37ee8f4563c92b870b3c5f9333ff6e",
+    "bytes": 226
+  },
+  {
+    "path": "evidence/service-routines-source-audit.json",
+    "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6",
+    "bytes": 105586
+  },
+  {
+    "path": "evidence/service-routines-strict-results.json",
+    "sha256": "46ef9775fe5cca2eca759b44c6dc5c424f9f8ab75d8cd03e2a37fc32d68f4fcb",
+    "bytes": 174
+  },
+  {
+    "path": "evidence/service-routines-strict.log",
+    "sha256": "fc643700970341a1a1fa4c440fcd1bdb58ba353e4c47b6b19cdd1d0303706cae",
+    "bytes": 222
+  },
+  {
+    "path": "evidence/service-routines-target-results.json",
+    "sha256": "d6d3dc9793fdc44c94752cac9504973d18ce78c664461363d7615e35e5d622ab",
+    "bytes": 4777
+  },
+  {
+    "path": "evidence/service-routines-target-source.snapshots.bin.xz",
+    "sha256": "533ccb3fc6a2ef9bd860856d6c1c5d088a66d688ee42020fa49537444ae55848",
+    "bytes": 38948
+  },
+  {
+    "path": "evidence/service-routines-tests.log",
+    "sha256": "44550051debf784b2f8aedf7ebc2155ede4e667629b9ac6d141339fb878ca07b",
+    "bytes": 962
+  },
+  {
+    "path": "evidence/service-routines-vice-results.json",
+    "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4",
+    "bytes": 199
+  },
+  {
+    "path": "evidence/service-routines-vice.log",
+    "sha256": "bce9d3a149ea191fa09f41bd5ceeacd15827dd96a24edd660108fd513ca5b392",
+    "bytes": 6530
+  },
+  {
+    "path": "evidence/service-routines-vice.mon",
+    "sha256": "f310f61801b9585f915bf08f4b6b09303bd34fc24ea0e42e1fc46de343fb9578",
+    "bytes": 191
+  },
+  {
+    "path": "evidence/service-routines.map",
+    "sha256": "b4ac6d32da054a6d8c14100918d7aade98f61cde856d33a208555f9adf6829e2",
+    "bytes": 11344
+  },
+  {
+    "path": "evidence/service-routines.prg",
+    "sha256": "8b059fb49e9579c8c2dca1560cd6eab2d43cf77e8e6aa160d85a544b446cf990",
+    "bytes": 32575
+  },
+  {
+    "path": "include/service_routines.h",
+    "sha256": "dd4081134958dea76d905caf4d1f19504181e56a1d96a3ef0a6d3fbefb007084",
+    "bytes": 2294
+  },
+  {
+    "path": "include/service_routines_source.h",
+    "sha256": "1505d2cc0fd9a321517c1a6824be429ab114e54f4accfa9543d3e5416fc824eb",
+    "bytes": 1275
+  },
+  {
+    "path": "platform/c64/service_routines_diagnostic.c",
+    "sha256": "90d98f4d81d87dca2084dec9e0fca61debd9eb092492a09f5ad73865454f0abe",
+    "bytes": 446
+  },
+  {
+    "path": "src/service_routines.c",
+    "sha256": "7c83da729581fecbd3f87bcb237827069fcdbd548a4fe558f8dc127c792c80ee",
+    "bytes": 10245
+  },
+  {
+    "path": "tests/service_routines_cases.c",
+    "sha256": "0648fcd8f0744bbb77d8939f2fa0109ffaec3b6c2725aa34b372783b335ad3fb",
+    "bytes": 4647
+  },
+  {
+    "path": "tests/service_routines_cases.h",
+    "sha256": "0b1c7e59ccf5c6718e66dd62c8369d743e3f4e77360b01215ad208ab38c6c798",
+    "bytes": 388
+  },
+  {
+    "path": "tests/service_routines_fixed_inputs.h",
+    "sha256": "ecf493977d1e4ee0ab5cdab39725e3eeb39d175fec418f4a019cb1480e08bca2",
+    "bytes": 6054
+  },
+  {
+    "path": "tests/service_routines_target.c",
+    "sha256": "33ba72edc517c838bc700ada01849888bce70e0d1e91c71ed9996f6d9e840bba",
+    "bytes": 2574
+  },
+  {
+    "path": "tests/service_routines_target.h",
+    "sha256": "023020842317e845683128317c3181e388477418a03ed9efa9bfde44cc6ec920",
+    "bytes": 166
+  },
+  {
+    "path": "tests/service_routines_vectors.h",
+    "sha256": "5a8af703538454bda9238c40dd99311d67c3ad7327c21ae5e155710e3cb25211",
+    "bytes": 44487
+  },
+  {
+    "path": "tests/test_service_routines.c",
+    "sha256": "32a117020154c71fa1ad443549fbb11315d310b73e53eb16499dff033ed10190",
+    "bytes": 2150
+  },
+  {
+    "path": "tools/freeze_service_routines.py",
+    "sha256": "5066e65bdc9330e098878588716aebb235b2643c28014ad183bd051ac6038ed8",
+    "bytes": 2279
+  },
+  {
+    "path": "tools/package_service_routines.py",
+    "sha256": "454081c30474a512479f694a605ccc92c5cd0fde8a6fa09dc4ef66e5bafb5b9d",
+    "bytes": 7453
+  },
+  {
+    "path": "tools/service_routines_compare.py",
+    "sha256": "b408ba332b7d81072b6aae633843efd92ba7f21f46f29d1ad828618f59614d7c",
+    "bytes": 2775
+  },
+  {
+    "path": "tools/service_routines_dump.h",
+    "sha256": "8db690e2745cdcf3c3f64f7b8c3de2edf036b90596cebe59349349924c9dbc45",
+    "bytes": 576
+  },
+  {
+    "path": "tools/service_routines_host_test.py",
+    "sha256": "b9d04011c21bc500a89635d60b84715e16964cf60ce9a328665717845b7c0a17",
+    "bytes": 1540
+  },
+  {
+    "path": "tools/service_routines_input_dump.c",
+    "sha256": "bf07863e657d932c7cac38a1c638db30b96702551f3020bbe1cf664293ce0365",
+    "bytes": 676
+  },
+  {
+    "path": "tools/service_routines_port.mk",
+    "sha256": "99765fd6d8d57a91752da2ec81e069be581e42eb7bacf7757c2d72eac096bd4c",
+    "bytes": 1043
+  },
+  {
+    "path": "tools/service_routines_reference.c",
+    "sha256": "0dcf4481035f0777d04b8ccdcc481112171a81d0bf3e39a957f1ef6cf2396a56",
+    "bytes": 2379
+  },
+  {
+    "path": "tools/service_routines_snapshot.c",
+    "sha256": "35b8521c99f13f0e6ba18799ae844deeee89a7361bf532c98a74b73cc677e796",
+    "bytes": 904
+  },
+  {
+    "path": "tools/service_routines_source.py",
+    "sha256": "60d246ddb7faa757a21b6d08a08f91a0c7980b4354d10e7d91ae65493ce0c55d",
+    "bytes": 4406
+  },
+  {
+    "path": "tools/service_routines_verify_frozen.py",
+    "sha256": "db6006daff3d786be8f7dc25b586ff1d4036090679258c0ef152c77a0fedfdbe",
+    "bytes": 1212
+  },
+  {
+    "path": "tools/service_routines_vice_test.py",
+    "sha256": "6e8f4df37e99e42b247df11b1ecd461d6150d2279669e600e1d4587d01262a4d",
+    "bytes": 2571
+  }
+]

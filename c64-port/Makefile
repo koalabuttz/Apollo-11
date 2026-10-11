@@ -787,3 +787,5 @@ include tools/dsky_address_request.mk
 include tools/dsky_nv_blank_integration.mk
 
 include tools/dsky_nv_consumer_integration.mk
+
+include tools/service_routines_integration.mk
