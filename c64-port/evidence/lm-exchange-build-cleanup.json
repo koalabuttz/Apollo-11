@@ -1,0 +1,37 @@
+{
+  "scope": "inactive owned CHANGE/exchange duplicate raw source/strict/SAN streams only; application WIP preserved",
+  "removed": [
+    {
+      "path": "build/lm-interpreter-change-native.snapshots",
+      "bytes": 189894447,
+      "sha256": "376bc4b403a955b1cf6f78563dc483ae09f7d5d666a94067c00859d039e57b54"
+    },
+    {
+      "path": "build/lm-interpreter-change-reference.snapshots",
+      "bytes": 189894447,
+      "sha256": "376bc4b403a955b1cf6f78563dc483ae09f7d5d666a94067c00859d039e57b54"
+    },
+    {
+      "path": "build/lm-interpreter-change-sanitize.snapshots",
+      "bytes": 189894447,
+      "sha256": "376bc4b403a955b1cf6f78563dc483ae09f7d5d666a94067c00859d039e57b54"
+    },
+    {
+      "path": "build/lm-interpreter-exchange-native.snapshots",
+      "bytes": 189894447,
+      "sha256": "376bc4b403a955b1cf6f78563dc483ae09f7d5d666a94067c00859d039e57b54"
+    },
+    {
+      "path": "build/lm-interpreter-exchange-sanitize.snapshots",
+      "bytes": 189894447,
+      "sha256": "376bc4b403a955b1cf6f78563dc483ae09f7d5d666a94067c00859d039e57b54"
+    }
+  ],
+  "retained_complete_archive": "evidence/lm-interpreter-change-complete.snapshots.xz",
+  "archive_sha256": "c8b18a44480f1b6b35be4a1f5ab022fdc4e5a65b79eaeffc33e650dfb58d0478",
+  "decoded_sha256": "376bc4b403a955b1cf6f78563dc483ae09f7d5d666a94067c00859d039e57b54",
+  "committed_proof_sha256": "30c5bd94e384de2e4aa07ede428a43ea8755c0438b5e498887162558bc213f37",
+  "retained_frozen_decoded_sha256": "93f093f8838a2515e7791eca5a1301a4dd939cff2d8b14ab39e8575c94a7eb4a",
+  "freed_raw_bytes": 949472235,
+  "archive_bytes": 3997196
+}
