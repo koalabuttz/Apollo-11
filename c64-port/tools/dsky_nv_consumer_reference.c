@@ -1,0 +1,7 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+#define main reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "dsky_nv_consumer_cases.h"
+static apollo_overlay_state s;static agc_t lm,cm;
+int main(int argc,char **argv){unsigned n,i,cycles,pc,phase,group;enum dsky_nv_mission mission;agc_word channel11,target;p66_bias_io io;if(argc!=3||agc_load_binfile(&lm,argv[1])||agc_load_binfile(&cm,argv[2]))return 2;InhibitAlarms=1;for(n=0;n<DSKY_NV_CONSUMER_CASES;++n){dsky_nv_consumer_input(&s,&io,&channel11,(uint16_t)n,&mission);machine=mission==DSKY_NV_LM?lm:cm;group=(n/128u)%7u;for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];machine.OutputChannel7=machine.InputChannel[7]=io.superbank;machine.InputChannel[011]=channel11;machine.AllowInterrupt=io.interrupt_enabled;for(phase=0;phase<dsky_nv_consumer_count((uint16_t)n);++phase){target=phase==0?(group>=3u?03516u:group==1u?02317u:02337u):phase==1?(group==1u?03575u:group==2u?03602u:03566u):phase==2?(group==2u?02317u:(agc_word)(s.words[2]+1u)):phase==3?03604u:02035u;for(cycles=0;cycles<1800u;++cycles){pc=get(RegZ);if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&pc==target)break;machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}if(cycles==1800u){fprintf(stderr,"NVconsumer timeout %u phase%u PC%oFB%o target%o\n",n,phase,pc,get(4),target);return 2;}printf("%u %u",n,phase);for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<=2u?0177777u:077777u));printf(" %u %u %u\n",(unsigned)machine.OutputChannel7,(unsigned)machine.AllowInterrupt,(unsigned)machine.InputChannel[011]);}}return 0;}

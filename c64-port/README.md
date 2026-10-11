@@ -1146,3 +1146,7 @@ Qualify REQADD USEADD REQDAT and REQCOM with actual BANKCALL five blank SWRETURN
 ## Translate original internal display blank source continuation
 
 Qualify original BLANKDSP through ENTSET minus2 with source relay CCS and NOUT wrapping against8192 complete original native sanitizer states and128 C64 states without resetting canonical machine state. See `docs/DSKY-NV-BLANK.md`.
+
+## Compose original continuous internal display consumers and returns
+
+Qualify1792 uninterrupted original calls and5888 complete checkpoints through admission verb noun blank and true saved caller return plus28 C64 sequences keeping combined VN actual ENTPAS0 as the explicit remaining consumer. See `docs/DSKY-NV-CONSUMER.md`.
