@@ -282,3 +282,7 @@ ABS, ABVAL and UNIT now preserve raw length, half-unit vector, overflow, and scr
 ## Compose native P66 radial velocity and predicted altitude from verified arithmetic
 
 The P66 radial group now computes half-unit radius, radial velocity and predicted altitude with original VAC, signed-zero and scratch effects. All 4,952 complete 134-word original-assembly checkpoints agree; full-prefix host and sanitizer checks pass. Six C64 images verify 203 complete stage outputs from exact original pre-UNIT states. The full-prefix C64 diagnostic exceeds RAM, so whole-program overlay integration remains required. See `docs/RADIAL.md`.
+
+## Translate P66 desired radial acceleration and gravity through the rotation boundary
+
+The native P66 acceleration group preserves original VAC, scalar division, vector magnitude, gravity scaling and implicit stack pop effects through DANZIG before CDU rotation. All 16,384 full-stage assembly states and the 7,428-checkpoint composed host prefix agree. Strict host, sanitizer and 96 full-state C64 stage checks pass; whole-program overlay execution remains in progress. See `docs/ACCELERATION.md`.

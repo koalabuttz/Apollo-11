@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 96 complete acceleration group original-assembly states; retained memory unchanged
+Mailbox: a500006000
+PRG bytes: 42502
+acceleration-hardware-stack.bin: measured stack extent 30 bytes
+acceleration-software-stack.bin: measured stack extent 301 bytes

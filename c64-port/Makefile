@@ -313,3 +313,5 @@ include tools/cm_executive.mk
 include tools/unit.mk
 
 include tools/radial.mk
+
+include tools/acceleration.mk

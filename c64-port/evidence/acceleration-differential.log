@@ -1,0 +1,6 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS:16384 acceleration group cases, all112 complete modeled raw words and paths match unchanged assembly/hardware DV
+Paths: Counter({0: 16384})
+Snapshot SHA256: 185c0485b8277ffede8d4e5b7c3b7fe9fa9e1168d03c8028aa8a5559ba8d4627

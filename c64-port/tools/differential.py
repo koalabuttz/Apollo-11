@@ -170,3 +170,7 @@ subprocess.run([sys.executable,'tools/cm_executive_differential.py',str(referenc
 subprocess.run([sys.executable,'tools/unit_differential.py',str(reference)],cwd=ROOT,check=True)
 
 subprocess.run([sys.executable,'tools/radial_differential.py',str(reference)],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/acceleration_prefix_differential.py'],cwd=ROOT,check=True)
+
+subprocess.run([sys.executable,'tools/acceleration_differential.py',str(reference)],cwd=ROOT,check=True)
