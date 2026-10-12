@@ -22,6 +22,11 @@
       "sha256": "fa20007fa1544617a9c90dcaac2cd27693a239e5c3b0fdaff6b3c69699cef7d6",
       "bytes": 1616,
       "store": "release"
+    },
+    "cm-alarm-wholefile-host.log": {
+      "sha256": "d5f782e45c28176f62bde9e6a6f4fd59d6aceff0557f362e00d0cbf74777319f",
+      "bytes": 28571,
+      "store": "release"
     }
   }
 }

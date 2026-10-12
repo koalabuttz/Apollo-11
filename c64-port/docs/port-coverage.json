@@ -221,12 +221,12 @@
             "sha256": "3ec296a8f1387db947ab1aedea7f9661edf90979d44b97a078dbf93a34c68ef2"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-alarm-wholefile-review.json",
-            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+            "path": "evidence/cm-alarm-sites/cm-alarm-wholefile-host.log",
+            "sha256": "d5f782e45c28176f62bde9e6a6f4fd59d6aceff0557f362e00d0cbf74777319f"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-alarm-wholefile-review.json",
-            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+            "path": "evidence/cm-alarm-sites/cm-alarm-sites-vice.log",
+            "sha256": "fa20007fa1544617a9c90dcaac2cd27693a239e5c3b0fdaff6b3c69699cef7d6"
           },
           "native_transfer_round_trip": {
             "path": "evidence/cm-alarm-sites/cm-alarm-sites-proof.json",
