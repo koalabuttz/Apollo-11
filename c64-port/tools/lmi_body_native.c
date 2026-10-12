@@ -9,7 +9,7 @@
 /* T(X)'s POLY table (TIME_OF_FREE_FALL, bank 27 3736-3752). */
 static const agc_word tx[13]={04,012525,012525,071463,057703,04423,017645,074604,043667,01626,037256,077404,052071};
 int main(void){
- static apollo_overlay_state s;uint16_t in[16+2048],out[1+2048];
+ static apollo_overlay_state s;p66_bias_io io={0,0};uint16_t in[16+2048],out[1+2048];
  while(fread(in,sizeof in,1,stdin)==1){
   unsigned i;const agc_word *k=(in[15]&1u)?in+9:0;agc_word a0=in[7],a1=in[8];
   for(i=0;i<2048u;++i)s.words[i]=in[16+i];
@@ -52,6 +52,22 @@ int main(void){
   case 35:lmi_swreturn(&s);break;
   case 36:lmi_poly(&s,tx);break;
   case 37:(void)lmi_bplbmn(&s);break;
+  case 38:lmi_vad(&s,k);break;
+  case 39:lmi_vsu(&s,k);break;
+  case 40:lmi_bvsu(&s,k);break;
+  case 41:lmi_tad(&s,k);break;
+  case 42:lmi_round(&s);break;
+  case 43:lmi_ssp(&s,a0);break;
+  case 44:lmi_xad(&s);break;
+  case 45:lmi_xsu(&s);break;
+  case 46:lmi_lxa(&s);break;
+  case 47:lmi_sxa(&s);break;
+  case 48:(void)lmi_bhiz(&s);break;
+  case 49:lmi_call(&s);break;
+  case 50:lmi_goto_any(&s);break;
+  case 51:lmi_exit(&s);break;
+  case 52:lmi_intpret(&s,&io);break;
+  case 53:lmi_tpmode(&s);break;
   default:return 2;
   }
   out[0]=4;for(i=0;i<4u;++i)if(in[1+i]&&s.words[5]==in[1+i]){out[0]=(uint16_t)i;break;}

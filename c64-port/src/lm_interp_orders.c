@@ -11,6 +11,7 @@
  * the pinned yaAGC engine by tools/lmi_body_differential.py. */
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
+#include "lm_interp_steps.h"
 #define W s->words
 
 /* Erasable assignments (Luminary099 ERASABLE_ASSIGNMENTS). */
@@ -927,5 +928,114 @@ void lmi_poly(apollo_overlay_state *s,const agc_word *table){
  }
  /* TC POLYRET: the TC held there, leaving Q = 0142. */
  W[5]=(agc_word)(W[rPOLYRET]&07777u);ai_tc(s,rPOLYRET+1u);
+}
+/* ---- VAD/VSU, BVSU, TAD, ROUND, SSP --------------------------------------- */
+/* VSU 06747 / VAD 06751: ADS ADDRWD with BIT15 or PRIO30 turns the indexed
+ * READs into DCS or DCA of the operand's +2, +4 and +0 words; ADDRWD keeps
+ * the sum. Ends through ENDVXV at DANZIG. */
+static void vaddsub(apollo_overlay_state *s,const agc_word *k,uint8_t sub){
+ unsigned a=W[rADDRWD];unsigned i;static const unsigned off[3]={2u,4u,0u};
+ if(sub)CAF(BIT15);else CAF(030000u);
+ ADS(rADDRWD);
+ for(i=0;i<3u;++i){
+  if(sub){if(k)ai_dcsf(s,k+off[i]);else DCS(AT(a+off[i]));}
+  else{if(k)ai_dcaf(s,k+off[i]);else DCA(AT(a+off[i]));}
+  if(i==2u)break;
+  DAS(AT(rMPAC+3u+2u*i));
+  if(!ai_bzf(s)){if(i==0u){TC(06762);overflwy(s);}else{TC(06771);overflwz(s);}}
+ }
+ endvxv(s);
+}
+void lmi_vad(apollo_overlay_state *s,const agc_word *k){vaddsub(s,k,0);}
+void lmi_vsu(apollo_overlay_state *s,const agc_word *k){vaddsub(s,k,1);}
+void lmi_bvsu(apollo_overlay_state *s,const agc_word *k){
+ dca_op(s,k,2);DXCH(rMPAC+3);ai_dcom(s);DAS(rMPAC+3);
+ if(!ai_bzf(s)){TC(07050);overflwy(s);}
+ dca_op(s,k,4);DXCH(rMPAC+5);ai_dcom(s);DAS(rMPAC+5);
+ if(!ai_bzf(s)){TC(07062);overflwz(s);}
+ dca_op(s,k,0);DXCH(rMPAC);ai_dcom(s);endvxv(s);
+}
+void lmi_tad(apollo_overlay_state *s,const agc_word *k){
+ /* TAD 07071: DCA 1; DAS MPAC +1; AD 0; AD MPAC; TS MPAC (skip on
+  * overflow to TCF SETOVF). */
+ dca_op(s,k,1);DAS(rMPAC+1);
+ if(k)ADF(k[0]);else AD(AT(W[rADDRWD]));
+ AD(rMPAC);
+ if(!TS(rMPAC)){danzig(s);return;}
+ TC(07004);(void)overflow(s);danzig(s);
+}
+void lmi_round(apollo_overlay_state *s){
+ /* ROUND 02116 (bank 0): TC ROUNDSUB; TCF DANZIG. */
+ TC(02117);roundsub(s,0);danzig(s);
+}
+void lmi_ssp(apollo_overlay_state *s,agc_word word){
+ /* SSP 06620: INCR LOC; INDEX LOC, CA 0 (the word given); STORE1 INDEX
+  * ADDRWD, TS 0; TCF DANZIG. */
+ INCR(rLOC);CAF(word);(void)TS(AT(W[rADDRWD]));danzig(s);
+}
+
+/* ---- Index orders, BHIZ, CALL, indirect GOTO, EXIT and INTPRET ------------ */
+#define rINDEXLOC 0130u
+/* 15ADRERS 01,2427 into TAGSUB and back through TC Q. */
+static void adrers15(apollo_overlay_state *s){
+ uint8_t c;
+ CS(rPOLISH);ADF(DEC45);c=CCS(rA);
+ if(c==0u){CA(rFIXLOC);}
+ else if(c>=2u){if(c==2u)CAF(OCT1400);XCH(rPOLISH);(void)TS(rEB);MASKF(LOW8);}
+ ADS(rPOLISH);
+ CA(rFIXLOC);(void)TS(rINDEXLOC);
+ if(CCS(rCYR)==0u)INCR(rINDEXLOC);
+ RETQ();
+}
+static void xad2(apollo_overlay_state *s){ADS(AT(W[rINDEXLOC]+tX1));danzig(s);}
+void lmi_xad(apollo_overlay_state *s){TC(02401);adrers15(s);CA(AT(W[rPOLISH]));xad2(s);}
+void lmi_xsu(apollo_overlay_state *s){TC(02412);adrers15(s);CS(AT(W[rPOLISH]));xad2(s);}
+void lmi_lxa(apollo_overlay_state *s){TC(02355);adrers15(s);CA(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);}
+void lmi_sxa(apollo_overlay_state *s){TC(02365);adrers15(s);CA(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig(s);}
+uint8_t lmi_bhiz(apollo_overlay_state *s){
+ /* BHIZ 01,2452: CCS MPAC; + and - DANZIG, +0 and -0 GOTO 06646. */
+ uint8_t c=CCS(rMPAC);
+ if(c==1u||c==3u){W[5]=06646;return 1;}
+ danzig(s);return 0;
+}
+void lmi_call(apollo_overlay_state *s){
+ /* CALL/ITA CCS CYR (positive) TCF CALL; CALL CA BANKSET; MASK BANKMASK;
+  * AD BANKMASK; AD LOC; INDEX FIXLOC, TS QPRET; GOTO (fixed target). */
+ (void)CCS(rCYR);CA(rBANKSET);MASKF(076000u);ADF(076000u);AD(rLOC);(void)TS(AT(W[rFIXLOC]+tQPRET));
+ W[5]=06646;
+}
+void lmi_goto_any(apollo_overlay_state *s){
+ /* GOTO CA POLISH; MASK HIGH4; BZF GOTOERS (an erasable CADR is fetched,
+  * through the work area or the EBANK it names, until a fixed one). */
+ for(;;){
+  uint8_t c;
+  CA(rPOLISH);MASKF(074000u);
+  if(!ai_bzf(s))break;
+  CA(rPOLISH);ADF(ENDVAC_NEG);c=CCS(rA);
+  if(c==0u||c==1u){
+   if(c==0u)CA(rPOLISH);
+   (void)TS(rEB);MASKF(LOW8);CA(AT(01400u+W[rA]));
+  }else{
+   if(c==2u)CA(rFIXLOC);
+   AD(rPOLISH);CA(AT(W[rA]));
+  }
+  (void)TS(rPOLISH);
+ }
+ lmi_goto(s);
+}
+void lmi_exit(apollo_overlay_state *s){
+ /* EXIT 06743: CA BANKSET; TS BBANK; INDEX LOC, TC 1 (to the basic code
+  * after the order; Q = 06747). */
+ unsigned loc;
+ CA(rBANKSET);(void)TS(rBB);loc=W[rLOC];TC(06747);W[5]=(agc_word)((loc+1u)&07777u);
+}
+void lmi_intpret(apollo_overlay_state *s,p66_bias_io *io){
+ /* TC INTPRET (Q = the word after the TC): RELINT; QXCH LOC; CA BBANK;
+  * TS BANKSET; MASK BIT15; TS INTBIT15; TS EDOP; TCF NEWOPS. */
+ io->interrupt_enabled=1;ai_qxch(s,rLOC);CA(rBB);(void)TS(rBANKSET);MASKF(BIT15);(void)TS(rINTBIT15);(void)TS(rEDOP);W[5]=06070;
+}
+void lmi_tpmode(apollo_overlay_state *s){
+ /* TPMODE (RTB_OP_CODES, bank 10): CAF ONE; TCF NEWMODE. */
+ CAF(ONE);newmode(s);
 }
 #undef W
