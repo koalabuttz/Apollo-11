@@ -12,7 +12,9 @@ reruns the target, so the suite needs only the evidence it actually reads.
 """
 import argparse
 import concurrent.futures
+import gzip
 import json
+import lzma
 import os
 import pathlib
 import re
@@ -26,7 +28,15 @@ MISSING = re.compile(r"(?:No such file or directory|cannot open|not found)[^\n]*
                      r"|(evidence/[A-Za-z0-9._/+-]+)[^\n]*?(?:No such file or directory|not found)")
 BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[^']+)'|"
                           r"cmp: (build/[^:]+): No such file|"
-                          r"cannot open (build/[^:\s]+): No such file")
+                          r"cannot open (build/[^:\s]+): No such file|"
+                          # generated headers included from build/ (-Ibuild)
+                          r"fatal error: '([A-Za-z0-9_.-]+\.h)' file not found")
+
+
+def missing_build(output):
+    """The build/ inputs a failed command names, headers mapped into build/."""
+    found = {next(filter(None, m)) for m in BUILD_OUTPUT.findall(output)}
+    return {p if p.startswith('build/') else 'build/' + p for p in found}
 LOCK = threading.Lock()
 # Recipe text that writes the path that follows it.
 WRITES = r'(>|-o|-Map[,=])\s*'
@@ -92,6 +102,40 @@ def siblings(path):
     return found
 
 
+def evidence_names():
+    """Every evidence path, checked out or not: git's index plus release manifests."""
+    names = subprocess.run(['git', 'ls-files', 'evidence'], cwd=ROOT, stdout=subprocess.PIPE,
+                           text=True).stdout.split()
+    for manifest in (ROOT / 'evidence').glob('*/SHA256.json'):
+        files = json.loads(manifest.read_text()).get('files', {})
+        names += [manifest.parent.relative_to(ROOT).as_posix() + '/' + name for name in files]
+    return names
+
+
+def frozen(path):
+    """Copy a build/ input from its frozen copy under evidence/, if there is one.
+
+    Expected values (final-source samples, target results, reference
+    snapshots) were frozen into evidence/ when each milestone closed; the
+    build/ copy the old serial loop left behind is the same bytes. Build
+    products (PRGs, maps, disk images, headers, binaries) are never copied:
+    a test must run what the current source builds."""
+    name = pathlib.PurePosixPath(path).name
+    if pathlib.PurePosixPath(name).suffix in ('', '.prg', '.map', '.d64', '.d81', '.h', '.o', '.elf'):
+        return None
+    for suffix, opener in (('', open), ('.gz', gzip.open), ('.xz', lzma.open)):
+        for source in sorted(n for n in evidence_names() if pathlib.PurePosixPath(n).name == name + suffix):
+            with LOCK:
+                restore(source)
+            if not (ROOT / source).is_file():
+                continue
+            with opener(ROOT / source, 'rb') as data:
+                (ROOT / path).parent.mkdir(parents=True, exist_ok=True)
+                (ROOT / path).write_bytes(data.read())
+            return source
+    return None
+
+
 MAKE_VAR = re.compile(r'\$\(if \$\(([A-Z_]+)\),\$\(\1\),[^)]*\)|\$\(([A-Z_]+)\)')
 
 
@@ -132,6 +176,18 @@ def submake_writes(line, path, text=''):
     return None
 
 
+_TEXT = None
+
+
+def makefile_text():
+    """The Makefile and every tools/*.mk, for derived-variable lookups."""
+    global _TEXT
+    if _TEXT is None:
+        _TEXT = '\n'.join(p.read_text(errors='replace')
+                           for p in [ROOT / 'Makefile', *sorted((ROOT / 'tools').glob('*.mk'))])
+    return _TEXT
+
+
 def produce(path, target, log_dir, make_args, attempts, stack=()):
     """Recreate a build/ input that the old serial loop left behind.
 
@@ -140,13 +196,31 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
     another target's recipe. Try those producers in that order."""
     if (ROOT / path).exists():
         return True
+    source = frozen(path)
+    if source:
+        print(f'  {target}: copied {path} from {source}', flush=True)
+        return True
     rules = ci_rules()
     candidates = []
     if path in rules:
         candidates.append(('make', path))
+    if path.endswith('.map'):
+        # A map linked beside a PRG from a pattern rule (build/x-%.prg):
+        # make the PRG some rule depends on, and make links the map with it.
+        prg = path[:-len('.map')] + '.prg'
+        if prg in rules or any(prg in deps for deps, _ in rules.values()):
+            candidates.append(('make', prg))
     for name, (_, recipe) in rules.items():
         if name != target and re.search(WRITES + re.escape(path) + r'(\s|$)', recipe):
             candidates.append(('make', name))
+        elif name != target and '$(' in recipe:
+            # Included per-variant rules (build/x-phase$(PHASE).map) run
+            # with the variables that name the missing file.
+            for line in recipe.splitlines():
+                assigned = submake_writes(line, path, makefile_text())
+                if assigned:
+                    candidates.append(('submake', ('Makefile', name, *assigned)))
+                    break
     name = pathlib.PurePosixPath(path).name
     stem = re.sub(r'(-(native|reference|sanitize|live|target|inputs))?(\.snapshots|\.json|\.trace)?(\.gz|\.xz)?$', '',
                   name)
@@ -219,7 +293,7 @@ def produce_with(cmd, log, label, log_dir, make_args, attempts, stack):
         log.write_text(proc.stdout)
         if proc.returncode == 0:
             return True
-        built = sorted({next(filter(None, m)) for m in BUILD_OUTPUT.findall(proc.stdout)} - tried)
+        built = sorted(missing_build(proc.stdout) - tried)
         if label in stack or not built:
             return False
         tried.update(built)
@@ -252,7 +326,7 @@ def run(target, log_dir, make_args, attempts, stack=()):
         log.write_text(proc.stdout)
         if proc.returncode == 0:
             return target, True, time.monotonic() - start, ''
-        built = sorted({next(filter(None, m)) for m in BUILD_OUTPUT.findall(proc.stdout)} - tried)
+        built = sorted(missing_build(proc.stdout) - tried)
         if built:
             tried.update(built)
             ran = [produce(path, target, log_dir, make_args, attempts, stack + (target,)) for path in built]

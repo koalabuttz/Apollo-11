@@ -1,7 +1,7 @@
 # Real resident/basic composition; arithmetic coverage remains its own driver.
 P66_BASIC_CORE = src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c
 P66_BASIC_TEST = tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_basic_check.c
-P66_BASIC_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH
+P66_BASIC_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH -DEXEC_NATIVE_FINISH_FAMILY=2
 .PHONY: test-p66-basic sanitize-p66-basic c64-p66-basic
 test-p66-basic:
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(P66_BASIC_FLAGS) $(P66_BASIC_CORE) $(P66_BASIC_TEST) tests/test_p66_basic.c -o build/test-p66-basic
