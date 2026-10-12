@@ -7,7 +7,7 @@ LM_STATEUP_HDR = include/lm_stateup.h include/lm_interp_steps.h include/lm_inter
 all: build/test-lm-stateup
 test: test-lm-stateup
 sanitize: sanitize-lm-stateup
-build/test-lm-stateup: $(LM_STATEUP_SRC) tests/test_lm_stateup.c tests/lm_stateup_vectors.h $(LM_STATEUP_HDR) | build
+build/test-lm-stateup: $(LM_STATEUP_SRC) tests/test_lm_stateup.c tests/lm_stateup_vectors.h tests/lm_stateup_c64_vectors.h $(LM_STATEUP_HDR) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LM_STATEUP_SRC) tests/test_lm_stateup.c -o $@
 test-lm-stateup: build/test-lm-stateup
 	./build/test-lm-stateup

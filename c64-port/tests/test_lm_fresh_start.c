@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "lm_fresh_start_cases.h"
 #include "lm_fresh_start_vectors.h"
+#include "lm_fresh_start_c64_vectors.h"
 #include "lm_interbank_routines.h"
 #include "../src/lm_fresh_start_operands.inc"
 static unsigned checks,failures;
@@ -32,6 +33,7 @@ static void at(apollo_overlay_state *s,lm_fresh_io *io,agc_hardware *hw,agc_word
 }
 int main(void){apollo_overlay_state s;lm_fresh_io io;agc_hardware hw;enum exec_status st;unsigned n,i,ended[7]={0,0,0,0,0,0,0};
  check(LM_FS_VECTORS==LM_FS_CASES,"vector count",0);
+ for(n=0;n<LM_FS_C64_COUNT;++n)check(lm_fs_c64_case[n]<LM_FS_CASES&&(n==0u||lm_fs_c64_case[n-1u]<lm_fs_c64_case[n])&&lm_fs_c64[n]==lm_fs_expected[lm_fs_c64_case[n]],"C64 row",n);
  for(n=1;n<LM_FRESH_OPERAND_COUNT;++n)check(lm_fresh_operands[n-1u].physical<lm_fresh_operands[n].physical,"operands sorted",n);
  for(n=1;n<LM_FS_ROUTINES;++n)check(lm_fresh_start_routines.entries[n-1u].physical<lm_fresh_start_routines.entries[n].physical,"routines sorted",n);
  for(n=0;n<LM_FS_CASES;++n)check(lm_fs_digest(&s,(uint16_t)n,&st)==lm_fs_expected[n]&&st==EXEC_OK,"oracle",n);

@@ -57,5 +57,6 @@ Hashes: `evidence/lm-fresh-start/SHA256.json`. Bulk files are assets of the `evi
 - Host and sanitizer results: `make test-lm-fresh-start sanitize-lm-fresh-start` (`evidence/lm-fresh-start/lm-fresh-start-host.log`). Beyond the oracle digests, the test checks that:
   - all 11 entries are reached;
   - each case ends at one of seven kinds of exit (DUMMYJOB +2, GOP00FIX, RESTARTS, MMDSPLAY, ALARM, SWRETURN, another KLEAN return), and every kind is reached;
+  - the C64 rows are host cases with their host digests;
   - an ERESTORE repair into a counter, a TC Q to no return point, a missing io and a fresh start without the hardware record are refused.
-- C64 execution results: `make vice-lm-fresh-start` (`evidence/lm-fresh-start/lm-fresh-start-vice.log`): every 16th case (256).
+- C64 execution results: `make vice-lm-fresh-start` (`evidence/lm-fresh-start/lm-fresh-start-vice.log`): 259 C64 rows chosen by native branch outcome (`tools/a2_c64_rows.py`: every 16th case plus a greedy cover of the gcov branch arcs of every linked source; the freeze fails unless the rows take all 493 arcs the host cases take). Among them are the outcomes a stride missed: the ERESTORE != SKEEP7 fresh start (05,2716-2717) and the no-group-active restart, both outcomes of BZF GOTOPOOH and ENDRSTRT (05,3045-3053). The proof records the host and C64 arc counts; the host test checks every C64 row is a host case with its host digest.
