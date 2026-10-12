@@ -343,6 +343,7 @@
             "src/cm_body_attitude.c",
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
             "src/agc_image_ops.c",
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
