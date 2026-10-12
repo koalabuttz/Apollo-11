@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -5567,7 +5567,7 @@
       "sha256": "e49235d5d0b1de4082524112a7dd7ac1df1d99e5ba9ee86e9e607ad54b15fa67",
       "bytes": 23387,
       "lines": 721,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5640,6 +5640,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-c64-cover.json",
             "sha256": "3562022900d38e7ed2ce7b4032fe69eeb68c454c6711a1cb3dc5f2772fb25bfd"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-time-free-fall.md",
+            "sha256": "a90bedc6497cb5b1fe4283bd3a062956df0a445a47dd6825051ac802749f2eaf"
           }
         }
       }
