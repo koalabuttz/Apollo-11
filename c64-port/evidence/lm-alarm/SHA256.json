@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-alarm",
+  "release": "evidence-lm-alarm",
+  "files": {
+    "lm-alarm-data.json": {
+      "sha256": "50259ea5f4aa39abbfc975b92a3420cd8cf70e538fa97705da5c742c6c2ba1ce",
+      "bytes": 13635,
+      "store": "release"
+    },
+    "lm-alarm-host.log": {
+      "sha256": "61fe6f153c86a0400966c41c808853fb71c2fe19608f7d6e0148eb660361cfaa",
+      "bytes": 1684,
+      "store": "release"
+    },
+    "lm-alarm-proof.json": {
+      "sha256": "8ed182f684d1bd5763e3fb6c5de4d982079010331c39c35126882f43ab0aebbe",
+      "bytes": 690,
+      "store": "tree"
+    },
+    "lm-alarm-vice.log": {
+      "sha256": "3376f29fa5fc63df6161dabc84675b7267ac40e6b79cd5afd5a48970b2d85619",
+      "bytes": 608,
+      "store": "release"
+    }
+  }
+}

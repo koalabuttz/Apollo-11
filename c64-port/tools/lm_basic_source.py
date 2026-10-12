@@ -133,8 +133,10 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
     for r in records:
         if not r['words']:
             continue
-        b, addr = r['assembled_address'].split(',')
+        b, _, addr = r['assembled_address'].rpartition(',')
         a = int(addr, 8)
+        # A fixed-fixed address has no bank: physical bank 2 (04000-05777) or 3.
+        b = b or ('2' if a < 0o6000 else '3')
         name = r['path'].split('/', 1)[1]
         ranges = files[name]
         if ranges is not None and not any(lo <= a <= hi for lo, hi in ranges):

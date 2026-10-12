@@ -1,0 +1,10 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "01a9d2f566d23dfd85e34a7c89c01c328a89d646fcb5568fbb57ebec3421d3c7",
+ "entries": "every genuine TC ALARM/ALARM2/BAILOUT/POODOO/ABORT2/BAILOUT1/POODOO1/ALARM1/ALMNCADR site; CCSHOLE, CURTAINS, VARALARM, WHIMPER, GOPOODOO, PRIOLARM, FLAGS; MULTEXIT, BANKCALL and SUPERSW return points; ALMCADR",
+ "boundary": "entry state to the first point neither ALARM_AND_ABORT nor INTER-BANK_COMMUNICATION owns (caller return, PRIODSPR, ENEMA, V37KLEAN, MR.KLEAN, SERVIDLE)",
+ "full_physical_words": 2048
+}

@@ -35,6 +35,19 @@ void lm_thr_input(apollo_overlay_state *m,lm_flight_io *io,lm_thr_case *c,uint16
   m->words[03617]=(agc_word)((m->words[025]-01000u)&037777u);
   m->words[02507]=037000u;m->words[03620]=(agc_word)((rnd(&seed)>>17)%0100u);
  }
+ /* THROTTLE +3 with A,L and MASS each of mixed sign: A,L is an interpretive
+  * result and MASS a double word, neither sign-agreed, so MASSMULT's
+  * TPAGREE sees MPAC +1 of the other sign to MPAC (TS MPAC +1 does not
+  * overflow: CAF ZERO). One in four is the certificate review's case
+  * (A 00466, L 42635, MASS 31401 50337). */
+ if(n%LM_THR_ENTRIES==1u&&v%8u==5u){agc_word a,l,mh,ml;
+  if((v/8u)%4u==0u){a=00466u;l=042635u;mh=031401u;ml=050337u;}
+  else{a=(agc_word)((rnd(&seed)>>17)%02000u);l=(agc_word)(040000u|((rnd(&seed)>>12)&037777u));
+   mh=(agc_word)((rnd(&seed)>>12)&037777u);ml=(agc_word)(040000u|((rnd(&seed)>>12)&037777u));
+   if(rnd(&seed)&0x8000u){a=(agc_word)(077777u&~a);l=(agc_word)(077777u&~l);}
+   if(rnd(&seed)&0x8000u){mh=(agc_word)(077777u&~mh);ml=(agc_word)(077777u&~ml);}}
+  m->words[0]=agc_extend(a);m->words[1]=agc_extend(l);m->words[01244]=mh;m->words[01245]=ml;
+ }
 }
 static uint16_t stop_point(const lm_thr_case *c){return agc_fixed_physical(c->stop_z,c->stop_fb==ANY_FB?0u:c->stop_fb,c->superbank);}
 unsigned lm_thr_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){

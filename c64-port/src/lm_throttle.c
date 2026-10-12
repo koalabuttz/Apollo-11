@@ -112,9 +112,9 @@ static void tpagree(agc_image *s,agc_word ret){uint8_t c,k=1;unsigned i;static c
   if(k==0u){ai_tc(s,3u);ai_caf(s,POSMAX);}    /* TC Q; TCF ARG+ */
   else{ai_tc(s,06743u);ai_csf(s,POSMAX);}      /* NEG: INDEX Q; TC 2; CS POSMAX; TCF +2 */
   (void)ai_ts(s,2u);ai_aug(s,0u);ai_ad(s,MPAC2);
-  if(!ai_ts(s,MPAC2))ai_caf(s,ZERO);
+  if(!ai_ts(s,MPAC2)){LM_THR_PATH(25);ai_caf(s,ZERO);}
   ai_ad(s,2u);ai_ad(s,MPAC1);
-  if(!ai_ts(s,MPAC1))ai_caf(s,ZERO);
+  if(!ai_ts(s,MPAC1)){LM_THR_PATH(26);ai_caf(s,ZERO);}
   ai_ad(s,2u);ai_ad(s,MPAC);
   if(!ai_ts(s,MPAC))(void)ai_ts(s,MPAC1);      /* ARGZERO2: always skipping unless argzero */
  }

@@ -85,7 +85,18 @@ static void shape_entry(apollo_overlay_state *m,ims_case *c,uint16_t ph,unsigned
   w[lgyro]=g;
   if((v/16u)%3u==1u){unsigned base=((g>>8)&7u)*0400u+(g&0377u);
    for(i=0;i<8u;++i)if(base+i!=lgyro)w[base+i]=i%2u?small(seed,0400u):small(seed,4u);}
+  /* A third of the states: gyro pairs of zero commands (both words +-0)
+   * or with a high word of 0100-0177, which GMERGE's AD MINUS1 leaves at
+   * -0 (the CAF BIT14; ADS ITEMP2 fix before LASTSEG). */
+  if((v/16u)%3u==2u){unsigned base=((g>>8)&7u)*0400u+(g&0377u);
+   for(i=0;i<8u;i+=2u)if(base+i!=lgyro&&base+i+1u!=lgyro){
+    if((rnd(seed)>>17)&1u){w[base+i]=(rnd(seed)>>17)&1u?077777u:0u;w[base+i+1u]=(rnd(seed)>>17)&1u?077777u:0u;}
+    else{w[base+i]=(agc_word)(0100u+(rnd(seed)>>17)%0100u);w[base+i+1u]=small(seed,0400u);}}}
  }
+ /* 8192AUG: the remaining gyro word in each CCS class in a quarter of
+  * the states. */
+ if(IS(07,IMS_8192AUG)&&(v/8u)%4u==3u){agc_word g=w[lgyro];unsigned a=((g>>8)&7u)*0400u+(g&0377u);
+  if(a!=lgyro&&(a>=010u||(g&03400u)))w[a]=ccs_class(seed,v%4u);}
  /* CCS classes: LGYRO (IMUPULSE, GWAKE), MODECADR (stalls and mode
   * ends, with -1 for MODEGOOD's +0), MPAC (POSTAND's TPAGREE return),
   * ATTCADR zero for GOMANUR. */
@@ -99,6 +110,9 @@ static void shape_entry(apollo_overlay_state *m,ims_case *c,uint16_t ph,unsigned
  /* COARS2: commands near the per-pass limit in half the states. EB is
   * bank 3, where COMMAND lives, in half the states. */
  if(IS(07,IMS_COARS2)&&v%2u){unsigned eb=(w[3]>>8)&7u;for(i=0;i<3u;++i)w[eb*0400u+071u+i]=small(seed,0500u);}
+ /* COARS2 with no axis to command (every COMMAND +-0, the end of a
+  * coarse align) in an eighth of the states. */
+ if(IS(07,IMS_COARS2)&&v%8u==2u){unsigned eb=(w[3]>>8)&7u;for(i=0;i<3u;++i)w[eb*0400u+071u+i]=(rnd(seed)>>17)&1u?077777u:0u;}
  /* CHKCORS: CDUs within a few bits of THETAD in half the states. */
  if(IS(07,03072u)&&v%2u)for(i=0;i<3u;++i)w[CDUX_OF(i)]=(agc_word)((w[thetad+i]+((rnd(seed)>>17)%041u)-020u)&077777u);
  /* SCALPREP's return: the genuine retry sites, or the stop. */

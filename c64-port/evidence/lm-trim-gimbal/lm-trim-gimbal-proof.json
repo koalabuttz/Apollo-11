@@ -2,19 +2,19 @@
  "mission": "Luminary099",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "cases": 16384,
- "compared_cases": 16098,
- "compared_sha256": "dae15589d920385c5c2f6554af2afd82562960f485b60f6c14c7c01e5e6765dd",
+ "compared_cases": 16211,
+ "compared_sha256": "08cc861626e2259c8fd5d019a03b8e2abb0ed231d0c49926c4748a74db49d38f",
  "outcomes": {
   "21,3435:returned": 4096,
   "ACDT+C12:returned": 4096,
-  "GTS:closeout": 3810,
-  "GTS:refused": 286,
+  "GTS:closeout": 3923,
+  "GTS:refused": 173,
   "TIMEGMBL:returned": 4096
  },
- "refused_gts_cases": 286,
+ "refused_gts_cases": 173,
  "refused_gts_oracle_outcomes": {
-  "closeout": 156,
-  "none": 130
+  "closeout": 45,
+  "none": 128
  },
  "entries": [
   "21,3077 GTS",

@@ -73,4 +73,49 @@ static inline uint16_t lanec_ev_add16(uint16_t a, uint16_t b)
     if (sum & 0200000u) sum = (sum + 1u) & 0177777u;
     return (uint16_t)sum;
 }
+/* 15-bit word as the accumulator holds it after CA. */
+static inline uint16_t lanec_ev_sx(uint16_t v) { return lanec_a16((uint16_t)(v & 077777u)); }
+/* MP of a memory word (15-bit): A,L = corrected A times the word, as
+ * Virtual AGC forms the double-precision product and its zero signs. */
+static inline void lanec_ev_mp(apollo_overlay_state *s, uint16_t word)
+{
+    uint16_t a = lanec_ev_corrected(s->words[LANEC_A]), b = (uint16_t)(word & 077777u), ms, ls;
+    if (b == 0 || b == 077777u) {
+        ms = ls = 0;
+    } else if (a == 0 || a == 077777u) {
+        ms = ls = (uint16_t)((a == 0) == ((b & 040000u) != 0) ? 077777u : 0u);
+    } else {
+        uint16_t ma = (a & 040000u) ? (uint16_t)(~a & 037777u) : a;
+        uint16_t mb = (b & 040000u) ? (uint16_t)(~b & 037777u) : b;
+        uint32_t d = (uint32_t)ma * mb;
+        uint8_t neg = (uint8_t)(((a ^ b) & 040000u) != 0);
+        if (neg) d = ~d & 07777777777ul;
+        ls = (uint16_t)((d & 037777u) | (neg ? 040000u : 0u));
+        ms = (uint16_t)((d >> 14) & 077777u);
+    }
+    s->words[LANEC_A] = lanec_ev_sx(ms);
+    s->words[LANEC_L] = lanec_ev_sx(ls);
+}
+/* DXCH k (k, k+1 memory): A,L <-> k,k+1. */
+static inline void lanec_ev_dxch(apollo_overlay_state *s, uint16_t k)
+{
+    uint16_t lo = s->words[k + 1u], hi = s->words[k];
+    s->words[k + 1u] = lanec_ev_corrected(s->words[LANEC_L]);
+    s->words[LANEC_L] = lanec_ev_sx(lo);
+    s->words[k] = lanec_ev_corrected(s->words[LANEC_A]);
+    s->words[LANEC_A] = lanec_ev_sx(hi);
+}
+/* DAS k (k, k+1 memory): k,k+1 += A,L with the low word's carry; A = the
+ * high word's overflow (+1, -1 or +0), L = +0. */
+static inline void lanec_ev_das(apollo_overlay_state *s, uint16_t k)
+{
+    uint16_t lsw = lanec_ev_add16(s->words[LANEC_L], lanec_ev_sx(s->words[k + 1u]));
+    uint16_t msw = lanec_ev_add16(s->words[LANEC_A], lanec_ev_sx(s->words[k]));
+    if ((lsw & 0140000u) == 0040000u) msw = lanec_ev_add16(msw, 1u);
+    else if ((lsw & 0140000u) == 0100000u) msw = lanec_ev_add16(msw, 0177776u);
+    s->words[LANEC_A] = (msw & 0140000u) == 0100000u ? 0177776u : (msw & 0140000u) == 0040000u ? 1u : 0u;
+    s->words[LANEC_L] = 0;
+    s->words[k + 1u] = lanec_ev_corrected(lsw);
+    s->words[k] = lanec_ev_corrected(msw);
+}
 #endif

@@ -9,7 +9,7 @@
  ],
  "oracle_engine": "pinned yaAGC agc_engine.c without its gyro, IMU CDU drive and optics block (build/no-imu-device.patch)",
  "cases": 63488,
- "snapshot_sha256": "a324a5837092fc360ba155fc86c8d45fba8c48e07921afcd096852f1e1c1a681",
+ "snapshot_sha256": "f1eff392d8d5d59c3cd455f3fa7d5d21f59ec6796da649eee22e2faa93bc9922",
  "stops": {
   "LM routine 0": {
    "caller return": 384
@@ -62,8 +62,9 @@
    "VARDELAY": 194
   },
   "LM routine 14": {
+   "FIXDELAY": 24,
    "JOBWAKE": 192,
-   "VARDELAY": 192
+   "VARDELAY": 168
   },
   "LM routine 15": {
    "ALARM": 192,
@@ -308,8 +309,9 @@
    "VARDELAY": 193
   },
   "CM routine 11": {
+   "FIXDELAY": 22,
    "JOBWAKE": 192,
-   "VARDELAY": 192
+   "VARDELAY": 170
   },
   "CM routine 12": {
    "ALARM": 192,

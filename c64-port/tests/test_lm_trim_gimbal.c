@@ -11,7 +11,7 @@
 #include "lm_interbank_routines.h"
 #define P16(z) (uint16_t)(016u*1024u+((z)-02000u))
 #define P21(z) (uint16_t)(021u*1024u+((z)-02000u))
-#define PATHS 89u
+#define PATHS 87u
 unsigned lm_tg_paths[PATHS];
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s %u\n",what,n);}}
@@ -44,11 +44,8 @@ int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;lm_tg_case c;unsign
   *   3,000,000 random GTS passes);
   *  43: ROOTCYCL's TS SCRATCH overflow: the first Newton step, from
   *   ROOTHALF (HALFARG below 1/4) or POSMAX (HALFARG below 1/2), stays
-  *   below 1, and later steps only decrease;
-  *  86, 87: dv's yaAGC quirk with a dividend at or above the divisor: every
-  *   DV here divides less than its divisor (BZMF HUGEQUOT, SCALLOOP), or
-  *   has L = +0 (LXCH 7, ZL) or a positive L (TIMEGMBL). */
- static const unsigned unreachable[]={6u,17u,23u,30u,41u,42u,43u,63u,83u,84u,86u,87u};
+  *   below 1, and later steps only decrease. */
+ static const unsigned unreachable[]={6u,17u,23u,30u,41u,42u,43u,63u,83u,84u};
  program.basic=&lm_trim_gimbal_routines;program.basic_count=1;
  for(n=0;n<LM_TG_CASES;++n){unsigned kind;
   check(lm_tg_digest(&s,(uint16_t)n)==lm_tg_expected[n],"digest",n);

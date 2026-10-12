@@ -27,6 +27,8 @@ SHARED = ('Makefile', 'include/agc_word.h', 'src/agc_word.c', 'tools/ci_affected
 IGNORED = re.compile(r'^(docs/|evidence/|README\.md$|CONTRIBUTING-port\.md$|tools/ledgers\.py$|'
                      r'tools/evidence\.py$|tools/new_milestone\.py$|tools/setup_cloud\.sh$|\.gitignore$)')
 WORD = re.compile(r'[A-Za-z0-9_./+-]+')
+INCLUDE = re.compile(r'^\s*#\s*include\s*"([^"]+)"', re.M)
+INCLUDE_DIRS = ('include', 'src', 'tests', 'platform/c64', 'tools')
 
 
 def database():
@@ -64,6 +66,27 @@ def script_words(path, cache):
     return cache[path]
 
 
+def headers(path, cache):
+    """Headers a C source or header includes, transitively, as repo paths.
+    Make rules rarely list them, so without this a change to a shared header
+    selects none of the targets that compile it."""
+    if path in cache:
+        return cache[path]
+    cache[path] = found = set()
+    try:
+        text = (ROOT / path).read_text(errors='replace')
+    except OSError:
+        return found
+    for name in INCLUDE.findall(text):
+        for directory in (str(pathlib.PurePosixPath(path).parent),) + INCLUDE_DIRS:
+            candidate = str(pathlib.PurePosixPath(directory) / name)
+            if (ROOT / candidate).is_file():
+                found.add(candidate)
+                found |= headers(candidate, cache)
+                break
+    return found
+
+
 def closure(target, rules, seen, scripts):
     words = set()
     stack = [target]
@@ -79,6 +102,10 @@ def closure(target, rules, seen, scripts):
             words.add(word)
             if word.endswith('.py') and (ROOT / word).is_file():
                 words |= script_words(word, scripts)
+    includes = scripts.setdefault(None, {})
+    for word in list(words):
+        if word.endswith(('.c', '.h', '.S')) and (ROOT / word).is_file():
+            words |= headers(word, includes)
     return words
 
 
