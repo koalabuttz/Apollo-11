@@ -530,7 +530,7 @@
       "sha256": "d8babb9b0e0677f441411eed3ab6919a70a6aa95cbb49388813731e6c2348e74",
       "bytes": 17718,
       "lines": 441,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -543,7 +543,7 @@
           "scope": "Every instruction (05,3521-3775): DODOWNTM, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -551,7 +551,6 @@
         "external_continuations": [
           "RESUME (WAITLIST)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-DOWNTELEMETRY.md",
@@ -568,6 +567,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
             "sha256": "a38cb446d97c7b1c517e8e685cac071c6bda51ca420b6745183580c4ee7774fe"
+          },
+          "independent_review": {
+            "path": "docs/audits/downtelemetry.md",
+            "sha256": "4abbb5ac602fc27987a574dbdad6eb8f1533def92470835036eecfc0515c2fe2"
           }
         }
       }
@@ -3830,7 +3833,7 @@
       "sha256": "34ee428bb987e1826148083af7c6879c33ed577a0eb415ae08ce4a7ad0453d9b",
       "bytes": 17768,
       "lines": 455,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3843,7 +3846,7 @@
           "scope": "Every instruction (05,3506-3771): DODOWNTM/WO1/WOTEST, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3851,7 +3854,6 @@
         "external_continuations": [
           "RESUME (WAITLIST)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-DOWNTELEMETRY.md",
@@ -3868,6 +3870,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
             "sha256": "07837c8b03a0e59e9dcb12dfff175942d3d4f0d5b0d29df8d3e1f465e8fc93a1"
+          },
+          "independent_review": {
+            "path": "docs/audits/downtelemetry.md",
+            "sha256": "4abbb5ac602fc27987a574dbdad6eb8f1533def92470835036eecfc0515c2fe2"
           }
         }
       }
