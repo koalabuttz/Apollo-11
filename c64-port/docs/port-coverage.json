@@ -5566,6 +5566,22 @@
           ],
           "scope": "S34/35.3 with its LOMAT and INTINT returns (35,3377-35,3423), GOINT and INTINT with INTINT's INTSTALL and INTEGRVS returns (35,3462-35,3521), 53 words, as seven interpretive routines of the control-transfer ABI keyed at their NEWOPS: NORMEX saved and LOMAT called, DELVLVC rotated through the local-vertical matrix (VXM of the work-area matrix) into DELVEET3, the integration arguments pushed (VACT3, RACT3, TIG, TPASS4, DPPOSMAX or ZEROVECS and NOMTPI) and INTINT called, RTARG stored on into NOVRWRT, and INTINT's RTRN save, INTSTALL call and integration setup (INTYPFLG, TDEC1, MOONFLAG, TET, RCV, VCV scaled by RTX2) to INTEGRVS and the GOTO RTRN after it: from each NEWOPS entry through the trampoline (with lm-s3435's LOMAT and NOVRWRT) to the first NEWOPS outside them (INTSTALL, INTEGRVS, or a caller's return).",
           "verification": "docs/LM-S3435B.md"
+        },
+        {
+          "native_files": [
+            "src/lm_s3435c_routines.c",
+            "src/lm_work_matrix.c",
+            "src/lm_s3435b_routines.c",
+            "src/lm_s3435_routines.c",
+            "src/lm_p34_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/matrix_native.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "S34/35.2's integration head (35,3306-35,3326) and LOMAT tail (35,3367-35,3376), and S34/35.5 (35,3522-35,3605), 77 words, as ten interpretive routines keyed at their NEWOPS and eight basic routines keyed by Z, of the control-transfer ABI: SUBEXIT saved, the TPI integration arguments pushed (VPASS3, RPASS3, INTIME, TPASS4, TWOPI, or with NN nonzero ZEROVECS in its place) and INTINT called, LOMAT called and DELVEET3 rotated through the work-area matrix (MXV) into DELVLVC on to SUBEXIT; S34/35.5's FINALFLG branch and UPDATFLG set, FLAGON's GDT/2 save and V06N81 GOFLASH with its terminate, proceed and recycle returns, the EBANK7 new-target check with UPFLAG and INTPRET, the NTARGFLG branch to S34/35.3 or NOCHG (XDELVFLG cleared, DELVEET3 into DELVSIN), FLAGOFF's S34/35.4 call and V06N59 VNPOOH, and the GOTO SUBEXIT: from each entry through the trampoline (with lm-s3435b's, lm-s3435's and lm-p34's routines and the native INTER-BANK routines) to the first point outside them (INITVEL, INTSTALL, a caller's return, GOFLASH, UPFLAG, GOTOPOOH or INTPRET).",
+          "verification": "docs/LM-S3435C.md"
         }
       ]
     },
