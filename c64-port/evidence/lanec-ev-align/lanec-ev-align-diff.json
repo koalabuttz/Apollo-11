@@ -1,0 +1,7 @@
+{
+  "suite": "ev-align",
+  "cases": 5056,
+  "differing": 0,
+  "native_sha256": "5d9fcb0445b7c835b11c8ae9cc482dc539b60fbefe2b801970d2e4ffe3b9bcb8",
+  "oracle_sha256": "5d9fcb0445b7c835b11c8ae9cc482dc539b60fbefe2b801970d2e4ffe3b9bcb8"
+}

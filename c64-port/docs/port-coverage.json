@@ -755,6 +755,28 @@
           ],
           "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
           "verification": "docs/LANEC-EV-FRONT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_short.c",
+            "src/lanec.c",
+            "include/lanec_ev_short.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Short bank 43 verb bodies: the flag verbs, job and task starters, check-and-hand-over verbs and SHOWSUM, every label and return point to its callee boundary (TESTXACT, CHKPOOH, FINDVAC, NOVAC, WAITLIST, PRIOCHNG, UPFLAG/DOWNFLAG, CHECKMM, PHASCHNG, BANKCALL, POSTJUMP, GOPIN, ENDEXT, ENDOFJOB), register-exact against the original program.",
+          "verification": "docs/LANEC-EV-SHORT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_align.c",
+            "src/lanec.c",
+            "include/lanec_ev_align.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Alignment and radar-designate verb bodies: V40 zero, V41 coarse align (IMU, RR designate, CM optics), V42 fine align, V43 attitude error meters (CM ATTCK1 task), V44 RRDESEND, LM V60 LRPOS2K, OP/INERT, RDRUSECK and CKLFTBTS, every label and return point to its callee boundary, register-exact against the original program. LM ATTCK2 is not included.",
+          "verification": "docs/LANEC-EV-ALIGN.md"
         }
       ]
     },
@@ -3588,6 +3610,39 @@
           ],
           "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, CHKPOOH, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
           "verification": "docs/LANEC-EV-FRONT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_short.c",
+            "src/lanec.c",
+            "include/lanec_ev_short.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Short bank 43 verb bodies: the flag verbs, job and task starters, check-and-hand-over verbs and SHOWSUM, every label and return point to its callee boundary (TESTXACT, CHKPOOH, FINDVAC, NOVAC, WAITLIST, PRIOCHNG, UPFLAG/DOWNFLAG, CHECKMM, PHASCHNG, BANKCALL, POSTJUMP, GOPIN, ENDEXT, ENDOFJOB), register-exact against the original program.",
+          "verification": "docs/LANEC-EV-SHORT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_align.c",
+            "src/lanec.c",
+            "include/lanec_ev_align.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Alignment and radar-designate verb bodies: V40 zero, V41 coarse align (IMU, RR designate, CM optics), V42 fine align, V43 attitude error meters (CM ATTCK1 task), V44 RRDESEND, LM V60 LRPOS2K, OP/INERT, RDRUSECK and CKLFTBTS, every label and return point to its callee boundary, register-exact against the original program. LM ATTCK2 is not included.",
+          "verification": "docs/LANEC-EV-ALIGN.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_radar.c",
+            "src/lanec.c",
+            "include/lanec_ev_radar.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Radar test verbs R77 through R77END (V63 R04, V78 R77, V79 R77END), every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-RADAR.md"
         }
       ]
     },
