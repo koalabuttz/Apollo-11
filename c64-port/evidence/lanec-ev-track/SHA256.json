@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-track",
+  "release": "evidence-lanec-ev-track",
+  "files": {
+    "lanec-ev-track-diff.json": {
+      "sha256": "c9991ec46b424ad7dcadefc9a6aae9912a70887a4dc20c6623f3847660550ff4",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-ev-track-oracle.crc": {
+      "sha256": "ac1825087b33a6e85cfc253272e1ac0a9683e7045a9b5f2bd5632e4f492f23c1",
+      "bytes": 31146,
+      "store": "tree"
+    },
+    "lanec-ev-track-sanitize.txt": {
+      "sha256": "b6c34b58016dc78f591fd1d8326c5606ae5178c2565c3b59d5eea2215d9105a2",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-ev-track-vice.txt": {
+      "sha256": "61919ec70313bb34991ef5800569d8b418f8c8f02734f0cf06d52c73a557c6c7",
+      "bytes": 58,
+      "store": "tree"
+    }
+  }
+}

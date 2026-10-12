@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-dap",
+  "release": "evidence-lanec-ev-dap",
+  "files": {
+    "lanec-ev-dap-diff.json": {
+      "sha256": "ca746245565f96bdd30bc94630b5be077ea8b10e1a52841fffdf006063e21941",
+      "bytes": 233,
+      "store": "tree"
+    },
+    "lanec-ev-dap-oracle.crc": {
+      "sha256": "f383c9013776143dd887098d74019fb76e1def3f7ed3382d3b82875b6e860301",
+      "bytes": 38538,
+      "store": "tree"
+    },
+    "lanec-ev-dap-sanitize.txt": {
+      "sha256": "a9850bd2c8660b33e42efdf47c723d551a89cd19d6906248ca3b2777ab6c9047",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-ev-dap-vice.txt": {
+      "sha256": "16f8031b975ac684ae39ee22887aa7aeda5acd5c3cf68790d5a545aa392de679",
+      "bytes": 56,
+      "store": "tree"
+    }
+  }
+}
