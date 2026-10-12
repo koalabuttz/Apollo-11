@@ -161,9 +161,9 @@ static int xok(const apollo_overlay_state *s){unsigned i;
 #define XOK do{if(!xok(s))return REFUSE;}while(0)
 /* DDV whose divisor has no major part once its words agree in sign (the
  * original's BUFZERO path: hi +-0, or +-1 with a minor part of the other
- * sign): the compiled DDV (lm_interp_orders.c) does not follow BUFZERO's
- * overflow exit with a negative dividend, so the state is refused.
- * AINGOTN's divisor on the genuine path is a positive count. */
+ * sign). Unreachable: AINGOTN divides by the test's elapsed time, about
+ * 584 s, so the state is refused as outside the domain. The compiled DDV
+ * follows BUFZERO (the certificate review ran 180 cases equal to yaAGC). */
 static int divisor_zero(const apollo_overlay_state *s){agc_word hi=W[W[0116]&03777u],lo=W[(W[0116]+1u)&03777u];
  int neg=lo>=040000u&&lo!=077777u,pos=lo<040000u&&lo!=0u;
  return hi==0u||hi==077777u||(hi==1u&&neg)||(hi==077776u&&pos);
