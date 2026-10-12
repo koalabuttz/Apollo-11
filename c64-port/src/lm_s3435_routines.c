@@ -15,7 +15,26 @@
 #include "matrix_native.h"
 #define W s->words
 #define LM APOLLO_FIXED_LM
+/* The routines a C64 build registers (C64 RAM): lm-s3435's own groups 1
+ * (S34/35.1, LOMAT) and 2 (NOVRWRT, S34/35.4), and group 3 (NOVRWRT) for
+ * lm-s3435b's S34/35.3 INTINT return. Host builds register all four. */
+#ifndef LM_S3435_C64_GROUP
+#define HAS_S1 1
+#define HAS_NOVRWRT 1
+#define HAS_S4 1
+#define HAS_LOMAT 1
+#else
+#define HAS_S1 (LM_S3435_C64_GROUP==1)
+#define HAS_NOVRWRT (LM_S3435_C64_GROUP==2||LM_S3435_C64_GROUP==3)
+#define HAS_S4 (LM_S3435_C64_GROUP==2)
+#define HAS_LOMAT (LM_S3435_C64_GROUP==1)
+#endif
 
+#if defined __clang__ && defined LM_S3435_C64_GROUP
+/* A C64 group build compiles only its routines, so order helpers that only
+ * the other groups' routines use go unused there. */
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
 /* INDJUMP/MISCJUMP/UNAJUMP body entries. */
 enum {VLOAD=06505,PDVL=06557,VSU=06747,VXV=07460,MXV=07334,SETPD=07613,COMP=07670,UNIT=03023,PUSH=03247,
  RVQ=03274,CALLITA=02507,BZEGOTO=02467};
@@ -29,7 +48,7 @@ static inline void opnd(apollo_overlay_state *s,agc_word word,agc_word target){
 }
 static inline void vload(apollo_overlay_state *s,agc_word word){opnd(s,word,VLOAD);lmi_vload(s,0);}
 static inline void shorts(apollo_overlay_state *s){lmi_short_dispatch(s);if(W[5]==02017u)lmi_shortt(s);else lmi_shortv(s);}
-#if !defined LM_S3435_C64_GROUP || LM_S3435_C64_GROUP==1
+#if HAS_S1||HAS_LOMAT
 /* Orders only S34/35.1 and LOMAT use. */
 static inline void store(apollo_overlay_state *s,agc_word code){lmi_store_code(s,code);next(s);}
 static inline void rvq(apollo_overlay_state *s){lmi_unary(s,RVQ);lmi_rvq(s);}
@@ -45,7 +64,7 @@ static inline void vxv(apollo_overlay_state *s,agc_word word){opnd(s,word,VXV);l
  * matrix_native_phase's domain starts at ADDRWD 01000, so the phases run on
  * ADDRWD+01000 and the bias comes back out after each (phases 1 and 2 leave
  * the sum in A), as lm-midgim's GET.LVC does. */
-#if !defined LM_S3435_C64_GROUP || LM_S3435_C64_GROUP==2
+#if HAS_NOVRWRT
 static uint8_t mxv_work(apollo_overlay_state *s,agc_word word){
  agc_word k[18];unsigned i;
  lmi_direct(s,word,MXV);
@@ -79,7 +98,7 @@ static uint8_t entry_ok(const apollo_overlay_state *s,const p66_bias_io *io,agc_
 /* Every routine ends at a NEWOPS (the trampoline continues there) or at
  * POODOO1 with UNIT's alarm 1302 (an unmapped point). */
 
-#if !defined LM_S3435_C64_GROUP || LM_S3435_C64_GROUP==1
+#if HAS_S1
 /* S34/35.1 VLOAD VSU RPASS3 RACT3; UNIT PUSH; STOVL ULOS RACT3;
  * VXV UNIT VACT3; STORE UNRM; RVQ. */
 ROUTINE(s3435_1,03274u)
@@ -92,7 +111,7 @@ ROUTINE(s3435_1,03274u)
  return EXEC_OK;
 }
 #endif
-#if !defined LM_S3435_C64_GROUP || LM_S3435_C64_GROUP==2
+#if HAS_NOVRWRT
 /* NOVRWRT VLOAD PUSH ULOS; VXV VCOMP UNRM; UNIT PUSH; VXV VSL1 ULOS; PDVL
  * (pushes up); PDVL MXV DELVEET3 0D; VSL1; STCALL DVLOS NORMEX (to the CADR
  * in NORMEX). */
@@ -107,6 +126,8 @@ ROUTINE(novrwrt,03424u)
  lmi_store_code(s,036303);lmi_15bitadr(s,003463,CALLITA);lmi_call(s);lmi_goto_any(s);
  return EXEC_OK;
 }
+#endif
+#if HAS_S4
 /* S34/35.4 STQ SETPD NORMEX 0D; GOTO NOVRWRT. */
 ROUTINE(s3435_4,03442u)
  lmi_newops(s,040220);lmi_misc(s,003463,CALLITA);lmi_ita(s);right(s);lmi_direct(s,000001,SETPD);lmi_setpd(s);
@@ -117,7 +138,7 @@ ROUTINE(s3435_4,03442u)
  return EXEC_OK;
 }
 #endif
-#if !defined LM_S3435_C64_GROUP || LM_S3435_C64_GROUP==1
+#if HAS_LOMAT
 /* LOMAT VLOAD VCOMP UNRM; STOVL 6D RACT3; UNIT VCOMP; STORE 12D; VXV VSL1
  * UNRM; STORE 0D; SETPD RVQ 18D. */
 ROUTINE(lomat,03447u)
@@ -131,13 +152,19 @@ ROUTINE(lomat,03447u)
  return EXEC_OK;
 }
 #endif
-/* A C64 group registers only the routines its cases reach (C64 RAM). */
-#if !defined LM_S3435_C64_GROUP
+/* A C64 group registers only the routines its cases reach. */
 static const agc_routine_entry entries[]={
- {LM_S3435_B35(03274),s3435_1},{LM_S3435_B35(03424),novrwrt},{LM_S3435_B35(03442),s3435_4},{LM_S3435_B35(03447),lomat}};
-#elif LM_S3435_C64_GROUP==1
-static const agc_routine_entry entries[]={{LM_S3435_B35(03274),s3435_1},{LM_S3435_B35(03447),lomat}};
-#else
-static const agc_routine_entry entries[]={{LM_S3435_B35(03424),novrwrt},{LM_S3435_B35(03442),s3435_4}};
+#if HAS_S1
+ {LM_S3435_B35(03274),s3435_1},
 #endif
+#if HAS_NOVRWRT
+ {LM_S3435_B35(03424),novrwrt},
+#endif
+#if HAS_S4
+ {LM_S3435_B35(03442),s3435_4},
+#endif
+#if HAS_LOMAT
+ {LM_S3435_B35(03447),lomat},
+#endif
+};
 const agc_routine_table lm_s3435_routines={entries,(uint16_t)(sizeof entries/sizeof *entries)};
