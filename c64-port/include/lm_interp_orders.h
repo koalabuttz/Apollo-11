@@ -89,6 +89,9 @@ void lmi_xad(apollo_overlay_state *);
 void lmi_xsu(apollo_overlay_state *);
 void lmi_lxa(apollo_overlay_state *);
 void lmi_sxa(apollo_overlay_state *);
+/* AXC (POLISH = the address, CYR selects X1/X2): the complement into the
+ * index register, then DANZIG. */
+void lmi_axc(apollo_overlay_state *);
 /* ITA (STQ) 01,2507 with CYR negative: QPRET into the 15ADRERS address,
  * then DANZIG. */
 void lmi_ita(apollo_overlay_state *);

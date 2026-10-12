@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-midgim",
+  "release": "evidence-lm-midgim",
+  "files": {
+    "lm-midgim-1.map": {
+      "sha256": "544670ee2285d83550d657cdd2d012a085c1e9f5bbbe6d846cc8e79de8748f13",
+      "bytes": 21518,
+      "store": "release"
+    },
+    "lm-midgim-1.prg": {
+      "sha256": "19cefad2dd121a51fb57201497e4db8e6c07743d4170df8c2718e8d7891047f0",
+      "bytes": 32186,
+      "store": "release"
+    },
+    "lm-midgim-2.map": {
+      "sha256": "5e90be8b381bd2664fbf349b8db099ec277879874df598158f846220d18f9bd5",
+      "bytes": 19704,
+      "store": "release"
+    },
+    "lm-midgim-2.prg": {
+      "sha256": "c301572d7c2cefa9114eb6c27ae751443c14124c91b145829ff66d802f7562f6",
+      "bytes": 30770,
+      "store": "release"
+    },
+    "lm-midgim-3.map": {
+      "sha256": "4e7c9a2d6b8a1714750aac5d0bd53f60d2ce3f5de8a39988fe08facfc674dad0",
+      "bytes": 23389,
+      "store": "release"
+    },
+    "lm-midgim-3.prg": {
+      "sha256": "875238ce58f4a056cd3cd50d058213fc3668228fc40de97dd2760a802658af82",
+      "bytes": 20173,
+      "store": "release"
+    },
+    "lm-midgim-checks.log": {
+      "sha256": "28f7395adced5ce70f78b7857441e92b3b86b55027dbdd7767b4971f121dc31e",
+      "bytes": 796,
+      "store": "tree"
+    },
+    "lm-midgim-phase-steps.json": {
+      "sha256": "fb8bba61b616770802a0cac8ba604e75316326fe9fef27aefd0bcc1d08e203c4",
+      "bytes": 779,
+      "store": "tree"
+    },
+    "lm-midgim-reference.snapshots.bin.xz": {
+      "sha256": "3aea460ab22c84405c32f9e1478d425f7b02144dff113e7e4c506236299cb4ea",
+      "bytes": 34913900,
+      "store": "release"
+    },
+    "lm-midgim-results.json": {
+      "sha256": "4215b0ec61bcaa1d66fcb5bc5770457a2f6e301e5b89637d9d933f9a466cd421",
+      "bytes": 1628,
+      "store": "tree"
+    },
+    "lm-midgim-source-map.json": {
+      "sha256": "0eddbda9a44b0123e83a741f9683e3b91de2bf16ecedcb545cfab1b5c4bc3ec9",
+      "bytes": 10886,
+      "store": "tree"
+    },
+    "lm-midgim-source-stream.json": {
+      "sha256": "cb8bd7c41511adb49abbaf097207ce60be2b36a5098a871fca2fbf865a12e12d",
+      "bytes": 361,
+      "store": "tree"
+    },
+    "lm-midgim-target-states.json": {
+      "sha256": "e5bacbff2b0a44569b9ae0431b53c12adea8b26cf3e94efa7e4ce64fad2e8daa",
+      "bytes": 328,
+      "store": "tree"
+    }
+  }
+}

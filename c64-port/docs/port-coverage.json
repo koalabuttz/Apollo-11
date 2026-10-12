@@ -4614,7 +4614,7 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c"
           ],
-          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, GET.LVC, VN1645, R36; INITVEL is the lm-initvel milestone's) are not yet translated.",
+          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, VN1645, R36; INITVEL is the lm-initvel milestone's and MIDGIM and SELECTMU the lm-midgim milestone's) are not yet translated.",
           "verification": "docs/LM-PERIAPO.md"
         },
         {
@@ -4629,6 +4629,18 @@
           ],
           "scope": "INITVEL, all 189 words of bank 11 02000-02274 (INITVEL, HAVEGUES, INITVEL1-7, INITVELX), with ORBITAL_INTEGRATION's SETITCTR (11,3765-3775) compiled inline at its CALL and LAMBERT run as the lm-conic-lambert steps: from the NEWOPS entry frontier after each Luminary CALL of INITVEL or HAVEGUES, or where INTSTALL and INTEGRVS return (11,2155, 11,2200), to the caller's NEWOPS frontier at C(NORMEX), the UNIT/SQRT abort frontier, or the NEWOPS of INTSTALL or INTEGRVS (bank 13, not ported), as native steps between original NEWOPS frontiers.",
           "verification": "docs/LM-INITVEL.md"
+        },
+        {
+          "native_files": [
+            "src/lm_midgim.c",
+            "src/inverse_trig.c",
+            "src/guidance_norm.c",
+            "src/matrix_native.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "MIDGIM (HALFREV, GET+MGA, SETMGA, GET.LVC; bank 06 03715-03752) and SELECTMU (bank 10 02000-02027), 54 words: from the NEWOPS entry frontier after each Luminary call of GET+MGA or GET.LVC, or SELECTMU's entry, to the caller's NEWOPS frontier at C(QPRET), the NEWOPS of VN1645 (35,3606, not ported) for SELECTMU, the UNIT abort frontier or ARCSIN's alarm 1301 frontier, as one native step per routine.",
+          "verification": "docs/LM-MIDGIM.md"
         }
       ]
     },
