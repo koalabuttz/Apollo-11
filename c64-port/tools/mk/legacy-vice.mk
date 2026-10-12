@@ -908,6 +908,7 @@ vice-legacy-lm-interpreter-change: | build
 	python3 tools/lm_interpreter_change_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-interpreter-exchange: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	python3 tools/lm_interpreter_exchange_target_build.py --cc "$(MOS_CC)" --c1541 "$(C1541)"
 	python3 tools/lm_interpreter_exchange_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-powered-axis: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -936,6 +937,7 @@ vice-legacy-lm-rcs-monitor: | build
 	python3 tools/lm_rcs_monitor_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-recurrence-bridge: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	python3 tools/lm_recurrence_bridge_target_build.py --cc "$(MOS_CC)" --c1541 "$(C1541)"
 	python3 tools/lm_recurrence_bridge_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-scan-exception: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -963,6 +965,7 @@ vice-legacy-lm-torque: | build
 	python3 tools/lm_torque_vice_test.py --cc "$(MOS_CC)" --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-waitlist-dispatch: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	python3 tools/lm_waitlist_dispatch_target_build.py --cc "$(MOS_CC)" --c1541 "$(C1541)"
 	python3 tools/lm_waitlist_dispatch_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-waitlist-image: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -994,6 +997,7 @@ vice-legacy-native-source-dispatch: | build
 	python3 tools/native_source_dispatch_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-native-source-finish: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	python3 tools/native_source_adoption_build.py --cc "$(MOS_CC)"
 	python3 tools/native_source_finish_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-norm: build/norm.prg | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -1015,6 +1019,7 @@ vice-legacy-nv-words: nv_words-c64 | build
 	python3 tools/nv_words_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-overlay-v2: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	python3 tools/overlay_v2_target_build.py --cc "$(MOS_CC)"
 	python3 tools/overlay_v2_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-overlay: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice

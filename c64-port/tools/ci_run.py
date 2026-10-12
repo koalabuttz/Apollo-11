@@ -112,6 +112,10 @@ def evidence_names():
     return names
 
 
+# Earlier attempts kept beside a milestone's final evidence; never expected values.
+ARCHIVED = re.compile(r'-(failure|first-|timeout|prequalification)[^/]*/|/build/')
+
+
 def frozen(path):
     """Copy a build/ input from its frozen copy under evidence/, if there is one.
 
@@ -123,8 +127,15 @@ def frozen(path):
     name = pathlib.PurePosixPath(path).name
     if pathlib.PurePosixPath(name).suffix in ('', '.prg', '.map', '.d64', '.d81', '.h', '.o', '.elf'):
         return None
+    if name.endswith('-modules.json'):
+        return None  # a disk manifest: its build script also writes the PRGs it lists
+    # build/x.bin matches evidence/**/x.bin; build/dir/x.json needs evidence/**/dir/x.json.
+    tail = '/' + path[len('build/'):]
     for suffix, opener in (('', open), ('.gz', gzip.open), ('.xz', lzma.open)):
-        for source in sorted(n for n in evidence_names() if pathlib.PurePosixPath(n).name == name + suffix):
+        for source in sorted((n for n in evidence_names()
+                              if n.endswith(tail + suffix) and (tail.count('/') > 1 or n.count('/') <= 2)
+                              and not ARCHIVED.search(n)),
+                             key=lambda n: (n.count('/'), n)):
             with LOCK:
                 restore(source)
             if not (ROOT / source).is_file():
@@ -227,7 +238,8 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
     script = ROOT / 'tools' / (stem.replace('-', '_') + '_differential.py')
     scripts = [script] if script.is_file() else []
     scripts += sorted(s for s in (ROOT / 'tools').glob('*_differential.py')
-                      if s != script and s.name != 'differential.py' and name in s.read_text(errors='replace'))
+                      if s != script and s.name != 'differential.py'
+                      and path[len('build/'):] in s.read_text(errors='replace'))
     candidates += [('script', s) for s in scripts]
     # Sub-makefiles run through `make -f tools/<x>.mk` are not in the main
     # database; find the rule whose recipe writes the file.
@@ -253,6 +265,13 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
                and re.search(r"^.*['/]" + re.escape(name) + r"['\s].*(write_(text|bytes)|'-o'|-Map)"
                              r"|^.*(write_(text|bytes)|'-o'|-Map).*['/]" + re.escape(name) + r"['\s]",
                              s.read_text(errors='replace'), re.M)]
+    # Build scripts named after the file they write under a computed name
+    # (lm_interpreter_change_target_build.py writes stem+'-target-modules.json').
+    flat = name.replace('-', '_')
+    writers += sorted((s for s in (ROOT / 'tools').glob('*_build.py')
+                       if s not in writers and '_' in s.name[:-len('_build.py')]
+                       and flat.startswith(s.name[:-len('_build.py')] + '_')),
+                      key=lambda s: -len(s.name))
     writers.sort(key=lambda s: (not s.name.endswith('_build.py'), not s.name.startswith('freeze'), s.name))
     candidates += [('script', s) for s in writers[:4]]
     module = target
