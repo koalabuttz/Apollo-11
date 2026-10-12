@@ -1,0 +1,51 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 9216,
+ "snapshot_sha256": "0dcc8da4a8e1a1c2bb432a7b8883f52c686822b59bfc87db2bc11655c155bdb5",
+ "outcomes": {
+  "chang1:interpretive": 380,
+  "chang1:returned": 388,
+  "chang2:interpretive": 384,
+  "chang2:returned": 384,
+  "delay:alarm": 304,
+  "delay:returned": 720,
+  "endofjob:idle": 260,
+  "endofjob:interpretive": 289,
+  "endofjob:returned": 475,
+  "fixdelay-sites:alarm": 48,
+  "fixdelay-sites:returned": 464,
+  "jobsleep:idle": 261,
+  "jobsleep:interpretive": 109,
+  "jobsleep:returned": 654,
+  "jobwake:returned": 512,
+  "priochng:interpretive": 211,
+  "priochng:returned": 813,
+  "spvac:alarm": 263,
+  "spvac:returned": 761,
+  "t3-dispatch:returned": 1024,
+  "taskover-resume:returned": 512
+ },
+ "entries": [
+  "04014 T3RUPT vector",
+  "05112 SPVACIN",
+  "05116 SPVAC",
+  "05122 CHANG1",
+  "05126 CHANG2",
+  "05133 JOBSLEEP",
+  "05137 JOBWAKE",
+  "05146 PRIOCHNG",
+  "05155 ENDOFJOB",
+  "05221 FIXDELAY",
+  "05224 VARDELAY",
+  "05261 TASKOVER"
+ ],
+ "boundary": "job switches: the selected basic job entry, NEWOPS 06070 for an interpretive job, or ADVAN 01,3214 idle; SPVAC/JOBWAKE/PRIOCHNG: the caller return; FIXDELAY/VARDELAY: TASKOVER; TASKOVER RUPTAGN -0: the end of the interrupt (RESUME); T3 vector and TASKOVER +1: the dispatched task; alarm: BAILOUT1/POODOO1 entry",
+ "full_physical_words": 2048,
+ "extra_state": [
+  "SUPERBNK",
+  "interrupt enable",
+  "channel 11",
+  "InIsr"
+ ]
+}
