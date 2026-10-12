@@ -4,18 +4,22 @@
  * two words lower (43,3232-3723) than Comanche055 (43,3234-3725). Labels are
  * named by their Comanche055 address; K(z) is the mission's address of the
  * Comanche055 word z. The includer defines SC_D (0 or 2), SCK(name) (its
- * compiled constants), the outside entries SC_ALARM2, SC_CHANG1, SC_LEFT5,
- * SC_SUPDACAL, SC_POSTJUMP, SC_SDISPLAY and SC_ENDSUMS, and the names
- * SC_TABLE and SC_ENTRIES.
+ * compiled constants), SC_MISSION (0 or 1, for include/rope_image.h), SC_IO
+ * (its device record: p66_bias_io or cm_native_io), the outside entries
+ * SC_ALARM2, SC_CHANG1, SC_LEFT5, SC_SUPDACAL, SC_POSTJUMP, SC_SDISPLAY and
+ * SC_ENDSUMS, its operand table SC_OPERANDS (SC_OPERAND_COUNT words), and
+ * the names SC_TABLE, SC_ENTRIES, SC_SITE_TABLE and SC_ROPE_DATA.
  *
  * One agc_image_ops call per original instruction. Every TC out of the file
  * leaves through OUT; the routine resumes at the return point as its own
  * entry. TC Q (-1CHK, ADSUM) and TC SFAIL / TC SKEEP1 execute the word in
  * that register as TC, which leaves Q at the register +1; the word must be a
  * TC to an address this file continues at, or out of the file. FXADRS
- * (INDEX SKEEP3; CA 0, ROPECHK's read of the fixed-fixed rope) is not
- * translated: a run stops there. */
+ * (INDEX SKEEP3; CA 0, ROPECHK's read of the fixed-fixed rope) reads the
+ * rope image (include/rope_image.h), which SC_ROPE_DATA also serves to
+ * SUPDACAL as the program's fixed_data hook. */
 #include "agc_image_ops.h"
+#include "rope_image.h"
 
 #define W s->words
 #define K(z) ((agc_word)((z)-SC_D))
@@ -44,8 +48,8 @@
 #define SKEEP7 01377u
 #define B43 (033u<<10)
 
-static p66_bias_io *ctx(const apollo_overlay_state *s,void *io){
- p66_bias_io *x=io;
+static SC_IO *ctx(const apollo_overlay_state *s,void *io){
+ SC_IO *x=io;
  if(s==0||x==0||x->interrupt_enabled>1u||(x->superbank&~0160u)||!(x->superbank&0100u)||W[7]!=0)return 0;
  if((W[4]&076000u)!=B43)return 0;
  return x;
@@ -66,7 +70,7 @@ static int pair_ok(const apollo_overlay_state *s,agc_word x){
 static agc_word index_value(agc_word v){v=(agc_word)agc_correct(v);return v==077777u?0u:v;}
 
 static enum exec_status body(const agc_native_program *p,apollo_overlay_state *s,void *io,agc_word at){
- p66_bias_io *x=ctx(s,io);agc_word w;(void)p;
+ SC_IO *x=ctx(s,io);agc_word w;uint16_t physical;(void)p;
  if(!x)return EXEC_OUT_OF_SCOPE;
 jump:
  /* The words a TC Q or a TC through SFAIL/SKEEP1 can continue at: the
@@ -220,7 +224,12 @@ L3545: ai_cs(s,A); TS(SKEEP7);                             /* FXFX */
  TCL(03553u,L3554);                                        /* 3552 TC +2 */
 L3553: ai_caf(s,SCK(SBNK03));
 L3554: TS(SKEEP3); ai_caf(s,SCK(SPZERO)); TS(SKEEP1); ai_caf(s,SCK(SP1)); TS(SKEEP5);  /* 3554-3560 */
-L3561: W[5]=K(03561u);return EXEC_OK;                     /* FXADRS INDEX SKEEP3; CA 0: not translated */
+L3561: w=index_value(W[SKEEP3]);if(w>=010000u)return EXEC_OUT_OF_SCOPE;  /* FXADRS INDEX SKEEP3 */
+ if(w<02000u){if(ai_ea(s,w)==5u)W[A]=K(03563u);else ai_ca(s,w);}  /* 3562 CA 0 (Z reads as the next word) */
+ else{agc_word word;physical=agc_fixed_physical(w,W[4],(agc_word)x->superbank);
+  if(physical==AGC_TRANSFER_NONE||!apollo_rope_read(SC_MISSION,physical,&word))return EXEC_OUT_OF_SCOPE;
+  W[A]=agc_extend(word);}
+ TCL(03564u,L3565);                                        /* 3563 TC ADSUM */
 L3564: TCL(03565u,L3576);                                  /* TC ADRSCHK (after FXADRS's TC ADSUM) */
 L3565: if(ai_ts(s,SKEEP2))goto L3567;                      /* ADSUM TS SKEEP2 */
  ai_ad(s,SKEEP1);                                          /* 3566 */
@@ -307,6 +316,12 @@ L3721: ai_ad(s,SKEEP1); ai_adf(s,SCK(SM1));                /* 3721-3722 */
 L3724: TCL(03725u,L3635);                                  /* TC NXTBNK */
 #undef TCREG
 }
+
+/* The compiled operands: the CADR after TC POSTJUMP (CHECKNJ) and the constants. */
+const agc_site_operand *SC_SITE_TABLE(uint16_t *count){if(count){*count=SC_OPERAND_COUNT;}
+ return SC_OPERANDS;}
+/* SUPDACAL's read of the word ROPECHK addresses: the program's fixed_data hook. */
+bool SC_ROPE_DATA(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return apollo_rope_read(SC_MISSION,physical,word);}
 
 #define SC_ENTRY(z) static enum exec_status e##z(const agc_native_program *p,apollo_overlay_state *s,void *io){return body(p,s,io,K(0##z##u));}
 SC_ENTRY(3270) SC_ENTRY(3306) SC_ENTRY(3340) SC_ENTRY(3443) SC_ENTRY(3524) SC_ENTRY(3542)

@@ -8,12 +8,13 @@ The two missions assemble the same source: Luminary099 sits two words lower (43,
 
 ## Scope
 
-- `Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc` and `Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc`: every instruction of bank 43 but FXADRS (Comanche055 3561-3564).
+- `Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc` and `Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc`: every instruction of bank 43 (Comanche055 3234-3725).
 - Routines (`lm_self_check_routines`, `cm_self_check_routines`, 11 each): SELFCHK, STSHOSUM and NXTBNK (SHOWSUM in EXTENDED_VERBS), and the return point after each TC out of the file: ALARM2's (+0 SMODE entry at 3270), CHECKNJ's POSTJUMP through SELFRET (3306, 3443, 3627), SUPDACAL's (3542), CHANG1's (3625), LEFT5's (3675) and SDISPLAY's (3713).
 - One `agc_image_ops` call per original instruction, so overflow, editing (CYR, SR, CYL, EDOP), the EB window and ones' complement behave as in the AGC. Constants are compiled from the source listing (`src/{lm,cm}_self_check_operands.inc`, `tools/file_operands_generate.py`); nothing is read from code memory.
 - TC Q (-1CHK, ADSUM) and TC SFAIL / TC SKEEP1 execute the word in that register as an instruction, which leaves Q at the register +1 (yaAGC's behavior). The word must be a TC to a word the file continues at (the entries, the returns of TC -1CHK and TC ADSUM, ERASCHK, ROPECHK) or out of the file; anything else is refused.
-- A run goes through the trampoline until it reaches a routine the file calls (ALARM2, POSTJUMP, SUPDACAL, CHANG1, LEFT5, SDISPLAY), ENDSUMS, FXADRS or a TC SFAIL / TC SKEEP1 target outside the file.
-- Not translated: FXADRS (INDEX SKEEP3; CA 0), ROPECHK's read of the fixed-fixed rope. The native image holds only certified fixed data spans, so the run stops there with Z = FXADRS.
+- A run goes through the trampoline until it reaches a routine the file calls (ALARM2, POSTJUMP, SUPDACAL, CHANG1, LEFT5, SDISPLAY), ENDSUMS or a TC SFAIL / TC SKEEP1 target outside the file.
+- FXADRS (INDEX SKEEP3; CA 0) reads the fixed-fixed rope. An address below 02000 (erasable, or 0-1777 when SKEEP3 runs into it) is an erasable read, with Z read as FXADRS+2 as the AGC sees it; a fixed address reads the unmodified rope through `include/rope_image.h` (`apollo_rope_read(mission, physical, &word)`). With no rope image loaded the run is refused (EXEC_OUT_OF_SCOPE) rather than summing invented words.
+- Rope image (steward decision, 2026-10-12): only this file (and its test harness) may include `rope_image.h`; `tools/ci_guard.py` rejects any other include, so no other lane gets a SUPDACAL fallback through it. The host loads `build/fixed-data/<mission>/MAIN.agc.bin` (`src/rope_image_host.c`, yaYUL's bank order 2, 3, 0, 1, 4...). The C64 reads the REU (`platform/c64/rope_image_reu.c`): `tools/rope_image_pack.py` writes a 2 MB image with Luminary099 at 0x1c0000 and Comanche055 at 0x1e0000, two bytes per physical word (36 banks), in the top 256 KB of the 2 MB budget, clear of Lane H's ABI 2 store.
 - Refused: a missing io record, FB other than 33, a SUPERBNK that does not select bank 43, EDOP nonzero, an ERASCHK or ERESTORE pair that reaches below 061 after the EB window (the central registers), and a TC through a register to erasable memory or into the middle of the file.
 - Devices: io is a `p66_bias_io`; its interrupt-enable state takes the file's INHINT and RELINT.
 
@@ -27,7 +28,7 @@ The two missions assemble the same source: Luminary099 sits two words lower (43,
 | ERASCHK, ERASLOOP, ELOOPFIN and the EB steps (3341-3467) | `L3341`-`L3467` |
 | CNTRCHK, CYCLSHFT (3470-3521) | `L3470`-`L3520` |
 | ROPECHK, STSHOSUM, COMMFX, COMADRS, FXFX (3522-3560) | `L3522`-`L3554` |
-| FXADRS (3561-3564) | `L3561`: the run stops |
+| FXADRS (3561-3564) | `L3561`: the rope read through `apollo_rope_read` |
 | ADSUM, ADRSCHK, CONTINU, ADRS+1 (3565-3634) | `L3565`-`L3627` |
 | NXTBNK, 17TO20, CHKSUPR, NXTSUPR, GONXTBNK (3635-3671) | `L3635`-`L3664` |
 | SOPTION, SOPT, BNKCHK (3672-3724) | `L3672`-`L3724` |
@@ -36,14 +37,17 @@ The two missions assemble the same source: Luminary099 sits two words lower (43,
 
 Hashes: `evidence/self-check/SHA256.json`. Bulk files are assets of the `evidence-self-check` release (`python3 tools/evidence.py fetch self-check`).
 
-- Independent assembly comparison: `evidence/self-check/self-check-proof.json`. `make self-check-differential` runs the unmodified Luminary099 and Comanche055 ropes in yaAGC (host-only), 4,096 cases per mission.
+- Independent assembly comparison: `evidence/self-check/self-check-proof.json`. `make self-check-differential` runs the unmodified Luminary099 and Comanche055 ropes in yaAGC (host-only), 4,096 random-state cases and 43 whole-rope cases per mission.
   - Case n enters entry n % 11 with FB 33 and SUPERBNK selecting bank 43.
   - The image is pseudo-random within the program's domain: SMODE +0, -0, an option 1-8 (either sign) or out of range; SKEEP1 and SFAIL a TC to where the file continues there or out of the file; ERASCHK's address an erasable pair at or above 061 after the EB window it will run under, its limit often the next word, and ERESTORE +0 or that address; ROPECHK's address (often a bank's last), bank word (often the last bank or one before a numbering step), and running sums +-1, +-0; at SUPDACAL's return, the fetched word often a TC to itself; at SDISPLAY's return, a sum that passes or fails BNKCHK, or +-0; NEWJOB mostly +0; EB, the interrupt-enable state and the rest pseudo-random.
-  - Each case runs until the original reaches, at an instruction boundary, a point outside bank 43 3234-3725 (shifted for Luminary099) or FXADRS. Z in erasable memory (the word a TC Q or TC SFAIL executes) counts as inside.
-  - Compared: the interrupt-enable state, SUPERBNK and all 2,048 erasable words. The digests are frozen into `tests/lm_self_check_vectors.h` and `tests/cm_self_check_vectors.h`.
-  - The freeze fails if an instruction of the file is never executed, other than FXADRS and two words no state reaches: -1CHK's TCF PRERRORS on A = +0 (3277) and ADRSCHK's TC CONTINU on L = +0 (3612). Each of those CCS tests a ones'-complement sum whose last addend is never +0 (an ERASCHK address, S+1, S-1, CONC+S2, a complemented address, or SBIT11), and the AGC adder only makes +0 from two +0 addends.
+  - Each case runs until the original reaches, at an instruction boundary, a point outside bank 43 3234-3725 (shifted for Luminary099). Z in erasable memory (the word a TC Q or TC SFAIL executes) counts as inside.
+  - Whole-rope cases run the real tests end to end, through SUPDACAL and POSTJUMP (the INTER-BANK_COMMUNICATION routines, with the rope image) and two test-harness stand-ins for routines no lane has registered yet, ADVAN (the -0 NEWJOB return through SELFRET, else stop at NUCHANG2 / NUDIRECT) and LEFT5 (four CS CYL shifts): case 0 is SELFCHK with SMODE 5 (ROPECHK) and no job; 1 and 2 have a change job waiting or a job in position; 3-6 enter STSHOSUM with SKEEP6 -0, +0, +1, -1; 7-42 are SHOWSUM through 1-36 displays, each resumed at SDISPLAY as PROCEED does (its two LXCH and TC NXTBNK; verb 91's display itself is the DSKY lane's). They end at ENDSUMS, SDISPLAY, NUCHANG2, NUDIRECT, CHANG1 or ALARM2. ROPECHK sums every word of all 36 banks of each rope (about 179,000 trampoline steps) and passes every bank's check.
+  - Compared: the interrupt-enable state, SUPERBNK and all 2,048 erasable words. The digests are frozen into `tests/lm_self_check_vectors.h` and `tests/cm_self_check_vectors.h` (`*_expected`, `*_rope_expected`).
+  - The freeze fails if an instruction of the file is never executed, other than two words no state reaches: -1CHK's TCF PRERRORS on A = +0 (3277) and ADRSCHK's TC CONTINU on L = +0 (3612). Each of those CCS tests a ones'-complement sum whose last addend is never +0 (an ERASCHK address, S+1, S-1, CONC+S2, a complemented address, or SBIT11), and the AGC adder only makes +0 from two +0 addends.
 - Host and sanitizer results: `make test-self-check sanitize-self-check` (`evidence/self-check/self-check-host.log`). Beyond the oracle digests, the test checks that:
   - all 11 entries are reached in each mission;
-  - each case ends at ALARM2, POSTJUMP, SUPDACAL, CHANG1, LEFT5 or SDISPLAY with Q at the return point, at ENDSUMS, at FXADRS, or at a TC SFAIL / TC SKEEP1 target outside the file, and each named end is reached;
-  - a missing io, FB 32, a SUPERBNK selecting bank 33, a TC SFAIL to erasable memory or into the middle of the file and an ERASCHK pair over the central registers are refused.
-- C64 execution results: `make vice-self-check` (`evidence/self-check/self-check-vice.log`): 77 rows per mission, every 64th case plus a greedy cover so the rows execute every word the host cases execute (`tools/c64_rows.py`).
+  - each case ends at ALARM2, POSTJUMP, SUPDACAL, CHANG1, LEFT5 or SDISPLAY with Q at the return point, at ENDSUMS, or at a TC SFAIL / TC SKEEP1 target outside the file, and each named end is reached;
+  - the whole-rope cases match their digests; ROPECHK (case 0, 3) and SHOWSUM's last display (42) end at ENDSUMS after bank 43 with every sum passed, and SHOWSUM display n shows bank n - 6 (bank 0 first);
+  - FXADRS without a rope image, a missing io, FB 32, a SUPERBNK selecting bank 33, a TC SFAIL to erasable memory or into the middle of the file and an ERASCHK pair over the central registers are refused.
+- C64 execution results: `make vice-self-check` (`evidence/self-check/self-check-vice.log`): one PRG per mission (`build/self-check-lm.prg`, `build/self-check-cm.prg`; both missions do not fit in one image) with the rope image in a 2 MB REU (`build/self-check.reu`, `tools/vice_run.py --reu`). 74 random-state rows and 6 whole-rope rows (cases 0, 1, 2, 4, 5, 6, including a full ROPECHK) per mission, every 64th case plus a greedy cover so the rows execute every word the host cases execute (`tools/c64_rows.py`).
+- Completion certificates: `tools/self_check_complete.py` writes `evidence/lm-self-check-complete/` and `evidence/cm-self-check-complete/` (see `docs/SELF-CHECK-COMPLETE.md`).
