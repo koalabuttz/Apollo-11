@@ -8,7 +8,8 @@
  * STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC, INITSUB/RAKE) and bank 20
  * (VAC5STOR), as native routines of the control-transfer ABI
  * (docs/NATIVE_TRANSFER_ABI.md). Entries are GOP00FIX (POSTJUMP from
- * FRESH_START), V37, ROC and V37XEQ (TEMPFLSH -3 through INITDSP), the
+ * FRESH_START), V37, CANV37 (POSTJUMP from SERVICER207), ROC and V37XEQ
+ * (TEMPFLSH -3 through INITDSP), the
  * basic code after R00's interpretive EXIT, VAC5STOR (BANKCALL from
  * FRESH_START) and the return point after each TC to a routine outside the
  * file. Each routine runs until it leaves Z at one of those routines
@@ -19,7 +20,7 @@
  * listing (src/cm_v37_operands.inc); the CADRs after its BANKCALL/IBNKCALL/
  * POSTJUMP are in cm_interbank_site_table, which a program running these
  * routines uses as its operand table. io is a cm_fresh_io. */
-#define CM_V37_ROUTINES 35u
+#define CM_V37_ROUTINES 36u
 #define CM_V37_MMNUMBER 0775u
 #define CM_V37_MINDEX 0774u
 extern const agc_routine_table cm_v37_routines;

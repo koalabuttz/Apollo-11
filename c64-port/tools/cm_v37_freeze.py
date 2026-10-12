@@ -83,7 +83,7 @@ def main():
     proof = {'mission': 'Comanche055', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
-             'entries': 'GOP00FIX, V37, ROC, V37XEQ, the basic code after R00 EXIT, VAC5STOR and the return point after every TC out of the file (35)',
+             'entries': 'GOP00FIX, V37, CANV37, ROC, V37XEQ, the basic code after R00 EXIT, VAC5STOR and the return point after every TC out of the file (36)',
              'boundary': 'entry to the first point outside bank 04 2000-2366, bank 20 2000-2063, bank 05 2342-3217, GOTOPOOH 4106-4111 and INTER-BANK_COMMUNICATION, or SWRETURN',
              'full_physical_words': 2048, **c64_rows.summary(cases, chosen, OWNED)}
     (B / 'cm-v37-proof.json').write_text(json.dumps(proof, indent=1) + '\n')

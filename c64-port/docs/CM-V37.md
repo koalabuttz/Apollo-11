@@ -11,9 +11,9 @@ Bank 04 holds verb 37, which changes the major mode. It checks the IMU and the R
   - Bank 20 (2000-2063): VAC5STOR, V5LOOP1, V5OUT1, V5LOOP2, V5OUT2.
 - Not translated here:
   - R00's two interpretive words (CALL INTSTALL; DUMMYAD EXIT, 2131-2133) run in the interpreter. The run ends at INTPRET, and the basic code after the EXIT (2134) is an entry.
-  - Bank 13 is a later milestone.
-- Entries (`cm_v37_routines`, 35):
-  - GOP00FIX (POSTJUMP from FRESH_START) and V37 (pinball).
+  - Bank 13 and R00's interpretive words are `cm-stateup`.
+- Entries (`cm_v37_routines`, 36):
+  - GOP00FIX (POSTJUMP from FRESH_START), V37 (pinball) and CANV37 (POSTJUMP from SERVICER207's SERVEXIT).
   - ROC and V37XEQ, which INITDSP reaches as TEMPFLSH -3 (R00AD, V37QCAD).
   - The basic code after R00's EXIT (2134).
   - VAC5STOR (BANKCALL from GOPROG).
@@ -47,7 +47,7 @@ Paths with no producer: a TS that overflows refuses (no input in the domain over
 Hashes: `evidence/cm-v37/SHA256.json`. Bulk files are assets of the `evidence-cm-v37` release (`python3 tools/evidence.py fetch cm-v37`).
 
 - Independent assembly comparison: `evidence/cm-v37/cm-v37-proof.json`. `make cm-v37-differential` runs the unmodified Comanche055 rope in yaAGC (host-only), 4,096 cases.
-  - Case n enters entry n % 35, with the image pseudo-random within the program's domain:
+  - Case n enters entry n % 36, with the image pseudo-random within the program's domain:
     - V37's request (A) and MMNUMBER are a mode PREMM1 lists, P00, P20 or any of 0-0177.
     - MINDEX is an index of the 33-word tables. MODREG is +0, P20 or a mode.
     - The IMU-busy and NODO bits are mostly clear, so V37 gets past CANTR00.
@@ -58,9 +58,9 @@ Hashes: `evidence/cm-v37/SHA256.json`. Bulk files are assets of the `evidence-cm
   - Compared: the interrupt-enable state, SUPERBNK, channels 11, 5, 6, 12, 13, 14 and 33, the trap latches and all 2,048 erasable words. The digests are frozen into `tests/cm_v37_vectors.h`.
   - The oracle also traces the words each case executes (`tools/case_trace.h`). The freeze fails if any instruction of bank 04 2000-2366 or VAC5STOR is never executed. The only words left unexecuted are constants, CADRs, R00's interpretive words and the instruction after an EXTEND or INDEX, which runs in the same step as its prefix. The list is in the proof.
 - Host and sanitizer results: `make test-cm-v37 sanitize-cm-v37` (`evidence/cm-v37/cm-v37-host.log`). Beyond the oracle digests, the test checks that:
-  - all 35 entries are reached;
+  - all 36 entries are reached;
   - each case ends at one of the 29 points outside the milestone it can reach, and every one of them is reached;
   - VAC5STOR returns through SWRETURN, and a KLEAN entry returns to ISWRETRN with Q = 3;
   - the C64 rows are host cases with their host digests;
   - a negative MMNUMBER, an index outside the tables, a TC MPAC +1 word INITSUB never stores and a missing io are refused.
-- C64 execution results: `make vice-cm-v37` (`evidence/cm-v37/cm-v37-vice.log`). The rows are chosen by outcome (`tools/c64_rows.py`): every 32nd case, plus greedily added cases until the rows together execute every word the 4,096 host cases execute (136 rows). The stride is 32 rather than 16 so that the image fits below $c000.
+- C64 execution results: `make vice-cm-v37` (`evidence/cm-v37/cm-v37-vice.log`). The rows are chosen by outcome (`tools/c64_rows.py`): every 32nd case, plus greedily added cases until the rows together execute every word the 4,096 host cases execute (160 rows). The stride is 32 rather than 16 so that the image fits below $c000.
