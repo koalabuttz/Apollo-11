@@ -1973,6 +1973,10 @@ Native C for all of Comanche055 TVCDAPS (bank 20 `2530`-`3500`, 489 words): the 
 
 All of Luminary099 LANDING_ANALOG_DISPLAYS (bank 21, 467 words) runs as four native routines of the control-transfer ABI, with channels 12, 14 and 30 in `lm_flight_io`: LANDISP (the R10 task through DISINDAT, the altitude rate or extrapolation to ALTM and SPEEDRUN's velocity update), TWIDDLE's return and its INTLZE task, and VARDELAY's return (the lateral and forward velocity monitor to the cross-pointer commands, then `TC LADQSAVE` back into ALTROUT or ALTOUT). All 16,384 cases equal the original program (on yaAGC with the hardware divide) in the outcome, channels 12 and 14 and all 2,048 erasable words (strict and ASAN/UBSAN). Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and 128 C64 rows chosen to take every entry, outcome and branch the host cases take pass in VICE. See `docs/LM-LANDING-DISPLAYS.md`.
 
+## Translate ATTITUDE_MANEUVER_ROUTINE and ANGLFIND
+
+All of Luminary099 ATTITUDE_MANEUVER_ROUTINE and Comanche055 ANGLFIND (480 and 479 words: KALCMAN3 and SECAD, gimbal lock avoidance, the maneuver axis methods, MXM3, TRANSPOS, CDUTODCM, DELCOMP, DCMTOCDU and VECOFANG) are native C on the control-transfer ABI, as 83 routines. MXV and VXM matrix operands and LXC now compile. All 42,496 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 664 frozen cases, and ten C64 diagnostics pass 80 cases in VICE; three routines on KALCMAN3's main path are too large for one diagnostic and are checked on the host only. Both files have complete certificates drafted for the certificate reviewer. See `docs/ATTITUDE-MANEUVER.md`.
+
 ## Translate the DISPLAY_INTERFACE display start-up
 
 Native C for PINBRNCH through V50PASTE of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: PINBRNCH, NORMBNCH, NVDSP (GOPLAY), NV50DSP and its returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND and V50PASTE, translated block by block. 3,486 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, 114 with an out-of-range COPINDEX are refused unchanged, and 277 cases (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-NVDSP.md`.
@@ -1984,6 +1988,10 @@ All of Luminary099 AGS_INITIALIZATION (R47, bank 32, 138 words) runs as twenty-t
 ## Translate Luminary TRIM_GIMBAL_CONTROL_SYSTEM as transfer-ABI routines
 
 All of Luminary099 TRIM_GIMBAL_CONTROL_SYSTEM (banks 21 and 16, 388 words) runs as four native routines of the control-transfer ABI, with channel 12 in `lm_flight_io`. The routines are GTS (the trim gimbal control law, with GTSQRT and ROOTCYCL compiled inline), ACDT+C12, TIMEGMBL and its IBNKCALL return. 16,211 of 16,384 cases equal the original program in the outcome, channel 12 and all 2,048 erasable words (strict and ASAN/UBSAN). These include 138 zero-root DOSHIFT passes, where the INDEX SHFTFLAG'd CA BIT15 reads 04735 + ACENTRAL/2 (erasable memory, or a generated bank 21 and fixed-fixed table). The remaining 173 GTS cases index CA BIT15 into another order, which needs an offset acceleration above 8.6 deg/s^2; GTS refuses them with the image unchanged. DV is `ai_dv`, and the oracle runs every DV through yaAGC's SimulateDV hardware model. Each case runs from its entry to CLOSEOUT, the caller's return, or ACDT+C12 reached through the native IBNKCALL. Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and 256 C64 rows chosen to take every entry, outcome and branch the host cases take pass in VICE. See `docs/LM-TRIM-GIMBAL.md`.
+
+## Translate R60,R62
+
+Luminary099 and Comanche055 R60_62.agc (the attitude maneuver and crew-defined maneuver routines, VECPOINT and the FDAI ball angles) are native C on the control-transfer ABI as 116 routines, except the five words that read channels 30 and 31 (Luminary G+N,AUTO and ISITAUTO, Comanche TOBALLC), which wait for an I/O channel model. `tools/interp_compile.py` now also counts outside calls' inline words from the listing, starts routines at display and restart returns, refuses channel instructions, runs TC to erasable, and guards indexed writes at run time. All 59,392 cases equal the original programs in yaAGC except the 3,580 that reach a channel read, which are listed and not compared. The host and sanitizer tests pass 872 frozen cases, and eight C64 diagnostics pass 220 cases in VICE. Both files stay partial until the channel model exists. See `docs/R60-R62.md`.
 
 ## Translate Comanche FRESH_START_AND_RESTART (bank 05) as transfer-ABI routines
 
@@ -2048,6 +2056,10 @@ Native C for R77 through R77END of Luminary099 EXTENDED_VERBS (V63 R04 radar sam
 ## Register EXTENDED_VERBS on the transfer ABI
 
 Every labelled entry and every callee return of Luminary099 EXTENDED_VERBS is a routine of the control-transfer ABI at its physical address (313 basic, 15 interpretive keyed by LOC), and so is every Comanche055 entry the suites verify (241); `tools/lanec/routines.py ev` generates the tables and checks them against the listing. 468 round trips from Pinball's POSTJUMP GOEXTVB and the other BANKCALL/POSTJUMP callers, through INTER-BANK, the display interface, the LM Executive and the interpreter, match the unchanged original programs in Virtual AGC in strict and ASan/UBSan builds; 64 run on a VICE PAL C64, and 512 broken entry states are refused unchanged. See `docs/LANEC-EV-TRANSFER.md`.
+
+## Translate S-BAND_ANTENNA_FOR_LM and S-BAND_ANTENNA_FOR_CM
+
+All of Luminary099 S-BAND_ANTENNA_FOR_LM and Comanche055 S-BAND_ANTENNA_FOR_CM (116 and 80 words: R05, the V64 S-band antenna angles display) are native C on the control-transfer ABI, as 97 routines compiled by `tools/interp_compile.py`. The compiler now handles code in banks 040-043 (superbank 4), and with `resume_keys` it stops at CHANG2 when a DANZIG finds a job waiting, so every order pair of a job is a resume point. All 49,664 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 1,552 frozen cases, and seven C64 diagnostics pass 194 cases in VICE. Both files have complete certificates drafted for the certificate reviewer. See `docs/SBAND-ANTENNA.md`.
 
 ## Translate Comanche CM_ENTRY_DIGITAL_AUTOPILOT (CM entry DAP: body rates, attitude, dead zones, roll DAP)
 
