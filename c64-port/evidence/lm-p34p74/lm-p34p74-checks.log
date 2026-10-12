@@ -1,0 +1,6 @@
+PASS 17408 original P34/P74 entries equal native trampoline runs 2e268198eb10f1b933dbffb4dd3ed41175dc561ec6c2f68317ea0973b7a0daa7
+lm-p34p74: 17408 cases, 350 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 17829 checks, 0 failures
+PASS 112 assembled P34/P74 words on 112 source lines map to 34 native routines
+lm-p34p74: 17408 cases, 350 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 17829 checks, 0 failures
+PASS: VICE PAL lm-p34p74-1.prg: 512 checks, 0 failures
+PASS: VICE PAL lm-p34p74-2.prg: 128 checks, 0 failures
