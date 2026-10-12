@@ -57,6 +57,11 @@ in `src/cm_tvc_exec.c`), plus the 11 fixed constants (OCT60000, .5SEC,
 -BIT14, THREE, BIT13, NINETEEN, SIX, FOUR, FCORFRAC, NEGONE, ZERO) read from the
 rope and matched to the native literals.
 
+Independent assembly comparison: `evidence/cm-tvc-exec/cm-tvc-exec-assembly-comparison.json`
+(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
+unchanged file against the original Comanche055 rope, without reading the
+native code.
+
 ## Evidence
 
 Hashes: `evidence/cm-tvc-exec/SHA256.json`; bulk files in release

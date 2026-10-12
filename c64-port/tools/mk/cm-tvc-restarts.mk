@@ -15,6 +15,7 @@ test-cm-tvc-restarts: build/test-cm-tvc-restarts
 	./build/test-cm-tvc-restarts
 	python3 tools/cm_tvc_restarts_differential.py
 	python3 tools/cm_tvc_restarts_source.py
+	python3 tools/cm_flight_assembly_comparison.py cm-tvc-restarts TVCRESTARTS.agc
 sanitize-cm-tvc-restarts: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer $(CM_TVC_RESTARTS_SRC) $(CM_TVC_RESTARTS_TEST) -o build/test-cm-tvc-restarts-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-tvc-restarts-sanitize

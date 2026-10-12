@@ -58,6 +58,11 @@ check and native label (`L3140`..`L3253` in `src/cm_tvc_restarts.c`), the
 TVCADDR, TVCADDR +2, TVCADDR +4) matched to the native literals, and the
 native `table[]` matched to rope words `3257`-`3271`.
 
+Independent assembly comparison: `evidence/cm-tvc-restarts/cm-tvc-restarts-assembly-comparison.json`
+(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
+unchanged file against the original Comanche055 rope, without reading the
+native code.
+
 ## Evidence
 
 Hashes: `evidence/cm-tvc-restarts/SHA256.json`; bulk files in release

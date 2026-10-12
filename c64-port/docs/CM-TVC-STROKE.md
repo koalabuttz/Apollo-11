@@ -56,6 +56,11 @@ fixed-constant reads (BIT14, FCADDY, FREVS, FCARD, 20MS, TCTSKOVR, BIT11,
 ONE) matched to the native literals, and the native `fcard[]` matched to
 rope words `3524`-`3532`.
 
+Independent assembly comparison: `evidence/cm-tvc-stroke/cm-tvc-stroke-assembly-comparison.json`
+(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
+unchanged file against the original Comanche055 rope, without reading the
+native code.
+
 ## Evidence
 
 Hashes: `evidence/cm-tvc-stroke/SHA256.json`; bulk files in release

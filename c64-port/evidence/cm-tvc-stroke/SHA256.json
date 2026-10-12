@@ -3,6 +3,11 @@
   "milestone": "cm-tvc-stroke",
   "release": "evidence-cm-tvc-stroke",
   "files": {
+    "cm-tvc-stroke-assembly-comparison.json": {
+      "sha256": "1c0b9eb7fbb99248ee5feb9b04a46d23da3bdef9da6dcb5b677a50cd6ddb571f",
+      "bytes": 8689,
+      "store": "tree"
+    },
     "cm-tvc-stroke-checks.log": {
       "sha256": "b76fd6b178e0d0625b3bb0e2ab1141632095b5b5404b7fda1f3ab946f84f9ee4",
       "bytes": 681,

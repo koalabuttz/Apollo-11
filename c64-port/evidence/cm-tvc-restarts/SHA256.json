@@ -3,6 +3,11 @@
   "milestone": "cm-tvc-restarts",
   "release": "evidence-cm-tvc-restarts",
   "files": {
+    "cm-tvc-restarts-assembly-comparison.json": {
+      "sha256": "0c6083357a4bf07061d551b67f186a3975305e31330a14cedda3d0fdb7503d02",
+      "bytes": 10608,
+      "store": "tree"
+    },
     "cm-tvc-restarts-checks.log": {
       "sha256": "ad40e21811441954104092322ea64832ae2690886bf15788c84a7f185f020b72",
       "bytes": 673,

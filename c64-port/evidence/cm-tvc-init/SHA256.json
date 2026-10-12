@@ -3,6 +3,11 @@
   "milestone": "cm-tvc-init",
   "release": "evidence-cm-tvc-init",
   "files": {
+    "cm-tvc-init-assembly-comparison.json": {
+      "sha256": "648b6b9c851435ae1c321e01b5b24cadb07cecae5a3e463082b42d31304c414e",
+      "bytes": 29688,
+      "store": "tree"
+    },
     "cm-tvc-init-checks.log": {
       "sha256": "e40aa4e0ad76d8ee8d9e4ea9d8e790473dac95a00a387a883330f391dcc6b0ec",
       "bytes": 684,

@@ -76,6 +76,11 @@ fixed-constant reads (CAF, CA, CS, AD, MASK, MP on fixed memory) matched to
 the native literals, and the native coefficient table, 2CADRs, INDEX tables
 and fixed-fixed `7777`/`7657` matched to the rope.
 
+Independent assembly comparison: `evidence/cm-tvc-init/cm-tvc-init-assembly-comparison.json`
+(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
+unchanged file against the original Comanche055 rope, without reading the
+native code.
+
 ## Evidence
 
 Hashes: `evidence/cm-tvc-init/SHA256.json`; bulk files in release

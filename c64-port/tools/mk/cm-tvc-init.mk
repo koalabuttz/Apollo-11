@@ -15,6 +15,7 @@ test-cm-tvc-init: build/test-cm-tvc-init
 	./build/test-cm-tvc-init
 	python3 tools/cm_tvc_init_differential.py
 	python3 tools/cm_tvc_init_source.py
+	python3 tools/cm_flight_assembly_comparison.py cm-tvc-init TVCINITIALIZE.agc
 sanitize-cm-tvc-init: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer $(CM_TVC_INIT_SRC) $(CM_TVC_INIT_TEST) -o build/test-cm-tvc-init-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-tvc-init-sanitize

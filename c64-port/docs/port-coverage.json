@@ -2706,8 +2706,8 @@
             "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
-            "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-assembly-comparison.json",
+            "sha256": "c82a77f47e6d3df4569bb1eede740c1e8415b9dd4f10dd9097470c0672d504d7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-checks.log",
@@ -2756,8 +2756,8 @@
             "sha256": "bc7ab0f370a9483a078c9c36fef39ea7cf3ff19a335919dea1c77862b874373f"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
-            "sha256": "bc7ab0f370a9483a078c9c36fef39ea7cf3ff19a335919dea1c77862b874373f"
+            "path": "evidence/cm-tvc-init/cm-tvc-init-assembly-comparison.json",
+            "sha256": "648b6b9c851435ae1c321e01b5b24cadb07cecae5a3e463082b42d31304c414e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-checks.log",
@@ -2805,8 +2805,8 @@
             "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
-            "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-assembly-comparison.json",
+            "sha256": "488f34aeaf2ac07469195d47ee1cd127beccdbe254a3e11aa40c930cf5a62aef"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-checks.log",
@@ -2855,8 +2855,8 @@
             "sha256": "b0220cf1b6d9fc11f0f2b8e42cfaf234d8bcb52bf53c31733e28004fef8be766"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-source-map.json",
-            "sha256": "b0220cf1b6d9fc11f0f2b8e42cfaf234d8bcb52bf53c31733e28004fef8be766"
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-assembly-comparison.json",
+            "sha256": "0c6083357a4bf07061d551b67f186a3975305e31330a14cedda3d0fdb7503d02"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-checks.log",
@@ -2914,8 +2914,8 @@
             "sha256": "4ad0114d20578bd970d34bf38bcf48fb34c84cbe15a01c27a1a499c3adaf1bc0"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-source-map.json",
-            "sha256": "4ad0114d20578bd970d34bf38bcf48fb34c84cbe15a01c27a1a499c3adaf1bc0"
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-assembly-comparison.json",
+            "sha256": "1c0b9eb7fbb99248ee5feb9b04a46d23da3bdef9da6dcb5b677a50cd6ddb571f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-checks.log",

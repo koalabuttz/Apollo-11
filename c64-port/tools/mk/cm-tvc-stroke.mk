@@ -15,6 +15,7 @@ test-cm-tvc-stroke: build/test-cm-tvc-stroke
 	./build/test-cm-tvc-stroke
 	python3 tools/cm_tvc_stroke_differential.py
 	python3 tools/cm_tvc_stroke_source.py
+	python3 tools/cm_flight_assembly_comparison.py cm-tvc-stroke TVCSTROKETEST.agc
 sanitize-cm-tvc-stroke: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer $(CM_TVC_STROKE_SRC) $(CM_TVC_STROKE_TEST) -o build/test-cm-tvc-stroke-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-tvc-stroke-sanitize
