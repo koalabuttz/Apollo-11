@@ -5636,6 +5636,17 @@
         },
         {
           "native_files": [
+            "src/lm_p35_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P35/P75 (35,2725-35,2763), 31 words, as five basic routines keyed by Z and eight interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P35 and P75 with AVFLAGA/AVFLAGP, ATIGINC or PTIGINC into KT, P20FLGON and INTPRET, then CALL SELECTMU and the P35/P75B loop (RTB LOADTIME; TSTRT, TIG and INTIME from the time plus KT; STCALL TDEC1 PRECSET; CALL S34/35.1, S34/35.2, S34/35.5 and VN1645; GOTO P35/P75B): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, INTPRET, LOADTIME, or a NEWOPS outside 35,2737-35,2763).",
+          "verification": "docs/LM-P35.md"
+        },
+        {
+          "native_files": [
             "src/lm_s3435c_routines.c",
             "src/lm_work_matrix.c",
             "src/lm_s3435b_routines.c",
