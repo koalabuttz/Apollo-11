@@ -1464,6 +1464,15 @@
           ],
           "scope": "The 59 compiled interpretive order bodies and dispatch steps (address formation, load/store/push, DP and vector arithmetic, shifts, DDV/BDDV, SQRT/UNIT/ABVAL, BOV/RTB/SWRETURN, branches, index orders, CALL/GOTO/EXIT/INTPRET) built with Comanche055 fixed addresses; POLY is built but not exercised. Callers, the remaining orders (trig, ACOS/ASIN alarm paths), and whole-interpreter dispatch stay open.",
           "verification": "docs/CM-INTERP-BODIES.md"
+        },
+        {
+          "native_files": [
+            "src/interp_entry.c",
+            "include/interp_entry.h",
+            "src/standard_lead_routines.c"
+          ],
+          "scope": "The dispatcher entry for any caller (INTPRET 6006, INTPRET +2 6010, INTRSM 6017 to NEWOPS 6037) and INTPRET +3, as routines of the interpreter table, against the original program in all erasable words and the 16-bit registers. E/CALL's INTPRET keeps the standard lead-in composite; INTPRET +2 takes an in-bank LOC. NEWOPS and the rest of the dispatcher stay open.",
+          "verification": "docs/INTERP-ENTRY.md"
         }
       ]
     },
@@ -5283,6 +5292,15 @@
           ],
           "scope": "Canonical original vector-left shift through true DANZIG with actual overflow and all source scratch; other interpreter bodies remain open.",
           "verification": "docs/NATIVE-SBAND-VECTOR-SHIFT.md"
+        },
+        {
+          "native_files": [
+            "src/interp_entry.c",
+            "include/interp_entry.h",
+            "src/standard_lead_routines.c"
+          ],
+          "scope": "The dispatcher entry for any caller (INTPRET 6037, INTPRET +2 6041, INTRSM 6050 to NEWOPS 6070) and INTPRET +3, as routines of the interpreter table, against the original program in all erasable words and the 16-bit registers. E/CALL's INTPRET keeps the standard lead-in composite; INTPRET +2 takes an in-bank LOC. NEWOPS and the rest of the dispatcher stay open.",
+          "verification": "docs/INTERP-ENTRY.md"
         }
       ]
     },
