@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-throttle",
+  "release": "evidence-lm-throttle",
+  "files": {
+    "lm-throttle-host.log": {
+      "sha256": "2b93acc61037ee44692f10934b473410ca28e257333a6e4fabb7b727d29297ad",
+      "bytes": 521,
+      "store": "tree"
+    },
+    "lm-throttle-proof.json": {
+      "sha256": "9be72a6072fcccd754b85e644412ea25fd0046d287a9cfdd370910e0b0b71f1a",
+      "bytes": 816,
+      "store": "tree"
+    },
+    "lm-throttle-source-map.json": {
+      "sha256": "f131f9d19874f5e614fa581cc145218587046e23b0bb28709878f7944764328c",
+      "bytes": 26218,
+      "store": "tree"
+    },
+    "lm-throttle-vice.log": {
+      "sha256": "b3065df91b73d6a26e2aae9b917b5e4eaa948ad9f4b50f25f47eca55ad6548ee",
+      "bytes": 55,
+      "store": "tree"
+    }
+  }
+}

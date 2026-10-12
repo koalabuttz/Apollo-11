@@ -3165,8 +3165,49 @@
       "sha256": "f86c480485f55088649ec83f35d950a5e8d95233ee480edc35fb5c4e8277b7e3",
       "bytes": 13220,
       "lines": 494,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_dapidler.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-DAPIDLER.md",
+          "scope": "Every path of the file: CHEKBITS, CHEKMORE, DAPIDLER, CHECKUP and its ACCSOKAY/STARTDAP continuations, the QERRCALC and CALCPERR returns to SHUTDOWN, and ALTDSPLY with RETNMORE (MOREIDLE, SHUTDOWN, SETTIME5, OVERSUB2 and the DAC loop compiled where they are reached) as nine ABI routines across banks 16 and 20."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in their own banks (CHEKBITS, CHEKMORE, DAPIDLER, CHECKUP and the IBNKCALL returns in bank 16; ALTDSPLY in bank 20) under EBANK6 (EBANK= AOSQ / AK), with the lm_flight_io channel record (5, 6, 12, 14, 30, 31); the CHEKBITS and CHEKMORE caller returns are TC words into fixed memory; CDUXCMD-CDUZCMD are compared at the channel 14 write, before yaAGC's drive pulses",
+        "external_continuations": [
+          "NOVAC",
+          "IBNKCALL (QERRCALC, CALCPERR, ZATTEROR)",
+          "RESUME",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-dapidler/lm-dapidler-source-map.json",
+            "sha256": "5edb1cf7854a456d5d61feb354b60568d86823a487cce5fc34972b0d60b25130"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-dapidler/lm-dapidler-proof.json",
+            "sha256": "ffab143dcba18cb992cdd54f365e1a310e7c785804fca503915548e557f9bd97"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-dapidler/lm-dapidler-host.log",
+            "sha256": "fe64f85af74458cf4941228c9d8c51965866c5195f28224f7f239f518210daca"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-dapidler/lm-dapidler-vice.log",
+            "sha256": "ab23410e93f8bcae63004a7409eae455d2d23df8e9cf8713168df908bccd6b31"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/DAP_INTERFACE_SUBROUTINES.agc",
@@ -4544,6 +4585,13 @@
           ],
           "scope": "Complete STARTP66 entry-domain composition through RODCOMP, separately verified landing-cycle radial/acceleration/live CDU projection/force feedback/horizontal kernels. Live disk driver currently ends before UNIT; complete cycle/application integration and other landing programs remain pending.",
           "verification": "docs/P66_NATIVE_DRIVER.md"
+        },
+        {
+          "native_files": [
+            "src/lm_throttle.c"
+          ],
+          "verification": "docs/LM-THROTTLE.md",
+          "scope": "FASTCHNG (31,3740-3745) as an ABI routine: PHSNAME3 = caller return, TC A; composed with THROTTLE's DOPIF."
         }
       ]
     },
@@ -5844,8 +5892,47 @@
       "sha256": "68a812f18e678248d64ea62a56284e6a8a415925ea41ab8e35293f94a0c22efe",
       "bytes": 5906,
       "lines": 224,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_throttle.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-THROTTLE.md",
+          "scope": "Every path of the file (THROTTLE, THROTTLE+3/AFDUMP, the FC/FP/critical-band logic, DOPIF, DOIT with THRUST and channel 14, the FWEIGHT compensation, FLATOUT, WHATOUT, MASSMULT with DMP/TPAGREE compiled inline) as ABI routines to the caller's TC RTNHOLD return."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entry in bank 31 under EBANK7 (the callers' EBANK= PIF/E2DPS); returns are TC words into fixed memory; channel 14 thrust drive through lm_flight_io",
+        "external_continuations": [
+          "FASTCHNG (LUNAR_LANDING_GUIDANCE_EQUATIONS, routine registered here)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-throttle/lm-throttle-source-map.json",
+            "sha256": "f131f9d19874f5e614fa581cc145218587046e23b0bb28709878f7944764328c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-throttle/lm-throttle-proof.json",
+            "sha256": "9be72a6072fcccd754b85e644412ea25fd0046d287a9cfdd370910e0b0b71f1a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-throttle/lm-throttle-host.log",
+            "sha256": "2b93acc61037ee44692f10934b473410ca28e257333a6e4fabb7b727d29297ad"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-throttle/lm-throttle-vice.log",
+            "sha256": "b3065df91b73d6a26e2aae9b917b5e4eaa948ad9f4b50f25f47eca55ad6548ee"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/TIME_OF_FREE_FALL.agc",
@@ -5940,8 +6027,47 @@
       "sha256": "10c99519ea474da9b969dd64652ea6a2a6f739be0cc3fdb6a30e3bb619b80e2c",
       "bytes": 17211,
       "lines": 519,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_tjet_law.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-TJET-LAW.md",
+          "scope": "Every path of the file (TJETLAW for the P, U and V axes: NEGEDOT, SCALEE/SCALEDOT, ERRTEST, SENSTEST/MAXJETS/TJCALC, zones 1-5 with FORMULA1-3 and CHKMINTJ, the rough laws RUFLAW1/2/3 and SMALRATE, Z123COMP and RUFSETUP compiled at their call sites) as one ABI routine to the caller's TC HOLDQ return."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entry in bank 17 under EBANK6 (EBANK= TJP) with AXISCTR -1, 0 or +1 (the P-axis and Q,R-axis callers); the return is a TC word into fixed memory",
+        "external_continuations": [
+          "CCSHOLE (ALARM_AND_ABORT, unreachable from admitted inputs)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-source-map.json",
+            "sha256": "5fb0a84131006a38e5562c42f425ab4a3f0e4cc76933ceb63dfd2efb1c8f8f13"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-proof.json",
+            "sha256": "da3cf7020b5b220024a73578e083dcb2ac1b277297c36e4c1f88640cd5929a00"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-host.log",
+            "sha256": "1e6a03f247eeb5e9d410a8a2412c56a0c24f5b953c965872cc27edddbb9cc3e1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-vice.log",
+            "sha256": "95993b7ffb0ed45812fe2fe6ab2b323301e156003f86159f6ba736bddb6295eb"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
