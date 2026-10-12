@@ -31,6 +31,13 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   before the next starts, so C stack depth is constant. Executive jobs and
   Waitlist tasks keep using `exec_native`; this ABI covers transfers inside a
   job or task.
+- **Erasable continuations.** A few files store a `TC` into erasable memory and
+  run it later (RESTARTS writes the service call at GOLOC-1 and its own
+  continuation at GOLOC+2). Such a point is keyed
+  `AGC_TRANSFER_ERASABLE_BASE + physical erasable address`
+  (`agc_erasable_point`). The file that stores those words registers a routine
+  there that accepts exactly the words it stores and refuses any other with
+  `EXEC_OUT_OF_SCOPE`. Nothing decodes an arbitrary erasable word.
 - **Inline operands.** The word a caller places after its `TC` (alarm codes,
   BANKCALL/POSTJUMP CADRs) is the caller's compiled constant. A
   `agc_site_operand` table holds it for every genuine call site, keyed by the
@@ -75,5 +82,7 @@ transferring file.
 | Comanche055 INTER-BANK_COMMUNICATION | 13 entries in `cm_interbank_routines` | `cm_interbank_sites` (354 sites: BANKCALL, IBNKCALL, POSTJUMP, USPRCADR) | `cm-interbank-transfer` |
 | Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only, as in Luminary | `cm-standard-lead-transfer` |
 
-Luminary099 RESTART_TABLES is back to `partial` until the native RESTARTS
-consumer selects its entries and transfers to their 2CADRs through this ABI.
+| Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
+
+Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete
+certificate for the auditor's review.

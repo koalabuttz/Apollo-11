@@ -1664,3 +1664,7 @@ Native C for the EXTENDED_VERBS front end of both Luminary099 and Comanche055: t
 ## Translate Pinball verb 07 (DSPDPDEC) and CHANLOAD
 
 Native C for the two Pinball paths no earlier milestone covered, in both Luminary099 and Comanche055: verb 07 double-precision decimal display (DSPDPDEC through ENDDPDEC) and the channel load for channel nouns (CHANLOAD). 5,120 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 214 of them match the oracle on a VICE PAL C64. Adds `lanec_ad`, `lanec_erasable`, `lanec_rewrite` and `lanec_write` to the shared Lane C helpers. See `docs/LANEC-PIN-GAPS.md`.
+
+## Translate Luminary RESTARTS and run its restart table entries through the trampoline
+
+Luminary099 RESTARTS, GETPART2 and PHSPART2 select variable, table and X.1 display restarts natively from RESTART_TABLES words compiled from the source, and run as routines of the control-transfer ABI from RESTARTS to SWRETURN, handing each selected service its 2CADR. All 6,144 selection cases and 4,096 RESTARTS-to-SWRETURN compositions equal the original Luminary099 program in all 2,048 erasable words, covering all 40 table entries (12,703 strict and sanitizer checks), and every sixteenth case matches in VICE. See `docs/LM-RESTART-SELECT.md`.

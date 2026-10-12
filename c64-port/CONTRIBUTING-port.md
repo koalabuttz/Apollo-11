@@ -97,14 +97,18 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
   base Executive VICE check.
 
 The full suite runs nightly against `port/c64-native-c`, and on demand from
-the Actions tab (`port-ci`, Run workflow). Legacy `tools/*_vice_test.py`
-scripts are not yet run in CI; the auditor runs them.
+the Actions tab (`port-ci`, Run workflow). Full runs also run every legacy
+`tools/*_vice_test.py` script, split over eight `c64-legacy` shards, as the
+`vice-legacy-<name>` targets that `tools/legacy_vice.py` writes to
+`tools/mk/legacy-vice.mk`; run one locally with `tools/ci_run.py vice-legacy-<name>`.
 
 ## Done means the PORT_SCOPE certificate
 
 A file flips to `complete` in `docs/port-coverage.json` only with all four
 evidence categories (source-to-native map, independent assembly comparison,
 host and sanitizer results, C64 execution results) and after the auditor's
-review. Interfaces have owners: Lane A owns the interpreter and executive ABI,
+review. The two results categories must be records of actual runs:
+`port_coverage.py` rejects a certificate whose host or C64 results point at
+its source-to-native map. Interfaces have owners: Lane A owns the interpreter and executive ABI,
 Lane H owns the overlay and module ABI; change them through a PR the owner
 reviews.

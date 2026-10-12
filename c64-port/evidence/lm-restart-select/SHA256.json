@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-restart-select",
+  "release": "evidence-lm-restart-select",
+  "files": {
+    "lm-restart-select-host.log": {
+      "sha256": "28bee5e2f45e226689f126d5a37bddb6f70ff6e90528efdf940161c6db7ae730",
+      "bytes": 2102,
+      "store": "release"
+    },
+    "lm-restart-select-proof.json": {
+      "sha256": "0830d0d0a7f36d551410376713b7b900d8693a48a97e944712fdec4aaa8fb63b",
+      "bytes": 1389,
+      "store": "tree"
+    },
+    "lm-restart-select-table.json": {
+      "sha256": "a851f105845d56be5aff12c50d3847aab7759b17c00652633653297faffc5d53",
+      "bytes": 3352,
+      "store": "tree"
+    },
+    "lm-restart-select-vice.log": {
+      "sha256": "d70ff62cee7186bcae659a371de67740a05b497a9250af0bd9b3d5d393b322d2",
+      "bytes": 506,
+      "store": "release"
+    }
+  }
+}

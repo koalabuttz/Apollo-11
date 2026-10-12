@@ -63,6 +63,16 @@ def evidence_ok(records, required, errors, label):
             errors.append(label + ': evidence SHA mismatch for ' + category)
 
 
+def runs_distinct(records, errors, label):
+    """Host and C64 results must be run records, not the source map reused."""
+    if not isinstance(records, dict):
+        return
+    source_map = (records.get('source_to_native_map') or {}).get('path')
+    for category in FILE_EVIDENCE[2:]:
+        if source_map and (records.get(category) or {}).get('path') == source_map:
+            errors.append(label + ': ' + category + ' points at the source-to-native map, not a test run')
+
+
 def audit(manifest, require_complete):
     errors = []
     if manifest.get("schema_version") != 1:
@@ -120,6 +130,7 @@ def audit(manifest, require_complete):
                             ('source_to_native_map', 'independent_assembly_comparison'), errors, path)
             else:
                 evidence_ok(certificate.get('evidence'), FILE_EVIDENCE, errors, path)
+                runs_distinct(certificate.get('evidence'), errors, path)
         elif require_complete:
             errors.append('Remaining native source coverage: ' + path)
     if require_complete:

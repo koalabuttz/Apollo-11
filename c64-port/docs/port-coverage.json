@@ -820,7 +820,7 @@
       "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
       "bytes": 23181,
       "lines": 1066,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -868,7 +868,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -903,6 +903,11 @@
             "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
           }
         }
+      },
+      "demoted": {
+        "from": "complete",
+        "date": "2026-10-11",
+        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
@@ -1193,7 +1198,7 @@
       "sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
       "bytes": 5394,
       "lines": 198,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -1207,7 +1212,7 @@
           "verification": "docs/CM-EPHEMERIS-COMPLETE.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1257,6 +1262,11 @@
             "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
           }
         }
+      },
+      "demoted": {
+        "from": "complete",
+        "date": "2026-10-11",
+        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
@@ -2096,7 +2106,7 @@
       "sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
       "bytes": 7768,
       "lines": 358,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -2139,7 +2149,7 @@
           "verification": "docs/CM-RT8-WHOLE-SOURCE.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2171,6 +2181,11 @@
             "sha256": "6e8723dd150b29125b0858fe33805e79b49f4a3c98998d9725efae4517468688"
           }
         }
+      },
+      "demoted": {
+        "from": "complete",
+        "date": "2026-10-11",
+        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
@@ -3323,7 +3338,7 @@
       "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
       "bytes": 23400,
       "lines": 1067,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -3371,7 +3386,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3406,6 +3421,11 @@
             "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
           }
         }
+      },
+      "demoted": {
+        "from": "complete",
+        "date": "2026-10-11",
+        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
@@ -4610,8 +4630,48 @@
               "sha256": "7fb53f94d0a29869bd1488d8d94352b95d66f5d2c58b2763edc53480cdc70d8a"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/lm_restart_select.c",
+            "src/lm_restart_routines.c",
+            "src/lm_restart_table_data.inc",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-RESTART-SELECT.md",
+          "scope": "Every RESTARTS, GETPART2 and PHSPART2 path (variable Type A/B, X.1 display, odd/even table, waitlist direct/indirect/immediate, longcall incl. 600SECS, FINDVAC/NOVAC) to the selected service, and the GOLOC-1/GOLOC+2 and display returns as ABI routines through SWRETURN."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "GOPROG entry state BB 02003 (FB 1, EB 3); group MPAC+5 0..5 (TEMP2G for second parts); restart-table pointers within RESTART_TABLES; indirect times at erasable addresses",
+        "external_continuations": [
+          "FINDVAC/NOVAC/WAITLIST/LONGCALL bodies",
+          "SWRETURN",
+          "jobs and tasks named by the selected 2CADRs"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-RESTART-SELECT.md",
+            "sha256": "0de08ab73e42ab88907cf2e877539c67a6bb08961247feaf52de477c81cdc1d6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-restart-select/lm-restart-select-proof.json",
+            "sha256": "0830d0d0a7f36d551410376713b7b900d8693a48a97e944712fdec4aaa8fb63b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-restart-select/lm-restart-select-host.log",
+            "sha256": "28bee5e2f45e226689f126d5a37bddb6f70ff6e90528efdf940161c6db7ae730"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-restart-select/lm-restart-select-vice.log",
+            "sha256": "d70ff62cee7186bcae659a371de67740a05b497a9250af0bd9b3d5d393b322d2"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/RESTART_TABLES.agc",
@@ -4627,10 +4687,48 @@
             "src/fixed_data_lm.inc",
             "include/fixed_data_symbols.h"
           ],
-          "scope": "Every data-emitting source line and alias mapped as constants. Not complete: no native RESTARTS consumer selects these entries and transfers to their 2CADRs (auditor 2026-10-11, finding 4); see docs/NATIVE_TRANSFER_ABI.md.",
+          "scope": "Every data-emitting source line and alias mapped as constants.",
           "verification": "docs/FIXED_DATA.md"
+        },
+        {
+          "native_files": [
+            "src/lm_restart_select.c",
+            "src/lm_restart_routines.c",
+            "src/lm_restart_table_data.inc",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-RESTART-SELECT.md",
+          "scope": "All 132 table words compiled from the source listing and consumed by native RESTARTS; all 40 table entries are selected and their 2CADRs delivered to the selected service through the control-transfer ABI."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "consumed by lm_restart_select from GOPROG entry state",
+        "external_continuations": [
+          "jobs and tasks named by the table 2CADRs"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-RESTART-SELECT.md",
+            "sha256": "0de08ab73e42ab88907cf2e877539c67a6bb08961247feaf52de477c81cdc1d6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-restart-select/lm-restart-select-proof.json",
+            "sha256": "0830d0d0a7f36d551410376713b7b900d8693a48a97e944712fdec4aaa8fb63b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-restart-select/lm-restart-select-host.log",
+            "sha256": "28bee5e2f45e226689f126d5a37bddb6f70ff6e90528efdf940161c6db7ae730"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-restart-select/lm-restart-select-vice.log",
+            "sha256": "d70ff62cee7186bcae659a371de67740a05b497a9250af0bd9b3d5d393b322d2"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/RTB_OP_CODES.agc",
@@ -4638,7 +4736,7 @@
       "sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
       "bytes": 5660,
       "lines": 236,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -4680,7 +4778,7 @@
           "verification": "docs/LM-RTB-WHOLE-SOURCE.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4711,6 +4809,11 @@
             "sha256": "a4ba7c9aa1a83f412b7e9e9545601aee7d9cc2e1a2a361873e1b71fec7e002ea"
           }
         }
+      },
+      "demoted": {
+        "from": "complete",
+        "date": "2026-10-11",
+        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
