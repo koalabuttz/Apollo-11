@@ -1746,6 +1746,105 @@
      "literal": "K_LGCOMP",
      "value": "01471"
     }
+   },
+   "erasables": {
+    "TIME1": {
+     "native": "TIME1",
+     "address": "0025",
+     "note": "hardware counter register"
+    },
+    "FLAGWRD2": {
+     "native": "FLAGWRD2",
+     "address": "0076"
+    },
+    "FLAGWRD8": {
+     "native": "FLAGWRD8",
+     "address": "0104"
+    },
+    "VBUF": {
+     "native": "VBUF",
+     "address": "0122"
+    },
+    "BUF": {
+     "native": "BUF",
+     "address": "0130"
+    },
+    "TEM1": {
+     "native": "TEM1",
+     "address": "0141"
+    },
+    "MPAC": {
+     "native": "MPAC",
+     "address": "0154"
+    },
+    "MODE": {
+     "native": "MODE",
+     "address": "0163"
+    },
+    "NBDX": {
+     "native": "NBDX",
+     "address": "1460"
+    },
+    "NBDY": {
+     "native": "NBDY",
+     "address": "1461"
+    },
+    "NBDZ": {
+     "native": "NBDZ",
+     "address": "1462"
+    },
+    "ADIAX": {
+     "native": "ADIAX",
+     "address": "1463"
+    },
+    "ADIAY": {
+     "native": "ADIAY",
+     "address": "1464"
+    },
+    "ADIAZ": {
+     "native": "ADIAZ",
+     "address": "1465"
+    },
+    "ADSRAX": {
+     "native": "ADSRAX",
+     "address": "1466"
+    },
+    "ADSRAY": {
+     "native": "ADSRAY",
+     "address": "1467"
+    },
+    "ADSRAZ": {
+     "native": "ADSRAZ",
+     "address": "1470"
+    },
+    "GCOMP": {
+     "native": "GCOMP",
+     "address": "1471"
+    },
+    "GCOMPSW": {
+     "native": "GCOMPSW",
+     "address": "1477"
+    },
+    "PIPABIAS": {
+     "native": "PIPABIAS",
+     "address": "1452"
+    },
+    "PIPASCF": {
+     "native": "PIPASCF",
+     "address": "1453"
+    },
+    "1/PIPADT": {
+     "native": "LM.pipadt",
+     "address": "1075"
+    },
+    "DELVX": {
+     "native": "LM.deltav",
+     "address": "0324"
+    },
+    "PIPTIME": {
+     "native": "LM.piptime_low - 1 (PIPTIME +1)",
+     "address": "1234"
+    }
    }
   },
   "Comanche055": {
@@ -3286,6 +3385,105 @@
     "LGCOMP": {
      "literal": "K_LGCOMP",
      "value": "01471"
+    }
+   },
+   "erasables": {
+    "TIME1": {
+     "native": "TIME1",
+     "address": "0025",
+     "note": "hardware counter register"
+    },
+    "FLAGWRD2": {
+     "native": "FLAGWRD2",
+     "address": "0076"
+    },
+    "FLAGWRD8": {
+     "native": "FLAGWRD8",
+     "address": "0104"
+    },
+    "VBUF": {
+     "native": "VBUF",
+     "address": "0122"
+    },
+    "BUF": {
+     "native": "BUF",
+     "address": "0130"
+    },
+    "TEM1": {
+     "native": "TEM1",
+     "address": "0141"
+    },
+    "MPAC": {
+     "native": "MPAC",
+     "address": "0154"
+    },
+    "MODE": {
+     "native": "MODE",
+     "address": "0163"
+    },
+    "NBDX": {
+     "native": "NBDX",
+     "address": "1460"
+    },
+    "NBDY": {
+     "native": "NBDY",
+     "address": "1461"
+    },
+    "NBDZ": {
+     "native": "NBDZ",
+     "address": "1462"
+    },
+    "ADIAX": {
+     "native": "ADIAX",
+     "address": "1463"
+    },
+    "ADIAY": {
+     "native": "ADIAY",
+     "address": "1464"
+    },
+    "ADIAZ": {
+     "native": "ADIAZ",
+     "address": "1465"
+    },
+    "ADSRAX": {
+     "native": "ADSRAX",
+     "address": "1466"
+    },
+    "ADSRAY": {
+     "native": "ADSRAY",
+     "address": "1467"
+    },
+    "ADSRAZ": {
+     "native": "ADSRAZ",
+     "address": "1470"
+    },
+    "GCOMP": {
+     "native": "GCOMP",
+     "address": "1471"
+    },
+    "GCOMPSW": {
+     "native": "GCOMPSW",
+     "address": "1477"
+    },
+    "PIPABIAS": {
+     "native": "PIPABIAS",
+     "address": "1452"
+    },
+    "PIPASCF": {
+     "native": "PIPASCF",
+     "address": "1453"
+    },
+    "1/PIPADT": {
+     "native": "CM.pipadt",
+     "address": "1074"
+    },
+    "DELVX": {
+     "native": "CM.deltav",
+     "address": "1162"
+    },
+    "PIPTIME1": {
+     "native": "CM.piptime_low - 1 (PIPTIME1 +1)",
+     "address": "1245"
     }
    }
   }

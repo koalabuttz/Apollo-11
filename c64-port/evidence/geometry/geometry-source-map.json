@@ -1,0 +1,2422 @@
+{
+ "Luminary099/LEM_GEOMETRY.agc": {
+  "native_file": "src/lm_geometry.c",
+  "words": 113,
+  "untranslated_words": 0,
+  "routines": 10,
+  "map": [
+   {
+    "address": "13,2070",
+    "word": "43414",
+    "source": "SVDWN2 BOF RVQ",
+    "routine": "13,2070",
+    "function": "r26070"
+   },
+   {
+    "address": "13,2071",
+    "word": "04756",
+    "source": "  AVEMIDSW",
+    "routine": "13,2070",
+    "function": "r26070"
+   },
+   {
+    "address": "13,2072",
+    "word": "26073",
+    "source": "  +1",
+    "routine": "13,2070",
+    "function": "r26070"
+   },
+   {
+    "address": "13,2073",
+    "word": "53775",
+    "source": " VLOAD VSL*",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2074",
+    "word": "01521",
+    "source": "  TDELTAV",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2075",
+    "word": "57605",
+    "source": "  0          -7,2",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2076",
+    "word": "53655",
+    "source": " VAD VSL*",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2077",
+    "word": "01535",
+    "source": "  RCV",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2100",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2101",
+    "word": "25221",
+    "source": " STOVL RN",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2102",
+    "word": "01527",
+    "source": "  TNUV",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2103",
+    "word": "53257",
+    "source": " VSL* VAD",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2104",
+    "word": "57602",
+    "source": "  0          -4,2",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2105",
+    "word": "01543",
+    "source": "  VCV",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2106",
+    "word": "77657",
+    "source": " VSL* ",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2107",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2110",
+    "word": "15227",
+    "source": " STODL VN",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2111",
+    "word": "01517",
+    "source": "  TET",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2112",
+    "word": "01235",
+    "source": " STORE PIPTIME",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2113",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "13,2073",
+    "function": "r26073"
+   },
+   {
+    "address": "13,2114",
+    "word": "53775",
+    "source": "SVDWN1 VLOAD VSL*",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2115",
+    "word": "01521",
+    "source": "  TDELTAV",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2116",
+    "word": "57605",
+    "source": "  0          -7,2",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2117",
+    "word": "53655",
+    "source": " VAD VSL*",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2120",
+    "word": "01535",
+    "source": "  RCV",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2121",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2122",
+    "word": "25720",
+    "source": " STOVL R-OTHER",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2123",
+    "word": "01527",
+    "source": "  TNUV",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2124",
+    "word": "53257",
+    "source": " VSL* VAD",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2125",
+    "word": "57602",
+    "source": "  0          -4,2",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2126",
+    "word": "01543",
+    "source": "  VCV",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2127",
+    "word": "77657",
+    "source": " VSL* ",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2130",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2131",
+    "word": "01726",
+    "source": " STORE V-OTHER",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2132",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "13,2114",
+    "function": "r26114"
+   },
+   {
+    "address": "13,2133",
+    "word": "00041",
+    "source": "RRANGLES STORE 32D",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2134",
+    "word": "57545",
+    "source": " DLOAD DCOMP",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2135",
+    "word": "00043",
+    "source": "  34D",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2136",
+    "word": "67401",
+    "source": " SETPD ASIN",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2137",
+    "word": "00001",
+    "source": "  0",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2140",
+    "word": "44206",
+    "source": " PUSH BDSU",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2141",
+    "word": "24005",
+    "source": "  LODPHALF",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2142",
+    "word": "14005",
+    "source": " STODL 4",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2143",
+    "word": "24007",
+    "source": "  LO6ZEROS",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2144",
+    "word": "24043",
+    "source": " STOVL 34D",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2145",
+    "word": "00041",
+    "source": "  32D",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2146",
+    "word": "41056",
+    "source": " UNIT BOVB",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2147",
+    "word": "52421",
+    "source": "  LUNDESCH",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2150",
+    "word": "14041",
+    "source": " STODL 32D",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2151",
+    "word": "00041",
+    "source": "  32D",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2152",
+    "word": "44142",
+    "source": " SR1 STQ",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2153",
+    "word": "00051",
+    "source": "  S2",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2154",
+    "word": "14023",
+    "source": " STODL SINTH",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2155",
+    "word": "00045",
+    "source": "  36D",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2156",
+    "word": "77742",
+    "source": " SR1 ",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2157",
+    "word": "34021",
+    "source": " STCALL COSTH",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2160",
+    "word": "47320",
+    "source": "  ARCTRIG",
+    "routine": "13,2133",
+    "function": "r26133"
+   },
+   {
+    "address": "13,2161",
+    "word": "43206",
+    "source": " PUSH DAD",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2162",
+    "word": "24005",
+    "source": "  LODPHALF",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2163",
+    "word": "24007",
+    "source": " STOVL 6",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2164",
+    "word": "00005",
+    "source": "  4",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2165",
+    "word": "77634",
+    "source": " RTB ",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2166",
+    "word": "21635",
+    "source": "  2V1STO2S",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2167",
+    "word": "25112",
+    "source": " STOVL MODEB",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2170",
+    "word": "00001",
+    "source": "  0",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2171",
+    "word": "77634",
+    "source": " RTB ",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2172",
+    "word": "21635",
+    "source": "  2V1STO2S",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2173",
+    "word": "01110",
+    "source": " STORE MODEA",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2174",
+    "word": "77776",
+    "source": " EXIT ",
+    "routine": "13,2161",
+    "function": "r26161"
+   },
+   {
+    "address": "13,2175",
+    "word": "40110",
+    "source": " CS RADMODES",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2176",
+    "word": "74740",
+    "source": " MASK ANTENBIT",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2177",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2200",
+    "word": "12204",
+    "source": " TCF +4",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2201",
+    "word": "53110",
+    "source": " DXCH MODEA",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2202",
+    "word": "53112",
+    "source": " DXCH MODEB",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2203",
+    "word": "53110",
+    "source": " DXCH MODEA",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2204",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "13,2175",
+    "function": "r26175"
+   },
+   {
+    "address": "13,2205",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "13,2205",
+    "function": "r26205"
+   },
+   {
+    "address": "13,2206",
+    "word": "00051",
+    "source": "  S2",
+    "routine": "13,2205",
+    "function": "r26205"
+   },
+   {
+    "address": "23,2041",
+    "word": "47135",
+    "source": "RRNB SLOAD RTB",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2042",
+    "word": "03753",
+    "source": "  TANGNB",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2043",
+    "word": "21576",
+    "source": "  CDULOGIC",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2044",
+    "word": "41401",
+    "source": " SETPD PUSH",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2045",
+    "word": "00001",
+    "source": "  0",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2046",
+    "word": "57556",
+    "source": " SIN DCOMP",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2047",
+    "word": "14043",
+    "source": " STODL 34D",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2050",
+    "word": "41546",
+    "source": " COS PUSH",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2051",
+    "word": "47135",
+    "source": " SLOAD RTB",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2052",
+    "word": "03754",
+    "source": "  TANGNB     +1",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2053",
+    "word": "21576",
+    "source": "  CDULOGIC",
+    "routine": "23,2041",
+    "function": "r46041"
+   },
+   {
+    "address": "23,2054",
+    "word": "71406",
+    "source": "RRNB1 PUSH COS",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2055",
+    "word": "72405",
+    "source": " DMP SL1",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2056",
+    "word": "00001",
+    "source": "  0",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2057",
+    "word": "14045",
+    "source": " STODL 36D",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2060",
+    "word": "41356",
+    "source": " SIN DMP",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2061",
+    "word": "77752",
+    "source": " SL1 ",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2062",
+    "word": "24041",
+    "source": " STOVL 32D",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2063",
+    "word": "00041",
+    "source": "  32D",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2064",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "23,2054",
+    "function": "r46054"
+   },
+   {
+    "address": "23,2065",
+    "word": "14025",
+    "source": "RRNBMPAC STODL 20D",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2066",
+    "word": "00155",
+    "source": "  MPAC",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2067",
+    "word": "40234",
+    "source": " RTB SETPD",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2070",
+    "word": "21576",
+    "source": "  CDULOGIC",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2071",
+    "word": "00001",
+    "source": "  0",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2072",
+    "word": "73406",
+    "source": " PUSH SIN",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2073",
+    "word": "77676",
+    "source": " DCOMP ",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2074",
+    "word": "14043",
+    "source": " STODL 34D",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2075",
+    "word": "41546",
+    "source": " COS PUSH",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2076",
+    "word": "47135",
+    "source": " SLOAD RTB",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2077",
+    "word": "00026",
+    "source": "  21D",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2100",
+    "word": "21576",
+    "source": "  CDULOGIC",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2101",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "23,2065",
+    "function": "r46065"
+   },
+   {
+    "address": "23,2102",
+    "word": "46054",
+    "source": "  RRNB1",
+    "routine": "23,2065",
+    "function": "r46065"
+   }
+  ]
+ },
+ "Comanche055/CSM_GEOMETRY.agc": {
+  "native_file": "src/cm_geometry.c",
+  "words": 253,
+  "untranslated_words": 148,
+  "routines": 11,
+  "map": [
+   {
+    "address": "23,2000",
+    "word": "47133",
+    "source": "SXTNB SLOAD* RTB",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2001",
+    "word": "00006",
+    "source": "  5,1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2002",
+    "word": "45513",
+    "source": "  CDULOGIC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2003",
+    "word": "41434",
+    "source": " RTB PUSH",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2004",
+    "word": "46027",
+    "source": "  SXTLOGIC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2005",
+    "word": "72556",
+    "source": " SIN SL1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2006",
+    "word": "66606",
+    "source": " PUSH SLOAD*",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2007",
+    "word": "00004",
+    "source": "  3,1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2010",
+    "word": "41434",
+    "source": " RTB PUSH",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2011",
+    "word": "45513",
+    "source": "  CDULOGIC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2012",
+    "word": "41346",
+    "source": " COS DMP",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2013",
+    "word": "00003",
+    "source": "  2",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2014",
+    "word": "14041",
+    "source": " STODL STARM",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2015",
+    "word": "41356",
+    "source": " SIN DMP",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2016",
+    "word": "77626",
+    "source": " STADR ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2017",
+    "word": "63734",
+    "source": " STODL STARM      +2",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2020",
+    "word": "77746",
+    "source": " COS ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2021",
+    "word": "24045",
+    "source": " STOVL STARM      +4",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2022",
+    "word": "00041",
+    "source": "  STARM",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2023",
+    "word": "76521",
+    "source": " MXV VSL1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2024",
+    "word": "06302",
+    "source": "  NB1NB2",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2025",
+    "word": "00041",
+    "source": " STORE 32D",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2026",
+    "word": "77616",
+    "source": " RVQ ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2027",
+    "word": "32323",
+    "source": "SXTLOGIC CAF 10DEGS-",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2030",
+    "word": "26154",
+    "source": " ADS MPAC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2031",
+    "word": "35003",
+    "source": " CAF QUARTER",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2032",
+    "word": "07256",
+    "source": " TC SHORTMP",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2033",
+    "word": "06030",
+    "source": " TC DANZIG",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2034",
+    "word": "77220",
+    "source": "CALCSXA ITA VLOAD",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2035",
+    "word": "00034",
+    "source": "  28D",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2036",
+    "word": "02766",
+    "source": "  STAR",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2037",
+    "word": "77624",
+    "source": " CALL ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2040",
+    "word": "47644",
+    "source": "  *SMNB*",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2041",
+    "word": "76521",
+    "source": " MXV VSL1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2042",
+    "word": "06260",
+    "source": "  NB2NB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2043",
+    "word": "26766",
+    "source": " STOVL STAR",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2044",
+    "word": "15333",
+    "source": "  HIUNITX",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2045",
+    "word": "26555",
+    "source": " STOVL XNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2046",
+    "word": "15331",
+    "source": "  HIUNITY",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2047",
+    "word": "26563",
+    "source": " STOVL YNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2050",
+    "word": "15327",
+    "source": "  HIUNITZ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2051",
+    "word": "36571",
+    "source": " STCALL ZNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2052",
+    "word": "46076",
+    "source": "  SXTANG1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2053",
+    "word": "47020",
+    "source": "SXTANG ITA RTB",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2054",
+    "word": "00034",
+    "source": "  28D",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2055",
+    "word": "45662",
+    "source": "  TRANSP1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2056",
+    "word": "64375",
+    "source": " VLOAD MXV",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2057",
+    "word": "02714",
+    "source": "  XNB",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2060",
+    "word": "06260",
+    "source": "  NB2NB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2061",
+    "word": "77772",
+    "source": " VSL1 ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2062",
+    "word": "26555",
+    "source": " STOVL XNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2063",
+    "word": "02722",
+    "source": "  YNB",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2064",
+    "word": "76521",
+    "source": " MXV VSL1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2065",
+    "word": "06260",
+    "source": "  NB2NB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2066",
+    "word": "26563",
+    "source": " STOVL YNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2067",
+    "word": "02730",
+    "source": "  ZNB",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2070",
+    "word": "76521",
+    "source": " MXV VSL1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2071",
+    "word": "06260",
+    "source": "  NB2NB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2072",
+    "word": "02571",
+    "source": " STORE ZNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2073",
+    "word": "47034",
+    "source": " RTB RTB",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2074",
+    "word": "45662",
+    "source": "  TRANSP1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2075",
+    "word": "45676",
+    "source": "  TRANSP2",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2076",
+    "word": "47375",
+    "source": "SXTANG1 VLOAD VXV",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2077",
+    "word": "02571",
+    "source": "  ZNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2100",
+    "word": "02766",
+    "source": "  STAR",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2101",
+    "word": "77600",
+    "source": " BOV ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2102",
+    "word": "46103",
+    "source": "  +1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2103",
+    "word": "40056",
+    "source": " UNIT BOV",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2104",
+    "word": "46145",
+    "source": "  ZNB=S1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2105",
+    "word": "00027",
+    "source": " STORE PDA",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2106",
+    "word": "57441",
+    "source": " DOT DCOMP",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2107",
+    "word": "02555",
+    "source": "  XNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2110",
+    "word": "24023",
+    "source": " STOVL SINTH",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2111",
+    "word": "00027",
+    "source": "  PDA",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2112",
+    "word": "77641",
+    "source": " DOT ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2113",
+    "word": "02563",
+    "source": "  YNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2114",
+    "word": "34021",
+    "source": " STCALL COSTH",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2115",
+    "word": "47256",
+    "source": "  ARCTRIG",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2116",
+    "word": "77634",
+    "source": " RTB ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2117",
+    "word": "45546",
+    "source": "  1STO2S",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2120",
+    "word": "26774",
+    "source": " STOVL SAC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2121",
+    "word": "02766",
+    "source": "  STAR",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2122",
+    "word": "77600",
+    "source": " BOV ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2123",
+    "word": "46124",
+    "source": "  +1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2124",
+    "word": "72441",
+    "source": " DOT SL1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2125",
+    "word": "02571",
+    "source": "  ZNB1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2126",
+    "word": "77726",
+    "source": " ACOS ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2127",
+    "word": "62440",
+    "source": " BMN SL2",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2130",
+    "word": "46142",
+    "source": "  SXTALARM",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2131",
+    "word": "45200",
+    "source": " BOV DSU",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2132",
+    "word": "46142",
+    "source": "  SXTALARM",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2133",
+    "word": "06331",
+    "source": "  20DEG-",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2134",
+    "word": "77634",
+    "source": " RTB ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2135",
+    "word": "45546",
+    "source": "  1STO2S",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2136",
+    "word": "02776",
+    "source": " STORE PAC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2137",
+    "word": "77614",
+    "source": " CLRGO ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2140",
+    "word": "01630",
+    "source": "  CULTFLAG",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2141",
+    "word": "00034",
+    "source": "  28D",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2142",
+    "word": "77614",
+    "source": "SXTALARM SETGO ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2143",
+    "word": "01430",
+    "source": "  CULTFLAG",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2144",
+    "word": "00034",
+    "source": "  28D",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2145",
+    "word": "77745",
+    "source": "ZNB=S1 DLOAD ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2146",
+    "word": "06325",
+    "source": "  270DEG",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2147",
+    "word": "16774",
+    "source": " STODL SAC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2150",
+    "word": "06327",
+    "source": "  20DEGS-",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2151",
+    "word": "02776",
+    "source": " STORE PAC",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2152",
+    "word": "77614",
+    "source": " CLRGO ",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2153",
+    "word": "01630",
+    "source": "  CULTFLAG",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2154",
+    "word": "00034",
+    "source": "  28D",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "10,2237",
+    "word": "43414",
+    "source": "SVDWN1 BOF RVQ",
+    "routine": "10,2237",
+    "function": "r20237"
+   },
+   {
+    "address": "10,2240",
+    "word": "04756",
+    "source": "  AVEMIDSW",
+    "routine": "10,2237",
+    "function": "r20237"
+   },
+   {
+    "address": "10,2241",
+    "word": "20242",
+    "source": "  +1",
+    "routine": "10,2237",
+    "function": "r20237"
+   },
+   {
+    "address": "10,2242",
+    "word": "53775",
+    "source": " VLOAD VSL*",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2243",
+    "word": "01521",
+    "source": "  TDELTAV",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2244",
+    "word": "57605",
+    "source": "  0          -7,2",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2245",
+    "word": "53655",
+    "source": " VAD VSL*",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2246",
+    "word": "01535",
+    "source": "  RCV",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2247",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2250",
+    "word": "25171",
+    "source": " STOVL RN",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2251",
+    "word": "01527",
+    "source": "  TNUV",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2252",
+    "word": "53257",
+    "source": " VSL* VAD",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2253",
+    "word": "57602",
+    "source": "  0          -4,2",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2254",
+    "word": "01543",
+    "source": "  VCV",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2255",
+    "word": "77657",
+    "source": " VSL* ",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2256",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2257",
+    "word": "15177",
+    "source": " STODL VN",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2260",
+    "word": "01517",
+    "source": "  TET",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2261",
+    "word": "01205",
+    "source": " STORE PIPTIME",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2262",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "10,2242",
+    "function": "r20242"
+   },
+   {
+    "address": "10,2263",
+    "word": "53775",
+    "source": "SVDWN2 VLOAD VSL*",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2264",
+    "word": "01521",
+    "source": "  TDELTAV",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2265",
+    "word": "57605",
+    "source": "  0          -7,2",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2266",
+    "word": "53655",
+    "source": " VAD VSL*",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2267",
+    "word": "01535",
+    "source": "  RCV",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2270",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2271",
+    "word": "25722",
+    "source": " STOVL R-OTHER",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2272",
+    "word": "01527",
+    "source": "  TNUV",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2273",
+    "word": "53257",
+    "source": " VSL* VAD",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2274",
+    "word": "57602",
+    "source": "  0          -4,2",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2275",
+    "word": "01543",
+    "source": "  VCV",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2276",
+    "word": "77657",
+    "source": " VSL* ",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2277",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2300",
+    "word": "01730",
+    "source": " STORE V-OTHER",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "10,2301",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "10,2263",
+    "function": "r20263"
+   },
+   {
+    "address": "23,2155",
+    "word": "44301",
+    "source": "LOG NORM BDSU",
+    "routine": "23,2155",
+    "function": "r46155"
+   },
+   {
+    "address": "23,2156",
+    "word": "00160",
+    "source": "  MPAC       +3",
+    "routine": "23,2155",
+    "function": "r46155"
+   },
+   {
+    "address": "23,2157",
+    "word": "06212",
+    "source": "  NEARLY1",
+    "routine": "23,2155",
+    "function": "r46155"
+   },
+   {
+    "address": "23,2160",
+    "word": "77776",
+    "source": " EXIT ",
+    "routine": "23,2155",
+    "function": "r46155"
+   },
+   {
+    "address": "23,2161",
+    "word": "07171",
+    "source": " TC POLY",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2162",
+    "word": "00002",
+    "source": " DEC 2          B-14",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2163",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2164",
+    "word": "00000",
+    "source": "(+1)",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2165",
+    "word": "01001",
+    "source": " 2DEC .031335467",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2166",
+    "word": "14636",
+    "source": "(+1)",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2167",
+    "word": "00325",
+    "source": " 2DEC .0130145859",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2170",
+    "word": "07310",
+    "source": "(+1)",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2171",
+    "word": "00541",
+    "source": " 2DEC .0215738898",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2172",
+    "word": "16735",
+    "source": "(+1)",
+    "routine": "23,2161",
+    "function": "r46161"
+   },
+   {
+    "address": "23,2173",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2174",
+    "word": "54156",
+    "source": " TS MPAC       +2",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2175",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2176",
+    "word": "32214",
+    "source": " DCA CLOG2/32",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2177",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2200",
+    "word": "52160",
+    "source": " DXCH MPAC       +3",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2201",
+    "word": "40000",
+    "source": " COM ",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2202",
+    "word": "07256",
+    "source": " TC SHORTMP",
+    "routine": "23,2173",
+    "function": "r46173"
+   },
+   {
+    "address": "23,2203",
+    "word": "52156",
+    "source": " DXCH MPAC       +1",
+    "routine": "23,2203",
+    "function": "r46203"
+   },
+   {
+    "address": "23,2204",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "23,2203",
+    "function": "r46203"
+   },
+   {
+    "address": "23,2205",
+    "word": "52160",
+    "source": " DXCH MPAC       +3",
+    "routine": "23,2203",
+    "function": "r46203"
+   },
+   {
+    "address": "23,2206",
+    "word": "20155",
+    "source": " DAS MPAC",
+    "routine": "23,2203",
+    "function": "r46203"
+   },
+   {
+    "address": "23,2207",
+    "word": "06006",
+    "source": " TC INTPRET",
+    "routine": "23,2203",
+    "function": "r46203"
+   },
+   {
+    "address": "23,2210",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "23,2210",
+    "function": "r46210"
+   },
+   {
+    "address": "23,2211",
+    "word": "37777",
+    "source": "NEARLY1 2DEC .999999999",
+    "constant": "K46211"
+   },
+   {
+    "address": "23,2212",
+    "word": "37777",
+    "source": "(+1)",
+    "constant": "K46211"
+   },
+   {
+    "address": "23,2213",
+    "word": "00542",
+    "source": "CLOG2/32 2DEC .0216608494",
+    "constant": "K46211"
+   },
+   {
+    "address": "23,2214",
+    "word": "34414",
+    "source": "(+1)",
+    "constant": "K46211"
+   },
+   {
+    "address": "23,2215",
+    "word": "47375",
+    "source": "EARROT1 VLOAD VXV",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2216",
+    "word": "01714",
+    "source": "  UNITW",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2217",
+    "word": "03452",
+    "source": "  RTINIT",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2220",
+    "word": "03460",
+    "source": " STORE RTEAST",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2221",
+    "word": "77635",
+    "source": " VXV ",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2222",
+    "word": "01714",
+    "source": "  UNITW",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2223",
+    "word": "17466",
+    "source": " STODL RTNORM",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2224",
+    "word": "03606",
+    "source": "  DTEAROT",
+    "routine": "23,2215",
+    "function": "r46215"
+   },
+   {
+    "address": "23,2225",
+    "word": "56204",
+    "source": "EARROT2 BOVB DDV",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2226",
+    "word": "57352",
+    "source": "  TCDANZIG",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2227",
+    "word": "06256",
+    "source": "  1/WIE",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2230",
+    "word": "41400",
+    "source": " BOV PUSH",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2231",
+    "word": "46245",
+    "source": "  OVERADAY",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2232",
+    "word": "45346",
+    "source": " COS DSU",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2233",
+    "word": "15333",
+    "source": "  HIDPHALF",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2234",
+    "word": "65361",
+    "source": " VXSC PDDL",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2235",
+    "word": "03466",
+    "source": "  RTNORM",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2236",
+    "word": "74356",
+    "source": " SIN VXSC",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2237",
+    "word": "03460",
+    "source": "  RTEAST",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2240",
+    "word": "76455",
+    "source": " VAD VSL1",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2241",
+    "word": "53455",
+    "source": " VAD UNIT",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2242",
+    "word": "03452",
+    "source": "  RTINIT",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2243",
+    "word": "03474",
+    "source": " STORE RT",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2244",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "23,2225",
+    "function": "r46225"
+   },
+   {
+    "address": "23,2245",
+    "word": "75345",
+    "source": "OVERADAY DLOAD SIGN",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2246",
+    "word": "06256",
+    "source": "  1/WIE",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2247",
+    "word": "03606",
+    "source": "  DTEAROT",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2250",
+    "word": "77621",
+    "source": " BDSU ",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2251",
+    "word": "03606",
+    "source": "  DTEAROT",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2252",
+    "word": "03606",
+    "source": " STORE DTEAROT",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2253",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2254",
+    "word": "46225",
+    "source": "  EARROT2",
+    "routine": "23,2245",
+    "function": "r46245"
+   },
+   {
+    "address": "23,2255",
+    "word": "01015",
+    "source": "1/WIE 2DEC 8616410    B-28",
+    "constant": "K46255"
+   },
+   {
+    "address": "23,2256",
+    "word": "34732",
+    "source": "(+1)",
+    "constant": "K46255"
+   },
+   {
+    "address": "23,2257",
+    "word": "15373",
+    "source": "NB2NB1 2DEC +.8431756920 B-1",
+    "constant": "K46255"
+   },
+   {
+    "address": "23,2260",
+    "word": "11346",
+    "source": "(+1)",
+    "constant": "K46255"
+   },
+   {
+    "address": "23,2261",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "constant": "K46255"
+   },
+   {
+    "address": "23,2262",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K46255"
+   },
+   {
+    "address": "23,2263",
+    "word": "67313",
+    "source": " 2DEC -.5376381241 B-1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2264",
+    "word": "65307",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2265",
+    "word": "00000",
+    "source": "ZERINFLT 2DEC 0          B-28",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2266",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2267",
+    "word": "20000",
+    "source": "HALFNFLT 2DEC .5",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2270",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2271",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2272",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2273",
+    "word": "10464",
+    "source": " 2DEC +.5376381241 B-1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2274",
+    "word": "12470",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2275",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2276",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2277",
+    "word": "15373",
+    "source": " 2DEC +.8431756920 B-1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2300",
+    "word": "11346",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2301",
+    "word": "15373",
+    "source": "NB1NB2 2DEC +.8431756920 B-1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2302",
+    "word": "11346",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2303",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2304",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2305",
+    "word": "10464",
+    "source": " 2DEC +.5376381241 B-1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2306",
+    "word": "12470",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2307",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2310",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2311",
+    "word": "20000",
+    "source": " 2DEC .5",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2312",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2313",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2314",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2315",
+    "word": "67313",
+    "source": " 2DEC -.5376381241 B-1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2316",
+    "word": "65307",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2317",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2320",
+    "word": "00000",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2321",
+    "word": "15373",
+    "source": " 2DEC +.8431756920 B-1",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2322",
+    "word": "11346",
+    "source": "(+1)",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2323",
+    "word": "07020",
+    "source": "10DEGS- DEC 3600       B-14",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2324",
+    "word": "60000",
+    "source": "270DEG OCT 60000",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2325",
+    "word": "00000",
+    "source": " OCT 00000",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2326",
+    "word": "61740",
+    "source": "20DEGS- DEC -07199     B-14",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2327",
+    "word": "77777",
+    "source": " DEC -00000     B-14",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2330",
+    "word": "07020",
+    "source": "20DEG- DEC 03600      B-14",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   },
+   {
+    "address": "23,2331",
+    "word": "00000",
+    "source": " DEC 00000      B-14",
+    "untranslated": "SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2"
+   }
+  ]
+ }
+}

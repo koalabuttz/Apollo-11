@@ -2182,6 +2182,10 @@ Native C for the EXTENDED_VERBS V55 clock update (Luminary099 R33, Comanche055 A
 
 Native C for all of Comanche055 TVCRESTARTS (bank 16 `3140`-`3271`, 90 words): the REDOTVC restart package, the ENABL1/ENABL2/CMDSOUT outcounter enables with their channel 12/14 writes, the PHSCHK2 and CHKSTRK restart choices, FINCOPY, TRIM/CMD and the EXRSTRT task, from each of its 6 original entry points to the next transfer out of the file (WAITLIST, RESUME, NOQRSM, POSTJUMP, IBNKCALL, ISWCALL or a TVCEXECUTIVE restart point). The final image and channels 12 and 14 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 90 words, 14 fixed constants and the 11-word TVCCADR/TVCEXADR table are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-RESTARTS.md`.
 
+## Translate Luminary and Comanche INFLIGHT_ALIGNMENT_ROUTINES
+
+Every word of INFLIGHT_ALIGNMENT_ROUTINES in both programs (184 Luminary099 words, 186 Comanche055 words, bank 23) is native C on the control-transfer ABI: CALCGTA, ARCTRIG, CALCGA with its gimbal-lock alarm and AXISGEN, as 21 routines per program. A new compiler (`tools/interp_compile.py`) emits them from the assembly listings as the compiled interpreter path of each order pair. All 21,504 cases equal the original programs in yaAGC in Z, all 2,048 erasable words and the interrupt-enable state, from each routine to the point where control leaves the file. The strict and sanitizer host tests pass 672 frozen cases, and eight C64 diagnostics pass 84 cases in VICE. Complete certificates for both files are drafted for the certificate reviewer. See `docs/INFLIGHT-ALIGN.md`.
+
 ## Translate Comanche PHASE_TABLE_MAINTENANCE as transfer-ABI routines
 
 Comanche055 NEWMODEX, NEWMODEA, MMDSPLAY, CHECKMM, PHASCHNG, 2PHSCHNG, SETUPDSP, PHSCHNG2 and CON2 run as routines of the control-transfer ABI, with every caller's inline operands (162 `TC` sites, 229 words, including each PHASCHNG/2PHSCHNG's variable-length tail decoded as the source decodes it) compiled from the source listing. All 4,096 cases, entered from every caller site plus NEWMODEA and MMDSPLAY from random banks, equal the original Comanche055 program in all 2,048 erasable words, the interrupt-enable state and SETUPDSP's NOVAC request (4,673 strict and sanitizer checks, every registered entry reached), and every sixteenth case matches in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-PHASE-TABLE.md`.
@@ -2230,6 +2234,10 @@ Comanche055 DODOWNTM, the DNTMGOTO continuation it executes from erasable memory
 
 Native C for all of Comanche055 TVCINITIALIZE (bank 17 `2147`-`2551`, 259 words): TVCDAPON and MRCLEAN, TVCINIT1-4 with ATTINIT and NEEDLEIN, the DAPINIT T5 hand-off, the V46 CSM/LM switch-over (PRESWTCH, SWICHOVR, MCLEANJR), LOADCOEF and S40.15 with their coefficient tables, from each of its 9 original entry points to the next transfer out of the file. The final image, channel 11 and interrupt enable equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 259 words, 28 fixed constants and the coefficient, 2CADR and INDEX tables are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-INIT.md`.
 
+## Translate LEM_GEOMETRY and CSM_GEOMETRY
+
+All of Luminary099 LEM_GEOMETRY (113 words: the downlink state vectors, the rendezvous radar angles RRANGLES and RRNB) and 105 of the 253 Comanche055 CSM_GEOMETRY words (SVDWN1/2, LOG and EARROT) are native C on the control-transfer ABI, as 21 routines. `tools/interp_compile.py` now also compiles basic instructions (CCS, TCF, TC with returns, DXCH, DAS, TS skips, EXTEND/INDEX), and BOVB. All 10,752 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 336 frozen cases, and four C64 diagnostics pass 42 cases in VICE. The Luminary file has a complete certificate drafted for the certificate reviewer. The Comanche sextant routines wait for a Comanche MXV body and native TRANSP1/2. See `docs/GEOMETRY.md`.
+
 ## Translate Luminary UPDATE_PROGRAM as transfer-ABI routines
 
 Every instruction of Luminary099 UPDATE_PROGRAM (P27: the V70-V73 uplink verbs, data collection and verification, restart-protected stores into erasable memory and the TIME2/TIME1 adjustment) runs as routines of the control-transfer ABI. There are 35 entries: the verbs, the POSTJUMP targets, the job, its post-EXIT code, two restart points and the return after every TC out of the file. The file's own BANKCALL/POSTJUMP CADRs and constants are compiled from the source listing. 4,096 cases from every entry equal the original Luminary099 program in the interrupt-enable state, SUPERBNK, channel 11 and all 2,048 erasable words (12,399 strict and sanitizer checks, all 35 entries and all 13 external exits reached), and every 16th case matches in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-UPDATE.md`.
@@ -2259,6 +2267,10 @@ Native C for all of Comanche055 TVCROLLDAP (bank 16 `3272`-`3717`, 278 words): t
 ## Translate Luminary DOWN-TELEMETRY_PROGRAM as transfer-ABI routines
 
 Luminary099 DODOWNTM with WOTEST, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The six downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Luminary099 program in channels 13, 34 and 35 after every downrupt, the channel-13 traps and all 2,048 erasable words (18,830 strict and sanitizer checks, every control word of all six downlists sent), and all 48 sequences match in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-DOWNTELEMETRY.md`.
+
+## Translate KALCMANU_STEERING
+
+All of Luminary099 and Comanche055 KALCMANU_STEERING (159 and 179 words: NEWDELHI, NEWANGL, the CDU increment loop, TIMECHK, MANUSTAT with RATEBIAS, UPDTCALL, MANUSTOP and the Comanche loads) are native C on the control-transfer ABI, as 40 routines. `tools/interp_compile.py` now also compiles INDEX by the hardware's whole-word add, MSU, `TC Q` back into the routine (including TIMECHK's INCR Q returns), and calls that take inline words without returning (POSTJUMP). All 20,480 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 640 frozen cases, and two C64 diagnostics pass 80 cases in VICE. Both files have complete certificates drafted for the certificate reviewer. See `docs/KALCMANU-STEERING.md`.
 
 ## Translate the DISPLAY_INTERFACE ENDIDLE handling and display returns
 
@@ -2319,6 +2331,10 @@ Native C for all of Comanche055 JET_SELECTION_LOGIC (bank 17 `2552`-`3736`, 629 
 ## Translate the short EXTENDED_VERBS verb bodies
 
 Native C for the bank 43 verb bodies of EXTENDED_VERBS that set flags, start jobs and tasks, or check a condition and hand over (Luminary099 V47-V49, V55-V58, V61, V62, V64-V67, V74-V77, V80-V83, V85, V89-V93, V95 and V96; the matching Comanche055 bodies with its CHKPOOH, EXDAPOFF, STABLISH, GOTOR21/23 and V52 code), plus SHOWSUM, translated block by block. 6,368 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 245 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-SHORT.md`.
+
+## Translate Luminary BURN_BABY_BURN as transfer-ABI routines
+
+All of Luminary099 BURN_BABY_BURN (the master ignition routine, 689 words in banks 36, 35, 17 and 27 and KILLTASK in fixed-fixed) runs as 164 native routines of the control-transfer ABI, 160 basic and 4 interpretive: the six ignition tables run through `INDEX WHICH`, the countdown tasks and ullage, IGNITION and the program-specific ignition paths, the clock task and its display branches, NULLCLOK, COMFAIL, P40AUTO, the ZOOM tasks, P41SPOT's interpretive set-up, and KILLTASK with KILLTSK2. All 20,442 accepted cases (of 20,992; 550 refused) equal the original program (on yaAGC with the hardware divide) in all 2,048 erasable words, channels 11, 14 and 30 and the interrupt-enable bit (strict and ASAN/UBSAN). Every key, instruction, order pair and reachable decision outcome is taken, every word is owned and its operand checked against the listing and rope, and 224 C64 rows chosen by outcome pass in VICE in two PRGs. See `docs/LM-BURN-BABY.md`.
 
 ## Run the Luminary IMU performance tests (P07) as native routines
 

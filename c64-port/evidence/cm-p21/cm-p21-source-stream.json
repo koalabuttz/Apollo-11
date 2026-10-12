@@ -1,0 +1,10 @@
+{
+  "archive": "build/cm-p21-reference.snapshots.bin.xz",
+  "decoded_sha256": "fde47bff286e520cf79d811871c37a7940406786b0108e9778c2bd892cb2a524",
+  "decoded_bytes": 50454528,
+  "cases": 12288,
+  "tag_counts": {
+    "1": 12288
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/cm-rtb-fixture/MAIN.agc.bin (unchanged Comanche055)"
+}
