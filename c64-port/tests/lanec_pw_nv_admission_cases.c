@@ -1,0 +1,37 @@
+/* SPDX-License-Identifier: MIT */
+/* pw-nv-admission: NVSUB/NVMONOPT and the internal NVSUB1/NVSUB2 bodies
+ * through the selected callee entry (src/dsky_nv_admission.c). The
+ * generator chooses mission and entry; each entry is admitted only at its
+ * own Z, so run() takes the first entry the module accepts. */
+#include "lanec_pw.h"
+#include "dsky_nv_admission.h"
+#include "dsky_nv_admission_cases.h"
+
+static enum lanec_status nv_admission_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
+{
+    p66_bias_io p;
+    enum dsky_nv_route route;
+    unsigned e;
+    p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
+    for (e = DSKY_NV_NVSUB; e <= DSKY_NV_NVSUB2; ++e)
+        if (dsky_nv_admit(s, &p, (enum dsky_nv_mission)mission, (enum dsky_nv_entry)e, &route) == P66_BIAS_OK) {
+            io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
+            return LANEC_OK;
+        }
+    return LANEC_OUT_OF_SCOPE;
+}
+#define CASES 1024u
+static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
+{
+    p66_bias_io p;
+    enum dsky_nv_mission mission;
+    enum dsky_nv_entry entry;
+    uint16_t k = (uint16_t)lanec_pw_spread(n, CASES, DSKY_NV_ADMISSION_CASES);
+    lanec_fill(s, io, n);
+    dsky_nv_admission_input(s, &p, k, &mission, &entry);
+    io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
+    lanec_pw_settle(s);
+    m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
+    lanec_pw_exit_stop(m, s, io, nv_admission_run);
+}
+const lanec_suite lanec_suite_pw_nv_admission = { "pw-nv-admission", CASES, make, nv_admission_run };
