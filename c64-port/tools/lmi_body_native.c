@@ -74,7 +74,7 @@ int main(void){
   case 57:(void)lmi_tix(&s);break;
   case 58:lmi_tload(&s);break;
   case 59:lmi_vproj(&s,k);break;
-  case 62:lmi_vsc(&s,k);break;
+  case 71:lmi_vsc(&s,k);break;
   case 60:lmi_tload_fixed(&s,k);break;
   case 61:lmi_axc(&s);break;
   default:return 2;

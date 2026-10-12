@@ -230,13 +230,13 @@ def case(g,body):
    for i in range(7):img[0o154+i]=r.choice([0,0o77777])
   elif c<.2:img[0o154]=img[0o155]=0o37777
   return hdr,img
- if body in(31,32,62):
-  img[5]={31:0o7401,32:0o7460,62:0o7624}[body]
+ if body in(31,32,71):
+  img[5]={31:0o7401,32:0o7460,71:0o7624}[body]
   if r.random()<.35:
    b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3770);img[0o116]=a
    hdr[9:15]=[fixed(b,a-0o2000+i) for i in range(6)];hdr[15]=1
   else:img[0o116]=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1410,0o1770)
-  if body==62:vsc_shape(r,img,hdr)
+  if body==71:vsc_shape(r,img,hdr)
   return hdr,img
  if body==33:
   setbanks(img,1);img[5]=0o2457;hdr[2]=0o6646;hdr[3]=0o2450
@@ -382,11 +382,12 @@ BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC','V/SC']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC',
+ 'reserved','reserved','reserved','reserved','reserved','reserved','reserved','reserved','reserved','V/SC']  # (62-67 Lane D1b's trig and XCHX, 68-70 Lane D1's MXV, VXM, LXC)
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
- p.add_argument('--bodies',default=','.join(str(i) for i in range(len(NAMES))));p.add_argument('--dump');a=p.parse_args()
+ p.add_argument('--bodies',default=','.join(str(i) for i in range(len(NAMES)) if NAMES[i]!='reserved'));p.add_argument('--dump');a=p.parse_args()
  (R/'build').mkdir(exist_ok=True)
  if not LST.exists():subprocess.run([sys.executable,'tools/ephemeris_source.py'],cwd=R,check=True,stdout=subprocess.DEVNULL)
  if not (R/'build/agc_engine_hardware_dv.o').exists():subprocess.run([sys.executable,'tools/prepare_hardware_dv.py'],cwd=R,check=True)
