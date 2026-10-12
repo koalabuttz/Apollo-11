@@ -17,7 +17,7 @@ already in `lanec-ev-track`:
 - TCPIN (bank 43): `RTB PINBRNCH`.
 
 `src/lanec_ev_lmi.c` compiles these words onto the native interpreter paths
-of `lm_interp_steps` and `lm_interp_orders` (INTPRET, NEWOPS, the MISCJUMP
+of `lm_interp_steps` and `lm_interp_orders` (NEWOPS, the MISCJUMP
 bodies of CALL, SWITCH, LXA and RTB, DANZIG, EXIT), the same way the other
 compiled Luminary routines do. RRLOSDSP's fixed operands (UNITX, UNITY,
 UNITZ, HI6ZEROS, DPPOSMAX, at 23,2513-2530) are passed as literal words. Each order and operand word appears only as
@@ -27,7 +27,7 @@ the literal argument those paths take for the interpreter's bookkeeping.
 
 | Entry | Ends at |
 |---|---|
-| INTPRET with Q at RRLOSDSP +4, TRMTRAK1 +7, ATTACHIT +1 or ATTACHIT +16 | NEWOPS of RRNBMPAC, INTSTALL or PTOALEM (QPRET at the word after the call) |
+| NEWOPS with LOC at RRLOSDSP +4, TRMTRAK1 +7, ATTACHIT +1 or ATTACHIT +16 (the first word after a basic `TC INTPRET`; INTPRET itself is the interpreter's code and leaves LOC there) | NEWOPS of RRNBMPAC, INTSTALL or PTOALEM (QPRET at the word after the call) |
 | NEWOPS with LOC at RRLOSDSP +6 (the CALL return) | NEWOPS of ARCTRIG, or POODOO1 when UNIT's argument is zero |
 | NEWOPS with LOC at RRLOSDSP +21 or +24 (the ARCTRIG return and its BPL target) | NEWOPS of ARCTRIG |
 | NEWOPS with LOC at RRLOSDSP +34 or +37 | the basic word after EXIT |
@@ -41,7 +41,8 @@ pending), FIXLOC names a VAC area in unswitched erasable above the
 interpreter's work area (0200 up to 01400 less a VAC area), and at NEWOPS
 EDOP is +0, BANKSET names the current banks and INTBIT15 holds BANKSET's
 bit 15, as INTPRET leaves them. States outside it are out of
-scope.
+scope. Every entry is an interpretive point of the transfer ABI, keyed by
+LOC under BANKSET (`docs/LANEC-EV-TRANSFER.md`).
 
 ## Oracle stop at NEWOPS
 

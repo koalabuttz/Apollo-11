@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-di-idle.prg: 226 checks, 0 failures
+PASS: VICE PAL lanec-di-idle.prg: 264 checks, 0 failures

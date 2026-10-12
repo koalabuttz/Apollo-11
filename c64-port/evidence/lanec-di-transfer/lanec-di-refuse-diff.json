@@ -1,0 +1,6 @@
+{
+  "suite": "di-refuse",
+  "cases": 384,
+  "refused_unchanged": 384,
+  "native_sha256": "016149d4a1ca7be45eb2f9fe9799e73a1e33e5f6ffaf141be5c0c00aa7e47698"
+}
