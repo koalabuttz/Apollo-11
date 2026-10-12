@@ -1868,7 +1868,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries from their 162 compiled TC sites (and NEWMODEA/MMDSPLAY from any bank) with cm_native_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "supported_domain": "entries from their 162 compiled TC sites (and NEWMODEA/MMDSPLAY from any bank) with cm_native_io; phase words whose TEMPSW class has a producer (the source's can't-get-here branches refuse; TB+LB together follows the source but has no producer and is not oracle-compared)",
         "external_continuations": [
           "BANKJUMP (cm_interbank_routines)",
           "NOVAC and the DSPMMJOB job",
@@ -5630,7 +5630,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries from their 142 compiled TC sites (PHSCHNGA with the phase words its V37RET producer computes; NEWMODEA/MMDSPLAY from any bank) with p66_bias_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "supported_domain": "entries from their 142 compiled TC sites (PHSCHNGA with the phase words its V37RET producer computes; NEWMODEA/MMDSPLAY from any bank) with p66_bias_io; phase words whose TEMPSW class has a producer (the source's can't-get-here branches refuse; TB+LB together follows the source but has no producer and is not oracle-compared)",
         "external_continuations": [
           "BANKJUMP (lm_interbank_routines)",
           "NOVAC and the DSPMMJB job",

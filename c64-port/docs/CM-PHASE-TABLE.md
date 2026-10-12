@@ -13,7 +13,7 @@ Comanche055 PHASE_TABLE_MAINTENANCE keeps the major-mode display and the restart
 - Inline operands: the major mode after every `TC NEWMODEX` and `TC CHECKMM`; the packed phase word after every `TC PHASCHNG` (and the extra group word first after `TC 2PHSCHNG`) followed by a new priority or delta time and a new 2CADR when the type and phase bits ask for them; and the 2CADR DSPMMJOB after SETUPDSP's own `TC NOVAC`.
 - External continuations: BANKJUMP (Lane A's `cm_interbank_routines`), NOVAC and the DSPMMJOB job, CHECKMM's Q+1/Q+2 exits in INTERPRETER, and each caller's return. They resolve to `EXEC_UNMAPPED` (or the registered interbank routine) as for any other file.
 
-Paths with no producer: no caller's phase word sets both TBASE and LONGBASE (TEMPSW 060000), and the two "can't get here" branches of the source cannot be reached by any input. The native code refuses those CCS classes with `EXEC_OUT_OF_SCOPE` rather than invent behaviour. The legacy `cm_phase_cleanup` module (MR.KLEAN) is not touched.
+Paths with no producer: no caller's phase word sets both TBASE and LONGBASE (TEMPSW 060000). The native code follows the source there (BELOW2 sets TBASE, then the -0 from `AD BIT14COM` runs BELOW3), but no case reaches it, so the oracle does not compare it. The two "can't get here" branches of the source cannot be reached by any input; the native code refuses those CCS classes with `EXEC_OUT_OF_SCOPE` rather than invent behaviour. The legacy `cm_phase_cleanup` module (MR.KLEAN) is not touched.
 
 ## Source map
 
