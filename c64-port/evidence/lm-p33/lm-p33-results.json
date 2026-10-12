@@ -1,0 +1,31 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos, -fno-inline-functions), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 22016 original P33 entries equal native trampoline runs 91a56553cdb510f0e0d7d12fadac70bb5a26107e9118e75f96e3e9d01ccf8fd5",
+  "lm-p33: 22016 cases, 441 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22546 checks, 0 failures",
+  "PASS 122 assembled P32-P35_P72-P75 words (35,2216-2407) on 122 source lines map to 43 native routines",
+  "lm-p33: 22016 cases, 441 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22546 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-p33-1.prg: 128 checks, 0 failures",
+   "PASS: VICE PAL lm-p33-2.prg: 504 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 30086,
+    "prg_sha256": "9b3eb94f324d78f2b96eb5f2b22f6802c697046c975946435c1a7dced208a00d",
+    "image_end": "$7d91",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "DISDVLVC's S32/33.X return (MXV, VSL1, SXA) and the basic code its EXIT reaches: variant k*512/128 of entry 18"
+   },
+   "2": {
+    "prg_bytes": 39269,
+    "prg_sha256": "2c4a5866d166c6e4cb503340dc1dc5808b64b92bc5e7a23cbe17ebffac808598",
+    "image_end": "$a170",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "every entry but the S32/33.X return: variant k*512/504 of entry k%42 over the other 42"
+   }
+  }
+ }
+}

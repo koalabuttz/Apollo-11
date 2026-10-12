@@ -1,0 +1,6 @@
+PASS 14336 original P76 entries equal native trampoline runs 3dd445f01ae4e5d28028d5ea2fbaa91e3204893e1e983783fc58a7f057078cfe
+lm-p76: 14336 cases, 280 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 14675 checks, 0 failures
+PASS 98 assembled P76 words on 98 source lines map to 28 native routines
+lm-p76: 14336 cases, 280 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 14675 checks, 0 failures
+PASS: VICE PAL lm-p76-1.prg: 128 checks, 0 failures
+PASS: VICE PAL lm-p76-2.prg: 520 checks, 0 failures

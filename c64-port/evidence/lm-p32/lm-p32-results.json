@@ -1,0 +1,23 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos, -fno-inline-functions), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 20480 original P32 entries equal native trampoline runs f6b5b84fcd81b078031ad966a5bf9c2ca664164c7b358fb1ca28aaef2d3b18a5",
+  "lm-p32: 20480 cases, 415 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 20978 checks, 0 failures",
+  "PASS 119 assembled P32-P35_P72-P75 words (35,2027-2215) on 119 source lines map to 40 native routines",
+  "lm-p32: 20480 cases, 415 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 20978 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-p32-1.prg: 520 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 37860,
+    "prg_sha256": "2d55a550fbdfb89dcf8d47b1c0e060125795cc149cb3c57b3a50233b1fb69abf",
+    "image_end": "$9bef",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "every entry: variant k*512/520 of entry k%40"
+   }
+  }
+ }
+}

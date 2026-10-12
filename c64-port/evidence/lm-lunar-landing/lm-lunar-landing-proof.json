@@ -1,0 +1,119 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle_engine": "yaAGC with the hardware divide (build/agc_engine_hardware_dv.o); scalers frozen",
+ "cases": 15872,
+ "compared": 15872,
+ "refused": {},
+ "snapshot_sha256": "a3f562ff79a65a5c22c3f519e51653100506230ac87d099b6c2b840003628f2e",
+ "stops": {
+  "31,2144": {
+   "PHASCHNG": 512
+  },
+  "31,2146": {
+   "BANKCALL": 512
+  },
+  "31,2151": {
+   "BANKCALL": 512
+  },
+  "31,2153": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "31,2167": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "31,2176": {
+   "BANKCALL": 448,
+   "CHANG2": 64
+  },
+  "31,2203": {
+   "GOTOPOOH": 512
+  },
+  "31,2204": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "31,2205": {
+   "BANKCALL": 512
+  },
+  "31,2213": {
+   "GOTOPOOH": 512
+  },
+  "32,2776": {
+   "PHASCHNG": 512
+  },
+  "32,3000": {
+   "BANKCALL": 512
+  },
+  "32,3002": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "32,3040": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "32,3044": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "32,3051": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "32,3100": {
+   "NEWOPS outside the file (a CALL or STCALL)": 512
+  },
+  "32,3102": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 255,
+   "PHASCHNG": 193
+  },
+  "32,3146": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "32,3161": {
+   "CHANG2": 64,
+   "NEWOPS outside the file (a CALL or STCALL)": 448
+  },
+  "32,3204": {
+   "BANKCALL": 512
+  },
+  "32,3207": {
+   "ENDOFJOB": 512
+  },
+  "32,3210": {
+   "RTB R51P63": 512
+  },
+  "32,3215": {
+   "CHANG2": 64,
+   "IBNKCALL": 448
+  },
+  "32,3230": {
+   "BANKCALL": 512
+  },
+  "32,3233": {
+   "PHASCHNG": 512
+  },
+  "32,3235": {
+   "BANKCALL": 512
+  },
+  "32,3245": {
+   "GOTOPOOH": 512
+  },
+  "32,3246": {
+   "BANKCALL": 512
+  },
+  "32,3247": {
+   "BANKCALL": 512
+  },
+  "32,3251": {
+   "POSTJUMP": 512
+  }
+ },
+ "boundary": "from each routine key to the first instruction outside THE_LUNAR_LANDING, the interpreter and SWCALL (lld_leaves)",
+ "compared_words": "2048 erasable words (A, L 16-bit) and the channels 12 and 33 and the interrupt-enable state"
+}
