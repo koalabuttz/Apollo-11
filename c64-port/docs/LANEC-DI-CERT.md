@@ -40,7 +40,24 @@ the pinned listings and the unchanged original files. It fails unless:
   inside an owner's interval as the argument of the call before it.
 
 The map records, for every word, its original line number, address,
-assembled word, owner, native module and whether the oracle executed it.
+assembled word, owner, the C function that carries it (the function named
+after its label, else the module's dispatch) and whether the oracle
+executed it. Each entry word also names the transfer-ABI routine it is
+registered as (`abi_routine`). The `aliases` rows resolve the file's EQUALS
+names for code labels (GOAGIN, GOXDSP, GOXDSPR, GOXDSPF, GOXDSPFR, ENDEXT,
+GOPLAY, LINUS) to those rows, since other files call through them.
+
+## Transfer ABI
+
+Every labelled entry and every return into the file from a callee is an
+`exec_status` routine in `lanec_di_lm_routines` / `lanec_di_cm_routines`
+(165 / 164), and 996 round trips through `agc_transfer_run` match the
+original program; see `docs/LANEC-DI-TRANSFER.md` (milestone
+`lanec-di-transfer`). `lanec_di_*` is the canonical translation of the file.
+
+Comanche055 still needs Lane A's `cm_exec_sites` for its three NOVAC/FINDVAC
+2CADR operands (MAKEPLAY, JAMTERM, PLAYJUM1); its round trips stop at the
+Executive until then.
 
 ## Evidence
 
@@ -49,15 +66,28 @@ Hashes: `evidence/lanec-di-cert/SHA256.json`.
 - Source-to-native map: `lanec-di-lm-source-map.json` and
   `lanec-di-cm-source-map.json`.
 - Independent assembly comparison: `lanec-di-comparison.json`. It holds
-  the six suites' `diff.py` summaries, 17,632 cases in all, with zero
-  differing.
+  the `diff.py` summaries of the six module suites, the `di-transfer` and
+  `di-transfer-c64` round trips and the `di-refuse` refusals: 20,388 cases,
+  19,768 compared with zero differing and 620 refused with the state
+  unchanged (122 di-idle and 114 di-nvdsp index cases, 384 di-refuse), with accepted cases
+  counted per mission (`tools/lanec/cert_evidence.py`).
 - Host and sanitizer results: `lanec-di-checks.log`. It has the strict
-  and ASan/UBSan runs of all six suites and the whole-file map run.
+  and ASan/UBSan runs of all nine suites and the whole-file map run.
 - C64 execution results: `lanec-di-c64-results.json`. It has fresh VICE
-  PAL runs of the six frozen subsets (1,406 checks, 0 failures) with the
-  PRG hashes.
+  PAL runs of the six frozen module subsets and the transfer round trip
+  (1,542 checks, 0 failures) with the PRG hashes.
 
 The supported domain and the external continuations are written into the
-certificate itself. The continuations are the EXECUTIVE,
-INTER-BANK_COMMUNICATION, SERVICE_ROUTINES, ALARM_AND_ABORT and PINBALL
-services that the file calls.
+certificate itself. The continuations are the EXECUTIVE (with the
+FINDVAC job JAMTERM), INTER-BANK_COMMUNICATION, SERVICE_ROUTINES,
+ALARM_AND_ABORT and PINBALL services that the file calls. The only channel
+writes are WITCHONE's WAND on channel 011; ROR SUPERBNK only reads channel 07.
+
+Regenerate the evidence with:
+
+    python3 tools/lanec/cert_evidence.py lanec-di build/di-cert-new di-dsp di-mark di-play \
+      di-sleep di-idle di-nvdsp di-transfer di-transfer-c64 --refusals di-idle di-nvdsp \
+      --refusals-only di-refuse --wholefile tools/lanec/wholefile.py \
+      --c64 di-dsp=lanec-di-dsp di-mark=lanec-di-mark di-play=lanec-di-play \
+      di-sleep=lanec-di-sleep di-idle=lanec-di-idle di-nvdsp=lanec-di-nvdsp \
+      di-transfer-c64=lanec-di-transfer

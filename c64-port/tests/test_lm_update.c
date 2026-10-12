@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "lm_update_cases.h"
 #include "lm_update_vectors.h"
+#include "lm_update_c64_vectors.h"
 #include "lm_interbank_routines.h"
 #include "../src/lm_update_operands.inc"
 static unsigned checks,failures;
@@ -34,6 +35,8 @@ static const struct { agc_word z; uint8_t bank; } ends[13]={
  {03165u,04u},{05314u,0},{05472u,0}};
 int main(void){apollo_overlay_state s;p66_bias_io io;agc_hardware hw;enum exec_status st;unsigned n,i,ended[13]={0};
  check(LM_UP_VECTORS==LM_UP_CASES,"vector count",0);
+ /* The C64 rows (chosen by outcome in the freeze) are host cases with their digests. */
+ for(n=0;n<LM_UP_C64_COUNT;++n)check(lm_up_c64_case[n]<LM_UP_CASES&&(n==0u||lm_up_c64_case[n-1u]<lm_up_c64_case[n])&&lm_up_c64[n]==lm_up_expected[lm_up_c64_case[n]],"C64 row",n);
  for(n=1;n<LM_UPDATE_OPERAND_COUNT;++n)check(lm_update_operands[n-1u].physical<lm_update_operands[n].physical,"operands sorted",n);
  for(n=1;n<LM_UP_ROUTINES;++n)check(lm_update_routines.entries[n-1u].physical<lm_update_routines.entries[n].physical,"routines sorted",n);
  for(n=0;n<LM_UP_CASES;++n)check(lm_up_digest(&s,(uint16_t)n,&st)==lm_up_expected[n]&&st==EXEC_OK,"oracle",n);
