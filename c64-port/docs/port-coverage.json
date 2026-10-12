@@ -1692,7 +1692,7 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-phase-table/cm-phase-table-host.log",
-            "sha256": "2875c2f796b7b730f4eb7438c9791ad7151453732e58cdb5f49bbfce6519cbde"
+            "sha256": "971a910801be9d460dd49933168fc43a2cf77a5d69e3fc900776303f42d5f5c4"
           },
           "c64_execution_results": {
             "path": "evidence/cm-phase-table/cm-phase-table-vice.log",
@@ -4743,8 +4743,49 @@
           ],
           "scope": "Fixed NEWMODEX/MMDSPLAY/SETUPDSP path as called from STARTP66 (LUNAR_LANDING_GUIDANCE_EQUATIONS), through Executive NOVAC admission of the DSPMMJB job; the DSPMMJB body (PINBALL_GAME_BUTTONS_AND_LIGHTS) and other NEWMODEX callers remain separate.",
           "verification": "docs/P66_MAJOR_MODE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_phase_table.c",
+            "src/lm_phase_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-PHASE-TABLE.md",
+          "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG/PHSCHNGA/PHASJUMP with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 142 caller sites (181 words) compiled from the source listing."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 142 compiled TC sites (PHSCHNGA with the phase words its V37RET producer computes; NEWMODEA/MMDSPLAY from any bank) with p66_bias_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "external_continuations": [
+          "BANKJUMP (lm_interbank_routines)",
+          "NOVAC and the DSPMMJB job",
+          "CHECKMM exits Q+1/Q+2 in INTERPRETER",
+          "callers' returns"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-PHASE-TABLE.md",
+            "sha256": "60516d158b5961b139ff35a141ae7364628382e2aecbafb80d3800d2a3c6333a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-phase-table/lm-phase-table-proof.json",
+            "sha256": "d57ceb576d559d5a105fbbe706c9a4816fa54d79079596c62f7c69160ce36168"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-phase-table/lm-phase-table-host.log",
+            "sha256": "6d005697047ff949dd24a5886f511858ab59e007072e3365d78f9eaf6a0192ab"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-phase-table/lm-phase-table-vice.log",
+            "sha256": "5a916a58261ca88102703b5e908080bf6634075fe09e4d4712c8db131f6b4f29"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",

@@ -4,7 +4,7 @@
   "release": "evidence-cm-phase-table",
   "files": {
     "cm-phase-table-host.log": {
-      "sha256": "2875c2f796b7b730f4eb7438c9791ad7151453732e58cdb5f49bbfce6519cbde",
+      "sha256": "971a910801be9d460dd49933168fc43a2cf77a5d69e3fc900776303f42d5f5c4",
       "bytes": 1824,
       "store": "release"
     },
