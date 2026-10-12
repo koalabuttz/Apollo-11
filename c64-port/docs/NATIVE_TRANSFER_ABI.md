@@ -89,6 +89,7 @@ transferring file.
 | Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only, as in Luminary | `cm-standard-lead-transfer` |
 | Luminary099 EXECUTIVE (NOVAC, FINDVAC) and WAITLIST (WAITLIST, TWIDDLE, the LONGCALL chain) | 10 entries in `lm_exec_routines` | `lm_exec_sites` (146 sites, 268 words) | `lm-exec-services` |
 | Luminary099 EXECUTIVE (SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB), WAITLIST (FIXDELAY, VARDELAY, TASKOVER) and the INTERRUPT_LEAD_INS T3 vector | 8 entries in `lm_exec_job_routines`, 4 in `lm_exec_task_routines` | `lm_exec_sites` (adds the 16 FIXDELAY sites: 284 words) | `lm-exec-jobs` |
+| Luminary099 and Comanche055 IMU_COMPENSATION_PACKAGE | 11 Luminary and 9 Comanche entries in `lm_`/`cm_imu_compensation_routines` (1/PIPA, the NOVAC and BANKCALL returns, NBDONLY, GCOMPZER...) | BANKCALL/IBNKCALL CADRs in `lm_interbank_sites`/`cm_interbank_sites`; Luminary 1/GYRO 2CADR in `lm_exec_sites` | `imu-compensation` |
 | Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
 
 Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete
