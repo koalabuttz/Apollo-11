@@ -2875,8 +2875,49 @@
       "sha256": "e428b4f8811ab77ba4088c91dd170effb016b3dc9f46998ba59bb3ff48cf14c9",
       "bytes": 18686,
       "lines": 619,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_roll.c"
+          ],
+          "scope": "All 278 words from both original entry points (ROLLDAP waitlist task, NOROLL1 T6 task) to TASKOVER/NOQRSM, every phase-plane region, the firing-time division and limits, channel 6 and 13 writes. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-ROLL.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z ROLLDAP 3272 or NOROLL1 3676, FB 16, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 6/13.",
+          "frontiers": "TASKOVER 5324, NOQRSM 5335.",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche TASKOVER and NOQRSM (Lane A)",
+          "T6 interrupt delivery to NOROLL1 via T6LOC",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-source-map.json",
+            "sha256": "917b9f3793877b6b4e2326c3f6644539c8342f3df1ace11a46d3129d59f641ca"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-assembly-comparison.json",
+            "sha256": "7e0c69b36f21828504dda3891a40ef1a0e2d89a7eb4d68aaf20ebfe038d88f45"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-checks.log",
+            "sha256": "b8def3e600caaba1e4109a819f3a755fc35d6cd645d64a3550d59c58e74e92d7"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-results.json",
+            "sha256": "613852b51c7dee79ac2498c86c48cc0c85d1450e45e148d12703a0c42bb601a2"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCSTROKETEST.agc",
