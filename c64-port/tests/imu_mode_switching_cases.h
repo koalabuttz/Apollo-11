@@ -15,7 +15,7 @@
  *     states each, from BANKCALL/IBNKCALL through the native
  *     INTER-BANK_COMMUNICATION routines and this file back to the caller's
  *     Q +1, or to where native code ends (an external of this file other
- *     than the INTER-BANK entries, SETISSW, or ims_interbank_gap()).
+ *     than the INTER-BANK entries or SETISSW).
  * Every case ends with the 2048 erasable words, the interrupt-enable state
  * and channels 11-14 compared with the original program. States are drawn
  * inside each routine's domain (include/imu_mode_switching.h); the
@@ -49,11 +49,6 @@ const ims_stop *ims_externals(const ims_case *);
  * and TC RUPTREG3 at 072); the oracle runs through them. Any other Z below
  * 02000 stops both programs. */
 int ims_executed_erasable(agc_word z);
-/* Interim stop while INTER-BANK_COMMUNICATION's native context refuses
- * SWRETURN and ISWRETRN with Q outside 0100..07775 (the original reaches
- * them with Q 3 after TC Q): a round trip stops there, in both programs,
- * when Z is either entry and Q is outside that range. */
-int ims_interbank_gap(const ims_case *, agc_word z, agc_word q);
 /* Mission (1 Comanche) and physical key of the routine case n enters,
  * without building its image; 0xffff when the case has no site. */
 uint16_t ims_target(uint16_t n,uint8_t *cm);
