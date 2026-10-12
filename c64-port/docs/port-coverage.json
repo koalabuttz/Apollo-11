@@ -5750,8 +5750,60 @@
       "sha256": "c79584213ddacc0bdf6ceebb0b9bfe84c85eac69c124e28c5554a5585e5cdf3f",
       "bytes": 17289,
       "lines": 860,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_q_r_axis.c",
+            "src/lm_q_r_axis_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-Q-R-AXIS.md",
+          "scope": "Every path of the file: CALLQERR (QERRCALC, the GTS/TRYGTS/RCS choice, SENSEGET X-translation, minimum impulse, CHEKSTIK/RHCACTIV rate command and ENTERUV direct rate, ATTSTEER/TJLAW, AFTERTJ/DOROTAT/DOSKIP/NOTMIN/FEEDBACK/LOOPER jet selection with SELCTSUB and FAILOOP, XTRANS) to each call that leaves the file and its twelve returns, CLOSEOUT with MAKERUPT's EDRUPT and ENDJASK to TCF NOQRSM, and QERRCALC, JTLST and ROT-TOUV as subroutine entries, as seventeen ABI routines in bank 17 (MAKERUPT in fixed-fixed)."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 17 under EBANK6 (EBANK= CDUXD) with the lm_flight_io record (channels 4, 5, 13 and 31, the interrupt-enable and interrupt-in-progress bits); a QERRCALC, JTLST or ROT-TOUV return in Q is a TC word into fixed memory; excluded and refused with the image unchanged: SKIPU or SKIPV other than 0 or 4 at CALLQERR or a return entry (INDEX AXISCTR; INDEX SKIPU; TCF +1 would jump anywhere; every producer stores 0 or 4), ALLOWGTS -0 or channel 5 negative at CALLQERR (CCS would enter READ CHAN5 or DCA GTSCADR without its EXTEND; ALLOWGTS is stored as +0 or 1, channel 5 holds eight jet bits), and a return entry with AXISCTR other than 0 or 1, NUMBERT outside 0-4 or SENSETYP above 5 (they index INDEXES, AXISDIFF, TJU and TYPEPOLY; the file's loop and TJETLAW store these values); 784 of 16,384 random cases",
+        "external_continuations": [
+          "ALARM",
+          "IBNKCALL (ZATTEROR, TIMEGMBL, SPSRCS)",
+          "TJETLAW (TJET_LAW)",
+          "WRITEP +4, +13",
+          "WRITEU -1 (= WRITEP -1 +4)",
+          "WRITEV -1 (= WRITEP -1 +13)",
+          "GTS (TRIM_GIMBAL_CONTROL_SYSTEM)",
+          "NOQRSM",
+          "the word in RETJADR when it is not one of the file's return addresses",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-source-map.json",
+            "sha256": "3306783742167e9a9f63c6847ce5f87ff41b390fe77f964f5362d071540ac770"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-proof.json",
+            "sha256": "1317552d98c566bfa1076c24b2fbf8886137ad57129a2e134384990ee818d4d8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-host.log",
+            "sha256": "8c88b84193e673fa76e4114c0f9d698c4ac1e719335d21c18c574ecbe51c27c5"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-vice.log",
+            "sha256": "686773f03963477774b422544be0882c4637da2ccb9cea2fd25069bccdedc52f"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
+            "sha256": "30be5138a4438def4ce98f10038158b313d1af37a4a8a4d0152976fe184a3318"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/R30.agc",
