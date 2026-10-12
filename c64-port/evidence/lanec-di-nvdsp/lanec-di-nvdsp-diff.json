@@ -1,7 +1,8 @@
 {
   "suite": "di-nvdsp",
-  "cases": 3200,
+  "cases": 3600,
   "differing": 0,
-  "native_sha256": "a8a23f3a202f6c7d0dc6d794d4e0ca70af99ea8ea553a01b599801f77789c65e",
-  "oracle_sha256": "a8a23f3a202f6c7d0dc6d794d4e0ca70af99ea8ea553a01b599801f77789c65e"
+  "refused_unchanged": 114,
+  "native_sha256": "7a837a683a09623a6583328d8b60ee77ee2f06113165ae84d38836b9612e8dbd",
+  "oracle_sha256": "cec0a5cc3f90e80709a26e2dbb92b7fb0e03240406a0fa8e90ee32e8cc8ee0ee"
 }

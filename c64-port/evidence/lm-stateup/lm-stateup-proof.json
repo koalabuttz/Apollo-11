@@ -3,8 +3,8 @@
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "oracle": "yaAGC (deps/virtualagc), host only",
  "cases": 4096,
- "snapshot_sha256": "bab7608ec8414b97dc28cc3d92eee6d77f3175564d54473fd91481d981b539d0",
- "entries": "every order-pair word of STATEUP, DOINT, NO-INT, DOINT2 and THISVINT (11), at NEWOPS",
- "boundary": "NEWOPS with LOC on the pair to NEWOPS with LOC outside the file (CALL/STCALL/CLRGO/RVQ targets) or CHANG2",
+ "snapshot_sha256": "89dced8a6ba434e65fcd96bad04514774b1c95567bce9bf0cc8ab0634264a947",
+ "entries": "every order-pair word of STATEUP, DOINT, NO-INT, DOINT2, THISVINT (bank 13) and R00 (bank 04) (13), at NEWOPS",
+ "boundary": "NEWOPS with LOC on the pair to NEWOPS with LOC outside the file (CALL/STCALL/CLRGO/RVQ targets), R00 EXIT to basic code, or CHANG2",
  "full_physical_words": 2048
 }

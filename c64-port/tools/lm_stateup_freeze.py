@@ -6,7 +6,7 @@ Builds the host-only yaAGC driver (tools/lm_stateup_reference.c), runs it
 on the unmodified Luminary099 rope, checks the native snapshot
 (build/lm-stateup-native) is byte-identical, and writes
 tests/lm_stateup_vectors.h (one digest per case: two 16-bit running sums
-over the printed values) and every 16th digest (16 is prime to the 11 entries, so all are reached) to
+over the printed values) and every 16th digest (16 is prime to the 13 entries, so all are reached) to
 tests/lm_stateup_c64_vectors.h. Also writes build/lm-stateup-proof.json.
 """
 import hashlib
@@ -69,8 +69,8 @@ def main():
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
-             'entries': 'every order-pair word of STATEUP, DOINT, NO-INT, DOINT2 and THISVINT (11), at NEWOPS',
-             'boundary': 'NEWOPS with LOC on the pair to NEWOPS with LOC outside the file (CALL/STCALL/CLRGO/RVQ targets) or CHANG2',
+             'entries': 'every order-pair word of STATEUP, DOINT, NO-INT, DOINT2, THISVINT (bank 13) and R00 (bank 04) (13), at NEWOPS',
+             'boundary': 'NEWOPS with LOC on the pair to NEWOPS with LOC outside the file (CALL/STCALL/CLRGO/RVQ targets), R00 EXIT to basic code, or CHANG2',
              'full_physical_words': 2048}
     (B / 'lm-stateup-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
     print(f'PASS: {len(values)} cases equal the original program')

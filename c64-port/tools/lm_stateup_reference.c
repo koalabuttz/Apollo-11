@@ -2,6 +2,7 @@
 #define main admission_reference_main
 #include "cm_executive_reference.c"
 #undef main
+#include "cert_trace.h"
 #include "lm_stateup_cases.h"
 static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&!machine.SubstituteInstruction;}
 /* From each case's state, as tests/lm_stateup_cases.c sets it up, until
@@ -16,6 +17,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0;agc_t baseline;
   for(cycles=0;cycles<200000u;++cycles){
    if(cycles&&quiet()){pc=get(RegZ);
     if(lm_stateup_leaves((agc_word)pc,(agc_word)(get(4)&076000u),(agc_word)machine.InputChannel[7],(agc_word)get(0164),(agc_word)get(0165))){stopped=1;break;}}
+   if(quiet())CERT_MARK();
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(!stopped){fprintf(stderr,"LM STATEUP %u timeout %05o\n",n,pc);return 2;}
   printf("%u %u %u",n,(unsigned)machine.AllowInterrupt,(unsigned)machine.OutputChannel7&0160u);

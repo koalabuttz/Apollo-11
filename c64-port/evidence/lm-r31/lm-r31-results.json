@@ -1,0 +1,63 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos, -fno-inline-functions), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 21504 original R31 entries equal native trampoline runs 4459efd37b0b8653f3e4791c250e192e935f07c69002d16597c22d9511fd9b29",
+  "lm-r31: 21504 cases, 462 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22053 checks, 0 failures",
+  "PASS 204 assembled R31 words on 202 source lines map to 42 native routines",
+  "lm-r31: 21504 cases, 462 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22053 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-r31-1.prg: 128 checks, 0 failures",
+   "PASS: VICE PAL lm-r31-2.prg: 128 checks, 0 failures",
+   "PASS: VICE PAL lm-r31-3.prg: 128 checks, 0 failures",
+   "PASS: VICE PAL lm-r31-4.prg: 128 checks, 0 failures",
+   "PASS: VICE PAL lm-r31-5.prg: 128 checks, 0 failures",
+   "PASS: VICE PAL lm-r31-6.prg: 518 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 38188,
+    "prg_sha256": "360d37f0f11dad71efa66d26d3a2da88f7df8e5969ea87426ee10c124cb52d09",
+    "image_end": "$9d39",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "COMPDISP (NORMUNX1): 128 cases"
+   },
+   "2": {
+    "prg_bytes": 35069,
+    "prg_sha256": "698f33f76009ca03556db27bbe1fd54c2dd4157ce23c5bf1e262bf5311a2e0b2",
+    "image_end": "$9108",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "RANGE and RRATE (UNIT): 128 cases"
+   },
+   "3": {
+    "prg_bytes": 32446,
+    "prg_sha256": "cd97f4d72203caeeca3a5ac89a6824923227f6c21b9dda8e1daa35018ad48bb9",
+    "image_end": "$86c9",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "after CDU*NBSM (VXM, VPROJ, BVSU, SIGN): 128 cases"
+   },
+   "4": {
+    "prg_bytes": 24495,
+    "prg_sha256": "5cba3554d08c08c3fb4ea9729e2c2cefaef266f8ca43e7772cc91b03dcdc646f",
+    "image_end": "$67ba",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "first REFSMMAT rotation and GETRVN2: 128 cases"
+   },
+   "5": {
+    "prg_bytes": 20908,
+    "prg_sha256": "77b6c2ef3816432718873b1d1608a1fe208b95d82a5ba7c2b565033bf8617310",
+    "image_end": "$59b7",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "second REFSMMAT rotation: 128 cases"
+   },
+   "6": {
+    "prg_bytes": 33743,
+    "prg_sha256": "3d72ed600b24c5134a61ffa4800dbc837969bcbe3f625273ff64e78085c94400",
+    "image_end": "$8bda",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "every other entry: 518 cases"
+   }
+  }
+ }
+}

@@ -4,13 +4,17 @@
 /* Test-only case description shared by the native runner, the Virtual AGC
  * oracle and the C64 diagnostic. Never linked into flight code. */
 #include "lanec.h"
-#define LANEC_MAX_RANGES 6u
+#define LANEC_MAX_RANGES 8u
 #define LANEC_MAX_STOPS 4u
 typedef struct {
     enum lanec_mission mission;
     uint8_t ranges, stops;
     lanec_range range[LANEC_MAX_RANGES]; /* code the native routine translates */
     lanec_point stop[LANEC_MAX_STOPS];   /* labels inside those ranges owned elsewhere */
+    const lanec_point *stop_list;        /* more such labels (NULL: none) */
+    uint16_t stop_count;
+    const lanec_range *range_list;       /* more translated code (NULL: none) */
+    uint16_t range_count;
     /* Interpretive code: when newops is set, the oracle also stops at that
      * address (the interpreter's NEWOPS) once LOC, in the bank FB selects,
      * leaves the interpretive words listed in loc[]. */

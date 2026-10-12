@@ -26,7 +26,7 @@ The keys are every point where the files resume:
 - the two idle points below.
 
 Two waits spin until hardware moves an input. Each ends the run there as a continuation (`EXEC_OK`), and its key resumes it:
-- CHECKG1 (37,2335), when the BZF at 2352 finds PIPAX unchanged. The key runs CHECKG1 again: CHANG1 if a job is waiting, else the next read of PIPAX;
+- CHECKG1 (37,2335), when the BZF at 2352 finds PIPAX unchanged. The key runs CHECKG1 again: CHANG1 if a job is waiting, else the next read of PIPAX. The continuation is also an interrupt point: the run ends with interrupts inhibited, and the original's RELINT window (2336-2345) has no ABI boundary, so the scheduler takes interrupts at 2335 before resuming;
 - FINETIME +1 (04103), when the BZF at 04117 finds LOSCALAR 37777. The key reads the scaler again. SCALPREP (IMU_MODE_SWITCHING_ROUTINES) also enters here with `TC FINETIME +1` and returns to 37,3717.
 
 io is `lm_ipt_io`. INHINT and RELINT set `control.interrupt_enabled`. READ LOSCALAR and READ HISCALAR read the frozen scaler words.
@@ -40,7 +40,7 @@ Refused input ends `EXEC_OUT_OF_SCOPE` with the image and io unchanged. A refusa
 - NEWJOB negative at a DANZIG;
 - an RVQ whose QPRET is not a fixed CADR, a fixed operand outside the constants the code names, or SIN/COS outside `src/sband_trig.c`'s domain. VXSC GEORGEJ (37,3013) with a scalar in MPAC would read a vector at GEORGEJ, past the named constants;
 - an indexed operand or store with X1 or X2 outside ±0377. Only a store through another wild index leaves one there; at such an index, `INDEX ADDRWD` changes the instruction;
-- AINGOTN's DDV (37,2217) with a divisor whose major part is ±0 once its words agree in sign. That is the original's BUFZERO path, which the compiled DDV in `src/lm_interp_orders.c` does not follow with a negative dividend. On the genuine path the divisor is a positive count;
+- AINGOTN's DDV (37,2217) with a divisor whose major part is ±0 once its words agree in sign. That is the original's BUFZERO path, and it is unreachable: AINGOTN divides by the test's elapsed time, about 584 s. (The compiled DDV follows BUFZERO; the certificate review ran 180 such cases equal to yaAGC.);
 - an interpretive order with FIXLOC not one of the five VAC areas, PUSHLOC outside FIXLOC to FIXLOC+42, EDOP not +0, or FB not BANKSET's;
 - no undo image, or more than 4,000 steps.
 
@@ -64,7 +64,7 @@ Hashes: `evidence/lm-imu-performance/SHA256.json`.
   - every CCS class of NDXCTR, LENGTHOT, TORQNDX (with LENGTHOT +0 and TORQNDX +0 together), ALTIM and OVFLOWCK;
   - small POSITON, PIPINDEX and RESULTCT;
   - genuine return words in QPLACE, QPLACES and ZERONDX, and in the CALL return QPRET (also OVERFFIX's);
-  - the ALX1S and CMPX1 values the ALKCG loop produces;
+  - ALX1S and CMPX1 as +0 or -(12 to 132) and ±0. The flight values are ALX1S 144, then 132 down to 0 in steps of 12, and CMPX1 ±1; the certificate review's probe with those values takes the same branch outcomes;
   - NEWJOB +0 and positive, PIPAX unchanged at CHECKG1 in half its states, and LOSCALAR 37777 in a quarter of all states;
   - the five VAC areas, every superbank, and other EBs.
 
