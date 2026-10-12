@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -2210,8 +2210,51 @@
       "sha256": "9b4c9acb5836870ceb53a4203b8db334728e96b8ce2b1ea02da151d17b5f0966",
       "bytes": 24477,
       "lines": 975,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_rcs_dap.c"
+          ],
+          "scope": "All 611 words from every original entry point (REDORCS, RCSATT, the SMALLMP/DPADD/NOVAC/IBNKCALL returns, REINIT, T6PROGM, and the NEEDLER, NEEDLE11, NEEDLES, ZEROJET, STICKCHK subroutines) to the first transfer out of the file: initialisation, rate filter and Kalman gains, CDU increments, FDAI needles and DAC limits, hand controller and manual rates, free drift, channel 12/13/14 writes. ABI registration pending (see docs).",
+          "verification": "docs/CM-RCS-DAP.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; FB 21, EB E6, coherent BB; any raw A/L, erasable contents and channels 12/13/14/31; Z one of the 17 entries in docs/CM-RCS-DAP.md with the INDEX operands within the file's tables (ATTKALMN -1..11, RATEINDX 0..6, SPNDX 0..2 with DPNDX = 2 SPNDX at the MYSUBS returns) and, for the TC Q entries, Q a caller's return.",
+          "frontiers": "RESUME 5333, IBNKCALL 4740, NOVAC 5134, SMALLMP 2042, DPADD 2054, JETS 3441, T6PROG 3757, AHFNOROT 3250, caller's return (TC Q).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche RESUME, NOVAC, IBNKCALL (Lane A)",
+          "MYSUBS SMALLMP and DPADD",
+          "AUTOMATIC_MANEUVERS JETS, T6PROG, AHFNOROT (Lane G)",
+          "T5 interrupt delivery via T5LOC",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-source-map.json",
+            "sha256": "9bccf46ce73fcb26d40a9f2d3ce1f9386f1b80906b8dc068c343997683eb06bb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-assembly-comparison.json",
+            "sha256": "ce0e9594177ccdaa1387be832787d0ad72e3782033946e494f3ce014c2fe9835"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-checks.log",
+            "sha256": "b88305429761eb36f27b3c136e4e848575a77b13f8b2ef60d92f44a052f1f9ad"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-results.json",
+            "sha256": "53125955c7e0932050d7dcd661c3f439d7fd0d9f64bd1cf3d70cd6c44b482c74"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/README.md",
