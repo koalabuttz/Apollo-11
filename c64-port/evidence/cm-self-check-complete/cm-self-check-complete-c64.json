@@ -1,0 +1,20 @@
+{
+ "category": "c64_execution_results",
+ "aggregates": {
+  "self-check": {
+   "record": "evidence/self-check/self-check-vice.log",
+   "sha256": "5d509af6eea896d8ce1b46f5454a0582602aaf7845f7f8513a2f952c8044dbad",
+   "pass_lines": [
+    "PASS: VICE PAL self-check-lm.prg: 80 checks, 0 failures",
+    "PASS: VICE PAL self-check-cm.prg: 80 checks, 0 failures"
+   ],
+   "checks": [
+    80,
+    80
+   ],
+   "failures": 0,
+   "result": "PASS"
+  }
+ },
+ "result": "PASS"
+}

@@ -37,7 +37,23 @@ MODULES = {
     'lm-landing-displays': ('lm_landing_displays', 'LM_LAD', 'lm_lad', 8, 128, 'LM_LAD_SRC', IO_RUN),
     'lm-ags-init': ('lm_ags_init', 'AGS', 'ags', 22, 128, 'LM_AGS_SRC', '{s}_run(s,n,steps)'),
     'lm-lunar-landing': ('lm_lunar_landing', 'LLD', 'lld', 31, 120, 'LM_LLD_SRC', '{s}_run(s,n,0)'),
+    'lm-burn-baby': ('lm_burn_baby', 'LMBB', 'lmbb', 164, 224, 'LM_BB_SRC', '{s}_run(s,n,0)'),
 }
+
+
+
+def burn_baby_group(slot):
+    """lm-burn-baby's PRG of a routine slot: 2 for the bank-17 and bank-35
+    keys, 1 for the rest (platform/c64/lm_burn_baby_diagnostic.c)."""
+    src = (R / 'src/lm_burn_baby.c').read_text()
+    body = re.search(r'lmbb_routine_keys\[LMBB_ROUTINES\]=\{(.*?)\};', src, re.S).group(1)
+    banks = re.findall(r'K(\d\d|FF)\(', body)
+    return 2 if banks[slot] in ('17', '35') else 1
+
+
+# Modules built as several PRGs: (group macro, slot -> group). Each PRG gets
+# only its own rows.
+GROUPS = {'lm-burn-baby': ('LMBB_C64_GROUP', burn_baby_group)}
 
 
 def mk_var(milestone, name):
@@ -111,9 +127,19 @@ def main(milestone):
            f' * of tests/{stem}_vectors.h, chosen so that every entry, outcome and branch the',
            ' * host cases take is taken on the C64 (build/' + milestone + '-c64-cover.json), then',
            f' * spread with a stride of {STRIDE}. */',
-           f'#define {mac}_C64_COUNT {len(picked)}u',
-           *table('uint16_t', f'{sym}_c64_case', picked, '{}u,'),
-           *table('uint32_t', f'{sym}_c64', [digests[n] for n in picked], '0x{:08x}ul,')]
+           ]
+    if milestone in GROUPS:
+        macro, group = GROUPS[milestone]
+        of = {k: group(k) for k in range(slots)}
+        for g in sorted(set(of.values())):
+            mine = [n for n in picked if of[n % slots] == g]
+            out += [f'#if {macro}=={g}', f'#define {mac}_C64_COUNT {len(mine)}u',
+                    *table('uint16_t', f'{sym}_c64_case', mine, '{}u,'),
+                    *table('uint32_t', f'{sym}_c64', [digests[n] for n in mine], '0x{:08x}ul,'), '#endif']
+    else:
+        out += [f'#define {mac}_C64_COUNT {len(picked)}u',
+                *table('uint16_t', f'{sym}_c64_case', picked, '{}u,'),
+                *table('uint32_t', f'{sym}_c64', [digests[n] for n in picked], '0x{:08x}ul,')]
     (R / f'tests/{stem}_c64_vectors.h').write_text('\n'.join(out) + '\n')
     slot_rows = [sum(1 for n in picked if n % slots == k) for k in range(slots)]
     kinds = {f'kind {k}': [sum(1 for r in rows if r[1] == k), sum(1 for r in rows if r[1] == k and r[0] in picked)]

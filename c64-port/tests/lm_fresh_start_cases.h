@@ -7,7 +7,8 @@
  * SWCALL) until a point neither owns, or SWRETURN (a BANKCALL'd KLEAN entry
  * returning with Q = 3, which lm_interbank does not take). The image is
  * pseudo-random within the program's domain: restart-group phase pairs that
- * agree (one pair corrupted in some cases), MPAC +5/+6 as the group scan
+ * agree (one pair corrupted in some cases: a flipped bit, or -PHASEn equal
+ * to PHASEn), MPAC +5/+6 as the group scan
  * leaves them for the PINACT return, ERESTORE +0, -0, the address ERASCHK
  * was testing (061-01776, SKEEP7 equal to it) or a corrupt value, KLEAN
  * callers' Q a fixed-fixed return; FB/EB, SUPERBNK, the input channels (15,

@@ -4,9 +4,11 @@
  * of lm_interp_steps and lm_interp_orders. As in the other compiled
  * interpretive routines, each order and operand word appears below only as
  * the literal argument those paths take for the interpreter's bookkeeping.
- * Entries are the interpreter's own states: INTPRET with Q at the first
- * interpretive word (from the basic TC INTPRET), and NEWOPS with LOC at a
- * word the interpreter resumes on (a CALL's return or a branch target).
+ * Entries are the interpreter's own states: NEWOPS with LOC at a word the
+ * interpreter resumes on: the first word after a basic TC INTPRET (INTPRET,
+ * the interpreter's code, leaves LOC there), a CALL's return or a branch
+ * target. Each is an interpretive point of the transfer ABI, keyed by LOC
+ * under BANKSET.
  * Each run ends where the interpreter leaves these words: at NEWOPS of a
  * called routine, at the basic word after EXIT, at the RTB routine, or at
  * UNIT's alarm. See
@@ -19,7 +21,6 @@
 
 #define L(X) LANEC_LM_##X
 #define W s->words
-#define INTPRET 06037u
 #define NEWOPS 06070u
 
 /* MISCJUMP body entries (Luminary099 INTERPRETER). */
@@ -31,13 +32,13 @@ enum { DLOAD = 06052, VLOAD = 06505, DAD = 06775, DOT = 07331, UNIT = 03023 };
 static const agc_word K[16] = { 0, 0, 0, 0, 020000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 037777, 037777 };
 #define RR(n) (L(RRLOSDSP) + (n))
 
-typedef struct { uint16_t bank, z, at; } point;   /* at: Q at INTPRET, LOC at NEWOPS */
+typedef struct { uint16_t bank, z, at; } point;   /* at: LOC at NEWOPS */
 static const point entries[] = {
-    { 040u, INTPRET, RR(4u) }, { 040u, NEWOPS, RR(6u) }, { 040u, NEWOPS, RR(025u) }, { 040u, NEWOPS, RR(030u) },
+    { 040u, NEWOPS, RR(4u) }, { 040u, NEWOPS, RR(6u) }, { 040u, NEWOPS, RR(025u) }, { 040u, NEWOPS, RR(030u) },
     { 040u, NEWOPS, RR(042u) }, { 040u, NEWOPS, RR(045u) },
-    { 042u, INTPRET, L(TRMTRAK1) + 7u }, { 042u, NEWOPS, L(TRMTRAK1) + 9u },
-    { 043u, INTPRET, L(ATTACHIT) + 1u }, { 043u, NEWOPS, L(ATTACHIT) + 3u }, { 043u, NEWOPS, L(ATTACHIT) + 9u },
-    { 043u, INTPRET, L(ATTACHIT) + 16u }, { 043u, NEWOPS, L(ATTACHIT) + 18u }, { 043u, NEWOPS, L(ATTACHIT) + 21u },
+    { 042u, NEWOPS, L(TRMTRAK1) + 7u }, { 042u, NEWOPS, L(TRMTRAK1) + 9u },
+    { 043u, NEWOPS, L(ATTACHIT) + 1u }, { 043u, NEWOPS, L(ATTACHIT) + 3u }, { 043u, NEWOPS, L(ATTACHIT) + 9u },
+    { 043u, NEWOPS, L(ATTACHIT) + 16u }, { 043u, NEWOPS, L(ATTACHIT) + 18u }, { 043u, NEWOPS, L(ATTACHIT) + 21u },
     { 043u, NEWOPS, L(TCPIN) }
 };
 #define COUNT ((uint16_t)(sizeof(entries) / sizeof(entries[0])))
@@ -127,10 +128,9 @@ static void rrlosdsp(apollo_overlay_state *s, uint16_t at)
 
 static void run(apollo_overlay_state *s, p66_bias_io *io, const point *p)
 {
-    if (p->z == INTPRET) {
-        /* TC INTPRET; CALL RRNBMPAC (RRLOSDSP), INTSTALL (TRMTRAK1,
-         * ATTACHIT) or PTOALEM */
-        lmi_intpret(s, io);
+    if (p->at == RR(4u) || p->at == L(TRMTRAK1) + 7u || p->at == L(ATTACHIT) + 1u || p->at == L(ATTACHIT) + 16u) {
+        /* the first word after TC INTPRET: CALL RRNBMPAC (RRLOSDSP),
+         * INTSTALL (TRMTRAK1, ATTACHIT) or PTOALEM */
         lmi_newops(s, 077624);
         call(s, p->bank == 040u ? 046065 : p->at == L(ATTACHIT) + 16u ? 026760 : 027414);
         return;
@@ -183,13 +183,12 @@ const uint16_t *lanec_ev_lmi_entry(uint16_t i, uint16_t *bank, uint16_t *z, uint
 
 enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
-    uint16_t i, bank, at;
+    uint16_t i, bank;
     p66_bias_io pio;
     if (m != LANEC_LM || !lanec_registers_valid(s)) return LANEC_OUT_OF_SCOPE;
     bank = lanec_current_bank(s, io);
     for (i = 0; i < COUNT; ++i) {
-        at = entries[i].z == INTPRET ? W[LANEC_Q] : W[0164];
-        if (entries[i].bank == bank && entries[i].z == W[LANEC_Z] && entries[i].at == at) break;
+        if (entries[i].bank == bank && entries[i].z == W[LANEC_Z] && entries[i].at == W[0164]) break;
     }
     if (i == COUNT) return LANEC_OUT_OF_SCOPE;
     /* the interpreter's contract: no job change pending (NEWJOB +0), the job's
@@ -197,7 +196,7 @@ enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *s, lanec_io *io, e
      * area, and at NEWOPS EDOP +0 with
      * BANKSET naming the current banks and INTBIT15 its bit 15 */
     if (W[067] != 0 || W[0120] < 0200u || W[0120] >= 01400u - 060u) return LANEC_OUT_OF_SCOPE;
-    if (entries[i].z == NEWOPS && (W[023] != 0 || W[0165] != W[LANEC_BB] || W[0115] != (W[0165] & 040000u)))
+    if (W[023] != 0 || W[0165] != W[LANEC_BB] || W[0115] != (W[0165] & 040000u))
         return LANEC_OUT_OF_SCOPE;
     pio.superbank = io->superbank; pio.interrupt_enabled = io->interrupt_enabled;
     run(s, &pio, &entries[i]);
