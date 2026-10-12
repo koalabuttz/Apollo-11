@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-downtelemetry",
+  "release": "evidence-cm-downtelemetry",
+  "files": {
+    "cm-downtelemetry-data.json": {
+      "sha256": "956d7afc7df3275abe4dcca8ffc7bd18e101d0833b1e6843c9ff96aad5325041",
+      "bytes": 33369,
+      "store": "release"
+    },
+    "cm-downtelemetry-host.log": {
+      "sha256": "1dff9234a4aea42944992d8e60fead940966a2493c46b1d518cb48016ac4f1d8",
+      "bytes": 1650,
+      "store": "release"
+    },
+    "cm-downtelemetry-proof.json": {
+      "sha256": "15825d4995fab3e70ccc19087106179f4cb5e9d923cf6f1ebc68e9e155911b9a",
+      "bytes": 612,
+      "store": "tree"
+    },
+    "cm-downtelemetry-vice.log": {
+      "sha256": "a38cb446d97c7b1c517e8e685cac071c6bda51ca420b6745183580c4ee7774fe",
+      "bytes": 1918,
+      "store": "release"
+    }
+  }
+}

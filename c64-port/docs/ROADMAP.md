@@ -1656,7 +1656,7 @@ Qualify actual WAIT2 FIXDELAY VARDELAY insertion and original TASKOVER and alarm
 
 ## Translate Luminary lunar and solar ephemerides (LSPOS/LUNPOS, LUNVEL)
 
-Native C for all of Luminary099 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES (LSPOS/LUNPOS and LUNVEL, 74 words) as a chain of nine steps between original NEWOPS frontiers, with new compiled interpretive dispatch paths (`src/lm_interp_steps.c`) over the existing frozen arithmetic bodies. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entry states from every actual caller (strict and ASAN/UBSAN), 152 intermediate phase frontiers equal original NEWOPS images, 74 assembled words map to native literals after a fresh yaYUL assembly, and three C64 phase diagnostics pass 54 frozen steps in VICE. See `docs/LM-EPHEMERIS.md`.
+Native C for all of Luminary099 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES (LSPOS/LUNPOS and LUNVEL, 74 words) as a chain of nine steps between original NEWOPS frontiers, with new compiled interpretive dispatch paths (`src/lm_interp_steps.c`) over the existing frozen arithmetic bodies. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entry states from every actual caller (strict and ASAN/UBSAN), 152 intermediate phase frontiers equal original NEWOPS images, 74 assembled words map to native literals after a fresh yaYUL assembly, and four C64 phase diagnostics pass 54 frozen steps in VICE, each step dispatched through the control-transfer trampoline; LSPOS, LUNVEL and the phase frontiers are registered interpretive routines (`lm_ephemeris_routines`), and all 65536 sampled entries run through the trampoline on the host. See `docs/LM-EPHEMERIS.md`.
 
 ## Compile Comanche alarm call-site operands into native constants
 
@@ -1742,9 +1742,17 @@ Native C for the mark displays of DISPLAY_INTERFACE_ROUTINES in both Luminary099
 
 Native C for the shared apsides display subroutines of the Luminary099 targeting programs: RPAD, PERIAPO1, PERIAPO, SETRAD, LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT and SHIFTR1 from P34-35_P74-75 (bank 23) and MAXCHK/MAXNM from R30 (bank 22), 73 words, as ten steps between original NEWOPS frontiers that run the lm-conic-timerad milestone's APSIDES steps for PERIAPO. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entries from the routines' Luminary call returns (strict and ASAN/UBSAN), 118 intermediate phase frontiers equal original NEWOPS images, every assembled word maps to a native literal after a fresh yaYUL assembly, and four C64 phase diagnostics pass 63 frozen steps in VICE. See `docs/LM-PERIAPO.md`.
 
+## Translate Luminary THROTTLE_CONTROL_ROUTINES and FASTCHNG as transfer-ABI routines
+
+All of Luminary099 THROTTLE_CONTROL_ROUTINES (bank 31, 130 words: THROTTLE, AFDUMP, the critical-thrust bands, DOIT with THRUST and the channel 14 thrust drive, the FWEIGHT compensation, FLATOUT, WHATOUT, MASSMULT) and the LUNAR_LANDING_GUIDANCE_EQUATIONS FASTCHNG it calls run as nine native routines of the control-transfer ABI, with each source instruction one yaAGC-qualified `agc_image_ops` call. All 16,384 cases from THROTTLE, THROTTLE +3, FLATOUT and WHATOUT to the caller's return equal the original program in channel 14 and all 2,048 erasable words (strict and ASAN/UBSAN), every reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and every thirty-second case (512) passes in VICE. See `docs/LM-THROTTLE.md`.
+
 ## Translate Comanche TVCEXECUTIVE (TVCEXEC task, roll ladders, gain/mass and trim updates)
 
 Native C for all of Comanche055 TVCEXECUTIVE (bank 16 `2720`-`3137`, 144 words): the half-second TVCEXEC task, roll ladders and FDAI error, needles, variable gains and mass, one-shot and repetitive trim correction, and the TVCRESTARTS re-entries, from each of its 12 original continuation points to the next transfer out of the file (WAITLIST, IBNKCALL or TASKOVER). The final image and IRQ equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN (860 spin on the source's `TCF +0` for a negative VCNTR in both); all 144 words and 11 fixed constants are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-EXEC.md`.
+
+## Translate Comanche RESTARTS, RESTART_TABLES and NEWPHASE as transfer-ABI routines
+
+Comanche055 RESTARTS, GETPART2 and PHSPART2 select variable, table and X.1 display restarts natively from RESTART_TABLES words compiled from the source, and run as routines of the control-transfer ABI from RESTARTS to SWRETURN, handing each selected service its 2CADR. NEWPHASE, the executable part of RESTART_TABLES, is a routine entered from its nine `TC NEWPHASE` sites with its group operand compiled from the source. All 7,168 selection cases (including targeted signed-zero and overflow cases), 5,120 RESTARTS-to-SWRETURN compositions and 1,024 NEWPHASE calls equal the original Comanche055 program in all 2,048 erasable words, covering all 79 table entries and all nine NEWPHASE sites (15,908 strict and sanitizer checks), and every sixteenth case matches in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-RESTART-ROUTINES.md`.
 
 ## Run Luminary and Comanche IMU mode switching as native routines
 
@@ -1758,17 +1766,65 @@ Native C for the display job selection of DISPLAY_INTERFACE_ROUTINES in both Lum
 
 Native C for Luminary099 INITVEL (P34-35_P74-75, bank 11 02000-02274, 189 words). It includes HAVEGUES, INITVEL1-7 and INITVELX, and ORBITAL_INTEGRATION's SETITCTR (9 words) compiled inline. The routine is ten steps between original NEWOPS frontiers. It runs the lm-conic-lambert milestone's LAMBERT steps and stops at INTSTALL/INTEGRVS, which are not ported. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entries from the Luminary call returns and the integration returns (strict and ASAN/UBSAN). 7301 intermediate phase frontiers equal original NEWOPS images, and every assembled word maps to a native literal after a fresh yaYUL assembly. Four C64 phase diagnostics pass 49 frozen steps in VICE. It adds the shared VPROJ and fixed-TLOAD interpretive bodies. See `docs/LM-INITVEL.md`.
 
+## Translate Comanche TVCRESTARTS (TVC restart package, outcounter enables, EXRSTRT)
+
+Native C for all of Comanche055 TVCRESTARTS (bank 16 `3140`-`3271`, 90 words): the REDOTVC restart package, the ENABL1/ENABL2/CMDSOUT outcounter enables with their channel 12/14 writes, the PHSCHK2 and CHKSTRK restart choices, FINCOPY, TRIM/CMD and the EXRSTRT task, from each of its 6 original entry points to the next transfer out of the file (WAITLIST, RESUME, NOQRSM, POSTJUMP, IBNKCALL, ISWCALL or a TVCEXECUTIVE restart point). The final image and channels 12 and 14 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 90 words, 14 fixed constants and the 11-word TVCCADR/TVCEXADR table are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-RESTARTS.md`.
+
+## Translate Comanche PHASE_TABLE_MAINTENANCE as transfer-ABI routines
+
+Comanche055 NEWMODEX, NEWMODEA, MMDSPLAY, CHECKMM, PHASCHNG, 2PHSCHNG, SETUPDSP, PHSCHNG2 and CON2 run as routines of the control-transfer ABI, with every caller's inline operands (162 `TC` sites, 229 words, including each PHASCHNG/2PHSCHNG's variable-length tail decoded as the source decodes it) compiled from the source listing. All 4,096 cases, entered from every caller site plus NEWMODEA and MMDSPLAY from random banks, equal the original Comanche055 program in all 2,048 erasable words, the interrupt-enable state and SETUPDSP's NOVAC request (4,673 strict and sanitizer checks, every registered entry reached), and every sixteenth case matches in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-PHASE-TABLE.md`.
+
+## Translate Luminary TJET_LAW as a transfer-ABI routine
+
+All of Luminary099 TJET_LAW (bank 17, 314 words: the RCS jet-firing time law, with the phase-plane zones 1-5, the rough laws, Z123COMP and RUFSETUP) runs as one native TJETLAW routine of the control-transfer ABI, with each source instruction one yaAGC-qualified `agc_image_ops` call. All 16,384 cases for the P, U and V axes, from TJETLAW to the caller's return, equal the original program in all 2,048 erasable words (strict and ASAN/UBSAN). Every reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and every thirty-second case (512) passes in VICE. See `docs/LM-TJET-LAW.md`.
+
+## Translate Comanche TVCSTROKETEST (V68 stroke test initialization and HACK waveform)
+
+Native C for all of Comanche055 TVCSTROKETEST (bank 20 `3501`-`3611`, 73 words): the V68 STRKTSTI job (TSTINIT, STRKCHK) and the HACK waveform generator with its HACKWLST waitlist task, from each of its 4 original entry points to the next transfer out of the file (ENDOFJOB, WAITLIST, or TC BUNKER). The final image, channel 14 and interrupt enable equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 73 words, 8 fixed constants and the 7-word FCARD table are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-STROKE.md`.
+
+## Translate Luminary PHASE_TABLE_MAINTENANCE as transfer-ABI routines
+
+Luminary099 NEWMODEX, NEWMODEA, MMDSPLAY, CHECKMM, PHASCHNG, 2PHSCHNG, PHSCHNGA, SETUPDSP, PHSCHNG2 and CON2 run as routines of the control-transfer ABI, with every caller's inline operands (142 `TC` sites, 181 words, each PHASCHNG/2PHSCHNG tail decoded as the source decodes it) compiled from the source listing. All 4,096 cases, entered from every caller site (the PHSCHNGA site with each phase word its producer computes) plus NEWMODEA and MMDSPLAY from random banks, equal the original Luminary099 program in all 2,048 erasable words, the interrupt-enable state and SETUPDSP's NOVAC request (4,586 strict and sanitizer checks, every registered entry reached), and every sixteenth case matches in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-PHASE-TABLE.md`.
+
 ## Translate the DISPLAY_INTERFACE display sleep and wake
 
 Native C for the display sleep and wake code of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: GOSLEEPS, XCHSLEEP, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the flag updates after UPENT2/DOWNENT2, MARKWAKE/WAKEPLAY and the INITDSP restart entry. 2,176 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 242 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-SLEEP.md`.
+
+## Translate Luminary DAPIDLER_PROGRAM as transfer-ABI routines
+
+All of Luminary099 DAPIDLER_PROGRAM (banks 16 and 20, 284 words: CHEKBITS, CHEKMORE, the T5RUPT DAPIDLER with STARTDAP's initialization and SHUTDOWN, and the ALTDSPLY attitude-error needles with OVERSUB2 and the DAC loop) runs as nine native routines of the control-transfer ABI, with channels 5, 6, 12, 14, 30 and 31 in `lm_flight_io`. All 9,216 cases equal the original program in the outcome, the output channels and all 2,048 erasable words (strict and ASAN/UBSAN). Each case runs from its entry through the native Executive and inter-bank routines to RESUME, the IBNKCALL out of the file, the 1202 alarm or CHEKBITS's return. Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and every thirty-second case (288) passes in VICE. See `docs/LM-DAPIDLER.md`.
+
+## Translate Comanche DOWN-TELEMETRY_PROGRAM as transfer-ABI routines
+
+Comanche055 DODOWNTM, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The five downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Comanche055 program in channels 13, 34 and 35 after every downrupt, the channel-13 traps and all 2,048 erasable words (18,815 strict and sanitizer checks, every control word of all five downlists sent), and every second sequence matches in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-DOWNTELEMETRY.md`.
+
+## Translate Comanche TVCINITIALIZE (TVC DAP initialization, CSM/LM switch-over, LOADCOEF, S40.15)
+
+Native C for all of Comanche055 TVCINITIALIZE (bank 17 `2147`-`2551`, 259 words): TVCDAPON and MRCLEAN, TVCINIT1-4 with ATTINIT and NEEDLEIN, the DAPINIT T5 hand-off, the V46 CSM/LM switch-over (PRESWTCH, SWICHOVR, MCLEANJR), LOADCOEF and S40.15 with their coefficient tables, from each of its 9 original entry points to the next transfer out of the file. The final image, channel 11 and interrupt enable equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 259 words, 28 fixed constants and the coefficient, 2CADR and INDEX tables are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-INIT.md`.
+
+## Translate Comanche TVCROLLDAP (CM roll DAP during TVC: phase plane, firing time, roll jets)
+
+Native C for all of Comanche055 TVCROLLDAP (bank 16 `3272`-`3717`, 278 words): the ROLLDAP waitlist task (roll rate from OGANOW/OGAPAST, the six-region phase-plane switching logic, the firing-time division and limits, roll jet selection on channel 6 and the T6 hand-off) and the NOROLL1 T6 task, from both entry points to TASKOVER or NOQRSM. The final image and channels 6 and 13 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 278 words, 47 fixed constants and the NOROL1T6/LIMITS words are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-ROLL.md`.
+
+## Translate Luminary DOWN-TELEMETRY_PROGRAM as transfer-ABI routines
+
+Luminary099 DODOWNTM with WOTEST, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The six downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Luminary099 program in channels 13, 34 and 35 after every downrupt, the channel-13 traps and all 2,048 erasable words (18,830 strict and sanitizer checks, every control word of all six downlists sent), and every second sequence matches in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-DOWNTELEMETRY.md`.
 
 ## Translate the DISPLAY_INTERFACE ENDIDLE handling and display returns
 
 Native C for CLEANEND through TERMATE and PROCEED through ERASER of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: REST/RESTSLEP, FLASHSUB and the ENDIDLE call, the terminate, proceed and load returns, TIMECHEK, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS and ERASER, translated block by block. 3,840 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 226 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-IDLE.md`.
 
+## Translate Comanche TVCDAPS (CM pitch and yaw TVC autopilot: rate estimate, cascade filters, actuator commands)
+
+Native C for all of Comanche055 TVCDAPS (bank 20 `2530`-`3500`, 489 words): the PITCHDAP and YAWDAP T5 tasks (CDU rate limit, body-rate error, error limit, the three-cascade forward filter with VARK gain, offsets, actuator limit, TVC commands on TVCPITCH/TVCYAW with the channel 14 drive bits, precompensation and the DELBAR filter), the DAPINIT T5 task and the PCOPY/YCOPY copy cycles, from every entry to HACK, RESUME, NOQRSM or the caller's return. The final image and channel 14 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 489 words, 32 fixed constants, the TC Q dispatch and HACK returns are checked against the listing and rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-DAPS.md`.
+
 ## Translate the DISPLAY_INTERFACE display start-up
 
 Native C for PINBRNCH through V50PASTE of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: PINBRNCH, NORMBNCH, NVDSP (GOPLAY), NV50DSP and its returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND and V50PASTE, translated block by block. 3,200 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 247 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-NVDSP.md`.
+
+## Translate Luminary TRIM_GIMBAL_CONTROL_SYSTEM as transfer-ABI routines
+
+All of Luminary099 TRIM_GIMBAL_CONTROL_SYSTEM (banks 21 and 16, 388 words) runs as four native routines of the control-transfer ABI, with channel 12 in `lm_flight_io`. The routines are GTS (the trim gimbal control law, with GTSQRT and ROOTCYCL compiled inline), ACDT+C12, TIMEGMBL and its IBNKCALL return. 16,098 of 16,384 cases equal the original program in the outcome, channel 12 and all 2,048 erasable words (strict and ASAN/UBSAN). The remaining 286 GTS cases take the zero root with an INDEX SHFTFLAG outside BIT15-BIT2, where the original executes an arbitrary instruction; GTS refuses them with the image unchanged. Each case runs from its entry to CLOSEOUT, the caller's return, or ACDT+C12 reached through the native IBNKCALL. Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and every thirty-second case (512) passes in VICE. See `docs/LM-TRIM-GIMBAL.md`.
 
 ## Draft the DISPLAY_INTERFACE_ROUTINES full-file certificates
 

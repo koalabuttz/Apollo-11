@@ -1,0 +1,20 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 48,
+ "snapshot_sha256": "ce99bbba67fdbaa72304a44088309cd51f2a0a0929ec983847ff5f9dd4617cbc",
+ "entries": [
+  "05,3506 DODOWNTM",
+  "DNTMGOTO (erasable 0335)",
+  "05,3515 DNPHASE1",
+  "05,3523 DNPHASE2",
+  "05,3707 DNDUMPI",
+  "05,3712 DNDUMPI+3",
+  "05,3722 DNDUMP",
+  "05,3735 DNDUMP1"
+ ],
+ "downrupts": 18500,
+ "boundary": "DOWNRUPT lead-in state at DODOWNTM to TCF RESUME, for every downrupt of each case",
+ "full_physical_words": 2048
+}

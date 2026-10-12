@@ -1,0 +1,20 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 48,
+ "snapshot_sha256": "2880fbd3ddb8ddd2e2c622583c0511379c585e21f3959958f4dc4c4a8b3d099a",
+ "entries": [
+  "05,3521 DODOWNTM",
+  "DNTMGOTO (erasable 0335)",
+  "05,3530 DNPHASE1",
+  "05,3536 DNPHASE2",
+  "05,3722 DNDUMPI",
+  "05,3725 DNDUMPI+3",
+  "05,3735 DNDUMP",
+  "05,3750 DNDUMP1"
+ ],
+ "downrupts": 18500,
+ "boundary": "DOWNRUPT lead-in state at DODOWNTM to TCF RESUME, for every downrupt of each case",
+ "full_physical_words": 2048
+}

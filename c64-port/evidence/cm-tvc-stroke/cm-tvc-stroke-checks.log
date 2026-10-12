@@ -1,0 +1,6 @@
+cm-tvc-stroke: 128 frozen original TVCSTROKETEST states, entry refusals: PASS
+PASS 65536 original TVCSTROKETEST oracle states equal native 2053-word rows {'returned': 65536} 94ea5d9a5c893f5251f33c7219668041c0c61adcfa39a23c84174c775ea2020a
+PASS 73 original TVCSTROKETEST words mapped; listing equals rope; 8 fixed constants and the 7-word FCARD table equal native literals
+cm-tvc-stroke: 128 frozen original TVCSTROKETEST states, entry refusals: PASS
+PASS 65536 original TVCSTROKETEST oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} 94ea5d9a5c893f5251f33c7219668041c0c61adcfa39a23c84174c775ea2020a
+PASS: VICE PAL cm-tvc-stroke.prg: 128 checks, 0 failures

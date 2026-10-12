@@ -15,6 +15,7 @@ test-cm-tvc-exec: build/test-cm-tvc-exec
 	./build/test-cm-tvc-exec
 	python3 tools/cm_tvc_exec_differential.py
 	python3 tools/cm_tvc_exec_source.py
+	python3 tools/cm_flight_assembly_comparison.py cm-tvc-exec TVCEXECUTIVE.agc
 sanitize-cm-tvc-exec: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer $(CM_TVC_EXEC_SRC) $(CM_TVC_EXEC_TEST) -o build/test-cm-tvc-exec-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-tvc-exec-sanitize
