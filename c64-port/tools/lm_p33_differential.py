@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""Run unchanged Luminary099 in the pinned yaAGC oracle from every lm-p33
+case (tests/lm_p33_cases.c) to its first stop, check the native trampoline
+run of the P33/P73, AVFLAGA, AVFLAGP, P20FLGON and DISDVLVC routines against every row, pin the stream identity, and
+freeze per-case digests: tests/lm_p33_vectors.h (all cases, and the two C64 groups' samples). Archives the oracle stream as
+build/lm-p33-reference.snapshots.bin.xz and writes build/lm-p33-proof.json
+with the stops per routine. --record rewrites the pinned identity."""
+import argparse,collections,hashlib,json,lzma,pathlib,struct,subprocess,sys
+R=pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(R/'tools'))
+from lm_p33_core import CORE,CASES
+ROW=4106;ROUTINES=43;STATES=ROUTINES*512
+PIN=R/'evidence/lm-p33/lm-p33-source-stream.json'
+NAMES=['P33/P73A interp (2225)','P33/P73B (2233)','after ADVANCE (2235)','after CDHMVR (2237)','after INTINT3P (2245)','after ACTIVE (2247)','after INTINT3P (2255)','after PASSIVE (2257)','after S33/34.1 (2264)','after INTPRET (2277)','P33/P73C (2302)','P33/P73D (2306)','P33/P73E (2314)','P33/P73F (2325)','after INTPRET (2340)','after S32/33.1 (2343)','after VN1645 (2345)','DISDVLVC (2370)','after S32/33.X (2374)','GOTO NORMEX (2406)',
+ 'P33 (2216)','after AVFLAGA (2217)','P73 (2220)','P33/P73A (2221)','after P20FLGON (2222)','after VNPOOH (2224)','alarm (2266)','after ALARM (2270)','terminate (2273)','proceed (2274)','recycle (2275)','INTPRET (2276)','V06N75 (2335)','after VNPOOH (2337)','AVFLAGA (2347)','after UPFLAG (2353)','AVFLAGP (2354)','after DOWNFLAG (2360)','P20FLGON (2361)','after UPFLAG (2365)','after UPFLAG (2367)','after DISDVLVC EXIT (2403)','after VNPOOH (2405)']
+def digest(vals):
+ a=b=0
+ for v in vals:a=(a+v)&0xffff;b=(b+a)&0xffff
+ return b<<16|a
+def table(name,values):
+ out=[f'static const uint32_t {name}[{len(values)}]={{']
+ for i in range(0,len(values),6):out.append(''.join(f'0x{v:08x}ul,'for v in values[i:i+6]))
+ return out+['};']
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('--record',action='store_true');a=p.parse_args()
+(R/'build').mkdir(exist_ok=True)
+if not (R/'build/agc_engine_hardware_dv.o').exists():subprocess.run([sys.executable,'tools/prepare_hardware_dv.py'],cwd=R,check=True)
+subprocess.run(['gcc','-std=c99','-O2','-DLM_P33_NO_TRAMPOLINE','-Iinclude','-Itests','-Ideps/virtualagc/yaAGC','-Itools','tools/lm_p33_reference.c',*CASES,'tests/cm_executive_cases.c','src/agc_word.c','build/agc_engine_hardware_dv.o','deps/virtualagc/yaAGC/agc_engine_init.o','deps/virtualagc/yaAGC/rfopen.o','-lm','-o','build/lm-p33-reference'],cwd=R,check=True)
+subprocess.run(['cc','-std=c99','-O2','-Wall','-Wextra','-Werror','-Wconversion','-pedantic','-Iinclude','-Itests','tools/lm_p33_snapshot.c',*CORE,'-lm','-o','build/lm-p33-native'],cwd=R,check=True)
+ref=subprocess.Popen(['build/lm-p33-reference','deps/lm-rtb-fixture/MAIN.agc.bin',str(STATES)],cwd=R,stdout=subprocess.PIPE)
+nat=subprocess.Popen(['build/lm-p33-native',str(STATES)],cwd=R,stdout=subprocess.PIPE)
+out_path=R/'build/lm-p33-reference.snapshots.bin.xz';tmp=out_path.with_suffix('.xz.part');archive=lzma.open(tmp,'wb',preset=6)
+h=hashlib.sha256();size=0;tags=collections.Counter();digests=[];stops=collections.defaultdict(collections.Counter)
+for n in range(STATES):
+ x=ref.stdout.read(ROW);y=nat.stdout.read(ROW)
+ if len(x)!=ROW or x!=y:
+  ref.kill();nat.kill()
+  if len(x)==ROW==len(y):
+   X=struct.unpack('<2053H',x);Y=struct.unpack('<2053H',y)
+   print('FAIL case',n,[(f'{i-5:04o}',f'{v:06o}',f'{Y[i]:06o}')for i,v in enumerate(X)if v!=Y[i]][:25])
+  else:print('FAIL case',n,'short row')
+  raise SystemExit(1)
+ X=struct.unpack('<2053H',x);h.update(x);archive.write(x);size+=len(x);tags[X[4]]+=1
+ digests.append(digest([X[4],*X[5:],X[2]]))
+ w=X[5:];z=w[5];fb=w[4]&0o76000
+ if z==0o6070:name=f'NEWOPS {fb>>10:02o},{w[0o164]:04o}'
+ else:name={0o5504:'UPFLAG',0o5516:'DOWNFLAG',0o3712:'VNPOOH',0o5567:'ALARM',0o4616:'BANKCALL',0o6001:'GOTOPOOH',0o1470:'SUBEXIT',0o6037:'INTPRET',0o5726:'POODOO1 (1302)'}.get(z,f'Z {z:04o}')
+ stops[NAMES[n%ROUTINES]][name]+=1
+if ref.stdout.read(1)or nat.stdout.read(1)or ref.wait()or nat.wait():raise SystemExit('FAIL producer exit or trailing bytes')
+archive.close();tmp.replace(out_path)
+identity=dict(archive='build/lm-p33-reference.snapshots.bin.xz',decoded_sha256=h.hexdigest(),decoded_bytes=size,cases=STATES,tag_counts={str(k):v for k,v in sorted(tags.items())},oracle='pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)')
+if a.record:PIN.parent.mkdir(parents=True,exist_ok=True);PIN.write_text(json.dumps(identity,indent=2)+'\n')
+pin=json.loads(PIN.read_text())
+if (pin['decoded_sha256'],pin['decoded_bytes'])!=(identity['decoded_sha256'],size):raise SystemExit('FAIL oracle stream differs from the pinned identity')
+head=['/* SPDX-License-Identifier: MIT; generated by tools/lm_p33_differential.py: digests of the',' * original Luminary099 run of every lm-p33 case (see tests/lm_p33_cases.h). */']
+# C64 samples: each group's cases spread over the 512 variants, cycling
+# through the group's entries (case k: variant k*512/count, entry k%len).
+# Group 1 holds DISDVLVC's S32/33.X return (MXV); group 2 every other
+# entry (C64 RAM).
+GROUPS={1:(18,),2:tuple(r for r in range(ROUTINES)if r!=18)};COUNT={1:128,2:504}
+c64={g:[k*512//COUNT[g]*ROUTINES+r[k%len(r)]for k in range(COUNT[g])]for g,r in GROUPS.items()}
+lines=[*head,f'#define LM_P33_VECTORS {len(digests)}u','#ifndef LM_P33_C64_GROUP',*table('lm_p33_expected',digests)]
+for g,r in GROUPS.items():lines+=[f'#elif LM_P33_C64_GROUP=={g}',f'#define LM_P33_C64_CASES {len(c64[g])}u','static const uint8_t lm_p33_c64_routine[%d]={%s};'%(len(r),','.join(map(str,r))),*table('lm_p33_expected',[digests[n]for n in c64[g]])]
+(R/'tests/lm_p33_vectors.h').write_text('\n'.join([*lines,'#endif'])+'\n')
+proof=dict(cases=STATES,c64_groups={str(g):len(v)for g,v in c64.items()},stream_sha256=h.hexdigest(),stops={k:dict(sorted(v.items()))for k,v in stops.items()},boundary='each case runs from its entry (NEWOPS or Z) through the trampoline (this file\'s routines) to the first point outside them; the oracle stops at the same point (tests/lm_p33_cases.c lm_p33_stop: a NEWOPS outside 35,2225-2265, 2277-2346, 2370-2402 and 2406-2407, UPFLAG, DOWNFLAG, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, E 1470 (SUBEXIT), POODOO1)',compared='2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK')
+(R/'build/lm-p33-proof.json').write_text(json.dumps(proof,indent=1)+'\n')
+print(f'PASS {STATES} original P33 entries equal native trampoline runs',h.hexdigest(),flush=True)
