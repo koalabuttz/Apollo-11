@@ -7,7 +7,7 @@ CM_FS_HDR = include/cm_fresh_start.h include/cm_interbank_routines.h include/cm_
 all: build/test-cm-fresh-start
 test: test-cm-fresh-start
 sanitize: sanitize-cm-fresh-start
-build/test-cm-fresh-start: $(CM_FS_SRC) tests/test_cm_fresh_start.c tests/cm_fresh_start_vectors.h $(CM_FS_HDR) | build
+build/test-cm-fresh-start: $(CM_FS_SRC) tests/test_cm_fresh_start.c tests/cm_fresh_start_vectors.h tests/cm_fresh_start_c64_vectors.h $(CM_FS_HDR) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_FS_SRC) tests/test_cm_fresh_start.c -o $@
 test-cm-fresh-start: build/test-cm-fresh-start
 	python3 tools/file_operands_generate.py cm-fresh-start --check

@@ -21,7 +21,10 @@ void lm_fs_input(apollo_overlay_state *s,lm_fresh_io *io,agc_hardware *hw,uint16
  /* Restart groups 1-6: PHASEn and -PHASEn agree, n inactive (+0), active or negative. */
  for(g=0;g<6u;++g){unsigned m=upto(&seed,4);agc_word ph=m==0u?0u:m==1u?(agc_word)(1u+upto(&seed,040)):m==2u?word(&seed):(agc_word)(AGC_MASK-upto(&seed,040));
   s->words[0753u+2u*g]=ph;s->words[0752u+2u*g]=(agc_word)(~ph&AGC_MASK);}
- if(upto(&seed,8)==0u)s->words[0752u+2u*upto(&seed,6)]^=(agc_word)(1u<<upto(&seed,15));
+ /* An eighth corrupt: a bit of one -PHASEn flipped, or (a quarter of
+  * those) -PHASEn equal to PHASEn, which PCLOOP's RXOR makes +0. */
+ if(upto(&seed,8)==0u){g=upto(&seed,6);
+  if(upto(&seed,4))s->words[0752u+2u*g]^=(agc_word)(1u<<upto(&seed,15));else s->words[0752u+2u*g]=s->words[0753u+2u*g];}
  /* The group scan's counters, as PINACT finds them after RESTARTS. */
  s->words[0161]=(agc_word)upto(&seed,6);s->words[0162]=(agc_word)upto(&seed,7);
  /* ERESTORE: +0, -0, the address under test (SKEEP7 equal) or corrupt. */

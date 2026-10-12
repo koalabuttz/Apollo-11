@@ -1,0 +1,152 @@
+{
+ "cases": 21504,
+ "c64_groups": {
+  "1": 128,
+  "2": 128,
+  "3": 128,
+  "4": 128,
+  "5": 128,
+  "6": 518
+ },
+ "stream_sha256": "4459efd37b0b8653f3e4791c250e192e935f07c69002d16597c22d9511fd9b29",
+ "stops": {
+  "after V83CALL INTPRET (3132)": {
+   "LOADTIME": 512
+  },
+  "after LOADTIME (3134)": {
+   "NEWOPS 13,3057": 512
+  },
+  "after LEMPREC (3136)": {
+   "NEWOPS 13,3043": 512
+  },
+  "DOCMBASE (3144)": {
+   "NEWOPS 13,3043": 512
+  },
+  "after CSMPREC (3147)": {
+   "INTPRET": 255,
+   "PRIOCHNG": 257
+  },
+  "after REV83 INTPRET (3166)": {
+   "LOADTIME": 512
+  },
+  "after LOADTIME (3170)": {
+   "NEWOPS 13,3414": 512
+  },
+  "after INTSTALL (3172)": {
+   "NEWOPS 13,3107": 512
+  },
+  "OTHCONIC (3211)": {
+   "NEWOPS 13,3414": 512
+  },
+  "after INTSTALL (3217)": {
+   "NEWOPS 13,3107": 512
+  },
+  "OTHINT (3222)": {
+   "NEWOPS 13,3107": 512
+  },
+  "COMPDISP (3240)": {
+   "NEWOPS 37,3246": 512
+  },
+  "RANGE (3246)": {
+   "NEWOPS 23,3661": 512
+  },
+  "after CDU*NBSM (3263)": {
+   "ARCCOS": 512
+  },
+  "after ARCCOS (3304)": {
+   "ENDEXT": 258,
+   "INTPRET": 128,
+   "PRIOCHNG": 126
+  },
+  "GETRVN (3331)": {
+   "PRIOCHNG": 512
+  },
+  "after PRIOCHNG (3347)": {
+   "NEWOPS 13,3414": 256,
+   "NEWOPS 37,3355": 256
+  },
+  "VXM VSL1 (3355)": {
+   "NEWOPS 37,3240": 512
+  },
+  "GETRVN2 (3363)": {
+   "NEWOPS 13,3414": 512
+  },
+  "after INTSTALL (3365)": {
+   "NEWOPS 13,3107": 512
+  },
+  "R31SURF (3371)": {
+   "LOADTIME": 512
+  },
+  "after LOADTIME (3373)": {
+   "NEWOPS 13,3057": 512
+  },
+  "after LEMPREC (3375)": {
+   "NEWOPS 13,3414": 512
+  },
+  "ONEBASE (3404)": {
+   "LOADTIME": 512
+  },
+  "DISPN5X (3113)": {
+   "BANKCALL": 512
+  },
+  "B5OFF (3116)": {
+   "B5OFF": 512
+  },
+  "B5OFF (3117)": {
+   "B5OFF": 512
+  },
+  "recycle (3120)": {
+   "BANKCALL": 512
+  },
+  "V83CALL (3121)": {
+   "INTPRET": 386,
+   "PRIOCHNG": 126
+  },
+  "REV83 (3155)": {
+   "INTPRET": 256,
+   "PRIOCHNG": 256
+  },
+  "after EXIT (3316)": {
+   "ENDEXT": 253,
+   "INTPRET": 129,
+   "PRIOCHNG": 130
+  },
+  "GETRVN (3326)": {
+   "PRIOCHNG": 512
+  },
+  "after PRIOCHNG (3330)": {
+   "INTPRET": 512
+  },
+  "after EXIT (3344)": {
+   "PRIOCHNG": 512
+  },
+  "after PRIOCHNG (3346)": {
+   "INTPRET": 512
+  },
+  "R31SURF (3370)": {
+   "INTPRET": 512
+  },
+  "MUNG? (3377)": {
+   "INTPRET": 257,
+   "PRIOCHNG": 255
+  },
+  "ONEBASE (3403)": {
+   "INTPRET": 512
+  },
+  "R31CALL (40,3674)": {
+   "FINDVAC": 512
+  },
+  "DSPDELAY (40,3700)": {
+   "FIXDELAY": 512
+  },
+  "after FIXDELAY (40,3702)": {
+   "FIXDELAY": 255,
+   "NOVAC": 257
+  },
+  "after NOVAC (40,3712)": {
+   "TASKOVER": 512
+  }
+ },
+ "boundary": "each case runs from its entry (NEWOPS or Z) through the trampoline (this file's routines) to the first point outside them; the oracle stops at the same point (tests/lm_r31_cases.c lm_r31_stop: a NEWOPS at the split points 37,3240, 3246 and 3355 or outside 37,3132-3154, 3166-3315, 3331-3343, 3347-3367, 3371-3376 and 3404-3406, LOADTIME, ARCCOS, FINDVAC, FIXDELAY, NOVAC, TASKOVER, BANKCALL, B5OFF, PRIOCHNG, ENDEXT, INTPRET, POODOO1, UNIT 1302 exit)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}

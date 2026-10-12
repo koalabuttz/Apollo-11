@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-transfer",
+  "release": "evidence-lanec-ev-transfer",
+  "files": {
+    "lanec-ev-refuse-diff.json": {
+      "sha256": "86caa4d502a3f02724598615325de109f0302ebbd1468a9fcfaea80fa1bdc6c2",
+      "bytes": 158,
+      "store": "tree"
+    },
+    "lanec-ev-transfer-c64-diff.json": {
+      "sha256": "8e99efff4e28688411546f0729c2d3d58af4ef2bfec76de001a0c1a8ce37b5e4",
+      "bytes": 240,
+      "store": "tree"
+    },
+    "lanec-ev-transfer-c64-oracle.crc": {
+      "sha256": "3b4a09528438fd4cc722a0a13a37a2ba48c751dd06d9f276af7a1564ee8894c0",
+      "bytes": 758,
+      "store": "tree"
+    },
+    "lanec-ev-transfer-diff.json": {
+      "sha256": "da0a0c5afb4fb25be4541bf1ba838177e1e5eab44c395069bb0eb7c7b03d3bba",
+      "bytes": 237,
+      "store": "tree"
+    },
+    "lanec-ev-transfer-oracle.crc": {
+      "sha256": "bf9f2581d63d28731269ca3083286a2d4dcbfe3d1ee9dc2d29c17a8a4d873991",
+      "bytes": 5974,
+      "store": "tree"
+    },
+    "lanec-ev-transfer-sanitize.txt": {
+      "sha256": "04c9474e2844e472398d60ae25f284f71851ab9f6ce515723e256491aa985ecc",
+      "bytes": 362,
+      "store": "tree"
+    },
+    "lanec-ev-transfer-vice.txt": {
+      "sha256": "9aab6c5632916b8826a6a7d26e89782a1f199cb4343d317f835d48632140b4b4",
+      "bytes": 60,
+      "store": "tree"
+    }
+  }
+}

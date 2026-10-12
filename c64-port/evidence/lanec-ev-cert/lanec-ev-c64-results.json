@@ -8,7 +8,8 @@
   "PASS: VICE PAL lanec-ev-dap.prg: 258 checks, 0 failures",
   "PASS: VICE PAL lanec-ev-time.prg: 231 checks, 0 failures",
   "PASS: VICE PAL lanec-ev-track.prg: 210 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-lmi.prg: 138 checks, 0 failures"
+  "PASS: VICE PAL lanec-ev-lmi.prg: 138 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-transfer.prg: 64 checks, 0 failures"
  ],
  "prg_sha256": {
   "lanec-ev-front.prg": "8a34b91897d03fc387da9bd601c6559812eae2519a5eaf0ab51bbd80f7febcec",
@@ -18,6 +19,7 @@
   "lanec-ev-dap.prg": "092911e73b722ca32c884ffd4ec5081d0b509cea474e5b07d90fdbb6154a294e",
   "lanec-ev-time.prg": "1de6eea7f2010e016bfc3f5af913a0d18f19e66a6176669b1231924b3d4b1ff9",
   "lanec-ev-track.prg": "2ed55cd76a399cd875c85d939b5b9bc76206d128e27247438fcd9c1e6ad014f8",
-  "lanec-ev-lmi.prg": "321f3b30fc55a7f5dc258060b5687f4f937e5c6520b38c982507d3c69534274f"
+  "lanec-ev-lmi.prg": "6afdb2f19ac89e56a8c94c4b7a8d1019eb831d2fb848750c17960307a59f6f6d",
+  "lanec-ev-transfer.prg": "77c8ef3d7bd449e32711ed5c6db112ccccc340e043c28dca697c1e20901faf1f"
  }
 }

@@ -1,0 +1,10 @@
+{
+  "archive": "build/lm-r31-reference.snapshots.bin.xz",
+  "decoded_sha256": "4459efd37b0b8653f3e4791c250e192e935f07c69002d16597c22d9511fd9b29",
+  "decoded_bytes": 88295424,
+  "cases": 21504,
+  "tag_counts": {
+    "1": 21504
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

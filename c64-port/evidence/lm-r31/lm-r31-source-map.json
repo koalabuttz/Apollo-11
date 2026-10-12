@@ -1,0 +1,2104 @@
+{
+ "source_paths": [
+  "Luminary099/R31.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/R31.agc": "cf6d473c416217944c5868907c26bdb1fa970b8020a3198cb0cbc991c0c0926f"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_r31_routines.c",
+ "native_sha256": "04596e6ad55afa3229cc699b9fd5acd4e8722e6e578be0d0e3371fe2fbc46f42",
+ "source_words": 204,
+ "source_lines": 202,
+ "symbols": {
+  "R31CALL": "40,3674",
+  "DSPDELAY": "40,3700",
+  "DISPN5X": "37,3113",
+  "V83CALL": "37,3121",
+  "DOCMBASE": "37,3144",
+  "REV83": "37,3155",
+  "OTHCONIC": "37,3211",
+  "OTHINT": "37,3222",
+  "COMPDISP": "37,3240",
+  "GETRVN": "37,3326",
+  "GETRVN2": "37,3363",
+  "R31SURF": "37,3370",
+  "MUNG?": "37,3377",
+  "ONEBASE": "37,3403",
+  "V16N54": "37,3407",
+  "LOADTIME": "10,3573",
+  "LEMPREC": "13,3057",
+  "CSMPREC": "13,3043",
+  "INTSTALL": "13,3414",
+  "INTEGRVS": "13,3107",
+  "NORMUNX1": "10,3724",
+  "CDU*NBSM": "23,3661",
+  "GOMARKF": "10,2334",
+  "REFSMMAT": "E3,1733",
+  "MOONTHIS": "0000174",
+  "MUNFLAG": "0000141",
+  "AVEGFLAG": "0000163",
+  "SURFFLAG": "0000177",
+  "RANGE": "E4,1600",
+  "RRATE": "E4,1602",
+  "RTHETA": "E4,1604",
+  "BASETHP": "E4,1567",
+  "BASETHV": "E4,1504",
+  "BASEOTP": "E4,1537",
+  "BASEOTV": "E4,1517",
+  "BASETIME": "E4,1513",
+  "FLAGWRD6": "0102",
+  "FLAGWRD7": "0103",
+  "FLAGWRD8": "0104",
+  "EXTVBACT": "1044",
+  "FINDVAC": "5105",
+  "FIXDELAY": "5221",
+  "NOVAC": "5072",
+  "TASKOVER": "5261",
+  "BANKCALL": "4616",
+  "B5OFF": "5563",
+  "PRIOCHNG": "5146",
+  "ENDEXT": "5472",
+  "INTPRET": "6037",
+  "ARCCOS": "00,3612",
+  "PRIO3": "5015",
+  "PRIO5": "5017",
+  "PRIO22": "7710",
+  "BIT5": "4747",
+  "BIT12": "4740",
+  "AVEGFBIT": "4747",
+  "SURFFBIT": "4744",
+  "MUNFLBIT": "4744",
+  "UNITZ": "23,2513",
+  "DPPOSMAX": "23,2527"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 36,
+   "address": "40,3674",
+   "source": "R31CALL CAF PRIO3",
+   "words": [
+    "35015"
+   ],
+   "native": "r31call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 37,
+   "address": "40,3675",
+   "source": "TC FINDVAC",
+   "words": [
+    "05105"
+   ],
+   "native": "r31call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 39,
+   "address": "40,3676",
+   "source": "2CADR V83CALL",
+   "words": [
+    "03121",
+    "76067"
+   ],
+   "native": "r31call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 41,
+   "address": "40,3700",
+   "source": "DSPDELAY TC FIXDELAY",
+   "words": [
+    "05221"
+   ],
+   "native": "dspdelay"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 42,
+   "address": "40,3701",
+   "source": "DEC 100",
+   "words": [
+    "00144"
+   ],
+   "native": "dspdelay"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 43,
+   "address": "40,3702",
+   "source": "CA EXTVBACT",
+   "words": [
+    "31044"
+   ],
+   "native": "fixdelay_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 44,
+   "address": "40,3703",
+   "source": "MASK BIT12",
+   "words": [
+    "74740"
+   ],
+   "native": "fixdelay_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 45,
+   "address": "40,3704",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "fixdelay_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 46,
+   "address": "40,3705",
+   "source": "BZF DSPDELAY",
+   "words": [
+    "13700"
+   ],
+   "native": "fixdelay_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 48,
+   "address": "40,3706",
+   "source": "CAF PRIO5",
+   "words": [
+    "35017"
+   ],
+   "native": "fixdelay_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 49,
+   "address": "40,3707",
+   "source": "TC NOVAC",
+   "words": [
+    "05072"
+   ],
+   "native": "fixdelay_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 51,
+   "address": "40,3710",
+   "source": "2CADR DISPN5X",
+   "words": [
+    "03113",
+    "76067"
+   ],
+   "native": "fixdelay_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 53,
+   "address": "40,3712",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15261"
+   ],
+   "native": "r_taskover"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 60,
+   "address": "37,3113",
+   "source": "DISPN5X CAF V16N54",
+   "words": [
+    "33407"
+   ],
+   "native": "dispn5x"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 61,
+   "address": "37,3114",
+   "source": "TC BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "dispn5x"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 62,
+   "address": "37,3115",
+   "source": "CADR GOMARKF",
+   "words": [
+    "20334"
+   ],
+   "native": "dispn5x"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 63,
+   "address": "37,3116",
+   "source": "TC B5OFF",
+   "words": [
+    "05563"
+   ],
+   "native": "b5off_1"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 64,
+   "address": "37,3117",
+   "source": "TC B5OFF",
+   "words": [
+    "05563"
+   ],
+   "native": "b5off_2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 65,
+   "address": "37,3120",
+   "source": "TCF DISPN5X",
+   "words": [
+    "13113"
+   ],
+   "native": "redisplay"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 67,
+   "address": "37,3121",
+   "source": "V83CALL CS FLAGWRD7",
+   "words": [
+    "40103"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 68,
+   "address": "37,3122",
+   "source": "MASK AVEGFBIT",
+   "words": [
+    "74747"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 69,
+   "address": "37,3123",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 70,
+   "address": "37,3124",
+   "source": "BZF MUNG?",
+   "words": [
+    "13377"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 72,
+   "address": "37,3125",
+   "source": "CS FLAGWRD8",
+   "words": [
+    "40104"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 73,
+   "address": "37,3126",
+   "source": "MASK SURFFBIT",
+   "words": [
+    "74744"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 74,
+   "address": "37,3127",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 75,
+   "address": "37,3130",
+   "source": "BZF ONEBASE",
+   "words": [
+    "13403"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 77,
+   "address": "37,3131",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "v83call"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 78,
+   "address": "37,3132",
+   "source": "RTB",
+   "words": [
+    "77634"
+   ],
+   "native": "v83_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 80,
+   "address": "37,3133",
+   "source": "LOADTIME",
+   "words": [
+    "21573"
+   ],
+   "native": "v83_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 81,
+   "address": "37,3134",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "v83_lemprec"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 82,
+   "address": "37,3135",
+   "source": "LEMPREC",
+   "words": [
+    "27057"
+   ],
+   "native": "v83_lemprec"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 83,
+   "address": "37,3136",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 84,
+   "address": "37,3137",
+   "source": "RATT1",
+   "words": [
+    "00017"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 85,
+   "address": "37,3140",
+   "source": "STOVL BASETHP",
+   "words": [
+    "26170"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 86,
+   "address": "37,3141",
+   "source": "VATT1",
+   "words": [
+    "00025"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 87,
+   "address": "37,3142",
+   "source": "STODL BASETHV",
+   "words": [
+    "16105"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 88,
+   "address": "37,3143",
+   "source": "TAT",
+   "words": [
+    "00015"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 89,
+   "address": "37,3144",
+   "source": "DOCMBASE STORE BASETIME",
+   "words": [
+    "02114"
+   ],
+   "native": "docmbase"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 90,
+   "address": "37,3145",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "docmbase"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 91,
+   "address": "37,3146",
+   "source": "CSMPREC",
+   "words": [
+    "27043"
+   ],
+   "native": "docmbase"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 92,
+   "address": "37,3147",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "csmprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 93,
+   "address": "37,3150",
+   "source": "RATT1",
+   "words": [
+    "00017"
+   ],
+   "native": "csmprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 94,
+   "address": "37,3151",
+   "source": "STOVL BASEOTP",
+   "words": [
+    "26140"
+   ],
+   "native": "csmprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 95,
+   "address": "37,3152",
+   "source": "VATT1",
+   "words": [
+    "00025"
+   ],
+   "native": "csmprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 96,
+   "address": "37,3153",
+   "source": "STORE BASEOTV",
+   "words": [
+    "02120"
+   ],
+   "native": "csmprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 97,
+   "address": "37,3154",
+   "source": "EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "csmprec_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 99,
+   "address": "37,3155",
+   "source": "REV83 CS FLAGWRD7",
+   "words": [
+    "40103"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 100,
+   "address": "37,3156",
+   "source": "MASK AVEGFBIT",
+   "words": [
+    "74747"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 101,
+   "address": "37,3157",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 102,
+   "address": "37,3160",
+   "source": "BZF GETRVN",
+   "words": [
+    "13326"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 104,
+   "address": "37,3161",
+   "source": "CS FLAGWRD8",
+   "words": [
+    "40104"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 105,
+   "address": "37,3162",
+   "source": "MASK SURFFBIT",
+   "words": [
+    "74744"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 106,
+   "address": "37,3163",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 107,
+   "address": "37,3164",
+   "source": "BZF R31SURF",
+   "words": [
+    "13370"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 109,
+   "address": "37,3165",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "rev83"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 110,
+   "address": "37,3166",
+   "source": "RTB",
+   "words": [
+    "77634"
+   ],
+   "native": "rev83_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 111,
+   "address": "37,3167",
+   "source": "LOADTIME",
+   "words": [
+    "21573"
+   ],
+   "native": "rev83_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 112,
+   "address": "37,3170",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "rev83_intstall"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 113,
+   "address": "37,3171",
+   "source": "INTSTALL",
+   "words": [
+    "27414"
+   ],
+   "native": "rev83_intstall"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 114,
+   "address": "37,3172",
+   "source": "VLOAD CLEAR",
+   "words": [
+    "43175"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 115,
+   "address": "37,3173",
+   "source": "BASETHP",
+   "words": [
+    "02170"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 116,
+   "address": "37,3174",
+   "source": "MOONFLAG",
+   "words": [
+    "00263"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 117,
+   "address": "37,3175",
+   "source": "STOVL RCV",
+   "words": [
+    "25535"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 118,
+   "address": "37,3176",
+   "source": "BASETHV",
+   "words": [
+    "02105"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 119,
+   "address": "37,3177",
+   "source": "STODL VCV",
+   "words": [
+    "15543"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 120,
+   "address": "37,3200",
+   "source": "BASETIME",
+   "words": [
+    "02114"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 121,
+   "address": "37,3201",
+   "source": "BOF SET",
+   "words": [
+    "43014"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 122,
+   "address": "37,3202",
+   "source": "MOONTHIS",
+   "words": [
+    "04344"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 123,
+   "address": "37,3203",
+   "source": "+2",
+   "words": [
+    "77205"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 124,
+   "address": "37,3204",
+   "source": "MOONFLAG",
+   "words": [
+    "00063"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 125,
+   "address": "37,3205",
+   "source": "SET",
+   "words": [
+    "77614"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 126,
+   "address": "37,3206",
+   "source": "INTYPFLG",
+   "words": [
+    "01473"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 127,
+   "address": "37,3207",
+   "source": "STCALL TET",
+   "words": [
+    "35517"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 128,
+   "address": "37,3210",
+   "source": "INTEGRVS",
+   "words": [
+    "27107"
+   ],
+   "native": "intstall_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 129,
+   "address": "37,3211",
+   "source": "OTHCONIC VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "othconic"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 131,
+   "address": "37,3212",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "othconic"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 132,
+   "address": "37,3213",
+   "source": "STOVL RONE",
+   "words": [
+    "26207"
+   ],
+   "native": "othconic"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 133,
+   "address": "37,3214",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "othconic"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 134,
+   "address": "37,3215",
+   "source": "STCALL VONE",
+   "words": [
+    "36215"
+   ],
+   "native": "othconic"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 135,
+   "address": "37,3216",
+   "source": "INTSTALL",
+   "words": [
+    "27414"
+   ],
+   "native": "othconic"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 136,
+   "address": "37,3217",
+   "source": "SET DLOAD",
+   "words": [
+    "71214"
+   ],
+   "native": "intstall_ret2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 137,
+   "address": "37,3220",
+   "source": "INTYPFLG",
+   "words": [
+    "01473"
+   ],
+   "native": "intstall_ret2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 138,
+   "address": "37,3221",
+   "source": "TAT",
+   "words": [
+    "00015"
+   ],
+   "native": "intstall_ret2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 139,
+   "address": "37,3222",
+   "source": "OTHINT STORE TDEC1",
+   "words": [
+    "00041"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 140,
+   "address": "37,3223",
+   "source": "VLOAD CLEAR",
+   "words": [
+    "43175"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 141,
+   "address": "37,3224",
+   "source": "BASEOTP",
+   "words": [
+    "02140"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 142,
+   "address": "37,3225",
+   "source": "MOONFLAG",
+   "words": [
+    "00263"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 143,
+   "address": "37,3226",
+   "source": "STOVL RCV",
+   "words": [
+    "25535"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 144,
+   "address": "37,3227",
+   "source": "BASEOTV",
+   "words": [
+    "02120"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 145,
+   "address": "37,3230",
+   "source": "STODL VCV",
+   "words": [
+    "15543"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 146,
+   "address": "37,3231",
+   "source": "BASETIME",
+   "words": [
+    "02114"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 147,
+   "address": "37,3232",
+   "source": "BOF SET",
+   "words": [
+    "43014"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 148,
+   "address": "37,3233",
+   "source": "MOONTHIS",
+   "words": [
+    "04344"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 149,
+   "address": "37,3234",
+   "source": "+2",
+   "words": [
+    "77236"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 150,
+   "address": "37,3235",
+   "source": "MOONFLAG",
+   "words": [
+    "00063"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 151,
+   "address": "37,3236",
+   "source": "STCALL TET",
+   "words": [
+    "35517"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 152,
+   "address": "37,3237",
+   "source": "INTEGRVS",
+   "words": [
+    "27107"
+   ],
+   "native": "othint"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 153,
+   "address": "37,3240",
+   "source": "COMPDISP VLOAD VSU",
+   "words": [
+    "52375"
+   ],
+   "native": "compdisp"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 154,
+   "address": "37,3241",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "compdisp"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 155,
+   "address": "37,3242",
+   "source": "RONE",
+   "words": [
+    "02207"
+   ],
+   "native": "compdisp"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 156,
+   "address": "37,3243",
+   "source": "RTB PDDL",
+   "words": [
+    "65234"
+   ],
+   "native": "compdisp"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 157,
+   "address": "37,3244",
+   "source": "NORMUNX1",
+   "words": [
+    "21724"
+   ],
+   "native": "compdisp"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 158,
+   "address": "37,3245",
+   "source": "36D",
+   "words": [
+    "00045"
+   ],
+   "native": "compdisp"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 159,
+   "address": "37,3246",
+   "source": "SL*",
+   "words": [
+    "77657"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 160,
+   "address": "37,3247",
+   "source": "0,1",
+   "words": [
+    "20201"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 161,
+   "address": "37,3250",
+   "source": "STOVL RANGE",
+   "words": [
+    "26201"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 162,
+   "address": "37,3251",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 163,
+   "address": "37,3252",
+   "source": "VSU DOT",
+   "words": [
+    "50251"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 164,
+   "address": "37,3253",
+   "source": "VONE",
+   "words": [
+    "02215"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 165,
+   "address": "37,3254",
+   "source": "SL1",
+   "words": [
+    "77752"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 166,
+   "address": "37,3255",
+   "source": "STOVL RRATE",
+   "words": [
+    "26203"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 167,
+   "address": "37,3256",
+   "source": "RONE",
+   "words": [
+    "02207"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 168,
+   "address": "37,3257",
+   "source": "UNIT PDVL",
+   "words": [
+    "63256"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 169,
+   "address": "37,3260",
+   "source": "UNITZ",
+   "words": [
+    "06514"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 170,
+   "address": "37,3261",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 171,
+   "address": "37,3262",
+   "source": "CDU*NBSM",
+   "words": [
+    "47661"
+   ],
+   "native": "range_rate"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 172,
+   "address": "37,3263",
+   "source": "VXM PUSH",
+   "words": [
+    "41505"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 173,
+   "address": "37,3264",
+   "source": "REFSMMAT",
+   "words": [
+    "01734"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 174,
+   "address": "37,3265",
+   "source": "VPROJ VSL2",
+   "words": [
+    "72431"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 175,
+   "address": "37,3266",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 176,
+   "address": "37,3267",
+   "source": "BVSU UNIT",
+   "words": [
+    "53445"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 177,
+   "address": "37,3270",
+   "source": "6D",
+   "words": [
+    "00007"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 178,
+   "address": "37,3271",
+   "source": "PDVL VXV",
+   "words": [
+    "47315"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 179,
+   "address": "37,3272",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 180,
+   "address": "37,3273",
+   "source": "VONE",
+   "words": [
+    "02215"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 182,
+   "address": "37,3274",
+   "source": "VXV DOT",
+   "words": [
+    "50235"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 183,
+   "address": "37,3275",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 184,
+   "address": "37,3276",
+   "source": "12D",
+   "words": [
+    "00015"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 185,
+   "address": "37,3277",
+   "source": "PDVL",
+   "words": [
+    "77715"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 186,
+   "address": "37,3300",
+   "source": "DOT SIGN",
+   "words": [
+    "75241"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 187,
+   "address": "37,3301",
+   "source": "6D",
+   "words": [
+    "00007"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 188,
+   "address": "37,3302",
+   "source": "12D",
+   "words": [
+    "00015"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 189,
+   "address": "37,3303",
+   "source": "SL2 ACOS",
+   "words": [
+    "65512"
+   ],
+   "native": "cdunbsm_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 190,
+   "address": "37,3304",
+   "source": "STOVL RTHETA",
+   "words": [
+    "26205"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 191,
+   "address": "37,3305",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 192,
+   "address": "37,3306",
+   "source": "DOT BPL",
+   "words": [
+    "51041"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 193,
+   "address": "37,3307",
+   "source": "6D",
+   "words": [
+    "00007"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 194,
+   "address": "37,3310",
+   "source": "+5",
+   "words": [
+    "77315"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 195,
+   "address": "37,3311",
+   "source": "DLOAD DSU",
+   "words": [
+    "45345"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 196,
+   "address": "37,3312",
+   "source": "DPPOSMAX",
+   "words": [
+    "06530"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 197,
+   "address": "37,3313",
+   "source": "RTHETA",
+   "words": [
+    "02205"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 198,
+   "address": "37,3314",
+   "source": "STORE RTHETA",
+   "words": [
+    "02205"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 199,
+   "address": "37,3315",
+   "source": "EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "acos_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 201,
+   "address": "37,3316",
+   "source": "CA BIT5",
+   "words": [
+    "34747"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 202,
+   "address": "37,3317",
+   "source": "MASK EXTVBACT",
+   "words": [
+    "71044"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 203,
+   "address": "37,3320",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 204,
+   "address": "37,3321",
+   "source": "BZF ENDEXT",
+   "words": [
+    "15472"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 206,
+   "address": "37,3322",
+   "source": "CS EXTVBACT",
+   "words": [
+    "41044"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 207,
+   "address": "37,3323",
+   "source": "MASK BIT12",
+   "words": [
+    "74740"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 208,
+   "address": "37,3324",
+   "source": "ADS EXTVBACT",
+   "words": [
+    "27044"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 209,
+   "address": "37,3325",
+   "source": "TCF REV83",
+   "words": [
+    "13155"
+   ],
+   "native": "exit_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 211,
+   "address": "37,3326",
+   "source": "GETRVN CA PRIO22",
+   "words": [
+    "37710"
+   ],
+   "native": "getrvn"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 212,
+   "address": "37,3327",
+   "source": "TC PRIOCHNG",
+   "words": [
+    "05146"
+   ],
+   "native": "getrvn"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 213,
+   "address": "37,3330",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "prio_ret"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 214,
+   "address": "37,3331",
+   "source": "VLOAD SETPD",
+   "words": [
+    "40375"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 215,
+   "address": "37,3332",
+   "source": "RN",
+   "words": [
+    "01221"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 216,
+   "address": "37,3333",
+   "source": "0",
+   "words": [
+    "00001"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 217,
+   "address": "37,3334",
+   "source": "STOVL RONE",
+   "words": [
+    "26207"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 218,
+   "address": "37,3335",
+   "source": "VN",
+   "words": [
+    "01227"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 219,
+   "address": "37,3336",
+   "source": "STOVL VONE",
+   "words": [
+    "26215"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 220,
+   "address": "37,3337",
+   "source": "V(CSM)",
+   "words": [
+    "01726"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 221,
+   "address": "37,3340",
+   "source": "PDVL PDDL",
+   "words": [
+    "65315"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 222,
+   "address": "37,3341",
+   "source": "R(CSM)",
+   "words": [
+    "01720"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 223,
+   "address": "37,3342",
+   "source": "PIPTIME",
+   "words": [
+    "01235"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 224,
+   "address": "37,3343",
+   "source": "EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "getrvn_i"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 225,
+   "address": "37,3344",
+   "source": "CA PRIO3",
+   "words": [
+    "35015"
+   ],
+   "native": "getrvn_exit"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 226,
+   "address": "37,3345",
+   "source": "TC PRIOCHNG",
+   "words": [
+    "05146"
+   ],
+   "native": "getrvn_exit"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 227,
+   "address": "37,3346",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "prio_ret2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 228,
+   "address": "37,3347",
+   "source": "BOFF VLOAD",
+   "words": [
+    "77214"
+   ],
+   "native": "getrvn_i2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 229,
+   "address": "37,3350",
+   "source": "MUNFLAG",
+   "words": [
+    "03347"
+   ],
+   "native": "getrvn_i2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 230,
+   "address": "37,3351",
+   "source": "GETRVN2",
+   "words": [
+    "77363"
+   ],
+   "native": "getrvn_i2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 232,
+   "address": "37,3352",
+   "source": "VXM VSR4",
+   "words": [
+    "60505"
+   ],
+   "native": "getrvn_i2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 233,
+   "address": "37,3353",
+   "source": "REFSMMAT",
+   "words": [
+    "01734"
+   ],
+   "native": "getrvn_i2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 234,
+   "address": "37,3354",
+   "source": "PDVL",
+   "words": [
+    "77715"
+   ],
+   "native": "getrvn_i2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 235,
+   "address": "37,3355",
+   "source": "VXM VSL1",
+   "words": [
+    "76505"
+   ],
+   "native": "vxm_vsl1"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 236,
+   "address": "37,3356",
+   "source": "REFSMMAT",
+   "words": [
+    "01734"
+   ],
+   "native": "vxm_vsl1"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 237,
+   "address": "37,3357",
+   "source": "PUSH SETPD",
+   "words": [
+    "40206"
+   ],
+   "native": "vxm_vsl1"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 238,
+   "address": "37,3360",
+   "source": "0",
+   "words": [
+    "00001"
+   ],
+   "native": "vxm_vsl1"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 239,
+   "address": "37,3361",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "vxm_vsl1"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 240,
+   "address": "37,3362",
+   "source": "COMPDISP",
+   "words": [
+    "77240"
+   ],
+   "native": "vxm_vsl1"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 242,
+   "address": "37,3363",
+   "source": "GETRVN2 CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "getrvn2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 243,
+   "address": "37,3364",
+   "source": "INTSTALL",
+   "words": [
+    "27414"
+   ],
+   "native": "getrvn2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 244,
+   "address": "37,3365",
+   "source": "CLEAR GOTO",
+   "words": [
+    "52014"
+   ],
+   "native": "intstall_ret3"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 245,
+   "address": "37,3366",
+   "source": "INTYPFLG",
+   "words": [
+    "01673"
+   ],
+   "native": "intstall_ret3"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 246,
+   "address": "37,3367",
+   "source": "OTHINT",
+   "words": [
+    "77222"
+   ],
+   "native": "intstall_ret3"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 247,
+   "address": "37,3370",
+   "source": "R31SURF TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "r31surf"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 248,
+   "address": "37,3371",
+   "source": "RTB",
+   "words": [
+    "77634"
+   ],
+   "native": "r31surf_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 249,
+   "address": "37,3372",
+   "source": "LOADTIME",
+   "words": [
+    "21573"
+   ],
+   "native": "r31surf_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 250,
+   "address": "37,3373",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "r31surf_lemprec"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 251,
+   "address": "37,3374",
+   "source": "LEMPREC",
+   "words": [
+    "27057"
+   ],
+   "native": "r31surf_lemprec"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 252,
+   "address": "37,3375",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "lemprec_ret2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 253,
+   "address": "37,3376",
+   "source": "OTHCONIC",
+   "words": [
+    "77211"
+   ],
+   "native": "lemprec_ret2"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 254,
+   "address": "37,3377",
+   "source": "MUNG? CS FLAGWRD6",
+   "words": [
+    "40102"
+   ],
+   "native": "mung"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 255,
+   "address": "37,3400",
+   "source": "MASK MUNFLBIT",
+   "words": [
+    "74744"
+   ],
+   "native": "mung"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 256,
+   "address": "37,3401",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "mung"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 257,
+   "address": "37,3402",
+   "source": "BZF GETRVN",
+   "words": [
+    "13326"
+   ],
+   "native": "mung"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 259,
+   "address": "37,3403",
+   "source": "ONEBASE TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "onebase"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 260,
+   "address": "37,3404",
+   "source": "RTB GOTO",
+   "words": [
+    "52034"
+   ],
+   "native": "onebase_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 261,
+   "address": "37,3405",
+   "source": "LOADTIME",
+   "words": [
+    "21573"
+   ],
+   "native": "onebase_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 262,
+   "address": "37,3406",
+   "source": "DOCMBASE",
+   "words": [
+    "77144"
+   ],
+   "native": "onebase_rtb"
+  },
+  {
+   "path": "Luminary099/R31.agc",
+   "line": 264,
+   "address": "37,3407",
+   "source": "V16N54 VN 1654",
+   "words": [
+    "04066"
+   ],
+   "native": "K_V16N54"
+  }
+ ],
+ "covered_ranges": [
+  "40,3674-40,3712",
+  "37,3113-37,3407"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every word of R31.agc is owned by the registered routine entered at the first address of its range or is a constant equal to its native literal: interpretive words are literal bookkeeping arguments in source order, basic words belong to the routine whose ENTRY names the address, the erasable words and destinations the code names equal their native macros, and V16N54, UNITZ, DPPOSMAX and the PRIO and BIT masks equal their native literals."
+}

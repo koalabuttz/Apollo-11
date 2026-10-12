@@ -12,7 +12,8 @@ static unsigned below(uint32_t *s,unsigned n){return (unsigned)((rnd(s)>>16)%n);
 int lm_stateup_leaves(agc_word z,agc_word fb,agc_word superbank,agc_word loc,agc_word bankset){
  uint16_t ph;
  if(z<02000u)return z!=2u;
- if(z==NEWOPS){ph=agc_fixed_physical(loc,bankset,superbank);return !(ph>=013u*1024u+026u&&ph<=013u*1024u+067u);}
+ if(z==NEWOPS){ph=agc_fixed_physical(loc,bankset,superbank);
+  return !((ph>=013u*1024u+026u&&ph<=013u*1024u+067u)||(ph>=04u*1024u+0144u&&ph<=04u*1024u+0146u));}
  if(z>=06037u&&z<=07707u)return 0;
  if(z>=04000u)return 1;
  ph=agc_fixed_physical(z,fb,superbank);
@@ -26,7 +27,7 @@ void lm_stateup_input(apollo_overlay_state *m,p66_bias_io *io,uint16_t n){
  W[7]=0;W[0]=agc_extend(W[0]);W[1]=agc_extend(W[1]);
  io->interrupt_enabled=(uint16_t)below(&seed,2u);io->superbank=(agc_word)(below(&seed,4u)<<4);
  eb=(agc_word)(below(&seed,8u)<<8);
- W[4]=(agc_word)(013u<<10);W[3]=eb;W[6]=(agc_word)(W[4]|(eb>>8));
+ W[4]=(agc_word)((lm_stateup_entries[k]>=02144u?04u:013u)<<10);W[3]=eb;W[6]=(agc_word)(W[4]|(eb>>8));
  W[5]=NEWOPS;W[LOC]=lm_stateup_entries[k];W[BANKSET]=W[6];W[023]=0;W[0115]=040000u;
  W[067]=below(&seed,5u)==4u?(agc_word)(below(&seed,0400u)+1u):0u;
  vac=(agc_word)(0401u+054u*below(&seed,5u));W[0120]=vac;W[0166]=(agc_word)(vac+below(&seed,043u));
