@@ -28,6 +28,7 @@ for line in listing.splitlines():
   assert word(bank,addr+k)==int(raw,8),(oct(addr+k),raw)
  lab,op,opnd=(m[8],m[9] or '',m[10] or '') if len(m[7])<12 else ('',m[8],m[9] or '')
  off=m[11] if len(m[7])<12 else m[10]
+ if op.startswith('+'):lab,op,opnd,off=op,opnd,(m[10] if len(m[7])>=12 else m[11]) or '',None
  if off and off.startswith('+'):opnd+=' '+off
  inst=int(m[5],8);prev=out[-1] if out else None
  if op in('CAF','CS','AD','MASK') and opnd and not (prev and prev['op']=='INDEX'):

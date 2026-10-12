@@ -603,9 +603,9 @@
    "bank": "16",
    "address": "3230",
    "raw_octal": "04740",
-   "label": "",
-   "op": "+3",
-   "operand": "TC",
+   "label": "+3",
+   "op": "TC",
+   "operand": "IBNKCALL",
    "native_label": "L3225"
   },
   {
@@ -663,9 +663,9 @@
    "bank": "16",
    "address": "3236",
    "raw_octal": "04701",
-   "label": "",
-   "op": "+4",
-   "operand": "TC",
+   "label": "+4",
+   "op": "TC",
+   "operand": "POSTJUMP",
    "native_label": "L3236"
   },
   {
@@ -843,9 +843,9 @@
    "bank": "16",
    "address": "3260",
    "raw_octal": "40675",
-   "label": "",
-   "op": "+1",
-   "operand": "CADR",
+   "label": "+1",
+   "op": "CADR",
+   "operand": "PCOPY",
    "native_label": "L3253"
   },
   {
@@ -853,9 +853,9 @@
    "bank": "16",
    "address": "3261",
    "raw_octal": "03205",
-   "label": "",
-   "op": "+2",
-   "operand": "GENADR",
+   "label": "+2",
+   "op": "GENADR",
+   "operand": "CMDSOUT",
    "native_label": "L3253"
   },
   {
@@ -863,9 +863,9 @@
    "bank": "16",
    "address": "3262",
    "raw_octal": "41051",
-   "label": "",
-   "op": "+3",
-   "operand": "CADR",
+   "label": "+3",
+   "op": "CADR",
+   "operand": "YCOPY",
    "native_label": "L3253"
   },
   {
@@ -883,9 +883,9 @@
    "bank": "16",
    "address": "3264",
    "raw_octal": "03003",
-   "label": "",
-   "op": "+1",
-   "operand": "GENADR",
+   "label": "+1",
+   "op": "GENADR",
+   "operand": "EXECCOPY",
    "native_label": "L3253"
   },
   {
@@ -893,9 +893,9 @@
    "bank": "16",
    "address": "3265",
    "raw_octal": "03011",
-   "label": "",
-   "op": "+2",
-   "operand": "GENADR",
+   "label": "+2",
+   "op": "GENADR",
+   "operand": "1SHOTCHK",
    "native_label": "L3253"
   },
   {
@@ -903,9 +903,9 @@
    "bank": "16",
    "address": "3266",
    "raw_octal": "03040",
-   "label": "",
-   "op": "+3",
-   "operand": "GENADR",
+   "label": "+3",
+   "op": "GENADR",
+   "operand": "TEMPSET",
    "native_label": "L3253"
   },
   {
@@ -913,9 +913,9 @@
    "bank": "16",
    "address": "3267",
    "raw_octal": "03043",
-   "label": "",
-   "op": "+4",
-   "operand": "GENADR",
+   "label": "+4",
+   "op": "GENADR",
+   "operand": "CORSETUP",
    "native_label": "L3253"
   },
   {
@@ -923,9 +923,9 @@
    "bank": "16",
    "address": "3270",
    "raw_octal": "03121",
-   "label": "",
-   "op": "+5",
-   "operand": "GENADR",
+   "label": "+5",
+   "op": "GENADR",
+   "operand": "CORCOPY",
    "native_label": "L3253"
   },
   {
@@ -933,9 +933,9 @@
    "bank": "16",
    "address": "3271",
    "raw_octal": "03132",
-   "label": "",
-   "op": "+6",
-   "operand": "GENADR",
+   "label": "+6",
+   "op": "GENADR",
+   "operand": "CNTRCOPY",
    "native_label": "L3253"
   }
  ]
