@@ -1161,6 +1161,16 @@
           ],
           "scope": "Canonical original vector-left shift through true DANZIG with actual overflow and all source scratch; other interpreter bodies remain open.",
           "verification": "docs/NATIVE-SBAND-VECTOR-SHIFT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "The 59 compiled interpretive order bodies and dispatch steps (address formation, load/store/push, DP and vector arithmetic, shifts, DDV/BDDV, SQRT/UNIT/ABVAL, BOV/RTB/SWRETURN, branches, index orders, CALL/GOTO/EXIT/INTPRET) built with Comanche055 fixed addresses; POLY is built but not exercised. Callers, the remaining orders (trig, ACOS/ASIN alarm paths), and whole-interpreter dispatch stay open.",
+          "verification": "docs/CM-INTERP-BODIES.md"
         }
       ]
     },
