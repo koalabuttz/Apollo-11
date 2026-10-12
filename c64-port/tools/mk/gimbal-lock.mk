@@ -32,4 +32,4 @@ c64-gimbal-lock: $(GLA_C64_PRGS)
 build/gimbal-lock-%.prg: $(GLA_SRC) platform/c64/gimbal_lock_diagnostic.c tools/mk/gimbal-lock.groups $(GLA_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(GLA_MOS_FLAGS) $(GIMBAL_LOCK_GROUP_FLAGS_$*) -Wl,-Map,build/gimbal-lock-$*.map $(GLA_C64_$(GIMBAL_LOCK_GROUP_MISSION_$*)) $(GLA_C64_COMMON) platform/c64/gimbal_lock_diagnostic.c -o $@
 vice-gimbal-lock: $(GLA_C64_PRGS)
-	for p in $(GLA_C64_PRGS); do sha256sum $$p; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(GLA_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

@@ -32,4 +32,4 @@ c64-sband-antenna: $(SBA_C64_PRGS)
 build/sband-antenna-%.prg: $(SBA_SRC) platform/c64/sband_antenna_diagnostic.c tools/mk/sband-antenna.groups $(SBA_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(SBA_MOS_FLAGS) $(SBAND_ANTENNA_GROUP_FLAGS_$*) -Wl,-Map,build/sband-antenna-$*.map $(SBA_C64_$(SBAND_ANTENNA_GROUP_MISSION_$*)) $(SBA_C64_COMMON) platform/c64/sband_antenna_diagnostic.c -o $@
 vice-sband-antenna: $(SBA_C64_PRGS)
-	for p in $(SBA_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(SBA_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

@@ -263,6 +263,13 @@ SPECS = {
         # after LXC,1 X1 is its complement.
         'all_states': {'01325': [0, 2, 4, 6], '01130': [0, 2, 4, 6],
                        'vac+046': [0o77777 ^ r for r in (0, 2, 4, 6)]},
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         'freeze_stride': 32,
     },
     'lm-orbital-integration': {
@@ -350,6 +357,16 @@ SPECS = {
         # GOMARKFR's returns (terminate, proceed, recycle, immediate) land on
         # words nothing in the file reaches.
         'resume_orphans': True,
+        # X2 (VAC+39D) picks the sphere for SLOAD BHIZ X2: 0 Earth, 2 Moon,
+        # and -0.
+        'all_states': {'vac+047': [0, 2, 0o77777]},
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         'freeze_stride': 32,
     },
     'cm-imu-calibration': {
@@ -431,6 +448,13 @@ SPECS = {
         'states': {'NORMLOP+3': {'00154': [4], '00155': [2]}, 'TARGDRVE': {'00000': [0, 6]}},
         # One case per routine: the cases carry many edits, and the header
         # must stay under 1 MB.
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         'freeze_stride': 640,
     },
 }

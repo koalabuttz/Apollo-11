@@ -14,11 +14,11 @@ Lane D1 (IMU and hardware). Milestone `sband-antenna`. How the routines are made
 Both files are in bank 42, so they run as FB 32 under superbank 4. The compiler keys and decodes them that way (`docs/INTERP-COMPILE.md`).
 
 Destinations outside the file stop with `EXEC_UNMAPPED` until their files have routines:
-- basic: BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG, BLANKET, B5OFF, ENDOFJOB, ENDEXT;
+- basic: BANKCALL (R02BOTH, GOMARKFR, and in Comanche DELAYJOB), PRIOCHNG (Luminary only), BLANKET, B5OFF, ENDOFJOB, ENDEXT;
 - interpretive: CALL and STCALL to LEMCONIC or CSMCONIC, LUNPOS, CDUTRIG and *SMNB*;
 - CHANG2, when a DANZIG finds NEWJOB positive (`resume_keys`). The Executive resumes the job at NEWOPS with LOC +1, which is the key of the next routine.
 
-RTB LOADTIME is native (`src/rtb_angles.c`). SIN, COS and ASIN are the compiled interpreter bodies.
+RTB LOADTIME is native (`src/rtb_angles.c`). SIN, COS, and ASIN (Luminary) or ACOS (Comanche) are the compiled interpreter bodies.
 
 ## Evidence
 

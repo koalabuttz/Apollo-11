@@ -3177,9 +3177,9 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, VMOON, REFSMMAT, the CDU angles, the pushdown list, RCM at 2D among it).",
         "external_continuations": [
-          "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
+          "BANKCALL (R02BOTH, GOMARKFR, DELAYJOB) and BLANKET with their inline words",
           "B5OFF, ENDOFJOB and ENDEXT (no return)",
           "Interpretive CALL and STCALL to CSMCONIC, LUNPOS, CDUTRIG and *SMNB*",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",

@@ -31,4 +31,4 @@ c64-cm-imu-calibration: $(CIC_C64_PRGS)
 build/cm-imu-calibration-%.prg: $(CIC_SRC) platform/c64/cm_imu_calibration_diagnostic.c tools/mk/cm-imu-calibration.groups $(CIC_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(CIC_MOS_FLAGS) $(CM_IMU_CALIBRATION_GROUP_FLAGS_$*) -Wl,-Map,build/cm-imu-calibration-$*.map $(CIC_C64_$(CM_IMU_CALIBRATION_GROUP_MISSION_$*)) $(CIC_C64_COMMON) platform/c64/cm_imu_calibration_diagnostic.c -o $@
 vice-cm-imu-calibration: $(CIC_C64_PRGS)
-	for p in $(CIC_C64_PRGS); do sha256sum $$p; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(CIC_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
