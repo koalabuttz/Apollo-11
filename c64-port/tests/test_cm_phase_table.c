@@ -13,6 +13,10 @@
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s case %u\n",what,n);}}
+/* One routine call at Z, for refusals (a step-limited run would also end
+ * in EXEC_OUT_OF_SCOPE after a routine that succeeded). */
+static enum exec_status once(const agc_native_program *p,apollo_overlay_state *s,cm_native_io *io){
+ agc_routine call=agc_transfer_resolve(p,s,io?io->superbank:0u);return call?call(p,s,io):EXEC_UNMAPPED;}
 static unsigned reached[CM_PT_ROUTINES];
 static enum exec_status count(const agc_native_program *p,apollo_overlay_state *s,void *io){
  unsigned i;uint16_t at=agc_transfer_point(p,s,((cm_native_io *)io)->superbank);
@@ -40,9 +44,9 @@ int main(void){apollo_overlay_state s;cm_native_io io;cm_pt_log log;unsigned n,i
  {agc_native_program p={&cm_phase_table_routines,1,0,0,cm_phase_sites,CM_PHASE_SITE_WORDS,AGC_TRANSFER_NONE,0,0,0,0,0};
   for(n=0;n<cm_pt_site_count();++n){cm_pt_input(&s,&io,(uint16_t)n);
    if(n<CM_PHASE_SITE_COUNT){s.words[2]=(agc_word)(s.words[2]+cm_phase_site_list[n].words);
-    check(agc_transfer_run(&p,&s,&io,&io.superbank,0xfffeu,1,&steps)==EXEC_OUT_OF_SCOPE,"non-site Q",n);}
+    check(once(&p,&s,&io)==EXEC_OUT_OF_SCOPE,"non-site Q",n);}
    cm_pt_input(&s,&io,(uint16_t)n);
-   check(agc_transfer_run(&p,&s,0,&io.superbank,0xfffeu,1,&steps)==EXEC_OUT_OF_SCOPE,"no io",n);}
+   check(once(&p,&s,0)==EXEC_OUT_OF_SCOPE,"no io",n);}
   cm_pt_input(&s,&io,0);s.words[5]=CM_PT_PHSCHNG2;s.words[4]=024000u;s.words[6]=(agc_word)(024000u|(s.words[3]>>8));
   (void)agc_transfer_run(&p,&s,&io,&io.superbank,0xfffeu,1,&steps);
   check(s.words[5]==CM_PT_PHSCHNG2,"PHSCHNG2 only in bank 10",0);}
