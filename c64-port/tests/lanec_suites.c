@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include <string.h>
 #include "lanec_suites.h"
-static const lanec_suite *const suites[] = { &lanec_suite_ev_front, &lanec_suite_pin_gaps, &lanec_suite_di_dsp, &lanec_suite_di_mark, &lanec_suite_di_play, &lanec_suite_di_sleep, &lanec_suite_di_idle, &lanec_suite_di_nvdsp, &lanec_suite_ev_short, &lanec_suite_ev_align, &lanec_suite_ev_radar, &lanec_suite_ev_dap, &lanec_suite_ev_time, &lanec_suite_ev_track, &lanec_suite_ev_lmi, &lanec_suite_di_transfer, &lanec_suite_di_transfer_c64, &lanec_suite_di_refuse, &lanec_suite_ev_transfer, &lanec_suite_ev_transfer_c64, &lanec_suite_ev_refuse, &lanec_suite_pw_blanksub };
+static const lanec_suite *const suites[] = { &lanec_suite_ev_front, &lanec_suite_pin_gaps, &lanec_suite_di_dsp, &lanec_suite_di_mark, &lanec_suite_di_play, &lanec_suite_di_sleep, &lanec_suite_di_idle, &lanec_suite_di_nvdsp, &lanec_suite_ev_short, &lanec_suite_ev_align, &lanec_suite_ev_radar, &lanec_suite_ev_dap, &lanec_suite_ev_time, &lanec_suite_ev_track, &lanec_suite_ev_lmi, &lanec_suite_di_transfer, &lanec_suite_di_transfer_c64, &lanec_suite_di_refuse, &lanec_suite_ev_transfer, &lanec_suite_ev_transfer_c64, &lanec_suite_ev_refuse, &lanec_suite_pw_blanksub, &lanec_suite_pw_decimal_time_consumer, &lanec_suite_pw_display_release, &lanec_suite_pw_enter, &lanec_suite_pw_enter_zero, &lanec_suite_pw_extended_dispatch, &lanec_suite_pw_five_blank, &lanec_suite_pw_fixed_display, &lanec_suite_pw_fraction_pair, &lanec_suite_pw_hours_output, &lanec_suite_pw_input_angle, &lanec_suite_pw_input_arithmetic, &lanec_suite_pw_input_factor, &lanec_suite_pw_input_mode, &lanec_suite_pw_input_scale, &lanec_suite_pw_input_select };
 const lanec_suite *lanec_find_suite(const char *name)
 {
     unsigned i;
