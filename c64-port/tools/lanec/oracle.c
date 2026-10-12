@@ -78,6 +78,12 @@ static void trace(unsigned z)
     unsigned char (*t)[02000] = traced[meta.mission == LANEC_CM];
     if (z >= 04000u) t[0][(z - 04000u) % 02000u] |= (unsigned char)(1u << ((z - 04000u) / 02000u));
     else if (z >= 02000u && fb >= 1u && fb < 044u) t[fb][z - 02000u] |= 1u;
+    /* the interpreter reading its program: INDEX LOC, then an instruction
+     * whose address K reads LOC + K in the current bank */
+    if (fetch(z) == 050164u) {
+        unsigned a = (word(0164u) + (fetch(z + 1u) & 07777u)) & 077777u;
+        if (a >= 02000u && a < 04000u && fb >= 1u && fb < 044u) t[fb][a - 02000u] |= 2u;
+    }
 }
 
 static void write_trace(const char *path)
@@ -91,8 +97,12 @@ static void write_trace(const char *path)
                 if (traced[n][0][a] & (1u << k)) fprintf(f, "%s 0,%04o\n", n ? "CM" : "LM", 04000u + k * 02000u + a);
         for (b = 1; b < 044u; ++b)
             for (a = 0; a < 02000u; ++a)
-                if (traced[n][b][a]) fprintf(f, "%s %o,%04o\n", n ? "CM" : "LM", b, 02000u + a);
+                if (traced[n][b][a] & 1u) fprintf(f, "%s %o,%04o\n", n ? "CM" : "LM", b, 02000u + a);
     }
+    for (n = 0; n < 2u; ++n)
+        for (b = 1; b < 044u; ++b)
+            for (a = 0; a < 02000u; ++a)
+                if (traced[n][b][a] & 2u) fprintf(f, "%sI %o,%04o\n", n ? "CM" : "LM", b, 02000u + a);
     fclose(f);
 }
 
