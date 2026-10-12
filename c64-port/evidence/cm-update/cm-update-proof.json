@@ -7,10 +7,7 @@
  "entries": "V70UPDAT-V73UPDAT (with CKMDMORE), UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35)",
  "boundary": "entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT)",
  "full_physical_words": 2048,
- "c64_rows": 289,
- "c64_row_selection": "every stride-th case plus a greedy cover: the C64 rows execute every fixed word the host cases execute (each branch outcome lands on its own word)",
  "host_words_executed": 245,
- "c64_words_executed": 245,
  "owned_words_never_executed": [
   "27,3374",
   "27,3375",
@@ -62,5 +59,12 @@
   "43,3741",
   "43,3752",
   "43,3765"
- ]
+ ],
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 4096,
+ "host_branch_arcs": 420,
+ "c64_rows": 302,
+ "c64_branch_arcs": 420,
+ "c64_row_seed_stride": 16,
+ "c64_missing_branch_arcs": []
 }
