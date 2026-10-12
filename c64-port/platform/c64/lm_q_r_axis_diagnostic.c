@@ -1,0 +1,16 @@
+/* SPDX-License-Identifier: MIT */
+/* lm-q-r-axis on the C64: the Luminary099 Q_R-AXIS_RCS_AUTOPILOT cases chosen
+ * by tools/lane_f_c64_rows.py (every entry, outcome and branch the host
+ * cases take) through the trampoline,
+ * against digests frozen from the original program
+ * (tools/lm_q_r_axis_freeze.py).
+ * Mailbox (tools/vice_run.py): $c001-2 failures, $c003-4 checks, $a5 at $c000. */
+#include <stdint.h>
+#include "lm_q_r_axis_cases.h"
+#include "lm_q_r_axis_c64_vectors.h"
+static apollo_overlay_state image;
+int main(void){volatile uint8_t *mail=(volatile uint8_t *)0xc000;uint16_t failures=0,checks=0,n;
+ for(n=0;n<LM_QR_C64_COUNT;++n){++checks;if(lm_qr_digest(&image,lm_qr_c64_case[n])!=lm_qr_c64[n])++failures;}
+ mail[1]=(uint8_t)failures;mail[2]=(uint8_t)(failures>>8);mail[3]=(uint8_t)checks;mail[4]=(uint8_t)(checks>>8);mail[0]=0xa5;
+ for(;;){}
+}

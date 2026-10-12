@@ -7,6 +7,7 @@
  * fixed constant. TS overflow skips and CCS exits land where the
  * original's do, including the ones no admitted input reaches. */
 #include "lm_trim_gimbal.h"
+#include "lm_trim_gimbal_ca_table.inc"
 #include "agc_image_ops.h"
 #define W s->words
 /* Branch coverage hook for the host test (empty in flight builds). */
@@ -115,20 +116,6 @@ static int sa(const agc_image *s){agc_register a=W[0];return a&0100000u?-(int)(~
 static void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
 static void wand(agc_image *s,agc_word *chan){agc_word v=(agc_word)(oc(W[0])&*chan);*chan=v;W[0]=agc_extend(v);}
 static void wr(agc_image *s,agc_word *chan){*chan=(agc_word)(oc(W[0])&077777u);}
-/* DV K as yaAGC executes it. Its SpToDecent compares the sign-extended L
- * with a 15-bit -0, so a positive A over L = -0 divides (A-1)*2^14 + 0
- * (A = +-0, L kept, when that dividend is zero; the equal-divisor and
- * normal-division results otherwise); a quotient that does not fit, and
- * every other dividend, is ai_dv's. */
-static agc_word cpu2agc(long x){return (agc_word)(x<0?077777u&~(unsigned long)(-x):077777u&(unsigned long)x);}
-static void dv(agc_image *s,unsigned k){agc_word a=oc(W[0]),d=ai_word(s,k);long m,ak,dk;
- if(W[1]!=0177777u||a==0u||(a&040000u)){ai_dv(s,k);return;}
- m=(long)a-1;ak=d&040000u?(long)(~d&037777u):(long)d;dk=d&040000u?-ak:ak;
- if(m==0){LM_TG_PATH(85);W[0]=agc_extend((agc_word)(d&040000u?(ak==0?037777u:0u):(ak==0?040000u:077777u)));return;}
- if(m>ak){LM_TG_PATH(86);ai_dv(s,k);return;}
- if(m==ak){LM_TG_PATH(87);W[1]=agc_extend((agc_word)m);W[0]=agc_extend((agc_word)(dk==m?037777u:040000u));return;}
- LM_TG_PATH(88);m*=040000;W[0]=agc_extend(cpu2agc(m/dk));W[1]=m%dk==0?0u:agc_extend(cpu2agc(m%dk));
-}
 /* DTCB (DXCH Z) executed at `at`: Z,BB <-> A,L. */
 static void dtcb(agc_image *s,agc_word at){agc_word z=agc_correct(W[0]),bb=agc_correct(W[1]);
  W[0]=(agc_word)(at+1u);W[1]=agc_extend(W[6]);W[5]=z;
@@ -149,7 +136,7 @@ static void rootcycl(agc_image *s,agc_word ret){
  ai_tc(s,ret);
  if(ai_ts(s,SCRATCH))LM_TG_PATH(43);
  else (void)ai_ts(s,SR);
- ai_ca(s,HALFARG);ai_zl(s);dv(s,SCRATCH);ai_ad(s,SR);
+ ai_ca(s,HALFARG);ai_zl(s);ai_dv(s,SCRATCH);ai_ad(s,SR);
  ai_tc(s,QREG+1u); /* TC Q: Z = ret, Q = 3 */
 }
 /* GTSQRT, entered by TC GTSQRT from RSTOFGTS; returns at PRODUCT with Q as
@@ -181,7 +168,7 @@ goodarg1:
  }
  /* INDEX ININDEX; CA BIT15; XCH HALFARG; EXTEND; DCA FUNCTION; EXTEND;
   * DV HALFARG. */
- k=sv(s,ININDEX);ai_caf(s,bit15(k));ai_xch(s,HALFARG);ai_dca(s,FUNCTION);dv(s,HALFARG);
+ k=sv(s,ININDEX);ai_caf(s,bit15(k));ai_xch(s,HALFARG);ai_dca(s,FUNCTION);ai_dv(s,HALFARG);
 scaldone: /* EXTEND; QXCH FUNCTION +1; EXTEND; MP BIT14; TS HALFARG;
   * MASK BIT13; CCS A; CA OCT11276; AD ROOTHALF; TC ROOTCYCL (three);
   * TC FUNCTION +1. */
@@ -239,8 +226,8 @@ static enum exec_status gts(const agc_native_program *p,agc_image *s,void *v){lm
   }else{
    /* EXTEND; DCS A; AD KCENTRAL; EXTEND; DV KCENTRAL; XCH A2CNTRAL; CA L;
     * LXCH 7; EXTEND; DV KCENTRAL; XCH A2CNTRAL +1; TCF HAVEQUOT. */
-   LM_TG_PATH(9);ai_dcom(s);ai_ad(s,KCENTRAL);dv(s,KCENTRAL);ai_xch(s,A2CNTRAL);ai_ca(s,LREG);
-   ai_lxch(s,ZEROREG);dv(s,KCENTRAL);ai_xch(s,A2CNTRAL1);
+   LM_TG_PATH(9);ai_dcom(s);ai_ad(s,KCENTRAL);ai_dv(s,KCENTRAL);ai_xch(s,A2CNTRAL);ai_ca(s,LREG);
+   ai_lxch(s,ZEROREG);ai_dv(s,KCENTRAL);ai_xch(s,A2CNTRAL1);
   }
   /* HAVEQUOT: CA WCENTRAL; EXTEND; MP BIT9; DXCH K2CNTRAL; EXTEND;
    * DCA K2CNTRAL; DXCH FUNCTION; CA ACENTRAL; EXTEND; BZMF +4; EXTEND;
@@ -301,12 +288,22 @@ static enum exec_status gts(const agc_native_program *p,agc_image *s,void *v){lm
    LM_TG_PATH(45);ai_dca(s,K2CNTRAL);ai_das(s,K2THETA);
   }else{
    k=sv(s,SHFTFLAG);
-   if(k<0||k>13){ /* only after the zero root (ININDEX = ACENTRAL) */
-    LM_TG_PATH(64);
-    for(i=0;i<GTS_CELLS;++i)W[ai_ea(s,gts_cells[i])]=saved[i];
-    io->chan12=chan12;return EXEC_OUT_OF_SCOPE;
-   }
-   LM_TG_PATH(46);ai_caf(s,bit15(k));ai_xch(s,K2CNTRAL);ai_mp(s,K2CNTRAL);ai_das(s,K2THETA);ai_xch(s,K2CNTRAL);
+   if(k<0||k>13){ /* only after the zero root: ININDEX is ACENTRAL, so
+    * SHFTFLAG is ACENTRAL/2 and INDEX SHFTFLAG makes CA BIT15 (34735) the
+    * word 34735 + k. While that stays a CA (k -2525 .. +1570), it reads
+    * 04735 + k: erasable memory (CA Z reads 21,3547, the next address),
+    * bank 21 or fixed-fixed, from the generated table. Beyond that the
+    * word is another order, which is refused. */
+    int a=04735+k;
+    if(a<0||a>07777){
+     LM_TG_PATH(64);
+     for(i=0;i<GTS_CELLS;++i)W[ai_ea(s,gts_cells[i])]=saved[i];
+     io->chan12=chan12;return EXEC_OUT_OF_SCOPE;
+    }
+    if(a<02000){LM_TG_PATH(85);if(a==5)W[5]=03547u;ai_ca(s,(unsigned)a);}
+    else{LM_TG_PATH(86);ai_caf(s,gts_ca_fixed[a-02000]);}
+   }else{LM_TG_PATH(46);ai_caf(s,bit15(k));}
+   ai_xch(s,K2CNTRAL);ai_mp(s,K2CNTRAL);ai_das(s,K2THETA);ai_xch(s,K2CNTRAL);
    ai_mp(s,K2CNTRAL1);ai_ads(s,K2THETA1);
    if(ai_ts(s,LREG)){LM_TG_PATH(47);ai_ads(s,K2THETA);}
   }
@@ -393,7 +390,7 @@ static enum exec_status timegmbl(const agc_native_program *p,agc_image *s,void *
    * BZF TGOFFNOW; TCF DRIVEON. */
   ai_ca(s,NZACCDOT);ai_mpf(s,BIT12);ai_ad(s,ITEMP2);
   if(ai_bzmf(s)){LM_TG_PATH(78);goto notallow;}
-  ai_cs(s,ITEMP2);ai_mpf(s,OCT00240);dv(s,NZACCDOT);
+  ai_cs(s,ITEMP2);ai_mpf(s,OCT00240);ai_dv(s,NZACCDOT);
   if(ai_bzf(s)){LM_TG_PATH(79);goto tgoffnow;}
   /* DRIVEON: INDEX QRNDXER; TS QGIMTIMR. */
   LM_TG_PATH(80);(void)ai_ts(s,at(QGIMTIMR,k));goto doneyet;

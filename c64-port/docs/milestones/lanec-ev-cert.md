@@ -1,0 +1,7 @@
+---
+id: lanec-ev-cert
+title: Draft the Luminary099 EXTENDED_VERBS full-file certificate
+date: 2026-10-12T17:30Z
+lane: C
+---
+Pending complete-coverage certificate for Luminary099 EXTENDED_VERBS.agc, for the auditor's review. `tools/lanec/wholefile_ev.py` assigns every assembled word (994) to one of the eight Lane C extended-verb milestones or to the file's constants. It shows that every instruction word but one unreachable `TC ALM/END` is executed (778), and every interpretive word is read by the interpreter (55), in the unchanged original program in Virtual AGC under cases the native code matches. The evidence also covers 26,880 oracle cases (strict and ASan/UBSan) and fresh VICE runs of all eight frozen subsets (1,797 checks). See `docs/LANEC-EV-CERT.md`.

@@ -13,5 +13,9 @@ extern const lanec_suite lanec_suite_di_nvdsp;
 extern const lanec_suite lanec_suite_ev_short;
 extern const lanec_suite lanec_suite_ev_align;
 extern const lanec_suite lanec_suite_ev_radar;
+extern const lanec_suite lanec_suite_ev_dap;
+extern const lanec_suite lanec_suite_ev_time;
+extern const lanec_suite lanec_suite_ev_track;
+extern const lanec_suite lanec_suite_ev_lmi;
 const lanec_suite *lanec_find_suite(const char *name);
 #endif

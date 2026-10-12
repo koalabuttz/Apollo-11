@@ -9,7 +9,7 @@
 #include "lm_throttle_cases.h"
 #include "lm_throttle_vectors.h"
 #define P(z) (uint16_t)(031u*1024u+((z)-02000u))
-#define PATHS 25u
+#define PATHS 27u
 unsigned lm_thr_paths[PATHS];
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s %u\n",what,n);}}

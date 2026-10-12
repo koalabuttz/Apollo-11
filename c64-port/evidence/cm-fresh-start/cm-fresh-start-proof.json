@@ -1,0 +1,10 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "91105a04cb0e72bb8534f9de6ecd766afc9b8fc858a36b332aba541a69605404",
+ "entries": "SLAP1, MR.KLEAN, P00KLEAN, V37KLEAN, GOPROG, ENEMA, GOPROG3, T5IDLOC, GOTOPOOH and the return points after BANKCALL VAC5STOR, IBNKCALL SETCOARS, WAITLIST, MMDSPLAY, STOPRATE, SWCALL, ALARM and PHASCHNG (17)",
+ "boundary": "entry to the first point outside bank 05 2342-3217, GOTOPOOH 4106-4111 and INTER-BANK_COMMUNICATION, or SWRETURN",
+ "full_physical_words": 2048
+}

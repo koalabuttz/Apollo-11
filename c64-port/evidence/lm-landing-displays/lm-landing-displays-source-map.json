@@ -1,0 +1,4683 @@
+{
+ "sources": {
+  "Luminary099/LANDING_ANALOG_DISPLAYS.agc": "c07d1ef6d1a83375b0aa0f7be87ef4d496d396621501298932aa46466d2db34c"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_landing_displays.c",
+ "native_sha256": "0dce1868aaa53ca264a6d825e5c1e3c562be5952b168c14d3258387a513f0dcf",
+ "source_words": 467,
+ "source_lines": 467,
+ "line_map": [
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 37,
+   "address": "21,2154",
+   "source": "LANDISP LXCH PIPCTR1",
+   "words": [
+    "23714"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 38,
+   "address": "21,2155",
+   "source": "CS TIME1",
+   "words": [
+    "40025"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 39,
+   "address": "21,2156",
+   "source": "DXCH TBASE2",
+   "words": [
+    "53056"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 41,
+   "address": "21,2157",
+   "source": "CS FLAGWRD7",
+   "words": [
+    "40103"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 42,
+   "address": "21,2160",
+   "source": "MASK SWANDBIT",
+   "words": [
+    "74741"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 43,
+   "address": "21,2161",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 44,
+   "address": "21,2162",
+   "source": "TCF DISPRSET",
+   "words": [
+    "13053"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 45,
+   "address": "21,2163",
+   "source": "CA IMODES33",
+   "words": [
+    "31303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 46,
+   "address": "21,2164",
+   "source": "MASK BIT7",
+   "words": [
+    "74745"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 47,
+   "address": "21,2165",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 48,
+   "address": "21,2166",
+   "source": "TCF ALTOUT",
+   "words": [
+    "12240"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 49,
+   "address": "21,2167",
+   "source": "ALTROUT TC DISINDAT",
+   "words": [
+    "02324"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 50,
+   "address": "21,2170",
+   "source": "CS IMODES33",
+   "words": [
+    "41303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 51,
+   "address": "21,2171",
+   "source": "MASK BIT7",
+   "words": [
+    "74745"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 52,
+   "address": "21,2172",
+   "source": "ADS IMODES33",
+   "words": [
+    "27303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 53,
+   "address": "21,2173",
+   "source": "CAF BIT2",
+   "words": [
+    "34752"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 54,
+   "address": "21,2174",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 55,
+   "address": "21,2175",
+   "source": "WOR CHAN14",
+   "words": [
+    "05014"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 56,
+   "address": "21,2176",
+   "source": "ARCOMP CA RUNIT",
+   "words": [
+    "31743"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 57,
+   "address": "21,2177",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 58,
+   "address": "21,2200",
+   "source": "MP VVECT",
+   "words": [
+    "71706"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 59,
+   "address": "21,2201",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 60,
+   "address": "21,2202",
+   "source": "CA RUNIT +1",
+   "words": [
+    "31744"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 61,
+   "address": "21,2203",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 62,
+   "address": "21,2204",
+   "source": "MP VVECT +1",
+   "words": [
+    "71707"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 63,
+   "address": "21,2205",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 64,
+   "address": "21,2206",
+   "source": "CA RUNIT +2",
+   "words": [
+    "31745"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 65,
+   "address": "21,2207",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 66,
+   "address": "21,2210",
+   "source": "MP VVECT +2",
+   "words": [
+    "71710"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 67,
+   "address": "21,2211",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 68,
+   "address": "21,2212",
+   "source": "CA ARCONV",
+   "words": [
+    "32000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 69,
+   "address": "21,2213",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 70,
+   "address": "21,2214",
+   "source": "MP RUPTREG1",
+   "words": [
+    "70070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 71,
+   "address": "21,2215",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 72,
+   "address": "21,2216",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 73,
+   "address": "21,2217",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 74,
+   "address": "21,2220",
+   "source": "CA DALTRATE",
+   "words": [
+    "31716"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 75,
+   "address": "21,2221",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 76,
+   "address": "21,2222",
+   "source": "MP DT",
+   "words": [
+    "71715"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 77,
+   "address": "21,2223",
+   "source": "AD RUPTREG1",
+   "words": [
+    "60070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 78,
+   "address": "21,2224",
+   "source": "TS ALTRATE",
+   "words": [
+    "55711"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 79,
+   "address": "21,2225",
+   "source": "CS ALTRATE",
+   "words": [
+    "41711"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 81,
+   "address": "21,2226",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 82,
+   "address": "21,2227",
+   "source": "BZMF +2",
+   "words": [
+    "62231"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 83,
+   "address": "21,2230",
+   "source": "TCF DATAOUT",
+   "words": [
+    "12233"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 84,
+   "address": "21,2231",
+   "source": "CA ALTRATE",
+   "words": [
+    "31711"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 85,
+   "address": "21,2232",
+   "source": "AD BIT15",
+   "words": [
+    "64735"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 86,
+   "address": "21,2233",
+   "source": "DATAOUT TS ALTM",
+   "words": [
+    "54060"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 87,
+   "address": "21,2234",
+   "source": "CAF BIT3",
+   "words": [
+    "34751"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 88,
+   "address": "21,2235",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 89,
+   "address": "21,2236",
+   "source": "WOR CHAN14",
+   "words": [
+    "05014"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 90,
+   "address": "21,2237",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15261"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 92,
+   "address": "21,2240",
+   "source": "ALTOUT TC DISINDAT",
+   "words": [
+    "02324"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 93,
+   "address": "21,2241",
+   "source": "CS BIT7",
+   "words": [
+    "44745"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 94,
+   "address": "21,2242",
+   "source": "MASK IMODES33",
+   "words": [
+    "71303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 95,
+   "address": "21,2243",
+   "source": "TS IMODES33",
+   "words": [
+    "55303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 96,
+   "address": "21,2244",
+   "source": "CS BIT2",
+   "words": [
+    "44752"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 97,
+   "address": "21,2245",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 98,
+   "address": "21,2246",
+   "source": "WAND CHAN14",
+   "words": [
+    "03014"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 99,
+   "address": "21,2247",
+   "source": "CCS ALTBITS",
+   "words": [
+    "11741"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 100,
+   "address": "21,2250",
+   "source": "TCF +4",
+   "words": [
+    "12254"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 101,
+   "address": "21,2251",
+   "source": "TCF +3",
+   "words": [
+    "12254"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 102,
+   "address": "21,2252",
+   "source": "TCF OLDDATA",
+   "words": [
+    "12272"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 103,
+   "address": "21,2253",
+   "source": "TS ALTBITS",
+   "words": [
+    "55741"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 104,
+   "address": "21,2254",
+   "source": "CS ONE",
+   "words": [
+    "44753"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 105,
+   "address": "21,2255",
+   "source": "DXCH ALTBITS",
+   "words": [
+    "53742"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 106,
+   "address": "21,2256",
+   "source": "DXCH ALTSAVE",
+   "words": [
+    "53713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 107,
+   "address": "21,2257",
+   "source": "CA BIT10",
+   "words": [
+    "34742"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 108,
+   "address": "21,2260",
+   "source": "XCH Q",
+   "words": [
+    "56002"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 109,
+   "address": "21,2261",
+   "source": "LXCH 7",
+   "words": [
+    "22007"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 110,
+   "address": "21,2262",
+   "source": "CA DT",
+   "words": [
+    "31715"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 111,
+   "address": "21,2263",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 112,
+   "address": "21,2264",
+   "source": "DV Q",
+   "words": [
+    "10002"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 113,
+   "address": "21,2265",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 114,
+   "address": "21,2266",
+   "source": "MP ARTOA2",
+   "words": [
+    "72002"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 115,
+   "address": "21,2267",
+   "source": "TCF OLDDATA +1",
+   "words": [
+    "12273"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 117,
+   "address": "21,2270",
+   "source": "ZDATA2 DXCH ALTSAVE",
+   "words": [
+    "53713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 118,
+   "address": "21,2271",
+   "source": "TCF NEWDATA",
+   "words": [
+    "12313"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 119,
+   "address": "21,2272",
+   "source": "OLDDATA CA ARTOA",
+   "words": [
+    "32001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 120,
+   "address": "21,2273",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 121,
+   "address": "21,2274",
+   "source": "MP ALTRATE",
+   "words": [
+    "71711"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 122,
+   "address": "21,2275",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 123,
+   "address": "21,2276",
+   "source": "AD ALTSAVE +1",
+   "words": [
+    "61713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 124,
+   "address": "21,2277",
+   "source": "TS ALTSAVE +1",
+   "words": [
+    "55713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 125,
+   "address": "21,2300",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 126,
+   "address": "21,2301",
+   "source": "ADS ALTSAVE",
+   "words": [
+    "27712"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 127,
+   "address": "21,2302",
+   "source": "CAF POSMAX",
+   "words": [
+    "34733"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 128,
+   "address": "21,2303",
+   "source": "AD ONE",
+   "words": [
+    "64753"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 129,
+   "address": "21,2304",
+   "source": "AD ALTSAVE +1",
+   "words": [
+    "61713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 130,
+   "address": "21,2305",
+   "source": "TS ALTSAVE +1",
+   "words": [
+    "55713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 132,
+   "address": "21,2306",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 133,
+   "address": "21,2307",
+   "source": "AD POSMAX",
+   "words": [
+    "64733"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 134,
+   "address": "21,2310",
+   "source": "AD ALTSAVE",
+   "words": [
+    "61712"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 135,
+   "address": "21,2311",
+   "source": "TS ALTSAVE",
+   "words": [
+    "55712"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 136,
+   "address": "21,2312",
+   "source": "TCF ZERODATA",
+   "words": [
+    "13050"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 137,
+   "address": "21,2313",
+   "source": "NEWDATA CCS ALTSAVE +1",
+   "words": [
+    "11713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 138,
+   "address": "21,2314",
+   "source": "TCF +4",
+   "words": [
+    "12320"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 139,
+   "address": "21,2315",
+   "source": "TCF +3",
+   "words": [
+    "12320"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 140,
+   "address": "21,2316",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 141,
+   "address": "21,2317",
+   "source": "TS ALTSAVE +1",
+   "words": [
+    "55713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 142,
+   "address": "21,2320",
+   "source": "CCS ALTSAVE",
+   "words": [
+    "11712"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 143,
+   "address": "21,2321",
+   "source": "CAF BIT15",
+   "words": [
+    "34735"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 144,
+   "address": "21,2322",
+   "source": "AD ALTSAVE +1",
+   "words": [
+    "61713"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 145,
+   "address": "21,2323",
+   "source": "TCF DATAOUT",
+   "words": [
+    "12233"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 146,
+   "address": "21,2324",
+   "source": "DISINDAT EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 147,
+   "address": "21,2325",
+   "source": "QXCH LADQSAVE",
+   "words": [
+    "23714"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 148,
+   "address": "21,2326",
+   "source": "CAF BIT6",
+   "words": [
+    "34746"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 149,
+   "address": "21,2327",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 150,
+   "address": "21,2330",
+   "source": "RAND CHAN30",
+   "words": [
+    "02030"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 151,
+   "address": "21,2331",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 152,
+   "address": "21,2332",
+   "source": "TCF DISPRSET",
+   "words": [
+    "13053"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 153,
+   "address": "21,2333",
+   "source": "CS FLAGWRD1",
+   "words": [
+    "40075"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 154,
+   "address": "21,2334",
+   "source": "MASK DIDFLBIT",
+   "words": [
+    "74736"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 155,
+   "address": "21,2335",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 156,
+   "address": "21,2336",
+   "source": "BZF SPEEDRUN",
+   "words": [
+    "12374"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 157,
+   "address": "21,2337",
+   "source": "CS FLAGWRD1",
+   "words": [
+    "40075"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 158,
+   "address": "21,2340",
+   "source": "MASK DIDFLBIT",
+   "words": [
+    "74736"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 159,
+   "address": "21,2341",
+   "source": "ADS FLAGWRD1",
+   "words": [
+    "26075"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 160,
+   "address": "21,2342",
+   "source": "CS BIT7",
+   "words": [
+    "44745"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 161,
+   "address": "21,2343",
+   "source": "MASK IMODES33",
+   "words": [
+    "71303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 162,
+   "address": "21,2344",
+   "source": "TS IMODES33",
+   "words": [
+    "55303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 163,
+   "address": "21,2345",
+   "source": "CS FLAGWRD0",
+   "words": [
+    "40074"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 164,
+   "address": "21,2346",
+   "source": "MASK R10FLBIT",
+   "words": [
+    "74752"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 165,
+   "address": "21,2347",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 166,
+   "address": "21,2350",
+   "source": "BZF TASKOVER",
+   "words": [
+    "15261"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 167,
+   "address": "21,2351",
+   "source": "CAF BIT8",
+   "words": [
+    "34744"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 168,
+   "address": "21,2352",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 169,
+   "address": "21,2353",
+   "source": "WOR CHAN12",
+   "words": [
+    "05012"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 170,
+   "address": "21,2354",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 171,
+   "address": "21,2355",
+   "source": "TS TRAKLATV",
+   "words": [
+    "55702"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 172,
+   "address": "21,2356",
+   "source": "TS TRAKFWDV",
+   "words": [
+    "55703"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 173,
+   "address": "21,2357",
+   "source": "TS LATVMETR",
+   "words": [
+    "55676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 174,
+   "address": "21,2360",
+   "source": "TS FORVMETR",
+   "words": [
+    "55677"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 175,
+   "address": "21,2361",
+   "source": "CAF BIT4",
+   "words": [
+    "34750"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 176,
+   "address": "21,2362",
+   "source": "TC TWIDDLE",
+   "words": [
+    "05173"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 177,
+   "address": "21,2363",
+   "source": "ADRES INTLZE",
+   "words": [
+    "02365"
+   ],
+   "native": "lm_landing_displays_sites"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 178,
+   "address": "21,2364",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15261"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 179,
+   "address": "21,2365",
+   "source": "INTLZE CAF BIT2",
+   "words": [
+    "34752"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 180,
+   "address": "21,2366",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 181,
+   "address": "21,2367",
+   "source": "WOR CHAN12",
+   "words": [
+    "05012"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 183,
+   "address": "21,2370",
+   "source": "CS IMODES33",
+   "words": [
+    "41303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 184,
+   "address": "21,2371",
+   "source": "MASK BIT8",
+   "words": [
+    "74744"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 185,
+   "address": "21,2372",
+   "source": "ADS IMODES33",
+   "words": [
+    "27303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 186,
+   "address": "21,2373",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15261"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 188,
+   "address": "21,2374",
+   "source": "SPEEDRUN CS PIPTIME +1",
+   "words": [
+    "41235"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 189,
+   "address": "21,2375",
+   "source": "AD TIME1",
+   "words": [
+    "60025"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 190,
+   "address": "21,2376",
+   "source": "AD HALF",
+   "words": [
+    "64736"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 191,
+   "address": "21,2377",
+   "source": "AD HALF",
+   "words": [
+    "64736"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 192,
+   "address": "21,2400",
+   "source": "XCH DT",
+   "words": [
+    "57715"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 193,
+   "address": "21,2401",
+   "source": "CA 1SEC",
+   "words": [
+    "34777"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 194,
+   "address": "21,2402",
+   "source": "TS ITEMP5",
+   "words": [
+    "54065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 195,
+   "address": "21,2403",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 196,
+   "address": "21,2404",
+   "source": "DCA GDT/2",
+   "words": [
+    "31237"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 197,
+   "address": "21,2405",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 198,
+   "address": "21,2406",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 199,
+   "address": "21,2407",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 200,
+   "address": "21,2410",
+   "source": "MP DT",
+   "words": [
+    "71715"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 201,
+   "address": "21,2411",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 202,
+   "address": "21,2412",
+   "source": "DV ITEMP5",
+   "words": [
+    "10065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 203,
+   "address": "21,2413",
+   "source": "XCH VVECT",
+   "words": [
+    "57706"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 204,
+   "address": "21,2414",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 205,
+   "address": "21,2415",
+   "source": "DCA V",
+   "words": [
+    "31527"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 206,
+   "address": "21,2416",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 207,
+   "address": "21,2417",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 208,
+   "address": "21,2420",
+   "source": "ADS VVECT",
+   "words": [
+    "27706"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 209,
+   "address": "21,2421",
+   "source": "CA PIPAX",
+   "words": [
+    "30037"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 210,
+   "address": "21,2422",
+   "source": "AD PIPATMPX",
+   "words": [
+    "61160"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 211,
+   "address": "21,2423",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 212,
+   "address": "21,2424",
+   "source": "MP KPIP1(5)",
+   "words": [
+    "72004"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 213,
+   "address": "21,2425",
+   "source": "ADS VVECT",
+   "words": [
+    "27706"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 214,
+   "address": "21,2426",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 215,
+   "address": "21,2427",
+   "source": "DCA GDT/2 +2",
+   "words": [
+    "31241"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 216,
+   "address": "21,2430",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 217,
+   "address": "21,2431",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 218,
+   "address": "21,2432",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 219,
+   "address": "21,2433",
+   "source": "MP DT",
+   "words": [
+    "71715"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 220,
+   "address": "21,2434",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 221,
+   "address": "21,2435",
+   "source": "DV ITEMP5",
+   "words": [
+    "10065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 222,
+   "address": "21,2436",
+   "source": "XCH VVECT +1",
+   "words": [
+    "57707"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 223,
+   "address": "21,2437",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 224,
+   "address": "21,2440",
+   "source": "DCA V +2",
+   "words": [
+    "31531"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 225,
+   "address": "21,2441",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 226,
+   "address": "21,2442",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 227,
+   "address": "21,2443",
+   "source": "ADS VVECT +1",
+   "words": [
+    "27707"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 228,
+   "address": "21,2444",
+   "source": "CA PIPAY",
+   "words": [
+    "30040"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 229,
+   "address": "21,2445",
+   "source": "AD PIPATMPY",
+   "words": [
+    "61161"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 230,
+   "address": "21,2446",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 231,
+   "address": "21,2447",
+   "source": "MP KPIP1(5)",
+   "words": [
+    "72004"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 232,
+   "address": "21,2450",
+   "source": "ADS VVECT +1",
+   "words": [
+    "27707"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 234,
+   "address": "21,2451",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 235,
+   "address": "21,2452",
+   "source": "DCA GDT/2 +4",
+   "words": [
+    "31243"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 236,
+   "address": "21,2453",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 237,
+   "address": "21,2454",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 238,
+   "address": "21,2455",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 239,
+   "address": "21,2456",
+   "source": "MP DT",
+   "words": [
+    "71715"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 240,
+   "address": "21,2457",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 241,
+   "address": "21,2460",
+   "source": "DV ITEMP5",
+   "words": [
+    "10065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 242,
+   "address": "21,2461",
+   "source": "XCH VVECT +2",
+   "words": [
+    "57710"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 243,
+   "address": "21,2462",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 244,
+   "address": "21,2463",
+   "source": "DCA V +4",
+   "words": [
+    "31533"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 245,
+   "address": "21,2464",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 246,
+   "address": "21,2465",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 247,
+   "address": "21,2466",
+   "source": "ADS VVECT +2",
+   "words": [
+    "27710"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 248,
+   "address": "21,2467",
+   "source": "CA PIPAZ",
+   "words": [
+    "30041"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 249,
+   "address": "21,2470",
+   "source": "AD PIPATMPZ",
+   "words": [
+    "61162"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 250,
+   "address": "21,2471",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 251,
+   "address": "21,2472",
+   "source": "MP KPIP1(5)",
+   "words": [
+    "72004"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 252,
+   "address": "21,2473",
+   "source": "ADS VVECT +2",
+   "words": [
+    "27710"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 254,
+   "address": "21,2474",
+   "source": "CAF BIT3",
+   "words": [
+    "34751"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 255,
+   "address": "21,2475",
+   "source": "TC VARDELAY",
+   "words": [
+    "05224"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 257,
+   "address": "21,2476",
+   "source": "CS FLAGWRD0",
+   "words": [
+    "40074"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 258,
+   "address": "21,2477",
+   "source": "MASK R10FLBIT",
+   "words": [
+    "74752"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 259,
+   "address": "21,2500",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 260,
+   "address": "21,2501",
+   "source": "TCF +2",
+   "words": [
+    "12503"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 261,
+   "address": "21,2502",
+   "source": "TC LADQSAVE",
+   "words": [
+    "01714"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 263,
+   "address": "21,2503",
+   "source": "CA DELVS",
+   "words": [
+    "31733"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 264,
+   "address": "21,2504",
+   "source": "AD VVECT",
+   "words": [
+    "61706"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 265,
+   "address": "21,2505",
+   "source": "TS ITEMP1",
+   "words": [
+    "54061"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 266,
+   "address": "21,2506",
+   "source": "CA DELVS +2",
+   "words": [
+    "31735"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 267,
+   "address": "21,2507",
+   "source": "AD VVECT +1",
+   "words": [
+    "61707"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 268,
+   "address": "21,2510",
+   "source": "TS ITEMP2",
+   "words": [
+    "54062"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 269,
+   "address": "21,2511",
+   "source": "CA DELVS +4",
+   "words": [
+    "31737"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 270,
+   "address": "21,2512",
+   "source": "AD VVECT +2",
+   "words": [
+    "61710"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 271,
+   "address": "21,2513",
+   "source": "TS ITEMP3",
+   "words": [
+    "54063"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 272,
+   "address": "21,2514",
+   "source": "CA ITEMP1",
+   "words": [
+    "30061"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 273,
+   "address": "21,2515",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 274,
+   "address": "21,2516",
+   "source": "MP UHYP",
+   "words": [
+    "71717"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 275,
+   "address": "21,2517",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 276,
+   "address": "21,2520",
+   "source": "CA ITEMP2",
+   "words": [
+    "30062"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 277,
+   "address": "21,2521",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 278,
+   "address": "21,2522",
+   "source": "MP UHYP +2",
+   "words": [
+    "71721"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 279,
+   "address": "21,2523",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 280,
+   "address": "21,2524",
+   "source": "CA ITEMP3",
+   "words": [
+    "30063"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 281,
+   "address": "21,2525",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 282,
+   "address": "21,2526",
+   "source": "MP UHYP +4",
+   "words": [
+    "71723"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 283,
+   "address": "21,2527",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 285,
+   "address": "21,2530",
+   "source": "CA RUPTREG1",
+   "words": [
+    "30070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 286,
+   "address": "21,2531",
+   "source": "DOUBLE",
+   "words": [
+    "60000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 287,
+   "address": "21,2532",
+   "source": "XCH VHY",
+   "words": [
+    "57704"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 288,
+   "address": "21,2533",
+   "source": "CA ITEMP1",
+   "words": [
+    "30061"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 289,
+   "address": "21,2534",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 290,
+   "address": "21,2535",
+   "source": "MP UHZP",
+   "words": [
+    "71725"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 291,
+   "address": "21,2536",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 292,
+   "address": "21,2537",
+   "source": "CA ITEMP2",
+   "words": [
+    "30062"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 293,
+   "address": "21,2540",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 294,
+   "address": "21,2541",
+   "source": "MP UHZP +2",
+   "words": [
+    "71727"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 295,
+   "address": "21,2542",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 296,
+   "address": "21,2543",
+   "source": "CA ITEMP3",
+   "words": [
+    "30063"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 297,
+   "address": "21,2544",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 298,
+   "address": "21,2545",
+   "source": "MP UHZP +4",
+   "words": [
+    "71731"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 299,
+   "address": "21,2546",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 300,
+   "address": "21,2547",
+   "source": "CA RUPTREG1",
+   "words": [
+    "30070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 301,
+   "address": "21,2550",
+   "source": "DOUBLE",
+   "words": [
+    "60000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 302,
+   "address": "21,2551",
+   "source": "XCH VHZ",
+   "words": [
+    "57705"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 303,
+   "address": "21,2552",
+   "source": "GET22/32 CAF EBANK6",
+   "words": [
+    "35015"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 304,
+   "address": "21,2553",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 306,
+   "address": "21,2554",
+   "source": "CA M22",
+   "words": [
+    "31417"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 307,
+   "address": "21,2555",
+   "source": "TS ITEMP3",
+   "words": [
+    "54063"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 308,
+   "address": "21,2556",
+   "source": "CA M32",
+   "words": [
+    "31420"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 309,
+   "address": "21,2557",
+   "source": "TS ITEMP4",
+   "words": [
+    "54064"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 310,
+   "address": "21,2560",
+   "source": "CAF EBANK7",
+   "words": [
+    "35016"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 311,
+   "address": "21,2561",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 313,
+   "address": "21,2562",
+   "source": "LATFWDV CA ITEMP4",
+   "words": [
+    "30064"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 314,
+   "address": "21,2563",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 315,
+   "address": "21,2564",
+   "source": "MP VHY",
+   "words": [
+    "71704"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 316,
+   "address": "21,2565",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 317,
+   "address": "21,2566",
+   "source": "CA ITEMP3",
+   "words": [
+    "30063"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 318,
+   "address": "21,2567",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 319,
+   "address": "21,2570",
+   "source": "MP VHZ",
+   "words": [
+    "71705"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 320,
+   "address": "21,2571",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 321,
+   "address": "21,2572",
+   "source": "CA VELCONV",
+   "words": [
+    "32003"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 322,
+   "address": "21,2573",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 323,
+   "address": "21,2574",
+   "source": "MP RUPTREG1",
+   "words": [
+    "70070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 324,
+   "address": "21,2575",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 325,
+   "address": "21,2576",
+   "source": "XCH LATVEL",
+   "words": [
+    "57700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 326,
+   "address": "21,2577",
+   "source": "CA ITEMP4",
+   "words": [
+    "30064"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 327,
+   "address": "21,2600",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 328,
+   "address": "21,2601",
+   "source": "MP VHZ",
+   "words": [
+    "71705"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 329,
+   "address": "21,2602",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 330,
+   "address": "21,2603",
+   "source": "CA ITEMP3",
+   "words": [
+    "30063"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 331,
+   "address": "21,2604",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 332,
+   "address": "21,2605",
+   "source": "MP VHY",
+   "words": [
+    "71704"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 333,
+   "address": "21,2606",
+   "source": "CS A",
+   "words": [
+    "40000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 334,
+   "address": "21,2607",
+   "source": "ADS RUPTREG1",
+   "words": [
+    "26070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 336,
+   "address": "21,2610",
+   "source": "CA VELCONV",
+   "words": [
+    "32003"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 337,
+   "address": "21,2611",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 338,
+   "address": "21,2612",
+   "source": "MP RUPTREG1",
+   "words": [
+    "70070"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 339,
+   "address": "21,2613",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 340,
+   "address": "21,2614",
+   "source": "XCH FORVEL",
+   "words": [
+    "57701"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 342,
+   "address": "21,2615",
+   "source": "CS MAXVBITS",
+   "words": [
+    "42005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 343,
+   "address": "21,2616",
+   "source": "TS ITEMP6",
+   "words": [
+    "54066"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 345,
+   "address": "21,2617",
+   "source": "CAF ONE",
+   "words": [
+    "34753"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 346,
+   "address": "21,2620",
+   "source": "VMONITOR TS ITEMP5",
+   "words": [
+    "54065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 347,
+   "address": "21,2621",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 348,
+   "address": "21,2622",
+   "source": "CCS LATVEL",
+   "words": [
+    "11700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 349,
+   "address": "21,2623",
+   "source": "TCF +4",
+   "words": [
+    "12627"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 350,
+   "address": "21,2624",
+   "source": "TCF LVLIMITS",
+   "words": [
+    "12730"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 351,
+   "address": "21,2625",
+   "source": "TCF +8D",
+   "words": [
+    "12635"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 352,
+   "address": "21,2626",
+   "source": "TCF LVLIMITS",
+   "words": [
+    "12730"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 353,
+   "address": "21,2627",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 354,
+   "address": "21,2630",
+   "source": "CS LATVEL",
+   "words": [
+    "41700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 355,
+   "address": "21,2631",
+   "source": "AD MAXVBITS",
+   "words": [
+    "62005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 356,
+   "address": "21,2632",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 357,
+   "address": "21,2633",
+   "source": "BZMF CHKLASTY",
+   "words": [
+    "62643"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 358,
+   "address": "21,2634",
+   "source": "TCF LVLIMITS",
+   "words": [
+    "12730"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 359,
+   "address": "21,2635",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 360,
+   "address": "21,2636",
+   "source": "CA LATVEL",
+   "words": [
+    "31700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 361,
+   "address": "21,2637",
+   "source": "AD MAXVBITS",
+   "words": [
+    "62005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 362,
+   "address": "21,2640",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 363,
+   "address": "21,2641",
+   "source": "BZMF +2",
+   "words": [
+    "62643"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 364,
+   "address": "21,2642",
+   "source": "TCF LVLIMITS",
+   "words": [
+    "12730"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 365,
+   "address": "21,2643",
+   "source": "CHKLASTY INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 366,
+   "address": "21,2644",
+   "source": "CCS LATVMETR",
+   "words": [
+    "11676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 367,
+   "address": "21,2645",
+   "source": "TCF +4",
+   "words": [
+    "12651"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 368,
+   "address": "21,2646",
+   "source": "TCF LASTOK",
+   "words": [
+    "12662"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 369,
+   "address": "21,2647",
+   "source": "TCF +7",
+   "words": [
+    "12656"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 370,
+   "address": "21,2650",
+   "source": "TCF LASTOK",
+   "words": [
+    "12662"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 371,
+   "address": "21,2651",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 372,
+   "address": "21,2652",
+   "source": "CA LATVEL",
+   "words": [
+    "31700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 373,
+   "address": "21,2653",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 374,
+   "address": "21,2654",
+   "source": "BZMF LASTPOSY +5",
+   "words": [
+    "62701"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 375,
+   "address": "21,2655",
+   "source": "TCF +5",
+   "words": [
+    "12662"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 376,
+   "address": "21,2656",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 377,
+   "address": "21,2657",
+   "source": "CS LATVEL",
+   "words": [
+    "41700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 378,
+   "address": "21,2660",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 379,
+   "address": "21,2661",
+   "source": "BZMF LASTNEGY +4",
+   "words": [
+    "62716"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 380,
+   "address": "21,2662",
+   "source": "LASTOK INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 381,
+   "address": "21,2663",
+   "source": "CCS TRAKLATV",
+   "words": [
+    "11702"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 382,
+   "address": "21,2664",
+   "source": "TCF LASTPOSY",
+   "words": [
+    "12674"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 383,
+   "address": "21,2665",
+   "source": "TCF +2",
+   "words": [
+    "12667"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 384,
+   "address": "21,2666",
+   "source": "TCF LASTNEGY",
+   "words": [
+    "12712"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 385,
+   "address": "21,2667",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 387,
+   "address": "21,2670",
+   "source": "CA LATVEL",
+   "words": [
+    "31700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 388,
+   "address": "21,2671",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 389,
+   "address": "21,2672",
+   "source": "BZMF NEGVMAXY",
+   "words": [
+    "62720"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 390,
+   "address": "21,2673",
+   "source": "TCF POSVMAXY",
+   "words": [
+    "12703"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 391,
+   "address": "21,2674",
+   "source": "LASTPOSY INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 392,
+   "address": "21,2675",
+   "source": "CA LATVEL",
+   "words": [
+    "31700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 393,
+   "address": "21,2676",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 394,
+   "address": "21,2677",
+   "source": "BZMF +2",
+   "words": [
+    "62701"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 395,
+   "address": "21,2700",
+   "source": "TCF POSVMAXY",
+   "words": [
+    "12703"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 396,
+   "address": "21,2701",
+   "source": "CS MAXVBITS",
+   "words": [
+    "42005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 397,
+   "address": "21,2702",
+   "source": "TCF ZEROLSTY",
+   "words": [
+    "13024"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 398,
+   "address": "21,2703",
+   "source": "POSVMAXY INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 399,
+   "address": "21,2704",
+   "source": "CS LATVMETR",
+   "words": [
+    "41676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 400,
+   "address": "21,2705",
+   "source": "AD MAXVBITS",
+   "words": [
+    "62005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 401,
+   "address": "21,2706",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 402,
+   "address": "21,2707",
+   "source": "XCH RUPTREG3",
+   "words": [
+    "56072"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 403,
+   "address": "21,2710",
+   "source": "CAF ONE",
+   "words": [
+    "34753"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 404,
+   "address": "21,2711",
+   "source": "TCF ZEROLSTY +3",
+   "words": [
+    "13027"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 405,
+   "address": "21,2712",
+   "source": "LASTNEGY INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 406,
+   "address": "21,2713",
+   "source": "CA LATVEL",
+   "words": [
+    "31700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 407,
+   "address": "21,2714",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 408,
+   "address": "21,2715",
+   "source": "BZMF NEGVMAXY",
+   "words": [
+    "62720"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 409,
+   "address": "21,2716",
+   "source": "CA MAXVBITS",
+   "words": [
+    "32005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 410,
+   "address": "21,2717",
+   "source": "TCF ZEROLSTY",
+   "words": [
+    "13024"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 411,
+   "address": "21,2720",
+   "source": "NEGVMAXY INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 412,
+   "address": "21,2721",
+   "source": "CA LATVMETR",
+   "words": [
+    "31676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 413,
+   "address": "21,2722",
+   "source": "AD MAXVBITS",
+   "words": [
+    "62005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 414,
+   "address": "21,2723",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 415,
+   "address": "21,2724",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 416,
+   "address": "21,2725",
+   "source": "XCH RUPTREG3",
+   "words": [
+    "56072"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 417,
+   "address": "21,2726",
+   "source": "CS ONE",
+   "words": [
+    "44753"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 418,
+   "address": "21,2727",
+   "source": "TCF ZEROLSTY +3",
+   "words": [
+    "13027"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 419,
+   "address": "21,2730",
+   "source": "LVLIMITS INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 420,
+   "address": "21,2731",
+   "source": "CCS TRAKLATV",
+   "words": [
+    "11702"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 421,
+   "address": "21,2732",
+   "source": "TCF LATVPOS",
+   "words": [
+    "12761"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 422,
+   "address": "21,2733",
+   "source": "TCF +2",
+   "words": [
+    "12735"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 423,
+   "address": "21,2734",
+   "source": "TCF LATVNEG",
+   "words": [
+    "12766"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 424,
+   "address": "21,2735",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 425,
+   "address": "21,2736",
+   "source": "CS LATVMETR",
+   "words": [
+    "41676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 426,
+   "address": "21,2737",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 427,
+   "address": "21,2740",
+   "source": "BZMF +2",
+   "words": [
+    "62742"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 428,
+   "address": "21,2741",
+   "source": "TCF NEGLMLV",
+   "words": [
+    "12775"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 429,
+   "address": "21,2742",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 430,
+   "address": "21,2743",
+   "source": "CS LATVEL",
+   "words": [
+    "41700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 431,
+   "address": "21,2744",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 432,
+   "address": "21,2745",
+   "source": "BZMF LVMINLM",
+   "words": [
+    "63020"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 433,
+   "address": "21,2746",
+   "source": "AD ITEMP6",
+   "words": [
+    "60066"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 434,
+   "address": "21,2747",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 435,
+   "address": "21,2750",
+   "source": "AD LATVMETR",
+   "words": [
+    "61676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 436,
+   "address": "21,2751",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 438,
+   "address": "21,2752",
+   "source": "BZMF LVMINLM",
+   "words": [
+    "63020"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 439,
+   "address": "21,2753",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 440,
+   "address": "21,2754",
+   "source": "AD LATVEL",
+   "words": [
+    "61700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 441,
+   "address": "21,2755",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 442,
+   "address": "21,2756",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 443,
+   "address": "21,2757",
+   "source": "SU LATVMETR",
+   "words": [
+    "61676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 444,
+   "address": "21,2760",
+   "source": "TCF ZEROLSTY",
+   "words": [
+    "13024"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 445,
+   "address": "21,2761",
+   "source": "LATVPOS INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 446,
+   "address": "21,2762",
+   "source": "CS LATVEL",
+   "words": [
+    "41700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 447,
+   "address": "21,2763",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 448,
+   "address": "21,2764",
+   "source": "BZMF LVMINLM",
+   "words": [
+    "63020"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 449,
+   "address": "21,2765",
+   "source": "TCF +5",
+   "words": [
+    "12772"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 450,
+   "address": "21,2766",
+   "source": "LATVNEG INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 451,
+   "address": "21,2767",
+   "source": "CA LATVEL",
+   "words": [
+    "31700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 452,
+   "address": "21,2770",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 453,
+   "address": "21,2771",
+   "source": "BZMF LVMINLM",
+   "words": [
+    "63020"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 454,
+   "address": "21,2772",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 455,
+   "address": "21,2773",
+   "source": "CS LATVMETR",
+   "words": [
+    "41676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 456,
+   "address": "21,2774",
+   "source": "TCF ZEROLSTY",
+   "words": [
+    "13024"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 457,
+   "address": "21,2775",
+   "source": "NEGLMLV INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 458,
+   "address": "21,2776",
+   "source": "CA LATVEL",
+   "words": [
+    "31700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 459,
+   "address": "21,2777",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 460,
+   "address": "21,3000",
+   "source": "BZMF LVMINLM",
+   "words": [
+    "63020"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 461,
+   "address": "21,3001",
+   "source": "CA MAXVBITS",
+   "words": [
+    "32005"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 462,
+   "address": "21,3002",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 463,
+   "address": "21,3003",
+   "source": "AD LATVMETR",
+   "words": [
+    "61676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 464,
+   "address": "21,3004",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 465,
+   "address": "21,3005",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 466,
+   "address": "21,3006",
+   "source": "AD LATVEL",
+   "words": [
+    "61700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 467,
+   "address": "21,3007",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 468,
+   "address": "21,3010",
+   "source": "BZMF LVMINLM",
+   "words": [
+    "63020"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 469,
+   "address": "21,3011",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 470,
+   "address": "21,3012",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 471,
+   "address": "21,3013",
+   "source": "SU LATVEL",
+   "words": [
+    "61700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 472,
+   "address": "21,3014",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 473,
+   "address": "21,3015",
+   "source": "AD LATVMETR",
+   "words": [
+    "61676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 474,
+   "address": "21,3016",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 475,
+   "address": "21,3017",
+   "source": "TCF ZEROLSTY",
+   "words": [
+    "13024"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 476,
+   "address": "21,3020",
+   "source": "LVMINLM INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 477,
+   "address": "21,3021",
+   "source": "CS LATVMETR",
+   "words": [
+    "41676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 478,
+   "address": "21,3022",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 479,
+   "address": "21,3023",
+   "source": "AD LATVEL",
+   "words": [
+    "61700"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 480,
+   "address": "21,3024",
+   "source": "ZEROLSTY INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 481,
+   "address": "21,3025",
+   "source": "XCH RUPTREG3",
+   "words": [
+    "56072"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 482,
+   "address": "21,3026",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 483,
+   "address": "21,3027",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 484,
+   "address": "21,3030",
+   "source": "TS TRAKLATV",
+   "words": [
+    "55702"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 485,
+   "address": "21,3031",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 486,
+   "address": "21,3032",
+   "source": "CA RUPTREG3",
+   "words": [
+    "30072"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 487,
+   "address": "21,3033",
+   "source": "AD NEG0",
+   "words": [
+    "64754"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 489,
+   "address": "21,3034",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 490,
+   "address": "21,3035",
+   "source": "TS CDUTCMD",
+   "words": [
+    "54053"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 491,
+   "address": "21,3036",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 492,
+   "address": "21,3037",
+   "source": "CA RUPTREG3",
+   "words": [
+    "30072"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 493,
+   "address": "21,3040",
+   "source": "INDEX ITEMP5",
+   "words": [
+    "50065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 494,
+   "address": "21,3041",
+   "source": "ADS LATVMETR",
+   "words": [
+    "27676"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 495,
+   "address": "21,3042",
+   "source": "CCS ITEMP5",
+   "words": [
+    "10065"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 496,
+   "address": "21,3043",
+   "source": "TCF VMONITOR",
+   "words": [
+    "12620"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 498,
+   "address": "21,3044",
+   "source": "CAF BITSET",
+   "words": [
+    "35020"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 499,
+   "address": "21,3045",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 500,
+   "address": "21,3046",
+   "source": "WOR CHAN14",
+   "words": [
+    "05014"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 501,
+   "address": "21,3047",
+   "source": "TC LADQSAVE",
+   "words": [
+    "01714"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 502,
+   "address": "21,3050",
+   "source": "ZERODATA CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 503,
+   "address": "21,3051",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 504,
+   "address": "21,3052",
+   "source": "TCF ZDATA2",
+   "words": [
+    "12270"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 508,
+   "address": "21,3053",
+   "source": "DISPRSET CS FLAGWRD0",
+   "words": [
+    "40074"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 509,
+   "address": "21,3054",
+   "source": "MASK R10FLBIT",
+   "words": [
+    "74752"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 510,
+   "address": "21,3055",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 511,
+   "address": "21,3056",
+   "source": "BZF ABORTON",
+   "words": [
+    "13067"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 512,
+   "address": "21,3057",
+   "source": "CAF BIT8",
+   "words": [
+    "34744"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 513,
+   "address": "21,3060",
+   "source": "MASK IMODES33",
+   "words": [
+    "71303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 514,
+   "address": "21,3061",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 515,
+   "address": "21,3062",
+   "source": "CAF BIT2",
+   "words": [
+    "34752"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 516,
+   "address": "21,3063",
+   "source": "AD BIT8",
+   "words": [
+    "64744"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 517,
+   "address": "21,3064",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 518,
+   "address": "21,3065",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 519,
+   "address": "21,3066",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 520,
+   "address": "21,3067",
+   "source": "ABORTON CS BITS8/7",
+   "words": [
+    "43076"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 521,
+   "address": "21,3070",
+   "source": "MASK IMODES33",
+   "words": [
+    "71303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 522,
+   "address": "21,3071",
+   "source": "TS IMODES33",
+   "words": [
+    "55303"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 523,
+   "address": "21,3072",
+   "source": "CS DIDFLBIT",
+   "words": [
+    "44736"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 524,
+   "address": "21,3073",
+   "source": "MASK FLAGWRD1",
+   "words": [
+    "70075"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 525,
+   "address": "21,3074",
+   "source": "TS FLAGWRD1",
+   "words": [
+    "54075"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 526,
+   "address": "21,3075",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15261"
+   ],
+   "native": "flow"
+  },
+  {
+   "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+   "line": 528,
+   "address": "21,3076",
+   "source": "BITS8/7 OCT 00300",
+   "words": [
+    "00300"
+   ],
+   "native": "flow"
+  }
+ ],
+ "note": "Fresh yaYUL assembly of the file reproduces the certified rope; every assembled word of LANDING_ANALOG_DISPLAYS (bank 21) has one native owner holding its erasable address (the indexed base for INDEX orders), the rope value of its fixed operand, its branch target (or composes it inline), its channel or its constant; the ADRES INTLZE operand of TC TWIDDLE is a compiled site operand."
+}

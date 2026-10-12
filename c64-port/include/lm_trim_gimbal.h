@@ -22,9 +22,11 @@
  * Refused (EXEC_OUT_OF_SCOPE, image unchanged): an entry outside its bank or
  * under an EB other than EBANK6 (EBANK= QDIFF / NEGUQ), a missing io record,
  * an ACDT+C12 return in Q or a TIMEGMBL return in RUPTREG2 that is not a TC
- * into fixed memory, and a GTS pass whose GTSQRT takes the zero root while
- * ININDEX (which then still holds ACENTRAL) makes DOSHIFT's INDEX SHFTFLAG
- * select a word other than BIT15-BIT2. */
+ * into fixed memory, and a GTS pass whose GTSQRT takes the zero root with
+ * ACENTRAL/2 (ININDEX is the same cell) outside -2525 .. +1570, where
+ * DOSHIFT's INDEX SHFTFLAG turns CA BIT15 into another order. Inside that
+ * range the indexed CA reads 04735 + ACENTRAL/2 (erasable memory, or bank
+ * 21 and fixed-fixed from src/lm_trim_gimbal_ca_table.inc). */
 extern const agc_routine_table lm_trim_gimbal_routines;
 #define LM_TG_FB21 042000u
 #define LM_TG_FB16 034000u

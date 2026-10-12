@@ -13,8 +13,8 @@ OWNERS = [(0o21, 0o3077, 0o3326, 'gts'), (0o16, 0o3735, 0o3771, 'acdtc12'),
           (0o21, 0o3434, 0o3434, 'lm_interbank_sites'), (0o21, 0o3435, 0o3437, 'timeret'),
           (0o21, 0o3440, 0o3440, 'timegmbl'), (0o21, 0o3441, 0o3523, 'gtsqrt'), (0o21, 0o3524, 0o3635, 'gts'),
           (0o21, 0o3636, 0o3645, 'rootcycl')]
-HELPERS = {'gts': ['gtsqrt', 'wand', 'dtcb', 'dv', 'sv', 'sa', 'at', 'bit15'], 'gtsqrt': ['rootcycl', 'sv', 'dv', 'bit15'],
-           'rootcycl': ['dv'], 'acdtc12': ['rand', 'wr'], 'timegmbl': ['dv', 'sv', 'at']}
+HELPERS = {'gts': ['gtsqrt', 'wand', 'dtcb', 'sv', 'sa', 'at', 'bit15'], 'gtsqrt': ['rootcycl', 'sv', 'bit15'],
+           'rootcycl': [], 'acdtc12': ['rand', 'wr'], 'timegmbl': ['sv', 'at']}
 # Branches composed in C: GTS's labels and its GTSQRT call (RSTOFGTS),
 # GTSQRT's labels and ROOTCYCL calls, TIMEGMBL's labels, and the TC
 # FUNCTION +1 return.

@@ -11,6 +11,12 @@ typedef struct {
     uint8_t ranges, stops;
     lanec_range range[LANEC_MAX_RANGES]; /* code the native routine translates */
     lanec_point stop[LANEC_MAX_STOPS];   /* labels inside those ranges owned elsewhere */
+    /* Interpretive code: when newops is set, the oracle also stops at that
+     * address (the interpreter's NEWOPS) once LOC, in the bank FB selects,
+     * leaves the interpretive words listed in loc[]. */
+    uint16_t newops;
+    uint8_t locs;
+    lanec_range loc[LANEC_MAX_RANGES];
 } lanec_meta;
 typedef void (*lanec_make)(uint32_t n, apollo_overlay_state *, lanec_io *, lanec_meta *);
 typedef enum lanec_status (*lanec_run)(apollo_overlay_state *, lanec_io *, enum lanec_mission);

@@ -3,24 +3,29 @@
   "milestone": "lm-throttle",
   "release": "evidence-lm-throttle",
   "files": {
+    "lm-throttle-c64-cover.json": {
+      "sha256": "6636f0f6a8c4fd2c2be39cf2a184ed1aeeefddb7e7cdb7db211277d36a2e1af3",
+      "bytes": 3222,
+      "store": "tree"
+    },
     "lm-throttle-host.log": {
-      "sha256": "2b93acc61037ee44692f10934b473410ca28e257333a6e4fabb7b727d29297ad",
-      "bytes": 521,
+      "sha256": "ebf9d2a48640a78bcce4377d5ca15211a6cdf917037bec11299704908cfe57e0",
+      "bytes": 539,
       "store": "tree"
     },
     "lm-throttle-proof.json": {
-      "sha256": "9be72a6072fcccd754b85e644412ea25fd0046d287a9cfdd370910e0b0b71f1a",
+      "sha256": "1aecdf787cbe6821cc1ea0d4dbbf0aee4489bb3a17ad11d60fe6e42d6f02f53e",
       "bytes": 816,
       "store": "tree"
     },
     "lm-throttle-source-map.json": {
-      "sha256": "f131f9d19874f5e614fa581cc145218587046e23b0bb28709878f7944764328c",
+      "sha256": "ffce1fc5d4a44551681b956e6b5063057a72fff24d622daff1b1e9584d1aaadb",
       "bytes": 26218,
       "store": "tree"
     },
     "lm-throttle-vice.log": {
-      "sha256": "b3065df91b73d6a26e2aae9b917b5e4eaa948ad9f4b50f25f47eca55ad6548ee",
-      "bytes": 55,
+      "sha256": "4d675e3ae4e92929b006905a481e7d12bd478ba32b977cd4cd824daaf7c4a8c7",
+      "bytes": 191,
       "store": "tree"
     }
   }

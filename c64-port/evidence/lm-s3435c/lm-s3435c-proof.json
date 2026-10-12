@@ -1,0 +1,76 @@
+{
+ "cases": 18432,
+ "c64_groups": {
+  "1": 256,
+  "2": 256,
+  "3": 352
+ },
+ "stream_sha256": "3b7c3bf48396fcef863804f95785076f178fd9c06f05640834d370d2dd4c04c8",
+ "stops": {
+  "S34/35.2 (3306)": {
+   "NEWOPS of a CADR in another bank": 1024
+  },
+  "S34/35.2 after INITVEL (3367)": {
+   "NEWOPS 35,2673": 384,
+   "NEWOPS 35,2756": 384,
+   "NEWOPS of a CADR in another bank": 256
+  },
+  "S34/35.2 after LOMAT (3371)": {
+   "NEWOPS 35,2673": 384,
+   "NEWOPS 35,2756": 384,
+   "NEWOPS of a CADR in another bank": 256
+  },
+  "S34/35.5 (3522)": {
+   "GOFLASH": 1024
+  },
+  "FLAGON (3531)": {
+   "GOFLASH": 1024
+  },
+  "target check after INTPRET (3566)": {
+   "GOFLASH": 514,
+   "NEWOPS of a CADR in another bank": 510
+  },
+  "NOCHG (3572)": {
+   "GOFLASH": 1024
+  },
+  "FLAGOFF (3576)": {
+   "GOFLASH": 1024
+  },
+  "FLAGOFF after S34/35.4 (3600)": {
+   "GOFLASH": 1024
+  },
+  "after VNPOOH and INTPRET (3604)": {
+   "NEWOPS 35,2721": 384,
+   "NEWOPS 35,2760": 384,
+   "NEWOPS of a CADR in another bank": 256
+  },
+  "FLAGON +5 (3536)": {
+   "GOFLASH": 1024
+  },
+  "GOFLASH terminate (3541)": {
+   "GOTOPOOH": 1024
+  },
+  "GOFLASH proceed (3542)": {
+   "INTPRET": 512,
+   "UPFLAG": 512
+  },
+  "GOFLASH recycle (3543)": {
+   "GOFLASH": 1024
+  },
+  "target check (3544)": {
+   "INTPRET": 512,
+   "UPFLAG": 512
+  },
+  "after UPFLAG (3565)": {
+   "INTPRET": 1024
+  },
+  "after FLAGOFF EXIT (3601)": {
+   "GOFLASH": 1024
+  },
+  "after VNPOOH (3603)": {
+   "INTPRET": 1024
+  }
+ },
+ "boundary": "each case runs from its entry (NEWOPS or Z) through the trampoline (this file's routines with lm-s3435b's, lm-s3435's, lm-p34's basic routines and the native INTER-BANK routines) to the first point outside them; the oracle stops at the same point (tests/lm_s3435c_cases.c lm_s3435c_stop: a NEWOPS outside their interpretive code, GOFLASH, UPFLAG, GOTOPOOH, INTPRET, POODOO1)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}
