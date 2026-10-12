@@ -1,0 +1,73 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 16384,
+ "compared_cases": 16235,
+ "compared_sha256": "b28e579cbb5c57ba2f643d688f462626fbdd3f2a42f1cf284c6f67193078934d",
+ "outcomes": {
+  "16,2223:left the file": 1024,
+  "16,2224:left the file": 1024,
+  "16,2653:left the file": 1024,
+  "16,2773:left the file": 1020,
+  "16,2773:refused": 4,
+  "16,3154:left the file": 1017,
+  "16,3154:refused": 7,
+  "16,3403:left the file": 922,
+  "16,3403:refused": 102,
+  "16,3424:left the file": 1018,
+  "16,3424:refused": 6,
+  "16,3443:left the file": 1022,
+  "16,3443:refused": 2,
+  "16,3500:left the file": 1018,
+  "16,3500:refused": 6,
+  "16,3512:left the file": 1019,
+  "16,3512:refused": 5,
+  "16,3550:left the file": 1019,
+  "16,3550:refused": 5,
+  "BACKP:left the file": 2036,
+  "BACKP:refused": 12,
+  "CALCPERR:left the file": 1024,
+  "PAXIS:left the file": 1024,
+  "SUPERJOB:left the file": 1024
+ },
+ "exits": {
+  "ACDT+C12": 618,
+  "ALARM": 870,
+  "BAILOUT": 346,
+  "CALCPERR's return in Q": 1020,
+  "CALLQERR": 3254,
+  "CHEKBITS": 1542,
+  "IBNKCALL": 2553,
+  "NOQBRSM +1": 1592,
+  "RATELOOP": 1026,
+  "WRITEP": 1129,
+  "WRITEP -1": 2285
+ },
+ "dv_against_yaagc": {
+  "cases": 2000000,
+  "differences": 0
+ },
+ "refused_cases": 149,
+ "refused_oracle_outcomes": {
+  "left the file": 149
+ },
+ "entries": [
+  "16,2213 PAXIS",
+  "16,2223",
+  "16,2224",
+  "16,2316 BACKP",
+  "16,2653",
+  "16,2666 SUPERJOB",
+  "16,2773",
+  "16,3154",
+  "16,3403",
+  "16,3424",
+  "16,3443",
+  "16,3446 CALCPERR",
+  "16,3500",
+  "16,3512",
+  "16,3550"
+ ],
+ "boundary": "each entry from a random image (FB bank 16, EB 6, random channels 12, 13 and 31, a random interrupt-enable bit, erasable words of random widths with +-0 frequent) until the original leaves 16,2213-3640 (TC, TCF, DTCB or TC Q to a destination outside); compared: outcome, channels 12 and 13, the interrupt-enable bit and all 2048 erasable words",
+ "full_physical_words": 2048
+}

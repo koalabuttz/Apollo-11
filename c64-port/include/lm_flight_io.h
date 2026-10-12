@@ -12,5 +12,6 @@ typedef struct {
  agc_word chan5,chan6;  /* RCS jet commands */
  agc_word chan12;   /* IMU error counter enable, trim gimbal drives, ... */
  agc_word chan30,chan31; /* inputs: PGNCS control (30 bit 10), mode select (31 bits 13-14) */
+ agc_word chan13;   /* RHC counter enable and read (bits 8-9), ... */
 } lm_flight_io;
 #endif

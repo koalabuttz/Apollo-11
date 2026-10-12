@@ -5053,8 +5053,57 @@
       "sha256": "6aa46513dcd7f1b77b41cbf847ce98dcdaec5a95bf4327d0a7c2df8adf937775",
       "bytes": 21026,
       "lines": 1056,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p_axis.c",
+            "src/lm_p_axis_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-P-AXIS.md",
+          "scope": "Every path of the file: the PAXIS T5 lead-in and CHEKBITS's two returns, the CDU desired update and PAXFILT to ACDT+C12, the KALMAN filter set up as an interrupted job and SUPERJOB, BACKP (SUBDIVDE, OVERSUB, trap filters, AOS terms, gimbal timers, CHKVISFZ/TRYUORV/ALTERYZ translation, manual, detent and rate command, PURGENCY/PEGI and PJETSLEC/SELECTP jet selection) to each call that leaves the file and its eight returns, and CALCPERR, as fifteen ABI routines in bank 16."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 16 under EBANK6 (EBANK= PERROR) with the lm_flight_io record (channels 12, 13 and 31, interrupt-enable bit); a CALCPERR return in Q is a TC word into fixed memory; excluded and refused with the image unchanged: a 16,3403 entry with ROTINDEX other than 0 or 1 (it indexes MINTIMES after PJETSLEC's LXCH ROTINDEX of 0 or 1), and OLDPMIN -0 (CCS OLDPMIN would run FIREP's RAND CHAN31 word without its EXTEND; the file only stores +0, 1 and OCT14 bits there); 149 of 16,384 random cases",
+        "external_continuations": [
+          "BAILOUT",
+          "CHEKBITS (DAPIDLER_PROGRAM)",
+          "ACDT+C12 (TRIM_GIMBAL_CONTROL_SYSTEM)",
+          "NOQBRSM +1",
+          "RATELOOP (KALMAN_FILTER)",
+          "ALARM",
+          "IBNKCALL (ZATTEROR, SPSRCS, TJETLAW, JTLST)",
+          "WRITEP",
+          "WRITEP -1",
+          "CALLQERR (Q_R-AXIS_RCS_AUTOPILOT)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p-axis/lm-p-axis-source-map.json",
+            "sha256": "18711e5559fe03cec367d3c05cad9f0636b0d7a190c1926cf83dd34927898b4f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p-axis/lm-p-axis-proof.json",
+            "sha256": "478959493204a9e797aab4a6c899b361b61c2093dad39a5d8aa246ec7d5322ef"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p-axis/lm-p-axis-host.log",
+            "sha256": "20c54c1f3b5be4f4c15a3c37209288d8848c50252da49f5654186b3f7fd30843"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p-axis/lm-p-axis-vice.log",
+            "sha256": "2ef31fcb7bb4f48c65f5c433582bdc3887b09258833e374e3a401bf0211ebf05"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P12.agc",

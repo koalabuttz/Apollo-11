@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p-axis",
+  "release": "evidence-lm-p-axis",
+  "files": {
+    "lm-p-axis-host.log": {
+      "sha256": "20c54c1f3b5be4f4c15a3c37209288d8848c50252da49f5654186b3f7fd30843",
+      "bytes": 1421,
+      "store": "tree"
+    },
+    "lm-p-axis-proof.json": {
+      "sha256": "478959493204a9e797aab4a6c899b361b61c2093dad39a5d8aa246ec7d5322ef",
+      "bytes": 1993,
+      "store": "tree"
+    },
+    "lm-p-axis-source-map.json": {
+      "sha256": "18711e5559fe03cec367d3c05cad9f0636b0d7a190c1926cf83dd34927898b4f",
+      "bytes": 143630,
+      "store": "tree"
+    },
+    "lm-p-axis-vice.log": {
+      "sha256": "2ef31fcb7bb4f48c65f5c433582bdc3887b09258833e374e3a401bf0211ebf05",
+      "bytes": 53,
+      "store": "tree"
+    }
+  }
+}
