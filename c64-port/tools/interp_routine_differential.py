@@ -15,13 +15,15 @@ it, and fixed CADRs outside the file (or the genuine return points of the
 file's callers) in QPRET, S1, S2 and every erasable word a GOTO or CALL of
 the file reads a CADR from. The rest of the image is a seeded fill, with
 three data shapes: the fill itself, small words in the VAC area and the
-file's operands, and half-unit vectors at the file's operands.
+file's operands, and half-unit vectors at the file's operands. A spec with
+'edge_cases': True adds a fourth, tools/edge_cases.py's flight edge values.
 
   interp_routine_differential.py <spec> [--cases N] [--freeze] [--show K]
 
 --freeze writes tests/<id>_vectors.h (a subset of cases with their oracle
 digests) for the host test and the C64 diagnostic, and
-build/<id>-proof.json."""
+build/<id>-proof.json. A spec with 'c64_rows': 'cover' picks the C64 cases
+by branch outcome (tools/c64_row_cover.py) instead of per routine."""
 import argparse
 import collections
 import hashlib
@@ -34,6 +36,8 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import c64_row_cover
+import edge_cases
 import interp_compile as IC
 import interp_specs
 
@@ -89,6 +93,9 @@ class Mission:
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
+        self.edge = spec.get('edge_cases', False)
+        self.rk = bool(spec.get('resume_keys'))
+        self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
 
     def caller_returns(self, spec):
@@ -137,15 +144,20 @@ def case(mi, point, n, rng):
     if bank in (2, 3):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
-    fb = bank << 10
+    # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
+    sb = 0o100 if bank >= 0o40 else 0
+    fb = (bank - 8 if bank >= 0o40 else bank) << 10
     eb = rng.randrange(8) if mi.ebank is None else mi.ebank
     E[3] = eb << 8
     E[4] = fb
     E[6] = fb | eb
-    E[0o67] = 0
+    # NEWJOB +0, or (resume_keys) positive in a quarter of the cases: a job
+    # waiting, so the next DANZIG goes to CHANG2.
+    E[0o67] = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
-    shape = n % 3
+    # 'edge_cases' specs add a fourth shape (tools/edge_cases.py).
+    shape = n % 4 if mi.edge else n % 3
     if shape >= 1:
         for a in range(vac, vac + 0o46):
             w = rng.randrange(0o4000)
@@ -164,6 +176,8 @@ def case(mi, point, n, rng):
                 hi, lo = dp(x)
                 E[(phys + 2 * k) & 0o3777] = hi
                 E[(phys + 2 * k + 1) & 0o3777] = lo
+    if shape == 3:
+        E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
     for off in (0o50, 0o51, 0o52):
         E[vac + off] = mi.outside(rng)
     for w in mi.cp.cadr_erasable:
@@ -174,8 +188,10 @@ def case(mi, point, n, rng):
     # OVFIND clear in most cases, so BOV(B) falls through as often as not.
     if rng.random() < 0.75:
         E[0o121] = 0
-    for k, choices in mi.states.get(point, {}).items():
+    for k, choices in list(mi.all_states.items()) + list(mi.states.get(point, {}).items()):
         a = vac + int(k[4:], 8) if k.startswith('vac+') else int(k, 8)
+        if isinstance(choices, dict):
+            choices = choices[mi.m]
         v = rng.choice(choices)
         if isinstance(v, str) and v.startswith('vac+'):
             v = vac + int(v[4:], 8)
@@ -197,8 +213,11 @@ def case(mi, point, n, rng):
             if not mi.cp.in_file(q):
                 break
         E[2] = logical(q)
+        # Saved returns a TC to erasable runs (TC MPAC +2, TC TBASE2): the same.
+        for k in mi.cp.tc_erasable:
+            E[k] = logical(q)
         stop = q
-    return seed, list(E.items()), n & 1, stop
+    return seed, list(E.items()), n & 1, stop, sb
 
 
 def write_cases(path, missions, cases):
@@ -214,7 +233,7 @@ def write_cases(path, missions, cases):
         f.write(struct.pack('<I', len(cases)))
         for c in cases:
             seed, cm, ie, edits = c['seed'], c['cm'], c['ie'], c['edits']
-            f.write(struct.pack('<IBBHH', seed, cm, ie, c.get('stop', 0xffff), len(edits)))
+            f.write(struct.pack('<IBBHHH', seed, cm, ie, c.get('sb', 0), c.get('stop', 0xffff), len(edits)))
             for a, w in edits:
                 f.write(struct.pack('<HH', a, w))
 
@@ -264,8 +283,8 @@ def main():
             continue
         for p in mi.points:
             for n in range(a.cases):
-                seed, edits, ie, stop = case(mi, p, n, rng)
-                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop})
+                seed, edits, ie, stop, sb = case(mi, p, n, rng)
+                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop, 'sb': sb})
     os.makedirs(B, exist_ok=True)
     path = os.path.join(B, '%s-cases.bin' % a.spec)
     write_cases(path, missions, cases)
@@ -273,17 +292,37 @@ def main():
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
+    # A native run that ends refusing in a routine with an I/O channel
+    # instruction waits for a channel model: counted, not compared.
+    chan = {}
+    for i in bad:
+        mi = missions[cases[i]['cm']]
+        z = int(rows_n[i][2])
+        hit = [p for p in mi.cp.channel_blocks if mi.cp.logical_of(p) == z]
+        if rows_n[i][1] != '0' and hit:
+            chan[i] = '%s %s' % (mi.m, mi.cp.where(hit[0]))
+    bad = [i for i in bad if i not in chan]
+    if chan:
+        print('waiting for an I/O channel model: %d cases (%s)' % (len(chan), ', '.join(
+            '%s x%d' % kv for kv in sorted(collections.Counter(chan.values()).items()))))
     stops = collections.defaultdict(collections.Counter)
-    for c, r in zip(cases, rows_r):
+    for i, (c, r) in enumerate(zip(cases, rows_r)):
         mi = missions[c['cm']]
         key = '%s %s %s' % (mi.m.upper(), mi.cp.where(c['point']), mi.cp.name(c['point']))
+        if i in chan:
+            stops[key]['I/O channel'] += 1
+            continue
         z = int(r[2])
         stops[key]['%05o' % z] += 1
     if bad or len(rows_r) != len(rows_n):
-        dr = run([ref, *ROPES, path, 'dump'])
-        dn = run([nat, path, 'dump'])
         sel = [i for i in bad if not a.only or a.only in "%s %s" % (missions[cases[i]["cm"]].m, missions[cases[i]["cm"]].cp.where(cases[i]["point"]))]
-        for i in sel[:a.show]:
+        # Dumps of the shown cases only (all of them would not fit in memory).
+        show = sel[:a.show]
+        sub = path + '.show'
+        write_cases(sub, missions, [cases[i] for i in show])
+        dr = dict(zip(show, run([ref, *ROPES, sub, 'dump'])))
+        dn = dict(zip(show, run([nat, sub, 'dump'])))
+        for i in show:
             c = cases[i]
             mi = missions[c['cm']]
             print('case %d %s %s: oracle Z %05o kind %s, native Z %05o kind %s' % (
@@ -294,7 +333,7 @@ def main():
         by = collections.Counter('%s %s' % (missions[cases[i]['cm']].m, missions[cases[i]['cm']].cp.where(cases[i]['point'])) for i in bad)
         print('mismatches by routine:', dict(by))
         sys.exit('FAIL: %d of %d %s cases differ from the original program' % (len(bad), len(cases), a.spec))
-    timeouts = [r for r in rows_r if r[1] != '0']
+    timeouts = [r for i, r in enumerate(rows_r) if r[1] != '0' and i not in chan]
     if timeouts:
         sys.exit('FAIL: %d oracle timeouts' % len(timeouts))
     print('PASS: %d %s cases equal the original programs (%d routines)' % (
@@ -310,12 +349,12 @@ def main():
             for t in r[4:]:
                 v |= 1 << idx[int(t[1:])]
             visits.append(v)
-        freeze(a.spec, spec, missions, cases, rows_r, stops, visits)
+        freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan)
 
 
-def freeze(spec_id, spec, missions, cases, rows, stops, visits):
+def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
     stride = spec.get('freeze_stride', 16)
-    pick = list(range(0, len(cases), stride))
+    pick = [i for i in range(0, len(cases), stride) if i not in chan]
     sym = spec_id.replace('-', '_')
     out = ['/* SPDX-License-Identifier: MIT; generated by tools/interp_routine_differential.py',
            ' * --freeze: every %dth %s case with its yaAGC oracle digest (original' % (stride, spec_id),
@@ -327,20 +366,21 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits):
                    ','.join('{0%o,0%o}' % (a, w) for a, w in c['edits'])))
     out.append('#define %s_VECTORS %du' % (sym.upper(), len(pick)))
     out.append('static const irc_case %s_cases[%d]={' % (sym, len(pick)))
-    out.append(',\n'.join(' {0x%08xul,%d,%d,0,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'],
+    out.append(',\n'.join(' {0x%08xul,%d,%d,%s,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'], '0%o' % cases[i].get('sb', 0) if cases[i].get('sb') else '0',
                                                             len(cases[i]['edits']), sym, j) for j, i in enumerate(pick)))
     out.append('};')
     out.append('static const uint32_t %s_expected[%d]={' % (sym, len(pick)))
     out.append(',\n'.join(' 0x%08xul' % int(rows[i][3]) for i in pick))
     out.append('};')
     open(os.path.join(R, 'tests/%s_vectors.h' % sym), 'w').write('\n'.join(out) + '\n')
-    c64 = freeze_c64(spec, sym, missions, cases, rows, visits)
+    c64, cover = freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan)
     blob = open(os.path.join(B, '%s-cases.bin' % spec_id), 'rb').read()
     proof = {'milestone': spec_id, 'missions': ['Luminary099', 'Comanche055'],
              'rope_sha256': [hashlib.sha256(open(p, 'rb').read()).hexdigest() for p in ROPES],
              'cases': len(cases), 'cases_sha256': hashlib.sha256(blob).hexdigest(),
              'oracle_sha256': hashlib.sha256('\n'.join(' '.join(r) for r in rows).encode()).hexdigest(),
              'frozen_vectors': len(pick), 'c64_vectors': c64,
+             **({'c64_host_only': C64_HOST_ONLY} if C64_HOST_ONLY else {}),
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
              'boundary': 'from each routine entry state to NEWOPS with LOC outside the file, an exit of the '
                          'interpreter bodies (%s), or a transfer to an outside basic routine (%s)' % (
@@ -348,6 +388,9 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits):
                              '; '.join('%s: %s' % (mi.m, ', '.join(sorted(set(mi.cp.externals.values()) | set(mi.cp.externals_any.values()))) or 'none')
                                        for mi in missions if mi.m in spec['missions'])),
              'compared': 'Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state'}
+    proof.update(cover)
+    if chan:
+        proof['waiting_for_io_channels'] = dict(collections.Counter(chan.values()))
     open(os.path.join(B, '%s-proof.json' % spec_id), 'w').write(json.dumps(proof, indent=1) + '\n')
     smap = {}
     for mi in missions:
@@ -359,7 +402,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits):
             sys.exit('%s words no routine compiles: %s' % (mi.m, ', '.join(r['address'] for r in loose)))
         for r in loose:
             r['untranslated'] = spec['partial'][mi.m]
-        smap[spec['file'][mi.m] and ('Luminary099/' if mi.m == 'lm' else 'Comanche055/') + spec['file'][mi.m]] = {
+        smap[('Luminary099/' if mi.m == 'lm' else 'Comanche055/') + spec.get('source_path', spec['file'])[mi.m]] = {
             'native_file': 'src/%s.c' % spec['base'][mi.m], 'words': len(rows_m), 'untranslated_words': len(loose),
             'routines': len(mi.points), 'map': rows_m}
     open(os.path.join(B, '%s-source-map.json' % spec_id), 'w').write(json.dumps(smap, indent=1) + '\n')
@@ -378,6 +421,16 @@ def c64_sources(spec, m):
             + spec.get('native_sources', []) + [x for x in COMMON if '_interp_' not in x] + [spec['target']])
 
 
+KEEP_WORDS = {}   # symbol -> the generated file's KEEP words
+
+
+def keep_flags(symbol, mask):
+    """-D<SYM>_KEEP<n> for a routine mask, 60 routines per word (every
+    word the file has, so none defaults to all)."""
+    n = KEEP_WORDS[symbol]
+    return ['-D%s_KEEP%d=0x%x' % (symbol.upper(), w, (mask >> (60 * w)) & ((1 << 60) - 1)) for w in range(n)]
+
+
 def c64_size(spec, sym, m, mask, text):
     """End of the C64 diagnostic's memory (code, data and bss) for one group,
     or None when it does not link or reaches past C64_TOP."""
@@ -386,16 +439,19 @@ def c64_size(spec, sym, m, mask, text):
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
     r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, '-DIRC_GROUP=1',
-                        '-DIRC_%s_ONLY' % m.upper(), '-D%s_KEEP0=0x%x' % (spec['symbol'][m].upper(), mask),
+                        '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
                        cwd=R, capture_output=True, text=True)
     end = None
+    if r.returncode and os.environ.get('IRC_C64_DEBUG'):
+        sys.stderr.write(r.stderr[-3000:])
     if r.returncode == 0:
         for ln in open(os.path.join(d, 'probe.map')):
             if '__heap_start = ' in ln:
                 end = int(ln.split()[0], 16)
-    subprocess.run(['rm', '-rf', d])
+    if not os.environ.get('IRC_C64_DEBUG'):
+        subprocess.run(['rm', '-rf', d])
     return end if end is not None and end <= C64_TOP else None
 
 
@@ -414,7 +470,7 @@ def group_text(sym, groups, cases, rows):
                        ','.join('{0%o,0%o}' % (a, w) for a, w in cases[i]['edits'])))
         out.append('#define IRC_C64_VECTORS %du' % len(pick))
         out.append('static const irc_case irc_c64_cases[%d]={' % len(pick))
-        out.append(',\n'.join(' {0x%08xul,%d,%d,0,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'],
+        out.append(',\n'.join(' {0x%08xul,%d,%d,%s,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'], '0%o' % cases[i].get('sb', 0) if cases[i].get('sb') else '0',
                                                                 len(cases[i]['edits']), pre, j) for j, i in enumerate(pick)))
         out.append('};')
         out.append('static const uint32_t irc_c64_expected[%d]={' % len(pick))
@@ -424,32 +480,78 @@ def group_text(sym, groups, cases, rows):
     return '\n'.join(out) + '\n'
 
 
-def freeze_c64(spec, sym, missions, cases, rows, visits):
+def host_arcs(spec_id, spec, missions, cases):
+    """{case: branch arcs} of the native runner, one case at a time
+    (tools/c64_row_cover.py)."""
+    d = os.path.join(B, '%s-cover' % spec_id)
+    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
+    exe = c64_row_cover.build(d, [*srcs, spec['target'], 'tools/interp_routine_native.c'],
+                              [f for f in FLAGS if f != '-O2'])
+    one = os.path.join(d, 'cases')
+    os.makedirs(one)
+
+    def argv(i):
+        p = os.path.join(one, '%d.bin' % i)
+        write_cases(p, missions, [cases[i]])
+        return [str(exe), p]
+    return c64_row_cover.trace(d, range(len(cases)), argv)
+
+
+C64_HOST_ONLY = []   # routines whose runs do not fit one C64 diagnostic
+
+
+def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
     """Groups of routines whose diagnostic fits below $c000, each with the
     spec's c64_per_point cases (default 2) per routine whose run stays in
-    the group (fewest edits first). Writes tests/<id>_c64_vectors.h and
-    tools/mk/<id>.groups; returns the groups."""
+    the group (fewest edits first). With 'c64_rows': 'cover', the cases are
+    instead the fewest whose native runs take every branch arc all the
+    cases take (tools/c64_row_cover.py), among the cases whose routines fit
+    one diagnostic, plus the first of a routine none of them enters, and
+    groups fill case by case. Writes tests/<id>_c64_vectors.h and
+    tools/mk/<id>.groups; returns the groups and the cover's proof fields."""
     per = spec.get('c64_per_point', 2)
+    cover = spec.get('c64_rows') == 'cover'
+    if cover:
+        arcs = host_arcs(spec_id, spec, missions, cases)
+        cost = lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']))
+        chosen = set()
+        for cm, mi in enumerate(missions):
+            if mi.m not in spec['missions']:
+                continue
+            mine = [i for i in arcs if cases[i]['cm'] == cm and i not in chan]
+            # Each routine set the cases visit, probed with its largest case.
+            big = {visits[i]: i for i in sorted(mine, key=lambda i: len(cases[i]['edits']))}
+            fits = {v for v, i in big.items()
+                    if c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None}
+            ok = {i: arcs[i] for i in mine if visits[i] in fits}
+            chosen |= set(c64_row_cover.cover(ok, cost))
     groups = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
             continue
         bit = {p: 1 << k for k, p in enumerate(mi.points)}
+        KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
         need = {}
         for p in mi.points:
-            mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p),
-                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))[:per]
-            need[p] = mine
+            mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan),
+                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
+            need[p] = ([i for i in mine if i in chosen] or mine[:1]) if cover else mine[:per]
         mask, pick = 0, []
-        for p in mi.points:
+        for p, part in (((p, [i]) for p in mi.points for i in need[p]) if cover else ((p, need[p]) for p in mi.points)):
             want = 0
-            for i in need[p]:
+            for i in part:
                 want |= visits[i]
             trial = mask | want
-            tp = pick + need[p]
+            tp = pick + part
             if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
+                if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
+                    # The routine's whole run (with every routine it reaches)
+                    # does not fit one diagnostic: its cases stay host-only.
+                    if '%s %s' % (mi.m, mi.cp.where(p)) not in C64_HOST_ONLY:
+                        C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
+                    continue
                 groups.append((mi.m, mask, pick))
-                mask, pick = want, list(need[p])
+                mask, pick = want, list(part)
             else:
                 mask, pick = trial, tp
         groups.append((mi.m, mask, pick))
@@ -458,7 +560,14 @@ def freeze_c64(spec, sym, missions, cases, rows, visits):
         # closures don't drop earlier cases.
         assert all(visits[i] & ~mask == 0 for i in pick)
         if c64_size(spec, sym, m, mask, group_text(sym, [(m, mask, pick)], cases, rows)) is None:
+            if os.environ.get('IRC_C64_DEBUG'):
+                sys.stderr.write('group %s mask %x picks %s edits %s\n' % (m, mask, [cases[i]['point'] for i in pick], [len(cases[i]['edits']) for i in pick]))
             sys.exit('a single routine group of %s does not fit the C64' % m)
+    extra = {}
+    if cover:
+        picked = [i for m, mask, pick in groups for i in pick]
+        c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
+        extra = c64_row_cover.summary(arcs, picked)
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]
@@ -466,10 +575,10 @@ def freeze_c64(spec, sym, missions, cases, rows, visits):
     mk.append('%s_GROUPS = %s' % (v, ' '.join(str(g) for g in range(1, len(groups) + 1))))
     for g, (m, mask, pick) in enumerate(groups, 1):
         mk.append('%s_GROUP_MISSION_%d = %s' % (v, g, m))
-        mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY -D%s_KEEP0=0x%x' % (
-            v, g, g, m.upper(), spec['symbol'][m].upper(), mask))
+        mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
+            v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
-    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups]
+    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups], extra
 
 
 if __name__ == '__main__':

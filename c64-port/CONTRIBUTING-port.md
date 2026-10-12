@@ -56,6 +56,15 @@ A C64 diagnostic reports through the `$c000` mailbox that `tools/vice_run.py`
 checks: write the failure count to `$c001-2` and the check count to `$c003-4`,
 then `$a5` to `$c000` last.
 
+Don't hand-translate a file that has interpretive code. Generate it with
+`tools/interp_compile.py`: add a spec to `tools/interp_specs.py`, and the
+compiler writes `src/<base>.c` and `include/<base>.h` from the yaYUL listing as
+transfer-ABI routines. It handles the basic code between EXIT and TC INTPRET
+too. See `docs/INTERP-COMPILE.md`. Lanes that have used it report a file
+taking about an hour instead of about a day. If the compiler lacks an order
+or an instruction form, add it to the compiler and keep the generated files
+byte-identical for every existing spec (`interp_compile.py --check <spec>`).
+
 ## Never edit these by hand
 
 CI rejects a lane PR that touches them:
@@ -102,13 +111,43 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
   base Executive VICE check.
 
 The full suite runs nightly against `port/c64-native-c`, and on demand from
-the Actions tab (`port-ci`, Run workflow). Full runs also run every legacy
+the Actions tab (`port-ci`, Run workflow). Those requested full runs (not a PR
+that touches shared plumbing) also run every legacy
 `tools/*_vice_test.py` script, split over eight `c64-legacy` shards, as the
 `vice-legacy-<name>` targets that `tools/legacy_vice.py` writes to
 `tools/mk/legacy-vice.mk`; run one locally with `tools/ci_run.py vice-legacy-<name>`.
 A script your milestone records as an unqualified development trial (never
 passed, replaced by a staged script) goes in `TRIALS` in `tools/legacy_vice.py`
 with the document that says so; anything else that fails is a failure to fix.
+
+## Pick the C64 rows by outcome
+
+The C64 runs a subset of the host cases. Pick it with `tools/c64_row_cover.py`,
+not by stride or fewest edits: it builds a host runner with `--coverage`, runs
+it one case at a time and reads every branch arc each case takes in every
+linked source (`gcov -b -j`). `cover()` returns the fewest cases whose arcs
+equal what the whole host corpus takes; `check()` fails, listing each missed
+arc as `file:line branch N`, when a row list falls short.
+
+```sh
+python3 tools/c64_row_cover.py pick --objdir build/foo-cover --cases 512 --budget 96 \
+    --trace build/foo-arcs.json -- build/foo-cover/runner {case}
+python3 tools/c64_row_cover.py check --objdir build/foo-cover --cases 512 \
+    --rows 0,17,40 --trace build/foo-arcs.json
+```
+
+The runner takes the case number as its argument (`tools/lane_f_path_trace.c`
+does). From Python, `host_trace(objdir, sources, flags, cases)` builds and
+traces in one call, and `summary()` gives the proof fields. Interpreter-routine
+specs opt in with `'c64_rows': 'cover'` in `tools/interp_specs.py`; specs
+without the key freeze byte-identical vectors.
+
+Generators should also reach flight-typical values a seeded fill misses: +-0
+high words, equal times, zero and full-scale vectors, and non-zero TIME1,
+TIME2 and CDU cells (`tests/interp_case.c` clears 010-061 before the case's
+edits, so only edits set them). `tools/edge_cases.py` returns these as
+`(address, word)` edits; interpreter-routine specs opt in with
+`'edge_cases': True`, which adds them as a fourth case shape.
 
 ## Done means the PORT_SCOPE certificate
 
@@ -124,3 +163,20 @@ bank (BANKCALL, IBNKCALL, POSTJUMP and the like) must be registered as an
 `agc_transfer` routine, or the auditor sends the certificate back. Interfaces have owners: Lane A owns the interpreter and executive ABI,
 Lane H owns the overlay and module ABI; change them through a PR the owner
 reviews.
+
+Before you draft a certificate, run `python3 tools/cert_precheck.py
+<AGC file> --fetch` (or `--changed --base origin/port/c64-native-c`). It
+checks the rejection patterns from past audits: distinct, real evidence
+records (no map cited twice, sha256 matching); a comparison that is a
+yaAGC/oracle run with a case count above zero and no differing cases; results
+that show a pass (C64 results from VICE); no open items in the scope text; every
+entry reached from another file and every interpretive resume word (CHANG2)
+registered in `agc_routine_entry`; refusals, with NEWJOB refusals flagged; and
+the C64 row cover through `tools/c64_row_cover.py` when the record names its
+rows. Each finding is a FAIL or WARN line with a fix hint. `ci_guard.py` runs
+it on every certificate a PR changes and fails on any FAIL. WARN lines are
+things it cannot settle mechanically (edge and signed-zero paths left
+uncompared, whether domain claims hold, C64 cover without a runner): argue
+them in the certificate. A clean precheck does not mean the auditor will
+accept it. If you change how routines are reached, regenerate its listing facts
+after `tools/setup_cloud.sh` with `python3 tools/cert_precheck.py --write-facts`.
