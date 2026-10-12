@@ -752,6 +752,14 @@
           ],
           "scope": "SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB as control-transfer ABI routines (cm_exec_job_routines) composing the qualified admission, context change, sleep, wake, priority and finish bodies, through the caller, the selected basic or interpretive job, ADVAN, and JOBWAKE's TC 014 and CCSHOLE exits. With cm-exec-services every EXECUTIVE.agc service other code calls is a native routine; the idle loop (ADVAN, NUDIRECT), the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
           "verification": "docs/CM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_idle.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "DUMMYJOB, DUMMYJOB+2, ADVAN (through NUDIRECT or the SELFRET self-check dispatch), NUCHANG2 and SUPDXCHZ/SUPDXCHZ+1 as control-transfer ABI routines (cm_exec_idle_routines) composing the qualified idle dispatch, idle recheck and super dispatch bodies. With cm-exec-services and cm-exec-jobs every EXECUTIVE.agc entry is a native routine; the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
+          "verification": "docs/CM-EXEC-IDLE.md"
         }
       ]
     },
@@ -3236,6 +3244,14 @@
           ],
           "scope": "WAITLIST, TWIDDLE, the whole LONGCALL chain (LONGCALL, LNGCALL2, LONGCYCL/MUCHTIME/LASTTIME, LONGRTRN, GETCADR), FIXDELAY, VARDELAY, TASKOVER (RESUME on RUPTAGN -0, T3RUPT2 dispatch on +1) and the T3RUPT vector lead-in as control-transfer ABI routines, against the original program at every genuine call site, including the DPBIT14 and TC 1203 frontiers. The SVCT3 end-of-list task, DLY2-1 and the RESUME entries other interrupts use remain separate.",
           "verification": "docs/CM-EXEC-SERVICES.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_idle.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "The SVCT3 end-of-list task (05306) and its resumptions after NOVAC (05323) and SVCT3X's FIXDELAY (07721) as control-transfer ABI routines composing the qualified cm_svct3_phase body, to TASKOVER, NOVAC NBDONLY or FIXDELAY 500. DLY2-1 and the RESUME entries other interrupts use remain separate.",
+          "verification": "docs/CM-EXEC-IDLE.md"
         }
       ]
     },
