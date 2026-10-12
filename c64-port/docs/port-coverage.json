@@ -1109,6 +1109,17 @@
           ],
           "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
           "verification": "docs/GIMBAL_COMPLETE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_gimbal_lock.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (LOCSKIRT: rate choice from RATEINDX, CALL DELCOMP, BRATE and TM, the overshoot bias, SETGO CALCMAN2 to NEWANGL +1) as 11 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: WCALC (22,2737), the DELCOMP return and every word after a DANZIG.",
+          "verification": "docs/GIMBAL-LOCK.md"
         }
       ],
       "complete_native_coverage": {
@@ -1136,6 +1147,37 @@
             "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
           }
         }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 11 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list).",
+        "external_continuations": [
+          "Interpretive CALL to DELCOMP (ANGLFIND)",
+          "SETGO CALCMAN2 to NEWANGL +1",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
+            "sha256": "fa0ee121d8359f5ee0fa4996f6f5b31952318f86d0b1903e61f94d48bfde55f6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
+            "sha256": "8b422f87cf708d0bd2864173f2d60a534d1ec2c39441930efd6d55bdf7bf3f3d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-host.log",
+            "sha256": "81325ef6e06fe23890f757ec68374e682fa630966c05914edfc0992586bf0515"
+          },
+          "c64_execution_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
+            "sha256": "ee0123698b10374ab6fd1e4cc4391f71277bc14a8b9830d556d2a6f996103462"
+          }
+        }
       }
     },
     {
@@ -1154,7 +1196,55 @@
       "bytes": 23871,
       "lines": 1406,
       "status": "untranslated",
-      "native_coverage": []
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_imu_calibration.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "include/agc_input_channels.h"
+          ],
+          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 395 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
+          "verification": "docs/IMU-CALIBRATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, saved returns at the file's call sites, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads.",
+        "external_continuations": [
+          "BANKCALL, TWIDDLE, PRIOCHNG, 2PHSCHNG, PHASCHNG, NEWPHASE, CHANG1, CHECKMM, DOWNFLAG, FINDVAC, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX and ALARM with their inline words; POSTJUMP",
+          "ENDEXT, POODOO, ENDMARK, ENDOFJOB, JOBSLEEP and TASKOVER (no return)",
+          "Interpretive CALL and STCALL to routines of other files; RTB PULSEIMU and SGNAGREE; RVQ or GOTO to a caller outside",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
+          "TC LAT(SPL) (E7,1400), the erasable program the performance test loads",
+          "Idle points CHECKG1 and FINETIME +1, waiting for PIPAX or LOSCALAR to move",
+          "Interpreter LOADTIME, 1STO2S and CDULOGIC through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
+            "sha256": "714951f5a9968978cae5de67b27a8cb36073b535122d854fe335fae756ae1dc7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
+            "sha256": "c2afb73ad70a42650646eb875991b7598b9a515d4adebe2690085561088aa8c0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
+            "sha256": "5dfc5c53e7f578d231f34d5a6cfe523c66a14681830a57b12c760bcf00daf24d"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
+            "sha256": "e61448658ea9642c92e3ee5e04f3b0e91e7aa8c4c886ddd08bf513543eedf00f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/IMU_COMPENSATION_PACKAGE.agc",
@@ -5048,6 +5138,17 @@
           ],
           "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
           "verification": "docs/GIMBAL_COMPLETE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_gimbal_lock.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (LOCSKIRT: rate choice from RATEINDX, CALL DELCOMP, BRATE and TM, SETGO CALCMAN2 to NEWANGL +1) as 9 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: NOGIMLOC (22,2744) and WCALC, the DELCOMP return and every word after a DANZIG.",
+          "verification": "docs/GIMBAL-LOCK.md"
         }
       ],
       "complete_native_coverage": {
@@ -5073,6 +5174,37 @@
           "c64_execution_results": {
             "path": "evidence/gimbal-complete-target.log",
             "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 9 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list).",
+        "external_continuations": [
+          "Interpretive CALL to DELCOMP (ATTITUDE_MANEUVER_ROUTINE)",
+          "SETGO CALCMAN2 to NEWANGL +1",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
+            "sha256": "fa0ee121d8359f5ee0fa4996f6f5b31952318f86d0b1903e61f94d48bfde55f6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
+            "sha256": "8b422f87cf708d0bd2864173f2d60a534d1ec2c39441930efd6d55bdf7bf3f3d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-host.log",
+            "sha256": "81325ef6e06fe23890f757ec68374e682fa630966c05914edfc0992586bf0515"
+          },
+          "c64_execution_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
+            "sha256": "ee0123698b10374ab6fd1e4cc4391f71277bc14a8b9830d556d2a6f996103462"
           }
         }
       }

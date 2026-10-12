@@ -31,6 +31,7 @@ import os
 import random
 import struct
 import subprocess
+import types
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -85,13 +86,19 @@ class Mission:
         self.points = sorted(self.cp.blocks)
         self.kinds = {p: self.cp.starts[p][0] for p in self.points}
         self.externals = sorted(set(self.cp.externals))
-        self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)))
+        # (An erasable program's address a call reaches is 0xC000 | Z.)
+        self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)
+                                     + [0xC000 | k for k in self.cp.erasable_calls]))
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
         self.rk = bool(spec.get('resume_keys'))
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
+        # range_states: (FROM, TO, states) applies states to every point
+        # from label FROM up to (not including) label TO, after all_states.
+        self.range_states = [(self.cp.label_phys(a), self.cp.label_phys(b), st)
+                             for a, b, st in spec.get('range_states', ())]
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
@@ -129,6 +136,15 @@ class Mission:
             phys = bank * 1024 + off
             if not self.cp.in_file(phys):
                 return cadr(phys)
+
+
+class Absent:
+    """A mission the spec leaves out: no ranges, stops or routines."""
+    def __init__(self, m):
+        self.m = m
+        self.newops = 0
+        self.cp = types.SimpleNamespace(ranges=[])
+        self.body_exits = self.externals = self.points = []
 
 
 def case(mi, point, n, rng):
@@ -180,12 +196,15 @@ def case(mi, point, n, rng):
     # OVFIND clear in most cases, so BOV(B) falls through as often as not.
     if rng.random() < 0.75:
         E[0o121] = 0
-    for k, choices in list(mi.all_states.items()) + list(mi.states.get(point, {}).items()):
+    ranged = [kv for lo, hi, st in mi.range_states if lo <= point < hi for kv in st.items()]
+    for k, choices in list(mi.all_states.items()) + ranged + list(mi.states.get(point, {}).items()):
         a = vac + int(k[4:], 8) if k.startswith('vac+') else int(k, 8)
         if isinstance(choices, dict):
             choices = choices[mi.m]
         v = rng.choice(choices)
-        if isinstance(v, str) and v.startswith('vac+'):
+        if v == 'outside':
+            v = mi.outside(rng)
+        elif isinstance(v, str) and v.startswith('vac+'):
             v = vac + int(v[4:], 8)
         elif isinstance(v, str):
             lab, off = v.split('+')
@@ -207,7 +226,7 @@ def case(mi, point, n, rng):
         E[2] = logical(q)
         # Saved returns a TC to erasable runs (TC MPAC +2, TC TBASE2): the same.
         for k in mi.cp.tc_erasable:
-            E[k] = logical(q)
+            E[k if k < 0o1400 else (eb << 8) | (k & 0o377)] = logical(q)
         stop = q
     return seed, list(E.items()), n & 1, stop, sb
 
@@ -267,7 +286,7 @@ def main():
     spec = interp_specs.SPECS[a.spec]
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
-    missions = [Mission(spec, m) for m in ('lm', 'cm')]
+    missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
     rng = random.Random('interp-routine:' + a.spec)
     cases = []
     for cm, mi in enumerate(missions):
@@ -498,6 +517,9 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
                 want |= visits[i]
             trial = mask | want
             tp = pick + need[p]
+            if not mask and c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, need[p])], cases, rows)) is None:
+                C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
+                continue
             if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
                 if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, need[p])], cases, rows)) is None:
                     # The routine's whole run (with every routine it reaches)

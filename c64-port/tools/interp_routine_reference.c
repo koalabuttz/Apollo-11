@@ -43,6 +43,9 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   machine=baseline[c.cm];
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;
+  {agc_input_channels in;irc_inputs(&c,&in);machine.InputChannel[3]=(int16_t)in.channel3;machine.InputChannel[4]=(int16_t)in.channel4;
+   machine.InputChannel[030]=(int16_t)in.channel30;machine.InputChannel[031]=(int16_t)in.channel31;
+   machine.InputChannel[032]=(int16_t)in.channel32;machine.InputChannel[033]=(int16_t)in.channel33;}
   for(cycles=0;cycles<400000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
     if(pc==t->newops){unsigned p=loc_physical();if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}
@@ -51,7 +54,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
     /* The file's own transfers out (and the case's return) stop only when
      * the file made them; the interpreter's exits stop from anywhere. */
     if(prev_in){if(zp==stop){stopped=1;break;}for(i=0;i<t->nf;++i)if(zp==t->from_file[i]){stopped=1;break;}}
-    for(i=0;i<t->n;++i)if(zp==t->ext[i]){stopped=1;break;}
+    for(i=0;i<t->n;++i)if(zp==t->ext[i]||(pc<02000u&&t->ext[i]==(0xc000u|pc))){stopped=1;break;}
     if(zp!=0xfffeu)prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
     if(stopped)break;
    }

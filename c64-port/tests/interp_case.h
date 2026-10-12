@@ -8,6 +8,7 @@
  * the host differential, the host test and the C64 diagnostic share it. */
 #include "agc_transfer.h"
 #include "p66_bias.h"
+#include "agc_input_channels.h"
 typedef struct { uint16_t addr; agc_word word; } irc_edit;
 typedef struct {
     uint32_t seed; uint8_t cm, interrupt_enabled; agc_word superbank;
@@ -16,6 +17,9 @@ typedef struct {
 /* Fill all 2048 words from the seed (A and L sign-extended, the special
  * and counter registers 010-061 and ZERO cleared), then apply the edits. */
 void irc_build(apollo_overlay_state *, const irc_case *);
+/* The input channels the case latches, from its seed (a stream apart from
+ * the image's): LOSCALAR (channel 4) 37777 in a quarter of the cases, else random. */
+void irc_inputs(const irc_case *, agc_input_channels *);
 enum { IRC_STOPPED = 0, IRC_REFUSED = 1, IRC_FAILED = 2 };
 /* Run from the image's point until a point no routine covers (the case's
  * stop), at most max_steps routines. Returns IRC_STOPPED at an unmapped

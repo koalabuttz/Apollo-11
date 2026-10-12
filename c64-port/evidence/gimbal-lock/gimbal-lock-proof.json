@@ -1,0 +1,107 @@
+{
+ "milestone": "gimbal-lock",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 10240,
+ "cases_sha256": "560320975a10b30e5bb99fa352f01f5e8b79ecbcc553e05e1083b5c8302f1e14",
+ "oracle_sha256": "13cac58257c19f1a863407f71af07b7daf9e93850350142f736a16108c473118",
+ "frozen_vectors": 320,
+ "c64_vectors": [
+  {
+   "mission": "lm",
+   "keep": "0x1ff",
+   "cases": 18
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7ff",
+   "cases": 22
+  }
+ ],
+ "stops": {
+  "CM 22,2737 WCALC": {
+   "06037": 401,
+   "05170": 111
+  },
+  "CM 22,2742 ": {
+   "06037": 512
+  },
+  "CM 22,2744 ": {
+   "05170": 126,
+   "06037": 386
+  },
+  "CM 22,2747 ": {
+   "06037": 370,
+   "05170": 142
+  },
+  "CM 22,2751 ": {
+   "06037": 368,
+   "05170": 144
+  },
+  "CM 22,2753 ": {
+   "06037": 390,
+   "05170": 122
+  },
+  "CM 22,2756 ": {
+   "06037": 400,
+   "05170": 112
+  },
+  "CM 22,2760 ": {
+   "05170": 142,
+   "06037": 370
+  },
+  "CM 22,2762 ": {
+   "06037": 360,
+   "05170": 152
+  },
+  "CM 22,2764 ": {
+   "06037": 391,
+   "05170": 121
+  },
+  "CM 22,2765 ": {
+   "06037": 512
+  },
+  "LM 22,2744 NOGIMLOC": {
+   "06070": 373,
+   "05126": 139
+  },
+  "LM 22,2746 WCALC": {
+   "06070": 390,
+   "05126": 122
+  },
+  "LM 22,2751 ": {
+   "06070": 512
+  },
+  "LM 22,2753 ": {
+   "06070": 381,
+   "05126": 131
+  },
+  "LM 22,2756 ": {
+   "06070": 380,
+   "05126": 132
+  },
+  "LM 22,2760 ": {
+   "05126": 129,
+   "06070": 383
+  },
+  "LM 22,2763 ": {
+   "06070": 385,
+   "05126": 127
+  },
+  "LM 22,2765 ": {
+   "06070": 365,
+   "05126": 147
+  },
+  "LM 22,2766 ": {
+   "06070": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: CHANG2; cm: CHANG2)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state"
+}

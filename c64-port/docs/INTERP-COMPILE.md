@@ -18,8 +18,14 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - Fixed words that basic instructions read (`CAF`, `AD`, `MP`, `DCA` on constants) are recorded in the source map as constants.
 - An outside call listed in the spec's `noreturn` owns its inline words (POSTJUMP's CADR) but has no return point.
 - An outside call's inline words can be counted from the listing (`'auto'` in `externals`): the data words after the TC.
-- Words nothing in the file reaches, such as the returns of a display or restart (GOPERF +1/+2), become routines of their own with `resume_orphans`. Words after an EXTEND or INDEX prefix are not.
+- Words nothing in the file reaches, such as the returns of a display or restart (GOPERF +1/+2), become routines of their own with `resume_orphans`. Words after an EXTEND or INDEX prefix are not. With `resume_orphans: 'all'`, so is an order word nothing reaches (the EXIT after LITTLSUB's GOTO QPLAC), entered at NEWOPS.
 - I/O channel instructions (extended opcode 0: READ, WRITE, RAND, WAND, ROR, WOR, RXOR) refuse with `EXEC_OUT_OF_SCOPE` until the ABI has a channel model. The source map records those words as untranslated, with the spec's `partial` reason.
+- With `channel_inputs`, READ, RAND, ROR and RXOR of input channels 3, 4 (the scalers) and 030-033 compile. They read the inputs the caller latches for the run through `AGC_CHANNEL(n)` (`include/agc_input_channels.h`: the mission's io record, then the inputs), as yaAGC does: A overflow-corrected, combined, sign-extended. A scaler does not move during a run. Writes to channels still refuse. This is interim: `AGC_CHANNEL` moves to `agc_hardware` when the Kernel lane adds the channel fields there.
+- `idle` names spin points that wait for hardware to move an input (CHECKG1, FINETIME +1). Reaching one ends the run there with `EXEC_IDLE`, and the point is a routine that runs the wait once more.
+- `erasable_calls` names erasable addresses the file transfers to (TC LAT(SPL), the erasable program of the IMU performance test). The run ends there.
+- `index_guard` refuses an indexed erasable operand that leaves erasable memory. A starred operand with a fixed base reads the rope words its index can reach (a `KX` window). One with an erasable base that indexes into fixed memory is refused.
+- A SLOAD of a fixed word, a TC to switched erasable, and an indexed TC into a table of up to eight TCs (INDEX NDXCTR, TC +1) compile. A channel instruction reached without its EXTEND (a TS overflow skip) is refused.
+- A spec can name one mission (`missions: ('cm',)`).
 - A TC to an erasable address (TC MPAC +2, TC TBASE2) runs the word there with Q set to its return, as the hardware does.
 - An INDEX-modified write that could reach a bank or Z register checks the address at run time and refuses if it would.
 - MXV and VXM read their 18-word matrix operand as a `K` array. LXC is an indexed misc order.
@@ -41,7 +47,7 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - a transfer from the file to an outside basic routine;
 - the case's own caller return.
 
-The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`) or at every routine (`all_states`, per mission if it is a dict). At a basic routine, every erasable word a TC runs holds the case's return. A routine in banks 040-043 runs with the superbank bit set. With `resume_keys`, NEWJOB is positive in a quarter of the cases, and CHANG2 is a stop. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file.
+The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`) or at every routine (`all_states`, per mission if it is a dict). At a basic routine, every erasable word a TC runs holds the case's return. A routine in banks 040-043 runs with the superbank bit set. With `resume_keys`, NEWJOB is positive in a quarter of the cases, and CHANG2 is a stop. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file. `range_states` sets values at every routine from one label up to another (a loop's index registers, say). A state value `'outside'` is a caller return outside the file. With `channel_inputs`, each case latches input channels drawn from its seed (`irc_inputs`), LOSCALAR 37777 in a quarter of them, and the oracle sets yaAGC's input channels to the same values.
 
 `--freeze` writes:
 
