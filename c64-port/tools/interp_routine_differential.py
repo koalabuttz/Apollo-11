@@ -203,12 +203,17 @@ def case(mi, point, n, rng):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
     fb = bank << 10
+    if bank >= 0o40:
+        # Banks 40-43: FB 30-33 with SUPERBNK 4 (a channel 7 edit).
+        fb = (bank - 0o10) << 10
     eb = rng.randrange(8) if mi.ebank is None else mi.ebank.get(point, rng.randrange(8)) \
         if isinstance(mi.ebank, dict) else mi.ebank
     E[3] = eb << 8
     E[4] = fb
     E[6] = fb | eb
     E[0o67] = 0
+    if bank >= 0o40:
+        E[0x8000 | 0o7] = 0o100
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
     shape = n % 3

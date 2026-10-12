@@ -342,6 +342,9 @@ class Compiler:
         fp = self.fixed_operand(w, bank)
         if fp is None:
             return '0'
+        if ADDR_ALIAS.get(what) == 'GSHIFT':
+            # A long shift's word is its shift code, not an operand address.
+            return '0'
         if not takes_k:
             raise CompileError('%s with fixed operand' % what)
         self.consts[fp] = self.name(fp)
@@ -556,6 +559,11 @@ class Compiler:
         no order follows it."""
         ln = self.code.get(cur)
         if not (w & 0o74000) and (ln is None or not is_interp_op(ln.op)):
+            return
+        if ln is not None and ln.op and not is_interp_op(ln.op) and ln.op not in ('2CADR', 'CADR', 'ADRES', 'GENADR', 'OCT', 'DEC', '2DEC', '2OCT'):
+            # Basic code follows (P11's GETDOWN: STCALL LALOTORV +5, which
+            # leaves through the INCORPEX return GETDOWN saved): the call
+            # does not come back here.
             return
         self.add_start(cur, 'i', why)
 
@@ -983,12 +991,22 @@ class Compiler:
         c.append('')
         if self.basic:
             c.extend(self.basic.emit(sym))
-            c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent')
-            c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
-            c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){')
-            c.append(' unsigned i;')
-            c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
-            c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
+            if any(phys >= 0o40 * 1024 for phys in self.blocks):
+                c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear; fb')
+                c.append(' * 0100000-0106000 names banks 40-43, FB 30-33 with SUPERBNK 4), coherent')
+                c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
+                c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){')
+                c.append(' unsigned i;agc_word reg=fb>=0100000u?(agc_word)(fb-020000u):fb;')
+                c.append(' if(W[4]!=reg||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+                c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+                c.append(' if(fb>=0100000u?(io->superbank&0160u)!=0100u:fb>=060000u&&(io->superbank&0100u))return 0;')
+            else:
+                c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent')
+                c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
+                c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){')
+                c.append(' unsigned i;')
+                c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+                c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
             c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
             c.append(' return 1;')
             c.append('}')

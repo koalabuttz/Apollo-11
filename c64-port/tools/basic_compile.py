@@ -179,15 +179,23 @@ class Basic:
         self.add(phys)
         while self.work:
             k = self.work.pop()
-            if self.is_data(k[0]) and self.where(k[0]) not in self.spec.get('execute_data', ()):
-                # Control reaching a constant: the file's flow never does
-                # (the paths here are CCS exits and TS skips no admitted
-                # state takes); the differential checks none is taken.
+            if (self.is_data(k[0]) or self.is_interp(k[0])) and self.where(k[0]) not in self.spec.get('execute_data', ()):
+                # Control reaching a constant or an interpretive word (P11's
+                # CCS SATSW -0 exit into STEERSAT's TLOAD): the file's flow
+                # never does (the paths here are CCS exits and TS skips no
+                # admitted state takes); the differential checks none is
+                # taken.
                 self.data_landings.add(k[0])
                 self.nodes[k] = ['/* %s %s: data, never executed */' % (self.where(k[0]), self.text(k[0])),
                                  'return EXEC_INVALID_ACTION;']
                 continue
             self.nodes[k] = self.compile(*k)
+
+    def is_interp(self, phys):
+        from interp_compile import is_interp_op
+        ln = self.L.by_phys.get(phys)
+        # (INCR names a basic instruction and an interpretive order alike.)
+        return ln is not None and ln.op != 'INCR' and is_interp_op(ln.op)
 
     def is_data(self, phys):
         ln = self.L.by_phys.get(phys)

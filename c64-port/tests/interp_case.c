@@ -24,12 +24,15 @@ void irc_build(apollo_overlay_state *m,const irc_case *c){uint32_t seed=c->seed;
   }else m->words[c->edits[i].addr&03777u]=c->edits[i].word;
  }
 }
+agc_word irc_superbank(const irc_case *c){agc_word sb=c->superbank;unsigned i;
+ for(i=0;i<c->nedits;++i)if(c->edits[i].addr==(IRC_CHANNEL|07u))sb=c->edits[i].word;
+ return sb;}
 #ifndef IRC_BUILD_ONLY
 unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps,uint16_t *ie){
- p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;enum exec_status st;uint16_t steps;unsigned i;
- lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
+ p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=irc_superbank(c);enum exec_status st;uint16_t steps;unsigned i;
+ lio.superbank=superbank;lio.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
- cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ cio.superbank=superbank;cio.interrupt_enabled=c->interrupt_enabled;
  if(irc_ch_on)irc_cm_io(&cio,0);
  io=c->cm?(void *)&cio:(void *)&lio;
  st=agc_transfer_run(p,s,io,&superbank,0xfffeu,max_steps,&steps);

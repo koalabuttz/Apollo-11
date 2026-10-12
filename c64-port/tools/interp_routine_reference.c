@@ -22,12 +22,14 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
 struct stops{unsigned newops,nr,first[16],last[16],n,ext[64],nf,from_file[64],any,intpret,nd,device[8];};
 static unsigned outside(const struct stops *t,unsigned p){unsigned i;for(i=0;i<t->nr;++i)if(p>=t->first[i]&&p<=t->last[i])return 0;return 1;}
 /* Physical fixed address of Z (0xfffe when Z is erasable; 0xffff is no stop). */
-static unsigned z_physical(unsigned z){unsigned bank=(get(4)>>10)&037u;
+/* FB 30-37 reach banks 40-47 under SUPERBNK 4 (channel 7 bits 5-7). */
+static unsigned super_bank(unsigned bank,unsigned sb){return bank>=030u&&(sb&0160u)==0100u?bank+010u:bank;}
+static unsigned z_physical(unsigned z){unsigned bank=super_bank((get(4)>>10)&037u,(unsigned)machine.OutputChannel7);
  if(z<02000u)return 0xfffeu;
  if(z>=04000u)return 2048u+(z-04000u);
  return bank*1024u+(z&01777u);
 }
-static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&037u;
+static unsigned loc_physical(void){unsigned loc=get(0164),bank=super_bank((get(0165)>>10)&037u,get(0165));
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
@@ -47,7 +49,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=0;stop=rd16(f);c.nedits=(uint16_t)rd16(f);
   if(c.nedits>4096u)return 2;
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
-  c.edits=edits;irc_build(&s,&c);t=&st[c.cm];
+  c.edits=edits;c.superbank=irc_superbank(&c);irc_build(&s,&c);t=&st[c.cm];
   machine=baseline[c.cm];
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;

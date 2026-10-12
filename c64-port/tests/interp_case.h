@@ -26,6 +26,9 @@ extern uint8_t irc_ch_on;
 /* Fill all 2048 words from the seed (A and L sign-extended, the special
  * and counter registers 010-061 and ZERO cleared), then apply the edits. */
 void irc_build(apollo_overlay_state *, const irc_case *);
+/* The case's SUPERBNK: an IRC_CHANNEL|07 edit (routines in banks 40-43),
+ * else c->superbank. */
+agc_word irc_superbank(const irc_case *);
 enum { IRC_STOPPED = 0, IRC_REFUSED = 1, IRC_FAILED = 2 };
 /* Run from the image's point until a point no routine covers (the case's
  * stop), at most max_steps routines. Returns IRC_STOPPED at an unmapped
