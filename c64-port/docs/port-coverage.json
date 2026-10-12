@@ -5430,6 +5430,17 @@
           ],
           "scope": "GET45 +1 through VNPOOH (35,3635-35,3722), 54 words: GET45 +1's TC COMPTGO, the DELAYJOB wait, the V16N45 flash and its terminate, proceed and recycle responses, KILCLOCK, N45PROC, CLUPDATE with its interpretive CLEAR GOTO UPDATFLG QSAVED, DISPLAYE, P3XORP7X and VNPOOH, as 20 basic and 7 interpretive routines of the control-transfer ABI (with the lm-vn1645 and lm-midgim steps registered as interpretive routines): from each entry through the trampoline and the native INTER-BANK routines to the first point outside the file (COMPTGO, DELAYJOB, GOFLASH, PHASCHNG, UPFLAG, GOTOPOOH, CLUPDATE's TC INTPRET, a NEWOPS outside the file, the UNIT or ARCSIN alarm frontier, or the caller's return).",
           "verification": "docs/LM-P34-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/lm_s3435_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/matrix_native.c"
+          ],
+          "scope": "S34/35.1 (35,3274-35,3305), NOVRWRT, S34/35.4 and LOMAT (35,3424-35,3461), 40 words, as four interpretive routines of the control-transfer ABI keyed at their NEWOPS: the line of sight ULOS and orbit normal UNRM, the line-of-sight frame and DELVEET3 rotated into DVLOS (MXV of the work-area matrix), and the local-vertical matrix at 0D: from each NEWOPS entry through the trampoline to the first NEWOPS outside them (the caller's return at C(QPRET) or the CADR in NORMEX) or UNIT's POODOO1 frontier.",
+          "verification": "docs/LM-S3435.md"
         }
       ]
     },

@@ -1,0 +1,434 @@
+{
+ "source_paths": [
+  "Luminary099/P34-35_P74-75.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/P34-35_P74-75.agc": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_s3435_routines.c",
+ "native_sha256": "59248ded38f52a7d963056443fe313a4d39e1cffbcbe7915c3ad99a238c656cb",
+ "source_words": 40,
+ "source_lines": 40,
+ "symbols": {
+  "S34/35.1": "35,3274",
+  "S34/35.4": "35,3442",
+  "NOVRWRT": "35,3424",
+  "LOMAT": "35,3447",
+  "RPASS3": "E7,1551",
+  "RACT3": "E7,1535",
+  "VACT3": "E7,1543",
+  "ULOS": "E4,1710",
+  "UNRM": "E4,1660",
+  "DELVEET3": "E4,1765",
+  "DVLOS": "E4,1702",
+  "NORMEX": "E7,1463"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 680,
+   "address": "35,3274",
+   "source": "S34/35.1 VLOAD VSU",
+   "words": [
+    "52375"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 681,
+   "address": "35,3275",
+   "source": "RPASS3",
+   "words": [
+    "03552"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 682,
+   "address": "35,3276",
+   "source": "RACT3",
+   "words": [
+    "03536"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 683,
+   "address": "35,3277",
+   "source": "UNIT PUSH",
+   "words": [
+    "41456"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 684,
+   "address": "35,3300",
+   "source": "STOVL ULOS",
+   "words": [
+    "26311"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 685,
+   "address": "35,3301",
+   "source": "RACT3",
+   "words": [
+    "03536"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 686,
+   "address": "35,3302",
+   "source": "VXV UNIT",
+   "words": [
+    "53435"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 687,
+   "address": "35,3303",
+   "source": "VACT3",
+   "words": [
+    "03544"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 688,
+   "address": "35,3304",
+   "source": "STORE UNRM",
+   "words": [
+    "02261"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 689,
+   "address": "35,3305",
+   "source": "RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "s3435_1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 780,
+   "address": "35,3424",
+   "source": "NOVRWRT VLOAD PUSH",
+   "words": [
+    "41575"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 781,
+   "address": "35,3425",
+   "source": "ULOS",
+   "words": [
+    "02311"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 782,
+   "address": "35,3426",
+   "source": "VXV VCOMP",
+   "words": [
+    "57435"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 783,
+   "address": "35,3427",
+   "source": "UNRM",
+   "words": [
+    "02261"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 784,
+   "address": "35,3430",
+   "source": "UNIT PUSH",
+   "words": [
+    "41456"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 785,
+   "address": "35,3431",
+   "source": "VXV VSL1",
+   "words": [
+    "76435"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 786,
+   "address": "35,3432",
+   "source": "ULOS",
+   "words": [
+    "02311"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 787,
+   "address": "35,3433",
+   "source": "PDVL",
+   "words": [
+    "77715"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 788,
+   "address": "35,3434",
+   "source": "PDVL MXV",
+   "words": [
+    "64315"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 789,
+   "address": "35,3435",
+   "source": "DELVEET3",
+   "words": [
+    "02366"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 790,
+   "address": "35,3436",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 791,
+   "address": "35,3437",
+   "source": "VSL1",
+   "words": [
+    "77772"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 792,
+   "address": "35,3440",
+   "source": "STCALL DVLOS",
+   "words": [
+    "36303"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 793,
+   "address": "35,3441",
+   "source": "NORMEX",
+   "words": [
+    "03463"
+   ],
+   "native": "novrwrt"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 798,
+   "address": "35,3442",
+   "source": "S34/35.4 STQ SETPD",
+   "words": [
+    "40220"
+   ],
+   "native": "s3435_4"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 799,
+   "address": "35,3443",
+   "source": "NORMEX",
+   "words": [
+    "03463"
+   ],
+   "native": "s3435_4"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 800,
+   "address": "35,3444",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "s3435_4"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 801,
+   "address": "35,3445",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "s3435_4"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 802,
+   "address": "35,3446",
+   "source": "NOVRWRT",
+   "words": [
+    "73424"
+   ],
+   "native": "s3435_4"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 807,
+   "address": "35,3447",
+   "source": "LOMAT VLOAD VCOMP",
+   "words": [
+    "57575"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 808,
+   "address": "35,3450",
+   "source": "UNRM",
+   "words": [
+    "02261"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 809,
+   "address": "35,3451",
+   "source": "STOVL 6D",
+   "words": [
+    "24007"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 810,
+   "address": "35,3452",
+   "source": "RACT3",
+   "words": [
+    "03536"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 811,
+   "address": "35,3453",
+   "source": "UNIT VCOMP",
+   "words": [
+    "57456"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 812,
+   "address": "35,3454",
+   "source": "STORE 12D",
+   "words": [
+    "00015"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 813,
+   "address": "35,3455",
+   "source": "VXV VSL1",
+   "words": [
+    "76435"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 814,
+   "address": "35,3456",
+   "source": "UNRM",
+   "words": [
+    "02261"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 815,
+   "address": "35,3457",
+   "source": "STORE 0D",
+   "words": [
+    "00001"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 816,
+   "address": "35,3460",
+   "source": "SETPD RVQ",
+   "words": [
+    "43401"
+   ],
+   "native": "lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 817,
+   "address": "35,3461",
+   "source": "18D",
+   "words": [
+    "00023"
+   ],
+   "native": "lomat"
+  }
+ ],
+ "covered_ranges": [
+  "35,3274-35,3305",
+  "35,3424-35,3461"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every interpretive word of S34/35.1, NOVRWRT, S34/35.4 and LOMAT is a literal bookkeeping argument of the registered transfer routine entered at the first address of its range."
+}
