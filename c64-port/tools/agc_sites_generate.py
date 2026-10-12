@@ -40,6 +40,8 @@ TABLES = {
     # LONGCALL, an ADRES after TWIDDLE, the delay (DEC) after FIXDELAY.
     'lm-exec': ('Luminary099', ('NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'TWIDDLE', 'FIXDELAY'),
                 'src/lm_exec_sites.inc', 'lm_exec_sites'),
+    'cm-exec': ('Comanche055', ('NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'TWIDDLE', 'FIXDELAY'),
+                'src/cm_exec_sites.inc', 'cm_exec_sites'),
 }
 # Callees whose operand is two words (2CADR, or an OCT pair).
 TWO_WORD = {'NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL'}

@@ -735,6 +735,15 @@
           ],
           "scope": "Canonical original positive zero core admission scan; actual EXTEND BZF NEXTCORE behavior qualified, historical interpretation corrected additively.",
           "verification": "docs/COMANCHE_ADMISSION_ZERO.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "include/cm_exec_routines.h",
+            "src/cm_exec_sites.inc"
+          ],
+          "scope": "NOVAC and FINDVAC as control-transfer ABI routines at their original addresses, with the inline 2CADR from the compiled site table (every genuine call site) or erasable, through cm_admission_zero to the caller return or BAILOUT 1201/1202. SPVAC, CHANG1/CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB remain separate.",
+          "verification": "docs/CM-EXEC-SERVICES.md"
         }
       ]
     },
@@ -3209,6 +3218,16 @@
           ],
           "scope": "Actual TWIDDLE and full ordinary positive delay domain, with source alarm target transfers. Alarm continuation bodies and complete timed service coverage remain pending.",
           "verification": "docs/COMANCHE_WAITLIST_EXTENDED.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "include/cm_exec_routines.h",
+            "src/cm_exec_sites.inc",
+            "src/cm_waitlist_extended.c"
+          ],
+          "scope": "WAITLIST, TWIDDLE, the whole LONGCALL chain (LONGCALL, LNGCALL2, LONGCYCL/MUCHTIME/LASTTIME, LONGRTRN, GETCADR), FIXDELAY, VARDELAY, TASKOVER (RESUME on RUPTAGN -0, T3RUPT2 dispatch on +1) and the T3RUPT vector lead-in as control-transfer ABI routines, against the original program at every genuine call site, including the DPBIT14 and TC 1203 frontiers. The SVCT3 end-of-list task, DLY2-1 and the RESUME entries other interrupts use remain separate.",
+          "verification": "docs/CM-EXEC-SERVICES.md"
         }
       ]
     },
