@@ -19,7 +19,7 @@
       "store": "tree"
     },
     "lm-downtelemetry-vice.log": {
-      "sha256": "07837c8b03a0e59e9dcb12dfff175942d3d4f0d5b0d29df8d3e1f465e8fc93a1",
+      "sha256": "326174bb8597740ce03b5e2ee9f361311d3aa877128b6f8bb236c6b12ba3c599",
       "bytes": 631,
       "store": "release"
     }

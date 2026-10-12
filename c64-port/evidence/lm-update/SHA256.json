@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-update",
+  "release": "evidence-lm-update",
+  "files": {
+    "lm-update-data.json": {
+      "sha256": "5b7a20f720c9a4cf188228a9ffee7951146bc2887b2de2a0d6e6a9af2137c35f",
+      "bytes": 2587,
+      "store": "release"
+    },
+    "lm-update-host.log": {
+      "sha256": "6c9b6ea802ecbf4f296166053ca1e4893f27c369b6e14b9e4adceedd6eeceb92",
+      "bytes": 1696,
+      "store": "release"
+    },
+    "lm-update-proof.json": {
+      "sha256": "ec3bcf72a8e9ea14d22f74d117c08629eb5988b73a8321ae49877df27b079530",
+      "bytes": 671,
+      "store": "tree"
+    },
+    "lm-update-vice.log": {
+      "sha256": "40f06a86102e05b296f52b5046dc9945d51582161061d84977a106340ad652d7",
+      "bytes": 611,
+      "store": "release"
+    }
+  }
+}
