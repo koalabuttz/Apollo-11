@@ -4809,7 +4809,7 @@
       "sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
       "bytes": 6098,
       "lines": 183,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4853,7 +4853,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
-            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+            "sha256": "12140f2fa58e899a33231de01b804beb4157e4fe2527cd5ae8c6ef2dec2f2640"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-source-stream.json",
@@ -4870,6 +4870,10 @@
           "independent_assembly_comparison_snapshots": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-reference.snapshots.bin.xz",
             "sha256": "a2593a19409707c6b34473c2ec19a697ea008ba6f4038b6f70788fd75a6b504b"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-ephemeris.md",
+            "sha256": "0b8e4647d644d883a47acddc98344a5406279881e6c9084827cf5fe662e980cd"
           }
         }
       }
