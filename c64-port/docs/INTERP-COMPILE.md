@@ -47,11 +47,30 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - a transfer from the file to an outside basic routine;
 - the case's own caller return.
 
-The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`) or at every routine (`all_states`, per mission if it is a dict). At a basic routine, every erasable word a TC runs holds the case's return. A routine in banks 040-043 runs with the superbank bit set. With `resume_keys`, NEWJOB is positive in a quarter of the cases, and CHANG2 is a stop. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file. `range_states` sets values at every routine from one label up to another (a loop's index registers, say). A state value `'outside'` is a caller return outside the file. With `channel_inputs`, each case latches input channels drawn from its seed (`irc_inputs`), LOSCALAR 37777 in a quarter of them, and the oracle sets yaAGC's input channels to the same values.
+The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`) or at every routine (`all_states`, per mission if it is a dict). State keys are `vac+n`, an octal address or an erasable symbol from the listing (`TM+1`). `joint_states` gives sets of values that only mean something together (TM a little past TIME2/TIME1): one set per case, at a routine or, under `'*'`, in half of every routine's cases. With `counters`, TIME2, TIME1 (across its range, at 0 and just below its 037777 wrap) and CDUX-Z vary; otherwise `irc_build` leaves 010-061 at 0. With `edge_values`, a quarter of the cases put edge values into MPAC, the top of the pushdown list and every operand: ±0, one LSB, 1/2, 1/4, just below 1, half-unit axis vectors (a matrix's rows as a signed permutation), unit vectors in a coordinate plane and tiny vectors, with the CDUs at 0, 45, 90, 180 or 270°. These keys are all off unless a spec sets them, so other milestones' cases are unchanged. At a basic routine, every erasable word a TC runs holds the case's return. A routine in banks 040-043 runs with the superbank bit set. With `resume_keys`, NEWJOB is positive in a quarter of the cases, and CHANG2 is a stop. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file. `range_states` sets values at every routine from one label up to another (a loop's index registers, say). A state value `'outside'` is a caller return outside the file. With `channel_inputs`, each case latches input channels drawn from its seed (`irc_inputs`), LOSCALAR 37777 in a quarter of them, and the oracle sets yaAGC's input channels to the same values.
 
 `--freeze` writes:
 
-- `tests/<id>_vectors.h`: every Nth case with its oracle digest, for the host and sanitizer tests.
-- `tests/<id>_c64_vectors.h` and `tools/mk/<id>.groups`: groups of routines that fit below $c000 with the shared interpreter bodies (found by linking each candidate), and the cases whose whole run stays in a group.
-- `build/<id>-proof.json`. Cases that stop at a channel instruction are listed as `waiting_for_io_channels` and not compared. Routines whose runs reach too much of the file to fit one diagnostic are listed as `c64_host_only`.
+- `tests/<id>_vectors.h`: every Nth case with its oracle digest, for the host and sanitizer tests. With `cover`, also the fewest cases (greedy) that reach every edge any case reaches: the native runner is rebuilt with `clang -fsanitize-coverage=trace-pc-guard` over every linked source but the test harness (`tools/irc_edges.c`), so each branch outcome is an edge, and each case reports the edges it reached.
+- `tests/<id>_c64_vectors.h` and `tools/mk/<id>.groups`: with `cover`, the cases a greedy cover picks to reach every edge, among those whose run fits one diagnostic, plus the fewest-visit case of any routine it leaves out, packed case by case into groups of routines that fit below $c000 with the shared interpreter bodies (found by linking each candidate), and the cases whose whole run stays in a group.
+- `build/<id>-proof.json`. Cases that stop at a channel instruction are listed as `waiting_for_io_channels` and not compared. Routines whose runs reach too much of the file to fit one diagnostic are listed as `c64_host_only`. With `cover`, `outcome_cover` gives the edges all cases, the host vectors and the C64 cases reach, and the source lines of any edge no C64 case reaches.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
+
+## Additions from the orbital lane (ORBITAL_INTEGRATION, INTEGRATION_INITIALIZATION)
+
+Spec keys:
+
+- `cgoto`: the CADR list a CGOTO reads, with its length. The list's words are `cadr_list` rows in the source map.
+- `indexed_fixed`: a starred operand into fixed memory, with the range its index register can take. It emits a `KX` table and checks the index at run time, refusing anything outside the table.
+- `rtb` also serves BOVB to a basic label (BOVB TCDANZIG).
+- `return_words`: erasable words that hold a saved interpretive return (TBASE2), seeded like QPRET with a return outside the file.
+- `native_ranges`: basic routines implemented by hand behind RTB (the MOVE* state-vector moves), mapped in the source map to that function.
+- `c64_flags`: extra flags for the C64 probe and the milestone's PRGs. The large integration files use `-fno-inline -fstatic-stack -mlto-zp=110`, with the image under KERNAL at $e000.
+
+`all_states` sets the legal values of index registers, PBODY, DIFEQCNT, COLREG and PUSHLOC for every case.
+
+A target of `SSP QPRET <label>` (PHEXIT, AMOVED) is a return point and must be listed in `entries`.
+
+Rope words come from the `MAIN.agc.bin` beside the listing, so bank checksums and fillers that the listing omits are read correctly.
+
+The freeze halves a routine's C64 cases when their closure does not fit one program.

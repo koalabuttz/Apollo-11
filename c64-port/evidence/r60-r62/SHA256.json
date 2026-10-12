@@ -4,18 +4,18 @@
   "release": "evidence-r60-r62",
   "files": {
     "r60-r62-differential.log": {
-      "sha256": "71e7e10cc0d125fbe442e4301f392c07ac93c45b26e722c18e6f4138e14e3b4f",
-      "bytes": 21257,
+      "sha256": "4a6462400378fa47408a0f2f4b42187d85e22565a0e81cb28b402e36749d7375",
+      "bytes": 20917,
       "store": "release"
     },
     "r60-r62-host.log": {
-      "sha256": "8c3d5a5c2d2018d6ccff4b30f8af7773886c35fcf90540b37261dc4f087d7810",
+      "sha256": "d4487dffb52317b5f493a3a8e7267d9be4b3756f9262268cb861138c0d12154f",
       "bytes": 64,
       "store": "release"
     },
     "r60-r62-proof.json": {
-      "sha256": "77d9fbc589c9d636e8d7d5652d914ed0da137f72caa454c22393a89f9c58850a",
-      "bytes": 33178,
+      "sha256": "4166c5287e2b565e27196a626cbd742f0b0af76bc9f691c9a81c0dea119e964a",
+      "bytes": 33230,
       "store": "tree"
     },
     "r60-r62-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "r60-r62-vice.log": {
-      "sha256": "b4a4b393bdb2dc28ebf772adbd83677634a2cb5b76b67283ec3280bdba9e0a69",
-      "bytes": 413,
+      "sha256": "96783b1cd6a1c3c0bba76bb8a6b09619652c64bb99e73a672f56d1ef988ce72f",
+      "bytes": 1419,
       "store": "release"
     }
   }

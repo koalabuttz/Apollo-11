@@ -2,6 +2,63 @@
 """Milestone specs for tools/interp_compile.py: the file, its entries, the
 outside basic routines it calls (with their inline word counts) and the
 native routines its RTBs reach."""
+
+
+def ones(x):
+    """x as a ones'-complement word."""
+    return x if x >= 0 else ~(-x) & 0o77777
+
+
+def kalcmanu_joint(cm):
+    """KALCMANU steering states that only mean something together:
+    TIMECHK's TM - TIME (TTEMP) small, of both signs and exactly 0, around
+    ONESEK (100); CONTMANU's NEXTIME at, near and wrapped past TIME1;
+    INCRDCDU's BCDU - NCDU small enough that MP DT/TAU leaves +-0; RATEBIAS's
+    BRATE +-0; and (Comanche) HOLDFLAG +-0 and each RATEINDX."""
+    out = []
+    for t2 in (0, 0o1234, 0o37777):
+        for t1 in (0o200, 0o37000):
+            for dh in (0, 1):
+                for d in (-101, -100, -99, -1, 0, 1, 99, 100, 101):
+                    out.append({'0024': t2, '0025': t1, 'TM': t2 + dh, 'TM+1': t1 + d})
+    for t1 in (0o200, 0o37770, 0o37777):
+        for d in (-1, 0, 1, 50, 100):
+            out.append({'0025': t1, 'NEXTIME': (t1 + d) % 0o40000})
+    for e in (-12, -5, -1, 0, 1, 5, 12):
+        st = {}
+        for i in range(3):
+            st['BCDU+%d' % i] = ones(0o100 + e * (i - 1))
+            st['NCDU+%d' % i] = 0o100
+        out.append(st)
+    for hi in (0, 0o77777, 3, 0o77774):
+        out.append({'BRATE+0': hi, 'BRATE+1': 0, 'BRATE+2': 0o77777 ^ hi, 'BRATE+3': 0, 'BRATE+4': hi, 'BRATE+5': 0})
+    if cm:
+        for v in (0, 0o77777, 1, 0o77776):
+            out.append({'HOLDFLAG': v})
+        for v in (0, 2, 4, 5, 6, 7):
+            out.append({'RATEINDX': v})
+    return out
+
+
+def anglfind_joint():
+    """MFI at identity and axis rotations (AM = ARCCOS(1), the ACOSST .5
+    edge), and COF with each ordering of its components, ties included
+    (COFMAXGO's BMN arms)."""
+    out = []
+    for one in (0o10000, 0o20000):
+        for signs in ((1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1)):
+            st = {'MFI+%d' % k: 0 for k in range(18)}
+            for i, sg in enumerate(signs):
+                st['MFI+%d' % (8 * i)] = one if sg > 0 else ones(-one)
+                st['MFI+%d' % (8 * i + 1)] = 0 if sg > 0 else 0o77777
+            out.append(st)
+    for a, b, c in ((1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1),
+                    (2, 2, 1), (1, 2, 2), (2, 1, 2), (1, 1, 1)):
+        out.append({'COF': a * 0o2000, 'COF+1': 0, 'COF+2': b * 0o2000, 'COF+3': 0,
+                    'COF+4': c * 0o2000, 'COF+5': 0})
+    return out
+
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -15,6 +72,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/inflight_align_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # Every 32nd case keeps the vectors under the 1 MB fast-checkout limit.
         'freeze_stride': 32,
         # AXISGEN's loops entered directly: index registers and steps as
@@ -47,6 +111,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/geometry_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # Words no routine compiles yet, and why (the source map records them).
         'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2'},
         'freeze_stride': 32,
@@ -70,10 +141,19 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/kalcmanu_steering_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         'freeze_stride': 32,
-        # ISITAUTO leaves +0 or +1 in A; CCS A's negative arms are the
-        # interpretive words that follow.
-        'states': {'NEWDELHI+2': {'0': [0, 1]}},
+        # ISITAUTO leaves CHAN31 & BIT14 in A: +0 or 020000.
+        'states': {'NEWDELHI+2': {'0': [0, 0o20000]}},
+        # The joint states reach TIMECHK's end of maneuver, CONTMANU's wrap
+        # and the +-0 arms.
+        'joint_states': {'*': {'lm': kalcmanu_joint(False), 'cm': kalcmanu_joint(True)}},
         # The file's EBANK= TTEMP (E6, as its 2CADR BBCONs carry): its
         # switched names (KSPNDX, BRATE...) mean nothing under another EB.
         'ebank': 6,
@@ -102,6 +182,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/r60_r62_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # BUF2 holds the last display's return (a fixed address), as
         # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
@@ -129,6 +216,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/attitude_maneuver_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # One C64 case per routine: KALCMAN3's run reaches most of the file.
         'c64_per_point': 1,
         # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
@@ -144,6 +238,10 @@ SPECS = {
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
                        'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
+        # Half the cases start from one MFI or COF set (anglfind_joint).
+        'joint_states': {'*': anglfind_joint()},
+        # -fno-inline keeps KALCMAN3's whole path in one diagnostic.
+        'c64_flags': ['-fno-inline'],
         'freeze_stride': 64,
     },
     'gimbal-lock': {
@@ -166,6 +264,73 @@ SPECS = {
         'all_states': {'01325': [0, 2, 4, 6], '01130': [0, 2, 4, 6],
                        'vac+046': [0o77777 ^ r for r in (0, 2, 4, 6)]},
         'freeze_stride': 32,
+    },
+    'lm-orbital-integration': {
+        'missions': ('lm',),
+        'file': {'lm': 'ORBITAL_INTEGRATION.agc'},
+        'base': {'lm': 'lm_orbital_integration'},
+        'symbol': {'lm': 'lm_orbital_integration'},
+        # Entered from INTEGRATION_INITIALIZATION (RVCON's CALL KEPPREP,
+        # RECTIFY, MINIRECT, POOHCHK's GOTO TIMESTEP) and INITVEL (SETITCTR).
+        'entries': ['KEPPREP', 'RECTIFY', 'MINIRECT', 'TIMESTEP', 'SETITCTR', 'AMOVED'],
+        'noreturn': ['POODOO'],
+        'externals': {'POODOO': 1, 'PHASCHNG': 1, 'UPFLAG': 1, 'ALARM': 1},
+        'cgoto': {'DIFEQTAB': 3},
+        # Indexed operands into bank 13's constants: the index is the body
+        # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
+        'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
+                          '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        'all_states': {'2030': [0, 2], '1117': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
+                       'vac+051': [0, 2, 4, 6], 'vac+052': [0, 2, 4, 6],
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # BOVB TCDANZIG: TCDANZIG is ENDT(X) in TIME_OF_FREE_FALL, TC DANZIG.
+        'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/lm_integration_moves.c'],
+        'target': 'tests/lm_orbital_integration_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    'lm-integration-init': {
+        'missions': ('lm',),
+        'file': {'lm': 'INTEGRATION_INITIALIZATION.agc'},
+        'base': {'lm': 'lm_integration_init'},
+        'symbol': {'lm': 'lm_integration_init'},
+        'entries': ['INTEGRV', 'INTEGRVS', 'LEMPREC', 'CSMPREC', 'LEMCONIC', 'CSMCONIC', 'INTSTALL',
+                    'SETIFLGS', 'INTWAKE', 'INTWAKE0', 'INTWAKE1', 'TESTLOOP', 'INTEGRV2', 'ATOPCSM',
+                    'ATOPLEM', 'CLRMOON', 'SETMOON', 'CKMID2', 'GRP2PC', 'A-PCHK',
+                    'STATEINT', 'STATINT1', 'AVETOMID', 'MIDTOAV1', 'MIDTOAV2', 'INTWAKEU',
+                    'ENDINT', 'PHEXIT'],
+        # The MOVE* routines and their SETBANK (with FORTYONE, the A it
+        # returns, and INTBANK) run as lm_integration_move behind RTB.
+        'native_ranges': {'MOVEACSM': (9, 'lm_integration_move'), 'MOVEPCSM': (9, 'lm_integration_move'),
+                          'MOVEALEM': (9, 'lm_integration_move'), 'MOVEPLEM': (9, 'lm_integration_move'),
+                          'SETBANK': (5, 'lm_integration_move'), 'FORTYONE': (1, 'lm_integration_move')},
+        'noreturn': ['BANKJUMP', 'ENDOFJOB', 'TASKOVER', 'JOBSLEEP'],
+        'externals': {'PHASCHNG': 1, 'FINDVAC': 2, 'TASKOVER': 0, 'LONGCALL': 2, 'ENDOFJOB': 0,
+                      'DOWNFLAG': 1, 'UPFLAG': 1, 'JOBSLEEP': 0, 'JOBWAKE': 0, 'TPAGREE': 0,
+                      'BANKJUMP': 0, 'ALARM': 1},
+        # Indexed operands into bank 13's constants: the index is the body
+        # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
+        'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
+                          '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        'all_states': {'1167': [0o5155], '2030': [0, 2], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # TBASE2 holds INTWAKE's saved QPRET, which RVQ at GOBAC returns to.
+        'return_words': ['1055'],
+        'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'},
+                'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'SGNAGREE': {'lm': 'rtb_agreement(s,io,RTB_LM,RTB_SGN_AGREE)'},
+                'SIGNMPAC': {'lm': 'rtb_agreement(s,io,RTB_LM,RTB_SIGN_MPAC)'},
+                'MOVEACSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ACSM)'},
+                'MOVEALEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ALEM)'},
+                'MOVEPCSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PCSM)'},
+                'MOVEPLEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PLEM)'}},
+        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/lm_integration_moves.c'],
+        'target': 'tests/lm_integration_init_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
     },
     'sband-antenna': {
         'missions': ('lm', 'cm'),

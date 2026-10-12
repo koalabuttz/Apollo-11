@@ -29,13 +29,14 @@ import json
 import math
 import os
 import random
+import re
 import struct
 import subprocess
-import types
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import interp_compile as IC
+import interp_listing as IL
 import interp_specs
 
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,11 +95,18 @@ class Mission:
         self.ebank = spec.get('ebank')
         self.rk = bool(spec.get('resume_keys'))
         self.all_states = spec.get('all_states', {})
+        self.counters = spec.get('counters', False)
+        self.edges = spec.get('edge_values', False)
+        js = spec.get('joint_states', {})
+        self.joint_any = js.get('*', [])
+        self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
+        self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
         # range_states: (FROM, TO, states) applies states to every point
         # from label FROM up to (not including) label TO, after all_states.
         self.range_states = [(self.cp.label_phys(a), self.cp.label_phys(b), st)
                              for a, b, st in spec.get('range_states', ())]
+        self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
@@ -138,13 +146,80 @@ class Mission:
                 return cadr(phys)
 
 
-class Absent:
-    """A mission the spec leaves out: no ranges, stops or routines."""
-    def __init__(self, m):
-        self.m = m
-        self.newops = 0
-        self.cp = types.SimpleNamespace(ranges=[])
-        self.body_exits = self.externals = self.points = []
+def erasable_symbols(path):
+    """Erasable symbol -> physical address, from the listing's symbol table
+    ('TM  E6,1733' is E6 1733, physical 3333; 'WAITTEMP  0064' is 0064)."""
+    out = {}
+    for m in re.finditer(r'\d+,E:\s+(\S+)\s+(?:E(\d),(\d{4})|(\d{4}))', open(path, errors='replace').read()):
+        out[m.group(1)] = (int(m.group(2)) * 256 + int(m.group(3), 8) - 0o1400) if m.group(2) else int(m.group(4), 8)
+    return out
+
+
+def state_address(mi, k, vac):
+    """'vac+n', an octal address, or an erasable symbol with an optional +n."""
+    if k.startswith('vac+'):
+        return vac + int(k[4:], 8)
+    if re.fullmatch(r'[0-7]+', k):
+        return int(k, 8)
+    name, _, off = k.partition('+')
+    return mi.esyms[name] + (int(off) if off else 0)
+
+
+def counter_states(E, rng):
+    """TIME2/TIME1 (024/025) and CDUX-Z (032-034), which irc_build zeroes:
+    TIME1 across its range, at 0 and just below its 037777 wrap."""
+    E[0o24] = rng.randrange(0o40000)
+    r = rng.random()
+    E[0o25] = (rng.randrange(0o40000) if r < 0.6 else 0o37777 - rng.randrange(8) if r < 0.8
+               else rng.randrange(8))
+    for a in (0o32, 0o33, 0o34):
+        E[a] = rng.getrandbits(15)
+
+
+def counter_edges(E, rng):
+    """CDUs at 0, 45, 90, 180, 270 degrees and -0, for the edge shape."""
+    for a in (0o32, 0o33, 0o34):
+        if rng.random() < 0.7:
+            E[a] = rng.choice([0, 0o10000, 0o20000, 0o40000, 0o60000, 0o77777])
+
+
+# Edge values for the 'edge_values' shape: +-0, one LSB, 1/2 (a unit
+# component, and ASIN/ACOS's exact .5), 1/4 and just below 1, as (hi, lo).
+EDGE_SCALARS = [(0, 0), (0o77777, 0o77777), (0, 1), (0o77777, 0o77776), (0o20000, 0),
+                (0o57777, 0o77777), (0o10000, 0), (0o67777, 0o77777), (0o37777, 0o37777),
+                (0o40000, 0o40000), (0, 0o37777), (0o77777, 0o40000)]
+ZEROS = [(0, 0), (0o77777, 0o77777)]
+
+
+def edge_vector(rng, row):
+    """Three (hi, lo) components of an edge-case vector: zero (either
+    sign), a half-unit axis, a unit in a coordinate plane, a tiny vector,
+    or palette components. 'row' is the axis an axis-set case gives this
+    address, so a matrix's three rows form a signed permutation."""
+    kind = rng.randrange(6)
+    if kind == 0:
+        return [rng.choice(ZEROS) for _ in range(3)]
+    if kind == 1 or (kind == 5 and row is None):
+        ax = rng.randrange(3)
+    elif kind == 5:
+        ax = row
+    if kind in (1, 5):
+        v = [rng.choice(ZEROS) for _ in range(3)]
+        v[ax] = rng.choice([(0o20000, 0), (0o57777, 0o77777)])
+        return v
+    if kind == 2:
+        z = rng.randrange(3)
+        t = rng.uniform(0, 2 * math.pi)
+        c = [dp(math.cos(t) / 2), dp(math.sin(t) / 2)]
+        v = [None] * 3
+        v[z] = rng.choice(ZEROS)
+        for i in range(3):
+            if v[i] is None:
+                v[i] = c.pop()
+        return v
+    if kind == 3:
+        return [rng.choice([(0, 0), (0, 1), (0o77777, 0o77776), (0o77777, 0o77777), (0, 3)]) for _ in range(3)]
+    return [rng.choice(EDGE_SCALARS) for _ in range(3)]
 
 
 def case(mi, point, n, rng):
@@ -167,7 +242,9 @@ def case(mi, point, n, rng):
     E[0o67] = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
-    shape = n % 3
+    # Shapes: 0 the VAC area and operands as they are, 1 random words,
+    # 2 random half-unit vectors, and with 'edge_values' 3 edge values.
+    shape = n % 4 if mi.edges else n % 3
     if shape >= 1:
         for a in range(vac, vac + 0o46):
             w = rng.randrange(0o4000)
@@ -186,19 +263,37 @@ def case(mi, point, n, rng):
                 hi, lo = dp(x)
                 E[(phys + 2 * k) & 0o3777] = hi
                 E[(phys + 2 * k + 1) & 0o3777] = lo
+    if shape == 3:
+        perm = rng.sample(range(3), 3) if rng.random() < 0.5 else None
+        # MPAC (0154-0160) and the top of the push-down list as well.
+        for a in [0o154, 0] + mi.operands:
+            phys = vac + a if a < 45 else a
+            row = perm[(phys // 6) % 3] if perm else None
+            for k, (hi, lo) in enumerate(edge_vector(rng, row)):
+                E[(phys + 2 * k) & 0o3777] = hi
+                E[(phys + 2 * k + 1) & 0o3777] = lo
+    if not mi.rk:
+        E[0o67] = 0   # (NEWJOB, which an operand's randomizing may have hit)
     for off in (0o50, 0o51, 0o52):
         E[vac + off] = mi.outside(rng)
     for w in mi.cp.cadr_erasable:
         E[(vac + w) if w < 45 else w] = mi.outside(rng)
+    # Words the spec names as saved returns (INTWAKE parks QPRET in TBASE2).
+    for a in mi.return_words:
+        E[a] = mi.outside(rng)
     # The interpreter's own state: PUSHLOC in the VAC area, MODE a mode.
     E[0o166] = vac + rng.randrange(0o42)
     E[0o163] = rng.choice([0o77776, 0, 1])
     # OVFIND clear in most cases, so BOV(B) falls through as often as not.
     if rng.random() < 0.75:
         E[0o121] = 0
+    if mi.counters:
+        counter_states(E, rng)
+        if shape == 3:
+            counter_edges(E, rng)
     ranged = [kv for lo, hi, st in mi.range_states if lo <= point < hi for kv in st.items()]
     for k, choices in list(mi.all_states.items()) + ranged + list(mi.states.get(point, {}).items()):
-        a = vac + int(k[4:], 8) if k.startswith('vac+') else int(k, 8)
+        a = state_address(mi, k, vac)
         if isinstance(choices, dict):
             choices = choices[mi.m]
         v = rng.choice(choices)
@@ -210,6 +305,17 @@ def case(mi, point, n, rng):
             lab, off = v.split('+')
             v = mi.L.word(mi.L.labels[lab] + int(off))
         E[a] = v
+    # Joint states: values that only mean something together (TM a little
+    # past TIME2/TIME1), one set per case; '*' sets go to half of every
+    # routine's cases.
+    joint = mi.joint.get(point)
+    if joint is None and mi.joint_any and rng.random() < 0.5:
+        joint = mi.joint_any
+    if joint:
+        if isinstance(joint, dict):
+            joint = joint[mi.m]
+        for k, v in rng.choice(joint).items():
+            E[state_address(mi, k, vac)] = v & 0o77777
     if mi.kinds[point] == 'i':
         E[5] = mi.newops
         E[0o164] = logical(point)
@@ -229,6 +335,23 @@ def case(mi, point, n, rng):
             E[k if k < 0o1400 else (eb << 8) | (k & 0o377)] = logical(q)
         stop = q
     return seed, list(E.items()), n & 1, stop, sb
+
+
+class Absent:
+    """A mission the spec leaves out: no routines and no stops."""
+    class _CP:
+        ranges = []
+
+        def where(self, p):
+            return '%05o' % p
+
+    def __init__(self, m):
+        self.m = m
+        self.newops = 0o6070 if m == 'lm' else 0o6037
+        self.cp = Absent._CP()
+        self.body_exits = []
+        self.externals = []
+        self.points = []
 
 
 def write_cases(path, missions, cases):
@@ -268,6 +391,65 @@ def build(spec_id, spec):
     subprocess.run(['cc', *FLAGS, *srcs, spec['target'], 'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
+
+
+def build_edges(spec_id, spec):
+    """The native runner with every linked source (the milestone's routines,
+    the interpreter bodies, the image ops and native RTBs; not the test
+    harness) instrumented per edge, so each branch outcome is a guard."""
+    d = os.path.join(B, '%s-edges' % spec_id)
+    os.makedirs(d, exist_ok=True)
+    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + \
+        [x for x in COMMON if not x.startswith('tests/')]
+    objs = []
+    for src in srcs:
+        o = os.path.join(d, os.path.basename(src) + '.o')
+        subprocess.run(['clang', '-std=c99', '-O0', '-g', '-fno-pie', '-Iinclude', '-Itests',
+                        '-fsanitize-coverage=trace-pc-guard', '-c', src, '-o', o], cwd=R, check=True)
+        objs.append(o)
+    nat = os.path.join(d, 'native')
+    subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES', *objs,
+                    'tests/interp_case.c', spec['target'], 'tools/interp_routine_native.c', 'tools/irc_edges.c',
+                    '-o', nat], cwd=R, check=True)
+    return nat
+
+
+def edge_sets(nat, path):
+    """Per case, the guards it reached; and each guard's source line."""
+    r = subprocess.run([nat, path, 'edges'], cwd=R, check=True, capture_output=True, text=True)
+    sets = [frozenset(int(t[1:]) for t in l.split()[4:] if t[0] == 'e') for l in r.stdout.splitlines()]
+    pcs = [l.split()[1:] for l in r.stderr.splitlines() if l.startswith('pc ')]
+    sym = subprocess.run(['llvm-symbolizer', '--obj=' + nat],
+                         input='\n'.join(a for _, a in pcs) + '\n', cwd=R, capture_output=True, text=True).stdout
+    lines = [b.split('\n')[1] for b in sym.strip().split('\n\n')]
+    where = {}
+    for (g, _), ln in zip(pcs, lines):
+        f, _, rest = ln.partition(':')
+        where[int(g)] = '%s:%s' % (os.path.relpath(f, R) if f.startswith('/') else f, rest.split(':')[0])
+    return sets, where
+
+
+def greedy_cover(cands, sets, covered=(), key=lambda i: i, accept=lambda i: True):
+    """Cases (in pick order) that together reach every guard the candidates
+    reach, each adding the most not yet reached (lazy greedy)."""
+    import heapq
+    cov = set(covered)
+    heap = [(-len(sets[i] - cov), key(i), i) for i in cands]
+    heapq.heapify(heap)
+    picked = []
+    while heap:
+        g, k, i = heapq.heappop(heap)
+        gain = len(sets[i] - cov)
+        if gain == 0:
+            continue
+        if gain != -g:
+            heapq.heappush(heap, (-gain, k, i))
+            continue
+        if not accept(i):
+            continue
+        picked.append(i)
+        cov |= sets[i]
+    return picked, cov
 
 
 def run(cmd):
@@ -360,12 +542,28 @@ def main():
             for t in r[4:]:
                 v |= 1 << idx[int(t[1:])]
             visits.append(v)
-        freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan)
+        edges = None
+        if spec.get('cover'):
+            edges = edge_sets(build_edges(a.spec, spec), path)
+        freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan, edges)
 
 
-def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
+def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=None):
     stride = spec.get('freeze_stride', 16)
     pick = [i for i in range(0, len(cases), stride) if i not in chan]
+    cover = None
+    if edges is not None:
+        # With 'cover': the sample, plus the fewest cases that reach every
+        # edge (branch outcome) any case reaches.
+        sets, where = edges
+        live = [i for i in range(len(cases)) if i not in chan]
+        target = set().union(*(sets[i] for i in live))
+        base = set().union(*(sets[i] for i in pick))
+        more, _ = greedy_cover(live, sets, base, key=lambda i: (len(cases[i]['edits']), i))
+        pick = sorted(set(pick) | set(more))
+        cover = {'method': 'clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every '
+                           'linked source but the test harness, per case (tools/irc_edges.c)',
+                 'edges_all_cases': len(target), 'edges_host_vectors': len(set().union(*(sets[i] for i in pick)))}
     sym = spec_id.replace('-', '_')
     out = ['/* SPDX-License-Identifier: MIT; generated by tools/interp_routine_differential.py',
            ' * --freeze: every %dth %s case with its yaAGC oracle digest (original' % (stride, spec_id),
@@ -384,7 +582,14 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
     out.append(',\n'.join(' 0x%08xul' % int(rows[i][3]) for i in pick))
     out.append('};')
     open(os.path.join(R, 'tests/%s_vectors.h' % sym), 'w').write('\n'.join(out) + '\n')
-    c64 = freeze_c64(spec, sym, missions, cases, rows, visits, chan)
+    c64 = freeze_c64(spec, sym, missions, cases, rows, visits, chan, edges)
+    if cover is not None:
+        sets, where = edges
+        got = set().union(*(sets[i] for g in C64_PICKS for i in g))
+        live = [i for i in range(len(cases)) if i not in chan]
+        target = set().union(*(sets[i] for i in live))
+        cover['edges_c64'] = len(got)
+        cover['edges_not_on_c64'] = sorted(set(where.get(e, '?') for e in target - got))
     blob = open(os.path.join(B, '%s-cases.bin' % spec_id), 'rb').read()
     proof = {'milestone': spec_id, 'missions': ['Luminary099', 'Comanche055'],
              'rope_sha256': [hashlib.sha256(open(p, 'rb').read()).hexdigest() for p in ROPES],
@@ -392,6 +597,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
              'oracle_sha256': hashlib.sha256('\n'.join(' '.join(r) for r in rows).encode()).hexdigest(),
              'frozen_vectors': len(pick), 'c64_vectors': c64,
              **({'c64_host_only': C64_HOST_ONLY} if C64_HOST_ONLY else {}),
+             **({'outcome_cover': cover} if cover is not None else {}),
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
              'boundary': 'from each routine entry state to NEWOPS with LOC outside the file, an exit of the '
                          'interpreter bodies (%s), or a transfer to an outside basic routine (%s)' % (
@@ -407,7 +613,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
         if mi.m not in spec['missions']:
             continue
         rows_m = mi.cp.source_map()
-        loose = [r for r in rows_m if 'routine' not in r and 'constant' not in r]
+        loose = [r for r in rows_m if 'routine' not in r and 'constant' not in r and 'cadr_list' not in r]
         if loose and mi.m not in spec.get('partial', {}):
             sys.exit('%s words no routine compiles: %s' % (mi.m, ', '.join(r['address'] for r in loose)))
         for r in loose:
@@ -426,19 +632,19 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
 C64_TOP = 0xbf00
 
 
+KEEP_WORDS = {}
+
+
 def c64_sources(spec, m):
     return (['src/%s.c' % spec['base'][m], 'src/%s_interp_orders.c' % m, 'src/%s_interp_steps.c' % m]
             + spec.get('native_sources', []) + [x for x in COMMON if '_interp_' not in x] + [spec['target']])
 
 
-KEEP_WORDS = {}   # symbol -> the generated file's KEEP words
-
-
-def keep_flags(symbol, mask):
-    """-D<SYM>_KEEP<n> for a routine mask, 60 routines per word (every
-    word the file has, so none defaults to all)."""
-    n = KEEP_WORDS[symbol]
-    return ['-D%s_KEEP%d=0x%x' % (symbol.upper(), w, (mask >> (60 * w)) & ((1 << 60) - 1)) for w in range(n)]
+def keep_flags(spec, m, mask):
+    """-D<SYMBOL>_KEEP<n> for every 60-routine word of a KEEP mask."""
+    n = KEEP_WORDS.get(m, max(1, (mask.bit_length() + 59) // 60))
+    return ['-D%s_KEEP%d=0x%x' % (spec['symbol'][m].upper(), i, (mask >> (60 * i)) & ((1 << 60) - 1))
+            for i in range(n)]
 
 
 def c64_size(spec, sym, m, mask, text):
@@ -448,19 +654,19 @@ def c64_size(spec, sym, m, mask, text):
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
-    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, '-DIRC_GROUP=1',
-                        '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
+    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
+                        '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec, m, mask),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
                        cwd=R, capture_output=True, text=True)
     end = None
-    if r.returncode and os.environ.get('IRC_C64_DEBUG'):
-        sys.stderr.write(r.stderr[-3000:])
     if r.returncode == 0:
         for ln in open(os.path.join(d, 'probe.map')):
             if '__heap_start = ' in ln:
                 end = int(ln.split()[0], 16)
-    if not os.environ.get('IRC_C64_DEBUG'):
+    if os.environ.get('IRC_C64_DEBUG'):
+        print('c64 probe %s %x: rc %d end %s %s' % (m, mask, r.returncode, end and hex(end), r.stderr[-800:]), file=sys.stderr)
+    else:
         subprocess.run(['rm', '-rf', d])
     return end if end is not None and end <= C64_TOP else None
 
@@ -493,28 +699,77 @@ def group_text(sym, groups, cases, rows):
 C64_HOST_ONLY = []   # routines whose runs do not fit one C64 diagnostic
 
 
-def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
-    """Groups of routines whose diagnostic fits below $c000, each with the
-    spec's c64_per_point cases (default 2) per routine whose run stays in
-    the group (fewest edits first). Writes tests/<id>_c64_vectors.h and
+C64_PICKS = []       # each group's cases, for the outcome cover
+
+
+def freeze_c64(spec, sym, missions, cases, rows, visits, chan=(), edges=None):
+    """Groups of routines whose diagnostic fits below $c000, each with
+    cases whose run stays in the group. Per routine: the spec's
+    c64_per_point cases (default 2, fewest routines visited first) or, with
+    edges, the cases a greedy cover picks to reach every edge (branch
+    outcome) the differential's cases reach, and the fewest-visit case of a
+    routine the cover leaves out. Writes tests/<id>_c64_vectors.h and
     tools/mk/<id>.groups; returns the groups."""
     per = spec.get('c64_per_point', 2)
     groups = []
+    for mi in missions:
+        # (every KEEP word is defined, so a group drops the routines past 60 too)
+        KEEP_WORDS[mi.m] = max(1, (len(mi.points) + 59) // 60)
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
             continue
         bit = {p: 1 << k for k, p in enumerate(mi.points)}
-        KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
         need = {}
+        fewest = lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i)
         for p in mi.points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan),
-                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))[:per]
+                          key=fewest)[:1 if edges is not None else per]
             need[p] = mine
+        if edges is not None:
+            sets = edges[0]
+            fits = {}
+
+            def alone(i):
+                v = visits[i]
+                if v not in fits:
+                    fits[v] = c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None
+                return fits[v]
+            live = [i for i, c in enumerate(cases) if c['cm'] == cm and i not in chan]
+            base = set().union(*(sets[i] for p in mi.points for i in need[p] if alone(i)))
+            more, _ = greedy_cover(live, sets, base, key=fewest, accept=alone)
+            for i in more:
+                need[cases[i]['point']].append(i)
         mask, pick = 0, []
+        if edges is not None:
+            # Case by case (the cover's cases already fit alone): a new
+            # group when the next case's routines do not fit with the last.
+            for p in mi.points:
+                if not any(alone(i) for i in need[p]):
+                    C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
+                for i in need[p]:
+                    if not alone(i):
+                        continue
+                    trial, tp = mask | visits[i], pick + [i]
+                    if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
+                        groups.append((mi.m, mask, pick))
+                        mask, pick = visits[i], [i]
+                    else:
+                        mask, pick = trial, tp
+            if pick:
+                groups.append((mi.m, mask, pick))
+            continue
         for p in mi.points:
             want = 0
             for i in need[p]:
                 want |= visits[i]
+            # A routine whose cases run through more code than one PRG holds
+            # keeps its cases that visit the fewest routines.
+            while len(need[p]) > 1 and c64_size(spec, sym, mi.m, want, group_text(
+                    sym, [(mi.m, want, need[p])], cases, rows)) is None:
+                need[p] = need[p][:len(need[p]) // 2]
+                want = 0
+                for i in need[p]:
+                    want |= visits[i]
             trial = mask | want
             tp = pick + need[p]
             if not mask and c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, need[p])], cases, rows)) is None:
@@ -536,9 +791,10 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
         # closures don't drop earlier cases.
         assert all(visits[i] & ~mask == 0 for i in pick)
         if c64_size(spec, sym, m, mask, group_text(sym, [(m, mask, pick)], cases, rows)) is None:
-            if os.environ.get('IRC_C64_DEBUG'):
-                sys.stderr.write('group %s mask %x picks %s edits %s\n' % (m, mask, [cases[i]['point'] for i in pick], [len(cases[i]['edits']) for i in pick]))
-            sys.exit('a single routine group of %s does not fit the C64' % m)
+            sys.exit('a single routine group of %s does not fit the C64: %s' % (
+                m, ', '.join(missions[[x.m for x in missions].index(m)].cp.where(q)
+                             for k, q in enumerate(missions[[x.m for x in missions].index(m)].points) if mask >> k & 1)))
+    C64_PICKS[:] = [pick for m, mask, pick in groups]
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]
@@ -547,7 +803,7 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
     for g, (m, mask, pick) in enumerate(groups, 1):
         mk.append('%s_GROUP_MISSION_%d = %s' % (v, g, m))
         mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
-            v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask))))
+            v, g, g, m.upper(), ' '.join(keep_flags(spec, m, mask))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups]
 

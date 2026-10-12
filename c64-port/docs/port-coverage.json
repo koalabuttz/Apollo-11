@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -323,15 +323,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
-            "sha256": "010672e3b21e92603e8a8d1c2a5943ac70c327ba27d4a406311558eb3053fcd2"
+            "sha256": "05774243909105baa21c1ac8e85f10a889df64ac63131f06c8479916bc8787f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
-            "sha256": "04324be050b1ee35df7ae497d7e5670acab656bf5ca13ef82ea08f5f4000f126"
+            "sha256": "8000b12456bf54921f852160e8aea6cc6e2aa1bff3237197d95627c27e7c9039"
           },
           "c64_execution_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
-            "sha256": "c2f95800b22f5bc7617ecd120f94739d714c182d612c95f471e3d13db849229b"
+            "sha256": "047fef345c1807088a0b5c37950bf9d8d443adb99cd03e0ccf59e49c5ff80876"
           }
         }
       }
@@ -536,7 +536,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "105 of 253 words: SVDWN1, SVDWN2 (bank 10), LOG with its POLY and SHORTMP basic code, EARROT1, EARROT2 and OVERADAY, as 11 routines of the control-transfer ABI compiled by tools/interp_compile.py. SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2; their 39 data words (NB2NB1, NB1NB2 and constants) are recorded as data.",
+          "scope": "105 of 253 words: SVDWN1, SVDWN2 (bank 10), LOG with its POLY and SHORTMP basic code, EARROT1, EARROT2 and OVERADAY, as 11 routines of the control-transfer ABI compiled by tools/interp_compile.py. SXTNB, SXTLOGIC, CALCSXA and SXTANG with their matrices wait for a Comanche MXV body and native TRANSP1/TRANSP2.",
           "verification": "docs/GEOMETRY.md"
         }
       ]
@@ -1551,15 +1551,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "ac8409fab7c6d2d5085691c4b11e6c8f6ec78dbdc15b21d67206ada4e8716ffc"
+            "sha256": "56585bb63a39ea716d6a64622947f13617f6c5650adf7d3e51deef88571910cd"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
-            "sha256": "b0ed56dd8ef3093d8aa3490f450ee881ea2e50a8fccaad400cffcefec5c11234"
+            "sha256": "0381d5d1619fa347273a25f9cdc9d2914a56792803b3a43f1b458c1e98980ae8"
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "64cc83ba53f6032a0712de5ea7bfc4ad4d463350ae2fab525742a9d4036d7513"
+            "sha256": "2acf593f94c73627569c196ab2b0042d9108e5c811086a644821d623cd6bec55"
           }
         }
       }
@@ -1875,7 +1875,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, any FB for STOPRATE in fixed-fixed), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or +1 at NEWDELHI's ISITAUTO return, and any values of the steering erasables.",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, any FB for STOPRATE in fixed-fixed), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the steering erasables (HOLDFLAG, RATEINDX, BCDU, NCDU, TM, NEXTIME, BRATE, TIME1/TIME2).",
         "external_continuations": [
           "BANKCALL and IBNKCALL (basic, their inline CADR)",
           "POSTJUMP with its inline CADR (no return)",
@@ -1893,15 +1893,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
-            "sha256": "2db77ae9e525037f1ae9cac984aab939c8aaa2f56effb057b772ba8a48b371f6"
+            "sha256": "f2647657a4f61cbedad16aec05050171392c890994e0413fd56725e928eba188"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
-            "sha256": "8ebf4916b891a8169486d28700e04f2bb9f0a25042579ffa782f5c680a8b918e"
+            "sha256": "c4d0bf215faadafee6ca87ef5bad2c431e4055161236987f1562e9e5b0036cde"
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "5100c78b3f0a786419ab149f391b4b59694e2e7bc0048c4dd782b3308bb73cfe"
+            "sha256": "b7f89bf39c6956c22378b70b69d48cc79d4dc5a59494cff126fcc20f877c4272"
           }
         }
       }
@@ -4211,7 +4211,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI, as the routine leaves it), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables (BCDU, CPHI, CTHETA, CPSI, MIS, MFS, MFI, TMIS, TMFI).",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI, as the routine leaves it), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables (BCDU, CPHI, MIS, MFS, MFI, TMIS, TMFI, SCAXIS, POINTVSM). On the C64 every branch outcome is run except the three on lm_interp_orders.c:277 (DP add overflow propagated to OVFIND) and :1136 (ACOS of a major part of exactly .5 with a negative minor part), which only whole-maneuver runs from KALCMAN3 reach and which do not fit C64 RAM; those outcomes are compared on the host only.",
         "external_continuations": [
           "ALARM, BANKCALL, IBNKCALL, PHASCHNG, UPFLAG, DOWNFLAG, MAKECADR, CURTAINS, WAITLIST, STOPRATE and LOADCDUD with their inline words",
           "POSTJUMP with its inline CADR (no return)",
@@ -4228,15 +4228,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
-            "sha256": "010672e3b21e92603e8a8d1c2a5943ac70c327ba27d4a406311558eb3053fcd2"
+            "sha256": "05774243909105baa21c1ac8e85f10a889df64ac63131f06c8479916bc8787f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
-            "sha256": "04324be050b1ee35df7ae497d7e5670acab656bf5ca13ef82ea08f5f4000f126"
+            "sha256": "8000b12456bf54921f852160e8aea6cc6e2aa1bff3237197d95627c27e7c9039"
           },
           "c64_execution_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
-            "sha256": "c2f95800b22f5bc7617ecd120f94739d714c182d612c95f471e3d13db849229b"
+            "sha256": "047fef345c1807088a0b5c37950bf9d8d443adb99cd03e0ccf59e49c5ff80876"
           }
         }
       }
@@ -5819,15 +5819,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "ac8409fab7c6d2d5085691c4b11e6c8f6ec78dbdc15b21d67206ada4e8716ffc"
+            "sha256": "56585bb63a39ea716d6a64622947f13617f6c5650adf7d3e51deef88571910cd"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
-            "sha256": "b0ed56dd8ef3093d8aa3490f450ee881ea2e50a8fccaad400cffcefec5c11234"
+            "sha256": "0381d5d1619fa347273a25f9cdc9d2914a56792803b3a43f1b458c1e98980ae8"
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "64cc83ba53f6032a0712de5ea7bfc4ad4d463350ae2fab525742a9d4036d7513"
+            "sha256": "2acf593f94c73627569c196ab2b0042d9108e5c811086a644821d623cd6bec55"
           }
         }
       }
@@ -5870,8 +5870,56 @@
       "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
       "bytes": 25139,
       "lines": 1102,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_integration_init.c",
+            "src/lm_integration_moves.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (623 words in banks 13 and 04): INTEGRV, INTEGRVS, INTEGRV2, LEMPREC, CSMPREC, LEMCONIC, CSMCONIC, INTSTALL, SETIFLGS, INTWAKE, INTWAKE0, INTWAKE1, INTWAKEU, TESTLOOP, ATOPCSM, ATOPLEM, CLRMOON, SETMOON, CKMID2, GRP2PC, A-PCHK, STATEINT, STATINT1, AVETOMID, MIDTOAV1, MIDTOAV2, ENDINT and PHEXIT, as 120 routines of the control-transfer ABI compiled by tools/interp_compile.py; the RTB state-vector moves (MOVEACSM, MOVEALEM, MOVEPCSM, MOVEPLEM with SETBANK) as lm_integration_move.",
+          "verification": "docs/INTEGRATION-INITIALIZATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
+        "external_continuations": [
+          "ORBITAL_INTEGRATION (TIMESTEP and the integration loop) at NEWOPS",
+          "PHASCHNG, UPFLAG, DOWNFLAG and ALARM with their inline words",
+          "FINDVAC, LONGCALL, JOBSLEEP, JOBWAKE, TASKOVER, ENDOFJOB and BANKJUMP (Executive/Waitlist)",
+          "TPAGREE; LOADTIME, SGNAGREE and SIGNMPAC through RTB (native, src/rtb_angles.c and src/rtb_agreement.c)",
+          "The interpreter exits POODOO1 and ALARM1",
+          "The caller's return through QPRET or Q"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-integration-init/lm-integration-init-source-map.json",
+            "sha256": "42d40190f941ba13829f17e925209dc24f503aca1230443e185ec8055771179d"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
+            "sha256": "4ca47014e33980b69396d41234d807a871c9ac537320ebf17ccd0b55d5420d6d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-integration-init/lm-integration-init-host.log",
+            "sha256": "c2164482c883ed0a86dc4e889db1a5d764a3a854db6a14bab6b5df69d171f3e8"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
+            "sha256": "581391006ea784fa70cd2f1ecc5ef8b00c7fe08b716d53e9498414b5e6e18631"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
@@ -6137,7 +6185,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= TTEMP), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or +1 at NEWDELHI's ISITAUTO return, and any values of the steering erasables (BCDU, NCDU, DELDCDU, CDUXD, TM, NEXTIME, OMEGAPD, DELPEROR, TIME1/TIME2).",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= TTEMP), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or 020000 (CHAN31 & BIT14) at NEWDELHI's ISITAUTO return, and any values of the steering erasables (BCDU, NCDU, DELDCDU, CDUXD, TM, NEXTIME, OMEGAPD, DELPEROR, TIME1/TIME2).",
         "external_continuations": [
           "BANKCALL ISITAUTO and IBNKCALL (basic, their inline CADR)",
           "MXM3 and DCMTOCDU through CALL (interpretive)",
@@ -6154,15 +6202,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
-            "sha256": "2db77ae9e525037f1ae9cac984aab939c8aaa2f56effb057b772ba8a48b371f6"
+            "sha256": "f2647657a4f61cbedad16aec05050171392c890994e0413fd56725e928eba188"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
-            "sha256": "8ebf4916b891a8169486d28700e04f2bb9f0a25042579ffa782f5c680a8b918e"
+            "sha256": "c4d0bf215faadafee6ca87ef5bad2c431e4055161236987f1562e9e5b0036cde"
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "5100c78b3f0a786419ab149f391b4b59694e2e7bc0048c4dd782b3308bb73cfe"
+            "sha256": "b7f89bf39c6956c22378b70b69d48cc79d4dc5a59494cff126fcc20f877c4272"
           }
         }
       }
@@ -6323,6 +6371,7 @@
         "external_continuations": [
           "The caller's return through QPRET or the CADR in S2 (any interpretive file)",
           "LUNDESCH (BOVB from RRANGLES, basic)",
+          "ARCTRIG (CALL from RRANGLES; native in src/lm_inflight_align.c, milestone inflight-align)",
           "Interpreter CDULOGIC and 2V1STO2S through RTB (native, src/rtb_angles.c)",
           "ALARM1 from ASIN/UNIT (interpreter alarm)"
         ],
@@ -6330,19 +6379,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/geometry/geometry-source-map.json",
-            "sha256": "6155a8a8db5ea626d7d75602b7f0e59acb1339eb79d19badff66ff187f902673"
+            "sha256": "4a1cc86aa443cf7904296aa58efe4f6c772cd70ab535b1753a34c46105b48113"
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "a7e2fe4bab1b0a6050ad183533d03762ae9113b4bbaee4accbb0fdcb10f66bc3"
+            "sha256": "37ec781f97a9f9de87456650bbe51549f0e8d9a32347f03c2e2f3a816ec530e7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
-            "sha256": "8439939b927bec3f73695c27bb719aa13dc1a0746ebac7d8d8ee5c1a612fc595"
+            "sha256": "1b3e3e383d3cec88d61316e47050b4b87734b0d6a0c2f8466e5d81f0d230e90f"
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "2716dc7a01ccd50bd88f760a44f483c4abfdea0e9baece21cc5cee830ba5b628"
+            "sha256": "e40f78aff9706a804b858a526d2ef45783a763f30449871a5ea4b0695afda976"
           }
         }
       }
@@ -6501,8 +6550,53 @@
       "sha256": "5fc234cd27586bf25918a05692b3e6849a433e0b62bfb1327c96ae06e2231b14",
       "bytes": 15916,
       "lines": 977,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_orbital_integration.c",
+            "src/lm_integration_moves.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (841 words in banks 11, 12 and 13): KEPPREP, the TIMESTEP/INTGRATE loop, DIFEQ+0/+1/+2 through CGOTO DIFEQTAB, OBLATE and the lunar/solar terms, RECTIFY/MINIRECT, the sphere-of-influence change (EARSPH, LUNSPH, ORIGCHNG), AMOVED, RELOADSV and the W-matrix loop (DOW.., WMATEND), as 73 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/ORBITAL-INTEGRATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables.",
+        "external_continuations": [
+          "INTEGRATION_INITIALIZATION (A-PCHK, ATOPCSM, ATOPLEM, STATEINT) at NEWOPS",
+          "PHASCHNG, UPFLAG and ALARM with their inline words; POODOO",
+          "TIME_OF_FREE_FALL TCDANZIG through BOVB/RTB (native, lm_integration_tcdanzig)",
+          "The interpreter exits POODOO1 and ALARM1",
+          "The caller's return through QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-orbital-integration/lm-orbital-integration-source-map.json",
+            "sha256": "7827b158dee8278e93e471fe67f1583a8964426acba0703cdbf9148fd88b1a92"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-orbital-integration/lm-orbital-integration-proof.json",
+            "sha256": "fd5aa73763acdfd4179830d389d843a2112f5c385bc76451b8f15241aabc8975"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
+            "sha256": "4fceb5b8a1899501af2fe9e68d3378688bf5114b949b4a68e1f28cc3c2015123"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
+            "sha256": "2817dc9f2ae4af4284faa0d0c355a33ec42d90424a9417cef4c4ee3f830d8aa2"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P-AXIS_RCS_AUTOPILOT.agc",
