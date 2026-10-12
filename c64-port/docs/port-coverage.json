@@ -2756,8 +2756,18 @@
       "sha256": "26409d71cdac421bef8dd11aa336abb0abda64f5ebf994c825eecfa866640581",
       "bytes": 47595,
       "lines": 1864,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_conic_kepler.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "The Kepler subroutine, 338 words of bank 12 (KEPLERN 02023 through DELTIME 02535, CHECKCTR 02644-02652): from KEPPREP's GOTO KEPLERN entry frontier to the NEWOPS frontier of each of KEPPREP's three callers, as 23 native steps between original NEWOPS frontiers. ITERATOR, NEWSTATE/LAMENTER, TIMETHET, TIMERAD, APSIDES, LAMBERT, GETX and the bank-4 constants are not yet translated.",
+          "verification": "docs/LM-CONIC-KEPLER.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/CONTROLLED_CONSTANTS.agc",

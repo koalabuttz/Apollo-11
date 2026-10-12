@@ -74,4 +74,34 @@ void lmi_swreturn(apollo_overlay_state *);
  * fixed words from there (N-1, then a0..aN); ends with Z at the word after
  * the table (TC POLYRET, Q = 0142). */
 void lmi_poly(apollo_overlay_state *, const agc_word *table);
+/* VAD, VSU, BVSU and TAD (overflow to OVFIND), each to DANZIG. */
+void lmi_vad(apollo_overlay_state *, const agc_word *k);
+void lmi_vsu(apollo_overlay_state *, const agc_word *k);
+void lmi_bvsu(apollo_overlay_state *, const agc_word *k);
+void lmi_tad(apollo_overlay_state *, const agc_word *k);
+/* ROUND (unary) and SSP (ADDRWD set; `word` the SP word given). */
+void lmi_round(apollo_overlay_state *);
+void lmi_ssp(apollo_overlay_state *, agc_word word);
+/* XAD, XSU, LXA, SXA (POLISH = the erasable address, CYR selects X1/X2). */
+void lmi_xad(apollo_overlay_state *);
+void lmi_xsu(apollo_overlay_state *);
+void lmi_lxa(apollo_overlay_state *);
+void lmi_sxa(apollo_overlay_state *);
+/* BHIZ: 1 = GOTO 06646 (MPAC high word zero), 0 = DANZIG. */
+uint8_t lmi_bhiz(apollo_overlay_state *);
+/* CALL (POLISH = the fixed CADR): QPRET set, ends at GOTO 06646. */
+void lmi_call(apollo_overlay_state *);
+/* GOTO from 06646, through GOTOERS while POLISH names erasable (fetching
+ * the CADR through the work area or its EBANK), to the target's NEWOPS. */
+void lmi_goto_any(apollo_overlay_state *);
+/* 15BITADR (STCALL's entry) to the MISCJUMP body `target`. */
+void lmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
+/* BZE/GOTO without the transfer: 1 at GOTO 06646 (BZE zero, or GOTO),
+ * 0 at DANZIG. */
+uint8_t lmi_bzegoto(apollo_overlay_state *);
+/* EXIT to the basic word after the order (Z = LOC+1, Q 06747); TC INTPRET
+ * from basic code (Q = the next word) to NEWOPS; TPMODE (RTB routine). */
+void lmi_exit(apollo_overlay_state *);
+void lmi_intpret(apollo_overlay_state *, p66_bias_io *);
+void lmi_tpmode(apollo_overlay_state *);
 #endif

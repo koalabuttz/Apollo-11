@@ -225,6 +225,81 @@ def case(g,body):
   img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777),0o77777])  # +0 would run 5B10 as code
   for i in range(3):img[0o154+i]=r.choice([0,0o77777,r.getrandbits(15)]) if r.random()<.5 else r.getrandbits(15)
   return hdr,img
+ if body in(38,39,40,41):
+  img[5]={38:0o6751,39:0o6747,40:0o7036,41:0o7071}[body];n=3 if body==41 else 6
+  if r.random()<.35:
+   b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o4000-n-1);img[0o116]=a
+   hdr[9:9+n]=[fixed(b,a-0o2000+i) for i in range(n)];hdr[15]=1
+  else:
+   img[0o116]=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1410,0o1770)
+  if body!=41:img[0o163]=0o77776
+  if r.random()<.2:
+   for i in range(6):img[0o154+i]=r.choice([0o37777,0o40000,0o37776])
+  return hdr,img
+ if body==42:
+  setbanks(img,0);img[5]=0o2116;img[0o163]=r.choice([0,0o77776,1])
+  if r.random()<.2:img[0o154]=img[0o155]=r.choice([0o37777,0o40000])
+  return hdr,img
+ if body==43:
+  b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3776);img[0o164]=a;img[0o165]=img[6]
+  hdr[7]=fixed(b,a+1-0o2000);img[5]=0o6620
+  img[0o116]=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1400,0o2000)
+  return hdr,img
+ if body in(44,45,46,47):
+  setbanks(img,1);img[5]={44:0o2400,45:0o2411,46:0o2354,47:0o2364}[body]
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  if r.random()<.4:img[0o117]=r.randrange(0,0o55)
+  else:
+   while True:
+    v=r.randrange(0o56,0o4000)
+    if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
+   img[0o117]=v
+  return hdr,img
+ if body==48:
+  setbanks(img,1);img[5]=0o2452;hdr[2]=0o6646
+  img[0o154]=r.choice([0,0o77777,r.getrandbits(15)])
+  return hdr,img
+ if body==49:
+  setbanks(img,1);img[5]=0o2507;hdr[1]=0o6646
+  img[0o20]=r.randrange(1,0o40000);img[0o117]=r.randrange(0o4000,0o100000)&0o77777
+  img[0o164]=r.randrange(0o2000,0o4000)
+  return hdr,img
+ if body==50:
+  setbanks(img,r.randrange(0o30));img[5]=0o6646;hdr[1]=0o6070
+  tgt=(r.randrange(2,0o40)<<10)|r.randrange(0o2000)
+  c=r.random()
+  if c<.3:
+   p_=r.randrange(0,0o55);img[0o117]=p_;img[(img[0o120]+p_)&0o3777]=tgt
+  elif c<.35:
+   img[0o117]=0o55;img[0o55]=tgt
+  elif c<.9:
+   while True:
+    p_=r.randrange(0o56,0o4000);eb=p_>>8;off=p_&0o377
+    absa=eb*0o400+off if eb>=3 else (0o1400+off if False else None)
+    if eb>=3:break
+   img[0o117]=p_;img[absa-0o1400+0o1400 if False else (eb*0o400+off)]=tgt
+  else:
+   img[0o117]=tgt
+  return hdr,img
+ if body==51:
+  b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3777);img[0o164]=a;img[0o165]=img[6]
+  img[5]=0o6743;hdr[1]=a+1
+  return hdr,img
+ if body==52:
+  b=r.randrange(2,0o30);setbanks(img,b);img[5]=0o6037;hdr[1]=0o6070;img[2]=r.randrange(0o2000,0o4000)
+  return hdr,img
+ if body==53:
+  setbanks(img,0o10);img[5]=0o3633
+  return hdr,img
+ if body==54:
+  b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3776);img[0o164]=a;img[0o165]=img[6]
+  hdr[7]=fixed(b,a+1-0o2000);img[5]=0o6252;img[0o20]=0o15;hdr[8]=0o2507;hdr[1]=0o2507
+  return hdr,img
+ if body==55:
+  setbanks(img,1);img[5]=0o2467;hdr[2]=0o6646
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  for i in range(3):img[0o154+i]=r.choice([0,0o77777,r.getrandbits(15)]) if r.random()<.6 else r.getrandbits(15)
+  return hdr,img
  if body in BANK0:
   setbanks(img,0);img[5]=BANK0[body]
   if body==22 and r.random()<.15:
@@ -235,7 +310,8 @@ ARITH={12:0o6775,13:0o7005,14:0o7062,15:0o7572,16:0o7574,21:0o7655,25:0o7331}
 BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
- 'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN']
+ 'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
