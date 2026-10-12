@@ -1,0 +1,16 @@
+PASS 11 frozen original LAMBERT entries, 24 admission guards and 176 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 9e590783b4c2bbd995eb8d90194a27b61ce2d06f7c52afb92ac346b82068a820
+PASS65536 original LAMBERT entries strict native
+PASS 11 frozen original LAMBERT entries, 24 admission guards and 176 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 9e590783b4c2bbd995eb8d90194a27b61ce2d06f7c52afb92ac346b82068a820
+PASS65536 original LAMBERT entries full ASAN/UBSAN
+PASS: VICE PAL lm-conic-lambert-1.prg: 17 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-2.prg: 16 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-3.prg: 16 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-4.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-5.prg: 26 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-6.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-7.prg: 33 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-8.prg: 7 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-9.prg: 37 checks, 0 failures
+PASS 316 assembled LAMBERT/ITERATOR words on 316 source lines map to native literals in 30 functions; whole file {'assembled_words': 1072, 'words_by_owner': {'CONICS1 constant tables': 29, 'lm-conic-kepler': 338, 'lm-conic-lambert': 316, 'lm-conic-timerad': 123, 'lm-conic-timethet': 265, 'lm-conic-timethet (ltt_havenorm)': 1}}

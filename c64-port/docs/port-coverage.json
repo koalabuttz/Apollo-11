@@ -2785,10 +2785,77 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c"
           ],
-          "scope": "The time-radius and apsides subroutines, 123 words of bank 12 (TIMERAD, TERMNVEC, CIRCULAR, BADR2 03547-03673; APSIDES, GETECC, INFINAPO 03674-03741), reusing the time-theta entry's PARAM/GEOM, GETX, COMMNOUT and DELTIME steps: from the NEWOPS entry frontier after P32/P72 CSI's STCALL TIMERAD or PERIAPO's STCALL APSIDES to the caller's NEWOPS frontier, ABTCONIC's POODOO frontier or the UNIT/SQRT abort frontier, as 9 native steps between original NEWOPS frontiers. ITERATOR and LAMBERT are not yet translated.",
+          "scope": "The time-radius and apsides subroutines, 123 words of bank 12 (TIMERAD, TERMNVEC, CIRCULAR, BADR2 03547-03673; APSIDES, GETECC, INFINAPO 03674-03741), reusing the time-theta entry's PARAM/GEOM, GETX, COMMNOUT and DELTIME steps: from the NEWOPS entry frontier after P32/P72 CSI's STCALL TIMERAD or PERIAPO's STCALL APSIDES to the caller's NEWOPS frontier, ABTCONIC's POODOO frontier or the UNIT/SQRT abort frontier, as 9 native steps between original NEWOPS frontiers.",
           "verification": "docs/LM-CONIC-TIMERAD.md"
+        },
+        {
+          "native_files": [
+            "src/lm_conic_lambert.c",
+            "src/lm_conic_timethet.c",
+            "src/lm_conic_kepler.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "The Lambert subroutine, 316 words of bank 12 (LAMBERT through TARGETV 03212-03546, ITERATOR 02536-02643, LAMENTER 02701-02731 compiled again for TARGETV), reusing the time-theta entry's GEOM (HAVENORM reached here with NORMSW set), GETX and DELTIME steps and the Kepler entry's CHECKCTR words inline: from the NEWOPS entry frontier after INITVEL's CALL SETITCTR to the caller's NEWOPS frontier at C(RTNLAMB) or the UNIT/SQRT abort frontier, as 30 native steps between original NEWOPS frontiers. With it every assembled word of the file has a native owner; the complete certificate below awaits the auditor review.",
+          "verification": "docs/LM-CONIC-LAMBERT.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; coherent original entry banks (FBANK 12 at each routine NEWOPS), BANKSET = BB, INTBIT15 040000, EDOP +0, five VACs, ordinary 15-bit words, X1 -2 or -10 (RTX1).",
+          "caller_returns": {
+            "KEPLERN": [
+              "027252",
+              "022516",
+              "023012 (KEPPREP GOTO KEPLERN)"
+            ],
+            "TIMETHET": [
+              "064320",
+              "070250",
+              "070363",
+              "071171",
+              "072664",
+              "071600"
+            ],
+            "TIMERAD": [
+              "072106 (P32/P72 CSI, RVSW set)"
+            ],
+            "APSIDES": [
+              "046333 (PERIAPO)"
+            ],
+            "LAMBERT": [
+              "022145 (INITVEL via SETITCTR, ITERCTR 20 or 5)"
+            ]
+          },
+          "data_validity": "Original conic formulas and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Caller entry/resume services and application scheduling",
+          "POODOO alarm 607 (ABTCONIC) and 1302 (UNIT/SQRT) abort handling beyond the abort frontier",
+          "Overlay ABI 2 modules for the whole routines on the C64 (phases verified separately)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-conic-lambert/lm-conic-lambert-source-map.json",
+            "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-conic-lambert/lm-conic-lambert-source-map.json",
+            "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-conic-lambert/lm-conic-lambert-checks.log",
+            "sha256": "3f6830fe53fccfbcd1e259222b1d1c23c8fdee906647f4048f1a6627d617aaa8"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-conic-lambert/lm-conic-lambert-results.json",
+            "sha256": "af8b6eb6241f48d07aaa8ead27e82e117c7318adc1b6a27fb390d6257d655d13"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/CONTROLLED_CONSTANTS.agc",

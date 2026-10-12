@@ -1,0 +1,138 @@
+{
+  "states": [
+    1,
+    240,
+    2097,
+    2425,
+    4320,
+    5502,
+    12856,
+    24703,
+    41464,
+    52117,
+    63993
+  ],
+  "frontiers_matched": 717,
+  "matched_oracle_rows_sha256": "f3a0868b9235eef1c04242ea81e7bf5b8fe8cf9986ddc3af751a44a4e80c3785",
+  "groups": {
+    "1": {
+      "phases": [
+        31,
+        2,
+        3,
+        4,
+        5
+      ],
+      "steps": 17,
+      "entry_changes": 97,
+      "exit_changes": 52,
+      "frozen_bytes": 5044
+    },
+    "2": {
+      "phases": [
+        32,
+        33,
+        34,
+        37
+      ],
+      "steps": 16,
+      "entry_changes": 102,
+      "exit_changes": 28,
+      "frozen_bytes": 5463
+    },
+    "3": {
+      "phases": [
+        35,
+        36,
+        38,
+        39
+      ],
+      "steps": 16,
+      "entry_changes": 131,
+      "exit_changes": 21,
+      "frozen_bytes": 6398
+    },
+    "4": {
+      "phases": [
+        9,
+        10,
+        11
+      ],
+      "steps": 12,
+      "entry_changes": 132,
+      "exit_changes": 20,
+      "frozen_bytes": 5499
+    },
+    "5": {
+      "phases": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "steps": 26,
+      "entry_changes": 133,
+      "exit_changes": 22,
+      "frozen_bytes": 10922
+    },
+    "6": {
+      "phases": [
+        20,
+        21,
+        22
+      ],
+      "steps": 12,
+      "entry_changes": 132,
+      "exit_changes": 25,
+      "frozen_bytes": 5525
+    },
+    "7": {
+      "phases": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "steps": 33,
+      "entry_changes": 133,
+      "exit_changes": 15,
+      "frozen_bytes": 13653
+    },
+    "8": {
+      "phases": [
+        49,
+        50
+      ],
+      "steps": 7,
+      "entry_changes": 135,
+      "exit_changes": 39,
+      "frozen_bytes": 3707
+    },
+    "9": {
+      "phases": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "steps": 37,
+      "entry_changes": 132,
+      "exit_changes": 20,
+      "frozen_bytes": 16211
+    }
+  }
+}

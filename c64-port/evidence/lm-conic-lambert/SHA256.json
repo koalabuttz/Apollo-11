@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-conic-lambert",
+  "release": "evidence-lm-conic-lambert",
+  "files": {
+    "lm-conic-lambert-1.map": {
+      "sha256": "4f9f98ee722afcaa5262adbba08c48e10357a283ca62f688a157993dc18efe98",
+      "bytes": 29716,
+      "store": "release"
+    },
+    "lm-conic-lambert-1.prg": {
+      "sha256": "45073dbc5806e32ed9bd507b45433aa85075806e66687306faa867db7a629f86",
+      "bytes": 34229,
+      "store": "release"
+    },
+    "lm-conic-lambert-2.map": {
+      "sha256": "026ab0242efebfef00f0fc59437304098a2517ba0a9baee87693bf85fd92a3a7",
+      "bytes": 22551,
+      "store": "release"
+    },
+    "lm-conic-lambert-2.prg": {
+      "sha256": "e8c236e6a35a9e90ba4d32016524d8e7738b2d844261ac28d78f7a8be0f5c0cc",
+      "bytes": 32062,
+      "store": "release"
+    },
+    "lm-conic-lambert-3.map": {
+      "sha256": "605cb75242ff591e7d88b6df86f55a3f01171867ced1e331b20840691c7ad8fd",
+      "bytes": 22559,
+      "store": "release"
+    },
+    "lm-conic-lambert-3.prg": {
+      "sha256": "76576a33b567687fa443309dccb36be38638679b7a280f0970395c042cae7089",
+      "bytes": 33323,
+      "store": "release"
+    },
+    "lm-conic-lambert-4.map": {
+      "sha256": "97ba3d9f52065401ea1904b02e419be3567324cde7aa25dfaaa16a1b62cbb781",
+      "bytes": 23109,
+      "store": "release"
+    },
+    "lm-conic-lambert-4.prg": {
+      "sha256": "e19ee052efaa29133f4c80e8ccf564e3809a2766a9505717959bde47c51a0836",
+      "bytes": 36378,
+      "store": "release"
+    },
+    "lm-conic-lambert-5.map": {
+      "sha256": "451559081443da641342b13b0177bd74d30fa06eb6c218038cbd39af0df359b9",
+      "bytes": 24834,
+      "store": "release"
+    },
+    "lm-conic-lambert-5.prg": {
+      "sha256": "545d136cbbcd4f9110f9b44144b503807c3450090204e436447a63c547bfa5d1",
+      "bytes": 43942,
+      "store": "release"
+    },
+    "lm-conic-lambert-6.map": {
+      "sha256": "7aa71da90fdd8a4a816cfbd0c1f96669a157103f2598bfd80e4221674dfaa3cb",
+      "bytes": 19810,
+      "store": "release"
+    },
+    "lm-conic-lambert-6.prg": {
+      "sha256": "3b67499fdb142f021d46795630d5b4eb2c0fbb3f9e29b2a805dc661ab2dd372b",
+      "bytes": 24325,
+      "store": "release"
+    },
+    "lm-conic-lambert-7.map": {
+      "sha256": "43174a93727a2a5e5c684dd27bebce35a5af831b8d91e6dedca542ac934eccd4",
+      "bytes": 25756,
+      "store": "release"
+    },
+    "lm-conic-lambert-7.prg": {
+      "sha256": "6762841f0271a4ece3eb519220f5c288d1769866d695946a10493f0f726ac29f",
+      "bytes": 38047,
+      "store": "release"
+    },
+    "lm-conic-lambert-8.map": {
+      "sha256": "37220eed9381b161bcf649196a6886966c91f83b21a21f03624a91aef3d0fa90",
+      "bytes": 22481,
+      "store": "release"
+    },
+    "lm-conic-lambert-8.prg": {
+      "sha256": "03f242e6328245785982486231b69ec8d2750fce360a2405892ae1f4d188165d",
+      "bytes": 33926,
+      "store": "release"
+    },
+    "lm-conic-lambert-9.map": {
+      "sha256": "933e80894d6082518f0d31e002fc27bc153365ac8717749bef8bf217bee7149a",
+      "bytes": 23118,
+      "store": "release"
+    },
+    "lm-conic-lambert-9.prg": {
+      "sha256": "c5e8a0aa1bf19c58628a11164dc79955a50e449e5fc62a300c071cba40bf94fd",
+      "bytes": 46542,
+      "store": "release"
+    },
+    "lm-conic-lambert-checks.log": {
+      "sha256": "3f6830fe53fccfbcd1e259222b1d1c23c8fdee906647f4048f1a6627d617aaa8",
+      "bytes": 1393,
+      "store": "tree"
+    },
+    "lm-conic-lambert-phase-steps.json": {
+      "sha256": "162ccad091701dc66bbfe62e2a524c0787df726a8467191eca67180b68e737d5",
+      "bytes": 2134,
+      "store": "tree"
+    },
+    "lm-conic-lambert-reference.snapshots.bin.xz": {
+      "sha256": "9b03c398a1d73b54007ed545e6d8fc035d807207a6ac559088fa6f54bf52890d",
+      "bytes": 34629588,
+      "store": "release"
+    },
+    "lm-conic-lambert-results.json": {
+      "sha256": "af8b6eb6241f48d07aaa8ead27e82e117c7318adc1b6a27fb390d6257d655d13",
+      "bytes": 5438,
+      "store": "tree"
+    },
+    "lm-conic-lambert-source-map.json": {
+      "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d",
+      "bytes": 44562,
+      "store": "tree"
+    },
+    "lm-conic-lambert-source-stream.json": {
+      "sha256": "f53f402032d5f54011fb87c0ce62f3edf6b588f64b6a0a9189b0b143834312fe",
+      "bytes": 368,
+      "store": "tree"
+    },
+    "lm-conic-lambert-target-states.json": {
+      "sha256": "3400ed1415bb87fab627f411451039331821ff932c5d450d7c1d3b66496c66f2",
+      "bytes": 284,
+      "store": "tree"
+    }
+  }
+}
