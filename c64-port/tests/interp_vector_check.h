@@ -18,7 +18,7 @@ static int interp_vector_case(apollo_overlay_state *s,uint16_t n,uint16_t *edit)
  if(!x)x=1;
  for(i=0;i<2048u;++i){x^=(uint16_t)(x<<7);x^=(uint16_t)(x>>9);x^=(uint16_t)(x<<8);s->words[i]=(agc_word)(x&077777u);}
  for(i=0;i<interp_vector_count[n];++i,++*edit)s->words[interp_vector_edit[*edit][0]]=interp_vector_edit[*edit][1];
- tag=interp_body_run(s,interp_vector_header[n]);
+ tag=interp_body_run(s,interp_vector_header[n],0);
  return interp_vector_digest_of(tag,s)==interp_vector_digest[n];
 }
 #endif

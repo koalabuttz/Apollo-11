@@ -1,0 +1,39 @@
+{
+ "cases": 14336,
+ "c64_groups": {
+  "1": 256,
+  "2": 384,
+  "3": 160
+ },
+ "stream_sha256": "8df65fbc2bd928470dc115397bf1143542ea21e4c9ecfa7f93e7e16c815a58fe",
+ "stops": {
+  "S34/35.3 (3377)": {
+   "NEWOPS of a CADR in another bank": 2048
+  },
+  "S34/35.3 after LOMAT (3402)": {
+   "NEWOPS of a CADR in another bank": 2048
+  },
+  "S34/35.3 after INTINT (3421)": {
+   "NEWOPS 35,3572": 1536,
+   "NEWOPS of a CADR in another bank": 512
+  },
+  "GOINT (3462)": {
+   "NEWOPS of a CADR in another bank": 2048
+  },
+  "INTINT (3466)": {
+   "NEWOPS of a CADR in another bank": 2048
+  },
+  "INTINT after INTSTALL (3471)": {
+   "NEWOPS of a CADR in another bank": 2048
+  },
+  "INTINT after INTEGRVS (3517)": {
+   "NEWOPS 35,3246": 384,
+   "NEWOPS 35,3255": 384,
+   "NEWOPS 35,3327": 384,
+   "NEWOPS 35,3572": 256,
+   "NEWOPS of a CADR in another bank": 640
+  }
+ },
+ "boundary": "each case runs from its routine's NEWOPS through the trampoline (the seven S34/35.3 and GOINT/INTINT routines with lm-s3435's LOMAT and NOVRWRT) to the first point outside them; the oracle stops at the same NEWOPS outside the routines (INTSTALL, INTEGRVS, a caller's return)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}

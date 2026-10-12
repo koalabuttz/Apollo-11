@@ -17,7 +17,6 @@
 #define lmi_setpd cmi_setpd
 #define lmi_vdef cmi_vdef
 #define lmi_axt cmi_axt
-#define lmi_axc cmi_axc
 #define lmi_incr cmi_incr
 #define lmi_switch cmi_switch
 #define lmi_swbranch cmi_swbranch
@@ -93,6 +92,7 @@
 #define lmi_lxc cmi_lxc
 #define lmi_sxa cmi_sxa
 #define lmi_xchx cmi_xchx
+#define lmi_axc cmi_axc
 #define lmi_ita cmi_ita
 #define lmi_tix cmi_tix
 #define lmi_bhiz cmi_bhiz

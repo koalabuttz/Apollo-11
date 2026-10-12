@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-s3435b",
+  "release": "evidence-lm-s3435b",
+  "files": {
+    "lm-s3435b-1.map": {
+      "sha256": "045939aa3beac6f5be36f92dfaeb76051e3f62b520aa9a8985791b4b5a9e8cc5",
+      "bytes": 25186,
+      "store": "release"
+    },
+    "lm-s3435b-1.prg": {
+      "sha256": "d9dcd840017d601fabc7068f3dc4448d9975e00d15b24389b5f891f2f7376c8d",
+      "bytes": 38871,
+      "store": "release"
+    },
+    "lm-s3435b-2.map": {
+      "sha256": "88bbd17e76ac4ec8a25ec8ecb6a935ecec74edac8d7041ea8186485191992ad1",
+      "bytes": 27537,
+      "store": "release"
+    },
+    "lm-s3435b-2.prg": {
+      "sha256": "55bbe98346f8dc322dc9083f481598c9a2121b6feaa6860a29da16532dc4255b",
+      "bytes": 35490,
+      "store": "release"
+    },
+    "lm-s3435b-3.map": {
+      "sha256": "d835296000f7a4fcd2d0587639fb995478ecfd60f0d4542624ec8d524d61db01",
+      "bytes": 23160,
+      "store": "release"
+    },
+    "lm-s3435b-3.prg": {
+      "sha256": "1748b7acb8a555b985eba7b0956aed092e81946a9e49eb80fcbfecdae83118ed",
+      "bytes": 47083,
+      "store": "release"
+    },
+    "lm-s3435b-checks.log": {
+      "sha256": "db485dd00f2ebddeda9f06d41c5e5681b45c7cd0792f9ed47daa8e54cfebb515",
+      "bytes": 635,
+      "store": "tree"
+    },
+    "lm-s3435b-proof.json": {
+      "sha256": "5bb6e57e8416b73e726504cb3610b33d8ffcd9918f3c331b8c1317dd7307b348",
+      "bytes": 1238,
+      "store": "tree"
+    },
+    "lm-s3435b-reference.snapshots.bin.xz": {
+      "sha256": "e33b26f13f73eba4ed7e7bed7c6693f44d9dcc48b79307a0488e2a7a2e30d96e",
+      "bytes": 55060500,
+      "store": "release"
+    },
+    "lm-s3435b-results.json": {
+      "sha256": "4d6f575bab516f8b8f363402bdc45a06116511b43dcca341e0fa07344b50b69c",
+      "bytes": 1745,
+      "store": "tree"
+    },
+    "lm-s3435b-source-map.json": {
+      "sha256": "8ce5b574d0aee4cef0e858f831b6d8d99ff8b1dcd975ea6598b58ba0edbf6f07",
+      "bytes": 11035,
+      "store": "tree"
+    },
+    "lm-s3435b-source-stream.json": {
+      "sha256": "f6a0496cd369f6a1e999a29e7006cb8151f6d05dd4dcf20472d692d8502ba8ed",
+      "bytes": 341,
+      "store": "tree"
+    }
+  }
+}

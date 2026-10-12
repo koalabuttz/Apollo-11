@@ -156,7 +156,7 @@ def case(g,body):
  if body in ARITH:
   # Operand at C(ADDRWD): live erasable (either window), or fixed data in a
   # bank <030 with the words passed to the native side.
-  img[5]=ARITH[body];n=6 if body==25 else 2
+  img[5]=ARITH[body];n=6 if body in(25,59) else 2
   # (SIGN's INDEX ADDRWD; CCS 0 is a TCF for a fixed address: erasable only.)
   if body!=21 and r.random()<.35:
    b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o4000-n-1);img[0o116]=a
@@ -274,6 +274,33 @@ def case(g,body):
     if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
    img[0o117]=v
   return hdr,img
+ if body in(68,69):
+  # MXV/VXM: an 18-word matrix in erasable (inside one EB window) or in a
+  # fixed bank <030, read from the rope by the native side.
+  img[5]={68:A(0o7334),69:A(0o7337)}[body]
+  if r.random()<.35:
+   b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o4000-19);img[0o116]=a
+   hdr[9]=b;hdr[10]=a;hdr[15]=2
+  else:img[0o116]=r.randrange(0o61,0o1370-18) if r.random()<.7 else r.randrange(0o1410,0o1770-18)
+  if r.random()<.2:
+   for i in range(6):img[0o154+i]=r.choice([0o37777,0o40000,0o37776])
+  return hdr,img
+ if body==70:
+  # LXC: as LXA.
+  setbanks(img,1);img[5]=A(0o2360,1)
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  if r.random()<.4:img[0o117]=r.randrange(0,0o55)
+  else:
+   while True:
+    v=r.randrange(0o56,0o4000)
+    if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
+   img[0o117]=v
+  return hdr,img
+ if body==61:
+  setbanks(img,1);img[5]=A(0o2351,1)
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  img[0o117]=r.randrange(0,0o100000)
+  return hdr,img
  if body==48:
   setbanks(img,1);img[5]=A(0o2452,1);hdr[2]=A(0o6646)
   img[0o154]=r.choice([0,0o77777,r.getrandbits(15)])
@@ -338,6 +365,12 @@ def case(g,body):
   # TLOAD from erasable (either window or the work area after DIRADRES).
   img[5]=A(0o6470);hdr[1]=A(0o6061)
   img[0o116]=r.randrange(0o61,0o1360) if r.random()<.7 else r.randrange(0o1410,0o1765)
+  return hdr,img
+ if body==60:
+  # TLOAD from fixed data in a bank <030, the three words passed natively.
+  img[5]=A(0o6470);hdr[1]=A(0o6061)
+  b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3775);img[0o116]=a
+  hdr[9:12]=[fixed(b,a-0o2000+i) for i in range(3)];hdr[15]=1
   return hdr,img
  if body==57:
   # TIX: POLISH the branch CADR, X and S of the selected index either sign.
@@ -415,12 +448,13 @@ def case(g,body):
 def addresses():
  global STORE_NEXT,ARITH,BANK0
  STORE_NEXT=[A(0o6061),A(0o6061),A(0o6061),A(0o6460),A(0o6144),A(0o6463),A(0o6466),A(0o6252)]
- ARITH={12:A(0o6775),13:A(0o7005),14:A(0o7062),15:A(0o7572),16:A(0o7574),21:A(0o7655),25:A(0o7331)}
+ ARITH={12:A(0o6775),13:A(0o7005),14:A(0o7062),15:A(0o7572),16:A(0o7574),21:A(0o7655),25:A(0o7331),59:A(0o7425)}
  BANK0={20:A(0o7670),22:A(0o3226,0),23:A(0o3174,0),24:A(0o3245,0)}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD',None,None,'AXC','XCHX','ARCCOS','ARCSIN','SIN','COS','ACOSABRT return']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC',
+ 'XCHX','ARCCOS','ARCSIN','SIN','COS','ACOSABRT return','MXV','VXM','LXC']
 def main():
  global rom,MISSION,ROPES,LST,ROM
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
@@ -433,7 +467,7 @@ def main():
   # (POLY, body 36, is driven by T(X)'s Luminary table; Comanche cases use other bodies.)
   LST=R/'build/fixed-data/Comanche055/assembly.lst';ROM=R/'deps/cm-rtb-fixture/MAIN.agc.bin'
   ROPES=(Rope('Luminary099'),Rope('Comanche055'))
- if a.bodies is None:a.bodies=','.join(str(i) for i in range(len(NAMES)) if NAMES[i] and not (MISSION=='cm' and i==36))
+ if a.bodies is None:a.bodies=','.join(str(i) for i in range(len(NAMES)) if NAMES[i]!='reserved' and not (MISSION=='cm' and i==36))
  addresses()
  (R/'build').mkdir(exist_ok=True)
  if not LST.exists():subprocess.run([sys.executable,'tools/ephemeris_source.py'],cwd=R,check=True,stdout=subprocess.DEVNULL)
@@ -452,7 +486,7 @@ def main():
   if a.dump:pathlib.Path(a.dump+'.%d'%b).write_bytes(blob)
   ref=subprocess.run(['build/lmi-body-reference',str(ROM)],cwd=R,input=blob,capture_output=True)
   if ref.returncode:print(ref.stderr.decode()[-2000:]);raise SystemExit('FAIL reference exit %d'%ref.returncode)
-  nat=subprocess.run([native],cwd=R,input=blob,capture_output=True,check=True).stdout
+  nat=subprocess.run([native,str(ROM)],cwd=R,input=blob,capture_output=True,check=True).stdout
   for i,(h,img) in enumerate(cases):
    x=struct.unpack_from('<2049H',ref.stdout,i*4098);y=struct.unpack_from('<2049H',nat,i*4098)
    if x!=y:
@@ -478,11 +512,16 @@ def vectors(a,g,bodies,native):
  cases=[];seeds=[]
  for b in bodies:
   for j in range(a.vector_cases):
-   seed=(b*a.vector_cases+j)*40503+1;FILL=xs_fill(seed);cases.append(case(g,b));seeds.append((seed,list(FILL)))
+   seed=(b*a.vector_cases+j)*40503+1
+   # (The C64 has no rope, so a fixed-memory MXV/VXM matrix is redrawn.)
+   while True:
+    FILL=xs_fill(seed);c=case(g,b)
+    if not c[0][15]&2:break
+   cases.append(c);seeds.append((seed,list(FILL)))
  FILL=None
  blob=b''.join(struct.pack('<2064H',*(h+i)) for h,i in cases)
  ref=subprocess.run(['build/lmi-body-reference',str(ROM)],cwd=R,input=blob,capture_output=True,check=True).stdout
- nat=subprocess.run([native],cwd=R,input=blob,capture_output=True,check=True).stdout
+ nat=subprocess.run([native,str(ROM)],cwd=R,input=blob,capture_output=True,check=True).stdout
  if ref!=nat:raise SystemExit('FAIL vector cases differ from yaAGC')
  rows=[];edits=[]
  for i,((h,img),(seed,fill)) in enumerate(zip(cases,seeds)):
@@ -493,7 +532,7 @@ def vectors(a,g,bodies,native):
   '/* Each case: image = xorshift16 fill from `seed` plus its edits; header words; */',
   '/* digest of the stop tag and the image after the original program ran it (yaAGC). */',
   '/* Define INTERP_BODY_LO/HI to keep only the cases of bodies LO..HI-1. */',
-  '#include <stdint.h>','#ifndef INTERP_BODY_LO','#define INTERP_BODY_LO 0u','#define INTERP_BODY_HI 96u','#endif']
+  '#include <stdint.h>','#ifndef INTERP_BODY_LO','#define INTERP_BODY_LO 0u','#define INTERP_BODY_HI 128u','#endif']
  def guarded(name,decl,item):
   L.append(decl+'={')
   for k,r in enumerate(rows):

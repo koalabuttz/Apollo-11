@@ -1,0 +1,10 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "8f1d2f4fba06b2b03949273664d2342bb1b15b319973b0b3e09e24481c4f713c",
+ "entries": "V70UPDAT-V73UPDAT (with CKMDMORE), UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35)",
+ "boundary": "entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT)",
+ "full_physical_words": 2048
+}

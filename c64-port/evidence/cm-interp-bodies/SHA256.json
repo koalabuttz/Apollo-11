@@ -4,23 +4,23 @@
   "release": "evidence-cm-interp-bodies",
   "files": {
     "cm-interp-bodies-differential.log": {
-      "sha256": "deb5822143040edcc962982111609ad385482ffc36e99f21fb518c1843033aa7",
-      "bytes": 848,
+      "sha256": "8b3869e2927353ef9e361d250ca5f6a6d394cf2b17119cea77accbd5d670acd5",
+      "bytes": 665,
       "store": "release"
     },
     "cm-interp-bodies-host.log": {
-      "sha256": "50968289ec870c2a8763a76f9f98147e4a3862d3fd8e034c3ec08ad684b2d2f7",
-      "bytes": 1248,
+      "sha256": "7862fe1811768f2c40c01fbe61b5faaa180de2026307be407c4d72a13aada04e",
+      "bytes": 1226,
       "store": "release"
     },
     "cm-interp-bodies-proof.json": {
-      "sha256": "f9ba4cf376e764ef7de7dc5f1686519289f95775c750b33e9042608b6dab2fde",
-      "bytes": 809,
+      "sha256": "1c2d04e6a2f7d4fc515b4af09a932952a5f1db5a6a9ec919f57f09565951d25c",
+      "bytes": 873,
       "store": "tree"
     },
     "cm-interp-bodies-vice.log": {
-      "sha256": "4fb47691b5634ead24d6d82faeba476e176fa9038c0e3de885c475639c155c97",
-      "bytes": 1581,
+      "sha256": "8ba02a8f2b2af8d2f72493c4887da51c1a806e84b1f76167ed75ef176d196547",
+      "bytes": 184,
       "store": "release"
     }
   }

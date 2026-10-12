@@ -1,0 +1,580 @@
+{
+ "source_paths": [
+  "Luminary099/P34-35_P74-75.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/P34-35_P74-75.agc": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_s3435b_routines.c",
+ "native_sha256": "e5205d35637287630b5553eb0617bd64aaba1aa8956bc86bca9b05d6c00147fb",
+ "source_words": 53,
+ "source_lines": 53,
+ "symbols": {
+  "S34/35.3": "35,3377",
+  "GOINT": "35,3462",
+  "INTINT": "35,3466",
+  "INTSTALL": "13,3414",
+  "INTEGRVS": "13,3107",
+  "LOMAT": "35,3447",
+  "NOVRWRT": "35,3424",
+  "NORMEX": "E7,1463",
+  "RTRN": "E7,1465",
+  "RATT": "0000000",
+  "RTARG": "E7,1443",
+  "DELVLVC": "E7,1433",
+  "DELVEET3": "E4,1765",
+  "VACT3": "E7,1543",
+  "RACT3": "E7,1535",
+  "TIG": "E7,1441",
+  "TPASS4": "E7,1630",
+  "DPPOSMAX": "23,2527",
+  "ZEROVECS": "23,2521",
+  "NOMTPI": "E4,1716",
+  "INTYPFLG": "0000070",
+  "TDEC1": "0000040",
+  "MOONFLAG": "0000003",
+  "CMOONFLG": "0000173",
+  "TET": "E3,1516",
+  "RCV": "E3,1534",
+  "VCV": "E3,1542",
+  "RTX2": "E5,1777"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 759,
+   "address": "35,3377",
+   "source": "S34/35.3 STQ CALL",
+   "words": [
+    "45020"
+   ],
+   "native": "s3435_3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 760,
+   "address": "35,3400",
+   "source": "NORMEX",
+   "words": [
+    "03463"
+   ],
+   "native": "s3435_3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 761,
+   "address": "35,3401",
+   "source": "LOMAT",
+   "words": [
+    "73447"
+   ],
+   "native": "s3435_3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 762,
+   "address": "35,3402",
+   "source": "VLOAD VXM",
+   "words": [
+    "61375"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 763,
+   "address": "35,3403",
+   "source": "DELVLVC",
+   "words": [
+    "03434"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 764,
+   "address": "35,3404",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 765,
+   "address": "35,3405",
+   "source": "VSL1",
+   "words": [
+    "77772"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 766,
+   "address": "35,3406",
+   "source": "STORE DELVEET3",
+   "words": [
+    "02366"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 767,
+   "address": "35,3407",
+   "source": "VAD PDVL",
+   "words": [
+    "63255"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 768,
+   "address": "35,3410",
+   "source": "VACT3",
+   "words": [
+    "03544"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 769,
+   "address": "35,3411",
+   "source": "RACT3",
+   "words": [
+    "03536"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 770,
+   "address": "35,3412",
+   "source": "PDDL PDDL",
+   "words": [
+    "65325"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 771,
+   "address": "35,3413",
+   "source": "TIG",
+   "words": [
+    "03442"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 772,
+   "address": "35,3414",
+   "source": "TPASS4",
+   "words": [
+    "03631"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 773,
+   "address": "35,3415",
+   "source": "PDDL PUSH",
+   "words": [
+    "41525"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 774,
+   "address": "35,3416",
+   "source": "DPPOSMAX",
+   "words": [
+    "06530"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 775,
+   "address": "35,3417",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 776,
+   "address": "35,3420",
+   "source": "INTINT",
+   "words": [
+    "73466"
+   ],
+   "native": "s3435_3_lomat"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 777,
+   "address": "35,3421",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "s3435_3_intint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 778,
+   "address": "35,3422",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "s3435_3_intint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 779,
+   "address": "35,3423",
+   "source": "STORE RTARG",
+   "words": [
+    "03444"
+   ],
+   "native": "s3435_3_intint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 818,
+   "address": "35,3462",
+   "source": "GOINT PDDL PDDL",
+   "words": [
+    "65325"
+   ],
+   "native": "goint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 819,
+   "address": "35,3463",
+   "source": "ZEROVECS",
+   "words": [
+    "06522"
+   ],
+   "native": "goint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 820,
+   "address": "35,3464",
+   "source": "NOMTPI",
+   "words": [
+    "02317"
+   ],
+   "native": "goint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 821,
+   "address": "35,3465",
+   "source": "PUSH PUSH",
+   "words": [
+    "41406"
+   ],
+   "native": "goint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 822,
+   "address": "35,3466",
+   "source": "INTINT STQ CALL",
+   "words": [
+    "45020"
+   ],
+   "native": "intint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 823,
+   "address": "35,3467",
+   "source": "RTRN",
+   "words": [
+    "03465"
+   ],
+   "native": "intint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 824,
+   "address": "35,3470",
+   "source": "INTSTALL",
+   "words": [
+    "27414"
+   ],
+   "native": "intint"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 825,
+   "address": "35,3471",
+   "source": "CLEAR DLOAD",
+   "words": [
+    "71214"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 826,
+   "address": "35,3472",
+   "source": "INTYPFLG",
+   "words": [
+    "01673"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 827,
+   "address": "35,3473",
+   "source": "BZE SET",
+   "words": [
+    "43054"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 828,
+   "address": "35,3474",
+   "source": "+2",
+   "words": [
+    "73476"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 829,
+   "address": "35,3475",
+   "source": "INTYPFLG",
+   "words": [
+    "01473"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 830,
+   "address": "35,3476",
+   "source": "DLOAD STADR",
+   "words": [
+    "45545"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 831,
+   "address": "35,3477",
+   "source": "STODL TDEC1",
+   "words": [
+    "63736"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 832,
+   "address": "35,3500",
+   "source": "SET LXA,2",
+   "words": [
+    "73014"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 833,
+   "address": "35,3501",
+   "source": "MOONFLAG",
+   "words": [
+    "00063"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 834,
+   "address": "35,3502",
+   "source": "RTX2",
+   "words": [
+    "02777"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 835,
+   "address": "35,3503",
+   "source": "BON CLEAR",
+   "words": [
+    "43014"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 836,
+   "address": "35,3504",
+   "source": "CMOONFLG",
+   "words": [
+    "04303"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 837,
+   "address": "35,3505",
+   "source": "ALLSET",
+   "words": [
+    "73507"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 838,
+   "address": "35,3506",
+   "source": "MOONFLAG",
+   "words": [
+    "00263"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 839,
+   "address": "35,3507",
+   "source": "ALLSET STOVL TET",
+   "words": [
+    "25517"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 840,
+   "address": "35,3510",
+   "source": "VSR*",
+   "words": [
+    "77657"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 841,
+   "address": "35,3511",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 842,
+   "address": "35,3512",
+   "source": "STOVL RCV",
+   "words": [
+    "25535"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 843,
+   "address": "35,3513",
+   "source": "VSR*",
+   "words": [
+    "77657"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 844,
+   "address": "35,3514",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 845,
+   "address": "35,3515",
+   "source": "STCALL VCV",
+   "words": [
+    "35543"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 846,
+   "address": "35,3516",
+   "source": "INTEGRVS",
+   "words": [
+    "27107"
+   ],
+   "native": "intint_installed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 847,
+   "address": "35,3517",
+   "source": "VLOAD GOTO",
+   "words": [
+    "52175"
+   ],
+   "native": "intint_integrated"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 848,
+   "address": "35,3520",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "intint_integrated"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 849,
+   "address": "35,3521",
+   "source": "RTRN",
+   "words": [
+    "03465"
+   ],
+   "native": "intint_integrated"
+  }
+ ],
+ "covered_ranges": [
+  "35,3377-35,3423",
+  "35,3462-35,3521"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every interpretive word of S34/35.3 (with its LOMAT and INTINT returns), GOINT and INTINT (with its INTSTALL and INTEGRVS returns) is a literal bookkeeping argument of the registered transfer routine entered at the first address of its range."
+}

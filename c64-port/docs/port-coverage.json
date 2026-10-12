@@ -717,7 +717,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
-            "sha256": "a38cb446d97c7b1c517e8e685cac071c6bda51ca420b6745183580c4ee7774fe"
+            "sha256": "f236436f632ef939ef59a1c210bd38d0dd7b3ff28945ce9e8bbc3111f381089f"
           },
           "independent_review": {
             "path": "docs/audits/downtelemetry.md",
@@ -2037,7 +2037,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries from their 162 compiled TC sites (and NEWMODEA/MMDSPLAY from any bank) with cm_native_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "supported_domain": "entries from their 162 compiled TC sites (and NEWMODEA/MMDSPLAY from any bank) with cm_native_io; phase words whose TEMPSW class has a producer (the source's can't-get-here branches refuse; TB+LB together follows the source but has no producer and is not oracle-compared)",
         "external_continuations": [
           "BANKJUMP (cm_interbank_routines)",
           "NOVAC and the DSPMMJOB job",
@@ -2047,7 +2047,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-PHASE-TABLE.md",
-            "sha256": "d60ebc080dfba988040fd4cb37b953c9f3af9bdf2fcd68faefabf673af13e025"
+            "sha256": "1ec4216f3be487e7efeac725fd983affc63aecd76ac573b02c4c3f45e0e345c9"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-phase-table/cm-phase-table-proof.json",
@@ -2717,7 +2717,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
-            "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+            "sha256": "1ed4011476c6ae3567b28453ba4c8dc8322cd4729ac0f2d75c09371b1b4c82d2"
           },
           "independent_review": {
             "path": "docs/audits/cm-restart-routines.md",
@@ -2775,7 +2775,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
-            "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+            "sha256": "1ed4011476c6ae3567b28453ba4c8dc8322cd4729ac0f2d75c09371b1b4c82d2"
           },
           "independent_review": {
             "path": "docs/audits/cm-restart-routines.md",
@@ -3629,8 +3629,50 @@
       "sha256": "d41dbe2cafed15061ac3744bd6fabc0da30aee43d0210c7d2011a0f07f75fe6d",
       "bytes": 16798,
       "lines": 555,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_update.c",
+            "src/cm_update_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction: V70UPDAT-V73UPDAT/CKMDMORE/UPERROR (bank 43), UPPART2, OHWELL1/OHWELL2, UPVERIFY, CK4V32, UPSTORE, UPEND73, UPFNDVAC, UPJOB/UPWAKE basic code, TIMEDIDL/TIMEDIDR/DELTAOK, UPEND71/STORLP71, UPEND72/LDLOOP72, UPOUT, UPEND70, UPERROUT and UPACTOFF (bank 27) as control-transfer ABI routines (35 entries incl. the POSTJUMP targets, restart points and every return point after a TC outside the file); constants compiled from the source listing, BANKCALL/POSTJUMP CADRs from cm_interbank_site_table.",
+          "verification": "docs/CM-UPDATE.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/cm-update/cm-update-vice.log",
+            "sha256": "58e2b4cdddfae72891e1139d8722a40b539b39bc9018feeebc045775a46a33f5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-update/cm-update-host.log",
+            "sha256": "f0d57b7dad9b6c975bf94feb24f33cc5d28b5b7f2bd19e1b6405fadbdc937077"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-update/cm-update-proof.json",
+            "sha256": "48084f9e6469b3660816a057747e8aa43ca7f5554408cdd302a64d0c22801732"
+          },
+          "source_to_native_map": {
+            "path": "docs/CM-UPDATE.md",
+            "sha256": "76b15ada3c7130b8d8f7c2b1f65cbb94a858d52daa4bcbd97a4e1da1eb8e0ae5"
+          }
+        },
+        "external_continuations": [
+          "TESTXACT (PINBALL) and its return",
+          "PHASCHNG, NEWMODEX, NEWMODEX+3, FALTON, FINDVAC, ENDOFJOB, UPFLAG, TPAGREE, INTWAKEU and ENDEXT",
+          "BANKCALL GOXDSPF with its three returns, POSTJUMP UPPART2/UPERROUT+2",
+          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, MODREG and FLAGWRD5 as CKMDMORE reads them, COMPNUMB in each verb's accepted range (V70/V73 2, V71 3-20, V72 odd 3-19), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03534/03721), V71/V72 erasable addresses in EB 1-7 above the registers; cm_native_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+      }
     },
     {
       "path": "Comanche055/WAITLIST.agc",
@@ -3713,8 +3755,49 @@
               "sha256": "910b1ebf5332b619683d48be205e084929377278bcbb541977e273fc13a1a949"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/lm_alarm.c",
+            "src/lm_alarm_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-ALARM.md",
+          "scope": "Every instruction: ALARM/ALARM2/BORTENT/PRIOENT/LARMENT, CHKFAIL1/CHKFAIL2/FAIL3/PROGLARM/MULTEXIT/MULTFAIL, PRIOLARM, BAILOUT, WHIMPER, POODOO/ABORT2/GOPOODOO/STRTIDLE, CCSHOLE, CURTAINS, BAILOUT1/BOTHABRT/POODOO1, ALARM1/ALMNCADR, VARALARM and FLAGS as control-transfer ABI routines (26 entries incl. MULTEXIT/BANKCALL/SUPERSW return points and the ALMCADR erasable continuation); alarm codes of all 73 caller sites compiled from the source listing."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 73 compiled TC sites (and ALMNCADR with Q at a compiled code), CCSHOLE/CURTAINS/VARALARM/WHIMPER/GOPOODOO/PRIOLARM/FLAGS as their callers enter them with a positive alarm code in A where one is passed, the return points and ALMCADR holding a return address 2000-7777; p66_bias_io plus agc_hardware for WHIMPER's RESUME (TS overflow, a negative CCS after MASK V37FLBIT and MULTEXIT words other than TC/TCF refuse)",
+        "external_continuations": [
+          "callers' returns",
+          "PRIODSPR (PINBALL)",
+          "BANKCALL/POSTJUMP/SUPERSW (lm_interbank_routines) to ENEMA, V37KLEAN, MR.KLEAN, SERVIDLE",
+          "SWRETURN after BANKCALL FLAGS (lm_interbank takes Q 0100-7775 only)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-ALARM.md",
+            "sha256": "7239aa436a0d6abe69e877cedb078f6a802bd869a59c73e2448be0a56be495ad"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-alarm/lm-alarm-proof.json",
+            "sha256": "8ed182f684d1bd5763e3fb6c5de4d982079010331c39c35126882f43ab0aebbe"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-alarm/lm-alarm-host.log",
+            "sha256": "61fe6f153c86a0400966c41c808853fb71c2fe19608f7d6e0148eb660361cfaa"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-alarm/lm-alarm-vice.log",
+            "sha256": "3376f29fa5fc63df6161dabc84675b7267ac40e6b79cd5afd5a48970b2d85619"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
@@ -4270,7 +4353,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-DOWNTELEMETRY.md",
-            "sha256": "0c4c647488f054cfd03179ff422118c6a2b92f4622d707544d9d8d1b13a1785f"
+            "sha256": "e41b14ee11b46fbb4c29af438d37177d9f7d2ad1fe61ad4c0174234ef420d527"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-proof.json",
@@ -4282,7 +4365,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
-            "sha256": "07837c8b03a0e59e9dcb12dfff175942d3d4f0d5b0d29df8d3e1f465e8fc93a1"
+            "sha256": "326174bb8597740ce03b5e2ee9f361311d3aa877128b6f8bb236c6b12ba3c599"
           },
           "independent_review": {
             "path": "docs/audits/downtelemetry.md",
@@ -4668,6 +4751,26 @@
               "sha256": "910b1ebf5332b619683d48be205e084929377278bcbb541977e273fc13a1a949"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/lm_fresh_start.c",
+            "src/lm_fresh_start_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART/DOFSTRT1, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, DORSTART, SETINFL, ENEMA, GOPROG2/GOPROG2A/GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB1/STARTSB2, DSPOFF and GOTOPOOH as control-transfer ABI routines (11 entries incl. the returns after MMDSPLAY, SWCALL and ALARM); CADRs and constants compiled from the source listing. STARTSIM (patch-only) untranslated; bank 04 is lm-v37; bank 13 STATEUP remains.",
+          "verification": "docs/LM-FRESH-START.md"
+        },
+        {
+          "native_files": [
+            "src/lm_v37.c",
+            "src/lm_v37_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 04: GOP00FIX, V37 with CANTROD/V37BAD, CHECKTAB/AGAINMM, ISSERVON, V37RET, CANV37, R00, POOH, SEUDOP00, GOMOD/GOGOPROG, RENDV00/RESET22/KILL2/P00FIZZ/RENDN00/STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC and SETUP70/71 as control-transfer ABI routines (32 entries incl. the return after every TC out of the bank); CADRs, constants and the PREMM1/FCADRMM1/DNLADMM1 tables compiled from the source listing. Bank 13 STATEUP (interpretive) remains.",
+          "verification": "docs/LM-V37.md"
         }
       ]
     },
@@ -5810,6 +5913,29 @@
           ],
           "scope": "GET45 +1 through VNPOOH (35,3635-35,3722), 54 words: GET45 +1's TC COMPTGO, the DELAYJOB wait, the V16N45 flash and its terminate, proceed and recycle responses, KILCLOCK, N45PROC, CLUPDATE with its interpretive CLEAR GOTO UPDATFLG QSAVED, DISPLAYE, P3XORP7X and VNPOOH, as 20 basic and 7 interpretive routines of the control-transfer ABI (with the lm-vn1645 and lm-midgim steps registered as interpretive routines): from each entry through the trampoline and the native INTER-BANK routines to the first point outside the file (COMPTGO, DELAYJOB, GOFLASH, PHASCHNG, UPFLAG, GOTOPOOH, CLUPDATE's TC INTPRET, a NEWOPS outside the file, the UNIT or ARCSIN alarm frontier, or the caller's return).",
           "verification": "docs/LM-P34-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/lm_s3435_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/matrix_native.c"
+          ],
+          "scope": "S34/35.1 (35,3274-35,3305), NOVRWRT, S34/35.4 and LOMAT (35,3424-35,3461), 40 words, as four interpretive routines of the control-transfer ABI keyed at their NEWOPS: the line of sight ULOS and orbit normal UNRM, the line-of-sight frame and DELVEET3 rotated into DVLOS (MXV of the work-area matrix), and the local-vertical matrix at 0D: from each NEWOPS entry through the trampoline to the first NEWOPS outside them (the caller's return at C(QPRET) or the CADR in NORMEX) or UNIT's POODOO1 frontier.",
+          "verification": "docs/LM-S3435.md"
+        },
+        {
+          "native_files": [
+            "src/lm_s3435b_routines.c",
+            "src/lm_s3435_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/matrix_native.c"
+          ],
+          "scope": "S34/35.3 with its LOMAT and INTINT returns (35,3377-35,3423), GOINT and INTINT with INTINT's INTSTALL and INTEGRVS returns (35,3462-35,3521), 53 words, as seven interpretive routines of the control-transfer ABI keyed at their NEWOPS: NORMEX saved and LOMAT called, DELVLVC rotated through the local-vertical matrix (VXM of the work-area matrix) into DELVEET3, the integration arguments pushed (VACT3, RACT3, TIG, TPASS4, DPPOSMAX or ZEROVECS and NOMTPI) and INTINT called, RTARG stored on into NOVRWRT, and INTINT's RTRN save, INTSTALL call and integration setup (INTYPFLG, TDEC1, MOONFLAG, TET, RCV, VCV scaled by RTX2) to INTEGRVS and the GOTO RTRN after it: from each NEWOPS entry through the trampoline (with lm-s3435's LOMAT and NOVRWRT) to the first NEWOPS outside them (INTSTALL, INTEGRVS, or a caller's return).",
+          "verification": "docs/LM-S3435B.md"
         }
       ]
     },
@@ -5896,7 +6022,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries from their 142 compiled TC sites (PHSCHNGA with the phase words its V37RET producer computes; NEWMODEA/MMDSPLAY from any bank) with p66_bias_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "supported_domain": "entries from their 142 compiled TC sites (PHSCHNGA with the phase words its V37RET producer computes; NEWMODEA/MMDSPLAY from any bank) with p66_bias_io; phase words whose TEMPSW class has a producer (the source's can't-get-here branches refuse; TB+LB together follows the source but has no producer and is not oracle-compared)",
         "external_continuations": [
           "BANKJUMP (lm_interbank_routines)",
           "NOVAC and the DSPMMJB job",
@@ -5906,7 +6032,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-PHASE-TABLE.md",
-            "sha256": "60516d158b5961b139ff35a141ae7364628382e2aecbafb80d3800d2a3c6333a"
+            "sha256": "218fe545e619e49e345b2394653386e29bdc41e926a912b0b1a8f220e1fe0588"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-phase-table/lm-phase-table-proof.json",
@@ -7267,8 +7393,50 @@
       "sha256": "5f54e9c63cf0af039a8a435aa3ba86ad933e3b921366388ee115460da5c9f7f6",
       "bytes": 17802,
       "lines": 556,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_update.c",
+            "src/lm_update_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction: V70UPDAT-V73UPDAT/UPERROR (bank 43), UPPART2, OHWELL1/OHWELL2, UPVERIFY, CK4V32, UPSTORE, UPEND73, UPFNDVAC, UPJOB/UPWAKE basic code, TIMEDIDL/TIMEDIDR/DELTATOK, UPEND71/STORLP71, UPEND72/LDLOOP72, UPOUT, UPEND70, UPERROUT and UPACTOFF (bank 04) as control-transfer ABI routines (35 entries incl. the POSTJUMP targets, restart points and every return point after a TC outside the file); CADRs and constants compiled from the source listing.",
+          "verification": "docs/LM-UPDATE.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/lm-update/lm-update-vice.log",
+            "sha256": "40f06a86102e05b296f52b5046dc9945d51582161061d84977a106340ad652d7"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-update/lm-update-host.log",
+            "sha256": "6c9b6ea802ecbf4f296166053ca1e4893f27c369b6e14b9e4adceedd6eeceb92"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-update/lm-update-proof.json",
+            "sha256": "ec3bcf72a8e9ea14d22f74d117c08629eb5988b73a8321ae49877df27b079530"
+          },
+          "source_to_native_map": {
+            "path": "docs/LM-UPDATE.md",
+            "sha256": "b43dfe6d38de69b8f6b129e0c253b114066a21bba3d6dfe7653d2f0ab7f1656b"
+          }
+        },
+        "external_continuations": [
+          "TESTXACT (PINBALL) and its return",
+          "PHASCHNG, NEWMODEX, NEWMODEX+3, FALTON, FINDVAC, ENDOFJOB, UPFLAG, TPAGREE, INTWAKEU and ENDEXT",
+          "BANKCALL GOXDSPF with its three returns, POSTJUMP UPPART2/UPERROUT+2",
+          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB in each verb's accepted range (V70/V73 2, V71 3-20, V72 odd 3-19), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in EB 1-7 above the registers; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+      }
     },
     {
       "path": "Luminary099/WAITLIST.agc",
