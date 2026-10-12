@@ -42,6 +42,6 @@ Hashes: `evidence/lm-t4rupt-imu/SHA256.json`.
   - the digests;
   - that every continuation is reached: RESUME, ALARM, VARALARM, WAITLIST, VARDELAY, TASKOVER, IBNKCALL, POSTJUMP, ZEROICDU and SETISSW's caller;
   - five refusals with the image unchanged, and that the entry addresses do not resolve in another bank.
-- **C64 execution results.** `make vice-lm-t4rupt-imu` (`evidence/lm-t4rupt-imu/lm-t4rupt-imu-vice.log`) runs every sixteenth case.
+- **C64 execution results.** `make vice-lm-t4rupt-imu` (`evidence/lm-t4rupt-imu/lm-t4rupt-imu-vice.log`) runs 300 cases: every sixteenth, plus the four that `tools/c64_case_cover.py` adds so that the C64 rows run every branch outcome (control-flow edge) of the native routine that the full host case set runs. The proof records the edge counts.
 
-RRAUTCHK and DAPT4S, the other LM monitors, remain; T4RUPT_PROGRAM.agc stays partial.
+RRAUTCHK and GPMATRIX (DAPT4S), the rest of the file, are `lm-t4rupt-rr` (`docs/LM-T4RUPT-RR.md`).
