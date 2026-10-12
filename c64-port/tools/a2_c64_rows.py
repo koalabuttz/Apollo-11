@@ -24,11 +24,12 @@ B = R / 'build'
 FLAGS = ('-std=c99', '-Iinclude', '-Itests', '-Isrc')
 
 
-def select(name, sources, includes, call, cases, budget=None, stride=16):
+def select(name, sources, includes, call, cases, budget=None, stride=16, flags=()):
     """(rows, proof fields): sources are the milestone's linked sources (port root
     relative), includes the headers the runner needs, call a C statement running
     case n (an unsigned) with apollo_overlay_state s and enum exec_status st in scope.
-    The cover starts from every stride-th case (the earlier C64 rows; 0: none)."""
+    The cover starts from every stride-th case (the earlier C64 rows; 0: none);
+    flags are extra compiler flags (the C64 build's -D options)."""
     d = B / f'{name}-cover'
     d.mkdir(parents=True, exist_ok=True)
     runner = d / 'runner.c'
@@ -44,14 +45,14 @@ def select(name, sources, includes, call, cases, budget=None, stride=16):
                                                                  *(R / 'include').glob('*.h'),
                                                                  *(R / 'tests').glob('*_cases.h'))):
         h.update(s.encode() + b'\0' + (R / s).read_bytes())
-    h.update(repr((call, cases)).encode())
+    h.update(repr((call, cases, tuple(flags))).encode())
     cache = d / f'trace-{h.hexdigest()[:16]}.json'
     if cache.exists():
         trace = c64_row_cover.load(cache)
     else:
         for old in d.glob('trace-*.json'):
             old.unlink()
-        trace = c64_row_cover.host_trace(d / 'obj', srcs, FLAGS, range(cases))
+        trace = c64_row_cover.host_trace(d / 'obj', srcs, (*FLAGS, *flags), range(cases))
         c64_row_cover.save(cache, trace)
     rows = c64_row_cover.cover(trace, budget=budget, seed=range(0, cases, stride) if stride else ())
     c64_row_cover.check(trace, rows, f'{name} C64 rows')

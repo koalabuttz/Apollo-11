@@ -10,8 +10,11 @@ native snapshot (build/self-check-native, with the rope image) is
 byte-identical, fails if an instruction of AGC_BLOCK_TWO_SELF-CHECK (bank 43)
 is never executed (but UNREACHABLE), and writes tests/{lm,cm}_self_check_vectors.h
 (one digest per case: two 16-bit running sums over the printed values) and
-the C64 rows chosen by outcome (tools/c64_rows.py; every STRIDEth case, and
-for the whole-rope cases every ROPE_STRIDEth) to
+the C64 rows chosen by native branch outcome (tools/a2_c64_rows.py: every
+STRIDEth case, and for the whole-rope cases every ROPE_STRIDEth, plus a greedy
+cover of the gcov arcs every host case takes in every source the mission's C64
+image links, with the host rope image in place of the REU; the freeze fails
+unless the rows take them all) to
 tests/{lm,cm}_self_check_c64_vectors.h. Also writes build/self-check-proof.json.
 """
 import hashlib
@@ -21,6 +24,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import a2_c64_rows  # noqa: E402
 import c64_rows  # noqa: E402
 
 R = pathlib.Path(__file__).resolve().parents[1]
@@ -30,6 +34,12 @@ STRIDE = 64
 ROPE_STRIDE = 64
 # mission index, name, prefix, offset of its words below Comanche055's
 MISSIONS = [(0, 'Luminary099', 'lm_self_check', 2), (1, 'Comanche055', 'cm_self_check', 0)]
+# What each mission's C64 image links (tools/mk/self-check.mk SELF_CHECK_C64_LM/_CM), with the
+# host rope image for the REU one, for the row cover.
+C64_COMMON = ['src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c', 'src/agc_word.c',
+              'src/agc_multiword.c', 'tests/self_check_cases.c', 'src/rope_image_host.c']
+C64_SRC = [['src/lm_self_check.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', *C64_COMMON],
+           ['src/cm_self_check.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', *C64_COMMON]]
 CORE = ['tests/self_check_cases.c', 'src/lm_self_check.c', 'src/cm_self_check.c', 'src/agc_image_ops.c',
         'src/agc_hardware_divide.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c',
         'src/rope_image_host.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
@@ -99,11 +109,19 @@ def main():
             cases = c64_rows.read(trace)
             assert sorted(cases) == list(range(len(values)))
             executed |= frozenset().union(*cases.values())
-            chosen = c64_rows.rows(cases, stride)
-            c64.append(c64_rows.c64_header('self_check', prefix + tag, values, chosen, stride))
+            m = prefix[:2]
+            chosen, cover = a2_c64_rows.select(
+                f'self-check-{m}{tag.replace("_", "-")}', C64_SRC[mission], ['self_check_cases.h', 'rope_image.h'],
+                f'if(!apollo_rope_load({mission}u,"build/fixed-data/{name}/MAIN.agc.bin"))return 2;'
+                f'self_check{tag}_digest({mission}u,&s,(uint16_t)n,&st);', len(values), stride=stride,
+                flags=(f'-DSELF_CHECK_{m.upper()}_ONLY',))
+            c64.append(a2_c64_rows.header('self_check_freeze.py', prefix + tag, values, chosen, stride))
             record[f'cases{tag}'] = len(values)
             record[f'snapshot{tag}_sha256'] = hashlib.sha256(ref).hexdigest()
-            record.update({k + tag: v for k, v in c64_rows.summary(cases, chosen, owned(d)).items()})
+            host = frozenset().union(*cases.values())
+            record[f'host_words_executed{tag}'] = len(host)
+            record[f'owned_words_never_executed{tag}'] = [c64_rows.name(w) for w in sorted(set(owned(d)) - host)]
+            record.update({k + tag: v for k, v in cover.items()})
         (R / f'tests/{prefix}_vectors.h').write_text('\n'.join(out) + '\n')
         (R / f'tests/{prefix}_c64_vectors.h').write_text(''.join(c64))
         missed = c64_rows.unexecuted_instructions(c64_rows.listing(rope.parent / 'assembly.lst'), owned(d), executed)
@@ -111,7 +129,8 @@ def main():
             raise SystemExit(f'{name}: instructions of the milestone no case executes: {missed}')
         proof['missions'][name] = record
         print(f'PASS: {name}: {record["cases"]} random-state and {record["cases_rope"]} whole-rope cases equal the original program; '
-              f'{record["c64_rows"]} + {record["c64_rows_rope"]} C64 rows cover every word the host cases execute')
+              f'{record["c64_rows"]} + {record["c64_rows_rope"]} C64 rows take all {record["host_branch_arcs"]} + '
+              f'{record["host_branch_arcs_rope"]} host branch arcs')
     proof.update({'entries': 'SELFCHK, STSHOSUM, NXTBNK and the return point after every TC out of the file (11)',
                   'boundary': 'random-state cases: entry to the first point outside bank 43 3234-3725 (Comanche055 addresses; Luminary099 two lower): ALARM2, POSTJUMP, SUPDACAL, CHANG1, LEFT5, SDISPLAY, ENDSUMS or a TC SFAIL/SKEEP1 target outside the file; whole-rope cases: through SUPDACAL, POSTJUMP, ADVAN and LEFT5 to ENDSUMS, SDISPLAY, NUCHANG2, NUDIRECT, CHANG1 or ALARM2',
                   'rope_image': 'FXADRS and SUPDACAL read the unmodified rope (include/rope_image.h: build/fixed-data/<mission>/MAIN.agc.bin on the host, the REU on the C64)',
