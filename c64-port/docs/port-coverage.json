@@ -777,6 +777,17 @@
           ],
           "scope": "Alignment and radar-designate verb bodies: V40 zero, V41 coarse align (IMU, RR designate, CM optics), V42 fine align, V43 attitude error meters (CM ATTCK1 task), V44 RRDESEND, LM V60 LRPOS2K, OP/INERT, RDRUSECK and CKLFTBTS, every label and return point to its callee boundary, register-exact against the original program. LM ATTCK2 is not included.",
           "verification": "docs/LANEC-EV-ALIGN.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_dap.c",
+            "src/lanec.c",
+            "include/lanec_ev_dap.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V48 DAP data load: LM R03 (DAPDATA1, STIKLOAD through TRIMDONE) and CM DAPDISP with DAPDISP1, every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-DAP.md"
         }
       ]
     },
@@ -3640,6 +3651,17 @@
           ],
           "scope": "Radar test verbs R77 through R77END (V63 R04, V78 R77, V79 R77END), every label and return point to its callee boundary, register-exact against the original program.",
           "verification": "docs/LANEC-EV-RADAR.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_dap.c",
+            "src/lanec.c",
+            "include/lanec_ev_dap.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V48 DAP data load: LM R03 (DAPDATA1, STIKLOAD through TRIMDONE) and CM DAPDISP with DAPDISP1, every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-DAP.md"
         }
       ]
     },
