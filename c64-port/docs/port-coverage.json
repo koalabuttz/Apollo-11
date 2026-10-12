@@ -454,6 +454,18 @@
           ],
           "scope": "Display job selection: MAKEPLAY and its PRIOCHNG return, MAKEPRIO/HIPRIO/SETMARK/ASKIFNRM/SETNORM/OKTOCOPY/REDOPRIO/KEEPPRIO, IFLEGAL/PRIOBORT/OKTOPLAY/PLAYJUM1/PRIOPLAY with their Q+1 and JOBWAKE returns, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC/RELINTQ, to their callee boundaries (PRIOCHNG, Q+1, POODOO, JOBXCHS, GOSLEEPS, JOBWAKE, GOPLAY, ENDOFJOB, EXDSPRET, the caller's return), register-exact against the original program.",
           "verification": "docs/LANEC-DI-PLAY.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_sleep.c",
+            "src/lanec_di_play.c",
+            "src/lanec.c",
+            "include/lanec_di_sleep.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display sleep and wake: GOSLEEPS, WAITMASK +1/XCHSLEEP and its JOBWAKE and XCHTOEND returns, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the IDLEMASK and XCHQADD returns from DOWNENT2/UPENT2, MARKWAKE/WAKEPLAY and the MARKFMSK returns, INITDSP and its SUPERSW and PRIOCHNG returns, to their callee boundaries (UPENT2, DOWNENT2, JOBWAKE, JOBSLEEP, MARKPLAY, OKTOCOPY, ENDRET, SUPERSW, PRIOCHNG, BANKJUMP), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-SLEEP.md"
         }
       ]
     },
@@ -3071,6 +3083,18 @@
           ],
           "scope": "Display job selection: MAKEPLAY and its PRIOCHNG return, MAKEPRIO/HIPRIO/SETMARK/ASKIFNRM/SETNORM/OKTOCOPY/REDOPRIO/KEEPPRIO, IFLEGAL/PRIOBORT/OKTOPLAY/PLAYJUM1/PRIOPLAY with their Q+1 and JOBWAKE returns, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC/RELINTQ, to their callee boundaries (PRIOCHNG, Q+1, POODOO, JOBXCHS, GOSLEEPS, JOBWAKE, GOPLAY, ENDOFJOB, EXDSPRET, the caller's return), register-exact against the original program.",
           "verification": "docs/LANEC-DI-PLAY.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_sleep.c",
+            "src/lanec_di_play.c",
+            "src/lanec.c",
+            "include/lanec_di_sleep.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display sleep and wake: GOSLEEPS, WAITMASK +1/XCHSLEEP and its JOBWAKE and XCHTOEND returns, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the IDLEMASK and XCHQADD returns from DOWNENT2/UPENT2, MARKWAKE/WAKEPLAY and the MARKFMSK returns, INITDSP and its SUPERSW and PRIOCHNG returns, to their callee boundaries (UPENT2, DOWNENT2, JOBWAKE, JOBSLEEP, MARKPLAY, OKTOCOPY, ENDRET, SUPERSW, PRIOCHNG, BANKJUMP), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-SLEEP.md"
         }
       ]
     },
