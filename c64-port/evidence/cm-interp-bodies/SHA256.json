@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-interp-bodies",
+  "release": "evidence-cm-interp-bodies",
+  "files": {
+    "cm-interp-bodies-differential.log": {
+      "sha256": "deb5822143040edcc962982111609ad385482ffc36e99f21fb518c1843033aa7",
+      "bytes": 848,
+      "store": "release"
+    },
+    "cm-interp-bodies-host.log": {
+      "sha256": "50968289ec870c2a8763a76f9f98147e4a3862d3fd8e034c3ec08ad684b2d2f7",
+      "bytes": 1248,
+      "store": "release"
+    },
+    "cm-interp-bodies-proof.json": {
+      "sha256": "f9ba4cf376e764ef7de7dc5f1686519289f95775c750b33e9042608b6dab2fde",
+      "bytes": 809,
+      "store": "tree"
+    },
+    "cm-interp-bodies-vice.log": {
+      "sha256": "4fb47691b5634ead24d6d82faeba476e176fa9038c0e3de885c475639c155c97",
+      "bytes": 1581,
+      "store": "release"
+    }
+  }
+}
