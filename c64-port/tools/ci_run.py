@@ -215,6 +215,15 @@ def run(target, log_dir, make_args, attempts, stack=()):
             ran = [produce(path, target, log_dir, make_args, attempts, stack + (target,)) for path in built]
             if any(ran):
                 continue
+        if 'missing/outside evidence file' in proc.stdout and '--coverage' not in tried:
+            # The coverage audit names categories, not paths: fetch every
+            # release-stored file that a coverage certificate cites.
+            tried.add('--coverage')
+            with LOCK:
+                fetch = subprocess.run([sys.executable, 'tools/evidence.py', 'fetch', '--coverage'], cwd=ROOT)
+            if fetch.returncode == 0:
+                print(f'  {target}: fetched coverage evidence, rerunning', flush=True)
+                continue
         wanted = {(a or b).rstrip("'.,:)") for a, b in MISSING.findall(proc.stdout)} - tried
         tried |= wanted
         with LOCK:
