@@ -1343,8 +1343,51 @@
           ],
           "scope": "Canonical automatic T3 interrupt lead-in through real service and hardware RESUME/foreground composition; other interrupt entries remain unported.",
           "verification": "docs/COMANCHE_MISSION_LOOP.md"
+        },
+        {
+          "native_files": [
+            "src/rupt_lead_ins.c",
+            "include/rupt_lead_ins.h"
+          ],
+          "scope": "The GOPROG restart lead-in (04000), the T6RUPT 2CADR vector (04004), the T5RUPT lead-in (04010) and T5RUPT (04065, BZMF NOQBRSM; DCA T5LOC; DTCB), and the banked T4RUPT, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR and HANDRUPT vectors with their BBCON constants as control-transfer ABI routines (cm_lead_in_routines). With the T3RUPT vector (cm-exec-services) every assembled word of the file is native; T5RPTBB is assembled but nothing reads it.",
+          "verification": "docs/RUPT-LEAD-INS.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in cm_native_io; InIsr in agc_hardware.",
+          "entry_contracts": "Every vector is a routine entered at its fixed-fixed address: GOPROG 04000 at restart; T6RUPT 04004, T5RUPT 04010 and its body 04065, T4RUPT 04020, KEYRUPT1 04024, KEYRUPT2 04030, UPRUPT 04034, DOWNRUPT 04040, RADAR 04044 and HANDRUPT 04050 inside the interrupt (cm_lead_in_routines); T3RUPT 04014 in cm_exec_routines.",
+          "index_domains": "T6LOC and T5LOC hold 2CADRs whose CADRs are in fixed memory 02000-07777 (as the T6 and T5 schedulers and the restart store them); TIME5 any value. Vectors other than GOPROG need the interrupt in progress. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "None beyond the interrupt-enable bit (GOPROG INHINT, RESUME RELINT) and InIsr; raising the interrupts and the restart that enter these vectors are device-adapter obligations."
+        },
+        "external_continuations": [
+          "GOPROG (FRESH_START_AND_RESTART) after the restart lead-in",
+          "The interrupt handlers T4RUPT, KEYRUPT1, MARKRUPT, UPRUPT, DODOWNTM, VHFREAD and the T6LOC and T5LOC targets, each ending the interrupt through WAITLIST RESUME (native in cm_lead_in_routines)",
+          "T3RUPT vector equivalence: evidence/cm-exec-services",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-cm.json",
+            "sha256": "1eace387ca147bd24beff6f1f63a6f337e8fcd78867a1b37c1fec5915553abfb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
+            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
+            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+          },
+          "c64_execution_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
+            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/JET_SELECTION_LOGIC.agc",
@@ -3252,6 +3295,14 @@
           ],
           "scope": "The SVCT3 end-of-list task (05306) and its resumptions after NOVAC (05323) and SVCT3X's FIXDELAY (07721) as control-transfer ABI routines composing the qualified cm_svct3_phase body, to TASKOVER, NOVAC NBDONLY or FIXDELAY 500. DLY2-1 and the RESUME entries other interrupts use remain separate.",
           "verification": "docs/CM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/rupt_lead_ins.c",
+            "include/rupt_lead_ins.h"
+          ],
+          "scope": "The interrupt exits RESUME (05333), NOQRSM (05335), NOQRSM +1 (05336, HANDRUPT's entry) and NOQBRSM (05337) as control-transfer ABI routines of cm_lead_in_routines, ending the interrupt at ZRUPT-1.",
+          "verification": "docs/RUPT-LEAD-INS.md"
         }
       ]
     },
@@ -4772,8 +4823,51 @@
           ],
           "scope": "The T6RUPT vector (04004: DXCH ARUPT; EXTEND; DCA T6ADR; DTCB) and T6ADR's 2CADR as a control-transfer ABI routine ending at DOT6RUPT.",
           "verification": "docs/LM-T6RUPT.md"
+        },
+        {
+          "native_files": [
+            "src/rupt_lead_ins.c",
+            "include/rupt_lead_ins.h"
+          ],
+          "scope": "The GOPROG restart lead-in (04000), the T5RUPT 2CADR vector (04010, DCA T5ADR; DTCB) and the banked T4RUPT, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR and RUPT10 vectors with their BBCON constants as control-transfer ABI routines (lm_lead_in_routines). With the T6RUPT (lm-t6rupt) and T3RUPT (lm-exec-jobs) vectors every assembled word of the file is native.",
+          "verification": "docs/RUPT-LEAD-INS.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; InIsr in agc_hardware.",
+          "entry_contracts": "Every vector is a routine entered at its fixed-fixed address: GOPROG 04000 at restart; T5RUPT 04010, T4RUPT 04020, KEYRUPT1 04024, KEYRUPT2 04030, UPRUPT 04034, DOWNRUPT 04040, RADAR 04044 and RUPT10 04050 inside the interrupt (lm_lead_in_routines); T6RUPT 04004 in lm_t6rupt_routines and T3RUPT 04014 in lm_exec_task routines.",
+          "index_domains": "T5ADR holds a 2CADR whose CADR is in fixed memory 02000-07777 (as the DAP and restart store it). Vectors other than GOPROG need the interrupt in progress. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "None beyond the interrupt-enable bit (GOPROG INHINT, RESUME RELINT) and InIsr; raising the interrupts and the restart that enter these vectors are device-adapter obligations."
+        },
+        "external_continuations": [
+          "GOPROG (FRESH_START_AND_RESTART) after the restart lead-in",
+          "The interrupt handlers T4RUPT, KEYRUPT1, MARKRUPT, UPRUPT, DODOWNTM, RADAREAD, PITFALL and the T5ADR target (the DAP), each ending the interrupt through WAITLIST RESUME",
+          "T6RUPT vector equivalence: evidence/lm-t6rupt; T3RUPT vector equivalence: evidence/lm-exec-jobs",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-lm.json",
+            "sha256": "4daf90775981605a53212aa6824f026f18e42b1abc882b1fafbd44d1d3795250"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
+            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
+            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+          },
+          "c64_execution_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
+            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/KALCMANU_STEERING.agc",

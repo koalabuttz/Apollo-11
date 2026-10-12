@@ -1,0 +1,5 @@
+PASS: VICE PAL rupt-lead-ins.prg: 192 checks, 0 failures
+
+real	1m24.157s
+user	1m23.095s
+sys	0m0.083s
