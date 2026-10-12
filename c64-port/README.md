@@ -1818,6 +1818,10 @@ Native C for the display sleep and wake code of DISPLAY_INTERFACE_ROUTINES in bo
 
 All of Luminary099 DAPIDLER_PROGRAM (banks 16 and 20, 284 words: CHEKBITS, CHEKMORE, the T5RUPT DAPIDLER with STARTDAP's initialization and SHUTDOWN, and the ALTDSPLY attitude-error needles with OVERSUB2 and the DAC loop) runs as nine native routines of the control-transfer ABI, with channels 5, 6, 12, 14, 30 and 31 in `lm_flight_io`. All 9,216 cases equal the original program in the outcome, the output channels and all 2,048 erasable words (strict and ASAN/UBSAN). Each case runs from its entry through the native Executive and inter-bank routines to RESUME, the IBNKCALL out of the file, the 1202 alarm or CHEKBITS's return. Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and every thirty-second case (288) passes in VICE. See `docs/LM-DAPIDLER.md`.
 
+## Translate Comanche DOWN-TELEMETRY_PROGRAM as transfer-ABI routines
+
+Comanche055 DODOWNTM, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The five downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Comanche055 program in channels 13, 34 and 35 after every downrupt, the channel-13 traps and all 2,048 erasable words (18,815 strict and sanitizer checks, every control word of all five downlists sent), and every second sequence matches in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-DOWNTELEMETRY.md`.
+
 ## Translate Comanche TVCINITIALIZE (TVC DAP initialization, CSM/LM switch-over, LOADCOEF, S40.15)
 
 Native C for all of Comanche055 TVCINITIALIZE (bank 17 `2147`-`2551`, 259 words): TVCDAPON and MRCLEAN, TVCINIT1-4 with ATTINIT and NEEDLEIN, the DAPINIT T5 hand-off, the V46 CSM/LM switch-over (PRESWTCH, SWICHOVR, MCLEANJR), LOADCOEF and S40.15 with their coefficient tables, from each of its 9 original entry points to the next transfer out of the file. The final image, channel 11 and interrupt enable equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 259 words, 28 fixed constants and the coefficient, 2CADR and INDEX tables are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-INIT.md`.
@@ -1825,6 +1829,10 @@ Native C for all of Comanche055 TVCINITIALIZE (bank 17 `2147`-`2551`, 259 words)
 ## Translate Comanche TVCROLLDAP (CM roll DAP during TVC: phase plane, firing time, roll jets)
 
 Native C for all of Comanche055 TVCROLLDAP (bank 16 `3272`-`3717`, 278 words): the ROLLDAP waitlist task (roll rate from OGANOW/OGAPAST, the six-region phase-plane switching logic, the firing-time division and limits, roll jet selection on channel 6 and the T6 hand-off) and the NOROLL1 T6 task, from both entry points to TASKOVER or NOQRSM. The final image and channels 6 and 13 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 278 words, 47 fixed constants and the NOROL1T6/LIMITS words are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-ROLL.md`.
+
+## Translate Luminary DOWN-TELEMETRY_PROGRAM as transfer-ABI routines
+
+Luminary099 DODOWNTM with WOTEST, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The six downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Luminary099 program in channels 13, 34 and 35 after every downrupt, the channel-13 traps and all 2,048 erasable words (18,830 strict and sanitizer checks, every control word of all six downlists sent), and every second sequence matches in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-DOWNTELEMETRY.md`.
 
 ## Translate the DISPLAY_INTERFACE ENDIDLE handling and display returns
 
@@ -1837,6 +1845,10 @@ Native C for all of Comanche055 TVCDAPS (bank 20 `2530`-`3500`, 489 words): the 
 ## Translate the DISPLAY_INTERFACE display start-up
 
 Native C for PINBRNCH through V50PASTE of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: PINBRNCH, NORMBNCH, NVDSP (GOPLAY), NV50DSP and its returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND and V50PASTE, translated block by block. 3,200 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 247 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-NVDSP.md`.
+
+## Translate Luminary TRIM_GIMBAL_CONTROL_SYSTEM as transfer-ABI routines
+
+All of Luminary099 TRIM_GIMBAL_CONTROL_SYSTEM (banks 21 and 16, 388 words) runs as four native routines of the control-transfer ABI, with channel 12 in `lm_flight_io`. The routines are GTS (the trim gimbal control law, with GTSQRT and ROOTCYCL compiled inline), ACDT+C12, TIMEGMBL and its IBNKCALL return. 16,098 of 16,384 cases equal the original program in the outcome, channel 12 and all 2,048 erasable words (strict and ASAN/UBSAN). The remaining 286 GTS cases take the zero root with an INDEX SHFTFLAG outside BIT15-BIT2, where the original executes an arbitrary instruction; GTS refuses them with the image unchanged. Each case runs from its entry to CLOSEOUT, the caller's return, or ACDT+C12 reached through the native IBNKCALL. Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and every thirty-second case (512) passes in VICE. See `docs/LM-TRIM-GIMBAL.md`.
 
 ## Draft the DISPLAY_INTERFACE_ROUTINES full-file certificates
 
