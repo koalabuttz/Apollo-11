@@ -46,8 +46,15 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
  * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */
+/* Banks 040-043 are FB 030-033 with the superbank bit (channel 7 0100);
+ * FB 030-037 without it are banks 030-037. fb carries 1 in bit 0 for a
+ * superbank bank. */
+static MAYBE_UNUSED uint8_t sb_ok(const p66_bias_io *io,agc_word fb){
+ if((fb&060000u)!=060000u)return 1;
+ return (fb&1u)?(io->superbank&0100u)!=0:(io->superbank&0100u)==0;
+}
 static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
- return W[5]==06037u&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);
+ return W[5]==06037u&&W[4]==(fb&076000u)&&sb_ok(io,fb)&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);
 }
 /* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction
  * word w in 16-bit ones' complement, then overflow-corrected. */
@@ -81,7 +88,7 @@ static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
  W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;
 }
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
- return W[4]==fb&&sane(s,io);
+ return W[4]==(fb&076000u)&&sb_ok(io,fb)&&sane(s,io);
 }
 
 /* CM_R31_KEEP<n> bit i (i = 60n+bit, the order of cm_r31_points) keeps routine i;

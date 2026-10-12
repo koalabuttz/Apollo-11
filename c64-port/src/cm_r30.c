@@ -482,7 +482,7 @@ static enum exec_status r46426(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,046135);
  cmi_direct(s,000050,006450);cmi_sload(s);
  right(s);
- cmi_misc(s,046463,002474);
+ cmi_misc(s,046463,002474);(void)ai_ccs(s,020);
  if(cmi_bhiz(s)){
    cmi_goto(s);
    return EXEC_OK;

@@ -90,6 +90,7 @@ class Mission:
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
+        self.rk = bool(spec.get('resume_keys'))
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
 
@@ -141,12 +142,16 @@ def case(mi, point, n, rng):
     if bank in (2, 3):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
-    fb = bank << 10
+    # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
+    sb = 0o100 if bank >= 0o40 else 0
+    fb = (bank - 8 if bank >= 0o40 else bank) << 10
     eb = rng.randrange(8) if mi.ebank is None else mi.ebank
     E[3] = eb << 8
     E[4] = fb
     E[6] = fb | eb
-    E[0o67] = 0
+    # NEWJOB +0, or (resume_keys) positive in a quarter of the cases: a job
+    # waiting, so the next DANZIG goes to CHANG2.
+    E[0o67] = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
     shape = n % 3
@@ -212,7 +217,7 @@ def case(mi, point, n, rng):
             if a not in pinned:
                 E[a] = logical(q)
         stop = q
-    return seed, list(E.items()), n & 1, stop
+    return seed, list(E.items()), n & 1, stop, sb
 
 
 class Absent:
@@ -240,7 +245,7 @@ def write_cases(path, missions, cases):
         f.write(struct.pack('<I', len(cases)))
         for c in cases:
             seed, cm, ie, edits = c['seed'], c['cm'], c['ie'], c['edits']
-            f.write(struct.pack('<IBBHH', seed, cm, ie, c.get('stop', 0xffff), len(edits)))
+            f.write(struct.pack('<IBBHHH', seed, cm, ie, c.get('sb', 0), c.get('stop', 0xffff), len(edits)))
             for a, w in edits:
                 f.write(struct.pack('<HH', a, w))
 
@@ -290,8 +295,8 @@ def main():
             continue
         for p in mi.points:
             for n in range(a.cases):
-                seed, edits, ie, stop = case(mi, p, n, rng)
-                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop})
+                seed, edits, ie, stop, sb = case(mi, p, n, rng)
+                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop, 'sb': sb})
     os.makedirs(B, exist_ok=True)
     path = os.path.join(B, '%s-cases.bin' % a.spec)
     write_cases(path, missions, cases)
@@ -373,7 +378,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
                    ','.join('{0%o,0%o}' % (a, w) for a, w in c['edits'])))
     out.append('#define %s_VECTORS %du' % (sym.upper(), len(pick)))
     out.append('static const irc_case %s_cases[%d]={' % (sym, len(pick)))
-    out.append(',\n'.join(' {0x%08xul,%d,%d,0,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'],
+    out.append(',\n'.join(' {0x%08xul,%d,%d,%s,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'], '0%o' % cases[i].get('sb', 0) if cases[i].get('sb') else '0',
                                                             len(cases[i]['edits']), sym, j) for j, i in enumerate(pick)))
     out.append('};')
     out.append('static const uint32_t %s_expected[%d]={' % (sym, len(pick)))
@@ -476,7 +481,7 @@ def group_text(sym, groups, cases, rows):
                        ','.join('{0%o,0%o}' % (a, w) for a, w in cases[i]['edits'])))
         out.append('#define IRC_C64_VECTORS %du' % len(pick))
         out.append('static const irc_case irc_c64_cases[%d]={' % len(pick))
-        out.append(',\n'.join(' {0x%08xul,%d,%d,0,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'],
+        out.append(',\n'.join(' {0x%08xul,%d,%d,%s,%d,%s_e%d}' % (cases[i]['seed'], cases[i]['cm'], cases[i]['ie'], '0%o' % cases[i].get('sb', 0) if cases[i].get('sb') else '0',
                                                                 len(cases[i]['edits']), pre, j) for j, i in enumerate(pick)))
         out.append('};')
         out.append('static const uint32_t irc_c64_expected[%d]={' % len(pick))
