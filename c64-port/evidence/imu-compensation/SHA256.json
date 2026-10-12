@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "imu-compensation",
+  "release": "evidence-imu-compensation",
+  "files": {
+    "imu-compensation-host.log": {
+      "sha256": "f0308a399893531d4394ddeef840f916eda73936085d63c1f63837e290cb08a1",
+      "bytes": 651,
+      "store": "release"
+    },
+    "imu-compensation-proof.json": {
+      "sha256": "014c002a712683d5b22d6e78898b68572e711e552a25a60df03aeda178b3b144",
+      "bytes": 2609,
+      "store": "tree"
+    },
+    "imu-compensation-source-map.json": {
+      "sha256": "f8a121420b3df54274264d19cc75bea9dcde34141da664e5bab48e999ccc7d3b",
+      "bytes": 78004,
+      "store": "tree"
+    },
+    "imu-compensation-vice.log": {
+      "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef",
+      "bytes": 196,
+      "store": "release"
+    }
+  }
+}
