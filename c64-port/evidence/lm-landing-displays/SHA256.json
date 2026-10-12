@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-landing-displays",
+  "release": "evidence-lm-landing-displays",
+  "files": {
+    "lm-landing-displays-c64-cover.json": {
+      "sha256": "cda75e5a30b844aaa509af63d88bd6be05430e745ebeb5845c3238025d33019f",
+      "bytes": 11508,
+      "store": "tree"
+    },
+    "lm-landing-displays-host.log": {
+      "sha256": "4ff362f3d7b0544196770840bc334f973a2352628213f20b93e3c20adbf664f1",
+      "bytes": 1284,
+      "store": "tree"
+    },
+    "lm-landing-displays-proof.json": {
+      "sha256": "95a745301c809f90ff79c97f3782cf175498f935447ef0017dceef989eed62d6",
+      "bytes": 1325,
+      "store": "tree"
+    },
+    "lm-landing-displays-source-map.json": {
+      "sha256": "c8b4105ce81c0d4a677b40faa24dff24d4c8d7653416ea221dd8a702e1607e74",
+      "bytes": 86155,
+      "store": "tree"
+    },
+    "lm-landing-displays-vice.log": {
+      "sha256": "49b7c9fa94a320eaff06294bb4d05a6d36a3a446488ed100a3fd30bbfcf978b8",
+      "bytes": 215,
+      "store": "tree"
+    }
+  }
+}

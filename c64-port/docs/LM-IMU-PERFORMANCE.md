@@ -2,7 +2,7 @@
 
 Lane D1. Milestone `lm-imu-performance`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 
-`Luminary099/IMU_PERFORMANCE_TEST_2.agc` and `Luminary099/IMU_PERFORMANCE_TESTS_4.agc` are compiled native C (`src/lm_imu_performance.c`). Both files are bank 37 code of P07, the IMU performance test: 585 emitted words at 37,2002-3112. Each entry of the files, and each point where they resume after an outside call or an RTB, is a routine of the control-transfer ABI at its original address. There are 40 basic routines keyed by Z and 14 interpretive routines keyed by LOC at NEWOPS 06070. FINETIME (fixed-fixed 04102-04123, which CHECKG calls) is compiled in as a local subroutine.
+`Luminary099/IMU_PERFORMANCE_TEST_2.agc` and `Luminary099/IMU_PERFORMANCE_TESTS_4.agc` are compiled native C (`src/lm_imu_performance.c`). Both files are bank 37 code of P07, the IMU performance test: 585 emitted words at 37,2002-3112. Each entry of the files, and each point where they resume, is a routine of the control-transfer ABI at its original address. There are 43 basic routines keyed by Z and 125 interpretive routines keyed by LOC at NEWOPS 06070. FINETIME (fixed-fixed 04102-04123, which CHECKG calls) is compiled in as a local subroutine.
 
 ## How the code is written
 
@@ -18,24 +18,29 @@ A run ends where control leaves the files:
 - the target of an RTB in another bank: 1STO2S, CDULOGIC, SGNAGREE, LOADTIME or PULSEIMU;
 - an erasable Z other than the returns above (TC ATIGINC in EBANK 7).
 
-After `RTB EXIT 1STO2S` (37,2025) the original continues at DANZIG with the EXIT still pending in EDOP. No ABI key covers that point, so the run stops at 1STO2S.
+The keys are every point where the files resume:
+- the basic entries and the returns from outside calls;
+- 37,2027, where `RTB EXIT 1STO2S` (37,2025) resumes: after 1STO2S, DANZIG runs the EXIT still pending in EDOP, which does `INDEX LOC; TC 1`;
+- every order-pair and store word (125). Each can follow a DANZIG, and a DANZIG with NEWJOB positive goes to CHANG2. CHANG2 suspends the job with LOC negated, and the Executive resumes it at NEWOPS with LOC +1 (EXECUTIVE: CHANG2, ENDPRCHG, INTRSM). That is the word after the pair, which is the native code's own stop point;
+- two hardware events: 02354 (CHECKG after a PIPA pulse moved PIPAX between its two reads) and 04112 (FINETIME after LOSCALAR moved between its READ and the RXOR);
+- the two idle points below.
 
-Two keys are hardware events rather than calls:
-- 02354 is CHECKG after a PIPA pulse moved PIPAX between its two reads. Without one, CHECKG only leaves through CHANG1.
-- 04112 is FINETIME after LOSCALAR moved between its READ and the RXOR.
+Two waits spin until hardware moves an input. Each ends the run there as a continuation (`EXEC_OK`), and its key resumes it:
+- CHECKG1 (37,2335), when the BZF at 2352 finds PIPAX unchanged. The key runs CHECKG1 again: CHANG1 if a job is waiting, else the next read of PIPAX;
+- FINETIME +1 (04103), when the BZF at 04117 finds LOSCALAR 37777. The key reads the scaler again. SCALPREP (IMU_MODE_SWITCHING_ROUTINES) also enters here with `TC FINETIME +1` and returns to 37,3717.
 
 io is `lm_ipt_io`. INHINT and RELINT set `control.interrupt_enabled`. READ LOSCALAR and READ HISCALAR read the frozen scaler words.
 
 ## Refused input
 
-Refused input ends `EXEC_OUT_OF_SCOPE` with the image and io unchanged. A refusal can come after a run has started, so the routine saves the entry image in `io->undo`, which the caller supplies. On the C64 the undo image lives outside the overlay slot. No original producer creates these states, or they are paths that never end without an interrupt:
+Refused input ends `EXEC_OUT_OF_SCOPE` with the image and io unchanged. A refusal can come after a run has started, so the routine saves the entry image in `io->undo`, which the caller supplies. On the C64 the undo image lives outside the overlay slot. No original producer creates these states, or the compiled interpreter orders do not follow them:
 - Z or LOC is not one of the files' instruction or order-pair words, as when a CCS takes a slot that holds data;
 - an INDEX whose sum leaves the erasable words the instruction names (POSITON, PIPINDEX, RESULTCT, L in ZEROING), or NDXCTR's computed TC beyond bank 37;
 - a TC Q or erasable TC whose word is not a TC to fixed memory, or is a TC into FINETIME, SWCALL or the interpreter;
-- CHECKG's wait with NEWJOB not positive (it spins until an interrupt moves PIPAX);
-- FINETIME with LOSCALAR 37777 (it spins until the scaler moves);
 - NEWJOB negative at a DANZIG;
-- an RVQ whose QPRET is not a fixed CADR, a fixed operand outside the constants the code names, or SIN/COS outside `src/sband_trig.c`'s domain;
+- an RVQ whose QPRET is not a fixed CADR, a fixed operand outside the constants the code names, or SIN/COS outside `src/sband_trig.c`'s domain. VXSC GEORGEJ (37,3013) with a scalar in MPAC would read a vector at GEORGEJ, past the named constants;
+- an indexed operand or store with X1 or X2 outside ±0377. Only a store through another wild index leaves one there; at such an index, `INDEX ADDRWD` changes the instruction;
+- AINGOTN's DDV (37,2217) with a divisor whose major part is ±0 once its words agree in sign. That is the original's BUFZERO path, which the compiled DDV in `src/lm_interp_orders.c` does not follow with a negative dividend. On the genuine path the divisor is a positive count;
 - an interpretive order with FIXLOC not one of the five VAC areas, PUSHLOC outside FIXLOC to FIXLOC+42, EDOP not +0, or FB not BANKSET's;
 - no undo image, or more than 4,000 steps.
 
@@ -53,17 +58,28 @@ Result: `evidence/lm-imu-performance/lm-imu-performance-source-map.json`.
 
 Hashes: `evidence/lm-imu-performance/SHA256.json`.
 
-- **Independent assembly comparison.** `make lm-imu-performance-differential` runs the unmodified rope in yaAGC (host-only, `tools/lm_imu_performance_reference.c`). The oracle is the pinned engine without its gyro, IMU CDU drive and optics block (`tools/prepare_no_imu_device_engine.py`), with the scalers frozen. Each of the 54 routines runs 512 states, 27,648 cases. Every case the native code runs (26,689) equals the original in all 2,048 erasable words and the interrupt-enable state, from the same image, Z, scalers and interrupt state to the same stop (`ipt_leaves()`). The 959 refused cases are the domain limits above, and the native image is unchanged for them. Per-case digests are frozen in `tests/lm_imu_performance_vectors.h`.
+- **Independent assembly comparison.** `make lm-imu-performance-differential` runs the unmodified rope in yaAGC (host-only, `tools/lm_imu_performance_reference.c`). The oracle is the pinned engine without its gyro, IMU CDU drive and optics block (`tools/prepare_no_imu_device_engine.py`), with the scalers frozen. Each of the 168 routines runs 384 states, 64,512 cases. Every case the native code runs (56,580) equals the original in all 2,048 erasable words and the interrupt-enable state, from the same image, Z, scalers and interrupt state to the same stop. The stop is the first instruction outside the files, the interpreter, SWCALL and FINETIME (`ipt_leaves()`), or an idle point (`ipt_idle()`). At an idle point with no job waiting, the oracle runs on until it is back there and requires every word unchanged, so the spin is a fixed point. The 7,932 refused cases are the domain limits above, and the native image is unchanged for them. Most are other EBs (a quarter of the states), random MODE or MPAC at the resume keys (SIN/COS domain, VXSC's operand), and random QPRETs. Per-case digests are frozen in `tests/lm_imu_performance_vectors.h`.
 
-  States are drawn inside each routine's domain. They cover every CCS class of NDXCTR, LENGTHOT, TORQNDX, ALTIM and OVFLOWCK, small POSITON, PIPINDEX and RESULTCT, genuine return words in QPLACE, QPLACES and ZERONDX and in the CALL return QPRET, the ALX1S and CMPX1 values the ALKCG loop produces, NEWJOB +0 and positive, the five VAC areas, every superbank, and other EBs.
+  States are drawn inside each routine's domain, each class on its own draw. They cover:
+  - every CCS class of NDXCTR, LENGTHOT, TORQNDX (with LENGTHOT +0 and TORQNDX +0 together), ALTIM and OVFLOWCK;
+  - small POSITON, PIPINDEX and RESULTCT;
+  - genuine return words in QPLACE, QPLACES and ZERONDX, and in the CALL return QPRET (also OVERFFIX's);
+  - the ALX1S and CMPX1 values the ALKCG loop produces;
+  - NEWJOB +0 and positive, PIPAX unchanged at CHECKG1 in half its states, and LOSCALAR 37777 in a quarter of all states;
+  - the five VAC areas, every superbank, and other EBs.
 
-  Results: `evidence/lm-imu-performance/lm-imu-performance-proof.json` (stops reached per routine, refusals per routine).
+  Results: `evidence/lm-imu-performance/lm-imu-performance-proof.json` (stops reached per routine, refusals per routine). The host stream stops 7,997 times at CHANG2, 493 times at CHECKG1 and 277 times at FINETIME +1.
 - **Host and sanitizer results.** `make test-lm-imu-performance sanitize-lm-imu-performance` (`evidence/lm-imu-performance/lm-imu-performance-host.log`) checks:
   - the digests and that each case either stops or is refused;
-  - that each routine runs in at least half of its states;
+  - that each routine runs in at least a fifth of its states (the resume keys draw MODE, MPAC and the pushdown list at random);
+  - that both idle points end runs as continuations;
   - that both tables are sorted;
   - the three genuine CALL returns the cases use, through `lmi_call`;
-  - each refusal above with image and io unchanged (55,414 checks).
-  
-  It runs once as built and once with the C64 parts' jump dispatch (`IPT_C64_PART=0`).
-- **C64 execution results.** `make vice-lm-imu-performance` (`evidence/lm-imu-performance/lm-imu-performance-vice.log`) runs five diagnostics. The interpretive orders and both files' code do not fit beside two images in C64 RAM, so each part (`IPT_C64_PART`, `tests/lm_imu_performance_cases.h`) links only some interpretive words and basic blocks. A jump to a block a part leaves out goes back through the dispatch with Z set, which is the same next instruction. The freeze script builds every part for the host too and checks that each case a part runs gives the native row exactly. Every 37th case (748) goes to the first part that runs it, and 685 of them run on the C64. The other 63 reach the ALFLT/NORMLOP loop (37,2605-2772, with its vector, matrix and trig orders), which needs about 60 KB alone, or they need code from more than one part (EARTHR with ESTIMS or GEOSTRT4). They are checked on the host only. The proof lists them per routine.
+  - each refusal above with image and io unchanged (129,258 checks).
+
+  It runs once as built and once with the C64 parts' dispatch (`IPT_C64_PART=0`).
+- **C64 execution results.** `make vice-lm-imu-performance` (`evidence/lm-imu-performance/lm-imu-performance-vice.log`) runs seven diagnostics, one per part (`IPT_C64_PART`, `tests/lm_imu_performance_cases.h`). The interpretive orders and both files' code do not fit beside two images in C64 RAM, so each part links only some interpretive words and basic blocks. The ALFLT loop is split at ALKLP (37,2676); no loop crosses that point. A part's run is a chained step: it stops where control reaches a registered key the part leaves out, and that key's cases continue from there in the part that has it.
+
+  The freeze builds every part for the host too and checks every row a part runs (kinds 0 and 2) against the oracle run with the same stops. It also checks that the part-0 build, which takes the part at run time, replays each part exactly.
+
+  The C64 rows are 218 rows that together take every edge the host stream takes and start at every key (`tools/lm_imu_performance_cover.c`, greedy over trace-pc edge sets), plus every 149th case in the first part that runs it: 650 rows. `tools/lm_imu_performance_cover.py` replays them through the part-0 build under gcov. They take 765 of the 1,140 branch outcomes of `src/lm_imu_performance.c`, every one the host stream takes (764) and the chained-step stop. Result: `evidence/lm-imu-performance/lm-imu-performance-c64-cover.json`, which also lists the outcomes the host never takes (the C64 part tests and the refusal guards no drawn state reaches).

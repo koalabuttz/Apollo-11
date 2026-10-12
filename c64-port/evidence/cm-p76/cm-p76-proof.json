@@ -1,0 +1,222 @@
+{
+ "cases": 13824,
+ "c64_groups": {
+  "1": 128,
+  "2": 520
+ },
+ "stream_sha256": "e0bd74c3081670f897dd8dd9fa1a3f563b4b877bb18bd4103e469751584c97dd",
+ "stops": {
+  "TIG (2110)": {
+   "NEWOPS 13,3105": 512
+  },
+  "COMPMAT (2114)": {
+   "NEWOPS 13,3442": 512
+  },
+  "after INTSTALL (2136)": {
+   "NEWOPS 13,3135": 512
+  },
+  "after P76SUB1 (2140)": {
+   "NEWOPS 13,3135": 512
+  },
+  "after INTEGRVS (2157)": {
+   "NEWOPS 13,3442": 512
+  },
+  "after INTSTALL (2161)": {
+   "NEWOPS 11,3435": 512
+  },
+  "after P76SUB1 (2163)": {
+   "NEWOPS 11,3435": 512
+  },
+  "after MINIRECT (2174)": {
+   "PHASCHNG": 512
+  },
+  "after INTPRET (2202)": {
+   "NEWOPS 13,2760": 512
+  },
+  "after ATOPOTH (2204)": {
+   "BANKCALL": 512
+  },
+  "OUT (2211)": {
+   "GOTOPOOH": 512
+  },
+  "P76SUB1 (2222)": {
+   "NEWOPS 02,2067": 1,
+   "NEWOPS 02,2245": 1,
+   "NEWOPS 02,2422": 1,
+   "NEWOPS 02,3054": 1,
+   "NEWOPS 02,3064": 1,
+   "NEWOPS 02,3241": 1,
+   "NEWOPS 02,3251": 1,
+   "NEWOPS 02,3426": 1,
+   "NEWOPS 02,3604": 1,
+   "NEWOPS 03,2077": 1,
+   "NEWOPS 03,2255": 1,
+   "NEWOPS 03,3103": 1,
+   "NEWOPS 03,3261": 1,
+   "NEWOPS 03,3436": 1,
+   "NEWOPS 04,2107": 1,
+   "NEWOPS 04,3113": 1,
+   "NEWOPS 04,3270": 1,
+   "NEWOPS 04,3732": 1,
+   "NEWOPS 05,2117": 1,
+   "NEWOPS 05,2127": 1,
+   "NEWOPS 05,2304": 1,
+   "NEWOPS 05,2745": 1,
+   "NEWOPS 05,3123": 1,
+   "NEWOPS 05,3741": 1,
+   "NEWOPS 06,2136": 1,
+   "NEWOPS 06,2314": 1,
+   "NEWOPS 06,2755": 1,
+   "NEWOPS 06,3133": 1,
+   "NEWOPS 06,3564": 1,
+   "NEWOPS 06,3761": 1,
+   "NEWOPS 07,2146": 1,
+   "NEWOPS 07,2600": 1,
+   "NEWOPS 07,2610": 1,
+   "NEWOPS 07,2765": 1,
+   "NEWOPS 07,3416": 1,
+   "NEWOPS 07,3574": 1,
+   "NEWOPS 07,3613": 1,
+   "NEWOPS 07,3771": 1,
+   "NEWOPS 10,2001": 1,
+   "NEWOPS 10,2432": 1,
+   "NEWOPS 10,2617": 1,
+   "NEWOPS 10,3005": 1,
+   "NEWOPS 10,3162": 1,
+   "NEWOPS 10,3623": 1,
+   "NEWOPS 11,2265": 1,
+   "NEWOPS 11,2442": 1,
+   "NEWOPS 11,2637": 1,
+   "NEWOPS 11,3014": 1,
+   "NEWOPS 11,3435": 192,
+   "NEWOPS 11,3446": 1,
+   "NEWOPS 11,3633": 1,
+   "NEWOPS 12,2274": 1,
+   "NEWOPS 12,2452": 1,
+   "NEWOPS 12,2462": 1,
+   "NEWOPS 12,2471": 1,
+   "NEWOPS 12,2647": 1,
+   "NEWOPS 12,3300": 1,
+   "NEWOPS 12,3456": 1,
+   "NEWOPS 12,3465": 1,
+   "NEWOPS 13,3135": 192,
+   "NEWOPS 14,2501": 1,
+   "NEWOPS 14,3310": 1,
+   "NEWOPS 14,3475": 1,
+   "NEWOPS 15,2324": 1,
+   "NEWOPS 15,2334": 1,
+   "NEWOPS 15,2511": 1,
+   "NEWOPS 15,3142": 1,
+   "NEWOPS 15,3320": 1,
+   "NEWOPS 15,3337": 1,
+   "NEWOPS 15,3515": 1,
+   "NEWOPS 16,2156": 1,
+   "NEWOPS 16,2343": 1,
+   "NEWOPS 16,2775": 1,
+   "NEWOPS 16,3152": 1,
+   "NEWOPS 16,3330": 1,
+   "NEWOPS 16,3347": 1,
+   "NEWOPS 16,3525": 1,
+   "NEWOPS 17,2011": 1,
+   "NEWOPS 17,2166": 1,
+   "NEWOPS 17,2627": 1,
+   "NEWOPS 17,3172": 1,
+   "NEWOPS 17,3357": 1,
+   "NEWOPS 20,2020": 1,
+   "NEWOPS 20,2176": 1,
+   "NEWOPS 20,2215": 1,
+   "NEWOPS 20,2373": 1,
+   "NEWOPS 20,3024": 1,
+   "NEWOPS 20,3202": 1,
+   "NEWOPS 20,3212": 1,
+   "NEWOPS 20,3643": 1,
+   "NEWOPS 21,2030": 1,
+   "NEWOPS 21,2040": 1,
+   "NEWOPS 21,2225": 1,
+   "NEWOPS 21,2657": 1,
+   "NEWOPS 21,3034": 1,
+   "NEWOPS 21,3653": 1,
+   "NEWOPS 22,2050": 1,
+   "NEWOPS 22,2666": 1,
+   "NEWOPS 22,3044": 1,
+   "NEWOPS 22,3505": 1,
+   "NEWOPS 22,3672": 1,
+   "NEWOPS 23,2060": 1,
+   "NEWOPS 23,2521": 1,
+   "NEWOPS 23,2676": 1,
+   "NEWOPS 23,3073": 1,
+   "NEWOPS 23,3702": 1,
+   "NEWOPS 24,2353": 1,
+   "NEWOPS 24,2531": 1,
+   "NEWOPS 24,2706": 1,
+   "NEWOPS 24,3535": 1,
+   "NEWOPS 24,3712": 1,
+   "NEWOPS 25,2206": 1,
+   "NEWOPS 25,2363": 1,
+   "NEWOPS 25,2541": 1,
+   "NEWOPS 25,2550": 1,
+   "NEWOPS 25,2726": 1,
+   "NEWOPS 25,2736": 1,
+   "NEWOPS 25,3367": 1,
+   "NEWOPS 25,3544": 1,
+   "NEWOPS 25,3722": 1,
+   "NEWOPS 26,2403": 1,
+   "NEWOPS 26,2560": 1,
+   "NEWOPS 26,3221": 1,
+   "NEWOPS 26,3377": 1,
+   "NEWOPS 26,3554": 1,
+   "NEWOPS 27,2235": 1,
+   "NEWOPS 27,2412": 1,
+   "NEWOPS 27,2570": 1,
+   "NEWOPS 27,3231": 1,
+   "NEWOPS 27,3407": 1
+  },
+  "P76 (2071)": {
+   "UPFLAG": 512
+  },
+  "after UPFLAG (2073)": {
+   "BANKCALL": 512
+  },
+  "terminate (2076)": {
+   "GOTOPOOH": 512
+  },
+  "proceed (2077)": {
+   "BANKCALL": 512
+  },
+  "recycle (2100)": {
+   "BANKCALL": 512
+  },
+  "V06N84 +1 (2101)": {
+   "BANKCALL": 512
+  },
+  "terminate (2104)": {
+   "GOTOPOOH": 512
+  },
+  "proceed (2105)": {
+   "INTPRET": 512
+  },
+  "recycle (2106)": {
+   "BANKCALL": 512
+  },
+  "INTPRET (2107)": {
+   "INTPRET": 512
+  },
+  "PHASCHNG (2175)": {
+   "PHASCHNG": 512
+  },
+  "after PHASCHNG (2177)": {
+   "UPFLAG": 512
+  },
+  "after UPFLAG (2201)": {
+   "INTPRET": 512
+  },
+  "INTWAKE1 (2207)": {
+   "BANKCALL": 512
+  },
+  "ENDP76 (2212)": {
+   "GOTOPOOH": 512
+  }
+ },
+ "boundary": "each case runs from its entry (NEWOPS or Z) through the trampoline (this file's routines) to the first point outside them; the oracle stops at the same point (tests/cm_p76_cases.c cm_p76_stop: a NEWOPS outside 13,2110-2174, 2202-2206, 2211 and 2222-2230, UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}

@@ -1,0 +1,2 @@
+lm-landing-displays.prg sha256 435291b65a18f37ec2b6f810fc97c8b7eec012f36a700b126fe43e6fccd40a82, 128 C64 rows (tests/lm_landing_displays_c64_vectors.h)
+PASS: VICE PAL lm-landing-displays.prg: 128 checks, 0 failures

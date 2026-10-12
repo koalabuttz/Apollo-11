@@ -1,0 +1,2 @@
+lm-ags-init.prg sha256 8cc81fa0a7694b7212beb4cb8c9a9662f99e9a0b3693b17d307cad31543f046f, 128 C64 rows (tests/lm_ags_init_c64_vectors.h)
+PASS: VICE PAL lm-ags-init.prg: 128 checks, 0 failures

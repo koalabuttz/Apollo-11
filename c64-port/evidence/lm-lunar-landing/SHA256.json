@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-lunar-landing",
+  "release": "evidence-lm-lunar-landing",
+  "files": {
+    "lm-lunar-landing-c64-cover.json": {
+      "sha256": "32e58b2fb1c6d0a6ed4ebf839c8596737b8c1dc721537407bc8b2c8da7e8bb01",
+      "bytes": 25042,
+      "store": "tree"
+    },
+    "lm-lunar-landing-host.log": {
+      "sha256": "11b9ac7bd7e288489d03f807954288d31b0bf7b3fa58db3b1f6e0d640c97e2f3",
+      "bytes": 3019,
+      "store": "tree"
+    },
+    "lm-lunar-landing-proof.json": {
+      "sha256": "7e3aed5e6c831399d42fea85ffbe637b32e54f04e63843d0d89a42b9a807e487",
+      "bytes": 2424,
+      "store": "tree"
+    },
+    "lm-lunar-landing-source-map.json": {
+      "sha256": "35b12d2e18177be5a50b603612ebcd3ba286548a0819fefa12cf883cede794d1",
+      "bytes": 8478,
+      "store": "tree"
+    },
+    "lm-lunar-landing-vice.log": {
+      "sha256": "3bc97b7bd9b84bee706c3a269de8ea3fd578e6b7d9d6cd6a30deb1d4c28e8244",
+      "bytes": 432,
+      "store": "tree"
+    }
+  }
+}

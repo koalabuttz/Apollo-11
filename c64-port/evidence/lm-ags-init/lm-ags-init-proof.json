@@ -1,0 +1,89 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle_engine": "yaAGC with the hardware divide (build/agc_engine_hardware_dv.o); scalers frozen",
+ "cases": 16896,
+ "compared": 16896,
+ "refused": {},
+ "snapshot_sha256": "ff52c4b63f518a548df26b766f44720b312be692e7f5aa96a07ed8c0a5243a7e",
+ "stops": {
+  "32,2005": {
+   "ALARM": 384,
+   "BANKCALL": 384
+  },
+  "32,2013": {
+   "ENDEXT": 768
+  },
+  "32,2025": {
+   "ENDEXT": 768
+  },
+  "32,2026": {
+   "BANKCALL": 640,
+   "CHANG2": 128
+  },
+  "32,2027": {
+   "BANKCALL": 768
+  },
+  "32,2046": {
+   "RTB LOADTIME": 768
+  },
+  "32,2051": {
+   "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 768
+  },
+  "32,2053": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2055": {
+   "CHANG2": 128,
+   "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 640
+  },
+  "32,2061": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2063": {
+   "BANKCALL": 640,
+   "CHANG2": 128
+  },
+  "32,2077": {
+   "BANKCALL": 384,
+   "DOWNFLAG": 384
+  },
+  "32,2114": {
+   "BANKCALL": 768
+  },
+  "32,2117": {
+   "BANKCALL": 768
+  },
+  "32,2121": {
+   "DOWNFLAG": 768
+  },
+  "32,2122": {
+   "DOWNFLAG": 768
+  },
+  "32,2124": {
+   "BANKCALL": 768
+  },
+  "32,2127": {
+   "ENDEXT": 768
+  },
+  "32,2130": {
+   "ENDEXT": 768
+  },
+  "32,2131": {
+   "ENDEXT": 768
+  },
+  "32,2144": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2156": {
+   "BANKCALL": 320,
+   "CHANG2": 128,
+   "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 320
+  }
+ },
+ "boundary": "from each routine key to the first instruction outside AGS_INITIALIZATION, the interpreter and SWCALL (ags_leaves)",
+ "compared_words": "2048 erasable words (A, L 16-bit) and the interrupt-enable state"
+}
