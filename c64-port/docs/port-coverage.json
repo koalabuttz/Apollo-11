@@ -7016,6 +7016,14 @@
           ],
           "scope": "T4RUPT entry with the DSRUPTSW scan, T4JUMP dispatch, SETTIME4 (PROCEEDE), DSPOUTSB/NODSPOUT/HANG20/DSPOUT display relay output, QUIKDSP and the SYNCT4 resume paths, as control-transfer ABI routines (lm_t4rupt_core_routines, bank 06 entries 2000, 2116, 2121, 2125) on the image through agc_image_ops, with channels 10 and 32 in agc_hardware. TABLNTH, 120MRUPT and OCT37737 are unreached data; IMUMON and the rest of the file remain unported.",
           "verification": "docs/T4RUPT-CORE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t4rupt_imu.c",
+            "include/lm_t4rupt_imu.h"
+          ],
+          "scope": "IMUMON through 90SECS (bank 06,2172-3005): the channel 30 and channel 33 IMU monitors with their bit-change handlers (TLIM, ITURNON, ENDTNON, IMUBAD, UNZ2, ISSUP, SETISSW, IMUCAGE, IMUOP, PIPFAIL, DNTMFAST, UPTMFAST), the gimbal lock check, CAGESUB and LAMPTEST, as control-transfer ABI routines (lm_t4rupt_imu_routines, 22 bank 06 entries) on the image through agc_image_ops, with channels 12, 14, 30 and 33 in agc_hardware. Every instruction word of the range was executed by the original in the comparison; RRAUTCHK and DAPT4S remain unported.",
+          "verification": "docs/LM-T4RUPT-IMU.md"
         }
       ]
     },

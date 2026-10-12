@@ -40,7 +40,9 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   the T6RUPT programs drive (`docs/LM-T6RUPT.md`), and input channel 15, the
   DSKY key code KEYRUPT1 reads (`docs/KEYRUPT-UPRUPT.md`), and output
   channel 10 (the last DSKY relay word) and input channel 32 (the PRO key) that
-  T4RUPT uses (`docs/T4RUPT-CORE.md`). Channel 13 holds only the
+  T4RUPT uses (`docs/T4RUPT-CORE.md`), and output channels 12 and 14 and
+  input channels 30 and 33 that the LM IMU monitor reads and drives
+  (`docs/LM-T4RUPT-IMU.md`). Channel 13 holds only the
   CPU-writable bits (043777). Initializers that name only the first two
   members leave the others zero. A routine that needs it refuses when it is
   NULL.

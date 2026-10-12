@@ -44,10 +44,13 @@ bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
  * channels 5 and 6 and channel 13 (bit 15 enables the TIME6 counter) that
  * the LM T6RUPT programs drive, input channel 15 (the DSKY key code
  * KEYRUPT1 reads), output channel 10 (the last DSKY relay word T4RUPT
- * wrote) and input channel 32 (the PRO key T4RUPT samples). Channel 13 holds what the CPU can write (043777: the
- * trap-reset bits never stay set). Initializers that name only the first
+ * wrote) and input channel 32 (the PRO key T4RUPT samples), and the IMU
+ * monitor's channels: output channels 12 and 14 (IMU control, CDU and gyro
+ * drive) and input channels 30 and 33 (IMU, temperature and PIPA status).
+ * Channel 13 holds what the CPU can write (043777: the trap-reset bits never
+ * stay set). Initializers that name only the first
  * members leave the later channels zero. */
-typedef struct { agc_word channel11; uint16_t in_interrupt; agc_word channel5, channel6, channel13, channel15, channel10, channel32; } agc_hardware;
+typedef struct { agc_word channel11; uint16_t in_interrupt; agc_word channel5, channel6, channel13, channel15, channel10, channel32, channel12, channel14, channel30, channel33; } agc_hardware;
 
 /* A native routine entered at its original address. It runs with the flight
  * image in its entry state, performs its translated body, and leaves Z (and FB,
