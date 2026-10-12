@@ -174,7 +174,7 @@ def render():
             if not needs and not steps and builder.is_file():
                 build_args = variants(builder, selectors(args))[0]
                 lines.append(f'\tpython3 tools/{builder.name} ' + ' '.join(build_args))
-            lines.append(f'\tpython3 tools/{script.name} ' + ' '.join(args))
+            lines.append(f'\tpython3 tools/legacy_vice_run.py tools/{script.name} ' + ' '.join(args))
     lines.insert(3 + len(TRIALS), '.PHONY: ' + ' '.join(names))
     return '\n'.join(lines) + '\n'
 
