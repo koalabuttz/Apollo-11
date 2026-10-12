@@ -2667,8 +2667,50 @@
       "sha256": "21d54203ecc6dae03f693943305486215212989ff907250f04e16d850b47c633",
       "bytes": 16414,
       "lines": 784,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_daps.c"
+          ],
+          "scope": "All 489 words from every original entry point (PITCHDAP, YAWDAP and DAPINIT T5 tasks, the four HACK returns, PCOPY+1/YCOPY+1) to HACK/RESUME/NOQRSM or the caller's return: CDU rate limit, error limit, cascade filters, actuator limit, TVC commands and channel 14 drive bits, precompensation and copy cycles. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-DAPS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z PITCHDAP 2530, YAWDAP 2732, DAPINIT 3107, HACK return 2541/2543/2743/2745, or PCOPY+1 2675/YCOPY+1 3051 with Q a caller's return 4000-7777; FB 20, EB E6, coherent BB; any raw A/L, erasable contents and channel 14.",
+          "frontiers": "HACK 3533, RESUME 5333, NOQRSM 5335, caller's return (TC Q).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche RESUME and NOQRSM (Lane A)",
+          "TVCSTROKETEST HACK (Lane G, cm-tvc-stroke)",
+          "T5 interrupt delivery via T5LOC",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-source-map.json",
+            "sha256": "1e01fb3ab9032b334224af2807528c9cb7d4a62e5a2dfdb42a1d8b517f13a514"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-assembly-comparison.json",
+            "sha256": "17cf096848fce4175008dbcc7730534c7e4f89e4ba06dfe6e27d40ba335b24f7"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-checks.log",
+            "sha256": "ab62c99184d1c801638d85a0e0140ffaf853b61436148ed6da08c019d3ab272a"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-results.json",
+            "sha256": "363fd4b186bea4fa44dd00104a7928e3402aae33f2f53bfbb0af6bf818c68e6b"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCEXECUTIVE.agc",

@@ -1,0 +1,7 @@
+cm-tvc-daps: 128 frozen original TVCDAPS states, entry refusals: PASS
+PASS 65536 original TVCDAPS oracle states equal native 2053-word rows {'returned': 65536} fad424582dbed5335883da183ac6374edcb5e884a7a1192b6ec7d5b4aeef2490
+PASS 489 original TVCDAPS words mapped; listing equals rope; 32 fixed constants equal native literals; TC Q dispatch and HACK returns equal the listing
+PASS 489 emitted TVCDAPS.agc words equal the original Comanche055 rope
+cm-tvc-daps: 128 frozen original TVCDAPS states, entry refusals: PASS
+PASS 65536 original TVCDAPS oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} fad424582dbed5335883da183ac6374edcb5e884a7a1192b6ec7d5b4aeef2490
+PASS: VICE PAL cm-tvc-daps.prg: 128 checks, 0 failures
