@@ -20,7 +20,15 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - An outside call's inline words can be counted from the listing (`'auto'` in `externals`): the data words after the TC.
 - Words nothing in the file reaches, such as the returns of a display or restart (GOPERF +1/+2), become routines of their own with `resume_orphans`. Words after an EXTEND or INDEX prefix are not.
 - I/O channel instructions (extended opcode 0: READ, WRITE, RAND, WAND, ROR, WOR, RXOR) refuse with `EXEC_OUT_OF_SCOPE` until the ABI has a channel model. The source map records those words as untranslated, with the spec's `partial` reason.
-- A TC to an erasable address (TC MPAC +2, TC TBASE2) runs the word there with Q set to its return, as the hardware does.
+- A TC to an erasable address (TC MPAC +2, TC TBASE2, TC QSAVED) runs the word there with Q set to its return, as the hardware does. Switched erasable (01400-01777) is read through EB. The differential seeds the word with a caller return unless the spec pins it.
+- Lane E keys (`r30`, `cm-r31`, `cm-tpi-search`):
+  - `tc_tables`: an INDEX into a TC table (`DOTICK +7`), with the table's length. It becomes a C `switch` on the indexed word.
+  - `fixed_index`: an indexed fixed operand (`DLOAD* 1/RTMUE,2`, `STODL* MUTABLE +2,1`), with the offsets the index register can take. Each reachable address is a `K` array, and any other effective address is refused. Banks 30-37 also refuse when the superbank bits are set.
+  - `returns`: an outside call that returns to more than one word after its CADR (GOFLASH 3, GOFLASHR 4). Each of those words becomes a return point.
+  - SLOAD of a fixed constant (DECTWO) runs the interpreter's inline load.
+  - VPROJ is an address order.
+  - A CALL or TC whose return lies past the end of the file, or on interpretive or data words, has no return point.
+  - A spec may name one mission only (`'missions': ('cm',)`).
 - An INDEX-modified write that could reach a bank or Z register checks the address at run time and refuses if it would.
 - MXV and VXM read their 18-word matrix operand as a `K` array. LXC is an indexed misc order.
 - RTB to a routine with a native implementation (`rtb` in the spec, such as `rtb_angles`) calls it. BOVB's branch to basic code ends the routine at that address.

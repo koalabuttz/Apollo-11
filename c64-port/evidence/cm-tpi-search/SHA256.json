@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tpi-search",
+  "release": "evidence-cm-tpi-search",
+  "files": {
+    "cm-tpi-search-differential.log": {
+      "sha256": "7ee6d7c1fbfc0ba9ed2f3397d6e8e62ab63ae42a8254a3862b87912f38a0eca9",
+      "bytes": 2614,
+      "store": "release"
+    },
+    "cm-tpi-search-host.log": {
+      "sha256": "67399451cca3c8c57bee8a74400c068a8c11d695dc155ecb317cbc5301f0f7a7",
+      "bytes": 76,
+      "store": "release"
+    },
+    "cm-tpi-search-proof.json": {
+      "sha256": "8fb60a9934dd82dd1ece986019587c54d915f7cc2905370b462a39a12d7542a9",
+      "bytes": 4558,
+      "store": "tree"
+    },
+    "cm-tpi-search-source-map.json": {
+      "sha256": "d98a3b8560b88106be1e1785aaaa46dc9b267b3820045ae06e18570adfabe215",
+      "bytes": 60014,
+      "store": "tree"
+    },
+    "cm-tpi-search-vice.log": {
+      "sha256": "2e67aa2cdb9941d015516f8eccae9fdc9c6265c7cb0a2396f2e9b3353f8c2b05",
+      "bytes": 459,
+      "store": "release"
+    }
+  }
+}
