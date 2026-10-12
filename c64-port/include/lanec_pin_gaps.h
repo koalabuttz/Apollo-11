@@ -10,8 +10,13 @@
  *             current EB bank.
  *   chanload  CHANLOAD (bank 41), NOUNCADR = channel; channel 7 or a write
  *             to channel 1-077 -> LOADLV.
+ *   dsp2dec   DSP2DEC (bank 40) -> 11DSPIN; its returns +6 -> 11DSPIN,
+ *             +8 -> DSPSIGN, +9 and END2DEC -> DSPDCWD1.
+ *   leadin    NVSUBB -> NVSUB1, LOADLV1 -> LOADLV (bank 41).
  * Out-of-scope input returns LANEC_OUT_OF_SCOPE before any change. */
 enum lanec_status lanec_pin_dspdpdec(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pin_chanload(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_dsp2dec(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_leadin(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pin_gaps_dispatch(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 #endif

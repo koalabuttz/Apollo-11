@@ -2,12 +2,14 @@
 /* Cases for Pinball verb 07 and CHANLOAD: both MIXBR branches, NOUNADD over
  * unswitched and switched erasable (pairs that overlap MPAC or the editing
  * registers included),
- * both return points, and a channel load for every channel 0-077. */
+ * both return points, a channel load for every channel 0-077, DSP2DEC from
+ * its entry (Q with and without overflow) and from each return, and the
+ * NVSUBB/LOADLV1 lead-ins. */
 #include "lanec_suites.h"
 #include "lanec_pin_gaps.h"
 #include "lanec_symbols.h"
 
-#define ENTRIES 10u
+#define ENTRIES 17u
 
 static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
 {
@@ -45,6 +47,18 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     case 4: case 5:                  /* TPAGREE returns to +13, DSP2DEC to ENDDPDEC */
         lanec_enter(s, io, 040u, (uint16_t)(x + 9u + entry));
         range(m, 040u, w[LANEC_Z], w[LANEC_Z]);
+        break;
+    case 10: case 11: case 12: case 13: case 14: {   /* DSP2DEC +0, +6, +8, +9, END2DEC */
+        static const uint8_t at[5] = { 0, 6, 8, 9, 10 }, last[5] = { 5, 7, 8, 10, 10 };
+        uint16_t d = m->mission == LANEC_LM ? LANEC_LM_DSP2DEC : LANEC_CM_DSP2DEC;
+        lanec_enter(s, io, 040u, (uint16_t)(d + at[entry - 10u]));
+        if (entry == 10u && (v & 1u)) w[LANEC_Q] = (uint16_t)(w[LANEC_Q] ^ 040000u);   /* Q overflowed */
+        range(m, 040u, w[LANEC_Z], (uint16_t)(d + last[entry - 10u]));
+        break;
+    }
+    case 15: case 16:                /* NVSUBB, LOADLV1 */
+        lanec_enter(s, io, 041u, (uint16_t)(LANEC_LM_NVSUBB + entry - 15u));
+        range(m, 041u, w[LANEC_Z], w[LANEC_Z]);
         break;
     default:                         /* CHANLOAD: every channel, high NOUNCADR bits */
         channel = (uint16_t)((v + (entry - 6u) * 16u) % 0100u);
