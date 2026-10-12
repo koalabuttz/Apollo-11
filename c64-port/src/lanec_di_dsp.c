@@ -2,6 +2,7 @@
 /* DISPLAY_INTERFACE_ROUTINES display-start entries, Luminary099 and
  * Comanche055 (bank 10). See docs/LANEC-DI-DSP.md for the source map. */
 #include "lanec_di_dsp.h"
+#include "lanec_di_internal.h"
 #include "lanec_symbols.h"
 
 typedef struct {
@@ -94,7 +95,7 @@ static uint16_t corrected(uint16_t a) { return (uint16_t)((a & 037777u) | ((a >>
 
 /* Source "TC Q" / "TC L": Z goes to the register (2 or 1), which holds a
  * TC to fixed memory; that TC leaves Q = register address + 1. */
-static void tc_register(apollo_overlay_state *s, uint16_t reg, uint16_t return_address)
+void lanec_di_tc_register(apollo_overlay_state *s, uint16_t reg, uint16_t return_address)
 {
     uint16_t target = s->words[reg];
     lanec_tc(s, reg, return_address);
@@ -167,7 +168,7 @@ static void purrs4(apollo_overlay_state *s, const places *p, uint16_t back)
     lanec_tc(s, p->purrs4, back);
     if (!lanec_ts(s, p->option1)) set_a(s, V04N06);
     if (!lanec_ts(s, PLAYTEM1)) set_a(s, PERF4MSK);
-    tc_register(s, LANEC_Q, (uint16_t)(p->purrs4 + 5u));
+    lanec_di_tc_register(s, LANEC_Q, (uint16_t)(p->purrs4 + 5u));
 }
 
 /* "TS cell" then a constant (the skip on overflow leaves A at +-1). */
@@ -198,7 +199,7 @@ static void saved_return(apollo_overlay_state *s, lanec_io *io, const places *p)
 {
     uint16_t *w = s->words;
     if (!lanec_ts(s, PLAYTEM3)) lanec_ad(s, w[RUPTREG3]);
-    tc_register(s, LANEC_L, (uint16_t)(p->savelocs + 10u));
+    lanec_di_tc_register(s, LANEC_L, (uint16_t)(p->savelocs + 10u));
     if (w[LANEC_Z] == p->bothjobs + 1u) {
         set_a(s, w[MPAC + 1u]); w[LANEC_L] = lanec_a16(w[MPAC + 2u]);   /* DCA MPAC +1 */
         dxch_indexed(s, (uint16_t)(MPAC + 1u + w[LOCCTR]));
@@ -229,13 +230,42 @@ static void copies2(apollo_overlay_state *s, lanec_io *io, const places *p)
     set_a(s, w[PLAYTEM1]);
     w[NVWORD + i] = w[PLAYTEM1];
     io->interrupt_enabled = 1;
-    tc_register(s, LANEC_Q, (uint16_t)(p->relintq + 2u));
+    lanec_di_tc_register(s, LANEC_Q, (uint16_t)(p->relintq + 2u));
 }
 
 static uint8_t copies_ok(const apollo_overlay_state *s, uint16_t index)
 {
     uint16_t q = s->words[LANEC_Q];
     return (uint8_t)(index <= COPINDEX_MAX && q >= 04000u && q <= 07777u);
+}
+
+/* CHKPRIO: CA FLAGWRD4, MASK OCT24100, CCS A, TCF MARSLEEP, CS FLAGWRD4,
+ * MASK MKOVBIT, INHINT, ADS FLAGWRD4, TCF SETNORM. */
+void lanec_di_chkprio(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    const places *p = at(m);
+    uint16_t *w = s->words;
+    set_a(s, w[FLAGWRD4]);
+    lanec_mask(s, OCT24100);
+    if (lanec_ccs_a(s) == 0) { w[LANEC_Z] = p->marsleep; return; }
+    w[LANEC_A] = (uint16_t)~lanec_a16(w[FLAGWRD4]);
+    lanec_mask(s, MKOVBIT);
+    io->interrupt_enabled = 0;
+    lanec_ad(s, w[FLAGWRD4]);                                       /* ADS FLAGWRD4 */
+    w[FLAGWRD4] = corrected(w[LANEC_A]);
+    w[LANEC_Z] = p->setnorm;
+}
+
+void lanec_di_goflash2(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m) { goflash2(s, io, at(m)); }
+void lanec_di_godspr2(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m) { godsprs(s, io, at(m), 0); }
+void lanec_di_godsprs(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m) { godsprs(s, io, at(m), THREE); }
+
+/* COPIES with A = the index: TS COPINDEX, then COPIES2 through RELINTQ's
+ * TC Q. An overflow skip passes over INHINT, which RELINTQ undoes anyway. */
+void lanec_di_copies(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    (void)lanec_ts(s, COPINDEX);
+    copies2(s, io, at(m));
 }
 
 enum lanec_status lanec_di_dsp_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
@@ -248,10 +278,8 @@ enum lanec_status lanec_di_dsp_dispatch(apollo_overlay_state *s, lanec_io *io, e
         uint16_t index = z == p->copynorm ? 0u : z == p->copies ? corrected(a) : w[COPINDEX];
         if (!copies_ok(s, index)) return LANEC_OUT_OF_SCOPE;
         if (z == p->copynorm) w[LANEC_A] = 0;
-        /* TS COPINDEX; an overflow skip passes over INHINT, which RELINTQ
-         * undoes anyway, so both paths end alike. */
-        if (z != p->copies2) (void)lanec_ts(s, COPINDEX);
-        copies2(s, io, p);
+        if (z == p->copies2) copies2(s, io, p);
+        else lanec_di_copies(s, io, m);
         return LANEC_OK;
     }
     if (z == p->savelocs + 7u) {
@@ -259,18 +287,7 @@ enum lanec_status lanec_di_dsp_dispatch(apollo_overlay_state *s, lanec_io *io, e
         saved_return(s, io, p);
         return LANEC_OK;
     }
-    if (z == p->chkprio) {
-        set_a(s, w[FLAGWRD4]);
-        lanec_mask(s, OCT24100);
-        if (lanec_ccs_a(s) == 0) { w[LANEC_Z] = p->marsleep; return LANEC_OK; }
-        w[LANEC_A] = (uint16_t)~lanec_a16(w[FLAGWRD4]);
-        lanec_mask(s, MKOVBIT);
-        io->interrupt_enabled = 0;
-        lanec_ad(s, w[FLAGWRD4]);                                       /* ADS FLAGWRD4 */
-        w[FLAGWRD4] = corrected(w[LANEC_A]);
-        w[LANEC_Z] = p->setnorm;
-        return LANEC_OK;
-    }
+    if (z == p->chkprio) { lanec_di_chkprio(s, io, m); return LANEC_OK; }
     if (z == p->markperf) {
         set_a(s, w[MARKNV]);
         lanec_mask(s, VERBMASK);

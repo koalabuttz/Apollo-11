@@ -5,5 +5,6 @@
 extern const lanec_suite lanec_suite_ev_front;
 extern const lanec_suite lanec_suite_pin_gaps;
 extern const lanec_suite lanec_suite_di_dsp;
+extern const lanec_suite lanec_suite_di_mark;
 const lanec_suite *lanec_find_suite(const char *name);
 #endif

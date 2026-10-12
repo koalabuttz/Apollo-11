@@ -429,6 +429,18 @@
           ],
           "scope": "Display-start entries GODSP/GODSPR/CLEANDSP/REFLASH(R)/REGODSP(R)/CLOCPLAY/GOFLASH(R)/PRIODSP(R)/EXDSPRET/GOPERF*, PURRS4, GODSPRS1/VACDSP/BOTHJOBS job scheduling, SAVELOCS/SAVELOCR and MAKECADR returns, COPYNORM/COPIES, CHKPRIO and MARKPERF, to their callee boundaries (MAKECADR, NOVAC, SPVAC, MAKEPLAY, BANKJUMP, MARSLEEP, SETNORM, NV50DSP), register-exact against the original program.",
           "verification": "docs/LANEC-DI-DSP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_mark.c",
+            "src/lanec_di_dsp.c",
+            "src/lanec.c",
+            "include/lanec_di_mark.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Mark displays: BLANKET, ENDMARK, CLEARMRK, MARKEND, GOMARK/GOMARS/KLEENEX/GOMARKF/GOMARK2/MARKFORM/GOMARK3/GOMARK4 and the GOMARK*R entries, MAKEMARK, MARKPLAY/GOGOMARK/MARKCOP, COPYTOGO/COPYPACS, to their callee boundaries (POSTJUMP, MARKOVER, the display-start exits, CHKPRIO's exits, PRIOPLAY, ENDOFJOB, the caller's return), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-MARK.md"
         }
       ]
     },
@@ -2982,6 +2994,18 @@
           ],
           "scope": "Display-start entries GODSP/GODSPR/CLEANDSP/REFLASH(R)/REGODSP(R)/CLOCPLAY/GOFLASH(R)/PRIODSP(R)/EXDSPRET/GOPERF*, PURRS4, GODSPRS1/VACDSP/BOTHJOBS job scheduling, SAVELOCS/SAVELOCR and MAKECADR returns, COPYNORM/COPIES, CHKPRIO and MARKPERF, to their callee boundaries (MAKECADR, NOVAC, SPVAC, MAKEPLAY, BANKJUMP, MARSLEEP, SETNORM, NV50DSP), register-exact against the original program.",
           "verification": "docs/LANEC-DI-DSP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_mark.c",
+            "src/lanec_di_dsp.c",
+            "src/lanec.c",
+            "include/lanec_di_mark.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Mark displays: BLANKET, ENDMARK, CLEARMRK, MARKEND, GOMARK/GOMARS/KLEENEX/GOMARKF/GOMARK2/MARKFORM/GOMARK3/GOMARK4 and the GOMARK*R entries, MAKEMARK, MARKPLAY/GOGOMARK/MARKCOP, COPYTOGO/COPYPACS, to their callee boundaries (POSTJUMP, MARKOVER, the display-start exits, CHKPRIO's exits, PRIOPLAY, ENDOFJOB, the caller's return), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-MARK.md"
         }
       ]
     },
