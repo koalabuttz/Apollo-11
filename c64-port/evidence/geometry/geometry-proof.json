@@ -9,19 +9,24 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 10752,
- "cases_sha256": "0c1d1d2c309a9570c36f8df36b00e6a3de25b2ac01acbee362fcefe050fdcc9d",
- "oracle_sha256": "43759848278746f8c7e5ab04bb114cfc35cbd4af550a1ff907a5f810737dbf51",
- "frozen_vectors": 336,
+ "cases_sha256": "196ba75cd4ba8c555dc05a44ce8ddaf905e3d33649955853ade5d82de81adb31",
+ "oracle_sha256": "6f684d4220efc9fe9cb2c98ed75974369137170032cd062a6091c8cf47e38236",
+ "frozen_vectors": 357,
  "c64_vectors": [
   {
    "mission": "lm",
-   "keep": "0xf",
-   "cases": 8
+   "keep": "0x7",
+   "cases": 9
   },
   {
    "mission": "lm",
-   "keep": "0x3f0",
-   "cases": 12
+   "keep": "0x78",
+   "cases": 13
+  },
+  {
+   "mission": "lm",
+   "keep": "0x380",
+   "cases": 4
   },
   {
    "mission": "cm",
@@ -32,8 +37,25 @@
    "mission": "cm",
    "keep": "0x700",
    "cases": 6
+  },
+  {
+   "mission": "cm",
+   "keep": "0x600",
+   "cases": 8
+  },
+  {
+   "mission": "cm",
+   "keep": "0x600",
+   "cases": 1
   }
  ],
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 1018,
+  "edges_host_vectors": 1018,
+  "edges_c64": 1018,
+  "edges_not_on_c64": []
+ },
  "stops": {
   "CM 10,2237 SVDWN1": {
    "06037": 512
@@ -60,16 +82,16 @@
    "06037": 512
   },
   "CM 23,2215 EARROT1": {
-   "06037": 350,
-   "03352": 162
+   "06037": 371,
+   "03352": 141
   },
   "CM 23,2225 EARROT2": {
-   "06037": 385,
-   "03352": 127
+   "06037": 388,
+   "03352": 124
   },
   "CM 23,2245 OVERADAY": {
-   "06037": 376,
-   "03352": 136
+   "06037": 391,
+   "03352": 121
   },
   "LM 13,2070 SVDWN2": {
    "06070": 512
@@ -81,9 +103,9 @@
    "06070": 512
   },
   "LM 13,2133 RRANGLES": {
-   "02421": 106,
-   "06070": 287,
-   "05732": 119
+   "06070": 269,
+   "02421": 152,
+   "05732": 91
   },
   "LM 13,2161 ": {
    "06070": 512

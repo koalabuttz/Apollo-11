@@ -32,4 +32,4 @@ c64-attitude-maneuver: $(ATT_C64_PRGS)
 build/attitude-maneuver-%.prg: $(ATT_SRC) platform/c64/attitude_maneuver_diagnostic.c tools/mk/attitude-maneuver.groups $(ATT_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(ATT_MOS_FLAGS) $(ATTITUDE_MANEUVER_GROUP_FLAGS_$*) -Wl,-Map,build/attitude-maneuver-$*.map $(ATT_C64_$(ATTITUDE_MANEUVER_GROUP_MISSION_$*)) $(ATT_C64_COMMON) platform/c64/attitude_maneuver_diagnostic.c -o $@
 vice-attitude-maneuver: $(ATT_C64_PRGS)
-	for p in $(ATT_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(ATT_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

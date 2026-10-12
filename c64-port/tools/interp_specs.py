@@ -2,6 +2,44 @@
 """Milestone specs for tools/interp_compile.py: the file, its entries, the
 outside basic routines it calls (with their inline word counts) and the
 native routines its RTBs reach."""
+
+
+def ones(x):
+    """x as a ones'-complement word."""
+    return x if x >= 0 else ~(-x) & 0o77777
+
+
+def kalcmanu_joint(cm):
+    """KALCMANU steering states that only mean something together:
+    TIMECHK's TM - TIME (TTEMP) small, of both signs and exactly 0, around
+    ONESEK (100); CONTMANU's NEXTIME at, near and wrapped past TIME1;
+    INCRDCDU's BCDU - NCDU small enough that MP DT/TAU leaves +-0; RATEBIAS's
+    BRATE +-0; and (Comanche) HOLDFLAG +-0 and each RATEINDX."""
+    out = []
+    for t2 in (0, 0o1234, 0o37777):
+        for t1 in (0o200, 0o37000):
+            for dh in (0, 1):
+                for d in (-101, -100, -99, -1, 0, 1, 99, 100, 101):
+                    out.append({'0024': t2, '0025': t1, 'TM': t2 + dh, 'TM+1': t1 + d})
+    for t1 in (0o200, 0o37770, 0o37777):
+        for d in (-1, 0, 1, 50, 100):
+            out.append({'0025': t1, 'NEXTIME': (t1 + d) % 0o40000})
+    for e in (-12, -5, -1, 0, 1, 5, 12):
+        st = {}
+        for i in range(3):
+            st['BCDU+%d' % i] = ones(0o100 + e * (i - 1))
+            st['NCDU+%d' % i] = 0o100
+        out.append(st)
+    for hi in (0, 0o77777, 3, 0o77774):
+        out.append({'BRATE+0': hi, 'BRATE+1': 0, 'BRATE+2': 0o77777 ^ hi, 'BRATE+3': 0, 'BRATE+4': hi, 'BRATE+5': 0})
+    if cm:
+        for v in (0, 0o77777, 1, 0o77776):
+            out.append({'HOLDFLAG': v})
+        for v in (0, 2, 4, 5, 6, 7):
+            out.append({'RATEINDX': v})
+    return out
+
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -15,6 +53,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/inflight_align_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # Every 32nd case keeps the vectors under the 1 MB fast-checkout limit.
         'freeze_stride': 32,
         # AXISGEN's loops entered directly: index registers and steps as
@@ -47,6 +92,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/geometry_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # Words no routine compiles yet, and why (the source map records them).
         'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2'},
         'freeze_stride': 32,
@@ -70,10 +122,19 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/kalcmanu_steering_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         'freeze_stride': 32,
-        # ISITAUTO leaves +0 or +1 in A; CCS A's negative arms are the
-        # interpretive words that follow.
-        'states': {'NEWDELHI+2': {'0': [0, 1]}},
+        # ISITAUTO leaves CHAN31 & BIT14 in A: +0 or 020000.
+        'states': {'NEWDELHI+2': {'0': [0, 0o20000]}},
+        # The joint states reach TIMECHK's end of maneuver, CONTMANU's wrap
+        # and the +-0 arms.
+        'joint_states': {'*': {'lm': kalcmanu_joint(False), 'cm': kalcmanu_joint(True)}},
         # The file's EBANK= TTEMP (E6, as its 2CADR BBCONs carry): its
         # switched names (KSPNDX, BRATE...) mean nothing under another EB.
         'ebank': 6,
@@ -102,6 +163,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/r60_r62_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # BUF2 holds the last display's return (a fixed address), as
         # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
@@ -129,6 +197,13 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/attitude_maneuver_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         # One C64 case per routine: KALCMAN3's run reaches most of the file.
         'c64_per_point': 1,
         # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
