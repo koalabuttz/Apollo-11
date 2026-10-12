@@ -1,0 +1,11 @@
+PASS 22 frozen original INITVEL entries, 28 admission guards and 49 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 0ecbabe19489d9cba3ea67b48a744fdaa7e94021efd1b51d2f21fbd42c11c02e
+PASS65536 original INITVEL entries strict native
+PASS 198 assembled INITVEL words on 198 source lines map to native literals in 10 functions
+PASS 22 frozen original INITVEL entries, 28 admission guards and 49 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 0ecbabe19489d9cba3ea67b48a744fdaa7e94021efd1b51d2f21fbd42c11c02e
+PASS65536 original INITVEL entries full ASAN/UBSAN
+PASS: VICE PAL lm-initvel-1.prg: 11 checks, 0 failures
+PASS: VICE PAL lm-initvel-2.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-initvel-3.prg: 8 checks, 0 failures
+PASS: VICE PAL lm-initvel-4.prg: 18 checks, 0 failures
