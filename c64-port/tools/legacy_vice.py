@@ -24,7 +24,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'tools/mk/legacy-vice.mk'
 # Arguments every script gets from the environment CI sets up (deps/env.sh).
 FIXED = {'--vice': '"$(VICE)"', '--rom-dir': '"$(VICE_ROM_DIR)"', '--data-dir': '"$(VICE_DATA_DIR)"',
-         '--cc': '"$(MOS_CC)"', '--c1541': '"$(C1541)"'}
+         '--cc': '"$(MOS_CC)"', '--mos-cc': '"$(MOS_CC)"', '--c1541': '"$(C1541)"'}
 USAGE_ARG = re.compile(r'(\[)?(--[a-z0-9-]+)(?: (\{[^}]*\}|[A-Z_][A-Z0-9_]*))?\]?')
 
 

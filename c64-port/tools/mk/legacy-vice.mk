@@ -447,7 +447,7 @@ vice-legacy-dsky-charin-sign: c64-dsky-charin-sign | build
 	python3 tools/dsky_charin_sign_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-decimal-consumer: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_decimal_consumer_build.py 
+	python3 tools/dsky_decimal_consumer_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_decimal_consumer_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-decimal-general: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -471,7 +471,7 @@ vice-legacy-dsky-decimal-select: | build
 	python3 tools/dsky_decimal_select_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-decimal-time-consumer: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_decimal_time_consumer_build.py 
+	python3 tools/dsky_decimal_time_consumer_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_decimal_time_consumer_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-decimal: c64-dsky-decimal | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -496,7 +496,7 @@ vice-legacy-dsky-five-blank: c64-dsky-five-blank | build
 	python3 tools/dsky_five_blank_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-fixed-display: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_fixed_display_build.py 
+	python3 tools/dsky_fixed_display_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_fixed_display_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-fraction-pair: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -504,7 +504,7 @@ vice-legacy-dsky-fraction-pair: | build
 	python3 tools/dsky_fraction_pair_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-hours-output: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_hours_output_build.py 
+	python3 tools/dsky_hours_output_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_hours_output_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-input-angle: c64-dsky-input-angle | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -594,7 +594,7 @@ vice-legacy-dsky-major-request: c64-dsky-major-request | build
 	python3 tools/dsky_major_request_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-minutes-output: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_minutes_output_build.py 
+	python3 tools/dsky_minutes_output_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_minutes_output_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-mixed-noun: c64-dsky-mixed-noun | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -609,15 +609,15 @@ vice-legacy-dsky-mode-job: c64-dsky-mode-job | build
 	python3 tools/dsky_mode_job_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --mission cm
 vice-legacy-dsky-monitor-consumer: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_monitor_consumer_build.py 
+	python3 tools/dsky_monitor_consumer_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_monitor_consumer_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --cohort 0
 vice-legacy-dsky-monitor-paste: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_monitor_paste_build.py 
+	python3 tools/dsky_monitor_paste_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_monitor_paste_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --cohort 0
 vice-legacy-dsky-monitor: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_monitor_build.py 
+	python3 tools/dsky_monitor_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_monitor_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-noun-check: c64-dsky-noun-check | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -660,7 +660,7 @@ vice-legacy-dsky-nv-update: | build
 	python3 tools/dsky_nv_update_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-octal-consumer: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_octal_consumer_build.py 
+	python3 tools/dsky_octal_consumer_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_octal_consumer_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-octal-display: c64-dsky-octal-display | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -723,14 +723,14 @@ vice-legacy-dsky-source-alarm: c64-dsky-source-alarm | build
 	python3 tools/dsky_source_alarm_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-test-noun: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_test_noun_build.py 
+	python3 tools/dsky_test_noun_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_test_noun_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --cohort 0
 vice-legacy-dsky-two-digit: c64-dsky-two-digit | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
 	python3 tools/dsky_two_digit_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-dsky-two-integer: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
-	python3 tools/dsky_two_integer_build.py 
+	python3 tools/dsky_two_integer_build.py --mos-cc "$(MOS_CC)"
 	python3 tools/dsky_two_integer_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --stage 0
 vice-legacy-dsky-verb-dispatch: c64-dsky-verb-dispatch | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice

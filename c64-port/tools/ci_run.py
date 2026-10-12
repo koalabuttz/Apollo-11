@@ -28,6 +28,21 @@ BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[
                           r"cmp: (build/[^:]+): No such file|"
                           r"cannot open (build/[^:\s]+): No such file")
 LOCK = threading.Lock()
+# Recipe text that writes the path that follows it.
+WRITES = r'(>|-o|-Map[,=])\s*'
+TOOL_ARGS = {'--cc': 'MOS_CC', '--mos-cc': 'MOS_CC', '--c1541': 'C1541'}
+
+
+def tool_args(script, make_args):
+    """Toolchain options a producer script accepts, from make args or the environment."""
+    values = dict(arg.split('=', 1) for arg in make_args if '=' in arg)
+    text = script.read_text(errors='replace')
+    argv = []
+    for option, variable in TOOL_ARGS.items():
+        value = values.get(variable) or os.environ.get(variable)
+        if value and f"'{option}'" in text:
+            argv += [option, value]
+    return argv
 
 
 def group_targets(group):
@@ -90,7 +105,7 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
     if path in rules:
         candidates.append(('make', path))
     for name, (_, recipe) in rules.items():
-        if name != target and re.search(r'(>|-o)\s*' + re.escape(path) + r'(\s|$)', recipe):
+        if name != target and re.search(WRITES + re.escape(path) + r'(\s|$)', recipe):
             candidates.append(('make', name))
     name = pathlib.PurePosixPath(path).name
     stem = re.sub(r'(-(native|reference|sanitize|live|target|inputs))?(\.snapshots|\.json|\.trace)?(\.gz|\.xz)?$', '',
@@ -111,9 +126,19 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
             head = re.match(r'([A-Za-z0-9_.-]+)\s*:(?!=)', line)
             if head:
                 rule = head[1]
-            elif rule and line.startswith('\t') and re.search(r'>\s*' + re.escape(path) + r'(\s|$)', line):
+            elif rule and line.startswith('\t') and re.search(WRITES + re.escape(path) + r'(\s|$)', line):
                 candidates.append(('submake', (mk.relative_to(ROOT).as_posix(), rule)))
                 break
+    # Build and freeze scripts that write the file under its literal name
+    # (module manifests, frozen samples, PRGs linked with -Map).
+    writers = [s for s in sorted((ROOT / 'tools').glob('*.py'))
+               if s not in scripts and not s.name.endswith(('_vice_test.py', '_differential.py'))
+               and s.name not in ('ci_run.py', 'ci_affected.py', 'legacy_vice.py')
+               and re.search(r"^.*['/]" + re.escape(name) + r"['\s].*(write_(text|bytes)|'-o'|-Map)"
+                             r"|^.*(write_(text|bytes)|'-o'|-Map).*['/]" + re.escape(name) + r"['\s]",
+                             s.read_text(errors='replace'), re.M)]
+    writers.sort(key=lambda s: (not s.name.endswith('_build.py'), not s.name.startswith('freeze'), s.name))
+    candidates += [('script', s) for s in writers[:4]]
     module = target
     for prefix in ('c64-', 'sanitize-', 'test-'):
         module = module[len(prefix):] if module.startswith(prefix) else module
@@ -121,7 +146,7 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
         if rule in rules and rule != target:
             candidates.append(('make', rule))
     for kind, what in candidates:
-        if kind == 'make' and what in stack:
+        if (kind == 'make' and what in stack) or (kind == 'script' and what.name in stack):
             continue
         label = what.name if kind == 'script' else ' '.join(what) if kind == 'submake' else what
         print(f'  {target}: producing {path} via {label}', flush=True)
@@ -130,6 +155,7 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
         else:
             if kind == 'script':
                 argv = [str(ROOT / 'deps/fixture')] if 'sys.argv[1]' in what.read_text(errors='replace') else []
+                argv += tool_args(what, make_args)
                 cmd, log = [sys.executable, str(what), *argv], log_dir / (what.stem + '.log')
             else:
                 cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', what[0], what[1]]
