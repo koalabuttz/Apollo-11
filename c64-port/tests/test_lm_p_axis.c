@@ -11,7 +11,7 @@
 #include "lm_interbank_routines.h"
 #define P16(z) (uint16_t)(016u*1024u+((z)-02000u))
 #define EB6(a) (03000u+((a)-01400u))
-#define PATHS 123u
+#define PATHS 115u
 unsigned lm_pa_paths[PATHS];
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s %u\n",what,n);}}
@@ -30,13 +30,8 @@ int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;unsigned n,i,left=0
   *   TS RCSFLAGS (ALTERYZ, ABORTYZ +2): A is BIT1 or AORBSYST RXOR a
   *   sign-extended L (a TS L of a CA'd word, an LXCH of an erasable word),
   *   so its two sign bits stay equal;
-  *  60: CCS OLDPMIN's -0 exit: refused (no producer stores -0);
-  *  120: the DV with a dividend equal to the divisor: DIVIDER divides
-  *   |OMEGAU| at most 0631 by DAPTREG4 = 1/40 (0632); DV NPTRAPS/NQTRAPS/
-  *   NRTRAPS has A = +0 (a zero dividend); DV DAPTEMP1/2 divides 5x (MP
-  *   FIVE), whose high word is at most 4 and whose low word is zero only for
-  *   x = +-0. */
- static const unsigned unreachable[]={3u,10u,12u,14u,50u,53u,60u,120u};
+  *  60: CCS OLDPMIN's -0 exit: refused (no producer stores -0). */
+ static const unsigned unreachable[]={3u,10u,12u,14u,50u,53u,60u};
  program.basic=&lm_p_axis_routines;program.basic_count=1;
  memset(lm_pa_paths,0,sizeof lm_pa_paths);
  for(n=0;n<LM_PA_CASES;++n){unsigned kind;

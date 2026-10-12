@@ -11,9 +11,9 @@ Lane F. Milestone `lm-p-axis`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 runs from its entry until the original program leaves the file, and every
 source instruction is one `agc_image_ops` call (register effects checked
 against yaAGC by `tools/agc_image_ops_differential.py`), named with its
-erasable address or the source's fixed constant. MSU, DV, DTCB and the
-channel orders (READ, RAND, WAND, WOR, RXOR on L) are small helpers with
-yaAGC's effect.
+erasable address or the source's fixed constant. MSU, DTCB and the channel
+orders (READ, RAND, WAND, WOR, RXOR on L) are small helpers with yaAGC's
+effect.
 
 | Entry | Body |
 |---|---|
@@ -49,13 +49,11 @@ TS overflow skips and the negative and -0 exits of CCS land where the
 original's do, even where no admitted input reaches them. INHINT and RELINT
 set the interrupt-enable bit of the device record.
 
-DV is yaAGC's, for every dividend. The helper `dv` joins A and L as yaAGC's
-SpToDecent does, including its comparison of a sign-extended L with a 15-bit
--0. It takes yaAGC's sign rules for a zero dividend, an equal dividend and a
-zero quotient (+0). A dividend at or above the divisor is left to `ai_dv`,
-which follows yaAGC's register-level SimulateDV. The freeze checks `dv`
-against yaAGC executing `EXTEND; DV K` on 2,000,000 random A, L and K,
-including +-0.
+DV is `ai_dv`, the AGC's divide as yaAGC's register-level SimulateDV
+models it, for every dividend. yaAGC's fast DV path joins a sign-extended
+L = -0 wrongly (SpToDecent), so the oracle is built against
+`build/agc_engine_hardware_dv.o` (`tools/prepare_hardware_dv.py`, which
+routes every DV through SimulateDV; see `docs/GENERAL_DIVIDE.md`).
 
 Channels 12, 13 and 31 and the interrupt-enable bit are in the device record
 `lm_flight_io` (`include/lm_flight_io.h`, which gains channel 13). Bits 12-14
@@ -105,19 +103,23 @@ program would leave the file: a TC, TCF, DTCB or `TC Q` whose destination is
 outside `16,2213`-`3640`.
 
 - `make lm-p-axis-differential` runs `tools/lm_p_axis_freeze.py`.
-  - It builds the yaAGC oracle `tools/lm_p_axis_reference.c`, which runs every
-    case in the unmodified rope until Z leaves the range at an instruction
-    boundary. Z in the central registers is a `TC Q` on its way to the word in
-    Q.
+  - It builds the yaAGC oracle `tools/lm_p_axis_reference.c` (with the
+    hardware-DV engine), which runs every case in the unmodified rope until
+    Z leaves the range at an instruction boundary. Z in the central
+    registers is a `TC Q` on its way to the word in Q.
   - It requires the native snapshot to be byte-identical for every case the
     native routines accept: 16,235 cases. The comparison covers the outcome,
     channels 12 and 13, the interrupt-enable bit and all 2,048 erasable words.
   - It leaves out the 149 refused cases. Their digest is of the unchanged
     input image, which the host test checks.
-  - The digests are frozen into `tests/lm_p_axis_vectors.h`, and every
-    sixty-fourth into `tests/lm_p_axis_c64_vectors.h`.
-  - It also builds `tools/lm_p_axis_dv_reference.c` and requires `dv` to
-    equal yaAGC's `EXTEND; DV K` on 2,000,000 random A, L and K.
+  - The digests are frozen into `tests/lm_p_axis_vectors.h`.
+  - `tools/lane_f_c64_rows.py` chooses the C64 rows
+    (`tests/lm_p_axis_c64_vectors.h`, 128 cases). It runs every host case with
+    branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
+    until every entry slot, outcome and branch the host cases take is taken
+    (40 cases), then spreads the rest with a stride of 97. The per-branch
+    host and C64 counts are in
+    `evidence/lm-p-axis/lm-p-axis-c64-cover.json`.
   - The proof (`evidence/lm-p-axis/lm-p-axis-proof.json`) counts where the
     cases leave the file: every exit above is taken.
 - `make test-lm-p-axis` and `make sanitize-lm-p-axis` check every digest
@@ -125,9 +127,9 @@ outside `16,2213`-`3640`.
   refused with the image unchanged, and require every entry and every
   reachable branch to be taken. They also check the refusals, the IBNKCALL
   CADRs against the compiled interbank table, and `lm_p_axis_data`.
-- `make vice-lm-p-axis` runs every sixty-fourth case (256) on the C64 in
-  VICE. Every thirty-second case did not fit VICE's 3,000,000,000-cycle
-  limit.
+- `make vice-lm-p-axis` runs the 128 C64 rows in VICE: every entry, every
+  outcome and every branch the host cases take. The VICE log records the
+  PRG's SHA-256.
 
 Branches no admitted input reaches are documented in the host test:
 
@@ -138,11 +140,6 @@ Branches no admitted input reaches are documented in the host test:
   ABORTYZ +2). A is BIT1 or AORBSYST RXOR a sign-extended L, so its two sign
   bits stay equal.
 - `CCS OLDPMIN`'s -0 exit, which is refused.
-- DV with a dividend equal to the divisor:
-  - DIVIDER divides |OMEGAU| of at most `0631` by DAPTREG4 = 1/40 (`0632`);
-  - `DV NPTRAPS`, `DV NQTRAPS` and `DV NRTRAPS` divide a zero dividend;
-  - `DV DAPTEMP1` and `DV DAPTEMP2` divide 5x, whose high word is at most 4
-    and whose low word is zero only for x = +-0.
 
 ## Source map
 
@@ -184,5 +181,5 @@ The ALARM codes and IBNKCALL CADRs are checked in their site tables.
 
 ## Evidence
 
-Hashes: `evidence/lm-p-axis/SHA256.json`; all four files are kept in the
+Hashes: `evidence/lm-p-axis/SHA256.json`; all five files are kept in the
 tree.

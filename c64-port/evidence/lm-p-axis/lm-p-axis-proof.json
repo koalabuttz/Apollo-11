@@ -3,7 +3,7 @@
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "cases": 16384,
  "compared_cases": 16235,
- "compared_sha256": "b28e579cbb5c57ba2f643d688f462626fbdd3f2a42f1cf284c6f67193078934d",
+ "compared_sha256": "7a012a061303c446c69c7242f35e3648b0902af3819ffb84cef92b225c1f2ba7",
  "outcomes": {
   "16,2223:left the file": 1024,
   "16,2224:left the file": 1024,
@@ -43,10 +43,7 @@
   "WRITEP": 1129,
   "WRITEP -1": 2285
  },
- "dv_against_yaagc": {
-  "cases": 2000000,
-  "differences": 0
- },
+ "dv": "yaAGC SimulateDV for every dividend (tools/prepare_hardware_dv.py)",
  "refused_cases": 149,
  "refused_oracle_outcomes": {
   "left the file": 149

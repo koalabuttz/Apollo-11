@@ -1,1 +1,2 @@
-PASS: VICE PAL lm-p-axis.prg: 256 checks, 0 failures
+lm-p-axis.prg sha256 904effafcb114184e9f7dbee4884930e96a2951a3ea5c27711d2d9f6464f7b50, 128 C64 rows (tests/lm_p_axis_c64_vectors.h)
+PASS: VICE PAL lm-p-axis.prg: 128 checks, 0 failures

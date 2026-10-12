@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -5088,19 +5088,23 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p-axis/lm-p-axis-source-map.json",
-            "sha256": "18711e5559fe03cec367d3c05cad9f0636b0d7a190c1926cf83dd34927898b4f"
+            "sha256": "55464a05c9d17fdc3d5b9bd35196ffc64593dcbdfad1a9fc5e574a0233e61165"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p-axis/lm-p-axis-proof.json",
-            "sha256": "478959493204a9e797aab4a6c899b361b61c2093dad39a5d8aa246ec7d5322ef"
+            "sha256": "ee1950d9c87e5dbcca367cbd37f7ee1645d07cfa176215bd35fd97e04912d516"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p-axis/lm-p-axis-host.log",
-            "sha256": "20c54c1f3b5be4f4c15a3c37209288d8848c50252da49f5654186b3f7fd30843"
+            "sha256": "4b790de91a49e23d7ad682fb1fa1c0c8b6a4806cafe83c9f0fab559d85d1f6da"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p-axis/lm-p-axis-vice.log",
-            "sha256": "2ef31fcb7bb4f48c65f5c433582bdc3887b09258833e374e3a401bf0211ebf05"
+            "sha256": "e39aed9369e80458509f3bce51abac067956b38679ea8ca94c5be587180b99d5"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
+            "sha256": "0fe44e9688a090d62c9605472aef9425ab7108c0ec51538b5a2014ccc497f2dd"
           }
         }
       }

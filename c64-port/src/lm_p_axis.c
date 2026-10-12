@@ -216,43 +216,6 @@ static void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsig
  if(d&040000u){d|=0100000u;--d;}
  W[0]=agc_extend((agc_word)(d&077777u));
 }
-/* DV K (K an erasable word) as yaAGC executes it. The dividend A,L is
- * joined as yaAGC's SpToDecent does: its zero test of a -0 L compares the
- * sign-extended register with a 15-bit -0, so L = -0 under a nonzero A of
- * the other sign takes the borrow from A. A dividend not below the divisor
- * is ai_dv's (yaAGC's register-level SimulateDV); a zero dividend keeps L
- * and takes A's sign from L and K; an equal one is +-POSMAX with L the high
- * word; otherwise the quotient and remainder are C's truncating division,
- * with a zero quotient +0 and a zero remainder signed as the dividend. */
-static int32_t lsx(int32_t v,int32_t m){return v&m?v|~(m|(m-1)):v;}
-static agc_word cpu2agc(int32_t x){return (agc_word)(x<0?077777u&~(uint32_t)(-x):077777u&(uint32_t)x);}
-static void dv(agc_image *s,unsigned k){agc_word hi=oc(W[0]),lo=W[1],kw=ai_word(s,k),ah,al,ak,q;int32_t d,dc,dk;
- if(hi==0u||hi==077777u){LM_PA_PATH(115);d=lsx((int32_t)((lo&077777u)|((lo<<1)&0100000u)),0100000)&07777777777;}
- else{
-  if((lo&040000u)!=(hi&040000u)){
-   if(lo==0u||lo==077777u){LM_PA_PATH(116);lo=hi&040000u?077777u:0u;}
-   else{int neg=(hi&040000u)!=0;LM_PA_PATH(117);
-    if(neg){hi=(agc_word)(077777u&~hi);lo=(agc_word)(077777u&~lo);}
-    --hi;lo=(agc_word)((lo+040000u+1u)&077777u);
-    if(neg){hi=(agc_word)(077777u&~hi);lo=(agc_word)(077777u&~lo);}}
-  }
-  d=(int32_t)((((uint32_t)hi<<14)&03777740000u)|(lo&037777u));
-  if(d&02000000000)d|=04000000000;
- }
- al=(agc_word)((d&037777)|(d&04000000000?040000:0));ah=oc((agc_register)(((uint32_t)d>>14)&0177777u));
- ak=(agc_word)(kw&040000u?077777u&~kw:kw);
- {agc_word aa=(agc_word)(ah&040000u?077777u&~ah:ah),la=(agc_word)(al&040000u?077777u&~al:al);
-  if(aa>ak||(aa==ak&&la!=0u)){LM_PA_PATH(118);ai_dv(s,k);return;}
-  if(aa==0u&&la==0u){LM_PA_PATH(119);
-   q=(W[1]&040000u)==(kw&040000u)?(ak==0u?037777u:0u):(ak==0u?040000u:077777u);W[0]=agc_extend(q);return;}
-  if(aa==ak){LM_PA_PATH(120);W[1]=agc_extend(ah);W[0]=agc_extend(ah==kw?037777u:040000u);return;}
- }
- dc=d&02000000000?-(int32_t)(01777777777&~d):(int32_t)(01777777777&d);
- dk=kw&040000u?-(int32_t)(037777u&~kw):(int32_t)(037777u&kw);
- W[0]=agc_extend(cpu2agc(dc/dk));
- if(dc%dk==0){LM_PA_PATH(121);W[1]=dc>=0?0u:0177777u;}
- else{LM_PA_PATH(122);W[1]=agc_extend(cpu2agc(dc%dk));}
-}
 /* DTCB (DXCH Z) executed at `at`: Z,BB <-> A,L. */
 static void dtcb(agc_image *s,agc_word at){agc_word z=agc_correct(W[0]),bb=agc_correct(W[1]);
  W[0]=(agc_word)(at+1u);W[1]=agc_extend(W[6]);W[5]=z;
@@ -288,7 +251,7 @@ static void subdivde(agc_image *s,int plus3,agc_word ret){uint8_t c;
  if(c==2u)ai_csf(s,POSMAX);
  tcq(s);return;
 divider:
- ai_dxch(s,OMEGAU);dv(s,DAPTREG4);tcq(s);
+ ai_dxch(s,OMEGAU);ai_dv(s,DAPTREG4);tcq(s);
 }
 /* OVERSUB, entered by TC from ret - 1: TS 7; TC Q; INDEX A; CS BIT15 -1;
  * TC Q (on overflow, A +-1 selects BIT15 or POSMAX: A limited to
@@ -412,7 +375,7 @@ static enum exec_status flow(agc_image *s,lm_flight_io *io,unsigned at){uint8_t 
  if(c==1u||c==3u)goto smalpdif;
  ai_ad(s,DAPTREG6);
  if(ai_bzmf(s)){LM_PA_PATH(25);goto smalpdif;}
- ai_zl(s);ai_lxch(s,TRAPEDP);ai_caf(s,ZERO);dv(s,NPTRAPS);ai_ads(s,OMEGAP);oversub(s,02504u);(void)ai_ts(s,OMEGAP);
+ ai_zl(s);ai_lxch(s,TRAPEDP);ai_caf(s,ZERO);ai_dv(s,NPTRAPS);ai_ads(s,OMEGAP);oversub(s,02504u);(void)ai_ts(s,OMEGAP);
  ai_ca(s,DAPTREG4);(void)ai_ts(s,NPTRAPS);
 smalpdif:
  ai_incr(s,NPTRAPS);
@@ -426,9 +389,9 @@ smalpdif:
  if(c==1u||c==3u)goto qrate;
  ai_ad(s,DAPTREG6);
  if(ai_bzmf(s)){LM_PA_PATH(30);goto qrate;}
- ai_zl(s);ai_lxch(s,TRAPEDQ);ai_caf(s,ZERO);dv(s,NQTRAPS);(void)ai_ts(s,DAPTEMP1);ai_ads(s,OMEGAQ);
+ ai_zl(s);ai_lxch(s,TRAPEDQ);ai_caf(s,ZERO);ai_dv(s,NQTRAPS);(void)ai_ts(s,DAPTEMP1);ai_ads(s,OMEGAQ);
  oversub(s,02532u);(void)ai_ts(s,OMEGAQ);
- ai_ca(s,DAPTREG4);ai_xch(s,NQTRAPS);ai_ad(s,DAPTREG5);ai_xch(s,DAPTEMP1);ai_mpf(s,FIVE);dv(s,DAPTEMP1);ai_ads(s,AOSQ);
+ ai_ca(s,DAPTREG4);ai_xch(s,NQTRAPS);ai_ad(s,DAPTREG5);ai_xch(s,DAPTEMP1);ai_mpf(s,FIVE);ai_dv(s,DAPTEMP1);ai_ads(s,AOSQ);
 qrate: /* Q-RATE: INCR NQTRAPS; CA JETRATEQ; AD AOSQTERM; ADS OMEGAQ;
   * TC OVERSUB; TS OMEGAQ; CCS TRAPEDR ... ADS AOSR, as for Q. */
  ai_incr(s,NQTRAPS);ai_ca(s,JETRATEQ);ai_ad(s,AOSQTERM);ai_ads(s,OMEGAQ);oversub(s,02551u);(void)ai_ts(s,OMEGAQ);
@@ -436,9 +399,9 @@ qrate: /* Q-RATE: INCR NQTRAPS; CA JETRATEQ; AD AOSQTERM; ADS OMEGAQ;
  if(c==1u||c==3u)goto rrate;
  ai_ad(s,DAPTREG6);
  if(ai_bzmf(s)){LM_PA_PATH(35);goto rrate;}
- ai_zl(s);ai_lxch(s,TRAPEDR);ai_caf(s,ZERO);dv(s,NRTRAPS);(void)ai_ts(s,DAPTEMP2);ai_ads(s,OMEGAR);
+ ai_zl(s);ai_lxch(s,TRAPEDR);ai_caf(s,ZERO);ai_dv(s,NRTRAPS);(void)ai_ts(s,DAPTEMP2);ai_ads(s,OMEGAR);
  oversub(s,02570u);(void)ai_ts(s,OMEGAR);
- ai_ca(s,DAPTREG4);ai_xch(s,NRTRAPS);ai_ad(s,DAPTREG5);ai_xch(s,DAPTEMP2);ai_mpf(s,FIVE);dv(s,DAPTEMP2);ai_ads(s,AOSR);
+ ai_ca(s,DAPTREG4);ai_xch(s,NRTRAPS);ai_ad(s,DAPTREG5);ai_xch(s,DAPTEMP2);ai_mpf(s,FIVE);ai_dv(s,DAPTEMP2);ai_ads(s,AOSR);
 rrate: /* R-RATE: INCR NRTRAPS; CA JETRATER; AD AOSRTERM; ADS OMEGAR;
   * TC OVERSUB; TS OMEGAR; CS DAPBOOLS; MASK DRIFTBIT; CCS A;
   * TCF WORKTIME; TS ALPHAQ; TS ALPHAR; TS AOSQTERM; TS AOSRTERM; TS AOSQ;

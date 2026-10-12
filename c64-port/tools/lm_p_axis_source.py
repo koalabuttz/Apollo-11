@@ -25,9 +25,9 @@ OWNERS = [(0o2213, 0o2222, 'paxis'), (0o2223, 0o2223, 'chekbits2'), (0o2224, 0o2
           (0o3624, 0o3640, 'flow')]
 HELPERS = {'paxis': ['afterchek_body', 'leave'], 'chekbits2': ['leave'],
            'afterchek_body': ['afteracdt_body', 'onetotwos', 'msu', 'leave'], 'onetotwos': ['tcq'],
-           'subdivde': ['dv', 'tcq'], 'oversub': ['tcq'], 'zeroenbl': ['wor13', 'tcq'], 'altsyst': ['rxor_l', 'tcq'],
+           'subdivde': ['tcq'], 'oversub': ['tcq'], 'zeroenbl': ['wor13', 'tcq'], 'altsyst': ['rxor_l', 'tcq'],
            'calcperr_body': ['msu', 'tcq'], 'selectp': ['tcq', 'sv'],
-           'flow': ['subdivde', 'oversub', 'zeroenbl', 'altsyst', 'calcperr_body', 'selectp', 'msu', 'dv', 'dtcb',
+           'flow': ['subdivde', 'oversub', 'zeroenbl', 'altsyst', 'calcperr_body', 'selectp', 'msu', 'dtcb',
                     'rd', 'rand', 'wand', 'rxor_l', 'leave', 'sv', 'sa']}
 # Branches composed in C: the transfers among this file's own words (its
 # labels and the TC calls of its subroutines, compiled as C calls).
