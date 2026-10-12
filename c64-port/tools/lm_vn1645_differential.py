@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Run unchanged Luminary099 P34-35_P74-75 midcourse display subroutines (GET+MGA, GET.LVC, SELECTMU) in the pinned yaAGC oracle
+"""Run unchanged Luminary099 P34-35_P74-75 VN1645 head and P3XORP7X (through GET+MGA to GET45) in the pinned yaAGC oracle
 for all 65536 sampled entries from their callers (tests/lm_vn1645_cases.c), check the native port against every row, and keep
 the oracle stream (build/lm-vn1645-reference.snapshots.bin.xz) for the
 host and freeze steps. --record rewrites the pinned stream identity."""

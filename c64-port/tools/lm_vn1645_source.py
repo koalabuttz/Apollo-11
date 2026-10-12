@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 """Source-to-native map and independent assembly comparison for the native
-Luminary099 MIDGIM and SELECTMU (src/lm_vn1645.c).
+Luminary099 VN1645 head and P3XORP7X (src/lm_vn1645.c).
 
 Reassembles unchanged Luminary099 with the pinned yaYUL (the fixture
 INTERPRETER, as tools/ephemeris_source.py does) and requires the rope to equal
