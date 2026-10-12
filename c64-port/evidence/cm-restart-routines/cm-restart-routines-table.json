@@ -1,0 +1,719 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "first_physical": 1024,
+ "words": [
+  51,
+  8,
+  51,
+  20,
+  51,
+  35,
+  51,
+  71,
+  162,
+  176,
+  222,
+  230,
+  120,
+  31096,
+  19401,
+  4096,
+  1285,
+  14390,
+  4096,
+  1084,
+  23606,
+  4096,
+  1253,
+  31798,
+  1452,
+  31336,
+  11315,
+  2560,
+  1438,
+  11315,
+  4096,
+  1432,
+  28727,
+  6144,
+  1406,
+  25653,
+  4096,
+  1279,
+  23607,
+  8192,
+  1303,
+  14391,
+  0,
+  0,
+  0,
+  9216,
+  1103,
+  28723,
+  9216,
+  1195,
+  28723,
+  9216,
+  1046,
+  28723,
+  31975,
+  31241,
+  12232,
+  32767,
+  31367,
+  12232,
+  12288,
+  1372,
+  20535,
+  32767,
+  31367,
+  12232,
+  2996,
+  31523,
+  12233,
+  32767,
+  31367,
+  12232,
+  2496,
+  31363,
+  12232,
+  40,
+  31309,
+  12233,
+  160,
+  31284,
+  12233,
+  500,
+  31349,
+  12233,
+  250,
+  30877,
+  12233,
+  200,
+  30904,
+  12232,
+  7168,
+  1024,
+  27701,
+  7168,
+  2018,
+  27701,
+  954,
+  31456,
+  20535,
+  5120,
+  1156,
+  20535,
+  10240,
+  1024,
+  13360,
+  250,
+  31229,
+  12233,
+  5632,
+  1371,
+  12341,
+  2100,
+  31491,
+  10185,
+  5120,
+  1190,
+  20534,
+  500,
+  31378,
+  12232,
+  7680,
+  1354,
+  22582,
+  31747,
+  31370,
+  10185,
+  5632,
+  1411,
+  22582,
+  7680,
+  1548,
+  21558,
+  32767,
+  31535,
+  4041,
+  32767,
+  30892,
+  12232,
+  5632,
+  1327,
+  22583,
+  31813,
+  31423,
+  12232,
+  32767,
+  31338,
+  12233,
+  32767,
+  31235,
+  12233,
+  10,
+  31363,
+  12232,
+  32767,
+  30942,
+  12233,
+  250,
+  30929,
+  12233,
+  32767,
+  30916,
+  12233,
+  32767,
+  30882,
+  12233,
+  32767,
+  31349,
+  12233,
+  13312,
+  1694,
+  31799,
+  200,
+  31034,
+  969,
+  8192,
+  1604,
+  31799,
+  200,
+  31034,
+  969,
+  200,
+  31034,
+  969,
+  32767,
+  31254,
+  969,
+  8192,
+  1326,
+  27701,
+  32767,
+  31357,
+  5066,
+  8192,
+  1367,
+  27701,
+  8192,
+  1748,
+  27701,
+  8192,
+  2703,
+  2101,
+  9216,
+  1438,
+  27701,
+  32767,
+  31338,
+  5066,
+  8192,
+  1757,
+  27701,
+  8192,
+  1731,
+  27701,
+  0,
+  0,
+  0,
+  8192,
+  1776,
+  27701,
+  0,
+  0,
+  0,
+  32767,
+  31204,
+  969,
+  32767,
+  31294,
+  968,
+  32767,
+  31582,
+  16329,
+  100,
+  31055,
+  12232,
+  100,
+  31055,
+  12232,
+  12288,
+  1915,
+  23603,
+  0,
+  0,
+  0,
+  31786,
+  31459,
+  19401,
+  0,
+  0,
+  0
+ ],
+ "labels": [
+  {
+   "group": 1,
+   "phase": 3,
+   "pointer": 12
+  },
+  {
+   "group": 1,
+   "phase": 5,
+   "pointer": 15
+  },
+  {
+   "group": 1,
+   "phase": 7,
+   "pointer": 18
+  },
+  {
+   "group": 1,
+   "phase": 9,
+   "pointer": 21
+  },
+  {
+   "group": 2,
+   "phase": 3,
+   "pointer": 24
+  },
+  {
+   "group": 2,
+   "phase": 5,
+   "pointer": 27
+  },
+  {
+   "group": 2,
+   "phase": 7,
+   "pointer": 30
+  },
+  {
+   "group": 2,
+   "phase": 9,
+   "pointer": 33
+  },
+  {
+   "group": 2,
+   "phase": 11,
+   "pointer": 36
+  },
+  {
+   "group": 3,
+   "phase": 3,
+   "pointer": 39
+  },
+  {
+   "group": 3,
+   "phase": 5,
+   "pointer": 42
+  },
+  {
+   "group": 3,
+   "phase": 7,
+   "pointer": 45
+  },
+  {
+   "group": 3,
+   "phase": 9,
+   "pointer": 48
+  },
+  {
+   "group": 3,
+   "phase": 11,
+   "pointer": 51
+  },
+  {
+   "group": 3,
+   "phase": 13,
+   "pointer": 54
+  },
+  {
+   "group": 4,
+   "phase": 2,
+   "pointer": 57
+  },
+  {
+   "group": 4,
+   "phase": 4,
+   "pointer": 63
+  },
+  {
+   "group": 4,
+   "phase": 6,
+   "pointer": 69
+  },
+  {
+   "group": 4,
+   "phase": 3,
+   "pointer": 75
+  },
+  {
+   "group": 4,
+   "phase": 5,
+   "pointer": 78
+  },
+  {
+   "group": 4,
+   "phase": 7,
+   "pointer": 81
+  },
+  {
+   "group": 4,
+   "phase": 9,
+   "pointer": 84
+  },
+  {
+   "group": 4,
+   "phase": 11,
+   "pointer": 87
+  },
+  {
+   "group": 4,
+   "phase": 13,
+   "pointer": 90
+  },
+  {
+   "group": 4,
+   "phase": 15,
+   "pointer": 93
+  },
+  {
+   "group": 4,
+   "phase": 17,
+   "pointer": 96
+  },
+  {
+   "group": 4,
+   "phase": 19,
+   "pointer": 99
+  },
+  {
+   "group": 4,
+   "phase": 21,
+   "pointer": 102
+  },
+  {
+   "group": 4,
+   "phase": 23,
+   "pointer": 105
+  },
+  {
+   "group": 4,
+   "phase": 25,
+   "pointer": 108
+  },
+  {
+   "group": 4,
+   "phase": 27,
+   "pointer": 111
+  },
+  {
+   "group": 4,
+   "phase": 29,
+   "pointer": 114
+  },
+  {
+   "group": 4,
+   "phase": 31,
+   "pointer": 117
+  },
+  {
+   "group": 4,
+   "phase": 33,
+   "pointer": 120
+  },
+  {
+   "group": 4,
+   "phase": 35,
+   "pointer": 123
+  },
+  {
+   "group": 4,
+   "phase": 37,
+   "pointer": 126
+  },
+  {
+   "group": 4,
+   "phase": 39,
+   "pointer": 129
+  },
+  {
+   "group": 4,
+   "phase": 41,
+   "pointer": 132
+  },
+  {
+   "group": 4,
+   "phase": 43,
+   "pointer": 135
+  },
+  {
+   "group": 4,
+   "phase": 45,
+   "pointer": 138
+  },
+  {
+   "group": 4,
+   "phase": 47,
+   "pointer": 141
+  },
+  {
+   "group": 4,
+   "phase": 49,
+   "pointer": 144
+  },
+  {
+   "group": 4,
+   "phase": 51,
+   "pointer": 147
+  },
+  {
+   "group": 4,
+   "phase": 53,
+   "pointer": 150
+  },
+  {
+   "group": 4,
+   "phase": 55,
+   "pointer": 153
+  },
+  {
+   "group": 4,
+   "phase": 57,
+   "pointer": 156
+  },
+  {
+   "group": 4,
+   "phase": 59,
+   "pointer": 159
+  },
+  {
+   "group": 4,
+   "phase": 61,
+   "pointer": 162
+  },
+  {
+   "group": 4,
+   "phase": 63,
+   "pointer": 165
+  },
+  {
+   "group": 5,
+   "phase": 2,
+   "pointer": 168
+  },
+  {
+   "group": 5,
+   "phase": 4,
+   "pointer": 174
+  },
+  {
+   "group": 5,
+   "phase": 3,
+   "pointer": 180
+  },
+  {
+   "group": 5,
+   "phase": 5,
+   "pointer": 183
+  },
+  {
+   "group": 5,
+   "phase": 7,
+   "pointer": 186
+  },
+  {
+   "group": 5,
+   "phase": 9,
+   "pointer": 189
+  },
+  {
+   "group": 5,
+   "phase": 11,
+   "pointer": 192
+  },
+  {
+   "group": 5,
+   "phase": 13,
+   "pointer": 195
+  },
+  {
+   "group": 5,
+   "phase": 15,
+   "pointer": 198
+  },
+  {
+   "group": 5,
+   "phase": 17,
+   "pointer": 201
+  },
+  {
+   "group": 5,
+   "phase": 19,
+   "pointer": 204
+  },
+  {
+   "group": 5,
+   "phase": 21,
+   "pointer": 207
+  },
+  {
+   "group": 5,
+   "phase": 23,
+   "pointer": 210
+  },
+  {
+   "group": 5,
+   "phase": 25,
+   "pointer": 213
+  },
+  {
+   "group": 5,
+   "phase": 27,
+   "pointer": 216
+  },
+  {
+   "group": 5,
+   "phase": 29,
+   "pointer": 219
+  },
+  {
+   "group": 5,
+   "phase": 31,
+   "pointer": 222
+  },
+  {
+   "group": 5,
+   "phase": 33,
+   "pointer": 225
+  },
+  {
+   "group": 6,
+   "phase": 2,
+   "pointer": 228
+  },
+  {
+   "group": 6,
+   "phase": 3,
+   "pointer": 234
+  },
+  {
+   "group": 6,
+   "phase": 5,
+   "pointer": 237
+  },
+  {
+   "group": 6,
+   "phase": 7,
+   "pointer": 240
+  },
+  {
+   "group": 6,
+   "phase": 9,
+   "pointer": 243
+  },
+  {
+   "group": 6,
+   "phase": 11,
+   "pointer": 246
+  },
+  {
+   "group": 1,
+   "phase": 2,
+   "pointer": 57
+  },
+  {
+   "group": 2,
+   "phase": 2,
+   "pointer": 57
+  },
+  {
+   "group": 3,
+   "phase": 2,
+   "pointer": 57
+  }
+ ],
+ "initdsp": {
+  "physical": 1888,
+  "words": [
+   1713,
+   8243
+  ]
+ },
+ "newphase_sites": [
+  {
+   "physical": 20779,
+   "word": 4,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "P40-P47.agc:373",
+   "operand": "OCT 4"
+  },
+  {
+   "physical": 20855,
+   "word": 4,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "P40-P47.agc:477",
+   "operand": "OCT 4"
+  },
+  {
+   "physical": 20911,
+   "word": 4,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "P40-P47.agc:556",
+   "operand": "OCT 4"
+  },
+  {
+   "physical": 20931,
+   "word": 4,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "P40-P47.agc:582",
+   "operand": "OCT 4"
+  },
+  {
+   "physical": 20991,
+   "word": 4,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "P40-P47.agc:666",
+   "operand": "OCT 4"
+  },
+  {
+   "physical": 28052,
+   "word": 5,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:634",
+   "operand": "OCT 00005"
+  },
+  {
+   "physical": 32208,
+   "word": 5,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "SERVICER207.agc:237",
+   "operand": "OCT 5"
+  },
+  {
+   "physical": 32278,
+   "word": 1,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "SERVICER207.agc:334",
+   "operand": "OCT 1"
+  },
+  {
+   "physical": 32297,
+   "word": 5,
+   "callee": "NEWPHASE",
+   "callee_address": 2124,
+   "caller": "SERVICER207.agc:358",
+   "operand": "OCT 5"
+  }
+ ]
+}

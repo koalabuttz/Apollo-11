@@ -402,13 +402,24 @@ Hashes: `evidence/lm-conic-lambert/SHA256.json`. Bulk files are assets of the
 - Oracle: `tools/lm_conic_lambert_reference.c` (GPL, host only) runs the
   unchanged Luminary099 in the pinned yaAGC hardware-DV variant over 65536
   sampled entries (`tests/lm_conic_lambert_cases.c`), with both IRQ settings,
-  SUPER, EBANK, all five VACs, PUSHLOC, MODE and OVFIND.
+  SUPER, EBANK, all five VACs, PUSHLOC, MODE and OVFIND. On a clean checkout
+  the oracle needs the pinned fixture rope first: `python3
+  tools/rtb_angles_prepare_reference.py` builds `deps/lm-rtb-fixture` (it
+  needs `deps/lm-powered-fixture` and yaYUL) and checks the rope against the
+  pinned one. The same holds for the Kepler, time-theta and time-radius
+  oracles.
   `tools/lm_conic_lambert_differential.py` checks the native producer against
   every entry and pins the stream identity
-  (`lm-conic-lambert-source-stream.json`, SHA256 `9e590783...68a820`,
-  269,090,816 bytes). LAMBERT returns on 60552 entries and reaches the 1302
-  abort (a SQRT in the COGA bounds or INITV) on 4984. All 77 phase
+  (`lm-conic-lambert-source-stream.json`, SHA256 `b312345d...ea06d3`,
+  269,090,816 bytes). LAMBERT returns on 60534 entries and reaches the 1302
+  abort (a SQRT in the COGA bounds or INITV) on 5002. All 77 phase
   transitions taken are frozen.
+- Whole-file record: `python3 tools/lm_conic_file_record.py` writes
+  `lm-conic-file-record.json`, which cites each of the four milestones'
+  oracle stream identity, snapshot archive, checks log, C64 results and source
+  map with the SHA256 its manifest records (and checks the bytes), and
+  `lm-conic-file-checks.log`, the four checks logs together. The certificate
+  cites these, plus `lm-conic-file-independent-review.txt`.
 - Host and sanitizer results: `make test-lm-conic-lambert
   sanitize-lm-conic-lambert`. Strict and ASAN/UBSAN builds each pass 11
   frozen entries, 24 admission guards, 176 frozen phase steps and the full
@@ -422,6 +433,40 @@ Hashes: `evidence/lm-conic-lambert/SHA256.json`. Bulk files are assets of the
   starting each step from a debris-only base state. In VICE (PAL, stock ROMs)
   they pass 17, 16, 16, 12, 26, 12, 33, 7 and 37 steps with no failures
   (`lm-conic-lambert-results.json`).
+
+## Rare source paths
+
+Two cases buckets exist only to drive paths the random geometry misses; the
+oracle stream compares every entry in them.
+
+- DSU BMN COGUPLIM falling through to UPLIM (AGC lines 1411-1414,
+  `src/lm_conic_lambert.c:163-165`). It needs COGAMAX in
+  [.999511597, 1) with no overflow. The 32 cases with `(n & 2047) == 1717`
+  use nine short transfers (r1 along x, r2 in the xy plane at |r2| = k|r1|
+  and angle th, GEOMSGN positive) found by searching the native producer.
+  All 32 take the fall-through.
+- BZE NEGP after LAMBLOOP's DDV (AGC lines 1449-1451,
+  `src/lm_conic_lambert.c:223`). ROUND BZE 360LAMB tests the rounded triple
+  MPAC, but LAMBLOOP divides the double 1-CSTH that STORE wrote before the
+  ROUND. When r1 and r2 are almost parallel, CSTH can come out one lsb above
+  .5 (20000 00001). SR1 BDSU D1/4 then leaves MPAC = 77777 77777 20000. STORE
+  writes 1-CSTH as double negative zero, but ROUND carries the half-lsb third
+  word to 77777 00001, which is nonzero, so 360LAMB is not taken. LAMBLOOP
+  reloads the stored -0, the DDV quotient is zero, BMN does not branch and
+  BZE takes NEGP. The 32 cases with `(n & 2047) == 717` use eight
+  almost-parallel pairs (|th| from 2^-13 down to 2^-19 rad). All 32 take the
+  branch this way, and no other sampled entry does.
+
+## Interpretive order decoding
+
+`lmi_switch`, `lmi_store`, `lmi_direct` and `lmi_indexed`
+(`src/lm_interp_steps.c`, `src/lm_interp_orders.c`) read the order or
+address word they are handed and take its bit fields apart at run time, as
+the original SWITCHES, STORE and address-decoding code does. Each caller
+passes a compiled literal (the assembled fixed word at that address), so the
+fields are always the same for a given call site and no order is fetched
+from memory or dispatched through a table. These bodies come from
+INTERPRETER.agc, which Lane A owns and which is still partial.
 
 ## Limits
 

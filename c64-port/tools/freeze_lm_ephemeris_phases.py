@@ -14,7 +14,7 @@ from frozen_words import encode_rows,c_header
 from lm_ephemeris_core import CORE
 IDS=[0,1,2,4,6,8,9,32,63,383,4095,4096,17000,40000,51234,65471]
 # Phase numbers (include/lm_ephemeris.h) in each C64 diagnostic group.
-GROUPS={1:[0,1],2:[2,3,4,6,7],3:[5,8]}
+GROUPS={1:[0,1],2:[2,3,4,6,7],3:[5],4:[8]}
 PER_PHASE=6
 subprocess.run(['cc','-std=c99','-O2','-Wall','-Wextra','-Werror','-Wconversion','-pedantic','-Iinclude','-Itests','tools/lm_ephemeris_phases.c',*CORE,'-o','build/lm-ephemeris-phases'],cwd=R,check=True)
 subprocess.run(['cc','-std=c99','-O2','-Wall','-Wextra','-Werror','-Wconversion','-pedantic','-Iinclude','-Itests','tools/lm_ephemeris_inputs.c','tests/lm_ephemeris_cases.c','-o','build/lm-ephemeris-inputs'],cwd=R,check=True)

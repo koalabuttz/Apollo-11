@@ -3,6 +3,21 @@
   "milestone": "lm-conic-lambert",
   "release": "evidence-lm-conic-lambert",
   "files": {
+    "lm-conic-file-checks.log": {
+      "sha256": "75874aaf2e85d4baf0755a1d6b2d74a6f68a61174e72d90a7510a5b40b239ea3",
+      "bytes": 4618,
+      "store": "tree"
+    },
+    "lm-conic-file-independent-review.txt": {
+      "sha256": "246fc0d93b5517b303b9c31e77bdaf0d43df31eeccf6b51a5feeb533066d25de",
+      "bytes": 9674,
+      "store": "tree"
+    },
+    "lm-conic-file-record.json": {
+      "sha256": "2233141e70c923d647bce4a6538a366430b539b3ebf510bfbc7ae18ea1b8d8fa",
+      "bytes": 7232,
+      "store": "tree"
+    },
     "lm-conic-lambert-1.map": {
       "sha256": "4f9f98ee722afcaa5262adbba08c48e10357a283ca62f688a157993dc18efe98",
       "bytes": 29716,
@@ -94,8 +109,8 @@
       "store": "release"
     },
     "lm-conic-lambert-checks.log": {
-      "sha256": "3f6830fe53fccfbcd1e259222b1d1c23c8fdee906647f4048f1a6627d617aaa8",
-      "bytes": 1393,
+      "sha256": "df723518335088be1b7c2f0918388f4c33e6cd8fd7eb232100023421895b0994",
+      "bytes": 1528,
       "store": "tree"
     },
     "lm-conic-lambert-phase-steps.json": {
@@ -104,13 +119,13 @@
       "store": "tree"
     },
     "lm-conic-lambert-reference.snapshots.bin.xz": {
-      "sha256": "9b03c398a1d73b54007ed545e6d8fc035d807207a6ac559088fa6f54bf52890d",
-      "bytes": 34629588,
+      "sha256": "97c7aa2ec419d9e2897ad91908279b7ffa1f8c9a3cd1930ee0aa4f7881f3e21f",
+      "bytes": 34642040,
       "store": "release"
     },
     "lm-conic-lambert-results.json": {
-      "sha256": "af8b6eb6241f48d07aaa8ead27e82e117c7318adc1b6a27fb390d6257d655d13",
-      "bytes": 5438,
+      "sha256": "58a40641ca5128d4497b8cf8cb3caa1c466ca1658fba66b8a5b78bd5ca1ad3b0",
+      "bytes": 5578,
       "store": "tree"
     },
     "lm-conic-lambert-source-map.json": {
@@ -119,7 +134,7 @@
       "store": "tree"
     },
     "lm-conic-lambert-source-stream.json": {
-      "sha256": "f53f402032d5f54011fb87c0ce62f3edf6b588f64b6a0a9189b0b143834312fe",
+      "sha256": "b47e9cad52fce1eabf61e7d705c1edee05e16a13087054c73fb3acb52cc70cad",
       "bytes": 368,
       "store": "tree"
     },
