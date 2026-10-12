@@ -27,7 +27,7 @@ int main(void){apollo_overlay_state s;unsigned n,p,seen[LM_RESTART_TABLE_WORDS]=
  }
  check(entries==40u,"every table entry selected",entries);
  /* Unmapped service: the trampoline stops at the selected service. */
- {agc_native_program program={&lm_restart_routines,1,0,0,lm_restart_operands,2,AGC_TRANSFER_NONE,0,0,0,0};agc_word sb=0;uint16_t steps;
+ {agc_native_program program={&lm_restart_routines,1,0,0,lm_restart_operands,2,AGC_TRANSFER_NONE,0,0,0,0,0};agc_word sb=0;uint16_t steps;
   for(n=0;n<LM_RSR_CASES;n+=97u){(void)lm_rsselect_input(&s,lm_rsr_select_case((uint16_t)n));
    st=agc_transfer_run(&program,&s,0,&sb,FF(LM_RS_SWRETURN),8,&steps);
    check(st==EXEC_UNMAPPED&&(s.words[5]==LM_RS_FINDVAC||s.words[5]==LM_RS_NOVAC||s.words[5]==LM_RS_WAITLIST||s.words[5]==LM_RS_LONGCALL),"unmapped service",n);}
