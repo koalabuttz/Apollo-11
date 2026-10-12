@@ -8,6 +8,15 @@ auditor's review. The file stays `partial` until the auditor flips it.
 Comanche055's EXTENDED_VERBS follows once its interpretive words are
 translated.
 
+## Open before review
+
+The auditor's review of the display certificate (issue #54) requires every
+entry of a certified file to be a registered routine of the native
+control-transfer ABI (`docs/NATIVE_TRANSFER_ABI.md`), with a host and C64
+round trip through `agc_transfer_run`. The extended-verb modules are not yet
+registered either, so this certificate goes to the reviewer once that is
+done for both files.
+
 ## What it claims
 
 Every one of the file's 994 assembled words has exactly one owner:
