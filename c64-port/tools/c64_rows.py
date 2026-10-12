@@ -46,7 +46,7 @@ def name(w):
 # interpretive words (an empty opcode column is an interpretive operand or the
 # second word of a two-word constant).
 DATA = {'OCT', 'DEC', '2DEC', 'CADR', '2CADR', 'FCADR', '2FCADR', 'ADRES', 'GENADR', 'ECADR', 'REMADR',
-        'BBCON', '2BCADR', 'VN', 'EBANK=', 'BANK', 'SETLOC', 'CALL', 'EXIT', 'STCALL', 'RTB', 'BHIZ'}
+        'BBCON', 'BBCON*', 'OCTAL', '2BCADR', 'VN', 'EBANK=', 'BANK', 'SETLOC', 'CALL', 'EXIT', 'STCALL', 'RTB', 'BHIZ'}
 
 
 def listing(path):
@@ -65,14 +65,14 @@ def listing(path):
 def unexecuted_instructions(lst, owned, host):
     """Owned words that hold an instruction the CPU starts at yet no host case executed.
 
-    A word right after EXTEND or INDEX runs in the same step as its prefix, so
+    A word right after EXTEND or INDEX (NDX) runs in the same step as its prefix, so
     the trace credits the prefix; the step's outcome still lands on its own word."""
     bad = []
     for w in sorted(set(owned) - host):
         ops = [o for o in lst.get(w, []) if o]
         if not ops or any(o in DATA for o in ops):
             continue
-        if any(o in ('EXTEND', 'INDEX') for o in lst.get(w - 1, [])):
+        if any(o in ('EXTEND', 'INDEX', 'NDX') for o in lst.get(w - 1, [])):
             continue
         bad.append(name(w))
     return bad

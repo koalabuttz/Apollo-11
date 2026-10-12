@@ -31,6 +31,8 @@ TABLES = {
     'lm-v37': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_v37_operands.inc', 'LM_V37'),
     'cm-fresh-start': ('Comanche055', 'FRESH_START_AND_RESTART', (), 'src/cm_fresh_start_operands.inc', 'CM_FRESH'),
     'cm-v37': ('Comanche055', 'FRESH_START_AND_RESTART', (), 'src/cm_v37_operands.inc', 'CM_V37'),
+    'lm-self-check': ('Luminary099', 'AGC_BLOCK_TWO_SELF-CHECK', (), 'src/lm_self_check_operands.inc', 'LM_SC'),
+    'cm-self-check': ('Comanche055', 'AGC_BLOCK_TWO_SELF-CHECK', (), 'src/cm_self_check_operands.inc', 'CM_SC'),
 }
 # Tables whose own interbank calls include IBNKCALL, and fixed tables the
 # file reads with INDEX (label, words), compiled as arrays.
@@ -39,6 +41,8 @@ ARRAYS = {'lm-v37': (('PREMM1', 30), ('FCADRMM1', 30), ('DNLADMM1', 30)), 'cm-fr
           'cm-v37': (('PREMM1', 33), ('FCADRMM1', 33), ('DNLADMM1', 33), ('FLAGTABL', 12))}
 # Tables that also compile the constants the file reads with MP.
 MP_TABLES = ('cm-fresh-start', 'cm-v37')
+# Tables whose constant names keep their signs (S+1 -> SP1, S-1 -> SM1), as SELF-CHECK has both.
+SIGNED_NAMES = ('lm-self-check', 'cm-self-check')
 OWN = ('BANKCALL', 'POSTJUMP')
 ONE_WORD = ('CA', 'CAF', 'CS', 'AD', 'MASK')
 TWO_WORD = ('DCA', 'DCS')
@@ -71,7 +75,7 @@ def build(name):
             continue
         phys = address12 if address12 >= 0o4000 else here // 1024 * 1024 + address12 - 0o2000
         parts = opnd.split()
-        name_ = re.sub(r'\W', '_', parts[0])
+        name_ = re.sub(r'\W', '_', parts[0].replace('+', 'P').replace('-', 'M') if name in SIGNED_NAMES else parts[0])
         if len(parts) > 1 and re.fullmatch(r'[+-]\d+D?', parts[1]):   # SWINIT +2 -> SWINIT_P2
             name_ += ('_P' if parts[1][0] == '+' else '_M') + parts[1][1:].rstrip('D')
         value = [listed[phys + k][0] for k in range(count)]

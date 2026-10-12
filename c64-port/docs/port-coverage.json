@@ -88,8 +88,20 @@
       "sha256": "f86f1a02856b29a2cd01186a1a807fe4455b576624f8c4cb5876408677c83868",
       "bytes": 13911,
       "lines": 513,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_self_check.c",
+            "src/self_check_body.inc",
+            "src/cm_self_check_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 43 3234-3725 but FXADRS: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS (INDEX SKEEP3; CA 0, the fixed-fixed rope read) untranslated: a run stops there.",
+          "verification": "docs/SELF-CHECK.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/ALARM_AND_ABORT.agc",
@@ -3575,8 +3587,20 @@
       "sha256": "fce563bb8f9c943a3c90242491f002f2b2ebd0b7610d47105ecb669312fcaa9c",
       "bytes": 13695,
       "lines": 513,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_self_check.c",
+            "src/self_check_body.inc",
+            "src/lm_self_check_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 43 3232-3723 but FXADRS: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS (INDEX SKEEP3; CA 0, the fixed-fixed rope read) untranslated: a run stops there.",
+          "verification": "docs/SELF-CHECK.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/AGS_INITIALIZATION.agc",
