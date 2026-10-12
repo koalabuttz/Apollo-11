@@ -130,6 +130,10 @@ class Compiler:
         self.words = set(l.phys + i for l in self.lines for i in range(len(l.words)))
         self.superbank = any(l.phys >= 0o40 * 1024 for l in self.lines)
         self.high_banks = any(l.phys >= 0o30 * 1024 for l in self.lines)
+        # resume_keys: every word after a DANZIG is a routine of its own, so
+        # a job whose DANZIG finds NEWJOB positive stops at CHANG2 and the
+        # Executive's resume (NEWOPS at LOC +1) has its key.
+        self.rk = bool(spec.get('resume_keys'))
         self.lo = min(self.words)
         self.hi = max(self.words)
         # The file's fixed words as contiguous physical ranges.
@@ -276,6 +280,10 @@ class Compiler:
             if ln is None or not is_interp_op(ln.op):
                 raise CompileError('interpretive flow runs into %s (%r)' % (self.where(p), ln))
             stmts, nxt, done = self.slot(p, bank)
+            if self.rk and not done and stmts and stmts[-1] in ('next(s);', 'setpd_next(s);'):
+                stmts[-1] = 'if(%s)return EXEC_OK;' % stmts[-1][:-1]
+                self.add_start(nxt, 'i', 'CHANG2 resume')
+                self.externals_any[self.L.labels['CHANG2']] = 'CHANG2'
             for q in range(p, nxt):
                 self.owner.setdefault(q, start)
             p = nxt
@@ -419,6 +427,9 @@ class Compiler:
             return st, cur, False, False
         if base in ('BPL', 'BMN', 'BZE', 'BHIZ'):
             fn = {'BPL': 'bplbmn', 'BMN': 'bplbmn', 'BZE': 'bzegoto', 'BHIZ': 'bhiz'}[base]
+            if base == 'BHIZ':
+                # RTB/BHIZ CCS CYR (negative) comes before BHIZ's CCS MPAC.
+                st[-1] += '(void)ai_ccs(s,020);'
             st.append('if(%s%s(s)){' % (P, fn))
             st.extend(['  ' + x for x in self.goto(w, base + ' target')])
             st.append('}')
@@ -860,19 +871,38 @@ class Compiler:
                 ws = ','.join('0%05o' % self.L.word(fp + i) for i in range(n))
                 c.append('static const agc_word K%o[%d] MAYBE_UNUSED={%s}; /* %s %s */' % (fp, n, ws, self.where(fp), self.consts[fp] or ''))
             c.append('')
-        c.append('static MAYBE_UNUSED void next(apollo_overlay_state *s){%sdanzig_next(s);}' % P)
+        if self.rk:
+            ch2 = self.L.labels['CHANG2']
+            assert ch2 // 1024 in (2, 3)
+            ch2 = self.logical_of(ch2)
+            c.append('/* DANZIG at the end of a pair: NEWJOB +0 goes on to NEWOPS; positive')
+            c.append(' * goes to CHANG2 (CA BANKSET; TS BBANK; CCS EDOP; CCS NEWJOB; TCF')
+            c.append(' * CHANG2) and the routine stops there. */')
+            c.append('static MAYBE_UNUSED uint8_t next(apollo_overlay_state *s){')
+            c.append(' if(!W[067]){%sdanzig_next(s);return 0;}' % P)
+            c.append(' ai_ca(s,0165);(void)ai_ts(s,6);(void)ai_ccs(s,023);(void)ai_ccs(s,067);W[5]=0%04ou;return 1;' % ch2)
+            c.append('}')
+        else:
+            c.append('static MAYBE_UNUSED void next(apollo_overlay_state *s){%sdanzig_next(s);}' % P)
         c.append('static MAYBE_UNUSED void right(apollo_overlay_state *s){%sdanzig_right(s);}' % P)
         c.append('/* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB')
         c.append(' * (+0); INCR LOC; NEWOPS. */')
-        c.append('static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=0%04o;}' % self.newops)
+        if self.rk:
+            c.append('static MAYBE_UNUSED uint8_t setpd_next(apollo_overlay_state *s){')
+            c.append(' (void)ai_ccs(s,023);if(!W[067]){(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=0%04o;return 0;}' % self.newops)
+            c.append(' (void)ai_ccs(s,067);W[5]=0%04ou;return 1;' % ch2)
+            c.append('}')
+        else:
+            c.append('static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=0%04o;}' % self.newops)
         c.append('static MAYBE_UNUSED void shorts(apollo_overlay_state *s){%sshort_dispatch(s);if(W[5]==0%04ou)%sshortt(s);else %sshortv(s);}' % (P, self.shortt, P, P))
         c.append('')
         c.append('/* The image as the routines need it: ordinary words (A, L and Q may')
-        c.append(' * hold 16 bits), coherent banks, NEWJOB +0, FIXLOC a VAC area and the')
+        c.append(' * hold 16 bits), coherent banks, NEWJOB %s, FIXLOC a VAC area and the' % ('+0 or positive' if self.rk else '+0'))
         c.append(' * latches in range. */')
         c.append('static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){')
         c.append(' unsigned i,vac=W[0120];')
-        c.append(' if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+        c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
+                 % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
         c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
         c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')

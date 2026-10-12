@@ -89,6 +89,7 @@ class Mission:
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
+        self.rk = bool(spec.get('resume_keys'))
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
 
@@ -145,7 +146,9 @@ def case(mi, point, n, rng):
     E[3] = eb << 8
     E[4] = fb
     E[6] = fb | eb
-    E[0o67] = 0
+    # NEWJOB +0, or (resume_keys) positive in a quarter of the cases: a job
+    # waiting, so the next DANZIG goes to CHANG2.
+    E[0o67] = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
     shape = n % 3
