@@ -28,11 +28,11 @@ OWNERS=[(0o3360,0o3360,'ltf_entry'),(0o3361,0o3420,'ltf_conmu'),(0o3421,0o3426,'
  (0o3541,0o3547,'ltf_fallback'),(0o3550,0o3560,'ltf_inbound'),(0o3561,0o3572,'ltf_xtest'),(0o3573,0o3610,'ltf_series'),
  (0o3611,0o3630,'ltf_poly'),(0o3631,0o3640,'ltf_scale'),(0o3641,0o3644,'ltf_endtff'),(0o3645,0o3647,'ltf_negtff'),
  (0o3650,0o3650,'ltf_maxtff1'),(0o3651,0o3652,'ltf_maxtff'),(0o3653,0o3654,'ltf_tffell'),(0o3655,0o3673,'ltf_tffel1'),
- (0o3674,0o3734,'ltf_ellipse'),(0o3735,0o3753,'rtb_tx'),(0o3754,0o3771,'constants')]
+ (0o3674,0o3734,'ltf_ellipse'),(0o3735,0o3752,'rtb_tx'),(0o3753,0o3753,'lm_time_free_fall_tcdanzig'),(0o3754,0o3771,'constants')]
 # Helpers a function reaches for words it passes on (RVQ, BOVB TCDANZIG,
 # RTB T(X) and its table).
-HELPERS={'ltf_conmu_end':['rvq'],'ltf_rapo':['rvq'],'ltf_fallback':['rvq'],'ltf_endtff':['rvq'],'ltf_rpra':['bovb_danzig'],'ltf_qterm':['bovb_danzig'],
- 'ltf_poly':['rtb_tx'],'ltf_ellipse':['rtb_tx'],'rtb_tx':['constants']}
+HELPERS={'ltf_conmu_end':['rvq'],'ltf_rapo':['rvq'],'ltf_fallback':['rvq'],'ltf_endtff':['rvq'],'ltf_rpra':['lm_time_free_fall_bovb_tcdanzig'],'ltf_qterm':['lm_time_free_fall_bovb_tcdanzig'],'lm_time_free_fall_bovb_tcdanzig':['lm_time_free_fall_tcdanzig'],
+ 'ltf_poly':['rtb_tx'],'ltf_ellipse':['rtb_tx'],'rtb_tx':['constants','lm_time_free_fall_tcdanzig']}
 native=(R/'src/lm_time_free_fall.c').read_text()
 def body(name):
  if name=='constants':
@@ -58,7 +58,7 @@ for r in records:
  owned.add(owner[0]);rows.append(dict(line=r['line'],address=r['assembled_address'],source=(r['label']+' '+r['op']+' '+r['arguments']).strip(),words=[f'{w:05o}'for w in r['words']],native=owner[0]))
 missing={o for _,_,o in OWNERS}-owned
 if missing:raise SystemExit('FAIL native phases own no source: '+', '.join(sorted(missing)))
-KEYS=('TFFCONIC','TFFCONMU','TFFRP/RA','CALCTPER','CALCTFF','T(X)','PI/16','NEARONE','R300K','TFFZEROS','TFF1/4','RONE','VONE','TFFSW','SR30.1')
+KEYS=('TFFCONIC','TFFCONMU','TFFRP/RA','CALCTPER','CALCTFF','T(X)','ENDT(X)','TCDANZIG','PI/16','NEARONE','R300K','TFFZEROS','TFF1/4','RONE','VONE','TFFSW','SR30.1')
 s=symbols((work/'assembly.lst').read_text())
 result=dict(source_path=path,source_sha256=hashlib.sha256(original.read_bytes()).hexdigest(),rope_sha256=hashlib.sha256(rope).hexdigest(),native_path='src/lm_time_free_fall.c',native_sha256=hashlib.sha256(native.encode()).hexdigest(),
  source_words=sum(len(r['words'])for r in rows),source_lines=len(rows),symbols={k:s[k]for k in KEYS if k in s},line_map=rows,
