@@ -34,6 +34,10 @@
  * the run ends there as a continuation (EXEC_OK) and the key resumes it:
  * CHECKG1 (02335) after the BZF at 02352 found PIPAX unchanged, and
  * FINETIME +1 (04103) after the BZF at 04117 found LOSCALAR 37777.
+ * CHECKG1 is also an interrupt point: the run ends with interrupts
+ * inhibited (CHECKG's INHINT), and the original's RELINT window
+ * (02336-02345) has no ABI boundary, so a scheduler takes interrupts at
+ * the 02335 continuation before resuming the key.
  *
  * io is lm_ipt_io; INHINT and RELINT set control.interrupt_enabled, READ
  * LOSCALAR and READ HISCALAR (FINETIME) read the frozen scaler words.
@@ -53,7 +57,8 @@
  *   - an indexed operand or store with X1 or X2 outside +-0377 (only a
  *     store through another wild index leaves one there);
  *   - AINGOTN's DDV with a divisor whose major part is +-0 once its words
- *     agree in sign (BUFZERO, which the compiled DDV does not follow);
+ *     agree in sign (BUFZERO): unreachable, the divisor is the test's
+ *     elapsed time (about 584 s);
  *   - an interpretive order with FIXLOC not one of the five VAC areas or
  *     PUSHLOC outside FIXLOC..FIXLOC+42, or EDOP not +0;
  *   - no undo image (io->undo NULL), or more than 4000 steps.
