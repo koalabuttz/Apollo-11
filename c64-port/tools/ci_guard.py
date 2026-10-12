@@ -59,6 +59,22 @@ def changed_certificates(base, errors):
             port_coverage.runs_distinct(certificate.get('evidence'), errors, f'{key[0]} ({key[1]})')
 
 
+# include/rope_image.h reads any word of the rope; only AGC_BLOCK_TWO_SELF-CHECK
+# (ROPECHK, STSHOSUM) may use it. Everything else reads constants through
+# fixed_data.h's certified spans.
+ROPE_IMAGE_USERS = {'src/self_check_body.inc', 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c',
+                    'tests/self_check_cases.c', 'tests/test_self_check.c', 'platform/host/self_check_snapshot.c'}
+
+
+def rope_image_includes(errors):
+    """Any source outside ROPE_IMAGE_USERS that includes rope_image.h."""
+    listed = subprocess.run(['git', 'grep', '-l', '-E', r'#\s*include\s*[<"]rope_image\.h[">]', '--', '*.c', '*.h', '*.inc'],
+                            cwd=ROOT, capture_output=True, text=True).stdout.split()
+    for path in listed:
+        if path not in ROPE_IMAGE_USERS:
+            errors.append(f'{path}: includes rope_image.h, which only AGC_BLOCK_TWO_SELF-CHECK may use (read constants through fixed_data.h)')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -89,6 +105,7 @@ def main():
                     records.get(path.name, {}).get('store') != 'tree':
                 errors.append(f'evidence/{milestone}/{path.name}: committed but not a tree-stored manifest entry')
     changed_certificates(args.base, errors)
+    rope_image_includes(errors)
     try:
         ledgers.load()
     except ValueError as error:

@@ -101,8 +101,8 @@ void ipt_input(apollo_overlay_state *m,ipt_case *c,uint16_t n){
   W[E5(01562)]=small_class(&seed,below(&seed,3u),2u);
   W[E5(01473)]=ccs_class(&seed,below(&seed,4u));
   if(below(&seed,2u))W[E5(01576)]=0;
-  /* ALX1S: 0 after ESTIMS, 12 lower after each ALKCG pass; CMPX1 +-0
-   * (ALKLP's LXC/SXA flips it). */
+  /* ALX1S +0 or -(12..132), CMPX1 +-0 (flight: ALX1S 144, then 132 down to
+   * 0 by 12, CMPX1 +-1; the review's probe with those gave the same outcomes). */
   {agc_word x=(agc_word)(12u*below(&seed,12u));W[E5(01444)]=x?(agc_word)(~x&077777u):0u;}
   W[E5(01445)]=(rnd(&seed)>>17)&1u?077777u:0u;
   /* CHECKG1: PIPAX unchanged since CHECKG's first read (ZERONDX holds

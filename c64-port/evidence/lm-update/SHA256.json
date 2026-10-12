@@ -9,17 +9,17 @@
       "store": "release"
     },
     "lm-update-host.log": {
-      "sha256": "6c9b6ea802ecbf4f296166053ca1e4893f27c369b6e14b9e4adceedd6eeceb92",
-      "bytes": 1696,
+      "sha256": "56559ad933825f0e7c14460c8c6fbb61df0293a82e275f932d98594cba3b79be",
+      "bytes": 1413,
       "store": "release"
     },
     "lm-update-proof.json": {
-      "sha256": "ec3bcf72a8e9ea14d22f74d117c08629eb5988b73a8321ae49877df27b079530",
-      "bytes": 671,
+      "sha256": "feea17cabc9cfabcb3a2ecc8ec42449a21b12a43e3def02a55beaba4577f609a",
+      "bytes": 1578,
       "store": "tree"
     },
     "lm-update-vice.log": {
-      "sha256": "40f06a86102e05b296f52b5046dc9945d51582161061d84977a106340ad652d7",
+      "sha256": "5d84b1ed02aabc02dd13ce476e37c09dfd3a76309df3691a19d8139107285567",
       "bytes": 611,
       "store": "release"
     }

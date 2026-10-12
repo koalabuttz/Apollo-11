@@ -2,13 +2,14 @@
 /* cm-update: Comanche055 UPDATE_PROGRAM cases through the trampoline, against
  * digests frozen from the original program; every registered entry is
  * reached and each run ends at an entry outside the file (through both
- * CKMDMORE outcomes); a TC UPTEMP or
+ * CKMDMORE outcomes) or, for UPACTOFF from either BANKCALL, at SWRETURN; a TC UPTEMP or
  * INDEX UPTEMP; TC 1 word TIMEDIDL never stores, an UPVERB with no branch,
  * an update that would write a register or counter, a missing io record and
  * UPACTOFF without the hardware record are refused. */
 #include <stdio.h>
 #include "cm_update_cases.h"
 #include "cm_update_vectors.h"
+#include "cm_update_c64_vectors.h"
 #include "cm_interbank_routines.h"
 #include "../src/cm_update_operands.inc"
 static unsigned checks,failures;
@@ -30,11 +31,13 @@ static void at(apollo_overlay_state *s,cm_native_io *io,agc_hardware *hw,agc_wor
  cm_up_input(s,io,hw,(uint16_t)k);
 }
 /* External entries a run may end at (Z, and the bank for switched ones). */
-static const struct { agc_word z; uint8_t bank; } ends[13]={
+static const struct { agc_word z; uint8_t bank; } ends[14]={
  {02076u,043u},{05412u,0},{05354u,0},{02561u,010u},{04400u,0},{05147u,0},{05217u,0},{06006u,0},{05546u,0},{07226u,0},
- {02671u,027u},{05357u,0},{05534u,0}};
-int main(void){apollo_overlay_state s;cm_native_io io;agc_hardware hw;enum exec_status st;unsigned n,i,ended[13]={0};
+ {02671u,027u},{05357u,0},{05534u,0},{CM_UP_SWRETURN,0}};
+int main(void){apollo_overlay_state s;cm_native_io io;agc_hardware hw;enum exec_status st;unsigned n,i,ended[14]={0},callers[2]={0};
  check(CM_UP_VECTORS==CM_UP_CASES,"vector count",0);
+ /* The C64 rows (chosen by outcome in the freeze) are host cases with their digests. */
+ for(n=0;n<CM_UP_C64_COUNT;++n)check(cm_up_c64_case[n]<CM_UP_CASES&&(n==0u||cm_up_c64_case[n-1u]<cm_up_c64_case[n])&&cm_up_c64[n]==cm_up_expected[cm_up_c64_case[n]],"C64 row",n);
  for(n=1;n<CM_UPDATE_OPERAND_COUNT;++n)check(cm_update_operands[n-1u].physical<cm_update_operands[n].physical,"operands sorted",n);
  /* The CADRs after the file's BANKCALL GOXDSPF and POSTJUMP come from the interbank site table. */
  {static const struct { uint16_t physical; agc_word word; } cadrs[5]={
@@ -49,12 +52,17 @@ int main(void){apollo_overlay_state s;cm_native_io io;agc_hardware hw;enum exec_
   tables[0].entries=wrapped;tables[0].count=CM_UP_ROUTINES;tables[1]=cm_interbank_routines;p.basic=tables;p.hardware=&hw;p.operands=cm_interbank_site_table(&p.operand_count);
   for(n=0;n<CM_UP_CASES;++n){unsigned bank;
    cm_up_input(&s,&io,&hw,(uint16_t)n);
-   check(agc_transfer_run(&p,&s,&io,&io.superbank,0xfffeu,24,&steps)==EXEC_UNMAPPED,"coverage run",n);
+   st=agc_transfer_run(&p,&s,&io,&io.superbank,CM_UP_SWRETURN_POINT,24,&steps);
+   check(st==EXEC_UNMAPPED||(st==EXEC_OK&&s.words[5]==CM_UP_SWRETURN),"coverage run",n);
    bank=s.words[4]>>10;if(bank>=030u&&(io.superbank&0100u))bank+=010u;
-   for(i=0;i<13u;++i)if(s.words[5]==ends[i].z&&(!ends[i].bank||bank==ends[i].bank))break;
-   check(i<13u,"end point",n);if(i<13u)++ended[i];}
+   for(i=0;i<14u;++i)if(s.words[5]==ends[i].z&&(!ends[i].bank||bank==ends[i].bank))break;
+   check(i<14u,"end point",n);if(i<14u)++ended[i];
+   /* UPACTOFF from a BANKCALL: back at SWRETURN with Q = 3. */
+   if(cm_up_entries[n%CM_UP_ROUTINES].z==03757u){unsigned c=(n/CM_UP_ROUTINES)&1u;
+    check(s.words[5]==CM_UP_SWRETURN&&s.words[2]==3u,"UPACTOFF returns to its BANKCALL",n);++callers[c];}}
+  check(callers[0]>0u&&callers[1]>0u,"both UPACTOFF callers",0);
   for(i=0;i<CM_UP_ROUTINES;++i)check(reached[i]>0u,"entry reached",i);
-  for(i=0;i<13u;++i)check(ended[i]>0u,"end reached",i);}
+  for(i=0;i<14u;++i)check(ended[i]>0u,"end reached",i);}
  /* Refusals, each entered once directly. */
  at(&s,&io,&hw,03613u);s.words[CM_UP_UPTEMP]=03535u;check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"TC UPTEMP word",0);
  at(&s,&io,&hw,03621u);s.words[CM_UP_UPTEMP]=03536u;check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"INDEX UPTEMP; TC 1 word",0);
@@ -63,7 +71,7 @@ int main(void){apollo_overlay_state s;cm_native_io io;agc_hardware hw;enum exec_
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"update into a register or counter",0);
  at(&s,&io,&hw,03373u);check(once(&s,0,&hw)==EXEC_OUT_OF_SCOPE,"no io",0);
  at(&s,&io,&hw,03706u);check(once(&s,&io,0)==EXEC_OUT_OF_SCOPE,"UPACTOFF without hardware",0);
- printf("cm-update: %u cases, %u entries, ends",CM_UP_CASES,CM_UP_ROUTINES);for(i=0;i<13u;++i)printf(" %u",ended[i]);
+ printf("cm-update: %u cases, %u entries, ends",CM_UP_CASES,CM_UP_ROUTINES);for(i=0;i<14u;++i)printf(" %u",ended[i]);
  printf("; %u checks, %u failures\n",checks,failures);
  return failures!=0u;
 }

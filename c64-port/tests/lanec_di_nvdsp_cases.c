@@ -3,7 +3,8 @@
  * NVWORD of each sign including -0, PINBRANCH flag combinations, the
  * perform, flash, paste and second-part bits of TEMPOR2, DSPFLG values
  * whose ADS lands on zero, negative or positive, and A with and without
- * overflow. */
+ * overflow. Variants 64-71 put COPINDEX outside 0-2: the blocks that index
+ * with it refuse, the others run as the original does. */
 #include "lanec_suites.h"
 #include "lanec_di_nvdsp.h"
 #include "lanec_symbols.h"
@@ -46,8 +47,9 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     case 1: w[LANEC_A] = (uint16_t)(0100000u | (x & 037777u)); break;
     default: w[LANEC_A] = lanec_a16((uint16_t)(x & 077777u)); break;
     }
+    if (v >= 64u) w[LANEC_LM_LOC] = (uint16_t)(3u + lanec_rand(&r) % 077774u);
     lanec_enter(s, io, 010u, (uint16_t)(pb + offsets[e]));
     range(m, 010u, pb, (uint16_t)(vp + 1u));
 }
 
-const lanec_suite lanec_suite_di_nvdsp = { "di-nvdsp", ENTRIES * 2u * 64u, make, lanec_di_nvdsp_dispatch };
+const lanec_suite lanec_suite_di_nvdsp = { "di-nvdsp", ENTRIES * 2u * 72u, make, lanec_di_nvdsp_dispatch };

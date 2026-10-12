@@ -4,12 +4,12 @@
   "release": "evidence-lanec-ev-lmi",
   "files": {
     "lanec-ev-lmi-diff.json": {
-      "sha256": "c6c0e7f1a9c4154f97c4901b6fd0744045cb43355d7bfbe1c2dea871e4b8f696",
+      "sha256": "ad42cf440fb284cb8b2a91e8fefde5e4bc8033490dcca6da5a39c76f6c2c7424",
       "bytes": 232,
       "store": "tree"
     },
     "lanec-ev-lmi-oracle.crc": {
-      "sha256": "dac22ee2f9c74a9593019df4896f0e217f5b22c2a435e654c5ce528312145a6a",
+      "sha256": "519f020e3650dd367b2ab46cbd61cdd0d028472d72fa897d2e71cb7d827dbe09",
       "bytes": 12370,
       "store": "tree"
     },

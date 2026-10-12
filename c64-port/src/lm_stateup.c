@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* Luminary099 FRESH_START_AND_RESTART, bank 13 (02026-02067): STATEUP,
- * DOINT, NO-INT, DOINT2 and THISVINT. One case per order-pair word, each
+/* Luminary099 FRESH_START_AND_RESTART interpretive code: bank 13
+ * (02026-02067) STATEUP, DOINT, NO-INT, DOINT2 and THISVINT, and R00's
+ * CALL INTSTALL; EXIT in bank 04 (02144-02146). One case per order-pair word, each
  * the compiled interpreter path for its words in source order (NEWOPS,
  * the left order, DANZIG's right-hand dispatch, the right order, DANZIG),
  * with the pair's words as literal constants; nothing is read from code
@@ -18,6 +19,7 @@
 #define LOC LM_STATEUP_LOC
 #define BANKSET LM_STATEUP_BANKSET
 #define B13 (013u<<10)
+#define B04 (04u<<10)
 #define X_CHANG2 05126u
 /* MISCJUMP/INDJUMP/UNAJUMP body entries. */
 enum {DLOAD=06052,RVQ=03274,CALLITA=02507,SWITCH=02516};
@@ -40,11 +42,12 @@ static enum exec_status branch(apollo_overlay_state *s,agc_word word){lmi_swbran
 static enum exec_status call(apollo_overlay_state *s,agc_word word){lmi_misc(s,word,CALLITA);lmi_call(s);lmi_goto(s);return EXEC_OK;}
 
 /* The interpreter's own state at NEWOPS: EDOP +0, a work area (one of the
- * five VAC areas, PUSHLOC inside it) and BBANK under BANKSET in bank 13. */
+ * five VAC areas, PUSHLOC inside it) and BBANK under BANKSET in the pair's
+ * bank (13, or 04 for R00). */
 static p66_bias_io *ctx(const apollo_overlay_state *s,void *io){
  p66_bias_io *x=io;agc_word f;
  if(s==0||x==0||x->interrupt_enabled>1u||(x->superbank&~0160u)||W[7]!=0)return 0;
- if(W[5]!=LM_STATEUP_NEWOPS||(W[4]&076000u)!=B13||((W[BANKSET]^W[4])&076000u)||W[EDOP])return 0;
+ if(W[5]!=LM_STATEUP_NEWOPS||(W[4]&076000u)!=(W[LOC]>=02144u?B04:B13)||((W[BANKSET]^W[4])&076000u)||W[EDOP])return 0;
  f=W[FIXLOC];
  if(f!=0401u&&f!=0455u&&f!=0531u&&f!=0605u&&f!=0661u)return 0;
  if(W[PUSHLOC]<f||W[PUSHLOC]>f+042u)return 0;
@@ -81,12 +84,17 @@ static enum exec_status pair(const agc_native_program *p,apollo_overlay_state *s
  case 02066u:lmi_newops(s,043414);(void)sw(s,x,001674);right(s);
   if(!(W[(W[FIXLOC]+052u)&03777u]&074000u))return EXEC_OUT_OF_SCOPE;
   lmi_unary(s,RVQ);lmi_rvq(s);return EXEC_OK;
+ /* R00 (bank 04, after its TC INTPRET) CALL INTSTALL; DUMMYAD EXIT. */
+ case 02144u:lmi_newops(s,077624);return call(s,027414);
+ case 02146u:lmi_newops(s,077776);lmi_exit(s);return EXEC_OK;
  default:return EXEC_OUT_OF_SCOPE;}
 }
 
-const uint16_t lm_stateup_entries[LM_STATEUP_ROUTINES]={02026u,02032u,02036u,02041u,02045u,02047u,02052u,02055u,02060u,02063u,02066u};
+const uint16_t lm_stateup_entries[LM_STATEUP_ROUTINES]={02026u,02032u,02036u,02041u,02045u,02047u,02052u,02055u,02060u,02063u,02066u,02144u,02146u};
 #define K13(z) (uint16_t)(013u*1024u+((z)-02000u))
+#define K04(z) (uint16_t)(04u*1024u+((z)-02000u))
 static const agc_routine_entry entries[LM_STATEUP_ROUTINES]={
+ {K04(02144),pair},{K04(02146),pair},
  {K13(02026),pair},{K13(02032),pair},{K13(02036),pair},{K13(02041),pair},{K13(02045),pair},{K13(02047),pair},
  {K13(02052),pair},{K13(02055),pair},{K13(02060),pair},{K13(02063),pair},{K13(02066),pair}};
 const agc_routine_table lm_stateup_interpretive={entries,LM_STATEUP_ROUTINES};

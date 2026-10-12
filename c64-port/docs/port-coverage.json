@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -88,8 +88,54 @@
       "sha256": "f86f1a02856b29a2cd01186a1a807fe4455b576624f8c4cb5876408677c83868",
       "bytes": 13911,
       "lines": 513,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_self_check.c",
+            "src/self_check_body.inc",
+            "src/cm_self_check_operands.inc",
+            "src/rope_image_host.c",
+            "platform/c64/rope_image_reu.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "verification": "docs/SELF-CHECK.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
+            "sha256": "1024a5f7af76fc0f357419f1982ac191a0646e1df4c1386eb54334e34ec02455"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
+            "sha256": "53f502fc1f5b5188cfca13567c9cbbfda920d243479a90fb30be2fc61dd5387f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-comparison.json",
+            "sha256": "676b1a217a3e6d50c70079f845d97bf6ef87102bac24ba45a691f0c638b23404"
+          },
+          "source_to_native_map": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
+            "sha256": "05d08955a2d1299121688906e5ee81d94c31720e33c9b57b2ff6797c96be6f5e"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (SUPDACAL with the rope image, POSTJUMP)",
+          "ALARM2 (ALARM_AND_ABORT); ADVAN, NUCHANG2, NUDIRECT and SELFRET (EXECUTIVE); CHANG1, LEFT5",
+          "SHOWSUM in EXTENDED_VERBS and verb 91's SDISPLAY display (DSKY lane)",
+          "ADVAN and LEFT5 are test-harness stand-ins until their lanes register them",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file, nothing excluded; two words no state reaches (-1CHK's TCF PRERRORS on A = +0, ADRSCHK's TC CONTINU on L = +0: the ones'-complement sums they test never end with a +0 addend). Entries as their callers reach them (docs/SELF-CHECK.md): FB 33 with SUPERBNK selecting bank 43; SMODE +0, -0, an option 1-8 or out of range; SKEEP1/SFAIL a TC to where the file continues or out of it; ERASCHK pairs at or above 061 after the EB window; ROPECHK/STSHOSUM over the unmodified rope with the rope image loaded, and SHOWSUM resumed at SDISPLAY as PROCEED does; p66_bias_io / cm_native_io. Refused before any change: a missing io record, another FB, a SUPERBNK not selecting bank 43, a TC through a register to erasable memory or into the middle of the file, an ERASCHK pair over the central registers, and FXADRS without a rope image."
+      }
     },
     {
       "path": "Comanche055/ALARM_AND_ABORT.agc",
@@ -636,12 +682,12 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
-          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start.",
-          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE before any change.",
-          "hardware_side_effects": "Channel values are kept exactly (WAND/ROR/WRITE results); the physical effect of channel 011 lights and of channel 013/034/035/010 latches is a device-adapter obligation, as for the other Lane C modules."
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_cm_routines (src/lanec_di_routines.inc, 164 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them).",
+          "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
-          "EXECUTIVE services (NOVAC, FINDVAC, SPVAC, JOBWAKE, JOBSLEEP, PRIOCHNG, ENDOFJOB, CHANG1) and INTER-BANK_COMMUNICATION (BANKJUMP, POSTJUMP, MAKECADR, SUPERSW)",
+          "EXECUTIVE services (NOVAC, FINDVAC, SPVAC, JOBWAKE, JOBSLEEP, PRIOCHNG, ENDOFJOB) and the FINDVAC job JAMTERM; INTER-BANK_COMMUNICATION (BANKJUMP, POSTJUMP, MAKECADR, SUPERSW); the Comanche exec site table for the NOVAC/FINDVAC 2CADR operands (Lane A cm_exec_sites)",
           "SERVICE_ROUTINES flag updates (UPENT2, DOWNENT2, UPFLAG, DOWNFLAG) and ALARM_AND_ABORT (POODOO)",
           "PINBALL_GAME_BUTTONS_AND_LIGHTS services (NVSUB, NVMONOPT, NVSUBUSY, ENDIDLE, FLASHON, FLASHOFF, BLANKSUB, Q+1) and the astronaut responses that resume ENDIDLE",
           "User display requests and the job and interrupt scheduling that interleave them; integrated C64 application acceptance"
@@ -649,19 +695,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-di-cert/lanec-di-cm-source-map.json",
-            "sha256": "ac114a2b460fa8814bee890c02c2a650d6473e525b42a0f8ed9cc3011a673537"
+            "sha256": "6cd03228406cd62dc2aeb2a7d5411e0b0d4af12659c67061c822de0ba5f89494"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
-            "sha256": "bf67aa51593e6926175ce5f12fc41ee99e3c0c870a54ac83944ec9af64dea8b8"
+            "sha256": "3d49bd65242ffa122822af9b7fe4877f865993552916240f8ee50730f520ad44"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-di-cert/lanec-di-checks.log",
-            "sha256": "55ca929d43e035bc77a31fd94ac737195314c1434cc3148c4ff765f2da029ab1"
+            "sha256": "d45879a5febc1e3c572a6a34d368961f4eed9b857cacdd3a3dbc41527c5649d6"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
-            "sha256": "388a8a11d1ca18b522084d34bb3786392742a01f0e517baec693260f48d9f024"
+            "sha256": "1503a12c528120f09de0f0437d5aa4bfcdb154b79acf0ee13e8d38bba4721735"
           }
         }
       }
@@ -1077,8 +1123,61 @@
           ],
           "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, ELRSKIP, NOCOARSE, ENEMA (GOPROG2), GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB2, DSPOFF, T5IDLOC and GOTOPOOH as control-transfer ABI routines (17 entries incl. the return after every TC out of the file); constants and the T5IDLER table compiled from the source listing. STARTSIM (patch-only) untranslated; banks 04 (V37/POOH), 20 (VAC5STOR, legacy cm_vac5_store) and 13 remain.",
           "verification": "docs/CM-FRESH-START.md"
+        },
+        {
+          "native_files": [
+            "src/cm_v37.c",
+            "src/cm_v37_operands.inc",
+            "src/cm_fresh_start.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 04 (GOP00FIX, V37, R00TOP00, ISITP00, CANTR00, V37BAD, CHECKTAB/AGAINMM, ISSERVON, CANV37, ROC, POOH, SEUDOP00, GROUPKIL, GOMOD/GOGOPROG, RENDV00, RENDN00, P00FIZZ, KILL20, REV37, STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC, INITSUB/SETMAXER/RAKE) and bank 20 (VAC5STOR) as control-transfer ABI routines (36 entries incl. GOP00FIX, V37, CANV37 (POSTJUMP from SERVICER207), the TEMPFLSH restarts ROC and V37XEQ, the code after R00's EXIT, VAC5STOR and the return after every TC out of the file); constants and the PREMM1, FCADRMM1, DNLADMM1 and FLAGTABL tables compiled from the source listing. R00's interpretive CALL INTSTALL/EXIT (2131-2133) and bank 13 are cm-stateup.",
+          "verification": "docs/CM-V37.md"
+        },
+        {
+          "native_files": [
+            "src/cm_stateup.c",
+            "src/cm_interp_steps.c",
+            "src/cm_interp_orders.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every order pair of bank 13: STATEUP, STATEND and THISVINT, and R00's CALL INTSTALL; DUMMYAD EXIT in bank 04 (2131-2133), as interpretive control-transfer ABI routines keyed by LOC at NEWOPS (12), through the Comanche055 builds of the compiled interpreter paths (SWITCHES, CALL, STCALL, DLOAD, RVQ, EXIT). With cm-fresh-start and cm-v37 every instruction of the file is covered except STARTSIM, which runs only if the STARTSW word is patched.",
+          "verification": "docs/CM-STATEUP.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64.json",
+            "sha256": "1d6cb8c154c6bb7f0754ef613de2044e3a73162c51746b1064d57dba86674bc1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-host.json",
+            "sha256": "8e3de269be7ca076652bc8717d0a5730433c8f042100d72d6eeba5eb28604257"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-comparison.json",
+            "sha256": "453cd26f9acc89de1f295053c25ba579431e3914c04d1e78266edc68468bcec5"
+          },
+          "source_to_native_map": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-source-map.json",
+            "sha256": "a9745e62b7585337ed104b6815d7c8948942518b1a702ac5f92239231e68bc60"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, which refuse Q = 3 (issue #94))",
+          "RESTARTS (through SWCALL), DUMMYJOB +2, MMDSPLAY, WAITLIST, ALARM, PHASCHNG, NEWMODEA, SPVAC, ENDOFJOB, CHANG2, STOPRATE, SETCOARS",
+          "DOWNFLAG, UPFLAG, CLEARMRK, GOFLASH and its three returns, RELDSP, FALTON, GENTRAN, DELAYJOB, SPSOFF, MASSPROP, RCSDAPON, TVCZAP, UPACTOFF, SETMINDB/SETMAXDB",
+          "Interpretive callees INTEGRV, INTSTALL, SETIFLGS, ENDINT and THISVINT's caller",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file but STARTSIM (05,2345-2350), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or disagree (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX an index of the 33-word tables; RAKE's return word 2001 or 2146; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; cm_fresh_io / p66_bias_io. Refused before any change: a TS overflow, an ERESTORE repair into a counter, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, a TC MPAC +1 word INITSUB never stores, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io record."
+      }
     },
     {
       "path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
@@ -1186,8 +1285,20 @@
       "sha256": "78875ef9f79433fa096eb975dd9658709cd2e4ea09cff47e2165c74251489f1b",
       "bytes": 4642,
       "lines": 205,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p21_routines.c",
+            "src/agc_transfer.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of P21 (37,2001-37,2154), 108 words, as fourteen basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI on the Comanche055 interpretive bodies: PROG21 (OPTION2, GOPERF4) and P21PROG1 (V06N34 GOFLASH) with their terminate/proceed/recycle returns, DSPTEM1 into TDEC1 and INTSTALL, BON P21FLAG, VINTFLAG by OPTION2 (SR1, BHIZ), DIM0FLAG/INTYPFLG and INTEGRV, P21CONT (RCV, VCV, TET, MOONFLAG by P21ORIG, INTEGRVS), P21VSAVE (base vector, ABVAL SL* 0,2, UNIT, DOT, DDV) up to ASIN, then P21GAM, SXA,2 P21ORIG, P21FLAG, P21DSP (LUNAFLAG by X2, ALPHAV, ERADFLAG, LAT-LONG), K.01 into P21ALT, EXIT, V06N43 and its returns, and the 600SEC recycle with RTB P21PROG1; the 600SEC, P21ONENN, V06N43, V6N34 and K.01 data words are checked as native literals: from each entry through the trampoline to the first point outside them (BANKCALL, GOTOPOOH, INTPRET, ARCSIN, POODOO, or a NEWOPS outside 37,2020-2130 and 2137-2144). ASIN itself (ARCSIN) is another file's.",
+          "verification": "docs/CM-P21.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
@@ -3751,7 +3862,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction: V70UPDAT-V73UPDAT/CKMDMORE/UPERROR (bank 43), UPPART2, OHWELL1/OHWELL2, UPVERIFY, CK4V32, UPSTORE, UPEND73, UPFNDVAC, UPJOB/UPWAKE basic code, TIMEDIDL/TIMEDIDR/DELTAOK, UPEND71/STORLP71, UPEND72/LDLOOP72, UPOUT, UPEND70, UPERROUT and UPACTOFF (bank 27) as control-transfer ABI routines (35 entries incl. the POSTJUMP targets, restart points and every return point after a TC outside the file); constants compiled from the source listing, BANKCALL/POSTJUMP CADRs from cm_interbank_site_table.",
+          "scope": "Every instruction: V70UPDAT-V73UPDAT/CKMDMORE/UPERROR (bank 43), UPPART2, OHWELL1/OHWELL2, UPVERIFY, CK4V32, UPSTORE, UPEND73, UPFNDVAC, UPJOB/UPWAKE basic code, TIMEDIDL/TIMEDIDR/DELTAOK, UPEND71/STORLP71, UPEND72/LDLOOP72, UPOUT, UPEND70, UPERROUT and UPACTOFF (bank 27) as control-transfer ABI routines (36 entries incl. UPACTOFF as FRESH_START's and P20-P25's BANKCALL reaches it, the POSTJUMP targets, restart points and every return point after a TC outside the file); constants compiled from the source listing, BANKCALL/POSTJUMP CADRs from cm_interbank_site_table.",
           "verification": "docs/CM-UPDATE.md"
         }
       ],
@@ -3760,31 +3871,32 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-update/cm-update-vice.log",
-            "sha256": "58e2b4cdddfae72891e1139d8722a40b539b39bc9018feeebc045775a46a33f5"
+            "sha256": "55224cc675d29d47560fd2f1397e0c00b25260e0a5c79672e10986b0f3febab2"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-update/cm-update-host.log",
-            "sha256": "f0d57b7dad9b6c975bf94feb24f33cc5d28b5b7f2bd19e1b6405fadbdc937077"
+            "sha256": "9a9b6c6450038747fb7371f29ab928e82649164a16874e020410fd84ff28f3b5"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-update/cm-update-proof.json",
-            "sha256": "48084f9e6469b3660816a057747e8aa43ca7f5554408cdd302a64d0c22801732"
+            "sha256": "4973f66d06915525f2d0d3c17cdd4fa00abe8b4ad648303cfd152b49e304d13b"
           },
           "source_to_native_map": {
             "path": "docs/CM-UPDATE.md",
-            "sha256": "76b15ada3c7130b8d8f7c2b1f65cbb94a858d52daa4bcbd97a4e1da1eb8e0ae5"
+            "sha256": "8a33278a48d504bc379355a1a34067c51381fc583dbb85792cb2de6a5dc8f221"
           }
         },
         "external_continuations": [
           "TESTXACT (PINBALL) and its return",
           "PHASCHNG, NEWMODEX, NEWMODEX+3, FALTON, FINDVAC, ENDOFJOB, UPFLAG, TPAGREE, INTWAKEU and ENDEXT",
           "BANKCALL GOXDSPF with its three returns, POSTJUMP UPPART2/UPERROUT+2",
-          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)"
+          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)",
+          "SWRETURN after UPACTOFF's TC Q from a BANKCALL (Q = 3; cm_interbank_complete refuses it, issue #94)"
         ],
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "entries as their callers reach them: UPVERB 0-3, MODREG and FLAGWRD5 as CKMDMORE reads them, COMPNUMB in each verb's accepted range (V70/V73 2, V71 3-20, V72 odd 3-19), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03534/03721), V71/V72 erasable addresses in EB 1-7 above the registers; cm_native_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, MODREG and FLAGWRD5 as CKMDMORE reads them, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03534/03721), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC and the update words 0300-0330), incl. one-word loads at a bank's first word and loads past a bank's end; UPACTOFF from FRESH_START's and P20-P25's BANKCALL; cm_native_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
       }
     },
     {
@@ -3828,8 +3940,54 @@
       "sha256": "fce563bb8f9c943a3c90242491f002f2b2ebd0b7610d47105ecb669312fcaa9c",
       "bytes": 13695,
       "lines": 513,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_self_check.c",
+            "src/self_check_body.inc",
+            "src/lm_self_check_operands.inc",
+            "src/rope_image_host.c",
+            "platform/c64/rope_image_reu.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "verification": "docs/SELF-CHECK.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
+            "sha256": "1024a5f7af76fc0f357419f1982ac191a0646e1df4c1386eb54334e34ec02455"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
+            "sha256": "53f502fc1f5b5188cfca13567c9cbbfda920d243479a90fb30be2fc61dd5387f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-comparison.json",
+            "sha256": "9482964a38c23f676e91ae325b26acbb991bcd2351610084bf9bd87c125eabbd"
+          },
+          "source_to_native_map": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-source-map.json",
+            "sha256": "d25edd69f6552408d5f7f3653dddc0c40cd72fe27759cfce169134f84c9a8710"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (SUPDACAL with the rope image, POSTJUMP)",
+          "ALARM2 (ALARM_AND_ABORT); ADVAN, NUCHANG2, NUDIRECT and SELFRET (EXECUTIVE); CHANG1, LEFT5",
+          "SHOWSUM in EXTENDED_VERBS and verb 91's SDISPLAY display (DSKY lane)",
+          "ADVAN and LEFT5 are test-harness stand-ins until their lanes register them",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file, nothing excluded; two words no state reaches (-1CHK's TCF PRERRORS on A = +0, ADRSCHK's TC CONTINU on L = +0: the ones'-complement sums they test never end with a +0 addend). Entries as their callers reach them (docs/SELF-CHECK.md): FB 33 with SUPERBNK selecting bank 43; SMODE +0, -0, an option 1-8 or out of range; SKEEP1/SFAIL a TC to where the file continues or out of it; ERASCHK pairs at or above 061 after the EB window; ROPECHK/STSHOSUM over the unmodified rope with the rope image loaded, and SHOWSUM resumed at SDISPLAY as PROCEED does; p66_bias_io / cm_native_io. Refused before any change: a missing io record, another FB, a SUPERBNK not selecting bank 43, a TC through a register to erasable memory or into the middle of the file, an ERASCHK pair over the central registers, and FXADRS without a rope image."
+      }
     },
     {
       "path": "Luminary099/AGS_INITIALIZATION.agc",
@@ -4089,8 +4247,81 @@
       "sha256": "7ed744d09332db172eaad0ca8432c243479d6d293ed387ee83eb0dd67c77f041",
       "bytes": 22306,
       "lines": 1059,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_burn_baby.c",
+            "src/lm_burn_baby_sites.inc",
+            "src/lm_burn_baby_flag_sites.inc",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-BURN-BABY.md",
+          "scope": "All of the file: bank 36 02022-03146 (the ignition tables P12TABLE-ABRTABLE run through INDEX WHICH; TCF n, BURNBABY and B*RNB*B*, P40SPOT and P41SPOT with its interpretive set-up (DLOAD DSU, STCALL INITCDUW, BOFF CALL CSMPREC, MXV, STCALL MUNGRAV, CALRB MIDTOAV1) and MIDTOAV1's two returns, CALLT-35 and the ABVEL display, the countdown tasks TIG-35, P41BLANK, TIG-30.1, TIG-30A, TIG-30, ULLGNOT, REDO2.17, REDO4.2, ULLGTASK, TIG-5, P40SJUNK, DISPCHNG and COMMON, TIG-0, IGNYET?, IGNITION with RAND/WRITE DSALMOUT, P63IGN, P40IGN, P12IGN, ABRTIGN, P42IGN, DVMONCON, ULLAGOFF, WAITABIT, TIGTASK, COMFAIL and COMFAIL1-4, INVFLAG (RXOR LCHAN), NOULLAGE and ONULLAGE, STCLOK1-3, CLOKTASK, KILLCLOK, CLOKJOB and its display branches, STOPCLOK, NULLCLOK with TC P40/RET, ASTNRETN, *PROCEED, *ENTER, GOPOST, GOCUTOFF, IGNITE and IGNITE1, P40ALM and REP40ALM), bank 35 03747-03775 (P40AUTO, P40A/P with RAND CHAN30, TURNITON, GOBACK), bank 17 02000-02026 (TIGTASK1, P63ZOOM, P40ZOOM with WOR CHAN14, P40ZOOMA), bank 27 02200-02246 (KILLTSK2, ADRSCAN, LETITLIV, DEAD, TSTFBANK, KILLDEAD) and fixed-fixed 06027-06036 (KILLTASK, KILLBB), as 160 basic and 4 interpretive ABI routines."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "basic keys at Z under their bank's FB (KILLTASK under any FB with Q a TC KILLTASK caller's CADR word), interpretive keys at LOC with Z at NEWOPS and BANKSET bank 36, any EBANK, with the lm_bb_io record (channels 11, 14 and 30); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB, BANKSET not bank 36, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, INDEX WHICH with WHICH not one of the six tables or reaching a table data word, a negative PHASE5, PHASE6 or PHASE3 (or -0) at their CCS, CLOKJOB with DISPDEX -0 or a negative index selecting no display branch, TC P40/RET with a word other than NULLCLOK's three returns, TC Q or KILLTASK with Q not a TC word into fixed memory or a CADR outside lm_burn_baby_sites, a computed transfer onto a word that runs only after its EXTEND or INDEX, overflow at the TS of MAKECADR's CADR or KILLTSK2's TS ITEMP3, or no io record; 550 of 20,992 random cases. The tables' TCF TASKOVER words (no INDEX WHICH selects them), the negative CCS outcomes of MASK results and ABVAL's alarm are translated or refused but no sampled input reaches them",
+        "external_continuations": [
+          "PHASCHNG",
+          "2PHSCHNG",
+          "BANKCALL (P40AUTO, STCLOK2, CLEANDSP, REGODSP, G+N,AUTO, GOPERF1, STCLOK1, CLOCPLAY, REFLASH, GOFLASH)",
+          "IBNKCALL (ENGINOF3, ENGINOF4, ALLCOAST, FLATOUT)",
+          "POSTJUMP (PREREAD, TIGTASK1)",
+          "BANKJUMP (STCLOK3's and P40AUTO's return)",
+          "NOVAC",
+          "FINDVAC",
+          "WAITLIST",
+          "LONGCALL",
+          "TWIDDLE",
+          "FIXDELAY",
+          "TASKOVER",
+          "ENDOFJOB",
+          "CHECKMM",
+          "MAKECADR",
+          "TPAGREE",
+          "UPFLAG",
+          "DOWNFLAG",
+          "COMFLAG",
+          "DEBIT",
+          "ALARM",
+          "GOTOPOOH",
+          "TCF P42STAGE",
+          "TCF IMPLBURN",
+          "CALL/STCALL INITCDUW, CSMPREC, MUNGRAV, MIDTOAV1",
+          "CHANG2",
+          "the caller's return of NOULLAGE, ONULLAGE (TC Q) and KILLTASK (DTCB)"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-source-map.json",
+            "sha256": "3c82d5289c91e5a1fadd5f41f244d3d074073119951c0a1d0159e6dd51cdebb1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-proof.json",
+            "sha256": "7861b29aec152039024996392c8b57246fa508da6b187e0ccca703969245ec25"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-host.log",
+            "sha256": "70c5fb01e3c82562da640b26ee7c616a61a5ffe1b848cc1d2e41f4995cf33ddd"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-vice.log",
+            "sha256": "3f4b83bbc8ddd97c0088709ccc7fce061980cc4eacee835f85c7d9a0f073540c"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-c64-cover.json",
+            "sha256": "cec9bda4f138d2dbcec1a4ad51f4c487c9bfc5aa5c803e4c7bcaa5179bbf920c"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/CONIC_SUBROUTINES.agc",
@@ -4474,12 +4705,12 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
-          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start.",
-          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE before any change.",
-          "hardware_side_effects": "Channel values are kept exactly (WAND/ROR/WRITE results); the physical effect of channel 011 lights and of channel 013/034/035/010 latches is a device-adapter obligation, as for the other Lane C modules."
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_lm_routines (src/lanec_di_routines.inc, 165 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them).",
+          "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
-          "EXECUTIVE services (NOVAC, FINDVAC, SPVAC, JOBWAKE, JOBSLEEP, PRIOCHNG, ENDOFJOB, CHANG1) and INTER-BANK_COMMUNICATION (BANKJUMP, POSTJUMP, MAKECADR, SUPERSW)",
+          "EXECUTIVE services (NOVAC, FINDVAC, SPVAC, JOBWAKE, JOBSLEEP, PRIOCHNG, ENDOFJOB) and the FINDVAC job JAMTERM; INTER-BANK_COMMUNICATION (BANKJUMP, POSTJUMP, MAKECADR, SUPERSW)",
           "SERVICE_ROUTINES flag updates (UPENT2, DOWNENT2, UPFLAG, DOWNFLAG) and ALARM_AND_ABORT (POODOO)",
           "PINBALL_GAME_BUTTONS_AND_LIGHTS services (NVSUB, NVMONOPT, NVSUBUSY, ENDIDLE, FLASHON, FLASHOFF, BLANKSUB, Q+1) and the astronaut responses that resume ENDIDLE",
           "User display requests and the job and interrupt scheduling that interleave them; integrated C64 application acceptance"
@@ -4487,19 +4718,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-di-cert/lanec-di-lm-source-map.json",
-            "sha256": "81c848c5a10c23afd2677343d76c934c585e3adc9c24804043929711d3cd8d05"
+            "sha256": "b5e2a24a5d1c00269390a344a3a0e206795835ce4bb6fa0c45ef0f39bdd564c1"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
-            "sha256": "bf67aa51593e6926175ce5f12fc41ee99e3c0c870a54ac83944ec9af64dea8b8"
+            "sha256": "3d49bd65242ffa122822af9b7fe4877f865993552916240f8ee50730f520ad44"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-di-cert/lanec-di-checks.log",
-            "sha256": "55ca929d43e035bc77a31fd94ac737195314c1434cc3148c4ff765f2da029ab1"
+            "sha256": "d45879a5febc1e3c572a6a34d368961f4eed9b857cacdd3a3dbc41527c5649d6"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
-            "sha256": "388a8a11d1ca18b522084d34bb3786392742a01f0e517baec693260f48d9f024"
+            "sha256": "1503a12c528120f09de0f0437d5aa4bfcdb154b79acf0ee13e8d38bba4721735"
           }
         }
       }
@@ -4796,33 +5027,33 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in banks 01, 20, 23, 40, 42 and 43.",
-          "entry_contracts": "Each entry named in the eight milestone documents (LANEC-EV-FRONT, -SHORT, -ALIGN, -RADAR, -DAP, -TIME, -TRACK, -LMI): every labelled entry, every compiled callee return address in the file and every basic block start; for the interpretive words, INTPRET with Q at the first word and NEWOPS with LOC at each word the interpreter resumes on.",
-          "index_domains": "Saved return words in 02000-07777 where TCQ/XACT0Q transfer through them; RRDESK2 +3 with the job's VAC address 0 or 062-0777; R04X -1 and R04C +4 with a non-overflowed A; ATTCK2 +1 with the axis index 0-2; TCPIN with FIXLOC + QPRET below 02000; interpretive entries with NEWJOB +0, FIXLOC 0200-01317, and at NEWOPS EDOP +0, BANKSET = BB and INTBIT15 its bit 15. Other inputs return LANEC_OUT_OF_SCOPE before any change.",
-          "hardware_side_effects": "Channel values are kept exactly (channel 12/14 CDU drive and RR/LR enable bits, channel 11 lights, WAND/WOR/WRITE results); the physical effect of the coarse-align CDU drive, radar power and lights is a device-adapter obligation, as for the other Lane C modules. The oracle holds Virtual AGC's simulated CDU drive still (docs/LANEC-EV-TIME.md)."
+          "entry_contracts": "Each entry named in the eight milestone documents (LANEC-EV-FRONT, -SHORT, -ALIGN, -RADAR, -DAP, -TIME, -TRACK, -LMI): every labelled entry, every compiled callee return address in the file and every basic block start; for the interpretive words, NEWOPS with LOC at each word the interpreter resumes on, the first word after each basic TC INTPRET included. Each is a transfer-ABI routine at its physical address: 313 basic routines in lanec_ev_lm_routines and 15 interpretive routines keyed by LOC under BANKSET in lanec_ev_lm_interpretive (src/lanec_ev_routines.inc, generated and checked against the listing by tools/lanec/routines.py ev), with INTPRET for the file's own TC INTPRET callers in lanec_ev_lm_intpret; LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. The routines take an lm_dntm_io device record (docs/LANEC-EV-TRANSFER.md).",
+          "index_domains": "Saved return words in 02000-07777 where TCQ/XACT0Q transfer through them; RRDESK2 +3 with the job's VAC address 0 or 062-0777; R04X -1 and R04C +4 with a non-overflowed A; ATTCK2 +1 with the axis index 0-2; TCPIN with FIXLOC + QPRET below 02000; interpretive entries with NEWJOB +0, FIXLOC 0200-01317, and at NEWOPS EDOP +0, BANKSET = BB and INTBIT15 its bit 15. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite ev-refuse: 512 corrupted entry states).",
+          "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on output channel 12 (IMUATTCK's error-counter enable, the RR/LR bits of R04 and TRMTRAK1), WOR on channel 14 (ATTCK2's CDU drive bits), RAND of channels 12, 30 and 33 and RXOR of channel 31 (IMU and radar status). Driving the CDUs, radars and meters from those bits is a device-adapter obligation, as for the other Lane C modules. The oracle holds Virtual AGC's simulated CDU drive still (docs/LANEC-EV-TIME.md)."
         },
         "external_continuations": [
           "EXECUTIVE and WAITLIST services (FINDVAC, PRIOCHNG, ENDOFJOB, DELAYJOB, JOBSLEEP, WAITLIST, TASKOVER) and INTER-BANK_COMMUNICATION (BANKCALL, IBNKCALL, POSTJUMP, BANKJUMP, MAKECADR)",
           "PINBALL_GAME_BUTTONS_AND_LIGHTS and DISPLAY_INTERFACE_ROUTINES services (ENDEXT, GOXDSPF/GOMARKF families, BLANKET, B5OFF, PINBRNCH, GOPIN, ALM/END support) and the astronaut responses that resume them",
           "SERVICE_ROUTINES, FRESH_START_AND_RESTART and PHASE_TABLE_MAINTENANCE (UPFLAG, DOWNFLAG, PHASCHNG, 2PHSCHNG, TPAGREE), ALARM_AND_ABORT (ALARM, POODOO)",
-          "The verbs' subsystem routines in other files (IMU and optics tests and alignment, RR/LR routines, DAP and R03 users, V82-V90 orbital displays, rendezvous navigation and the interpreter library entries RRNBMPAC, ARCTRIG, INTSTALL, PTOALEM, SVDWN1, CALLs to the interpretive routines' NEWOPS)",
+          "The verbs' subsystem routines in other files (IMU and optics tests and alignment, RR/LR routines, DAP and R03 users, V82-V90 orbital displays, rendezvous navigation and the interpreter (a general INTPRET routine, and the library entries RRNBMPAC, ARCTRIG, INTSTALL, PTOALEM, SVDWN1, CALLs to the interpretive routines' NEWOPS))",
           "User verb requests and the job and interrupt scheduling that interleave them; integrated C64 application acceptance"
         ],
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-ev-cert/lanec-ev-lm-source-map.json",
-            "sha256": "8d343e50353c3a92e6b1b263aaaa44fefe05360457d22034b3cd48178836d3b9"
+            "sha256": "a40f106dab938c364f96f4ebd8cde8788b81859263bab34c94ebaa25b2efbad3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-ev-cert/lanec-ev-comparison.json",
-            "sha256": "586c0221819483432987dabe9699c2449f3a28cd76cb6b8dbbee8ffa82d0c2d4"
+            "sha256": "be7e17f45d0b0409b7fea6cbe1bdfa0875221b1ba705a109e16d9b7110c19447"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-checks.log",
-            "sha256": "5530b052153c9dbc4242015976e4bd23488f2f9b7db933ab83710d001c075fba"
+            "sha256": "162ff34089d6995dd80379f664781c321f72a2f6ce5de11ed0f118e2dff71db9"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-results.json",
-            "sha256": "6052c677af01d5af204154d7b543b6ddda5b9f2381b16b24daeb1d7ab4b9f9d5"
+            "sha256": "b195571026b69bb8a2597f7ae1f864c906c45f33125192ee98c6cf477bb9a685"
           }
         }
       },
@@ -5086,7 +5317,39 @@
           "scope": "Every order pair of bank 13: STATEUP, DOINT, NO-INT, DOINT2 and THISVINT as interpretive control-transfer ABI routines keyed by LOC at NEWOPS (11), through the compiled interpreter paths (SWITCHES, CALL, STCALL, DLOAD, RVQ). With lm-fresh-start and lm-v37 every instruction of the file is covered except STARTSIM, which runs only if the STARTSW word is patched.",
           "verification": "docs/LM-STATEUP.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64.json",
+            "sha256": "38c197141900009d3b6d95d530f8b99fda62acfef517d7ce01d27321551bc8c0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-host.json",
+            "sha256": "22a2fecafa62e25d1023e30b9b33a24d9ef5c38a400f42e04d8e5a3377bfb404"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-comparison.json",
+            "sha256": "cebf9766ad0fda7e27cb530860f5f1273094359e5605461a10246894549aa08c"
+          },
+          "source_to_native_map": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-source-map.json",
+            "sha256": "d073de2fb5a90cd956ccc2c168e97d4a2102d343da5f6e5a05beb268f960ea8c"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, which refuse Q = 3 (issue #94))",
+          "RESTARTS (through SWCALL), DUMMYJOB +2, MMDSPLAY, ALARM, PHASCHNG, PHSCHNGA, NEWMODEA, SPVAC, ENDOFJOB, CHANG2",
+          "DOWNFLAG, CLEARMRK, GOFLASH and its three returns, RELDSP, CLRADMOD, FALTON, ENGINOF1, ALLCOAST, PINBRNCH, P70/P71 (SETUP70/71 DTCB)",
+          "Interpretive callees INTEGRV, INTSTALL, SETIFLGS, ENDINT and THISVINT's caller",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file but STARTSIM (05,2452-2455), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or are corrupt (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX set by CHECKTAB; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; lm_fresh_io / p66_bias_io plus agc_hardware for channel 11. Refused before any change: a TS overflow, an ERESTORE repair below 061, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io or hardware record."
+      }
     },
     {
       "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
@@ -5215,8 +5478,20 @@
       "sha256": "97cba32a43d7de44db0db00e5785f2d9c4bebbc4a6d7f058c0c3c13113855140",
       "bytes": 4796,
       "lines": 208,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p21_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of P21 (24,3505-24,3667), 115 words, as fourteen basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI: PROG21 (OPTION2, GOPERF4) and P21PROG1 (V06N34 GOFLASH) with their terminate/proceed/recycle returns, DSPTEM1 into TDEC1 and INTSTALL, BON P21FLAG, VINTFLAG by OPTION2 (SR1, BHIZ), DIM0FLAG/INTYPFLG and INTEGRV, P21CONT (RCV, VCV, TET, MOONFLAG by P21ORIG, INTEGRVS), P21VSAVE (base vector, ABVAL SL* 0,2, UNIT, DOT, DDV) up to ASIN, then P21GAM, SXA,2 P21ORIG, P21FLAG by OPTION2 and SURFFLAG, P21DSP (LUNAFLAG by X2, ALPHAV, ERADFLAG, LAT-LONG), K.01 into P21ALT, EXIT, V06N43 and its returns, and the 600SEC recycle with RTB P21PROG1; the 600SEC, V06N43, V6N34 and K.01 data words are checked as native literals: from each entry through the trampoline to the first point outside them (BANKCALL, GOTOPOOH, INTPRET, ARCSIN, POODOO1, or a NEWOPS outside 24,3524-3645 and 3654-3661). ASIN itself (ARCSIN) is another file's.",
+          "verification": "docs/LM-P21.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/IMU_COMPENSATION_PACKAGE.agc",
@@ -5402,7 +5677,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO, not followed by the compiled DDV), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
+        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
         "external_continuations": [
           "BANKCALL, SWCALL/RTB targets 1STO2S, CDULOGIC, SGNAGREE, LOADTIME, PULSEIMU (INTER-BANK_COMMUNICATION and other banks)",
           "TWIDDLE, LONGCALL, TASKOVER (WAITLIST)",
@@ -5466,7 +5741,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO, not followed by the compiled DDV), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
+        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
         "external_continuations": [
           "BANKCALL, SWCALL/RTB targets 1STO2S, CDULOGIC, SGNAGREE, LOADTIME, PULSEIMU (INTER-BANK_COMMUNICATION and other banks)",
           "TWIDDLE, LONGCALL, TASKOVER (WAITLIST)",
@@ -7123,8 +7398,22 @@
       "sha256": "cf6d473c416217944c5868907c26bdb1fa970b8020a3198cb0cbc991c0c0926f",
       "bytes": 5012,
       "lines": 266,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_r31_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_vector.c",
+            "src/rtb_unit.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of R31 (40,3674-40,3712 and 37,3113-37,3407), 204 words, as eighteen basic routines keyed by Z and twenty-four interpretive routines keyed at their NEWOPS, of the control-transfer ABI: R31CALL (FINDVAC), DSPDELAY/FIXDELAY, NOVAC DISPN5X and TASKOVER in bank 40; DISPN5X (V16N54 GOMARKF, B5OFF returns), V83CALL and REV83 (AVEGFLAG, SURFFLAG branches), the LOADTIME/LEMPREC/CSMPREC base states, the INTSTALL/INTEGRVS integrations with MOONFLAG by MOONTHIS, COMPDISP (RTB NORMUNX1, RANGE, RRATE, UNIT PDVL UNITZ, CDU*NBSM, VXM REFSMMAT, VPROJ, BVSU, VXV, DOT, SIGN) up to ACOS, RTHETA with the BPL and DPPOSMAX, the EXTVBACT recycle (ENDEXT, ADS, REV83), GETRVN (PRIO22, RN/VN/V(CSM)/R(CSM)/PIPTIME, BOFF MUNFLAG, VXM rotations), GETRVN2, R31SURF, MUNG? and ONEBASE; V16N54 is checked as a native literal: from each entry through the trampoline to the first point outside them (FINDVAC, FIXDELAY, NOVAC, TASKOVER, BANKCALL, B5OFF, PRIOCHNG, ENDEXT, INTPRET, LOADTIME, ARCCOS, POODOO1, UNIT's 1302 exit, a NEWOPS outside the file's interpretive code, or the split points 37,3240, 3246 and 3355). ACOS itself (ARCCOS) is another file's, and ONEBASE's GOTO DOCMBASE runs only after LOADTIME.",
+          "verification": "docs/LM-R31.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/R60_62.agc",
@@ -8163,19 +8452,19 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-update/lm-update-vice.log",
-            "sha256": "40f06a86102e05b296f52b5046dc9945d51582161061d84977a106340ad652d7"
+            "sha256": "5d84b1ed02aabc02dd13ce476e37c09dfd3a76309df3691a19d8139107285567"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-update/lm-update-host.log",
-            "sha256": "6c9b6ea802ecbf4f296166053ca1e4893f27c369b6e14b9e4adceedd6eeceb92"
+            "sha256": "56559ad933825f0e7c14460c8c6fbb61df0293a82e275f932d98594cba3b79be"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-update/lm-update-proof.json",
-            "sha256": "ec3bcf72a8e9ea14d22f74d117c08629eb5988b73a8321ae49877df27b079530"
+            "sha256": "feea17cabc9cfabcb3a2ecc8ec42449a21b12a43e3def02a55beaba4577f609a"
           },
           "source_to_native_map": {
             "path": "docs/LM-UPDATE.md",
-            "sha256": "b43dfe6d38de69b8f6b129e0c253b114066a21bba3d6dfe7653d2f0ab7f1656b"
+            "sha256": "0c09379cc2c08f82407e7fda0785dd88eb22f748b6599f4cf32c516744d64957"
           }
         },
         "external_continuations": [
@@ -8187,7 +8476,7 @@
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB in each verb's accepted range (V70/V73 2, V71 3-20, V72 odd 3-19), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in EB 1-7 above the registers; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC), incl. one-word loads at a bank's first word and loads past a bank's end; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
       }
     },
     {

@@ -1,0 +1,10 @@
+PASS 21504 original R31 entries equal native trampoline runs 4459efd37b0b8653f3e4791c250e192e935f07c69002d16597c22d9511fd9b29
+lm-r31: 21504 cases, 462 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22053 checks, 0 failures
+PASS 204 assembled R31 words on 202 source lines map to 42 native routines
+lm-r31: 21504 cases, 462 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22053 checks, 0 failures
+PASS: VICE PAL lm-r31-1.prg: 128 checks, 0 failures
+PASS: VICE PAL lm-r31-2.prg: 128 checks, 0 failures
+PASS: VICE PAL lm-r31-3.prg: 128 checks, 0 failures
+PASS: VICE PAL lm-r31-4.prg: 128 checks, 0 failures
+PASS: VICE PAL lm-r31-5.prg: 128 checks, 0 failures
+PASS: VICE PAL lm-r31-6.prg: 518 checks, 0 failures

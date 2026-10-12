@@ -28,7 +28,7 @@ enum {
     BLANKALL = 77, NVSUBRET = 79, ENDIT = 80, ENDIT3 = 83, UNSETR1 = 85, UNSETR16 = 91, IMMEDRET = 92,
     TERMATE = 95, LINUSCHR = 97, PROCEED = 110, MARKRET = 112, MARKOVER = 118, NORMRET = 124,
     NORMRET4 = 128, NORMRET8 = 132, NORMRET12 = 136, NOVACRET = 144, MARSLEEP = 145, LOADITIS = 150,
-    ERASER = 158, ERASER2 = 160, ERASER3 = 161, OUT = 0xffff
+    ERASER = 158, ERASER2 = 160, ERASER3 = 161, OUT = 0xffff, REFUSE = 0xfffe
 };
 
 #define AT(M, X) (LANEC_##M##_##X == LANEC_##M##_CLEANEND + (X))
@@ -97,7 +97,7 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
         k = lanec_ccs(s, w[CADRSTOR]);
         return (k == 1u || k == 3u) ? (uint16_t)RESTSLEP : leave(s, p->endofjob);
     case RESTSLEP: set_a(s, w[GENMASK]); lanec_mask(s, W(ASTROMSK)); return call(s, p, p->upent2, RESTSLEP + 3u);
-    case RESTSLEP4: set_a(s, p->nvcadr[w[COPINDEX]]); return call(s, p, p->nvsubusy, FLASHSUB);
+    case RESTSLEP4: if (w[COPINDEX] > 2u) return REFUSE; set_a(s, p->nvcadr[w[COPINDEX]]); return call(s, p, p->nvsubusy, FLASHSUB);
     case FLASHSUB: return call(s, p, p->flashon, FLASHSUB1);
     case FLASHSUB1:                                    /* CA COPINDEX, TS COPMPAC, CA GENMASK, MASK IDLEMASK */
         set_a(s, w[COPINDEX]);
@@ -106,6 +106,7 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
         lanec_mask(s, W(IDLEMASK));
         return call(s, p, p->upent2, ITISMASK);
     case CHKREPT:                                      /* CA R1SAVE, INDEX COPINDEX, MASK BIT3, CCS A */
+        if (w[COPINDEX] > 2u) return REFUSE;
         set_a(s, w[p->r1save]);
         lanec_mask(s, bit3[w[COPINDEX]]);
         if (lanec_ccs_a(s) == 0) return UNSETR1;
@@ -142,6 +143,7 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
         if (k == 0) lanec_ad(s, W(ONE));
         return ENDRET4;
     case ENDRET4:                                      /* INDEX COPMPAC, AD CADRFLSH, TS MPAC +3 */
+        if (w[COPMPAC] > 2u) return REFUSE;
         lanec_ad(s, w[CADRFLSH + w[COPMPAC]]);
         if (!lanec_ts(s, COPMPAC)) set_a(s, w[GENMASK]);   /* an overflow skips CA GENMASK */
         lanec_mask(s, W(PINIDMSK));
@@ -151,13 +153,14 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
     case ENDIT: set_a(s, w[USERPRIO]); lanec_mask(s, W(PRIO37)); return call(s, p, p->priochng, ENDIT3);
     case ENDIT3: set_a(s, w[COPMPAC]); return leave(s, p->bankjump);
     case UNSETR1:                                      /* INDEX COPINDEX, CS BIT3, MASK R1SAVE, TS R1SAVE */
+        if (w[COPINDEX] > 2u) return REFUSE;
         cs_a(s, bit3[w[COPINDEX]]);
         lanec_mask(s, w[p->r1save]);
         (void)lanec_ts(s, p->r1save);
         w[LANEC_A] = 0;                                /* CAF ZERO, TC SUPERSW */
         return call(s, p, p->supersw, UNSETR16);
     case UNSETR16: set_a(s, W(THREE)); return IMMEDRET;
-    case IMMEDRET: lanec_ad(s, w[CADRFLSH + w[COPINDEX]]); return leave(s, p->bankjump);
+    case IMMEDRET: if (w[COPINDEX] > 2u) return REFUSE; lanec_ad(s, w[CADRFLSH + w[COPINDEX]]); return leave(s, p->bankjump);
     case TERMATE: w[LANEC_A] = 0; return ENDOUT;
     case PROCEED: set_a(s, W(ONE)); return ENDOUT;
     case MARKRET:                                      /* CS SIX, MASK FLAGWRD4, INHINT, TS FLAGWRD4, RELINT */
@@ -196,6 +199,7 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
         lanec_mask(s, W(BITS5_P_11));
         return leave(s, lanec_ccs_a(s) == 0 ? p->endofjob : p->gosleeps);
     case LOADITIS:                                     /* INDEX COPMPAC, CA NVWORD, MASK LOW7, COM, AD MPAC +1 */
+        if (w[COPMPAC] > 2u) return REFUSE;
         set_a(s, w[NVWORD + w[COPMPAC]]);
         lanec_mask(s, W(LOW7));
         w[LANEC_A] = (uint16_t)~w[LANEC_A];
@@ -225,13 +229,26 @@ static uint8_t is_block(uint16_t at)
 enum lanec_status lanec_di_idle_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
     const places *p = at(m);
-    uint16_t *w = s->words, z = w[LANEC_Z], at;
+    uint16_t *w = s->words, z = w[LANEC_Z], at, i;
+    /* the words the blocks write, kept to undo a refusal */
+    uint16_t keep[7], where[7];
+    uint16_t ie = io->interrupt_enabled;
     if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 010u) return LANEC_OUT_OF_SCOPE;
     if (z < p->cleanend) return LANEC_OUT_OF_SCOPE;
     at = (uint16_t)(z - p->cleanend);
+    if (!is_block(at)) return LANEC_OUT_OF_SCOPE;
+    where[0] = LANEC_A; where[1] = LANEC_Q; where[2] = LANEC_Z; where[3] = OUTHERE; where[4] = COPMPAC;
+    where[5] = FLAGWRD4; where[6] = p->r1save;
+    for (i = 0; i < 7u; ++i) keep[i] = w[where[i]];
     /* COPINDEX and COPMPAC index three-word tables (PRIOOCT order) and the
-     * CADRFLSH and NVWORD cells. */
-    if (!is_block(at) || w[COPINDEX] > 2u || w[COPMPAC] > 2u) return LANEC_OUT_OF_SCOPE;
-    while (at != OUT) at = step(s, io, p, at);
+     * CADRFLSH and NVWORD cells: a block that indexes with a larger value
+     * reads words this module does not hold, so the case is refused there,
+     * with the image and I/O as they were on entry. */
+    while (at != OUT && at != REFUSE) at = step(s, io, p, at);
+    if (at == REFUSE) {
+        for (i = 0; i < 7u; ++i) w[where[i]] = keep[i];
+        io->interrupt_enabled = ie;
+        return LANEC_OUT_OF_SCOPE;
+    }
     return LANEC_OK;
 }
