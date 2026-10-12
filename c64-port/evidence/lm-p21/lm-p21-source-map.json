@@ -1,0 +1,1193 @@
+{
+ "source_paths": [
+  "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc": "97cba32a43d7de44db0db00e5785f2d9c4bebbc4a6d7f058c0c3c13113855140"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_p21_routines.c",
+ "native_sha256": "930b373430d0be23e8d9273e29f2a9f685ca74278b01bcbe7e0ac6c7881c3a9a",
+ "source_words": 115,
+ "source_lines": 113,
+ "symbols": {
+  "PROG21": "24,3505",
+  "P21PROG1": "24,3515",
+  "P21CONT": "24,3550",
+  "P21VSAVE": "24,3571",
+  "P21DSP": "24,3625",
+  "600SEC": "24,3662",
+  "SURFFLAG": "0000177",
+  "V06N43": "24,3664",
+  "V6N34": "24,3665",
+  "K.01": "24,3666",
+  "GOPERF4": "10,2633",
+  "GOFLASH": "10,2476",
+  "INTSTALL": "13,3414",
+  "INTEGRV": "13,3134",
+  "INTEGRVS": "13,3107",
+  "LAT-LONG": "13,2351",
+  "DSPTEM1": "1045",
+  "TDEC1": "0000040",
+  "P21FLAG": "0000004",
+  "VINTFLAG": "0000071",
+  "DIM0FLAG": "0000073",
+  "INTYPFLG": "0000070",
+  "MOONFLAG": "0000003",
+  "LUNAFLAG": "0000060",
+  "ERADFLAG": "0000021",
+  "P21TIME": "E7,1762",
+  "P21BASER": "E7,1675",
+  "P21BASEV": "E7,1703",
+  "P21ORIG": "1163",
+  "P21VEL": "E7,1711",
+  "P21GAM": "E7,1713",
+  "P21ALT": "E7,1715",
+  "ALPHAV": "E4,1431",
+  "OPTION2": "1145",
+  "BANKCALL": "4616",
+  "GOTOPOOH": "6001",
+  "INTPRET": "6037",
+  "ARCSIN": "00,3610",
+  "ONE": "4753",
+  "BIT2": "4752"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 93,
+   "address": "24,3505",
+   "source": "PROG21 CAF ONE",
+   "words": [
+    "34753"
+   ],
+   "native": "prog21"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 94,
+   "address": "24,3506",
+   "source": "TS OPTION2",
+   "words": [
+    "55145"
+   ],
+   "native": "prog21"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 95,
+   "address": "24,3507",
+   "source": "CAF BIT2",
+   "words": [
+    "34752"
+   ],
+   "native": "r_perf4"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 96,
+   "address": "24,3510",
+   "source": "TC BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "r_perf4"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 97,
+   "address": "24,3511",
+   "source": "CADR GOPERF4",
+   "words": [
+    "20633"
+   ],
+   "native": "r_perf4"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 98,
+   "address": "24,3512",
+   "source": "TC GOTOPOOH",
+   "words": [
+    "06001"
+   ],
+   "native": "perf4_terminate"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 99,
+   "address": "24,3513",
+   "source": "TC +2",
+   "words": [
+    "03515"
+   ],
+   "native": "perf4_proceed"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 100,
+   "address": "24,3514",
+   "source": "TC -5",
+   "words": [
+    "03507"
+   ],
+   "native": "perf4_enter"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 101,
+   "address": "24,3515",
+   "source": "P21PROG1 CAF V6N34",
+   "words": [
+    "33665"
+   ],
+   "native": "p21prog1"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 102,
+   "address": "24,3516",
+   "source": "TC BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "p21prog1"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 103,
+   "address": "24,3517",
+   "source": "CADR GOFLASH",
+   "words": [
+    "20476"
+   ],
+   "native": "p21prog1"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 104,
+   "address": "24,3520",
+   "source": "TC GOTOPOOH",
+   "words": [
+    "06001"
+   ],
+   "native": "f34_terminate"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 105,
+   "address": "24,3521",
+   "source": "TC +2",
+   "words": [
+    "03523"
+   ],
+   "native": "f34_proceed"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 106,
+   "address": "24,3522",
+   "source": "TC -5",
+   "words": [
+    "03515"
+   ],
+   "native": "f34_recycle"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 107,
+   "address": "24,3523",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "r_intpret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 108,
+   "address": "24,3524",
+   "source": "DLOAD",
+   "words": [
+    "77745"
+   ],
+   "native": "p21_tdec1"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 109,
+   "address": "24,3525",
+   "source": "DSPTEM1",
+   "words": [
+    "01046"
+   ],
+   "native": "p21_tdec1"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 110,
+   "address": "24,3526",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "p21_tdec1"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 111,
+   "address": "24,3527",
+   "source": "INTSTALL",
+   "words": [
+    "27414"
+   ],
+   "native": "p21_tdec1"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 112,
+   "address": "24,3530",
+   "source": "BON CLEAR",
+   "words": [
+    "43014"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 113,
+   "address": "24,3531",
+   "source": "P21FLAG",
+   "words": [
+    "00304"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 114,
+   "address": "24,3532",
+   "source": "P21CONT",
+   "words": [
+    "51550"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 115,
+   "address": "24,3533",
+   "source": "VINTFLAG",
+   "words": [
+    "01674"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 116,
+   "address": "24,3534",
+   "source": "SLOAD SR1",
+   "words": [
+    "70535"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 117,
+   "address": "24,3535",
+   "source": "OPTION2",
+   "words": [
+    "01146"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 118,
+   "address": "24,3536",
+   "source": "BHIZ SET",
+   "words": [
+    "43030"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 119,
+   "address": "24,3537",
+   "source": "+2",
+   "words": [
+    "51541"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 120,
+   "address": "24,3540",
+   "source": "VINTFLAG",
+   "words": [
+    "01474"
+   ],
+   "native": "p21_flags"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 121,
+   "address": "24,3541",
+   "source": "CLEAR CLEAR",
+   "words": [
+    "43014"
+   ],
+   "native": "p21_integrv"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 122,
+   "address": "24,3542",
+   "source": "DIM0FLAG",
+   "words": [
+    "01676"
+   ],
+   "native": "p21_integrv"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 123,
+   "address": "24,3543",
+   "source": "INTYPFLG",
+   "words": [
+    "01673"
+   ],
+   "native": "p21_integrv"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 124,
+   "address": "24,3544",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "p21_integrv"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 125,
+   "address": "24,3545",
+   "source": "INTEGRV",
+   "words": [
+    "27134"
+   ],
+   "native": "p21_integrv"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 126,
+   "address": "24,3546",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "integrv_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 127,
+   "address": "24,3547",
+   "source": "P21VSAVE",
+   "words": [
+    "51571"
+   ],
+   "native": "integrv_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 128,
+   "address": "24,3550",
+   "source": "P21CONT VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 129,
+   "address": "24,3551",
+   "source": "P21BASER",
+   "words": [
+    "03676"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 130,
+   "address": "24,3552",
+   "source": "STOVL RCV",
+   "words": [
+    "25535"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 132,
+   "address": "24,3553",
+   "source": "P21BASEV",
+   "words": [
+    "03704"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 133,
+   "address": "24,3554",
+   "source": "STODL VCV",
+   "words": [
+    "15543"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 134,
+   "address": "24,3555",
+   "source": "P21TIME",
+   "words": [
+    "03763"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 135,
+   "address": "24,3556",
+   "source": "STORE TET",
+   "words": [
+    "01517"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 136,
+   "address": "24,3557",
+   "source": "CLEAR CLEAR",
+   "words": [
+    "43014"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 137,
+   "address": "24,3560",
+   "source": "DIM0FLAG",
+   "words": [
+    "01676"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 138,
+   "address": "24,3561",
+   "source": "MOONFLAG",
+   "words": [
+    "00263"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 139,
+   "address": "24,3562",
+   "source": "SLOAD BZE",
+   "words": [
+    "53135"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 140,
+   "address": "24,3563",
+   "source": "P21ORIG",
+   "words": [
+    "01164"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 141,
+   "address": "24,3564",
+   "source": "+3",
+   "words": [
+    "51567"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 142,
+   "address": "24,3565",
+   "source": "SET",
+   "words": [
+    "77614"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 143,
+   "address": "24,3566",
+   "source": "MOONFLAG",
+   "words": [
+    "00063"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 144,
+   "address": "24,3567",
+   "source": "+3 CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 145,
+   "address": "24,3570",
+   "source": "INTEGRVS",
+   "words": [
+    "27107"
+   ],
+   "native": "p21cont"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 146,
+   "address": "24,3571",
+   "source": "P21VSAVE DLOAD",
+   "words": [
+    "77745"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 147,
+   "address": "24,3572",
+   "source": "TAT",
+   "words": [
+    "00015"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 148,
+   "address": "24,3573",
+   "source": "STOVL P21TIME",
+   "words": [
+    "27763"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 149,
+   "address": "24,3574",
+   "source": "RATT1",
+   "words": [
+    "00017"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 150,
+   "address": "24,3575",
+   "source": "STOVL P21BASER",
+   "words": [
+    "27676"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 151,
+   "address": "24,3576",
+   "source": "VATT1",
+   "words": [
+    "00025"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 152,
+   "address": "24,3577",
+   "source": "STORE P21BASEV",
+   "words": [
+    "03704"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 153,
+   "address": "24,3600",
+   "source": "ABVAL SL*",
+   "words": [
+    "53646"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 154,
+   "address": "24,3601",
+   "source": "0,2",
+   "words": [
+    "57576"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 155,
+   "address": "24,3602",
+   "source": "STOVL P21VEL",
+   "words": [
+    "27712"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 156,
+   "address": "24,3603",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 157,
+   "address": "24,3604",
+   "source": "UNIT DOT",
+   "words": [
+    "50256"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 158,
+   "address": "24,3605",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 159,
+   "address": "24,3606",
+   "source": "DDV ASIN",
+   "words": [
+    "67471"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 160,
+   "address": "24,3607",
+   "source": "P21VEL",
+   "words": [
+    "03712"
+   ],
+   "native": "p21vsave"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 161,
+   "address": "24,3610",
+   "source": "STORE P21GAM",
+   "words": [
+    "03714"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 162,
+   "address": "24,3611",
+   "source": "SXA,2 SLOAD",
+   "words": [
+    "67334"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 163,
+   "address": "24,3612",
+   "source": "P21ORIG",
+   "words": [
+    "01163"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 164,
+   "address": "24,3613",
+   "source": "OPTION2",
+   "words": [
+    "01146"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 165,
+   "address": "24,3614",
+   "source": "SR1 BHIZ",
+   "words": [
+    "46142"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 166,
+   "address": "24,3615",
+   "source": "+3",
+   "words": [
+    "51620"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 167,
+   "address": "24,3616",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 168,
+   "address": "24,3617",
+   "source": "+4",
+   "words": [
+    "51623"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 169,
+   "address": "24,3620",
+   "source": "+3 BON",
+   "words": [
+    "77614"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 170,
+   "address": "24,3621",
+   "source": "SURFFLAG",
+   "words": [
+    "04307"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 171,
+   "address": "24,3622",
+   "source": "P21DSP",
+   "words": [
+    "51625"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 172,
+   "address": "24,3623",
+   "source": "+4 SET",
+   "words": [
+    "77614"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 173,
+   "address": "24,3624",
+   "source": "P21FLAG",
+   "words": [
+    "00064"
+   ],
+   "native": "arcsin_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 174,
+   "address": "24,3625",
+   "source": "P21DSP CLEAR SLOAD",
+   "words": [
+    "67214"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 175,
+   "address": "24,3626",
+   "source": "LUNAFLAG",
+   "words": [
+    "01663"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 176,
+   "address": "24,3627",
+   "source": "X2",
+   "words": [
+    "00050"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 177,
+   "address": "24,3630",
+   "source": "BZE SET",
+   "words": [
+    "43054"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 178,
+   "address": "24,3631",
+   "source": "+2",
+   "words": [
+    "51633"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 179,
+   "address": "24,3632",
+   "source": "LUNAFLAG",
+   "words": [
+    "01463"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 180,
+   "address": "24,3633",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 181,
+   "address": "24,3634",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 183,
+   "address": "24,3635",
+   "source": "STODL ALPHAV",
+   "words": [
+    "16032"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 184,
+   "address": "24,3636",
+   "source": "TAT",
+   "words": [
+    "00015"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 185,
+   "address": "24,3637",
+   "source": "CLEAR CALL",
+   "words": [
+    "45014"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 186,
+   "address": "24,3640",
+   "source": "ERADFLAG",
+   "words": [
+    "00662"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 187,
+   "address": "24,3641",
+   "source": "LAT-LONG",
+   "words": [
+    "26351"
+   ],
+   "native": "p21dsp"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 188,
+   "address": "24,3642",
+   "source": "DMP",
+   "words": [
+    "77605"
+   ],
+   "native": "latlong_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 189,
+   "address": "24,3643",
+   "source": "K.01",
+   "words": [
+    "11667"
+   ],
+   "native": "latlong_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 190,
+   "address": "24,3644",
+   "source": "STORE P21ALT",
+   "words": [
+    "03716"
+   ],
+   "native": "latlong_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 191,
+   "address": "24,3645",
+   "source": "EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "latlong_ret"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 192,
+   "address": "24,3646",
+   "source": "CAF V06N43",
+   "words": [
+    "33664"
+   ],
+   "native": "v06n43"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 193,
+   "address": "24,3647",
+   "source": "TC BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "v06n43"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 194,
+   "address": "24,3650",
+   "source": "CADR GOFLASH",
+   "words": [
+    "20476"
+   ],
+   "native": "v06n43"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 195,
+   "address": "24,3651",
+   "source": "TC GOTOPOOH",
+   "words": [
+    "06001"
+   ],
+   "native": "f43_terminate"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 196,
+   "address": "24,3652",
+   "source": "TC GOTOPOOH",
+   "words": [
+    "06001"
+   ],
+   "native": "f43_proceed"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 197,
+   "address": "24,3653",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "f43_recycle"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 198,
+   "address": "24,3654",
+   "source": "DLOAD DAD",
+   "words": [
+    "43345"
+   ],
+   "native": "p21_next"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 199,
+   "address": "24,3655",
+   "source": "P21TIME",
+   "words": [
+    "03763"
+   ],
+   "native": "p21_next"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 200,
+   "address": "24,3656",
+   "source": "600SEC",
+   "words": [
+    "11663"
+   ],
+   "native": "p21_next"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 201,
+   "address": "24,3657",
+   "source": "STORE DSPTEM1",
+   "words": [
+    "01046"
+   ],
+   "native": "p21_next"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 202,
+   "address": "24,3660",
+   "source": "RTB",
+   "words": [
+    "77634"
+   ],
+   "native": "p21_next"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 203,
+   "address": "24,3661",
+   "source": "P21PROG1",
+   "words": [
+    "51515"
+   ],
+   "native": "p21_next"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 204,
+   "address": "24,3662",
+   "source": "600SEC 2DEC 60000",
+   "words": [
+    "00003",
+    "25140"
+   ],
+   "native": "K_600SEC_HI K_600SEC_LO"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 206,
+   "address": "24,3664",
+   "source": "V06N43 VN 00643",
+   "words": [
+    "01453"
+   ],
+   "native": "K_V06N43"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 207,
+   "address": "24,3665",
+   "source": "V6N34 VN 00634",
+   "words": [
+    "01442"
+   ],
+   "native": "K_V6N34"
+  },
+  {
+   "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+   "line": 208,
+   "address": "24,3666",
+   "source": "K.01 2DEC .01",
+   "words": [
+    "00243",
+    "32703"
+   ],
+   "native": "K_K01_HI K_K01_LO"
+  }
+ ],
+ "covered_ranges": [
+  "24,3505-24,3667"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every word of GROUND_TRACKING_DETERMINATION_PROGRAM.agc (P21) is owned by the registered routine entered at the first address of its range or is a constant equal to its native literals: interpretive words are literal bookkeeping arguments in source order, basic words belong to the routine whose ENTRY names the address, the erasable word and destinations the code names equal their native macros, and ONE, BIT2, V6N34, V06N43 and the K.01 and 600SEC pairs equal their native literals."
+}
