@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-stroke",
+  "release": "evidence-cm-tvc-stroke",
+  "files": {
+    "cm-tvc-stroke-differential.log": {
+      "sha256": "d0fd5ebf68779f008c6ae929dad67907cd2cdc9068f4c2a70302894300c65a7c",
+      "bytes": 289,
+      "store": "tree"
+    },
+    "cm-tvc-stroke-host.log": {
+      "sha256": "830e5eb9da6dad10988bfc307e24bdc5fbf5189d0b640e97c9b655de214d425f",
+      "bytes": 1028,
+      "store": "tree"
+    },
+    "cm-tvc-stroke-proof.json": {
+      "sha256": "26748661f36f1e235fc6cedb6cdbc806f3ef6c2a94ab90f330f48a7c198a9356",
+      "bytes": 3220,
+      "store": "tree"
+    },
+    "cm-tvc-stroke-source-map.json": {
+      "sha256": "9347b90536afa2523e61c75720457940021e84be1fdfbbb2ac1172d8a58fcaab",
+      "bytes": 10626,
+      "store": "tree"
+    },
+    "cm-tvc-stroke-vice.log": {
+      "sha256": "8613340903a174ca6917082de43a4060a6a592f79dc8799ca36dd7c917648ac4",
+      "bytes": 416,
+      "store": "tree"
+    }
+  }
+}

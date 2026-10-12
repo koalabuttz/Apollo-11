@@ -1,0 +1,617 @@
+{
+ "Comanche055/TVCMASSPROP.agc": {
+  "native_file": "src/cm_tvc_massprop.c",
+  "words": 91,
+  "untranslated_words": 0,
+  "routines": 2,
+  "map": [
+   {
+    "address": "05,3366",
+    "word": "34334",
+    "source": "MASSPROP CAF NINE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3367",
+    "word": "55506",
+    "source": " TS PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3370",
+    "word": "31466",
+    "source": "LEMTEST CAE DAPDATR1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3371",
+    "word": "75003",
+    "source": " MASK BIT13",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3372",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3373",
+    "word": "13377",
+    "source": " BZF LEMYES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3374",
+    "word": "51506",
+    "source": "LEMNO INDEX PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3375",
+    "word": "33463",
+    "source": " CAF NOLEMVAL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3376",
+    "word": "13407",
+    "source": " TCF STOINST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3377",
+    "word": "31473",
+    "source": "LEMYES CAE LEMMASS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3400",
+    "word": "60000",
+    "source": " DOUBLE ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3401",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3402",
+    "word": "51506",
+    "source": " INDEX PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3403",
+    "word": "73505",
+    "source": " MP SLOPEVAL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3404",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3405",
+    "word": "51506",
+    "source": " INDEX PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3406",
+    "word": "63473",
+    "source": " AD INTVALUE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3407",
+    "word": "51506",
+    "source": "STOINST INDEX PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3410",
+    "word": "55511",
+    "source": " TS VARST0",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3411",
+    "word": "11506",
+    "source": " CCS PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3412",
+    "word": "13367",
+    "source": " TCF MASSPROP   +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3413",
+    "word": "11466",
+    "source": "DXTEST CCS DAPDATR1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3414",
+    "word": "13422",
+    "source": " TCF FIXCW",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3415",
+    "word": "13422",
+    "source": " TCF FIXCW",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3416",
+    "word": "53522",
+    "source": " DXCH VARST0     +8D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3417",
+    "word": "21513",
+    "source": " DAS VARST0     +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3420",
+    "word": "33520",
+    "source": " CA DXITFIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3421",
+    "word": "27520",
+    "source": " ADS VARST0     +7",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3422",
+    "word": "35016",
+    "source": "FIXCW CAF BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3423",
+    "word": "55506",
+    "source": " TS PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3424",
+    "word": "55507",
+    "source": " TS PSI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3425",
+    "word": "31474",
+    "source": " CAE CSMMASS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3426",
+    "word": "63517",
+    "source": " AD NEGBPW",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3427",
+    "word": "60000",
+    "source": " DOUBLE ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3430",
+    "word": "55510",
+    "source": " TS TEMP333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3431",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3432",
+    "word": "63435",
+    "source": " BZMF PEGGY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3433",
+    "word": "37715",
+    "source": " CAF NEG2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3434",
+    "word": "55506",
+    "source": " TS PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3435",
+    "word": "51506",
+    "source": "PEGGY INDEX PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3436",
+    "word": "31516",
+    "source": " CAE VARST5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3437",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3440",
+    "word": "71510",
+    "source": " MP TEMP333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3441",
+    "word": "60000",
+    "source": " DOUBLE ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3442",
+    "word": "51507",
+    "source": " INDEX PSI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3443",
+    "word": "61511",
+    "source": " AD VARST0",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3444",
+    "word": "51507",
+    "source": " INDEX PSI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3445",
+    "word": "55470",
+    "source": " TS IXX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3446",
+    "word": "11507",
+    "source": " CCS PSI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3447",
+    "word": "13457",
+    "source": " TCF BOKKEP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3450",
+    "word": "31466",
+    "source": " CAE DAPDATR1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3451",
+    "word": "75002",
+    "source": " MASK BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3452",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3453",
+    "word": "31473",
+    "source": " CA LEMMASS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3454",
+    "word": "61474",
+    "source": " AD CSMMASS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3455",
+    "word": "55475",
+    "source": " TS WEIGHT/G",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3456",
+    "word": "00002",
+    "source": "ENDMASSP TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3457",
+    "word": "55507",
+    "source": "BOKKEP2 TS PSI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3460",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3461",
+    "word": "27506",
+    "source": " DIM PHI333",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3462",
+    "word": "13435",
+    "source": " TCF PEGGY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "05,3463",
+    "word": "00616",
+    "source": "NOLEMVAL DEC 25445      B-20",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3464",
+    "word": "02526",
+    "source": " DEC 87450      B-20",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3465",
+    "word": "02352",
+    "source": " DEC .30715     B-2",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3466",
+    "word": "01471",
+    "source": " DEC 1.22877    E-5        B+12",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3467",
+    "word": "00634",
+    "source": " DEC 1.6096     B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3470",
+    "word": "00612",
+    "source": " DEC 1.54       B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3471",
+    "word": "03706",
+    "source": " DEC 7.77177    B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3472",
+    "word": "04425",
+    "source": " DEC 3.46458    E-5        B+12",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3473",
+    "word": "00644",
+    "source": "INTVALUE DEC 26850      B-20",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3474",
+    "word": "03710",
+    "source": " DEC 127518     B-20",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3475",
+    "word": "04246",
+    "source": " DEC .54059     B-2",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3476",
+    "word": "02011",
+    "source": " DEC .153964    E-4        B+12",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3477",
+    "word": "77501",
+    "source": " DEC -.742923   B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3500",
+    "word": "00612",
+    "source": " DEC 1.5398     B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3501",
+    "word": "04656",
+    "source": " DEC 9.68       B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3502",
+    "word": "10372",
+    "source": " DEC .647625    E-4        B+12",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3503",
+    "word": "77126",
+    "source": " DEC -27228     B-20",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3504",
+    "word": "76261",
+    "source": " DEC -.206476   B-2",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3505",
+    "word": "00767",
+    "source": "SLOPEVAL DEC 1.96307    B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3506",
+    "word": "15624",
+    "source": " DEC 27.5774    B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3507",
+    "word": "03054",
+    "source": " DEC 2.3548     E-5        B+12",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3510",
+    "word": "04532",
+    "source": " DEC 2.1777     E-9        B+26",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3511",
+    "word": "10433",
+    "source": " DEC 1.044      E-3        B+8",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3512",
+    "word": "00000",
+    "source": " DEC 0          B-14",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3513",
+    "word": "22070",
+    "source": " DEC 2.21068    E-3        B+8",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3514",
+    "word": "03204",
+    "source": " DEC 1.5166     E-9        B+26",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3515",
+    "word": "77266",
+    "source": " DEC -1.284     B-6",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3516",
+    "word": "02476",
+    "source": " DEC 2          E-5        B+12",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3517",
+    "word": "70364",
+    "source": "NEGBPW DEC -15402.17  B-16",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "05,3520",
+    "word": "75420",
+    "source": "DXITFIX DEC* -1.88275   E-5        B+12*",
+    "constant": "basic operand (inline)"
+   }
+  ]
+ }
+}

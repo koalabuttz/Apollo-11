@@ -1,0 +1,578 @@
+{
+ "milestone": "cm-p61-p67",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 25856,
+ "cases_sha256": "b8659a1d2b113c8f33cda5a4f69eda273506b0bd15cd75bc35f1b28592e4317a",
+ "oracle_sha256": "cedd10e7d4f44c1b71728926885c936dbf3085a42a2a1a24866d6520993102bc",
+ "frozen_vectors": 202,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x1000060000000000000003ff",
+   "cases": 22,
+   "case_ids": [
+    144,
+    39,
+    90,
+    126,
+    298,
+    265,
+    554,
+    999,
+    1033,
+    1114,
+    1081,
+    1108,
+    1478,
+    1542,
+    1839,
+    1969,
+    1918,
+    1825,
+    1865,
+    1951,
+    2174,
+    2430
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffffffc01",
+   "cases": 34,
+   "case_ids": [
+    2629,
+    3065,
+    3150,
+    3520,
+    3719,
+    4047,
+    4135,
+    4448,
+    4620,
+    4891,
+    5282,
+    5394,
+    5638,
+    6077,
+    6231,
+    6541,
+    6424,
+    6448,
+    6550,
+    6698,
+    6788,
+    6999,
+    7303,
+    7445,
+    7866,
+    7975,
+    8216,
+    8463,
+    8836,
+    9167,
+    9285,
+    9472,
+    9926,
+    9987
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x12fffffff00000c0004",
+   "cases": 31,
+   "case_ids": [
+    10474,
+    10580,
+    10860,
+    11260,
+    11435,
+    11559,
+    11857,
+    12140,
+    12489,
+    12733,
+    12986,
+    13155,
+    13384,
+    13583,
+    13842,
+    14080,
+    14444,
+    14436,
+    14390,
+    14426,
+    14537,
+    14372,
+    14447,
+    14667,
+    14881,
+    15203,
+    15525,
+    15637,
+    15944,
+    16269,
+    16519
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffe0000000000000004",
+   "cases": 11,
+   "case_ids": [
+    16845,
+    16920,
+    17299,
+    17438,
+    17772,
+    18157,
+    18368,
+    18615,
+    18796,
+    19010,
+    19215
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x13200ff0000000000000000000",
+   "cases": 18,
+   "case_ids": [
+    19568,
+    19534,
+    19702,
+    19685,
+    19708,
+    19967,
+    19745,
+    19974,
+    20356,
+    20387,
+    20329,
+    20501,
+    20763,
+    20847,
+    20979,
+    20766,
+    20992,
+    21266
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xc0f000000000000000000000",
+   "cases": 11,
+   "case_ids": [
+    21604,
+    21612,
+    21647,
+    21648,
+    21577,
+    21678,
+    21538,
+    22009,
+    21896,
+    22115,
+    22296
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1ff0004000000000000000100",
+   "cases": 11,
+   "case_ids": [
+    22558,
+    22829,
+    23151,
+    23097,
+    23122,
+    23296,
+    23552,
+    23862,
+    24313,
+    24329,
+    24588
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1e000000000000000000000000",
+   "cases": 4,
+   "case_ids": [
+    24853,
+    25130,
+    25350,
+    25624
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 142,
+  "c64_labels": 142,
+  "host_edges": 1809,
+  "c64_edges": 1809,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 992,
+  "c64_taken": 992,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_p61_p67.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_p61_p67_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "stops": {
+  "CM 10,2376 S62.3": {
+   "06037": 256
+  },
+  "CM 26,2217 P61": {
+   "04662": 256
+  },
+  "CM 26,2224 ": {
+   "04662": 256
+  },
+  "CM 26,2227 ": {
+   "04106": 256
+  },
+  "CM 26,2230 ": {
+   "06037": 256
+  },
+  "CM 26,2234 ": {
+   "05217": 256
+  },
+  "CM 26,2243 NEWRNVN": {
+   "06037": 256
+  },
+  "CM 26,2247 ": {
+   "06037": 256
+  },
+  "CM 26,2267 P61.1": {
+   "05536": 256
+  },
+  "CM 26,2270 ": {
+   "04662": 256
+  },
+  "CM 26,2273 ": {
+   "04106": 256
+  },
+  "CM 26,2274 ": {
+   "04662": 256
+  },
+  "CM 26,2277 ": {
+   "04662": 256
+  },
+  "CM 26,2306 ": {
+   "04662": 256
+  },
+  "CM 26,2311 ": {
+   "04106": 256
+  },
+  "CM 26,2312 ": {
+   "05354": 256
+  },
+  "CM 26,2316 ": {
+   "04662": 256
+  },
+  "CM 26,2320 P62": {
+   "04662": 256
+  },
+  "CM 26,2321 ": {
+   "03672": 256
+  },
+  "CM 26,2322 ": {
+   "03672": 256
+  },
+  "CM 26,2326 P62.2": {
+   "04662": 256
+  },
+  "CM 26,2334 ": {
+   "04106": 256
+  },
+  "CM 26,2335 ": {
+   "04701": 256
+  },
+  "CM 26,2342 P62.1": {
+   "04662": 256
+  },
+  "CM 26,2345 ": {
+   "04662": 256
+  },
+  "CM 26,2352 ": {
+   "05546": 256
+  },
+  "CM 26,2367 ": {
+   "05412": 124,
+   "05354": 132
+  },
+  "CM 26,2374 WAKEP62": {
+   "05134": 256
+  },
+  "CM 26,2400 ": {
+   "05324": 256
+  },
+  "CM 26,2401 P62.3": {
+   "06037": 256
+  },
+  "CM 26,2405 P63": {
+   "05354": 256
+  },
+  "CM 26,2407 ": {
+   "05412": 256
+  },
+  "CM 26,2417 ": {
+   "04662": 256
+  },
+  "CM 26,2421 P63.1": {
+   "05412": 256
+  },
+  "CM 26,2423 ": {
+   "05217": 256
+  },
+  "CM 26,2433 P64": {
+   "05354": 256
+  },
+  "CM 26,2435 ": {
+   "06030": 256
+  },
+  "CM 26,2441 P65": {
+   "05354": 256
+  },
+  "CM 26,2443 ": {
+   "05134": 256
+  },
+  "CM 26,2447 ": {
+   "05372": 256
+  },
+  "CM 26,2452 ": {
+   "02120": 256
+  },
+  "CM 26,2453 ": {
+   "02120": 256
+  },
+  "CM 26,2457 P65.1": {
+   "05560": 256
+  },
+  "CM 26,2461 ": {
+   "04662": 256
+  },
+  "CM 26,2464 ": {
+   "04662": 256
+  },
+  "CM 26,2472 ": {
+   "05412": 256
+  },
+  "CM 26,2474 P66": {
+   "05354": 256
+  },
+  "CM 26,2476 ": {
+   "05546": 256
+  },
+  "CM 26,2500 P67": {
+   "05354": 256
+  },
+  "CM 26,2502 ": {
+   "05546": 256
+  },
+  "CM 26,2506 KILLGRP4": {
+   "05412": 256
+  },
+  "CM 26,2510 ": {
+   "06030": 256
+  },
+  "CM 26,2512 P67.1": {
+   "04662": 256
+  },
+  "CM 26,2515 ": {
+   "04106": 256
+  },
+  "CM 26,2531 P67.2": {
+   "06037": 256
+  },
+  "CM 26,2541 P67.3": {
+   "03611": 256
+  },
+  "CM 26,2550 ": {
+   "05650": 93,
+   "06037": 119,
+   "04662": 8,
+   "03352": 31,
+   "03672": 5
+  },
+  "CM 26,2551 ": {
+   "05650": 86,
+   "06037": 124,
+   "03352": 33,
+   "03672": 5,
+   "04662": 8
+  },
+  "CM 26,2555 ": {
+   "05245": 256
+  },
+  "CM 26,2562 ": {
+   "05412": 256
+  },
+  "CM 26,2564 ": {
+   "05217": 256
+  },
+  "CM 26,2565 S61.1C": {
+   "05147": 256
+  },
+  "CM 26,2571 ": {
+   "05372": 256
+  },
+  "CM 26,2577 ": {
+   "04701": 256
+  },
+  "CM 26,2603 ": {
+   "05650": 167,
+   "03352": 71,
+   "04662": 7,
+   "03672": 11
+  },
+  "CM 26,2604 S61.1A": {
+   "03352": 68,
+   "05650": 177,
+   "03672": 3,
+   "04662": 8
+  },
+  "CM 26,2622 S61.1B": {
+   "05650": 256
+  },
+  "CM 26,2626 RETRN3": {
+   "05650": 256
+  },
+  "CM 26,2630 ": {
+   "04662": 256
+  },
+  "CM 26,2631 RETRN2": {
+   "05650": 256
+  },
+  "CM 26,2633 ": {
+   "04662": 256
+  },
+  "CM 26,2636 ": {
+   "04662": 256
+  },
+  "CM 26,2641 RETRN1": {
+   "04662": 133,
+   "03672": 123
+  },
+  "CM 26,2651 S61.2": {
+   "06037": 256
+  },
+  "CM 26,2657 CALLCON": {
+   "06037": 256
+  },
+  "CM 26,2661 ": {
+   "06037": 256
+  },
+  "CM 26,2664 ": {
+   "06037": 256
+  },
+  "CM 26,2666 ": {
+   "06037": 256
+  },
+  "CM 26,2670 ": {
+   "06037": 256
+  },
+  "CM 26,2673 ": {
+   "06037": 256
+  },
+  "CM 26,2677 ": {
+   "06037": 256
+  },
+  "CM 26,2701 ": {
+   "06037": 175,
+   "05650": 81
+  },
+  "CM 26,2703 ": {
+   "06037": 256
+  },
+  "CM 26,2705 ": {
+   "06037": 256
+  },
+  "CM 26,2707 ": {
+   "05721": 203,
+   "06037": 53
+  },
+  "CM 26,2711 ": {
+   "05721": 153,
+   "06037": 103
+  },
+  "CM 26,2723 ": {
+   "06037": 256
+  },
+  "CM 26,2750 ": {
+   "06037": 256
+  },
+  "CM 26,2755 ": {
+   "06037": 256
+  },
+  "CM 26,2757 ": {
+   "06037": 256
+  },
+  "CM 26,2761 ": {
+   "05721": 160,
+   "05536": 96
+  },
+  "CM 26,2766 ": {
+   "05536": 256
+  },
+  "CM 26,2775 LUNENT": {
+   "06037": 256
+  },
+  "CM 26,3030 FISHCALC": {
+   "06037": 256
+  },
+  "CM 26,3046 PREVGAM": {
+   "05721": 136,
+   "06037": 120
+  },
+  "CM 26,3051 VGAMCALC": {
+   "05721": 199,
+   "06037": 57
+  },
+  "CM 27,2631 TFF/TRIG": {
+   "06037": 256
+  },
+  "CM 27,2651 DISPTARG": {
+   "06037": 256
+  },
+  "CM 27,2660 ": {
+   "06037": 187,
+   "05650": 69
+  },
+  "CM 27,2662 ": {
+   "06037": 256
+  },
+  "CM 27,2664 VRCALC": {
+   "05650": 92,
+   "06037": 164
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, ALARM, BANKCALL, BOVB ENDT(X), CLEARMRK, DANZIG, DOWNFLAG, ENDOFJOB, FINDVAC, GOTOPOOH, NEWMODEX, NOVAC, PHASCHNG, POSTJUMP, RTB CM/DAPIC, RTB REFAZE10, RTB SERVNOUT, TASKOVER, UPFLAG, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap"
+}

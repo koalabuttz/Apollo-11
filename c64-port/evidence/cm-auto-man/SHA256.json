@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-auto-man",
+  "release": "evidence-cm-auto-man",
+  "files": {
+    "cm-auto-man-differential.log": {
+      "sha256": "61b0eb06336cf6ff0bfc31f2f69e0a42f6259f9c3d0b5feb369352ca8af84903",
+      "bytes": 345,
+      "store": "tree"
+    },
+    "cm-auto-man-host.log": {
+      "sha256": "1674d2317dfa8cdabcb3eb5ec0c9203bd8165b81f8eee24eada00ffe0fa1db38",
+      "bytes": 1000,
+      "store": "tree"
+    },
+    "cm-auto-man-proof.json": {
+      "sha256": "5cf191593a5f58008a3756b0a9d268d9c814151dd81bd038b68ffafeebf921d1",
+      "bytes": 3452,
+      "store": "tree"
+    },
+    "cm-auto-man-source-map.json": {
+      "sha256": "5aab2365427fe8959d2ae25f2f68c6f181c536024892d9da009da094b5f08cde",
+      "bytes": 47744,
+      "store": "tree"
+    },
+    "cm-auto-man-vice.log": {
+      "sha256": "3a10520767596b138bb71314ce941863d283eda43d4fd79e76cb63bd918940dd",
+      "bytes": 408,
+      "store": "tree"
+    }
+  }
+}

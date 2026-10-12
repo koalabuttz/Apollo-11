@@ -1,0 +1,106 @@
+{
+ "milestone": "cm-tvc-restarts",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 1792,
+ "cases_sha256": "2cfb3e6a8aad9a0db690173978d6cc73ac252b8422c52816340983876ab114ef",
+ "oracle_sha256": "12365c70d02159c961af513e940a783c68fa4b8acfc1da5131374ad63d3148d0",
+ "frozen_vectors": 56,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x7f",
+   "cases": 19,
+   "case_ids": [
+    147,
+    240,
+    448,
+    262,
+    298,
+    430,
+    274,
+    581,
+    843,
+    774,
+    906,
+    984,
+    1002,
+    990,
+    1132,
+    1301,
+    1647,
+    1707,
+    1575
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 73,
+  "c64_labels": 73,
+  "host_edges": 370,
+  "c64_edges": 370,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 213,
+  "c64_taken": 213,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_tvc_restarts.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_tvc_restarts_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "stops": {
+  "CM 16,3140 REDOTVC": {
+   "05245": 256
+  },
+  "CM 16,3152 TVCDAPHS": {
+   "05333": 166,
+   "04744": 90
+  },
+  "CM 16,3174 ENABL2": {
+   "05335": 256
+  },
+  "CM 16,3205 CMDSOUT": {
+   "04740": 45,
+   "04701": 211
+  },
+  "CM 16,3232 CHKSTRK": {
+   "04701": 256
+  },
+  "CM 16,3243 ": {
+   "05333": 256
+  },
+  "CM 16,3253 EXRSTRT": {
+   "03121": 34,
+   "03132": 56,
+   "03011": 43,
+   "03040": 36,
+   "03043": 52,
+   "03003": 35
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: IBNKCALL, ISWCALL, NOQRSM, POSTJUMP, RESUME, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 12, 14 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap"
+}

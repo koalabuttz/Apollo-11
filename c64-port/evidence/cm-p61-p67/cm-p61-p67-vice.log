@@ -1,0 +1,21 @@
+PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+92af07316c224ba7154bd760068f566c8cf95a3ee05a82b696fbee5db7ac4410  build/cm-p61-p67-1.prg
+b69c209987a82409f4fed28e684b42866709032bb611033c2fe151ef314bb193  build/cm-p61-p67-2.prg
+f610ad68a9b195f3e308fd77c4be4f58305063b7abb2922bbd0c941ac95818cc  build/cm-p61-p67-3.prg
+e4e0f2c2ca49b18f4fd3c088d924282c882acb8bf464f118195da58d0670d45c  build/cm-p61-p67-4.prg
+078ff2c2116ccbdec96fa0ea13006eba082cdcc17149cbaa1f8cd818e71068d4  build/cm-p61-p67-5.prg
+8581e42a1ca8e5884513b02bf7605419dc3b47f7e6fb7652fb885e22ce605b0e  build/cm-p61-p67-6.prg
+87cee36a692455d869e9de08166b6c40e9ae87153490afccbb2a0a696831256b  build/cm-p61-p67-7.prg
+99883cd8cfc4b07bfe9072b02e204e553a5605aa1955c8c0d0bdea02b67e12d5  build/cm-p61-p67-8.prg
+
+$ make vice-cm-p61-p67
+for p in build/cm-p61-p67-1.prg build/cm-p61-p67-2.prg build/cm-p61-p67-3.prg build/cm-p61-p67-4.prg build/cm-p61-p67-5.prg build/cm-p61-p67-6.prg build/cm-p61-p67-7.prg build/cm-p61-p67-8.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-p61-p67-1.prg: 22 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-2.prg: 34 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-3.prg: 31 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-4.prg: 11 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-5.prg: 18 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-6.prg: 11 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-7.prg: 11 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-8.prg: 4 checks, 0 failures
+exit 0

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-rcs-dap",
+  "release": "evidence-cm-rcs-dap",
+  "files": {
+    "cm-rcs-dap-differential.log": {
+      "sha256": "0e818b834edf78bb2ef661add741c8bc40a51a92e17fdecda83e7014892f6d8f",
+      "bytes": 13939,
+      "store": "tree"
+    },
+    "cm-rcs-dap-host.log": {
+      "sha256": "71f85f6251a3c06d079e9ce5b6208ebb8992fca90479f39e72e1f35ae51b46f7",
+      "bytes": 988,
+      "store": "tree"
+    },
+    "cm-rcs-dap-proof.json": {
+      "sha256": "27d6981e5bbda1c4329d2fa3c1a3aeb3fe782eee576a1dd1445cd4c7d3e2cfae",
+      "bytes": 24147,
+      "store": "tree"
+    },
+    "cm-rcs-dap-source-map.json": {
+      "sha256": "edbf36fd3df9c369024d2782e63203b7e3f84b4d534d9d27f1ade445d6f8dd8f",
+      "bytes": 87590,
+      "store": "tree"
+    },
+    "cm-rcs-dap-vice.log": {
+      "sha256": "f9255ca7497fe08f83de4d1e34612cf8d41123ae96c54ebc6f980666e80a1d42",
+      "bytes": 570,
+      "store": "tree"
+    }
+  }
+}

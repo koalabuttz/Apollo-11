@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-daps",
+  "release": "evidence-cm-tvc-daps",
+  "files": {
+    "cm-tvc-daps-differential.log": {
+      "sha256": "26a617d9201968cf5bbd548d493e2ac71aea86fceeac87c4e2609ec63e115777",
+      "bytes": 4557,
+      "store": "tree"
+    },
+    "cm-tvc-daps-host.log": {
+      "sha256": "d05017393f4478224e44566e67dcca3856a5a4599e8b1441ac36b684100dff06",
+      "bytes": 1000,
+      "store": "tree"
+    },
+    "cm-tvc-daps-proof.json": {
+      "sha256": "8b6a2187fc1f09c8913c4041f083d6271e1d16667c36b62fdfa49a340796896f",
+      "bytes": 9687,
+      "store": "tree"
+    },
+    "cm-tvc-daps-source-map.json": {
+      "sha256": "97ba3286d5b87f80b7f697c728bf521f12f20baa4935b3da46c67f4013968e69",
+      "bytes": 70697,
+      "store": "tree"
+    },
+    "cm-tvc-daps-vice.log": {
+      "sha256": "50f920faa8e12fe98be72ed0c13c6e0e0ba8f49d47482d2bf22244fe58ad3403",
+      "bytes": 408,
+      "store": "tree"
+    }
+  }
+}

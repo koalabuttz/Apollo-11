@@ -1,0 +1,9 @@
+PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+78cc86d54035aad3611002b03eca682749402098a60b49c88894929412cd2c07  build/cm-entry-dap-1.prg
+8aa6a7282c25105dfde0686c3d8780a9af9c24f733653b8435181c673908e70e  build/cm-entry-dap-2.prg
+
+$ make vice-cm-entry-dap
+for p in build/cm-entry-dap-1.prg build/cm-entry-dap-2.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-entry-dap-1.prg: 34 checks, 0 failures
+PASS: VICE PAL cm-entry-dap-2.prg: 45 checks, 0 failures
+exit 0

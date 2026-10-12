@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-init",
+  "release": "evidence-cm-tvc-init",
+  "files": {
+    "cm-tvc-init-differential.log": {
+      "sha256": "0c87834481de24c2c377d20597b677a05b49bcf6f2847dc7341e93a4561fbe25",
+      "bytes": 2502,
+      "store": "tree"
+    },
+    "cm-tvc-init-host.log": {
+      "sha256": "14353f27bd9a7a8f0910ef77652df33d82b4d6c3e4371b875ef6394a1e2a2efa",
+      "bytes": 1000,
+      "store": "tree"
+    },
+    "cm-tvc-init-proof.json": {
+      "sha256": "345120b77de91c4340054db2f49357edb33e50ab90fc39b68c12084ffcc50bd7",
+      "bytes": 6581,
+      "store": "tree"
+    },
+    "cm-tvc-init-source-map.json": {
+      "sha256": "c918f4a2777c879ba96ecff2b003f83139f433855e15a0c11dd506503946c626",
+      "bytes": 37066,
+      "store": "tree"
+    },
+    "cm-tvc-init-vice.log": {
+      "sha256": "3f362f032993bfdc422cd30a41f60857d252fa22460b91ed68ba5f0695190885",
+      "bytes": 408,
+      "store": "tree"
+    }
+  }
+}

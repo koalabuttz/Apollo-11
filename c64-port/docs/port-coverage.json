@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -409,7 +409,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "e57191505e8db474086c4446976f226935682ffb9f6e4fbba69e60a8e0cce6df"
+            "sha256": "5cf191593a5f58008a3756b0a9d268d9c814151dd81bd038b68ffafeebf921d1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
@@ -417,7 +417,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "fe060c1034edc5d6fd07eaa9ed9e618c1780dea2af0fb27521de4f70d31ec4d9"
+            "sha256": "3a10520767596b138bb71314ce941863d283eda43d4fd79e76cb63bd918940dd"
           }
         }
       }
@@ -461,7 +461,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-proof.json",
-            "sha256": "7393c9df5235e5439e9fae9fd58554087ff084f80d4df22a399d567f239420bd"
+            "sha256": "3a9aac64b91f7265d2a2e68af933b49d4e76b6ac1cf8369a97dbbec3c623469a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-host.log",
@@ -469,7 +469,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-vice.log",
-            "sha256": "13cfa3b2af260ea342a980be13aa160bf0803affd81daecfbd77b5ab89f53022"
+            "sha256": "9848416499b514a674fb8c214ba5936e2523c93dd2fb43e350a8c3f48ff13699"
           }
         }
       }
@@ -522,7 +522,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "2cba545e9b258496159e551eb033f02f2427a258c478fc4aa66645b7719cd038"
+            "sha256": "4428ab2ec9df968ef124d877da648c067f1f0de1cb4f25aa066d3aa4220a81eb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -530,7 +530,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "73c4dc209a892faaeac9422553f302840c721b9dc529c595247f0adb0bc3a309"
+            "sha256": "06d4aa3278dea524a4d032c49046977db500674acaf98ec2cff7ba991d76e542"
           }
         }
       }
@@ -1805,7 +1805,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "e3e66121b68eb5bb0930c58e89e3c1e4c55597d305ae0ec1563ad557cdd378c3"
+            "sha256": "4ee8d7c55a0a3a9ab1fa81d2bdafb5ecec434726b49cabd670208404b8b58e9f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
@@ -1813,7 +1813,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "75d06d081da1fcc4952a4ee8f473b63aac4b04a02a5a865433ee7ab7cd36e99e"
+            "sha256": "8579c3f53489e06f5cb57bb9e8af5809e2da71884b21b1864f2c37ef954e0b01"
           }
         }
       }
@@ -2250,7 +2250,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
-            "sha256": "dd9cb818044dd3ed7c9564aef6b90a868df2ebd7281f93b28486dd8aabe528f1"
+            "sha256": "bc80c08d8ffcb2a341973434dcd3e134d6baa6a6a21111551d2ca27571bf5236"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-host.log",
@@ -2258,7 +2258,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-vice.log",
-            "sha256": "08d92ea9dee393d1dea673551bec4e35b1a677ebdbc24ab0f1fd648e25c649cd"
+            "sha256": "0b442aeea67519f67749cc226f228b2d28471e929f88af0c06afc01e2a6d7a85"
           }
         }
       }
@@ -2925,15 +2925,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "0aa421ee3b05d9dda3e50d69612f0383c390283bf6c673da8715a4c38ea290c4"
+            "sha256": "27d6981e5bbda1c4329d2fa3c1a3aeb3fe782eee576a1dd1445cd4c7d3e2cfae"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
-            "sha256": "8078505d2fdd1a3ab76242c8740d985158baf4b823eb826d22d1b1351ae8c5ea"
+            "sha256": "71f85f6251a3c06d079e9ce5b6208ebb8992fca90479f39e72e1f35ae51b46f7"
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "8bfe87082950e379fbf3ce462d04522f2fae8438be4de855b487118b0551710f"
+            "sha256": "f9255ca7497fe08f83de4d1e34612cf8d41123ae96c54ebc6f980666e80a1d42"
           }
         }
       }
@@ -3266,7 +3266,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-servicer/cm-servicer-proof.json",
-            "sha256": "e82b87aadd31e9caafaa806829f9d88a0bac170b70b193f1c10104467b34de73"
+            "sha256": "24fd2d5c11194fcc71fa4e22558a574a2c4770265c67c65503624465e49783f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-servicer/cm-servicer-host.log",
@@ -3274,7 +3274,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-servicer/cm-servicer-vice.log",
-            "sha256": "960e63342bdb582bf1c5c06a206fe6cdad7cb472c00022587778a9cc41804d6b"
+            "sha256": "fceff4d3b29d7ea73b6a04c4f58a4703c7871154e26b5bf8c5020ee5d672d997"
           }
         }
       }
@@ -3600,7 +3600,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-proof.json",
-            "sha256": "c1006b231019a474d5f24c165f1a84ec795ea2f4f199247753a2272aaa858f79"
+            "sha256": "8b6a2187fc1f09c8913c4041f083d6271e1d16667c36b62fdfa49a340796896f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-host.log",
@@ -3608,7 +3608,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-vice.log",
-            "sha256": "ddeb4b84686d371c52a576b618dd57942fabe75253542250ddae98873381f842"
+            "sha256": "50f920faa8e12fe98be72ed0c13c6e0e0ba8f49d47482d2bf22244fe58ad3403"
           }
         }
       }
@@ -3652,7 +3652,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-proof.json",
-            "sha256": "5b3bda48aac023cd9d240659d9108bda6b2ca838bbaaa2f9a78230d8e6007b03"
+            "sha256": "89c173f976345f6bf99929a5b0cf02f3f626f142645933ea5420f0ae5bc3228f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-host.log",
@@ -3660,7 +3660,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-vice.log",
-            "sha256": "3533de46a75e5291884e20928be63a587f3bfa1a6f44ca723e1d633eca346d1e"
+            "sha256": "2e43948484cd31026b031b7151d5dd0a4b8dfb04c9a7ffd86ecff899b9e9655d"
           }
         }
       }
@@ -3706,7 +3706,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
-            "sha256": "71977252c0ba9adb35a2fd146c3b1924bd42a87972d1fa24a842c8ba548a5f00"
+            "sha256": "345120b77de91c4340054db2f49357edb33e50ab90fc39b68c12084ffcc50bd7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-host.log",
@@ -3714,7 +3714,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-vice.log",
-            "sha256": "09df52a45fc84e51bc12dc61bd70779b1e4a2cdd7f37665fb949eab180061e7e"
+            "sha256": "3f362f032993bfdc422cd30a41f60857d252fa22460b91ed68ba5f0695190885"
           }
         }
       }
@@ -3755,7 +3755,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-proof.json",
-            "sha256": "5d4806eafadc20ecdbf8f63e690aef00a980087fabaee29c63de0365cb173c9d"
+            "sha256": "835a44c89466cb05664b373fe3b8495d770a94201555d9457f136e164f0f06d3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-host.log",
@@ -3763,7 +3763,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-vice.log",
-            "sha256": "d5272a55669b8a5fca2c834ae462ba7cb23981f32fe66fda73f9eb05e1f0abf2"
+            "sha256": "aa5ec82c0d7dfad77c21904fea75712a235b18cc220ef8e65d6472546eb56ec7"
           }
         }
       }
@@ -3810,7 +3810,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-proof.json",
-            "sha256": "1a5133f739d62431a3a1dbb4746cf48575a2669034c4332014f0e80d7d0ad1a8"
+            "sha256": "f3e762de0c6018664d7a86979dd66e7deb6593958d44a192e778292e16726de0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-host.log",
@@ -3818,7 +3818,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-vice.log",
-            "sha256": "5767a60d688b814a4ff71fe1dc96ab12b8951d7427a657118cc2754091df8521"
+            "sha256": "1624e131f3e380bf471ab8b755b01ac8cb7f526e88efa7e47955e23f976e09b5"
           }
         }
       }
@@ -3861,7 +3861,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-proof.json",
-            "sha256": "7dad7776b193993ff8a88858ba14171d1a3ab0ae3e50459e408bd7fdc6e233f1"
+            "sha256": "4c60810e2f9977ff4d8024e96e5929dfeeecb4f0998aed942807eeefcccb8f14"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-host.log",
@@ -3869,7 +3869,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-vice.log",
-            "sha256": "e51826cc3e085258fed4b4b5f98b80635d130b8dc176077f0414b4bfaf9d0f92"
+            "sha256": "6b96e399740c0059651d3f78cf2cf6a878a3ec75c52edcc2274dc8a74244467b"
           }
         }
       }
@@ -3913,7 +3913,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-proof.json",
-            "sha256": "ce12a10e2365f6fb6387551b8b445bc70f303a4d6aa2d048d36ecf22299f6da3"
+            "sha256": "26748661f36f1e235fc6cedb6cdbc806f3ef6c2a94ab90f330f48a7c198a9356"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-host.log",
@@ -3921,7 +3921,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-vice.log",
-            "sha256": "bcdb7b35dfbc35bc5fffcf6cef04565ad9ddba15eace5aa8c59ab6d8ba266275"
+            "sha256": "8613340903a174ca6917082de43a4060a6a592f79dc8799ca36dd7c917648ac4"
           }
         }
       }

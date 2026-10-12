@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-servicer",
+  "release": "evidence-cm-servicer",
+  "files": {
+    "cm-servicer-differential.log": {
+      "sha256": "4036a477f4d65651c1c96bf1fe1baea60c842fe71c0085ed481591ad45201fe4",
+      "bytes": 1746,
+      "store": "tree"
+    },
+    "cm-servicer-host.log": {
+      "sha256": "5ff5ce35fd87bbf7a7e22f4e7bda5cf64d6a1a07773d5fe2b54d0df6911eef50",
+      "bytes": 1002,
+      "store": "tree"
+    },
+    "cm-servicer-proof.json": {
+      "sha256": "24fd2d5c11194fcc71fa4e22558a574a2c4770265c67c65503624465e49783f1",
+      "bytes": 6739,
+      "store": "tree"
+    },
+    "cm-servicer-source-map.json": {
+      "sha256": "21e5491d22c83cd53d6a9e0c6a943044cc740ec99bc793d1f505b3b17dc1e8c2",
+      "bytes": 53295,
+      "store": "tree"
+    },
+    "cm-servicer-vice.log": {
+      "sha256": "fceff4d3b29d7ea73b6a04c4f58a4703c7871154e26b5bf8c5020ee5d672d997",
+      "bytes": 1424,
+      "store": "tree"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+413558956159724d029a9810c64ad977808cabd63e4352842169a7b39566ed7c  build/cm-body-attitude-1.prg
+d12320d23be507994a0bd0835985b8e50268bf33cc8fd6ef045403083b1efca5  build/cm-body-attitude-2.prg
+28f7f49c4230c15ad431284a6ba381c2ba184098aa9c88b89390c5c7f8c6a9ea  build/cm-body-attitude-3.prg
+
+$ make vice-cm-body-attitude
+for p in build/cm-body-attitude-1.prg build/cm-body-attitude-2.prg build/cm-body-attitude-3.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-body-attitude-1.prg: 7 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-2.prg: 9 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-3.prg: 8 checks, 0 failures
+exit 0
