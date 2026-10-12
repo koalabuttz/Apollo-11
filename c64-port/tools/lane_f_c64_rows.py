@@ -36,6 +36,7 @@ MODULES = {
     'lm-trim-gimbal': ('lm_trim_gimbal', 'LM_TG', 'lm_tg', 4, 256, 'LM_TG_SRC', IO_RUN),
     'lm-landing-displays': ('lm_landing_displays', 'LM_LAD', 'lm_lad', 8, 128, 'LM_LAD_SRC', IO_RUN),
     'lm-ags-init': ('lm_ags_init', 'AGS', 'ags', 22, 128, 'LM_AGS_SRC', '{s}_run(s,n,steps)'),
+    'lm-lunar-landing': ('lm_lunar_landing', 'LLD', 'lld', 31, 120, 'LM_LLD_SRC', '{s}_run(s,n,0)'),
 }
 
 

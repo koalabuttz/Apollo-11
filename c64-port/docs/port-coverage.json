@@ -7152,8 +7152,60 @@
           ],
           "scope": "STARTP66 guidance display END idle hardware clock IRQ1 RODTASK and second P66 iteration with continuous canonical image; source one-shot RODTASK does not requeue itself.",
           "verification": "docs/P66-APPLICATION-RECURRENCE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_lunar_landing.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-LUNAR-LANDING.md",
+          "scope": "All of the file: P63 (bank 32 02776-03262: P63LM's PHASCHNG and R02BOTH, the P63 set-up with WAND CHAN12 and the FLAGORGY flags, IGNALG and IGNALOOP through RP-TO-R, GUIDINIT, LEMPREC, MUNGRAV and ?GUIDSUB, DDUMCALC's DDUM iteration with its pushdown arithmetic to BMN DDUMGOOD or CALL INTSTALL, INTEGRVS's GOTO IGNALOOP, DDUMGOOD's TIG and OUTOFPLN, IGNALGRT and ASTNCLOK, ASTNRET's SSP QMAJ and RTB R51P63, P63SPOT2 through PFLITEDB and R60LEM, P63SPOT3's LR antenna test (RAND CHAN33) to GOPERF1 or SETPOS1 and POSTJUMP BURNBABY) and P68's LANDJUNK (bank 31 02144-02215: ZATTEROR, SETMAXDB, LAT-LONG, R-TO-RP, the V06N43 display and REFMF), as twenty-one basic and ten interpretive ABI routines."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 31 or 32 under any EBANK with the lm_lld_io record (channels 12 and 33); basic keys at Z, interpretive keys at LOC with Z at NEWOPS; DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB, BANKSET not the key's bank, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, DDUMCALC with overflow in A, or no io record; 0 of 15,872 random cases. UNIT's and ABVAL's alarm 1302 exits are translated but no sampled input reaches them",
+        "external_continuations": [
+          "PHASCHNG",
+          "BANKCALL (R02BOTH, STCLOK2, R60LEM, GOPERF1, SETPOS1, ZATTEROR, SETMAXDB, GOFLASH)",
+          "IBNKCALL (PFLITEDB)",
+          "POSTJUMP (BURNBABY)",
+          "ENDOFJOB",
+          "GOTOPOOH",
+          "RTB R51P63",
+          "CALL/STCALL RP-TO-R, GUIDINIT, LEMPREC, MUNGRAV, ?GUIDSUB, INTSTALL, INTEGRVS, LAT-LONG, R-TO-RP, REFMF",
+          "POODOO1 (alarm 1302)",
+          "CHANG2"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-source-map.json",
+            "sha256": "35b12d2e18177be5a50b603612ebcd3ba286548a0819fefa12cf883cede794d1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-proof.json",
+            "sha256": "7e3aed5e6c831399d42fea85ffbe637b32e54f04e63843d0d89a42b9a807e487"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-host.log",
+            "sha256": "11b9ac7bd7e288489d03f807954288d31b0bf7b3fa58db3b1f6e0d640c97e2f3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-vice.log",
+            "sha256": "0d984f05761b9fe1c71af211902da6fc37e6ec34542340ed7e7613af3873d900"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-c64-cover.json",
+            "sha256": "eb37a41ee3d87c886b3cdcc0ec52ff672f8b947a6bfb1ef07264e6756f0f7e21"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
