@@ -97,7 +97,7 @@
       "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
       "bytes": 4448,
       "lines": 230,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -179,9 +179,18 @@
           ],
           "scope": "Complete containing ALARM_AND_ABORT local source body recommendation within reviewed valid original compiled caller/data contracts. Authentic external callee/source-return handoffs preserved. Full applications and external bodies are separate acceptance requirements.",
           "verification": "docs/COMANCHE_ALARM_BODY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_alarm_sites.c",
+            "src/cm_alarm_sites.inc",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Inline alarm codes after all 62 genuine TC ALARM/ALARM2/BAILOUT/POODOO sites as compiled constants generated from the source listing; native entries take them from the site table, never from the rope. Non-site fixed Q is out of scope.",
+          "verification": "docs/CM-ALARM-SITES.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -189,7 +198,7 @@
           "sole_persistent_state": "2048 canonical physical erasable words; A/L/Q raw16, other words15, coherent EB/FB/BB and ZERO=0",
           "ordinary_TC_inline_or_return": "Q0100..7775, banked physical code storage>=0100. These are compiled program descriptors; no decoder/reserved CPU word execution. Caller owns frame/producer exclusion across internal overlay swaps.",
           "alarm_codes": "normal15-bit codes from inline original words, CA MPAC, T4 CCS result, or actual R02 BIT4/OCT220 arithmetic. Raw overflowing VARALARM/BORTENT A would skip source caller-save and target reserved CPU descriptors; no original mission producer supplies it. PRIOLARM broader raw16 behavior separately proved.",
-          "fixed_read_domain": "all40 physical banks/40960 addresses through original-layout passive immutable reader, including zero unpopulated banks. No executable credit from those words.",
+          "fixed_read_domain": "inline alarm words at fixed Q come from the compiled cm_alarm_sites table (62 genuine call sites, checked against source text and rope at generation); a fixed Q that is no genuine site is out of scope. No runtime rope reader is linked.",
           "ISR_metadata": "ALARM entries preserve separate caller ISR metadata; full original complete-entry/directALARM2 oracles assert both contexts where applicable. WHIMPER explicitly clears actualISR via passed metadata and preserves real RESUME frame semantics.",
           "diagnostic_failure_locations": "ALARM2 surviving A is recorded data, all normal15 values certified. Actual selfcheck ERRORS producer independently records all normal15 oldQ register values including low descriptors/negative/-0, then genuineTC overwritesQ3267 before returning. The old data is never program dispatch.",
           "priority_display_caller": "actualBANKCALL PRIOLARM pair with ordinary saved fixed caller and coherent saved bank; genuine sourceP51 CAF404 caller accepts immediate2202return and actualEND admission, including resource failure. Its upstream mission and queued payload bodies are external to this file.",
@@ -212,19 +221,18 @@
             "sha256": "3ec296a8f1387db947ab1aedea7f9661edf90979d44b97a078dbf93a34c68ef2"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-alarm-wholefile-review.json",
-            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+            "path": "evidence/cm-alarm-sites/cm-alarm-wholefile-host.log",
+            "sha256": "d5f782e45c28176f62bde9e6a6f4fd59d6aceff0557f362e00d0cbf74777319f"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-alarm-wholefile-review.json",
-            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+            "path": "evidence/cm-alarm-sites/cm-alarm-sites-vice.log",
+            "sha256": "fa20007fa1544617a9c90dcaac2cd27693a239e5c3b0fdaff6b3c69699cef7d6"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/cm-alarm-sites/cm-alarm-sites-proof.json",
+            "sha256": "138ef51a1d5bdc8ecbbd3c51ccc69ee50fa3eb16b8c42b54576f83f8f7011f8d"
           }
         }
-      },
-      "demoted": {
-        "from": "complete",
-        "date": "2026-10-11",
-        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
@@ -373,7 +381,7 @@
             "src/cm_nv85_route.c",
             "src/cm_dynamic_display.c"
           ],
-          "scope": "Normal CKNVWRD1/REGODSP and MAKEPLAY/GOPLAY continuation for source V06N85, original priority/wake and actual END/idle composition. Busy, flashing, monitor and noun40 paths remain separate work.",
+          "scope": "REGODSP and MAKEPLAY/GOPLAY continuation for source V06N85 entered from CKNVWRD1 (CKNVWRD1 itself is P40-P47), original priority/wake and actual END/idle composition. Busy, flashing, monitor and noun40 paths remain separate work.",
           "verification": "docs/COMANCHE-NORMAL-N85.md"
         },
         {
@@ -395,15 +403,22 @@
           "native_files": [
             "src/cm_display_rest.c"
           ],
-          "scope": "Actual blocked NVDSP REST RESTSLEP and UPENT2 source continuations to real ENDOFJOB or NVSUBUSY.",
+          "scope": "Blocked NVDSP REST/RESTSLEP source continuation to real ENDOFJOB or NVSUBUSY; UPENT2 (SERVICE_ROUTINES), NVSUBUSY (PINBALL) and ENDOFJOB (EXECUTIVE) are callees, not claimed here.",
           "verification": "docs/COMANCHE-DISPLAY-REST.md"
         },
         {
           "native_files": [
             "src/cm_clock_blocked_display.c"
           ],
-          "scope": "Blocked clock display continuation through REST NVSUBUSY and real JOBSLEEP; retained external monitor flags.",
+          "scope": "Blocked clock display continuation into NVSUBUSY (PINBALL) and JOBSLEEP (EXECUTIVE); only the DISPLAY_INTERFACE side is claimed here. Retained external monitor flags.",
           "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_pinbranch.c"
+          ],
+          "scope": "PINBRNCH display selection and its ERASER, MARKPLAY, KEEPPRIO and PLAYJUM1 continuations to GOPLAY or NVSUB.",
+          "verification": "docs/DSKY-PINBRANCH.md"
         }
       ]
     },
@@ -627,8 +642,19 @@
       "sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
       "bytes": 31075,
       "lines": 1315,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lanec_ev_front.c",
+            "src/lanec.c",
+            "include/lanec_ev_front.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
+          "verification": "docs/LANEC-EV-FRONT.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/FIXED_FIXED_CONSTANT_POOL.agc",
@@ -930,6 +956,15 @@
           ],
           "scope": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced; all14 entries/all76 emitted words including negative-overflow register-Q fault frontier before external fetch",
           "verification": "docs/COMANCHE-INTERBANK.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interbank_routines.c",
+            "src/cm_interbank_sites.inc",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 354 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "verification": "docs/CM-INTERBANK-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -962,6 +997,10 @@
           "independent_review": {
             "path": "evidence/cm-interbank-complete-independent-review.txt",
             "sha256": "3b6c886d45aa667874a445b290c59ebd13fe2083be4efb5a2a2a7cf313938421"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/cm-interbank-transfer/cm-interbank-transfer-proof.json",
+            "sha256": "14dfcb95ab08b75cf44ceb690fc961448d9d8b9a6ef517a58b451a26298d2a3b"
           }
         }
       }
@@ -1792,6 +1831,16 @@
           ],
           "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
           "verification": "docs/DSKY-OPERATOR-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_pin_gaps.c",
+            "src/lanec.c",
+            "include/lanec_pin_gaps.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns) and CHANLOAD (channel 7 skip, WRITE of channels 0-77) to their callee boundaries, register-exact against the original program.",
+          "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]
     },
@@ -2360,6 +2409,14 @@
           ],
           "scope": "All containing-source public entries, internal paths and original constants within reviewed caller contracts; external source continuations retain their actual handoffs.",
           "verification": "docs/SYSTEM_TEST_LEAD_INS.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "E/BKCALL, its returns, E/CALL, resume, E/JOBWAK, EXIT and the INTPRET forms registered as native routines; E/BKCALL and E/CALL round trips run through the trampoline into a native callee and back.",
+          "verification": "docs/CM-STANDARD-LEAD-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -2383,6 +2440,10 @@
           "c64_execution_results": {
             "path": "evidence/standard-lead-proof.json",
             "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/cm-standard-lead-transfer/cm-standard-lead-transfer-proof.json",
+            "sha256": "a784add92f43a1763ce30c103b46f931a9ac612c356fb4b0eb30085a9f373c66"
           }
         }
       }
@@ -2776,10 +2837,33 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/p66_major_mode.c"
+            "src/p66_regodspr.c",
+            "src/p66_runtime_regodspr.c"
           ],
-          "scope": "Fixed STARTP66 NEWMODEX major-mode selection and actual DSPMMJB NOVAC admission; deferred formatting/device drain still pending.",
-          "verification": "docs/P66_MAJOR_MODE.md"
+          "scope": "Nonflashing V06N60 REGODSPR through NOVAC, SAVELOCR and BANKJUMP to ENDOFJOB (or BAILOUT1 on NOCORE), including a pending NEWJOB; MAKEPLAY is admitted, not executed.",
+          "verification": "docs/P66-RUNTIME-REGODSPR.md"
+        },
+        {
+          "native_files": [
+            "src/p66_makeplay.c",
+            "src/p66_makeplay_sleep.c"
+          ],
+          "scope": "Normal P66 MAKEPLAY priority/select/wake-return paths, GOSLEEPS/XCHTOEND sleep and resume through PLAYJUM1 to GOPLAY, and the busy REST/RESTSLEP route to NVSUBUSY or ENDOFJOB.",
+          "verification": "docs/P66-MAKEPLAY-SLEEP.md"
+        },
+        {
+          "native_files": [
+            "src/p66_goplay.c"
+          ],
+          "scope": "Normal V06N60 GOPLAY/NVDSP consumer through COPYPACS to NVMONOPT and the nonflashing finish to ENDOFJOB.",
+          "verification": "docs/P66-GOPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_pinbranch.c"
+          ],
+          "scope": "PINBRNCH display selection and its ERASER, MARKPLAY, KEEPPRIO and PLAYJUM1 continuations to GOPLAY or NVSUB.",
+          "verification": "docs/DSKY-PINBRANCH.md"
         }
       ]
     },
@@ -3008,8 +3092,19 @@
       "sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
       "bytes": 37260,
       "lines": 1681,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lanec_ev_front.c",
+            "src/lanec.c",
+            "include/lanec_ev_front.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, CHKPOOH, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
+          "verification": "docs/LANEC-EV-FRONT.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc",
@@ -3415,6 +3510,15 @@
           ],
           "scope": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced; all14 entries/all76 emitted words including negative-overflow register-Q fault frontier before external fetch",
           "verification": "docs/LUMINARY-INTERBANK.md"
+        },
+        {
+          "native_files": [
+            "src/lm_interbank_routines.c",
+            "src/lm_interbank_sites.inc",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 448 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "verification": "docs/LM-INTERBANK-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -3447,6 +3551,10 @@
           "independent_review": {
             "path": "evidence/lm-interbank-independent-review.txt",
             "sha256": "3056dd280e3361436d2626a1149a0876f860f8402c250c46f1fff2bbcbf47a2d"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/lm-interbank-transfer/lm-interbank-transfer-proof.json",
+            "sha256": "b235d6f6f38ca482201f7ba7b8f245d6b9f37ded04cdb6671fad07bd4a50df3d"
           }
         }
       }
@@ -3720,8 +3828,60 @@
       "sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
       "bytes": 6098,
       "lines": 183,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_ephemeris.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "All 74 words: LSPOS/LUNPOS and LUNVEL from the original entry frontier to every actual caller frontier, as nine native steps between original NEWOPS frontiers. Every source path is translated; the complete certificate below awaits the auditor review.",
+          "verification": "docs/LM-EPHEMERIS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; coherent original entry banks, BANKSET = BB, five VACs, ordinary 15-bit words.",
+          "caller_returns": {
+            "LSPOS": [
+              "022563",
+              "023273",
+              "023373",
+              "030512",
+              "065627 under SUPER 0100"
+            ],
+            "LUNVEL": [
+              "023417"
+            ]
+          },
+          "data_validity": "Original ephemeris polynomial validity; no widened claim."
+        },
+        "external_continuations": [
+          "Caller entry/resume services and application scheduling",
+          "Overlay ABI 2 modules for the whole routine on the C64 (phases verified separately)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
+            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
+            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-checks.log",
+            "sha256": "31fe7d0fee2daddcc969fc72fc6ceba25ba47620c5b2d62d12dd52099be995ed"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-results.json",
+            "sha256": "f336006417ac182a4f83fd84c4322b5aa192d96196d015781e1f3bdd28d3c097"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
@@ -3897,7 +4057,7 @@
       "status": "partial",
       "native_coverage": [
         {
-          "scope": "PHASCHNG/2PHSCHNG A/B/C table maintenance for groups 1..6; DSKY NEWMODE/MMDSPLAY services remain untranslated.",
+          "scope": "PHASCHNG/2PHSCHNG A/B/C table maintenance for groups 1..6; NEWMODEX/MMDSPLAY covered only on the STARTP66 path below.",
           "artifacts": [
             {
               "path": "src/phase.c",
@@ -3912,6 +4072,13 @@
               "sha256": "ffc0309d935570799859a507c8bbd6b9019c937fde066db3437b483f26b72423"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/p66_major_mode.c"
+          ],
+          "scope": "Fixed NEWMODEX/MMDSPLAY/SETUPDSP path as called from STARTP66 (LUNAR_LANDING_GUIDANCE_EQUATIONS), through Executive NOVAC admission of the DSPMMJB job; the DSPMMJB body (PINBALL_GAME_BUTTONS_AND_LIGHTS) and other NEWMODEX callers remain separate.",
+          "verification": "docs/P66_MAJOR_MODE.md"
         }
       ]
     },
@@ -4205,6 +4372,16 @@
           ],
           "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
           "verification": "docs/DSKY-OPERATOR-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_pin_gaps.c",
+            "src/lanec.c",
+            "include/lanec_pin_gaps.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns) and CHANLOAD (channel 7 skip, WRITE of channels 0-77) to their callee boundaries, register-exact against the original program.",
+          "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]
     },
@@ -4462,7 +4639,7 @@
       "sha256": "1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59",
       "bytes": 7458,
       "lines": 293,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -4470,33 +4647,10 @@
             "src/fixed_data_lm.inc",
             "include/fixed_data_symbols.h"
           ],
-          "scope": "constant and alias declarations, no executable algorithm; every original data-emitting source line and alias mapped",
+          "scope": "Every data-emitting source line and alias mapped as constants. Not complete: no native RESTARTS consumer selects these entries and transfers to their 2CADRs (auditor 2026-10-11, finding 4); see docs/NATIVE_TRANSFER_ABI.md.",
           "verification": "docs/FIXED_DATA.md"
         }
-      ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/fixed-data-certificates.json",
-            "sha256": "5440bf0c814aca180f2e1b73ea4137de21e17f732d2a3e8c5818cd432c6672a7"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/fixed-data-audit.json.gz",
-            "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/fixed-data-host.log",
-            "sha256": "4ec0c7761c302724b3096120f7dd7657113162a076cc95e5d982de4ff890a53e"
-          },
-          "c64_execution_results": {
-            "path": "evidence/fixed-data-vice-result.txt",
-            "sha256": "0b67321fcef8be41ab88f60a27bd0305fcd44050dd8e46fcf50f858100732be6"
-          }
-        },
-        "review_scope": "Pure data declarations, including documented SIZETAB numeric TC pseudo-ops; executable readers and consumers are separate source files and remain uncertified."
-      }
+      ]
     },
     {
       "path": "Luminary099/RTB_OP_CODES.agc",
@@ -4812,6 +4966,14 @@
           ],
           "scope": "All containing-source public entries, internal paths and original constants within reviewed caller contracts; external source continuations retain their actual handoffs.",
           "verification": "docs/SYSTEM_TEST_LEAD_INS.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "E/BKCALL, its returns, E/CALL, resume, E/JOBWAK, EXIT and the INTPRET forms registered as native routines; E/BKCALL and E/CALL round trips run through the trampoline into a native callee and back.",
+          "verification": "docs/LM-STANDARD-LEAD-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -4835,6 +4997,10 @@
           "c64_execution_results": {
             "path": "evidence/standard-lead-proof.json",
             "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+          },
+          "native_transfer_round_trip": {
+            "path": "evidence/lm-standard-lead-transfer/lm-standard-lead-transfer-proof.json",
+            "sha256": "b409f3f3d3175ebca780db93644e398390315f64e6fb2ea0bcc9ddcf3b9ce8bf"
           }
         }
       }

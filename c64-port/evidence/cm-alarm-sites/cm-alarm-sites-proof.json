@@ -1,0 +1,31 @@
+{
+ "milestone": "cm-alarm-sites",
+ "lane": "A",
+ "commit": "7900c29c2f42042b52504f69df765bfb24871da5",
+ "interface": "docs/NATIVE_TRANSFER_ABI.md",
+ "host_strict": "cm-alarm-sites: 859919 checks, 0 failures",
+ "host_sanitizer": "cm-alarm-sites: 859919 checks, 0 failures",
+ "c64_vice": "PASS: VICE PAL cm-alarm-sites.prg: 372 checks, 0 failures",
+ "native_files": {
+  "src/agc_transfer.c": "2ef6da5015ed204ff790dd86c343e61882230704f02eb07b8d45c3789af6010f",
+  "src/cm_alarm_sites.c": "35bfd64553cecbacf3e3955e52b7fb81aef28d8630b75ed6eb1406985eb9ede6",
+  "src/cm_alarm_sites.inc": "b6e8d23b4b89e4c380dec85c522c6dbb7b3e95b4c275b511db9fe8ad50cc0168",
+  "include/cm_alarm_sites.h": "bbb199ae15df49806ff5964966800e16b195d3dd2242121bd2caf0406f237324"
+ },
+ "differential": {
+  "milestone": "cm-alarm-sites",
+  "sites": 62,
+  "cases": 11904,
+  "kinds": [
+   "ALARM 05650",
+   "ALARM2 05652",
+   "BAILOUT 07762 / POODOO 05726 word"
+  ],
+  "contexts_per_site_and_kind": 64,
+  "image_words": 2048,
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "snapshot_sha256": "fb6ab69c2fa610fa1219f5f2fa65524873f177a5744d1792f9dce7267eca057b",
+  "snapshot_bytes": 49163520,
+  "native_link_has_rope_reader": false
+ }
+}

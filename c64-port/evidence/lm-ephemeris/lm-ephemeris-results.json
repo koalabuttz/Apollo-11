@@ -1,0 +1,78 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 16 frozen original LSPOS/LUNVEL states, 21 admission guards and 54 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 c3617d869ff44fc782f71184975346d6edc90c298c03d01600df756efda5c466",
+  "PASS65536 original LSPOS/LUNVEL states strict native",
+  "PASS 16 frozen original LSPOS/LUNVEL states, 21 admission guards and 54 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 c3617d869ff44fc782f71184975346d6edc90c298c03d01600df756efda5c466",
+  "PASS65536 original LSPOS/LUNVEL states full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-ephemeris-1.prg: 12 checks, 0 failures",
+   "PASS: VICE PAL lm-ephemeris-2.prg: 30 checks, 0 failures",
+   "PASS: VICE PAL lm-ephemeris-3.prg: 12 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 31590,
+    "prg_sha256": "4be3902b9cc89a085d126e38e380472960b358b0b9e4d168f5d05974b630f825",
+    "sections": {
+     "text": 27141,
+     "rodata": 4435,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$8367",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     0,
+     1
+    ],
+    "steps": 12
+   },
+   "2": {
+    "prg_bytes": 28953,
+    "prg_sha256": "33826ecea101af50e53bdfbd76305d5ff3be751a5fd14844ddf906e1d7f31c58",
+    "sections": {
+     "text": 20393,
+     "rodata": 8546,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$7918",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     2,
+     3,
+     4,
+     6,
+     7
+    ],
+    "steps": 30
+   },
+   "3": {
+    "prg_bytes": 40998,
+    "prg_sha256": "b198a5e2f94f69cd908243ec24204f98284aa7ddcd746878d89c6c3471c82d7f",
+    "sections": {
+     "text": 34411,
+     "rodata": 6573,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$a827",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     5,
+     8
+    ],
+    "steps": 12
+   }
+  },
+  "whole_routine_note": "The whole routine links to about 51 KB of 6502 code (-Oz), more than one PRG beside two images, so the C64 check runs each phase in one of three PRGs; the host runs the same phase steps and the whole chain."
+ },
+ "source_audit": [
+  "PASS 74 assembled words on 74 source lines map to native literals in 8 functions"
+ ]
+}
