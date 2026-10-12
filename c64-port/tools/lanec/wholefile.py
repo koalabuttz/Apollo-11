@@ -61,6 +61,8 @@ def norm(text, mission):
     code = ' '.join(text.split('#', 1)[0].split())
     if mission == 'CM':
         code = code.replace('CAF EBANKSAV', 'CA EBANKSAV')
+    # The transcribed Luminary099 Pinball reads TC DSPOCTWO; the rope assembles DSPOCTWD.
+    code = re.sub(r'\bDSPOCTWO\b', 'DSPOCTWD', code)
     # yaYUL lists a relative address +8 as +8D
     return re.sub(r'(?<=\s)([+-]\d+)D(?=\s|$)', r'\1', code)
 
