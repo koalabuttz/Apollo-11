@@ -1761,11 +1761,11 @@ The Luminary099 SYSTEM_TEST_STANDARD_LEAD_INS entries (E/BKCALL, its three retur
 
 ## Translate the EXTENDED_VERBS front end and add the Lane C oracle harness
 
-Native C for the EXTENDED_VERBS front end of both Luminary099 and Comanche055: the extended verb fan (GOEXTVB, LST2FAN, all 60 slots), the extended-verb display grab and release (TESTXACT, SETXTACT, XACT0 and their NVSUB returns, XACTALM) and the operator-error exits (ALM/END, GOPIN, LM CHKPOOH). 5,760 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 240 of them match the oracle on a VICE PAL C64. Adds the shared Lane C harness (tools/lanec/) that later DSKY milestones reuse. See `docs/LANEC-EV-FRONT.md`.
+Native C for the EXTENDED_VERBS front end of both Luminary099 and Comanche055: the extended verb fan (GOEXTVB, LST2FAN, all 60 slots), the extended-verb display grab and release (TESTXACT, SETXTACT, XACT0 and their NVSUB returns, XACTALM) and the operator-error exits (ALM/END, GOPIN, LM CHKPOOH). 5,760 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 251 of them (every entry, both missions) match the oracle on a VICE PAL C64. Adds the shared Lane C harness (tools/lanec/) that later DSKY milestones reuse. See `docs/LANEC-EV-FRONT.md`.
 
 ## Translate Pinball verb 07 (DSPDPDEC) and CHANLOAD
 
-Native C for the two Pinball paths no earlier milestone covered, in both Luminary099 and Comanche055: verb 07 double-precision decimal display (DSPDPDEC through ENDDPDEC) and the channel load for channel nouns (CHANLOAD). 5,120 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 214 of them match the oracle on a VICE PAL C64. Adds `lanec_ad`, `lanec_erasable`, `lanec_rewrite` and `lanec_write` to the shared Lane C helpers. See `docs/LANEC-PIN-GAPS.md`.
+Native C for the two Pinball paths no earlier milestone covered, in both Luminary099 and Comanche055: verb 07 double-precision decimal display (DSPDPDEC through ENDDPDEC) and the channel load for channel nouns (CHANLOAD). 5,120 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 223 of them (every entry, both missions) match the oracle on a VICE PAL C64. Adds `lanec_ad`, `lanec_erasable`, `lanec_rewrite` and `lanec_write` to the shared Lane C helpers. See `docs/LANEC-PIN-GAPS.md`.
 
 ## Translate Luminary RESTARTS and run its restart table entries through the trampoline
 
@@ -1794,3 +1794,23 @@ Native C for the Luminary099 CONIC_SUBROUTINES time-radius and apsides subroutin
 ## Translate the Luminary Lambert subroutine (LAMBERT, ITERATOR)
 
 Native C for the Luminary099 CONIC_SUBROUTINES Lambert subroutine (LAMBERT through TARGETV, ITERATOR and LAMENTER; 316 words of bank 12) as 30 new steps between original NEWOPS frontiers, reusing the time-theta milestone's GEOM, GETX and DELTIME steps and compiling CHECKCTR inline. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entries from INITVEL's SETITCTR (strict and ASAN/UBSAN), 717 intermediate phase frontiers equal original NEWOPS images, 316 assembled words map to native literals after a fresh yaYUL assembly (and every one of the file's 1072 words now has a native owner), and nine C64 phase diagnostics pass 176 frozen steps in VICE. See `docs/LM-CONIC-LAMBERT.md`.
+
+## Run Luminary Executive job switches and Waitlist task services as native routines
+
+Luminary099 SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB, plus FIXDELAY, VARDELAY, TASKOVER and the T3RUPT vector, are routines of the control-transfer ABI. A job switch now ends at the selected job's entry (or NEWOPS for an interpretive job, or the idle loop), and a task's TASKOVER ends at the next due task or back in the interrupted program. JOBSLEEP and PRIOCHNG also switch to interpretive jobs, which their image bodies did not. FIXDELAY takes its delay from the compiled site table at all 16 genuine call sites. All 9,216 cases equal the original Luminary099 program in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, channel 11 and the interrupt flag, and they reach alarms 1201, 1202, 1203 and 1204. The 18,463 strict and sanitizer checks pass, and every sixteenth case matches in VICE, in three C64 programs. See `docs/LM-EXEC-JOBS.md`.
+
+## Translate the DISPLAY_INTERFACE display-start entries
+
+Native C for the display-start entries of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: GODSP, GODSPR, CLEANDSP/REFLASH, REGODSP(R), CLOCPLAY, GOFLASH(R), PRIODSP(R), EXDSPRET, the GOPERF family with PURRS4, the job scheduling in GODSPRS1/VACDSP/BOTHJOBS, SAVELOCS/SAVELOCR and their MAKECADR returns, COPYNORM/COPIES, CHKPRIO and MARKPERF. 3,264 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 218 of them (every entry, both missions) match the oracle on a VICE PAL C64. The Lane C symbol generator now reads constants as assembled words from the listings. Earlier Lane C C64 subsets are refrozen with a stride that reaches every entry in both missions. See `docs/LANEC-DI-DSP.md`.
+
+## Translate Luminary DAP interface subroutines as transfer-ABI routines
+
+All of Luminary099 DAP_INTERFACE_SUBROUTINES (bank 20, 67 words: RESTORDB, SETMAXDB, SETMINDB, CALLACCS, PFLITEDB, ZATTEROR, STOPRATE, ALLCOAST) runs as twelve native routines of the control-transfer ABI, and CALLACCS hands 1/ACCJOB to the native NOVAC. All 7,168 cases, from every entry to the caller's return or the 1202 alarm, equal the original program in all 2,048 erasable words (strict and ASAN/UBSAN), every assembled word maps to its native owner after a fresh yaYUL assembly, and every sixteenth case (448) passes in VICE. See `docs/LM-DAP-INTERFACE.md`.
+
+## Translate the DISPLAY_INTERFACE mark displays
+
+Native C for the mark displays of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: BLANKET, ENDMARK, CLEARMRK, MARKEND, the GOMARK entries, MAKEMARK, MARKPLAY/GOGOMARK/MARKCOP and COPYTOGO/COPYPACS. 2,944 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 227 of them (every entry, both missions) match the oracle on a VICE PAL C64. The display-start paths of lanec-di-dsp are shared through `include/lanec_di_internal.h`, and `symbols.txt` WORD rows now also take equates and NAME+N. See `docs/LANEC-DI-MARK.md`.
+
+## Translate the DISPLAY_INTERFACE display job selection
+
+Native C for the display job selection of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: MAKEPLAY, the PRIO/NORM/MARK selection, MAKEPRIO through KEEPPRIO, IFLEGAL through PRIOPLAY, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC. 2,208 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 246 of them (every entry, both missions) match the oracle on a VICE PAL C64. MAKEMARK and COPIES2 are shared with lanec-di-mark and lanec-di-dsp. See `docs/LANEC-DI-PLAY.md`.
