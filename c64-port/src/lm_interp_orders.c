@@ -876,6 +876,71 @@ void lmi_vxsc(apollo_overlay_state *s,const agc_word *k){
 void lmi_vproj(apollo_overlay_state *s,const agc_word *k){
  TC(07426);CAF(TWO);(void)TS(rDOTINC);dotsub(s,k);CSF(FOUR);ADS(rADDRWD);dvxsc(s,k);
 }
+/* V/SCDV 02750 (Q = return): one component in MPAC,+1 divided by the
+ * normalized divisor in BUF, to TC Q; 1 when it ends at DVOVF (DANZIG). */
+static uint8_t vscdv(apollo_overlay_state *s){
+ uint8_t c;
+ CA(rVBUF+5);(void)TS(rDVSIGN);
+ c=CCS(rMPAC);
+ if(c==1u||c==3u){
+  c=CCS(rMPAC+1);
+  if(c==1u||c==3u){RETQ();return 0;}   /* zero component */
+ }
+ if(c==2u){DCS(rMPAC);DXCH(rMPAC);INCR(rDVSIGN);}
+ /* /MPAC+ near-one test against the unnormalized divisor in BUF2. */
+ CSF(ONE);(void)TS(rMAXDVSW);CS(rMPAC);AD(rBUF2);c=CCS(rA);
+ if(c==2u){dvovf(s);return 1;}
+ if(c!=0u){
+  (void)TS(rMAXDVSW);CS(rMPAC+1);AD(rBUF2+1);
+  if(ai_bzmf(s)){dvovf(s);return 1;}
+ }
+ /* DDVCALL DXCH MPAC; INDEX DVNORMCT; TCF MAXTEST (Q still the caller's). */
+ DXCH(rMPAC);ddv_chain(s,chain_at(02565u,W[rDVNORMCT]));return 0;
+}
+/* V/SC2 02654 (vector in MPAC, scalar in BUF) to DANZIG. */
+static void vsc2(apollo_overlay_state *s){
+ uint8_t c;
+ CSF(ONE);(void)TS(rDVNORMCT);(void)TS(rVBUF+5);
+ TC(02660);vecagree(s);
+ DXCH(rBUF);TC(02662);alsignag(s);DXCH(rBUF);
+ c=CCS(rBUF);
+ if(c==0u)goto bufplus;
+ if(c==2u)goto bufminus;
+ /* Major part zero: shift vector and scalar left 14, DVOVF on overflow. */
+ XCH(rBUF+1);XCH(rBUF);XCH(rMPAC+1);XCH(rMPAC);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ XCH(rMPAC+4);XCH(rMPAC+3);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ XCH(rMPAC+6);XCH(rMPAC+5);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ c=CCS(rBUF);
+ if(c==0u)goto bufplus;
+ if(c!=2u){dvovf(s);return;}   /* zero divisor */
+bufminus:
+ DCS(rBUF);DXCH(rBUF);INCR(rVBUF+5);
+bufplus:
+ DCA(rBUF);DXCH(rBUF2);
+ for(;;){
+  CA(rBUF);DOUBLE();
+  if(ai_ovsk(s))break;
+  ai_aug(s,rDVNORMCT);DCA(rBUF);DAS(rBUF);
+ }
+ TC(02737);if(vscdv(s))return;
+ DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);
+ TC(02743);if(vscdv(s))return;
+ DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);
+ TC(02747);if(vscdv(s))return;
+ vrotatex(s);
+}
+/* V/SC 07624: VV/SC (vector mode, scalar operand) or DV/SC (scalar mode,
+ * vector operand; mode becomes vector), V/SC1 DXCH BUF; FBANK 0; V/SC2. */
+void lmi_vsc(apollo_overlay_state *s,const agc_word *k){
+ if(CCS(rMODE)<2u){
+  dca_op(s,k,2);DXCH(rMPAC+3);dca_op(s,k,4);DXCH(rMPAC+5);
+  CSF(ONE);(void)TS(rMODE);dca_op(s,k,0);DXCH(rMPAC);
+ }else dca_op(s,k,0);
+ DXCH(rBUF);CAF(ZERO);(void)TS(rFB);vsc2(s);
+}
 void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
  DCA(rMPAC+5);DXCH(rMPAC);DXCH(rVBUF);TC(07465);dmpsub(s,k);
  DCS(rMPAC+3);DXCH(rMPAC);DXCH(rVBUF+2);TC(07472);dmpsub(s,k);

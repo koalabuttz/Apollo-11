@@ -63,6 +63,9 @@ void lmi_vxsc(apollo_overlay_state *, const agc_word *k);
 void lmi_vxv(apollo_overlay_state *, const agc_word *k);
 /* VPROJ 07425 ((MPAC.X)X: DOT through PREDOT, then DVXSC) to DANZIG. */
 void lmi_vproj(apollo_overlay_state *, const agc_word *k);
+/* V/SC 07624 (vector divided by scalar; either side may be the operand)
+ * through V/SC2 and V/SCDV in bank 0 to DANZIG or DVOVF. */
+void lmi_vsc(apollo_overlay_state *, const agc_word *k);
 /* BOV(B) (bank 1): DANZIG, GOTO 06646 (then lmi_goto) or RTB 02450. */
 enum {LMI_BOV_NONE,LMI_BOV_GOTO,LMI_BOV_RTB,LMI_BOV_OUT_OF_SCOPE};
 /* BPL/BMN order: 1 = take GOTO (W[5]=06646), 0 = DANZIG. */
