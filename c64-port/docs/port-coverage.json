@@ -2585,8 +2585,48 @@
       "sha256": "21b48d0bb13356fe66517c4210f3d45cdabb0a5e67c88ef6327de4b3e4da4b47",
       "bytes": 6897,
       "lines": 245,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_massprop.c"
+          ],
+          "scope": "All 91 words: MASSPROP and FIXCW from either entry to ENDMASSP TC Q, every overflow detour, and the source loops that never return. Every source path is translated; the complete certificate below awaits the auditor review.",
+          "verification": "docs/CM-TVC-MASSPROP.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z = MASSPROP 3366 or FIXCW 3422, FB 05, EB E6, coherent BB; any raw A/L/Q and erasable contents.",
+          "returns": "ENDMASSP TC Q: Z = caller return held in Q, Q = 3. Non-returning overflow loops reported as NO_EXIT.",
+          "data_validity": "Original breakpoint/slope constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "TVCEXECUTIVE / TVCINITIALIZE / P40 callers and their IBNKCALL/BANKCALL bank switching",
+          "Ownership of the TVC/RCS interrupt temporaries (PHI333..VARST0+9) during the call"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
+            "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
+            "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-checks.log",
+            "sha256": "6fdf3a95ef016cede798f90a045ec3529dda992f43132fe650f9f2ba2aae025b"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-results.json",
+            "sha256": "27187541d5b0edd2519a17b38c69b6895edf4ffaede9be48c27d2bdf93a4fa1f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCRESTARTS.agc",
