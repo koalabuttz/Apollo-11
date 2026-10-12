@@ -8,10 +8,19 @@
 #include "lm_interp_steps.h"
 /* T(X)'s POLY table (TIME_OF_FREE_FALL, bank 27 3736-3752). */
 static const agc_word tx[13]={04,012525,012525,071463,057703,04423,017645,074604,043667,01626,037256,077404,052071};
-int main(void){
- static apollo_overlay_state s;p66_bias_io io={0,0};uint16_t in[16+2048],out[1+2048];
+/* The rope (argv[1]), for matrix operands too long for the record header:
+ * header flag 2 names the bank (word 9) and address (word 10) instead. */
+static uint8_t rope[36u*2048u];
+static agc_word rope_word(unsigned bank,unsigned off){
+ unsigned i=(bank<4u?(unsigned)"\2\3\0\1"[bank]:bank)*1024u+off;
+ return (agc_word)((((unsigned)rope[2u*i]<<8)|rope[2u*i+1u])>>1);
+}
+int main(int argc,char **argv){
+ static apollo_overlay_state s;p66_bias_io io={0,0};uint16_t in[16+2048],out[1+2048];agc_word mk[18];
+ if(argc>1){FILE *f=fopen(argv[1],"rb");if(!f||fread(rope,1,sizeof rope,f)!=sizeof rope)return 2;fclose(f);}
  while(fread(in,sizeof in,1,stdin)==1){
   unsigned i;const agc_word *k=(in[15]&1u)?in+9:0;agc_word a0=in[7],a1=in[8];
+  if(in[15]&2u){for(i=0;i<18u;++i)mk[i]=rope_word(in[9],in[10]-02000u+i);k=mk;}
   for(i=0;i<2048u;++i)s.words[i]=in[16+i];
   switch(in[0]){
   case 0:lmi_diradres(&s,a0,a1);break;
@@ -76,6 +85,9 @@ int main(void){
   case 59:lmi_vproj(&s,k);break;
   case 60:lmi_tload_fixed(&s,k);break;
   case 61:lmi_axc(&s);break;
+  case 68:lmi_mxv(&s,k);break;
+  case 69:lmi_vxm(&s,k);break;
+  case 70:lmi_lxc(&s);break;
   default:return 2;
   }
   out[0]=4;for(i=0;i<4u;++i)if(in[1+i]&&s.words[5]==in[1+i]){out[0]=(uint16_t)i;break;}
