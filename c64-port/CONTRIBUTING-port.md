@@ -119,6 +119,35 @@ A script your milestone records as an unqualified development trial (never
 passed, replaced by a staged script) goes in `TRIALS` in `tools/legacy_vice.py`
 with the document that says so; anything else that fails is a failure to fix.
 
+## Pick the C64 rows by outcome
+
+The C64 runs a subset of the host cases. Pick it with `tools/c64_row_cover.py`,
+not by stride or fewest edits: it builds a host runner with `--coverage`, runs
+it one case at a time and reads every branch arc each case takes in every
+linked source (`gcov -b -j`). `cover()` returns the fewest cases whose arcs
+equal what the whole host corpus takes; `check()` fails, listing each missed
+arc as `file:line branch N`, when a row list falls short.
+
+```sh
+python3 tools/c64_row_cover.py pick --objdir build/foo-cover --cases 512 --budget 96 \
+    --trace build/foo-arcs.json -- build/foo-cover/runner {case}
+python3 tools/c64_row_cover.py check --objdir build/foo-cover --cases 512 \
+    --rows 0,17,40 --trace build/foo-arcs.json
+```
+
+The runner takes the case number as its argument (`tools/lane_f_path_trace.c`
+does). From Python, `host_trace(objdir, sources, flags, cases)` builds and
+traces in one call, and `summary()` gives the proof fields. Interpreter-routine
+specs opt in with `'c64_rows': 'cover'` in `tools/interp_specs.py`; specs
+without the key freeze byte-identical vectors.
+
+Generators should also reach flight-typical values a seeded fill misses: +-0
+high words, equal times, zero and full-scale vectors, and non-zero TIME1,
+TIME2 and CDU cells (`tests/interp_case.c` clears 010-061 before the case's
+edits, so only edits set them). `tools/edge_cases.py` returns these as
+`(address, word)` edits; interpreter-routine specs opt in with
+`'edge_cases': True`, which adds them as a fourth case shape.
+
 ## Done means the PORT_SCOPE certificate
 
 A file flips to `complete` in `docs/port-coverage.json` only with all four
