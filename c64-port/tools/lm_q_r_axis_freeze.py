@@ -34,8 +34,7 @@ NAMES = ['CALLQERR', '17,2172', '17,2214', '17,2454', '17,2620', 'QERRCALC', '17
          '17,3004', '17,3042', '17,3074', '17,3103', 'JTLST', 'ROT-TOUV', '17,3224', 'CLOSEOUT'] + ['CALLQERR'] * 15
 
 # Destinations of the file's exits: (FB bank, Z) in switched fixed memory.
-EXITS = {(0o21, 0o3077): 'GTS', (0o17, 0o3252): 'TJETLAW', (0o17, 0o1477): 'TC RETJADR (another word there)',
-         (0o17, 0o2002): 'TC 02002 (OCT 02002 run as TC)', 0o4674: 'IBNKCALL', 0o5272: 'NOQRSM', 0o5567: 'ALARM',
+EXITS = {(0o21, 0o3077): 'GTS', (0o17, 0o3252): 'TJETLAW', (0o17, 0o2002): 'TC 02002 (OCT 02002 run as TC)', 0o4674: 'IBNKCALL', 0o5272: 'NOQRSM', 0o5567: 'ALARM',
          0o5757: 'WRITEU -1 (= WRITEP -1 +4)', 0o5760: 'WRITEP +4',
          0o5770: 'WRITEV -1 (= WRITEP -1 +13)', 0o5771: 'WRITEP +13'}
 
@@ -97,7 +96,8 @@ def main():
              'boundary': 'each entry from a random image (FB bank 17, EB 6, random channels 4, 13 and 31, an eight-bit '
                          'channel 5, a random interrupt-enable bit, erasable words of random widths with +-0 frequent) '
                          'until the original leaves 17,2072-3251 and MAKERUPT (TC, TCF, DTCB or TC Q to a destination '
-                         'outside; LOOPER\'s TC RETJADR to a word other than the file\'s three return addresses); '
+                         'outside; LOOPER\'s TC RETJADR to a word other than the file\'s three return addresses, '
+                         'which the native routines refuse at the entry); '
                          'compared: outcome, channel 13, the interrupt-enable and interrupt-in-progress bits and all '
                          '2048 erasable words',
              'full_physical_words': 2048}

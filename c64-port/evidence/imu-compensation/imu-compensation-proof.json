@@ -8,7 +8,7 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 13824,
- "snapshot_sha256": "3c6bb822a8f162aeffc7a3d43563b1996c4e691882235a1c70873fb9248ebb18",
+ "snapshot_sha256": "b2532c4db5f03d7b713c2e602704bc552a4e6fd8f8d76930b688cb0b3fc296d9",
  "stops": {
   "LM 06,3263 1/PIPA": {
    "NOVAC": 377,
@@ -68,15 +68,15 @@
    "ENDOFJOB": 512
   },
   "CM 06,3542 NBDONLY": {
-   "BANKCALL": 185,
-   "ENDOFJOB": 327
+   "BANKCALL": 137,
+   "ENDOFJOB": 375
   },
   "CM 06,3636 LASTBIAS": {
    "BANKCALL": 512
   },
   "CM 06,3640 PIPUSE return": {
-   "BANKCALL": 379,
-   "ENDOFJOB": 133
+   "BANKCALL": 285,
+   "ENDOFJOB": 227
   },
   "round trip site 0": {
    "caller return": 512

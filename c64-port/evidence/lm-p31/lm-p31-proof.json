@@ -1,0 +1,62 @@
+{
+ "cases": 8704,
+ "c64_groups": {
+  "1": 510
+ },
+ "stream_sha256": "ad1ae4ae4cf58bd5db7245c86de55c0bbc239001e2f353094bc2c277c0d81c2f",
+ "stops": {
+  "P31 start (2454)": {
+   "NEWOPS 13,3057": 512
+  },
+  "after LEMPREC (2461)": {
+   "NEWOPS 11,2000": 512
+  },
+  "after INITVEL (2503)": {
+   "NEWOPS 06,3733": 512
+  },
+  "after GET.LVC (2512)": {
+   "NEWOPS 23,2316": 512
+  },
+  "after PERIAPO1 (2517)": {
+   "NEWOPS 23,2426": 512
+  },
+  "after SHIFTR1 (2521)": {
+   "NEWOPS 22,3636": 512
+  },
+  "after MAXCHK (2523)": {
+   "NEWOPS 23,2426": 512
+  },
+  "after SHIFTR1 (2527)": {
+   "NEWOPS 22,3636": 512
+  },
+  "after MAXCHK (2531)": {
+   "VNPOOH": 512
+  },
+  "REVN1645 (2540)": {
+   "NEWOPS 35,3606": 512
+  },
+  "after VN1645 (2543)": {
+   "NEWOPS 35,3606": 512
+  },
+  "P31 (2450)": {
+   "P20FLGON": 512
+  },
+  "after P20FLGON (2451)": {
+   "VNPOOH": 512
+  },
+  "after VNPOOH (2453)": {
+   "INTPRET": 512
+  },
+  "V06N81 (2533)": {
+   "VNPOOH": 512
+  },
+  "V06N42 (2535)": {
+   "VNPOOH": 512
+  },
+  "after VNPOOH (2537)": {
+   "INTPRET": 512
+  }
+ },
+ "boundary": "each case runs from its entry (NEWOPS or Z) through the trampoline (this file's routines) to the first point outside them; the oracle stops at the same point (tests/lm_p31_cases.c lm_p31_stop: a NEWOPS outside 35,2454-2544, P20FLGON, VNPOOH, INTPRET, POODOO1)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}

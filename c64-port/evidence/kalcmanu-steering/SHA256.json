@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "kalcmanu-steering",
+  "release": "evidence-kalcmanu-steering",
+  "files": {
+    "kalcmanu-steering-differential.log": {
+      "sha256": "4dac397c7ec9418cf1989531e51642f81715eb8cc329d329014d7b6be82a5864",
+      "bytes": 17161,
+      "store": "release"
+    },
+    "kalcmanu-steering-host.log": {
+      "sha256": "8ebf4916b891a8169486d28700e04f2bb9f0a25042579ffa782f5c680a8b918e",
+      "bytes": 84,
+      "store": "release"
+    },
+    "kalcmanu-steering-proof.json": {
+      "sha256": "2db77ae9e525037f1ae9cac984aab939c8aaa2f56effb057b772ba8a48b371f6",
+      "bytes": 26594,
+      "store": "tree"
+    },
+    "kalcmanu-steering-source-map.json": {
+      "sha256": "18f7100a7cf9b3eba62d2cfcf5a88bc4ad1ef1aa810f104938d81225c591df82",
+      "bytes": 46936,
+      "store": "tree"
+    },
+    "kalcmanu-steering-vice.log": {
+      "sha256": "5100c78b3f0a786419ab149f391b4b59694e2e7bc0048c4dd782b3308bb73cfe",
+      "bytes": 124,
+      "store": "release"
+    }
+  }
+}

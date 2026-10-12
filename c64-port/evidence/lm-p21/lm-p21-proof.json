@@ -1,0 +1,85 @@
+{
+ "cases": 12288,
+ "c64_groups": {
+  "1": 516,
+  "2": 518
+ },
+ "stream_sha256": "3dbf12de3b41aa65eba3953a12a1866bed0eb2fcd1efdaf32e1e793d6af74c37",
+ "stops": {
+  "after INTPRET (3524)": {
+   "NEWOPS 13,3414": 512
+  },
+  "after INTSTALL (3530)": {
+   "NEWOPS 13,3107": 252,
+   "NEWOPS 13,3134": 260
+  },
+  "+2 (3541)": {
+   "NEWOPS 13,3134": 512
+  },
+  "after INTEGRV (3546)": {
+   "ARCSIN": 512
+  },
+  "P21CONT (3550)": {
+   "NEWOPS 13,3107": 512
+  },
+  "P21VSAVE (3571)": {
+   "ARCSIN": 512
+  },
+  "after ARCSIN (3610)": {
+   "NEWOPS 13,2351": 512
+  },
+  "P21DSP (3625)": {
+   "NEWOPS 13,2351": 512
+  },
+  "after LAT-LONG (3642)": {
+   "BANKCALL": 512
+  },
+  "after INTPRET (3654)": {
+   "BANKCALL": 512
+  },
+  "PROG21 (3505)": {
+   "BANKCALL": 512
+  },
+  "GOPERF4 (3507)": {
+   "BANKCALL": 512
+  },
+  "terminate (3512)": {
+   "GOTOPOOH": 512
+  },
+  "proceed (3513)": {
+   "BANKCALL": 512
+  },
+  "enter (3514)": {
+   "BANKCALL": 512
+  },
+  "P21PROG1 (3515)": {
+   "BANKCALL": 512
+  },
+  "terminate (3520)": {
+   "GOTOPOOH": 512
+  },
+  "proceed (3521)": {
+   "INTPRET": 512
+  },
+  "recycle (3522)": {
+   "BANKCALL": 512
+  },
+  "INTPRET (3523)": {
+   "INTPRET": 512
+  },
+  "V06N43 (3646)": {
+   "BANKCALL": 512
+  },
+  "terminate (3651)": {
+   "GOTOPOOH": 512
+  },
+  "proceed (3652)": {
+   "GOTOPOOH": 512
+  },
+  "recycle (3653)": {
+   "INTPRET": 512
+  }
+ },
+ "boundary": "each case runs from its entry (NEWOPS or Z) through the trampoline (this file's routines) to the first point outside them; the oracle stops at the same point (tests/lm_p21_cases.c lm_p21_stop: a NEWOPS outside 24,3524-3645 and 3654-3661, ARCSIN, BANKCALL, GOTOPOOH, INTPRET, POODOO1)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}

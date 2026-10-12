@@ -1,0 +1,31 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 13824 original P76 entries equal native trampoline runs e0bd74c3081670f897dd8dd9fa1a3f563b4b877bb18bd4103e469751584c97dd",
+  "cm-p76: 13824 cases, 273 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 14154 checks, 0 failures",
+  "PASS 96 assembled P76 words on 96 source lines map to 27 native routines",
+  "cm-p76: 13824 cases, 273 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 14154 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL cm-p76-1.prg: 128 checks, 0 failures",
+   "PASS: VICE PAL cm-p76-2.prg: 520 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 35444,
+    "prg_sha256": "7ade5140ce13d76e3b717244485ba4b2c48a267a41f6e5e773b00361be261e89",
+    "image_end": "$927b",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "COMPMAT (UNIT, VXV, VXM): variant k*512/128 of entry 1"
+   },
+   "2": {
+    "prg_bytes": 33137,
+    "prg_sha256": "6360929bbb50d0d33daa2eb891ab40be10e9fb3ef28fcd4294f656bc7be0e746",
+    "image_end": "$8978",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "every entry but COMPMAT: variant k*512/520 of entry k%26 over the other 26"
+   }
+  }
+ }
+}
