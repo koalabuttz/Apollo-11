@@ -21,8 +21,10 @@ on:
         type: boolean
         default: true
 
+# Full runs (dispatch, nightly) get their own group, so a merge's push run
+# never cancels a queued full run on the same branch, or waits behind one.
 concurrency:
-  group: port-ci-${{ github.event.pull_request.number || inputs.ref || github.ref }}
+  group: port-ci-${{ github.event.pull_request.number || inputs.ref || github.ref }}-${{ inputs.full && 'full' || 'affected' }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
