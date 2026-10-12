@@ -2142,6 +2142,30 @@ Native C for the mark displays of DISPLAY_INTERFACE_ROUTINES in both Luminary099
 
 Native C for the shared apsides display subroutines of the Luminary099 targeting programs: RPAD, PERIAPO1, PERIAPO, SETRAD, LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT and SHIFTR1 from P34-35_P74-75 (bank 23) and MAXCHK/MAXNM from R30 (bank 22), 73 words, as ten steps between original NEWOPS frontiers that run the lm-conic-timerad milestone's APSIDES steps for PERIAPO. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entries from the routines' Luminary call returns (strict and ASAN/UBSAN), 118 intermediate phase frontiers equal original NEWOPS images, every assembled word maps to a native literal after a fresh yaYUL assembly, and four C64 phase diagnostics pass 63 frozen steps in VICE. See `docs/LM-PERIAPO.md`.
 
+## Translate Comanche TVCEXECUTIVE (TVCEXEC task, roll ladders, gain/mass and trim updates)
+
+Native C for all of Comanche055 TVCEXECUTIVE (bank 16 `2720`-`3137`, 144 words): the half-second TVCEXEC task, roll ladders and FDAI error, needles, variable gains and mass, one-shot and repetitive trim correction, and the TVCRESTARTS re-entries, from each of its 12 original continuation points to the next transfer out of the file (WAITLIST, IBNKCALL or TASKOVER). The final image and IRQ equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN (860 spin on the source's `TCF +0` for a negative VCNTR in both); all 144 words and 11 fixed constants are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-EXEC.md`.
+
 ## Translate the DISPLAY_INTERFACE display job selection
 
 Native C for the display job selection of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: MAKEPLAY, the PRIO/NORM/MARK selection, MAKEPRIO through KEEPPRIO, IFLEGAL through PRIOPLAY, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC. 2,208 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 246 of them (every entry, both missions) match the oracle on a VICE PAL C64. MAKEMARK and COPIES2 are shared with lanec-di-mark and lanec-di-dsp. See `docs/LANEC-DI-PLAY.md`.
+
+## Translate Luminary INITVEL (P34-35 required velocity, with LAMBERT)
+
+Native C for Luminary099 INITVEL (P34-35_P74-75, bank 11 02000-02274, 189 words). It includes HAVEGUES, INITVEL1-7 and INITVELX, and ORBITAL_INTEGRATION's SETITCTR (9 words) compiled inline. The routine is ten steps between original NEWOPS frontiers. It runs the lm-conic-lambert milestone's LAMBERT steps and stops at INTSTALL/INTEGRVS, which are not ported. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entries from the Luminary call returns and the integration returns (strict and ASAN/UBSAN). 7301 intermediate phase frontiers equal original NEWOPS images, and every assembled word maps to a native literal after a fresh yaYUL assembly. Four C64 phase diagnostics pass 49 frozen steps in VICE. It adds the shared VPROJ and fixed-TLOAD interpretive bodies. See `docs/LM-INITVEL.md`.
+
+## Translate the DISPLAY_INTERFACE display sleep and wake
+
+Native C for the display sleep and wake code of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: GOSLEEPS, XCHSLEEP, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the flag updates after UPENT2/DOWNENT2, MARKWAKE/WAKEPLAY and the INITDSP restart entry. 2,176 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 242 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-SLEEP.md`.
+
+## Translate the DISPLAY_INTERFACE ENDIDLE handling and display returns
+
+Native C for CLEANEND through TERMATE and PROCEED through ERASER of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: REST/RESTSLEP, FLASHSUB and the ENDIDLE call, the terminate, proceed and load returns, TIMECHEK, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS and ERASER, translated block by block. 3,840 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 226 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-IDLE.md`.
+
+## Translate the DISPLAY_INTERFACE display start-up
+
+Native C for PINBRNCH through V50PASTE of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: PINBRNCH, NORMBNCH, NVDSP (GOPLAY), NV50DSP and its returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND and V50PASTE, translated block by block. 3,200 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 247 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-DI-NVDSP.md`.
+
+## Draft the DISPLAY_INTERFACE_ROUTINES full-file certificates
+
+Pending complete-coverage certificates for Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES.agc, for the auditor's review. `tools/lanec/wholefile.py` assigns every assembled word (670 LM, 667 CM) to one of the six Lane C display milestones or to the file's constant table, and shows that every instruction word (612 LM, 609 CM) is executed by the unchanged original program in Virtual AGC under cases the native code matches. The evidence also covers 17,632 oracle cases (strict and ASan/UBSan) and fresh VICE runs of all six frozen subsets. See `docs/LANEC-DI-CERT.md`.

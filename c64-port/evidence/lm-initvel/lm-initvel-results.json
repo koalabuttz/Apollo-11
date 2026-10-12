@@ -1,0 +1,66 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 22 frozen original INITVEL entries, 28 admission guards and 49 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 0ecbabe19489d9cba3ea67b48a744fdaa7e94021efd1b51d2f21fbd42c11c02e",
+  "PASS65536 original INITVEL entries strict native",
+  "PASS 22 frozen original INITVEL entries, 28 admission guards and 49 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 0ecbabe19489d9cba3ea67b48a744fdaa7e94021efd1b51d2f21fbd42c11c02e",
+  "PASS65536 original INITVEL entries full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-initvel-1.prg: 11 checks, 0 failures",
+   "PASS: VICE PAL lm-initvel-2.prg: 12 checks, 0 failures",
+   "PASS: VICE PAL lm-initvel-3.prg: 8 checks, 0 failures",
+   "PASS: VICE PAL lm-initvel-4.prg: 18 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 37653,
+    "prg_sha256": "438b62a7aca5bc11030864d667c41bfacec33e864f6f1c50238e4189645021a0",
+    "image_end": "$9b14",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     61,
+     62,
+     63
+    ]
+   },
+   "2": {
+    "prg_bytes": 44547,
+    "prg_sha256": "68f44aef41662ebe2c87af53cb7f4e76f8a04bfbb9ac9562e4b87387ca8731b3",
+    "image_end": "$b602",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     31,
+     49,
+     50
+    ]
+   },
+   "3": {
+    "prg_bytes": 39813,
+    "prg_sha256": "3deb89b7c32efc26ddc057e7f7d6bc2055961522eb532d748c2e3b00028dc565",
+    "image_end": "$a384",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     64,
+     65
+    ]
+   },
+   "4": {
+    "prg_bytes": 40925,
+    "prg_sha256": "db63750ef2d93431c48961acd970c61231536a65a7f115f5ec874fddd043dc00",
+    "image_end": "$a7dc",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     66,
+     67,
+     68,
+     69,
+     70
+    ]
+   }
+  }
+ }
+}

@@ -104,9 +104,11 @@ def words(fixture):
     text = (ROOT / 'deps' / fixture / 'assembly.lst').read_text(errors='replace')
     found = {}
     for line in text.splitlines():
-        m = re.match(r'^\d+,\d+:\s+(?:([0-7]{2}),)?([0-7]{4})\s+([0-7]{5})\s', line)
+        m = re.match(r'^\d+,\d+:\s+(?:([0-7]{2}),)?([0-7]{4})\s+([0-7]{5})(?:\s+([0-7]{5}))?\s', line)
         if m:
             found.setdefault((m.group(1), int(m.group(2), 8)), int(m.group(3), 8))
+            if m.group(4):  # second word of a 2CADR or 2DEC row
+                found.setdefault((m.group(1), int(m.group(2), 8) + 1), int(m.group(4), 8))
     return found
 
 
