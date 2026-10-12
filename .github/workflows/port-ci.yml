@@ -63,7 +63,9 @@ jobs:
           HEAD_REF: ${{ github.head_ref || github.ref_name }}
           BEFORE: ${{ github.event.before }}
         run: |
-          if [ "$EVENT" = pull_request ]; then base=$PR_BASE
+          # A PR's base is the merge ref's first parent: the event's base.sha can
+          # be older when the base moved before GitHub built the merge ref.
+          if [ "$EVENT" = pull_request ]; then base=$(git rev-parse -q --verify HEAD^1 || echo "$PR_BASE")
           elif [ "$EVENT" = push ] && [ "$HEAD_REF" = port/c64-native-c ] && [ -n "$BEFORE" ] \
                && [ "$BEFORE" != 0000000000000000000000000000000000000000 ]; then base=$BEFORE
           else base=$(git merge-base HEAD origin/port/c64-native-c)
