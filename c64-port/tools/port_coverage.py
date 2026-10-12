@@ -64,13 +64,15 @@ def evidence_ok(records, required, errors, label):
 
 
 def runs_distinct(records, errors, label):
-    """Host and C64 results must be run records, not the source map reused."""
+    """The comparison and both results categories must be their own records,
+    not the source-to-native map cited again."""
     if not isinstance(records, dict):
         return
     source_map = (records.get('source_to_native_map') or {}).get('path')
-    for category in FILE_EVIDENCE[2:]:
+    for category in FILE_EVIDENCE[1:]:
         if source_map and (records.get(category) or {}).get('path') == source_map:
-            errors.append(label + ': ' + category + ' points at the source-to-native map, not a test run')
+            what = 'an independent comparison' if category == FILE_EVIDENCE[1] else 'a test run'
+            errors.append(label + ': ' + category + ' points at the source-to-native map, not ' + what)
 
 
 def audit(manifest, require_complete):

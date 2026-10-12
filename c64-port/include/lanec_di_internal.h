@@ -11,6 +11,8 @@ void lanec_di_godsprs(apollo_overlay_state *, lanec_io *, enum lanec_mission);  
 void lanec_di_copies(apollo_overlay_state *, lanec_io *, enum lanec_mission);   /* COPIES, A = index */
 void lanec_di_copies2(apollo_overlay_state *, lanec_io *, enum lanec_mission);  /* COPIES2 */
 void lanec_di_makemark(apollo_overlay_state *, lanec_io *, enum lanec_mission); /* MAKEMARK */
+void lanec_di_witchone(apollo_overlay_state *, lanec_io *, enum lanec_mission, uint16_t back); /* TC WITCHONE */
+void lanec_di_xchnyloc(apollo_overlay_state *, lanec_io *, enum lanec_mission); /* XCHNYLOC, A = new LOC; LOCCTR in domain */
 void lanec_di_chkprio(apollo_overlay_state *, lanec_io *, enum lanec_mission);  /* CHKPRIO */
 /* Source "TC Q" or "TC L": runs the TC held in that register. */
 void lanec_di_tc_register(apollo_overlay_state *, uint16_t reg, uint16_t return_address);

@@ -1,0 +1,19 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "results": [
+  "PASS: VICE PAL lanec-di-dsp.prg: 218 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-mark.prg: 227 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-play.prg: 246 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-sleep.prg: 242 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-idle.prg: 226 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-nvdsp.prg: 247 checks, 0 failures"
+ ],
+ "prg_sha256": {
+  "lanec-di-dsp.prg": "9b908e352ae65e3b1f4c1069cd4ac00038416d3c3f0055e16eb0033b317053f8",
+  "lanec-di-mark.prg": "c2ff1f3c2e4ec598d4b31bc9396a51aba51f61b55dc760680d40abb132da7f71",
+  "lanec-di-play.prg": "80653d9f881f36369a24d84f672c870b947794aada22caa88867f154de9ae76d",
+  "lanec-di-sleep.prg": "edcba12567e9d330401843a0e8c8204fa3758304826285336e7bf2cffaf7b061",
+  "lanec-di-idle.prg": "cbc92991289fe1755059055679ef483bef71f62d4dbcc5776a26fd27fce04678",
+  "lanec-di-nvdsp.prg": "8bce6dfbe819a3458c8466750a4ca440e3c014242af02764777be88c3ccb73ce"
+ }
+}

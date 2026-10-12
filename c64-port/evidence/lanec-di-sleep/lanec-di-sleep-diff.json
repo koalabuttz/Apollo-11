@@ -1,0 +1,7 @@
+{
+  "suite": "di-sleep",
+  "cases": 2176,
+  "differing": 0,
+  "native_sha256": "cd182485d82202f150e3f8bc398c7a7a23175aac5bec73ac1eb14c9792049783",
+  "oracle_sha256": "cd182485d82202f150e3f8bc398c7a7a23175aac5bec73ac1eb14c9792049783"
+}
