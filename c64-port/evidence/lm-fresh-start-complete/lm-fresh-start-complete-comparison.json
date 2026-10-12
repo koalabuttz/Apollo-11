@@ -1,0 +1,34 @@
+{
+ "category": "independent_assembly_comparison",
+ "source_path": "Luminary099/FRESH_START_AND_RESTART.agc",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "method": "each milestone's cases through the native routines and through the unmodified rope in yaAGC (host only); its freeze script checked the outputs byte-identical and froze the snapshot; this tool reran each oracle with the coverage trace and compared with that snapshot",
+ "aggregates": {
+  "lm-fresh-start": {
+   "record": "evidence/lm-fresh-start/lm-fresh-start-proof.json",
+   "sha256": "3754761cdbc1f9e2ed3c2995ea9369a1c18cdbff5152424d728eab43d0978301",
+   "cases": 4096,
+   "snapshot_sha256": "25f7b29f4858195f5769fa20a1ea63b71d78c3ac71b91e88d9e46a64ed183f15",
+   "rerun_snapshot_sha256": "25f7b29f4858195f5769fa20a1ea63b71d78c3ac71b91e88d9e46a64ed183f15",
+   "result": "PASS"
+  },
+  "lm-v37": {
+   "record": "evidence/lm-v37/lm-v37-proof.json",
+   "sha256": "e55351ad8871aec4569f85b4c31051587f13f126fad9aa9308df4bc7ef07e6f9",
+   "cases": 4096,
+   "snapshot_sha256": "4e6430f8b789a349a445d028e17b0a4d267087dedb2f0035fe910b42a8afb13e",
+   "rerun_snapshot_sha256": "4e6430f8b789a349a445d028e17b0a4d267087dedb2f0035fe910b42a8afb13e",
+   "result": "PASS"
+  },
+  "lm-stateup": {
+   "record": "evidence/lm-stateup/lm-stateup-proof.json",
+   "sha256": "19250bc7e29f5c94280e38c0f16ba7c06f150fbec0603dcd3b07b2ef91ec58e2",
+   "cases": 4096,
+   "snapshot_sha256": "89dced8a6ba434e65fcd96bad04514774b1c95567bce9bf0cc8ab0634264a947",
+   "rerun_snapshot_sha256": "89dced8a6ba434e65fcd96bad04514774b1c95567bce9bf0cc8ab0634264a947",
+   "result": "PASS"
+  }
+ },
+ "cases": 12288,
+ "result": "PASS"
+}

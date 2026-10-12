@@ -1,0 +1,34 @@
+{
+ "category": "independent_assembly_comparison",
+ "source_path": "Comanche055/FRESH_START_AND_RESTART.agc",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "method": "each milestone's cases through the native routines and through the unmodified rope in yaAGC (host only); its freeze script checked the outputs byte-identical and froze the snapshot; this tool reran each oracle with the coverage trace and compared with that snapshot",
+ "aggregates": {
+  "cm-fresh-start": {
+   "record": "evidence/cm-fresh-start/cm-fresh-start-proof.json",
+   "sha256": "6e619dd7ccdf321b56abf3e8a22f933fc033f9a22984c7186b690147d1aeb81a",
+   "cases": 4096,
+   "snapshot_sha256": "40ab9c282cd50aae246248015d591e91731ccf388b89fc88b120e3525bb9cc03",
+   "rerun_snapshot_sha256": "40ab9c282cd50aae246248015d591e91731ccf388b89fc88b120e3525bb9cc03",
+   "result": "PASS"
+  },
+  "cm-v37": {
+   "record": "evidence/cm-v37/cm-v37-proof.json",
+   "sha256": "69f8deb005918d7c5ab3637b0c5d1b229593b3f49dad90ff3530e11f16fb4c32",
+   "cases": 4096,
+   "snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",
+   "rerun_snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",
+   "result": "PASS"
+  },
+  "cm-stateup": {
+   "record": "evidence/cm-stateup/cm-stateup-proof.json",
+   "sha256": "86a13e2afa058d403fc7ed00c2866394951c096c5ccbf1a43d25dccc5e312997",
+   "cases": 4096,
+   "snapshot_sha256": "b28b31dcc39256cef5ae1b6bc2b197f76a403053119f5dea5fc04d1dabf9f783",
+   "rerun_snapshot_sha256": "b28b31dcc39256cef5ae1b6bc2b197f76a403053119f5dea5fc04d1dabf9f783",
+   "result": "PASS"
+  }
+ },
+ "cases": 12288,
+ "result": "PASS"
+}

@@ -8,10 +8,11 @@
  * GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU,
  * NEWMODEX+3 or ENDEXT. The image is pseudo-random within the program's
  * own domain: UPVERB 0-3, COMPNUMB as OHWELL1 accepts it for that verb (2
- * for V70/V73, 3-20 for V71, odd 3-19 for V72), UPCOUNT 1-COMPNUMB, UPTEMP a small component number (or, where TIMEDIDR returns
+ * for V70/V73, 3-20 for V71 and V72), UPCOUNT 1-COMPNUMB, UPTEMP a small component number (or, where TIMEDIDR returns
  * through it, one of the two return addresses TIMEDIDL stores), UPBUFF
- * words with update addresses in erasable banks 1-7 where V71/V72 store
- * through them, MODREG +0, -0 or a mode; FB/EB, SUPERBNK, TIME1/TIME2,
+ * words with update addresses in any erasable bank (EB0 from 061 up) where
+ * V71/V72 store through them, including one-word loads at a bank's first word
+ * and loads running past a bank's end, MODREG +0, -0 or a mode; FB/EB, SUPERBNK, TIME1/TIME2,
  * channel 11 and the interrupt-enable state pseudo-random.
  * tools/lm_update_reference.c does the same in the original program. */
 #define LM_UP_CASES 4096u
