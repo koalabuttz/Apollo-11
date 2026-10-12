@@ -60,7 +60,7 @@ Refused inputs (`EXEC_OUT_OF_SCOPE`, image unchanged), with no original producer
 Hashes: `evidence/lm-exec-jobs/SHA256.json`. Bulk files are assets of the `evidence-lm-exec-jobs` release
 (`python3 tools/evidence.py fetch lm-exec-jobs`).
 
-- **Independent assembly comparison.** `make lm-exec-jobs-differential` runs the unmodified Luminary099 rope in yaAGC (host-only, `tools/lm_exec_jobs_reference.c`). Each case starts at its entry with the same image, SUPERBNK, interrupt-enable bit, channel 11 and InIsr, and runs until Z reaches one of the case's stops (the caller's return, a job entry, NEWOPS, ADVAN, TASKOVER, a task), the interrupt ends, or BAILOUT1/POODOO1. Every case equals the native run in its outcome, all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, channel 11 and InIsr. Per-case digests are frozen into `tests/lm_exec_jobs_vectors.h`. Inputs come from the qualified image milestones' own input domains.
+- **Independent assembly comparison.** `make lm-exec-jobs-differential` runs the unmodified Luminary099 rope in yaAGC (host-only, `tools/lm_exec_jobs_reference.c`). Each case starts at its entry with the same image, SUPERBNK, interrupt-enable bit, channel 11 and InIsr, and runs until Z reaches one of the case's stops (the caller's return, a job entry, NEWOPS, ADVAN, TASKOVER, a task), the interrupt ends, or BAILOUT1/POODOO1. Every case equals the native run in its outcome, all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, channel 11 and InIsr. Per-case digests are frozen into `tests/lm_exec_jobs_vectors.h`. Inputs come from the qualified image milestones' own input domains. The Waitlist domain is sampled below case 7560, where its generator's arithmetic still fits the C64's 16-bit `int`.
 
   | Cohort | Cases | Basic job or return | Interpretive job | Idle | Alarm |
   |---|---|---|---|---|---|
@@ -71,12 +71,12 @@ Hashes: `evidence/lm-exec-jobs/SHA256.json`. Bulk files are assets of the `evide
   | JOBWAKE | 512 | 512 | | | |
   | PRIOCHNG | 1,024 | 813 | 211 | | |
   | ENDOFJOB | 1,024 | 475 | 289 | 260 | |
-  | FIXDELAY/VARDELAY | 1,024 | 754 at TASKOVER | | | 270 |
+  | FIXDELAY/VARDELAY | 1,024 | 720 at TASKOVER | | | 304 |
   | FIXDELAY at its 16 call sites | 512 | 464 at TASKOVER | | | 48 |
   | TASKOVER resume | 512 | 512 | | | |
   | T3 vector and TASKOVER +1 | 1,024 | 1,024 tasks | | | |
 
-  The alarms are 1201 (169), 1202 (94), 1203 (168) and 1204 (150). Results: `evidence/lm-exec-jobs/lm-exec-jobs-proof.json`.
+  The alarms are 1201 (169), 1202 (94), 1203 (214) and 1204 (138). Results: `evidence/lm-exec-jobs/lm-exec-jobs-proof.json`.
 - **Host and sanitizer results.** `make test-lm-exec-jobs sanitize-lm-exec-jobs` (`evidence/lm-exec-jobs/lm-exec-jobs-host.log`) checks:
   - the digests;
   - that all 12 entries and all four alarms are reached, along with interpretive successors after JOBSLEEP and PRIOCHNG, idle after JOBSLEEP and ENDOFJOB, RESUME clearing the interrupt flag, TASKOVER dispatching, and T3 dispatch in both interrupt states;

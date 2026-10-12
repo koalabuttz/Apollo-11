@@ -80,12 +80,14 @@ void lm_exj_input(apollo_overlay_state *m,p66_bias_io *io,lm_exj_case *c,uint16_
 #endif
 #if LM_EXJ_TASKS
  case LM_EXJ_DELAY:
-  /* FIXDELAY (delay in erasable at Q) or VARDELAY from a task. */
-  (void)lm_delay_image_input(m,io,(uint16_t)(3u*((j*7u)%5461u)+(j&1u)));
+  /* FIXDELAY (delay in erasable at Q) or VARDELAY from a task. The Waitlist
+   * input domain is taken below 7560, where its (n/20)*173 still fits the
+   * C64's 16-bit unsigned int. */
+  (void)lm_delay_image_input(m,io,(uint16_t)(6u*((j*7u)%1260u)+3u*((j>>1)&1u)+(j&1u)));
   c->hw.in_interrupt=1;c->until=LM_EXEC_TASKOVER;stop(c,LM_EXEC_TASKOVER);break;
  case LM_EXJ_FIXDELAY_SITES:{
   uint16_t e=fixdelay_site(j%16u),v=(uint16_t)(j/16u),ph=lm_exec_sites[e].physical,bank=(uint16_t)(ph/1024u),off=(uint16_t)(ph%1024u);agc_word fb,eb;
-  (void)lm_delay_image_input(m,io,(uint16_t)(6u*((v*97u+j*13u)%2730u)));
+  (void)lm_delay_image_input(m,io,(uint16_t)(6u*((v*97u+j*13u)%1260u)));
   eb=m->words[3];
   if(bank==2u||bank==3u){m->words[2]=(agc_word)(bank*02000u+off);fb=(agc_word)(((v*5u)%32u)*02000u);io->superbank=(agc_word)((v%4u)*020u);}
   else if(bank>=040u){m->words[2]=(agc_word)(02000u+off);fb=(agc_word)((bank-8u)*02000u);io->superbank=0100;}
