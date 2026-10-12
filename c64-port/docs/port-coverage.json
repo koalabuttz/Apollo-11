@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -755,6 +755,28 @@
           ],
           "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
           "verification": "docs/LANEC-EV-FRONT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_short.c",
+            "src/lanec.c",
+            "include/lanec_ev_short.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Short bank 43 verb bodies: the flag verbs, job and task starters, check-and-hand-over verbs and SHOWSUM, every label and return point to its callee boundary (TESTXACT, CHKPOOH, FINDVAC, NOVAC, WAITLIST, PRIOCHNG, UPFLAG/DOWNFLAG, CHECKMM, PHASCHNG, BANKCALL, POSTJUMP, GOPIN, ENDEXT, ENDOFJOB), register-exact against the original program.",
+          "verification": "docs/LANEC-EV-SHORT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_align.c",
+            "src/lanec.c",
+            "include/lanec_ev_align.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Alignment and radar-designate verb bodies: V40 zero, V41 coarse align (IMU, RR designate, CM optics), V42 fine align, V43 attitude error meters (CM ATTCK1 task), V44 RRDESEND, LM V60 LRPOS2K, OP/INERT, RDRUSECK and CKLFTBTS, every label and return point to its callee boundary, register-exact against the original program. LM ATTCK2 is not included.",
+          "verification": "docs/LANEC-EV-ALIGN.md"
         }
       ]
     },
@@ -968,6 +990,15 @@
       "native_coverage": [
         {
           "native_files": [
+            "src/imu_mode_switching.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (656 words, fixed-fixed 5521, 07,2577-3651, 07,3652-3672 (R02BOTH), 26,3660-3776): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 54 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "verification": "docs/IMU-MODE-SWITCHING.md"
+        },
+        {
+          "native_files": [
             "src/imu_pulse.c"
           ],
           "scope": "Actual IMUPULSE mode lead in and successful WAITLIST registration with free command reservation, TPAGREE and source MODEEXIT return; deferred gyro tasks, busy sleep and hardware delivery remain open.",
@@ -1016,35 +1047,34 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "2048 physical erasable words; source rawA/L and coherent banks/VAC frames within unchanged frozen helper contracts. Sole persistent native image ownership.",
-          "producer_ownership": "No producers during original computational stages; pulse/task/device and coarse contexts retain exact frozen idle/activity/counter contracts.",
-          "hardware_returns": "Readable source latches including channel13 excluding trap-enable bits; actual FINETIME SHORTMP TPAGREE return ABI at compiled return entries. Physical scaler sampling and standby transitions remain hardware adapter obligations.",
-          "entry_contracts": "Each independently qualified actual local entry and compiled caller/helper return. No arbitrary Cartesian RAM/code frame or opcode decoder."
-        },
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
         "external_continuations": [
-          "Actual ALARM/POODOO and mode/flag/phase/display/bank services",
-          "Actual WAITLIST/task return/sleep/wake and interrupt scheduling services",
-          "Actual FINETIME scaler sampling and SHORTMP/TPAGREE helper bodies from other source files",
-          "Asynchronous device pulse/coarse transport and physical standby transition",
-          "Complete mission jobs, runtime registry, restart timing and integrated C64 application acceptance"
+          "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
+          "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
+          "JOBSLEEP, JOBWAKE (EXECUTIVE)",
+          "BANKCALL, IBNKCALL, SWRETURN, ISWRETRN, MAKECADR, POSTJUMP (native, cm_interbank_routines)",
+          "TPAGREE, SHORTMP (SINGLE_PRECISION_SUBROUTINES)",
+          "FINETIME (FRESH_START / T4RUPT clock)",
+          "UPFLAG, DOWNFLAG (FLAG routines)",
+          "PHASCHNG (RESTART_CONTROL)"
         ],
+        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/cm-imu-mode-whole-source-map.json",
-            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
+            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/imu-mode-root-whole-source-audit.json",
-            "sha256": "1e1e86b96eed13fc37e14aa96851c61d1a769819ef2273f4638887dd0339e763"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
+            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-imu-mode-whole-source-map.json",
-            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
+            "sha256": "9d221dc8b93a958ffeeeec21311e0b9190321120dc628242d12a2c94f755b638"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-imu-mode-whole-source-map.json",
-            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
+            "sha256": "a944d9a2cf15ae85c9acda9f39001a66ffc34d6b0c501b87c7a6df773b916ac3"
           }
         }
       },
@@ -3257,7 +3287,7 @@
       "sha256": "1156271d55ea1f47bf20602da2cefa9388a908b3dca5231650cc7f10895db776",
       "bytes": 4811,
       "lines": 176,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3276,7 +3306,7 @@
           "scope": "Every path of the file (RESTORDB, RESTORDB+1, SETMAXDB, SETMINDB, CALLACCS to the native NOVAC, PFLITEDB, ZATTEROR, STOPRATE, ALLCOAST and the returns at 02137, 02145, 02207, 02225) as ABI routines to the caller's TC Q / RUPTREG1 / RUPTREG2 return or BAILOUT1."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3286,7 +3316,6 @@
           "BAILOUT1",
           "the caller's return"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-dap-interface/lm-dap-interface-source-map.json",
@@ -3303,6 +3332,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-dap-interface/lm-dap-interface-vice.log",
             "sha256": "962d4d1e6776a6b9052c5b0d95f654852cbed99ee3500412ad81ee84f1b140d8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-dap-interface.md",
+            "sha256": "2425dd46162ef337b5d9455c21b01ab6c467fb27ad5a9ca6429d3b235b7b50c9"
           }
         }
       }
@@ -3703,6 +3736,39 @@
           ],
           "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, CHKPOOH, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
           "verification": "docs/LANEC-EV-FRONT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_short.c",
+            "src/lanec.c",
+            "include/lanec_ev_short.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Short bank 43 verb bodies: the flag verbs, job and task starters, check-and-hand-over verbs and SHOWSUM, every label and return point to its callee boundary (TESTXACT, CHKPOOH, FINDVAC, NOVAC, WAITLIST, PRIOCHNG, UPFLAG/DOWNFLAG, CHECKMM, PHASCHNG, BANKCALL, POSTJUMP, GOPIN, ENDEXT, ENDOFJOB), register-exact against the original program.",
+          "verification": "docs/LANEC-EV-SHORT.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_align.c",
+            "src/lanec.c",
+            "include/lanec_ev_align.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Alignment and radar-designate verb bodies: V40 zero, V41 coarse align (IMU, RR designate, CM optics), V42 fine align, V43 attitude error meters (CM ATTCK1 task), V44 RRDESEND, LM V60 LRPOS2K, OP/INERT, RDRUSECK and CKLFTBTS, every label and return point to its callee boundary, register-exact against the original program. LM ATTCK2 is not included.",
+          "verification": "docs/LANEC-EV-ALIGN.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_radar.c",
+            "src/lanec.c",
+            "include/lanec_ev_radar.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Radar test verbs R77 through R77END (V63 R04, V78 R77, V79 R77END), every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-RADAR.md"
         }
       ]
     },
@@ -3929,7 +3995,7 @@
       "sha256": "0b5c62e140514e58767ef3950fc3f3f381d607166f198f11348c3765c07f4ae8",
       "bytes": 10414,
       "lines": 417,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3941,7 +4007,7 @@
           "verification": "docs/IMU-COMPENSATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3953,7 +4019,6 @@
           "PIPASR +3 and PIPUSE1 (SERVICER)",
           "ENDOFJOB (EXECUTIVE)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-compensation/imu-compensation-source-map.json",
@@ -3970,6 +4035,10 @@
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
             "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-imu-compensation.md",
+            "sha256": "7f29be1369ef661682c548085bc8eacf3b3c90e9e15438f109c5806107a0611e"
           }
         }
       }
@@ -3982,6 +4051,15 @@
       "lines": 1067,
       "status": "partial",
       "native_coverage": [
+        {
+          "native_files": [
+            "src/imu_mode_switching.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (660 words, fixed-fixed 5457, 07,2714-3772, 04,3253-3273, 37,3655-3773): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 74 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "verification": "docs/IMU-MODE-SWITCHING.md"
+        },
         {
           "native_files": [
             "src/imu_pulse.c"
@@ -4032,35 +4110,35 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "2048 physical erasable words; source rawA/L and coherent banks/VAC frames within unchanged frozen helper contracts. Sole persistent native image ownership.",
-          "producer_ownership": "No producers during original computational stages; pulse/task/device and coarse contexts retain exact frozen idle/activity/counter contracts.",
-          "hardware_returns": "Readable source latches including channel13 excluding trap-enable bits; actual FINETIME SHORTMP TPAGREE return ABI at compiled return entries. Physical scaler sampling and standby transitions remain hardware adapter obligations.",
-          "entry_contracts": "Each independently qualified actual local entry and compiled caller/helper return. No arbitrary Cartesian RAM/code frame or opcode decoder."
-        },
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
         "external_continuations": [
-          "Actual ALARM/POODOO and mode/flag/phase/display/bank services",
-          "Actual WAITLIST/task return/sleep/wake and interrupt scheduling services",
-          "Actual FINETIME scaler sampling and SHORTMP/TPAGREE helper bodies from other source files",
-          "Asynchronous device pulse/coarse transport and physical standby transition",
-          "Complete mission jobs, runtime registry, restart timing and integrated C64 application acceptance"
+          "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
+          "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
+          "JOBSLEEP, JOBWAKE (EXECUTIVE)",
+          "BANKCALL, IBNKCALL, SWRETURN, ISWRETRN, MAKECADR, POSTJUMP (native, lm_interbank_routines)",
+          "TPAGREE, SHORTMP (SINGLE_PRECISION_SUBROUTINES)",
+          "FINETIME (FRESH_START / T4RUPT clock)",
+          "UPFLAG, DOWNFLAG (FLAG routines)",
+          "PHASCHNG (RESTART_CONTROL)",
+          "BAILOUT1 (ALARM_AND_ABORT, Luminary MODABORT)"
         ],
+        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/lm-imu-mode-whole-source-map.json",
-            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
+            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/imu-mode-root-whole-source-audit.json",
-            "sha256": "1e1e86b96eed13fc37e14aa96851c61d1a769819ef2273f4638887dd0339e763"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
+            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/lm-imu-mode-whole-source-map.json",
-            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
+            "sha256": "9d221dc8b93a958ffeeeec21311e0b9190321120dc628242d12a2c94f755b638"
           },
           "c64_execution_results": {
-            "path": "evidence/lm-imu-mode-whole-source-map.json",
-            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
+            "sha256": "a944d9a2cf15ae85c9acda9f39001a66ffc34d6b0c501b87c7a6df773b916ac3"
           }
         }
       },
@@ -4671,8 +4749,33 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c"
           ],
-          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, INITVEL, GET.LVC, VN1645, R36) are not yet translated.",
+          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, VN1645, R36; INITVEL is the lm-initvel milestone's and MIDGIM and SELECTMU the lm-midgim milestone's) are not yet translated.",
           "verification": "docs/LM-PERIAPO.md"
+        },
+        {
+          "native_files": [
+            "src/lm_initvel.c",
+            "src/lm_conic_lambert.c",
+            "src/lm_conic_timethet.c",
+            "src/lm_conic_kepler.c",
+            "src/sband_trig.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "INITVEL, all 189 words of bank 11 02000-02274 (INITVEL, HAVEGUES, INITVEL1-7, INITVELX), with ORBITAL_INTEGRATION's SETITCTR (11,3765-3775) compiled inline at its CALL and LAMBERT run as the lm-conic-lambert steps: from the NEWOPS entry frontier after each Luminary CALL of INITVEL or HAVEGUES, or where INTSTALL and INTEGRVS return (11,2155, 11,2200), to the caller's NEWOPS frontier at C(NORMEX), the UNIT/SQRT abort frontier, or the NEWOPS of INTSTALL or INTEGRVS (bank 13, not ported), as native steps between original NEWOPS frontiers.",
+          "verification": "docs/LM-INITVEL.md"
+        },
+        {
+          "native_files": [
+            "src/lm_midgim.c",
+            "src/inverse_trig.c",
+            "src/guidance_norm.c",
+            "src/matrix_native.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "MIDGIM (HALFREV, GET+MGA, SETMGA, GET.LVC; bank 06 03715-03752) and SELECTMU (bank 10 02000-02027), 54 words: from the NEWOPS entry frontier after each Luminary call of GET+MGA or GET.LVC, or SELECTMU's entry, to the caller's NEWOPS frontier at C(QPRET), the NEWOPS of VN1645 (35,3606, not ported) for SELECTMU, the UNIT abort frontier or ARCSIN's alarm 1301 frontier, as one native step per routine.",
+          "verification": "docs/LM-MIDGIM.md"
         }
       ]
     },
@@ -5327,7 +5430,7 @@
       "sha256": "42f22e578939222d5b0645e85d4c89b578b5200fb998db7dd95938feeb20eb61",
       "bytes": 7689,
       "lines": 323,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Protected Type C job restart admission only; table, Type B, timed-task and LONGCALL routes remain untranslated.",
@@ -5357,7 +5460,7 @@
           "scope": "Every RESTARTS, GETPART2 and PHSPART2 path (variable Type A/B, X.1 display, odd/even table, waitlist direct/indirect/immediate, longcall incl. 600SECS, FINDVAC/NOVAC) to the selected service, and the GOLOC-1/GOLOC+2 and display returns as ABI routines through SWRETURN."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5367,7 +5470,6 @@
           "SWRETURN",
           "jobs and tasks named by the selected 2CADRs"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-RESTART-SELECT.md",
@@ -5384,6 +5486,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-restart-select/lm-restart-select-vice.log",
             "sha256": "769c74cf8fa3919394c7a8cb9ebd416577a0772e76ffc2fc8742fae8486be4de"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-restarts-routine.md",
+            "sha256": "cf8c1d1103825e4b1813223816fadd9409ca490f52ad1c6cd45c30af10628b46"
           }
         }
       }
@@ -5901,7 +6007,7 @@
       "sha256": "e49235d5d0b1de4082524112a7dd7ac1df1d99e5ba9ee86e9e607ad54b15fa67",
       "bytes": 23387,
       "lines": 721,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5974,6 +6080,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-c64-cover.json",
             "sha256": "3562022900d38e7ed2ce7b4032fe69eeb68c454c6711a1cb3dc5f2772fb25bfd"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-time-free-fall.md",
+            "sha256": "a90bedc6497cb5b1fe4283bd3a062956df0a445a47dd6825051ac802749f2eaf"
           }
         }
       }

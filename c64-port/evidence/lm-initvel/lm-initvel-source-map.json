@@ -1,0 +1,2036 @@
+{
+ "source_paths": [
+  "Luminary099/P34-35_P74-75.agc",
+  "Luminary099/ORBITAL_INTEGRATION.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/P34-35_P74-75.agc": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
+  "Luminary099/ORBITAL_INTEGRATION.agc": "5fc234cd27586bf25918a05692b3e6849a433e0b62bfb1327c96ae06e2231b14"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_initvel.c",
+ "native_sha256": "9576202975b4259fa95bd3c734f7411680452ce2629d401995a613efc57bca01",
+ "source_words": 198,
+ "source_lines": 198,
+ "symbols": {
+  "INITVEL": "11,2000",
+  "HAVEGUES": "11,2002",
+  "INITVEL1": "11,2026",
+  "INITVEL2": "11,2062",
+  "INITVEL3": "11,2105",
+  "INITVEL4": "11,2137",
+  "INITVEL5": "11,2163",
+  "INITVEL6": "11,2225",
+  "INITVEL7": "11,2230",
+  "INITVELX": "11,2255",
+  "SETITCTR": "11,3765",
+  "LAMBERT": "12,3212",
+  "INTSTALL": "13,3414",
+  "INTEGRVS": "13,3107",
+  "NORMEX": "E7,1463",
+  "RINIT": "E4,1722",
+  "VINIT": "E4,1730",
+  "RTARG": "E7,1443",
+  "RTARG1": "E7,1471",
+  "DELLT4": "E7,1451",
+  "INTIME": "E7,1607",
+  "VIPRIME": "E4,1736",
+  "VTPRIME": "E7,1565",
+  "DELVEET3": "E4,1765",
+  "VTARGTAG": "E5,1701",
+  "ITCTR": "E7,1616",
+  "COZY4": "E7,1666",
+  "RTX1": "E5,1776",
+  "RTX2": "E5,1777",
+  "MUEARTH": "13,2006",
+  "ZEROVEC": "12,2006",
+  "MUTABLE": "04,2004"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1124,
+   "address": "11,2000",
+   "source": "INITVEL SET",
+   "words": [
+    "77614"
+   ],
+   "native": "liv_initvel"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1125,
+   "address": "11,2001",
+   "source": "GUESSW",
+   "words": [
+    "00475"
+   ],
+   "native": "liv_initvel"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1126,
+   "address": "11,2002",
+   "source": "HAVEGUES VLOAD STQ",
+   "words": [
+    "44175"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1127,
+   "address": "11,2003",
+   "source": "RTARG",
+   "words": [
+    "03444"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1128,
+   "address": "11,2004",
+   "source": "NORMEX",
+   "words": [
+    "03463"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1129,
+   "address": "11,2005",
+   "source": "STORE RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1130,
+   "address": "11,2006",
+   "source": "ABVAL",
+   "words": [
+    "77646"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1131,
+   "address": "11,2007",
+   "source": "STORE RTMAG",
+   "words": [
+    "03723"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1132,
+   "address": "11,2010",
+   "source": "SLOAD BHIZ",
+   "words": [
+    "46135"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1133,
+   "address": "11,2011",
+   "source": "RTX2",
+   "words": [
+    "03000"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1134,
+   "address": "11,2012",
+   "source": "INITVEL1",
+   "words": [
+    "22026"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1135,
+   "address": "11,2013",
+   "source": "VLOAD VSL2",
+   "words": [
+    "72575"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1136,
+   "address": "11,2014",
+   "source": "RINIT",
+   "words": [
+    "02323"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1137,
+   "address": "11,2015",
+   "source": "STOVL RINIT",
+   "words": [
+    "26323"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1138,
+   "address": "11,2016",
+   "source": "VINIT",
+   "words": [
+    "02331"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1139,
+   "address": "11,2017",
+   "source": "VSL2",
+   "words": [
+    "77752"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1140,
+   "address": "11,2020",
+   "source": "STOVL VINIT",
+   "words": [
+    "26331"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1141,
+   "address": "11,2021",
+   "source": "RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1142,
+   "address": "11,2022",
+   "source": "VSL2",
+   "words": [
+    "77752"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1143,
+   "address": "11,2023",
+   "source": "STORE RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1144,
+   "address": "11,2024",
+   "source": "ABVAL",
+   "words": [
+    "77646"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1145,
+   "address": "11,2025",
+   "source": "STORE RTMAG",
+   "words": [
+    "03723"
+   ],
+   "native": "liv_havegues"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1149,
+   "address": "11,2026",
+   "source": "INITVEL1 SSP DLOAD",
+   "words": [
+    "71331"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1150,
+   "address": "11,2027",
+   "source": "ITCTR",
+   "words": [
+    "03617"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1151,
+   "address": "11,2030",
+   "source": "0 -1",
+   "words": [
+    "77776"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1152,
+   "address": "11,2031",
+   "source": "COSINE SR1",
+   "words": [
+    "70546"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1153,
+   "address": "11,2032",
+   "source": "STODL COZY4",
+   "words": [
+    "17667"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1154,
+   "address": "11,2033",
+   "source": "LXA,2 SXA,2",
+   "words": [
+    "67154"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1155,
+   "address": "11,2034",
+   "source": "MPAC",
+   "words": [
+    "00154"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1156,
+   "address": "11,2035",
+   "source": "VTARGTAG",
+   "words": [
+    "02701"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1157,
+   "address": "11,2036",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1159,
+   "address": "11,2037",
+   "source": "RINIT",
+   "words": [
+    "02323"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1160,
+   "address": "11,2040",
+   "source": "STOVL R1VEC",
+   "words": [
+    "26655"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1161,
+   "address": "11,2041",
+   "source": "RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1162,
+   "address": "11,2042",
+   "source": "STODL R2VEC",
+   "words": [
+    "16663"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1163,
+   "address": "11,2043",
+   "source": "DELLT4",
+   "words": [
+    "03452"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1164,
+   "address": "11,2044",
+   "source": "STORE TDESIRED",
+   "words": [
+    "02671"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1165,
+   "address": "11,2045",
+   "source": "SETPD VLOAD",
+   "words": [
+    "77201"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1166,
+   "address": "11,2046",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1167,
+   "address": "11,2047",
+   "source": "RINIT",
+   "words": [
+    "02323"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1168,
+   "address": "11,2050",
+   "source": "UNIT PUSH",
+   "words": [
+    "41456"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1169,
+   "address": "11,2051",
+   "source": "VXV UNIT",
+   "words": [
+    "53435"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1170,
+   "address": "11,2052",
+   "source": "VINIT",
+   "words": [
+    "02331"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1171,
+   "address": "11,2053",
+   "source": "STOVL UN",
+   "words": [
+    "26674"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1172,
+   "address": "11,2054",
+   "source": "RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1173,
+   "address": "11,2055",
+   "source": "UNIT DOT",
+   "words": [
+    "50256"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1174,
+   "address": "11,2056",
+   "source": "DAD CLEAR",
+   "words": [
+    "43015"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1175,
+   "address": "11,2057",
+   "source": "COZY4",
+   "words": [
+    "03667"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1176,
+   "address": "11,2060",
+   "source": "NORMSW",
+   "words": [
+    "03665"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1177,
+   "address": "11,2061",
+   "source": "STORE COZY4",
+   "words": [
+    "03667"
+   ],
+   "native": "liv_initvel1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1178,
+   "address": "11,2062",
+   "source": "INITVEL2 BPL SET",
+   "words": [
+    "43044"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1179,
+   "address": "11,2063",
+   "source": "INITVEL3",
+   "words": [
+    "22105"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1180,
+   "address": "11,2064",
+   "source": "NORMSW",
+   "words": [
+    "03465"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1184,
+   "address": "11,2065",
+   "source": "VLOAD PUSH",
+   "words": [
+    "41575"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1185,
+   "address": "11,2066",
+   "source": "R2VEC",
+   "words": [
+    "02663"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1186,
+   "address": "11,2067",
+   "source": "ABVAL PDVL",
+   "words": [
+    "63246"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1187,
+   "address": "11,2070",
+   "source": "PUSH VPROJ",
+   "words": [
+    "46206"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1188,
+   "address": "11,2071",
+   "source": "UN",
+   "words": [
+    "02674"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1189,
+   "address": "11,2072",
+   "source": "VSL2 BVSU",
+   "words": [
+    "51352"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1190,
+   "address": "11,2073",
+   "source": "UNIT VXSC",
+   "words": [
+    "74256"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1191,
+   "address": "11,2074",
+   "source": "VSL1",
+   "words": [
+    "77772"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1192,
+   "address": "11,2075",
+   "source": "STORE R2VEC",
+   "words": [
+    "02663"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1193,
+   "address": "11,2076",
+   "source": "TLOAD SLOAD",
+   "words": [
+    "67351"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1194,
+   "address": "11,2077",
+   "source": "ZEROVEC",
+   "words": [
+    "24007"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1195,
+   "address": "11,2100",
+   "source": "ITCTR",
+   "words": [
+    "03617"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1196,
+   "address": "11,2101",
+   "source": "BPL VLOAD",
+   "words": [
+    "77244"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1197,
+   "address": "11,2102",
+   "source": "INITVEL3",
+   "words": [
+    "22105"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1198,
+   "address": "11,2103",
+   "source": "R2VEC",
+   "words": [
+    "02663"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1199,
+   "address": "11,2104",
+   "source": "STORE RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_initvel2"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1200,
+   "address": "11,2105",
+   "source": "INITVEL3 DLOAD PDVL",
+   "words": [
+    "63345"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1201,
+   "address": "11,2106",
+   "source": "MUEARTH",
+   "words": [
+    "26007"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1202,
+   "address": "11,2107",
+   "source": "R2VEC",
+   "words": [
+    "02663"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1203,
+   "address": "11,2110",
+   "source": "UNIT PDVL",
+   "words": [
+    "63256"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1204,
+   "address": "11,2111",
+   "source": "R1VEC",
+   "words": [
+    "02655"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1205,
+   "address": "11,2112",
+   "source": "UNIT PUSH",
+   "words": [
+    "41456"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1206,
+   "address": "11,2113",
+   "source": "VXV VCOMP",
+   "words": [
+    "57435"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1207,
+   "address": "11,2114",
+   "source": "2D",
+   "words": [
+    "00003"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1208,
+   "address": "11,2115",
+   "source": "PUSH",
+   "words": [
+    "77606"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1209,
+   "address": "11,2116",
+   "source": "LXA,1 DLOAD",
+   "words": [
+    "71350"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1211,
+   "address": "11,2117",
+   "source": "RTX1",
+   "words": [
+    "02776"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1212,
+   "address": "11,2120",
+   "source": "18D",
+   "words": [
+    "00023"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1213,
+   "address": "11,2121",
+   "source": "BMN INCR,1",
+   "words": [
+    "62040"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1214,
+   "address": "11,2122",
+   "source": "+2",
+   "words": [
+    "22124"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1215,
+   "address": "11,2123",
+   "source": "DEC -8",
+   "words": [
+    "77767"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1216,
+   "address": "11,2124",
+   "source": "INCR,1 SLOAD",
+   "words": [
+    "67310"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1217,
+   "address": "11,2125",
+   "source": "10D",
+   "words": [
+    "00012"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1218,
+   "address": "11,2126",
+   "source": "X1",
+   "words": [
+    "00047"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1219,
+   "address": "11,2127",
+   "source": "BHIZ VLOAD",
+   "words": [
+    "77230"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1220,
+   "address": "11,2130",
+   "source": "+2",
+   "words": [
+    "22132"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1221,
+   "address": "11,2131",
+   "source": "VCOMP PUSH",
+   "words": [
+    "41476"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1222,
+   "address": "11,2132",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1223,
+   "address": "11,2133",
+   "source": "VXV DOT",
+   "words": [
+    "50235"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1224,
+   "address": "11,2134",
+   "source": "BPL DLOAD",
+   "words": [
+    "71244"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1225,
+   "address": "11,2135",
+   "source": "INITVEL4",
+   "words": [
+    "22137"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1226,
+   "address": "11,2136",
+   "source": "DCOMP PUSH",
+   "words": [
+    "41476"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1227,
+   "address": "11,2137",
+   "source": "INITVEL4 LXA,2 SXA,2",
+   "words": [
+    "67154"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1228,
+   "address": "11,2140",
+   "source": "0D",
+   "words": [
+    "00000"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1229,
+   "address": "11,2141",
+   "source": "GEOMSGN",
+   "words": [
+    "02672"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1233,
+   "address": "11,2142",
+   "source": "LXA,1 CALL",
+   "words": [
+    "45150"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1234,
+   "address": "11,2143",
+   "source": "RTX1",
+   "words": [
+    "02776"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1238,
+   "address": "11,2144",
+   "source": "SETITCTR",
+   "words": [
+    "23765"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1243,
+   "address": "11,2145",
+   "source": "CLEAR VLOAD",
+   "words": [
+    "77214"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1244,
+   "address": "11,2146",
+   "source": "GUESSW",
+   "words": [
+    "00675"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1245,
+   "address": "11,2147",
+   "source": "VVEC",
+   "words": [
+    "02744"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1249,
+   "address": "11,2150",
+   "source": "STODL VIPRIME",
+   "words": [
+    "16337"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1254,
+   "address": "11,2151",
+   "source": "VTARGTAG",
+   "words": [
+    "02702"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1255,
+   "address": "11,2152",
+   "source": "BHIZ CALL",
+   "words": [
+    "45030"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1256,
+   "address": "11,2153",
+   "source": "INITVEL7",
+   "words": [
+    "22230"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1257,
+   "address": "11,2154",
+   "source": "INTSTALL",
+   "words": [
+    "27414"
+   ],
+   "native": "liv_afterlambert"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1258,
+   "address": "11,2155",
+   "source": "SLOAD CLEAR",
+   "words": [
+    "43135"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1259,
+   "address": "11,2156",
+   "source": "RTX2",
+   "words": [
+    "03000"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1260,
+   "address": "11,2157",
+   "source": "MOONFLAG",
+   "words": [
+    "00263"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1261,
+   "address": "11,2160",
+   "source": "BHIZ SET",
+   "words": [
+    "43030"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1262,
+   "address": "11,2161",
+   "source": "INITVEL5",
+   "words": [
+    "22163"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1264,
+   "address": "11,2162",
+   "source": "MOONFLAG",
+   "words": [
+    "00063"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1265,
+   "address": "11,2163",
+   "source": "INITVEL5 VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1266,
+   "address": "11,2164",
+   "source": "RINIT",
+   "words": [
+    "02323"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1267,
+   "address": "11,2165",
+   "source": "STORE R1VEC",
+   "words": [
+    "02655"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1268,
+   "address": "11,2166",
+   "source": "STOVL RCV",
+   "words": [
+    "25535"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1269,
+   "address": "11,2167",
+   "source": "VIPRIME",
+   "words": [
+    "02337"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1270,
+   "address": "11,2170",
+   "source": "STODL VCV",
+   "words": [
+    "15543"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1271,
+   "address": "11,2171",
+   "source": "INTIME",
+   "words": [
+    "03610"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1272,
+   "address": "11,2172",
+   "source": "STORE TET",
+   "words": [
+    "01517"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1273,
+   "address": "11,2173",
+   "source": "DAD CLEAR",
+   "words": [
+    "43015"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1274,
+   "address": "11,2174",
+   "source": "DELLT4",
+   "words": [
+    "03452"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1275,
+   "address": "11,2175",
+   "source": "INTYPFLG",
+   "words": [
+    "01673"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1276,
+   "address": "11,2176",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1277,
+   "address": "11,2177",
+   "source": "INTEGRVS",
+   "words": [
+    "27107"
+   ],
+   "native": "liv_afterintstall"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1278,
+   "address": "11,2200",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1279,
+   "address": "11,2201",
+   "source": "VATT1",
+   "words": [
+    "00025"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1280,
+   "address": "11,2202",
+   "source": "STORE VTARGET",
+   "words": [
+    "02703"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1285,
+   "address": "11,2203",
+   "source": "LXA,2 INCR,2",
+   "words": [
+    "63154"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1286,
+   "address": "11,2204",
+   "source": "ITCTR",
+   "words": [
+    "03616"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1287,
+   "address": "11,2205",
+   "source": "1D",
+   "words": [
+    "00001"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1288,
+   "address": "11,2206",
+   "source": "SXA,2 XSU,2",
+   "words": [
+    "55134"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1289,
+   "address": "11,2207",
+   "source": "ITCTR",
+   "words": [
+    "03616"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1290,
+   "address": "11,2210",
+   "source": "VTARGTAG",
+   "words": [
+    "02701"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1291,
+   "address": "11,2211",
+   "source": "SLOAD BHIZ",
+   "words": [
+    "46135"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1292,
+   "address": "11,2212",
+   "source": "X2",
+   "words": [
+    "00050"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1293,
+   "address": "11,2213",
+   "source": "INITVEL6",
+   "words": [
+    "22225"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1297,
+   "address": "11,2214",
+   "source": "VLOAD VSU",
+   "words": [
+    "52375"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1298,
+   "address": "11,2215",
+   "source": "RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1299,
+   "address": "11,2216",
+   "source": "RATT1",
+   "words": [
+    "00017"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1300,
+   "address": "11,2217",
+   "source": "VAD",
+   "words": [
+    "77655"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1301,
+   "address": "11,2220",
+   "source": "R2VEC",
+   "words": [
+    "02663"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1302,
+   "address": "11,2221",
+   "source": "STODL R2VEC",
+   "words": [
+    "16663"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1303,
+   "address": "11,2222",
+   "source": "COZY4",
+   "words": [
+    "03667"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1304,
+   "address": "11,2223",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1305,
+   "address": "11,2224",
+   "source": "INITVEL2",
+   "words": [
+    "22062"
+   ],
+   "native": "liv_afterintegrvs"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1309,
+   "address": "11,2225",
+   "source": "INITVEL6 VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "liv_initvel6"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1310,
+   "address": "11,2226",
+   "source": "R2VEC",
+   "words": [
+    "02663"
+   ],
+   "native": "liv_initvel6"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1311,
+   "address": "11,2227",
+   "source": "STORE RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_initvel6"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1312,
+   "address": "11,2230",
+   "source": "INITVEL7 VLOAD VSU",
+   "words": [
+    "52375"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1313,
+   "address": "11,2231",
+   "source": "VIPRIME",
+   "words": [
+    "02337"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1314,
+   "address": "11,2232",
+   "source": "VINIT",
+   "words": [
+    "02331"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1315,
+   "address": "11,2233",
+   "source": "STOVL DELVEET3",
+   "words": [
+    "26366"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1317,
+   "address": "11,2234",
+   "source": "VTARGET",
+   "words": [
+    "02703"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1318,
+   "address": "11,2235",
+   "source": "STORE VTPRIME",
+   "words": [
+    "03566"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1319,
+   "address": "11,2236",
+   "source": "SLOAD BHIZ",
+   "words": [
+    "46135"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1320,
+   "address": "11,2237",
+   "source": "RTX2",
+   "words": [
+    "03000"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1321,
+   "address": "11,2240",
+   "source": "INITVELX",
+   "words": [
+    "22255"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1322,
+   "address": "11,2241",
+   "source": "VLOAD VSR2",
+   "words": [
+    "70575"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1323,
+   "address": "11,2242",
+   "source": "VTPRIME",
+   "words": [
+    "03566"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1324,
+   "address": "11,2243",
+   "source": "STOVL VTPRIME",
+   "words": [
+    "27566"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1325,
+   "address": "11,2244",
+   "source": "VIPRIME",
+   "words": [
+    "02337"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1326,
+   "address": "11,2245",
+   "source": "VSR2",
+   "words": [
+    "77742"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1327,
+   "address": "11,2246",
+   "source": "STOVL VIPRIME",
+   "words": [
+    "26337"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1328,
+   "address": "11,2247",
+   "source": "RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1329,
+   "address": "11,2250",
+   "source": "VSR2",
+   "words": [
+    "77742"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1330,
+   "address": "11,2251",
+   "source": "STOVL RTARG1",
+   "words": [
+    "27472"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1331,
+   "address": "11,2252",
+   "source": "DELVEET3",
+   "words": [
+    "02366"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1332,
+   "address": "11,2253",
+   "source": "VSR2",
+   "words": [
+    "77742"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1333,
+   "address": "11,2254",
+   "source": "STORE DELVEET3",
+   "words": [
+    "02366"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1334,
+   "address": "11,2255",
+   "source": "INITVELX LXA,1 DLOAD*",
+   "words": [
+    "70750"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1335,
+   "address": "11,2256",
+   "source": "RTX1",
+   "words": [
+    "02776"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1336,
+   "address": "11,2257",
+   "source": "MUTABLE -2,1",
+   "words": [
+    "10003"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1337,
+   "address": "11,2260",
+   "source": "PUSH DMP",
+   "words": [
+    "41206"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1338,
+   "address": "11,2261",
+   "source": "R1A",
+   "words": [
+    "02742"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1339,
+   "address": "11,2262",
+   "source": "SR1 DDV",
+   "words": [
+    "56342"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1340,
+   "address": "11,2263",
+   "source": "R1",
+   "words": [
+    "00041"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1341,
+   "address": "11,2264",
+   "source": "STODL MU/A",
+   "words": [
+    "17721"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1342,
+   "address": "11,2265",
+   "source": "SR",
+   "words": [
+    "77661"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1343,
+   "address": "11,2266",
+   "source": "6",
+   "words": [
+    "20607"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1344,
+   "address": "11,2267",
+   "source": "STORE MUASTEER",
+   "words": [
+    "03717"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1345,
+   "address": "11,2270",
+   "source": "SETPD VLOAD",
+   "words": [
+    "77201"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1346,
+   "address": "11,2271",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1347,
+   "address": "11,2272",
+   "source": "RTARG1",
+   "words": [
+    "03472"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1348,
+   "address": "11,2273",
+   "source": "STCALL RTARG",
+   "words": [
+    "37444"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1349,
+   "address": "11,2274",
+   "source": "NORMEX",
+   "words": [
+    "03463"
+   ],
+   "native": "liv_initvel7"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 862,
+   "address": "11,3765",
+   "source": "SETITCTR SSP BOFF",
+   "words": [
+    "43131"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 863,
+   "address": "11,3766",
+   "source": "ITERCTR",
+   "words": [
+    "00027"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 864,
+   "address": "11,3767",
+   "source": "20D",
+   "words": [
+    "00024"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 865,
+   "address": "11,3770",
+   "source": "AVEGFLAG",
+   "words": [
+    "03752"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 866,
+   "address": "11,3771",
+   "source": "LAMBERT",
+   "words": [
+    "25212"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 867,
+   "address": "11,3772",
+   "source": "SSP GOTO",
+   "words": [
+    "52131"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 868,
+   "address": "11,3773",
+   "source": "ITERCTR",
+   "words": [
+    "00027"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 869,
+   "address": "11,3774",
+   "source": "5",
+   "words": [
+    "00005"
+   ],
+   "native": "liv_initvel3"
+  },
+  {
+   "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+   "line": 870,
+   "address": "11,3775",
+   "source": "LAMBERT",
+   "words": [
+    "25212"
+   ],
+   "native": "liv_initvel3"
+  }
+ ],
+ "covered_ranges": [
+  "11,2000-11,2274",
+  "11,3765-11,3775"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged files reproduces the certified rope; every word of INITVEL (HAVEGUES through INITVELX) and of SETITCTR is a literal bookkeeping argument or constant of the native function owning its address. LAMBERT and its conic steps are the lm-conic-lambert milestone's (src/lm_conic_lambert.c); INTSTALL and INTEGRVS are not ported. The rest of both files is not covered here."
+}

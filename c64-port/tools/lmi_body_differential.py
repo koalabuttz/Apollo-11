@@ -137,7 +137,7 @@ def case(g,body):
  if body in ARITH:
   # Operand at C(ADDRWD): live erasable (either window), or fixed data in a
   # bank <030 with the words passed to the native side.
-  img[5]=ARITH[body];n=6 if body==25 else 2
+  img[5]=ARITH[body];n=6 if body in(25,59) else 2
   # (SIGN's INDEX ADDRWD; CCS 0 is a TCF for a fixed address: erasable only.)
   if body!=21 and r.random()<.35:
    b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o4000-n-1);img[0o116]=a
@@ -255,6 +255,11 @@ def case(g,body):
     if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
    img[0o117]=v
   return hdr,img
+ if body==61:
+  setbanks(img,1);img[5]=0o2351
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  img[0o117]=r.randrange(0,0o100000)
+  return hdr,img
  if body==48:
   setbanks(img,1);img[5]=0o2452;hdr[2]=0o6646
   img[0o154]=r.choice([0,0o77777,r.getrandbits(15)])
@@ -318,6 +323,12 @@ def case(g,body):
   img[5]=0o6470;hdr[1]=0o6061
   img[0o116]=r.randrange(0o61,0o1360) if r.random()<.7 else r.randrange(0o1410,0o1765)
   return hdr,img
+ if body==60:
+  # TLOAD from fixed data in a bank <030, the three words passed natively.
+  img[5]=0o6470;hdr[1]=0o6061
+  b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3775);img[0o116]=a
+  hdr[9:12]=[fixed(b,a-0o2000+i) for i in range(3)];hdr[15]=1
+  return hdr,img
  if body==57:
   # TIX: POLISH the branch CADR, X and S of the selected index either sign.
   setbanks(img,1);img[5]=0o2415;hdr[2]=0o6646
@@ -333,12 +344,12 @@ def case(g,body):
    for i in range(3):img[0o154+i]=r.choice([0,0o77777])
   return hdr,img
  raise SystemExit('unknown body')
-ARITH={12:0o6775,13:0o7005,14:0o7062,15:0o7572,16:0o7574,21:0o7655,25:0o7331}
+ARITH={12:0o6775,13:0o7005,14:0o7062,15:0o7572,16:0o7574,21:0o7655,25:0o7331,59:0o7425}
 BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
