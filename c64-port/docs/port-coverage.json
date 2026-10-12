@@ -3578,11 +3578,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-ags-init/lm-ags-init-vice.log",
-            "sha256": "eb9a4cdfd7a3243b9789c532cfb0330616f32a71a4cc270d64e75f022e7aa3c8"
+            "sha256": "be605d662273a0ff27c1b47608042254de83b3df72754f121f7f92c586bcb8ae"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ags-init/lm-ags-init-c64-cover.json",
-            "sha256": "eb3d625d05e34c45db496bacadf1e01f0b52f3aeb0d71d06ccff0681b6ec6cd0"
+            "sha256": "0ec008aab5f726933211260fd10e20011c8cf2167fc607394d6b62eb9fc79246"
           }
         }
       }
@@ -5496,11 +5496,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-vice.log",
-            "sha256": "85119b95d52d6e3aa6785fb2c9a307656ba0418f1eac1822452ff10d72df195c"
+            "sha256": "49b7c9fa94a320eaff06294bb4d05a6d36a3a446488ed100a3fd30bbfcf978b8"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-c64-cover.json",
-            "sha256": "58242a72c57a7dfb5221665b4aa1f47e6276f4a522d317f45bb3d0c3baf1741f"
+            "sha256": "cda75e5a30b844aaa509af63d88bd6be05430e745ebeb5845c3238025d33019f"
           }
         }
       }
@@ -7178,8 +7178,60 @@
           ],
           "scope": "STARTP66 guidance display END idle hardware clock IRQ1 RODTASK and second P66 iteration with continuous canonical image; source one-shot RODTASK does not requeue itself.",
           "verification": "docs/P66-APPLICATION-RECURRENCE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_lunar_landing.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-LUNAR-LANDING.md",
+          "scope": "All of the file: P63 (bank 32 02776-03262: P63LM's PHASCHNG and R02BOTH, the P63 set-up with WAND CHAN12 and the FLAGORGY flags, IGNALG and IGNALOOP through RP-TO-R, GUIDINIT, LEMPREC, MUNGRAV and ?GUIDSUB, DDUMCALC's DDUM iteration with its pushdown arithmetic to BMN DDUMGOOD or CALL INTSTALL, INTEGRVS's GOTO IGNALOOP, DDUMGOOD's TIG and OUTOFPLN, IGNALGRT and ASTNCLOK, ASTNRET's SSP QMAJ and RTB R51P63, P63SPOT2 through PFLITEDB and R60LEM, P63SPOT3's LR antenna test (RAND CHAN33) to GOPERF1 or SETPOS1 and POSTJUMP BURNBABY) and P68's LANDJUNK (bank 31 02144-02215: ZATTEROR, SETMAXDB, LAT-LONG, R-TO-RP, the V06N43 display and REFMF), as twenty-one basic and ten interpretive ABI routines."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 31 or 32 under any EBANK with the lm_lld_io record (channels 12 and 33); basic keys at Z, interpretive keys at LOC with Z at NEWOPS; DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB, BANKSET not the key's bank, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, DDUMCALC with overflow in A, or no io record; 0 of 15,872 random cases. UNIT's and ABVAL's alarm 1302 exits are translated but no sampled input reaches them",
+        "external_continuations": [
+          "PHASCHNG",
+          "BANKCALL (R02BOTH, STCLOK2, R60LEM, GOPERF1, SETPOS1, ZATTEROR, SETMAXDB, GOFLASH)",
+          "IBNKCALL (PFLITEDB)",
+          "POSTJUMP (BURNBABY)",
+          "ENDOFJOB",
+          "GOTOPOOH",
+          "RTB R51P63",
+          "CALL/STCALL RP-TO-R, GUIDINIT, LEMPREC, MUNGRAV, ?GUIDSUB, INTSTALL, INTEGRVS, LAT-LONG, R-TO-RP, REFMF",
+          "POODOO1 (alarm 1302)",
+          "CHANG2"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-source-map.json",
+            "sha256": "35b12d2e18177be5a50b603612ebcd3ba286548a0819fefa12cf883cede794d1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-proof.json",
+            "sha256": "7e3aed5e6c831399d42fea85ffbe637b32e54f04e63843d0d89a42b9a807e487"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-host.log",
+            "sha256": "11b9ac7bd7e288489d03f807954288d31b0bf7b3fa58db3b1f6e0d640c97e2f3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-vice.log",
+            "sha256": "3bc97b7bd9b84bee706c3a269de8ea3fd578e6b7d9d6cd6a30deb1d4c28e8244"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-lunar-landing/lm-lunar-landing-c64-cover.json",
+            "sha256": "32e58b2fb1c6d0a6ed4ebf839c8596737b8c1dc721537407bc8b2c8da7e8bb01"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",

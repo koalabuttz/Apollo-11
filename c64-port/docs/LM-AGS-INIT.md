@@ -94,8 +94,9 @@ keys. Each case starts from a random image with FB bank 32.
     interrupt-enable bit.
   - The digests are frozen into `tests/lm_ags_init_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
-    (`tests/lm_ags_init_c64_vectors.h`, 128 cases): every key, outcome and
-    path the host cases take (27 cases), then a stride of 97. The counts
+    (`tests/lm_ags_init_c64_vectors.h`, 128 cases): every key, outcome,
+    path and basic block of `src/lm_ags_init.c` the host cases take (27
+    cases), then a stride of 97. The counts
     are in `evidence/lm-ags-init/lm-ags-init-c64-cover.json`.
   - The proof (`evidence/lm-ags-init/lm-ags-init-proof.json`) counts where
     each key's cases leave the file.
