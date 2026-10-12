@@ -111,7 +111,8 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
   base Executive VICE check.
 
 The full suite runs nightly against `port/c64-native-c`, and on demand from
-the Actions tab (`port-ci`, Run workflow). Full runs also run every legacy
+the Actions tab (`port-ci`, Run workflow). Those requested full runs (not a PR
+that touches shared plumbing) also run every legacy
 `tools/*_vice_test.py` script, split over eight `c64-legacy` shards, as the
 `vice-legacy-<name>` targets that `tools/legacy_vice.py` writes to
 `tools/mk/legacy-vice.mk`; run one locally with `tools/ci_run.py vice-legacy-<name>`.
