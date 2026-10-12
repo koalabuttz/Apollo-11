@@ -255,6 +255,28 @@ def case(g,body):
     if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
    img[0o117]=v
   return hdr,img
+ if body in(68,69):
+  # MXV/VXM: an 18-word matrix in erasable (inside one EB window) or in a
+  # fixed bank <030, read from the rope by the native side.
+  img[5]={68:0o7334,69:0o7337}[body]
+  if r.random()<.35:
+   b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o4000-19);img[0o116]=a
+   hdr[9]=b;hdr[10]=a;hdr[15]=2
+  else:img[0o116]=r.randrange(0o61,0o1370-18) if r.random()<.7 else r.randrange(0o1410,0o1770-18)
+  if r.random()<.2:
+   for i in range(6):img[0o154+i]=r.choice([0o37777,0o40000,0o37776])
+  return hdr,img
+ if body==70:
+  # LXC: as LXA.
+  setbanks(img,1);img[5]=0o2360
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  if r.random()<.4:img[0o117]=r.randrange(0,0o55)
+  else:
+   while True:
+    v=r.randrange(0o56,0o4000)
+    if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
+   img[0o117]=v
+  return hdr,img
  if body==61:
   setbanks(img,1);img[5]=0o2351
   img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
@@ -349,11 +371,12 @@ BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC',
+ 'reserved','reserved','reserved','reserved','reserved','reserved','MXV','VXM','LXC']  # (62-67: Lane D1b's trig and XCHX bodies)
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
- p.add_argument('--bodies',default=','.join(str(i) for i in range(len(NAMES))));p.add_argument('--dump');a=p.parse_args()
+ p.add_argument('--bodies',default=','.join(str(i) for i in range(len(NAMES)) if NAMES[i]!='reserved'));p.add_argument('--dump');a=p.parse_args()
  (R/'build').mkdir(exist_ok=True)
  if not LST.exists():subprocess.run([sys.executable,'tools/ephemeris_source.py'],cwd=R,check=True,stdout=subprocess.DEVNULL)
  if not (R/'build/agc_engine_hardware_dv.o').exists():subprocess.run([sys.executable,'tools/prepare_hardware_dv.py'],cwd=R,check=True)
@@ -366,7 +389,7 @@ def main():
  if a.dump:pathlib.Path(a.dump).write_bytes(blob)
  ref=subprocess.run(['build/lmi-body-reference',str(ROM)],cwd=R,input=blob,capture_output=True)
  if ref.returncode:print(ref.stderr.decode()[-2000:]);raise SystemExit('FAIL reference exit %d'%ref.returncode)
- nat=subprocess.run(['build/lmi-body-native'],cwd=R,input=blob,capture_output=True,check=True).stdout
+ nat=subprocess.run(['build/lmi-body-native',str(ROM)],cwd=R,input=blob,capture_output=True,check=True).stdout
  bad={}
  for i,(h,img) in enumerate(cases):
   x=struct.unpack_from('<2049H',ref.stdout,i*4098);y=struct.unpack_from('<2049H',nat,i*4098)
