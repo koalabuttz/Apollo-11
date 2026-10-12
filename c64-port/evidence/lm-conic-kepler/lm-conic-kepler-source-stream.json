@@ -1,0 +1,10 @@
+{
+  "archive": "build/lm-conic-kepler-reference.snapshots.bin.xz",
+  "decoded_sha256": "f6248a9eca9e4784388b25ee6224400c223f0d0d4b267e303cb851a4acd9f35b",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "1": 65536
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

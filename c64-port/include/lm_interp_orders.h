@@ -94,6 +94,11 @@ void lmi_call(apollo_overlay_state *);
 /* GOTO from 06646, through GOTOERS while POLISH names erasable (fetching
  * the CADR through the work area or its EBANK), to the target's NEWOPS. */
 void lmi_goto_any(apollo_overlay_state *);
+/* 15BITADR (STCALL's entry) to the MISCJUMP body `target`. */
+void lmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
+/* BZE/GOTO without the transfer: 1 at GOTO 06646 (BZE zero, or GOTO),
+ * 0 at DANZIG. */
+uint8_t lmi_bzegoto(apollo_overlay_state *);
 /* EXIT to the basic word after the order (Z = LOC+1, Q 06747); TC INTPRET
  * from basic code (Q = the next word) to NEWOPS; TPMODE (RTB routine). */
 void lmi_exit(apollo_overlay_state *);

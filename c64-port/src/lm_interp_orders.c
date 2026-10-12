@@ -1023,6 +1023,20 @@ void lmi_goto_any(apollo_overlay_state *s){
  }
  lmi_goto(s);
 }
+void lmi_15bitadr(apollo_overlay_state *s,agc_word word,agc_word target){
+ /* 15BITADR 06252 (from STCALL's STOTC): INCR LOC; INDEX LOC, CA 0;
+  * TS POLISH; CAF LOW7+2K; TS FBANK; MASK CYR; INDEX A, TCF MISCJUMP. */
+ INCR(rLOC);CAF(word);(void)TS(rPOLISH);CAF(02177u);(void)TS(rFB);MASK(rCYR);W[5]=target;
+}
+uint8_t lmi_bzegoto(apollo_overlay_state *s){
+ /* BZE/GOTO 01,2467: CCS CYR (positive) TC BRANCH; zero TCF GOTO (1, at
+  * GOTO 06646 for lmi_goto or lmi_goto_any), else DANZIG (0); GOTO when
+  * CYR is not positive (1). */
+ if(CCS(rCYR)!=0u){W[5]=06646;return 1;}
+ TC(02471);
+ if(branch(s)==1u){W[5]=06646;return 1;}
+ danzig(s);return 0;
+}
 void lmi_exit(apollo_overlay_state *s){
  /* EXIT 06743: CA BANKSET; TS BBANK; INDEX LOC, TC 1 (to the basic code
   * after the order; Q = 06747). */

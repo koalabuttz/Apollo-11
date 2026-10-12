@@ -291,6 +291,15 @@ def case(g,body):
  if body==53:
   setbanks(img,0o10);img[5]=0o3633
   return hdr,img
+ if body==54:
+  b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3776);img[0o164]=a;img[0o165]=img[6]
+  hdr[7]=fixed(b,a+1-0o2000);img[5]=0o6252;img[0o20]=0o15;hdr[8]=0o2507;hdr[1]=0o2507
+  return hdr,img
+ if body==55:
+  setbanks(img,1);img[5]=0o2467;hdr[2]=0o6646
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  for i in range(3):img[0o154+i]=r.choice([0,0o77777,r.getrandbits(15)]) if r.random()<.6 else r.getrandbits(15)
+  return hdr,img
  if body in BANK0:
   setbanks(img,0);img[5]=BANK0[body]
   if body==22 and r.random()<.15:
@@ -302,7 +311,7 @@ BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
