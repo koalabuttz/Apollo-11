@@ -13,9 +13,10 @@ bool lm_interbank_data_address(const apollo_overlay_state *s,const p66_bias_io *
 bool lm_interbank(apollo_overlay_state *s,p66_bias_io *io,enum lm_interbank_entry entry,agc_word literal,agc_word word){agc_word oldfb,cadr,q,base,relative,savedbank;agc_register olda,oldl;int overflow;
  if(!context(s,io)||(unsigned)entry>=14u||s->words[5]!=pc[entry])return false;
  /* Q is only debris for BANKJUMP (XCH Q puts it in A): DISPLAY_INTERFACE's
-  * SAVELOCS reaches it by TC L, with Q = 2. Every other entry reads or
-  * returns through Q. */
- if(entry!=LM_IB_BANKJUMP&&s->words[2]<0100u)return false;
+  * SAVELOCS reaches it by TC L, with Q = 2. SWRETURN and ISWRETRN never read
+  * Q: a BANKCALLed routine reaches them by TC Q, with Q = 3. Every other
+  * entry reads or returns through Q. */
+ if(entry!=LM_IB_BANKJUMP&&entry!=LM_IB_SWRETURN&&entry!=LM_IB_ISWRETRN&&s->words[2]<0100u)return false;
  q=s->words[2];oldfb=s->words[4];olda=s->words[0];oldl=s->words[1];overflow=agc_overflow(olda);base=(agc_word)(entry>=LM_IB_IBNKCALL&&entry<=LM_IB_ISWRETRN?072:0133);cadr=literal;
  if((entry==LM_IB_BANKCALL||entry==LM_IB_IBNKCALL||entry==LM_IB_POSTJUMP||entry==LM_IB_USPRCADR)&&literal>AGC_MASK)return false;
  if((entry==LM_IB_BANKCALL||entry==LM_IB_IBNKCALL||entry==LM_IB_POSTJUMP||entry==LM_IB_USPRCADR)&&q>=01400u&&q<02000u&&s->words[3]+(q&0377u)<0100u)return false;

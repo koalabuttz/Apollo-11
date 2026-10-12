@@ -15,6 +15,10 @@ translated, in both Luminary099 and Comanche055:
   (LM lines 2559-2569, CM lines 2557-2567, bank 40).
 - The bank-41 lead-ins NVSUBB (`TC NVSUB1`), LOADLV1 (`TC LOADLV`) and GOALMCYC
   (`TC ALMCYCLE`, the octal-only entry of the PUTDCSF2 scale-factor table).
+- DSPDCWD1, the per-digit loop of the decimal display (bank 40): its
+  `CAF FOUR` lead-in, the loop head and the point where DSPIN returns.
+- The fixed-fixed LODSAMPT, FLASHON and FLASHOFF, and the lamp test's
+  WAITLIST and NOVAC return points.
 
 Each native entry runs one source path from its entry to the first boundary
 and leaves the image exactly as the original program leaves it there (A/L/Q
@@ -35,6 +39,10 @@ debris, the stores, Z at the boundary, FB/BB, superbank, channels).
 | DSP2DEC +8 `TC DSPSIGN` | `lanec_pin_dsp2dec` | DSPSIGN |
 | DSP2DEC +9 `CAF R2D1`, END2DEC `TC DSPDCWD1` | `lanec_pin_dsp2dec` | DSPDCWD1, which returns through WDRET |
 | NVSUBB `TC NVSUB1`, LOADLV1 `TC LOADLV`, GOALMCYC `TC ALMCYCLE` | `lanec_pin_leadin` | NVSUB1, LOADLV, ALMCYCLE |
+| DSPDCWD1 -1 `CAF FOUR`; DSPDCWD1 `TS WDCNT`, `CAF BINCON`, `TC SHORTMP`, the relay code from RELTAB, `XCH CODE`/`XCH DSPCOUNT`/`TS COUNT`, `CCS A` | `lanec_pin_dspdcwd1` | DSPIN (Q = DSPDCWD1 +16); a negative count goes on as at +16, -0 to the next digit |
+| DSPDCWD1 +16 (DSPIN returns): `CCS WDCNT` and its four branches, `CS VD1`/`TS DSPCOUNT` | `lanec_pin_dspdcwd1` | the next digit (Q = DSPDCWD1 +18), or WDRET |
+| LODSAMPT `DCA TIME2`, `DXCH SAMPTIME`; FLASHON/FLASHOFF on channel 11 | `lanec_pin_small` | the caller in Q (switched or fixed-fixed) |
+| the lamp test's `TC WAITLIST` and `TC NOVAC` returns | `lanec_pin_small` | ENDOFJOB, TASKOVER |
 | dispatch by Z and bank | `lanec_pin_gaps_dispatch` | |
 
 `NOUNADD` may name any erasable pair from 010 up to 01376 or inside the
@@ -53,17 +61,32 @@ channel writes and are not claimed by this milestone. A NOUNCADR whose low
 nine bits name a channel above 077, or name channel 7 with other bits set,
 is out of scope.
 
+DSPDCWD1 runs SHORTMP (MPAC times BINCON) on a copy and refuses unless the
+product's top word is a digit 0-9 (or -0), as it is for every magnitude
+DSPDECWD leaves in MPAC; an A that overflowed into `TS WDCNT` is out of scope.
+SHORTMP's and DMPSUB2's words are part of the oracle's range and its
+`TC Q` runs through Q.
+
+`DCA` reads the pair's second word into L before the first into A, so a
+pair whose first word is L (NOUNADD 1) gives A the new L; a central register
+read through its address gives its low 15 bits, sign-extended. Verb 07
+follows both rules.
+
 ## Evidence
 
 Harness: `tools/lanec/` (see `docs/LANEC-EV-FRONT.md`).
 Hashes: `evidence/lanec-pin-gaps/SHA256.json`.
 
-- Independent assembly comparison: `lanec-pin-gaps-diff.json` (9,216 cases:
+- Independent assembly comparison: `lanec-pin-gaps-diff.json` (13,312 cases:
   both MIXBR branches, NOUNADD over unswitched, switched, MPAC-overlapping and
   editing-register pairs, both return points, every channel 0-077 with and
   without high NOUNCADR bits, DSP2DEC from its entry with and without an
-  overflowed Q and from each return, the two lead-ins, both missions) and `lanec-pin-gaps-oracle.crc`.
+  overflowed Q and from each return, the lead-ins, LODSAMPT/FLASHON/FLASHOFF
+  with fixed and erasable callers, the lamp-test returns, DSPDCWD1 from its
+  three points with every digit, every CCS branch and out-of-range A or MPAC,
+  both missions; 13,043 identical, 269 refused unchanged) and
+  `lanec-pin-gaps-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-pin-gaps sanitize-lanec-pin-gaps`
   (`lanec-pin-gaps-sanitize.txt`).
-- C64 execution results: `make vice-lanec-pin-gaps`, 225 frozen cases (every entry, both missions) on a
-  VICE PAL C64 (`lanec-pin-gaps-vice.txt`).
+- C64 execution results: `make vice-lanec-pin-gaps`, 325 frozen cases (every 41st case, so every entry in
+  both missions) on a VICE PAL C64 (`lanec-pin-gaps-vice.txt`).

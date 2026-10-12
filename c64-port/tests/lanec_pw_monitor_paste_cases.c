@@ -7,18 +7,6 @@
 #include "dsky_monitor_paste.h"
 #include "dsky_monitor_paste_cases.h"
 
-static enum lanec_status monitor_paste_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    p66_bias_io p;
-    unsigned e;
-    p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
-    for (e = DSKY_MONITOR_PASTE_BEGIN; e <= DSKY_MONITOR_PASTE_BLANKED; ++e)
-        if (dsky_monitor_paste(s, &p, (enum dsky_nv_mission)mission, (enum dsky_monitor_paste_stage)e) == P66_BIAS_OK) {
-            io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
-            return LANEC_OK;
-        }
-    return LANEC_OUT_OF_SCOPE;
-}
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -31,6 +19,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, monitor_paste_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_monitor_paste_run);
 }
-const lanec_suite lanec_suite_pw_monitor_paste = { "pw-monitor-paste", CASES, make, monitor_paste_run };
+const lanec_suite lanec_suite_pw_monitor_paste = { "pw-monitor-paste", CASES, make, lanec_pw_monitor_paste_run };

@@ -6,7 +6,9 @@
  * from which tools/lanec/routines.py builds the routine tables. An entry at
  * the interpreter (Z at NEWOPS, or at INTPRET with Q the first interpretive
  * word, which INTPRET makes LOC) is printed "LMI|CMI bank loc n": the
- * interpretive point keyed by LOC under BANKSET.
+ * interpretive point keyed by LOC under BANKSET. --exits adds to each entry
+ * line where the routine stopped, "fb z q", and the Q it started with (fb the
+ * bank then selected).
  * A refused case (LANEC_OUT_OF_SCOPE) must leave the image and I/O exactly as
  * they were; one that does not is printed with status 2, which no oracle row
  * matches. */
@@ -18,14 +20,15 @@ static apollo_overlay_state s, before;
 
 int main(int argc, char **argv)
 {
-    int entries = argc == 3 && !strcmp(argv[1], "--entries");
+    int exits = argc == 3 && !strcmp(argv[1], "--exits");
+    int entries = (argc == 3 && !strcmp(argv[1], "--entries")) || exits;
     const lanec_suite *suite = argc == 2 + entries ? lanec_find_suite(argv[1 + entries]) : 0;
     lanec_io io, io_before;
     lanec_meta meta;
     enum lanec_status status;
     uint32_t n;
     unsigned i, bank, z, interp;
-    if (!suite) { fprintf(stderr, "usage: native [--entries] SUITE\n"); return 2; }
+    if (!suite) { fprintf(stderr, "usage: native [--entries|--exits] SUITE\n"); return 2; }
     for (n = 0; n < suite->count; ++n) {
         memset(&meta, 0, sizeof meta);
         suite->make(n, &s, &io, &meta);
@@ -40,8 +43,14 @@ int main(int argc, char **argv)
         if (status != LANEC_OK && (memcmp(&s, &before, sizeof s) || memcmp(&io, &io_before, sizeof io)))
             status = (enum lanec_status)2;
         if (entries) {
-            if (status == LANEC_OK)
+            if (status == LANEC_OK && !exits)
                 printf("%s%s %o %o %lu\n", meta.mission == LANEC_CM ? "CM" : "LM", interp ? "I" : "", bank, z, (unsigned long)n);
+            else if (status == LANEC_OK) {
+                unsigned x = s.words[LANEC_Z] & 07777u;
+                printf("%s%s %o %o %lu %o %o %o %o\n", meta.mission == LANEC_CM ? "CM" : "LM", interp ? "I" : "", bank, z,
+                       (unsigned long)n, lanec_current_bank(&s, &io), x, s.words[LANEC_Q] & 07777u,
+                       before.words[LANEC_Q] & 07777u);
+            }
             continue;
         }
         printf("%lu", (unsigned long)n);

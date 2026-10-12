@@ -9,7 +9,6 @@
 #include "dsky_extended_dispatch.h"
 #include "dsky_extended_dispatch_cases.h"
 
-LANEC_PW_P66_RUN(extended_dispatch_run, dsky_extended_dispatch, cm_extended_dispatch)
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -20,6 +19,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     lanec_pw_settle(s);
     m->mission = k >= 4096u ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, extended_dispatch_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_extended_dispatch_run);
 }
-const lanec_suite lanec_suite_pw_extended_dispatch = { "pw-extended-dispatch", CASES, make, extended_dispatch_run };
+const lanec_suite lanec_suite_pw_extended_dispatch = { "pw-extended-dispatch", CASES, make, lanec_pw_extended_dispatch_run };

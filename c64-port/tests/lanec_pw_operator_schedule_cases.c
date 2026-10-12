@@ -8,15 +8,6 @@
 #include "dsky_operator_schedule.h"
 #include "dsky_operator_schedule_cases.h"
 
-static exec_address request_pair(const apollo_overlay_state *s)
-{
-    exec_address a;
-    a.location = s->words[01046]; a.bank = s->words[01047];
-    return a;
-}
-static enum dsky_operator_schedule_route route;
-LANEC_PW_CHARIN_RUN(operator_schedule_run, dsky_operator_schedule(s, &p, request_pair(s), &route),
-                    cm_operator_schedule(s, &c, &wrote, request_pair(s), &route))
 #define CASES 1024u
-LANEC_PW_CHARIN_MAKE(make, dsky_operator_schedule_input, operator_schedule_run, CASES)
-const lanec_suite lanec_suite_pw_operator_schedule = { "pw-operator-schedule", CASES, make, operator_schedule_run };
+LANEC_PW_CHARIN_MAKE(make, dsky_operator_schedule_input, lanec_pw_operator_schedule_run, CASES)
+const lanec_suite lanec_suite_pw_operator_schedule = { "pw-operator-schedule", CASES, make, lanec_pw_operator_schedule_run };

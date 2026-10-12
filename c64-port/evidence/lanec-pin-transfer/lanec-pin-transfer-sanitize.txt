@@ -1,0 +1,2 @@
+PASS: 1212 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 836 out-of-domain cases refused with the state unchanged
+PASS: 28 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 4 out-of-domain cases refused with the state unchanged

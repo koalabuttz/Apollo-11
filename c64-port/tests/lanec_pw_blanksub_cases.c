@@ -6,7 +6,6 @@
 #include "dsky_blanksub.h"
 #include "dsky_blanksub_cases.h"
 
-LANEC_PW_P66_RUN(blanksub_run, dsky_blanksub, cm_blanksub)
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -17,6 +16,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     lanec_pw_settle(s);
     m->mission = k >= 4096u ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, blanksub_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_blanksub_run);
 }
-const lanec_suite lanec_suite_pw_blanksub = { "pw-blanksub", CASES, make, blanksub_run };
+const lanec_suite lanec_suite_pw_blanksub = { "pw-blanksub", CASES, make, lanec_pw_blanksub_run };

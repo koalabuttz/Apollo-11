@@ -4,7 +4,6 @@
 #include "lanec_pw_a.h"
 #include "dsky_charin_alarm.h"
 #include "dsky_charin_alarm_cases.h"
-LANEC_PW_CHARIN_RUN(run, dsky_charin_alarm(s, &c), cm_charin_alarm(s, &x, &w))
 #define CASES 1024u
-LANEC_PW_CHARIN_MAKE(make, dsky_charin_alarm_input, 8192u, CASES, run)
-const lanec_suite lanec_suite_pw_charin_alarm = { "pw-charin-alarm", CASES, make, run };
+LANEC_PW_CHARIN_MAKE(make, dsky_charin_alarm_input, 8192u, CASES, lanec_pw_charin_alarm_run)
+const lanec_suite lanec_suite_pw_charin_alarm = { "pw-charin-alarm", CASES, make, lanec_pw_charin_alarm_run };

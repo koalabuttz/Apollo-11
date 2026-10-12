@@ -6,20 +6,6 @@
 #include "lanec_pw_f.h"
 #include "cm_formatter_cases.h"
 
-static enum lanec_status formatter_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    cm_native_io c;
-    uint16_t z = s->words[LANEC_Z];
-    enum cm_formatter_status st;
-    if (mission != LANEC_CM) return LANEC_OUT_OF_SCOPE;
-    lanec_pw_f_to_cm(&c, io);
-    if (z == 03213u) st = cm_two_digit(s, &c);
-    else if (z == 03133u || z == 03167u) st = cm_decimal_display(s, &c, (uint8_t)(z == 03133u));
-    else return LANEC_OUT_OF_SCOPE;
-    if (st != CM_FORMATTER_OK) return LANEC_OUT_OF_SCOPE;
-    lanec_pw_f_from_cm(io, &c);
-    return LANEC_OK;
-}
 #define CASES 1536u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -31,6 +17,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     lanec_pw_f_from_cm(io, &c);
     lanec_pw_settle(s);
     m->mission = LANEC_CM;
-    lanec_pw_exit_stop(m, s, io, formatter_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_cm_formatter_run);
 }
-const lanec_suite lanec_suite_pw_cm_formatter = { "pw-cm-formatter", CASES, make, formatter_run };
+const lanec_suite lanec_suite_pw_cm_formatter = { "pw-cm-formatter", CASES, make, lanec_pw_cm_formatter_run };

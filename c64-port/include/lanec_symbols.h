@@ -131,6 +131,21 @@
 #define LANEC_LM_GOALMCYC 02350u /* GOALMCYC F 41 */
 #define LANEC_LM_GOALMCYC_BANK 041u
 #define LANEC_LM_ALMCYCLE 04145u /* ALMCYCLE F fixed-fixed/unswitched */
+#define LANEC_LM_LODSAMPT 04400u /* LODSAMPT F fixed-fixed/unswitched */
+#define LANEC_LM_FLASHON 04427u /* FLASHON F fixed-fixed/unswitched */
+#define LANEC_LM_FLASHOFF 04433u /* FLASHOFF F fixed-fixed/unswitched */
+#define LANEC_LM_FULLDSP 03654u /* FULLDSP F 41 */
+#define LANEC_LM_FULLDSP_BANK 041u
+#define LANEC_LM_TSTLTS3 03667u /* TSTLTS3 F 41 */
+#define LANEC_LM_TSTLTS3_BANK 041u
+#define LANEC_LM_TIME2 024u /* TIME2 C fixed-fixed/unswitched */
+#define LANEC_LM_SAMPTIME 013u /* SAMPTIME C fixed-fixed/unswitched */
+#define LANEC_LM_DSPIN 03322u /* DSPIN F 40 */
+#define LANEC_LM_DSPIN_BANK 040u
+#define LANEC_LM_WDCNT 0137u /* WDCNT E fixed-fixed/unswitched */
+#define LANEC_LM_COUNT 0143u /* COUNT E fixed-fixed/unswitched */
+#define LANEC_LM_SHORTMP 07307u /* SHORTMP F fixed-fixed/unswitched */
+#define LANEC_LM_DMPSUB2 07126u /* DMPSUB2 F fixed-fixed/unswitched */
 #define LANEC_LM_CHKPRIO 02427u /* CHKPRIO F 10 */
 #define LANEC_LM_CHKPRIO_BANK 010u
 #define LANEC_LM_MARKPERF 02440u /* MARKPERF F 10 */
@@ -966,6 +981,21 @@
 #define LANEC_CM_GOALMCYC 02350u /* GOALMCYC F 41 */
 #define LANEC_CM_GOALMCYC_BANK 041u
 #define LANEC_CM_ALMCYCLE 04161u /* ALMCYCLE F fixed-fixed/unswitched */
+#define LANEC_CM_LODSAMPT 04414u /* LODSAMPT F fixed-fixed/unswitched */
+#define LANEC_CM_FLASHON 04443u /* FLASHON F fixed-fixed/unswitched */
+#define LANEC_CM_FLASHOFF 04447u /* FLASHOFF F fixed-fixed/unswitched */
+#define LANEC_CM_FULLDSP 03654u /* FULLDSP F 41 */
+#define LANEC_CM_FULLDSP_BANK 041u
+#define LANEC_CM_TSTLTS3 03667u /* TSTLTS3 F 41 */
+#define LANEC_CM_TSTLTS3_BANK 041u
+#define LANEC_CM_TIME2 024u /* TIME2 C fixed-fixed/unswitched */
+#define LANEC_CM_SAMPTIME 013u /* SAMPTIME C fixed-fixed/unswitched */
+#define LANEC_CM_DSPIN 03227u /* DSPIN F 40 */
+#define LANEC_CM_DSPIN_BANK 040u
+#define LANEC_CM_WDCNT 0137u /* WDCNT E fixed-fixed/unswitched */
+#define LANEC_CM_COUNT 0143u /* COUNT E fixed-fixed/unswitched */
+#define LANEC_CM_SHORTMP 07256u /* SHORTMP F fixed-fixed/unswitched */
+#define LANEC_CM_DMPSUB2 07075u /* DMPSUB2 F fixed-fixed/unswitched */
 #define LANEC_CM_CHKPRIO 02654u /* CHKPRIO F 10 */
 #define LANEC_CM_CHKPRIO_BANK 010u
 #define LANEC_CM_MARKPERF 02665u /* MARKPERF F 10 */

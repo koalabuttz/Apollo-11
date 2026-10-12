@@ -9,26 +9,6 @@
 #include "dsky_minutes_output.h"
 #include "dsky_minutes_output_cases.h"
 
-static enum lanec_status minutes_output_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    static const uint16_t pcs[2][6] = { { 03303, 03343, 03347, 03351, 03361, 03371 },
-                                        { 03216, 03256, 03262, 03264, 03274, 03304 } };
-    static apollo_overlay_state saved;
-    enum dsky_nv_mission m = mission == LANEC_LM ? DSKY_NV_LM : DSKY_NV_CM;
-    p66_bias_io p;
-    unsigned k;
-    p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
-    for (k = 0; k < 6u && s->words[LANEC_Z] != pcs[mission][k]; ++k) {}
-    if (k == 6u) return LANEC_OUT_OF_SCOPE;
-    saved = *s;
-    for (; k < 6u; ++k)
-        if (s->words[LANEC_Z] != pcs[mission][k] || dsky_minutes_output(s, &p, m, (enum dsky_minutes_stage)k) != P66_BIAS_OK) {
-            *s = saved;
-            return LANEC_OUT_OF_SCOPE;
-        }
-    io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
-    return LANEC_OK;
-}
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -47,6 +27,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, minutes_output_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_minutes_output_run);
 }
-const lanec_suite lanec_suite_pw_minutes_output = { "pw-minutes-output", CASES + 8u, make, minutes_output_run };
+const lanec_suite lanec_suite_pw_minutes_output = { "pw-minutes-output", CASES + 8u, make, lanec_pw_minutes_output_run };

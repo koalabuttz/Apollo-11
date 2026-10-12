@@ -7,14 +7,6 @@
 #include "dsky_decimal_raw.h"
 #include "dsky_decimal_raw_cases.h"
 
-static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    p66_bias_io p; enum lanec_status r; enum dsky_decimal_general_route route;
-    p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
-    r = dsky_decimal_raw(s, &p, lanec_pw_nv(mission), lanec_pw_rounded(s), &route) == P66_BIAS_OK ? LANEC_OK : LANEC_OUT_OF_SCOPE;
-    if (r == LANEC_OK) { io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled; }
-    return r;
-}
 #define CASES 2048u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -25,6 +17,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     lanec_pw_decimal_caller(s, mission);
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_decimal_raw_run);
 }
-const lanec_suite lanec_suite_pw_decimal_raw = { "pw-decimal-raw", CASES, make, run };
+const lanec_suite lanec_suite_pw_decimal_raw = { "pw-decimal-raw", CASES, make, lanec_pw_decimal_raw_run };

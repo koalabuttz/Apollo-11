@@ -5,8 +5,6 @@
 #include "dsky_response_recall.h"
 #include "dsky_response_recall_cases.h"
 
-LANEC_PW_LAMP_RUN(response_recall_run, dsky_response_recall(s, &p),
-                  cm_response_recall(s, &c, &wrote, &restart))
 #define CASES 1024u
-LANEC_PW_LAMP_MAKE(make, dsky_response_recall_input, response_recall_run, CASES)
-const lanec_suite lanec_suite_pw_response_recall = { "pw-response-recall", CASES, make, response_recall_run };
+LANEC_PW_LAMP_MAKE(make, dsky_response_recall_input, lanec_pw_response_recall_run, CASES)
+const lanec_suite lanec_suite_pw_response_recall = { "pw-response-recall", CASES, make, lanec_pw_response_recall_run };

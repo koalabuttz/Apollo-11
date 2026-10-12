@@ -5,7 +5,6 @@
 #include "dsky_mode_admit.h"
 #include "dsky_mode_admit_cases.h"
 
-LANEC_PW_ROUTE_RUN(mode_admit_run, dsky_mode_admit, cm_mode_admit, enum dsky_mode_admit_route, DSKY_MODE_ADMIT_CALLER)
 #define CASES 1024u
-LANEC_PW_MAKE(make, p66_bias_io, dsky_mode_admit_input, lanec_pw_copy_p66, mode_admit_run, 8192u, CASES)
-const lanec_suite lanec_suite_pw_mode_admit = { "pw-mode-admit", CASES, make, mode_admit_run };
+LANEC_PW_MAKE(make, p66_bias_io, dsky_mode_admit_input, lanec_pw_copy_p66, lanec_pw_mode_admit_run, 8192u, CASES)
+const lanec_suite lanec_suite_pw_mode_admit = { "pw-mode-admit", CASES, make, lanec_pw_mode_admit_run };

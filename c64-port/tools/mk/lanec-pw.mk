@@ -5,7 +5,10 @@
 # to LANEC_PW_SUITES.
 LANEC_SUITE_SRC += tests/lanec_pw.c tests/lanec_pw_blanksub_cases.c src/agc_multiword.c src/dsky_pinball.c \
   src/dsky_blank.c src/dsky_blanksub.c tests/p66_bias_cases.c tests/dsky_blanksub_cases.c
-LANEC_SUITE_HDR += tests/lanec_pw.h
+LANEC_SUITE_SRC += src/lanec_pw_runs.c src/lanec_pw_a_runs.c src/lanec_pw_b_runs.c src/lanec_pw_c_runs.c \
+  src/lanec_pw_e_runs.c src/lanec_pw_f_runs.c src/lanec_pw_g_runs.c
+LANEC_SUITE_HDR += tests/lanec_pw.h include/lanec_pw_runs.h include/lanec_pw_run.h include/lanec_pw_a_run.h \
+  include/lanec_pw_b_run.h include/lanec_pw_c_run.h include/lanec_pw_e_run.h include/lanec_pw_f_run.h include/lanec_pw_g_run.h
 LANEC_PW_SUITES += pw-blanksub
 .PHONY: test-lanec-pw sanitize-lanec-pw
 test: test-lanec-pw

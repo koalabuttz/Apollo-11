@@ -1,0 +1,8 @@
+{
+  "suite": "pin-transfer",
+  "cases": 2048,
+  "differing": 0,
+  "refused_unchanged": 836,
+  "native_sha256": "f8673fec8509180d2cbd4ee5b60ab526593f3912d5d7508bc8f807c0702d59fb",
+  "oracle_sha256": "115bc52b8996774d62355b2d0835192c5a453281ad3dad684af467c0d38a882c"
+}

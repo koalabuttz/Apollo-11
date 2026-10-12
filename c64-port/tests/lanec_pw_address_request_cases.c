@@ -5,8 +5,6 @@
 #include "lanec_pw_a.h"
 #include "dsky_address_request.h"
 #include "dsky_address_request_cases.h"
-static enum dsky_request_route route;
-LANEC_PW_CHARIN_RUN(run, dsky_address_request(s, &c, &route), cm_address_request(s, &x, &w, &route))
 #define CASES 1024u
-LANEC_PW_CHARIN_MAKE(make, dsky_address_request_input, 8192u, CASES, run)
-const lanec_suite lanec_suite_pw_address_request = { "pw-address-request", CASES, make, run };
+LANEC_PW_CHARIN_MAKE(make, dsky_address_request_input, 8192u, CASES, lanec_pw_address_request_run)
+const lanec_suite lanec_suite_pw_address_request = { "pw-address-request", CASES, make, lanec_pw_address_request_run };

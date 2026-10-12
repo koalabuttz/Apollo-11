@@ -37,6 +37,10 @@ enum lanec_mission { LANEC_LM = 0, LANEC_CM = 1 };
  * switchable fixed memory 02000-03777, or LANEC_ANY_BANK for erasable and
  * fixed-fixed addresses. */
 #define LANEC_ANY_BANK 0377u
+/* As a range's bank: erasable words the program runs (TC WDRET, ...) only
+ * while they hold a TC (not to themselves, and not RELINT, INHINT or EXTEND)
+ * or a TCF into fixed memory, a transfer taken in one instruction. */
+#define LANEC_TC_CELL 0376u
 typedef struct { uint16_t bank, lo, hi; } lanec_range;      /* lo..hi inclusive */
 typedef struct { uint16_t bank, address; } lanec_point;
 

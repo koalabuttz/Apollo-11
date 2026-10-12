@@ -4,8 +4,6 @@
 #include "lanec_pw_a.h"
 #include "dsky_charin_release.h"
 #include "dsky_charin_release_cases.h"
-static enum dsky_release_route route;
-LANEC_PW_CHARIN_RUN(run, dsky_charin_release(s, &c, &route), cm_charin_release(s, &x, &w, &route))
 #define CASES 1024u
-LANEC_PW_CHARIN_MAKE(make, dsky_charin_release_input, 8192u, CASES, run)
-const lanec_suite lanec_suite_pw_charin_release = { "pw-charin-release", CASES, make, run };
+LANEC_PW_CHARIN_MAKE(make, dsky_charin_release_input, 8192u, CASES, lanec_pw_charin_release_run)
+const lanec_suite lanec_suite_pw_charin_release = { "pw-charin-release", CASES, make, lanec_pw_charin_release_run };

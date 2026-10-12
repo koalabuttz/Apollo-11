@@ -10,6 +10,7 @@
  * the point (bank and address) where the native module stopped with the
  * same Q; the native module claims nothing past it. Test-only. */
 #include "lanec_suites.h"
+#include "lanec_pw_run.h"
 #include "p66_bias.h"
 #include "cm_native_image.h"
 
@@ -24,21 +25,4 @@ uint32_t lanec_pw_spread(uint32_t n, uint32_t cases, uint32_t domain);
 #define LANEC_PW_FIFTH_CHAR 8u
 void lanec_pw_fifth_char(apollo_overlay_state *, unsigned);
 
-/* LANEC_PW_P66_RUN(name, lm, cm): a lanec_run around an LM p66_bias_io
- * routine and its CM cm_native_io twin (either may be 0 for one mission). */
-#define LANEC_PW_P66_RUN(name, lm, cm)                                                             \
-    static enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
-        int ok = 0;                                                                                \
-        if (mission == LANEC_LM) {                                                                 \
-            p66_bias_io p; p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled; \
-            ok = lm(s, &p) == P66_BIAS_OK;                                                         \
-            if (ok) { io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled; } \
-        } else {                                                                                   \
-            cm_native_io c = {0}; c.superbank = io->superbank; c.interrupt_enabled = io->interrupt_enabled; \
-            ok = cm(s, &c) == EXEC_OK;                                                             \
-            if (ok) { io->superbank = c.superbank; io->interrupt_enabled = c.interrupt_enabled; }  \
-        }                                                                                          \
-        return ok ? LANEC_OK : LANEC_OUT_OF_SCOPE;                                                 \
-    }
 #endif

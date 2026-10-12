@@ -18,6 +18,11 @@ void RequestRadarData(agc_t *s) { (void)s; }
 void ShiftToDeda(agc_t *s, int data) { (void)s; (void)data; }
 void UnblockSocket(int n) { (void)n; }
 
+/* A case that never leaves its code within this many instructions is
+ * reported with status 3. Pinball's BLANKDSP clears up to
+ * 32767 display relays in one loop, about 300,000 instructions. */
+#define LANEC_ORACLE_STEPS 1000000u
+
 static agc_t rope[2], m;
 static apollo_overlay_state s;
 static lanec_io io;
@@ -33,8 +38,18 @@ static unsigned char traced[2][044][02000];
  * the inputs that reach a rare path. */
 static unsigned watch[16][2], watches;
 static uint32_t watch_case;
+/* LANEC_STEPS=CASE: print each instruction that case starts (Z, FB, Q, A, L)
+ * on stderr, the last 200 of a case that never leaves too. */
+static long steps_case = -1;
 
 static unsigned word(unsigned a) { return (unsigned)m.Erasable[a / 0400][a % 0400] & (a <= 2u ? 0177777u : 077777u); }
+
+/* The word at z is a TC (not RELINT, INHINT or EXTEND, and not back to z
+ * itself) or a TCF into fixed memory. */
+static int tc_cell(unsigned z, unsigned w)
+{
+    return (w <= 07777u && w != 3u && w != 4u && w != 6u && w != z) || (w >= 012000u && w <= 017777u);
+}
 
 static int outside(unsigned z)
 {
@@ -53,12 +68,14 @@ static int outside(unsigned z)
         if (meta.stop_list[i].address == z && (meta.stop_list[i].bank == LANEC_ANY_BANK || meta.stop_list[i].bank == fb)) return 1;
     for (i = 0; i < meta.ranges; ++i) {
         bank = meta.range[i].bank;
-        if (z >= meta.range[i].lo && z <= meta.range[i].hi && (bank == LANEC_ANY_BANK || (z >= 02000u && z < 04000u && bank == fb)))
+        if (z >= meta.range[i].lo && z <= meta.range[i].hi && (bank == LANEC_ANY_BANK || (z >= 02000u && z < 04000u && bank == fb) ||
+                                                               (bank == LANEC_TC_CELL && tc_cell(z, word(z)))))
             return 0;
     }
     for (i = 0; i < meta.range_count; ++i) {
         bank = meta.range_list[i].bank;
-        if (z >= meta.range_list[i].lo && z <= meta.range_list[i].hi && (bank == LANEC_ANY_BANK || (z >= 02000u && z < 04000u && bank == fb)))
+        if (z >= meta.range_list[i].lo && z <= meta.range_list[i].hi && (bank == LANEC_ANY_BANK || (z >= 02000u && z < 04000u && bank == fb) ||
+                                                                         (bank == LANEC_TC_CELL && tc_cell(z, word(z)))))
             return 0;
     }
     return 1;
@@ -134,6 +151,7 @@ int main(int argc, char **argv)
         return 2;
     }
     InhibitAlarms = 1;
+    if (getenv("LANEC_STEPS")) steps_case = atol(getenv("LANEC_STEPS"));
     if (getenv("LANEC_WATCH")) {
         const char *w = getenv("LANEC_WATCH");
         int used;
@@ -152,21 +170,26 @@ int main(int argc, char **argv)
             if (i != 1u && i != 2u && i != 7u) m.InputChannel[i] = (int16_t)io.channel[i];
         m.OutputChannel7 = m.InputChannel[7] = (int16_t)io.superbank;
         m.AllowInterrupt = io.interrupt_enabled;
-        for (steps = 0; steps < 40000u; ++steps) {
+        for (steps = 0; steps < LANEC_ORACLE_STEPS; ++steps) {
             if (steps && !m.PendFlag && !m.ExtraDelay && outside(word(RegZ))) break;
             if (!m.PendFlag && !m.ExtraDelay) trace(word(RegZ));
+            if ((long)n == steps_case && !m.PendFlag && !m.ExtraDelay && (steps < 5000u || steps > LANEC_ORACLE_STEPS - 200u))
+                fprintf(stderr, "%u Z %o FB %o Q %o A %o L %o\n", steps, word(RegZ), ((unsigned)m.Erasable[0][RegFB] >> 10) & 037u,
+                        word(2u), word(0u), word(1u));
             m.ScalerCounter = 0;
             drive = channel14_io() ? 0 : (unsigned)m.InputChannel[014] & 070000u;
             m.InputChannel[014] &= (int16_t)~drive;
             if (agc_engine(&m)) return 2;
             m.InputChannel[014] |= (int16_t)drive;
         }
-        if (steps == 40000u) { fprintf(stderr, "%s case %lu: no boundary, Z=%o\n", suite->name, (unsigned long)n, word(RegZ)); return 2; }
+        /* a case that never leaves its code: its row (status 3) matches no
+         * native result, so only a case the native routine refuses passes */
+        if (steps == LANEC_ORACLE_STEPS) fprintf(stderr, "%s case %lu: no boundary, Z=%o\n", suite->name, (unsigned long)n, word(RegZ));
         printf("%lu", (unsigned long)n);
         for (i = 0; i < APOLLO_SHARED_WORDS; ++i) printf(" %u", word(i));
         for (i = 0; i < LANEC_CHANNELS; ++i)
             printf(" %u", i == 1u || i == 2u || i == 7u ? 0u : (unsigned)m.InputChannel[i] & 077777u);
-        printf(" %u %u 0\n", (unsigned)m.OutputChannel7 & 0160u, (unsigned)m.AllowInterrupt);
+        printf(" %u %u %u\n", (unsigned)m.OutputChannel7 & 0160u, (unsigned)m.AllowInterrupt, steps == LANEC_ORACLE_STEPS ? 3u : 0u);
     }
     if (getenv("LANEC_TRACE")) write_trace(getenv("LANEC_TRACE"));
     return 0;

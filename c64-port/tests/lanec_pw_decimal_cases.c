@@ -6,7 +6,6 @@
 #include "dsky_decimal.h"
 #include "dsky_decimal_cases.h"
 
-LANEC_PW_G_P66_RUN(decimal_run, dsky_decimal_display(s, &p, (uint8_t)(s->words[LANEC_Z] == 03226u)))
 #define CASES 1024u
-LANEC_PW_G_MAKE(make, dsky_decimal_prepare, DSKY_DECIMAL_CASE_COUNT, CASES, decimal_run, io->channel[011])
-const lanec_suite lanec_suite_pw_decimal = { "pw-decimal", CASES, make, decimal_run };
+LANEC_PW_G_MAKE(make, dsky_decimal_prepare, DSKY_DECIMAL_CASE_COUNT, CASES, lanec_pw_decimal_run, io->channel[011])
+const lanec_suite lanec_suite_pw_decimal = { "pw-decimal", CASES, make, lanec_pw_decimal_run };

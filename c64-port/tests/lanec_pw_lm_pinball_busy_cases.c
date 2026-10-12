@@ -5,20 +5,6 @@
 #include "lanec_pw.h"
 #include "lm_busy_cases.h"
 
-static enum lanec_status busy_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    p66_bias_io p;
-    agc_word channel11;
-    enum lm_busy_status st;
-    if (mission != LANEC_LM) return LANEC_OUT_OF_SCOPE;
-    p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
-    channel11 = io->channel[011];
-    st = lm_pinball_busy(s, &p, &channel11);
-    if (st == LM_BUSY_OUT_OF_SCOPE) return LANEC_OUT_OF_SCOPE;
-    io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
-    io->channel[011] = channel11;
-    return LANEC_OK;
-}
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -31,6 +17,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->channel[011] = channel11;
     lanec_pw_settle(s);
     m->mission = LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, busy_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_lm_pinball_busy_run);
 }
-const lanec_suite lanec_suite_pw_lm_pinball_busy = { "pw-lm-pinball-busy", CASES, make, busy_run };
+const lanec_suite lanec_suite_pw_lm_pinball_busy = { "pw-lm-pinball-busy", CASES, make, lanec_pw_lm_pinball_busy_run };

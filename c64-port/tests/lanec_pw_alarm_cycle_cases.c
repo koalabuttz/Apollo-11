@@ -4,8 +4,6 @@
 #include "lanec_pw_a.h"
 #include "dsky_alarm_cycle.h"
 #include "dsky_alarm_cycle_cases.h"
-static enum dsky_alarm_cycle_route route;
-LANEC_PW_CHARIN_RUN(run, dsky_alarm_cycle(s, &c, &route), cm_alarm_cycle(s, &x, &w, &route))
 #define CASES 1024u
-LANEC_PW_CHARIN_MAKE(make, dsky_alarm_cycle_input, 8192u, CASES, run)
-const lanec_suite lanec_suite_pw_alarm_cycle = { "pw-alarm-cycle", CASES, make, run };
+LANEC_PW_CHARIN_MAKE(make, dsky_alarm_cycle_input, 8192u, CASES, lanec_pw_alarm_cycle_run)
+const lanec_suite lanec_suite_pw_alarm_cycle = { "pw-alarm-cycle", CASES, make, lanec_pw_alarm_cycle_run };

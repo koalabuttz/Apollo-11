@@ -7,20 +7,6 @@
 #include "dsky_nv_busy.h"
 #include "dsky_nv_busy_cases.h"
 
-static enum lanec_status nv_busy_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    p66_bias_io p;
-    agc_word channel11 = io->channel[011];
-    enum dsky_nv_busy_route route;
-    unsigned e;
-    p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
-    for (e = DSKY_NV_ENDIDLE; e <= DSKY_NV_BUSY_INNER; ++e)
-        if (dsky_nv_busy(s, &p, &channel11, (enum dsky_nv_mission)mission, (enum dsky_nv_busy_entry)e, &route) == P66_BIAS_OK) {
-            io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled; io->channel[011] = channel11;
-            return LANEC_OK;
-        }
-    return LANEC_OUT_OF_SCOPE;
-}
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -34,6 +20,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled; io->channel[011] = channel11;
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, nv_busy_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_nv_busy_run);
 }
-const lanec_suite lanec_suite_pw_nv_busy = { "pw-nv-busy", CASES, make, nv_busy_run };
+const lanec_suite lanec_suite_pw_nv_busy = { "pw-nv-busy", CASES, make, lanec_pw_nv_busy_run };

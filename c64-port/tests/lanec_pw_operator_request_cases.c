@@ -6,9 +6,6 @@
 #include "dsky_operator_request.h"
 #include "dsky_operator_request_cases.h"
 
-static enum dsky_request_control_route route;
-LANEC_PW_CHARIN_RUN(operator_request_run, dsky_operator_request(s, &p, &route),
-                    cm_operator_request(s, &c, &wrote, &route))
 #define CASES 1024u
-LANEC_PW_CHARIN_MAKE(make, dsky_operator_request_input, operator_request_run, CASES)
-const lanec_suite lanec_suite_pw_operator_request = { "pw-operator-request", CASES, make, operator_request_run };
+LANEC_PW_CHARIN_MAKE(make, dsky_operator_request_input, lanec_pw_operator_request_run, CASES)
+const lanec_suite lanec_suite_pw_operator_request = { "pw-operator-request", CASES, make, lanec_pw_operator_request_run };

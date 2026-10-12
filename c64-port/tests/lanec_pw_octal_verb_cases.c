@@ -13,22 +13,6 @@
 #include "dsky_octal_verb.h"
 #include "dsky_octal_verb_cases.h"
 
-static enum lanec_status octal_verb_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    enum dsky_octal_verb_route route;
-    enum dsky_nv_mission nv = mission == LANEC_CM ? DSKY_NV_CM : DSKY_NV_LM;
-    enum p66_bias_status st;
-    uint16_t z = s->words[LANEC_Z], ch = (uint16_t)(s->words[01017] & 0777u);
-    p66_bias_io p; p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
-    if (z == 02504u) {
-        if (ch > 077u) return LANEC_OUT_OF_SCOPE;
-        st = dsky_octal_verb_channel(s, &p, nv, io->channel[ch], &route);
-    } else if (z == 02422u) st = dsky_octal_verb_return(s, &p, nv, &route);
-    else st = dsky_octal_verb_begin(s, &p, nv, &route);
-    if (st != P66_BIAS_OK) return LANEC_OUT_OF_SCOPE;
-    io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
-    return LANEC_OK;
-}
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -46,6 +30,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     }
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
-    LANEC_PW_E_STOP(m, s, io, octal_verb_run);
+    LANEC_PW_E_STOP(m, s, io, lanec_pw_octal_verb_run);
 }
-const lanec_suite lanec_suite_pw_octal_verb = { "pw-octal-verb", CASES, make, octal_verb_run };
+const lanec_suite lanec_suite_pw_octal_verb = { "pw-octal-verb", CASES, make, lanec_pw_octal_verb_run };

@@ -6,7 +6,6 @@
 #include "dsky_lamp_lifecycle.h"
 #include "dsky_lamp_lifecycle_cases.h"
 
-LANEC_PW_LAMP_RUN(lamp_lifecycle_run, dsky_lamp_lifecycle, cm_lamp_lifecycle, enum dsky_lamp_lifecycle_route, DSKY_LAMP_LIFECYCLE_END)
 #define CASES 1024u
-LANEC_PW_MAKE(make, dsky_lamp_io, dsky_lamp_lifecycle_input, lanec_pw_lamp_out, lamp_lifecycle_run, 8192u, CASES)
-const lanec_suite lanec_suite_pw_lamp_lifecycle = { "pw-lamp-lifecycle", CASES, make, lamp_lifecycle_run };
+LANEC_PW_MAKE(make, dsky_lamp_io, dsky_lamp_lifecycle_input, lanec_pw_lamp_out, lanec_pw_lamp_lifecycle_run, 8192u, CASES)
+const lanec_suite lanec_suite_pw_lamp_lifecycle = { "pw-lamp-lifecycle", CASES, make, lanec_pw_lamp_lifecycle_run };

@@ -5,7 +5,6 @@
 #include "dsky_input_mode.h"
 #include "dsky_input_mode_cases.h"
 
-LANEC_PW_LAMP_RUN(input_mode_run, dsky_input_mode, cm_input_mode, enum dsky_input_mode_route)
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -17,6 +16,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->channel[011] = p.channel11; io->channel[012] = p.channel12; io->channel[013] = p.channel13;
     lanec_pw_settle(s);
     m->mission = k >= 4096u ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, input_mode_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_input_mode_run);
 }
-const lanec_suite lanec_suite_pw_input_mode = { "pw-input-mode", CASES, make, input_mode_run };
+const lanec_suite lanec_suite_pw_input_mode = { "pw-input-mode", CASES, make, lanec_pw_input_mode_run };

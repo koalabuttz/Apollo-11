@@ -5,17 +5,6 @@
 #include "lanec_pw_f.h"
 #include "cm_pinball_cases.h"
 
-static enum lanec_status cm_pinball_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    cm_native_io c;
-    uint16_t z = s->words[LANEC_Z];
-    enum dsky_pinball_entry e = z == 03227u ? DSKY_DSPIN : z == 03311u ? DSKY_11DSPIN : DSKY_2BLANK;
-    if (mission != LANEC_CM) return LANEC_OUT_OF_SCOPE;
-    lanec_pw_f_to_cm(&c, io);
-    if (cm_pinball_write(s, &c, e) != CM_PINBALL_OK) return LANEC_OUT_OF_SCOPE;
-    lanec_pw_f_from_cm(io, &c);
-    return LANEC_OK;
-}
 #define CASES 1024u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -27,6 +16,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     lanec_pw_f_from_cm(io, &c);
     lanec_pw_settle(s);
     m->mission = LANEC_CM;
-    lanec_pw_exit_stop(m, s, io, cm_pinball_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_cm_pinball_run);
 }
-const lanec_suite lanec_suite_pw_cm_pinball = { "pw-cm-pinball", CASES, make, cm_pinball_run };
+const lanec_suite lanec_suite_pw_cm_pinball = { "pw-cm-pinball", CASES, make, lanec_pw_cm_pinball_run };

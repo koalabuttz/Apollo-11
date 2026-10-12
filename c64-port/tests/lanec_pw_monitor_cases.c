@@ -8,21 +8,6 @@
 #include "dsky_monitor.h"
 #include "dsky_monitor_cases.h"
 
-static enum lanec_status monitor_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    dsky_charin_io c;
-    enum dsky_monitor_route route;
-    unsigned e;
-    c.control.superbank = io->superbank; c.control.interrupt_enabled = io->interrupt_enabled;
-    c.channel11 = io->channel[011]; c.wrote_channel11 = 0;
-    for (e = DSKY_MONITOR_SETUP; e <= DSKY_MONITOR_BUSY; ++e)
-        if (dsky_monitor(s, &c, (enum dsky_nv_mission)mission, (enum dsky_monitor_stage)e, &route) == P66_BIAS_OK) {
-            io->superbank = c.control.superbank; io->interrupt_enabled = c.control.interrupt_enabled;
-            io->channel[011] = c.channel11;
-            return LANEC_OK;
-        }
-    return LANEC_OUT_OF_SCOPE;
-}
 #define CASES 2048u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -36,6 +21,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->channel[011] = c.channel11;
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, monitor_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_monitor_run);
 }
-const lanec_suite lanec_suite_pw_monitor = { "pw-monitor", CASES, make, monitor_run };
+const lanec_suite lanec_suite_pw_monitor = { "pw-monitor", CASES, make, lanec_pw_monitor_run };

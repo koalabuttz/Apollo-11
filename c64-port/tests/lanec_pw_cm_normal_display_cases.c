@@ -4,12 +4,11 @@
  * for generator numbers 0-511 (N40, M/SOUT included), 0-25 for 512-639
  * (N85). Domain: 512 x 30 + 128 x 26 = 18688 (number, route) pairs; each case
  * runs its route from the state the native routes before it leave (the
- * module's own snapshot chain). make() records the route for run(). */
+ * module's own snapshot chain). run() tries each route
+ * (LANEC_PW_F_CM_STEPS). */
 #include "lanec_pw_f.h"
 #include "cm_normal_display_cases.h"
 
-static uint8_t route;
-LANEC_PW_F_CM_RUN(normal_run, cm_normal_display_step(s, &c, route))
 #define CASES 2048u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -22,10 +21,9 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     cm_normal_display_input(s, &c, (uint16_t)number);
     for (p = 0; p < last; ++p)
         if (!cm_normal_display_step(s, &c, p)) break;
-    route = p;
     lanec_pw_f_from_cm(io, &c);
     lanec_pw_settle(s);
     m->mission = LANEC_CM;
-    lanec_pw_exit_stop(m, s, io, normal_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_cm_normal_display_run);
 }
-const lanec_suite lanec_suite_pw_cm_normal_display = { "pw-cm-normal-display", CASES, make, normal_run };
+const lanec_suite lanec_suite_pw_cm_normal_display = { "pw-cm-normal-display", CASES, make, lanec_pw_cm_normal_display_run };

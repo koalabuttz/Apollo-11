@@ -3,14 +3,18 @@
  * Luminary099 and Comanche055. See docs/LANEC-PIN-GAPS.md. */
 #include "lanec_pin_gaps.h"
 #include "lanec_symbols.h"
+#include "lanec_ev_internal.h"
+#include "agc_multiword.h"
 
-typedef struct { uint16_t dspdpdec, dspalarm, tpagree, dsp2dec, chanload, loadlv, dspin11, dspsign, dspdcwd1, nvsub1, almcycle; } places;
+typedef struct { uint16_t dspdpdec, dspalarm, tpagree, dsp2dec, chanload, loadlv, dspin11, dspsign, dspdcwd1, nvsub1, almcycle, lodsampt, flashon, flashoff, dspin; } places;
 static const places lm = { LANEC_LM_DSPDPDEC, LANEC_LM_DSPALARM, LANEC_LM_TPAGREE, LANEC_LM_DSP2DEC,
                            LANEC_LM_CHANLOAD, LANEC_LM_LOADLV, LANEC_LM_11DSPIN, LANEC_LM_DSPSIGN,
-                           LANEC_LM_DSPDCWD1, LANEC_LM_NVSUB1, LANEC_LM_ALMCYCLE };
+                           LANEC_LM_DSPDCWD1, LANEC_LM_NVSUB1, LANEC_LM_ALMCYCLE,
+                           LANEC_LM_LODSAMPT, LANEC_LM_FLASHON, LANEC_LM_FLASHOFF, LANEC_LM_DSPIN };
 static const places cm = { LANEC_CM_DSPDPDEC, LANEC_CM_DSPALARM, LANEC_CM_TPAGREE, LANEC_CM_DSP2DEC,
                            LANEC_CM_CHANLOAD, LANEC_CM_LOADLV, LANEC_CM_11DSPIN, LANEC_CM_DSPSIGN,
-                           LANEC_CM_DSPDCWD1, LANEC_CM_NVSUB1, LANEC_CM_ALMCYCLE };
+                           LANEC_CM_DSPDCWD1, LANEC_CM_NVSUB1, LANEC_CM_ALMCYCLE,
+                           LANEC_CM_LODSAMPT, LANEC_CM_FLASHON, LANEC_CM_FLASHOFF, LANEC_CM_DSPIN };
 typedef char same_erasable[(LANEC_LM_MIXBR == LANEC_CM_MIXBR && LANEC_LM_NOUNADD == LANEC_CM_NOUNADD &&
     LANEC_LM_NOUNCADR == LANEC_CM_NOUNCADR && LANEC_LM_DSPCOUNT == LANEC_CM_DSPCOUNT &&
     LANEC_LM_ENTEXIT == LANEC_CM_ENTEXIT && LANEC_LM_MPAC == LANEC_CM_MPAC &&
@@ -19,11 +23,16 @@ typedef char same_erasable[(LANEC_LM_MIXBR == LANEC_CM_MIXBR && LANEC_LM_NOUNADD
     LANEC_LM_ENDDPDEC == LANEC_LM_DSPDPDEC + 14u && LANEC_CM_ENDDPDEC == LANEC_CM_DSPDPDEC + 14u &&
     LANEC_LM_END2DEC == LANEC_LM_DSP2DEC + 10u && LANEC_CM_END2DEC == LANEC_CM_DSP2DEC + 10u &&
     LANEC_LM_WDRET == LANEC_CM_WDRET && LANEC_LM_CODE == LANEC_CM_CODE &&
+    LANEC_LM_WDCNT == LANEC_CM_WDCNT && LANEC_LM_COUNT == LANEC_CM_COUNT &&
+    LANEC_LM_DSPDCWD1_BANK == 040u && LANEC_CM_DSPDCWD1_BANK == 040u && LANEC_LM_DSPIN_BANK == 040u && LANEC_CM_DSPIN_BANK == 040u &&
     LANEC_LM_DSP2DEC_BANK == 040u && LANEC_CM_DSP2DEC_BANK == 040u &&
     LANEC_LM_NVSUBB_BANK == 041u && LANEC_CM_NVSUBB_BANK == 041u &&
     LANEC_LM_LOADLV1 == LANEC_LM_NVSUBB + 1u && LANEC_CM_LOADLV1 == LANEC_CM_NVSUBB + 1u &&
     LANEC_LM_NVSUBB == LANEC_CM_NVSUBB && LANEC_LM_GOALMCYC == LANEC_CM_GOALMCYC &&
-    LANEC_LM_GOALMCYC_BANK == 041u && LANEC_CM_GOALMCYC_BANK == 041u) ? 1 : -1];
+    LANEC_LM_GOALMCYC_BANK == 041u && LANEC_CM_GOALMCYC_BANK == 041u &&
+    LANEC_LM_FULLDSP == LANEC_CM_FULLDSP && LANEC_LM_TSTLTS3 == LANEC_CM_TSTLTS3 &&
+    LANEC_LM_FULLDSP_BANK == 041u && LANEC_CM_FULLDSP_BANK == 041u && LANEC_LM_TIME2 == LANEC_CM_TIME2 &&
+    LANEC_LM_SAMPTIME == LANEC_CM_SAMPTIME) ? 1 : -1];
 #define MIXBR LANEC_LM_MIXBR
 #define NOUNADD LANEC_LM_NOUNADD
 #define NOUNCADR LANEC_LM_NOUNCADR
@@ -32,8 +41,18 @@ typedef char same_erasable[(LANEC_LM_MIXBR == LANEC_CM_MIXBR && LANEC_LM_NOUNADD
 #define MPAC LANEC_LM_MPAC
 #define WDRET LANEC_LM_WDRET
 #define CODE LANEC_LM_CODE
+#define WDCNT LANEC_LM_WDCNT
+#define COUNT LANEC_LM_COUNT
+#define MPTEMP 0135u
+#define VD1 023u
 #define NVSUBB LANEC_LM_NVSUBB
 #define GOALMCYC LANEC_LM_GOALMCYC
+#define WAITEND (LANEC_LM_FULLDSP - 1u)     /* TC ENDOFJOB after TSTLTS1's WAITLIST */
+#define NOVACEND (LANEC_LM_TSTLTS3 - 1u)    /* TC TASKOVER after TSTLTS2's NOVAC */
+#define TIME2 LANEC_LM_TIME2
+#define SAMPTIME LANEC_LM_SAMPTIME
+#define BIT6 040u
+#define DSALMOUT 011u
 #define R2D1 011u
 #define R1D1 016u
 #define SEVEN 7u
@@ -62,11 +81,13 @@ enum lanec_status lanec_pin_dspdpdec(apollo_overlay_state *s, lanec_io *io, enum
     }
     lanec_tc(s, (uint16_t)(x + 2u), (uint16_t)(x + 2u));    /* normal noun: TC +0 indexed to TC +2 */
     lanec_tc(s, (uint16_t)(x + 4u), (uint16_t)(x + 3u));
-    hi = w[lanec_erasable(s, k)];                           /* DCA */
-    lo = w[lanec_erasable(s, (uint16_t)(k + 1u))];
+    lo = lanec_erasable(s, (uint16_t)(k + 1u));            /* DCA: L first */
+    lo = lanec_a16((uint16_t)(w[lo] & 077777u));           /* a register reads its low 15 bits */
+    hi = lanec_erasable(s, k);                              /* then A, which reads the new L */
+    hi = lanec_a16((uint16_t)((hi == 1u ? lo : w[hi]) & 077777u));
     lanec_rewrite(s, (uint16_t)(k + 1u)); lanec_rewrite(s, k);
-    old_hi = w[MPAC]; old_lo = w[MPAC + 1u];                /* DXCH MPAC */
-    w[MPAC] = hi; w[MPAC + 1u] = lo;
+    old_hi = w[MPAC]; old_lo = w[MPAC + 1u];                /* DXCH MPAC (A and L from a */
+    w[MPAC] = lanec_ev_corrected(hi); w[MPAC + 1u] = lanec_ev_corrected(lo);   /* 16-bit register store corrected) */
     w[LANEC_A] = lanec_a16(old_hi); w[LANEC_L] = lanec_a16(old_lo);
     w[DSPCOUNT] = R1D1;                                     /* CAF R1D1, TS DSPCOUNT */
     w[LANEC_A] = 0; w[MPAC + 2u] = 0;                       /* CAF ZERO, TS MPAC +2 */
@@ -121,6 +142,68 @@ enum lanec_status lanec_pin_dsp2dec(apollo_overlay_state *s, lanec_io *io, enum 
     }
 }
 
+/* SHORTMP (CAF BINCON first): MPAC's triple word times ten, A and L the
+ * high product, as the decimal display modules run it. w holds words 0-0156. */
+static void accumulate(agc_register_pair *r, uint16_t *w, uint16_t a)
+{
+    agc_dp d;
+    d.high = w[a]; d.low = w[a + 1u];
+    agc_double_add(r, &d);
+    w[a] = d.high; w[a + 1u] = d.low;
+}
+static void shortmp(uint16_t *w)
+{
+    agc_register_pair r;
+    agc_word minor = w[MPAC + 1u], major = w[MPAC];
+    w[MPTEMP] = 10u;
+    r = agc_multiply(10u, w[MPAC + 2u]); w[MPAC + 2u] = agc_correct(r.a); w[MPAC + 1u] = 0;
+    r = agc_multiply(agc_extend(minor), 10u); accumulate(&r, w, MPAC + 1u); w[MPAC] = agc_correct(r.a);
+    r = agc_multiply(agc_extend(major), 10u); accumulate(&r, w, MPAC);
+    w[LANEC_A] = r.a; w[LANEC_L] = r.l;
+}
+
+/* DSPDCWD1 -1 CAF FOUR, +0 TS WDCNT, CAF BINCON, TC SHORTMP, +3 TRACE1
+ * INDEX MPAC, CAF RELTAB, MASK LOW5, TS CODE, CAF ZERO, XCH MPAC +2,
+ * XCH MPAC +1, TS MPAC, XCH DSPCOUNT, +12 TRACE1S TS COUNT, CCS A,
+ * TS DSPCOUNT, +15 TC DSPIN, +16 CCS WDCNT, TC DSPDCWD1, CS VD1,
+ * TS DSPCOUNT, +20 TC WDRET. Entries: -1, +0, and +16 where DSPIN returns.
+ * MPAC after SHORTMP must index RELTAB's ten digits (or be -0). */
+enum lanec_status lanec_pin_dspdcwd1(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    static const uint16_t relay[10] = { 025u, 003u, 031u, 033u, 017u, 036u, 034u, 023u, 035u, 037u };
+    const places *p = at(m);
+    uint16_t *w = s->words, x = p->dspdcwd1, z = w[LANEC_Z], a, t[MPAC + 3u], i;
+    uint8_t skip;
+    if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 040u || (z != x - 1u && z != x && z != x + 16u))
+        return LANEC_OUT_OF_SCOPE;
+    if (z != x + 16u) {
+        a = z == x - 1u ? 4u : w[LANEC_A];                          /* CAF FOUR */
+        if (((a >> 15) ^ (a >> 14)) & 1u) return LANEC_OUT_OF_SCOPE;  /* TS WDCNT would skip */
+        for (i = 0; i < MPAC + 3u; ++i) t[i] = w[i];
+        shortmp(t);
+        if (t[MPAC] > 9u && t[MPAC] != 077777u) return LANEC_OUT_OF_SCOPE;
+        w[LANEC_A] = a; (void)lanec_ts(s, WDCNT);                   /* TS WDCNT */
+        w[MPTEMP] = t[MPTEMP]; w[MPAC] = t[MPAC]; w[MPAC + 1u] = t[MPAC + 1u]; w[MPAC + 2u] = t[MPAC + 2u];
+        w[LANEC_L] = t[LANEC_L];
+        w[CODE] = relay[t[MPAC] == 077777u ? 0u : t[MPAC]];          /* INDEX MPAC, CAF RELTAB, MASK LOW5, TS CODE */
+        a = w[MPAC + 2u]; w[MPAC + 2u] = 0;                            /* CAF ZERO, XCH MPAC +2 */
+        i = w[MPAC + 1u]; w[MPAC + 1u] = a;                            /* XCH MPAC +1 */
+        w[MPAC] = i;                                                   /* TS MPAC */
+        w[LANEC_A] = lanec_a16(w[DSPCOUNT]); w[DSPCOUNT] = i;          /* XCH DSPCOUNT */
+        (void)lanec_ts(s, COUNT);                                      /* TRACE1S TS COUNT */
+        skip = lanec_ccs_a(s);                                         /* CCS A */
+        if (skip == 0u) (void)lanec_ts(s, DSPCOUNT);
+        if (skip <= 1u) { lanec_tc(s, p->dspin, (uint16_t)(x + 16u)); return LANEC_OK; }
+        if (skip == 3u) { lanec_tc(s, x, (uint16_t)(x + 18u)); return LANEC_OK; }
+    }
+    skip = lanec_ccs(s, w[WDCNT]);                                     /* +16 CCS WDCNT */
+    if (skip == 0u) { lanec_tc(s, x, (uint16_t)(x + 18u)); return LANEC_OK; }
+    if (skip == 1u) w[LANEC_A] = (uint16_t)~lanec_a16(VD1);            /* CS VD1 */
+    if (skip <= 2u) (void)lanec_ts(s, DSPCOUNT);
+    lanec_tc(s, WDRET, (uint16_t)(x + 21u));
+    return LANEC_OK;
+}
+
 /* NVSUBB TC NVSUB1, LOADLV1 TC LOADLV and GOALMCYC TC ALMCYCLE (the
  * PUTDCSF2 table's octal-only entry), the bank-41 lead-ins (both missions). */
 enum lanec_status lanec_pin_leadin(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
@@ -133,6 +216,39 @@ enum lanec_status lanec_pin_leadin(apollo_overlay_state *s, lanec_io *io, enum l
     return LANEC_OK;
 }
 
+/* LODSAMPT (EXTEND, DCA TIME2, DXCH SAMPTIME, TC Q), FLASHON (CAF BIT6,
+ * EXTEND, WOR DSALMOUT, TC Q) and FLASHOFF (CS BIT6, EXTEND, WAND DSALMOUT,
+ * TC Q), the fixed-fixed subroutines other files call (TC Q runs the return
+ * address in Q as a TC, which leaves Q = 3); and the bank-41 words
+ * where WAITLIST and NOVAC return to the lamp test, TC ENDOFJOB and
+ * TC TASKOVER. */
+enum lanec_status lanec_pin_small(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    const places *p = at(m);
+    uint16_t *w = s->words, z = w[LANEC_Z];
+    if (!lanec_registers_valid(s)) return LANEC_OUT_OF_SCOPE;
+    if ((z == p->lodsampt || z == p->flashon || z == p->flashoff) && (w[LANEC_Q] < 02000u || w[LANEC_Q] > 07777u))
+        return LANEC_OUT_OF_SCOPE;    /* TC Q runs Q as a TC to fixed memory */
+    if (z == p->lodsampt) {
+        w[LANEC_A] = lanec_ev_sx(w[TIME2]); w[LANEC_L] = lanec_ev_sx(w[TIME2 + 1u]);
+        lanec_ev_dxch(s, SAMPTIME);
+        lanec_tc(s, w[LANEC_Q], 3u);
+        return LANEC_OK;
+    }
+    if (z == p->flashon || z == p->flashoff) {
+        if (z == p->flashon) { w[LANEC_A] = BIT6; lanec_ev_wor(s, io, DSALMOUT); }
+        else { w[LANEC_A] = (uint16_t)~BIT6; lanec_ev_wand(s, io, DSALMOUT); }
+        lanec_tc(s, w[LANEC_Q], 3u);
+        return LANEC_OK;
+    }
+    if ((z == WAITEND || z == NOVACEND) && lanec_current_bank(s, io) == 041u) {
+        lanec_tc(s, z == WAITEND ? (m == LANEC_LM ? LANEC_LM_ENDOFJOB : LANEC_CM_ENDOFJOB)
+                                 : (m == LANEC_LM ? LANEC_LM_TASKOVER : LANEC_CM_TASKOVER), (uint16_t)(z + 1u));
+        return LANEC_OK;
+    }
+    return LANEC_OUT_OF_SCOPE;
+}
+
 enum lanec_status lanec_pin_gaps_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
     const places *p = at(m);
@@ -140,5 +256,9 @@ enum lanec_status lanec_pin_gaps_dispatch(apollo_overlay_state *s, lanec_io *io,
     if (z == p->chanload && lanec_current_bank(s, io) == 041u) return lanec_pin_chanload(s, io, m);
     if ((z == NVSUBB || z == NVSUBB + 1u || z == GOALMCYC) && lanec_current_bank(s, io) == 041u) return lanec_pin_leadin(s, io, m);
     if (z >= p->dsp2dec && z <= p->dsp2dec + 10u && lanec_current_bank(s, io) == 040u) return lanec_pin_dsp2dec(s, io, m);
+    if ((z == p->dspdcwd1 - 1u || z == p->dspdcwd1 || z == p->dspdcwd1 + 16u) && lanec_current_bank(s, io) == 040u)
+        return lanec_pin_dspdcwd1(s, io, m);
+    if (z == p->lodsampt || z == p->flashon || z == p->flashoff || ((z == WAITEND || z == NOVACEND) && lanec_current_bank(s, io) == 041u))
+        return lanec_pin_small(s, io, m);
     return lanec_pin_dspdpdec(s, io, m);
 }

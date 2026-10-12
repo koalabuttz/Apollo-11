@@ -8,18 +8,6 @@
 #include "dsky_nv_continuation.h"
 #include "dsky_nv_continuation_cases.h"
 
-static enum lanec_status nv_continuation_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
-    p66_bias_io p;
-    unsigned e;
-    p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
-    for (e = DSKY_NV_COMMON; e <= DSKY_NV_PAS0; ++e)
-        if (dsky_nv_continue(s, &p, (enum dsky_nv_mission)mission, (enum dsky_nv_continuation_entry)e) == P66_BIAS_OK) {
-            io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
-            return LANEC_OK;
-        }
-    return LANEC_OUT_OF_SCOPE;
-}
 #define CASES 2048u
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
@@ -32,6 +20,6 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
-    lanec_pw_exit_stop(m, s, io, nv_continuation_run);
+    lanec_pw_exit_stop(m, s, io, lanec_pw_nv_continuation_run);
 }
-const lanec_suite lanec_suite_pw_nv_continuation = { "pw-nv-continuation", CASES, make, nv_continuation_run };
+const lanec_suite lanec_suite_pw_nv_continuation = { "pw-nv-continuation", CASES, make, lanec_pw_nv_continuation_run };

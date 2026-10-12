@@ -7,22 +7,8 @@
  * them between it and a lanec_io. Test-only. */
 #include <string.h>
 #include "lanec_pw.h"
+#include "lanec_pw_f_run.h"
 
-static inline void lanec_pw_f_from_cm(lanec_io *io, const cm_native_io *c)
-{
-    io->channel[011] = c->channel11; io->channel[012] = c->channel12;
-    io->channel[013] = c->channel13; io->channel[014] = c->channel14;
-    io->channel[015] = c->main_keys; io->channel[016] = c->navigation_keys;
-    io->superbank = c->superbank; io->interrupt_enabled = c->interrupt_enabled;
-}
-static inline void lanec_pw_f_to_cm(cm_native_io *c, const lanec_io *io)
-{
-    memset(c, 0, sizeof *c);
-    c->channel11 = io->channel[011]; c->channel12 = io->channel[012];
-    c->channel13 = io->channel[013]; c->channel14 = io->channel[014];
-    c->main_keys = io->channel[015]; c->navigation_keys = io->channel[016];
-    c->superbank = io->superbank; c->interrupt_enabled = io->interrupt_enabled;
-}
 /* The oracle stops the first time Z reaches the caller the native routine
  * returned to. The DSPIN/DSPDECWD family itself executes these CM addresses
  * before it returns: the return cells DSEXIT (0114), WDRET (0115) and
@@ -65,16 +51,4 @@ static inline void lanec_pw_f_exit_stop(lanec_meta *m, const apollo_overlay_stat
         if (!seen) { m->loc[m->locs].bank = sb[i]; m->loc[m->locs].lo = 02000u; m->loc[m->locs++].hi = 03777u; }
     }
 }
-/* A lanec_run around one CM call: `call` is an expression on `s` and `c`
- * that is nonzero when the native routine reached its boundary. */
-#define LANEC_PW_F_CM_RUN(name, call)                                                              \
-    static enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
-        cm_native_io c;                                                                            \
-        if (mission != LANEC_CM) return LANEC_OUT_OF_SCOPE;                                        \
-        lanec_pw_f_to_cm(&c, io);                                                                  \
-        if (!(call)) return LANEC_OUT_OF_SCOPE;                                                    \
-        lanec_pw_f_from_cm(io, &c);                                                                \
-        return LANEC_OK;                                                                           \
-    }
 #endif

@@ -4,7 +4,6 @@
 #include "lanec_pw_a.h"
 #include "dsky_charin_sign.h"
 #include "dsky_charin_sign_cases.h"
-LANEC_PW_CHARIN_RUN(run, dsky_charin_sign(s, &c), cm_charin_sign(s, &x, &w))
 #define CASES 1024u
-LANEC_PW_CHARIN_MAKE(make, dsky_charin_sign_input, 8192u, CASES, run)
-const lanec_suite lanec_suite_pw_charin_sign = { "pw-charin-sign", CASES, make, run };
+LANEC_PW_CHARIN_MAKE(make, dsky_charin_sign_input, 8192u, CASES, lanec_pw_charin_sign_run)
+const lanec_suite lanec_suite_pw_charin_sign = { "pw-charin-sign", CASES, make, lanec_pw_charin_sign_run };

@@ -10,59 +10,7 @@
  * its result, like the wrote-channel flags, is not compared. Results are
  * copied back only when the module accepts the case. Test-only. */
 #include "lanec_pw.h"
-
-#define LANEC_PW_LAMP_RUN(name, LM_CALL, CM_CALL)                                                  \
-    static enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
-        int ok;                                                                                    \
-        if (mission == LANEC_LM) {                                                                 \
-            dsky_lamp_io p;                                                                        \
-            p.control.superbank = io->superbank; p.control.interrupt_enabled = io->interrupt_enabled; \
-            p.channel11 = io->channel[011]; p.channel12 = io->channel[012]; p.channel13 = io->channel[013]; \
-            p.wrote_channels = 0; p.restart_light = 0;                                             \
-            ok = (LM_CALL) == P66_BIAS_OK;                                                         \
-            if (ok) {                                                                              \
-                io->superbank = p.control.superbank; io->interrupt_enabled = p.control.interrupt_enabled; \
-                io->channel[011] = p.channel11; io->channel[012] = p.channel12; io->channel[013] = p.channel13; \
-            }                                                                                      \
-        } else {                                                                                   \
-            cm_native_io c = {0}; uint16_t wrote = 0, restart = 0;                                 \
-            c.superbank = io->superbank; c.interrupt_enabled = io->interrupt_enabled;             \
-            c.channel11 = io->channel[011]; c.channel12 = io->channel[012]; c.channel13 = io->channel[013]; \
-            ok = (CM_CALL) == EXEC_OK;                                                             \
-            if (ok) {                                                                              \
-                io->superbank = c.superbank; io->interrupt_enabled = c.interrupt_enabled;          \
-                io->channel[011] = c.channel11; io->channel[012] = c.channel12; io->channel[013] = c.channel13; \
-            }                                                                                      \
-        }                                                                                          \
-        return ok ? LANEC_OK : LANEC_OUT_OF_SCOPE;                                                 \
-    }
-
-#define LANEC_PW_CHARIN_RUN(name, LM_CALL, CM_CALL)                                                \
-    static enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
-        int ok;                                                                                    \
-        if (mission == LANEC_LM) {                                                                 \
-            dsky_charin_io p;                                                                      \
-            p.control.superbank = io->superbank; p.control.interrupt_enabled = io->interrupt_enabled; \
-            p.channel11 = io->channel[011]; p.wrote_channel11 = 0;                                 \
-            ok = (LM_CALL) == P66_BIAS_OK;                                                         \
-            if (ok) {                                                                              \
-                io->superbank = p.control.superbank; io->interrupt_enabled = p.control.interrupt_enabled; \
-                io->channel[011] = p.channel11;                                                    \
-            }                                                                                      \
-        } else {                                                                                   \
-            cm_native_io c = {0}; uint16_t wrote = 0;                                              \
-            c.superbank = io->superbank; c.interrupt_enabled = io->interrupt_enabled;             \
-            c.channel11 = io->channel[011];                                                        \
-            ok = (CM_CALL) == EXEC_OK;                                                             \
-            if (ok) {                                                                              \
-                io->superbank = c.superbank; io->interrupt_enabled = c.interrupt_enabled;          \
-                io->channel[011] = c.channel11;                                                    \
-            }                                                                                      \
-        }                                                                                          \
-        return ok ? LANEC_OK : LANEC_OUT_OF_SCOPE;                                                 \
-    }
+#include "lanec_pw_e_run.h"
 
 /* lanec_pw_exit_stop for suites whose run refuses some generated cases: a
  * refused case has no stop, so the oracle is given no range either and

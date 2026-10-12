@@ -1,0 +1,1 @@
+PASS: VICE PAL lanec-pin-transfer.prg: 32 checks, 0 failures
