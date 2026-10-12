@@ -116,8 +116,9 @@ outside `16,2213`-`3640`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
     (`tests/lm_p_axis_c64_vectors.h`, 128 cases). It runs every host case with
     branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
-    until every entry slot, outcome and branch the host cases take is taken
-    (40 cases), then spreads the rest with a stride of 97. The per-branch
+    until every entry slot, outcome, counted branch and basic block
+    (`-fsanitize-coverage=trace-pc`) the host cases take is taken
+    (43 cases), then spreads the rest with a stride of 97. The per-branch
     host and C64 counts are in
     `evidence/lm-p-axis/lm-p-axis-c64-cover.json`.
   - The proof (`evidence/lm-p-axis/lm-p-axis-proof.json`) counts where the
@@ -128,7 +129,7 @@ outside `16,2213`-`3640`.
   reachable branch to be taken. They also check the refusals, the IBNKCALL
   CADRs against the compiled interbank table, and `lm_p_axis_data`.
 - `make vice-lm-p-axis` runs the 128 C64 rows in VICE: every entry, every
-  outcome and every branch the host cases take. The VICE log records the
+  outcome, branch and basic block the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches are documented in the host test:

@@ -191,9 +191,12 @@ static void tcq(agc_image *s){ai_tc(s,QREG+1u);}
  * limited to +-POSMAX). */
 static void rot_touv_body(agc_image *s){static const agc_word limits[3]={037777u,057777u,040000u}; /* LIMITS -1 .. +1 */
  ai_lxch(s,ROTEMP2);ai_mp(s,COEFFQ);ai_xch(s,ROTEMP2);ai_mp(s,COEFFR);(void)ai_ts(s,LREG);ai_ad(s,ROTEMP2);
- if(ai_ts(s,ROTEMP1)){LM_QR_PATH(0);ai_csf(s,limits[W[0u]==1u?2:0]);(void)ai_ts(s,ROTEMP1);}
+ if(ai_ts(s,ROTEMP1)){LM_QR_PATH(0);
+  if(W[0u]==1u){LM_QR_PATH(165);ai_csf(s,limits[2]);}else{LM_QR_PATH(166);ai_csf(s,limits[0]);}
+  (void)ai_ts(s,ROTEMP1);}
  ai_cs(s,ROTEMP2);ai_ad(s,LREG);
- if(ai_ts(s,ZEROREG)){LM_QR_PATH(1);ai_csf(s,limits[W[0u]==1u?2:0]);}
+ if(ai_ts(s,ZEROREG)){LM_QR_PATH(1);
+  if(W[0u]==1u){LM_QR_PATH(167);ai_csf(s,limits[2]);}else{LM_QR_PATH(168);ai_csf(s,limits[0]);}}
  ai_lxch(s,ROTEMP1);tcq(s);
 }
 /* ROT-TOUV, entered by TC from ret - 1. */
@@ -606,7 +609,7 @@ looper: /* LOOPER: CCS AXISCTR; TC RETJADR; TCF CLOSEOUT (the negative and
  case MINADR:LM_QR_PATH(149);ai_tc(s,RETJADR+1u);goto minrtn;
  case HANDADR:LM_QR_PATH(150);ai_tc(s,RETJADR+1u);goto backhand;
  case TJLAWADR:LM_QR_PATH(151);ai_tc(s,RETJADR+1u);goto tjlaw3;
- default:LM_QR_PATH(152);W[5]=LM_QR_RETJADR;return EXEC_OK;
+ default:LM_QR_PATH(152);return EXEC_OUT_OF_SCOPE; /* unreachable: refused at the entry */
  }
 doskip: /* DOSKIP: CS ABSTJ; AD +TJMINT6; EXTEND; BZMF NOTMIN; ADS ABSTJ;
   * INDEX AXISCTR; CCS TJU; CA +TJMINT6; TCF +2; CS +TJMINT6;
@@ -668,11 +671,31 @@ closeout: /* CLOSEOUT: CA ADRRUPT; TC MAKERUPT. MAKERUPT: EXTEND;
 }
 
 static int skips(const agc_image *s){agc_word u=ai_word(s,SKIPU),v=ai_word(s,SKIPV);return (u==0u||u==4u)&&(v==0u||v==4u);}
-static enum exec_status flow_entry(agc_image *s,void *v,unsigned at){lm_flight_io *io=v;
+static int rjok(const agc_image *s){agc_word w=ai_word(s,RETJADR);return w==MINADR||w==HANDADR||w==TJLAWADR;}
+/* Refused with the image unchanged: values no producer stores, where the
+ * original would read them before storing them. CALLQERR, ALARMRET, MINRET,
+ * ENTERUVRET and TIMEGMBLRET store AXISCTR, NUMBERT and RETJADR (MINRTN,
+ * MIMRET, BACKHAND, TJLAW, TSNUMBRT) before reading them, so P-AXIS's
+ * PURGENCY AXISCTR -1, GTS's SAVESR in AXISCTR and PJETSLEC's NUMBERT 5 or
+ * 6 are accepted there (SENSEGET's SELCTSUB, which indexes TJU by AXISCTR
+ * on its alarm, never alarms: TYPEPOLY 0 and 1 share no jet with ALLJETS
+ * 4 or 5). The loop's own returns read them as the loop left them. */
+static enum exec_status flow_entry(agc_image *s,void *v,unsigned at){lm_flight_io *io=v;agc_word st;
  if(!entry(s,v)||!skips(s))return EXEC_OUT_OF_SCOPE;
- if(at==AT_CALLQERR){if(ai_word(s,ALLOWGTS)==077777u||(io->chan5&040000u))return EXEC_OUT_OF_SCOPE;}
- else{agc_word st=ai_word(s,SENSETYP);
-  if(AX>1u||ai_word(s,NUMBERT)>4u||(st>5u&&st<040000u))return EXEC_OUT_OF_SCOPE;}
+ st=ai_word(s,SENSETYP);
+ switch(at){
+ case AT_CALLQERR:
+  if(ai_word(s,ALLOWGTS)==077777u||(io->chan5&040000u))return EXEC_OUT_OF_SCOPE;
+  break;
+ case AT_TIMEGMBLRET:break; /* SENSEGET stores SENSETYP */
+ case AT_ALARMRET:case AT_MINRET:case AT_ENTERUVRET:
+  if(st>5u&&st<040000u)return EXEC_OUT_OF_SCOPE;
+  break;
+ default:
+  if(AX>1u||ai_word(s,NUMBERT)>4u||(st>5u&&st<040000u))return EXEC_OUT_OF_SCOPE;
+  /* LOOPER's TC RETJADR runs with AXISCTR 1. */
+  if(AX==1u&&!rjok(s)&&at!=AT_WRITEURET&&at!=AT_WRITEVRET)return EXEC_OUT_OF_SCOPE;
+ }
  return flow(s,io,at);
 }
 static enum exec_status callqerr(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_CALLQERR);}

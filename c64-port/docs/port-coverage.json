@@ -1888,8 +1888,20 @@
       "sha256": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a",
       "bytes": 4804,
       "lines": 162,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p76_routines.c",
+            "src/agc_transfer.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of P76 (13,2071-13,2230), 96 words, as fifteen basic routines keyed by Z and twelve interpretive routines keyed at their NEWOPS, of the control-transfer ABI on the Comanche055 interpretive bodies: P76 (UPFLAG TRACKFLG), the V06N84 and V06N33 GOFLASH displays and their terminate/proceed/recycle returns, TIG and OTHPREC, COMPMAT (UNIT, VCOMP, VXV, VXM, VSL1, VAD, INTSTALL), P76SUB1 calls, VCV/RCV by VSR* 0,2, TET, CLEAR INTYPFLG, INTEGRVS, INTSTALL, RRECT/RCV/TET and MINIRECT, PHASCHNG 04024, REINTFLG, ATOPOTH, SSP QPRET OUT, INTWAKE1, OUT, ENDP76 (MARKCTR, VHFCNT, MRKBUF2, GOTOPOOH) and P76SUB1 (CLEAR MOONFLAG, SLOAD X2, BHIZ, SET MOONFLAG, RVQ): from each entry through the trampoline to the first point outside them (UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO, or a NEWOPS outside 13,2110-2174, 2202-2206, 2211 and 2222-2230).",
+          "verification": "docs/CM-P76.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
@@ -4741,8 +4753,20 @@
       "sha256": "6e440a29d56167c2f48b7bc58c0d53491d596c61e8e7137dc3b349ad90c1dc10",
       "bytes": 4308,
       "lines": 168,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p31_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P31 and REVN1645 (35,2450-35,2544), 61 words, the whole file, as six basic routines keyed by Z and eleven interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P31 with P20FLGON, the V06N33 display and INTPRET; UPDATFLG cleared, TIG and LEMPREC; RTIG/RINIT and VTIG/VINIT from RATT and VATT, P30ZERO and DELLT4 pushed, TPASS4 with SXA,1 and SXA,2, and INITVEL; DELVEET3 into DELVSIN, ABVAL into VGDISP with XDELVFLG cleared, and GET.LVC; RTIG, VIPRIME and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK, HAPO and EXIT; the V06N81 and V06N42 displays and INTPRET; and REVN1645 (SET FINALFLG, CALL VN1645, GOTO REVN1645): from each entry through the trampoline to the first point outside them (P20FLGON, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2454-35,2544).",
+          "verification": "docs/LM-P31.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
@@ -4976,7 +5000,7 @@
       "sha256": "5fb543ce6aebfbc6d2e83f576b78b1d61ece37e88a2229b734d5c094aef6ea56",
       "bytes": 6228,
       "lines": 362,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4991,7 +5015,7 @@
           "verification": "docs/LM-IMU-PERFORMANCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5006,7 +5030,6 @@
           "CALCGA and callers' NEWOPS (other interpretive code)",
           "ATIGINC (erasable TC, EBANK 7)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-source-map.json",
@@ -5023,6 +5046,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
             "sha256": "ad3530a01f872968462b21a70e60d7c36cb7a50c3915e591a1e1f7e31f21697e"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-imu-performance.md",
+            "sha256": "1536f46e3a994370084faf70d3446b2a308734d8468eaf29ad7e3eb584322bd7"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
@@ -5037,7 +5064,7 @@
       "sha256": "80d973122d8212c2a0d6dbedfc061b0b91b44467422abe8a487b85137fa4c490",
       "bytes": 6936,
       "lines": 421,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5052,7 +5079,7 @@
           "verification": "docs/LM-IMU-PERFORMANCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5067,7 +5094,6 @@
           "CALCGA and callers' NEWOPS (other interpretive code)",
           "ATIGINC (erasable TC, EBANK 7)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-source-map.json",
@@ -5084,6 +5110,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
             "sha256": "ad3530a01f872968462b21a70e60d7c36cb7a50c3915e591a1e1f7e31f21697e"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-imu-performance.md",
+            "sha256": "1536f46e3a994370084faf70d3446b2a308734d8468eaf29ad7e3eb584322bd7"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
@@ -5456,7 +5486,7 @@
       "sha256": "c07d1ef6d1a83375b0aa0f7be87ef4d496d396621501298932aa46466d2db34c",
       "bytes": 11726,
       "lines": 533,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5469,7 +5499,7 @@
           "scope": "Every path of the file: LANDISP (TBASE2, DISPRSET/ABORTON, DISINDAT with the mode switch, DIDFLAG and the first-pass set-up to TC TWIDDLE, SPEEDRUN to TC VARDELAY), TWIDDLE's return and INTLZE, and VARDELAY's return (VHY/VHZ, GET22/32, LATFWDV, VMONITOR and the limit paths to ZEROLSTY, channel 14) with TC LADQSAVE continuing at ALTROUT +1 (ARCOMP) or ALTOUT +1 (OLDDATA, NEWDATA, ZERODATA) to DATAOUT, as four ABI routines in bank 21."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5480,7 +5510,6 @@
           "VARDELAY",
           "the word in LADQSAVE when it is not ALTROUT +1 or ALTOUT +1"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-source-map.json",
@@ -5497,6 +5526,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-vice.log",
             "sha256": "49b7c9fa94a320eaff06294bb4d05a6d36a3a446488ed100a3fd30bbfcf978b8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-landing-displays.md",
+            "sha256": "bd2947f91bddb23ad60d7cae1525d85e5df9fa14880dea9456aa3a69b44af513"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-c64-cover.json",
@@ -5733,11 +5766,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-p-axis/lm-p-axis-vice.log",
-            "sha256": "e39aed9369e80458509f3bce51abac067956b38679ea8ca94c5be587180b99d5"
+            "sha256": "4840b5c38ed471c786f9800d80ae59c1970b2846208aaf0c566a7d4555fa76bb"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
-            "sha256": "6d6804cdcda7b1b68d286f3b8bcff760b8f6c6785e2505e4234c2e2347a02fea"
+            "sha256": "fc7aace1a9bea2c904257bf171b12a0426319434c5b07af9365ce410d85c84ad"
           }
         }
       }
@@ -5766,8 +5799,21 @@
       "sha256": "2ea604772395dcae064d0a23f4f475845cef39b3528d62d4adeac8e3aab9b573",
       "bytes": 4937,
       "lines": 185,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p30_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/lm_work_matrix.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P30 (35,2000-35,2026) and S30.1 (34,2000-34,2056), 70 words, the whole file, as eight basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P30 with UPFLAG UPDATFLG and TRACKFLG, the V06N33 and V06N81 displays through VNPOOH, DOWNFLAG UPDATFLG and INTPRET; CALL S30.1 and SET UPDATFLG, EXIT; PARAM30's V06N42 display, INTPRET and SETGO XDELVFLG REVN1645; and S30.1 (STQ QTEMP, TIG and LEMPREC; RTIG and VTIG with SXA,2 and SXA,1; the local-vertical frame with UNIT, VCOMP, VXV; DELVSLV through it with VXM and VSL1 into DELVSIN; ABVAL into DELVSAB; VTIG + DELVSIN and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK and STCALL HAPO to C(QTEMP)): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 34,2000-2056, 35,2013-2016 and 35,2022-2024).",
+          "verification": "docs/LM-P30.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P32-P35_P72-P75.agc",
@@ -5775,8 +5821,32 @@
       "sha256": "0fc78a6c5bcfd461bf1e9e7ffd11e5e4f93950595daf275bb2df2a9a08f149ec",
       "bytes": 25575,
       "lines": 1394,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p32_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P32/P72, ALMXITA and ALMXIT (35,2027-35,2215), 119 words, as twenty-one basic routines keyed by Z and nineteen interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P32 and P72 through AVFLAGA/AVFLAGP, P32STRT (CENTANG from P30ZERO), P32/P72A (P20FLGON, NN +1 and TCSI zeroed, the V06N11 display and INTPRET); the TCSI check (DCOMP, BMN VN0655, PRECSET, RVEC/VVEC by VSR* 0,2, RVSW, TIMERAD to DPPOSMAX, TCSI = TDEC2 + time) and VN0655 (V06N55 GOFLASH and its returns, the V06N37 display); TCSI into TIG and SELECTMU; P32/P72B (ADVANCE, INTINT from VPASS1, RPASS1, TCSI, TTPI and TWOPI, PASSIVE, CSI/A); P32/P72C-F (UPDATFLG by FINALFLG, the 60MIN loops on T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, DELVEET1/RACT1, DISDVLVC, VN1645 and GOTO P32/P72B; and ALMXITA/ALMXIT (SXA,2 and LXC,1 CSIALRM, SLOAD* ALARM/TB -1,1, VARALARM and the V05N09 GOFLASH returns): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, VNPOOH, VARALARM, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2036-2043, 2063-2111, 2113, 2125-2172 and 2176-2215).",
+          "verification": "docs/LM-P32.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p33_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/lm_work_matrix.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P33/P73, AVFLAGA, AVFLAGP, P20FLGON and DISDVLVC (35,2216-35,2407), 122 words, as twenty-three basic routines keyed by Z and twenty interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P33 and P73 through AVFLAGA/AVFLAGP, P20FLGON, the V06N13 display and INTPRET; TTPI0, TCDH and SELECTMU; P33/P73B's ADVANCE, CDHMVR, the INTINT3P/ACTIVE and INTINT3P/PASSIVE integrations, ITSWICH, NOMTPI and S33/34.1 with the 611 alarm and its V05N09 GOFLASH returns; P33/P73C-F (UPDATFLG by FINALFLG, TTPI + NOMTPI, the 60MIN loops into T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, VN1645 and GOTO P33/P73B; AVFLAGA, AVFLAGP and P20FLGON (QXCH SUBEXIT, UPFLAG/DOWNFLAG, TC SUBEXIT); and DISDVLVC (STQ NORMEX, S32/33.X, MXV, VSL1, SXA,1 VERBNOUN, the VERBNOUN display and GOTO NORMEX): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, E 1470, POODOO1, or a NEWOPS outside 35,2225-2265, 2277-2346, 2370-2402 and 2406-2407).",
+          "verification": "docs/LM-P33.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P34-35_P74-75.agc",
@@ -5946,8 +6016,21 @@
       "sha256": "b94d0907e3d64318a3fd225ac8d0106109182d40646e3dcbdcffa354e3f08925",
       "bytes": 4400,
       "lines": 161,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p76_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/lm_work_matrix.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P76 (13,2207-13,2350), 98 words, the whole file, as sixteen basic routines keyed by Z and twelve interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P76 with UPFLAG TRACKFLG and INTPRET; DELVLVC into DELVOV; the V06N84 and V06N33 GOFLASH displays and their returns; TIG and OTHPREC; COMPMAT (UNIT, VXV, VXM, VSL1, VAD) and INTSTALL; P76SUB1, the VCV/RCV/TET setup scaled by X2, INTYPFLG and INTEGRVS; RRECT/RCV/TET from RATT1, TAT, VATT1 and MINIRECT; PHASCHNG, UPFLAG REINTFLG; ATOPOTH, SSP QPRET OUT and BANKCALL INTWAKE1; OUT and ENDP76 (MARKCTR zero, GOTOPOOH); and P76SUB1 (X2, MOONFLAG by CMOONFLG, return to C(QPRET)): from each entry through the trampoline to the first point outside them (UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside bank 13's 2212-2215, 2233-2315, 2323-2332 and 2340-2350).",
+          "verification": "docs/LM-P76.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
@@ -6462,7 +6545,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries in bank 17 under EBANK6 (EBANK= CDUXD) with the lm_flight_io record (channels 4, 5, 13 and 31, the interrupt-enable and interrupt-in-progress bits); a QERRCALC, JTLST or ROT-TOUV return in Q is a TC word into fixed memory; excluded and refused with the image unchanged: SKIPU or SKIPV other than 0 or 4 at CALLQERR or a return entry (INDEX AXISCTR; INDEX SKIPU; TCF +1 would jump anywhere; every producer stores 0 or 4), ALLOWGTS -0 or channel 5 negative at CALLQERR (CCS would enter READ CHAN5 or DCA GTSCADR without its EXTEND; ALLOWGTS is stored as +0 or 1, channel 5 holds eight jet bits), and a return entry with AXISCTR other than 0 or 1, NUMBERT outside 0-4 or SENSETYP above 5 (they index INDEXES, AXISDIFF, TJU and TYPEPOLY; the file's loop and TJETLAW store these values); 784 of 16,384 random cases",
+        "supported_domain": "entries in bank 17 under EBANK6 (EBANK= CDUXD) with the lm_flight_io record (channels 4, 5, 13 and 31, the interrupt-enable and interrupt-in-progress bits); a QERRCALC, JTLST or ROT-TOUV return in Q is a TC word into fixed memory; excluded and refused with the image unchanged: SKIPU or SKIPV other than 0 or 4 at CALLQERR or a return entry (INDEX AXISCTR; INDEX SKIPU; TCF +1 would jump anywhere; every producer stores 0 or 4), ALLOWGTS -0 or channel 5 negative at CALLQERR (CCS would enter READ CHAN5 or DCA GTSCADR without its EXTEND; ALLOWGTS is stored as +0 or 1, channel 5 holds eight jet bits), a loop return entry (17,2714, 17,2724, 17,2775, 17,3004, 17,3042, 17,3074, 17,3103, 17,3224) with AXISCTR other than 0 or 1, NUMBERT outside 0-4 or SENSETYP above 5 (they index INDEXES, AXISDIFF, TJU and TYPEPOLY; the file's loop and TJETLAW store these values), or with AXISCTR 1 and RETJADR not one of the file's three return addresses (only this file stores RETJADR), and 17,2172, 17,2214 or 17,2454 with SENSETYP above 5; CALLQERR and 17,2172, 17,2214, 17,2454 and 17,2620 accept any AXISCTR and NUMBERT (PURGENCY's -1, GTS's SAVESR, PJETSLEC's 5 or 6), which they store before reading; 837 of 16,384 random cases",
         "external_continuations": [
           "ALARM",
           "IBNKCALL (ZATTEROR, TIMEGMBL, SPSRCS)",
@@ -6472,30 +6555,29 @@
           "WRITEV -1 (= WRITEP -1 +13)",
           "GTS (TRIM_GIMBAL_CONTROL_SYSTEM)",
           "NOQRSM",
-          "the word in RETJADR when it is not one of the file's return addresses",
           "the caller's return"
         ],
         "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-source-map.json",
-            "sha256": "3306783742167e9a9f63c6847ce5f87ff41b390fe77f964f5362d071540ac770"
+            "sha256": "f23403f55c1796fe91c1fddf0a7f515b0c5a2859dc539e86091ceb66b8ddad45"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-proof.json",
-            "sha256": "1317552d98c566bfa1076c24b2fbf8886137ad57129a2e134384990ee818d4d8"
+            "sha256": "ba658aefa99408908ee9a1f9930e31bb0d1df73ce4a5ff42968da1a7a7981af4"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-host.log",
-            "sha256": "8c88b84193e673fa76e4114c0f9d698c4ac1e719335d21c18c574ecbe51c27c5"
+            "sha256": "56fd2b53e6f943f08c2b3afd9f561f9e845cc7d228dc4cb94e52d4e1490b7410"
           },
           "c64_execution_results": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-vice.log",
-            "sha256": "686773f03963477774b422544be0882c4637da2ccb9cea2fd25069bccdedc52f"
+            "sha256": "b4fee6dfd10d3b7f66c2ff0bd73d84d221e7674c5d96556f3c5ada048177be0b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
-            "sha256": "17d2a3acfacf9e1c2c6e65aea03b354b1c3f70ad0ba3154e933f6210b7064187"
+            "sha256": "c38cd6799b7b27965b0ee7aebe55d8bf9fb3bb6b2cd4dcb43df3a2656ae422c0"
           }
         }
       }
@@ -7418,11 +7500,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-vice.log",
-            "sha256": "89f7d8513127b9a7dd598ef0b0d6aafa4b73275794c6498bb9e06e8a289f4527"
+            "sha256": "de3d63273fa81b798a13b335e2b9998e0e421597a48c4cd6ec4299db4adf4a62"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-c64-cover.json",
-            "sha256": "39956f154f5153f5e459b8be3200caa248e232c210ad0018ff0bbb89ba26a8ba"
+            "sha256": "e5eccb8522eb024f1284270ec8e5029e336247acb31ec7faff591e5e6066d004"
           }
         }
       }

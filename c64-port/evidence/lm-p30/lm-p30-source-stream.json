@@ -1,0 +1,10 @@
+{
+  "archive": "build/lm-p30-reference.snapshots.bin.xz",
+  "decoded_sha256": "219b76886caf78ad3b78e425eb8f69a0c12187f9d18eb88345a4f927ba59f817",
+  "decoded_bytes": 37840896,
+  "cases": 9216,
+  "tag_counts": {
+    "1": 9216
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

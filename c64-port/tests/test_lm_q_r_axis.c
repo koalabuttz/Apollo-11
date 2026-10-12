@@ -11,7 +11,7 @@
 #include "lm_interbank_routines.h"
 #define P17(z) (uint16_t)(017u*1024u+((z)-02000u))
 #define EB6(a) (03000u+((a)-01400u))
-#define PATHS 165u
+#define PATHS 169u
 unsigned lm_qr_paths[PATHS];
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s %u\n",what,n);}}
@@ -31,10 +31,13 @@ int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;unsigned n,i,left=0
   *   from THREE by CCS;
   *  147, 148: LOOPER's CCS AXISCTR negative and -0 exits: AXISCTR is 0 or
   *   1 (stored by the file's loop; refused otherwise at a return entry);
+  *  152: LOOPER's TC RETJADR to another word: RETJADR is stored by the
+  *   file only (MINRTN, BACKHAND, TJLAW +3; refused otherwise at a return
+  *   entry);
   *  155, 157: DOSKIP's CCS TJU +0 and -0 exits: DOSKIP follows DOROTAT,
   *   whose CCS TJU sends +-0 to NOROTAT, and nothing between stores TJU. */
  static const unsigned unreachable[]={4u,5u,9u,10u,16u,17u,27u,28u,32u,33u,36u,37u,40u,41u,44u,45u,48u,49u,66u,67u,
-  117u,118u,131u,132u,135u,136u,147u,148u,155u,157u};
+  117u,118u,131u,132u,135u,136u,147u,148u,152u,155u,157u};
  program.basic=&lm_q_r_axis_routines;program.basic_count=1;
  memset(lm_qr_paths,0,sizeof lm_qr_paths);
  for(n=0;n<LM_QR_CASES;++n){unsigned kind;
@@ -68,6 +71,8 @@ int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;unsigned n,i,left=0
  lm_qr_input(&s,&io,9);s.words[EB6(01505u)]=2u;refused(&s,&io,"17,3004 with AXISCTR 2");
  lm_qr_input(&s,&io,6);s.words[EB6(01743u)]=5u;refused(&s,&io,"17,2714 with NUMBERT 5");
  lm_qr_input(&s,&io,6);s.words[EB6(01500u)]=6u;refused(&s,&io,"17,2714 with SENSETYP 6");
+ lm_qr_input(&s,&io,9);s.words[EB6(01505u)]=1u;s.words[EB6(01477u)]=0u;refused(&s,&io,"17,3004 with AXISCTR 1 and RETJADR 0");
+ lm_qr_input(&s,&io,10);s.words[EB6(01505u)]=1u;s.words[EB6(01477u)]=02274u;refused(&s,&io,"17,3042 with AXISCTR 1 and RETJADR MINRTN +1");
  lm_qr_input(&s,&io,0);call=agc_transfer_resolve(&program,&s,0);
  {apollo_overlay_state before=s;check(call&&call(&program,&s,0)==EXEC_OUT_OF_SCOPE&&!memcmp(&s,&before,sizeof s),"CALLQERR without io",0);}
  printf("lm-q-r-axis: %u cases left the file, %u refusals; entries",left,refusals);
