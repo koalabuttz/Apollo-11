@@ -19,17 +19,18 @@ test-lm-time-free-fall: build/test-lm-time-free-fall build/lm-time-free-fall-ref
 	python3 tools/lm_time_free_fall_host.py --cc "$(CC)"
 	python3 tools/lm_time_free_fall_source.py
 	python3 tools/lmi_body_differential.py --cases 400
+	python3 tools/lm_time_free_fall_c64_cover.py
 sanitize-lm-time-free-fall: build/lm-time-free-fall-reference.snapshots.bin.xz | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-omit-frame-pointer $(LM_TIME_FREE_FALL_SRC) $(LM_TIME_FREE_FALL_TARGET) tests/test_lm_time_free_fall.c -o build/test-lm-time-free-fall-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-time-free-fall-sanitize
 	python3 tools/lm_time_free_fall_host.py --cc "$(CC)" --sanitize
-# Four PRGs, one per phase group, with the two images under KERNAL ROM.
-c64-lm-time-free-fall: build/lm-time-free-fall-1.prg build/lm-time-free-fall-2.prg build/lm-time-free-fall-3.prg build/lm-time-free-fall-4.prg
+# One PRG per part of each phase group (lm-time-free-fall-GROUP-PART), with
+# the two images under KERNAL ROM. The parts are the frozen vector headers'
+# (tools/freeze_lm_time_free_fall_phases.py lists them).
+LM_TIME_FREE_FALL_PRGS = 1-1 2-1 3-1 4-1
+c64-lm-time-free-fall: $(foreach p,$(LM_TIME_FREE_FALL_PRGS),build/lm-time-free-fall-$(p).prg)
 build/lm-time-free-fall-%.prg: $(LM_TIME_FREE_FALL_SRC) $(LM_TIME_FREE_FALL_C64) platform/c64/lm_time_free_fall_diagnostic.c $(LM_TIME_FREE_FALL_HDR) | build
-	$(MOS_CC) $(CPPFLAGS) -DAPOLLO_FIXED_LM_ONLY -DLM_TIME_FREE_FALL_GROUP=$* -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-time-free-fall-$*.map $(LM_TIME_FREE_FALL_SRC) $(LM_TIME_FREE_FALL_C64) platform/c64/lm_time_free_fall_diagnostic.c -o $@
+	$(MOS_CC) $(CPPFLAGS) -DAPOLLO_FIXED_LM_ONLY -DLM_TIME_FREE_FALL_GROUP=$(word 1,$(subst -, ,$*)) -DLM_TIME_FREE_FALL_PART=$(word 2,$(subst -, ,$*)) -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-time-free-fall-$*.map $(LM_TIME_FREE_FALL_SRC) $(LM_TIME_FREE_FALL_C64) platform/c64/lm_time_free_fall_diagnostic.c -o $@
 	python3 -c "import re,sys;m=open('build/lm-time-free-fall-$*.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else 'image and BSS reach the mailbox page: '+hex(e))"
 vice-lm-time-free-fall: c64-lm-time-free-fall
-	python3 tools/vice_run.py build/lm-time-free-fall-1.prg
-	python3 tools/vice_run.py build/lm-time-free-fall-2.prg
-	python3 tools/vice_run.py build/lm-time-free-fall-3.prg
-	python3 tools/vice_run.py build/lm-time-free-fall-4.prg
+	set -e;for p in $(LM_TIME_FREE_FALL_PRGS);do python3 tools/vice_run.py build/lm-time-free-fall-$$p.prg;done

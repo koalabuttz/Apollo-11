@@ -1,0 +1,11 @@
+{
+  "archive": "build/lm-periapo-reference.snapshots.bin.xz",
+  "decoded_sha256": "36536a9471bb08244dbff88cecb296c860c0e1471a5ea90dfdbd8ccd84585305",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "1": 63819,
+    "2": 1717
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

@@ -37,8 +37,8 @@ TABLES = {
     'lm-interbank': ('Luminary099', ('BANKCALL', 'IBNKCALL', 'POSTJUMP', 'USPRCADR'),
                      'src/lm_interbank_sites.inc', 'lm_interbank_sites'),
     # Executive/Waitlist services: a 2CADR after NOVAC, FINDVAC, WAITLIST and
-    # LONGCALL, an ADRES after TWIDDLE.
-    'lm-exec': ('Luminary099', ('NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'TWIDDLE'),
+    # LONGCALL, an ADRES after TWIDDLE, the delay (DEC) after FIXDELAY.
+    'lm-exec': ('Luminary099', ('NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'TWIDDLE', 'FIXDELAY'),
                 'src/lm_exec_sites.inc', 'lm_exec_sites'),
 }
 # Callees whose operand is two words (2CADR, or an OCT pair).

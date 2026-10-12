@@ -9,9 +9,10 @@
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define ANY_FB 0177777u
 static uint32_t rnd(uint32_t *s){*s=*s*1664525u+1013904223u;return *s;}
-/* Site k (0..145): index of its first operand word in lm_exec_sites. */
+/* Site k (0..145): index of its first operand word in lm_exec_sites. The
+ * FIXDELAY sites belong to lm-exec-jobs. */
 static uint16_t site_entry(uint16_t k){uint16_t i,seen=0;
- for(i=0;i<LM_EXEC_SITES_COUNT;++i)if(i==0u||lm_exec_sites[i-1u].physical!=lm_exec_sites[i].physical-1u){if(seen==k)return i;++seen;}
+ for(i=0;i<LM_EXEC_SITES_COUNT;++i)if(lm_exec_sites_callee[i]!=LM_EXEC_FIXDELAY&&(i==0u||lm_exec_sites[i-1u].physical!=lm_exec_sites[i].physical-1u)){if(seen==k)return i;++seen;}
  return 0;
 }
 /* Canonical Executive and Waitlist erasable: cores busy core sets (core set
@@ -112,7 +113,7 @@ static uint16_t stop_point(const lm_exs_case *c){
  return agc_fixed_physical(c->stop_z,c->stop_fb==ANY_FB?0u:c->stop_fb,c->superbank);
 }
 unsigned lm_exs_run(apollo_overlay_state *s,uint16_t n,uint16_t *steps){
- agc_routine_table tables[2];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};p66_bias_io io;lm_exs_case c;enum exec_status st;
+ agc_routine_table tables[2];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};p66_bias_io io;lm_exs_case c;enum exec_status st;
  tables[0]=lm_exec_routines;tables[1]=lm_restart_routines;program.basic=tables;program.basic_count=2;
  program.operands=lm_exec_site_table(&program.operand_count);
  lm_exs_input(s,&io,&c,n);

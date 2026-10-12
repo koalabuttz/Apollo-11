@@ -913,8 +913,50 @@
       "sha256": "fe2e800173b6c7e607d03c0b06a58b517b4faae2f8400e74b98b36b54e10cf19",
       "bytes": 9277,
       "lines": 368,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/imu_compensation.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK and SWRETURN (Comanche NOVAC has no native routine yet).",
+          "verification": "docs/IMU-COMPENSATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL return leave it; any EB (1/PIPA sets EBANK to GCOMP's and restores the caller's); any GCOMPSW, FLAGWRD2, TIME1, PIPA, coefficient and GCOMP values.",
+        "external_continuations": [
+          "NOVAC admitting 1/GYRO (EXECUTIVE, no native Comanche routine yet)",
+          "SWRETURN and BANKCALL (native, cm_interbank_routines)",
+          "IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES)",
+          "PIPUSE (SERVICER207)",
+          "ENDOFJOB (EXECUTIVE)"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/imu-compensation/imu-compensation-source-map.json",
+            "sha256": "f8a121420b3df54274264d19cc75bea9dcde34141da664e5bab48e999ccc7d3b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/imu-compensation/imu-compensation-proof.json",
+            "sha256": "014c002a712683d5b22d6e78898b68572e711e552a25a60df03aeda178b3b144"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/imu-compensation/imu-compensation-host.log",
+            "sha256": "f0308a399893531d4394ddeef840f916eda73936085d63c1f63837e290cb08a1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/imu-compensation/imu-compensation-vice.log",
+            "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
@@ -2652,8 +2694,48 @@
       "sha256": "21b48d0bb13356fe66517c4210f3d45cdabb0a5e67c88ef6327de4b3e4da4b47",
       "bytes": 6897,
       "lines": 245,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_massprop.c"
+          ],
+          "scope": "All 91 words: MASSPROP and FIXCW from either entry to ENDMASSP TC Q, every overflow detour, and the source loops that never return. Every source path is translated; the complete certificate below awaits the auditor review.",
+          "verification": "docs/CM-TVC-MASSPROP.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z = MASSPROP 3366 or FIXCW 3422, FB 05, EB E6, coherent BB; any raw A/L/Q and erasable contents.",
+          "returns": "ENDMASSP TC Q: Z = caller return held in Q, Q = 3. Non-returning overflow loops reported as NO_EXIT.",
+          "data_validity": "Original breakpoint/slope constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "TVCEXECUTIVE / TVCINITIALIZE / P40 callers and their IBNKCALL/BANKCALL bank switching",
+          "Ownership of the TVC/RCS interrupt temporaries (PHI333..VARST0+9) during the call"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
+            "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
+            "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-checks.log",
+            "sha256": "6fdf3a95ef016cede798f90a045ec3529dda992f43132fe650f9f2ba2aae025b"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-results.json",
+            "sha256": "27187541d5b0edd2519a17b38c69b6895edf4ffaede9be48c27d2bdf93a4fa1f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCRESTARTS.agc",
@@ -3433,6 +3515,15 @@
           ],
           "scope": "NOVAC and FINDVAC as control-transfer ABI routines at their original addresses, with the inline 2CADR from the compiled site table (every genuine call site) or erasable; RESTARTS composes through them to SWRETURN. SPVAC, JOBSLEEP, JOBWAKE, PRIOCHNG, CHANG1/CHANG2, ENDOFJOB and BAILOUT1 bodies remain separate.",
           "verification": "docs/LM-EXEC-SERVICES.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_jobs.c",
+            "src/lm_exec_tasks.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB as control-transfer ABI routines (lm_exec_job_routines) composing the qualified admission, change, sleep, wake, priority and finish bodies, through the selected basic job, NEWOPS for an interpretive one (JOBSLEEP and PRIOCHNG gain interpretive successors here), ADVAN idle or the caller. The DUMMYJOB/ADVAN idle loop, NUDIRECT and NUCHANG2 remain separate.",
+          "verification": "docs/LM-EXEC-JOBS.md"
         }
       ]
     },
@@ -3679,8 +3770,50 @@
       "sha256": "0b5c62e140514e58767ef3950fc3f3f381d607166f198f11348c3765c07f4ae8",
       "bytes": 10414,
       "lines": 417,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/imu_compensation.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (282 words, 06,3263-3714): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY and its PIPASR +3 return, LASTBIAS and its PIPUSE1 return, GCOMPZER, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 11 routines of the control-transfer ABI; round trips from every genuine TC BANKCALL of 1/PIPA and GCOMPZER through native INTER-BANK, NOVAC and SWRETURN.",
+          "verification": "docs/IMU-COMPENSATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL/IBNKCALL return leave it; any EB (1/PIPA and GCOMPZER set EBANK to GCOMP's and restore the caller's); any GCOMPSW, FLAGWRD2, FLAGWRD8, TIME1, PIPA, coefficient and GCOMP values; TEM1 +0 or BIT8 at the PIPASR +3 return (refused otherwise).",
+        "external_continuations": [
+          "NOVAC (native, lm_exec_routines) admitting 1/GYRO",
+          "SWRETURN and BANKCALL/IBNKCALL (native, lm_interbank_routines)",
+          "IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES)",
+          "PIPASR +3 and PIPUSE1 (SERVICER)",
+          "ENDOFJOB (EXECUTIVE)"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/imu-compensation/imu-compensation-source-map.json",
+            "sha256": "f8a121420b3df54274264d19cc75bea9dcde34141da664e5bab48e999ccc7d3b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/imu-compensation/imu-compensation-proof.json",
+            "sha256": "014c002a712683d5b22d6e78898b68572e711e552a25a60df03aeda178b3b144"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/imu-compensation/imu-compensation-host.log",
+            "sha256": "f0308a399893531d4394ddeef840f916eda73936085d63c1f63837e290cb08a1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/imu-compensation/imu-compensation-vice.log",
+            "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
@@ -4073,6 +4206,15 @@
               "sha256": "dc8962bd64ad1b926587e0e476b4e51dab4194cd06298b6ccc388bbbbde41c5c"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/lm_exec_jobs.c",
+            "src/lm_exec_tasks.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "The T3RUPT vector 04014 (DXCH ARUPT, CAF T3RPTBB, XCH BBANK, TCF T3RUPT) as a control-transfer ABI routine through T3RUPT2 to the dispatched task, with interrupts enabled or inhibited. The other vectors remain separate.",
+          "verification": "docs/LM-EXEC-JOBS.md"
         }
       ]
     },
@@ -4359,8 +4501,21 @@
       "sha256": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
       "bytes": 34716,
       "lines": 1764,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_periapo.c",
+            "src/lm_conic_timerad.c",
+            "src/lm_conic_timethet.c",
+            "src/lm_conic_kepler.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, INITVEL, GET.LVC, VN1645, R36) are not yet translated.",
+          "verification": "docs/LM-PERIAPO.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P40-P47.agc",
@@ -4859,8 +5014,18 @@
       "sha256": "76b904d389476022d9c6dcef6788737385a4603cff81d1c9af1fd17d82dc76bd",
       "bytes": 14653,
       "lines": 464,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_periapo.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "MAXCHK and its constant MAXNM, 9 words of bank 22 (03636-03646): from the NEWOPS entry frontier after each of its six Luminary CALLs (R30 and the P30/P35 apsides displays) to the caller's NEWOPS frontier at C(QPRET), as one native step. The rest of R30 (V82 orbit parameter display, CALCTPER, CALCTFF) is not yet translated.",
+          "verification": "docs/LM-PERIAPO.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/R31.agc",
@@ -5568,31 +5733,47 @@
               "045633"
             ],
             "TFFCONIC": [
-              "045567 from the EDOP +0 entry (no Luminary099 caller)"
+              "045567 from the EDOP +0 entry (no Luminary099 caller); a future caller must re-qualify it from the state its CALL leaves"
+            ],
+            "TCDANZIG": [
+              "Exported entry lm_time_free_fall_tcdanzig: RTB from BOVB TCDANZIG (MEASUREMENT_INCORPORATION 371, ORBITAL_INTEGRATION 95, P20-P25 3217) with FBANK 27 to TC DANZIG (Q 03754, Z DANZIG); the whole order is lm_time_free_fall_bovb_tcdanzig, qualified with and without overflow by the TFFRP/RA and QTERM uses in the oracle stream"
             ]
           },
-          "data_validity": "Original conic formulas and scaling; no widened claim."
+          "data_validity": "Original conic formulas and scaling; no widened claim.",
+          "exported_constants": {
+            "NEARONE": "lm_time_free_fall_nearone (27,3770), ASCENT_GUIDANCE DLOAD operand (163, 618)",
+            "R300K": "lm_time_free_fall_r300k (27,3766), no Luminary099 reference"
+          },
+          "oracle_sampling": "65536 call chains: SR30.1 chains (TFFCONMU, +TFFRP/RA, +CALCTPER, +CALCTFF) and TFFCONIC chains; Earth and Moon scaling; elliptic, near-parabolic, exactly parabolic, hyperbolic and axis-aligned apse orbits (circular speed times a factor, a flight-path angle, a random plane); one in eight with raw edge words (signed zeros, extremes, overflow-sized terms); poisoned erasable debris; both IRQ settings, SUPER, EBANK, all five VACs; OVFIND 0 and +-1 (the values overflow leaves)"
         },
         "external_continuations": [
           "Caller entry/resume services and application scheduling",
-          "Overlay ABI 2 modules for the whole routine on the C64 (phases verified separately)"
+          "Overlay ABI 2 modules for the whole routine on the C64 (each phase step verified separately; the C64 rows take every branch outcome the host stream takes)"
         ],
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-map.json",
-            "sha256": "c47f364a9c42d8746ae76d430a871631265d4e8477a9312adcba593eea68d6c9"
+            "sha256": "4e3d610e380c130109579eda5b30cf79a9719fb2d5620770d4f73921a30339be"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-map.json",
-            "sha256": "c47f364a9c42d8746ae76d430a871631265d4e8477a9312adcba593eea68d6c9"
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-stream.json",
+            "sha256": "0917ba188f248c89ac13ef293a71e99d57d9e2f18b1bf61dacfa6e58430702f7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-checks.log",
-            "sha256": "50fd876b1bc0b50fb3608cb47b575151d8ad57c9dac8ce7163c163640f30ec9f"
+            "sha256": "7e89bfc7beac5c3d96c53a29269ed26d1303e3c161fbd1c05939d9b86b93233b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-results.json",
-            "sha256": "945b2ff8b5d44a4ea4ff6e9e21d0882c18edf6b5320908b53b7c05a7ec0d9f26"
+            "sha256": "7da7ff49969282980bf46fe42eeb6e07bad5e926a26a246ed6a415276b43a1e1"
+          },
+          "independent_assembly_comparison_snapshots": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-reference.snapshots.bin.xz",
+            "sha256": "d89b3acabe67516ac6475829ba063e8bcbc4c10e3d1257ed6ea13d2631356013"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-c64-cover.json",
+            "sha256": "3562022900d38e7ed2ce7b4032fe69eeb68c454c6711a1cb3dc5f2772fb25bfd"
           }
         }
       }
@@ -5679,6 +5860,15 @@
           ],
           "scope": "WAITLIST and TWIDDLE as control-transfer ABI routines, and the whole LONGCALL chain (LONGCALL, LNGCALL2 delta check and LONGPOOH, LONGCYCL/MUCHTIME/LASTTIME, LONGRTRN, GETCADR) through the trampoline, against the original program at every genuine call site and from RESTARTS. T3RUPT/TASKOVER dispatch, VARDELAY and FIXDELAY remain separate.",
           "verification": "docs/LM-EXEC-SERVICES.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_jobs.c",
+            "src/lm_exec_tasks.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "FIXDELAY (inline delay from the compiled site table at all 16 genuine call sites, or erasable), VARDELAY, TASKOVER (RESUME on RUPTAGN -0, T3RUPT2 dispatch on +1) as control-transfer ABI routines (lm_exec_task_routines) composing the delay, TASKOVER-resume and T3 dispatch bodies. The SVCT3 end-of-list task and the RESUME/NOQRSM/NOQBRSM entries other interrupts use remain separate.",
+          "verification": "docs/LM-EXEC-JOBS.md"
         }
       ]
     }
