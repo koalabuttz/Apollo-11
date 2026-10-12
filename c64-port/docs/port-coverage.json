@@ -1098,8 +1098,20 @@
       "sha256": "78875ef9f79433fa096eb975dd9658709cd2e4ea09cff47e2165c74251489f1b",
       "bytes": 4642,
       "lines": 205,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p21_routines.c",
+            "src/agc_transfer.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of P21 (37,2001-37,2154), 108 words, as fourteen basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI on the Comanche055 interpretive bodies: PROG21 (OPTION2, GOPERF4) and P21PROG1 (V06N34 GOFLASH) with their terminate/proceed/recycle returns, DSPTEM1 into TDEC1 and INTSTALL, BON P21FLAG, VINTFLAG by OPTION2 (SR1, BHIZ), DIM0FLAG/INTYPFLG and INTEGRV, P21CONT (RCV, VCV, TET, MOONFLAG by P21ORIG, INTEGRVS), P21VSAVE (base vector, ABVAL SL* 0,2, UNIT, DOT, DDV) up to ASIN, then P21GAM, SXA,2 P21ORIG, P21FLAG, P21DSP (LUNAFLAG by X2, ALPHAV, ERADFLAG, LAT-LONG), K.01 into P21ALT, EXIT, V06N43 and its returns, and the 600SEC recycle with RTB P21PROG1; the 600SEC, P21ONENN, V06N43, V6N34 and K.01 data words are checked as native literals: from each entry through the trampoline to the first point outside them (BANKCALL, GOTOPOOH, INTPRET, ARCSIN, POODOO, or a NEWOPS outside 37,2020-2130 and 2137-2144). ASIN itself (ARCSIN) is another file's.",
+          "verification": "docs/CM-P21.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
@@ -4934,8 +4946,20 @@
       "sha256": "97cba32a43d7de44db0db00e5785f2d9c4bebbc4a6d7f058c0c3c13113855140",
       "bytes": 4796,
       "lines": 208,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p21_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of P21 (24,3505-24,3667), 115 words, as fourteen basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI: PROG21 (OPTION2, GOPERF4) and P21PROG1 (V06N34 GOFLASH) with their terminate/proceed/recycle returns, DSPTEM1 into TDEC1 and INTSTALL, BON P21FLAG, VINTFLAG by OPTION2 (SR1, BHIZ), DIM0FLAG/INTYPFLG and INTEGRV, P21CONT (RCV, VCV, TET, MOONFLAG by P21ORIG, INTEGRVS), P21VSAVE (base vector, ABVAL SL* 0,2, UNIT, DOT, DDV) up to ASIN, then P21GAM, SXA,2 P21ORIG, P21FLAG by OPTION2 and SURFFLAG, P21DSP (LUNAFLAG by X2, ALPHAV, ERADFLAG, LAT-LONG), K.01 into P21ALT, EXIT, V06N43 and its returns, and the 600SEC recycle with RTB P21PROG1; the 600SEC, V06N43, V6N34 and K.01 data words are checked as native literals: from each entry through the trampoline to the first point outside them (BANKCALL, GOTOPOOH, INTPRET, ARCSIN, POODOO1, or a NEWOPS outside 24,3524-3645 and 3654-3661). ASIN itself (ARCSIN) is another file's.",
+          "verification": "docs/LM-P21.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/IMU_COMPENSATION_PACKAGE.agc",

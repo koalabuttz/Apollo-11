@@ -1,0 +1,6 @@
+PASS 12288 original P21 entries equal native trampoline runs fde47bff286e520cf79d811871c37a7940406786b0108e9778c2bd892cb2a524
+cm-p21: 12288 cases, 238 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 12577 checks, 0 failures
+PASS 108 assembled P21 words on 106 source lines map to 24 native routines
+cm-p21: 12288 cases, 238 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 12577 checks, 0 failures
+PASS: VICE PAL cm-p21-1.prg: 516 checks, 0 failures
+PASS: VICE PAL cm-p21-2.prg: 518 checks, 0 failures
