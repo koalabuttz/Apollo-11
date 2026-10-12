@@ -70,7 +70,9 @@ class Gen:
    b,a,w,l=r.choice(s.pairs)
    if a>=0o3777 or b>=0o30:continue
    n=fixed(b,a+1-0o2000)
-   if positive==(0<n<0o40000) and (positive or n&0o40000):
+   # (77777 would be a pair of EXIT codes: CCS sees +0 and takes the
+   # address-given path through NEG4, so it is never an order pair here.)
+   if positive==(0<n<0o40000) and (positive or (n&0o40000 and n!=0o77777)):
     setbanks(img,b);img[0o164]=a;img[0o165]=img[6];return n
 def sx(v):return(v&0o77777)|((v<<1)&0o100000)
 def stop_body(cyr):
@@ -131,8 +133,42 @@ def case(g,body):
    a=r.randrange(0o61,0o1360) if r.random()<.7 else r.randrange(0o1410,0o1770)
    img[0o116]=a
   return hdr,img
+ hdr[1]=0o6061
+ if body in ARITH:
+  # Operand at C(ADDRWD): live erasable (either window), or fixed data in a
+  # bank <030 with the words passed to the native side.
+  img[5]=ARITH[body];n=6 if body==25 else 2
+  # (SIGN's INDEX ADDRWD; CCS 0 is a TCF for a fixed address: erasable only.)
+  if body!=21 and r.random()<.35:
+   b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o4000-n-1);img[0o116]=a
+   hdr[9:9+n]=[fixed(b,a-0o2000+i) for i in range(n)];hdr[15]=1
+  else:
+   img[0o116]=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1410,0o1770)
+  return hdr,img
+ if body==17:
+  # OPJUMP2 for a short shift code (low three bits 100): OPJUMP's TS CYR
+  # and CCS CYR have rotated it twice and left DABS-1 of the first in A.
+  c=(r.randrange(16)<<3)|4;img[0o20]=edit_cyr(edit_cyr(c));img[0]=edit_cyr(c)-1;img[5]=0o6247
+  return hdr,img
+ if body==18:
+  if r.random()<.6:v=r.randrange(0,0o60)|r.choice([0,0o200,0o400,0o600])|r.choice([0,0o1000])
+  else:v=r.getrandbits(10)
+  img[0o116]=v;img[5]=0o7621;return hdr,img
+ if body==19:
+  img[0o116]=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1410,0o1770)
+  if r.random()<.15:
+   for i in range(3):img[0o154+i]=r.choice([0,0o77777,1,0o77776])
+  img[5]=0o7616;return hdr,img
+ if body in BANK0:
+  setbanks(img,0);img[5]=BANK0[body]
+  if body==22 and r.random()<.15:
+   for i in range(3):img[0o154+i]=r.choice([0,0o77777])
+  return hdr,img
  raise SystemExit('unknown body')
-NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH']
+ARITH={12:0o6775,13:0o7005,14:0o7062,15:0o7572,16:0o7574,21:0o7655,25:0o7331}
+BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
+NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
+ 'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)

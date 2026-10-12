@@ -27,10 +27,11 @@ unsigned ai_ea(const agc_image *s,unsigned a){
  return a>=01400u?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;
 }
 agc_word ai_word(const agc_image *s,unsigned a){return (agc_word)(W[ai_ea(s,a)]&077777u);}
-/* 16-bit view of A, L or Q. The canonical image holds Q in 15 bits, so a
- * sixteenth Q bit never survives a store (Q only carries return words). */
+/* A, L and Q are 16-bit registers. Between original instructions Q keeps
+ * its sixteenth bit too (TPAGREE parks NEGMAX there); a canonical image at
+ * an interpretive frontier holds Q in 15 bits, as the reference rows do. */
 static agc_register reg(const agc_image *s,unsigned a){return W[a];}
-static void setreg(agc_image *s,unsigned a,agc_register v){if(a<2u)W[a]=v;else W[2]=(agc_word)(v&077777u);}
+static void setreg(agc_image *s,unsigned a,agc_register v){W[a]=v;}
 void ai_put(agc_image *s,unsigned a,agc_word v){
  v&=077777u;a=ai_ea(s,a);
  switch(a){
@@ -101,7 +102,7 @@ void ai_qxch(agc_image *s,unsigned a){
  if(a==2u){endi(s);return;}
  if(a==7u)W[2]=0;
  else if(a<3u){setreg(s,2,reg(s,a));setreg(s,a,q);}
- else{W[2]=ai_word(s,a);ai_put(s,a,oc(q));}
+ else{W[2]=sx(ai_word(s,a));ai_put(s,a,oc(q));}
  endi(s);
 }
 void ai_ads(agc_image *s,unsigned a){

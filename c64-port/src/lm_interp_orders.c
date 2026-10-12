@@ -224,4 +224,329 @@ void lmi_push(apollo_overlay_state *s){
  if(c==1u){danzig(s);return;}
  DCA(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));DCA(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));danzig(s);
 }
+
+/* ---- Shared basic subroutines (INTERPRETER.agc) ---------------------- */
+#define ZL() ai_zl(s)
+#define DOUBLE() ai_double(s)
+#define COM() ai_com(s)
+#define SQUARE() ai_square(s)
+#define DDOUBL() ai_ddoubl(s)
+#define AUGA() ai_aug(s,0u)
+/* INDEX r; CAF BIT14: FIXED_FIXED words 04730-04777 (the bit table runs
+ * BIT15 04735 to BIT1 04753), indexed by the one's-complement C(r). */
+static agc_word bit14_indexed(const apollo_overlay_state *s,unsigned r){
+ static const agc_word t[]={01007,02,037777,037777,057777,040000,020000,010000,04000,02000,01000,0400,0200,0100,
+  040,020,010,04,02,01,077777,0,05,07,013,015,017,030,033,035,032,045,046,050,055,060,062,0120,0140,0144};
+ int i=6+signed_word((agc_word)(W[r]&077777u));
+ return i>=0&&i<(int)(sizeof t/sizeof t[0])?t[i]:0u;
+}
+
+/* BRANCH 06723 (Q holds the caller's return): 0 positive (TC Q),
+ * 1 zero (INDEX Q, TC 1), 2 negative (INDEX Q, TC 2). -0 is passed over. */
+static uint8_t branch(apollo_overlay_state *s){
+ unsigned i;uint8_t c;
+ for(i=0;i<3u;++i){
+  c=CCS(rMPAC+i);
+  if(c==0u){RETQ();return 0;}
+  if(c==2u){TC(06743);return 2;}
+ }
+ TC(06741);return 1;
+}
+/* OVERFLOW 07017 (A = +-1, L = component offset 0, 3 or 5). Returns 1 when
+ * the propagated overflow reached OVFIND (SETOVF2). Ends with TC Q. */
+static uint8_t overflow(apollo_overlay_state *s){
+ unsigned l;
+ CSF(W[rA]==1u?040000u:037777u);(void)TS(rBUF);AUGA();
+ l=W[rL];ADS(AT(rMPAC+1u+l));
+ if(!TS(rZERO))CAF(ZERO);
+ AD(rBUF);ADS(AT(rMPAC+l));
+ if(!TS(rZERO)){RETQ();return 0;}
+ (void)TS(rOVFIND);RETQ();return 1;
+}
+static void overflwy(apollo_overlay_state *s){(void)TS(rL);CAF(3u);XCH(rL);(void)overflow(s);}
+static void overflwz(apollo_overlay_state *s){(void)TS(rL);CAF(FIVE);XCH(rL);(void)overflow(s);}
+/* ENDVXV: DAS MPAC; BZF DANZIG; else TC OVERFLOW, TCF DANZIG. */
+static void endvxv(apollo_overlay_state *s){
+ DAS(rMPAC);
+ if(!ai_bzf(s)){TC(07004);(void)overflow(s);}
+ danzig(s);
+}
+void lmi_dad(apollo_overlay_state *s,const agc_word *k){dca_op(s,k,0);endvxv(s);}
+void lmi_dsu(apollo_overlay_state *s,const agc_word *k){
+ if(k)ai_dcsf(s,k);else DCS(W[rADDRWD]);
+ endvxv(s);
+}
+void lmi_bdsu(apollo_overlay_state *s,const agc_word *k){
+ dca_op(s,k,0);DXCH(rMPAC);ai_dcom(s);endvxv(s);
+}
+/* VROUND/ROUNDSUB 07136-07153. `entry` 0 ROUNDSUB, 1 ROUNDSUB +1, 2 VROUND. */
+static void roundsub(apollo_overlay_state *s,unsigned entry){
+ if(entry==0u)CAF(ZERO);
+ if(entry<2u)(void)TS(rMODE);
+ XCH(rMPAC+2);DOUBLE();
+ if(!TS(rL)){RETQ();return;}
+ AD(rMPAC+1);
+ if(!TS(rMPAC+1)){RETQ();return;}
+ AD(rMPAC);
+ if(!TS(rMPAC)){RETQ();return;}
+ (void)TS(rOVFIND);RETQ();
+}
+/* DMPSUB 07107 with the operand pair at C(ADDRWD) (or fixed `k`). */
+static void dmpsub(apollo_overlay_state *s,const agc_word *k){
+ if(k)CAF(k[1]);else CA(AT(W[rADDRWD]+1u));
+ (void)TS(rMPAC+2);CAF(ZERO);XCH(rMPAC+1);(void)TS(rMPTEMP);
+ MP(rMPAC+2);XCH(rMPAC+2);MP(rMPAC);DAS(rMPAC+1);
+ if(k)CAF(k[0]);else CA(W[rADDRWD]);
+ XCH(rMPTEMP);
+ MP(rMPTEMP);DAS(rMPAC+1);XCH(rMPAC);MP(rMPTEMP);DAS(rMPAC);RETQ();
+}
+void lmi_dmp(apollo_overlay_state *s,const agc_word *k){TC(07573);dmpsub(s,k);danzig(s);}
+void lmi_dmpr(apollo_overlay_state *s,const agc_word *k){
+ TC(07575);dmpsub(s,k);TC(07576);roundsub(s,1);danzig(s);
+}
+/* TPAGREE 07257 (Q = return); returns via TC L. */
+static void tpagree(apollo_overlay_state *s){
+ uint8_t c;
+ LXCH(rQ);TC(07261);c=branch(s);
+ if(c==1u){(void)TS(rMPAC+2);goto argzero2;}
+ if(c==2u)CSF(POSMAX);else CAF(POSMAX);
+ (void)TS(rQ);AUGA();AD(rMPAC+2);
+ if(!TS(rMPAC+2))CAF(ZERO);
+ AD(rQ);AD(rMPAC+1);
+ if(!TS(rMPAC+1))CAF(ZERO);
+ AD(rQ);AD(rMPAC);
+argzero2:
+ if(!TS(rMPAC))(void)TS(rMPAC+1);
+ /* TC L: executes the return TC held in L, leaving Q = 2. */
+ ai_tc(s,2u);
+}
+
+/* ---- Shifts (bank 0) -------------------------------------------------- */
+void lmi_shortv(apollo_overlay_state *);
+static void mpacshr3(apollo_overlay_state *s){
+ /* MPACSHR +3 TS MPAC+2; CA MPTEMP; MP MPAC; DXCH MPAC; CA MPTEMP; MP L;
+  * DAS MPAC+1; TCF DANZIG. */
+ (void)TS(rMPAC+2);CA(rMPTEMP);MP(rMPAC);DXCH(rMPAC);CA(rMPTEMP);MP(rL);DAS(rMPAC+1);danzig(s);
+}
+static void mpacshr(apollo_overlay_state *s){CA(rMPTEMP);MP(rMPAC+2);mpacshr3(s);}
+/* VSHR2 (A = value to double) to TC Q. */
+static void vshr2(apollo_overlay_state *s){
+ DOUBLE();
+ if(TS(rMPAC+2))ADS(rMPAC+1);
+ CAF(ZERO);(void)TS(rMPAC+2);XCH(rMPAC);MP(rMPTEMP);DAS(rMPAC);RETQ();
+}
+static void mpacsrnd(apollo_overlay_state *s){
+ CA(rMPAC+2);MP(rMPTEMP);XCH(rMPAC+1);MP(rMPTEMP);XCH(rMPAC+1);AD(rL);vshr2(s);
+}
+static void vshrrnd(apollo_overlay_state *s){CA(rMPTEMP);MP(rMPAC+1);(void)TS(rMPAC+1);XCH(rL);vshr2(s);}
+/* RIGHTR TC MPACSRND; TCF NEWMODE (C(A) = 0). */
+static void rightr(apollo_overlay_state *s){TC(02032);mpacsrnd(s);newmode(s);}
+static void vrotatex(apollo_overlay_state *s){DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC+3);DXCH(rMPAC);danzig(s);}
+/* VSSR (MPTEMP = count - 1); `indexed` 0 enters at VSSR +1, past the
+ * INDEX MPTEMP (CCS -0 of CYR in SHORTV lands there). */
+static void vssr(apollo_overlay_state *s,uint8_t indexed){
+ CAF(indexed?bit14_indexed(s,rMPTEMP):BIT14);(void)TS(rMPTEMP);
+ TC(02133);vshrrnd(s);DXCH(rMPAC);DXCH(rMPAC+3);DXCH(rMPAC);
+ TC(02137);vshrrnd(s);DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC);
+ TC(02143);vshrrnd(s);vrotatex(s);
+}
+/* TSSL +2 loop (MPTEMP = count - 1), then the CYR round test. */
+static void tssl2(apollo_overlay_state *s){
+ uint8_t c;
+ for(;;){
+  DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);AD(rMPAC);
+  if(TS(rMPAC))(void)TS(rOVFIND);
+  if(CCS(rMPTEMP)!=0u)break;
+  (void)TS(rMPTEMP);
+ }
+ c=CCS(rCYR);
+ if(c==0u){TC(02117);roundsub(s,0);}
+ /* -0 in CYR (GENSCL's MP leaves -0 for an unrounded count) passes the
+  * three exits and runs on into SHORTV, as the original does. */
+ if(c==3u){lmi_shortv(s);return;}
+ danzig(s);
+}
+/* VSSL loop from VSSL (MPTEMP = count - 1). */
+static void vssl(apollo_overlay_state *s){
+ for(;;){
+  DCA(rMPAC);DAS(rMPAC);if(!ai_bzf(s)){TC(02153);(void)overflow(s);}
+  DCA(rMPAC+3);DAS(rMPAC+3);if(!ai_bzf(s)){TC(02161);overflwy(s);}
+  DCA(rMPAC+5);DAS(rMPAC+5);if(!ai_bzf(s)){TC(02167);overflwz(s);}
+  if(CCS(rMPTEMP)!=0u)break;
+  (void)TS(rMPTEMP);
+ }
+ danzig(s);
+}
+void lmi_short_dispatch(apollo_overlay_state *s){
+ /* OPJUMP2 CCS CYR (+); OPJUMP3 TS FBANK; CCS CYR (-); CCS MODE: SHORTT
+  * for a scalar, SHORTV for a vector. */
+ uint8_t c;
+ (void)CCS(rCYR);(void)TS(rFB);(void)CCS(rCYR);c=CCS(rMODE);
+ W[5]=c==2u?02121:02017;
+}
+void lmi_shortt(apollo_overlay_state *s){
+ uint8_t c;
+ CAF(6u);MASK(rCYR);(void)TS(rSR);c=CCS(rCYR);
+ if(c==0u){
+  /* TSSL CA SR; TS MPTEMP. */
+  CA(rSR);(void)TS(rMPTEMP);tssl2(s);return;
+ }
+ /* TSSR INDEX SR; CAF BIT14 (-0 enters past the INDEX); TS MPTEMP; CCS CYR. */
+ CAF(c==3u?BIT14:bit14_indexed(s,rSR));(void)TS(rMPTEMP);
+ switch(CCS(rCYR)){
+ case 0:rightr(s);return;
+ case 1:newmode(s);return;                       /* TCF NEWMODE, C(A) = 0 */
+ case 2:mpacshr(s);return;
+ default:MP(rMPAC+2);mpacshr3(s);return;         /* MPACSHR +1 */
+ }
+}
+void lmi_shortv(apollo_overlay_state *s){
+ uint8_t c;
+ CAF(LOW3);MASK(rCYR);(void)TS(rMPTEMP);c=CCS(rCYR);
+ if(c==0u)vssl(s);else vssr(s,c!=3u);
+}
+/* SETROUND 02272 (A = bits to double; L = 0) to TC Q. */
+static void setround(apollo_overlay_state *s){
+ DOUBLE();if(!TS(rMPAC+2))CAF(ZERO);XCH(rL);RETQ();
+}
+/* DOSSHFT and the GENSCR right shift (MPTEMP = count - 1). */
+static void dosshft(apollo_overlay_state *s){
+ CAF(bit14_indexed(s,rMPTEMP));(void)TS(rMPTEMP);CAF(BIT10);MASK(rADDRWD);
+ if(CCS(rA)==0u)rightr(s);else mpacshr(s);
+}
+/* CAF BIT10; MASK ADDRWD; CCS A; TC ROUNDSUB; TCF DANZIG (GENSCR +12, or
+ * GENSHIFT +3 for a zero count; `ret` is the address after the TC). */
+static void genscr_tail(apollo_overlay_state *s,agc_word ret){
+ CAF(BIT10);MASK(rADDRWD);
+ if(CCS(rA)==0u){TC(ret);roundsub(s,0);}
+ danzig(s);
+}
+/* GENSCR +1 (A = remaining count): AD NEG12; BZMF DOSSHFT; GENSCR +4 AD
+ * NEGONE ... shifting 14 places a pass. `at4` enters at GENSCR +4. */
+static void genscr1(apollo_overlay_state *s,uint8_t at4){
+ for(;;){
+  if(!at4){
+   ADF(NEG12);
+   if(ai_bzmf(s)){dosshft(s);return;}
+  }
+  at4=0;ADF(NEGONE);
+  /* GENSCR +4 */
+  (void)TS(rMPTEMP);CAF(ZERO);XCH(rMPAC);XCH(rMPAC+1);(void)TS(rMPAC+2);
+  switch(CCS(rMPTEMP)){
+  case 0:(void)TS(rMPTEMP);TC(02314);break;     /* TS MPTEMP; TC GENSCR +1 */
+  case 1:TC(02314);break;                      /* TC GENSCR +1 */
+  default:genscr_tail(s,02321);return;
+  }
+ }
+}
+static void genscr(apollo_overlay_state *s){CA(rMPTEMP);genscr1(s,0);}
+static void vright2(apollo_overlay_state *s){
+ uint8_t c;
+ for(;;){
+  ADF(NEG12);
+  if(ai_bzmf(s)){vssr(s,1);return;}
+  ADF(NEGONE);(void)TS(rMPTEMP);CAF(ZERO);(void)TS(rL);
+  XCH(rMPAC);XCH(rMPAC+1);TC(02254);setround(s);DAS(rMPAC);
+  XCH(rMPAC+3);XCH(rMPAC+4);TC(02260);setround(s);DAS(rMPAC+3);
+  XCH(rMPAC+5);XCH(rMPAC+6);TC(02264);setround(s);DAS(rMPAC+5);
+  /* CCS MPTEMP: + TS MPTEMP; +0 TCF VRIGHT2; -0 (a count of exactly 14
+   * more, as AD NEGONE makes it) TCF DANZIG. */
+  c=CCS(rMPTEMP);
+  if(c==3u){danzig(s);return;}
+  if(c==0u)(void)TS(rMPTEMP);
+ }
+}
+static void right(apollo_overlay_state *s){
+ if(CCS(rMODE)!=2u){genscr(s);return;}
+ CA(rMPTEMP);vright2(s);
+}
+static void left(apollo_overlay_state *s){
+ if(CCS(rMODE)==2u){vssl(s);return;}
+ /* GENSCL CS ADDRWD; MP BIT6; TS CYR; TCF TSSL +2. */
+ CS(rADDRWD);MPF(BIT6);(void)TS(rCYR);tssl2(s);
+}
+void lmi_genshift(apollo_overlay_state *s){
+ /* GENSHIFT (A = LOW7): MASK ADDRWD; CCS A. */
+ MASK(rADDRWD);
+ if(CCS(rA)==1u){genscr_tail(s,02223);return;}
+ /* GENSHFT2 TS MPTEMP; CAF BIT8; MP ADDRWD; MASK LOW2; INDEX A; TCF +1. */
+ (void)TS(rMPTEMP);CAF(BIT8);MP(rADDRWD);MASKF(LOW2);
+ switch(W[rA]){
+ case 0:CS(rMPTEMP);ADF(OCT176);(void)TS(rMPTEMP);right(s);return;   /* RIGHT- */
+ case 1:left(s);return;                                              /* LEFT */
+ case 2:CSF(OCT176);AD(rMPTEMP);COM();(void)TS(rMPTEMP);left(s);return; /* LEFT- */
+ default:right(s);return;                                            /* RIGHT */
+ }
+}
+/* GSHIFT CAF LOW7; TS FBANK; TCF GENSHIFT. */
+void lmi_gshift(apollo_overlay_state *s){CAF(LOW7);(void)TS(rFB);lmi_genshift(s);}
+/* TSLC CAF ZERO; TS FBANK; TSLC2 ... ENDTSLC CS MPTEMP; STORE1. */
+void lmi_tslc(apollo_overlay_state *s){
+ uint8_t c;
+ CAF(ZERO);(void)TS(rFB);(void)TS(rMPTEMP);TC(02174);c=branch(s);
+ if(c!=1u){
+  TC(02177);tpagree(s);CA(rMPAC);
+  for(;;){
+   DOUBLE();
+   if(ai_ovsk(s))break;
+   INCR(rMPTEMP);DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);ADS(rMPAC);
+  }
+ }
+ CS(rMPTEMP);(void)TS(W[rADDRWD]);danzig(s);
+}
+
+/* ---- Unary scalar/vector orders (bank 0 and 3) ------------------------ */
+/* COMP 07670 and DCOMP. */
+static void comp(apollo_overlay_state *s){
+ DCS(rMPAC);DXCH(rMPAC);
+ if(CCS(rMODE)<2u){CS(rMPAC+2);(void)TS(rMPAC+2);danzig(s);return;}
+ DCS(rMPAC+3);DXCH(rMPAC+3);DCS(rMPAC+5);DXCH(rMPAC+5);danzig(s);
+}
+void lmi_comp(apollo_overlay_state *s){comp(s);}
+void lmi_sign(apollo_overlay_state *s,const agc_word *k){
+ uint8_t c=k?ai_ccsf(s,k[0]):CCS(W[rADDRWD]);
+ if(c==0u){danzig(s);return;}
+ if(c==2u){comp(s);return;}
+ c=k?ai_ccsf(s,k[1]):CCS(AT(W[rADDRWD]+1u));
+ if(c==2u)comp(s);else danzig(s);
+}
+void lmi_abs(apollo_overlay_state *s){TC(03227);if(branch(s)==2u)comp(s);else danzig(s);}
+/* DSQSUB 03300 to TC Q. */
+static void dsqsub(apollo_overlay_state *s){
+ CA(rMPAC+1);SQUARE();(void)TS(rMPAC+2);CAF(ZERO);XCH(rMPAC+1);MP(rMPAC);DDOUBL();DAS(rMPAC+1);
+ XCH(rMPAC);SQUARE();DAS(rMPAC);RETQ();
+}
+void lmi_dsq(apollo_overlay_state *s){TC(03175);dsqsub(s);danzig(s);}
+/* ENDDOT 07205 to TC DOTRET (Q = DOTRET +1). */
+static void enddot(apollo_overlay_state *s){
+ DXCH(rBUF+1);DAS(rMPAC+1);AD(rMPAC);AD(rBUF);
+ if(TS(rMPAC)){TC(07214);(void)overflow(s);}
+ ai_tc(s,rDOTRET+1u);
+}
+/* VSQSUB 03317 (QXCH DOTRET ... ENDDOT). */
+static void vsqsub(apollo_overlay_state *s){
+ ai_qxch(s,rDOTRET);
+ TC(03322);dsqsub(s);DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
+ TC(03330);dsqsub(s);DXCH(rMPAC+1);DAS(rBUF+1);AD(rMPAC);AD(rBUF);
+ if(TS(rBUF))(void)TS(rOVFIND);
+ DXCH(rMPAC+5);DXCH(rMPAC);TC(03342);dsqsub(s);enddot(s);
+}
+/* DMODE CAF ZERO; TCF NEWMODE. */
+static void dmode(apollo_overlay_state *s){CAF(ZERO);newmode(s);}
+void lmi_vsq(apollo_overlay_state *s){TC(03246);vsqsub(s);dmode(s);}
+/* DOTSUB 07156 (DOTINC set) with the vector operand at C(ADDRWD) or `k`. */
+static void dotsub(apollo_overlay_state *s,const agc_word *k){
+ unsigned base=W[rADDRWD];
+ ai_qxch(s,rDOTRET);
+ TC(07161);dmpsub(s,k);DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
+ CA(rDOTINC);ADS(rADDRWD);
+ TC(07171);dmpsub(s,k?k+(W[rADDRWD]-base):0);DXCH(rMPAC+1);DAS(rBUF+1);AD(rMPAC);AD(rBUF);
+ if(TS(rBUF))(void)TS(rOVFIND);
+ DXCH(rMPAC+5);DXCH(rMPAC);CA(rDOTINC);ADS(rADDRWD);
+ TC(07205);dmpsub(s,k?k+(W[rADDRWD]-base):0);enddot(s);
+}
+void lmi_dot(apollo_overlay_state *s,const agc_word *k){
+ /* DOT TC PREDOT (CAF TWO; TS DOTINC; DOTSUB); DMODE. */
+ TC(07332);CAF(TWO);(void)TS(rDOTINC);dotsub(s,k);dmode(s);
+}
 #undef W

@@ -22,7 +22,7 @@ int main(void){
   case BZMF:if(ai_bzmf(&s))next=k;ai_dca(&s,0);break;
   default:return 2;
   }
-  s.words[5]=(agc_word)next;s.words[7]=0;
+  s.words[5]=(agc_word)next;s.words[7]=0;s.words[2]&=077777u; /* rows hold Q in 15 bits */
   if(fwrite(s.words,sizeof s.words,1,stdout)!=1)return 2;
  }
  return 0;

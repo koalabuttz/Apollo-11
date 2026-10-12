@@ -29,4 +29,27 @@ void lmi_vload(apollo_overlay_state *, const agc_word *k);
 void lmi_pdvl(apollo_overlay_state *, const agc_word *k);
 void lmi_pddl_op(apollo_overlay_state *, const agc_word *k);
 void lmi_push(apollo_overlay_state *);
+/* Scalar arithmetic: DAD, DSU, BDSU (ENDVXV), DMP (DMP1), DMPR. */
+void lmi_dad(apollo_overlay_state *, const agc_word *k);
+void lmi_dsu(apollo_overlay_state *, const agc_word *k);
+void lmi_bdsu(apollo_overlay_state *, const agc_word *k);
+void lmi_dmp(apollo_overlay_state *, const agc_word *k);
+void lmi_dmpr(apollo_overlay_state *, const agc_word *k);
+/* Short shifts: OPJUMP2 for a short shift code, ending with Z at SHORTT
+ * (02017) or SHORTV (02121) in bank 0; those bodies end at DANZIG. */
+void lmi_short_dispatch(apollo_overlay_state *);
+void lmi_shortt(apollo_overlay_state *);
+void lmi_shortv(apollo_overlay_state *);
+/* Addressed shifts: GSHIFT (C(ADDRWD) = shift word), its GENSHIFT tail
+ * (A = LOW7, FBANK 0), and TSLC (store address in ADDRWD). */
+void lmi_gshift(apollo_overlay_state *);
+void lmi_genshift(apollo_overlay_state *);
+void lmi_tslc(apollo_overlay_state *);
+/* COMP, SIGN, ABS, DSQ, VSQ and DOT. */
+void lmi_comp(apollo_overlay_state *);
+void lmi_sign(apollo_overlay_state *, const agc_word *k);
+void lmi_abs(apollo_overlay_state *);
+void lmi_dsq(apollo_overlay_state *);
+void lmi_vsq(apollo_overlay_state *);
+void lmi_dot(apollo_overlay_state *, const agc_word *k);
 #endif

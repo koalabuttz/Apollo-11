@@ -24,10 +24,25 @@ int main(void){
   case 9:lmi_pdvl(&s,k);break;
   case 10:lmi_pddl_op(&s,k);break;
   case 11:lmi_push(&s);break;
+  case 12:lmi_dad(&s,k);break;
+  case 13:lmi_dsu(&s,k);break;
+  case 14:lmi_bdsu(&s,k);break;
+  case 15:lmi_dmp(&s,k);break;
+  case 16:lmi_dmpr(&s,k);break;
+  case 17:lmi_short_dispatch(&s);if(s.words[5]==02121u)lmi_shortv(&s);else lmi_shortt(&s);break;
+  case 18:lmi_gshift(&s);break;
+  case 19:lmi_tslc(&s);break;
+  case 20:lmi_comp(&s);break;
+  case 21:lmi_sign(&s,k);break;
+  case 22:lmi_abs(&s);break;
+  case 23:lmi_dsq(&s);break;
+  case 24:lmi_vsq(&s);break;
+  case 25:lmi_dot(&s,k);break;
   default:return 2;
   }
   out[0]=4;for(i=0;i<4u;++i)if(in[1+i]&&s.words[5]==in[1+i]){out[0]=(uint16_t)i;break;}
   for(i=0;i<2048u;++i)out[1+i]=s.words[i];
+  out[1+2]&=077777u; /* rows hold Q in 15 bits */
   if(fwrite(out,sizeof out,1,stdout)!=1)return 2;
  }
  return 0;
