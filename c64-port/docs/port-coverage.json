@@ -2815,8 +2815,50 @@
       "sha256": "21d54203ecc6dae03f693943305486215212989ff907250f04e16d850b47c633",
       "bytes": 16414,
       "lines": 784,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_daps.c"
+          ],
+          "scope": "All 489 words from every original entry point (PITCHDAP, YAWDAP and DAPINIT T5 tasks, the four HACK returns, PCOPY+1/YCOPY+1) to HACK/RESUME/NOQRSM or the caller's return: CDU rate limit, error limit, cascade filters, actuator limit, TVC commands and channel 14 drive bits, precompensation and copy cycles. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-DAPS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z PITCHDAP 2530, YAWDAP 2732, DAPINIT 3107, HACK return 2541/2543/2743/2745, or PCOPY+1 2675/YCOPY+1 3051 with Q a caller's return 4000-7777; FB 20, EB E6, coherent BB; any raw A/L, erasable contents and channel 14.",
+          "frontiers": "HACK 3533, RESUME 5333, NOQRSM 5335, caller's return (TC Q).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche RESUME and NOQRSM (Lane A)",
+          "TVCSTROKETEST HACK (Lane G, cm-tvc-stroke)",
+          "T5 interrupt delivery via T5LOC",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-source-map.json",
+            "sha256": "1e01fb3ab9032b334224af2807528c9cb7d4a62e5a2dfdb42a1d8b517f13a514"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-assembly-comparison.json",
+            "sha256": "17cf096848fce4175008dbcc7730534c7e4f89e4ba06dfe6e27d40ba335b24f7"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-checks.log",
+            "sha256": "ab62c99184d1c801638d85a0e0140ffaf853b61436148ed6da08c019d3ab272a"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-results.json",
+            "sha256": "363fd4b186bea4fa44dd00104a7928e3402aae33f2f53bfbb0af6bf818c68e6b"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCEXECUTIVE.agc",
@@ -2854,8 +2896,8 @@
             "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
-            "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-assembly-comparison.json",
+            "sha256": "c82a77f47e6d3df4569bb1eede740c1e8415b9dd4f10dd9097470c0672d504d7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-checks.log",
@@ -2874,8 +2916,49 @@
       "sha256": "ddc0ee4a00a30a7145d4204350833182658aacfbd38dccf84171a22adc81aee8",
       "bytes": 10796,
       "lines": 414,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_init.c"
+          ],
+          "scope": "All 259 words from each of the 9 original entry points (TVCDAPON, MRCLEAN, TVCINIT1, MASSPROP and NEEDLER returns, TVCINIT4, WAITLIST return, PRESWTCH, SWICHOVR +5, S40.15) to the next RESUME/IBNKCALL/WAITLIST/TC RTRNLOC/caller-return transfer, the CSMN10 data run on TS VARK overflow, channel 11 and INHINT. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-INIT.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 9 original entry points, FB 17, EB E6, coherent BB; any raw A/L/Q, erasable contents, channel 11 and interrupt enable; S40.15 with Q 4000-7777.",
+          "frontiers": "RESUME 5333, IBNKCALL 4740 (Q 2175/2323), WAITLIST 5245 (Q 2341), TC RTRNLOC 1613 (Q 2422), the S40.15 caller's return, TC 1703 (Q 2503) after TS VARK overflow.",
+          "data_validity": "Original constants, coefficients and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche RESUME, WAITLIST and INTER-BANK routines (Lane A) and their site operands",
+          "MASSPROP (cm-tvc-massprop), NEEDLER, TVCEXEC (cm-tvc-exec), DAPINIT (TVCDAPS), PINBRNCH",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
+            "sha256": "bc7ab0f370a9483a078c9c36fef39ea7cf3ff19a335919dea1c77862b874373f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-assembly-comparison.json",
+            "sha256": "648b6b9c851435ae1c321e01b5b24cadb07cecae5a3e463082b42d31304c414e"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-checks.log",
+            "sha256": "e40aa4e0ad76d8ee8d9e4ea9d8e790473dac95a00a387a883330f391dcc6b0ec"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-results.json",
+            "sha256": "85e852aef606fd24bcbf360581911c301d688411a4f14c17e2f6426a4c6c8338"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCMASSPROP.agc",
@@ -2912,8 +2995,8 @@
             "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
-            "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-assembly-comparison.json",
+            "sha256": "488f34aeaf2ac07469195d47ee1cd127beccdbe254a3e11aa40c930cf5a62aef"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-checks.log",
@@ -2932,8 +3015,49 @@
       "sha256": "eb36e5be74c986022d1cb1adbab3da3de222d9e9675a13d75992f621e5738ac1",
       "bytes": 9821,
       "lines": 256,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_restarts.c"
+          ],
+          "scope": "All 90 words from each of the 6 original entry points (REDOTVC, ENABL2, CMDSOUT T5 tasks, CHKSTRK and FINCOPY+3 returns, EXRSTRT task) to the next WAITLIST/RESUME/NOQRSM/POSTJUMP/IBNKCALL/ISWCALL or TVCEXECUTIVE restart-point transfer, with channel 12/14 writes. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-RESTARTS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 6 original entry points, FB 16, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 12/14; EXRSTRT with TVCEXPHS 1..6; REDOTVC reaching FINCOPY with TVCPHASE <= 9.",
+          "frontiers": "WAITLIST 5245 (Q 3150), RESUME 5333, NOQRSM 5335, POSTJUMP 4701 (Q 3227/3237), IBNKCALL 4740 (Q 3231), ISWCALL 4744 (Q 3243), TVCEXECUTIVE 3003/3011/3040/3043/3121/3132.",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche WAITLIST, RESUME/NOQRSM and INTER-BANK routines (Lane A) and their site operands",
+          "MRCLEAN, TVCINIT4, SWICHOVR (TVCINITIALIZE), PCOPY/YCOPY copycycles (TVCDAPS), TVCEXECUTIVE restart points (cm-tvc-exec)",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-source-map.json",
+            "sha256": "b0220cf1b6d9fc11f0f2b8e42cfaf234d8bcb52bf53c31733e28004fef8be766"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-assembly-comparison.json",
+            "sha256": "0c6083357a4bf07061d551b67f186a3975305e31330a14cedda3d0fdb7503d02"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-checks.log",
+            "sha256": "ad40e21811441954104092322ea64832ae2690886bf15788c84a7f185f020b72"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-results.json",
+            "sha256": "478c481176f3abc507e4821e3728ccaad4791ae765b189089cb43259fb324d97"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCROLLDAP.agc",
@@ -2941,8 +3065,49 @@
       "sha256": "e428b4f8811ab77ba4088c91dd170effb016b3dc9f46998ba59bb3ff48cf14c9",
       "bytes": 18686,
       "lines": 619,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_roll.c"
+          ],
+          "scope": "All 278 words from both original entry points (ROLLDAP waitlist task, NOROLL1 T6 task) to TASKOVER/NOQRSM, every phase-plane region, the firing-time division and limits, channel 6 and 13 writes. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-ROLL.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z ROLLDAP 3272 or NOROLL1 3676, FB 16, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 6/13.",
+          "frontiers": "TASKOVER 5324, NOQRSM 5335.",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche TASKOVER and NOQRSM (Lane A)",
+          "T6 interrupt delivery to NOROLL1 via T6LOC",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-source-map.json",
+            "sha256": "917b9f3793877b6b4e2326c3f6644539c8342f3df1ace11a46d3129d59f641ca"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-assembly-comparison.json",
+            "sha256": "7e0c69b36f21828504dda3891a40ef1a0e2d89a7eb4d68aaf20ebfe038d88f45"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-checks.log",
+            "sha256": "b8def3e600caaba1e4109a819f3a755fc35d6cd645d64a3550d59c58e74e92d7"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-results.json",
+            "sha256": "613852b51c7dee79ac2498c86c48cc0c85d1450e45e148d12703a0c42bb601a2"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCSTROKETEST.agc",
@@ -2950,8 +3115,49 @@
       "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
       "bytes": 8776,
       "lines": 260,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_stroke.c"
+          ],
+          "scope": "All 73 words from each of the 4 original entry points (STRKTSTI job, HACK from the DAPs, its WAITLIST return, HACKWLST task) to the next ENDOFJOB/WAITLIST/TC BUNKER transfer, with the channel 14 write and INHINT. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-STROKE.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 4 original entry points, FB 20, EB E6, coherent BB; any raw A/L/Q, erasable contents, channel 14 and interrupt enable; HACK, its WAITLIST return and HACKWLST with CARD -4..-1.",
+          "frontiers": "ENDOFJOB 5217, WAITLIST 5245 (Q 3537), TC BUNKER 1657 (Q 3556/3575/3577/3612).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche Executive ENDOFJOB, WAITLIST and TASKOVER (Lane A)",
+          "TVC DAP return held in BUNKER (TVCDAPS)",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-source-map.json",
+            "sha256": "4ad0114d20578bd970d34bf38bcf48fb34c84cbe15a01c27a1a499c3adaf1bc0"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-assembly-comparison.json",
+            "sha256": "1c0b9eb7fbb99248ee5feb9b04a46d23da3bdef9da6dcb5b677a50cd6ddb571f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-checks.log",
+            "sha256": "b76fd6b178e0d0625b3bb0e2ab1141632095b5b5404b7fda1f3ab946f84f9ee4"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-results.json",
+            "sha256": "19355078f573167ad430f7a401d8f84fc141bcb10c70d0d827373285e8e4d7e4"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/UPDATE_PROGRAM.agc",
