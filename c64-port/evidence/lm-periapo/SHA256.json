@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-periapo",
+  "release": "evidence-lm-periapo",
+  "files": {
+    "lm-periapo-1.map": {
+      "sha256": "f3e8e77365b9426b48cb4c08cd88cd47c8fac3c1c8124857387146a6cf176da3",
+      "bytes": 23103,
+      "store": "release"
+    },
+    "lm-periapo-1.prg": {
+      "sha256": "d4d44c0f6802ad1232380cd2e67723188bdfd62a88c04624bb02362a111502ad",
+      "bytes": 28562,
+      "store": "release"
+    },
+    "lm-periapo-2.map": {
+      "sha256": "b4db56d6af574b85174c5469a016c0f26168a3632b5dfcbda3c7f7c316c84a90",
+      "bytes": 14280,
+      "store": "release"
+    },
+    "lm-periapo-2.prg": {
+      "sha256": "d08707fa66f46d53a00a0be9ebbd84747bf75f8f675cb11885d23341b08be754",
+      "bytes": 12734,
+      "store": "release"
+    },
+    "lm-periapo-3.map": {
+      "sha256": "d731bfb164bde63cc24e156a7867d37a362239b4b7c58c51bb2724f9b7450812",
+      "bytes": 27348,
+      "store": "release"
+    },
+    "lm-periapo-3.prg": {
+      "sha256": "86c068f0e96dcf0f7fff927f78fe4bd70c62d63aa2354ba5b3821903a2dce97a",
+      "bytes": 29856,
+      "store": "release"
+    },
+    "lm-periapo-4.map": {
+      "sha256": "259ccb327b6618cdcf667275a3d845542761b7219fe3521b6cf9730a1a17f070",
+      "bytes": 31095,
+      "store": "release"
+    },
+    "lm-periapo-4.prg": {
+      "sha256": "71b8fcf36bf44153b9e44a50081c2d9a51f955910f9aa46cb805afe01863561d",
+      "bytes": 44305,
+      "store": "release"
+    },
+    "lm-periapo-checks.log": {
+      "sha256": "cf079a38c92e916b93fb4744bb6587f62d16fac12331c3e4b3b2b06db698fe67",
+      "bytes": 857,
+      "store": "tree"
+    },
+    "lm-periapo-phase-steps.json": {
+      "sha256": "921cb0fc8aa2e7e5b14c7311361785828cbcd8809f17001df5697744734e22cc",
+      "bytes": 1113,
+      "store": "tree"
+    },
+    "lm-periapo-reference.snapshots.bin.xz": {
+      "sha256": "a6570a663e49f0ba624be7c405ff935d449a785f77e74f2cf19957455fab0c8a",
+      "bytes": 36439452,
+      "store": "release"
+    },
+    "lm-periapo-results.json": {
+      "sha256": "9b4185b0d8d2e0aff2f40ec0466241a2f0c2abeb6f60ee73e86cd6f87e1951a4",
+      "bytes": 2061,
+      "store": "tree"
+    },
+    "lm-periapo-source-map.json": {
+      "sha256": "12b5d3fb6ffaba9f2c3847bf0aa5ef0d55ac720dca47bcf6914e1b8ff8088596",
+      "bytes": 14513,
+      "store": "tree"
+    },
+    "lm-periapo-source-stream.json": {
+      "sha256": "35a27d4488f48dda21d4285642609d59e3e2d12ff67cf3c912c53b46ece87900",
+      "bytes": 362,
+      "store": "tree"
+    },
+    "lm-periapo-target-states.json": {
+      "sha256": "ad7fa20ff68c9ba56925c8f56dc0c3c5e462461c421a5c0c49de4f57cc8a0d48",
+      "bytes": 336,
+      "store": "tree"
+    }
+  }
+}
