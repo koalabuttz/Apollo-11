@@ -653,7 +653,9 @@ class Compiler:
                     self.add_start(p + 1, 'i', 'after TC INTPRET')
                     return st, []
                 if self.in_file(tz):
-                    self.add_start(nxt, 'b', 'return from %s' % (lab or self.where(tz)))
+                    # (A TC followed by data, as TC SBANDANT +2, does not return.)
+                    if self.is_basic(nxt):
+                        self.add_start(nxt, 'b', 'return from %s' % (lab or self.where(tz)))
                     # The return, and the skips INCR Q makes, stay in this routine.
                     rets = [nxt] + ([nxt + 1, nxt + 2, nxt + 3] if self.incr_q else [])
                     rets = [q for q in rets if self.is_basic(q)]
