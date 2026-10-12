@@ -40,6 +40,25 @@ def kalcmanu_joint(cm):
     return out
 
 
+def anglfind_joint():
+    """MFI at identity and axis rotations (AM = ARCCOS(1), the ACOSST .5
+    edge), and COF with each ordering of its components, ties included
+    (COFMAXGO's BMN arms)."""
+    out = []
+    for one in (0o10000, 0o20000):
+        for signs in ((1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1)):
+            st = {'MFI+%d' % k: 0 for k in range(18)}
+            for i, sg in enumerate(signs):
+                st['MFI+%d' % (8 * i)] = one if sg > 0 else ones(-one)
+                st['MFI+%d' % (8 * i + 1)] = 0 if sg > 0 else 0o77777
+            out.append(st)
+    for a, b, c in ((1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1),
+                    (2, 2, 1), (1, 2, 2), (2, 1, 2), (1, 1, 1)):
+        out.append({'COF': a * 0o2000, 'COF+1': 0, 'COF+2': b * 0o2000, 'COF+3': 0,
+                    'COF+4': c * 0o2000, 'COF+5': 0})
+    return out
+
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -219,6 +238,10 @@ SPECS = {
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
                        'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
+        # Half the cases start from one MFI or COF set (anglfind_joint).
+        'joint_states': {'*': anglfind_joint()},
+        # -fno-inline keeps KALCMAN3's whole path in one diagnostic.
+        'c64_flags': ['-fno-inline'],
         'freeze_stride': 64,
     },
     'lm-orbital-integration': {

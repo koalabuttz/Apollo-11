@@ -5,7 +5,7 @@
 ATT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 ATT_SRC = src/lm_attitude_maneuver.c src/cm_attitude_maneuver.c tests/attitude_maneuver_target.c $(ATT_COMMON)
 ATT_HDR = include/lm_attitude_maneuver.h include/cm_attitude_maneuver.h tests/interp_case.h tests/attitude_maneuver_vectors.h tests/attitude_maneuver_c64_vectors.h
-ATT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+ATT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
 .PHONY: test-attitude-maneuver sanitize-attitude-maneuver c64-attitude-maneuver vice-attitude-maneuver attitude-maneuver-differential
 all: build/test-attitude-maneuver
 test: test-attitude-maneuver

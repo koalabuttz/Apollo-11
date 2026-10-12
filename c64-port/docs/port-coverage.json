@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -323,15 +323,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
-            "sha256": "d4cc58be9c79722f67eac7b30f3faa36685fe4c22b2cf2c925bc3f033009fa60"
+            "sha256": "05774243909105baa21c1ac8e85f10a889df64ac63131f06c8479916bc8787f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
-            "sha256": "21d4f839614b2c951131ce2984b79e4c191c3d0d03e6447ae235d07d1e3415f9"
+            "sha256": "8000b12456bf54921f852160e8aea6cc6e2aa1bff3237197d95627c27e7c9039"
           },
           "c64_execution_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
-            "sha256": "2dada7532d62bf9a00ecdecd41320fbf80e843ee14b0ab6016e2a45a6a03dd77"
+            "sha256": "047fef345c1807088a0b5c37950bf9d8d443adb99cd03e0ccf59e49c5ff80876"
           }
         }
       }
@@ -4077,7 +4077,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI, as the routine leaves it), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables (BCDU, CPHI, MIS, MFS, MFI, TMIS, TMFI, SCAXIS, POINTVSM).",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI, as the routine leaves it), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables (BCDU, CPHI, MIS, MFS, MFI, TMIS, TMFI, SCAXIS, POINTVSM). On the C64 every branch outcome is run except the three on lm_interp_orders.c:277 (DP add overflow propagated to OVFIND) and :1136 (ACOS of a major part of exactly .5 with a negative minor part), which only whole-maneuver runs from KALCMAN3 reach and which do not fit C64 RAM; those outcomes are compared on the host only.",
         "external_continuations": [
           "ALARM, BANKCALL, IBNKCALL, PHASCHNG, UPFLAG, DOWNFLAG, MAKECADR, CURTAINS, WAITLIST, STOPRATE and LOADCDUD with their inline words",
           "POSTJUMP with its inline CADR (no return)",
@@ -4094,15 +4094,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
-            "sha256": "d4cc58be9c79722f67eac7b30f3faa36685fe4c22b2cf2c925bc3f033009fa60"
+            "sha256": "05774243909105baa21c1ac8e85f10a889df64ac63131f06c8479916bc8787f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
-            "sha256": "21d4f839614b2c951131ce2984b79e4c191c3d0d03e6447ae235d07d1e3415f9"
+            "sha256": "8000b12456bf54921f852160e8aea6cc6e2aa1bff3237197d95627c27e7c9039"
           },
           "c64_execution_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
-            "sha256": "2dada7532d62bf9a00ecdecd41320fbf80e843ee14b0ab6016e2a45a6a03dd77"
+            "sha256": "047fef345c1807088a0b5c37950bf9d8d443adb99cd03e0ccf59e49c5ff80876"
           }
         }
       }
