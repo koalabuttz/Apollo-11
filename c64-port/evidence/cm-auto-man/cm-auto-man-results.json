@@ -1,0 +1,21 @@
+{
+ "toolchain": "llvm-mos SDK v23.3.0 (deps/llvm-mos), VICE x64sc 3.7.1 PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "cm-auto-man: 128 frozen original AUTOMATIC_MANEUVERS states, entry refusals: PASS",
+  "PASS 65536 original AUTOMATIC_MANEUVERS oracle states equal native 2053-word rows {'returned': 65536} c18bb36390606420397bc9e9876f2df389202bc253fa626fc6f404ceeba4d94a",
+  "PASS 333 original AUTOMATIC_MANEUVERS words mapped; listing equals rope; 19 fixed constants, double-word, 2CADR and INDEX tables equal native literals; TC returns equal the listing",
+  "PASS 333 emitted AUTOMATIC_MANEUVERS.agc words equal the original Comanche055 rope",
+  "cm-auto-man: 128 frozen original AUTOMATIC_MANEUVERS states, entry refusals: PASS",
+  "PASS 65536 original AUTOMATIC_MANEUVERS oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} c18bb36390606420397bc9e9876f2df389202bc253fa626fc6f404ceeba4d94a"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL cm-auto-man.prg: 128 checks, 0 failures"
+  ],
+  "prg": "cm-auto-man.prg",
+  "prg_sha256": "ccab0315dcb9235f0aadffa66515196ebe56ee0499a5c8e87eecd9bc66544da4",
+  "prg_bytes": 20033,
+  "heap_start": "$7640",
+  "what_runs": "128 frozen oracle rows (every entry, every exit, full 2048-word image compared) regenerated from tests/cm_auto_man_cases.c on the C64 and run through the same native cm_auto_man"
+ }
+}

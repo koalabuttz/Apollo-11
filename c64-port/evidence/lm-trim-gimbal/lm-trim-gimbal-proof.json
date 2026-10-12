@@ -1,0 +1,27 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 16384,
+ "compared_cases": 16211,
+ "compared_sha256": "08cc861626e2259c8fd5d019a03b8e2abb0ed231d0c49926c4748a74db49d38f",
+ "outcomes": {
+  "21,3435:returned": 4096,
+  "ACDT+C12:returned": 4096,
+  "GTS:closeout": 3923,
+  "GTS:refused": 173,
+  "TIMEGMBL:returned": 4096
+ },
+ "refused_gts_cases": 173,
+ "refused_gts_oracle_outcomes": {
+  "closeout": 45,
+  "none": 128
+ },
+ "entries": [
+  "21,3077 GTS",
+  "16,3736 ACDT+C12",
+  "21,3330 TIMEGMBL",
+  "21,3435"
+ ],
+ "boundary": "each entry from a random image (FB bank 21 or 16, EB 6, random channel 12, trim gimbal inputs of random widths) to GTS's DTCB to CLOSEOUT, ACDT+C12's TC Q, TIMEGMBL's IBNKCALL arriving at ACDT+C12, or 21,3435's TC RUPTREG2; compared: outcome, channel 12 and all 2048 erasable words",
+ "full_physical_words": 2048
+}

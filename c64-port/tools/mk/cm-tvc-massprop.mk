@@ -15,6 +15,7 @@ test-cm-tvc-massprop: build/test-cm-tvc-massprop
 	./build/test-cm-tvc-massprop
 	python3 tools/cm_tvc_massprop_differential.py
 	python3 tools/cm_tvc_massprop_source.py
+	python3 tools/cm_flight_assembly_comparison.py cm-tvc-massprop TVCMASSPROP.agc
 sanitize-cm-tvc-massprop: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer $(CM_TVC_MASSPROP_SRC) $(CM_TVC_MASSPROP_TEST) -o build/test-cm-tvc-massprop-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-tvc-massprop-sanitize

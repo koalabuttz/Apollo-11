@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-cert",
+  "release": "evidence-lanec-ev-cert",
+  "files": {
+    "lanec-ev-c64-results.json": {
+      "sha256": "6052c677af01d5af204154d7b543b6ddda5b9f2381b16b24daeb1d7ab4b9f9d5",
+      "bytes": 1363,
+      "store": "tree"
+    },
+    "lanec-ev-checks.log": {
+      "sha256": "5530b052153c9dbc4242015976e4bd23488f2f9b7db933ab83710d001c075fba",
+      "bytes": 2968,
+      "store": "tree"
+    },
+    "lanec-ev-comparison.json": {
+      "sha256": "586c0221819483432987dabe9699c2449f3a28cd76cb6b8dbbee8ffa82d0c2d4",
+      "bytes": 3108,
+      "store": "tree"
+    },
+    "lanec-ev-lm-source-map.json": {
+      "sha256": "8d343e50353c3a92e6b1b263aaaa44fefe05360457d22034b3cd48178836d3b9",
+      "bytes": 238709,
+      "store": "tree"
+    }
+  }
+}

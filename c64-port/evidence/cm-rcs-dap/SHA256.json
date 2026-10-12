@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-rcs-dap",
+  "release": "evidence-cm-rcs-dap",
+  "files": {
+    "cm-rcs-dap-assembly-comparison.json": {
+      "sha256": "ce0e9594177ccdaa1387be832787d0ad72e3782033946e494f3ce014c2fe9835",
+      "bytes": 69453,
+      "store": "tree"
+    },
+    "cm-rcs-dap-checks.log": {
+      "sha256": "b88305429761eb36f27b3c136e4e848575a77b13f8b2ef60d92f44a052f1f9ad",
+      "bytes": 874,
+      "store": "tree"
+    },
+    "cm-rcs-dap-reference.deltas.xz": {
+      "sha256": "fc03866df0f156a978de9b5f73dca45c899a704aee00218904a0a17255808020",
+      "bytes": 1471540,
+      "store": "release"
+    },
+    "cm-rcs-dap-results.json": {
+      "sha256": "53125955c7e0932050d7dcd661c3f439d7fd0d9f64bd1cf3d70cd6c44b482c74",
+      "bytes": 1454,
+      "store": "tree"
+    },
+    "cm-rcs-dap-source-map.json": {
+      "sha256": "9bccf46ce73fcb26d40a9f2d3ce1f9386f1b80906b8dc068c343997683eb06bb",
+      "bytes": 112811,
+      "store": "tree"
+    },
+    "cm-rcs-dap-source-stream.json": {
+      "sha256": "f278ed315c5fbb4c7c76066f15e1c2e6f39eb3a347692753d79e77c6f3d3c996",
+      "bytes": 371,
+      "store": "tree"
+    },
+    "cm-rcs-dap.map": {
+      "sha256": "ce5f0e80326fc1decb58ad76f4f82eb03db6b37c779669c1514f24243493110e",
+      "bytes": 12736,
+      "store": "release"
+    },
+    "cm-rcs-dap.prg": {
+      "sha256": "699cb22b701cb5420ed11f11aaa506c9c584867572912849f98e8209d9ede000",
+      "bytes": 29806,
+      "store": "release"
+    }
+  }
+}

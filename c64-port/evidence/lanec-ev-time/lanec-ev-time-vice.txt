@@ -1,0 +1,1 @@
+PASS: VICE PAL lanec-ev-time.prg: 231 checks, 0 failures

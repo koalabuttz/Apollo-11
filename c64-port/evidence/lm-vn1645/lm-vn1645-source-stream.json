@@ -1,0 +1,11 @@
+{
+  "archive": "build/lm-vn1645-reference.snapshots.bin.xz",
+  "decoded_sha256": "1aba483e1ea17bb1731069cd943f21602be12b73e1c60b55385f291e2831ab60",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "1": 63726,
+    "3": 1810
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

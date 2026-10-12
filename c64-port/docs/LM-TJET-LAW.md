@@ -61,14 +61,20 @@ paths.
   builds the yaAGC oracle `tools/lm_tjet_law_reference.c`, runs every case
   in the unmodified rope to the same return, and requires the native
   snapshot to be byte-identical in all 2,048 erasable words and A, L, Q. The
-  digests are frozen into `tests/lm_tjet_law_vectors.h`, and every
-  thirty-second into `tests/lm_tjet_law_c64_vectors.h`.
+  digests are frozen into `tests/lm_tjet_law_vectors.h`.
+- `tools/lane_f_c64_rows.py` chooses the C64 rows
+  (`tests/lm_tjet_law_c64_vectors.h`, 256 cases). It runs every host case with
+  branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
+  until every entry, outcome and branch the host cases take is taken
+  (23 cases), then spreads the rest with a stride of 97. The per-branch
+  host and C64 counts are in `evidence/lm-tjet-law/lm-tjet-law-c64-cover.json`.
 - `make test-lm-tjet-law` and `make sanitize-lm-tjet-law` check every
   digest (strict and ASAN/UBSAN), require every case to reach the caller's
   return, require every reachable branch to be taken, and check the
   refusals.
-- `make vice-lm-tjet-law` runs every thirty-second case (512) on the C64 in
-  VICE.
+- `make vice-lm-tjet-law` runs the 256 C64 rows in VICE: every entry, every
+  outcome and every branch the host cases take. The VICE log records the
+  PRG's SHA-256.
 
 Branches no admitted input reaches, documented in the host test:
 

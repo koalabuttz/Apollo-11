@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-ags-init",
+  "release": "evidence-lm-ags-init",
+  "files": {
+    "lm-ags-init-c64-cover.json": {
+      "sha256": "0ec008aab5f726933211260fd10e20011c8cf2167fc607394d6b62eb9fc79246",
+      "bytes": 14412,
+      "store": "tree"
+    },
+    "lm-ags-init-host.log": {
+      "sha256": "06e7d21c0c72039629a80a22c49113bd223e811ac336a3912c6d07707751ea90",
+      "bytes": 1796,
+      "store": "tree"
+    },
+    "lm-ags-init-proof.json": {
+      "sha256": "cf1d1ee58bc3740da972acef02ca68353cffd534a1cf49311f042c4fa53f694e",
+      "bytes": 1804,
+      "store": "tree"
+    },
+    "lm-ags-init-source-map.json": {
+      "sha256": "9877313df882a3420d55d56970a6a1a52d26718ef7a78841156715c8a4f9e390",
+      "bytes": 4911,
+      "store": "tree"
+    },
+    "lm-ags-init-vice.log": {
+      "sha256": "be605d662273a0ff27c1b47608042254de83b3df72754f121f7f92c586bcb8ae",
+      "bytes": 191,
+      "store": "tree"
+    }
+  }
+}

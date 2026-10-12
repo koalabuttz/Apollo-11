@@ -3,6 +3,11 @@
   "milestone": "cm-tvc-massprop",
   "release": "evidence-cm-tvc-massprop",
   "files": {
+    "cm-tvc-massprop-assembly-comparison.json": {
+      "sha256": "488f34aeaf2ac07469195d47ee1cd127beccdbe254a3e11aa40c930cf5a62aef",
+      "bytes": 10721,
+      "store": "tree"
+    },
     "cm-tvc-massprop-checks.log": {
       "sha256": "6fdf3a95ef016cede798f90a045ec3529dda992f43132fe650f9f2ba2aae025b",
       "bytes": 695,

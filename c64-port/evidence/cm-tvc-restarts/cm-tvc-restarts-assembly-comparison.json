@@ -1,0 +1,640 @@
+{
+ "source_file": "Comanche055/TVCRESTARTS.agc",
+ "original_sha256": "eb36e5be74c986022d1cb1adbab3da3de222d9e9675a13d75992f621e5738ac1",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "method": "yaYUL listing of the unchanged file (deps/cm-flight-fixture/assembly.lst) against the original Comanche055 rope, word by word; no native code read",
+ "emitted_words": 90,
+ "mismatches": 0,
+ "words": [
+  {
+   "source_line": 137,
+   "bank": "16",
+   "address": "3140",
+   "listing": "22016",
+   "rope": "22016"
+  },
+  {
+   "source_line": 138,
+   "bank": "16",
+   "address": "3141",
+   "listing": "00006",
+   "rope": "00006"
+  },
+  {
+   "source_line": 139,
+   "bank": "16",
+   "address": "3142",
+   "listing": "22012",
+   "rope": "22012"
+  },
+  {
+   "source_line": 141,
+   "bank": "16",
+   "address": "3143",
+   "listing": "11651",
+   "rope": "11651"
+  },
+  {
+   "source_line": 142,
+   "bank": "16",
+   "address": "3144",
+   "listing": "13146",
+   "rope": "13146"
+  },
+  {
+   "source_line": 143,
+   "bank": "16",
+   "address": "3145",
+   "listing": "13152",
+   "rope": "13152"
+  },
+  {
+   "source_line": 145,
+   "bank": "16",
+   "address": "3146",
+   "listing": "34334",
+   "rope": "34334"
+  },
+  {
+   "source_line": 146,
+   "bank": "16",
+   "address": "3147",
+   "listing": "05245",
+   "rope": "05245"
+  },
+  {
+   "source_line": 148,
+   "bank": "16",
+   "address": "3150",
+   "listing": "03253",
+   "rope": "03253"
+  },
+  {
+   "source_line": 148,
+   "bank": "16",
+   "address": "3151",
+   "listing": "34066",
+   "rope": "34066"
+  },
+  {
+   "source_line": 150,
+   "bank": "16",
+   "address": "3152",
+   "listing": "47700",
+   "rope": "47700"
+  },
+  {
+   "source_line": 151,
+   "bank": "16",
+   "address": "3153",
+   "listing": "71644",
+   "rope": "71644"
+  },
+  {
+   "source_line": 152,
+   "bank": "16",
+   "address": "3154",
+   "listing": "10000",
+   "rope": "10000"
+  },
+  {
+   "source_line": 153,
+   "bank": "16",
+   "address": "3155",
+   "listing": "13240",
+   "rope": "13240"
+  },
+  {
+   "source_line": 154,
+   "bank": "16",
+   "address": "3156",
+   "listing": "13163",
+   "rope": "13163"
+  },
+  {
+   "source_line": 156,
+   "bank": "16",
+   "address": "3157",
+   "listing": "41644",
+   "rope": "41644"
+  },
+  {
+   "source_line": 157,
+   "bank": "16",
+   "address": "3160",
+   "listing": "75016",
+   "rope": "75016"
+  },
+  {
+   "source_line": 158,
+   "bank": "16",
+   "address": "3161",
+   "listing": "00006",
+   "rope": "00006"
+  },
+  {
+   "source_line": 159,
+   "bank": "16",
+   "address": "3162",
+   "listing": "13244",
+   "rope": "13244"
+  },
+  {
+   "source_line": 161,
+   "bank": "16",
+   "address": "3163",
+   "listing": "35010",
+   "rope": "35010"
+  },
+  {
+   "source_line": 162,
+   "bank": "16",
+   "address": "3164",
+   "listing": "65005",
+   "rope": "65005"
+  },
+  {
+   "source_line": 163,
+   "bank": "16",
+   "address": "3165",
+   "listing": "00006",
+   "rope": "00006"
+  },
+  {
+   "source_line": 164,
+   "bank": "16",
+   "address": "3166",
+   "listing": "05012",
+   "rope": "05012"
+  },
+  {
+   "source_line": 165,
+   "bank": "16",
+   "address": "3167",
+   "listing": "33257",
+   "rope": "33257"
+  },
+  {
+   "source_line": 166,
+   "bank": "16",
+   "address": "3170",
+   "listing": "55312",
+   "rope": "55312"
+  },
+  {
+   "source_line": 167,
+   "bank": "16",
+   "address": "3171",
+   "listing": "33263",
+   "rope": "33263"
+  },
+  {
+   "source_line": 168,
+   "bank": "16",
+   "address": "3172",
+   "listing": "54030",
+   "rope": "54030"
+  },
+  {
+   "source_line": 170,
+   "bank": "16",
+   "address": "3173",
+   "listing": "15333",
+   "rope": "15333"
+  },
+  {
+   "source_line": 172,
+   "bank": "16",
+   "address": "3174",
+   "listing": "22016",
+   "rope": "22016"
+  },
+  {
+   "source_line": 174,
+   "bank": "16",
+   "address": "3175",
+   "listing": "35016",
+   "rope": "35016"
+  },
+  {
+   "source_line": 175,
+   "bank": "16",
+   "address": "3176",
+   "listing": "00006",
+   "rope": "00006"
+  },
+  {
+   "source_line": 176,
+   "bank": "16",
+   "address": "3177",
+   "listing": "05012",
+   "rope": "05012"
+  },
+  {
+   "source_line": 178,
+   "bank": "16",
+   "address": "3200",
+   "listing": "33261",
+   "rope": "33261"
+  },
+  {
+   "source_line": 179,
+   "bank": "16",
+   "address": "3201",
+   "listing": "55312",
+   "rope": "55312"
+  },
+  {
+   "source_line": 180,
+   "bank": "16",
+   "address": "3202",
+   "listing": "37700",
+   "rope": "37700"
+  },
+  {
+   "source_line": 181,
+   "bank": "16",
+   "address": "3203",
+   "listing": "54030",
+   "rope": "54030"
+  },
+  {
+   "source_line": 183,
+   "bank": "16",
+   "address": "3204",
+   "listing": "15335",
+   "rope": "15335"
+  },
+  {
+   "source_line": 185,
+   "bank": "16",
+   "address": "3205",
+   "listing": "22016",
+   "rope": "22016"
+  },
+  {
+   "source_line": 186,
+   "bank": "16",
+   "address": "3206",
+   "listing": "00006",
+   "rope": "00006"
+  },
+  {
+   "source_line": 187,
+   "bank": "16",
+   "address": "3207",
+   "listing": "22012",
+   "rope": "22012"
+  },
+  {
+   "source_line": 189,
+   "bank": "16",
+   "address": "3210",
+   "listing": "45021",
+   "rope": "45021"
+  },
+  {
+   "source_line": 190,
+   "bank": "16",
+   "address": "3211",
+   "listing": "61623",
+   "rope": "61623"
+  },
+  {
+   "source_line": 191,
+   "bank": "16",
+   "address": "3212",
+   "listing": "54054",
+   "rope": "54054"
+  },
+  {
+   "source_line": 192,
+   "bank": "16",
+   "address": "3213",
+   "listing": "45021",
+   "rope": "45021"
+  },
+  {
+   "source_line": 193,
+   "bank": "16",
+   "address": "3214",
+   "listing": "61624",
+   "rope": "61624"
+  },
+  {
+   "source_line": 194,
+   "bank": "16",
+   "address": "3215",
+   "listing": "54053",
+   "rope": "54053"
+  },
+  {
+   "source_line": 196,
+   "bank": "16",
+   "address": "3216",
+   "listing": "35062",
+   "rope": "35062"
+  },
+  {
+   "source_line": 197,
+   "bank": "16",
+   "address": "3217",
+   "listing": "00006",
+   "rope": "00006"
+  },
+  {
+   "source_line": 198,
+   "bank": "16",
+   "address": "3220",
+   "listing": "05014",
+   "rope": "05014"
+  },
+  {
+   "source_line": 200,
+   "bank": "16",
+   "address": "3221",
+   "listing": "11644",
+   "rope": "11644"
+  },
+  {
+   "source_line": 201,
+   "bank": "16",
+   "address": "3222",
+   "listing": "13232",
+   "rope": "13232"
+  },
+  {
+   "source_line": 202,
+   "bank": "16",
+   "address": "3223",
+   "listing": "13232",
+   "rope": "13232"
+  },
+  {
+   "source_line": 203,
+   "bank": "16",
+   "address": "3224",
+   "listing": "10000",
+   "rope": "10000"
+  },
+  {
+   "source_line": 204,
+   "bank": "16",
+   "address": "3225",
+   "listing": "03230",
+   "rope": "03230"
+  },
+  {
+   "source_line": 206,
+   "bank": "16",
+   "address": "3226",
+   "listing": "04701",
+   "rope": "04701"
+  },
+  {
+   "source_line": 207,
+   "bank": "16",
+   "address": "3227",
+   "listing": "36152",
+   "rope": "36152"
+  },
+  {
+   "source_line": 209,
+   "bank": "16",
+   "address": "3230",
+   "listing": "04740",
+   "rope": "04740"
+  },
+  {
+   "source_line": 210,
+   "bank": "16",
+   "address": "3231",
+   "listing": "36361",
+   "rope": "36361"
+  },
+  {
+   "source_line": 212,
+   "bank": "16",
+   "address": "3232",
+   "listing": "11574",
+   "rope": "11574"
+  },
+  {
+   "source_line": 213,
+   "bank": "16",
+   "address": "3233",
+   "listing": "13250",
+   "rope": "13250"
+  },
+  {
+   "source_line": 214,
+   "bank": "16",
+   "address": "3234",
+   "listing": "13236",
+   "rope": "13236"
+  },
+  {
+   "source_line": 215,
+   "bank": "16",
+   "address": "3235",
+   "listing": "13250",
+   "rope": "13250"
+  },
+  {
+   "source_line": 217,
+   "bank": "16",
+   "address": "3236",
+   "listing": "04701",
+   "rope": "04701"
+  },
+  {
+   "source_line": 218,
+   "bank": "16",
+   "address": "3237",
+   "listing": "36324",
+   "rope": "36324"
+  },
+  {
+   "source_line": 220,
+   "bank": "16",
+   "address": "3240",
+   "listing": "51644",
+   "rope": "51644"
+  },
+  {
+   "source_line": 221,
+   "bank": "16",
+   "address": "3241",
+   "listing": "33257",
+   "rope": "33257"
+  },
+  {
+   "source_line": 222,
+   "bank": "16",
+   "address": "3242",
+   "listing": "04744",
+   "rope": "04744"
+  },
+  {
+   "source_line": 223,
+   "bank": "16",
+   "address": "3243",
+   "listing": "13163",
+   "rope": "13163"
+  },
+  {
+   "source_line": 225,
+   "bank": "16",
+   "address": "3244",
+   "listing": "00006",
+   "rope": "00006"
+  },
+  {
+   "source_line": 227,
+   "bank": "16",
+   "address": "3245",
+   "listing": "31424",
+   "rope": "31424"
+  },
+  {
+   "source_line": 228,
+   "bank": "16",
+   "address": "3246",
+   "listing": "53624",
+   "rope": "53624"
+  },
+  {
+   "source_line": 229,
+   "bank": "16",
+   "address": "3247",
+   "listing": "13163",
+   "rope": "13163"
+  },
+  {
+   "source_line": 231,
+   "bank": "16",
+   "address": "3250",
+   "listing": "35021",
+   "rope": "35021"
+  },
+  {
+   "source_line": 232,
+   "bank": "16",
+   "address": "3251",
+   "listing": "55574",
+   "rope": "55574"
+  },
+  {
+   "source_line": 234,
+   "bank": "16",
+   "address": "3252",
+   "listing": "13236",
+   "rope": "13236"
+  },
+  {
+   "source_line": 236,
+   "bank": "16",
+   "address": "3253",
+   "listing": "51651",
+   "rope": "51651"
+  },
+  {
+   "source_line": 237,
+   "bank": "16",
+   "address": "3254",
+   "listing": "33263",
+   "rope": "33263"
+  },
+  {
+   "source_line": 238,
+   "bank": "16",
+   "address": "3255",
+   "listing": "50000",
+   "rope": "50000"
+  },
+  {
+   "source_line": 239,
+   "bank": "16",
+   "address": "3256",
+   "listing": "10000",
+   "rope": "10000"
+  },
+  {
+   "source_line": 244,
+   "bank": "16",
+   "address": "3257",
+   "listing": "03174",
+   "rope": "03174"
+  },
+  {
+   "source_line": 245,
+   "bank": "16",
+   "address": "3260",
+   "listing": "40675",
+   "rope": "40675"
+  },
+  {
+   "source_line": 246,
+   "bank": "16",
+   "address": "3261",
+   "listing": "03205",
+   "rope": "03205"
+  },
+  {
+   "source_line": 247,
+   "bank": "16",
+   "address": "3262",
+   "listing": "41051",
+   "rope": "41051"
+  },
+  {
+   "source_line": 248,
+   "bank": "16",
+   "address": "3263",
+   "listing": "37772",
+   "rope": "37772"
+  },
+  {
+   "source_line": 249,
+   "bank": "16",
+   "address": "3264",
+   "listing": "03003",
+   "rope": "03003"
+  },
+  {
+   "source_line": 250,
+   "bank": "16",
+   "address": "3265",
+   "listing": "03011",
+   "rope": "03011"
+  },
+  {
+   "source_line": 251,
+   "bank": "16",
+   "address": "3266",
+   "listing": "03040",
+   "rope": "03040"
+  },
+  {
+   "source_line": 252,
+   "bank": "16",
+   "address": "3267",
+   "listing": "03043",
+   "rope": "03043"
+  },
+  {
+   "source_line": 253,
+   "bank": "16",
+   "address": "3270",
+   "listing": "03121",
+   "rope": "03121"
+  },
+  {
+   "source_line": 254,
+   "bank": "16",
+   "address": "3271",
+   "listing": "03132",
+   "rope": "03132"
+  }
+ ]
+}

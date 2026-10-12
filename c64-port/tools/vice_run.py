@@ -39,6 +39,7 @@ def main():
         sys.exit('FAIL: PRG has no BASIC SYS header')
     mailbox = work / 'mailbox.bin'
     mailbox.unlink(missing_ok=True)
+    (work / 'monitor.log').unlink(missing_ok=True)   # VICE appends; keep one session per run
     commands = work / 'vice.mon'
     commands.write_text(f'load "{prg}" 0\nwatch store c000\ng {int(match[1]):04x}\n'
                         f'm c000 c004\nbsave "{mailbox}" 0 c000 c004\nquit\n')
