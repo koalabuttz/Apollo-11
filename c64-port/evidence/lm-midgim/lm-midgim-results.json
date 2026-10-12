@@ -1,0 +1,47 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 18 frozen original MIDGIM and SELECTMU entries, 26 admission guards and 18 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 76e33e3da9245280a135a6503354c1f510666961826fe584287af1a0e281b9eb",
+  "PASS65536 original MIDGIM entries strict native",
+  "PASS 18 frozen original MIDGIM and SELECTMU entries, 26 admission guards and 18 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 76e33e3da9245280a135a6503354c1f510666961826fe584287af1a0e281b9eb",
+  "PASS65536 original MIDGIM entries full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-midgim-1.prg: 5 checks, 0 failures",
+   "PASS: VICE PAL lm-midgim-2.prg: 5 checks, 0 failures",
+   "PASS: VICE PAL lm-midgim-3.prg: 8 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 32186,
+    "prg_sha256": "19cefad2dd121a51fb57201497e4db8e6c07743d4170df8c2718e8d7891047f0",
+    "image_end": "$85bb",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     1
+    ]
+   },
+   "2": {
+    "prg_bytes": 30770,
+    "prg_sha256": "c301572d7c2cefa9114eb6c27ae751443c14124c91b145829ff66d802f7562f6",
+    "image_end": "$8031",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     2
+    ]
+   },
+   "3": {
+    "prg_bytes": 20173,
+    "prg_sha256": "875238ce58f4a056cd3cd50d058213fc3668228fc40de97dd2760a802658af82",
+    "image_end": "$56cc",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     3
+    ]
+   }
+  }
+ }
+}
