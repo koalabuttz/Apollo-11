@@ -1,0 +1,148 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 12 frozen original TIMERAD/APSIDES entries, 25 admission guards and 108 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266",
+  "PASS65536 original TIMERAD/APSIDES entries strict native",
+  "PASS 12 frozen original TIMERAD/APSIDES entries, 25 admission guards and 108 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266",
+  "PASS65536 original TIMERAD/APSIDES entries full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-conic-timerad-1.prg: 28 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timerad-2.prg: 9 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timerad-3.prg: 13 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timerad-4.prg: 17 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timerad-5.prg: 21 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timerad-6.prg: 20 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 46959,
+    "prg_sha256": "93904c0d8895b8b0edb194fb58f2a9232d4a1d81b2e5f7588f9204de1c238dfb",
+    "sections": {
+     "text": 36879,
+     "rodata": 10066,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$bf6e",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     31,
+     37,
+     1,
+     2,
+     3,
+     4,
+     6
+    ],
+    "steps": 28
+   },
+   "2": {
+    "prg_bytes": 39140,
+    "prg_sha256": "9ed07c3c844e3f1994c03596061894d2f4e60598b2f625e6deb3bc2c05c824e3",
+    "sections": {
+     "text": 32227,
+     "rodata": 6899,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$a0e3",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     32,
+     35,
+     36
+    ],
+    "steps": 9
+   },
+   "3": {
+    "prg_bytes": 40854,
+    "prg_sha256": "84d2ae27c7b4c29e327d37428af5bddbc14a2f1dcd6de70f00ce4543791cc158",
+    "sections": {
+     "text": 32376,
+     "rodata": 8464,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$a795",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     33,
+     34,
+     38,
+     39
+    ],
+    "steps": 13
+   },
+   "4": {
+    "prg_bytes": 37097,
+    "prg_sha256": "03c7eb57bec006aaa77b0b3d5b3202b4ba6230dee29e0bf43b504c0112b2fa66",
+    "sections": {
+     "text": 30687,
+     "rodata": 6396,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$98e8",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     8,
+     26,
+     9,
+     10,
+     11
+    ],
+    "steps": 17
+   },
+   "5": {
+    "prg_bytes": 40675,
+    "prg_sha256": "56ec496214e30e79845fcca570838de7a76258f2f32cbbcf9d11fad423c3d63c",
+    "sections": {
+     "text": 32647,
+     "rodata": 8014,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$a6e2",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18
+    ],
+    "steps": 21
+   },
+   "6": {
+    "prg_bytes": 27686,
+    "prg_sha256": "78b0a13c7f332694b970c655606d55a611418884a1dff2ec8211f5a3152f6b13",
+    "sections": {
+     "text": 19611,
+     "rodata": 8061,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$7425",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     19,
+     20,
+     21,
+     22,
+     23
+    ],
+    "steps": 20
+   }
+  },
+  "whole_routine_note": "The routines with the shared time-theta steps are too big for one PRG beside two images, so the C64 check runs each phase in one of six PRGs from a debris-only base state; the host runs the same phase steps and the whole chains."
+ },
+ "source_audit": [
+  "PASS 123 assembled TIMERAD/APSIDES words on 123 source lines map to native literals in 9 functions"
+ ]
+}

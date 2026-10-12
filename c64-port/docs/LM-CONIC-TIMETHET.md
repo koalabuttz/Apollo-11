@@ -26,7 +26,7 @@ when the entry is outside the contract. Admitted entries:
 - QPRET one of the six callers' returns: `064320` (P20-P25 `32,2317`),
   `070250`, `070363`, `071171` (P32-P35 `34,2247`, `34,2362`, `34,3170`),
   `072664` (`35,2663`) and `071600` (STABLE_ORBIT `34,3577`). The cases sample
-  all six, with RVSW both set (time and new state) and clear (time only).
+  all six, with RVSW both set (time only: `BON RVSW` returns before NEWSTATE) and clear (time and new state).
 
 PARAM clears NORMSW, so HAVENORM (`4,3162`) is compiled but unreachable from
 TIMETHET (LAMBERT reaches it). No sampled entry reaches the 1302 abort.
