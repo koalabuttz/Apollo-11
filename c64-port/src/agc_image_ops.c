@@ -23,7 +23,8 @@ static agc_register ovf(agc_register v){
 static void endi(agc_image *s){W[1]=sx(oc(W[1]));}
 
 unsigned ai_ea(const agc_image *s,unsigned a){
- return (a>=01400u&&a<02000u)?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;
+ a&=01777u; /* the erasable address field; never outside the image */
+ return a>=01400u?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;
 }
 agc_word ai_word(const agc_image *s,unsigned a){return (agc_word)(W[ai_ea(s,a)]&077777u);}
 /* 16-bit view of A, L or Q. The canonical image holds Q in 15 bits, so a

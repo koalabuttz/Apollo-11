@@ -15,8 +15,9 @@
  * the end of every original instruction does.
  *
  * Erasable addresses are 0-01777 as the instruction sees them; 01400-01777
- * select the EB window. Skip results: TS/OVSK return 1 when the next
- * instruction is skipped; CCS returns 0 (+), 1 (+0), 2 (-), 3 (-0). */
+ * select the EB window. Addresses are taken modulo 02000, so no helper ever
+ * touches memory outside the image (callers stay in the original domain).
+ * Skip results: TS/OVSK return 1 when the next instruction is skipped; CCS returns 0 (+), 1 (+0), 2 (-), 3 (-0). */
 typedef apollo_overlay_state agc_image;
 
 unsigned ai_ea(const agc_image *, unsigned address);
