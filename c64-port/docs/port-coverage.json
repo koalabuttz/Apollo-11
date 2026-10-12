@@ -1120,7 +1120,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL return leave it; any EB (1/PIPA sets EBANK to GCOMP's and restores the caller's); any GCOMPSW, FLAGWRD2, TIME1, PIPA, coefficient and GCOMP values.",
+        "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL return leave it; any EB (1/PIPA sets EBANK to GCOMP's and restores the caller's); any GCOMPSW, FLAGWRD2, TIME1, PIPA, coefficient and GCOMP values, including NBD2 elapsed times of -0 and +0; each routine runs to its exit with no interrupt in between.",
         "external_continuations": [
           "NOVAC admitting 1/GYRO (EXECUTIVE, no native Comanche routine yet)",
           "SWRETURN and BANKCALL (native, cm_interbank_routines)",
@@ -1132,19 +1132,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-compensation/imu-compensation-source-map.json",
-            "sha256": "f8a121420b3df54274264d19cc75bea9dcde34141da664e5bab48e999ccc7d3b"
+            "sha256": "2312f0e885c2554f9d4572bdeece2ff3b59821f25c5925c0ac14d2289206445d"
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "014c002a712683d5b22d6e78898b68572e711e552a25a60df03aeda178b3b144"
+            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "f0308a399893531d4394ddeef840f916eda73936085d63c1f63837e290cb08a1"
+            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
           }
         }
       }
@@ -4868,19 +4868,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-compensation/imu-compensation-source-map.json",
-            "sha256": "f8a121420b3df54274264d19cc75bea9dcde34141da664e5bab48e999ccc7d3b"
+            "sha256": "2312f0e885c2554f9d4572bdeece2ff3b59821f25c5925c0ac14d2289206445d"
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "014c002a712683d5b22d6e78898b68572e711e552a25a60df03aeda178b3b144"
+            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "f0308a399893531d4394ddeef840f916eda73936085d63c1f63837e290cb08a1"
+            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
           },
           "independent_review": {
             "path": "docs/audits/lm-imu-compensation.md",
