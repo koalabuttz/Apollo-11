@@ -52,4 +52,24 @@ void lmi_abs(apollo_overlay_state *);
 void lmi_dsq(apollo_overlay_state *);
 void lmi_vsq(apollo_overlay_state *);
 void lmi_dot(apollo_overlay_state *, const agc_word *k);
+/* DDV/BDDV through the bank-0 divide (DANZIG, also on division overflow). */
+void lmi_ddv(apollo_overlay_state *, const agc_word *k);
+void lmi_bddv(apollo_overlay_state *, const agc_word *k);
+/* SQRT, ABVAL/ABS and UNIT: 0 at DANZIG, 1 at POODOO1 (alarm 1302, Q 03404). */
+uint8_t lmi_sqrt(apollo_overlay_state *);
+uint8_t lmi_abvalabs(apollo_overlay_state *);
+uint8_t lmi_unit(apollo_overlay_state *);
+void lmi_vxsc(apollo_overlay_state *, const agc_word *k);
+void lmi_vxv(apollo_overlay_state *, const agc_word *k);
+/* BOV(B) (bank 1): DANZIG, GOTO 06646 (then lmi_goto) or RTB 02450. */
+enum {LMI_BOV_NONE,LMI_BOV_GOTO,LMI_BOV_RTB,LMI_BOV_OUT_OF_SCOPE};
+uint8_t lmi_bov(apollo_overlay_state *);
+/* RTB (bank 1, POLISH = the routine's CADR) to the routine's first word,
+ * with FBANK switched and Q = SWRETURN 04631; SWRETURN back to DANZIG. */
+void lmi_rtb(apollo_overlay_state *);
+void lmi_swreturn(apollo_overlay_state *);
+/* POLY 07222 with Q = the address after TC POLY and `table` the caller's
+ * fixed words from there (N-1, then a0..aN); ends with Z at the word after
+ * the table (TC POLYRET, Q = 0142). */
+void lmi_poly(apollo_overlay_state *, const agc_word *table);
 #endif

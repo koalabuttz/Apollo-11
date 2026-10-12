@@ -159,6 +159,67 @@ def case(g,body):
   if r.random()<.15:
    for i in range(3):img[0o154+i]=r.choice([0,0o77777,1,0o77776])
   img[5]=0o7616;return hdr,img
+ if body in(26,27):
+  img[5]={26:0o7577,27:0o7603}[body]
+  if r.random()<.35:
+   b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3775);img[0o116]=a
+   hdr[9:11]=[fixed(b,a-0o2000+i) for i in range(2)];hdr[15]=1;op=hdr[9:11]
+  else:
+   while True:
+    a=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1410,0o1770)
+    e=(img[3]>>8)*0o400+a-0o1400 if a>=0o1400 else a
+    if e not in(0o115,0o116):break   # (the operand never overlaps ADDRWD)
+   img[0o116]=a;a=e;op=None
+  # Usually a dividend smaller than the divisor, as the original's callers keep it.
+  if r.random()<.6:
+   sh=r.randrange(1,15);hi=img[0o154] if body==26 else (op[0] if op else img[a])
+   v=(hi&0o37777)>>sh
+   if hi&0o40000:v=0o77777-v
+   if body==26:img[0o154]=v
+   elif not op:img[a]=v
+  if r.random()<.1:img[0o154]=0;img[0o155]=r.choice([0,0o77777,r.getrandbits(15)])
+  if not op and r.random()<.15:img[a]=img[0o154]   # equal majors (MAXDV)
+  return hdr,img
+ if body in(28,29,30):
+  setbanks(img,0);img[5]={28:0o3207,29:0o3176,30:0o3023}[body];hdr[2]=0o5726
+  if body==30:img[0o163]=0o77776
+  for i in range(7):
+   if r.random()<.5:
+    v=r.getrandbits(r.randrange(1,15))
+    img[0o154+i]=v if r.random()<.6 else 0o77777-v
+  if body==28 and r.random()<.6:
+   for i in range(3):img[0o154+i]&=0o37777
+  if r.random()<.1:img[0o154]=0
+  if r.random()<.05:img[0o155]=0
+  c=r.random()
+  if c<.1:
+   for i in(0,3,5):img[0o154+i]=r.choice([0,0o77777]);img[0o155+i]=r.getrandbits(r.randrange(1,15))
+  elif c<.15:
+   for i in range(7):img[0o154+i]=r.choice([0,0o77777])
+  elif c<.2:img[0o154]=img[0o155]=0o37777
+  return hdr,img
+ if body in(31,32):
+  img[5]={31:0o7401,32:0o7460}[body]
+  if r.random()<.35:
+   b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3770);img[0o116]=a
+   hdr[9:15]=[fixed(b,a-0o2000+i) for i in range(6)];hdr[15]=1
+  else:img[0o116]=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1410,0o1770)
+  return hdr,img
+ if body==33:
+  setbanks(img,1);img[5]=0o2457;hdr[2]=0o6646;hdr[3]=0o2450
+  img[0o121]=r.choice([0,1,0o77776,0o77777,r.getrandbits(15)])
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  return hdr,img
+ if body==34:
+  setbanks(img,1);img[5]=0o2450;b=r.randrange(0o30);off=r.randrange(0o2000)
+  img[0o117]=b*0o2000+off;hdr[1]=0o2000+off;return hdr,img
+ if body==35:
+  setbanks(img,r.randrange(0o30));img[5]=0o4631;img[0o133]=0o2453;img[0o134]=0o2000;return hdr,img
+ if body==36:
+  setbanks(img,0o27);img[5]=0o7222;img[2]=0o3736;hdr[1]=0o3753
+  for i in range(2):
+   v=r.getrandbits(14);img[0o154+i]=v if r.random()<.5 else 0o77777-v
+  return hdr,img
  if body in BANK0:
   setbanks(img,0);img[5]=BANK0[body]
   if body==22 and r.random()<.15:
@@ -168,7 +229,8 @@ def case(g,body):
 ARITH={12:0o6775,13:0o7005,14:0o7062,15:0o7572,16:0o7574,21:0o7655,25:0o7331}
 BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
- 'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT']
+ 'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
+ 'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)

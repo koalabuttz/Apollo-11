@@ -18,10 +18,11 @@ enum {
  rA=0,rL=1,rQ=2,rEB=3,rFB=4,rBB=6,rZERO=7,rCYR=020,rSR=021,rCYL=022,rEDOP=023,
  rINTBIT15=0115,rADDRWD=0116,rPOLISH=0117,rFIXLOC=0120,rOVFIND=0121,rVBUF=0122,
  rBUF=0130,rMPTEMP=0135,rDOTINC=0136,rDOTRET=0137,rPOLYCNT=0140,rPOLYRET=0141,
- rMPAC=0154,rMODE=0163,rLOC=0164,rBANKSET=0165,rPUSHLOC=0166
+ rMPAC=0154,rMODE=0163,rLOC=0164,rBANKSET=0165,rPUSHLOC=0166,
+ rBUF2=0133,rDVSIGN=0136,rDVNORMCT=0137,rMAXDVSW=0140,rTEM1=0141
 };
 /* Work-area tags relative to FIXLOC. */
-enum {tX1=046,tX2=047,tLVSQUARE=042,tQPRET=052};
+enum {tX1=046,tX2=047,tLVSQUARE=042,tLV=044,tQPRET=052};
 /* Fixed constants (FIXED_FIXED_CONSTANT_POOL and INTERPRETER). */
 #define ZERO 0u
 #define ONE 1u
@@ -232,14 +233,18 @@ void lmi_push(apollo_overlay_state *s){
 #define SQUARE() ai_square(s)
 #define DDOUBL() ai_ddoubl(s)
 #define AUGA() ai_aug(s,0u)
-/* INDEX r; CAF BIT14: FIXED_FIXED words 04730-04777 (the bit table runs
- * BIT15 04735 to BIT1 04753), indexed by the one's-complement C(r). */
-static agc_word bit14_indexed(const apollo_overlay_state *s,unsigned r){
+/* INDEX v; CAF k for k in FIXED_FIXED 04730-04777 (the bit table runs
+ * BIT15 04735 to BIT1 04753), v taken as a one's-complement index. */
+static agc_word fixed_indexed(unsigned k,agc_word v){
  static const agc_word t[]={01007,02,037777,037777,057777,040000,020000,010000,04000,02000,01000,0400,0200,0100,
   040,020,010,04,02,01,077777,0,05,07,013,015,017,030,033,035,032,045,046,050,055,060,062,0120,0140,0144};
- int i=6+signed_word((agc_word)(W[r]&077777u));
+ int i=(int)k-04730+signed_word((agc_word)(v&077777u));
  return i>=0&&i<(int)(sizeof t/sizeof t[0])?t[i]:0u;
 }
+#define BIT15_AT 04735u
+#define BIT14_AT 04736u
+/* INDEX r; CAF BIT14. */
+static agc_word bit14_indexed(const apollo_overlay_state *s,unsigned r){return fixed_indexed(BIT14_AT,W[r]);}
 
 /* BRANCH 06723 (Q holds the caller's return): 0 positive (TC Q),
  * 1 zero (INDEX Q, TC 1), 2 negative (INDEX Q, TC 2). -0 is passed over. */
@@ -548,5 +553,370 @@ static void dotsub(apollo_overlay_state *s,const agc_word *k){
 void lmi_dot(apollo_overlay_state *s,const agc_word *k){
  /* DOT TC PREDOT (CAF TWO; TS DOTINC; DOTSUB); DMODE. */
  TC(07332);CAF(TWO);(void)TS(rDOTINC);dotsub(s,k);dmode(s);
+}
+
+/* ---- Division (bank 0) ------------------------------------------------ */
+#define MP_HALF() MPF(HALF)
+/* FINALDV +3 (A = minor quotient): DVSIGN -0 complements MPAC; TC Q with
+ * C(A) = 0. */
+static void finaldv3(apollo_overlay_state *s){
+ if(TS(rMPAC+1)){RETQ();return;}
+ if(CCS(rDVSIGN)!=3u){RETQ();return;}
+ DCS(rMPAC);DXCH(rMPAC);CAF(ZERO);RETQ();
+}
+static void finaldv(apollo_overlay_state *s){ZL();ai_dv(s,rBUF);finaldv3(s);}
+static void endmaxdv(apollo_overlay_state *s){AD(rBUF);finaldv(s);}
+/* GENDDV, or GENDDV +1 with the dividend already in A,L. */
+static void genddv(apollo_overlay_state *s,uint8_t plus1){
+ if(!plus1)DXCH(rMPAC);
+ ai_dv(s,rBUF);DXCH(rMPAC);CS(rMPAC);MP(rBUF+1);AD(rMPAC+1);
+ if(ai_ovsk(s)){ai_su(s,rBUF);INCR(rMPAC);}
+ else if(ai_bzmf(s)){
+  /* -UP: BZF FINALDV +3; DIM MPAC; ENDMAXDV. */
+  if(ai_bzf(s)){finaldv3(s);return;}
+  ai_dim(s,rMPAC);endmaxdv(s);return;
+ }
+ /* +DOWN SU BUF; BZF +3; BZMF ENDMAXDV; +3 INCR MPAC; TCF FINALDV. */
+ ai_su(s,rBUF);
+ if(!ai_bzf(s)&&ai_bzmf(s)){endmaxdv(s);return;}
+ INCR(rMPAC);finaldv(s);
+}
+static void maxdv(apollo_overlay_state *s){
+ CS(rMPAC);AD(rBUF);
+ if(!ai_bzf(s)){genddv(s,0);return;}
+ CAF(POSMAX);(void)TS(rMPAC);CS(rBUF+1);AD(rMPAC+1);endmaxdv(s);
+}
+/* MAXTEST CCS MAXDVSW (-1, or +0 when the majors may be equal). */
+static void maxtest(apollo_overlay_state *s){
+ switch(CCS(rMAXDVSW)){
+ case 1:maxdv(s);return;
+ case 3:genddv(s,1);return;
+ default:genddv(s,0);return;   /* - (MAXDVSW is never positive) */
+ }
+}
+/* The dividend normalization chain entered at `e` (02540 is the UNIT
+ * prologue -21D; 02547-02563 DDOUBLs; 02564 DXCH MPAC; 02565 MAXTEST), as
+ * INDEX DVNORMCT; TC MAXTEST and INDEX MPTEMP; TCF MAXTEST -1 select it. */
+static void ddv_chain(apollo_overlay_state *s,unsigned e){
+ if(e==02540u){LXCH(rSR);MP_HALF();XCH(rL);AD(rSR);XCH(rL);genddv(s,1);return;}
+ if(e<=02564u){for(;e<02564u;++e)DDOUBL();DXCH(rMPAC);}
+ maxtest(s);
+}
+static unsigned chain_at(unsigned base,agc_word v){return (unsigned)((int)base+signed_word((agc_word)(v&077777u)));}
+/* DVOVF 02405: +-POSMAX through FINALDV +3, OVFIND set, TC DANZIG. */
+static void dvovf(apollo_overlay_state *s){
+ CAF(POSMAX);(void)TS(rMPAC);TC(02410);finaldv3(s);CAF(ONE);(void)TS(rOVFIND);TC(02413);danzig(s);
+}
+/* DDV/BDDV 02353 (dividend MPAC, divisor BUF) to DANZIG. */
+static void ddv_bddv(apollo_overlay_state *s){
+ uint8_t c;
+ CSF(ONE);(void)TS(rDVSIGN);(void)TS(rDVNORMCT);(void)TS(rMAXDVSW);
+ c=CCS(rBUF);
+ if(c==0u)goto bufpos;
+ if(c==2u)goto bufneg;
+bufzero:
+ (void)TS(rMPAC+2);TC(02365);tpagree(s);
+ c=CCS(rMPAC);
+ if(c==0u)goto ovfplus;
+ if(c==2u)goto ovfminus;
+ XCH(rBUF+1);XCH(rBUF);XCH(rMPAC+1);XCH(rMPAC);
+ c=CCS(rBUF);
+ if(c==0u)goto bufplus;
+ if(c==2u)goto bufminus;
+ CS(rMPAC);
+sgndvovf:
+ if(!ai_bzmf(s))INCR(rDVSIGN);
+ dvovf(s);return;
+ovfminus:
+ INCR(rDVSIGN);
+ovfplus:
+ CS(rBUF+1);goto sgndvovf;
+bufminus:
+ DCS(rBUF);DXCH(rBUF);INCR(rDVSIGN);
+bufplus:
+ c=CCS(rMPAC);
+ if(c==1u||c==3u){
+  c=CCS(rMPAC+1);
+  if(c==1u||c==3u){danzig(s);return;}  /* zero dividend */
+ }
+ if(c==2u){DCS(rMPAC);DXCH(rMPAC);INCR(rDVSIGN);}
+ /* MPAC+ CS MPAC; AD NEGONE; AD BUF; CCS A. */
+ CS(rMPAC);ADF(NEGONE);AD(rBUF);c=CCS(rA);
+ if(c==0u)goto dvnorm;
+ if(c==1u)AD(rL);              /* -1/2+2 (OCT 60001) runs as AD L */
+ CAF(HALF);DOUBLE();AD(rMPAC+1);if(!TS(rMPAC+1))CAF(ZERO);ADF(POSMAX);ADS(rMPAC);
+ CAF(HALF);DOUBLE();AD(rBUF+1);if(!TS(rBUF+1))CAF(ZERO);ADF(POSMAX);ADS(rBUF);
+ CS(rMPAC);AD(rBUF);c=CCS(rA);
+ if(c==0u)goto dvnorm;
+ if(c!=3u){dvovf(s);return;}   /* (+0 cannot occur: the majors differ) */
+ (void)TS(rMAXDVSW);CS(rMPAC+1);AD(rBUF+1);
+ if(ai_bzmf(s)){dvovf(s);return;}
+dvnorm:
+ for(;;){
+  CA(rBUF);DOUBLE();
+  if(ai_ovsk(s))break;
+  ai_aug(s,rDVNORMCT);DCA(rBUF);DAS(rBUF);
+ }
+ DXCH(rMPAC);TC(02514);ddv_chain(s,chain_at(02565u,W[rDVNORMCT]));
+ (void)TS(rMPAC+2);danzig(s);return;
+bufpos:
+ /* BUFPOS CCS A (A = |BUF| - 1). */
+ if(CCS(rA)==0u)goto bufplus;
+ CS(rBUF+1);
+ if(ai_bzmf(s))goto bufplus;
+ CAF(HALF);
+bufpos6:
+ DOUBLE();ADS(rBUF+1);CAF(ZERO);(void)TS(rBUF);goto bufzero;
+bufneg:
+ if(CCS(rA)==0u)goto bufminus;
+ CA(rBUF+1);
+ if(ai_bzmf(s))goto bufminus;
+ CSF(HALF);goto bufpos6;
+}
+/* DDV/BDDV prologue tail BDDV +4: DXCH BUF; CAF ZERO; TS FBANK. */
+static void bddv4(apollo_overlay_state *s){DXCH(rBUF);CAF(ZERO);(void)TS(rFB);ddv_bddv(s);}
+void lmi_ddv(apollo_overlay_state *s,const agc_word *k){dca_op(s,k,0);bddv4(s);}
+void lmi_bddv(apollo_overlay_state *s,const agc_word *k){dca_op(s,k,0);DXCH(rMPAC);bddv4(s);}
+
+/* ---- Square root and length (bank 0) ---------------------------------- */
+#define SLOPEHI 022650u
+#define BIASHI 06552u
+#define SLOPELO 032506u
+#define BIASLO 04604u
+#define NEGHALF2 060001u
+/* SQRTSUB 03343 to TC Q; 1 when it ends at SQRTABRT's TC POODOO1 (1302). */
+static uint8_t sqrtsub(apollo_overlay_state *s){
+ uint8_t c;
+ CAF(ZERO);(void)TS(rMPTEMP);
+ c=CCS(rMPAC);
+ if(c==0u)goto smpac;
+ if(c==2u)goto sqrtneg;
+ XCH(rMPAC+2);XCH(rMPAC+1);(void)TS(rMPAC);CAF(SEVEN);(void)TS(rMPTEMP);
+ c=CCS(rMPAC);
+ if(c==0u)goto smpac;
+ if(c==2u)goto zeroans;
+ XCH(rMPAC+1);(void)TS(rMPAC);CAF(SEVEN);ADS(rMPTEMP);
+ c=CCS(rMPAC);
+ if(c==0u)goto smpac;
+ if(c==1u){RETQ();return 0;}
+ if(c==2u)goto zeroans;
+ goto fixroot;
+sqrtneg:
+ c=CCS(rA);
+ if(c==0u)goto abrt;
+ if(c==2u)goto zeroans;
+ if(c==3u)goto fixroot;
+ c=CCS(rMPAC+1);
+ if(c==0u)goto zeroans;
+ if(c==2u)goto abrt;
+ goto fixroot;
+zeroans:
+ CAF(ZERO);
+fixroot:
+ if(!TS(rMPAC))(void)TS(rMPAC+1);
+ RETQ();return 0;
+abrt:
+ DXCH(rLOC);TC(03404);W[5]=05726;return 1;
+smpac:
+ ADF(NEGHALF2);
+ if(ai_bzmf(s))goto srtest;
+ DXCH(rMPAC);LXCH(rSR);MP_HALF();DXCH(rMPAC);XCH(rSR);ADS(rMPAC+1);
+arghi:
+ CAF(SLOPEHI);MP(rMPAC);ADF(BIASHI);
+arghi4:
+ if(!TS(rBUF))CA(rMPAC);
+ ZL();ai_dv(s,rBUF);MP_HALF();ADS(rBUF);MP_HALF();DXCH(rMPAC);ai_dv(s,rBUF);
+ if(!TS(rBUF+1))CAF(ZERO);
+ XCH(rL);ai_dv(s,rBUF);
+ if(!TS(rL))CA(rBUF+1);
+ DAS(rMPAC);
+ if(ai_bzf(s)){RETQ();return 0;}
+ CAF(POSMAX);goto fixroot;
+srtest:
+ ADF(QUARTER);
+ if(ai_bzmf(s))goto sqrtnorm;
+ DXCH(rMPAC);LXCH(rSR);MP_HALF();DXCH(rMPAC);XCH(rSR);ADS(rMPAC+1);
+arglo:
+ CAF(SLOPELO);MP(rMPAC);ADF(BIASLO);goto arghi4;
+sqrtnm2:
+ DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);ADS(rMPAC);
+sqrtnorm:
+ INCR(rMPTEMP);DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);ADS(rMPAC);DOUBLE();
+ /* TS CYL; NORMTEST CCS CYL; CCS CYL (each CCS cycles CYL again). */
+ c=TS(rCYL)?0u:CCS(rCYL);
+ if(c==0u){
+  c=CCS(rCYL);
+  if(c==0u)goto sqrtnm2;
+  if(c==1u)goto arghi;
+  goto arglo;                  /* (-0 would run on into COSINE) */
+ }
+ if(c==1u)goto sqrtnm2;
+ if(c==2u)goto arghi;
+ goto arglo;
+}
+/* SQRT 03207 to DANZIG, or 1 at POODOO1 (alarm 1302). */
+static uint8_t sqrt_body(apollo_overlay_state *s){
+ uint8_t c;
+ TC(03210);if(sqrtsub(s))return 1;
+ c=CCS(rMPTEMP);
+ if(c==1u){danzig(s);return 0;}
+ if(c!=3u){
+  ADF(NEG12);
+  if(!ai_bzmf(s)){ZL();LXCH(rADDRWD);genscr1(s,1);return 0;}
+ }
+ /* SQRTSHFT INDEX MPTEMP; CAF BIT15; TS MPTEMP; CAF ZERO; MPACSHR +3. */
+ CAF(fixed_indexed(BIT15_AT,W[rMPTEMP]));(void)TS(rMPTEMP);CAF(ZERO);mpacshr3(s);return 0;
+}
+uint8_t lmi_sqrt(apollo_overlay_state *s){return sqrt_body(s);}
+/* ABVALABS 03176: ABS on a scalar, ABVAL (length, LVSQUARE kept) on a vector. */
+uint8_t lmi_abvalabs(apollo_overlay_state *s){
+ if(CCS(rMODE)<2u){lmi_abs(s);return 0;}
+ TC(03202);vsqsub(s);LXCH(rMODE);DCA(rMPAC);DXCH(AT(W[rFIXLOC]+tLVSQUARE));
+ return sqrt_body(s);
+}
+
+/* ---- UNIT (bank 0) ---------------------------------------------------- */
+/* ALSIGNAG 07544: sign agreement of A,L, to TC Q. */
+static void alsignag(apollo_overlay_state *s){
+ switch(CCS(rA)){
+ case 0:XCH(rL);ADF(HALF);ADF(HALF);if(TS(rA))INCR(rL);XCH(rL);RETQ();return;
+ case 2:XCH(rL);ADF(BIT15);ADF(NEGONE);if(TS(rA))INCR(rL);XCH(rL);COM();RETQ();return;
+ default:RETQ();return;
+ }
+}
+/* VECAGREE 03010 (Q = return): ends with TC A, leaving Q = 1. */
+static void vecagree(apollo_overlay_state *s){
+ XCH(rQ);
+ DXCH(rMPAC);TC(03013);alsignag(s);DXCH(rMPAC);
+ DXCH(rMPAC+3);TC(03016);alsignag(s);DXCH(rMPAC+3);
+ DXCH(rMPAC+5);TC(03021);alsignag(s);DXCH(rMPAC+5);
+ ai_tc(s,1u);
+}
+/* MPACVBUF 07532 to TC Q. */
+static void mpacvbuf(apollo_overlay_state *s){
+ DCA(rMPAC);DXCH(rVBUF);DCA(rMPAC+3);DXCH(rVBUF+2);DCA(rMPAC+5);DXCH(rVBUF+4);RETQ();
+}
+/* UNITDV 03151 (divisor in BUF, MPTEMP the pre-divide count) to TC Q. */
+static void unitdv(apollo_overlay_state *s){
+ uint8_t c=CCS(rMPAC);
+ if(c==1u||c==3u){
+  c=CCS(rMPAC+1);
+  if(c==1u||c==3u){RETQ();return;}
+ }
+ if(c==2u){CSF(ZERO);(void)TS(rDVSIGN);DCS(rMPAC);}
+ else{(void)TS(rDVSIGN);DXCH(rMPAC);}
+ ddv_chain(s,chain_at(02564u,W[rMPTEMP]));
+}
+/* UNIT 03023 to DANZIG (or DVOVF's TC DANZIG); 1 at POODOO1. */
+uint8_t lmi_unit(apollo_overlay_state *s){
+ uint8_t c;
+ TC(03024);vecagree(s);TC(03025);mpacvbuf(s);
+ CAF(ZERO);XCH(rOVFIND);(void)TS(rTEM1);TC(03031);vsqsub(s);CA(rTEM1);XCH(rOVFIND);
+ if(!ai_bzf(s)){dvovf(s);return 0;}
+ DCA(rMPAC);DXCH(AT(W[rFIXLOC]+tLVSQUARE));
+ TC(03043);if(sqrtsub(s))return 1;
+ c=CCS(rMPAC);
+ if(c!=0u){
+  /* +0 TS L; - INDEX FIXLOC; -0 (unindexed) DXCH LV; TCF DVOVF. */
+  if(c==1u)(void)TS(rL);
+  DXCH(c==3u?AT(tLV):AT(W[rFIXLOC]+tLV));dvovf(s);return 0;
+ }
+ CSF(016u);AD(rMPTEMP);c=CCS(rA);
+ if(c==0u)COM();
+ if(c<2u){
+  /* SMALL TS MPTEMP; shift VBUF left 14; INDEX A (-MPTEMP); CAF BIT14; MP MPAC. */
+  (void)TS(rMPTEMP);CAF(ZERO);
+  XCH(rVBUF+1);XCH(rVBUF);XCH(rVBUF+3);XCH(rVBUF+2);XCH(rVBUF+5);XCH(rVBUF+4);
+  CS(rMPTEMP);CAF(fixed_indexed(BIT14_AT,W[rA]));MP(rMPAC);
+  goto small2;
+ }
+ if(c==3u){CSF(015u);(void)TS(rMPTEMP);CA(rMPAC);goto small2;}
+ /* LARGE CCS MPTEMP. */
+ c=CCS(rMPTEMP);
+ if(c==0u){
+  /* LARGE3 COM; TS MPTEMP; COM; INDEX A; CAF BIT14 ... unnormalize. */
+  COM();(void)TS(rMPTEMP);COM();CAF(fixed_indexed(BIT14_AT,W[rA]));(void)TS(rBUF);
+  MP(rMPAC+1);XCH(rBUF);MP(rMPAC);XCH(rL);AD(rBUF);XCH(rL);goto large2;
+ }
+ if(c==1u)CSF(024u);           /* CS SRDDV */
+ if(c<3u)(void)TS(rMPTEMP);
+ DCA(rMPAC);goto large2;
+small2:
+ (void)TS(rL);CAF(ZERO);
+large2:
+ DXCH(AT(W[rFIXLOC]+tLV));CSF(ONE);(void)TS(rMAXDVSW);
+ DXCH(rVBUF);DXCH(rMPAC);DXCH(rBUF);TC(03122);unitdv(s);
+ DXCH(rVBUF+2);DXCH(rMPAC);DXCH(rMPAC+3);TC(03126);unitdv(s);
+ DXCH(rVBUF+4);DXCH(rMPAC);DXCH(rMPAC+5);TC(03132);unitdv(s);
+ vrotatex(s);return 0;
+}
+
+/* ---- Vector times scalar and cross product (bank 3) ------------------- */
+static const agc_word *kat(const agc_word *k,unsigned i){return k?k+i:0;}
+void lmi_vxsc(apollo_overlay_state *s,const agc_word *k){
+ uint8_t c=CCS(rMODE);
+ if(c<2u){
+  /* DVXSC: scalar in MPAC, vector operand at C(ADDRWD). */
+  DCA(rMPAC);DXCH(rMPAC+3);TC(07434);dmpsub(s,k);TC(07435);roundsub(s,2);
+  CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+5);TC(07444);dmpsub(s,kat(k,2));TC(07445);roundsub(s,2);
+  CAF(TWO);ADS(rADDRWD);DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);TC(07453);dmpsub(s,kat(k,4));TC(07454);roundsub(s,2);
+  DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC);vmode(s);return;
+ }
+ /* VVXSC (-0 enters at its TC VROUND). */
+ if(c==2u){TC(07405);dmpsub(s,k);}
+ TC(07406);roundsub(s,2);
+ DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);TC(07412);dmpsub(s,k);TC(07413);roundsub(s,2);
+ DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);TC(07417);dmpsub(s,k);TC(07420);roundsub(s,2);
+ vrotatex(s);
+}
+void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
+ DCA(rMPAC+5);DXCH(rMPAC);DXCH(rVBUF);TC(07465);dmpsub(s,k);
+ DCS(rMPAC+3);DXCH(rMPAC);DXCH(rVBUF+2);TC(07472);dmpsub(s,k);
+ CAF(TWO);ADS(rADDRWD);
+ DCS(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);TC(07501);dmpsub(s,kat(k,2));
+ DCA(rVBUF);DXCH(rMPAC);DXCH(rVBUF+4);TC(07506);dmpsub(s,kat(k,2));
+ CAF(TWO);ADS(rADDRWD);
+ DCS(rVBUF);DXCH(rMPAC);DAS(rMPAC+5);
+ if(!ai_bzf(s)){TC(07517);overflwz(s);}
+ TC(07520);dmpsub(s,kat(k,4));
+ DXCH(rVBUF+2);DXCH(rMPAC+3);DXCH(rMPAC);DAS(rMPAC+3);
+ if(!ai_bzf(s)){TC(07527);overflwy(s);}
+ TC(07530);dmpsub(s,kat(k,4));DXCH(rVBUF+4);endvxv(s);
+}
+
+/* ---- BOV(B), RTB and POLY ----------------------------------------------- */
+uint8_t lmi_bov(apollo_overlay_state *s){
+ uint8_t c=CCS(rOVFIND);
+ if(c==1u){danzig(s);return LMI_BOV_NONE;}
+ if(c!=3u)(void)TS(rOVFIND);
+ c=CCS(rCYR);
+ if(c==0u){W[5]=02450;return LMI_BOV_RTB;}
+ if(c==2u){W[5]=06646;return LMI_BOV_GOTO;}
+ W[5]=(agc_word)(c==1u?02465u:02467u);return LMI_BOV_OUT_OF_SCOPE;
+}
+void lmi_rtb(apollo_overlay_state *s){
+ /* RTB CA POLISH; TC SWCALL -1: INCR Q; TS L; LXCH FBANK; MASK LOW10;
+  * XCH Q; DXCH BUF2; INDEX Q; TC 2000 (Q = SWRETURN). */
+ unsigned sub;
+ CA(rPOLISH);TC(02452);INCR(rQ);(void)TS(rL);LXCH(rFB);MASKF(LOW10);XCH(rQ);DXCH(rBUF2);
+ sub=W[rQ]&01777u;TC(04631);W[5]=(agc_word)(02000u+sub);
+}
+void lmi_swreturn(apollo_overlay_state *s){
+ /* SWRETURN XCH BUF2 +1; XCH FBANK; XCH BUF2 +1; TC BUF2 (the TC held
+  * there, leaving Q = BUF2 +1, reaches RTB's TCF DANZIG). */
+ XCH(rBUF2+1);XCH(rFB);XCH(rBUF2+1);ai_tc(s,rBUF2+1u);danzig(s);
+}
+void lmi_poly(apollo_overlay_state *s,const agc_word *table){
+ agc_word q=(agc_word)(W[rQ]&077777u);
+ CAF(table[0]);(void)TS(rPOLYCNT);DOUBLE();AD(rQ);(void)TS(rPOLISH);ADF(FIVE);(void)TS(rPOLYRET);
+ CAF(LVBUF);(void)TS(rADDRWD);
+ ai_dcaf(s,table+(W[rPOLISH]-q)+3u);DXCH(rMPAC);DXCH(rVBUF);
+ for(;;){
+  TC(07246);dmpsub(s,0);ai_dcaf(s,table+(W[rPOLISH]-q)+1u);DAS(rMPAC);
+  if(CCS(rPOLYCNT)!=0u)break;
+  (void)TS(rPOLYCNT);CSF(TWO);ADS(rPOLISH);
+ }
+ /* TC POLYRET: the TC held there, leaving Q = 0142. */
+ W[5]=(agc_word)(W[rPOLYRET]&07777u);ai_tc(s,rPOLYRET+1u);
 }
 #undef W

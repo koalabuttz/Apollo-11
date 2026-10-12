@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include "lm_interp_orders.h"
 #include "lm_interp_steps.h"
+/* T(X)'s POLY table (TIME_OF_FREE_FALL, bank 27 3736-3752). */
+static const agc_word tx[13]={04,012525,012525,071463,057703,04423,017645,074604,043667,01626,037256,077404,052071};
 int main(void){
  static apollo_overlay_state s;uint16_t in[16+2048],out[1+2048];
  while(fread(in,sizeof in,1,stdin)==1){
@@ -38,6 +40,17 @@ int main(void){
   case 23:lmi_dsq(&s);break;
   case 24:lmi_vsq(&s);break;
   case 25:lmi_dot(&s,k);break;
+  case 26:lmi_ddv(&s,k);break;
+  case 27:lmi_bddv(&s,k);break;
+  case 28:(void)lmi_sqrt(&s);break;
+  case 29:(void)lmi_abvalabs(&s);break;
+  case 30:(void)lmi_unit(&s);break;
+  case 31:lmi_vxsc(&s,k);break;
+  case 32:lmi_vxv(&s,k);break;
+  case 33:(void)lmi_bov(&s);break;
+  case 34:lmi_rtb(&s);break;
+  case 35:lmi_swreturn(&s);break;
+  case 36:lmi_poly(&s,tx);break;
   default:return 2;
   }
   out[0]=4;for(i=0;i<4u;++i)if(in[1+i]&&s.words[5]==in[1+i]){out[0]=(uint16_t)i;break;}
