@@ -2224,8 +2224,47 @@
           ],
           "scope": "Actual timing and table selection source paths; complete restart continuation loop remains pending.",
           "verification": "docs/COMANCHE_RESTART_SELECT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_restart_routines.c",
+            "src/cm_restart_table_data.inc",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-RESTART-ROUTINES.md",
+          "scope": "Every RESTARTS, GETPART2 and PHSPART2 path (variable Type A/B, X.1 display, odd/even table, waitlist direct/indirect/immediate, longcall incl. 600SECS, FINDVAC/NOVAC) to the selected service, and the GOLOC-1/GOLOC+2 and display returns as ABI routines through SWRETURN."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "GOPROG entry state BB 02003 (FB 1, EB 3); group MPAC+5 0..5 (TEMP2G for second parts); TEMPPHS 1..01777; restart-table pointers within RESTART_TABLES; indirect times at erasable addresses",
+        "external_continuations": [
+          "FINDVAC/NOVAC/WAITLIST/LONGCALL bodies",
+          "SWRETURN",
+          "jobs and tasks named by the selected 2CADRs"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-RESTART-ROUTINES.md",
+            "sha256": "6dbc60d772cf5853be57a77c5f089bb7274c6bdbd3c443d314d315d84ade3ac6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-proof.json",
+            "sha256": "57df6dc20882ad7253c1626c8993413c508ea9ae56188e7389948eba6322162a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-host.log",
+            "sha256": "82ebe03cfe3c95dbef8c64b9a6feb8a5c10713ac01f59a38cd222e25d51a6e99"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
+            "sha256": "13fae30fe68940390317dcb218f3e466c7f076488843db378d261a05650851de"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/RESTART_TABLES.agc",
@@ -2241,8 +2280,46 @@
           ],
           "scope": "Verified249-word restart prefix; the rest of the original source is not certified.",
           "verification": "docs/COMANCHE_RESTART_SELECT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_restart_routines.c",
+            "src/cm_restart_table_data.inc",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-RESTART-ROUTINES.md",
+          "scope": "All 249 table words compiled from the source listing and consumed by native RESTARTS (all 79 table entries selected and their 2CADRs delivered through the control-transfer ABI); NEWPHASE/NUFAZ+10 as an ABI routine with its nine TC NEWPHASE site operands compiled from the source."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "tables consumed by cm_restart_routines_select from GOPROG entry state; NEWPHASE from its nine TC NEWPHASE sites with A not overflowed",
+        "external_continuations": [
+          "jobs and tasks named by the table 2CADRs",
+          "NEWPHASE callers at L+2"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-RESTART-ROUTINES.md",
+            "sha256": "6dbc60d772cf5853be57a77c5f089bb7274c6bdbd3c443d314d315d84ade3ac6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-proof.json",
+            "sha256": "57df6dc20882ad7253c1626c8993413c508ea9ae56188e7389948eba6322162a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-host.log",
+            "sha256": "82ebe03cfe3c95dbef8c64b9a6feb8a5c10713ac01f59a38cd222e25d51a6e99"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
+            "sha256": "13fae30fe68940390317dcb218f3e466c7f076488843db378d261a05650851de"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/RT8_OP_CODES.agc",

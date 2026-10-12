@@ -1,0 +1,23 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": {
+  "select": 7168,
+  "compose": 5120,
+  "newphase": 1024
+ },
+ "snapshot_sha256": {
+  "select": "1ebd0f202027303274e6654bb70a44c82d8dbea12dc36a7a71fade2643af0259",
+  "compose": "155d37cbe41908d34cc1e46ee6de3abd5509834b121b1107882dec45c3f57bb5",
+  "newphase": "1a68e836e586bddccbac342b6437f7f303cde9ea0ddc5727d25803ef44e1521d"
+ },
+ "entries": [
+  "01,3520 RESTARTS",
+  "01,3533 GETPART2",
+  "01,3755 PHSPART2",
+  "4114 NEWPHASE"
+ ],
+ "boundary": "select: TC GOLOC-1 (Z 0704) or X.1 TC FINDVAC; compose: RESTARTS to SWRETURN with each selected service recorded and returned to Q+2; newphase: TC NEWPHASE site to the caller L+2",
+ "full_physical_words": 2048
+}
