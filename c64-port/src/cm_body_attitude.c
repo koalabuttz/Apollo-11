@@ -74,6 +74,12 @@ static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
  if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;
  W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;
 }
+/* TC K, K erasable: C(K) runs as an instruction; a TC leaves Q = K+1. */
+static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
+ agc_word w=W[k];
+ if((w&070000u)||w<010u)return EXEC_OUT_OF_SCOPE;
+ W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;
+}
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }

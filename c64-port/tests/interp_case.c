@@ -6,7 +6,8 @@ const uint8_t irc_ch_num[IRC_NCH]={05,06,011,012,013,014,030,031,032,033};
 agc_word irc_ch[IRC_NCH],irc_trap[3];
 uint8_t irc_ch_on;
 agc_word irc_superbank;
-#ifndef IRC_BUILD_ONLY
+#if !defined(IRC_BUILD_ONLY) && !defined(IRC_LM_ONLY)
+/* (cm_channels: src/cm_interp_orders.c, which LM-only C64 builds leave out.) */
 void irc_cm_io(void *cm_io,unsigned save){cm_native_io *io=(cm_native_io *)cm_io;
  agc_word *f[IRC_NCH];unsigned i;
  f[0]=&cm_channels.channel05;f[1]=&cm_channels.channel06;f[2]=&io->channel11;f[3]=&io->channel12;f[4]=&io->channel13;
@@ -35,11 +36,15 @@ unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_c
  lio.superbank=superbank;lio.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
  cio.superbank=superbank;cio.interrupt_enabled=c->interrupt_enabled;
+#ifndef IRC_LM_ONLY
  {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
  if(irc_ch_on)irc_cm_io(&cio,0);
+#endif
  io=c->cm?(void *)&cio:(void *)&lio;
  st=agc_transfer_run(p,s,io,&superbank,0xfffeu,max_steps,&steps);
+#ifndef IRC_LM_ONLY
  if(irc_ch_on)irc_cm_io(&cio,1);
+#endif
  if(ie)*ie=c->cm?cio.interrupt_enabled:lio.interrupt_enabled;
  return st==EXEC_UNMAPPED?IRC_STOPPED:st==EXEC_OUT_OF_SCOPE&&steps==0u?IRC_REFUSED:IRC_FAILED;
 }
