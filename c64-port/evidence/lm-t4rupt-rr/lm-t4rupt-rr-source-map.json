@@ -1,0 +1,1141 @@
+{
+ "source_path": "Luminary099/T4RUPT_PROGRAM.agc",
+ "scope": "RRAUTCHK to the end of the file (06,3006-3155): the rendezvous radar monitor, MONREPOS, GPMATRIX and their constants",
+ "source_sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native": {
+  "src/lm_t4rupt_rr.c": "ab940f858c49fa2cf9543ccd0e45e9fe9a770c15294ba557e61d4527d65756c2",
+  "include/lm_t4rupt_rr.h": "8c69b9bd4420ed1d12526ae62753b2a255fb9708dba7411b9fac56f7ce10bf6c"
+ },
+ "source_words": 104,
+ "source_lines_with_words": 102,
+ "instructions_executed_by_oracle": 94,
+ "native_constants_checked": 14,
+ "external_addresses_checked": 7,
+ "line_map": [
+  {
+   "line": 1112,
+   "address": "06,3006",
+   "source": "RRAUTCHK CA RADMODES",
+   "words": [
+    "30110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1113,
+   "address": "06,3007",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1114,
+   "address": "06,3010",
+   "source": "RXOR CHAN33",
+   "words": [
+    "06033"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1115,
+   "address": "06,3011",
+   "source": "MASK AUTOMBIT",
+   "words": [
+    "74752"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1116,
+   "address": "06,3012",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1117,
+   "address": "06,3013",
+   "source": "BZF RRCDUCHK",
+   "words": [
+    "13037"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1119,
+   "address": "06,3014",
+   "source": "LXCH RADMODES",
+   "words": [
+    "22110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1120,
+   "address": "06,3015",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1121,
+   "address": "06,3016",
+   "source": "RXOR LCHAN",
+   "words": [
+    "06001"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1122,
+   "address": "06,3017",
+   "source": "MASK OCT05776",
+   "words": [
+    "73033"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1123,
+   "address": "06,3020",
+   "source": "TS RADMODES",
+   "words": [
+    "54110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1124,
+   "address": "06,3021",
+   "source": "MASK BIT2",
+   "words": [
+    "74752"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1125,
+   "address": "06,3022",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1126,
+   "address": "06,3023",
+   "source": "TCF RRCDUCHK -3",
+   "words": [
+    "13034"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1127,
+   "address": "06,3024",
+   "source": "CA OCT10001",
+   "words": [
+    "37663"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1128,
+   "address": "06,3025",
+   "source": "ADS RADMODES",
+   "words": [
+    "26110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1131,
+   "address": "06,3026",
+   "source": "CAF ONE",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1132,
+   "address": "06,3027",
+   "source": "TC WAITLIST",
+   "words": [
+    "05203"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1134,
+   "address": "06,3030",
+   "source": "2CADR RRTURNON",
+   "words": [
+    "02062",
+    "52107"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1136,
+   "address": "06,3032",
+   "source": "TCF NORRGMON",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1138,
+   "address": "06,3033",
+   "source": "OCT05776 OCT 5776",
+   "words": [
+    "05776"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1174,
+   "address": "06,3034",
+   "source": "-3 CS BIT2",
+   "words": [
+    "44752"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1175,
+   "address": "06,3035",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1176,
+   "address": "06,3036",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1178,
+   "address": "06,3037",
+   "source": "RRCDUCHK CA RADMODES",
+   "words": [
+    "30110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1179,
+   "address": "06,3040",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1180,
+   "address": "06,3041",
+   "source": "RXOR CHAN30",
+   "words": [
+    "06030"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1181,
+   "address": "06,3042",
+   "source": "MASK RCDUFBIT",
+   "words": [
+    "74745"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1182,
+   "address": "06,3043",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1183,
+   "address": "06,3044",
+   "source": "BZF RRGIMON",
+   "words": [
+    "13071"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1185,
+   "address": "06,3045",
+   "source": "CAF AUTOMBIT",
+   "words": [
+    "34752"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1186,
+   "address": "06,3046",
+   "source": "MASK RADMODES",
+   "words": [
+    "70110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1187,
+   "address": "06,3047",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1188,
+   "address": "06,3050",
+   "source": "TCF NORRGMON",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1190,
+   "address": "06,3051",
+   "source": "CAF RCDUFBIT",
+   "words": [
+    "34745"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1192,
+   "address": "06,3052",
+   "source": "LXCH RADMODES",
+   "words": [
+    "22110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1193,
+   "address": "06,3053",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1194,
+   "address": "06,3054",
+   "source": "RXOR L",
+   "words": [
+    "06001"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1195,
+   "address": "06,3055",
+   "source": "TS RADMODES",
+   "words": [
+    "54110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1197,
+   "address": "06,3056",
+   "source": "CA RADMODES",
+   "words": [
+    "30110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1198,
+   "address": "06,3057",
+   "source": "MASK RCDUFBIT",
+   "words": [
+    "74745"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1199,
+   "address": "06,3060",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1200,
+   "address": "06,3061",
+   "source": "TCF TRKFLCDU",
+   "words": [
+    "13070"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1201,
+   "address": "06,3062",
+   "source": "CS FLAGWRD0",
+   "words": [
+    "40074"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1202,
+   "address": "06,3063",
+   "source": "MASK RNDVZBIT",
+   "words": [
+    "74745"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1203,
+   "address": "06,3064",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1204,
+   "address": "06,3065",
+   "source": "TCF TRKFLCDU",
+   "words": [
+    "13070"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1205,
+   "address": "06,3066",
+   "source": "TC ALARM",
+   "words": [
+    "05567"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1206,
+   "address": "06,3067",
+   "source": "OCT 00515",
+   "words": [
+    "00515"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1207,
+   "address": "06,3070",
+   "source": "TRKFLCDU TC SETTRKF",
+   "words": [
+    "04564"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1244,
+   "address": "06,3071",
+   "source": "RRGIMON CAE FLAGWRD5",
+   "words": [
+    "30101"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1245,
+   "address": "06,3072",
+   "source": "MASK NORRMBIT",
+   "words": [
+    "74750"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1246,
+   "address": "06,3073",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1247,
+   "address": "06,3074",
+   "source": "TCF NORRGMON",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1248,
+   "address": "06,3075",
+   "source": "CS FLAGWRD7",
+   "words": [
+    "40103"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1249,
+   "address": "06,3076",
+   "source": "MASK AVEGFBIT",
+   "words": [
+    "74747"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1250,
+   "address": "06,3077",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1251,
+   "address": "06,3100",
+   "source": "TCF +5",
+   "words": [
+    "13105"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1252,
+   "address": "06,3101",
+   "source": "CA FLAGWRD6",
+   "words": [
+    "30102"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1253,
+   "address": "06,3102",
+   "source": "MASK MUNFLBIT",
+   "words": [
+    "74744"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1254,
+   "address": "06,3103",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1255,
+   "address": "06,3104",
+   "source": "TCF NORRGMON",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1256,
+   "address": "06,3105",
+   "source": "+5 CAF OCT32002",
+   "words": [
+    "33127"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1257,
+   "address": "06,3106",
+   "source": "MASK RADMODES",
+   "words": [
+    "70110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1258,
+   "address": "06,3107",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1259,
+   "address": "06,3110",
+   "source": "TCF NORRGMON",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1261,
+   "address": "06,3111",
+   "source": "TC RRLIMCHK",
+   "words": [
+    "04523"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1262,
+   "address": "06,3112",
+   "source": "ADRES CDUT",
+   "words": [
+    "00035"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1264,
+   "address": "06,3113",
+   "source": "TCF MONREPOS",
+   "words": [
+    "13115"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1266,
+   "address": "06,3114",
+   "source": "TCF NORRGMON",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1268,
+   "address": "06,3115",
+   "source": "MONREPOS CAF REPOSBIT",
+   "words": [
+    "34741"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1269,
+   "address": "06,3116",
+   "source": "ADS RADMODES",
+   "words": [
+    "26110"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1271,
+   "address": "06,3117",
+   "source": "CS OCT20002",
+   "words": [
+    "43130"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1272,
+   "address": "06,3120",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1273,
+   "address": "06,3121",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1275,
+   "address": "06,3122",
+   "source": "CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1276,
+   "address": "06,3123",
+   "source": "TC WAITLIST",
+   "words": [
+    "05203"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1278,
+   "address": "06,3124",
+   "source": "2CADR DORREPOS",
+   "words": [
+    "02127",
+    "52107"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1280,
+   "address": "06,3126",
+   "source": "TCF NORRGMON",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1282,
+   "address": "06,3127",
+   "source": "OCT32002 OCT 32002",
+   "words": [
+    "32002"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1283,
+   "address": "06,3130",
+   "source": "OCT20002 OCT 20002",
+   "words": [
+    "20002"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1284,
+   "address": "06,3131",
+   "source": "OCT02100 OCT 02100",
+   "words": [
+    "02100"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1325,
+   "address": "06,3132",
+   "source": "GPMATRIX CAE CDUZ",
+   "words": [
+    "30034"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1326,
+   "address": "06,3133",
+   "source": "TC SPSIN",
+   "words": [
+    "05033"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1327,
+   "address": "06,3134",
+   "source": "TS M11",
+   "words": [
+    "55414"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1329,
+   "address": "06,3135",
+   "source": "CAE CDUZ",
+   "words": [
+    "30034"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1330,
+   "address": "06,3136",
+   "source": "TC SPCOS",
+   "words": [
+    "05032"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1331,
+   "address": "06,3137",
+   "source": "TS COSMG",
+   "words": [
+    "54061"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1333,
+   "address": "06,3140",
+   "source": "CAE CDUX",
+   "words": [
+    "30032"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1334,
+   "address": "06,3141",
+   "source": "TC SPSIN",
+   "words": [
+    "05033"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1335,
+   "address": "06,3142",
+   "source": "TS M22",
+   "words": [
+    "55417"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1337,
+   "address": "06,3143",
+   "source": "CS M22",
+   "words": [
+    "41417"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1339,
+   "address": "06,3144",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1340,
+   "address": "06,3145",
+   "source": "MP COSMG",
+   "words": [
+    "70061"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1341,
+   "address": "06,3146",
+   "source": "TS M31",
+   "words": [
+    "55416"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1343,
+   "address": "06,3147",
+   "source": "CAE CDUX",
+   "words": [
+    "30032"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1344,
+   "address": "06,3150",
+   "source": "TC SPCOS",
+   "words": [
+    "05032"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1345,
+   "address": "06,3151",
+   "source": "TS M32",
+   "words": [
+    "55420"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1347,
+   "address": "06,3152",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1348,
+   "address": "06,3153",
+   "source": "MP COSMG",
+   "words": [
+    "70061"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1349,
+   "address": "06,3154",
+   "source": "TS M21",
+   "words": [
+    "55415"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1351,
+   "address": "06,3155",
+   "source": "TC RESUME",
+   "words": [
+    "05270"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t4rupt_rr.c",
+   "executed_by_oracle": true
+  }
+ ]
+}
