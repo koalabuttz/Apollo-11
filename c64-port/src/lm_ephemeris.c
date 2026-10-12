@@ -87,7 +87,7 @@ static uint8_t lme_shift(apollo_overlay_state *s,uint8_t right){
  ok=right?ephemeris_time_downscale(s,LM):ephemeris_scalar_left(s,LM);
  W[0116]=actual;return ok;
 }
-static uint8_t admitted(const apollo_overlay_state *s,const p66_bias_io *io){
+uint8_t lm_ephemeris_admitted(const apollo_overlay_state *s,const p66_bias_io *io){
  static const agc_word returns[5]={022563,023273,023373,030512,065627};
  unsigned i,vac=W[0120];agc_word q;uint8_t known=0;
  if(W[5]!=06070u||W[4]!=032000u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)(032000u|(W[3]>>8))||W[0165]!=W[6]||W[7]||W[023]||W[067]||W[0115]||W[0163])return 0;
@@ -225,7 +225,7 @@ uint8_t lm_ephemeris_step(apollo_overlay_state *s,p66_bias_io *io,uint8_t phase)
 }
 uint8_t lm_ephemeris(apollo_overlay_state *s,p66_bias_io *io){
  uint8_t phase=LME_ENTRY;unsigned guard;
- if(!s||!io||!admitted(s,io))return 0;
+ if(!s||!io||!lm_ephemeris_admitted(s,io))return 0;
  /* The original's loops end in a few passes (POSITB at most once more, the
   * POSITD/POSITE loop over three RATESP blocks); the bound only stops a
   * runaway chain. */

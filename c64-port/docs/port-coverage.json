@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -4449,7 +4449,9 @@
         {
           "native_files": [
             "src/lm_ephemeris.c",
-            "src/lm_interp_steps.c"
+            "src/lm_interp_steps.c",
+            "src/lm_ephemeris_routines.c",
+            "src/lm_ephemeris_routine_table.c"
           ],
           "scope": "All 74 words: LSPOS/LUNPOS and LUNVEL from the original entry frontier to every actual caller frontier, as nine native steps between original NEWOPS frontiers. Every source path is translated; the complete certificate below awaits the auditor review.",
           "verification": "docs/LM-EPHEMERIS.md"
@@ -4460,7 +4462,7 @@
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; coherent original entry banks, BANKSET = BB, five VACs, ordinary 15-bit words.",
+          "canonical_state": "Sole canonical 2048-word image; Z at NEWOPS 06070 with FB = BANKSET bank 15 (BANKSET = BB), LOC at LSPOS 03664 or LUNVEL 03775, EDOP, NEWJOB, INTBIT15, MODE and word 7 zero, an interrupt latch of 0 or 1, SUPER 0 or 0100 as the caller requires, five VACs, ordinary 15-bit words (lm_ephemeris_admitted).",
           "caller_returns": {
             "LSPOS": [
               "022563",
@@ -4473,11 +4475,15 @@
               "023417"
             ]
           },
-          "data_validity": "Original ephemeris polynomial validity; no widened claim."
+          "data_validity": "Original ephemeris polynomial validity; no widened claim.",
+          "interrupts_and_jobs": "No interrupt during the routine (the yaAGC oracle runs with none). The routine creates no job, so NEWJOB stays zero throughout and the native steps do not test it again; a job switch requested by an interrupt mid-routine is outside the qualified domain. Separately scheduled overlay modules must keep that condition or test NEWJOB at each frontier.",
+          "transfer_abi": "lm_ephemeris_routines registers LSPOS 15,3664 and LUNVEL 15,3775 and the eight other NEWOPS frontiers (3700, 3722, 3743, 3752, 3753, 3756, 3763, 3764) as interpretive routines keyed by LOC under BANKSET; each runs one step and leaves the next frontier, and the RVQ leaves the caller's frontier selected by QPRET. The file has no inline operands. Round trip: all 65536 sampled entries through agc_transfer_run on the host (strict and ASAN/UBSAN) and every frozen phase step through the trampoline in VICE.",
+          "untested_paths": "The UNIT SQRT abort frontier is translated and admitted but no sampled state reaches it, so it is not oracle-compared."
         },
         "external_continuations": [
           "Caller entry/resume services and application scheduling",
-          "Overlay ABI 2 modules for the whole routine on the C64 (phases verified separately)"
+          "Overlay ABI 2 modules for the whole routine on the C64 (each phase runs through the trampoline separately)",
+          "POODOO 1302 handling beyond the UNIT SQRT abort frontier"
         ],
         "evidence": {
           "source_to_native_map": {
@@ -4485,16 +4491,20 @@
             "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
-            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+            "path": "evidence/lm-ephemeris/lm-ephemeris-source-stream.json",
+            "sha256": "0a236512d939e1230aec4dc9038cc1230c29a9bfd4c37c0fd41416f5b95237ce"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-checks.log",
-            "sha256": "31fe7d0fee2daddcc969fc72fc6ceba25ba47620c5b2d62d12dd52099be995ed"
+            "sha256": "db7d4ac77eb67ab11a10074805430a59d947c08008425408c526c76409b6faf7"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-results.json",
-            "sha256": "f336006417ac182a4f83fd84c4322b5aa192d96196d015781e1f3bdd28d3c097"
+            "sha256": "d4c784640d95eb46f4ff7942082cc62b438ba35d395615e41075efa9aa6aa102"
+          },
+          "independent_assembly_comparison_snapshots": {
+            "path": "evidence/lm-ephemeris/lm-ephemeris-reference.snapshots.bin.xz",
+            "sha256": "a2593a19409707c6b34473c2ec19a697ea008ba6f4038b6f70788fd75a6b504b"
           }
         }
       }
