@@ -799,6 +799,17 @@
           ],
           "scope": "V55 clock update (ALINTIME: noun 24 load, V23 check, UPDATIME through TPAGREE into TIME2/TIME1), every label and return point to its callee boundary, register-exact against the original program.",
           "verification": "docs/LANEC-EV-TIME.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_track.c",
+            "src/lanec.c",
+            "include/lanec_ev_track.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Basic code of V69 and the tracking and state-vector verbs (TRACKTRM, CLEANOUT, SETVHFLG, RESETVHF, ATTACHIT, TACHEXIT, LMTOCMSV, LMTOCM) up to each TC INTPRET and from each interpretive EXIT, register-exact against the original program. The interpretive words are not included.",
+          "verification": "docs/LANEC-EV-TRACK.md"
         }
       ]
     },
@@ -3684,6 +3695,17 @@
           ],
           "scope": "V55 clock update (R33: noun 24 load, V23 check, UPDATIME through TPAGREE into TIME2/TIME1) and the V43 ATTCK2 task (THETAD into CDUXCMD..CDUZCMD, channel 14 drive bits), every label and return point to its callee boundary, register-exact against the original program.",
           "verification": "docs/LANEC-EV-TIME.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_track.c",
+            "src/lanec.c",
+            "include/lanec_ev_track.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Basic code of V69 and the tracking and state-vector verbs (TRMTRAK1, DSPRRLOS/RRLOSDSP, ATTACHIT with TACHEXIT and TCPIN set-up) up to each TC INTPRET and from each interpretive EXIT, register-exact against the original program. The interpretive words are not included.",
+          "verification": "docs/LANEC-EV-TRACK.md"
         }
       ]
     },

@@ -798,6 +798,26 @@
 #define LANEC_LM_ATTSCALE_WORD 03146u /* ATTSCALE */
 #define LANEC_LM_DEC23_WORD 027u /* DEC23 */
 #define LANEC_LM_VNLODDT_WORD 06230u /* VNLODDT */
+#define LANEC_LM_ATTACHIT 03147u /* ATTACHIT F 43 */
+#define LANEC_LM_ATTACHIT_BANK 043u
+#define LANEC_LM_B5OFF 05563u /* B5OFF F fixed-fixed/unswitched */
+#define LANEC_LM_CDUT 035u /* CDUT C fixed-fixed/unswitched */
+#define LANEC_LM_DSPRRLOS 02000u /* DSPRRLOS F 40 */
+#define LANEC_LM_DSPRRLOS_BANK 040u
+#define LANEC_LM_FIXLOC 0120u /* FIXLOC E fixed-fixed/unswitched */
+#define LANEC_LM_GENTRAN 05544u /* GENTRAN F fixed-fixed/unswitched */
+#define LANEC_LM_INTPRET 06037u /* INTPRET F fixed-fixed/unswitched */
+#define LANEC_LM_PHASCHNG 05353u /* PHASCHNG F fixed-fixed/unswitched */
+#define LANEC_LM_QPRET 052u /* QPRET C fixed-fixed/unswitched */
+#define LANEC_LM_RRLOSDSP 02017u /* RRLOSDSP F 40 */
+#define LANEC_LM_RRLOSDSP_BANK 040u
+#define LANEC_LM_TRMTRAK1 02054u /* TRMTRAK1 F 42 */
+#define LANEC_LM_TRMTRAK1_BANK 042u
+#define LANEC_LM_VERB69 02037u /* VERB69 F 43 */
+#define LANEC_LM_VERB69_BANK 043u
+#define LANEC_LM_OCT51_WORD 051u /* OCT51 */
+#define LANEC_LM_TCPINAD_WORD 067202u /* TCPINAD */
+#define LANEC_LM_V16N56_WORD 04070u /* V16N56 */
 #define LANEC_CM_GOEXTVB 02000u /* GOEXTVB F 43 */
 #define LANEC_CM_GOEXTVB_BANK 043u
 #define LANEC_CM_LST2FAN 02002u /* LST2FAN F 43 */
@@ -1508,4 +1528,29 @@
 #define LANEC_CM_UPDTMEND_BANK 043u
 #define LANEC_CM_DEC23_WORD 027u /* DEC23 */
 #define LANEC_CM_VNLODDT_WORD 06230u /* VNLODDT */
+#define LANEC_CM_2PHSCHNG 05372u /* 2PHSCHNG F fixed-fixed/unswitched */
+#define LANEC_CM_ATTACHIT 03041u /* ATTACHIT F 43 */
+#define LANEC_CM_ATTACHIT_BANK 043u
+#define LANEC_CM_FIXLOC 0120u /* FIXLOC E fixed-fixed/unswitched */
+#define LANEC_CM_GENTRAN 05606u /* GENTRAN F fixed-fixed/unswitched */
+#define LANEC_CM_INTPRET 06006u /* INTPRET F fixed-fixed/unswitched */
+#define LANEC_CM_LMTOCM 03107u /* LMTOCM F 43 */
+#define LANEC_CM_LMTOCM_BANK 043u
+#define LANEC_CM_LMTOCMSV 03102u /* LMTOCMSV F 43 */
+#define LANEC_CM_LMTOCMSV_BANK 043u
+#define LANEC_CM_QPRET 052u /* QPRET C fixed-fixed/unswitched */
+#define LANEC_CM_RESETVHF 03027u /* RESETVHF F 43 */
+#define LANEC_CM_RESETVHF_BANK 043u
+#define LANEC_CM_SETVHFLG 03023u /* SETVHFLG F 43 */
+#define LANEC_CM_SETVHFLG_BANK 043u
+#define LANEC_CM_STOPRATE 04526u /* STOPRATE F fixed-fixed/unswitched */
+#define LANEC_CM_TACHEXIT 03057u /* TACHEXIT F 43 */
+#define LANEC_CM_TACHEXIT_BANK 043u
+#define LANEC_CM_TRACKTRM 02653u /* TRACKTRM F 43 */
+#define LANEC_CM_TRACKTRM_BANK 043u
+#define LANEC_CM_TRFAILOF 05631u /* TRFAILOF F fixed-fixed/unswitched */
+#define LANEC_CM_VERB69 02037u /* VERB69 F 43 */
+#define LANEC_CM_VERB69_BANK 043u
+#define LANEC_CM_OCT51_WORD 051u /* OCT51 */
+#define LANEC_CM_TCPINAD_WORD 067076u /* TCPINAD */
 #endif
