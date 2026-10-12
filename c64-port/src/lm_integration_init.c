@@ -1586,7 +1586,7 @@ static enum exec_status r27351(apollo_overlay_state *s,p66_bias_io *io){
  lmi_newops(s,046135);
  lmi_direct(s,001012,006501);lmi_sload(s);
  right(s);
- lmi_misc(s,027363,002447);
+ lmi_misc(s,027363,002447);(void)ai_ccs(s,020);
  if(lmi_bhiz(s)){
    lmi_goto(s);
    return EXEC_OK;

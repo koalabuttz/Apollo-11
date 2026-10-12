@@ -564,7 +564,7 @@ static enum exec_status r22573(apollo_overlay_state *s,p66_bias_io *io){
  /* 11,2602 BHIZ BOF */
  TRACE(s);
  lmi_newops(s,043030);
- lmi_misc(s,022606,002447);
+ lmi_misc(s,022606,002447);(void)ai_ccs(s,020);
  if(lmi_bhiz(s)){
    lmi_goto(s);
    return EXEC_OK;
