@@ -1,0 +1,11 @@
+PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 88 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2
+PASS65536 original TIME_OF_FREE_FALL call chains strict native
+PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 88 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2
+PASS65536 original TIME_OF_FREE_FALL call chains full ASAN/UBSAN
+PASS: VICE PAL lm-time-free-fall-1.prg: 24 checks, 0 failures
+PASS: VICE PAL lm-time-free-fall-2.prg: 34 checks, 0 failures
+PASS: VICE PAL lm-time-free-fall-3.prg: 22 checks, 0 failures
+PASS: VICE PAL lm-time-free-fall-4.prg: 8 checks, 0 failures
+PASS 266 assembled words on 253 source lines map to native literals in 27 functions

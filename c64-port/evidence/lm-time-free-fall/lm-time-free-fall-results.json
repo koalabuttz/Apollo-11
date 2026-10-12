@@ -1,0 +1,110 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 88 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2",
+  "PASS65536 original TIME_OF_FREE_FALL call chains strict native",
+  "PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 88 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2",
+  "PASS65536 original TIME_OF_FREE_FALL call chains full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-time-free-fall-1.prg: 24 checks, 0 failures",
+   "PASS: VICE PAL lm-time-free-fall-2.prg: 34 checks, 0 failures",
+   "PASS: VICE PAL lm-time-free-fall-3.prg: 22 checks, 0 failures",
+   "PASS: VICE PAL lm-time-free-fall-4.prg: 8 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 47055,
+    "prg_sha256": "e55289add42370097829a23529d840d3a10570e87c0872cc743b7522f32d1a68",
+    "sections": {
+     "text": 37437,
+     "rodata": 9604,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$bfce",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "steps": 24
+   },
+   "2": {
+    "prg_bytes": 45936,
+    "prg_sha256": "b0212d112d8ca9403882956ab601b4dc1731a0a5aacf40ef82d1d0f31976fc53",
+    "sections": {
+     "text": 31494,
+     "rodata": 14428,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$bb6f",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "steps": 34
+   },
+   "3": {
+    "prg_bytes": 35208,
+    "prg_sha256": "619394c644e8bac9e17de42666d5b621dbd724b8930f82ebce47a4398c031884",
+    "sections": {
+     "text": 27802,
+     "rodata": 7392,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$9187",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21
+    ],
+    "steps": 22
+   },
+   "4": {
+    "prg_bytes": 31609,
+    "prg_sha256": "536df80b0a6c17fabe3c6e76870fe8a6479314fb45c709bbe593972faea4547a",
+    "sections": {
+     "text": 28456,
+     "rodata": 3139,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$8378",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     22,
+     23,
+     24
+    ],
+    "steps": 8
+   }
+  },
+  "whole_routine_note": "The whole routine is too big for one PRG beside two images, so the C64 check runs each phase in one of four PRGs from a debris-only base state; the host runs the same phase steps and the whole chain."
+ },
+ "source_audit": [
+  "PASS 266 assembled words on 253 source lines map to native literals in 27 functions"
+ ]
+}

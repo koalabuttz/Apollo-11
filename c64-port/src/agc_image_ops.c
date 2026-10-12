@@ -14,7 +14,7 @@ static agc_register add16(agc_register a, agc_register b){
  if(t&0200000u)t=(t+1u)&M16;
  return (agc_register)t;
 }
-static agc_register sx(agc_word v){return (agc_register)((v&077777u)|((v<<1)&0100000u));}
+static agc_register sx(agc_word v){return (agc_register)((v&077777u)|(((unsigned)v<<1)&0100000u));}
 static agc_word oc(agc_register v){return (agc_word)((v&037777u)|((v>>1)&040000u));}
 /* +1, -1 (16-bit) or +0 for an accumulator-style value. */
 static agc_register ovf(agc_register v){
@@ -43,7 +43,7 @@ void ai_put(agc_image *s,unsigned a,agc_word v){
  case 7:return;
  case 020:W[020]=(agc_word)((v>>1)|((v&1u)<<14));return;
  case 021:W[021]=(agc_word)((v>>1)|(v&040000u));return;
- case 022:W[022]=(agc_word)(((v<<1)|(v>>14))&077777u);return;
+ case 022:W[022]=(agc_word)((((unsigned)v<<1)|((unsigned)v>>14))&077777u);return;
  case 023:W[023]=(agc_word)((v>>7)&0177u);return;
  default:W[a]=v;return;
  }
