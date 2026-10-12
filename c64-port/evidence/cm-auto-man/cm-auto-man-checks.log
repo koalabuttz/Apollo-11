@@ -1,0 +1,7 @@
+cm-auto-man: 128 frozen original AUTOMATIC_MANEUVERS states, entry refusals: PASS
+PASS 65536 original AUTOMATIC_MANEUVERS oracle states equal native 2053-word rows {'returned': 65536} c18bb36390606420397bc9e9876f2df389202bc253fa626fc6f404ceeba4d94a
+PASS 333 original AUTOMATIC_MANEUVERS words mapped; listing equals rope; 19 fixed constants, double-word, 2CADR and INDEX tables equal native literals; TC returns equal the listing
+PASS 333 emitted AUTOMATIC_MANEUVERS.agc words equal the original Comanche055 rope
+cm-auto-man: 128 frozen original AUTOMATIC_MANEUVERS states, entry refusals: PASS
+PASS 65536 original AUTOMATIC_MANEUVERS oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} c18bb36390606420397bc9e9876f2df389202bc253fa626fc6f404ceeba4d94a
+PASS: VICE PAL cm-auto-man.prg: 128 checks, 0 failures
