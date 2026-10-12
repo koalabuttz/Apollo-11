@@ -1,0 +1,21 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "76aebce3fa4caaaa0a89e2c0a6e1f43edf05b98304af8e18d95b8edd6b7b139e",
+ "entries": [
+  "5354 NEWMODEX",
+  "5357 NEWMODEA",
+  "5360 MMDSPLAY",
+  "5364 CHECKMM",
+  "5372 2PHSCHNG",
+  "5412 PHASCHNG",
+  "10,2440 SETUPDSP",
+  "10,2446 SETUPDSP NOVAC return",
+  "10,2451 PHSCHNG2",
+  "10,2537 CON2"
+ ],
+ "boundary": "caller site to the caller return (or CHECKMM Q+1/Q+2), through BANKJUMP (cm_interbank_routines); NOVAC recorded and returned to Q+2",
+ "full_physical_words": 2048
+}

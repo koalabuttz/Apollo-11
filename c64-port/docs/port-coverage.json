@@ -1657,8 +1657,49 @@
           ],
           "scope": "Original MR.KLEAN P00KLEAN V37KLEAN phase clearing through true caller returns.",
           "verification": "docs/COMANCHE_PHASE_CLEANUP.md"
+        },
+        {
+          "native_files": [
+            "src/cm_phase_table.c",
+            "src/cm_phase_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-PHASE-TABLE.md",
+          "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 162 caller sites (229 words) compiled from the source listing."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 162 compiled TC sites (and NEWMODEA/MMDSPLAY from any bank) with cm_native_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "external_continuations": [
+          "BANKJUMP (cm_interbank_routines)",
+          "NOVAC and the DSPMMJOB job",
+          "CHECKMM exits Q+1/Q+2 in INTERPRETER",
+          "callers' returns"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-PHASE-TABLE.md",
+            "sha256": "d60ebc080dfba988040fd4cb37b953c9f3af9bdf2fcd68faefabf673af13e025"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-phase-table/cm-phase-table-proof.json",
+            "sha256": "ac5b0d75832b2751201aafad8c28ddd71918c4f6e7152b453521f846b47422d8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-phase-table/cm-phase-table-host.log",
+            "sha256": "2875c2f796b7b730f4eb7438c9791ad7151453732e58cdb5f49bbfce6519cbde"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-phase-table/cm-phase-table-vice.log",
+            "sha256": "4990a09c9c01d4be80c26e7efd6843c69fa9d8a0708c3fc22a79111a872f3b8f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-phase-table",
+  "release": "evidence-cm-phase-table",
+  "files": {
+    "cm-phase-table-host.log": {
+      "sha256": "2875c2f796b7b730f4eb7438c9791ad7151453732e58cdb5f49bbfce6519cbde",
+      "bytes": 1824,
+      "store": "release"
+    },
+    "cm-phase-table-proof.json": {
+      "sha256": "ac5b0d75832b2751201aafad8c28ddd71918c4f6e7152b453521f846b47422d8",
+      "bytes": 672,
+      "store": "tree"
+    },
+    "cm-phase-table-sites.json": {
+      "sha256": "712858572bcf0ccb41b3edaad4e5581ef024557d741138102f0ce7754ebc7d09",
+      "bytes": 48932,
+      "store": "release"
+    },
+    "cm-phase-table-vice.log": {
+      "sha256": "4990a09c9c01d4be80c26e7efd6843c69fa9d8a0708c3fc22a79111a872f3b8f",
+      "bytes": 626,
+      "store": "release"
+    }
+  }
+}
