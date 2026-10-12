@@ -41,7 +41,8 @@ static int outside(unsigned z)
         if (!inside) return 1;
     }
     for (i = 0; i < meta.stops; ++i)
-        if (meta.stop[i].address == z && (meta.stop[i].bank == LANEC_ANY_BANK || meta.stop[i].bank == fb)) return 1;
+        if (meta.stop[i].address == z && (meta.stop[i].bank == LANEC_ANY_BANK || meta.stop[i].bank == fb) &&
+            !(i == 0 && meta.stop_q && word(2u) != meta.stop_q_value)) return 1;
     for (i = 0; i < meta.stop_count; ++i)
         if (meta.stop_list[i].address == z && (meta.stop_list[i].bank == LANEC_ANY_BANK || meta.stop_list[i].bank == fb)) return 1;
     for (i = 0; i < meta.ranges; ++i) {

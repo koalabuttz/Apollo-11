@@ -7,8 +7,8 @@
  * which original words they cover. Each suite draws its states from the
  * module's own input generator, spread over the generator's whole domain.
  * The oracle runs the original program from the entry until Z first reaches
- * the point (bank and address) where the native module stopped; the native
- * module claims nothing past it. Test-only. */
+ * the point (bank and address) where the native module stopped with the
+ * same Q; the native module claims nothing past it. Test-only. */
 #include "lanec_suites.h"
 #include "p66_bias.h"
 #include "cm_native_image.h"

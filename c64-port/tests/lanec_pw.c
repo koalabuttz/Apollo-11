@@ -14,6 +14,8 @@ void lanec_pw_exit_stop(lanec_meta *m, const apollo_overlay_state *s, const lane
     m->stops = 1u;
     m->stop[0].address = z;
     m->stop[0].bank = z >= 02000u && z < 04000u ? lanec_current_bank(&t, &u) : LANEC_ANY_BANK;
+    m->stop_q = 1u;   /* the program may pass the exit address earlier with another Q */
+    m->stop_q_value = t.words[LANEC_Q];
 }
 
 void lanec_pw_settle(apollo_overlay_state *s)
