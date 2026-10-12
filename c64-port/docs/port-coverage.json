@@ -1679,7 +1679,7 @@
       "sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
       "bytes": 12224,
       "lines": 416,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1699,7 +1699,7 @@
           "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 162 caller sites (229 words) compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1710,7 +1710,6 @@
           "CHECKMM exits Q+1/Q+2 in INTERPRETER",
           "callers' returns"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-PHASE-TABLE.md",
@@ -1727,6 +1726,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-phase-table/cm-phase-table-vice.log",
             "sha256": "4990a09c9c01d4be80c26e7efd6843c69fa9d8a0708c3fc22a79111a872f3b8f"
+          },
+          "independent_review": {
+            "path": "docs/audits/phase-table.md",
+            "sha256": "9e317586106f06da348338e84fb743a91da1d39480648c4b1e10dd17bc7581db"
           }
         }
       }
@@ -2286,7 +2289,7 @@
       "sha256": "490811f02cb07b69e98d9c558ed156f82e95d8735f29827edf8fe2fd6366efcc",
       "bytes": 7809,
       "lines": 337,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2306,7 +2309,7 @@
           "scope": "Every RESTARTS, GETPART2 and PHSPART2 path (variable Type A/B, X.1 display, odd/even table, waitlist direct/indirect/immediate, longcall incl. 600SECS, FINDVAC/NOVAC) to the selected service, and the GOLOC-1/GOLOC+2 and display returns as ABI routines through SWRETURN."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2316,7 +2319,6 @@
           "SWRETURN",
           "jobs and tasks named by the selected 2CADRs"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-RESTART-ROUTINES.md",
@@ -2333,6 +2335,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
             "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-restart-routines.md",
+            "sha256": "db9154a6c92c83c69eac502d56a2aa7c7a3e17c6f3c708a8c74b0d22b6e9f749"
           }
         }
       }
@@ -2343,7 +2349,7 @@
       "sha256": "4ed25b96c1e8582bf1656b433e0212eb6c9f5528348b40f5c7117a1964ab9994",
       "bytes": 11852,
       "lines": 549,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2362,7 +2368,7 @@
           "scope": "All 249 table words compiled from the source listing and consumed by native RESTARTS (all 79 table entries selected and their 2CADRs delivered through the control-transfer ABI); NEWPHASE/NUFAZ+10 as an ABI routine with its nine TC NEWPHASE site operands compiled from the source."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2371,7 +2377,6 @@
           "jobs and tasks named by the table 2CADRs",
           "NEWPHASE callers at L+2"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-RESTART-ROUTINES.md",
@@ -2388,6 +2393,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
             "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-restart-routines.md",
+            "sha256": "db9154a6c92c83c69eac502d56a2aa7c7a3e17c6f3c708a8c74b0d22b6e9f749"
           }
         }
       }
@@ -4809,7 +4818,7 @@
       "sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
       "bytes": 6098,
       "lines": 183,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4853,7 +4862,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
-            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+            "sha256": "12140f2fa58e899a33231de01b804beb4157e4fe2527cd5ae8c6ef2dec2f2640"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-source-stream.json",
@@ -4870,6 +4879,10 @@
           "independent_assembly_comparison_snapshots": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-reference.snapshots.bin.xz",
             "sha256": "a2593a19409707c6b34473c2ec19a697ea008ba6f4038b6f70788fd75a6b504b"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-ephemeris.md",
+            "sha256": "0b8e4647d644d883a47acddc98344a5406279881e6c9084827cf5fe662e980cd"
           }
         }
       }
@@ -5102,7 +5115,7 @@
       "sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
       "bytes": 12373,
       "lines": 411,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "PHASCHNG/2PHSCHNG A/B/C table maintenance for groups 1..6; NEWMODEX/MMDSPLAY covered only on the STARTP66 path below.",
@@ -5139,7 +5152,7 @@
           "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG/PHSCHNGA/PHASJUMP with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 142 caller sites (181 words) compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5150,7 +5163,6 @@
           "CHECKMM exits Q+1/Q+2 in INTERPRETER",
           "callers' returns"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-PHASE-TABLE.md",
@@ -5167,6 +5179,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-phase-table/lm-phase-table-vice.log",
             "sha256": "5a916a58261ca88102703b5e908080bf6634075fe09e4d4712c8db131f6b4f29"
+          },
+          "independent_review": {
+            "path": "docs/audits/phase-table.md",
+            "sha256": "9e317586106f06da348338e84fb743a91da1d39480648c4b1e10dd17bc7581db"
           }
         }
       }
