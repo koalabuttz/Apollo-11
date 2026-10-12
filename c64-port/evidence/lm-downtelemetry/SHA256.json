@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-downtelemetry",
+  "release": "evidence-lm-downtelemetry",
+  "files": {
+    "lm-downtelemetry-data.json": {
+      "sha256": "762a7e9be0fc21554ab095e0b7d87a8205af8b8628a64a68c63db6d160a1733d",
+      "bytes": 35319,
+      "store": "release"
+    },
+    "lm-downtelemetry-host.log": {
+      "sha256": "9593fc30d35821010ae83cfce2e884e156a4f6315d4421ea09a41dd2241a8b5c",
+      "bytes": 1635,
+      "store": "release"
+    },
+    "lm-downtelemetry-proof.json": {
+      "sha256": "c769060975ab840f375adaa5f7da78c16ea60c4d893a802a09fb3fd84640904a",
+      "bytes": 612,
+      "store": "tree"
+    },
+    "lm-downtelemetry-vice.log": {
+      "sha256": "07837c8b03a0e59e9dcb12dfff175942d3d4f0d5b0d29df8d3e1f465e8fc93a1",
+      "bytes": 631,
+      "store": "release"
+    }
+  }
+}

@@ -21,7 +21,7 @@ enum {
  rINTBIT15=0115,rADDRWD=0116,rPOLISH=0117,rFIXLOC=0120,rOVFIND=0121,rVBUF=0122,
  rBUF=0130,rMPTEMP=0135,rDOTINC=0136,rDOTRET=0137,rPOLYCNT=0140,rPOLYRET=0141,
  rMPAC=0154,rMODE=0163,rLOC=0164,rBANKSET=0165,rPUSHLOC=0166,
- rBUF2=0133,rDVSIGN=0136,rDVNORMCT=0137,rMAXDVSW=0140,rTEM1=0141
+ rBUF2=0133,rDVSIGN=0136,rDVNORMCT=0137,rMAXDVSW=0140,rMATINC=0140,rTEM1=0141
 };
 /* Work-area tags relative to FIXLOC. */
 enum {tX1=046,tX2=047,tS1=050,tLVSQUARE=042,tLV=044,tQPRET=052};
@@ -31,7 +31,9 @@ enum {tX1=046,tX2=047,tS1=050,tLVSQUARE=042,tLV=044,tQPRET=052};
 #define TWO 2u
 #define FOUR 4u
 #define FIVE 5u
+#define SIX 6u
 #define SEVEN 7u
+#define TEN 012u
 #define LOW2 3u
 #define LOW3 7u
 #define LOW7 0177u
@@ -902,6 +904,26 @@ void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
  TC(IF_(07530,07477));dmpsub(s,kat(k,4));DXCH(rVBUF+4);endvxv(s);
 }
 
+/* VXM/MXV 07342 (Comanche 07311; DOTINC in A, MATINC set): three DOTSUBs of the MPAC vector
+ * (saved in VBUF) with the rows (MXV) or columns (VXM) of the matrix at
+ * C(ADDRWD) or `k` (18 words), result in MPAC, to DANZIG. */
+static void vxmmxv(apollo_overlay_state *s,const agc_word *k){
+ unsigned base=W[rADDRWD];
+ (void)TS(rDOTINC);TC(IF_(07344,07313));mpacvbuf(s);
+ TC(IF_(07345,07314));dotsub(s,k);
+ DCA(rVBUF);DXCH(rMPAC);DXCH(rBUF2);DCA(rVBUF+2);DXCH(rMPAC+3);DCA(rVBUF+4);DXCH(rMPAC+5);
+ CA(rMATINC);ADS(rADDRWD);
+ TC(IF_(07362,07331));dotsub(s,kat(k,(unsigned)(W[rADDRWD]-base)));
+ DXCH(rVBUF);DXCH(rMPAC);DXCH(rVBUF+2);DXCH(rMPAC+3);DXCH(rVBUF+4);DXCH(rMPAC+5);
+ CA(rMATINC);ADS(rADDRWD);
+ TC(IF_(07373,07342));dotsub(s,kat(k,(unsigned)(W[rADDRWD]-base)));
+ DXCH(rBUF2);DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rVBUF+2);DXCH(rMPAC+3);danzig(s);
+}
+/* MXV 07334 (Comanche 07303) CAF TWO; TS MATINC; TCF VXM/MXV. */
+void lmi_mxv(apollo_overlay_state *s,const agc_word *k){CAF(TWO);(void)TS(rMATINC);vxmmxv(s,k);}
+/* VXM 07337 (Comanche 07306) CS TEN; TS MATINC; CAF SIX; VXM/MXV. */
+void lmi_vxm(apollo_overlay_state *s,const agc_word *k){CSF(TEN);(void)TS(rMATINC);CAF(SIX);vxmmxv(s,k);}
+
 /* ---- BOV(B), RTB and POLY ----------------------------------------------- */
 /* BPL/BMN 01,2474: CCS CYR; positive TCF BPL (TC BRANCH; + or zero GOTO),
  * negative BMN (TC BRANCH; only negative GOTO), -0 DANZIG. Returns 1 at GOTO 06646 (the
@@ -1014,6 +1036,8 @@ void lmi_axc(apollo_overlay_state *s){
  CA(rFIXLOC);(void)TS(rINDEXLOC);if(CCS(rCYR)==0u)INCR(rINDEXLOC);W[2]=3;
  CS(rPOLISH);TC(IF_(02354,02401));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);
 }
+/* LXC 01,2360 (Comanche 01,2405): TC 15ADRERS; INDEX POLISH, CS 0; XSTORE. */
+void lmi_lxc(apollo_overlay_state *s){TC(IF_(02361,02406));adrers15(s);CS(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);}
 void lmi_sxa(apollo_overlay_state *s){TC(IF_(02365,02412));adrers15(s);CA(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig(s);}
 void lmi_ita(apollo_overlay_state *s){
  /* CALL/ITA CCS CYR (negative: ITA/STQ); TC 15ADRERS; INDEX FIXLOC,

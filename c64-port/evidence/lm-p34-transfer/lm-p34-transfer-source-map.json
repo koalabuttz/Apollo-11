@@ -1,0 +1,590 @@
+{
+ "source_paths": [
+  "Luminary099/P34-35_P74-75.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/P34-35_P74-75.agc": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_p34_routines.c",
+ "native_sha256": "49a490c4488030225dab67e6ec89b492af5992338afd4aadddfa69877034a318",
+ "source_words": 54,
+ "source_lines": 54,
+ "symbols": {
+  "GET45": "35,3634",
+  "KILCLOCK": "35,3651",
+  "N45PROC": "35,3654",
+  "CLUPDATE": "35,3664",
+  "DISPLAYE": "35,3674",
+  "P3XORP7X": "35,3704",
+  "VNPOOH": "35,3712",
+  "COMPTGO": "35,2432",
+  "BANKCALL": "4616",
+  "DELAYJOB": "00,3735",
+  "GOFLASH": "10,2476",
+  "PHASCHNG": "5353",
+  "UPFLAG": "5504",
+  "GOTOPOOH": "6001",
+  "INTPRET": "6037",
+  "QSAVED": "E7,1464",
+  "NORMEX": "E7,1463",
+  "RTRN": "E7,1465",
+  "SUBEXIT": "E7,1470",
+  "VERBNOUN": "E7,1615",
+  "DISPDEX": "1163",
+  "MODREG": "1011",
+  "UPDATFLG": "0000027",
+  "FINALFLG": "0000047",
+  "BIT6": "4746",
+  "1SEC": "4777",
+  "HIGH9": "7744",
+  "V06N55": "35,3724",
+  "V16N45": "35,3730"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 953,
+   "address": "35,3635",
+   "source": "TC COMPTGO",
+   "words": [
+    "02432"
+   ],
+   "native": "lm_p34_get45_comptgo"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 954,
+   "address": "35,3636",
+   "source": "CA SUBEXIT",
+   "words": [
+    "31470"
+   ],
+   "native": "get45_delay"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 955,
+   "address": "35,3637",
+   "source": "TS QSAVED",
+   "words": [
+    "55464"
+   ],
+   "native": "get45_delay"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 956,
+   "address": "35,3640",
+   "source": "CAF 1SEC",
+   "words": [
+    "34777"
+   ],
+   "native": "get45_delay"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 957,
+   "address": "35,3641",
+   "source": "TC BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "get45_delay"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 958,
+   "address": "35,3642",
+   "source": "CADR DELAYJOB",
+   "words": [
+    "01735"
+   ],
+   "native": "get45_delay"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 959,
+   "address": "35,3643",
+   "source": "CAF V16N45",
+   "words": [
+    "33730"
+   ],
+   "native": "get45_flash"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 960,
+   "address": "35,3644",
+   "source": "TC BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "get45_flash"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 961,
+   "address": "35,3645",
+   "source": "CADR GOFLASH",
+   "words": [
+    "20476"
+   ],
+   "native": "get45_flash"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 962,
+   "address": "35,3646",
+   "source": "TC KILCLOCK",
+   "words": [
+    "03651"
+   ],
+   "native": "get45_terminate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 963,
+   "address": "35,3647",
+   "source": "TC N45PROC",
+   "words": [
+    "03654"
+   ],
+   "native": "get45_proceed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 964,
+   "address": "35,3650",
+   "source": "TC CLUPDATE",
+   "words": [
+    "03664"
+   ],
+   "native": "get45_recycle"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 965,
+   "address": "35,3651",
+   "source": "KILCLOCK CA Z",
+   "words": [
+    "30005"
+   ],
+   "native": "r_kilclock"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 966,
+   "address": "35,3652",
+   "source": "TS DISPDEX",
+   "words": [
+    "55163"
+   ],
+   "native": "r_kilclock"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 968,
+   "address": "35,3653",
+   "source": "TC GOTOPOOH",
+   "words": [
+    "06001"
+   ],
+   "native": "r_kilclock"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 969,
+   "address": "35,3654",
+   "source": "N45PROC CS FLAGWRD2",
+   "words": [
+    "40076"
+   ],
+   "native": "r_n45proc"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 970,
+   "address": "35,3655",
+   "source": "MASK BIT6",
+   "words": [
+    "74746"
+   ],
+   "native": "r_n45proc"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 971,
+   "address": "35,3656",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "r_n45proc"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 972,
+   "address": "35,3657",
+   "source": "BZF KILCLOCK",
+   "words": [
+    "13651"
+   ],
+   "native": "r_n45proc"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 973,
+   "address": "35,3660",
+   "source": "TC PHASCHNG",
+   "words": [
+    "05353"
+   ],
+   "native": "r_n45proc"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 974,
+   "address": "35,3661",
+   "source": "OCT 04024",
+   "words": [
+    "04024"
+   ],
+   "native": "r_n45proc"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 975,
+   "address": "35,3662",
+   "source": "TC UPFLAG",
+   "words": [
+    "05504"
+   ],
+   "native": "n45proc_upflag"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 976,
+   "address": "35,3663",
+   "source": "ADRES FINALFLG",
+   "words": [
+    "00047"
+   ],
+   "native": "n45proc_upflag"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 977,
+   "address": "35,3664",
+   "source": "CLUPDATE CA Z",
+   "words": [
+    "30005"
+   ],
+   "native": "r_clupdate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 978,
+   "address": "35,3665",
+   "source": "TS DISPDEX",
+   "words": [
+    "55163"
+   ],
+   "native": "r_clupdate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 979,
+   "address": "35,3666",
+   "source": "TC PHASCHNG",
+   "words": [
+    "05353"
+   ],
+   "native": "r_clupdate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 980,
+   "address": "35,3667",
+   "source": "OCT 04024",
+   "words": [
+    "04024"
+   ],
+   "native": "r_clupdate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 981,
+   "address": "35,3670",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "clupdate_intpret"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 982,
+   "address": "35,3671",
+   "source": "CLEAR GOTO",
+   "words": [
+    "52014"
+   ],
+   "native": "lm_p34_clupdate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 983,
+   "address": "35,3672",
+   "source": "UPDATFLG",
+   "words": [
+    "00670"
+   ],
+   "native": "lm_p34_clupdate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 984,
+   "address": "35,3673",
+   "source": "QSAVED",
+   "words": [
+    "03464"
+   ],
+   "native": "lm_p34_clupdate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 996,
+   "address": "35,3674",
+   "source": "DISPLAYE EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "r_displaye"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 997,
+   "address": "35,3675",
+   "source": "QXCH NORMEX",
+   "words": [
+    "23463"
+   ],
+   "native": "r_displaye"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 998,
+   "address": "35,3676",
+   "source": "CAF V06N55",
+   "words": [
+    "33724"
+   ],
+   "native": "r_displaye"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 999,
+   "address": "35,3677",
+   "source": "TCR BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "r_displaye"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1000,
+   "address": "35,3700",
+   "source": "CADR GOFLASH",
+   "words": [
+    "20476"
+   ],
+   "native": "r_displaye"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1001,
+   "address": "35,3701",
+   "source": "TCF GOTOPOOH",
+   "words": [
+    "16001"
+   ],
+   "native": "displaye_terminate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1002,
+   "address": "35,3702",
+   "source": "TC NORMEX",
+   "words": [
+    "01463"
+   ],
+   "native": "displaye_proceed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1003,
+   "address": "35,3703",
+   "source": "TCF -5",
+   "words": [
+    "13676"
+   ],
+   "native": "displaye_recycle"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1008,
+   "address": "35,3704",
+   "source": "P3XORP7X CAF HIGH9",
+   "words": [
+    "37744"
+   ],
+   "native": "r_p3xorp7x"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1009,
+   "address": "35,3705",
+   "source": "MASK MODREG",
+   "words": [
+    "71011"
+   ],
+   "native": "r_p3xorp7x"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1010,
+   "address": "35,3706",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "r_p3xorp7x"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1011,
+   "address": "35,3707",
+   "source": "BZF +2",
+   "words": [
+    "13711"
+   ],
+   "native": "r_p3xorp7x"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1012,
+   "address": "35,3710",
+   "source": "INCR Q",
+   "words": [
+    "24002"
+   ],
+   "native": "r_p3xorp7x"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1013,
+   "address": "35,3711",
+   "source": "RETURN",
+   "words": [
+    "00002"
+   ],
+   "native": "r_p3xorp7x"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1022,
+   "address": "35,3712",
+   "source": "VNPOOH EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "r_vnpooh"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1023,
+   "address": "35,3713",
+   "source": "QXCH RTRN",
+   "words": [
+    "23465"
+   ],
+   "native": "r_vnpooh"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1024,
+   "address": "35,3714",
+   "source": "TS VERBNOUN",
+   "words": [
+    "55615"
+   ],
+   "native": "r_vnpooh"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1025,
+   "address": "35,3715",
+   "source": "CA VERBNOUN",
+   "words": [
+    "31615"
+   ],
+   "native": "r_vnpooh"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1026,
+   "address": "35,3716",
+   "source": "TCR BANKCALL",
+   "words": [
+    "04616"
+   ],
+   "native": "r_vnpooh"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1027,
+   "address": "35,3717",
+   "source": "CADR GOFLASH",
+   "words": [
+    "20476"
+   ],
+   "native": "r_vnpooh"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1028,
+   "address": "35,3720",
+   "source": "TCF GOTOPOOH",
+   "words": [
+    "16001"
+   ],
+   "native": "vnpooh_terminate"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1029,
+   "address": "35,3721",
+   "source": "TC RTRN",
+   "words": [
+    "01465"
+   ],
+   "native": "vnpooh_proceed"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1030,
+   "address": "35,3722",
+   "source": "TCF -5",
+   "words": [
+    "13715"
+   ],
+   "native": "vnpooh_recycle"
+  }
+ ],
+ "covered_ranges": [
+  "35,3635-35,3722"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every word of GET45 +1 through VNPOOH is owned by the registered transfer routine entered at its first address (with the inline helpers its TCs fall into); CLUPDATE's CLEAR GOTO UPDATFLG QSAVED words are literals of lm_p34_clupdate, both CADR GOFLASH words after TCR BANKCALL are native site operands, and BIT6, 1SEC, HIGH9, V06N55 and V16N45 equal their native literals. COMPTGO (P32-P35_P72-P75) and the display constants after 35,3722 are not covered."
+}

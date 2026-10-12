@@ -282,8 +282,50 @@
       "sha256": "b7803a69b1702f90b89d8ae1510d646569cee23876bb113db51aec9c315f990e",
       "bytes": 10787,
       "lines": 504,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_auto_man.c"
+          ],
+          "scope": "All 333 words from every original entry point (AHFNOROT, JETS, T6PROG, the STICKCHK and SMALLMP returns) to the first transfer out of the file: attitude hold and its biases, free and rate-damping control, the three-axis phase-plane jet timing (J6.-J24, JN/JP) and TAU limits, and the T6PROG hand-off to JETSLECT. ABI registration pending (see docs).",
+          "verification": "docs/CM-AUTO-MAN.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; FB 21, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 31/32; Z AHFNOROT 3250, JETS 3441, T6PROG 3757, STICKCHK return 3304 (RMANNDX/PMANNDX/YMANNDX 0..3) or SMALLMP return 3732/3734 (SPNDX 0..2).",
+          "frontiers": "RESUME 5333, REINIT 2534, T6PROGM 3067, STICKCHK 3130, SMALLMP 2042.",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche RESUME (Lane A)",
+          "RCS-CSM_DIGITAL_AUTOPILOT REINIT, T6PROGM, STICKCHK (Lane G, cm-rcs-dap)",
+          "MYSUBS SMALLMP",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-auto-man/cm-auto-man-source-map.json",
+            "sha256": "e3eddc57d86e36c90efa113d15820ed2a3ff49c57ee28ca29b0980c5c1be26fc"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-auto-man/cm-auto-man-assembly-comparison.json",
+            "sha256": "2f89f5a90ffec426931c3e2178607ac1d08d0074755baa86174e97236d9ba71c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-auto-man/cm-auto-man-checks.log",
+            "sha256": "6fc423b7167a7df2b9ba3efd3d0e32a7606020756876b30fd7261154994b98bf"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-auto-man/cm-auto-man-results.json",
+            "sha256": "97e2e9950b7016fa1b9f1d5b798156b7debd20f17eec82fdea18587a6ee5ef15"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/CM_BODY_ATTITUDE.agc",
@@ -300,8 +342,50 @@
       "sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
       "bytes": 31099,
       "lines": 1273,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_entry_dap.c"
+          ],
+          "scope": "All of bank 15 2434-3754 and bank 20 3612-3737: READGYMB/BODYRATE, ATTRATES and dead zones, CM/RCS roll DAP and JETCALL, FDAI and telemetry dump, CM/DAPON/CM/DAPIC",
+          "verification": "docs/CM-ENTRY-DAP.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Canonical 2048-word image, EB E6, FB bank 15 or 20 per entry; JETAG -1..+1, CMDAPMOD -1..+1 or -0, SW/NDX -13..+13; channels 5, 6",
+          "frontiers": "TASKOVER 5324, WAITLIST 5245, PHASCHNG 5412, 2PHSCHNG 5372, FLUSHJET 6000, SPSIN 5075, SPCOS 5074, IBNKCALL 4740, RESUME 5333, DOWNFLAG 5560, BANKCALL 4662, POSTJUMP 4701, bank 20 2434",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Executive, waitlist and restart services",
+          "SPSIN/SPCOS (SINGLE_PRECISION_SUBROUTINES)",
+          "NEEDLER via IBNKCALL",
+          "P62 via POSTJUMP"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-source-map.json",
+            "sha256": "8504d728fc8eaa87771978a7364e172415bbb025307b47a292971537a885dd7e"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-assembly-comparison.json",
+            "sha256": "ca4c58f053cd6eacf2a4028681f801426c5a63300bcec67f5643eee4a5a447ec"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-checks.log",
+            "sha256": "2a0ba8c4fcf6b149e697c34969b21e45ecabc07f16f408dba454e42e056a5ad3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-results.json",
+            "sha256": "52d68037c81f3163aacdb896b28adb7d4c047e8ac7a81ca0eb1e30e9dc681536"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/CONIC_SUBROUTINES.agc",
@@ -530,8 +614,50 @@
       "sha256": "d8babb9b0e0677f441411eed3ab6919a70a6aa95cbb49388813731e6c2348e74",
       "bytes": 17718,
       "lines": 441,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_downtelemetry.c",
+            "src/cm_downtelemetry_data.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-DOWNTELEMETRY.md",
+          "scope": "Every instruction (05,3521-3775): DODOWNTM, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "DOWNRUPT entries at DODOWNTM with FB 05/EB 0 and any interrupted BB, DNTMGOTO holding one of its six stored words, DNLSTCOD 0-4, any DUMPCNT, cm_dntm_io channels 11-14 and 30-35; run-time INDEX words that form a CA of a compiled word or a READ of channel 11-14/30-33 (others, and the no-producer +0 branches, refuse)",
+        "external_continuations": [
+          "RESUME (WAITLIST)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-DOWNTELEMETRY.md",
+            "sha256": "51420908c9a1598b8b266fc946ebddcd998c89a7e5131f73b6d8ea726340ce4f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-downtelemetry/cm-downtelemetry-proof.json",
+            "sha256": "15825d4995fab3e70ccc19087106179f4cb5e9d923cf6f1ebc68e9e155911b9a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-downtelemetry/cm-downtelemetry-host.log",
+            "sha256": "1dff9234a4aea42944992d8e60fead940966a2493c46b1d518cb48016ac4f1d8"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
+            "sha256": "a38cb446d97c7b1c517e8e685cac071c6bda51ca420b6745183580c4ee7774fe"
+          },
+          "independent_review": {
+            "path": "docs/audits/downtelemetry.md",
+            "sha256": "4abbb5ac602fc27987a574dbdad6eb8f1533def92470835036eecfc0515c2fe2"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/DOWNLINK_LISTS.agc",
@@ -1337,8 +1463,47 @@
       "sha256": "e626c5273e96df95e3e0f243842bd32005537910554475e3dde3e2f48bdffbd4",
       "bytes": 21978,
       "lines": 920,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_jet_select.c"
+          ],
+          "scope": "All of bank 17 2552-3736: JETSLECT T5 task and T6START T6 task",
+          "verification": "docs/CM-JET-SELECT.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Canonical 2048-word image, FB bank 17, EB E6; JETSLECT with XTRANS -4..+4, T6START with BLAST+1, BLAST1+1, BLAST2+1 each 0, 4 or 11; channels 5, 6, 13, 31",
+          "frontiers": "RESUME 5333",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "RESUME (T5/T6 interrupt return)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-jet-select/cm-jet-select-source-map.json",
+            "sha256": "846588e393a91b4012ffb059b96af5df67d42e21e83b3ba3ed904738866c32d0"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-jet-select/cm-jet-select-assembly-comparison.json",
+            "sha256": "e00595556969c2809fe607d320df3eb3d467c49244ca2ed9ad52850dc3ef5a80"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-jet-select/cm-jet-select-checks.log",
+            "sha256": "0eee5c6adf30d1589e52f1d349ca0c24eda2494334f6e801617b7bee3ae87289"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-jet-select/cm-jet-select-results.json",
+            "sha256": "f11d282ef5fe5649ad3eca4fa2efd5072735ed6681092ba40bff8fd18f8eca93"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/KALCMANU_STEERING.agc",
@@ -1689,7 +1854,7 @@
       "sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
       "bytes": 12224,
       "lines": 416,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1709,7 +1874,7 @@
           "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 162 caller sites (229 words) compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1720,7 +1885,6 @@
           "CHECKMM exits Q+1/Q+2 in INTERPRETER",
           "callers' returns"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-PHASE-TABLE.md",
@@ -1737,6 +1901,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-phase-table/cm-phase-table-vice.log",
             "sha256": "4990a09c9c01d4be80c26e7efd6843c69fa9d8a0708c3fc22a79111a872f3b8f"
+          },
+          "independent_review": {
+            "path": "docs/audits/phase-table.md",
+            "sha256": "9e317586106f06da348338e84fb743a91da1d39480648c4b1e10dd17bc7581db"
           }
         }
       }
@@ -2269,8 +2437,51 @@
       "sha256": "9b4c9acb5836870ceb53a4203b8db334728e96b8ce2b1ea02da151d17b5f0966",
       "bytes": 24477,
       "lines": 975,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_rcs_dap.c"
+          ],
+          "scope": "All 611 words from every original entry point (REDORCS, RCSATT, the SMALLMP/DPADD/NOVAC/IBNKCALL returns, REINIT, T6PROGM, and the NEEDLER, NEEDLE11, NEEDLES, ZEROJET, STICKCHK subroutines) to the first transfer out of the file: initialisation, rate filter and Kalman gains, CDU increments, FDAI needles and DAC limits, hand controller and manual rates, free drift, channel 12/13/14 writes. ABI registration pending (see docs).",
+          "verification": "docs/CM-RCS-DAP.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; FB 21, EB E6, coherent BB; any raw A/L, erasable contents and channels 12/13/14/31; Z one of the 17 entries in docs/CM-RCS-DAP.md with the INDEX operands within the file's tables (ATTKALMN -1..11, RATEINDX 0..6, SPNDX 0..2 with DPNDX = 2 SPNDX at the MYSUBS returns) and, for the TC Q entries, Q a caller's return.",
+          "frontiers": "RESUME 5333, IBNKCALL 4740, NOVAC 5134, SMALLMP 2042, DPADD 2054, JETS 3441, T6PROG 3757, AHFNOROT 3250, caller's return (TC Q).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche RESUME, NOVAC, IBNKCALL (Lane A)",
+          "MYSUBS SMALLMP and DPADD",
+          "AUTOMATIC_MANEUVERS JETS, T6PROG, AHFNOROT (Lane G)",
+          "T5 interrupt delivery via T5LOC",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-source-map.json",
+            "sha256": "9bccf46ce73fcb26d40a9f2d3ce1f9386f1b80906b8dc068c343997683eb06bb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-assembly-comparison.json",
+            "sha256": "ce0e9594177ccdaa1387be832787d0ad72e3782033946e494f3ce014c2fe9835"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-checks.log",
+            "sha256": "b88305429761eb36f27b3c136e4e848575a77b13f8b2ef60d92f44a052f1f9ad"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-results.json",
+            "sha256": "53125955c7e0932050d7dcd661c3f439d7fd0d9f64bd1cf3d70cd6c44b482c74"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/README.md",
@@ -2296,7 +2507,7 @@
       "sha256": "490811f02cb07b69e98d9c558ed156f82e95d8735f29827edf8fe2fd6366efcc",
       "bytes": 7809,
       "lines": 337,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2316,7 +2527,7 @@
           "scope": "Every RESTARTS, GETPART2 and PHSPART2 path (variable Type A/B, X.1 display, odd/even table, waitlist direct/indirect/immediate, longcall incl. 600SECS, FINDVAC/NOVAC) to the selected service, and the GOLOC-1/GOLOC+2 and display returns as ABI routines through SWRETURN."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2326,7 +2537,6 @@
           "SWRETURN",
           "jobs and tasks named by the selected 2CADRs"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-RESTART-ROUTINES.md",
@@ -2343,6 +2553,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
             "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-restart-routines.md",
+            "sha256": "db9154a6c92c83c69eac502d56a2aa7c7a3e17c6f3c708a8c74b0d22b6e9f749"
           }
         }
       }
@@ -2353,7 +2567,7 @@
       "sha256": "4ed25b96c1e8582bf1656b433e0212eb6c9f5528348b40f5c7117a1964ab9994",
       "bytes": 11852,
       "lines": 549,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2372,7 +2586,7 @@
           "scope": "All 249 table words compiled from the source listing and consumed by native RESTARTS (all 79 table entries selected and their 2CADRs delivered through the control-transfer ABI); NEWPHASE/NUFAZ+10 as an ABI routine with its nine TC NEWPHASE site operands compiled from the source."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2381,7 +2595,6 @@
           "jobs and tasks named by the table 2CADRs",
           "NEWPHASE callers at L+2"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-RESTART-ROUTINES.md",
@@ -2398,6 +2611,10 @@
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
             "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-restart-routines.md",
+            "sha256": "db9154a6c92c83c69eac502d56a2aa7c7a3e17c6f3c708a8c74b0d22b6e9f749"
           }
         }
       }
@@ -3792,8 +4009,50 @@
       "sha256": "34ee428bb987e1826148083af7c6879c33ed577a0eb415ae08ce4a7ad0453d9b",
       "bytes": 17768,
       "lines": 455,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_downtelemetry.c",
+            "src/lm_downtelemetry_data.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-DOWNTELEMETRY.md",
+          "scope": "Every instruction (05,3506-3771): DODOWNTM/WO1/WOTEST, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "DOWNRUPT entries at DODOWNTM with FB 05/EB 0 and any interrupted BB, DNTMGOTO holding one of its six stored words, DNLSTCOD 0-5, any DUMPCNT, lm_dntm_io channels 11-14 and 30-35; run-time INDEX words that form a CA of a compiled word or a READ of channel 11-14/30-33 (others, MINB1314's can't-get-here path and the no-producer +0 branches refuse)",
+        "external_continuations": [
+          "RESUME (WAITLIST)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-DOWNTELEMETRY.md",
+            "sha256": "0c4c647488f054cfd03179ff422118c6a2b92f4622d707544d9d8d1b13a1785f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-downtelemetry/lm-downtelemetry-proof.json",
+            "sha256": "c769060975ab840f375adaa5f7da78c16ea60c4d893a802a09fb3fd84640904a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-downtelemetry/lm-downtelemetry-host.log",
+            "sha256": "9593fc30d35821010ae83cfce2e884e156a4f6315d4421ea09a41dd2241a8b5c"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
+            "sha256": "07837c8b03a0e59e9dcb12dfff175942d3d4f0d5b0d29df8d3e1f465e8fc93a1"
+          },
+          "independent_review": {
+            "path": "docs/audits/downtelemetry.md",
+            "sha256": "4abbb5ac602fc27987a574dbdad6eb8f1533def92470835036eecfc0515c2fe2"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ERASABLE_ASSIGNMENTS.agc",
@@ -4819,7 +5078,7 @@
       "sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
       "bytes": 6098,
       "lines": 183,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4863,7 +5122,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-source-map.json",
-            "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c"
+            "sha256": "12140f2fa58e899a33231de01b804beb4157e4fe2527cd5ae8c6ef2dec2f2640"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-source-stream.json",
@@ -4880,6 +5139,10 @@
           "independent_assembly_comparison_snapshots": {
             "path": "evidence/lm-ephemeris/lm-ephemeris-reference.snapshots.bin.xz",
             "sha256": "a2593a19409707c6b34473c2ec19a697ea008ba6f4038b6f70788fd75a6b504b"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-ephemeris.md",
+            "sha256": "0b8e4647d644d883a47acddc98344a5406279881e6c9084827cf5fe662e980cd"
           }
         }
       }
@@ -5067,6 +5330,20 @@
           ],
           "scope": "VN1645's computation head (35,3606-35,3634), P3XORP7X (35,3704-35,3711) and DP-.01 (35,3741-35,3742), 31 words: from the NEWOPS frontier at VN1645 after its callers' GOTO, through the -.01/-.02 +MGA settings, the FINALFLG and REFSMFLG switches, P3XORP7X and, for P3X programs, GET+MGA of DELVSIN (the lm-midgim step), to the basic frontier at GET45 +1 (35,3635, TC COMPTGO, not ported), the UNIT abort frontier or ARCSIN's alarm 1301 frontier, as native steps between original NEWOPS frontiers.",
           "verification": "docs/LM-VN1645.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p34_routines.c",
+            "src/lm_vn1645.c",
+            "src/lm_midgim.c",
+            "src/lm_interbank_routines.c",
+            "src/agc_transfer.c",
+            "src/agc_image_ops.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "GET45 +1 through VNPOOH (35,3635-35,3722), 54 words: GET45 +1's TC COMPTGO, the DELAYJOB wait, the V16N45 flash and its terminate, proceed and recycle responses, KILCLOCK, N45PROC, CLUPDATE with its interpretive CLEAR GOTO UPDATFLG QSAVED, DISPLAYE, P3XORP7X and VNPOOH, as 20 basic and 7 interpretive routines of the control-transfer ABI (with the lm-vn1645 and lm-midgim steps registered as interpretive routines): from each entry through the trampoline and the native INTER-BANK routines to the first point outside the file (COMPTGO, DELAYJOB, GOFLASH, PHASCHNG, UPFLAG, GOTOPOOH, CLUPDATE's TC INTPRET, a NEWOPS outside the file, the UNIT or ARCSIN alarm frontier, or the caller's return).",
+          "verification": "docs/LM-P34-TRANSFER.md"
         }
       ]
     },
@@ -5112,7 +5389,7 @@
       "sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
       "bytes": 12373,
       "lines": 411,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "PHASCHNG/2PHSCHNG A/B/C table maintenance for groups 1..6; NEWMODEX/MMDSPLAY covered only on the STARTP66 path below.",
@@ -5149,7 +5426,7 @@
           "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG/PHSCHNGA/PHASJUMP with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 142 caller sites (181 words) compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5160,7 +5437,6 @@
           "CHECKMM exits Q+1/Q+2 in INTERPRETER",
           "callers' returns"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-PHASE-TABLE.md",
@@ -5177,6 +5453,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-phase-table/lm-phase-table-vice.log",
             "sha256": "5a916a58261ca88102703b5e908080bf6634075fe09e4d4712c8db131f6b4f29"
+          },
+          "independent_review": {
+            "path": "docs/audits/phase-table.md",
+            "sha256": "9e317586106f06da348338e84fb743a91da1d39480648c4b1e10dd17bc7581db"
           }
         }
       }
@@ -6472,8 +6752,48 @@
       "sha256": "13da16e475f7d0610ee90d73b5676d2ff0704fb8b79f7651c97e0a32e16b256a",
       "bytes": 17459,
       "lines": 617,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_trim_gimbal.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-TRIM-GIMBAL.md",
+          "scope": "Every path of the file: GTS (both axes, DEL, NEGUSUM, drive reversal, GTSQRT and ROOTCYCL compiled at their call sites, the QRCNTR = +-1 pass after a TS SAVESR overflow) to its DTCB to CLOSEOUT, ACDT+C12, TIMEGMBL to its IBNKCALL and the IBNKCALL return's TC RUPTREG2, as four ABI routines in banks 21 and 16."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in their own banks (GTS, TIMEGMBL and 21,3435 in bank 21; ACDT+C12 in bank 16) under EBANK6 (EBANK= QDIFF / NEGUQ) with the lm_flight_io channel 12 record; the ACDT+C12 return in Q and the TIMEGMBL return in RUPTREG2 are TC words into fixed memory; excluded: a GTS pass whose GTSQRT takes the zero root while ININDEX (still ACENTRAL) makes DOSHIFT's INDEX SHFTFLAG select a word other than BIT15-BIT2, where the original executes CA BIT15 + ACENTRAL/2 as an arbitrary instruction (refused with the image unchanged; 286 of 4,096 random GTS cases)",
+        "external_continuations": [
+          "CLOSEOUT (Q_R-AXIS_RCS_AUTOPILOT)",
+          "IBNKCALL (ACDT+C12)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-source-map.json",
+            "sha256": "116e39bd6a3ce9c45b967c78663b2e7739f36c05f08f4bffd974d6a1f6db8ca1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-proof.json",
+            "sha256": "a3147b39c6d3f5f50af23f9287d9796169039c8aa5de13b5be9285513865e4c1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-host.log",
+            "sha256": "a8b98c35d48c69eee18927ae326caceb2a9515347847e647e59118ee244598ef"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-vice.log",
+            "sha256": "b5814a85a60e67124b96287aa55b1faaec444dbccb4f528d9ce4d230a6c1c80b"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/UPDATE_PROGRAM.agc",

@@ -3,15 +3,16 @@
  * applies the named lm_interp_orders/lm_interp_steps path to the image and
  * returns which of the record's stop addresses it ended at (4: none). In[0]
  * names the body, in[1..4] the stops, in[7..8] the order/operand words, and
- * in[9..14] fixed operand words when in[15] bit 0 is set. Compiled with
+ * in[9..14] fixed operand words when in[15] bit 0 is set (bit 1: the
+ * caller passes an 18-word fixed matrix). Compiled with
  * src/cm_interp_names.h for the Comanche055 build. */
 #include "interp_body_run.h"
 #include "lm_interp_orders.h"
 #include "lm_interp_steps.h"
 /* T(X)'s POLY table (TIME_OF_FREE_FALL, bank 27 3736-3752). */
 static const agc_word tx[13]={04,012525,012525,071463,057703,04423,017645,074604,043667,01626,037256,077404,052071};
-unsigned interp_body_run(apollo_overlay_state *s,const uint16_t in[16]){
- p66_bias_io io_={0,0},*io=&io_;unsigned i;const agc_word *k=(in[15]&1u)?in+9:0;agc_word a0=in[7],a1=in[8];
+unsigned interp_body_run(apollo_overlay_state *s,const uint16_t in[16],const agc_word *matrix){
+ p66_bias_io io_={0,0},*io=&io_;unsigned i;const agc_word *k=(in[15]&2u)?matrix:(in[15]&1u)?in+9:0;agc_word a0=in[7],a1=in[8];
 #ifdef INTERP_BODY_LO
  /* A C64 part runs only its own bodies, so the rest drop out of the program. */
  if(in[0]<INTERP_BODY_LO||in[0]>=INTERP_BODY_HI)return 5u;
@@ -79,6 +80,9 @@ unsigned interp_body_run(apollo_overlay_state *s,const uint16_t in[16]){
  case 59:lmi_vproj(s,k);break;
  case 60:lmi_tload_fixed(s,k);break;
  case 61:lmi_axc(s);break;
+ case 68:lmi_mxv(s,k);break;
+ case 69:lmi_vxm(s,k);break;
+ case 70:lmi_lxc(s);break;
  default:return 5u;
  }
  for(i=0;i<4u;++i)if(in[1+i]&&s->words[5]==in[1+i])return i;
