@@ -1,0 +1,5 @@
+PASS: VICE PAL keyrupt-uprupt.prg: 192 checks, 0 failures
+
+real	1m20.188s
+user	1m19.234s
+sys	0m0.074s

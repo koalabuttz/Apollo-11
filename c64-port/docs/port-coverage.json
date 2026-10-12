@@ -1422,8 +1422,51 @@
           ],
           "scope": "Actual KEYRUPT/KEYCOM admission, hardware RESUME and physical GETIN to genuine CHARIN/ENDOJOB lifecycle. UPRUPT and remaining source paths still need coverage.",
           "verification": "docs/COMANCHE-KEYBOARD-RUNTIME.md"
+        },
+        {
+          "native_files": [
+            "src/keyrupt_uprupt.c",
+            "include/keyrupt_uprupt.h"
+          ],
+          "scope": "Every assembled word: KEYRUPT1 with KEYCOM and ACCEPTUP to NOVAC (CHARIN) and NOVAC's return to RESUME, and UPRUPT with UPRPT1, UPTEST, UPOK, CLUPLOCK and TMFAIL2, as control-transfer ABI routines (cm_keyrupt_routines) on the image through agc_image_ops, with channel 15 in agc_hardware.",
+          "verification": "docs/KEYRUPT-UPRUPT.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in cm_native_io; InIsr, channel 11 and channel 15 in agc_hardware.",
+          "entry_contracts": "Inside the interrupt with FB in the file's bank (07,3673): KEYRUPT1 and UPRUPT from their lead-ins, their LODSAMPT returns (+4), KEYCOM (Comanche SXTMARK's key path), and NOVAC's return after the CHARIN 2CADR. Every labelled entry and every return point a callee reaches is a routine.",
+          "index_domains": "A holds no overflow at KEYRUPT1, UPRUPT and KEYCOM (the lead-ins leave the old BB, SXTMARK a key code); Q may hold anything (an overflowed Q makes TS QRUPT skip LODSAMPT, as in the original); LOCCTR at NOVAC's return is a core set offset 0-72 in steps of 12. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "WOR on channel 11 (UPACT) as yaAGC computes it; reading the key code from channel 15 and the uplink word from INLINK are device-adapter obligations."
+        },
+        "external_continuations": [
+          "LODSAMPT (PINBALL_GAME_BUTTONS_AND_LIGHTS) returns to the entry +4",
+          "NOVAC (EXECUTIVE, native in the exec milestones) starts CHARIN and returns after the 2CADR",
+          "WAITLIST RESUME ends the interrupt (native: cm_lead_in_routines)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-source-map-cm.json",
+            "sha256": "c17f355fb527bf29cd9cab730d66e5e80a2ca4d859d8d157523c7e8ca8f66721"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
+            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
+            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+          },
+          "c64_execution_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
+            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
@@ -4935,8 +4978,51 @@
           ],
           "scope": "Fixed-vector keyboard KEYRUPT/KEYCOM/RESUME paths, admission and selected CHARIN lifecycle; UPRUPT and other complete-file paths remain unported.",
           "verification": "docs/DSKY-KEYBOARD-RUNTIME.md"
+        },
+        {
+          "native_files": [
+            "src/keyrupt_uprupt.c",
+            "include/keyrupt_uprupt.h"
+          ],
+          "scope": "Every assembled word: KEYRUPT1 with KEYCOM and ACCEPTUP to NOVAC (CHARIN) and NOVAC's return to RESUME, and UPRUPT with UPRPT1, UPTEST, UPOK, CLUPLOCK and TMFAIL2, as control-transfer ABI routines (lm_keyrupt_routines) on the image through agc_image_ops, with channel 15 in agc_hardware. The CS XDSPBIT at 04,3400 is unreached and has no native counterpart.",
+          "verification": "docs/KEYRUPT-UPRUPT.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; InIsr, channel 11 and channel 15 in agc_hardware.",
+          "entry_contracts": "Inside the interrupt with FB in the file's bank (04,3274): KEYRUPT1 and UPRUPT from their lead-ins, their LODSAMPT returns (+4), KEYCOM (Comanche SXTMARK's key path), and NOVAC's return after the CHARIN 2CADR. Every labelled entry and every return point a callee reaches is a routine.",
+          "index_domains": "A holds no overflow at KEYRUPT1, UPRUPT and KEYCOM (the lead-ins leave the old BB, SXTMARK a key code); Q may hold anything (an overflowed Q makes TS QRUPT skip LODSAMPT, as in the original); LOCCTR at NOVAC's return is a core set offset 0-72 in steps of 12. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "WOR on channel 11 (UPACT) as yaAGC computes it; reading the key code from channel 15 and the uplink word from INLINK are device-adapter obligations."
+        },
+        "external_continuations": [
+          "LODSAMPT (PINBALL_GAME_BUTTONS_AND_LIGHTS) returns to the entry +4",
+          "NOVAC (EXECUTIVE, native in the exec milestones) starts CHARIN and returns after the 2CADR",
+          "WAITLIST RESUME ends the interrupt (native: lm_t6rupt_routines)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-source-map-lm.json",
+            "sha256": "b8815418407dece510e01284cbc77d808f99277e50e7ce2e40e898037f603ca9"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
+            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
+            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+          },
+          "c64_execution_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
+            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",

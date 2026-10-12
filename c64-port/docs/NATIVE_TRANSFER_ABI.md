@@ -37,7 +37,8 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   channel 11 (the Executive's idle loop turns COMP ACTY off), the
   interrupt-in-progress flag (tasks run inside T3RUPT; TASKOVER's RESUME ends
   it), and the LM RCS jet channels 5 and 6 and channel 13 (TIME6 enable) that
-  the T6RUPT programs drive (`docs/LM-T6RUPT.md`). Channel 13 holds only the
+  the T6RUPT programs drive (`docs/LM-T6RUPT.md`), and input channel 15, the
+  DSKY key code KEYRUPT1 reads (`docs/KEYRUPT-UPRUPT.md`). Channel 13 holds only the
   CPU-writable bits (043777). Initializers that name only the first two
   members leave the others zero. A routine that needs it refuses when it is
   NULL.
