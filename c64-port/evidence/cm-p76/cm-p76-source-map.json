@@ -1,0 +1,1014 @@
+{
+ "source_paths": [
+  "Comanche055/P76.agc"
+ ],
+ "source_sha256": {
+  "Comanche055/P76.agc": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a"
+ },
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "native_path": "src/cm_p76_routines.c",
+ "native_sha256": "3242e8b2001fa1f5f88fb8179175841618d6c11f84a76e78fb6aad441d875b34",
+ "source_words": 96,
+ "source_lines": 96,
+ "symbols": {
+  "P76": "13,2071",
+  "COMPMAT": "13,2114",
+  "INTOTHIS": "13,2155",
+  "OUT": "13,2211",
+  "ENDP76": "13,2212",
+  "P76SUB1": "13,2222",
+  "V06N84": "13,2220",
+  "OTHPREC": "13,3105",
+  "INTSTALL": "13,3442",
+  "INTEGRVS": "13,3135",
+  "MINIRECT": "11,3435",
+  "ATOPOTH": "13,2760",
+  "INTWAKE1": "13,3477",
+  "GOFLASH": "10,2720",
+  "DELVOV": "E7,1537",
+  "TIG": "E7,1412",
+  "TET": "E3,1516",
+  "TETTHIS": "E3,1570",
+  "RRECT": "E3,1502",
+  "TRACKFLG": "0000031",
+  "REINTFLG": "0000236",
+  "MOONFLAG": "0000003",
+  "INTYPFLG": "0000070",
+  "MARKCTR": "1126",
+  "VHFCNT": "1125",
+  "MRKBUF2": "E7,1734",
+  "UPFLAG": "5546",
+  "PHASCHNG": "5412",
+  "BANKCALL": "4662",
+  "GOTOPOOH": "4106",
+  "INTPRET": "6006",
+  "ZERO": "5021",
+  "NEGONE": "7716"
+ },
+ "line_map": [
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 59,
+   "address": "13,2071",
+   "source": "P76 TC UPFLAG",
+   "words": [
+    "05546"
+   ],
+   "native": "p76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 60,
+   "address": "13,2072",
+   "source": "ADRES TRACKFLG",
+   "words": [
+    "00031"
+   ],
+   "native": "p76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 62,
+   "address": "13,2073",
+   "source": "CAF V06N84",
+   "words": [
+    "32220"
+   ],
+   "native": "r_flash84"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 63,
+   "address": "13,2074",
+   "source": "TC BANKCALL",
+   "words": [
+    "04662"
+   ],
+   "native": "r_flash84"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 64,
+   "address": "13,2075",
+   "source": "CADR GOFLASH",
+   "words": [
+    "20720"
+   ],
+   "native": "r_flash84"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 65,
+   "address": "13,2076",
+   "source": "TCF ENDP76",
+   "words": [
+    "12212"
+   ],
+   "native": "f84_terminate"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 66,
+   "address": "13,2077",
+   "source": "TC +2",
+   "words": [
+    "02101"
+   ],
+   "native": "f84_proceed"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 67,
+   "address": "13,2100",
+   "source": "TC -5",
+   "words": [
+    "02073"
+   ],
+   "native": "f84_recycle"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 68,
+   "address": "13,2101",
+   "source": "CAF V06N84 +1",
+   "words": [
+    "32221"
+   ],
+   "native": "r_flash33"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 69,
+   "address": "13,2102",
+   "source": "TC BANKCALL",
+   "words": [
+    "04662"
+   ],
+   "native": "r_flash33"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 70,
+   "address": "13,2103",
+   "source": "CADR GOFLASH",
+   "words": [
+    "20720"
+   ],
+   "native": "r_flash33"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 71,
+   "address": "13,2104",
+   "source": "TCF ENDP76",
+   "words": [
+    "12212"
+   ],
+   "native": "f33_terminate"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 72,
+   "address": "13,2105",
+   "source": "TC +2",
+   "words": [
+    "02107"
+   ],
+   "native": "f33_proceed"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 73,
+   "address": "13,2106",
+   "source": "TC -5",
+   "words": [
+    "02101"
+   ],
+   "native": "f33_recycle"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 74,
+   "address": "13,2107",
+   "source": "TC INTPRET",
+   "words": [
+    "06006"
+   ],
+   "native": "r_intpret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 75,
+   "address": "13,2110",
+   "source": "DLOAD",
+   "words": [
+    "77745"
+   ],
+   "native": "p76_tig"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 76,
+   "address": "13,2111",
+   "source": "TIG",
+   "words": [
+    "03413"
+   ],
+   "native": "p76_tig"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 77,
+   "address": "13,2112",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "p76_tig"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 78,
+   "address": "13,2113",
+   "source": "OTHPREC",
+   "words": [
+    "27105"
+   ],
+   "native": "p76_tig"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 79,
+   "address": "13,2114",
+   "source": "COMPMAT VLOAD UNIT",
+   "words": [
+    "53575"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 80,
+   "address": "13,2115",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 82,
+   "address": "13,2116",
+   "source": "VCOMP",
+   "words": [
+    "77676"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 83,
+   "address": "13,2117",
+   "source": "STORE 24D",
+   "words": [
+    "00031"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 84,
+   "address": "13,2120",
+   "source": "VXV UNIT",
+   "words": [
+    "53435"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 85,
+   "address": "13,2121",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 86,
+   "address": "13,2122",
+   "source": "STORE 18D",
+   "words": [
+    "00023"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 87,
+   "address": "13,2123",
+   "source": "VXV UNIT",
+   "words": [
+    "53435"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 88,
+   "address": "13,2124",
+   "source": "24D",
+   "words": [
+    "00031"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 89,
+   "address": "13,2125",
+   "source": "STOVL 12D",
+   "words": [
+    "24015"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 90,
+   "address": "13,2126",
+   "source": "DELVOV",
+   "words": [
+    "03540"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 91,
+   "address": "13,2127",
+   "source": "VXM VSL1",
+   "words": [
+    "76505"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 92,
+   "address": "13,2130",
+   "source": "12D",
+   "words": [
+    "00015"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 93,
+   "address": "13,2131",
+   "source": "VAD",
+   "words": [
+    "77655"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 94,
+   "address": "13,2132",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 95,
+   "address": "13,2133",
+   "source": "STORE 6",
+   "words": [
+    "00007"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 96,
+   "address": "13,2134",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 97,
+   "address": "13,2135",
+   "source": "INTSTALL",
+   "words": [
+    "27442"
+   ],
+   "native": "compmat"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 98,
+   "address": "13,2136",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "call_sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 99,
+   "address": "13,2137",
+   "source": "P76SUB1",
+   "words": [
+    "26222"
+   ],
+   "native": "call_sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 100,
+   "address": "13,2140",
+   "source": "VLOAD VSR*",
+   "words": [
+    "53775"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 101,
+   "address": "13,2141",
+   "source": "6",
+   "words": [
+    "00007"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 102,
+   "address": "13,2142",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 103,
+   "address": "13,2143",
+   "source": "STOVL VCV",
+   "words": [
+    "25543"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 104,
+   "address": "13,2144",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 105,
+   "address": "13,2145",
+   "source": "VSR*",
+   "words": [
+    "77657"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 106,
+   "address": "13,2146",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 107,
+   "address": "13,2147",
+   "source": "STODL RCV",
+   "words": [
+    "15535"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 108,
+   "address": "13,2150",
+   "source": "TIG",
+   "words": [
+    "03413"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 109,
+   "address": "13,2151",
+   "source": "STORE TET",
+   "words": [
+    "01517"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 110,
+   "address": "13,2152",
+   "source": "CLEAR DLOAD",
+   "words": [
+    "71214"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 111,
+   "address": "13,2153",
+   "source": "INTYPFLG",
+   "words": [
+    "01673"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 112,
+   "address": "13,2154",
+   "source": "TETTHIS",
+   "words": [
+    "01571"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 113,
+   "address": "13,2155",
+   "source": "INTOTHIS STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 114,
+   "address": "13,2156",
+   "source": "INTEGRVS",
+   "words": [
+    "27135"
+   ],
+   "native": "sub1_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 115,
+   "address": "13,2157",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "integrvs_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 116,
+   "address": "13,2160",
+   "source": "INTSTALL",
+   "words": [
+    "27442"
+   ],
+   "native": "integrvs_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 117,
+   "address": "13,2161",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "call_sub1_2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 118,
+   "address": "13,2162",
+   "source": "P76SUB1",
+   "words": [
+    "26222"
+   ],
+   "native": "call_sub1_2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 119,
+   "address": "13,2163",
+   "source": "VLOAD",
+   "words": [
+    "77775"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 120,
+   "address": "13,2164",
+   "source": "RATT1",
+   "words": [
+    "00017"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 121,
+   "address": "13,2165",
+   "source": "STORE RRECT",
+   "words": [
+    "01503"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 122,
+   "address": "13,2166",
+   "source": "STODL RCV",
+   "words": [
+    "15535"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 123,
+   "address": "13,2167",
+   "source": "TAT",
+   "words": [
+    "00015"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 124,
+   "address": "13,2170",
+   "source": "STOVL TET",
+   "words": [
+    "25517"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 125,
+   "address": "13,2171",
+   "source": "VATT1",
+   "words": [
+    "00025"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 126,
+   "address": "13,2172",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 127,
+   "address": "13,2173",
+   "source": "MINIRECT",
+   "words": [
+    "23435"
+   ],
+   "native": "sub1_ret2"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 128,
+   "address": "13,2174",
+   "source": "EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "minirect_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 129,
+   "address": "13,2175",
+   "source": "TC PHASCHNG",
+   "words": [
+    "05412"
+   ],
+   "native": "phaschng"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 130,
+   "address": "13,2176",
+   "source": "OCT 04024",
+   "words": [
+    "04024"
+   ],
+   "native": "phaschng"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 132,
+   "address": "13,2177",
+   "source": "TC UPFLAG",
+   "words": [
+    "05546"
+   ],
+   "native": "phaschng_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 133,
+   "address": "13,2200",
+   "source": "ADRES REINTFLG",
+   "words": [
+    "00236"
+   ],
+   "native": "phaschng_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 135,
+   "address": "13,2201",
+   "source": "TC INTPRET",
+   "words": [
+    "06006"
+   ],
+   "native": "reintflg_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 136,
+   "address": "13,2202",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "call_atopoth"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 137,
+   "address": "13,2203",
+   "source": "ATOPOTH",
+   "words": [
+    "26760"
+   ],
+   "native": "call_atopoth"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 138,
+   "address": "13,2204",
+   "source": "SSP EXIT",
+   "words": [
+    "77531"
+   ],
+   "native": "atopoth_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 139,
+   "address": "13,2205",
+   "source": "QPRET",
+   "words": [
+    "00053"
+   ],
+   "native": "atopoth_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 140,
+   "address": "13,2206",
+   "source": "OUT",
+   "words": [
+    "26211"
+   ],
+   "native": "atopoth_ret"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 141,
+   "address": "13,2207",
+   "source": "TC BANKCALL",
+   "words": [
+    "04662"
+   ],
+   "native": "intwake"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 142,
+   "address": "13,2210",
+   "source": "CADR INTWAKE1",
+   "words": [
+    "27477"
+   ],
+   "native": "intwake"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 143,
+   "address": "13,2211",
+   "source": "OUT EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "out"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 144,
+   "address": "13,2212",
+   "source": "ENDP76 CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 145,
+   "address": "13,2213",
+   "source": "TS MARKCTR",
+   "words": [
+    "55126"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 146,
+   "address": "13,2214",
+   "source": "TS VHFCNT",
+   "words": [
+    "55125"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 148,
+   "address": "13,2215",
+   "source": "CAF NEGONE",
+   "words": [
+    "37716"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 149,
+   "address": "13,2216",
+   "source": "TS MRKBUF2",
+   "words": [
+    "55734"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 151,
+   "address": "13,2217",
+   "source": "TCF GOTOPOOH",
+   "words": [
+    "14106"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 153,
+   "address": "13,2220",
+   "source": "V06N84 NV 0684",
+   "words": [
+    "01524"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 154,
+   "address": "13,2221",
+   "source": "NV 0633",
+   "words": [
+    "01441"
+   ],
+   "native": "r_endp76"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 155,
+   "address": "13,2222",
+   "source": "P76SUB1 CLEAR SLOAD",
+   "words": [
+    "67214"
+   ],
+   "native": "p76sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 156,
+   "address": "13,2223",
+   "source": "MOONFLAG",
+   "words": [
+    "00263"
+   ],
+   "native": "p76sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 157,
+   "address": "13,2224",
+   "source": "X2",
+   "words": [
+    "00050"
+   ],
+   "native": "p76sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 158,
+   "address": "13,2225",
+   "source": "BHIZ SET",
+   "words": [
+    "43030"
+   ],
+   "native": "p76sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 159,
+   "address": "13,2226",
+   "source": "+2",
+   "words": [
+    "26230"
+   ],
+   "native": "p76sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 160,
+   "address": "13,2227",
+   "source": "MOONFLAG",
+   "words": [
+    "00063"
+   ],
+   "native": "p76sub1"
+  },
+  {
+   "path": "Comanche055/P76.agc",
+   "line": 161,
+   "address": "13,2230",
+   "source": "RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "p76sub1"
+  }
+ ],
+ "covered_ranges": [
+  "13,2071-13,2230"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every word of P76 is owned by the registered routine entered at the first address of its range: interpretive words are literal bookkeeping arguments in source order, basic words belong to the routine whose ENTRY names the address, the erasable words and destinations the basic code names equal their native macros, and V06N84, V06N84 +1, ZERO and NEGONE equal their native literals."
+}

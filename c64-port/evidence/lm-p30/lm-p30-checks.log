@@ -1,0 +1,6 @@
+PASS 9216 original P30 entries equal native trampoline runs 219b76886caf78ad3b78e425eb8f69a0c12187f9d18eb88345a4f927ba59f817
+lm-p30: 9216 cases, 196 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 9451 checks, 0 failures
+PASS 70 assembled P30_P37 words on 70 source lines map to 18 native routines
+lm-p30: 9216 cases, 196 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 9451 checks, 0 failures
+PASS: VICE PAL lm-p30-1.prg: 128 checks, 0 failures
+PASS: VICE PAL lm-p30-2.prg: 510 checks, 0 failures

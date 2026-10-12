@@ -1888,8 +1888,20 @@
       "sha256": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a",
       "bytes": 4804,
       "lines": 162,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p76_routines.c",
+            "src/agc_transfer.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of P76 (13,2071-13,2230), 96 words, as fifteen basic routines keyed by Z and twelve interpretive routines keyed at their NEWOPS, of the control-transfer ABI on the Comanche055 interpretive bodies: P76 (UPFLAG TRACKFLG), the V06N84 and V06N33 GOFLASH displays and their terminate/proceed/recycle returns, TIG and OTHPREC, COMPMAT (UNIT, VCOMP, VXV, VXM, VSL1, VAD, INTSTALL), P76SUB1 calls, VCV/RCV by VSR* 0,2, TET, CLEAR INTYPFLG, INTEGRVS, INTSTALL, RRECT/RCV/TET and MINIRECT, PHASCHNG 04024, REINTFLG, ATOPOTH, SSP QPRET OUT, INTWAKE1, OUT, ENDP76 (MARKCTR, VHFCNT, MRKBUF2, GOTOPOOH) and P76SUB1 (CLEAR MOONFLAG, SLOAD X2, BHIZ, SET MOONFLAG, RVQ): from each entry through the trampoline to the first point outside them (UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO, or a NEWOPS outside 13,2110-2174, 2202-2206, 2211 and 2222-2230).",
+          "verification": "docs/CM-P76.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
@@ -4741,8 +4753,20 @@
       "sha256": "6e440a29d56167c2f48b7bc58c0d53491d596c61e8e7137dc3b349ad90c1dc10",
       "bytes": 4308,
       "lines": 168,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p31_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P31 and REVN1645 (35,2450-35,2544), 61 words, the whole file, as six basic routines keyed by Z and eleven interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P31 with P20FLGON, the V06N33 display and INTPRET; UPDATFLG cleared, TIG and LEMPREC; RTIG/RINIT and VTIG/VINIT from RATT and VATT, P30ZERO and DELLT4 pushed, TPASS4 with SXA,1 and SXA,2, and INITVEL; DELVEET3 into DELVSIN, ABVAL into VGDISP with XDELVFLG cleared, and GET.LVC; RTIG, VIPRIME and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK, HAPO and EXIT; the V06N81 and V06N42 displays and INTPRET; and REVN1645 (SET FINALFLG, CALL VN1645, GOTO REVN1645): from each entry through the trampoline to the first point outside them (P20FLGON, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2454-35,2544).",
+          "verification": "docs/LM-P31.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
@@ -5766,8 +5790,21 @@
       "sha256": "2ea604772395dcae064d0a23f4f475845cef39b3528d62d4adeac8e3aab9b573",
       "bytes": 4937,
       "lines": 185,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p30_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/lm_work_matrix.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P30 (35,2000-35,2026) and S30.1 (34,2000-34,2056), 70 words, the whole file, as eight basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P30 with UPFLAG UPDATFLG and TRACKFLG, the V06N33 and V06N81 displays through VNPOOH, DOWNFLAG UPDATFLG and INTPRET; CALL S30.1 and SET UPDATFLG, EXIT; PARAM30's V06N42 display, INTPRET and SETGO XDELVFLG REVN1645; and S30.1 (STQ QTEMP, TIG and LEMPREC; RTIG and VTIG with SXA,2 and SXA,1; the local-vertical frame with UNIT, VCOMP, VXV; DELVSLV through it with VXM and VSL1 into DELVSIN; ABVAL into DELVSAB; VTIG + DELVSIN and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK and STCALL HAPO to C(QTEMP)): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 34,2000-2056, 35,2013-2016 and 35,2022-2024).",
+          "verification": "docs/LM-P30.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P32-P35_P72-P75.agc",
@@ -5775,8 +5812,32 @@
       "sha256": "0fc78a6c5bcfd461bf1e9e7ffd11e5e4f93950595daf275bb2df2a9a08f149ec",
       "bytes": 25575,
       "lines": 1394,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p32_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P32/P72, ALMXITA and ALMXIT (35,2027-35,2215), 119 words, as twenty-one basic routines keyed by Z and nineteen interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P32 and P72 through AVFLAGA/AVFLAGP, P32STRT (CENTANG from P30ZERO), P32/P72A (P20FLGON, NN +1 and TCSI zeroed, the V06N11 display and INTPRET); the TCSI check (DCOMP, BMN VN0655, PRECSET, RVEC/VVEC by VSR* 0,2, RVSW, TIMERAD to DPPOSMAX, TCSI = TDEC2 + time) and VN0655 (V06N55 GOFLASH and its returns, the V06N37 display); TCSI into TIG and SELECTMU; P32/P72B (ADVANCE, INTINT from VPASS1, RPASS1, TCSI, TTPI and TWOPI, PASSIVE, CSI/A); P32/P72C-F (UPDATFLG by FINALFLG, the 60MIN loops on T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, DELVEET1/RACT1, DISDVLVC, VN1645 and GOTO P32/P72B; and ALMXITA/ALMXIT (SXA,2 and LXC,1 CSIALRM, SLOAD* ALARM/TB -1,1, VARALARM and the V05N09 GOFLASH returns): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, VNPOOH, VARALARM, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2036-2043, 2063-2111, 2113, 2125-2172 and 2176-2215).",
+          "verification": "docs/LM-P32.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p33_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/lm_work_matrix.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P33/P73, AVFLAGA, AVFLAGP, P20FLGON and DISDVLVC (35,2216-35,2407), 122 words, as twenty-three basic routines keyed by Z and twenty interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P33 and P73 through AVFLAGA/AVFLAGP, P20FLGON, the V06N13 display and INTPRET; TTPI0, TCDH and SELECTMU; P33/P73B's ADVANCE, CDHMVR, the INTINT3P/ACTIVE and INTINT3P/PASSIVE integrations, ITSWICH, NOMTPI and S33/34.1 with the 611 alarm and its V05N09 GOFLASH returns; P33/P73C-F (UPDATFLG by FINALFLG, TTPI + NOMTPI, the 60MIN loops into T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, VN1645 and GOTO P33/P73B; AVFLAGA, AVFLAGP and P20FLGON (QXCH SUBEXIT, UPFLAG/DOWNFLAG, TC SUBEXIT); and DISDVLVC (STQ NORMEX, S32/33.X, MXV, VSL1, SXA,1 VERBNOUN, the VERBNOUN display and GOTO NORMEX): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, E 1470, POODOO1, or a NEWOPS outside 35,2225-2265, 2277-2346, 2370-2402 and 2406-2407).",
+          "verification": "docs/LM-P33.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P34-35_P74-75.agc",
@@ -5946,8 +6007,21 @@
       "sha256": "b94d0907e3d64318a3fd225ac8d0106109182d40646e3dcbdcffa354e3f08925",
       "bytes": 4400,
       "lines": 161,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p76_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/lm_work_matrix.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P76 (13,2207-13,2350), 98 words, the whole file, as sixteen basic routines keyed by Z and twelve interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P76 with UPFLAG TRACKFLG and INTPRET; DELVLVC into DELVOV; the V06N84 and V06N33 GOFLASH displays and their returns; TIG and OTHPREC; COMPMAT (UNIT, VXV, VXM, VSL1, VAD) and INTSTALL; P76SUB1, the VCV/RCV/TET setup scaled by X2, INTYPFLG and INTEGRVS; RRECT/RCV/TET from RATT1, TAT, VATT1 and MINIRECT; PHASCHNG, UPFLAG REINTFLG; ATOPOTH, SSP QPRET OUT and BANKCALL INTWAKE1; OUT and ENDP76 (MARKCTR zero, GOTOPOOH); and P76SUB1 (X2, MOONFLAG by CMOONFLG, return to C(QPRET)): from each entry through the trampoline to the first point outside them (UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside bank 13's 2212-2215, 2233-2315, 2323-2332 and 2340-2350).",
+          "verification": "docs/LM-P76.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",

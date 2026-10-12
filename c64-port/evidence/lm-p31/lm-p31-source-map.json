@@ -1,0 +1,667 @@
+{
+ "source_paths": [
+  "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc": "6e440a29d56167c2f48b7bc58c0d53491d596c61e8e7137dc3b349ad90c1dc10"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_p31_routines.c",
+ "native_sha256": "3abb5af384b3a3b2fa241ccbe51614b6fbd48548b9f0823b7bbb3f1b669f43d7",
+ "source_words": 61,
+ "source_lines": 61,
+ "symbols": {
+  "P31": "35,2450",
+  "REVN1645": "35,2540",
+  "LEMPREC": "13,3057",
+  "INITVEL": "11,2000",
+  "GET.LVC": "06,3733",
+  "PERIAPO1": "23,2316",
+  "SHIFTR1": "23,2426",
+  "MAXCHK": "22,3636",
+  "VN1645": "35,3606",
+  "TIG": "E7,1441",
+  "RATT": "0000000",
+  "VATT": "0000006",
+  "RTX1": "E5,1776",
+  "RTX2": "E5,1777",
+  "RTIG": "E7,1641",
+  "VTIG": "E7,1647",
+  "RINIT": "E4,1722",
+  "VINIT": "E4,1730",
+  "DELLT4": "E7,1451",
+  "TPASS4": "E7,1630",
+  "DELVEET3": "E4,1765",
+  "DELVSIN": "E7,1655",
+  "VGDISP": "E7,1663",
+  "VIPRIME": "E4,1736",
+  "HPER": "E4,1720",
+  "HAPO": "E4,1716",
+  "UPDATFLG": "0000027",
+  "XDELVFLG": "0000045",
+  "FINALFLG": "0000047",
+  "P20FLGON": "35,2361",
+  "VNPOOH": "35,3712",
+  "INTPRET": "6037",
+  "V06N33": "35,2025",
+  "V06N81": "35,3727",
+  "V06N42": "35,2026",
+  "P30ZERO": "35,2417"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 104,
+   "address": "35,2450",
+   "source": "P31 TC P20FLGON",
+   "words": [
+    "02361"
+   ],
+   "native": "p31"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 105,
+   "address": "35,2451",
+   "source": "CAF V06N33",
+   "words": [
+    "32025"
+   ],
+   "native": "p20_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 106,
+   "address": "35,2452",
+   "source": "TC VNPOOH",
+   "words": [
+    "03712"
+   ],
+   "native": "p20_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 107,
+   "address": "35,2453",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "vnpooh_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 108,
+   "address": "35,2454",
+   "source": "CLEAR DLOAD",
+   "words": [
+    "71214"
+   ],
+   "native": "p31_start"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 109,
+   "address": "35,2455",
+   "source": "UPDATFLG",
+   "words": [
+    "00670"
+   ],
+   "native": "p31_start"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 110,
+   "address": "35,2456",
+   "source": "TIG",
+   "words": [
+    "03442"
+   ],
+   "native": "p31_start"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 111,
+   "address": "35,2457",
+   "source": "STCALL TDEC1",
+   "words": [
+    "34041"
+   ],
+   "native": "p31_start"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 112,
+   "address": "35,2460",
+   "source": "LEMPREC",
+   "words": [
+    "27057"
+   ],
+   "native": "p31_start"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 113,
+   "address": "35,2461",
+   "source": "VLOAD SETPD",
+   "words": [
+    "40375"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 114,
+   "address": "35,2462",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 115,
+   "address": "35,2463",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 116,
+   "address": "35,2464",
+   "source": "STORE RTIG",
+   "words": [
+    "03642"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 117,
+   "address": "35,2465",
+   "source": "STOVL RINIT",
+   "words": [
+    "26323"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 118,
+   "address": "35,2466",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 119,
+   "address": "35,2467",
+   "source": "STORE VTIG",
+   "words": [
+    "03650"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 120,
+   "address": "35,2470",
+   "source": "STODL VINIT",
+   "words": [
+    "16331"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 121,
+   "address": "35,2471",
+   "source": "P30ZERO",
+   "words": [
+    "32420"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 122,
+   "address": "35,2472",
+   "source": "PUSH PDDL",
+   "words": [
+    "65206"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 123,
+   "address": "35,2473",
+   "source": "DELLT4",
+   "words": [
+    "03452"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 124,
+   "address": "35,2474",
+   "source": "DAD SXA,1",
+   "words": [
+    "66015"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 125,
+   "address": "35,2475",
+   "source": "TIG",
+   "words": [
+    "03442"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 126,
+   "address": "35,2476",
+   "source": "RTX1",
+   "words": [
+    "02776"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 127,
+   "address": "35,2477",
+   "source": "STORE TPASS4",
+   "words": [
+    "03631"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 128,
+   "address": "35,2500",
+   "source": "SXA,2 CALL",
+   "words": [
+    "45134"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 129,
+   "address": "35,2501",
+   "source": "RTX2",
+   "words": [
+    "02777"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 130,
+   "address": "35,2502",
+   "source": "INITVEL",
+   "words": [
+    "22000"
+   ],
+   "native": "lemprec_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 131,
+   "address": "35,2503",
+   "source": "VLOAD PUSH",
+   "words": [
+    "41575"
+   ],
+   "native": "initvel_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 133,
+   "address": "35,2504",
+   "source": "DELVEET3",
+   "words": [
+    "02366"
+   ],
+   "native": "initvel_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 134,
+   "address": "35,2505",
+   "source": "STORE DELVSIN",
+   "words": [
+    "03656"
+   ],
+   "native": "initvel_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 135,
+   "address": "35,2506",
+   "source": "ABVAL CLEAR",
+   "words": [
+    "43046"
+   ],
+   "native": "initvel_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 136,
+   "address": "35,2507",
+   "source": "XDELVFLG",
+   "words": [
+    "01267"
+   ],
+   "native": "initvel_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 137,
+   "address": "35,2510",
+   "source": "STCALL VGDISP",
+   "words": [
+    "37664"
+   ],
+   "native": "initvel_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 138,
+   "address": "35,2511",
+   "source": "GET.LVC",
+   "words": [
+    "15733"
+   ],
+   "native": "initvel_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 139,
+   "address": "35,2512",
+   "source": "VLOAD PDVL",
+   "words": [
+    "63375"
+   ],
+   "native": "getlvc_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 140,
+   "address": "35,2513",
+   "source": "RTIG",
+   "words": [
+    "03642"
+   ],
+   "native": "getlvc_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 141,
+   "address": "35,2514",
+   "source": "VIPRIME",
+   "words": [
+    "02337"
+   ],
+   "native": "getlvc_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 142,
+   "address": "35,2515",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "getlvc_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 143,
+   "address": "35,2516",
+   "source": "PERIAPO1",
+   "words": [
+    "46316"
+   ],
+   "native": "getlvc_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 144,
+   "address": "35,2517",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "periapo_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 145,
+   "address": "35,2520",
+   "source": "SHIFTR1",
+   "words": [
+    "46426"
+   ],
+   "native": "periapo_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 146,
+   "address": "35,2521",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "shiftr1_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 147,
+   "address": "35,2522",
+   "source": "MAXCHK",
+   "words": [
+    "45636"
+   ],
+   "native": "shiftr1_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 148,
+   "address": "35,2523",
+   "source": "STODL HPER",
+   "words": [
+    "16321"
+   ],
+   "native": "maxchk_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 149,
+   "address": "35,2524",
+   "source": "4D",
+   "words": [
+    "00005"
+   ],
+   "native": "maxchk_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 150,
+   "address": "35,2525",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "maxchk_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 151,
+   "address": "35,2526",
+   "source": "SHIFTR1",
+   "words": [
+    "46426"
+   ],
+   "native": "maxchk_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 152,
+   "address": "35,2527",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "shiftr1_ret2"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 153,
+   "address": "35,2530",
+   "source": "MAXCHK",
+   "words": [
+    "45636"
+   ],
+   "native": "shiftr1_ret2"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 154,
+   "address": "35,2531",
+   "source": "STORE HAPO",
+   "words": [
+    "02317"
+   ],
+   "native": "maxchk_ret2"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 155,
+   "address": "35,2532",
+   "source": "EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "maxchk_ret2"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 156,
+   "address": "35,2533",
+   "source": "CAF V06N81",
+   "words": [
+    "33727"
+   ],
+   "native": "v06n81"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 157,
+   "address": "35,2534",
+   "source": "TC VNPOOH",
+   "words": [
+    "03712"
+   ],
+   "native": "v06n81"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 158,
+   "address": "35,2535",
+   "source": "CAF V06N42",
+   "words": [
+    "32026"
+   ],
+   "native": "v06n42"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 159,
+   "address": "35,2536",
+   "source": "TC VNPOOH",
+   "words": [
+    "03712"
+   ],
+   "native": "v06n42"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 160,
+   "address": "35,2537",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "v06n42_ret"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 161,
+   "address": "35,2540",
+   "source": "REVN1645 SET CALL",
+   "words": [
+    "45014"
+   ],
+   "native": "revn1645"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 162,
+   "address": "35,2541",
+   "source": "FINALFLG",
+   "words": [
+    "01071"
+   ],
+   "native": "revn1645"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 163,
+   "address": "35,2542",
+   "source": "VN1645",
+   "words": [
+    "73606"
+   ],
+   "native": "revn1645"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 164,
+   "address": "35,2543",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "loop"
+  },
+  {
+   "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+   "line": 165,
+   "address": "35,2544",
+   "source": "REVN1645",
+   "words": [
+    "72540"
+   ],
+   "native": "loop"
+  }
+ ],
+ "covered_ranges": [
+  "35,2450-35,2544"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every word of LAMBERT_AIMPOINT_GUIDANCE.agc (P31 and REVN1645) is owned by the registered routine entered at the first address of its range: interpretive words are literal bookkeeping arguments in source order, basic words belong to the routine whose ENTRY names the address, the destinations the basic code names equal their native macros, and V06N33, V06N81, V06N42 and the P30ZERO pair equal their native literals."
+}

@@ -1,0 +1,23 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 8704 original P31 entries equal native trampoline runs ad1ae4ae4cf58bd5db7245c86de55c0bbc239001e2f353094bc2c277c0d81c2f",
+  "lm-p31: 8704 cases, 196 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 8937 checks, 0 failures",
+  "PASS 61 assembled P31 words on 61 source lines map to 17 native routines",
+  "lm-p31: 8704 cases, 196 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 8937 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-p31-1.prg: 510 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 35122,
+    "prg_sha256": "d7b546b652d1e85d0cb770b4982eeb2384b48d77c93c631e216b89a834e85564",
+    "image_end": "$9139",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "every entry: variant k*512/510 of entry k%17"
+   }
+  }
+ }
+}

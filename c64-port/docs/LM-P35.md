@@ -48,7 +48,7 @@ with the image unchanged:
 - INTBIT15 set;
 - EDOP, ZERO and NEWJOB zero;
 - MODE `+0`, `+1` or vector;
-- the VAC one of the five, with PUSHLOC no further than 40D into it;
+- the VAC one of the five, with PUSHLOC no further than 32D into it;
 - IRQ 0 or 1, and an allowed SUPERBNK;
 - every word 15 bits.
 
