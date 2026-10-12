@@ -4,13 +4,13 @@
   "release": "evidence-imu-mode-switching",
   "files": {
     "imu-mode-switching-host.log": {
-      "sha256": "9d221dc8b93a958ffeeeec21311e0b9190321120dc628242d12a2c94f755b638",
-      "bytes": 182,
+      "sha256": "b705e091176aa17f06f0d29db6cf8d9f631265fbe1e972cb87d871f726de49bb",
+      "bytes": 386,
       "store": "release"
     },
     "imu-mode-switching-proof.json": {
-      "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e",
-      "bytes": 18147,
+      "sha256": "e58f6148f5da6b1ebd02a1599ebad8afe44f8475e451751e9866d7c3582cd361",
+      "bytes": 17536,
       "store": "tree"
     },
     "imu-mode-switching-source-map.json": {
