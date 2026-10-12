@@ -27,6 +27,7 @@ from fixed_data_generate import fixed_address, rope_word  # noqa: E402
 TABLES = {
     'lm-update': ('Luminary099', 'UPDATE_PROGRAM', (), 'src/lm_update_operands.inc', 'LM_UPDATE'),
     'cm-update': ('Comanche055', 'UPDATE_PROGRAM', (), 'src/cm_update_operands.inc', 'CM_UPDATE'),
+    'lm-fresh-start': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_fresh_start_operands.inc', 'LM_FRESH'),
 }
 OWN = ('BANKCALL', 'POSTJUMP')
 ONE_WORD = ('CA', 'CAF', 'CS', 'AD', 'MASK')
@@ -59,7 +60,10 @@ def build(name):
         if address12 < 0o2000:
             continue
         phys = address12 if address12 >= 0o4000 else here // 1024 * 1024 + address12 - 0o2000
-        name_ = re.sub(r'\W', '_', opnd.split()[0])
+        parts = opnd.split()
+        name_ = re.sub(r'\W', '_', parts[0])
+        if len(parts) > 1 and re.fullmatch(r'[+-]\d+D?', parts[1]):   # SWINIT +2 -> SWINIT_P2
+            name_ += ('_P' if parts[1][0] == '+' else '_M') + parts[1][1:].rstrip('D')
         value = [listed[phys + k][0] for k in range(count)]
         for k in range(count):
             assert rope_word(rope, phys + k) == value[k], (path, line)
