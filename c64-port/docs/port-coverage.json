@@ -3082,8 +3082,49 @@
               "sha256": "910b1ebf5332b619683d48be205e084929377278bcbb541977e273fc13a1a949"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/lm_alarm.c",
+            "src/lm_alarm_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-ALARM.md",
+          "scope": "Every instruction: ALARM/ALARM2/BORTENT/PRIOENT/LARMENT, CHKFAIL1/CHKFAIL2/FAIL3/PROGLARM/MULTEXIT/MULTFAIL, PRIOLARM, BAILOUT, WHIMPER, POODOO/ABORT2/GOPOODOO/STRTIDLE, CCSHOLE, CURTAINS, BAILOUT1/BOTHABRT/POODOO1, ALARM1/ALMNCADR, VARALARM and FLAGS as control-transfer ABI routines (26 entries incl. MULTEXIT/BANKCALL/SUPERSW return points and the ALMCADR erasable continuation); alarm codes of all 73 caller sites compiled from the source listing."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 73 compiled TC sites (and ALMNCADR with Q at a compiled code), CCSHOLE/CURTAINS/VARALARM/WHIMPER/GOPOODOO/PRIOLARM/FLAGS as their callers enter them with a positive alarm code in A where one is passed, the return points and ALMCADR holding a return address 2000-7777; p66_bias_io plus agc_hardware for WHIMPER's RESUME (TS overflow, a negative CCS after MASK V37FLBIT and MULTEXIT words other than TC/TCF refuse)",
+        "external_continuations": [
+          "callers' returns",
+          "PRIODSPR (PINBALL)",
+          "BANKCALL/POSTJUMP/SUPERSW (lm_interbank_routines) to ENEMA, V37KLEAN, MR.KLEAN, SERVIDLE",
+          "SWRETURN after BANKCALL FLAGS (lm_interbank takes Q 0100-7775 only)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-ALARM.md",
+            "sha256": "7239aa436a0d6abe69e877cedb078f6a802bd869a59c73e2448be0a56be495ad"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-alarm/lm-alarm-proof.json",
+            "sha256": "8ed182f684d1bd5763e3fb6c5de4d982079010331c39c35126882f43ab0aebbe"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-alarm/lm-alarm-host.log",
+            "sha256": "61fe6f153c86a0400966c41c808853fb71c2fe19608f7d6e0148eb660361cfaa"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-alarm/lm-alarm-vice.log",
+            "sha256": "3376f29fa5fc63df6161dabc84675b7267ac40e6b79cd5afd5a48970b2d85619"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
