@@ -1,0 +1,174 @@
+{
+ "source_path": "Luminary099/CONIC_SUBROUTINES.agc",
+ "assembled_words": 1072,
+ "note": "Each milestone runs the unchanged Luminary099 in the pinned yaAGC hardware-DV variant over 65536 sampled entries and requires every 2053-word native row to equal the oracle row; the source map only accounts for words and is not the comparison.",
+ "milestones": [
+  {
+   "milestone": "lm-conic-kepler",
+   "scope": "KEPLERN, DELTIME, KEPLOOP",
+   "words": 338,
+   "independent_assembly_comparison": {
+    "identity": {
+     "path": "evidence/lm-conic-kepler/lm-conic-kepler-source-stream.json",
+     "sha256": "daf718799cacc5d9b0317ce2ff55fae4f17230812d675ec72a6ffae6008fd959"
+    },
+    "snapshots": {
+     "path": "evidence/lm-conic-kepler/lm-conic-kepler-reference.snapshots.bin.xz",
+     "sha256": "b1e654f7f813d216b62e401c72c6d83fcaa393d503f8dc16fba718fe50fc92ce"
+    },
+    "decoded_sha256": "501521398e5847c0dbb2e80b5232faaf4e7169b470ec08442c30663d5a5120e0",
+    "decoded_bytes": 269090816,
+    "states": 65536,
+    "status_counts": {
+     "1": 65536
+    }
+   },
+   "host_and_sanitizer_results": {
+    "path": "evidence/lm-conic-kepler/lm-conic-kepler-checks.log",
+    "sha256": "1fe2d6b60d08912050226d7094b20d8560e87e7815dee99ac0a7e441951fc1ec"
+   },
+   "c64_execution_results": {
+    "path": "evidence/lm-conic-kepler/lm-conic-kepler-results.json",
+    "sha256": "9948c0be719d18716710a3e8cb3f11b43cbd226576daeb0c62e75cb5c3b9dd48",
+    "vice": [
+     "PASS: VICE PAL lm-conic-kepler-1.prg: 24 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-kepler-2.prg: 20 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-kepler-3.prg: 28 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-kepler-4.prg: 18 checks, 0 failures"
+    ]
+   },
+   "source_map": {
+    "path": "evidence/lm-conic-kepler/lm-conic-kepler-source-map.json",
+    "sha256": "7336114df6bf5bb78b7f214c1e55a61466a1c64ea2d4b161bccddb5887999d25"
+   }
+  },
+  {
+   "milestone": "lm-conic-timethet",
+   "scope": "TIMETHET, PARAM, GEOM, GETX and their tails",
+   "words": 265,
+   "independent_assembly_comparison": {
+    "identity": {
+     "path": "evidence/lm-conic-timethet/lm-conic-timethet-source-stream.json",
+     "sha256": "bf0351f5c4105bdd2e0fb7c9f7c74e11ed458fef62b60156e5364aef78b7959e"
+    },
+    "snapshots": {
+     "path": "evidence/lm-conic-timethet/lm-conic-timethet-reference.snapshots.bin.xz",
+     "sha256": "36f9c3ec0f30b706c08e747945181b0175e179ca84a77bda9155ce3202961ad4"
+    },
+    "decoded_sha256": "ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf",
+    "decoded_bytes": 269090816,
+    "states": 65536,
+    "status_counts": {
+     "1": 50122,
+     "3": 15414
+    }
+   },
+   "host_and_sanitizer_results": {
+    "path": "evidence/lm-conic-timethet/lm-conic-timethet-checks.log",
+    "sha256": "f4a2263d7222122ffe9e0f38f7435350d0dfbff9ac430dac04475e51a0eee5f4"
+   },
+   "c64_execution_results": {
+    "path": "evidence/lm-conic-timethet/lm-conic-timethet-results.json",
+    "sha256": "b926e8a0cbab90cbe0376f938eb09160d9a1742670c3270df6d633b82aed7e66",
+    "vice": [
+     "PASS: VICE PAL lm-conic-timethet-1.prg: 22 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timethet-2.prg: 21 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timethet-3.prg: 23 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timethet-4.prg: 24 checks, 0 failures"
+    ]
+   },
+   "source_map": {
+    "path": "evidence/lm-conic-timethet/lm-conic-timethet-source-map.json",
+    "sha256": "fae4b0831d14a11954c2bd3d79524ed0da6e6f9081dd7242b105ee6ca35754b2"
+   }
+  },
+  {
+   "milestone": "lm-conic-timerad",
+   "scope": "TIMERAD, APSIDES",
+   "words": 123,
+   "independent_assembly_comparison": {
+    "identity": {
+     "path": "evidence/lm-conic-timerad/lm-conic-timerad-source-stream.json",
+     "sha256": "54b4be1197ba2dd361d384cc09097721a738ff9c3ec92064f3b36f3c44a89944"
+    },
+    "snapshots": {
+     "path": "evidence/lm-conic-timerad/lm-conic-timerad-reference.snapshots.bin.xz",
+     "sha256": "e1e42dc98bdeedc5a5c5d90518ba9416fc52e9d2126f643697dcf5809a7ca095"
+    },
+    "decoded_sha256": "6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266",
+    "decoded_bytes": 269090816,
+    "states": 65536,
+    "status_counts": {
+     "1": 57812,
+     "2": 571,
+     "3": 7153
+    }
+   },
+   "host_and_sanitizer_results": {
+    "path": "evidence/lm-conic-timerad/lm-conic-timerad-checks.log",
+    "sha256": "7aa7a9169e2c583c3f20e4a3121ac371a4864ef5b12cace0efb568c3cce030f9"
+   },
+   "c64_execution_results": {
+    "path": "evidence/lm-conic-timerad/lm-conic-timerad-results.json",
+    "sha256": "f25743d945abd410d7e7d4a6fe5a2854aac33d2246577b9ff1db529b0d7c3a9d",
+    "vice": [
+     "PASS: VICE PAL lm-conic-timerad-1.prg: 28 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timerad-2.prg: 9 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timerad-3.prg: 13 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timerad-4.prg: 17 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timerad-5.prg: 21 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-timerad-6.prg: 20 checks, 0 failures"
+    ]
+   },
+   "source_map": {
+    "path": "evidence/lm-conic-timerad/lm-conic-timerad-source-map.json",
+    "sha256": "c8519269bef46e036f4fcd87cf613cc9a34766b4e966521e3acf0aa3c14e6d6c"
+   }
+  },
+  {
+   "milestone": "lm-conic-lambert",
+   "scope": "LAMBERT, ITERATOR, LAMENTER (and HAVENORM RVQ, CONICS1 constants)",
+   "words": 346,
+   "independent_assembly_comparison": {
+    "identity": {
+     "path": "evidence/lm-conic-lambert/lm-conic-lambert-source-stream.json",
+     "sha256": "b47e9cad52fce1eabf61e7d705c1edee05e16a13087054c73fb3acb52cc70cad"
+    },
+    "snapshots": {
+     "path": "evidence/lm-conic-lambert/lm-conic-lambert-reference.snapshots.bin.xz",
+     "sha256": "97c7aa2ec419d9e2897ad91908279b7ffa1f8c9a3cd1930ee0aa4f7881f3e21f"
+    },
+    "decoded_sha256": "b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3",
+    "decoded_bytes": 269090816,
+    "states": 65536,
+    "status_counts": {
+     "1": 60534,
+     "2": 5002
+    }
+   },
+   "host_and_sanitizer_results": {
+    "path": "evidence/lm-conic-lambert/lm-conic-lambert-checks.log",
+    "sha256": "df723518335088be1b7c2f0918388f4c33e6cd8fd7eb232100023421895b0994"
+   },
+   "c64_execution_results": {
+    "path": "evidence/lm-conic-lambert/lm-conic-lambert-results.json",
+    "sha256": "58a40641ca5128d4497b8cf8cb3caa1c466ca1658fba66b8a5b78bd5ca1ad3b0",
+    "vice": [
+     "PASS: VICE PAL lm-conic-lambert-1.prg: 17 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-2.prg: 16 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-3.prg: 16 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-4.prg: 12 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-5.prg: 26 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-6.prg: 12 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-7.prg: 33 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-8.prg: 7 checks, 0 failures",
+     "PASS: VICE PAL lm-conic-lambert-9.prg: 37 checks, 0 failures"
+    ]
+   },
+   "source_map": {
+    "path": "evidence/lm-conic-lambert/lm-conic-lambert-source-map.json",
+    "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d"
+   }
+  }
+ ]
+}
