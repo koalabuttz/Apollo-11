@@ -1,0 +1,30 @@
+{
+ "cases": 16384,
+ "c64_groups": {
+  "1": 512,
+  "2": 512
+ },
+ "stream_sha256": "ebe6398ef2a768f6844551bd5c9b0fcd7ebc517b1133af565397588ed626cced",
+ "stops": {
+  "S34/35.1 (3274)": {
+   "NEWOPS 35,2754": 2048,
+   "NEWOPS 35,3006": 1024,
+   "NEWOPS of a CADR in another bank": 1024
+  },
+  "NOVRWRT (3424)": {
+   "NEWOPS 35,3572": 3072,
+   "NEWOPS of a CADR in another bank": 1024
+  },
+  "S34/35.4 (3442)": {
+   "NEWOPS 35,3600": 3072,
+   "NEWOPS of a CADR in another bank": 1024
+  },
+  "LOMAT (3447)": {
+   "NEWOPS 35,3371": 2048,
+   "NEWOPS 35,3402": 1024,
+   "NEWOPS of a CADR in another bank": 1024
+  }
+ },
+ "boundary": "each case runs from its routine's NEWOPS through the trampoline (the four S34/35 routines) to the first point outside them; the oracle stops at the same NEWOPS outside the routines or at UNIT's POODOO1",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}
