@@ -3437,6 +3437,14 @@
           ],
           "scope": "E/BKCALL, its returns, E/CALL, resume, E/JOBWAK, EXIT and the INTPRET forms registered as native routines; E/BKCALL and E/CALL round trips run through the trampoline into a native callee and back.",
           "verification": "docs/CM-STANDARD-LEAD-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "COMPVER, GTSCPSS1 and REDO (33,2000-2002) registered in cm_standard_lead_routines: one TC each to GCOMPVER, GTSCPSS or NEWMODEX with Q at the next word; 384 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/cm-lead-tests.md"
         }
       ],
       "complete_native_coverage": {
