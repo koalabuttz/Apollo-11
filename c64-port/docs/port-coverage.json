@@ -6234,8 +6234,48 @@
       "sha256": "13da16e475f7d0610ee90d73b5676d2ff0704fb8b79f7651c97e0a32e16b256a",
       "bytes": 17459,
       "lines": 617,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_trim_gimbal.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-TRIM-GIMBAL.md",
+          "scope": "Every path of the file: GTS (both axes, DEL, NEGUSUM, drive reversal, GTSQRT and ROOTCYCL compiled at their call sites, the QRCNTR = +-1 pass after a TS SAVESR overflow) to its DTCB to CLOSEOUT, ACDT+C12, TIMEGMBL to its IBNKCALL and the IBNKCALL return's TC RUPTREG2, as four ABI routines in banks 21 and 16."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in their own banks (GTS, TIMEGMBL and 21,3435 in bank 21; ACDT+C12 in bank 16) under EBANK6 (EBANK= QDIFF / NEGUQ) with the lm_flight_io channel 12 record; the ACDT+C12 return in Q and the TIMEGMBL return in RUPTREG2 are TC words into fixed memory; excluded: a GTS pass whose GTSQRT takes the zero root while ININDEX (still ACENTRAL) makes DOSHIFT's INDEX SHFTFLAG select a word other than BIT15-BIT2, where the original executes CA BIT15 + ACENTRAL/2 as an arbitrary instruction (refused with the image unchanged; 286 of 4,096 random GTS cases)",
+        "external_continuations": [
+          "CLOSEOUT (Q_R-AXIS_RCS_AUTOPILOT)",
+          "IBNKCALL (ACDT+C12)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-source-map.json",
+            "sha256": "116e39bd6a3ce9c45b967c78663b2e7739f36c05f08f4bffd974d6a1f6db8ca1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-proof.json",
+            "sha256": "a3147b39c6d3f5f50af23f9287d9796169039c8aa5de13b5be9285513865e4c1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-host.log",
+            "sha256": "a8b98c35d48c69eee18927ae326caceb2a9515347847e647e59118ee244598ef"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-vice.log",
+            "sha256": "b5814a85a60e67124b96287aa55b1faaec444dbccb4f528d9ce4d230a6c1c80b"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/UPDATE_PROGRAM.agc",
