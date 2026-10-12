@@ -45,13 +45,21 @@
     },
     "3": {
       "phases": [
-        5,
+        5
+      ],
+      "steps": 6,
+      "entry_changes": 44,
+      "exit_changes": 38,
+      "frozen_bytes": 1439
+    },
+    "4": {
+      "phases": [
         8
       ],
-      "steps": 12,
+      "steps": 6,
       "entry_changes": 60,
       "exit_changes": 41,
-      "frozen_bytes": 3105
+      "frozen_bytes": 1744
     }
   }
 }

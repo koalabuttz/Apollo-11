@@ -139,36 +139,79 @@ its address (`tools/lm_ephemeris_source.py`, `evidence/lm-ephemeris/lm-ephemeris
 Hashes: `evidence/lm-ephemeris/SHA256.json`. Bulk files are assets of the `evidence-lm-ephemeris` release
 (`python3 tools/evidence.py fetch lm-ephemeris`).
 
-- Source-to-native map and independent assembly comparison:
-  `python3 tools/lm_ephemeris_source.py` reassembles the unchanged file with the
-  pinned yaYUL (rope equal to the certified fixed-data rope), requires the
-  fresh line/word map to equal the retained `evidence/ephemeris-source-map.json`
-  and maps all 74 words to native literals in 8 functions.
-- Oracle: `tools/lm_ephemeris_reference.c` (GPL, host only) runs the unchanged
+- Source-to-native map: `python3 tools/lm_ephemeris_source.py` reassembles the
+  unchanged file with the pinned yaYUL (rope equal to the certified fixed-data
+  rope), requires the fresh line/word map to equal the retained
+  `evidence/ephemeris-source-map.json` and maps all 74 words to native literals
+  in 8 functions. This accounts for words only; it is not the comparison.
+- Independent assembly comparison (oracle): `tools/lm_ephemeris_reference.c`
+  (GPL, host only) runs the unchanged
   Luminary099 in the pinned yaAGC hardware-DV variant from 65536 sampled entry
   states (`tests/lm_ephemeris_cases.c`: every caller, both IRQ settings, SUPER,
   all five VACs, EBANK, edge values of MPAC and TEPHEM, LUNVEL with overflowed
   L) to the caller frontier. `tools/lm_ephemeris_differential.py` checks the
   native producer against every row and pins the stream identity
   (`lm-ephemeris-source-stream.json`, SHA256 `c3617d86...a5c466`, 269,090,816
-  bytes; all 65536 states return).
+  bytes; all 65536 states return), printing the
+  `PASS65536 original LSPOS/LUNVEL oracle states equal native 2053-word rows`
+  line recorded in `lm-ephemeris-checks.log`. The snapshot archive is
+  `lm-ephemeris-reference.snapshots.bin.xz`. No sampled state reaches the
+  UNIT SQRT abort frontier; that path is translated and admitted but not
+  oracle-compared.
+- Control-transfer ABI (`docs/NATIVE_TRANSFER_ABI.md`): `lm_ephemeris_routines`
+  (`src/lm_ephemeris_routines.c`, `src/lm_ephemeris_routine_table.c`)
+  registers LSPOS 15,3664 and LUNVEL 15,3775 and the eight other NEWOPS
+  frontiers (POSITA 3700, POSITD 3722, POSITF 3743, the COS VDEF frontiers
+  3752 and 3763, the MXV KONMAT UNIT frontiers 3753 and 3764, DLOAD KONMAT +2
+  3756) as interpretive routines keyed by LOC under BANKSET. Each runs one
+  step and leaves the next NEWOPS frontier, so the trampoline chains the
+  steps, and the RVQ leaves the caller's frontier selected by QPRET.
+  `tests/test_lm_ephemeris_routines.c` runs every one of the 65536 sampled
+  entries through `agc_transfer_run` from the entry frontier to a native
+  stand-in for the caller's continuation and requires the image to equal the
+  certified `lm_ephemeris` composition followed by that stand-in, strict and
+  under ASAN/UBSAN; 1024 entries made outside the domain (pending NEWJOB,
+  nonzero EDOP, MODE and the other admitted-zero words) are refused with the
+  image unchanged. The file has no inline operands.
 - Host and sanitizer results: `make test-lm-ephemeris sanitize-lm-ephemeris`.
   Strict and ASAN/UBSAN builds each pass 16 frozen whole-routine states, 21
   admission guards, 54 frozen phase steps and the full 65536-state stream
   (`lm-ephemeris-checks.log`).
 - Phase frontiers: `tools/freeze_lm_ephemeris_phases.py` requires each of the
   152 native frontiers of the 16 frozen states to equal, in order, an original
-  NEWOPS image of the oracle, then freezes 54 steps in three groups.
+  NEWOPS image of the oracle, then freezes 54 steps in four groups.
 - C64 execution results: `make vice-lm-ephemeris`. The whole routine links to
   about 51 KB of 6502 code, more than one PRG holds beside two images, so
-  three PRGs each link one phase group and keep both images in the RAM under
-  KERNAL ROM (`$01=$35`). In VICE (PAL, stock ROMs): group 1 (entry and the
-  POSITB loop) 12 steps, group 2 (POSITD to the solar angles) 30 steps, group 3
-  (MXV/UNIT/STORE and RVQ) 12 steps, no failures (`lm-ephemeris-results.json`).
+  four PRGs each link one phase group and keep both images in the RAM under
+  KERNAL ROM (`$01=$35`). Every step runs through the control-transfer
+  trampoline: the PRG's interpretive table holds its group's routines, and
+  the trampoline must select the step's own routine from the entry image and
+  stop at the frozen next frontier after exactly one call. In VICE (PAL, stock
+  ROMs): group 1 (entry and the POSITB loop) 12 steps, group 2 (POSITD to the
+  solar angles) 30 steps, group 3 (lunar MXV/UNIT/STORE) 6 steps, group 4
+  (solar MXV/UNIT/STORE and RVQ) 6 steps, no failures
+  (`lm-ephemeris-results.json`).
+
+## Domain
+
+Admitted entries have Z at NEWOPS 06070 with FB and BANKSET at bank 15, LOC at
+LSPOS or LUNVEL, EDOP, NEWJOB, INTBIT15 and MODE zero (with word 7), an
+ordinary VAC area, ordinary 15-bit words, an interrupt latch of 0 or 1, and a
+QPRET equal to one of the actual callers' returns. The oracle runs with no
+interrupt during the routine. The routine creates no job, so with no
+interrupt NEWJOB stays zero throughout, and the native steps do not test it
+again: a job switch requested by an interrupt in mid-routine is outside the
+qualified domain. Separately scheduled overlay modules would have to keep
+that condition or test NEWJOB at each frontier.
 
 ## Limits
 
-- The C64 check runs each phase separately; the whole chain runs on the host.
+- The C64 check runs each phase separately (through the trampoline); the whole
+  chain runs on the host.
+- `lm_ephemeris` returns 0 with the image unchanged for an entry outside the
+  admitted domain, but a step that leaves the qualified primitive contracts
+  after admission returns 0 with the image already changed (no sampled entry
+  does); the routines report that case as `EXEC_OUT_OF_SCOPE`.
   Running it as one program needs overlay ABI 2 modules (the nine phases are
   the module entry points).
 - Validity of the ephemeris polynomials is the original's; no widened claim.
