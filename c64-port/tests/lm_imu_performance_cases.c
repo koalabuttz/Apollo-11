@@ -1,7 +1,5 @@
 /* SPDX-License-Identifier: MIT */
 #include "lm_imu_performance_cases.h"
-#include "lm_interp_steps.h"
-#include "lm_interp_orders.h"
 #define W m->words
 #define NEWOPS 06070u
 #define FIXLOC 0120u
@@ -34,15 +32,6 @@ int ipt_leaves(agc_word z,agc_word fb,agc_word superbank,agc_word loc,agc_word b
  return 1;
 }
 
-/* QPRET as the CALL at LOC (order pair word, CALL operand) stores it. */
-static agc_word call_qpret(agc_word loc,agc_word pair,agc_word operand){
- static apollo_overlay_state t;unsigned i;
- for(i=0;i<2048u;++i)t.words[i]=0;
- t.words[4]=076000u;t.words[3]=02400u;t.words[6]=076005u;t.words[BANKSET]=076005u;t.words[0115]=040000u;
- t.words[FIXLOC]=0401u;t.words[0166]=0405u;t.words[LOC]=loc;t.words[5]=NEWOPS;
- lmi_newops(&t,pair);lmi_misc(&t,operand,02507u);lmi_call(&t);
- return t.words[0401u+052u];
-}
 static void set_banks(apollo_overlay_state *m,agc_word fb,agc_word eb){W[4]=fb;W[3]=eb;W[6]=(agc_word)(fb|(eb>>8));}
 /* Physical word of an EBANK 5 window address (the image is indexed
  * physically: E5 is 02400-02777). */
@@ -106,17 +95,23 @@ void ipt_input(apollo_overlay_state *m,ipt_case *c,uint16_t n){
   * genuine return CADRs. */
  W[5]=NEWOPS;W[LOC]=(agc_word)(02000u+ph%1024u);W[BANKSET]=W[6];W[0115]=040000u;W[023]=0;
  {agc_word genuine[3];
-  genuine[0]=call_qpret(02532u,077624u,076401u);genuine[1]=call_qpret(03030u,077624u,076401u);genuine[2]=call_qpret(02452u,077624u,076420u);
+  genuine[0]=IPT_QPRET_ERTHRVSE_2532;genuine[1]=IPT_QPRET_ERTHRVSE_3030;genuine[2]=IPT_QPRET_EARTHR_2452;
   if(KEY(02414))W[vac+052u]=(v>>2)%4u==3u?(agc_word)(04000u|r15(&seed)):genuine[(v>>2)%2u];
   if(KEY(02423)||KEY(02445)){W[vac+051u]=(v>>2)%4u==3u?(agc_word)(04000u|r15(&seed)):genuine[2];W[vac+052u]=genuine[2];}
  }
 }
 
+#ifndef IPT_UNDO_ADDRESS
+static apollo_overlay_state undo_image;
+#define IPT_UNDO (&undo_image)
+#else
+#define IPT_UNDO ((apollo_overlay_state *)IPT_UNDO_ADDRESS)
+#endif
 unsigned ipt_run(apollo_overlay_state *s,uint16_t n,uint16_t *ie){
- static apollo_overlay_state undo;ipt_case c;lm_ipt_io io;agc_routine_table basic[1],interp[1];
+ ipt_case c;lm_ipt_io io;agc_routine_table basic[1],interp[1];
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;enum exec_status st;
  ipt_input(s,&c,n);
- io.control.superbank=c.superbank;io.control.interrupt_enabled=c.interrupt_enabled;io.hiscalar=c.hiscalar;io.loscalar=c.loscalar;io.undo=&undo;
+ io.control.superbank=c.superbank;io.control.interrupt_enabled=c.interrupt_enabled;io.hiscalar=c.hiscalar;io.loscalar=c.loscalar;io.undo=IPT_UNDO;
  basic[0]=lm_imu_performance_routines;interp[0]=lm_imu_performance_interpretive;
  program.basic=basic;program.basic_count=1;program.interpretive=interp;program.interpretive_count=1;
  program.interpreter_fetch=(uint16_t)(2048u+NEWOPS-04000u);program.loc=LOC;program.bankset=BANKSET;

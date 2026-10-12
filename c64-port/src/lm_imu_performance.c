@@ -118,7 +118,17 @@ static const agc_word B37DATA[036]={06200u,0u,0u,0u,0u,0u,0u,1u,4u,2u,0220u,0777
  0115u,01443u,04133u,02265u,057223u,066451u,05427u,012577u,077567u,044202u,024276u,014066u,023073u,011773u};
 static const agc_word DPPOSMAX[2]={037777u,037777u};
 
-enum {GO=0,STOP=1,REFUSE=2};
+enum {GO=0,STOP=1,REFUSE=2,ABSENT=3,JUMP=4};
+/* C64 diagnostics link the interpretive cases of one part at a time
+ * (IPT_IN(loc), tests/lm_imu_performance_cases.h); a run that reaches a
+ * case left out ends EXEC_UNMAPPED with the image restored. */
+#ifdef IPT_C64_PART
+#include "lm_imu_performance_cases.h"
+#define IN(a) do{if(!IPT_IN(a))return ABSENT;}while(0)
+#else
+#define IN(a) do{}while(0)
+#define IPT_BASIC_IN(a) 1
+#endif
 #define RUN_LIMIT 4000u
 
 /* The fixed operand words ADDRWD names after address formation (n words),
@@ -189,185 +199,185 @@ static int interpretive(apollo_overlay_state *s,lm_ipt_io *io){
  (void)io;
  switch(W[LOC]){
  /* LATAZCHK DLOAD SL2 LATITUDE; STODL DSPTEM1 +1 AZIMUTH; RTB EXIT 1STO2S. */
- case 02021:lmi_newops(s,062545);opnd(s,002403,DLOAD);K(2);lmi_dload_op(s,k);right(s);shorts(s);NEXT;
- case 02023:return stodl(s,015047,002401);
- case 02025:lmi_newops(s,077434);return rtb(s,021614);
+ case 02021:IN(02021);lmi_newops(s,062545);opnd(s,002403,DLOAD);K(2);lmi_dload_op(s,k);right(s);shorts(s);NEXT;
+ case 02023:IN(02023);return stodl(s,015047,002401);
+ case 02025:IN(02025);lmi_newops(s,077434);return rtb(s,021614);
  /* SLOAD RTB DSPTEM1 CDULOGIC; STORE AZIMUTH; SLOAD SR2 DSPTEM1 +1; STORE
   * LATITUDE; COS DCOMP; SL1; STODL WANGI LATITUDE; SIN SL1; STODL WANGO
   * AZIMUTH; PUSH SIN; STORE YNB +2; STODL ZNB +4 (pushdown); COS; STORE
   * YNB +4; DCOMP; POSGMBL STCALL ZNB +2 CALCGA; EXIT. */
- case 02040:lmi_newops(s,047135);if(sload(s,001046))return REFUSE;right(s);return rtb(s,021576);
- case 02043:return store(s,002401);
- case 02044:lmi_newops(s,060535);if(sload(s,001047))return REFUSE;right(s);shorts(s);NEXT;
- case 02046:return store(s,002403);
- case 02047:lmi_newops(s,057546);TRIG(1);right(s);unary(s,COMP,lmi_comp);NEXT;
- case 02050:lmi_newops(s,077752);shorts(s);NEXT;
- case 02051:return stodl(s,016437,002403);
- case 02053:lmi_newops(s,072556);TRIG(0);right(s);shorts(s);NEXT;
- case 02054:return stodl(s,016435,002401);
- case 02056:lmi_newops(s,073406);unary(s,PUSH,lmi_push);right(s);TRIG(0);NEXT;
- case 02057:return store(s,002675);
- case 02060:return stodl(s,016705,077746);
- case 02061:lmi_newops(s,077746);TRIG(1);NEXT;
- case 02062:return store(s,002677);
- case 02063:lmi_newops(s,077676);unary(s,COMP,lmi_comp);NEXT;
- case 02064:lmi_store_code(s,036703);lmi_15bitadr(s,047353,CALLITA);lmi_call(s);lmi_goto(s);return GO;
- case 02066:return exit_(s);
+ case 02040:IN(02040);lmi_newops(s,047135);if(sload(s,001046))return REFUSE;right(s);return rtb(s,021576);
+ case 02043:IN(02043);return store(s,002401);
+ case 02044:IN(02044);lmi_newops(s,060535);if(sload(s,001047))return REFUSE;right(s);shorts(s);NEXT;
+ case 02046:IN(02046);return store(s,002403);
+ case 02047:IN(02047);lmi_newops(s,057546);TRIG(1);right(s);unary(s,COMP,lmi_comp);NEXT;
+ case 02050:IN(02050);lmi_newops(s,077752);shorts(s);NEXT;
+ case 02051:IN(02051);return stodl(s,016437,002403);
+ case 02053:IN(02053);lmi_newops(s,072556);TRIG(0);right(s);shorts(s);NEXT;
+ case 02054:IN(02054);return stodl(s,016435,002401);
+ case 02056:IN(02056);lmi_newops(s,073406);unary(s,PUSH,lmi_push);right(s);TRIG(0);NEXT;
+ case 02057:IN(02057);return store(s,002675);
+ case 02060:IN(02060);return stodl(s,016705,077746);
+ case 02061:IN(02061);lmi_newops(s,077746);TRIG(1);NEXT;
+ case 02062:IN(02062);return store(s,002677);
+ case 02063:IN(02063);lmi_newops(s,077676);unary(s,COMP,lmi_comp);NEXT;
+ case 02064:IN(02064);lmi_store_code(s,036703);lmi_15bitadr(s,047353,CALLITA);lmi_call(s);lmi_goto(s);return GO;
+ case 02066:IN(02066);return exit_(s);
  /* DLOAD DSU DATAPL +6 DATAPL +2; BPL CALL AINGOTN OVERFFIX. */
- case 02211:lmi_newops(s,045345);opnd(s,002501,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,002475,DSU);K(2);lmi_dsu(s,k);NEXT;
- case 02214:lmi_newops(s,045044);if(bplbmn(s,076217))return GO;right(s);return call(s,076275);
+ case 02211:IN(02211);lmi_newops(s,045345);opnd(s,002501,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,002475,DSU);K(2);lmi_dsu(s,k);NEXT;
+ case 02214:IN(02214);lmi_newops(s,045044);if(bplbmn(s,076217))return GO;right(s);return call(s,076275);
  /* AINGOTN PDDL DDV DATAPL +4 (pushdown); DMPR RTB DEC585 SGNAGREE;
   * STORE DSPTEM2; EXIT. */
- case 02217:lmi_newops(s,056325);opnd(s,002477,PDDL);K(2);lmi_pddl_op(s,k);right(s);opnd(s,047075,DDV);lmi_ddv(s,0);NEXT;
- case 02221:lmi_newops(s,047075);opnd(s,037056,DMPR);K(2);lmi_dmpr(s,k);right(s);return rtb(s,021612);
- case 02224:return store(s,001051);
- case 02225:return exit_(s);
+ case 02217:IN(02217);lmi_newops(s,056325);opnd(s,002477,PDDL);K(2);lmi_pddl_op(s,k);right(s);opnd(s,047075,DDV);lmi_ddv(s,0);NEXT;
+ case 02221:IN(02221);lmi_newops(s,047075);opnd(s,037056,DMPR);K(2);lmi_dmpr(s,k);right(s);return rtb(s,021612);
+ case 02224:IN(02224);return store(s,001051);
+ case 02225:IN(02225);return exit_(s);
  /* OVERFFIX DAD DAD DPPOSMAX ONEDPP; RVQ. */
- case 02275:lmi_newops(s,043215);opnd(s,006530,DAD);K(2);lmi_dad(s,k);right(s);opnd(s,037064,DAD);K(2);lmi_dad(s,k);NEXT;
- case 02300:lmi_newops(s,077616);return rvq(s);
+ case 02275:IN(02275);lmi_newops(s,043215);opnd(s,006530,DAD);K(2);lmi_dad(s,k);right(s);opnd(s,037064,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02300:IN(02300);lmi_newops(s,077616);return rvq(s);
  /* ERTHRVSE DLOAD PDDL SCHZEROS LATITUDE; COS DCOMP; PDDL SIN LATITUDE;
   * VDEF VXSC OMEG/MS; STORE ERVECTOR; RTB LOADTIME; STOVL TMARK SCHZEROS;
   * STORE ERCOMP; RVQ. */
- case 02401:lmi_newops(s,065345);opnd(s,037057,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,002403,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
- case 02404:lmi_newops(s,057546);TRIG(1);right(s);unary(s,COMP,lmi_comp);NEXT;
- case 02405:lmi_newops(s,073525);opnd(s,002403,PDDL);K(2);lmi_pddl_op(s,k);right(s);TRIG(0);NEXT;
- case 02407:lmi_newops(s,074266);unary(s,VDEF,lmi_vdef);right(s);opnd(s,036001,VXSC);K(2);lmi_vxsc(s,k);NEXT;
- case 02411:return store(s,002405);
- case 02412:lmi_newops(s,077634);return rtb(s,021573);
- case 02414:return stovl(s,026433,037057);
- case 02416:return store(s,002564);
- case 02417:lmi_newops(s,077616);return rvq(s);
+ case 02401:IN(02401);lmi_newops(s,065345);opnd(s,037057,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,002403,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
+ case 02404:IN(02404);lmi_newops(s,057546);TRIG(1);right(s);unary(s,COMP,lmi_comp);NEXT;
+ case 02405:IN(02405);lmi_newops(s,073525);opnd(s,002403,PDDL);K(2);lmi_pddl_op(s,k);right(s);TRIG(0);NEXT;
+ case 02407:IN(02407);lmi_newops(s,074266);unary(s,VDEF,lmi_vdef);right(s);opnd(s,036001,VXSC);K(2);lmi_vxsc(s,k);NEXT;
+ case 02411:IN(02411);return store(s,002405);
+ case 02412:IN(02412);lmi_newops(s,077634);return rtb(s,021573);
+ case 02414:IN(02414);return stovl(s,026433,037057);
+ case 02416:IN(02416);return store(s,002564);
+ case 02417:IN(02417);lmi_newops(s,077616);return rvq(s);
  /* EARTHR ITA RTB S2 LOADTIME; STORE TEMPTIME; DSU BPL TMARK ERTHR; CALL
   * OVERFFIX; ERTHR SL VXSC 9D ERVECTOR; MXV VAD XSM ERCOMP; STODL ERCOMP
   * TEMPTIME; STORE TMARK; AXT,1 RTB ECADR ERCOMP PULSEIMU; GOTO S2. */
- case 02420:lmi_newops(s,047020);misc(s,000051,CALLITA);lmi_ita(s);right(s);return rtb(s,021573);
- case 02423:return store(s,002431);
- case 02424:lmi_newops(s,051025);opnd(s,002433,DSU);K(2);lmi_dsu(s,k);right(s);if(bplbmn(s,076431))return GO;NEXT;
- case 02427:lmi_newops(s,077624);return call(s,076275);
- case 02431:lmi_newops(s,074261);opnd(s,020212,GSHIFT);lmi_gshift(s);right(s);opnd(s,002405,VXSC);K(2);lmi_vxsc(s,k);NEXT;
- case 02434:lmi_newops(s,053321);opnd(s,002643,MXV);K(18);lmi_mxv(s,k);right(s);opnd(s,002564,VAD);K(6);lmi_vad(s,k);NEXT;
- case 02437:return stodl(s,016564,002431);
- case 02441:return store(s,002433);
- case 02442:lmi_newops(s,047170);misc(s,002563,AXT);lmi_axt(s);right(s);return rtb(s,021705);
- case 02445:lmi_newops(s,077650);misc(s,000051,BZEGOTO);(void)ai_ccs(s,020);lmi_goto_any(s);return GO;
+ case 02420:IN(02420);lmi_newops(s,047020);misc(s,000051,CALLITA);lmi_ita(s);right(s);return rtb(s,021573);
+ case 02423:IN(02423);return store(s,002431);
+ case 02424:IN(02424);lmi_newops(s,051025);opnd(s,002433,DSU);K(2);lmi_dsu(s,k);right(s);if(bplbmn(s,076431))return GO;NEXT;
+ case 02427:IN(02427);lmi_newops(s,077624);return call(s,076275);
+ case 02431:IN(02431);lmi_newops(s,074261);opnd(s,020212,GSHIFT);lmi_gshift(s);right(s);opnd(s,002405,VXSC);K(2);lmi_vxsc(s,k);NEXT;
+ case 02434:IN(02434);lmi_newops(s,053321);opnd(s,002643,MXV);K(18);lmi_mxv(s,k);right(s);opnd(s,002564,VAD);K(6);lmi_vad(s,k);NEXT;
+ case 02437:IN(02437);return stodl(s,016564,002431);
+ case 02441:IN(02441);return store(s,002433);
+ case 02442:IN(02442);lmi_newops(s,047170);misc(s,002563,AXT);lmi_axt(s);right(s);return rtb(s,021705);
+ case 02445:IN(02445);lmi_newops(s,077650);misc(s,000051,BZEGOTO);(void)ai_ccs(s,020);lmi_goto_any(s);return GO;
  /* EARTHR* (after its TC INTPRET) CALL EARTHR; EXIT. */
- case 02452:lmi_newops(s,077624);return call(s,076420);
- case 02454:return exit_(s);
+ case 02452:IN(02452);lmi_newops(s,077624);return call(s,076420);
+ case 02454:IN(02454);return exit_(s);
  /* ESTIMS SLOAD SCHZEROS; STOVL GCOMPSW -1 INTVAL +2; STOVL ALX1S
   * SCHZEROS; STORE DELVX; STORE GCOMP; SLOAD TORQNDX; DCOMP BMN VERTSKIP;
   * CALL ERTHRVSE; VERTSKIP EXIT. */
- case 02516:lmi_newops(s,077735);if(sload(s,037057))return REFUSE;NEXT;
- case 02520:return stovl(s,025477,037070);
- case 02522:return stovl(s,026445,037057);
- case 02524:return store(s,000325);
- case 02525:return store(s,001472);
- case 02526:lmi_newops(s,077735);if(sload(s,002441))return REFUSE;NEXT;
- case 02530:lmi_newops(s,050076);unary(s,COMP,lmi_comp);right(s);if(bplbmn(s,076534))return GO;NEXT;
- case 02532:lmi_newops(s,077624);return call(s,076401);
- case 02534:return exit_(s);
+ case 02516:IN(02516);lmi_newops(s,077735);if(sload(s,037057))return REFUSE;NEXT;
+ case 02520:IN(02520);return stovl(s,025477,037070);
+ case 02522:IN(02522);return stovl(s,026445,037057);
+ case 02524:IN(02524);return store(s,000325);
+ case 02525:IN(02525);return store(s,001472);
+ case 02526:IN(02526);lmi_newops(s,077735);if(sload(s,002441))return REFUSE;NEXT;
+ case 02530:IN(02530);lmi_newops(s,050076);unary(s,COMP,lmi_comp);right(s);if(bplbmn(s,076534))return GO;NEXT;
+ case 02532:IN(02532);lmi_newops(s,077624);return call(s,076401);
+ case 02534:IN(02534);return exit_(s);
  /* NORMLOP DLOAD INTVAL; STOVL S1 DELVX; VXM VSL1 XSM; DLOAD DCOMP MPAC
   * +3; STODL DPIPAY MPAC +5; STORE DPIPAZ; SETPD AXT,1 0 8D; SLOAD DCOMP
   * GEOCOMPS; BMN PERFERAS. */
- case 02605:lmi_newops(s,077745);opnd(s,037066,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
- case 02607:return stovl(s,024051,000325);
- case 02611:lmi_newops(s,076505);opnd(s,002643,VXM);K(18);lmi_vxm(s,k);right(s);shorts(s);NEXT;
- case 02613:lmi_newops(s,057545);opnd(s,000160,DLOAD);K(2);lmi_dload_op(s,k);right(s);unary(s,COMP,lmi_comp);NEXT;
- case 02615:return stodl(s,016523,000162);
- case 02617:return store(s,002527);
- case 02620:lmi_newops(s,076001);lmi_direct(s,000001,SETPD);lmi_setpd(s);lmi_noibnksw_right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
- case 02623:lmi_newops(s,057535);if(sload(s,002563))return REFUSE;right(s);unary(s,COMP,lmi_comp);NEXT;
- case 02625:lmi_newops(s,077640);if(bplbmn(s,076772))return GO;NEXT;
+ case 02605:IN(02605);lmi_newops(s,077745);opnd(s,037066,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
+ case 02607:IN(02607);return stovl(s,024051,000325);
+ case 02611:IN(02611);lmi_newops(s,076505);opnd(s,002643,VXM);K(18);lmi_vxm(s,k);right(s);shorts(s);NEXT;
+ case 02613:IN(02613);lmi_newops(s,057545);opnd(s,000160,DLOAD);K(2);lmi_dload_op(s,k);right(s);unary(s,COMP,lmi_comp);NEXT;
+ case 02615:IN(02615);return stodl(s,016523,000162);
+ case 02617:IN(02617);return store(s,002527);
+ case 02620:IN(02620);lmi_newops(s,076001);lmi_direct(s,000001,SETPD);lmi_setpd(s);lmi_noibnksw_right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
+ case 02623:IN(02623);lmi_newops(s,057535);if(sload(s,002563))return REFUSE;right(s);unary(s,COMP,lmi_comp);NEXT;
+ case 02625:IN(02625);lmi_newops(s,077640);if(bplbmn(s,076772))return GO;NEXT;
  /* ALCGKK SLOAD BMN ALTIMS ALFLT3; ALKCG AXT,2 LXA,1 12D ALX1S; ALKCG2
   * DLOAD* INCR,1 ALFDK +144D,1 DEC -2; STORE ALDK +10D,2; TIX,2 SXA,1
   * ALKCG2 ALX1S. */
- case 02627:lmi_newops(s,050135);if(sload(s,002532))return REFUSE;right(s);if(bplbmn(s,076644))return GO;NEXT;
- case 02632:lmi_newops(s,072174);misc(s,000014,AXT);lmi_axt(s);right(s);misc(s,002444,LXA);lmi_lxa(s);NEXT;
- case 02635:lmi_newops(s,062143);lmi_indexed(s,002243,DLOAD);K(2);lmi_dload_op(s,k);right(s);misc(s,077775,INCR);lmi_incr(s);NEXT;
- case 02640:return store(s,012545);
- case 02641:lmi_newops(s,066104);if(tix(s,076635))return GO;right(s);misc(s,002444,SXA);lmi_sxa(s);NEXT;
+ case 02627:IN(02627);lmi_newops(s,050135);if(sload(s,002532))return REFUSE;right(s);if(bplbmn(s,076644))return GO;NEXT;
+ case 02632:IN(02632);lmi_newops(s,072174);misc(s,000014,AXT);lmi_axt(s);right(s);misc(s,002444,LXA);lmi_lxa(s);NEXT;
+ case 02635:IN(02635);lmi_newops(s,062143);lmi_indexed(s,002243,DLOAD);K(2);lmi_dload_op(s,k);right(s);misc(s,077775,INCR);lmi_incr(s);NEXT;
+ case 02640:IN(02640);return store(s,012545);
+ case 02641:IN(02641);lmi_newops(s,066104);if(tix(s,076635))return GO;right(s);misc(s,002444,SXA);lmi_sxa(s);NEXT;
  /* ALFLT3 AXT,1 8D; DELMLP DLOAD* DMP DPIPAY +8D,1 PIPASC; SLR BDSU* 9D
   * INTY +8D,1; STORE INTY +8D,1; PDDL DMP* VELSC VLAUN +8D,1; SL2R; DSU
   * STADR (pushdown); STORE DELM +8D,1; STORE DELM +10D,1; TIX,1 AXT,2
   * DELMLP 4. */
- case 02644:lmi_newops(s,077770);misc(s,000010,AXT);lmi_axt(s);NEXT;
- case 02646:lmi_newops(s,041343);lmi_indexed(s,002533,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037100,DMP);K(2);lmi_dmp(s,k);NEXT;
- case 02651:lmi_newops(s,043661);opnd(s,021212,GSHIFT);lmi_gshift(s);right(s);lmi_indexed(s,002501,BDSU);K(2);lmi_bdsu(s,k);NEXT;
- case 02654:return store(s,006501);
- case 02655:lmi_newops(s,040725);opnd(s,037102,PDDL);K(2);lmi_pddl_op(s,k);right(s);lmi_indexed(s,002521,DMP);K(2);lmi_dmp(s,k);NEXT;
- case 02660:lmi_newops(s,077732);shorts(s);NEXT;
- case 02661:lmi_newops(s,045425);opnd(s,071216,DSU);K(2);lmi_dsu(s,k);right(s);lmi_unary(s,STADR);lmi_stadr(s,071216);NEXT;
- case 02663:return store(s,006563);
- case 02664:lmi_newops(s,077100);if(tix(s,076646))return GO;right(s);misc(s,000004,AXT);lmi_axt(s);NEXT;
+ case 02644:IN(02644);lmi_newops(s,077770);misc(s,000010,AXT);lmi_axt(s);NEXT;
+ case 02646:IN(02646);lmi_newops(s,041343);lmi_indexed(s,002533,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037100,DMP);K(2);lmi_dmp(s,k);NEXT;
+ case 02651:IN(02651);lmi_newops(s,043661);opnd(s,021212,GSHIFT);lmi_gshift(s);right(s);lmi_indexed(s,002501,BDSU);K(2);lmi_bdsu(s,k);NEXT;
+ case 02654:IN(02654);return store(s,006501);
+ case 02655:IN(02655);lmi_newops(s,040725);opnd(s,037102,PDDL);K(2);lmi_pddl_op(s,k);right(s);lmi_indexed(s,002521,DMP);K(2);lmi_dmp(s,k);NEXT;
+ case 02660:IN(02660);lmi_newops(s,077732);shorts(s);NEXT;
+ case 02661:IN(02661);lmi_newops(s,045425);opnd(s,071216,DSU);K(2);lmi_dsu(s,k);right(s);lmi_unary(s,STADR);lmi_stadr(s,071216);NEXT;
+ case 02663:IN(02663);return store(s,006563);
+ case 02664:IN(02664);lmi_newops(s,077100);if(tix(s,076646))return GO;right(s);misc(s,000004,AXT);lmi_axt(s);NEXT;
  /* ALILP DLOAD* DMPR* ALK +4,2 ALDK +4,2; STORE ALK +4,2; TIX,2 AXT,2
   * ALILP 8D. */
- case 02667:lmi_newops(s,056743);lmi_indexed(s,075324,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075240,DMPR);K(2);lmi_dmpr(s,k);NEXT;
- case 02672:return store(s,012453);
- case 02673:lmi_newops(s,077104);if(tix(s,076667))return GO;right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
+ case 02667:IN(02667);lmi_newops(s,056743);lmi_indexed(s,075324,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075240,DMPR);K(2);lmi_dmpr(s,k);NEXT;
+ case 02672:IN(02672);return store(s,012453);
+ case 02673:IN(02673);lmi_newops(s,077104);if(tix(s,076667))return GO;right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
  /* ALKLP LXC,1 SXA,1 CMPX1 CMPX1; DLOAD* DMPR* ALK +1,1 DELM +8D,2; DAD*
   * INTY +8D,2; STORE INTY +8D,2; DLOAD* DAD* ALK +12D,2 ALDK +12D,2; STORE
   * ALK +12D,2; DMPR* DAD* DELM +8D,2 INTY +16D,2; STORE INTY +16D,2;
   * DLOAD* DMP* ALSK +1,1 DELM +8D,2; SL1R DAD* VLAUN +8D,2; STORE VLAUN
   * +8D,2; TIX,2 AXT,1 ALKLP 8D. */
- case 02676:lmi_newops(s,066140);misc(s,002445,LXC);lmi_lxc(s);right(s);misc(s,002445,SXA);lmi_sxa(s);NEXT;
- case 02701:lmi_newops(s,056743);lmi_indexed(s,002450,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);NEXT;
- case 02704:lmi_newops(s,077613);lmi_indexed(s,075276,DAD);K(2);lmi_dad(s,k);NEXT;
- case 02706:return store(s,012501);
- case 02707:lmi_newops(s,042743);lmi_indexed(s,075314,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075230,DAD);K(2);lmi_dad(s,k);NEXT;
- case 02712:return store(s,012463);
- case 02713:lmi_newops(s,042673);lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);right(s);lmi_indexed(s,075266,DAD);K(2);lmi_dad(s,k);NEXT;
- case 02716:return store(s,012511);
- case 02717:lmi_newops(s,040743);lmi_indexed(s,037105,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075216,DMP);K(2);lmi_dmp(s,k);NEXT;
- case 02722:lmi_newops(s,042772);shorts(s);right(s);lmi_indexed(s,075256,DAD);K(2);lmi_dad(s,k);NEXT;
- case 02724:return store(s,012521);
- case 02725:lmi_newops(s,076104);if(tix(s,076676))return GO;right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
+ case 02676:IN(02676);lmi_newops(s,066140);misc(s,002445,LXC);lmi_lxc(s);right(s);misc(s,002445,SXA);lmi_sxa(s);NEXT;
+ case 02701:IN(02701);lmi_newops(s,056743);lmi_indexed(s,002450,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);NEXT;
+ case 02704:IN(02704);lmi_newops(s,077613);lmi_indexed(s,075276,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02706:IN(02706);return store(s,012501);
+ case 02707:IN(02707);lmi_newops(s,042743);lmi_indexed(s,075314,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075230,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02712:IN(02712);return store(s,012463);
+ case 02713:IN(02713);lmi_newops(s,042673);lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);right(s);lmi_indexed(s,075266,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02716:IN(02716);return store(s,012511);
+ case 02717:IN(02717);lmi_newops(s,040743);lmi_indexed(s,037105,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075216,DMP);K(2);lmi_dmp(s,k);NEXT;
+ case 02722:IN(02722);lmi_newops(s,042772);shorts(s);right(s);lmi_indexed(s,075256,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02724:IN(02724);return store(s,012521);
+ case 02725:IN(02725);lmi_newops(s,076104);if(tix(s,076676))return GO;right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
  /* LOOSE DLOAD* PDDL* ACCWD +8D,1 VLAUN +8D,1; PDDL* VDEF POSNV +8D,1;
   * MXV VSL1 TRANSM1; DLOAD MPAC; STORE POSNV +8D,1; DLOAD MPAC +3; STORE
   * VLAUN +8D,1; DLOAD MPAC +5; STORE ACCWD +8D,1; TIX,1 LOOSE; AXT,2 AXT,1
   * 6 2. */
- case 02730:lmi_newops(s,064743);lmi_indexed(s,002523,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,002521,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
- case 02733:lmi_newops(s,055523);lmi_indexed(s,002531,PDDL);K(2);lmi_pddl_op(s,k);right(s);unary(s,VDEF,lmi_vdef);NEXT;
- case 02735:lmi_newops(s,076521);opnd(s,002001,MXV);K(18);lmi_mxv(s,k);right(s);shorts(s);NEXT;
- case 02737:lmi_newops(s,077745);opnd(s,000155,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
- case 02741:return store(s,006531);
- case 02742:lmi_newops(s,077745);opnd(s,000160,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
- case 02744:return store(s,006521);
- case 02745:lmi_newops(s,077745);opnd(s,000162,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
- case 02747:return store(s,006523);
- case 02750:lmi_newops(s,077700);if(tix(s,076730))return GO;NEXT;
- case 02752:lmi_newops(s,076174);misc(s,000006,AXT);lmi_axt(s);right(s);misc(s,000002,AXT);lmi_axt(s);NEXT;
+ case 02730:IN(02730);lmi_newops(s,064743);lmi_indexed(s,002523,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,002521,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
+ case 02733:IN(02733);lmi_newops(s,055523);lmi_indexed(s,002531,PDDL);K(2);lmi_pddl_op(s,k);right(s);unary(s,VDEF,lmi_vdef);NEXT;
+ case 02735:IN(02735);lmi_newops(s,076521);opnd(s,002001,MXV);K(18);lmi_mxv(s,k);right(s);shorts(s);NEXT;
+ case 02737:IN(02737);lmi_newops(s,077745);opnd(s,000155,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
+ case 02741:IN(02741);return store(s,006531);
+ case 02742:IN(02742);lmi_newops(s,077745);opnd(s,000160,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
+ case 02744:IN(02744);return store(s,006521);
+ case 02745:IN(02745);lmi_newops(s,077745);opnd(s,000162,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
+ case 02747:IN(02747);return store(s,006523);
+ case 02750:IN(02750);lmi_newops(s,077700);if(tix(s,076730))return GO;NEXT;
+ case 02752:IN(02752);lmi_newops(s,076174);misc(s,000006,AXT);lmi_axt(s);right(s);misc(s,000002,AXT);lmi_axt(s);NEXT;
  /* BOOP DLOAD* DMPR ANGX +2,1 GEORGEJ; SR2R; PUSH SIN; SL3R XAD,1 X1;
   * STORE 16D,2; DLOAD (pushdown); COS; STORE 22D,2; TIX,2 BOOP;
   * PERFERAS EXIT. */
- case 02755:lmi_newops(s,057343);lmi_indexed(s,002503,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037110,DMPR);K(2);lmi_dmpr(s,k);NEXT;
- case 02760:lmi_newops(s,077722);shorts(s);NEXT;
- case 02761:lmi_newops(s,073406);unary(s,PUSH,lmi_push);right(s);TRIG(0);NEXT;
- case 02762:lmi_newops(s,056072);shorts(s);right(s);misc(s,000046,XAD);lmi_xad(s);NEXT;
- case 02764:return store(s,010021);
- case 02765:lmi_newops(s,077745);opnd(s,077746,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
- case 02766:lmi_newops(s,077746);TRIG(1);NEXT;
- case 02767:return store(s,010027);
- case 02770:lmi_newops(s,077704);if(tix(s,076755))return GO;NEXT;
- case 02772:return exit_(s);
+ case 02755:IN(02755);lmi_newops(s,057343);lmi_indexed(s,002503,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037110,DMPR);K(2);lmi_dmpr(s,k);NEXT;
+ case 02760:IN(02760);lmi_newops(s,077722);shorts(s);NEXT;
+ case 02761:IN(02761);lmi_newops(s,073406);unary(s,PUSH,lmi_push);right(s);TRIG(0);NEXT;
+ case 02762:IN(02762);lmi_newops(s,056072);shorts(s);right(s);misc(s,000046,XAD);lmi_xad(s);NEXT;
+ case 02764:IN(02764);return store(s,010021);
+ case 02765:IN(02765);lmi_newops(s,077745);opnd(s,077746,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
+ case 02766:IN(02766);lmi_newops(s,077746);TRIG(1);NEXT;
+ case 02767:IN(02767);return store(s,010027);
+ case 02770:IN(02770);lmi_newops(s,077704);if(tix(s,076755))return GO;NEXT;
+ case 02772:IN(02772);return exit_(s);
  /* SETUPER1 DLOAD PDDL ANGZ ANGY; PDDL VDEF ANGX; VCOMP VXSC GEORGEJ; MXV
   * VSR1 XSM; STORE OGC; EXIT. */
- case 03006:lmi_newops(s,065345);opnd(s,002473,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,002477,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
- case 03011:lmi_newops(s,055525);opnd(s,002501,PDDL);K(2);lmi_pddl_op(s,k);right(s);unary(s,VDEF,lmi_vdef);NEXT;
- case 03013:lmi_newops(s,074276);unary(s,COMP,lmi_comp);right(s);opnd(s,037110,VXSC);K(2);lmi_vxsc(s,k);NEXT;
- case 03015:lmi_newops(s,074521);opnd(s,002643,MXV);K(18);lmi_mxv(s,k);right(s);shorts(s);NEXT;
- case 03017:return store(s,002740);
- case 03020:return exit_(s);
+ case 03006:IN(03006);lmi_newops(s,065345);opnd(s,002473,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,002477,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
+ case 03011:IN(03011);lmi_newops(s,055525);opnd(s,002501,PDDL);K(2);lmi_pddl_op(s,k);right(s);unary(s,VDEF,lmi_vdef);NEXT;
+ case 03013:IN(03013);lmi_newops(s,074276);unary(s,COMP,lmi_comp);right(s);opnd(s,037110,VXSC);K(2);lmi_vxsc(s,k);NEXT;
+ case 03015:IN(03015);lmi_newops(s,074521);opnd(s,002643,MXV);K(18);lmi_mxv(s,k);right(s);shorts(s);NEXT;
+ case 03017:IN(03017);return store(s,002740);
+ case 03020:IN(03020);return exit_(s);
  /* GEOSTRT4 (after its TC INTPRET) CALL ERTHRVSE; EXIT. */
- case 03030:lmi_newops(s,077624);return call(s,076401);
- case 03032:return exit_(s);
+ case 03030:IN(03030);lmi_newops(s,077624);return call(s,076401);
+ case 03032:IN(03032);return exit_(s);
  default:return REFUSE;
  }
 }
 
 /* ---- Basic helpers ------------------------------------------------------ */
-static int out(apollo_overlay_state *s,agc_word q,agc_word z){ai_tc(s,q);W[5]=z;return STOP;}
+static __attribute__((unused)) int out(apollo_overlay_state *s,agc_word q,agc_word z){ai_tc(s,q);W[5]=z;return STOP;}
 /* INDEX K: the index added to an erasable address a, refused when the sum
  * leaves 0..01777 (the instruction would change). -0 indexes as +0. */
-static int ix(const apollo_overlay_state *s,unsigned k,unsigned a,unsigned *ea){
+static __attribute__((unused)) int ix(const apollo_overlay_state *s,unsigned k,unsigned a,unsigned *ea){
  agc_word v=ai_word(s,k);if(v==077777u)v=0;
  if(v>01777u-a)return 0;
  *ea=a+v;return 1;
@@ -375,7 +385,7 @@ static int ix(const apollo_overlay_state *s,unsigned k,unsigned a,unsigned *ea){
 #define IX(k,a) do{if(!ix(s,(k),(a),&ea))return REFUSE;}while(0)
 /* TC to an erasable word E that holds a TC to fixed memory: Q = E +1 and
  * Z = that address. TC Q runs the word Q held before the TC (Q ends at 3). */
-static int tc_erasable(apollo_overlay_state *s,unsigned e){
+static __attribute__((unused)) int tc_erasable(apollo_overlay_state *s,unsigned e){
  agc_word v=e==Q_?W[Q_]:ai_word(s,e);
  if(v<02000u||v>07777u)return REFUSE;
  /* A TC into FINETIME, SWCALL or the interpreter: no caller of the file
@@ -383,21 +393,34 @@ static int tc_erasable(apollo_overlay_state *s,unsigned e){
  if((v>=04102u&&v<=04123u)||(v>=04621u&&v<=04630u)||(v>=06037u&&v<=07707u))return REFUSE;
  ai_tc(s,(agc_word)(e+1u));W[5]=v;return GO;
 }
-static void intpret(apollo_overlay_state *s,lm_ipt_io *io,agc_word ret){ai_tc(s,ret);W[5]=06037;lmi_intpret(s,&io->control);}
-static void read_ch(apollo_overlay_state *s,agc_word v){ai_caf(s,v);}
+static __attribute__((unused)) void intpret(apollo_overlay_state *s,lm_ipt_io *io,agc_word ret){ai_tc(s,ret);W[5]=06037;lmi_intpret(s,&io->control);}
+static __attribute__((unused)) void read_ch(apollo_overlay_state *s,agc_word v){ai_caf(s,v);}
 /* A case label (and goto label) at each instruction address; straight-line
  * code falls through from one instruction to the next, as the source does. */
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#ifndef IPT_C64_PART
 #define AT(a) case a: L##a: __attribute__((unused))
 #define GOTO(a) goto L##a
+#else
+/* A C64 part links only its basic blocks (IPT_BASIC_IN), so a jump goes
+ * back through the dispatch in run() with Z set: the same next instruction. */
+#define AT(a) case a:
+#define GOTO(a) do{W[5]=(a);return JUMP;}while(0)
+#endif
 #define TC(r,a) do{ai_tc(s,(r));GOTO(a);}while(0)
 
 /* Basic code at Z (bank 37, or FINETIME in fixed-fixed). */
 static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  unsigned ea;uint8_t c;
+ (void)ea;(void)c;(void)io;
  switch(W[5]){
+#if IPT_BASIC_IN(02002u)
  /* REDO TC NEWMODEX (MM 07). */
  AT(02002);return out(s,02003,X_NEWMODEX);
+#else
+ case 02002:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02004u)
  /* GEOIMUTT TC IMUZERR; IMUBACK zero NDXCTR, TORQNDX, OVFLOWCK; NBPOSPL
   * zero XNB with ZEROING; HALF to XNB; GUESS TC INTPRET. */
  AT(02004);TC(02005,02325);
@@ -413,6 +436,11 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02016);ai_caf(s,K_HALF);
  AT(02017);(void)ai_ts(s,XNB);
  AT(02020);intpret(s,io,02021);return GO;
+#else
+ case 02004:case 02005:case 02006:case 02007:case 02010:case 02011:case 02012:case 02013:case 02014:
+ case 02015:case 02016:case 02017:case 02020:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02027u)
  /* After 1STO2S: XCH MPAC; TS DSPTEM1; CAF VN0641; TC BANKCALL GOFLASH;
   * TC ENDTEST1 / TC +2 / TC -5; TC INTPRET. */
  AT(02027);ai_xch(s,MPAC);
@@ -423,6 +451,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02035);TC(02036,02037);
  AT(02036);TC(02037,02031);
  AT(02037);intpret(s,io,02040);return GO;
+#else
+ case 02027:case 02030:case 02031:case 02032:case 02034:case 02035:case 02036:case 02037:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02067u)
  /* After CALCGA's IMUCOARS: gimbal lock test, DOWNFLAG GLOKFAIL. */
  AT(02067);return out(s,02070,X_BANKCALL);
  AT(02071);ai_caf(s,K_BIT14);
@@ -431,6 +463,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02075);ai_incr(s,NDXCTR);
  AT(02076);return out(s,02077,X_DOWNFLAG);
  AT(02100);TC(02101,02315);
+#else
+ case 02067:case 02071:case 02072:case 02073:case 02075:case 02076:case 02100:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02101u)
  /* CCS NDXCTR: TC PIPACHK / TC FINIMUDD / EXTEND DCA PERFDLAY / the DCA
   * word unextended (CA PERFDLAY +1); TC LONGCALL 2CADR GOESTIMS. */
  AT(02101);c=ai_ccs(s,NDXCTR);
@@ -445,6 +481,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02113);ai_caf(s,K_ESTICADR);
  AT(02114);return out(s,02115,X_JOBWAKE);
  AT(02115);return out(s,02116,X_TASKOVER);
+#else
+ case 02101:case 02102:case 02103:case 02104:case 02111:case 02112:case 02113:case 02114:case 02115:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02117u)
  /* TORQUE. */
  AT(02117);ai_caf(s,K_ZERO);
  AT(02120);(void)ai_ts(s,DSPTEM2);
@@ -452,6 +492,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02122);(void)ai_ts(s,DSPTEM2+1u);
  AT(02123);IX(POSITON,SOUTHDR-1u);(void)ai_ts(s,ea);
  AT(02125);TC(02126,02457);
+#else
+ case 02117:case 02120:case 02121:case 02122:case 02123:case 02125:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02126u)
  /* PIPACHK INDEX NDXCTR; TC +1 (TC 02130 + NDXCTR). */
  AT(02126);{agc_word v=ai_word(s,NDXCTR);if(v==077777u)v=0;if(v>03777u-02130u)return REFUSE;ai_tc(s,02130);W[5]=(agc_word)(02130u+v);return GO;}
  AT(02130);TC(02131,02447);
@@ -469,6 +513,11 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02145);ai_caf(s,K_TWO);
  AT(02146);return out(s,02147,X_TWIDDLE);
  AT(02150);return out(s,02151,X_ENDOFJOB);
+#else
+ case 02126:case 02130:case 02131:case 02132:case 02133:case 02134:case 02135:case 02136:case 02137:
+ case 02140:case 02142:case 02143:case 02144:case 02145:case 02146:case 02150:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02151u)
  /* PIPATASK. */
  AT(02151);ai_dim(s,LENGTHOT);
  AT(02153);ai_ca(s,LENGTHOT);
@@ -478,6 +527,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02161);ai_caf(s,K_PRIO20);
  AT(02162);return out(s,02163,X_FINDVAC);
  AT(02165);return out(s,02166,X_TASKOVER);
+#else
+ case 02151:case 02153:case 02154:case 02156:case 02157:case 02161:case 02162:case 02165:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02166u)
  /* PIPJOBB INDEX NDXCTR; TC +1. */
  AT(02166);{agc_word v=ai_word(s,NDXCTR);if(v==077777u)v=0;if(v>03777u-02170u)return REFUSE;ai_tc(s,02170);W[5]=(agc_word)(02170u+v);return GO;}
  AT(02170);TC(02171,02447);
@@ -498,6 +551,11 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02205);ai_dcs(s,DATAPL);
  AT(02207);ai_das(s,DATAPL+4u);
  AT(02210);intpret(s,io,02211);return GO;
+#else
+ case 02166:case 02170:case 02171:case 02172:case 02174:case 02175:case 02176:case 02177:case 02200:
+ case 02201:case 02202:case 02203:case 02204:case 02205:case 02207:case 02210:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02226u)
  /* After SGNAGREE's EXIT: CCS NDXCTR; TC COAALIGN / TC SHOW / VERTDRFT. */
  AT(02226);c=ai_ccs(s,NDXCTR);
   if(c==1u)GOTO(02230);
@@ -538,11 +596,22 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02265);ai_caf(s,K_ZERO);
  AT(02266);(void)ai_ts(s,DSPTEM2);
  AT(02267);TC(02270,02457);
+#else
+ case 02226:case 02227:case 02230:case 02231:case 02232:case 02233:case 02235:case 02236:case 02237:
+ case 02240:case 02241:case 02242:case 02243:case 02244:case 02245:case 02246:case 02247:case 02250:
+ case 02251:case 02252:case 02253:case 02254:case 02255:case 02256:case 02257:case 02260:case 02261:
+ case 02262:case 02263:case 02264:case 02265:case 02266:case 02267:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02270u)
  /* ENDTEST1 DOWNFLAG IMUSE; CS ZERO; TC NEWMODEA; TC ENDEXT. */
  AT(02270);return out(s,02271,X_DOWNFLAG);
  AT(02272);ai_csf(s,K_ZERO);
  AT(02273);return out(s,02274,X_NEWMODEA);
  AT(02274);return out(s,02275,X_ENDEXT);
+#else
+ case 02270:case 02272:case 02273:case 02274:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02301u)
  /* COAALIGN, ALIGNCOA, IMUSLLLG, FINIMUDD, IMUZERR. */
  AT(02301);ai_qxch(s,ZERONDX);
  AT(02303);ai_caf(s,K_ZERO);
@@ -561,6 +630,11 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02325);ai_qxch(s,ZERONDX);
  AT(02327);return out(s,02330,X_BANKCALL);
  AT(02331);TC(02332,02311);
+#else
+ case 02301:case 02303:case 02304:case 02305:case 02306:case 02307:case 02311:case 02313:case 02314:
+ case 02315:case 02317:case 02320:case 02322:case 02324:case 02325:case 02327:case 02331:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02332u)
  /* CHECKG: catch a PIPA pulse. CHECKG1 spins while PIPAX is unchanged and
   * no job is waiting, which only an interrupt ends. */
  AT(02332);ai_qxch(s,QPLACE);
@@ -588,6 +662,12 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02363);IX(RESULTCT,DATAPL+2u);ai_lxch(s,ea);
  AT(02365);io->control.interrupt_enabled=1;
  AT(02366);return tc_erasable(s,QPLACE);
+#else
+ case 02332:case 02334:case 02335:case 02336:case 02337:case 02341:case 02342:case 02343:case 02345:
+ case 02346:case 02347:case 02351:case 02352:case 02354:case 02356:case 02360:case 02361:case 02363:
+ case 02365:case 02366:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02367u)
  /* ZEROING (A = count, L or A = first address): clear C(ZERONDX) +1 words. */
  AT(02367);(void)ai_ts(s,L_);
  AT(02370);GOTO(02372);
@@ -600,11 +680,19 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
   if(c>=2u)return REFUSE;
  AT(02377);GOTO(02371);
  AT(02400);return tc_erasable(s,Q_);
+#else
+ case 02367:case 02370:case 02371:case 02372:case 02373:case 02375:case 02376:case 02377:case 02400:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02447u)
  /* EARTHR* (QPLACES); after its EXIT: TC IMUSLLLG; TC QPLACES. */
  AT(02447);ai_qxch(s,QPLACES);
  AT(02451);intpret(s,io,02452);return GO;
  AT(02455);TC(02456,02315);
  AT(02456);return tc_erasable(s,QPLACES);
+#else
+ case 02447:case 02451:case 02455:case 02456:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02457u)
  /* SHOW, SHOW1: flash V06 N98 until V33. */
  AT(02457);ai_qxch(s,QPLACE);
  AT(02461);ai_ca(s,POSITON);
@@ -614,6 +702,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02466);TC(02467,02270);
  AT(02467);return tc_erasable(s,QPLACE);
  AT(02470);GOTO(02461);
+#else
+ case 02457:case 02461:case 02462:case 02463:case 02464:case 02466:case 02467:case 02470:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02500u)
  /* ESTIMS. */
  AT(02500);io->control.interrupt_enabled=0;
  AT(02501);ai_ca(s,SECXT1);
@@ -629,6 +721,11 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02514);TC(02515,02367);
  AT(02515);intpret(s,io,02516);return GO;
  AT(02535);TC(02536,03035);
+#else
+ case 02500:case 02501:case 02502:case 02504:case 02505:case 02506:case 02507:case 02510:case 02511:
+ case 02512:case 02513:case 02514:case 02515:case 02535:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02536u)
  /* ALLOOP. */
  AT(02536);ai_ca(s,OVFLOWCK);
  AT(02537);if(ai_bzf(s))GOTO(02542);
@@ -660,6 +757,12 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02572);ai_caf(s,K_PRIO20);
  AT(02573);return out(s,02574,X_FINDVAC);
  AT(02576);return out(s,02577,X_TASKOVER);
+#else
+ case 02536:case 02537:case 02541:case 02542:case 02543:case 02544:case 02545:case 02546:case 02547:
+ case 02550:case 02551:case 02553:case 02554:case 02556:case 02557:case 02561:case 02562:case 02563:
+ case 02564:case 02565:case 02566:case 02567:case 02570:case 02571:case 02572:case 02573:case 02576:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02577u)
  /* ALFLT: CCS GEOCOMPS; TC +2 / TC NORMLOP / TC BANKCALL 1/PIPA. */
  AT(02577);c=ai_ccs(s,GEOCOMPS);
   if(c==1u)GOTO(02601);
@@ -669,6 +772,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02601);TC(02602,02604);
  AT(02602);return out(s,02603,X_BANKCALL);
  AT(02604);intpret(s,io,02605);return GO;
+#else
+ case 02577:case 02600:case 02601:case 02602:case 02604:return ABSENT;
+#endif
+#if IPT_BASIC_IN(02773u)
  /* PERFERAS (after its EXIT): EBANK 7; TC ATIGINC. */
  AT(02773);ai_caf(s,K_EBANK7);
  AT(02774);(void)ai_ts(s,EB_);
@@ -690,6 +797,11 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(03021);ai_caf(s,K_OGCPL);
  AT(03022);return out(s,03023,X_BANKCALL);
  AT(03024);TC(03025,02315);
+#else
+ case 02773:case 02774:case 02775:case 02776:case 02777:case 03000:case 03001:case 03002:case 03003:
+ case 03004:case 03005:case 03021:case 03022:case 03024:return ABSENT;
+#endif
+#if IPT_BASIC_IN(03025u)
  /* GEOSTRT4: CCS TORQNDX; TC VALMIS / TC INTPRET. */
  AT(03025);c=ai_ccs(s,TORQNDX);
   if(c>=2u)return REFUSE;
@@ -697,6 +809,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(03026);TC(03027,02263);
  AT(03027);intpret(s,io,03030);return GO;
  AT(03033);TC(03034,02117);
+#else
+ case 03025:case 03026:case 03027:case 03033:return ABSENT;
+#endif
+#if IPT_BASIC_IN(03034u)
  /* SLEEPIE TS LENGTHOT; CCS TORQNDX; TC EARTHR* / TC ENDOFJOB /
   * SOMEERRR. */
  AT(03034);(void)ai_ts(s,LENGTHOT);
@@ -716,6 +832,11 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(03050);return out(s,03051,X_VARALARM);
  AT(03051);return out(s,03052,X_DOWNFLAG);
  AT(03053);return out(s,03054,X_ENDOFJOB);
+#else
+ case 03034:case 03035:case 03036:case 03037:case 03040:case 03041:case 03042:case 03043:case 03044:
+ case 03046:case 03047:case 03050:case 03051:case 03053:return ABSENT;
+#endif
+#if IPT_BASIC_IN(04102u)
  /* FINETIME (fixed-fixed; returns with interrupts inhibited). */
  AT(04102);io->control.interrupt_enabled=0;
  AT(04103);read_ch(s,io->loscalar);
@@ -729,6 +850,10 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(04117);if(ai_bzf(s))return REFUSE;   /* FINETIME +1 again: the scaler is frozen */
  AT(04121);read_ch(s,io->hiscalar);
  AT(04123);return tc_erasable(s,Q_);
+#else
+ case 04102:case 04103:case 04105:case 04106:case 04110:case 04112:case 04114:case 04115:case 04116:
+ case 04117:case 04121:case 04123:return ABSENT;
+#endif
  default:return REFUSE;
  }
 }
@@ -753,14 +878,17 @@ static int work_area(const apollo_overlay_state *s){
  return p>=f&&p<=f+042u;
 }
 static enum exec_status steps(apollo_overlay_state *s,lm_ipt_io *io){
- unsigned n;int st,interp;
+ unsigned n,jumps=0;int st,interp;
  for(n=0;n<RUN_LIMIT;++n){
   if(!here(s,io,&interp))return n?EXEC_OK:EXEC_OUT_OF_SCOPE;
   /* NEWOPS reads the order word under FB, which DANZIG set from BANKSET. */
   if(interp&&(((W[4]^W[BANKSET])&076000u)||!work_area(s)))return EXEC_OUT_OF_SCOPE;
   st=interp?interpretive(s,io):basic(s,io);
   if(st==REFUSE)return EXEC_OUT_OF_SCOPE;
+  if(st==ABSENT)return EXEC_UNMAPPED;
   if(st==STOP)return EXEC_OK;
+  /* A jump (C64 parts only) is part of the step it came from. */
+  if(st==JUMP){if(++jumps==0u)return EXEC_OUT_OF_SCOPE;--n;}
  }
  return EXEC_OUT_OF_SCOPE;
 }
