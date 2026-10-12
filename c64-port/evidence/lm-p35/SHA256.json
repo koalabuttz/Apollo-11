@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p35",
+  "release": "evidence-lm-p35",
+  "files": {
+    "lm-p35-1.map": {
+      "sha256": "ec1560f22b4d54ecc9108693918b5619ada9d6fc56e912ca538d8039e52bb936",
+      "bytes": 17407,
+      "store": "release"
+    },
+    "lm-p35-1.prg": {
+      "sha256": "c1ef9caf8db9f0ed7245f2c548310a515b6adc945ca28c01f18659df5959eadb",
+      "bytes": 20922,
+      "store": "release"
+    },
+    "lm-p35-checks.log": {
+      "sha256": "04a1837028f54f42a3ecc1aee203c63db44aa1f202b9799c999abf3990216636",
+      "bytes": 539,
+      "store": "tree"
+    },
+    "lm-p35-proof.json": {
+      "sha256": "4c53e90ed080dc8827d66fd023c11c06ea1db73fd9797862f0fbd65c928345cf",
+      "bytes": 1246,
+      "store": "tree"
+    },
+    "lm-p35-reference.snapshots.bin.xz": {
+      "sha256": "cb4513a9cd4d18d74332945e45a99122b3946d9f7895bf949ed3aeb8c1263034",
+      "bytes": 51101448,
+      "store": "release"
+    },
+    "lm-p35-results.json": {
+      "sha256": "8b644edae384c5789fd5258ced0356dabde73e76e0a36ec73c55c32f4c7bc5d1",
+      "bytes": 1009,
+      "store": "tree"
+    },
+    "lm-p35-source-map.json": {
+      "sha256": "433d10cdc93d18815e5a28f2d577a395558f5ff0be9a219bb2cf49ec35b620f5",
+      "bytes": 6897,
+      "store": "tree"
+    },
+    "lm-p35-source-stream.json": {
+      "sha256": "529a4155288e337ee00d9573cbdac92971b80c00d9a8189a5636cb58e854060f",
+      "bytes": 338,
+      "store": "tree"
+    }
+  }
+}
