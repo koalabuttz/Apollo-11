@@ -48,8 +48,7 @@ SPECS = {
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/geometry_target.c',
         # Words no routine compiles yet, and why (the source map records them).
-        'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their '
-                          'constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2'},
+        'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2'},
         'freeze_stride': 32,
     },
     'kalcmanu-steering': {
@@ -78,5 +77,93 @@ SPECS = {
         # The file's EBANK= TTEMP (E6, as its 2CADR BBCONs carry): its
         # switched names (KSPNDX, BRATE...) mean nothing under another EB.
         'ebank': 6,
+    },
+    'r60-r62': {
+        'missions': ('lm', 'cm'),
+        # The listing names the file R60,R62.agc; the repository R60_62.agc.
+        'file': {'lm': 'R60,R62.agc', 'cm': 'R60,R62.agc'},
+        'source_path': {'lm': 'R60_62.agc', 'cm': 'R60_62.agc'},
+        'base': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
+        'symbol': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
+        'entries': {'lm': ['R60LEM', 'R62FLASH', 'VECPOINT', 'VECPNT1', 'BALLANGS', 'RELINUS', 'ISITAUTO', 'G+N,AUTO'],
+                    'cm': ['R60CSM', 'R62DISP', 'VECPOINT', 'RELINUS']},
+        # 'auto': the call's inline words are the data words after the TC.
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
+                      'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
+                      'MAKECADR': 'auto', 'PHASCHNG': 'auto', 'LINUS': 'auto', 'PRIOCHNG': 'auto',
+                      'CHECKMM': 'auto', 'ENDOFJOB': None, 'GOTOPOOH': None, 'GOTOV56': None,
+                      'BANKJUMP': None, 'TASKOVER': None},
+        # Display and restart returns (GOPERF +1/+2 and the like) land on
+        # words nothing in the file reaches.
+        'resume_orphans': True,
+        'rtb': {'V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_VECTOR_ONE_TO_TWO)',
+                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)'},
+                'READCDUK': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/r60_r62_target.c',
+        # BUF2 holds the last display's return (a fixed address), as
+        # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
+        'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
+        'partial': {'lm': 'G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model',
+                    'cm': 'TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model'},
+        'freeze_stride': 64,
+    },
+    'attitude-maneuver': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
+        'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
+        'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
+        'entries': ['KALCMAN3', 'MXM3', 'TRANSPOS', 'READCDUK', 'CDUTODCM', 'DELCOMP', 'DCMTOCDU',
+                    'VECOFANG', 'NOGO'],
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
+                      'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'MAKECADR': 'auto', 'CURTAINS': 'auto',
+                      'WAITLIST': 'auto', 'STOPRATE': 'auto', 'LOADCDUD': 'auto', 'POSTJUMP': 1,
+                      'ENDOFJOB': None, 'GOTOPOOH': None, 'BANKJUMP': None, 'TASKOVER': None},
+        'noreturn': ['POSTJUMP'],
+        'resume_orphans': True,
+        # READCDUK is the file's own basic code; CDULOGIC is native.
+        'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
+                'READCDUK': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/attitude_maneuver_target.c',
+        # One C64 case per routine: KALCMAN3's run reaches most of the file.
+        'c64_per_point': 1,
+        # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
+        # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
+        'ebank': 6,
+        # LOOPSIN is CDUTODCM's TIX loop: X1 3, 2 or 1 with S1 1, and the
+        # pushdown list at 0D (its SETPD 0), as the loop's pushes assume.
+        # SUHALFA and CALCPHI (DCMTOCDU's THETA quadrant fix) run with PSI
+        # and THETA pushed (pushdown at 4D).
+        'states': {'LOOPSIN': {'vac+046': [3, 2, 1], 'vac+050': [1], '0166': ['vac+0']},
+                   'SUHALFA': {'0166': ['vac+4']}, 'CALCPHI': {'0166': ['vac+4']}},
+        'all_states': {'vac+046': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
+                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
+                       'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
+                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
+        'freeze_stride': 64,
+    },
+    'sband-antenna': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'S-BAND_ANTENNA_FOR_LM.agc', 'cm': 'S-BAND_ANTENNA_FOR_CM.agc'},
+        'base': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
+        'symbol': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
+        'entries': ['SBANDANT'],
+        'externals': {'BANKCALL': 'auto', 'PRIOCHNG': 'auto', 'BLANKET': 'auto', 'B5OFF': None,
+                      'ENDOFJOB': None, 'ENDEXT': None},
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/sband_antenna_target.c',
+        # V64 runs SBANDANT as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        # GOMARKFR's returns (terminate, proceed, recycle, immediate) land on
+        # words nothing in the file reaches.
+        'resume_orphans': True,
+        'freeze_stride': 32,
     },
 }

@@ -70,6 +70,12 @@ static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
  if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;
  W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;
 }
+/* TC K, K erasable: C(K) runs as an instruction; a TC leaves Q = K+1. */
+static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
+ agc_word w=W[k];
+ if((w&070000u)||w<010u)return EXEC_OUT_OF_SCOPE;
+ W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;
+}
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }
@@ -669,6 +675,7 @@ static enum exec_status r45056(apollo_overlay_state *s,p66_bias_io *io){
  ai_mpf(s,003146);
  /* 22,3072 DXCH DELCDUX */
  {agc_word iw=ixw(s,053576,01665u);if((iw^053576u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-1u)<=6u&&(unsigned)((iw&01777u)-1u)+1u>=3u)return EXEC_OUT_OF_SCOPE;
    ai_dxch(s,(unsigned)((iw&01777u)-1u));
  }
  /* 22,3074 CA NCDU */
@@ -677,10 +684,12 @@ static enum exec_status r45056(apollo_overlay_state *s,p66_bias_io *io){
  }
  /* 22,3076 XCH BCDU */
  {agc_word iw=ixw(s,057661,01664u);if((iw^057661u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    ai_xch(s,(unsigned)((iw&01777u)-0u));
  }
  /* 22,3100 TS CDUXD */
  {agc_word iw=ixw(s,055646,01665u);if((iw^055646u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45102;
  }
  /* 22,3101 CCS KSPNDX */

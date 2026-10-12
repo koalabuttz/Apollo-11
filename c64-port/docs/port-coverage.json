@@ -287,8 +287,54 @@
       "sha256": "827f457bf6dd722ed1432991623dcb6165e4ddc74dcf2c8ce531f5c2d21c5487",
       "bytes": 11682,
       "lines": 626,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_attitude_maneuver.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (479 words, 22,2000-2736): KALCMAN3, SECAD, CHECKMAX, ALTCALC, COMP12, METHOD1, METHOD3, MXM3, TRANSPOS, READCDUK, CDUTODCM, DELCOMP, DCMTOCDU, VECOFANG, NOGOM2 and NOGO, as 39 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/ATTITUDE-MANEUVER.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables.",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, PHASCHNG, UPFLAG, DOWNFLAG, MAKECADR, CURTAINS, WAITLIST, STOPRATE and LOADCDUD with their inline words",
+          "POSTJUMP with its inline CADR (no return)",
+          "Interpreter CDULOGIC through RTB (native, src/rtb_angles.c)",
+          "ENDOFJOB, GOTOPOOH, BANKJUMP and TASKOVER",
+          "The caller's return through Q or QPRET"
+        ],
+        "c64_note": "22,2003 and 22,2011 (KALCMAN3's path through SECAD) reach most of the file and run on the host only (c64_host_only in the proof); every routine their runs reach has its own C64 cases.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-source-map.json",
+            "sha256": "de2b1d9a51ee84faf61cb23b05c9ab41c817e92203e437df2304f51151b20a46"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
+            "sha256": "010672e3b21e92603e8a8d1c2a5943ac70c327ba27d4a406311558eb3053fcd2"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
+            "sha256": "04324be050b1ee35df7ae497d7e5670acab656bf5ca13ef82ea08f5f4000f126"
+          },
+          "c64_execution_results": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
+            "sha256": "c2f95800b22f5bc7617ecd120f94739d714c182d612c95f471e3d13db849229b"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
@@ -490,7 +536,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "105 of 253 words: SVDWN1, SVDWN2 (bank 10), LOG with its POLY and SHORTMP basic code, EARROT1, EARROT2 and OVERADAY, as 11 routines of the control-transfer ABI compiled by tools/interp_compile.py. SXTNB, SXTLOGIC, CALCSXA and SXTANG with their matrices wait for a Comanche MXV body and native TRANSP1/TRANSP2.",
+          "scope": "105 of 253 words: SVDWN1, SVDWN2 (bank 10), LOG with its POLY and SHORTMP basic code, EARROT1, EARROT2 and OVERADAY, as 11 routines of the control-transfer ABI compiled by tools/interp_compile.py. SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2; their 39 data words (NB2NB1, NB1NB2 and constants) are recorded as data.",
           "verification": "docs/GEOMETRY.md"
         }
       ]
@@ -2653,8 +2699,21 @@
       "sha256": "d3357adf3da2436167e2db289813ad0411b206623c0117ba8679b998b7c81c6f",
       "bytes": 10521,
       "lines": 385,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_r60_r62.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "225 of 227 words: R60CSM, TOBALL, STARTMNV, ENDMANUV, RELINUS, VECPOINT, ROT180, XROT, R62DISP, as 51 routines of the control-transfer ABI compiled by tools/interp_compile.py. TOBALLC's RXOR CHAN31 waits for an I/O channel model.",
+          "verification": "docs/R60-R62.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
@@ -3010,8 +3069,52 @@
           ],
           "scope": "Actual unit trig matrix and shift continuations in antenna frame calculation; Moon-return and final angle branches remain open.",
           "verification": "docs/NATIVE-SBAND-FRAME.md"
+        },
+        {
+          "native_files": [
+            "src/cm_sband_antenna.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (80 words, 42,3652-3771): SBANDANT and the rest of R05 (conic update, Earth or Moon sphere, vehicle-frame rotation, pitch and yaw, the V06 N51 display and its returns), as 39 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key.",
+          "verification": "docs/SBAND-ANTENNA.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "external_continuations": [
+          "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
+          "B5OFF, ENDOFJOB and ENDEXT (no return)",
+          "Interpretive CALL and STCALL to CSMCONIC, LUNPOS, CDUTRIG and *SMNB*",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/sband-antenna/sband-antenna-source-map.json",
+            "sha256": "c6ecc079057eb8fb50642fa758c43b631b51ba8c4570804ffff5e9423ed4609c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/sband-antenna/sband-antenna-proof.json",
+            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/sband-antenna/sband-antenna-host.log",
+            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+          },
+          "c64_execution_results": {
+            "path": "evidence/sband-antenna/sband-antenna-vice.log",
+            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/SERVICER207.agc",
@@ -3999,8 +4102,54 @@
       "sha256": "ce059a77e621dc2b0df032410206e3da672d88d065114b533fa3e74a997f0443",
       "bytes": 27087,
       "lines": 1027,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_attitude_maneuver.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (480 words, 22,2004-2743): KALCMAN3, SECAD, CHECKMAX, ALTCALC, COMP12, METHOD1, METHOD3, MXM3, TRANSPOS, READCDUK, CDUTODCM, DELCOMP, DCMTOCDU, VECOFANG, TOOBADF, TOOBADI and NOGO, as 44 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/ATTITUDE-MANEUVER.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI, as the routine leaves it), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables (BCDU, CPHI, CTHETA, CPSI, MIS, MFS, MFI, TMIS, TMFI).",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, PHASCHNG, UPFLAG, DOWNFLAG, MAKECADR, CURTAINS, WAITLIST, STOPRATE and LOADCDUD with their inline words",
+          "POSTJUMP with its inline CADR (no return)",
+          "Interpreter CDULOGIC through RTB (native, src/rtb_angles.c)",
+          "ENDOFJOB, GOTOPOOH, BANKJUMP and TASKOVER",
+          "The caller's return through Q or QPRET"
+        ],
+        "c64_note": "22,2022 (KALCMAN3's path through SECAD) reaches most of the file and runs on the host only (c64_host_only in the proof); every routine its runs reach has its own C64 cases.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-source-map.json",
+            "sha256": "de2b1d9a51ee84faf61cb23b05c9ab41c817e92203e437df2304f51151b20a46"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
+            "sha256": "010672e3b21e92603e8a8d1c2a5943ac70c327ba27d4a406311558eb3053fcd2"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
+            "sha256": "04324be050b1ee35df7ae497d7e5670acab656bf5ca13ef82ea08f5f4000f126"
+          },
+          "c64_execution_results": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
+            "sha256": "c2f95800b22f5bc7617ecd120f94739d714c182d612c95f471e3d13db849229b"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
@@ -7140,8 +7289,21 @@
       "sha256": "23cf6099c20b0dacdb54b377db1208214f8fb9fee1fb09a6e1ae0337d14c83f6",
       "bytes": 15295,
       "lines": 577,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_r60_r62.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "293 of 296 words: R60LEM, TOBALL, TOBALLA, STARTMNV, ENDMANUV, RELINUS and CHKLINUS, BALLANGS, ROT180, XROT, VECPOINT and VECPNT1, R62FLASH, as 65 routines of the control-transfer ABI compiled by tools/interp_compile.py. G+N,AUTO and ISITAUTO (READ CHAN30, READ CHAN31) wait for an I/O channel model.",
+          "verification": "docs/R60-R62.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/R63.agc",
@@ -7470,8 +7632,52 @@
           ],
           "scope": "Actual unit trig matrix and shift continuations in antenna frame calculation; Moon-return and final angle branches remain open.",
           "verification": "docs/NATIVE-SBAND-FRAME.md"
+        },
+        {
+          "native_files": [
+            "src/lm_sband_antenna.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (116 words, 42,3606-3771): SBANDANT and the rest of R05 (conic update, Earth or Moon sphere, vehicle-frame rotation, pitch and yaw, the V06 N51 display and its returns), as 58 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key.",
+          "verification": "docs/SBAND-ANTENNA.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "external_continuations": [
+          "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
+          "B5OFF, ENDOFJOB and ENDEXT (no return)",
+          "Interpretive CALL and STCALL to LEMCONIC, LUNPOS, CDUTRIG and *SMNB*",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/sband-antenna/sband-antenna-source-map.json",
+            "sha256": "c6ecc079057eb8fb50642fa758c43b631b51ba8c4570804ffff5e9423ed4609c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/sband-antenna/sband-antenna-proof.json",
+            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/sband-antenna/sband-antenna-host.log",
+            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+          },
+          "c64_execution_results": {
+            "path": "evidence/sband-antenna/sband-antenna-vice.log",
+            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/SERVICER.agc",
