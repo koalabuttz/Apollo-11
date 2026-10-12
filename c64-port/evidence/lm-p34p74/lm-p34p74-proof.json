@@ -1,0 +1,119 @@
+{
+ "cases": 17408,
+ "c64_groups": {
+  "1": 512,
+  "2": 128
+ },
+ "stream_sha256": "2e268198eb10f1b933dbffb4dd3ed41175dc561ec6c2f68317ea0973b7a0daa7",
+ "stops": {
+  "P34 start after INTPRET (2562)": {
+   "NEWOPS 10,2000": 512
+  },
+  "P34/P74B (2572)": {
+   "NEWOPS 10,2000": 512
+  },
+  "P34/P74C (2574)": {
+   "NEWOPS 23,2360": 512
+  },
+  "INTLOOP (2604)": {
+   "NEWOPS 23,2360": 512
+  },
+  "after PRECSET (2611)": {
+   "NEWOPS 35,2764": 512
+  },
+  "after S33/34.1 (2613)": {
+   "ALARM": 256,
+   "DISPLAYE": 65,
+   "NEWOPS 23,2360": 128,
+   "VNPOOH": 63
+  },
+  "SWCHCLR (2625)": {
+   "DISPLAYE": 128,
+   "NEWOPS 23,2360": 256,
+   "VNPOOH": 128
+  },
+  "P34/P74D (2635)": {
+   "VNPOOH": 512
+  },
+  "after P34/P74E INTPRET (2641)": {
+   "NEWOPS 12,2732": 512
+  },
+  "after TIMETHET (2664)": {
+   "NEWOPS 35,3306": 512
+  },
+  "after S34/35.2 (2673)": {
+   "NEWOPS 23,2316": 512
+  },
+  "after PERIAPO1 (2706)": {
+   "NEWOPS 23,2426": 512
+  },
+  "after SHIFTR1 (2710)": {
+   "VNPOOH": 512
+  },
+  "after INTPRET (2717)": {
+   "NEWOPS 35,3522": 512
+  },
+  "after S34/35.5 (2721)": {
+   "NEWOPS 35,3606": 512
+  },
+  "after VN1645 (2723)": {
+   "NEWOPS 23,2360": 512
+  },
+  "P34 (2545)": {
+   "AVFLAGA": 512
+  },
+  "after AVFLAGA (2546)": {
+   "P20FLGON": 512
+  },
+  "P74 (2547)": {
+   "AVFLAGP": 512
+  },
+  "P34/P74A (2550)": {
+   "P20FLGON": 512
+  },
+  "after P20FLGON (2551)": {
+   "VNPOOH": 512
+  },
+  "after VNPOOH (2553)": {
+   "DISPLAYE": 512
+  },
+  "after DISPLAYE (2561)": {
+   "INTPRET": 512
+  },
+  "ALARM call (2615)": {
+   "ALARM": 512
+  },
+  "after ALARM (2617)": {
+   "BANKCALL": 512
+  },
+  "GOFLASH terminate (2622)": {
+   "GOTOPOOH": 512
+  },
+  "GOFLASH proceed (2623)": {
+   "P20FLGON": 512
+  },
+  "GOFLASH recycle (2624)": {
+   "ALARM": 512
+  },
+  "after SWCHCLR EXIT (2633)": {
+   "DISPLAYE": 512
+  },
+  "after DISPLAYE (2634)": {
+   "INTPRET": 512
+  },
+  "after P34/P74D EXIT (2636)": {
+   "VNPOOH": 512
+  },
+  "P34/P74E (2640)": {
+   "INTPRET": 512
+  },
+  "after SHIFTR1 EXIT (2714)": {
+   "VNPOOH": 512
+  },
+  "after VNPOOH (2716)": {
+   "INTPRET": 512
+  }
+ },
+ "boundary": "each case runs from its entry (NEWOPS or Z) through the trampoline (this file's routines) to the first point outside them; the oracle stops at the same point (tests/lm_p34p74_cases.c lm_p34p74_stop: a NEWOPS outside 35,2562-2724, AVFLAGA, AVFLAGP, P20FLGON, DISPLAYE, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, POODOO1)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}

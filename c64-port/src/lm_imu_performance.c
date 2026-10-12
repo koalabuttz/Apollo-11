@@ -145,8 +145,29 @@ static int operand(const apollo_overlay_state *s,unsigned n,const agc_word **k){
  return 0;
 }
 #define K(n) do{if(!operand(s,(n),&k))return REFUSE;}while(0)
+/* A VXSC operand: a scalar (2 words) with a vector in MPAC, else a vector
+ * (MODE +0 or positive: VXSC multiplies the vector operand by MPAC). */
+#define VSCALAR (W[0163]<040000u?6u:2u)
 
 /* ---- Interpretive helpers -------------------------------------------- */
+/* X1 and X2 inside +-0377 at an indexed operand or store: address - X
+ * then stays an erasable word (a wild index, which only a store through
+ * another wild index leaves there, makes INDEX ADDRWD change the
+ * instruction). */
+static int xok(const apollo_overlay_state *s){unsigned i;
+ for(i=046u;i<050u;++i){agc_word x=W[(W[FIXLOC]+i)&03777u];if(x>=0400u&&x<=077377u)return 0;}
+ return 1;
+}
+#define XOK do{if(!xok(s))return REFUSE;}while(0)
+/* DDV whose divisor has no major part once its words agree in sign (the
+ * original's BUFZERO path: hi +-0, or +-1 with a minor part of the other
+ * sign). Unreachable: AINGOTN divides by the test's elapsed time, about
+ * 584 s, so the state is refused as outside the domain. The compiled DDV
+ * follows BUFZERO (the certificate review ran 180 cases equal to yaAGC). */
+static int divisor_zero(const apollo_overlay_state *s){agc_word hi=W[W[0116]&03777u],lo=W[(W[0116]+1u)&03777u];
+ int neg=lo>=040000u&&lo!=077777u,pos=lo<040000u&&lo!=0u;
+ return hi==0u||hi==077777u||(hi==1u&&neg)||(hi==077776u&&pos);
+}
 /* DANZIG at the end of a pair: NEWJOB +0 goes on to NEWOPS; positive goes
  * to CHANG2 (CA BANKSET; TS BBANK; CCS EDOP; CCS NEWJOB; TCF CHANG2). */
 static int next(apollo_overlay_state *s){
@@ -161,7 +182,7 @@ static void opnd(apollo_overlay_state *s,agc_word word,agc_word target){
  if(word&040000u)lmi_address_pushup(s,word,target);else lmi_direct(s,word,target);
 }
 static void shorts(apollo_overlay_state *s){lmi_short_dispatch(s);if(W[5]==02017u)lmi_shortt(s);else lmi_shortv(s);}
-static int store(apollo_overlay_state *s,agc_word code){lmi_store_code(s,code);return next(s);}
+static int store(apollo_overlay_state *s,agc_word code){if(((code>>11&7u)==1u||(code>>11&7u)==2u)&&!xok(s))return REFUSE;lmi_store_code(s,code);return next(s);}
 static int stodl(apollo_overlay_state *s,agc_word code,agc_word word){const agc_word *k;
  lmi_store_code(s,code);lmi_dodload(s);
  if(word&040000u)lmi_diradres_pushup(s,word,DLOAD);else lmi_diradres(s,word,DLOAD);
@@ -228,7 +249,7 @@ static int interpretive(apollo_overlay_state *s,lm_ipt_io *io){
  case 02214:IN(02214);lmi_newops(s,045044);if(bplbmn(s,076217))return GO;right(s);return call(s,076275);
  /* AINGOTN PDDL DDV DATAPL +4 (pushdown); DMPR RTB DEC585 SGNAGREE;
   * STORE DSPTEM2; EXIT. */
- case 02217:IN(02217);lmi_newops(s,056325);opnd(s,002477,PDDL);K(2);lmi_pddl_op(s,k);right(s);opnd(s,047075,DDV);lmi_ddv(s,0);NEXT;
+ case 02217:IN(02217);lmi_newops(s,056325);opnd(s,002477,PDDL);K(2);lmi_pddl_op(s,k);right(s);opnd(s,047075,DDV);if(divisor_zero(s))return REFUSE;lmi_ddv(s,0);NEXT;
  case 02221:IN(02221);lmi_newops(s,047075);opnd(s,037056,DMPR);K(2);lmi_dmpr(s,k);right(s);return rtb(s,021612);
  case 02224:IN(02224);return store(s,001051);
  case 02225:IN(02225);return exit_(s);
@@ -292,7 +313,7 @@ static int interpretive(apollo_overlay_state *s,lm_ipt_io *io){
   * ALKCG2 ALX1S. */
  case 02627:IN(02627);lmi_newops(s,050135);if(sload(s,002532))return REFUSE;right(s);if(bplbmn(s,076644))return GO;NEXT;
  case 02632:IN(02632);lmi_newops(s,072174);misc(s,000014,AXT);lmi_axt(s);right(s);misc(s,002444,LXA);lmi_lxa(s);NEXT;
- case 02635:IN(02635);lmi_newops(s,062143);lmi_indexed(s,002243,DLOAD);K(2);lmi_dload_op(s,k);right(s);misc(s,077775,INCR);lmi_incr(s);NEXT;
+ case 02635:IN(02635);lmi_newops(s,062143);XOK;lmi_indexed(s,002243,DLOAD);K(2);lmi_dload_op(s,k);right(s);misc(s,077775,INCR);lmi_incr(s);NEXT;
  case 02640:IN(02640);return store(s,012545);
  case 02641:IN(02641);lmi_newops(s,066104);if(tix(s,076635))return GO;right(s);misc(s,002444,SXA);lmi_sxa(s);NEXT;
  /* ALFLT3 AXT,1 8D; DELMLP DLOAD* DMP DPIPAY +8D,1 PIPASC; SLR BDSU* 9D
@@ -300,17 +321,17 @@ static int interpretive(apollo_overlay_state *s,lm_ipt_io *io){
   * STADR (pushdown); STORE DELM +8D,1; STORE DELM +10D,1; TIX,1 AXT,2
   * DELMLP 4. */
  case 02644:IN(02644);lmi_newops(s,077770);misc(s,000010,AXT);lmi_axt(s);NEXT;
- case 02646:IN(02646);lmi_newops(s,041343);lmi_indexed(s,002533,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037100,DMP);K(2);lmi_dmp(s,k);NEXT;
- case 02651:IN(02651);lmi_newops(s,043661);opnd(s,021212,GSHIFT);lmi_gshift(s);right(s);lmi_indexed(s,002501,BDSU);K(2);lmi_bdsu(s,k);NEXT;
+ case 02646:IN(02646);lmi_newops(s,041343);XOK;lmi_indexed(s,002533,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037100,DMP);K(2);lmi_dmp(s,k);NEXT;
+ case 02651:IN(02651);lmi_newops(s,043661);opnd(s,021212,GSHIFT);lmi_gshift(s);right(s);XOK;lmi_indexed(s,002501,BDSU);K(2);lmi_bdsu(s,k);NEXT;
  case 02654:IN(02654);return store(s,006501);
- case 02655:IN(02655);lmi_newops(s,040725);opnd(s,037102,PDDL);K(2);lmi_pddl_op(s,k);right(s);lmi_indexed(s,002521,DMP);K(2);lmi_dmp(s,k);NEXT;
+ case 02655:IN(02655);lmi_newops(s,040725);opnd(s,037102,PDDL);K(2);lmi_pddl_op(s,k);right(s);XOK;lmi_indexed(s,002521,DMP);K(2);lmi_dmp(s,k);NEXT;
  case 02660:IN(02660);lmi_newops(s,077732);shorts(s);NEXT;
  case 02661:IN(02661);lmi_newops(s,045425);opnd(s,071216,DSU);K(2);lmi_dsu(s,k);right(s);lmi_unary(s,STADR);lmi_stadr(s,071216);NEXT;
  case 02663:IN(02663);return store(s,006563);
  case 02664:IN(02664);lmi_newops(s,077100);if(tix(s,076646))return GO;right(s);misc(s,000004,AXT);lmi_axt(s);NEXT;
  /* ALILP DLOAD* DMPR* ALK +4,2 ALDK +4,2; STORE ALK +4,2; TIX,2 AXT,2
   * ALILP 8D. */
- case 02667:IN(02667);lmi_newops(s,056743);lmi_indexed(s,075324,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075240,DMPR);K(2);lmi_dmpr(s,k);NEXT;
+ case 02667:IN(02667);lmi_newops(s,056743);XOK;lmi_indexed(s,075324,DLOAD);K(2);lmi_dload_op(s,k);right(s);XOK;lmi_indexed(s,075240,DMPR);K(2);lmi_dmpr(s,k);NEXT;
  case 02672:IN(02672);return store(s,012453);
  case 02673:IN(02673);lmi_newops(s,077104);if(tix(s,076667))return GO;right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
  /* ALKLP LXC,1 SXA,1 CMPX1 CMPX1; DLOAD* DMPR* ALK +1,1 DELM +8D,2; DAD*
@@ -319,23 +340,23 @@ static int interpretive(apollo_overlay_state *s,lm_ipt_io *io){
   * DLOAD* DMP* ALSK +1,1 DELM +8D,2; SL1R DAD* VLAUN +8D,2; STORE VLAUN
   * +8D,2; TIX,2 AXT,1 ALKLP 8D. */
  case 02676:IN(02676);lmi_newops(s,066140);misc(s,002445,LXC);lmi_lxc(s);right(s);misc(s,002445,SXA);lmi_sxa(s);NEXT;
- case 02701:IN(02701);lmi_newops(s,056743);lmi_indexed(s,002450,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);NEXT;
- case 02704:IN(02704);lmi_newops(s,077613);lmi_indexed(s,075276,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02701:IN(02701);lmi_newops(s,056743);XOK;lmi_indexed(s,002450,DLOAD);K(2);lmi_dload_op(s,k);right(s);XOK;lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);NEXT;
+ case 02704:IN(02704);lmi_newops(s,077613);XOK;lmi_indexed(s,075276,DAD);K(2);lmi_dad(s,k);NEXT;
  case 02706:IN(02706);return store(s,012501);
- case 02707:IN(02707);lmi_newops(s,042743);lmi_indexed(s,075314,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075230,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02707:IN(02707);lmi_newops(s,042743);XOK;lmi_indexed(s,075314,DLOAD);K(2);lmi_dload_op(s,k);right(s);XOK;lmi_indexed(s,075230,DAD);K(2);lmi_dad(s,k);NEXT;
  case 02712:IN(02712);return store(s,012463);
- case 02713:IN(02713);lmi_newops(s,042673);lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);right(s);lmi_indexed(s,075266,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02713:IN(02713);lmi_newops(s,042673);XOK;lmi_indexed(s,075216,DMPR);K(2);lmi_dmpr(s,k);right(s);XOK;lmi_indexed(s,075266,DAD);K(2);lmi_dad(s,k);NEXT;
  case 02716:IN(02716);return store(s,012511);
- case 02717:IN(02717);lmi_newops(s,040743);lmi_indexed(s,037105,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,075216,DMP);K(2);lmi_dmp(s,k);NEXT;
- case 02722:IN(02722);lmi_newops(s,042772);shorts(s);right(s);lmi_indexed(s,075256,DAD);K(2);lmi_dad(s,k);NEXT;
+ case 02717:IN(02717);lmi_newops(s,040743);XOK;lmi_indexed(s,037105,DLOAD);K(2);lmi_dload_op(s,k);right(s);XOK;lmi_indexed(s,075216,DMP);K(2);lmi_dmp(s,k);NEXT;
+ case 02722:IN(02722);lmi_newops(s,042772);shorts(s);right(s);XOK;lmi_indexed(s,075256,DAD);K(2);lmi_dad(s,k);NEXT;
  case 02724:IN(02724);return store(s,012521);
  case 02725:IN(02725);lmi_newops(s,076104);if(tix(s,076676))return GO;right(s);misc(s,000010,AXT);lmi_axt(s);NEXT;
  /* LOOSE DLOAD* PDDL* ACCWD +8D,1 VLAUN +8D,1; PDDL* VDEF POSNV +8D,1;
   * MXV VSL1 TRANSM1; DLOAD MPAC; STORE POSNV +8D,1; DLOAD MPAC +3; STORE
   * VLAUN +8D,1; DLOAD MPAC +5; STORE ACCWD +8D,1; TIX,1 LOOSE; AXT,2 AXT,1
   * 6 2. */
- case 02730:IN(02730);lmi_newops(s,064743);lmi_indexed(s,002523,DLOAD);K(2);lmi_dload_op(s,k);right(s);lmi_indexed(s,002521,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
- case 02733:IN(02733);lmi_newops(s,055523);lmi_indexed(s,002531,PDDL);K(2);lmi_pddl_op(s,k);right(s);unary(s,VDEF,lmi_vdef);NEXT;
+ case 02730:IN(02730);lmi_newops(s,064743);XOK;lmi_indexed(s,002523,DLOAD);K(2);lmi_dload_op(s,k);right(s);XOK;lmi_indexed(s,002521,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
+ case 02733:IN(02733);lmi_newops(s,055523);XOK;lmi_indexed(s,002531,PDDL);K(2);lmi_pddl_op(s,k);right(s);unary(s,VDEF,lmi_vdef);NEXT;
  case 02735:IN(02735);lmi_newops(s,076521);opnd(s,002001,MXV);K(18);lmi_mxv(s,k);right(s);shorts(s);NEXT;
  case 02737:IN(02737);lmi_newops(s,077745);opnd(s,000155,DLOAD);K(2);lmi_dload_op(s,k);NEXT;
  case 02741:IN(02741);return store(s,006531);
@@ -348,7 +369,7 @@ static int interpretive(apollo_overlay_state *s,lm_ipt_io *io){
  /* BOOP DLOAD* DMPR ANGX +2,1 GEORGEJ; SR2R; PUSH SIN; SL3R XAD,1 X1;
   * STORE 16D,2; DLOAD (pushdown); COS; STORE 22D,2; TIX,2 BOOP;
   * PERFERAS EXIT. */
- case 02755:IN(02755);lmi_newops(s,057343);lmi_indexed(s,002503,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037110,DMPR);K(2);lmi_dmpr(s,k);NEXT;
+ case 02755:IN(02755);lmi_newops(s,057343);XOK;lmi_indexed(s,002503,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,037110,DMPR);K(2);lmi_dmpr(s,k);NEXT;
  case 02760:IN(02760);lmi_newops(s,077722);shorts(s);NEXT;
  case 02761:IN(02761);lmi_newops(s,073406);unary(s,PUSH,lmi_push);right(s);TRIG(0);NEXT;
  case 02762:IN(02762);lmi_newops(s,056072);shorts(s);right(s);misc(s,000046,XAD);lmi_xad(s);NEXT;
@@ -362,7 +383,7 @@ static int interpretive(apollo_overlay_state *s,lm_ipt_io *io){
   * VSR1 XSM; STORE OGC; EXIT. */
  case 03006:IN(03006);lmi_newops(s,065345);opnd(s,002473,DLOAD);K(2);lmi_dload_op(s,k);right(s);opnd(s,002477,PDDL);K(2);lmi_pddl_op(s,k);NEXT;
  case 03011:IN(03011);lmi_newops(s,055525);opnd(s,002501,PDDL);K(2);lmi_pddl_op(s,k);right(s);unary(s,VDEF,lmi_vdef);NEXT;
- case 03013:IN(03013);lmi_newops(s,074276);unary(s,COMP,lmi_comp);right(s);opnd(s,037110,VXSC);K(2);lmi_vxsc(s,k);NEXT;
+ case 03013:IN(03013);lmi_newops(s,074276);unary(s,COMP,lmi_comp);right(s);opnd(s,037110,VXSC);K(VSCALAR);lmi_vxsc(s,k);NEXT;
  case 03015:IN(03015);lmi_newops(s,074521);opnd(s,002643,MXV);K(18);lmi_mxv(s,k);right(s);shorts(s);NEXT;
  case 03017:IN(03017);return store(s,002740);
  case 03020:IN(03020);return exit_(s);
@@ -413,6 +434,12 @@ static __attribute__((unused)) void read_ch(apollo_overlay_state *s,agc_word v){
 static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  unsigned ea;uint8_t c;
  (void)ea;(void)c;(void)io;
+#if defined IPT_C64_PART && IPT_C64_PART==0
+ if(!ipt_basic_in(W[5]))return ABSENT;
+#elif defined IPT_C64_PART
+ /* Anything in a block the part leaves out (a label or not). */
+ {agc_word b=ipt_block(W[5]);if(!IPT_BASIC_IN(b))return ABSENT;}
+#endif
  switch(W[5]){
 #if IPT_BASIC_IN(02002u)
  /* REDO TC NEWMODEX (MM 07). */
@@ -635,8 +662,9 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  case 02315:case 02317:case 02320:case 02322:case 02324:case 02325:case 02327:case 02331:return ABSENT;
 #endif
 #if IPT_BASIC_IN(02332u)
- /* CHECKG: catch a PIPA pulse. CHECKG1 spins while PIPAX is unchanged and
-  * no job is waiting, which only an interrupt ends. */
+ /* CHECKG: catch a PIPA pulse. CHECKG1 (a key) leaves through CHANG1 when a
+  * job is waiting; the BZF back to it, PIPAX unchanged, ends the run there
+  * as a continuation (the original spins until a PIPA interrupt). */
  AT(02332);ai_qxch(s,QPLACE);
  AT(02334);TC(02335,02342);
  AT(02335);io->control.interrupt_enabled=1;
@@ -649,12 +677,7 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(02346);io->control.interrupt_enabled=0;
  AT(02347);IX(PIPINDEX,PIPAX);ai_ca(s,ea);
  AT(02351);ai_ad(s,ZERONDX);
- AT(02352);if(ai_bzf(s)){
-  /* Back to CHECKG1: with NEWJOB not positive the same state recurs. */
-  agc_word j=ai_word(s,NEWJOB);
-  if(j==0u||j==077777u||j>037777u)return REFUSE;
-  GOTO(02335);
- }
+ AT(02352);if(ai_bzf(s)){W[5]=02335;return STOP;}   /* CHECKG1: idle until a PIPA pulse */
  AT(02354);IX(PIPINDEX,PIPAX);ai_ca(s,ea);
  AT(02356);IX(RESULTCT,DATAPL);(void)ai_ts(s,ea);
  AT(02360);TC(02361,04102);
@@ -847,7 +870,7 @@ static int basic(apollo_overlay_state *s,lm_ipt_io *io){
  AT(04114);(void)ai_ts(s,L_);
  AT(04115);ai_csf(s,K_POSMAX);
  AT(04116);ai_ad(s,L_);
- AT(04117);if(ai_bzf(s))return REFUSE;   /* FINETIME +1 again: the scaler is frozen */
+ AT(04117);if(ai_bzf(s)){W[5]=04103;return STOP;}   /* FINETIME +1: idle until the scaler moves */
  AT(04121);read_ch(s,io->hiscalar);
  AT(04123);return tc_erasable(s,Q_);
 #else
@@ -868,6 +891,14 @@ static int here(const apollo_overlay_state *s,const lm_ipt_io *io,int *interp){
  ph=agc_fixed_physical(z,W[4],io->control.superbank);
  return ph>=037u*1024u+(02002u-02000u)&&ph<=037u*1024u+(03053u-02000u);
 }
+#ifdef IPT_C64_PART
+/* The physical key of this point (LOC at NEWOPS, else Z). */
+static uint16_t key(const apollo_overlay_state *s,const lm_ipt_io *io,int interp){agc_word z=W[5];
+ if(interp)return agc_fixed_physical(W[LOC],W[BANKSET],io->control.superbank);
+ if(z>=04000u)return (uint16_t)(2048u+z-04000u);
+ return agc_fixed_physical(z,W[4],io->control.superbank);
+}
+#endif
 /* FIXLOC one of the five VAC areas, PUSHLOC inside it, no order code left
  * over in EDOP (every NEWOPS the file reaches follows a whole pair or a
  * store code). */
@@ -881,6 +912,10 @@ static enum exec_status steps(apollo_overlay_state *s,lm_ipt_io *io){
  unsigned n,jumps=0;int st,interp;
  for(n=0;n<RUN_LIMIT;++n){
   if(!here(s,io,&interp))return n?EXEC_OK:EXEC_OUT_OF_SCOPE;
+#ifdef IPT_C64_PART
+  /* A registered key this part leaves out: the chained step ends here. */
+  if((n||jumps)&&ipt_is_key(key(s,io,interp))&&!ipt_part_has(key(s,io,interp)))return EXEC_OK;
+#endif
   /* NEWOPS reads the order word under FB, which DANZIG set from BANKSET. */
   if(interp&&(((W[4]^W[BANKSET])&076000u)||!work_area(s)))return EXEC_OUT_OF_SCOPE;
   st=interp?interpretive(s,io):basic(s,io);
@@ -906,19 +941,45 @@ static enum exec_status routine(const agc_native_program *p,apollo_overlay_state
 #define FFK(a) (uint16_t)(2048u+((a)-04000u))
 #define FF(a) {FFK(a),routine}
 static const agc_routine_entry basic_entries[IPT_BASIC_ROUTINES]={
- FF(04112),RT(02002),RT(02004),RT(02034),RT(02035),RT(02036),RT(02071),RT(02100),RT(02111),RT(02113),
- RT(02115),RT(02150),RT(02151),RT(02161),RT(02165),RT(02166),RT(02272),RT(02274),RT(02311),RT(02313),
- RT(02314),RT(02324),RT(02331),RT(02342),RT(02354),RT(02466),RT(02467),RT(02470),RT(02500),RT(02504),
- RT(02536),RT(02561),RT(02576),RT(02577),RT(02604),RT(02776),RT(03024),RT(03046),RT(03051),RT(03053)};
+ FF(04103),FF(04112),RT(02002),RT(02004),RT(02027),RT(02034),RT(02035),RT(02036),RT(02071),RT(02100),
+ RT(02111),RT(02113),RT(02115),RT(02150),RT(02151),RT(02161),RT(02165),RT(02166),RT(02272),RT(02274),
+ RT(02311),RT(02313),RT(02314),RT(02324),RT(02331),RT(02335),RT(02342),RT(02354),RT(02466),RT(02467),
+ RT(02470),RT(02500),RT(02504),RT(02536),RT(02561),RT(02576),RT(02577),RT(02604),RT(02776),RT(03024),
+ RT(03046),RT(03051),RT(03053)};
+/* Every order-pair and store word: each can follow a DANZIG, where a job
+ * switch (CHANG2) suspends the job and the Executive resumes it at NEWOPS
+ * with LOC there. */
 static const agc_routine_entry interp_entries[IPT_INTERPRETIVE_ROUTINES]={
- RT(02021),RT(02040),RT(02043),RT(02066),RT(02211),RT(02224),RT(02414),RT(02423),RT(02445),RT(02452),
- RT(02516),RT(02605),RT(03006),RT(03030)};
+ RT(02021),RT(02023),RT(02025),RT(02040),RT(02043),RT(02044),RT(02046),RT(02047),RT(02050),RT(02051),
+ RT(02053),RT(02054),RT(02056),RT(02057),RT(02060),RT(02061),RT(02062),RT(02063),RT(02064),RT(02066),
+ RT(02211),RT(02214),RT(02217),RT(02221),RT(02224),RT(02225),RT(02275),RT(02300),RT(02401),RT(02404),
+ RT(02405),RT(02407),RT(02411),RT(02412),RT(02414),RT(02416),RT(02417),RT(02420),RT(02423),RT(02424),
+ RT(02427),RT(02431),RT(02434),RT(02437),RT(02441),RT(02442),RT(02445),RT(02452),RT(02454),RT(02516),
+ RT(02520),RT(02522),RT(02524),RT(02525),RT(02526),RT(02530),RT(02532),RT(02534),RT(02605),RT(02607),
+ RT(02611),RT(02613),RT(02615),RT(02617),RT(02620),RT(02623),RT(02625),RT(02627),RT(02632),RT(02635),
+ RT(02640),RT(02641),RT(02644),RT(02646),RT(02651),RT(02654),RT(02655),RT(02660),RT(02661),RT(02663),
+ RT(02664),RT(02667),RT(02672),RT(02673),RT(02676),RT(02701),RT(02704),RT(02706),RT(02707),RT(02712),
+ RT(02713),RT(02716),RT(02717),RT(02722),RT(02724),RT(02725),RT(02730),RT(02733),RT(02735),RT(02737),
+ RT(02741),RT(02742),RT(02744),RT(02745),RT(02747),RT(02750),RT(02752),RT(02755),RT(02760),RT(02761),
+ RT(02762),RT(02764),RT(02765),RT(02766),RT(02767),RT(02770),RT(02772),RT(03006),RT(03011),RT(03013),
+ RT(03015),RT(03017),RT(03020),RT(03030),RT(03032)};
 const agc_routine_table lm_imu_performance_routines={basic_entries,IPT_BASIC_ROUTINES};
 const agc_routine_table lm_imu_performance_interpretive={interp_entries,IPT_INTERPRETIVE_ROUTINES};
 const uint16_t ipt_routine_keys[IPT_ROUTINES]={
- FFK(04112),B37(02002),B37(02004),B37(02034),B37(02035),B37(02036),B37(02071),B37(02100),B37(02111),B37(02113),
- B37(02115),B37(02150),B37(02151),B37(02161),B37(02165),B37(02166),B37(02272),B37(02274),B37(02311),B37(02313),
- B37(02314),B37(02324),B37(02331),B37(02342),B37(02354),B37(02466),B37(02467),B37(02470),B37(02500),B37(02504),
- B37(02536),B37(02561),B37(02576),B37(02577),B37(02604),B37(02776),B37(03024),B37(03046),B37(03051),B37(03053),
- B37(02021),B37(02040),B37(02043),B37(02066),B37(02211),B37(02224),B37(02414),B37(02423),B37(02445),B37(02452),
- B37(02516),B37(02605),B37(03006),B37(03030)};
+ FFK(04103),FFK(04112),B37(02002),B37(02004),B37(02027),B37(02034),B37(02035),B37(02036),B37(02071),B37(02100),
+ B37(02111),B37(02113),B37(02115),B37(02150),B37(02151),B37(02161),B37(02165),B37(02166),B37(02272),B37(02274),
+ B37(02311),B37(02313),B37(02314),B37(02324),B37(02331),B37(02335),B37(02342),B37(02354),B37(02466),B37(02467),
+ B37(02470),B37(02500),B37(02504),B37(02536),B37(02561),B37(02576),B37(02577),B37(02604),B37(02776),B37(03024),
+ B37(03046),B37(03051),B37(03053),B37(02021),B37(02023),B37(02025),B37(02040),B37(02043),B37(02044),B37(02046),
+ B37(02047),B37(02050),B37(02051),B37(02053),B37(02054),B37(02056),B37(02057),B37(02060),B37(02061),B37(02062),
+ B37(02063),B37(02064),B37(02066),B37(02211),B37(02214),B37(02217),B37(02221),B37(02224),B37(02225),B37(02275),
+ B37(02300),B37(02401),B37(02404),B37(02405),B37(02407),B37(02411),B37(02412),B37(02414),B37(02416),B37(02417),
+ B37(02420),B37(02423),B37(02424),B37(02427),B37(02431),B37(02434),B37(02437),B37(02441),B37(02442),B37(02445),
+ B37(02452),B37(02454),B37(02516),B37(02520),B37(02522),B37(02524),B37(02525),B37(02526),B37(02530),B37(02532),
+ B37(02534),B37(02605),B37(02607),B37(02611),B37(02613),B37(02615),B37(02617),B37(02620),B37(02623),B37(02625),
+ B37(02627),B37(02632),B37(02635),B37(02640),B37(02641),B37(02644),B37(02646),B37(02651),B37(02654),B37(02655),
+ B37(02660),B37(02661),B37(02663),B37(02664),B37(02667),B37(02672),B37(02673),B37(02676),B37(02701),B37(02704),
+ B37(02706),B37(02707),B37(02712),B37(02713),B37(02716),B37(02717),B37(02722),B37(02724),B37(02725),B37(02730),
+ B37(02733),B37(02735),B37(02737),B37(02741),B37(02742),B37(02744),B37(02745),B37(02747),B37(02750),B37(02752),
+ B37(02755),B37(02760),B37(02761),B37(02762),B37(02764),B37(02765),B37(02766),B37(02767),B37(02770),B37(02772),
+ B37(03006),B37(03011),B37(03013),B37(03015),B37(03017),B37(03020),B37(03030),B37(03032)};

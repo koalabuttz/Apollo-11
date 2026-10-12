@@ -1,0 +1,31 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 12288 original P21 entries equal native trampoline runs fde47bff286e520cf79d811871c37a7940406786b0108e9778c2bd892cb2a524",
+  "cm-p21: 12288 cases, 238 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 12577 checks, 0 failures",
+  "PASS 108 assembled P21 words on 106 source lines map to 24 native routines",
+  "cm-p21: 12288 cases, 238 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 12577 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL cm-p21-1.prg: 516 checks, 0 failures",
+   "PASS: VICE PAL cm-p21-2.prg: 518 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 45424,
+    "prg_sha256": "64c55e80357128087c2b9f3ff60b462e21f606e84724ba5fc7197c591c15684a",
+    "image_end": "$b977",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "TDEC1 through P21VSAVE (INTEGRV, DDV, ASIN): 516 cases"
+   },
+   "2": {
+    "prg_bytes": 27366,
+    "prg_sha256": "b9047a55168ae30e22504cdfca34db85d365f05abb0f7e8ae9dcc95a0142fe14",
+    "image_end": "$72ed",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "every other entry: 518 cases"
+   }
+  }
+ }
+}

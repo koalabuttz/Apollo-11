@@ -125,6 +125,15 @@ void icp_input(apollo_overlay_state *m,icp_case *c,uint16_t n){uint32_t seed=0x1
  }
  m->words[076]=ccs_class(&seed,(v/4u)%4u);                    /* FLAGWRD2 */
  if(!c->cm&&(z==LM_ICP_PIPASR_RETURN))m->words[0141]=(v&8u)?0200u:0u; /* TEM1 as NBDONLY stores it */
+ /* NBD2's elapsed time at -0 (TCF ENDOFJOB) and +0 (TCF NBD3) in a quarter
+  * of the states each: NBDONLY's TIME1 - 1/PIPADT and the PIPUSE return's
+  * PIPTIME1 +1 - 1/PIPADT, COM of the old 1/PIPADT plus the new time. -0
+  * when the two are equal; +0 only from a new time of +0 and an old
+  * 1/PIPADT of -0. */
+ if(c->cm&&(z==CM_ICP_NBDONLY||z==CM_ICP_PIPUSE_RETURN)&&(v/16u)%4u>=2u){
+  agc_word *now=&m->words[z==CM_ICP_NBDONLY?025u:01246u];
+  if((v/16u)%4u==2u)m->words[01074]=*now;else{*now=0;m->words[01074]=077777u;}
+ }
 }
 #ifdef ICP_EXEC
 /* Luminary round trips read BANKCALL CADRs and the NOVAC 2CADR from one

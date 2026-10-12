@@ -1,0 +1,116 @@
+{
+ "cases": 14336,
+ "c64_groups": {
+  "1": 128,
+  "2": 520
+ },
+ "stream_sha256": "3dd445f01ae4e5d28028d5ea2fbaa91e3204893e1e983783fc58a7f057078cfe",
+ "stops": {
+  "DELVOV save (2212)": {
+   "BANKCALL": 512
+  },
+  "TIG (2233)": {
+   "NEWOPS 13,3043": 512
+  },
+  "COMPMAT (2237)": {
+   "NEWOPS 13,3414": 512
+  },
+  "after INTSTALL (2261)": {
+   "NEWOPS 13,3107": 512
+  },
+  "after P76SUB1 (2263)": {
+   "NEWOPS 13,3107": 512
+  },
+  "after INTEGRVS (2302)": {
+   "NEWOPS 13,3414": 512
+  },
+  "after INTSTALL (2304)": {
+   "NEWOPS 11,3455": 512
+  },
+  "after MINIRECT (2315)": {
+   "PHASCHNG": 512
+  },
+  "after INTPRET (2323)": {
+   "NEWOPS 13,2661": 512
+  },
+  "after ATOPOTH (2325)": {
+   "BANKCALL": 512
+  },
+  "OUT (2332)": {
+   "GOTOPOOH": 512
+  },
+  "P76SUB1 (2340)": {
+   "NEWOPS 10,2217": 1,
+   "NEWOPS 10,2602": 1,
+   "NEWOPS 10,2640": 1,
+   "NEWOPS 10,2650": 1,
+   "NEWOPS 10,3223": 1,
+   "NEWOPS 10,3344": 1,
+   "NEWOPS 10,3644": 1,
+   "NEWOPS 11,2301": 1,
+   "NEWOPS 11,2723": 1,
+   "NEWOPS 11,3275": 1,
+   "NEWOPS 11,3660": 1,
+   "NEWOPS 11,3726": 1,
+   "NEWOPS 12,2001": 1,
+   "NEWOPS 12,2354": 1,
+   "NEWOPS 12,2363": 1,
+   "NEWOPS 12,2422": 1,
+   "NEWOPS 12,2736": 1,
+   "NEWOPS 12,3005": 1,
+   "NEWOPS 12,3357": 1,
+   "NEWOPS 13,3107": 384,
+   "NEWOPS of a CADR in another bank": 109
+  },
+  "P76 (2207)": {
+   "UPFLAG": 512
+  },
+  "after UPFLAG (2211)": {
+   "INTPRET": 512
+  },
+  "V06N84 flash (2216)": {
+   "BANKCALL": 512
+  },
+  "terminate (2221)": {
+   "GOTOPOOH": 512
+  },
+  "proceed (2222)": {
+   "BANKCALL": 512
+  },
+  "recycle (2223)": {
+   "BANKCALL": 512
+  },
+  "V06N33 flash (2224)": {
+   "BANKCALL": 512
+  },
+  "terminate (2227)": {
+   "GOTOPOOH": 512
+  },
+  "proceed (2230)": {
+   "INTPRET": 512
+  },
+  "recycle (2231)": {
+   "BANKCALL": 512
+  },
+  "INTPRET (2232)": {
+   "INTPRET": 512
+  },
+  "PHASCHNG (2316)": {
+   "PHASCHNG": 512
+  },
+  "after PHASCHNG (2320)": {
+   "UPFLAG": 512
+  },
+  "after UPFLAG (2322)": {
+   "INTPRET": 512
+  },
+  "INTWAKE1 (2330)": {
+   "BANKCALL": 512
+  },
+  "ENDP76 (2333)": {
+   "GOTOPOOH": 512
+  }
+ },
+ "boundary": "each case runs from its entry (NEWOPS or Z) through the trampoline (this file's routines) to the first point outside them; the oracle stops at the same point (tests/lm_p76_cases.c lm_p76_stop: a NEWOPS outside 13,2212-2350, UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO1)",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and SUPERBNK"
+}

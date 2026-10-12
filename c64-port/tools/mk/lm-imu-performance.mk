@@ -28,10 +28,10 @@ lm-imu-performance-differential: build/lm-imu-performance-native
 	python3 tools/prepare_no_imu_device_engine.py
 	python3 tools/lm_imu_performance_freeze.py
 	git diff --exit-code -- tests/lm_imu_performance_vectors.h tests/lm_imu_performance_c64_vectors.h
-# C64: five parts (IPT_C64_PART, tests/lm_imu_performance_cases.h), each
+# C64: seven parts (IPT_C64_PART, tests/lm_imu_performance_cases.h), each
 # linking the code its cases run; images under KERNAL ROM.
 IPT_MOS_FLAGS = -std=c99 -Oz -DAPOLLO_FIXED_LM_ONLY -DP66_NATIVE_DISPATCH_ONLY -DIPT_UNDO_ADDRESS=0xf000u -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
-IPT_C64_PRGS = $(foreach p,1 2 3 4 5,build/lm-imu-performance-$(p).prg)
+IPT_C64_PRGS = $(foreach p,1 2 3 4 5 6 7,build/lm-imu-performance-$(p).prg)
 c64-lm-imu-performance: $(IPT_C64_PRGS)
 build/lm-imu-performance-%.prg: $(IPT_SRC) platform/c64/lm_imu_performance_diagnostic.c tests/lm_imu_performance_c64_vectors.h $(IPT_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(IPT_MOS_FLAGS) -DIPT_C64_PART=$* -Wl,-Map,build/lm-imu-performance-$*.map $(IPT_SRC) platform/c64/lm_imu_performance_diagnostic.c -o $@

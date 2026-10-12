@@ -6,7 +6,7 @@ The DOWNRUPT lead-in saves A and L, loads BB for bank 05 and jumps to DODOWNTM. 
 
 ## Scope
 
-- `Luminary099/DOWN-TELEMETRY_PROGRAM.agc`, every instruction (05,3506-3771): DODOWNTM, WO1, DNPHASE1, DNPHASE2, NEWLIST, NEXTINCL, SETWO, DODNCHAN, WOZERO, DODNPTR, SNAPLOOP, SNAPAGN, FETCH2WD, DOSUBLST, NEXTINSL, DNTMEXIT, DNDUMPI, DNDUMP, DNDUMP1, DNDUMP2, SENDID and WOTEST.
+- `Luminary099/DOWN_TELEMETRY_PROGRAM.agc`, every instruction (05,3506-3771): DODOWNTM, WO1, DNPHASE1, DNPHASE2, NEWLIST, NEXTINCL, SETWO, DODNCHAN, WOZERO, DODNPTR, SNAPLOOP, SNAPAGN, FETCH2WD, DOSUBLST, NEXTINSL, DNTMEXIT, DNDUMPI, DNDUMP, DNDUMP1, DNDUMP2, SENDID and WOTEST.
 - `TC DNTMGOTO` is an erasable continuation (`AGC_TRANSFER_ERASABLE_BASE + 0335`). It accepts exactly the six words stored there: LDNPHAS1 (STARTSUB), LDNPHAS2, LDNDUMPI (DNEDUMP), LDNDUMP, LDNDUMP1, and the return address of DNDUMPI's `TC SENDID` (`QXCH DNTMGOTO`). Any other word refuses.
 - Data: the six downlists of `DOWNLINK_LISTS.agc` (DNTABLE 05,2441-2446, the control lists, DNPTR sublists and snapshot sublists) and the constants the program reads are compiled from the listing into `src/lm_downtelemetry_data.inc` (`tools/downtelemetry_generate.py --mission Luminary099`) and checked against the rope. MINTIME2 and DNADRDCR are executed as MASK 7753 and MASK 4001 on the +0 branch of the CCS before them; the words those read are compiled too. MINB1314 would execute as CS 7777, but the source marks it "CAN'T GET HERE" and Luminary assembles no word at 07777, so that path refuses.
 - Run-time INDEX: the list pointers (`INDEX CTLIST; CA 0`, `INDEX SUBLIST; 0 0`) and DNCHAN's `INDEX DNECADR; INDEX 0 -4000` form the instruction word as the hardware does (overflow-corrected sum of the sign-extended words). The result must be a CA of a compiled fixed word, or a READ of channel 11-14 or 30-33. Anything else refuses.
@@ -35,4 +35,4 @@ Hashes: `evidence/lm-downtelemetry/SHA256.json`. Bulk files are assets of the `e
   - every control word of all six downlists is sent;
   - every dump case returns to DNPHASE2;
   - an unknown DNTMGOTO word, a DNLSTCOD with no downlist (6), a missing io and a bank other than 05 are refused.
-- C64 execution results: `make vice-lm-downtelemetry` (`evidence/lm-downtelemetry/lm-downtelemetry-vice.log`): every second sequence (24 sequences, 7,720 downrupts).
+- C64 execution results: `make vice-lm-downtelemetry` (`evidence/lm-downtelemetry/lm-downtelemetry-vice.log`): all 48 sequences, so every downlist and every dump case also runs on the C64.

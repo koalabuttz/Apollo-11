@@ -1,0 +1,7 @@
+{
+  "suite": "ev-lmi",
+  "cases": 960,
+  "differing": 0,
+  "native_sha256": "b3cd7043a18220717d23552a35f085873dffc991a76b528dddc7d77675d79eff",
+  "oracle_sha256": "b3cd7043a18220717d23552a35f085873dffc991a76b528dddc7d77675d79eff"
+}

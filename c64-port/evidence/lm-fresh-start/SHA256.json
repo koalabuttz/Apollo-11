@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-fresh-start",
+  "release": "evidence-lm-fresh-start",
+  "files": {
+    "lm-fresh-start-data.json": {
+      "sha256": "bde074c3f193b7b09dff8fb2dea25fefc557be152e51522d619db5b628cf2784",
+      "bytes": 8778,
+      "store": "release"
+    },
+    "lm-fresh-start-host.log": {
+      "sha256": "5033316e3506f0005eebbbb68c084c35092b11d4be0c0023e4ee63d7569e3e8a",
+      "bytes": 1764,
+      "store": "release"
+    },
+    "lm-fresh-start-proof.json": {
+      "sha256": "3754761cdbc1f9e2ed3c2995ea9369a1c18cdbff5152424d728eab43d0978301",
+      "bytes": 669,
+      "store": "tree"
+    },
+    "lm-fresh-start-vice.log": {
+      "sha256": "f11ccd82da5760289a74fee20a68fda794d5727a25a4d4cf50766f5294217a2f",
+      "bytes": 626,
+      "store": "release"
+    }
+  }
+}

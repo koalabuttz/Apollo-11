@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-q-r-axis",
+  "release": "evidence-lm-q-r-axis",
+  "files": {
+    "lm-q-r-axis-c64-cover.json": {
+      "sha256": "c38cd6799b7b27965b0ee7aebe55d8bf9fb3bb6b2cd4dcb43df3a2656ae422c0",
+      "bytes": 18834,
+      "store": "tree"
+    },
+    "lm-q-r-axis-host.log": {
+      "sha256": "56fd2b53e6f943f08c2b3afd9f561f9e845cc7d228dc4cb94e52d4e1490b7410",
+      "bytes": 1776,
+      "store": "tree"
+    },
+    "lm-q-r-axis-proof.json": {
+      "sha256": "ba658aefa99408908ee9a1f9930e31bb0d1df73ce4a5ff42968da1a7a7981af4",
+      "bytes": 2291,
+      "store": "tree"
+    },
+    "lm-q-r-axis-source-map.json": {
+      "sha256": "f23403f55c1796fe91c1fddf0a7f515b0c5a2859dc539e86091ceb66b8ddad45",
+      "bytes": 115269,
+      "store": "tree"
+    },
+    "lm-q-r-axis-vice.log": {
+      "sha256": "b4fee6dfd10d3b7f66c2ff0bd73d84d221e7674c5d96556f3c5ada048177be0b",
+      "bytes": 191,
+      "store": "tree"
+    }
+  }
+}

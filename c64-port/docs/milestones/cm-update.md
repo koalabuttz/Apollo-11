@@ -1,0 +1,7 @@
+---
+id: cm-update
+title: Translate Comanche UPDATE_PROGRAM as transfer-ABI routines
+date: 2026-10-12T17:28Z
+lane: A
+---
+Every instruction of Comanche055 UPDATE_PROGRAM (P27: the V70-V73 uplink verbs, data collection and verification, restart-protected stores into erasable memory and the TIME2/TIME1 adjustment) runs as routines of the control-transfer ABI. There are 36 entries: the verbs, UPACTOFF (BANKCALL'd from FRESH_START and P20-P25), the POSTJUMP targets, the job, its post-EXIT code, two restart points and the return after every TC out of the file. The code follows the Luminary translation, plus the Comanche-only CKMDMORE mode check; its constants are compiled from the source listing and its BANKCALL/POSTJUMP CADRs come from the interbank site table. 4,096 cases from every entry equal the original Comanche055 program in the interrupt-enable state, SUPERBNK, channel 11 and all 2,048 erasable words. They include even V72 counts, one-word V71 loads at a bank's first word, V71 loads past a bank's end, EB0 targets and UPACTOFF from both BANKCALL callers, and together they execute every instruction of the file (12,811 strict and sanitizer checks, all 36 entries and all 14 exits reached). 289 rows chosen by outcome, covering every word the host cases execute, match in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-UPDATE.md`.

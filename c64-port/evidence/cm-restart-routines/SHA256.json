@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "cm-restart-routines-vice.log": {
-      "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592",
-      "bytes": 1076,
+      "sha256": "1ed4011476c6ae3567b28453ba4c8dc8322cd4729ac0f2d75c09371b1b4c82d2",
+      "bytes": 641,
       "store": "release"
     }
   }

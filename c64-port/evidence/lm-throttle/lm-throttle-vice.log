@@ -1,1 +1,2 @@
-PASS: VICE PAL lm-throttle.prg: 512 checks, 0 failures
+lm-throttle.prg sha256 9794689fbbed8e19566ba00df735560602f919a7118cdc18914c7fb08427238b, 256 C64 rows (tests/lm_throttle_c64_vectors.h)
+PASS: VICE PAL lm-throttle.prg: 256 checks, 0 failures

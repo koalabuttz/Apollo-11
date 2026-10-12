@@ -32,11 +32,38 @@ int ipt_leaves(agc_word z,agc_word fb,agc_word superbank,agc_word loc,agc_word b
  return 1;
 }
 
+int ipt_idle(agc_word z,agc_word prev){return (z==02335u&&prev==02352u)||(z==04103u&&prev==04117u);}
+
+#if !(defined IPT_C64_PART && IPT_C64_PART>0)
+unsigned ipt_part;
+int ipt_in(agc_word loc){return IPT_P_IN(ipt_part,loc);}
+int ipt_basic_in(agc_word a){return IPT_P_BASIC_IN(ipt_part,ipt_block(a));}
+#endif
+agc_word ipt_block(agc_word a){
+ static const agc_word heads[]={02002u,02004u,02027u,02067u,02101u,02117u,02126u,02151u,02166u,02226u,02270u,02301u,
+  02332u,02367u,02447u,02457u,02500u,02536u,02577u,02773u,03025u,03034u,04102u};
+ unsigned i=sizeof heads/sizeof *heads;
+ while(--i&&heads[i]>a){}
+ return heads[i];
+}
+static int search(const agc_routine_table *t,uint16_t ph){unsigned lo=0,hi=t->count;
+ while(lo<hi){unsigned mid=(lo+hi)/2u;if(t->entries[mid].physical<ph)lo=mid+1u;else hi=mid;}
+ return lo<t->count&&t->entries[lo].physical==ph;
+}
+int ipt_is_key(uint16_t ph){return search(&lm_imu_performance_routines,ph)||search(&lm_imu_performance_interpretive,ph);}
+int ipt_part_has(uint16_t ph){agc_word a;
+ if(search(&lm_imu_performance_interpretive,ph))return IPT_IN((agc_word)(02000u+ph%1024u));
+ a=(agc_word)(ph>=2048u&&ph<3072u?04000u+ph-2048u:02000u+ph%1024u);
+ a=ipt_block(a);
+ return IPT_P_BASIC_IN(ipt_part,a);
+}
+
 static void set_banks(apollo_overlay_state *m,agc_word fb,agc_word eb){W[4]=fb;W[3]=eb;W[6]=(agc_word)(fb|(eb>>8));}
 /* Physical word of an EBANK 5 window address (the image is indexed
  * physically: E5 is 02400-02777). */
 #define E5(a) ((a)+01000u)
 #define KEY(a) (ph==(uint16_t)(037u*1024u+((a)-02000u)))
+#define FFKEY(a) (ph==(uint16_t)(2048u+((a)-04000u)))
 
 void ipt_input(apollo_overlay_state *m,ipt_case *c,uint16_t n){
  uint32_t seed=0x1d07ul+(uint32_t)n*13u;unsigned i,v,r=n%IPT_ROUTINES;uint16_t ph=ipt_routine_keys[r];
@@ -46,13 +73,13 @@ void ipt_input(apollo_overlay_state *m,ipt_case *c,uint16_t n){
  W[7]=0;W[0]=agc_extend(W[0]);W[1]=agc_extend(W[1]);
  c->interrupt_enabled=(uint16_t)(v&1u);
  c->superbank=(agc_word)(((v>>1)%4u)<<4);
- c->hiscalar=r15(&seed);c->loscalar=r15(&seed);
- if(c->loscalar==037777u)c->loscalar=0;
+ /* LOSCALAR 37777 (FINETIME's retry) in a quarter of the states. */
+ c->hiscalar=r15(&seed);c->loscalar=below(&seed,4u)?r15(&seed):037777u;
  eb=(v>>3)%4u==3u?(agc_word)(below(&seed,8u)<<8):02400u;
  set_banks(m,076000u,eb);
- /* NEWJOB +0 (a job waiting in a fifth of the states; CHECKG's wait needs
-  * one to end). */
- W[067]=(v>>5)%5u==4u||KEY(02342)||KEY(02166)||KEY(02151)?(agc_word)(below(&seed,0400u)+1u):0;
+ /* NEWJOB +0, or a job waiting in a fifth of the states (always at
+  * CHECKG's CHANG1 return and the PIPA tasks; half the CHECKG1 states). */
+ W[067]=below(&seed,5u)==4u||KEY(02342)||KEY(02166)||KEY(02151)||(KEY(02335)&&below(&seed,2u))?(agc_word)(below(&seed,0400u)+1u):0;
  /* The erasable returns: genuine call sites or a caller outside (04000). */
  {static const agc_word qplace[7]={02144u,02200u,02126u,02231u,02270u,04000u,04000u};
   static const agc_word qplaces[5]={02131u,02171u,02252u,03037u,04000u};
@@ -63,21 +90,25 @@ void ipt_input(apollo_overlay_state *m,ipt_case *c,uint16_t n){
  /* Small indexes: POSITON (SOUTHDR), PIPINDEX (PIPAX), RESULTCT (DATAPL). */
  if(eb==02400u){
   W[E5(01416)]=(agc_word)below(&seed,8u);
-  W[E5(01415)]=(v>>7)%8u==7u?small_class(&seed,2u+below(&seed,2u),2u):(agc_word)below(&seed,3u);
+  W[E5(01415)]=below(&seed,8u)==7u?small_class(&seed,2u+below(&seed,2u),2u):(agc_word)below(&seed,3u);
   W[E5(01537)]=(agc_word)below(&seed,6u);
-  /* CCS words: NDXCTR, LENGTHOT, TORQNDX, ALTIM, GEOCOMPS (not -0 at
-   * ALFLT), DATAPL +1, OVFLOWCK. */
-  W[E5(01414)]=(v>>9)%2u?small_class(&seed,(v>>3)%4u,3u):(agc_word)((v>>3)%2u);
-  W[E5(01412)]=ccs_class(&seed,(v>>4)%4u);
-  W[E5(01440)]=ccs_class(&seed,(v>>5)%4u);
-  W[E5(01530)]=ccs_class(&seed,(v>>6)%4u);
-  W[E5(01562)]=small_class(&seed,(v>>2)%3u,2u);
-  W[E5(01473)]=ccs_class(&seed,(v>>7)%4u);
-  if((v>>8)%2u)W[E5(01576)]=0;
-  /* ALX1S: 0 after ESTIMS, 12 lower after each ALKCG pass; CMPX1 +-0
-   * (ALKLP's LXC/SXA flips it). */
+  /* CCS words, each class drawn on its own: NDXCTR, LENGTHOT, TORQNDX,
+   * ALTIM, GEOCOMPS, DATAPL +1, OVFLOWCK. */
+  W[E5(01414)]=below(&seed,2u)?small_class(&seed,below(&seed,4u),3u):(agc_word)below(&seed,2u);
+  W[E5(01412)]=ccs_class(&seed,below(&seed,4u));
+  W[E5(01440)]=ccs_class(&seed,below(&seed,4u));
+  W[E5(01530)]=ccs_class(&seed,below(&seed,4u));
+  W[E5(01562)]=small_class(&seed,below(&seed,3u),2u);
+  W[E5(01473)]=ccs_class(&seed,below(&seed,4u));
+  if(below(&seed,2u))W[E5(01576)]=0;
+  /* ALX1S +0 or -(12..132), CMPX1 +-0 (flight: ALX1S 144, then 132 down to
+   * 0 by 12, CMPX1 +-1; the review's probe with those gave the same outcomes). */
   {agc_word x=(agc_word)(12u*below(&seed,12u));W[E5(01444)]=x?(agc_word)(~x&077777u):0u;}
   W[E5(01445)]=(rnd(&seed)>>17)&1u?077777u:0u;
+  /* CHECKG1: PIPAX unchanged since CHECKG's first read (ZERONDX holds
+   * its complement) in half the states. */
+  if(KEY(02335)&&below(&seed,2u)){agc_word x=W[E5(01415)]==077777u?0u:W[E5(01415)];
+   if(x<3u)W[E5(01571)]=(agc_word)(~W[037u+x]&077777u);}
  }
  /* A work area of one of the five VAC areas, the pushdown pointer inside
   * it, small index registers and steps (the basic code reaches the
@@ -87,7 +118,9 @@ void ipt_input(apollo_overlay_state *m,ipt_case *c,uint16_t n){
  for(i=0;i<2u;++i){agc_word x=(agc_word)below(&seed,040u);W[vac+046u+i]=(rnd(&seed)>>17)&1u?x:(agc_word)(~x&077777u);}
  W[vac+050u]=(agc_word)(below(&seed,6u)+1u);W[vac+051u]=(agc_word)(below(&seed,6u)+1u);
  if(r<IPT_BASIC_ROUTINES){
-  if(ph>=2048u&&ph<3072u){W[5]=(agc_word)(04000u+ph-2048u);W[2]=02361u;}
+  /* FINETIME keys return to CHECKG (02361) or, at FINETIME +1, also to
+   * SCALPREP (bank 37, 03717). */
+  if(ph>=2048u&&ph<3072u){W[5]=(agc_word)(04000u+ph-2048u);W[2]=FFKEY(04103)&&below(&seed,2u)?03717u:02361u;}
   else W[5]=(agc_word)(02000u+ph%1024u);
   return;
  }
@@ -96,8 +129,11 @@ void ipt_input(apollo_overlay_state *m,ipt_case *c,uint16_t n){
  W[5]=NEWOPS;W[LOC]=(agc_word)(02000u+ph%1024u);W[BANKSET]=W[6];W[0115]=040000u;W[023]=0;
  {agc_word genuine[3];
   genuine[0]=IPT_QPRET_ERTHRVSE_2532;genuine[1]=IPT_QPRET_ERTHRVSE_3030;genuine[2]=IPT_QPRET_EARTHR_2452;
-  if(KEY(02414))W[vac+052u]=(v>>2)%4u==3u?(agc_word)(04000u|r15(&seed)):genuine[(v>>2)%2u];
-  if(KEY(02423)||KEY(02445)){W[vac+051u]=(v>>2)%4u==3u?(agc_word)(04000u|r15(&seed)):genuine[2];W[vac+052u]=genuine[2];}
+  if(KEY(02414)||KEY(02416)||KEY(02417))W[vac+052u]=(v>>2)%4u==3u?(agc_word)(04000u|r15(&seed)):genuine[(v>>2)%2u];
+  if(KEY(02423)||KEY(02424)||KEY(02427)||KEY(02431)||KEY(02434)||KEY(02437)||KEY(02441)||KEY(02442)||KEY(02445)){
+   W[vac+051u]=(v>>2)%4u==3u?(agc_word)(04000u|r15(&seed)):genuine[2];W[vac+052u]=genuine[2];}
+  /* OVERFFIX's RVQ: CALL OVERFFIX at 02214 (back to AINGOTN) or 02427. */
+  if(KEY(02275)||KEY(02300))W[vac+052u]=(v>>2)%4u==3u?(agc_word)(04000u|r15(&seed)):(v>>2)%2u?076431u:076217u;
  }
 }
 

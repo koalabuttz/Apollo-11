@@ -77,13 +77,19 @@ the C64 diagnostic.
     pulse output empties CDUXCMD-CDUZCMD into the IMU outside the program. The
     oracle therefore reports those three counters as the program left them at
     `CAF 13,14,15` (`20,2425`), just before `WOR CHAN14`.
-  - The digests are frozen into `tests/lm_dapidler_vectors.h`, and every
-    thirty-second into `tests/lm_dapidler_c64_vectors.h`.
+  - The digests are frozen into `tests/lm_dapidler_vectors.h`.
+  - `tools/lane_f_c64_rows.py` chooses the C64 rows
+    (`tests/lm_dapidler_c64_vectors.h`, 192 cases). It runs every host case with
+    branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
+    until every entry, outcome and branch the host cases take is taken
+    (16 cases), then spreads the rest with a stride of 97. The per-branch
+    host and C64 counts are in `evidence/lm-dapidler/lm-dapidler-c64-cover.json`.
 - `make test-lm-dapidler` and `make sanitize-lm-dapidler` check every digest
   (strict and ASAN/UBSAN), require every case to reach its stop, require every
   routine and every reachable branch to be taken, and check the refusals.
-- `make vice-lm-dapidler` runs every thirty-second case (288) on the C64 in
-  VICE.
+- `make vice-lm-dapidler` runs the 192 C64 rows in VICE: every entry, every
+  outcome and every branch the host cases take. The VICE log records the
+  PRG's SHA-256.
 
 Branches no admitted input reaches, documented in the host test: the negative
 and -0 exits of each CCS on a MASK or RAND result (in CHEKBITS, DAPIDLER,

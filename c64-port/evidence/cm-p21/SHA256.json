@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p21",
+  "release": "evidence-cm-p21",
+  "files": {
+    "cm-p21-1.map": {
+      "sha256": "4d9c207d5fcb04ad0d79755367547b44277c46b7f7f60c7fe6505a15a657f696",
+      "bytes": 25583,
+      "store": "release"
+    },
+    "cm-p21-1.prg": {
+      "sha256": "64c55e80357128087c2b9f3ff60b462e21f606e84724ba5fc7197c591c15684a",
+      "bytes": 45424,
+      "store": "release"
+    },
+    "cm-p21-2.map": {
+      "sha256": "d3173e4270bfdfb5d0be3198f9ac05822656ee2ac3a45fe6f609e42c55266105",
+      "bytes": 20605,
+      "store": "release"
+    },
+    "cm-p21-2.prg": {
+      "sha256": "b9047a55168ae30e22504cdfca34db85d365f05abb0f7e8ae9dcc95a0142fe14",
+      "bytes": 27366,
+      "store": "release"
+    },
+    "cm-p21-checks.log": {
+      "sha256": "ba5f34a9f3c8ed4f06ba8845fa4f82e0bf7c277ffa19217001481c436210c7cb",
+      "bytes": 647,
+      "store": "tree"
+    },
+    "cm-p21-proof.json": {
+      "sha256": "4aa5af1c7be9cafb54668239799121cec17286fed462819cfc6c3f84b8e7bb4f",
+      "bytes": 1749,
+      "store": "tree"
+    },
+    "cm-p21-reference.snapshots.bin.xz": {
+      "sha256": "f1627cc8d09c260aad8f6c0ed3a67d3e7420d9e0ac0378c20f3cc65e07299643",
+      "bytes": 46891196,
+      "store": "release"
+    },
+    "cm-p21-results.json": {
+      "sha256": "3eb88c592fb3d1079982686eb6dab8d903ff2360fb3199819ef6778e53616ff8",
+      "bytes": 1369,
+      "store": "tree"
+    },
+    "cm-p21-source-map.json": {
+      "sha256": "2221fd2e54ea04acd471313dc4762c4df2a9d62b90d2b505c1dd8edca71b6056",
+      "bytes": 23318,
+      "store": "tree"
+    },
+    "cm-p21-source-stream.json": {
+      "sha256": "019792d8dcd97088d788d6e414190a1b0be043c9124cf37f645b4d60f581eb67",
+      "bytes": 338,
+      "store": "tree"
+    }
+  }
+}

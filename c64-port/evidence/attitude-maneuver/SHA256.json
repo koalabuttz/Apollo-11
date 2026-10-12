@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "attitude-maneuver",
+  "release": "evidence-attitude-maneuver",
+  "files": {
+    "attitude-maneuver-differential.log": {
+      "sha256": "fe098e7a2a17daba067d0d7b51fe7a1c3e9f37e27a3d28c6f14230dac928be4e",
+      "bytes": 3194,
+      "store": "release"
+    },
+    "attitude-maneuver-host.log": {
+      "sha256": "04324be050b1ee35df7ae497d7e5670acab656bf5ca13ef82ea08f5f4000f126",
+      "bytes": 84,
+      "store": "release"
+    },
+    "attitude-maneuver-proof.json": {
+      "sha256": "010672e3b21e92603e8a8d1c2a5943ac70c327ba27d4a406311558eb3053fcd2",
+      "bytes": 6164,
+      "store": "tree"
+    },
+    "attitude-maneuver-source-map.json": {
+      "sha256": "de2b1d9a51ee84faf61cb23b05c9ab41c817e92203e437df2304f51151b20a46",
+      "bytes": 131041,
+      "store": "tree"
+    },
+    "attitude-maneuver-vice.log": {
+      "sha256": "c2f95800b22f5bc7617ecd120f94739d714c182d612c95f471e3d13db849229b",
+      "bytes": 613,
+      "store": "release"
+    }
+  }
+}

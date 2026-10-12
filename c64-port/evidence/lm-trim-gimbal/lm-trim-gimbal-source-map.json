@@ -4,7 +4,7 @@
  },
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "native_path": "src/lm_trim_gimbal.c",
- "native_sha256": "cc73700ffcd9e2924c0cad5527b62b615c27f123e69d8c93c12e69236fb8075c",
+ "native_sha256": "78d9b9c175859add27db51140f3be143f0dd19869b2ac1d2de5b42d2274edbfa",
  "source_words": 388,
  "source_lines": 387,
  "indentation_only_repairs": {

@@ -1,0 +1,23 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 13312 original P35/P75 entries equal native trampoline runs 418af5cdef915a952a4fa5b25939227765eacdef038b91f3f51e6b9b5d55afcf",
+  "lm-p35: 13312 cases, 147 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 13488 checks, 0 failures",
+  "PASS 31 assembled P35/P75 words on 31 source lines map to 13 native routines",
+  "lm-p35: 13312 cases, 147 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 13488 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-p35-1.prg: 520 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 20922,
+    "prg_sha256": "c1ef9caf8db9f0ed7245f2c548310a515b6adc945ca28c01f18659df5959eadb",
+    "image_end": "$59c1",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "all thirteen entries: variant k*1024/520 of entry k%13"
+   }
+  }
+ }
+}

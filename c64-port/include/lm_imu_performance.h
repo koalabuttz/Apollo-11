@@ -21,29 +21,44 @@
  * DANZIG with NEWJOB positive, or an erasable Z other than those returns
  * (TC ATIGINC).
  *
- * Two keys are hardware events rather than calls: 02354 (CHECKG after a
- * PIPA pulse moved PIPAX between its two reads; without one CHECKG only
- * leaves through CHANG1) and 04112 (FINETIME after LOSCALAR moved between
- * READ and RXOR). The table is sorted by key: FINETIME (fixed-fixed) sorts
- * first.
+ * Keys: every entry and resume point. Basic: the files' entries, the
+ * returns from outside calls, 02027 (1STO2S's EXIT), the hardware events
+ * 02354 (CHECKG after a PIPA pulse moved PIPAX between its two reads) and
+ * 04112 (FINETIME after LOSCALAR moved between READ and RXOR), and the two
+ * idle points below. Interpretive: every order-pair and store word, since
+ * each can follow a DANZIG, where a job switch (CHANG2) suspends the job
+ * and the Executive resumes it at NEWOPS with LOC there. Each table is
+ * sorted by key: FINETIME (fixed-fixed) sorts first.
+ *
+ * Idle points: the original spins there until hardware moves an input, so
+ * the run ends there as a continuation (EXEC_OK) and the key resumes it:
+ * CHECKG1 (02335) after the BZF at 02352 found PIPAX unchanged, and
+ * FINETIME +1 (04103) after the BZF at 04117 found LOSCALAR 37777.
+ * CHECKG1 is also an interrupt point: the run ends with interrupts
+ * inhibited (CHECKG's INHINT), and the original's RELINT window
+ * (02336-02345) has no ABI boundary, so a scheduler takes interrupts at
+ * the 02335 continuation before resuming the key.
  *
  * io is lm_ipt_io; INHINT and RELINT set control.interrupt_enabled, READ
  * LOSCALAR and READ HISCALAR (FINETIME) read the frozen scaler words.
  *
- * Refused (EXEC_OUT_OF_SCOPE): states the original does not produce or
- * paths that never end without an interrupt:
+ * Refused (EXEC_OUT_OF_SCOPE): states the original does not produce, or
+ * that the compiled interpreter orders do not follow:
  *   - Z or LOC not one of the file's instruction or order-pair words (a
  *     CCS taking a slot that holds data or another routine's words);
  *   - an INDEX whose sum leaves the erasable words the instruction names
  *     (POSITON, PIPINDEX, RESULTCT, L in ZEROING; NDXCTR's computed TC
  *     beyond bank 37);
  *   - a TC Q or erasable TC whose word is not a TC to fixed memory;
- *   - CHECKG's wait with NEWJOB not positive (it spins until an interrupt
- *     moves PIPAX), FINETIME with LOSCALAR 37777 (it spins until the scaler
- *     moves), NEWJOB negative at a DANZIG;
+ *   - NEWJOB negative at a DANZIG;
  *   - an RVQ whose QPRET is not a fixed CADR, a fixed operand outside the
- *     constants the code names, and SIN/COS outside src/sband_trig.c's
- *     domain;
+ *     constants the code names (VXSC GEORGEJ with a scalar in MPAC names a
+ *     vector there), and SIN/COS outside src/sband_trig.c's domain;
+ *   - an indexed operand or store with X1 or X2 outside +-0377 (only a
+ *     store through another wild index leaves one there);
+ *   - AINGOTN's DDV with a divisor whose major part is +-0 once its words
+ *     agree in sign (BUFZERO): unreachable, the divisor is the test's
+ *     elapsed time (about 584 s);
  *   - an interpretive order with FIXLOC not one of the five VAC areas or
  *     PUSHLOC outside FIXLOC..FIXLOC+42, or EDOP not +0;
  *   - no undo image (io->undo NULL), or more than 4000 steps.
@@ -57,8 +72,8 @@ typedef struct {
 } lm_ipt_io;
 extern const agc_routine_table lm_imu_performance_routines;
 extern const agc_routine_table lm_imu_performance_interpretive;
-#define IPT_BASIC_ROUTINES 40u
-#define IPT_INTERPRETIVE_ROUTINES 14u
+#define IPT_BASIC_ROUTINES 43u
+#define IPT_INTERPRETIVE_ROUTINES 125u
 #define IPT_ROUTINES (IPT_BASIC_ROUTINES+IPT_INTERPRETIVE_ROUTINES)
 /* Physical keys, basic then interpretive, in table order. */
 extern const uint16_t ipt_routine_keys[IPT_ROUTINES];

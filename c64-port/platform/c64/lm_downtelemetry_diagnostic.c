@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-/* lm-downtelemetry on the C64: every second Luminary099 DOWN-TELEMETRY_PROGRAM
+/* lm-downtelemetry on the C64: every Luminary099 DOWN_TELEMETRY_PROGRAM
  * case (all its downrupts) through the trampoline, against digests frozen from the original
  * program (tools/lm_downtelemetry_freeze.py).
  * Mailbox (tools/vice_run.py): $c001-2 failures, $c003-4 checks, $a5 at $c000. */

@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "cm-downtelemetry-vice.log": {
-      "sha256": "a38cb446d97c7b1c517e8e685cac071c6bda51ca420b6745183580c4ee7774fe",
-      "bytes": 1918,
+      "sha256": "f236436f632ef939ef59a1c210bd38d0dd7b3ff28945ce9e8bbc3111f381089f",
+      "bytes": 631,
       "store": "release"
     }
   }

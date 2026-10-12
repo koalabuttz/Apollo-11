@@ -2,7 +2,7 @@
  "mission": "Luminary099",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "cases": 16384,
- "snapshot_sha256": "327b8cd1710019b79e3599718a8a6851cae9edcffd32aa8ae7dec5d70266d5b8",
+ "snapshot_sha256": "494589a951c6cc4ad9a34ddfbea4c250a64d1a5d0efc3962c533bae041ec6331",
  "outcomes": {
   "FLATOUT:returned": 4096,
   "THROTTLE+3:returned": 4096,

@@ -1,1 +1,2 @@
-PASS: VICE PAL lm-tjet-law.prg: 512 checks, 0 failures
+lm-tjet-law.prg sha256 3b57d27192a18be3903ef60b558475f6b8ce6ba822a4b0d623f424566d0ac7b0, 256 C64 rows (tests/lm_tjet_law_c64_vectors.h)
+PASS: VICE PAL lm-tjet-law.prg: 256 checks, 0 failures

@@ -1,0 +1,32 @@
+ev-front strict: PASS: 5760 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-front sanitize: PASS: 5760 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-short strict: PASS: 6368 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-short sanitize: PASS: 6368 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-align strict: PASS: 5056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-align sanitize: PASS: 5056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-radar strict: PASS: 2448 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-radar sanitize: PASS: 2448 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-dap strict: PASS: 2832 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-dap sanitize: PASS: 2832 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-time strict: PASS: 1152 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-time sanitize: PASS: 1152 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-track strict: PASS: 2304 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-track sanitize: PASS: 2304 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-lmi strict: PASS: 960 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-lmi sanitize: PASS: 960 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-transfer strict: PASS: 468 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-transfer sanitize: PASS: 468 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-transfer-c64 strict: PASS: 64 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-transfer-c64 sanitize: PASS: 64 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+ev-refuse strict: PASS: 512 out-of-domain cases refused with the image and I/O unchanged
+ev-refuse sanitize: PASS: 512 out-of-domain cases refused with the image and I/O unchanged
+PASS LM Luminary099/EXTENDED_VERBS.agc: 994 assembled words; 778 executed, 55 interpreted, 116 call arguments, 44 constants, 1 unreachable; owners {'constants': 44, 'lanec-ev-align': 222, 'lanec-ev-dap': 156, 'lanec-ev-front': 86, 'lanec-ev-lmi': 55, 'lanec-ev-radar': 150, 'lanec-ev-short': 182, 'lanec-ev-time': 39, 'lanec-ev-track': 60}
+ev-front C64: PASS: VICE PAL lanec-ev-front.prg: 251 checks, 0 failures
+ev-short C64: PASS: VICE PAL lanec-ev-short.prg: 245 checks, 0 failures
+ev-align C64: PASS: VICE PAL lanec-ev-align.prg: 241 checks, 0 failures
+ev-radar C64: PASS: VICE PAL lanec-ev-radar.prg: 223 checks, 0 failures
+ev-dap C64: PASS: VICE PAL lanec-ev-dap.prg: 258 checks, 0 failures
+ev-time C64: PASS: VICE PAL lanec-ev-time.prg: 231 checks, 0 failures
+ev-track C64: PASS: VICE PAL lanec-ev-track.prg: 210 checks, 0 failures
+ev-lmi C64: PASS: VICE PAL lanec-ev-lmi.prg: 138 checks, 0 failures
+ev-transfer-c64 C64: PASS: VICE PAL lanec-ev-transfer.prg: 64 checks, 0 failures

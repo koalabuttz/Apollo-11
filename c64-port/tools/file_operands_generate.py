@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""Compile the fixed words one AGC source file reads, for its native routines.
+
+For a table named below: the inline operand after every genuine TC site of
+the callees whose operand that file's code reads at Q, the CADRs after the
+file's own TC BANKCALL/POSTJUMP (read by the interbank routines), and the
+fixed constants the file reads with CA/CAF/CS/AD/MASK (one word) or DCA/DCS
+(two), each checked against the listing and the rope (sites via
+tools/agc_sites_generate.py). Native code never reads the rope.
+
+  python3 tools/file_operands_generate.py lm-update           # write src/lm_update_operands.inc
+  python3 tools/file_operands_generate.py lm-update --check   # fail if stale
+"""
+import argparse
+import json
+import pathlib
+import re
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools'))
+from agc_sites_generate import listing_lines, sites  # noqa: E402
+from fixed_data_generate import fixed_address, rope_word  # noqa: E402
+
+# name -> (mission, file, callees read at Q by the file, output, prefix)
+TABLES = {
+    'lm-update': ('Luminary099', 'UPDATE_PROGRAM', (), 'src/lm_update_operands.inc', 'LM_UPDATE'),
+    'cm-update': ('Comanche055', 'UPDATE_PROGRAM', (), 'src/cm_update_operands.inc', 'CM_UPDATE'),
+    'lm-fresh-start': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_fresh_start_operands.inc', 'LM_FRESH'),
+    'lm-v37': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_v37_operands.inc', 'LM_V37'),
+    'cm-fresh-start': ('Comanche055', 'FRESH_START_AND_RESTART', (), 'src/cm_fresh_start_operands.inc', 'CM_FRESH'),
+    'cm-v37': ('Comanche055', 'FRESH_START_AND_RESTART', (), 'src/cm_v37_operands.inc', 'CM_V37'),
+    'lm-self-check': ('Luminary099', 'AGC_BLOCK_TWO_SELF-CHECK', (), 'src/lm_self_check_operands.inc', 'LM_SC'),
+    'cm-self-check': ('Comanche055', 'AGC_BLOCK_TWO_SELF-CHECK', (), 'src/cm_self_check_operands.inc', 'CM_SC'),
+}
+# Tables whose own interbank calls include IBNKCALL, and fixed tables the
+# file reads with INDEX (label, words), compiled as arrays.
+OWN_EXTRA = {'lm-v37': ('IBNKCALL',)}
+ARRAYS = {'lm-v37': (('PREMM1', 30), ('FCADRMM1', 30), ('DNLADMM1', 30)), 'cm-fresh-start': (('T5IDLER', 8),),
+          'cm-v37': (('PREMM1', 33), ('FCADRMM1', 33), ('DNLADMM1', 33), ('FLAGTABL', 12))}
+# Tables that also compile the constants the file reads with MP.
+MP_TABLES = ('cm-fresh-start', 'cm-v37')
+# Tables whose constant names keep their signs (S+1 -> SP1, S-1 -> SM1), as SELF-CHECK has both.
+SIGNED_NAMES = ('lm-self-check', 'cm-self-check')
+OWN = ('BANKCALL', 'POSTJUMP')
+ONE_WORD = ('CA', 'CAF', 'CS', 'AD', 'MASK')
+TWO_WORD = ('DCA', 'DCS')
+
+
+def build(name):
+    mission, program, callees, _, _ = TABLES[name]
+    base = ROOT / 'build/fixed-data' / mission
+    listing = (base / 'assembly.lst').read_text(errors='replace')
+    rope = (base / 'MAIN.agc.bin').read_bytes()
+    rows = list(listing_lines(listing))
+    calls, rope_sha = sites(mission, callees) if callees else ([], None)
+    own, rope_sha = sites(mission, OWN + OWN_EXTRA.get(name, ()))
+    own = [r for r in own if r['caller'].startswith(program)]
+    listed = {}
+    for path, line, address, words, label, op, opnd in rows:
+        at = fixed_address(address) if words else None
+        if at is not None:
+            for k, w in enumerate(words):
+                listed[at + k] = (w, f'{path}:{line}')
+    constants = {}
+    for path, line, address, words, label, op, opnd in rows:
+        if not path.startswith(program) or len(words) != 1 or op not in ONE_WORD + TWO_WORD + (('MP',) if name in MP_TABLES else ()) or opnd == '0':
+            continue
+        count = 2 if op in TWO_WORD else 1
+        address12, here = words[0] & 0o7777, fixed_address(address)
+        if count == 2:
+            address12 -= 1   # DCA/DCS K are assembled as K+1
+        if address12 < 0o2000:
+            continue
+        phys = address12 if address12 >= 0o4000 else here // 1024 * 1024 + address12 - 0o2000
+        parts = opnd.split()
+        name_ = re.sub(r'\W', '_', parts[0].replace('+', 'P').replace('-', 'M') if name in SIGNED_NAMES else parts[0])
+        if len(parts) > 1 and re.fullmatch(r'[+-]\d+D?', parts[1]):   # SWINIT +2 -> SWINIT_P2
+            name_ += ('_P' if parts[1][0] == '+' else '_M') + parts[1][1:].rstrip('D')
+        value = [listed[phys + k][0] for k in range(count)]
+        for k in range(count):
+            assert rope_word(rope, phys + k) == value[k], (path, line)
+        assert constants.get(name_, (phys, value)) == (phys, value), name_
+        constants[name_] = (phys, value)
+    table = [{'physical': r['physical'], 'word': r['word'], 'kind': f"{r['callee']} {r['operand']}", 'source': r['caller']}
+             for r in calls + own]
+    for n, (p, ws) in constants.items():
+        table += [{'physical': p + k, 'word': w, 'kind': f'constant {n}' + (' +1' if k else ''), 'source': listed[p + k][1]}
+                  for k, w in enumerate(ws)]
+    table.sort(key=lambda r: r['physical'])
+    out, seen = [], set()
+    for r in table:   # a constant may also be another site's word
+        if r['physical'] in seen:
+            assert next(x for x in out if x['physical'] == r['physical'])['word'] == r['word']
+            continue
+        seen.add(r['physical'])
+        out.append(r)
+    arrays = {}
+    labels = {label: fixed_address(address) for path, line, address, words, label, op, opnd in rows
+              if path.startswith(program) and label and (words or op == 'EQUALS' and not opnd)}
+    for label, count in ARRAYS.get(name, ()):
+        at = labels[label]
+        arrays[label] = (at, [listed[at + k][0] for k in range(count)])
+        for k in range(count):
+            assert rope_word(rope, at + k) == arrays[label][1][k], (label, k)
+    constants['_arrays'] = arrays
+    return calls, own, constants, out, rope_sha
+
+
+def render(name, calls, own, constants, table, rope_sha):
+    mission, program, callees, _, prefix = TABLES[name]
+    symbol = prefix.lower() + '_operands'
+    out = [f'/* SPDX-License-Identifier: MIT; generated by tools/file_operands_generate.py {name}. */',
+           f'/* {mission} {program}: ' + (f"the word after every genuine TC {', '.join(callees)}, " if callees else '')
+           + 'the CADRs after its own TC BANKCALL/POSTJUMP',
+           f' * and the fixed constants it reads; keyed by physical fixed word. Oracle rope sha256 {rope_sha}. */']
+    arrays = constants.pop('_arrays', {})
+    for n, (phys, ws) in sorted(constants.items()):
+        bank, offset = divmod(phys, 1024)
+        out.append(f'#define {prefix}_K_{n} ' + ','.join(f'0{w:05o}u' for w in ws) + f' /* {bank:02o},{offset + 0o2000:04o} */')
+    out.append(f'#define {prefix}_OPERAND_COUNT {len(table)}u')
+    out.append(f'static const agc_site_operand {symbol}[{len(table)}]={{')
+    for row in table:
+        bank, offset = divmod(row['physical'], 1024)
+        out.append(f" {{{row['physical']}u,0{row['word']:05o}}}, /* {bank:02o},{offset + 0o2000:04o} "
+                   f"{row['kind'][:40]} <- {row['source']} */")
+    out.append('};')
+    for label, (phys, ws) in arrays.items():
+        bank, offset = divmod(phys, 1024)
+        out.append(f'/* {label} ({bank:02o},{offset + 0o2000:04o}), read with INDEX. */')
+        out.append(f'static const agc_word {prefix.lower()}_{label.lower()}[{len(ws)}]={{')
+        for i in range(0, len(ws), 10):
+            out.append(' ' + ''.join(f'0{w:05o},' for w in ws[i:i + 10]))
+        out.append('};')
+    if callees:
+        out.append(f'#ifdef {prefix}_SITE_LIST /* tests: operand word and callee of each TC site */')
+        out.append(f'#define {prefix}_SITE_COUNT {len(calls)}u')
+        out.append(f'static const struct {{ uint16_t physical; uint8_t callee; }} {prefix.lower()}_site_list[{len(calls)}]={{')
+        for i in range(0, len(calls), 8):
+            out.append(' ' + ''.join(f"{{{s['physical']}u,{callees.index(s['callee'])}}}," for s in calls[i:i + 8]))
+        out.append('};')
+        out.append('#endif')
+    return '\n'.join(out) + '\n'
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('table', choices=sorted(TABLES))
+    parser.add_argument('--check', action='store_true')
+    parser.add_argument('--json', help='also write the table as JSON (evidence)')
+    args = parser.parse_args()
+    calls, own, constants, table, rope_sha = build(args.table)
+    arrays = constants.get('_arrays', {})
+    text = render(args.table, calls, own, constants, table, rope_sha)
+    mission, _, _, output, _ = TABLES[args.table]
+    if args.json:
+        pathlib.Path(args.json).write_text(json.dumps(
+            {'mission': mission, 'rope_sha256': rope_sha, 'sites': calls, 'own_cadrs': own,
+             'constants': {n: {'physical': p, 'words': w} for n, (p, w) in constants.items()},
+             'arrays': {n: {'physical': p, 'words': w} for n, (p, w) in arrays.items()}}, indent=1) + '\n')
+    path = ROOT / output
+    if args.check:
+        if not path.exists() or path.read_text() != text:
+            sys.exit(f'{output} is stale; run tools/file_operands_generate.py {args.table}')
+        print(f'PASS: {output} matches {len(calls)} {mission} sites, {len(table)} words')
+        return
+    path.write_text(text)
+    print(f'wrote {output}: {len(calls)} sites, {len(table)} words')
+
+
+if __name__ == '__main__':
+    main()

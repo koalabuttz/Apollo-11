@@ -1,0 +1,39 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 18432 original S34/35.2 and S34/35.5 entries equal native trampoline runs 3b7c3bf48396fcef863804f95785076f178fd9c06f05640834d370d2dd4c04c8",
+  "lm-s3435c: 18432 cases, 196 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 18667 checks, 0 failures",
+  "PASS 77 assembled S34/35.2 and S34/35.5 words on 77 source lines map to 18 native routines",
+  "lm-s3435c: 18432 cases, 196 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 18667 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-s3435c-1.prg: 256 checks, 0 failures",
+   "PASS: VICE PAL lm-s3435c-2.prg: 256 checks, 0 failures",
+   "PASS: VICE PAL lm-s3435c-3.prg: 352 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 37538,
+    "prg_sha256": "007acc16c32efc716b2138411aad5e6c2d039e5c44e34062629d50c53e6b7a87",
+    "image_end": "$9aad",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "S34/35.2 (with lm-s3435b's INTINT): variant k*1024/256 of routine 0"
+   },
+   "2": {
+    "prg_bytes": 32167,
+    "prg_sha256": "79935a0e0b5aaf967a5e5fc5a3e710b267b4d91699018bbcec290256f1935e67",
+    "image_end": "$85b2",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "S34/35.2's LOMAT return: variant k*1024/256 of routine 2"
+   },
+   "3": {
+    "prg_bytes": 33414,
+    "prg_sha256": "30271151329772e87a49b4137ea677b6d3e1ddbc2c0b8f93d58f0a18d7736126",
+    "image_end": "$91a7",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "FLAGON, FLAGOFF's S34/35.4 return, VNPOOH's INTPRET return and the eight basic routines: variant k*1024/352 of routine 4, 8-17 cycling"
+   }
+  }
+ }
+}

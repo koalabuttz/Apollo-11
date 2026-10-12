@@ -3,6 +3,11 @@
   "milestone": "lm-tjet-law",
   "release": "evidence-lm-tjet-law",
   "files": {
+    "lm-tjet-law-c64-cover.json": {
+      "sha256": "e5eccb8522eb024f1284270ec8e5029e336247acb31ec7faff591e5e6066d004",
+      "bytes": 8135,
+      "store": "tree"
+    },
     "lm-tjet-law-host.log": {
       "sha256": "1e6a03f247eeb5e9d410a8a2412c56a0c24f5b953c965872cc27edddbb9cc3e1",
       "bytes": 740,
@@ -19,8 +24,8 @@
       "store": "tree"
     },
     "lm-tjet-law-vice.log": {
-      "sha256": "95993b7ffb0ed45812fe2fe6ab2b323301e156003f86159f6ba736bddb6295eb",
-      "bytes": 55,
+      "sha256": "de3d63273fa81b798a13b335e2b9998e0e421597a48c4cd6ec4299db4adf4a62",
+      "bytes": 191,
       "store": "tree"
     }
   }

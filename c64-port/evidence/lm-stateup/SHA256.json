@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-stateup",
+  "release": "evidence-lm-stateup",
+  "files": {
+    "lm-stateup-host.log": {
+      "sha256": "328c2f0df02d538c1b0d040419fa411a93e8ca14352f0d16855a2544323e9c09",
+      "bytes": 1534,
+      "store": "release"
+    },
+    "lm-stateup-proof.json": {
+      "sha256": "19250bc7e29f5c94280e38c0f16ba7c06f150fbec0603dcd3b07b2ef91ec58e2",
+      "bytes": 569,
+      "store": "tree"
+    },
+    "lm-stateup-vice.log": {
+      "sha256": "61f273f706d40bf1bd675331fda6f0667755814b640f6ad9afe37fbfd6ad9d01",
+      "bytes": 614,
+      "store": "release"
+    }
+  }
+}
