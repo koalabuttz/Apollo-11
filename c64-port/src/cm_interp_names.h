@@ -71,6 +71,7 @@
 #define lmi_mxv cmi_mxv
 #define lmi_vxm cmi_vxm
 #define lmi_vproj cmi_vproj
+#define lmi_vsc cmi_vsc
 #define LMI_BOV_NONE CMI_BOV_NONE
 #define LMI_BOV_GOTO CMI_BOV_GOTO
 #define LMI_BOV_RTB CMI_BOV_RTB
@@ -98,6 +99,7 @@
 #define lmi_bhiz cmi_bhiz
 #define lmi_call cmi_call
 #define lmi_goto_any cmi_goto_any
+#define lmi_cgoto cmi_cgoto
 #define lmi_15bitadr cmi_15bitadr
 #define lmi_bzegoto cmi_bzegoto
 #define lmi_tload cmi_tload

@@ -91,6 +91,7 @@ class Mission:
         self.ebank = spec.get('ebank')
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
+        self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
@@ -165,10 +166,14 @@ def case(mi, point, n, rng):
                 hi, lo = dp(x)
                 E[(phys + 2 * k) & 0o3777] = hi
                 E[(phys + 2 * k + 1) & 0o3777] = lo
+    E[0o67] = 0   # (NEWJOB, which an operand's randomizing may have hit)
     for off in (0o50, 0o51, 0o52):
         E[vac + off] = mi.outside(rng)
     for w in mi.cp.cadr_erasable:
         E[(vac + w) if w < 45 else w] = mi.outside(rng)
+    # Words the spec names as saved returns (INTWAKE parks QPRET in TBASE2).
+    for a in mi.return_words:
+        E[a] = mi.outside(rng)
     # The interpreter's own state: PUSHLOC in the VAC area, MODE a mode.
     E[0o166] = vac + rng.randrange(0o42)
     E[0o163] = rng.choice([0o77776, 0, 1])
@@ -205,6 +210,23 @@ def case(mi, point, n, rng):
             E[k] = logical(q)
         stop = q
     return seed, list(E.items()), n & 1, stop
+
+
+class Absent:
+    """A mission the spec leaves out: no routines and no stops."""
+    class _CP:
+        ranges = []
+
+        def where(self, p):
+            return '%05o' % p
+
+    def __init__(self, m):
+        self.m = m
+        self.newops = 0o6070 if m == 'lm' else 0o6037
+        self.cp = Absent._CP()
+        self.body_exits = []
+        self.externals = []
+        self.points = []
 
 
 def write_cases(path, missions, cases):
@@ -262,7 +284,7 @@ def main():
     spec = interp_specs.SPECS[a.spec]
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
-    missions = [Mission(spec, m) for m in ('lm', 'cm')]
+    missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
     rng = random.Random('interp-routine:' + a.spec)
     cases = []
     for cm, mi in enumerate(missions):
@@ -383,7 +405,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
         if mi.m not in spec['missions']:
             continue
         rows_m = mi.cp.source_map()
-        loose = [r for r in rows_m if 'routine' not in r and 'constant' not in r]
+        loose = [r for r in rows_m if 'routine' not in r and 'constant' not in r and 'cadr_list' not in r]
         if loose and mi.m not in spec.get('partial', {}):
             sys.exit('%s words no routine compiles: %s' % (mi.m, ', '.join(r['address'] for r in loose)))
         for r in loose:
@@ -402,19 +424,19 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
 C64_TOP = 0xbf00
 
 
+KEEP_WORDS = {}
+
+
 def c64_sources(spec, m):
     return (['src/%s.c' % spec['base'][m], 'src/%s_interp_orders.c' % m, 'src/%s_interp_steps.c' % m]
             + spec.get('native_sources', []) + [x for x in COMMON if '_interp_' not in x] + [spec['target']])
 
 
-KEEP_WORDS = {}   # symbol -> the generated file's KEEP words
-
-
-def keep_flags(symbol, mask):
-    """-D<SYM>_KEEP<n> for a routine mask, 60 routines per word (every
-    word the file has, so none defaults to all)."""
-    n = KEEP_WORDS[symbol]
-    return ['-D%s_KEEP%d=0x%x' % (symbol.upper(), w, (mask >> (60 * w)) & ((1 << 60) - 1)) for w in range(n)]
+def keep_flags(spec, m, mask):
+    """-D<SYMBOL>_KEEP<n> for every 60-routine word of a KEEP mask."""
+    n = KEEP_WORDS.get(m, max(1, (mask.bit_length() + 59) // 60))
+    return ['-D%s_KEEP%d=0x%x' % (spec['symbol'][m].upper(), i, (mask >> (60 * i)) & ((1 << 60) - 1))
+            for i in range(n)]
 
 
 def c64_size(spec, sym, m, mask, text):
@@ -424,19 +446,19 @@ def c64_size(spec, sym, m, mask, text):
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
-    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, '-DIRC_GROUP=1',
-                        '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
+    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
+                        '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec, m, mask),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
                        cwd=R, capture_output=True, text=True)
     end = None
-    if r.returncode and os.environ.get('IRC_C64_DEBUG'):
-        sys.stderr.write(r.stderr[-3000:])
     if r.returncode == 0:
         for ln in open(os.path.join(d, 'probe.map')):
             if '__heap_start = ' in ln:
                 end = int(ln.split()[0], 16)
-    if not os.environ.get('IRC_C64_DEBUG'):
+    if os.environ.get('IRC_C64_DEBUG'):
+        print('c64 probe %s %x: rc %d end %s %s' % (m, mask, r.returncode, end and hex(end), r.stderr[-800:]), file=sys.stderr)
+    else:
         subprocess.run(['rm', '-rf', d])
     return end if end is not None and end <= C64_TOP else None
 
@@ -476,11 +498,13 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
     tools/mk/<id>.groups; returns the groups."""
     per = spec.get('c64_per_point', 2)
     groups = []
+    for mi in missions:
+        # (every KEEP word is defined, so a group drops the routines past 60 too)
+        KEEP_WORDS[mi.m] = max(1, (len(mi.points) + 59) // 60)
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
             continue
         bit = {p: 1 << k for k, p in enumerate(mi.points)}
-        KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
         need = {}
         for p in mi.points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan),
@@ -491,6 +515,14 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
             want = 0
             for i in need[p]:
                 want |= visits[i]
+            # A routine whose cases run through more code than one PRG holds
+            # keeps its cases that visit the fewest routines.
+            while len(need[p]) > 1 and c64_size(spec, sym, mi.m, want, group_text(
+                    sym, [(mi.m, want, need[p])], cases, rows)) is None:
+                need[p] = need[p][:len(need[p]) // 2]
+                want = 0
+                for i in need[p]:
+                    want |= visits[i]
             trial = mask | want
             tp = pick + need[p]
             if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
@@ -509,9 +541,9 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
         # closures don't drop earlier cases.
         assert all(visits[i] & ~mask == 0 for i in pick)
         if c64_size(spec, sym, m, mask, group_text(sym, [(m, mask, pick)], cases, rows)) is None:
-            if os.environ.get('IRC_C64_DEBUG'):
-                sys.stderr.write('group %s mask %x picks %s edits %s\n' % (m, mask, [cases[i]['point'] for i in pick], [len(cases[i]['edits']) for i in pick]))
-            sys.exit('a single routine group of %s does not fit the C64' % m)
+            sys.exit('a single routine group of %s does not fit the C64: %s' % (
+                m, ', '.join(missions[[x.m for x in missions].index(m)].cp.where(q)
+                             for k, q in enumerate(missions[[x.m for x in missions].index(m)].points) if mask >> k & 1)))
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]
@@ -520,7 +552,7 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
     for g, (m, mask, pick) in enumerate(groups, 1):
         mk.append('%s_GROUP_MISSION_%d = %s' % (v, g, m))
         mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
-            v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask))))
+            v, g, g, m.upper(), ' '.join(keep_flags(spec, m, mask))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups]
 

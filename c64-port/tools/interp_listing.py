@@ -5,6 +5,7 @@ assembly.lst): every assembled line with its source file, address, words,
 label, op and operand columns, the fixed-memory words by physical address,
 and the program's labels. Used by tools/interp_compile.py and the
 compiled-routine differential."""
+import os
 import re
 
 LISTINGS = {'lm': 'build/fixed-data/Luminary099/assembly.lst',
@@ -86,6 +87,18 @@ class Listing:
                 self.by_phys[ln.phys] = ln
                 for i, w in enumerate(words):
                     self.rope[ln.phys + i] = w
+
+        # The rope itself, where the build left it beside the listing: the
+        # words no listing line shows (bank checksums, fillers) read as the
+        # hardware reads them. yaYUL writes banks 2, 3, 0, 1, 4, 5, ...
+        binpath = os.path.join(os.path.dirname(path), 'MAIN.agc.bin')
+        if os.path.exists(binpath):
+            data = open(binpath, 'rb').read()
+            for fb in range(len(data) // 2048):
+                bank = {0: 2, 1: 3, 2: 0, 3: 1}.get(fb, fb)
+                for off in range(1024):
+                    i = (fb * 1024 + off) * 2
+                    self.rope[bank * 1024 + off] = (data[i] << 8 | data[i + 1]) >> 1
 
     def file_lines(self, name):
         return [l for l in self.lines if l.src == name]
