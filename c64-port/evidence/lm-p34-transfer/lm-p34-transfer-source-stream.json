@@ -1,0 +1,11 @@
+{
+  "archive": "build/lm-p34-transfer-reference.snapshots.bin.xz",
+  "decoded_sha256": "9facce6f3b869158786cba1a6f33e47385260065c30997208184760be57023c2",
+  "decoded_bytes": 58863616,
+  "cases": 14336,
+  "tag_counts": {
+    "0": 64,
+    "1": 14272
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

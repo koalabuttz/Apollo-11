@@ -4851,6 +4851,20 @@
           ],
           "scope": "VN1645's computation head (35,3606-35,3634), P3XORP7X (35,3704-35,3711) and DP-.01 (35,3741-35,3742), 31 words: from the NEWOPS frontier at VN1645 after its callers' GOTO, through the -.01/-.02 +MGA settings, the FINALFLG and REFSMFLG switches, P3XORP7X and, for P3X programs, GET+MGA of DELVSIN (the lm-midgim step), to the basic frontier at GET45 +1 (35,3635, TC COMPTGO, not ported), the UNIT abort frontier or ARCSIN's alarm 1301 frontier, as native steps between original NEWOPS frontiers.",
           "verification": "docs/LM-VN1645.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p34_routines.c",
+            "src/lm_vn1645.c",
+            "src/lm_midgim.c",
+            "src/lm_interbank_routines.c",
+            "src/agc_transfer.c",
+            "src/agc_image_ops.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "GET45 +1 through VNPOOH (35,3635-35,3722), 54 words: GET45 +1's TC COMPTGO, the DELAYJOB wait, the V16N45 flash and its terminate, proceed and recycle responses, KILCLOCK, N45PROC, CLUPDATE with its interpretive CLEAR GOTO UPDATFLG QSAVED, DISPLAYE, P3XORP7X and VNPOOH, as 20 basic and 7 interpretive routines of the control-transfer ABI (with the lm-vn1645 and lm-midgim steps registered as interpretive routines): from each entry through the trampoline and the native INTER-BANK routines to the first point outside the file (COMPTGO, DELAYJOB, GOFLASH, PHASCHNG, UPFLAG, GOTOPOOH, CLUPDATE's TC INTPRET, a NEWOPS outside the file, the UNIT or ARCSIN alarm frontier, or the caller's return).",
+          "verification": "docs/LM-P34-TRANSFER.md"
         }
       ]
     },
