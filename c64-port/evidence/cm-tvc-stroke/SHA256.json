@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-stroke",
+  "release": "evidence-cm-tvc-stroke",
+  "files": {
+    "cm-tvc-stroke-checks.log": {
+      "sha256": "b76fd6b178e0d0625b3bb0e2ab1141632095b5b5404b7fda1f3ab946f84f9ee4",
+      "bytes": 681,
+      "store": "tree"
+    },
+    "cm-tvc-stroke-reference.deltas.xz": {
+      "sha256": "44c2c639db5f3b6f31a9187a4332669b1ce961e749aa6b3583d5aa44732a29be",
+      "bytes": 696796,
+      "store": "release"
+    },
+    "cm-tvc-stroke-results.json": {
+      "sha256": "19355078f573167ad430f7a401d8f84fc141bcb10c70d0d827373285e8e4d7e4",
+      "bytes": 1279,
+      "store": "tree"
+    },
+    "cm-tvc-stroke-source-map.json": {
+      "sha256": "4ad0114d20578bd970d34bf38bcf48fb34c84cbe15a01c27a1a499c3adaf1bc0",
+      "bytes": 14321,
+      "store": "tree"
+    },
+    "cm-tvc-stroke-source-stream.json": {
+      "sha256": "94a5dd882f0335158fe77540c246c5748bbe6cfefd6ad8553cbfcdc7c495eca6",
+      "bytes": 374,
+      "store": "tree"
+    },
+    "cm-tvc-stroke.map": {
+      "sha256": "53f6807e2c16ea2f1e534b3fdc6e4fe057a0ac76736371f24cba513b9945cdec",
+      "bytes": 10295,
+      "store": "release"
+    },
+    "cm-tvc-stroke.prg": {
+      "sha256": "a36d4d43f790aa7cb7ce4e33171d0cc4d3319d1d161256d3aef903d434199a23",
+      "bytes": 11259,
+      "store": "release"
+    }
+  }
+}

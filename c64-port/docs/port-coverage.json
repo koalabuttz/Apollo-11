@@ -2659,8 +2659,49 @@
       "sha256": "ddc0ee4a00a30a7145d4204350833182658aacfbd38dccf84171a22adc81aee8",
       "bytes": 10796,
       "lines": 414,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_init.c"
+          ],
+          "scope": "All 259 words from each of the 9 original entry points (TVCDAPON, MRCLEAN, TVCINIT1, MASSPROP and NEEDLER returns, TVCINIT4, WAITLIST return, PRESWTCH, SWICHOVR +5, S40.15) to the next RESUME/IBNKCALL/WAITLIST/TC RTRNLOC/caller-return transfer, the CSMN10 data run on TS VARK overflow, channel 11 and INHINT. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-INIT.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 9 original entry points, FB 17, EB E6, coherent BB; any raw A/L/Q, erasable contents, channel 11 and interrupt enable; S40.15 with Q 4000-7777.",
+          "frontiers": "RESUME 5333, IBNKCALL 4740 (Q 2175/2323), WAITLIST 5245 (Q 2341), TC RTRNLOC 1613 (Q 2422), the S40.15 caller's return, TC 1703 (Q 2503) after TS VARK overflow.",
+          "data_validity": "Original constants, coefficients and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche RESUME, WAITLIST and INTER-BANK routines (Lane A) and their site operands",
+          "MASSPROP (cm-tvc-massprop), NEEDLER, TVCEXEC (cm-tvc-exec), DAPINIT (TVCDAPS), PINBRNCH",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
+            "sha256": "bc7ab0f370a9483a078c9c36fef39ea7cf3ff19a335919dea1c77862b874373f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
+            "sha256": "bc7ab0f370a9483a078c9c36fef39ea7cf3ff19a335919dea1c77862b874373f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-checks.log",
+            "sha256": "e40aa4e0ad76d8ee8d9e4ea9d8e790473dac95a00a387a883330f391dcc6b0ec"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-results.json",
+            "sha256": "85e852aef606fd24bcbf360581911c301d688411a4f14c17e2f6426a4c6c8338"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCMASSPROP.agc",
@@ -2776,8 +2817,49 @@
       "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
       "bytes": 8776,
       "lines": 260,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_stroke.c"
+          ],
+          "scope": "All 73 words from each of the 4 original entry points (STRKTSTI job, HACK from the DAPs, its WAITLIST return, HACKWLST task) to the next ENDOFJOB/WAITLIST/TC BUNKER transfer, with the channel 14 write and INHINT. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-STROKE.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 4 original entry points, FB 20, EB E6, coherent BB; any raw A/L/Q, erasable contents, channel 14 and interrupt enable; HACK, its WAITLIST return and HACKWLST with CARD -4..-1.",
+          "frontiers": "ENDOFJOB 5217, WAITLIST 5245 (Q 3537), TC BUNKER 1657 (Q 3556/3575/3577/3612).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche Executive ENDOFJOB, WAITLIST and TASKOVER (Lane A)",
+          "TVC DAP return held in BUNKER (TVCDAPS)",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-source-map.json",
+            "sha256": "4ad0114d20578bd970d34bf38bcf48fb34c84cbe15a01c27a1a499c3adaf1bc0"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-source-map.json",
+            "sha256": "4ad0114d20578bd970d34bf38bcf48fb34c84cbe15a01c27a1a499c3adaf1bc0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-checks.log",
+            "sha256": "b76fd6b178e0d0625b3bb0e2ab1141632095b5b5404b7fda1f3ab946f84f9ee4"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-results.json",
+            "sha256": "19355078f573167ad430f7a401d8f84fc141bcb10c70d0d827373285e8e4d7e4"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/UPDATE_PROGRAM.agc",
