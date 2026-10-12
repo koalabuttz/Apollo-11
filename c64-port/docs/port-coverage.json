@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -454,8 +454,75 @@
           ],
           "scope": "Display job selection: MAKEPLAY and its PRIOCHNG return, MAKEPRIO/HIPRIO/SETMARK/ASKIFNRM/SETNORM/OKTOCOPY/REDOPRIO/KEEPPRIO, IFLEGAL/PRIOBORT/OKTOPLAY/PLAYJUM1/PRIOPLAY with their Q+1 and JOBWAKE returns, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC/RELINTQ, to their callee boundaries (PRIOCHNG, Q+1, POODOO, JOBXCHS, GOSLEEPS, JOBWAKE, GOPLAY, ENDOFJOB, EXDSPRET, the caller's return), register-exact against the original program.",
           "verification": "docs/LANEC-DI-PLAY.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_sleep.c",
+            "src/lanec_di_play.c",
+            "src/lanec.c",
+            "include/lanec_di_sleep.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display sleep and wake: GOSLEEPS, WAITMASK +1/XCHSLEEP and its JOBWAKE and XCHTOEND returns, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the IDLEMASK and XCHQADD returns from DOWNENT2/UPENT2, MARKWAKE/WAKEPLAY and the MARKFMSK returns, INITDSP and its SUPERSW and PRIOCHNG returns, to their callee boundaries (UPENT2, DOWNENT2, JOBWAKE, JOBSLEEP, MARKPLAY, OKTOCOPY, ENDRET, SUPERSW, PRIOCHNG, BANKJUMP), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-SLEEP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_idle.c",
+            "src/lanec.c",
+            "include/lanec_di_idle.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "ENDIDLE handling and display returns, CLEANEND through TERMATE and PROCEED through ERASER (REST/RESTSLEP, FLASHSUB, ISITPRIO, the ENDIDLE call and its terminate, proceed and load returns, OKTOENT/ENDOUT, TIMECHEK, NORMWAKE, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS, ERASER), every basic block to its callee boundary (FINDVAC, UPENT2, DOWNENT2, NVSUBUSY, FLASHON, ENDIDLE, NVSUB, PRIOCHNG, SUPERSW, NOVAC, BANKJUMP, ENDOFJOB, PRIOBORT, KEEPPRIO, MARKWAKE, WAKEPLAY, GOSLEEPS, NORMBNCH, PINBRNCH), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_nvdsp.c",
+            "src/lanec.c",
+            "include/lanec_di_nvdsp.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display start-up, PINBRNCH through V50PASTE (PINBRNCH, NORMBNCH, NVDSP/GOPLAY, NVDSP1, NV50DSP and its busy, done and DOWNFLAG returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND, V50PASTE), every basic block to its callee boundary (ERASER, MARKPLAY, UPFLAG, KEEPPRIO, PLAYJUM1, COPYPACS, CLEANEND, NVMONOPT, REST, FLASHOFF, COPYTOGO, DOWNFLAG, BLANKSUB, FLASHSUB, ENDIT, ENDOFJOB, MARKPERF), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-NVDSP.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start.",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "Channel values are kept exactly (WAND/ROR/WRITE results); the physical effect of channel 011 lights and of channel 013/034/035/010 latches is a device-adapter obligation, as for the other Lane C modules."
+        },
+        "external_continuations": [
+          "EXECUTIVE services (NOVAC, FINDVAC, SPVAC, JOBWAKE, JOBSLEEP, PRIOCHNG, ENDOFJOB, CHANG1) and INTER-BANK_COMMUNICATION (BANKJUMP, POSTJUMP, MAKECADR, SUPERSW)",
+          "SERVICE_ROUTINES flag updates (UPENT2, DOWNENT2, UPFLAG, DOWNFLAG) and ALARM_AND_ABORT (POODOO)",
+          "PINBALL_GAME_BUTTONS_AND_LIGHTS services (NVSUB, NVMONOPT, NVSUBUSY, ENDIDLE, FLASHON, FLASHOFF, BLANKSUB, Q+1) and the astronaut responses that resume ENDIDLE",
+          "User display requests and the job and interrupt scheduling that interleave them; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lanec-di-cert/lanec-di-cm-source-map.json",
+            "sha256": "ac114a2b460fa8814bee890c02c2a650d6473e525b42a0f8ed9cc3011a673537"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
+            "sha256": "bf67aa51593e6926175ce5f12fc41ee99e3c0c870a54ac83944ec9af64dea8b8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lanec-di-cert/lanec-di-checks.log",
+            "sha256": "55ca929d43e035bc77a31fd94ac737195314c1434cc3148c4ff765f2da029ab1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
+            "sha256": "388a8a11d1ca18b522084d34bb3786392742a01f0e517baec693260f48d9f024"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/DOWN-TELEMETRY_PROGRAM.agc",
@@ -2619,8 +2686,49 @@
       "sha256": "db23079b9f12369d550b9658a5fb9a9adf52b798735c17e408cd36ff1aed5594",
       "bytes": 7926,
       "lines": 276,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_exec.c"
+          ],
+          "scope": "All 144 words from each of the 12 original continuation points (task entry, WAITLIST/IBNKCALL returns, TVCRESTARTS re-entries) to the next WAITLIST/IBNKCALL/TASKOVER transfer, every overflow detour and the TCF +0 spin. ABI registration and trampoline round trip pending (see docs).",
+          "verification": "docs/CM-TVC-EXEC.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 12 original continuation points, FB 16, EB E6, coherent BB; any raw A/L/Q and erasable contents; channel 11 from the device record.",
+          "frontiers": "WAITLIST 5245 (Q 2726/2744), IBNKCALL 4740 (Q 2747/2772/2774), TASKOVER 5324; VCNTR negative spins (NO_EXIT).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche WAITLIST/TASKOVER and INTER-BANK routines (Lane A) and their site operands",
+          "NEEDLER, FIXCW (cm-tvc-massprop), S40.15, ROLLDAP callees",
+          "ABI registration with trampoline round trip (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
+            "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
+            "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-checks.log",
+            "sha256": "b2e6df7ca44b1872cdb1fa706b2c8b6348e2d84e1c3cac3d6a7b462190301e39"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-results.json",
+            "sha256": "452140fe1654ddc1d3ca2003c4a9cce6592a22caad0255c45e8dcde664b70389"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCINITIALIZE.agc",
@@ -3163,8 +3271,75 @@
           ],
           "scope": "Display job selection: MAKEPLAY and its PRIOCHNG return, MAKEPRIO/HIPRIO/SETMARK/ASKIFNRM/SETNORM/OKTOCOPY/REDOPRIO/KEEPPRIO, IFLEGAL/PRIOBORT/OKTOPLAY/PLAYJUM1/PRIOPLAY with their Q+1 and JOBWAKE returns, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC/RELINTQ, to their callee boundaries (PRIOCHNG, Q+1, POODOO, JOBXCHS, GOSLEEPS, JOBWAKE, GOPLAY, ENDOFJOB, EXDSPRET, the caller's return), register-exact against the original program.",
           "verification": "docs/LANEC-DI-PLAY.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_sleep.c",
+            "src/lanec_di_play.c",
+            "src/lanec.c",
+            "include/lanec_di_sleep.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display sleep and wake: GOSLEEPS, WAITMASK +1/XCHSLEEP and its JOBWAKE and XCHTOEND returns, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the IDLEMASK and XCHQADD returns from DOWNENT2/UPENT2, MARKWAKE/WAKEPLAY and the MARKFMSK returns, INITDSP and its SUPERSW and PRIOCHNG returns, to their callee boundaries (UPENT2, DOWNENT2, JOBWAKE, JOBSLEEP, MARKPLAY, OKTOCOPY, ENDRET, SUPERSW, PRIOCHNG, BANKJUMP), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-SLEEP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_idle.c",
+            "src/lanec.c",
+            "include/lanec_di_idle.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "ENDIDLE handling and display returns, CLEANEND through TERMATE and PROCEED through ERASER (REST/RESTSLEP, FLASHSUB, ISITPRIO, the ENDIDLE call and its terminate, proceed and load returns, OKTOENT/ENDOUT, TIMECHEK, NORMWAKE, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS, ERASER), every basic block to its callee boundary (FINDVAC, UPENT2, DOWNENT2, NVSUBUSY, FLASHON, ENDIDLE, NVSUB, PRIOCHNG, SUPERSW, NOVAC, BANKJUMP, ENDOFJOB, PRIOBORT, KEEPPRIO, MARKWAKE, WAKEPLAY, GOSLEEPS, NORMBNCH, PINBRNCH), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_nvdsp.c",
+            "src/lanec.c",
+            "include/lanec_di_nvdsp.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display start-up, PINBRNCH through V50PASTE (PINBRNCH, NORMBNCH, NVDSP/GOPLAY, NVDSP1, NV50DSP and its busy, done and DOWNFLAG returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND, V50PASTE), every basic block to its callee boundary (ERASER, MARKPLAY, UPFLAG, KEEPPRIO, PLAYJUM1, COPYPACS, CLEANEND, NVMONOPT, REST, FLASHOFF, COPYTOGO, DOWNFLAG, BLANKSUB, FLASHSUB, ENDIT, ENDOFJOB, MARKPERF), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-NVDSP.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start.",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "Channel values are kept exactly (WAND/ROR/WRITE results); the physical effect of channel 011 lights and of channel 013/034/035/010 latches is a device-adapter obligation, as for the other Lane C modules."
+        },
+        "external_continuations": [
+          "EXECUTIVE services (NOVAC, FINDVAC, SPVAC, JOBWAKE, JOBSLEEP, PRIOCHNG, ENDOFJOB, CHANG1) and INTER-BANK_COMMUNICATION (BANKJUMP, POSTJUMP, MAKECADR, SUPERSW)",
+          "SERVICE_ROUTINES flag updates (UPENT2, DOWNENT2, UPFLAG, DOWNFLAG) and ALARM_AND_ABORT (POODOO)",
+          "PINBALL_GAME_BUTTONS_AND_LIGHTS services (NVSUB, NVMONOPT, NVSUBUSY, ENDIDLE, FLASHON, FLASHOFF, BLANKSUB, Q+1) and the astronaut responses that resume ENDIDLE",
+          "User display requests and the job and interrupt scheduling that interleave them; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lanec-di-cert/lanec-di-lm-source-map.json",
+            "sha256": "81c848c5a10c23afd2677343d76c934c585e3adc9c24804043929711d3cd8d05"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
+            "sha256": "bf67aa51593e6926175ce5f12fc41ee99e3c0c870a54ac83944ec9af64dea8b8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lanec-di-cert/lanec-di-checks.log",
+            "sha256": "55ca929d43e035bc77a31fd94ac737195314c1434cc3148c4ff765f2da029ab1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
+            "sha256": "388a8a11d1ca18b522084d34bb3786392742a01f0e517baec693260f48d9f024"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/DOWNLINK_LISTS.agc",
@@ -4388,8 +4563,21 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c"
           ],
-          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, INITVEL, GET.LVC, VN1645, R36) are not yet translated.",
+          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, GET.LVC, VN1645, R36; INITVEL is the lm-initvel milestone's) are not yet translated.",
           "verification": "docs/LM-PERIAPO.md"
+        },
+        {
+          "native_files": [
+            "src/lm_initvel.c",
+            "src/lm_conic_lambert.c",
+            "src/lm_conic_timethet.c",
+            "src/lm_conic_kepler.c",
+            "src/sband_trig.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "INITVEL, all 189 words of bank 11 02000-02274 (INITVEL, HAVEGUES, INITVEL1-7, INITVELX), with ORBITAL_INTEGRATION's SETITCTR (11,3765-3775) compiled inline at its CALL and LAMBERT run as the lm-conic-lambert steps: from the NEWOPS entry frontier after each Luminary CALL of INITVEL or HAVEGUES, or where INTSTALL and INTEGRVS return (11,2155, 11,2200), to the caller's NEWOPS frontier at C(NORMEX), the UNIT/SQRT abort frontier, or the NEWOPS of INTSTALL or INTEGRVS (bank 13, not ported), as native steps between original NEWOPS frontiers.",
+          "verification": "docs/LM-INITVEL.md"
         }
       ]
     },

@@ -1,0 +1,8018 @@
+{
+ "source_path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+ "source_sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "native": {
+  "src/lanec.c": "585d82d5cf70fcafa8f1c5a8deb372242f65d3e4d03a94797143032d8d9faea0",
+  "src/lanec_di_dsp.c": "08b8d418b0a0ccead7276ee3cfc31c89ae7141f77c63ff8998455d79995aaeaf",
+  "src/lanec_di_idle.c": "da562beaf8a0341fbd42e8a634b1e8086b85f95fa46014e3098f005595e9bd5e",
+  "src/lanec_di_mark.c": "708e1192ff14a5a4daa42e2771b32295a176665f3dcb07be24d724d8bdfacc10",
+  "src/lanec_di_nvdsp.c": "c6feeb6e474e152c77bba074c69bebea6f3a7b8b7d7b142e3a34e33e95e7a0cc",
+  "src/lanec_di_play.c": "c497b1d1441855b725862bd2ae51986b4cad82f8d12638e587511ef725a60e0c",
+  "src/lanec_di_sleep.c": "70b3f1debe9440e14234adab2964f6b68159ff49f06c584f9128f181d3176b10"
+ },
+ "source_words": 667,
+ "source_lines_with_words": 664,
+ "line_map": [
+  {
+   "line": 509,
+   "address": "FF,5526",
+   "source": "BLANKET TS MPAC +6",
+   "words": [
+    "54162"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 510,
+   "address": "FF,5527",
+   "source": "CS PLAYTEM4",
+   "words": [
+    "40160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 511,
+   "address": "FF,5530",
+   "source": "MASK MPAC +6",
+   "words": [
+    "70162"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 512,
+   "address": "FF,5531",
+   "source": "INDEX MPAC +5",
+   "words": [
+    "50161"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 513,
+   "address": "FF,5532",
+   "source": "ADS PLAYTEM4",
+   "words": [
+    "26160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 515,
+   "address": "FF,5533",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 517,
+   "address": "FF,5534",
+   "source": "ENDMARK TC POSTJUMP",
+   "words": [
+    "04701"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 518,
+   "address": "FF,5535",
+   "source": "CADR MARKEND",
+   "words": [
+    "20553"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 520,
+   "address": "FF,5536",
+   "source": "CLEARMRK CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 521,
+   "address": "FF,5537",
+   "source": "TS EXTVBACT",
+   "words": [
+    "55044"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 523,
+   "address": "FF,5540",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 524,
+   "address": "FF,5541",
+   "source": "CS BIT1",
+   "words": [
+    "45017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 525,
+   "address": "FF,5542",
+   "source": "MASK FLAGWRD4",
+   "words": [
+    "70100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 526,
+   "address": "FF,5543",
+   "source": "TS FLAGWRD4",
+   "words": [
+    "54100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 528,
+   "address": "FF,5544",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 529,
+   "address": "FF,5545",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (BLANKET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 543,
+   "address": "10,2553",
+   "source": "MARKEND TC CLEARMRK",
+   "words": [
+    "05536"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 544,
+   "address": "10,2554",
+   "source": "TCF MARKOVER",
+   "words": [
+    "13643"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 547,
+   "address": "10,2555",
+   "source": "GOMARK TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 549,
+   "address": "10,2556",
+   "source": "GOMARS CAF BIT15",
+   "words": [
+    "35001"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 550,
+   "address": "10,2557",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 552,
+   "address": "10,2560",
+   "source": "KLEENEX CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 553,
+   "address": "10,2561",
+   "source": "GOMARKF TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 555,
+   "address": "10,2562",
+   "source": "CAF MARKFMSK",
+   "words": [
+    "33253"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 556,
+   "address": "10,2563",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 558,
+   "address": "10,2564",
+   "source": "GOMARK2 TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 559,
+   "address": "10,2565",
+   "source": "MARKFORM CAF MPERFMSK",
+   "words": [
+    "33742"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 560,
+   "address": "10,2566",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 562,
+   "address": "10,2567",
+   "source": "GOMARK3 TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 563,
+   "address": "10,2570",
+   "source": "CAF MARK3MSK",
+   "words": [
+    "33727"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 564,
+   "address": "10,2571",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 566,
+   "address": "10,2572",
+   "source": "GOMARK4 TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 567,
+   "address": "10,2573",
+   "source": "CAF MARK4MSK",
+   "words": [
+    "33730"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 568,
+   "address": "10,2574",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 570,
+   "address": "10,2575",
+   "source": "GOMARKR TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 572,
+   "address": "10,2576",
+   "source": "CAF BIT15",
+   "words": [
+    "35001"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 573,
+   "address": "10,2577",
+   "source": "TCF GODSPR2",
+   "words": [
+    "12700"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 575,
+   "address": "10,2600",
+   "source": "GOMARKFR TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 577,
+   "address": "10,2601",
+   "source": "CAF MARKFMSK",
+   "words": [
+    "33253"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 578,
+   "address": "10,2602",
+   "source": "TCF GODSPRS",
+   "words": [
+    "13061"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 580,
+   "address": "10,2603",
+   "source": "GOMARK2R TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 581,
+   "address": "10,2604",
+   "source": "CAF MPERFMSK",
+   "words": [
+    "33742"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 582,
+   "address": "10,2605",
+   "source": "TCF GODSPRS",
+   "words": [
+    "13061"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 584,
+   "address": "10,2606",
+   "source": "GOMARK3R TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 585,
+   "address": "10,2607",
+   "source": "CAF MARK3MSK",
+   "words": [
+    "33727"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 586,
+   "address": "10,2610",
+   "source": "TCF GODSPRS",
+   "words": [
+    "13061"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 588,
+   "address": "10,2611",
+   "source": "MAKEMARK CAF ONE",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 589,
+   "address": "10,2612",
+   "source": "TC COPIES",
+   "words": [
+    "03157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 591,
+   "address": "10,2613",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 592,
+   "address": "10,2614",
+   "source": "MASK OCT34300",
+   "words": [
+    "73743"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 593,
+   "address": "10,2615",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 594,
+   "address": "10,2616",
+   "source": "TCF CHKPRIO",
+   "words": [
+    "12654"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 596,
+   "address": "10,2617",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 598,
+   "address": "10,2620",
+   "source": "MASK BIT9",
+   "words": [
+    "75007"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 599,
+   "address": "10,2621",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 600,
+   "address": "10,2622",
+   "source": "BZF MARKPLAY",
+   "words": [
+    "12624"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 602,
+   "address": "10,2623",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 604,
+   "address": "10,2624",
+   "source": "MARKPLAY INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 605,
+   "address": "10,2625",
+   "source": "CS FIVE",
+   "words": [
+    "45022"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 606,
+   "address": "10,2626",
+   "source": "MASK FLAGWRD4",
+   "words": [
+    "70100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 607,
+   "address": "10,2627",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 608,
+   "address": "10,2630",
+   "source": "TS FLAGWRD4",
+   "words": [
+    "54100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 609,
+   "address": "10,2631",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 611,
+   "address": "10,2632",
+   "source": "GOGOMARK CS MARKFLAG",
+   "words": [
+    "41070"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 612,
+   "address": "10,2633",
+   "source": "MASK BIT5",
+   "words": [
+    "75013"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 613,
+   "address": "10,2634",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 614,
+   "address": "10,2635",
+   "source": "TCF MARKCOP",
+   "words": [
+    "12640"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 615,
+   "address": "10,2636",
+   "source": "CS MARKNV",
+   "words": [
+    "40370"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 616,
+   "address": "10,2637",
+   "source": "TS MARKNV",
+   "words": [
+    "54370"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 618,
+   "address": "10,2640",
+   "source": "MARKCOP CAF ONE",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 619,
+   "address": "10,2641",
+   "source": "TCF PRIOPLAY",
+   "words": [
+    "13040"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 621,
+   "address": "10,2642",
+   "source": "COPYTOGO CA MPAC2SAV",
+   "words": [
+    "30165"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 622,
+   "address": "10,2643",
+   "source": "TS MPAC +2",
+   "words": [
+    "54156"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 624,
+   "address": "10,2644",
+   "source": "COPYPACS INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 625,
+   "address": "10,2645",
+   "source": "CAF PRIOOCT",
+   "words": [
+    "33753"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 626,
+   "address": "10,2646",
+   "source": "TS GENMASK",
+   "words": [
+    "54162"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 628,
+   "address": "10,2647",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 629,
+   "address": "10,2650",
+   "source": "CA EBANKSAV",
+   "words": [
+    "31067"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 630,
+   "address": "10,2651",
+   "source": "TS TEMPOR2",
+   "words": [
+    "54160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 632,
+   "address": "10,2652",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 634,
+   "address": "10,2653",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-mark",
+   "native": "src/lanec_di_mark.c (MARKEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 644,
+   "address": "10,2654",
+   "source": "CHKPRIO CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 645,
+   "address": "10,2655",
+   "source": "MASK OCT24100",
+   "words": [
+    "73476"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 646,
+   "address": "10,2656",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 647,
+   "address": "10,2657",
+   "source": "TCF MARSLEEP",
+   "words": [
+    "13676"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 650,
+   "address": "10,2660",
+   "source": "CS FLAGWRD4",
+   "words": [
+    "40100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 651,
+   "address": "10,2661",
+   "source": "MASK BIT3",
+   "words": [
+    "75015"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 652,
+   "address": "10,2662",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 653,
+   "address": "10,2663",
+   "source": "ADS FLAGWRD4",
+   "words": [
+    "26100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 655,
+   "address": "10,2664",
+   "source": "TCF SETNORM",
+   "words": [
+    "12756"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 657,
+   "address": "10,2665",
+   "source": "MARKPERF CA MARKNV",
+   "words": [
+    "30370"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 658,
+   "address": "10,2666",
+   "source": "MASK VERBMASK",
+   "words": [
+    "74160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 659,
+   "address": "10,2667",
+   "source": "TCF NV50DSP",
+   "words": [
+    "13342"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 661,
+   "address": "10,2670",
+   "source": "GODSP TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 663,
+   "address": "10,2671",
+   "source": "GODSP2 CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 664,
+   "address": "10,2672",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 666,
+   "address": "10,2673",
+   "source": "GODSPRET TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 668,
+   "address": "10,2674",
+   "source": "CAF BIT6",
+   "words": [
+    "35012"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 669,
+   "address": "10,2675",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 671,
+   "address": "10,2676",
+   "source": "GODSPR TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 673,
+   "address": "10,2677",
+   "source": "GODSPR1 CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 674,
+   "address": "10,2700",
+   "source": "GODSPR2 TS PLAYTEM4",
+   "words": [
+    "54160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 676,
+   "address": "10,2701",
+   "source": "CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 677,
+   "address": "10,2702",
+   "source": "TCF GODSPRS1",
+   "words": [
+    "13063"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 690,
+   "address": "10,2703",
+   "source": "CLEANDSP CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 691,
+   "address": "10,2704",
+   "source": "REFLASH TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 693,
+   "address": "10,2705",
+   "source": "CAF REDOMASK",
+   "words": [
+    "33726"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 694,
+   "address": "10,2706",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 696,
+   "address": "10,2707",
+   "source": "REGODSP TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 698,
+   "address": "10,2710",
+   "source": "CAF BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 699,
+   "address": "10,2711",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 703,
+   "address": "10,2712",
+   "source": "REGODSPR TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 704,
+   "address": "10,2713",
+   "source": "CAF BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 705,
+   "address": "10,2714",
+   "source": "TCF GODSPR2",
+   "words": [
+    "12700"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 707,
+   "address": "10,2715",
+   "source": "CLOCPLAY TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 708,
+   "address": "10,2716",
+   "source": "CAF CLOCKCON",
+   "words": [
+    "33765"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 709,
+   "address": "10,2717",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 710,
+   "address": "10,2720",
+   "source": "GOFLASH TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 712,
+   "address": "10,2721",
+   "source": "CAF BIT4",
+   "words": [
+    "35014"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 713,
+   "address": "10,2722",
+   "source": "GOFLASH2 TS PLAYTEM4",
+   "words": [
+    "54160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 715,
+   "address": "10,2723",
+   "source": "TC SAVELOCS",
+   "words": [
+    "03144"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 717,
+   "address": "10,2724",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 719,
+   "address": "10,2725",
+   "source": "TCF MAKEPLAY",
+   "words": [
+    "12770"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 721,
+   "address": "10,2726",
+   "source": "PRIODSPR TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 723,
+   "address": "10,2727",
+   "source": "CAF BITS7+4",
+   "words": [
+    "33745"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 724,
+   "address": "10,2730",
+   "source": "TCF GODSPRS",
+   "words": [
+    "13061"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 726,
+   "address": "10,2731",
+   "source": "PRIODSP TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 728,
+   "address": "10,2732",
+   "source": "SETPRIO CAF BITS7+4",
+   "words": [
+    "33745"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 729,
+   "address": "10,2733",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (CHKPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 731,
+   "address": "10,2734",
+   "source": "MAKEPRIO CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 732,
+   "address": "10,2735",
+   "source": "TS COPINDEX",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 734,
+   "address": "10,2736",
+   "source": "TC LINUSCHR",
+   "words": [
+    "03616"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 735,
+   "address": "10,2737",
+   "source": "TCF HIPRIO",
+   "words": [
+    "12744"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 736,
+   "address": "10,2740",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 737,
+   "address": "10,2741",
+   "source": "MASK OCT20100",
+   "words": [
+    "73764"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 738,
+   "address": "10,2742",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 739,
+   "address": "10,2743",
+   "source": "TCF PRIOBORT",
+   "words": [
+    "13017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 741,
+   "address": "10,2744",
+   "source": "HIPRIO CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 742,
+   "address": "10,2745",
+   "source": "MASK OCT40400",
+   "words": [
+    "77765"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 743,
+   "address": "10,2746",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 744,
+   "address": "10,2747",
+   "source": "BZF ASKIFNRM",
+   "words": [
+    "12752"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 746,
+   "address": "10,2750",
+   "source": "SETMARK CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 747,
+   "address": "10,2751",
+   "source": "TCF JOBXCHS",
+   "words": [
+    "13216"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 749,
+   "address": "10,2752",
+   "source": "ASKIFNRM CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 750,
+   "address": "10,2753",
+   "source": "MASK OCT10200",
+   "words": [
+    "73762"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 751,
+   "address": "10,2754",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 753,
+   "address": "10,2755",
+   "source": "BZF OKTOCOPY",
+   "words": [
+    "12760"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 755,
+   "address": "10,2756",
+   "source": "SETNORM CAF ONE",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 756,
+   "address": "10,2757",
+   "source": "TCF JOBXCHS",
+   "words": [
+    "13216"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 758,
+   "address": "10,2760",
+   "source": "OKTOCOPY TC COPYNORM",
+   "words": [
+    "03156"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 759,
+   "address": "10,2761",
+   "source": "TC WITCHONE",
+   "words": [
+    "03427"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 761,
+   "address": "10,2762",
+   "source": "TC JOBWAKE",
+   "words": [
+    "05201"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 763,
+   "address": "10,2763",
+   "source": "TC XCHTOEND",
+   "words": [
+    "03444"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 765,
+   "address": "10,2764",
+   "source": "REDOPRIO CA TIME1",
+   "words": [
+    "30025"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 766,
+   "address": "10,2765",
+   "source": "TS PRIOTIME",
+   "words": [
+    "55147"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 768,
+   "address": "10,2766",
+   "source": "KEEPPRIO CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 769,
+   "address": "10,2767",
+   "source": "TCF PRIOPLAY",
+   "words": [
+    "13040"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 771,
+   "address": "10,2770",
+   "source": "MAKEPLAY CA PRIORITY",
+   "words": [
+    "30167"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 772,
+   "address": "10,2771",
+   "source": "MASK PRIO37",
+   "words": [
+    "77674"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 773,
+   "address": "10,2772",
+   "source": "TS USERPRIO",
+   "words": [
+    "54163"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 775,
+   "address": "10,2773",
+   "source": "CAF PRIO33",
+   "words": [
+    "37670"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 776,
+   "address": "10,2774",
+   "source": "TC PRIOCHNG",
+   "words": [
+    "05210"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 778,
+   "address": "10,2775",
+   "source": "CA PLAYTEM4",
+   "words": [
+    "30160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 779,
+   "address": "10,2776",
+   "source": "MASK BITS15+7",
+   "words": [
+    "73744"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 780,
+   "address": "10,2777",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 781,
+   "address": "10,3000",
+   "source": "TCF MAKEPRIO",
+   "words": [
+    "12734"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 782,
+   "address": "10,3001",
+   "source": "TCF IFLEGAL",
+   "words": [
+    "13003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 783,
+   "address": "10,3002",
+   "source": "TCF MAKEMARK",
+   "words": [
+    "12611"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 785,
+   "address": "10,3003",
+   "source": "IFLEGAL CAF TWO",
+   "words": [
+    "35016"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 786,
+   "address": "10,3004",
+   "source": "TS COPINDEX",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 788,
+   "address": "10,3005",
+   "source": "TC LINUSCHR",
+   "words": [
+    "03616"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 790,
+   "address": "10,3006",
+   "source": "TCF OKTOPLAY",
+   "words": [
+    "13021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 791,
+   "address": "10,3007",
+   "source": "CS EBANKTEM",
+   "words": [
+    "41071"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 792,
+   "address": "10,3010",
+   "source": "MASK BIT4",
+   "words": [
+    "75014"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 793,
+   "address": "10,3011",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 794,
+   "address": "10,3012",
+   "source": "TCF OKTOPLAY",
+   "words": [
+    "13021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 796,
+   "address": "10,3013",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 797,
+   "address": "10,3014",
+   "source": "MASK NBUSMASK",
+   "words": [
+    "73735"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 798,
+   "address": "10,3015",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 799,
+   "address": "10,3016",
+   "source": "BZF OKTOPLAY",
+   "words": [
+    "13021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 801,
+   "address": "10,3017",
+   "source": "PRIOBORT TC POODOO",
+   "words": [
+    "05721"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 802,
+   "address": "10,3020",
+   "source": "OCT 1502",
+   "words": [
+    "01502"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 805,
+   "address": "10,3021",
+   "source": "OKTOPLAY TC COPIES2",
+   "words": [
+    "03160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 807,
+   "address": "10,3022",
+   "source": "CA USERPRIO",
+   "words": [
+    "30163"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 808,
+   "address": "10,3023",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 809,
+   "address": "10,3024",
+   "source": "ROR SUPERBNK",
+   "words": [
+    "04007"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 810,
+   "address": "10,3025",
+   "source": "TS RESTREG",
+   "words": [
+    "54366"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 812,
+   "address": "10,3026",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 813,
+   "address": "10,3027",
+   "source": "MASK PMMASK",
+   "words": [
+    "73736"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 814,
+   "address": "10,3030",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 815,
+   "address": "10,3031",
+   "source": "TCF GOSLEEPS",
+   "words": [
+    "13176"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 817,
+   "address": "10,3032",
+   "source": "TCF +2",
+   "words": [
+    "13034"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 818,
+   "address": "10,3033",
+   "source": "TCF GOSLEEPS",
+   "words": [
+    "13176"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 822,
+   "address": "10,3034",
+   "source": "TC WITCHONE",
+   "words": [
+    "03427"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 823,
+   "address": "10,3035",
+   "source": "TC JOBWAKE",
+   "words": [
+    "05201"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 825,
+   "address": "10,3036",
+   "source": "TC XCHTOEND",
+   "words": [
+    "03444"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 827,
+   "address": "10,3037",
+   "source": "PLAYJUM1 CAF TWO",
+   "words": [
+    "35016"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 828,
+   "address": "10,3040",
+   "source": "PRIOPLAY TS COPINDEX",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 830,
+   "address": "10,3041",
+   "source": "TCF GOPLAY",
+   "words": [
+    "13312"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (MAKEPRIO block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 832,
+   "address": "10,3042",
+   "source": "EXDSPRET TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 834,
+   "address": "10,3043",
+   "source": "CAF BIT15+6",
+   "words": [
+    "37703"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 835,
+   "address": "10,3044",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 837,
+   "address": "10,3045",
+   "source": "GOPERF1 TS NORMTEM1",
+   "words": [
+    "55045"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 838,
+   "address": "10,3046",
+   "source": "CAF V01N25",
+   "words": [
+    "33720"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 840,
+   "address": "10,3047",
+   "source": "GOPERFS TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 842,
+   "address": "10,3050",
+   "source": "CAF PERFMASK",
+   "words": [
+    "33717"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 843,
+   "address": "10,3051",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 845,
+   "address": "10,3052",
+   "source": "GOPERF2 TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 847,
+   "address": "10,3053",
+   "source": "CAF PERF2MSK",
+   "words": [
+    "33723"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 848,
+   "address": "10,3054",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 850,
+   "address": "10,3055",
+   "source": "GOPERF4 TC PURRS4",
+   "words": [
+    "03137"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 852,
+   "address": "10,3056",
+   "source": "TCF GOFLASH2",
+   "words": [
+    "12722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 854,
+   "address": "10,3057",
+   "source": "GOFLASHR TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 856,
+   "address": "10,3060",
+   "source": "CAF BIT4",
+   "words": [
+    "35014"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 857,
+   "address": "10,3061",
+   "source": "GODSPRS TS PLAYTEM4",
+   "words": [
+    "54160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 859,
+   "address": "10,3062",
+   "source": "CAF THREE",
+   "words": [
+    "36214"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 861,
+   "address": "10,3063",
+   "source": "GODSPRS1 INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 862,
+   "address": "10,3064",
+   "source": "TS RUPTREG3",
+   "words": [
+    "54072"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 864,
+   "address": "10,3065",
+   "source": "CA PRIORITY",
+   "words": [
+    "30167"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 865,
+   "address": "10,3066",
+   "source": "MASK PRIO37",
+   "words": [
+    "77674"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 866,
+   "address": "10,3067",
+   "source": "TS NEWPRIO",
+   "words": [
+    "54063"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 868,
+   "address": "10,3070",
+   "source": "CA PLAYTEM4",
+   "words": [
+    "30160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 869,
+   "address": "10,3071",
+   "source": "MASK BIT4",
+   "words": [
+    "75014"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 870,
+   "address": "10,3072",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 871,
+   "address": "10,3073",
+   "source": "TCF VACDSP",
+   "words": [
+    "13101"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 872,
+   "address": "10,3074",
+   "source": "CA NEWPRIO",
+   "words": [
+    "30063"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 873,
+   "address": "10,3075",
+   "source": "TC NOVAC",
+   "words": [
+    "05134"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 875,
+   "address": "10,3076",
+   "source": "2CADR MAKEPLAY",
+   "words": [
+    "02770",
+    "20067"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 877,
+   "address": "10,3100",
+   "source": "TCF BOTHJOBS",
+   "words": [
+    "13107"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 879,
+   "address": "10,3101",
+   "source": "VACDSP CA BBANK",
+   "words": [
+    "30006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 880,
+   "address": "10,3102",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 881,
+   "address": "10,3103",
+   "source": "ROR SUPERBNK",
+   "words": [
+    "04007"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 882,
+   "address": "10,3104",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 883,
+   "address": "10,3105",
+   "source": "CAF MAKEGEN",
+   "words": [
+    "33761"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 884,
+   "address": "10,3106",
+   "source": "TC SPVAC",
+   "words": [
+    "05160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 886,
+   "address": "10,3107",
+   "source": "BOTHJOBS TC SAVELOCS",
+   "words": [
+    "03144"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 888,
+   "address": "10,3110",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 889,
+   "address": "10,3111",
+   "source": "DCA MPAC +1",
+   "words": [
+    "30156"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 890,
+   "address": "10,3112",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 891,
+   "address": "10,3113",
+   "source": "DXCH MPAC +1",
+   "words": [
+    "52156"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 893,
+   "address": "10,3114",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 894,
+   "address": "10,3115",
+   "source": "DCA MPAC +3",
+   "words": [
+    "30160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 895,
+   "address": "10,3116",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 896,
+   "address": "10,3117",
+   "source": "DXCH MPAC +3",
+   "words": [
+    "52160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 898,
+   "address": "10,3120",
+   "source": "CA LOCCTR",
+   "words": [
+    "30064"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 899,
+   "address": "10,3121",
+   "source": "TS MPAC +5",
+   "words": [
+    "54161"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 900,
+   "address": "10,3122",
+   "source": "TC SAVELOCR",
+   "words": [
+    "03151"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 901,
+   "address": "10,3123",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 902,
+   "address": "10,3124",
+   "source": "TCF BANKJUMP",
+   "words": [
+    "14704"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 905,
+   "address": "10,3125",
+   "source": "GOPERF1R TS NORMTEM1",
+   "words": [
+    "55045"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 907,
+   "address": "10,3126",
+   "source": "CAF V01N25",
+   "words": [
+    "33720"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 909,
+   "address": "10,3127",
+   "source": "GOPERFRS TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 911,
+   "address": "10,3130",
+   "source": "CAF PERFMASK",
+   "words": [
+    "33717"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 912,
+   "address": "10,3131",
+   "source": "TCF GODSPRS",
+   "words": [
+    "13061"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 914,
+   "address": "10,3132",
+   "source": "GOPERF2R TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 916,
+   "address": "10,3133",
+   "source": "CAF PERF2MSK",
+   "words": [
+    "33723"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 917,
+   "address": "10,3134",
+   "source": "TCF GODSPRS",
+   "words": [
+    "13061"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 919,
+   "address": "10,3135",
+   "source": "GOPERF4R TC PURRS4",
+   "words": [
+    "03137"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 921,
+   "address": "10,3136",
+   "source": "TCF GODSPRS",
+   "words": [
+    "13061"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 923,
+   "address": "10,3137",
+   "source": "PURRS4 TS OPTION1",
+   "words": [
+    "55131"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 925,
+   "address": "10,3140",
+   "source": "CAF V04N06",
+   "words": [
+    "33724"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 926,
+   "address": "10,3141",
+   "source": "TS PLAYTEM1",
+   "words": [
+    "54155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 928,
+   "address": "10,3142",
+   "source": "CAF PERF4MSK",
+   "words": [
+    "33725"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 929,
+   "address": "10,3143",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 931,
+   "address": "10,3144",
+   "source": "SAVELOCS INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 933,
+   "address": "10,3145",
+   "source": "CS OCT3400",
+   "words": [
+    "43734"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 934,
+   "address": "10,3146",
+   "source": "MASK PLAYTEM4",
+   "words": [
+    "70160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 935,
+   "address": "10,3147",
+   "source": "AD EBANK",
+   "words": [
+    "60003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 936,
+   "address": "10,3150",
+   "source": "TS PLAYTEM4",
+   "words": [
+    "54160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 938,
+   "address": "10,3151",
+   "source": "SAVELOCR LXCH Q",
+   "words": [
+    "22002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 940,
+   "address": "10,3152",
+   "source": "TC MAKECADR",
+   "words": [
+    "04711"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 941,
+   "address": "10,3153",
+   "source": "TS PLAYTEM3",
+   "words": [
+    "54157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 943,
+   "address": "10,3154",
+   "source": "AD RUPTREG3",
+   "words": [
+    "60072"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 944,
+   "address": "10,3155",
+   "source": "TC L",
+   "words": [
+    "00001"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 946,
+   "address": "10,3156",
+   "source": "COPYNORM CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 947,
+   "address": "10,3157",
+   "source": "COPIES TS COPINDEX",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 948,
+   "address": "10,3160",
+   "source": "COPIES2 INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 949,
+   "address": "10,3161",
+   "source": "CA PLAYTEM4",
+   "words": [
+    "30160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 950,
+   "address": "10,3162",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 951,
+   "address": "10,3163",
+   "source": "TS EBANKSAV",
+   "words": [
+    "55067"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 952,
+   "address": "10,3164",
+   "source": "MASK CADRMASK",
+   "words": [
+    "73752"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 953,
+   "address": "10,3165",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 955,
+   "address": "10,3166",
+   "source": "BZF SKIPADD",
+   "words": [
+    "13172"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 957,
+   "address": "10,3167",
+   "source": "CA PLAYTEM3",
+   "words": [
+    "30157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 958,
+   "address": "10,3170",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 959,
+   "address": "10,3171",
+   "source": "TS CADRFLSH",
+   "words": [
+    "54372"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 961,
+   "address": "10,3172",
+   "source": "SKIPADD CA PLAYTEM1",
+   "words": [
+    "30155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 962,
+   "address": "10,3173",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 963,
+   "address": "10,3174",
+   "source": "TS NVWORD",
+   "words": [
+    "54367"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 965,
+   "address": "10,3175",
+   "source": "TCF RELINTQ",
+   "words": [
+    "13453"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-dsp",
+   "native": "src/lanec_di_dsp.c (EXDSPRET block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 967,
+   "address": "10,3176",
+   "source": "GOSLEEPS INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 968,
+   "address": "10,3177",
+   "source": "CA PRIOOCT",
+   "words": [
+    "33753"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 969,
+   "address": "10,3200",
+   "source": "MASK WAITMASK",
+   "words": [
+    "73202"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 970,
+   "address": "10,3201",
+   "source": "TC UPENT2",
+   "words": [
+    "07722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 971,
+   "address": "10,3202",
+   "source": "WAITMASK OCT 3004",
+   "words": [
+    "03004"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 972,
+   "address": "10,3203",
+   "source": "CS ONE",
+   "words": [
+    "45017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 973,
+   "address": "10,3204",
+   "source": "AD COPINDEX",
+   "words": [
+    "60164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 974,
+   "address": "10,3205",
+   "source": "TS FACEREG",
+   "words": [
+    "54154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 976,
+   "address": "10,3206",
+   "source": "XCHSLEEP INDEX FACEREG",
+   "words": [
+    "50154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 977,
+   "address": "10,3207",
+   "source": "CAF WAKECADR",
+   "words": [
+    "33732"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 978,
+   "address": "10,3210",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 979,
+   "address": "10,3211",
+   "source": "TC JOBWAKE",
+   "words": [
+    "05201"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 981,
+   "address": "10,3212",
+   "source": "TC XCHTOEND",
+   "words": [
+    "03444"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 983,
+   "address": "10,3213",
+   "source": "INDEX FACEREG",
+   "words": [
+    "50154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 984,
+   "address": "10,3214",
+   "source": "CAF WAKECADR",
+   "words": [
+    "33732"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 985,
+   "address": "10,3215",
+   "source": "TCF JOBSLEEP",
+   "words": [
+    "15175"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 987,
+   "address": "10,3216",
+   "source": "JOBXCHS TS FACEREG",
+   "words": [
+    "54154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 988,
+   "address": "10,3217",
+   "source": "TC WITCHONE",
+   "words": [
+    "03427"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 989,
+   "address": "10,3220",
+   "source": "TC JOBWAKE",
+   "words": [
+    "05201"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 990,
+   "address": "10,3221",
+   "source": "CA FACEREG",
+   "words": [
+    "30154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 991,
+   "address": "10,3222",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 992,
+   "address": "10,3223",
+   "source": "TS FACEREG",
+   "words": [
+    "54154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 994,
+   "address": "10,3224",
+   "source": "CAF XCHQADD",
+   "words": [
+    "33237"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 995,
+   "address": "10,3225",
+   "source": "TC XCHNYLOC",
+   "words": [
+    "03445"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 997,
+   "address": "10,3226",
+   "source": "INDEX FACEREG",
+   "words": [
+    "50154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 998,
+   "address": "10,3227",
+   "source": "CA MARKOCT",
+   "words": [
+    "33754"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 999,
+   "address": "10,3230",
+   "source": "MASK IDLESLEP",
+   "words": [
+    "73756"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1000,
+   "address": "10,3231",
+   "source": "TC DOWNENT2",
+   "words": [
+    "07740"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1001,
+   "address": "10,3232",
+   "source": "IDLEMASK OCT 74004",
+   "words": [
+    "74004"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1002,
+   "address": "10,3233",
+   "source": "INDEX FACEREG",
+   "words": [
+    "50154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1003,
+   "address": "10,3234",
+   "source": "CA BIT5",
+   "words": [
+    "35013"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1005,
+   "address": "10,3235",
+   "source": "AD FOUR",
+   "words": [
+    "65015"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1006,
+   "address": "10,3236",
+   "source": "TC UPENT2",
+   "words": [
+    "07722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1007,
+   "address": "10,3237",
+   "source": "XCHQADD GENADR XCHSLEEP",
+   "words": [
+    "03206"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1008,
+   "address": "10,3240",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1009,
+   "address": "10,3241",
+   "source": "MASK BIT3",
+   "words": [
+    "75015"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1010,
+   "address": "10,3242",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1011,
+   "address": "10,3243",
+   "source": "GENMARK TC MARKPLAY",
+   "words": [
+    "02624"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1012,
+   "address": "10,3244",
+   "source": "TCF OKTOCOPY",
+   "words": [
+    "12760"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1014,
+   "address": "10,3245",
+   "source": "MARKWAKE CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1015,
+   "address": "10,3246",
+   "source": "WAKEPLAY TS TEMPOR2",
+   "words": [
+    "54160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1017,
+   "address": "10,3247",
+   "source": "INDEX TEMPOR2",
+   "words": [
+    "50160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1018,
+   "address": "10,3250",
+   "source": "CA BITS5+11",
+   "words": [
+    "33746"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1019,
+   "address": "10,3251",
+   "source": "AD FOUR",
+   "words": [
+    "65015"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1020,
+   "address": "10,3252",
+   "source": "TC DOWNENT2",
+   "words": [
+    "07740"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1021,
+   "address": "10,3253",
+   "source": "MARKFMSK OCT 40010",
+   "words": [
+    "40010"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1023,
+   "address": "10,3254",
+   "source": "INDEX TEMPOR2",
+   "words": [
+    "50160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1024,
+   "address": "10,3255",
+   "source": "CAF WAKECADR",
+   "words": [
+    "33732"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1025,
+   "address": "10,3256",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1026,
+   "address": "10,3257",
+   "source": "TC JOBWAKE",
+   "words": [
+    "05201"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1028,
+   "address": "10,3260",
+   "source": "TCF ENDRET",
+   "words": [
+    "13557"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1035,
+   "address": "10,3261",
+   "source": "INITDSP CA EBANKTEM",
+   "words": [
+    "31071"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1036,
+   "address": "10,3262",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1038,
+   "address": "10,3263",
+   "source": "CA RESTREG",
+   "words": [
+    "30366"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1039,
+   "address": "10,3264",
+   "source": "TC SUPERSW",
+   "words": [
+    "04773"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1041,
+   "address": "10,3265",
+   "source": "MASK PRIO37",
+   "words": [
+    "77674"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1042,
+   "address": "10,3266",
+   "source": "TC PRIOCHNG",
+   "words": [
+    "05210"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1044,
+   "address": "10,3267",
+   "source": "CS THREE",
+   "words": [
+    "46214"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1045,
+   "address": "10,3270",
+   "source": "AD TEMPFLSH",
+   "words": [
+    "60374"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1046,
+   "address": "10,3271",
+   "source": "TCF BANKJUMP",
+   "words": [
+    "14704"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-sleep",
+   "native": "src/lanec_di_sleep.c (GOSLEEPS block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1048,
+   "address": "10,3272",
+   "source": "PINBRNCH RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1049,
+   "address": "10,3273",
+   "source": "CA MARK2PAC",
+   "words": [
+    "31072"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1050,
+   "address": "10,3274",
+   "source": "TS MPAC +2",
+   "words": [
+    "54156"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1052,
+   "address": "10,3275",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1053,
+   "address": "10,3276",
+   "source": "MASK PINMASK",
+   "words": [
+    "77707"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1054,
+   "address": "10,3277",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1056,
+   "address": "10,3300",
+   "source": "TCF +3",
+   "words": [
+    "13303"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1057,
+   "address": "10,3301",
+   "source": "TCF ERASER",
+   "words": [
+    "13713"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1058,
+   "address": "10,3302",
+   "source": "TCF MARKPLAY",
+   "words": [
+    "12624"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1060,
+   "address": "10,3303",
+   "source": "NORMBNCH TC UPFLAG",
+   "words": [
+    "05546"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1061,
+   "address": "10,3304",
+   "source": "ADRES PINBRFLG",
+   "words": [
+    "00105"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1063,
+   "address": "10,3305",
+   "source": "CAF BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1064,
+   "address": "10,3306",
+   "source": "MASK FLAGWRD4",
+   "words": [
+    "70100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1065,
+   "address": "10,3307",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1066,
+   "address": "10,3310",
+   "source": "TCF KEEPPRIO",
+   "words": [
+    "12766"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1068,
+   "address": "10,3311",
+   "source": "TCF PLAYJUM1",
+   "words": [
+    "13037"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1070,
+   "address": "10,3312",
+   "source": "NVDSP TC COPYPACS",
+   "words": [
+    "02644"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1072,
+   "address": "10,3313",
+   "source": "CA TEMPOR2",
+   "words": [
+    "30160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1073,
+   "address": "10,3314",
+   "source": "MASK SEVEN",
+   "words": [
+    "75023"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1074,
+   "address": "10,3315",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1076,
+   "address": "10,3316",
+   "source": "CS BIT13",
+   "words": [
+    "45003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1077,
+   "address": "10,3317",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1078,
+   "address": "10,3320",
+   "source": "MASK DSPFLG",
+   "words": [
+    "71067"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1079,
+   "address": "10,3321",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1080,
+   "address": "10,3322",
+   "source": "TS DSPFLG",
+   "words": [
+    "55067"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1082,
+   "address": "10,3323",
+   "source": "MASK BIT8",
+   "words": [
+    "75010"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1083,
+   "address": "10,3324",
+   "source": "TS TEM1",
+   "words": [
+    "54141"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1085,
+   "address": "10,3325",
+   "source": "CA MPAC +2",
+   "words": [
+    "30156"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1086,
+   "address": "10,3326",
+   "source": "TS MPAC2SAV",
+   "words": [
+    "54165"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1088,
+   "address": "10,3327",
+   "source": "TS MARK2PAC",
+   "words": [
+    "55072"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1089,
+   "address": "10,3330",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1090,
+   "address": "10,3331",
+   "source": "CCS NVWORD",
+   "words": [
+    "10367"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1091,
+   "address": "10,3332",
+   "source": "TCF NVDSP1",
+   "words": [
+    "13341"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1092,
+   "address": "10,3333",
+   "source": "TCF CLEANEND",
+   "words": [
+    "13455"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1093,
+   "address": "10,3334",
+   "source": "CS MARKNV",
+   "words": [
+    "40370"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1094,
+   "address": "10,3335",
+   "source": "TS MARKNV",
+   "words": [
+    "54370"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1095,
+   "address": "10,3336",
+   "source": "MASK LOW7",
+   "words": [
+    "76043"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1096,
+   "address": "10,3337",
+   "source": "AD V05N00M1",
+   "words": [
+    "63737"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1097,
+   "address": "10,3340",
+   "source": "AD TEM1",
+   "words": [
+    "60141"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1098,
+   "address": "10,3341",
+   "source": "NVDSP1 AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1099,
+   "address": "10,3342",
+   "source": "NV50DSP TC NVMONOPT",
+   "words": [
+    "04171"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1100,
+   "address": "10,3343",
+   "source": "TCF REST",
+   "words": [
+    "13467"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1101,
+   "address": "10,3344",
+   "source": "TC FLASHOFF",
+   "words": [
+    "04447"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1103,
+   "address": "10,3345",
+   "source": "TC COPYTOGO",
+   "words": [
+    "02642"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1104,
+   "address": "10,3346",
+   "source": "TC DOWNFLAG",
+   "words": [
+    "05560"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1105,
+   "address": "10,3347",
+   "source": "ADRES MRKNVFLG",
+   "words": [
+    "00102"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1107,
+   "address": "10,3350",
+   "source": "TC DOWNFLAG",
+   "words": [
+    "05560"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1108,
+   "address": "10,3351",
+   "source": "ADRES NRMNVFLG",
+   "words": [
+    "00103"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1109,
+   "address": "10,3352",
+   "source": "TC DOWNFLAG",
+   "words": [
+    "05560"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1110,
+   "address": "10,3353",
+   "source": "ADRES PRONVFLG",
+   "words": [
+    "00104"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1111,
+   "address": "10,3354",
+   "source": "BLANKCHK CA TEMPOR2",
+   "words": [
+    "30160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1112,
+   "address": "10,3355",
+   "source": "TC BLANKSUB",
+   "words": [
+    "04271"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1113,
+   "address": "10,3356",
+   "source": "TCF NVDSP",
+   "words": [
+    "13312"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1114,
+   "address": "10,3357",
+   "source": "PERFCHEK CAF BIT5",
+   "words": [
+    "35013"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1115,
+   "address": "10,3360",
+   "source": "MASK TEMPOR2",
+   "words": [
+    "70160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1116,
+   "address": "10,3361",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1117,
+   "address": "10,3362",
+   "source": "TCF 1STOR2ND",
+   "words": [
+    "13405"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1119,
+   "address": "10,3363",
+   "source": "GOANIDLE CAF BIT4",
+   "words": [
+    "35014"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1120,
+   "address": "10,3364",
+   "source": "MASK TEMPOR2",
+   "words": [
+    "70160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1121,
+   "address": "10,3365",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1122,
+   "address": "10,3366",
+   "source": "TCF FLASHSUB",
+   "words": [
+    "13502"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1124,
+   "address": "10,3367",
+   "source": "CS TEMPOR2",
+   "words": [
+    "40160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1125,
+   "address": "10,3370",
+   "source": "MASK BIT6",
+   "words": [
+    "75012"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1126,
+   "address": "10,3371",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1127,
+   "address": "10,3372",
+   "source": "TCF ISITN00",
+   "words": [
+    "13377"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1129,
+   "address": "10,3373",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1130,
+   "address": "10,3374",
+   "source": "CA CADRFLSH",
+   "words": [
+    "30372"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1131,
+   "address": "10,3375",
+   "source": "TS MPAC +3",
+   "words": [
+    "54157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1132,
+   "address": "10,3376",
+   "source": "TCF ENDIT",
+   "words": [
+    "13575"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1134,
+   "address": "10,3377",
+   "source": "ISITN00 INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1135,
+   "address": "10,3400",
+   "source": "CA NVWORD",
+   "words": [
+    "30367"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1136,
+   "address": "10,3401",
+   "source": "MASK LOW7",
+   "words": [
+    "76043"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1137,
+   "address": "10,3402",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1138,
+   "address": "10,3403",
+   "source": "BZF FLASHSUB",
+   "words": [
+    "13502"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1140,
+   "address": "10,3404",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1142,
+   "address": "10,3405",
+   "source": "1STOR2ND CA TEMPOR2",
+   "words": [
+    "30160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1143,
+   "address": "10,3406",
+   "source": "MASK BIT13",
+   "words": [
+    "75003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1144,
+   "address": "10,3407",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1145,
+   "address": "10,3410",
+   "source": "TCF GOANIDLE",
+   "words": [
+    "13363"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1147,
+   "address": "10,3411",
+   "source": "CA BIT13",
+   "words": [
+    "35003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1148,
+   "address": "10,3412",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1149,
+   "address": "10,3413",
+   "source": "ADS DSPFLG",
+   "words": [
+    "27067"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1151,
+   "address": "10,3414",
+   "source": "ZL",
+   "words": [
+    "22007"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1152,
+   "address": "10,3415",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1153,
+   "address": "10,3416",
+   "source": "BZMF MARKPERF",
+   "words": [
+    "62665"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1154,
+   "address": "10,3417",
+   "source": "MASK BIT12",
+   "words": [
+    "75004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1155,
+   "address": "10,3420",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1157,
+   "address": "10,3421",
+   "source": "BZF V50PASTE",
+   "words": [
+    "13425"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1158,
+   "address": "10,3422",
+   "source": "CS NVWORD1",
+   "words": [
+    "41145"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1159,
+   "address": "10,3423",
+   "source": "AD V97N00",
+   "words": [
+    "63763"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1160,
+   "address": "10,3424",
+   "source": "TCF NV50DSP",
+   "words": [
+    "13342"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1161,
+   "address": "10,3425",
+   "source": "V50PASTE CAF V50N00",
+   "words": [
+    "33722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1162,
+   "address": "10,3426",
+   "source": "TCF NV50DSP",
+   "words": [
+    "13342"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-nvdsp",
+   "native": "src/lanec_di_nvdsp.c (PINBRNCH block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1164,
+   "address": "10,3427",
+   "source": "WITCHONE CS BIT5",
+   "words": [
+    "45013"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1165,
+   "address": "10,3430",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1166,
+   "address": "10,3431",
+   "source": "WAND DSALMOUT",
+   "words": [
+    "03011"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1168,
+   "address": "10,3432",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1169,
+   "address": "10,3433",
+   "source": "MASK NVBUSMSK",
+   "words": [
+    "73740"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1170,
+   "address": "10,3434",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1171,
+   "address": "10,3435",
+   "source": "CAF ONE",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1172,
+   "address": "10,3436",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1173,
+   "address": "10,3437",
+   "source": "CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1174,
+   "address": "10,3440",
+   "source": "INDEX L",
+   "words": [
+    "50001"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1175,
+   "address": "10,3441",
+   "source": "XCH CADRSTOR",
+   "words": [
+    "57042"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1177,
+   "address": "10,3442",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1178,
+   "address": "10,3443",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1180,
+   "address": "10,3444",
+   "source": "XCHTOEND CAF ENDINST",
+   "words": [
+    "34233"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1181,
+   "address": "10,3445",
+   "source": "XCHNYLOC XCH LOCCTR",
+   "words": [
+    "56064"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1182,
+   "address": "10,3446",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1183,
+   "address": "10,3447",
+   "source": "BZMF RELINTQ",
+   "words": [
+    "63453"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1184,
+   "address": "10,3450",
+   "source": "XCH LOCCTR",
+   "words": [
+    "56064"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1185,
+   "address": "10,3451",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1186,
+   "address": "10,3452",
+   "source": "TS LOC",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1188,
+   "address": "10,3453",
+   "source": "RELINTQ RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1189,
+   "address": "10,3454",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (WITCHONE block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1191,
+   "address": "10,3455",
+   "source": "CLEANEND CAF PRIO32",
+   "words": [
+    "37667"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1192,
+   "address": "10,3456",
+   "source": "TC FINDVAC",
+   "words": [
+    "05147"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1194,
+   "address": "10,3457",
+   "source": "2CADR JAMTERM",
+   "words": [
+    "04245",
+    "04060"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1196,
+   "address": "10,3461",
+   "source": "TCF FLASHSUB +1",
+   "words": [
+    "13503"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1198,
+   "address": "10,3462",
+   "source": "ISITPRIO CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1199,
+   "address": "10,3463",
+   "source": "MASK ITISMASK",
+   "words": [
+    "73510"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1200,
+   "address": "10,3464",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1201,
+   "address": "10,3465",
+   "source": "BZF PRIOBORT",
+   "words": [
+    "13017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1202,
+   "address": "10,3466",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1203,
+   "address": "10,3467",
+   "source": "REST CCS CADRSTOR",
+   "words": [
+    "11042"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1204,
+   "address": "10,3470",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1206,
+   "address": "10,3471",
+   "source": "TCF RESTSLEP",
+   "words": [
+    "13473"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1208,
+   "address": "10,3472",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1210,
+   "address": "10,3473",
+   "source": "RESTSLEP CA GENMASK",
+   "words": [
+    "30162"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1211,
+   "address": "10,3474",
+   "source": "MASK ASTROMSK",
+   "words": [
+    "73741"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1212,
+   "address": "10,3475",
+   "source": "TC UPENT2",
+   "words": [
+    "07722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1213,
+   "address": "10,3476",
+   "source": "OCT24100 OCT 24100",
+   "words": [
+    "24100"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1215,
+   "address": "10,3477",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1216,
+   "address": "10,3500",
+   "source": "CAF NVCADR",
+   "words": [
+    "33731"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1217,
+   "address": "10,3501",
+   "source": "TC NVSUBUSY",
+   "words": [
+    "04456"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1219,
+   "address": "10,3502",
+   "source": "FLASHSUB TC FLASHON",
+   "words": [
+    "04443"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1221,
+   "address": "10,3503",
+   "source": "CA COPINDEX",
+   "words": [
+    "30164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1222,
+   "address": "10,3504",
+   "source": "TS COPMPAC",
+   "words": [
+    "54157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1224,
+   "address": "10,3505",
+   "source": "CA GENMASK",
+   "words": [
+    "30162"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1225,
+   "address": "10,3506",
+   "source": "MASK IDLEMASK",
+   "words": [
+    "73232"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1226,
+   "address": "10,3507",
+   "source": "TC UPENT2",
+   "words": [
+    "07722"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1227,
+   "address": "10,3510",
+   "source": "ITISMASK OCT 40040",
+   "words": [
+    "40040"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1229,
+   "address": "10,3511",
+   "source": "CA R1SAVE",
+   "words": [
+    "31073"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1230,
+   "address": "10,3512",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1231,
+   "address": "10,3513",
+   "source": "MASK BIT3",
+   "words": [
+    "75015"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1232,
+   "address": "10,3514",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1233,
+   "address": "10,3515",
+   "source": "TCF UNSETR1",
+   "words": [
+    "13602"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1235,
+   "address": "10,3516",
+   "source": "CCS CADRSTOR",
+   "words": [
+    "11042"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1236,
+   "address": "10,3517",
+   "source": "TCF ISITPRIO",
+   "words": [
+    "13462"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1237,
+   "address": "10,3520",
+   "source": "TCF +2",
+   "words": [
+    "13522"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1238,
+   "address": "10,3521",
+   "source": "TCF ISITPRIO",
+   "words": [
+    "13462"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1240,
+   "address": "10,3522",
+   "source": "TC ENDIDLE",
+   "words": [
+    "04223"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1241,
+   "address": "10,3523",
+   "source": "IDLERET1 TCF TERMATE",
+   "words": [
+    "13614"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1243,
+   "address": "10,3524",
+   "source": "TCF PROCEED",
+   "words": [
+    "13633"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1245,
+   "address": "10,3525",
+   "source": "CS LOWLOAD",
+   "words": [
+    "43750"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1246,
+   "address": "10,3526",
+   "source": "AD MPAC",
+   "words": [
+    "60154"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1247,
+   "address": "10,3527",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1248,
+   "address": "10,3530",
+   "source": "DIM A",
+   "words": [
+    "26000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1249,
+   "address": "10,3531",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1250,
+   "address": "10,3532",
+   "source": "BZF LOADITIS",
+   "words": [
+    "13703"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1252,
+   "address": "10,3533",
+   "source": "OKTOENT CAF TWO",
+   "words": [
+    "35016"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1253,
+   "address": "10,3534",
+   "source": "ENDOUT TS OUTHERE",
+   "words": [
+    "54161"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1254,
+   "address": "10,3535",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1255,
+   "address": "10,3536",
+   "source": "MASK OCT60000",
+   "words": [
+    "74105"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1257,
+   "address": "10,3537",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1258,
+   "address": "10,3540",
+   "source": "TCF TIMECHEK",
+   "words": [
+    "13543"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1259,
+   "address": "10,3541",
+   "source": "TCF NORMRET",
+   "words": [
+    "13651"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1260,
+   "address": "10,3542",
+   "source": "TCF MARKRET",
+   "words": [
+    "13635"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1262,
+   "address": "10,3543",
+   "source": "TIMECHEK CS TIME1",
+   "words": [
+    "40025"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1263,
+   "address": "10,3544",
+   "source": "AD PRIOTIME",
+   "words": [
+    "61147"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1264,
+   "address": "10,3545",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1265,
+   "address": "10,3546",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1266,
+   "address": "10,3547",
+   "source": "AD OCT37776",
+   "words": [
+    "67700"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1267,
+   "address": "10,3550",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1268,
+   "address": "10,3551",
+   "source": "AD -2SEC",
+   "words": [
+    "63774"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1269,
+   "address": "10,3552",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1270,
+   "address": "10,3553",
+   "source": "BZMF KEEPPRIO",
+   "words": [
+    "62766"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1272,
+   "address": "10,3554",
+   "source": "TCF NORMRET",
+   "words": [
+    "13651"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1274,
+   "address": "10,3555",
+   "source": "NORMWAKE CAF ONE",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1275,
+   "address": "10,3556",
+   "source": "TCF WAKEPLAY",
+   "words": [
+    "13246"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1277,
+   "address": "10,3557",
+   "source": "ENDRET CCS OUTHERE",
+   "words": [
+    "10161"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1278,
+   "address": "10,3560",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1279,
+   "address": "10,3561",
+   "source": "TCF +2",
+   "words": [
+    "13563"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1280,
+   "address": "10,3562",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1281,
+   "address": "10,3563",
+   "source": "INDEX COPMPAC",
+   "words": [
+    "50157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1282,
+   "address": "10,3564",
+   "source": "AD CADRFLSH",
+   "words": [
+    "60372"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1283,
+   "address": "10,3565",
+   "source": "TS MPAC +3",
+   "words": [
+    "54157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1285,
+   "address": "10,3566",
+   "source": "CA GENMASK",
+   "words": [
+    "30162"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1286,
+   "address": "10,3567",
+   "source": "MASK PINIDMSK",
+   "words": [
+    "73571"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1287,
+   "address": "10,3570",
+   "source": "TC DOWNENT2",
+   "words": [
+    "07740"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1288,
+   "address": "10,3571",
+   "source": "PINIDMSK OCT 74044",
+   "words": [
+    "74044"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1290,
+   "address": "10,3572",
+   "source": "CS THREE",
+   "words": [
+    "46214"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1291,
+   "address": "10,3573",
+   "source": "TC NVSUB",
+   "words": [
+    "04170"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1292,
+   "address": "10,3574",
+   "source": "TCF +1",
+   "words": [
+    "13575"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1294,
+   "address": "10,3575",
+   "source": "ENDIT CA USERPRIO",
+   "words": [
+    "30163"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1295,
+   "address": "10,3576",
+   "source": "MASK PRIO37",
+   "words": [
+    "77674"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1296,
+   "address": "10,3577",
+   "source": "TC PRIOCHNG",
+   "words": [
+    "05210"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1297,
+   "address": "10,3600",
+   "source": "CA MPAC +3",
+   "words": [
+    "30157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1298,
+   "address": "10,3601",
+   "source": "TCF BANKJUMP",
+   "words": [
+    "14704"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1300,
+   "address": "10,3602",
+   "source": "UNSETR1 INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1301,
+   "address": "10,3603",
+   "source": "CS BIT3",
+   "words": [
+    "45015"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1302,
+   "address": "10,3604",
+   "source": "MASK R1SAVE",
+   "words": [
+    "71073"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1303,
+   "address": "10,3605",
+   "source": "TS R1SAVE",
+   "words": [
+    "55073"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1304,
+   "address": "10,3606",
+   "source": "CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1305,
+   "address": "10,3607",
+   "source": "TC SUPERSW",
+   "words": [
+    "04773"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1308,
+   "address": "10,3610",
+   "source": "-1 CAF THREE",
+   "words": [
+    "36214"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1309,
+   "address": "10,3611",
+   "source": "IMMEDRET INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1310,
+   "address": "10,3612",
+   "source": "AD CADRFLSH",
+   "words": [
+    "60372"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1311,
+   "address": "10,3613",
+   "source": "TCF BANKJUMP",
+   "words": [
+    "14704"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1313,
+   "address": "10,3614",
+   "source": "TERMATE CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1314,
+   "address": "10,3615",
+   "source": "TCF ENDOUT",
+   "words": [
+    "13534"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (CLEANEND block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1316,
+   "address": "10,3616",
+   "source": "LINUSCHR CS PLAYTEM4",
+   "words": [
+    "40160"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1317,
+   "address": "10,3617",
+   "source": "MASK BIT14",
+   "words": [
+    "75002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1318,
+   "address": "10,3620",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1319,
+   "address": "10,3621",
+   "source": "TCF Q+1",
+   "words": [
+    "16706"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1320,
+   "address": "10,3622",
+   "source": "CS PLAYTEM3",
+   "words": [
+    "40157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1321,
+   "address": "10,3623",
+   "source": "INDEX COPINDEX",
+   "words": [
+    "50164"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1322,
+   "address": "10,3624",
+   "source": "AD CADRFLSH",
+   "words": [
+    "60372"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1323,
+   "address": "10,3625",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1324,
+   "address": "10,3626",
+   "source": "BZF +2",
+   "words": [
+    "13630"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1326,
+   "address": "10,3627",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1327,
+   "address": "10,3630",
+   "source": "CCS DSPLOCK",
+   "words": [
+    "11012"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1328,
+   "address": "10,3631",
+   "source": "TC ENDOFJOB",
+   "words": [
+    "05217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1329,
+   "address": "10,3632",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-play",
+   "native": "src/lanec_di_play.c (LINUSCHR block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1333,
+   "address": "10,3633",
+   "source": "PROCEED CAF ONE",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1334,
+   "address": "10,3634",
+   "source": "TCF ENDOUT",
+   "words": [
+    "13534"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1345,
+   "address": "10,3635",
+   "source": "MARKRET CS SIX",
+   "words": [
+    "46211"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1346,
+   "address": "10,3636",
+   "source": "MASK FLAGWRD4",
+   "words": [
+    "70100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1347,
+   "address": "10,3637",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1348,
+   "address": "10,3640",
+   "source": "TS FLAGWRD4",
+   "words": [
+    "54100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1350,
+   "address": "10,3641",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1351,
+   "address": "10,3642",
+   "source": "TCF ENDRET",
+   "words": [
+    "13557"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1353,
+   "address": "10,3643",
+   "source": "MARKOVER CAF MINUS1",
+   "words": [
+    "37716"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1354,
+   "address": "10,3644",
+   "source": "TS OUTHERE",
+   "words": [
+    "54161"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1355,
+   "address": "10,3645",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1356,
+   "address": "10,3646",
+   "source": "MASK PRIO30",
+   "words": [
+    "74371"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1357,
+   "address": "10,3647",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1359,
+   "address": "10,3650",
+   "source": "TCF NORMBNCH",
+   "words": [
+    "13303"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1361,
+   "address": "10,3651",
+   "source": "NORMRET CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1362,
+   "address": "10,3652",
+   "source": "MASK BITS5+11",
+   "words": [
+    "73746"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1363,
+   "address": "10,3653",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1364,
+   "address": "10,3654",
+   "source": "TCF MARKWAKE",
+   "words": [
+    "13245"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1366,
+   "address": "10,3655",
+   "source": "CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1367,
+   "address": "10,3656",
+   "source": "MASK BITS4+10",
+   "words": [
+    "73747"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1368,
+   "address": "10,3657",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1369,
+   "address": "10,3660",
+   "source": "TCF NORMWAKE",
+   "words": [
+    "13555"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1371,
+   "address": "10,3661",
+   "source": "CA EBANKTEM",
+   "words": [
+    "31071"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1372,
+   "address": "10,3662",
+   "source": "MASK OCT50",
+   "words": [
+    "75033"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1373,
+   "address": "10,3663",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1374,
+   "address": "10,3664",
+   "source": "TCF ENDRET",
+   "words": [
+    "13557"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1375,
+   "address": "10,3665",
+   "source": "CA NVSAVE",
+   "words": [
+    "30371"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1376,
+   "address": "10,3666",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1377,
+   "address": "10,3667",
+   "source": "BZF ENDRET",
+   "words": [
+    "13557"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1379,
+   "address": "10,3670",
+   "source": "CAF PRIO15",
+   "words": [
+    "35067"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1380,
+   "address": "10,3671",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1381,
+   "address": "10,3672",
+   "source": "TC NOVAC",
+   "words": [
+    "05134"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1383,
+   "address": "10,3673",
+   "source": "2CADR PLAYJUM1",
+   "words": [
+    "03037",
+    "20060"
+   ],
+   "kind": "inline data",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1385,
+   "address": "10,3675",
+   "source": "TCF ENDRET",
+   "words": [
+    "13557"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1387,
+   "address": "10,3676",
+   "source": "MARSLEEP CA FLAGWRD4",
+   "words": [
+    "30100"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1388,
+   "address": "10,3677",
+   "source": "MASK BITS5+11",
+   "words": [
+    "73746"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1389,
+   "address": "10,3700",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1390,
+   "address": "10,3701",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1391,
+   "address": "10,3702",
+   "source": "TCF GOSLEEPS",
+   "words": [
+    "13176"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1393,
+   "address": "10,3703",
+   "source": "LOADITIS INDEX COPMPAC",
+   "words": [
+    "50157"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1394,
+   "address": "10,3704",
+   "source": "CA NVWORD",
+   "words": [
+    "30367"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1395,
+   "address": "10,3705",
+   "source": "MASK LOW7",
+   "words": [
+    "76043"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1396,
+   "address": "10,3706",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1397,
+   "address": "10,3707",
+   "source": "AD MPAC +1",
+   "words": [
+    "60155"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1398,
+   "address": "10,3710",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1399,
+   "address": "10,3711",
+   "source": "BZF OKTOENT",
+   "words": [
+    "13533"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1400,
+   "address": "10,3712",
+   "source": "TCF PINBRNCH",
+   "words": [
+    "13272"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1402,
+   "address": "10,3713",
+   "source": "ERASER CS THREE",
+   "words": [
+    "46214"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1403,
+   "address": "10,3714",
+   "source": "TC NVSUB",
+   "words": [
+    "04170"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1404,
+   "address": "10,3715",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1405,
+   "address": "10,3716",
+   "source": "TCF ENDOFJOB",
+   "words": [
+    "15217"
+   ],
+   "kind": "instruction",
+   "owner": "lanec-di-idle",
+   "native": "src/lanec_di_idle.c (PROCEED block)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1407,
+   "address": "10,3717",
+   "source": "PERFMASK OCT 0036",
+   "words": [
+    "00036"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant PERFMASK (symbols.txt WORD row)",
+   "constant": "PERFMASK"
+  },
+  {
+   "line": 1409,
+   "address": "10,3720",
+   "source": "V01N25 VN 00125",
+   "words": [
+    "00231"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant V01N25 (symbols.txt WORD row)",
+   "constant": "V01N25"
+  },
+  {
+   "line": 1410,
+   "address": "10,3721",
+   "source": "V06N07 VN 00607",
+   "words": [
+    "01407"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "preserved in the rope; no source line of the program refers to it",
+   "constant": "V06N07"
+  },
+  {
+   "line": 1411,
+   "address": "10,3722",
+   "source": "V50N00 VN 5000",
+   "words": [
+    "14400"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant V50N00 (symbols.txt WORD row)",
+   "constant": "V50N00"
+  },
+  {
+   "line": 1412,
+   "address": "10,3723",
+   "source": "PERF2MSK OCT 00030",
+   "words": [
+    "00030"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant PERF2MSK (symbols.txt WORD row)",
+   "constant": "PERF2MSK"
+  },
+  {
+   "line": 1413,
+   "address": "10,3724",
+   "source": "V04N06 VN 00406",
+   "words": [
+    "01006"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant V04N06 (symbols.txt WORD row)",
+   "constant": "V04N06"
+  },
+  {
+   "line": 1414,
+   "address": "10,3725",
+   "source": "PERF4MSK OCT 14",
+   "words": [
+    "00014"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant PERF4MSK (symbols.txt WORD row)",
+   "constant": "PERF4MSK"
+  },
+  {
+   "line": 1416,
+   "address": "10,3726",
+   "source": "REDOMASK OCT 20010",
+   "words": [
+    "20010"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant REDOMASK (symbols.txt WORD row)",
+   "constant": "REDOMASK"
+  },
+  {
+   "line": 1417,
+   "address": "10,3727",
+   "source": "MARK3MSK OCT 40230",
+   "words": [
+    "40230"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant MARK3MSK (symbols.txt WORD row)",
+   "constant": "MARK3MSK"
+  },
+  {
+   "line": 1418,
+   "address": "10,3730",
+   "source": "MARK4MSK OCT 40036",
+   "words": [
+    "40036"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant MARK4MSK (symbols.txt WORD row)",
+   "constant": "MARK4MSK"
+  },
+  {
+   "line": 1419,
+   "address": "10,3731",
+   "source": "NVCADR CADR REDOPRIO",
+   "words": [
+    "20764"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant NVCADR (symbols.txt WORD row)",
+   "constant": "NVCADR"
+  },
+  {
+   "line": 1420,
+   "address": "10,3732",
+   "source": "WAKECADR CADR MARKPLAY",
+   "words": [
+    "20624"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant WAKECADR (symbols.txt WORD row)",
+   "constant": "WAKECADR"
+  },
+  {
+   "line": 1421,
+   "address": "10,3733",
+   "source": "CADR PLAYJUM1",
+   "words": [
+    "21037"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant WAKECADR+1 (symbols.txt WORD row)",
+   "constant": "WAKECADR (following word)"
+  },
+  {
+   "line": 1423,
+   "address": "10,3734",
+   "source": "OCT3400 OCT 3400",
+   "words": [
+    "03400"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant OCT3400 (symbols.txt WORD row)",
+   "constant": "OCT3400"
+  },
+  {
+   "line": 1424,
+   "address": "10,3735",
+   "source": "NBUSMASK OCT 11210",
+   "words": [
+    "11210"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant NBUSMASK (symbols.txt WORD row)",
+   "constant": "NBUSMASK"
+  },
+  {
+   "line": 1425,
+   "address": "10,3736",
+   "source": "PMMASK OCT 66521",
+   "words": [
+    "66521"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant PMMASK (symbols.txt WORD row)",
+   "constant": "PMMASK"
+  },
+  {
+   "line": 1427,
+   "address": "10,3737",
+   "source": "V05N00M1 OCT 1177",
+   "words": [
+    "01177"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant V05N00M1 (symbols.txt WORD row)",
+   "constant": "V05N00M1"
+  },
+  {
+   "line": 1434,
+   "address": "10,3740",
+   "source": "NVBUSMSK OCT 700",
+   "words": [
+    "00700"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant NVBUSMSK (symbols.txt WORD row)",
+   "constant": "NVBUSMSK"
+  },
+  {
+   "line": 1435,
+   "address": "10,3741",
+   "source": "ASTROMSK OCT 704",
+   "words": [
+    "00704"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant ASTROMSK (symbols.txt WORD row)",
+   "constant": "ASTROMSK"
+  },
+  {
+   "line": 1436,
+   "address": "10,3742",
+   "source": "MPERFMSK OCT 40030",
+   "words": [
+    "40030"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant MPERFMSK (symbols.txt WORD row)",
+   "constant": "MPERFMSK"
+  },
+  {
+   "line": 1437,
+   "address": "10,3743",
+   "source": "OCT34300 OCT 34300",
+   "words": [
+    "34300"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant OCT34300 (symbols.txt WORD row)",
+   "constant": "OCT34300"
+  },
+  {
+   "line": 1438,
+   "address": "10,3744",
+   "source": "BITS15+7 OCT 40100",
+   "words": [
+    "40100"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant BITS15+7 (symbols.txt WORD row)",
+   "constant": "BITS15+7"
+  },
+  {
+   "line": 1439,
+   "address": "10,3745",
+   "source": "BITS7+4 OCT 110",
+   "words": [
+    "00110"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant BITS7+4 (symbols.txt WORD row)",
+   "constant": "BITS7+4"
+  },
+  {
+   "line": 1443,
+   "address": "10,3746",
+   "source": "BITS5+11 OCT 2020",
+   "words": [
+    "02020"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant BITS5+11 (symbols.txt WORD row)",
+   "constant": "BITS5+11"
+  },
+  {
+   "line": 1444,
+   "address": "10,3747",
+   "source": "BITS4+10 OCT 1010",
+   "words": [
+    "01010"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant BITS4+10 (symbols.txt WORD row)",
+   "constant": "BITS4+10"
+  },
+  {
+   "line": 1445,
+   "address": "10,3750",
+   "source": "LOWLOAD DEC 22 B-14",
+   "words": [
+    "00026"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant LOWLOAD (symbols.txt WORD row)",
+   "constant": "LOWLOAD"
+  },
+  {
+   "line": 1446,
+   "address": "10,3751",
+   "source": "BUSYMASK OCT 77730",
+   "words": [
+    "77730"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "preserved in the rope; no source line of the program refers to it",
+   "constant": "BUSYMASK"
+  },
+  {
+   "line": 1447,
+   "address": "10,3752",
+   "source": "CADRMASK OCT 50",
+   "words": [
+    "00050"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant CADRMASK (symbols.txt WORD row)",
+   "constant": "CADRMASK"
+  },
+  {
+   "line": 1457,
+   "address": "10,3753",
+   "source": "PRIOOCT OCT 20144",
+   "words": [
+    "20144"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant PRIOOCT (symbols.txt WORD row)",
+   "constant": "PRIOOCT"
+  },
+  {
+   "line": 1458,
+   "address": "10,3754",
+   "source": "MARKOCT OCT 42424",
+   "words": [
+    "42424"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant PRIOOCT+1 (symbols.txt WORD row)",
+   "constant": "MARKOCT"
+  },
+  {
+   "line": 1460,
+   "address": "10,3755",
+   "source": "OCT 11254",
+   "words": [
+    "11254"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant PRIOOCT+2 (symbols.txt WORD row)",
+   "constant": "MARKOCT (following word)"
+  },
+  {
+   "line": 1462,
+   "address": "10,3756",
+   "source": "IDLESLEP OCT 74704",
+   "words": [
+    "74704"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant IDLESLEP (symbols.txt WORD row)",
+   "constant": "IDLESLEP"
+  },
+  {
+   "line": 1463,
+   "address": "10,3757",
+   "source": "OCT67777 OCT 67777",
+   "words": [
+    "67777"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "preserved in the rope; no source line of the program refers to it",
+   "constant": "OCT67777"
+  },
+  {
+   "line": 1469,
+   "address": "10,3760",
+   "source": "OCT40420 OCT 40420",
+   "words": [
+    "40420"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "preserved in the rope; no source line of the program refers to it",
+   "constant": "OCT40420"
+  },
+  {
+   "line": 1470,
+   "address": "10,3761",
+   "source": "MAKEGEN GENADR MAKEPLAY",
+   "words": [
+    "02770"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant MAKEGEN (symbols.txt WORD row)",
+   "constant": "MAKEGEN"
+  },
+  {
+   "line": 1471,
+   "address": "10,3762",
+   "source": "OCT10200 OCT 10200",
+   "words": [
+    "10200"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant OCT10200 (symbols.txt WORD row)",
+   "constant": "OCT10200"
+  },
+  {
+   "line": 1472,
+   "address": "10,3763",
+   "source": "V97N00 VN 09700",
+   "words": [
+    "30200"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant V97N00 (symbols.txt WORD row)",
+   "constant": "V97N00"
+  },
+  {
+   "line": 1473,
+   "address": "10,3764",
+   "source": "OCT20100 OCT 20100",
+   "words": [
+    "20100"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant OCT20100 (symbols.txt WORD row)",
+   "constant": "OCT20100"
+  },
+  {
+   "line": 1474,
+   "address": "10,3765",
+   "source": "CLOCKCON OCT 24030",
+   "words": [
+    "24030"
+   ],
+   "kind": "constant",
+   "owner": "constant table",
+   "native": "compiled constant CLOCKCON (symbols.txt WORD row)",
+   "constant": "CLOCKCON"
+  }
+ ],
+ "covered_ranges": [
+  "FF,5526-FF,5545 lanec-di-mark",
+  "10,2553-10,2653 lanec-di-mark",
+  "10,2654-10,2733 lanec-di-dsp",
+  "10,2734-10,3041 lanec-di-play",
+  "10,3042-10,3175 lanec-di-dsp",
+  "10,3176-10,3271 lanec-di-sleep",
+  "10,3272-10,3426 lanec-di-nvdsp",
+  "10,3427-10,3454 lanec-di-play",
+  "10,3455-10,3615 lanec-di-idle",
+  "10,3616-10,3632 lanec-di-play",
+  "10,3633-10,3716 lanec-di-idle",
+  "10,3717-end constant table"
+ ],
+ "whole_file": {
+  "assembled_words": 667,
+  "words_by_owner": {
+   "constant table": 39,
+   "lanec-di-dsp": 140,
+   "lanec-di-idle": 149,
+   "lanec-di-mark": 81,
+   "lanec-di-nvdsp": 93,
+   "lanec-di-play": 105,
+   "lanec-di-sleep": 60
+  },
+  "instruction_words": 609,
+  "instruction_words_executed_by_oracle": 609
+ },
+ "note": "Every assembled word of the file is owned by one Lane C display milestone or by the constant table at its end. Every instruction word was started by the unchanged original program in Virtual AGC under at least one case of the six display suites (oracle LANEC_TRACE), and the native modules reproduce those cases' complete results (2048 erasable words, registers, channels, superbank, interrupt state). Inline data words (ADRES/OCT/2CADR/GENADR after a call) are the arguments of the call before them, compiled into the native call. Words before CHKPRIO/after COPYPACS and the GOMARK family use the display-start paths of lanec-di-dsp through include/lanec_di_internal.h."
+}

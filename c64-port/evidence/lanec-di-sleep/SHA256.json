@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-di-sleep",
+  "release": "evidence-lanec-di-sleep",
+  "files": {
+    "lanec-di-sleep-diff.json": {
+      "sha256": "0ab994110d2f7977232f7452c77abf1fa443803fb47ae6631e0642d15e41fe91",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-di-sleep-oracle.crc": {
+      "sha256": "a9f032758f5ddfe4e29b2d5da27ab37359ebe01a42340f3199091f9289b9ef60",
+      "bytes": 29354,
+      "store": "tree"
+    },
+    "lanec-di-sleep-sanitize.txt": {
+      "sha256": "4c56ad2d710a1d42c5c6e0bcadaad0a534ba7ddb3a0c54a160e183f8ef7e85f4",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-di-sleep-vice.txt": {
+      "sha256": "6a38f68654ca764b789f724dc911ca6538cf2a5aa05db0023b982f4e5e61b24b",
+      "bytes": 58,
+      "store": "tree"
+    }
+  }
+}
