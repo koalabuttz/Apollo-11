@@ -107,8 +107,9 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
     and 33 and the interrupt-enable bit.
   - The digests are frozen into `tests/lm_lunar_landing_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
-    (`tests/lm_lunar_landing_c64_vectors.h`, 120 cases): every key, outcome
-    and path the host cases take (32 cases), then a stride of 97. The counts
+    (`tests/lm_lunar_landing_c64_vectors.h`, 120 cases): every key, outcome,
+    path and basic block of `src/lm_lunar_landing.c` the host cases take
+    (33 cases), then a stride of 97. The counts
     are in `evidence/lm-lunar-landing/lm-lunar-landing-c64-cover.json`.
   - The proof (`evidence/lm-lunar-landing/lm-lunar-landing-proof.json`)
     counts where each key's cases leave the file.

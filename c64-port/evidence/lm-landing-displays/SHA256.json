@@ -4,8 +4,8 @@
   "release": "evidence-lm-landing-displays",
   "files": {
     "lm-landing-displays-c64-cover.json": {
-      "sha256": "58242a72c57a7dfb5221665b4aa1f47e6276f4a522d317f45bb3d0c3baf1741f",
-      "bytes": 4715,
+      "sha256": "cda75e5a30b844aaa509af63d88bd6be05430e745ebeb5845c3238025d33019f",
+      "bytes": 11508,
       "store": "tree"
     },
     "lm-landing-displays-host.log": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "lm-landing-displays-vice.log": {
-      "sha256": "85119b95d52d6e3aa6785fb2c9a307656ba0418f1eac1822452ff10d72df195c",
+      "sha256": "49b7c9fa94a320eaff06294bb4d05a6d36a3a446488ed100a3fd30bbfcf978b8",
       "bytes": 215,
       "store": "tree"
     }

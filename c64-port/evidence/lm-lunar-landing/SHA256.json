@@ -4,8 +4,8 @@
   "release": "evidence-lm-lunar-landing",
   "files": {
     "lm-lunar-landing-c64-cover.json": {
-      "sha256": "eb37a41ee3d87c886b3cdcc0ec52ff672f8b947a6bfb1ef07264e6756f0f7e21",
-      "bytes": 14314,
+      "sha256": "32e58b2fb1c6d0a6ed4ebf839c8596737b8c1dc721537407bc8b2c8da7e8bb01",
+      "bytes": 25042,
       "store": "tree"
     },
     "lm-lunar-landing-host.log": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "lm-lunar-landing-vice.log": {
-      "sha256": "0d984f05761b9fe1c71af211902da6fc37e6ec34542340ed7e7613af3873d900",
+      "sha256": "3bc97b7bd9b84bee706c3a269de8ea3fd578e6b7d9d6cd6a30deb1d4c28e8244",
       "bytes": 432,
       "store": "tree"
     }

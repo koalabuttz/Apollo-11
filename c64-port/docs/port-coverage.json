@@ -3578,11 +3578,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-ags-init/lm-ags-init-vice.log",
-            "sha256": "eb9a4cdfd7a3243b9789c532cfb0330616f32a71a4cc270d64e75f022e7aa3c8"
+            "sha256": "be605d662273a0ff27c1b47608042254de83b3df72754f121f7f92c586bcb8ae"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ags-init/lm-ags-init-c64-cover.json",
-            "sha256": "eb3d625d05e34c45db496bacadf1e01f0b52f3aeb0d71d06ccff0681b6ec6cd0"
+            "sha256": "0ec008aab5f726933211260fd10e20011c8cf2167fc607394d6b62eb9fc79246"
           }
         }
       }
@@ -5482,11 +5482,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-vice.log",
-            "sha256": "85119b95d52d6e3aa6785fb2c9a307656ba0418f1eac1822452ff10d72df195c"
+            "sha256": "49b7c9fa94a320eaff06294bb4d05a6d36a3a446488ed100a3fd30bbfcf978b8"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-c64-cover.json",
-            "sha256": "58242a72c57a7dfb5221665b4aa1f47e6276f4a522d317f45bb3d0c3baf1741f"
+            "sha256": "cda75e5a30b844aaa509af63d88bd6be05430e745ebeb5845c3238025d33019f"
           }
         }
       }
@@ -7198,11 +7198,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-lunar-landing/lm-lunar-landing-vice.log",
-            "sha256": "0d984f05761b9fe1c71af211902da6fc37e6ec34542340ed7e7613af3873d900"
+            "sha256": "3bc97b7bd9b84bee706c3a269de8ea3fd578e6b7d9d6cd6a30deb1d4c28e8244"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-lunar-landing/lm-lunar-landing-c64-cover.json",
-            "sha256": "eb37a41ee3d87c886b3cdcc0ec52ff672f8b947a6bfb1ef07264e6756f0f7e21"
+            "sha256": "32e58b2fb1c6d0a6ed4ebf839c8596737b8c1dc721537407bc8b2c8da7e8bb01"
           }
         }
       }
