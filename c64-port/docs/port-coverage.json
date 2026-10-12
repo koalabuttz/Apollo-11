@@ -1028,8 +1028,18 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 04 (GOP00FIX, V37, R00TOP00, ISITP00, CANTR00, V37BAD, CHECKTAB/AGAINMM, ISSERVON, CANV37, ROC, POOH, SEUDOP00, GROUPKIL, GOMOD/GOGOPROG, RENDV00, RENDN00, P00FIZZ, KILL20, REV37, STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC, INITSUB/SETMAXER/RAKE) and bank 20 (VAC5STOR) as control-transfer ABI routines (35 entries incl. GOP00FIX, V37, the TEMPFLSH restarts ROC and V37XEQ, the code after R00's EXIT, VAC5STOR and the return after every TC out of the file); constants and the PREMM1, FCADRMM1, DNLADMM1 and FLAGTABL tables compiled from the source listing. R00's interpretive CALL INTSTALL/EXIT (2131-2133) and bank 13 remain.",
+          "scope": "Every instruction of bank 04 (GOP00FIX, V37, R00TOP00, ISITP00, CANTR00, V37BAD, CHECKTAB/AGAINMM, ISSERVON, CANV37, ROC, POOH, SEUDOP00, GROUPKIL, GOMOD/GOGOPROG, RENDV00, RENDN00, P00FIZZ, KILL20, REV37, STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC, INITSUB/SETMAXER/RAKE) and bank 20 (VAC5STOR) as control-transfer ABI routines (35 entries incl. GOP00FIX, V37, the TEMPFLSH restarts ROC and V37XEQ, the code after R00's EXIT, VAC5STOR and the return after every TC out of the file); constants and the PREMM1, FCADRMM1, DNLADMM1 and FLAGTABL tables compiled from the source listing. R00's interpretive CALL INTSTALL/EXIT (2131-2133) and bank 13 are cm-stateup.",
           "verification": "docs/CM-V37.md"
+        },
+        {
+          "native_files": [
+            "src/cm_stateup.c",
+            "src/cm_interp_steps.c",
+            "src/cm_interp_orders.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every order pair of bank 13: STATEUP, STATEND and THISVINT, and R00's CALL INTSTALL; DUMMYAD EXIT in bank 04 (2131-2133), as interpretive control-transfer ABI routines keyed by LOC at NEWOPS (12), through the Comanche055 builds of the compiled interpreter paths (SWITCHES, CALL, STCALL, DLOAD, RVQ, EXIT). With cm-fresh-start and cm-v37 every instruction of the file is covered except STARTSIM, which runs only if the STARTSW word is patched.",
+          "verification": "docs/CM-STATEUP.md"
         }
       ]
     },
