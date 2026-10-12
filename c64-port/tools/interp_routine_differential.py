@@ -15,13 +15,15 @@ it, and fixed CADRs outside the file (or the genuine return points of the
 file's callers) in QPRET, S1, S2 and every erasable word a GOTO or CALL of
 the file reads a CADR from. The rest of the image is a seeded fill, with
 three data shapes: the fill itself, small words in the VAC area and the
-file's operands, and half-unit vectors at the file's operands.
+file's operands, and half-unit vectors at the file's operands. A spec with
+'edge_cases': True adds a fourth, tools/edge_cases.py's flight edge values.
 
   interp_routine_differential.py <spec> [--cases N] [--freeze] [--show K]
 
 --freeze writes tests/<id>_vectors.h (a subset of cases with their oracle
 digests) for the host test and the C64 diagnostic, and
-build/<id>-proof.json."""
+build/<id>-proof.json. A spec with 'c64_rows': 'cover' picks the C64 cases
+by branch outcome (tools/c64_row_cover.py) instead of per routine."""
 import argparse
 import collections
 import hashlib
@@ -34,6 +36,8 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import c64_row_cover
+import edge_cases
 import interp_compile as IC
 import interp_specs
 
@@ -89,6 +93,7 @@ class Mission:
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
+        self.edge = spec.get('edge_cases', False)
         self.rk = bool(spec.get('resume_keys'))
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
@@ -151,7 +156,8 @@ def case(mi, point, n, rng):
     E[0o67] = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
-    shape = n % 3
+    # 'edge_cases' specs add a fourth shape (tools/edge_cases.py).
+    shape = n % 4 if mi.edge else n % 3
     if shape >= 1:
         for a in range(vac, vac + 0o46):
             w = rng.randrange(0o4000)
@@ -170,6 +176,8 @@ def case(mi, point, n, rng):
                 hi, lo = dp(x)
                 E[(phys + 2 * k) & 0o3777] = hi
                 E[(phys + 2 * k + 1) & 0o3777] = lo
+    if shape == 3:
+        E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
     for off in (0o50, 0o51, 0o52):
         E[vac + off] = mi.outside(rng)
     for w in mi.cp.cadr_erasable:
@@ -365,7 +373,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
     out.append(',\n'.join(' 0x%08xul' % int(rows[i][3]) for i in pick))
     out.append('};')
     open(os.path.join(R, 'tests/%s_vectors.h' % sym), 'w').write('\n'.join(out) + '\n')
-    c64 = freeze_c64(spec, sym, missions, cases, rows, visits, chan)
+    c64, cover = freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan)
     blob = open(os.path.join(B, '%s-cases.bin' % spec_id), 'rb').read()
     proof = {'milestone': spec_id, 'missions': ['Luminary099', 'Comanche055'],
              'rope_sha256': [hashlib.sha256(open(p, 'rb').read()).hexdigest() for p in ROPES],
@@ -380,6 +388,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
                              '; '.join('%s: %s' % (mi.m, ', '.join(sorted(set(mi.cp.externals.values()) | set(mi.cp.externals_any.values()))) or 'none')
                                        for mi in missions if mi.m in spec['missions'])),
              'compared': 'Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state'}
+    proof.update(cover)
     if chan:
         proof['waiting_for_io_channels'] = dict(collections.Counter(chan.values()))
     open(os.path.join(B, '%s-proof.json' % spec_id), 'w').write(json.dumps(proof, indent=1) + '\n')
@@ -471,15 +480,51 @@ def group_text(sym, groups, cases, rows):
     return '\n'.join(out) + '\n'
 
 
+def host_arcs(spec_id, spec, missions, cases):
+    """{case: branch arcs} of the native runner, one case at a time
+    (tools/c64_row_cover.py)."""
+    d = os.path.join(B, '%s-cover' % spec_id)
+    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
+    exe = c64_row_cover.build(d, [*srcs, spec['target'], 'tools/interp_routine_native.c'],
+                              [f for f in FLAGS if f != '-O2'])
+    one = os.path.join(d, 'cases')
+    os.makedirs(one)
+
+    def argv(i):
+        p = os.path.join(one, '%d.bin' % i)
+        write_cases(p, missions, [cases[i]])
+        return [str(exe), p]
+    return c64_row_cover.trace(d, range(len(cases)), argv)
+
+
 C64_HOST_ONLY = []   # routines whose runs do not fit one C64 diagnostic
 
 
-def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
+def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
     """Groups of routines whose diagnostic fits below $c000, each with the
     spec's c64_per_point cases (default 2) per routine whose run stays in
-    the group (fewest edits first). Writes tests/<id>_c64_vectors.h and
-    tools/mk/<id>.groups; returns the groups."""
+    the group (fewest edits first). With 'c64_rows': 'cover', the cases are
+    instead the fewest whose native runs take every branch arc all the
+    cases take (tools/c64_row_cover.py), among the cases whose routines fit
+    one diagnostic, plus the first of a routine none of them enters, and
+    groups fill case by case. Writes tests/<id>_c64_vectors.h and
+    tools/mk/<id>.groups; returns the groups and the cover's proof fields."""
     per = spec.get('c64_per_point', 2)
+    cover = spec.get('c64_rows') == 'cover'
+    if cover:
+        arcs = host_arcs(spec_id, spec, missions, cases)
+        cost = lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']))
+        chosen = set()
+        for cm, mi in enumerate(missions):
+            if mi.m not in spec['missions']:
+                continue
+            mine = [i for i in arcs if cases[i]['cm'] == cm and i not in chan]
+            # Each routine set the cases visit, probed with its largest case.
+            big = {visits[i]: i for i in sorted(mine, key=lambda i: len(cases[i]['edits']))}
+            fits = {v for v, i in big.items()
+                    if c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None}
+            ok = {i: arcs[i] for i in mine if visits[i] in fits}
+            chosen |= set(c64_row_cover.cover(ok, cost))
     groups = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -489,23 +534,24 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
         need = {}
         for p in mi.points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan),
-                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))[:per]
-            need[p] = mine
+                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
+            need[p] = ([i for i in mine if i in chosen] or mine[:1]) if cover else mine[:per]
         mask, pick = 0, []
-        for p in mi.points:
+        for p, part in (((p, [i]) for p in mi.points for i in need[p]) if cover else ((p, need[p]) for p in mi.points)):
             want = 0
-            for i in need[p]:
+            for i in part:
                 want |= visits[i]
             trial = mask | want
-            tp = pick + need[p]
+            tp = pick + part
             if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
-                if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, need[p])], cases, rows)) is None:
+                if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
                     # The routine's whole run (with every routine it reaches)
                     # does not fit one diagnostic: its cases stay host-only.
-                    C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
+                    if '%s %s' % (mi.m, mi.cp.where(p)) not in C64_HOST_ONLY:
+                        C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
                     continue
                 groups.append((mi.m, mask, pick))
-                mask, pick = want, list(need[p])
+                mask, pick = want, list(part)
             else:
                 mask, pick = trial, tp
         groups.append((mi.m, mask, pick))
@@ -517,6 +563,11 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
             if os.environ.get('IRC_C64_DEBUG'):
                 sys.stderr.write('group %s mask %x picks %s edits %s\n' % (m, mask, [cases[i]['point'] for i in pick], [len(cases[i]['edits']) for i in pick]))
             sys.exit('a single routine group of %s does not fit the C64' % m)
+    extra = {}
+    if cover:
+        picked = [i for m, mask, pick in groups for i in pick]
+        c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
+        extra = c64_row_cover.summary(arcs, picked)
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]
@@ -527,7 +578,7 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, chan=()):
         mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
             v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
-    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups]
+    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups], extra
 
 
 if __name__ == '__main__':
