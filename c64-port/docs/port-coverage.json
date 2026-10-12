@@ -4559,7 +4559,39 @@
           "scope": "Every order pair of bank 13: STATEUP, DOINT, NO-INT, DOINT2 and THISVINT as interpretive control-transfer ABI routines keyed by LOC at NEWOPS (11), through the compiled interpreter paths (SWITCHES, CALL, STCALL, DLOAD, RVQ). With lm-fresh-start and lm-v37 every instruction of the file is covered except STARTSIM, which runs only if the STARTSW word is patched.",
           "verification": "docs/LM-STATEUP.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64.json",
+            "sha256": "38c197141900009d3b6d95d530f8b99fda62acfef517d7ce01d27321551bc8c0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-host.json",
+            "sha256": "22a2fecafa62e25d1023e30b9b33a24d9ef5c38a400f42e04d8e5a3377bfb404"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-comparison.json",
+            "sha256": "cebf9766ad0fda7e27cb530860f5f1273094359e5605461a10246894549aa08c"
+          },
+          "source_to_native_map": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-source-map.json",
+            "sha256": "d073de2fb5a90cd956ccc2c168e97d4a2102d343da5f6e5a05beb268f960ea8c"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, which refuse Q = 3 (issue #94))",
+          "RESTARTS (through SWCALL), DUMMYJOB +2, MMDSPLAY, ALARM, PHASCHNG, PHSCHNGA, NEWMODEA, SPVAC, ENDOFJOB, CHANG2",
+          "DOWNFLAG, CLEARMRK, GOFLASH and its three returns, RELDSP, CLRADMOD, FALTON, ENGINOF1, ALLCOAST, PINBRNCH, P70/P71 (SETUP70/71 DTCB)",
+          "Interpretive callees INTEGRV, INTSTALL, SETIFLGS, ENDINT and THISVINT's caller",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file but STARTSIM (05,2452-2455), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or are corrupt (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX set by CHECKTAB; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; lm_fresh_io / p66_bias_io plus agc_hardware for channel 11. Refused before any change: a TS overflow, an ERESTORE repair below 061, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io or hardware record."
+      }
     },
     {
       "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
