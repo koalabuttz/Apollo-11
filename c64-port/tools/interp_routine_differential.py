@@ -85,11 +85,27 @@ class Mission:
         self.points = sorted(self.cp.blocks)
         self.kinds = {p: self.cp.starts[p][0] for p in self.points}
         self.externals = sorted(set(self.cp.externals))
+        if self.cp.basic:
+            # Whole-file basic code (tools/basic_compile.py): any transfer
+            # from the file to a fixed address outside it but INTPRET stops.
+            self.externals += [0xffff, 2048 + self.cp.intpret - 0o4000]
         self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)))
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
-        self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
+        self.states = {self.point_of(k): v for k, v in spec.get('states', {}).items()}
+        # Erasable cells every case of the milestone holds in range (physical
+        # address: choices), as the rest of the program keeps them.
+        self.cells = spec.get('cells', {})
+        self.io_channels = spec.get('io_channels', {})
+
+    def point_of(self, k):
+        """A states key: a label (or label+n), or 'bank,addr' for an
+        unlabelled point."""
+        if ',' in k:
+            b, a = k.split(',')
+            return int(b, 8) * 1024 + int(a, 8) - 0o2000
+        return self.cp.label_phys(k)
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
@@ -127,6 +143,21 @@ class Mission:
             phys = bank * 1024 + off
             if not self.cp.in_file(phys):
                 return cadr(phys)
+
+
+class Absent:
+    """A mission the spec does not compile: an empty header."""
+    def __init__(self, m):
+        self.m = m
+        self.newops = 0
+        self.externals = []
+        self.body_exits = []
+        self.points = []
+
+        class C:
+            lo = hi = 0
+            ranges = []
+        self.cp = C()
 
 
 def case(mi, point, n, rng):
@@ -183,6 +214,33 @@ def case(mi, point, n, rng):
             lab, off = v.split('+')
             v = mi.L.word(mi.L.labels[lab] + int(off))
         E[a] = v
+    if mi.cp.basic and mi.kinds[point] == 'b':
+        # Compiled basic code: the words it names take zeros, small values
+        # and saturating values often enough to reach every CCS exit, BZF and
+        # BZMF branch and TS overflow (switched addresses through the case's
+        # EBANK).
+        for a in sorted(mi.cp.basic.erasable_refs):
+            phys = (eb << 8) + (a - 0o1400) if a >= 0o1400 else a
+            if phys in E:
+                continue    # the interpreter state set above (FIXLOC, ...)
+            r = rng.random()
+            if r < 0.15:
+                E[phys] = 0
+            elif r < 0.3:
+                E[phys] = 0o77777
+            elif r < 0.5:
+                k = rng.randrange(1, 4)
+                E[phys] = k if rng.random() < 0.5 else 0o77777 - k
+            elif r < 0.6:
+                k = rng.randrange(0o37770, 0o40000)
+                E[phys] = k if rng.random() < 0.5 else 0o77777 - k
+    for a, choices in mi.cells.items():
+        E[a] = rng.choice(choices)
+    # I/O channels the file reads or writes (spec 'io_channels', channel:
+    # mask of the bits a case may set): a channel edit each, so the run and
+    # the digest cover them (tests/interp_case.h).
+    for k, mask in sorted(mi.io_channels.items()):
+        E[0x8000 | k] = rng.getrandbits(15) & mask if rng.random() < 0.75 else rng.choice([0, mask])
     if mi.kinds[point] == 'i':
         E[5] = mi.newops
         E[0o164] = logical(point)
@@ -256,7 +314,7 @@ def main():
     spec = interp_specs.SPECS[a.spec]
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
-    missions = [Mission(spec, m) for m in ('lm', 'cm')]
+    missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
     rng = random.Random('interp-routine:' + a.spec)
     cases = []
     for cm, mi in enumerate(missions):
@@ -385,7 +443,7 @@ def c64_size(spec, sym, m, mask, text):
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
-    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, '-DIRC_GROUP=1',
+    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), '-D%s_KEEP0=0x%x' % (spec['symbol'][m].upper(), mask),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
@@ -395,6 +453,8 @@ def c64_size(spec, sym, m, mask, text):
         for ln in open(os.path.join(d, 'probe.map')):
             if '__heap_start = ' in ln:
                 end = int(ln.split()[0], 16)
+    if os.environ.get('IRC_DEBUG'):
+        print('probe %s %x: rc=%d end=%s %s' % (m, mask, r.returncode, end and hex(end), r.stderr[-1500:]), file=sys.stderr)
     subprocess.run(['rm', '-rf', d])
     return end if end is not None and end <= C64_TOP else None
 

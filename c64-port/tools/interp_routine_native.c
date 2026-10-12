@@ -18,6 +18,7 @@ static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const
  lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
  cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ if(irc_ch_on)irc_cm_io(&cio,0);
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
  while(nvisit<max_steps&&nvisit<256u){
   uint16_t pt=agc_transfer_point(p,s,superbank);

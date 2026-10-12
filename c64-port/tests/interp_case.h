@@ -13,6 +13,16 @@ typedef struct {
     uint32_t seed; uint8_t cm, interrupt_enabled; agc_word superbank;
     uint16_t nedits; const irc_edit *edits;
 } irc_case;
+/* Channel edits (Lane G): an edit whose addr is IRC_CHANNEL|k sets I/O
+ * channel k (one of irc_ch_num) instead of an image word. A case with any
+ * channel edit runs with those channel values (the rest 0) in the CM io
+ * record and in yaAGC's channels, and its digest also covers the channels
+ * and the channel-13 traps after the run; a case without one is unchanged. */
+#define IRC_CHANNEL 0x8000u
+enum { IRC_NCH = 10 };
+extern const uint8_t irc_ch_num[IRC_NCH];
+extern agc_word irc_ch[IRC_NCH], irc_trap[3];
+extern uint8_t irc_ch_on;
 /* Fill all 2048 words from the seed (A and L sign-extended, the special
  * and counter registers 010-061 and ZERO cleared), then apply the edits. */
 void irc_build(apollo_overlay_state *, const irc_case *);
@@ -23,6 +33,10 @@ enum { IRC_STOPPED = 0, IRC_REFUSED = 1, IRC_FAILED = 2 };
  * the interrupt-enable latch. */
 unsigned irc_run(const agc_native_program *, apollo_overlay_state *, const irc_case *,
                  uint16_t max_steps, uint16_t *ie);
-/* Running sums over the kind, the 2048 words (A, L 16-bit) and ie. */
+/* The CM io record's channels and traps from irc_ch/irc_trap (save 0), or
+ * back into them (save 1). */
+void irc_cm_io(void *cm_io, unsigned save);
+/* Running sums over the kind, the 2048 words (A, L 16-bit) and ie, then the
+ * channels and traps when the case set channels. */
 uint32_t irc_digest(unsigned kind, const apollo_overlay_state *, uint16_t ie);
 #endif
