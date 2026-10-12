@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -976,6 +976,16 @@
           ],
           "scope": "Actual ENEMA restart portion within continuous alarm lifecycle, retaining source MMDSPLAY PTBAD or DOFSTART frontier; broader restart program remains open.",
           "verification": "docs/COMANCHE_ABORT_LIFECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_fresh_start.c",
+            "src/cm_fresh_start_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, ELRSKIP, NOCOARSE, ENEMA (GOPROG2), GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB2, DSPOFF, T5IDLOC and GOTOPOOH as control-transfer ABI routines (17 entries incl. the return after every TC out of the file); constants and the T5IDLER table compiled from the source listing. STARTSIM (patch-only) untranslated; banks 04 (V37/POOH), 20 (VAC5STOR, legacy cm_vac5_store) and 13 remain.",
+          "verification": "docs/CM-FRESH-START.md"
         }
       ]
     },
