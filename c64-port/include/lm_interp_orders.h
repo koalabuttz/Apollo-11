@@ -105,6 +105,8 @@ void lmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
 /* BZE/GOTO without the transfer: 1 at GOTO 06646 (BZE zero, or GOTO),
  * 0 at DANZIG. */
 uint8_t lmi_bzegoto(apollo_overlay_state *);
+/* TLOAD 06470 with an erasable operand at C(ADDRWD), to DANZIG (TP mode). */
+void lmi_tload(apollo_overlay_state *);
 /* EXIT to the basic word after the order (Z = LOC+1, Q 06747); TC INTPRET
  * from basic code (Q = the next word) to NEWOPS; TPMODE (RTB routine). */
 void lmi_exit(apollo_overlay_state *);

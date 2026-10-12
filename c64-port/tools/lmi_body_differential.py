@@ -313,6 +313,11 @@ def case(g,body):
     if not 0o1370<=v<0o1400 and v!=0o117:break
    img[0o117]=v
   return hdr,img
+ if body==58:
+  # TLOAD from erasable (either window or the work area after DIRADRES).
+  img[5]=0o6470;hdr[1]=0o6061
+  img[0o116]=r.randrange(0o61,0o1360) if r.random()<.7 else r.randrange(0o1410,0o1765)
+  return hdr,img
  if body==57:
   # TIX: POLISH the branch CADR, X and S of the selected index either sign.
   setbanks(img,1);img[5]=0o2415;hdr[2]=0o6646
@@ -333,7 +338,7 @@ BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
