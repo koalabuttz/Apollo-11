@@ -77,7 +77,24 @@ typedef struct agc_native_program {
     agc_hardware *hardware;
 } agc_native_program;
 
-/* Native routine for the current Z (or LOC at the fetch point), or NULL. */
+/* Pending right-hand order. A pair whose left order is RTB returns through
+ * DANZIG (LM 06061, CM 06030) with the right order's code still in EDOP
+ * (CCS EDOP positive: TCF OPJUMP) and LOC at the RTB's operand word, the
+ * pair word +1. That point is interpretive too: when Z is DANZIG, EDOP is
+ * positive and the program's interpretive tables include the mission's
+ * marker table, the point is LOC under BANKSET. The file owning the pair
+ * registers a routine there, in its interpretive table, that accepts exactly
+ * the EDOP code its pair leaves, performs DANZIG's BBANK load and the right
+ * order, and refuses anything else with EXEC_OUT_OF_SCOPE. An RTB operand
+ * word is never an order-pair word, so these keys never meet NEWOPS keys.
+ * Programs without the marker resolve DANZIG by Z as before. */
+#define AGC_LM_DANZIG UINT16_C(3121)  /* physical 06061 */
+#define AGC_CM_DANZIG UINT16_C(3096)  /* physical 06030 */
+#define AGC_EDOP 023u
+extern const agc_routine_table agc_lm_danzig_marker, agc_cm_danzig_marker;
+
+/* Native routine for the current Z (or LOC at the fetch point, or at a
+ * pending DANZIG), or NULL. */
 agc_routine agc_transfer_resolve(const agc_native_program *, const apollo_overlay_state *,
                                  agc_word superbank);
 /* The inline operand at logical address q (the word after the caller's TC),
@@ -86,7 +103,7 @@ bool agc_transfer_operand(const agc_native_program *, const apollo_overlay_state
                           agc_word superbank, agc_word q, agc_word *word);
 /* Point the trampoline compares against stop: the physical fixed address of
  * Z, its erasable key when Z is erasable, or LOC under BANKSET when Z is the
- * interpreter fetch point. */
+ * interpreter fetch point or a pending DANZIG. */
 uint16_t agc_transfer_point(const agc_native_program *, const apollo_overlay_state *, agc_word superbank);
 /* Trampoline: call the routine at the current point, then the routine at its
  * continuation, and so on, until the point equals stop (the caller's own

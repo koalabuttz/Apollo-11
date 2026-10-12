@@ -51,6 +51,13 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   (`agc_erasable_point`). The file that stores those words registers a routine
   there that accepts exactly the words it stores and refuses any other with
   `EXEC_OUT_OF_SCOPE`. Nothing decodes an arbitrary erasable word.
+- **Pending right-hand orders.** An RTB in the left half of an order pair
+  returns through DANZIG with the right order still in EDOP. With the
+  mission's marker table (`agc_lm_danzig_marker`, `agc_cm_danzig_marker`) in
+  a program's interpretive tables, Z at DANZIG with EDOP positive is an
+  interpretive point keyed by LOC under BANKSET, the RTB's operand word. The
+  file owning the pair registers a routine there that accepts exactly its
+  pair's EDOP code. See `docs/DANZIG-PENDING.md`.
 - **Inline operands.** The word a caller places after its `TC` (alarm codes,
   BANKCALL/POSTJUMP CADRs) is the caller's compiled constant. A
   `agc_site_operand` table holds it for every genuine call site, keyed by the
