@@ -528,6 +528,7 @@ include tools/lm_torque.mk
 
 test: test-documentation-coverage
 test-documentation-coverage:
+	python3 tools/evidence.py fetch --coverage
 	python3 tests/test_documentation_coverage.py
 .PHONY: test-documentation-coverage
 
