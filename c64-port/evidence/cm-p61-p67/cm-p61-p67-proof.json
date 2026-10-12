@@ -9,180 +9,238 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 25856,
- "cases_sha256": "c5813c41e6c3a87a548c6f6b7fdb7b166018f481eded9449f7fde18bff899b56",
- "oracle_sha256": "7059888d68be57d25f7f049ed2c7fa12b38251db59e9a96a2377ab638d7b3ed3",
+ "cases_sha256": "b8659a1d2b113c8f33cda5a4f69eda273506b0bd15cd75bc35f1b28592e4317a",
+ "oracle_sha256": "cedd10e7d4f44c1b71728926885c936dbf3085a42a2a1a24866d6520993102bc",
  "frozen_vectors": 202,
  "c64_vectors": [
   {
    "mission": "cm",
-   "keep": "0x7fff",
-   "cases": 15,
+   "keep": "0x1000060000000000000001ff",
+   "cases": 21,
    "case_ids": [
-    12,
-    445,
-    620,
-    1008,
-    1240,
-    1487,
-    1548,
-    1816,
-    2063,
-    2421,
+    144,
+    39,
+    90,
+    126,
+    298,
+    265,
+    554,
+    999,
+    1033,
+    1114,
+    1081,
+    1108,
+    1478,
+    1542,
+    1839,
+    1969,
+    1918,
+    1825,
+    1865,
+    1951,
+    2174
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3ffffffe01",
+   "cases": 33,
+   "case_ids": [
+    2430,
     2629,
-    2948,
-    3090,
-    3409,
-    3593
+    3065,
+    3150,
+    3520,
+    3719,
+    4047,
+    4135,
+    4448,
+    4620,
+    4891,
+    5282,
+    5394,
+    5638,
+    6077,
+    6231,
+    6541,
+    6424,
+    6448,
+    6550,
+    6698,
+    6788,
+    6999,
+    7303,
+    7445,
+    7866,
+    7975,
+    8216,
+    8463,
+    8836,
+    9167,
+    9285,
+    9472
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xfffffffff8001",
-   "cases": 38,
+   "keep": "0x12effffffc0000c0004",
+   "cases": 32,
    "case_ids": [
-    3843,
-    4096,
-    4394,
-    4662,
-    4879,
-    5195,
-    5607,
-    5719,
-    5888,
-    6189,
-    6442,
-    6806,
-    6695,
-    7020,
-    7171,
-    7436,
-    7722,
-    7966,
-    8393,
-    8490,
-    8821,
-    8963,
-    9222,
-    9628,
-    9959,
-    10011,
-    10312,
-    10502,
-    10806,
-    11206,
-    11273,
-    11571,
-    11965,
-    12035,
-    12387,
-    12748,
-    12875,
-    13281
+    9926,
+    9987,
+    10474,
+    10580,
+    10860,
+    11260,
+    11435,
+    11559,
+    11857,
+    12140,
+    12489,
+    12733,
+    12986,
+    13155,
+    13384,
+    13583,
+    13842,
+    14080,
+    14444,
+    14436,
+    14390,
+    14426,
+    14537,
+    14372,
+    14447,
+    14667,
+    14881,
+    15203,
+    15525,
+    15637,
+    15944,
+    16269
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xffffff00000000c0004",
-   "cases": 38,
+   "keep": "0xfff0000000000000004",
+   "cases": 12,
    "case_ids": [
-    13531,
-    13673,
-    13824,
-    14089,
-    14369,
-    14396,
-    14411,
-    14564,
-    14715,
-    14619,
-    14646,
-    14736,
-    14959,
-    15212,
-    15579,
-    15694,
-    15917,
-    16182,
-    16543,
-    16582,
-    16549,
-    16417,
-    16652,
-    16643,
-    16727,
-    16664,
-    16896,
-    16905,
-    17194,
-    17528,
-    17718,
-    17977,
-    18197,
-    18549,
-    18540,
-    18718,
-    18950,
-    19224
+    16519,
+    16845,
+    16920,
+    17299,
+    17438,
+    17772,
+    18157,
+    18368,
+    18615,
+    18796,
+    19010,
+    19215
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x13e03ff0000000000000000000",
-   "cases": 10,
+   "keep": "0x13200ff0000000000000000000",
+   "cases": 18,
    "case_ids": [
-    19456,
-    19712,
-    19971,
-    20230,
-    20483,
-    20787,
+    19568,
+    19534,
+    19702,
+    19685,
+    19708,
+    19967,
+    19745,
+    19974,
+    20356,
+    20387,
+    20329,
+    20501,
+    20763,
+    20847,
+    20979,
+    20766,
     20992,
-    21260,
-    21507,
-    21781
+    21266
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x123c000000000000000000000",
+   "keep": "0xc0f000000000000000000000",
+   "cases": 11,
+   "case_ids": [
+    21604,
+    21612,
+    21647,
+    21648,
+    21577,
+    21678,
+    21538,
+    22009,
+    21896,
+    22115,
+    22296
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1ff0004000000000000000100",
+   "cases": 11,
+   "case_ids": [
+    22558,
+    22829,
+    23151,
+    23097,
+    23122,
+    23296,
+    23552,
+    23862,
+    24313,
+    24329,
+    24588
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1e000000000000000000000000",
    "cases": 4,
    "case_ids": [
-    22016,
-    22272,
-    22531,
-    22796
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0x17fc0004000000000000000100",
-   "cases": 9,
-   "case_ids": [
-    23061,
-    23305,
-    23552,
-    23811,
-    24067,
-    24320,
-    24582,
-    24841,
-    25121
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0x18000000000000000000000000",
-   "cases": 2,
-   "case_ids": [
-    25344,
-    25600
+    24853,
+    25130,
+    25350,
+    25624
    ]
   }
  ],
- "c64_label_coverage": {
+ "c64_coverage": {
   "host_labels": 142,
   "c64_labels": 142,
-  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+  "host_edges": 1805,
+  "c64_edges": 1805,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 989,
+  "c64_taken": 989,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_p61_p67.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_p61_p67_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
  },
  "stops": {
   "CM 10,2376 S62.3": {
@@ -264,8 +322,8 @@
    "05546": 256
   },
   "CM 26,2367 ": {
-   "05412": 118,
-   "05354": 138
+   "05412": 124,
+   "05354": 132
   },
   "CM 26,2374 WAKEP62": {
    "05134": 256
@@ -355,18 +413,18 @@
    "03611": 256
   },
   "CM 26,2550 ": {
-   "05650": 94,
-   "06037": 128,
-   "03672": 5,
-   "03352": 26,
-   "04662": 3
+   "05650": 93,
+   "06037": 119,
+   "04662": 8,
+   "03352": 31,
+   "03672": 5
   },
   "CM 26,2551 ": {
-   "06037": 135,
-   "05650": 79,
-   "03352": 32,
-   "04662": 5,
-   "03672": 5
+   "05650": 86,
+   "06037": 124,
+   "03352": 33,
+   "03672": 5,
+   "04662": 8
   },
   "CM 26,2555 ": {
    "05245": 256
@@ -387,16 +445,16 @@
    "04701": 256
   },
   "CM 26,2603 ": {
-   "05650": 165,
-   "03672": 16,
-   "03352": 69,
-   "04662": 6
+   "05650": 167,
+   "03352": 71,
+   "04662": 7,
+   "03672": 11
   },
   "CM 26,2604 S61.1A": {
-   "05650": 162,
-   "03352": 69,
-   "04662": 14,
-   "03672": 11
+   "03352": 68,
+   "05650": 177,
+   "03672": 3,
+   "04662": 8
   },
   "CM 26,2622 S61.1B": {
    "05650": 256
@@ -417,8 +475,8 @@
    "04662": 256
   },
   "CM 26,2641 RETRN1": {
-   "04662": 136,
-   "03672": 120
+   "04662": 133,
+   "03672": 123
   },
   "CM 26,2651 S61.2": {
    "06037": 256
@@ -445,8 +503,8 @@
    "06037": 256
   },
   "CM 26,2701 ": {
-   "06037": 171,
-   "05650": 85
+   "06037": 175,
+   "05650": 81
   },
   "CM 26,2703 ": {
    "06037": 256
@@ -455,12 +513,12 @@
    "06037": 256
   },
   "CM 26,2707 ": {
-   "06037": 41,
-   "05721": 215
+   "05721": 203,
+   "06037": 53
   },
   "CM 26,2711 ": {
-   "06037": 112,
-   "05721": 144
+   "05721": 153,
+   "06037": 103
   },
   "CM 26,2723 ": {
    "06037": 256
@@ -475,8 +533,8 @@
    "06037": 256
   },
   "CM 26,2761 ": {
-   "05536": 97,
-   "05721": 159
+   "05721": 160,
+   "05536": 96
   },
   "CM 26,2766 ": {
    "05536": 256
@@ -488,12 +546,12 @@
    "06037": 256
   },
   "CM 26,3046 PREVGAM": {
-   "06037": 85,
-   "05721": 171
+   "05721": 136,
+   "06037": 120
   },
   "CM 26,3051 VGAMCALC": {
-   "06037": 65,
-   "05721": 191
+   "05721": 199,
+   "06037": 57
   },
   "CM 27,2631 TFF/TRIG": {
    "06037": 256
@@ -502,8 +560,8 @@
    "06037": 256
   },
   "CM 27,2660 ": {
-   "06037": 174,
-   "05650": 82
+   "06037": 187,
+   "05650": 69
   },
   "CM 27,2662 ": {
    "06037": 256
@@ -515,5 +573,6 @@
  },
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, ALARM, BANKCALL, BOVB ENDT(X), CLEARMRK, DANZIG, DOWNFLAG, ENDOFJOB, FINDVAC, GOTOPOOH, NEWMODEX, NOVAC, PHASCHNG, POSTJUMP, RTB CM/DAPIC, RTB REFAZE10, RTB SERVNOUT, TASKOVER, UPFLAG, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
- "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap"
 }

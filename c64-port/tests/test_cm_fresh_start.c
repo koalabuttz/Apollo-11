@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "cm_fresh_start_cases.h"
 #include "cm_fresh_start_vectors.h"
+#include "cm_fresh_start_c64_vectors.h"
 #include "cm_interbank_routines.h"
 #include "../src/cm_fresh_start_operands.inc"
 #define ENDS 13u
@@ -34,6 +35,7 @@ static void at(apollo_overlay_state *s,cm_fresh_io *io,agc_word z){unsigned k;
 int main(void){apollo_overlay_state s;cm_fresh_io io;enum exec_status st;unsigned n,i,ended[ENDS];
  for(i=0;i<ENDS;++i)ended[i]=0;
  check(CM_FS_VECTORS==CM_FS_CASES,"vector count",0);
+ for(n=0;n<CM_FS_C64_COUNT;++n)check(cm_fs_c64_case[n]<CM_FS_CASES&&(n==0u||cm_fs_c64_case[n-1u]<cm_fs_c64_case[n])&&cm_fs_c64[n]==cm_fresh_start_expected[cm_fs_c64_case[n]],"C64 row",n);
  for(n=1;n<CM_FRESH_OPERAND_COUNT;++n)check(cm_fresh_operands[n-1u].physical<cm_fresh_operands[n].physical,"operands sorted",n);
  for(n=1;n<CM_FS_ROUTINES;++n)check(cm_fresh_start_routines.entries[n-1u].physical<cm_fresh_start_routines.entries[n].physical,"routines sorted",n);
  for(n=0;n<CM_FS_CASES;++n)check(cm_fs_digest(&s,(uint16_t)n,&st)==cm_fresh_start_expected[n]&&st==EXEC_OK,"oracle",n);

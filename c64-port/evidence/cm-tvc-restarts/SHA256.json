@@ -4,7 +4,7 @@
   "release": "evidence-cm-tvc-restarts",
   "files": {
     "cm-tvc-restarts-differential.log": {
-      "sha256": "4e2a2cd670737a98406092929218d818a7b202358adc02b82201888f5cb84326",
+      "sha256": "b2c0ba724d4d60d308cd4dc6f6dd58a87eef95f150eba54ee60a66ca7a718b8d",
       "bytes": 426,
       "store": "tree"
     },
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-restarts-proof.json": {
-      "sha256": "832900ad0e1b50761fecbb2bca02fb49877fa76ed9a53516d3e3037a7837283b",
-      "bytes": 2155,
+      "sha256": "1a5133f739d62431a3a1dbb4746cf48575a2669034c4332014f0e80d7d0ad1a8",
+      "bytes": 3526,
       "store": "tree"
     },
     "cm-tvc-restarts-source-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-tvc-restarts-vice.log": {
-      "sha256": "c315b0b8e4558596885573514c9138b6a3ed170452a974720b05b9e7b3a5b8b9",
+      "sha256": "5767a60d688b814a4ff71fe1dc96ab12b8951d7427a657118cc2754091df8521",
       "bytes": 424,
       "store": "tree"
     }

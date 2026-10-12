@@ -92,6 +92,7 @@ SPECS = {
     },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-servicer': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'SERVICER207.agc'},
         'base': {'cm': 'cm_servicer'},
@@ -171,6 +172,7 @@ SPECS = {
     },
     # Lane G: Comanche055 CM_BODY_ATTITUDE (bank 37), basic and interpretive.
     'cm-body-attitude': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'CM_BODY_ATTITUDE.agc'},
         'base': {'cm': 'cm_body_attitude'},
@@ -189,8 +191,44 @@ SPECS = {
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
     },
+    # Lane G: Comanche055 REENTRY_CONTROL (entry guidance), basic and
+    # interpretive.
+    'cm-reentry': {
+        'counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'REENTRY_CONTROL.agc'},
+        'base': {'cm': 'cm_reentry'},
+        'symbol': {'cm': 'cm_reentry'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        # PREDICT3's INDEX JJ; AD VREFER (+1), CS VREFER: JJ counts 12 down
+        # to 0 through the reference-velocity table, then BACK2 adds 13 per
+        # pass (five passes) through the 13-word tables after it.
+        'fixed_tables': {'VREFER': (0, 91)},
+        # KEP's RTB P66 is the first order of its pair: P66 returns through
+        # TC DANZIG with SSP still in EDOP, so the interpreter runs SSP
+        # GOTOADDR KEP2 from OPJUMP, not at NEWOPS where the transfer ABI
+        # keys interpretive routines.
+        'partial': {'cm': 'SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it '
+                          'runs from the interpreter\'s DANZIG/OPJUMP when P66 returns, a point the transfer ABI '
+                          'does not key yet (interpretive routines are keyed by LOC at NEWOPS)'},
+        # LEWD (E7,1724), the lift-over-drag ratio the loop halves toward:
+        # positive in both words, as STARTENT and LEWDOVFL leave it.
+        # Negative (a negative low word under a +0 high word too),
+        # LWDSTORE's BMN LEWDPTR loop never ends (on the AGC too).
+        'cells': {'E7,1724': list(range(0, 0o40000, 0o1001)),
+                  'E7,1725': list(range(0, 0o40000, 0o1001))},
+        'target': 'tests/cm_reentry_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline'],
+    },
     # Lane G: Comanche055 P61-P67 (entry programs), basic and interpretive.
     'cm-p61-p67': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'P61-P67.agc'},
         'base': {'cm': 'cm_p61_p67'},
@@ -221,6 +259,7 @@ SPECS = {
     # Lane G: Comanche055 TVCMASSPROP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-massprop': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCMASSPROP.agc'},
         'base': {'cm': 'cm_tvc_massprop'},
@@ -258,6 +297,7 @@ SPECS = {
     # Lane G: Comanche055 TVCEXECUTIVE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-exec': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCEXECUTIVE.agc'},
         'base': {'cm': 'cm_tvc_exec'},
@@ -282,6 +322,7 @@ SPECS = {
     # Lane G: Comanche055 TVCRESTARTS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-restarts': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCRESTARTS.agc'},
         'base': {'cm': 'cm_tvc_restarts'},
@@ -310,6 +351,7 @@ SPECS = {
     # Lane G: Comanche055 TVCSTROKETEST, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-stroke': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCSTROKETEST.agc'},
         'base': {'cm': 'cm_tvc_stroke'},
@@ -341,6 +383,7 @@ SPECS = {
     # Lane G: Comanche055 TVCINITIALIZE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-init': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCINITIALIZE.agc'},
         'base': {'cm': 'cm_tvc_init'},
@@ -386,6 +429,7 @@ SPECS = {
     # Lane G: Comanche055 TVCROLLDAP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-roll': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCROLLDAP.agc'},
         'base': {'cm': 'cm_tvc_roll'},
@@ -413,6 +457,7 @@ SPECS = {
     # Lane G: Comanche055 TVCDAPS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-daps': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCDAPS.agc'},
         'base': {'cm': 'cm_tvc_daps'},
@@ -433,6 +478,7 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'RCS-CSM_DIGITAL_AUTOPILOT.agc'},
         'base': {'cm': 'cm_rcs_dap'},
@@ -454,9 +500,15 @@ SPECS = {
                   0o3217: [0o77774, 0o77775, 0o77776] + list(range(11)),
                   # RMANNDX/PMANNDX/YMANNDX (E6,1656-1660) as STICKCHK
                   # leaves them (MASK THREE).
-                  0o3256: [0, 1, 2, 3], 0o3257: [0, 1, 2, 3], 0o3260: [0, 1, 2, 3]},
+                  0o3256: [0, 1, 2, 3], 0o3257: [0, 1, 2, 3], 0o3260: [0, 1, 2, 3],
+                  # RATEINDX (1130), the manual rate index into MANTABLE:
+                  # 0, 2, 4 or 6, as FRESH START and P40-P47 set it.
+                  0o1130: [0, 2, 4, 6]},
         'fixed_tables': {'GAIN1': (-3, 10), 'GAIN2': (-3, 10), 'DACLIMIT': (-1, 1),
-                         'FREETAU': (0, 3)},
+                         'FREETAU': (0, 3),
+                         # MANTABLE -1 indexed by RATEINDX + RMANNDX (0-6 + 0-3):
+                         # 3 (both stick directions) reads =+14MS after it.
+                         'MANTABLE': (0, 8)},
         'target': 'tests/cm_rcs_dap_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
@@ -464,6 +516,7 @@ SPECS = {
     # Lane G: Comanche055 AUTOMATIC_MANEUVERS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-auto-man': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'AUTOMATIC_MANEUVERS.agc'},
         'base': {'cm': 'cm_auto_man'},
@@ -491,6 +544,7 @@ SPECS = {
     # Lane G: Comanche055 JET_SELECTION_LOGIC, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-jet-select': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
@@ -525,6 +579,7 @@ SPECS = {
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-entry-dap': {
+        'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'CM_ENTRY_DIGITAL_AUTOPILOT.agc'},
         'base': {'cm': 'cm_entry_dap'},

@@ -8,14 +8,19 @@ auditor's review. The file stays `partial` until the auditor flips it.
 Comanche055's EXTENDED_VERBS follows once its interpretive words are
 translated.
 
-## Open before review
+## Transfer ABI
 
-The auditor's review of the display certificate (issue #54) requires every
-entry of a certified file to be a registered routine of the native
-control-transfer ABI (`docs/NATIVE_TRANSFER_ABI.md`), with a host and C64
-round trip through `agc_transfer_run`. The extended-verb modules are not yet
-registered either, so this certificate goes to the reviewer once that is
-done for both files.
+Every labelled entry and every return into the file from a callee is a
+routine of the native control-transfer ABI (`docs/NATIVE_TRANSFER_ABI.md`):
+313 basic routines in `lanec_ev_lm_routines` and the 15 interpretive entries,
+keyed by LOC, in `lanec_ev_lm_interpretive`, generated and checked against
+the listing by `tools/lanec/routines.py ev`. 468 round trips through
+`agc_transfer_run`, from Pinball's `POSTJUMP GOEXTVB` and every other
+BANKCALL/POSTJUMP caller of the file, match the original program, 64 of
+them on a C64, and 512 broken entry states are refused unchanged. See
+`docs/LANEC-EV-TRANSFER.md` (milestone `lanec-ev-transfer`). The source map
+names, for every word, the C function that carries it and, for an entry,
+the routine it is registered as.
 
 ## What it claims
 
@@ -74,13 +79,24 @@ Hashes: `evidence/lanec-ev-cert/SHA256.json`.
   word's original line, address, assembled word, owner, native module and
   how the oracle covered it.
 - Independent assembly comparison: `lanec-ev-comparison.json`. It holds
-  the eight suites' `diff.py` summaries, 26,880 cases in all, with zero
-  differing, and the hashes of their per-case oracle CRCs.
+  the eight module suites' `diff.py` summaries (26,880 cases), the
+  `ev-transfer` and `ev-transfer-c64` round trips (532 cases) and the
+  `ev-refuse` refusals (512 cases refused with the state unchanged): 27,412
+  compared with zero differing, and the hashes of their per-case oracle CRCs.
 - Host and sanitizer results: `lanec-ev-checks.log`. It has the strict and
-  ASan/UBSan runs of all eight suites and the whole-file map run.
+  ASan/UBSan runs of all eleven suites and the whole-file map run.
 - C64 execution results: `lanec-ev-c64-results.json`. It has fresh VICE
-  PAL runs of the eight frozen subsets (1,797 checks, 0 failures) with the
-  PRG hashes.
+  PAL runs of the eight frozen module subsets and the transfer round trip
+  (1,861 checks, 0 failures) with the PRG hashes.
 
 The supported domain and the external continuations are written into the
 certificate itself.
+
+Regenerate the evidence with:
+
+    python3 tools/lanec/cert_evidence.py lanec-ev build/ev-cert-new ev-front ev-short ev-align \
+      ev-radar ev-dap ev-time ev-track ev-lmi ev-transfer ev-transfer-c64 \
+      --refusals-only ev-refuse --wholefile tools/lanec/wholefile_ev.py \
+      --c64 ev-front=lanec-ev-front ev-short=lanec-ev-short ev-align=lanec-ev-align \
+      ev-radar=lanec-ev-radar ev-dap=lanec-ev-dap ev-time=lanec-ev-time \
+      ev-track=lanec-ev-track ev-lmi=lanec-ev-lmi ev-transfer-c64=lanec-ev-transfer

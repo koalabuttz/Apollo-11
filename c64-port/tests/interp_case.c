@@ -17,11 +17,12 @@ void irc_build(apollo_overlay_state *m,const irc_case *c){uint32_t seed=c->seed;
  for(i=0;i<2048u;++i)m->words[i]=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
  m->words[0]=agc_extend(m->words[0]);m->words[1]=agc_extend(m->words[1]);
  m->words[7]=0;for(i=010;i<=061u;++i)m->words[i]=0;
+ for(i=0;i<c->nedits;++i)if(c->edits[i].addr==IRC_COUNTERS)for(k=010;k<=061u;++k)m->words[k]=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
  irc_ch_on=0;for(k=0;k<IRC_NCH;++k)irc_ch[k]=0;for(k=0;k<3u;++k)irc_trap[k]=0;
  for(i=0;i<c->nedits;++i){
   if(c->edits[i].addr&IRC_CHANNEL){
    for(k=0;k<IRC_NCH;++k)if(irc_ch_num[k]==(c->edits[i].addr&0777u)){irc_ch[k]=c->edits[i].word;irc_ch_on=1;}
-  }else m->words[c->edits[i].addr&03777u]=c->edits[i].word;
+  }else if(c->edits[i].addr!=IRC_COUNTERS)m->words[c->edits[i].addr&03777u]=c->edits[i].word;
  }
 }
 agc_word irc_superbank(const irc_case *c){agc_word sb=c->superbank;unsigned i;

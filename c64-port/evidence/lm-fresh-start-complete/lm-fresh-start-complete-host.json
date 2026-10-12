@@ -1,0 +1,47 @@
+{
+ "category": "host_and_sanitizer_results",
+ "aggregates": {
+  "lm-fresh-start": {
+   "record": "evidence/lm-fresh-start/lm-fresh-start-host.log",
+   "sha256": "5033316e3506f0005eebbbb68c084c35092b11d4be0c0023e4ee63d7569e3e8a",
+   "pass_lines": [
+    "PASS: 4096 cases equal the original program",
+    "PASS: src/lm_fresh_start_operands.inc matches 0 Luminary099 sites, 102 words"
+   ],
+   "checks": [
+    8896,
+    8896
+   ],
+   "failures": 0,
+   "result": "PASS"
+  },
+  "lm-v37": {
+   "record": "evidence/lm-v37/lm-v37-host.log",
+   "sha256": "b5ff71e1aa9dc052a2ad0419f884826f3b93aac5ee73e8abe81fa4e567e0949a",
+   "pass_lines": [
+    "PASS: 4096 cases equal the original program",
+    "PASS: src/lm_v37_operands.inc matches 0 Luminary099 sites, 106 words"
+   ],
+   "checks": [
+    8497,
+    8497
+   ],
+   "failures": 0,
+   "result": "PASS"
+  },
+  "lm-stateup": {
+   "record": "evidence/lm-stateup/lm-stateup-host.log",
+   "sha256": "328c2f0df02d538c1b0d040419fa411a93e8ca14352f0d16855a2544323e9c09",
+   "pass_lines": [
+    "PASS: 4096 cases equal the original program"
+   ],
+   "checks": [
+    11510,
+    11510
+   ],
+   "failures": 0,
+   "result": "PASS"
+  }
+ },
+ "result": "PASS"
+}

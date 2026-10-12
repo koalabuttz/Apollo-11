@@ -3318,49 +3318,49 @@
     "address": "21,3040",
     "word": "00165",
     "source": "MANTABLE DEC .0071111",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3041",
     "word": "77612",
     "source": " DEC -.0071111",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3042",
     "word": "00722",
     "source": " DEC .028444",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3043",
     "word": "77055",
     "source": " DEC -0.028444",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3044",
     "word": "02215",
     "source": " DEC .071111",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3045",
     "word": "75562",
     "source": " DEC -.071111",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3046",
     "word": "11064",
     "source": " DEC .284444",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3047",
     "word": "66713",
     "source": " DEC -.284444",
-    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+    "constant": "basic operand (inline)"
    },
    {
     "address": "21,3050",

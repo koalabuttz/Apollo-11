@@ -1,7 +1,7 @@
 PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-4b5d0ee6aeaf0f25dcd4c3e3c01fbba63675b8d4c6f24c48d408404e6ae57a62  build/cm-tvc-roll-1.prg
+6b016f9cf3155f86ad67e52ceda74f6415781e4a0b3d4cd6549b5702d4fd29f6  build/cm-tvc-roll-1.prg
 
 $ make vice-cm-tvc-roll
 for p in build/cm-tvc-roll-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-tvc-roll-1.prg: 9 checks, 0 failures
+PASS: VICE PAL cm-tvc-roll-1.prg: 16 checks, 0 failures
 exit 0

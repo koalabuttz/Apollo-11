@@ -1,9 +1,11 @@
 PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-6cf6021e9d6961e438bf3a6d153acedfd82c8a380b8a8cc886b4470b8a0e8f70  build/cm-body-attitude-1.prg
-82341e67ed5ec0a3019e90f5444d2cc09baf12a31a9df4cb96a42332e7a6a35b  build/cm-body-attitude-2.prg
+3eeaba39b0955347cba00263b2e0af142fea1c2d6562b379f00031f53684b4b9  build/cm-body-attitude-1.prg
+420d726c9c985c47cce91a1d94bc704de809154e3f58675874fce2b7338773a6  build/cm-body-attitude-2.prg
+5404a17b055e7bcba7e4039aeab44fbc245dae482418db62bc0dee56546653e6  build/cm-body-attitude-3.prg
 
 $ make vice-cm-body-attitude
-for p in build/cm-body-attitude-1.prg build/cm-body-attitude-2.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-body-attitude-1.prg: 3 checks, 0 failures
-PASS: VICE PAL cm-body-attitude-2.prg: 9 checks, 0 failures
+for p in build/cm-body-attitude-1.prg build/cm-body-attitude-2.prg build/cm-body-attitude-3.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-body-attitude-1.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-2.prg: 7 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-3.prg: 12 checks, 0 failures
 exit 0

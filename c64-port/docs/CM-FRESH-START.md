@@ -48,15 +48,16 @@ Hashes: `evidence/cm-fresh-start/SHA256.json`. Bulk files are assets of the `evi
 
 - Independent assembly comparison: `evidence/cm-fresh-start/cm-fresh-start-proof.json`. `make cm-fresh-start-differential` runs the unmodified Comanche055 rope in yaAGC (host-only), 4,096 cases.
   - Case n enters entry n % 17, with the image pseudo-random within the program's domain:
-    - Restart-group phase pairs agree (inactive, active or negative), with one pair corrupted in an eighth of the cases.
+    - Restart-group phase pairs agree (inactive, active or negative), with one pair disagreeing in an eighth of the cases: -PHASEn has one bit flipped, or equals PHASEn (so PCLOOP's RXOR gives +0 and the second TCF PTBAD runs).
     - MPAC +5/+6 are the group scan's counters for the PINACT return.
     - ERESTORE is +0, -0, the address ERASCHK was testing (061-01776, with SKEEP7 equal to it) or a corrupt value.
     - A KLEAN caller's Q is SWRETURN (BUF2 a bank 04 return) or another fixed-fixed word.
     - ELR is sometimes held on channel 15 or 16. FB/EB, SUPERBNK, channels 5, 6, 11, 12, 13 and 14 (without the bits yaAGC acts on as a peripheral) and 33, the trap latches and the interrupt-enable state are pseudo-random.
   - Each case runs to the first point neither this file nor INTER-BANK_COMMUNICATION owns, or to SWRETURN.
   - Compared: the interrupt-enable state, SUPERBNK, channels 11, 5, 6, 12, 13, 14 and 33, the trap latches and all 2,048 erasable words. The digests are frozen into `tests/cm_fresh_start_vectors.h`.
+  - The oracle traces the words each case executes (`tools/case_trace.h`). Together the cases execute every instruction of bank 05 but the patch-only STARTSIM, and of GOTOPOOH; the freeze fails otherwise.
 - Host and sanitizer results: `make test-cm-fresh-start sanitize-cm-fresh-start` (`evidence/cm-fresh-start/cm-fresh-start-host.log`). Beyond the oracle digests, the test checks that:
   - all 17 entries are reached;
   - each case ends at one of 13 kinds of exit (SWRETURN, DUMMYJOB +2, RESTARTS, MMDSPLAY, WAITLIST, PHASCHNG, VAC5STOR, GOP00FIX, NOQRSM +1, ALARM, STOPRATE, SETCOARS, another KLEAN return), and every kind is reached;
   - an ERESTORE repair into a counter, a TC Q to no return point, a missing io and a SUPERBNK outside bits 5-7 are refused.
-- C64 execution results: `make vice-cm-fresh-start` (`evidence/cm-fresh-start/cm-fresh-start-vice.log`): every 16th case (256).
+- C64 execution results: `make vice-cm-fresh-start` (`evidence/cm-fresh-start/cm-fresh-start-vice.log`): the outcome-chosen rows (`tools/c64_rows.py`: every 16th case plus a greedy cover of every word the host cases execute, 257 rows, listed in `tests/cm_fresh_start_c64_vectors.h`).

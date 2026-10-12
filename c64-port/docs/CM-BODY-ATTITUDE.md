@@ -23,7 +23,7 @@ Destinations outside the file: only the caller's return through Q. Lane A has no
 
 ## Domain
 
-Canonical 2048-word image under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. Any values of the attitude erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. Any values of the attitude erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.
 
 ## Evidence
 
@@ -32,4 +32,4 @@ Hashes: `evidence/cm-body-attitude/SHA256.json`; all files are in the tree.
 - **Source map.** `cm-body-attitude-source-map.json` lists all 195 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
 - **Independent assembly comparison.** `make cm-body-attitude-differential` runs 256 states per routine (2,048 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-body-attitude-proof.json` (`cm-body-attitude-differential.log` is the run). One case in 32 is frozen in `tests/cm_body_attitude_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-body-attitude sanitize-cm-body-attitude` runs the 64 frozen cases (`cm-body-attitude-host.log`).
-- **C64 execution results.** `make vice-cm-body-attitude` runs 2 diagnostic programs with 12 cases (`cm-body-attitude-vice.log`, which starts with each PRG's SHA-256). The cases are chosen per routine so the C64 runs reach every compiled label the host cases reach: 72 of 72.
+- **C64 execution results.** `make vice-cm-body-attitude` runs 3 diagnostic programs with 24 cases (`cm-body-attitude-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 2,048 differential cases take: 1174 of 1174 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 72 of 72 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 586 of the 586 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

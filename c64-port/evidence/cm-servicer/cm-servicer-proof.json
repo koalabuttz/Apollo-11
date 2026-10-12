@@ -9,88 +9,100 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 13312,
- "cases_sha256": "b71710b1b2f3f96d814a2e063ec14272acc837847b250c6db079c08008abb880",
- "oracle_sha256": "7d2549bf542823aa3dfe59706da1202e96363e5e10c784f18b66cfe98163d717",
+ "cases_sha256": "bd9a9fd13311c0704ee1bfea6de1fcc6873b19ee0b674792f7992f1f0a952504",
+ "oracle_sha256": "1b6fd171eedc87c0cd58bf2e891c49fa30acf04829f78b39cba23364e9fc6f74",
  "frozen_vectors": 104,
  "c64_vectors": [
   {
    "mission": "cm",
    "keep": "0x7fffff",
-   "cases": 38,
+   "cases": 39,
    "case_ids": [
-    147,
-    349,
-    521,
-    870,
-    1258,
-    1529,
-    1623,
-    1704,
-    1599,
-    1593,
-    1987,
-    1810,
-    1831,
-    1942,
-    2201,
-    2219,
-    2063,
-    2264,
-    2370,
-    2563,
-    2954,
-    2945,
-    3177,
-    3075,
-    3331,
-    3587,
-    3999,
-    4213,
-    4201,
-    4264,
-    4096,
-    4460,
-    4565,
-    4851,
-    5089,
-    5372,
-    5388,
-    5638
+    102,
+    249,
+    328,
+    767,
+    816,
+    1147,
+    1481,
+    1707,
+    1752,
+    1644,
+    1569,
+    1798,
+    2213,
+    2394,
+    2740,
+    2900,
+    3138,
+    3376,
+    3758,
+    3879,
+    4282,
+    4303,
+    4189,
+    4267,
+    4162,
+    4358,
+    4614,
+    4984,
+    5168,
+    5246,
+    5199,
+    5213,
+    5318,
+    5309,
+    5336,
+    5240,
+    5312,
+    5424,
+    5701
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xf00000f800000",
+   "keep": "0xf000007800000",
+   "cases": 3,
+   "case_ids": [
+    6013,
+    5894,
+    6029
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xf000007800000",
    "cases": 5,
    "case_ids": [
-    6041,
-    6144,
+    6098,
+    6122,
+    6186,
     6400,
-    6779,
-    7074
+    6671
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x7fff0000000",
-   "cases": 16,
+   "keep": "0x7fff8000000",
+   "cases": 17,
    "case_ids": [
-    7357,
-    7673,
-    7917,
-    8179,
-    8291,
+    7086,
+    7243,
+    7553,
+    7803,
+    8065,
+    8204,
     8448,
-    8707,
-    9182,
-    9258,
-    9589,
-    9728,
-    9797,
-    10146,
-    10429,
-    10697,
-    10950
+    8728,
+    8969,
+    9420,
+    9523,
+    9935,
+    9746,
+    10122,
+    10336,
+    10556,
+    10824
    ]
   },
   {
@@ -98,26 +110,29 @@
    "keep": "0x3780000000000",
    "cases": 4,
    "case_ids": [
-    11053,
-    11276,
-    11541,
-    11821
+    11255,
+    11267,
+    11724,
+    11893
    ]
   },
   {
    "mission": "cm",
    "keep": "0x800000000000",
-   "cases": 9,
+   "cases": 12,
    "case_ids": [
-    12155,
-    12053,
+    12079,
     12137,
+    12242,
+    12068,
+    12080,
+    12105,
+    12107,
     12284,
-    12059,
-    12032,
-    12248,
-    12110,
-    12267
+    12231,
+    12221,
+    12227,
+    12194
    ]
   },
   {
@@ -125,17 +140,41 @@
    "keep": "0xf000000000000",
    "cases": 4,
    "case_ids": [
-    12297,
-    12544,
-    12806,
-    13065
+    12501,
+    12550,
+    12809,
+    13076
    ]
   }
  ],
- "c64_label_coverage": {
+ "c64_coverage": {
   "host_labels": 240,
   "c64_labels": 240,
-  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+  "host_edges": 1423,
+  "c64_edges": 1423,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 785,
+  "c64_taken": 785,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_servicer.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_servicer_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
  },
  "stops": {
   "CM 37,2701 PREREAD": {
@@ -157,16 +196,16 @@
    "04753": 256
   },
   "CM 37,2744 READACCS": {
-   "05245": 193,
-   "05147": 63
+   "05245": 198,
+   "05147": 58
   },
   "CM 37,2745 PIPSDONE": {
-   "05147": 70,
-   "05245": 186
+   "05245": 199,
+   "05147": 57
   },
   "CM 37,2751 REDO5.5": {
-   "05245": 186,
-   "05147": 70
+   "05245": 200,
+   "05147": 56
   },
   "CM 37,3005 ": {
    "05245": 256
@@ -175,12 +214,12 @@
    "04114": 256
   },
   "CM 37,3027 ": {
-   "05245": 129,
-   "05147": 127
+   "05245": 122,
+   "05147": 134
   },
   "CM 37,3033 CHEKAVEG": {
-   "05245": 131,
-   "05147": 125
+   "05245": 122,
+   "05147": 134
   },
   "CM 37,3043 MAKESERV": {
    "05147": 256
@@ -192,14 +231,14 @@
    "05324": 256
   },
   "CM 37,3067 QUIKREAD": {
-   "05324": 34,
-   "05412": 88,
-   "05267": 79,
-   "05650": 55
+   "05650": 55,
+   "05412": 80,
+   "05267": 91,
+   "05324": 30
   },
   "CM 37,3104 SERVICER": {
-   "05650": 120,
-   "05412": 136
+   "05650": 111,
+   "05412": 145
   },
   "CM 37,3121 ": {
    "05412": 256
@@ -262,8 +301,8 @@
    "05560": 256
   },
   "CM 37,3216 ": {
-   "04701": 128,
-   "05372": 128
+   "04701": 130,
+   "05372": 126
   },
   "CM 37,3225 ": {
    "04701": 256
@@ -290,9 +329,9 @@
    "05217": 256
   },
   "CM 37,3305 REREADAC": {
-   "05324": 41,
-   "05245": 169,
-   "05147": 46
+   "05245": 153,
+   "05147": 56,
+   "05324": 47
   },
   "CM 37,3353 CALCGRAV": {
    "06037": 256
@@ -309,5 +348,6 @@
  },
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, ALARM, BANKCALL, DOWNFLAG, ENDOFJOB, FINDVAC, FIXDELAY, GENTRAN, NEWPHASE, NOVAC, PHASCHNG, POSTJUMP, TASKOVER, UPFLAG, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 11 and the 31A/31B/32 trap flags",
- "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap"
 }

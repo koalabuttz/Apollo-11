@@ -108,6 +108,7 @@ static const agc_word T43074[14]={006604,032703,006604,002031,012132,013030,0140
 static const agc_word T43112[14]={000435,013412,000435,000032,001350,001575,002103,002523,003327,004432,006264,011351,017324,033622}; /* 21,3112 GAIN2-3 .. +10 */
 static const agc_word T42541[3]={077177,037200,000600}; /* 21,2541 DACLIMIT-1 .. +1 */
 static const agc_word T43063[4]={000000,000740,077037,000000}; /* 21,3063 FREETAU+0 .. +3 */
+static const agc_word T43040[9]={000165,077612,000722,077055,002215,075562,011064,066713,000027}; /* 21,3040 MANTABLE+0 .. +8 */
 /* A fixed word read under INDEX (logical e under this bank), from the
  * tables above: 0 outside them. */
 static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){
@@ -117,6 +118,7 @@ static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word
  if(p>=17994u&&p<=18007u){*k=T43112[p-17994u];return 1;}
  if(p>=17761u&&p<=17763u){*k=T42541[p-17761u];return 1;}
  if(p>=17971u&&p<=17974u){*k=T43063[p-17971u];return 1;}
+ if(p>=17952u&&p<=17960u){*k=T43040[p-17952u];return 1;}
  (void)p;(void)k;return 0;
 }
 /* Host coverage builds (tools/interp_routine_differential.py --freeze)

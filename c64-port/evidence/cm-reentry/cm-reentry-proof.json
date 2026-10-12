@@ -1,0 +1,907 @@
+{
+ "milestone": "cm-reentry",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 26112,
+ "cases_sha256": "f81ffcb55dd36543f6d6d870ade9afb56245df55379ddc4ed27209d997eb5ce2",
+ "oracle_sha256": "58bd0897f9a9b95cba6c88b9a6aef41020d2111ef60cd623ffd564232c1998aa",
+ "frozen_vectors": 204,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x2f",
+   "cases": 14,
+   "case_ids": [
+    122,
+    117,
+    212,
+    189,
+    9,
+    331,
+    527,
+    774,
+    970,
+    789,
+    873,
+    952,
+    997,
+    892
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x400000000000000000000f0",
+   "cases": 7,
+   "case_ids": [
+    1087,
+    1307,
+    1554,
+    1816,
+    1954,
+    1813,
+    1972
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xe00000000000000000003e700",
+   "cases": 7,
+   "case_ids": [
+    2282,
+    2229,
+    2048,
+    2114,
+    2202,
+    2349,
+    2731
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3f800",
+   "cases": 5,
+   "case_ids": [
+    3011,
+    3072,
+    3331,
+    3587,
+    3972
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xe000000000000000000030000",
+   "cases": 4,
+   "case_ids": [
+    4177,
+    4175,
+    4319,
+    4445
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x20000000000000000000fc0000",
+   "cases": 5,
+   "case_ids": [
+    4638,
+    4790,
+    4759,
+    4645,
+    4647
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfc0000",
+   "cases": 8,
+   "case_ids": [
+    4846,
+    4707,
+    5022,
+    4979,
+    5344,
+    5517,
+    5638,
+    5924
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x8800ff81000000",
+   "cases": 1,
+   "case_ids": [
+    6351
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1f0001900000000c1000000",
+   "cases": 2,
+   "case_ids": [
+    6214,
+    6321
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x2000080001f81000000",
+   "cases": 1,
+   "case_ids": [
+    6241
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x101d000040080001fc1000000",
+   "cases": 2,
+   "case_ids": [
+    6252,
+    6282
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1f1001900000000c1000000",
+   "cases": 5,
+   "case_ids": [
+    6198,
+    6291,
+    6153,
+    6162,
+    6297
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x80001f81000000",
+   "cases": 1,
+   "case_ids": [
+    6144
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x101d000190000000066000000",
+   "cases": 1,
+   "case_ids": [
+    6585
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x101f00000000000003e000000",
+   "cases": 4,
+   "case_ids": [
+    6589,
+    6487,
+    6899,
+    7052
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x101f000190000000070000000",
+   "cases": 4,
+   "case_ids": [
+    7365,
+    7472,
+    7866,
+    7809
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x8e00ff80000000",
+   "cases": 1,
+   "case_ids": [
+    8172
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x8800ff80000000",
+   "cases": 4,
+   "case_ids": [
+    7994,
+    8167,
+    7985,
+    8059
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x200000e00ff00000000",
+   "cases": 4,
+   "case_ids": [
+    8417,
+    8351,
+    8207,
+    8448
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x200000800fc00000000",
+   "cases": 5,
+   "case_ids": [
+    8819,
+    8818,
+    9153,
+    9243,
+    9484
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xe00c000000000",
+   "cases": 4,
+   "case_ids": [
+    9743,
+    9740,
+    9844,
+    9984
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x600019f0000000000",
+   "cases": 8,
+   "case_ids": [
+    10456,
+    10288,
+    10315,
+    10246,
+    10514,
+    10803,
+    11134,
+    11477
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x2060001ec1e00000000",
+   "cases": 5,
+   "case_ids": [
+    11718,
+    11715,
+    11851,
+    12038,
+    12294
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x20000fe009e00000000",
+   "cases": 4,
+   "case_ids": [
+    12556,
+    12800,
+    13224,
+    13510
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x20001e0001e00000000",
+   "cases": 4,
+   "case_ids": [
+    13648,
+    13857,
+    14176,
+    14381
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x10001fe00000000000000",
+   "cases": 1,
+   "case_ids": [
+    14707
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1d800600e00000000000000",
+   "cases": 3,
+   "case_ids": [
+    14685,
+    14601,
+    14634
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x102317e00000000000000",
+   "cases": 5,
+   "case_ids": [
+    14762,
+    14778,
+    14664,
+    14592,
+    14723
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x100007c00000000000000",
+   "cases": 1,
+   "case_ids": [
+    14862
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1d10007f800000000000000",
+   "cases": 7,
+   "case_ids": [
+    15252,
+    15384,
+    15622,
+    15881,
+    16131,
+    16417,
+    16655
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x103fd0000000000000000",
+   "cases": 10,
+   "case_ids": [
+    16914,
+    17155,
+    17453,
+    17673,
+    17920,
+    18185,
+    18179,
+    18236,
+    18441,
+    18694
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1801fc000000000000000000",
+   "cases": 7,
+   "case_ids": [
+    19124,
+    19004,
+    19011,
+    19190,
+    18947,
+    19239,
+    19594
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x107ffe0000000000000000000",
+   "cases": 17,
+   "case_ids": [
+    19845,
+    20205,
+    20224,
+    20489,
+    20910,
+    20988,
+    20892,
+    20946,
+    21079,
+    21299,
+    21516,
+    21778,
+    22037,
+    22287,
+    22585,
+    22991,
+    23199
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1ff9c000000000000000030000",
+   "cases": 10,
+   "case_ids": [
+    23299,
+    23648,
+    23898,
+    24226,
+    24320,
+    24609,
+    24832,
+    25097,
+    25347,
+    25655
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x20000000000000000000700000",
+   "cases": 1,
+   "case_ids": [
+    25883
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 88,
+  "c64_labels": 88,
+  "host_edges": 1984,
+  "c64_edges": 1984,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 992,
+  "c64_taken": 992,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_reentry.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_reentry_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "stops": {
+  "CM 25,2000 STARTENT": {
+   "06037": 256
+  },
+  "CM 25,2001 ": {
+   "06037": 256
+  },
+  "CM 25,2010 ": {
+   "06037": 256
+  },
+  "CM 25,2036 ": {
+   "03712": 256
+  },
+  "CM 25,2046 ": {
+   "04701": 256
+  },
+  "CM 25,2063 STARTEN1": {
+   "06037": 256
+  },
+  "CM 25,2077 ": {
+   "06037": 256
+  },
+  "CM 25,2104 ": {
+   "06037": 197,
+   "05650": 59
+  },
+  "CM 25,2115 SCALEPOP": {
+   "06037": 256
+  },
+  "CM 25,2117 ": {
+   "05412": 256
+  },
+  "CM 25,2120 REFAZE10": {
+   "05412": 256
+  },
+  "CM 25,2122 ": {
+   "06037": 256
+  },
+  "CM 25,2123 ": {
+   "06037": 256
+  },
+  "CM 25,2125 TARGETNG": {
+   "06037": 256
+  },
+  "CM 25,2133 GETVEL": {
+   "06037": 256
+  },
+  "CM 25,2136 ": {
+   "06037": 256
+  },
+  "CM 25,2162 DSTORE": {
+   "06037": 256
+  },
+  "CM 25,2173 UPDATERT": {
+   "06037": 256
+  },
+  "CM 25,2200 ": {
+   "06037": 243,
+   "05650": 13
+  },
+  "CM 25,2215 ": {
+   "06037": 242,
+   "05650": 12,
+   "05721": 2
+  },
+  "CM 25,2226 THETDONE": {
+   "06037": 254,
+   "05721": 2
+  },
+  "CM 25,2232 ": {
+   "06037": 251,
+   "05721": 5
+  },
+  "CM 25,2253 NOLDCALC": {
+   "06037": 256
+  },
+  "CM 25,2255 NO.05G": {
+   "06037": 256
+  },
+  "CM 25,2260 INITROLL": {
+   "05721": 31,
+   "02433": 64,
+   "04662": 54,
+   "03352": 9,
+   "04701": 52,
+   "02500": 20,
+   "03712": 15,
+   "06037": 6,
+   "02506": 5
+  },
+  "CM 25,2275 ": {
+   "04701": 85,
+   "04662": 101,
+   "03352": 36,
+   "03712": 34
+  },
+  "CM 25,2304 ": {
+   "04701": 93,
+   "03712": 43,
+   "03352": 22,
+   "04662": 98
+  },
+  "CM 25,2316 D0EQ": {
+   "04701": 99,
+   "04662": 96,
+   "03712": 56,
+   "03352": 5
+  },
+  "CM 25,2327 ": {
+   "04701": 97,
+   "03712": 51,
+   "04662": 103,
+   "03352": 5
+  },
+  "CM 25,2351 INROLOUT": {
+   "03712": 36,
+   "04662": 112,
+   "04701": 94,
+   "03352": 14
+  },
+  "CM 25,2354 KATEST": {
+   "04701": 71,
+   "03352": 40,
+   "03712": 77,
+   "04662": 68
+  },
+  "CM 25,2362 INITRL1": {
+   "03352": 19,
+   "02500": 41,
+   "03712": 40,
+   "04662": 28,
+   "04701": 41,
+   "05721": 66,
+   "06037": 14,
+   "02506": 7
+  },
+  "CM 25,2370 ": {
+   "02506": 22,
+   "05721": 146,
+   "02500": 72,
+   "06037": 16
+  },
+  "CM 25,2373 HUNTEST": {
+   "02500": 82,
+   "05721": 142,
+   "06037": 16,
+   "02506": 16
+  },
+  "CM 25,2406 A0CALC": {
+   "02506": 27,
+   "05721": 129,
+   "02500": 99,
+   "06037": 1
+  },
+  "CM 25,2433 V1LEAD": {
+   "02500": 112,
+   "05721": 132,
+   "02506": 9,
+   "06037": 3
+  },
+  "CM 25,2442 HUNTEST1": {
+   "05721": 155,
+   "02500": 90,
+   "02506": 6,
+   "06037": 5
+  },
+  "CM 25,2533 GETDHOOK": {
+   "06037": 246,
+   "05650": 10
+  },
+  "CM 25,2536 ": {
+   "06037": 249,
+   "05650": 7
+  },
+  "CM 25,2561 HUNTEST3": {
+   "06037": 237,
+   "05650": 19
+  },
+  "CM 25,2633 ": {
+   "05412": 80,
+   "03352": 127,
+   "02506": 49
+  },
+  "CM 25,2677 GETLEWD": {
+   "05412": 137,
+   "02506": 119
+  },
+  "CM 25,2706 LWDSTORE": {
+   "05412": 149,
+   "02506": 107
+  },
+  "CM 25,2717 ": {
+   "05412": 256
+  },
+  "CM 25,2725 ": {
+   "05210": 256
+  },
+  "CM 25,2727 ": {
+   "05721": 128,
+   "02500": 101,
+   "02506": 18,
+   "06037": 9
+  },
+  "CM 25,2732 ": {
+   "02500": 92,
+   "02506": 25,
+   "05721": 121,
+   "06037": 18
+  },
+  "CM 25,2741 LEWDOVFL": {
+   "02506": 256
+  },
+  "CM 25,2745 LEWDPTR": {
+   "05412": 180,
+   "02506": 76
+  },
+  "CM 25,2751 NEGAMA": {
+   "06037": 256
+  },
+  "CM 25,2775 ": {
+   "06037": 256
+  },
+  "CM 25,3004 DHOOKYQ7": {
+   "06037": 256
+  },
+  "CM 25,3014 PRE-HUNT": {
+   "05721": 126,
+   "02500": 87,
+   "06037": 11,
+   "02506": 32
+  },
+  "CM 25,3015 ": {
+   "05721": 131,
+   "02506": 16,
+   "02500": 93,
+   "06037": 16
+  },
+  "CM 25,3020 ": {
+   "05721": 147,
+   "02500": 77,
+   "06037": 8,
+   "02506": 24
+  },
+  "CM 25,3022 FOREHUNT": {
+   "06037": 256
+  },
+  "CM 25,3033 GOTOUPSY": {
+   "02441": 256
+  },
+  "CM 25,3035 UPCONTRL": {
+   "03712": 86,
+   "04662": 21,
+   "02474": 76,
+   "03352": 38,
+   "02500": 14,
+   "04701": 13,
+   "05721": 8
+  },
+  "CM 25,3043 ": {
+   "04662": 20,
+   "02474": 72,
+   "03352": 45,
+   "03712": 90,
+   "02500": 12,
+   "04701": 13,
+   "05721": 4
+  },
+  "CM 25,3065 CONT1": {
+   "04662": 75,
+   "04701": 77,
+   "03352": 27,
+   "05721": 61,
+   "03712": 16
+  },
+  "CM 25,3075 CONT3": {
+   "03712": 44,
+   "05721": 135,
+   "04701": 14,
+   "03352": 51,
+   "04662": 12
+  },
+  "CM 25,3134 CONTINU2": {
+   "03712": 130,
+   "03352": 68,
+   "04662": 26,
+   "04701": 32
+  },
+  "CM 25,3152 UPCNTRL3": {
+   "03712": 181,
+   "04701": 38,
+   "04662": 37
+  },
+  "CM 25,3200 NEXT1": {
+   "03712": 215,
+   "04701": 15,
+   "04662": 26
+  },
+  "CM 25,3203 NEGTESTS": {
+   "03712": 60,
+   "04701": 94,
+   "04662": 102
+  },
+  "CM 25,3221 DCONSTD": {
+   "02506": 256
+  },
+  "CM 25,3226 BECONSTD": {
+   "02506": 256
+  },
+  "CM 25,3232 CONSTD": {
+   "03712": 188,
+   "03352": 57,
+   "04701": 6,
+   "04662": 5
+  },
+  "CM 25,3251 CONSTD1": {
+   "03712": 256
+  },
+  "CM 25,3260 DOWNCNTL": {
+   "03352": 74,
+   "03712": 178,
+   "04701": 3,
+   "04662": 1
+  },
+  "CM 25,3313 KEP": {
+   "02474": 256
+  },
+  "CM 25,3317 KEP2": {
+   "06037": 124,
+   "02500": 132
+  },
+  "CM 25,3331 ": {
+   "06037": 256
+  },
+  "CM 25,3333 PREFINAL": {
+   "02500": 256
+  },
+  "CM 25,3337 ": {
+   "05134": 128,
+   "03712": 119,
+   "03352": 9
+  },
+  "CM 25,3343 PREDICT3": {
+   "03712": 109,
+   "05134": 143,
+   "03352": 4
+  },
+  "CM 25,3350 ": {
+   "03712": 234,
+   "03352": 22
+  },
+  "CM 25,3437 ": {
+   "03712": 230,
+   "03352": 25,
+   "04662": 1
+  },
+  "CM 25,3453 HAVDNRNG": {
+   "03712": 177,
+   "03352": 78,
+   "04662": 1
+  },
+  "CM 25,3470 GONEGLAD": {
+   "03712": 256
+  },
+  "CM 25,3472 GOMAXL/D": {
+   "03712": 256
+  },
+  "CM 25,3476 GLIMITER": {
+   "04662": 117,
+   "04701": 125,
+   "05721": 14
+  },
+  "CM 25,3523 GOPOSLAD": {
+   "04701": 132,
+   "04662": 124
+  },
+  "CM 25,3525 STOREL/D": {
+   "04662": 141,
+   "04701": 115
+  },
+  "CM 25,3526 LIMITL/D": {
+   "04662": 117,
+   "04701": 139
+  },
+  "CM 25,3553 L353": {
+   "04662": 131,
+   "04701": 125
+  },
+  "CM 25,3566 L355": {
+   "04701": 117,
+   "04662": 139
+  },
+  "CM 25,3576 ENDEXIT": {
+   "04701": 130,
+   "04662": 126
+  },
+  "CM 25,3577 OVERNOUT": {
+   "04662": 139,
+   "04701": 117
+  },
+  "CM 25,3606 NODISKY": {
+   "04701": 256
+  },
+  "CM 25,3611 SERVNOUT": {
+   "04701": 256
+  },
+  "CM 25,3613 STEEROFF": {
+   "05134": 256
+  },
+  "CM 25,3614 ": {
+   "05134": 256
+  },
+  "CM 25,3622 ": {
+   "05372": 256
+  },
+  "CM 25,3625 ": {
+   "06037": 256
+  },
+  "CM 25,3630 ": {
+   "06037": 256
+  },
+  "CM 25,3632 L357": {
+   "04701": 124,
+   "04662": 132
+  },
+  "CM 26,3074 GETETA": {
+   "06037": 256
+  },
+  "CM 26,3117 SUBETA": {
+   "06037": 256
+  },
+  "CM 26,3125 SUBETA2": {
+   "06037": 256
+  },
+  "CM 26,3133 SETMIND": {
+   "06037": 256
+  },
+  "CM 26,3136 TINYTHET": {
+   "06037": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, BANKCALL, BOVB ENDT(X), CHANG1, NOVAC, PHASCHNG, POSTJUMP, PRIOCHNG, RTB KILLGRP4, RTB P64, RTB P65, RTB P66, RTB P67, RTB SIGNMPAC); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap"
+}

@@ -9,41 +9,85 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 2048,
- "cases_sha256": "0a0ad5a26ddc72a04ee5d1f4c1333b52f2dc145e257a39ffd554072a9df3d669",
- "oracle_sha256": "0c79659384a13e1031fb6da58349bcde9e7cf4401e8f4b98b458fa257f398446",
+ "cases_sha256": "01d71a0284d4b612e78aa3045ac49a11f71f4522f885583f9b1c372ac513ab6d",
+ "oracle_sha256": "b47330d439153c3f51d2e37b0d1ac806ff478ea0d2e7285c21029f5ef2a91f6d",
  "frozen_vectors": 64,
  "c64_vectors": [
   {
    "mission": "cm",
    "keep": "0x7",
-   "cases": 3,
+   "cases": 5,
    "case_ids": [
-    33,
-    265,
-    521
+    153,
+    174,
+    240,
+    10,
+    243
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7",
+   "cases": 7,
+   "case_ids": [
+    16,
+    256,
+    566,
+    662,
+    656,
+    710,
+    692
    ]
   },
   {
    "mission": "cm",
    "keep": "0xf8",
-   "cases": 9,
+   "cases": 12,
    "case_ids": [
-    783,
-    1036,
-    1075,
-    1060,
-    1377,
-    1391,
-    1403,
-    1536,
-    1810
+    837,
+    768,
+    789,
+    978,
+    1216,
+    1120,
+    1213,
+    1123,
+    1480,
+    1395,
+    1608,
+    1795
    ]
   }
  ],
- "c64_label_coverage": {
+ "c64_coverage": {
   "host_labels": 72,
   "c64_labels": 72,
-  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+  "host_edges": 1174,
+  "c64_edges": 1174,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 586,
+  "c64_taken": 586,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_body_attitude.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_body_attitude_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
  },
  "stops": {
   "CM 37,3470 CM/POSE": {
@@ -56,12 +100,12 @@
    "06037": 256
   },
   "CM 37,3627 ": {
-   "06037": 218,
-   "05650": 38
+   "05650": 38,
+   "06037": 218
   },
   "CM 37,3645 ": {
-   "05650": 36,
-   "06037": 220
+   "05650": 34,
+   "06037": 222
   },
   "CM 37,3655 CM/ATUP": {
    "06037": 256
@@ -75,5 +119,6 @@
  },
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: none); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
- "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap"
 }
