@@ -1,0 +1,11 @@
+PASS 20 frozen original PERIAPO family entries, 30 admission guards and 63 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 36536a9471bb08244dbff88cecb296c860c0e1471a5ea90dfdbd8ccd84585305
+PASS65536 original PERIAPO family entries strict native
+PASS 73 assembled PERIAPO family words on 71 source lines map to native literals in 10 functions
+PASS 20 frozen original PERIAPO family entries, 30 admission guards and 63 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 36536a9471bb08244dbff88cecb296c860c0e1471a5ea90dfdbd8ccd84585305
+PASS65536 original PERIAPO family entries full ASAN/UBSAN
+PASS: VICE PAL lm-periapo-1.prg: 31 checks, 0 failures
+PASS: VICE PAL lm-periapo-2.prg: 8 checks, 0 failures
+PASS: VICE PAL lm-periapo-3.prg: 8 checks, 0 failures
+PASS: VICE PAL lm-periapo-4.prg: 16 checks, 0 failures

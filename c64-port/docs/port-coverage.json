@@ -4116,8 +4116,21 @@
       "sha256": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
       "bytes": 34716,
       "lines": 1764,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_periapo.c",
+            "src/lm_conic_timerad.c",
+            "src/lm_conic_timethet.c",
+            "src/lm_conic_kepler.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, INITVEL, GET.LVC, VN1645, R36) are not yet translated.",
+          "verification": "docs/LM-PERIAPO.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P40-P47.agc",
@@ -4616,8 +4629,18 @@
       "sha256": "76b904d389476022d9c6dcef6788737385a4603cff81d1c9af1fd17d82dc76bd",
       "bytes": 14653,
       "lines": 464,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_periapo.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "MAXCHK and its constant MAXNM, 9 words of bank 22 (03636-03646): from the NEWOPS entry frontier after each of its six Luminary CALLs (R30 and the P30/P35 apsides displays) to the caller's NEWOPS frontier at C(QPRET), as one native step. The rest of R30 (V82 orbit parameter display, CALCTPER, CALCTFF) is not yet translated.",
+          "verification": "docs/LM-PERIAPO.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/R31.agc",

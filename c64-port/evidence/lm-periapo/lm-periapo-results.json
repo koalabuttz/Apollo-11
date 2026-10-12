@@ -1,0 +1,71 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 20 frozen original PERIAPO family entries, 30 admission guards and 63 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 36536a9471bb08244dbff88cecb296c860c0e1471a5ea90dfdbd8ccd84585305",
+  "PASS65536 original PERIAPO family entries strict native",
+  "PASS 20 frozen original PERIAPO family entries, 30 admission guards and 63 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 36536a9471bb08244dbff88cecb296c860c0e1471a5ea90dfdbd8ccd84585305",
+  "PASS65536 original PERIAPO family entries full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-periapo-1.prg: 31 checks, 0 failures",
+   "PASS: VICE PAL lm-periapo-2.prg: 8 checks, 0 failures",
+   "PASS: VICE PAL lm-periapo-3.prg: 8 checks, 0 failures",
+   "PASS: VICE PAL lm-periapo-4.prg: 16 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 28562,
+    "prg_sha256": "d4d44c0f6802ad1232380cd2e67723188bdfd62a88c04624bb02362a111502ad",
+    "image_end": "$7791",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     40,
+     41,
+     42,
+     43,
+     44,
+     45,
+     46,
+     47,
+     48,
+     49
+    ]
+   },
+   "2": {
+    "prg_bytes": 12734,
+    "prg_sha256": "d08707fa66f46d53a00a0be9ebbd84747bf75f8f675cb11885d23341b08be754",
+    "image_end": "$39bd",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     37,
+     1
+    ]
+   },
+   "3": {
+    "prg_bytes": 29856,
+    "prg_sha256": "86c068f0e96dcf0f7fff927f78fe4bd70c62d63aa2354ba5b3821903a2dce97a",
+    "image_end": "$7c9f",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     38,
+     39
+    ]
+   },
+   "4": {
+    "prg_bytes": 44305,
+    "prg_sha256": "71b8fcf36bf44153b9e44a50081c2d9a51f955910f9aa46cb805afe01863561d",
+    "image_end": "$b510",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     2,
+     3,
+     4,
+     6
+    ]
+   }
+  }
+ }
+}
