@@ -37,13 +37,16 @@ written as `TC` (`TC +3`, `TC +2`, `TC +1`, `TC +4`) set Q as well.
 The original's indirect transfers are followed:
 
 - LOOPER's `TC RETJADR` runs the word in RETJADR. The file stores GENADR
-  MINRTN, BACKHAND or TJLAW +3 there, each a TC with Q = RETJADR +1; with any
-  other word the routine ends with Z = RETJADR, where the original executes
-  it.
+  MINRTN, BACKHAND or TJLAW +3 there, each a TC with Q = RETJADR +1. Only
+  this file stores RETJADR, so a loop return entry (which reaches LOOPER with
+  AXISCTR 1) holding any other word is refused with the image unchanged.
+  CALLQERR, 17,2172, 17,2214, 17,2454 and 17,2620 store RETJADR before
+  LOOPER reads it.
 - `INDEX AXISCTR; INDEX SKIPU; TCF +1` goes to the word after the TCF or the
   one four past it (SKIPU is 0 or 4).
 - `INDEX A; CS 1/ANET2 +1` uses AXISDIFF (TJET_LAW's table, 0 or 16) plus 0 or
-  1; `INDEX A; CS LIMITS` limits an overflowed sum to +-POSMAX.
+  1; `INDEX A; CS LIMITS` limits an overflowed sum to +-POSMAX (each sign
+  has its own branch counter).
 - MAKERUPT's EDRUPT, with no interrupt pending, saves its address +1 in
   ZRUPT and its word in BRUPT, sets the interrupt in progress and vectors to
   address 0, where A (ADRRUPT) runs as `TC ENDJASK` with Q = 1.
@@ -84,10 +87,22 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io unchanged):
 - CALLQERR with ALLOWGTS -0 or channel 5 negative. CCS would enter
   `READ CHAN5` or `DCA GTSCADR` without its EXTEND; ALLOWGTS is stored as
   +0 or 1 (AOSTASK, DAPIDLER, TIMEGMBL), and channel 5 holds the eight jet bits;
-- a return entry with AXISCTR other than 0 or 1, NUMBERT outside 0-4 or
-  SENSETYP above 5. They index INDEXES, AXISDIFF, TJU and TYPEPOLY; the
-  file's own loop and TJETLAW store these values before the calls these
-  entries return from.
+- a loop return entry (17,2714, 17,2724, 17,2775, 17,3004, 17,3042,
+  17,3074, 17,3103, 17,3224) with AXISCTR other than 0 or 1, NUMBERT outside
+  0-4 or SENSETYP above 5, or with AXISCTR 1 and RETJADR not one of the three
+  return addresses (except 17,3074 and 17,3103, which go to CLOSEOUT). They
+  index INDEXES, AXISDIFF, TJU and TYPEPOLY; the file's own loop and TJETLAW
+  store these values before the calls these entries return from;
+- 17,2172, 17,2214 and 17,2454 with SENSETYP above 5 (no producer stores
+  one).
+
+CALLQERR, 17,2172 (the ALARM 02002 return), 17,2214 (CHKBIT10's ZATTEROR
+return), 17,2454 (ENTERUV's ZATTEROR return) and 17,2620 (the TIMEGMBL
+return) accept any AXISCTR and NUMBERT: they store both (MINRTN, MIMRET,
+BACKHAND, TJLAW, TSNUMBRT) before reading them. P-AXIS's PURGENCY leaves
+AXISCTR -1, GTS keeps SR in AXISCTR (SAVESR) and PJETSLEC leaves NUMBERT 5 or
+6. SENSEGET's SELCTSUB, which would index TJU by AXISCTR on its alarm, never
+alarms: TYPEPOLY 0 and 1 share no jet with ALLJETS 4 or 5.
 
 ## Verification
 
@@ -100,8 +115,10 @@ bits) and 31, an eight-bit channel 5 and a random interrupt-enable bit.
   bit width, with +0 and -0 frequent.
 - In one cohort in eight, three quarters of those words are +0 or -0.
 - SKIPU and SKIPV are 0 or 4. RETJADR holds one of the file's three return
-  addresses in three quarters of the cases. AXISCTR is 0 or 1, NUMBERT 0-4,
-  and SENSETYP 0-2 in three quarters. One cohort in 32 keeps all of these
+  addresses in fifteen cases of sixteen. At CALLQERR, 17,2172, 17,2214,
+  17,2454 and 17,2620, AXISCTR is 0 or 1 in half the cases, -1 in a quarter,
+  -0 or a random word in the rest, and NUMBERT is 0-6; at the other entries
+  AXISCTR is 0 or 1 and NUMBERT 0-4. SENSETYP is 0-2 in three quarters. One cohort in 32 keeps all of these
   random, and half of that cohort has a random 15-bit channel 5.
 - Q holds a caller return for the subroutine entries: SWRETURN, a fixed-fixed
   word, or a bank 17 word outside the file.
@@ -116,17 +133,18 @@ program would leave the file.
     the word in Q, or EDRUPT's vector to A), at MAKERUPT, or at RETJADR
     holding one of the three return addresses is in the file.
   - It requires the native snapshot to be byte-identical for every case the
-    native routines accept: 15,600 cases. The comparison covers the outcome,
+    native routines accept: 15,547 cases. The comparison covers the outcome,
     channel 13, the interrupt-enable and interrupt-in-progress bits and all
     2,048 erasable words.
-  - It leaves out the 784 refused cases. Their digest is of the unchanged
+  - It leaves out the 837 refused cases. Their digest is of the unchanged
     input image, which the host test checks.
   - The digests are frozen into `tests/lm_q_r_axis_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
     (`tests/lm_q_r_axis_c64_vectors.h`, 128 cases). It runs every host case
     with branch counting (`tools/lane_f_path_trace.c`) and takes, greedily,
-    cases until every entry slot, outcome and branch the host cases take is
-    taken (48 cases), then spreads the rest with a stride of 97. The
+    cases until every entry slot, outcome, counted branch and basic block
+    (`-fsanitize-coverage=trace-pc`) the host cases take is taken (54
+    cases), then spreads the rest with a stride of 97. The
     per-branch host and C64 counts are in
     `evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json`.
   - The proof (`evidence/lm-q-r-axis/lm-q-r-axis-proof.json`) counts where
@@ -138,7 +156,7 @@ program would leave the file.
   reachable branch to be taken. They also check the refusals, the IBNKCALL
   CADRs against the compiled interbank table, and `lm_q_r_axis_data`.
 - `make vice-lm-q-r-axis` runs the 128 C64 rows in VICE: every entry, every
-  outcome and every branch the host cases take. The VICE log records the
+  outcome, branch and basic block the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches are documented in the host test:
@@ -149,6 +167,7 @@ Branches no admitted input reaches are documented in the host test:
 - FAILOOP's CCS NUMBERT negative and -0 exits: NUMBERT counts down from
   THREE;
 - LOOPER's CCS AXISCTR negative and -0 exits: AXISCTR is 0 or 1;
+- LOOPER's `TC RETJADR` to another word: refused at the entry;
 - DOSKIP's CCS TJU +0 and -0 exits: DOSKIP follows DOROTAT, whose CCS TJU
   sends +-0 to NOROTAT, and nothing between stores TJU.
 

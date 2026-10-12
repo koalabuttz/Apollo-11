@@ -36,10 +36,19 @@ void lm_qr_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t s
   * one cohort in 32 (refused where the original would leave the domain). */
  if(v%32u!=31u){
   m->words[EB6(01535u)]=(rnd(&seed)>>20)&1u?4u:0u;m->words[EB6(01536u)]=(rnd(&seed)>>20)&1u?4u:0u;
-  {unsigned r=(rnd(&seed)>>20)%4u;if(r<3u)m->words[EB6(01477u)]=retjadr[r];}
+  {unsigned r=(rnd(&seed)>>20)%16u;if(r<15u)m->words[EB6(01477u)]=retjadr[r%3u];}
   if(m->words[EB6(01502u)]==077777u)m->words[EB6(01502u)]=0u; /* ALLOWGTS */
-  m->words[EB6(01505u)]=(agc_word)((rnd(&seed)>>20)&1u);
-  m->words[EB6(01743u)]=(agc_word)((rnd(&seed)>>20)%5u);
+  if(e<5u||e>16u){
+   /* CALLQERR and the returns that store AXISCTR and NUMBERT before reading
+    * them: also P-AXIS PURGENCY's AXISCTR -1, GTS's SR in AXISCTR (SAVESR)
+    * and PJETSLEC's NUMBERT 5 or 6. */
+   unsigned k=(rnd(&seed)>>20)%8u;
+   m->words[EB6(01505u)]=k<4u?(agc_word)(k&1u):k<6u?077776u:k==6u?077777u:raw(&seed);
+   m->words[EB6(01743u)]=(agc_word)((rnd(&seed)>>20)%7u);
+  }else{
+   m->words[EB6(01505u)]=(agc_word)((rnd(&seed)>>20)&1u);
+   m->words[EB6(01743u)]=(agc_word)((rnd(&seed)>>20)%5u);
+  }
   if((v/2u)%4u!=3u)m->words[EB6(01500u)]=(agc_word)((rnd(&seed)>>20)%3u);
  }else if(v%64u==31u)io->chan5=raw(&seed);
  /* Return in Q: SWRETURN, fixed-fixed 06000-07777, or bank 17 outside
