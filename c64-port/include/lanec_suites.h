@@ -10,5 +10,6 @@ extern const lanec_suite lanec_suite_di_play;
 extern const lanec_suite lanec_suite_di_sleep;
 extern const lanec_suite lanec_suite_di_idle;
 extern const lanec_suite lanec_suite_di_nvdsp;
+extern const lanec_suite lanec_suite_ev_short;
 const lanec_suite *lanec_find_suite(const char *name);
 #endif
