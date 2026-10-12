@@ -1192,7 +1192,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
+            "sha256": "ba357d57a53f6ec8c2a1ae2a058307c9ca379312ce4a934c3f800ddabad40af5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
@@ -4641,7 +4641,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
+            "sha256": "ba357d57a53f6ec8c2a1ae2a058307c9ca379312ce4a934c3f800ddabad40af5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",

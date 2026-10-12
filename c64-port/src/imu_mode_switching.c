@@ -560,7 +560,10 @@ static int gselect(const ims_mission *m,apollo_overlay_state *s,void *io,agc_wor
   *out=aug3(m,s);return 0;
  }
  /* +0: -GYROMIN as MASK 07601; -: TCF +4; -0: CAF BIT14; ADS ITEMP2;
-  * CAF ZERO. Then INDEX ITEMP1 DXCH 1400; CA ITEMP2; LASTSEG TS GYROCMD. */
+  * CAF ZERO. Then INDEX ITEMP1 DXCH 1400; CA ITEMP2; LASTSEG TS GYROCMD.
+  * The +0 outcome cannot occur: A is RUPTREG1 as DCA loaded it (no
+  * overflow), and in ones' complement x + (-1) is +0 for no x (x = +1
+  * gives -0). The MASK stays as the source has it. */
  if(c==1u)ai_maskf(s,m->gyromin_word);
  if(c==3u){ai_caf(s,K_BIT14);ai_ads(s,ITEMP2);ai_caf(s,0);}
  ai_dxch(s,EB1400+ix(s,ITEMP1));ai_ca(s,ITEMP2);(void)ai_ts(s,GYROCMD);
