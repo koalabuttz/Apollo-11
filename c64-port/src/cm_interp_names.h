@@ -66,7 +66,6 @@
 #define lmi_acos_alarmed cmi_acos_alarmed
 #define lmi_abvalabs cmi_abvalabs
 #define lmi_unit cmi_unit
-#define lmi_unit1 cmi_unit1
 #define lmi_vxsc cmi_vxsc
 #define lmi_vxv cmi_vxv
 #define lmi_mxv cmi_mxv

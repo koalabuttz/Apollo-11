@@ -419,18 +419,13 @@ class Compiler:
             return st, cur, False, False
         if base in ('BOV', 'BOVB'):
             st.append('switch(%sbov(s)){case %sBOV_NONE:break;case %sBOV_GOTO:' % (P, P.upper(), P.upper()))
-            if base == 'BOVB' and self.in_file(self.cadr_phys(w)):
-                st.append('  return EXEC_OUT_OF_SCOPE;')
-            else:
-                st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
+            st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
             if base == 'BOVB':
-                # BOVB's branch is to basic code, as RTB transfers: out of
-                # the file a stop, into it the basic routine there.
+                # BOVB's branch is to basic code, as RTB transfers.
                 t = self.cadr_phys(w)
                 if self.in_file(t):
-                    self.add_start(t, 'b', 'BOVB target')
-                else:
-                    self.externals_any[t] = 'BOVB ' + (self.L.label_at(t) or '')
+                    raise CompileError('BOVB into the file at %s' % self.where(t))
+                self.externals_any[t] = 'BOVB ' + (self.L.label_at(t) or '')
                 st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
             st.append('default:return EXEC_OUT_OF_SCOPE;}')
             return st, cur, False, False
@@ -548,20 +543,6 @@ class Compiler:
                 raise CompileError('%s writes a bank or Z register at %s' % (what, self.where(p)))
             return ea(k)
 
-        def fixed_indexed(k, fmt):
-            # INDEX on a fixed operand (a small constant table, an index of
-            # -1..+1): the indexed address picks one of the compiled rope
-            # words; any other address is refused.
-            self._ix = (w, index, 0o7777)
-            arms = []
-            for a in (k - 1, k, k + 1):
-                fp = self.phys_of(a, bank)
-                if fp is None or self.L.word(fp) is None:
-                    continue
-                self.basic_fixed.add(fp)
-                arms.append('case 0%04ou:%sbreak;' % (a, fmt % ('0%05o' % self.L.word(fp))))
-            return 'switch(iw&07777u){%sdefault:return EXEC_OUT_OF_SCOPE;}' % ''.join(arms)
-
         def fixed(k):
             if index is not None:
                 raise CompileError('INDEX on a fixed operand at %s' % self.where(p))
@@ -590,11 +571,6 @@ class Compiler:
                     # (a return inside this routine is a goto; basic_block
                     # fills in the dispatch).
                     return st + ['@TCQ@'], []
-                if k12 < 0o2000 and k12 > 4 and index is None:
-                    # TC to an erasable word holding a saved return (QXCH
-                    # K earlier): the word runs as TC its address, Q = K+1.
-                    self.uses_tce = True
-                    return st + ['@TCE%o@' % k12], []
                 if k12 < 0o2000:
                     raise CompileError('TC to erasable %04o at %s' % (k12, self.where(p)))
                 tz = self.phys_of(k12, bank)
@@ -626,9 +602,7 @@ class Compiler:
                 # data or interpretive words) has no producer: refused.
                 arms, succ = [], []
                 for q in (nxt, nxt + 1, nxt + 2, nxt + 3):
-                    # An arm on the word after an EXTEND would run it
-                    # unextended: no producer, refused like data.
-                    if self.is_basic(q) and not (q - 1 > p and self.L.word(q - 1) == 0o6):
+                    if self.is_basic(q):
                         arms.append('goto L%o;' % q)
                         succ.append(q)
                     else:
@@ -647,8 +621,6 @@ class Compiler:
             if op in (3, 4, 6, 7):
                 fn = {3: 'ca', 4: 'cs', 6: 'ad', 7: 'mask'}[op]
                 if k12 >= 0o2000:
-                    if index is not None:
-                        return st + [fixed_indexed(k12, 'ai_%sf(s,%%s);' % fn)], [nxt]
                     fp = fixed(k12)
                     return st + ['ai_%sf(s,0%05o);' % (fn, self.L.word(fp))], [nxt]
                 return st + ['ai_%s(s,%s);' % (fn, eras(k12, fn))], [nxt]
@@ -662,18 +634,6 @@ class Compiler:
                     return st + ['if(ai_ts(s,%s))goto L%o;' % (eras(k10, 'ts'), nxt + 1)], [nxt, nxt + 1]
                 return st + ['ai_xch(s,%s);' % eras(k10, 'xch')], [nxt]
         else:
-            if op == 0 and (w >> 9) & 7 in (0, 2):
-                # READ / RAND of an input channel the spec's io carries
-                # (lm_channel_io), as yaAGC: the overflow-corrected A
-                # (RAND) and the channel, sign-extended into A.
-                ch = w & 0o777
-                field = self.spec.get('channels', {}).get(ch)
-                if field is None:
-                    raise CompileError('channel %o at %s: not in the spec channels' % (ch, self.where(p)))
-                v = '((const lm_channel_io *)(const void *)io)->%s' % field
-                if (w >> 9) & 7 == 2:
-                    v = '(agc_word)(((W[0]&037777u)|((W[0]>>1)&040000u))&%s)' % v
-                return st + ['W[0]=agc_extend((agc_word)(%s&0177777u));' % v], [nxt]
             if op == 1 and qc == 0:
                 return st + ['ai_dv(s,%s);' % eras(k10, 'dv')], [nxt]
             if op in (1, 6) and qc != 0:
@@ -699,8 +659,6 @@ class Compiler:
                 return st + ['ai_su(s,%s);' % eras(k10, 'su')], [nxt]
             if op == 7:
                 if k12 >= 0o2000:
-                    if index is not None:
-                        return st + [fixed_indexed(k12, 'ai_mpf(s,%s);')], [nxt]
                     return st + ['ai_mpf(s,0%05o);' % self.L.word(fixed(k12))], [nxt]
                 return st + ['ai_mp(s,%s);' % eras(k12, 'mp')], [nxt]
         raise CompileError('unsupported basic instruction %05o (%s %s) at %s' % (w, ln.op, ln.operand, self.where(p)))
@@ -735,16 +693,10 @@ class Compiler:
         if self.returns_seen:
             tcq = 'switch(W[2]){%sdefault:return tc_q(s);}' % ''.join(
                 'case 0%04ou:W[2]=3u;goto L%o;' % (self.logical_of(r), r) for r in sorted(self.returns_seen))
-        import re
-
-        def tce(k):
-            return 'switch(W[0%ou]){%sdefault:return tc_e(s,0%ou);}' % (k, ''.join(
-                'case 0%04ou:W[2]=0%ou;goto L%o;' % (self.logical_of(r), k + 1, r) for r in sorted(self.returns_seen)), k)
         out = []
         for i, p in enumerate(order):
             st, succ = units[p]
             st = [x.replace('@TCQ@', tcq) for x in st]
-            st = [re.sub(r'@TCE([0-7]+)@', lambda m: tce(int(m.group(1), 8)), x) for x in st]
             out.append('L%o:;' % p)
             out.extend(st)
             last = st[-1].strip()
@@ -881,13 +833,6 @@ class Compiler:
         c.append(' if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;')
         c.append(' W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;')
         c.append('}')
-        if getattr(self, 'uses_tce', False):
-            c.append('/* TC K to an erasable word: the word runs as an instruction; a TC leaves Q = K+1. */')
-            c.append('static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,unsigned k){')
-            c.append(' agc_word q=W[k];')
-            c.append(' if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;')
-            c.append(' W[2]=(agc_word)(k+1u);W[5]=(agc_word)(q&07777u);return EXEC_OK;')
-            c.append('}')
         c.append('static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
         c.append(' return W[4]==fb&&sane(s,io);')
         c.append('}')
