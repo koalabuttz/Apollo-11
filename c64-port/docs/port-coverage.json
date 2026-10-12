@@ -3552,8 +3552,62 @@
       "sha256": "658648f1bdac76929efdfe98fc23676e467d167645310c685bf1479c97da77fa",
       "bytes": 6146,
       "lines": 228,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_ags_init.c",
+            "src/lm_ags_init_sites.inc",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-AGS-INIT.md",
+          "scope": "All of the file (R47, bank 32 02005-02216): AGSINIT's REFSMFLG test and ALARM, the AGSK display and GOMARKF's three returns (V32 keystroke time, V25 keyed AGSK, AGSVCALC), the interpretive AGS vector set-up from RTB LOADTIME through LEMPREC/CSMPREC and SCALEVEC (VECSGNAG returns, RVQ) to the AGS clock and downlist, DELAYJOB, the IMUSE test and CKSTALL, IMUZERO/IMUSTALL returns, AGSEND (DOWNFLAG) and the V50N16 display with GOMARK3's returns, as fifteen basic and seven interpretive ABI routines."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 32 under any EBANK, with the p66_bias_io record; basic keys at Z, interpretive keys at LOC with Z at NEWOPS; DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB, NEWJOB negative, or no io record; 0 of 16,896 random cases",
+        "external_continuations": [
+          "ALARM",
+          "ENDEXT",
+          "BANKCALL (GOMARKF, EXDSPRET, DELAYJOB, IMUZERO, IMUSTALL, GOMARK3)",
+          "DOWNFLAG",
+          "RTB LOADTIME",
+          "RTB VECSGNAG",
+          "LEMPREC",
+          "CSMPREC",
+          "SCALEVEC's RVQ to a caller outside the file (QPRET)",
+          "CHANG2"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-ags-init/lm-ags-init-source-map.json",
+            "sha256": "9877313df882a3420d55d56970a6a1a52d26718ef7a78841156715c8a4f9e390"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-ags-init/lm-ags-init-proof.json",
+            "sha256": "cf1d1ee58bc3740da972acef02ca68353cffd534a1cf49311f042c4fa53f694e"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-ags-init/lm-ags-init-host.log",
+            "sha256": "06e7d21c0c72039629a80a22c49113bd223e811ac336a3912c6d07707751ea90"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-ags-init/lm-ags-init-vice.log",
+            "sha256": "eb9a4cdfd7a3243b9789c532cfb0330616f32a71a4cc270d64e75f022e7aa3c8"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-ags-init/lm-ags-init-c64-cover.json",
+            "sha256": "eb3d625d05e34c45db496bacadf1e01f0b52f3aeb0d71d06ccff0681b6ec6cd0"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ALARM_AND_ABORT.agc",
@@ -5442,8 +5496,54 @@
       "sha256": "c07d1ef6d1a83375b0aa0f7be87ef4d496d396621501298932aa46466d2db34c",
       "bytes": 11726,
       "lines": 533,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_landing_displays.c",
+            "src/lm_landing_displays_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-LANDING-DISPLAYS.md",
+          "scope": "Every path of the file: LANDISP (TBASE2, DISPRSET/ABORTON, DISINDAT with the mode switch, DIDFLAG and the first-pass set-up to TC TWIDDLE, SPEEDRUN to TC VARDELAY), TWIDDLE's return and INTLZE, and VARDELAY's return (VHY/VHZ, GET22/32, LATFWDV, VMONITOR and the limit paths to ZEROLSTY, channel 14) with TC LADQSAVE continuing at ALTROUT +1 (ARCOMP) or ALTOUT +1 (OLDDATA, NEWDATA, ZERODATA) to DATAOUT, as four ABI routines in bank 21."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 21 under EBANK7 (EBANK= UNIT/R/) with the lm_flight_io record (channels 12, 14 and 30); the word in LADQSAVE at TC LADQSAVE is run: ALTROUT +1 and ALTOUT +1 (the returns DISINDAT stores there) continue in the file, any other word ends the routine at LADQSAVE as in the original; channel 14 is compared without the CDU and gyro drive bits, which yaAGC drains as counter commands; refused with the image unchanged: another FB or EB, or no io record; 0 of 16,384 random cases",
+        "external_continuations": [
+          "TASKOVER",
+          "TWIDDLE (ADRES INTLZE)",
+          "VARDELAY",
+          "the word in LADQSAVE when it is not ALTROUT +1 or ALTOUT +1"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-source-map.json",
+            "sha256": "c8b4105ce81c0d4a677b40faa24dff24d4c8d7653416ea221dd8a702e1607e74"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-proof.json",
+            "sha256": "95a745301c809f90ff79c97f3782cf175498f935447ef0017dceef989eed62d6"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-host.log",
+            "sha256": "4ff362f3d7b0544196770840bc334f973a2352628213f20b93e3c20adbf664f1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-vice.log",
+            "sha256": "85119b95d52d6e3aa6785fb2c9a307656ba0418f1eac1822452ff10d72df195c"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-c64-cover.json",
+            "sha256": "58242a72c57a7dfb5221665b4aa1f47e6276f4a522d317f45bb3d0c3baf1741f"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc",
