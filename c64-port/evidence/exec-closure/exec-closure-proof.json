@@ -1,0 +1,71 @@
+{
+ "files": [
+  {
+   "source_path": "Luminary099/EXECUTIVE.agc",
+   "source_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+   "source_words": 345,
+   "instruction_lines": 336,
+   "instruction_lines_executed_by_oracle": 326,
+   "unreached_instruction_lines": 10,
+   "pending_instruction_lines": 0
+  },
+  {
+   "source_path": "Luminary099/WAITLIST.agc",
+   "source_sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+   "source_words": 267,
+   "instruction_lines": 240,
+   "instruction_lines_executed_by_oracle": 238,
+   "unreached_instruction_lines": 2,
+   "pending_instruction_lines": 0
+  },
+  {
+   "source_path": "Comanche055/EXECUTIVE.agc",
+   "source_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+   "source_words": 337,
+   "instruction_lines": 328,
+   "instruction_lines_executed_by_oracle": 320,
+   "unreached_instruction_lines": 8,
+   "pending_instruction_lines": 0
+  },
+  {
+   "source_path": "Comanche055/WAITLIST.agc",
+   "source_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+   "source_words": 252,
+   "instruction_lines": 225,
+   "instruction_lines_executed_by_oracle": 224,
+   "unreached_instruction_lines": 1,
+   "pending_instruction_lines": 0
+  }
+ ],
+ "milestone_evidence": {
+  "lm-exec-services": {
+   "manifest": "evidence/lm-exec-services/SHA256.json",
+   "sha256": "3d8e926e52f8038bb4caa21c998f0913fbf7eaac7d28e17be6095a2f4d7b72e7"
+  },
+  "lm-exec-jobs": {
+   "manifest": "evidence/lm-exec-jobs/SHA256.json",
+   "sha256": "c874cbb60f22ec94e1d3ff711451a1af7b32080bd655cceed7df2a299f2b03e0"
+  },
+  "lm-exec-idle": {
+   "manifest": "evidence/lm-exec-idle/SHA256.json",
+   "sha256": "bcb11f678d3a5cd88c348a3267c09fe5cd54f0e1b7cd9296f33e71920a4f1620"
+  },
+  "rupt-lead-ins": {
+   "manifest": "evidence/rupt-lead-ins/SHA256.json",
+   "sha256": "2c0a382903cae46d3fb60819eed513ac948f5db8ba79df816394fda1a5c3079f"
+  },
+  "cm-exec-services": {
+   "manifest": "evidence/cm-exec-services/SHA256.json",
+   "sha256": "a2a3574b0039b190aad97e1987cb6c1cc6f9515747a03e7f17a219ab56b517df"
+  },
+  "cm-exec-jobs": {
+   "manifest": "evidence/cm-exec-jobs/SHA256.json",
+   "sha256": "3bbc1af3a191a24aafcd3dc183841fd46cfc08f41faf6c492e68ab7eba14f731"
+  },
+  "cm-exec-idle": {
+   "manifest": "evidence/cm-exec-idle/SHA256.json",
+   "sha256": "4a522a2d60ea95bb12d22335c3b987fc18d30af518b493a06dcc5db22d729af3"
+  }
+ },
+ "method": "each milestone differential rerun with tools/oracle_trace linked into its yaAGC reference; a word is executed when the original program ran it in that comparison (each run ends where the native routine ended, so the word is inside a native routine's compared path)"
+}

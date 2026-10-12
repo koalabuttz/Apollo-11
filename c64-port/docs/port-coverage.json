@@ -760,8 +760,53 @@
           ],
           "scope": "DUMMYJOB, DUMMYJOB+2, ADVAN (through NUDIRECT or the SELFRET self-check dispatch), NUCHANG2 and SUPDXCHZ/SUPDXCHZ+1 as control-transfer ABI routines (cm_exec_idle_routines) composing the qualified idle dispatch, idle recheck and super dispatch bodies. With cm-exec-services and cm-exec-jobs every EXECUTIVE.agc entry is a native routine; the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
           "verification": "docs/CM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "src/cm_exec_jobs.c",
+            "src/cm_exec_idle.c",
+            "src/rupt_lead_ins.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Comanche055/EXECUTIVE.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (8 instruction lines).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_exec_routines, cm_exec_job_routines, cm_exec_idle_routines and cm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (8 instruction lines). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-cm-executive.json",
+            "sha256": "feb5f53debd79a9209cf4969600d27a6581fe3b30ceffb2033d459e08d6135e0"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/EXTENDED_VERBS.agc",
@@ -3355,8 +3400,53 @@
           ],
           "scope": "The interrupt exits RESUME (05333), NOQRSM (05335), NOQRSM +1 (05336, HANDRUPT's entry) and NOQBRSM (05337) as control-transfer ABI routines of cm_lead_in_routines, ending the interrupt at ZRUPT-1.",
           "verification": "docs/RUPT-LEAD-INS.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "src/cm_exec_jobs.c",
+            "src/cm_exec_idle.c",
+            "src/rupt_lead_ins.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Comanche055/WAITLIST.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the NOOP marked CAN'T GET HERE in LONGCYCL (+0 class of LONGTIME +1).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_exec_routines, cm_exec_job_routines, cm_exec_idle_routines and cm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the NOOP marked CAN'T GET HERE in LONGCYCL (+0 class of LONGTIME +1). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-cm-waitlist.json",
+            "sha256": "d0abc82f82e1178c8f061471d3812f2f29f514512ab03979809733f0b65a8503"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
@@ -4131,8 +4221,56 @@
           ],
           "scope": "DUMMYJOB, DUMMYJOB+2, ADVAN (through NUDIRECT or the SELFRET self-check dispatch), NUCHANG2 and SUPDXCHZ/SUPDXCHZ+1 as control-transfer ABI routines (lm_exec_idle_routines) composing the qualified idle dispatch and super dispatch bodies. With lm-exec-services and lm-exec-jobs every EXECUTIVE.agc entry is a native routine; the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
           "verification": "docs/LM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_routines.c",
+            "src/lm_exec_jobs.c",
+            "src/lm_exec_tasks.c",
+            "src/lm_exec_idle.c",
+            "src/lm_svct3.c",
+            "src/lm_basic_wake.c",
+            "src/rupt_lead_ins.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Luminary099/EXECUTIVE.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (10 instruction lines).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines and lm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (10 instruction lines). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-lm-executive.json",
+            "sha256": "7bb857d2c4b7a331981f053a8939b896c4728739f8e9451e71fa6bb4cbad3a68"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/EXTENDED_VERBS.agc",
@@ -6872,8 +7010,56 @@
           ],
           "scope": "RESUME (05270), NOQRSM (05272) and NOQBRSM (05274), the interrupt exits other interrupts use, as control-transfer ABI routines ending the interrupt at ZRUPT-1.",
           "verification": "docs/LM-T6RUPT.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_routines.c",
+            "src/lm_exec_jobs.c",
+            "src/lm_exec_tasks.c",
+            "src/lm_exec_idle.c",
+            "src/lm_svct3.c",
+            "src/lm_basic_wake.c",
+            "src/rupt_lead_ins.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Luminary099/WAITLIST.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines and lm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-lm-waitlist.json",
+            "sha256": "02ba9298c3bd1a8d3ddb6d0edebd41eb6a87db52d354f0a23f102b52ea3071fa"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     }
   ]
 }

@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "cm-exec-services-sites.json": {
-      "sha256": "b6fb3b9603c6a33f752c36fd9a09191319ddd65cd24df887455df69d39049ede",
-      "bytes": 45532,
+      "sha256": "a02eaba2cd96da38f9328d3b662fe02693a58c3f4743913938799edf1f2e1c02",
+      "bytes": 45510,
       "store": "tree"
     },
     "cm-exec-services-vice.log": {
