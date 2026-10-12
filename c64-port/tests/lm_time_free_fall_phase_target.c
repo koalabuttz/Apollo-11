@@ -74,7 +74,7 @@ static int deltas(frozen_words *r,apollo_overlay_state *image,uint16_t width){
  }
  return 1;
 }
-static int group(begin_fn begin,uint16_t rows,uint16_t entry_width,uint16_t exit_width,
+static int lm_time_free_fall_step_rows(begin_fn begin,uint16_t rows,uint16_t entry_width,uint16_t exit_width,
                  apollo_overlay_state *st,apollo_overlay_state *ex,unsigned *completed){
  uint16_t row,n,phase,irq,super,next,irq2,super2;unsigned i;p66_bias_io io;frozen_words r;
  for(row=0;row<rows;++row){
@@ -94,16 +94,16 @@ static int group(begin_fn begin,uint16_t rows,uint16_t entry_width,uint16_t exit
 int lm_time_free_fall_phase_check(apollo_overlay_state *st,apollo_overlay_state *ex,unsigned *completed){
  int status=0;*completed=0;
 #if LM_TIME_FREE_FALL_GROUP==0||LM_TIME_FREE_FALL_GROUP==1
- if(!status)status=group(lm_time_free_fall_g1_reference_begin,LM_TIME_FREE_FALL_G1_FROZEN_ROWS,LM_TIME_FREE_FALL_G1_ENTRY_CHANGES,LM_TIME_FREE_FALL_G1_EXIT_CHANGES,st,ex,completed);
+ LM_TIME_FREE_FALL_G1_CHECK(st,ex,completed,status);
 #endif
 #if LM_TIME_FREE_FALL_GROUP==0||LM_TIME_FREE_FALL_GROUP==2
- if(!status)status=group(lm_time_free_fall_g2_reference_begin,LM_TIME_FREE_FALL_G2_FROZEN_ROWS,LM_TIME_FREE_FALL_G2_ENTRY_CHANGES,LM_TIME_FREE_FALL_G2_EXIT_CHANGES,st,ex,completed);
+ LM_TIME_FREE_FALL_G2_CHECK(st,ex,completed,status);
 #endif
 #if LM_TIME_FREE_FALL_GROUP==0||LM_TIME_FREE_FALL_GROUP==3
- if(!status)status=group(lm_time_free_fall_g3_reference_begin,LM_TIME_FREE_FALL_G3_FROZEN_ROWS,LM_TIME_FREE_FALL_G3_ENTRY_CHANGES,LM_TIME_FREE_FALL_G3_EXIT_CHANGES,st,ex,completed);
+ LM_TIME_FREE_FALL_G3_CHECK(st,ex,completed,status);
 #endif
 #if LM_TIME_FREE_FALL_GROUP==0||LM_TIME_FREE_FALL_GROUP==4
- if(!status)status=group(lm_time_free_fall_g4_reference_begin,LM_TIME_FREE_FALL_G4_FROZEN_ROWS,LM_TIME_FREE_FALL_G4_ENTRY_CHANGES,LM_TIME_FREE_FALL_G4_EXIT_CHANGES,st,ex,completed);
+ LM_TIME_FREE_FALL_G4_CHECK(st,ex,completed,status);
 #endif
  return status;
 }

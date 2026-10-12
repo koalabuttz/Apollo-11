@@ -47,6 +47,15 @@ enum lm_time_free_fall_phase {
 };
 /* R300K 2DEC 6464778 B-29 (27,3766). */
 extern const agc_word lm_time_free_fall_r300k[2];
+/* Symbols other files use. NEARONE 2DEC .999999999 (27,3770; ASCENT_GUIDANCE
+ * DLOADs it). TCDANZIG = ENDT(X) (27,3753): TC DANZIG, entered by RTB with
+ * FBANK 27 (Q = 03754 after, Z = DANZIG). BOVB TCDANZIG as compiled order
+ * (MEASUREMENT_INCORPORATION, ORBITAL_INTEGRATION, P20-P25): from the
+ * order's BOVB entry with POLISH set by the operand word 057753, 0 at
+ * DANZIG (overflow or not), 2 when the original would leave it. */
+extern const agc_word lm_time_free_fall_nearone[2];
+void lm_time_free_fall_tcdanzig(apollo_overlay_state *);
+uint8_t lm_time_free_fall_bovb_tcdanzig(apollo_overlay_state *);
 uint8_t lm_time_free_fall_step(apollo_overlay_state *,p66_bias_io *,uint8_t phase);
 /* The phases themselves (module entry points); each returns the next phase. */
 uint8_t ltf_entry(apollo_overlay_state *);

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-massprop",
+  "release": "evidence-cm-tvc-massprop",
+  "files": {
+    "cm-tvc-massprop-checks.log": {
+      "sha256": "6fdf3a95ef016cede798f90a045ec3529dda992f43132fe650f9f2ba2aae025b",
+      "bytes": 695,
+      "store": "tree"
+    },
+    "cm-tvc-massprop-reference.deltas.xz": {
+      "sha256": "e1b6db01ea7e293d38910aa4a0d08d345c2e65b23febb8df66fa18a5b2e989fa",
+      "bytes": 1465876,
+      "store": "release"
+    },
+    "cm-tvc-massprop-results.json": {
+      "sha256": "27187541d5b0edd2519a17b38c69b6895edf4ffaede9be48c27d2bdf93a4fa1f",
+      "bytes": 1288,
+      "store": "tree"
+    },
+    "cm-tvc-massprop-source-map.json": {
+      "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba",
+      "bytes": 20848,
+      "store": "tree"
+    },
+    "cm-tvc-massprop-source-stream.json": {
+      "sha256": "ec530792bad658e95c95bc0dfcabfdbd91fc4b3c60fa63e68fcd0a8c021e2afe",
+      "bytes": 404,
+      "store": "tree"
+    },
+    "cm-tvc-massprop.map": {
+      "sha256": "e5b5f0b0c88a4ff372b4a7ff1c0275ee5991e13dd753db2a69e3b0a48e30e733",
+      "bytes": 10229,
+      "store": "release"
+    },
+    "cm-tvc-massprop.prg": {
+      "sha256": "c9dde864813e3e4afcccf5c4cbbd8757249edc9c7841598fb12646a7e2fd2c20",
+      "bytes": 16098,
+      "store": "release"
+    }
+  }
+}

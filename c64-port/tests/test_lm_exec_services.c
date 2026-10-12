@@ -12,7 +12,7 @@
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s case %u\n",what,n);}}
 static agc_routine_table tables[2];
-static agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};
+static agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};
 static const uint16_t points[10]={FF(LM_EXEC_NOVAC),FF(LM_EXEC_FINDVAC),FF(LM_EXEC_TWIDDLE),FF(LM_EXEC_WAITLIST),FF(LM_EXEC_LONGCALL),
  B1(LM_EXEC_LNGCALL2),B1(LM_EXEC_LONGCYCL),B1(LM_EXEC_LONGRTRN),B1(LM_EXEC_MUCHRTRN),B1(LM_EXEC_GETCADR)};
 static unsigned reached[10],alarms[5];
@@ -37,7 +37,7 @@ static void refused(apollo_overlay_state *s,const char *what){apollo_overlay_sta
 int main(void){apollo_overlay_state s;p66_bias_io io;lm_exs_case c;unsigned n,i,kind[3]={0,0,0},dpbit14=0;uint16_t steps;
  tables[0]=lm_exec_routines;tables[1]=lm_restart_routines;program.basic=tables;program.basic_count=2;
  program.operands=lm_exec_site_table(&program.operand_count);
- check(program.operand_count==268u,"268 operand words",program.operand_count);
+ check(program.operand_count==284u,"284 operand words (268 for these services, 16 FIXDELAY)",program.operand_count);
  for(n=0;n<LM_EXS_CASES;++n){unsigned k=lm_exs_run(&s,(uint16_t)n,&steps);
   check(lm_exs_digest(&s,(uint16_t)n)==lm_exs_expected[n],"digest",n);
   /* Only LONGCYCL reaching DPBIT14 is refused. */

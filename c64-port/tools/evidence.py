@@ -164,7 +164,9 @@ def cmd_push(args):
                     index += 1
                 if index == 0:
                     stage(f'{UPLOAD_DIR}/{name}.part000', git('hash-object', '-w', '--stdin', data=b''))
-        tree = git('write-tree', env=env)
+        # --missing-ok: a lean checkout lacks HEAD's large evidence blobs, and a
+        # plain write-tree would lazily fetch every one of them.
+        tree = git('write-tree', '--missing-ok', env=env)
     commit = git('commit-tree', tree, '-p', 'HEAD', '-m', f'Evidence upload for {args.id}')
     ref = f'refs/heads/evidence-upload/{args.id}'
     subprocess.run(['git', 'push', '--force', 'origin', f'{commit}:{ref}'], cwd=REPOSITORY, check=True)

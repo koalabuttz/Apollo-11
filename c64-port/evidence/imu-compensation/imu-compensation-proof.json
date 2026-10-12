@@ -1,0 +1,122 @@
+{
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 13824,
+ "snapshot_sha256": "3c6bb822a8f162aeffc7a3d43563b1996c4e691882235a1c70873fb9248ebb18",
+ "stops": {
+  "LM 06,3263 1/PIPA": {
+   "NOVAC": 377,
+   "SWRETURN": 135
+  },
+  "LM 06,3352 NOVAC return": {
+   "SWRETURN": 512
+  },
+  "LM 06,3507 1/GYRO": {
+   "BANKCALL": 512
+  },
+  "LM 06,3535 IMUPULSE return": {
+   "BANKCALL": 512
+  },
+  "LM 06,3537 IMUSTALL return": {
+   "ENDOFJOB": 512
+  },
+  "LM 06,3540 GCOMP1": {
+   "ENDOFJOB": 512
+  },
+  "LM 06,3555 NBDONLY": {
+   "BANKCALL": 96,
+   "ENDOFJOB": 321,
+   "IBNKCALL": 95
+  },
+  "LM 06,3575 PIPASR return": {
+   "BANKCALL": 504,
+   "ENDOFJOB": 8
+  },
+  "LM 06,3663 LASTBIAS": {
+   "BANKCALL": 512
+  },
+  "LM 06,3665 PIPUSE1 return": {
+   "BANKCALL": 377,
+   "ENDOFJOB": 135
+  },
+  "LM 06,3701 GCOMPZER": {
+   "SWRETURN": 512
+  },
+  "CM 06,3262 1/PIPA": {
+   "NOVAC": 377,
+   "SWRETURN": 135
+  },
+  "CM 06,3406 NOVAC return": {
+   "SWRETURN": 512
+  },
+  "CM 06,3474 1/GYRO": {
+   "BANKCALL": 512
+  },
+  "CM 06,3522 IMUPULSE return": {
+   "BANKCALL": 512
+  },
+  "CM 06,3524 IMUSTALL return": {
+   "ENDOFJOB": 512
+  },
+  "CM 06,3525 GCOMP1": {
+   "ENDOFJOB": 512
+  },
+  "CM 06,3542 NBDONLY": {
+   "BANKCALL": 185,
+   "ENDOFJOB": 327
+  },
+  "CM 06,3636 LASTBIAS": {
+   "BANKCALL": 512
+  },
+  "CM 06,3640 PIPUSE return": {
+   "BANKCALL": 379,
+   "ENDOFJOB": 133
+  },
+  "round trip site 0": {
+   "caller return": 512
+  },
+  "round trip site 1": {
+   "BAILOUT1": 42,
+   "caller return": 470
+  },
+  "round trip site 2": {
+   "BAILOUT1": 42,
+   "caller return": 470
+  },
+  "round trip site 3": {
+   "BAILOUT1": 42,
+   "caller return": 470
+  },
+  "round trip site 4": {
+   "NOVAC": 380,
+   "caller return": 132
+  },
+  "round trip site 5": {
+   "NOVAC": 377,
+   "caller return": 135
+  },
+  "plain LM round trip site 0": {
+   "caller return": 128
+  },
+  "plain LM round trip site 1": {
+   "NOVAC": 93,
+   "caller return": 35
+  },
+  "plain LM round trip site 2": {
+   "NOVAC": 95,
+   "caller return": 33
+  },
+  "plain LM round trip site 3": {
+   "NOVAC": 92,
+   "caller return": 36
+  }
+ },
+ "boundary": "entry cases: from the routine to the first external address (SWRETURN, BANKCALL, IBNKCALL, NOVAC, ENDOFJOB); round trips: TC BANKCALL 1/PIPA or GCOMPZER from every genuine site to the caller Q+1, LM BAILOUT1 or CM NOVAC; plain LM round trips stop at NOVAC",
+ "compared": "2048 erasable words (A, L 16-bit) and the interrupt-enable state"
+}

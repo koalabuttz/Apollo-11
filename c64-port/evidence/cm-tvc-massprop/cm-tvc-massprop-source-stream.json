@@ -1,0 +1,11 @@
+{
+  "archive": "build/cm-tvc-massprop-reference.snapshots.bin.xz",
+  "decoded_sha256": "4cd41a3179a4caf4b5675e01ce25a2440f75151770e4bede6f658b4c19275259",
+  "decoded_bytes": 268959744,
+  "states": 65536,
+  "status_counts": {
+    "returned": 59237,
+    "no_exit": 6299
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/cm-flight-fixture/MAIN.agc.bin (byte-original Comanche055 rope 6e3150ae...)"
+}

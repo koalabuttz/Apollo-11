@@ -37,6 +37,12 @@ typedef struct { uint16_t physical; agc_word word; } agc_site_operand;
 bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
                      uint16_t physical, agc_word *word);
 
+/* CPU state a routine may need beyond the erasable image and the mission's
+ * device record: output channel 11 (the Executive's idle loop turns off COMP
+ * ACTY) and whether an interrupt is in progress (yaAGC InIsr; Waitlist tasks
+ * run inside T3RUPT, and TASKOVER's RESUME ends it). */
+typedef struct { agc_word channel11; uint16_t in_interrupt; } agc_hardware;
+
 /* A native routine entered at its original address. It runs with the flight
  * image in its entry state, performs its translated body, and leaves Z (and FB,
  * Q, LOC, ...) where the original would continue. io is the mission's device
@@ -60,6 +66,9 @@ typedef struct agc_native_program {
     /* Passive constant reads (SUPDACAL, display of fixed memory); may be NULL. */
     bool (*fixed_data)(const struct agc_native_program *, uint16_t physical, agc_word *word);
     void *user;
+    /* NULL when the program has no routine that needs it; such routines then
+     * refuse with EXEC_OUT_OF_SCOPE. */
+    agc_hardware *hardware;
 } agc_native_program;
 
 /* Native routine for the current Z (or LOC at the fetch point), or NULL. */

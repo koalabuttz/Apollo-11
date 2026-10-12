@@ -1,31 +1,35 @@
 {
  "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
  "host_and_sanitizer": [
-  "PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 88 frozen phase steps",
+  "PASS65536 original TIME_OF_FREE_FALL oracle call chains equal native 2053-word rows 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2",
+  "PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 63 frozen phase steps",
   "PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2",
   "PASS65536 original TIME_OF_FREE_FALL call chains strict native",
-  "PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 88 frozen phase steps",
+  "PASS 266 assembled words on 253 source lines map to native literals in 28 functions",
+  "PASS 23600 body images equal yaAGC: DIRADRES, DIRADRES PUSHUP, ADDRESS PUSHUP, STORE codes, STADR, DODLOAD, DOVLOAD, DLOAD, VLOAD, PDVL, PDDL, PUSH, DAD, DSU, BDSU, DMP, DMPR, short shifts, GSHIFT, TSLC, COMP, SIGN, ABS, DSQ, VSQ, DOT, DDV, BDDV, SQRT, ABVAL/ABS, UNIT, VXSC, VXV, BOV(B), RTB, SWRETURN, POLY, BPL/BMN, VAD, VSU, BVSU, TAD, ROUND, SSP, XAD, XSU, LXA, SXA, BHIZ, CALL, GOTO indirect, EXIT, INTPRET, TPMODE, 15BITADR, BZE/GOTO, ITA/STQ, TIX, TLOAD",
+  "PASS C64 phase rows take every branch outcome the host stream takes: 74 of 109 outcomes (74 on the host)",
+  "PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 63 frozen phase steps",
   "PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2",
   "PASS65536 original TIME_OF_FREE_FALL call chains full ASAN/UBSAN"
  ],
  "c64": {
   "results": [
-   "PASS: VICE PAL lm-time-free-fall-1.prg: 24 checks, 0 failures",
-   "PASS: VICE PAL lm-time-free-fall-2.prg: 34 checks, 0 failures",
-   "PASS: VICE PAL lm-time-free-fall-3.prg: 22 checks, 0 failures",
-   "PASS: VICE PAL lm-time-free-fall-4.prg: 8 checks, 0 failures"
+   "PASS: VICE PAL lm-time-free-fall-1-1.prg: 17 checks, 0 failures",
+   "PASS: VICE PAL lm-time-free-fall-2-1.prg: 22 checks, 0 failures",
+   "PASS: VICE PAL lm-time-free-fall-3-1.prg: 17 checks, 0 failures",
+   "PASS: VICE PAL lm-time-free-fall-4-1.prg: 7 checks, 0 failures"
   ],
-  "groups": {
-   "1": {
-    "prg_bytes": 47055,
-    "prg_sha256": "e55289add42370097829a23529d840d3a10570e87c0872cc743b7522f32d1a68",
+  "prgs": {
+   "1-1": {
+    "prg_bytes": 45663,
+    "prg_sha256": "d695347005eea27d606b4b141e6b66ef176129261604db1d3acd060a6a74fdf5",
     "sections": {
      "text": 37437,
-     "rodata": 9604,
+     "rodata": 8212,
      "data": 0,
      "bss": 0
     },
-    "image_end": "$bfce",
+    "image_end": "$ba5e",
     "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
     "phases": [
      0,
@@ -35,18 +39,29 @@
      4,
      5
     ],
-    "steps": 24
+    "steps": 17,
+    "states": [
+     0,
+     2,
+     34,
+     114,
+     179,
+     242,
+     768,
+     775
+    ],
+    "vice": "PASS: VICE PAL lm-time-free-fall-1-1.prg: 17 checks, 0 failures"
    },
-   "2": {
-    "prg_bytes": 45936,
-    "prg_sha256": "b0212d112d8ca9403882956ab601b4dc1731a0a5aacf40ef82d1d0f31976fc53",
+   "2-1": {
+    "prg_bytes": 41991,
+    "prg_sha256": "097a667c399b9eaca6dba0192ce38fc6deeebbc942cbbbb4a2cf4e1271a18f04",
     "sections": {
      "text": 31494,
-     "rodata": 14428,
+     "rodata": 10483,
      "data": 0,
      "bss": 0
     },
-    "image_end": "$bb6f",
+    "image_end": "$ac06",
     "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
     "phases": [
      6,
@@ -59,18 +74,28 @@
      13,
      14
     ],
-    "steps": 34
+    "steps": 22,
+    "states": [
+     3,
+     4,
+     19,
+     523,
+     771,
+     779,
+     40007
+    ],
+    "vice": "PASS: VICE PAL lm-time-free-fall-2-1.prg: 22 checks, 0 failures"
    },
-   "3": {
-    "prg_bytes": 35208,
-    "prg_sha256": "619394c644e8bac9e17de42666d5b621dbd724b8930f82ebce47a4398c031884",
+   "3-1": {
+    "prg_bytes": 33690,
+    "prg_sha256": "3b224ff57ef0dc5c612ad6cb920e50e7294bf79210f2096a910712395deabbdc",
     "sections": {
-     "text": 27802,
-     "rodata": 7392,
+     "text": 27807,
+     "rodata": 5869,
      "data": 0,
      "bss": 0
     },
-    "image_end": "$9187",
+    "image_end": "$8b99",
     "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
     "phases": [
      15,
@@ -81,30 +106,94 @@
      20,
      21
     ],
-    "steps": 22
+    "steps": 17,
+    "states": [
+     3,
+     4,
+     19,
+     35,
+     83,
+     179,
+     379,
+     771,
+     775,
+     65535
+    ],
+    "vice": "PASS: VICE PAL lm-time-free-fall-3-1.prg: 17 checks, 0 failures"
    },
-   "4": {
-    "prg_bytes": 31609,
-    "prg_sha256": "536df80b0a6c17fabe3c6e76870fe8a6479314fb45c709bbe593972faea4547a",
+   "4-1": {
+    "prg_bytes": 31348,
+    "prg_sha256": "7bd72c797388d8695e7a9c8fdc7d05005ceb02b6c68172e0f5de3d681c1022a0",
     "sections": {
      "text": 28456,
-     "rodata": 3139,
+     "rodata": 2878,
      "data": 0,
      "bss": 0
     },
-    "image_end": "$8378",
+    "image_end": "$8273",
     "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
     "phases": [
      22,
      23,
      24
     ],
-    "steps": 8
+    "steps": 7,
+    "states": [
+     3,
+     251,
+     523
+    ],
+    "vice": "PASS: VICE PAL lm-time-free-fall-4-1.prg: 7 checks, 0 failures"
    }
   },
-  "whole_routine_note": "The whole routine is too big for one PRG beside two images, so the C64 check runs each phase in one of four PRGs from a debris-only base state; the host runs the same phase steps and the whole chain."
- },
- "source_audit": [
-  "PASS 266 assembled words on 253 source lines map to native literals in 27 functions"
- ]
+  "steps": 63,
+  "branch_outcomes": {
+   "source": "src/lm_time_free_fall.c",
+   "lines": "1-382 (phase code)",
+   "measure": "gcc gcov -O0 branch outcomes",
+   "outcomes": 109,
+   "host_stream_taken": 74,
+   "c64_rows_taken": 74,
+   "host_only": [],
+   "never_taken_on_host": [
+    "44:2 return apollo_fixed_data_read(LM,(uint16_t)(023u*1024u+sub),&k[0])&&apollo_fixed_data_read(LM,(uint16_t)(023u*1024u+sub+",
+    "44:5 return apollo_fixed_data_read(LM,(uint16_t)(023u*1024u+sub),&k[0])&&apollo_fixed_data_read(LM,(uint16_t)(023u*1024u+sub+",
+    "81:0 if(r!=LMI_BOV_GOTO)return 2;",
+    "93:0 if(r!=LMI_BOV_RTB)return 2;",
+    "94:1 lmi_rtb(s);if(W[5]!=03753u)return 2;",
+    "100:1 if(ai_ccs(s,020)!=0u)return 0;",
+    "101:1 lmi_rtb(s);if(W[5]!=03735u)return 0;",
+    "102:2 ai_tc(s,03736);W[5]=07222;lmi_poly(s,TX);if(W[5]!=03753u)return 0;",
+    "113:6 lmi_newops(s,053575);opnd(s,002207,VLOAD);lmi_vload(s,0);right(s);lmi_unary(s,UNIT);if(lmi_unit(s))return LTF_ABORTED;ne",
+    "126:1 if(!bank23(0511,k))return LTF_FAILED;",
+    "136:3 lmi_newops(s,075446);lmi_unary(s,ABVAL);if(lmi_abvalabs(s))return LTF_ABORTED;right(s);lmi_unary(s,SQRT);if(lmi_sqrt(s))",
+    "136:8 lmi_newops(s,075446);lmi_unary(s,ABVAL);if(lmi_abvalabs(s))return LTF_ABORTED;right(s);lmi_unary(s,SQRT);if(lmi_sqrt(s))",
+    "147:1 if(!bank23(0511,k))return LTF_FAILED;",
+    "155:1 if(!bank23(0511,k))return LTF_FAILED;",
+    "160:6 lmi_newops(s,051415);opnd(s,017765,DAD);lmi_dad(s,DP2M4);right(s);lmi_unary(s,ABVAL);if(lmi_abvalabs(s))return LTF_ABORT",
+    "161:3 lmi_newops(s,043366);lmi_unary(s,SQRT);if(lmi_sqrt(s))return LTF_ABORTED;right(s);opnd(s,006512,DAD);lmi_dad(s,k);next(s",
+    "167:5 lmi_newops(s,041005);opnd(s,000027,DMP);lmi_dmp(s,0);right(s);if(lm_time_free_fall_bovb_tcdanzig(s))return LTF_FAILED;ne",
+    "174:3 switch(bov(s,057461)){case 0:next(s);break;case 1:return LTF_MAXRA;default:return LTF_FAILED;}",
+    "191:1 if(!lmi_switch(s,io))return LTF_FAILED;",
+    "197:1 if(lmi_switch(s,io))return LTF_FAILED;",
+    "202:1 if(!bank23(0511,k))return LTF_FAILED;",
+    "217:1 if(!bank23(0521,k))return LTF_FAILED;",
+    "224:3 right(s);lmi_unary(s,SQRT);if(lmi_sqrt(s))return LTF_ABORTED;next(s);",
+    "225:4 lmi_newops(s,041076);unary(s,COMP,lmi_comp);right(s);if(lm_time_free_fall_bovb_tcdanzig(s))return LTF_FAILED;next(s);",
+    "242:5 lmi_newops(s,051406);unary(s,PUSH,lmi_push);right(s);lmi_unary(s,ABVAL);if(lmi_abvalabs(s))return LTF_ABORTED;next(s);",
+    "244:3 switch(bov(s,057561)){case 0:next(s);return LTF_FALLBACK;case 1:return LTF_XTEST;default:return LTF_FAILED;}",
+    "248:1 if(!bank23(0521,k))return LTF_FAILED;",
+    "273:3 switch(bov(s,057653)){case 0:next(s);return LTF_SERIES;case 1:return LTF_TFFELL;default:return LTF_FAILED;}",
+    "291:2 lmi_newops(s,041234);if(!rtb_tx(s))return LTF_FAILED;right(s);opnd(s,044302,DMP);lmi_dmp(s,0);next(s);",
+    "314:3 switch(bov(s,057651)){case 0:next(s);break;case 1:return LTF_MAXTFF;default:return LTF_FAILED;}",
+    "350:3 switch(lmi_bov(s)){",
+    "352:2 case LMI_BOV_RTB:lmi_rtb(s);if(W[5]!=03712u||rtb_agreement(s,io,RTB_LM,RTB_SIGN_MPAC)!=RTB_OK||W[5]!=06061u)return LTF_F",
+    "352:5 case LMI_BOV_RTB:lmi_rtb(s);if(W[5]!=03712u||rtb_agreement(s,io,RTB_LM,RTB_SIGN_MPAC)!=RTB_OK||W[5]!=06061u)return LTF_F",
+    "352:6 case LMI_BOV_RTB:lmi_rtb(s);if(W[5]!=03712u||rtb_agreement(s,io,RTB_LM,RTB_SIGN_MPAC)!=RTB_OK||W[5]!=06061u)return LTF_F",
+    "362:2 lmi_newops(s,041234);if(!rtb_tx(s))return LTF_FAILED;right(s);opnd(s,000043,DMP);lmi_dmp(s,0);next(s);"
+   ],
+   "note": "Outcomes never taken on the host are the LTF_FAILED guards on compiled literal operands, and the UNIT/ABVAL/SQRT abort exits no sampled chain reaches."
+  },
+  "whole_routine_note": "The whole routine is too big for one PRG beside two images, so the C64 check runs each phase step in the PRG of its group from a debris-only base state; the host runs the same steps and the whole chain. Whole-routine C64 runs wait for overlay ABI 2."
+ }
 }
