@@ -1,0 +1,16 @@
+{
+  "states": 8,
+  "max_changes": 106,
+  "frozen_bytes": 2395,
+  "decoded_sha256": "9c37e9f049fac76ab6ee3a131f93486e4474a4d0d12122738b74774c9d8a2fe4",
+  "case_ids": [
+    0,
+    99,
+    112,
+    264,
+    2360,
+    3312,
+    13002,
+    65535
+  ]
+}
