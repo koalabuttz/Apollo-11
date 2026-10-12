@@ -34,6 +34,7 @@ MODULES = {
     'lm-tjet-law': ('lm_tjet_law', 'LM_TJ', 'lm_tj', 3, 256, 'LM_TJ_SRC', '{s}_run(s,n,steps)'),
     'lm-dapidler': ('lm_dapidler', 'LM_DI', 'lm_di', 9, 192, 'LM_DI_SRC', IO_RUN),
     'lm-trim-gimbal': ('lm_trim_gimbal', 'LM_TG', 'lm_tg', 4, 256, 'LM_TG_SRC', IO_RUN),
+    'lm-landing-displays': ('lm_landing_displays', 'LM_LAD', 'lm_lad', 8, 128, 'LM_LAD_SRC', IO_RUN),
 }
 
 

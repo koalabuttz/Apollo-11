@@ -1,0 +1,30 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle_engine": "yaAGC with the hardware divide (build/agc_engine_hardware_dv.o)",
+ "cases": 16384,
+ "compared_cases": 16384,
+ "compared_sha256": "cf565041d5bedbc602b84ba2b0c9f932dc2571deea2c5426f4df11ec4611f4e1",
+ "outcomes": {
+  "21,2364:left the file": 2048,
+  "21,2476:left the file": 6144,
+  "INTLZE:left the file": 2048,
+  "LANDISP:left the file": 6144
+ },
+ "exits": {
+  "TASKOVER": 13772,
+  "TC LADQSAVE (another word)": 1547,
+  "TWIDDLE (ADRES INTLZE)": 353,
+  "VARDELAY": 712
+ },
+ "refused_cases": 0,
+ "refused_oracle_outcomes": {},
+ "entries": [
+  "21,2154 LANDISP",
+  "21,2365 INTLZE",
+  "21,2364",
+  "21,2476"
+ ],
+ "boundary": "each entry from a random image (FB bank 21, EB 7, random channels 12 and 30, channel 14 without the CDU and gyro drive bits, the tested flag bits set or clear, LADQSAVE holding ALTROUT +1 or ALTOUT +1 in three cases in four, erasable words of random widths with +-0 frequent) until the original leaves 21,2154-3076 (TC or TCF to TASKOVER, TWIDDLE, VARDELAY, TC LADQSAVE to a word other than ALTROUT +1 and ALTOUT +1, and the CCS and TS exits that run a data word as TC); compared: outcome, channels 12 and 14 and all 2048 erasable words",
+ "full_physical_words": 2048
+}
