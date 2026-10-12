@@ -1,11 +1,12 @@
 {
  "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
  "host_and_sanitizer": [
+  "PASS65536 original TIMETHET oracle entries equal native 2053-word rows ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf",
   "PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps",
-  "PASS all retained source-state bytes: 269090816 SHA256 f5558c19dc9a15d64b33da20fc6d78b0f3c3ae09a642609dcc88bc96df411b16",
+  "PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf",
   "PASS65536 original TIMETHET entries strict native",
   "PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps",
-  "PASS all retained source-state bytes: 269090816 SHA256 f5558c19dc9a15d64b33da20fc6d78b0f3c3ae09a642609dcc88bc96df411b16",
+  "PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf",
   "PASS65536 original TIMETHET entries full ASAN/UBSAN"
  ],
  "c64": {

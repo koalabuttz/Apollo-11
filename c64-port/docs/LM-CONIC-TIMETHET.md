@@ -369,13 +369,26 @@ Hashes: `evidence/lm-conic-timethet/SHA256.json`. Bulk files are assets of the
   sampled entries (`tests/lm_conic_timethet_cases.c`): Earth and Moon state
   vectors with speeds from well below circular to hyperbolic, near-radial
   flight paths, transfer angles near 0, 180 and 360 degrees and across both
-  half-planes, raw edge words in one case in eight, all six caller returns,
+  half-planes, raw edge words in one case in eight, constructed hyperbolic
+  exits in one case in 2048 (below), all six caller returns,
   RVSW set and clear, both IRQ settings, SUPER, EBANK, all five VACs, PUSHLOC,
   MODE and OVFIND. `tools/lm_conic_timethet_differential.py` checks the native
   producer against every entry and pins the stream identity
-  (`lm-conic-timethet-source-stream.json`, SHA256 `f5558c19...411b16`,
-  269,090,816 bytes; 50152 return, 15384 end at ABTCONIC). Every phase but
+  (`lm-conic-timethet-source-stream.json`, SHA256 `ad121738...b25acf`,
+  269,090,816 bytes; 50122 return, 15414 end at ABTCONIC). Every phase but
   HAVENORM and all 38 phase transitions are reached.
+- POLYCOEF `BMN INFINITY` (AGC lines 1242-1243): WLOOP only leaves W
+  negative when W^2 + R1A/16 is exactly zero in triple precision. With W
+  negative and R1A/16 negative, any nonzero root s = sqrt(W^2 + R1A/16)
+  (so s < |W|) gives a new W + s whose square plus R1A/16 is
+  2s(s + W) < 0, so the next pass takes the
+  WLOOP `BMN INFINITY` instead; a zero root leaves W fixed through all three
+  passes, BDDV gives a negative 1/W and POLYCOEF's BMN fires. The cases with
+  `(n & 2047) == 1333` (32 entries) set VVEC to three times circular speed,
+  R1A to exactly -h^2 (h = 1024 or 2897), and SNTH and CSTH so that GETX
+  leaves W exactly -h 2^-16. These values were found by searching the native
+  producer; all 32 take the branch natively, and the oracle stream compares
+  every one.
 - Host and sanitizer results: `make test-lm-conic-timethet
   sanitize-lm-conic-timethet`. Strict and ASAN/UBSAN builds each pass 8 frozen
   entries, 22 admission guards, 90 frozen phase steps and the full

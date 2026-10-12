@@ -8,8 +8,11 @@
  * COGA guess when clear) and NORMSW (with UN when set), X1 = -2 or -10.
  * Case n is a pair of positions on an Earth or Moon conic and the time
  * between them (sometimes perturbed, sometimes unrelated or the same
- * direction), or for one case in eight raw edge words, over poisoned
- * ordinary erasable debris. Both the oracle and the native producers use
+ * direction), for one case in 2048 a short transfer whose COGAMAX falls
+ * just below overflow (the UPLIM fall-through), for another one in 2048
+ * an almost-parallel pair whose stored 1-CSTH is -0 (LAMBLOOP's BZE
+ * NEGP), or for one case in eight raw edge words, over poisoned ordinary
+ * erasable debris. Both the oracle and the native producers use
  * these. */
 void lm_conic_lambert_input(apollo_overlay_state *,p66_bias_io *,uint32_t n);
 /* The orbit-free part of case n's entry image (erasable debris, A/L/Q, EB,

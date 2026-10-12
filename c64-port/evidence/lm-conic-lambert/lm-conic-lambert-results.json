@@ -1,11 +1,12 @@
 {
  "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
  "host_and_sanitizer": [
+  "PASS65536 original LAMBERT oracle entries equal native 2053-word rows b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3",
   "PASS 11 frozen original LAMBERT entries, 24 admission guards and 176 frozen phase steps",
-  "PASS all retained source-state bytes: 269090816 SHA256 9e590783b4c2bbd995eb8d90194a27b61ce2d06f7c52afb92ac346b82068a820",
+  "PASS all retained source-state bytes: 269090816 SHA256 b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3",
   "PASS65536 original LAMBERT entries strict native",
   "PASS 11 frozen original LAMBERT entries, 24 admission guards and 176 frozen phase steps",
-  "PASS all retained source-state bytes: 269090816 SHA256 9e590783b4c2bbd995eb8d90194a27b61ce2d06f7c52afb92ac346b82068a820",
+  "PASS all retained source-state bytes: 269090816 SHA256 b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3",
   "PASS65536 original LAMBERT entries full ASAN/UBSAN"
  ],
  "c64": {

@@ -2947,7 +2947,8 @@
               "022145 (INITVEL via SETITCTR, ITERCTR 20 or 5)"
             ]
           },
-          "data_validity": "Original conic formulas and scaling; no widened claim."
+          "data_validity": "Original conic formulas and scaling; no widened claim.",
+          "rare_source_paths": "Driven by dedicated case buckets and compared by the oracle streams: POLYCOEF BMN INFINITY (AGC 1242-1243, timethet cases (n&2047)==1333, reachable only when W^2+R1A/16 is exactly zero), DSU BMN COGUPLIM fall-through to UPLIM (AGC 1411-1414, lambert cases (n&2047)==1717) and LAMBLOOP BZE NEGP (AGC 1449-1451, lambert cases (n&2047)==717, CSTH one lsb above .5, so the stored 1-CSTH is -0 while ROUND leaves MPAC nonzero). See docs/LM-CONIC-TIMETHET.md and docs/LM-CONIC-LAMBERT.md."
         },
         "external_continuations": [
           "Caller entry/resume services and application scheduling",
@@ -2960,16 +2961,20 @@
             "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/lm-conic-lambert/lm-conic-lambert-source-map.json",
-            "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d"
+            "path": "evidence/lm-conic-lambert/lm-conic-file-record.json",
+            "sha256": "2233141e70c923d647bce4a6538a366430b539b3ebf510bfbc7ae18ea1b8d8fa"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/lm-conic-lambert/lm-conic-lambert-checks.log",
-            "sha256": "3f6830fe53fccfbcd1e259222b1d1c23c8fdee906647f4048f1a6627d617aaa8"
+            "path": "evidence/lm-conic-lambert/lm-conic-file-checks.log",
+            "sha256": "75874aaf2e85d4baf0755a1d6b2d74a6f68a61174e72d90a7510a5b40b239ea3"
           },
           "c64_execution_results": {
-            "path": "evidence/lm-conic-lambert/lm-conic-lambert-results.json",
-            "sha256": "af8b6eb6241f48d07aaa8ead27e82e117c7318adc1b6a27fb390d6257d655d13"
+            "path": "evidence/lm-conic-lambert/lm-conic-file-record.json",
+            "sha256": "2233141e70c923d647bce4a6538a366430b539b3ebf510bfbc7ae18ea1b8d8fa"
+          },
+          "independent_review": {
+            "path": "evidence/lm-conic-lambert/lm-conic-file-independent-review.txt",
+            "sha256": "246fc0d93b5517b303b9c31e77bdaf0d43df31eeccf6b51a5feeb533066d25de"
           }
         }
       }

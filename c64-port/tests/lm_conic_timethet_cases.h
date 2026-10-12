@@ -8,7 +8,8 @@
  * (circular speed times a factor, a flight-path angle that is sometimes
  * almost radial, a random plane) and a transfer angle theta (anywhere on
  * the circle, near 0, 180 or 360 degrees), or for one case in eight raw
- * edge words, over poisoned ordinary erasable debris. Both the oracle and
+ * edge words, or for one case in 2048 a constructed hyperbolic exit that
+ * takes POLYCOEF's BMN INFINITY, over poisoned ordinary erasable debris. Both the oracle and
  * the native producers use these. */
 void lm_conic_timethet_input(apollo_overlay_state *,p66_bias_io *,uint32_t n);
 /* The orbit-free part of case n's entry image (erasable debris, A/L/Q, EB,
