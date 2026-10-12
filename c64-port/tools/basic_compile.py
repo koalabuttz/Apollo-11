@@ -81,12 +81,34 @@ class Basic:
         self.nodes = {}          # (phys, ext) -> list of C statements (or None while walking)
         self.dispatch = set()    # phys reachable by a computed transfer (labels)
         self.entries = set()     # basic starts
+        # Words an INDEX can turn into another order (spec 'index_words'
+        # {'bank,addr': [index values]}).
+        self.index_words = {}
+        for k, vals in self.spec.get('index_words', {}).items():
+            b, a = k.split(',')
+            self.index_words[int(b, 8) * 1024 + int(a, 8) - 0o2000] = vals
+        # The word EB holds under the spec's fixed 'ebank', when it names
+        # the file's own code (a TC through register 3).
+        self.eb_word = None
+        if self.spec.get('ebank') is not None and (self.spec['ebank'] << 8) >= 0o2000:
+            self.eb_word = self.spec['ebank'] << 8
+        # Indexed TC/TCF words whose sum stays in the file (spec
+        # 'index_targets' {'bank,addr': largest index}).
+        self.index_targets = {}
+        for k, n in self.spec.get('index_targets', {}).items():
+            b, a = k.split(',')
+            self.index_targets[int(b, 8) * 1024 + int(a, 8) - 0o2000] = n
+        # Erasable cells holding an order code an INDEX adds to the next
+        # word (spec 'index_cells' {logical address: [values]}).
+        self.index_cells = {k: v
+                            for k, v in self.spec.get('index_cells', {}).items()}
         self.fixed_tables = []   # (lo phys, hi phys)
         for lab, (lo, hi) in self.spec.get('fixed_tables', {}).items():
             # A label, or the fixed-fixed logical address (octal) of an
             # EQUALS name such as LIMITS.
             b = self.L.labels[lab] if lab in self.L.labels else 2048 + int(lab, 8) - 0o4000
             self.fixed_tables.append((b + lo, b + hi, lab, lo))
+            self.cp.basic_fixed.update(range(b + lo, b + hi + 1))
         self.channels = self.spec.get('channels', {})
         if self.channels == 'all':
             # Every channel of the CM io record (include/cm_native_image.h).
@@ -96,6 +118,7 @@ class Basic:
         self.operands = set()    # inline operand words of outside TCs
         self.data_landings = set()
         self.erasable_refs = set()   # erasable addresses the basic code names
+        self.channels_used = set()   # I/O channels its channel orders name
 
     # ---- addresses -------------------------------------------------------
     def bank(self, phys):
@@ -184,9 +207,12 @@ class Basic:
             ret += len(ln.words)
         name = self.L.label_at(self.phys_of(target_logical, phys)) or ('%04o' % target_logical)
         self.cp.externals[self.phys_of(target_logical, phys)] = name
-        if self.in_file(ret):
+        if self.in_file(ret) and name not in self.NORETURN + tuple(self.spec.get('noreturn', ())):
             self.cp.add_start(ret, 'b', 'return from ' + name)
         return name
+
+    # Outside routines that never come back to the word after the call.
+    NORETURN = ('POSTJUMP', 'ENDOFJOB', 'TASKOVER', 'RESUME')
 
     CONST_OPS = ('OCT', 'OCTAL', 'DEC', 'DEC*', '2DEC', '2DEC*', 'ADRES', 'CADR', 'FCADR', 'GENADR',
                  '2CADR', '2FCADR', 'BBCON', 'REMADR', '2OCT', '2BCADR')
@@ -200,6 +226,10 @@ class Basic:
         tp = self.phys_of(target_logical, here)
         if target_logical == 0o2 and call:
             raise BasicError('TC Q handled elsewhere')
+        if tp == here and not call:
+            # TCF +0: the AGC spins until its TC trap forces a restart; the
+            # port refuses instead of spinning.
+            return ['return EXEC_INVALID_ACTION; /* TCF +0 (TC trap) */']
         if tp is not None and self.in_file(tp):
             st.append('goto %s;' % self.add(tp, False, clean))
             if call:
@@ -257,6 +287,10 @@ class Basic:
             st.append('goto %s;' % self.add(nxt, False, clean))
             return st
         if op == 'INDEX':
+            words = self.index_words.get(nxt, self.index_cells.get(a))
+            if words is not None:
+                st.extend(self.indexed_words(a, phys, nxt, ext, clean, words))
+                return st
             st.append(self.index_value(a, phys))
             st.extend(self.indexed(nxt, ext, clean))
             return st
@@ -280,6 +314,30 @@ class Basic:
         if op in self.PASS:
             return clean
         return False
+
+    def indexed_words(self, a, here, phys, ext, clean, values):
+        """INDEX K before a word whose sum with K's value can change the
+        order itself (INDEX I, 0 SGNRT: TC with I = 0, CS with I = BIT15):
+        one static order per value the spec's 'index_words' gives, anything
+        else refused."""
+        if a >= 0o2000 or a < 0o10:
+            raise BasicError('index_words INDEX of %o at %s' % (a, self.where(here)))
+        w = self.L.word(phys)
+        self.words.add(phys)
+        st = ['/* %s %s(indexed by %s) %s */' % (self.where(phys), 'EXTENDED ' if ext else '',
+                                                  ', '.join('%05o' % v for v in values), self.text(phys))]
+        st.append('switch(ai_word(s,0%o)){' % a)
+        for v in values:
+            x = w + v
+            x = (x & 0o77777) + (x >> 15)     # ones' complement sum
+            op, k, lim = decode(x & 0o77777, ext)
+            if k is not None and 0o10 <= k < 0o2000 and op not in CHANNEL_OPS:
+                self.erasable_refs.update(range(k, k + 3))
+            st.append(' case 0%05ou: /* %s %s */' % (v, op, '%04o' % k if k is not None else ''))
+            st.extend('  ' + y for y in self.order(op, k, lim, phys, False, ext, clean))
+        st.append('}')
+        st.append('return EXEC_INVALID_ACTION;')
+        return st
 
     def index_value(self, a, here):
         if a == 0:
@@ -306,7 +364,20 @@ class Basic:
         st = ['/* %s %s(indexed) %s */' % (self.where(phys), 'EXTENDED ' if ext else '', self.text(phys))]
         if a is None or op in ('EXTEND', 'INDEX', 'RESUME') or op in CHANNEL_OPS:
             raise BasicError('INDEX of %s at %s' % (op, self.where(phys)))
-        st.append('e=(long)0%o+ix;if(e<0||e>0%o)return EXEC_INVALID_ACTION;' % (a, lim))
+        if op in ('TC', 'TCF') and phys in self.index_targets:
+            # A computed transfer into the file's own words (INDEX A, TC +1):
+            # each word the spec's 'index_targets' allows is a dispatch label.
+            for v in range(self.index_targets[phys] + 1):
+                t = self.phys_of(a + v, phys)
+                self.dispatch.add(t)
+                self.add(t)
+        if op == 'CCS' and not ext:
+            # Opcode 1: CCS on an erasable sum, TCF on a fixed one (INDEX A,
+            # TCF 0 through a table of GENADRs).
+            st.append('e=(long)0%o+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;' % a)
+            st.append('if(e>=02000){W[5]=(agc_word)e;goto dispatch;}')
+        else:
+            st.append('e=(long)0%o+ix;if(e<0||e>0%o)return EXEC_INVALID_ACTION;' % (a, lim))
         st.extend(self.order(op, a, lim, phys, True, False, clean))
         return st
 
@@ -327,14 +398,39 @@ class Basic:
                     self.add(nxt)
                 st.append('W[5]=(agc_word)e;goto dispatch;')
                 return st
+            if a < 3 and call:
+                # TC A (XXALQ), TC L (XLQ), TC Q (RETURN): the register's word
+                # runs as an instruction, a TC (Q = K+1) to fixed memory or
+                # to an erasable continuation (tools/basic_compile.py's
+                # erasable points); anything else is refused.
+                reg = {0: 'W[0]', 1: 'W[1]', 2: 'W[2]'}[a]
+                st.append('e=(long)(agc_correct(%s)&077777u);' % reg)
+                if a == 2 and self.eb_word is not None:
+                    # TC Q with Q = 3 (left by an earlier TC Q): Q's word 3
+                    # runs as RELINT, then the word in EB as TC EB (CM entry
+                    # DAP's 2D/SDZ after CCS JETAG -0 reaches CM/FDAIR -1
+                    # this way).
+                    st.append('if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}')
+                    t = self.phys_of(self.eb_word, here)
+                    if self.in_file(t) and not self.is_data(t):
+                        self.dispatch.add(t)
+                        self.add(t)
+                st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
+                st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
+                return st
+            if 0o10 <= a < 0o200 and call and not 0o20 <= a <= 0o23:
+                # TC to an unswitched erasable word below 0200 (SERVICER207's
+                # TC RUPTREG1 after QXCH RUPTREG1): the stored word runs as a
+                # TC, Q = K+1, as for TC Q; anything but a TC is refused.
+                st.append('e=(long)(W[0%o]&077777u);' % a)
+                st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
+                st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
+                return st
             if a < 0o2000 and call and a not in (3, 4, 5, 6, 7) and not 0o20 <= a <= 0o23:
-                # TC A (XXALQ), TC L (XLQ), TC Q (RETURN) or TC to a stored
-                # return: the word there runs as an instruction, which the
-                # file only ever makes a TC to fixed memory (Q = K+1).
-                reg = {0: 'W[0]', 1: 'W[1]', 2: 'W[2]'}.get(a, 'ai_word(s,0%o)' % a)
-                st.append('e=(long)(agc_correct(%s)&077777u);' % reg if a < 3 else 'e=(long)%s;' % reg)
-                st.append('if(e<02000||e>07777)return EXEC_INVALID_ACTION;')
-                st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;goto dispatch;' % (a + 1))
+                # TC to a stored word: Z = K, a transfer to the erasable
+                # continuation registered for it (spec 'erasable_points').
+                st.append('ai_tc(s,0%05ou);W[5]=0%o;return EXEC_OK; /* TC %s */' % (
+                    (self.logical(here) + 1) & 0o7777, a, self.L.label_at(a) or '%04o' % a))
                 return st
             if a < 0o2000:
                 raise BasicError('%s to erasable %o at %s' % (op, a, self.where(here)))
@@ -395,6 +491,7 @@ class Basic:
                 raise BasicError('channel %o at %s' % (a, self.where(here)))
             if op == 'EDRUPT':
                 raise BasicError('EDRUPT at %s' % self.where(here))
+            self.channels_used.add(a)
             st.append('ch_%s(s,io,0%o);' % (op.lower(), a))
             st.append(cont())
             return st
@@ -438,8 +535,10 @@ class Basic:
             lo_name = FIXED_FORM[op]
             fp = self.phys_of(a, here)
             sym = self.L.label_at(fp) or ''
+            self.cp.basic_fixed.add(fp)
             if op in ('DCA', 'DCS'):
                 fp0 = self.phys_of(a - 1, here)
+                self.cp.basic_fixed.add(fp0)
                 st.append('{static const agc_word k[2]={0%05ou,0%05ou};ai_%s(s,k);} /* %s */' % (
                     self.L.word(fp0), self.L.word(fp), lo_name, self.L.label_at(fp0) or sym))
             else:
@@ -453,6 +552,49 @@ class Basic:
         return st
 
     # ---- output ----------------------------------------------------------
+    def erasable_points(self):
+        """Routines for the file's erasable continuations (spec
+        'erasable_points' {'E<bank>,<addr>': [words]}): keyed
+        AGC_TRANSFER_ERASABLE_BASE + the physical address, each runs the
+        stored word only when it is one of the TC words the file stores
+        there, else refuses. Returns (C lines, [(key, function)])."""
+        c, ents = [], []
+        for k, words in sorted(self.spec.get('erasable_points', {}).items()):
+            b, a = k[1:].split(',')
+            b, a = int(b, 8), int(a, 8)
+            phys = b * 256 + (a - 0o1400) if a >= 0o1400 else a
+            key = 40960 + phys
+            fn = 'e%o' % phys
+            c.append('/* %s: the TC words the file stores there (%s). */' % (k, ', '.join('%05o' % w for w in words)))
+            c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
+            c.append(' cm_native_io *io=(cm_native_io *)v;agc_word w;(void)p;')
+            c.append(' if(!s||!v||!basic_sane(s,io,W[4])||agc_erasable_point(W[5],W[3])!=%uu)return EXEC_OUT_OF_SCOPE;' % key)
+            c.append(' w=W[0%o];' % phys)
+            c.append(' switch(w){%s break;default:return EXEC_OUT_OF_SCOPE;}' % ''.join('case 0%05ou:' % x for x in words))
+            c.append(' ai_tc(s,(unsigned)((W[5]&07777u)+1u));W[5]=w;')
+            c.append(' return EXEC_OK;')
+            c.append('}')
+            ents.append((key, fn))
+        return c, ents
+
+    def erasable_targets(self):
+        """The file's own words its erasable continuations transfer to:
+        each is a routine of its own ((phys, why) pairs)."""
+        out = []
+        for k, words in sorted(self.spec.get('erasable_points', {}).items()):
+            for x in words:
+                for q in (self.word_targets(x) if x >= 0o2000 else []):
+                    if self.in_file(q) and q in self.cp.code:
+                        out.append((q, 'TC %05o stored in %s' % (x, k)))
+        return out
+
+    def word_targets(self, w):
+        """Physical addresses a stored TC word w may name (banked words: the
+        file's banks)."""
+        if w >= 0o4000:
+            return [2048 + w - 0o4000]
+        return [bk * 1024 + w - 0o2000 for bk in set(q // 1024 for q in self.cp.words)]
+
     def emit(self, sym):
         c = []
         c.append('/* Signed index values: A, L and Q are 16-bit registers. */')
@@ -485,14 +627,16 @@ class Basic:
             c.append(' if(p>=%uu&&p<=%uu){*k=T%o[p-%uu];return 1;}' % (lo, hi, lo, lo))
         c.append(' (void)p;(void)k;return 0;')
         c.append('}')
-        if getattr(self, 'uses_msu', False):
-            c.append('/* EXTEND MSU on an ordinary erasable word: the two\'s-complement')
-            c.append(' * difference of the 15-bit operands, less one when negative. */')
-            c.append('static void msu(apollo_overlay_state *s,unsigned k){')
-            c.append(' unsigned a=agc_correct(W[0])&077777u,b=~(unsigned)ai_word(s,k)&077777u,d=a+b+1u;')
-            c.append(' if(d&040000u)d=(d|0100000u)-1u;')
-            c.append(' W[0]=agc_extend((agc_word)(d&077777u));')
-            c.append('}')
+        # (msu: tools/interp_compile.py's helper.)
+        c.append('/* Host coverage builds (tools/interp_routine_differential.py --freeze)')
+        c.append(' * count each label a case reaches, to pick C64 cases that take every')
+        c.append(' * branch outcome the host cases take. */')
+        c.append('#ifdef IRC_COVER_ON')
+        c.append('void irc_cover(unsigned n);')
+        c.append('#define IRC_COVER(n) irc_cover(n)')
+        c.append('#else')
+        c.append('#define IRC_COVER(n) ((void)0)')
+        c.append('#endif')
         c.append('/* Every basic word of the file. */')
         c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){')
         c.append(' long ix=0,e=0;uint16_t p;')
@@ -502,8 +646,9 @@ class Basic:
             c.append(' case %uu:goto %s;' % (p, self.label(p)))
         c.append(' default:return EXEC_OUT_OF_SCOPE;')
         c.append(' }')
-        for k in sorted(self.nodes):
+        for n, k in enumerate(sorted(self.nodes)):
             c.append('%s:' % self.label(*k))
+            c.append(' IRC_COVER(%du);' % n)
             body = self.nodes[k]
             twin = (k[0], k[1], False)
             if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in body]:
@@ -512,6 +657,16 @@ class Basic:
                 continue
             for x in body:
                 c.append(' ' + x)
+        if not any('goto dispatch' in x for x in c):
+            # No computed transfer: the return words of in-file calls whose
+            # subroutine never returns by TC Q are never reached.
+            body = '\n'.join(c)
+            for i, x in enumerate(c):
+                if x.endswith(':') and ('goto %s;' % x[:-1]) not in body:
+                    c[i] = x + ' __attribute__((unused));'
+            c.append(' (void)p;')
+            c.append('}')
+            return c
         c.append('dispatch:')
         c.append(' p=agc_fixed_physical(W[5],W[4],io->superbank);')
         c.append(' switch(p){')

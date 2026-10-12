@@ -108,7 +108,7 @@ static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_b
  io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}
 /* Channel orders on the mission's output channels, as yaAGC's. */
 static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){
- switch(k){case 011:return &io->channel11; default:return 0;}
+ switch(k){case 05:return &io->channel05;case 06:return &io->channel06;case 011:return &io->channel11;case 012:return &io->channel12;case 013:return &io->channel13;case 014:return &io->channel14;case 030:return &io->channel30;case 031:return &io->channel31;case 032:return &io->channel32;case 033:return &io->channel33; default:return 0;}
 }
 static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}
@@ -130,6 +130,15 @@ static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word
  if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=037u*1024u+e-02000u;
  (void)p;(void)k;return 0;
 }
+/* Host coverage builds (tools/interp_routine_differential.py --freeze)
+ * count each label a case reaches, to pick C64 cases that take every
+ * branch outcome the host cases take. */
+#ifdef IRC_COVER_ON
+void irc_cover(unsigned n);
+#define IRC_COVER(n) irc_cover(n)
+#else
+#define IRC_COVER(n) ((void)0)
+#endif
 /* Every basic word of the file. */
 static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
  long ix=0,e=0;uint16_t p;
@@ -179,167 +188,209 @@ static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native
  default:return EXEC_OUT_OF_SCOPE;
  }
 B76701:
+ IRC_COVER(0u);
  /* 37,2701 PREREAD CAF PRIO21 */
  ai_caf(s,021000u); /* PRIO21 */
  goto B76702c;
 B76702c:
+ IRC_COVER(1u);
  /* 37,2702 TC NOVAC */
  ai_tc(s,002703u);
  W[5]=05134u;return EXEC_OK; /* NOVAC */
 B76705:
+ IRC_COVER(2u);
  /* 37,2705 REDO5.31 TC PREREAD1 */
  ai_tc(s,002706u);
  goto B76722;
 B76706:
+ IRC_COVER(3u);
  /* 37,2706 CAF PRIO32 */
  ai_caf(s,032000u); /* PRIO32 */
  goto B76707c;
 B76707c:
+ IRC_COVER(4u);
  /* 37,2707 TC FINDVAC */
  ai_tc(s,002710u);
  W[5]=05147u;return EXEC_OK; /* FINDVAC */
 B76712:
+ IRC_COVER(5u);
  /* 37,2712 CAF 2SECS */
  ai_caf(s,000310u); /* 2SECS */
  goto B76713c;
 B76713c:
+ IRC_COVER(6u);
  /* 37,2713 TC WAITLIST */
  ai_tc(s,002714u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B76716:
+ IRC_COVER(7u);
  /* 37,2716 CS TWO */
  ai_csf(s,000002u); /* BIT2 */
  goto B76717c;
 B76717c:
+ IRC_COVER(8u);
  /* 37,2717 TC NEWPHASE */
  ai_tc(s,002720u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B76721:
+ IRC_COVER(9u);
  /* 37,2721 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B76722:
+ IRC_COVER(10u);
  /* 37,2722 PREREAD1 EXTEND */
  goto X76723;
 X76723:
+ IRC_COVER(11u);
  /* 37,2723 EXTENDED QXCH RUPTREG1 */
  ai_qxch(s,070);
  goto B76724;
 B76724:
+ IRC_COVER(12u);
  /* 37,2724 TC PIPASR */
  ai_tc(s,002725u);
  goto B77254;
 B76725:
+ IRC_COVER(13u);
  /* 37,2725 CAF ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B76726c;
 B76726c:
+ IRC_COVER(14u);
  /* 37,2726 TS PIPAGE */
  (void)ai_ts(s,(unsigned)01230);
  goto B76727c;
 B76727c:
+ IRC_COVER(15u);
  /* 37,2727 CS FLAGWRD1 */
  ai_cs(s,075);
  goto B76730c;
 B76730c:
+ IRC_COVER(16u);
  /* 37,2730 MASK BIT1 */
  ai_maskf(s,000001u); /* BIT1 */
  goto B76731c;
 B76731c:
+ IRC_COVER(17u);
  /* 37,2731 ADS FLAGWRD1 */
  ai_ads(s,075);
  goto B76732;
 B76732:
+ IRC_COVER(18u);
  /* 37,2732 CA POSMAX */
  ai_caf(s,037777u); /* POSMAX */
  goto B76733c;
 B76733c:
+ IRC_COVER(19u);
  /* 37,2733 MASK FLAGWRD2 */
  ai_mask(s,076);
  goto B76734c;
 B76734c:
+ IRC_COVER(20u);
  /* 37,2734 TS FLAGWRD2 */
  (void)ai_ts(s,(unsigned)076);
  goto B76735c;
 B76735c:
+ IRC_COVER(21u);
  /* 37,2735 CS FLAGWRD7 */
  ai_cs(s,0103);
  goto B76736c;
 B76736c:
+ IRC_COVER(22u);
  /* 37,2736 MASK BIT6 */
  ai_maskf(s,000040u); /* BIT6 */
  goto B76737c;
 B76737c:
+ IRC_COVER(23u);
  /* 37,2737 ADS FLAGWRD7 */
  ai_ads(s,0103);
  goto B76740;
 B76740:
+ IRC_COVER(24u);
  /* 37,2740 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B76741c;
 B76741c:
+ IRC_COVER(25u);
  /* 37,2741 TS DVTOTAL */
  (void)ai_ts(s,(unsigned)01425);
  goto B76742c;
 B76742c:
+ IRC_COVER(26u);
  /* 37,2742 TS DVTOTAL    +1 */
  (void)ai_ts(s,(unsigned)01426);
  goto B76743c;
 B76743c:
+ IRC_COVER(27u);
  /* 37,2743 TC RUPTREG1 */
- e=(long)ai_word(s,070);
- if(e<02000||e>07777)return EXEC_INVALID_ACTION;
- ai_tc(s,071u);W[5]=(agc_word)e;goto dispatch;
+ e=(long)(W[070]&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,071u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B76744:
+ IRC_COVER(28u);
  /* 37,2744 READACCS TC PIPASR */
  ai_tc(s,002745u);
  goto B77254;
 B76744c:
+ IRC_COVER(29u);
  /* 37,2744 READACCS TC PIPASR */
  ai_tc(s,002745u);
  goto B77254c;
 B76745:
+ IRC_COVER(30u);
  /* 37,2745 PIPSDONE CAF FIVE */
  ai_caf(s,000005u); /* FIVE */
  goto B76746c;
 B76746c:
+ IRC_COVER(31u);
  /* 37,2746 TS L */
  (void)ai_ts(s,(unsigned)01);
  goto B76747c;
 B76747c:
+ IRC_COVER(32u);
  /* 37,2747 COM */
  ai_cs(s,00);
  goto B76750;
 B76750:
+ IRC_COVER(33u);
  /* 37,2750 DXCH -PHASE5 */
  ai_dxch(s,0762);
  goto B76751c;
 B76751:
+ IRC_COVER(34u);
  /* 37,2751 REDO5.5 CAF ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B76752c;
 B76751c:
+ IRC_COVER(35u);
  goto B76751;
 B76752c:
+ IRC_COVER(36u);
  /* 37,2752 TS PIPAGE */
  (void)ai_ts(s,(unsigned)01230);
  goto B76753c;
 B76753c:
+ IRC_COVER(37u);
  /* 37,2753 CA TWO */
  ai_caf(s,000002u); /* BIT2 */
  goto B76754c;
 B76754c:
+ IRC_COVER(38u);
  /* 37,2754 TS PIPCTR */
  (void)ai_ts(s,(unsigned)01227);
  goto B76755c;
 B76755c:
+ IRC_COVER(39u);
  /* 37,2755 CS CM/FLAGS */
  ai_cs(s,0102);
  goto B76756c;
 B76756c:
+ IRC_COVER(40u);
  /* 37,2756 MASK BIT2 */
  ai_maskf(s,000002u); /* BIT2 */
  goto B76757c;
 B76757c:
+ IRC_COVER(41u);
  /* 37,2757 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B76760c;
@@ -349,169 +400,212 @@ B76757c:
  }
  return EXEC_INVALID_ACTION;
 B76760c:
+ IRC_COVER(42u);
  /* 37,2760 TC CHEKAVEG */
  ai_tc(s,002761u);
  goto B77033c;
 B76761:
+ IRC_COVER(43u);
  /* 37,2761 CS PIPTIME1   +1 */
  ai_cs(s,01246);
  goto B76762c;
 B76761c:
+ IRC_COVER(44u);
  goto B76761;
 B76762c:
+ IRC_COVER(45u);
  /* 37,2762 TS TBASE6 */
  (void)ai_ts(s,(unsigned)01065);
  goto B76763c;
 B76763c:
+ IRC_COVER(46u);
  /* 37,2763 EXTEND */
  goto X76764c;
 X76764c:
+ IRC_COVER(47u);
  /* 37,2764 EXTENDED DCA AOG */
  ai_dca(s,01661);
  goto B76765c;
 B76765c:
+ IRC_COVER(48u);
  /* 37,2765 DXCH AOG/PIP */
  ai_dxch(s,01667);
  goto B76766c;
 B76766c:
+ IRC_COVER(49u);
  /* 37,2766 CA AMG */
  ai_ca(s,01663);
  goto B76767c;
 B76767c:
+ IRC_COVER(50u);
  /* 37,2767 XCH AMG/PIP */
  ai_xch(s,01671);
  goto B76770c;
 B76770c:
+ IRC_COVER(51u);
  /* 37,2770 EXTEND */
  goto X76771c;
 X76771c:
+ IRC_COVER(52u);
  /* 37,2771 EXTENDED DCA ROLL/180 */
  ai_dca(s,01664);
  goto B76772c;
 B76772c:
+ IRC_COVER(53u);
  /* 37,2772 DXCH ROLL/PIP */
  ai_dxch(s,01672);
  goto B76773c;
 B76773c:
+ IRC_COVER(54u);
  /* 37,2773 CA BETA/180 */
  ai_ca(s,01666);
  goto B76774c;
 B76774c:
+ IRC_COVER(55u);
  /* 37,2774 XCH BETA/PIP */
  ai_xch(s,01674);
  goto B76775c;
 B76775c:
+ IRC_COVER(56u);
  /* 37,2775 CA CM/FLAGS */
  ai_ca(s,0102);
  goto B76776c;
 B76776c:
+ IRC_COVER(57u);
  /* 37,2776 MASK BIT12 */
  ai_maskf(s,004000u); /* BIT12 */
  goto B76777c;
 B76777c:
+ IRC_COVER(58u);
  /* 37,2777 EXTEND */
  goto X77000c;
 X77000c:
+ IRC_COVER(59u);
  /* 37,3000 EXTENDED BZF NOSAVPIP */
  if(ai_bzf(s)){
    goto B77016c;
  }
  goto B77001c;
 B77001c:
+ IRC_COVER(60u);
  /* 37,3001 CA 0.5SEC */
  ai_caf(s,000062u); /* 0.5SEC */
  goto B77002c;
 B77002c:
+ IRC_COVER(61u);
  /* 37,3002 TC WAITLIST */
  ai_tc(s,003003u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B77005:
+ IRC_COVER(62u);
  /* 37,3005 CA DELVX */
  ai_ca(s,01162);
  goto B77006c;
 B77006c:
+ IRC_COVER(63u);
  /* 37,3006 XCH XPIPBUF */
  ai_xch(s,01533);
  goto B77007c;
 B77007c:
+ IRC_COVER(64u);
  /* 37,3007 TS XOLDBUF */
  (void)ai_ts(s,(unsigned)01536);
  goto B77010c;
 B77010c:
+ IRC_COVER(65u);
  /* 37,3010 CA DELVY */
  ai_ca(s,01164);
  goto B77011c;
 B77011c:
+ IRC_COVER(66u);
  /* 37,3011 XCH YPIPBUF */
  ai_xch(s,01534);
  goto B77012c;
 B77012c:
+ IRC_COVER(67u);
  /* 37,3012 TS YOLDBUF */
  (void)ai_ts(s,(unsigned)01537);
  goto B77013c;
 B77013c:
+ IRC_COVER(68u);
  /* 37,3013 CA DELVZ */
  ai_ca(s,01166);
  goto B77014c;
 B77014c:
+ IRC_COVER(69u);
  /* 37,3014 XCH ZPIPBUF */
  ai_xch(s,01535);
  goto B77015c;
 B77015c:
+ IRC_COVER(70u);
  /* 37,3015 TS ZOLDBUF */
  (void)ai_ts(s,(unsigned)01540);
  goto B77016c;
 B77016c:
+ IRC_COVER(71u);
  /* 37,3016 NOSAVPIP CA FIVE */
  ai_caf(s,000005u); /* FIVE */
  goto B77017c;
 B77017c:
+ IRC_COVER(72u);
  /* 37,3017 TS CM/GYMDT */
  (void)ai_ts(s,(unsigned)01725);
  goto B77020c;
 B77020c:
+ IRC_COVER(73u);
  /* 37,3020 CA JTAGTIME */
  ai_caf(s,000170u); /* JTAGTIME */
  goto B77021c;
 B77021c:
+ IRC_COVER(74u);
  /* 37,3021 TC WAITLIST */
  ai_tc(s,003022u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B77024:
+ IRC_COVER(75u);
  /* 37,3024 CS THREE */
  ai_csf(s,000003u); /* OCTAL3 */
  goto B77025c;
 B77025c:
+ IRC_COVER(76u);
  /* 37,3025 TC NEWPHASE */
  ai_tc(s,003026u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B77027:
+ IRC_COVER(77u);
  /* 37,3027 CAF OCT37 */
  ai_caf(s,000037u); /* LOW5 */
  goto B77030c;
 B77030c:
+ IRC_COVER(78u);
  /* 37,3030 TS L */
  (void)ai_ts(s,(unsigned)01);
  goto B77031c;
 B77031c:
+ IRC_COVER(79u);
  /* 37,3031 COM */
  ai_cs(s,00);
  goto B77032;
 B77032:
+ IRC_COVER(80u);
  /* 37,3032 DXCH -PHASE5 */
  ai_dxch(s,0762);
  goto B77033c;
 B77033:
+ IRC_COVER(81u);
  /* 37,3033 CHEKAVEG CS FLAGWRD1 */
  ai_cs(s,075);
  goto B77034c;
 B77033c:
+ IRC_COVER(82u);
  goto B77033;
 B77034c:
+ IRC_COVER(83u);
  /* 37,3034 MASK BIT1 */
  ai_maskf(s,000001u); /* BIT1 */
  goto B77035c;
 B77035c:
+ IRC_COVER(84u);
  /* 37,3035 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B77036c;
@@ -521,85 +615,108 @@ B77035c:
  }
  return EXEC_INVALID_ACTION;
 B77036c:
+ IRC_COVER(85u);
  /* 37,3036 TC AVEGOUT */
  ai_tc(s,003037u);
  goto B77056c;
 B77037:
+ IRC_COVER(86u);
  /* 37,3037 CAF 2SECS */
  ai_caf(s,000310u); /* 2SECS */
  goto B77040c;
 B77037c:
+ IRC_COVER(87u);
  goto B77037;
 B77040c:
+ IRC_COVER(88u);
  /* 37,3040 TC WAITLIST */
  ai_tc(s,003041u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B77041c:
+ IRC_COVER(89u);
  /* 37,3041 2CADR READACCS: data, never executed */
  return EXEC_INVALID_ACTION;
 B77043:
+ IRC_COVER(90u);
  /* 37,3043 MAKESERV CAF PRIO20 */
  ai_caf(s,020000u); /* BIT14 */
  goto B77044c;
 B77043c:
+ IRC_COVER(91u);
  goto B77043;
 B77044c:
+ IRC_COVER(92u);
  /* 37,3044 TC FINDVAC */
  ai_tc(s,003045u);
  W[5]=05147u;return EXEC_OK; /* FINDVAC */
 B77047:
+ IRC_COVER(93u);
  /* 37,3047 CS FOUR */
  ai_csf(s,000004u); /* BIT3 */
  goto B77050c;
 B77050c:
+ IRC_COVER(94u);
  /* 37,3050 TC NEWPHASE */
  ai_tc(s,003051u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B77052:
+ IRC_COVER(95u);
  /* 37,3052 CAF BIT9 */
  ai_caf(s,000400u); /* BIT9 */
  goto B77053c;
 B77053c:
+ IRC_COVER(96u);
  /* 37,3053 EXTEND */
  goto X77054c;
 X77054c:
+ IRC_COVER(97u);
  /* 37,3054 EXTENDED WOR DSALMOUT */
  ch_wor(s,io,011);
  goto B77055c;
 B77055c:
+ IRC_COVER(98u);
  /* 37,3055 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B77056c:
+ IRC_COVER(99u);
  /* 37,3056 AVEGOUT EXTEND */
  goto X77057c;
 X77057c:
+ IRC_COVER(100u);
  /* 37,3057 EXTENDED DCA AVOUTCAD */
  {static const agc_word k[2]={003165u,076067u};ai_dcaf(s,k);} /* AVOUTCAD */
  goto B77060c;
 B77060c:
+ IRC_COVER(101u);
  /* 37,3060 DXCH AVGEXIT */
  ai_dxch(s,01222);
  goto B77061c;
 B77061c:
+ IRC_COVER(102u);
  /* 37,3061 TCF MAKESERV */
  goto B77043c;
 B77064c:
+ IRC_COVER(103u);
  /* 37,3064 ONMNITOR TS PIPCTR */
  (void)ai_ts(s,(unsigned)01227);
  goto B77065c;
 B77065c:
+ IRC_COVER(104u);
  /* 37,3065 TC FIXDELAY */
  ai_tc(s,003066u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B77067:
+ IRC_COVER(105u);
  /* 37,3067 QUIKREAD CAF TWO */
  ai_caf(s,000002u); /* BIT2 */
  goto B77070c;
 B77070c:
+ IRC_COVER(106u);
  /* 37,3070 TS RUPTREG1 */
  (void)ai_ts(s,(unsigned)070);
  goto B77071c;
 B77071c:
+ IRC_COVER(107u);
  /* 37,3071 INDEX A */
  ix=areg(s);
  /* 37,3072 (indexed) CA PIPAX */
@@ -609,6 +726,7 @@ B77071c:
  else ai_ca(s,(unsigned)e);
  goto B77073c;
 B77073c:
+ IRC_COVER(108u);
  /* 37,3073 INDEX RUPTREG1 */
  ix=agc_to_int(ai_word(s,070));
  /* 37,3074 (indexed) XCH XPIPBUF */
@@ -617,6 +735,7 @@ B77073c:
  ai_xch(s,(unsigned)e);
  goto B77075c;
 B77075c:
+ IRC_COVER(109u);
  /* 37,3075 INDEX RUPTREG1 */
  ix=agc_to_int(ai_word(s,070));
  /* 37,3076 (indexed) TS XOLDBUF */
@@ -625,6 +744,7 @@ B77075c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B77077c;
 B77077c:
+ IRC_COVER(110u);
  /* 37,3077 CHKCTR CCS RUPTREG1 */
  switch(ai_ccs(s,070)){
   case 0:goto B77100c;
@@ -634,9 +754,11 @@ B77077c:
  }
  return EXEC_INVALID_ACTION;
 B77100c:
+ IRC_COVER(111u);
  /* 37,3100 TCF QUIKREAD   +1 */
  goto B77070c;
 B77101c:
+ IRC_COVER(112u);
  /* 37,3101 CCS PIPCTR */
  switch(ai_ccs(s,01227)){
   case 0:goto B77102c;
@@ -646,35 +768,44 @@ B77101c:
  }
  return EXEC_INVALID_ACTION;
 B77102c:
+ IRC_COVER(113u);
  /* 37,3102 TCF ONMNITOR */
  goto B77064c;
 B77103c:
+ IRC_COVER(114u);
  /* 37,3103 TC TASKOVER */
  ai_tc(s,003104u);
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B77104:
+ IRC_COVER(115u);
  /* 37,3104 SERVICER CAF TWO */
  ai_caf(s,000002u); /* BIT2 */
  goto B77105c;
 B77104c:
+ IRC_COVER(116u);
  goto B77104;
 B77105c:
+ IRC_COVER(117u);
  /* 37,3105 INHINT */
  io->interrupt_enabled=0;
  goto B77106c;
 B77106c:
+ IRC_COVER(118u);
  /* 37,3106 PIPCHECK TS RUPTREG1 */
  (void)ai_ts(s,(unsigned)070);
  goto B77107c;
 B77107c:
+ IRC_COVER(119u);
  /* 37,3107 DOUBLE */
  ai_ad(s,00);
  goto B77110;
 B77110:
+ IRC_COVER(120u);
  /* 37,3110 INDEX A */
  ix=areg(s);
  /* 37,3111 (indexed) CCS DELVX */
- e=(long)01162+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ e=(long)01162+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e>=02000){W[5]=(agc_word)e;goto dispatch;}
  switch(ai_ccs(s,(unsigned)e)){
   case 0:goto B77112c;
   case 1:goto B77113c;
@@ -683,52 +814,65 @@ B77110:
  }
  return EXEC_INVALID_ACTION;
 B77112c:
+ IRC_COVER(121u);
  /* 37,3112 TC +2 */
  ai_tc(s,003113u);
  goto B77114c;
 B77113:
+ IRC_COVER(122u);
  /* 37,3113 TC PIPLOOP */
  ai_tc(s,003114u);
  goto B77122;
 B77113c:
+ IRC_COVER(123u);
  /* 37,3113 TC PIPLOOP */
  ai_tc(s,003114u);
  goto B77122c;
 B77114:
+ IRC_COVER(124u);
  /* 37,3114 AD -MAXDELV */
  ai_adf(s,063401u); /* -MAXDELV */
  goto B77115;
 B77114c:
+ IRC_COVER(125u);
  goto B77114;
 B77115:
+ IRC_COVER(126u);
  /* 37,3115 EXTEND */
  goto X77116;
 B77115c:
+ IRC_COVER(127u);
  /* 37,3115 EXTEND */
  goto X77116c;
 X77116:
+ IRC_COVER(128u);
  /* 37,3116 EXTENDED BZMF PIPLOOP */
  if(ai_bzmf(s)){
    goto B77122;
  }
  goto B77117;
 X77116c:
+ IRC_COVER(129u);
  /* 37,3116 EXTENDED BZMF PIPLOOP */
  if(ai_bzmf(s)){
    goto B77122c;
  }
  goto B77117c;
 B77117:
+ IRC_COVER(130u);
  /* 37,3117 TC ALARM */
  ai_tc(s,003120u);
  W[5]=05650u;return EXEC_OK; /* ALARM */
 B77117c:
+ IRC_COVER(131u);
  goto B77117;
 B77121:
+ IRC_COVER(132u);
  /* 37,3121 TC AVERAGEG */
  ai_tc(s,003122u);
  goto B77143;
 B77122:
+ IRC_COVER(133u);
  /* 37,3122 PIPLOOP CCS RUPTREG1 */
  switch(ai_ccs(s,070)){
   case 0:goto B77123c;
@@ -738,290 +882,367 @@ B77122:
  }
  return EXEC_INVALID_ACTION;
 B77122c:
+ IRC_COVER(134u);
  goto B77122;
 B77123c:
+ IRC_COVER(135u);
  /* 37,3123 TCF PIPCHECK */
  goto B77106c;
 B77124c:
+ IRC_COVER(136u);
  /* 37,3124 TC PHASCHNG */
  ai_tc(s,003125u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B77125c:
+ IRC_COVER(137u);
  /* 37,3125 OCT 16035: data, never executed */
  return EXEC_INVALID_ACTION;
 B77126c:
+ IRC_COVER(138u);
  /* 37,3126 OCT 20000: data, never executed */
  return EXEC_INVALID_ACTION;
 B77131:
+ IRC_COVER(139u);
  /* 37,3131 TC BANKCALL */
  ai_tc(s,003132u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B77133:
+ IRC_COVER(140u);
  /* 37,3133 DVTOTUP TC INTPRET */
  ai_tc(s,003134u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B77140:
+ IRC_COVER(141u);
  /* 37,3140 EXTEND */
  goto X77141;
 X77141:
+ IRC_COVER(142u);
  /* 37,3141 EXTENDED DCA MPAC */
  ai_dca(s,0154);
  goto B77142c;
 B77142c:
+ IRC_COVER(143u);
  /* 37,3142 DAS DVTOTAL */
  ai_das(s,01425);
  goto B77143;
 B77143:
+ IRC_COVER(144u);
  /* 37,3143 AVERAGEG TC PHASCHNG */
  ai_tc(s,003144u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B77145:
+ IRC_COVER(145u);
  /* 37,3145 TC INTPRET */
  ai_tc(s,003146u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B77151:
+ IRC_COVER(146u);
  /* 37,3151 TC PHASCHNG */
  ai_tc(s,003152u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B77153:
+ IRC_COVER(147u);
  /* 37,3153 CAF OCT31 */
  ai_caf(s,000031u); /* OCT31 */
  goto B77154c;
 B77154c:
+ IRC_COVER(148u);
  /* 37,3154 TC GENTRAN */
  ai_tc(s,003155u);
  W[5]=05606u;return EXEC_OK; /* GENTRAN */
 B77157:
+ IRC_COVER(149u);
  /* 37,3157 RELINT */
  io->interrupt_enabled=1;
  goto B77160;
 B77160:
+ IRC_COVER(150u);
  /* 37,3160 TC PHASCHNG */
  ai_tc(s,003161u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B77162:
+ IRC_COVER(151u);
  /* 37,3162 EXTEND */
  goto X77163;
 X77163:
+ IRC_COVER(152u);
  /* 37,3163 EXTENDED DCA AVGEXIT */
  ai_dca(s,01222);
  goto B77164c;
 B77164c:
+ IRC_COVER(153u);
  /* 37,3164 DXCH Z */
  dtcb(s,003164u);goto dispatch;
 B77165:
+ IRC_COVER(154u);
  /* 37,3165 AVGEND CA PIPTIME    +1 */
  ai_ca(s,01205);
  goto B77166c;
 B77166c:
+ IRC_COVER(155u);
  /* 37,3166 TS OLDBT1 */
  (void)ai_ts(s,(unsigned)01074);
  goto B77167c;
 B77167c:
+ IRC_COVER(156u);
  /* 37,3167 TC UPFLAG */
  ai_tc(s,003170u);
  W[5]=05546u;return EXEC_OK; /* UPFLAG */
 B77171:
+ IRC_COVER(157u);
  /* 37,3171 TC 2PHSCHNG */
  ai_tc(s,003172u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B77175:
+ IRC_COVER(158u);
  /* 37,3175 TC INTPRET */
  ai_tc(s,003176u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B77201:
+ IRC_COVER(159u);
  /* 37,3201 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B77202c;
 B77202c:
+ IRC_COVER(160u);
  /* 37,3202 TS VHFCNT */
  (void)ai_ts(s,(unsigned)01125);
  goto B77203c;
 B77203c:
+ IRC_COVER(161u);
  /* 37,3203 TS TRKMKCNT */
  (void)ai_ts(s,(unsigned)01126);
  goto B77204c;
 B77204c:
+ IRC_COVER(162u);
  /* 37,3204 TC BANKCALL */
  ai_tc(s,003205u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B77206:
+ IRC_COVER(163u);
  /* 37,3206 CS BIT9 */
  ai_csf(s,000400u); /* BIT9 */
  goto B77207c;
 B77207c:
+ IRC_COVER(164u);
  /* 37,3207 TS MRKBUF2 */
  (void)ai_ts(s,(unsigned)01734);
  goto B77210c;
 B77210c:
+ IRC_COVER(165u);
  /* 37,3210 EXTEND */
  goto X77211c;
 X77211c:
+ IRC_COVER(166u);
  /* 37,3211 EXTENDED WAND DSALMOUT */
  ch_wand(s,io,011);
  goto B77212c;
 B77212c:
+ IRC_COVER(167u);
  /* 37,3212 TC DOWNFLAG */
  ai_tc(s,003213u);
  W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
 B77214:
+ IRC_COVER(168u);
  /* 37,3214 TC DOWNFLAG */
  ai_tc(s,003215u);
  W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
 B77216:
+ IRC_COVER(169u);
  /* 37,3216 CAF BIT7 */
  ai_caf(s,000100u); /* BIT7 */
  goto B77217c;
 B77217c:
+ IRC_COVER(170u);
  /* 37,3217 MASK FLAGWRD0 */
  ai_mask(s,074);
  goto B77220c;
 B77220c:
+ IRC_COVER(171u);
  /* 37,3220 EXTEND */
  goto X77221c;
 X77221c:
+ IRC_COVER(172u);
  /* 37,3221 EXTENDED BZF +4 */
  if(ai_bzf(s)){
    goto B77225c;
  }
  goto B77222c;
 B77222c:
+ IRC_COVER(173u);
  /* 37,3222 TC 2PHSCHNG */
  ai_tc(s,003223u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B77225:
+ IRC_COVER(174u);
  /* 37,3225 TC POSTJUMP */
  ai_tc(s,003226u);
  W[5]=04701u;return EXEC_OK; /* POSTJUMP */
 B77225c:
+ IRC_COVER(175u);
  goto B77225;
 B77227:
+ IRC_COVER(176u);
  /* 37,3227 SERVEXIT TC PHASCHNG */
  ai_tc(s,003230u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B77231:
+ IRC_COVER(177u);
  /* 37,3231 TCF ENDOFJOB */
  W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B77236:
+ IRC_COVER(178u);
  /* 37,3236 NORMLIZE CAF THIRTEEN */
  ai_caf(s,000015u); /* OCT15 */
  goto B77237c;
 B77237c:
+ IRC_COVER(179u);
  /* 37,3237 TC GENTRAN */
  ai_tc(s,003240u);
  W[5]=05606u;return EXEC_OK; /* GENTRAN */
 B77242:
+ IRC_COVER(180u);
  /* 37,3242 RELINT */
  io->interrupt_enabled=1;
  goto B77243;
 B77243:
+ IRC_COVER(181u);
  /* 37,3243 TC INTPRET */
  ai_tc(s,003244u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B77253:
+ IRC_COVER(182u);
  /* 37,3253 TCF ENDOFJOB */
  W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B77254:
+ IRC_COVER(183u);
  /* 37,3254 PIPASR EXTEND */
  goto X77255;
 B77254c:
+ IRC_COVER(184u);
  /* 37,3254 PIPASR EXTEND */
  goto X77255c;
 X77255:
+ IRC_COVER(185u);
  /* 37,3255 EXTENDED DCA TIME2 */
  ai_dca(s,024);
  goto B77256c;
 X77255c:
+ IRC_COVER(186u);
  goto X77255;
 B77256c:
+ IRC_COVER(187u);
  /* 37,3256 DXCH PIPTIME1 */
  ai_dxch(s,01245);
  goto B77257c;
 B77257c:
+ IRC_COVER(188u);
  /* 37,3257 CS ZERO */
  ai_csf(s,000000u); /* ZERO */
  goto B77260c;
 B77260c:
+ IRC_COVER(189u);
  /* 37,3260 TS TEMX */
  (void)ai_ts(s,(unsigned)01224);
  goto B77261c;
 B77261c:
+ IRC_COVER(190u);
  /* 37,3261 TS TEMY */
  (void)ai_ts(s,(unsigned)01225);
  goto B77262c;
 B77262c:
+ IRC_COVER(191u);
  /* 37,3262 TS TEMZ */
  (void)ai_ts(s,(unsigned)01226);
  goto B77263c;
 B77263c:
+ IRC_COVER(192u);
  /* 37,3263 CA ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B77264c;
 B77264c:
+ IRC_COVER(193u);
  /* 37,3264 TS DELVZ */
  (void)ai_ts(s,(unsigned)01166);
  goto B77265c;
 B77265c:
+ IRC_COVER(194u);
  /* 37,3265 TS DELVY */
  (void)ai_ts(s,(unsigned)01164);
  goto B77266c;
 B77266c:
+ IRC_COVER(195u);
  /* 37,3266 TS DELVX      +1 */
  (void)ai_ts(s,(unsigned)01163);
  goto B77267c;
 B77267c:
+ IRC_COVER(196u);
  /* 37,3267 TS DELVY      +1 */
  (void)ai_ts(s,(unsigned)01165);
  goto B77270c;
 B77270c:
+ IRC_COVER(197u);
  /* 37,3270 TS DELVZ      +1 */
  (void)ai_ts(s,(unsigned)01167);
  goto B77271c;
 B77271c:
+ IRC_COVER(198u);
  /* 37,3271 TS PIPAGE */
  (void)ai_ts(s,(unsigned)01230);
  goto B77272c;
 B77272c:
+ IRC_COVER(199u);
  /* 37,3272 REPIP1 EXTEND */
  goto X77273c;
 X77273c:
+ IRC_COVER(200u);
  /* 37,3273 EXTENDED DCS PIPAX */
  ai_dcs(s,037);
  goto B77274c;
 B77274c:
+ IRC_COVER(201u);
  /* 37,3274 DXCH TEMX */
  ai_dxch(s,01224);
  goto B77275c;
 B77275c:
+ IRC_COVER(202u);
  /* 37,3275 DXCH PIPAX */
  ai_dxch(s,037);
  goto B77276c;
 B77276c:
+ IRC_COVER(203u);
  /* 37,3276 TS DELVX */
  (void)ai_ts(s,(unsigned)01162);
  goto B77277c;
 B77277c:
+ IRC_COVER(204u);
  /* 37,3277 LXCH DELVY */
  ai_lxch(s,01164);
  goto B77300c;
 B77300c:
+ IRC_COVER(205u);
  /* 37,3300 REPIP3 CS PIPAZ */
  ai_cs(s,041);
  goto B77301c;
 B77301c:
+ IRC_COVER(206u);
  /* 37,3301 XCH TEMZ */
  ai_xch(s,01226);
  goto B77302c;
 B77302c:
+ IRC_COVER(207u);
  /* 37,3302 XCH PIPAZ */
  ai_xch(s,041);
  goto B77303c;
 B77303c:
+ IRC_COVER(208u);
  /* 37,3303 DODELVZ TS DELVZ */
  (void)ai_ts(s,(unsigned)01166);
  goto B77304c;
 B77304c:
+ IRC_COVER(209u);
  /* 37,3304 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
- if(e<02000||e>07777)return EXEC_INVALID_ACTION;
- ai_tc(s,03u);W[5]=(agc_word)e;goto dispatch;
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B77305:
+ IRC_COVER(210u);
  /* 37,3305 REREADAC CCS PHASE5 */
  switch(ai_ccs(s,0763)){
   case 0:goto B77306c;
@@ -1031,20 +1252,25 @@ B77305:
  }
  return EXEC_INVALID_ACTION;
 B77306c:
+ IRC_COVER(211u);
  /* 37,3306 TCF +2 */
  goto B77310c;
 B77307c:
+ IRC_COVER(212u);
  /* 37,3307 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B77310c:
+ IRC_COVER(213u);
  /* 37,3310 CAF PRIO31 */
  ai_caf(s,031000u); /* PRIO31 */
  goto B77311c;
 B77311c:
+ IRC_COVER(214u);
  /* 37,3311 TS 1/PIPADT */
  (void)ai_ts(s,(unsigned)01074);
  goto B77312c;
 B77312c:
+ IRC_COVER(215u);
  /* 37,3312 CCS PIPAGE */
  switch(ai_ccs(s,01230)){
   case 0:goto B77313c;
@@ -1054,17 +1280,21 @@ B77312c:
  }
  return EXEC_INVALID_ACTION;
 B77313c:
+ IRC_COVER(216u);
  /* 37,3313 TCF READACCS */
  goto B76744c;
 B77314c:
+ IRC_COVER(217u);
  /* 37,3314 CAF DONEADR */
  ai_caf(s,002745u); /* DONEADR */
  goto B77315c;
 B77315c:
+ IRC_COVER(218u);
  /* 37,3315 TS Q */
  (void)ai_ts(s,(unsigned)02);
  goto B77316c;
 B77316c:
+ IRC_COVER(219u);
  /* 37,3316 CCS DELVZ */
  switch(ai_ccs(s,01166)){
   case 0:goto B77317c;
@@ -1074,28 +1304,34 @@ B77316c:
  }
  return EXEC_INVALID_ACTION;
 B77317c:
+ IRC_COVER(220u);
  /* 37,3317 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
- if(e<02000||e>07777)return EXEC_INVALID_ACTION;
- ai_tc(s,03u);W[5]=(agc_word)e;goto dispatch;
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B77320c:
+ IRC_COVER(221u);
  /* 37,3320 TCF +3 */
  goto B77323c;
 B77321c:
+ IRC_COVER(222u);
  /* 37,3321 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
- if(e<02000||e>07777)return EXEC_INVALID_ACTION;
- ai_tc(s,03u);W[5]=(agc_word)e;goto dispatch;
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B77322c:
+ IRC_COVER(223u);
  /* 37,3322 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
- if(e<02000||e>07777)return EXEC_INVALID_ACTION;
- ai_tc(s,03u);W[5]=(agc_word)e;goto dispatch;
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B77323c:
+ IRC_COVER(224u);
  /* 37,3323 ZL */
  ai_lxch(s,07);
  goto B77324c;
 B77324c:
+ IRC_COVER(225u);
  /* 37,3324 CCS DELVY */
  switch(ai_ccs(s,01164)){
   case 0:goto B77325c;
@@ -1105,19 +1341,24 @@ B77324c:
  }
  return EXEC_INVALID_ACTION;
 B77325c:
+ IRC_COVER(226u);
  /* 37,3325 TCF +3 */
  goto B77330c;
 B77326c:
+ IRC_COVER(227u);
  /* 37,3326 TCF CHKTEMX */
  goto B77337c;
 B77327c:
+ IRC_COVER(228u);
  /* 37,3327 TCF +1 */
  goto B77330c;
 B77330c:
+ IRC_COVER(229u);
  /* 37,3330 LXCH PIPAZ */
  ai_lxch(s,041);
  goto B77331c;
 B77331c:
+ IRC_COVER(230u);
  /* 37,3331 CCS TEMZ */
  switch(ai_ccs(s,01226)){
   case 0:goto B77332c;
@@ -1127,25 +1368,31 @@ B77331c:
  }
  return EXEC_INVALID_ACTION;
 B77332c:
+ IRC_COVER(231u);
  /* 37,3332 CS TEMZ */
  ai_cs(s,01226);
  goto B77333c;
 B77333c:
+ IRC_COVER(232u);
  /* 37,3333 TCF DODELVZ */
  goto B77303c;
 B77334c:
+ IRC_COVER(233u);
  /* 37,3334 TCF -2 */
  goto B77332c;
 B77335c:
+ IRC_COVER(234u);
  /* 37,3335 LXCH DELVZ */
  ai_lxch(s,01166);
  goto B77336c;
 B77336c:
+ IRC_COVER(235u);
  /* 37,3336 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
- if(e<02000||e>07777)return EXEC_INVALID_ACTION;
- ai_tc(s,03u);W[5]=(agc_word)e;goto dispatch;
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B77337c:
+ IRC_COVER(236u);
  /* 37,3337 CHKTEMX CCS TEMX */
  switch(ai_ccs(s,01224)){
   case 0:goto B77340c;
@@ -1155,39 +1402,49 @@ B77337c:
  }
  return EXEC_INVALID_ACTION;
 B77340c:
+ IRC_COVER(237u);
  /* 37,3340 CS TEMX */
  ai_cs(s,01224);
  goto B77341c;
 B77341c:
+ IRC_COVER(238u);
  /* 37,3341 TCF +3 */
  goto B77344c;
 B77342c:
+ IRC_COVER(239u);
  /* 37,3342 TCF -2 */
  goto B77340c;
 B77343c:
+ IRC_COVER(240u);
  /* 37,3343 TCF REPIP1 */
  goto B77272c;
 B77344c:
+ IRC_COVER(241u);
  /* 37,3344 TS DELVX */
  (void)ai_ts(s,(unsigned)01162);
  goto B77345c;
 B77345c:
+ IRC_COVER(242u);
  /* 37,3345 CS TEMY */
  ai_cs(s,01225);
  goto B77346c;
 B77346c:
+ IRC_COVER(243u);
  /* 37,3346 TS DELVY */
  (void)ai_ts(s,(unsigned)01164);
  goto B77347c;
 B77347c:
+ IRC_COVER(244u);
  /* 37,3347 CS ZERO */
  ai_csf(s,000000u); /* ZERO */
  goto B77350c;
 B77350c:
+ IRC_COVER(245u);
  /* 37,3350 DXCH PIPAX */
  ai_dxch(s,037);
  goto B77351c;
 B77351c:
+ IRC_COVER(246u);
  /* 37,3351 TCF REPIP3 */
  goto B77300c;
 dispatch:
@@ -1260,7 +1517,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #define CM_SERVICER_KEEP0 0xfffffffffffffff
 #endif
 #if (CM_SERVICER_KEEP0 >> 0) & 1
-/* 37,2701 PREREAD (entry PREREAD) */
+/* 37,2701 PREREAD (entry PREREAD (RESTART_TABLES.agc -2CADR PREREAD)) */
 static enum exec_status r76701_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32193u);
@@ -1295,14 +1552,14 @@ static enum exec_status r76721_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 5) & 1
-/* 37,2722 PREREAD1 (entry PREREAD1) */
+/* 37,2722 PREREAD1 (entry PREREAD1 (P11.agc CADR PREREAD1)) */
 static enum exec_status r76722_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32210u);
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 6) & 1
-/* 37,2744 READACCS (entry READACCS) */
+/* 37,2744 READACCS (entry READACCS (P11.agc 2CADR READACCS)) */
 static enum exec_status r76744_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32228u);
@@ -1316,7 +1573,7 @@ static enum exec_status r76745_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 8) & 1
-/* 37,2751 REDO5.5 (entry REDO5.5) */
+/* 37,2751 REDO5.5 (entry REDO5.5 (RESTART_TABLES.agc -2CADR REDO5.5)) */
 static enum exec_status r76751_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32233u);
@@ -1344,7 +1601,7 @@ static enum exec_status r77027_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 12) & 1
-/* 37,3033 CHEKAVEG (entry CHEKAVEG) */
+/* 37,3033 CHEKAVEG (entry CHEKAVEG (RESTART_TABLES.agc -2CADR CHEKAVEG)) */
 static enum exec_status r77033_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32283u);
@@ -1379,7 +1636,7 @@ static enum exec_status r77067_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 17) & 1
-/* 37,3104 SERVICER (entry SERVICER) */
+/* 37,3104 SERVICER (entry SERVICER (RESTART_TABLES.agc 2CADR SERVICER)) */
 static enum exec_status r77104_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32324u);
@@ -1568,7 +1825,7 @@ static enum exec_status r77225_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 40) & 1
-/* 37,3227 SERVEXIT (entry SERVEXIT) */
+/* 37,3227 SERVEXIT (entry SERVEXIT (P40-P47.agc 2CADR SERVEXIT)) */
 static enum exec_status r77227_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32407u);
@@ -1582,7 +1839,7 @@ static enum exec_status r77231_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 42) & 1
-/* 37,3236 NORMLIZE (entry NORMLIZE) */
+/* 37,3236 NORMLIZE (entry NORMLIZE (RESTART_TABLES.agc 2CADR NORMLIZE)) */
 static enum exec_status r77236_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32414u);
@@ -1636,14 +1893,14 @@ static enum exec_status r77253_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 47) & 1
-/* 37,3305 REREADAC (entry REREADAC) */
+/* 37,3305 REREADAC (entry REREADAC (RESTART_TABLES.agc -2CADR REREADAC)) */
 static enum exec_status r77305_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,076000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,32453u);
 }
 #endif
 #if (CM_SERVICER_KEEP0 >> 48) & 1
-/* 37,3353 CALCGRAV (entry CALCGRAV) */
+/* 37,3353 CALCGRAV (entry CALCGRAV (P40-P47.agc  CALCGRAV)) */
 static enum exec_status r77353(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,076000u))return EXEC_OUT_OF_SCOPE;
  /* 37,3353 UNIT PUSH */

@@ -219,11 +219,14 @@ class Compiler:
             ln = self.code[phys]
             self.add_start(phys, 'i' if is_interp_op(ln.op) else 'b', 'entry ' + lab)
         if self.basic:
+            for t, why in self.basic.erasable_targets():
+                self.add_start(t, 'b', why)
             # The file's own CADR constants that name its code.
             for ln in self.lines:
                 if ln.op in ('2CADR', 'CADR', 'GENADR', 'FCADR', '2FCADR') and ln.operand:
                     t = self.L.labels.get(ln.operand.split()[0])
-                    if t is not None and self.in_file(t) and t in self.code and len(ln.operand.split()) == 1:
+                    if (t is not None and self.in_file(t) and t in self.code and len(ln.operand.split()) == 1
+                            and self.code[t].op not in self.DATA_OPS):
                         self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', ln.op + ' ' + ln.operand)
         self.blocks = {}
         self.owner = {}
@@ -263,6 +266,8 @@ class Compiler:
             if ln.src == self.spec['file'][self.m] or not ln.operand:
                 continue
             t = ln.operand.replace(' ', '').split(',')[0]
+            if t[:1] in '+-':
+                continue    # relative to the line itself (TC +5), not a label
             off = 0
             for sep in ('+', '-'):
                 if sep in t[1:]:
@@ -830,6 +835,11 @@ class Compiler:
                     use = {'constant': 'K%o' % const[q]}
                 elif q in self.basic_fixed:
                     use = {'constant': 'basic operand (inline)'}
+                elif self.basic and q in self.basic.operands:
+                    use = {'constant': 'inline operand of an outside call'}
+                elif self.basic and ln.op in self.DATA_OPS:
+                    use = {'constant': 'data no instruction of the file reads (another file or an '
+                                       'interrupt table may)'}
                 else:
                     use = {}
                 rows.append(dict(address=self.where(q), word='%05o' % self.L.word(q),
@@ -956,6 +966,10 @@ class Compiler:
             c.append(' return 1;')
             c.append('}')
             c.append('')
+        self.erasable_ents = []
+        if self.basic:
+            ec, self.erasable_ents = self.basic.erasable_points()
+            c.extend(ec)
         routines = []
         keep = sym.upper() + '_KEEP'
         nwords = (len(self.blocks) + 59) // 60
@@ -1024,6 +1038,9 @@ class Compiler:
                 c.append(guard(index[phys]))
                 c.append(' {%u,%s_abi},' % (phys, fn))
                 c.append('#endif')
+            if kind == 'b' and self.basic:
+                for key, fn in self.erasable_ents:
+                    c.append(' {%u,%s_abi},' % (key, fn))
             c.append(' {0xffffu,0}')
             c.append('};')
             c.append('const agc_routine_table %s_%s={%s_entries,(uint16_t)(sizeof %s_entries/sizeof %s_entries[0]-1u)};'

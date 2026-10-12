@@ -1,0 +1,10 @@
+PASS: 2048 cm-body-attitude cases equal the original programs (8 routines)
+  CM 37,3470 CM/POSE: 06037 x256
+  CM 37,3471 : 06037 x256
+  CM 37,3517 CM/POSE2: 06037 x256
+  CM 37,3627 : 05650 x38, 06037 x218
+  CM 37,3645 : 05650 x36, 06037 x220
+  CM 37,3655 CM/ATUP: 06037 x256
+  CM 37,3744 REDOPOSE: 06037 x256
+  CM 37,3753 CM/POSE3: 06037 x256
+froze 64 vectors to tests/cm_body_attitude_vectors.h

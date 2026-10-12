@@ -3,45 +3,30 @@
   "milestone": "cm-jet-select",
   "release": "evidence-cm-jet-select",
   "files": {
-    "cm-jet-select-assembly-comparison.json": {
-      "sha256": "e00595556969c2809fe607d320df3eb3d467c49244ca2ed9ad52850dc3ef5a80",
-      "bytes": 71470,
+    "cm-jet-select-differential.log": {
+      "sha256": "929a48cb0126198eb9d5548314cf4ea3ff5b05c3515270659fdfa53a7c12f916",
+      "bytes": 188,
       "store": "tree"
     },
-    "cm-jet-select-checks.log": {
-      "sha256": "0eee5c6adf30d1589e52f1d349ca0c24eda2494334f6e801617b7bee3ae87289",
-      "bytes": 849,
+    "cm-jet-select-host.log": {
+      "sha256": "fd0ee0d2ba0af910ec33f8c12637a42043a0316ca03955f65d45141b1e5b68f5",
+      "bytes": 1028,
       "store": "tree"
     },
-    "cm-jet-select-reference.deltas.xz": {
-      "sha256": "35ebbc490127397e2bb35e48abe830175457452d53ce1257f137b4d9e088aeab",
-      "bytes": 2395400,
-      "store": "release"
-    },
-    "cm-jet-select-results.json": {
-      "sha256": "f11d282ef5fe5649ad3eca4fa2efd5072735ed6681092ba40bff8fd18f8eca93",
-      "bytes": 1303,
+    "cm-jet-select-proof.json": {
+      "sha256": "e1a0599b065ee50e50053c27a9757e0e510412be4b06632d36e97995ac7b2dcb",
+      "bytes": 1820,
       "store": "tree"
     },
     "cm-jet-select-source-map.json": {
-      "sha256": "846588e393a91b4012ffb059b96af5df67d42e21e83b3ba3ed904738866c32d0",
-      "bytes": 116365,
+      "sha256": "6cac9bd71563334f098a770124e5e7ae490bde8aca9e3e6ef3ca3bc00ba4d9ed",
+      "bytes": 89815,
       "store": "tree"
     },
-    "cm-jet-select-source-stream.json": {
-      "sha256": "a0c44d808e4c64e16e6e8de41e7f0b927548a80dabeca604b18a02caf3963175",
-      "bytes": 374,
+    "cm-jet-select-vice.log": {
+      "sha256": "d58dc9967fd2bd6b1bd80b8dcfd299df1bf1726b4c10abae8c1e97bf7d5881da",
+      "bytes": 416,
       "store": "tree"
-    },
-    "cm-jet-select.map": {
-      "sha256": "c262a266b87fc7ace567ba34b9245d077f9c7f3e595277e71858c92fd70f6638",
-      "bytes": 12516,
-      "store": "release"
-    },
-    "cm-jet-select.prg": {
-      "sha256": "2869500bcfb86c3cfbf72e3945020880812706984827cc1aa327dff8f1cec83f",
-      "bytes": 32037,
-      "store": "release"
     }
   }
 }

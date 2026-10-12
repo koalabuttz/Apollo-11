@@ -1,112 +1,31 @@
-# Translate Comanche TVCMASSPROP (MASSPROP and FIXCW mass properties)
+# Translate Comanche TVCMASSPROP
 
-Lane G. Milestone `cm-tvc-massprop`.
+Lane G (CM flight). Milestone `cm-tvc-massprop`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/TVCMASSPROP.agc` (`src/cm_tvc_massprop.c`) is native C in full: MASSPROP (the LEM-off and LEM-on breakpoints and slopes of the TVC gains) and FIXCW (the CSM-weight gains IXX, IAVG, IAVG/TLX and WEIGHT/G), ending at ENDMASSP TC Q. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #77: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/TVCMASSPROP.agc`, all of it: bank 05 `3366`-`3520`, 91 assembled
-words (61 executable, 30 data) on source lines 137-245. Nothing is left in the
-file.
+2 routines, keyed by physical address in `cm_tvc_massprop_basic`:
 
-- `MASSPROP` (`05,3366`): ten passes load the LEM-off breakpoints (NOLEMVAL)
-  or the LEM-on line (INTVALUE + 2·LEMMASS·SLOPEVAL) into VARST0..+9, the
-  DXTEST descent-stage adjustment (DAPDATR1 negative), then FIXCW.
-- `FIXCW` (`05,3422`), also entered directly by TVCEXECUTIVE through IBNKCALL:
-  three outputs IXX, IAVG, IAVG/TLX from the slope chosen by the sign of the
-  CSM weight delta, then WEIGHT/G, then `ENDMASSP TC Q`.
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 05,3366 MASSPROP | basic | entry MASSPROP (FRESH_START_AND_RESTART.agc CADR MASSPROP) |
+| 05,3422 FIXCW | basic | entry FIXCW (TVCEXECUTIVE.agc CADR FIXCW) |
 
-`cm_tvc_massprop(image)` runs from either entry to the source return. Admitted
-entries: Z `3366` or `3422`, FB bank 05 (`012000`), EB E6 (`03000`), BB
-`012006`; any raw 16-bit A/L, any Q, any erasable contents. Results:
+Destinations outside the file: only the caller's return through Q. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-- `CM_TVC_MASSPROP_OK`: the image as `ENDMASSP TC Q` leaves it. TC Q executes
-  the TC word held in Q, so Z = the caller's return and Q = 3 (as the oracle
-  shows and as Lane B recorded for Luminary).
-- `CM_TVC_MASSPROP_NO_EXIT`: the source never returns (below).
-- `CM_TVC_MASSPROP_OUT_OF_SCOPE`: entry outside the contract, image unchanged.
-- `CM_TVC_MASSPROP_FAULT`: cannot occur (an INDEX value outside ±9 or a fixed
-  operand outside the table); the loop counters are written only by the
-  source's own CAF/CCS/DIM/TS words.
+## Domain
 
-### How it is translated
-
-Each original word is one call to the qualified basic-instruction primitives
-(`src/agc_image_ops.c`) on the image, under a C label named for its address.
-INDEX is the ones'-complement sum of the counter and the next word's address.
-Every TS honours its overflow skip and every CCS its four-way skip, so the
-detours the source takes with raw erasable contents are the original ones:
-
-- `TS TEMP333` overflowing skips EXTEND, so the BZMF word at `3432` executes as
-  `AD 3435` (adding the fixed word `51506`) before falling into `CAF NEG2`.
-- `TS PSI333` overflowing would skip EXTEND and run DIM's word as `ADS PHI333`.
-- `TS VARST0` overflowing reaches `TCF MASSPROP +1` with A = ±1, so PHI333
-  becomes ±1; `TS IXX` and `TS WEIGHT/G` overflowing reach BOKKEP2.
-
-Some of these detours cycle forever: e.g. LEMMASS large enough that pass 1
-overflows sets PHI333 to 1 again on every pass. The native code detects this
-exactly. Neither loop writes a word it reads (MASSPROP reads DAPDATR1, LEMMASS
-and the fixed tables and writes PHI333 and VARST0-1..+9; PEGGY reads
-VARST0-1..+7, TEMP333, DAPDATR1, LEMMASS, CSMMASS and writes IXX-1..+2,
-PHI333, PSI333, WEIGHT/G), and A and L are overwritten before use, so the loop
-state at the MASSPROP head is A and at the PEGGY head the PHI333/PSI333 pair.
-A repeated head state means the source never leaves; the native code returns
-`NO_EXIT` there. The oracle runner gives up at 4000 instruction steps; no
-returning case needs more than a few hundred, and the 65536-state comparison
-would fail if a native `NO_EXIT` case returned in the oracle or the reverse.
-
-Unreachable but translated anyway: the TS skips at `3367`, `3423`, `3424`,
-`3434` and `3457` (A there is a constant, a CCS result or ±1), CCS −0 at `3411`
-and `3446` (counters are never −0 there), CCS negative/−0 at `3452` (A is
-`MASK BIT14`). Line coverage of the native file over the corpus reaches every
-other branch.
-
-## Source map
-
-| Original | Native |
-|---|---|
-| MASSPROP `3366`, LEMTEST `3370`, LEMNO `3374`, LEMYES `3377`, STOINST `3407` | `L3367`-`L3412` in `src/cm_tvc_massprop.c` |
-| DXTEST `3413`-`3421` | `L3413` |
-| FIXCW `3422`-`3434` | `L3422`-`L3433` |
-| PEGGY `3435`-`3455`, ENDMASSP `3456` | `L3435`-`L3456` |
-| BOKKEP2 `3457`-`3462` | `L3457` |
-| NOLEMVAL, INTVALUE, SLOPEVAL, NEGBPW, DXITFIX `3463`-`3520` | `bank05[]`, `cm_tvc_massprop_fixed` |
-
-Per-word map: `evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json`
-(`tools/cm_tvc_massprop_source.py`).
-
-Independent assembly comparison: `evidence/cm-tvc-massprop/cm-tvc-massprop-assembly-comparison.json`
-(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
-unchanged file against the original Comanche055 rope, without reading the
-native code.
+Canonical 2048-word image under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. LEMMASS within the LM mass (0 to 15100 kg at B+16), CSMMASS within the CSM mass (0 to 30000 kg) either side of the NEGBPW breakpoint, and VARST0-VARST8 within +-07777 as MASSPROP leaves them. Outside that range the original overflows TS VARST0 or TS IXX and loops for ever (TCF MASSPROP +1, TCF BOKKEP2 with A = 1); those states are not admitted. MASSPROP indexes the constant tables NOLEMVAL, SLOPEVAL and INTVALUE by PHI333 (9 down to 0).
 
 ## Evidence
 
-Hashes: `evidence/cm-tvc-massprop/SHA256.json`. Bulk files are assets of the
-`evidence-cm-tvc-massprop` release (`python3 tools/evidence.py fetch cm-tvc-massprop`).
+Hashes: `evidence/cm-tvc-massprop/SHA256.json`; all files are in the tree.
 
-- Oracle: `tools/cm_flight_prepare_reference.py` builds `deps/cm-flight-fixture`,
-  the original CM rope with every Lane G source file taken from `Comanche055/`
-  unchanged apart from yaYUL's offset-label indentation (one patch per file);
-  the rope must equal `6e3150ae...` (the pinned byte-original CM rope).
-  REENTRY_CONTROL is not in the list yet: the repository copy has a label
-  transcription difference (`GETDLEWD`) that yaYUL rejects; it is handled with
-  that file.
-- Independent assembly comparison: `tools/cm_tvc_massprop_source.py` reads all
-  91 words from the yaYUL listing, checks each against the assembled rope, maps
-  each to its native construct, and checks the 32 native operand words against
-  the rope.
-- Host and sanitizer results: `make test-cm-tvc-massprop sanitize-cm-tvc-massprop`.
-  `tools/cm_tvc_massprop_differential.py` runs all 65536 cases
-  (`tests/cm_tvc_massprop_cases.c`: both entries; every DAPDATR1 CCS class with
-  BIT13/BIT14 combinations; physical and raw masses; random A/L/Q, IRQ and
-  unowned words) in the oracle and natively and compares every 2052-word row
-  (59237 return, 6299 never return); the full-row SHA256 is pinned in
-  `cm-tvc-massprop-source-stream.json`, and the oracle is kept as per-case
-  deltas (`cm-tvc-massprop-reference.deltas.xz`). Log:
-  `cm-tvc-massprop-checks.log`.
-- C64 execution results: `make vice-cm-tvc-massprop` runs 128 frozen oracle
-  rows (`tools/cm_tvc_massprop_freeze.py`; 105 returning with the whole image
-  compared, 23 non-returning) on the C64. `cm-tvc-massprop-results.json`.
-
-What this does not claim: TVCEXECUTIVE's IBNKCALL into FIXCW and the TVC/RCS
-interrupt temporaries' ownership belong to the callers' milestones.
+- **Source map.** `cm-tvc-massprop-source-map.json` lists all 91 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-tvc-massprop-differential` runs 256 states per routine (512 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-tvc-massprop-proof.json` (`cm-tvc-massprop-differential.log` is the run). One case in 32 is frozen in `tests/cm_tvc_massprop_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-tvc-massprop sanitize-cm-tvc-massprop` runs the 16 frozen cases (`cm-tvc-massprop-host.log`).
+- **C64 execution results.** `make vice-cm-tvc-massprop` runs 1 diagnostic program with 4 cases (`cm-tvc-massprop-vice.log`, which starts with each PRG's SHA-256). The cases are chosen per routine so the C64 runs reach every compiled label the host cases reach: 57 of 57.

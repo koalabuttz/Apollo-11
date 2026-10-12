@@ -1,0 +1,62 @@
+{
+ "milestone": "cm-tvc-stroke",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 1024,
+ "cases_sha256": "a799a14e9c35a4ffe8e7374b742f1dea0ba2755c46712ee608712e968aa114ea",
+ "oracle_sha256": "29426dcb857aeb232bb385d5f10cbecc0103183ed7fb6b48b4a7bfe6862c9c5a",
+ "frozen_vectors": 32,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0xf",
+   "cases": 12,
+   "case_ids": [
+    213,
+    340,
+    743,
+    536,
+    527,
+    560,
+    530,
+    879,
+    906,
+    921,
+    924,
+    813
+   ]
+  }
+ ],
+ "c64_label_coverage": {
+  "host_labels": 62,
+  "c64_labels": 62,
+  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+ },
+ "stops": {
+  "CM 20,3501 STRKTSTI": {
+   "05217": 256
+  },
+  "CM 20,3533 HACK": {
+   "05245": 256
+  },
+  "CM 20,3541 ": {
+   "02541": 66,
+   "02745": 48,
+   "05324": 47,
+   "02543": 49,
+   "02743": 46
+  },
+  "CM 20,3542 HACKWLST": {
+   "05324": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: ENDOFJOB, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 14 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+}

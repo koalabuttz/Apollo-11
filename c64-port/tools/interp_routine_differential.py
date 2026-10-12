@@ -89,6 +89,13 @@ class Mission:
             # Whole-file basic code (tools/basic_compile.py): any transfer
             # from the file to a fixed address outside it but INTPRET stops.
             self.externals += [0xffff, 2048 + self.cp.intpret - 0o4000]
+            # Counters yaAGC's device models empty (spec 'device_cells'):
+            # only words the file's code never names.
+            dev = spec.get('device_cells', [])
+            named = self.cp.basic.erasable_refs
+            if any(a in named for a in dev):
+                raise SystemExit('device cells %s are named by the file' % dev)
+            self.externals += list(dev)
         self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)))
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
@@ -98,6 +105,11 @@ class Mission:
         # address: choices), as the rest of the program keeps them.
         self.cells = spec.get('cells', {})
         self.io_channels = spec.get('io_channels', {})
+        if self.io_channels == 'auto':
+            # Every channel the file's channel orders name, any value, but
+            # channel 14's IMU CDU and gyro drive bits (yaAGC's device
+            # models act on them at once; tests/interp_case.h).
+            self.io_channels = {k: (0o6777 if k == 0o14 else 0o77777) for k in self.cp.basic.channels_used}
 
     def point_of(self, k):
         """A states key: a label (or label+n), or 'bank,addr' for an
@@ -110,7 +122,9 @@ class Mission:
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
         that name one of the file's entries."""
-        ents = set(cadr(self.cp.label_phys(e)) for e in IC.entries(spec, self.m))
+        ents = set(cadr(self.cp.label_phys(e)) for e in IC.entries(spec, self.m) if e != '@external')
+        if '@external' in IC.entries(spec, self.m):
+            ents |= set(cadr(t) for t, why in self.cp.external_entries())
         out = []
         lines = self.L.lines
         for i, ln in enumerate(lines):
@@ -249,13 +263,20 @@ def case(mi, point, n, rng):
         stop = 0xffff
     else:
         E[5] = logical(point)
-        # Q: a return in the caller's bank outside the file, the case's stop.
-        while True:
-            q = bank * 1024 + rng.randrange(0o1776)
-            if not mi.cp.in_file(q):
-                break
-        E[2] = logical(q)
-        stop = q
+        # Q: a return in the caller's bank outside the file, the case's stop
+        # (or the returns the spec's states give the point: banked ones in
+        # the case's bank).
+        fixed_q = mi.states.get(point, {}).get('2')
+        if fixed_q:
+            E[2] = rng.choice(fixed_q)
+            stop = 2048 + E[2] - 0o4000 if E[2] >= 0o4000 else bank * 1024 + E[2] - 0o2000
+        else:
+            while True:
+                q = bank * 1024 + rng.randrange(0o1776)
+                if not mi.cp.in_file(q):
+                    break
+            E[2] = logical(q)
+            stop = q
     return seed, list(E.items()), n & 1, stop
 
 
@@ -278,13 +299,22 @@ def write_cases(path, missions, cases):
 
 
 def build(spec_id, spec):
-    ref = os.path.join(B, 'interp-routine-reference')
     # The pinned engine with DV always through its hardware model
     # (tools/prepare_hardware_dv.py: the fast path mishandles a
-    # sign-extended -0 in L), as the native divide follows.
-    hw = os.path.join(B, 'agc_engine_hardware_dv.o')
+    # sign-extended -0 in L), as the native divide follows. Spec 'engine':
+    # 'flight-device' also leaves out the IMU and optics device models
+    # (tools/prepare_flight_device_engine.py), for files that drive the CDU
+    # output counters themselves.
+    if spec.get('engine') == 'flight-device':
+        ref = os.path.join(B, 'interp-routine-reference-flight-device')
+        hw = os.path.join(B, 'agc_engine_flight_device.o')
+        prep = 'tools/prepare_flight_device_engine.py'
+    else:
+        ref = os.path.join(B, 'interp-routine-reference')
+        hw = os.path.join(B, 'agc_engine_hardware_dv.o')
+        prep = 'tools/prepare_hardware_dv.py'
     if not os.path.exists(hw):
-        subprocess.run([sys.executable, 'tools/prepare_hardware_dv.py'], cwd=R, check=True, capture_output=True)
+        subprocess.run([sys.executable, prep], cwd=R, check=True, capture_output=True)
     if not os.path.exists(ref) or os.path.getmtime(ref) < os.path.getmtime(os.path.join(R, 'tools/interp_routine_reference.c')):
         subprocess.run(['cc', '-std=c99', '-O2', '-Iinclude', '-Itests', '-I' + E,
                         '-DIRC_BUILD_ONLY', 'tools/interp_routine_reference.c', 'tests/interp_case.c', 'src/agc_word.c',
@@ -366,12 +396,22 @@ def main():
             idx = {p: k for k, p in enumerate(missions[c['cm']].points)}
             v = 0
             for t in r[4:]:
-                v |= 1 << idx[int(t[1:])]
+                if int(t[1:]) in idx:   # (erasable continuations are always kept)
+                    v |= 1 << idx[int(t[1:])]
             visits.append(v)
-        freeze(a.spec, spec, missions, cases, rows_r, stops, visits)
+        covers = None
+        if spec.get('basic') == 'full':
+            # The compiled basic labels each case reaches (a coverage build
+            # of the native runner): the C64 cases take every one of them.
+            cov = nat + '-cover'
+            srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
+            subprocess.run(['cc', *FLAGS, '-DIRC_COVER_ON', *srcs, spec['target'], 'tools/interp_routine_native.c',
+                            '-o', cov], cwd=R, check=True)
+            covers = [frozenset(int(t[1:]) for t in r[4:]) for r in run([cov, path, 'cover'])]
+        freeze(a.spec, spec, missions, cases, rows_r, stops, visits, covers)
 
 
-def freeze(spec_id, spec, missions, cases, rows, stops, visits):
+def freeze(spec_id, spec, missions, cases, rows, stops, visits, covers=None):
     stride = spec.get('freeze_stride', 16)
     pick = list(range(0, len(cases), stride))
     sym = spec_id.replace('-', '_')
@@ -392,20 +432,37 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits):
     out.append(',\n'.join(' 0x%08xul' % int(rows[i][3]) for i in pick))
     out.append('};')
     open(os.path.join(R, 'tests/%s_vectors.h' % sym), 'w').write('\n'.join(out) + '\n')
-    c64 = freeze_c64(spec, sym, missions, cases, rows, visits)
+    c64 = freeze_c64(spec, sym, missions, cases, rows, visits, covers)
     blob = open(os.path.join(B, '%s-cases.bin' % spec_id), 'rb').read()
     proof = {'milestone': spec_id, 'missions': ['Luminary099', 'Comanche055'],
              'rope_sha256': [hashlib.sha256(open(p, 'rb').read()).hexdigest() for p in ROPES],
              'cases': len(cases), 'cases_sha256': hashlib.sha256(blob).hexdigest(),
              'oracle_sha256': hashlib.sha256('\n'.join(' '.join(r) for r in rows).encode()).hexdigest(),
              'frozen_vectors': len(pick), 'c64_vectors': c64,
+             **({'c64_label_coverage': {
+                 'host_labels': len(frozenset().union(*covers)),
+                 'c64_labels': len(frozenset().union(*(covers[i] for g in c64 for i in g['case_ids']))),
+                 'note': 'compiled basic labels (each word and each branch outcome reached with A clean or '
+                         'unknown) the host cases reach, and those the C64 cases reach'}} if covers else {}),
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
              'boundary': 'from each routine entry state to NEWOPS with LOC outside the file, an exit of the '
-                         'interpreter bodies (%s), or a transfer to an outside basic routine (%s)' % (
+                         'interpreter bodies (%s), or a transfer to an outside basic routine (%s)%s' % (
                              '; '.join('%s: %s' % (mi.m, ', '.join(BODY_EXITS[mi.m])) for mi in missions),
                              '; '.join('%s: %s' % (mi.m, ', '.join(sorted(set(mi.cp.externals.values()) | set(mi.cp.externals_any.values()))) or 'none')
-                                       for mi in missions if mi.m in spec['missions'])),
-             'compared': 'Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state'}
+                                       for mi in missions if mi.m in spec['missions']),
+                             '; whole-file basic code stops at any transfer from the file to a fixed address '
+                             'outside it but INTPRET (stored words the file transfers to in erasable run on)'
+                             if any(getattr(mi.cp, 'basic', None) for mi in missions) else ''),
+             'compared': 'Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state' + (
+                 ', the I/O channels %s and the 31A/31B/32 trap flags' % ', '.join(
+                     '%02o' % k for k in sorted(set().union(*(getattr(mi, 'io_channels', {}) for mi in missions))))
+                 if any(getattr(mi, 'io_channels', {}) for mi in missions) else ''),
+             **({'engine': 'pinned yaAGC%s, its ScalerCounter held at 0 (TIME1-TIME6 and the timer '
+                           'interrupts do not advance during a case)' % (
+                               ' with hardware DV and without the IMU/optics device block '
+                               '(tools/prepare_flight_device_engine.py)'
+                               if spec.get('engine') == 'flight-device' else '')}
+                if any(getattr(mi.cp, 'basic', None) for mi in missions) else {})}
     open(os.path.join(B, '%s-proof.json' % spec_id), 'w').write(json.dumps(proof, indent=1) + '\n')
     smap = {}
     for mi in missions:
@@ -484,7 +541,7 @@ def group_text(sym, groups, cases, rows):
     return '\n'.join(out) + '\n'
 
 
-def freeze_c64(spec, sym, missions, cases, rows, visits):
+def freeze_c64(spec, sym, missions, cases, rows, visits, covers=None):
     """Groups of routines whose diagnostic fits below $c000, each with the
     spec's c64_per_point cases (default 2) per routine whose run stays in
     the group (fewest edits first). Writes tests/<id>_c64_vectors.h and
@@ -498,8 +555,21 @@ def freeze_c64(spec, sym, missions, cases, rows, visits):
         need = {}
         for p in mi.points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p),
-                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))[:per]
-            need[p] = mine
+                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
+            if covers is None:
+                need[p] = mine[:per]
+                continue
+            # Greedy: the case adding the most labels not yet taken, until
+            # the point's cases reach no more (at least one case).
+            got, pick_p = set(), []
+            while True:
+                best = max(mine, key=lambda i: len(covers[i] - got), default=None)
+                if best is None or (pick_p and not covers[best] - got):
+                    break
+                pick_p.append(best)
+                got |= covers[best]
+                mine = [i for i in mine if i != best]
+            need[p] = pick_p
         mask, pick = 0, []
         for p in mi.points:
             want = 0
@@ -529,7 +599,7 @@ def freeze_c64(spec, sym, missions, cases, rows, visits):
         mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY -D%s_KEEP0=0x%x' % (
             v, g, g, m.upper(), spec['symbol'][m].upper(), mask))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
-    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups]
+    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick), 'case_ids': list(pick)} for m, mask, pick in groups]
 
 
 if __name__ == '__main__':

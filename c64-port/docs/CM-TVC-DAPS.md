@@ -1,92 +1,38 @@
-# Translate Comanche TVCDAPS (CM pitch and yaw TVC autopilot)
+# Translate Comanche TVCDAPS
 
-Lane G. Milestone `cm-tvc-daps`.
+Lane G (CM flight). Milestone `cm-tvc-daps`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/TVCDAPS.agc` (`src/cm_tvc_daps.c`) is native C in full: The pitch and yaw TVC autopilots (PITCHDAP, YAWDAP with their HACK returns, the copycycles PCOPY +1 and YCOPY +1) and DAPINIT. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #77: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/TVCDAPS.agc`, all of it: bank 20 `2530`-`3500`, 489
-assembled words (including the ACTSAT, 1/ACTSAT, PITCHT5, DAPT5, YAWT5,
-1/RTLIM, 1-E(-AT) and E(-AT) constants; ERRLIM and 1/ERRLIM are EQUALS of
-fixed-fixed BIT13 and BIT3). Nothing is left in the file.
+9 routines, keyed by physical address in `cm_tvc_daps_basic`:
 
-`cm_tvc_daps(image, io)` runs one entry to its exit. `io` holds channel 14
-(WOR of bit 11 for pitch, bit 12 for yaw: the TVC drive requests).
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 20,2530 PITCHDAP | basic | GENADR PITCHDAP |
+| 20,2541  | basic | return from HACK |
+| 20,2543 PCDUDOTS | basic | return from HACK |
+| 20,2675  | basic | entry 20,2675 (TVCRESTARTS.agc CADR PCOPY      +1) |
+| 20,2732 YAWDAP | basic | GENADR YAWDAP |
+| 20,2743  | basic | return from HACK |
+| 20,2745 YINTEGRL | basic | return from HACK |
+| 20,3051  | basic | entry 20,3051 (TVCRESTARTS.agc CADR YCOPY      +1) |
+| 20,3107 DAPINIT | basic | entry DAPINIT (TVCINITIALIZE.agc 2CADR DAPINIT) |
 
-| Entry | Reached from |
-|---|---|
-| `2530` PITCHDAP | T5RUPT via T5LOC (PITCHT5, set by YAWDAP and DAPINIT) |
-| `2732` YAWDAP | T5RUPT via T5LOC (YAWT5, set by PITCHDAP) |
-| `3107` DAPINIT | T5RUPT via DAPT5 (TVCINITIALIZE) |
-| `2541`, `2543`, `2743`, `2745` | return from `TC HACK` (TVCSTROKETEST) |
-| `2675` PCOPY+1, `3051` YCOPY+1 | ISWCALL from FINCOPY (TVCEXECUTIVE); end in TC Q |
+Destinations outside the file: HACK, NOQRSM, RESUME. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-Admitted state: FB bank 20 (`040000`), EB E6, BB `040006`, any raw A/L,
-erasable contents and channel 14; for PCOPY+1/YCOPY+1, Q must be a caller's
-return in `4000`-`7777`. `CM_TVC_DAPS_OK` leaves `Z = RESUME 5333` (PDAPEND,
-YDAPEND), `Z = NOQRSM 5335` (DAPINIT), `Z = HACK 3533` with Q the TC's
-return, or `Z` = the caller's return with `Q = 3`; anything else is
-`CM_TVC_DAPS_OUT_OF_SCOPE`, image and io unchanged. The file has no loop.
+## Domain
 
-### How it is translated
-
-As in `cm-tvc-init`: one qualified `agc_image_ops` primitive per original
-word, under C labels named for the original addresses. Each `TCR` sets Q
-and jumps; each `TC Q` goes through one dispatch on the return address, the
-way the TC word held in Q does (leaving Q = 3). The dispatch covers the
-twelve TCR returns; any other Q is the external caller. MSU and WOR are
-written from the yaAGC definitions.
-
-- `TS L` at `3141` after DOUBLE overflows when CMDTMP+1 is large; the skip
-  goes to `AD CMDTMP` with A = ±1 (the carry into the high word).
-- `TS TIME5` at `3114` overflows with large T5TVCDT; the skip goes to
-  `TS T5LOC` with A = ±1.
-- The other TS words store an MSU or MP result, a load, a constant or a
-  CCS result, so they cannot overflow.
-- `CCS A` at `3212` and `3407` sees DAPDATR1 masked with BIT14 or BIT13,
-  so only the + and +0 slots occur. The +0/-0 slots of ERRORLIM and ACTLIM
-  follow a BZF that has already taken a zero product; they are translated
-  (they store the CCS's +0) but no sample reaches them.
-
-## Source map
-
-`evidence/cm-tvc-daps/cm-tvc-daps-source-map.json`
-(`tools/cm_tvc_daps_source.py`): every word with its source line, rope
-check and native label, the 32 fixed-constant reads matched to the native
-literals, the TC Q dispatch matched to the listing's TCR return addresses
-and the HACK returns matched to the listing's `TC HACK` words.
-
-Independent assembly comparison: `evidence/cm-tvc-daps/cm-tvc-daps-assembly-comparison.json`
-(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
-unchanged file against the original Comanche055 rope, without reading the
-native code.
+Canonical 2048-word image under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. Any values of the DAP erasables; PITCHDAP and YAWDAP entered as the T5RUPT task their GENADR/BBCON pairs name.
 
 ## Evidence
 
-Hashes: `evidence/cm-tvc-daps/SHA256.json`; bulk files in release
-`evidence-cm-tvc-daps`.
+Hashes: `evidence/cm-tvc-daps/SHA256.json`; all files are in the tree.
 
-- Oracle: `deps/cm-flight-fixture` (`tools/cm_flight_prepare_reference.py`,
-  original CM rope `6e3150ae...`). The runner stops at HACK, RESUME, NOQRSM
-  or, for PCOPY+1/YCOPY+1, the caller's return. Channel 14 starts with the
-  bits yaAGC's gyro and CDU drive models act on (`01000`, `070000`) clear.
-  yaAGC's optics CDU model empties OPTY/OPTX (`035`/`036`) when bits 11/12
-  are set; the program never addresses them, so the runner keeps them as
-  the program left them. The runner's scaler is held, so TIME5 does not
-  count.
-- Host and sanitizer results: `make test-cm-tvc-daps sanitize-cm-tvc-daps`.
-  65536 cases (`tests/cm_tvc_daps_cases.c`: every entry; STROKER zero, -0,
-  small or raw; CDU readings near and far from their past values; attitude
-  errors, rates, sines and cosines, filter coefficients, VARK, offsets and
-  filter state zero, -0, small, medium or raw, so the rate limit, ERRORLIM,
-  ACTLIM, its DOUBLE overflow, both DAPDATR1 cascade choices and DAPINIT's
-  TIME5 overflow all occur; raw A/L/Q and unowned words). Every case reaches
-  an exit, and the two sides agree on all of them. Stream identity
-  `cm-tvc-daps-source-stream.json`, deltas `cm-tvc-daps-reference.deltas.xz`,
-  log `cm-tvc-daps-checks.log`.
-- C64 execution results: `make vice-cm-tvc-daps`, 128 frozen rows
-  (`tools/cm_tvc_daps_freeze.py`). `cm-tvc-daps-results.json`.
-
-## Open
-
-ABI registration of the entries follows in the Lane G routine-table step,
-after Lane A's ISWRETRN fix.
+- **Source map.** `cm-tvc-daps-source-map.json` lists all 489 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-tvc-daps-differential` runs 256 states per routine (2,304 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 14 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-tvc-daps-proof.json` (`cm-tvc-daps-differential.log` is the run). One case in 32 is frozen in `tests/cm_tvc_daps_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-tvc-daps sanitize-cm-tvc-daps` runs the 72 frozen cases (`cm-tvc-daps-host.log`).
+- **C64 execution results.** `make vice-cm-tvc-daps` runs 1 diagnostic program with 22 cases (`cm-tvc-daps-vice.log`, which starts with each PRG's SHA-256). The cases are chosen per routine so the C64 runs reach every compiled label the host cases reach: 487 of 487.

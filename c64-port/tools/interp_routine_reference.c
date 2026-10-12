@@ -16,7 +16,10 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
 /* A from_file entry 0xffff followed by INTPRET's address (Lane G's whole-file
  * basic compiles): any transfer from the file to a fixed address outside it
  * other than INTPRET stops too. */
-struct stops{unsigned newops,nr,first[16],last[16],n,ext[64],nf,from_file[64],any,intpret;};
+/* Further entries after those two are counter cells yaAGC's device models
+ * empty (OPTX/OPTY under channel 14's drive bits): words the file never
+ * addresses, so the run leaves them as the case set them. */
+struct stops{unsigned newops,nr,first[16],last[16],n,ext[64],nf,from_file[64],any,intpret,nd,device[8];};
 static unsigned outside(const struct stops *t,unsigned p){unsigned i;for(i=0;i<t->nr;++i)if(p>=t->first[i]&&p<=t->last[i])return 0;return 1;}
 /* Physical fixed address of Z (0xfffe when Z is erasable; 0xffff is no stop). */
 static unsigned z_physical(unsigned z){unsigned bank=(get(4)>>10)&037u;
@@ -37,7 +40,8 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
  for(m=0;m<2;++m){st[m].newops=rd16(f);st[m].nr=rd16(f);if(st[m].nr>16u)return 2;for(i=0;i<st[m].nr;++i){st[m].first[i]=rd16(f);st[m].last[i]=rd16(f);}
   st[m].n=rd16(f);if(st[m].n>64u)return 2;for(i=0;i<st[m].n;++i)st[m].ext[i]=rd16(f);
   st[m].nf=rd16(f);if(st[m].nf>64u)return 2;for(i=0;i<st[m].nf;++i)st[m].from_file[i]=rd16(f);
-  st[m].any=0;for(i=0;i+1<st[m].nf;++i)if(st[m].from_file[i]==0xffffu){st[m].any=1;st[m].intpret=st[m].from_file[i+1];}}
+  st[m].any=0;st[m].nd=0;for(i=0;i+1<st[m].nf;++i)if(st[m].from_file[i]==0xffffu){unsigned j;st[m].any=1;st[m].intpret=st[m].from_file[i+1];
+   for(j=i+2;j<st[m].nf&&st[m].nd<8u;++j)st[m].device[st[m].nd++]=st[m].from_file[j];break;}}
  count=(unsigned)rd32(f);
  for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned stopped=0,stop,zp,prev_in=1,was_in=0;const struct stops *t;
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=0;stop=rd16(f);c.nedits=(uint16_t)rd16(f);
@@ -66,7 +70,9 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
    }
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0\n",n,pc);continue;}
+  {agc_word keep[8];for(i=0;i<t->nd;++i)keep[i]=s.words[t->device[i]];
   for(i=0;i<2048u;++i)s.words[i]=(agc_word)((unsigned)*memory(i)&(i<2u?0177777u:077777u));
+  for(i=0;i<t->nd;++i)s.words[t->device[i]]=keep[i];}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)irc_ch[i]=(agc_word)((unsigned)machine.InputChannel[irc_ch_num[i]]&077777u);irc_trap[0]=(agc_word)machine.Trap31A;irc_trap[1]=(agc_word)machine.Trap31B;irc_trap[2]=(agc_word)machine.Trap32;}
   printf("%u 0 %u %lu",n,pc,(unsigned long)irc_digest(0,&s,(uint16_t)machine.AllowInterrupt));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)s.words[i]);printf(" %u",(unsigned)machine.AllowInterrupt);}

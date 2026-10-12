@@ -1,0 +1,79 @@
+{
+ "milestone": "cm-body-attitude",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 2048,
+ "cases_sha256": "0a0ad5a26ddc72a04ee5d1f4c1333b52f2dc145e257a39ffd554072a9df3d669",
+ "oracle_sha256": "0c79659384a13e1031fb6da58349bcde9e7cf4401e8f4b98b458fa257f398446",
+ "frozen_vectors": 64,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x7",
+   "cases": 3,
+   "case_ids": [
+    33,
+    265,
+    521
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xf8",
+   "cases": 9,
+   "case_ids": [
+    783,
+    1036,
+    1075,
+    1060,
+    1377,
+    1391,
+    1403,
+    1536,
+    1810
+   ]
+  }
+ ],
+ "c64_label_coverage": {
+  "host_labels": 72,
+  "c64_labels": 72,
+  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+ },
+ "stops": {
+  "CM 37,3470 CM/POSE": {
+   "06037": 256
+  },
+  "CM 37,3471 ": {
+   "06037": 256
+  },
+  "CM 37,3517 CM/POSE2": {
+   "06037": 256
+  },
+  "CM 37,3627 ": {
+   "06037": 218,
+   "05650": 38
+  },
+  "CM 37,3645 ": {
+   "05650": 36,
+   "06037": 220
+  },
+  "CM 37,3655 CM/ATUP": {
+   "06037": 256
+  },
+  "CM 37,3744 REDOPOSE": {
+   "06037": 256
+  },
+  "CM 37,3753 CM/POSE3": {
+   "06037": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: none); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+}

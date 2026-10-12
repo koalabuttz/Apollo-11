@@ -1,6 +1,0 @@
-cm-tvc-massprop: 128 frozen original MASSPROP/FIXCW states, entry refusals: PASS
-PASS 65536 original MASSPROP/FIXCW oracle states equal native 2052-word rows {'returned': 59237, 'no_exit': 6299} 4cd41a3179a4caf4b5675e01ce25a2440f75151770e4bede6f658b4c19275259
-PASS 91 original TVCMASSPROP words mapped; listing equals rope; 32 native operand words equal the rope
-cm-tvc-massprop: 128 frozen original MASSPROP/FIXCW states, entry refusals: PASS
-PASS 65536 original MASSPROP/FIXCW oracle states equal native 2052-word rows (ASan/UBSan) {'returned': 59237, 'no_exit': 6299} 4cd41a3179a4caf4b5675e01ce25a2440f75151770e4bede6f658b4c19275259
-PASS: VICE PAL cm-tvc-massprop.prg: 128 checks, 0 failures

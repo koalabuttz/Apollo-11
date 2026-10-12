@@ -1,0 +1,7 @@
+PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+1ca2c08f5e48543572c82de9f7a84a72061c90e0aae5f5ac4871c4722a0ff5c2  build/cm-tvc-massprop-1.prg
+
+$ make vice-cm-tvc-massprop
+for p in build/cm-tvc-massprop-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-tvc-massprop-1.prg: 4 checks, 0 failures
+exit 0

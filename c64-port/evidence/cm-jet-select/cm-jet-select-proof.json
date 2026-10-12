@@ -1,0 +1,61 @@
+{
+ "milestone": "cm-jet-select",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 512,
+ "cases_sha256": "b559b8fc93b3c47367fb76f2ea2b278521635fc004049463e606773fbfd902b9",
+ "oracle_sha256": "15e5422fdb56640805dba399eafc15298676c4a0f7d990bd6b5d94d97cfe3a87",
+ "frozen_vectors": 16,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x3",
+   "cases": 21,
+   "case_ids": [
+    101,
+    198,
+    9,
+    187,
+    62,
+    228,
+    138,
+    155,
+    18,
+    136,
+    186,
+    12,
+    132,
+    268,
+    313,
+    493,
+    289,
+    259,
+    337,
+    439,
+    328
+   ]
+  }
+ ],
+ "c64_label_coverage": {
+  "host_labels": 532,
+  "c64_labels": 532,
+  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+ },
+ "stops": {
+  "CM 17,2552 JETSLECT": {
+   "05333": 256
+  },
+  "CM 17,3617 T6START": {
+   "05333": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: RESUME); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 05, 06, 13, 31 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+}

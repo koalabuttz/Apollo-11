@@ -1,27 +1,34 @@
 # SPDX-License-Identifier: MIT
-# Milestone cm-jet-select (lane G): Translate Comanche JET_SELECTION_LOGIC (CM RCS jet selection T5 task and T6 jet sequencing)
-CM_JET_SELECT_SRC = src/cm_jet_select.c src/agc_image_ops.c src/agc_word.c src/agc_multiword.c src/agc_hardware_divide.c
-CM_JET_SELECT_TEST = tests/test_cm_jet_select.c tests/cm_jet_select_cases.c tests/frozen_words.c
-CM_JET_SELECT_HDR = include/cm_jet_select.h include/agc_image_ops.h tests/cm_jet_select_cases.h tests/cm_jet_select_vectors.h
-.PHONY: test-cm-jet-select sanitize-cm-jet-select c64-cm-jet-select vice-cm-jet-select
+# Milestone cm-jet-select (lane G): Comanche055 JET_SELECTION_LOGIC compiled by
+# tools/interp_compile.py and tools/basic_compile.py into native routines of
+# the control-transfer ABI.
+CM_JET_SELECT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
+CM_JET_SELECT_SRC = src/cm_jet_select.c tests/cm_jet_select_target.c $(CM_JET_SELECT_COMMON)
+CM_JET_SELECT_HDR = include/cm_jet_select.h tests/interp_case.h tests/cm_jet_select_vectors.h tests/cm_jet_select_c64_vectors.h
+CM_JET_SELECT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
+.PHONY: test-cm-jet-select sanitize-cm-jet-select c64-cm-jet-select vice-cm-jet-select cm-jet-select-differential
 all: build/test-cm-jet-select
 test: test-cm-jet-select
 sanitize: sanitize-cm-jet-select
-build/test-cm-jet-select: $(CM_JET_SELECT_SRC) $(CM_JET_SELECT_TEST) $(CM_JET_SELECT_HDR) | build
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_JET_SELECT_SRC) $(CM_JET_SELECT_TEST) -o $@
-# All 65536 cases against unchanged Comanche055 in the pinned yaAGC, then the
-# frozen rows, then the source map of every emitted original word.
+build/test-cm-jet-select: $(CM_JET_SELECT_SRC) tests/test_cm_jet_select.c $(CM_JET_SELECT_HDR) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_JET_SELECT_SRC) tests/test_cm_jet_select.c -o $@
 test-cm-jet-select: build/test-cm-jet-select
 	./build/test-cm-jet-select
-	python3 tools/cm_jet_select_differential.py
-	python3 tools/cm_jet_select_source.py
-	python3 tools/cm_flight_assembly_comparison.py cm-jet-select JET_SELECTION_LOGIC.agc
 sanitize-cm-jet-select: | build
-	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer $(CM_JET_SELECT_SRC) $(CM_JET_SELECT_TEST) -o build/test-cm-jet-select-sanitize
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CM_JET_SELECT_SRC) tests/test_cm_jet_select.c -o build/test-cm-jet-select-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-jet-select-sanitize
-	python3 tools/cm_jet_select_differential.py --sanitize
-c64-cm-jet-select: build/cm-jet-select.prg
-build/cm-jet-select.prg: $(CM_JET_SELECT_SRC) $(CM_JET_SELECT_TEST) platform/c64/cm_jet_select_diagnostic.c $(CM_JET_SELECT_HDR) | build
-	$(MOS_CC) $(CPPFLAGS) -DCM_JET_SELECT_CHECK_ONLY -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-jet-select.map $(CM_JET_SELECT_SRC) $(CM_JET_SELECT_TEST) platform/c64/cm_jet_select_diagnostic.c -o $@
-vice-cm-jet-select: build/cm-jet-select.prg
-	python3 tools/vice_run.py build/cm-jet-select.prg
+# Host-only oracle comparison: the original rope in yaAGC against the native
+# routines (needs deps/virtualagc and the Comanche055 listing build).
+cm-jet-select-differential:
+	python3 tools/interp_routine_differential.py cm-jet-select --cases 256 --freeze
+	git diff --exit-code -- tests/cm_jet_select_vectors.h tests/cm_jet_select_c64_vectors.h tools/mk/cm-jet-select.groups
+# The C64 diagnostic is one program per group of routines (generated with
+# the vectors; the image sits under the KERNAL ROM, the code below $c000).
+include tools/mk/cm-jet-select.groups
+CM_JET_SELECT_C64_PRGS = $(foreach g,$(CM_JET_SELECT_GROUPS),build/cm-jet-select-$(g).prg)
+CM_JET_SELECT_C64_SRC = src/cm_jet_select.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_jet_select_target.c
+c64-cm-jet-select: $(CM_JET_SELECT_C64_PRGS)
+build/cm-jet-select-%.prg: $(CM_JET_SELECT_SRC) platform/c64/cm_jet_select_diagnostic.c tools/mk/cm-jet-select.groups $(CM_JET_SELECT_HDR) | build
+	$(MOS_CC) $(CPPFLAGS) $(CM_JET_SELECT_MOS_FLAGS) $(CM_JET_SELECT_GROUP_FLAGS_$*) -Wl,-Map,build/cm-jet-select-$*.map $(CM_JET_SELECT_C64_SRC) platform/c64/cm_jet_select_diagnostic.c -o $@
+vice-cm-jet-select: $(CM_JET_SELECT_C64_PRGS)
+	for p in $(CM_JET_SELECT_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

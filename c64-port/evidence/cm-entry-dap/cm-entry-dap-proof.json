@@ -1,0 +1,207 @@
+{
+ "milestone": "cm-entry-dap",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 7168,
+ "cases_sha256": "455d0d938365e05a68e10503dabffec3110e8ec5d2ffa91878b84011f61ae4b9",
+ "oracle_sha256": "cb19b4301d8aa032f2954918dfe6c9367ff039e9fe96af4b204cbab9d7348fcf",
+ "frozen_vectors": 224,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x1ffff",
+   "cases": 45,
+   "case_ids": [
+    9,
+    66,
+    252,
+    33,
+    364,
+    557,
+    752,
+    674,
+    728,
+    891,
+    1198,
+    1310,
+    1587,
+    1746,
+    1960,
+    2204,
+    2559,
+    2439,
+    2620,
+    2921,
+    3213,
+    3140,
+    3089,
+    3094,
+    3183,
+    3312,
+    3241,
+    3318,
+    3315,
+    3159,
+    3124,
+    3149,
+    3337,
+    3700,
+    3674,
+    3778,
+    3590,
+    3587,
+    3743,
+    3657,
+    3809,
+    3694,
+    3632,
+    4044,
+    4171
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffe0000",
+   "cases": 21,
+   "case_ids": [
+    4598,
+    4572,
+    4409,
+    4394,
+    4358,
+    4385,
+    4806,
+    4725,
+    4704,
+    4870,
+    5348,
+    5403,
+    5872,
+    5833,
+    6110,
+    6026,
+    6207,
+    6312,
+    6514,
+    6833,
+    7002
+   ]
+  }
+ ],
+ "c64_label_coverage": {
+  "host_labels": 802,
+  "c64_labels": 802,
+  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+ },
+ "stops": {
+  "CM 15,2434 READGYMB": {
+   "05245": 192,
+   "05412": 64
+  },
+  "CM 15,2500 ": {
+   "05324": 256
+  },
+  "CM 15,2507 ": {
+   "05074": 95,
+   "05245": 127,
+   "05324": 34
+  },
+  "CM 15,2540 ": {
+   "05075": 256
+  },
+  "CM 15,2543 ": {
+   "05074": 256
+  },
+  "CM 15,2551 ": {
+   "05075": 256
+  },
+  "CM 15,2607 ": {
+   "05324": 40,
+   "05075": 216
+  },
+  "CM 15,2631 ": {
+   "05074": 256
+  },
+  "CM 15,2641 ": {
+   "05324": 256
+  },
+  "CM 15,2665 ATTRATES": {
+   "05074": 256
+  },
+  "CM 15,2700 ": {
+   "05075": 256
+  },
+  "CM 15,2712 ": {
+   "05075": 256
+  },
+  "CM 15,2724 ": {
+   "05333": 146,
+   "04740": 103,
+   "05245": 5,
+   "05412": 2
+  },
+  "CM 15,3056 ": {
+   "05245": 256
+  },
+  "CM 15,3064 EXDAP4": {
+   "05333": 144,
+   "04740": 103,
+   "05245": 9
+  },
+  "CM 15,3207 SETJTAG": {
+   "05412": 256
+  },
+  "CM 15,3215 ": {
+   "05324": 256
+  },
+  "CM 15,3642 JETACTN": {
+   "05333": 46,
+   "05324": 148,
+   "05245": 32,
+   "04740": 30
+  },
+  "CM 15,3650 JETCALL": {
+   "05324": 183,
+   "05245": 73
+  },
+  "CM 15,3717 ": {
+   "05333": 256
+  },
+  "CM 20,3612 CM/DAPON": {
+   "05560": 256
+  },
+  "CM 20,3616 ": {
+   "05560": 256
+  },
+  "CM 20,3620 ": {
+   "04662": 135,
+   "04701": 121
+  },
+  "CM 20,3636 ": {
+   "04662": 136,
+   "04701": 120
+  },
+  "CM 20,3672 CM/DAPIC": {
+   "05245": 253,
+   "02434": 3
+  },
+  "CM 20,3715 ": {
+   "05372": 256
+  },
+  "CM 20,3716 ": {
+   "05372": 256
+  },
+  "CM 20,3732 ": {
+   "04701": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2434, 2PHSCHNG, BANKCALL, DOWNFLAG, IBNKCALL, PHASCHNG, POSTJUMP, RESUME, SPCOS, SPSIN, TASKOVER, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 05, 06 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+}

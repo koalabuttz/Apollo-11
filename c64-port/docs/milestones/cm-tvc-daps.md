@@ -1,7 +1,7 @@
 ---
 id: cm-tvc-daps
-title: Translate Comanche TVCDAPS (CM pitch and yaw TVC autopilot: rate estimate, cascade filters, actuator commands)
-date: 2026-10-12T18:30Z
+title: Translate Comanche TVCDAPS
+date: 2026-10-12T22:00Z
 lane: G
 ---
-Native C for all of Comanche055 TVCDAPS (bank 20 `2530`-`3500`, 489 words): the PITCHDAP and YAWDAP T5 tasks (CDU rate limit, body-rate error, error limit, the three-cascade forward filter with VARK gain, offsets, actuator limit, TVC commands on TVCPITCH/TVCYAW with the channel 14 drive bits, precompensation and the DELBAR filter), the DAPINIT T5 task and the PCOPY/YCOPY copy cycles, from every entry to HACK, RESUME, NOQRSM or the caller's return. The final image and channel 14 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 489 words, 32 fixed constants, the TC Q dispatch and HACK returns are checked against the listing and rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-DAPS.md`.
+All of Comanche055 TVCDAPS (489 words) is native C on the control-transfer ABI, as 9 routines compiled whole-file by `tools/basic_compile.py`. All 2,304 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 72 frozen cases, and 1 C64 diagnostic passes 22 cases in VICE that reach every label the host cases reach. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-DAPS.md`.

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-body-attitude",
+  "release": "evidence-cm-body-attitude",
+  "files": {
+    "cm-body-attitude-differential.log": {
+      "sha256": "ef3a06d53c0bfd7a8095934c81175d416f82d0e3862fb828bf9be6020db6a20a",
+      "bytes": 396,
+      "store": "tree"
+    },
+    "cm-body-attitude-host.log": {
+      "sha256": "9b7ef5ec0b444a5c7d1718268d9f98c0e9a1568ff212d80c1998b48c330f4473",
+      "bytes": 1104,
+      "store": "tree"
+    },
+    "cm-body-attitude-proof.json": {
+      "sha256": "0dc4b96f779c2cd35e73626873b7e1af33669f434fefcfda05948805201d80ed",
+      "bytes": 1969,
+      "store": "tree"
+    },
+    "cm-body-attitude-source-map.json": {
+      "sha256": "2947fde0d367b9006c77f3f6da8ffd2065183d4c5c7e318712c603e62bcd62dc",
+      "bytes": 27120,
+      "store": "tree"
+    },
+    "cm-body-attitude-vice.log": {
+      "sha256": "e09f9ad1768f8f1d2daa66d1741e6b257f53bac25d6ac12d68fef24d6f7770d4",
+      "bytes": 611,
+      "store": "tree"
+    }
+  }
+}

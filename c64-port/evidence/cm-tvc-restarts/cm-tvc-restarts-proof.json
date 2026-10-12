@@ -1,0 +1,77 @@
+{
+ "milestone": "cm-tvc-restarts",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 1792,
+ "cases_sha256": "6ca89de52cb2886b2ac26767ad09ac20b4c40273aa152b1c8bcc54d18efb1500",
+ "oracle_sha256": "7d7b180c4176f8dd4f158ba1daac526c2db37f271ab41a2bebb4988439145d00",
+ "frozen_vectors": 56,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x7f",
+   "cases": 15,
+   "case_ids": [
+    99,
+    352,
+    298,
+    331,
+    746,
+    852,
+    963,
+    1005,
+    804,
+    915,
+    1189,
+    1054,
+    1081,
+    1415,
+    1566
+   ]
+  }
+ ],
+ "c64_label_coverage": {
+  "host_labels": 73,
+  "c64_labels": 73,
+  "note": "compiled basic labels (each word and each branch outcome reached with A clean or unknown) the host cases reach, and those the C64 cases reach"
+ },
+ "stops": {
+  "CM 16,3140 REDOTVC": {
+   "05245": 256
+  },
+  "CM 16,3152 TVCDAPHS": {
+   "05333": 177,
+   "04744": 79
+  },
+  "CM 16,3174 ENABL2": {
+   "05335": 256
+  },
+  "CM 16,3205 CMDSOUT": {
+   "04701": 217,
+   "04740": 39
+  },
+  "CM 16,3232 CHKSTRK": {
+   "04701": 256
+  },
+  "CM 16,3243 ": {
+   "05333": 256
+  },
+  "CM 16,3253 EXRSTRT": {
+   "03121": 38,
+   "03003": 41,
+   "03011": 49,
+   "03132": 35,
+   "03043": 46,
+   "03040": 47
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: IBNKCALL, ISWCALL, NOQRSM, POSTJUMP, RESUME, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 12, 14 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)"
+}

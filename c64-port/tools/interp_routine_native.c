@@ -28,9 +28,14 @@ static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const
   if(call(p,s,io)!=EXEC_OK)break;
  }
 }
-int main(int argc,char **argv){unsigned n,i,m,count,dump,visits;FILE *f;static irc_edit edits[4096];
+/* cover: the labels of the compiled basic code a case reaches (a build with
+ * -DIRC_COVER_ON). */
+static uint8_t cover[1024];
+void irc_cover(unsigned k);
+void irc_cover(unsigned k){if(k<8192u)cover[k>>3]=(uint8_t)(cover[k>>3]|1u<<(k&7u));}
+int main(int argc,char **argv){unsigned n,i,m,count,dump,visits,covers;FILE *f;static irc_edit edits[4096];
  if(argc<2)return 2;
- dump=argc>2&&!strcmp(argv[2],"dump");visits=argc>2&&!strcmp(argv[2],"visits");
+ dump=argc>2&&!strcmp(argv[2],"dump");visits=argc>2&&!strcmp(argv[2],"visits");covers=argc>2&&!strcmp(argv[2],"cover");
  f=fopen(argv[1],"rb");if(!f)return 2;
  if(rd32(f)!=0x32435249ul)return 2;
  for(m=0;m<2;++m){unsigned k,j;rd16(f);k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);for(j=0;j<2u;++j){k=rd16(f);for(i=0;i<k;++i)rd16(f);}}
@@ -41,10 +46,12 @@ int main(int argc,char **argv){unsigned n,i,m,count,dump,visits;FILE *f;static i
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
   c.edits=edits;irc_build(&s,&c);
   if(visits){irc_build(&s,&c);irc_visits(irc_program(c.cm),&s,&c,200);irc_build(&s,&c);}
+  memset(cover,0,sizeof cover);
   kind=irc_run(irc_program(c.cm),&s,&c,200,&ie);
   printf("%u %u %u %lu",n,kind,(unsigned)(s.words[5]&077777u),(unsigned long)irc_digest(0,&s,ie));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)(s.words[i]&(i<2u?0177777u:077777u)));printf(" %u",(unsigned)ie);}
   if(visits)for(i=0;i<nvisit;++i)printf(" v%u",(unsigned)visit[i]);
+  if(covers)for(i=0;i<8192u;++i)if(cover[i>>3]&(1u<<(i&7u)))printf(" c%u",i);
   printf("\n");
  }return 0;
 }
