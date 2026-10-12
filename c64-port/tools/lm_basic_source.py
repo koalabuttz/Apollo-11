@@ -18,7 +18,7 @@ holds:
   - for a constant (OCT/OCTAL/DEC/ADRES/...), its value.
 EXTEND carries no operand. Words owned by a compiled site table are looked up
 there instead. Returns the JSON-ready line map."""
-import hashlib, pathlib, re, shutil, subprocess, sys
+import hashlib, pathlib, re, subprocess, sys
 R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R / 'tools'))
 from fixed_data_generate import assemble, listing_records, source_line, filename_alias, rope_word  # noqa: E402
@@ -58,15 +58,25 @@ def numbers(text):
     return vals
 
 
+# Files this repository names differently from the assembler's MAIN.agc.
+RENAMED = {'Q_R-AXIS_RCS_AUTOPILOT.agc': 'Q,R-AXES_RCS_AUTOPILOT.agc'}
+
+
 def reassemble(files, work_name):
     root = R / 'build' / work_name
     assemble('Luminary099', root)
     work = root / 'Luminary099'
     includes = [line[1:].split()[0] for line in (work / 'MAIN.agc').read_text().splitlines() if line.startswith('$')]
-    aliases = {}
+    aliases, repairs = {}, {}
     for name in files:
-        alias = filename_alias(name, includes)
-        shutil.copyfile(R.parent / 'Luminary099' / name, work / alias)
+        alias = RENAMED.get(name) or filename_alias(name, includes)
+        text = (R.parent / 'Luminary099' / name).read_text()
+        # The same indentation-only repair fixed_data_generate applies: a
+        # '+n' location field written in the label column after a tab.
+        normalized = re.sub(r'^\t([+-]\d+D?)\t', r' \1\t\t', text, flags=re.M)
+        normalized = re.sub(r'^([+-]\d+D?)\t', r' \1\t', normalized, flags=re.M)
+        repairs[name] = [n for n, (a, b) in enumerate(zip(text.splitlines(), normalized.splitlines()), 1) if a != b]
+        (work / alias).write_text(normalized)
         aliases[alias] = 'Luminary099/' + name
     with (work / 'assembly.lst').open('w') as log:
         subprocess.run([str(R / 'deps/virtualagc/yaYUL/yaYUL'), 'MAIN.agc'], cwd=work, stdout=log,
@@ -74,7 +84,7 @@ def reassemble(files, work_name):
     rope = (work / 'MAIN.agc.bin').read_bytes()
     if rope != (R / 'evidence/fixed-data-lm-original.rope.bin').read_bytes():
         raise SystemExit('FAIL fresh rope differs from the certified fixed-data rope')
-    return work, aliases, rope
+    return work, aliases, rope, repairs
 
 
 def check(native, files, bank, owners, helpers, inline=None, channels=None, sites=None, work_name='basic-source'):
@@ -83,7 +93,7 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
     that spans banks (bank is then a tuple of the banks allowed); sites:
     {function: path of a .inc table}."""
     inline, channels, sites = inline or {}, channels or {}, sites or {}
-    work, aliases, rope = reassemble(list(files), work_name)
+    work, aliases, rope, repairs = reassemble(list(files), work_name)
     funcs = bodies(native)
     texts = {f'Luminary099/{n}': (R.parent / 'Luminary099' / n).read_text() for n in files}
     records = listing_records(work / 'assembly.lst', aliases, texts, rope)
@@ -180,7 +190,11 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
     missing = {o for _, _, _, o in owners} - owned
     if missing:
         raise SystemExit('FAIL native owners own no source: ' + ', '.join(sorted(missing)))
+    mapped = {(r['path'], r['line']) for r in rows}
+    fixes = {f'Luminary099/{n}': [k for k in v if (f'Luminary099/{n}', k) in mapped] for n, v in repairs.items()}
+    fixes = {n: v for n, v in fixes.items() if v}
     return dict(sources={p: hashlib.sha256((R.parent / p).read_bytes()).hexdigest() for p in texts},
                 rope_sha256=hashlib.sha256(rope).hexdigest(), native_path=native,
                 native_sha256=hashlib.sha256((R / native).read_bytes()).hexdigest(),
-                source_words=sum(len(r['words']) for r in rows), source_lines=len(rows), line_map=rows), owned
+                source_words=sum(len(r['words']) for r in rows), source_lines=len(rows),
+                **({'indentation_only_repairs': fixes} if fixes else {}), line_map=rows), owned
