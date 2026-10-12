@@ -18,6 +18,8 @@ assembled word and against the binary rope. yaYUL is a build-time oracle only.
   python3 tools/agc_sites_generate.py cm-alarm --check    # fail if stale
 """
 import argparse
+import difflib
+import functools
 import hashlib
 import json
 import pathlib
@@ -67,6 +69,41 @@ def listing_lines(listing):
         words = [int(w, 8) for w in text[33:44].split() if re.fullmatch('[0-7]{5}', w)]
         yield (current, int(match[1]), text[14:23].strip(), words, text[45:65].strip(),
                text[65:74].strip(), text[74:].split('#', 1)[0].strip())
+
+
+@functools.lru_cache(maxsize=None)
+def source_files(mission):
+    """Assembled copy's file names -> repository names (a few are spelled differently)."""
+    names = sorted(p.name for p in (ROOT.parent / mission).glob('*.agc'))
+    key = {re.sub('[^A-Z0-9]', '', n[:-4].upper()): n for n in names}
+
+    def match(n):
+        k = re.sub('[^A-Z0-9]', '', n[:-4].upper())
+        hits = [v for c, v in key.items() if c == k] or [v for c, v in key.items() if k.startswith(c)]
+        return (hits or difflib.get_close_matches(n, names, 1, 0.8) or [None])[0]
+    return {p.name: match(p.name) for p in (ROOT / 'build/fixed-data' / mission).glob('*.agc')}
+
+
+@functools.lru_cache(maxsize=None)
+def source_lines(mission, path):
+    """Map a listing line (of the assembled copy under build/fixed-data) to the
+    line of the repository source, whose header comments and indentation
+    differ. A line that differs takes the offset of the last matching one."""
+    def words(p):
+        return [' '.join(x.split()) for x in p.read_text(errors='replace').splitlines()]
+    built = words(ROOT / 'build/fixed-data' / mission / path)
+    source = words(ROOT.parent / mission / source_files(mission)[path])
+    out, delta = {}, 0
+    blocks = difflib.SequenceMatcher(None, built, source, autojunk=False).get_matching_blocks()
+    starts = {a: b - a for a, b, n in blocks if n}
+    for k in range(len(built)):
+        delta = starts.get(k, delta)
+        out[k + 1] = k + 1 + delta
+    return out
+
+
+def source_line(mission, path, line):
+    return f'{source_files(mission)[path]}:{source_lines(mission, path)[line]}'
 
 
 def symbol_table(listing):
@@ -126,7 +163,7 @@ def sites(mission, callees):
             assert rope_word(rope, at) == word, (n_path, n_line)
             result.append({'physical': at, 'word': word, 'callee': callee,
                            'callee_address': words[0],
-                           'caller': f'{path}:{line}', 'operand': text})
+                           'caller': source_line(mission, path, line), 'operand': text})
     result.sort(key=lambda r: r['physical'])
     assert len({r['physical'] for r in result}) == len(result)
     return result, hashlib.sha256(rope).hexdigest()
