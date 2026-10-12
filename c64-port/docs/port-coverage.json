@@ -466,6 +466,16 @@
           ],
           "scope": "Display sleep and wake: GOSLEEPS, WAITMASK +1/XCHSLEEP and its JOBWAKE and XCHTOEND returns, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the IDLEMASK and XCHQADD returns from DOWNENT2/UPENT2, MARKWAKE/WAKEPLAY and the MARKFMSK returns, INITDSP and its SUPERSW and PRIOCHNG returns, to their callee boundaries (UPENT2, DOWNENT2, JOBWAKE, JOBSLEEP, MARKPLAY, OKTOCOPY, ENDRET, SUPERSW, PRIOCHNG, BANKJUMP), register-exact against the original program.",
           "verification": "docs/LANEC-DI-SLEEP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_idle.c",
+            "src/lanec.c",
+            "include/lanec_di_idle.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "ENDIDLE handling and display returns, CLEANEND through TERMATE and PROCEED through ERASER (REST/RESTSLEP, FLASHSUB, ISITPRIO, the ENDIDLE call and its terminate, proceed and load returns, OKTOENT/ENDOUT, TIMECHEK, NORMWAKE, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS, ERASER), every basic block to its callee boundary (FINDVAC, UPENT2, DOWNENT2, NVSUBUSY, FLASHON, ENDIDLE, NVSUB, PRIOCHNG, SUPERSW, NOVAC, BANKJUMP, ENDOFJOB, PRIOBORT, KEEPPRIO, MARKWAKE, WAKEPLAY, GOSLEEPS, NORMBNCH, PINBRNCH), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-IDLE.md"
         }
       ]
     },
@@ -3095,6 +3105,16 @@
           ],
           "scope": "Display sleep and wake: GOSLEEPS, WAITMASK +1/XCHSLEEP and its JOBWAKE and XCHTOEND returns, JOBXCHS with its WITCHONE, JOBWAKE and XCHNYLOC steps, the IDLEMASK and XCHQADD returns from DOWNENT2/UPENT2, MARKWAKE/WAKEPLAY and the MARKFMSK returns, INITDSP and its SUPERSW and PRIOCHNG returns, to their callee boundaries (UPENT2, DOWNENT2, JOBWAKE, JOBSLEEP, MARKPLAY, OKTOCOPY, ENDRET, SUPERSW, PRIOCHNG, BANKJUMP), register-exact against the original program.",
           "verification": "docs/LANEC-DI-SLEEP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_idle.c",
+            "src/lanec.c",
+            "include/lanec_di_idle.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "ENDIDLE handling and display returns, CLEANEND through TERMATE and PROCEED through ERASER (REST/RESTSLEP, FLASHSUB, ISITPRIO, the ENDIDLE call and its terminate, proceed and load returns, OKTOENT/ENDOUT, TIMECHEK, NORMWAKE, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS, ERASER), every basic block to its callee boundary (FINDVAC, UPENT2, DOWNENT2, NVSUBUSY, FLASHON, ENDIDLE, NVSUB, PRIOCHNG, SUPERSW, NOVAC, BANKJUMP, ENDOFJOB, PRIOBORT, KEEPPRIO, MARKWAKE, WAKEPLAY, GOSLEEPS, NORMBNCH, PINBRNCH), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-IDLE.md"
         }
       ]
     },
