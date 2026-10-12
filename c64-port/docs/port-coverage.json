@@ -993,8 +993,51 @@
       "sha256": "91635bbc0cf874075cdeeb9c8f7da291f340f8114841c0f34c9d1067d250b440",
       "bytes": 7027,
       "lines": 304,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_inflight_align.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (186 words, 23,3205-3476): CALCGTA, ARCTRIG (TRIG1, TRIG2), CALCGA (CALCGA1, GIMLOCK1 with its ALARM and UPFLAG returns) and AXISGEN (AXISGEN1-3), with the points after each STCALL, EXIT and TC INTPRET, as 21 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/INFLIGHT-ALIGN.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 23 as the caller's CALL leaves it, FIXLOC a VAC area, any PUSHLOC within it, MODE, X1/X2, operand and flag values; the AXISGEN loop states as the TIX loop produces them.",
+        "external_continuations": [
+          "The caller's return through the QPRET CADR (any interpretive file)",
+          "UPFLAG 05546, ALARM 05650, POODOO 05721 (alarm and flag routines, basic)",
+          "Interpreter V1STO2S through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/inflight-align/inflight-align-source-map.json",
+            "sha256": "a4588cab41a61cc3da4088aea9a7be2e1fad936e0e4099676996ec2ab88b161b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/inflight-align/inflight-align-proof.json",
+            "sha256": "a9c926774f2c189ecead361c8e57a4a3817fa71ac838aeeca3315ad3d754ab54"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/inflight-align/inflight-align-host.log",
+            "sha256": "b0ed56dd8ef3093d8aa3490f450ee881ea2e50a8fccaad400cffcefec5c11234"
+          },
+          "c64_execution_results": {
+            "path": "evidence/inflight-align/inflight-align-vice.log",
+            "sha256": "64cc83ba53f6032a0712de5ea7bfc4ad4d463350ae2fab525742a9d4036d7513"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/INTEGRATION_INITIALIZATION.agc",
@@ -3811,8 +3854,51 @@
       "sha256": "9d5e5d467f4eeedd9aee8a2f068e646a5d43ba3ec93a83cec565554b0c3fa52c",
       "bytes": 6931,
       "lines": 300,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_inflight_align.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (184 words, 23,3247-3536): CALCGTA, ARCTRIG (TRIG1, TRIG2), CALCGA (CALCGA1, GIMLOCK1 with its ALARM and UPFLAG returns) and AXISGEN (AXISGEN1-3), with the points after each STCALL, EXIT and TC INTPRET, as 21 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/INFLIGHT-ALIGN.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 23 as the caller's CALL leaves it, FIXLOC a VAC area, any PUSHLOC within it, MODE, X1/X2, operand and flag values; the AXISGEN loop states as the TIX loop produces them.",
+        "external_continuations": [
+          "The caller's return through the QPRET CADR (any interpretive file)",
+          "UPFLAG 05504, ALARM 05567, POODOO1 05726, ALARM1 05732 (alarm and flag routines, basic)",
+          "Interpreter V1STO2S through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/inflight-align/inflight-align-source-map.json",
+            "sha256": "a4588cab41a61cc3da4088aea9a7be2e1fad936e0e4099676996ec2ab88b161b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/inflight-align/inflight-align-proof.json",
+            "sha256": "a9c926774f2c189ecead361c8e57a4a3817fa71ac838aeeca3315ad3d754ab54"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/inflight-align/inflight-align-host.log",
+            "sha256": "b0ed56dd8ef3093d8aa3490f450ee881ea2e50a8fccaad400cffcefec5c11234"
+          },
+          "c64_execution_results": {
+            "path": "evidence/inflight-align/inflight-align-vice.log",
+            "sha256": "64cc83ba53f6032a0712de5ea7bfc4ad4d463350ae2fab525742a9d4036d7513"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "inflight-align",
+  "release": "evidence-inflight-align",
+  "files": {
+    "inflight-align-differential.log": {
+      "sha256": "d4259834332b44306383ec1e699b7aff0aac28e481154163e763178d6bac10aa",
+      "bytes": 1603,
+      "store": "release"
+    },
+    "inflight-align-host.log": {
+      "sha256": "b0ed56dd8ef3093d8aa3490f450ee881ea2e50a8fccaad400cffcefec5c11234",
+      "bytes": 78,
+      "store": "release"
+    },
+    "inflight-align-proof.json": {
+      "sha256": "a9c926774f2c189ecead361c8e57a4a3817fa71ac838aeeca3315ad3d754ab54",
+      "bytes": 3500,
+      "store": "tree"
+    },
+    "inflight-align-source-map.json": {
+      "sha256": "a4588cab41a61cc3da4088aea9a7be2e1fad936e0e4099676996ec2ab88b161b",
+      "bytes": 50571,
+      "store": "tree"
+    },
+    "inflight-align-vice.log": {
+      "sha256": "64cc83ba53f6032a0712de5ea7bfc4ad4d463350ae2fab525742a9d4036d7513",
+      "bytes": 468,
+      "store": "release"
+    }
+  }
+}

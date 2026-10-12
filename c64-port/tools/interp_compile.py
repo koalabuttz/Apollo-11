@@ -1,0 +1,667 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""Compile a file's interpretive code (and the short basic sequences between
+EXIT and TC INTPRET) from the yaYUL listing into native routines of the
+control-transfer ABI (include/agc_transfer.h).
+
+Each order pair becomes the compiled lm_interp_steps/lm_interp_orders path
+(cmi_ names for Comanche055) with its literal order and operand words, as in
+src/lm_conic_timerad.c; nothing reads the rope at run time. A routine starts
+at every entry the spec names, every label a branch or CALL in the file
+reaches, every CALL return point and every resume point after an outside
+call, and runs to the next control transfer or the next routine start. An
+interpretive routine is keyed by the physical LOC at NEWOPS, a basic one by
+the physical Z.
+
+Usage: interp_compile.py <spec> [--check]
+  writes src/<base>.c and include/<base>.h (or compares them with --check)
+  for each mission of the spec in tools/interp_specs.py."""
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import interp_listing as IL
+import interp_specs
+
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# INDJUMP names of the address orders, and their bodies: (C body, takes k).
+ADDR = {
+    'VLOAD': ('vload', True), 'DLOAD': ('dload_op', True), 'PDVL': ('pdvl', True),
+    'PDDL': ('pddl_op', True), 'TAD': ('tad', True), 'SIGN': ('sign', True),
+    'VXSC': ('vxsc', True), 'DMPR': ('dmpr', True), 'DDV': ('ddv', True),
+    'BDDV': ('bddv', True), 'VAD': ('vad', True), 'VSU': ('vsu', True),
+    'BVSU': ('bvsu', True), 'DOT': ('dot', True), 'VXV': ('vxv', True),
+    'DSU': ('dsu', True), 'BDSU': ('bdsu', True), 'DAD': ('dad', True),
+    'DMP1': ('dmp', True), 'TLOAD': ('tload', False), 'SLOAD': ('sload', False),
+    'TSLC': ('tslc', False), 'GSHIFT': ('gshift', False), 'SETPD': ('setpd', False),
+    'SSP': (None, False),
+}
+ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
+              'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
+MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
+        'TIX': 'TIX', 'XAD': 'XAD', 'XSU': 'XSU', 'GOTO': 'BZE/GOTO', 'BZE': 'BZE/GOTO',
+        'BPL': 'BPL/BMN', 'BMN': 'BPL/BMN', 'RTB': 'RTB/BHIZ', 'BHIZ': 'RTB/BHIZ',
+        'CALL': 'CALL/ITA', 'ITA': 'CALL/ITA', 'STQ': 'CALL/ITA', 'BOV': 'BOV(B)', 'BOVB': 'BOV(B)'}
+INDEXED_MISC = ('AXT', 'AXC', 'LXA', 'SXA', 'XCHX', 'INCR', 'TIX', 'XAD', 'XSU')
+SWITCH_BRANCH = ('BON', 'BOFF', 'BONCLR', 'BOFCLR', 'BONSET', 'BOFSET', 'BONINV', 'BOFINV',
+                 'SETGO', 'CLRGO', 'INVGO')
+SWITCH_PLAIN = ('SET', 'CLEAR', 'INVERT')
+UNARY = {'SQRT': 'SQRT', 'SIN': 'SINE', 'COS': 'COSINE', 'ASIN': 'ARCSIN', 'ACOS': 'ARCCOS',
+         'DSQ': 'DSQ', 'ROUND': 'ROUND', 'DCOMP': 'COMP', 'VCOMP': 'COMP', 'VDEF': 'VDEF',
+         'UNIT': 'UNIT', 'ABVAL': 'ABVALABS', 'ABS': 'ABVALABS', 'VSQ': 'VSQ', 'STADR': 'STADR',
+         'RVQ': 'RVQ', 'PUSH': 'PUSH'}
+SHORTS = set(['SR%d' % i for i in range(1, 5)] + ['SL%d' % i for i in range(1, 5)] +
+             ['SR%dR' % i for i in range(1, 5)] + ['SL%dR' % i for i in range(1, 5)] +
+             ['VSL%d' % i for i in range(1, 9)] + ['VSR%d' % i for i in range(1, 9)])
+STORES = ('STORE', 'STODL', 'STOVL', 'STCALL', 'STODL*', 'STOVL*')
+
+
+class CompileError(Exception):
+    pass
+
+
+def split_op(op):
+    """(base mnemonic, starred, index tag) of an order column entry."""
+    tag = 0
+    if op.endswith(',1') or op.endswith(',2'):
+        tag = int(op[-1])
+        op = op[:-2]
+    star = op.endswith('*')
+    return (op[:-1] if star else op), star, tag
+
+
+def classify(op):
+    base, star, tag = split_op(op)
+    if base == 'EXIT':
+        return 'exit', base
+    if base in SHORTS and not star:
+        return 'short', base
+    if base in UNARY and not star:
+        return 'unary', UNARY[base]
+    if base in MISC:
+        return 'misc', MISC[base]
+    if base in SWITCH_BRANCH:
+        return 'switch_branch', base
+    if base in SWITCH_PLAIN:
+        return 'switch', base
+    name = ADDR_ALIAS.get(base, base)
+    if name in ADDR:
+        return 'addr', name
+    raise CompileError('unknown interpretive order %r' % op)
+
+
+def is_interp_op(op):
+    if not op:
+        return False
+    if op in STORES:
+        return True
+    try:
+        classify(op)
+        return True
+    except CompileError:
+        return False
+
+
+class Compiler:
+    def __init__(self, spec, mission):
+        self.spec = spec
+        self.m = mission
+        self.L = IL.load(mission)
+        self.p = 'lmi_' if mission == 'lm' else 'cmi_'
+        self.lines = self.L.file_lines(spec['file'][mission])
+        if not self.lines:
+            raise CompileError('no lines for %s' % spec['file'][mission])
+        self.code = {l.phys: l for l in self.lines}
+        self.lo = min(self.code)
+        self.hi = max(l.phys + len(l.words) - 1 for l in self.lines)
+        self.T = {}
+        self.T.update(self.L.jump_table('INDJUMP', 32))
+        self.T.update(self.L.jump_table('MISCJUMP', 16))
+        self.T.update(self.L.jump_table('UNAJUMP', 15))
+        lab = self.L.labels
+        self.newops = 0o4000 + lab['NEWOPS'] - 2048
+        self.intpret = 0o4000 + lab['INTPRET'] - 2048
+        self.shortt = 0o2000 + lab['SHORTT']
+        self.dloadstar = self.L.word(lab['DLOAD*'])
+        self.vloadstar = 0o40001
+        self.starts = {}       # phys -> ('i'|'b', reason)
+        self.consts = {}       # phys -> label
+        self.cadr_erasable = set()
+        self.externals = {}    # Z (logical) -> name
+        self.rtb = spec.get('rtb', {})
+
+    # ---- addresses -------------------------------------------------------
+    def word(self, phys):
+        ln = self.code.get(phys)
+        if ln is None:
+            # second word of a two-word line
+            return self.L.word(phys)
+        return ln.words[0]
+
+    def name(self, phys):
+        return self.L.label_at(phys) or ''
+
+    def where(self, phys):
+        return '%02o,%04o' % (phys // 1024, 0o2000 + phys % 1024)
+
+    def cadr_phys(self, w):
+        """Physical address of a fixed CADR word (as GOTO forms it)."""
+        return ((w >> 10) & 0o37) * 1024 + (w & 0o1777)
+
+    def in_file(self, phys):
+        return self.lo <= phys <= self.hi
+
+    def fixed_operand(self, w, bank):
+        """Physical address of an address-order operand word naming fixed
+        memory, or None for erasable."""
+        a = (w - 1) & 0o77777
+        if a < 0o4000:
+            return None
+        b = (a >> 10) | (0o20 if bank & 0o20 else 0)
+        return b * 1024 + (a & 0o1777)
+
+    def add_start(self, phys, kind, why):
+        if phys in self.starts:
+            if self.starts[phys][0] != kind:
+                raise CompileError('%s is both interpretive and basic' % self.where(phys))
+            return
+        self.starts[phys] = (kind, why)
+        self.work.append(phys)
+
+    # ---- decoding --------------------------------------------------------
+    def decode(self):
+        self.work = []
+        for e in self.spec['entries']:
+            lab = e if isinstance(e, str) else e[self.m]
+            phys = self.L.labels.get(lab)
+            if phys is None:
+                raise CompileError('entry %s not found' % lab)
+            ln = self.code[phys]
+            self.add_start(phys, 'i' if is_interp_op(ln.op) else 'b', 'entry ' + lab)
+        self.blocks = {}
+        self.owner = {}
+        while self.work:
+            phys = self.work.pop()
+            kind = self.starts[phys][0]
+            self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
+        # Second pass: a block stops where another starts.
+        self.owner = {}        # word phys -> routine phys that compiles it
+        for phys in list(self.blocks):
+            kind = self.starts[phys][0]
+            self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
+
+    def target(self, w, why):
+        """A fixed branch target in the file becomes a routine start."""
+        if w & 0o74000:
+            t = self.cadr_phys(w)
+            if self.in_file(t):
+                if t not in self.code or not is_interp_op(self.code[t].op):
+                    raise CompileError('branch to non-interpretive %s' % self.where(t))
+                self.add_start(t, 'i', why)
+            return t
+        return None
+
+    def interp_block(self, start):
+        """C statements for the interpretive routine at start."""
+        out = []
+        p = start
+        bank = start // 1024
+        first = True
+        while True:
+            if not first and p in self.starts:
+                out.append('return EXEC_OK; /* on to %s */' % self.where(p))
+                return out
+            first = False
+            ln = self.code.get(p)
+            if ln is None or not is_interp_op(ln.op):
+                raise CompileError('interpretive flow runs into %s (%r)' % (self.where(p), ln))
+            stmts, nxt, done = self.slot(p, bank)
+            for q in range(p, nxt):
+                self.owner.setdefault(q, start)
+            p = nxt
+            out.append('/* %s %s %s */' % (self.where(ln.phys), ln.op, ln.operand))
+            out.append('TRACE(s);')
+            out.extend(stmts)
+            if done:
+                return out
+
+    def operand_k(self, w, bank, takes_k, starred, what):
+        if starred:
+            return '0'
+        fp = self.fixed_operand(w, bank)
+        if fp is None:
+            return '0'
+        if not takes_k:
+            raise CompileError('%s with fixed operand' % what)
+        self.consts[fp] = self.name(fp)
+        return 'K%o' % fp
+
+    def slot(self, p, bank):
+        """Statements for the NEWOPS slot at p: (stmts, next slot, ends)."""
+        ln = self.code[p]
+        P = self.p
+        w = ln.words[0]
+        cur = p + 1
+        if ln.op in STORES:
+            st = ['%sstore_code(s,0%05o);' % (P, w)]
+            more, cur, done = self.store_tail(ln.op, cur, bank)
+            return st + more, cur, done
+        st = ['%snewops(s,0%05o);' % (P, w)]
+        ops = [ln.op] + ([ln.operand] if ln.operand else [])
+        prev_setpd = False
+        for i, op in enumerate(ops):
+            if i == 1:
+                st.append('%snoibnksw_right(s);' % P if prev_setpd else 'right(s);')
+            body, cur, done, prev_setpd = self.order(op, cur, bank)
+            st.extend(body)
+            if done == 'pair':
+                return st, cur, False
+            if done:
+                return st, cur, True
+        st.append('setpd_next(s);' if prev_setpd else 'next(s);')
+        return st, cur, False
+
+    def goto(self, w, why, call=False):
+        """GOTO 06646 (after a taken branch or CALL) to the target."""
+        P = self.p
+        if w & 0o74000:
+            self.target(w, why)
+            return ['%sgoto(s);' % P, 'return EXEC_OK;']
+        self.cadr_erasable.add(w)
+        return ['%sgoto_any(s);' % P, 'return EXEC_OK;']
+
+    def order(self, op, cur, bank):
+        """(stmts, cursor, ends, setpd) for one order of a pair."""
+        P = self.p
+        kind, name = classify(op)
+        base, star, tag = split_op(op)
+        T = self.T
+        if kind == 'short':
+            return ['shorts(s);'], cur, False, False
+        if kind == 'exit':
+            # EXIT continues in basic code at the word after the pair.
+            self.add_start(cur, 'b', 'after EXIT')
+            return ['%sexit(s);return EXEC_OK;' % P], cur, True, False
+        if kind == 'unary':
+            if name == 'STADR':
+                sw = self.word(cur)
+                st = ['%sunary(s,0%05o);%sstadr(s,0%05o);' % (P, T['STADR'], P, sw)]
+                sop = self.code[cur].op
+                if sop not in STORES:
+                    raise CompileError('STADR without store at %s' % self.where(cur))
+                more, cur, done = self.store_tail(sop, cur + 1, bank)
+                # The store's tail ends the pair (DANZIG) or transfers.
+                return st + more, cur, (True if done else 'pair'), False
+            body = {'SQRT': 'if(%ssqrt(s))return EXEC_OK;', 'SINE': '%ssin(s);',
+                    'COSINE': '%scos(s);', 'ARCSIN': 'if(%sasin(s))return EXEC_OK;',
+                    'ARCCOS': 'if(%sacos(s))return EXEC_OK;', 'DSQ': '%sdsq(s);',
+                    'ROUND': '%sround(s);', 'COMP': '%scomp(s);', 'VDEF': '%svdef(s);',
+                    'UNIT': 'if(%sunit(s))return EXEC_OK;',
+                    'ABVALABS': 'if(%sabvalabs(s))return EXEC_OK;', 'VSQ': '%svsq(s);',
+                    'PUSH': '%spush(s);', 'RVQ': '%srvq(s);return EXEC_OK;'}[name] % P
+            st = ['%sunary(s,0%05o);' % (P, T[name]) + body]
+            return st, cur, name == 'RVQ', False
+        if kind == 'addr':
+            fn, takes_k = ADDR[name]
+            if name == 'SSP':
+                a, v = self.word(cur), self.word(cur + 1)
+                return ['%sdirect(s,0%05o,0%05o);%sssp(s,0%05o);' % (P, a, T['SSP'], P, v)], cur + 2, False, False
+            nxt = self.word(cur)
+            if star:
+                st = ['%sindexed(s,0%05o,0%05o);' % (P, nxt, T[name])]
+                k = '0'
+                cur += 1
+            elif nxt & 0o40000:
+                if name == 'SETPD':
+                    raise CompileError('SETPD push-up')
+                st = ['%saddress_pushup(s,0%05o,0%05o);' % (P, nxt, T[name])]
+                k = '0'
+            else:
+                st = ['%sdirect(s,0%05o,0%05o);' % (P, nxt, T[name])]
+                k = self.operand_k(nxt, bank, takes_k, False, op)
+                cur += 1
+            if takes_k:
+                st[-1] += '%s%s(s,%s);' % (P, fn, k)
+            else:
+                st[-1] += '%s%s(s);' % (P, fn)
+            return st, cur, False, name == 'SETPD'
+        if kind in ('switch', 'switch_branch'):
+            sw = self.word(cur)
+            st = ['%smisc(s,0%05o,0%05o);' % (P, sw, T['SW/'])]
+            cur += 1
+            if kind == 'switch':
+                st[-1] += 'if(%sswitch(s,io))return EXEC_OUT_OF_SCOPE;' % P
+                return st, cur, False, False
+            bw = self.word(cur)
+            cur += 1
+            if op.endswith('GO'):
+                # SETGO/CLRGO/INVGO always branch.
+                st[-1] += 'if(!%sswitch(s,io))return EXEC_OUT_OF_SCOPE;' % P
+                st.extend(self.swbranch(bw))
+                return st, cur, True, False
+            st[-1] += 'if(%sswitch(s,io)){' % P
+            st.extend(['  ' + x for x in self.swbranch(bw)])
+            st.append('}')
+            return st, cur, False, False
+        # misc
+        w = self.word(cur)
+        cur += 1
+        st = ['%smisc(s,0%05o,0%05o);' % (P, w, T[name])]
+        if base in INDEXED_MISC:
+            if base == 'TIX':
+                st.append('if(%stix(s)){' % P)
+                st.extend(['  ' + x for x in self.goto(w, 'TIX target')])
+                st.append('}')
+                return st, cur, False, False
+            st[-1] += '%s%s(s);' % (P, base.lower())
+            return st, cur, False, False
+        if base in ('BPL', 'BMN', 'BZE', 'BHIZ'):
+            fn = {'BPL': 'bplbmn', 'BMN': 'bplbmn', 'BZE': 'bzegoto', 'BHIZ': 'bhiz'}[base]
+            st.append('if(%s%s(s)){' % (P, fn))
+            st.extend(['  ' + x for x in self.goto(w, base + ' target')])
+            st.append('}')
+            return st, cur, False, False
+        if base == 'GOTO':
+            if w & 0o74000:
+                self.target(w, 'GOTO target')
+                st[-1] += '%sgoto_order(s);return EXEC_OK;' % P
+            else:
+                self.cadr_erasable.add(w)
+                st[-1] += '(void)ai_ccs(s,020);%sgoto_any(s);return EXEC_OK;' % P
+            return st, cur, True, False
+        if base == 'CALL':
+            st[-1] += '%scall(s);' % P
+            self.add_start(cur, 'i', 'CALL return')
+            st.extend(self.goto(w, 'CALL target', call=True))
+            return st, cur, True, False
+        if base in ('ITA', 'STQ'):
+            st[-1] += '%sita(s);' % P
+            return st, cur, False, False
+        if base == 'RTB':
+            target = self.cadr_phys(w)
+            lab = self.L.label_at(target)
+            if lab not in self.rtb:
+                raise CompileError('RTB %s has no native routine in the spec' % lab)
+            st[-1] += '(void)ai_ccs(s,020);%srtb(s);' % P
+            st.append('if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* %s */' % (self.rtb[lab][self.m], lab))
+            return st, cur, False, False
+        if base in ('BOV', 'BOVB'):
+            st.append('switch(%sbov(s)){case LMI_BOV_NONE:break;case LMI_BOV_GOTO:' % P)
+            st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
+            st.append('default:return EXEC_OUT_OF_SCOPE;}')
+            return st, cur, False, False
+        raise CompileError('unsupported order %s' % op)
+
+    def swbranch(self, w):
+        P = self.p
+        if w & 0o74000:
+            self.target(w, 'switch branch target')
+            return ['%sswbranch(s,0%05o);return EXEC_OK;' % (P, w)]
+        self.cadr_erasable.add(w)
+        return ['(void)ai_ca(s,0165);(void)ai_ts(s,4);ai_caf(s,0%05o);(void)ai_ts(s,0117);%sgoto_any(s);return EXEC_OK;' % (w, P)]
+
+    def store_tail(self, sop, cur, bank):
+        """After the store itself (Z at the STORJUMP continuation)."""
+        P = self.p
+        T = self.T
+        if sop == 'STORE':
+            return ['next(s);'], cur, False
+        if sop == 'STCALL':
+            w = self.word(cur)
+            cur += 1
+            st = ['%s15bitadr(s,0%05o,0%05o);%scall(s);' % (P, w, T['CALL/ITA'], P)]
+            self.add_start(cur, 'i', 'STCALL return')
+            return st + self.goto(w, 'STCALL target', call=True), cur, True
+        w = self.word(cur)
+        load, fn = ('DLOAD', 'dload_op') if sop.startswith('STODL') else ('VLOAD', 'vload')
+        if sop.endswith('*'):
+            star = self.dloadstar if load == 'DLOAD' else self.vloadstar
+            st = ['ai_caf(s,0%05o);(void)ai_ts(s,020);%sindexed(s,0%05o,0%05o);%s%s(s,0);' % (star, P, w, T[load], P, fn)]
+            return st + ['next(s);'], cur + 1, False
+        pre = '%sdodload(s);' % P if load == 'DLOAD' else '%sdovload(s);' % P
+        if w & 0o40000:
+            st = [pre + '%sdiradres_pushup(s,0%05o,0%05o);%s%s(s,0);' % (P, w, T[load], P, fn)]
+        else:
+            k = self.operand_k(w, bank, True, False, sop)
+            st = [pre + '%sdiradres(s,0%05o,0%05o);%s%s(s,%s);' % (P, w, T[load], P, fn, k)]
+            cur += 1
+        return st + ['next(s);'], cur, False
+
+    def basic_block(self, start):
+        out = []
+        p = start
+        ext = self.spec.get('externals', {})
+        while True:
+            ln = self.code.get(p)
+            if ln is None:
+                raise CompileError('basic flow runs into %s' % self.where(p))
+            out.append('/* %s %s %s */' % (self.where(p), ln.op, ln.operand))
+            self.owner.setdefault(p, start)
+            if ln.op == 'TC' and ln.operand == 'INTPRET':
+                out.append('ai_tc(s,0%04o);W[5]=0%04o;%sintpret(s,io);return EXEC_OK;' % (ln.loc + 1, self.intpret, self.p))
+                self.add_start(p + 1, 'i', 'after TC INTPRET')
+                return out
+            if ln.op == 'TC' and ln.operand in ext:
+                tz = self.L.labels[ln.operand]
+                if tz >= 4096:
+                    raise CompileError('banked TC target %s' % ln.operand)
+                z = 0o4000 + tz - 2048
+                self.externals[z] = ln.operand
+                n = ext[ln.operand]
+                out.append('ai_tc(s,0%04o);W[5]=0%04o;return EXEC_OK; /* %s */' % (ln.loc + 1, z, ln.operand))
+                for q in range(p + 1, p + 1 + n):
+                    self.owner.setdefault(q, start)
+                self.add_start(p + 1 + n, 'b', 'return from ' + ln.operand)
+                return out
+            raise CompileError('unsupported basic instruction %s %s at %s' % (ln.op, ln.operand, self.where(p)))
+
+    def source_map(self):
+        """Every emitted word of the file: the routine that compiles it, the
+        fixed operand (K array) it is a word of, or neither."""
+        const = {}
+        for fp in self.consts:
+            for i in range(6):
+                const.setdefault(fp + i, fp)
+        rows = []
+        for ln in self.lines:
+            for i in range(len(ln.words)):
+                q = ln.phys + i
+                if q in self.owner:
+                    use = {'routine': self.where(self.owner[q]), 'function': 'r%o' % self.owner[q]}
+                elif q in const:
+                    use = {'constant': 'K%o' % const[q]}
+                else:
+                    use = {}
+                rows.append(dict(address=self.where(q), word='%05o' % self.L.word(q),
+                                 source='%s %s %s' % (ln.label, ln.op, ln.operand) if i == 0 else '(+%d)' % i, **use))
+        return rows
+
+    # ---- output ----------------------------------------------------------
+    def emit(self):
+        s = self.spec
+        base = s['base'][self.m]
+        sym = s['symbol'][self.m]
+        hdr = base.upper() + '_H'
+        P = self.p
+        prog = 'Luminary099' if self.m == 'lm' else 'Comanche055'
+        c = []
+        c.append('/* SPDX-License-Identifier: MIT */')
+        c.append('/* Generated by tools/interp_compile.py from the %s assembly listing:' % prog)
+        c.append(' * do not edit. %s/%s as native routines of the' % (prog, s['file'][self.m]))
+        c.append(' * control-transfer ABI. Each order pair is the compiled interpreter path')
+        c.append(' * with its literal order and operand words; fixed operands are the words')
+        c.append(' * of the rope at the addresses they name. */')
+        c.append('#include "%s.h"' % base)
+        c.append('#include "%s"' % ('lm_interp_steps.h"\n#include "lm_interp_orders.h' if self.m == 'lm' else 'cm_interp.h'))
+        c.append('#include "agc_image_ops.h"')
+        for inc in s.get('includes', []):
+            c.append('#include "%s"' % inc)
+        c.append('#define W s->words')
+        c.append('/* A group build (KEEP masks below) leaves some helpers and operands unused. */')
+        c.append('#ifdef __GNUC__')
+        c.append('#define MAYBE_UNUSED __attribute__((unused))')
+        c.append('#else')
+        c.append('#define MAYBE_UNUSED')
+        c.append('#endif')
+        c.append('#ifdef INTERP_ROUTINE_TRACE')
+        c.append('void interp_routine_trace(const apollo_overlay_state *);')
+        c.append('#define TRACE(s) interp_routine_trace(s)')
+        c.append('#else')
+        c.append('#define TRACE(s) ((void)0)')
+        c.append('#endif')
+        c.append('')
+        if self.consts:
+            c.append('/* Fixed operands (the rope words from each address). */')
+            for fp in sorted(self.consts):
+                ws = ','.join('0%05o' % self.L.word(fp + i) for i in range(6))
+                c.append('static const agc_word K%o[6] MAYBE_UNUSED={%s}; /* %s %s */' % (fp, ws, self.where(fp), self.consts[fp] or ''))
+            c.append('')
+        c.append('static MAYBE_UNUSED void next(apollo_overlay_state *s){%sdanzig_next(s);}' % P)
+        c.append('static MAYBE_UNUSED void right(apollo_overlay_state *s){%sdanzig_right(s);}' % P)
+        c.append('/* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB')
+        c.append(' * (+0); INCR LOC; NEWOPS. */')
+        c.append('static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=0%04o;}' % self.newops)
+        c.append('static MAYBE_UNUSED void shorts(apollo_overlay_state *s){%sshort_dispatch(s);if(W[5]==0%04ou)%sshortt(s);else %sshortv(s);}' % (P, self.shortt, P, P))
+        c.append('')
+        c.append('/* The image as the routines need it: ordinary words (A, L and Q may')
+        c.append(' * hold 16 bits), coherent banks, NEWJOB +0, FIXLOC a VAC area and the')
+        c.append(' * latches in range. */')
+        c.append('static uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){')
+        c.append(' unsigned i,vac=W[0120];')
+        c.append(' if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+        c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+        c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
+        c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
+        c.append(' return 1;')
+        c.append('}')
+        c.append('/* An interpretive routine at NEWOPS of its bank (LOC was matched by the')
+        c.append(' * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */')
+        c.append('static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+        c.append(' return W[5]==0%04ou&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % self.newops)
+        c.append('}')
+        c.append('static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+        c.append(' return W[4]==fb&&sane(s,io);')
+        c.append('}')
+        c.append('')
+        routines = []
+        keep = sym.upper() + '_KEEP'
+        nwords = (len(self.blocks) + 59) // 60
+        c.append('/* %s<n> bit i (i = 60n+bit, the order of %s_points) keeps routine i;' % (keep, sym))
+        c.append(' * a build that defines them keeps only a group (the C64 diagnostics). */')
+        for n in range(nwords):
+            c.append('#ifndef %s%d' % (keep, n))
+            c.append('#define %s%d 0xfffffffffffffff' % (keep, n))
+            c.append('#endif')
+        def guard(i):
+            return '#if (%s%d >> %d) & 1' % (keep, i // 60, i % 60)
+        for i, phys in enumerate(sorted(self.blocks)):
+            kind, why = self.starts[phys]
+            lab = self.name(phys)
+            fn = 'r%o' % phys
+            routines.append((phys, kind, fn, lab, why))
+            fb = (phys // 1024) << 10
+            c.append(guard(i))
+            c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
+            c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
+            chk = 'at_newops' if kind == 'i' else 'at_basic'
+            c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
+            for st in self.blocks[phys]:
+                c.append(' ' + st)
+            c.append('}')
+            c.append('#endif')
+        c.append('')
+        # Wrappers: the mission's io record.
+        if self.m == 'lm':
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}')
+        else:
+            c.append('/* Comanche routines take the two latches the bodies use from the')
+            c.append(' * mission\'s cm_native_io and copy them back. */')
+            c.append('static enum exec_status latched(enum exec_status (*f)(apollo_overlay_state *,p66_bias_io *),apollo_overlay_state *s,void *v){')
+            c.append(' cm_native_io *io=v;p66_bias_io l;enum exec_status st;')
+            c.append(' if(!s||!io)return EXEC_OUT_OF_SCOPE;')
+            c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;st=f(s,&l);')
+            c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;return st;')
+            c.append('}')
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return latched(f,s,v);}')
+        index = {r[0]: i for i, r in enumerate(routines)}
+        for i, (phys, kind, fn, lab, why) in enumerate(routines):
+            c.append(guard(i))
+            c.append('WRAP(%s)' % fn)
+            c.append('#endif')
+        c.append('/* Each table ends with a sentinel the count leaves out. */')
+        for kind, tab in (('i', 'interpretive'), ('b', 'basic')):
+            rs = [r for r in routines if r[1] == kind]
+            if not rs:
+                c.append('const agc_routine_table %s_%s={0,0};' % (sym, tab))
+                continue
+            c.append('static const agc_routine_entry %s_entries[]={' % tab)
+            for phys, kind, fn, lab, why in rs:
+                c.append(guard(index[phys]))
+                c.append(' {%u,%s_abi},' % (phys, fn))
+                c.append('#endif')
+            c.append(' {0xffffu,0}')
+            c.append('};')
+            c.append('const agc_routine_table %s_%s={%s_entries,(uint16_t)(sizeof %s_entries/sizeof %s_entries[0]-1u)};'
+                     % (sym, tab, tab, tab, tab))
+        # Test metadata.
+        c.append('const %s_point %s_points[%s_POINTS]={' % (sym, sym, sym.upper()))
+        c.append(',\n'.join(' {%u,%u}' % (phys, 1 if kind == 'i' else 0) for phys, kind, fn, lab, why in routines))
+        c.append('};')
+        ce = sorted(self.cadr_erasable)
+        c.append('const agc_word %s_cadr_words[%s_CADR_WORDS]={%s};' % (sym, sym.upper(), ','.join('0%04o' % x for x in ce) or '0'))
+        ex = sorted(self.externals)
+        c.append('const agc_word %s_externals[%s_EXTERNALS]={%s};' % (sym, sym.upper(), ','.join('0%04o' % x for x in ex) or '0'))
+        h = []
+        h.append('/* SPDX-License-Identifier: MIT */')
+        h.append('/* Generated by tools/interp_compile.py: do not edit. */')
+        h.append('#ifndef %s' % hdr)
+        h.append('#define %s' % hdr)
+        h.append('#include "agc_transfer.h"')
+        h.append('#include "p66_bias.h"')
+        if self.m == 'cm':
+            h.append('#include "cm_native_image.h"')
+        h.append('/* %s/%s: interpretive routines keyed by the physical' % (prog, s['file'][self.m]))
+        h.append(' * LOC at NEWOPS (%04o), basic ones by physical Z. */' % self.newops)
+        h.append('extern const agc_routine_table %s_interpretive,%s_basic;' % (sym, sym))
+        h.append('/* Every routine (physical address, 1 interpretive), the erasable')
+        h.append(' * words its GOTOs and CALLs read a CADR from (work-area offsets below')
+        h.append(' * 045), and the outside basic addresses it transfers to. */')
+        h.append('typedef struct {uint16_t physical;uint8_t interpretive;} %s_point;' % sym)
+        h.append('#define %s_POINTS %du' % (sym.upper(), len(routines)))
+        h.append('#define %s_CADR_WORDS %du' % (sym.upper(), max(1, len(ce))))
+        h.append('#define %s_EXTERNALS %du' % (sym.upper(), max(1, len(ex))))
+        h.append('#define %s_FIRST %uu' % (sym.upper(), self.lo))
+        h.append('#define %s_LAST %uu' % (sym.upper(), self.hi))
+        h.append('extern const %s_point %s_points[%s_POINTS];' % (sym, sym, sym.upper()))
+        h.append('extern const agc_word %s_cadr_words[%s_CADR_WORDS];' % (sym, sym.upper()))
+        h.append('extern const agc_word %s_externals[%s_EXTERNALS];' % (sym, sym.upper()))
+        h.append('#endif')
+        return '\n'.join(c) + '\n', '\n'.join(h) + '\n'
+
+
+def main(argv):
+    check = '--check' in argv
+    names = [a for a in argv[1:] if not a.startswith('--')]
+    bad = 0
+    for n in names:
+        spec = interp_specs.SPECS[n]
+        for m in spec['missions']:
+            cp = Compiler(spec, m)
+            cp.decode()
+            csrc, hsrc = cp.emit()
+            base = spec['base'][m]
+            for path, text in (('src/%s.c' % base, csrc), ('include/%s.h' % base, hsrc)):
+                full = os.path.join(HERE, path)
+                if check:
+                    old = open(full).read() if os.path.exists(full) else None
+                    if old != text:
+                        print('%s is not what tools/interp_compile.py generates' % path)
+                        bad = 1
+                else:
+                    open(full, 'w').write(text)
+                    print('wrote %s (%d routines)' % (path, len(cp.blocks)))
+    return bad
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
