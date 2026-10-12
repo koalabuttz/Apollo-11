@@ -1,0 +1,21 @@
+{
+ "toolchain": "llvm-mos SDK v23.3.0 (deps/llvm-mos), VICE x64sc 3.7.1 PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "cm-rcs-dap: 128 frozen original RCS-CSM_DIGITAL_AUTOPILOT states, entry refusals: PASS",
+  "PASS 65536 original RCS-CSM_DIGITAL_AUTOPILOT oracle states equal native 2054-word rows {'returned': 65536} ef7314266de8d7162bf7cb99d85ce397e3469463985e0aa58aa5533e155a851e",
+  "PASS 611 original RCS-CSM_DIGITAL_AUTOPILOT words mapped; listing equals rope; 87 fixed constants, 2CADR and INDEX tables equal native literals; TC Q dispatch and frontier returns equal the listing",
+  "PASS 611 emitted RCS-CSM_DIGITAL_AUTOPILOT.agc words equal the original Comanche055 rope",
+  "cm-rcs-dap: 128 frozen original RCS-CSM_DIGITAL_AUTOPILOT states, entry refusals: PASS",
+  "PASS 65536 original RCS-CSM_DIGITAL_AUTOPILOT oracle states equal native 2054-word rows (ASan/UBSan) {'returned': 65536} ef7314266de8d7162bf7cb99d85ce397e3469463985e0aa58aa5533e155a851e"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL cm-rcs-dap.prg: 128 checks, 0 failures"
+  ],
+  "prg": "cm-rcs-dap.prg",
+  "prg_sha256": "699cb22b701cb5420ed11f11aaa506c9c584867572912849f98e8209d9ede000",
+  "prg_bytes": 29806,
+  "heap_start": "$9c6d",
+  "what_runs": "128 frozen oracle rows (every entry, every exit, full 2048-word image and channels 12/13/14 compared) regenerated from tests/cm_rcs_dap_cases.c on the C64 and run through the same native cm_rcs_dap"
+ }
+}

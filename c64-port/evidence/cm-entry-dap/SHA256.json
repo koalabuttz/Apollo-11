@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-entry-dap",
+  "release": "evidence-cm-entry-dap",
+  "files": {
+    "cm-entry-dap-assembly-comparison.json": {
+      "sha256": "ca4c58f053cd6eacf2a4028681f801426c5a63300bcec67f5643eee4a5a447ec",
+      "bytes": 91763,
+      "store": "tree"
+    },
+    "cm-entry-dap-checks.log": {
+      "sha256": "2a0ba8c4fcf6b149e697c34969b21e45ecabc07f16f408dba454e42e056a5ad3",
+      "bytes": 887,
+      "store": "tree"
+    },
+    "cm-entry-dap-reference.deltas.xz": {
+      "sha256": "4d53a3b4c23de9604ecd90f16c42e7419512ece4d3d84047955be7e3823526a4",
+      "bytes": 1182172,
+      "store": "release"
+    },
+    "cm-entry-dap-results.json": {
+      "sha256": "52d68037c81f3163aacdb896b28adb7d4c047e8ac7a81ca0eb1e30e9dc681536",
+      "bytes": 1335,
+      "store": "tree"
+    },
+    "cm-entry-dap-source-map.json": {
+      "sha256": "8504d728fc8eaa87771978a7364e172415bbb025307b47a292971537a885dd7e",
+      "bytes": 148865,
+      "store": "tree"
+    },
+    "cm-entry-dap-source-stream.json": {
+      "sha256": "9e224372f19e224a65eb3fa3d7874f2da7e95c1cc7297da458a02d0e86ea33d9",
+      "bytes": 373,
+      "store": "tree"
+    },
+    "cm-entry-dap.map": {
+      "sha256": "076fccfb2df5a7c17ac19f9985bf59ef6912efa0c9ff2a3a815e24efec26a776",
+      "bytes": 12917,
+      "store": "release"
+    },
+    "cm-entry-dap.prg": {
+      "sha256": "078f0e99075464224ceb2874fe8e1f331247096564c4828ecf9875eed4e35331",
+      "bytes": 33363,
+      "store": "release"
+    }
+  }
+}

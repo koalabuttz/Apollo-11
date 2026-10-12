@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-jet-select",
+  "release": "evidence-cm-jet-select",
+  "files": {
+    "cm-jet-select-assembly-comparison.json": {
+      "sha256": "e00595556969c2809fe607d320df3eb3d467c49244ca2ed9ad52850dc3ef5a80",
+      "bytes": 71470,
+      "store": "tree"
+    },
+    "cm-jet-select-checks.log": {
+      "sha256": "0eee5c6adf30d1589e52f1d349ca0c24eda2494334f6e801617b7bee3ae87289",
+      "bytes": 849,
+      "store": "tree"
+    },
+    "cm-jet-select-reference.deltas.xz": {
+      "sha256": "35ebbc490127397e2bb35e48abe830175457452d53ce1257f137b4d9e088aeab",
+      "bytes": 2395400,
+      "store": "release"
+    },
+    "cm-jet-select-results.json": {
+      "sha256": "f11d282ef5fe5649ad3eca4fa2efd5072735ed6681092ba40bff8fd18f8eca93",
+      "bytes": 1303,
+      "store": "tree"
+    },
+    "cm-jet-select-source-map.json": {
+      "sha256": "846588e393a91b4012ffb059b96af5df67d42e21e83b3ba3ed904738866c32d0",
+      "bytes": 116365,
+      "store": "tree"
+    },
+    "cm-jet-select-source-stream.json": {
+      "sha256": "a0c44d808e4c64e16e6e8de41e7f0b927548a80dabeca604b18a02caf3963175",
+      "bytes": 374,
+      "store": "tree"
+    },
+    "cm-jet-select.map": {
+      "sha256": "c262a266b87fc7ace567ba34b9245d077f9c7f3e595277e71858c92fd70f6638",
+      "bytes": 12516,
+      "store": "release"
+    },
+    "cm-jet-select.prg": {
+      "sha256": "2869500bcfb86c3cfbf72e3945020880812706984827cc1aa327dff8f1cec83f",
+      "bytes": 32037,
+      "store": "release"
+    }
+  }
+}
