@@ -5696,8 +5696,47 @@
       "sha256": "10c99519ea474da9b969dd64652ea6a2a6f739be0cc3fdb6a30e3bb619b80e2c",
       "bytes": 17211,
       "lines": 519,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_tjet_law.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-TJET-LAW.md",
+          "scope": "Every path of the file (TJETLAW for the P, U and V axes: NEGEDOT, SCALEE/SCALEDOT, ERRTEST, SENSTEST/MAXJETS/TJCALC, zones 1-5 with FORMULA1-3 and CHKMINTJ, the rough laws RUFLAW1/2/3 and SMALRATE, Z123COMP and RUFSETUP compiled at their call sites) as one ABI routine to the caller's TC HOLDQ return."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entry in bank 17 under EBANK6 (EBANK= TJP) with AXISCTR -1, 0 or +1 (the P-axis and Q,R-axis callers); the return is a TC word into fixed memory",
+        "external_continuations": [
+          "CCSHOLE (ALARM_AND_ABORT, unreachable from admitted inputs)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-source-map.json",
+            "sha256": "5fb0a84131006a38e5562c42f425ab4a3f0e4cc76933ceb63dfd2efb1c8f8f13"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-proof.json",
+            "sha256": "da3cf7020b5b220024a73578e083dcb2ac1b277297c36e4c1f88640cd5929a00"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-host.log",
+            "sha256": "1e6a03f247eeb5e9d410a8a2412c56a0c24f5b953c965872cc27edddbb9cc3e1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-vice.log",
+            "sha256": "95993b7ffb0ed45812fe2fe6ab2b323301e156003f86159f6ba736bddb6295eb"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
