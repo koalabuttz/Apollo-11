@@ -26,7 +26,7 @@ static lanec_meta meta;
 /* LANEC_TRACE=FILE: also write every fixed-memory instruction address the
  * original program started executing inside the suite's ranges, as
  * "MISSION bank,address" (bank 0 for fixed-fixed), one per line, deduplicated. */
-static unsigned char traced[2][040][02000];
+static unsigned char traced[2][044][02000];
 
 static unsigned word(unsigned a) { return (unsigned)m.Erasable[a / 0400][a % 0400] & (a <= 2u ? 0177777u : 077777u); }
 
@@ -71,7 +71,7 @@ static void trace(unsigned z)
     if (fb >= 030u && (m.OutputChannel7 & 0100)) fb += 010u;
     unsigned char (*t)[02000] = traced[meta.mission == LANEC_CM];
     if (z >= 04000u) t[0][(z - 04000u) % 02000u] |= (unsigned char)(1u << ((z - 04000u) / 02000u));
-    else if (z >= 02000u && fb >= 1u && fb < 040u) t[fb][z - 02000u] |= 1u;
+    else if (z >= 02000u && fb >= 1u && fb < 044u) t[fb][z - 02000u] |= 1u;
 }
 
 static void write_trace(const char *path)
@@ -83,7 +83,7 @@ static void write_trace(const char *path)
         for (k = 0; k < 2u; ++k)
             for (a = 0; a < 02000u; ++a)
                 if (traced[n][0][a] & (1u << k)) fprintf(f, "%s 0,%04o\n", n ? "CM" : "LM", 04000u + k * 02000u + a);
-        for (b = 1; b < 040u; ++b)
+        for (b = 1; b < 044u; ++b)
             for (a = 0; a < 02000u; ++a)
                 if (traced[n][b][a]) fprintf(f, "%s %o,%04o\n", n ? "CM" : "LM", b, 02000u + a);
     }
