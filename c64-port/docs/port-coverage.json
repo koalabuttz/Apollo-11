@@ -4786,7 +4786,7 @@
       "sha256": "1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59",
       "bytes": 7458,
       "lines": 293,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4808,7 +4808,7 @@
           "scope": "All 132 table words compiled from the source listing and consumed by native RESTARTS; all 40 table entries are selected and their 2CADRs delivered to the selected service through the control-transfer ABI."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4816,7 +4816,6 @@
         "external_continuations": [
           "jobs and tasks named by the table 2CADRs"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-RESTART-SELECT.md",
@@ -4833,6 +4832,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-restart-select/lm-restart-select-vice.log",
             "sha256": "d70ff62cee7186bcae659a371de67740a05b497a9250af0bd9b3d5d393b322d2"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-restart-tables.md",
+            "sha256": "cff974978a104d44a1248954fad701688c84d1ed87b1efa96963d8b89851ea8e"
           }
         }
       }
