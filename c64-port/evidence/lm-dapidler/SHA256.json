@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-dapidler",
+  "release": "evidence-lm-dapidler",
+  "files": {
+    "lm-dapidler-host.log": {
+      "sha256": "fe64f85af74458cf4941228c9d8c51965866c5195f28224f7f239f518210daca",
+      "bytes": 555,
+      "store": "tree"
+    },
+    "lm-dapidler-proof.json": {
+      "sha256": "ffab143dcba18cb992cdd54f365e1a310e7c785804fca503915548e557f9bd97",
+      "bytes": 1323,
+      "store": "tree"
+    },
+    "lm-dapidler-source-map.json": {
+      "sha256": "5edb1cf7854a456d5d61feb354b60568d86823a487cce5fc34972b0d60b25130",
+      "bytes": 51141,
+      "store": "tree"
+    },
+    "lm-dapidler-vice.log": {
+      "sha256": "ab23410e93f8bcae63004a7409eae455d2d23df8e9cf8713168df908bccd6b31",
+      "bytes": 55,
+      "store": "tree"
+    }
+  }
+}

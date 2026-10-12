@@ -25,7 +25,7 @@ from fixed_data_generate import assemble, listing_records, source_line, filename
 
 BRANCH = {'TC', 'TCF', 'BZF', 'BZMF'}
 NO_OPERAND = {'EXTEND', 'INHINT', 'RELINT', 'RESUME'}
-CONSTANT = {'OCT', 'OCTAL', 'DEC', 'ADRES', 'CADR', 'FCADR', 'GENADR', '2DEC', '2OCT', 'BBCON', 'REMADR'}
+CONSTANT = {'OCT', 'OCTAL', 'DEC', 'ADRES', 'CADR', 'FCADR', 'GENADR', '2DEC', '2OCT', 'BBCON', 'REMADR', '2CADR'}
 # Quarter-coded orders take a 10-bit erasable address.
 QUARTER = {'TS', 'XCH', 'LXCH', 'QXCH', 'ADS', 'DXCH', 'DAS', 'INCR', 'AUG', 'DIM', 'DV', 'CCS'}
 DOUBLE = {'DCA', 'DCS', 'DXCH', 'DAS'}
@@ -33,7 +33,7 @@ READS = {'CA', 'CAF', 'CAE', 'CS', 'AD', 'MASK', 'MP', 'SU', 'DCA', 'DCS', 'CCS'
 IO = {'READ', 'WRITE', 'RAND', 'WAND', 'ROR', 'WOR', 'RXOR'}
 # Alias forms the listing shows as their own operation.
 ALIAS = {'COM': ('CS', 0), 'DOUBLE': ('AD', 0), 'ZL': ('LXCH', 7), 'ZQ': ('QXCH', 7), 'DCOM': ('DCS', 1),
-         'DDOUBL': ('DAS', 1), 'SQUARE': ('MP', 0), 'RETURN': ('TC', 2)}
+         'DDOUBL': ('DAS', 1), 'SQUARE': ('MP', 0), 'RETURN': ('TC', 2), 'DTCB': ('DXCH', 5)}
 
 
 def bodies(native):
@@ -79,7 +79,9 @@ def reassemble(files, work_name):
 
 def check(native, files, bank, owners, helpers, inline=None, channels=None, sites=None, work_name='basic-source'):
     """files: {name: None (whole file) or [(lo, hi)] address ranges}; owners:
-    [(lo, hi, function)] in bank; sites: {function: path of a .inc table}."""
+    [(lo, hi, function)] in bank, or [(bank, lo, hi, function)] for a file
+    that spans banks (bank is then a tuple of the banks allowed); sites:
+    {function: path of a .inc table}."""
     inline, channels, sites = inline or {}, channels or {}, sites or {}
     work, aliases, rope = reassemble(list(files), work_name)
     funcs = bodies(native)
@@ -111,8 +113,11 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
         seen.add(name)
         return funcs[name] + ''.join(body_text(h, seen) for h in helpers.get(name, []))
 
-    def fixed(addr):
-        return 2048 + addr - 0o4000 if addr >= 0o4000 else bank * 1024 + addr - 0o2000
+    banks = bank if isinstance(bank, tuple) else (bank,)
+    owners = [o if len(o) == 4 else (banks[0], *o) for o in owners]
+
+    def fixed(addr, wbank=banks[0]):
+        return 2048 + addr - 0o4000 if addr >= 0o4000 else wbank * 1024 + addr - 0o2000
 
     rows, owned = [], set()
     for r in records:
@@ -124,9 +129,10 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
         ranges = files[name]
         if ranges is not None and not any(lo <= a <= hi for lo, hi in ranges):
             continue
-        if int(b, 8) != bank:
-            raise SystemExit(f"FAIL word outside bank {bank:o}: {r['assembled_address']}")
-        owner = [o for lo, hi, o in owners if lo <= a <= hi]
+        wbank = int(b, 8)
+        if wbank not in banks:
+            raise SystemExit(f"FAIL word outside bank {'/'.join(f'{x:o}' for x in banks)}: {r['assembled_address']}")
+        owner = [o for ob, lo, hi, o in owners if ob == wbank and lo <= a <= hi]
         if len(owner) != 1:
             raise SystemExit(f'FAIL address {addr} has no single native owner')
         owner, op, args = owner[0], r['op'], r['arguments']
@@ -135,8 +141,8 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
             op, args = op.strip(), args.strip()
         for k, w in enumerate(r['words']):
             if owner in sites:
-                if not re.search(r'\{%du,0*%o\}' % (fixed(a + k), w), (R / sites[owner]).read_text()):
-                    raise SystemExit(f'FAIL word {w:05o} at {bank:o},{a + k:04o} is not in {sites[owner]}')
+                if not re.search(r'\{%du,0*%o\}' % (fixed(a + k, wbank), w), (R / sites[owner]).read_text()):
+                    raise SystemExit(f'FAIL word {w:05o} at {wbank:o},{a + k:04o} is not in {sites[owner]}')
                 continue
             if op in NO_OPERAND:
                 continue
@@ -162,7 +168,7 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
                 if o in DOUBLE:
                     operand -= 1
                 if o in READS and operand >= 0o2000:
-                    need, what = rope_word(rope, fixed(operand)), f'constant at {operand:05o}'
+                    need, what = rope_word(rope, fixed(operand, wbank)), f'constant at {operand:05o}'
                 else:
                     need, what = operand, 'erasable address'
             if need not in lits:
@@ -171,7 +177,7 @@ def check(native, files, bank, owners, helpers, inline=None, channels=None, site
         rows.append(dict(path=r['path'], line=r['line'], address=r['assembled_address'],
                          source=(r['label'] + ' ' + r['op'] + ' ' + r['arguments']).strip(),
                          words=[f'{w:05o}' for w in r['words']], native=owner))
-    missing = {o for _, _, o in owners} - owned
+    missing = {o for _, _, _, o in owners} - owned
     if missing:
         raise SystemExit('FAIL native owners own no source: ' + ', '.join(sorted(missing)))
     return dict(sources={p: hashlib.sha256((R.parent / p).read_bytes()).hexdigest() for p in texts},
