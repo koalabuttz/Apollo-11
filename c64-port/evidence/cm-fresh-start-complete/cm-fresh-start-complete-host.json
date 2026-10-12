@@ -3,42 +3,42 @@
  "aggregates": {
   "cm-fresh-start": {
    "record": "evidence/cm-fresh-start/cm-fresh-start-host.log",
-   "sha256": "d5323bd96c4e8675f9c583c0447426aa770b772ae4dbba9276c7283088f8a205",
+   "sha256": "ad24e447d3e015847dc1bc92fafcd333811816082d667ec0de6df7bb75d5dc3d",
    "pass_lines": [
-    "PASS: 4096 cases equal the original program; 257 C64 rows cover every word the host cases execute",
+    "PASS: 4096 cases equal the original program; 259 C64 rows take all 503 host branch arcs",
     "PASS: src/cm_fresh_start_operands.inc matches 0 Comanche055 sites, 101 words"
    ],
    "checks": [
-    8963,
-    8963
+    8965,
+    8965
    ],
    "failures": 0,
    "result": "PASS"
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-host.log",
-   "sha256": "3fa042c919d83b0adb4f68c877e5b1a12ca2c4a5f241face43ceeb39c94ba35b",
+   "sha256": "f4787bab3bc60d123e04033a628f9ecc89ff7c4e77bb31afc4d42f419a83f6e6",
    "pass_lines": [
-    "PASS: 4096 cases equal the original program; 160 C64 rows cover every word the host cases execute",
+    "PASS: 4096 cases equal the original program; 165 C64 rows take all 571 host branch arcs",
     "PASS: src/cm_v37_operands.inc matches 0 Comanche055 sites, 101 words",
     "PASS: src/cm_fresh_start_operands.inc matches 0 Comanche055 sites, 101 words"
    ],
    "checks": [
-    12957,
-    12957
+    12962,
+    12962
    ],
    "failures": 0,
    "result": "PASS"
   },
   "cm-stateup": {
    "record": "evidence/cm-stateup/cm-stateup-host.log",
-   "sha256": "76dc2418040dc1f9ba7d4c88db7d097c425a550f5d899a28b224747676e82ec2",
+   "sha256": "87b2a45d01a75853f26fdc35615dcfd4b2b0b197a936c6aec549811d10e1fd90",
    "pass_lines": [
-    "PASS: 4096 cases equal the original program"
+    "PASS: 4096 cases equal the original program; 242 C64 rows take all 211 host branch arcs"
    ],
    "checks": [
-    11480,
-    11480
+    11722,
+    11722
    ],
    "failures": 0,
    "result": "PASS"

@@ -5,10 +5,7 @@
    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
    "cases": 4096,
    "snapshot_sha256": "56104ae5c67afe372a092d349e978cf1d23830c7d6131946521bcdf84dbbb4dd",
-   "c64_rows": 74,
-   "c64_row_selection": "every stride-th case plus a greedy cover: the C64 rows execute every fixed word the host cases execute (each branch outcome lands on its own word)",
    "host_words_executed": 265,
-   "c64_words_executed": 265,
    "owned_words_never_executed": [
     "43,3232",
     "43,3233",
@@ -58,12 +55,16 @@
     "43,3707",
     "43,3723"
    ],
+   "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+   "host_cases_traced": 4096,
+   "host_branch_arcs": 426,
+   "c64_rows": 77,
+   "c64_branch_arcs": 426,
+   "c64_row_seed_stride": 64,
+   "c64_missing_branch_arcs": [],
    "cases_rope": 43,
    "snapshot_rope_sha256": "47a7b12860171310eafb9b04fa429c6f3e309711b07694dbb955e05927a04c26",
-   "c64_rows_rope": 6,
-   "c64_row_selection_rope": "every stride-th case plus a greedy cover: the C64 rows execute every fixed word the host cases execute (each branch outcome lands on its own word)",
    "host_words_executed_rope": 177,
-   "c64_words_executed_rope": 177,
    "owned_words_never_executed_rope": [
     "43,3232",
     "43,3233",
@@ -240,16 +241,20 @@
     "43,3707",
     "43,3713",
     "43,3723"
-   ]
+   ],
+   "c64_row_selection_rope": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+   "host_cases_traced_rope": 43,
+   "host_branch_arcs_rope": 389,
+   "c64_rows_rope": 7,
+   "c64_branch_arcs_rope": 389,
+   "c64_row_seed_stride_rope": 64,
+   "c64_missing_branch_arcs_rope": []
   },
   "Comanche055": {
    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
    "cases": 4096,
    "snapshot_sha256": "0d91fa7ecc47bd882228a7c0044bbdf9bc581b81b3c0f745595671ab791a62e4",
-   "c64_rows": 74,
-   "c64_row_selection": "every stride-th case plus a greedy cover: the C64 rows execute every fixed word the host cases execute (each branch outcome lands on its own word)",
    "host_words_executed": 265,
-   "c64_words_executed": 265,
    "owned_words_never_executed": [
     "43,3234",
     "43,3235",
@@ -299,12 +304,16 @@
     "43,3711",
     "43,3725"
    ],
+   "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+   "host_cases_traced": 4096,
+   "host_branch_arcs": 426,
+   "c64_rows": 78,
+   "c64_branch_arcs": 426,
+   "c64_row_seed_stride": 64,
+   "c64_missing_branch_arcs": [],
    "cases_rope": 43,
    "snapshot_rope_sha256": "ba3cb9a892b017440663908d94dfffe905c7b0d86da7426a85bf70a60d058803",
-   "c64_rows_rope": 6,
-   "c64_row_selection_rope": "every stride-th case plus a greedy cover: the C64 rows execute every fixed word the host cases execute (each branch outcome lands on its own word)",
    "host_words_executed_rope": 178,
-   "c64_words_executed_rope": 178,
    "owned_words_never_executed_rope": [
     "43,3234",
     "43,3235",
@@ -481,7 +490,14 @@
     "43,3711",
     "43,3715",
     "43,3725"
-   ]
+   ],
+   "c64_row_selection_rope": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+   "host_cases_traced_rope": 43,
+   "host_branch_arcs_rope": 385,
+   "c64_rows_rope": 7,
+   "c64_branch_arcs_rope": 385,
+   "c64_row_seed_stride_rope": 64,
+   "c64_missing_branch_arcs_rope": []
   }
  },
  "entries": "SELFCHK, STSHOSUM, NXTBNK and the return point after every TC out of the file (11)",

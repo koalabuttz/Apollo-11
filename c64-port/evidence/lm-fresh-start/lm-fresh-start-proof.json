@@ -6,5 +6,12 @@
  "snapshot_sha256": "25f7b29f4858195f5769fa20a1ea63b71d78c3ac71b91e88d9e46a64ed183f15",
  "entries": "SLAP1, MR.KLEAN, P00KLEAN, V37KLEAN, GOPROG, ENEMA, GOPROG2, GOTOPOOH and the returns after TC MMDSPLAY, TC SWCALL and TC ALARM (11)",
  "boundary": "entry state to the first point neither FRESH_START_AND_RESTART (bank 05, fixed-fixed) nor INTER-BANK_COMMUNICATION owns (DUMMYJOB+2, GOP00FIX, RESTARTS, MMDSPLAY, ALARM, a KLEAN caller's return), or SWRETURN",
- "full_physical_words": 2048
+ "full_physical_words": 2048,
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 4096,
+ "host_branch_arcs": 493,
+ "c64_rows": 259,
+ "c64_branch_arcs": 493,
+ "c64_row_seed_stride": 16,
+ "c64_missing_branch_arcs": []
 }

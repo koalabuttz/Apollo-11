@@ -7,9 +7,10 @@ per-case trace of tools/case_trace.h), runs it on the unmodified Comanche055
 rope, checks the native snapshot (build/cm-v37-native) is byte-identical,
 fails if an instruction of bank 04 2000-2366 or VAC5STOR is never executed,
 and writes tests/cm_v37_vectors.h (one digest per case: two 16-bit running
-sums over the printed values) and the C64 rows chosen by outcome
-(tools/c64_rows.py; every 32nd case, as the C64 image must stay below
-$c000) to tests/cm_v37_c64_vectors.h. Also writes
+sums over the printed values) and the C64 rows chosen by native branch
+outcome (tools/a2_c64_rows.py: every 32nd case, as the C64 image must stay
+below $c000, plus a greedy cover of the gcov arcs every host case takes in
+every linked source; the freeze fails unless the rows take them all) to tests/cm_v37_c64_vectors.h. Also writes
 build/cm-v37-proof.json.
 """
 import hashlib
@@ -19,11 +20,14 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import a2_c64_rows  # noqa: E402
 import c64_rows  # noqa: E402
 
 R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
+# The milestone's linked sources (tools/mk/cm-v37.mk CM_V37_SRC), for the row cover.
+SRC = ['src/cm_v37.c', 'src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_v37_cases.c']
 ROPE = B / 'fixed-data/Comanche055/MAIN.agc.bin'
 # The milestone's own words (bank 04 V37 ... RAKE, bank 20 VAC5STOR), physical.
 OWNED = [0o4 * 1024 + w - 0o2000 for w in range(0o2000, 0o2367)] + [0o20 * 1024 + w - 0o2000 for w in range(0o2000, 0o2064)]
@@ -78,16 +82,20 @@ def main():
                                               frozenset().union(*cases.values()))
     if missed:
         raise SystemExit(f'instructions of the milestone no case executes: {missed}')
-    chosen = c64_rows.rows(cases, 32)
-    (R / 'tests/cm_v37_c64_vectors.h').write_text(c64_rows.c64_header('cm_v37', 'cm_v37', values, chosen, 32))
+    chosen, cover = a2_c64_rows.select('cm-v37', SRC, ['cm_v37_cases.h'], 'cm_v37_digest(&s,(uint16_t)n,&st);', len(values),
+                                       stride=32)
+    (R / 'tests/cm_v37_c64_vectors.h').write_text(a2_c64_rows.header('cm_v37_freeze.py', 'cm_v37', values, chosen, 32))
+    host = frozenset().union(*cases.values())
     proof = {'mission': 'Comanche055', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
              'entries': 'GOP00FIX, V37, CANV37, ROC, V37XEQ, the basic code after R00 EXIT, VAC5STOR and the return point after every TC out of the file (36)',
              'boundary': 'entry to the first point outside bank 04 2000-2366, bank 20 2000-2063, bank 05 2342-3217, GOTOPOOH 4106-4111 and INTER-BANK_COMMUNICATION, or SWRETURN',
-             'full_physical_words': 2048, **c64_rows.summary(cases, chosen, OWNED)}
+             'full_physical_words': 2048, 'host_words_executed': len(host),
+             'owned_words_never_executed': [c64_rows.name(w) for w in sorted(set(OWNED) - host)], **cover}
     (B / 'cm-v37-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
-    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows cover every word the host cases execute')
+    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows take all '
+          f'{cover["host_branch_arcs"]} host branch arcs')
 
 
 if __name__ == '__main__':

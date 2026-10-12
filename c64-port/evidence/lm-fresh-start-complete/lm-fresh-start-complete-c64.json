@@ -3,31 +3,31 @@
  "aggregates": {
   "lm-fresh-start": {
    "record": "evidence/lm-fresh-start/lm-fresh-start-vice.log",
-   "sha256": "f11ccd82da5760289a74fee20a68fda794d5727a25a4d4cf50766f5294217a2f",
+   "sha256": "3b14fcd33f1140b43e4559c180dddb402f1f0cdc61bf4f9aaa6d3e7df840ba43",
    "pass_lines": [
-    "PASS: VICE PAL lm-fresh-start.prg: 256 checks, 0 failures"
+    "PASS: VICE PAL lm-fresh-start.prg: 259 checks, 0 failures"
    ],
    "checks": [
-    256
+    259
    ],
    "failures": 0,
    "result": "PASS"
   },
   "lm-v37": {
    "record": "evidence/lm-v37/lm-v37-vice.log",
-   "sha256": "a3f12f2f2915f29ac28a0f07afd3b389e202649e6d1204fa3f5618111dbae3b3",
+   "sha256": "d576e7f5ed0c6ac39c5b1172062e87c25e4e52983d8e1381b97427601a39d5e3",
    "pass_lines": [
-    "PASS: VICE PAL lm-v37.prg: 274 checks, 0 failures"
+    "PASS: VICE PAL lm-v37.prg: 177 checks, 0 failures"
    ],
    "checks": [
-    274
+    177
    ],
    "failures": 0,
    "result": "PASS"
   },
   "lm-stateup": {
    "record": "evidence/lm-stateup/lm-stateup-vice.log",
-   "sha256": "61f273f706d40bf1bd675331fda6f0667755814b640f6ad9afe37fbfd6ad9d01",
+   "sha256": "6e5deacedae9302b9e54deda1d2cc16c3f85cfa81a7815fa2282381d0d0985a4",
    "pass_lines": [
     "PASS: VICE PAL lm-stateup.prg: 256 checks, 0 failures"
    ],

@@ -8,8 +8,10 @@ Comanche055 rope, checks the native snapshot (build/cm-fresh-start-native)
 is byte-identical, fails if an instruction of bank 05 2342-3217 (but the
 patch-only STARTSIM) or GOTOPOOH is never executed, and writes
 tests/cm_fresh_start_vectors.h (one digest per case: two 16-bit running sums
-over the printed values) and the C64 rows chosen by outcome
-(tools/c64_rows.py: every 16th case plus a greedy cover) to
+over the printed values) and the C64 rows chosen by native branch outcome
+(tools/a2_c64_rows.py: every 16th case plus a greedy cover of the gcov arcs
+every host case takes in every linked source; the freeze fails unless the
+rows take them all) to
 tests/cm_fresh_start_c64_vectors.h. Also writes build/cm-fresh-start-proof.json.
 """
 import hashlib
@@ -19,11 +21,14 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import a2_c64_rows  # noqa: E402
 import c64_rows  # noqa: E402
 
 R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
+# The milestone's linked sources (tools/mk/cm-fresh-start.mk CM_FS_SRC), for the row cover.
+SRC = ['src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_fresh_start_cases.c']
 ROPE = B / 'fixed-data/Comanche055/MAIN.agc.bin'
 # The milestone's own words (bank 05 but STARTSIM 2345-2350, GOTOPOOH), physical.
 OWNED = ([0o5 * 1024 + w - 0o2000 for w in range(0o2342, 0o3220) if not 0o2345 <= w <= 0o2350]
@@ -79,16 +84,20 @@ def main():
                                               frozenset().union(*cases.values()))
     if missed:
         raise SystemExit(f'instructions of the milestone no case executes: {missed}')
-    chosen = c64_rows.rows(cases, 16)
-    (R / 'tests/cm_fresh_start_c64_vectors.h').write_text(c64_rows.c64_header('cm_fresh_start', 'cm_fs', values, chosen))
+    chosen, cover = a2_c64_rows.select('cm-fresh-start', SRC, ['cm_fresh_start_cases.h'], 'cm_fs_digest(&s,(uint16_t)n,&st);', len(values),
+                                       stride=16)
+    (R / 'tests/cm_fresh_start_c64_vectors.h').write_text(a2_c64_rows.header('cm_fresh_start_freeze.py', 'cm_fs', values, chosen, 16))
+    host = frozenset().union(*cases.values())
     proof = {'mission': 'Comanche055', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
              'entries': 'SLAP1, MR.KLEAN, P00KLEAN, V37KLEAN, GOPROG, ENEMA, GOPROG3, T5IDLOC, GOTOPOOH and the return points after BANKCALL VAC5STOR, IBNKCALL SETCOARS, WAITLIST, MMDSPLAY, STOPRATE, SWCALL, ALARM and PHASCHNG (17)',
              'boundary': 'entry to the first point outside bank 05 2342-3217, GOTOPOOH 4106-4111 and INTER-BANK_COMMUNICATION, or SWRETURN',
-             'full_physical_words': 2048, **c64_rows.summary(cases, chosen, OWNED)}
+             'full_physical_words': 2048, 'host_words_executed': len(host),
+             'owned_words_never_executed': [c64_rows.name(w) for w in sorted(set(OWNED) - host)], **cover}
     (B / 'cm-fresh-start-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
-    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows cover every word the host cases execute')
+    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows take all '
+          f'{cover["host_branch_arcs"]} host branch arcs')
 
 
 if __name__ == '__main__':

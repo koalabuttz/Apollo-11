@@ -6,7 +6,7 @@
  "aggregates": {
   "self-check": {
    "record": "evidence/self-check/self-check-proof.json",
-   "sha256": "6778fa462b03f2b55b10dac4014d8d82e4a57d27ebfea554500ad9f2adab57ca",
+   "sha256": "c05ce039f027090cc9745bacf3950d07f7590607eea0711c74a1306a484b8164",
    "cases": 4096,
    "cases_rope": 43,
    "snapshot_sha256": [

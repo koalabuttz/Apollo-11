@@ -3,14 +3,14 @@
  "aggregates": {
   "self-check": {
    "record": "evidence/self-check/self-check-vice.log",
-   "sha256": "5d509af6eea896d8ce1b46f5454a0582602aaf7845f7f8513a2f952c8044dbad",
+   "sha256": "cd66bac2690b584358c07c4a23551c1ff5b1a064adab5f7fb6fe3a8cecaaf544",
    "pass_lines": [
-    "PASS: VICE PAL self-check-lm.prg: 80 checks, 0 failures",
-    "PASS: VICE PAL self-check-cm.prg: 80 checks, 0 failures"
+    "PASS: VICE PAL self-check-lm.prg: 84 checks, 0 failures",
+    "PASS: VICE PAL self-check-cm.prg: 85 checks, 0 failures"
    ],
    "checks": [
-    80,
-    80
+    84,
+    85
    ],
    "failures": 0,
    "result": "PASS"

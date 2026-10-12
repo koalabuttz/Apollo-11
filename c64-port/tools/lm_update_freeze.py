@@ -6,7 +6,10 @@ Builds the host-only yaAGC driver (tools/lm_update_reference.c), runs it
 on the unmodified Luminary099 rope, checks the native snapshot
 (build/lm-update-native) is byte-identical, and writes
 tests/lm_update_vectors.h (one digest per case: two 16-bit running sums
-over the printed values) and every 16th digest to
+over the printed values) and the C64 rows chosen by native branch outcome
+(tools/a2_c64_rows.py: every 16th case plus a greedy cover of the gcov arcs
+every host case takes in every linked source; the freeze fails unless the
+rows take them all) to
 tests/lm_update_c64_vectors.h. Also writes build/lm-update-proof.json.
 """
 import hashlib
@@ -16,6 +19,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import a2_c64_rows  # noqa: E402
 import c64_rows  # noqa: E402
 
 R = pathlib.Path(__file__).resolve().parents[1]
@@ -23,6 +27,8 @@ R = pathlib.Path(__file__).resolve().parents[1]
 OWNED = [0o43 * 1024 + w - 0o2000 for w in range(0o3724, 0o3752)] + [0o4 * 1024 + w - 0o2000 for w in range(0o3401, 0o3771)]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
+# The milestone's linked sources (tools/mk/lm-update.mk LM_UP_SRC), for the row cover.
+SRC = ['src/lm_update.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/lm_update_cases.c']
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
 CORE = ['tests/lm_update_cases.c', 'src/lm_update.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
         'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c',
@@ -70,20 +76,23 @@ def main():
     (R / 'tests/lm_update_vectors.h').write_text('\n'.join(out) + '\n')
     cases = c64_rows.read(trace)
     assert sorted(cases) == list(range(len(values)))
-    chosen = c64_rows.rows(cases, 16)
     missed = c64_rows.unexecuted_instructions(c64_rows.listing(ROPE.parent / 'assembly.lst'), OWNED,
                                               frozenset().union(*cases.values()))
     if missed:
         raise SystemExit(f'instructions of the file no case executes: {missed}')
-    (R / 'tests/lm_update_c64_vectors.h').write_text(c64_rows.c64_header('lm_update', 'lm_up', values, chosen))
+    chosen, cover = a2_c64_rows.select('lm-update', SRC, ['lm_update_cases.h'], 'lm_up_digest(&s,(uint16_t)n,&st);', len(values))
+    (R / 'tests/lm_update_c64_vectors.h').write_text(a2_c64_rows.header('lm_update_freeze.py', 'lm_up', values, chosen))
+    host = frozenset().union(*cases.values())
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
              'entries': 'V70UPDAT-V73UPDAT, UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35)',
              'boundary': 'entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT)',
-             'full_physical_words': 2048, **c64_rows.summary(cases, chosen, OWNED)}
+             'full_physical_words': 2048, 'host_words_executed': len(host),
+             'owned_words_never_executed': [c64_rows.name(w) for w in sorted(set(OWNED) - host)], **cover}
     (B / 'lm-update-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
-    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows cover every word the host cases execute')
+    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows take all '
+          f'{cover["host_branch_arcs"]} host branch arcs')
 
 
 if __name__ == '__main__':

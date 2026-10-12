@@ -4,18 +4,18 @@
   "release": "evidence-cm-self-check-complete",
   "files": {
     "cm-self-check-complete-c64.json": {
-      "sha256": "1024a5f7af76fc0f357419f1982ac191a0646e1df4c1386eb54334e34ec02455",
+      "sha256": "b12d958761cfbdf78304efba91d5d7ba29350861ce11dbe83bef9529db053cc7",
       "bytes": 464,
       "store": "tree"
     },
     "cm-self-check-complete-comparison.json": {
-      "sha256": "676b1a217a3e6d50c70079f845d97bf6ef87102bac24ba45a691f0c638b23404",
+      "sha256": "47447acf8f400d32ca5fd984890f529030577e7bdb95e568ac77990c6c6bda97",
       "bytes": 1104,
       "store": "tree"
     },
     "cm-self-check-complete-host.json": {
-      "sha256": "53f502fc1f5b5188cfca13567c9cbbfda920d243479a90fb30be2fc61dd5387f",
-      "bytes": 653,
+      "sha256": "8db8cbcf3e5b91fc09c762477223316fb869b83e41ef74597801595d1781fa9f",
+      "bytes": 645,
       "store": "tree"
     },
     "cm-self-check-complete-line-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-self-check-complete-source-map.json": {
-      "sha256": "05d08955a2d1299121688906e5ee81d94c31720e33c9b57b2ff6797c96be6f5e",
+      "sha256": "aa18a7a01caa733d9e5c6301166fa305d9c6a7173d0e3b7c66d9e4d809d0290b",
       "bytes": 1369,
       "store": "tree"
     }

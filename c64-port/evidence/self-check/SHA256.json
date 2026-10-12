@@ -4,18 +4,18 @@
   "release": "evidence-self-check",
   "files": {
     "self-check-host.log": {
-      "sha256": "be617bb15dbec499e916d134ef9567a1df7d391e13c3064147604a325e9f7e95",
-      "bytes": 2765,
+      "sha256": "fed3143fc1cf3cdf5d1ab5ee6aa47796b45437832c83fee7bf393c96c3cd4817",
+      "bytes": 2757,
       "store": "release"
     },
     "self-check-proof.json": {
-      "sha256": "6778fa462b03f2b55b10dac4014d8d82e4a57d27ebfea554500ad9f2adab57ca",
-      "bytes": 9356,
+      "sha256": "c05ce039f027090cc9745bacf3950d07f7590607eea0711c74a1306a484b8164",
+      "bytes": 9716,
       "store": "tree"
     },
     "self-check-vice.log": {
-      "sha256": "5d509af6eea896d8ce1b46f5454a0582602aaf7845f7f8513a2f952c8044dbad",
-      "bytes": 1470,
+      "sha256": "cd66bac2690b584358c07c4a23551c1ff5b1a064adab5f7fb6fe3a8cecaaf544",
+      "bytes": 1458,
       "store": "release"
     }
   }
