@@ -5325,31 +5325,47 @@
               "045633"
             ],
             "TFFCONIC": [
-              "045567 from the EDOP +0 entry (no Luminary099 caller)"
+              "045567 from the EDOP +0 entry (no Luminary099 caller); a future caller must re-qualify it from the state its CALL leaves"
+            ],
+            "TCDANZIG": [
+              "Exported entry lm_time_free_fall_tcdanzig: RTB from BOVB TCDANZIG (MEASUREMENT_INCORPORATION 371, ORBITAL_INTEGRATION 95, P20-P25 3217) with FBANK 27 to TC DANZIG (Q 03754, Z DANZIG); the whole order is lm_time_free_fall_bovb_tcdanzig, qualified with and without overflow by the TFFRP/RA and QTERM uses in the oracle stream"
             ]
           },
-          "data_validity": "Original conic formulas and scaling; no widened claim."
+          "data_validity": "Original conic formulas and scaling; no widened claim.",
+          "exported_constants": {
+            "NEARONE": "lm_time_free_fall_nearone (27,3770), ASCENT_GUIDANCE DLOAD operand (163, 618)",
+            "R300K": "lm_time_free_fall_r300k (27,3766), no Luminary099 reference"
+          },
+          "oracle_sampling": "65536 call chains: SR30.1 chains (TFFCONMU, +TFFRP/RA, +CALCTPER, +CALCTFF) and TFFCONIC chains; Earth and Moon scaling; elliptic, near-parabolic, exactly parabolic, hyperbolic and axis-aligned apse orbits (circular speed times a factor, a flight-path angle, a random plane); one in eight with raw edge words (signed zeros, extremes, overflow-sized terms); poisoned erasable debris; both IRQ settings, SUPER, EBANK, all five VACs; OVFIND 0 and +-1 (the values overflow leaves)"
         },
         "external_continuations": [
           "Caller entry/resume services and application scheduling",
-          "Overlay ABI 2 modules for the whole routine on the C64 (phases verified separately)"
+          "Overlay ABI 2 modules for the whole routine on the C64 (each phase step verified separately; the C64 rows take every branch outcome the host stream takes)"
         ],
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-map.json",
-            "sha256": "c47f364a9c42d8746ae76d430a871631265d4e8477a9312adcba593eea68d6c9"
+            "sha256": "4e3d610e380c130109579eda5b30cf79a9719fb2d5620770d4f73921a30339be"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-map.json",
-            "sha256": "c47f364a9c42d8746ae76d430a871631265d4e8477a9312adcba593eea68d6c9"
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-stream.json",
+            "sha256": "0917ba188f248c89ac13ef293a71e99d57d9e2f18b1bf61dacfa6e58430702f7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-checks.log",
-            "sha256": "50fd876b1bc0b50fb3608cb47b575151d8ad57c9dac8ce7163c163640f30ec9f"
+            "sha256": "7e89bfc7beac5c3d96c53a29269ed26d1303e3c161fbd1c05939d9b86b93233b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-results.json",
-            "sha256": "945b2ff8b5d44a4ea4ff6e9e21d0882c18edf6b5320908b53b7c05a7ec0d9f26"
+            "sha256": "7da7ff49969282980bf46fe42eeb6e07bad5e926a26a246ed6a415276b43a1e1"
+          },
+          "independent_assembly_comparison_snapshots": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-reference.snapshots.bin.xz",
+            "sha256": "d89b3acabe67516ac6475829ba063e8bcbc4c10e3d1257ed6ea13d2631356013"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-c64-cover.json",
+            "sha256": "3562022900d38e7ed2ce7b4032fe69eeb68c454c6711a1cb3dc5f2772fb25bfd"
           }
         }
       }
