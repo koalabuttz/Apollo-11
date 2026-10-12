@@ -214,7 +214,7 @@ uint8_t lck_deltime(apollo_overlay_state *s,p66_bias_io *io){
  /* DELTIME EXIT; TC POLY (S(XI) series); TC INTPRET; STODL S(XI) XI. */
  lmi_newops(s,077776);lmi_exit(s);
  ai_tc(s,02423);W[5]=07222;lmi_poly(s,SXI);if(W[5]!=02450u)return LCK_FAILED;
- ai_tc(s,02451);lmi_intpret(s,io);TRACE(s);
+ ai_tc(s,02451);W[5]=06037;lmi_intpret(s,io);TRACE(s);
  stodl(s,014033,000031,0);
  return LCK_DELTIME2;
 }
@@ -222,7 +222,7 @@ uint8_t lck_deltime2(apollo_overlay_state *s,p66_bias_io *io){
  /* EXIT; TC POLY (C(XI) series); TC INTPRET. */
  lmi_newops(s,077776);lmi_exit(s);
  ai_tc(s,02455);W[5]=07222;lmi_poly(s,CXI);if(W[5]!=02502u)return LCK_FAILED;
- ai_tc(s,02503);lmi_intpret(s,io);TRACE(s);
+ ai_tc(s,02503);W[5]=06037;lmi_intpret(s,io);TRACE(s);
  return LCK_DELTAIL;
 }
 /* RTB TPMODE (bank 10, 03633), as the left order of RTB PDDL. */
@@ -317,7 +317,15 @@ uint8_t lck_brnchctr(apollo_overlay_state *s){
   * AD ITERCTR; INDEX FIXLOC, TS ITERCTR; TS MPAC; TC DANZIG. */
  lmi_newops(s,046034);lmi_misc(s,024644,RTBBHIZ);(void)ai_ccs(s,020);lmi_rtb(s);
  if(W[5]!=02644u)return LCK_FAILED;
- ai_csf(s,1u);ai_ad(s,(unsigned)(W[0120]+026u));(void)ai_ts(s,(unsigned)(W[0120]+026u));(void)ai_ts(s,0154u);ai_tc(s,02653);W[5]=06061;
+ {/* The instruction words (12,2644-2652) give the addresses: CS ONE reads
+   * the fixed-fixed constant at 04753 (bank 2, 0753); INDEX FIXLOC adds
+   * C(FIXLOC) to AD/TS ITERCTR. */
+  agc_word one;unsigned ctr;
+  if(!fixed_pair((uint16_t)(2u*1024u+(044753&01777u)),&one,1))return LCK_FAILED;
+  ctr=(unsigned)(W[050120&01777u]+(060026&01777u));
+  ai_csf(s,one);ai_ad(s,ctr);ctr=(unsigned)(W[050120&01777u]+(054026&01777u));(void)ai_ts(s,ctr);(void)ai_ts(s,054154&01777u);
+  ai_tc(s,02653);W[5]=06061;
+ }
  right(s);lmi_misc(s,024333,RTBBHIZ);(void)ai_ccs(s,020);
  if(lmi_bhiz(s)){branch_taken(s);return LCK_KEPCONVG;}
  next(s);
@@ -425,8 +433,8 @@ uint8_t lm_conic_kepler_step(apollo_overlay_state *s,p66_bias_io *io,uint8_t pha
 }
 
 /* The actual entry: KEPPREP (ORBITAL_INTEGRATION, bank 11) after STQ
- * KEPRTN and AXC,1 10 or 2 (BON MOONFLAG), GOTO KEPLERN; its only caller
- * is RVCON's CALL KEPPREP (13,3250), so KEPRTN (E4,1512) holds 13,3252. */
+ * KEPRTN and AXC,1 10 or 2 (BON MOONFLAG), GOTO KEPLERN. KEPRTN (E4,1512)
+ * holds the return of one of KEPPREP's three callers. */
 #define KEPRTN 02112u
 static uint8_t admitted(const apollo_overlay_state *s,const p66_bias_io *io){
  unsigned i,vac=W[0120];agc_word x1;
@@ -435,7 +443,9 @@ static uint8_t admitted(const apollo_overlay_state *s,const p66_bias_io *io){
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
  for(i=2;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
  x1=W[vac+046u];
- return W[0164]==02023u&&(x1==077775u||x1==077765u)&&W[KEPRTN]==027252u;
+ /* KEPRTN: the returns KEPPREP's STQ stores for its three callers (CALL at
+  * 13,3250; STCALL at 11,2514 and 11,3010). */
+ return W[0164]==02023u&&(x1==077775u||x1==077765u)&&(W[KEPRTN]==027252u||W[KEPRTN]==022516u||W[KEPRTN]==023012u);
 }
 uint8_t lm_conic_kepler(apollo_overlay_state *s,p66_bias_io *io){
  uint8_t phase=LCK_ENTRY;unsigned guard;

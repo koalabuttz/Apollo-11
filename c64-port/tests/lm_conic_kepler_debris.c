@@ -11,8 +11,9 @@ void lm_conic_kepler_debris(apollo_overlay_state *m,p66_bias_io *io,uint32_t n){
  W[3]=(agc_word)(((n/16u)%8u)*0400u);W[4]=024000;W[6]=(agc_word)(024000u|(W[3]>>8));W[0165]=W[6];
  W[5]=06070;W[0164]=02023;W[0115]=0;W[023]=0;W[7]=0;W[067]=0;
  vac=0401u+((n/32u)%5u)*054u;W[0120]=(agc_word)vac;W[0166]=(agc_word)(vac+(n%6u)*2u);W[0163]=(agc_word)((n/4u)%2u?077776u:0u);
- /* AXC,1 2 (Earth) or 10 (Moon, MOONFLAG); STQ KEPRTN (RVCON's CALL KEPPREP, 13,3252). */
- W[vac+046u]=(n/8u)&1u?077765u:077775u;W[02112]=027252;
+ /* AXC,1 2 (Earth) or 10 (Moon, MOONFLAG); STQ KEPRTN, the return of one of
+  * KEPPREP's callers (13,3252, 11,2516, 11,3012). */
+ W[vac+046u]=(n/8u)&1u?077765u:077775u;W[02112]=(n/7u)%3u==0u?027252u:(n/7u)%3u==1u?022516u:023012u;
  /* OVFIND as overflow leaves it: usually clear, sometimes +-1. */
  W[0121]=(n/1024u)%8u==3u?1u:(n/1024u)%8u==6u?077776u:0u;
  io->interrupt_enabled=(uint16_t)((n/64u)&1u);
