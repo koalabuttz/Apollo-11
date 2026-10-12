@@ -87,6 +87,7 @@ void cmi_xad(apollo_overlay_state *);
 void cmi_xsu(apollo_overlay_state *);
 void cmi_lxa(apollo_overlay_state *);
 void cmi_sxa(apollo_overlay_state *);
+void cmi_axc(apollo_overlay_state *);
 void cmi_ita(apollo_overlay_state *);
 uint8_t cmi_tix(apollo_overlay_state *);
 uint8_t cmi_bhiz(apollo_overlay_state *);

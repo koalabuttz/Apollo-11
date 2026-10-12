@@ -1,0 +1,3144 @@
+{
+ "sources": {
+  "Luminary099/TJET_LAW.agc": "10c99519ea474da9b969dd64652ea6a2a6f739be0cc3fdb6a30e3bb619b80e2c"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_tjet_law.c",
+ "native_sha256": "f18f8ac22d548f625a4a17d7febd724a782920e73353ce5e836c7f3dcbfad6de",
+ "source_words": 314,
+ "source_lines": 313,
+ "line_map": [
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 84,
+   "address": "17,3252",
+   "source": "TJETLAW EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 85,
+   "address": "17,3253",
+   "source": "QXCH HOLDQ",
+   "words": [
+    "23745"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 89,
+   "address": "17,3254",
+   "source": "INDEX AXISCTR",
+   "words": [
+    "51505"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 90,
+   "address": "17,3255",
+   "source": "CAF AXISDIFF",
+   "words": [
+    "33722"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 91,
+   "address": "17,3256",
+   "source": "TS ADRSDIF1",
+   "words": [
+    "55746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 93,
+   "address": "17,3257",
+   "source": "CAE EDOT",
+   "words": [
+    "31427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 94,
+   "address": "17,3260",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 95,
+   "address": "17,3261",
+   "source": "BZMF NEGEDOT",
+   "words": [
+    "63266"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 96,
+   "address": "17,3262",
+   "source": "CAE ADRSDIF1",
+   "words": [
+    "31746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 97,
+   "address": "17,3263",
+   "source": "TS ADRSDIF2",
+   "words": [
+    "55744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 98,
+   "address": "17,3264",
+   "source": "CAF SENSOR",
+   "words": [
+    "33724"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 99,
+   "address": "17,3265",
+   "source": "TCF SETSENSE",
+   "words": [
+    "13276"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 101,
+   "address": "17,3266",
+   "source": "NEGEDOT CS E",
+   "words": [
+    "41752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 102,
+   "address": "17,3267",
+   "source": "TS E",
+   "words": [
+    "55752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 103,
+   "address": "17,3270",
+   "source": "CS EDOT",
+   "words": [
+    "41427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 104,
+   "address": "17,3271",
+   "source": "TS EDOT",
+   "words": [
+    "55427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 105,
+   "address": "17,3272",
+   "source": "CAF BIT1",
+   "words": [
+    "34753"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 106,
+   "address": "17,3273",
+   "source": "ADS ADRSDIF1",
+   "words": [
+    "27746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 107,
+   "address": "17,3274",
+   "source": "TS ADRSDIF2",
+   "words": [
+    "55744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 108,
+   "address": "17,3275",
+   "source": "CS SENSOR",
+   "words": [
+    "43724"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 109,
+   "address": "17,3276",
+   "source": "SETSENSE TS ROTSENSE",
+   "words": [
+    "55740"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 115,
+   "address": "17,3277",
+   "source": "CAE E",
+   "words": [
+    "31752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 116,
+   "address": "17,3300",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 117,
+   "address": "17,3301",
+   "source": "MP BIT5",
+   "words": [
+    "74747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 118,
+   "address": "17,3302",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 119,
+   "address": "17,3303",
+   "source": "TCF RUFLAW2",
+   "words": [
+    "13664"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 120,
+   "address": "17,3304",
+   "source": "TCF SCALEE",
+   "words": [
+    "13306"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 121,
+   "address": "17,3305",
+   "source": "TCF RUFLAW1",
+   "words": [
+    "13630"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 122,
+   "address": "17,3306",
+   "source": "SCALEE CAF BIT13",
+   "words": [
+    "34737"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 123,
+   "address": "17,3307",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 124,
+   "address": "17,3310",
+   "source": "MP L",
+   "words": [
+    "70001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 125,
+   "address": "17,3311",
+   "source": "TS E",
+   "words": [
+    "55752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 131,
+   "address": "17,3312",
+   "source": "CAE EDOT",
+   "words": [
+    "31427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 133,
+   "address": "17,3313",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 134,
+   "address": "17,3314",
+   "source": "MP BIT4",
+   "words": [
+    "74750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 135,
+   "address": "17,3315",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 136,
+   "address": "17,3316",
+   "source": "BZF SCALEDOT",
+   "words": [
+    "13320"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 137,
+   "address": "17,3317",
+   "source": "TCF RUFLAW3",
+   "words": [
+    "13672"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 141,
+   "address": "17,3320",
+   "source": "SCALEDOT LXCH EDOT",
+   "words": [
+    "23427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 143,
+   "address": "17,3321",
+   "source": "CAE EDOT",
+   "words": [
+    "31427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 144,
+   "address": "17,3322",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 145,
+   "address": "17,3323",
+   "source": "SQUARE",
+   "words": [
+    "70000"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 146,
+   "address": "17,3324",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 147,
+   "address": "17,3325",
+   "source": "MP BIT13",
+   "words": [
+    "74737"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 148,
+   "address": "17,3326",
+   "source": "TS EDOTSQ",
+   "words": [
+    "55737"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 150,
+   "address": "17,3327",
+   "source": "ERRTEST CCS E",
+   "words": [
+    "11752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 151,
+   "address": "17,3330",
+   "source": "AD -3DEG",
+   "words": [
+    "63725"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 152,
+   "address": "17,3331",
+   "source": "TCF +2",
+   "words": [
+    "13333"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 153,
+   "address": "17,3332",
+   "source": "AD -3DEG",
+   "words": [
+    "63725"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 154,
+   "address": "17,3333",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 155,
+   "address": "17,3334",
+   "source": "INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 156,
+   "address": "17,3335",
+   "source": "SU FIREDB",
+   "words": [
+    "61601"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 157,
+   "address": "17,3336",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 158,
+   "address": "17,3337",
+   "source": "BZMF SENSTEST",
+   "words": [
+    "63344"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 159,
+   "address": "17,3340",
+   "source": "MAXJETS CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 160,
+   "address": "17,3341",
+   "source": "ADS ADRSDIF2",
+   "words": [
+    "27744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 161,
+   "address": "17,3342",
+   "source": "CAF FOUR",
+   "words": [
+    "34751"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 162,
+   "address": "17,3343",
+   "source": "TCF TJCALC",
+   "words": [
+    "13347"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 163,
+   "address": "17,3344",
+   "source": "SENSTEST CCS SENSETYP",
+   "words": [
+    "11500"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 164,
+   "address": "17,3345",
+   "source": "TCF TJCALC",
+   "words": [
+    "13347"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 165,
+   "address": "17,3346",
+   "source": "TCF MAXJETS",
+   "words": [
+    "13340"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 166,
+   "address": "17,3347",
+   "source": "TJCALC TS NUMBERT",
+   "words": [
+    "55743"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 170,
+   "address": "17,3350",
+   "source": "CS EDOTSQ",
+   "words": [
+    "41737"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 171,
+   "address": "17,3351",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 172,
+   "address": "17,3352",
+   "source": "INDEX ADRSDIF2",
+   "words": [
+    "51744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 173,
+   "address": "17,3353",
+   "source": "MP 1/ANET1",
+   "words": [
+    "71567"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 174,
+   "address": "17,3354",
+   "source": "INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 175,
+   "address": "17,3355",
+   "source": "AD FIREDB",
+   "words": [
+    "61601"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 176,
+   "address": "17,3356",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 177,
+   "address": "17,3357",
+   "source": "SU E",
+   "words": [
+    "61752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 178,
+   "address": "17,3360",
+   "source": "TS FIREFCT",
+   "words": [
+    "55741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 179,
+   "address": "17,3361",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 180,
+   "address": "17,3362",
+   "source": "BZMF ZON1,2,3",
+   "words": [
+    "63542"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 182,
+   "address": "17,3363",
+   "source": "ZONE4,5 INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 183,
+   "address": "17,3364",
+   "source": "CAE 1/ACOAST",
+   "words": [
+    "31573"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 185,
+   "address": "17,3365",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 186,
+   "address": "17,3366",
+   "source": "MP EDOTSQ",
+   "words": [
+    "71737"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 187,
+   "address": "17,3367",
+   "source": "AD E",
+   "words": [
+    "61752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 188,
+   "address": "17,3370",
+   "source": "INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 189,
+   "address": "17,3371",
+   "source": "AD COASTDB",
+   "words": [
+    "61603"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 190,
+   "address": "17,3372",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 191,
+   "address": "17,3373",
+   "source": "BZMF ZONE5",
+   "words": [
+    "63426"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 199,
+   "address": "17,3374",
+   "source": "ZONE4 INDEX AXISCTR",
+   "words": [
+    "51505"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 200,
+   "address": "17,3375",
+   "source": "CS TJETU",
+   "words": [
+    "41525"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 201,
+   "address": "17,3376",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 202,
+   "address": "17,3377",
+   "source": "MP ROTSENSE",
+   "words": [
+    "71740"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 203,
+   "address": "17,3400",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 204,
+   "address": "17,3401",
+   "source": "BZMF COASTTJ",
+   "words": [
+    "63422"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 206,
+   "address": "17,3402",
+   "source": "JETSON CCS FLAT",
+   "words": [
+    "11555"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 207,
+   "address": "17,3403",
+   "source": "TCF DRIFT/ON",
+   "words": [
+    "13414"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 209,
+   "address": "17,3404",
+   "source": "CS FIREFCT",
+   "words": [
+    "41741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 210,
+   "address": "17,3405",
+   "source": "INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 211,
+   "address": "17,3406",
+   "source": "AD AXISDIST",
+   "words": [
+    "61605"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 212,
+   "address": "17,3407",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 213,
+   "address": "17,3410",
+   "source": "BZMF COASTTJ",
+   "words": [
+    "63422"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 214,
+   "address": "17,3411",
+   "source": "TC Z123COMP",
+   "words": [
+    "03526"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 215,
+   "address": "17,3412",
+   "source": "CAE FIREFCT",
+   "words": [
+    "31741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 216,
+   "address": "17,3413",
+   "source": "TCF ZONE1",
+   "words": [
+    "13562"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 218,
+   "address": "17,3414",
+   "source": "DRIFT/ON INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 219,
+   "address": "17,3415",
+   "source": "CS FIREDB",
+   "words": [
+    "41601"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 220,
+   "address": "17,3416",
+   "source": "DOUBLE",
+   "words": [
+    "60000"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 221,
+   "address": "17,3417",
+   "source": "AD FIREFCT",
+   "words": [
+    "61741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 222,
+   "address": "17,3420",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 223,
+   "address": "17,3421",
+   "source": "BZMF +3",
+   "words": [
+    "63424"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 224,
+   "address": "17,3422",
+   "source": "COASTTJ CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 225,
+   "address": "17,3423",
+   "source": "TCF RETURNTJ",
+   "words": [
+    "13466"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 227,
+   "address": "17,3424",
+   "source": "TC Z123COMP",
+   "words": [
+    "03526"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 228,
+   "address": "17,3425",
+   "source": "TCF ZONE2,3",
+   "words": [
+    "13547"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 230,
+   "address": "17,3426",
+   "source": "ZONE5 TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 231,
+   "address": "17,3427",
+   "source": "CCS ROTSENSE",
+   "words": [
+    "11740"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 232,
+   "address": "17,3430",
+   "source": "TCF +4",
+   "words": [
+    "13434"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 233,
+   "address": "17,3431",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 234,
+   "address": "17,3432",
+   "source": "CS TWO",
+   "words": [
+    "44752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 236,
+   "address": "17,3433",
+   "source": "ADS ADRSDIF2",
+   "words": [
+    "27744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 238,
+   "address": "17,3434",
+   "source": "+4 CAE L",
+   "words": [
+    "30001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 239,
+   "address": "17,3435",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 240,
+   "address": "17,3436",
+   "source": "INDEX ADRSDIF2",
+   "words": [
+    "51744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 241,
+   "address": "17,3437",
+   "source": "MP ACCFCTZ5",
+   "words": [
+    "71576"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 242,
+   "address": "17,3440",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 243,
+   "address": "17,3441",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 244,
+   "address": "17,3442",
+   "source": "DXCH HH",
+   "words": [
+    "53750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 245,
+   "address": "17,3443",
+   "source": "INDEX ADRSDIF2",
+   "words": [
+    "51744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 246,
+   "address": "17,3444",
+   "source": "CAE 1/ANET2",
+   "words": [
+    "31570"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 247,
+   "address": "17,3445",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 248,
+   "address": "17,3446",
+   "source": "MP EDOT",
+   "words": [
+    "71427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 249,
+   "address": "17,3447",
+   "source": "TS TTOAXIS",
+   "words": [
+    "55742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 253,
+   "address": "17,3450",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 254,
+   "address": "17,3451",
+   "source": "MP -.05AT2",
+   "words": [
+    "73734"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 255,
+   "address": "17,3452",
+   "source": "AD HH",
+   "words": [
+    "61747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 256,
+   "address": "17,3453",
+   "source": "AD NEG2",
+   "words": [
+    "67746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 257,
+   "address": "17,3454",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 258,
+   "address": "17,3455",
+   "source": "BZMF FORMULA1",
+   "words": [
+    "63503"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 262,
+   "address": "17,3456",
+   "source": "CAE TTOAXIS",
+   "words": [
+    "31742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 263,
+   "address": "17,3457",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 264,
+   "address": "17,3460",
+   "source": "MP -.15AT2",
+   "words": [
+    "73735"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 265,
+   "address": "17,3461",
+   "source": "AD HH",
+   "words": [
+    "61747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 266,
+   "address": "17,3462",
+   "source": "AD -.0112A8",
+   "words": [
+    "63726"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 267,
+   "address": "17,3463",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 268,
+   "address": "17,3464",
+   "source": "BZMF FORMULA2",
+   "words": [
+    "63513"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 273,
+   "address": "17,3465",
+   "source": "FULLTIME CAF BIT11",
+   "words": [
+    "34741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 277,
+   "address": "17,3466",
+   "source": "RETURNTJ EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 278,
+   "address": "17,3467",
+   "source": "MP ROTSENSE",
+   "words": [
+    "71740"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 279,
+   "address": "17,3470",
+   "source": "INDEX AXISCTR",
+   "words": [
+    "51505"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 280,
+   "address": "17,3471",
+   "source": "TS TJETU",
+   "words": [
+    "55525"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 281,
+   "address": "17,3472",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 282,
+   "address": "17,3473",
+   "source": "INDEX AXISCTR",
+   "words": [
+    "51505"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 283,
+   "address": "17,3474",
+   "source": "MP ACCSWU",
+   "words": [
+    "71547"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 284,
+   "address": "17,3475",
+   "source": "CAE L",
+   "words": [
+    "30001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 285,
+   "address": "17,3476",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 286,
+   "address": "17,3477",
+   "source": "BZMF +3",
+   "words": [
+    "63502"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 287,
+   "address": "17,3500",
+   "source": "CAF FOUR",
+   "words": [
+    "34751"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 289,
+   "address": "17,3501",
+   "source": "TS NUMBERT",
+   "words": [
+    "55743"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 290,
+   "address": "17,3502",
+   "source": "TC HOLDQ",
+   "words": [
+    "01745"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 294,
+   "address": "17,3503",
+   "source": "FORMULA1 CS -.025AT4",
+   "words": [
+    "43733"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 295,
+   "address": "17,3504",
+   "source": "AD TTOAXIS",
+   "words": [
+    "61742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 296,
+   "address": "17,3505",
+   "source": "DXCH HH",
+   "words": [
+    "53750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 297,
+   "address": "17,3506",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 298,
+   "address": "17,3507",
+   "source": "DV HH",
+   "words": [
+    "11747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 299,
+   "address": "17,3510",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 300,
+   "address": "17,3511",
+   "source": "MP BIT14",
+   "words": [
+    "74736"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 301,
+   "address": "17,3512",
+   "source": "TCF CHKMINTJ",
+   "words": [
+    "13623"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 305,
+   "address": "17,3513",
+   "source": "FORMULA2 EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 306,
+   "address": "17,3514",
+   "source": "DCA .00375A8",
+   "words": [
+    "33737"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 307,
+   "address": "17,3515",
+   "source": "DAS HH",
+   "words": [
+    "21750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 309,
+   "address": "17,3516",
+   "source": "CAE TTOAXIS",
+   "words": [
+    "31742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 310,
+   "address": "17,3517",
+   "source": "AD .1AT4",
+   "words": [
+    "63727"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 311,
+   "address": "17,3520",
+   "source": "DXCH HH",
+   "words": [
+    "53750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 312,
+   "address": "17,3521",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 313,
+   "address": "17,3522",
+   "source": "DV HH",
+   "words": [
+    "11747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 314,
+   "address": "17,3523",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 315,
+   "address": "17,3524",
+   "source": "MP BIT14",
+   "words": [
+    "74736"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 316,
+   "address": "17,3525",
+   "source": "TCF RETURNTJ",
+   "words": [
+    "13466"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 321,
+   "address": "17,3526",
+   "source": "Z123COMP CS ROTSENSE",
+   "words": [
+    "41740"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 322,
+   "address": "17,3527",
+   "source": "TS ROTSENSE",
+   "words": [
+    "55740"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 323,
+   "address": "17,3530",
+   "source": "CAE EDOT",
+   "words": [
+    "31427"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 324,
+   "address": "17,3531",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 325,
+   "address": "17,3532",
+   "source": "INDEX ADRSDIF2",
+   "words": [
+    "51744"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 326,
+   "address": "17,3533",
+   "source": "MP 1/ANET1",
+   "words": [
+    "71567"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 327,
+   "address": "17,3534",
+   "source": "TS TTOAXIS",
+   "words": [
+    "55742"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 328,
+   "address": "17,3535",
+   "source": "AD -TJMAX",
+   "words": [
+    "63740"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 329,
+   "address": "17,3536",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 330,
+   "address": "17,3537",
+   "source": "BZMF +2",
+   "words": [
+    "63541"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 331,
+   "address": "17,3540",
+   "source": "TCF FULLTIME",
+   "words": [
+    "13465"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 332,
+   "address": "17,3541",
+   "source": "RETURN",
+   "words": [
+    "00002"
+   ],
+   "native": "z123comp"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 334,
+   "address": "17,3542",
+   "source": "ZON1,2,3 TC Z123COMP",
+   "words": [
+    "03526"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 341,
+   "address": "17,3543",
+   "source": "CAE FIREFCT",
+   "words": [
+    "31741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 342,
+   "address": "17,3544",
+   "source": "AD FLAT",
+   "words": [
+    "61555"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 343,
+   "address": "17,3545",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 344,
+   "address": "17,3546",
+   "source": "BZMF ZONE1",
+   "words": [
+    "63562"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 348,
+   "address": "17,3547",
+   "source": "ZONE2,3 CS ZONE3LIM",
+   "words": [
+    "41556"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 349,
+   "address": "17,3550",
+   "source": "AD TTOAXIS",
+   "words": [
+    "61742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 350,
+   "address": "17,3551",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 351,
+   "address": "17,3552",
+   "source": "BZMF ZONE3",
+   "words": [
+    "63555"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 352,
+   "address": "17,3553",
+   "source": "ZONE2 CAE TTOAXIS",
+   "words": [
+    "31742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 353,
+   "address": "17,3554",
+   "source": "TCF RETURNTJ",
+   "words": [
+    "13466"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 354,
+   "address": "17,3555",
+   "source": "ZONE3 CCS EDOT",
+   "words": [
+    "11427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 355,
+   "address": "17,3556",
+   "source": "CAF BIT6",
+   "words": [
+    "34746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 356,
+   "address": "17,3557",
+   "source": "TCF RETURNTJ",
+   "words": [
+    "13466"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 357,
+   "address": "17,3560",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 358,
+   "address": "17,3561",
+   "source": "TCF RETURNTJ",
+   "words": [
+    "13466"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 360,
+   "address": "17,3562",
+   "source": "ZONE1 EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 361,
+   "address": "17,3563",
+   "source": "INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 362,
+   "address": "17,3564",
+   "source": "SU AXISDIST",
+   "words": [
+    "61605"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 363,
+   "address": "17,3565",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 364,
+   "address": "17,3566",
+   "source": "INDEX ADRSDIF2",
+   "words": [
+    "51744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 365,
+   "address": "17,3567",
+   "source": "MP ACCFCTZ1",
+   "words": [
+    "71575"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 366,
+   "address": "17,3570",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 367,
+   "address": "17,3571",
+   "source": "DDOUBL",
+   "words": [
+    "20001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 368,
+   "address": "17,3572",
+   "source": "DXCH HH",
+   "words": [
+    "53750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 374,
+   "address": "17,3573",
+   "source": "CAE TTOAXIS",
+   "words": [
+    "31742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 375,
+   "address": "17,3574",
+   "source": "AD -TJMAX",
+   "words": [
+    "63740"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 376,
+   "address": "17,3575",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 377,
+   "address": "17,3576",
+   "source": "SQUARE",
+   "words": [
+    "70000"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 378,
+   "address": "17,3577",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 379,
+   "address": "17,3600",
+   "source": "SU HH",
+   "words": [
+    "61747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 380,
+   "address": "17,3601",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 381,
+   "address": "17,3602",
+   "source": "BZMF FULLTIME",
+   "words": [
+    "63465"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 385,
+   "address": "17,3603",
+   "source": "CAE HH",
+   "words": [
+    "31747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 386,
+   "address": "17,3604",
+   "source": "AD NEG2",
+   "words": [
+    "67746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 387,
+   "address": "17,3605",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 388,
+   "address": "17,3606",
+   "source": "BZMF FORMULA3",
+   "words": [
+    "63616"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 393,
+   "address": "17,3607",
+   "source": "CAF .1AT2",
+   "words": [
+    "33730"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 394,
+   "address": "17,3610",
+   "source": "DXCH HH",
+   "words": [
+    "53750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 395,
+   "address": "17,3611",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 396,
+   "address": "17,3612",
+   "source": "DV HH",
+   "words": [
+    "11747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 397,
+   "address": "17,3613",
+   "source": "AD TTOAXIS",
+   "words": [
+    "61742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 398,
+   "address": "17,3614",
+   "source": "AD .0375AT4",
+   "words": [
+    "63731"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 399,
+   "address": "17,3615",
+   "source": "TCF RETURNTJ",
+   "words": [
+    "13466"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 403,
+   "address": "17,3616",
+   "source": "FORMULA3 CS -.025AT2",
+   "words": [
+    "43732"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 404,
+   "address": "17,3617",
+   "source": "DXCH HH",
+   "words": [
+    "53750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 405,
+   "address": "17,3620",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 406,
+   "address": "17,3621",
+   "source": "DV HH",
+   "words": [
+    "11747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 407,
+   "address": "17,3622",
+   "source": "AD TTOAXIS",
+   "words": [
+    "61742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 412,
+   "address": "17,3623",
+   "source": "CHKMINTJ AD -TJMIN",
+   "words": [
+    "63742"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 413,
+   "address": "17,3624",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 414,
+   "address": "17,3625",
+   "source": "BZMF COASTTJ",
+   "words": [
+    "63422"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 415,
+   "address": "17,3626",
+   "source": "AD TJMIN",
+   "words": [
+    "63741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 416,
+   "address": "17,3627",
+   "source": "TCF RETURNTJ",
+   "words": [
+    "13466"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 431,
+   "address": "17,3630",
+   "source": "RUFLAW1 CS RUFRATE",
+   "words": [
+    "43743"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 432,
+   "address": "17,3631",
+   "source": "ADS EDOT",
+   "words": [
+    "27427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 433,
+   "address": "17,3632",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 434,
+   "address": "17,3633",
+   "source": "BZMF SMALRATE",
+   "words": [
+    "63654"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 435,
+   "address": "17,3634",
+   "source": "TC RUFSETUP",
+   "words": [
+    "03712"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 436,
+   "address": "17,3635",
+   "source": "CAE EDOT",
+   "words": [
+    "31427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 438,
+   "address": "17,3636",
+   "source": "RUFLAW12 EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 439,
+   "address": "17,3637",
+   "source": "INDEX ADRSDIF2",
+   "words": [
+    "51744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 440,
+   "address": "17,3640",
+   "source": "MP 1/ANET1 +2",
+   "words": [
+    "71571"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 441,
+   "address": "17,3641",
+   "source": "AD -1/8",
+   "words": [
+    "67741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 442,
+   "address": "17,3642",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 443,
+   "address": "17,3643",
+   "source": "BZMF +2",
+   "words": [
+    "63645"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 444,
+   "address": "17,3644",
+   "source": "TCF FULLTIME",
+   "words": [
+    "13465"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 445,
+   "address": "17,3645",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 446,
+   "address": "17,3646",
+   "source": "BZF FULLTIME",
+   "words": [
+    "13465"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 447,
+   "address": "17,3647",
+   "source": "AD BIT12",
+   "words": [
+    "64740"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 448,
+   "address": "17,3650",
+   "source": "DAS A",
+   "words": [
+    "20001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 449,
+   "address": "17,3651",
+   "source": "DAS A",
+   "words": [
+    "20001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 450,
+   "address": "17,3652",
+   "source": "DAS A",
+   "words": [
+    "20001"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 451,
+   "address": "17,3653",
+   "source": "TCF CHKMINTJ",
+   "words": [
+    "13623"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 453,
+   "address": "17,3654",
+   "source": "SMALRATE TC RUFSETUP +2",
+   "words": [
+    "03714"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 454,
+   "address": "17,3655",
+   "source": "CCS ROTSENSE",
+   "words": [
+    "11740"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 455,
+   "address": "17,3656",
+   "source": "CAF ONE",
+   "words": [
+    "34753"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 456,
+   "address": "17,3657",
+   "source": "TCF +2",
+   "words": [
+    "13661"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 457,
+   "address": "17,3660",
+   "source": "CAF NEGONE",
+   "words": [
+    "37747"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 458,
+   "address": "17,3661",
+   "source": "ADS ADRSDIF2",
+   "words": [
+    "27744"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 460,
+   "address": "17,3662",
+   "source": "CS EDOT",
+   "words": [
+    "41427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 461,
+   "address": "17,3663",
+   "source": "TCF RUFLAW12",
+   "words": [
+    "13636"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 463,
+   "address": "17,3664",
+   "source": "RUFLAW2 TC RUFSETUP",
+   "words": [
+    "03712"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 464,
+   "address": "17,3665",
+   "source": "CAF RUFRATE",
+   "words": [
+    "33743"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 465,
+   "address": "17,3666",
+   "source": "AD EDOT",
+   "words": [
+    "61427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 466,
+   "address": "17,3667",
+   "source": "TS A",
+   "words": [
+    "54000"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 467,
+   "address": "17,3670",
+   "source": "TCF RUFLAW12",
+   "words": [
+    "13636"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 468,
+   "address": "17,3671",
+   "source": "TCF FULLTIME",
+   "words": [
+    "13465"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 471,
+   "address": "17,3672",
+   "source": "RUFLAW3 TC RUFSETUP",
+   "words": [
+    "03712"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 472,
+   "address": "17,3673",
+   "source": "INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 473,
+   "address": "17,3674",
+   "source": "CS FIREDB",
+   "words": [
+    "41601"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 474,
+   "address": "17,3675",
+   "source": "AD E",
+   "words": [
+    "61752"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 475,
+   "address": "17,3676",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 476,
+   "address": "17,3677",
+   "source": "MP BIT11",
+   "words": [
+    "74741"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 477,
+   "address": "17,3700",
+   "source": "XCH EDOT",
+   "words": [
+    "57427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 478,
+   "address": "17,3701",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 479,
+   "address": "17,3702",
+   "source": "SQUARE",
+   "words": [
+    "70000"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 480,
+   "address": "17,3703",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 481,
+   "address": "17,3704",
+   "source": "INDEX ADRSDIF1",
+   "words": [
+    "51746"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 482,
+   "address": "17,3705",
+   "source": "MP 1/ANET1 +2",
+   "words": [
+    "71571"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 483,
+   "address": "17,3706",
+   "source": "AD EDOT",
+   "words": [
+    "61427"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 484,
+   "address": "17,3707",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 485,
+   "address": "17,3710",
+   "source": "BZMF COASTTJ",
+   "words": [
+    "63422"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 486,
+   "address": "17,3711",
+   "source": "TCF FULLTIME",
+   "words": [
+    "13465"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 490,
+   "address": "17,3712",
+   "source": "RUFSETUP CS ROTSENSE",
+   "words": [
+    "41740"
+   ],
+   "native": "rufsetup"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 491,
+   "address": "17,3713",
+   "source": "TS ROTSENSE",
+   "words": [
+    "55740"
+   ],
+   "native": "rufsetup"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 492,
+   "address": "17,3714",
+   "source": "+2 CAF FOUR",
+   "words": [
+    "34751"
+   ],
+   "native": "rufsetup"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 493,
+   "address": "17,3715",
+   "source": "TS NUMBERT",
+   "words": [
+    "55743"
+   ],
+   "native": "rufsetup"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 494,
+   "address": "17,3716",
+   "source": "CAF NEGMAX",
+   "words": [
+    "34735"
+   ],
+   "native": "rufsetup"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 495,
+   "address": "17,3717",
+   "source": "TS FIREFCT",
+   "words": [
+    "55741"
+   ],
+   "native": "rufsetup"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 496,
+   "address": "17,3720",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "native": "rufsetup"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 500,
+   "address": "17,3721",
+   "source": "DEC -16",
+   "words": [
+    "77757"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 501,
+   "address": "17,3722",
+   "source": "AXISDIFF DEC +0",
+   "words": [
+    "00000"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 502,
+   "address": "17,3723",
+   "source": "DEC 16",
+   "words": [
+    "00020"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 503,
+   "address": "17,3724",
+   "source": "SENSOR OCT 14400",
+   "words": [
+    "14400"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 505,
+   "address": "17,3725",
+   "source": "-3DEG DEC -.06667",
+   "words": [
+    "75673"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 506,
+   "address": "17,3726",
+   "source": "-.0112A8 DEC -.00141",
+   "words": [
+    "77750"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 507,
+   "address": "17,3727",
+   "source": ".1AT4 DEC .025",
+   "words": [
+    "00632"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 508,
+   "address": "17,3730",
+   "source": ".1AT2 DEC .05",
+   "words": [
+    "01463"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 509,
+   "address": "17,3731",
+   "source": ".0375AT4 DEC .00938",
+   "words": [
+    "00232"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 510,
+   "address": "17,3732",
+   "source": "-.025AT2 DEC -.0125",
+   "words": [
+    "77462"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 511,
+   "address": "17,3733",
+   "source": "-.025AT4 DEC -.00625",
+   "words": [
+    "77631"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 512,
+   "address": "17,3734",
+   "source": "-.05AT2 DEC -.025",
+   "words": [
+    "77145"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 513,
+   "address": "17,3735",
+   "source": "-.15AT2 DEC -.075",
+   "words": [
+    "75462"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 514,
+   "address": "17,3736",
+   "source": ".00375A8 2DEC .00375 B-3",
+   "words": [
+    "00007",
+    "25605"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 516,
+   "address": "17,3740",
+   "source": "-TJMAX DEC -.0375",
+   "words": [
+    "76631"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 517,
+   "address": "17,3741",
+   "source": "TJMIN DEC .005",
+   "words": [
+    "00122"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 518,
+   "address": "17,3742",
+   "source": "-TJMIN DEC -.005",
+   "words": [
+    "77655"
+   ],
+   "native": "tjetlaw"
+  },
+  {
+   "path": "Luminary099/TJET_LAW.agc",
+   "line": 519,
+   "address": "17,3743",
+   "source": "RUFRATE DEC .1444",
+   "words": [
+    "04476"
+   ],
+   "native": "tjetlaw"
+  }
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every assembled word of TJET_LAW has one native owner holding its erasable address (the indexed base for INDEX orders), the rope value of its fixed operand, its branch target (or composes it inline), or its constant."
+}

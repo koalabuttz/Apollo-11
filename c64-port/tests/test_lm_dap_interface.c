@@ -12,7 +12,7 @@
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s case %u\n",what,n);}}
 static agc_routine_table tables[2];
-static agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};
+static agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};
 #define POINTS 13u
 static const uint16_t points[POINTS]={P(02123u),P(02124u),P(02127u),P(02137u),P(02140u),P(02142u),P(02145u),P(02153u),P(02165u),P(02204u),P(02207u),P(02225u),FF(LM_EXEC_NOVAC)};
 static unsigned reached[POINTS];

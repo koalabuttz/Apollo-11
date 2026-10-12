@@ -274,6 +274,11 @@ def case(g,body):
     if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
    img[0o117]=v
   return hdr,img
+ if body==61:
+  setbanks(img,1);img[5]=A(0o2351,1)
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  img[0o117]=r.randrange(0,0o100000)
+  return hdr,img
  if body==48:
   setbanks(img,1);img[5]=A(0o2452,1);hdr[2]=A(0o6646)
   img[0o154]=r.choice([0,0o77777,r.getrandbits(15)])
@@ -368,7 +373,7 @@ def addresses():
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC']
 def main():
  global rom,MISSION,ROPES,LST,ROM
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)

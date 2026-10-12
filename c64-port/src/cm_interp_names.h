@@ -83,6 +83,7 @@
 #define lmi_xsu cmi_xsu
 #define lmi_lxa cmi_lxa
 #define lmi_sxa cmi_sxa
+#define lmi_axc cmi_axc
 #define lmi_ita cmi_ita
 #define lmi_tix cmi_tix
 #define lmi_bhiz cmi_bhiz
