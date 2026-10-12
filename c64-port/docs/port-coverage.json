@@ -3259,6 +3259,16 @@
           ],
           "scope": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff; every original emitted word and control body, passive constants and directives reviewed",
           "verification": "docs/NATIVE-SERVICE-ROUTINES.md"
+        },
+        {
+          "native_files": [
+            "src/service_transfer.c",
+            "src/cm_service_sites.inc",
+            "src/service_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (152 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
@@ -8034,6 +8044,16 @@
           ],
           "scope": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff; every original emitted word and control body, passive constants and directives reviewed",
           "verification": "docs/NATIVE-SERVICE-ROUTINES.md"
+        },
+        {
+          "native_files": [
+            "src/service_transfer.c",
+            "src/lm_service_sites.inc",
+            "src/service_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 11 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (171 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
       "complete_native_coverage": {
