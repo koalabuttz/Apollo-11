@@ -220,6 +220,11 @@ def case(g,body):
   for i in range(2):
    v=r.getrandbits(14);img[0o154+i]=v if r.random()<.5 else 0o77777-v
   return hdr,img
+ if body==37:
+  setbanks(img,1);img[5]=0o2474;hdr[1]=0o6646;hdr[2]=0o6061
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777),0o77777])  # +0 would run 5B10 as code
+  for i in range(3):img[0o154+i]=r.choice([0,0o77777,r.getrandbits(15)]) if r.random()<.5 else r.getrandbits(15)
+  return hdr,img
  if body in BANK0:
   setbanks(img,0);img[5]=BANK0[body]
   if body==22 and r.random()<.15:
@@ -230,7 +235,7 @@ ARITH={12:0o6775,13:0o7005,14:0o7062,15:0o7572,16:0o7574,21:0o7655,25:0o7331}
 BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
- 'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY']
+ 'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)

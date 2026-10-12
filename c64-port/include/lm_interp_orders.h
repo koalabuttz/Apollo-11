@@ -63,6 +63,8 @@ void lmi_vxsc(apollo_overlay_state *, const agc_word *k);
 void lmi_vxv(apollo_overlay_state *, const agc_word *k);
 /* BOV(B) (bank 1): DANZIG, GOTO 06646 (then lmi_goto) or RTB 02450. */
 enum {LMI_BOV_NONE,LMI_BOV_GOTO,LMI_BOV_RTB,LMI_BOV_OUT_OF_SCOPE};
+/* BPL/BMN order: 1 = take GOTO (W[5]=06646), 0 = DANZIG. */
+uint8_t lmi_bplbmn(apollo_overlay_state *);
 uint8_t lmi_bov(apollo_overlay_state *);
 /* RTB (bank 1, POLISH = the routine's CADR) to the routine's first word,
  * with FBANK switched and Q = SWRETURN 04631; SWRETURN back to DANZIG. */

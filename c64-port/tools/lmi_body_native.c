@@ -51,6 +51,7 @@ int main(void){
   case 34:lmi_rtb(&s);break;
   case 35:lmi_swreturn(&s);break;
   case 36:lmi_poly(&s,tx);break;
+  case 37:(void)lmi_bplbmn(&s);break;
   default:return 2;
   }
   out[0]=4;for(i=0;i<4u;++i)if(in[1+i]&&s.words[5]==in[1+i]){out[0]=(uint16_t)i;break;}

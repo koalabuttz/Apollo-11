@@ -885,6 +885,15 @@ void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
 }
 
 /* ---- BOV(B), RTB and POLY ----------------------------------------------- */
+/* BPL/BMN 01,2474: CCS CYR; positive TCF BPL (TC BRANCH; + or zero GOTO),
+ * negative BMN (TC BRANCH; only negative GOTO), -0 DANZIG. Returns 1 at GOTO 06646 (the
+ * caller continues with lmi_goto), 0 at DANZIG. */
+uint8_t lmi_bplbmn(apollo_overlay_state *s){
+ uint8_t c=CCS(rCYR),b;
+ if(c==0u){TC(02504);b=branch(s);if(b!=2u){W[5]=06646;return 1;}danzig(s);return 0;}
+ if(c==3u){danzig(s);return 0;}
+ TC(02500);b=branch(s);if(b==2u){W[5]=06646;return 1;}danzig(s);return 0;
+}
 uint8_t lmi_bov(apollo_overlay_state *s){
  uint8_t c=CCS(rOVFIND);
  if(c==1u){danzig(s);return LMI_BOV_NONE;}
