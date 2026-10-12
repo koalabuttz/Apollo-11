@@ -4,18 +4,18 @@
   "release": "evidence-cm-fresh-start",
   "files": {
     "cm-fresh-start-host.log": {
-      "sha256": "d5323bd96c4e8675f9c583c0447426aa770b772ae4dbba9276c7283088f8a205",
-      "bytes": 1885,
+      "sha256": "ad24e447d3e015847dc1bc92fafcd333811816082d667ec0de6df7bb75d5dc3d",
+      "bytes": 1875,
       "store": "release"
     },
     "cm-fresh-start-proof.json": {
-      "sha256": "6e619dd7ccdf321b56abf3e8a22f933fc033f9a22984c7186b690147d1aeb81a",
-      "bytes": 2147,
+      "sha256": "4f9c7f18fe791ebcc506f3dc60af85acc85401cfacbf55538b611b31700dbe0f",
+      "bytes": 2220,
       "store": "tree"
     },
     "cm-fresh-start-vice.log": {
-      "sha256": "ef80392a21eceb7fe503b9cdec80fd889eea1cdb89bee91f539fb9f6a475faaa",
-      "bytes": 626,
+      "sha256": "acde2fae7c3ec743acc78a202e353cf1879208946a9908e8b755085c1ebdee82",
+      "bytes": 620,
       "store": "release"
     }
   }
