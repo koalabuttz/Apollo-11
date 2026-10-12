@@ -175,7 +175,7 @@ def main():
                 'result': 'PASS' if shas == frozen else 'FAIL'},
             f'{cert}-host.json': {'category': 'host_and_sanitizer_results', 'aggregates': {MILESTONE: host}, 'result': host['result']},
             f'{cert}-c64.json': {'category': 'c64_execution_results', 'aggregates': {MILESTONE: c64}, 'result': c64['result']}}
-        summary.append(f'{name}: {total} words translated, {instructions} instructions executed but '
+        summary.append(f'{name}: {total} words translated, {instructions} instructions, all executed but '
                        f'{len(freeze.UNREACHABLE)} unreachable; {record["cases"]} + {record["cases_rope"]} oracle cases equal the snapshots')
     if errors:
         raise SystemExit('FAIL:\n  ' + '\n  '.join(errors))

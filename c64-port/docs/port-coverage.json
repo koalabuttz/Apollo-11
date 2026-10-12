@@ -95,13 +95,47 @@
             "src/cm_self_check.c",
             "src/self_check_body.inc",
             "src/cm_self_check_operands.inc",
+            "src/rope_image_host.c",
+            "platform/c64/rope_image_reu.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3234-3725 but FXADRS: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS (INDEX SKEEP3; CA 0, the fixed-fixed rope read) untranslated: a run stops there.",
+          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
+            "sha256": "1024a5f7af76fc0f357419f1982ac191a0646e1df4c1386eb54334e34ec02455"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
+            "sha256": "53f502fc1f5b5188cfca13567c9cbbfda920d243479a90fb30be2fc61dd5387f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-comparison.json",
+            "sha256": "676b1a217a3e6d50c70079f845d97bf6ef87102bac24ba45a691f0c638b23404"
+          },
+          "source_to_native_map": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
+            "sha256": "05d08955a2d1299121688906e5ee81d94c31720e33c9b57b2ff6797c96be6f5e"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (SUPDACAL with the rope image, POSTJUMP)",
+          "ALARM2 (ALARM_AND_ABORT); ADVAN, NUCHANG2, NUDIRECT and SELFRET (EXECUTIVE); CHANG1, LEFT5",
+          "SHOWSUM in EXTENDED_VERBS and verb 91's SDISPLAY display (DSKY lane)",
+          "ADVAN and LEFT5 are test-harness stand-ins until their lanes register them",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file, nothing excluded; two words no state reaches (-1CHK's TCF PRERRORS on A = +0, ADRSCHK's TC CONTINU on L = +0: the ones'-complement sums they test never end with a +0 addend). Entries as their callers reach them (docs/SELF-CHECK.md): FB 33 with SUPERBNK selecting bank 43; SMODE +0, -0, an option 1-8 or out of range; SKEEP1/SFAIL a TC to where the file continues or out of it; ERASCHK pairs at or above 061 after the EB window; ROPECHK/STSHOSUM over the unmodified rope with the rope image loaded, and SHOWSUM resumed at SDISPLAY as PROCEED does; p66_bias_io / cm_native_io. Refused before any change: a missing io record, another FB, a SUPERBNK not selecting bank 43, a TC through a register to erasable memory or into the middle of the file, an ERASCHK pair over the central registers, and FXADRS without a rope image."
+      }
     },
     {
       "path": "Comanche055/ALARM_AND_ABORT.agc",
@@ -3594,13 +3628,47 @@
             "src/lm_self_check.c",
             "src/self_check_body.inc",
             "src/lm_self_check_operands.inc",
+            "src/rope_image_host.c",
+            "platform/c64/rope_image_reu.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3232-3723 but FXADRS: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS (INDEX SKEEP3; CA 0, the fixed-fixed rope read) untranslated: a run stops there.",
+          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
+            "sha256": "1024a5f7af76fc0f357419f1982ac191a0646e1df4c1386eb54334e34ec02455"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
+            "sha256": "53f502fc1f5b5188cfca13567c9cbbfda920d243479a90fb30be2fc61dd5387f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-comparison.json",
+            "sha256": "9482964a38c23f676e91ae325b26acbb991bcd2351610084bf9bd87c125eabbd"
+          },
+          "source_to_native_map": {
+            "path": "evidence/lm-self-check-complete/lm-self-check-complete-source-map.json",
+            "sha256": "d25edd69f6552408d5f7f3653dddc0c40cd72fe27759cfce169134f84c9a8710"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (SUPDACAL with the rope image, POSTJUMP)",
+          "ALARM2 (ALARM_AND_ABORT); ADVAN, NUCHANG2, NUDIRECT and SELFRET (EXECUTIVE); CHANG1, LEFT5",
+          "SHOWSUM in EXTENDED_VERBS and verb 91's SDISPLAY display (DSKY lane)",
+          "ADVAN and LEFT5 are test-harness stand-ins until their lanes register them",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file, nothing excluded; two words no state reaches (-1CHK's TCF PRERRORS on A = +0, ADRSCHK's TC CONTINU on L = +0: the ones'-complement sums they test never end with a +0 addend). Entries as their callers reach them (docs/SELF-CHECK.md): FB 33 with SUPERBNK selecting bank 43; SMODE +0, -0, an option 1-8 or out of range; SKEEP1/SFAIL a TC to where the file continues or out of it; ERASCHK pairs at or above 061 after the EB window; ROPECHK/STSHOSUM over the unmodified rope with the rope image loaded, and SHOWSUM resumed at SDISPLAY as PROCEED does; p66_bias_io / cm_native_io. Refused before any change: a missing io record, another FB, a SUPERBNK not selecting bank 43, a TC through a register to erasable memory or into the middle of the file, an ERASCHK pair over the central registers, and FXADRS without a rope image."
+      }
     },
     {
       "path": "Luminary099/AGS_INITIALIZATION.agc",

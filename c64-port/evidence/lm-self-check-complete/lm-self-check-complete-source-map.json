@@ -1,0 +1,45 @@
+{
+ "category": "source_to_native_map",
+ "source_path": "Luminary099/AGC_BLOCK_TWO_SELF-CHECK.agc",
+ "source_sha256": "50ca9c6124a95fc11ec867e6ef264827f3511b34c94f1bb89b12a36123b3d0da",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "aggregates": {
+  "self-check": {
+   "record": "docs/SELF-CHECK.md",
+   "sha256": "b9c496ab219422faa74c10fe17de61f12c9a95fa64fc81ecd408794034569bb7",
+   "native": [
+    "src/lm_self_check.c",
+    "src/self_check_body.inc",
+    "src/lm_self_check_operands.inc",
+    "src/rope_image_host.c",
+    "platform/c64/rope_image_reu.c"
+   ],
+   "native_sha256": {
+    "src/lm_self_check.c": "021d428c1b9881d4ffe7cce662064da8c6f62cc1ff1acf07b662e2aa0c8605c8",
+    "src/self_check_body.inc": "34274613da05498dbde5a98e3fef9be1743db7ab2eaa422ffd8aba1ef3d29ab4",
+    "src/lm_self_check_operands.inc": "943f15eb851913c52ed4bb66e4e425c4021a4eab8a7040913cd93f75b41273e1"
+   },
+   "owns": [
+    "43,3232-3723"
+   ]
+  }
+ },
+ "word_check": {
+  "source_words": 314,
+  "translated_words": 314,
+  "excluded_words": 0,
+  "result": "PASS"
+ },
+ "execution_check": {
+  "instructions": 299,
+  "not_executed": [],
+  "unreachable": {
+   "3275": "CCS A +0 at -1CHK",
+   "3610": "CCS L +0 at ADRSCHK"
+  },
+  "result": "PASS"
+ },
+ "line_map": {
+  "record": "evidence/lm-self-check-complete/lm-self-check-complete-line-map.json"
+ }
+}
