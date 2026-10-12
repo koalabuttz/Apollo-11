@@ -1,0 +1,6 @@
+lm-p34-transfer: 14336 cases, 64 refused stored returns, 148 admission guards; [256] [256] [256] [256] [128 128] [256] [256] [128 128] [256] [256] [256] [256] [256] [224] [256] [256] [256] [256] [224] [256]; 33903 checks, 0 failures
+PASS 54 assembled P34-35 transfer words on 54 source lines map to 21 native routines
+lm-p34-transfer: 14336 cases, 64 refused stored returns, 148 admission guards; [256] [256] [256] [256] [128 128] [256] [256] [128 128] [256] [256] [256] [256] [256] [224] [256] [256] [256] [256] [224] [256]; 33903 checks, 0 failures
+PASS: VICE PAL lm-p34-transfer-1.prg: 320 checks, 0 failures
+PASS: VICE PAL lm-p34-transfer-2.prg: 62 checks, 0 failures
+PASS: VICE PAL lm-p34-transfer-3.prg: 12 checks, 0 failures
