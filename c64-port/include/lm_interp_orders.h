@@ -61,6 +61,8 @@ uint8_t lmi_abvalabs(apollo_overlay_state *);
 uint8_t lmi_unit(apollo_overlay_state *);
 void lmi_vxsc(apollo_overlay_state *, const agc_word *k);
 void lmi_vxv(apollo_overlay_state *, const agc_word *k);
+/* VPROJ 07425 ((MPAC.X)X: DOT through PREDOT, then DVXSC) to DANZIG. */
+void lmi_vproj(apollo_overlay_state *, const agc_word *k);
 /* BOV(B) (bank 1): DANZIG, GOTO 06646 (then lmi_goto) or RTB 02450. */
 enum {LMI_BOV_NONE,LMI_BOV_GOTO,LMI_BOV_RTB,LMI_BOV_OUT_OF_SCOPE};
 /* BPL/BMN order: 1 = take GOTO (W[5]=06646), 0 = DANZIG. */
@@ -107,6 +109,9 @@ void lmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
 uint8_t lmi_bzegoto(apollo_overlay_state *);
 /* TLOAD 06470 with an erasable operand at C(ADDRWD), to DANZIG (TP mode). */
 void lmi_tload(apollo_overlay_state *);
+/* TLOAD whose ADDRWD names the fixed TP words k[0..2] (INDEX ADDRWD reads
+ * the FBANK). */
+void lmi_tload_fixed(apollo_overlay_state *, const agc_word *k);
 /* EXIT to the basic word after the order (Z = LOC+1, Q 06747); TC INTPRET
  * from basic code (Q = the next word) to NEWOPS; TPMODE (RTB routine). */
 void lmi_exit(apollo_overlay_state *);

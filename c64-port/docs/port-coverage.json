@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -3194,7 +3194,7 @@
       "sha256": "1156271d55ea1f47bf20602da2cefa9388a908b3dca5231650cc7f10895db776",
       "bytes": 4811,
       "lines": 176,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3213,7 +3213,7 @@
           "scope": "Every path of the file (RESTORDB, RESTORDB+1, SETMAXDB, SETMINDB, CALLACCS to the native NOVAC, PFLITEDB, ZATTEROR, STOPRATE, ALLCOAST and the returns at 02137, 02145, 02207, 02225) as ABI routines to the caller's TC Q / RUPTREG1 / RUPTREG2 return or BAILOUT1."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3223,7 +3223,6 @@
           "BAILOUT1",
           "the caller's return"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-dap-interface/lm-dap-interface-source-map.json",
@@ -3240,6 +3239,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-dap-interface/lm-dap-interface-vice.log",
             "sha256": "962d4d1e6776a6b9052c5b0d95f654852cbed99ee3500412ad81ee84f1b140d8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-dap-interface.md",
+            "sha256": "2425dd46162ef337b5d9455c21b01ab6c467fb27ad5a9ca6429d3b235b7b50c9"
           }
         }
       }
@@ -3932,7 +3935,7 @@
       "sha256": "0b5c62e140514e58767ef3950fc3f3f381d607166f198f11348c3765c07f4ae8",
       "bytes": 10414,
       "lines": 417,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3944,7 +3947,7 @@
           "verification": "docs/IMU-COMPENSATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3956,7 +3959,6 @@
           "PIPASR +3 and PIPUSE1 (SERVICER)",
           "ENDOFJOB (EXECUTIVE)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-compensation/imu-compensation-source-map.json",
@@ -3973,6 +3975,10 @@
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
             "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-imu-compensation.md",
+            "sha256": "7f29be1369ef661682c548085bc8eacf3b3c90e9e15438f109c5806107a0611e"
           }
         }
       }
@@ -4674,8 +4680,21 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c"
           ],
-          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, INITVEL, GET.LVC, VN1645, R36) are not yet translated.",
+          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, GET.LVC, VN1645, R36; INITVEL is the lm-initvel milestone's) are not yet translated.",
           "verification": "docs/LM-PERIAPO.md"
+        },
+        {
+          "native_files": [
+            "src/lm_initvel.c",
+            "src/lm_conic_lambert.c",
+            "src/lm_conic_timethet.c",
+            "src/lm_conic_kepler.c",
+            "src/sband_trig.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "INITVEL, all 189 words of bank 11 02000-02274 (INITVEL, HAVEGUES, INITVEL1-7, INITVELX), with ORBITAL_INTEGRATION's SETITCTR (11,3765-3775) compiled inline at its CALL and LAMBERT run as the lm-conic-lambert steps: from the NEWOPS entry frontier after each Luminary CALL of INITVEL or HAVEGUES, or where INTSTALL and INTEGRVS return (11,2155, 11,2200), to the caller's NEWOPS frontier at C(NORMEX), the UNIT/SQRT abort frontier, or the NEWOPS of INTSTALL or INTEGRVS (bank 13, not ported), as native steps between original NEWOPS frontiers.",
+          "verification": "docs/LM-INITVEL.md"
         }
       ]
     },
@@ -5289,7 +5308,7 @@
       "sha256": "42f22e578939222d5b0645e85d4c89b578b5200fb998db7dd95938feeb20eb61",
       "bytes": 7689,
       "lines": 323,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Protected Type C job restart admission only; table, Type B, timed-task and LONGCALL routes remain untranslated.",
@@ -5319,7 +5338,7 @@
           "scope": "Every RESTARTS, GETPART2 and PHSPART2 path (variable Type A/B, X.1 display, odd/even table, waitlist direct/indirect/immediate, longcall incl. 600SECS, FINDVAC/NOVAC) to the selected service, and the GOLOC-1/GOLOC+2 and display returns as ABI routines through SWRETURN."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5329,7 +5348,6 @@
           "SWRETURN",
           "jobs and tasks named by the selected 2CADRs"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-RESTART-SELECT.md",
@@ -5346,6 +5364,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-restart-select/lm-restart-select-vice.log",
             "sha256": "769c74cf8fa3919394c7a8cb9ebd416577a0772e76ffc2fc8742fae8486be4de"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-restarts-routine.md",
+            "sha256": "cf8c1d1103825e4b1813223816fadd9409ca490f52ad1c6cd45c30af10628b46"
           }
         }
       }
@@ -5863,7 +5885,7 @@
       "sha256": "e49235d5d0b1de4082524112a7dd7ac1df1d99e5ba9ee86e9e607ad54b15fa67",
       "bytes": 23387,
       "lines": 721,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5936,6 +5958,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-time-free-fall/lm-time-free-fall-c64-cover.json",
             "sha256": "3562022900d38e7ed2ce7b4032fe69eeb68c454c6711a1cb3dc5f2772fb25bfd"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-time-free-fall.md",
+            "sha256": "a90bedc6497cb5b1fe4283bd3a062956df0a445a47dd6825051ac802749f2eaf"
           }
         }
       }

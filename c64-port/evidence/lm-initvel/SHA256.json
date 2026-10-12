@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-initvel",
+  "release": "evidence-lm-initvel",
+  "files": {
+    "lm-initvel-1.map": {
+      "sha256": "bf6bdceb64579b1cbc2c6a2af160e796d6d3c81904d32847a4f6db0ef0bda0a7",
+      "bytes": 23064,
+      "store": "release"
+    },
+    "lm-initvel-1.prg": {
+      "sha256": "438b62a7aca5bc11030864d667c41bfacec33e864f6f1c50238e4189645021a0",
+      "bytes": 37653,
+      "store": "release"
+    },
+    "lm-initvel-2.map": {
+      "sha256": "0c02ae2ea92598c2a6419bd536dce31ba6dfeb87a4767746c69a830d5ef53c68",
+      "bytes": 30237,
+      "store": "release"
+    },
+    "lm-initvel-2.prg": {
+      "sha256": "68f44aef41662ebe2c87af53cb7f4e76f8a04bfbb9ac9562e4b87387ca8731b3",
+      "bytes": 44547,
+      "store": "release"
+    },
+    "lm-initvel-3.map": {
+      "sha256": "d932e71184b1e0f5ff9f6b7922f65b891ee75d01f1af2992d45181e3980bdcaa",
+      "bytes": 29915,
+      "store": "release"
+    },
+    "lm-initvel-3.prg": {
+      "sha256": "3deb89b7c32efc26ddc057e7f7d6bc2055961522eb532d748c2e3b00028dc565",
+      "bytes": 39813,
+      "store": "release"
+    },
+    "lm-initvel-4.map": {
+      "sha256": "388362d447fc3b43eb36be39f644da8caee2ecd0d156ffad2a987aae8cca2339",
+      "bytes": 28070,
+      "store": "release"
+    },
+    "lm-initvel-4.prg": {
+      "sha256": "db63750ef2d93431c48961acd970c61231536a65a7f115f5ec874fddd043dc00",
+      "bytes": 40925,
+      "store": "release"
+    },
+    "lm-initvel-checks.log": {
+      "sha256": "325452680979d7f2b0f719671689f93938c5cbffaaab797ffcbe3f8af67d7afd",
+      "bytes": 825,
+      "store": "tree"
+    },
+    "lm-initvel-phase-steps.json": {
+      "sha256": "875701b55348bafabc7a6ce06a517b01e50a43880c3d7025439793e79d9e8ad1",
+      "bytes": 1078,
+      "store": "tree"
+    },
+    "lm-initvel-reference.snapshots.bin.xz": {
+      "sha256": "33fb9f41ce4ba2b46cfdb122e989a956841dfb2b537ea734bd2d3f987fba3af5",
+      "bytes": 39351172,
+      "store": "release"
+    },
+    "lm-initvel-results.json": {
+      "sha256": "d42194871382bc16ed003fadcd22010b58e94309fa2fdcffe02ffd9cd0522d71",
+      "bytes": 1994,
+      "store": "tree"
+    },
+    "lm-initvel-source-map.json": {
+      "sha256": "2a03b04a971261f4c09a0d75db7b7f55fb1566dd66b6343722433d44d849facd",
+      "bytes": 37762,
+      "store": "tree"
+    },
+    "lm-initvel-source-stream.json": {
+      "sha256": "e67a386d7fc4f57892af7fb476e3dd39405859d94eb20847aecbaa842097733e",
+      "bytes": 378,
+      "store": "tree"
+    },
+    "lm-initvel-target-states.json": {
+      "sha256": "f79eea821bbfcb113f2792cfa4db8ade3fcdc755d81c7a494c21f1c892067bea",
+      "bytes": 353,
+      "store": "tree"
+    }
+  }
+}
