@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-pin-gaps",
+  "release": "evidence-lanec-pin-gaps",
+  "files": {
+    "lanec-pin-gaps-diff.json": {
+      "sha256": "fdec5a3c1c83904c9c8c8c3f35520f8244d8a412e349f5cf326fac46a71fa3f7",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-pin-gaps-oracle.crc": {
+      "sha256": "a57b4de2f673698fbe2634336dfeecdf6a9f7a691230d1ec6524f782ffe86f57",
+      "bytes": 70570,
+      "store": "tree"
+    },
+    "lanec-pin-gaps-sanitize.txt": {
+      "sha256": "37b144e870249786d953b7173c641b7eacb2d73e64137c7619b7f63211a73778",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-pin-gaps-vice.txt": {
+      "sha256": "9d36bbf1b03216c659d2977a0095e50dae436048dc470977e1158857bc8a835a",
+      "bytes": 58,
+      "store": "tree"
+    }
+  }
+}

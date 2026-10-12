@@ -412,6 +412,13 @@
           ],
           "scope": "Blocked clock display continuation into NVSUBUSY (PINBALL) and JOBSLEEP (EXECUTIVE); only the DISPLAY_INTERFACE side is claimed here. Retained external monitor flags.",
           "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_pinbranch.c"
+          ],
+          "scope": "PINBRNCH display selection and its ERASER, MARKPLAY, KEEPPRIO and PLAYJUM1 continuations to GOPLAY or NVSUB.",
+          "verification": "docs/DSKY-PINBRANCH.md"
         }
       ]
     },
@@ -635,8 +642,19 @@
       "sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
       "bytes": 31075,
       "lines": 1315,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lanec_ev_front.c",
+            "src/lanec.c",
+            "include/lanec_ev_front.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
+          "verification": "docs/LANEC-EV-FRONT.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/FIXED_FIXED_CONSTANT_POOL.agc",
@@ -1803,6 +1821,16 @@
           ],
           "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
           "verification": "docs/DSKY-OPERATOR-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_pin_gaps.c",
+            "src/lanec.c",
+            "include/lanec_pin_gaps.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns) and CHANLOAD (channel 7 skip, WRITE of channels 0-77) to their callee boundaries, register-exact against the original program.",
+          "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]
     },
@@ -2790,8 +2818,39 @@
       "sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
       "bytes": 40245,
       "lines": 1459,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/p66_regodspr.c",
+            "src/p66_runtime_regodspr.c"
+          ],
+          "scope": "Nonflashing V06N60 REGODSPR through NOVAC, SAVELOCR and BANKJUMP to ENDOFJOB (or BAILOUT1 on NOCORE), including a pending NEWJOB; MAKEPLAY is admitted, not executed.",
+          "verification": "docs/P66-RUNTIME-REGODSPR.md"
+        },
+        {
+          "native_files": [
+            "src/p66_makeplay.c",
+            "src/p66_makeplay_sleep.c"
+          ],
+          "scope": "Normal P66 MAKEPLAY priority/select/wake-return paths, GOSLEEPS/XCHTOEND sleep and resume through PLAYJUM1 to GOPLAY, and the busy REST/RESTSLEP route to NVSUBUSY or ENDOFJOB.",
+          "verification": "docs/P66-MAKEPLAY-SLEEP.md"
+        },
+        {
+          "native_files": [
+            "src/p66_goplay.c"
+          ],
+          "scope": "Normal V06N60 GOPLAY/NVDSP consumer through COPYPACS to NVMONOPT and the nonflashing finish to ENDOFJOB.",
+          "verification": "docs/P66-GOPLAY.md"
+        },
+        {
+          "native_files": [
+            "src/dsky_pinbranch.c"
+          ],
+          "scope": "PINBRNCH display selection and its ERASER, MARKPLAY, KEEPPRIO and PLAYJUM1 continuations to GOPLAY or NVSUB.",
+          "verification": "docs/DSKY-PINBRANCH.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/DOWNLINK_LISTS.agc",
@@ -3018,8 +3077,19 @@
       "sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
       "bytes": 37260,
       "lines": 1681,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lanec_ev_front.c",
+            "src/lanec.c",
+            "include/lanec_ev_front.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Front end only: GOEXTVB/LST2FAN fan (all 60 slots), TESTXACT, SETXTACT, XACT0 and the NVSUB returns, XACTALM, ALM/END, GOPIN, CHKPOOH, OC24100 and the TERMEXTV/ENDEXTVB equates. Verb bodies remain untranslated.",
+          "verification": "docs/LANEC-EV-FRONT.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc",
@@ -4230,6 +4300,16 @@
           ],
           "scope": "Direct source operator release and monitor-unsuspension controls including signed locks and preserved unused Executive state.",
           "verification": "docs/DSKY-OPERATOR-RELEASE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_pin_gaps.c",
+            "src/lanec.c",
+            "include/lanec_pin_gaps.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns) and CHANLOAD (channel 7 skip, WRITE of channels 0-77) to their callee boundaries, register-exact against the original program.",
+          "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]
     },
