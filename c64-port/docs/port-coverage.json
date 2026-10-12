@@ -530,8 +530,47 @@
       "sha256": "d8babb9b0e0677f441411eed3ab6919a70a6aa95cbb49388813731e6c2348e74",
       "bytes": 17718,
       "lines": 441,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_downtelemetry.c",
+            "src/cm_downtelemetry_data.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-DOWNTELEMETRY.md",
+          "scope": "Every instruction (05,3521-3775): DODOWNTM, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "DOWNRUPT entries at DODOWNTM with FB 05/EB 0 and any interrupted BB, DNTMGOTO holding one of its six stored words, DNLSTCOD 0-4, any DUMPCNT, cm_dntm_io channels 11-14 and 30-35; run-time INDEX words that form a CA of a compiled word or a READ of channel 11-14/30-33 (others, and the no-producer +0 branches, refuse)",
+        "external_continuations": [
+          "RESUME (WAITLIST)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-DOWNTELEMETRY.md",
+            "sha256": "51420908c9a1598b8b266fc946ebddcd998c89a7e5131f73b6d8ea726340ce4f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-downtelemetry/cm-downtelemetry-proof.json",
+            "sha256": "15825d4995fab3e70ccc19087106179f4cb5e9d923cf6f1ebc68e9e155911b9a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-downtelemetry/cm-downtelemetry-host.log",
+            "sha256": "1dff9234a4aea42944992d8e60fead940966a2493c46b1d518cb48016ac4f1d8"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
+            "sha256": "a38cb446d97c7b1c517e8e685cac071c6bda51ca420b6745183580c4ee7774fe"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/DOWNLINK_LISTS.agc",
@@ -3791,8 +3830,47 @@
       "sha256": "34ee428bb987e1826148083af7c6879c33ed577a0eb415ae08ce4a7ad0453d9b",
       "bytes": 17768,
       "lines": 455,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_downtelemetry.c",
+            "src/lm_downtelemetry_data.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-DOWNTELEMETRY.md",
+          "scope": "Every instruction (05,3506-3771): DODOWNTM/WO1/WOTEST, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "DOWNRUPT entries at DODOWNTM with FB 05/EB 0 and any interrupted BB, DNTMGOTO holding one of its six stored words, DNLSTCOD 0-5, any DUMPCNT, lm_dntm_io channels 11-14 and 30-35; run-time INDEX words that form a CA of a compiled word or a READ of channel 11-14/30-33 (others, MINB1314's can't-get-here path and the no-producer +0 branches refuse)",
+        "external_continuations": [
+          "RESUME (WAITLIST)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-DOWNTELEMETRY.md",
+            "sha256": "0c4c647488f054cfd03179ff422118c6a2b92f4622d707544d9d8d1b13a1785f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-downtelemetry/lm-downtelemetry-proof.json",
+            "sha256": "c769060975ab840f375adaa5f7da78c16ea60c4d893a802a09fb3fd84640904a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-downtelemetry/lm-downtelemetry-host.log",
+            "sha256": "9593fc30d35821010ae83cfce2e884e156a4f6315d4421ea09a41dd2241a8b5c"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
+            "sha256": "07837c8b03a0e59e9dcb12dfff175942d3d4f0d5b0d29df8d3e1f465e8fc93a1"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ERASABLE_ASSIGNMENTS.agc",
