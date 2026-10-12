@@ -194,6 +194,43 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline'],
     },
+    # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
+    # basic and interpretive.
+    'cm-p40-p47': {
+        'counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'P40-P47.agc'},
+        'base': {'cm': 'cm_p40_p47'},
+        # RCSDAPON ends TS FLAGWRD6 / TC Q: the TS skip past the bank's
+        # last word needs an overflowing A, which CS OCT60000 / MASK / AD
+        # BIT14 never makes.
+        'fall_out': True,
+        # S40.6's CNTR (E6,1447): +0 or -0 (pitch), -1 (yaw), +1 (restart
+        # entry); OUTPUT's INDEX CNTR / CAF BIT11 reads BIT12 at -1.
+        'cells': {'E6,1447': [0, 0o77777, 0o77776, 1],
+                  # CSMMASS (E6,1474) within the CSM's mass: V97TTASK's AD
+                  # 3MDOT never overflows into the PHASCHNG operand.
+                  'E6,1474': CSMMASS},
+        'fixed_tables': {'BIT11': (-1, 0)},
+        # P41/P40 returns to the call +1 (P41) or, INCR Q, +2 (P40).
+        'call_skips': {'P41/P40': 1},
+        # OUTPUT's return after FIXDELAY: TEMPR60 (1146) holds the Q its
+        # QXCH saved, one of GIMDTEST's three TC OUTPUT returns.
+        'states': {'20,2327': {'1146': [0o2303, 0o2305, 0o2307]}},
+        'index_targets': {'42,3616': 3},
+        # PRECHECK's CCS PHASE5 with PHASE5 negative runs CADR PREREAD as MASK.
+        'execute_data': ('24,2573',),
+        'symbol': {'cm': 'cm_p40_p47'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        'target': 'tests/cm_p40_p47_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline'],
+    },
     # Lane G: Comanche055 P61-P67 (entry programs), basic and interpretive.
     'cm-p61-p67': {
         'counters': True,

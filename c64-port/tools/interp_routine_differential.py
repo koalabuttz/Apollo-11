@@ -207,6 +207,12 @@ def case(mi, point, n, rng):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
     fb = bank << 10
+    if bank >= 0o40:
+        # Banks 40-43: FB 30-33 with SUPERBNK 0100 (tests/interp_case.h
+        # IRC_SUPERBANK).
+        assert mi.kinds[point] != 'i', 'interpretive entry in a superbank'
+        fb = (bank - 0o10) << 10
+        E[0x4001] = 0o100
     eb = rng.randrange(8) if mi.ebank is None else mi.ebank.get(point, rng.randrange(8)) \
         if isinstance(mi.ebank, dict) else mi.ebank
     if mi.counters:

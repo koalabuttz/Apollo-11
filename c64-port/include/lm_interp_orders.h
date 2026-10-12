@@ -132,6 +132,8 @@ void lmi_tload(apollo_overlay_state *);
 /* TLOAD whose ADDRWD names the fixed TP words k[0..2] (INDEX ADDRWD reads
  * the FBANK). */
 void lmi_tload_fixed(apollo_overlay_state *, const agc_word *k);
+void lmi_sload_fixed(apollo_overlay_state *, const agc_word *k);
+void lmi_vdsc(apollo_overlay_state *, const agc_word *k);
 /* EXIT to the basic word after the order (Z = LOC+1, Q 06747); TC INTPRET
  * from basic code (Q = the next word) to NEWOPS; TPMODE (RTB routine). */
 void lmi_exit(apollo_overlay_state *);

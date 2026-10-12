@@ -35,7 +35,7 @@ ADDR = {
     'DSU': ('dsu', True), 'BDSU': ('bdsu', True), 'DAD': ('dad', True),
     'DMP1': ('dmp', True), 'TLOAD': ('tload', False), 'SLOAD': ('sload', False),
     'TSLC': ('tslc', False), 'GSHIFT': ('gshift', False), 'SETPD': ('setpd', False),
-    'SSP': (None, False), 'MXV': ('mxv', True), 'VXM': ('vxm', True),
+    'SSP': (None, False), 'MXV': ('mxv', True), 'VXM': ('vxm', True), 'V/SC': ('vdsc', True),
 }
 ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
               'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
@@ -151,6 +151,7 @@ class Compiler:
         self.vloadstar = 0o40001
         self.starts = {}       # phys -> ('i'|'b', reason)
         self.consts = {}       # phys -> label
+        self.klen = {}         # phys -> words of K past 6 (fixed matrices)
         self.basic_fixed = set()  # rope words basic instructions read as operands
         self.cadr_erasable = set()
         self.ktables = {}      # phys -> (words, label, range) for indexed fixed operands
@@ -336,7 +337,7 @@ class Compiler:
         self.ktables[lo] = (hi - lo + 1, lab, rng)
         return 'kx(s,KX%o,%uu,%uu,&k)' % (lo, lo, hi - lo + 1)
 
-    def operand_k(self, w, bank, takes_k, starred, what):
+    def operand_k(self, w, bank, takes_k, starred, what, n=6):
         if starred:
             return '0'
         fp = self.fixed_operand(w, bank)
@@ -345,6 +346,9 @@ class Compiler:
         if not takes_k:
             raise CompileError('%s with fixed operand' % what)
         self.consts[fp] = self.name(fp)
+        if n > 6:
+            # MXV/VXM read a fixed matrix: 18 words.
+            self.klen[fp] = max(self.klen.get(fp, 6), n)
         return 'K%o' % fp
 
     def slot(self, p, bank):
@@ -439,10 +443,11 @@ class Compiler:
                 k = '0'
             else:
                 st = ['%sdirect(s,0%05o,0%05o);' % (P, nxt, T[name])]
-                if name == 'TLOAD' and self.fixed_operand(nxt, bank) is not None:
-                    fn, takes_k = 'tload_fixed', True     # TLOAD of a rope constant
+                if name in ('TLOAD', 'SLOAD') and self.fixed_operand(nxt, bank) is not None:
+                    fn, takes_k = name.lower() + '_fixed', True     # a load of a rope constant
                 # A shift's word is a count code (020200 + n), not an address.
-                k = '0' if name == 'GSHIFT' else self.operand_k(nxt, bank, takes_k, False, op)
+                k = '0' if name == 'GSHIFT' else self.operand_k(nxt, bank, takes_k, False, op,
+                                                                18 if name in ('MXV', 'VXM') else 6)
                 cur += 1
             if takes_k and k.startswith('kx('):
                 # An indexed fixed operand: the rope words at the address the
@@ -859,7 +864,7 @@ class Compiler:
         fixed operand (K array) it is a word of, or neither."""
         const = {}
         for fp in self.consts:
-            for i in range(6):
+            for i in range(self.klen.get(fp, 6)):
                 const.setdefault(fp + i, fp)
         rows = []
         for ln in self.lines:
@@ -922,8 +927,9 @@ class Compiler:
         if self.consts:
             c.append('/* Fixed operands (the rope words from each address). */')
             for fp in sorted(self.consts):
-                ws = ','.join('0%05o' % self.L.word(fp + i) for i in range(6))
-                c.append('static const agc_word K%o[6] MAYBE_UNUSED={%s}; /* %s %s */' % (fp, ws, self.where(fp), self.consts[fp] or ''))
+                n = self.klen.get(fp, 6)
+                ws = ','.join('0%05o' % self.L.word(fp + i) for i in range(n))
+                c.append('static const agc_word K%o[%d] MAYBE_UNUSED={%s}; /* %s %s */' % (fp, n, ws, self.where(fp), self.consts[fp] or ''))
             c.append('')
         if self.ktables:
             c.append('/* Indexed fixed operands: the rope words over the range the index reaches. */')
@@ -999,8 +1005,14 @@ class Compiler:
             c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
             c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){')
             c.append(' unsigned i;')
-            c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
-            c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
+            if any(p // 1024 >= 0o40 for p in self.blocks if self.starts[p][0] == 'b'):
+                c.append(' /* fb bit 15: a bank 40-43 routine, FB 30-33 with SUPERBNK 0100 */')
+                c.append(' agc_word sb=(agc_word)(fb>>15);fb&=077777u;')
+                c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+                c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(sb?(io->superbank&0160u)!=0100u:(fb>=060000u&&(io->superbank&0100u))))return 0;')
+            else:
+                c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+                c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
             c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
             c.append(' return 1;')
             c.append('}')
@@ -1026,6 +1038,9 @@ class Compiler:
             fn = 'r%o' % phys
             routines.append((phys, kind, fn, lab, why))
             fb = (phys // 1024) << 10
+            if phys // 1024 >= 0o40:
+                # basic_sane's superbank form: FB 30-33, SUPERBNK 0100.
+                fb = (phys // 1024 - 0o10) << 10 | 0o100000
             c.append(guard(i))
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             if kind == 'b' and self.basic:

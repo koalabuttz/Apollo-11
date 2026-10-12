@@ -25,6 +25,7 @@ static unsigned outside(const struct stops *t,unsigned p){unsigned i;for(i=0;i<t
 static unsigned z_physical(unsigned z){unsigned bank=(get(4)>>10)&037u;
  if(z<02000u)return 0xfffeu;
  if(z>=04000u)return 2048u+(z-04000u);
+ if(bank>=030u&&(machine.OutputChannel7&0160)==0100)bank+=010u; /* SUPERBNK: banks 40-43 */
  return bank*1024u+(z&01777u);
 }
 static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&037u;
@@ -50,7 +51,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   c.edits=edits;irc_build(&s,&c);t=&st[c.cm];
   machine=baseline[c.cm];
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
-  machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;
+  machine.InputChannel[7]=machine.OutputChannel7=(int16_t)(c.superbank|irc_superbank);machine.AllowInterrupt=c.interrupt_enabled;
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
   for(cycles=0;cycles<400000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);

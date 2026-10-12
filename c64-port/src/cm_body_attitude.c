@@ -24,7 +24,7 @@ void interp_routine_trace(const apollo_overlay_state *);
 
 /* Fixed operands (the rope words from each address). */
 static const agc_word K55244[6] MAYBE_UNUSED={001727,020103,000121,017460,000400,000000}; /* 26,3244 KWE */
-static const agc_word K77766[6] MAYBE_UNUSED={045730,053410,003146,003744,076066,000000}; /* 37,3766 -KVSCALE */
+static const agc_word K77766[6] MAYBE_UNUSED={045730,053410,003146,003744,076066,003773}; /* 37,3766 -KVSCALE */
 
 static MAYBE_UNUSED void next(apollo_overlay_state *s){cmi_danzig_next(s);}
 static MAYBE_UNUSED void right(apollo_overlay_state *s){cmi_danzig_right(s);}

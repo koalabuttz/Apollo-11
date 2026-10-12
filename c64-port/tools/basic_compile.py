@@ -112,7 +112,9 @@ class Basic:
         self.channels = self.spec.get('channels', {})
         if self.channels == 'all':
             # Every channel of the CM io record (include/cm_native_image.h).
-            self.channels = {k: 'channel%02o' % k for k in (0o5, 0o6, 0o11, 0o12, 0o13, 0o14, 0o30, 0o31, 0o32, 0o33)}
+            # (5, 6 and 30-33 in cm_channels, beside it.)
+            self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
+            self.channels.update({k: 'cm_channels.channel%02o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
         self.work = []
         self.words = set()       # every word compiled as basic code
         self.operands = set()    # inline operand words of outside TCs
@@ -161,7 +163,7 @@ class Basic:
     def add(self, phys, ext=False, clean=False):
         """Label of the word at phys reached with EXTEND state ext and A
         known free of overflow (clean), queued for compiling."""
-        if not self.in_file(phys):
+        if not self.in_file(phys) and not self.spec.get('fall_out'):
             raise BasicError('basic flow leaves the file at %s' % self.where(phys))
         k = (phys, ext, clean)
         if k not in self.nodes:
@@ -179,6 +181,14 @@ class Basic:
         self.add(phys)
         while self.work:
             k = self.work.pop()
+            if not self.in_file(k[0]):
+                # Spec 'fall_out': a TS overflow skip or CCS exit past the
+                # file's last word, which no admitted state takes (the
+                # differential checks it never is).
+                self.data_landings.add(k[0])
+                self.nodes[k] = ['/* %s: past the end of the file, never reached */' % self.where(k[0]),
+                                 'return EXEC_INVALID_ACTION;']
+                continue
             if self.is_data(k[0]) and self.where(k[0]) not in self.spec.get('execute_data', ()):
                 # Control reaching a constant: the file's flow never does
                 # (the paths here are CCS exits and TS skips no admitted
@@ -235,6 +245,11 @@ class Basic:
             if call:
                 self.dispatch.add(here + 1)
                 self.add(here + 1)
+                # Spec 'call_skips' {label: n}: a subroutine that may return
+                # up to n words past the call's +1 (INCR Q; TC Q).
+                for i in range(self.spec.get('call_skips', {}).get(self.L.label_at(tp), 0)):
+                    self.dispatch.add(here + 2 + i)
+                    self.add(here + 2 + i)
             return st
         if tp is not None and self.L.labels.get('INTPRET') == tp and call:
             # TC INTPRET: the interpretive code at the next word.
@@ -418,10 +433,11 @@ class Basic:
                 st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
                 st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
                 return st
-            if 0o10 <= a < 0o200 and call and not 0o20 <= a <= 0o23:
-                # TC to an unswitched erasable word below 0200 (SERVICER207's
-                # TC RUPTREG1 after QXCH RUPTREG1): the stored word runs as a
-                # TC, Q = K+1, as for TC Q; anything but a TC is refused.
+            if 0o10 <= a < 0o1400 and call and not 0o20 <= a <= 0o23:
+                # TC to an unswitched erasable word (SERVICER207's TC RUPTREG1
+                # after QXCH RUPTREG1, P40-P47's TC TEMPR60): the stored word
+                # runs as a TC, Q = K+1, as for TC Q; anything but a TC is
+                # refused.
                 st.append('e=(long)(W[0%o]&077777u);' % a)
                 st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
                 st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
@@ -682,7 +698,7 @@ class Basic:
         c = ['/* Channel orders on the mission\'s output channels, as yaAGC\'s. */']
         c.append('static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){')
         c.append(' switch(k){%s default:return 0;}' % ''.join(
-            'case 0%o:return &io->%s;' % (k, v) for k, v in sorted(self.channels.items())))
+            'case 0%o:return &%s;' % (k, v if '.' in v else 'io->' + v) for k, v in sorted(self.channels.items())))
         c.append('}')
         c.append('static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}')
         c.append('static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}')

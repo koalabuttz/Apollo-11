@@ -24,7 +24,7 @@ void interp_routine_trace(const apollo_overlay_state *);
 /* Fixed operands (the rope words from each address). */
 static const agc_word K52111[6] MAYBE_UNUSED={000003,001520,011774,011010,077624,052125}; /* 25,2111 500SEC */
 static const agc_word K53470[6] MAYBE_UNUSED={077745,013471,041234,045712,003624,003634}; /* 25,3470 GONEGLAD */
-static const agc_word K53772[6] MAYBE_UNUSED={016631,006755,000000,000000,000000,000000}; /* 25,3772 MAXRNG */
+static const agc_word K53772[6] MAYBE_UNUSED={016631,006755,003774,003775,072651,000000}; /* 25,3772 MAXRNG */
 static const agc_word K55145[6] MAYBE_UNUSED={002525,012525,012525,004631,023146,003146}; /* 26,3145 1/12TH */
 static const agc_word K55146[6] MAYBE_UNUSED={012525,012525,004631,023146,003146,014632}; /* 26,3146 1/3RD */
 static const agc_word K55150[6] MAYBE_UNUSED={004631,023146,003146,014632,006314,031463}; /* 26,3150 LEWD1 */
@@ -676,7 +676,7 @@ B53612c:
 B53613c:
  IRC_COVER(86u);
  /* 25,3613 STEEROFF EXIT */
- ai_maskf(s,000000u); /*  */
+ ai_maskf(s,007776u); /*  */
  goto B53614c;
 B53614:
  IRC_COVER(87u);

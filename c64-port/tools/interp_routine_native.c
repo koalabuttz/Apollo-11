@@ -14,10 +14,11 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
  * differential can pick C64 cases that stay within one group of routines. */
 static uint16_t visit[256];static unsigned nvisit;
 static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps){
- p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
- lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
+ p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank|irc_superbank;unsigned i;agc_routine call;
+ lio.superbank=superbank;lio.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
- cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ cio.superbank=superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
  if(irc_ch_on)irc_cm_io(&cio,0);
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
  while(nvisit<max_steps&&nvisit<256u){
