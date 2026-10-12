@@ -134,7 +134,16 @@ def proof_builder(script):
     builder = script.with_name(script.name.replace('_vice_test.py', '_build.py'))
     if builder.is_file():
         return builder
+    target_builder = script.with_name(script.name.replace('_vice_test.py', '_target_build.py'))
+    if target_builder.is_file():
+        return target_builder
     stem = script.name[:-len('_vice_test.py')].replace('_', '-')
+    # A shared build script that links build/<stem>.prg through an f-string
+    # (f'build/native-source-{name}.prg').
+    for candidate in sorted((ROOT / 'tools').glob('*_build.py')):
+        for template in re.findall(r"build/[\w.-]*\{\w+\}[\w.-]*\.prg", candidate.read_text(errors='replace')):
+            if re.fullmatch(re.sub(r'\\\{\w+\\\}', r'[\\w-]+', re.escape(template)), f'build/{stem}.prg'):
+                return candidate
     proof = ROOT / 'evidence' / f'{stem}-proof.json'
     if proof.is_file():
         found = re.findall(r'tools/([a-z0-9_]+_build\.py)', proof.read_text(errors='replace'))
