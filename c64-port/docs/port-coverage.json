@@ -441,6 +441,19 @@
           ],
           "scope": "Mark displays: BLANKET, ENDMARK, CLEARMRK, MARKEND, GOMARK/GOMARS/KLEENEX/GOMARKF/GOMARK2/MARKFORM/GOMARK3/GOMARK4 and the GOMARK*R entries, MAKEMARK, MARKPLAY/GOGOMARK/MARKCOP, COPYTOGO/COPYPACS, to their callee boundaries (POSTJUMP, MARKOVER, the display-start exits, CHKPRIO's exits, PRIOPLAY, ENDOFJOB, the caller's return), register-exact against the original program.",
           "verification": "docs/LANEC-DI-MARK.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_play.c",
+            "src/lanec_di_mark.c",
+            "src/lanec_di_dsp.c",
+            "src/lanec.c",
+            "include/lanec_di_play.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display job selection: MAKEPLAY and its PRIOCHNG return, MAKEPRIO/HIPRIO/SETMARK/ASKIFNRM/SETNORM/OKTOCOPY/REDOPRIO/KEEPPRIO, IFLEGAL/PRIOBORT/OKTOPLAY/PLAYJUM1/PRIOPLAY with their Q+1 and JOBWAKE returns, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC/RELINTQ, to their callee boundaries (PRIOCHNG, Q+1, POODOO, JOBXCHS, GOSLEEPS, JOBWAKE, GOPLAY, ENDOFJOB, EXDSPRET, the caller's return), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-PLAY.md"
         }
       ]
     },
@@ -3006,6 +3019,19 @@
           ],
           "scope": "Mark displays: BLANKET, ENDMARK, CLEARMRK, MARKEND, GOMARK/GOMARS/KLEENEX/GOMARKF/GOMARK2/MARKFORM/GOMARK3/GOMARK4 and the GOMARK*R entries, MAKEMARK, MARKPLAY/GOGOMARK/MARKCOP, COPYTOGO/COPYPACS, to their callee boundaries (POSTJUMP, MARKOVER, the display-start exits, CHKPRIO's exits, PRIOPLAY, ENDOFJOB, the caller's return), register-exact against the original program.",
           "verification": "docs/LANEC-DI-MARK.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_play.c",
+            "src/lanec_di_mark.c",
+            "src/lanec_di_dsp.c",
+            "src/lanec.c",
+            "include/lanec_di_play.h",
+            "include/lanec_di_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display job selection: MAKEPLAY and its PRIOCHNG return, MAKEPRIO/HIPRIO/SETMARK/ASKIFNRM/SETNORM/OKTOCOPY/REDOPRIO/KEEPPRIO, IFLEGAL/PRIOBORT/OKTOPLAY/PLAYJUM1/PRIOPLAY with their Q+1 and JOBWAKE returns, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC/RELINTQ, to their callee boundaries (PRIOCHNG, Q+1, POODOO, JOBXCHS, GOSLEEPS, JOBWAKE, GOPLAY, ENDOFJOB, EXDSPRET, the caller's return), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-PLAY.md"
         }
       ]
     },

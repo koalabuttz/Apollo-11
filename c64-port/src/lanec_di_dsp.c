@@ -268,6 +268,8 @@ void lanec_di_copies(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m
     copies2(s, io, at(m));
 }
 
+void lanec_di_copies2(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m) { copies2(s, io, at(m)); }
+
 enum lanec_status lanec_di_dsp_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
     const places *p = at(m);

@@ -126,8 +126,9 @@ static void markplay(apollo_overlay_state *s, lanec_io *io, const places *p)
 /* MAKEMARK: CAF ONE, TC COPIES, CA FLAGWRD4, MASK OCT34300, CCS A,
  * TCF CHKPRIO, CA FLAGWRD4, MASK MRKNVBIT, EXTEND, BZF MARKPLAY,
  * TCF ENDOFJOB. */
-static void makemark(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m, const places *p)
+void lanec_di_makemark(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
+    const places *p = at(m);
     uint16_t *w = s->words;
     set_a(s, ONE);
     lanec_tc(s, p->copies, (uint16_t)(p->makemark + 2u));
@@ -204,7 +205,7 @@ enum lanec_status lanec_di_mark_dispatch(apollo_overlay_state *s, lanec_io *io, 
     if (z == p->gomarkfr) { if (!lanec_ts(s, PLAYTEM1)) set_a(s, MARKFMSK); lanec_di_godsprs(s, io, m); return LANEC_OK; }
     if (z == p->gomark2r) { if (!lanec_ts(s, PLAYTEM1)) set_a(s, MPERFMSK); lanec_di_godsprs(s, io, m); return LANEC_OK; }
     if (z == p->gomark3r) { if (!lanec_ts(s, PLAYTEM1)) set_a(s, MARK3MSK); lanec_di_godsprs(s, io, m); return LANEC_OK; }
-    if (z == p->makemark) { makemark(s, io, m, p); return LANEC_OK; }
+    if (z == p->makemark) { lanec_di_makemark(s, io, m); return LANEC_OK; }
     if (z == p->markplay) { markplay(s, io, p); return LANEC_OK; }
     if (z == p->markplay + 6u) { gogomark(s, p); return LANEC_OK; }
     if (z == p->markplay + 12u) { markcop(s, p); return LANEC_OK; }
