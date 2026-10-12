@@ -1,0 +1,10 @@
+{
+  "archive": "build/cm-entry-dap-reference.deltas.xz",
+  "decoded_sha256": "2f5b283a1b946b57d0794e8a5c2426c6cd9b119cb67605ea4b350ad1f1f8fd7b",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "returned": 65536
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/cm-flight-fixture/MAIN.agc.bin (byte-original Comanche055 rope 6e3150ae...)"
+}

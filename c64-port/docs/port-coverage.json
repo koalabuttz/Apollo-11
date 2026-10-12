@@ -342,8 +342,50 @@
       "sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
       "bytes": 31099,
       "lines": 1273,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_entry_dap.c"
+          ],
+          "scope": "All of bank 15 2434-3754 and bank 20 3612-3737: READGYMB/BODYRATE, ATTRATES and dead zones, CM/RCS roll DAP and JETCALL, FDAI and telemetry dump, CM/DAPON/CM/DAPIC",
+          "verification": "docs/CM-ENTRY-DAP.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Canonical 2048-word image, EB E6, FB bank 15 or 20 per entry; JETAG -1..+1, CMDAPMOD -1..+1 or -0, SW/NDX -13..+13; channels 5, 6",
+          "frontiers": "TASKOVER 5324, WAITLIST 5245, PHASCHNG 5412, 2PHSCHNG 5372, FLUSHJET 6000, SPSIN 5075, SPCOS 5074, IBNKCALL 4740, RESUME 5333, DOWNFLAG 5560, BANKCALL 4662, POSTJUMP 4701, bank 20 2434",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Executive, waitlist and restart services",
+          "SPSIN/SPCOS (SINGLE_PRECISION_SUBROUTINES)",
+          "NEEDLER via IBNKCALL",
+          "P62 via POSTJUMP"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-source-map.json",
+            "sha256": "8504d728fc8eaa87771978a7364e172415bbb025307b47a292971537a885dd7e"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-assembly-comparison.json",
+            "sha256": "ca4c58f053cd6eacf2a4028681f801426c5a63300bcec67f5643eee4a5a447ec"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-checks.log",
+            "sha256": "2a0ba8c4fcf6b149e697c34969b21e45ecabc07f16f408dba454e42e056a5ad3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-results.json",
+            "sha256": "52d68037c81f3163aacdb896b28adb7d4c047e8ac7a81ca0eb1e30e9dc681536"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/CONIC_SUBROUTINES.agc",
