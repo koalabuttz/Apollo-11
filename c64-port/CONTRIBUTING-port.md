@@ -56,6 +56,15 @@ A C64 diagnostic reports through the `$c000` mailbox that `tools/vice_run.py`
 checks: write the failure count to `$c001-2` and the check count to `$c003-4`,
 then `$a5` to `$c000` last.
 
+Don't hand-translate a file that has interpretive code. Generate it with
+`tools/interp_compile.py`: add a spec to `tools/interp_specs.py`, and the
+compiler writes `src/<base>.c` and `include/<base>.h` from the yaYUL listing as
+transfer-ABI routines. It handles the basic code between EXIT and TC INTPRET
+too. See `docs/INTERP-COMPILE.md`. Lanes that have used it report a file
+taking about an hour instead of about a day. If the compiler lacks an order
+or an instruction form, add it to the compiler and keep the generated files
+byte-identical for every existing spec (`interp_compile.py --check <spec>`).
+
 ## Never edit these by hand
 
 CI rejects a lane PR that touches them:
