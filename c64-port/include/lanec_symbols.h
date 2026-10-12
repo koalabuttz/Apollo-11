@@ -781,6 +781,23 @@
 #define LANEC_LM_V50N48_WORD 014460u /* V50N48 */
 #define LANEC_LM__M_0_D_3D_S_S_WORD 077622u /* -0.3D/S */
 #define LANEC_LM__M_0_D_6D_S_S_WORD 077445u /* -0.6D/S */
+#define LANEC_LM_ATTCK2 02035u /* ATTCK2 F 42 */
+#define LANEC_LM_ATTCK2_BANK 042u
+#define LANEC_LM_CDUXCMD 050u /* CDUXCMD C fixed-fixed/unswitched */
+#define LANEC_LM_DSPTEM2 01050u /* DSPTEM2 E fixed-fixed/unswitched */
+#define LANEC_LM_R33 02002u /* R33 F 42 */
+#define LANEC_LM_R33_BANK 042u
+#define LANEC_LM_TASKOVER 05261u /* TASKOVER F fixed-fixed/unswitched */
+#define LANEC_LM_THETAD 0321u /* THETAD E fixed-fixed/unswitched */
+#define LANEC_LM_TIME2 024u /* TIME2 C fixed-fixed/unswitched */
+#define LANEC_LM_UPDATIME 02016u /* UPDATIME F 42 */
+#define LANEC_LM_UPDATIME_BANK 042u
+#define LANEC_LM_UPDTMEND 02032u /* UPDTMEND F 42 */
+#define LANEC_LM_UPDTMEND_BANK 042u
+#define LANEC_LM_13_14_15_WORD 070000u /* 13,14,15 */
+#define LANEC_LM_ATTSCALE_WORD 03146u /* ATTSCALE */
+#define LANEC_LM_DEC23_WORD 027u /* DEC23 */
+#define LANEC_LM_VNLODDT_WORD 06230u /* VNLODDT */
 #define LANEC_CM_GOEXTVB 02000u /* GOEXTVB F 43 */
 #define LANEC_CM_GOEXTVB_BANK 043u
 #define LANEC_CM_LST2FAN 02002u /* LST2FAN F 43 */
@@ -1481,4 +1498,14 @@
 #define LANEC_CM_V04N46_WORD 01056u /* V04N46 */
 #define LANEC_CM_V0648_WORD 01460u /* V0648 */
 #define LANEC_CM_V06N47_WORD 01457u /* V06N47 */
+#define LANEC_CM_ALINTIME 02326u /* ALINTIME F 43 */
+#define LANEC_CM_ALINTIME_BANK 043u
+#define LANEC_CM_DSPTEM2 01050u /* DSPTEM2 E fixed-fixed/unswitched */
+#define LANEC_CM_TIME2 024u /* TIME2 C fixed-fixed/unswitched */
+#define LANEC_CM_UPDATIME 02341u /* UPDATIME F 43 */
+#define LANEC_CM_UPDATIME_BANK 043u
+#define LANEC_CM_UPDTMEND 02355u /* UPDTMEND F 43 */
+#define LANEC_CM_UPDTMEND_BANK 043u
+#define LANEC_CM_DEC23_WORD 027u /* DEC23 */
+#define LANEC_CM_VNLODDT_WORD 06230u /* VNLODDT */
 #endif

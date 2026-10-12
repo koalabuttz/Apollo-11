@@ -96,4 +96,26 @@ static inline void lanec_ev_mp(apollo_overlay_state *s, uint16_t word)
     s->words[LANEC_A] = lanec_ev_sx(ms);
     s->words[LANEC_L] = lanec_ev_sx(ls);
 }
+/* DXCH k (k, k+1 memory): A,L <-> k,k+1. */
+static inline void lanec_ev_dxch(apollo_overlay_state *s, uint16_t k)
+{
+    uint16_t lo = s->words[k + 1u], hi = s->words[k];
+    s->words[k + 1u] = lanec_ev_corrected(s->words[LANEC_L]);
+    s->words[LANEC_L] = lanec_ev_sx(lo);
+    s->words[k] = lanec_ev_corrected(s->words[LANEC_A]);
+    s->words[LANEC_A] = lanec_ev_sx(hi);
+}
+/* DAS k (k, k+1 memory): k,k+1 += A,L with the low word's carry; A = the
+ * high word's overflow (+1, -1 or +0), L = +0. */
+static inline void lanec_ev_das(apollo_overlay_state *s, uint16_t k)
+{
+    uint16_t lsw = lanec_ev_add16(s->words[LANEC_L], lanec_ev_sx(s->words[k + 1u]));
+    uint16_t msw = lanec_ev_add16(s->words[LANEC_A], lanec_ev_sx(s->words[k]));
+    if ((lsw & 0140000u) == 0040000u) msw = lanec_ev_add16(msw, 1u);
+    else if ((lsw & 0140000u) == 0100000u) msw = lanec_ev_add16(msw, 0177776u);
+    s->words[LANEC_A] = (msw & 0140000u) == 0100000u ? 0177776u : (msw & 0140000u) == 0040000u ? 1u : 0u;
+    s->words[LANEC_L] = 0;
+    s->words[k + 1u] = lanec_ev_corrected(lsw);
+    s->words[k] = lanec_ev_corrected(msw);
+}
 #endif

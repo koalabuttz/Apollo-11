@@ -788,6 +788,17 @@
           ],
           "scope": "V48 DAP data load: LM R03 (DAPDATA1, STIKLOAD through TRIMDONE) and CM DAPDISP with DAPDISP1, every label and return point to its callee boundary, register-exact against the original program.",
           "verification": "docs/LANEC-EV-DAP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_time.c",
+            "src/lanec.c",
+            "include/lanec_ev_time.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V55 clock update (ALINTIME: noun 24 load, V23 check, UPDATIME through TPAGREE into TIME2/TIME1), every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-TIME.md"
         }
       ]
     },
@@ -3662,6 +3673,17 @@
           ],
           "scope": "V48 DAP data load: LM R03 (DAPDATA1, STIKLOAD through TRIMDONE) and CM DAPDISP with DAPDISP1, every label and return point to its callee boundary, register-exact against the original program.",
           "verification": "docs/LANEC-EV-DAP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_time.c",
+            "src/lanec.c",
+            "include/lanec_ev_time.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V55 clock update (R33: noun 24 load, V23 check, UPDATIME through TPAGREE into TIME2/TIME1) and the V43 ATTCK2 task (THETAD into CDUXCMD..CDUZCMD, channel 14 drive bits), every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-TIME.md"
         }
       ]
     },

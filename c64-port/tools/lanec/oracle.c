@@ -44,6 +44,27 @@ static int outside(unsigned z)
     return 1;
 }
 
+/* Virtual AGC drives the coarse-align CDUs from channel 14 bits 15-13
+ * between instructions, emptying CDUXCMD..CDUZCMD on a schedule kept in
+ * engine statics that carry over from case to case. Like the timers, that
+ * drive is hardware the port leaves outside its scope, so the bits are kept
+ * out of the engine's view except during an instruction that does channel 14
+ * I/O itself. */
+static unsigned fetch(unsigned z)
+{
+    unsigned fb = ((unsigned)m.Erasable[0][RegFB] >> 10) & 037u;
+    if (fb >= 030u && (m.OutputChannel7 & 0100)) fb += 010u;
+    if (z >= 04000u) return (unsigned)m.Fixed[2u + (z - 04000u) / 02000u][(z - 04000u) % 02000u] & 077777u;
+    if (z >= 02000u) return (unsigned)m.Fixed[fb][z - 02000u] & 077777u;
+    return word(z);
+}
+
+static int channel14_io(void)
+{
+    unsigned k = (fetch(word(RegZ) & 07777u) + (unsigned)m.IndexValue) & 077777u;    /* INDEX applies first */
+    return m.ExtraCode && (k & 070000u) == 0 && (k & 0777u) == 014u;
+}
+
 static void trace(unsigned z)
 {
     unsigned fb = ((unsigned)m.Erasable[0][RegFB] >> 10) & 037u;
@@ -73,7 +94,7 @@ int main(int argc, char **argv)
 {
     const lanec_suite *suite = argc == 4 ? lanec_find_suite(argv[1]) : 0;
     uint32_t n;
-    unsigned i, steps;
+    unsigned i, steps, drive;
     if (!suite || agc_load_binfile(&rope[0], argv[2]) || agc_load_binfile(&rope[1], argv[3])) {
         fprintf(stderr, "usage: oracle SUITE LM.bin CM.bin\n");
         return 2;
@@ -92,7 +113,10 @@ int main(int argc, char **argv)
             if (steps && !m.PendFlag && !m.ExtraDelay && outside(word(RegZ))) break;
             if (!m.PendFlag && !m.ExtraDelay) trace(word(RegZ));
             m.ScalerCounter = 0;
+            drive = channel14_io() ? 0 : (unsigned)m.InputChannel[014] & 070000u;
+            m.InputChannel[014] &= (int16_t)~drive;
             if (agc_engine(&m)) return 2;
+            m.InputChannel[014] |= (int16_t)drive;
         }
         if (steps == 4000u) { fprintf(stderr, "%s case %lu: no boundary, Z=%o\n", suite->name, (unsigned long)n, word(RegZ)); return 2; }
         printf("%lu", (unsigned long)n);

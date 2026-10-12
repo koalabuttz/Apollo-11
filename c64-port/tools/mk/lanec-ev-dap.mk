@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Milestone lanec-ev-dap (lane C): EXTENDED_VERBS dap test verbs, LM.
+# Milestone lanec-ev-dap (lane C): EXTENDED_VERBS V48 DAP data load, LM and CM.
 LANEC_EV_DAP_SRC = src/lanec_ev_dap.c tests/lanec_ev_dap_cases.c
 LANEC_SUITE_SRC += $(LANEC_EV_DAP_SRC)
 LANEC_SUITE_HDR += include/lanec_ev_dap.h
