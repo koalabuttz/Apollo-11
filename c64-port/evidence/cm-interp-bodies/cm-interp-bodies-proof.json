@@ -2,7 +2,7 @@
  "mission": "cm",
  "seed": 1969,
  "cases_per_body": 3000,
- "cases": 183000,
+ "cases": 192000,
  "bodies": [
   "DIRADRES",
   "DIRADRES PUSHUP",
@@ -64,7 +64,10 @@
   "TLOAD",
   "VPROJ",
   "TLOAD fixed",
-  "AXC"
+  "AXC",
+  "MXV",
+  "VXM",
+  "LXC"
  ],
  "result": "all body images and stop addresses equal yaAGC"
 }
