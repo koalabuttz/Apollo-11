@@ -990,6 +990,15 @@
       "native_coverage": [
         {
           "native_files": [
+            "src/imu_mode_switching.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (656 words, fixed-fixed 5521, 07,2577-3651, 07,3652-3672 (R02BOTH), 26,3660-3776): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 54 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "verification": "docs/IMU-MODE-SWITCHING.md"
+        },
+        {
+          "native_files": [
             "src/imu_pulse.c"
           ],
           "scope": "Actual IMUPULSE mode lead in and successful WAITLIST registration with free command reservation, TPAGREE and source MODEEXIT return; deferred gyro tasks, busy sleep and hardware delivery remain open.",
@@ -1038,35 +1047,34 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "2048 physical erasable words; source rawA/L and coherent banks/VAC frames within unchanged frozen helper contracts. Sole persistent native image ownership.",
-          "producer_ownership": "No producers during original computational stages; pulse/task/device and coarse contexts retain exact frozen idle/activity/counter contracts.",
-          "hardware_returns": "Readable source latches including channel13 excluding trap-enable bits; actual FINETIME SHORTMP TPAGREE return ABI at compiled return entries. Physical scaler sampling and standby transitions remain hardware adapter obligations.",
-          "entry_contracts": "Each independently qualified actual local entry and compiled caller/helper return. No arbitrary Cartesian RAM/code frame or opcode decoder."
-        },
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
         "external_continuations": [
-          "Actual ALARM/POODOO and mode/flag/phase/display/bank services",
-          "Actual WAITLIST/task return/sleep/wake and interrupt scheduling services",
-          "Actual FINETIME scaler sampling and SHORTMP/TPAGREE helper bodies from other source files",
-          "Asynchronous device pulse/coarse transport and physical standby transition",
-          "Complete mission jobs, runtime registry, restart timing and integrated C64 application acceptance"
+          "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
+          "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
+          "JOBSLEEP, JOBWAKE (EXECUTIVE)",
+          "BANKCALL, IBNKCALL, SWRETURN, ISWRETRN, MAKECADR, POSTJUMP (native, cm_interbank_routines)",
+          "TPAGREE, SHORTMP (SINGLE_PRECISION_SUBROUTINES)",
+          "FINETIME (FRESH_START / T4RUPT clock)",
+          "UPFLAG, DOWNFLAG (FLAG routines)",
+          "PHASCHNG (RESTART_CONTROL)"
         ],
+        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/cm-imu-mode-whole-source-map.json",
-            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
+            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/imu-mode-root-whole-source-audit.json",
-            "sha256": "1e1e86b96eed13fc37e14aa96851c61d1a769819ef2273f4638887dd0339e763"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
+            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-imu-mode-whole-source-map.json",
-            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
+            "sha256": "9d221dc8b93a958ffeeeec21311e0b9190321120dc628242d12a2c94f755b638"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-imu-mode-whole-source-map.json",
-            "sha256": "68f2e168db2745fcc0669b7f0601063216278c4a4532c58a68d0734350e730d9"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
+            "sha256": "a944d9a2cf15ae85c9acda9f39001a66ffc34d6b0c501b87c7a6df773b916ac3"
           }
         }
       },
@@ -3927,6 +3935,15 @@
       "native_coverage": [
         {
           "native_files": [
+            "src/imu_mode_switching.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (660 words, fixed-fixed 5457, 07,2714-3772, 04,3253-3273, 37,3655-3773): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 74 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "verification": "docs/IMU-MODE-SWITCHING.md"
+        },
+        {
+          "native_files": [
             "src/imu_pulse.c"
           ],
           "scope": "Actual IMUPULSE mode lead in and successful WAITLIST registration with free command reservation, TPAGREE and source MODEEXIT return; deferred gyro tasks, busy sleep and hardware delivery remain open.",
@@ -3975,35 +3992,35 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "2048 physical erasable words; source rawA/L and coherent banks/VAC frames within unchanged frozen helper contracts. Sole persistent native image ownership.",
-          "producer_ownership": "No producers during original computational stages; pulse/task/device and coarse contexts retain exact frozen idle/activity/counter contracts.",
-          "hardware_returns": "Readable source latches including channel13 excluding trap-enable bits; actual FINETIME SHORTMP TPAGREE return ABI at compiled return entries. Physical scaler sampling and standby transitions remain hardware adapter obligations.",
-          "entry_contracts": "Each independently qualified actual local entry and compiled caller/helper return. No arbitrary Cartesian RAM/code frame or opcode decoder."
-        },
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
         "external_continuations": [
-          "Actual ALARM/POODOO and mode/flag/phase/display/bank services",
-          "Actual WAITLIST/task return/sleep/wake and interrupt scheduling services",
-          "Actual FINETIME scaler sampling and SHORTMP/TPAGREE helper bodies from other source files",
-          "Asynchronous device pulse/coarse transport and physical standby transition",
-          "Complete mission jobs, runtime registry, restart timing and integrated C64 application acceptance"
+          "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
+          "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
+          "JOBSLEEP, JOBWAKE (EXECUTIVE)",
+          "BANKCALL, IBNKCALL, SWRETURN, ISWRETRN, MAKECADR, POSTJUMP (native, lm_interbank_routines)",
+          "TPAGREE, SHORTMP (SINGLE_PRECISION_SUBROUTINES)",
+          "FINETIME (FRESH_START / T4RUPT clock)",
+          "UPFLAG, DOWNFLAG (FLAG routines)",
+          "PHASCHNG (RESTART_CONTROL)",
+          "BAILOUT1 (ALARM_AND_ABORT, Luminary MODABORT)"
         ],
+        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/lm-imu-mode-whole-source-map.json",
-            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
+            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/imu-mode-root-whole-source-audit.json",
-            "sha256": "1e1e86b96eed13fc37e14aa96851c61d1a769819ef2273f4638887dd0339e763"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
+            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/lm-imu-mode-whole-source-map.json",
-            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
+            "sha256": "9d221dc8b93a958ffeeeec21311e0b9190321120dc628242d12a2c94f755b638"
           },
           "c64_execution_results": {
-            "path": "evidence/lm-imu-mode-whole-source-map.json",
-            "sha256": "bc72f090f5f7ecdb5a3c3aa482081d8d380dddfdcfdad85c06f5a0686a983477"
+            "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
+            "sha256": "a944d9a2cf15ae85c9acda9f39001a66ffc34d6b0c501b87c7a6df773b916ac3"
           }
         }
       },
