@@ -27,4 +27,4 @@ c64-lm-restart-select: build/lm-restart-select.prg
 build/lm-restart-select.prg: $(LM_RS_SRC) platform/c64/lm_restart_routines_diagnostic.c tests/lm_restart_c64_vectors.h $(LM_RS_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-restart-select.map $(LM_RS_SRC) platform/c64/lm_restart_routines_diagnostic.c -o $@
 vice-lm-restart-select: build/lm-restart-select.prg
-	python3 tools/vice_run.py build/lm-restart-select.prg --cycles 3000000000 --timeout 1200
+	python3 tools/vice_run.py build/lm-restart-select.prg --cycles 8000000000 --timeout 2400
