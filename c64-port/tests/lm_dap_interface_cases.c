@@ -36,7 +36,7 @@ void lm_dap_input(apollo_overlay_state *m,p66_bias_io *io,lm_dap_case *c,uint16_
 }
 static uint16_t stop_point(const lm_dap_case *c){return agc_fixed_physical(c->stop_z,c->stop_fb==ANY_FB?0u:c->stop_fb,c->superbank);}
 unsigned lm_dap_run(apollo_overlay_state *s,uint16_t n,uint16_t *steps){
- agc_routine_table tables[2];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};p66_bias_io io;lm_dap_case c;enum exec_status st;
+ agc_routine_table tables[2];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};p66_bias_io io;lm_dap_case c;enum exec_status st;
  tables[0]=lm_dap_interface_routines;tables[1]=lm_exec_routines;program.basic=tables;program.basic_count=2;
  program.operands=lm_exec_site_table(&program.operand_count);
  lm_dap_input(s,&io,&c,n);
