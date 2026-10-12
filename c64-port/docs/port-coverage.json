@@ -6606,8 +6606,50 @@
       "sha256": "5f54e9c63cf0af039a8a435aa3ba86ad933e3b921366388ee115460da5c9f7f6",
       "bytes": 17802,
       "lines": 556,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_update.c",
+            "src/lm_update_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction: V70UPDAT-V73UPDAT/UPERROR (bank 43), UPPART2, OHWELL1/OHWELL2, UPVERIFY, CK4V32, UPSTORE, UPEND73, UPFNDVAC, UPJOB/UPWAKE basic code, TIMEDIDL/TIMEDIDR/DELTATOK, UPEND71/STORLP71, UPEND72/LDLOOP72, UPOUT, UPEND70, UPERROUT and UPACTOFF (bank 04) as control-transfer ABI routines (35 entries incl. the POSTJUMP targets, restart points and every return point after a TC outside the file); CADRs and constants compiled from the source listing.",
+          "verification": "docs/LM-UPDATE.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/lm-update/lm-update-vice.log",
+            "sha256": "40f06a86102e05b296f52b5046dc9945d51582161061d84977a106340ad652d7"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-update/lm-update-host.log",
+            "sha256": "6c9b6ea802ecbf4f296166053ca1e4893f27c369b6e14b9e4adceedd6eeceb92"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-update/lm-update-proof.json",
+            "sha256": "ec3bcf72a8e9ea14d22f74d117c08629eb5988b73a8321ae49877df27b079530"
+          },
+          "source_to_native_map": {
+            "path": "docs/LM-UPDATE.md",
+            "sha256": "b43dfe6d38de69b8f6b129e0c253b114066a21bba3d6dfe7653d2f0ab7f1656b"
+          }
+        },
+        "external_continuations": [
+          "TESTXACT (PINBALL) and its return",
+          "PHASCHNG, NEWMODEX, NEWMODEX+3, FALTON, FINDVAC, ENDOFJOB, UPFLAG, TPAGREE, INTWAKEU and ENDEXT",
+          "BANKCALL GOXDSPF with its three returns, POSTJUMP UPPART2/UPERROUT+2",
+          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB in each verb's accepted range (V70/V73 2, V71 3-20, V72 odd 3-19), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in EB 1-7 above the registers; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+      }
     },
     {
       "path": "Luminary099/WAITLIST.agc",
