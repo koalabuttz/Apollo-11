@@ -133,3 +133,20 @@ bank (BANKCALL, IBNKCALL, POSTJUMP and the like) must be registered as an
 `agc_transfer` routine, or the auditor sends the certificate back. Interfaces have owners: Lane A owns the interpreter and executive ABI,
 Lane H owns the overlay and module ABI; change them through a PR the owner
 reviews.
+
+Before you draft a certificate, run `python3 tools/cert_precheck.py
+<AGC file> --fetch` (or `--changed --base origin/port/c64-native-c`). It
+checks the rejection patterns from past audits: distinct, real evidence
+records (no map cited twice, sha256 matching); a comparison that is a
+yaAGC/oracle run with a case count above zero and no differing cases; results
+that show a pass (C64 results from VICE); no open items in the scope text; every
+entry reached from another file and every interpretive resume word (CHANG2)
+registered in `agc_routine_entry`; refusals, with NEWJOB refusals flagged; and
+the C64 row cover through `tools/c64_row_cover.py` when the record names its
+rows. Each finding is a FAIL or WARN line with a fix hint. `ci_guard.py` runs
+it on every certificate a PR changes and fails on any FAIL. WARN lines are
+things it cannot settle mechanically (edge and signed-zero paths left
+uncompared, whether domain claims hold, C64 cover without a runner): argue
+them in the certificate. A clean precheck does not mean the auditor will
+accept it. If you change how routines are reached, regenerate its listing facts
+after `tools/setup_cloud.sh` with `python3 tools/cert_precheck.py --write-facts`.
