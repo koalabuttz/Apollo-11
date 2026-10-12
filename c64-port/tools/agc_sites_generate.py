@@ -36,7 +36,16 @@ TABLES = {
                      'src/cm_interbank_sites.inc', 'cm_interbank_sites'),
     'lm-interbank': ('Luminary099', ('BANKCALL', 'IBNKCALL', 'POSTJUMP', 'USPRCADR'),
                      'src/lm_interbank_sites.inc', 'lm_interbank_sites'),
+    # Executive/Waitlist services: a 2CADR after NOVAC, FINDVAC, WAITLIST and
+    # LONGCALL, an ADRES after TWIDDLE.
+    'lm-exec': ('Luminary099', ('NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'TWIDDLE'),
+                'src/lm_exec_sites.inc', 'lm_exec_sites'),
 }
+# Callees whose operand is two words (2CADR, or an OCT pair).
+TWO_WORD = {'NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL'}
+# `TC <service>` words that are data, not calls: PINBALL keeps them as
+# constants to store into erasable (TCNOVAC, TCWAIT, TCFINDVC).
+CONSTANT_WORDS = {'TCNOVAC', 'TCWAIT', 'TCFINDVC'}
 LINE = re.compile(r'^\d{6},(\d{6}): (.*)$')
 
 
@@ -77,28 +86,45 @@ def sites(mission, callees):
     targets = {fixed_fixed(table[name]): name for name in callees}
     rows = list(listing_lines(listing))
     result = []
-    for index, (path, line, address, words, _label, op, operands) in enumerate(rows):
+    for index, (path, line, address, words, label, op, operands) in enumerate(rows):
         if op != 'TC' or len(words) != 1 or words[0] not in targets:
+            continue
+        if label in CONSTANT_WORDS:
             continue
         physical = fixed_address(address)
         assert physical is not None, (path, line, address)
-        # The operand is the next emitted word in the same location counter.
-        for nxt in rows[index + 1:]:
-            if nxt[3]:
-                break
+        callee = targets[words[0]]
+        # The operand is the next emitted word(s) in the same location counter.
+        following = (r for r in rows[index + 1:] if r[3])
+        nxt = next(following)
         n_path, n_line, n_address, n_words, _l, n_op, n_operands = nxt
         operand_physical = fixed_address(n_address)
         assert operand_physical == physical + 1, (path, line, n_address)
-        assert len(n_words) == 1, (n_path, n_line)
-        word = n_words[0]
-        assert rope_word(rope, operand_physical) == word, (n_path, n_line)
-        if n_op in ('OCT', 'DEC'):
-            text = n_operands.split()[0]
-            value = int(text.rstrip('D'), 10 if (n_op == 'DEC' or text.endswith('D')) else 8)
-            assert value == word, (n_path, n_line, n_operands, oct(word))
-        result.append({'physical': operand_physical, 'word': word, 'callee': targets[words[0]],
-                       'callee_address': words[0],
-                       'caller': f'{path}:{line}', 'operand': f'{n_op} {n_operands}'.strip()})
+        if callee in TWO_WORD:
+            if n_op == '2CADR':
+                assert len(n_words) == 2, (n_path, n_line)
+                pair = [(n_words[0], f'2CADR {n_operands}'), (n_words[1], f'2CADR {n_operands} +1')]
+            else:
+                second = next(following)
+                assert n_op == 'OCT' and second[5] == 'OCT' and len(n_words) == 1, (n_path, n_line)
+                assert fixed_address(second[2]) == operand_physical + 1, (n_path, n_line)
+                pair = [(n_words[0], f'OCT {n_operands}'), (second[3][0], f'OCT {second[6]}')]
+                for word, text in pair:
+                    assert int(text.split()[1], 8) == word, (n_path, n_line)
+            operands_out = [(operand_physical + k, word, text) for k, (word, text) in enumerate(pair)]
+        else:
+            assert len(n_words) == 1, (n_path, n_line)
+            word = n_words[0]
+            if n_op in ('OCT', 'DEC'):
+                text = n_operands.split()[0]
+                value = int(text.rstrip('D'), 10 if (n_op == 'DEC' or text.endswith('D')) else 8)
+                assert value == word, (n_path, n_line, n_operands, oct(word))
+            operands_out = [(operand_physical, word, f'{n_op} {n_operands}'.strip())]
+        for at, word, text in operands_out:
+            assert rope_word(rope, at) == word, (n_path, n_line)
+            result.append({'physical': at, 'word': word, 'callee': callee,
+                           'callee_address': words[0],
+                           'caller': f'{path}:{line}', 'operand': text})
     result.sort(key=lambda r: r['physical'])
     assert len({r['physical'] for r in result}) == len(result)
     return result, hashlib.sha256(rope).hexdigest()

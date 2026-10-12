@@ -81,7 +81,7 @@ transferring file.
 | Luminary099 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only: the flight program has no E/BKCALL or E/CALL caller | `lm-standard-lead-transfer` |
 | Comanche055 INTER-BANK_COMMUNICATION | 13 entries in `cm_interbank_routines` | `cm_interbank_sites` (354 sites: BANKCALL, IBNKCALL, POSTJUMP, USPRCADR) | `cm-interbank-transfer` |
 | Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only, as in Luminary | `cm-standard-lead-transfer` |
-
+| Luminary099 EXECUTIVE (NOVAC, FINDVAC) and WAITLIST (WAITLIST, TWIDDLE, the LONGCALL chain) | 10 entries in `lm_exec_routines` | `lm_exec_sites` (146 sites, 268 words) | `lm-exec-services` |
 | Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
 
 Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete

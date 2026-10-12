@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-exec-services",
+  "release": "evidence-lm-exec-services",
+  "files": {
+    "lm-exec-services-host.log": {
+      "sha256": "5bce36faa71363d25d6af3b5b7a9b29a3125b56b08bc705a709fafd06c528048",
+      "bytes": 621,
+      "store": "release"
+    },
+    "lm-exec-services-proof.json": {
+      "sha256": "436b195e5371f62752d9427fc7549b04523d49079ad7aafab2b15f303280a018",
+      "bytes": 914,
+      "store": "tree"
+    },
+    "lm-exec-services-sites.json": {
+      "sha256": "464d1d1cd3c7c8a73cd6280c22e2c174008e67d197d4368e2da108d0d0ba04af",
+      "bytes": 46603,
+      "store": "tree"
+    },
+    "lm-exec-services-vice.log": {
+      "sha256": "eb93103cbb8bc7b4756ac0d1bd593b6e4f5f6f709a35092b8701f856be2811f8",
+      "bytes": 192,
+      "store": "release"
+    }
+  }
+}
