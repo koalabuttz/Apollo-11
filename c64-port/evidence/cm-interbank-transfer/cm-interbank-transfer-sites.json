@@ -1,0 +1,2844 @@
+{
+ "mission": "Comanche055",
+ "callees": [
+  "BANKCALL",
+  "IBNKCALL",
+  "POSTJUMP",
+  "USPRCADR"
+ ],
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "sites": [
+  {
+   "physical": 2121,
+   "word": 4096,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "FRESH_START_AND_RESTART.agc:716",
+   "operand": "CADR GOP00FIX"
+  },
+  {
+   "physical": 2153,
+   "word": 25823,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2467",
+   "operand": "CADR UPDATVB    -1"
+  },
+  {
+   "physical": 2165,
+   "word": 25823,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2801",
+   "operand": "CADR UPDATVB    -1"
+  },
+  {
+   "physical": 2167,
+   "word": 25602,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2803",
+   "operand": "CADR ENTER"
+  },
+  {
+   "physical": 2221,
+   "word": 25325,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:3222",
+   "operand": "CADR VBTERM"
+  },
+  {
+   "physical": 2231,
+   "word": 25319,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:3238",
+   "operand": "CADR VBPROC"
+  },
+  {
+   "physical": 2351,
+   "word": 4479,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:3582",
+   "operand": "CADR NVSUBSY1"
+  },
+  {
+   "physical": 2909,
+   "word": 8555,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:536",
+   "operand": "CADR MARKEND"
+  },
+  {
+   "physical": 3029,
+   "word": 16384,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "ALARM_AND_ABORT.agc:174",
+   "operand": "CADR VAC5STOR"
+  },
+  {
+   "physical": 3045,
+   "word": 5441,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "ALARM_AND_ABORT.agc:197",
+   "operand": "CADR MR.KLEAN"
+  },
+  {
+   "physical": 3051,
+   "word": 16384,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "ALARM_AND_ABORT.agc:204",
+   "operand": "CADR VAC5STOR"
+  },
+  {
+   "physical": 4081,
+   "word": 16384,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "ALARM_AND_ABORT.agc:151",
+   "operand": "CADR VAC5STOR"
+  },
+  {
+   "physical": 4092,
+   "word": 5545,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "ALARM_AND_ABORT.agc:164",
+   "operand": "CADR ENEMA"
+  },
+  {
+   "physical": 4100,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "FRESH_START_AND_RESTART.agc:727",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 4127,
+   "word": 21007,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "FRESH_START_AND_RESTART.agc:842",
+   "operand": "CADR SPSOFF"
+  },
+  {
+   "physical": 4129,
+   "word": 5878,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "FRESH_START_AND_RESTART.agc:844",
+   "operand": "CADR MASSPROP"
+  },
+  {
+   "physical": 4132,
+   "word": 17429,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "FRESH_START_AND_RESTART.agc:847",
+   "operand": "CADR RCSDAPON   +1"
+  },
+  {
+   "physical": 4134,
+   "word": 21049,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "FRESH_START_AND_RESTART.agc:850",
+   "operand": "CADR TVCZAP"
+  },
+  {
+   "physical": 4140,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "FRESH_START_AND_RESTART.agc:856",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 4157,
+   "word": 8890,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "FRESH_START_AND_RESTART.agc:876",
+   "operand": "CADR PINBRNCH"
+  },
+  {
+   "physical": 4202,
+   "word": 24559,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "FRESH_START_AND_RESTART.agc:940",
+   "operand": "CADR UPACTOFF"
+  },
+  {
+   "physical": 4230,
+   "word": 5451,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "FRESH_START_AND_RESTART.agc:985",
+   "operand": "CADR V37KLEAN"
+  },
+  {
+   "physical": 4234,
+   "word": 5445,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "FRESH_START_AND_RESTART.agc:991",
+   "operand": "CADR P00KLEAN"
+  },
+  {
+   "physical": 4238,
+   "word": 5545,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "FRESH_START_AND_RESTART.agc:997",
+   "operand": "CADR GOPROG2"
+  },
+  {
+   "physical": 4323,
+   "word": 20676,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "FRESH_START_AND_RESTART.agc:1109",
+   "operand": "CADR SETMINDB"
+  },
+  {
+   "physical": 4326,
+   "word": 20688,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "FRESH_START_AND_RESTART.agc:1112",
+   "operand": "CADR SETMAXDB"
+  },
+  {
+   "physical": 4500,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1268",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 4503,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1271",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 4822,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P32-P33,_P72-P73.agc:217",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 4835,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P32-P33,_P72-P73.agc:231",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 4939,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P32-P33,_P72-P73.agc:506",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 5440,
+   "word": 1685,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "FRESH_START_AND_RESTART.agc:261",
+   "operand": "CADR DUMMYJOB   +2"
+  },
+  {
+   "physical": 5468,
+   "word": 16384,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "FRESH_START_AND_RESTART.agc:296",
+   "operand": "CADR VAC5STOR"
+  },
+  {
+   "physical": 5528,
+   "word": 7703,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "FRESH_START_AND_RESTART.agc:370",
+   "operand": "CADR SETCOARS"
+  },
+  {
+   "physical": 6233,
+   "word": 8192,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "T4RUPT_PROGRAM.agc:204",
+   "operand": "CADR OPTDRIVE"
+  },
+  {
+   "physical": 6343,
+   "word": 8018,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "T4RUPT_PROGRAM.agc:437",
+   "operand": "CADR IMUBAD"
+  },
+  {
+   "physical": 6348,
+   "word": 7785,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "T4RUPT_PROGRAM.agc:443",
+   "operand": "CADR NOATTOFF"
+  },
+  {
+   "physical": 6381,
+   "word": 7785,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "T4RUPT_PROGRAM.agc:490",
+   "operand": "CADR NOATTOFF"
+  },
+  {
+   "physical": 6440,
+   "word": 7703,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "T4RUPT_PROGRAM.agc:620",
+   "operand": "CADR SETCOARS"
+  },
+  {
+   "physical": 6522,
+   "word": 7728,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "T4RUPT_PROGRAM.agc:801",
+   "operand": "CADR RNDREFDR"
+  },
+  {
+   "physical": 6538,
+   "word": 7728,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "T4RUPT_PROGRAM.agc:847",
+   "operand": "CADR RNDREFDR"
+  },
+  {
+   "physical": 6993,
+   "word": 7814,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_COMPENSATION_PACKAGE.agc:264",
+   "operand": "CADR IMUPULSE"
+  },
+  {
+   "physical": 6995,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_COMPENSATION_PACKAGE.agc:266",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 7071,
+   "word": 7790,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_COMPENSATION_PACKAGE.agc:363",
+   "operand": "CADR PIPUSE"
+  },
+  {
+   "physical": 7271,
+   "word": 8130,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "SXTMARK.agc:269",
+   "operand": "CADR KEYCOM"
+  },
+  {
+   "physical": 7400,
+   "word": 8560,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "SXTMARK.agc:535",
+   "operand": "CADR KLEENEX"
+  },
+  {
+   "physical": 7403,
+   "word": 8570,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "SXTMARK.agc:538",
+   "operand": "CADR GOMARK4"
+  },
+  {
+   "physical": 7413,
+   "word": 12421,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "SXTMARK.agc:550",
+   "operand": "CADR TERM52"
+  },
+  {
+   "physical": 7437,
+   "word": 8040,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "SXTMARK.agc:578",
+   "operand": "CADR GOODEND"
+  },
+  {
+   "physical": 7601,
+   "word": 6581,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:138",
+   "operand": "CADR SETISSW"
+  },
+  {
+   "physical": 7773,
+   "word": 6581,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:369",
+   "operand": "CADR SETISSW"
+  },
+  {
+   "physical": 7801,
+   "word": 6581,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:409",
+   "operand": "CADR SETISSW"
+  },
+  {
+   "physical": 8104,
+   "word": 18432,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:872",
+   "operand": "CADR KALCMAN3"
+  },
+  {
+   "physical": 8335,
+   "word": 7275,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "SXTMARK.agc:656",
+   "operand": "CADR MARKCONT"
+  },
+  {
+   "physical": 11325,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P76.agc:70",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 11331,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P76.agc:76",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 11400,
+   "word": 12095,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P76.agc:148",
+   "operand": "CADR INTWAKE1"
+  },
+  {
+   "physical": 12321,
+   "word": 11428,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:452",
+   "operand": "CADR SR52.1"
+  },
+  {
+   "physical": 12336,
+   "word": 8638,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:468",
+   "operand": "CADR GODSPR"
+  },
+  {
+   "physical": 12350,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:482",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 12364,
+   "word": 32111,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:496",
+   "operand": "CADR R61CSM"
+  },
+  {
+   "physical": 12414,
+   "word": 9206,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:551",
+   "operand": "CADR PRIOLARM"
+  },
+  {
+   "physical": 12423,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:563",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 12427,
+   "word": 8560,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:571",
+   "operand": "CADR KLEENEX"
+  },
+  {
+   "physical": 12653,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:949",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 12689,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:986",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 12720,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1017",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 12725,
+   "word": 13392,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1022",
+   "operand": "CADR P52C"
+  },
+  {
+   "physical": 12778,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1151",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 12781,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1156",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 12817,
+   "word": 7603,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1204",
+   "operand": "CADR IMUCOARS"
+  },
+  {
+   "physical": 12819,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1206",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 12822,
+   "word": 7739,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1210",
+   "operand": "CADR IMUFIN20"
+  },
+  {
+   "physical": 12824,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1212",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 12863,
+   "word": 8119,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1464",
+   "operand": "CADR R02ZERO"
+  },
+  {
+   "physical": 12866,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1468",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 12878,
+   "word": 8635,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1480",
+   "operand": "CADR GODSPRET"
+  },
+  {
+   "physical": 12881,
+   "word": 8635,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1483",
+   "operand": "CADR GODSPRET"
+  },
+  {
+   "physical": 12883,
+   "word": 7603,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1485",
+   "operand": "CADR IMUCOARS"
+  },
+  {
+   "physical": 12885,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1487",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 12888,
+   "word": 7739,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1490",
+   "operand": "CADR IMUFIN20"
+  },
+  {
+   "physical": 12890,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1492",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 12948,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1555",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 12999,
+   "word": 7170,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1687",
+   "operand": "CADR SXTMARK"
+  },
+  {
+   "physical": 13001,
+   "word": 8059,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1689",
+   "operand": "CADR OPTSTALL"
+  },
+  {
+   "physical": 13024,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1713",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 13027,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1716",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 13319,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:155",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 13330,
+   "word": 8797,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:166",
+   "operand": "CADR GOPERF4R"
+  },
+  {
+   "physical": 13350,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:186",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 13381,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:219",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 13396,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:234",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 13408,
+   "word": 12507,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:246",
+   "operand": "CADR PICAPAR"
+  },
+  {
+   "physical": 13419,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:258",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 13427,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:266",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 13451,
+   "word": 8638,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:290",
+   "operand": "CADR GODSPR"
+  },
+  {
+   "physical": 13454,
+   "word": 7814,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:293",
+   "operand": "CADR IMUPULSE"
+  },
+  {
+   "physical": 13456,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:295",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 13504,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1065",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 13512,
+   "word": 7814,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1073",
+   "operand": "CADR IMUPULSE"
+  },
+  {
+   "physical": 13514,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:1075",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 13559,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:2182",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 14286,
+   "word": 17680,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "CM_ENTRY_DIGITAL_AUTOPILOT.agc:1204",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 14339,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:3362",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 14704,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:374",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 14823,
+   "word": 17680,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "TVCEXECUTIVE.agc:125",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 14842,
+   "word": 5906,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "TVCEXECUTIVE.agc:148",
+   "operand": "CADR FIXCW"
+  },
+  {
+   "physical": 14844,
+   "word": 15666,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "TVCEXECUTIVE.agc:150",
+   "operand": "CADR S40.15"
+  },
+  {
+   "physical": 14999,
+   "word": 15466,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "TVCRESTARTS.agc:226",
+   "operand": "CADR MRCLEAN"
+  },
+  {
+   "physical": 15001,
+   "word": 15601,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "TVCRESTARTS.agc:229",
+   "operand": "CADR SWICHOVR   +5"
+  },
+  {
+   "physical": 15007,
+   "word": 15572,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "TVCRESTARTS.agc:237",
+   "operand": "CADR TVCINIT4"
+  },
+  {
+   "physical": 15410,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:2099",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 15415,
+   "word": 7172,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:2104",
+   "operand": "CADR SXTMARK    +2"
+  },
+  {
+   "physical": 15418,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:2108",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 15421,
+   "word": 8564,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:2112",
+   "operand": "CADR GOMARK2"
+  },
+  {
+   "physical": 15455,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:2147",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 15460,
+   "word": 13022,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P51-P53.agc:2152",
+   "operand": "CADR R53C1"
+  },
+  {
+   "physical": 15485,
+   "word": 5878,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "TVCINITIALIZE.agc:106",
+   "operand": "CADR MASSPROP"
+  },
+  {
+   "physical": 15571,
+   "word": 17680,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "TVCINITIALIZE.agc:214",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 15595,
+   "word": 8890,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "TVCINITIALIZE.agc:249",
+   "operand": "CADR PINBRNCH"
+  },
+  {
+   "physical": 16472,
+   "word": 18990,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "KALCMANU_STEERING.agc:171",
+   "operand": "CADR INCRDCDU   -1"
+  },
+  {
+   "physical": 16506,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P34-P35,_P74-P75.agc:1610",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 16511,
+   "word": 26583,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P34-P35,_P74-P75.agc:1615",
+   "operand": "CADR R36A"
+  },
+  {
+   "physical": 17309,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "CM_ENTRY_DIGITAL_AUTOPILOT.agc:197",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 17337,
+   "word": 22754,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "CM_ENTRY_DIGITAL_AUTOPILOT.agc:237",
+   "operand": "CADR P62.1"
+  },
+  {
+   "physical": 17371,
+   "word": 22742,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "CM_ENTRY_DIGITAL_AUTOPILOT.agc:288",
+   "operand": "CADR P62.2"
+  },
+  {
+   "physical": 17410,
+   "word": 19044,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "KALCMANU_STEERING.agc:207",
+   "operand": "CADR LOADYZ"
+  },
+  {
+   "physical": 17767,
+   "word": 16615,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "RCS-CSM_DIGITAL_AUTOPILOT.agc:558",
+   "operand": "CADR S41.2"
+  },
+  {
+   "physical": 17769,
+   "word": 16704,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "RCS-CSM_DIGITAL_AUTOPILOT.agc:561",
+   "operand": "CADR S40.14"
+  },
+  {
+   "physical": 18903,
+   "word": 16493,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "ANGLFIND.agc:626",
+   "operand": "CADR ZEROEROR"
+  },
+  {
+   "physical": 19014,
+   "word": 16473,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "KALCMANU_STEERING.agc:100",
+   "operand": "CADR CONTMANU"
+  },
+  {
+   "physical": 19374,
+   "word": 7814,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "RTB_OP_CODES.agc:200",
+   "operand": "CADR IMUPULSE"
+  },
+  {
+   "physical": 19418,
+   "word": 520,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "RTB_OP_CODES.agc:279",
+   "operand": "CADR VECAGREE"
+  },
+  {
+   "physical": 19447,
+   "word": 532,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "RTB_OP_CODES.agc:309",
+   "operand": "CADR UNIT       +1"
+  },
+  {
+   "physical": 19451,
+   "word": 520,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "RTB_OP_CODES.agc:317",
+   "operand": "CADR VECAGREE"
+  },
+  {
+   "physical": 19686,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R30.agc:116",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 19710,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R30.agc:145",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 19714,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R30.agc:150",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 19840,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R30.agc:295",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 19893,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R30.agc:353",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 19964,
+   "word": 17680,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P11.agc:888",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 19986,
+   "word": 18008,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P11.agc:914",
+   "operand": "CADR STICKCHK"
+  },
+  {
+   "physical": 19997,
+   "word": 17680,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P11.agc:927",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 20311,
+   "word": 19275,
+   "callee": "USPRCADR",
+   "callee_address": 2543,
+   "caller": "POWERED_FLIGHT_SUBROUTINES.agc:102",
+   "operand": "CADR CDULOGIC"
+  },
+  {
+   "physical": 20317,
+   "word": 846,
+   "callee": "USPRCADR",
+   "callee_address": 2543,
+   "caller": "POWERED_FLIGHT_SUBROUTINES.agc:108",
+   "operand": "CADR COSINE"
+  },
+  {
+   "physical": 20325,
+   "word": 856,
+   "callee": "USPRCADR",
+   "callee_address": 2543,
+   "caller": "POWERED_FLIGHT_SUBROUTINES.agc:116",
+   "operand": "CADR SINE       +1"
+  },
+  {
+   "physical": 20555,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:72",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 20566,
+   "word": 23552,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:84",
+   "operand": "CADR R60CSM"
+  },
+  {
+   "physical": 20587,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:111",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 20603,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:131",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 20637,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:172",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 20648,
+   "word": 8644,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:186",
+   "operand": "CADR REFLASH"
+  },
+  {
+   "physical": 20657,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:195",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 20665,
+   "word": 8644,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:205",
+   "operand": "CADR REFLASH"
+  },
+  {
+   "physical": 20788,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:392",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 20841,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:453",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 20859,
+   "word": 32193,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P40-P47.agc:482",
+   "operand": "CADR PREREAD"
+  },
+  {
+   "physical": 20996,
+   "word": 17428,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P40-P47.agc:674",
+   "operand": "CADR RCSDAPON"
+  },
+  {
+   "physical": 20998,
+   "word": 5878,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P40-P47.agc:677",
+   "operand": "CADR MASSPROP"
+  },
+  {
+   "physical": 21134,
+   "word": 32407,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P40-P47.agc:836",
+   "operand": "CADR SERVEXIT"
+  },
+  {
+   "physical": 21217,
+   "word": 20333,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:941",
+   "operand": "CADR QUICTRIG"
+  },
+  {
+   "physical": 21225,
+   "word": 8653,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:949",
+   "operand": "CADR CLOCPLAY"
+  },
+  {
+   "physical": 21231,
+   "word": 8653,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:956",
+   "operand": "CADR CLOCPLAY"
+  },
+  {
+   "physical": 21237,
+   "word": 8647,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P40-P47.agc:963",
+   "operand": "CADR REGODSP"
+  },
+  {
+   "physical": 21295,
+   "word": 17428,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P40-P47.agc:1042",
+   "operand": "CADR RCSDAPON"
+  },
+  {
+   "physical": 21351,
+   "word": 17428,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P40-P47.agc:1117",
+   "operand": "CADR RCSDAPON"
+  },
+  {
+   "physical": 22405,
+   "word": 8650,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "REENTRY_CONTROL.agc:1325",
+   "operand": "CADR REGODSPR"
+  },
+  {
+   "physical": 22410,
+   "word": 32407,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "REENTRY_CONTROL.agc:1331",
+   "operand": "CADR SERVEXIT"
+  },
+  {
+   "physical": 22678,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:92",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 22714,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:135",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 22728,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:156",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 22747,
+   "word": 8789,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:209",
+   "operand": "CADR GOPERF1R"
+  },
+  {
+   "physical": 22753,
+   "word": 17290,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P61-P67.agc:218",
+   "operand": "CADR CM/DAPON"
+  },
+  {
+   "physical": 22756,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:232",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 22800,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:332",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 22835,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:419",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 22860,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:492",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 22887,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:581",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 22914,
+   "word": 32193,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P61-P67.agc:616",
+   "operand": "CADR PREREAD"
+  },
+  {
+   "physical": 22941,
+   "word": 8638,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:648",
+   "operand": "CADR GODSPR"
+  },
+  {
+   "physical": 22944,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P61-P67.agc:651",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 23484,
+   "word": 7728,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:975",
+   "operand": "CADR RNDREFDR"
+  },
+  {
+   "physical": 23499,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:994",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 23565,
+   "word": 8794,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R60,R62.agc:66",
+   "operand": "CADR GOPERF2R"
+  },
+  {
+   "physical": 23589,
+   "word": 8638,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R60,R62.agc:95",
+   "operand": "CADR GODSPR"
+  },
+  {
+   "physical": 23592,
+   "word": 8087,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R60,R62.agc:99",
+   "operand": "CADR GOMANUR"
+  },
+  {
+   "physical": 23770,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R60,R62.agc:381",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 23777,
+   "word": 23552,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R60,R62.agc:392",
+   "operand": "CADR R60CSM"
+  },
+  {
+   "physical": 23817,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:1233",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 23836,
+   "word": 8061,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:1253",
+   "operand": "CADR RADSTALL"
+  },
+  {
+   "physical": 23905,
+   "word": 8037,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P20-P25.agc:1322",
+   "operand": "CADR BADEND"
+  },
+  {
+   "physical": 23910,
+   "word": 8040,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P20-P25.agc:1327",
+   "operand": "CADR GOODEND"
+  },
+  {
+   "physical": 24336,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "UPDATE_PROGRAM.agc:242",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 24356,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "UPDATE_PROGRAM.agc:265",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 24369,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "UPDATE_PROGRAM.agc:281",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 24579,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:205",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 24597,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:223",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 24679,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:313",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 24706,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:341",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 24799,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:1830",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 25148,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2190",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 25252,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2296",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 25606,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R31.agc:53",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 25619,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "R31.agc:67",
+   "operand": "CADR GOMARKF"
+  },
+  {
+   "physical": 25894,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2805",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 25976,
+   "word": 8741,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2889",
+   "operand": "CADR GOPERF1"
+  },
+  {
+   "physical": 26000,
+   "word": 23552,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2916",
+   "operand": "CADR R60CSM"
+  },
+  {
+   "physical": 26040,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2957",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 26189,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:3113",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 26808,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P37,P70.agc:522",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 27673,
+   "word": 7551,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:83",
+   "operand": "CADR IMUZERO"
+  },
+  {
+   "physical": 27705,
+   "word": 7603,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:116",
+   "operand": "CADR IMUCOARS"
+  },
+  {
+   "physical": 27717,
+   "word": 7739,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:128",
+   "operand": "CADR IMUFINE"
+  },
+  {
+   "physical": 27836,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:258",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 27849,
+   "word": 7603,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:274",
+   "operand": "CADR IMUCOARS"
+  },
+  {
+   "physical": 27851,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:276",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 27933,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:386",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 27946,
+   "word": 28751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:404",
+   "operand": "CADR MATRXJOB"
+  },
+  {
+   "physical": 27984,
+   "word": 7790,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:548",
+   "operand": "CADR PIPUSE"
+  },
+  {
+   "physical": 28068,
+   "word": 6834,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:656",
+   "operand": "CADR 1/PIPA"
+  },
+  {
+   "physical": 28214,
+   "word": 7814,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:824",
+   "operand": "CADR IMUPULSE"
+  },
+  {
+   "physical": 28409,
+   "word": 7814,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1045",
+   "operand": "CADR IMUPULSE"
+  },
+  {
+   "physical": 28411,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1047",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 28443,
+   "word": 28674,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1088",
+   "operand": "CADR P11"
+  },
+  {
+   "physical": 28452,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1114",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 28463,
+   "word": 8635,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1125",
+   "operand": "CADR GODSPRET"
+  },
+  {
+   "physical": 28466,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1128",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 28533,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1207",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 28550,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1226",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 28561,
+   "word": 7219,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1237",
+   "operand": "CADR MKRELEAS"
+  },
+  {
+   "physical": 28593,
+   "word": 7170,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1313",
+   "operand": "CADR SXTMARK"
+  },
+  {
+   "physical": 28595,
+   "word": 8059,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1315",
+   "operand": "CADR OPTSTALL"
+  },
+  {
+   "physical": 28650,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1382",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 28653,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1385",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 28668,
+   "word": 8890,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "IMU_CALIBRATION_AND_ALIGNMENT.agc:1400",
+   "operand": "CADR PINBRNCH"
+  },
+  {
+   "physical": 28716,
+   "word": 32210,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P11.agc:218",
+   "operand": "CADR PREREAD1"
+  },
+  {
+   "physical": 28731,
+   "word": 8643,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P11.agc:239",
+   "operand": "CADR CLEANDSP"
+  },
+  {
+   "physical": 28842,
+   "word": 32414,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P11.agc:370",
+   "operand": "CADR NORMLIZE"
+  },
+  {
+   "physical": 28879,
+   "word": 8647,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P11.agc:426",
+   "operand": "CADR REGODSP"
+  },
+  {
+   "physical": 28888,
+   "word": 17680,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P11.agc:437",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 28986,
+   "word": 17680,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P11.agc:686",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 28989,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P11.agc:689",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 29007,
+   "word": 17680,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P11.agc:709",
+   "operand": "CADR NEEDLER"
+  },
+  {
+   "physical": 29010,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P11.agc:712",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 29386,
+   "word": 8665,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:1166",
+   "operand": "CADR PRIODSP"
+  },
+  {
+   "physical": 29440,
+   "word": 24559,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:1557",
+   "operand": "CADR UPACTOFF"
+  },
+  {
+   "physical": 29643,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2693",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 29650,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2700",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 29669,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2720",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 29676,
+   "word": 23552,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:2728",
+   "operand": "CADR R60CSM"
+  },
+  {
+   "physical": 29739,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P34-P35,_P74-P75.agc:236",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 30238,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P34-P35,_P74-P75.agc:909",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 30241,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P34-P35,_P74-P75.agc:912",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 30360,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "TPI_SEARCH.agc:530",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 30393,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P30,P37.agc:56",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 30453,
+   "word": 8751,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P30,P37.agc:163",
+   "operand": "CADR GOFLASHR"
+  },
+  {
+   "physical": 30464,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P30,P37.agc:175",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 30472,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P30,P37.agc:183",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 31726,
+   "word": 12079,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "MEASUREMENT_INCORPORATION.agc:432",
+   "operand": "CADR INTWAKE"
+  },
+  {
+   "physical": 31749,
+   "word": 8749,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc:106",
+   "operand": "CADR GOPERF4"
+  },
+  {
+   "physical": 31755,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc:112",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 31835,
+   "word": 8656,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc:194",
+   "operand": "CADR GOFLASH"
+  },
+  {
+   "physical": 31922,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:106",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 31986,
+   "word": 32111,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:174",
+   "operand": "CADR R61CSM"
+  },
+  {
+   "physical": 31996,
+   "word": 7225,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:185",
+   "operand": "CADR MKRLEES"
+  },
+  {
+   "physical": 32015,
+   "word": 8576,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:465",
+   "operand": "CADR GOMARKFR"
+  },
+  {
+   "physical": 32024,
+   "word": 8576,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:476",
+   "operand": "CADR GOMARKFR"
+  },
+  {
+   "physical": 32065,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:571",
+   "operand": "CADR GOMARKF"
+  },
+  {
+   "physical": 32071,
+   "word": 8564,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:578",
+   "operand": "CADR GOMARK2"
+  },
+  {
+   "physical": 32091,
+   "word": 8564,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:598",
+   "operand": "CADR GOMARK2"
+  },
+  {
+   "physical": 32105,
+   "word": 8560,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:613",
+   "operand": "CADR KLEENEX"
+  },
+  {
+   "physical": 32134,
+   "word": 23552,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:696",
+   "operand": "CADR R60CSM"
+  },
+  {
+   "physical": 32346,
+   "word": 6834,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "SERVICER207.agc:460",
+   "operand": "CADR 1/PIPA"
+  },
+  {
+   "physical": 32389,
+   "word": 7803,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "SERVICER207.agc:515",
+   "operand": "CADR PIPFREE"
+  },
+  {
+   "physical": 32406,
+   "word": 4180,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "SERVICER207.agc:539",
+   "operand": "CADR CANV37"
+  },
+  {
+   "physical": 32817,
+   "word": 25602,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:493",
+   "operand": "CADR ENTER"
+  },
+  {
+   "physical": 33040,
+   "word": 25824,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:760",
+   "operand": "CADR UPDATVB"
+  },
+  {
+   "physical": 33159,
+   "word": 25974,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1467",
+   "operand": "CADR DSPDCEND"
+  },
+  {
+   "physical": 33194,
+   "word": 25976,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1519",
+   "operand": "CADR DSPDCEND   +2"
+  },
+  {
+   "physical": 33258,
+   "word": 26221,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2116",
+   "operand": "CADR PUTCOM2"
+  },
+  {
+   "physical": 33430,
+   "word": 25831,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2625",
+   "operand": "CADR UPDAT1     +2"
+  },
+  {
+   "physical": 33539,
+   "word": 8890,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2971",
+   "operand": "CADR PINBRNCH"
+  },
+  {
+   "physical": 33690,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P20-P25.agc:3396",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 33778,
+   "word": 12079,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P20-P25.agc:3486",
+   "operand": "CADR INTWAKE"
+  },
+  {
+   "physical": 33892,
+   "word": 27648,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:968",
+   "operand": "CADR GOEXTVB"
+  },
+  {
+   "physical": 33996,
+   "word": 24863,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1097",
+   "operand": "CADR 5BLANK"
+  },
+  {
+   "physical": 34022,
+   "word": 25236,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1126",
+   "operand": "CADR GOVNUPDT"
+  },
+  {
+   "physical": 34026,
+   "word": 25301,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1134",
+   "operand": "CADR DSPALARM"
+  },
+  {
+   "physical": 34167,
+   "word": 25179,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1359",
+   "operand": "CADR DSPDECWD"
+  },
+  {
+   "physical": 34309,
+   "word": 25388,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1895",
+   "operand": "CADR RECALTST"
+  },
+  {
+   "physical": 34568,
+   "word": 25295,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2656",
+   "operand": "CADR DSPOCTIN"
+  },
+  {
+   "physical": 34596,
+   "word": 24898,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2831",
+   "operand": "CADR 2BLANK"
+  },
+  {
+   "physical": 34601,
+   "word": 4105,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2836",
+   "operand": "CADR MODROUTB"
+  },
+  {
+   "physical": 34609,
+   "word": 24898,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2846",
+   "operand": "CADR 2BLANK"
+  },
+  {
+   "physical": 34700,
+   "word": 28120,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:3672",
+   "operand": "CADR CHKPOOH"
+  },
+  {
+   "physical": 34768,
+   "word": 4470,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:3757",
+   "operand": "CADR DSPMM"
+  },
+  {
+   "physical": 34772,
+   "word": 25342,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:3761",
+   "operand": "CADR TSTLTS4"
+  },
+  {
+   "physical": 34781,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P34-P35,_P74-P75.agc:1628",
+   "operand": "CADR GOMARKF"
+  },
+  {
+   "physical": 34800,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "P34-P35,_P74-P75.agc:1734",
+   "operand": "CADR GOMARKF"
+  },
+  {
+   "physical": 34822,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:754",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 34833,
+   "word": 16615,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:767",
+   "operand": "CADR S41.2"
+  },
+  {
+   "physical": 34836,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:772",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 34850,
+   "word": 5878,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "EXTENDED_VERBS.agc:787",
+   "operand": "CADR MASSPROP"
+  },
+  {
+   "physical": 34853,
+   "word": 16704,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:791",
+   "operand": "CADR S40.14"
+  },
+  {
+   "physical": 34856,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:795",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 35428,
+   "word": 25005,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1559",
+   "operand": "CADR READLO"
+  },
+  {
+   "physical": 35436,
+   "word": 25179,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1568",
+   "operand": "CADR DSPDECWD"
+  },
+  {
+   "physical": 35447,
+   "word": 25179,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1580",
+   "operand": "CADR DSPDECWD"
+  },
+  {
+   "physical": 35456,
+   "word": 25179,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1590",
+   "operand": "CADR DSPDECWD"
+  },
+  {
+   "physical": 35471,
+   "word": 25005,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1608",
+   "operand": "CADR READLO"
+  },
+  {
+   "physical": 35507,
+   "word": 25211,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1645",
+   "operand": "CADR DSPDC2NR"
+  },
+  {
+   "physical": 35515,
+   "word": 25239,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1654",
+   "operand": "CADR DSPIN"
+  },
+  {
+   "physical": 35525,
+   "word": 25211,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1664",
+   "operand": "CADR DSPDC2NR"
+  },
+  {
+   "physical": 35527,
+   "word": 25976,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:1666",
+   "operand": "CADR DSPDCEND   +2"
+  },
+  {
+   "physical": 35622,
+   "word": 26109,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc:2277",
+   "operand": "CADR LOADLV"
+  },
+  {
+   "physical": 35731,
+   "word": 28301,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P40-P47.agc:2317",
+   "operand": "CADR SATSTKON"
+  },
+  {
+   "physical": 35746,
+   "word": 17818,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P40-P47.agc:2332",
+   "operand": "CADR ZEROJET"
+  },
+  {
+   "physical": 35751,
+   "word": 27729,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "P40-P47.agc:2337",
+   "operand": "CADR GOPIN"
+  },
+  {
+   "physical": 35755,
+   "word": 8107,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "S-BAND_ANTENNA_FOR_CM.agc:42",
+   "operand": "CADR R02BOTH"
+  },
+  {
+   "physical": 35823,
+   "word": 8576,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "S-BAND_ANTENNA_FOR_CM.agc:111",
+   "operand": "CADR GOMARKFR"
+  },
+  {
+   "physical": 35831,
+   "word": 986,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "S-BAND_ANTENNA_FOR_CM.agc:119",
+   "operand": "CADR DELAYJOB"
+  },
+  {
+   "physical": 35922,
+   "word": 8890,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:163",
+   "operand": "CADR PINBRNCH"
+  },
+  {
+   "physical": 35929,
+   "word": 7551,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:185",
+   "operand": "CADR IMUZERO"
+  },
+  {
+   "physical": 35931,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:188",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 35951,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:259",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 35956,
+   "word": 8738,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:266",
+   "operand": "CADR EXDSPRET"
+  },
+  {
+   "physical": 35958,
+   "word": 7603,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:269",
+   "operand": "CADR IMUCOARS"
+  },
+  {
+   "physical": 35960,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:272",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 35985,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:306",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 35994,
+   "word": 8738,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:316",
+   "operand": "CADR EXDSPRET"
+  },
+  {
+   "physical": 36004,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:350",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 36009,
+   "word": 8738,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:356",
+   "operand": "CADR EXDSPRET"
+  },
+  {
+   "physical": 36011,
+   "word": 7739,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:359",
+   "operand": "CADR IMUFINE"
+  },
+  {
+   "physical": 36013,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:362",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 36017,
+   "word": 7814,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:367",
+   "operand": "CADR IMUPULSE"
+  },
+  {
+   "physical": 36019,
+   "word": 8063,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:370",
+   "operand": "CADR IMUSTALL"
+  },
+  {
+   "physical": 36034,
+   "word": 25601,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:399",
+   "operand": "CADR LOADLV1"
+  },
+  {
+   "physical": 36057,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:447",
+   "operand": "CADR GOMARKF"
+  },
+  {
+   "physical": 36125,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:569",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 36131,
+   "word": 17699,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:578",
+   "operand": "CADR NEEDLE11"
+  },
+  {
+   "physical": 36133,
+   "word": 17714,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:581",
+   "operand": "CADR NEEDLER2"
+  },
+  {
+   "physical": 36147,
+   "word": 17726,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "EXTENDED_VERBS.agc:599",
+   "operand": "CADR NEEDLES"
+  },
+  {
+   "physical": 36191,
+   "word": 15593,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:677",
+   "operand": "CADR PRESWTCH"
+  },
+  {
+   "physical": 36194,
+   "word": 27526,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:682",
+   "operand": "CADR DAPFIG"
+  },
+  {
+   "physical": 36209,
+   "word": 26624,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:740",
+   "operand": "CADR DAPDISP1"
+  },
+  {
+   "physical": 36214,
+   "word": 19674,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:850",
+   "operand": "CADR V82CALL"
+  },
+  {
+   "physical": 36298,
+   "word": 5545,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:995",
+   "operand": "CADR ENEMA"
+  },
+  {
+   "physical": 36353,
+   "word": 8561,
+   "callee": "BANKCALL",
+   "callee_address": 2482,
+   "caller": "EXTENDED_VERBS.agc:1130",
+   "operand": "CADR GOXDSPF"
+  },
+  {
+   "physical": 36413,
+   "word": 12079,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:1220",
+   "operand": "CADR INTWAKE"
+  },
+  {
+   "physical": 36462,
+   "word": 4105,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "EXTENDED_VERBS.agc:1303",
+   "operand": "CADR V37"
+  },
+  {
+   "physical": 36503,
+   "word": 17818,
+   "callee": "IBNKCALL",
+   "callee_address": 2528,
+   "caller": "P11.agc:868",
+   "operand": "CADR ZEROJET"
+  },
+  {
+   "physical": 36575,
+   "word": 1689,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "AGC_BLOCK_TWO_SELF-CHECK.agc:221",
+   "operand": "CADR ADVAN"
+  },
+  {
+   "physical": 36842,
+   "word": 24315,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "UPDATE_PROGRAM.agc:186",
+   "operand": "CADR UPPART2"
+  },
+  {
+   "physical": 36853,
+   "word": 24556,
+   "callee": "POSTJUMP",
+   "callee_address": 2497,
+   "caller": "UPDATE_PROGRAM.agc:200",
+   "operand": "CADR UPERROUT   +2"
+  }
+ ]
+}
