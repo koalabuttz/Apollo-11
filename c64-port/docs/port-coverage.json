@@ -5000,7 +5000,7 @@
       "sha256": "5fb543ce6aebfbc6d2e83f576b78b1d61ece37e88a2229b734d5c094aef6ea56",
       "bytes": 6228,
       "lines": 362,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5015,7 +5015,7 @@
           "verification": "docs/LM-IMU-PERFORMANCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5030,7 +5030,6 @@
           "CALCGA and callers' NEWOPS (other interpretive code)",
           "ATIGINC (erasable TC, EBANK 7)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-source-map.json",
@@ -5047,6 +5046,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
             "sha256": "ad3530a01f872968462b21a70e60d7c36cb7a50c3915e591a1e1f7e31f21697e"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-imu-performance.md",
+            "sha256": "1536f46e3a994370084faf70d3446b2a308734d8468eaf29ad7e3eb584322bd7"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
@@ -5061,7 +5064,7 @@
       "sha256": "80d973122d8212c2a0d6dbedfc061b0b91b44467422abe8a487b85137fa4c490",
       "bytes": 6936,
       "lines": 421,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5076,7 +5079,7 @@
           "verification": "docs/LM-IMU-PERFORMANCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5091,7 +5094,6 @@
           "CALCGA and callers' NEWOPS (other interpretive code)",
           "ATIGINC (erasable TC, EBANK 7)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-source-map.json",
@@ -5108,6 +5110,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
             "sha256": "ad3530a01f872968462b21a70e60d7c36cb7a50c3915e591a1e1f7e31f21697e"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-imu-performance.md",
+            "sha256": "1536f46e3a994370084faf70d3446b2a308734d8468eaf29ad7e3eb584322bd7"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
@@ -5480,7 +5486,7 @@
       "sha256": "c07d1ef6d1a83375b0aa0f7be87ef4d496d396621501298932aa46466d2db34c",
       "bytes": 11726,
       "lines": 533,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5493,7 +5499,7 @@
           "scope": "Every path of the file: LANDISP (TBASE2, DISPRSET/ABORTON, DISINDAT with the mode switch, DIDFLAG and the first-pass set-up to TC TWIDDLE, SPEEDRUN to TC VARDELAY), TWIDDLE's return and INTLZE, and VARDELAY's return (VHY/VHZ, GET22/32, LATFWDV, VMONITOR and the limit paths to ZEROLSTY, channel 14) with TC LADQSAVE continuing at ALTROUT +1 (ARCOMP) or ALTOUT +1 (OLDDATA, NEWDATA, ZERODATA) to DATAOUT, as four ABI routines in bank 21."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5504,7 +5510,6 @@
           "VARDELAY",
           "the word in LADQSAVE when it is not ALTROUT +1 or ALTOUT +1"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-source-map.json",
@@ -5521,6 +5526,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-vice.log",
             "sha256": "49b7c9fa94a320eaff06294bb4d05a6d36a3a446488ed100a3fd30bbfcf978b8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-landing-displays.md",
+            "sha256": "bd2947f91bddb23ad60d7cae1525d85e5df9fa14880dea9456aa3a69b44af513"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-c64-cover.json",
