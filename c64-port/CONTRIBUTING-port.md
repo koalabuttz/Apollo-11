@@ -101,6 +101,9 @@ the Actions tab (`port-ci`, Run workflow). Full runs also run every legacy
 `tools/*_vice_test.py` script, split over eight `c64-legacy` shards, as the
 `vice-legacy-<name>` targets that `tools/legacy_vice.py` writes to
 `tools/mk/legacy-vice.mk`; run one locally with `tools/ci_run.py vice-legacy-<name>`.
+A script your milestone records as an unqualified development trial (never
+passed, replaced by a staged script) goes in `TRIALS` in `tools/legacy_vice.py`
+with the document that says so; anything else that fails is a failure to fix.
 
 ## Done means the PORT_SCOPE certificate
 
