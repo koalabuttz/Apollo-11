@@ -69,6 +69,9 @@
 #define lmi_unit cmi_unit
 #define lmi_vxsc cmi_vxsc
 #define lmi_vxv cmi_vxv
+#define lmi_mxv cmi_mxv
+#define lmi_vxm cmi_vxm
+#define lmi_vproj cmi_vproj
 #define LMI_BOV_NONE CMI_BOV_NONE
 #define LMI_BOV_GOTO CMI_BOV_GOTO
 #define LMI_BOV_RTB CMI_BOV_RTB
@@ -87,6 +90,7 @@
 #define lmi_xad cmi_xad
 #define lmi_xsu cmi_xsu
 #define lmi_lxa cmi_lxa
+#define lmi_lxc cmi_lxc
 #define lmi_sxa cmi_sxa
 #define lmi_xchx cmi_xchx
 #define lmi_ita cmi_ita
@@ -97,6 +101,7 @@
 #define lmi_15bitadr cmi_15bitadr
 #define lmi_bzegoto cmi_bzegoto
 #define lmi_tload cmi_tload
+#define lmi_tload_fixed cmi_tload_fixed
 #define lmi_exit cmi_exit
 #define lmi_intpret cmi_intpret
 #define lmi_tpmode cmi_tpmode
