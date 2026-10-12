@@ -2717,8 +2717,49 @@
       "sha256": "eb36e5be74c986022d1cb1adbab3da3de222d9e9675a13d75992f621e5738ac1",
       "bytes": 9821,
       "lines": 256,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_restarts.c"
+          ],
+          "scope": "All 90 words from each of the 6 original entry points (REDOTVC, ENABL2, CMDSOUT T5 tasks, CHKSTRK and FINCOPY+3 returns, EXRSTRT task) to the next WAITLIST/RESUME/NOQRSM/POSTJUMP/IBNKCALL/ISWCALL or TVCEXECUTIVE restart-point transfer, with channel 12/14 writes. ABI registration pending (see docs).",
+          "verification": "docs/CM-TVC-RESTARTS.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 6 original entry points, FB 16, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 12/14; EXRSTRT with TVCEXPHS 1..6; REDOTVC reaching FINCOPY with TVCPHASE <= 9.",
+          "frontiers": "WAITLIST 5245 (Q 3150), RESUME 5333, NOQRSM 5335, POSTJUMP 4701 (Q 3227/3237), IBNKCALL 4740 (Q 3231), ISWCALL 4744 (Q 3243), TVCEXECUTIVE 3003/3011/3040/3043/3121/3132.",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche WAITLIST, RESUME/NOQRSM and INTER-BANK routines (Lane A) and their site operands",
+          "MRCLEAN, TVCINIT4, SWICHOVR (TVCINITIALIZE), PCOPY/YCOPY copycycles (TVCDAPS), TVCEXECUTIVE restart points (cm-tvc-exec)",
+          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-source-map.json",
+            "sha256": "fe1c8bac3baf42baf124202f6e77b4bb6511411170f9fa9982b77196c6fc3bd5"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-source-map.json",
+            "sha256": "fe1c8bac3baf42baf124202f6e77b4bb6511411170f9fa9982b77196c6fc3bd5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-checks.log",
+            "sha256": "ad40e21811441954104092322ea64832ae2690886bf15788c84a7f185f020b72"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-results.json",
+            "sha256": "478c481176f3abc507e4821e3728ccaad4791ae765b189089cb43259fb324d97"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCROLLDAP.agc",
