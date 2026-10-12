@@ -3487,8 +3487,62 @@
       "sha256": "658648f1bdac76929efdfe98fc23676e467d167645310c685bf1479c97da77fa",
       "bytes": 6146,
       "lines": 228,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_ags_init.c",
+            "src/lm_ags_init_sites.inc",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-AGS-INIT.md",
+          "scope": "All of the file (R47, bank 32 02005-02216): AGSINIT's REFSMFLG test and ALARM, the AGSK display and GOMARKF's three returns (V32 keystroke time, V25 keyed AGSK, AGSVCALC), the interpretive AGS vector set-up from RTB LOADTIME through LEMPREC/CSMPREC and SCALEVEC (VECSGNAG returns, RVQ) to the AGS clock and downlist, DELAYJOB, the IMUSE test and CKSTALL, IMUZERO/IMUSTALL returns, AGSEND (DOWNFLAG) and the V50N16 display with GOMARK3's returns, as fifteen basic and seven interpretive ABI routines."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 32 under any EBANK, with the p66_bias_io record; basic keys at Z, interpretive keys at LOC with Z at NEWOPS; DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB, NEWJOB negative, or no io record; 0 of 16,896 random cases",
+        "external_continuations": [
+          "ALARM",
+          "ENDEXT",
+          "BANKCALL (GOMARKF, EXDSPRET, DELAYJOB, IMUZERO, IMUSTALL, GOMARK3)",
+          "DOWNFLAG",
+          "RTB LOADTIME",
+          "RTB VECSGNAG",
+          "LEMPREC",
+          "CSMPREC",
+          "SCALEVEC's RVQ to a caller outside the file (QPRET)",
+          "CHANG2"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-ags-init/lm-ags-init-source-map.json",
+            "sha256": "9877313df882a3420d55d56970a6a1a52d26718ef7a78841156715c8a4f9e390"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-ags-init/lm-ags-init-proof.json",
+            "sha256": "cf1d1ee58bc3740da972acef02ca68353cffd534a1cf49311f042c4fa53f694e"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-ags-init/lm-ags-init-host.log",
+            "sha256": "06e7d21c0c72039629a80a22c49113bd223e811ac336a3912c6d07707751ea90"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-ags-init/lm-ags-init-vice.log",
+            "sha256": "eb9a4cdfd7a3243b9789c532cfb0330616f32a71a4cc270d64e75f022e7aa3c8"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-ags-init/lm-ags-init-c64-cover.json",
+            "sha256": "eb3d625d05e34c45db496bacadf1e01f0b52f3aeb0d71d06ccff0681b6ec6cd0"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ALARM_AND_ABORT.agc",
