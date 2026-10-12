@@ -43,10 +43,12 @@ static void pushloc(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(
 static void fbank(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[4]=(agc_word)(s->words[4]-02000u);s->words[6]=(agc_word)(s->words[6]-02000u);}
 static void no_undo(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)s;(void)c;io->undo=0;}
 static void newjob_minus(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[067]=077776u;}
-static void newjob_zero(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[067]=0;}
 static void qplace_intpret(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[02417]=06037u;}
 static void qplace_data(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[02417]=010000u;}
-static void loscalar(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)s;(void)c;io->loscalar=037777u;}
+static void wild_index(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[FIX(s)+047u]=010523u;}
+/* AINGOTN's divisor (pushed by its PDDL) +-1 with a minor part of the
+ * other sign: MPAC -1, +02106 in DP mode. */
+static void bufzero(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[0154]=077776u;s->words[0155]=02106u;s->words[0163]=0;}
 static void qpret(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[FIX(s)+052u]=0100u;}
 static void pipindex(apollo_overlay_state *s,ipt_case *c,lm_ipt_io *io){(void)c;(void)io;s->words[03]=02400u;s->words[06]=(agc_word)(s->words[4]|012u);s->words[02415]=02000u;}
 int main(void){static apollo_overlay_state s;unsigned n,k,v;uint16_t ie;static unsigned stopped[IPT_ROUTINES];
@@ -60,14 +62,23 @@ int main(void){static apollo_overlay_state s;unsigned n,k,v;uint16_t ie;static u
   check(ipt_digest(&s,(uint16_t)n)==ipt_expected[n],"digest",n);
   if(kind==IPT_STOPPED)++stopped[n%IPT_ROUTINES];
  }
- /* Every routine runs in at least half of its states. */
- for(k=0;k<IPT_ROUTINES;++k)check(stopped[k]*2u>=IPT_STATES,"routine",k);
+ /* Every routine runs in at least a fifth of its states (the resume keys'
+  * MODE, MPAC and pushdown are drawn at random, so SIN/COS domains and
+  * VXSC's operand length refuse some). */
+ for(k=0;k<IPT_ROUTINES;++k)check(stopped[k]*5u>=IPT_STATES,"routine",k);
+ /* The idle points end as continuations: CHECKG1 with PIPAX unchanged and
+  * FINETIME +1 with LOSCALAR 37777. */
+ {unsigned idle[2]={0,0};
+  for(n=0;n<IPT_CASES;++n)if(ipt_run(&s,(uint16_t)n,&ie)==IPT_STOPPED){
+   if(s.words[5]==02335u&&s.words[4]==076000u)++idle[0];
+   if(s.words[5]==04103u)++idle[1];}
+  check(idle[0]>0u,"CHECKG1 idle",idle[0]);check(idle[1]>0u,"FINETIME +1 idle",idle[1]);}
  {static const struct {uint16_t key;patch p;const char *what;} r[]={
    {B37(02021),edop,"EDOP"},{B37(02605),fixloc,"FIXLOC"},{B37(03030),pushloc,"PUSHLOC"},
    {B37(02040),fbank,"FB not BANKSET"},{B37(02002),no_undo,"no undo image"},
-   {B37(02043),newjob_minus,"NEWJOB negative at DANZIG"},{B37(02342),newjob_zero,"CHECKG wait"},
+   {B37(02043),newjob_minus,"NEWJOB negative at DANZIG"},{B37(02764),wild_index,"wild X2 at STORE,2"},
    {B37(02467),qplace_intpret,"QPLACE TC INTPRET"},{B37(02467),qplace_data,"QPLACE not a TC"},
-   {(uint16_t)(2048u+04112u-04000u),loscalar,"FINETIME LOSCALAR 37777"},{B37(02414),qpret,"RVQ QPRET erasable"},
+   {B37(02217),bufzero,"DDV divisor without a major part"},{B37(02414),qpret,"RVQ QPRET erasable"},
    {B37(02354),pipindex,"INDEX PIPINDEX"}};
   for(k=0;k<sizeof r/sizeof *r;++k){uint16_t i=routine(r[k].key);
    check(i!=0xffffu,r[k].what,k);

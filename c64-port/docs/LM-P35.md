@@ -137,8 +137,9 @@ Hashes are in `evidence/lm-p35/SHA256.json`. Bulk files are assets of the
 
 ## Limits
 
-- P34/P74, S33/34.1, ELCALC and S34/35.2's ACOS and Lambert setup are not
-  covered. The file stays `partial`.
+- S33/34.1, ELCALC and S34/35.2's ACOS and Lambert setup are not
+  covered (P34/P74 is lm-p34p74, `docs/LM-P34P74.md`). The file stays
+  `partial`.
 - AVFLAGA, AVFLAGP and P20FLGON belong to P32-P35_P72-P75 and are stops
   here.
 - Numerical validity is the original's. No wider claim is made.
