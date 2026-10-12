@@ -7,7 +7,7 @@ LM_UP_HDR = include/lm_update.h include/lm_interbank_routines.h include/agc_tran
 all: build/test-lm-update
 test: test-lm-update
 sanitize: sanitize-lm-update
-build/test-lm-update: $(LM_UP_SRC) tests/test_lm_update.c tests/lm_update_vectors.h $(LM_UP_HDR) | build
+build/test-lm-update: $(LM_UP_SRC) tests/test_lm_update.c tests/lm_update_vectors.h tests/lm_update_c64_vectors.h $(LM_UP_HDR) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LM_UP_SRC) tests/test_lm_update.c -o $@
 test-lm-update: build/test-lm-update
 	python3 tools/file_operands_generate.py lm-update --check

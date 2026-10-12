@@ -71,6 +71,12 @@ static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
  if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;
  W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;
 }
+/* TC K, K erasable: C(K) runs as an instruction; a TC leaves Q = K+1. */
+static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
+ agc_word w=W[k];
+ if((w&070000u)||w<010u)return EXEC_OUT_OF_SCOPE;
+ W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;
+}
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }
@@ -227,6 +233,7 @@ static enum exec_status r45034(apollo_overlay_state *s,p66_bias_io *io){
  L45051:;
  /* 22,3052 TS DELDCDU */
  {agc_word iw=ixw(s,055640,01272u);if((iw^055640u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45054;
  }
  /* 22,3054 CA NCDU */
@@ -240,10 +247,12 @@ static enum exec_status r45034(apollo_overlay_state *s,p66_bias_io *io){
  L45055:;
  /* 22,3056 XCH BCDU */
  {agc_word iw=ixw(s,057676,01272u);if((iw^057676u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    ai_xch(s,(unsigned)((iw&01777u)-0u));
  }
  /* 22,3060 TS CDUXD */
  {agc_word iw=ixw(s,055635,01272u);if((iw^055635u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45062;
  }
  /* 22,3061 CCS SPNDX */
@@ -439,6 +448,7 @@ static enum exec_status r45123(apollo_overlay_state *s,p66_bias_io *io){
  L45051:;
  /* 22,3052 TS DELDCDU */
  {agc_word iw=ixw(s,055640,01272u);if((iw^055640u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45054;
  }
  /* 22,3054 CA NCDU */
@@ -452,10 +462,12 @@ static enum exec_status r45123(apollo_overlay_state *s,p66_bias_io *io){
  L45055:;
  /* 22,3056 XCH BCDU */
  {agc_word iw=ixw(s,057676,01272u);if((iw^057676u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    ai_xch(s,(unsigned)((iw&01777u)-0u));
  }
  /* 22,3060 TS CDUXD */
  {agc_word iw=ixw(s,055635,01272u);if((iw^055635u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45062;
  }
  /* 22,3061 CCS SPNDX */
@@ -559,6 +571,7 @@ static enum exec_status r45123(apollo_overlay_state *s,p66_bias_io *io){
  L45140:;
  /* 22,3141 TS OMEGAPD */
  {agc_word iw=ixw(s,055643,01701u);if((iw^055643u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45143;
  }
  /* 22,3143 BZMF +2 */
@@ -585,6 +598,7 @@ static enum exec_status r45123(apollo_overlay_state *s,p66_bias_io *io){
  }
  /* 22,3156 TS DELPEROR */
  {agc_word iw=ixw(s,055277,01701u);if((iw^055277u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45160;
  }
  /* 22,3157 CCS KSPNDX */

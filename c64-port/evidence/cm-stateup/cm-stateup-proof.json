@@ -1,0 +1,10 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "b28b31dcc39256cef5ae1b6bc2b197f76a403053119f5dea5fc04d1dabf9f783",
+ "entries": "every order-pair word of STATEUP, STATEND, THISVINT (bank 13) and R00 (bank 04) (12), at NEWOPS",
+ "boundary": "NEWOPS with LOC on the pair to NEWOPS with LOC outside the file (CALL/STCALL/CLRGO/RVQ targets), R00 EXIT to basic code, or CHANG2",
+ "full_physical_words": 2048
+}

@@ -9,17 +9,17 @@
       "store": "release"
     },
     "cm-update-host.log": {
-      "sha256": "f0d57b7dad9b6c975bf94feb24f33cc5d28b5b7f2bd19e1b6405fadbdc937077",
-      "bytes": 1716,
+      "sha256": "9a9b6c6450038747fb7371f29ab928e82649164a16874e020410fd84ff28f3b5",
+      "bytes": 1439,
       "store": "release"
     },
     "cm-update-proof.json": {
-      "sha256": "48084f9e6469b3660816a057747e8aa43ca7f5554408cdd302a64d0c22801732",
-      "bytes": 687,
+      "sha256": "4973f66d06915525f2d0d3c17cdd4fa00abe8b4ad648303cfd152b49e304d13b",
+      "bytes": 1620,
       "store": "tree"
     },
     "cm-update-vice.log": {
-      "sha256": "58e2b4cdddfae72891e1139d8722a40b539b39bc9018feeebc045775a46a33f5",
+      "sha256": "55224cc675d29d47560fd2f1397e0c00b25260e0a5c79672e10986b0f3febab2",
       "bytes": 611,
       "store": "release"
     }

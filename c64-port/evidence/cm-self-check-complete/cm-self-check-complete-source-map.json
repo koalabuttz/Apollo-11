@@ -1,0 +1,45 @@
+{
+ "category": "source_to_native_map",
+ "source_path": "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
+ "source_sha256": "674f22014a8d4c7abc6f376ed93ec6b3d76af7cd87dea2752bc251968d46695a",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "aggregates": {
+  "self-check": {
+   "record": "docs/SELF-CHECK.md",
+   "sha256": "b9c496ab219422faa74c10fe17de61f12c9a95fa64fc81ecd408794034569bb7",
+   "native": [
+    "src/cm_self_check.c",
+    "src/self_check_body.inc",
+    "src/cm_self_check_operands.inc",
+    "src/rope_image_host.c",
+    "platform/c64/rope_image_reu.c"
+   ],
+   "native_sha256": {
+    "src/cm_self_check.c": "1cc2e5c485bdebf6b859301830ac1ff402a3d28b4b60d02deda32f5361caf851",
+    "src/self_check_body.inc": "34274613da05498dbde5a98e3fef9be1743db7ab2eaa422ffd8aba1ef3d29ab4",
+    "src/cm_self_check_operands.inc": "7917a615b905f81e975290c4b5df87ed8f7a045750700d06de4a6fa140d7a0d6"
+   },
+   "owns": [
+    "43,3234-3725"
+   ]
+  }
+ },
+ "word_check": {
+  "source_words": 314,
+  "translated_words": 314,
+  "excluded_words": 0,
+  "result": "PASS"
+ },
+ "execution_check": {
+  "instructions": 299,
+  "not_executed": [],
+  "unreachable": {
+   "3277": "CCS A +0 at -1CHK",
+   "3612": "CCS L +0 at ADRSCHK"
+  },
+  "result": "PASS"
+ },
+ "line_map": {
+  "record": "evidence/cm-self-check-complete/cm-self-check-complete-line-map.json"
+ }
+}

@@ -3,7 +3,7 @@
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "oracle": "yaAGC (deps/virtualagc), host only",
  "cases": 4096,
- "snapshot_sha256": "abb0f0a69b7f68e63a4c479b49435d6de9d19feb1ec12acc9208a2f2e9080806",
+ "snapshot_sha256": "4e6430f8b789a349a445d028e17b0a4d267087dedb2f0035fe910b42a8afb13e",
  "entries": "GOP00FIX, V37, V37RET, R00, V37XEQ, V37XEQC and the return after each TC out of bank 04 (32)",
  "boundary": "entry state to the first point neither FRESH_START_AND_RESTART (banks 04, 05, fixed-fixed) nor INTER-BANK_COMMUNICATION owns, or SWRETURN",
  "full_physical_words": 2048

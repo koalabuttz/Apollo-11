@@ -23,7 +23,7 @@ enum {
     PINBRNCH = 0, NORMBNCH = 9, NORMBNCH2 = 11, NVDSP = 16, NVDSP_1 = 17, NVMARK = 34, NVMARK_1 = 35,
     NVDSP1 = 39, NV50DSP = 40, NVBUSY = 41, NVDONE = 42, NVCOPY = 43, NVDOWN1 = 44, NVDOWN2 = 46,
     NVDOWN3 = 48, BLANKCHK = 50, BLANKCHK2 = 52, PERFCHEK = 53, GOANIDLE = 57, GOANIDLE4 = 61,
-    GOANIDLE8 = 65, ISITN00 = 69, FIRSTOR2ND = 75, FIRSTOR2ND4 = 79, V50PASTE = 91, OUT = 0xffff
+    GOANIDLE8 = 65, ISITN00 = 69, FIRSTOR2ND = 75, FIRSTOR2ND4 = 79, V50PASTE = 91, OUT = 0xffff, REFUSE = 0xfffe
 };
 
 #define AT(M, X, N) (LANEC_##M##_##X == LANEC_##M##_PINBRNCH + (N))
@@ -87,6 +87,7 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
         return leave(s, lanec_ccs_a(s) == 0 ? p->keepprio : p->playjum1);
     case NVDSP: return call(s, p, p->copypacs, NVDSP_1);
     case NVDSP_1:                  /* blank bits into L, clear DSPFLG bit 13, save TEM1, MPAC +2, CCS NVWORD */
+        if (i > 2u) return REFUSE;
         set_a(s, w[TEMPOR2]);
         lanec_mask(s, W(SEVEN));
         w[LANEC_L] = w[LANEC_A];
@@ -129,10 +130,12 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
         lanec_mask(s, W(BIT6));
         return lanec_ccs_a(s) == 0 ? (uint16_t)ISITN00 : (uint16_t)GOANIDLE8;
     case GOANIDLE8:                                    /* INDEX COPINDEX, CA CADRFLSH, TS MPAC +3, TCF ENDIT */
+        if (i > 2u) return REFUSE;
         set_a(s, w[CADRFLSH + i]);
         w[MPAC + 3u] = w[CADRFLSH + i];
         return leave(s, p->endit);
     case ISITN00:                                      /* INDEX COPINDEX, CA NVWORD, MASK LOW7, EXTEND, BZF */
+        if (i > 2u) return REFUSE;
         set_a(s, w[NVWORD + i]);
         lanec_mask(s, W(LOW7));
         return leave(s, zero16(w[LANEC_A]) ? p->flashsub : p->endofjob);
@@ -141,6 +144,7 @@ static uint16_t step(apollo_overlay_state *s, lanec_io *io, const places *p, uin
         lanec_mask(s, W(BIT13));
         return lanec_ccs_a(s) == 0 ? (uint16_t)GOANIDLE : (uint16_t)FIRSTOR2ND4;
     case FIRSTOR2ND4:              /* CA BIT13, INDEX COPINDEX, ADS DSPFLG, ZL, EXTEND, BZMF MARKPERF */
+        if (i > 2u) return REFUSE;
         set_a(s, W(BIT13));
         lanec_ad(s, w[p->dspflg + i]);
         w[p->dspflg + i] = (uint16_t)((w[LANEC_A] & 037777u) | ((w[LANEC_A] >> 1) & 040000u));
@@ -172,11 +176,15 @@ static uint8_t is_block(uint16_t at)
 enum lanec_status lanec_di_nvdsp_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
     const places *p = at(m);
-    uint16_t *w = s->words, z = w[LANEC_Z], at;
+    uint16_t *w = s->words, z = w[LANEC_Z], at, a;
     if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 010u || z < p->pinbrnch) return LANEC_OUT_OF_SCOPE;
     at = (uint16_t)(z - p->pinbrnch);
-    /* COPINDEX selects one of the three PRIO/MARK/NORM display word sets. */
-    if (!is_block(at) || w[COPINDEX] > 2u) return LANEC_OUT_OF_SCOPE;
-    while (at != OUT) at = step(s, io, p, at);
+    if (!is_block(at)) return LANEC_OUT_OF_SCOPE;
+    /* COPINDEX selects one of the three PRIO/MARK/NORM display word sets:
+     * each step that indexes with it refuses another value. The steps run
+     * before one only change A, which is put back. */
+    a = w[LANEC_A];
+    while (at != OUT && at != REFUSE) at = step(s, io, p, at);
+    if (at == REFUSE) { w[LANEC_A] = a; return LANEC_OUT_OF_SCOPE; }
     return LANEC_OK;
 }

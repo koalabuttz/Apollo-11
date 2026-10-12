@@ -1,0 +1,42 @@
+{
+ "category": "c64_execution_results",
+ "aggregates": {
+  "cm-fresh-start": {
+   "record": "evidence/cm-fresh-start/cm-fresh-start-vice.log",
+   "sha256": "ef80392a21eceb7fe503b9cdec80fd889eea1cdb89bee91f539fb9f6a475faaa",
+   "pass_lines": [
+    "PASS: VICE PAL cm-fresh-start.prg: 257 checks, 0 failures"
+   ],
+   "checks": [
+    257
+   ],
+   "failures": 0,
+   "result": "PASS"
+  },
+  "cm-v37": {
+   "record": "evidence/cm-v37/cm-v37-vice.log",
+   "sha256": "c936a5ce3a47de40e8816427458242e9cd431ddcba70867a9e310fb57e4507f7",
+   "pass_lines": [
+    "PASS: VICE PAL cm-v37.prg: 160 checks, 0 failures"
+   ],
+   "checks": [
+    160
+   ],
+   "failures": 0,
+   "result": "PASS"
+  },
+  "cm-stateup": {
+   "record": "evidence/cm-stateup/cm-stateup-vice.log",
+   "sha256": "e3efa68053e94d2b1f7c83dc7e978d66deded39f7aa2012b3edcd8479967f498",
+   "pass_lines": [
+    "PASS: VICE PAL cm-stateup.prg: 241 checks, 0 failures"
+   ],
+   "checks": [
+    241
+   ],
+   "failures": 0,
+   "result": "PASS"
+  }
+ },
+ "result": "PASS"
+}

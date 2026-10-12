@@ -1,11 +1,13 @@
 /* SPDX-License-Identifier: MIT */
-/* lm-stateup: Luminary099 FRESH_START_AND_RESTART bank 13 (STATEUP, DOINT,
- * NO-INT, DOINT2, THISVINT) cases through the trampoline against digests
- * frozen from the original program; every order pair is reached, each run
- * ends at NEWOPS of INTEGRV, INTSTALL, SETIFLGS, ENDINT or THISVINT's
- * caller, or at CHANG2, and every one of those is reached; LOC on an
- * operand word, BBANK not under BANKSET, a work area outside the VAC
- * areas, an erasable QPRET at THISVINT and a missing io are refused. */
+/* lm-stateup: Luminary099 FRESH_START_AND_RESTART interpretive code (bank
+ * 13 STATEUP, DOINT, NO-INT, DOINT2, THISVINT; bank 04 R00) cases through
+ * the trampoline against digests frozen from the original program; every
+ * order pair is reached, each run ends at NEWOPS of INTEGRV, INTSTALL,
+ * SETIFLGS, ENDINT or THISVINT's caller, at R00's TC DOWNFLAG after EXIT,
+ * or at CHANG2, and every one of those is reached; LOC on an operand word,
+ * BBANK not under BANKSET, a pair in the wrong bank, a work area outside
+ * the VAC areas, an erasable QPRET at THISVINT and a missing io are
+ * refused. */
 #include <stdio.h>
 #include "lm_stateup_cases.h"
 #include "lm_stateup_vectors.h"
@@ -30,10 +32,11 @@ static void at(apollo_overlay_state *s,p66_bias_io *io,agc_word loc){unsigned k;
  for(k=0;k<LM_STATEUP_ROUTINES&&lm_stateup_entries[k]!=loc;++k){}
  lm_stateup_input(s,io,(uint16_t)k);s->words[067]=0;
 }
-/* Where a run may end: NEWOPS with LOC (bank 13), or Z (CHANG2). */
+/* Where a run may end: NEWOPS with LOC (bank 13), or Z (R00's EXIT, CHANG2). */
 static const struct { uint16_t z,loc; const char *name; } ends[]={
  {06070u,03134u,"INTEGRV"},{06070u,03414u,"INTSTALL"},{06070u,02644u,"SETIFLGS"},{06070u,02632u,"ENDINT"},
- {06070u,03603u,"THISVINT's caller"},{06070u,0u,"another bank 13 return"},{05126u,0u,"CHANG2"}};
+ {06070u,03603u,"THISVINT's caller"},{06070u,0u,"another bank 13 return"},{02147u,0u,"R00's TC DOWNFLAG"},
+ {05126u,0u,"CHANG2"}};
 #define ENDS (sizeof ends/sizeof ends[0])
 int main(void){apollo_overlay_state s;p66_bias_io io;enum exec_status st;unsigned n,i,ended[ENDS];
  for(i=0;i<ENDS;++i)ended[i]=0;
@@ -48,8 +51,9 @@ int main(void){apollo_overlay_state s;p66_bias_io io;enum exec_status st;unsigne
    st=agc_transfer_run(&p,&s,&io,&io.superbank,AGC_TRANSFER_NONE,32,&steps);
    check(st==EXEC_UNMAPPED,"coverage run",n);
    z=s.words[5];loc=s.words[LM_STATEUP_LOC];
-   /* CALL, STCALL and CLRGO targets are bank 13 CADRs. */
-   if(z==06070u&&(loc==03134u||loc==03414u||loc==02644u||loc==02632u))check((s.words[LM_STATEUP_BANKSET]&076000u)==(013u<<10),"target in bank 13",n);
+   /* CALL, STCALL and CLRGO targets are bank 13 CADRs (THISVINT's RVQ
+    * returns wherever QPRET says). */
+   if(lm_stateup_entries[n%LM_STATEUP_ROUTINES]!=02066u&&z==06070u&&(loc==03134u||loc==03414u||loc==02644u||loc==02632u))check((s.words[LM_STATEUP_BANKSET]&076000u)==(013u<<10),"target in bank 13",n);
    for(i=0;i<ENDS;++i)if(ends[i].z==z&&(ends[i].loc==0u||ends[i].loc==loc))break;
    if(i<ENDS)++ended[i];else check(0,"end point",n);}
   for(i=0;i<LM_STATEUP_ROUTINES;++i)check(reached[i]>0u,"pair reached",i);
@@ -57,6 +61,8 @@ int main(void){apollo_overlay_state s;p66_bias_io io;enum exec_status st;unsigne
  /* Refusals, each entered once directly. */
  at(&s,&io,02026u);s.words[LM_STATEUP_LOC]=02027u;check(once(&s,&io)==EXEC_UNMAPPED,"LOC on an operand word is no entry",0);
  at(&s,&io,02026u);s.words[LM_STATEUP_BANKSET]=(agc_word)(014u<<10);check(once(&s,&io)!=EXEC_OK,"BBANK not under BANKSET",0);
+ at(&s,&io,02144u);s.words[4]=s.words[LM_STATEUP_BANKSET]=(agc_word)(013u<<10);s.words[6]=(agc_word)(s.words[4]|(s.words[3]>>8));
+ check(once(&s,&io)!=EXEC_OK,"R00 pair outside bank 04",0);
  at(&s,&io,02041u);s.words[0120]=0402u;check(once(&s,&io)==EXEC_OUT_OF_SCOPE,"work area outside the VAC areas",0);
  at(&s,&io,02066u);s.words[s.words[0120]+052u]=01000u;check(once(&s,&io)==EXEC_OUT_OF_SCOPE,"erasable QPRET at RVQ",0);
  at(&s,&io,02026u);check(once(&s,0)==EXEC_OUT_OF_SCOPE,"no io",0);

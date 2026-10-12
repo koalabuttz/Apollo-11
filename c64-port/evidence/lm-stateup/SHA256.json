@@ -4,17 +4,17 @@
   "release": "evidence-lm-stateup",
   "files": {
     "lm-stateup-host.log": {
-      "sha256": "3ea315a3a986785c4cf6f93a2016447251f92584365bd5d8d7f570ec845efc39",
-      "bytes": 1526,
+      "sha256": "328c2f0df02d538c1b0d040419fa411a93e8ca14352f0d16855a2544323e9c09",
+      "bytes": 1534,
       "store": "release"
     },
     "lm-stateup-proof.json": {
-      "sha256": "153c4981a0f435207a7639a610968d7acc702b796bd0b472ffa79228e503bee4",
-      "bytes": 519,
+      "sha256": "19250bc7e29f5c94280e38c0f16ba7c06f150fbec0603dcd3b07b2ef91ec58e2",
+      "bytes": 569,
       "store": "tree"
     },
     "lm-stateup-vice.log": {
-      "sha256": "20c1614a0a0e1c361c4dd1f6eb79aacbe6ed7fbf6e0ce9f1b4fdebc65c9ddaed",
+      "sha256": "61f273f706d40bf1bd675331fda6f0667755814b640f6ad9afe37fbfd6ad9d01",
       "bytes": 614,
       "store": "release"
     }
