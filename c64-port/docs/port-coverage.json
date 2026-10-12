@@ -4764,6 +4764,14 @@
           ],
           "scope": "The T3RUPT vector 04014 (DXCH ARUPT, CAF T3RPTBB, XCH BBANK, TCF T3RUPT) as a control-transfer ABI routine through T3RUPT2 to the dispatched task, with interrupts enabled or inhibited. The other vectors remain separate.",
           "verification": "docs/LM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "include/lm_t6rupt_routines.h"
+          ],
+          "scope": "The T6RUPT vector (04004: DXCH ARUPT; EXTEND; DCA T6ADR; DTCB) and T6ADR's 2CADR as a control-transfer ABI routine ending at DOT6RUPT.",
+          "verification": "docs/LM-T6RUPT.md"
         }
       ]
     },
@@ -6270,8 +6278,51 @@
       "sha256": "76f234ba5ac0e8e3516f935e674761cb4bba455b07543cd10e16c9d1f5caaa87",
       "bytes": 4500,
       "lines": 163,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "include/lm_t6rupt_routines.h"
+          ],
+          "scope": "Every assembled word: DOT6RUPT, T6JOBCHK, T6JOB/ENABLET6/GOCH56 and the WRITEP/WRITEU/WRITEV jet writers (with their -1 entries and 00314OCT) as control-transfer ABI routines (lm_t6rupt_routines) on the image through agc_image_ops, with channels 5, 6 and 13 in agc_hardware. The negative-TIME6 self-loop at T6JOBCHK +3 has no producer and is refused.",
+          "verification": "docs/LM-T6RUPT.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; channels 5, 6 and 13 (CPU-writable bits 043777) and InIsr in agc_hardware.",
+          "entry_contracts": "T6RUPT vector 04004 and DOT6RUPT 17,2065 inside the T6 interrupt (DOT6RUPT with FB 17, EB 6); T6JOBCHK 17,2027 and WRITEP-1/WRITEU-1/WRITEV-1 with EB 6; WRITEP/WRITEU/WRITEV from any bank. Every labelled entry and every DAP call target in the file is a routine.",
+          "index_domains": "NXT6ADR 0, 4 or 13 (the INDEXES and DAPIDLER values); TIME6 positive, +0 or -0 (a negative nonzero TIME6 reaches the T6JOBCHK +3 self-loop and has no producer); TC Q return addresses in fixed memory 02000-07777; no overflow in A at WRITEU/WRITEV. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "Channel values are kept exactly (WAND/WOR/RAND/WRITE results as yaAGC computes them); firing the jets from channels 5 and 6 and running the TIME6 counter from channel 13 bit 15 are device-adapter obligations."
+        },
+        "external_continuations": [
+          "WAITLIST RESUME (05270) ends the interrupt; RESUME/NOQRSM/NOQBRSM are routines of the same table",
+          "CCSHOLE (ALARM_AND_ABORT) for TIME6 +0",
+          "The DAP callers of WRITEP/WRITEU/WRITEV and producers of T6NEXT/T6FURTHA/NXT6ADR (P-AXIS and Q_R-AXIS RCS autopilots, DAPIDLER, FRESH_START_AND_RESTART); integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-source-map.json",
+            "sha256": "f995477a70d125d42074e091d382da59be7d35b433f25251766fb2d3536a5227"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-proof.json",
+            "sha256": "7fdf6c1508e008433c0ad5de6fc0f22c2f1f22596506a15c292206893fb8e30b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-host.log",
+            "sha256": "9718634faa0fa9b0a8625c0a62ba5f7abe7eb59994cefc361b1777b94247fb68"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-vice.log",
+            "sha256": "e15fabede24f731f0efd54c3ed2745bb638dbe1ca8cc2a1f76779cda5953f4ff"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
@@ -6615,6 +6666,14 @@
           ],
           "scope": "The SVCT3 end-of-list task (05240, CKIMUSE) and its resumptions after NOVAC (05255) and SVCT3X's FIXDELAY (05260) as control-transfer ABI routines over the new lm_svct3_phase body, to TASKOVER, NOVAC NBDONLY or FIXDELAY 500. The RESUME/NOQRSM/NOQBRSM entries other interrupts use remain separate.",
           "verification": "docs/LM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "include/lm_t6rupt_routines.h"
+          ],
+          "scope": "RESUME (05270), NOQRSM (05272) and NOQBRSM (05274), the interrupt exits other interrupts use, as control-transfer ABI routines ending the interrupt at ZRUPT-1.",
+          "verification": "docs/LM-T6RUPT.md"
         }
       ]
     }

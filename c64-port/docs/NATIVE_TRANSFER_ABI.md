@@ -34,9 +34,13 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   the T3 vector end at the next task or the interrupted program.
 - **Hardware.** `program->hardware` (`agc_hardware`) carries the CPU state a
   routine needs beyond the image and the mission's device record: output
-  channel 11 (the Executive's idle loop turns COMP ACTY off) and the
+  channel 11 (the Executive's idle loop turns COMP ACTY off), the
   interrupt-in-progress flag (tasks run inside T3RUPT; TASKOVER's RESUME ends
-  it). A routine that needs it refuses when it is NULL.
+  it), and the LM RCS jet channels 5 and 6 and channel 13 (TIME6 enable) that
+  the T6RUPT programs drive (`docs/LM-T6RUPT.md`). Channel 13 holds only the
+  CPU-writable bits (043777). Initializers that name only the first two
+  members leave the others zero. A routine that needs it refuses when it is
+  NULL.
 - **Erasable continuations.** A few files store a `TC` into erasable memory and
   run it later (RESTARTS writes the service call at GOLOC-1 and its own
   continuation at GOLOC+2). Such a point is keyed

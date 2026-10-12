@@ -39,9 +39,13 @@ bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
 
 /* CPU state a routine may need beyond the erasable image and the mission's
  * device record: output channel 11 (the Executive's idle loop turns off COMP
- * ACTY) and whether an interrupt is in progress (yaAGC InIsr; Waitlist tasks
- * run inside T3RUPT, and TASKOVER's RESUME ends it). */
-typedef struct { agc_word channel11; uint16_t in_interrupt; } agc_hardware;
+ * ACTY), whether an interrupt is in progress (yaAGC InIsr; Waitlist tasks
+ * run inside T3RUPT, and TASKOVER's RESUME ends it), and the RCS jet
+ * channels 5 and 6 and channel 13 (bit 15 enables the TIME6 counter) that
+ * the LM T6RUPT programs drive. Channel 13 holds what the CPU can write
+ * (043777: the trap-reset bits never stay set). Initializers that name only
+ * the first two members leave the jet channels zero. */
+typedef struct { agc_word channel11; uint16_t in_interrupt; agc_word channel5, channel6, channel13; } agc_hardware;
 
 /* A native routine entered at its original address. It runs with the flight
  * image in its entry state, performs its translated body, and leaves Z (and FB,

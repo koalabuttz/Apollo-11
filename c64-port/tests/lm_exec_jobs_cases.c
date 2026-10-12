@@ -50,7 +50,7 @@ static uint16_t fixdelay_site(uint16_t k){uint16_t i,seen=0;
 #endif
 void lm_exj_input(apollo_overlay_state *m,p66_bias_io *io,lm_exj_case *c,uint16_t n){
  enum lm_exj_cohort k=lm_exj_cohort(n);uint16_t j=(uint16_t)(n-first[k]);
- c->stops=0;c->resume=0;c->until=0;c->hw.channel11=0;c->hw.in_interrupt=0;
+ c->stops=0;c->resume=0;c->until=0;c->hw.channel11=0;c->hw.in_interrupt=0;c->hw.channel5=c->hw.channel6=c->hw.channel13=0;
  switch(k){
 #if LM_EXJ_CHANGES
  case LM_EXJ_SPVAC:

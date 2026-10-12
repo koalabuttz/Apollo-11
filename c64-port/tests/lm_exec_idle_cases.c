@@ -7,7 +7,7 @@ static const uint16_t start[LM_EXI_COHORTS+1]={0,1024,1792,2304,3328,4864};
 enum lm_exi_cohort lm_exi_cohort(uint16_t n){unsigned k=0;while(k+1u<LM_EXI_COHORTS&&n>=start[k+1u])++k;return (enum lm_exi_cohort)k;}
 uint16_t lm_exi_first(enum lm_exi_cohort k){return start[k];}
 void lm_exi_input(apollo_overlay_state *m,p66_bias_io *io,agc_hardware *hw,uint16_t n){enum lm_exi_cohort k=lm_exi_cohort(n);uint32_t j=(uint32_t)(n-start[k]),i;
- hw->channel11=0;hw->in_interrupt=0;
+ hw->channel11=0;hw->in_interrupt=0;hw->channel5=hw->channel6=hw->channel13=0;
  switch(k){
  /* The generator's ADVAN states (0-8191: NEWJOB +0, a basic job, an
   * interpretive job, -0) and NUCHANG2 states (8192-14335). */
