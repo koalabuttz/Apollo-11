@@ -103,6 +103,7 @@ uint8_t cmi_tix(apollo_overlay_state *);
 uint8_t cmi_bhiz(apollo_overlay_state *);
 void cmi_call(apollo_overlay_state *);
 void cmi_goto_any(apollo_overlay_state *);
+uint8_t cmi_cgoto(apollo_overlay_state *, agc_word list, const agc_word *cadrs, uint16_t n);
 void cmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
 uint8_t cmi_bzegoto(apollo_overlay_state *);
 void cmi_tload(apollo_overlay_state *);

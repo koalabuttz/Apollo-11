@@ -1275,6 +1275,17 @@ void lmi_goto_any(apollo_overlay_state *s){
  }
  lmi_goto(s);
 }
+/* CGOTO 06703 (ADDRWD names the modifier; `list` is the CADR-list word after
+ * the operand and cadrs its n words): INDEX LOC, CA 1; INDEX ADDRWD, AD 0;
+ * TS FBANK; MASK LOW10; INDEX A, CA 10000; TS POLISH; TCF GOTO +1, to the
+ * target's NEWOPS. 0, with the image unchanged, when the modifier selects
+ * a word outside the list. */
+uint8_t lmi_cgoto(apollo_overlay_state *s,agc_word list,const agc_word *cadrs,uint16_t n){
+ int i=signed_word(ai_word(s,AT(W[rADDRWD])));
+ if(i<0||i>=(int)n||(list&LOW10)+(unsigned)i>LOW10)return 0;
+ CAF(list);AD(AT(W[rADDRWD]));(void)TS(rFB);MASKF(LOW10);CAF(cadrs[i]);(void)TS(rPOLISH);lmi_goto(s);
+ return 1;
+}
 void lmi_15bitadr(apollo_overlay_state *s,agc_word word,agc_word target){
  /* 15BITADR 06252 (from STCALL's STOTC): INCR LOC; INDEX LOC, CA 0;
   * TS POLISH; CAF LOW7+2K; TS FBANK; MASK CYR; INDEX A, TCF MISCJUMP. */

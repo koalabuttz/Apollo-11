@@ -99,6 +99,7 @@
 #define lmi_bhiz cmi_bhiz
 #define lmi_call cmi_call
 #define lmi_goto_any cmi_goto_any
+#define lmi_cgoto cmi_cgoto
 #define lmi_15bitadr cmi_15bitadr
 #define lmi_bzegoto cmi_bzegoto
 #define lmi_tload cmi_tload

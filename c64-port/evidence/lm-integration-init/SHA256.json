@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-integration-init",
+  "release": "evidence-lm-integration-init",
+  "files": {
+    "lm-integration-init-differential.log": {
+      "sha256": "5e9a6c66d110b2a9c812919fc0cdd19e9fa0166a60c0c2d1ac7b130d4db88bf0",
+      "bytes": 4450,
+      "store": "release"
+    },
+    "lm-integration-init-host.log": {
+      "sha256": "c2164482c883ed0a86dc4e889db1a5d764a3a854db6a14bab6b5df69d171f3e8",
+      "bytes": 88,
+      "store": "release"
+    },
+    "lm-integration-init-proof.json": {
+      "sha256": "4ca47014e33980b69396d41234d807a871c9ac537320ebf17ccd0b55d5420d6d",
+      "bytes": 7927,
+      "store": "tree"
+    },
+    "lm-integration-init-source-map.json": {
+      "sha256": "42d40190f941ba13829f17e925209dc24f503aca1230443e185ec8055771179d",
+      "bytes": 85823,
+      "store": "tree"
+    },
+    "lm-integration-init-vice.log": {
+      "sha256": "581391006ea784fa70cd2f1ecc5ef8b00c7fe08b716d53e9498414b5e6e18631",
+      "bytes": 511,
+      "store": "release"
+    }
+  }
+}

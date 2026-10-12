@@ -39,3 +39,22 @@ The states are random words, small magnitudes and unit vectors. A spec can pin E
 - `tests/<id>_c64_vectors.h` and `tools/mk/<id>.groups`: groups of routines that fit below $c000 with the shared interpreter bodies (found by linking each candidate), and the cases whose whole run stays in a group.
 - `build/<id>-proof.json`.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
+
+## Additions from the orbital lane (ORBITAL_INTEGRATION, INTEGRATION_INITIALIZATION)
+
+Spec keys:
+
+- `cgoto`: the CADR list a CGOTO reads, with its length. The list's words are `cadr_list` rows in the source map.
+- `indexed_fixed`: a starred operand into fixed memory, with the range its index register can take. It emits a `KX` table and checks the index at run time, refusing anything outside the table.
+- `rtb` also serves BOVB to a basic label (BOVB TCDANZIG).
+- `return_words`: erasable words that hold a saved interpretive return (TBASE2), seeded like QPRET with a return outside the file.
+- `native_ranges`: basic routines implemented by hand behind RTB (the MOVE* state-vector moves), mapped in the source map to that function.
+- `c64_flags`: extra flags for the C64 probe and the milestone's PRGs. The large integration files use `-fno-inline -fstatic-stack -mlto-zp=110`, with the image under KERNAL at $e000.
+
+`all_states` sets the legal values of index registers, PBODY, DIFEQCNT, COLREG and PUSHLOC for every case.
+
+A target of `SSP QPRET <label>` (PHEXIT, AMOVED) is a return point and must be listed in `entries`.
+
+Rope words come from the `MAIN.agc.bin` beside the listing, so bank checksums and fillers that the listing omits are read correctly.
+
+The freeze halves a routine's C64 cases when their closure does not fit one program.
