@@ -115,7 +115,7 @@ int main(int argc, char **argv)
             if (i != 1u && i != 2u && i != 7u) m.InputChannel[i] = (int16_t)io.channel[i];
         m.OutputChannel7 = m.InputChannel[7] = (int16_t)io.superbank;
         m.AllowInterrupt = io.interrupt_enabled;
-        for (steps = 0; steps < 4000u; ++steps) {
+        for (steps = 0; steps < 40000u; ++steps) {
             if (steps && !m.PendFlag && !m.ExtraDelay && outside(word(RegZ))) break;
             if (!m.PendFlag && !m.ExtraDelay) trace(word(RegZ));
             m.ScalerCounter = 0;
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
             if (agc_engine(&m)) return 2;
             m.InputChannel[014] |= (int16_t)drive;
         }
-        if (steps == 4000u) { fprintf(stderr, "%s case %lu: no boundary, Z=%o\n", suite->name, (unsigned long)n, word(RegZ)); return 2; }
+        if (steps == 40000u) { fprintf(stderr, "%s case %lu: no boundary, Z=%o\n", suite->name, (unsigned long)n, word(RegZ)); return 2; }
         printf("%lu", (unsigned long)n);
         for (i = 0; i < APOLLO_SHARED_WORDS; ++i) printf(" %u", word(i));
         for (i = 0; i < LANEC_CHANNELS; ++i)

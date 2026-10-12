@@ -1,7 +1,7 @@
 {
   "suite": "ev-lmi",
-  "cases": 576,
+  "cases": 960,
   "differing": 0,
-  "native_sha256": "2e71cd81117551ae20e2114940d3ad3f18952881d1b4e27c447c7d0c2a4b1887",
-  "oracle_sha256": "2e71cd81117551ae20e2114940d3ad3f18952881d1b4e27c447c7d0c2a4b1887"
+  "native_sha256": "828fcbd2dfa2a7bc3a07b9844bbae06452fce002ad30fd434f59655d44ec79ea",
+  "oracle_sha256": "828fcbd2dfa2a7bc3a07b9844bbae06452fce002ad30fd434f59655d44ec79ea"
 }

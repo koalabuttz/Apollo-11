@@ -3719,7 +3719,7 @@
             "include/lanec_ev_lmi.h",
             "include/lanec_symbols.h"
           ],
-          "scope": "Interpretive words of TRMTRAK1 (CALL INTSTALL, EXIT), ATTACHIT (CALL INTSTALL, SET/BON/CLEAR MOONOTH, CALL PTOALEM, LXA,2 PBODY, CALL SVDWN1, EXIT) and TCPIN (RTB PINBRNCH), compiled onto the native interpreter paths, register-exact against the original program.",
+          "scope": "Interpretive words of RRLOSDSP (CALL RRNBMPAC, the line-of-sight vector math to RR-ELEV and RR-AZ through UNIT, DOT, STCALL ARCTRIG and BPL/DAD, EXIT), TRMTRAK1 (CALL INTSTALL, EXIT), ATTACHIT (CALL INTSTALL, SET/BON/CLEAR MOONOTH, CALL PTOALEM, LXA,2 PBODY, CALL SVDWN1, EXIT) and TCPIN (RTB PINBRNCH), compiled onto the native interpreter paths, register-exact against the original program.",
           "verification": "docs/LANEC-EV-LMI.md"
         }
       ]
