@@ -299,7 +299,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and RMANNDX/PMANNDX/YMANNDX 0-3 as the RCS DAP leaves them; MINTAU (0-3), BIT13 (0-2) and OCT01400 (0-2) indexed by them.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and RMANNDX/PMANNDX/YMANNDX 0-3 as the RCS DAP leaves them; MINTAU (0-3), BIT13 (0-2) and OCT01400 (0-2) indexed by them.",
         "external_continuations": [
           "REINIT (outside basic routine)",
           "RESUME (outside basic routine; Lane A Executive/Waitlist)",
@@ -317,7 +317,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "9c17a479b489f716b576534821400bc72125c0fe9ce7595c8f2defdda9197ec9"
+            "sha256": "e57191505e8db474086c4446976f226935682ffb9f6e4fbba69e60a8e0cce6df"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
@@ -325,7 +325,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "485c9ea3d2c1fe5e1cd92f41a9a2353f412bceb4970ac1ba615c819a1ae9f053"
+            "sha256": "fe060c1034edc5d6fd07eaa9ed9e618c1780dea2af0fb27521de4f70d31ec4d9"
           }
         }
       }
@@ -356,7 +356,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Any values of the attitude erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Any values of the attitude erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
         "external_continuations": [
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
@@ -369,7 +369,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-proof.json",
-            "sha256": "0dc4b96f779c2cd35e73626873b7e1af33669f434fefcfda05948805201d80ed"
+            "sha256": "7393c9df5235e5439e9fae9fd58554087ff084f80d4df22a399d567f239420bd"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-host.log",
@@ -377,7 +377,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-vice.log",
-            "sha256": "e09f9ad1768f8f1d2daa66d1741e6b257f53bac25d6ac12d68fef24d6f7770d4"
+            "sha256": "13cfa3b2af260ea342a980be13aa160bf0803affd81daecfbd77b5ab89f53022"
           }
         }
       }
@@ -405,7 +405,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CMDAPMOD +1, +0, -0 or -1 and SW/NDX alternating the needles (+1 to +13) with the telemetry index (-13 to -1) in steps of three. YJETCODE, P/RJCODE, LIMITS and HALFPR are read at -1 to +1. 2D/SDZ's TC Q with Q = 3 (after CCS JETAG -0) runs RELINT and then the word in EB as TC 3000, as the AGC does; this needs EB = E6.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CMDAPMOD +1, +0, -0 or -1 and SW/NDX alternating the needles (+1 to +13) with the telemetry index (-13 to -1) in steps of three. YJETCODE, P/RJCODE, LIMITS and HALFPR are read at -1 to +1. 2D/SDZ's TC Q with Q = 3 (after CCS JETAG -0) runs RELINT and then the word in EB as TC 3000, as the AGC does; this needs EB = E6.",
         "external_continuations": [
           "2434 (outside basic routine)",
           "2PHSCHNG (outside basic routine)",
@@ -430,7 +430,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "ae13a2ba972b26cd5cebcf9b8aabf460ac9032e125750701d406146aa77c3c76"
+            "sha256": "2cba545e9b258496159e551eb033f02f2427a258c478fc4aa66645b7719cd038"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -438,7 +438,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "b8c8406e76f61bb8e6947c6f1313cf84e8746b7b695d36de42ba1d5b319561b4"
+            "sha256": "73c4dc209a892faaeac9422553f302840c721b9dc529c595247f0adb0bc3a309"
           }
         }
       }
@@ -1646,7 +1646,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. XTRANS +0, +1 or -1 as P40 leaves it; BLAST, BLAST1, BLAST2 +1 holding T6SETUP's branch indices 0, 4, 11 (REPLACER, REPLACEP, REPLACEY), compiled as the three TC targets. Tables XLNNDX, XLN1NDX (0-3), PYTABLE, RTABLE (0-14), YZTABLE (0-8), NJET and DFTMAX (-4 to +4, negative counts after PTAUNEG/YTAUNEG).",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. XTRANS +0, +1 or -1 as P40 leaves it; BLAST, BLAST1, BLAST2 +1 holding T6SETUP's branch indices 0, 4, 11 (REPLACER, REPLACEP, REPLACEY), compiled as the three TC targets. Tables XLNNDX, XLN1NDX (0-3), PYTABLE, RTABLE (0-14), YZTABLE (0-8), NJET and DFTMAX (-4 to +4, negative counts after PTAUNEG/YTAUNEG).",
         "external_continuations": [
           "RESUME (outside basic routine; Lane A Executive/Waitlist)",
           "The caller's return through Q (TC Q runs the TC word held in Q)",
@@ -1660,7 +1660,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "e1a0599b065ee50e50053c27a9757e0e510412be4b06632d36e97995ac7b2dcb"
+            "sha256": "e3e66121b68eb5bb0930c58e89e3c1e4c55597d305ae0ec1563ad557cdd378c3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
@@ -1668,7 +1668,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "d58dc9967fd2bd6b1bd80b8dcfd299df1bf1726b4c10abae8c1e97bf7d5881da"
+            "sha256": "75d06d081da1fcc4952a4ee8f473b63aac4b04a02a5a865433ee7ab7cd36e99e"
           }
         }
       }
@@ -2071,7 +2071,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Each routine runs under the EBANK= the listing has in effect at its first word (E6 for the AOG code, E7 for the RTINIT/DVCNTR code). Under E6, 60GENRET (E6,1773) holds one of the two returns S61.1 saves there (TC 2224 from P61, TC 2321 from P62). Interpretive routines are entered at NEWOPS with FIXLOC a VAC area.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Each routine runs under the EBANK= the listing has in effect at its first word (E6 for the AOG code, E7 for the RTINIT/DVCNTR code). Under E6, 60GENRET (E6,1773) holds one of the two returns S61.1 saves there (TC 2224 from P61, TC 2321 from P62). Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. The repository copy has a stray SKIP line before page 794 that assembles to nothing; the words are those of the flight rope.",
         "external_continuations": [
           "2PHSCHNG (outside basic routine)",
           "ALARM (outside basic routine)",
@@ -2105,7 +2105,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
-            "sha256": "818520074f77a41460a609985df16bf5c4616c90eeae23e2f8e46e7f56da51f0"
+            "sha256": "dd9cb818044dd3ed7c9564aef6b90a868df2ebd7281f93b28486dd8aabe528f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-host.log",
@@ -2113,7 +2113,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-vice.log",
-            "sha256": "e91a370103c5a1caac5415504aec11f97ee46620add69f46f69aa58a32d90491"
+            "sha256": "08d92ea9dee393d1dea673551bec4e35b1a677ebdbc24ab0f1fd648e25c649cd"
           }
         }
       }
@@ -2745,7 +2745,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and DPNDX 0, 2, 4 (the axis loops), ATTKALMN from -3 (JETSLECT's translation gains) to 10 (the Kalman initialisation count), and RMANNDX/PMANNDX/YMANNDX 0-3 as STICKCHK leaves them. GAIN1/GAIN2 are read at -3 to +10, DACLIMIT at -1 to +1, FREETAU at 0 to 3.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and DPNDX 0, 2, 4 (the axis loops), ATTKALMN from -3 (JETSLECT's translation gains) to 10 (the Kalman initialisation count), and RMANNDX/PMANNDX/YMANNDX 0-3 as STICKCHK leaves them. GAIN1/GAIN2 are read at -3 to +10, DACLIMIT at -1 to +1, FREETAU at 0 to 3.",
         "external_continuations": [
           "AHFNOROT (outside basic routine)",
           "BIT4 (outside basic routine)",
@@ -2763,19 +2763,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-source-map.json",
-            "sha256": "22756c9ad73e38f74c6506db88a30fc83b6b80b944d3080373bd11f5c37a5674"
+            "sha256": "edbf36fd3df9c369024d2782e63203b7e3f84b4d534d9d27f1ade445d6f8dd8f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "d66dd82ba19613730f1965b6a7fa8ac751b7455e0a0381999a7a39005886e87b"
+            "sha256": "0aa421ee3b05d9dda3e50d69612f0383c390283bf6c673da8715a4c38ea290c4"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
-            "sha256": "71f85f6251a3c06d079e9ce5b6208ebb8992fca90479f39e72e1f35ae51b46f7"
+            "sha256": "8078505d2fdd1a3ab76242c8740d985158baf4b823eb826d22d1b1351ae8c5ea"
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "0e2b666f72399797e0d558a2011d9c67dafce40406ee17003ac12cca80015f80"
+            "sha256": "8bfe87082950e379fbf3ce462d04522f2fae8438be4de855b487118b0551710f"
           }
         }
       }
@@ -2795,8 +2795,21 @@
       "sha256": "47788f4f2139d31f9f87f63c33518b49b193ff762f9b3c1259d76f2074dcf408",
       "bytes": 31542,
       "lines": 1609,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_reentry.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All but 2 words of the file (1172 words): The entry guidance: STARTENT and the two-second steering loop (INITROLL, HUNTEST, UPCONTRL, KEP2/BALLISTIC, PREDICT3 with its reference-trajectory tables, the roll command and lift-vector logic, the G-limit and final-phase tests), with the entry displays and restart points, basic and interpretive. As 102 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at A0CALC, BECONSTD, CONSTD, CONSTD1, CONT1, CONT3, CONTINU2, D0EQ, DCONSTD, DHOOKYQ7, DOWNCNTL, DSTORE, ENDEXIT, FOREHUNT, GETDHOOK, GETETA, GETLEWD, GETVEL, GLIMITER, GOMAXL/D, GONEGLAD, GOPOSLAD, GOTOUPSY, HAVDNRNG, HUNTEST, HUNTEST1, HUNTEST3, INITRL1, INITROLL, INROLOUT, KATEST, KEP, KEP2, L353, L355, L357, LEWDOVFL, LEWDPTR, LIMITL/D, LWDSTORE, NEGAMA, NEGTESTS, NEXT1, NO.05G, NODISKY, NOLDCALC, OVERNOUT, PRE-HUNT, PREDICT3, PREFINAL, REFAZE10, SCALEPOP, SERVNOUT, SETMIND, STARTEN1, STARTENT, STEEROFF, STOREL/D, SUBETA, SUBETA2, TARGETNG, THETDONE, TINYTHET, UPCNTRL3, UPCONTRL, UPDATERT, V1LEAD and the continuations after outside calls. Untranslated (2 words): SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it runs from the interpreter's DANZIG/OPJUMP when P66 returns, a point the transfer ABI does not key yet (interpretive routines are keyed by LOC at NEWOPS).",
+          "verification": "docs/CM-REENTRY.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/RESTARTS_ROUTINE.agc",
@@ -3067,7 +3080,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Any values of the servicer erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Any values of the servicer erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
         "external_continuations": [
           "2PHSCHNG (outside basic routine)",
           "ALARM (outside basic routine)",
@@ -3095,7 +3108,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-servicer/cm-servicer-proof.json",
-            "sha256": "e8528660c84eb76a1446358d5419996fd33616f4aa803b7b4c2a4d7ebf4d3110"
+            "sha256": "e82b87aadd31e9caafaa806829f9d88a0bac170b70b193f1c10104467b34de73"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-servicer/cm-servicer-host.log",
@@ -3103,7 +3116,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-servicer/cm-servicer-vice.log",
-            "sha256": "1279fad341ea6f7ca5e33b3fdea1069101518266f6ba20112bfab1288a7eb0f2"
+            "sha256": "960e63342bdb582bf1c5c06a206fe6cdad7cb472c00022587778a9cc41804d6b"
           }
         }
       }
@@ -3413,7 +3426,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Any values of the DAP erasables; PITCHDAP and YAWDAP entered as the T5RUPT task their GENADR/BBCON pairs name.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Any values of the DAP erasables; PITCHDAP and YAWDAP entered as the T5RUPT task their GENADR/BBCON pairs name.",
         "external_continuations": [
           "HACK (outside basic routine)",
           "NOQRSM (outside basic routine)",
@@ -3429,7 +3442,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-proof.json",
-            "sha256": "31b6eeb7bfdae1177e1a09570158dd2a8c49f83d3546c04e03b2f7575e089b66"
+            "sha256": "c1006b231019a474d5f24c165f1a84ec795ea2f4f199247753a2272aaa858f79"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-host.log",
@@ -3437,7 +3450,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-vice.log",
-            "sha256": "fb9d50580f8b7d0a7e378196680721d5e3a07e308486edd27ac4a3de218eddb5"
+            "sha256": "ddeb4b84686d371c52a576b618dd57942fabe75253542250ddae98873381f842"
           }
         }
       }
@@ -3465,7 +3478,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. VCNTR (the variable-gain pass count) from +0 to 19 or -0, as TVCINITIALIZE and the executive leave it; a negative count reaches TCF +0, where the AGC spins until its TC trap restarts it. The port refuses that word (EXEC_INVALID_ACTION) instead of spinning.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. VCNTR (the variable-gain pass count) from +0 to 19 or -0, as TVCINITIALIZE and the executive leave it; a negative count reaches TCF +0, where the AGC spins until its TC trap restarts it. The port refuses that word (EXEC_INVALID_ACTION) instead of spinning.",
         "external_continuations": [
           "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
           "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
@@ -3481,7 +3494,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-proof.json",
-            "sha256": "1bf54306d4511c23d2f9234b45546081a87ebb9e9c5819977632d815a75d4182"
+            "sha256": "5b3bda48aac023cd9d240659d9108bda6b2ca838bbaaa2f9a78230d8e6007b03"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-host.log",
@@ -3489,7 +3502,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-vice.log",
-            "sha256": "4d48c4117deb9bd5da99672950f6238f757a8c121f7c029d4bbc996d591dbddf"
+            "sha256": "3533de46a75e5291884e20928be63a587f3bfa1a6f44ca723e1d633eca346d1e"
           }
         }
       }
@@ -3517,7 +3530,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CSMMASS within the CSM mass and EMDOT (SPS flow rate) up to 01400 at B+3 kg/cs, so the 10-second mass decrement never overflows TS MASSTMP; the gains S40.15 multiplies (EKTLX/I, KTLX/I, IXX, IAVG, IAVG/TLX) within +-07777 as MASSPROP and the pad load leave them, so TS 1/CONACC and TS VARK never overflow into the coefficient tables. COEFFADR holds one of the three coefficient-table addresses the file stores (CSMN10, HBN10, LBN10). SWICHOVR +5 is entered only through IBNKCALL (Q = ISWRETRN, 4753).",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CSMMASS within the CSM mass and EMDOT (SPS flow rate) up to 01400 at B+3 kg/cs, so the 10-second mass decrement never overflows TS MASSTMP; the gains S40.15 multiplies (EKTLX/I, KTLX/I, IXX, IAVG, IAVG/TLX) within +-07777 as MASSPROP and the pad load leave them, so TS 1/CONACC and TS VARK never overflow into the coefficient tables. COEFFADR holds one of the three coefficient-table addresses the file stores (CSMN10, HBN10, LBN10). SWICHOVR +5 is entered only through IBNKCALL (Q = ISWRETRN, 4753).",
         "external_continuations": [
           "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
           "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
@@ -3535,7 +3548,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
-            "sha256": "b1030106a1cb21729ca10284ef4a723c97d7aabc9e37f5f37019b39324d2719d"
+            "sha256": "71977252c0ba9adb35a2fd146c3b1924bd42a87972d1fa24a842c8ba548a5f00"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-host.log",
@@ -3543,7 +3556,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-vice.log",
-            "sha256": "da0dc8eb19788410a7c525ebb66399c26c29e930e8b29c49e21dd13be0431575"
+            "sha256": "09df52a45fc84e51bc12dc61bd70779b1e4a2cdd7f37665fb949eab180061e7e"
           }
         }
       }
@@ -3571,7 +3584,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. LEMMASS within the LM mass (0 to 15100 kg at B+16), CSMMASS within the CSM mass (0 to 30000 kg) either side of the NEGBPW breakpoint, and VARST0-VARST8 within +-07777 as MASSPROP leaves them. Outside that range the original overflows TS VARST0 or TS IXX and loops for ever (TCF MASSPROP +1, TCF BOKKEP2 with A = 1); those states are not admitted. MASSPROP indexes the constant tables NOLEMVAL, SLOPEVAL and INTVALUE by PHI333 (9 down to 0).",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. LEMMASS within the LM mass (0 to 15100 kg at B+16), CSMMASS within the CSM mass (0 to 30000 kg) either side of the NEGBPW breakpoint, and VARST0-VARST8 within +-07777 as MASSPROP leaves them. Outside that range the original overflows TS VARST0 or TS IXX and loops for ever (TCF MASSPROP +1, TCF BOKKEP2 with A = 1); those states are not admitted. MASSPROP indexes the constant tables NOLEMVAL, SLOPEVAL and INTVALUE by PHI333 (9 down to 0).",
         "external_continuations": [
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
@@ -3584,7 +3597,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-proof.json",
-            "sha256": "f282a60d744bf5e5115f2f50cc5d44f44c4618a4fde56ac692bc566a82b1d6f8"
+            "sha256": "5d4806eafadc20ecdbf8f63e690aef00a980087fabaee29c63de0365cb173c9d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-host.log",
@@ -3592,7 +3605,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-vice.log",
-            "sha256": "7c877dfcc123a5850e7e49b4e6aef53cfa4687ae1c0017aa51b4eb826a5f3d92"
+            "sha256": "d5272a55669b8a5fca2c834ae462ba7cb23981f32fe66fda73f9eb05e1f0abf2"
           }
         }
       }
@@ -3620,7 +3633,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. TVCPHASE one of the DAP phases -2, -1, +0, 1, 2, 3 and TVCEXPHS one of the executive phases 1 to 6, as TVCINITIALIZE, the DAPs and TVCEXECUTIVE set them.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. TVCPHASE one of the DAP phases -2, -1, +0, 1, 2, 3 and TVCEXPHS one of the executive phases 1 to 6, as TVCINITIALIZE, the DAPs and TVCEXECUTIVE set them.",
         "external_continuations": [
           "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
           "ISWCALL (outside basic routine)",
@@ -3639,7 +3652,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-proof.json",
-            "sha256": "832900ad0e1b50761fecbb2bca02fb49877fa76ed9a53516d3e3037a7837283b"
+            "sha256": "1a5133f739d62431a3a1dbb4746cf48575a2669034c4332014f0e80d7d0ad1a8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-host.log",
@@ -3647,7 +3660,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-vice.log",
-            "sha256": "c315b0b8e4558596885573514c9138b6a3ed170452a974720b05b9e7b3a5b8b9"
+            "sha256": "5767a60d688b814a4ff71fe1dc96ab12b8951d7427a657118cc2754091df8521"
           }
         }
       }
@@ -3675,7 +3688,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. I (E6,1670) holds PRIO30 or BIT15, the CA and CS order codes the file stores there: each INDEX I, 0 X word is compiled as CA X and CS X. TS TEMREG overflow protection reads LIMITS -1 to +1.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. I (E6,1670) holds PRIO30 or BIT15, the CA and CS order codes the file stores there: each INDEX I, 0 X word is compiled as CA X and CS X. TS TEMREG overflow protection reads LIMITS -1 to +1.",
         "external_continuations": [
           "NOQRSM (outside basic routine)",
           "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
@@ -3690,7 +3703,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-proof.json",
-            "sha256": "9752b5aac466c8a1a2022b04d801049230fc68edd0be278893f1749f71b93a85"
+            "sha256": "7dad7776b193993ff8a88858ba14171d1a3ab0ae3e50459e408bd7fdc6e233f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-host.log",
@@ -3698,7 +3711,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-vice.log",
-            "sha256": "34974254e8178f49c7e0338bdd54384d7b7933f5072250886d86fd4e4719e80a"
+            "sha256": "e51826cc3e085258fed4b4b5f98b80635d130b8dc176077f0414b4bfaf9d0f92"
           }
         }
       }
@@ -3726,7 +3739,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. HACK entered with Q one of the DAP returns 2541, 2543, 2743, 2745 (bank 20). BUNKER (E6,1657) holds what the file stores there: one of those returns or TCTSKOVR. CARD counts -4 to -1 between waveform sets (INDEX CARD reads FCARD +1 to +6).",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. HACK entered with Q one of the DAP returns 2541, 2543, 2743, 2745 (bank 20). BUNKER (E6,1657) holds what the file stores there: one of those returns or TCTSKOVR. CARD counts -4 to -1 between waveform sets (INDEX CARD reads FCARD +1 to +6).",
         "external_continuations": [
           "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
           "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
@@ -3742,7 +3755,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-proof.json",
-            "sha256": "0f69350e4f8d16e6ba2f7b1e412d89f7f49b5f62e42a8ebe13c9f39db67fe489"
+            "sha256": "ce12a10e2365f6fb6387551b8b445bc70f303a4d6aa2d048d36ecf22299f6da3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-host.log",
@@ -3750,7 +3763,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-vice.log",
-            "sha256": "e4af84db1adb4a8d22d82c295e4135b6d4976a843f327a7e82eb8b6834aa4660"
+            "sha256": "bcdb7b35dfbc35bc5fffcf6cef04565ad9ddba15eace5aa8c59ab6d8ba266275"
           }
         }
       }

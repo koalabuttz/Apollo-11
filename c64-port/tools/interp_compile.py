@@ -271,7 +271,7 @@ class Compiler:
             if t[:1] in '+-':
                 continue    # relative to the line itself (TC +5), not a label
             off = 0
-            for sep in ('+', '-'):
+            for sep in ('+', '-') if t not in self.L.labels else ():   # (labels like PRE-HUNT)
                 if sep in t[1:]:
                     i = t.index(sep, 1)
                     try:
@@ -416,6 +416,13 @@ class Compiler:
             fn, takes_k = ADDR[name]
             if name == 'SSP':
                 a, v = self.word(cur), self.word(cur + 1)
+                ln = self.code.get(cur + 1)
+                t = self.L.labels.get(ln.operand) if ln is not None else None
+                if self.basic and t is not None and self.in_file(t) and t in self.code \
+                        and self.code[t].op not in self.DATA_OPS:
+                    # SSP storing the address of the file's own code (a GOTO
+                    # selector such as POSEXIT = SCALEPOP): a routine start.
+                    self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', 'SSP %s' % ln.operand)
                 return ['%sdirect(s,0%05o,0%05o);%sssp(s,0%05o);' % (P, a, T['SSP'], P, v)], cur + 2, False, False
             nxt = self.word(cur)
             if star:
@@ -432,7 +439,10 @@ class Compiler:
                 k = '0'
             else:
                 st = ['%sdirect(s,0%05o,0%05o);' % (P, nxt, T[name])]
-                k = self.operand_k(nxt, bank, takes_k, False, op)
+                if name == 'TLOAD' and self.fixed_operand(nxt, bank) is not None:
+                    fn, takes_k = 'tload_fixed', True     # TLOAD of a rope constant
+                # A shift's word is a count code (020200 + n), not an address.
+                k = '0' if name == 'GSHIFT' else self.operand_k(nxt, bank, takes_k, False, op)
                 cur += 1
             if takes_k and k.startswith('kx('):
                 # An indexed fixed operand: the rope words at the address the
@@ -555,7 +565,9 @@ class Compiler:
         goes through an erasable CADR (a return the file keeps with STQ) and
         no order follows it."""
         ln = self.code.get(cur)
-        if not (w & 0o74000) and (ln is None or not is_interp_op(ln.op)):
+        if (not (w & 0o74000) or (ln is not None and ln.op in self.DATA_OPS)) and (
+                ln is None or not is_interp_op(ln.op)):
+            # (Also a CALL used as a GOTO, with constants after it.)
             return
         self.add_start(cur, 'i', why)
 

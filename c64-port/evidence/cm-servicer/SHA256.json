@@ -4,7 +4,7 @@
   "release": "evidence-cm-servicer",
   "files": {
     "cm-servicer-differential.log": {
-      "sha256": "179817ec6726072a9c1ec500e778c34259ba6ebb345f6f9fb0d20b4abf2c1596",
+      "sha256": "4036a477f4d65651c1c96bf1fe1baea60c842fe71c0085ed481591ad45201fe4",
       "bytes": 1746,
       "store": "tree"
     },
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-servicer-proof.json": {
-      "sha256": "e8528660c84eb76a1446358d5419996fd33616f4aa803b7b4c2a4d7ebf4d3110",
-      "bytes": 5233,
+      "sha256": "e82b87aadd31e9caafaa806829f9d88a0bac170b70b193f1c10104467b34de73",
+      "bytes": 6739,
       "store": "tree"
     },
     "cm-servicer-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-servicer-vice.log": {
-      "sha256": "1279fad341ea6f7ca5e33b3fdea1069101518266f6ba20112bfab1288a7eb0f2",
-      "bytes": 1254,
+      "sha256": "960e63342bdb582bf1c5c06a206fe6cdad7cb472c00022587778a9cc41804d6b",
+      "bytes": 1424,
       "store": "tree"
     }
   }

@@ -67,7 +67,7 @@ Destinations outside the file: 2PHSCHNG, ALARM, BANKCALL, DOWNFLAG, ENDOFJOB, FI
 
 ## Domain
 
-Canonical 2048-word image under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. Any values of the servicer erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. Any values of the servicer erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.
 
 ## Evidence
 
@@ -76,4 +76,4 @@ Hashes: `evidence/cm-servicer/SHA256.json`; all files are in the tree.
 - **Source map.** `cm-servicer-source-map.json` lists all 375 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
 - **Independent assembly comparison.** `make cm-servicer-differential` runs 256 states per routine (13,312 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 11 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-servicer-proof.json` (`cm-servicer-differential.log` is the run). One case in 128 is frozen in `tests/cm_servicer_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-servicer sanitize-cm-servicer` runs the 104 frozen cases (`cm-servicer-host.log`).
-- **C64 execution results.** `make vice-cm-servicer` runs 6 diagnostic programs with 76 cases (`cm-servicer-vice.log`, which starts with each PRG's SHA-256). The cases are chosen per routine so the C64 runs reach every compiled label the host cases reach: 240 of 240.
+- **C64 execution results.** `make vice-cm-servicer` runs 7 diagnostic programs with 84 cases (`cm-servicer-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 13,312 differential cases take: 1423 of 1423 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 240 of 240 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 785 of the 785 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

@@ -4,8 +4,8 @@
   "release": "evidence-cm-tvc-init",
   "files": {
     "cm-tvc-init-differential.log": {
-      "sha256": "a31b7cdb0dd58b838dccf1e8200be39af4db7435a0260891b8667776d1138027",
-      "bytes": 2592,
+      "sha256": "0c87834481de24c2c377d20597b677a05b49bcf6f2847dc7341e93a4561fbe25",
+      "bytes": 2502,
       "store": "tree"
     },
     "cm-tvc-init-host.log": {
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-init-proof.json": {
-      "sha256": "b1030106a1cb21729ca10284ef4a723c97d7aabc9e37f5f37019b39324d2719d",
-      "bytes": 5353,
+      "sha256": "71977252c0ba9adb35a2fd146c3b1924bd42a87972d1fa24a842c8ba548a5f00",
+      "bytes": 6581,
       "store": "tree"
     },
     "cm-tvc-init-source-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-tvc-init-vice.log": {
-      "sha256": "da0dc8eb19788410a7c525ebb66399c26c29e930e8b29c49e21dd13be0431575",
+      "sha256": "09df52a45fc84e51bc12dc61bd70779b1e4a2cdd7f37665fb949eab180061e7e",
       "bytes": 408,
       "store": "tree"
     }

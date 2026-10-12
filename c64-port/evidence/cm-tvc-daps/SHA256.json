@@ -4,8 +4,8 @@
   "release": "evidence-cm-tvc-daps",
   "files": {
     "cm-tvc-daps-differential.log": {
-      "sha256": "fee2107ce5c0992060df1b66dd9453d8a4ce01ee76e7601a7227491290cbb7c8",
-      "bytes": 4337,
+      "sha256": "26a617d9201968cf5bbd548d493e2ac71aea86fceeac87c4e2609ec63e115777",
+      "bytes": 4557,
       "store": "tree"
     },
     "cm-tvc-daps-host.log": {
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-daps-proof.json": {
-      "sha256": "31b6eeb7bfdae1177e1a09570158dd2a8c49f83d3546c04e03b2f7575e089b66",
-      "bytes": 8073,
+      "sha256": "c1006b231019a474d5f24c165f1a84ec795ea2f4f199247753a2272aaa858f79",
+      "bytes": 9687,
       "store": "tree"
     },
     "cm-tvc-daps-source-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-tvc-daps-vice.log": {
-      "sha256": "fb9d50580f8b7d0a7e378196680721d5e3a07e308486edd27ac4a3de218eddb5",
+      "sha256": "ddeb4b84686d371c52a576b618dd57942fabe75253542250ddae98873381f842",
       "bytes": 408,
       "store": "tree"
     }

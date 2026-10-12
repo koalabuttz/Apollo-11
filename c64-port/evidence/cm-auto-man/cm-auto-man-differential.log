@@ -1,8 +1,8 @@
 PASS: 1536 cm-auto-man cases equal the original programs (6 routines)
-  CM 21,3250 AHFNOROT: 02042 x68, 02534 x55, 03130 x129, 05333 x4
+  CM 21,3250 AHFNOROT: 02042 x70, 02534 x62, 03130 x117, 05333 x7
   CM 21,3304 : 03067 x256
-  CM 21,3441 JETS: 02042 x255, 05333 x1
+  CM 21,3441 JETS: 02042 x254, 05333 x2
   CM 21,3732 : 02042 x256
-  CM 21,3734 : 02042 x156, 05333 x100
+  CM 21,3734 : 02042 x170, 05333 x86
   CM 21,3757 T6PROG: 05333 x256
 froze 48 vectors to tests/cm_auto_man_vectors.h

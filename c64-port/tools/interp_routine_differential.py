@@ -24,12 +24,15 @@ digests) for the host test and the C64 diagnostic, and
 build/<id>-proof.json."""
 import argparse
 import collections
+import functools
 import hashlib
 import json
 import math
+import operator
 import os
 import random
 import re
+import shutil
 import struct
 import subprocess
 import sys
@@ -110,6 +113,7 @@ class Mission:
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
         self.cells = spec.get('cells', {})
+        self.counters = spec.get('counters', False)
         self.io_channels = spec.get('io_channels', {})
         if self.io_channels == 'auto':
             # Every channel the file's channel orders name, any value, but
@@ -205,6 +209,10 @@ def case(mi, point, n, rng):
     fb = bank << 10
     eb = rng.randrange(8) if mi.ebank is None else mi.ebank.get(point, rng.randrange(8)) \
         if isinstance(mi.ebank, dict) else mi.ebank
+    if mi.counters:
+        # 010-061 from the seed too (tests/interp_case.h IRC_COUNTERS): any
+        # TIME1-TIME6, CDU, PIPA and save-register values, not only zeros.
+        E[0x4000] = 0
     E[3] = eb << 8
     E[4] = fb
     E[6] = fb | eb
@@ -240,8 +248,10 @@ def case(mi, point, n, rng):
     # OVFIND clear in most cases, so BOV(B) falls through as often as not.
     if rng.random() < 0.75:
         E[0o121] = 0
+    held = set()
     for k, choices in mi.states.get(point, {}).items():
         a = vac + int(k[4:], 8) if k.startswith('vac+') else int(k, 8)
+        held.add(a)
         v = rng.choice(choices)
         if isinstance(v, str) and v.startswith('vac+'):
             v = vac + int(v[4:], 8)
@@ -269,6 +279,8 @@ def case(mi, point, n, rng):
             elif r < 0.6:
                 k = rng.randrange(0o37770, 0o40000)
                 E[phys] = k if rng.random() < 0.5 else 0o77777 - k
+    if mi.counters:
+        relate(mi, E, rng, eb, vac, held)
     for a, choices in mi.cells.items():
         if isinstance(a, str):
             # 'E<bank>,<addr>': a switched cell, held only in cases whose
@@ -284,6 +296,11 @@ def case(mi, point, n, rng):
     for k, mask in sorted(mi.io_channels.items()):
         E[0x8000 | k] = rng.getrandbits(15) & mask if rng.random() < 0.75 else rng.choice([0, mask])
     if mi.kinds[point] == 'i':
+        # At NEWOPS the interpreter takes EDOP (023) as the second order of
+        # a pair still to run: 0 there, as every interpretive entry leaves it
+        # (cases without 'counters' already have 010-061 at 0).
+        if mi.counters:
+            E[0o23] = 0
         E[5] = mi.newops
         E[0o164] = logical(point)
         E[0o165] = fb | eb
@@ -306,6 +323,62 @@ def case(mi, point, n, rng):
             E[2] = logical(q)
             stop = q
     return seed, list(E.items()), n & 1, stop
+
+
+# The counters files compare with each other and with stored times and
+# angles: TIME2/TIME1, TIME3-TIME6, the CDUs and the CDU commands.
+COUNTERS = (0o24, 0o25, 0o26, 0o27, 0o30, 0o31, 0o32, 0o33, 0o34, 0o50, 0o51, 0o52, 0o53, 0o54)
+
+
+def relate(mi, E, rng, eb, vac, held):
+    """Relational families (spec 'counters'): a seeded image almost never
+    holds the values flight brings together, so some cases make one word
+    (or double word) the file reads equal to another, a few counts from it,
+    or a counter just below its wrap: a deadline a few centiseconds from
+    TIME2/TIME1, an exactly equal time, a CDU at its commanded angle."""
+    def phys(a):
+        return (eb << 8) + (a - 0o1400) if a >= 0o1400 else a
+    refs = set(COUNTERS)
+    if mi.cp.basic:
+        refs |= {phys(a) for a in mi.cp.basic.erasable_refs if a < 0o4000}
+    refs |= {vac + a if a < 45 else phys(a) for a in mi.operands}
+    # Not the entry contract's words: NEWJOB, the interpreter's state
+    # (OVFIND, FIXLOC, MODE, LOC, BANKSET, PUSHLOC), the VAC area's return
+    # CADRs and the CADR words the file keeps.
+    keep = set(held) | {0o67, 0o115, 0o120, 0o121, 0o163, 0o164, 0o165, 0o166, vac + 0o50, vac + 0o51, vac + 0o52}
+    keep |= {(vac + w) if w < 45 else w for w in mi.cp.cadr_erasable}
+    refs = sorted(a for a in refs if 0o10 <= a < 0o4000 and a not in (0o20, 0o21, 0o22, 0o23)
+                  and a not in keep and a - 1 not in keep)
+    r = rng.random()
+    if r < 0.15:
+        # A counter at or just below its wrap (TIME1 into TIME2, a CDU at
+        # 0/180 degrees).
+        a = rng.choice([c for c in COUNTERS if c not in keep])
+        E[a] = rng.choice([0o37777 - rng.randrange(4), 0o40000 + rng.randrange(4), 0, 0o77777])
+        return
+    if r >= 0.5 or len(refs) < 2:
+        return
+    for _ in range(rng.randrange(1, 4)):
+        a, b = rng.sample(refs, 2)
+        if rng.random() < 0.5:
+            a = rng.choice([c for c in COUNTERS if c not in keep and c - 1 not in keep]) if rng.random() < 0.5 else a
+        d = rng.choice([0, 0, 1, -1, 2, -2, 3, -3, rng.randrange(-0o100, 0o101)])
+        double = rng.random() < 0.5 and a + 1 in refs + list(COUNTERS) and b + 1 in refs + list(COUNTERS) \
+            and a + 1 not in keep and b + 1 not in keep
+        if b not in E:
+            E[b] = rng.randrange(0o100000)
+        if double:
+            if b + 1 not in E:
+                E[b + 1] = rng.randrange(0o100000)
+            hi, lo = E[b], E[b + 1]
+            v = (lo & 0o37777) + d
+            E[a] = hi
+            E[a + 1] = (lo & 0o40000) | (v & 0o37777)
+        else:
+            w = E[b]
+            # (ones' complement: +d moves a positive word up, a negative
+            # one toward zero)
+            E[a] = (w + d) & 0o77777 if 0 <= (w & 0o37777) + d < 0o40000 else w
 
 
 def write_cases(path, missions, cases):
@@ -343,7 +416,8 @@ def build(spec_id, spec):
         prep = 'tools/prepare_hardware_dv.py'
     if not os.path.exists(hw):
         subprocess.run([sys.executable, prep], cwd=R, check=True, capture_output=True)
-    if not os.path.exists(ref) or os.path.getmtime(ref) < os.path.getmtime(os.path.join(R, 'tools/interp_routine_reference.c')):
+    if not os.path.exists(ref) or os.path.getmtime(ref) < max(os.path.getmtime(os.path.join(R, s)) for s in (
+            'tools/interp_routine_reference.c', 'tests/interp_case.c', 'tests/interp_case.h')):
         subprocess.run(['cc', '-std=c99', '-O2', '-Iinclude', '-Itests', '-I' + E,
                         '-DIRC_BUILD_ONLY', 'tools/interp_routine_reference.c', 'tests/interp_case.c', 'src/agc_word.c',
                         'tests/cm_executive_cases.c',
@@ -429,14 +503,103 @@ def main():
             visits.append(v)
         covers = None
         if spec.get('basic') == 'full':
-            # The compiled basic labels each case reaches (a coverage build
-            # of the native runner): the C64 cases take every one of them.
-            cov = nat + '-cover'
-            srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
-            subprocess.run(['cc', *FLAGS, '-DIRC_COVER_ON', *srcs, spec['target'], 'tools/interp_routine_native.c',
-                            '-o', cov], cwd=R, check=True)
-            covers = [frozenset(int(t[1:]) for t in r[4:]) for r in run([cov, path, 'cover'])]
+            covers = edge_covers(spec, nat, path)
         freeze(a.spec, spec, missions, cases, rows_r, stops, visits, covers)
+
+
+def cover_counts(covers, c64_ids):
+    host = functools.reduce(operator.or_, covers, 0)
+    c64 = functools.reduce(operator.or_, (covers[i] for i in c64_ids), 0)
+    lab = (1 << 8192) - 1
+    return {'host_labels': bin(host & lab).count('1'), 'c64_labels': bin(c64 & lab).count('1'),
+            'host_edges': bin(host >> 8192).count('1'), 'c64_edges': bin(c64 >> 8192).count('1'),
+            'host_edges_not_c64': bin(host & ~c64).count('1'),
+            'note': 'compiled basic labels; and edges with comparison outcomes (clang -O0 '
+                    '-fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: '
+                    'both outcomes of each branch, and equal/less/greater at each comparison) that the '
+                    'differential\'s cases reach, and those the C64 cases reach'}
+
+
+def gcov_branches(spec_id, spec, missions, cases, c64_ids):
+    """The certificate reviewer's check: gcc -O0 --coverage builds of the
+    host runner over every linked source, one run on all the differential's
+    cases and one on the C64 cases; gcov -b's taken branch outcomes of each."""
+    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
+    srcs = list(dict.fromkeys(srcs + [spec['target']]))
+    res = {}
+    for tag, sel in (('host', range(len(cases))), ('c64', sorted(set(c64_ids)))):
+        w = os.path.join(B, '%s-gcov-%s' % (spec_id, tag))
+        shutil.rmtree(w, ignore_errors=True)
+        os.makedirs(w)
+        write_cases(os.path.join(w, 'cases.bin'), missions, [cases[i] for i in sel])
+        objs = []
+        for s in srcs:
+            o = os.path.join(w, os.path.basename(s)[:-2] + '.o')
+            subprocess.run(['gcc', '-std=c99', '-O0', '--coverage', '-Iinclude', '-Itests', '-c', s, '-o', o],
+                           cwd=R, check=True)
+            objs.append(o)
+        subprocess.run(['gcc', '-O0', '--coverage', '-Iinclude', '-Itests', *objs, 'tools/interp_routine_native.c',
+                        '-o', os.path.join(w, 'run')], cwd=R, check=True)
+        subprocess.run([os.path.join(w, 'run'), os.path.join(w, 'cases.bin')], cwd=R, check=True,
+                       stdout=subprocess.DEVNULL)
+        taken = set()
+        for o in objs:
+            out = subprocess.run(['gcov', '-b', '-c', '-t', '-o', w, o[:-2] + '.gcda'], cwd=R, check=True,
+                                 capture_output=True, text=True).stdout
+            src = line = None
+            for l in out.splitlines():
+                m = re.match(r'\s*-:\s*0:Source:(.*)', l)
+                if m:
+                    src = m.group(1)
+                    continue
+                m = re.match(r'\s*[^:]+:\s*(\d+):', l)
+                if m:
+                    line = int(m.group(1))
+                    continue
+                m = re.match(r'branch\s+(\d+) taken (\d+)', l)
+                if m and int(m.group(2)):
+                    taken.add((src, line, int(m.group(1))))
+        res[tag] = taken
+        shutil.rmtree(w, ignore_errors=True)
+    miss = sorted(res['host'] - res['c64'])
+    return {'host_taken': len(res['host']), 'c64_taken': len(res['c64']), 'host_taken_not_c64': len(miss),
+            'missing': ['%s:%d branch %d' % x for x in miss[:50]],
+            'sources': srcs,
+            'note': 'gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source '
+                    'above: the branch outcomes all the differential cases take, and those the C64 cases take'}
+
+
+def edge_covers(spec, nat, path):
+    """Per case, the edges it takes in every linked source of the routines
+    (clang -O0 edge coverage: both outcomes of each branch, each switch
+    case), the outcomes (equal, less, greater) of each comparison they make
+    (so conditions that only yield a value count too) and the compiled
+    basic labels it reaches, as one bitmask; the C64 cases take every one
+    the host cases take."""
+    cov = nat + '-cover'
+    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
+    srcs = list(dict.fromkeys(srcs + [spec['target']]))
+    od = cov + '.o.d'
+    os.makedirs(os.path.join(R, od), exist_ok=True)
+    flags = [f for f in FLAGS if f != '-O2'] + ['-O0', '-DIRC_COVER_ON', '-DIRC_EDGES']
+    objs = []
+    for k, s in enumerate(srcs):
+        o = '%s/%d.o' % (od, k)
+        subprocess.run(['clang', *flags, '-fsanitize-coverage=trace-pc-guard,trace-cmp', '-c', s, '-o', o],
+                       cwd=R, check=True)
+        objs.append(o)
+    subprocess.run(['clang', *flags, *objs, 'tools/irc_edge_cover.c', 'tools/interp_routine_native.c', '-o', cov],
+                   cwd=R, check=True)
+    out, dense = [], {}
+    for r in run([cov, path, 'cover']):
+        m = 0
+        for tok in r[4:]:
+            if tok[0] == 'g':
+                m |= 1 << (8192 + dense.setdefault(int(tok[1:]), len(dense)))
+            else:
+                m |= 1 << int(tok[1:])
+        out.append(m)
+    return out
 
 
 def freeze(spec_id, spec, missions, cases, rows, stops, visits, covers=None):
@@ -467,11 +630,10 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, covers=None):
              'cases': len(cases), 'cases_sha256': hashlib.sha256(blob).hexdigest(),
              'oracle_sha256': hashlib.sha256('\n'.join(' '.join(r) for r in rows).encode()).hexdigest(),
              'frozen_vectors': len(pick), 'c64_vectors': c64,
-             **({'c64_label_coverage': {
-                 'host_labels': len(frozenset().union(*covers)),
-                 'c64_labels': len(frozenset().union(*(covers[i] for g in c64 for i in g['case_ids']))),
-                 'note': 'compiled basic labels (each word and each branch outcome reached with A clean or '
-                         'unknown) the host cases reach, and those the C64 cases reach'}} if covers else {}),
+             **({'c64_coverage': cover_counts(covers, [i for g in c64 for i in g['case_ids']]),
+                 'c64_gcov_branches': gcov_branches(spec_id, spec, missions, cases,
+                                                    [i for g in c64 for i in g['case_ids']])}
+                if covers else {}),
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
              'boundary': 'from each routine entry state to NEWOPS with LOC outside the file, an exit of the '
                          'interpreter bodies (%s), or a transfer to an outside basic routine (%s)%s' % (
@@ -490,7 +652,14 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, covers=None):
                                ' with hardware DV and without the IMU/optics device block '
                                '(tools/prepare_flight_device_engine.py)'
                                if spec.get('engine') == 'flight-device' else '')}
-                if any(getattr(mi.cp, 'basic', None) for mi in missions) else {})}
+                if any(getattr(mi.cp, 'basic', None) for mi in missions) else {}),
+             **({'start_state': 'every word of the image from the case seed, 010-061 included (TIME1-TIME6, the '
+                                'CDUs, PIPAs and other counters, the interrupt save words, the editing registers; '
+                                'IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words '
+                                'the file reads together (relate(): one equal to another, a few counts or a double '
+                                'word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a '
+                                'counter at its wrap'}
+                if spec.get('counters') else {})}
     open(os.path.join(B, '%s-proof.json' % spec_id), 'w').write(json.dumps(proof, indent=1) + '\n')
     smap = {}
     for mi in missions:
@@ -592,35 +761,47 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, covers=None):
         bit = {p: 1 << k for k, p in enumerate(mi.points)}
         POINTS[mi.m] = len(mi.points)
         need = {}
+        got = 0
         for p in mi.points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p),
                           key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
             if covers is None:
                 need[p] = mine[:per]
                 continue
-            # Greedy: the case adding the most labels not yet taken, until
-            # the point's cases reach no more (at least one case).
-            got, pick_p = set(), []
+            # Greedy: the case adding the most labels and edges no case
+            # taken so far (this routine's or an earlier one's) reaches,
+            # until the routine's cases add none (at least one case).
+            pick_p = []
             while True:
-                best = max(mine, key=lambda i: len(covers[i] - got), default=None)
-                if best is None or (pick_p and not covers[best] - got):
+                best = max(mine, key=lambda i: bin(covers[i] & ~got).count('1'), default=None)
+                if best is None or (pick_p and not covers[best] & ~got):
                     break
                 pick_p.append(best)
                 got |= covers[best]
                 mine = [i for i in mine if i != best]
             need[p] = pick_p
+        # Pack the routines' cases into groups in routine order, a routine's
+        # cases together while they fit, else case by case.
         mask, pick = 0, []
         for p in mi.points:
+            units = [need[p]]
             want = 0
             for i in need[p]:
                 want |= visits[i]
-            trial = mask | want
-            tp = pick + need[p]
-            if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
-                groups.append((mi.m, mask, pick))
-                mask, pick = want, list(need[p])
-            else:
-                mask, pick = trial, tp
+            if len(need[p]) > 1 and c64_size(spec, sym, mi.m, want,
+                                             group_text(sym, [(mi.m, want, need[p])], cases, rows)) is None:
+                units = [[i] for i in need[p]]
+            for u in units:
+                want = 0
+                for i in u:
+                    want |= visits[i]
+                trial = mask | want
+                tp = pick + u
+                if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
+                    groups.append((mi.m, mask, pick))
+                    mask, pick = want, list(u)
+                else:
+                    mask, pick = trial, tp
         groups.append((mi.m, mask, pick))
     for m, mask, pick in groups:
         # Every case of a group whose run stays in it, so later routines'

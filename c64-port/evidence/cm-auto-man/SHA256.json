@@ -4,8 +4,8 @@
   "release": "evidence-cm-auto-man",
   "files": {
     "cm-auto-man-differential.log": {
-      "sha256": "b3fd0c0063574f890da211117b25362bfd284a282fc8cf0c5e2a4480b0265348",
-      "bytes": 346,
+      "sha256": "61b0eb06336cf6ff0bfc31f2f69e0a42f6259f9c3d0b5feb369352ca8af84903",
+      "bytes": 345,
       "store": "tree"
     },
     "cm-auto-man-host.log": {
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-auto-man-proof.json": {
-      "sha256": "9c17a479b489f716b576534821400bc72125c0fe9ce7595c8f2defdda9197ec9",
-      "bytes": 2239,
+      "sha256": "e57191505e8db474086c4446976f226935682ffb9f6e4fbba69e60a8e0cce6df",
+      "bytes": 3452,
       "store": "tree"
     },
     "cm-auto-man-source-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-auto-man-vice.log": {
-      "sha256": "485c9ea3d2c1fe5e1cd92f41a9a2353f412bceb4970ac1ba615c819a1ae9f053",
+      "sha256": "fe060c1034edc5d6fd07eaa9ed9e618c1780dea2af0fb27521de4f70d31ec4d9",
       "bytes": 408,
       "store": "tree"
     }

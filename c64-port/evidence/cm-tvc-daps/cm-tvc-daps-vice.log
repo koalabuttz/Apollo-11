@@ -1,7 +1,7 @@
 PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-42ce64ec46ca4c57400806f71dbf2f51c34ae7273c429ced2454f5ed90d8517f  build/cm-tvc-daps-1.prg
+e5551c093d2265e084e49225be342ea363346e9eeb5ada3b3c5644b0a96e528a  build/cm-tvc-daps-1.prg
 
 $ make vice-cm-tvc-daps
 for p in build/cm-tvc-daps-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-tvc-daps-1.prg: 22 checks, 0 failures
+PASS: VICE PAL cm-tvc-daps-1.prg: 18 checks, 0 failures
 exit 0
