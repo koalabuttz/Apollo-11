@@ -1,0 +1,3 @@
+lm-dap-interface: 7168 cases (6528 returned, 640 alarm); routines 1024 1024 1024 4480 1024 1024 1024 2048 2048 1024 1024 896 5120; 14356 checks, 0 failures
+PASS 67 assembled words on 66 source lines map to 16 native owners
+lm-dap-interface: 7168 cases (6528 returned, 640 alarm); routines 1024 1024 1024 4480 1024 1024 1024 2048 2048 1024 1024 896 5120; 14356 checks, 0 failures

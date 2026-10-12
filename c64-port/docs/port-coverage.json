@@ -2957,8 +2957,47 @@
           ],
           "scope": "STOPRATE nine rate/error clears, exact basic return and physical-bank/IRQ effects; remaining DAP services not certified.",
           "verification": "docs/P66_INITIALIZATION.md"
+        },
+        {
+          "native_files": [
+            "src/lm_dap_interface.c",
+            "src/lm_exec_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-DAP-INTERFACE.md",
+          "scope": "Every path of the file (RESTORDB, RESTORDB+1, SETMAXDB, SETMINDB, CALLACCS to the native NOVAC, PFLITEDB, ZATTEROR, STOPRATE, ALLCOAST and the returns at 02137, 02145, 02207, 02225) as ABI routines to the caller's TC Q / RUPTREG1 / RUPTREG2 return or BAILOUT1."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entry with FB bank 20 (any EB and superbank); caller returns are TC words into fixed memory 02000-07777; A at 02207 not overflowed",
+        "external_continuations": [
+          "NOVAC (lm_exec_routines) and the 1/ACCJOB job it admits",
+          "BAILOUT1",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-dap-interface/lm-dap-interface-source-map.json",
+            "sha256": "af193ce6fd4ce22f8618e34fa3f2b0f9af527e96c46791c5c9a44331e24ac9bd"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-dap-interface/lm-dap-interface-proof.json",
+            "sha256": "c5ba9e553f88abbe612c244c62e7a1ef533130bb7054e6325de45f001cba251d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-dap-interface/lm-dap-interface-host.log",
+            "sha256": "a56d3f5bb054dd829a858c3b089a15eb48813849bd013d8b8378e025b660e4f1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-dap-interface/lm-dap-interface-vice.log",
+            "sha256": "962d4d1e6776a6b9052c5b0d95f654852cbed99ee3500412ad81ee84f1b140d8"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
