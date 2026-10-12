@@ -1653,3 +1653,35 @@ Qualify actual DLY2 VARDELAY FIXDELAY insertion overflow and real task completio
 ## Translate Luminary internal WAIT2 and delay task insertion
 
 Qualify actual WAIT2 FIXDELAY VARDELAY insertion and original TASKOVER and alarm frontiers against16384 complete original states strict sanitizers and64 C64 cases preserving frozen helpers. See `docs/LM-DELAY-IMAGE.md`.
+
+## Translate Luminary lunar and solar ephemerides (LSPOS/LUNPOS, LUNVEL)
+
+Native C for all of Luminary099 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES (LSPOS/LUNPOS and LUNVEL, 74 words) as a chain of nine steps between original NEWOPS frontiers, with new compiled interpretive dispatch paths (`src/lm_interp_steps.c`) over the existing frozen arithmetic bodies. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entry states from every actual caller (strict and ASAN/UBSAN), 152 intermediate phase frontiers equal original NEWOPS images, 74 assembled words map to native literals after a fresh yaYUL assembly, and three C64 phase diagnostics pass 54 frozen steps in VICE. See `docs/LM-EPHEMERIS.md`.
+
+## Compile Comanche alarm call-site operands into native constants
+
+The alarm code after every genuine Comanche055 `TC ALARM`, `TC ALARM2`, `TC BAILOUT` and `TC POODOO` (62 sites) is now a compiled constant generated from the original source listing, so the native ALARM_AND_ABORT entries no longer read a copy of the rope at runtime. All 11,904 site/context cases match the existing native entries fed the original rope words (859,919 strict and sanitizer checks), and 372 sampled cases match the host digests in VICE. See `docs/CM-ALARM-SITES.md`.
+
+## Run Comanche INTER-BANK entries as native routines
+
+The 13 Comanche055 INTER-BANK_COMMUNICATION entries are native routines in the control-transfer ABI registry, and the CADR after every genuine `TC BANKCALL/IBNKCALL/POSTJUMP/USPRCADR` (354 sites) is a compiled constant. BANKCALL and IBNKCALL round trips go through the trampoline into a native callee and back. 1,416 cases and 12,826 strict and sanitizer checks match `cm_interbank_complete` fed the original rope words, and every fourth case matches the host digests in VICE. See `docs/CM-INTERBANK-TRANSFER.md`.
+
+## Run Comanche standard lead-ins through the native trampoline
+
+The Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS entries and the INTPRET forms they reach are registered native routines. 3,072 stage cases match the certified stage functions, and 512 E/BKCALL and 384 E/CALL round trips go through the trampoline into a native callee and back (10,241 strict and sanitizer checks). 896 sampled cases match the host digests in VICE. See `docs/CM-STANDARD-LEAD-TRANSFER.md`.
+
+## Run Luminary INTER-BANK entries as native routines
+
+The 13 Luminary099 INTER-BANK_COMMUNICATION entries are native routines in the control-transfer ABI registry, and the CADR after every genuine `TC BANKCALL/IBNKCALL/POSTJUMP/USPRCADR` (448 sites) is a compiled constant. BANKCALL and IBNKCALL round trips run through the trampoline into a native callee and back via SWRETURN/ISWRETRN. 1,792 cases and 15,826 strict and sanitizer checks match `lm_interbank` fed the original rope words, and every fourth case matches the host digests in VICE. See `docs/LM-INTERBANK-TRANSFER.md`.
+
+## Run Luminary standard lead-ins through the native trampoline
+
+The Luminary099 SYSTEM_TEST_STANDARD_LEAD_INS entries (E/BKCALL, its three returns, E/CALL, the resume point, E/JOBWAK) and the INTPRET/INTPRET+2 and EXIT forms they reach are registered native routines. 3,072 stage cases match the certified stage functions, and 511 E/BKCALL and 384 E/CALL round trips go through the trampoline into a native callee and back (10,241 strict and sanitizer checks). 896 sampled cases match the host digests in VICE. See `docs/LM-STANDARD-LEAD-TRANSFER.md`.
+
+## Translate the EXTENDED_VERBS front end and add the Lane C oracle harness
+
+Native C for the EXTENDED_VERBS front end of both Luminary099 and Comanche055: the extended verb fan (GOEXTVB, LST2FAN, all 60 slots), the extended-verb display grab and release (TESTXACT, SETXTACT, XACT0 and their NVSUB returns, XACTALM) and the operator-error exits (ALM/END, GOPIN, LM CHKPOOH). 5,760 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 240 of them match the oracle on a VICE PAL C64. Adds the shared Lane C harness (tools/lanec/) that later DSKY milestones reuse. See `docs/LANEC-EV-FRONT.md`.
+
+## Translate Pinball verb 07 (DSPDPDEC) and CHANLOAD
+
+Native C for the two Pinball paths no earlier milestone covered, in both Luminary099 and Comanche055: verb 07 double-precision decimal display (DSPDPDEC through ENDDPDEC) and the channel load for channel nouns (CHANLOAD). 5,120 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 214 of them match the oracle on a VICE PAL C64. Adds `lanec_ad`, `lanec_erasable`, `lanec_rewrite` and `lanec_write` to the shared Lane C helpers. See `docs/LANEC-PIN-GAPS.md`.
