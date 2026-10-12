@@ -28,7 +28,12 @@ TABLES = {
     'lm-update': ('Luminary099', 'UPDATE_PROGRAM', (), 'src/lm_update_operands.inc', 'LM_UPDATE'),
     'cm-update': ('Comanche055', 'UPDATE_PROGRAM', (), 'src/cm_update_operands.inc', 'CM_UPDATE'),
     'lm-fresh-start': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_fresh_start_operands.inc', 'LM_FRESH'),
+    'lm-v37': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_v37_operands.inc', 'LM_V37'),
 }
+# Tables whose own interbank calls include IBNKCALL, and fixed tables the
+# file reads with INDEX (label, words), compiled as arrays.
+OWN_EXTRA = {'lm-v37': ('IBNKCALL',)}
+ARRAYS = {'lm-v37': (('PREMM1', 30), ('FCADRMM1', 30), ('DNLADMM1', 30))}
 OWN = ('BANKCALL', 'POSTJUMP')
 ONE_WORD = ('CA', 'CAF', 'CS', 'AD', 'MASK')
 TWO_WORD = ('DCA', 'DCS')
@@ -41,7 +46,7 @@ def build(name):
     rope = (base / 'MAIN.agc.bin').read_bytes()
     rows = list(listing_lines(listing))
     calls, rope_sha = sites(mission, callees) if callees else ([], None)
-    own, rope_sha = sites(mission, OWN)
+    own, rope_sha = sites(mission, OWN + OWN_EXTRA.get(name, ()))
     own = [r for r in own if r['caller'].startswith(program)]
     listed = {}
     for path, line, address, words, label, op, opnd in rows:
@@ -82,6 +87,15 @@ def build(name):
             continue
         seen.add(r['physical'])
         out.append(r)
+    arrays = {}
+    labels = {label: fixed_address(address) for path, line, address, words, label, op, opnd in rows
+              if path.startswith(program) and label and words}
+    for label, count in ARRAYS.get(name, ()):
+        at = labels[label]
+        arrays[label] = (at, [listed[at + k][0] for k in range(count)])
+        for k in range(count):
+            assert rope_word(rope, at + k) == arrays[label][1][k], (label, k)
+    constants['_arrays'] = arrays
     return calls, own, constants, out, rope_sha
 
 
@@ -92,6 +106,7 @@ def render(name, calls, own, constants, table, rope_sha):
            f'/* {mission} {program}: ' + (f"the word after every genuine TC {', '.join(callees)}, " if callees else '')
            + 'the CADRs after its own TC BANKCALL/POSTJUMP',
            f' * and the fixed constants it reads; keyed by physical fixed word. Oracle rope sha256 {rope_sha}. */']
+    arrays = constants.pop('_arrays', {})
     for n, (phys, ws) in sorted(constants.items()):
         bank, offset = divmod(phys, 1024)
         out.append(f'#define {prefix}_K_{n} ' + ','.join(f'0{w:05o}u' for w in ws) + f' /* {bank:02o},{offset + 0o2000:04o} */')
@@ -102,6 +117,13 @@ def render(name, calls, own, constants, table, rope_sha):
         out.append(f" {{{row['physical']}u,0{row['word']:05o}}}, /* {bank:02o},{offset + 0o2000:04o} "
                    f"{row['kind'][:40]} <- {row['source']} */")
     out.append('};')
+    for label, (phys, ws) in arrays.items():
+        bank, offset = divmod(phys, 1024)
+        out.append(f'/* {label} ({bank:02o},{offset + 0o2000:04o}), read with INDEX. */')
+        out.append(f'static const agc_word {prefix.lower()}_{label.lower()}[{len(ws)}]={{')
+        for i in range(0, len(ws), 10):
+            out.append(' ' + ''.join(f'0{w:05o},' for w in ws[i:i + 10]))
+        out.append('};')
     if callees:
         out.append(f'#ifdef {prefix}_SITE_LIST /* tests: operand word and callee of each TC site */')
         out.append(f'#define {prefix}_SITE_COUNT {len(calls)}u')
@@ -121,12 +143,14 @@ def main():
     parser.add_argument('--json', help='also write the table as JSON (evidence)')
     args = parser.parse_args()
     calls, own, constants, table, rope_sha = build(args.table)
+    arrays = constants.get('_arrays', {})
     text = render(args.table, calls, own, constants, table, rope_sha)
     mission, _, _, output, _ = TABLES[args.table]
     if args.json:
         pathlib.Path(args.json).write_text(json.dumps(
             {'mission': mission, 'rope_sha256': rope_sha, 'sites': calls, 'own_cadrs': own,
-             'constants': {n: {'physical': p, 'words': w} for n, (p, w) in constants.items()}}, indent=1) + '\n')
+             'constants': {n: {'physical': p, 'words': w} for n, (p, w) in constants.items()},
+             'arrays': {n: {'physical': p, 'words': w} for n, (p, w) in arrays.items()}}, indent=1) + '\n')
     path = ROOT / output
     if args.check:
         if not path.exists() or path.read_text() != text:
