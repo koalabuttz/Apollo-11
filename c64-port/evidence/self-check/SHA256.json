@@ -2,5 +2,21 @@
   "schema_version": 1,
   "milestone": "self-check",
   "release": "evidence-self-check",
-  "files": {}
+  "files": {
+    "self-check-host.log": {
+      "sha256": "3f9ce70b0d8370c25f89d05798e3de0ab97740c2d68038c61c4b776188f26915",
+      "bytes": 2080,
+      "store": "release"
+    },
+    "self-check-proof.json": {
+      "sha256": "983e8da69edc67cb16d7253d946355e2eb494c0221af09154c470899d07cb9ab",
+      "bytes": 3030,
+      "store": "tree"
+    },
+    "self-check-vice.log": {
+      "sha256": "2c14c9d8545e00c4aa9a292e0fe01eb5c112cdcd5d54c2326e226724f1761ec7",
+      "bytes": 614,
+      "store": "release"
+    }
+  }
 }
