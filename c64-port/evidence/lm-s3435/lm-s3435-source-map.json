@@ -7,7 +7,7 @@
  },
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "native_path": "src/lm_s3435_routines.c",
- "native_sha256": "59248ded38f52a7d963056443fe313a4d39e1cffbcbe7915c3ad99a238c656cb",
+ "native_sha256": "f8d22e9794800346d138c905dd2cb1f9d7a360b79ebf447f4ebde3076a6d6b7b",
  "source_words": 40,
  "source_lines": 40,
  "symbols": {

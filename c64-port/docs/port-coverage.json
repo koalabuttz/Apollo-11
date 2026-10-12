@@ -1454,6 +1454,16 @@
           ],
           "scope": "Canonical original vector-left shift through true DANZIG with actual overflow and all source scratch; other interpreter bodies remain open.",
           "verification": "docs/NATIVE-SBAND-VECTOR-SHIFT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "The 59 compiled interpretive order bodies and dispatch steps (address formation, load/store/push, DP and vector arithmetic, shifts, DDV/BDDV, SQRT/UNIT/ABVAL, BOV/RTB/SWRETURN, branches, index orders, CALL/GOTO/EXIT/INTPRET) built with Comanche055 fixed addresses; POLY is built but not exercised. Callers, the remaining orders (trig, ACOS/ASIN alarm paths), and whole-interpreter dispatch stay open.",
+          "verification": "docs/CM-INTERP-BODIES.md"
         }
       ]
     },
@@ -5827,6 +5837,18 @@
           ],
           "scope": "S34/35.1 (35,3274-35,3305), NOVRWRT, S34/35.4 and LOMAT (35,3424-35,3461), 40 words, as four interpretive routines of the control-transfer ABI keyed at their NEWOPS: the line of sight ULOS and orbit normal UNRM, the line-of-sight frame and DELVEET3 rotated into DVLOS (MXV of the work-area matrix), and the local-vertical matrix at 0D: from each NEWOPS entry through the trampoline to the first NEWOPS outside them (the caller's return at C(QPRET) or the CADR in NORMEX) or UNIT's POODOO1 frontier.",
           "verification": "docs/LM-S3435.md"
+        },
+        {
+          "native_files": [
+            "src/lm_s3435b_routines.c",
+            "src/lm_s3435_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/matrix_native.c"
+          ],
+          "scope": "S34/35.3 with its LOMAT and INTINT returns (35,3377-35,3423), GOINT and INTINT with INTINT's INTSTALL and INTEGRVS returns (35,3462-35,3521), 53 words, as seven interpretive routines of the control-transfer ABI keyed at their NEWOPS: NORMEX saved and LOMAT called, DELVLVC rotated through the local-vertical matrix (VXM of the work-area matrix) into DELVEET3, the integration arguments pushed (VACT3, RACT3, TIG, TPASS4, DPPOSMAX or ZEROVECS and NOMTPI) and INTINT called, RTARG stored on into NOVRWRT, and INTINT's RTRN save, INTSTALL call and integration setup (INTYPFLG, TDEC1, MOONFLAG, TET, RCV, VCV scaled by RTX2) to INTEGRVS and the GOTO RTRN after it: from each NEWOPS entry through the trampoline (with lm-s3435's LOMAT and NOVRWRT) to the first NEWOPS outside them (INTSTALL, INTEGRVS, or a caller's return).",
+          "verification": "docs/LM-S3435B.md"
         }
       ]
     },

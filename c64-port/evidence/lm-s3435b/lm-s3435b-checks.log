@@ -1,0 +1,7 @@
+PASS 14336 original S34/35.3 and GOINT/INTINT entries equal native trampoline runs 8df65fbc2bd928470dc115397bf1143542ea21e4c9ecfa7f93e7e16c815a58fe
+lm-s3435b: 14336 cases, 91 admission guards; stops [2048 2048 2048 2048 2048 2048 2048]; 14436 checks, 0 failures
+PASS 53 assembled S34/35.3 and GOINT/INTINT words on 53 source lines map to 7 native routines
+lm-s3435b: 14336 cases, 91 admission guards; stops [2048 2048 2048 2048 2048 2048 2048]; 14436 checks, 0 failures
+PASS: VICE PAL lm-s3435b-1.prg: 256 checks, 0 failures
+PASS: VICE PAL lm-s3435b-2.prg: 384 checks, 0 failures
+PASS: VICE PAL lm-s3435b-3.prg: 160 checks, 0 failures

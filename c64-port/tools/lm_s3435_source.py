@@ -39,7 +39,7 @@ def body(name):
  end=native.index('\n}\n',m.end())
  return int(m.group(1),8),native[m.start():end+2]
 def literals(text):return{int(x,8)for x in re.findall(r'\b(0[0-7]*)u?\b',text)}
-table=re.search(r'#if !defined LM_S3435_C64_GROUP\nstatic const agc_routine_entry entries\[\]=\{(.*?)\};',native,re.S).group(1)
+table=re.search(r'static const agc_routine_entry entries\[\]=\{(.*?)\};',native,re.S).group(1)
 registered=dict((int(a,8),f)for a,f in re.findall(r'LM_S3435_B35\((0[0-7]+)\),(\w+)\}',table))
 rows=[];owned=set()
 for r in records:

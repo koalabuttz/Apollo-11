@@ -6,6 +6,7 @@
  * effects of the original basic instructions that these fixed sequences
  * use; they are called only from the compiled sequences in this file. */
 #include "lm_interp_steps.h"
+#include "interp_mission.h"
 #define W s->words
 
 /* Erasable address in the canonical image: 01400-01777 through EBANK. */
@@ -84,7 +85,7 @@ static void mpf(apollo_overlay_state *s,agc_word k){agc_register_pair p=agc_mult
 void lmi_danzig_next(apollo_overlay_state *s){
  /* DANZIG CA BANKSET, TS BBANK; NOIBNKSW CCS EDOP (+0); CCS NEWJOB (+0);
   * INCR LOC; NEWOPS. */
- ca(s,0165);(void)ts(s,6);(void)ccs(s,023);(void)ccs(s,067);incr(s,0164);W[5]=06070;
+ ca(s,0165);(void)ts(s,6);(void)ccs(s,023);(void)ccs(s,067);incr(s,0164);W[5]=IF_(06070,06037);
 }
 static void opjump(apollo_overlay_state *s){
  /* OPJUMP TS CYR; CCS CYR. */
@@ -148,7 +149,7 @@ void lmi_unary(apollo_overlay_state *s,agc_word target){
   * INDEX A; TCF UNAJUMP. */
  (void)ccs(s,020);(void)ts(s,4);(void)ccs(s,020);W[5]=target;
 }
-static void danzig_entry(apollo_overlay_state *s){W[5]=06061;}
+static void danzig_entry(apollo_overlay_state *s){W[5]=IF_(06061,06030);}
 
 /* STORE CS ADDRWD; AD DEC45; CCS A; work area CA FIXLOC, otherwise CA
  * OCT1400; XCH ADDRWD; TS EBANK; MASK LOW8; AHEAD5 ADS ADDRWD; STARTSTO
@@ -199,7 +200,7 @@ void lmi_pddl(apollo_overlay_state *s){
 }
 void lmi_setpd(apollo_overlay_state *s){
  /* SETPD CA ADDRWD; TS PUSHLOC; TCF NOIBNKSW (DANZIG without BBANK). */
- ca(s,0116);(void)ts(s,0166);W[5]=06063;
+ ca(s,0116);(void)ts(s,0166);W[5]=IF_(06063,06032);
 }
 void lmi_vdef(apollo_overlay_state *s){
  /* VDEF CS FOUR; ADS PUSHLOC; EXTEND, INDEX A, DCA 2; DXCH MPAC +3;
@@ -227,7 +228,7 @@ void lmi_incr(apollo_overlay_state *s){
  * TS EDOP; TCF NEWOPS). Only fixed-bank targets are compiled here. */
 static void goto_fixed(apollo_overlay_state *s){
  ca(s,0165);(void)ts(s,6);ca(s,0117);(void)ts(s,4);maskf(s,LOW10);adf(s,TWO_K);(void)ts(s,0164);
- ca(s,6);(void)ts(s,0165);maskf(s,BIT15);(void)ts(s,0115);(void)ts(s,023);W[5]=06070;
+ ca(s,6);(void)ts(s,0165);maskf(s,BIT15);(void)ts(s,0115);(void)ts(s,023);W[5]=IF_(06070,06037);
 }
 void lmi_goto(apollo_overlay_state *s){
  /* GOTO CA POLISH; +1 MASK HIGH4; EXTEND BZF GOTOERS (fixed: nonzero). */
@@ -243,8 +244,8 @@ void lmi_rvq(apollo_overlay_state *s){
 /* BRANCH: -0 falls through CCS's fourth slot to the next word, as +0. */
 static uint8_t branch(apollo_overlay_state *s){
  unsigned i;uint8_t c;
- for(i=0;i<3u;++i){c=ccs(s,0154u+i);if(c==0u){W[2]=3;return 0;}if(c==2u){W[2]=06743;return 2;}}
- W[2]=06741;return 1;
+ for(i=0;i<3u;++i){c=ccs(s,0154u+i);if(c==0u){W[2]=3;return 0;}if(c==2u){W[2]=IF_(06743,06712);return 2;}}
+ W[2]=IF_(06741,06710);return 1;
 }
 uint8_t lmi_bze(apollo_overlay_state *s){
  /* BZE/GOTO CCS CYR (positive); TC BRANCH; zero TCF GOTO, else DANZIG. */
