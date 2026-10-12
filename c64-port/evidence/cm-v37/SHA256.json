@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-v37",
+  "release": "evidence-cm-v37",
+  "files": {
+    "cm-v37-host.log": {
+      "sha256": "42c8b7bf637e1c7c93527a0e104006ee486f6c26a05c270da408a6f423ffa0dd",
+      "bytes": 1664,
+      "store": "release"
+    },
+    "cm-v37-proof.json": {
+      "sha256": "7df439d4f1a5846114c5287b0a429a321e5e324e74de3142255251e04dcfdd22",
+      "bytes": 1485,
+      "store": "tree"
+    },
+    "cm-v37-vice.log": {
+      "sha256": "42f5e7b7ec807ad8d4adf4b6b4d330ae70ebc2febf31d9a1e29d8852409b852b",
+      "bytes": 602,
+      "store": "release"
+    }
+  }
+}

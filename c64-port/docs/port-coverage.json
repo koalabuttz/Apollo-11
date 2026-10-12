@@ -1019,6 +1019,17 @@
           ],
           "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, ELRSKIP, NOCOARSE, ENEMA (GOPROG2), GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB2, DSPOFF, T5IDLOC and GOTOPOOH as control-transfer ABI routines (17 entries incl. the return after every TC out of the file); constants and the T5IDLER table compiled from the source listing. STARTSIM (patch-only) untranslated; banks 04 (V37/POOH), 20 (VAC5STOR, legacy cm_vac5_store) and 13 remain.",
           "verification": "docs/CM-FRESH-START.md"
+        },
+        {
+          "native_files": [
+            "src/cm_v37.c",
+            "src/cm_v37_operands.inc",
+            "src/cm_fresh_start.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 04 (GOP00FIX, V37, R00TOP00, ISITP00, CANTR00, V37BAD, CHECKTAB/AGAINMM, ISSERVON, CANV37, ROC, POOH, SEUDOP00, GROUPKIL, GOMOD/GOGOPROG, RENDV00, RENDN00, P00FIZZ, KILL20, REV37, STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC, INITSUB/SETMAXER/RAKE) and bank 20 (VAC5STOR) as control-transfer ABI routines (35 entries incl. GOP00FIX, V37, the TEMPFLSH restarts ROC and V37XEQ, the code after R00's EXIT, VAC5STOR and the return after every TC out of the file); constants and the PREMM1, FCADRMM1, DNLADMM1 and FLAGTABL tables compiled from the source listing. R00's interpretive CALL INTSTALL/EXIT (2131-2133) and bank 13 remain.",
+          "verification": "docs/CM-V37.md"
         }
       ]
     },
