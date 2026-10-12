@@ -63,7 +63,9 @@ jobs:
           HEAD_REF: ${{ github.head_ref || github.ref_name }}
           BEFORE: ${{ github.event.before }}
         run: |
-          if [ "$EVENT" = pull_request ]; then base=$PR_BASE
+          # A PR's base is the merge ref's first parent: the event's base.sha can
+          # be older when the base moved before GitHub built the merge ref.
+          if [ "$EVENT" = pull_request ]; then base=$(git rev-parse -q --verify HEAD^1 || echo "$PR_BASE")
           elif [ "$EVENT" = push ] && [ "$HEAD_REF" = port/c64-native-c ] && [ -n "$BEFORE" ] \
                && [ "$BEFORE" != 0000000000000000000000000000000000000000 ]; then base=$BEFORE
           else base=$(git merge-base HEAD origin/port/c64-native-c)
@@ -170,11 +172,13 @@ jobs:
       - *logs
 
   # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
-  # targets. Full runs only (nightly, dispatch): about 400 VICE minutes, so
-  # they are split across shards.
+  # targets. Requested full runs only (nightly, dispatch): about 400 VICE
+  # minutes, so they are split across shards. A PR or push that touches shared
+  # files runs the full host and c64 jobs but not these, so shared-file PRs
+  # don't take every runner for hours; the nightly catches legacy breaks.
   c64-legacy:
     needs: plan
-    if: needs.plan.outputs.full == '1'
+    if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:

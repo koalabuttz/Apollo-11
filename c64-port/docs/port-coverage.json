@@ -1025,7 +1025,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -1820,7 +1820,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
@@ -3233,8 +3233,52 @@
           ],
           "scope": "Actual unit trig matrix and shift continuations in antenna frame calculation; Moon-return and final angle branches remain open.",
           "verification": "docs/NATIVE-SBAND-FRAME.md"
+        },
+        {
+          "native_files": [
+            "src/cm_sband_antenna.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (80 words, 42,3652-3771): SBANDANT and the rest of R05 (conic update, Earth or Moon sphere, vehicle-frame rotation, pitch and yaw, the V06 N51 display and its returns), as 39 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key.",
+          "verification": "docs/SBAND-ANTENNA.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "external_continuations": [
+          "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
+          "B5OFF, ENDOFJOB and ENDEXT (no return)",
+          "Interpretive CALL and STCALL to CSMCONIC, LUNPOS, CDUTRIG and *SMNB*",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/sband-antenna/sband-antenna-source-map.json",
+            "sha256": "c6ecc079057eb8fb50642fa758c43b631b51ba8c4570804ffff5e9423ed4609c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/sband-antenna/sband-antenna-proof.json",
+            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/sband-antenna/sband-antenna-host.log",
+            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+          },
+          "c64_execution_results": {
+            "path": "evidence/sband-antenna/sband-antenna-vice.log",
+            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/SERVICER207.agc",
@@ -4049,7 +4093,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -5185,7 +5229,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -6300,7 +6344,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
@@ -8008,8 +8052,52 @@
           ],
           "scope": "Actual unit trig matrix and shift continuations in antenna frame calculation; Moon-return and final angle branches remain open.",
           "verification": "docs/NATIVE-SBAND-FRAME.md"
+        },
+        {
+          "native_files": [
+            "src/lm_sband_antenna.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (116 words, 42,3606-3771): SBANDANT and the rest of R05 (conic update, Earth or Moon sphere, vehicle-frame rotation, pitch and yaw, the V06 N51 display and its returns), as 58 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key.",
+          "verification": "docs/SBAND-ANTENNA.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "external_continuations": [
+          "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
+          "B5OFF, ENDOFJOB and ENDEXT (no return)",
+          "Interpretive CALL and STCALL to LEMCONIC, LUNPOS, CDUTRIG and *SMNB*",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/sband-antenna/sband-antenna-source-map.json",
+            "sha256": "c6ecc079057eb8fb50642fa758c43b631b51ba8c4570804ffff5e9423ed4609c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/sband-antenna/sband-antenna-proof.json",
+            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/sband-antenna/sband-antenna-host.log",
+            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+          },
+          "c64_execution_results": {
+            "path": "evidence/sband-antenna/sband-antenna-vice.log",
+            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/SERVICER.agc",
@@ -8861,7 +8949,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
