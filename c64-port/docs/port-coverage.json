@@ -476,6 +476,16 @@
           ],
           "scope": "ENDIDLE handling and display returns, CLEANEND through TERMATE and PROCEED through ERASER (REST/RESTSLEP, FLASHSUB, ISITPRIO, the ENDIDLE call and its terminate, proceed and load returns, OKTOENT/ENDOUT, TIMECHEK, NORMWAKE, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS, ERASER), every basic block to its callee boundary (FINDVAC, UPENT2, DOWNENT2, NVSUBUSY, FLASHON, ENDIDLE, NVSUB, PRIOCHNG, SUPERSW, NOVAC, BANKJUMP, ENDOFJOB, PRIOBORT, KEEPPRIO, MARKWAKE, WAKEPLAY, GOSLEEPS, NORMBNCH, PINBRNCH), register-exact against the original program.",
           "verification": "docs/LANEC-DI-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_nvdsp.c",
+            "src/lanec.c",
+            "include/lanec_di_nvdsp.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display start-up, PINBRNCH through V50PASTE (PINBRNCH, NORMBNCH, NVDSP/GOPLAY, NVDSP1, NV50DSP and its busy, done and DOWNFLAG returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND, V50PASTE), every basic block to its callee boundary (ERASER, MARKPLAY, UPFLAG, KEEPPRIO, PLAYJUM1, COPYPACS, CLEANEND, NVMONOPT, REST, FLASHOFF, COPYTOGO, DOWNFLAG, BLANKSUB, FLASHSUB, ENDIT, ENDOFJOB, MARKPERF), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-NVDSP.md"
         }
       ]
     },
@@ -3115,6 +3125,16 @@
           ],
           "scope": "ENDIDLE handling and display returns, CLEANEND through TERMATE and PROCEED through ERASER (REST/RESTSLEP, FLASHSUB, ISITPRIO, the ENDIDLE call and its terminate, proceed and load returns, OKTOENT/ENDOUT, TIMECHEK, NORMWAKE, ENDRET/ENDIT, UNSETR1/IMMEDRET, MARKRET, MARKOVER, NORMRET, MARSLEEP, LOADITIS, ERASER), every basic block to its callee boundary (FINDVAC, UPENT2, DOWNENT2, NVSUBUSY, FLASHON, ENDIDLE, NVSUB, PRIOCHNG, SUPERSW, NOVAC, BANKJUMP, ENDOFJOB, PRIOBORT, KEEPPRIO, MARKWAKE, WAKEPLAY, GOSLEEPS, NORMBNCH, PINBRNCH), register-exact against the original program.",
           "verification": "docs/LANEC-DI-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_di_nvdsp.c",
+            "src/lanec.c",
+            "include/lanec_di_nvdsp.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Display start-up, PINBRNCH through V50PASTE (PINBRNCH, NORMBNCH, NVDSP/GOPLAY, NVDSP1, NV50DSP and its busy, done and DOWNFLAG returns, BLANKCHK, PERFCHEK, GOANIDLE, ISITN00, 1STOR2ND, V50PASTE), every basic block to its callee boundary (ERASER, MARKPLAY, UPFLAG, KEEPPRIO, PLAYJUM1, COPYPACS, CLEANEND, NVMONOPT, REST, FLASHOFF, COPYTOGO, DOWNFLAG, BLANKSUB, FLASHSUB, ENDIT, ENDOFJOB, MARKPERF), register-exact against the original program.",
+          "verification": "docs/LANEC-DI-NVDSP.md"
         }
       ]
     },
