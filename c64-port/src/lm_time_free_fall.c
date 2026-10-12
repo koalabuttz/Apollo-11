@@ -30,7 +30,10 @@ enum {VLOAD=06505,SIGN=07655,VXSC=07401,DLOAD=06052,PDDL=06523,PDVL=06557,TSLC=0
 
 /* Bank 27 constants (27,3754-3771) and the T(X) table after TC POLY (27,3736). */
 static const agc_word PI16[2]={06220,037553},LIM22[2]={037777,037700},DP22[2]={0,0100},
- DP2M3[2]={04000,0},DP2M4[2]={02000,0},NEARONE[2]={037777,037777};
+ DP2M3[2]={04000,0},DP2M4[2]={02000,0};
+/* NEARONE (27,3770): also ASCENT_GUIDANCE's DLOAD operand. */
+const agc_word lm_time_free_fall_nearone[2]={037777,037777};
+#define NEARONE lm_time_free_fall_nearone
 /* R300K (27,3766), assembled in this file but referenced by no Luminary099
  * code; kept for the source map and for any later caller. */
 const agc_word lm_time_free_fall_r300k[2]={0305,011205};
@@ -78,14 +81,18 @@ static uint8_t bov(apollo_overlay_state *s,agc_word word){
  if(r!=LMI_BOV_GOTO)return 2;
  branch_taken(s);return 1;
 }
-/* BOVB TCDANZIG: RTB to 27,3753 (TC DANZIG). 0 at DANZIG, 2 out of scope. */
-static uint8_t bovb_danzig(apollo_overlay_state *s){
+/* TCDANZIG = ENDT(X) (27,3753), entered by RTB with FBANK 27: TC DANZIG. */
+void lm_time_free_fall_tcdanzig(apollo_overlay_state *s){ai_tc(s,03754);W[5]=06061;}
+/* BOVB TCDANZIG (operand word 057753): 0 at DANZIG, 2 out of scope. The
+ * same order in MEASUREMENT_INCORPORATION, ORBITAL_INTEGRATION and P20-P25
+ * reaches DANZIG the same way. */
+uint8_t lm_time_free_fall_bovb_tcdanzig(apollo_overlay_state *s){
  uint8_t r;
  lmi_misc(s,057753,BOVB);r=lmi_bov(s);
  if(r==LMI_BOV_NONE)return 0;
  if(r!=LMI_BOV_RTB)return 2;
  lmi_rtb(s);if(W[5]!=03753u)return 2;
- ai_tc(s,03754);W[5]=06061;return 0;
+ lm_time_free_fall_tcdanzig(s);return 0;
 }
 /* RTB T(X): TC POLY with the table, then TC DANZIG. */
 static uint8_t rtb_tx(apollo_overlay_state *s){
@@ -93,7 +100,7 @@ static uint8_t rtb_tx(apollo_overlay_state *s){
  if(ai_ccs(s,020)!=0u)return 0;
  lmi_rtb(s);if(W[5]!=03735u)return 0;
  ai_tc(s,03736);W[5]=07222;lmi_poly(s,TX);if(W[5]!=03753u)return 0;
- ai_tc(s,03754);W[5]=06061;return 1;
+ lm_time_free_fall_tcdanzig(s);return 1;
 }
 
 uint8_t ltf_entry(apollo_overlay_state *s){
@@ -157,7 +164,7 @@ uint8_t ltf_rpra(apollo_overlay_state *s){
  lmi_newops(s,053657);gshift(s,020601);right(s);gshift(s,020572);next(s);
  stodl(s,014017,041005,0);
  /* DMP BOVB TFF1/ALF TCDANZIG. */
- lmi_newops(s,041005);opnd(s,000027,DMP);lmi_dmp(s,0);right(s);if(bovb_danzig(s))return LTF_FAILED;next(s);
+ lmi_newops(s,041005);opnd(s,000027,DMP);lmi_dmp(s,0);right(s);if(lm_time_free_fall_bovb_tcdanzig(s))return LTF_FAILED;next(s);
  /* BZE SL* MAXRA 0 -5,2. */
  lmi_newops(s,053654);lmi_misc(s,057461,BZEGOTO);
  if(lmi_bze(s)){TRACE(s);return LTF_MAXRA;}
@@ -215,7 +222,7 @@ uint8_t ltf_qterm(apollo_overlay_state *s){
  /* +2 BMN SQRT MAXTFF1; DCOMP BOVB TCDANZIG. */
  lmi_newops(s,075440);if(bplbmn(s,057650))return LTF_MAXTFF1;
  right(s);lmi_unary(s,SQRT);if(lmi_sqrt(s))return LTF_ABORTED;next(s);
- lmi_newops(s,041076);unary(s,COMP,lmi_comp);right(s);if(bovb_danzig(s))return LTF_FAILED;next(s);
+ lmi_newops(s,041076);unary(s,COMP,lmi_comp);right(s);if(lm_time_free_fall_bovb_tcdanzig(s))return LTF_FAILED;next(s);
  /* STOVL TFFTEM VONE'; DOT SL3 RONE; STORE TFFQ1. */
  stovl(s,024045,002170);
  lmi_newops(s,052441);opnd(s,002207,DOT);lmi_dot(s,0);right(s);shorts(s);next(s);

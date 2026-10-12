@@ -31,6 +31,25 @@ from the EDOP `+0` state, the only one in which its listing runs as written.
 `R300K` (`27,3766`) is assembled but referenced by nothing in Luminary099; it is
 exported as `lm_time_free_fall_r300k` for completeness.
 
+Two symbols of this file are used by other files, and both are exported:
+
+- `TCDANZIG = ENDT(X)` (`27,3753`, `TC DANZIG`) is the BOVB target in
+  MEASUREMENT_INCORPORATION (371), ORBITAL_INTEGRATION (95) and P20-P25
+  (3217). `lm_time_free_fall_tcdanzig` is that word: entered by RTB with FBANK
+  27, it leaves Q `03754` and Z at DANZIG. `lm_time_free_fall_bovb_tcdanzig`
+  is the whole compiled order `BOVB TCDANZIG` (operand word `057753`, the same
+  in every caller): DANZIG with OVFIND clear, or through RTB, TCDANZIG and
+  SWRETURN to DANZIG with it set. TFFRP/RA and TFFCONMU's QTERM run it here, so
+  the 65536-chain stream qualifies it, both with and without overflow. Other
+  files call these instead of compiling their own copy.
+- `NEARONE` (`27,3770`, 2DEC .999999999) is ASCENT_GUIDANCE's DLOAD operand
+  (163, 618) and is exported as `lm_time_free_fall_nearone`.
+
+The push-down list equates (`TFFDELQ = 10D` through `TFFTEM = 36D`, and `RAPO`,
+`RPER`) assemble no words. They name push-down offsets, and each one appears in
+the operand words of the orders that use it (for example `STORE TFFX` is code
+`000043`, 34D + 1); the native code passes those words as literals.
+
 ### How it is translated
 
 Every interpretive pair is compiled. The routine uses the general Luminary
@@ -56,6 +75,9 @@ an address order followed by an order pair (negative word) takes PUSHUP, as
 decrements OVFIND (CCS/TS), so an incoming OVFIND changes MAXRA/RAPO and the
 cases cover OVFIND `0` and `+-1`; ALFA is tested with BZE on the full
 triple-precision MPAC, so the parabolic branches need an exact zero.
+
+OVFIND is sampled at `0`, `+1` and `-1` only, the values overflow leaves in
+it; no caller enters with another value.
 
 ### Interpreter ABI
 
@@ -315,7 +337,7 @@ its address (`tools/lm_time_free_fall_source.py`,
 | 675 | 27,3745 | `2DEC* -1.01310997 E-1*` | 74604 43667 | `rtb_tx` |
 | 677 | 27,3747 | `2DEC* 5.609004986 E-2*` | 01626 37256 | `rtb_tx` |
 | 679 | 27,3751 | `2DEC* -1.536156925 E-2*` | 77404 52071 | `rtb_tx` |
-| 681 | 27,3753 | `ENDT(X) TC DANZIG` | 06061 | `rtb_tx` |
+| 681 | 27,3753 | `ENDT(X) TC DANZIG` | 06061 | `lm_time_free_fall_tcdanzig` |
 | 701 | 27,3754 | `PI/16 2DEC 3.141592653 B-4` | 06220 37553 | `constants` |
 | 703 | 27,3756 | `LIM(-22) 2OCT 3777737700` | 37777 37700 | `constants` |
 | 705 | 27,3760 | `DP(-22) 2OCT 0000000100` | 00000 00100 | `constants` |
@@ -329,36 +351,55 @@ its address (`tools/lm_time_free_fall_source.py`,
 Hashes: `evidence/lm-time-free-fall/SHA256.json`. Bulk files are assets of the `evidence-lm-time-free-fall` release
 (`python3 tools/evidence.py fetch lm-time-free-fall`).
 
-- Source-to-native map and independent assembly comparison:
-  `python3 tools/lm_time_free_fall_source.py` reassembles the unchanged file
-  with the pinned yaYUL (rope equal to the certified fixed-data rope) and maps
-  all 266 words to native literals in 27 functions.
-- Oracle: `tools/lm_time_free_fall_reference.c` (GPL, host only) runs the
-  unchanged Luminary099 in the pinned yaAGC hardware-DV variant over 65536
-  sampled call chains (`tests/lm_time_free_fall_cases.c`): the SR30.1 chains
-  TFFCONMU, +TFFRP/RA, +CALCTPER, +CALCTFF and TFFCONIC chains, Earth and Moon
-  scaling, elliptic, near-parabolic, exactly parabolic, hyperbolic and
-  axis-aligned apse orbits, raw edge words, both IRQ settings, SUPER, EBANK,
-  all five VACs and OVFIND. `tools/lm_time_free_fall_differential.py` checks
-  the native producer against every chain and pins the stream identity
-  (`lm-time-free-fall-source-stream.json`, SHA256 `4ac7d7e5...54bfe2`,
-  269,090,816 bytes; 64825 chains return, 711 reach the SQRT abort). Every
-  native branch is reached except two unreachable `default` arms.
+- Source-to-native map: `python3 tools/lm_time_free_fall_source.py`
+  reassembles the unchanged file with the pinned yaYUL (rope equal to the
+  certified fixed-data rope) and maps all 266 words to native literals in 28
+  functions (`lm-time-free-fall-source-map.json`). This only shows that each
+  word is accounted for; it is not the comparison.
+- Independent assembly comparison: `tools/lm_time_free_fall_reference.c`
+  (GPL, host only) runs the unchanged Luminary099 in the pinned yaAGC
+  hardware-DV variant over 65536 sampled call chains
+  (`tests/lm_time_free_fall_cases.c`), and
+  `tools/lm_time_free_fall_differential.py` requires the native producer to
+  equal every 2053-word row (`lm-time-free-fall-source-stream.json` and
+  `lm-time-free-fall-reference.snapshots.bin.xz`: decoded SHA256
+  `4ac7d7e5...54bfe2`, 269,090,816 bytes; 64825 chains return, 711 reach the
+  SQRT abort). The sampled input classes are: the SR30.1 chains (TFFCONMU,
+  +TFFRP/RA, +CALCTPER, +CALCTFF) and TFFCONIC chains; Earth and Moon scaling;
+  elliptic, near-parabolic, exactly parabolic, hyperbolic and axis-aligned apse
+  orbits from circular speed times a factor, a flight-path angle and a random
+  plane; one case in eight with raw edge words (signed zeros, extremes,
+  overflow-sized terms) in the state vector; poisoned erasable debris; both IRQ
+  settings, SUPER, EBANK, all five VACs and OVFIND `0`/`+-1`. Every native
+  branch the stream can reach is reached.
 - Host and sanitizer results: `make test-lm-time-free-fall
   sanitize-lm-time-free-fall`. Strict and ASAN/UBSAN builds each pass 16
-  frozen chains, 22 admission guards, 88 frozen phase steps and the full
-  65536-chain stream (`lm-time-free-fall-checks.log`).
-- Phase frontiers: `tools/freeze_lm_time_free_fall_phases.py` requires each of
-  the 247 native frontiers of the 16 frozen chains to equal, in order, an
-  original NEWOPS image of the oracle, then freezes 88 steps in four groups.
+  frozen chains, 22 admission guards, every frozen C64 phase step and the full
+  65536-chain stream; the checks log records each PASS line, including the
+  oracle comparison (`lm-time-free-fall-checks.log`). A clean checkout needs
+  `deps/lm-rtb-fixture` from `tools/setup_cloud.sh` first.
+- Phase frontiers: `tools/freeze_lm_time_free_fall_phases.py` requires each
+  native frontier of the frozen chains to equal, in order, an original NEWOPS
+  image of the oracle (`lm-time-free-fall-phase-steps.json`).
+- Which steps the C64 runs: the freeze tool records, with clang edge guards
+  (`tools/lm_time_free_fall_cover.c`, `tools/edge_cover.c`), the control-flow
+  edges of `src/lm_time_free_fall.c` each native step takes over all 65536
+  chains, and picks a greedy set of steps that takes every edge the host
+  stream takes, plus two evenly spaced steps of each phase from the 16 fixed
+  chains. `tools/lm_time_free_fall_c64_cover.py` checks the result with gcc
+  gcov: the frozen C64 rows take every branch outcome of the phase code that
+  the host stream takes (74 of 109; the other 35 are the LTF_FAILED guards on
+  compiled literal operands and abort exits no sampled chain reaches, listed
+  in the results file). That includes BOVB TCDANZIG with overflow, MAXRA,
+  the CALCTFF branch, BMN to MAXTFF1, DUMPTFF1, NEGTFF and the period logic,
+  and ENDTFF's BOV to MAXTFF.
 - C64 execution results: `make vice-lm-time-free-fall`. The whole routine is
-  too big for one PRG beside two images, so four PRGs each link one phase
-  group and keep both images in the RAM under KERNAL ROM (`$01=$35`). Their
-  phase steps start from a debris-only base state, so the 6502 build carries
-  no orbit sampling. In VICE (PAL, stock ROMs): group 1 (entry to RAPO) 24
-  steps, group 2 (CALCTPER to TFFXTEST) 34 steps, group 3 (series to MAXTFF)
-  22 steps, group 4 (ellipse) 8 steps, no failures
-  (`lm-time-free-fall-results.json`).
+  too big for one PRG beside two images, so each PRG links one phase group
+  (1 entry to RAPO, 2 CALCTPER to TFFXTEST, 3 series to MAXTFF, 4 ellipse)
+  and keeps both images in the RAM under KERNAL ROM (`$01=$35`); a group with
+  more rows than fit below `$c000` is split into parts. Phase steps start from
+  a debris-only base state, so the 6502 build carries no orbit sampling. The
+  VICE results (PAL, stock ROMs) are in `lm-time-free-fall-results.json`.
 
 ## Limits
 
@@ -366,5 +407,6 @@ Hashes: `evidence/lm-time-free-fall/SHA256.json`. Bulk files are assets of the `
   Running it as one program needs overlay ABI 2 modules (the 25 phases are the
   module entry points).
 - TFFCONIC is qualified from the EDOP `+0` entry only, since no Luminary099
-  caller exists.
+  caller exists. A future caller must re-qualify it from the state its CALL
+  leaves.
 - Numerical validity of the conic formulas is the original's; no widened claim.
