@@ -55,5 +55,5 @@ Hashes: `evidence/lanec-pin-gaps/SHA256.json`.
   without high NOUNCADR bits, both missions) and `lanec-pin-gaps-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-pin-gaps sanitize-lanec-pin-gaps`
   (`lanec-pin-gaps-sanitize.txt`).
-- C64 execution results: `make vice-lanec-pin-gaps`, 214 frozen cases on a
+- C64 execution results: `make vice-lanec-pin-gaps`, 223 frozen cases (every entry, both missions) on a
   VICE PAL C64 (`lanec-pin-gaps-vice.txt`).

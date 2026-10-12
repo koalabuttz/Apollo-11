@@ -1,0 +1,7 @@
+{
+  "suite": "di-mark",
+  "cases": 2944,
+  "differing": 0,
+  "native_sha256": "82a84af3126548737ab0b8ebdc308569fadddea08579ad7109464910f77e3740",
+  "oracle_sha256": "82a84af3126548737ab0b8ebdc308569fadddea08579ad7109464910f77e3740"
+}
