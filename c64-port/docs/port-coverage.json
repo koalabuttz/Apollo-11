@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -1588,8 +1588,16 @@
             "src/cm_interbank_sites.inc",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 354 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "scope": "All 13 entries and SWCALL -1 registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 354 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
           "verification": "docs/CM-INTERBANK-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interbank_routines.c",
+            "src/cm_interbank_complete.c"
+          ],
+          "scope": "Entries reached with an unusual Q: SWCALL -1 (every RTB; INCR Q, then SWCALL) registered as the 14th routine; BANKJUMP with Q 0..07775 (SAVELOCS TC L, TC SUPERSW then TCF BANKJUMP); SWRETURN/ISWRETRN with any Q. 512 cases of this mission equal yaAGC on all 2048 erasable words at the callee.",
+          "verification": "docs/INTERBANK-Q.md"
         }
       ],
       "complete_native_coverage": {
@@ -6010,8 +6018,16 @@
             "src/lm_interbank_sites.inc",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 448 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "scope": "All 13 entries and SWCALL -1 registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 448 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
           "verification": "docs/LM-INTERBANK-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/lm_interbank_routines.c",
+            "src/lm_interbank.c"
+          ],
+          "scope": "Entries reached with an unusual Q: SWCALL -1 (every RTB; INCR Q, then SWCALL) registered as the 14th routine; BANKJUMP with Q 0..07775 (SAVELOCS TC L, TC SUPERSW then TCF BANKJUMP); SWRETURN/ISWRETRN with any Q. 512 cases of this mission equal yaAGC on all 2048 erasable words at the callee.",
+          "verification": "docs/INTERBANK-Q.md"
         }
       ],
       "complete_native_coverage": {

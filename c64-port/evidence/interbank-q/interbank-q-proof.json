@@ -1,0 +1,36 @@
+{
+ "cases": 1024,
+ "reached_callee": 1024,
+ "native_equals_yaagc": true,
+ "by_kind": {
+  "LM SWCALL -1": 256,
+  "CM SWCALL -1": 256,
+  "LM BANKJUMP": 256,
+  "CM BANKJUMP": 256
+ },
+ "bankjump_q_below_0100": 256,
+ "ropes": {
+  "Luminary099": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ },
+ "oracle_sha256": "72a95787b9528f59fba5e8859d38b8ea7d9d34028b9cafc155577f95caa9b1d5",
+ "dependencies": {
+  "tests/interbank_q_cases.c": "fbfbebefa802c5fb05931b59a5a9af7860cd7a8430fa144f01d5f1d89b0cb3ee",
+  "src/lm_interbank_routines.c": "1ce4bc11a80c244b0e4d35440f9da513df49235d625e3c25b38cecd1f401026d",
+  "src/lm_interbank.c": "9c649677bfe8bdb4724ea5c88a185701cfae8b44203384f623c3c17433371a2e",
+  "src/cm_interbank_routines.c": "1651221a53dfc174a55f6009bc8c903d19e32c3d55c6ee4b03f9022a2180a2f2",
+  "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
+  "src/agc_transfer.c": "6beca7f83f3223cba4030cc0c153107c2aeed860a77a57e605fb79f4f3fd1047",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "include/agc_transfer.h": "4d52d21471584b4c7426bac7d725721293cfad61c6588ed6ab0cafd56ca48e01",
+  "include/lm_interbank_routines.h": "e31945e439aa5c136f282ddb2049cfdf73c10784826522205e3d90b8c1eea792",
+  "include/cm_interbank_routines.h": "c04b25bca148269e91be5b386e4f877533604d685fb83f4f4329246ba8046cde",
+  "include/lm_interbank.h": "9eae04a5f77310085c91b4a5f39fb37f5d780d7c81539afeb5548e721157c064",
+  "include/cm_interbank_complete.h": "df6dd556b2e3694246f61ab5c59c6260d02d7d9b130edf427cc1234730f7db72",
+  "tests/interbank_q_cases.h": "fd256d06443050a4a511a9c96bb522d8e205bb90c22517c2fbc9a766b18a7ca8"
+ },
+ "boundary": "from the INTER-BANK entry (SWCALL -1 or BANKJUMP) with a random erasable image to the first instruction of the callee; yaAGC stops when Z and FB first equal the native ones"
+}

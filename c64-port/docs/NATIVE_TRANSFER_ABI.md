@@ -40,10 +40,15 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   the T6RUPT programs drive (`docs/LM-T6RUPT.md`), and input channel 15, the
   DSKY key code KEYRUPT1 reads (`docs/KEYRUPT-UPRUPT.md`), and output
   channel 10 (the last DSKY relay word) and input channel 32 (the PRO key) that
-  T4RUPT uses (`docs/T4RUPT-CORE.md`). Channel 13 holds only the
-  CPU-writable bits (043777). Initializers that name only the first two
-  members leave the others zero. A routine that needs it refuses when it is
-  NULL.
+  T4RUPT uses (`docs/T4RUPT-CORE.md`). It also holds output channels 12 and
+  14, input channels 30, 31 and 33, and the scaler channels 3 and 4, for the
+  IMU monitor, the DAP and compiled READ/RXOR orders. Input channels hold
+  what READ returns, output channels the last word written, and channel 13
+  only the CPU-writable bits (043777). This is the one channel record for
+  every lane; new channels are appended by Lane A, not kept in mission I/O
+  records. Zero-initialize it with `agc_hardware hw = {0};`, because a
+  partial positional list fails `-Wmissing-field-initializers` whenever a
+  field is added. A routine that needs it refuses when it is NULL.
 - **Erasable continuations.** A few files store a `TC` into erasable memory and
   run it later (RESTARTS writes the service call at GOLOC-1 and its own
   continuation at GOLOC+2). Such a point is keyed
@@ -57,7 +62,9 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   a program's interpretive tables, Z at DANZIG with EDOP positive is an
   interpretive point keyed by LOC under BANKSET, the RTB's operand word. The
   file owning the pair registers a routine there that accepts exactly its
-  pair's EDOP code. See `docs/DANZIG-PENDING.md`.
+  pair's EDOP code. See `docs/DANZIG-PENDING.md`. The RTB itself enters
+  INTER-BANK at `SWCALL -1` (BANKCALL's `INCR Q`), which both missions'
+  interbank tables register (`docs/INTERBANK-Q.md`).
 - **Inline operands.** The word a caller places after its `TC` (alarm codes,
   BANKCALL/POSTJUMP CADRs) is the caller's compiled constant. A
   `agc_site_operand` table holds it for every genuine call site, keyed by the
