@@ -51,6 +51,25 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
 static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[5]==06037u&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);
 }
+/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction
+ * word w in 16-bit ones' complement, then overflow-corrected. */
+static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
+ unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
+ if(sum&0200000u)sum=(sum+1u)&0177777u;
+ return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
+}
+/* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
+static MAYBE_UNUSED void msu(apollo_overlay_state *s,unsigned k){
+ unsigned ui,uj,d;agc_word v;
+ if(k<3u){ui=W[0]&0177777u;uj=~(unsigned)W[k]&0177777u;}
+ else{ui=((W[0]&037777u)|((W[0]>>1)&040000u))&077777u;uj=~(unsigned)ai_word(s,k)&077777u;}
+ d=ui+uj+1u;if(d&040000u){d|=0100000u;d--;}
+ if(k==2u)W[0]=(agc_register)(d&0177777u);
+ else{v=(agc_word)(d&077777u);W[0]=(agc_register)((v&040000u)?(v|0100000u):v);}
+ if(k>=020u&&k<=023u)ai_put(s,k,ai_word(s,k));
+ W[1]=(agc_register)((((W[1]&037777u)|((W[1]>>1)&040000u))&040000u)?(((W[1]&037777u)|((W[1]>>1)&040000u))|0100000u):((W[1]&037777u)|((W[1]>>1)&040000u)));
+}
 /* TC Q: the word in Q runs as an instruction; a TC leaves Q = 3. */
 static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
  agc_word q=W[2];

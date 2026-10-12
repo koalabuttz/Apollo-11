@@ -1,6 +1,6 @@
 # Compiling a source file into native routines (`tools/interp_compile.py`)
 
-Used by Lane D1b milestones (`inflight-align`, `geometry`, ...). Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
+Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, ...). Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 
 ## What it emits
 
@@ -13,6 +13,10 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, ...). Any lane can us
   - DANZIG.
 - A fixed operand is a `K` array holding the rope words at its address, so nothing reads the rope at run time.
 - **Basic** routines are keyed by the physical Z. Each instruction is one `agc_image_ops` call, decoded from the instruction word itself, with EXTEND and INDEX prefixes. Control flow inside the file is C `goto`. A TC into the file sets Q and continues at the target; its return point is a routine of its own. `TC Q` runs the word in Q as the hardware does: a TC to its address, leaving Q at 3. A transfer out of the file sets Z and ends the routine. A TS overflow skip skips one word, even when that word is an EXTEND.
+- INDEX adds C(K) to the whole next instruction word, with the ones'-complement end carry, as yaAGC does. If that changes the instruction's order, the routine refuses.
+- A `TC Q` whose Q is a return point of an in-file TC continues in the routine. When the file has INCR Q (TIMECHK), the two words after each such return are return points too.
+- Fixed words that basic instructions read (`CAF`, `AD`, `MP`, `DCA` on constants) are recorded in the source map as constants.
+- An outside call listed in the spec's `noreturn` owns its inline words (POSTJUMP's CADR) but has no return point.
 - RTB to a routine with a native implementation (`rtb` in the spec, such as `rtb_angles`) calls it. BOVB's branch to basic code ends the routine at that address.
 - Every routine first checks that the image is one the original could be in. Anything else is `EXEC_OUT_OF_SCOPE` with the image unchanged.
 - `--check` fails when the generated files differ from what the listings give.
@@ -27,7 +31,7 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, ...). Any lane can us
 - a transfer from the file to an outside basic routine;
 - the case's own caller return.
 
-The states are random words, small magnitudes and unit vectors. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file.
+The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`). FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file.
 
 `--freeze` writes:
 

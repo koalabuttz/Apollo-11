@@ -88,12 +88,13 @@ class Mission:
         self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)))
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
-        self.states = {L.labels[k]: v for k, v in spec.get('states', {}).items()}
+        self.ebank = spec.get('ebank')
+        self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
         that name one of the file's entries."""
-        ents = set(cadr(self.L.labels[e]) for e in IC.entries(spec, self.m))
+        ents = set(cadr(self.cp.label_phys(e)) for e in IC.entries(spec, self.m))
         out = []
         lines = self.L.lines
         for i, ln in enumerate(lines):
@@ -137,7 +138,7 @@ def case(mi, point, n, rng):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
     fb = bank << 10
-    eb = rng.randrange(8)
+    eb = rng.randrange(8) if mi.ebank is None else mi.ebank
     E[3] = eb << 8
     E[4] = fb
     E[6] = fb | eb

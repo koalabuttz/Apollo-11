@@ -52,4 +52,31 @@ SPECS = {
                           'constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2'},
         'freeze_stride': 32,
     },
+    'kalcmanu-steering': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'KALCMANU_STEERING.agc', 'cm': 'KALCMANU_STEERING.agc'},
+        'base': {'lm': 'lm_kalcmanu_steering', 'cm': 'cm_kalcmanu_steering'},
+        'symbol': {'lm': 'lm_kalcmanu_steering', 'cm': 'cm_kalcmanu_steering'},
+        # Entries from other files, and the Waitlist/Executive/POSTJUMP
+        # targets the file names itself.
+        'entries': {'lm': ['NEWDELHI', 'NEWANGL', 'GOODMANU', 'MANUSTOP', 'UPDTCALL'],
+                    'cm': ['NEWDELHI', 'NEWANGL', 'MANUSTOP', 'UPDTCALL', 'CONTMANU', 'INCRDCDU-1',
+                           'STOPRATE', 'LOADCDUD', 'ZEROEROR', 'ENDMANU', 'LOADYZ']},
+        'externals': {'BANKCALL': 1, 'IBNKCALL': 1, 'POSTJUMP': 1, 'WAITLIST': 2, 'FINDVAC': 2,
+                      'SPVAC': 0, 'TASKOVER': None, 'ENDOFJOB': None},
+        # Calls that take inline words but never return past them.
+        'noreturn': ['POSTJUMP'],
+        'rtb': {'V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_VECTOR_ONE_TO_TWO)',
+                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/kalcmanu_steering_target.c',
+        'freeze_stride': 32,
+        # ISITAUTO leaves +0 or +1 in A; CCS A's negative arms are the
+        # interpretive words that follow.
+        'states': {'NEWDELHI+2': {'0': [0, 1]}},
+        # The file's EBANK= TTEMP (E6, as its 2CADR BBCONs carry): its
+        # switched names (KSPNDX, BRATE...) mean nothing under another EB.
+        'ebank': 6,
+    },
 }

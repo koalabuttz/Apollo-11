@@ -4,8 +4,8 @@
   "release": "evidence-geometry",
   "files": {
     "geometry-differential.log": {
-      "sha256": "b8509ae26363bb6dcfacf963b399e68f60e7eceac73b13f2a3c3a454340dee8c",
-      "bytes": 749,
+      "sha256": "be2d8ec32cb5fb497cae0e3afa2ea2e6e43770ddbf6b481de9b463768df8c290",
+      "bytes": 795,
       "store": "release"
     },
     "geometry-host.log": {

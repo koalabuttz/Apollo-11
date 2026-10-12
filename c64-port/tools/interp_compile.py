@@ -57,6 +57,10 @@ SHORTS = set(['SR%d' % i for i in range(1, 5)] + ['SL%d' % i for i in range(1, 5
 STORES = ('STORE', 'STODL', 'STOVL', 'STCALL', 'STODL*', 'STOVL*')
 
 
+DATA_OPS = ('DEC', '2DEC', 'OCT', '2OCT', 'CADR', '2CADR', 'ADRES', 'ECADR', 'GENADR', 'REMADR',
+            'BBCON', '2FCADR', '2BCADR', 'DEC*', '2DEC*', 'VN', 'FCADR', 'BBCON*', '=', 'EQUALS')
+
+
 class CompileError(Exception):
     pass
 
@@ -143,10 +147,14 @@ class Compiler:
         self.vloadstar = 0o40001
         self.starts = {}       # phys -> ('i'|'b', reason)
         self.consts = {}       # phys -> label
+        self.basic_fixed = set()  # rope words basic instructions read as operands
         self.cadr_erasable = set()
         self.externals = {}    # outside basic address (physical) -> name
         self.externals_any = {}  # the same, reached through interpreter code (BOVB)
         self.rtb = spec.get('rtb', {})
+        # INCR Q anywhere in the file: in-file subroutine calls may return
+        # one or two words past their return address.
+        self.incr_q = any(l.op == 'INCR' and l.words == [0o24002] for l in self.lines)
 
     # ---- addresses -------------------------------------------------------
     def word(self, phys):
@@ -155,6 +163,13 @@ class Compiler:
             # second word of a two-word line
             return self.L.word(phys)
         return ln.words[0]
+
+    def label_phys(self, lab):
+        """Physical address of 'LABEL' or 'LABEL+n' / 'LABEL-n'."""
+        import re
+        m = re.match(r'^(.*?)([+-]\d+)?$', lab)
+        base = self.L.labels.get(m.group(1))
+        return None if base is None else base + int(m.group(2) or 0)
 
     def name(self, phys):
         return self.L.label_at(phys) or ''
@@ -190,7 +205,7 @@ class Compiler:
     def decode(self):
         self.work = []
         for lab in entries(self.spec, self.m):
-            phys = self.L.labels.get(lab)
+            phys = self.label_phys(lab)
             if phys is None:
                 raise CompileError('entry %s not found' % lab)
             ln = self.code[phys]
@@ -469,6 +484,15 @@ class Compiler:
         return 0o2000 + off
 
     def basic_unit(self, p, bank):
+        st, succ = self._basic_unit(p, bank)
+        if self._ix:
+            w, k, mask = self._ix
+            head = st[0]
+            st = [head, '{agc_word iw=ixw(s,0%05o,0%ou);if((iw^0%05ou)&0%05ou)return EXEC_OUT_OF_SCOPE;' % (
+                w, k, w, 0o77777 & ~mask)] + ['  ' + x for x in st[1:]] + ['}']
+        return st, succ
+
+    def _basic_unit(self, p, bank):
         """(statements, successors, words, branch targets) for the basic
         instruction (with any EXTEND/INDEX prefix) at p. Successors are
         physical addresses compiled into the same routine; a statement list
@@ -485,7 +509,7 @@ class Compiler:
                 w = self.L.word(p)
                 continue
             op, qc, k12, k10 = (w >> 12) & 7, (w >> 10) & 3, w & 0o7777, w & 0o1777
-            if op == 5 and qc == 0 and not extended and index is None and k10 not in (0o17,):
+            if op == 5 and qc == 0 and not extended and index is None and k10 != 0o17:
                 index = k10       # INDEX K: the next instruction's address + C(K)
                 p += 1
                 w = self.L.word(p)
@@ -503,10 +527,16 @@ class Compiler:
             raise CompileError('basic flow runs into %s' % self.where(p))
         here = '/* %s %s %s */' % (self.where(p), ln.op, ln.operand)
 
+        self._ix = None
+
         def ea(k):
             if index is None:
                 return '0%04ou' % k
-            return '(unsigned)(0%04ou+ai_word(s,0%04ou))' % (k, index)
+            # INDEX adds C(K) to the whole instruction word at run time
+            # (ixw); the opcode bits must not change.
+            mask = 0o7777 if (w & 0o7777) - k in (0, 1) else 0o1777
+            self._ix = (w, index, mask)
+            return '(unsigned)((iw&0%ou)-%du)' % (mask, (w & mask) - k)
 
         def eras(k, what):
             if k in (4, 5, 6) and what in ('ts', 'xch', 'lxch', 'qxch', 'dxch', 'das', 'ads', 'incr', 'aug', 'dim'):
@@ -516,7 +546,9 @@ class Compiler:
         def fixed(k):
             if index is not None:
                 raise CompileError('INDEX on a fixed operand at %s' % self.where(p))
-            return self.phys_of(k, bank)
+            fp = self.phys_of(k, bank)
+            self.basic_fixed.add(fp)
+            return fp
 
         def leave(z_phys, why, note=''):
             """Transfer to a basic address: in the file a goto, else the end."""
@@ -535,8 +567,10 @@ class Compiler:
                 if k12 == 4:
                     return st + ['io->interrupt_enabled=0u;'], [nxt]
                 if k12 == 2:
-                    # TC Q runs C(Q) as an instruction: TC its address, Q = 3.
-                    return st + ['return tc_q(s);'], []
+                    # TC Q runs C(Q) as an instruction: TC its address, Q = 3
+                    # (a return inside this routine is a goto; basic_block
+                    # fills in the dispatch).
+                    return st + ['@TCQ@'], []
                 if k12 < 0o2000:
                     raise CompileError('TC to erasable %04o at %s' % (k12, self.where(p)))
                 tz = self.phys_of(k12, bank)
@@ -548,7 +582,11 @@ class Compiler:
                     return st, []
                 if self.in_file(tz):
                     self.add_start(nxt, 'b', 'return from %s' % (lab or self.where(tz)))
-                    return st + ['goto L%o;' % tz], [tz]
+                    # The return, and the skips INCR Q makes, stay in this routine.
+                    rets = [nxt] + ([nxt + 1, nxt + 2, nxt + 3] if self.incr_q else [])
+                    rets = [q for q in rets if self.is_basic(q)]
+                    self.returns_seen.update(rets)
+                    return st + ['goto L%o;' % tz], [tz] + rets
                 if lab not in ext:
                     raise CompileError('TC %s at %s: not in the spec externals' % (lab or '%04o' % k12, self.where(p)))
                 n = ext[lab]
@@ -556,12 +594,21 @@ class Compiler:
                 if n is not None:
                     # The inline words (the call's operands) belong to this TC.
                     self.unit_words = range(start, nxt + n)
-                    self.add_start(nxt + n, 'b', 'return from ' + lab)
+                    if lab not in self.spec.get('noreturn', ()):
+                        self.add_start(nxt + n, 'b', 'return from ' + lab)
                 return st + ['W[5]=0%04o;return EXEC_OK; /* %s */' % (k12, lab)], []
             if op == 1 and qc == 0:
-                st.append('switch(ai_ccs(s,%s)){case 0:goto L%o;case 1:goto L%o;case 2:goto L%o;default:goto L%o;}'
-                          % (eras(k10, 'ccs'), nxt, nxt + 1, nxt + 2, nxt + 3))
-                return st, [nxt, nxt + 1, nxt + 2, nxt + 3]
+                # A CCS outcome landing outside basic code (the source's
+                # data or interpretive words) has no producer: refused.
+                arms, succ = [], []
+                for q in (nxt, nxt + 1, nxt + 2, nxt + 3):
+                    if self.is_basic(q):
+                        arms.append('goto L%o;' % q)
+                        succ.append(q)
+                    else:
+                        arms.append('return EXEC_OUT_OF_SCOPE;')
+                st.append('switch(ai_ccs(s,%s)){case 0:%scase 1:%scase 2:%sdefault:%s}' % ((eras(k10, 'ccs'),) + tuple(arms)))
+                return st, succ
             if op == 1:
                 if index is not None:
                     raise CompileError('indexed TCF at %s' % self.where(p))
@@ -581,6 +628,9 @@ class Compiler:
                 if qc == 1:
                     return st + ['ai_dxch(s,%s);' % eras(k10 - 1, 'dxch')], [nxt]
                 if qc == 2:
+                    if not self.is_basic(nxt + 1):
+                        # An overflow skip out of the code has no producer.
+                        return st + ['if(ai_ts(s,%s))return EXEC_OUT_OF_SCOPE;' % eras(k10, 'ts')], [nxt]
                     return st + ['if(ai_ts(s,%s))goto L%o;' % (eras(k10, 'ts'), nxt + 1)], [nxt, nxt + 1]
                 return st + ['ai_xch(s,%s);' % eras(k10, 'xch')], [nxt]
         else:
@@ -595,12 +645,13 @@ class Compiler:
             if op == 2:
                 fn = ('msu', 'qxch', 'aug', 'dim')[qc]
                 if fn == 'msu':
-                    raise CompileError('MSU at %s' % self.where(p))
+                    return st + ['msu(s,%s);' % eras(k10, fn)], [nxt]
                 return st + ['ai_%s(s,%s);' % (fn, eras(k10, fn))], [nxt]
             if op in (3, 4):
                 fn = 'dca' if op == 3 else 'dcs'
                 if k12 >= 0o2000:
                     fp = fixed(k12) - 1
+                    self.basic_fixed.add(fp)
                     return st + ['{static const agc_word k[2]={0%05o,0%05o};ai_%sf(s,k);}' % (
                         self.L.word(fp), self.L.word(fp + 1), fn)], [nxt]
                 return st + ['ai_%s(s,%s);' % (fn, eras(k12 - 1, fn))], [nxt]
@@ -612,12 +663,17 @@ class Compiler:
                 return st + ['ai_mp(s,%s);' % eras(k12, 'mp')], [nxt]
         raise CompileError('unsupported basic instruction %05o (%s %s) at %s' % (w, ln.op, ln.operand, self.where(p)))
 
+    def is_basic(self, q):
+        ln = self.code.get(q)
+        return (ln is not None and ln.op and not is_interp_op(ln.op) and ln.op not in DATA_OPS)
+
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
         reachable from it without leaving the file, in address order, with
         labels where control jumps."""
         bank = start // 1024
         units = {}
+        self.returns_seen = set()
         work = [start]
         while work:
             p = work.pop()
@@ -633,11 +689,19 @@ class Compiler:
         order = sorted(units)
         order.remove(start)
         order.insert(0, start)
+        tcq = 'return tc_q(s);'
+        if self.returns_seen:
+            tcq = 'switch(W[2]){%sdefault:return tc_q(s);}' % ''.join(
+                'case 0%04ou:W[2]=3u;goto L%o;' % (self.logical_of(r), r) for r in sorted(self.returns_seen))
         out = []
         for i, p in enumerate(order):
             st, succ = units[p]
+            st = [x.replace('@TCQ@', tcq) for x in st]
             out.append('L%o:;' % p)
             out.extend(st)
+            last = st[-1].strip()
+            if last.startswith('goto ') or last.startswith('switch(') or last.startswith('return ') or last.endswith('return EXEC_OK;') or 'return EXEC_OK; /*' in last:
+                continue
             fall = [q for q in succ if q not in self._jumps(st)]
             if fall:
                 f = fall[0]
@@ -673,6 +737,8 @@ class Compiler:
                     use = {'routine': self.where(self.owner[q]), 'function': 'r%o' % self.owner[q]}
                 elif q in const:
                     use = {'constant': 'K%o' % const[q]}
+                elif q in self.basic_fixed:
+                    use = {'constant': 'basic operand (inline)'}
                 else:
                     use = {}
                 rows.append(dict(address=self.where(q), word='%05o' % self.L.word(q),
@@ -741,6 +807,25 @@ class Compiler:
         c.append(' * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */')
         c.append('static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
         c.append(' return W[5]==0%04ou&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % self.newops)
+        c.append('}')
+        c.append('/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction')
+        c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
+        c.append('static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){')
+        c.append(' unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;')
+        c.append(' a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;')
+        c.append(' if(sum&0200000u)sum=(sum+1u)&0177777u;')
+        c.append(' return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);')
+        c.append('}')
+        c.append('/* MSU K: two\'s-complement A - C(K) to ones\' complement (no agc_image_ops form). */')
+        c.append('static MAYBE_UNUSED void msu(apollo_overlay_state *s,unsigned k){')
+        c.append(' unsigned ui,uj,d;agc_word v;')
+        c.append(' if(k<3u){ui=W[0]&0177777u;uj=~(unsigned)W[k]&0177777u;}')
+        c.append(' else{ui=((W[0]&037777u)|((W[0]>>1)&040000u))&077777u;uj=~(unsigned)ai_word(s,k)&077777u;}')
+        c.append(' d=ui+uj+1u;if(d&040000u){d|=0100000u;d--;}')
+        c.append(' if(k==2u)W[0]=(agc_register)(d&0177777u);')
+        c.append(' else{v=(agc_word)(d&077777u);W[0]=(agc_register)((v&040000u)?(v|0100000u):v);}')
+        c.append(' if(k>=020u&&k<=023u)ai_put(s,k,ai_word(s,k));')
+        c.append(' W[1]=(agc_register)((((W[1]&037777u)|((W[1]>>1)&040000u))&040000u)?(((W[1]&037777u)|((W[1]>>1)&040000u))|0100000u):((W[1]&037777u)|((W[1]>>1)&040000u)));')
         c.append('}')
         c.append('/* TC Q: the word in Q runs as an instruction; a TC leaves Q = 3. */')
         c.append('static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){')

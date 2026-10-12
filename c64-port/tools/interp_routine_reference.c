@@ -52,7 +52,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
      * the file made them; the interpreter's exits stop from anywhere. */
     if(prev_in){if(zp==stop){stopped=1;break;}for(i=0;i<t->nf;++i)if(zp==t->from_file[i]){stopped=1;break;}}
     for(i=0;i<t->n;++i)if(zp==t->ext[i]){stopped=1;break;}
-    prev_in=zp!=0xfffeu&&!outside(t,zp);
+    if(zp!=0xfffeu)prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
     if(stopped)break;
    }
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}

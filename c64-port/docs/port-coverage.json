@@ -1304,8 +1304,55 @@
       "sha256": "06e71db5a48ba879b3cf730693a7a6e4db3f433a2ed95dcfceaf23dee11487fa",
       "bytes": 5059,
       "lines": 265,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_kalcmanu_steering.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (179 words in banks 02, 20, 21 and 22): NEWDELHI, NEWANGL, the INCRDCDU loop, TIMECHK, MANUSTAT with RATEBIAS, CONTMANU, UPDTCALL, ZEROEROR, MANUSTOP, ENDROLL, ENDMANU, LOADCDUD, LOADYZ and STOPRATE, as 23 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/KALCMANU-STEERING.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, any FB for STOPRATE in fixed-fixed), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or +1 at NEWDELHI's ISITAUTO return, and any values of the steering erasables.",
+        "external_continuations": [
+          "BANKCALL and IBNKCALL (basic, their inline CADR)",
+          "POSTJUMP with its inline CADR (no return)",
+          "MXM3 and DCMTOCDU through CALL (interpretive)",
+          "Interpreter V1STO2S through RTB (native, src/rtb_angles.c)",
+          "WAITLIST, FINDVAC and SPVAC with their inline words (Executive/Waitlist)",
+          "TASKOVER and ENDOFJOB",
+          "The caller's return through Q"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-source-map.json",
+            "sha256": "18f7100a7cf9b3eba62d2cfcf5a88bc4ad1ef1aa810f104938d81225c591df82"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
+            "sha256": "2db77ae9e525037f1ae9cac984aab939c8aaa2f56effb057b772ba8a48b371f6"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
+            "sha256": "8ebf4916b891a8169486d28700e04f2bb9f0a25042579ffa782f5c680a8b918e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
+            "sha256": "5100c78b3f0a786419ab149f391b4b59694e2e7bc0048c4dd782b3308bb73cfe"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/KEYRUPT_UPRUPT.agc",
@@ -4198,8 +4245,54 @@
       "sha256": "6a330bb23cb8f6c15cd50ffe8550ffd7599d19fcd9b9c03f0b2fbe8f081c21da",
       "bytes": 4807,
       "lines": 221,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_kalcmanu_steering.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (159 words, 22,3003-3241): NEWDELHI, NEWANGL, the INCRDCDU loop, TIMECHK with its INCR Q returns, MANUSTAL, MANUSTAT with RATEBIAS, UPDTCALL, MANUSTOP and GOODMANU, as 17 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/KALCMANU-STEERING.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= TTEMP), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or +1 at NEWDELHI's ISITAUTO return, and any values of the steering erasables (BCDU, NCDU, DELDCDU, CDUXD, TM, NEXTIME, OMEGAPD, DELPEROR, TIME1/TIME2).",
+        "external_continuations": [
+          "BANKCALL ISITAUTO and IBNKCALL (basic, their inline CADR)",
+          "MXM3 and DCMTOCDU through CALL (interpretive)",
+          "Interpreter V1STO2S through RTB (native, src/rtb_angles.c)",
+          "WAITLIST, FINDVAC and SPVAC with their inline words (Executive/Waitlist)",
+          "TASKOVER and ENDOFJOB",
+          "The caller's return through Q"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-source-map.json",
+            "sha256": "18f7100a7cf9b3eba62d2cfcf5a88bc4ad1ef1aa810f104938d81225c591df82"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
+            "sha256": "2db77ae9e525037f1ae9cac984aab939c8aaa2f56effb057b772ba8a48b371f6"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
+            "sha256": "8ebf4916b891a8169486d28700e04f2bb9f0a25042579ffa782f5c680a8b918e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
+            "sha256": "5100c78b3f0a786419ab149f391b4b59694e2e7bc0048c4dd782b3308bb73cfe"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/KALMAN_FILTER.agc",
