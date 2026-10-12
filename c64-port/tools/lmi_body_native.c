@@ -70,6 +70,8 @@ int main(void){
   case 53:lmi_tpmode(&s);break;
   case 54:lmi_15bitadr(&s,a0,a1);break;
   case 55:(void)lmi_bzegoto(&s);break;
+  case 56:lmi_ita(&s);break;
+  case 57:(void)lmi_tix(&s);break;
   default:return 2;
   }
   out[0]=4;for(i=0;i<4u;++i)if(in[1+i]&&s.words[5]==in[1+i]){out[0]=(uint16_t)i;break;}

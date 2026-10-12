@@ -300,6 +300,28 @@ def case(g,body):
   img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
   for i in range(3):img[0o154+i]=r.choice([0,0o77777,r.getrandbits(15)]) if r.random()<.6 else r.getrandbits(15)
   return hdr,img
+ if body==56:
+  # ITA (STQ): CALL/ITA with CYR negative (edited 15-bit ITA code), POLISH
+  # the erasable address, QPRET any CADR.
+  setbanks(img,1);img[5]=0o2507
+  img[0o20]=r.randrange(0o40000,0o77777)
+  img[(img[0o120]+0o52)&0o3777]=r.getrandbits(15)
+  if r.random()<.4:img[0o117]=r.randrange(0,0o55)
+  else:
+   while True:
+    v=r.randrange(0o61,0o4000)
+    if not 0o1370<=v<0o1400 and v!=0o117:break
+   img[0o117]=v
+  return hdr,img
+ if body==57:
+  # TIX: POLISH the branch CADR, X and S of the selected index either sign.
+  setbanks(img,1);img[5]=0o2415;hdr[2]=0o6646
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  img[0o117]=(r.randrange(2,0o40)<<10)|r.randrange(0o2000)
+  vac=img[0o120]
+  for x in(0o46,0o47,0o50,0o51):
+   v=r.randrange(0,0o60);img[vac+x]=v if r.random()<.6 else 0o77777-v
+  return hdr,img
  if body in BANK0:
   setbanks(img,0);img[5]=BANK0[body]
   if body==22 and r.random()<.15:
@@ -311,7 +333,7 @@ BANK0={20:0o7670,22:0o3226,23:0o3174,24:0o3245}
 NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODLOAD','DOVLOAD','DLOAD','VLOAD','PDVL','PDDL','PUSH',
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
- 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO']
+ 'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX']
 def main():
  global rom
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)
