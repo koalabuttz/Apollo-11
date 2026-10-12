@@ -46,4 +46,31 @@ static inline void lanec_ev_set_l(apollo_overlay_state *s, uint16_t v)
 {
     s->words[LANEC_L] = lanec_a16(lanec_ev_corrected(v));
 }
+/* RAND, RXOR: A with a channel (3-077, not 7). */
+static inline void lanec_ev_rand(apollo_overlay_state *s, const lanec_io *io, uint16_t ch)
+{
+    s->words[LANEC_A] = lanec_a16((uint16_t)(lanec_ev_corrected(s->words[LANEC_A]) & io->channel[ch]));
+}
+static inline void lanec_ev_rxor(apollo_overlay_state *s, const lanec_io *io, uint16_t ch)
+{
+    s->words[LANEC_A] = lanec_a16((uint16_t)(lanec_ev_corrected(s->words[LANEC_A]) ^ io->channel[ch]));
+}
+/* WOR, WAND: A = channel OR/AND A, written back with the channel's write rules. */
+static inline void lanec_ev_wor(apollo_overlay_state *s, lanec_io *io, uint16_t ch)
+{
+    s->words[LANEC_A] = lanec_a16((uint16_t)(lanec_ev_corrected(s->words[LANEC_A]) | io->channel[ch]));
+    lanec_write(s, io, ch);
+}
+static inline void lanec_ev_wand(apollo_overlay_state *s, lanec_io *io, uint16_t ch)
+{
+    s->words[LANEC_A] = lanec_a16((uint16_t)(lanec_ev_corrected(s->words[LANEC_A]) & io->channel[ch]));
+    lanec_write(s, io, ch);
+}
+/* 16-bit ones'-complement add (INCR of a register, AddSP16). */
+static inline uint16_t lanec_ev_add16(uint16_t a, uint16_t b)
+{
+    uint32_t sum = (uint32_t)a + b;
+    if (sum & 0200000u) sum = (sum + 1u) & 0177777u;
+    return (uint16_t)sum;
+}
 #endif
