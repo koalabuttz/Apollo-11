@@ -53,6 +53,7 @@ void lmi_pddl(apollo_overlay_state *);
 void lmi_setpd(apollo_overlay_state *);
 void lmi_vdef(apollo_overlay_state *);
 void lmi_axt(apollo_overlay_state *);
+/* AXC 01,2351: the complemented operand (POLISH) to the tagged index register. */
 void lmi_incr(apollo_overlay_state *);
 /* SW/ for the switch-bit orders under INHINT/RELINT (interrupts end
  * enabled). Returns 1 when the original transfers to SWBRANCH (the caller
