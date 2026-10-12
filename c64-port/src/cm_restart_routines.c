@@ -7,6 +7,7 @@
 #include "cm_restart_routines.h"
 #include "agc_multiword.h"
 #include "agc_word.h"
+#include "cm_native_image.h"
 #define CM_RESTART_TABLE
 #include "cm_restart_table_data.inc"
 
@@ -182,11 +183,12 @@ static enum exec_status goloc_return(const agc_native_program *p,apollo_overlay_
  * DOUBLE; TS TEMPG; CCS L. A phase of +0 or more stores directly; a
  * negative (or -0) phase first sets TBASE (NUFAZ+10: INCR A; TS L; CS TIME1;
  * NDX TEMPG; TS TBASE1 -2). Then CS L; NDX TEMPG; DXCH -PHASE1 -2; RELINT;
- * TC Q, which runs the TC held in Q (the caller's L+2), leaving Q = 3. */
+ * TC Q, which runs the TC held in Q (the caller's L+2), leaving Q = 3.
+ * io is the cm_native_io record: RELINT leaves interrupts enabled. */
 static enum exec_status newphase(const agc_native_program *p,apollo_overlay_state *s,void *io){
- agc_register a=W[0],l,ta,tl;agc_word q=W[2],group;enum agc_ccs_class kind;(void)io;
+ agc_register a=W[0],l,ta,tl;agc_word q=W[2],group;enum agc_ccs_class kind;cm_native_io *x=io;
  /* TS L with overflow would skip NDX Q; no caller loads such an A. */
- if(agc_overflow(a)!=0||!agc_transfer_operand(p,s,0,q,&group)||group<1u||group>6u)return EXEC_OUT_OF_SCOPE;
+ if(x==0||x->interrupt_enabled>1u||agc_overflow(a)!=0||!agc_transfer_operand(p,s,0,q,&group)||group<1u||group>6u)return EXEC_OUT_OF_SCOPE;
  l=a;W[TEMPG]=(agc_word)(group*2u);
  kind=agc_classify(agc_correct(l));
  if(kind==AGC_NEGATIVE||kind==AGC_MINUS_ZERO){
@@ -197,7 +199,7 @@ static enum exec_status newphase(const agc_native_program *p,apollo_overlay_stat
  ta=W[PHASE1M2+group*2u];tl=W[PHASE1M2+1u+group*2u];
  W[PHASE1M2+group*2u]=agc_correct(a);W[PHASE1M2+1u+group*2u]=agc_correct(l);
  W[0]=agc_extend((agc_word)ta);W[1]=agc_extend((agc_word)tl);
- W[2]=3;W[5]=(agc_word)(q+1u);
+ W[2]=3;W[5]=(agc_word)(q+1u);x->interrupt_enabled=1;
  return EXEC_OK;
 }
 static const agc_routine_entry entries[7]={

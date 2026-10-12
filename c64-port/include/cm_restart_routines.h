@@ -18,7 +18,8 @@
  * Also registered: the display return 01,3542 (TC RTRNCADR, TC SWRETURN), the
  * two erasable words RESTARTS stores for later execution, GOLOC-1 and GOLOC+2,
  * at their erasable keys, and NEWPHASE (4114), whose group operand comes from
- * cm_restart_operands (the nine `TC NEWPHASE` sites). Any other word at
+ * cm_restart_operands (the nine `TC NEWPHASE` sites); NEWPHASE needs io to be
+ * the mission's cm_native_io (INHINT ... RELINT leaves interrupts enabled). Any other word at
  * GOLOC-1/GOLOC+2 is EXEC_OUT_OF_SCOPE: no original producer stores it. */
 enum cm_rr_entry { CM_RR_GROUP=0,CM_RR_PART2=1,CM_RR_TYPEB_TABLE=2 };
 enum cm_rr_exit { CM_RR_SEL_JOB=0,CM_RR_SEL_TASK=1,CM_RR_SEL_LONGCALL=2,CM_RR_SEL_DISPLAY=3,CM_RR_INVALID=4 };

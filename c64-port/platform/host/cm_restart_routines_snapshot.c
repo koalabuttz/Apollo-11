@@ -15,8 +15,8 @@ int main(int argc,char **argv){unsigned n,i;apollo_overlay_state s;
   printf("%u %u",n,(unsigned)log.calls);
   for(i=0;i<log.calls;++i)printf(" %u %u %u %u %u %u",(unsigned)log.call[i].service,(unsigned)log.call[i].a,(unsigned)log.call[i].l,(unsigned)log.call[i].q,(unsigned)log.call[i].cadr,(unsigned)log.call[i].bbcon);
   image(&s);}
- else if(!strcmp(argv[1],"newphase"))for(n=0;n<CM_RR_NEWPHASE_CASES;++n){uint16_t steps;
-  if(cm_rr_newphase(&s,(uint16_t)n,&steps)!=EXEC_OK){fprintf(stderr,"CM NEWPHASE %u stopped\n",n);return 1;}
-  printf("%u",n);image(&s);}
+ else if(!strcmp(argv[1],"newphase"))for(n=0;n<CM_RR_NEWPHASE_CASES;++n){uint16_t steps;cm_native_io io;
+  if(cm_rr_newphase(&s,&io,(uint16_t)n,&steps)!=EXEC_OK){fprintf(stderr,"CM NEWPHASE %u stopped\n",n);return 1;}
+  printf("%u %u",n,(unsigned)io.interrupt_enabled);image(&s);}
  else return 2;
  return 0;}

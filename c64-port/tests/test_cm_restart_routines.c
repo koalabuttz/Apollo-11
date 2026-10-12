@@ -41,10 +41,10 @@ int main(void){apollo_overlay_state s;unsigned n,p,seen[CM_RESTART_TABLE_WORDS]=
  }
  for(n=0;n<CM_RR_NEWPHASE_CASES;++n){uint16_t at;
   check(cm_rr_newphase_digest(&s,(uint16_t)n,&st)==cm_rr_newphase_expected[n]&&st==EXEC_OK,"NEWPHASE",n);
-  cm_rr_newphase_input(&s,(uint16_t)n);at=agc_fixed_physical(s.words[2],s.words[4],0);
+  {cm_native_io io;cm_rr_newphase_input(&s,&io,(uint16_t)n);}at=agc_fixed_physical(s.words[2],s.words[4],0);
   for(p=0;p<CM_NEWPHASE_SITE_COUNT;++p)if(cm_restart_operands[2u+p].physical==at&&!sites[p]){sites[p]=1;++site_count;}}
  check(site_count==CM_NEWPHASE_SITE_COUNT,"every NEWPHASE site",site_count);
- {agc_native_program program={&cm_restart_routines,1,0,0,cm_restart_operands,CM_RESTART_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};agc_word sb=0;uint16_t steps;
+ {agc_native_program program={&cm_restart_routines,1,0,0,cm_restart_operands,CM_RESTART_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};agc_word sb=0;uint16_t steps;cm_native_io io;
   /* Unmapped service: the trampoline stops at the selected service. */
   for(n=0;n<CM_RR_COMPOSE_CASES;n+=97u){(void)cm_rr_select_input(&s,cm_rr_compose_case((uint16_t)n));
    st=agc_transfer_run(&program,&s,0,&sb,FF(CM_RR_SWRETURN),8,&steps);
@@ -57,10 +57,12 @@ int main(void){apollo_overlay_state s;unsigned n,p,seen[CM_RESTART_TABLE_WORDS]=
   (void)cm_rr_select_input(&s,0);s.words[6]=02002;
   check(cm_restart_routines_select(&s,CM_RR_GROUP)==CM_RR_INVALID,"bank refusal",0);
   /* NEWPHASE from a Q that is no `TC NEWPHASE` site, or with an overflowed A. */
-  cm_rr_newphase_input(&s,0);s.words[2]=(agc_word)(s.words[2]+1u);
-  check(agc_transfer_run(&program,&s,0,&sb,FF(CM_RR_SWRETURN),2,&steps)==EXEC_OUT_OF_SCOPE,"NEWPHASE site refusal",0);
-  cm_rr_newphase_input(&s,0);s.words[0]=0100003;
-  check(agc_transfer_run(&program,&s,0,&sb,FF(CM_RR_SWRETURN),2,&steps)==EXEC_OUT_OF_SCOPE,"NEWPHASE overflow refusal",0);}
+  cm_rr_newphase_input(&s,&io,0);s.words[2]=(agc_word)(s.words[2]+1u);
+  check(agc_transfer_run(&program,&s,&io,&sb,FF(CM_RR_SWRETURN),2,&steps)==EXEC_OUT_OF_SCOPE,"NEWPHASE site refusal",0);
+  cm_rr_newphase_input(&s,&io,0);s.words[0]=0100003;
+  check(agc_transfer_run(&program,&s,&io,&sb,FF(CM_RR_SWRETURN),2,&steps)==EXEC_OUT_OF_SCOPE,"NEWPHASE overflow refusal",0);
+  cm_rr_newphase_input(&s,&io,0);
+  check(agc_transfer_run(&program,&s,0,&sb,FF(CM_RR_SWRETURN),2,&steps)==EXEC_OUT_OF_SCOPE,"NEWPHASE without io",0);}
  printf("cm-restart-routines: %u selection, %u composition and %u NEWPHASE cases, %u table entries, %u NEWPHASE sites, %u checks, %u failures\n",
         CM_RR_SELECT_CASES,CM_RR_COMPOSE_CASES,CM_RR_NEWPHASE_CASES,entries,site_count,checks,failures);
  return failures!=0u;

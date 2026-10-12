@@ -95,7 +95,7 @@ enum cm_rr_entry cm_rr_select_input(apollo_overlay_state *s,uint16_t n){
  return entry;
 }
 
-static enum exec_status service(const agc_native_program *p,apollo_overlay_state *s,void *io){cm_rr_log *log=io;cm_rr_call *c;agc_word q=s->words[2];
+static enum exec_status service(const agc_native_program *p,apollo_overlay_state *s,void *io){cm_rr_log *log=p->user;(void)io;cm_rr_call *c;agc_word q=s->words[2];
  if(log->calls>=CM_RR_MAX_CALLS)return EXEC_OUT_OF_SCOPE;
  c=&log->call[log->calls++];c->service=s->words[5];c->a=s->words[0];c->l=s->words[1];c->q=q;
  if(!agc_transfer_operand(p,s,0,q,&c->cadr)||!agc_transfer_operand(p,s,0,(agc_word)(q+1u),&c->bbcon))return EXEC_OUT_OF_SCOPE;
@@ -103,10 +103,10 @@ static enum exec_status service(const agc_native_program *p,apollo_overlay_state
 }
 static const agc_routine_entry services[4]={{FF(CM_RR_NOVAC),service},{FF(CM_RR_FINDVAC),service},{FF(CM_RR_WAITLIST),service},{FF(CM_RR_LONGCALL),service}};
 enum exec_status cm_rr_compose(apollo_overlay_state *s,uint16_t n,cm_rr_log *log,uint16_t *steps){
- agc_routine_table tables[2];agc_native_program program={0,0,0,0,cm_restart_operands,CM_RESTART_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};agc_word superbank=0;
- tables[0]=cm_restart_routines;tables[1].entries=services;tables[1].count=4;program.basic=tables;program.basic_count=2;
+ agc_routine_table tables[2];agc_native_program program={0,0,0,0,cm_restart_operands,CM_RESTART_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};agc_word superbank=0;cm_native_io io={0};
+ program.user=log;tables[0]=cm_restart_routines;tables[1].entries=services;tables[1].count=4;program.basic=tables;program.basic_count=2;
  (void)cm_rr_select_input(s,cm_rr_compose_case(n));log->calls=0;
- return agc_transfer_run(&program,s,log,&superbank,FF(CM_RR_SWRETURN),32,steps);
+ return agc_transfer_run(&program,s,&io,&superbank,FF(CM_RR_SWRETURN),32,steps);
 }
 
 /* The group operand's logical address under FB for NEWPHASE site k. */
@@ -114,10 +114,11 @@ static void newphase_site(unsigned k,agc_word *fb,agc_word *q){agc_site_operand 
  for(i=0;i<CM_RESTART_OPERAND_COUNT;++i)if(cm_restart_operands[i].physical>=4096u&&found++==k){o=cm_restart_operands[i];break;}
  *fb=(agc_word)((o.physical/1024u)<<10);*q=(agc_word)(02000u+o.physical%1024u);
 }
-void cm_rr_newphase_input(apollo_overlay_state *s,uint16_t n){
+void cm_rr_newphase_input(apollo_overlay_state *s,cm_native_io *io,uint16_t n){
  static const agc_word edge[8]={0,077777,1,077776,037777,040000,7,077770};
  agc_word fb,q,phase;unsigned kind=(n>>4)&3u;
  image(s,0x4114u+n);
+ {cm_native_io z={0};*io=z;}io->interrupt_enabled=(agc_word)((n>>6)&1u);
  newphase_site(n%CM_NEWPHASE_SITE_COUNT,&fb,&q);
  s->words[3]=01400;s->words[4]=fb;s->words[6]=(agc_word)(fb|3u);s->words[5]=CM_RR_NEWPHASE;s->words[2]=q;
  /* Every sixteenth case is an edge phase; otherwise sign by kind. */
@@ -126,10 +127,10 @@ void cm_rr_newphase_input(apollo_overlay_state *s,uint16_t n){
  s->words[0]=agc_extend(phase);
 }
 uint16_t cm_rr_newphase_return(const apollo_overlay_state *s){return agc_fixed_physical((agc_word)(s->words[2]+1u),s->words[4],0);}
-enum exec_status cm_rr_newphase(apollo_overlay_state *s,uint16_t n,uint16_t *steps){
+enum exec_status cm_rr_newphase(apollo_overlay_state *s,cm_native_io *io,uint16_t n,uint16_t *steps){
  agc_native_program program={&cm_restart_routines,1,0,0,cm_restart_operands,CM_RESTART_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};agc_word superbank=0;uint16_t stop;
- cm_rr_newphase_input(s,n);stop=cm_rr_newphase_return(s);
- return agc_transfer_run(&program,s,0,&superbank,stop,4,steps);
+ cm_rr_newphase_input(s,io,n);stop=cm_rr_newphase_return(s);
+ return agc_transfer_run(&program,s,io,&superbank,stop,4,steps);
 }
 
 static uint16_t sum_a,sum_b;
@@ -144,6 +145,6 @@ uint32_t cm_rr_compose_digest(apollo_overlay_state *s,uint16_t n,enum exec_statu
  for(i=0;i<log.calls;++i){mix(log.call[i].service);mix(log.call[i].a);mix(log.call[i].l);mix(log.call[i].q);mix(log.call[i].cadr);mix(log.call[i].bbcon);}
  mix_image(s);return (uint32_t)sum_b<<16|sum_a;
 }
-uint32_t cm_rr_newphase_digest(apollo_overlay_state *s,uint16_t n,enum exec_status *status){uint16_t steps=0;
- *status=cm_rr_newphase(s,n,&steps);sum_a=sum_b=0;mix_image(s);return (uint32_t)sum_b<<16|sum_a;
+uint32_t cm_rr_newphase_digest(apollo_overlay_state *s,uint16_t n,enum exec_status *status){uint16_t steps=0;cm_native_io io;
+ *status=cm_rr_newphase(s,&io,n,&steps);sum_a=sum_b=0;mix(io.interrupt_enabled);mix_image(s);return (uint32_t)sum_b<<16|sum_a;
 }

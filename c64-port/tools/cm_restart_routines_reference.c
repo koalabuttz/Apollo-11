@@ -41,11 +41,11 @@ int main(int argc,char **argv){unsigned n,cycles,pc=0,i;apollo_overlay_state s;
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(cycles==2000u){fprintf(stderr,"CM restart composition %u timeout %05o\n",n,pc);return 2;}
   printf("%u %u",n,calls);for(i=0;i<calls;++i)printf(" %u %u %u %u %u %u",log[i][0],log[i][1],log[i][2],log[i][3],log[i][4],log[i][5]);image();}
- else if(!strcmp(argv[1],"newphase"))for(n=0;n<CM_RR_NEWPHASE_CASES;++n){unsigned ret;
-  cm_rr_newphase_input(&s,(uint16_t)n);ret=(unsigned)s.words[2]+1u;load(&s);
+ else if(!strcmp(argv[1],"newphase"))for(n=0;n<CM_RR_NEWPHASE_CASES;++n){unsigned ret;cm_native_io io;
+  cm_rr_newphase_input(&s,&io,(uint16_t)n);ret=(unsigned)s.words[2]+1u;load(&s);machine.AllowInterrupt=io.interrupt_enabled;
   for(cycles=0;cycles<200u;++cycles){pc=get(RegZ);if(cycles&&quiet()&&pc==ret)break;machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(cycles==200u){fprintf(stderr,"CM NEWPHASE %u timeout %05o\n",n,pc);return 2;}
-  printf("%u",n);image();}
+  printf("%u %u",n,(unsigned)machine.AllowInterrupt);image();}
  else return 2;
  return 0;
 }
