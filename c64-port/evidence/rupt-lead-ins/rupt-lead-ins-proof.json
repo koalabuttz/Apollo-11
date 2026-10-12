@@ -69,5 +69,6 @@
  },
  "boundary": "one lead-in from its vector to the handler it leaves in Z (the GOPROG restart, the banked handler, the 2CADR target, or NOQBRSM); the original runs to the first time it reaches that Z (and FB in banked memory), or for the Comanche RESUME family until the interrupt ends",
  "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr",
- "full_physical_words": 2048
+ "full_physical_words": 2048,
+ "oracle": "yaAGC (agc_engine) running the original rope of each mission"
 }
