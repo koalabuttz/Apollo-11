@@ -157,6 +157,35 @@ SPECS = {
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
     },
+    # Lane G: Comanche055 P61-P67 (entry programs), basic and interpretive.
+    'cm-p61-p67': {
+        'missions': ('cm',),
+        'file': {'cm': 'P61-P67.agc'},
+        'base': {'cm': 'cm_p61_p67'},
+        'symbol': {'cm': 'cm_p61_p67'},
+        'basic': 'full',
+        'entries': ['@external'],
+        # P61.2's RTB LOADTIME is the first order of its pair (RTB DSU):
+        # the native LOADTIME, so the DSU runs on in the same routine.
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        # S61.1 saves its caller's return (P61's TC S61.1 at 26,2223 or
+        # P62's at 26,2320) in 60GENRET (E6,1773) and RETRN1 runs it by
+        # TC 60GENRET: the erasable continuation accepts those two words.
+        'erasable_points': {'E6,1773': [0o2224, 0o2321]},
+        # Each routine under the EBANK= in effect at it (the file switches
+        # between AOG, E6, and RTINIT/DVCNTR, E7); under E6, 60GENRET holds
+        # what S61.1 leaves there.
+        'ebank': 'listing',
+        'cells': {'E6,1773': [0o2224, 0o2321]},
+        'target': 'tests/cm_p61_p67_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline'],
+    },
     # Lane G: Comanche055 TVCMASSPROP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-massprop': {

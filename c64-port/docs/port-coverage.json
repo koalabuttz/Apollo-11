@@ -2051,8 +2051,72 @@
       "sha256": "49cc72bb29fceae82c5a40ffd2e8d1dd62264e9a55f920e81c8f3ae8d5d20172",
       "bytes": 34115,
       "lines": 1225,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p61_p67.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (495 words): The entry programs: P61 and P62 (entry preparation, CM/SM separation, with the S61.1 IMU orientation check), P63 (entry initialisation), P64 to P67 (post-0.05 G, up control, ballistic and final phases) with their displays and restart points, basic and interpretive. As 102 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at CALLCON, DISPTARG, FISHCALC, KILLGRP4, LUNENT, NEWRNVN, P61, P61.1, P62, P62.1, P62.2, P62.3, P63, P63.1, P64, P65, P65.1, P66, P67, P67.1, P67.2, P67.3, PREVGAM, RETRN1, RETRN2, RETRN3, S61.1A, S61.1B, S61.1C, S61.2, S62.3, TFF/TRIG, VGAMCALC, VRCALC, WAKEP62 and the continuations after outside calls.",
+          "verification": "docs/CM-P61-P67.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Each routine runs under the EBANK= the listing has in effect at its first word (E6 for the AOG code, E7 for the RTINIT/DVCNTR code). Under E6, 60GENRET (E6,1773) holds one of the two returns S61.1 saves there (TC 2224 from P61, TC 2321 from P62). Interpretive routines are entered at NEWOPS with FIXLOC a VAC area.",
+        "external_continuations": [
+          "2PHSCHNG (outside basic routine)",
+          "ALARM (outside basic routine)",
+          "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "BOVB ENDT(X) (outside basic routine)",
+          "CLEARMRK (outside basic routine)",
+          "DANZIG (outside basic routine)",
+          "DOWNFLAG (outside basic routine)",
+          "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
+          "FINDVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "GOTOPOOH (outside basic routine)",
+          "NEWMODEX (outside basic routine)",
+          "NOVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "PHASCHNG (outside basic routine)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "RTB CM/DAPIC (outside basic routine)",
+          "RTB REFAZE10 (outside basic routine)",
+          "RTB SERVNOUT (outside basic routine)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "UPFLAG (outside basic routine)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
+          "Erasable continuation E6,1773 (this file): accepts only TC 02224, TC 02321"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-source-map.json",
+            "sha256": "2652b119ba7aa3b22baf798ede2082ef85a347293ca4ca6cb9ed1bd91fa48b33"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
+            "sha256": "818520074f77a41460a609985df16bf5c4616c90eeae23e2f8e46e7f56da51f0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-host.log",
+            "sha256": "9c052df88bb1ec32dd4f1bca537b3d4bb78999d12d6a7049d2bc80cf35da1e0b"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-vice.log",
+            "sha256": "e91a370103c5a1caac5415504aec11f97ee46620add69f46f69aa58a32d90491"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P76.agc",

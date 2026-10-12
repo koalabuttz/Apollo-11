@@ -29,6 +29,7 @@ import json
 import math
 import os
 import random
+import re
 import struct
 import subprocess
 import sys
@@ -36,6 +37,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import interp_compile as IC
 import interp_specs
+import interp_listing as IL
 
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = os.path.join(R, 'build')
@@ -100,6 +102,10 @@ class Mission:
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
+        if self.ebank == 'listing':
+            # Each routine runs under the EBANK= the listing has in effect at
+            # its first word (files that switch EBANK= between routines).
+            self.ebank = self.listing_ebanks()
         self.states = {self.point_of(k): v for k, v in spec.get('states', {}).items()}
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
@@ -118,6 +124,20 @@ class Mission:
             b, a = k.split(',')
             return int(b, 8) * 1024 + int(a, 8) - 0o2000
         return self.cp.label_phys(k)
+
+    def listing_ebanks(self):
+        eb, out = None, {}
+        pat = re.compile(r'^\d{6},\d{6}: (\d\d),(\d{4})  (?:E(\d),\d{4})?\s+(\S+)?')
+        for raw in open(IL.LISTINGS[self.m], errors='replace'):
+            m = pat.match(raw)
+            if not m:
+                continue
+            if m.group(3) is not None and 'EBANK=' in raw:
+                eb = int(m.group(3))
+            phys = int(m.group(1), 8) * 1024 + int(m.group(2), 8) - 0o2000
+            if phys in self.points and eb is not None:
+                out.setdefault(phys, eb)
+        return out
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
@@ -183,7 +203,8 @@ def case(mi, point, n, rng):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
     fb = bank << 10
-    eb = rng.randrange(8) if mi.ebank is None else mi.ebank
+    eb = rng.randrange(8) if mi.ebank is None else mi.ebank.get(point, rng.randrange(8)) \
+        if isinstance(mi.ebank, dict) else mi.ebank
     E[3] = eb << 8
     E[4] = fb
     E[6] = fb | eb
@@ -249,6 +270,13 @@ def case(mi, point, n, rng):
                 k = rng.randrange(0o37770, 0o40000)
                 E[phys] = k if rng.random() < 0.5 else 0o77777 - k
     for a, choices in mi.cells.items():
+        if isinstance(a, str):
+            # 'E<bank>,<addr>': a switched cell, held only in cases whose
+            # EBANK is that bank.
+            b, x = a[1:].split(',')
+            if int(b, 8) != eb:
+                continue
+            a = (eb << 8) + int(x, 8) - 0o1400
         E[a] = rng.choice(choices)
     # I/O channels the file reads or writes (spec 'io_channels', channel:
     # mask of the bits a case may set): a channel edit each, so the run and
@@ -493,6 +521,16 @@ def c64_sources(spec, m):
             + spec.get('native_sources', []) + [x for x in COMMON if '_interp_' not in x] + [spec['target']])
 
 
+def keep_defs(name, mask, n):
+    """-D flags for a group's KEEP mask: KEEP<k> holds points 60k..60k+59
+    (a file with more than 60 routines needs every word defined)."""
+    return ['-D%s_KEEP%d=0x%x' % (name, k, (mask >> (60 * k)) & ((1 << 60) - 1) if n > 60 else mask)
+            for k in range(max(1, (n + 59) // 60))]
+
+
+POINTS = {}     # mission -> routine count (set by freeze_c64)
+
+
 def c64_size(spec, sym, m, mask, text):
     """End of the C64 diagnostic's memory (code, data and bss) for one group,
     or None when it does not link or reaches past C64_TOP."""
@@ -501,7 +539,7 @@ def c64_size(spec, sym, m, mask, text):
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
     r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
-                        '-DIRC_%s_ONLY' % m.upper(), '-D%s_KEEP0=0x%x' % (spec['symbol'][m].upper(), mask),
+                        '-DIRC_%s_ONLY' % m.upper(), *keep_defs(spec['symbol'][m].upper(), mask, POINTS.get(m, 0)),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
                        cwd=R, capture_output=True, text=True)
@@ -552,6 +590,7 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, covers=None):
         if mi.m not in spec['missions']:
             continue
         bit = {p: 1 << k for k, p in enumerate(mi.points)}
+        POINTS[mi.m] = len(mi.points)
         need = {}
         for p in mi.points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p),
@@ -596,8 +635,8 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, covers=None):
     mk.append('%s_GROUPS = %s' % (v, ' '.join(str(g) for g in range(1, len(groups) + 1))))
     for g, (m, mask, pick) in enumerate(groups, 1):
         mk.append('%s_GROUP_MISSION_%d = %s' % (v, g, m))
-        mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY -D%s_KEEP0=0x%x' % (
-            v, g, g, m.upper(), spec['symbol'][m].upper(), mask))
+        mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
+            v, g, g, m.upper(), ' '.join(keep_defs(spec['symbol'][m].upper(), mask, POINTS.get(m, 0)))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick), 'case_ids': list(pick)} for m, mask, pick in groups]
 

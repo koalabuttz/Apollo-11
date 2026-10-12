@@ -90,7 +90,7 @@ class Basic:
         # The word EB holds under the spec's fixed 'ebank', when it names
         # the file's own code (a TC through register 3).
         self.eb_word = None
-        if self.spec.get('ebank') is not None and (self.spec['ebank'] << 8) >= 0o2000:
+        if isinstance(self.spec.get('ebank'), int) and (self.spec['ebank'] << 8) >= 0o2000:
             self.eb_word = self.spec['ebank'] << 8
         # Indexed TC/TCF words whose sum stays in the file (spec
         # 'index_targets' {'bank,addr': largest index}).
@@ -215,7 +215,7 @@ class Basic:
     NORETURN = ('POSTJUMP', 'ENDOFJOB', 'TASKOVER', 'RESUME')
 
     CONST_OPS = ('OCT', 'OCTAL', 'DEC', 'DEC*', '2DEC', '2DEC*', 'ADRES', 'CADR', 'FCADR', 'GENADR',
-                 '2CADR', '2FCADR', 'BBCON', 'REMADR', '2OCT', '2BCADR')
+                 '2CADR', '2FCADR', 'BBCON', 'REMADR', '2OCT', '2BCADR', 'ECADR', 'MM', 'VN', 'NV', 'BBCON*')
 
     def jump(self, phys, target_logical, call, clean=False):
         """Statements for TC/TCF (call) to a static target."""

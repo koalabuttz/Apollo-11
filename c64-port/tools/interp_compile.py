@@ -60,7 +60,7 @@ STORES = ('STORE', 'STODL', 'STOVL', 'STCALL', 'STODL*', 'STOVL*')
 
 
 DATA_OPS = ('DEC', '2DEC', 'OCT', '2OCT', 'CADR', '2CADR', 'ADRES', 'ECADR', 'GENADR', 'REMADR',
-            'BBCON', '2FCADR', '2BCADR', 'DEC*', '2DEC*', 'VN', 'FCADR', 'BBCON*', '=', 'EQUALS')
+            'BBCON', '2FCADR', '2BCADR', 'DEC*', '2DEC*', 'VN', 'FCADR', 'BBCON*', '=', 'EQUALS', 'MM', 'NV')
 
 
 class CompileError(Exception):
@@ -81,7 +81,9 @@ def split_op(op):
         tag = int(op[-1])
         op = op[:-2]
     star = op.endswith('*')
-    return (op[:-1] if star else op), star, tag
+    op = op[:-1] if star else op
+    # CALRB ("return in basic") is CALL's opcode under another name.
+    return ('CALL' if op == 'CALRB' else op), star, tag
 
 
 def classify(op):
@@ -487,7 +489,12 @@ class Compiler:
             return st, cur, True, False
         if base == 'CALL':
             st[-1] += '%scall(s);' % P
-            self.call_return(cur, w, 'CALL return')
+            if op.startswith('CALRB'):
+                # CALRB: the callee comes back in basic code (BANKJUMP to
+                # the CADR CALL saved), at the word after the pair.
+                self.add_start(cur, 'b', 'CALRB return')
+            else:
+                self.call_return(cur, w, 'CALL return')
             st.extend(self.goto(w, 'CALL target', call=True))
             return st, cur, True, False
         if base in ('ITA', 'STQ'):
@@ -496,6 +503,19 @@ class Compiler:
         if base == 'RTB':
             target = self.cadr_phys(w)
             lab = self.L.label_at(target)
+            if lab not in self.rtb and self.basic and (not self.in_file(target) or (
+                    target in self.code and not is_interp_op(self.code[target].op))):
+                # RTB to basic code with no native body (whole-file basic):
+                # the interpreter transfers there, to a routine of the file or
+                # an outside one; its TC DANZIG resumes at NEWOPS.
+                if self.in_file(target):
+                    self.add_start(target, 'b', 'RTB target')
+                else:
+                    self.externals_any[target] = 'RTB ' + (lab or '')
+                if cur in self.code and is_interp_op(self.code[cur].op):
+                    self.add_start(cur, 'i', 'after RTB %s' % lab)
+                st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
+                return st, cur, True, False
             if lab not in self.rtb:
                 raise CompileError('RTB %s has no native routine in the spec' % lab)
             st[-1] += '(void)ai_ccs(s,020);%srtb(s);' % P
@@ -503,14 +523,21 @@ class Compiler:
             return st, cur, False, False
         if base in ('BOV', 'BOVB'):
             st.append('switch(%sbov(s)){case %sBOV_NONE:break;case %sBOV_GOTO:' % (P, P.upper(), P.upper()))
-            st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
-            if base == 'BOVB':
-                # BOVB's branch is to basic code, as RTB transfers.
-                t = self.cadr_phys(w)
-                if self.in_file(t):
+            t = self.cadr_phys(w) if base == 'BOVB' else None
+            if t is not None and self.in_file(t):
+                # BOVB to the file's own basic code (P61's BOVB RETRN1): a
+                # basic routine of the file; the body takes the RTB path.
+                if not self.basic or t not in self.code or is_interp_op(self.code[t].op):
                     raise CompileError('BOVB into the file at %s' % self.where(t))
-                self.externals_any[t] = 'BOVB ' + (self.L.label_at(t) or '')
+                self.add_start(t, 'b', 'BOVB target')
+                st.append('  return EXEC_OUT_OF_SCOPE;')
                 st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
+            else:
+                st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
+                if base == 'BOVB':
+                    # BOVB's branch is to basic code, as RTB transfers.
+                    self.externals_any[t] = 'BOVB ' + (self.L.label_at(t) or '')
+                    st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
             st.append('default:return EXEC_OUT_OF_SCOPE;}')
             return st, cur, False, False
         raise CompileError('unsupported order %s' % op)
