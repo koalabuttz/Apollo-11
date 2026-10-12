@@ -4741,8 +4741,20 @@
       "sha256": "6e440a29d56167c2f48b7bc58c0d53491d596c61e8e7137dc3b349ad90c1dc10",
       "bytes": 4308,
       "lines": 168,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p31_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P31 and REVN1645 (35,2450-35,2544), 61 words, the whole file, as six basic routines keyed by Z and eleven interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P31 with P20FLGON, the V06N33 display and INTPRET; UPDATFLG cleared, TIG and LEMPREC; RTIG/RINIT and VTIG/VINIT from RATT and VATT, P30ZERO and DELLT4 pushed, TPASS4 with SXA,1 and SXA,2, and INITVEL; DELVEET3 into DELVSIN, ABVAL into VGDISP with XDELVFLG cleared, and GET.LVC; RTIG, VIPRIME and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK, HAPO and EXIT; the V06N81 and V06N42 displays and INTPRET; and REVN1645 (SET FINALFLG, CALL VN1645, GOTO REVN1645): from each entry through the trampoline to the first point outside them (P20FLGON, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2454-35,2544).",
+          "verification": "docs/LM-P31.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
