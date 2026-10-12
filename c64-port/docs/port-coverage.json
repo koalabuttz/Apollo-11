@@ -4020,6 +4020,14 @@
           ],
           "scope": "SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB as control-transfer ABI routines (lm_exec_job_routines) composing the qualified admission, change, sleep, wake, priority and finish bodies, through the selected basic job, NEWOPS for an interpretive one (JOBSLEEP and PRIOCHNG gain interpretive successors here), ADVAN idle or the caller. The DUMMYJOB/ADVAN idle loop, NUDIRECT and NUCHANG2 remain separate.",
           "verification": "docs/LM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_idle.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "DUMMYJOB, DUMMYJOB+2, ADVAN (through NUDIRECT or the SELFRET self-check dispatch), NUCHANG2 and SUPDXCHZ/SUPDXCHZ+1 as control-transfer ABI routines (lm_exec_idle_routines) composing the qualified idle dispatch and super dispatch bodies. With lm-exec-services and lm-exec-jobs every EXECUTIVE.agc entry is a native routine; the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
+          "verification": "docs/LM-EXEC-IDLE.md"
         }
       ]
     },
@@ -6597,6 +6605,16 @@
           ],
           "scope": "FIXDELAY (inline delay from the compiled site table at all 16 genuine call sites, or erasable), VARDELAY, TASKOVER (RESUME on RUPTAGN -0, T3RUPT2 dispatch on +1) as control-transfer ABI routines (lm_exec_task_routines) composing the delay, TASKOVER-resume and T3 dispatch bodies. The SVCT3 end-of-list task and the RESUME/NOQRSM/NOQBRSM entries other interrupts use remain separate.",
           "verification": "docs/LM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_idle.c",
+            "src/lm_svct3.c",
+            "include/lm_svct3.h",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "The SVCT3 end-of-list task (05240, CKIMUSE) and its resumptions after NOVAC (05255) and SVCT3X's FIXDELAY (05260) as control-transfer ABI routines over the new lm_svct3_phase body, to TASKOVER, NOVAC NBDONLY or FIXDELAY 500. The RESUME/NOQRSM/NOQBRSM entries other interrupts use remain separate.",
+          "verification": "docs/LM-EXEC-IDLE.md"
         }
       ]
     }

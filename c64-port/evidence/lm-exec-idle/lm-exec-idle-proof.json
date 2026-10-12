@@ -1,0 +1,27 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 4864,
+ "snapshot_sha256": "51c126284fe09b757609dafb0b57e59e04235b2e7acd6b13c4b18e2eee2af8a9",
+ "outcomes": {
+  "advan:returned": 1024,
+  "dummyjob:returned": 512,
+  "nuchang2:returned": 768,
+  "supdxchz:returned": 1024,
+  "svct3:returned": 1536
+ },
+ "entries": [
+  "01,3011 NUCHANG2",
+  "01,3206 DUMMYJOB",
+  "01,3210 DUMMYJOB +2",
+  "01,3214 ADVAN",
+  "05165 SUPDXCHZ",
+  "05166 SUPDXCHZ +1",
+  "05240 SVCT3",
+  "05255 SVCT3 after NOVAC",
+  "05260 SVCT3X after FIXDELAY"
+ ],
+ "boundary": "one routine from its entry to the continuation it leaves in Z (the selected basic job, NEWOPS for an interpretive job, the self-check at SELFRET, the SUPDXCHZ target, or TASKOVER, NOVAC or FIXDELAY from SVCT3); the original runs to the first time it reaches that Z (and FB in banked memory); alarm: BAILOUT1/POODOO1 entry",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, channel 11, InIsr",
+ "full_physical_words": 2048
+}
