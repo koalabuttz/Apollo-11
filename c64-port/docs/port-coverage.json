@@ -3709,6 +3709,18 @@
           ],
           "scope": "Basic code of V69 and the tracking and state-vector verbs (TRMTRAK1, DSPRRLOS/RRLOSDSP, ATTACHIT with TACHEXIT and TCPIN set-up) up to each TC INTPRET and from each interpretive EXIT, register-exact against the original program. The interpretive words are not included.",
           "verification": "docs/LANEC-EV-TRACK.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_lmi.c",
+            "src/lanec.c",
+            "src/lm_interp_steps.c",
+            "src/lm_interp_orders.c",
+            "include/lanec_ev_lmi.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Interpretive words of TRMTRAK1 (CALL INTSTALL, EXIT), ATTACHIT (CALL INTSTALL, SET/BON/CLEAR MOONOTH, CALL PTOALEM, LXA,2 PBODY, CALL SVDWN1, EXIT) and TCPIN (RTB PINBRNCH), compiled onto the native interpreter paths, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-LMI.md"
         }
       ]
     },

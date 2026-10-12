@@ -34,6 +34,12 @@ static int outside(unsigned z)
 {
     unsigned fb = ((unsigned)m.Erasable[0][RegFB] >> 10) & 037u, bank, i;
     if (fb >= 030u && (m.OutputChannel7 & 0100)) fb += 010u;
+    if (meta.newops && z == meta.newops) {
+        unsigned loc = word(0164u), inside = 0;
+        for (i = 0; i < meta.locs; ++i)
+            if (meta.loc[i].bank == fb && loc >= meta.loc[i].lo && loc <= meta.loc[i].hi) inside = 1;
+        if (!inside) return 1;
+    }
     for (i = 0; i < meta.stops; ++i)
         if (meta.stop[i].address == z && (meta.stop[i].bank == LANEC_ANY_BANK || meta.stop[i].bank == fb)) return 1;
     for (i = 0; i < meta.ranges; ++i) {

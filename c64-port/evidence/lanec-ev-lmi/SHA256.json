@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-lmi",
+  "release": "evidence-lanec-ev-lmi",
+  "files": {
+    "lanec-ev-lmi-diff.json": {
+      "sha256": "ebca056ddffae44130277d938187d1d29ba8c7bf43f2fda81850b4548df87753",
+      "bytes": 232,
+      "store": "tree"
+    },
+    "lanec-ev-lmi-oracle.crc": {
+      "sha256": "0edd3e36da9d95ce81ab92c145c76f40e2b739036b0d91c04e7a0099dc6a2084",
+      "bytes": 7378,
+      "store": "tree"
+    },
+    "lanec-ev-lmi-sanitize.txt": {
+      "sha256": "fe6a31ae5bd0391f9c59d99fda37f2be71090b3d2e09d4547bac633900aab9c1",
+      "bytes": 146,
+      "store": "tree"
+    },
+    "lanec-ev-lmi-vice.txt": {
+      "sha256": "c372af8b092efab23698e7b4a1c5241d352b2e7dc6be9af105d019443844fb6f",
+      "bytes": 56,
+      "store": "tree"
+    }
+  }
+}
