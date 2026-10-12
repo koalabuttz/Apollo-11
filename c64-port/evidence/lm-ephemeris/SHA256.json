@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-ephemeris",
+  "release": "evidence-lm-ephemeris",
+  "files": {
+    "lm-ephemeris-1.map": {
+      "sha256": "f22b862abcbc6ee0cb69764d85559904f78954f42e4195acb2d9760cc9069d7d",
+      "bytes": 21772,
+      "store": "release"
+    },
+    "lm-ephemeris-1.prg": {
+      "sha256": "4be3902b9cc89a085d126e38e380472960b358b0b9e4d168f5d05974b630f825",
+      "bytes": 31590,
+      "store": "release"
+    },
+    "lm-ephemeris-2.map": {
+      "sha256": "22ef8a7e2dce82313146f2987c3259a63f99c841c27760555b065dc32aa16811",
+      "bytes": 21254,
+      "store": "release"
+    },
+    "lm-ephemeris-2.prg": {
+      "sha256": "33826ecea101af50e53bdfbd76305d5ff3be751a5fd14844ddf906e1d7f31c58",
+      "bytes": 28953,
+      "store": "release"
+    },
+    "lm-ephemeris-3.map": {
+      "sha256": "07f14c0ddec1b0d436609a0d236e70617a75a18d8ed76af2df04bdcddd0b419b",
+      "bytes": 19810,
+      "store": "release"
+    },
+    "lm-ephemeris-3.prg": {
+      "sha256": "b198a5e2f94f69cd908243ec24204f98284aa7ddcd746878d89c6c3471c82d7f",
+      "bytes": 40998,
+      "store": "release"
+    },
+    "lm-ephemeris-checks.log": {
+      "sha256": "31fe7d0fee2daddcc969fc72fc6ceba25ba47620c5b2d62d12dd52099be995ed",
+      "bytes": 782,
+      "store": "tree"
+    },
+    "lm-ephemeris-phase-steps.json": {
+      "sha256": "5b1a04e0fd002e63bd603c5a1ad2807eabd834ee9e55123eae396f3f3e88ee8d",
+      "bytes": 833,
+      "store": "tree"
+    },
+    "lm-ephemeris-reference.snapshots.bin.xz": {
+      "sha256": "a2593a19409707c6b34473c2ec19a697ea008ba6f4038b6f70788fd75a6b504b",
+      "bytes": 16690780,
+      "store": "release"
+    },
+    "lm-ephemeris-results.json": {
+      "sha256": "f336006417ac182a4f83fd84c4322b5aa192d96196d015781e1f3bdd28d3c097",
+      "bytes": 2363,
+      "store": "tree"
+    },
+    "lm-ephemeris-source-map.json": {
+      "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c",
+      "bytes": 11042,
+      "store": "tree"
+    },
+    "lm-ephemeris-source-stream.json": {
+      "sha256": "0a236512d939e1230aec4dc9038cc1230c29a9bfd4c37c0fd41416f5b95237ce",
+      "bytes": 349,
+      "store": "tree"
+    },
+    "lm-ephemeris-target-states.json": {
+      "sha256": "e9c2f36e245bc0f7b4e59f6b6546ae43f98724da72d6c1862cba87933fa54fcb",
+      "bytes": 310,
+      "store": "tree"
+    }
+  }
+}
