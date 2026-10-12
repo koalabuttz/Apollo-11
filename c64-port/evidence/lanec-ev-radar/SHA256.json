@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-radar",
+  "release": "evidence-lanec-ev-radar",
+  "files": {
+    "lanec-ev-radar-diff.json": {
+      "sha256": "ae564eef0f4ab038d8b6ca0ab3a7f2e9ef00b6b28a3f85021dd75315592a1ebe",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-ev-radar-oracle.crc": {
+      "sha256": "b5100add1ccf9ac7083d2baa6fa2235c15b61f70feef8d54d2b5152ad4ad8adc",
+      "bytes": 33162,
+      "store": "tree"
+    },
+    "lanec-ev-radar-sanitize.txt": {
+      "sha256": "77da20dd9e5c34e1ade7f56a763ba50d5dae4097f39f4e4535075f0baf3cc2ab",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-ev-radar-vice.txt": {
+      "sha256": "07e6752c0a4c2dde8c064bd44e28366c61fa8ef8279d6b7582660e0531287cce",
+      "bytes": 58,
+      "store": "tree"
+    }
+  }
+}

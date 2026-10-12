@@ -1,0 +1,39 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 14 frozen original VN1645 entries, 25 admission guards and 41 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 1aba483e1ea17bb1731069cd943f21602be12b73e1c60b55385f291e2831ab60",
+  "PASS65536 original VN1645 entries strict native",
+  "PASS 14 frozen original VN1645 entries, 25 admission guards and 41 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 1aba483e1ea17bb1731069cd943f21602be12b73e1c60b55385f291e2831ab60",
+  "PASS65536 original VN1645 entries full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-vn1645-1.prg: 33 checks, 0 failures",
+   "PASS: VICE PAL lm-vn1645-2.prg: 8 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 18512,
+    "prg_sha256": "eefca2af306ca75b19241b5e619d8ce5aec51c7950115f96ae47b72f308a9196",
+    "image_end": "$504f",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     8,
+     9,
+     10
+    ]
+   },
+   "2": {
+    "prg_bytes": 33376,
+    "prg_sha256": "542e0c5db1eef6cfb371a68c9bd1c9a9d67a499f054cc86483b9bac81a0d6cad",
+    "image_end": "$8a61",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     1
+    ]
+   }
+  }
+ }
+}

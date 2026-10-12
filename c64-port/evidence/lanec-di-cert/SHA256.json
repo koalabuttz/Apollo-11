@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-di-cert",
+  "release": "evidence-lanec-di-cert",
+  "files": {
+    "lanec-di-c64-results.json": {
+      "sha256": "388a8a11d1ca18b522084d34bb3786392742a01f0e517baec693260f48d9f024",
+      "bytes": 1053,
+      "store": "tree"
+    },
+    "lanec-di-checks.log": {
+      "sha256": "55ca929d43e035bc77a31fd94ac737195314c1434cc3148c4ff765f2da029ab1",
+      "bytes": 2536,
+      "store": "tree"
+    },
+    "lanec-di-cm-source-map.json": {
+      "sha256": "ac114a2b460fa8814bee890c02c2a650d6473e525b42a0f8ed9cc3011a673537",
+      "bytes": 168323,
+      "store": "tree"
+    },
+    "lanec-di-comparison.json": {
+      "sha256": "bf67aa51593e6926175ce5f12fc41ee99e3c0c870a54ac83944ec9af64dea8b8",
+      "bytes": 2388,
+      "store": "tree"
+    },
+    "lanec-di-lm-source-map.json": {
+      "sha256": "81c848c5a10c23afd2677343d76c934c585e3adc9c24804043929711d3cd8d05",
+      "bytes": 169069,
+      "store": "tree"
+    }
+  }
+}

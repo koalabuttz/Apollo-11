@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-/* One C64 phase diagnostic group (LM_EPHEMERIS_GROUP 1..3): the whole routine
+/* One C64 phase diagnostic group (LM_EPHEMERIS_GROUP 1..4): the whole routine
  * is about 51 KB of 6502 code, so each PRG links only its group's phases. */
 #include <stdint.h>
 #include "lm_ephemeris_phase_target.h"

@@ -1,0 +1,8211 @@
+{
+ "file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+ "missions": {
+  "Luminary099": {
+   "words": 660,
+   "map": [
+    {
+     "address": "02,5457",
+     "word": "34755",
+     "source": "ZEROICDU CAF ZERO",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5460",
+     "word": "54032",
+     "source": "TS CDUX",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5461",
+     "word": "54033",
+     "source": "TS CDUY",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5462",
+     "word": "54034",
+     "source": "TS CDUZ",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5463",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "07,2714",
+     "word": "00004",
+     "source": "IMUZERO INHINT",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2715",
+     "word": "41036",
+     "source": "CS DSPTAB +11D",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2716",
+     "word": "74771",
+     "source": "MASK BITS4&6",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2717",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2720",
+     "word": "12724",
+     "source": "TCF IMUZEROA",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2721",
+     "word": "05567",
+     "source": "TC ALARM",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2722",
+     "word": "00206",
+     "source": "OCT 00206",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2723",
+     "word": "13657",
+     "source": "TCF CAGETSTJ +4",
+     "native": "r_c2723 (after ALARM 206)"
+    },
+    {
+     "address": "07,2724",
+     "word": "03653",
+     "source": "IMUZEROA TC CAGETSTJ",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2725",
+     "word": "41303",
+     "source": "CS IMODES33",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2726",
+     "word": "74773",
+     "source": "MASK SUPER011",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2727",
+     "word": "27303",
+     "source": "ADS IMODES33",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2730",
+     "word": "41302",
+     "source": "CS IMODES30",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2731",
+     "word": "75751",
+     "source": "MASK BITS3&4",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2732",
+     "word": "27302",
+     "source": "ADS IMODES30",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2733",
+     "word": "44771",
+     "source": "CS BITS4&6",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2734",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2735",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2736",
+     "word": "03266",
+     "source": "TC NOATTOFF",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2737",
+     "word": "34747",
+     "source": "CAF BIT5",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2740",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2741",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2742",
+     "word": "05457",
+     "source": "TC ZEROICDU",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2743",
+     "word": "34746",
+     "source": "CAF BIT6",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2744",
+     "word": "05203",
+     "source": "TC WAITLIST",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2745",
+     "word": "02757",
+     "source": "2CADR IMUZERO2",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2746",
+     "word": "16103",
+     "source": "2CADR IMUZERO2 (second word)",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2747",
+     "word": "41302",
+     "source": "CS IMODES30",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2750",
+     "word": "74743",
+     "source": "MASK BIT9",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2751",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2752",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2753",
+     "word": "05567",
+     "source": "TC ALARM",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2754",
+     "word": "00210",
+     "source": "OCT 210",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2755",
+     "word": "00003",
+     "source": "MODEEXIT RELINT",
+     "native": "modeexit (MODEEXIT)"
+    },
+    {
+     "address": "07,2756",
+     "word": "14631",
+     "source": "TCF SWRETURN",
+     "native": "modeexit (MODEEXIT)"
+    },
+    {
+     "address": "07,2757",
+     "word": "03641",
+     "source": "IMUZERO2 TC CAGETEST",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2760",
+     "word": "05457",
+     "source": "TC ZEROICDU",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2761",
+     "word": "44747",
+     "source": "CS BIT5",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2762",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2763",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2764",
+     "word": "34741",
+     "source": "CAF BIT11",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2765",
+     "word": "05224",
+     "source": "TC VARDELAY",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2766",
+     "word": "03641",
+     "source": "IMUZERO3 TC CAGETEST",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2767",
+     "word": "45751",
+     "source": "CS BITS3&4",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2770",
+     "word": "71302",
+     "source": "MASK IMODES30",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2771",
+     "word": "55302",
+     "source": "TS IMODES30",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2772",
+     "word": "44773",
+     "source": "CS SUPER011",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2773",
+     "word": "71303",
+     "source": "MASK IMODES33",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2774",
+     "word": "55303",
+     "source": "TS IMODES33",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2775",
+     "word": "04674",
+     "source": "TC IBNKCALL",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2776",
+     "word": "14703",
+     "source": "CADR SETISSW",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2777",
+     "word": "13631",
+     "source": "TCF ENDIMU",
+     "native": "r_c2777 (after SETISSW)"
+    },
+    {
+     "address": "07,3000",
+     "word": "00004",
+     "source": "IMUCOARS INHINT",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,3001",
+     "word": "03653",
+     "source": "TC CAGETSTJ",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,3002",
+     "word": "03144",
+     "source": "TC SETCOARS",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,3003",
+     "word": "36242",
+     "source": "CAF SIX",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,3004",
+     "word": "05203",
+     "source": "TC WAITLIST",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,3005",
+     "word": "03010",
+     "source": "2CADR COARS",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,3006",
+     "word": "16103",
+     "source": "2CADR COARS (second word)",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,3007",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3007 (after WAITLIST)"
+    },
+    {
+     "address": "07,3010",
+     "word": "03641",
+     "source": "COARS TC CAGETEST",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3011",
+     "word": "34746",
+     "source": "CAF BIT6",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3012",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3013",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3014",
+     "word": "34752",
+     "source": "CAF TWO",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3015",
+     "word": "55474",
+     "source": "COARS1 TS CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3016",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3017",
+     "word": "30321",
+     "source": "CA THETAD",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3020",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3021",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3022",
+     "word": "20032",
+     "source": "MSU CDUX",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3023",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3024",
+     "word": "74737",
+     "source": "MP BIT13",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3025",
+     "word": "56001",
+     "source": "XCH L",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3026",
+     "word": "60000",
+     "source": "DOUBLE",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3027",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3030",
+     "word": "13032",
+     "source": "TCF +2",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3031",
+     "word": "26001",
+     "source": "ADS L",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3032",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3033",
+     "word": "23471",
+     "source": "LXCH COMMAND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3034",
+     "word": "11474",
+     "source": "CCS CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3035",
+     "word": "03015",
+     "source": "TC COARS1",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3036",
+     "word": "34752",
+     "source": "CAF TWO",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3037",
+     "word": "05224",
+     "source": "TC VARDELAY",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,3040",
+     "word": "03641",
+     "source": "COARS2 TC CAGETEST",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3041",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3042",
+     "word": "34752",
+     "source": "CAF TWO",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3043",
+     "word": "55474",
+     "source": "+3 TS CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3044",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3045",
+     "word": "11471",
+     "source": "CCS COMMAND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3046",
+     "word": "03052",
+     "source": "TC COMPOS",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3047",
+     "word": "03061",
+     "source": "TC NEXTCDU +1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3050",
+     "word": "03117",
+     "source": "TC COMNEG",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3051",
+     "word": "03061",
+     "source": "TC NEXTCDU +1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3052",
+     "word": "63745",
+     "source": "COMPOS AD -COMMAX",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3053",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3054",
+     "word": "63127",
+     "source": "BZMF COMZERO",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3055",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3056",
+     "word": "55471",
+     "source": "TS COMMAND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3057",
+     "word": "43746",
+     "source": "CS -COMMAX-",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3060",
+     "word": "24061",
+     "source": "NEXTCDU INCR ITEMP1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3061",
+     "word": "64754",
+     "source": "AD NEG0",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3062",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3063",
+     "word": "54050",
+     "source": "TS CDUXCMD",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3064",
+     "word": "11474",
+     "source": "CCS CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3065",
+     "word": "03043",
+     "source": "TC COARS2 +3",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3066",
+     "word": "10061",
+     "source": "CCS ITEMP1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3067",
+     "word": "13133",
+     "source": "TCF SENDPULS",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3070",
+     "word": "05221",
+     "source": "TC FIXDELAY",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3071",
+     "word": "00226",
+     "source": "DEC 150 B-14",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,3072",
+     "word": "34752",
+     "source": "CAF TWO",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3073",
+     "word": "54061",
+     "source": "CHKCORS TS ITEMP1",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3074",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3075",
+     "word": "30032",
+     "source": "CA CDUX",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3076",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3077",
+     "word": "50061",
+     "source": "INDEX ITEMP1",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3100",
+     "word": "20321",
+     "source": "MSU THETAD",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3101",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3102",
+     "word": "13110",
+     "source": "TCF COARSERR",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3103",
+     "word": "13105",
+     "source": "TCF CORSCHK2",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3104",
+     "word": "13110",
+     "source": "TCF COARSERR",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3105",
+     "word": "10061",
+     "source": "CORSCHK2 CCS ITEMP1",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3106",
+     "word": "13073",
+     "source": "TCF CHKCORS",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3107",
+     "word": "13631",
+     "source": "TCF ENDIMU",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3110",
+     "word": "63116",
+     "source": "COARSERR AD COARSTOL",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3111",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3112",
+     "word": "63105",
+     "source": "BZMF CORSCHK2",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3113",
+     "word": "05567",
+     "source": "TC ALARM",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3114",
+     "word": "00211",
+     "source": "OCT 211",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3115",
+     "word": "13637",
+     "source": "TCF IMUBAD",
+     "native": "r_c3115 (after ALARM 211)"
+    },
+    {
+     "address": "07,3116",
+     "word": "77511",
+     "source": "COARSTOL DEC -.01111",
+     "native": "K_COARSTOL (COARSTOL)"
+    },
+    {
+     "address": "07,3117",
+     "word": "63745",
+     "source": "COMNEG AD -COMMAX",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3120",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3121",
+     "word": "63127",
+     "source": "BZMF COMZERO",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3122",
+     "word": "40000",
+     "source": "COM",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3123",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3124",
+     "word": "55471",
+     "source": "TS COMMAND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3125",
+     "word": "33746",
+     "source": "CA -COMMAX-",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3126",
+     "word": "03060",
+     "source": "TC NEXTCDU",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3127",
+     "word": "34755",
+     "source": "COMZERO CAF ZERO",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3130",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3131",
+     "word": "57471",
+     "source": "XCH COMMAND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3132",
+     "word": "03060",
+     "source": "TC NEXTCDU",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3133",
+     "word": "37740",
+     "source": "SENDPULS CAF 13,14,15",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3134",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3135",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3136",
+     "word": "33747",
+     "source": "CAF 600MS",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3137",
+     "word": "13037",
+     "source": "TCF COARS2 -1",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3140",
+     "word": "34746",
+     "source": "CA+ECE CAF BIT6",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3141",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3142",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3143",
+     "word": "05261",
+     "source": "TC TASKOVER",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3144",
+     "word": "34750",
+     "source": "SETCOARS CAF BIT4",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3145",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3146",
+     "word": "02012",
+     "source": "RAND CHAN12",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3147",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3150",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3151",
+     "word": "44746",
+     "source": "CS BIT6",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3152",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3153",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3154",
+     "word": "44742",
+     "source": "CS BIT10",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3155",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3156",
+     "word": "03014",
+     "source": "WAND CHAN14",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3157",
+     "word": "44755",
+     "source": "CS ZERO",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3160",
+     "word": "54047",
+     "source": "TS GYROCMD",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3161",
+     "word": "34750",
+     "source": "CAF BIT4",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3162",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3163",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3164",
+     "word": "41036",
+     "source": "CS DSPTAB +11D",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3165",
+     "word": "73207",
+     "source": "MASK OCT40010",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3166",
+     "word": "27036",
+     "source": "ADS DSPTAB +11D",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3167",
+     "word": "41303",
+     "source": "CS IMODES33",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3170",
+     "word": "74746",
+     "source": "MASK BIT6",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3171",
+     "word": "27303",
+     "source": "ADS IMODES33",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3172",
+     "word": "41302",
+     "source": "CS IMODES30",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3173",
+     "word": "74750",
+     "source": "MASK BIT4",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3174",
+     "word": "27302",
+     "source": "ADS IMODES30",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3175",
+     "word": "44747",
+     "source": "RNDREFDR CS TRACKBIT",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3176",
+     "word": "70075",
+     "source": "MASK FLAGWRD1",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3177",
+     "word": "54075",
+     "source": "TS FLAGWRD1",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3200",
+     "word": "44735",
+     "source": "CS DRFTBIT",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3201",
+     "word": "70076",
+     "source": "MASK FLAGWRD2",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3202",
+     "word": "54076",
+     "source": "TS FLAGWRD2",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3203",
+     "word": "44737",
+     "source": "CS REFSMBIT",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3204",
+     "word": "70077",
+     "source": "MASK FLAGWRD3",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3205",
+     "word": "54077",
+     "source": "TS FLAGWRD3",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3206",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3207",
+     "word": "40010",
+     "source": "OCT40010 OCT 40010",
+     "native": "K_OCT40010 (OCT40010)"
+    },
+    {
+     "address": "07,3210",
+     "word": "00004",
+     "source": "IMUFINE INHINT",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3211",
+     "word": "03653",
+     "source": "TC CAGETSTJ",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3212",
+     "word": "43744",
+     "source": "CS BITS4-5",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3213",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3214",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3215",
+     "word": "44746",
+     "source": "CS BIT6",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3216",
+     "word": "71303",
+     "source": "MASK IMODES33",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3217",
+     "word": "55303",
+     "source": "TS IMODES33",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3220",
+     "word": "03266",
+     "source": "TC NOATTOFF",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3221",
+     "word": "34742",
+     "source": "CAF BIT10",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3222",
+     "word": "05203",
+     "source": "TC WAITLIST",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3223",
+     "word": "03234",
+     "source": "2CADR IFAILOK",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3224",
+     "word": "16103",
+     "source": "2CADR IFAILOK (second word)",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3225",
+     "word": "35000",
+     "source": "CAF 2SECS",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3226",
+     "word": "05203",
+     "source": "TC WAITLIST",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3227",
+     "word": "03232",
+     "source": "2CADR IMUFINED",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3230",
+     "word": "16103",
+     "source": "2CADR IMUFINED (second word)",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3231",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3231 (after WAITLIST)"
+    },
+    {
+     "address": "07,3232",
+     "word": "03641",
+     "source": "IMUFINED TC CAGETEST",
+     "native": "imufined (IMUFINED)"
+    },
+    {
+     "address": "07,3233",
+     "word": "13631",
+     "source": "TCF ENDIMU",
+     "native": "imufined (IMUFINED)"
+    },
+    {
+     "address": "07,3234",
+     "word": "03646",
+     "source": "IFAILOK TC CAGETSTQ",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3235",
+     "word": "15261",
+     "source": "TCF TASKOVER",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3236",
+     "word": "34750",
+     "source": "CAF BIT4",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3237",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3240",
+     "word": "02012",
+     "source": "RAND CHAN12",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3241",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3242",
+     "word": "15261",
+     "source": "TCF TASKOVER",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3243",
+     "word": "41302",
+     "source": "CS IMODES30",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3244",
+     "word": "74737",
+     "source": "MASK BIT13",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3245",
+     "word": "27302",
+     "source": "ADS IMODES30",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3246",
+     "word": "44750",
+     "source": "CS BIT4",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3247",
+     "word": "71302",
+     "source": "PFAILOK2 MASK IMODES30",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3250",
+     "word": "55302",
+     "source": "TS IMODES30",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3251",
+     "word": "04674",
+     "source": "TC IBNKCALL",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3252",
+     "word": "14703",
+     "source": "CADR SETISSW",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3253",
+     "word": "15261",
+     "source": "TCF TASKOVER",
+     "native": "r_c3253 (after SETISSW)"
+    },
+    {
+     "address": "07,3254",
+     "word": "03646",
+     "source": "PFAILOK TC CAGETSTQ",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3255",
+     "word": "15261",
+     "source": "TCF TASKOVER",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3256",
+     "word": "41302",
+     "source": "CS IMODES30",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3257",
+     "word": "74742",
+     "source": "MASK BIT10",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3260",
+     "word": "27302",
+     "source": "ADS IMODES30",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3261",
+     "word": "41303",
+     "source": "CS IMODES33",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3262",
+     "word": "74737",
+     "source": "MASK BIT13",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3263",
+     "word": "27303",
+     "source": "ADS IMODES33",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3264",
+     "word": "44747",
+     "source": "CS BIT5",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3265",
+     "word": "13247",
+     "source": "TCF PFAILOK2",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3266",
+     "word": "43207",
+     "source": "NOATTOFF CS OCT40010",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3267",
+     "word": "71036",
+     "source": "MASK DSPTAB +11D",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3270",
+     "word": "64735",
+     "source": "AD BIT15",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3271",
+     "word": "55036",
+     "source": "TS DSPTAB +11D",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3272",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3273",
+     "word": "44755",
+     "source": "PIPUSE CS ZERO",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3274",
+     "word": "54037",
+     "source": "TS PIPAX",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3275",
+     "word": "54040",
+     "source": "TS PIPAY",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3276",
+     "word": "54041",
+     "source": "TS PIPAZ",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3277",
+     "word": "03646",
+     "source": "PIPUSE1 TC CAGETSTQ",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3300",
+     "word": "14631",
+     "source": "TCF SWRETURN",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3301",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3302",
+     "word": "44753",
+     "source": "CS BIT1",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3303",
+     "word": "71302",
+     "source": "MASK IMODES30",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3304",
+     "word": "55302",
+     "source": "TS IMODES30",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3305",
+     "word": "04674",
+     "source": "PIPFREE2 TC IBNKCALL",
+     "native": "pipfree2 (PIPFREE2; CADR is the interbank site operand)"
+    },
+    {
+     "address": "07,3306",
+     "word": "14703",
+     "source": "CADR SETISSW",
+     "native": "pipfree2 (PIPFREE2; CADR is the interbank site operand)"
+    },
+    {
+     "address": "07,3307",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3307 (after IBNKCALL)"
+    },
+    {
+     "address": "07,3310",
+     "word": "00004",
+     "source": "PIPFREE INHINT",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3311",
+     "word": "41302",
+     "source": "CS IMODES30",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3312",
+     "word": "74753",
+     "source": "MASK BIT1",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3313",
+     "word": "27302",
+     "source": "ADS IMODES30",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3314",
+     "word": "74742",
+     "source": "MASK BIT10",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3315",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3316",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3317",
+     "word": "05567",
+     "source": "TC ALARM",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3320",
+     "word": "00212",
+     "source": "OCT 212",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3321",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "r_c3321 (after ALARM 212)"
+    },
+    {
+     "address": "07,3322",
+     "word": "13305",
+     "source": "TCF PIPFREE2",
+     "native": "r_c3321 (after ALARM 212)"
+    },
+    {
+     "address": "07,3323",
+     "word": "54161",
+     "source": "IMUPULSE TS MPAC +5",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3324",
+     "word": "03653",
+     "source": "TC CAGETSTJ",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3325",
+     "word": "11314",
+     "source": "CCS LGYRO",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3326",
+     "word": "03367",
+     "source": "TC GYROBUSY",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3327",
+     "word": "54156",
+     "source": "TS MPAC +2",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3330",
+     "word": "34746",
+     "source": "CAF BIT6",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3331",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3332",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3333",
+     "word": "34751",
+     "source": "CAF FOUR",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3334",
+     "word": "05203",
+     "source": "GWAKE2 TC WAITLIST",
+     "native": "gwake2 (GWAKE2)"
+    },
+    {
+     "address": "07,3335",
+     "word": "03405",
+     "source": "2CADR STRTGYRO",
+     "native": "gwake2 (GWAKE2)"
+    },
+    {
+     "address": "07,3336",
+     "word": "16103",
+     "source": "2CADR STRTGYRO (second word)",
+     "native": "gwake2 (GWAKE2)"
+    },
+    {
+     "address": "07,3337",
+     "word": "30161",
+     "source": "CA MPAC +5",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3340",
+     "word": "56003",
+     "source": "XCH EBANK",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3341",
+     "word": "56161",
+     "source": "XCH MPAC +5",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3342",
+     "word": "55314",
+     "source": "TS LGYRO",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3343",
+     "word": "74357",
+     "source": "MASK LOW8",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3344",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3345",
+     "word": "34752",
+     "source": "CAF TWO",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3346",
+     "word": "54157",
+     "source": "GYROAGRE TS MPAC +3",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3347",
+     "word": "60000",
+     "source": "DOUBLE",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3350",
+     "word": "60061",
+     "source": "AD ITEMP1",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3351",
+     "word": "54160",
+     "source": "TS MPAC +4",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3352",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3353",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3354",
+     "word": "31401",
+     "source": "DCA 1400",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3355",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3356",
+     "word": "07257",
+     "source": "TC TPAGREE",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3357",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3360",
+     "word": "50160",
+     "source": "INDEX MPAC +4",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3361",
+     "word": "53401",
+     "source": "DXCH 1400",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3362",
+     "word": "10157",
+     "source": "CCS MPAC +3",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3363",
+     "word": "13346",
+     "source": "TCF GYROAGRE",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3364",
+     "word": "30161",
+     "source": "CA MPAC +5",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3365",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3366",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3367",
+     "word": "00006",
+     "source": "GYROBUSY EXTEND",
+     "native": "r_imupulse (GYROBUSY)"
+    },
+    {
+     "address": "07,3370",
+     "word": "30134",
+     "source": "DCA BUF2",
+     "native": "r_imupulse (GYROBUSY)"
+    },
+    {
+     "address": "07,3371",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_imupulse (GYROBUSY)"
+    },
+    {
+     "address": "07,3372",
+     "word": "33404",
+     "source": "REGSLEEP CAF LGWAKE",
+     "native": "regsleep (REGSLEEP)"
+    },
+    {
+     "address": "07,3373",
+     "word": "15133",
+     "source": "TCF JOBSLEEP",
+     "native": "regsleep (REGSLEEP)"
+    },
+    {
+     "address": "07,3374",
+     "word": "11314",
+     "source": "GWAKE CCS LGYRO",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3375",
+     "word": "13372",
+     "source": "TCF REGSLEEP",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3376",
+     "word": "54156",
+     "source": "TS MPAC +2",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3377",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3400",
+     "word": "30155",
+     "source": "DCA MPAC",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3401",
+     "word": "52134",
+     "source": "DXCH BUF2",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3402",
+     "word": "34753",
+     "source": "CAF ONE",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3403",
+     "word": "13334",
+     "source": "TCF GWAKE2",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3404",
+     "word": "17374",
+     "source": "LGWAKE CADR GWAKE",
+     "native": "lgwake (LGWAKE: CADR GWAKE)"
+    },
+    {
+     "address": "07,3405",
+     "word": "43626",
+     "source": "STRTGYRO CS GDESELCT",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3406",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3407",
+     "word": "03014",
+     "source": "WAND CHAN14",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3410",
+     "word": "03641",
+     "source": "TC CAGETEST",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3411",
+     "word": "31314",
+     "source": "STRTGYR2 CA LGYRO",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3412",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3413",
+     "word": "74750",
+     "source": "MP BIT4",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3414",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3415",
+     "word": "13416",
+     "source": "TCF +1",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3416",
+     "word": "03433",
+     "source": "TC GSELECT",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3417",
+     "word": "00202",
+     "source": "OCT 00202",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3420",
+     "word": "03433",
+     "source": "TC GSELECT",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3421",
+     "word": "00302",
+     "source": "OCT 00302",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3422",
+     "word": "03431",
+     "source": "TC GSELECT -2",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3423",
+     "word": "00100",
+     "source": "OCT 00100",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3424",
+     "word": "34755",
+     "source": "CAF ZERO",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3425",
+     "word": "55314",
+     "source": "TS LGYRO",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3426",
+     "word": "33404",
+     "source": "CAF LGWAKE",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3427",
+     "word": "05137",
+     "source": "TC JOBWAKE",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3430",
+     "word": "13232",
+     "source": "NORESET TCF IMUFINED",
+     "native": "r_noreset (NORESET)"
+    },
+    {
+     "address": "07,3431",
+     "word": "44751",
+     "source": "-2 CS FOUR",
+     "native": "r_strtgyro (GSELECT -2)"
+    },
+    {
+     "address": "07,3432",
+     "word": "27314",
+     "source": "ADS LGYRO",
+     "native": "r_strtgyro (GSELECT -2)"
+    },
+    {
+     "address": "07,3433",
+     "word": "50002",
+     "source": "GSELECT INDEX Q",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3434",
+     "word": "30000",
+     "source": "CAF 0",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3435",
+     "word": "54064",
+     "source": "TS ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3436",
+     "word": "74757",
+     "source": "MASK SEVEN",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3437",
+     "word": "64737",
+     "source": "AD BIT13",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3440",
+     "word": "27314",
+     "source": "ADS LGYRO",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3441",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3442",
+     "word": "74357",
+     "source": "MASK LOW8",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3443",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3444",
+     "word": "44757",
+     "source": "CS SEVEN",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3445",
+     "word": "70064",
+     "source": "MASK ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3446",
+     "word": "54064",
+     "source": "TS ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3447",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3450",
+     "word": "50061",
+     "source": "INDEX ITEMP1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3451",
+     "word": "31401",
+     "source": "DCA 1400",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3452",
+     "word": "52071",
+     "source": "DXCH RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3453",
+     "word": "10070",
+     "source": "CCS RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3454",
+     "word": "13467",
+     "source": "TCF MAJ+",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3455",
+     "word": "13457",
+     "source": "TCF +2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3456",
+     "word": "13607",
+     "source": "TCF MAJ-",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3457",
+     "word": "10071",
+     "source": "CCS RUPTREG2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3460",
+     "word": "13464",
+     "source": "TCF MIN+",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3461",
+     "word": "13411",
+     "source": "TCF STRTGYR2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3462",
+     "word": "13604",
+     "source": "TCF MIN-",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3463",
+     "word": "13411",
+     "source": "TCF STRTGYR2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3464",
+     "word": "63520",
+     "source": "MIN+ AD -GYROMIN",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3465",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3466",
+     "word": "63411",
+     "source": "BZMF STRTGYR2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3467",
+     "word": "00006",
+     "source": "MAJ+ EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3470",
+     "word": "33630",
+     "source": "DCA GYROFRAC",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3471",
+     "word": "20071",
+     "source": "DAS RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3472",
+     "word": "30064",
+     "source": "CA ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3473",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3474",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3475",
+     "word": "36074",
+     "source": "CAF LOW7",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3476",
+     "word": "70071",
+     "source": "MASK RUPTREG2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3477",
+     "word": "56071",
+     "source": "XCH RUPTREG2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3500",
+     "word": "00006",
+     "source": "GMERGE EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3501",
+     "word": "74744",
+     "source": "MP BIT8",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3502",
+     "word": "54062",
+     "source": "TS ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3503",
+     "word": "30070",
+     "source": "CA RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3504",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3505",
+     "word": "74743",
+     "source": "MP BIT9",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3506",
+     "word": "54070",
+     "source": "TS RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3507",
+     "word": "30001",
+     "source": "CA L",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3510",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3511",
+     "word": "74736",
+     "source": "MP BIT14",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3512",
+     "word": "26062",
+     "source": "ADS ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3513",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3514",
+     "word": "30071",
+     "source": "DCA RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3515",
+     "word": "67747",
+     "source": "AD MINUS1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3516",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3517",
+     "word": "13543",
+     "source": "TCF LONGGYRO",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3520",
+     "word": "77601",
+     "source": "-GYROMIN OCT -176",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3521",
+     "word": "13525",
+     "source": "TCF +4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3522",
+     "word": "34736",
+     "source": "CAF BIT14",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3523",
+     "word": "26062",
+     "source": "ADS ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3524",
+     "word": "34755",
+     "source": "CAF ZERO",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3525",
+     "word": "50061",
+     "source": "+4 INDEX ITEMP1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3526",
+     "word": "53401",
+     "source": "DXCH 1400",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3527",
+     "word": "30062",
+     "source": "CA ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3530",
+     "word": "54047",
+     "source": "LASTSEG TS GYROCMD",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3531",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3532",
+     "word": "74742",
+     "source": "MP BIT10",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3533",
+     "word": "66245",
+     "source": "AD THREE",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3534",
+     "word": "05203",
+     "source": "TC WAITLIST",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3535",
+     "word": "03405",
+     "source": "2CADR STRTGYRO",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3536",
+     "word": "16103",
+     "source": "2CADR STRTGYRO (second word)",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3537",
+     "word": "34742",
+     "source": "GYROEXIT CAF BIT10",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3540",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3541",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3542",
+     "word": "15261",
+     "source": "TCF TASKOVER",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3543",
+     "word": "50061",
+     "source": "LONGGYRO INDEX ITEMP1",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3544",
+     "word": "53401",
+     "source": "DXCH 1400",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3545",
+     "word": "34736",
+     "source": "CAF BIT14",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3546",
+     "word": "60062",
+     "source": "AD ITEMP2",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3547",
+     "word": "54047",
+     "source": "TS GYROCMD",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3550",
+     "word": "00006",
+     "source": "AUG3 EXTEND",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3551",
+     "word": "74742",
+     "source": "MP BIT10",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3552",
+     "word": "67745",
+     "source": "AD NEG3",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3553",
+     "word": "05203",
+     "source": "TC WAITLIST",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3554",
+     "word": "03557",
+     "source": "2CADR 8192AUG",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3555",
+     "word": "16103",
+     "source": "2CADR 8192AUG (second word)",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3556",
+     "word": "13537",
+     "source": "TCF GYROEXIT",
+     "native": "r_c3556 (after WAITLIST)"
+    },
+    {
+     "address": "07,3557",
+     "word": "03641",
+     "source": "8192AUG TC CAGETEST",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3560",
+     "word": "34750",
+     "source": "CAF BIT4",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3561",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3562",
+     "word": "02012",
+     "source": "RAND CHAN12",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3563",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3564",
+     "word": "13637",
+     "source": "TCF IMUBAD",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3565",
+     "word": "31314",
+     "source": "CA LGYRO",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3566",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3567",
+     "word": "74357",
+     "source": "MASK LOW8",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3570",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3571",
+     "word": "50061",
+     "source": "INDEX ITEMP1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3572",
+     "word": "11400",
+     "source": "CCS 1400",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3573",
+     "word": "13577",
+     "source": "TCF AUG2",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3574",
+     "word": "34736",
+     "source": "CAF BIT14",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3575",
+     "word": "26047",
+     "source": "ADS GYROCMD",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3576",
+     "word": "13531",
+     "source": "TCF LASTSEG +1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3577",
+     "word": "50061",
+     "source": "AUG2 INDEX ITEMP1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3600",
+     "word": "55400",
+     "source": "TS 1400",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3601",
+     "word": "34736",
+     "source": "CAF BIT14",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3602",
+     "word": "26047",
+     "source": "ADS GYROCMD",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3603",
+     "word": "13550",
+     "source": "TCF AUG3",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3604",
+     "word": "63520",
+     "source": "MIN- AD -GYROMIN",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3605",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3606",
+     "word": "63411",
+     "source": "BZMF STRTGYR2",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3607",
+     "word": "00006",
+     "source": "MAJ- EXTEND",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3610",
+     "word": "43630",
+     "source": "DCS GYROFRAC",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3611",
+     "word": "20071",
+     "source": "DAS RUPTREG1",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3612",
+     "word": "30064",
+     "source": "CA ITEMP4",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3613",
+     "word": "64743",
+     "source": "AD BIT9",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3614",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3615",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3616",
+     "word": "40070",
+     "source": "CS RUPTREG1",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3617",
+     "word": "54070",
+     "source": "TS RUPTREG1",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3620",
+     "word": "40071",
+     "source": "CS RUPTREG2",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3621",
+     "word": "76074",
+     "source": "MASK LOW7",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3622",
+     "word": "40000",
+     "source": "COM",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3623",
+     "word": "56071",
+     "source": "XCH RUPTREG2",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3624",
+     "word": "40000",
+     "source": "COM",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3625",
+     "word": "13500",
+     "source": "TCF GMERGE",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3626",
+     "word": "01700",
+     "source": "GDESELCT OCT 1700",
+     "native": "K_GDESELCT, K_GYROFRAC (GDESELCT, GYROFRAC)"
+    },
+    {
+     "address": "07,3627",
+     "word": "00000",
+     "source": "GYROFRAC 2DEC .215 B-21",
+     "native": "K_GDESELCT, K_GYROFRAC (GDESELCT, GYROFRAC)"
+    },
+    {
+     "address": "07,3630",
+     "word": "00034",
+     "source": "GYROFRAC 2DEC .215 B-21 (second word)",
+     "native": "K_GDESELCT, K_GYROFRAC (GDESELCT, GYROFRAC)"
+    },
+    {
+     "address": "07,3631",
+     "word": "00006",
+     "source": "ENDIMU EXTEND",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3632",
+     "word": "00011",
+     "source": "READ DSALMOUT",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3633",
+     "word": "74753",
+     "source": "MASK BIT1",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3634",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3635",
+     "word": "13637",
+     "source": "TCF IMUBAD",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3636",
+     "word": "13665",
+     "source": "IMUGOOD TCF GOODEND",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3637",
+     "word": "34755",
+     "source": "IMUBAD CAF ZERO",
+     "native": "imubad (IMUBAD)"
+    },
+    {
+     "address": "07,3640",
+     "word": "13662",
+     "source": "TCF BADEND",
+     "native": "imubad (IMUBAD)"
+    },
+    {
+     "address": "07,3641",
+     "word": "34746",
+     "source": "CAGETEST CAF BIT6",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3642",
+     "word": "71302",
+     "source": "MASK IMODES30",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3643",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3644",
+     "word": "13637",
+     "source": "TCF IMUBAD",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3645",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3646",
+     "word": "41302",
+     "source": "CAGETSTQ CS IMODES30",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3647",
+     "word": "74746",
+     "source": "MASK BIT6",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3650",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3651",
+     "word": "24002",
+     "source": "INCR Q",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3652",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3653",
+     "word": "41302",
+     "source": "CAGETSTJ CS IMODES30",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3654",
+     "word": "74746",
+     "source": "MASK BIT6",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3655",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3656",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3657",
+     "word": "44755",
+     "source": "CS ZERO",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3660",
+     "word": "55304",
+     "source": "TS IMUCADR",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3661",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3662",
+     "word": "54071",
+     "source": "BADEND TS RUPTREG2",
+     "native": "badend (BADEND)"
+    },
+    {
+     "address": "07,3663",
+     "word": "44755",
+     "source": "CS ZERO",
+     "native": "badend (BADEND)"
+    },
+    {
+     "address": "07,3664",
+     "word": "13667",
+     "source": "TCF GOODEND +2",
+     "native": "badend (BADEND)"
+    },
+    {
+     "address": "07,3665",
+     "word": "54071",
+     "source": "GOODEND TS RUPTREG2",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3666",
+     "word": "44753",
+     "source": "CS ONE",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3667",
+     "word": "54072",
+     "source": "TS RUPTREG3",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3670",
+     "word": "50071",
+     "source": "INDEX RUPTREG2",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3671",
+     "word": "11304",
+     "source": "CCS MODECADR",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3672",
+     "word": "13676",
+     "source": "TCF +4",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3673",
+     "word": "13706",
+     "source": "TCF ENDMODE",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3674",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3675",
+     "word": "13707",
+     "source": "BZF ENDMODE +1",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3676",
+     "word": "34755",
+     "source": "CAF ZERO",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3677",
+     "word": "50071",
+     "source": "INDEX RUPTREG2",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3700",
+     "word": "57304",
+     "source": "XCH MODECADR",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3701",
+     "word": "05137",
+     "source": "TC JOBWAKE",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3702",
+     "word": "40072",
+     "source": "CS RUPTREG3",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3703",
+     "word": "50064",
+     "source": "INDEX LOCCTR",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3704",
+     "word": "26164",
+     "source": "ADS LOC",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3705",
+     "word": "15261",
+     "source": "TCF TASKOVER",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3706",
+     "word": "30072",
+     "source": "ENDMODE CA RUPTREG3",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3707",
+     "word": "50071",
+     "source": "+1 INDEX RUPTREG2",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3710",
+     "word": "55304",
+     "source": "TS MODECADR",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3711",
+     "word": "15261",
+     "source": "TCF TASKOVER",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3712",
+     "word": "34753",
+     "source": "AOTSTALL CAF ONE",
+     "native": "r_aotstall (AOTSTALL)"
+    },
+    {
+     "address": "07,3713",
+     "word": "03717",
+     "source": "TC STALL",
+     "native": "r_aotstall (AOTSTALL)"
+    },
+    {
+     "address": "07,3714",
+     "word": "34752",
+     "source": "RADSTALL CAF TWO",
+     "native": "r_radstall (RADSTALL)"
+    },
+    {
+     "address": "07,3715",
+     "word": "13717",
+     "source": "TCF STALL",
+     "native": "r_radstall (RADSTALL)"
+    },
+    {
+     "address": "07,3716",
+     "word": "34755",
+     "source": "IMUSTALL CAF ZERO",
+     "native": "r_imustall (IMUSTALL)"
+    },
+    {
+     "address": "07,3717",
+     "word": "00004",
+     "source": "STALL INHINT",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3720",
+     "word": "54071",
+     "source": "TS RUPTREG2",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3721",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3722",
+     "word": "11304",
+     "source": "CCS MODECADR",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3723",
+     "word": "13741",
+     "source": "TCF MODABORT",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3724",
+     "word": "13735",
+     "source": "TCF MODESLP",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3725",
+     "word": "13731",
+     "source": "TCF MODEGOOD",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3726",
+     "word": "50071",
+     "source": "MG2 INDEX RUPTREG2",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3727",
+     "word": "55304",
+     "source": "TS MODECADR",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3730",
+     "word": "12755",
+     "source": "TCF MODEEXIT",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3731",
+     "word": "10000",
+     "source": "MODEGOOD CCS A",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3732",
+     "word": "13741",
+     "source": "TCF MODABORT",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3733",
+     "word": "24133",
+     "source": "INCR BUF2",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3734",
+     "word": "13726",
+     "source": "TCF MG2",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3735",
+     "word": "04645",
+     "source": "MODESLP TC MAKECADR",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3736",
+     "word": "50071",
+     "source": "INDEX RUPTREG2",
+     "native": "r_c3736 (after MAKECADR)"
+    },
+    {
+     "address": "07,3737",
+     "word": "55304",
+     "source": "TS MODECADR",
+     "native": "r_c3736 (after MAKECADR)"
+    },
+    {
+     "address": "07,3740",
+     "word": "15133",
+     "source": "TCF JOBSLEEP",
+     "native": "r_c3736 (after MAKECADR)"
+    },
+    {
+     "address": "07,3741",
+     "word": "52134",
+     "source": "MODABORT DXCH BUF2",
+     "native": "modabort (MODABORT)"
+    },
+    {
+     "address": "07,3742",
+     "word": "05716",
+     "source": "TC BAILOUT1",
+     "native": "modabort (MODABORT)"
+    },
+    {
+     "address": "07,3743",
+     "word": "01210",
+     "source": "OCT 1210",
+     "native": "modabort (MODABORT)"
+    },
+    {
+     "address": "07,3744",
+     "word": "00030",
+     "source": "BITS4-5 OCT 00030",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3745",
+     "word": "77500",
+     "source": "-COMMAX DEC -191 B-14",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3746",
+     "word": "77477",
+     "source": "-COMMAX- DEC -192 B-14",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3747",
+     "word": "00074",
+     "source": "600MS DEC 60 B-14",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3750",
+     "word": "31307",
+     "source": "GOMANUR CA ATTCADR",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3751",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3752",
+     "word": "13755",
+     "source": "BZF +3",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3753",
+     "word": "05652",
+     "source": "TC POODOO",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3754",
+     "word": "01210",
+     "source": "OCT 1210",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3755",
+     "word": "00006",
+     "source": "+3 EXTEND",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3756",
+     "word": "30134",
+     "source": "DCA BUF2",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3757",
+     "word": "53310",
+     "source": "DXCH ATTCADR",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3760",
+     "word": "30006",
+     "source": "CA BBANK",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3761",
+     "word": "74757",
+     "source": "MASK SEVEN",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3762",
+     "word": "27310",
+     "source": "ADS ATTCADR +1",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3763",
+     "word": "30167",
+     "source": "CA PRIORITY",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3764",
+     "word": "77725",
+     "source": "MASK PRIO37",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3765",
+     "word": "55311",
+     "source": "TS ATTPRIO",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3766",
+     "word": "33772",
+     "source": "CAF KALEBCON",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3767",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3770",
+     "word": "04635",
+     "source": "TC POSTJUMP",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3771",
+     "word": "44004",
+     "source": "CADR KALCMAN3",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3772",
+     "word": "03276",
+     "source": "KALEBCON ECADR BCDU",
+     "native": "kalebcon (KALEBCON: ECADR BCDU)"
+    },
+    {
+     "address": "04,3253",
+     "word": "00063",
+     "source": "DEC51 DEC 51 B-14",
+     "native": "r_r02both (DEC51 is its VARALARM operand)"
+    },
+    {
+     "address": "04,3254",
+     "word": "34737",
+     "source": "R02BOTH CAF REFSMBIT",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3255",
+     "word": "70077",
+     "source": "MASK FLAGWRD3",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3256",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3257",
+     "word": "03270",
+     "source": "TC R02ZERO",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3260",
+     "word": "31302",
+     "source": "CA IMODES30",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3261",
+     "word": "74743",
+     "source": "MASK BIT9",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3262",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3263",
+     "word": "13265",
+     "source": "BZF +2",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3264",
+     "word": "44750",
+     "source": "CS BIT4",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3265",
+     "word": "63273",
+     "source": "AD OCT220",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3266",
+     "word": "05744",
+     "source": "TC VARALARM",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "04,3267",
+     "word": "06001",
+     "source": "TC GOTOPOOH",
+     "native": "r_c3267 (after VARALARM)"
+    },
+    {
+     "address": "04,3270",
+     "word": "05504",
+     "source": "R02ZERO TC UPFLAG",
+     "native": "r_r02both (R02ZERO)"
+    },
+    {
+     "address": "04,3271",
+     "word": "00007",
+     "source": "ADRES IMUSE",
+     "native": "r_r02both (R02ZERO)"
+    },
+    {
+     "address": "04,3272",
+     "word": "14631",
+     "source": "TCF SWRETURN",
+     "native": "r_c3272 (after UPFLAG)"
+    },
+    {
+     "address": "04,3273",
+     "word": "00220",
+     "source": "OCT220 OCT 220",
+     "native": "K_OCT220 (OCT220)"
+    },
+    {
+     "address": "37,3655",
+     "word": "05504",
+     "source": "P06 TC UPFLAG",
+     "native": "r_p06 (P06)"
+    },
+    {
+     "address": "37,3656",
+     "word": "00054",
+     "source": "ADRES NODOFLAG",
+     "native": "r_p06 (P06)"
+    },
+    {
+     "address": "37,3657",
+     "word": "00004",
+     "source": "PRESTAND INHINT",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "37,3660",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "37,3661",
+     "word": "30025",
+     "source": "DCA TIME2",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "37,3662",
+     "word": "52315",
+     "source": "DXCH TIME2SAV",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "37,3663",
+     "word": "03714",
+     "source": "TC SCALPREP",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "37,3664",
+     "word": "03657",
+     "source": "TC PRESTAND",
+     "native": "r_c3664 (SCALPREP retry return)"
+    },
+    {
+     "address": "37,3665",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3665"
+    },
+    {
+     "address": "37,3666",
+     "word": "52317",
+     "source": "DXCH SCALSAVE",
+     "native": "r_c3665"
+    },
+    {
+     "address": "37,3667",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "r_c3665"
+    },
+    {
+     "address": "37,3670",
+     "word": "04616",
+     "source": "TC BANKCALL",
+     "native": "r_c3665"
+    },
+    {
+     "address": "37,3671",
+     "word": "17175",
+     "source": "CADR RNDREFDR",
+     "native": "r_c3665"
+    },
+    {
+     "address": "37,3672",
+     "word": "05516",
+     "source": "TC DOWNFLAG",
+     "native": "r_c3672 (after BANKCALL)"
+    },
+    {
+     "address": "37,3673",
+     "word": "00007",
+     "source": "ADRES IMUSE",
+     "native": "r_c3672 (after BANKCALL)"
+    },
+    {
+     "address": "37,3674",
+     "word": "05516",
+     "source": "TC DOWNFLAG",
+     "native": "r_c3674 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3675",
+     "word": "00010",
+     "source": "ADRES RNDVZFLG",
+     "native": "r_c3674 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3676",
+     "word": "34741",
+     "source": "CAF BIT11",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3677",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3700",
+     "word": "05013",
+     "source": "WOR CHAN13",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3701",
+     "word": "05353",
+     "source": "TC PHASCHNG",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3702",
+     "word": "07024",
+     "source": "OCT 07024",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3703",
+     "word": "20000",
+     "source": "OCT 20000",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3704",
+     "word": "03734",
+     "source": "2CADR POSTAND",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3705",
+     "word": "76060",
+     "source": "2CADR POSTAND (second word)",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "37,3706",
+     "word": "34774",
+     "source": "CAF OCT62",
+     "native": "r_c3706 (after PHASCHNG)"
+    },
+    {
+     "address": "37,3707",
+     "word": "04616",
+     "source": "TC BANKCALL",
+     "native": "r_c3706 (after PHASCHNG)"
+    },
+    {
+     "address": "37,3710",
+     "word": "20623",
+     "source": "CADR GOPERF1",
+     "native": "r_c3706 (after PHASCHNG)"
+    },
+    {
+     "address": "37,3711",
+     "word": "13706",
+     "source": "TCF -3",
+     "native": "r_c3711 (GOPERF1 return)"
+    },
+    {
+     "address": "37,3712",
+     "word": "13706",
+     "source": "TCF -4",
+     "native": "r_c3712 (GOPERF1 return)"
+    },
+    {
+     "address": "37,3713",
+     "word": "13706",
+     "source": "TCF -5",
+     "native": "r_c3713 (GOPERF1 return)"
+    },
+    {
+     "address": "37,3714",
+     "word": "00006",
+     "source": "SCALPREP EXTEND",
+     "native": "scalprep (SCALPREP)"
+    },
+    {
+     "address": "37,3715",
+     "word": "22156",
+     "source": "QXCH MPAC +2",
+     "native": "scalprep (SCALPREP)"
+    },
+    {
+     "address": "37,3716",
+     "word": "04103",
+     "source": "TC FINETIME +1",
+     "native": "scalprep (SCALPREP)"
+    },
+    {
+     "address": "37,3717",
+     "word": "00003",
+     "source": "RELINT",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3720",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3721",
+     "word": "34747",
+     "source": "CA BIT5",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3722",
+     "word": "54001",
+     "source": "TS L",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3723",
+     "word": "34755",
+     "source": "CA ZERO",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3724",
+     "word": "20155",
+     "source": "DAS MPAC",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3725",
+     "word": "44346",
+     "source": "CS LOW5",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3726",
+     "word": "70155",
+     "source": "MASK MPAC +1",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3727",
+     "word": "56155",
+     "source": "XCH MPAC +1",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3730",
+     "word": "74346",
+     "source": "MASK LOW5",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3731",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3732",
+     "word": "24156",
+     "source": "INCR MPAC +2",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3733",
+     "word": "00156",
+     "source": "TC MPAC +2",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "37,3734",
+     "word": "44741",
+     "source": "POSTAND CS BIT11",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3735",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3736",
+     "word": "03013",
+     "source": "WAND CHAN13",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3737",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3740",
+     "word": "34755",
+     "source": "CA ZERO",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3741",
+     "word": "54001",
+     "source": "TS L",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3742",
+     "word": "52025",
+     "source": "DXCH TIME2",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3743",
+     "word": "03714",
+     "source": "TC SCALPREP",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "37,3744",
+     "word": "03737",
+     "source": "TC POSTAND +3",
+     "native": "r_c3744 (SCALPREP retry return)"
+    },
+    {
+     "address": "37,3745",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3745"
+    },
+    {
+     "address": "37,3746",
+     "word": "40317",
+     "source": "DCS SCALSAVE",
+     "native": "r_c3745"
+    },
+    {
+     "address": "37,3747",
+     "word": "20155",
+     "source": "DAS MPAC",
+     "native": "r_c3745"
+    },
+    {
+     "address": "37,3750",
+     "word": "34742",
+     "source": "CAF BIT10",
+     "native": "r_c3745"
+    },
+    {
+     "address": "37,3751",
+     "word": "07307",
+     "source": "TC SHORTMP",
+     "native": "r_c3745"
+    },
+    {
+     "address": "37,3752",
+     "word": "34755",
+     "source": "CAF ZERO",
+     "native": "r_c3752 (after SHORTMP)"
+    },
+    {
+     "address": "37,3753",
+     "word": "54156",
+     "source": "TS MPAC +2",
+     "native": "r_c3752 (after SHORTMP)"
+    },
+    {
+     "address": "37,3754",
+     "word": "07257",
+     "source": "TC TPAGREE",
+     "native": "r_c3752 (after SHORTMP)"
+    },
+    {
+     "address": "37,3755",
+     "word": "10154",
+     "source": "CCS MPAC",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3756",
+     "word": "03763",
+     "source": "TC POSTCOM",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3757",
+     "word": "03763",
+     "source": "TC POSTCOM",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3760",
+     "word": "03761",
+     "source": "TC +1",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3761",
+     "word": "34742",
+     "source": "CAF BIT10",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3762",
+     "word": "26154",
+     "source": "ADS MPAC",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3763",
+     "word": "00006",
+     "source": "POSTCOM EXTEND",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3764",
+     "word": "30315",
+     "source": "DCA TIME2SAV",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3765",
+     "word": "20155",
+     "source": "DAS MPAC",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3766",
+     "word": "07257",
+     "source": "TC TPAGREE",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "37,3767",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "37,3770",
+     "word": "20025",
+     "source": "DAS TIME2",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "37,3771",
+     "word": "05516",
+     "source": "TC DOWNFLAG",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "37,3772",
+     "word": "00054",
+     "source": "ADRES NODOFLAG",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "37,3773",
+     "word": "06001",
+     "source": "TC GOTOPOOH",
+     "native": "r_c3773 (after DOWNFLAG)"
+    }
+   ],
+   "constants": {
+    "BIT1": {
+     "literal": "K_BIT1",
+     "value": "00001"
+    },
+    "BIT4": {
+     "literal": "K_BIT4",
+     "value": "00010"
+    },
+    "BIT5": {
+     "literal": "K_BIT5",
+     "value": "00020"
+    },
+    "BIT6": {
+     "literal": "K_BIT6",
+     "value": "00040"
+    },
+    "BIT8": {
+     "literal": "K_BIT8",
+     "value": "00200"
+    },
+    "BIT9": {
+     "literal": "K_BIT9",
+     "value": "00400"
+    },
+    "BIT10": {
+     "literal": "K_BIT10",
+     "value": "01000"
+    },
+    "BIT11": {
+     "literal": "K_BIT11",
+     "value": "02000"
+    },
+    "BIT13": {
+     "literal": "K_BIT13",
+     "value": "10000"
+    },
+    "BIT14": {
+     "literal": "K_BIT14",
+     "value": "20000"
+    },
+    "BIT15": {
+     "literal": "K_BIT15",
+     "value": "40000"
+    },
+    "BITS3&4": {
+     "literal": "K_BITS3_4",
+     "value": "00014"
+    },
+    "BITS4-5": {
+     "literal": "K_BITS4_5",
+     "value": "00030"
+    },
+    "BITS4&6": {
+     "literal": "K_BITS4_6",
+     "value": "00050"
+    },
+    "SUPER011": {
+     "literal": "K_SUPER011",
+     "value": "00060"
+    },
+    "OCT40010": {
+     "literal": "K_OCT40010",
+     "value": "40010"
+    },
+    "13,14,15": {
+     "literal": "K_13_14_15",
+     "value": "70000"
+    },
+    "600MS": {
+     "literal": "K_600MS",
+     "value": "00074"
+    },
+    "2SECS": {
+     "literal": "K_2SECS",
+     "value": "00310"
+    },
+    "OCT62": {
+     "literal": "K_OCT62",
+     "value": "00062"
+    },
+    "OCT220": {
+     "literal": "K_OCT220",
+     "value": "00220"
+    },
+    "-COMMAX": {
+     "literal": "K_MCOMMAX",
+     "value": "77500"
+    },
+    "-COMMAX-": {
+     "literal": "K_MCOMMAX_",
+     "value": "77477"
+    },
+    "COARSTOL": {
+     "literal": "K_COARSTOL",
+     "value": "77511"
+    },
+    "GDESELCT": {
+     "literal": "K_GDESELCT",
+     "value": "01700"
+    },
+    "-GYROMIN": {
+     "literal": "K_MGYROMIN",
+     "value": "77601"
+    },
+    "LOW5": {
+     "literal": "K_LOW5",
+     "value": "00037"
+    },
+    "LOW7": {
+     "literal": "K_LOW7",
+     "value": "00177"
+    },
+    "LOW8": {
+     "literal": "K_LOW8",
+     "value": "00377"
+    },
+    "SEVEN": {
+     "literal": "K_SEVEN",
+     "value": "00007"
+    },
+    "PRIO37": {
+     "literal": "K_PRIO37",
+     "value": "37000"
+    },
+    "NEG0": {
+     "literal": "K_NEG0",
+     "value": "77777"
+    },
+    "MINUS1": {
+     "literal": "K_MINUS1",
+     "value": "77776"
+    },
+    "NEG3": {
+     "literal": "K_NEG3",
+     "value": "77774"
+    },
+    "GYROFRAC": {
+     "literal": "K_GYROFRAC",
+     "value": "00000 00034"
+    },
+    "MASK 7601": {
+     "literal": "LM.gyromin_word",
+     "value": "30001"
+    },
+    "KALEBCON": {
+     "literal": "LM.kalebcon",
+     "value": "03276"
+    }
+   }
+  },
+  "Comanche055": {
+   "words": 656,
+   "map": [
+    {
+     "address": "02,5521",
+     "word": "35021",
+     "source": "ZEROICDU CAF ZERO",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5522",
+     "word": "54032",
+     "source": "TS CDUX",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5523",
+     "word": "54033",
+     "source": "TS CDUY",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5524",
+     "word": "54034",
+     "source": "TS CDUZ",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "02,5525",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "zeroicdu (ZEROICDU)"
+    },
+    {
+     "address": "07,2577",
+     "word": "00004",
+     "source": "IMUZERO INHINT",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2600",
+     "word": "41036",
+     "source": "CS DSPTAB +11D",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2601",
+     "word": "75033",
+     "source": "MASK BITS4&6",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2602",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2603",
+     "word": "12607",
+     "source": "TCF IMUZEROA",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2604",
+     "word": "05650",
+     "source": "TC ALARM",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2605",
+     "word": "00206",
+     "source": "OCT 00206",
+     "native": "r_imuzero (IMUZERO, IMUZEROA)"
+    },
+    {
+     "address": "07,2606",
+     "word": "13542",
+     "source": "TCF CAGETSTJ +4",
+     "native": "r_c2723 (after ALARM 206)"
+    },
+    {
+     "address": "07,2607",
+     "word": "03536",
+     "source": "IMUZEROA TC CAGETSTJ",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2610",
+     "word": "41321",
+     "source": "CS IMODES33",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2611",
+     "word": "75035",
+     "source": "MASK SUPER011",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2612",
+     "word": "27321",
+     "source": "ADS IMODES33",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2613",
+     "word": "41320",
+     "source": "CS IMODES30",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2614",
+     "word": "75771",
+     "source": "MASK BITS3&4",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2615",
+     "word": "27320",
+     "source": "ADS IMODES30",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2616",
+     "word": "45033",
+     "source": "CS BITS4&6",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2617",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2620",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2621",
+     "word": "03151",
+     "source": "TC NOATTOFF",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2622",
+     "word": "35013",
+     "source": "CAF BIT5",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2623",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2624",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2625",
+     "word": "05521",
+     "source": "TC ZEROICDU",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2626",
+     "word": "35012",
+     "source": "CAF BIT6",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2627",
+     "word": "05245",
+     "source": "TC WAITLIST",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2630",
+     "word": "02642",
+     "source": "2CADR IMUZERO2",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2631",
+     "word": "16063",
+     "source": "2CADR IMUZERO2 (second word)",
+     "native": "r_imuzero (IMUZEROA: CAGETSTJ, ZEROICDU, WAITLIST)"
+    },
+    {
+     "address": "07,2632",
+     "word": "41320",
+     "source": "CS IMODES30",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2633",
+     "word": "75007",
+     "source": "MASK BIT9",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2634",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2635",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2636",
+     "word": "05650",
+     "source": "TC ALARM",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2637",
+     "word": "00210",
+     "source": "OCT 210",
+     "native": "r_c2747 (after WAITLIST)"
+    },
+    {
+     "address": "07,2640",
+     "word": "00003",
+     "source": "MODEEXIT RELINT",
+     "native": "modeexit (MODEEXIT)"
+    },
+    {
+     "address": "07,2641",
+     "word": "14675",
+     "source": "TCF SWRETURN",
+     "native": "modeexit (MODEEXIT)"
+    },
+    {
+     "address": "07,2642",
+     "word": "03524",
+     "source": "IMUZERO2 TC CAGETEST",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2643",
+     "word": "05521",
+     "source": "TC ZEROICDU",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2644",
+     "word": "45013",
+     "source": "CS BIT5",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2645",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2646",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2647",
+     "word": "35005",
+     "source": "CAF BIT11",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2650",
+     "word": "05272",
+     "source": "TC VARDELAY",
+     "native": "r_imuzero2 (IMUZERO2)"
+    },
+    {
+     "address": "07,2651",
+     "word": "03524",
+     "source": "IMUZERO3 TC CAGETEST",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2652",
+     "word": "45771",
+     "source": "CS BITS3&4",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2653",
+     "word": "71320",
+     "source": "MASK IMODES30",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2654",
+     "word": "55320",
+     "source": "TS IMODES30",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2655",
+     "word": "45035",
+     "source": "CS SUPER011",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2656",
+     "word": "71321",
+     "source": "MASK IMODES33",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2657",
+     "word": "55321",
+     "source": "TS IMODES33",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2660",
+     "word": "04740",
+     "source": "TC IBNKCALL",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2661",
+     "word": "14665",
+     "source": "CADR SETISSW",
+     "native": "r_imuzero3 (IMUZERO3)"
+    },
+    {
+     "address": "07,2662",
+     "word": "13514",
+     "source": "TCF ENDIMU",
+     "native": "r_c2777 (after SETISSW)"
+    },
+    {
+     "address": "07,2663",
+     "word": "00004",
+     "source": "IMUCOARS INHINT",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,2664",
+     "word": "03536",
+     "source": "TC CAGETSTJ",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,2665",
+     "word": "03027",
+     "source": "TC SETCOARS",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,2666",
+     "word": "36211",
+     "source": "CAF SIX",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,2667",
+     "word": "05245",
+     "source": "TC WAITLIST",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,2670",
+     "word": "02673",
+     "source": "2CADR COARS",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,2671",
+     "word": "16063",
+     "source": "2CADR COARS (second word)",
+     "native": "r_imucoars (IMUCOARS)"
+    },
+    {
+     "address": "07,2672",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3007 (after WAITLIST)"
+    },
+    {
+     "address": "07,2673",
+     "word": "03524",
+     "source": "COARS TC CAGETEST",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2674",
+     "word": "35012",
+     "source": "CAF BIT6",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2675",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2676",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2677",
+     "word": "35016",
+     "source": "CAF TWO",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2700",
+     "word": "55474",
+     "source": "COARS1 TS CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2701",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2702",
+     "word": "31155",
+     "source": "CA THETAD",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2703",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2704",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2705",
+     "word": "20032",
+     "source": "MSU CDUX",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2706",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2707",
+     "word": "75003",
+     "source": "MP BIT13",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2710",
+     "word": "56001",
+     "source": "XCH L",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2711",
+     "word": "60000",
+     "source": "DOUBLE",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2712",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2713",
+     "word": "12715",
+     "source": "TCF +2",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2714",
+     "word": "26001",
+     "source": "ADS L",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2715",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2716",
+     "word": "23471",
+     "source": "LXCH COMMAND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2717",
+     "word": "11474",
+     "source": "CCS CDUIND",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2720",
+     "word": "02700",
+     "source": "TC COARS1",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2721",
+     "word": "35016",
+     "source": "CAF TWO",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2722",
+     "word": "05272",
+     "source": "TC VARDELAY",
+     "native": "r_coars (COARS, COARS1)"
+    },
+    {
+     "address": "07,2723",
+     "word": "03524",
+     "source": "COARS2 TC CAGETEST",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2724",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2725",
+     "word": "35016",
+     "source": "CAF TWO",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2726",
+     "word": "55474",
+     "source": "+3 TS CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2727",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2730",
+     "word": "11471",
+     "source": "CCS COMMAND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2731",
+     "word": "02735",
+     "source": "TC COMPOS",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2732",
+     "word": "02744",
+     "source": "TC NEXTCDU +1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2733",
+     "word": "03002",
+     "source": "TC COMNEG",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2734",
+     "word": "02744",
+     "source": "TC NEXTCDU +1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2735",
+     "word": "63624",
+     "source": "COMPOS AD -COMMAX",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2736",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2737",
+     "word": "63012",
+     "source": "BZMF COMZERO",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2740",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2741",
+     "word": "55471",
+     "source": "TS COMMAND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2742",
+     "word": "43625",
+     "source": "CS -COMMAX-",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2743",
+     "word": "24061",
+     "source": "NEXTCDU INCR ITEMP1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2744",
+     "word": "65020",
+     "source": "AD NEG0",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2745",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2746",
+     "word": "54050",
+     "source": "TS CDUXCMD",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2747",
+     "word": "11474",
+     "source": "CCS CDUIND",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2750",
+     "word": "02726",
+     "source": "TC COARS2 +3",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2751",
+     "word": "10061",
+     "source": "CCS ITEMP1",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2752",
+     "word": "13016",
+     "source": "TCF SENDPULS",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2753",
+     "word": "05267",
+     "source": "TC FIXDELAY",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2754",
+     "word": "00226",
+     "source": "DEC 150 B-14",
+     "native": "r_coars2 (COARS2, COMPOS, NEXTCDU)"
+    },
+    {
+     "address": "07,2755",
+     "word": "35016",
+     "source": "CAF TWO",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2756",
+     "word": "54061",
+     "source": "CHKCORS TS ITEMP1",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2757",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2760",
+     "word": "30032",
+     "source": "CA CDUX",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2761",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2762",
+     "word": "50061",
+     "source": "INDEX ITEMP1",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2763",
+     "word": "21155",
+     "source": "MSU THETAD",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2764",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2765",
+     "word": "12773",
+     "source": "TCF COARSERR",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2766",
+     "word": "12770",
+     "source": "TCF CORSCHK2",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2767",
+     "word": "12773",
+     "source": "TCF COARSERR",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2770",
+     "word": "10061",
+     "source": "CORSCHK2 CCS ITEMP1",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2771",
+     "word": "12756",
+     "source": "TCF CHKCORS",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2772",
+     "word": "13514",
+     "source": "TCF ENDIMU",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2773",
+     "word": "63001",
+     "source": "COARSERR AD COARSTOL",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2774",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2775",
+     "word": "62770",
+     "source": "BZMF CORSCHK2",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2776",
+     "word": "05650",
+     "source": "TC ALARM",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,2777",
+     "word": "00211",
+     "source": "OCT 211",
+     "native": "r_c3072 (CHKCORS, CORSCHK2, COARSERR)"
+    },
+    {
+     "address": "07,3000",
+     "word": "13522",
+     "source": "TCF IMUBAD",
+     "native": "r_c3115 (after ALARM 211)"
+    },
+    {
+     "address": "07,3001",
+     "word": "77511",
+     "source": "COARSTOL DEC -.01111",
+     "native": "K_COARSTOL (COARSTOL)"
+    },
+    {
+     "address": "07,3002",
+     "word": "63624",
+     "source": "COMNEG AD -COMMAX",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3003",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3004",
+     "word": "63012",
+     "source": "BZMF COMZERO",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3005",
+     "word": "40000",
+     "source": "COM",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3006",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3007",
+     "word": "55471",
+     "source": "TS COMMAND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3010",
+     "word": "33625",
+     "source": "CA -COMMAX-",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3011",
+     "word": "02743",
+     "source": "TC NEXTCDU",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3012",
+     "word": "35021",
+     "source": "COMZERO CAF ZERO",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3013",
+     "word": "51474",
+     "source": "INDEX CDUIND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3014",
+     "word": "57471",
+     "source": "XCH COMMAND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3015",
+     "word": "02743",
+     "source": "TC NEXTCDU",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3016",
+     "word": "37707",
+     "source": "SENDPULS CAF 13,14,15",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3017",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3020",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3021",
+     "word": "33626",
+     "source": "CAF 600MS",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3022",
+     "word": "12722",
+     "source": "TCF COARS2 -1",
+     "native": "r_coars2 (COMNEG, COMZERO, SENDPULS)"
+    },
+    {
+     "address": "07,3023",
+     "word": "35012",
+     "source": "CA+ECE CAF BIT6",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3024",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3025",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3026",
+     "word": "05324",
+     "source": "TC TASKOVER",
+     "native": "r_ca_ece (CA+ECE)"
+    },
+    {
+     "address": "07,3027",
+     "word": "35014",
+     "source": "SETCOARS CAF BIT4",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3030",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3031",
+     "word": "02012",
+     "source": "RAND CHAN12",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3032",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3033",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3034",
+     "word": "45012",
+     "source": "CS BIT6",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3035",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3036",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3037",
+     "word": "45006",
+     "source": "CS BIT10",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3040",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3041",
+     "word": "03014",
+     "source": "WAND CHAN14",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3042",
+     "word": "45021",
+     "source": "CS ZERO",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3043",
+     "word": "54047",
+     "source": "TS GYROCMD",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3044",
+     "word": "35014",
+     "source": "CAF BIT4",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3045",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3046",
+     "word": "05012",
+     "source": "WOR CHAN12",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3047",
+     "word": "41036",
+     "source": "CS DSPTAB +11D",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3050",
+     "word": "73072",
+     "source": "MASK OCT40010",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3051",
+     "word": "27036",
+     "source": "ADS DSPTAB +11D",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3052",
+     "word": "41321",
+     "source": "CS IMODES33",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3053",
+     "word": "75012",
+     "source": "MASK BIT6",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3054",
+     "word": "27321",
+     "source": "ADS IMODES33",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3055",
+     "word": "41320",
+     "source": "CS IMODES30",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3056",
+     "word": "75014",
+     "source": "MASK BIT4",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3057",
+     "word": "27320",
+     "source": "ADS IMODES30",
+     "native": "setcoars (SETCOARS)"
+    },
+    {
+     "address": "07,3060",
+     "word": "45013",
+     "source": "RNDREFDR CS BIT5",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3061",
+     "word": "70075",
+     "source": "MASK FLAGWRD1",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3062",
+     "word": "54075",
+     "source": "TS FLAGWRD1",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3063",
+     "word": "45001",
+     "source": "CS BIT15",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3064",
+     "word": "70076",
+     "source": "MASK FLAGWRD2",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3065",
+     "word": "54076",
+     "source": "TS FLAGWRD2",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3066",
+     "word": "45003",
+     "source": "CS BIT13",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3067",
+     "word": "70077",
+     "source": "MASK FLAGWRD3",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3070",
+     "word": "54077",
+     "source": "TS FLAGWRD3",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3071",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "rndrefdr (RNDREFDR)"
+    },
+    {
+     "address": "07,3072",
+     "word": "40010",
+     "source": "OCT40010 OCT 40010",
+     "native": "K_OCT40010 (OCT40010)"
+    },
+    {
+     "address": "07,3073",
+     "word": "00004",
+     "source": "IMUFINE INHINT",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3074",
+     "word": "03536",
+     "source": "TC CAGETSTJ",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3075",
+     "word": "45027",
+     "source": "CS BITS4-5",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3076",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3077",
+     "word": "03012",
+     "source": "WAND CHAN12",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3100",
+     "word": "45012",
+     "source": "CS BIT6",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3101",
+     "word": "71321",
+     "source": "MASK IMODES33",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3102",
+     "word": "55321",
+     "source": "TS IMODES33",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3103",
+     "word": "03151",
+     "source": "TC NOATTOFF",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3104",
+     "word": "35006",
+     "source": "CAF BIT10",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3105",
+     "word": "05245",
+     "source": "TC WAITLIST",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3106",
+     "word": "03117",
+     "source": "2CADR IFAILOK",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3107",
+     "word": "16063",
+     "source": "2CADR IFAILOK (second word)",
+     "native": "r_imufine (IMUFINE)"
+    },
+    {
+     "address": "07,3110",
+     "word": "35042",
+     "source": "CAF 2SECS",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3111",
+     "word": "05245",
+     "source": "TC WAITLIST",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3112",
+     "word": "03115",
+     "source": "2CADR IMUFINED",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3113",
+     "word": "16063",
+     "source": "2CADR IMUFINED (second word)",
+     "native": "r_c3225 (WAITLIST IMUFINED)"
+    },
+    {
+     "address": "07,3114",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3231 (after WAITLIST)"
+    },
+    {
+     "address": "07,3115",
+     "word": "03524",
+     "source": "IMUFINED TC CAGETEST",
+     "native": "imufined (IMUFINED)"
+    },
+    {
+     "address": "07,3116",
+     "word": "13514",
+     "source": "TCF ENDIMU",
+     "native": "imufined (IMUFINED)"
+    },
+    {
+     "address": "07,3117",
+     "word": "03531",
+     "source": "IFAILOK TC CAGETSTQ",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3120",
+     "word": "15324",
+     "source": "TCF TASKOVER",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3121",
+     "word": "35014",
+     "source": "CAF BIT4",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3122",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3123",
+     "word": "02012",
+     "source": "RAND CHAN12",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3124",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3125",
+     "word": "15324",
+     "source": "TCF TASKOVER",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3126",
+     "word": "41320",
+     "source": "CS IMODES30",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3127",
+     "word": "75003",
+     "source": "MASK BIT13",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3130",
+     "word": "27320",
+     "source": "ADS IMODES30",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3131",
+     "word": "45014",
+     "source": "CS BIT4",
+     "native": "r_ifailok (IFAILOK)"
+    },
+    {
+     "address": "07,3132",
+     "word": "71320",
+     "source": "PFAILOK2 MASK IMODES30",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3133",
+     "word": "55320",
+     "source": "TS IMODES30",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3134",
+     "word": "04740",
+     "source": "TC IBNKCALL",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3135",
+     "word": "14665",
+     "source": "CADR SETISSW",
+     "native": "pfailok2 (PFAILOK2)"
+    },
+    {
+     "address": "07,3136",
+     "word": "15324",
+     "source": "TCF TASKOVER",
+     "native": "r_c3253 (after SETISSW)"
+    },
+    {
+     "address": "07,3137",
+     "word": "03531",
+     "source": "PFAILOK TC CAGETSTQ",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3140",
+     "word": "15324",
+     "source": "TCF TASKOVER",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3141",
+     "word": "41320",
+     "source": "CS IMODES30",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3142",
+     "word": "75006",
+     "source": "MASK BIT10",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3143",
+     "word": "27320",
+     "source": "ADS IMODES30",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3144",
+     "word": "41321",
+     "source": "CS IMODES33",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3145",
+     "word": "75003",
+     "source": "MASK BIT13",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3146",
+     "word": "27321",
+     "source": "ADS IMODES33",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3147",
+     "word": "45013",
+     "source": "CS BIT5",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3150",
+     "word": "13132",
+     "source": "TCF PFAILOK2",
+     "native": "r_pfailok (PFAILOK)"
+    },
+    {
+     "address": "07,3151",
+     "word": "43072",
+     "source": "NOATTOFF CS OCT40010",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3152",
+     "word": "71036",
+     "source": "MASK DSPTAB +11D",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3153",
+     "word": "65001",
+     "source": "AD BIT15",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3154",
+     "word": "55036",
+     "source": "TS DSPTAB +11D",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3155",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "noattoff (NOATTOFF)"
+    },
+    {
+     "address": "07,3156",
+     "word": "45021",
+     "source": "PIPUSE CS ZERO",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3157",
+     "word": "54037",
+     "source": "TS PIPAX",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3160",
+     "word": "54040",
+     "source": "TS PIPAY",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3161",
+     "word": "54041",
+     "source": "TS PIPAZ",
+     "native": "r_pipuse (PIPUSE)"
+    },
+    {
+     "address": "07,3162",
+     "word": "03531",
+     "source": "PIPUSE1 TC CAGETSTQ",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3163",
+     "word": "14675",
+     "source": "TCF SWRETURN",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3164",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3165",
+     "word": "45017",
+     "source": "CS BIT1",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3166",
+     "word": "71320",
+     "source": "MASK IMODES30",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3167",
+     "word": "55320",
+     "source": "TS IMODES30",
+     "native": "pipuse1 (PIPUSE1)"
+    },
+    {
+     "address": "07,3170",
+     "word": "04740",
+     "source": "PIPFREE2 TC IBNKCALL",
+     "native": "pipfree2 (PIPFREE2; CADR is the interbank site operand)"
+    },
+    {
+     "address": "07,3171",
+     "word": "14665",
+     "source": "CADR SETISSW",
+     "native": "pipfree2 (PIPFREE2; CADR is the interbank site operand)"
+    },
+    {
+     "address": "07,3172",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3307 (after IBNKCALL)"
+    },
+    {
+     "address": "07,3173",
+     "word": "00004",
+     "source": "PIPFREE INHINT",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3174",
+     "word": "41320",
+     "source": "CS IMODES30",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3175",
+     "word": "75017",
+     "source": "MASK BIT1",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3176",
+     "word": "27320",
+     "source": "ADS IMODES30",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3177",
+     "word": "75006",
+     "source": "MASK BIT10",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3200",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3201",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3202",
+     "word": "05650",
+     "source": "TC ALARM",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3203",
+     "word": "00212",
+     "source": "OCT 212",
+     "native": "r_pipfree (PIPFREE)"
+    },
+    {
+     "address": "07,3204",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "r_c3321 (after ALARM 212)"
+    },
+    {
+     "address": "07,3205",
+     "word": "13170",
+     "source": "TCF PIPFREE2",
+     "native": "r_c3321 (after ALARM 212)"
+    },
+    {
+     "address": "07,3206",
+     "word": "54161",
+     "source": "IMUPULSE TS MPAC +5",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3207",
+     "word": "03536",
+     "source": "TC CAGETSTJ",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3210",
+     "word": "11304",
+     "source": "CCS LGYRO",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3211",
+     "word": "03252",
+     "source": "TC GYROBUSY",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3212",
+     "word": "54156",
+     "source": "TS MPAC +2",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3213",
+     "word": "35012",
+     "source": "CAF BIT6",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3214",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3215",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3216",
+     "word": "35015",
+     "source": "CAF FOUR",
+     "native": "r_imupulse (IMUPULSE)"
+    },
+    {
+     "address": "07,3217",
+     "word": "05245",
+     "source": "GWAKE2 TC WAITLIST",
+     "native": "gwake2 (GWAKE2)"
+    },
+    {
+     "address": "07,3220",
+     "word": "03270",
+     "source": "2CADR STRTGYRO",
+     "native": "gwake2 (GWAKE2)"
+    },
+    {
+     "address": "07,3221",
+     "word": "16063",
+     "source": "2CADR STRTGYRO (second word)",
+     "native": "gwake2 (GWAKE2)"
+    },
+    {
+     "address": "07,3222",
+     "word": "30161",
+     "source": "CA MPAC +5",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3223",
+     "word": "56003",
+     "source": "XCH EBANK",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3224",
+     "word": "56161",
+     "source": "XCH MPAC +5",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3225",
+     "word": "55304",
+     "source": "TS LGYRO",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3226",
+     "word": "74373",
+     "source": "MASK LOW8",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3227",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3230",
+     "word": "35016",
+     "source": "CAF TWO",
+     "native": "r_c3337 (after WAITLIST)"
+    },
+    {
+     "address": "07,3231",
+     "word": "54157",
+     "source": "GYROAGRE TS MPAC +3",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3232",
+     "word": "60000",
+     "source": "DOUBLE",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3233",
+     "word": "60061",
+     "source": "AD ITEMP1",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3234",
+     "word": "54160",
+     "source": "TS MPAC +4",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3235",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3236",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3237",
+     "word": "31401",
+     "source": "DCA 1400",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3240",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3241",
+     "word": "07226",
+     "source": "TC TPAGREE",
+     "native": "gyroagre (GYROAGRE)"
+    },
+    {
+     "address": "07,3242",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3243",
+     "word": "50160",
+     "source": "INDEX MPAC +4",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3244",
+     "word": "53401",
+     "source": "DXCH 1400",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3245",
+     "word": "10157",
+     "source": "CCS MPAC +3",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3246",
+     "word": "13231",
+     "source": "TCF GYROAGRE",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3247",
+     "word": "30161",
+     "source": "CA MPAC +5",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3250",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3251",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "r_c3357 (after TPAGREE)"
+    },
+    {
+     "address": "07,3252",
+     "word": "00006",
+     "source": "GYROBUSY EXTEND",
+     "native": "r_imupulse (GYROBUSY)"
+    },
+    {
+     "address": "07,3253",
+     "word": "30134",
+     "source": "DCA BUF2",
+     "native": "r_imupulse (GYROBUSY)"
+    },
+    {
+     "address": "07,3254",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_imupulse (GYROBUSY)"
+    },
+    {
+     "address": "07,3255",
+     "word": "33267",
+     "source": "REGSLEEP CAF LGWAKE",
+     "native": "regsleep (REGSLEEP)"
+    },
+    {
+     "address": "07,3256",
+     "word": "15175",
+     "source": "TCF JOBSLEEP",
+     "native": "regsleep (REGSLEEP)"
+    },
+    {
+     "address": "07,3257",
+     "word": "11304",
+     "source": "GWAKE CCS LGYRO",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3260",
+     "word": "13255",
+     "source": "TCF REGSLEEP",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3261",
+     "word": "54156",
+     "source": "TS MPAC +2",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3262",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3263",
+     "word": "30155",
+     "source": "DCA MPAC",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3264",
+     "word": "52134",
+     "source": "DXCH BUF2",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3265",
+     "word": "35017",
+     "source": "CAF ONE",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3266",
+     "word": "13217",
+     "source": "TCF GWAKE2",
+     "native": "r_gwake (GWAKE)"
+    },
+    {
+     "address": "07,3267",
+     "word": "17257",
+     "source": "LGWAKE CADR GWAKE",
+     "native": "lgwake (LGWAKE: CADR GWAKE)"
+    },
+    {
+     "address": "07,3270",
+     "word": "43511",
+     "source": "STRTGYRO CS GDESELCT",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3271",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3272",
+     "word": "03014",
+     "source": "WAND CHAN14",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3273",
+     "word": "03524",
+     "source": "TC CAGETEST",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3274",
+     "word": "31304",
+     "source": "STRTGYR2 CA LGYRO",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3275",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3276",
+     "word": "75014",
+     "source": "MP BIT4",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3277",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3300",
+     "word": "13301",
+     "source": "TCF +1",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3301",
+     "word": "03316",
+     "source": "TC GSELECT",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3302",
+     "word": "00202",
+     "source": "OCT 00202",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3303",
+     "word": "03316",
+     "source": "TC GSELECT",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3304",
+     "word": "00302",
+     "source": "OCT 00302",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3305",
+     "word": "03314",
+     "source": "TC GSELECT -2",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3306",
+     "word": "00100",
+     "source": "OCT 00100",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3307",
+     "word": "35021",
+     "source": "CAF ZERO",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3310",
+     "word": "55304",
+     "source": "TS LGYRO",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3311",
+     "word": "33267",
+     "source": "CAF LGWAKE",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3312",
+     "word": "05201",
+     "source": "TC JOBWAKE",
+     "native": "r_strtgyro (STRTGYRO, STRTGYR2; the OCT words are the GSELECT operands)"
+    },
+    {
+     "address": "07,3313",
+     "word": "13115",
+     "source": "NORESET TCF IMUFINED",
+     "native": "r_noreset (NORESET)"
+    },
+    {
+     "address": "07,3314",
+     "word": "45015",
+     "source": "-2 CS FOUR",
+     "native": "r_strtgyro (GSELECT -2)"
+    },
+    {
+     "address": "07,3315",
+     "word": "27304",
+     "source": "ADS LGYRO",
+     "native": "r_strtgyro (GSELECT -2)"
+    },
+    {
+     "address": "07,3316",
+     "word": "50002",
+     "source": "GSELECT INDEX Q",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3317",
+     "word": "30000",
+     "source": "CAF 0",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3320",
+     "word": "54064",
+     "source": "TS ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3321",
+     "word": "75023",
+     "source": "MASK SEVEN",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3322",
+     "word": "65003",
+     "source": "AD BIT13",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3323",
+     "word": "27304",
+     "source": "ADS LGYRO",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3324",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3325",
+     "word": "74373",
+     "source": "MASK LOW8",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3326",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3327",
+     "word": "45023",
+     "source": "CS SEVEN",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3330",
+     "word": "70064",
+     "source": "MASK ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3331",
+     "word": "54064",
+     "source": "TS ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3332",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3333",
+     "word": "50061",
+     "source": "INDEX ITEMP1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3334",
+     "word": "31401",
+     "source": "DCA 1400",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3335",
+     "word": "52071",
+     "source": "DXCH RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3336",
+     "word": "10070",
+     "source": "CCS RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3337",
+     "word": "13352",
+     "source": "TCF MAJ+",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3340",
+     "word": "13342",
+     "source": "TCF +2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3341",
+     "word": "13472",
+     "source": "TCF MAJ-",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3342",
+     "word": "10071",
+     "source": "CCS RUPTREG2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3343",
+     "word": "13347",
+     "source": "TCF MIN+",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3344",
+     "word": "13274",
+     "source": "TCF STRTGYR2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3345",
+     "word": "13467",
+     "source": "TCF MIN-",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3346",
+     "word": "13274",
+     "source": "TCF STRTGYR2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3347",
+     "word": "63403",
+     "source": "MIN+ AD -GYROMIN",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3350",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3351",
+     "word": "63274",
+     "source": "BZMF STRTGYR2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3352",
+     "word": "00006",
+     "source": "MAJ+ EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3353",
+     "word": "33513",
+     "source": "DCA GYROFRAC",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3354",
+     "word": "20071",
+     "source": "DAS RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3355",
+     "word": "30064",
+     "source": "CA ITEMP4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3356",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3357",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3360",
+     "word": "36043",
+     "source": "CAF LOW7",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3361",
+     "word": "70071",
+     "source": "MASK RUPTREG2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3362",
+     "word": "56071",
+     "source": "XCH RUPTREG2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3363",
+     "word": "00006",
+     "source": "GMERGE EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3364",
+     "word": "75010",
+     "source": "MP BIT8",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3365",
+     "word": "54062",
+     "source": "TS ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3366",
+     "word": "30070",
+     "source": "CA RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3367",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3370",
+     "word": "75007",
+     "source": "MP BIT9",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3371",
+     "word": "54070",
+     "source": "TS RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3372",
+     "word": "30001",
+     "source": "CA L",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3373",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3374",
+     "word": "75002",
+     "source": "MP BIT14",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3375",
+     "word": "26062",
+     "source": "ADS ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3376",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3377",
+     "word": "30071",
+     "source": "DCA RUPTREG1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3400",
+     "word": "67716",
+     "source": "AD MINUS1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3401",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3402",
+     "word": "13426",
+     "source": "TCF LONGGYRO",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3403",
+     "word": "77601",
+     "source": "-GYROMIN OCT -176",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3404",
+     "word": "13410",
+     "source": "TCF +4",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3405",
+     "word": "35002",
+     "source": "CAF BIT14",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3406",
+     "word": "26062",
+     "source": "ADS ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3407",
+     "word": "35021",
+     "source": "CAF ZERO",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3410",
+     "word": "50061",
+     "source": "+4 INDEX ITEMP1",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3411",
+     "word": "53401",
+     "source": "DXCH 1400",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3412",
+     "word": "30062",
+     "source": "CA ITEMP2",
+     "native": "gselect (GSELECT, MIN+, MAJ+, GMERGE; -GYROMIN runs as MASK gyromin_word)"
+    },
+    {
+     "address": "07,3413",
+     "word": "54047",
+     "source": "LASTSEG TS GYROCMD",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3414",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3415",
+     "word": "75006",
+     "source": "MP BIT10",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3416",
+     "word": "66214",
+     "source": "AD THREE",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3417",
+     "word": "05245",
+     "source": "TC WAITLIST",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3420",
+     "word": "03270",
+     "source": "2CADR STRTGYRO",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3421",
+     "word": "16063",
+     "source": "2CADR STRTGYRO (second word)",
+     "native": "lastseg1 (LASTSEG; 2CADR STRTGYRO is WAITLIST's operand)"
+    },
+    {
+     "address": "07,3422",
+     "word": "35006",
+     "source": "GYROEXIT CAF BIT10",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3423",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3424",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3425",
+     "word": "15324",
+     "source": "TCF TASKOVER",
+     "native": "r_gyroexit (GYROEXIT)"
+    },
+    {
+     "address": "07,3426",
+     "word": "50061",
+     "source": "LONGGYRO INDEX ITEMP1",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3427",
+     "word": "53401",
+     "source": "DXCH 1400",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3430",
+     "word": "35002",
+     "source": "CAF BIT14",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3431",
+     "word": "60062",
+     "source": "AD ITEMP2",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3432",
+     "word": "54047",
+     "source": "TS GYROCMD",
+     "native": "gselect (LONGGYRO)"
+    },
+    {
+     "address": "07,3433",
+     "word": "00006",
+     "source": "AUG3 EXTEND",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3434",
+     "word": "75006",
+     "source": "MP BIT10",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3435",
+     "word": "67714",
+     "source": "AD NEG3",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3436",
+     "word": "05245",
+     "source": "TC WAITLIST",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3437",
+     "word": "03442",
+     "source": "2CADR 8192AUG",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3440",
+     "word": "16063",
+     "source": "2CADR 8192AUG (second word)",
+     "native": "aug3 (AUG3)"
+    },
+    {
+     "address": "07,3441",
+     "word": "13422",
+     "source": "TCF GYROEXIT",
+     "native": "r_c3556 (after WAITLIST)"
+    },
+    {
+     "address": "07,3442",
+     "word": "03524",
+     "source": "8192AUG TC CAGETEST",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3443",
+     "word": "35014",
+     "source": "CAF BIT4",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3444",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3445",
+     "word": "02012",
+     "source": "RAND CHAN12",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3446",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3447",
+     "word": "13522",
+     "source": "TCF IMUBAD",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3450",
+     "word": "31304",
+     "source": "CA LGYRO",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3451",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3452",
+     "word": "74373",
+     "source": "MASK LOW8",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3453",
+     "word": "54061",
+     "source": "TS ITEMP1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3454",
+     "word": "50061",
+     "source": "INDEX ITEMP1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3455",
+     "word": "11400",
+     "source": "CCS 1400",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3456",
+     "word": "13462",
+     "source": "TCF AUG2",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3457",
+     "word": "35002",
+     "source": "CAF BIT14",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3460",
+     "word": "26047",
+     "source": "ADS GYROCMD",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3461",
+     "word": "13414",
+     "source": "TCF LASTSEG +1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3462",
+     "word": "50061",
+     "source": "AUG2 INDEX ITEMP1",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3463",
+     "word": "55400",
+     "source": "TS 1400",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3464",
+     "word": "35002",
+     "source": "CAF BIT14",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3465",
+     "word": "26047",
+     "source": "ADS GYROCMD",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3466",
+     "word": "13433",
+     "source": "TCF AUG3",
+     "native": "r_8192aug (8192AUG, AUG2)"
+    },
+    {
+     "address": "07,3467",
+     "word": "63403",
+     "source": "MIN- AD -GYROMIN",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3470",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3471",
+     "word": "63274",
+     "source": "BZMF STRTGYR2",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3472",
+     "word": "00006",
+     "source": "MAJ- EXTEND",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3473",
+     "word": "43513",
+     "source": "DCS GYROFRAC",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3474",
+     "word": "20071",
+     "source": "DAS RUPTREG1",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3475",
+     "word": "30064",
+     "source": "CA ITEMP4",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3476",
+     "word": "65007",
+     "source": "AD BIT9",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3477",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3500",
+     "word": "05014",
+     "source": "WOR CHAN14",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3501",
+     "word": "40070",
+     "source": "CS RUPTREG1",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3502",
+     "word": "54070",
+     "source": "TS RUPTREG1",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3503",
+     "word": "40071",
+     "source": "CS RUPTREG2",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3504",
+     "word": "76043",
+     "source": "MASK LOW7",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3505",
+     "word": "40000",
+     "source": "COM",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3506",
+     "word": "56071",
+     "source": "XCH RUPTREG2",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3507",
+     "word": "40000",
+     "source": "COM",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3510",
+     "word": "13363",
+     "source": "TCF GMERGE",
+     "native": "gselect (MIN-, MAJ-)"
+    },
+    {
+     "address": "07,3511",
+     "word": "01700",
+     "source": "GDESELCT OCT 1700",
+     "native": "K_GDESELCT, K_GYROFRAC (GDESELCT, GYROFRAC)"
+    },
+    {
+     "address": "07,3512",
+     "word": "00000",
+     "source": "GYROFRAC 2DEC .215 B-21",
+     "native": "K_GDESELCT, K_GYROFRAC (GDESELCT, GYROFRAC)"
+    },
+    {
+     "address": "07,3513",
+     "word": "00034",
+     "source": "GYROFRAC 2DEC .215 B-21 (second word)",
+     "native": "K_GDESELCT, K_GYROFRAC (GDESELCT, GYROFRAC)"
+    },
+    {
+     "address": "07,3514",
+     "word": "00006",
+     "source": "ENDIMU EXTEND",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3515",
+     "word": "00011",
+     "source": "READ DSALMOUT",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3516",
+     "word": "75017",
+     "source": "MASK BIT1",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3517",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3520",
+     "word": "13522",
+     "source": "TCF IMUBAD",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3521",
+     "word": "13550",
+     "source": "IMUGOOD TCF GOODEND",
+     "native": "r_endimu (ENDIMU, IMUGOOD)"
+    },
+    {
+     "address": "07,3522",
+     "word": "35021",
+     "source": "IMUBAD CAF ZERO",
+     "native": "imubad (IMUBAD)"
+    },
+    {
+     "address": "07,3523",
+     "word": "13545",
+     "source": "TCF BADEND",
+     "native": "imubad (IMUBAD)"
+    },
+    {
+     "address": "07,3524",
+     "word": "35012",
+     "source": "CAGETEST CAF BIT6",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3525",
+     "word": "71320",
+     "source": "MASK IMODES30",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3526",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3527",
+     "word": "13522",
+     "source": "TCF IMUBAD",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3530",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "cagetest (CAGETEST)"
+    },
+    {
+     "address": "07,3531",
+     "word": "41320",
+     "source": "CAGETSTQ CS IMODES30",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3532",
+     "word": "75012",
+     "source": "MASK BIT6",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3533",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3534",
+     "word": "24002",
+     "source": "INCR Q",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3535",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "cagetstq (CAGETSTQ)"
+    },
+    {
+     "address": "07,3536",
+     "word": "41320",
+     "source": "CAGETSTJ CS IMODES30",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3537",
+     "word": "75012",
+     "source": "MASK BIT6",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3540",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3541",
+     "word": "00002",
+     "source": "TC Q",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3542",
+     "word": "45021",
+     "source": "CS ZERO",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3543",
+     "word": "55322",
+     "source": "TS IMUCADR",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3544",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "cagetstj (CAGETSTJ)"
+    },
+    {
+     "address": "07,3545",
+     "word": "54071",
+     "source": "BADEND TS RUPTREG2",
+     "native": "badend (BADEND)"
+    },
+    {
+     "address": "07,3546",
+     "word": "45021",
+     "source": "CS ZERO",
+     "native": "badend (BADEND)"
+    },
+    {
+     "address": "07,3547",
+     "word": "13552",
+     "source": "TCF GOODEND +2",
+     "native": "badend (BADEND)"
+    },
+    {
+     "address": "07,3550",
+     "word": "54071",
+     "source": "GOODEND TS RUPTREG2",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3551",
+     "word": "45017",
+     "source": "CS ONE",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3552",
+     "word": "54072",
+     "source": "TS RUPTREG3",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3553",
+     "word": "50071",
+     "source": "INDEX RUPTREG2",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3554",
+     "word": "11322",
+     "source": "CCS MODECADR",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3555",
+     "word": "13557",
+     "source": "TCF +2",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3556",
+     "word": "13567",
+     "source": "TCF ENDMODE",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3557",
+     "word": "35021",
+     "source": "CAF ZERO",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3560",
+     "word": "50071",
+     "source": "INDEX RUPTREG2",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3561",
+     "word": "57322",
+     "source": "XCH MODECADR",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3562",
+     "word": "05201",
+     "source": "TC JOBWAKE",
+     "native": "goodend, endmode1 (GOODEND)"
+    },
+    {
+     "address": "07,3563",
+     "word": "40072",
+     "source": "CS RUPTREG3",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3564",
+     "word": "50064",
+     "source": "INDEX LOCCTR",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3565",
+     "word": "26164",
+     "source": "ADS LOC",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3566",
+     "word": "15324",
+     "source": "TCF TASKOVER",
+     "native": "r_c3702 (after JOBWAKE)"
+    },
+    {
+     "address": "07,3567",
+     "word": "30072",
+     "source": "ENDMODE CA RUPTREG3",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3570",
+     "word": "50071",
+     "source": "INDEX RUPTREG2",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3571",
+     "word": "55322",
+     "source": "TS MODECADR",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3572",
+     "word": "15324",
+     "source": "TCF TASKOVER",
+     "native": "endmode, endtail (ENDMODE)"
+    },
+    {
+     "address": "07,3573",
+     "word": "35017",
+     "source": "AOTSTALL CAF ONE",
+     "native": "r_aotstall (AOTSTALL)"
+    },
+    {
+     "address": "07,3574",
+     "word": "03600",
+     "source": "TC STALL",
+     "native": "r_aotstall (AOTSTALL)"
+    },
+    {
+     "address": "07,3575",
+     "word": "35016",
+     "source": "RADSTALL CAF TWO",
+     "native": "r_radstall (RADSTALL)"
+    },
+    {
+     "address": "07,3576",
+     "word": "13600",
+     "source": "TCF STALL",
+     "native": "r_radstall (RADSTALL)"
+    },
+    {
+     "address": "07,3577",
+     "word": "35021",
+     "source": "IMUSTALL CAF ZERO",
+     "native": "r_imustall (IMUSTALL)"
+    },
+    {
+     "address": "07,3600",
+     "word": "00004",
+     "source": "STALL INHINT",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3601",
+     "word": "54071",
+     "source": "TS RUPTREG2",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3602",
+     "word": "50000",
+     "source": "INDEX A",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3603",
+     "word": "11322",
+     "source": "CCS MODECADR",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3604",
+     "word": "13622",
+     "source": "TCF MODABORT",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3605",
+     "word": "13616",
+     "source": "TCF MODESLP",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3606",
+     "word": "13612",
+     "source": "TCF MODEGOOD",
+     "native": "stall (STALL)"
+    },
+    {
+     "address": "07,3607",
+     "word": "50071",
+     "source": "MG2 INDEX RUPTREG2",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3610",
+     "word": "55322",
+     "source": "TS MODECADR",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3611",
+     "word": "12640",
+     "source": "TCF MODEEXIT",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3612",
+     "word": "10000",
+     "source": "MODEGOOD CCS A",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3613",
+     "word": "13622",
+     "source": "TCF MODABORT",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3614",
+     "word": "24133",
+     "source": "INCR BUF2",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3615",
+     "word": "13607",
+     "source": "TCF MG2",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3616",
+     "word": "04711",
+     "source": "MODESLP TC MAKECADR",
+     "native": "mg2 (MG2, MODEGOOD, MODESLP)"
+    },
+    {
+     "address": "07,3617",
+     "word": "50071",
+     "source": "INDEX RUPTREG2",
+     "native": "r_c3736 (after MAKECADR)"
+    },
+    {
+     "address": "07,3620",
+     "word": "55322",
+     "source": "TS MODECADR",
+     "native": "r_c3736 (after MAKECADR)"
+    },
+    {
+     "address": "07,3621",
+     "word": "15175",
+     "source": "TCF JOBSLEEP",
+     "native": "r_c3736 (after MAKECADR)"
+    },
+    {
+     "address": "07,3622",
+     "word": "05721",
+     "source": "MODABORT TC POODOO",
+     "native": "modabort (MODABORT)"
+    },
+    {
+     "address": "07,3623",
+     "word": "01210",
+     "source": "OCT 1210",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3624",
+     "word": "77500",
+     "source": "-COMMAX DEC -191 B-14",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3625",
+     "word": "77477",
+     "source": "-COMMAX- DEC -192 B-14",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3626",
+     "word": "00074",
+     "source": "600MS DEC 60 B-14",
+     "native": "K_BITS4_5, K_MCOMMAX, K_MCOMMAX_, K_600MS"
+    },
+    {
+     "address": "07,3627",
+     "word": "31325",
+     "source": "GOMANUR CA ATTCADR",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3630",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3631",
+     "word": "13634",
+     "source": "BZF +3",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3632",
+     "word": "05721",
+     "source": "TC POODOO",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3633",
+     "word": "01210",
+     "source": "OCT 1210",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3634",
+     "word": "00006",
+     "source": "+3 EXTEND",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3635",
+     "word": "30134",
+     "source": "DCA BUF2",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3636",
+     "word": "53326",
+     "source": "DXCH ATTCADR",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3637",
+     "word": "30006",
+     "source": "CA BBANK",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3640",
+     "word": "75023",
+     "source": "MASK SEVEN",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3641",
+     "word": "27326",
+     "source": "ADS ATTCADR +1",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3642",
+     "word": "30167",
+     "source": "CA PRIORITY",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3643",
+     "word": "77674",
+     "source": "MASK PRIO37",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3644",
+     "word": "55327",
+     "source": "TS ATTPRIO",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3645",
+     "word": "33651",
+     "source": "CAF KALEBCON",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3646",
+     "word": "54003",
+     "source": "TS EBANK",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3647",
+     "word": "04701",
+     "source": "TC POSTJUMP",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3650",
+     "word": "44000",
+     "source": "CADR KALCMAN3",
+     "native": "r_gomanur (GOMANUR)"
+    },
+    {
+     "address": "07,3651",
+     "word": "03261",
+     "source": "KALEBCON ECADR BCDU",
+     "native": "kalebcon (KALEBCON: ECADR BCDU)"
+    },
+    {
+     "address": "07,3652",
+     "word": "00063",
+     "source": "DEC51 DEC 51 B-14",
+     "native": "r_r02both (DEC51 is its VARALARM operand)"
+    },
+    {
+     "address": "07,3653",
+     "word": "35003",
+     "source": "R02BOTH CAF BIT13",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3654",
+     "word": "70077",
+     "source": "MASK STATE +3",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3655",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3656",
+     "word": "03667",
+     "source": "TC R02ZERO",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3657",
+     "word": "31320",
+     "source": "CA IMODES30",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3660",
+     "word": "75007",
+     "source": "MASK BIT9",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3661",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3662",
+     "word": "13664",
+     "source": "BZF +2",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3663",
+     "word": "45014",
+     "source": "CS BIT4",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3664",
+     "word": "63672",
+     "source": "AD OCT220",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3665",
+     "word": "05764",
+     "source": "TC VARALARM",
+     "native": "r_r02both (R02BOTH)"
+    },
+    {
+     "address": "07,3666",
+     "word": "04106",
+     "source": "TC GOTOPOOH",
+     "native": "r_c3267 (after VARALARM)"
+    },
+    {
+     "address": "07,3667",
+     "word": "05546",
+     "source": "R02ZERO TC UPFLAG",
+     "native": "r_r02both (R02ZERO)"
+    },
+    {
+     "address": "07,3670",
+     "word": "00007",
+     "source": "ADRES IMUSE",
+     "native": "r_r02both (R02ZERO)"
+    },
+    {
+     "address": "07,3671",
+     "word": "14675",
+     "source": "TCF SWRETURN",
+     "native": "r_c3272 (after UPFLAG)"
+    },
+    {
+     "address": "07,3672",
+     "word": "00220",
+     "source": "OCT220 OCT 220",
+     "native": "K_OCT220 (OCT220)"
+    },
+    {
+     "address": "26,3660",
+     "word": "05546",
+     "source": "P06 TC UPFLAG",
+     "native": "r_p06 (P06)"
+    },
+    {
+     "address": "26,3661",
+     "word": "00054",
+     "source": "ADRES NODOFLAG",
+     "native": "r_p06 (P06)"
+    },
+    {
+     "address": "26,3662",
+     "word": "00004",
+     "source": "PRESTAND INHINT",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "26,3663",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "26,3664",
+     "word": "30025",
+     "source": "DCA TIME2",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "26,3665",
+     "word": "53151",
+     "source": "DXCH TIME2SAV",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "26,3666",
+     "word": "03717",
+     "source": "TC SCALPREP",
+     "native": "r_prestand (PRESTAND)"
+    },
+    {
+     "address": "26,3667",
+     "word": "03662",
+     "source": "TC PRESTAND",
+     "native": "r_c3664 (SCALPREP retry return)"
+    },
+    {
+     "address": "26,3670",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3665"
+    },
+    {
+     "address": "26,3671",
+     "word": "53153",
+     "source": "DXCH SCALSAVE",
+     "native": "r_c3665"
+    },
+    {
+     "address": "26,3672",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "r_c3665"
+    },
+    {
+     "address": "26,3673",
+     "word": "04662",
+     "source": "TC BANKCALL",
+     "native": "r_c3665"
+    },
+    {
+     "address": "26,3674",
+     "word": "17060",
+     "source": "CADR RNDREFDR",
+     "native": "r_c3665"
+    },
+    {
+     "address": "26,3675",
+     "word": "05560",
+     "source": "TC DOWNFLAG",
+     "native": "r_c3672 (after BANKCALL)"
+    },
+    {
+     "address": "26,3676",
+     "word": "00007",
+     "source": "ADRES IMUSE",
+     "native": "r_c3672 (after BANKCALL)"
+    },
+    {
+     "address": "26,3677",
+     "word": "05560",
+     "source": "TC DOWNFLAG",
+     "native": "r_c3674 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3700",
+     "word": "00010",
+     "source": "ADRES RNDVZFLG",
+     "native": "r_c3674 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3701",
+     "word": "35005",
+     "source": "CAF BIT11",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3702",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3703",
+     "word": "05013",
+     "source": "WOR CHAN13",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3704",
+     "word": "05412",
+     "source": "TC PHASCHNG",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3705",
+     "word": "07024",
+     "source": "OCT 07024",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3706",
+     "word": "20000",
+     "source": "OCT 20000",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3707",
+     "word": "03737",
+     "source": "2CADR POSTAND",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3710",
+     "word": "54062",
+     "source": "2CADR POSTAND (second word)",
+     "native": "r_c3676 (after DOWNFLAG)"
+    },
+    {
+     "address": "26,3711",
+     "word": "35036",
+     "source": "CAF OCT62",
+     "native": "r_c3706 (after PHASCHNG)"
+    },
+    {
+     "address": "26,3712",
+     "word": "04662",
+     "source": "TC BANKCALL",
+     "native": "r_c3706 (after PHASCHNG)"
+    },
+    {
+     "address": "26,3713",
+     "word": "21045",
+     "source": "CADR GOPERF1",
+     "native": "r_c3706 (after PHASCHNG)"
+    },
+    {
+     "address": "26,3714",
+     "word": "13711",
+     "source": "TCF -3",
+     "native": "r_c3711 (GOPERF1 return)"
+    },
+    {
+     "address": "26,3715",
+     "word": "13711",
+     "source": "TCF -4",
+     "native": "r_c3712 (GOPERF1 return)"
+    },
+    {
+     "address": "26,3716",
+     "word": "13711",
+     "source": "TCF -5",
+     "native": "r_c3713 (GOPERF1 return)"
+    },
+    {
+     "address": "26,3717",
+     "word": "00006",
+     "source": "SCALPREP EXTEND",
+     "native": "scalprep (SCALPREP)"
+    },
+    {
+     "address": "26,3720",
+     "word": "22156",
+     "source": "QXCH MPAC +2",
+     "native": "scalprep (SCALPREP)"
+    },
+    {
+     "address": "26,3721",
+     "word": "04554",
+     "source": "TC FINETIME +1",
+     "native": "scalprep (SCALPREP)"
+    },
+    {
+     "address": "26,3722",
+     "word": "00003",
+     "source": "RELINT",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3723",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3724",
+     "word": "35013",
+     "source": "CA BIT5",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3725",
+     "word": "54001",
+     "source": "TS L",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3726",
+     "word": "35021",
+     "source": "CA ZERO",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3727",
+     "word": "20155",
+     "source": "DAS MPAC",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3730",
+     "word": "44362",
+     "source": "CS LOW5",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3731",
+     "word": "70155",
+     "source": "MASK MPAC +1",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3732",
+     "word": "56155",
+     "source": "XCH MPAC +1",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3733",
+     "word": "74362",
+     "source": "MASK LOW5",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3734",
+     "word": "10000",
+     "source": "CCS A",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3735",
+     "word": "24156",
+     "source": "INCR MPAC +2",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3736",
+     "word": "00156",
+     "source": "TC MPAC +2",
+     "native": "r_c3717 (after FINETIME)"
+    },
+    {
+     "address": "26,3737",
+     "word": "45005",
+     "source": "POSTAND CS BIT11",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3740",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3741",
+     "word": "03013",
+     "source": "WAND CHAN13",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3742",
+     "word": "00004",
+     "source": "INHINT",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3743",
+     "word": "35021",
+     "source": "CA ZERO",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3744",
+     "word": "54001",
+     "source": "TS L",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3745",
+     "word": "52025",
+     "source": "DXCH TIME2",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3746",
+     "word": "03717",
+     "source": "TC SCALPREP",
+     "native": "r_postand (POSTAND)"
+    },
+    {
+     "address": "26,3747",
+     "word": "03742",
+     "source": "TC POSTAND +3",
+     "native": "r_c3744 (SCALPREP retry return)"
+    },
+    {
+     "address": "26,3750",
+     "word": "00006",
+     "source": "EXTEND",
+     "native": "r_c3745"
+    },
+    {
+     "address": "26,3751",
+     "word": "41153",
+     "source": "DCS SCALSAVE",
+     "native": "r_c3745"
+    },
+    {
+     "address": "26,3752",
+     "word": "20155",
+     "source": "DAS MPAC",
+     "native": "r_c3745"
+    },
+    {
+     "address": "26,3753",
+     "word": "35006",
+     "source": "CAF BIT10",
+     "native": "r_c3745"
+    },
+    {
+     "address": "26,3754",
+     "word": "07256",
+     "source": "TC SHORTMP",
+     "native": "r_c3745"
+    },
+    {
+     "address": "26,3755",
+     "word": "35021",
+     "source": "CAF ZERO",
+     "native": "r_c3752 (after SHORTMP)"
+    },
+    {
+     "address": "26,3756",
+     "word": "54156",
+     "source": "TS MPAC +2",
+     "native": "r_c3752 (after SHORTMP)"
+    },
+    {
+     "address": "26,3757",
+     "word": "07226",
+     "source": "TC TPAGREE",
+     "native": "r_c3752 (after SHORTMP)"
+    },
+    {
+     "address": "26,3760",
+     "word": "10154",
+     "source": "CCS MPAC",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3761",
+     "word": "03766",
+     "source": "TC POSTCOM",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3762",
+     "word": "03766",
+     "source": "TC POSTCOM",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3763",
+     "word": "03764",
+     "source": "TC +1",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3764",
+     "word": "35006",
+     "source": "CAF BIT10",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3765",
+     "word": "26154",
+     "source": "ADS MPAC",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3766",
+     "word": "00006",
+     "source": "POSTCOM EXTEND",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3767",
+     "word": "31151",
+     "source": "DCA TIME2SAV",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3770",
+     "word": "20155",
+     "source": "DAS MPAC",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3771",
+     "word": "07226",
+     "source": "TC TPAGREE",
+     "native": "r_c3755 (after TPAGREE, POSTCOM)"
+    },
+    {
+     "address": "26,3772",
+     "word": "52155",
+     "source": "DXCH MPAC",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "26,3773",
+     "word": "20025",
+     "source": "DAS TIME2",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "26,3774",
+     "word": "05560",
+     "source": "TC DOWNFLAG",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "26,3775",
+     "word": "00054",
+     "source": "ADRES NODOFLAG",
+     "native": "r_c3767 (after TPAGREE)"
+    },
+    {
+     "address": "26,3776",
+     "word": "04106",
+     "source": "TC GOTOPOOH",
+     "native": "r_c3773 (after DOWNFLAG)"
+    }
+   ],
+   "constants": {
+    "BIT1": {
+     "literal": "K_BIT1",
+     "value": "00001"
+    },
+    "BIT4": {
+     "literal": "K_BIT4",
+     "value": "00010"
+    },
+    "BIT5": {
+     "literal": "K_BIT5",
+     "value": "00020"
+    },
+    "BIT6": {
+     "literal": "K_BIT6",
+     "value": "00040"
+    },
+    "BIT8": {
+     "literal": "K_BIT8",
+     "value": "00200"
+    },
+    "BIT9": {
+     "literal": "K_BIT9",
+     "value": "00400"
+    },
+    "BIT10": {
+     "literal": "K_BIT10",
+     "value": "01000"
+    },
+    "BIT11": {
+     "literal": "K_BIT11",
+     "value": "02000"
+    },
+    "BIT13": {
+     "literal": "K_BIT13",
+     "value": "10000"
+    },
+    "BIT14": {
+     "literal": "K_BIT14",
+     "value": "20000"
+    },
+    "BIT15": {
+     "literal": "K_BIT15",
+     "value": "40000"
+    },
+    "BITS3&4": {
+     "literal": "K_BITS3_4",
+     "value": "00014"
+    },
+    "BITS4-5": {
+     "literal": "K_BITS4_5",
+     "value": "00030"
+    },
+    "BITS4&6": {
+     "literal": "K_BITS4_6",
+     "value": "00050"
+    },
+    "SUPER011": {
+     "literal": "K_SUPER011",
+     "value": "00060"
+    },
+    "OCT40010": {
+     "literal": "K_OCT40010",
+     "value": "40010"
+    },
+    "13,14,15": {
+     "literal": "K_13_14_15",
+     "value": "70000"
+    },
+    "600MS": {
+     "literal": "K_600MS",
+     "value": "00074"
+    },
+    "2SECS": {
+     "literal": "K_2SECS",
+     "value": "00310"
+    },
+    "OCT62": {
+     "literal": "K_OCT62",
+     "value": "00062"
+    },
+    "OCT220": {
+     "literal": "K_OCT220",
+     "value": "00220"
+    },
+    "-COMMAX": {
+     "literal": "K_MCOMMAX",
+     "value": "77500"
+    },
+    "-COMMAX-": {
+     "literal": "K_MCOMMAX_",
+     "value": "77477"
+    },
+    "COARSTOL": {
+     "literal": "K_COARSTOL",
+     "value": "77511"
+    },
+    "GDESELCT": {
+     "literal": "K_GDESELCT",
+     "value": "01700"
+    },
+    "-GYROMIN": {
+     "literal": "K_MGYROMIN",
+     "value": "77601"
+    },
+    "LOW5": {
+     "literal": "K_LOW5",
+     "value": "00037"
+    },
+    "LOW7": {
+     "literal": "K_LOW7",
+     "value": "00177"
+    },
+    "LOW8": {
+     "literal": "K_LOW8",
+     "value": "00377"
+    },
+    "SEVEN": {
+     "literal": "K_SEVEN",
+     "value": "00007"
+    },
+    "PRIO37": {
+     "literal": "K_PRIO37",
+     "value": "37000"
+    },
+    "NEG0": {
+     "literal": "K_NEG0",
+     "value": "77777"
+    },
+    "MINUS1": {
+     "literal": "K_MINUS1",
+     "value": "77776"
+    },
+    "NEG3": {
+     "literal": "K_NEG3",
+     "value": "77774"
+    },
+    "GYROFRAC": {
+     "literal": "K_GYROFRAC",
+     "value": "00000 00034"
+    },
+    "MASK 7601": {
+     "literal": "CM.gyromin_word",
+     "value": "52131"
+    },
+    "KALEBCON": {
+     "literal": "CM.kalebcon",
+     "value": "03261"
+    }
+   }
+  }
+ }
+}

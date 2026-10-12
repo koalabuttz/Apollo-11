@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-exec",
+  "release": "evidence-cm-tvc-exec",
+  "files": {
+    "cm-tvc-exec-assembly-comparison.json": {
+      "sha256": "c82a77f47e6d3df4569bb1eede740c1e8415b9dd4f10dd9097470c0672d504d7",
+      "bytes": 16706,
+      "store": "tree"
+    },
+    "cm-tvc-exec-checks.log": {
+      "sha256": "b2e6df7ca44b1872cdb1fa706b2c8b6348e2d84e1c3cac3d6a7b462190301e39",
+      "bytes": 677,
+      "store": "tree"
+    },
+    "cm-tvc-exec-reference.deltas.xz": {
+      "sha256": "17075cad14932c5872513b3aa4880c2ded9853b081ac687f1bf59cb317ca9255",
+      "bytes": 1009244,
+      "store": "release"
+    },
+    "cm-tvc-exec-results.json": {
+      "sha256": "452140fe1654ddc1d3ca2003c4a9cce6592a22caad0255c45e8dcde664b70389",
+      "bytes": 1273,
+      "store": "tree"
+    },
+    "cm-tvc-exec-source-map.json": {
+      "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f",
+      "bytes": 26937,
+      "store": "tree"
+    },
+    "cm-tvc-exec-source-stream.json": {
+      "sha256": "8e381b93fa0a50153b69f30c7b4f091fc91f57ae103501e00a201ee03e95a965",
+      "bytes": 392,
+      "store": "tree"
+    },
+    "cm-tvc-exec.map": {
+      "sha256": "e6cb8c490d4f4a9d893b40181f82d96d86a3bff9d34937b4d746cbf529306912",
+      "bytes": 11288,
+      "store": "release"
+    },
+    "cm-tvc-exec.prg": {
+      "sha256": "4d6cdf25a6d59382c46eb6172e110e826c716c365c04f4f9e1da3a5f661061fe",
+      "bytes": 14872,
+      "store": "release"
+    }
+  }
+}

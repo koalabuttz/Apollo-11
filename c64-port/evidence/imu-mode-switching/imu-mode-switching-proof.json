@@ -1,0 +1,994 @@
+{
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "oracle_engine": "pinned yaAGC agc_engine.c without its gyro, IMU CDU drive and optics block (build/no-imu-device.patch)",
+ "cases": 63488,
+ "snapshot_sha256": "435e9acacfab3d3aff026b03de864896864e0a73febe473bfc3976c01fc2c762",
+ "interbank_gap_stops": 928,
+ "stops": {
+  "LM routine 0": {
+   "caller return": 384
+  },
+  "LM routine 1": {
+   "UPFLAG": 192,
+   "VARALARM": 192
+  },
+  "LM routine 2": {
+   "GOTOPOOH": 384
+  },
+  "LM routine 3": {
+   "SWRETURN": 384
+  },
+  "LM routine 4": {
+   "ALARM": 98,
+   "SWRETURN": 144,
+   "WAITLIST": 142
+  },
+  "LM routine 5": {
+   "SWRETURN": 384
+  },
+  "LM routine 6": {
+   "ALARM": 192,
+   "SWRETURN": 192
+  },
+  "LM routine 7": {
+   "SWRETURN": 384
+  },
+  "LM routine 8": {
+   "JOBWAKE": 193,
+   "VARDELAY": 191
+  },
+  "LM routine 9": {
+   "IBNKCALL": 192,
+   "JOBWAKE": 192
+  },
+  "LM routine 10": {
+   "JOBWAKE": 384
+  },
+  "LM routine 11": {
+   "SWRETURN": 192,
+   "WAITLIST": 192
+  },
+  "LM routine 12": {
+   "SWRETURN": 384
+  },
+  "LM routine 13": {
+   "JOBWAKE": 190,
+   "VARDELAY": 194
+  },
+  "LM routine 14": {
+   "JOBWAKE": 192,
+   "VARDELAY": 192
+  },
+  "LM routine 15": {
+   "ALARM": 192,
+   "JOBWAKE": 192
+  },
+  "LM routine 16": {
+   "JOBWAKE": 384
+  },
+  "LM routine 17": {
+   "TASKOVER": 384
+  },
+  "LM routine 18": {
+   "caller return": 384
+  },
+  "LM routine 19": {
+   "caller return": 384
+  },
+  "LM routine 20": {
+   "SWRETURN": 190,
+   "WAITLIST": 194
+  },
+  "LM routine 21": {
+   "WAITLIST": 384
+  },
+  "LM routine 22": {
+   "SWRETURN": 384
+  },
+  "LM routine 23": {
+   "JOBWAKE": 384
+  },
+  "LM routine 24": {
+   "IBNKCALL": 99,
+   "TASKOVER": 285
+  },
+  "LM routine 25": {
+   "TASKOVER": 384
+  },
+  "LM routine 26": {
+   "IBNKCALL": 192,
+   "TASKOVER": 192
+  },
+  "LM routine 27": {
+   "caller return": 384
+  },
+  "LM routine 28": {
+   "IBNKCALL": 193,
+   "SWRETURN": 191
+  },
+  "LM routine 29": {
+   "IBNKCALL": 191,
+   "SWRETURN": 193
+  },
+  "LM routine 30": {
+   "SWRETURN": 384
+  },
+  "LM routine 31": {
+   "ALARM": 192,
+   "SWRETURN": 192
+  },
+  "LM routine 32": {
+   "IBNKCALL": 384
+  },
+  "LM routine 33": {
+   "JOBSLEEP": 47,
+   "SWRETURN": 192,
+   "WAITLIST": 145
+  },
+  "LM routine 34": {
+   "TPAGREE": 384
+  },
+  "LM routine 35": {
+   "SWRETURN": 230,
+   "TPAGREE": 154
+  },
+  "LM routine 36": {
+   "JOBSLEEP": 96,
+   "WAITLIST": 288
+  },
+  "LM routine 37": {
+   "JOBWAKE": 239,
+   "TASKOVER": 1,
+   "WAITLIST": 109,
+   "Z 00100": 11,
+   "Z 00202": 11,
+   "Z 00302": 13
+  },
+  "LM routine 38": {
+   "JOBWAKE": 384
+  },
+  "LM routine 39": {
+   "TASKOVER": 384
+  },
+  "LM routine 40": {
+   "TASKOVER": 384
+  },
+  "LM routine 41": {
+   "JOBWAKE": 282,
+   "WAITLIST": 102
+  },
+  "LM routine 42": {
+   "JOBWAKE": 152,
+   "TASKOVER": 232
+  },
+  "LM routine 43": {
+   "JOBWAKE": 152,
+   "TASKOVER": 232
+  },
+  "LM routine 44": {
+   "JOBWAKE": 154,
+   "TASKOVER": 230
+  },
+  "LM routine 45": {
+   "JOBWAKE": 154,
+   "TASKOVER": 230
+  },
+  "LM routine 46": {
+   "TASKOVER": 384
+  },
+  "LM routine 47": {
+   "BAILOUT1": 156,
+   "MAKECADR": 76,
+   "SWRETURN": 152
+  },
+  "LM routine 48": {
+   "BAILOUT1": 152,
+   "MAKECADR": 80,
+   "SWRETURN": 152
+  },
+  "LM routine 49": {
+   "BAILOUT1": 152,
+   "MAKECADR": 76,
+   "SWRETURN": 156
+  },
+  "LM routine 50": {
+   "JOBSLEEP": 384
+  },
+  "LM routine 51": {
+   "POODOO": 192,
+   "POSTJUMP": 192
+  },
+  "LM routine 52": {
+   "UPFLAG": 384
+  },
+  "LM routine 53": {
+   "FINETIME +1": 384
+  },
+  "LM routine 54": {
+   "FINETIME +1": 384
+  },
+  "LM routine 55": {
+   "BANKCALL": 384
+  },
+  "LM routine 56": {
+   "DOWNFLAG": 384
+  },
+  "LM routine 57": {
+   "DOWNFLAG": 384
+  },
+  "LM routine 58": {
+   "PHASCHNG": 384
+  },
+  "LM routine 59": {
+   "BANKCALL": 384
+  },
+  "LM routine 60": {
+   "BANKCALL": 384
+  },
+  "LM routine 61": {
+   "BANKCALL": 384
+  },
+  "LM routine 62": {
+   "BANKCALL": 384
+  },
+  "LM routine 63": {
+   "FINETIME +1": 384
+  },
+  "LM routine 64": {
+   "BANKCALL": 128,
+   "FINETIME +1": 15,
+   "SHORTMP": 113,
+   "caller return +1": 128
+  },
+  "LM routine 65": {
+   "FINETIME +1": 384
+  },
+  "LM routine 66": {
+   "FINETIME +1": 384
+  },
+  "LM routine 67": {
+   "SHORTMP": 384
+  },
+  "LM routine 68": {
+   "TPAGREE": 384
+  },
+  "LM routine 69": {
+   "TPAGREE": 384
+  },
+  "LM routine 70": {
+   "DOWNFLAG": 384
+  },
+  "LM routine 71": {
+   "GOTOPOOH": 384
+  },
+  "CM routine 0": {
+   "caller return": 384
+  },
+  "CM routine 1": {
+   "ALARM": 97,
+   "SWRETURN": 147,
+   "WAITLIST": 140
+  },
+  "CM routine 2": {
+   "SWRETURN": 384
+  },
+  "CM routine 3": {
+   "ALARM": 190,
+   "SWRETURN": 194
+  },
+  "CM routine 4": {
+   "SWRETURN": 384
+  },
+  "CM routine 5": {
+   "JOBWAKE": 192,
+   "VARDELAY": 192
+  },
+  "CM routine 6": {
+   "IBNKCALL": 193,
+   "JOBWAKE": 191
+  },
+  "CM routine 7": {
+   "JOBWAKE": 384
+  },
+  "CM routine 8": {
+   "SWRETURN": 192,
+   "WAITLIST": 192
+  },
+  "CM routine 9": {
+   "SWRETURN": 384
+  },
+  "CM routine 10": {
+   "JOBWAKE": 191,
+   "VARDELAY": 193
+  },
+  "CM routine 11": {
+   "JOBWAKE": 192,
+   "VARDELAY": 192
+  },
+  "CM routine 12": {
+   "ALARM": 192,
+   "JOBWAKE": 192
+  },
+  "CM routine 13": {
+   "JOBWAKE": 384
+  },
+  "CM routine 14": {
+   "TASKOVER": 384
+  },
+  "CM routine 15": {
+   "caller return": 384
+  },
+  "CM routine 16": {
+   "caller return": 384
+  },
+  "CM routine 17": {
+   "SWRETURN": 192,
+   "WAITLIST": 192
+  },
+  "CM routine 18": {
+   "WAITLIST": 384
+  },
+  "CM routine 19": {
+   "SWRETURN": 384
+  },
+  "CM routine 20": {
+   "JOBWAKE": 384
+  },
+  "CM routine 21": {
+   "IBNKCALL": 98,
+   "TASKOVER": 286
+  },
+  "CM routine 22": {
+   "TASKOVER": 384
+  },
+  "CM routine 23": {
+   "IBNKCALL": 192,
+   "TASKOVER": 192
+  },
+  "CM routine 24": {
+   "caller return": 384
+  },
+  "CM routine 25": {
+   "IBNKCALL": 191,
+   "SWRETURN": 193
+  },
+  "CM routine 26": {
+   "IBNKCALL": 192,
+   "SWRETURN": 192
+  },
+  "CM routine 27": {
+   "SWRETURN": 384
+  },
+  "CM routine 28": {
+   "ALARM": 192,
+   "SWRETURN": 192
+  },
+  "CM routine 29": {
+   "IBNKCALL": 384
+  },
+  "CM routine 30": {
+   "JOBSLEEP": 54,
+   "SWRETURN": 192,
+   "WAITLIST": 138
+  },
+  "CM routine 31": {
+   "TPAGREE": 384
+  },
+  "CM routine 32": {
+   "SWRETURN": 230,
+   "TPAGREE": 154
+  },
+  "CM routine 33": {
+   "JOBSLEEP": 96,
+   "WAITLIST": 288
+  },
+  "CM routine 34": {
+   "JOBWAKE": 246,
+   "WAITLIST": 103,
+   "Z 00100": 11,
+   "Z 00202": 11,
+   "Z 00302": 13
+  },
+  "CM routine 35": {
+   "JOBWAKE": 384
+  },
+  "CM routine 36": {
+   "TASKOVER": 384
+  },
+  "CM routine 37": {
+   "TASKOVER": 384
+  },
+  "CM routine 38": {
+   "JOBWAKE": 290,
+   "WAITLIST": 94
+  },
+  "CM routine 39": {
+   "JOBWAKE": 308,
+   "TASKOVER": 76
+  },
+  "CM routine 40": {
+   "JOBWAKE": 308,
+   "TASKOVER": 76
+  },
+  "CM routine 41": {
+   "JOBWAKE": 307,
+   "TASKOVER": 77
+  },
+  "CM routine 42": {
+   "JOBWAKE": 307,
+   "TASKOVER": 77
+  },
+  "CM routine 43": {
+   "TASKOVER": 384
+  },
+  "CM routine 44": {
+   "MAKECADR": 76,
+   "POODOO": 156,
+   "SWRETURN": 152
+  },
+  "CM routine 45": {
+   "MAKECADR": 80,
+   "POODOO": 152,
+   "SWRETURN": 152
+  },
+  "CM routine 46": {
+   "MAKECADR": 76,
+   "POODOO": 152,
+   "SWRETURN": 156
+  },
+  "CM routine 47": {
+   "JOBSLEEP": 384
+  },
+  "CM routine 48": {
+   "POODOO": 192,
+   "POSTJUMP": 192
+  },
+  "CM routine 49": {
+   "UPFLAG": 193,
+   "VARALARM": 191
+  },
+  "CM routine 50": {
+   "GOTOPOOH": 384
+  },
+  "CM routine 51": {
+   "SWRETURN": 384
+  },
+  "CM routine 52": {
+   "UPFLAG": 384
+  },
+  "CM routine 53": {
+   "FINETIME +1": 384
+  },
+  "CM routine 54": {
+   "FINETIME +1": 384
+  },
+  "CM routine 55": {
+   "BANKCALL": 384
+  },
+  "CM routine 56": {
+   "DOWNFLAG": 384
+  },
+  "CM routine 57": {
+   "DOWNFLAG": 384
+  },
+  "CM routine 58": {
+   "PHASCHNG": 384
+  },
+  "CM routine 59": {
+   "BANKCALL": 384
+  },
+  "CM routine 60": {
+   "BANKCALL": 384
+  },
+  "CM routine 61": {
+   "BANKCALL": 384
+  },
+  "CM routine 62": {
+   "BANKCALL": 384
+  },
+  "CM routine 63": {
+   "FINETIME +1": 384
+  },
+  "CM routine 64": {
+   "BANKCALL": 128,
+   "SHORTMP": 128,
+   "caller return": 15,
+   "caller return +1": 113
+  },
+  "CM routine 65": {
+   "FINETIME +1": 384
+  },
+  "CM routine 66": {
+   "FINETIME +1": 384
+  },
+  "CM routine 67": {
+   "SHORTMP": 384
+  },
+  "CM routine 68": {
+   "TPAGREE": 384
+  },
+  "CM routine 69": {
+   "TPAGREE": 384
+  },
+  "CM routine 70": {
+   "DOWNFLAG": 384
+  },
+  "CM routine 71": {
+   "GOTOPOOH": 384
+  },
+  "LM round trip site 0": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "LM round trip site 1": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "LM round trip site 2": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "LM round trip site 3": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "LM round trip site 4": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "LM round trip site 5": {
+   "JOBSLEEP": 14,
+   "WAITLIST": 18,
+   "caller continuation": 32
+  },
+  "LM round trip site 6": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 7": {
+   "SETISSW": 31,
+   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 33
+  },
+  "LM round trip site 8": {
+   "JOBWAKE": 64
+  },
+  "LM round trip site 9": {
+   "JOBSLEEP": 15,
+   "WAITLIST": 16,
+   "caller continuation": 33
+  },
+  "LM round trip site 10": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 11": {
+   "JOBSLEEP": 16,
+   "WAITLIST": 17,
+   "caller continuation": 31
+  },
+  "LM round trip site 12": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 13": {
+   "JOBSLEEP": 16,
+   "WAITLIST": 16,
+   "caller continuation": 32
+  },
+  "LM round trip site 14": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 15": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 16": {
+   "WAITLIST": 31,
+   "caller continuation": 33
+  },
+  "LM round trip site 17": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 18": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "LM round trip site 19": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 20": {
+   "UPFLAG": 33,
+   "VARALARM": 31
+  },
+  "LM round trip site 21": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 22": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "LM round trip site 23": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 24": {
+   "WAITLIST": 33,
+   "caller continuation": 31
+  },
+  "LM round trip site 25": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 26": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "LM round trip site 27": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 28": {
+   "JOBSLEEP": 15,
+   "WAITLIST": 15,
+   "caller continuation": 34
+  },
+  "LM round trip site 29": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 30": {
+   "ALARM": 31,
+   "caller continuation": 33
+  },
+  "LM round trip site 31": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "LM round trip site 32": {
+   "UPFLAG": 31,
+   "VARALARM": 33
+  },
+  "LM round trip site 33": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 34": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 35": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 36": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 37": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 38": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 39": {
+   "UPFLAG": 31,
+   "VARALARM": 33
+  },
+  "LM round trip site 40": {
+   "POODOO": 64
+  },
+  "LM round trip site 41": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "LM round trip site 42": {
+   "ALARM": 15,
+   "WAITLIST": 23,
+   "caller continuation": 26
+  },
+  "LM round trip site 43": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 44": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 45": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 46": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "LM round trip site 47": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 48": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 49": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 50": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 51": {
+   "UPFLAG": 31,
+   "VARALARM": 33
+  },
+  "LM round trip site 52": {
+   "UPFLAG": 33,
+   "VARALARM": 31
+  },
+  "LM round trip site 53": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "LM round trip site 54": {
+   "UPFLAG": 31,
+   "VARALARM": 33
+  },
+  "LM round trip site 55": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "LM round trip site 56": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "LM round trip site 57": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 58": {
+   "WAITLIST": 31,
+   "caller continuation": 33
+  },
+  "LM round trip site 59": {
+   "ALARM": 15,
+   "WAITLIST": 25,
+   "caller continuation": 24
+  },
+  "LM round trip site 60": {
+   "JOBSLEEP": 17,
+   "WAITLIST": 15,
+   "caller continuation": 32
+  },
+  "LM round trip site 61": {
+   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "LM round trip site 62": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "LM round trip site 63": {
+   "ALARM": 14,
+   "WAITLIST": 25,
+   "caller continuation": 25
+  },
+  "LM round trip site 64": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 65": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 66": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 67": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "LM round trip site 68": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 69": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 70": {
+   "WAITLIST": 31,
+   "caller continuation": 33
+  },
+  "LM round trip site 71": {
+   "BAILOUT1": 64
+  },
+  "LM round trip site 72": {
+   "JOBSLEEP": 16,
+   "WAITLIST": 15,
+   "caller continuation": 33
+  },
+  "LM round trip site 73": {
+   "BAILOUT1": 64
+  },
+  "CM round trip site 0": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "CM round trip site 1": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "CM round trip site 2": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "CM round trip site 3": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "CM round trip site 4": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "CM round trip site 5": {
+   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "CM round trip site 6": {
+   "JOBSLEEP": 14,
+   "WAITLIST": 17,
+   "caller continuation": 33
+  },
+  "CM round trip site 7": {
+   "POODOO": 64
+  },
+  "CM round trip site 8": {
+   "SETISSW": 33,
+   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 31
+  },
+  "CM round trip site 9": {
+   "JOBWAKE": 64
+  },
+  "CM round trip site 10": {
+   "WAITLIST": 29,
+   "caller continuation": 35
+  },
+  "CM round trip site 11": {
+   "POODOO": 64
+  },
+  "CM round trip site 12": {
+   "WAITLIST": 34,
+   "caller continuation": 30
+  },
+  "CM round trip site 13": {
+   "POODOO": 64
+  },
+  "CM round trip site 14": {
+   "WAITLIST": 30,
+   "caller continuation": 34
+  },
+  "CM round trip site 15": {
+   "POODOO": 64
+  },
+  "CM round trip site 16": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "CM round trip site 17": {
+   "POODOO": 64
+  },
+  "CM round trip site 18": {
+   "POODOO": 64
+  },
+  "CM round trip site 19": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "CM round trip site 20": {
+   "JOBSLEEP": 17,
+   "WAITLIST": 14,
+   "caller continuation": 33
+  },
+  "CM round trip site 21": {
+   "POODOO": 64
+  },
+  "CM round trip site 22": {
+   "JOBSLEEP": 15,
+   "WAITLIST": 20,
+   "caller continuation": 29
+  },
+  "CM round trip site 23": {
+   "POODOO": 64
+  },
+  "CM round trip site 24": {
+   "JOBSLEEP": 13,
+   "WAITLIST": 17,
+   "caller continuation": 34
+  },
+  "CM round trip site 25": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "CM round trip site 26": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "CM round trip site 27": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "CM round trip site 28": {
+   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+  },
+  "CM round trip site 29": {
+   "POODOO": 64
+  },
+  "CM round trip site 30": {
+   "POODOO": 64
+  },
+  "CM round trip site 31": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "CM round trip site 32": {
+   "ALARM": 14,
+   "WAITLIST": 27,
+   "caller continuation": 23
+  },
+  "CM round trip site 33": {
+   "WAITLIST": 33,
+   "caller continuation": 31
+  },
+  "CM round trip site 34": {
+   "WAITLIST": 31,
+   "caller continuation": 33
+  },
+  "CM round trip site 35": {
+   "WAITLIST": 32,
+   "caller continuation": 32
+  },
+  "CM round trip site 36": {
+   "POODOO": 64
+  },
+  "CM round trip site 37": {
+   "SETISSW": 32,
+   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 32
+  },
+  "CM round trip site 38": {
+   "JOBSLEEP": 15,
+   "WAITLIST": 14,
+   "caller continuation": 35
+  },
+  "CM round trip site 39": {
+   "JOBSLEEP": 16,
+   "WAITLIST": 18,
+   "caller continuation": 30
+  },
+  "CM round trip site 40": {
+   "POODOO": 64
+  },
+  "CM round trip site 41": {
+   "POODOO": 64
+  },
+  "CM round trip site 42": {
+   "UPFLAG": 33,
+   "VARALARM": 31
+  },
+  "CM round trip site 43": {
+   "UPFLAG": 32,
+   "VARALARM": 32
+  },
+  "CM round trip site 44": {
+   "ALARM": 33,
+   "caller continuation": 31
+  },
+  "CM round trip site 45": {
+   "UPFLAG": 31,
+   "VARALARM": 33
+  },
+  "CM round trip site 46": {
+   "ALARM": 14,
+   "WAITLIST": 26,
+   "caller continuation": 24
+  },
+  "CM round trip site 47": {
+   "POODOO": 64
+  },
+  "CM round trip site 48": {
+   "WAITLIST": 29,
+   "caller continuation": 35
+  },
+  "CM round trip site 49": {
+   "POODOO": 64
+  },
+  "CM round trip site 50": {
+   "WAITLIST": 33,
+   "caller continuation": 31
+  },
+  "CM round trip site 51": {
+   "POODOO": 64
+  },
+  "CM round trip site 52": {
+   "JOBSLEEP": 14,
+   "WAITLIST": 17,
+   "caller continuation": 33
+  },
+  "CM round trip site 53": {
+   "POODOO": 64
+  }
+ },
+ "boundary": "entry cases: from the routine to the first external address, the subroutine return at 04000, or an erasable TC target; round trips: TC BANKCALL or IBNKCALL from every genuine site through native INTER-BANK to the caller continuation, an external, SETISSW, or SWRETURN/ISWRETRN entered with Q outside 0100-07775",
+ "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and channels 11-14"
+}

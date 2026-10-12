@@ -1,0 +1,6 @@
+cm-tvc-restarts: 128 frozen original TVCRESTARTS states, entry refusals: PASS
+PASS 65536 original TVCRESTARTS oracle states equal native 2053-word rows {'returned': 65536} b63bdfb7e606ae671fcaa07f0e2dce23fbf37f7e9c6f54fe1cf4c849106a2462
+PASS 90 original TVCRESTARTS words mapped; listing equals rope; 14 fixed constants and the 11-word table equal native literals
+cm-tvc-restarts: 128 frozen original TVCRESTARTS states, entry refusals: PASS
+PASS 65536 original TVCRESTARTS oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} b63bdfb7e606ae671fcaa07f0e2dce23fbf37f7e9c6f54fe1cf4c849106a2462
+PASS: VICE PAL cm-tvc-restarts.prg: 128 checks, 0 failures

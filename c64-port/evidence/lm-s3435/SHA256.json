@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-s3435",
+  "release": "evidence-lm-s3435",
+  "files": {
+    "lm-s3435-1.map": {
+      "sha256": "abe672d839840cccb99835104257c95c603ef4f28763c828451572a88ae9d41f",
+      "bytes": 20533,
+      "store": "release"
+    },
+    "lm-s3435-1.prg": {
+      "sha256": "2a6810becfd5067404c7c2788033ed860e542ba9d9f58c5dedfae9755f87ec76",
+      "bytes": 34922,
+      "store": "release"
+    },
+    "lm-s3435-2.map": {
+      "sha256": "ece4b2f8b89e82ed2d1f9151cfb55a1b12fa234f3f02c85cfc73a7c26f7d03fd",
+      "bytes": 21380,
+      "store": "release"
+    },
+    "lm-s3435-2.prg": {
+      "sha256": "8635e8a4d5615510cd176c89a77fa4757f074393abd6fa5a065da237031813b1",
+      "bytes": 46154,
+      "store": "release"
+    },
+    "lm-s3435-checks.log": {
+      "sha256": "6346762d69c38f9ebe17c5eb0d2dd42999b7cf39815b9ed2082ae094841dde5b",
+      "bytes": 516,
+      "store": "tree"
+    },
+    "lm-s3435-proof.json": {
+      "sha256": "689637107a82c4b3bcf00aef88f1c77406b60f6fdf7d3106f9f15f046e28694e",
+      "bytes": 920,
+      "store": "tree"
+    },
+    "lm-s3435-reference.snapshots.bin.xz": {
+      "sha256": "47b8ea191d68cb7728ddad97bb73c7738c03b6b1b650df4e9e235d635696a07c",
+      "bytes": 62876624,
+      "store": "release"
+    },
+    "lm-s3435-results.json": {
+      "sha256": "9455926f7cba5f20159127378649556c937dc81a134d2f4e0ddc8e8693be32eb",
+      "bytes": 1238,
+      "store": "tree"
+    },
+    "lm-s3435-source-map.json": {
+      "sha256": "299400e31f0c4d9bb454938df5ae546e2a1eb1ff86f5a64b9768c79d603ffde1",
+      "bytes": 7999,
+      "store": "tree"
+    },
+    "lm-s3435-source-stream.json": {
+      "sha256": "8aaf74268f6976f869c2d5468d0138c3a806168f04aafe1bc3df04e44377e69b",
+      "bytes": 340,
+      "store": "tree"
+    }
+  }
+}

@@ -96,4 +96,35 @@ void lm_conic_lambert_input(apollo_overlay_state *m,p66_bias_io *io,uint32_t n){
   d=(r1[0]*v1[0]+r1[1]*v1[1]+r1[2]*v1[2])/(r*v*cos(gam));
   put_dp(m,COGA,(n/64u)%4u==0u?(uniform(&seed)-0.5)*1.9:d*(1.0+(uniform(&seed)-0.5)*0.2)/32.0);
  }
+ if((n&2047u)==1717u){
+  /* One case in 2048: a short transfer whose COGAMAX lands in
+   * [COGUPLIM, 1) without overflow, so DSU BMN COGUPLIM falls through to
+   * UPLIM (12,3301). The geometries (r1 along x, r2 in the xy plane, |r2| =
+   * k|r1|, angle th) were found by searching with the native producer;
+   * the oracle stream checks every one. GEOMSGN is positive. */
+  static const double g[9][3]={{0.099184178495779637,0.78600198375061159,6.1501704494379084},
+   {0.16514534384943544,2.9984175774268804,-0.098563667573349639},{0.1835265287477523,1.7913997971452773,6.1739943436019544},
+   {0.50825697647407653,1.8899496045894921,6.1752416505234722},{0.43425944049842657,0.33158781398087739,6.1121048886674449},
+   {0.26117806530557575,2.9566918222233651,6.1843507193900749},{0.15334549055434762,0.41077288817614316,-0.16000916917276187},
+   {0.1735789668560028,2.3240143211558459,0.10347717865223108},{0.45832602724432947,1.5614628933370114,-0.11249529466818825}};
+  const double *q=g[(n>>11)%9u];
+  put_dp(m,R1VEC,q[0]);put_dp(m,R1VEC+2u,0.0);put_dp(m,R1VEC+4u,0.0);
+  put_dp(m,R2VEC,q[0]*q[1]*cos(q[2]));put_dp(m,R2VEC+2u,q[0]*q[1]*sin(q[2]));put_dp(m,R2VEC+4u,0.0);
+  W[GEOMSGN]=(agc_word)(W[GEOMSGN]&037777u);
+ }
+ if((n&2047u)==717u){
+  /* One case in 2048: r1 and r2 almost parallel (|th| between 2^-13 and
+   * 2^-19 rad). CSTH comes out one lsb above .5, STORE writes 1-CSTH as -0,
+   * but ROUND carries the third word so BZE 360LAMB is not taken; LAMBLOOP
+   * divides the stored -0 and BZE takes NEGP (12,3343). Found and checked
+   * with the native producer; the oracle stream checks every one. */
+  static const double z[8][3]={
+   {0.056,0.69,-0.0001312255859375}, {0.07,0.8999999999999999,7.62939453125e-05},
+   {0.096,1.29,-4.8065185546875e-05}, {0.112,1.5299999999999998,-2.70843505859375e-05},
+   {0.08600000000000001,1.1400000000000001,1.10626220703125e-05}, {0.094,1.2599999999999998,5.91278076171875e-06},
+   {0.062,0.78,2.193450927734375e-06}, {0.12200000000000001,1.6800000000000002,0.000115966796875}};
+  const double *q=z[(n>>11)%8u];
+  put_dp(m,R1VEC,q[0]);put_dp(m,R1VEC+2u,0.0);put_dp(m,R1VEC+4u,0.0);
+  put_dp(m,R2VEC,q[0]*q[1]*cos(q[2]));put_dp(m,R2VEC+2u,q[0]*q[1]*sin(q[2]));put_dp(m,R2VEC+4u,0.0);
+ }
 }

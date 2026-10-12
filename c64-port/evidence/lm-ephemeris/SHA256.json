@@ -4,43 +4,53 @@
   "release": "evidence-lm-ephemeris",
   "files": {
     "lm-ephemeris-1.map": {
-      "sha256": "f22b862abcbc6ee0cb69764d85559904f78954f42e4195acb2d9760cc9069d7d",
-      "bytes": 21772,
+      "sha256": "bd7f5cec643ae3a464352c839ec3d3ac2ed44ec94a4a0d2af95b83a7a3fb8881",
+      "bytes": 23710,
       "store": "release"
     },
     "lm-ephemeris-1.prg": {
-      "sha256": "4be3902b9cc89a085d126e38e380472960b358b0b9e4d168f5d05974b630f825",
-      "bytes": 31590,
+      "sha256": "f1acbb66df95e2b54ac302337e09c8fdeac17c07f6db1835a1202c07e6e0512f",
+      "bytes": 42928,
       "store": "release"
     },
     "lm-ephemeris-2.map": {
-      "sha256": "22ef8a7e2dce82313146f2987c3259a63f99c841c27760555b065dc32aa16811",
-      "bytes": 21254,
+      "sha256": "083f5834430eabdabc66c7cef9779237f691683a5eaf2c28d4e8123de1887d01",
+      "bytes": 23822,
       "store": "release"
     },
     "lm-ephemeris-2.prg": {
-      "sha256": "33826ecea101af50e53bdfbd76305d5ff3be751a5fd14844ddf906e1d7f31c58",
-      "bytes": 28953,
+      "sha256": "036f1a72cce90824ada31bf7a961d2b6615c2796f861e4016301856b89e15659",
+      "bytes": 37592,
       "store": "release"
     },
     "lm-ephemeris-3.map": {
-      "sha256": "07f14c0ddec1b0d436609a0d236e70617a75a18d8ed76af2df04bdcddd0b419b",
-      "bytes": 19810,
+      "sha256": "0dbd526d1ae7cfc29f78f6be21bcf5f46fa854c02193f8fde9ba7c94b356a282",
+      "bytes": 21015,
       "store": "release"
     },
     "lm-ephemeris-3.prg": {
-      "sha256": "b198a5e2f94f69cd908243ec24204f98284aa7ddcd746878d89c6c3471c82d7f",
-      "bytes": 40998,
+      "sha256": "b0cd54d9aa1cbe1a6efc25c882bbea34af3db0ae4ad49949037512a4c5400d3f",
+      "bytes": 44456,
+      "store": "release"
+    },
+    "lm-ephemeris-4.map": {
+      "sha256": "3a2b53d3a7759913cf4667162e2069bfcd077dabfa0af22c5db61597e83cbe36",
+      "bytes": 21313,
+      "store": "release"
+    },
+    "lm-ephemeris-4.prg": {
+      "sha256": "6ace6a9edcf030723d8624c143a6b885d26033b3295d44381fd1b7e479b3358d",
+      "bytes": 45254,
       "store": "release"
     },
     "lm-ephemeris-checks.log": {
-      "sha256": "31fe7d0fee2daddcc969fc72fc6ceba25ba47620c5b2d62d12dd52099be995ed",
-      "bytes": 782,
+      "sha256": "db7d4ac77eb67ab11a10074805430a59d947c08008425408c526c76409b6faf7",
+      "bytes": 1498,
       "store": "tree"
     },
     "lm-ephemeris-phase-steps.json": {
-      "sha256": "5b1a04e0fd002e63bd603c5a1ad2807eabd834ee9e55123eae396f3f3e88ee8d",
-      "bytes": 833,
+      "sha256": "f844df00a1a0ae08a57c23ae83e473934b6e3f4f5e97f09a77cdb97f05225fdb",
+      "bytes": 974,
       "store": "tree"
     },
     "lm-ephemeris-reference.snapshots.bin.xz": {
@@ -49,12 +59,12 @@
       "store": "release"
     },
     "lm-ephemeris-results.json": {
-      "sha256": "f336006417ac182a4f83fd84c4322b5aa192d96196d015781e1f3bdd28d3c097",
-      "bytes": 2363,
+      "sha256": "d4c784640d95eb46f4ff7942082cc62b438ba35d395615e41075efa9aa6aa102",
+      "bytes": 4009,
       "store": "tree"
     },
     "lm-ephemeris-source-map.json": {
-      "sha256": "220f640a3b40c42d0abd1779494dd0f6cdb06b2a269f6bcd6897294c1dbbf96c",
+      "sha256": "12140f2fa58e899a33231de01b804beb4157e4fe2527cd5ae8c6ef2dec2f2640",
       "bytes": 11042,
       "store": "tree"
     },

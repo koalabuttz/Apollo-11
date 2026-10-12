@@ -1,0 +1,22 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "fd4cc9fc787112dfde8f779e6951c507067c789eac535396eb95c8a6881829a1",
+ "entries": [
+  "5311 NEWMODEX",
+  "5314 NEWMODEA",
+  "5315 MMDSPLAY",
+  "5321 CHECKMM",
+  "5327 2PHSCHNG",
+  "5353 PHASCHNG",
+  "5357 PHSCHNGA",
+  "10,2213 SETUPDSP",
+  "10,2221 SETUPDSP NOVAC return",
+  "10,2224 PHSCHNG2",
+  "10,2312 CON2"
+ ],
+ "boundary": "caller site to the caller return (or CHECKMM Q+1/Q+2), through BANKJUMP (lm_interbank_routines); NOVAC recorded and returned to Q+2",
+ "full_physical_words": 2048
+}

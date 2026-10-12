@@ -1,0 +1,7 @@
+{
+  "suite": "ev-radar",
+  "cases": 2448,
+  "differing": 0,
+  "native_sha256": "3144c65adf203b58c7a186dd5c08123a95c9d99496260380fa2762543aa2bc60",
+  "oracle_sha256": "3144c65adf203b58c7a186dd5c08123a95c9d99496260380fa2762543aa2bc60"
+}

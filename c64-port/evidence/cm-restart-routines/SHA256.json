@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-restart-routines",
+  "release": "evidence-cm-restart-routines",
+  "files": {
+    "cm-restart-routines-host.log": {
+      "sha256": "3a777d1375753cc7ef2bc5aa75688b45e93e8132441e9e4045c4a7454c8390c1",
+      "bytes": 1721,
+      "store": "release"
+    },
+    "cm-restart-routines-proof.json": {
+      "sha256": "e22176c1acdd1d6cd45e52c83324390ebbaa8d178fd8c883bd247bfd72c4f3c7",
+      "bytes": 830,
+      "store": "tree"
+    },
+    "cm-restart-routines-table.json": {
+      "sha256": "632551d055796f7a599e450b154af60586e0ef9706e6dc5ca59a5037ff55bccd",
+      "bytes": 8040,
+      "store": "tree"
+    },
+    "cm-restart-routines-vice.log": {
+      "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592",
+      "bytes": 1076,
+      "store": "release"
+    }
+  }
+}

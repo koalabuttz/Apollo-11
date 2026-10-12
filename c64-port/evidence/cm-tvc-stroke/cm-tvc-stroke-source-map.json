@@ -1,0 +1,759 @@
+{
+ "source_file": "Comanche055/TVCSTROKETEST.agc",
+ "original_sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "emitted_words": 73,
+ "native_files": [
+  "src/cm_tvc_stroke.c",
+  "include/cm_tvc_stroke.h"
+ ],
+ "entries": [
+  "3501 STRKTSTI (V68 job, EXTENDED VERBS 2CADR)",
+  "3533 HACK (TC HACK from the pitch and yaw TVC DAPs)",
+  "3541 (WAITLIST return past the 2CADR)",
+  "3542 HACKWLST (waitlist task)"
+ ],
+ "frontiers": {
+  "ENDOFJOB 5217": "STRKCHK, interrupts inhibited",
+  "WAITLIST 5245": "Q 3537 (2CADR HACKWLST), A 20MS",
+  "BUNKER 1657": "TC BUNKER with Q 3556, 3575, 3577 or 3612; BUNKER holds the DAP return (QXCH) or TC TASKOVER"
+ },
+ "fixed_constants_checked": {
+  "3504 BIT14": "20000",
+  "3512 FCADDY": "00012",
+  "3515 FREVS": "00003",
+  "3517 FCARD": "00004",
+  "3535 20MS": "00002",
+  "3542 TCTSKOVR": "05324",
+  "3546 BIT11": "02000",
+  "3603 ONE": "00001"
+ },
+ "table_checked": "3524-3532 (FCARD..FCARD6) equal native fcard[]",
+ "reachability": {
+  "TS overflow skips other than 3606": "unreachable: they store constants, CCS results, a negated constant or a loaded word; 3606 (CADDY after DOUBLE) is taken",
+  "TSTINIT 3512 as an entry": "only reached by TCR from STRKTSTI",
+  "CARD outside -4..-1 at HACK/HACKWLST": "refused at entry (OUT_OF_SCOPE): only TSTINIT and the waveform write CARD"
+ },
+ "words": [
+  {
+   "source_line": 143,
+   "bank": "20",
+   "address": "3501",
+   "raw_octal": "03512",
+   "label": "STRKTSTI",
+   "op": "TCR",
+   "operand": "TSTINIT",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 146,
+   "bank": "20",
+   "address": "3502",
+   "raw_octal": "00004",
+   "label": "STRKCHK",
+   "op": "INHINT",
+   "operand": "#",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 148,
+   "bank": "20",
+   "address": "3503",
+   "raw_octal": "31466",
+   "label": "",
+   "op": "CAE",
+   "operand": "DAPDATR1",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 149,
+   "bank": "20",
+   "address": "3504",
+   "raw_octal": "75002",
+   "label": "",
+   "op": "MASK",
+   "operand": "BIT14",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 150,
+   "bank": "20",
+   "address": "3505",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 151,
+   "bank": "20",
+   "address": "3506",
+   "raw_octal": "13511",
+   "label": "",
+   "op": "BZF",
+   "operand": "+3",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 153,
+   "bank": "20",
+   "address": "3507",
+   "raw_octal": "31413",
+   "label": "",
+   "op": "CAE",
+   "operand": "ESTROKER",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 154,
+   "bank": "20",
+   "address": "3510",
+   "raw_octal": "55574",
+   "label": "",
+   "op": "TS",
+   "operand": "STROKER",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 156,
+   "bank": "20",
+   "address": "3511",
+   "raw_octal": "15217",
+   "label": "",
+   "op": "TCF",
+   "operand": "ENDOFJOB",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 158,
+   "bank": "20",
+   "address": "3512",
+   "raw_octal": "43522",
+   "label": "TSTINIT",
+   "op": "CS",
+   "operand": "FCADDY",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 159,
+   "bank": "20",
+   "address": "3513",
+   "raw_octal": "55655",
+   "label": "",
+   "op": "TS",
+   "operand": "CADDY",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 160,
+   "bank": "20",
+   "address": "3514",
+   "raw_octal": "55656",
+   "label": "",
+   "op": "TS",
+   "operand": "N",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 162,
+   "bank": "20",
+   "address": "3515",
+   "raw_octal": "33523",
+   "label": "",
+   "op": "CAF",
+   "operand": "FREVS",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 163,
+   "bank": "20",
+   "address": "3516",
+   "raw_octal": "55660",
+   "label": "",
+   "op": "TS",
+   "operand": "REVS",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 165,
+   "bank": "20",
+   "address": "3517",
+   "raw_octal": "43524",
+   "label": "",
+   "op": "CS",
+   "operand": "FCARD",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 166,
+   "bank": "20",
+   "address": "3520",
+   "raw_octal": "55661",
+   "label": "",
+   "op": "TS",
+   "operand": "CARD",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 168,
+   "bank": "20",
+   "address": "3521",
+   "raw_octal": "00002",
+   "label": "",
+   "op": "TC",
+   "operand": "Q",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 181,
+   "bank": "20",
+   "address": "3522",
+   "raw_octal": "00012",
+   "label": "FCADDY",
+   "op": "DEC",
+   "operand": "10",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 182,
+   "bank": "20",
+   "address": "3523",
+   "raw_octal": "00003",
+   "label": "FREVS",
+   "op": "DEC",
+   "operand": "3",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 184,
+   "bank": "20",
+   "address": "3524",
+   "raw_octal": "00004",
+   "label": "FCARD",
+   "op": "DEC",
+   "operand": "4",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 186,
+   "bank": "20",
+   "address": "3525",
+   "raw_octal": "00005",
+   "label": "FCARD1",
+   "op": "DEC",
+   "operand": "5",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 188,
+   "bank": "20",
+   "address": "3526",
+   "raw_octal": "00011",
+   "label": "FCARD2",
+   "op": "DEC",
+   "operand": "9",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 189,
+   "bank": "20",
+   "address": "3527",
+   "raw_octal": "00015",
+   "label": "FCARD3",
+   "op": "DEC",
+   "operand": "13",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 191,
+   "bank": "20",
+   "address": "3530",
+   "raw_octal": "00006",
+   "label": "FCARD4",
+   "op": "DEC",
+   "operand": "6",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 192,
+   "bank": "20",
+   "address": "3531",
+   "raw_octal": "00005",
+   "label": "FCARD5",
+   "op": "DEC",
+   "operand": "5",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 193,
+   "bank": "20",
+   "address": "3532",
+   "raw_octal": "00004",
+   "label": "FCARD6",
+   "op": "DEC",
+   "operand": "4",
+   "native_label": "L3501"
+  },
+  {
+   "source_line": 201,
+   "bank": "20",
+   "address": "3533",
+   "raw_octal": "00006",
+   "label": "HACK",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L3533"
+  },
+  {
+   "source_line": 202,
+   "bank": "20",
+   "address": "3534",
+   "raw_octal": "23657",
+   "label": "",
+   "op": "QXCH",
+   "operand": "BUNKER",
+   "native_label": "L3533"
+  },
+  {
+   "source_line": 204,
+   "bank": "20",
+   "address": "3535",
+   "raw_octal": "35016",
+   "label": "",
+   "op": "CAF",
+   "operand": "20MS",
+   "native_label": "L3533"
+  },
+  {
+   "source_line": 205,
+   "bank": "20",
+   "address": "3536",
+   "raw_octal": "05245",
+   "label": "",
+   "op": "TC",
+   "operand": "WAITLIST",
+   "native_label": "L3533"
+  },
+  {
+   "source_line": 207,
+   "bank": "20",
+   "address": "3537",
+   "raw_octal": "03542 40066",
+   "label": "",
+   "op": "2CADR",
+   "operand": "HACKWLST",
+   "native_label": "L3533"
+  },
+  {
+   "source_line": 209,
+   "bank": "20",
+   "address": "3541",
+   "raw_octal": "13544",
+   "label": "",
+   "op": "TCF",
+   "operand": "+3",
+   "native_label": "L3533"
+  },
+  {
+   "source_line": 211,
+   "bank": "20",
+   "address": "3542",
+   "raw_octal": "34367",
+   "label": "HACKWLST",
+   "op": "CAF",
+   "operand": "TCTSKOVR",
+   "native_label": "L3542"
+  },
+  {
+   "source_line": 212,
+   "bank": "20",
+   "address": "3543",
+   "raw_octal": "55657",
+   "label": "",
+   "op": "TS",
+   "operand": "BUNKER",
+   "native_label": "L3542"
+  },
+  {
+   "source_line": 214,
+   "bank": "20",
+   "address": "3544",
+   "raw_octal": "31574",
+   "label": "",
+   "op": "CA",
+   "operand": "STROKER",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 215,
+   "bank": "20",
+   "address": "3545",
+   "raw_octal": "26054",
+   "label": "",
+   "op": "ADS",
+   "operand": "TVCPITCH",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 217,
+   "bank": "20",
+   "address": "3546",
+   "raw_octal": "35005",
+   "label": "",
+   "op": "CAF",
+   "operand": "BIT11",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 218,
+   "bank": "20",
+   "address": "3547",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 219,
+   "bank": "20",
+   "address": "3550",
+   "raw_octal": "05014",
+   "label": "",
+   "op": "WOR",
+   "operand": "CHAN14",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 220,
+   "bank": "20",
+   "address": "3551",
+   "raw_octal": "25655",
+   "label": "",
+   "op": "INCR",
+   "operand": "CADDY",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 222,
+   "bank": "20",
+   "address": "3552",
+   "raw_octal": "41655",
+   "label": "",
+   "op": "CS",
+   "operand": "CADDY",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 223,
+   "bank": "20",
+   "address": "3553",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 224,
+   "bank": "20",
+   "address": "3554",
+   "raw_octal": "63556",
+   "label": "",
+   "op": "BZMF",
+   "operand": "+2",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 225,
+   "bank": "20",
+   "address": "3555",
+   "raw_octal": "01657",
+   "label": "",
+   "op": "TC",
+   "operand": "BUNKER",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 227,
+   "bank": "20",
+   "address": "3556",
+   "raw_octal": "11660",
+   "label": "",
+   "op": "CCS",
+   "operand": "REVS",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 228,
+   "bank": "20",
+   "address": "3557",
+   "raw_octal": "13577",
+   "label": "",
+   "op": "TCF",
+   "operand": "REVUP",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 229,
+   "bank": "20",
+   "address": "3560",
+   "raw_octal": "13603",
+   "label": "",
+   "op": "TCF",
+   "operand": "REVUP +4",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 231,
+   "bank": "20",
+   "address": "3561",
+   "raw_octal": "25661",
+   "label": "",
+   "op": "INCR",
+   "operand": "CARD",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 232,
+   "bank": "20",
+   "address": "3562",
+   "raw_octal": "41661",
+   "label": "",
+   "op": "CS",
+   "operand": "CARD",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 233,
+   "bank": "20",
+   "address": "3563",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 234,
+   "bank": "20",
+   "address": "3564",
+   "raw_octal": "13575",
+   "label": "",
+   "op": "BZF",
+   "operand": "STROKILL",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 236,
+   "bank": "20",
+   "address": "3565",
+   "raw_octal": "51661",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CARD",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 237,
+   "bank": "20",
+   "address": "3566",
+   "raw_octal": "33530",
+   "label": "",
+   "op": "CAF",
+   "operand": "FCARD +4",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 238,
+   "bank": "20",
+   "address": "3567",
+   "raw_octal": "55660",
+   "label": "",
+   "op": "TS",
+   "operand": "REVS",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 239,
+   "bank": "20",
+   "address": "3570",
+   "raw_octal": "51661",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CARD",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 240,
+   "bank": "20",
+   "address": "3571",
+   "raw_octal": "43533",
+   "label": "",
+   "op": "CS",
+   "operand": "FCARD +7",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 241,
+   "bank": "20",
+   "address": "3572",
+   "raw_octal": "55656",
+   "label": "",
+   "op": "TS",
+   "operand": "N",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 242,
+   "bank": "20",
+   "address": "3573",
+   "raw_octal": "55655",
+   "label": "",
+   "op": "TS",
+   "operand": "CADDY",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 243,
+   "bank": "20",
+   "address": "3574",
+   "raw_octal": "01657",
+   "label": "",
+   "op": "TC",
+   "operand": "BUNKER",
+   "native_label": "L3544"
+  },
+  {
+   "source_line": 245,
+   "bank": "20",
+   "address": "3575",
+   "raw_octal": "55574",
+   "label": "STROKILL",
+   "op": "TS",
+   "operand": "STROKER",
+   "native_label": "L3575"
+  },
+  {
+   "source_line": 246,
+   "bank": "20",
+   "address": "3576",
+   "raw_octal": "01657",
+   "label": "",
+   "op": "TC",
+   "operand": "BUNKER",
+   "native_label": "L3575"
+  },
+  {
+   "source_line": 248,
+   "bank": "20",
+   "address": "3577",
+   "raw_octal": "55660",
+   "label": "REVUP",
+   "op": "TS",
+   "operand": "REVS",
+   "native_label": "L3577"
+  },
+  {
+   "source_line": 249,
+   "bank": "20",
+   "address": "3600",
+   "raw_octal": "31656",
+   "label": "",
+   "op": "CA",
+   "operand": "N",
+   "native_label": "L3577"
+  },
+  {
+   "source_line": 250,
+   "bank": "20",
+   "address": "3601",
+   "raw_octal": "60000",
+   "label": "",
+   "op": "DOUBLE",
+   "operand": "#",
+   "native_label": "L3577"
+  },
+  {
+   "source_line": 251,
+   "bank": "20",
+   "address": "3602",
+   "raw_octal": "13606",
+   "label": "",
+   "op": "TCF",
+   "operand": "+4",
+   "native_label": "L3577"
+  },
+  {
+   "source_line": 253,
+   "bank": "20",
+   "address": "3603",
+   "raw_octal": "45017",
+   "label": "+4",
+   "op": "CS",
+   "operand": "ONE",
+   "native_label": "L3603"
+  },
+  {
+   "source_line": 254,
+   "bank": "20",
+   "address": "3604",
+   "raw_octal": "55660",
+   "label": "",
+   "op": "TS",
+   "operand": "REVS",
+   "native_label": "L3603"
+  },
+  {
+   "source_line": 255,
+   "bank": "20",
+   "address": "3605",
+   "raw_octal": "31656",
+   "label": "",
+   "op": "CA",
+   "operand": "N",
+   "native_label": "L3603"
+  },
+  {
+   "source_line": 256,
+   "bank": "20",
+   "address": "3606",
+   "raw_octal": "55655",
+   "label": "",
+   "op": "TS",
+   "operand": "CADDY",
+   "native_label": "L3606"
+  },
+  {
+   "source_line": 258,
+   "bank": "20",
+   "address": "3607",
+   "raw_octal": "41574",
+   "label": "",
+   "op": "CS",
+   "operand": "STROKER",
+   "native_label": "L3606"
+  },
+  {
+   "source_line": 259,
+   "bank": "20",
+   "address": "3610",
+   "raw_octal": "55574",
+   "label": "",
+   "op": "TS",
+   "operand": "STROKER",
+   "native_label": "L3610"
+  },
+  {
+   "source_line": 260,
+   "bank": "20",
+   "address": "3611",
+   "raw_octal": "01657",
+   "label": "",
+   "op": "TC",
+   "operand": "BUNKER",
+   "native_label": "L3610"
+  }
+ ]
+}

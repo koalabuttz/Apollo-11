@@ -21,7 +21,7 @@ enum {
  rINTBIT15=0115,rADDRWD=0116,rPOLISH=0117,rFIXLOC=0120,rOVFIND=0121,rVBUF=0122,
  rBUF=0130,rMPTEMP=0135,rDOTINC=0136,rDOTRET=0137,rPOLYCNT=0140,rPOLYRET=0141,
  rMPAC=0154,rMODE=0163,rLOC=0164,rBANKSET=0165,rPUSHLOC=0166,
- rBUF2=0133,rDVSIGN=0136,rDVNORMCT=0137,rMAXDVSW=0140,rTEM1=0141
+ rBUF2=0133,rDVSIGN=0136,rDVNORMCT=0137,rMAXDVSW=0140,rMATINC=0140,rTEM1=0141
 };
 /* Work-area tags relative to FIXLOC. */
 enum {tX1=046,tX2=047,tS1=050,tLVSQUARE=042,tLV=044,tQPRET=052};
@@ -31,7 +31,9 @@ enum {tX1=046,tX2=047,tS1=050,tLVSQUARE=042,tLV=044,tQPRET=052};
 #define TWO 2u
 #define FOUR 4u
 #define FIVE 5u
+#define SIX 6u
 #define SEVEN 7u
+#define TEN 012u
 #define LOW2 3u
 #define LOW3 7u
 #define LOW7 0177u
@@ -865,21 +867,27 @@ large2:
 
 /* ---- Vector times scalar and cross product (bank 3) ------------------- */
 static const agc_word *kat(const agc_word *k,unsigned i){return k?k+i:0;}
+/* DVXSC 07430 (Comanche 07377): scalar in MPAC, vector operand at C(ADDRWD), to DANZIG. */
+static void dvxsc(apollo_overlay_state *s,const agc_word *k){
+ DCA(rMPAC);DXCH(rMPAC+3);TC(IF_(07434,07403));dmpsub(s,k);TC(IF_(07435,07404));roundsub(s,2);
+ CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+5);TC(IF_(07444,07413));dmpsub(s,kat(k,2));TC(IF_(07445,07414));roundsub(s,2);
+ CAF(TWO);ADS(rADDRWD);DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);TC(IF_(07453,07422));dmpsub(s,kat(k,4));TC(IF_(07454,07423));roundsub(s,2);
+ DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC);vmode(s);
+}
 void lmi_vxsc(apollo_overlay_state *s,const agc_word *k){
  uint8_t c=CCS(rMODE);
- if(c<2u){
-  /* DVXSC: scalar in MPAC, vector operand at C(ADDRWD). */
-  DCA(rMPAC);DXCH(rMPAC+3);TC(IF_(07434,07403));dmpsub(s,k);TC(IF_(07435,07404));roundsub(s,2);
-  CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+5);TC(IF_(07444,07413));dmpsub(s,kat(k,2));TC(IF_(07445,07414));roundsub(s,2);
-  CAF(TWO);ADS(rADDRWD);DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);TC(IF_(07453,07422));dmpsub(s,kat(k,4));TC(IF_(07454,07423));roundsub(s,2);
-  DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC);vmode(s);return;
- }
+ if(c<2u){dvxsc(s,k);return;}
  /* VVXSC (-0 enters at its TC VROUND). */
  if(c==2u){TC(IF_(07405,07354));dmpsub(s,k);}
  TC(IF_(07406,07355));roundsub(s,2);
  DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);TC(IF_(07412,07361));dmpsub(s,k);TC(IF_(07413,07362));roundsub(s,2);
  DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);TC(IF_(07417,07366));dmpsub(s,k);TC(IF_(07420,07367));roundsub(s,2);
  vrotatex(s);
+}
+/* VPROJ 07425 (Comanche 07374): TC PREDOT (DOTINC 2, DOTSUB); CS FOUR; ADS ADDRWD back to
+ * the operand; DVXSC. */
+void lmi_vproj(apollo_overlay_state *s,const agc_word *k){
+ TC(IF_(07426,07375));CAF(TWO);(void)TS(rDOTINC);dotsub(s,k);CSF(FOUR);ADS(rADDRWD);dvxsc(s,k);
 }
 void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
  DCA(rMPAC+5);DXCH(rMPAC);DXCH(rVBUF);TC(IF_(07465,07434));dmpsub(s,k);
@@ -895,6 +903,26 @@ void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
  if(!ai_bzf(s)){TC(IF_(07527,07476));overflwy(s);}
  TC(IF_(07530,07477));dmpsub(s,kat(k,4));DXCH(rVBUF+4);endvxv(s);
 }
+
+/* VXM/MXV 07342 (Comanche 07311; DOTINC in A, MATINC set): three DOTSUBs of the MPAC vector
+ * (saved in VBUF) with the rows (MXV) or columns (VXM) of the matrix at
+ * C(ADDRWD) or `k` (18 words), result in MPAC, to DANZIG. */
+static void vxmmxv(apollo_overlay_state *s,const agc_word *k){
+ unsigned base=W[rADDRWD];
+ (void)TS(rDOTINC);TC(IF_(07344,07313));mpacvbuf(s);
+ TC(IF_(07345,07314));dotsub(s,k);
+ DCA(rVBUF);DXCH(rMPAC);DXCH(rBUF2);DCA(rVBUF+2);DXCH(rMPAC+3);DCA(rVBUF+4);DXCH(rMPAC+5);
+ CA(rMATINC);ADS(rADDRWD);
+ TC(IF_(07362,07331));dotsub(s,kat(k,(unsigned)(W[rADDRWD]-base)));
+ DXCH(rVBUF);DXCH(rMPAC);DXCH(rVBUF+2);DXCH(rMPAC+3);DXCH(rVBUF+4);DXCH(rMPAC+5);
+ CA(rMATINC);ADS(rADDRWD);
+ TC(IF_(07373,07342));dotsub(s,kat(k,(unsigned)(W[rADDRWD]-base)));
+ DXCH(rBUF2);DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rVBUF+2);DXCH(rMPAC+3);danzig(s);
+}
+/* MXV 07334 (Comanche 07303) CAF TWO; TS MATINC; TCF VXM/MXV. */
+void lmi_mxv(apollo_overlay_state *s,const agc_word *k){CAF(TWO);(void)TS(rMATINC);vxmmxv(s,k);}
+/* VXM 07337 (Comanche 07306) CS TEN; TS MATINC; CAF SIX; VXM/MXV. */
+void lmi_vxm(apollo_overlay_state *s,const agc_word *k){CSF(TEN);(void)TS(rMATINC);CAF(SIX);vxmmxv(s,k);}
 
 /* ---- BOV(B), RTB and POLY ----------------------------------------------- */
 /* BPL/BMN 01,2474: CCS CYR; positive TCF BPL (TC BRANCH; + or zero GOTO),
@@ -1124,6 +1152,14 @@ static void xad2(apollo_overlay_state *s){ADS(AT(W[rINDEXLOC]+tX1));danzig(s);}
 void lmi_xad(apollo_overlay_state *s){TC(IF_(02401,02426));adrers15(s);CA(AT(W[rPOLISH]));xad2(s);}
 void lmi_xsu(apollo_overlay_state *s){TC(IF_(02412,02437));adrers15(s);CS(AT(W[rPOLISH]));xad2(s);}
 void lmi_lxa(apollo_overlay_state *s){TC(IF_(02355,02402));adrers15(s);CA(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);}
+/* AXC 01,2351: TC TAGSUB (INDEXLOC = FIXLOC, +1 for X2); CS POLISH; TC
+ * XSTORE; XSTORE INDEX INDEXLOC, TS X1; TCF DANZIG. */
+void lmi_axc(apollo_overlay_state *s){
+ CA(rFIXLOC);(void)TS(rINDEXLOC);if(CCS(rCYR)==0u)INCR(rINDEXLOC);W[2]=3;
+ CS(rPOLISH);TC(IF_(02354,02401));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);
+}
+/* LXC 01,2360 (Comanche 01,2405): TC 15ADRERS; INDEX POLISH, CS 0; XSTORE. */
+void lmi_lxc(apollo_overlay_state *s){TC(IF_(02361,02406));adrers15(s);CS(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);}
 void lmi_sxa(apollo_overlay_state *s){TC(IF_(02365,02412));adrers15(s);CA(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig(s);}
 void lmi_xchx(apollo_overlay_state *s){
  /* XCHX TC 15ADRERS; INDEX POLISH, CA 0; INDEX INDEXLOC, XCH X1;
@@ -1203,6 +1239,10 @@ void lmi_tload(apollo_overlay_state *s){
  /* TLOAD 06470 (erasable operand at ADDRWD): INDEX ADDRWD, CA 2; TS MPAC+2;
   * EXTEND; INDEX ADDRWD, DCA 0; DXCH MPAC; TMODE CAF ONE; TCF NEWMODE. */
  CA(AT(W[rADDRWD]+2u));(void)TS(rMPAC+2);DCA(AT(W[rADDRWD]));DXCH(rMPAC);CAF(ONE);newmode(s);
+}
+/* TLOAD with a fixed operand: the same path, the three words passed in k. */
+void lmi_tload_fixed(apollo_overlay_state *s,const agc_word *k){
+ CAF(k[2]);(void)TS(rMPAC+2);ai_dcaf(s,k);DXCH(rMPAC);CAF(ONE);newmode(s);
 }
 void lmi_tpmode(apollo_overlay_state *s){
  /* TPMODE (RTB_OP_CODES, bank 10): CAF ONE; TCF NEWMODE. */

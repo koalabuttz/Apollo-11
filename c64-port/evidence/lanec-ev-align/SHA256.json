@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-align",
+  "release": "evidence-lanec-ev-align",
+  "files": {
+    "lanec-ev-align-diff.json": {
+      "sha256": "8e8aaa24f5af4bbb9fd9038a385fd25b1648e6a9174c0584a1f1a4f569161bf7",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-ev-align-oracle.crc": {
+      "sha256": "0fdb5c65897c606dea254a78d82f6afd3b779f789fd3e5315a056afe2f23309f",
+      "bytes": 69674,
+      "store": "tree"
+    },
+    "lanec-ev-align-sanitize.txt": {
+      "sha256": "50dc7677d48450bddf4eae9dbedb84bb3331b01e9042ab319fa53a74d1025a00",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-ev-align-vice.txt": {
+      "sha256": "df34b1d4a93e9e5deb3861a09aa28a11dcce92b74e455d43ecf37102bbfae2b2",
+      "bytes": 58,
+      "store": "tree"
+    }
+  }
+}

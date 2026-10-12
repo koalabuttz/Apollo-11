@@ -1,0 +1,2808 @@
+{
+ "sources": {
+  "Luminary099/DAPIDLER_PROGRAM.agc": "f86c480485f55088649ec83f35d950a5e8d95233ee480edc35fb5c4e8277b7e3"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_dapidler.c",
+ "native_sha256": "98adf64554bf754c2855d60d9954ba6ec36d4c680b7a42d098b3999f3ec27c16",
+ "source_words": 284,
+ "source_lines": 279,
+ "line_map": [
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 41,
+   "address": "16,2000",
+   "source": "CHEKBITS EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 42,
+   "address": "16,2001",
+   "source": "READ CHAN31",
+   "words": [
+    "00031"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 43,
+   "address": "16,2002",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 44,
+   "address": "16,2003",
+   "source": "MASK BIT13-14",
+   "words": [
+    "74355"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 45,
+   "address": "16,2004",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 46,
+   "address": "16,2005",
+   "source": "BZF MOREIDLE",
+   "words": [
+    "12157"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 48,
+   "address": "16,2006",
+   "source": "CS IMODES33",
+   "words": [
+    "41303"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 49,
+   "address": "16,2007",
+   "source": "MASK BIT6",
+   "words": [
+    "74746"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 50,
+   "address": "16,2010",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 51,
+   "address": "16,2011",
+   "source": "TCF JUMPDSP",
+   "words": [
+    "12206"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 52,
+   "address": "16,2012",
+   "source": "CS RCSFLAGS",
+   "words": [
+    "41273"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 53,
+   "address": "16,2013",
+   "source": "MASK BIT3",
+   "words": [
+    "74751"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 54,
+   "address": "16,2014",
+   "source": "ADS RCSFLAGS",
+   "words": [
+    "27273"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 55,
+   "address": "16,2015",
+   "source": "TCF SHUTDOWN",
+   "words": [
+    "12163"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 57,
+   "address": "16,2016",
+   "source": "CHEKMORE CAF BIT10",
+   "words": [
+    "34742"
+   ],
+   "native": "chekmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 58,
+   "address": "16,2017",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "chekmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 59,
+   "address": "16,2020",
+   "source": "RAND CHAN30",
+   "words": [
+    "02030"
+   ],
+   "native": "chekmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 60,
+   "address": "16,2021",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "chekmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 61,
+   "address": "16,2022",
+   "source": "TCF MOREIDLE",
+   "words": [
+    "12157"
+   ],
+   "native": "chekmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 63,
+   "address": "16,2023",
+   "source": "RETURN",
+   "words": [
+    "00002"
+   ],
+   "native": "chekmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 68,
+   "address": "16,2024",
+   "source": "DAPIDLER LXCH BANKRUPT",
+   "words": [
+    "22016"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 69,
+   "address": "16,2025",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 70,
+   "address": "16,2026",
+   "source": "QXCH QRUPT",
+   "words": [
+    "22012"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 72,
+   "address": "16,2027",
+   "source": "CA RCSFLAGS",
+   "words": [
+    "31273"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 73,
+   "address": "16,2030",
+   "source": "MASK BIT13",
+   "words": [
+    "74737"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 74,
+   "address": "16,2031",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 75,
+   "address": "16,2032",
+   "source": "TCF CHECKUP",
+   "words": [
+    "12041"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 76,
+   "address": "16,2033",
+   "source": "CA BIT13",
+   "words": [
+    "34737"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 77,
+   "address": "16,2034",
+   "source": "ADS RCSFLAGS",
+   "words": [
+    "27273"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 78,
+   "address": "16,2035",
+   "source": "CAF PRIO27",
+   "words": [
+    "37715"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 79,
+   "address": "16,2036",
+   "source": "TC NOVAC",
+   "words": [
+    "05072"
+   ],
+   "native": "dapidler_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 81,
+   "address": "16,2037",
+   "source": "2CADR 1/ACCSET",
+   "words": [
+    "02447",
+    "40106"
+   ],
+   "native": "lm_exec_sites"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 83,
+   "address": "16,2041",
+   "source": "CHECKUP TC CHEKBITS",
+   "words": [
+    "02000"
+   ],
+   "native": "checkup_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 86,
+   "address": "16,2042",
+   "source": "CAE DAPBOOLS",
+   "words": [
+    "30111"
+   ],
+   "native": "accsokay"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 87,
+   "address": "16,2043",
+   "source": "MASK ACCSOKAY",
+   "words": [
+    "74751"
+   ],
+   "native": "accsokay"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 88,
+   "address": "16,2044",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "accsokay"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 89,
+   "address": "16,2045",
+   "source": "BZF MOREIDLE",
+   "words": [
+    "12157"
+   ],
+   "native": "accsokay"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 91,
+   "address": "16,2046",
+   "source": "STARTDAP TC IBNKCALL",
+   "words": [
+    "04674"
+   ],
+   "native": "accsokay"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 92,
+   "address": "16,2047",
+   "source": "FCADR ZATTEROR",
+   "words": [
+    "40153"
+   ],
+   "native": "lm_interbank_sites"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 93,
+   "address": "16,2050",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 94,
+   "address": "16,2051",
+   "source": "TS TJP",
+   "words": [
+    "55524"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 95,
+   "address": "16,2052",
+   "source": "TS TJU",
+   "words": [
+    "55525"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 96,
+   "address": "16,2053",
+   "source": "TS TJV",
+   "words": [
+    "55526"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 97,
+   "address": "16,2054",
+   "source": "TS OMEGAP",
+   "words": [
+    "55421"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 98,
+   "address": "16,2055",
+   "source": "TS OMEGAQ",
+   "words": [
+    "55422"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 99,
+   "address": "16,2056",
+   "source": "TS OMEGAR",
+   "words": [
+    "55423"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 100,
+   "address": "16,2057",
+   "source": "TS TRAPEDP",
+   "words": [
+    "55430"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 101,
+   "address": "16,2060",
+   "source": "TS TRAPEDQ",
+   "words": [
+    "55431"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 102,
+   "address": "16,2061",
+   "source": "TS TRAPEDR",
+   "words": [
+    "55432"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 103,
+   "address": "16,2062",
+   "source": "TS AOSQ",
+   "words": [
+    "55537"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 104,
+   "address": "16,2063",
+   "source": "TS AOSQ +1",
+   "words": [
+    "55540"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 105,
+   "address": "16,2064",
+   "source": "TS AOSR",
+   "words": [
+    "55541"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 106,
+   "address": "16,2065",
+   "source": "TS AOSR +1",
+   "words": [
+    "55542"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 107,
+   "address": "16,2066",
+   "source": "TS ALPHAQ",
+   "words": [
+    "55424"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 108,
+   "address": "16,2067",
+   "source": "TS ALPHAR",
+   "words": [
+    "55425"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 109,
+   "address": "16,2070",
+   "source": "TS NEGUQ",
+   "words": [
+    "55501"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 110,
+   "address": "16,2071",
+   "source": "TS NEGUR",
+   "words": [
+    "55503"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 111,
+   "address": "16,2072",
+   "source": "TS AOSQTERM",
+   "words": [
+    "55545"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 112,
+   "address": "16,2073",
+   "source": "TS AOSRTERM",
+   "words": [
+    "55546"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 113,
+   "address": "16,2074",
+   "source": "TS QACCDOT",
+   "words": [
+    "55510"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 114,
+   "address": "16,2075",
+   "source": "TS RACCDOT",
+   "words": [
+    "55512"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 116,
+   "address": "16,2076",
+   "source": "TS ALLOWGTS",
+   "words": [
+    "55502"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 117,
+   "address": "16,2077",
+   "source": "TS COTROLER",
+   "words": [
+    "55631"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 118,
+   "address": "16,2100",
+   "source": "TS INGTS",
+   "words": [
+    "55633"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 119,
+   "address": "16,2101",
+   "source": "TS QGIMTIMR",
+   "words": [
+    "55632"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 120,
+   "address": "16,2102",
+   "source": "TS RGIMTIMR",
+   "words": [
+    "55634"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 121,
+   "address": "16,2103",
+   "source": "TS OLDPMIN",
+   "words": [
+    "55460"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 122,
+   "address": "16,2104",
+   "source": "TS OLDQRMIN",
+   "words": [
+    "55461"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 123,
+   "address": "16,2105",
+   "source": "TS PJETCTR",
+   "words": [
+    "55767"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 124,
+   "address": "16,2106",
+   "source": "TS UJETCTR",
+   "words": [
+    "55770"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 125,
+   "address": "16,2107",
+   "source": "TS VJETCTR",
+   "words": [
+    "55771"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 127,
+   "address": "16,2110",
+   "source": "CS MANFLAG",
+   "words": [
+    "42202"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 128,
+   "address": "16,2111",
+   "source": "MASK RCSFLAGS",
+   "words": [
+    "71273"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 129,
+   "address": "16,2112",
+   "source": "TS RCSFLAGS",
+   "words": [
+    "55273"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 133,
+   "address": "16,2113",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 134,
+   "address": "16,2114",
+   "source": "DCA CDUX",
+   "words": [
+    "30033"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 135,
+   "address": "16,2115",
+   "source": "DXCH OLDXFORP",
+   "words": [
+    "53441"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 136,
+   "address": "16,2116",
+   "source": "CA CDUZ",
+   "words": [
+    "30034"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 137,
+   "address": "16,2117",
+   "source": "TS OLDZFORQ",
+   "words": [
+    "55442"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 138,
+   "address": "16,2120",
+   "source": "CS RCSFLAGS",
+   "words": [
+    "41273"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 139,
+   "address": "16,2121",
+   "source": "MASK BIT12",
+   "words": [
+    "74740"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 140,
+   "address": "16,2122",
+   "source": "ADS RCSFLAGS",
+   "words": [
+    "27273"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 141,
+   "address": "16,2123",
+   "source": "CA FOUR",
+   "words": [
+    "34751"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 142,
+   "address": "16,2124",
+   "source": "TS SKIPU",
+   "words": [
+    "55535"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 143,
+   "address": "16,2125",
+   "source": "TS SKIPV",
+   "words": [
+    "55536"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 144,
+   "address": "16,2126",
+   "source": "CA POSMAX",
+   "words": [
+    "34733"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 145,
+   "address": "16,2127",
+   "source": "TS TIME6",
+   "words": [
+    "54031"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 146,
+   "address": "16,2130",
+   "source": "TS T6NEXT",
+   "words": [
+    "55466"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 147,
+   "address": "16,2131",
+   "source": "TS T6FURTHA",
+   "words": [
+    "55470"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 148,
+   "address": "16,2132",
+   "source": "CA ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 149,
+   "address": "16,2133",
+   "source": "TS T6NEXT +1",
+   "words": [
+    "55467"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 150,
+   "address": "16,2134",
+   "source": "TS T6FURTHA +1",
+   "words": [
+    "55471"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 151,
+   "address": "16,2135",
+   "source": "TS NXT6ADR",
+   "words": [
+    "55465"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 152,
+   "address": "16,2136",
+   "source": "TS NEXTP",
+   "words": [
+    "55472"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 153,
+   "address": "16,2137",
+   "source": "TS NEXTU",
+   "words": [
+    "55473"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 154,
+   "address": "16,2140",
+   "source": "TS NEXTV",
+   "words": [
+    "55474"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 155,
+   "address": "16,2141",
+   "source": "CS TEN",
+   "words": [
+    "44363"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 156,
+   "address": "16,2142",
+   "source": "TS DAPZRUPT",
+   "words": [
+    "55757"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 157,
+   "address": "16,2143",
+   "source": "CA TWO",
+   "words": [
+    "34752"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 158,
+   "address": "16,2144",
+   "source": "TS NPTRAPS",
+   "words": [
+    "55433"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 159,
+   "address": "16,2145",
+   "source": "TS NQTRAPS",
+   "words": [
+    "55434"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 160,
+   "address": "16,2146",
+   "source": "TS NRTRAPS",
+   "words": [
+    "55435"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 161,
+   "address": "16,2147",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 162,
+   "address": "16,2150",
+   "source": "DCA PAXADIDL",
+   "words": [
+    "32205"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 163,
+   "address": "16,2151",
+   "source": "DXCH T5ADR",
+   "words": [
+    "53275"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 164,
+   "address": "16,2152",
+   "source": "SETTIME5 CAF MS100",
+   "words": [
+    "37727"
+   ],
+   "native": "settime5"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 165,
+   "address": "16,2153",
+   "source": "TS TIME5",
+   "words": [
+    "54030"
+   ],
+   "native": "settime5"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 167,
+   "address": "16,2154",
+   "source": "TCF RESUME",
+   "words": [
+    "15270"
+   ],
+   "native": "settime5"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 169,
+   "address": "16,2155",
+   "source": "IDLERADR 2CADR DAPIDLER",
+   "words": [
+    "02024",
+    "34106"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 171,
+   "address": "16,2157",
+   "source": "MOREIDLE TC IBNKCALL",
+   "words": [
+    "04674"
+   ],
+   "native": "moreidle"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 172,
+   "address": "16,2160",
+   "source": "CADR QERRCALC",
+   "words": [
+    "36626"
+   ],
+   "native": "lm_interbank_sites"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 174,
+   "address": "16,2161",
+   "source": "TC IBNKCALL",
+   "words": [
+    "04674"
+   ],
+   "native": "calcperr"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 175,
+   "address": "16,2162",
+   "source": "CADR CALCPERR",
+   "words": [
+    "35446"
+   ],
+   "native": "lm_interbank_sites"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 177,
+   "address": "16,2163",
+   "source": "SHUTDOWN EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 178,
+   "address": "16,2164",
+   "source": "DCA IDLERADR",
+   "words": [
+    "32156"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 179,
+   "address": "16,2165",
+   "source": "DXCH T5ADR",
+   "words": [
+    "53275"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 181,
+   "address": "16,2166",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 182,
+   "address": "16,2167",
+   "source": "TS NEXTP",
+   "words": [
+    "55472"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 183,
+   "address": "16,2170",
+   "source": "TS NEXTU",
+   "words": [
+    "55473"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 184,
+   "address": "16,2171",
+   "source": "TS NEXTV",
+   "words": [
+    "55474"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 185,
+   "address": "16,2172",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 186,
+   "address": "16,2173",
+   "source": "WRITE CHAN5",
+   "words": [
+    "01005"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 187,
+   "address": "16,2174",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 188,
+   "address": "16,2175",
+   "source": "WRITE CHAN6",
+   "words": [
+    "01006"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 189,
+   "address": "16,2176",
+   "source": "CS BGIM23",
+   "words": [
+    "42203"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 190,
+   "address": "16,2177",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 191,
+   "address": "16,2200",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 192,
+   "address": "16,2201",
+   "source": "TCF SETTIME5",
+   "words": [
+    "12152"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 194,
+   "address": "16,2202",
+   "source": "MANFLAG OCT 03021",
+   "words": [
+    "03021"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 195,
+   "address": "16,2203",
+   "source": "BGIM23 OCTAL 07400",
+   "words": [
+    "07400"
+   ],
+   "native": "shutdown"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 197,
+   "address": "16,2204",
+   "source": "PAXADIDL 2CADR PAXIS",
+   "words": [
+    "02213",
+    "34106"
+   ],
+   "native": "startdap"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 201,
+   "address": "16,2206",
+   "source": "JUMPDSP EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 202,
+   "address": "16,2207",
+   "source": "DCA DSPCADR",
+   "words": [
+    "32212"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 203,
+   "address": "16,2210",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 206,
+   "address": "16,2211",
+   "source": "DSPCADR 2CADR ALTDSPLY",
+   "words": [
+    "02226",
+    "40106"
+   ],
+   "native": "chekbits_body"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 247,
+   "address": "20,2226",
+   "source": "ALTDSPLY CA RCSFLAGS",
+   "words": [
+    "31273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 248,
+   "address": "20,2227",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 249,
+   "address": "20,2230",
+   "source": "CA DSPLYALT",
+   "words": [
+    "34750"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 250,
+   "address": "20,2231",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 251,
+   "address": "20,2232",
+   "source": "RXOR LCHAN",
+   "words": [
+    "06001"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 252,
+   "address": "20,2233",
+   "source": "TS RCSFLAGS",
+   "words": [
+    "55273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 254,
+   "address": "20,2234",
+   "source": "MASK DSPLYALT",
+   "words": [
+    "74750"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 255,
+   "address": "20,2235",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 256,
+   "address": "20,2236",
+   "source": "TCF NEEDLER",
+   "words": [
+    "12322"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 258,
+   "address": "20,2237",
+   "source": "CAE FLAGWRD0",
+   "words": [
+    "30074"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 260,
+   "address": "20,2240",
+   "source": "MASK NEEDLBIT",
+   "words": [
+    "74750"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 261,
+   "address": "20,2241",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 262,
+   "address": "20,2242",
+   "source": "TCF DSPLYTOT",
+   "words": [
+    "12252"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 264,
+   "address": "20,2243",
+   "source": "CS QERROR",
+   "words": [
+    "41450"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 265,
+   "address": "20,2244",
+   "source": "TS AK +1",
+   "words": [
+    "55762"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 266,
+   "address": "20,2245",
+   "source": "CS RERROR",
+   "words": [
+    "41452"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 267,
+   "address": "20,2246",
+   "source": "TS AK +2",
+   "words": [
+    "55763"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 268,
+   "address": "20,2247",
+   "source": "CS PERROR",
+   "words": [
+    "41464"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 269,
+   "address": "20,2250",
+   "source": "XCH AK",
+   "words": [
+    "57761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 271,
+   "address": "20,2251",
+   "source": "TCF RETNMORE",
+   "words": [
+    "12442"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 275,
+   "address": "20,2252",
+   "source": "DSPLYTOT EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 276,
+   "address": "20,2253",
+   "source": "QXCH ITEMP1",
+   "words": [
+    "22061"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 278,
+   "address": "20,2254",
+   "source": "CA CTHETA",
+   "words": [
+    "30322"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 279,
+   "address": "20,2255",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 280,
+   "address": "20,2256",
+   "source": "MSU CDUY",
+   "words": [
+    "20033"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 281,
+   "address": "20,2257",
+   "source": "TS AK",
+   "words": [
+    "55761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 282,
+   "address": "20,2260",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 283,
+   "address": "20,2261",
+   "source": "MP M21",
+   "words": [
+    "71415"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 284,
+   "address": "20,2262",
+   "source": "XCH AK +1",
+   "words": [
+    "57762"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 285,
+   "address": "20,2263",
+   "source": "CA CPSI",
+   "words": [
+    "30323"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 286,
+   "address": "20,2264",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 287,
+   "address": "20,2265",
+   "source": "MSU CDUZ",
+   "words": [
+    "20034"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 288,
+   "address": "20,2266",
+   "source": "TS AK +2",
+   "words": [
+    "55763"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 289,
+   "address": "20,2267",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 290,
+   "address": "20,2270",
+   "source": "MP M22",
+   "words": [
+    "71417"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 291,
+   "address": "20,2271",
+   "source": "AD AK +1",
+   "words": [
+    "61762"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 292,
+   "address": "20,2272",
+   "source": "TC OVERSUB2",
+   "words": [
+    "02435"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 293,
+   "address": "20,2273",
+   "source": "TS AK +1",
+   "words": [
+    "55762"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 297,
+   "address": "20,2274",
+   "source": "CA AK",
+   "words": [
+    "31761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 298,
+   "address": "20,2275",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 299,
+   "address": "20,2276",
+   "source": "MP M31",
+   "words": [
+    "71416"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 300,
+   "address": "20,2277",
+   "source": "XCH AK +2",
+   "words": [
+    "57763"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 302,
+   "address": "20,2300",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 303,
+   "address": "20,2301",
+   "source": "MP M32",
+   "words": [
+    "71420"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 304,
+   "address": "20,2302",
+   "source": "AD AK +2",
+   "words": [
+    "61763"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 305,
+   "address": "20,2303",
+   "source": "TC OVERSUB2",
+   "words": [
+    "02435"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 306,
+   "address": "20,2304",
+   "source": "TS AK +2",
+   "words": [
+    "55763"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 310,
+   "address": "20,2305",
+   "source": "CA AK",
+   "words": [
+    "31761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 311,
+   "address": "20,2306",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 312,
+   "address": "20,2307",
+   "source": "MP M11",
+   "words": [
+    "71414"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 313,
+   "address": "20,2310",
+   "source": "XCH AK",
+   "words": [
+    "57761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 314,
+   "address": "20,2311",
+   "source": "CAE CPHI",
+   "words": [
+    "30321"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 315,
+   "address": "20,2312",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 316,
+   "address": "20,2313",
+   "source": "MSU CDUX",
+   "words": [
+    "20032"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 322,
+   "address": "20,2314",
+   "source": "AD AK",
+   "words": [
+    "61761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 323,
+   "address": "20,2315",
+   "source": "TC OVERSUB2",
+   "words": [
+    "02435"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 324,
+   "address": "20,2316",
+   "source": "TS AK",
+   "words": [
+    "55761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 326,
+   "address": "20,2317",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 327,
+   "address": "20,2320",
+   "source": "QXCH ITEMP1",
+   "words": [
+    "22061"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 329,
+   "address": "20,2321",
+   "source": "TCF RETNMORE",
+   "words": [
+    "12442"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 396,
+   "address": "20,2322",
+   "source": "NEEDLER CA RCSFLAGS",
+   "words": [
+    "31273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 397,
+   "address": "20,2323",
+   "source": "MASK SIX",
+   "words": [
+    "76242"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 398,
+   "address": "20,2324",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 399,
+   "address": "20,2325",
+   "source": "BZF NEEDLES3",
+   "words": [
+    "12362"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 400,
+   "address": "20,2326",
+   "source": "MASK BIT3",
+   "words": [
+    "74751"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 401,
+   "address": "20,2327",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 402,
+   "address": "20,2330",
+   "source": "BZF NEEDLER2",
+   "words": [
+    "12353"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 404,
+   "address": "20,2331",
+   "source": "CS BIT6",
+   "words": [
+    "44746"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 405,
+   "address": "20,2332",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 406,
+   "address": "20,2333",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 407,
+   "address": "20,2334",
+   "source": "NEEDLE11 CS ZERO",
+   "words": [
+    "44755"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 408,
+   "address": "20,2335",
+   "source": "TS AK",
+   "words": [
+    "55761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 409,
+   "address": "20,2336",
+   "source": "TS AK1",
+   "words": [
+    "55762"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 410,
+   "address": "20,2337",
+   "source": "TS AK2",
+   "words": [
+    "55763"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 411,
+   "address": "20,2340",
+   "source": "TS EDRIVEX",
+   "words": [
+    "55764"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 412,
+   "address": "20,2341",
+   "source": "TS EDRIVEY",
+   "words": [
+    "55765"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 413,
+   "address": "20,2342",
+   "source": "TS EDRIVEZ",
+   "words": [
+    "55766"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 414,
+   "address": "20,2343",
+   "source": "TS CDUXCMD",
+   "words": [
+    "54050"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 415,
+   "address": "20,2344",
+   "source": "TS CDUYCMD",
+   "words": [
+    "54051"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 416,
+   "address": "20,2345",
+   "source": "TS CDUZCMD",
+   "words": [
+    "54052"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 417,
+   "address": "20,2346",
+   "source": "CS SIX",
+   "words": [
+    "46242"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 418,
+   "address": "20,2347",
+   "source": "MASK RCSFLAGS",
+   "words": [
+    "71273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 419,
+   "address": "20,2350",
+   "source": "AD BIT2",
+   "words": [
+    "64752"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 420,
+   "address": "20,2351",
+   "source": "TS RCSFLAGS",
+   "words": [
+    "55273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 421,
+   "address": "20,2352",
+   "source": "TCF RETNMORE",
+   "words": [
+    "12442"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 423,
+   "address": "20,2353",
+   "source": "NEEDLER2 CAF BIT6",
+   "words": [
+    "34746"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 424,
+   "address": "20,2354",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 425,
+   "address": "20,2355",
+   "source": "WOR CHAN12",
+   "words": [
+    "05012"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 426,
+   "address": "20,2356",
+   "source": "CS SIX",
+   "words": [
+    "46242"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 427,
+   "address": "20,2357",
+   "source": "MASK RCSFLAGS",
+   "words": [
+    "71273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 428,
+   "address": "20,2360",
+   "source": "TS RCSFLAGS",
+   "words": [
+    "55273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 429,
+   "address": "20,2361",
+   "source": "TCF RETNMORE",
+   "words": [
+    "12442"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 431,
+   "address": "20,2362",
+   "source": "NEEDLES3 CAF BIT6",
+   "words": [
+    "34746"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 432,
+   "address": "20,2363",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 433,
+   "address": "20,2364",
+   "source": "RAND CHAN12",
+   "words": [
+    "02012"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 435,
+   "address": "20,2365",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 436,
+   "address": "20,2366",
+   "source": "TCF NEEDLES",
+   "words": [
+    "12373"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 438,
+   "address": "20,2367",
+   "source": "CS RCSFLAGS",
+   "words": [
+    "41273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 439,
+   "address": "20,2370",
+   "source": "MASK BIT3",
+   "words": [
+    "74751"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 440,
+   "address": "20,2371",
+   "source": "ADS RCSFLAGS",
+   "words": [
+    "27273"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 441,
+   "address": "20,2372",
+   "source": "TCF RETNMORE",
+   "words": [
+    "12442"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 443,
+   "address": "20,2373",
+   "source": "NEEDLES CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 444,
+   "address": "20,2374",
+   "source": "DACLOOP TS DINDX",
+   "words": [
+    "54063"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 445,
+   "address": "20,2375",
+   "source": "CS ONETENTH",
+   "words": [
+    "42434"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 446,
+   "address": "20,2376",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 447,
+   "address": "20,2377",
+   "source": "INDEX DINDX",
+   "words": [
+    "50063"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 448,
+   "address": "20,2400",
+   "source": "MP AK",
+   "words": [
+    "71761"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 449,
+   "address": "20,2401",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 450,
+   "address": "20,2402",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 451,
+   "address": "20,2403",
+   "source": "CA DACLIMIT",
+   "words": [
+    "32432"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 452,
+   "address": "20,2404",
+   "source": "TCF +2",
+   "words": [
+    "12406"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 453,
+   "address": "20,2405",
+   "source": "CS DACLIMIT",
+   "words": [
+    "42432"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 454,
+   "address": "20,2406",
+   "source": "AD L",
+   "words": [
+    "60001"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 455,
+   "address": "20,2407",
+   "source": "TS T5TEMP",
+   "words": [
+    "54061"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 456,
+   "address": "20,2410",
+   "source": "TCF +4",
+   "words": [
+    "12414"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 457,
+   "address": "20,2411",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 458,
+   "address": "20,2412",
+   "source": "CAF DACLIMIT",
+   "words": [
+    "32432"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 459,
+   "address": "20,2413",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 460,
+   "address": "20,2414",
+   "source": "INDEX DINDX",
+   "words": [
+    "50063"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 461,
+   "address": "20,2415",
+   "source": "CS EDRIVEX",
+   "words": [
+    "41764"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 462,
+   "address": "20,2416",
+   "source": "AD L",
+   "words": [
+    "60001"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 463,
+   "address": "20,2417",
+   "source": "INDEX DINDX",
+   "words": [
+    "50063"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 464,
+   "address": "20,2420",
+   "source": "ADS CDUXCMD",
+   "words": [
+    "26050"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 465,
+   "address": "20,2421",
+   "source": "INDEX DINDX",
+   "words": [
+    "50063"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 466,
+   "address": "20,2422",
+   "source": "LXCH EDRIVEX",
+   "words": [
+    "23764"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 467,
+   "address": "20,2423",
+   "source": "CCS DINDX",
+   "words": [
+    "10063"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 468,
+   "address": "20,2424",
+   "source": "TCF DACLOOP",
+   "words": [
+    "12374"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 469,
+   "address": "20,2425",
+   "source": "CAF 13,14,15",
+   "words": [
+    "37740"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 470,
+   "address": "20,2426",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 471,
+   "address": "20,2427",
+   "source": "WOR CHAN14",
+   "words": [
+    "05014"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 472,
+   "address": "20,2430",
+   "source": "TCF RETNMORE",
+   "words": [
+    "12442"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 474,
+   "address": "20,2431",
+   "source": "DEC -384",
+   "words": [
+    "77177"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 475,
+   "address": "20,2432",
+   "source": "DACLIMIT DEC 16000",
+   "words": [
+    "37200"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 476,
+   "address": "20,2433",
+   "source": "DEC 384",
+   "words": [
+    "00600"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 478,
+   "address": "20,2434",
+   "source": "ONETENTH OCT 03146",
+   "words": [
+    "03146"
+   ],
+   "native": "altdsply"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 481,
+   "address": "20,2435",
+   "source": "OVERSUB2 TS 7",
+   "words": [
+    "54007"
+   ],
+   "native": "oversub2"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 482,
+   "address": "20,2436",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "native": "oversub2"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 483,
+   "address": "20,2437",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "native": "oversub2"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 485,
+   "address": "20,2440",
+   "source": "CS LIMITS",
+   "words": [
+    "44734"
+   ],
+   "native": "oversub2"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 486,
+   "address": "20,2441",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "native": "oversub2"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 488,
+   "address": "20,2442",
+   "source": "RETNMORE EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "retnmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 489,
+   "address": "20,2443",
+   "source": "DCA MORECADR",
+   "words": [
+    "32446"
+   ],
+   "native": "retnmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 490,
+   "address": "20,2444",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "native": "retnmore"
+  },
+  {
+   "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+   "line": 493,
+   "address": "20,2445",
+   "source": "MORECADR 2CADR CHEKMORE",
+   "words": [
+    "02016",
+    "34106"
+   ],
+   "native": "retnmore"
+  }
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every assembled word of DAPIDLER_PROGRAM has one native owner holding its erasable address (the indexed base for INDEX orders), the rope value of its fixed operand, its branch target (or composes it inline), its channel or its constant; the NOVAC 2CADR and the IBNKCALL CADRs are the compiled site operands."
+}

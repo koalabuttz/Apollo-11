@@ -277,6 +277,16 @@ static void makeplay5(apollo_overlay_state *s, lanec_io *io, enum lanec_mission 
     else if (s->words[LANEC_Z] == p->makeprio + OFF_PRIOPLAY) prioplay(s, p);
 }
 
+void lanec_di_witchone(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m, uint16_t back)
+{
+    witchone(s, io, at(m), back);
+}
+
+void lanec_di_xchnyloc(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    xchnyloc(s, io, at(m));
+}
+
 /* A caller's return run by TC Q: a TC to fixed memory outside the bank 10
  * code this suite translates (MARKEND..RELINTQ +1 and LINUSCHR). */
 static uint8_t caller_ok(const apollo_overlay_state *s, lanec_io *io, const places *p)

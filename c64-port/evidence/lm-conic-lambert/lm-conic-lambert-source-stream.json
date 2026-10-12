@@ -1,11 +1,11 @@
 {
   "archive": "build/lm-conic-lambert-reference.snapshots.bin.xz",
-  "decoded_sha256": "9e590783b4c2bbd995eb8d90194a27b61ce2d06f7c52afb92ac346b82068a820",
+  "decoded_sha256": "b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3",
   "decoded_bytes": 269090816,
   "states": 65536,
   "status_counts": {
-    "1": 60552,
-    "2": 4984
+    "1": 60534,
+    "2": 5002
   },
   "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
 }

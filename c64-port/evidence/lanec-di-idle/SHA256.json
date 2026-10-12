@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-di-idle",
+  "release": "evidence-lanec-di-idle",
+  "files": {
+    "lanec-di-idle-diff.json": {
+      "sha256": "98a4f6758acbaae92fae4505bd7f130253dc1bb0eb3b93c90a309c35fd5f4689",
+      "bytes": 234,
+      "store": "tree"
+    },
+    "lanec-di-idle-oracle.crc": {
+      "sha256": "bc0dedb0f9facabd9d7be28c5c2079cce556943ec938a86f8ddd832ef8cf25a9",
+      "bytes": 52650,
+      "store": "tree"
+    },
+    "lanec-di-idle-sanitize.txt": {
+      "sha256": "d85d856cc4e57ec353bdaf12c60e6fcfa0ec1c32872c49e4eee410ab4ca70c3e",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-di-idle-vice.txt": {
+      "sha256": "98aac266ead534485be0c564b73b1f4854e64c62118008cc395f3b6a6c265d2c",
+      "bytes": 57,
+      "store": "tree"
+    }
+  }
+}
