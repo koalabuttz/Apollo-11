@@ -28,6 +28,21 @@ BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[
                           r"cmp: (build/[^:]+): No such file|"
                           r"cannot open (build/[^:\s]+): No such file")
 LOCK = threading.Lock()
+# Recipe text that writes the path that follows it.
+WRITES = r'(>|-o|-Map[,=])\s*'
+TOOL_ARGS = {'--cc': 'MOS_CC', '--mos-cc': 'MOS_CC', '--c1541': 'C1541'}
+
+
+def tool_args(script, make_args):
+    """Toolchain options a producer script accepts, from make args or the environment."""
+    values = dict(arg.split('=', 1) for arg in make_args if '=' in arg)
+    text = script.read_text(errors='replace')
+    argv = []
+    for option, variable in TOOL_ARGS.items():
+        value = values.get(variable) or os.environ.get(variable)
+        if value and f"'{option}'" in text:
+            argv += [option, value]
+    return argv
 
 
 def group_targets(group):
@@ -77,6 +92,46 @@ def siblings(path):
     return found
 
 
+MAKE_VAR = re.compile(r'\$\(if \$\(([A-Z_]+)\),\$\(\1\),[^)]*\)|\$\(([A-Z_]+)\)')
+
+
+DERIVED = re.compile(r'^([A-Z_]+)\s*:?=\s*\$\(if \$\(filter ([^,]+),\$\(([A-Z_]+)\)\),([^,)]*),([^,)]*)\)\s*$', re.M)
+
+
+def submake_writes(line, path, text=''):
+    """The VAR=value assignments under which a recipe line writes `path`, or None.
+
+    Per-variant sub-makefile rules name outputs like
+    build/x$(if $(SELECTOR),$(SELECTOR),0).map; match those against the
+    missing file and pass the variant back as a make variable. A name built
+    from a derived variable (TREE = $(if $(filter 1,$(MISSION)),cm,lm), in
+    the makefile `text`) is passed back as the variable it derives from."""
+    for *_, out in re.findall(WRITES + r'"?(build/(?:\$\((?:[^()]|\([^()]*\))*\)|[^\s"$])+)', line):
+        pattern, names, last = '', [], 0
+        for var in MAKE_VAR.finditer(out):
+            name = var[1] or var[2]
+            pattern += re.escape(out[last:var.start()])
+            pattern += f'(?P={name})' if name in names else f'(?P<{name}>[A-Za-z0-9_]+)'
+            names.append(name)
+            last = var.end()
+        match = re.fullmatch(pattern + re.escape(out[last:]), path)
+        if match:
+            assigned = []
+            derived = {d[0]: d[1:] for d in DERIVED.findall(text)}
+            for name, value in match.groupdict().items():
+                if name in derived:
+                    when, source, then, other = derived[name]
+                    default = re.search(r'^' + source + r'\s*\?=\s*(\S+)', text, re.M)
+                    unless = default[1] if default and default[1] != when else '1' if when == '0' else '0'
+                    name, value = source, when if value == then else unless if value == other else None
+                    if value is None:
+                        break
+                assigned.append(f'{name}={value}')
+            else:
+                return assigned
+    return None
+
+
 def produce(path, target, log_dir, make_args, attempts, stack=()):
     """Recreate a build/ input that the old serial loop left behind.
 
@@ -90,7 +145,7 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
     if path in rules:
         candidates.append(('make', path))
     for name, (_, recipe) in rules.items():
-        if name != target and re.search(r'(>|-o)\s*' + re.escape(path) + r'(\s|$)', recipe):
+        if name != target and re.search(WRITES + re.escape(path) + r'(\s|$)', recipe):
             candidates.append(('make', name))
     name = pathlib.PurePosixPath(path).name
     stem = re.sub(r'(-(native|reference|sanitize|live|target|inputs))?(\.snapshots|\.json|\.trace)?(\.gz|\.xz)?$', '',
@@ -106,14 +161,26 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
     for mk in sorted((ROOT / 'tools').glob('*.mk')):
         if mk.relative_to(ROOT).as_posix() in included:
             continue
-        rule = None
-        for line in mk.read_text(errors='replace').splitlines():
+        rule, text = None, mk.read_text(errors='replace')
+        for line in text.splitlines():
             head = re.match(r'([A-Za-z0-9_.-]+)\s*:(?!=)', line)
             if head:
                 rule = head[1]
-            elif rule and line.startswith('\t') and re.search(r'>\s*' + re.escape(path) + r'(\s|$)', line):
-                candidates.append(('submake', (mk.relative_to(ROOT).as_posix(), rule)))
-                break
+            elif rule and line.startswith('\t'):
+                assigned = submake_writes(line, path, text)
+                if assigned is not None:
+                    candidates.append(('submake', (mk.relative_to(ROOT).as_posix(), rule, *assigned)))
+                    break
+    # Build and freeze scripts that write the file under its literal name
+    # (module manifests, frozen samples, PRGs linked with -Map).
+    writers = [s for s in sorted((ROOT / 'tools').glob('*.py'))
+               if s not in scripts and not s.name.endswith(('_vice_test.py', '_differential.py'))
+               and s.name not in ('ci_run.py', 'ci_affected.py', 'legacy_vice.py')
+               and re.search(r"^.*['/]" + re.escape(name) + r"['\s].*(write_(text|bytes)|'-o'|-Map)"
+                             r"|^.*(write_(text|bytes)|'-o'|-Map).*['/]" + re.escape(name) + r"['\s]",
+                             s.read_text(errors='replace'), re.M)]
+    writers.sort(key=lambda s: (not s.name.endswith('_build.py'), not s.name.startswith('freeze'), s.name))
+    candidates += [('script', s) for s in writers[:4]]
     module = target
     for prefix in ('c64-', 'sanitize-', 'test-'):
         module = module[len(prefix):] if module.startswith(prefix) else module
@@ -121,7 +188,7 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
         if rule in rules and rule != target:
             candidates.append(('make', rule))
     for kind, what in candidates:
-        if kind == 'make' and what in stack:
+        if (kind == 'make' and what in stack) or (kind == 'script' and what.name in stack):
             continue
         label = what.name if kind == 'script' else ' '.join(what) if kind == 'submake' else what
         print(f'  {target}: producing {path} via {label}', flush=True)
@@ -130,10 +197,12 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
         else:
             if kind == 'script':
                 argv = [str(ROOT / 'deps/fixture')] if 'sys.argv[1]' in what.read_text(errors='replace') else []
+                argv += tool_args(what, make_args)
                 cmd, log = [sys.executable, str(what), *argv], log_dir / (what.stem + '.log')
             else:
-                cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', what[0], what[1]]
-                log = log_dir / (pathlib.Path(what[0]).stem + '-' + what[1] + '.log')
+                cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', *what]
+                log = log_dir / '-'.join([pathlib.Path(what[0]).stem, *what[1:]]).replace('=', '')
+                log = log.with_name(log.name + '.log')
             ok = produce_with(cmd, log, label, log_dir, make_args, attempts, stack)
         if (ROOT / path).exists():
             if ok:
@@ -188,6 +257,15 @@ def run(target, log_dir, make_args, attempts, stack=()):
             tried.update(built)
             ran = [produce(path, target, log_dir, make_args, attempts, stack + (target,)) for path in built]
             if any(ran):
+                continue
+        if 'missing/outside evidence file' in proc.stdout and '--coverage' not in tried:
+            # The coverage audit names categories, not paths: fetch every
+            # release-stored file that a coverage certificate cites.
+            tried.add('--coverage')
+            with LOCK:
+                fetch = subprocess.run([sys.executable, 'tools/evidence.py', 'fetch', '--coverage'], cwd=ROOT)
+            if fetch.returncode == 0:
+                print(f'  {target}: fetched coverage evidence, rerunning', flush=True)
                 continue
         wanted = {(a or b).rstrip("'.,:)") for a, b in MISSING.findall(proc.stdout)} - tried
         tried |= wanted

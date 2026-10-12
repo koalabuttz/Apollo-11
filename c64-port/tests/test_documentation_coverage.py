@@ -31,4 +31,10 @@ class DocumentationCoverage(unittest.TestCase):
         source=next(e for e in forged['files'] if e['path']=='Comanche055/CONTRACT_AND_APPROVALS.agc')
         source['complete_native_coverage']['emitted_words']=1
         self.assertTrue(any('must claim zero algorithms and emitted words' in e for e in self.audit_errors(forged)))
+    def test_run_results_cannot_reuse_the_source_map(self):
+        forged=copy.deepcopy(self.inventory)
+        source=next(e for e in forged['files'] if e['path']=='Comanche055/MYSUBS.agc')
+        evidence=source['complete_native_coverage']['evidence']
+        evidence['c64_execution_results']=dict(evidence['source_to_native_map'])
+        self.assertTrue(any('c64_execution_results points at the source-to-native map' in e for e in self.audit_errors(forged)))
 if __name__=='__main__':unittest.main()

@@ -42,6 +42,7 @@ jobs:
       affected: ${{ steps.plan.outputs.affected }}
       host: ${{ steps.plan.outputs.host }}
       c64: ${{ steps.plan.outputs.c64 }}
+      full: ${{ steps.plan.outputs.full }}
     steps:
       - &checkout
         name: Lean checkout
@@ -77,6 +78,7 @@ jobs:
           echo "affected=$affected" >> "$GITHUB_OUTPUT"
           echo "host=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["test"] or a["sanitize"])))')" >> "$GITHUB_OUTPUT"
           echo "c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')" >> "$GITHUB_OUTPUT"
+          echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
 
   ledgers-and-coverage:
     needs: plan
@@ -157,10 +159,44 @@ jobs:
         run: |
           source deps/env.sh
           if echo "$AFFECTED" | grep -q '"full": true'; then
-            targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | sort -u)
+            targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | grep -v '^vice-legacy-' | sort -u)
           else
             targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))')
           fi
           python3 tools/ci_run.py --make-arg "MOS_CC=$MOS_CC" $targets --summary build/ci-summary.json
           make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
       - *logs
+
+  # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
+  # targets. Full runs only (nightly, dispatch): about 400 VICE minutes, so
+  # they are split across shards.
+  c64-legacy:
+    needs: plan
+    if: needs.plan.outputs.full == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Legacy VICE checks (shard ${{ matrix.shard }} of 8)
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          python3 tools/legacy_vice.py
+          targets=$(python3 tools/legacy_vice.py --shard ${{ matrix.shard }}/8)
+          python3 tools/ci_run.py -j 4 --make-arg "MOS_CC=$MOS_CC" --make-arg "VICE=$VICE" \
+            --make-arg "VICE_ROM_DIR=$VICE_ROM_DIR" --make-arg "VICE_DATA_DIR=$VICE_DATA_DIR" \
+            --make-arg "C1541=$C1541" $targets --summary build/ci-summary.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c64-legacy-${{ matrix.shard }}-logs
+          path: |
+            c64-port/build/ci-logs
+            c64-port/build/ci-summary.json
+          if-no-files-found: ignore
