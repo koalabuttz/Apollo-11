@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-di-nvdsp",
+  "release": "evidence-lanec-di-nvdsp",
+  "files": {
+    "lanec-di-nvdsp-diff.json": {
+      "sha256": "0c122c0523a23946ffe38e8e2e023f70a99e3a6088aa96809b2fe7fcd263fd2d",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-di-nvdsp-oracle.crc": {
+      "sha256": "83741ad9d60231caf4567fd4f8c7fdd07d3a49fc16425a6e0794ed5e3b7ef6fd",
+      "bytes": 43690,
+      "store": "tree"
+    },
+    "lanec-di-nvdsp-sanitize.txt": {
+      "sha256": "59d0806bc1dc43ba9fb47e18cdc4949ed8d76eaf0ed004c737edf995edfd4916",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-di-nvdsp-vice.txt": {
+      "sha256": "479f09e081b947f64f1c2643f2838b203a95a500121497b14568b11a4765fbf8",
+      "bytes": 58,
+      "store": "tree"
+    }
+  }
+}
