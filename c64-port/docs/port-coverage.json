@@ -5766,8 +5766,21 @@
       "sha256": "2ea604772395dcae064d0a23f4f475845cef39b3528d62d4adeac8e3aab9b573",
       "bytes": 4937,
       "lines": 185,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p30_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/lm_work_matrix.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P30 (35,2000-35,2026) and S30.1 (34,2000-34,2056), 70 words, the whole file, as eight basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P30 with UPFLAG UPDATFLG and TRACKFLG, the V06N33 and V06N81 displays through VNPOOH, DOWNFLAG UPDATFLG and INTPRET; CALL S30.1 and SET UPDATFLG, EXIT; PARAM30's V06N42 display, INTPRET and SETGO XDELVFLG REVN1645; and S30.1 (STQ QTEMP, TIG and LEMPREC; RTIG and VTIG with SXA,2 and SXA,1; the local-vertical frame with UNIT, VCOMP, VXV; DELVSLV through it with VXM and VSL1 into DELVSIN; ABVAL into DELVSAB; VTIG + DELVSIN and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK and STCALL HAPO to C(QTEMP)): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 34,2000-2056, 35,2013-2016 and 35,2022-2024).",
+          "verification": "docs/LM-P30.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P32-P35_P72-P75.agc",
