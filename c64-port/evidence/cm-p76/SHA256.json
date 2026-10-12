@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p76",
+  "release": "evidence-cm-p76",
+  "files": {
+    "cm-p76-1.map": {
+      "sha256": "c6838d9b199454a6ea18cd2b32dbda1a2092e64baeb9c39ddd22b32178c03837",
+      "bytes": 20483,
+      "store": "release"
+    },
+    "cm-p76-1.prg": {
+      "sha256": "7ade5140ce13d76e3b717244485ba4b2c48a267a41f6e5e773b00361be261e89",
+      "bytes": 35444,
+      "store": "release"
+    },
+    "cm-p76-2.map": {
+      "sha256": "2bf2a4df7db9944a9a9f87a1a41cc23f20472ab190f86a21a507cd1275ff35df",
+      "bytes": 24999,
+      "store": "release"
+    },
+    "cm-p76-2.prg": {
+      "sha256": "6360929bbb50d0d33daa2eb891ab40be10e9fb3ef28fcd4294f656bc7be0e746",
+      "bytes": 33137,
+      "store": "release"
+    },
+    "cm-p76-checks.log": {
+      "sha256": "241cd54fc39ba6621c51e964912945eeff1e13aa63a1805c976a187e7863fc77",
+      "bytes": 669,
+      "store": "tree"
+    },
+    "cm-p76-proof.json": {
+      "sha256": "aabc4b4a3927a4f01fdbd814dd8772a0de25226f535e3b355eb60463aa45a523",
+      "bytes": 5033,
+      "store": "tree"
+    },
+    "cm-p76-reference.snapshots.bin.xz": {
+      "sha256": "b7643c25e92c51c31af1768b595964f23bb119205519fda9239caa766432ed63",
+      "bytes": 52796716,
+      "store": "release"
+    },
+    "cm-p76-results.json": {
+      "sha256": "aa3607f2077a7921b1dadc4eb6c35dce7df88d9db187fec96f765ceaf2b28126",
+      "bytes": 1437,
+      "store": "tree"
+    },
+    "cm-p76-source-map.json": {
+      "sha256": "df6f1d50de1c6e4ca3356ea70897f393d5730513ffb8aa8e601c4438dffcf2bc",
+      "bytes": 17541,
+      "store": "tree"
+    },
+    "cm-p76-source-stream.json": {
+      "sha256": "2e2fec3d7c95a2084037811e2422445bee5b73a1421b8cd3f037acab1b3ae992",
+      "bytes": 338,
+      "store": "tree"
+    }
+  }
+}

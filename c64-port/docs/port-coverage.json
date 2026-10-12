@@ -1888,8 +1888,20 @@
       "sha256": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a",
       "bytes": 4804,
       "lines": 162,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p76_routines.c",
+            "src/agc_transfer.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of P76 (13,2071-13,2230), 96 words, as fifteen basic routines keyed by Z and twelve interpretive routines keyed at their NEWOPS, of the control-transfer ABI on the Comanche055 interpretive bodies: P76 (UPFLAG TRACKFLG), the V06N84 and V06N33 GOFLASH displays and their terminate/proceed/recycle returns, TIG and OTHPREC, COMPMAT (UNIT, VCOMP, VXV, VXM, VSL1, VAD, INTSTALL), P76SUB1 calls, VCV/RCV by VSR* 0,2, TET, CLEAR INTYPFLG, INTEGRVS, INTSTALL, RRECT/RCV/TET and MINIRECT, PHASCHNG 04024, REINTFLG, ATOPOTH, SSP QPRET OUT, INTWAKE1, OUT, ENDP76 (MARKCTR, VHFCNT, MRKBUF2, GOTOPOOH) and P76SUB1 (CLEAR MOONFLAG, SLOAD X2, BHIZ, SET MOONFLAG, RVQ): from each entry through the trampoline to the first point outside them (UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO, or a NEWOPS outside 13,2110-2174, 2202-2206, 2211 and 2222-2230).",
+          "verification": "docs/CM-P76.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
