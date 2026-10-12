@@ -23,6 +23,7 @@ imu-mode-switching-differential: build/imu-mode-switching-native
 	python3 tools/imu_mode_switching_source.py
 	python3 tools/prepare_no_imu_device_engine.py
 	python3 tools/imu_mode_switching_freeze.py
+	python3 tools/imu_mode_switching_cover.py
 	git diff --exit-code -- tests/imu_mode_switching_vectors.h tests/imu_mode_switching_c64_vectors.h
 # C64: each third of the routines (IMS_C64_PART) as its own entry, Luminary
 # round-trip and Comanche round-trip program; the other routines are
