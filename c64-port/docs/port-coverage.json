@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -3815,7 +3815,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries in their own banks (CHEKBITS, CHEKMORE, DAPIDLER, CHECKUP and the IBNKCALL returns in bank 16; ALTDSPLY in bank 20) under EBANK6 (EBANK= AOSQ / AK), with the lm_flight_io channel record (5, 6, 12, 14, 30, 31); the CHEKBITS and CHEKMORE caller returns are TC words into fixed memory; CDUXCMD-CDUZCMD are compared at the channel 14 write, before yaAGC's drive pulses",
+        "supported_domain": "entries in their own banks (CHEKBITS, CHEKMORE, DAPIDLER, CHECKUP and the IBNKCALL returns in bank 16; ALTDSPLY in bank 20) under EBANK6 (EBANK= AOSQ / AK), with the lm_flight_io channel record (5, 6, 12, 14, 30, 31); the CHEKBITS and CHEKMORE caller returns are TC words into fixed memory; CDUXCMD-CDUZCMD are compared at the channel 14 write, before yaAGC's drive pulses; entry context: the T5RUPT DAP (DAPIDLER and CHEKBITS/CHEKMORE run in the T5 interrupt); the oracle runs outside an ISR with interrupts disallowed, and DAPIDLER's RESUME ends as EXEC_UNMAPPED because the T5RUPT vector and RESUME are not registered yet (INTERRUPT_LEAD_INS work)",
         "external_continuations": [
           "NOVAC",
           "IBNKCALL (QERRCALC, CALCPERR, ZATTEROR)",
@@ -3838,7 +3838,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-dapidler/lm-dapidler-vice.log",
-            "sha256": "ab23410e93f8bcae63004a7409eae455d2d23df8e9cf8713168df908bccd6b31"
+            "sha256": "d1b1b7ec424778a244ce6beedaecda411e87acbdbbb75de61652e3aec707d123"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-dapidler/lm-dapidler-c64-cover.json",
+            "sha256": "0e48bf5b94fd6d696078669b5c68169e59cfc0d982286d01e9420495672ae439"
           }
         }
       }
@@ -5434,8 +5438,61 @@
       "sha256": "6aa46513dcd7f1b77b41cbf847ce98dcdaec5a95bf4327d0a7c2df8adf937775",
       "bytes": 21026,
       "lines": 1056,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p_axis.c",
+            "src/lm_p_axis_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-P-AXIS.md",
+          "scope": "Every path of the file: the PAXIS T5 lead-in and CHEKBITS's two returns, the CDU desired update and PAXFILT to ACDT+C12, the KALMAN filter set up as an interrupted job and SUPERJOB, BACKP (SUBDIVDE, OVERSUB, trap filters, AOS terms, gimbal timers, CHKVISFZ/TRYUORV/ALTERYZ translation, manual, detent and rate command, PURGENCY/PEGI and PJETSLEC/SELECTP jet selection) to each call that leaves the file and its eight returns, and CALCPERR, as fifteen ABI routines in bank 16."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 16 under EBANK6 (EBANK= PERROR) with the lm_flight_io record (channels 12, 13 and 31, interrupt-enable bit); a CALCPERR return in Q is a TC word into fixed memory; excluded and refused with the image unchanged: a 16,3403 entry with ROTINDEX other than 0 or 1 (it indexes MINTIMES after PJETSLEC's LXCH ROTINDEX of 0 or 1), and OLDPMIN -0 (CCS OLDPMIN would run FIREP's RAND CHAN31 word without its EXTEND; the file only stores +0, 1 and OCT14 bits there); 149 of 16,384 random cases",
+        "external_continuations": [
+          "BAILOUT",
+          "CHEKBITS (DAPIDLER_PROGRAM)",
+          "ACDT+C12 (TRIM_GIMBAL_CONTROL_SYSTEM)",
+          "NOQBRSM +1",
+          "RATELOOP (KALMAN_FILTER)",
+          "ALARM",
+          "IBNKCALL (ZATTEROR, SPSRCS, TJETLAW, JTLST)",
+          "WRITEP",
+          "WRITEP -1",
+          "CALLQERR (Q_R-AXIS_RCS_AUTOPILOT)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p-axis/lm-p-axis-source-map.json",
+            "sha256": "55464a05c9d17fdc3d5b9bd35196ffc64593dcbdfad1a9fc5e574a0233e61165"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p-axis/lm-p-axis-proof.json",
+            "sha256": "ee1950d9c87e5dbcca367cbd37f7ee1645d07cfa176215bd35fd97e04912d516"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p-axis/lm-p-axis-host.log",
+            "sha256": "4b790de91a49e23d7ad682fb1fa1c0c8b6a4806cafe83c9f0fab559d85d1f6da"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p-axis/lm-p-axis-vice.log",
+            "sha256": "e39aed9369e80458509f3bce51abac067956b38679ea8ca94c5be587180b99d5"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
+            "sha256": "6d6804cdcda7b1b68d286f3b8bcff760b8f6c6785e2505e4234c2e2347a02fea"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P12.agc",
@@ -6117,8 +6174,60 @@
       "sha256": "c79584213ddacc0bdf6ceebb0b9bfe84c85eac69c124e28c5554a5585e5cdf3f",
       "bytes": 17289,
       "lines": 860,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_q_r_axis.c",
+            "src/lm_q_r_axis_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-Q-R-AXIS.md",
+          "scope": "Every path of the file: CALLQERR (QERRCALC, the GTS/TRYGTS/RCS choice, SENSEGET X-translation, minimum impulse, CHEKSTIK/RHCACTIV rate command and ENTERUV direct rate, ATTSTEER/TJLAW, AFTERTJ/DOROTAT/DOSKIP/NOTMIN/FEEDBACK/LOOPER jet selection with SELCTSUB and FAILOOP, XTRANS) to each call that leaves the file and its twelve returns, CLOSEOUT with MAKERUPT's EDRUPT and ENDJASK to TCF NOQRSM, and QERRCALC, JTLST and ROT-TOUV as subroutine entries, as seventeen ABI routines in bank 17 (MAKERUPT in fixed-fixed)."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 17 under EBANK6 (EBANK= CDUXD) with the lm_flight_io record (channels 4, 5, 13 and 31, the interrupt-enable and interrupt-in-progress bits); a QERRCALC, JTLST or ROT-TOUV return in Q is a TC word into fixed memory; excluded and refused with the image unchanged: SKIPU or SKIPV other than 0 or 4 at CALLQERR or a return entry (INDEX AXISCTR; INDEX SKIPU; TCF +1 would jump anywhere; every producer stores 0 or 4), ALLOWGTS -0 or channel 5 negative at CALLQERR (CCS would enter READ CHAN5 or DCA GTSCADR without its EXTEND; ALLOWGTS is stored as +0 or 1, channel 5 holds eight jet bits), and a return entry with AXISCTR other than 0 or 1, NUMBERT outside 0-4 or SENSETYP above 5 (they index INDEXES, AXISDIFF, TJU and TYPEPOLY; the file's loop and TJETLAW store these values); 784 of 16,384 random cases",
+        "external_continuations": [
+          "ALARM",
+          "IBNKCALL (ZATTEROR, TIMEGMBL, SPSRCS)",
+          "TJETLAW (TJET_LAW)",
+          "WRITEP +4, +13",
+          "WRITEU -1 (= WRITEP -1 +4)",
+          "WRITEV -1 (= WRITEP -1 +13)",
+          "GTS (TRIM_GIMBAL_CONTROL_SYSTEM)",
+          "NOQRSM",
+          "the word in RETJADR when it is not one of the file's return addresses",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-source-map.json",
+            "sha256": "3306783742167e9a9f63c6847ce5f87ff41b390fe77f964f5362d071540ac770"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-proof.json",
+            "sha256": "1317552d98c566bfa1076c24b2fbf8886137ad57129a2e134384990ee818d4d8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-host.log",
+            "sha256": "8c88b84193e673fa76e4114c0f9d698c4ac1e719335d21c18c574ecbe51c27c5"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-vice.log",
+            "sha256": "686773f03963477774b422544be0882c4637da2ccb9cea2fd25069bccdedc52f"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
+            "sha256": "17d2a3acfacf9e1c2c6e65aea03b354b1c3f70ad0ba3154e933f6210b7064187"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/R30.agc",
@@ -6832,19 +6941,23 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-throttle/lm-throttle-source-map.json",
-            "sha256": "f131f9d19874f5e614fa581cc145218587046e23b0bb28709878f7944764328c"
+            "sha256": "ffce1fc5d4a44551681b956e6b5063057a72fff24d622daff1b1e9584d1aaadb"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-throttle/lm-throttle-proof.json",
-            "sha256": "9be72a6072fcccd754b85e644412ea25fd0046d287a9cfdd370910e0b0b71f1a"
+            "sha256": "1aecdf787cbe6821cc1ea0d4dbbf0aee4489bb3a17ad11d60fe6e42d6f02f53e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-throttle/lm-throttle-host.log",
-            "sha256": "2b93acc61037ee44692f10934b473410ca28e257333a6e4fabb7b727d29297ad"
+            "sha256": "ebf9d2a48640a78bcce4377d5ca15211a6cdf917037bec11299704908cfe57e0"
           },
           "c64_execution_results": {
             "path": "evidence/lm-throttle/lm-throttle-vice.log",
-            "sha256": "b3065df91b73d6a26e2aae9b917b5e4eaa948ad9f4b50f25f47eca55ad6548ee"
+            "sha256": "4d675e3ae4e92929b006905a481e7d12bd478ba32b977cd4cd824daaf7c4a8c7"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-throttle/lm-throttle-c64-cover.json",
+            "sha256": "6636f0f6a8c4fd2c2be39cf2a184ed1aeeefddb7e7cdb7db211277d36a2e1af3"
           }
         }
       }
@@ -6958,7 +7071,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entry in bank 17 under EBANK6 (EBANK= TJP) with AXISCTR -1, 0 or +1 (the P-axis and Q,R-axis callers); the return is a TC word into fixed memory",
+        "supported_domain": "entry in bank 17 under EBANK6 (EBANK= TJP) with AXISCTR -1, 0 or +1 (the P-axis and Q,R-axis callers); the return is a TC word into fixed memory; entry context: called from the T5RUPT DAP (the P axis under INHINT, the Q,R axes in the T5 interrupt); the oracle runs TJETLAW outside an ISR with interrupts disallowed",
         "external_continuations": [
           "CCSHOLE (ALARM_AND_ABORT, unreachable from admitted inputs)",
           "the caller's return"
@@ -6979,7 +7092,11 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-vice.log",
-            "sha256": "95993b7ffb0ed45812fe2fe6ab2b323301e156003f86159f6ba736bddb6295eb"
+            "sha256": "89f7d8513127b9a7dd598ef0b0d6aafa4b73275794c6498bb9e06e8a289f4527"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-tjet-law/lm-tjet-law-c64-cover.json",
+            "sha256": "39956f154f5153f5e459b8be3200caa248e232c210ad0018ff0bbb89ba26a8ba"
           }
         }
       }
@@ -6995,6 +7112,7 @@
         {
           "native_files": [
             "src/lm_trim_gimbal.c",
+            "src/lm_trim_gimbal_ca_table.inc",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
@@ -7006,7 +7124,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries in their own banks (GTS, TIMEGMBL and 21,3435 in bank 21; ACDT+C12 in bank 16) under EBANK6 (EBANK= QDIFF / NEGUQ) with the lm_flight_io channel 12 record; the ACDT+C12 return in Q and the TIMEGMBL return in RUPTREG2 are TC words into fixed memory; excluded: a GTS pass whose GTSQRT takes the zero root while ININDEX (still ACENTRAL) makes DOSHIFT's INDEX SHFTFLAG select a word other than BIT15-BIT2, where the original executes CA BIT15 + ACENTRAL/2 as an arbitrary instruction (refused with the image unchanged; 286 of 4,096 random GTS cases)",
+        "supported_domain": "entries in their own banks (GTS, TIMEGMBL and 21,3435 in bank 21; ACDT+C12 in bank 16) under EBANK6 (EBANK= QDIFF / NEGUQ) with the lm_flight_io channel 12 record; the ACDT+C12 return in Q and the TIMEGMBL return in RUPTREG2 are TC words into fixed memory; after GTSQRT's zero root DOSHIFT's INDEX SHFTFLAG (ACENTRAL/2, ININDEX being the same cell) runs CA BIT15 as CA 04735+k, reading erasable memory or bank 21 and fixed-fixed from src/lm_trim_gimbal_ca_table.inc (generated from the certified rope and checked by make test-lm-trim-gimbal); excluded and refused with the image unchanged: k outside -2525..+1570, where the indexed word is another order (it needs |AOSQ| or |AOSR| of at least 1,571 LSB, 0.151 rad/s^2 or 8.6 deg/s^2, six times the RCS jet acceleration; a physical bound, not a producer check); 173 of 16,384 random cases",
         "external_continuations": [
           "CLOSEOUT (Q_R-AXIS_RCS_AUTOPILOT)",
           "IBNKCALL (ACDT+C12)",
@@ -7016,19 +7134,23 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-source-map.json",
-            "sha256": "116e39bd6a3ce9c45b967c78663b2e7739f36c05f08f4bffd974d6a1f6db8ca1"
+            "sha256": "6967776f385d021b5fe48978f9865a107cba42fd25646f739afd1315381816a3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-proof.json",
-            "sha256": "a3147b39c6d3f5f50af23f9287d9796169039c8aa5de13b5be9285513865e4c1"
+            "sha256": "d0864d1604093f6edf7efe7e801f54c7a9b5cfc74fa3091f86c99c1039b7ef28"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-host.log",
-            "sha256": "a8b98c35d48c69eee18927ae326caceb2a9515347847e647e59118ee244598ef"
+            "sha256": "6e7980c96535cd687143b4423e49dbee50221876ebcf3e1c9933f553547f2d83"
           },
           "c64_execution_results": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-vice.log",
-            "sha256": "b5814a85a60e67124b96287aa55b1faaec444dbccb4f528d9ce4d230a6c1c80b"
+            "sha256": "ad9ef8ff0035de6d82968854c5157a956318cae9b105e7cea8d37eaa1128881d"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-c64-cover.json",
+            "sha256": "6322b7d1c46e091b0b1257c3ef3ea4369b2b6c977babcf74e27ec2adaff2744b"
           }
         }
       }

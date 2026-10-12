@@ -1,0 +1,7 @@
+---
+id: lm-q-r-axis
+title: Translate Luminary Q_R-AXIS_RCS_AUTOPILOT as transfer-ABI routines
+date: 2026-10-12T17:20Z
+lane: F
+---
+All of Luminary099 Q_R-AXIS_RCS_AUTOPILOT (bank 17 and MAKERUPT in fixed-fixed, 626 words) runs as seventeen native routines of the control-transfer ABI, with channels 4, 5, 13 and 31, the interrupt-enable bit and the interrupt-in-progress bit in `lm_flight_io` (which gains channel 4 and the interrupt-in-progress bit). The routines are CALLQERR (Q,R errors, the GTS/RCS choice, X-translation, minimum impulse, rate command, attitude hold, TJLAW and the U,V jet selection) with its twelve returns from calls that leave the file, CLOSEOUT (MAKERUPT's EDRUPT and ENDJASK), and the subroutines QERRCALC, JTLST and ROT-TOUV. 15,600 of 16,384 cases equal the original program in the outcome, channel 13, both interrupt bits and all 2,048 erasable words (strict and ASAN/UBSAN); the other 784 are refused with the image unchanged (SKIPU or SKIPV other than 0 or 4, ALLOWGTS -0 or channel 5 negative at CALLQERR, a return entry with AXISCTR, NUMBERT or SENSETYP outside the values the file stores, or a subroutine return that is not a TC into fixed memory). Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and 128 C64 rows chosen to take every entry, outcome and branch the host cases take pass in VICE. See `docs/LM-Q-R-AXIS.md`.

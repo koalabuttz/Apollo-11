@@ -1,1 +1,2 @@
-PASS: VICE PAL lm-dapidler.prg: 288 checks, 0 failures
+lm-dapidler.prg sha256 57c9f683053ac3a0735dd21c16d4491a3b94abfdab03e62a0e0f743c69c476d7, 192 C64 rows (tests/lm_dapidler_c64_vectors.h)
+PASS: VICE PAL lm-dapidler.prg: 192 checks, 0 failures

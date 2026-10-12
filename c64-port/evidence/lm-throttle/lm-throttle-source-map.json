@@ -5,7 +5,7 @@
  },
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "native_path": "src/lm_throttle.c",
- "native_sha256": "1a5c3b83d6e1fa916eb8f02b986a16713c5dc8dd2ea9eb76654467dd02c33a87",
+ "native_sha256": "566ec49287ea861e37fa29b4cfbc6913947a888c6323c1b28e967e5dbd7c537d",
  "source_words": 136,
  "source_lines": 136,
  "line_map": [

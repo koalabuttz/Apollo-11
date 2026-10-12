@@ -33,6 +33,19 @@ void lm_tg_input(apollo_overlay_state *m,lm_flight_io *io,lm_tg_case *c,uint16_t
    m->words[EB6(01507u+2u*i)]=v%16u!=8u?positive(&seed):width(&seed,w15(&seed));
    {static const agc_word negu[4]={1u,0u,077776u,077777u};m->words[EB6(01501u+2u*i)]=negu[(rnd(&seed)>>20)%4u];}}
   if(v%4u)m->words[021]=width(&seed,13u);
+  /* GTS near the switching curve with a small offset acceleration, where
+   * GTSQRT takes the zero root and DOSHIFT's INDEX SHFTFLAG indexes CA BIT15
+   * by ACENTRAL/2: the certificate review's four cases (AOSQ, EDOTQ, KQ),
+   * EDOTQ moved by up to +-3 and the signs of AOSQ and EDOTQ flipped
+   * together, with SR, QDIFF and the R axis zero. */
+  if(e==0u&&v%16u==5u){static const agc_word ex[4][3]={{077773u,2u,01750u},{077731u,0102u,05360u},{046u,077675u,05360u},
+    {077740u,0173u,01750u}};const agc_word *x=ex[(v/16u)%4u];int d=(int)((rnd(&seed)>>20)%7u)-3;agc_word aos=x[0],ed=x[1];
+   if((v/64u)%2u){aos=(agc_word)(~aos&077777u);ed=(agc_word)(~ed&077777u);}
+   {int s=(ed&040000u?-(int)(~ed&037777u):(int)ed)+d;ed=(agc_word)(s<0?077777u&~(unsigned)(-s):(unsigned)s);}
+   for(i=0;i<4u;++i)m->words[EB6(01537u+i)]=0u;
+   m->words[EB6(01537u)]=aos;m->words[EB6(01436u)]=ed;m->words[EB6(01437u)]=0u;m->words[EB6(01504u)]=x[2];m->words[EB6(01506u)]=0u;
+   for(i=0;i<4u;++i)m->words[EB6(01450u+i)]=0u;
+   m->words[021]=0u;}
  }
  /* Return: SWRETURN, fixed-fixed 06000-07777, or this entry's bank outside
   * this file. ACDT+C12 returns to Q, 21,3435 to the word in RUPTREG2. */

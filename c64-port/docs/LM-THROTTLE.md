@@ -86,7 +86,11 @@ Hashes: `evidence/lm-throttle/SHA256.json`; all four files are kept in the tree.
   address in `06000`-`06677` (below BRANCH, DMP and TPAGREE, which MASSMULT
   passes through) or a bank-31 address outside the routines. A THROTTLE +3
   cohort sets /AFC/ next to the acceleration in A,L so PIF is small (all-zero
-  MPAC for TPAGREE, and a +0 high word for `CCS PIF`). All 16,384 equal the
+  MPAC for TPAGREE, and a +0 high word for `CCS PIF`). Another THROTTLE +3
+  cohort gives A,L and MASS mixed signs (an interpretive result and a double
+  word are not sign-agreed), so TPAGREE's `TS MPAC +1` does not overflow and
+  runs `CAF ZERO`; one in four is the certificate review's case (A `00466`,
+  L `42635`, MASS `31401 50337`). All 16,384 equal the
   native run in channel 14 and all 2,048 erasable words; per-case digests are
   frozen in `tests/lm_throttle_vectors.h`. Results:
   `evidence/lm-throttle/lm-throttle-proof.json`.
@@ -96,5 +100,12 @@ Hashes: `evidence/lm-throttle/SHA256.json`; all four files are kept in the tree.
   branch are taken (counted through `LM_THR_PATH` in the test build), the
   refusals above, and runs the source map.
 - **C64 execution results.** `make vice-lm-throttle`
-  (`evidence/lm-throttle/lm-throttle-vice.log`) runs every thirty-second case
-  (512) through the trampoline in VICE against the frozen digests.
+  (`evidence/lm-throttle/lm-throttle-vice.log`, which records the PRG's
+  SHA-256) runs the 256 C64 rows through the trampoline in VICE against the
+  frozen digests: every entry, outcome and branch the host cases take.
+  `tools/lane_f_c64_rows.py` chooses the C64 rows
+  (`tests/lm_throttle_c64_vectors.h`, 256 cases). It runs every host case with
+  branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
+  until every entry, outcome and branch the host cases take is taken
+  (8 cases), then spreads the rest with a stride of 97. The per-branch
+  host and C64 counts are in `evidence/lm-throttle/lm-throttle-c64-cover.json`.
