@@ -2764,8 +2764,18 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c"
           ],
-          "scope": "The Kepler subroutine, 338 words of bank 12 (KEPLERN 02023 through DELTIME 02535, CHECKCTR 02644-02652): from KEPPREP's GOTO KEPLERN entry frontier to the NEWOPS frontier of each of KEPPREP's three callers, as 23 native steps between original NEWOPS frontiers. ITERATOR, NEWSTATE/LAMENTER, TIMETHET, TIMERAD, APSIDES, LAMBERT, GETX and the bank-4 constants are not yet translated.",
+          "scope": "The Kepler subroutine, 338 words of bank 12 (KEPLERN 02023 through DELTIME 02535, CHECKCTR 02644-02652): from KEPPREP's GOTO KEPLERN entry frontier to the NEWOPS frontier of each of KEPPREP's three callers, as 23 native steps between original NEWOPS frontiers. ITERATOR, TIMERAD, APSIDES, LAMBERT and the bank-4 constants are not yet translated (TIMETHET is the next entry).",
           "verification": "docs/LM-CONIC-KEPLER.md"
+        },
+        {
+          "native_files": [
+            "src/lm_conic_timethet.c",
+            "src/lm_conic_kepler.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "The time-theta subroutine, 290 words: NEWSTATE/LAMENTER, TIMETHET, COMMNOUT, COGAOVFL, GETX with its WLOOP iteration, POLY series, INVRSEQN, 1/WLOOP and TRUE360X paths, XCOMMON and INFINITY (bank 12 02653-03211), ABTCONIC (12,3742-3744) and PARAM/GEOM (bank 4 03064-03163), reusing the Kepler entry's DELTIME: from the NEWOPS entry frontier after each of TIMETHET's six callers' CALL to the caller's NEWOPS frontier at C(RTNTT) or ABTCONIC's POODOO frontier, as 27 native steps between original NEWOPS frontiers. HAVENORM is compiled but unreachable from TIMETHET (PARAM clears NORMSW).",
+          "verification": "docs/LM-CONIC-TIMETHET.md"
         }
       ]
     },

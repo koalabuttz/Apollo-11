@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-conic-timethet",
+  "release": "evidence-lm-conic-timethet",
+  "files": {
+    "lm-conic-timethet-1.map": {
+      "sha256": "c25f18544df63cbf3074cd94836d044acf9c94c3dd7d3e7b84df53a96f47bf80",
+      "bytes": 32827,
+      "store": "release"
+    },
+    "lm-conic-timethet-1.prg": {
+      "sha256": "16d87e847c70c1eae1e6fef6864c08fe2eea4174e105e5f466bfef6e7f06df7f",
+      "bytes": 46613,
+      "store": "release"
+    },
+    "lm-conic-timethet-2.map": {
+      "sha256": "f840473d80971574b528f296661c0c250d82773317225c0ebec3a96e3513dfe7",
+      "bytes": 24139,
+      "store": "release"
+    },
+    "lm-conic-timethet-2.prg": {
+      "sha256": "d263bfddc83a3743250315b8307380df51506369ee0996ab4e569910137a5102",
+      "bytes": 38774,
+      "store": "release"
+    },
+    "lm-conic-timethet-3.map": {
+      "sha256": "338fb13f0df66e9594bac9c921ca5d1118f0a4f1e761267b84d5550f97cfa0ec",
+      "bytes": 25472,
+      "store": "release"
+    },
+    "lm-conic-timethet-3.prg": {
+      "sha256": "7a304829fa71c7006b8e469eb7dfe010427ed4e6bf7b6afd7387b75283d0412d",
+      "bytes": 41362,
+      "store": "release"
+    },
+    "lm-conic-timethet-4.map": {
+      "sha256": "8f019175b3abe49e111751d451c86ac986912c3d383100953c7d84efd63ef089",
+      "bytes": 28108,
+      "store": "release"
+    },
+    "lm-conic-timethet-4.prg": {
+      "sha256": "8dd228799105566bed2c17e4ac101a88062dc3520d63d3a2e0c64bf17cea76d8",
+      "bytes": 45221,
+      "store": "release"
+    },
+    "lm-conic-timethet-checks.log": {
+      "sha256": "f0e25b0017b5934211f89275e5bb4b5e307d8294b8a28c959d4d5e14c62e83ae",
+      "bytes": 857,
+      "store": "tree"
+    },
+    "lm-conic-timethet-phase-steps.json": {
+      "sha256": "f0e6a8411d2b7cc38b50a02e0143e067561f534e4d81e3b2f26c19c404b2d6b7",
+      "bytes": 1120,
+      "store": "tree"
+    },
+    "lm-conic-timethet-reference.snapshots.bin.xz": {
+      "sha256": "519c0dd73750023449500ef61573a4a9627b5064f3df1e111ff250214ad5ed1e",
+      "bytes": 33285024,
+      "store": "release"
+    },
+    "lm-conic-timethet-results.json": {
+      "sha256": "7045784ca615bfb74921033cf85664a259f48130703fa6ebb3b53393b27c0214",
+      "bytes": 2932,
+      "store": "tree"
+    },
+    "lm-conic-timethet-source-map.json": {
+      "sha256": "fae4b0831d14a11954c2bd3d79524ed0da6e6f9081dd7242b105ee6ca35754b2",
+      "bytes": 39898,
+      "store": "tree"
+    },
+    "lm-conic-timethet-source-stream.json": {
+      "sha256": "93742ce8c199c230ee933df362715538a35e73776a4bdc38d6d86d1d5886b335",
+      "bytes": 370,
+      "store": "tree"
+    },
+    "lm-conic-timethet-target-states.json": {
+      "sha256": "cd8dc939c9891e5cbc55b59fd9804810dd8b77ff058e0b391cfc7016329c5aa6",
+      "bytes": 247,
+      "store": "tree"
+    }
+  }
+}

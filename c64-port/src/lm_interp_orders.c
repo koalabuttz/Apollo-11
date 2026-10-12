@@ -23,7 +23,7 @@ enum {
  rBUF2=0133,rDVSIGN=0136,rDVNORMCT=0137,rMAXDVSW=0140,rTEM1=0141
 };
 /* Work-area tags relative to FIXLOC. */
-enum {tX1=046,tX2=047,tLVSQUARE=042,tLV=044,tQPRET=052};
+enum {tX1=046,tX2=047,tS1=050,tLVSQUARE=042,tLV=044,tQPRET=052};
 /* Fixed constants (FIXED_FIXED_CONSTANT_POOL and INTERPRETER). */
 #define ZERO 0u
 #define ONE 1u
@@ -992,6 +992,19 @@ void lmi_xad(apollo_overlay_state *s){TC(02401);adrers15(s);CA(AT(W[rPOLISH]));x
 void lmi_xsu(apollo_overlay_state *s){TC(02412);adrers15(s);CS(AT(W[rPOLISH]));xad2(s);}
 void lmi_lxa(apollo_overlay_state *s){TC(02355);adrers15(s);CA(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);}
 void lmi_sxa(apollo_overlay_state *s){TC(02365);adrers15(s);CA(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig(s);}
+void lmi_ita(apollo_overlay_state *s){
+ /* CALL/ITA CCS CYR (negative: ITA/STQ); TC 15ADRERS; INDEX FIXLOC,
+  * CA QPRET; MSTORE1 INDEX POLISH, TS 0; TCF DANZIG. */
+ (void)CCS(rCYR);TC(02513);adrers15(s);CA(AT(W[rFIXLOC]+tQPRET));(void)TS(AT(W[rPOLISH]));danzig(s);
+}
+uint8_t lmi_tix(apollo_overlay_state *s){
+ /* TIX 01,2415: TC TAGSUB; INDEX INDEXLOC, CS S1; INDEX INDEXLOC, AD X1;
+  * EXTEND, BZMF DANZIG; DOTIXBR INDEX INDEXLOC, XCH X1; TCF GOTO 06646. */
+ TC(02416);CA(rFIXLOC);(void)TS(rINDEXLOC);if(CCS(rCYR)==0u)INCR(rINDEXLOC);RETQ();
+ CS(AT(W[rINDEXLOC]+tS1));AD(AT(W[rINDEXLOC]+tX1));
+ if(ai_bzmf(s)){danzig(s);return 0;}
+ XCH(AT(W[rINDEXLOC]+tX1));W[5]=06646;return 1;
+}
 uint8_t lmi_bhiz(apollo_overlay_state *s){
  /* BHIZ 01,2452: CCS MPAC; + and - DANZIG, +0 and -0 GOTO 06646. */
  uint8_t c=CCS(rMPAC);
@@ -1047,6 +1060,11 @@ void lmi_intpret(apollo_overlay_state *s,p66_bias_io *io){
  /* TC INTPRET (Q = the word after the TC): RELINT; QXCH LOC; CA BBANK;
   * TS BANKSET; MASK BIT15; TS INTBIT15; TS EDOP; TCF NEWOPS. */
  io->interrupt_enabled=1;ai_qxch(s,rLOC);CA(rBB);(void)TS(rBANKSET);MASKF(BIT15);(void)TS(rINTBIT15);(void)TS(rEDOP);W[5]=06070;
+}
+void lmi_tload(apollo_overlay_state *s){
+ /* TLOAD 06470 (erasable operand at ADDRWD): INDEX ADDRWD, CA 2; TS MPAC+2;
+  * EXTEND; INDEX ADDRWD, DCA 0; DXCH MPAC; TMODE CAF ONE; TCF NEWMODE. */
+ CA(AT(W[rADDRWD]+2u));(void)TS(rMPAC+2);DCA(AT(W[rADDRWD]));DXCH(rMPAC);CAF(ONE);newmode(s);
 }
 void lmi_tpmode(apollo_overlay_state *s){
  /* TPMODE (RTB_OP_CODES, bank 10): CAF ONE; TCF NEWMODE. */

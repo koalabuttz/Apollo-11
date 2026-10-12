@@ -1,0 +1,11 @@
+{
+  "archive": "build/lm-conic-timethet-reference.snapshots.bin.xz",
+  "decoded_sha256": "f5558c19dc9a15d64b33da20fc6d78b0f3c3ae09a642609dcc88bc96df411b16",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "1": 50152,
+    "3": 15384
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

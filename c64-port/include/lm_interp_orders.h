@@ -87,6 +87,12 @@ void lmi_xad(apollo_overlay_state *);
 void lmi_xsu(apollo_overlay_state *);
 void lmi_lxa(apollo_overlay_state *);
 void lmi_sxa(apollo_overlay_state *);
+/* ITA (STQ) 01,2507 with CYR negative: QPRET into the 15ADRERS address,
+ * then DANZIG. */
+void lmi_ita(apollo_overlay_state *);
+/* TIX 01,2415 (Z there, POLISH the branch CADR): 1 when it branches
+ * (decremented index stored, Z = GOTO 06646), 0 at DANZIG. */
+uint8_t lmi_tix(apollo_overlay_state *);
 /* BHIZ: 1 = GOTO 06646 (MPAC high word zero), 0 = DANZIG. */
 uint8_t lmi_bhiz(apollo_overlay_state *);
 /* CALL (POLISH = the fixed CADR): QPRET set, ends at GOTO 06646. */
@@ -99,6 +105,8 @@ void lmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
 /* BZE/GOTO without the transfer: 1 at GOTO 06646 (BZE zero, or GOTO),
  * 0 at DANZIG. */
 uint8_t lmi_bzegoto(apollo_overlay_state *);
+/* TLOAD 06470 with an erasable operand at C(ADDRWD), to DANZIG (TP mode). */
+void lmi_tload(apollo_overlay_state *);
 /* EXIT to the basic word after the order (Z = LOC+1, Q 06747); TC INTPRET
  * from basic code (Q = the next word) to NEWOPS; TPMODE (RTB routine). */
 void lmi_exit(apollo_overlay_state *);
