@@ -1769,3 +1769,15 @@ Native C for PINBRNCH through V50PASTE of DISPLAY_INTERFACE_ROUTINES in both Lum
 ## Draft the DISPLAY_INTERFACE_ROUTINES full-file certificates
 
 Pending complete-coverage certificates for Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES.agc, for the auditor's review. `tools/lanec/wholefile.py` assigns every assembled word (670 LM, 667 CM) to one of the six Lane C display milestones or to the file's constant table, and shows that every instruction word (612 LM, 609 CM) is executed by the unchanged original program in Virtual AGC under cases the native code matches. The evidence also covers 17,632 oracle cases (strict and ASan/UBSan) and fresh VICE runs of all six frozen subsets. See `docs/LANEC-DI-CERT.md`.
+
+## Translate the short EXTENDED_VERBS verb bodies
+
+Native C for the bank 43 verb bodies of EXTENDED_VERBS that set flags, start jobs and tasks, or check a condition and hand over (Luminary099 V47-V49, V55-V58, V61, V62, V64-V67, V74-V77, V80-V83, V85, V89-V93, V95 and V96; the matching Comanche055 bodies with its CHKPOOH, EXDAPOFF, STABLISH, GOTOR21/23 and V52 code), plus SHOWSUM, translated block by block. 6,368 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 245 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-SHORT.md`.
+
+## Translate the EXTENDED_VERBS alignment and radar-designate bodies
+
+Native C for the IMU zero, coarse and fine align, attitude error meter, rendezvous radar designate and zero, landing radar position and optics coarse-align verb bodies of EXTENDED_VERBS in Luminary099 (bank 43 and AURLOKON in bank 23) and Comanche055 (bank 43), with OP/INERT, RDRUSECK and CKLFTBTS, translated block by block. 5,056 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 241 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-ALIGN.md`.
+
+## Translate the Luminary radar test verbs (R04, R77)
+
+Native C for R77 through R77END of Luminary099 EXTENDED_VERBS (V63 R04 radar sampling and display, V78 R77 LR spurious-return test, V79 R77END), translated block by block. 2,448 complete states are identical to the unchanged original program in Virtual AGC, in strict and ASan/UBSan builds, and 223 of them (every entry) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-RADAR.md`.
