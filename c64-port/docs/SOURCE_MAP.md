@@ -1805,9 +1805,21 @@ Native C for PINBRNCH through V50PASTE of DISPLAY_INTERFACE_ROUTINES in both Lum
 
 All of Luminary099 TRIM_GIMBAL_CONTROL_SYSTEM (banks 21 and 16, 388 words) runs as four native routines of the control-transfer ABI, with channel 12 in `lm_flight_io`. The routines are GTS (the trim gimbal control law, with GTSQRT and ROOTCYCL compiled inline), ACDT+C12, TIMEGMBL and its IBNKCALL return. 16,098 of 16,384 cases equal the original program in the outcome, channel 12 and all 2,048 erasable words (strict and ASAN/UBSAN). The remaining 286 GTS cases take the zero root with an INDEX SHFTFLAG outside BIT15-BIT2, where the original executes an arbitrary instruction; GTS refuses them with the image unchanged. Each case runs from its entry to CLOSEOUT, the caller's return, or ACDT+C12 reached through the native IBNKCALL. Every routine and reachable branch is taken, every assembled word maps to its native owner after a fresh yaYUL assembly, and every thirty-second case (512) passes in VICE. See `docs/LM-TRIM-GIMBAL.md`.
 
+## Translate Comanche RCS-CSM_DIGITAL_AUTOPILOT (CM RCS DAP T5 cycle, needles, hand controller)
+
+Native C for all of Comanche055 RCS-CSM_DIGITAL_AUTOPILOT (bank 21 `2105`-`3247`, 611 words). This covers the RCSATT T5 cycle and its REDORCS restart, from initialisation through the hand controller, manual rates and free drift. It also covers the subroutines other files call: NEEDLER, NEEDLE11, NEEDLES, ZEROJET and STICKCHK. Every entry runs to RESUME, IBNKCALL, NOVAC, the MYSUBS calls, the AUTOMATIC_MANEUVERS transfers or the caller's return. The final image and channels 12/13/14 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN. All 611 words, 87 fixed constants, the 2CADRs, the INDEX tables, the TC Q dispatch and the frontier returns are checked against the listing and the rope. A C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-RCS-DAP.md`.
+
+## Translate Comanche AUTOMATIC_MANEUVERS (CM RCS attitude hold, rate damping and phase-plane jet timing)
+
+Native C for all of Comanche055 AUTOMATIC_MANEUVERS (bank 21 `3250`-`3764`, 333 words). This covers attitude hold with its biases, the free and rate-damping modes, the three-axis phase-plane jet-time logic and TAU limits, and the T6PROG hand-off to JETSLECT. Every entry runs to RESUME, REINIT, T6PROGM, STICKCHK, SMALLMP or the next file. The final image equals unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN. All 333 words, 19 fixed constants, the double-word, 2CADR and INDEX tables, and the TC returns are checked against the listing and the rope. A C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-AUTO-MAN.md`.
+
 ## Draft the DISPLAY_INTERFACE_ROUTINES full-file certificates
 
 Pending complete-coverage certificates for Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES.agc, for the auditor's review. `tools/lanec/wholefile.py` assigns every assembled word (670 LM, 667 CM) to one of the six Lane C display milestones or to the file's constant table, and shows that every instruction word (612 LM, 609 CM) is executed by the unchanged original program in Virtual AGC under cases the native code matches. The evidence also covers 17,632 oracle cases (strict and ASan/UBSan) and fresh VICE runs of all six frozen subsets. See `docs/LANEC-DI-CERT.md`.
+
+## Translate Comanche JET_SELECTION_LOGIC (CM RCS jet selection T5 task and T6 jet sequencing)
+
+Native C for all of Comanche055 JET_SELECTION_LOGIC (bank 17 `2552`-`3736`, 629 words): the JETSLECT T5 task that picks the pitch, yaw and roll jets from the translation command, rotation times and jet failures, sizes the blasts and sets up T6, and the T6START task that fires the jet words through channels 5 and 6. Both entries run to RESUME. The final image and channels 5/6/13 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN. All 629 words, 97 fixed constants, RCS2CADR, the seven INDEX tables and the REPLACER returns are checked against the listing and the rope. A C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-JET-SELECT.md`.
 
 ## Translate the short EXTENDED_VERBS verb bodies
 
@@ -1820,3 +1832,7 @@ Native C for the IMU zero, coarse and fine align, attitude error meter, rendezvo
 ## Translate the Luminary radar test verbs (R04, R77)
 
 Native C for R77 through R77END of Luminary099 EXTENDED_VERBS (V63 R04 radar sampling and display, V78 R77 LR spurious-return test, V79 R77END), translated block by block. 2,448 complete states are identical to the unchanged original program in Virtual AGC, in strict and ASan/UBSan builds, and 223 of them (every entry) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-RADAR.md`.
+
+## Translate Comanche CM_ENTRY_DIGITAL_AUTOPILOT (CM entry DAP: body rates, attitude, dead zones, roll DAP)
+
+Native C for all of Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT (bank 15 `2434`-`3754` and bank 20 `3612`-`3737`, 807 words). This covers the READGYMB/BODYRATE CDU and body-rate task and the ATTRATES T5 attitude update, with the pitch/yaw dead zones and the exo-atmospheric DAP. It also covers the CM/RCS roll DAP and its JETCALL jet timing, the FDAI and telemetry dump, and the CM/DAPON/CM/DAPIC start-up. Every entry runs to its waitlist, executive, single-precision or restart frontier. The final image and channels 5/6 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN. All 807 words, 108 fixed constants, the 2CADRs, the INDEX tables, the TC Q dispatch and the frontier returns are checked against the listing and the rope. A C64 diagnostic passes 136 frozen oracle rows in VICE. See `docs/CM-ENTRY-DAP.md`.
