@@ -21,6 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import evidence  # noqa: E402
 import ledgers  # noqa: E402
+import port_coverage  # noqa: E402
 
 FROZEN = [
     (re.compile(r'^(README\.md|docs/(HANDOFF|ROADMAP|VERIFICATION|SOURCE_MAP)\.md)$'),
@@ -38,6 +39,24 @@ def changes(base):
     for line in out.splitlines():
         status, path = line.split('\t', 1)
         yield status, path[len('c64-port/'):] if path.startswith('c64-port/') else path
+
+
+def certificates(text):
+    entries = json.loads(text).get('files', []) if text else []
+    return {(entry['path'], key): entry[key] for entry in entries
+            for key in ('pending_complete_certificate', 'complete_native_coverage') if entry.get(key)}
+
+
+def changed_certificates(base, errors):
+    """A certificate a change adds or edits must cite separate comparison and
+    run records, drafted or complete, so lanes find out here, not at review."""
+    inventory = 'docs/port-coverage.json'
+    before = subprocess.run(['git', 'show', f'{base}:c64-port/{inventory}'], cwd=ROOT,
+                            capture_output=True, text=True).stdout
+    old = certificates(before)
+    for key, certificate in certificates((ROOT / inventory).read_text()).items():
+        if old.get(key) != certificate:
+            port_coverage.runs_distinct(certificate.get('evidence'), errors, f'{key[0]} ({key[1]})')
 
 
 def main():
@@ -69,6 +88,7 @@ def main():
             if tracked and path.name not in (evidence.MANIFEST, '.gitignore') and \
                     records.get(path.name, {}).get('store') != 'tree':
                 errors.append(f'evidence/{milestone}/{path.name}: committed but not a tree-stored manifest entry')
+    changed_certificates(args.base, errors)
     try:
         ledgers.load()
     except ValueError as error:

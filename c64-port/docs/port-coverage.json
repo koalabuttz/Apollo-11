@@ -2698,8 +2698,49 @@
       "sha256": "db23079b9f12369d550b9658a5fb9a9adf52b798735c17e408cd36ff1aed5594",
       "bytes": 7926,
       "lines": 276,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tvc_exec.c"
+          ],
+          "scope": "All 144 words from each of the 12 original continuation points (task entry, WAITLIST/IBNKCALL returns, TVCRESTARTS re-entries) to the next WAITLIST/IBNKCALL/TASKOVER transfer, every overflow detour and the TCF +0 spin. ABI registration and trampoline round trip pending (see docs).",
+          "verification": "docs/CM-TVC-EXEC.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; Z one of the 12 original continuation points, FB 16, EB E6, coherent BB; any raw A/L/Q and erasable contents; channel 11 from the device record.",
+          "frontiers": "WAITLIST 5245 (Q 2726/2744), IBNKCALL 4740 (Q 2747/2772/2774), TASKOVER 5324; VCNTR negative spins (NO_EXIT).",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Comanche WAITLIST/TASKOVER and INTER-BANK routines (Lane A) and their site operands",
+          "NEEDLER, FIXCW (cm-tvc-massprop), S40.15, ROLLDAP callees",
+          "ABI registration with trampoline round trip (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
+            "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
+            "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-checks.log",
+            "sha256": "b2e6df7ca44b1872cdb1fa706b2c8b6348e2d84e1c3cac3d6a7b462190301e39"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-results.json",
+            "sha256": "452140fe1654ddc1d3ca2003c4a9cce6592a22caad0255c45e8dcde664b70389"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCINITIALIZE.agc",
@@ -5215,19 +5256,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-RESTART-SELECT.md",
-            "sha256": "0de08ab73e42ab88907cf2e877539c67a6bb08961247feaf52de477c81cdc1d6"
+            "sha256": "49cd96091f2ee874bf26ddb84ad80d9e837dea392bb0554d93ac47559f28cb23"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-restart-select/lm-restart-select-proof.json",
-            "sha256": "0830d0d0a7f36d551410376713b7b900d8693a48a97e944712fdec4aaa8fb63b"
+            "sha256": "fac3ee8b77349fae6c1dfe650e1364e0421721c0733b9341b3116727a2e1ce4a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-restart-select/lm-restart-select-host.log",
-            "sha256": "28bee5e2f45e226689f126d5a37bddb6f70ff6e90528efdf940161c6db7ae730"
+            "sha256": "d3e792de55b3491b659a5f68ff456c39c7a6d0fe2d40f1bdf18da88bb6fab683"
           },
           "c64_execution_results": {
             "path": "evidence/lm-restart-select/lm-restart-select-vice.log",
-            "sha256": "d70ff62cee7186bcae659a371de67740a05b497a9250af0bd9b3d5d393b322d2"
+            "sha256": "769c74cf8fa3919394c7a8cb9ebd416577a0772e76ffc2fc8742fae8486be4de"
           }
         }
       }
@@ -5271,19 +5312,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-RESTART-SELECT.md",
-            "sha256": "0de08ab73e42ab88907cf2e877539c67a6bb08961247feaf52de477c81cdc1d6"
+            "sha256": "49cd96091f2ee874bf26ddb84ad80d9e837dea392bb0554d93ac47559f28cb23"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-restart-select/lm-restart-select-proof.json",
-            "sha256": "0830d0d0a7f36d551410376713b7b900d8693a48a97e944712fdec4aaa8fb63b"
+            "sha256": "fac3ee8b77349fae6c1dfe650e1364e0421721c0733b9341b3116727a2e1ce4a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-restart-select/lm-restart-select-host.log",
-            "sha256": "28bee5e2f45e226689f126d5a37bddb6f70ff6e90528efdf940161c6db7ae730"
+            "sha256": "d3e792de55b3491b659a5f68ff456c39c7a6d0fe2d40f1bdf18da88bb6fab683"
           },
           "c64_execution_results": {
             "path": "evidence/lm-restart-select/lm-restart-select-vice.log",
-            "sha256": "d70ff62cee7186bcae659a371de67740a05b497a9250af0bd9b3d5d393b322d2"
+            "sha256": "769c74cf8fa3919394c7a8cb9ebd416577a0772e76ffc2fc8742fae8486be4de"
           },
           "independent_review": {
             "path": "docs/audits/lm-restart-tables.md",

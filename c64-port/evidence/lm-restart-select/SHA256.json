@@ -4,13 +4,13 @@
   "release": "evidence-lm-restart-select",
   "files": {
     "lm-restart-select-host.log": {
-      "sha256": "28bee5e2f45e226689f126d5a37bddb6f70ff6e90528efdf940161c6db7ae730",
-      "bytes": 2102,
+      "sha256": "d3e792de55b3491b659a5f68ff456c39c7a6d0fe2d40f1bdf18da88bb6fab683",
+      "bytes": 2099,
       "store": "release"
     },
     "lm-restart-select-proof.json": {
-      "sha256": "0830d0d0a7f36d551410376713b7b900d8693a48a97e944712fdec4aaa8fb63b",
-      "bytes": 1389,
+      "sha256": "fac3ee8b77349fae6c1dfe650e1364e0421721c0733b9341b3116727a2e1ce4a",
+      "bytes": 1832,
       "store": "tree"
     },
     "lm-restart-select-table.json": {
@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "lm-restart-select-vice.log": {
-      "sha256": "d70ff62cee7186bcae659a371de67740a05b497a9250af0bd9b3d5d393b322d2",
-      "bytes": 506,
+      "sha256": "769c74cf8fa3919394c7a8cb9ebd416577a0772e76ffc2fc8742fae8486be4de",
+      "bytes": 640,
       "store": "release"
     }
   }

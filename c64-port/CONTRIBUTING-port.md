@@ -110,8 +110,12 @@ with the document that says so; anything else that fails is a failure to fix.
 A file flips to `complete` in `docs/port-coverage.json` only with all four
 evidence categories (source-to-native map, independent assembly comparison,
 host and sanitizer results, C64 execution results) and after the auditor's
-review. The two results categories must be records of actual runs:
-`port_coverage.py` rejects a certificate whose host or C64 results point at
-its source-to-native map. Interfaces have owners: Lane A owns the interpreter and executive ABI,
+review. The independent assembly comparison and the two results categories
+must each be their own record (a comparison, a host run, a C64 run), never the
+source-to-native map cited again: `port_coverage.py` rejects such a complete
+certificate, and `ci_guard.py` rejects a drafted or complete certificate a PR
+adds or edits that does. Every entry the file's code is reached at from another
+bank (BANKCALL, IBNKCALL, POSTJUMP and the like) must be registered as an
+`agc_transfer` routine, or the auditor sends the certificate back. Interfaces have owners: Lane A owns the interpreter and executive ABI,
 Lane H owns the overlay and module ABI; change them through a PR the owner
 reviews.
