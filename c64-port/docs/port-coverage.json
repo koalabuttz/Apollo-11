@@ -1687,8 +1687,49 @@
           ],
           "scope": "Original MR.KLEAN P00KLEAN V37KLEAN phase clearing through true caller returns.",
           "verification": "docs/COMANCHE_PHASE_CLEANUP.md"
+        },
+        {
+          "native_files": [
+            "src/cm_phase_table.c",
+            "src/cm_phase_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-PHASE-TABLE.md",
+          "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 162 caller sites (229 words) compiled from the source listing."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 162 compiled TC sites (and NEWMODEA/MMDSPLAY from any bank) with cm_native_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "external_continuations": [
+          "BANKJUMP (cm_interbank_routines)",
+          "NOVAC and the DSPMMJOB job",
+          "CHECKMM exits Q+1/Q+2 in INTERPRETER",
+          "callers' returns"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-PHASE-TABLE.md",
+            "sha256": "d60ebc080dfba988040fd4cb37b953c9f3af9bdf2fcd68faefabf673af13e025"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-phase-table/cm-phase-table-proof.json",
+            "sha256": "ac5b0d75832b2751201aafad8c28ddd71918c4f6e7152b453521f846b47422d8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-phase-table/cm-phase-table-host.log",
+            "sha256": "971a910801be9d460dd49933168fc43a2cf77a5d69e3fc900776303f42d5f5c4"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-phase-table/cm-phase-table-vice.log",
+            "sha256": "4990a09c9c01d4be80c26e7efd6843c69fa9d8a0708c3fc22a79111a872f3b8f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
@@ -2254,8 +2295,47 @@
           ],
           "scope": "Actual timing and table selection source paths; complete restart continuation loop remains pending.",
           "verification": "docs/COMANCHE_RESTART_SELECT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_restart_routines.c",
+            "src/cm_restart_table_data.inc",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-RESTART-ROUTINES.md",
+          "scope": "Every RESTARTS, GETPART2 and PHSPART2 path (variable Type A/B, X.1 display, odd/even table, waitlist direct/indirect/immediate, longcall incl. 600SECS, FINDVAC/NOVAC) to the selected service, and the GOLOC-1/GOLOC+2 and display returns as ABI routines through SWRETURN."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "GOPROG entry state BB 02003 (FB 1, EB 3); group MPAC+5 0..5 (TEMP2G for second parts); TEMPPHS 1..01777; restart-table pointers within RESTART_TABLES; indirect times at erasable addresses",
+        "external_continuations": [
+          "FINDVAC/NOVAC/WAITLIST/LONGCALL bodies",
+          "SWRETURN",
+          "jobs and tasks named by the selected 2CADRs"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-RESTART-ROUTINES.md",
+            "sha256": "1e74c8d0f77984ce2f12f50eaf212d7eba487eea2c0c4c8441ca17a44b12048f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-proof.json",
+            "sha256": "e22176c1acdd1d6cd45e52c83324390ebbaa8d178fd8c883bd247bfd72c4f3c7"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-host.log",
+            "sha256": "3a777d1375753cc7ef2bc5aa75688b45e93e8132441e9e4045c4a7454c8390c1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
+            "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/RESTART_TABLES.agc",
@@ -2271,8 +2351,46 @@
           ],
           "scope": "Verified249-word restart prefix; the rest of the original source is not certified.",
           "verification": "docs/COMANCHE_RESTART_SELECT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_restart_routines.c",
+            "src/cm_restart_table_data.inc",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-RESTART-ROUTINES.md",
+          "scope": "All 249 table words compiled from the source listing and consumed by native RESTARTS (all 79 table entries selected and their 2CADRs delivered through the control-transfer ABI); NEWPHASE/NUFAZ+10 as an ABI routine with its nine TC NEWPHASE site operands compiled from the source."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "tables consumed by cm_restart_routines_select from GOPROG entry state; NEWPHASE from its nine TC NEWPHASE sites with A not overflowed",
+        "external_continuations": [
+          "jobs and tasks named by the table 2CADRs",
+          "NEWPHASE callers at L+2"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-RESTART-ROUTINES.md",
+            "sha256": "1e74c8d0f77984ce2f12f50eaf212d7eba487eea2c0c4c8441ca17a44b12048f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-proof.json",
+            "sha256": "e22176c1acdd1d6cd45e52c83324390ebbaa8d178fd8c883bd247bfd72c4f3c7"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-host.log",
+            "sha256": "3a777d1375753cc7ef2bc5aa75688b45e93e8132441e9e4045c4a7454c8390c1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
+            "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/RT8_OP_CODES.agc",
@@ -4781,8 +4899,49 @@
           ],
           "scope": "Fixed NEWMODEX/MMDSPLAY/SETUPDSP path as called from STARTP66 (LUNAR_LANDING_GUIDANCE_EQUATIONS), through Executive NOVAC admission of the DSPMMJB job; the DSPMMJB body (PINBALL_GAME_BUTTONS_AND_LIGHTS) and other NEWMODEX callers remain separate.",
           "verification": "docs/P66_MAJOR_MODE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_phase_table.c",
+            "src/lm_phase_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-PHASE-TABLE.md",
+          "scope": "Every instruction: NEWMODEX/NEWMODEA/MMDSPLAY/PREBJUMP, CHECKMM, PHASCHNG/2PHSCHNG/PHSCHNGA/PHASJUMP with ONEORTWO/CHECKB/CON1/GETPRIO/GETNEWNM/TOCON2, SETUPDSP, PHSCHNG2/BELOW1-4 and CON2 as control-transfer ABI routines; inline operands of all 142 caller sites (181 words) compiled from the source listing."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 142 compiled TC sites (PHSCHNGA with the phase words its V37RET producer computes; NEWMODEA/MMDSPLAY from any bank) with p66_bias_io; phase words whose TEMPSW class has a producer (TB+LB together and the source's can't-get-here branches refuse)",
+        "external_continuations": [
+          "BANKJUMP (lm_interbank_routines)",
+          "NOVAC and the DSPMMJB job",
+          "CHECKMM exits Q+1/Q+2 in INTERPRETER",
+          "callers' returns"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/LM-PHASE-TABLE.md",
+            "sha256": "60516d158b5961b139ff35a141ae7364628382e2aecbafb80d3800d2a3c6333a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-phase-table/lm-phase-table-proof.json",
+            "sha256": "d57ceb576d559d5a105fbbe706c9a4816fa54d79079596c62f7c69160ce36168"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-phase-table/lm-phase-table-host.log",
+            "sha256": "6d005697047ff949dd24a5886f511858ab59e007072e3365d78f9eaf6a0192ab"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-phase-table/lm-phase-table-vice.log",
+            "sha256": "5a916a58261ca88102703b5e908080bf6634075fe09e4d4712c8db131f6b4f29"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
