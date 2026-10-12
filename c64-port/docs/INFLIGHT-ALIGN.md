@@ -1,6 +1,6 @@
 # Translate Luminary and Comanche INFLIGHT_ALIGNMENT_ROUTINES
 
-Lane D1b (alignment and maneuvers). Milestone `inflight-align`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
+Lane D1b (alignment and maneuvers). Milestone `inflight-align`. Interface: `docs/NATIVE_TRANSFER_ABI.md`. Compiler and differential: `docs/INTERP-COMPILE.md`.
 
 `Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc` and `Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc` are native C (`src/lm_inflight_align.c`, `src/cm_inflight_align.c`). Each entry, and each point where the file resumes after an outside call, is a routine of the control-transfer ABI keyed by its original address in bank 23. A routine runs the file from there to the point where control leaves it, and leaves the image as the original does.
 

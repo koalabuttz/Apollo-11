@@ -43,7 +43,8 @@ MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'SXA': 'SXA', 'XCHX': 'XCHX', 
         'BPL': 'BPL/BMN', 'BMN': 'BPL/BMN', 'RTB': 'RTB/BHIZ', 'BHIZ': 'RTB/BHIZ',
         'CALL': 'CALL/ITA', 'ITA': 'CALL/ITA', 'STQ': 'CALL/ITA', 'BOV': 'BOV(B)', 'BOVB': 'BOV(B)'}
 INDEXED_MISC = ('AXT', 'AXC', 'LXA', 'SXA', 'XCHX', 'INCR', 'TIX', 'XAD', 'XSU')
-SWITCH_BRANCH = ('BON', 'BOFF', 'BONCLR', 'BOFCLR', 'BONSET', 'BOFSET', 'BONINV', 'BOFINV',
+SWITCH_ALIAS = {'BOF': 'BOFF', 'BOFCLR': 'BOFFCLR', 'BOFSET': 'BOFFSET', 'BOFINV': 'BOFFINV'}
+SWITCH_BRANCH = ('BON', 'BOFF', 'BOFFCLR', 'BOFFSET', 'BOFFINV', 'BONCLR', 'BOFCLR', 'BONSET', 'BOFSET', 'BONINV', 'BOFINV',
                  'SETGO', 'CLRGO', 'INVGO')
 SWITCH_PLAIN = ('SET', 'CLEAR', 'INVERT')
 UNARY = {'SQRT': 'SQRT', 'SIN': 'SINE', 'COS': 'COSINE', 'ASIN': 'ARCSIN', 'ACOS': 'ARCCOS',
@@ -60,6 +61,13 @@ class CompileError(Exception):
     pass
 
 
+def entries(spec, m):
+    """The spec's entry labels for mission m: a list shared by both
+    missions, or a {mission: list} dict."""
+    e = spec['entries']
+    return e[m] if isinstance(e, dict) else e
+
+
 def split_op(op):
     """(base mnemonic, starred, index tag) of an order column entry."""
     tag = 0
@@ -72,6 +80,7 @@ def split_op(op):
 
 def classify(op):
     base, star, tag = split_op(op)
+    base = SWITCH_ALIAS.get(base, base)
     if base == 'EXIT':
         return 'exit', base
     if base in SHORTS and not star:
@@ -112,8 +121,16 @@ class Compiler:
         if not self.lines:
             raise CompileError('no lines for %s' % spec['file'][mission])
         self.code = {l.phys: l for l in self.lines}
-        self.lo = min(self.code)
-        self.hi = max(l.phys + len(l.words) - 1 for l in self.lines)
+        self.words = set(l.phys + i for l in self.lines for i in range(len(l.words)))
+        self.lo = min(self.words)
+        self.hi = max(self.words)
+        # The file's fixed words as contiguous physical ranges.
+        self.ranges = []
+        for q in sorted(self.words):
+            if self.ranges and self.ranges[-1][1] == q - 1:
+                self.ranges[-1][1] = q
+            else:
+                self.ranges.append([q, q])
         self.T = {}
         self.T.update(self.L.jump_table('INDJUMP', 32))
         self.T.update(self.L.jump_table('MISCJUMP', 16))
@@ -127,7 +144,8 @@ class Compiler:
         self.starts = {}       # phys -> ('i'|'b', reason)
         self.consts = {}       # phys -> label
         self.cadr_erasable = set()
-        self.externals = {}    # Z (logical) -> name
+        self.externals = {}    # outside basic address (physical) -> name
+        self.externals_any = {}  # the same, reached through interpreter code (BOVB)
         self.rtb = spec.get('rtb', {})
 
     # ---- addresses -------------------------------------------------------
@@ -149,7 +167,7 @@ class Compiler:
         return ((w >> 10) & 0o37) * 1024 + (w & 0o1777)
 
     def in_file(self, phys):
-        return self.lo <= phys <= self.hi
+        return phys in self.words
 
     def fixed_operand(self, w, bank):
         """Physical address of an address-order operand word naming fixed
@@ -171,8 +189,7 @@ class Compiler:
     # ---- decoding --------------------------------------------------------
     def decode(self):
         self.work = []
-        for e in self.spec['entries']:
-            lab = e if isinstance(e, str) else e[self.m]
+        for lab in entries(self.spec, self.m):
             phys = self.L.labels.get(lab)
             if phys is None:
                 raise CompileError('entry %s not found' % lab)
@@ -386,8 +403,15 @@ class Compiler:
             st.append('if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* %s */' % (self.rtb[lab][self.m], lab))
             return st, cur, False, False
         if base in ('BOV', 'BOVB'):
-            st.append('switch(%sbov(s)){case LMI_BOV_NONE:break;case LMI_BOV_GOTO:' % P)
+            st.append('switch(%sbov(s)){case %sBOV_NONE:break;case %sBOV_GOTO:' % (P, P.upper(), P.upper()))
             st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
+            if base == 'BOVB':
+                # BOVB's branch is to basic code, as RTB transfers.
+                t = self.cadr_phys(w)
+                if self.in_file(t):
+                    raise CompileError('BOVB into the file at %s' % self.where(t))
+                self.externals_any[t] = 'BOVB ' + (self.L.label_at(t) or '')
+                st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
             st.append('default:return EXEC_OUT_OF_SCOPE;}')
             return st, cur, False, False
         raise CompileError('unsupported order %s' % op)
@@ -427,33 +451,212 @@ class Compiler:
             cur += 1
         return st + ['next(s);'], cur, False
 
-    def basic_block(self, start):
-        out = []
-        p = start
+    # ---- basic code ------------------------------------------------------
+    def phys_of(self, k, bank):
+        """Physical fixed address of a 12-bit address field (None if erasable)."""
+        if k < 0o2000:
+            return None
+        if k >= 0o4000:
+            return 2048 + (k - 0o4000)
+        if bank in (2, 3):
+            raise CompileError('banked address %04o from fixed-fixed code' % k)
+        return bank * 1024 + (k - 0o2000)
+
+    def logical_of(self, phys):
+        bank, off = divmod(phys, 1024)
+        if bank in (2, 3):
+            return 0o4000 + (bank - 2) * 1024 + off
+        return 0o2000 + off
+
+    def basic_unit(self, p, bank):
+        """(statements, successors, words, branch targets) for the basic
+        instruction (with any EXTEND/INDEX prefix) at p. Successors are
+        physical addresses compiled into the same routine; a statement list
+        that ends the routine has none."""
         ext = self.spec.get('externals', {})
+        w = self.L.word(p)
+        start = p
+        extended = False
+        index = None
         while True:
-            ln = self.code.get(p)
-            if ln is None:
-                raise CompileError('basic flow runs into %s' % self.where(p))
-            out.append('/* %s %s %s */' % (self.where(p), ln.op, ln.operand))
-            self.owner.setdefault(p, start)
-            if ln.op == 'TC' and ln.operand == 'INTPRET':
-                out.append('ai_tc(s,0%04o);W[5]=0%04o;%sintpret(s,io);return EXEC_OK;' % (ln.loc + 1, self.intpret, self.p))
-                self.add_start(p + 1, 'i', 'after TC INTPRET')
-                return out
-            if ln.op == 'TC' and ln.operand in ext:
-                tz = self.L.labels[ln.operand]
-                if tz >= 4096:
-                    raise CompileError('banked TC target %s' % ln.operand)
-                z = 0o4000 + tz - 2048
-                self.externals[z] = ln.operand
-                n = ext[ln.operand]
-                out.append('ai_tc(s,0%04o);W[5]=0%04o;return EXEC_OK; /* %s */' % (ln.loc + 1, z, ln.operand))
-                for q in range(p + 1, p + 1 + n):
-                    self.owner.setdefault(q, start)
-                self.add_start(p + 1 + n, 'b', 'return from ' + ln.operand)
-                return out
-            raise CompileError('unsupported basic instruction %s %s at %s' % (ln.op, ln.operand, self.where(p)))
+            if w == 0o6:          # EXTEND
+                extended = True
+                p += 1
+                w = self.L.word(p)
+                continue
+            op, qc, k12, k10 = (w >> 12) & 7, (w >> 10) & 3, w & 0o7777, w & 0o1777
+            if op == 5 and qc == 0 and not extended and index is None and k10 not in (0o17,):
+                index = k10       # INDEX K: the next instruction's address + C(K)
+                p += 1
+                w = self.L.word(p)
+                continue
+            if op == 5 and extended and index is None and k12 < 0o2000:
+                index = k12       # extended INDEX: next stays extended
+                p += 1
+                w = self.L.word(p)
+                continue
+            break
+        nxt = p + 1
+        self.unit_words = range(start, p + 1)
+        ln = self.code.get(p)
+        if ln is None or p not in self.words:
+            raise CompileError('basic flow runs into %s' % self.where(p))
+        here = '/* %s %s %s */' % (self.where(p), ln.op, ln.operand)
+
+        def ea(k):
+            if index is None:
+                return '0%04ou' % k
+            return '(unsigned)(0%04ou+ai_word(s,0%04ou))' % (k, index)
+
+        def eras(k, what):
+            if k in (4, 5, 6) and what in ('ts', 'xch', 'lxch', 'qxch', 'dxch', 'das', 'ads', 'incr', 'aug', 'dim'):
+                raise CompileError('%s writes a bank or Z register at %s' % (what, self.where(p)))
+            return ea(k)
+
+        def fixed(k):
+            if index is not None:
+                raise CompileError('INDEX on a fixed operand at %s' % self.where(p))
+            return self.phys_of(k, bank)
+
+        def leave(z_phys, why, note=''):
+            """Transfer to a basic address: in the file a goto, else the end."""
+            if self.in_file(z_phys):
+                return ['goto L%o;' % z_phys], [z_phys]
+            self.externals[z_phys] = why
+            return ['W[5]=0%04o;return EXEC_OK;%s' % (self.logical_of(z_phys), note)], []
+
+        st = [here]
+        if not extended:
+            if op == 0:
+                if index is not None:
+                    raise CompileError('indexed TC at %s' % self.where(p))
+                if k12 == 3:
+                    return st + ['io->interrupt_enabled=1u;'], [nxt]
+                if k12 == 4:
+                    return st + ['io->interrupt_enabled=0u;'], [nxt]
+                if k12 == 2:
+                    # TC Q runs C(Q) as an instruction: TC its address, Q = 3.
+                    return st + ['return tc_q(s);'], []
+                if k12 < 0o2000:
+                    raise CompileError('TC to erasable %04o at %s' % (k12, self.where(p)))
+                tz = self.phys_of(k12, bank)
+                lab = self.L.label_at(tz) or ''
+                st.append('ai_tc(s,0%04o);' % (ln.loc + 1))
+                if lab == 'INTPRET':
+                    st.append('W[5]=0%04o;%sintpret(s,io);return EXEC_OK;' % (self.intpret, self.p))
+                    self.add_start(p + 1, 'i', 'after TC INTPRET')
+                    return st, []
+                if self.in_file(tz):
+                    self.add_start(nxt, 'b', 'return from %s' % (lab or self.where(tz)))
+                    return st + ['goto L%o;' % tz], [tz]
+                if lab not in ext:
+                    raise CompileError('TC %s at %s: not in the spec externals' % (lab or '%04o' % k12, self.where(p)))
+                n = ext[lab]
+                self.externals[tz] = lab
+                if n is not None:
+                    # The inline words (the call's operands) belong to this TC.
+                    self.unit_words = range(start, nxt + n)
+                    self.add_start(nxt + n, 'b', 'return from ' + lab)
+                return st + ['W[5]=0%04o;return EXEC_OK; /* %s */' % (k12, lab)], []
+            if op == 1 and qc == 0:
+                st.append('switch(ai_ccs(s,%s)){case 0:goto L%o;case 1:goto L%o;case 2:goto L%o;default:goto L%o;}'
+                          % (eras(k10, 'ccs'), nxt, nxt + 1, nxt + 2, nxt + 3))
+                return st, [nxt, nxt + 1, nxt + 2, nxt + 3]
+            if op == 1:
+                if index is not None:
+                    raise CompileError('indexed TCF at %s' % self.where(p))
+                more, succ = leave(self.phys_of(k12, bank), 'TCF %s' % ln.operand)
+                return st + more, succ
+            if op == 2:
+                fn = ('das', 'lxch', 'incr', 'ads')[qc]
+                a = k10 - 1 if fn == 'das' else k10
+                return st + ['ai_%s(s,%s);' % (fn, eras(a, fn))], [nxt]
+            if op in (3, 4, 6, 7):
+                fn = {3: 'ca', 4: 'cs', 6: 'ad', 7: 'mask'}[op]
+                if k12 >= 0o2000:
+                    fp = fixed(k12)
+                    return st + ['ai_%sf(s,0%05o);' % (fn, self.L.word(fp))], [nxt]
+                return st + ['ai_%s(s,%s);' % (fn, eras(k12, fn))], [nxt]
+            if op == 5:
+                if qc == 1:
+                    return st + ['ai_dxch(s,%s);' % eras(k10 - 1, 'dxch')], [nxt]
+                if qc == 2:
+                    return st + ['if(ai_ts(s,%s))goto L%o;' % (eras(k10, 'ts'), nxt + 1)], [nxt, nxt + 1]
+                return st + ['ai_xch(s,%s);' % eras(k10, 'xch')], [nxt]
+        else:
+            if op == 1 and qc == 0:
+                return st + ['ai_dv(s,%s);' % eras(k10, 'dv')], [nxt]
+            if op in (1, 6) and qc != 0:
+                fn = 'bzf' if op == 1 else 'bzmf'
+                if index is not None:
+                    raise CompileError('indexed %s at %s' % (fn, self.where(p)))
+                more, succ = leave(self.phys_of(k12, bank), fn.upper())
+                return st + ['if(ai_%s(s)){' % fn] + ['  ' + x for x in more] + ['}'], succ + [nxt]
+            if op == 2:
+                fn = ('msu', 'qxch', 'aug', 'dim')[qc]
+                if fn == 'msu':
+                    raise CompileError('MSU at %s' % self.where(p))
+                return st + ['ai_%s(s,%s);' % (fn, eras(k10, fn))], [nxt]
+            if op in (3, 4):
+                fn = 'dca' if op == 3 else 'dcs'
+                if k12 >= 0o2000:
+                    fp = fixed(k12) - 1
+                    return st + ['{static const agc_word k[2]={0%05o,0%05o};ai_%sf(s,k);}' % (
+                        self.L.word(fp), self.L.word(fp + 1), fn)], [nxt]
+                return st + ['ai_%s(s,%s);' % (fn, eras(k12 - 1, fn))], [nxt]
+            if op == 6 and qc == 0:
+                return st + ['ai_su(s,%s);' % eras(k10, 'su')], [nxt]
+            if op == 7:
+                if k12 >= 0o2000:
+                    return st + ['ai_mpf(s,0%05o);' % self.L.word(fixed(k12))], [nxt]
+                return st + ['ai_mp(s,%s);' % eras(k12, 'mp')], [nxt]
+        raise CompileError('unsupported basic instruction %05o (%s %s) at %s' % (w, ln.op, ln.operand, self.where(p)))
+
+    def basic_block(self, start):
+        """C statements for the basic routine at start: every instruction
+        reachable from it without leaving the file, in address order, with
+        labels where control jumps."""
+        bank = start // 1024
+        units = {}
+        work = [start]
+        while work:
+            p = work.pop()
+            if p in units:
+                continue
+            if p != start and p in self.starts and self.starts[p][0] == 'i':
+                raise CompileError('basic flow runs into interpretive %s' % self.where(p))
+            st, succ = self.basic_unit(p, bank)
+            units[p] = (st, succ)
+            for q in self.unit_words:
+                self.owner.setdefault(q, start)
+            work.extend(succ)
+        order = sorted(units)
+        order.remove(start)
+        order.insert(0, start)
+        out = []
+        for i, p in enumerate(order):
+            st, succ = units[p]
+            out.append('L%o:;' % p)
+            out.extend(st)
+            fall = [q for q in succ if q not in self._jumps(st)]
+            if fall:
+                f = fall[0]
+                if i + 1 < len(order) and order[i + 1] == f:
+                    continue
+                out.append('goto L%o;' % f)
+        # Labels nothing jumps to are dropped (-Wunused-label).
+        used = set()
+        for x in out:
+            used.update(self._jumps([x]))
+        return [x for x in out if not (x.startswith('L') and x.endswith(':;') and int(x[1:-2], 8) not in used)]
+
+    @staticmethod
+    def _jumps(stmts):
+        import re
+        out = set()
+        for x in stmts:
+            out.update(int(m, 8) for m in re.findall(r'goto L([0-7]+);', x))
+        return out
 
     def source_map(self):
         """Every emitted word of the file: the routine that compiles it, the
@@ -526,7 +729,7 @@ class Compiler:
         c.append('/* The image as the routines need it: ordinary words (A, L and Q may')
         c.append(' * hold 16 bits), coherent banks, NEWJOB +0, FIXLOC a VAC area and the')
         c.append(' * latches in range. */')
-        c.append('static uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){')
+        c.append('static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){')
         c.append(' unsigned i,vac=W[0120];')
         c.append(' if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
@@ -538,6 +741,12 @@ class Compiler:
         c.append(' * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */')
         c.append('static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
         c.append(' return W[5]==0%04ou&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % self.newops)
+        c.append('}')
+        c.append('/* TC Q: the word in Q runs as an instruction; a TC leaves Q = 3. */')
+        c.append('static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){')
+        c.append(' agc_word q=W[2];')
+        c.append(' if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;')
+        c.append(' W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;')
         c.append('}')
         c.append('static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
         c.append(' return W[4]==fb&&sane(s,io);')
@@ -563,8 +772,11 @@ class Compiler:
             c.append(guard(i))
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
-            chk = 'at_newops' if kind == 'i' else 'at_basic'
-            c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
+            if kind == 'b' and phys // 1024 in (2, 3):
+                c.append(' if(!sane(s,io))return EXEC_OUT_OF_SCOPE;')
+            else:
+                chk = 'at_newops' if kind == 'i' else 'at_basic'
+                c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
             for st in self.blocks[phys]:
                 c.append(' ' + st)
             c.append('}')
@@ -609,7 +821,7 @@ class Compiler:
         c.append('};')
         ce = sorted(self.cadr_erasable)
         c.append('const agc_word %s_cadr_words[%s_CADR_WORDS]={%s};' % (sym, sym.upper(), ','.join('0%04o' % x for x in ce) or '0'))
-        ex = sorted(self.externals)
+        ex = sorted(set(self.externals) | set(self.externals_any))
         c.append('const agc_word %s_externals[%s_EXTERNALS]={%s};' % (sym, sym.upper(), ','.join('0%04o' % x for x in ex) or '0'))
         h = []
         h.append('/* SPDX-License-Identifier: MIT */')

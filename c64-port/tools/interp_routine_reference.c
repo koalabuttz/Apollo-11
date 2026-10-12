@@ -5,13 +5,22 @@
 #include "interp_case.h"
 /* Runs the unmodified ropes (argv[1] Luminary099, argv[2] Comanche055) on
  * each case of argv[3] (written by tools/interp_routine_differential.py)
- * from its image to its stop: NEWOPS with LOC outside the file, or one of
- * the mission's outside addresses. Prints the case, the kind (0), Z, the
+ * from its image to its stop: NEWOPS with LOC outside the file's ranges,
+ * an exit of the interpreter's own bodies, or (reached from the file) one
+ * of its outside basic addresses or the case's own stop (a caller's
+ * return), all as physical fixed addresses. Prints the case, the kind (0), Z, the
  * digest and, with argv[4] = "dump", the 2048 words. */
 static agc_t baseline[2];
 static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(stderr,"short case file\n");exit(2);}return (unsigned)a|(unsigned)b<<8;}
 static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned long)rd16(f)<<16;}
-struct stops{unsigned newops,first,last,n,ext[32];};
+struct stops{unsigned newops,nr,first[16],last[16],n,ext[64],nf,from_file[64];};
+static unsigned outside(const struct stops *t,unsigned p){unsigned i;for(i=0;i<t->nr;++i)if(p>=t->first[i]&&p<=t->last[i])return 0;return 1;}
+/* Physical fixed address of Z (0xfffe when Z is erasable; 0xffff is no stop). */
+static unsigned z_physical(unsigned z){unsigned bank=(get(4)>>10)&037u;
+ if(z<02000u)return 0xfffeu;
+ if(z>=04000u)return 2048u+(z-04000u);
+ return bank*1024u+(z&01777u);
+}
 static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&037u;
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
@@ -21,11 +30,13 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
  dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;
- if(rd32(f)!=0x31435249ul){fprintf(stderr,"bad case file\n");return 2;}
- for(m=0;m<2;++m){st[m].newops=rd16(f);st[m].first=rd16(f);st[m].last=rd16(f);st[m].n=rd16(f);if(st[m].n>32u)return 2;for(i=0;i<st[m].n;++i)st[m].ext[i]=rd16(f);}
+ if(rd32(f)!=0x32435249ul){fprintf(stderr,"bad case file\n");return 2;}
+ for(m=0;m<2;++m){st[m].newops=rd16(f);st[m].nr=rd16(f);if(st[m].nr>16u)return 2;for(i=0;i<st[m].nr;++i){st[m].first[i]=rd16(f);st[m].last[i]=rd16(f);}
+  st[m].n=rd16(f);if(st[m].n>64u)return 2;for(i=0;i<st[m].n;++i)st[m].ext[i]=rd16(f);
+  st[m].nf=rd16(f);if(st[m].nf>64u)return 2;for(i=0;i<st[m].nf;++i)st[m].from_file[i]=rd16(f);}
  count=(unsigned)rd32(f);
- for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned stopped=0;const struct stops *t;
-  c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);c.nedits=(uint16_t)rd16(f);
+ for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned stopped=0,stop,zp,prev_in=1;const struct stops *t;
+  c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=0;stop=rd16(f);c.nedits=(uint16_t)rd16(f);
   if(c.nedits>4096u)return 2;
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
   c.edits=edits;irc_build(&s,&c);t=&st[c.cm];
@@ -34,9 +45,14 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;
   for(cycles=0;cycles<400000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
-    if(pc==t->newops){unsigned p=loc_physical();if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(p<t->first||p>t->last){stopped=1;break;}}
+    if(pc==t->newops){unsigned p=loc_physical();if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}
     if(trace==n&&getenv("IRC_ZTRACE"))fprintf(stderr,"Z %05o FB %05o A %06o L %06o Q %05o MPAC %05o %05o %05o BUF %05o %05o %05o BUF2 %05o %05o MPTEMP %05o IE %d\n",pc,get(4),(unsigned)*memory(0)&0177777u,(unsigned)*memory(1)&0177777u,get(2),get(0154),get(0155),get(0156),get(0130),get(0131),get(0132),get(0134),get(0135),get(0136),machine.AllowInterrupt);
-    for(i=0;i<t->n;++i)if(pc==t->ext[i]){stopped=1;break;}
+    zp=z_physical(pc);
+    /* The file's own transfers out (and the case's return) stop only when
+     * the file made them; the interpreter's exits stop from anywhere. */
+    if(prev_in){if(zp==stop){stopped=1;break;}for(i=0;i<t->nf;++i)if(zp==t->from_file[i]){stopped=1;break;}}
+    for(i=0;i<t->n;++i)if(zp==t->ext[i]){stopped=1;break;}
+    prev_in=zp!=0xfffeu&&!outside(t,zp);
     if(stopped)break;
    }
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}

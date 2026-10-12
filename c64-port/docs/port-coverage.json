@@ -350,8 +350,20 @@
       "sha256": "93414cefa5c6ed833b4bc0610c5055a2ded393aea6938dc65d13cf2b717bc101",
       "bytes": 9913,
       "lines": 415,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_geometry.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "105 of 253 words: SVDWN1, SVDWN2 (bank 10), LOG with its POLY and SHORTMP basic code, EARROT1, EARROT2 and OVERADAY, as 11 routines of the control-transfer ABI compiled by tools/interp_compile.py. SXTNB, SXTLOGIC, CALCSXA and SXTANG with their matrices wait for a Comanche MXV body and native TRANSP1/TRANSP2.",
+          "verification": "docs/GEOMETRY.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
@@ -1022,11 +1034,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/inflight-align/inflight-align-source-map.json",
-            "sha256": "a4588cab41a61cc3da4088aea9a7be2e1fad936e0e4099676996ec2ab88b161b"
+            "sha256": "7573261127c6cb76ad92fea6970665f05d224c2106a074d7d2c041dd8d71af6a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "a9c926774f2c189ecead361c8e57a4a3817fa71ac838aeeca3315ad3d754ab54"
+            "sha256": "ac8409fab7c6d2d5085691c4b11e6c8f6ec78dbdc15b21d67206ada4e8716ffc"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -3883,11 +3895,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/inflight-align/inflight-align-source-map.json",
-            "sha256": "a4588cab41a61cc3da4088aea9a7be2e1fad936e0e4099676996ec2ab88b161b"
+            "sha256": "7573261127c6cb76ad92fea6970665f05d224c2106a074d7d2c041dd8d71af6a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "a9c926774f2c189ecead361c8e57a4a3817fa71ac838aeeca3315ad3d754ab54"
+            "sha256": "ac8409fab7c6d2d5085691c4b11e6c8f6ec78dbdc15b21d67206ada4e8716ffc"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -4273,8 +4285,52 @@
       "sha256": "6793dddb22af8b0ae7f73d735fabbc4336a0f6743c5d1965e5dab3350c1ce6d6",
       "bytes": 5084,
       "lines": 206,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_geometry.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (113 words, 13,2070-2206 and 23,2041-2102): SVDWN2, SVDWN1, RRANGLES with its EXIT/RADMODES basic code, RRNB, RRNB1 and RRNBMPAC, as 10 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/GEOMETRY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic one), FB 13 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, any PUSHLOC within it, MODE, X1/X2, OVFIND, operand and flag values (AVEMIDSW, RADMODES).",
+        "external_continuations": [
+          "The caller's return through QPRET or the CADR in S2 (any interpretive file)",
+          "LUNDESCH (BOVB from RRANGLES, basic)",
+          "Interpreter CDULOGIC and 2V1STO2S through RTB (native, src/rtb_angles.c)",
+          "ALARM1 from ASIN/UNIT (interpreter alarm)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/geometry/geometry-source-map.json",
+            "sha256": "6155a8a8db5ea626d7d75602b7f0e59acb1339eb79d19badff66ff187f902673"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/geometry/geometry-proof.json",
+            "sha256": "a7e2fe4bab1b0a6050ad183533d03762ae9113b4bbaee4accbb0fdcb10f66bc3"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/geometry/geometry-host.log",
+            "sha256": "8439939b927bec3f73695c27bb719aa13dc1a0746ebac7d8d8ee5c1a612fc595"
+          },
+          "c64_execution_results": {
+            "path": "evidence/geometry/geometry-vice.log",
+            "sha256": "2716dc7a01ccd50bd88f760a44f483c4abfdea0e9baece21cc5cee830ba5b628"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",

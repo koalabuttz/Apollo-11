@@ -84,8 +84,8 @@ class Mission:
         self.newops = self.cp.newops
         self.points = sorted(self.cp.blocks)
         self.kinds = {p: self.cp.starts[p][0] for p in self.points}
-        exits = list(self.cp.externals) + [logical(L.labels[n]) for n in BODY_EXITS[m]]
-        self.externals = sorted(set(exits))
+        self.externals = sorted(set(self.cp.externals))
+        self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)))
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.states = {L.labels[k]: v for k, v in spec.get('states', {}).items()}
@@ -93,7 +93,7 @@ class Mission:
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
         that name one of the file's entries."""
-        ents = set(cadr(self.L.labels[e if isinstance(e, str) else e[self.m]]) for e in spec['entries'])
+        ents = set(cadr(self.L.labels[e]) for e in IC.entries(spec, self.m))
         out = []
         lines = self.L.lines
         for i, ln in enumerate(lines):
@@ -133,6 +133,9 @@ def case(mi, point, n, rng):
     E = collections.OrderedDict()
     seed = rng.getrandbits(32)
     bank = point // 1024
+    if bank in (2, 3):
+        # Fixed-fixed code runs under any FB.
+        bank = rng.randrange(4, 0o30)
     fb = bank << 10
     eb = rng.randrange(8)
     E[3] = eb << 8
@@ -167,6 +170,9 @@ def case(mi, point, n, rng):
     # The interpreter's own state: PUSHLOC in the VAC area, MODE a mode.
     E[0o166] = vac + rng.randrange(0o42)
     E[0o163] = rng.choice([0o77776, 0, 1])
+    # OVFIND clear in most cases, so BOV(B) falls through as often as not.
+    if rng.random() < 0.75:
+        E[0o121] = 0
     for k, choices in mi.states.get(point, {}).items():
         a = vac + int(k[4:], 8) if k.startswith('vac+') else int(k, 8)
         v = rng.choice(choices)
@@ -181,21 +187,33 @@ def case(mi, point, n, rng):
         E[0o164] = logical(point)
         E[0o165] = fb | eb
         E[0o115] = fb & 0o40000
+        stop = 0xffff
     else:
         E[5] = logical(point)
-    return seed, list(E.items()), n & 1
+        # Q: a return in the caller's bank outside the file, the case's stop.
+        while True:
+            q = bank * 1024 + rng.randrange(0o1776)
+            if not mi.cp.in_file(q):
+                break
+        E[2] = logical(q)
+        stop = q
+    return seed, list(E.items()), n & 1, stop
 
 
 def write_cases(path, missions, cases):
     with open(path, 'wb') as f:
-        f.write(struct.pack('<I', 0x31435249))
+        f.write(struct.pack('<I', 0x32435249))
         for mi in missions:
-            f.write(struct.pack('<4H', mi.newops, mi.cp.lo, mi.cp.hi, len(mi.externals)))
-            f.write(struct.pack('<%dH' % len(mi.externals), *mi.externals))
+            f.write(struct.pack('<2H', mi.newops, len(mi.cp.ranges)))
+            for a, b in mi.cp.ranges:
+                f.write(struct.pack('<2H', a, b))
+            for ex in (mi.body_exits, mi.externals):
+                f.write(struct.pack('<H', len(ex)))
+                f.write(struct.pack('<%dH' % len(ex), *ex))
         f.write(struct.pack('<I', len(cases)))
         for c in cases:
             seed, cm, ie, edits = c['seed'], c['cm'], c['ie'], c['edits']
-            f.write(struct.pack('<IBBHH', seed, cm, ie, 0, len(edits)))
+            f.write(struct.pack('<IBBHH', seed, cm, ie, c.get('stop', 0xffff), len(edits)))
             for a, w in edits:
                 f.write(struct.pack('<HH', a, w))
 
@@ -245,8 +263,8 @@ def main():
             continue
         for p in mi.points:
             for n in range(a.cases):
-                seed, edits, ie = case(mi, p, n, rng)
-                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie})
+                seed, edits, ie, stop = case(mi, p, n, rng)
+                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop})
     os.makedirs(B, exist_ok=True)
     path = os.path.join(B, '%s-cases.bin' % a.spec)
     write_cases(path, missions, cases)
@@ -323,9 +341,11 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits):
              'oracle_sha256': hashlib.sha256('\n'.join(' '.join(r) for r in rows).encode()).hexdigest(),
              'frozen_vectors': len(pick), 'c64_vectors': c64,
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
-             'boundary': 'from each routine entry state to NEWOPS with LOC outside the file or an outside '
-                         'basic address (%s)' % ', '.join(
-                             '%s: %s' % (mi.m, ' '.join('%05o' % z for z in mi.externals)) for mi in missions),
+             'boundary': 'from each routine entry state to NEWOPS with LOC outside the file, an exit of the '
+                         'interpreter bodies (%s), or a transfer to an outside basic routine (%s)' % (
+                             '; '.join('%s: %s' % (mi.m, ', '.join(BODY_EXITS[mi.m])) for mi in missions),
+                             '; '.join('%s: %s' % (mi.m, ', '.join(sorted(set(mi.cp.externals.values()) | set(mi.cp.externals_any.values()))) or 'none')
+                                       for mi in missions if mi.m in spec['missions'])),
              'compared': 'Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state'}
     open(os.path.join(B, '%s-proof.json' % spec_id), 'w').write(json.dumps(proof, indent=1) + '\n')
     smap = {}
@@ -334,10 +354,12 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits):
             continue
         rows_m = mi.cp.source_map()
         loose = [r for r in rows_m if 'routine' not in r and 'constant' not in r]
-        if loose:
+        if loose and mi.m not in spec.get('partial', {}):
             sys.exit('%s words no routine compiles: %s' % (mi.m, ', '.join(r['address'] for r in loose)))
+        for r in loose:
+            r['untranslated'] = spec['partial'][mi.m]
         smap[spec['file'][mi.m] and ('Luminary099/' if mi.m == 'lm' else 'Comanche055/') + spec['file'][mi.m]] = {
-            'native_file': 'src/%s.c' % spec['base'][mi.m], 'words': len(rows_m),
+            'native_file': 'src/%s.c' % spec['base'][mi.m], 'words': len(rows_m), 'untranslated_words': len(loose),
             'routines': len(mi.points), 'map': rows_m}
     open(os.path.join(B, '%s-source-map.json' % spec_id), 'w').write(json.dumps(smap, indent=1) + '\n')
     print('froze %d vectors to tests/%s_vectors.h' % (len(pick), sym))

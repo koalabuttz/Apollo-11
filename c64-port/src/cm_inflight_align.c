@@ -38,7 +38,7 @@ static MAYBE_UNUSED void shorts(apollo_overlay_state *s){cmi_short_dispatch(s);i
 /* The image as the routines need it: ordinary words (A, L and Q may
  * hold 16 bits), coherent banks, NEWJOB +0, FIXLOC a VAC area and the
  * latches in range. */
-static uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){
+static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){
  unsigned i,vac=W[0120];
  if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
@@ -50,6 +50,12 @@ static uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){
  * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */
 static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[5]==06037u&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);
+}
+/* TC Q: the word in Q runs as an instruction; a TC leaves Q = 3. */
+static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
+ agc_word q=W[2];
+ if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;
+ W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;
 }
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
@@ -497,7 +503,8 @@ static enum exec_status r47371(apollo_overlay_state *s,p66_bias_io *io){
 static enum exec_status r47372(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3372 TC ALARM */
- ai_tc(s,03373);W[5]=05650;return EXEC_OK; /* ALARM */
+ ai_tc(s,03373);
+ W[5]=05650;return EXEC_OK; /* ALARM */
 }
 #endif
 #if (CM_INFLIGHT_ALIGN_KEEP0 >> 14) & 1
@@ -505,7 +512,8 @@ static enum exec_status r47372(apollo_overlay_state *s,p66_bias_io *io){
 static enum exec_status r47374(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3374 TC UPFLAG */
- ai_tc(s,03375);W[5]=05546;return EXEC_OK; /* UPFLAG */
+ ai_tc(s,03375);
+ W[5]=05546;return EXEC_OK; /* UPFLAG */
 }
 #endif
 #if (CM_INFLIGHT_ALIGN_KEEP0 >> 15) & 1
@@ -513,7 +521,8 @@ static enum exec_status r47374(apollo_overlay_state *s,p66_bias_io *io){
 static enum exec_status r47376(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3376 TC INTPRET */
- ai_tc(s,03377);W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+ ai_tc(s,03377);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
 }
 #endif
 #if (CM_INFLIGHT_ALIGN_KEEP0 >> 16) & 1

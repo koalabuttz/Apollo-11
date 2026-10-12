@@ -2,6 +2,7 @@
  "Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc": {
   "native_file": "src/lm_inflight_align.c",
   "words": 184,
+  "untranslated_words": 0,
   "routines": 21,
   "map": [
    {
@@ -1293,6 +1294,7 @@
  "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc": {
   "native_file": "src/cm_inflight_align.c",
   "words": 186,
+  "untranslated_words": 0,
   "routines": 21,
   "map": [
    {

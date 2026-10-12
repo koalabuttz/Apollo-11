@@ -1,0 +1,109 @@
+{
+ "milestone": "geometry",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 10752,
+ "cases_sha256": "0c1d1d2c309a9570c36f8df36b00e6a3de25b2ac01acbee362fcefe050fdcc9d",
+ "oracle_sha256": "43759848278746f8c7e5ab04bb114cfc35cbd4af550a1ff907a5f810737dbf51",
+ "frozen_vectors": 336,
+ "c64_vectors": [
+  {
+   "mission": "lm",
+   "keep": "0xf",
+   "cases": 8
+  },
+  {
+   "mission": "lm",
+   "keep": "0x3f0",
+   "cases": 12
+  },
+  {
+   "mission": "cm",
+   "keep": "0xff",
+   "cases": 16
+  },
+  {
+   "mission": "cm",
+   "keep": "0x700",
+   "cases": 6
+  }
+ ],
+ "stops": {
+  "CM 10,2237 SVDWN1": {
+   "06037": 512
+  },
+  "CM 10,2242 ": {
+   "06037": 512
+  },
+  "CM 10,2263 SVDWN2": {
+   "06037": 512
+  },
+  "CM 23,2155 LOG": {
+   "07171": 512
+  },
+  "CM 23,2161 ": {
+   "07171": 512
+  },
+  "CM 23,2173 ": {
+   "07256": 512
+  },
+  "CM 23,2203 ": {
+   "06037": 512
+  },
+  "CM 23,2210 ": {
+   "06037": 512
+  },
+  "CM 23,2215 EARROT1": {
+   "06037": 350,
+   "03352": 162
+  },
+  "CM 23,2225 EARROT2": {
+   "06037": 385,
+   "03352": 127
+  },
+  "CM 23,2245 OVERADAY": {
+   "06037": 376,
+   "03352": 136
+  },
+  "LM 13,2070 SVDWN2": {
+   "06070": 512
+  },
+  "LM 13,2073 ": {
+   "06070": 512
+  },
+  "LM 13,2114 SVDWN1": {
+   "06070": 512
+  },
+  "LM 13,2133 RRANGLES": {
+   "02421": 106,
+   "06070": 287,
+   "05732": 119
+  },
+  "LM 13,2161 ": {
+   "06070": 512
+  },
+  "LM 13,2175 ": {
+   "06070": 512
+  },
+  "LM 13,2205 ": {
+   "06070": 512
+  },
+  "LM 23,2041 RRNB": {
+   "06070": 512
+  },
+  "LM 23,2054 RRNB1": {
+   "06070": 512
+  },
+  "LM 23,2065 RRNBMPAC": {
+   "06070": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: BOVB LUNDESCH; cm: BOVB ENDT(X), POLY, SHORTMP)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state"
+}

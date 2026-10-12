@@ -30,4 +30,26 @@ SPECS = {
                          'vac+051': [0o2], 'vac+036': [0o77771], '0166': ['vac+0']},
         },
     },
+    'geometry': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'LEM_GEOMETRY.agc', 'cm': 'CSM_GEOMETRY.agc'},
+        'base': {'lm': 'lm_geometry', 'cm': 'cm_geometry'},
+        'symbol': {'lm': 'lm_geometry', 'cm': 'cm_geometry'},
+        'entries': {'lm': ['SVDWN2', 'SVDWN1', 'RRANGLES', 'RRNB', 'RRNBMPAC'],
+                    'cm': ['SVDWN1', 'SVDWN2', 'LOG', 'EARROT1', 'EARROT2']},
+        'externals': {'POLY': 9, 'SHORTMP': 0},
+        'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
+                '2V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_TWO_VECTOR_ONE_TO_TWO)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_TWO_VECTOR_ONE_TO_TWO)'},
+                '1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_ONE_TO_TWO)',
+                           'cm': 'rtb_angles(s,io,RTB_CM,RTB_ONE_TO_TWO)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/geometry_target.c',
+        # Words no routine compiles yet, and why (the source map records them).
+        'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG (with NB2NB1, NB1NB2 and their '
+                          'constants) wait for a Comanche MXV body and native TRANSP1/TRANSP2'},
+        'freeze_stride': 32,
+    },
 }
