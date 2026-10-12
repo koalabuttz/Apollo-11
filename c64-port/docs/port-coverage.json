@@ -846,8 +846,50 @@
       "sha256": "fe2e800173b6c7e607d03c0b06a58b517b4faae2f8400e74b98b36b54e10cf19",
       "bytes": 9277,
       "lines": 368,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/imu_compensation.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK and SWRETURN (Comanche NOVAC has no native routine yet).",
+          "verification": "docs/IMU-COMPENSATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL return leave it; any EB (1/PIPA sets EBANK to GCOMP's and restores the caller's); any GCOMPSW, FLAGWRD2, TIME1, PIPA, coefficient and GCOMP values.",
+        "external_continuations": [
+          "NOVAC admitting 1/GYRO (EXECUTIVE, no native Comanche routine yet)",
+          "SWRETURN and BANKCALL (native, cm_interbank_routines)",
+          "IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES)",
+          "PIPUSE (SERVICER207)",
+          "ENDOFJOB (EXECUTIVE)"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/imu-compensation/imu-compensation-source-map.json",
+            "sha256": "f8a121420b3df54274264d19cc75bea9dcde34141da664e5bab48e999ccc7d3b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/imu-compensation/imu-compensation-proof.json",
+            "sha256": "014c002a712683d5b22d6e78898b68572e711e552a25a60df03aeda178b3b144"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/imu-compensation/imu-compensation-host.log",
+            "sha256": "f0308a399893531d4394ddeef840f916eda73936085d63c1f63837e290cb08a1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/imu-compensation/imu-compensation-vice.log",
+            "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
@@ -3594,8 +3636,50 @@
       "sha256": "0b5c62e140514e58767ef3950fc3f3f381d607166f198f11348c3765c07f4ae8",
       "bytes": 10414,
       "lines": 417,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/imu_compensation.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (282 words, 06,3263-3714): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY and its PIPASR +3 return, LASTBIAS and its PIPUSE1 return, GCOMPZER, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 11 routines of the control-transfer ABI; round trips from every genuine TC BANKCALL of 1/PIPA and GCOMPZER through native INTER-BANK, NOVAC and SWRETURN.",
+          "verification": "docs/IMU-COMPENSATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL/IBNKCALL return leave it; any EB (1/PIPA and GCOMPZER set EBANK to GCOMP's and restore the caller's); any GCOMPSW, FLAGWRD2, FLAGWRD8, TIME1, PIPA, coefficient and GCOMP values; TEM1 +0 or BIT8 at the PIPASR +3 return (refused otherwise).",
+        "external_continuations": [
+          "NOVAC (native, lm_exec_routines) admitting 1/GYRO",
+          "SWRETURN and BANKCALL/IBNKCALL (native, lm_interbank_routines)",
+          "IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES)",
+          "PIPASR +3 and PIPUSE1 (SERVICER)",
+          "ENDOFJOB (EXECUTIVE)"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/imu-compensation/imu-compensation-source-map.json",
+            "sha256": "f8a121420b3df54274264d19cc75bea9dcde34141da664e5bab48e999ccc7d3b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/imu-compensation/imu-compensation-proof.json",
+            "sha256": "014c002a712683d5b22d6e78898b68572e711e552a25a60df03aeda178b3b144"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/imu-compensation/imu-compensation-host.log",
+            "sha256": "f0308a399893531d4394ddeef840f916eda73936085d63c1f63837e290cb08a1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/imu-compensation/imu-compensation-vice.log",
+            "sha256": "ecb5cbf2f46e4378ed6bbf7fee84738ada01cdb2def153f0caec8a30d35a44ef"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
