@@ -201,11 +201,11 @@
   ]
  ],
  "outcomes_host_c64": {
-  "left the file": [
+  "kind 0": [
    16235,
    127
   ],
-  "refused": [
+  "kind 1": [
    149,
    1
   ]

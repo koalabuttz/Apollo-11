@@ -9,7 +9,8 @@ takes is taken by some row; then evenly spread cases (a stride of 97, which
 shares no factor with any module's entry count) up to the module's row
 budget. Writes tests/<module>_c64_vectors.h (the case numbers and their
 frozen digests from tests/<module>_vectors.h) and build/<milestone>-c64-cover.json
-(per branch: host cases and C64 rows taking it). Fails if a host branch,
+(per entry slot, outcome kind (the run function's
+return) and branch: host cases and C64 rows taking it). Fails if a host branch,
 slot or outcome kind is missing from the rows.
 
   python3 tools/lane_f_c64_rows.py lm-p-axis
@@ -34,7 +35,6 @@ MODULES = {
     'lm-dapidler': ('lm_dapidler', 'LM_DI', 'lm_di', 9, 192, 'LM_DI_SRC', IO_RUN),
     'lm-trim-gimbal': ('lm_trim_gimbal', 'LM_TG', 'lm_tg', 4, 256, 'LM_TG_SRC', IO_RUN),
 }
-OUTCOME = {0: 'left the file', 1: 'refused', 2: 'none'}
 
 
 def mk_var(milestone, name):
@@ -58,7 +58,8 @@ def main(milestone):
     exe = B / f'{milestone}-path-trace'
     defs = [f'-DTRACE_HDR="{stem}_cases.h"', f'-DTRACE_PATHS={sym}_paths', f'-DTRACE_NPATHS={npaths}u',
             f'-DTRACE_CASES={mac}_CASES', f'-DTRACE_RUN(s,io,n,steps)={run.format(s=sym)}',
-            f'-D{mac}_COUNT_PATHS', '-DP66_NATIVE_DISPATCH_ONLY']
+            f'-D{mac}_COUNT_PATHS', '-DP66_NATIVE_DISPATCH_ONLY', '-ffunction-sections',
+            '-fdata-sections', '-Wl,--gc-sections']
     subprocess.run(['cc', '-std=c99', '-O2', '-Iinclude', '-Itests', *defs, *mk_var(milestone, srcvar),
                     'tools/lane_f_path_trace.c', '-o', str(exe)], cwd=R, check=True)
     rows = []
@@ -102,7 +103,7 @@ def main(milestone):
            *table('uint32_t', f'{sym}_c64', [digests[n] for n in picked], '0x{:08x}ul,')]
     (R / f'tests/{stem}_c64_vectors.h').write_text('\n'.join(out) + '\n')
     slot_rows = [sum(1 for n in picked if n % slots == k) for k in range(slots)]
-    kinds = {OUTCOME[k]: [sum(1 for r in rows if r[1] == k), sum(1 for r in rows if r[1] == k and r[0] in picked)]
+    kinds = {f'kind {k}': [sum(1 for r in rows if r[1] == k), sum(1 for r in rows if r[1] == k and r[0] in picked)]
              for k in sorted({r[1] for r in rows})}
     cover = {'milestone': milestone, 'host_cases': cases, 'c64_rows': len(picked),
              'cover_rows': len(chosen), 'stride_fill': STRIDE,

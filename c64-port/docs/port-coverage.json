@@ -5104,7 +5104,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
-            "sha256": "0fe44e9688a090d62c9605472aef9425ab7108c0ec51538b5a2014ccc497f2dd"
+            "sha256": "6d6804cdcda7b1b68d286f3b8bcff760b8f6c6785e2505e4234c2e2347a02fea"
           }
         }
       }
@@ -5800,7 +5800,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
-            "sha256": "30be5138a4438def4ce98f10038158b313d1af37a4a8a4d0152976fe184a3318"
+            "sha256": "17d2a3acfacf9e1c2c6e65aea03b354b1c3f70ad0ba3154e933f6210b7064187"
           }
         }
       }
