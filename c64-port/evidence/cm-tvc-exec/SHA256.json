@@ -3,6 +3,11 @@
   "milestone": "cm-tvc-exec",
   "release": "evidence-cm-tvc-exec",
   "files": {
+    "cm-tvc-exec-assembly-comparison.json": {
+      "sha256": "c82a77f47e6d3df4569bb1eede740c1e8415b9dd4f10dd9097470c0672d504d7",
+      "bytes": 16706,
+      "store": "tree"
+    },
     "cm-tvc-exec-checks.log": {
       "sha256": "b2e6df7ca44b1872cdb1fa706b2c8b6348e2d84e1c3cac3d6a7b462190301e39",
       "bytes": 677,

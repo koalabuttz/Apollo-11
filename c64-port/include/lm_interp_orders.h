@@ -61,6 +61,10 @@ uint8_t lmi_abvalabs(apollo_overlay_state *);
 uint8_t lmi_unit(apollo_overlay_state *);
 void lmi_vxsc(apollo_overlay_state *, const agc_word *k);
 void lmi_vxv(apollo_overlay_state *, const agc_word *k);
+/* MXV 07334 and VXM 07337: matrix (18 words at C(ADDRWD), or `k` when
+ * fixed) times the MPAC vector, to DANZIG. */
+void lmi_mxv(apollo_overlay_state *, const agc_word *k);
+void lmi_vxm(apollo_overlay_state *, const agc_word *k);
 /* VPROJ 07425 ((MPAC.X)X: DOT through PREDOT, then DVXSC) to DANZIG. */
 void lmi_vproj(apollo_overlay_state *, const agc_word *k);
 /* BOV(B) (bank 1): DANZIG, GOTO 06646 (then lmi_goto) or RTB 02450. */
@@ -88,6 +92,7 @@ void lmi_ssp(apollo_overlay_state *, agc_word word);
 void lmi_xad(apollo_overlay_state *);
 void lmi_xsu(apollo_overlay_state *);
 void lmi_lxa(apollo_overlay_state *);
+void lmi_lxc(apollo_overlay_state *);
 void lmi_sxa(apollo_overlay_state *);
 /* AXC (POLISH = the address, CYR selects X1/X2): the complement into the
  * index register, then DANZIG. */
