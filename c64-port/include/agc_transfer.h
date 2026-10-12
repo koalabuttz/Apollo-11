@@ -26,6 +26,13 @@
  * AGC_TRANSFER_NONE for an erasable address. */
 uint16_t agc_fixed_physical(agc_word logical, agc_word fb, agc_word superbank);
 
+/* Key of an erasable continuation (Z below 02000; 01400-01777 under EB):
+ * AGC_TRANSFER_ERASABLE_BASE + the physical erasable address. A file that
+ * stores a TC into erasable for later execution (RESTARTS' GOLOC words)
+ * registers a routine at that key for exactly the words it stores. */
+#define AGC_TRANSFER_ERASABLE_BASE UINT16_C(40960)
+uint16_t agc_erasable_point(agc_word logical, agc_word eb);
+
 typedef struct { uint16_t physical; agc_word word; } agc_site_operand;
 bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
                      uint16_t physical, agc_word *word);
@@ -40,9 +47,10 @@ typedef enum exec_status (*agc_routine)(const struct agc_native_program *, apoll
 typedef struct { uint16_t physical; agc_routine call; } agc_routine_entry;
 typedef struct { const agc_routine_entry *entries; uint16_t count; } agc_routine_table;
 
-/* Basic routines are keyed by the physical address of Z. When Z reaches the
- * program's interpreter fetch point, the continuation is the interpretive
- * routine keyed by the physical address of LOC under BANKSET instead. */
+/* Basic routines are keyed by the physical address of Z (or its erasable
+ * key). When Z reaches the program's interpreter fetch point, the
+ * continuation is the interpretive routine keyed by the physical address of
+ * LOC under BANKSET instead. */
 typedef struct agc_native_program {
     const agc_routine_table *basic; uint8_t basic_count;
     const agc_routine_table *interpretive; uint8_t interpretive_count;
@@ -61,8 +69,9 @@ agc_routine agc_transfer_resolve(const agc_native_program *, const apollo_overla
  * from the program's compiled site table or from erasable memory. */
 bool agc_transfer_operand(const agc_native_program *, const apollo_overlay_state *,
                           agc_word superbank, agc_word q, agc_word *word);
-/* Physical address the trampoline compares against stop: Z, or LOC under
- * BANKSET when Z is the interpreter fetch point. */
+/* Point the trampoline compares against stop: the physical fixed address of
+ * Z, its erasable key when Z is erasable, or LOC under BANKSET when Z is the
+ * interpreter fetch point. */
 uint16_t agc_transfer_point(const agc_native_program *, const apollo_overlay_state *, agc_word superbank);
 /* Trampoline: call the routine at the current point, then the routine at its
  * continuation, and so on, until the point equals stop (the caller's own
