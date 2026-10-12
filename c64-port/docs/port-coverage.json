@@ -1028,7 +1028,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 04 (GOP00FIX, V37, R00TOP00, ISITP00, CANTR00, V37BAD, CHECKTAB/AGAINMM, ISSERVON, CANV37, ROC, POOH, SEUDOP00, GROUPKIL, GOMOD/GOGOPROG, RENDV00, RENDN00, P00FIZZ, KILL20, REV37, STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC, INITSUB/SETMAXER/RAKE) and bank 20 (VAC5STOR) as control-transfer ABI routines (35 entries incl. GOP00FIX, V37, the TEMPFLSH restarts ROC and V37XEQ, the code after R00's EXIT, VAC5STOR and the return after every TC out of the file); constants and the PREMM1, FCADRMM1, DNLADMM1 and FLAGTABL tables compiled from the source listing. R00's interpretive CALL INTSTALL/EXIT (2131-2133) and bank 13 are cm-stateup.",
+          "scope": "Every instruction of bank 04 (GOP00FIX, V37, R00TOP00, ISITP00, CANTR00, V37BAD, CHECKTAB/AGAINMM, ISSERVON, CANV37, ROC, POOH, SEUDOP00, GROUPKIL, GOMOD/GOGOPROG, RENDV00, RENDN00, P00FIZZ, KILL20, REV37, STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC, INITSUB/SETMAXER/RAKE) and bank 20 (VAC5STOR) as control-transfer ABI routines (36 entries incl. GOP00FIX, V37, CANV37 (POSTJUMP from SERVICER207), the TEMPFLSH restarts ROC and V37XEQ, the code after R00's EXIT, VAC5STOR and the return after every TC out of the file); constants and the PREMM1, FCADRMM1, DNLADMM1 and FLAGTABL tables compiled from the source listing. R00's interpretive CALL INTSTALL/EXIT (2131-2133) and bank 13 are cm-stateup.",
           "verification": "docs/CM-V37.md"
         },
         {
@@ -1041,7 +1041,39 @@
           "scope": "Every order pair of bank 13: STATEUP, STATEND and THISVINT, and R00's CALL INTSTALL; DUMMYAD EXIT in bank 04 (2131-2133), as interpretive control-transfer ABI routines keyed by LOC at NEWOPS (12), through the Comanche055 builds of the compiled interpreter paths (SWITCHES, CALL, STCALL, DLOAD, RVQ, EXIT). With cm-fresh-start and cm-v37 every instruction of the file is covered except STARTSIM, which runs only if the STARTSW word is patched.",
           "verification": "docs/CM-STATEUP.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "c64_execution_results": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64.json",
+            "sha256": "1d6cb8c154c6bb7f0754ef613de2044e3a73162c51746b1064d57dba86674bc1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-host.json",
+            "sha256": "8e3de269be7ca076652bc8717d0a5730433c8f042100d72d6eeba5eb28604257"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-comparison.json",
+            "sha256": "453cd26f9acc89de1f295053c25ba579431e3914c04d1e78266edc68468bcec5"
+          },
+          "source_to_native_map": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-source-map.json",
+            "sha256": "a9745e62b7585337ed104b6815d7c8948942518b1a702ac5f92239231e68bc60"
+          }
+        },
+        "external_continuations": [
+          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, which refuse Q = 3 (issue #94))",
+          "RESTARTS (through SWCALL), DUMMYJOB +2, MMDSPLAY, WAITLIST, ALARM, PHASCHNG, NEWMODEA, SPVAC, ENDOFJOB, CHANG2, STOPRATE, SETCOARS",
+          "DOWNFLAG, UPFLAG, CLEARMRK, GOFLASH and its three returns, RELDSP, FALTON, GENTRAN, DELAYJOB, SPSOFF, MASSPROP, RCSDAPON, TVCZAP, UPACTOFF, SETMINDB/SETMAXDB",
+          "Interpretive callees INTEGRV, INTSTALL, SETIFLGS, ENDINT and THISVINT's caller",
+          "Integrated C64 application acceptance"
+        ],
+        "qualification_kind": "native_translation",
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "supported_domain": "every word of the file but STARTSIM (05,2345-2350), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or disagree (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX an index of the 33-word tables; RAKE's return word 2001 or 2146; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; cm_fresh_io / p66_bias_io. Refused before any change: a TS overflow, an ERESTORE repair into a counter, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, a TC MPAC +1 word INITSUB never stores, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io record."
+      }
     },
     {
       "path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
