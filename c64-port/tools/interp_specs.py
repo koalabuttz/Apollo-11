@@ -200,17 +200,26 @@ SPECS = {
         'missions': ('cm',),
         'file': {'cm': 'P40-P47.agc'},
         'base': {'cm': 'cm_p40_p47'},
+        # Its basic code (banks 16, 20, 21, 24, 27, 42) does not fit one C64
+        # diagnostic with interpretive bodies: one function per bank.
+        'basic_split': True,
         # RCSDAPON ends TS FLAGWRD6 / TC Q: the TS skip past the bank's
         # last word needs an overflowing A, which CS OCT60000 / MASK / AD
         # BIT14 never makes.
         'fall_out': True,
         # S40.6's CNTR (E6,1447): +0 or -0 (pitch), -1 (yaw), +1 (restart
         # entry); OUTPUT's INDEX CNTR / CAF BIT11 reads BIT12 at -1.
-        'cells': {'E6,1447': [0, 0o77777, 0o77776, 1],
+        # (Physical E6 words, held under every EBANK: V97ETASK reaches
+        # CSMMASS through TCR E6SETTER from E7.)
+        'cells': {0o3047: [0, 0o77777, 0o77776, 1],
                   # CSMMASS (E6,1474) within the CSM's mass: V97TTASK's AD
                   # 3MDOT never overflows into the PHASCHNG operand.
-                  'E6,1474': CSMMASS},
-        'fixed_tables': {'BIT11': (-1, 0)},
+                  0o3074: CSMMASS,
+                  # NBRCYCLS (E6,1742), S40.13's cycle count, short of
+                  # 037777: the count +1 never overflows into the OCT after
+                  # TC PHASCHNG.
+                  0o3342: list(range(0, 0o37777, 0o111))},
+        'fixed_tables': {'BIT11': (-1, 1)},
         # P41/P40 returns to the call +1 (P41) or, INCR Q, +2 (P40).
         'call_skips': {'P41/P40': 1},
         # OUTPUT's return after FIXDELAY: TEMPR60 (1146) holds the Q its

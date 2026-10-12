@@ -927,7 +927,7 @@ class Compiler:
                 q = ln.phys + i
                 if self.owner.get(q) == 'basic':
                     # Basic words compile into the file's one basic_run.
-                    use = {'routine': 'basic code', 'function': 'basic_run'}
+                    use = {'routine': 'basic code', 'function': self.basic.run_name(q // 1024)}
                 elif q in self.owner:
                     use = {'routine': self.where(self.owner[q]), 'function': 'r%o' % self.owner[q]}
                 elif q in const:
@@ -1109,7 +1109,7 @@ class Compiler:
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
                 c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % fb)
-                c.append(' return basic_run(s,(cm_native_io *)v,%uu);' % phys)
+                c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024), phys))
                 c.append('}')
                 c.append('#endif')
                 continue

@@ -667,6 +667,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, covers=None, cha
                                                     [i for g in c64 for i in g['case_ids']])}
                 if covers else {}),
              **({'c64_host_only': C64_HOST_ONLY} if C64_HOST_ONLY else {}),
+             **({'c64_too_big_cases': [{'case': i, 'point': cases[i]['point']} for i in C64_TOO_BIG]} if C64_TOO_BIG else {}),
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
              'boundary': 'from each routine entry state to NEWOPS with LOC outside the file, an exit of the '
                          'interpreter bodies (%s), or a transfer to an outside basic routine (%s)%s' % (
@@ -735,7 +736,7 @@ def keep_flags(symbol, mask):
     return ['-D%s_KEEP%d=0x%x' % (symbol.upper(), w, (mask >> (60 * w)) & ((1 << 60) - 1)) for w in range(n)]
 
 
-def c64_size(spec, sym, m, mask, text):
+def c64_size(spec, sym, m, mask, text, pick=()):
     """End of the C64 diagnostic's memory (code, data and bss) for one group,
     or None when it does not link or reaches past C64_TOP."""
     d = os.path.join(B, '%s-probe-%s-%x' % (sym, m, mask))
@@ -744,6 +745,7 @@ def c64_size(spec, sym, m, mask, text):
     prg = os.path.join(d, 'probe.prg')
     r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
+                        *GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
                        cwd=R, capture_output=True, text=True)
@@ -785,6 +787,32 @@ def group_text(sym, groups, cases, rows):
 
 
 C64_HOST_ONLY = []   # routines whose runs do not fit one C64 diagnostic
+GROUP_EXTRA = {}     # symbol -> (mask, pick) -> extra C64 group flags
+C64_TOO_BIG = []     # cases whose run alone does not fit one C64 diagnostic
+
+
+def bank_flags(spec, mi, covers):
+    """Spec 'basic_split': -D<SYM>_BANKS for a group, the banks of its
+    basic routines and of every basic word its cases reach (the labels in
+    their covers)."""
+    if not spec.get('basic_split') or covers is None:
+        return None
+    nb = [k[0] // 1024 for k in sorted(mi.cp.basic.nodes)]   # (IRC_COVER numbering)
+    sym = spec['symbol'][mi.m].upper()
+    case_banks = {}
+
+    def of(i):
+        if i not in case_banks:
+            lab = covers[i] & ((1 << 8192) - 1)
+            case_banks[i] = {nb[n] for n in range(len(nb)) if lab >> n & 1}
+        return case_banks[i]
+
+    def flags(mask, pick):
+        banks = {p // 1024 for k, p in enumerate(mi.points) if mask >> k & 1 and mi.kinds[p] == 'b'}
+        for i in pick:
+            banks |= of(i)
+        return ['-D%s_BANKS=0x%xull' % (sym, sum(1 << b for b in banks))]
+    return flags
 
 
 def freeze_c64(spec, sym, missions, cases, rows, visits, covers=None, chan=()):
@@ -793,77 +821,99 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, covers=None, chan=()):
     the group (fewest edits first). Writes tests/<id>_c64_vectors.h and
     tools/mk/<id>.groups; returns the groups."""
     per = spec.get('c64_per_point', 2)
-    groups = []
-    for cm, mi in enumerate(missions):
-        if mi.m not in spec['missions']:
-            continue
-        bit = {p: 1 << k for k, p in enumerate(mi.points)}
-        KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
-        need = {}
-        got = 0
-        for p in mi.points:
-            mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan),
-                          key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
-            if covers is None:
-                need[p] = mine[:per]
+
+    def select(excluded):
+        groups = []
+        for cm, mi in enumerate(missions):
+            if mi.m not in spec['missions']:
                 continue
-            # Greedy: the case adding the most labels and edges no case
-            # taken so far (this routine's or an earlier one's) reaches,
-            # until the routine's cases add none (at least one case).
-            pick_p = []
-            while True:
-                best = max(mine, key=lambda i: bin(covers[i] & ~got).count('1'), default=None)
-                if best is None or (pick_p and not covers[best] & ~got):
-                    break
-                pick_p.append(best)
-                got |= covers[best]
-                mine = [i for i in mine if i != best]
-            need[p] = pick_p
-        # Pack the routines' cases into groups in routine order, a routine's
-        # cases together while they fit, else case by case.
-        mask, pick = 0, []
-        for p in mi.points:
-            units = [need[p]]
-            want = 0
-            for i in need[p]:
-                want |= visits[i]
-            if covers is None:
-                trial = mask | want
-                tp = pick + need[p]
-                if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
-                    if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, need[p])], cases, rows)) is None:
-                        # The routine's whole run (with every routine it reaches)
-                        # does not fit one diagnostic: its cases stay host-only.
-                        C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
-                        continue
-                    groups.append((mi.m, mask, pick))
-                    mask, pick = want, list(need[p])
-                else:
-                    mask, pick = trial, tp
-                continue
-            if len(need[p]) > 1 and c64_size(spec, sym, mi.m, want,
-                                             group_text(sym, [(mi.m, want, need[p])], cases, rows)) is None:
-                units = [[i] for i in need[p]]
-            for u in units:
+            bit = {p: 1 << k for k, p in enumerate(mi.points)}
+            KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
+            bf = bank_flags(spec, mi, covers)
+            if bf:
+                GROUP_EXTRA[sym] = bf
+            need = {}
+            got = 0
+            for p in mi.points:
+                mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan
+                               and i not in excluded),
+                              key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
+                if covers is None:
+                    need[p] = mine[:per]
+                    continue
+                # Greedy: the case adding the most labels and edges no case
+                # taken so far (this routine's or an earlier one's) reaches,
+                # until the routine's cases add none (at least one case).
+                pick_p = []
+                while True:
+                    best = max(mine, key=lambda i: bin(covers[i] & ~got).count('1'), default=None)
+                    if best is None or (pick_p and not covers[best] & ~got):
+                        break
+                    pick_p.append(best)
+                    got |= covers[best]
+                    mine = [i for i in mine if i != best]
+                need[p] = pick_p
+            # Pack the routines' cases into groups in routine order, a routine's
+            # cases together while they fit, else case by case.
+            mask, pick = 0, []
+            for p in mi.points:
+                units = [need[p]]
                 want = 0
-                for i in u:
+                for i in need[p]:
                     want |= visits[i]
-                trial = mask | want
-                tp = pick + u
-                if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
-                    groups.append((mi.m, mask, pick))
-                    mask, pick = want, list(u)
-                else:
-                    mask, pick = trial, tp
-        groups.append((mi.m, mask, pick))
-    for m, mask, pick in groups:
-        # Every case of a group whose run stays in it, so later routines'
-        # closures don't drop earlier cases.
-        assert all(visits[i] & ~mask == 0 for i in pick)
-        if c64_size(spec, sym, m, mask, group_text(sym, [(m, mask, pick)], cases, rows)) is None:
-            if os.environ.get('IRC_C64_DEBUG'):
-                sys.stderr.write('group %s mask %x picks %s edits %s\n' % (m, mask, [cases[i]['point'] for i in pick], [len(cases[i]['edits']) for i in pick]))
-            sys.exit('a single routine group of %s does not fit the C64' % m)
+                if covers is None:
+                    trial = mask | want
+                    tp = pick + need[p]
+                    if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows), tp) is None:
+                        if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, need[p])], cases, rows), need[p]) is None:
+                            # The routine's whole run (with every routine it reaches)
+                            # does not fit one diagnostic: its cases stay host-only.
+                            C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
+                            continue
+                        groups.append((mi.m, mask, pick))
+                        mask, pick = want, list(need[p])
+                    else:
+                        mask, pick = trial, tp
+                    continue
+                if len(need[p]) > 1 and c64_size(spec, sym, mi.m, want,
+                                                 group_text(sym, [(mi.m, want, need[p])], cases, rows), need[p]) is None:
+                    units = [[i] for i in need[p]]
+                for u in units:
+                    want = 0
+                    for i in u:
+                        want |= visits[i]
+                    trial = mask | want
+                    tp = pick + u
+                    if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows), tp) is None:
+                        groups.append((mi.m, mask, pick))
+                        mask, pick = want, list(u)
+                    else:
+                        mask, pick = trial, tp
+            groups.append((mi.m, mask, pick))
+        return groups
+
+    # A case whose run alone does not fit one diagnostic (its routines,
+    # bodies and banks) is left to the host; selection runs again without it.
+    excluded = set()
+    while True:
+        groups = select(excluded)
+        bad = None
+        for m, mask, pick in groups:
+            # Every case of a group whose run stays in it, so later routines'
+            # closures don't drop earlier cases.
+            assert all(visits[i] & ~mask == 0 for i in pick)
+            if c64_size(spec, sym, m, mask, group_text(sym, [(m, mask, pick)], cases, rows), pick) is None:
+                if os.environ.get('IRC_C64_DEBUG'):
+                    sys.stderr.write('group %s mask %x picks %s edits %s\n' % (m, mask, [cases[i]['point'] for i in pick], [len(cases[i]['edits']) for i in pick]))
+                if len(pick) != 1:
+                    sys.exit('a group of %s does not fit the C64' % m)
+                bad = pick[0]
+                break
+        if bad is None:
+            break
+        sys.stderr.write('case %d (%s) does not fit one C64 diagnostic: host only\n' % (bad, cases[bad]['point']))
+        excluded.add(bad)
+        C64_TOO_BIG.append(bad)
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]
@@ -872,7 +922,8 @@ def freeze_c64(spec, sym, missions, cases, rows, visits, covers=None, chan=()):
     for g, (m, mask, pick) in enumerate(groups, 1):
         mk.append('%s_GROUP_MISSION_%d = %s' % (v, g, m))
         mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
-            v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask))))
+            v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask)
+                                         + GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick), 'case_ids': list(pick)} for m, mask, pick in groups]
 

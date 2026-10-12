@@ -1,7 +1,0 @@
-PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-a65fd2af567dbf300e44018b64f7496951d8cc6213e9e2d0552f0a8d14f9762b  build/cm-auto-man-1.prg
-
-$ make vice-cm-auto-man
-for p in build/cm-auto-man-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-auto-man-1.prg: 24 checks, 0 failures
-exit 0

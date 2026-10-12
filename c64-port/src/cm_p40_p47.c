@@ -141,13 +141,13 @@ static MAYBE_UNUSED void ch_ror(apollo_overlay_state *s,cm_native_io *io,unsigne
 static MAYBE_UNUSED void ch_wor(apollo_overlay_state *s,cm_native_io *io,unsigned k){agc_word v=(agc_word)(oc16(W[0])|*chan(io,k));W[0]=agc_extend(v);ch_out(io,k,v);}
 static MAYBE_UNUSED void ch_rxor(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])^*chan(io,k)));}
 /* Fixed words the file reads under INDEX (rope words). */
-static const agc_word T5004[2]={004000,002000}; /* 02,3004 BIT11-1 .. +0 */
+static const agc_word T5004[3]={004000,002000,001000}; /* 02,3004 BIT11-1 .. +1 */
 /* A fixed word read under INDEX (logical e under this bank), from the
  * tables above: 0 outside them. */
 static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){
  unsigned p;(void)s;
  if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=016u*1024u+e-02000u;
- if(p>=2564u&&p<=2565u){*k=T5004[p-2564u];return 1;}
+ if(p>=2564u&&p<=2566u){*k=T5004[p-2564u];return 1;}
  (void)p;(void)k;return 0;
 }
 /* Host coverage builds (tools/interp_routine_differential.py --freeze)
@@ -159,10 +159,63 @@ void irc_cover(unsigned n);
 #else
 #define IRC_COVER(n) ((void)0)
 #endif
-/* Every basic word of the file. */
-static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+#ifndef CM_P40_P47_BANKS
+#define CM_P40_P47_BANKS 0xffffffffffffffffull
+#endif
+#define CM_P40_P47_HAS(b) ((CM_P40_P47_BANKS >> (b)) & 1u)
+#if CM_P40_P47_HAS(016)
+static enum exec_status basic_run_16(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_P40_P47_HAS(020)
+static enum exec_status basic_run_20(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_P40_P47_HAS(021)
+static enum exec_status basic_run_21(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_P40_P47_HAS(024)
+static enum exec_status basic_run_24(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_P40_P47_HAS(027)
+static enum exec_status basic_run_27(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_P40_P47_HAS(042)
+static enum exec_status basic_run_42(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_P40_P47_HAS(016)
+#define CM_P40_P47_RUN_16 basic_run_16
+#else
+#define CM_P40_P47_RUN_16(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_P40_P47_HAS(020)
+#define CM_P40_P47_RUN_20 basic_run_20
+#else
+#define CM_P40_P47_RUN_20(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_P40_P47_HAS(021)
+#define CM_P40_P47_RUN_21 basic_run_21
+#else
+#define CM_P40_P47_RUN_21(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_P40_P47_HAS(024)
+#define CM_P40_P47_RUN_24 basic_run_24
+#else
+#define CM_P40_P47_RUN_24(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_P40_P47_HAS(027)
+#define CM_P40_P47_RUN_27 basic_run_27
+#else
+#define CM_P40_P47_RUN_27(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_P40_P47_HAS(042)
+#define CM_P40_P47_RUN_42 basic_run_42
+#else
+#define CM_P40_P47_RUN_42(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_P40_P47_HAS(016)
+/* The basic words of bank 16. */
+static enum exec_status basic_run_16(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
  long ix=0,e=0;uint16_t p;
- (void)ix;(void)e;
+ (void)ix;(void)e;(void)p;
  switch(at){
  case 14455u:goto B34167;
  case 14457u:goto B34171;
@@ -180,158 +233,9 @@ static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native
  case 14622u:goto B34436;
  case 14666u:goto B34512;
  case 14667u:goto B34513;
+ case 14672u:goto B34520;
  case 14674u:goto B34522;
  case 14676u:goto B34524;
- case 16518u:goto B40206;
- case 16525u:goto B40215;
- case 16527u:goto B40217;
- case 16536u:goto B40230;
- case 16545u:goto B40241;
- case 16554u:goto B40252;
- case 16564u:goto B40264;
- case 16569u:goto B40271;
- case 16599u:goto B40327;
- case 16602u:goto B40332;
- case 16615u:goto B40347;
- case 16704u:goto B40500;
- case 17420u:goto B42014;
- case 17428u:goto B42024;
- case 17429u:goto B42025;
- case 20539u:goto B50073;
- case 20541u:goto B50075;
- case 20554u:goto B50112;
- case 20556u:goto B50114;
- case 20563u:goto B50123;
- case 20567u:goto B50127;
- case 20571u:goto B50133;
- case 20582u:goto B50146;
- case 20588u:goto B50154;
- case 20611u:goto B50203;
- case 20612u:goto B50204;
- case 20620u:goto B50214;
- case 20633u:goto B50231;
- case 20635u:goto B50233;
- case 20636u:goto B50234;
- case 20638u:goto B50236;
- case 20646u:goto B50246;
- case 20649u:goto B50251;
- case 20660u:goto B50264;
- case 20663u:goto B50267;
- case 20666u:goto B50272;
- case 20676u:goto B50304;
- case 20688u:goto B50320;
- case 20700u:goto B50334;
- case 20704u:goto B50340;
- case 20706u:goto B50342;
- case 20713u:goto B50351;
- case 20719u:goto B50357;
- case 20726u:goto B50366;
- case 20737u:goto B50401;
- case 20743u:goto B50407;
- case 20767u:goto B50437;
- case 20771u:goto B50443;
- case 20777u:goto B50451;
- case 20780u:goto B50454;
- case 20787u:goto B50463;
- case 20789u:goto B50465;
- case 20792u:goto B50470;
- case 20797u:goto B50475;
- case 20799u:goto B50477;
- case 20800u:goto B50500;
- case 20807u:goto B50507;
- case 20809u:goto B50511;
- case 20821u:goto B50525;
- case 20823u:goto B50527;
- case 20827u:goto B50533;
- case 20828u:goto B50534;
- case 20834u:goto B50542;
- case 20836u:goto B50544;
- case 20839u:goto B50547;
- case 20842u:goto B50552;
- case 20843u:goto B50553;
- case 20844u:goto B50554;
- case 20845u:goto B50555;
- case 20853u:goto B50565;
- case 20856u:goto B50570;
- case 20860u:goto B50574;
- case 20864u:goto B50600;
- case 20869u:goto B50605;
- case 20873u:goto B50611;
- case 20874u:goto B50612;
- case 20885u:goto B50625;
- case 20912u:goto B50660;
- case 20914u:goto B50662;
- case 20932u:goto B50704;
- case 20939u:goto B50713;
- case 20971u:goto B50753;
- case 20975u:goto B50757;
- case 20982u:goto B50766;
- case 20988u:goto B50774;
- case 20992u:goto B51000;
- case 20994u:goto B51002;
- case 20997u:goto B51005;
- case 20999u:goto B51007;
- case 21002u:goto B51012;
- case 21006u:goto B51016;
- case 21007u:goto B51017;
- case 21049u:goto B51071;
- case 21072u:goto B51120;
- case 21077u:goto B51125;
- case 21101u:goto B51155;
- case 21105u:goto B51161;
- case 21108u:goto B51164;
- case 21125u:goto B51205;
- case 21129u:goto B51211;
- case 21149u:goto B51235;
- case 21162u:goto B51252;
- case 21165u:goto B51255;
- case 21167u:goto B51257;
- case 21168u:goto B51260;
- case 21174u:goto B51266;
- case 21185u:goto B51301;
- case 21197u:goto B51315;
- case 21204u:goto B51324;
- case 21205u:goto B51325;
- case 21209u:goto B51331;
- case 21210u:goto B51332;
- case 21218u:goto B51342;
- case 21226u:goto B51352;
- case 21232u:goto B51360;
- case 21238u:goto B51366;
- case 21250u:goto B51402;
- case 21254u:goto B51406;
- case 21277u:goto B51435;
- case 21280u:goto B51440;
- case 21281u:goto B51441;
- case 21289u:goto B51451;
- case 21292u:goto B51454;
- case 21294u:goto B51456;
- case 21296u:goto B51460;
- case 21300u:goto B51464;
- case 21307u:goto B51473;
- case 21313u:goto B51501;
- case 21315u:goto B51503;
- case 21317u:goto B51505;
- case 21319u:goto B51507;
- case 21321u:goto B51511;
- case 21323u:goto B51513;
- case 21331u:goto B51523;
- case 21341u:goto B51535;
- case 21344u:goto B51540;
- case 21346u:goto B51542;
- case 21350u:goto B51546;
- case 21352u:goto B51550;
- case 21356u:goto B51554;
- case 21362u:goto B51562;
- case 21367u:goto B51567;
- case 21371u:goto B51573;
- case 23948u:goto B56614;
- case 23950u:goto B56616;
- case 35718u:goto B105606;
- case 35735u:goto B105627;
- case 35742u:goto B105636;
- case 35744u:goto B105640;
- case 35747u:goto B105643;
  default:return EXEC_OUT_OF_SCOPE;
  }
 B34167:
@@ -536,6 +440,233 @@ B34525c:
  IRC_COVER(40u);
  /* 16,2525 NOTADDUL TC INTPRET */
  ai_tc(s,002526u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+dispatch:
+ p=agc_fixed_physical(W[5],W[4],io->superbank);
+ switch(p){
+ case 14455u:goto B34167;
+ case 14457u:goto B34171;
+ case 14472u:goto B34210;
+ case 14530u:goto B34302;
+ case 14545u:goto B34321;
+ case 14548u:goto B34324;
+ case 14582u:goto B34366;
+ case 14584u:goto B34370;
+ case 14592u:goto B34400;
+ case 14596u:goto B34404;
+ case 14597u:goto B34405;
+ case 14606u:goto B34416;
+ case 14615u:goto B34427;
+ case 14622u:goto B34436;
+ case 14666u:goto B34512;
+ case 14667u:goto B34513;
+ case 14672u:goto B34520;
+ case 14674u:goto B34522;
+ case 14676u:goto B34524;
+ case 16518u:return CM_P40_P47_RUN_20(s,io,16518u);
+ case 16525u:return CM_P40_P47_RUN_20(s,io,16525u);
+ case 16527u:return CM_P40_P47_RUN_20(s,io,16527u);
+ case 16536u:return CM_P40_P47_RUN_20(s,io,16536u);
+ case 16545u:return CM_P40_P47_RUN_20(s,io,16545u);
+ case 16554u:return CM_P40_P47_RUN_20(s,io,16554u);
+ case 16564u:return CM_P40_P47_RUN_20(s,io,16564u);
+ case 16569u:return CM_P40_P47_RUN_20(s,io,16569u);
+ case 16579u:return CM_P40_P47_RUN_20(s,io,16579u);
+ case 16581u:return CM_P40_P47_RUN_20(s,io,16581u);
+ case 16583u:return CM_P40_P47_RUN_20(s,io,16583u);
+ case 16599u:return CM_P40_P47_RUN_20(s,io,16599u);
+ case 16602u:return CM_P40_P47_RUN_20(s,io,16602u);
+ case 16615u:return CM_P40_P47_RUN_20(s,io,16615u);
+ case 16704u:return CM_P40_P47_RUN_20(s,io,16704u);
+ case 17420u:return CM_P40_P47_RUN_21(s,io,17420u);
+ case 17424u:return CM_P40_P47_RUN_21(s,io,17424u);
+ case 17428u:return CM_P40_P47_RUN_21(s,io,17428u);
+ case 17429u:return CM_P40_P47_RUN_21(s,io,17429u);
+ case 20539u:return CM_P40_P47_RUN_24(s,io,20539u);
+ case 20541u:return CM_P40_P47_RUN_24(s,io,20541u);
+ case 20554u:return CM_P40_P47_RUN_24(s,io,20554u);
+ case 20556u:return CM_P40_P47_RUN_24(s,io,20556u);
+ case 20563u:return CM_P40_P47_RUN_24(s,io,20563u);
+ case 20564u:return CM_P40_P47_RUN_24(s,io,20564u);
+ case 20567u:return CM_P40_P47_RUN_24(s,io,20567u);
+ case 20571u:return CM_P40_P47_RUN_24(s,io,20571u);
+ case 20572u:return CM_P40_P47_RUN_24(s,io,20572u);
+ case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
+ case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
+ case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
+ case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
+ case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
+ case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
+ case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
+ case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
+ case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
+ case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
+ case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
+ case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
+ case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
+ case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
+ case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
+ case 20706u:return CM_P40_P47_RUN_24(s,io,20706u);
+ case 20713u:return CM_P40_P47_RUN_24(s,io,20713u);
+ case 20719u:return CM_P40_P47_RUN_24(s,io,20719u);
+ case 20726u:return CM_P40_P47_RUN_24(s,io,20726u);
+ case 20737u:return CM_P40_P47_RUN_24(s,io,20737u);
+ case 20743u:return CM_P40_P47_RUN_24(s,io,20743u);
+ case 20744u:return CM_P40_P47_RUN_24(s,io,20744u);
+ case 20767u:return CM_P40_P47_RUN_24(s,io,20767u);
+ case 20771u:return CM_P40_P47_RUN_24(s,io,20771u);
+ case 20777u:return CM_P40_P47_RUN_24(s,io,20777u);
+ case 20780u:return CM_P40_P47_RUN_24(s,io,20780u);
+ case 20787u:return CM_P40_P47_RUN_24(s,io,20787u);
+ case 20789u:return CM_P40_P47_RUN_24(s,io,20789u);
+ case 20792u:return CM_P40_P47_RUN_24(s,io,20792u);
+ case 20797u:return CM_P40_P47_RUN_24(s,io,20797u);
+ case 20799u:return CM_P40_P47_RUN_24(s,io,20799u);
+ case 20800u:return CM_P40_P47_RUN_24(s,io,20800u);
+ case 20807u:return CM_P40_P47_RUN_24(s,io,20807u);
+ case 20809u:return CM_P40_P47_RUN_24(s,io,20809u);
+ case 20821u:return CM_P40_P47_RUN_24(s,io,20821u);
+ case 20823u:return CM_P40_P47_RUN_24(s,io,20823u);
+ case 20827u:return CM_P40_P47_RUN_24(s,io,20827u);
+ case 20828u:return CM_P40_P47_RUN_24(s,io,20828u);
+ case 20834u:return CM_P40_P47_RUN_24(s,io,20834u);
+ case 20836u:return CM_P40_P47_RUN_24(s,io,20836u);
+ case 20839u:return CM_P40_P47_RUN_24(s,io,20839u);
+ case 20842u:return CM_P40_P47_RUN_24(s,io,20842u);
+ case 20843u:return CM_P40_P47_RUN_24(s,io,20843u);
+ case 20844u:return CM_P40_P47_RUN_24(s,io,20844u);
+ case 20845u:return CM_P40_P47_RUN_24(s,io,20845u);
+ case 20846u:return CM_P40_P47_RUN_24(s,io,20846u);
+ case 20847u:return CM_P40_P47_RUN_24(s,io,20847u);
+ case 20853u:return CM_P40_P47_RUN_24(s,io,20853u);
+ case 20856u:return CM_P40_P47_RUN_24(s,io,20856u);
+ case 20860u:return CM_P40_P47_RUN_24(s,io,20860u);
+ case 20864u:return CM_P40_P47_RUN_24(s,io,20864u);
+ case 20869u:return CM_P40_P47_RUN_24(s,io,20869u);
+ case 20873u:return CM_P40_P47_RUN_24(s,io,20873u);
+ case 20874u:return CM_P40_P47_RUN_24(s,io,20874u);
+ case 20885u:return CM_P40_P47_RUN_24(s,io,20885u);
+ case 20912u:return CM_P40_P47_RUN_24(s,io,20912u);
+ case 20914u:return CM_P40_P47_RUN_24(s,io,20914u);
+ case 20932u:return CM_P40_P47_RUN_24(s,io,20932u);
+ case 20939u:return CM_P40_P47_RUN_24(s,io,20939u);
+ case 20943u:return CM_P40_P47_RUN_24(s,io,20943u);
+ case 20944u:return CM_P40_P47_RUN_24(s,io,20944u);
+ case 20959u:return CM_P40_P47_RUN_24(s,io,20959u);
+ case 20971u:return CM_P40_P47_RUN_24(s,io,20971u);
+ case 20975u:return CM_P40_P47_RUN_24(s,io,20975u);
+ case 20979u:return CM_P40_P47_RUN_24(s,io,20979u);
+ case 20982u:return CM_P40_P47_RUN_24(s,io,20982u);
+ case 20983u:return CM_P40_P47_RUN_24(s,io,20983u);
+ case 20988u:return CM_P40_P47_RUN_24(s,io,20988u);
+ case 20989u:return CM_P40_P47_RUN_24(s,io,20989u);
+ case 20992u:return CM_P40_P47_RUN_24(s,io,20992u);
+ case 20994u:return CM_P40_P47_RUN_24(s,io,20994u);
+ case 20995u:return CM_P40_P47_RUN_24(s,io,20995u);
+ case 20997u:return CM_P40_P47_RUN_24(s,io,20997u);
+ case 20999u:return CM_P40_P47_RUN_24(s,io,20999u);
+ case 21000u:return CM_P40_P47_RUN_24(s,io,21000u);
+ case 21002u:return CM_P40_P47_RUN_24(s,io,21002u);
+ case 21006u:return CM_P40_P47_RUN_24(s,io,21006u);
+ case 21007u:return CM_P40_P47_RUN_24(s,io,21007u);
+ case 21049u:return CM_P40_P47_RUN_24(s,io,21049u);
+ case 21072u:return CM_P40_P47_RUN_24(s,io,21072u);
+ case 21077u:return CM_P40_P47_RUN_24(s,io,21077u);
+ case 21101u:return CM_P40_P47_RUN_24(s,io,21101u);
+ case 21105u:return CM_P40_P47_RUN_24(s,io,21105u);
+ case 21108u:return CM_P40_P47_RUN_24(s,io,21108u);
+ case 21125u:return CM_P40_P47_RUN_24(s,io,21125u);
+ case 21129u:return CM_P40_P47_RUN_24(s,io,21129u);
+ case 21141u:return CM_P40_P47_RUN_24(s,io,21141u);
+ case 21149u:return CM_P40_P47_RUN_24(s,io,21149u);
+ case 21162u:return CM_P40_P47_RUN_24(s,io,21162u);
+ case 21165u:return CM_P40_P47_RUN_24(s,io,21165u);
+ case 21167u:return CM_P40_P47_RUN_24(s,io,21167u);
+ case 21168u:return CM_P40_P47_RUN_24(s,io,21168u);
+ case 21174u:return CM_P40_P47_RUN_24(s,io,21174u);
+ case 21185u:return CM_P40_P47_RUN_24(s,io,21185u);
+ case 21197u:return CM_P40_P47_RUN_24(s,io,21197u);
+ case 21204u:return CM_P40_P47_RUN_24(s,io,21204u);
+ case 21205u:return CM_P40_P47_RUN_24(s,io,21205u);
+ case 21209u:return CM_P40_P47_RUN_24(s,io,21209u);
+ case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
+ case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
+ case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
+ case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
+ case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
+ case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
+ case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
+ case 21289u:return CM_P40_P47_RUN_24(s,io,21289u);
+ case 21290u:return CM_P40_P47_RUN_24(s,io,21290u);
+ case 21292u:return CM_P40_P47_RUN_24(s,io,21292u);
+ case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
+ case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
+ case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
+ case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
+ case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
+ case 21317u:return CM_P40_P47_RUN_24(s,io,21317u);
+ case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
+ case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
+ case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
+ case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
+ case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
+ case 21342u:return CM_P40_P47_RUN_24(s,io,21342u);
+ case 21344u:return CM_P40_P47_RUN_24(s,io,21344u);
+ case 21346u:return CM_P40_P47_RUN_24(s,io,21346u);
+ case 21350u:return CM_P40_P47_RUN_24(s,io,21350u);
+ case 21352u:return CM_P40_P47_RUN_24(s,io,21352u);
+ case 21356u:return CM_P40_P47_RUN_24(s,io,21356u);
+ case 21362u:return CM_P40_P47_RUN_24(s,io,21362u);
+ case 21367u:return CM_P40_P47_RUN_24(s,io,21367u);
+ case 21371u:return CM_P40_P47_RUN_24(s,io,21371u);
+ case 23948u:return CM_P40_P47_RUN_27(s,io,23948u);
+ case 23950u:return CM_P40_P47_RUN_27(s,io,23950u);
+ case 35718u:return CM_P40_P47_RUN_42(s,io,35718u);
+ case 35727u:return CM_P40_P47_RUN_42(s,io,35727u);
+ case 35728u:return CM_P40_P47_RUN_42(s,io,35728u);
+ case 35729u:return CM_P40_P47_RUN_42(s,io,35729u);
+ case 35730u:return CM_P40_P47_RUN_42(s,io,35730u);
+ case 35735u:return CM_P40_P47_RUN_42(s,io,35735u);
+ case 35742u:return CM_P40_P47_RUN_42(s,io,35742u);
+ case 35744u:return CM_P40_P47_RUN_42(s,io,35744u);
+ case 35747u:return CM_P40_P47_RUN_42(s,io,35747u);
+ default:return EXEC_OK;
+ }
+}
+#endif
+#if CM_P40_P47_HAS(020)
+/* The basic words of bank 20. */
+static enum exec_status basic_run_20(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;
+ switch(at){
+ case 16518u:goto B40206;
+ case 16525u:goto B40215;
+ case 16527u:goto B40217;
+ case 16536u:goto B40230;
+ case 16545u:goto B40241;
+ case 16554u:goto B40252;
+ case 16564u:goto B40264;
+ case 16569u:goto B40271;
+ case 16579u:goto B40303;
+ case 16581u:goto B40305;
+ case 16583u:goto B40307;
+ case 16599u:goto B40327;
+ case 16602u:goto B40332;
+ case 16615u:goto B40347;
+ case 16704u:goto B40500;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
 B40206:
  IRC_COVER(41u);
  /* 20,2206 CAF POSMAX */
@@ -1483,6 +1614,222 @@ B40524c:
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+dispatch:
+ p=agc_fixed_physical(W[5],W[4],io->superbank);
+ switch(p){
+ case 14455u:return CM_P40_P47_RUN_16(s,io,14455u);
+ case 14457u:return CM_P40_P47_RUN_16(s,io,14457u);
+ case 14472u:return CM_P40_P47_RUN_16(s,io,14472u);
+ case 14530u:return CM_P40_P47_RUN_16(s,io,14530u);
+ case 14545u:return CM_P40_P47_RUN_16(s,io,14545u);
+ case 14548u:return CM_P40_P47_RUN_16(s,io,14548u);
+ case 14582u:return CM_P40_P47_RUN_16(s,io,14582u);
+ case 14584u:return CM_P40_P47_RUN_16(s,io,14584u);
+ case 14592u:return CM_P40_P47_RUN_16(s,io,14592u);
+ case 14596u:return CM_P40_P47_RUN_16(s,io,14596u);
+ case 14597u:return CM_P40_P47_RUN_16(s,io,14597u);
+ case 14606u:return CM_P40_P47_RUN_16(s,io,14606u);
+ case 14615u:return CM_P40_P47_RUN_16(s,io,14615u);
+ case 14622u:return CM_P40_P47_RUN_16(s,io,14622u);
+ case 14666u:return CM_P40_P47_RUN_16(s,io,14666u);
+ case 14667u:return CM_P40_P47_RUN_16(s,io,14667u);
+ case 14672u:return CM_P40_P47_RUN_16(s,io,14672u);
+ case 14674u:return CM_P40_P47_RUN_16(s,io,14674u);
+ case 14676u:return CM_P40_P47_RUN_16(s,io,14676u);
+ case 16518u:goto B40206;
+ case 16525u:goto B40215;
+ case 16527u:goto B40217;
+ case 16536u:goto B40230;
+ case 16545u:goto B40241;
+ case 16554u:goto B40252;
+ case 16564u:goto B40264;
+ case 16569u:goto B40271;
+ case 16579u:goto B40303;
+ case 16581u:goto B40305;
+ case 16583u:goto B40307;
+ case 16599u:goto B40327;
+ case 16602u:goto B40332;
+ case 16615u:goto B40347;
+ case 16704u:goto B40500;
+ case 17420u:return CM_P40_P47_RUN_21(s,io,17420u);
+ case 17424u:return CM_P40_P47_RUN_21(s,io,17424u);
+ case 17428u:return CM_P40_P47_RUN_21(s,io,17428u);
+ case 17429u:return CM_P40_P47_RUN_21(s,io,17429u);
+ case 20539u:return CM_P40_P47_RUN_24(s,io,20539u);
+ case 20541u:return CM_P40_P47_RUN_24(s,io,20541u);
+ case 20554u:return CM_P40_P47_RUN_24(s,io,20554u);
+ case 20556u:return CM_P40_P47_RUN_24(s,io,20556u);
+ case 20563u:return CM_P40_P47_RUN_24(s,io,20563u);
+ case 20564u:return CM_P40_P47_RUN_24(s,io,20564u);
+ case 20567u:return CM_P40_P47_RUN_24(s,io,20567u);
+ case 20571u:return CM_P40_P47_RUN_24(s,io,20571u);
+ case 20572u:return CM_P40_P47_RUN_24(s,io,20572u);
+ case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
+ case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
+ case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
+ case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
+ case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
+ case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
+ case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
+ case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
+ case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
+ case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
+ case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
+ case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
+ case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
+ case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
+ case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
+ case 20706u:return CM_P40_P47_RUN_24(s,io,20706u);
+ case 20713u:return CM_P40_P47_RUN_24(s,io,20713u);
+ case 20719u:return CM_P40_P47_RUN_24(s,io,20719u);
+ case 20726u:return CM_P40_P47_RUN_24(s,io,20726u);
+ case 20737u:return CM_P40_P47_RUN_24(s,io,20737u);
+ case 20743u:return CM_P40_P47_RUN_24(s,io,20743u);
+ case 20744u:return CM_P40_P47_RUN_24(s,io,20744u);
+ case 20767u:return CM_P40_P47_RUN_24(s,io,20767u);
+ case 20771u:return CM_P40_P47_RUN_24(s,io,20771u);
+ case 20777u:return CM_P40_P47_RUN_24(s,io,20777u);
+ case 20780u:return CM_P40_P47_RUN_24(s,io,20780u);
+ case 20787u:return CM_P40_P47_RUN_24(s,io,20787u);
+ case 20789u:return CM_P40_P47_RUN_24(s,io,20789u);
+ case 20792u:return CM_P40_P47_RUN_24(s,io,20792u);
+ case 20797u:return CM_P40_P47_RUN_24(s,io,20797u);
+ case 20799u:return CM_P40_P47_RUN_24(s,io,20799u);
+ case 20800u:return CM_P40_P47_RUN_24(s,io,20800u);
+ case 20807u:return CM_P40_P47_RUN_24(s,io,20807u);
+ case 20809u:return CM_P40_P47_RUN_24(s,io,20809u);
+ case 20821u:return CM_P40_P47_RUN_24(s,io,20821u);
+ case 20823u:return CM_P40_P47_RUN_24(s,io,20823u);
+ case 20827u:return CM_P40_P47_RUN_24(s,io,20827u);
+ case 20828u:return CM_P40_P47_RUN_24(s,io,20828u);
+ case 20834u:return CM_P40_P47_RUN_24(s,io,20834u);
+ case 20836u:return CM_P40_P47_RUN_24(s,io,20836u);
+ case 20839u:return CM_P40_P47_RUN_24(s,io,20839u);
+ case 20842u:return CM_P40_P47_RUN_24(s,io,20842u);
+ case 20843u:return CM_P40_P47_RUN_24(s,io,20843u);
+ case 20844u:return CM_P40_P47_RUN_24(s,io,20844u);
+ case 20845u:return CM_P40_P47_RUN_24(s,io,20845u);
+ case 20846u:return CM_P40_P47_RUN_24(s,io,20846u);
+ case 20847u:return CM_P40_P47_RUN_24(s,io,20847u);
+ case 20853u:return CM_P40_P47_RUN_24(s,io,20853u);
+ case 20856u:return CM_P40_P47_RUN_24(s,io,20856u);
+ case 20860u:return CM_P40_P47_RUN_24(s,io,20860u);
+ case 20864u:return CM_P40_P47_RUN_24(s,io,20864u);
+ case 20869u:return CM_P40_P47_RUN_24(s,io,20869u);
+ case 20873u:return CM_P40_P47_RUN_24(s,io,20873u);
+ case 20874u:return CM_P40_P47_RUN_24(s,io,20874u);
+ case 20885u:return CM_P40_P47_RUN_24(s,io,20885u);
+ case 20912u:return CM_P40_P47_RUN_24(s,io,20912u);
+ case 20914u:return CM_P40_P47_RUN_24(s,io,20914u);
+ case 20932u:return CM_P40_P47_RUN_24(s,io,20932u);
+ case 20939u:return CM_P40_P47_RUN_24(s,io,20939u);
+ case 20943u:return CM_P40_P47_RUN_24(s,io,20943u);
+ case 20944u:return CM_P40_P47_RUN_24(s,io,20944u);
+ case 20959u:return CM_P40_P47_RUN_24(s,io,20959u);
+ case 20971u:return CM_P40_P47_RUN_24(s,io,20971u);
+ case 20975u:return CM_P40_P47_RUN_24(s,io,20975u);
+ case 20979u:return CM_P40_P47_RUN_24(s,io,20979u);
+ case 20982u:return CM_P40_P47_RUN_24(s,io,20982u);
+ case 20983u:return CM_P40_P47_RUN_24(s,io,20983u);
+ case 20988u:return CM_P40_P47_RUN_24(s,io,20988u);
+ case 20989u:return CM_P40_P47_RUN_24(s,io,20989u);
+ case 20992u:return CM_P40_P47_RUN_24(s,io,20992u);
+ case 20994u:return CM_P40_P47_RUN_24(s,io,20994u);
+ case 20995u:return CM_P40_P47_RUN_24(s,io,20995u);
+ case 20997u:return CM_P40_P47_RUN_24(s,io,20997u);
+ case 20999u:return CM_P40_P47_RUN_24(s,io,20999u);
+ case 21000u:return CM_P40_P47_RUN_24(s,io,21000u);
+ case 21002u:return CM_P40_P47_RUN_24(s,io,21002u);
+ case 21006u:return CM_P40_P47_RUN_24(s,io,21006u);
+ case 21007u:return CM_P40_P47_RUN_24(s,io,21007u);
+ case 21049u:return CM_P40_P47_RUN_24(s,io,21049u);
+ case 21072u:return CM_P40_P47_RUN_24(s,io,21072u);
+ case 21077u:return CM_P40_P47_RUN_24(s,io,21077u);
+ case 21101u:return CM_P40_P47_RUN_24(s,io,21101u);
+ case 21105u:return CM_P40_P47_RUN_24(s,io,21105u);
+ case 21108u:return CM_P40_P47_RUN_24(s,io,21108u);
+ case 21125u:return CM_P40_P47_RUN_24(s,io,21125u);
+ case 21129u:return CM_P40_P47_RUN_24(s,io,21129u);
+ case 21141u:return CM_P40_P47_RUN_24(s,io,21141u);
+ case 21149u:return CM_P40_P47_RUN_24(s,io,21149u);
+ case 21162u:return CM_P40_P47_RUN_24(s,io,21162u);
+ case 21165u:return CM_P40_P47_RUN_24(s,io,21165u);
+ case 21167u:return CM_P40_P47_RUN_24(s,io,21167u);
+ case 21168u:return CM_P40_P47_RUN_24(s,io,21168u);
+ case 21174u:return CM_P40_P47_RUN_24(s,io,21174u);
+ case 21185u:return CM_P40_P47_RUN_24(s,io,21185u);
+ case 21197u:return CM_P40_P47_RUN_24(s,io,21197u);
+ case 21204u:return CM_P40_P47_RUN_24(s,io,21204u);
+ case 21205u:return CM_P40_P47_RUN_24(s,io,21205u);
+ case 21209u:return CM_P40_P47_RUN_24(s,io,21209u);
+ case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
+ case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
+ case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
+ case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
+ case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
+ case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
+ case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
+ case 21289u:return CM_P40_P47_RUN_24(s,io,21289u);
+ case 21290u:return CM_P40_P47_RUN_24(s,io,21290u);
+ case 21292u:return CM_P40_P47_RUN_24(s,io,21292u);
+ case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
+ case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
+ case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
+ case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
+ case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
+ case 21317u:return CM_P40_P47_RUN_24(s,io,21317u);
+ case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
+ case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
+ case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
+ case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
+ case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
+ case 21342u:return CM_P40_P47_RUN_24(s,io,21342u);
+ case 21344u:return CM_P40_P47_RUN_24(s,io,21344u);
+ case 21346u:return CM_P40_P47_RUN_24(s,io,21346u);
+ case 21350u:return CM_P40_P47_RUN_24(s,io,21350u);
+ case 21352u:return CM_P40_P47_RUN_24(s,io,21352u);
+ case 21356u:return CM_P40_P47_RUN_24(s,io,21356u);
+ case 21362u:return CM_P40_P47_RUN_24(s,io,21362u);
+ case 21367u:return CM_P40_P47_RUN_24(s,io,21367u);
+ case 21371u:return CM_P40_P47_RUN_24(s,io,21371u);
+ case 23948u:return CM_P40_P47_RUN_27(s,io,23948u);
+ case 23950u:return CM_P40_P47_RUN_27(s,io,23950u);
+ case 35718u:return CM_P40_P47_RUN_42(s,io,35718u);
+ case 35727u:return CM_P40_P47_RUN_42(s,io,35727u);
+ case 35728u:return CM_P40_P47_RUN_42(s,io,35728u);
+ case 35729u:return CM_P40_P47_RUN_42(s,io,35729u);
+ case 35730u:return CM_P40_P47_RUN_42(s,io,35730u);
+ case 35735u:return CM_P40_P47_RUN_42(s,io,35735u);
+ case 35742u:return CM_P40_P47_RUN_42(s,io,35742u);
+ case 35744u:return CM_P40_P47_RUN_42(s,io,35744u);
+ case 35747u:return CM_P40_P47_RUN_42(s,io,35747u);
+ default:return EXEC_OK;
+ }
+}
+#endif
+#if CM_P40_P47_HAS(021)
+/* The basic words of bank 21. */
+static enum exec_status basic_run_21(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;
+ switch(at){
+ case 17420u:goto B42014;
+ case 17424u:goto B42020;
+ case 17428u:goto B42024;
+ case 17429u:goto B42025;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
 B42014:
  IRC_COVER(227u);
  /* 21,2014 RCSUP LXCH BANKRUPT */
@@ -1585,6 +1932,366 @@ B42042c:
  IRC_COVER(247u);
  /* 21,2042: past the end of the file, never reached */
  return EXEC_INVALID_ACTION;
+dispatch:
+ p=agc_fixed_physical(W[5],W[4],io->superbank);
+ switch(p){
+ case 14455u:return CM_P40_P47_RUN_16(s,io,14455u);
+ case 14457u:return CM_P40_P47_RUN_16(s,io,14457u);
+ case 14472u:return CM_P40_P47_RUN_16(s,io,14472u);
+ case 14530u:return CM_P40_P47_RUN_16(s,io,14530u);
+ case 14545u:return CM_P40_P47_RUN_16(s,io,14545u);
+ case 14548u:return CM_P40_P47_RUN_16(s,io,14548u);
+ case 14582u:return CM_P40_P47_RUN_16(s,io,14582u);
+ case 14584u:return CM_P40_P47_RUN_16(s,io,14584u);
+ case 14592u:return CM_P40_P47_RUN_16(s,io,14592u);
+ case 14596u:return CM_P40_P47_RUN_16(s,io,14596u);
+ case 14597u:return CM_P40_P47_RUN_16(s,io,14597u);
+ case 14606u:return CM_P40_P47_RUN_16(s,io,14606u);
+ case 14615u:return CM_P40_P47_RUN_16(s,io,14615u);
+ case 14622u:return CM_P40_P47_RUN_16(s,io,14622u);
+ case 14666u:return CM_P40_P47_RUN_16(s,io,14666u);
+ case 14667u:return CM_P40_P47_RUN_16(s,io,14667u);
+ case 14672u:return CM_P40_P47_RUN_16(s,io,14672u);
+ case 14674u:return CM_P40_P47_RUN_16(s,io,14674u);
+ case 14676u:return CM_P40_P47_RUN_16(s,io,14676u);
+ case 16518u:return CM_P40_P47_RUN_20(s,io,16518u);
+ case 16525u:return CM_P40_P47_RUN_20(s,io,16525u);
+ case 16527u:return CM_P40_P47_RUN_20(s,io,16527u);
+ case 16536u:return CM_P40_P47_RUN_20(s,io,16536u);
+ case 16545u:return CM_P40_P47_RUN_20(s,io,16545u);
+ case 16554u:return CM_P40_P47_RUN_20(s,io,16554u);
+ case 16564u:return CM_P40_P47_RUN_20(s,io,16564u);
+ case 16569u:return CM_P40_P47_RUN_20(s,io,16569u);
+ case 16579u:return CM_P40_P47_RUN_20(s,io,16579u);
+ case 16581u:return CM_P40_P47_RUN_20(s,io,16581u);
+ case 16583u:return CM_P40_P47_RUN_20(s,io,16583u);
+ case 16599u:return CM_P40_P47_RUN_20(s,io,16599u);
+ case 16602u:return CM_P40_P47_RUN_20(s,io,16602u);
+ case 16615u:return CM_P40_P47_RUN_20(s,io,16615u);
+ case 16704u:return CM_P40_P47_RUN_20(s,io,16704u);
+ case 17420u:goto B42014;
+ case 17424u:goto B42020;
+ case 17428u:goto B42024;
+ case 17429u:goto B42025;
+ case 20539u:return CM_P40_P47_RUN_24(s,io,20539u);
+ case 20541u:return CM_P40_P47_RUN_24(s,io,20541u);
+ case 20554u:return CM_P40_P47_RUN_24(s,io,20554u);
+ case 20556u:return CM_P40_P47_RUN_24(s,io,20556u);
+ case 20563u:return CM_P40_P47_RUN_24(s,io,20563u);
+ case 20564u:return CM_P40_P47_RUN_24(s,io,20564u);
+ case 20567u:return CM_P40_P47_RUN_24(s,io,20567u);
+ case 20571u:return CM_P40_P47_RUN_24(s,io,20571u);
+ case 20572u:return CM_P40_P47_RUN_24(s,io,20572u);
+ case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
+ case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
+ case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
+ case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
+ case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
+ case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
+ case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
+ case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
+ case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
+ case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
+ case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
+ case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
+ case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
+ case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
+ case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
+ case 20706u:return CM_P40_P47_RUN_24(s,io,20706u);
+ case 20713u:return CM_P40_P47_RUN_24(s,io,20713u);
+ case 20719u:return CM_P40_P47_RUN_24(s,io,20719u);
+ case 20726u:return CM_P40_P47_RUN_24(s,io,20726u);
+ case 20737u:return CM_P40_P47_RUN_24(s,io,20737u);
+ case 20743u:return CM_P40_P47_RUN_24(s,io,20743u);
+ case 20744u:return CM_P40_P47_RUN_24(s,io,20744u);
+ case 20767u:return CM_P40_P47_RUN_24(s,io,20767u);
+ case 20771u:return CM_P40_P47_RUN_24(s,io,20771u);
+ case 20777u:return CM_P40_P47_RUN_24(s,io,20777u);
+ case 20780u:return CM_P40_P47_RUN_24(s,io,20780u);
+ case 20787u:return CM_P40_P47_RUN_24(s,io,20787u);
+ case 20789u:return CM_P40_P47_RUN_24(s,io,20789u);
+ case 20792u:return CM_P40_P47_RUN_24(s,io,20792u);
+ case 20797u:return CM_P40_P47_RUN_24(s,io,20797u);
+ case 20799u:return CM_P40_P47_RUN_24(s,io,20799u);
+ case 20800u:return CM_P40_P47_RUN_24(s,io,20800u);
+ case 20807u:return CM_P40_P47_RUN_24(s,io,20807u);
+ case 20809u:return CM_P40_P47_RUN_24(s,io,20809u);
+ case 20821u:return CM_P40_P47_RUN_24(s,io,20821u);
+ case 20823u:return CM_P40_P47_RUN_24(s,io,20823u);
+ case 20827u:return CM_P40_P47_RUN_24(s,io,20827u);
+ case 20828u:return CM_P40_P47_RUN_24(s,io,20828u);
+ case 20834u:return CM_P40_P47_RUN_24(s,io,20834u);
+ case 20836u:return CM_P40_P47_RUN_24(s,io,20836u);
+ case 20839u:return CM_P40_P47_RUN_24(s,io,20839u);
+ case 20842u:return CM_P40_P47_RUN_24(s,io,20842u);
+ case 20843u:return CM_P40_P47_RUN_24(s,io,20843u);
+ case 20844u:return CM_P40_P47_RUN_24(s,io,20844u);
+ case 20845u:return CM_P40_P47_RUN_24(s,io,20845u);
+ case 20846u:return CM_P40_P47_RUN_24(s,io,20846u);
+ case 20847u:return CM_P40_P47_RUN_24(s,io,20847u);
+ case 20853u:return CM_P40_P47_RUN_24(s,io,20853u);
+ case 20856u:return CM_P40_P47_RUN_24(s,io,20856u);
+ case 20860u:return CM_P40_P47_RUN_24(s,io,20860u);
+ case 20864u:return CM_P40_P47_RUN_24(s,io,20864u);
+ case 20869u:return CM_P40_P47_RUN_24(s,io,20869u);
+ case 20873u:return CM_P40_P47_RUN_24(s,io,20873u);
+ case 20874u:return CM_P40_P47_RUN_24(s,io,20874u);
+ case 20885u:return CM_P40_P47_RUN_24(s,io,20885u);
+ case 20912u:return CM_P40_P47_RUN_24(s,io,20912u);
+ case 20914u:return CM_P40_P47_RUN_24(s,io,20914u);
+ case 20932u:return CM_P40_P47_RUN_24(s,io,20932u);
+ case 20939u:return CM_P40_P47_RUN_24(s,io,20939u);
+ case 20943u:return CM_P40_P47_RUN_24(s,io,20943u);
+ case 20944u:return CM_P40_P47_RUN_24(s,io,20944u);
+ case 20959u:return CM_P40_P47_RUN_24(s,io,20959u);
+ case 20971u:return CM_P40_P47_RUN_24(s,io,20971u);
+ case 20975u:return CM_P40_P47_RUN_24(s,io,20975u);
+ case 20979u:return CM_P40_P47_RUN_24(s,io,20979u);
+ case 20982u:return CM_P40_P47_RUN_24(s,io,20982u);
+ case 20983u:return CM_P40_P47_RUN_24(s,io,20983u);
+ case 20988u:return CM_P40_P47_RUN_24(s,io,20988u);
+ case 20989u:return CM_P40_P47_RUN_24(s,io,20989u);
+ case 20992u:return CM_P40_P47_RUN_24(s,io,20992u);
+ case 20994u:return CM_P40_P47_RUN_24(s,io,20994u);
+ case 20995u:return CM_P40_P47_RUN_24(s,io,20995u);
+ case 20997u:return CM_P40_P47_RUN_24(s,io,20997u);
+ case 20999u:return CM_P40_P47_RUN_24(s,io,20999u);
+ case 21000u:return CM_P40_P47_RUN_24(s,io,21000u);
+ case 21002u:return CM_P40_P47_RUN_24(s,io,21002u);
+ case 21006u:return CM_P40_P47_RUN_24(s,io,21006u);
+ case 21007u:return CM_P40_P47_RUN_24(s,io,21007u);
+ case 21049u:return CM_P40_P47_RUN_24(s,io,21049u);
+ case 21072u:return CM_P40_P47_RUN_24(s,io,21072u);
+ case 21077u:return CM_P40_P47_RUN_24(s,io,21077u);
+ case 21101u:return CM_P40_P47_RUN_24(s,io,21101u);
+ case 21105u:return CM_P40_P47_RUN_24(s,io,21105u);
+ case 21108u:return CM_P40_P47_RUN_24(s,io,21108u);
+ case 21125u:return CM_P40_P47_RUN_24(s,io,21125u);
+ case 21129u:return CM_P40_P47_RUN_24(s,io,21129u);
+ case 21141u:return CM_P40_P47_RUN_24(s,io,21141u);
+ case 21149u:return CM_P40_P47_RUN_24(s,io,21149u);
+ case 21162u:return CM_P40_P47_RUN_24(s,io,21162u);
+ case 21165u:return CM_P40_P47_RUN_24(s,io,21165u);
+ case 21167u:return CM_P40_P47_RUN_24(s,io,21167u);
+ case 21168u:return CM_P40_P47_RUN_24(s,io,21168u);
+ case 21174u:return CM_P40_P47_RUN_24(s,io,21174u);
+ case 21185u:return CM_P40_P47_RUN_24(s,io,21185u);
+ case 21197u:return CM_P40_P47_RUN_24(s,io,21197u);
+ case 21204u:return CM_P40_P47_RUN_24(s,io,21204u);
+ case 21205u:return CM_P40_P47_RUN_24(s,io,21205u);
+ case 21209u:return CM_P40_P47_RUN_24(s,io,21209u);
+ case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
+ case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
+ case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
+ case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
+ case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
+ case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
+ case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
+ case 21289u:return CM_P40_P47_RUN_24(s,io,21289u);
+ case 21290u:return CM_P40_P47_RUN_24(s,io,21290u);
+ case 21292u:return CM_P40_P47_RUN_24(s,io,21292u);
+ case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
+ case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
+ case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
+ case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
+ case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
+ case 21317u:return CM_P40_P47_RUN_24(s,io,21317u);
+ case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
+ case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
+ case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
+ case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
+ case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
+ case 21342u:return CM_P40_P47_RUN_24(s,io,21342u);
+ case 21344u:return CM_P40_P47_RUN_24(s,io,21344u);
+ case 21346u:return CM_P40_P47_RUN_24(s,io,21346u);
+ case 21350u:return CM_P40_P47_RUN_24(s,io,21350u);
+ case 21352u:return CM_P40_P47_RUN_24(s,io,21352u);
+ case 21356u:return CM_P40_P47_RUN_24(s,io,21356u);
+ case 21362u:return CM_P40_P47_RUN_24(s,io,21362u);
+ case 21367u:return CM_P40_P47_RUN_24(s,io,21367u);
+ case 21371u:return CM_P40_P47_RUN_24(s,io,21371u);
+ case 23948u:return CM_P40_P47_RUN_27(s,io,23948u);
+ case 23950u:return CM_P40_P47_RUN_27(s,io,23950u);
+ case 35718u:return CM_P40_P47_RUN_42(s,io,35718u);
+ case 35727u:return CM_P40_P47_RUN_42(s,io,35727u);
+ case 35728u:return CM_P40_P47_RUN_42(s,io,35728u);
+ case 35729u:return CM_P40_P47_RUN_42(s,io,35729u);
+ case 35730u:return CM_P40_P47_RUN_42(s,io,35730u);
+ case 35735u:return CM_P40_P47_RUN_42(s,io,35735u);
+ case 35742u:return CM_P40_P47_RUN_42(s,io,35742u);
+ case 35744u:return CM_P40_P47_RUN_42(s,io,35744u);
+ case 35747u:return CM_P40_P47_RUN_42(s,io,35747u);
+ default:return EXEC_OK;
+ }
+}
+#endif
+#if CM_P40_P47_HAS(024)
+/* The basic words of bank 24. */
+static enum exec_status basic_run_24(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;
+ switch(at){
+ case 20539u:goto B50073;
+ case 20541u:goto B50075;
+ case 20554u:goto B50112;
+ case 20556u:goto B50114;
+ case 20563u:goto B50123;
+ case 20564u:goto B50124;
+ case 20567u:goto B50127;
+ case 20571u:goto B50133;
+ case 20572u:goto B50134;
+ case 20573u:goto B50135;
+ case 20582u:goto B50146;
+ case 20588u:goto B50154;
+ case 20611u:goto B50203;
+ case 20612u:goto B50204;
+ case 20613u:goto B50205;
+ case 20620u:goto B50214;
+ case 20633u:goto B50231;
+ case 20635u:goto B50233;
+ case 20636u:goto B50234;
+ case 20638u:goto B50236;
+ case 20646u:goto B50246;
+ case 20649u:goto B50251;
+ case 20660u:goto B50264;
+ case 20663u:goto B50267;
+ case 20666u:goto B50272;
+ case 20676u:goto B50304;
+ case 20688u:goto B50320;
+ case 20700u:goto B50334;
+ case 20704u:goto B50340;
+ case 20706u:goto B50342;
+ case 20713u:goto B50351;
+ case 20719u:goto B50357;
+ case 20726u:goto B50366;
+ case 20737u:goto B50401;
+ case 20743u:goto B50407;
+ case 20744u:goto B50410;
+ case 20767u:goto B50437;
+ case 20771u:goto B50443;
+ case 20777u:goto B50451;
+ case 20780u:goto B50454;
+ case 20787u:goto B50463;
+ case 20789u:goto B50465;
+ case 20792u:goto B50470;
+ case 20797u:goto B50475;
+ case 20799u:goto B50477;
+ case 20800u:goto B50500;
+ case 20807u:goto B50507;
+ case 20809u:goto B50511;
+ case 20821u:goto B50525;
+ case 20823u:goto B50527;
+ case 20827u:goto B50533;
+ case 20828u:goto B50534;
+ case 20834u:goto B50542;
+ case 20836u:goto B50544;
+ case 20839u:goto B50547;
+ case 20842u:goto B50552;
+ case 20843u:goto B50553;
+ case 20844u:goto B50554;
+ case 20845u:goto B50555;
+ case 20846u:goto B50556;
+ case 20847u:goto B50557;
+ case 20853u:goto B50565;
+ case 20856u:goto B50570;
+ case 20860u:goto B50574;
+ case 20864u:goto B50600;
+ case 20869u:goto B50605;
+ case 20873u:goto B50611;
+ case 20874u:goto B50612;
+ case 20885u:goto B50625;
+ case 20912u:goto B50660;
+ case 20914u:goto B50662;
+ case 20932u:goto B50704;
+ case 20939u:goto B50713;
+ case 20943u:goto B50717;
+ case 20944u:goto B50720;
+ case 20959u:goto B50737;
+ case 20971u:goto B50753;
+ case 20975u:goto B50757;
+ case 20979u:goto B50763;
+ case 20982u:goto B50766;
+ case 20983u:goto B50767;
+ case 20988u:goto B50774;
+ case 20989u:goto B50775;
+ case 20992u:goto B51000;
+ case 20994u:goto B51002;
+ case 20995u:goto B51003;
+ case 20997u:goto B51005;
+ case 20999u:goto B51007;
+ case 21000u:goto B51010;
+ case 21002u:goto B51012;
+ case 21006u:goto B51016;
+ case 21007u:goto B51017;
+ case 21049u:goto B51071;
+ case 21072u:goto B51120;
+ case 21077u:goto B51125;
+ case 21101u:goto B51155;
+ case 21105u:goto B51161;
+ case 21108u:goto B51164;
+ case 21125u:goto B51205;
+ case 21129u:goto B51211;
+ case 21141u:goto B51225;
+ case 21149u:goto B51235;
+ case 21162u:goto B51252;
+ case 21165u:goto B51255;
+ case 21167u:goto B51257;
+ case 21168u:goto B51260;
+ case 21174u:goto B51266;
+ case 21185u:goto B51301;
+ case 21197u:goto B51315;
+ case 21204u:goto B51324;
+ case 21205u:goto B51325;
+ case 21209u:goto B51331;
+ case 21210u:goto B51332;
+ case 21218u:goto B51342;
+ case 21226u:goto B51352;
+ case 21232u:goto B51360;
+ case 21238u:goto B51366;
+ case 21250u:goto B51402;
+ case 21254u:goto B51406;
+ case 21255u:goto B51407;
+ case 21277u:goto B51435;
+ case 21280u:goto B51440;
+ case 21281u:goto B51441;
+ case 21289u:goto B51451;
+ case 21290u:goto B51452;
+ case 21292u:goto B51454;
+ case 21294u:goto B51456;
+ case 21296u:goto B51460;
+ case 21300u:goto B51464;
+ case 21307u:goto B51473;
+ case 21313u:goto B51501;
+ case 21315u:goto B51503;
+ case 21317u:goto B51505;
+ case 21319u:goto B51507;
+ case 21321u:goto B51511;
+ case 21323u:goto B51513;
+ case 21331u:goto B51523;
+ case 21336u:goto B51530;
+ case 21341u:goto B51535;
+ case 21342u:goto B51536;
+ case 21344u:goto B51540;
+ case 21346u:goto B51542;
+ case 21350u:goto B51546;
+ case 21352u:goto B51550;
+ case 21356u:goto B51554;
+ case 21362u:goto B51562;
+ case 21367u:goto B51567;
+ case 21371u:goto B51573;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
 B50073:
  IRC_COVER(248u);
  /* 24,2073 P40CSM TC DOWNFLAG */
@@ -3979,189 +4686,47 @@ B51573:
  IRC_COVER(737u);
  /* 24,3573 ENDV97E TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
-B56614:
- IRC_COVER(738u);
- /* 27,2614 P41CSM TC UPFLAG */
- ai_tc(s,002615u);
- W[5]=05546u;return EXEC_OK; /* UPFLAG */
-B56616:
- IRC_COVER(739u);
- /* 27,2616 TC INTPRET */
- ai_tc(s,002617u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
-B105606:
- IRC_COVER(740u);
- /* 42,3606 DAPFIG CS BIT9 */
- ai_csf(s,000400u); /* BIT9 */
- goto B105607c;
-B105607c:
- IRC_COVER(741u);
- /* 42,3607 EXTEND */
- goto X105610c;
-X105610c:
- IRC_COVER(742u);
- /* 42,3610 EXTENDED WAND CHAN12 */
- ch_wand(s,io,012);
- goto B105611c;
-B105611c:
- IRC_COVER(743u);
- /* 42,3611 CAE DAPDATR1 */
- ai_ca(s,01466);
- goto B105612c;
-B105612c:
- IRC_COVER(744u);
- /* 42,3612 EXTEND */
- goto X105613c;
-X105613c:
- IRC_COVER(745u);
- /* 42,3613 EXTENDED MP BIT3 */
- ai_mpf(s,000004u); /* BIT3 */
- goto B105614c;
-B105614c:
- IRC_COVER(746u);
- /* 42,3614 MASK THREE */
- ai_maskf(s,000003u); /* OCTAL3 */
- goto B105615c;
-B105615c:
- IRC_COVER(747u);
- /* 42,3615 INDEX A */
- ix=areg(s);
- /* 42,3616 (indexed) TCF +1 */
- e=(long)03617+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
- W[5]=(agc_word)e;goto dispatch;
-B105617:
- IRC_COVER(748u);
- /* 42,3617 TCF NODAPUP */
- goto B105631;
-B105620:
- IRC_COVER(749u);
- /* 42,3620 TCF RCSDAPUP */
- goto B105624;
-B105621:
- IRC_COVER(750u);
- /* 42,3621 TCF RCSDAPUP */
- goto B105624;
-B105622:
- IRC_COVER(751u);
- /* 42,3622 TC POSTJUMP */
- ai_tc(s,003623u);
- W[5]=04701u;return EXEC_OK; /* POSTJUMP */
-B105624:
- IRC_COVER(752u);
- /* 42,3624 RCSDAPUP INHINT */
- io->interrupt_enabled=0;
- goto B105625;
-B105625:
- IRC_COVER(753u);
- /* 42,3625 TCR IBNKCALL */
- ai_tc(s,003626u);
- W[5]=04740u;return EXEC_OK; /* IBNKCALL */
-B105627:
- IRC_COVER(754u);
- /* 42,3627 RELINT */
- io->interrupt_enabled=1;
- goto B105630;
-B105630:
- IRC_COVER(755u);
- /* 42,3630 TCF ENDFIG */
- goto B105646;
-B105631:
- IRC_COVER(756u);
- /* 42,3631 NODAPUP EXTEND */
- goto X105632;
-X105632:
- IRC_COVER(757u);
- /* 42,3632 EXTENDED DCA T5IDLDAP */
- {static const agc_word k[2]={003153u,012106u};ai_dcaf(s,k);} /* T5IDLDAP */
- goto B105633c;
-B105633c:
- IRC_COVER(758u);
- /* 42,3633 DXCH T5LOC */
- ai_dxch(s,01312);
- goto B105634c;
-B105634c:
- IRC_COVER(759u);
- /* 42,3634 TC DOWNFLAG */
- ai_tc(s,003635u);
- W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
-B105636:
- IRC_COVER(760u);
- /* 42,3636 TC DOWNFLAG */
- ai_tc(s,003637u);
- W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
-B105640:
- IRC_COVER(761u);
- /* 42,3640 INHINT */
- io->interrupt_enabled=0;
- goto B105641;
-B105641:
- IRC_COVER(762u);
- /* 42,3641 TC IBNKCALL */
- ai_tc(s,003642u);
- W[5]=04740u;return EXEC_OK; /* IBNKCALL */
-B105643:
- IRC_COVER(763u);
- /* 42,3643 RELINT */
- io->interrupt_enabled=1;
- goto B105644;
-B105644:
- IRC_COVER(764u);
- /* 42,3644 CAF BIT1 */
- ai_caf(s,000001u); /* BIT1 */
- goto B105645c;
-B105645c:
- IRC_COVER(765u);
- /* 42,3645 TS HOLDFLAG */
- (void)ai_ts(s,(unsigned)01332);
- goto B105646c;
-B105646:
- IRC_COVER(766u);
- /* 42,3646 ENDFIG TC POSTJUMP */
- ai_tc(s,003647u);
- W[5]=04701u;return EXEC_OK; /* POSTJUMP */
-B105646c:
- IRC_COVER(767u);
- goto B105646;
 dispatch:
  p=agc_fixed_physical(W[5],W[4],io->superbank);
  switch(p){
- case 14455u:goto B34167;
- case 14457u:goto B34171;
- case 14472u:goto B34210;
- case 14530u:goto B34302;
- case 14545u:goto B34321;
- case 14548u:goto B34324;
- case 14582u:goto B34366;
- case 14584u:goto B34370;
- case 14592u:goto B34400;
- case 14596u:goto B34404;
- case 14597u:goto B34405;
- case 14606u:goto B34416;
- case 14615u:goto B34427;
- case 14622u:goto B34436;
- case 14666u:goto B34512;
- case 14667u:goto B34513;
- case 14672u:goto B34520;
- case 14674u:goto B34522;
- case 14676u:goto B34524;
- case 16518u:goto B40206;
- case 16525u:goto B40215;
- case 16527u:goto B40217;
- case 16536u:goto B40230;
- case 16545u:goto B40241;
- case 16554u:goto B40252;
- case 16564u:goto B40264;
- case 16569u:goto B40271;
- case 16579u:goto B40303;
- case 16581u:goto B40305;
- case 16583u:goto B40307;
- case 16599u:goto B40327;
- case 16602u:goto B40332;
- case 16615u:goto B40347;
- case 16704u:goto B40500;
- case 17420u:goto B42014;
- case 17424u:goto B42020;
- case 17428u:goto B42024;
- case 17429u:goto B42025;
+ case 14455u:return CM_P40_P47_RUN_16(s,io,14455u);
+ case 14457u:return CM_P40_P47_RUN_16(s,io,14457u);
+ case 14472u:return CM_P40_P47_RUN_16(s,io,14472u);
+ case 14530u:return CM_P40_P47_RUN_16(s,io,14530u);
+ case 14545u:return CM_P40_P47_RUN_16(s,io,14545u);
+ case 14548u:return CM_P40_P47_RUN_16(s,io,14548u);
+ case 14582u:return CM_P40_P47_RUN_16(s,io,14582u);
+ case 14584u:return CM_P40_P47_RUN_16(s,io,14584u);
+ case 14592u:return CM_P40_P47_RUN_16(s,io,14592u);
+ case 14596u:return CM_P40_P47_RUN_16(s,io,14596u);
+ case 14597u:return CM_P40_P47_RUN_16(s,io,14597u);
+ case 14606u:return CM_P40_P47_RUN_16(s,io,14606u);
+ case 14615u:return CM_P40_P47_RUN_16(s,io,14615u);
+ case 14622u:return CM_P40_P47_RUN_16(s,io,14622u);
+ case 14666u:return CM_P40_P47_RUN_16(s,io,14666u);
+ case 14667u:return CM_P40_P47_RUN_16(s,io,14667u);
+ case 14672u:return CM_P40_P47_RUN_16(s,io,14672u);
+ case 14674u:return CM_P40_P47_RUN_16(s,io,14674u);
+ case 14676u:return CM_P40_P47_RUN_16(s,io,14676u);
+ case 16518u:return CM_P40_P47_RUN_20(s,io,16518u);
+ case 16525u:return CM_P40_P47_RUN_20(s,io,16525u);
+ case 16527u:return CM_P40_P47_RUN_20(s,io,16527u);
+ case 16536u:return CM_P40_P47_RUN_20(s,io,16536u);
+ case 16545u:return CM_P40_P47_RUN_20(s,io,16545u);
+ case 16554u:return CM_P40_P47_RUN_20(s,io,16554u);
+ case 16564u:return CM_P40_P47_RUN_20(s,io,16564u);
+ case 16569u:return CM_P40_P47_RUN_20(s,io,16569u);
+ case 16579u:return CM_P40_P47_RUN_20(s,io,16579u);
+ case 16581u:return CM_P40_P47_RUN_20(s,io,16581u);
+ case 16583u:return CM_P40_P47_RUN_20(s,io,16583u);
+ case 16599u:return CM_P40_P47_RUN_20(s,io,16599u);
+ case 16602u:return CM_P40_P47_RUN_20(s,io,16602u);
+ case 16615u:return CM_P40_P47_RUN_20(s,io,16615u);
+ case 16704u:return CM_P40_P47_RUN_20(s,io,16704u);
+ case 17420u:return CM_P40_P47_RUN_21(s,io,17420u);
+ case 17424u:return CM_P40_P47_RUN_21(s,io,17424u);
+ case 17428u:return CM_P40_P47_RUN_21(s,io,17428u);
+ case 17429u:return CM_P40_P47_RUN_21(s,io,17429u);
  case 20539u:goto B50073;
  case 20541u:goto B50075;
  case 20554u:goto B50112;
@@ -4310,8 +4875,383 @@ dispatch:
  case 21362u:goto B51562;
  case 21367u:goto B51567;
  case 21371u:goto B51573;
+ case 23948u:return CM_P40_P47_RUN_27(s,io,23948u);
+ case 23950u:return CM_P40_P47_RUN_27(s,io,23950u);
+ case 35718u:return CM_P40_P47_RUN_42(s,io,35718u);
+ case 35727u:return CM_P40_P47_RUN_42(s,io,35727u);
+ case 35728u:return CM_P40_P47_RUN_42(s,io,35728u);
+ case 35729u:return CM_P40_P47_RUN_42(s,io,35729u);
+ case 35730u:return CM_P40_P47_RUN_42(s,io,35730u);
+ case 35735u:return CM_P40_P47_RUN_42(s,io,35735u);
+ case 35742u:return CM_P40_P47_RUN_42(s,io,35742u);
+ case 35744u:return CM_P40_P47_RUN_42(s,io,35744u);
+ case 35747u:return CM_P40_P47_RUN_42(s,io,35747u);
+ default:return EXEC_OK;
+ }
+}
+#endif
+#if CM_P40_P47_HAS(027)
+/* The basic words of bank 27. */
+static enum exec_status basic_run_27(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;
+ switch(at){
  case 23948u:goto B56614;
  case 23950u:goto B56616;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B56614:
+ IRC_COVER(738u);
+ /* 27,2614 P41CSM TC UPFLAG */
+ ai_tc(s,002615u);
+ W[5]=05546u;return EXEC_OK; /* UPFLAG */
+B56616:
+ IRC_COVER(739u);
+ /* 27,2616 TC INTPRET */
+ ai_tc(s,002617u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+}
+#endif
+#if CM_P40_P47_HAS(042)
+/* The basic words of bank 42. */
+static enum exec_status basic_run_42(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;
+ switch(at){
+ case 35718u:goto B105606;
+ case 35727u:goto B105617;
+ case 35728u:goto B105620;
+ case 35729u:goto B105621;
+ case 35730u:goto B105622;
+ case 35735u:goto B105627;
+ case 35742u:goto B105636;
+ case 35744u:goto B105640;
+ case 35747u:goto B105643;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B105606:
+ IRC_COVER(740u);
+ /* 42,3606 DAPFIG CS BIT9 */
+ ai_csf(s,000400u); /* BIT9 */
+ goto B105607c;
+B105607c:
+ IRC_COVER(741u);
+ /* 42,3607 EXTEND */
+ goto X105610c;
+X105610c:
+ IRC_COVER(742u);
+ /* 42,3610 EXTENDED WAND CHAN12 */
+ ch_wand(s,io,012);
+ goto B105611c;
+B105611c:
+ IRC_COVER(743u);
+ /* 42,3611 CAE DAPDATR1 */
+ ai_ca(s,01466);
+ goto B105612c;
+B105612c:
+ IRC_COVER(744u);
+ /* 42,3612 EXTEND */
+ goto X105613c;
+X105613c:
+ IRC_COVER(745u);
+ /* 42,3613 EXTENDED MP BIT3 */
+ ai_mpf(s,000004u); /* BIT3 */
+ goto B105614c;
+B105614c:
+ IRC_COVER(746u);
+ /* 42,3614 MASK THREE */
+ ai_maskf(s,000003u); /* OCTAL3 */
+ goto B105615c;
+B105615c:
+ IRC_COVER(747u);
+ /* 42,3615 INDEX A */
+ ix=areg(s);
+ /* 42,3616 (indexed) TCF +1 */
+ e=(long)03617+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ W[5]=(agc_word)e;goto dispatch;
+B105617:
+ IRC_COVER(748u);
+ /* 42,3617 TCF NODAPUP */
+ goto B105631;
+B105620:
+ IRC_COVER(749u);
+ /* 42,3620 TCF RCSDAPUP */
+ goto B105624;
+B105621:
+ IRC_COVER(750u);
+ /* 42,3621 TCF RCSDAPUP */
+ goto B105624;
+B105622:
+ IRC_COVER(751u);
+ /* 42,3622 TC POSTJUMP */
+ ai_tc(s,003623u);
+ W[5]=04701u;return EXEC_OK; /* POSTJUMP */
+B105624:
+ IRC_COVER(752u);
+ /* 42,3624 RCSDAPUP INHINT */
+ io->interrupt_enabled=0;
+ goto B105625;
+B105625:
+ IRC_COVER(753u);
+ /* 42,3625 TCR IBNKCALL */
+ ai_tc(s,003626u);
+ W[5]=04740u;return EXEC_OK; /* IBNKCALL */
+B105627:
+ IRC_COVER(754u);
+ /* 42,3627 RELINT */
+ io->interrupt_enabled=1;
+ goto B105630;
+B105630:
+ IRC_COVER(755u);
+ /* 42,3630 TCF ENDFIG */
+ goto B105646;
+B105631:
+ IRC_COVER(756u);
+ /* 42,3631 NODAPUP EXTEND */
+ goto X105632;
+X105632:
+ IRC_COVER(757u);
+ /* 42,3632 EXTENDED DCA T5IDLDAP */
+ {static const agc_word k[2]={003153u,012106u};ai_dcaf(s,k);} /* T5IDLDAP */
+ goto B105633c;
+B105633c:
+ IRC_COVER(758u);
+ /* 42,3633 DXCH T5LOC */
+ ai_dxch(s,01312);
+ goto B105634c;
+B105634c:
+ IRC_COVER(759u);
+ /* 42,3634 TC DOWNFLAG */
+ ai_tc(s,003635u);
+ W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
+B105636:
+ IRC_COVER(760u);
+ /* 42,3636 TC DOWNFLAG */
+ ai_tc(s,003637u);
+ W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
+B105640:
+ IRC_COVER(761u);
+ /* 42,3640 INHINT */
+ io->interrupt_enabled=0;
+ goto B105641;
+B105641:
+ IRC_COVER(762u);
+ /* 42,3641 TC IBNKCALL */
+ ai_tc(s,003642u);
+ W[5]=04740u;return EXEC_OK; /* IBNKCALL */
+B105643:
+ IRC_COVER(763u);
+ /* 42,3643 RELINT */
+ io->interrupt_enabled=1;
+ goto B105644;
+B105644:
+ IRC_COVER(764u);
+ /* 42,3644 CAF BIT1 */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B105645c;
+B105645c:
+ IRC_COVER(765u);
+ /* 42,3645 TS HOLDFLAG */
+ (void)ai_ts(s,(unsigned)01332);
+ goto B105646c;
+B105646:
+ IRC_COVER(766u);
+ /* 42,3646 ENDFIG TC POSTJUMP */
+ ai_tc(s,003647u);
+ W[5]=04701u;return EXEC_OK; /* POSTJUMP */
+B105646c:
+ IRC_COVER(767u);
+ goto B105646;
+dispatch:
+ p=agc_fixed_physical(W[5],W[4],io->superbank);
+ switch(p){
+ case 14455u:return CM_P40_P47_RUN_16(s,io,14455u);
+ case 14457u:return CM_P40_P47_RUN_16(s,io,14457u);
+ case 14472u:return CM_P40_P47_RUN_16(s,io,14472u);
+ case 14530u:return CM_P40_P47_RUN_16(s,io,14530u);
+ case 14545u:return CM_P40_P47_RUN_16(s,io,14545u);
+ case 14548u:return CM_P40_P47_RUN_16(s,io,14548u);
+ case 14582u:return CM_P40_P47_RUN_16(s,io,14582u);
+ case 14584u:return CM_P40_P47_RUN_16(s,io,14584u);
+ case 14592u:return CM_P40_P47_RUN_16(s,io,14592u);
+ case 14596u:return CM_P40_P47_RUN_16(s,io,14596u);
+ case 14597u:return CM_P40_P47_RUN_16(s,io,14597u);
+ case 14606u:return CM_P40_P47_RUN_16(s,io,14606u);
+ case 14615u:return CM_P40_P47_RUN_16(s,io,14615u);
+ case 14622u:return CM_P40_P47_RUN_16(s,io,14622u);
+ case 14666u:return CM_P40_P47_RUN_16(s,io,14666u);
+ case 14667u:return CM_P40_P47_RUN_16(s,io,14667u);
+ case 14672u:return CM_P40_P47_RUN_16(s,io,14672u);
+ case 14674u:return CM_P40_P47_RUN_16(s,io,14674u);
+ case 14676u:return CM_P40_P47_RUN_16(s,io,14676u);
+ case 16518u:return CM_P40_P47_RUN_20(s,io,16518u);
+ case 16525u:return CM_P40_P47_RUN_20(s,io,16525u);
+ case 16527u:return CM_P40_P47_RUN_20(s,io,16527u);
+ case 16536u:return CM_P40_P47_RUN_20(s,io,16536u);
+ case 16545u:return CM_P40_P47_RUN_20(s,io,16545u);
+ case 16554u:return CM_P40_P47_RUN_20(s,io,16554u);
+ case 16564u:return CM_P40_P47_RUN_20(s,io,16564u);
+ case 16569u:return CM_P40_P47_RUN_20(s,io,16569u);
+ case 16579u:return CM_P40_P47_RUN_20(s,io,16579u);
+ case 16581u:return CM_P40_P47_RUN_20(s,io,16581u);
+ case 16583u:return CM_P40_P47_RUN_20(s,io,16583u);
+ case 16599u:return CM_P40_P47_RUN_20(s,io,16599u);
+ case 16602u:return CM_P40_P47_RUN_20(s,io,16602u);
+ case 16615u:return CM_P40_P47_RUN_20(s,io,16615u);
+ case 16704u:return CM_P40_P47_RUN_20(s,io,16704u);
+ case 17420u:return CM_P40_P47_RUN_21(s,io,17420u);
+ case 17424u:return CM_P40_P47_RUN_21(s,io,17424u);
+ case 17428u:return CM_P40_P47_RUN_21(s,io,17428u);
+ case 17429u:return CM_P40_P47_RUN_21(s,io,17429u);
+ case 20539u:return CM_P40_P47_RUN_24(s,io,20539u);
+ case 20541u:return CM_P40_P47_RUN_24(s,io,20541u);
+ case 20554u:return CM_P40_P47_RUN_24(s,io,20554u);
+ case 20556u:return CM_P40_P47_RUN_24(s,io,20556u);
+ case 20563u:return CM_P40_P47_RUN_24(s,io,20563u);
+ case 20564u:return CM_P40_P47_RUN_24(s,io,20564u);
+ case 20567u:return CM_P40_P47_RUN_24(s,io,20567u);
+ case 20571u:return CM_P40_P47_RUN_24(s,io,20571u);
+ case 20572u:return CM_P40_P47_RUN_24(s,io,20572u);
+ case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
+ case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
+ case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
+ case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
+ case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
+ case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
+ case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
+ case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
+ case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
+ case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
+ case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
+ case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
+ case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
+ case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
+ case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
+ case 20706u:return CM_P40_P47_RUN_24(s,io,20706u);
+ case 20713u:return CM_P40_P47_RUN_24(s,io,20713u);
+ case 20719u:return CM_P40_P47_RUN_24(s,io,20719u);
+ case 20726u:return CM_P40_P47_RUN_24(s,io,20726u);
+ case 20737u:return CM_P40_P47_RUN_24(s,io,20737u);
+ case 20743u:return CM_P40_P47_RUN_24(s,io,20743u);
+ case 20744u:return CM_P40_P47_RUN_24(s,io,20744u);
+ case 20767u:return CM_P40_P47_RUN_24(s,io,20767u);
+ case 20771u:return CM_P40_P47_RUN_24(s,io,20771u);
+ case 20777u:return CM_P40_P47_RUN_24(s,io,20777u);
+ case 20780u:return CM_P40_P47_RUN_24(s,io,20780u);
+ case 20787u:return CM_P40_P47_RUN_24(s,io,20787u);
+ case 20789u:return CM_P40_P47_RUN_24(s,io,20789u);
+ case 20792u:return CM_P40_P47_RUN_24(s,io,20792u);
+ case 20797u:return CM_P40_P47_RUN_24(s,io,20797u);
+ case 20799u:return CM_P40_P47_RUN_24(s,io,20799u);
+ case 20800u:return CM_P40_P47_RUN_24(s,io,20800u);
+ case 20807u:return CM_P40_P47_RUN_24(s,io,20807u);
+ case 20809u:return CM_P40_P47_RUN_24(s,io,20809u);
+ case 20821u:return CM_P40_P47_RUN_24(s,io,20821u);
+ case 20823u:return CM_P40_P47_RUN_24(s,io,20823u);
+ case 20827u:return CM_P40_P47_RUN_24(s,io,20827u);
+ case 20828u:return CM_P40_P47_RUN_24(s,io,20828u);
+ case 20834u:return CM_P40_P47_RUN_24(s,io,20834u);
+ case 20836u:return CM_P40_P47_RUN_24(s,io,20836u);
+ case 20839u:return CM_P40_P47_RUN_24(s,io,20839u);
+ case 20842u:return CM_P40_P47_RUN_24(s,io,20842u);
+ case 20843u:return CM_P40_P47_RUN_24(s,io,20843u);
+ case 20844u:return CM_P40_P47_RUN_24(s,io,20844u);
+ case 20845u:return CM_P40_P47_RUN_24(s,io,20845u);
+ case 20846u:return CM_P40_P47_RUN_24(s,io,20846u);
+ case 20847u:return CM_P40_P47_RUN_24(s,io,20847u);
+ case 20853u:return CM_P40_P47_RUN_24(s,io,20853u);
+ case 20856u:return CM_P40_P47_RUN_24(s,io,20856u);
+ case 20860u:return CM_P40_P47_RUN_24(s,io,20860u);
+ case 20864u:return CM_P40_P47_RUN_24(s,io,20864u);
+ case 20869u:return CM_P40_P47_RUN_24(s,io,20869u);
+ case 20873u:return CM_P40_P47_RUN_24(s,io,20873u);
+ case 20874u:return CM_P40_P47_RUN_24(s,io,20874u);
+ case 20885u:return CM_P40_P47_RUN_24(s,io,20885u);
+ case 20912u:return CM_P40_P47_RUN_24(s,io,20912u);
+ case 20914u:return CM_P40_P47_RUN_24(s,io,20914u);
+ case 20932u:return CM_P40_P47_RUN_24(s,io,20932u);
+ case 20939u:return CM_P40_P47_RUN_24(s,io,20939u);
+ case 20943u:return CM_P40_P47_RUN_24(s,io,20943u);
+ case 20944u:return CM_P40_P47_RUN_24(s,io,20944u);
+ case 20959u:return CM_P40_P47_RUN_24(s,io,20959u);
+ case 20971u:return CM_P40_P47_RUN_24(s,io,20971u);
+ case 20975u:return CM_P40_P47_RUN_24(s,io,20975u);
+ case 20979u:return CM_P40_P47_RUN_24(s,io,20979u);
+ case 20982u:return CM_P40_P47_RUN_24(s,io,20982u);
+ case 20983u:return CM_P40_P47_RUN_24(s,io,20983u);
+ case 20988u:return CM_P40_P47_RUN_24(s,io,20988u);
+ case 20989u:return CM_P40_P47_RUN_24(s,io,20989u);
+ case 20992u:return CM_P40_P47_RUN_24(s,io,20992u);
+ case 20994u:return CM_P40_P47_RUN_24(s,io,20994u);
+ case 20995u:return CM_P40_P47_RUN_24(s,io,20995u);
+ case 20997u:return CM_P40_P47_RUN_24(s,io,20997u);
+ case 20999u:return CM_P40_P47_RUN_24(s,io,20999u);
+ case 21000u:return CM_P40_P47_RUN_24(s,io,21000u);
+ case 21002u:return CM_P40_P47_RUN_24(s,io,21002u);
+ case 21006u:return CM_P40_P47_RUN_24(s,io,21006u);
+ case 21007u:return CM_P40_P47_RUN_24(s,io,21007u);
+ case 21049u:return CM_P40_P47_RUN_24(s,io,21049u);
+ case 21072u:return CM_P40_P47_RUN_24(s,io,21072u);
+ case 21077u:return CM_P40_P47_RUN_24(s,io,21077u);
+ case 21101u:return CM_P40_P47_RUN_24(s,io,21101u);
+ case 21105u:return CM_P40_P47_RUN_24(s,io,21105u);
+ case 21108u:return CM_P40_P47_RUN_24(s,io,21108u);
+ case 21125u:return CM_P40_P47_RUN_24(s,io,21125u);
+ case 21129u:return CM_P40_P47_RUN_24(s,io,21129u);
+ case 21141u:return CM_P40_P47_RUN_24(s,io,21141u);
+ case 21149u:return CM_P40_P47_RUN_24(s,io,21149u);
+ case 21162u:return CM_P40_P47_RUN_24(s,io,21162u);
+ case 21165u:return CM_P40_P47_RUN_24(s,io,21165u);
+ case 21167u:return CM_P40_P47_RUN_24(s,io,21167u);
+ case 21168u:return CM_P40_P47_RUN_24(s,io,21168u);
+ case 21174u:return CM_P40_P47_RUN_24(s,io,21174u);
+ case 21185u:return CM_P40_P47_RUN_24(s,io,21185u);
+ case 21197u:return CM_P40_P47_RUN_24(s,io,21197u);
+ case 21204u:return CM_P40_P47_RUN_24(s,io,21204u);
+ case 21205u:return CM_P40_P47_RUN_24(s,io,21205u);
+ case 21209u:return CM_P40_P47_RUN_24(s,io,21209u);
+ case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
+ case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
+ case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
+ case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
+ case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
+ case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
+ case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
+ case 21289u:return CM_P40_P47_RUN_24(s,io,21289u);
+ case 21290u:return CM_P40_P47_RUN_24(s,io,21290u);
+ case 21292u:return CM_P40_P47_RUN_24(s,io,21292u);
+ case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
+ case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
+ case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
+ case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
+ case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
+ case 21317u:return CM_P40_P47_RUN_24(s,io,21317u);
+ case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
+ case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
+ case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
+ case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
+ case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
+ case 21342u:return CM_P40_P47_RUN_24(s,io,21342u);
+ case 21344u:return CM_P40_P47_RUN_24(s,io,21344u);
+ case 21346u:return CM_P40_P47_RUN_24(s,io,21346u);
+ case 21350u:return CM_P40_P47_RUN_24(s,io,21350u);
+ case 21352u:return CM_P40_P47_RUN_24(s,io,21352u);
+ case 21356u:return CM_P40_P47_RUN_24(s,io,21356u);
+ case 21362u:return CM_P40_P47_RUN_24(s,io,21362u);
+ case 21367u:return CM_P40_P47_RUN_24(s,io,21367u);
+ case 21371u:return CM_P40_P47_RUN_24(s,io,21371u);
+ case 23948u:return CM_P40_P47_RUN_27(s,io,23948u);
+ case 23950u:return CM_P40_P47_RUN_27(s,io,23950u);
  case 35718u:goto B105606;
  case 35727u:goto B105617;
  case 35728u:goto B105620;
@@ -4324,6 +5264,7 @@ dispatch:
  default:return EXEC_OK;
  }
 }
+#endif
 /* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent
  * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */
 static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){
@@ -4700,14 +5641,14 @@ static enum exec_status r34153(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2167  (after EXIT) */
 static enum exec_status r34167_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14455u);
+ return basic_run_16(s,(cm_native_io *)v,14455u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 8) & 1
 /* 16,2171  (return from PHASCHNG) */
 static enum exec_status r34171_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14457u);
+ return basic_run_16(s,(cm_native_io *)v,14457u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 9) & 1
@@ -4767,7 +5708,7 @@ static enum exec_status r34172(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2210  (after EXIT) */
 static enum exec_status r34210_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14472u);
+ return basic_run_16(s,(cm_native_io *)v,14472u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 11) & 1
@@ -4940,7 +5881,7 @@ static enum exec_status r34275(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2302 S40.9 (2CADR S40.9) */
 static enum exec_status r34302_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14530u);
+ return basic_run_16(s,(cm_native_io *)v,14530u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 14) & 1
@@ -5004,14 +5945,14 @@ static enum exec_status r34320(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2321  (after EXIT) */
 static enum exec_status r34321_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14545u);
+ return basic_run_16(s,(cm_native_io *)v,14545u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 18) & 1
 /* 16,2324  (return from PHASCHNG) */
 static enum exec_status r34324_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14548u);
+ return basic_run_16(s,(cm_native_io *)v,14548u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 19) & 1
@@ -5134,14 +6075,14 @@ static enum exec_status r34365(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2366  (after EXIT) */
 static enum exec_status r34366_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14582u);
+ return basic_run_16(s,(cm_native_io *)v,14582u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 23) & 1
 /* 16,2370 COPY40.9 (return from PHASCHNG) */
 static enum exec_status r34370_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14584u);
+ return basic_run_16(s,(cm_native_io *)v,14584u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 24) & 1
@@ -5174,21 +6115,21 @@ static enum exec_status r34371(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2400 -2 (after EXIT) */
 static enum exec_status r34400_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14592u);
+ return basic_run_16(s,(cm_native_io *)v,14592u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 26) & 1
 /* 16,2404  (return from PHASCHNG) */
 static enum exec_status r34404_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14596u);
+ return basic_run_16(s,(cm_native_io *)v,14596u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 27) & 1
 /* 16,2405 REDO40.9 (entry REDO40.9 (RESTART_TABLES.agc 2CADR REDO40.9)) */
 static enum exec_status r34405_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14597u);
+ return basic_run_16(s,(cm_native_io *)v,14597u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 28) & 1
@@ -5224,14 +6165,14 @@ static enum exec_status r34406(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2416  (after EXIT) */
 static enum exec_status r34416_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14606u);
+ return basic_run_16(s,(cm_native_io *)v,14606u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 30) & 1
 /* 16,2427 S40.13 (entry S40.13 (RESTART_TABLES.agc 2CADR S40.13)) */
 static enum exec_status r34427_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14615u);
+ return basic_run_16(s,(cm_native_io *)v,14615u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 31) & 1
@@ -5262,7 +6203,7 @@ static enum exec_status r34430(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2436  (after EXIT) */
 static enum exec_status r34436_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14622u);
+ return basic_run_16(s,(cm_native_io *)v,14622u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 33) & 1
@@ -5416,14 +6357,14 @@ static enum exec_status r34511(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2512  (after EXIT) */
 static enum exec_status r34512_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14666u);
+ return basic_run_16(s,(cm_native_io *)v,14666u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 39) & 1
 /* 16,2513  (return from TPAGREE) */
 static enum exec_status r34513_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14667u);
+ return basic_run_16(s,(cm_native_io *)v,14667u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 40) & 1
@@ -5442,14 +6383,14 @@ static enum exec_status r34520(apollo_overlay_state *s,p66_bias_io *io){
 /* 16,2522 S40.134 (after EXIT) */
 static enum exec_status r34522_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14674u);
+ return basic_run_16(s,(cm_native_io *)v,14674u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 42) & 1
 /* 16,2524  (return from PHASCHNG) */
 static enum exec_status r34524_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,14676u);
+ return basic_run_16(s,(cm_native_io *)v,14676u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 43) & 1
@@ -5487,7 +6428,7 @@ static enum exec_status r40201(apollo_overlay_state *s,p66_bias_io *io){
 /* 20,2206  (after EXIT) */
 static enum exec_status r40206_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16518u);
+ return basic_run_20(s,(cm_native_io *)v,16518u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 46) & 1
@@ -5516,14 +6457,14 @@ static enum exec_status r40214(apollo_overlay_state *s,p66_bias_io *io){
 /* 20,2215  (after EXIT) */
 static enum exec_status r40215_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16525u);
+ return basic_run_20(s,(cm_native_io *)v,16525u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 49) & 1
 /* 20,2217  (return from ALARM) */
 static enum exec_status r40217_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16527u);
+ return basic_run_20(s,(cm_native_io *)v,16527u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 50) & 1
@@ -5563,7 +6504,7 @@ static enum exec_status r40222(apollo_overlay_state *s,p66_bias_io *io){
 /* 20,2230  (after EXIT) */
 static enum exec_status r40230_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16536u);
+ return basic_run_20(s,(cm_native_io *)v,16536u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 53) & 1
@@ -5582,77 +6523,77 @@ static enum exec_status r40236(apollo_overlay_state *s,p66_bias_io *io){
 /* 20,2241 PRE40.6 (entry PRE40.6 (RESTART_TABLES.agc -2CADR PRE40.6)) */
 static enum exec_status r40241_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16545u);
+ return basic_run_20(s,(cm_native_io *)v,16545u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 55) & 1
 /* 20,2252 S40.6 (2CADR S40.6) */
 static enum exec_status r40252_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16554u);
+ return basic_run_20(s,(cm_native_io *)v,16554u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 56) & 1
 /* 20,2264  (return from FIXDELAY) */
 static enum exec_status r40264_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16564u);
+ return basic_run_20(s,(cm_native_io *)v,16564u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 57) & 1
 /* 20,2271 RSTRTST (return from FIXDELAY) */
 static enum exec_status r40271_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16569u);
+ return basic_run_20(s,(cm_native_io *)v,16569u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 58) & 1
 /* 20,2327  (return from FIXDELAY) */
 static enum exec_status r40327_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16599u);
+ return basic_run_20(s,(cm_native_io *)v,16599u);
 }
 #endif
 #if (CM_P40_P47_KEEP0 >> 59) & 1
 /* 20,2332 +2 (return from FIXDELAY) */
 static enum exec_status r40332_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16602u);
+ return basic_run_20(s,(cm_native_io *)v,16602u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 0) & 1
 /* 20,2347 S41.2 (entry S41.2 (EXTENDED_VERBS.agc CADR S41.2)) */
 static enum exec_status r40347_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16615u);
+ return basic_run_20(s,(cm_native_io *)v,16615u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 1) & 1
 /* 20,2500 S40.14 (entry S40.14 (EXTENDED_VERBS.agc CADR S40.14)) */
 static enum exec_status r40500_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16704u);
+ return basic_run_20(s,(cm_native_io *)v,16704u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 2) & 1
 /* 21,2014 RCSUP (2CADR RCSUP) */
 static enum exec_status r42014_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,17420u);
+ return basic_run_21(s,(cm_native_io *)v,17420u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 3) & 1
 /* 21,2024 RCSDAPON (CADR RCSDAPON) */
 static enum exec_status r42024_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,17428u);
+ return basic_run_21(s,(cm_native_io *)v,17428u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 4) & 1
 /* 21,2025  (entry 21,2025 (FRESH_START_AND_RESTART.agc CADR RCSDAPON   +1)) */
 static enum exec_status r42025_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,17429u);
+ return basic_run_21(s,(cm_native_io *)v,17429u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 5) & 1
@@ -5711,14 +6652,14 @@ static enum exec_status r45440(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2073 P40CSM (entry P40CSM (FRESH_START_AND_RESTART.agc FCADR P40CSM)) */
 static enum exec_status r50073_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20539u);
+ return basic_run_24(s,(cm_native_io *)v,20539u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 9) & 1
 /* 24,2075  (return from DOWNFLAG) */
 static enum exec_status r50075_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20541u);
+ return basic_run_24(s,(cm_native_io *)v,20541u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 10) & 1
@@ -5777,14 +6718,14 @@ static enum exec_status r50106(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2112  (after EXIT) */
 static enum exec_status r50112_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20554u);
+ return basic_run_24(s,(cm_native_io *)v,20554u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 14) & 1
 /* 24,2114 P40PVA (return from BANKCALL) */
 static enum exec_status r50114_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20556u);
+ return basic_run_24(s,(cm_native_io *)v,20556u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 15) & 1
@@ -5827,21 +6768,21 @@ static enum exec_status r50121(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2123 P40SXTY (after EXIT) */
 static enum exec_status r50123_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20563u);
+ return basic_run_24(s,(cm_native_io *)v,20563u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 19) & 1
 /* 24,2127  (return from BANKCALL) */
 static enum exec_status r50127_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20567u);
+ return basic_run_24(s,(cm_native_io *)v,20567u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 20) & 1
 /* 24,2133  (return from UPFLAG) */
 static enum exec_status r50133_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20571u);
+ return basic_run_24(s,(cm_native_io *)v,20571u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 21) & 1
@@ -5874,28 +6815,28 @@ static enum exec_status r50140(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2146  (after EXIT) */
 static enum exec_status r50146_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20582u);
+ return basic_run_24(s,(cm_native_io *)v,20582u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 23) & 1
 /* 24,2154  (return from BANKCALL) */
 static enum exec_status r50154_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20588u);
+ return basic_run_24(s,(cm_native_io *)v,20588u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 24) & 1
 /* 24,2203  (return from WAITLIST) */
 static enum exec_status r50203_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20611u);
+ return basic_run_24(s,(cm_native_io *)v,20611u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 25) & 1
 /* 24,2204 P40S/SV (entry P40S/SV (RESTART_TABLES.agc 2CADR P40S/SV)) */
 static enum exec_status r50204_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20612u);
+ return basic_run_24(s,(cm_native_io *)v,20612u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 26) & 1
@@ -5925,105 +6866,105 @@ static enum exec_status r50206(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2214  (CALRB return) */
 static enum exec_status r50214_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20620u);
+ return basic_run_24(s,(cm_native_io *)v,20620u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 28) & 1
 /* 24,2231  (return from LONGCALL) */
 static enum exec_status r50231_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20633u);
+ return basic_run_24(s,(cm_native_io *)v,20633u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 29) & 1
 /* 24,2233  (return from PHASCHNG) */
 static enum exec_status r50233_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20635u);
+ return basic_run_24(s,(cm_native_io *)v,20635u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 30) & 1
 /* 24,2234 P40BLNKR (2CADR P40BLNKR) */
 static enum exec_status r50234_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20636u);
+ return basic_run_24(s,(cm_native_io *)v,20636u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 31) & 1
 /* 24,2236  (return from BANKCALL) */
 static enum exec_status r50236_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20638u);
+ return basic_run_24(s,(cm_native_io *)v,20638u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 32) & 1
 /* 24,2246 POSTBURN (entry POSTBURN (RESTART_TABLES.agc 2CADR POSTBURN)) */
 static enum exec_status r50246_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20646u);
+ return basic_run_24(s,(cm_native_io *)v,20646u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 33) & 1
 /* 24,2251  (return from BANKCALL) */
 static enum exec_status r50251_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20649u);
+ return basic_run_24(s,(cm_native_io *)v,20649u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 34) & 1
 /* 24,2264 TIGNOW (2CADR TIGNOW) */
 static enum exec_status r50264_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20660u);
+ return basic_run_24(s,(cm_native_io *)v,20660u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 35) & 1
 /* 24,2267  (return from PHASCHNG) */
 static enum exec_status r50267_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20663u);
+ return basic_run_24(s,(cm_native_io *)v,20663u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 36) & 1
 /* 24,2272  (return from BANKCALL) */
 static enum exec_status r50272_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20666u);
+ return basic_run_24(s,(cm_native_io *)v,20666u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 37) & 1
 /* 24,2304 SETMINDB (entry SETMINDB (FRESH_START_AND_RESTART.agc CADR SETMINDB)) */
 static enum exec_status r50304_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20676u);
+ return basic_run_24(s,(cm_native_io *)v,20676u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 38) & 1
 /* 24,2320 SETMAXDB (entry SETMAXDB (FRESH_START_AND_RESTART.agc CADR SETMAXDB)) */
 static enum exec_status r50320_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20688u);
+ return basic_run_24(s,(cm_native_io *)v,20688u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 39) & 1
 /* 24,2334 TTG/0 (entry TTG/0 (RESTART_TABLES.agc -2CADR TTG/0)) */
 static enum exec_status r50334_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20700u);
+ return basic_run_24(s,(cm_native_io *)v,20700u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 40) & 1
 /* 24,2340 P40CLK (return from NOVAC) */
 static enum exec_status r50340_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20704u);
+ return basic_run_24(s,(cm_native_io *)v,20704u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 41) & 1
 /* 24,2342  (return from DOWNFLAG) */
 static enum exec_status r50342_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20706u);
+ return basic_run_24(s,(cm_native_io *)v,20706u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 42) & 1
@@ -6052,21 +6993,21 @@ static enum exec_status r50350(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2351  (after EXIT) */
 static enum exec_status r50351_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20713u);
+ return basic_run_24(s,(cm_native_io *)v,20713u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 45) & 1
 /* 24,2357  (return from 2PHSCHNG) */
 static enum exec_status r50357_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20719u);
+ return basic_run_24(s,(cm_native_io *)v,20719u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 46) & 1
 /* 24,2366  (return from WAITLIST) */
 static enum exec_status r50366_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20726u);
+ return basic_run_24(s,(cm_native_io *)v,20726u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 47) & 1
@@ -6111,7 +7052,7 @@ static enum exec_status r50377(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2401 CALCN85 (2CADR CALCN85) */
 static enum exec_status r50401_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20737u);
+ return basic_run_24(s,(cm_native_io *)v,20737u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 50) & 1
@@ -6152,49 +7093,49 @@ static enum exec_status r50406(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2407  (after EXIT) */
 static enum exec_status r50407_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20743u);
+ return basic_run_24(s,(cm_native_io *)v,20743u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 54) & 1
 /* 24,2437 TIGBLNK (entry TIGBLNK (RESTART_TABLES.agc -GENADR TIGBLNK)) */
 static enum exec_status r50437_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20767u);
+ return basic_run_24(s,(cm_native_io *)v,20767u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 55) & 1
 /* 24,2443  (return from WAITLIST) */
 static enum exec_status r50443_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20771u);
+ return basic_run_24(s,(cm_native_io *)v,20771u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 56) & 1
 /* 24,2451  (return from NOVAC) */
 static enum exec_status r50451_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20777u);
+ return basic_run_24(s,(cm_native_io *)v,20777u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 57) & 1
 /* 24,2454  (return from NEWPHASE) */
 static enum exec_status r50454_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20780u);
+ return basic_run_24(s,(cm_native_io *)v,20780u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 58) & 1
 /* 24,2463 P47CSM (entry P47CSM (FRESH_START_AND_RESTART.agc FCADR P47CSM)) */
 static enum exec_status r50463_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20787u);
+ return basic_run_24(s,(cm_native_io *)v,20787u);
 }
 #endif
 #if (CM_P40_P47_KEEP1 >> 59) & 1
 /* 24,2465  (return from BANKCALL) */
 static enum exec_status r50465_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20789u);
+ return basic_run_24(s,(cm_native_io *)v,20789u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 0) & 1
@@ -6213,42 +7154,42 @@ static enum exec_status r50466(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2470  (CALRB return) */
 static enum exec_status r50470_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20792u);
+ return basic_run_24(s,(cm_native_io *)v,20792u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 2) & 1
 /* 24,2475  (return from WAITLIST) */
 static enum exec_status r50475_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20797u);
+ return basic_run_24(s,(cm_native_io *)v,20797u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 3) & 1
 /* 24,2477  (return from PHASCHNG) */
 static enum exec_status r50477_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20799u);
+ return basic_run_24(s,(cm_native_io *)v,20799u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 4) & 1
 /* 24,2500 TIGON (entry TIGON (RESTART_TABLES.agc -2CADR TIGON)) */
 static enum exec_status r50500_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20800u);
+ return basic_run_24(s,(cm_native_io *)v,20800u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 5) & 1
 /* 24,2507  (return from NOVAC) */
 static enum exec_status r50507_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20807u);
+ return basic_run_24(s,(cm_native_io *)v,20807u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 6) & 1
 /* 24,2511 CALCN83 (2CADR CALCN83) */
 static enum exec_status r50511_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20809u);
+ return basic_run_24(s,(cm_native_io *)v,20809u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 7) & 1
@@ -6307,28 +7248,28 @@ static enum exec_status r50524(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2525  (after EXIT) */
 static enum exec_status r50525_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20821u);
+ return basic_run_24(s,(cm_native_io *)v,20821u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 11) & 1
 /* 24,2527  (return from PHASCHNG) */
 static enum exec_status r50527_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20823u);
+ return basic_run_24(s,(cm_native_io *)v,20823u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 12) & 1
 /* 24,2533  (return from GENTRAN) */
 static enum exec_status r50533_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20827u);
+ return basic_run_24(s,(cm_native_io *)v,20827u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 13) & 1
 /* 24,2534 P47BODY (entry P47BODY (RESTART_TABLES.agc 2CADR P47BODY)) */
 static enum exec_status r50534_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20828u);
+ return basic_run_24(s,(cm_native_io *)v,20828u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 14) & 1
@@ -6358,217 +7299,217 @@ static enum exec_status r50535(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,2542 P47BOD (after EXIT) */
 static enum exec_status r50542_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20834u);
+ return basic_run_24(s,(cm_native_io *)v,20834u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 16) & 1
 /* 24,2544  (return from PRIOCHNG) */
 static enum exec_status r50544_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20836u);
+ return basic_run_24(s,(cm_native_io *)v,20836u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 17) & 1
 /* 24,2547 P47/DSP (return from PHASCHNG) */
 static enum exec_status r50547_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20839u);
+ return basic_run_24(s,(cm_native_io *)v,20839u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 18) & 1
 /* 24,2552  (return from BANKCALL) */
 static enum exec_status r50552_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20842u);
+ return basic_run_24(s,(cm_native_io *)v,20842u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 19) & 1
 /* 24,2553  (return from GOTOPOOH) */
 static enum exec_status r50553_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20843u);
+ return basic_run_24(s,(cm_native_io *)v,20843u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 20) & 1
 /* 24,2554  (return from GOTOPOOH) */
 static enum exec_status r50554_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20844u);
+ return basic_run_24(s,(cm_native_io *)v,20844u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 21) & 1
 /* 24,2555 TIGAVEG (entry TIGAVEG (RESTART_TABLES.agc -2CADR TIGAVEG)) */
 static enum exec_status r50555_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20845u);
+ return basic_run_24(s,(cm_native_io *)v,20845u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 22) & 1
 /* 24,2565  (return from WAITLIST) */
 static enum exec_status r50565_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20853u);
+ return basic_run_24(s,(cm_native_io *)v,20853u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 23) & 1
 /* 24,2570 PRECHECK (entry PRECHECK (RESTART_TABLES.agc -2CADR PRECHECK)) */
 static enum exec_status r50570_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20856u);
+ return basic_run_24(s,(cm_native_io *)v,20856u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 24) & 1
 /* 24,2574 TIG-5 (entry TIG-5 (RESTART_TABLES.agc -2CADR TIG-5)) */
 static enum exec_status r50574_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20860u);
+ return basic_run_24(s,(cm_native_io *)v,20860u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 25) & 1
 /* 24,2600  (return from WAITLIST) */
 static enum exec_status r50600_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20864u);
+ return basic_run_24(s,(cm_native_io *)v,20864u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 26) & 1
 /* 24,2605  (return from 2PHSCHNG) */
 static enum exec_status r50605_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20869u);
+ return basic_run_24(s,(cm_native_io *)v,20869u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 27) & 1
 /* 24,2611  (return from FINDVAC) */
 static enum exec_status r50611_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20873u);
+ return basic_run_24(s,(cm_native_io *)v,20873u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 28) & 1
 /* 24,2612 TIG-0 (entry TIG-0 (RESTART_TABLES.agc -2CADR TIG-0)) */
 static enum exec_status r50612_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20874u);
+ return basic_run_24(s,(cm_native_io *)v,20874u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 29) & 1
 /* 24,2625 IGNITION (entry IGNITION (RESTART_TABLES.agc -2CADR IGNITION)) */
 static enum exec_status r50625_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20885u);
+ return basic_run_24(s,(cm_native_io *)v,20885u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 30) & 1
 /* 24,2660  (return from NEWPHASE) */
 static enum exec_status r50660_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20912u);
+ return basic_run_24(s,(cm_native_io *)v,20912u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 31) & 1
 /* 24,2662 DOTVCON (entry DOTVCON (RESTART_TABLES.agc -2CADR DOTVCON)) */
 static enum exec_status r50662_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20914u);
+ return basic_run_24(s,(cm_native_io *)v,20914u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 32) & 1
 /* 24,2704  (return from NEWPHASE) */
 static enum exec_status r50704_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20932u);
+ return basic_run_24(s,(cm_native_io *)v,20932u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 33) & 1
 /* 24,2713 DOSTRULL (entry DOSTRULL (RESTART_TABLES.agc -2CADR DOSTRULL)) */
 static enum exec_status r50713_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20939u);
+ return basic_run_24(s,(cm_native_io *)v,20939u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 34) & 1
 /* 24,2753  (return from 2PHSCHNG) */
 static enum exec_status r50753_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20971u);
+ return basic_run_24(s,(cm_native_io *)v,20971u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 35) & 1
 /* 24,2757 IMPLCONT (2CADR IMPLCONT) */
 static enum exec_status r50757_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20975u);
+ return basic_run_24(s,(cm_native_io *)v,20975u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 36) & 1
 /* 24,2766 ENGINOFF (entry ENGINOFF (RESTART_TABLES.agc -2CADR ENGINOFF)) */
 static enum exec_status r50766_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20982u);
+ return basic_run_24(s,(cm_native_io *)v,20982u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 37) & 1
 /* 24,2774 DOSPSOFF (entry DOSPSOFF (RESTART_TABLES.agc -2CADR DOSPSOFF)) */
 static enum exec_status r50774_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20988u);
+ return basic_run_24(s,(cm_native_io *)v,20988u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 38) & 1
 /* 24,3000  (return from NEWPHASE) */
 static enum exec_status r51000_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20992u);
+ return basic_run_24(s,(cm_native_io *)v,20992u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 39) & 1
 /* 24,3002 DOTVCRCS (entry DOTVCRCS (RESTART_TABLES.agc -2CADR DOTVCRCS)) */
 static enum exec_status r51002_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20994u);
+ return basic_run_24(s,(cm_native_io *)v,20994u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 40) & 1
 /* 24,3005  (return from IBNKCALL) */
 static enum exec_status r51005_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20997u);
+ return basic_run_24(s,(cm_native_io *)v,20997u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 41) & 1
 /* 24,3007  (return from IBNKCALL) */
 static enum exec_status r51007_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,20999u);
+ return basic_run_24(s,(cm_native_io *)v,20999u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 42) & 1
 /* 24,3012  (return from PHASCHNG) */
 static enum exec_status r51012_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21002u);
+ return basic_run_24(s,(cm_native_io *)v,21002u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 43) & 1
 /* 24,3016  (return from NOVAC) */
 static enum exec_status r51016_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21006u);
+ return basic_run_24(s,(cm_native_io *)v,21006u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 44) & 1
 /* 24,3017 SPSOFF (entry SPSOFF (FRESH_START_AND_RESTART.agc CADR SPSOFF)) */
 static enum exec_status r51017_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21007u);
+ return basic_run_24(s,(cm_native_io *)v,21007u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 45) & 1
 /* 24,3071 TVCZAP (entry TVCZAP (FRESH_START_AND_RESTART.agc CADR TVCZAP)) */
 static enum exec_status r51071_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21049u);
+ return basic_run_24(s,(cm_native_io *)v,21049u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 46) & 1
@@ -6616,14 +7557,14 @@ static enum exec_status r51104(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,3120  (after EXIT) */
 static enum exec_status r51120_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21072u);
+ return basic_run_24(s,(cm_native_io *)v,21072u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 48) & 1
 /* 24,3125  (return from PHASCHNG) */
 static enum exec_status r51125_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21077u);
+ return basic_run_24(s,(cm_native_io *)v,21077u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 49) & 1
@@ -6717,21 +7658,21 @@ static enum exec_status r51154(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,3155  (after EXIT) */
 static enum exec_status r51155_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21101u);
+ return basic_run_24(s,(cm_native_io *)v,21101u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 55) & 1
 /* 24,3161  (return from FINDVAC) */
 static enum exec_status r51161_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21105u);
+ return basic_run_24(s,(cm_native_io *)v,21105u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 56) & 1
 /* 24,3164  (return from 2PHSCHNG) */
 static enum exec_status r51164_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21108u);
+ return basic_run_24(s,(cm_native_io *)v,21108u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 57) & 1
@@ -6786,7 +7727,7 @@ static enum exec_status r51165(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,3205 STEERING (2CADR STEERING) */
 static enum exec_status r51205_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21125u);
+ return basic_run_24(s,(cm_native_io *)v,21125u);
 }
 #endif
 #if (CM_P40_P47_KEEP2 >> 59) & 1
@@ -6815,77 +7756,77 @@ static enum exec_status r51210(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,3211  (after EXIT) */
 static enum exec_status r51211_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21129u);
+ return basic_run_24(s,(cm_native_io *)v,21129u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 2) & 1
 /* 24,3235  (return from DPAGREE) */
 static enum exec_status r51235_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21149u);
+ return basic_run_24(s,(cm_native_io *)v,21149u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 3) & 1
 /* 24,3252  (return from WAITLIST) */
 static enum exec_status r51252_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21162u);
+ return basic_run_24(s,(cm_native_io *)v,21162u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 4) & 1
 /* 24,3255  (return from 2PHSCHNG) */
 static enum exec_status r51255_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21165u);
+ return basic_run_24(s,(cm_native_io *)v,21165u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 5) & 1
 /* 24,3257  (return from DOWNFLAG) */
 static enum exec_status r51257_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21167u);
+ return basic_run_24(s,(cm_native_io *)v,21167u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 6) & 1
 /* 24,3260 CLOKTASK (entry CLOKTASK (RESTART_TABLES.agc -2CADR CLOKTASK)) */
 static enum exec_status r51260_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21168u);
+ return basic_run_24(s,(cm_native_io *)v,21168u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 7) & 1
 /* 24,3266  (return from PHASCHNG) */
 static enum exec_status r51266_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21174u);
+ return basic_run_24(s,(cm_native_io *)v,21174u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 8) & 1
 /* 24,3301  (return from WAITLIST) */
 static enum exec_status r51301_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21185u);
+ return basic_run_24(s,(cm_native_io *)v,21185u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 9) & 1
 /* 24,3315 SETTB6 (return from NOVAC) */
 static enum exec_status r51315_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21197u);
+ return basic_run_24(s,(cm_native_io *)v,21197u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 10) & 1
 /* 24,3324  (return from FINDVAC) */
 static enum exec_status r51324_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21204u);
+ return basic_run_24(s,(cm_native_io *)v,21204u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 11) & 1
 /* 24,3325 DYNDISP (2CADR DYNDISP) */
 static enum exec_status r51325_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21205u);
+ return basic_run_24(s,(cm_native_io *)v,21205u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 12) & 1
@@ -6914,231 +7855,231 @@ static enum exec_status r51330(apollo_overlay_state *s,p66_bias_io *io){
 /* 24,3331  (after EXIT) */
 static enum exec_status r51331_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21209u);
+ return basic_run_24(s,(cm_native_io *)v,21209u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 15) & 1
 /* 24,3332 CLOCKJOB (2CADR CLOCKJOB) */
 static enum exec_status r51332_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21210u);
+ return basic_run_24(s,(cm_native_io *)v,21210u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 16) & 1
 /* 24,3342 CKNVWRD1 (return from BANKCALL) */
 static enum exec_status r51342_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21218u);
+ return basic_run_24(s,(cm_native_io *)v,21218u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 17) & 1
 /* 24,3352  (return from BANKCALL) */
 static enum exec_status r51352_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21226u);
+ return basic_run_24(s,(cm_native_io *)v,21226u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 18) & 1
 /* 24,3360  (return from BANKCALL) */
 static enum exec_status r51360_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21232u);
+ return basic_run_24(s,(cm_native_io *)v,21232u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 19) & 1
 /* 24,3366 E7SETTER (return from BANKCALL) */
 static enum exec_status r51366_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21238u);
+ return basic_run_24(s,(cm_native_io *)v,21238u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 20) & 1
 /* 24,3402 V99T (2CADR V99T) */
 static enum exec_status r51402_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21250u);
+ return basic_run_24(s,(cm_native_io *)v,21250u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 21) & 1
 /* 24,3406 V99TJOB (return from 2PHSCHNG) */
 static enum exec_status r51406_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21254u);
+ return basic_run_24(s,(cm_native_io *)v,21254u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 22) & 1
 /* 24,3435  (return from 2PHSCHNG) */
 static enum exec_status r51435_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21277u);
+ return basic_run_24(s,(cm_native_io *)v,21277u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 23) & 1
 /* 24,3440  (return from TWIDDLE) */
 static enum exec_status r51440_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21280u);
+ return basic_run_24(s,(cm_native_io *)v,21280u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 24) & 1
 /* 24,3441 V97TTASK (entry V97TTASK (RESTART_TABLES.agc -2CADR V97TTASK)) */
 static enum exec_status r51441_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21281u);
+ return basic_run_24(s,(cm_native_io *)v,21281u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 25) & 1
 /* 24,3451  (return from PHASCHNG) */
 static enum exec_status r51451_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21289u);
+ return basic_run_24(s,(cm_native_io *)v,21289u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 26) & 1
 /* 24,3454  (return from PHASCHNG) */
 static enum exec_status r51454_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21292u);
+ return basic_run_24(s,(cm_native_io *)v,21292u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 27) & 1
 /* 24,3456 V97TRCS (entry V97TRCS (RESTART_TABLES.agc -2CADR V97TRCS)) */
 static enum exec_status r51456_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21294u);
+ return basic_run_24(s,(cm_native_io *)v,21294u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 28) & 1
 /* 24,3460  (return from IBNKCALL) */
 static enum exec_status r51460_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21296u);
+ return basic_run_24(s,(cm_native_io *)v,21296u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 29) & 1
 /* 24,3464 ENDV97T (return from NOVAC) */
 static enum exec_status r51464_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21300u);
+ return basic_run_24(s,(cm_native_io *)v,21300u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 30) & 1
 /* 24,3473 V97PTASK (entry V97PTASK (RESTART_TABLES.agc -2CADR V97PTASK)) */
 static enum exec_status r51473_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21307u);
+ return basic_run_24(s,(cm_native_io *)v,21307u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 31) & 1
 /* 24,3501  (return from UPFLAG) */
 static enum exec_status r51501_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21313u);
+ return basic_run_24(s,(cm_native_io *)v,21313u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 32) & 1
 /* 24,3503  (return from UPFLAG) */
 static enum exec_status r51503_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21315u);
+ return basic_run_24(s,(cm_native_io *)v,21315u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 33) & 1
 /* 24,3505  (return from PHASCHNG) */
 static enum exec_status r51505_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21317u);
+ return basic_run_24(s,(cm_native_io *)v,21317u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 34) & 1
 /* 24,3507 R40ENABL (entry R40ENABL (RESTART_TABLES.agc -2CADR R40ENABL)) */
 static enum exec_status r51507_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21319u);
+ return basic_run_24(s,(cm_native_io *)v,21319u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 35) & 1
 /* 24,3511  (return from DOWNFLAG) */
 static enum exec_status r51511_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21321u);
+ return basic_run_24(s,(cm_native_io *)v,21321u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 36) & 1
 /* 24,3513 ENDV97P (return from PHASCHNG) */
 static enum exec_status r51513_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21323u);
+ return basic_run_24(s,(cm_native_io *)v,21323u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 37) & 1
 /* 24,3523 V97ETASK (entry V97ETASK (RESTART_TABLES.agc -2CADR V97ETASK)) */
 static enum exec_status r51523_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21331u);
+ return basic_run_24(s,(cm_native_io *)v,21331u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 38) & 1
 /* 24,3535 SPSOFF97 (entry SPSOFF97 (RESTART_TABLES.agc -2CADR SPSOFF97)) */
 static enum exec_status r51535_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21341u);
+ return basic_run_24(s,(cm_native_io *)v,21341u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 39) & 1
 /* 24,3540  (return from PHASCHNG) */
 static enum exec_status r51540_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21344u);
+ return basic_run_24(s,(cm_native_io *)v,21344u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 40) & 1
 /* 24,3542 V97E40.6 (entry V97E40.6 (RESTART_TABLES.agc -2CADR V97E40.6)) */
 static enum exec_status r51542_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21346u);
+ return basic_run_24(s,(cm_native_io *)v,21346u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 41) & 1
 /* 24,3546  (return from WAITLIST) */
 static enum exec_status r51546_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21350u);
+ return basic_run_24(s,(cm_native_io *)v,21350u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 42) & 1
 /* 24,3550  (return from IBNKCALL) */
 static enum exec_status r51550_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21352u);
+ return basic_run_24(s,(cm_native_io *)v,21352u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 43) & 1
 /* 24,3554 QUICKIGN (return from 2PHSCHNG) */
 static enum exec_status r51554_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21356u);
+ return basic_run_24(s,(cm_native_io *)v,21356u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 44) & 1
 /* 24,3562 V99FLASH (return from FIXDELAY) */
 static enum exec_status r51562_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21362u);
+ return basic_run_24(s,(cm_native_io *)v,21362u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 45) & 1
 /* 24,3567  (return from 2PHSCHNG) */
 static enum exec_status r51567_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21367u);
+ return basic_run_24(s,(cm_native_io *)v,21367u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 46) & 1
 /* 24,3573 ENDV97E (return from FINDVAC) */
 static enum exec_status r51573_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,21371u);
+ return basic_run_24(s,(cm_native_io *)v,21371u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 47) & 1
@@ -7564,14 +8505,14 @@ static enum exec_status r51741(apollo_overlay_state *s,p66_bias_io *io){
 /* 27,2614 P41CSM (entry P41CSM (FRESH_START_AND_RESTART.agc FCADR P41CSM)) */
 static enum exec_status r56614_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,056000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,23948u);
+ return basic_run_27(s,(cm_native_io *)v,23948u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 54) & 1
 /* 27,2616  (return from UPFLAG) */
 static enum exec_status r56616_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,056000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,23950u);
+ return basic_run_27(s,(cm_native_io *)v,23950u);
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 55) & 1
@@ -7830,35 +8771,35 @@ static enum exec_status r61707(apollo_overlay_state *s,p66_bias_io *io){
 /* 42,3606 DAPFIG (entry DAPFIG (EXTENDED_VERBS.agc CADR DAPFIG)) */
 static enum exec_status r105606_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,35718u);
+ return basic_run_42(s,(cm_native_io *)v,35718u);
 }
 #endif
 #if (CM_P40_P47_KEEP4 >> 3) & 1
 /* 42,3627  (return from IBNKCALL) */
 static enum exec_status r105627_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,35735u);
+ return basic_run_42(s,(cm_native_io *)v,35735u);
 }
 #endif
 #if (CM_P40_P47_KEEP4 >> 4) & 1
 /* 42,3636  (return from DOWNFLAG) */
 static enum exec_status r105636_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,35742u);
+ return basic_run_42(s,(cm_native_io *)v,35742u);
 }
 #endif
 #if (CM_P40_P47_KEEP4 >> 5) & 1
 /* 42,3640  (return from DOWNFLAG) */
 static enum exec_status r105640_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,35744u);
+ return basic_run_42(s,(cm_native_io *)v,35744u);
 }
 #endif
 #if (CM_P40_P47_KEEP4 >> 6) & 1
 /* 42,3643  (return from IBNKCALL) */
 static enum exec_status r105643_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,35747u);
+ return basic_run_42(s,(cm_native_io *)v,35747u);
 }
 #endif
 
