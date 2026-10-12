@@ -3,6 +3,10 @@
 """Freeze every STRIDE-th case of a suite's oracle results as {case, CRC-32} pairs for the C64 diagnostic (same hash as tests/lanec_case.c).
 
   python3 tools/lanec/freeze.py SUITE STRIDE   # after tools/lanec/diff.py SUITE
+
+Pick STRIDE coprime with twice the suite's entry count, so the frozen subset
+reaches every entry in both missions (case n uses entry n % ENTRIES and
+mission (n / ENTRIES) % 2 in the Lane C suites).
 """
 import pathlib, sys, zlib
 
