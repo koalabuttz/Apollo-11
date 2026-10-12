@@ -1,0 +1,347 @@
+{
+ "source_paths": [
+  "Luminary099/P34-35_P74-75.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/P34-35_P74-75.agc": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_vn1645.c",
+ "native_sha256": "72d45d5d3de4d283959f6876ee752db6bfc68f456f75ae90da29f1e4fc579a15",
+ "source_words": 31,
+ "source_lines": 31,
+ "symbols": {
+  "VN1645": "35,3606",
+  "GET45": "35,3634",
+  "P3XORP7X": "35,3704",
+  "DP-.01": "35,3741",
+  "HIGH9": "7744",
+  "SUBEXIT": "E7,1470",
+  "+MGA": "E4,1652",
+  "DELVSIN": "E7,1655",
+  "FINALFLG": "0000047",
+  "REFSMFLG": "0000057",
+  "MODREG": "1011",
+  "GET+MGA": "06,3717",
+  "INTPRET": "6037",
+  "COMPTGO": "35,2432"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 930,
+   "address": "35,3606",
+   "source": "VN1645 STQ DLOAD",
+   "words": [
+    "71220"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 931,
+   "address": "35,3607",
+   "source": "SUBEXIT",
+   "words": [
+    "03470"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 932,
+   "address": "35,3610",
+   "source": "DP-.01",
+   "words": [
+    "33742"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 933,
+   "address": "35,3611",
+   "source": "STORE +MGA",
+   "words": [
+    "02253"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 934,
+   "address": "35,3612",
+   "source": "BOFF DLOAD",
+   "words": [
+    "71214"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 935,
+   "address": "35,3613",
+   "source": "FINALFLG",
+   "words": [
+    "01351"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 936,
+   "address": "35,3614",
+   "source": "GET45",
+   "words": [
+    "73634"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 937,
+   "address": "35,3615",
+   "source": "DP-.01",
+   "words": [
+    "33742"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 938,
+   "address": "35,3616",
+   "source": "DAD",
+   "words": [
+    "77615"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 939,
+   "address": "35,3617",
+   "source": "DP-.01",
+   "words": [
+    "33742"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 940,
+   "address": "35,3620",
+   "source": "STORE +MGA",
+   "words": [
+    "02253"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 941,
+   "address": "35,3621",
+   "source": "BOFF EXIT",
+   "words": [
+    "77414"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 942,
+   "address": "35,3622",
+   "source": "REFSMFLG",
+   "words": [
+    "01742"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 943,
+   "address": "35,3623",
+   "source": "GET45",
+   "words": [
+    "73634"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 944,
+   "address": "35,3624",
+   "source": "TC P3XORP7X",
+   "words": [
+    "03704"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 945,
+   "address": "35,3625",
+   "source": "TC +2",
+   "words": [
+    "03627"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 946,
+   "address": "35,3626",
+   "source": "TC GET45 +1",
+   "words": [
+    "03635"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 947,
+   "address": "35,3627",
+   "source": "TC INTPRET",
+   "words": [
+    "06037"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 948,
+   "address": "35,3630",
+   "source": "VLOAD PUSH",
+   "words": [
+    "41575"
+   ],
+   "native": "lvn_mga"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 949,
+   "address": "35,3631",
+   "source": "DELVSIN",
+   "words": [
+    "03656"
+   ],
+   "native": "lvn_mga"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 950,
+   "address": "35,3632",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "lvn_mga"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 951,
+   "address": "35,3633",
+   "source": "GET+MGA",
+   "words": [
+    "15717"
+   ],
+   "native": "lvn_mga"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 952,
+   "address": "35,3634",
+   "source": "GET45 EXIT",
+   "words": [
+    "77776"
+   ],
+   "native": "lvn_get45"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1008,
+   "address": "35,3704",
+   "source": "P3XORP7X CAF HIGH9",
+   "words": [
+    "37744"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1009,
+   "address": "35,3705",
+   "source": "MASK MODREG",
+   "words": [
+    "71011"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1010,
+   "address": "35,3706",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1011,
+   "address": "35,3707",
+   "source": "BZF +2",
+   "words": [
+    "13711"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1012,
+   "address": "35,3710",
+   "source": "INCR Q",
+   "words": [
+    "24002"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1013,
+   "address": "35,3711",
+   "source": "RETURN",
+   "words": [
+    "00002"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1049,
+   "address": "35,3741",
+   "source": "DP-.01 OCT 77777",
+   "words": [
+    "77777"
+   ],
+   "native": "lvn_vn1645"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1050,
+   "address": "35,3742",
+   "source": "OCT 61337",
+   "words": [
+    "61337"
+   ],
+   "native": "lvn_vn1645"
+  }
+ ],
+ "covered_ranges": [
+  "35,3606-35,3634",
+  "35,3704-35,3711",
+  "35,3741-35,3742"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged files reproduces the certified rope; every interpretive word of the VN1645 head (VN1645 through GET45 EXIT) and DP-.01 is a literal bookkeeping argument or constant of the native function owning its address; the basic TC words and P3XORP7X are compiled agc_image_ops instructions in lvn_vn1645, and HIGH9 equals its native literal. GET+MGA is the lm-midgim step; COMPTGO and the display code after GET45 are not covered."
+}

@@ -1,0 +1,10 @@
+{
+  "archive": "build/cm-tvc-daps-reference.deltas.xz",
+  "decoded_sha256": "fad424582dbed5335883da183ac6374edcb5e884a7a1192b6ec7d5b4aeef2490",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "returned": 65536
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/cm-flight-fixture/MAIN.agc.bin (byte-original Comanche055 rope 6e3150ae...)"
+}

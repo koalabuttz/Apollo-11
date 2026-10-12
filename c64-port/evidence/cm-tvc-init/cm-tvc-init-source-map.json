@@ -1,0 +1,2627 @@
+{
+ "source_file": "Comanche055/TVCINITIALIZE.agc",
+ "original_sha256": "ddc0ee4a00a30a7145d4204350833182658aacfbd38dccf84171a22adc81aee8",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "emitted_words": 259,
+ "native_files": [
+  "src/cm_tvc_init.c",
+  "include/cm_tvc_init.h"
+ ],
+ "entries": [
+  "2147 TVCDAPON (T5 via DOTVCON, P40-P47)",
+  "2152 MRCLEAN (POSTJUMP from TVCRESTARTS PHSCHK2)",
+  "2171 TVCINIT1 (T5 via INITLOC2)",
+  "2176 (IBNKCALL MASSPROP return)",
+  "2324 TVCINIT4 (IBNKCALL NEEDLER return; POSTJUMP from TVCRESTARTS CHKSTRK)",
+  "2343 (WAITLIST return past 2CADR TVCEXEC)",
+  "2351 PRESWTCH (V46, EXTENDED VERBS)",
+  "2361 SWICHOVR +5 (IBNKCALL from TVCRESTARTS)",
+  "2462 S40.15 (IBNKCALL from TVCEXECUTIVE)"
+ ],
+ "frontiers": {
+  "RESUME 5333": "ENDMRC, ENDTVCIN",
+  "IBNKCALL 4740": "Q 2175 (MASSPROP) or 2323 (NEEDLER)",
+  "WAITLIST 5245": "Q 2341 (2CADR TVCEXEC), A .5SEC",
+  "TC RTRNLOC 1613": "Q 2422; RTRNLOC holds the return QXCH saved",
+  "caller return": "S40.15 entry: its TC Q runs the TC held in the caller's Q",
+  "TC 1703": "TS VARK overflow skips TC Q into CSMN10 data (CA 7777, AD 7657, TC 1703)"
+ },
+ "fixed_constants_checked": {
+  "2152 NZERO": "00063",
+  "2155 ZERO": "00000",
+  "2166 POSMAX": "37777",
+  "2200 ONETHOU": "03720",
+  "2206 BIT14": "20000",
+  "2210 BIT1": "00001",
+  "2227 POSMAX": "37777",
+  "2230 BIT1": "00001",
+  "2232 BIT15": "40000",
+  "2251 NEGONE": "77776",
+  "2253 NINETEEN": "00023",
+  "2267 BIT13": "10000",
+  "2272 BIT1": "00001",
+  "2277 1/ATTLIM": "00170",
+  "2304 ATTLIM": "00210",
+  "2306 ATTLIM": "00210",
+  "2320 BIT3": "00004",
+  "2324 ZERO": "00000",
+  "2330 BIT13": "10000",
+  "2337 .5SEC": "00062",
+  "2357 BIT2": "00002",
+  "2363 NZEROJR": "00027",
+  "2365 ZERO": "00000",
+  "2375 BIT15": "40000",
+  "2402 FKPRIMDT": "00247",
+  "2404 FREPFRAC": "00232",
+  "2414 LBCFADR": "02512",
+  "2464 2PI/M": "33074"
+ },
+ "table_checked": "2500-2530 (CSMN10..D32) equal native coef[]; 2546-2551 2CADRs; INDEX tables CSMCFADR/HBCFADR, TCORR, BIT2/BIT3; fixed-fixed 7777 and 7657",
+ "reachability": {
+  "TS overflow skips other than MASSTMP, 1/CONACC and VARK": "unreachable: they store constants, loads, CCS or MP results; those three are taken",
+  "CCS negative/-0 slots on the MRCLEAN, ATTINIT and MCLEANJR counters": "unreachable: the counters are set by the file from NZERO, NZEROJR and BIT1 and only count down to +0",
+  "TVCINIT2, LOADCOEF, S40.15 +7, SWICHOVR": "reached only from inside the file (TCR/TC with the file's own Q)"
+ },
+ "words": [
+  {
+   "source_line": 77,
+   "bank": "17",
+   "address": "2147",
+   "raw_octal": "22016",
+   "label": "TVCDAPON",
+   "op": "LXCH",
+   "operand": "BANKRUPT",
+   "native_label": "L2147"
+  },
+  {
+   "source_line": 78,
+   "bank": "17",
+   "address": "2150",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2147"
+  },
+  {
+   "source_line": 79,
+   "bank": "17",
+   "address": "2151",
+   "raw_octal": "22012",
+   "label": "",
+   "op": "QXCH",
+   "operand": "QRUPT",
+   "native_label": "L2147"
+  },
+  {
+   "source_line": 80,
+   "bank": "17",
+   "address": "2152",
+   "raw_octal": "32534",
+   "label": "MRCLEAN",
+   "op": "CAF",
+   "operand": "NZERO",
+   "native_label": "L2152"
+  },
+  {
+   "source_line": 82,
+   "bank": "17",
+   "address": "2153",
+   "raw_octal": "10000",
+   "label": "+1",
+   "op": "CCS",
+   "operand": "A",
+   "native_label": "L2153"
+  },
+  {
+   "source_line": 83,
+   "bank": "17",
+   "address": "2154",
+   "raw_octal": "55447",
+   "label": "",
+   "op": "TS",
+   "operand": "CNTR",
+   "native_label": "L2153"
+  },
+  {
+   "source_line": 84,
+   "bank": "17",
+   "address": "2155",
+   "raw_octal": "35021",
+   "label": "",
+   "op": "CAF",
+   "operand": "ZERO",
+   "native_label": "L2155"
+  },
+  {
+   "source_line": 85,
+   "bank": "17",
+   "address": "2156",
+   "raw_octal": "54001",
+   "label": "",
+   "op": "TS",
+   "operand": "L",
+   "native_label": "L2156"
+  },
+  {
+   "source_line": 86,
+   "bank": "17",
+   "address": "2157",
+   "raw_octal": "51447",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CNTR",
+   "native_label": "L2157"
+  },
+  {
+   "source_line": 87,
+   "bank": "17",
+   "address": "2160",
+   "raw_octal": "53530",
+   "label": "",
+   "op": "DXCH",
+   "operand": "OMEGAYC",
+   "native_label": "L2157"
+  },
+  {
+   "source_line": 88,
+   "bank": "17",
+   "address": "2161",
+   "raw_octal": "11447",
+   "label": "",
+   "op": "CCS",
+   "operand": "CNTR",
+   "native_label": "L2157"
+  },
+  {
+   "source_line": 89,
+   "bank": "17",
+   "address": "2162",
+   "raw_octal": "12153",
+   "label": "",
+   "op": "TCF",
+   "operand": "MRCLEAN +1",
+   "native_label": "L2157"
+  },
+  {
+   "source_line": 91,
+   "bank": "17",
+   "address": "2163",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2157"
+  },
+  {
+   "source_line": 92,
+   "bank": "17",
+   "address": "2164",
+   "raw_octal": "32551",
+   "label": "",
+   "op": "DCA",
+   "operand": "INITLOC2",
+   "native_label": "L2164"
+  },
+  {
+   "source_line": 93,
+   "bank": "17",
+   "address": "2165",
+   "raw_octal": "53313",
+   "label": "",
+   "op": "DXCH",
+   "operand": "T5LOC",
+   "native_label": "L2165"
+  },
+  {
+   "source_line": 94,
+   "bank": "17",
+   "address": "2166",
+   "raw_octal": "34777",
+   "label": "",
+   "op": "CAF",
+   "operand": "POSMAX",
+   "native_label": "L2165"
+  },
+  {
+   "source_line": 95,
+   "bank": "17",
+   "address": "2167",
+   "raw_octal": "54030",
+   "label": "",
+   "op": "TS",
+   "operand": "TIME5",
+   "native_label": "L2165"
+  },
+  {
+   "source_line": 96,
+   "bank": "17",
+   "address": "2170",
+   "raw_octal": "15333",
+   "label": "ENDMRC",
+   "op": "TCF",
+   "operand": "RESUME",
+   "native_label": "L2165"
+  },
+  {
+   "source_line": 98,
+   "bank": "17",
+   "address": "2171",
+   "raw_octal": "22016",
+   "label": "TVCINIT1",
+   "op": "LXCH",
+   "operand": "BANKRUPT",
+   "native_label": "L2171"
+  },
+  {
+   "source_line": 99,
+   "bank": "17",
+   "address": "2172",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2171"
+  },
+  {
+   "source_line": 100,
+   "bank": "17",
+   "address": "2173",
+   "raw_octal": "22012",
+   "label": "",
+   "op": "QXCH",
+   "operand": "QRUPT",
+   "native_label": "L2171"
+  },
+  {
+   "source_line": 102,
+   "bank": "17",
+   "address": "2174",
+   "raw_octal": "04740",
+   "label": "",
+   "op": "TC",
+   "operand": "IBNKCALL",
+   "native_label": "L2171"
+  },
+  {
+   "source_line": 103,
+   "bank": "17",
+   "address": "2175",
+   "raw_octal": "13366",
+   "label": "",
+   "op": "CADR",
+   "operand": "MASSPROP",
+   "native_label": "L2171"
+  },
+  {
+   "source_line": 105,
+   "bank": "17",
+   "address": "2176",
+   "raw_octal": "30110",
+   "label": "",
+   "op": "CAE",
+   "operand": "EMDOT",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 106,
+   "bank": "17",
+   "address": "2177",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 107,
+   "bank": "17",
+   "address": "2200",
+   "raw_octal": "72545",
+   "label": "",
+   "op": "MP",
+   "operand": "ONETHOU",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 108,
+   "bank": "17",
+   "address": "2201",
+   "raw_octal": "55637",
+   "label": "",
+   "op": "TS",
+   "operand": "TENMDOT",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 109,
+   "bank": "17",
+   "address": "2202",
+   "raw_octal": "40000",
+   "label": "",
+   "op": "COM",
+   "operand": "#",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 110,
+   "bank": "17",
+   "address": "2203",
+   "raw_octal": "61474",
+   "label": "",
+   "op": "AD",
+   "operand": "CSMMASS",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 111,
+   "bank": "17",
+   "address": "2204",
+   "raw_octal": "55652",
+   "label": "",
+   "op": "TS",
+   "operand": "MASSTMP",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 113,
+   "bank": "17",
+   "address": "2205",
+   "raw_octal": "31466",
+   "label": "",
+   "op": "CAE",
+   "operand": "DAPDATR1",
+   "native_label": "L2176"
+  },
+  {
+   "source_line": 114,
+   "bank": "17",
+   "address": "2206",
+   "raw_octal": "75002",
+   "label": "",
+   "op": "MASK",
+   "operand": "BIT14",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 115,
+   "bank": "17",
+   "address": "2207",
+   "raw_octal": "10000",
+   "label": "",
+   "op": "CCS",
+   "operand": "A",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 116,
+   "bank": "17",
+   "address": "2210",
+   "raw_octal": "35017",
+   "label": "",
+   "op": "CAF",
+   "operand": "BIT1",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 117,
+   "bank": "17",
+   "address": "2211",
+   "raw_octal": "55447",
+   "label": "",
+   "op": "TS",
+   "operand": "CNTR",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 119,
+   "bank": "17",
+   "address": "2212",
+   "raw_octal": "51447",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CNTR",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 120,
+   "bank": "17",
+   "address": "2213",
+   "raw_octal": "32531",
+   "label": "",
+   "op": "CAF",
+   "operand": "CSMCFADR",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 121,
+   "bank": "17",
+   "address": "2214",
+   "raw_octal": "55722",
+   "label": "",
+   "op": "TS",
+   "operand": "COEFFADR",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 122,
+   "bank": "17",
+   "address": "2215",
+   "raw_octal": "02422",
+   "label": "",
+   "op": "TC",
+   "operand": "LOADCOEF",
+   "native_label": "L2206"
+  },
+  {
+   "source_line": 124,
+   "bank": "17",
+   "address": "2216",
+   "raw_octal": "51447",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CNTR",
+   "native_label": "L2216"
+  },
+  {
+   "source_line": 125,
+   "bank": "17",
+   "address": "2217",
+   "raw_octal": "31416",
+   "label": "",
+   "op": "CAE",
+   "operand": "EKTLX/I",
+   "native_label": "L2216"
+  },
+  {
+   "source_line": 126,
+   "bank": "17",
+   "address": "2220",
+   "raw_octal": "55636",
+   "label": "",
+   "op": "TS",
+   "operand": "KTLX/I",
+   "native_label": "L2216"
+  },
+  {
+   "source_line": 128,
+   "bank": "17",
+   "address": "2221",
+   "raw_octal": "02462",
+   "label": "",
+   "op": "TCR",
+   "operand": "S40.15",
+   "native_label": "L2216"
+  },
+  {
+   "source_line": 130,
+   "bank": "17",
+   "address": "2222",
+   "raw_octal": "41447",
+   "label": "TVCINIT2",
+   "op": "CS",
+   "operand": "CNTR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 131,
+   "bank": "17",
+   "address": "2223",
+   "raw_octal": "50000",
+   "label": "",
+   "op": "INDEX",
+   "operand": "A",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 132,
+   "bank": "17",
+   "address": "2224",
+   "raw_octal": "35016",
+   "label": "",
+   "op": "CAF",
+   "operand": "BIT2",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 133,
+   "bank": "17",
+   "address": "2225",
+   "raw_octal": "55634",
+   "label": "",
+   "op": "TS",
+   "operand": "KPRIMEDT",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 135,
+   "bank": "17",
+   "address": "2226",
+   "raw_octal": "40000",
+   "label": "",
+   "op": "COM",
+   "operand": "#",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 136,
+   "bank": "17",
+   "address": "2227",
+   "raw_octal": "64777",
+   "label": "",
+   "op": "AD",
+   "operand": "POSMAX",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 137,
+   "bank": "17",
+   "address": "2230",
+   "raw_octal": "65017",
+   "label": "",
+   "op": "AD",
+   "operand": "BIT1",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 138,
+   "bank": "17",
+   "address": "2231",
+   "raw_octal": "55625",
+   "label": "",
+   "op": "TS",
+   "operand": "T5TVCDT",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 140,
+   "bank": "17",
+   "address": "2232",
+   "raw_octal": "45001",
+   "label": "",
+   "op": "CS",
+   "operand": "BIT15",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 142,
+   "bank": "17",
+   "address": "2233",
+   "raw_octal": "70105",
+   "label": "",
+   "op": "MASK",
+   "operand": "FLAGWRD9",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 143,
+   "bank": "17",
+   "address": "2234",
+   "raw_octal": "54105",
+   "label": "",
+   "op": "TS",
+   "operand": "FLAGWRD9",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 145,
+   "bank": "17",
+   "address": "2235",
+   "raw_octal": "51447",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CNTR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 146,
+   "bank": "17",
+   "address": "2236",
+   "raw_octal": "31414",
+   "label": "",
+   "op": "CAE",
+   "operand": "EKPRIME",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 147,
+   "bank": "17",
+   "address": "2237",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 148,
+   "bank": "17",
+   "address": "2240",
+   "raw_octal": "71634",
+   "label": "",
+   "op": "MP",
+   "operand": "KPRIMEDT",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 149,
+   "bank": "17",
+   "address": "2241",
+   "raw_octal": "22000",
+   "label": "",
+   "op": "LXCH",
+   "operand": "A",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 150,
+   "bank": "17",
+   "address": "2242",
+   "raw_octal": "53635",
+   "label": "",
+   "op": "DXCH",
+   "operand": "KPRIMEDT",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 152,
+   "bank": "17",
+   "address": "2243",
+   "raw_octal": "51447",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CNTR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 153,
+   "bank": "17",
+   "address": "2244",
+   "raw_octal": "31421",
+   "label": "",
+   "op": "CAE",
+   "operand": "EREPFRAC",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 154,
+   "bank": "17",
+   "address": "2245",
+   "raw_octal": "55642",
+   "label": "",
+   "op": "TS",
+   "operand": "REPFRAC",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 156,
+   "bank": "17",
+   "address": "2246",
+   "raw_octal": "51447",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CNTR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 157,
+   "bank": "17",
+   "address": "2247",
+   "raw_octal": "32540",
+   "label": "",
+   "op": "CAF",
+   "operand": "TCORR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 158,
+   "bank": "17",
+   "address": "2250",
+   "raw_octal": "55447",
+   "label": "",
+   "op": "TS",
+   "operand": "CNTR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 160,
+   "bank": "17",
+   "address": "2251",
+   "raw_octal": "37716",
+   "label": "",
+   "op": "CAF",
+   "operand": "NEGONE",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 161,
+   "bank": "17",
+   "address": "2252",
+   "raw_octal": "55654",
+   "label": "",
+   "op": "TS",
+   "operand": "STRKTIME",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 163,
+   "bank": "17",
+   "address": "2253",
+   "raw_octal": "34374",
+   "label": "",
+   "op": "CAF",
+   "operand": "NINETEEN",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 164,
+   "bank": "17",
+   "address": "2254",
+   "raw_octal": "55643",
+   "label": "",
+   "op": "TS",
+   "operand": "VCNTR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 165,
+   "bank": "17",
+   "address": "2255",
+   "raw_octal": "55444",
+   "label": "",
+   "op": "TS",
+   "operand": "V97VCNTR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 167,
+   "bank": "17",
+   "address": "2256",
+   "raw_octal": "31423",
+   "label": "TVCINIT3",
+   "op": "CAE",
+   "operand": "PACTOFF",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 168,
+   "bank": "17",
+   "address": "2257",
+   "raw_octal": "55605",
+   "label": "",
+   "op": "TS",
+   "operand": "PDELOFF",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 169,
+   "bank": "17",
+   "address": "2260",
+   "raw_octal": "55623",
+   "label": "",
+   "op": "TS",
+   "operand": "PCMD",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 170,
+   "bank": "17",
+   "address": "2261",
+   "raw_octal": "55601",
+   "label": "",
+   "op": "TS",
+   "operand": "DELPBAR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 172,
+   "bank": "17",
+   "address": "2262",
+   "raw_octal": "31424",
+   "label": "",
+   "op": "CAE",
+   "operand": "YACTOFF",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 173,
+   "bank": "17",
+   "address": "2263",
+   "raw_octal": "55607",
+   "label": "",
+   "op": "TS",
+   "operand": "YDELOFF",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 174,
+   "bank": "17",
+   "address": "2264",
+   "raw_octal": "55624",
+   "label": "",
+   "op": "TS",
+   "operand": "YCMD",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 175,
+   "bank": "17",
+   "address": "2265",
+   "raw_octal": "55603",
+   "label": "",
+   "op": "TS",
+   "operand": "DELYBAR",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 177,
+   "bank": "17",
+   "address": "2266",
+   "raw_octal": "31466",
+   "label": "ATTINIT",
+   "op": "CAE",
+   "operand": "DAPDATR1",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 178,
+   "bank": "17",
+   "address": "2267",
+   "raw_octal": "75003",
+   "label": "",
+   "op": "MASK",
+   "operand": "BIT13",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 179,
+   "bank": "17",
+   "address": "2270",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 180,
+   "bank": "17",
+   "address": "2271",
+   "raw_octal": "12317",
+   "label": "",
+   "op": "BZF",
+   "operand": "NEEDLEIN",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 182,
+   "bank": "17",
+   "address": "2272",
+   "raw_octal": "35017",
+   "label": "",
+   "op": "CAF",
+   "operand": "BIT1",
+   "native_label": "L2222"
+  },
+  {
+   "source_line": 183,
+   "bank": "17",
+   "address": "2273",
+   "raw_octal": "55611",
+   "label": "+5",
+   "op": "TS",
+   "operand": "TTMP1",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 185,
+   "bank": "17",
+   "address": "2274",
+   "raw_octal": "51611",
+   "label": "",
+   "op": "INDEX",
+   "operand": "TTMP1",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 186,
+   "bank": "17",
+   "address": "2275",
+   "raw_octal": "31702",
+   "label": "",
+   "op": "CA",
+   "operand": "ERRBTMP",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 187,
+   "bank": "17",
+   "address": "2276",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 188,
+   "bank": "17",
+   "address": "2277",
+   "raw_octal": "72537",
+   "label": "",
+   "op": "MP",
+   "operand": "1/ATTLIM",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 189,
+   "bank": "17",
+   "address": "2300",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 190,
+   "bank": "17",
+   "address": "2301",
+   "raw_octal": "12311",
+   "label": "",
+   "op": "BZF",
+   "operand": "+8D",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 191,
+   "bank": "17",
+   "address": "2302",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 193,
+   "bank": "17",
+   "address": "2303",
+   "raw_octal": "62306",
+   "label": "",
+   "op": "BZMF",
+   "operand": "+3",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 194,
+   "bank": "17",
+   "address": "2304",
+   "raw_octal": "32536",
+   "label": "",
+   "op": "CA",
+   "operand": "ATTLIM",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 195,
+   "bank": "17",
+   "address": "2305",
+   "raw_octal": "12307",
+   "label": "",
+   "op": "TCF",
+   "operand": "+2",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 196,
+   "bank": "17",
+   "address": "2306",
+   "raw_octal": "42536",
+   "label": "+3",
+   "op": "CS",
+   "operand": "ATTLIM",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 197,
+   "bank": "17",
+   "address": "2307",
+   "raw_octal": "51611",
+   "label": "+2",
+   "op": "INDEX",
+   "operand": "TTMP1",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 198,
+   "bank": "17",
+   "address": "2310",
+   "raw_octal": "55702",
+   "label": "",
+   "op": "TS",
+   "operand": "ERRBTMP",
+   "native_label": "L2273"
+  },
+  {
+   "source_line": 199,
+   "bank": "17",
+   "address": "2311",
+   "raw_octal": "11611",
+   "label": "+8",
+   "op": "CCS",
+   "operand": "TTMP1",
+   "native_label": "L2311"
+  },
+  {
+   "source_line": 200,
+   "bank": "17",
+   "address": "2312",
+   "raw_octal": "12273",
+   "label": "",
+   "op": "TCF",
+   "operand": "ATTINIT +5",
+   "native_label": "L2311"
+  },
+  {
+   "source_line": 202,
+   "bank": "17",
+   "address": "2313",
+   "raw_octal": "31702",
+   "label": "",
+   "op": "CA",
+   "operand": "ERRBTMP",
+   "native_label": "L2311"
+  },
+  {
+   "source_line": 203,
+   "bank": "17",
+   "address": "2314",
+   "raw_octal": "55575",
+   "label": "",
+   "op": "TS",
+   "operand": "PERRB",
+   "native_label": "L2314"
+  },
+  {
+   "source_line": 204,
+   "bank": "17",
+   "address": "2315",
+   "raw_octal": "31703",
+   "label": "",
+   "op": "CA",
+   "operand": "ERRBTMP +1",
+   "native_label": "L2315"
+  },
+  {
+   "source_line": 205,
+   "bank": "17",
+   "address": "2316",
+   "raw_octal": "55577",
+   "label": "",
+   "op": "TS",
+   "operand": "YERRB",
+   "native_label": "L2315"
+  },
+  {
+   "source_line": 207,
+   "bank": "17",
+   "address": "2317",
+   "raw_octal": "41501",
+   "label": "NEEDLEIN",
+   "op": "CS",
+   "operand": "RCSFLAGS",
+   "native_label": "L2317"
+  },
+  {
+   "source_line": 208,
+   "bank": "17",
+   "address": "2320",
+   "raw_octal": "75015",
+   "label": "",
+   "op": "MASK",
+   "operand": "BIT3",
+   "native_label": "L2317"
+  },
+  {
+   "source_line": 209,
+   "bank": "17",
+   "address": "2321",
+   "raw_octal": "27501",
+   "label": "",
+   "op": "ADS",
+   "operand": "RCSFLAGS",
+   "native_label": "L2317"
+  },
+  {
+   "source_line": 210,
+   "bank": "17",
+   "address": "2322",
+   "raw_octal": "04740",
+   "label": "",
+   "op": "TC",
+   "operand": "IBNKCALL",
+   "native_label": "L2317"
+  },
+  {
+   "source_line": 211,
+   "bank": "17",
+   "address": "2323",
+   "raw_octal": "42420",
+   "label": "",
+   "op": "CADR",
+   "operand": "NEEDLER",
+   "native_label": "L2317"
+  },
+  {
+   "source_line": 213,
+   "bank": "17",
+   "address": "2324",
+   "raw_octal": "35021",
+   "label": "TVCINIT4",
+   "op": "CAF",
+   "operand": "ZERO",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 214,
+   "bank": "17",
+   "address": "2325",
+   "raw_octal": "55644",
+   "label": "",
+   "op": "TS",
+   "operand": "TVCPHASE",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 217,
+   "bank": "17",
+   "address": "2326",
+   "raw_octal": "30032",
+   "label": "",
+   "op": "CAE",
+   "operand": "CDUX",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 218,
+   "bank": "17",
+   "address": "2327",
+   "raw_octal": "55662",
+   "label": "",
+   "op": "TS",
+   "operand": "OGANOW",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 220,
+   "bank": "17",
+   "address": "2330",
+   "raw_octal": "35003",
+   "label": "",
+   "op": "CAF",
+   "operand": "BIT13",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 221,
+   "bank": "17",
+   "address": "2331",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 222,
+   "bank": "17",
+   "address": "2332",
+   "raw_octal": "02011",
+   "label": "",
+   "op": "RAND",
+   "operand": "DSALMOUT",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 223,
+   "bank": "17",
+   "address": "2333",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 224,
+   "bank": "17",
+   "address": "2334",
+   "raw_octal": "12337",
+   "label": "",
+   "op": "BZF",
+   "operand": "+3",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 227,
+   "bank": "17",
+   "address": "2335",
+   "raw_octal": "31652",
+   "label": "",
+   "op": "CAE",
+   "operand": "MASSTMP",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 228,
+   "bank": "17",
+   "address": "2336",
+   "raw_octal": "55474",
+   "label": "",
+   "op": "TS",
+   "operand": "CSMMASS",
+   "native_label": "L2324"
+  },
+  {
+   "source_line": 230,
+   "bank": "17",
+   "address": "2337",
+   "raw_octal": "35036",
+   "label": "+3",
+   "op": "CAF",
+   "operand": ".5SEC",
+   "native_label": "L2337"
+  },
+  {
+   "source_line": 231,
+   "bank": "17",
+   "address": "2340",
+   "raw_octal": "05245",
+   "label": "",
+   "op": "TC",
+   "operand": "WAITLIST",
+   "native_label": "L2337"
+  },
+  {
+   "source_line": 233,
+   "bank": "17",
+   "address": "2341",
+   "raw_octal": "02720 34066",
+   "label": "",
+   "op": "2CADR",
+   "operand": "TVCEXEC",
+   "native_label": "L2337"
+  },
+  {
+   "source_line": 235,
+   "bank": "17",
+   "address": "2343",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2343"
+  },
+  {
+   "source_line": 236,
+   "bank": "17",
+   "address": "2344",
+   "raw_octal": "32547",
+   "label": "",
+   "op": "DCA",
+   "operand": "DAPINIT5",
+   "native_label": "L2343"
+  },
+  {
+   "source_line": 237,
+   "bank": "17",
+   "address": "2345",
+   "raw_octal": "53313",
+   "label": "",
+   "op": "DXCH",
+   "operand": "T5LOC",
+   "native_label": "L2343"
+  },
+  {
+   "source_line": 238,
+   "bank": "17",
+   "address": "2346",
+   "raw_octal": "31625",
+   "label": "",
+   "op": "CAE",
+   "operand": "T5TVCDT",
+   "native_label": "L2343"
+  },
+  {
+   "source_line": 239,
+   "bank": "17",
+   "address": "2347",
+   "raw_octal": "54030",
+   "label": "",
+   "op": "TS",
+   "operand": "TIME5",
+   "native_label": "L2343"
+  },
+  {
+   "source_line": 241,
+   "bank": "17",
+   "address": "2350",
+   "raw_octal": "15333",
+   "label": "ENDTVCIN",
+   "op": "TCF",
+   "operand": "RESUME",
+   "native_label": "L2343"
+  },
+  {
+   "source_line": 243,
+   "bank": "17",
+   "address": "2351",
+   "raw_octal": "02354",
+   "label": "PRESWTCH",
+   "op": "TCR",
+   "operand": "SWICHOVR",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 245,
+   "bank": "17",
+   "address": "2352",
+   "raw_octal": "04701",
+   "label": "",
+   "op": "TC",
+   "operand": "POSTJUMP",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 246,
+   "bank": "17",
+   "address": "2353",
+   "raw_octal": "21272",
+   "label": "",
+   "op": "CADR",
+   "operand": "PINBRNCH",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 248,
+   "bank": "17",
+   "address": "2354",
+   "raw_octal": "00004",
+   "label": "SWICHOVR",
+   "op": "INHINT",
+   "operand": "#",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 249,
+   "bank": "17",
+   "address": "2355",
+   "raw_octal": "31644",
+   "label": "",
+   "op": "CA",
+   "operand": "TVCPHASE",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 250,
+   "bank": "17",
+   "address": "2356",
+   "raw_octal": "55611",
+   "label": "",
+   "op": "TS",
+   "operand": "PHASETMP",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 251,
+   "bank": "17",
+   "address": "2357",
+   "raw_octal": "45016",
+   "label": "",
+   "op": "CS",
+   "operand": "BIT2",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 252,
+   "bank": "17",
+   "address": "2360",
+   "raw_octal": "55644",
+   "label": "",
+   "op": "TS",
+   "operand": "TVCPHASE",
+   "native_label": "L2351"
+  },
+  {
+   "source_line": 254,
+   "bank": "17",
+   "address": "2361",
+   "raw_octal": "00006",
+   "label": "+5",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2361"
+  },
+  {
+   "source_line": 255,
+   "bank": "17",
+   "address": "2362",
+   "raw_octal": "23613",
+   "label": "",
+   "op": "QXCH",
+   "operand": "RTRNLOC",
+   "native_label": "L2361"
+  },
+  {
+   "source_line": 257,
+   "bank": "17",
+   "address": "2363",
+   "raw_octal": "32535",
+   "label": "",
+   "op": "CAF",
+   "operand": "NZEROJR",
+   "native_label": "L2361"
+  },
+  {
+   "source_line": 258,
+   "bank": "17",
+   "address": "2364",
+   "raw_octal": "55676",
+   "label": "+8",
+   "op": "TS",
+   "operand": "CNTRTMP",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 260,
+   "bank": "17",
+   "address": "2365",
+   "raw_octal": "35021",
+   "label": "MCLEANJR",
+   "op": "CA",
+   "operand": "ZERO",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 261,
+   "bank": "17",
+   "address": "2366",
+   "raw_octal": "54001",
+   "label": "",
+   "op": "TS",
+   "operand": "L",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 262,
+   "bank": "17",
+   "address": "2367",
+   "raw_octal": "51676",
+   "label": "",
+   "op": "INDEX",
+   "operand": "CNTRTMP",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 263,
+   "bank": "17",
+   "address": "2370",
+   "raw_octal": "53541",
+   "label": "",
+   "op": "DXCH",
+   "operand": "PTMP1",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 264,
+   "bank": "17",
+   "address": "2371",
+   "raw_octal": "11676",
+   "label": "",
+   "op": "CCS",
+   "operand": "CNTRTMP",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 265,
+   "bank": "17",
+   "address": "2372",
+   "raw_octal": "10000",
+   "label": "",
+   "op": "CCS",
+   "operand": "A",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 266,
+   "bank": "17",
+   "address": "2373",
+   "raw_octal": "12364",
+   "label": "",
+   "op": "TCF",
+   "operand": "SWICHOVR +8D",
+   "native_label": "L2364"
+  },
+  {
+   "source_line": 268,
+   "bank": "17",
+   "address": "2374",
+   "raw_octal": "40105",
+   "label": "",
+   "op": "CS",
+   "operand": "FLAGWRD9",
+   "native_label": "L2374"
+  },
+  {
+   "source_line": 269,
+   "bank": "17",
+   "address": "2375",
+   "raw_octal": "75001",
+   "label": "",
+   "op": "MASK",
+   "operand": "BIT15",
+   "native_label": "L2375"
+  },
+  {
+   "source_line": 270,
+   "bank": "17",
+   "address": "2376",
+   "raw_octal": "26105",
+   "label": "",
+   "op": "ADS",
+   "operand": "FLAGWRD9",
+   "native_label": "L2376"
+  },
+  {
+   "source_line": 272,
+   "bank": "17",
+   "address": "2377",
+   "raw_octal": "31420",
+   "label": "",
+   "op": "CAE",
+   "operand": "EKTLX/I +2",
+   "native_label": "L2376"
+  },
+  {
+   "source_line": 273,
+   "bank": "17",
+   "address": "2400",
+   "raw_octal": "55636",
+   "label": "",
+   "op": "TS",
+   "operand": "KTLX/I",
+   "native_label": "L2376"
+  },
+  {
+   "source_line": 274,
+   "bank": "17",
+   "address": "2401",
+   "raw_octal": "02471",
+   "label": "",
+   "op": "TCR",
+   "operand": "S40.15 +7",
+   "native_label": "L2376"
+  },
+  {
+   "source_line": 276,
+   "bank": "17",
+   "address": "2402",
+   "raw_octal": "32542",
+   "label": "",
+   "op": "CAF",
+   "operand": "FKPRIMDT",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 277,
+   "bank": "17",
+   "address": "2403",
+   "raw_octal": "55634",
+   "label": "",
+   "op": "TS",
+   "operand": "KPRIMEDT",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 279,
+   "bank": "17",
+   "address": "2404",
+   "raw_octal": "32543",
+   "label": "",
+   "op": "CAF",
+   "operand": "FREPFRAC",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 280,
+   "bank": "17",
+   "address": "2405",
+   "raw_octal": "55642",
+   "label": "",
+   "op": "TS",
+   "operand": "REPFRAC",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 282,
+   "bank": "17",
+   "address": "2406",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 283,
+   "bank": "17",
+   "address": "2407",
+   "raw_octal": "31602",
+   "label": "",
+   "op": "DCA",
+   "operand": "DELPBAR",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 284,
+   "bank": "17",
+   "address": "2410",
+   "raw_octal": "53606",
+   "label": "",
+   "op": "DXCH",
+   "operand": "PDELOFF",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 285,
+   "bank": "17",
+   "address": "2411",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 286,
+   "bank": "17",
+   "address": "2412",
+   "raw_octal": "31604",
+   "label": "",
+   "op": "DCA",
+   "operand": "DELYBAR",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 287,
+   "bank": "17",
+   "address": "2413",
+   "raw_octal": "53610",
+   "label": "",
+   "op": "DXCH",
+   "operand": "YDELOFF",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 289,
+   "bank": "17",
+   "address": "2414",
+   "raw_octal": "32533",
+   "label": "",
+   "op": "CA",
+   "operand": "LBCFADR",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 291,
+   "bank": "17",
+   "address": "2415",
+   "raw_octal": "55722",
+   "label": "",
+   "op": "TS",
+   "operand": "COEFFADR",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 292,
+   "bank": "17",
+   "address": "2416",
+   "raw_octal": "02422",
+   "label": "",
+   "op": "TC",
+   "operand": "LOADCOEF",
+   "native_label": "L2402"
+  },
+  {
+   "source_line": 294,
+   "bank": "17",
+   "address": "2417",
+   "raw_octal": "31611",
+   "label": "",
+   "op": "CAE",
+   "operand": "PHASETMP",
+   "native_label": "L2417"
+  },
+  {
+   "source_line": 295,
+   "bank": "17",
+   "address": "2420",
+   "raw_octal": "55644",
+   "label": "",
+   "op": "TS",
+   "operand": "TVCPHASE",
+   "native_label": "L2417"
+  },
+  {
+   "source_line": 297,
+   "bank": "17",
+   "address": "2421",
+   "raw_octal": "01613",
+   "label": "",
+   "op": "TC",
+   "operand": "RTRNLOC",
+   "native_label": "L2417"
+  },
+  {
+   "source_line": 299,
+   "bank": "17",
+   "address": "2422",
+   "raw_octal": "00006",
+   "label": "LOADCOEF",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 300,
+   "bank": "17",
+   "address": "2423",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 301,
+   "bank": "17",
+   "address": "2424",
+   "raw_octal": "30001",
+   "label": "",
+   "op": "DCA",
+   "operand": "0",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 302,
+   "bank": "17",
+   "address": "2425",
+   "raw_octal": "53724",
+   "label": "",
+   "op": "DXCH",
+   "operand": "N10",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 304,
+   "bank": "17",
+   "address": "2426",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 305,
+   "bank": "17",
+   "address": "2427",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 306,
+   "bank": "17",
+   "address": "2430",
+   "raw_octal": "30003",
+   "label": "",
+   "op": "DCA",
+   "operand": "2",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 307,
+   "bank": "17",
+   "address": "2431",
+   "raw_octal": "53726",
+   "label": "",
+   "op": "DXCH",
+   "operand": "N10 +2",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 310,
+   "bank": "17",
+   "address": "2432",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 311,
+   "bank": "17",
+   "address": "2433",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 312,
+   "bank": "17",
+   "address": "2434",
+   "raw_octal": "30005",
+   "label": "",
+   "op": "DCA",
+   "operand": "4",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 313,
+   "bank": "17",
+   "address": "2435",
+   "raw_octal": "53730",
+   "label": "",
+   "op": "DXCH",
+   "operand": "N10 +4",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 315,
+   "bank": "17",
+   "address": "2436",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 316,
+   "bank": "17",
+   "address": "2437",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 317,
+   "bank": "17",
+   "address": "2440",
+   "raw_octal": "30007",
+   "label": "",
+   "op": "DCA",
+   "operand": "6",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 318,
+   "bank": "17",
+   "address": "2441",
+   "raw_octal": "53732",
+   "label": "",
+   "op": "DXCH",
+   "operand": "N10 +6",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 320,
+   "bank": "17",
+   "address": "2442",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 321,
+   "bank": "17",
+   "address": "2443",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 322,
+   "bank": "17",
+   "address": "2444",
+   "raw_octal": "30011",
+   "label": "",
+   "op": "DCA",
+   "operand": "8D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 323,
+   "bank": "17",
+   "address": "2445",
+   "raw_octal": "53734",
+   "label": "",
+   "op": "DXCH",
+   "operand": "N10 +8D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 325,
+   "bank": "17",
+   "address": "2446",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 326,
+   "bank": "17",
+   "address": "2447",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 327,
+   "bank": "17",
+   "address": "2450",
+   "raw_octal": "30013",
+   "label": "",
+   "op": "DCA",
+   "operand": "10D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 328,
+   "bank": "17",
+   "address": "2451",
+   "raw_octal": "53736",
+   "label": "",
+   "op": "DXCH",
+   "operand": "N10 +10D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 330,
+   "bank": "17",
+   "address": "2452",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 331,
+   "bank": "17",
+   "address": "2453",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 332,
+   "bank": "17",
+   "address": "2454",
+   "raw_octal": "30015",
+   "label": "",
+   "op": "DCA",
+   "operand": "12D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 333,
+   "bank": "17",
+   "address": "2455",
+   "raw_octal": "53740",
+   "label": "",
+   "op": "DXCH",
+   "operand": "N10 +12D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 335,
+   "bank": "17",
+   "address": "2456",
+   "raw_octal": "51722",
+   "label": "",
+   "op": "INDEX",
+   "operand": "COEFFADR",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 336,
+   "bank": "17",
+   "address": "2457",
+   "raw_octal": "30016",
+   "label": "",
+   "op": "CA",
+   "operand": "14D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 337,
+   "bank": "17",
+   "address": "2460",
+   "raw_octal": "55741",
+   "label": "",
+   "op": "TS",
+   "operand": "N10 +14D",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 339,
+   "bank": "17",
+   "address": "2461",
+   "raw_octal": "00002",
+   "label": "",
+   "op": "TC",
+   "operand": "Q",
+   "native_label": "L2422"
+  },
+  {
+   "source_line": 341,
+   "bank": "17",
+   "address": "2462",
+   "raw_octal": "31470",
+   "label": "S40.15",
+   "op": "CAE",
+   "operand": "IXX",
+   "native_label": "L2462"
+  },
+  {
+   "source_line": 342,
+   "bank": "17",
+   "address": "2463",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2462"
+  },
+  {
+   "source_line": 343,
+   "bank": "17",
+   "address": "2464",
+   "raw_octal": "72544",
+   "label": "",
+   "op": "MP",
+   "operand": "2PI/M",
+   "native_label": "L2462"
+  },
+  {
+   "source_line": 344,
+   "bank": "17",
+   "address": "2465",
+   "raw_octal": "20001",
+   "label": "",
+   "op": "DDOUBL",
+   "operand": "#",
+   "native_label": "L2462"
+  },
+  {
+   "source_line": 345,
+   "bank": "17",
+   "address": "2466",
+   "raw_octal": "20001",
+   "label": "",
+   "op": "DDOUBL",
+   "operand": "#",
+   "native_label": "L2462"
+  },
+  {
+   "source_line": 346,
+   "bank": "17",
+   "address": "2467",
+   "raw_octal": "20001",
+   "label": "",
+   "op": "DDOUBL",
+   "operand": "#",
+   "native_label": "L2462"
+  },
+  {
+   "source_line": 347,
+   "bank": "17",
+   "address": "2470",
+   "raw_octal": "55640",
+   "label": "",
+   "op": "TS",
+   "operand": "1/CONACC",
+   "native_label": "L2462"
+  },
+  {
+   "source_line": 349,
+   "bank": "17",
+   "address": "2471",
+   "raw_octal": "31636",
+   "label": "+7",
+   "op": "CAE",
+   "operand": "KTLX/I",
+   "native_label": "L2471"
+  },
+  {
+   "source_line": 350,
+   "bank": "17",
+   "address": "2472",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 351,
+   "bank": "17",
+   "address": "2473",
+   "raw_octal": "71472",
+   "label": "",
+   "op": "MP",
+   "operand": "IAVG/TLX",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 352,
+   "bank": "17",
+   "address": "2474",
+   "raw_octal": "20001",
+   "label": "",
+   "op": "DDOUBL",
+   "operand": "#",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 353,
+   "bank": "17",
+   "address": "2475",
+   "raw_octal": "20001",
+   "label": "",
+   "op": "DDOUBL",
+   "operand": "#",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 354,
+   "bank": "17",
+   "address": "2476",
+   "raw_octal": "55641",
+   "label": "",
+   "op": "TS",
+   "operand": "VARK",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 355,
+   "bank": "17",
+   "address": "2477",
+   "raw_octal": "00002",
+   "label": "",
+   "op": "TC",
+   "operand": "Q",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 357,
+   "bank": "17",
+   "address": "2500",
+   "raw_octal": "37777",
+   "label": "CSMN10",
+   "op": "DEC",
+   "operand": ".99999",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 358,
+   "bank": "17",
+   "address": "2501",
+   "raw_octal": "67657",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.2549",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 359,
+   "bank": "17",
+   "address": "2502",
+   "raw_octal": "01703",
+   "label": "",
+   "op": "DEC",
+   "operand": ".0588",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 360,
+   "bank": "17",
+   "address": "2503",
+   "raw_octal": "47472",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.7620",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 361,
+   "bank": "17",
+   "address": "2504",
+   "raw_octal": "27656",
+   "label": "",
+   "op": "DEC",
+   "operand": ".7450",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 363,
+   "bank": "17",
+   "address": "2505",
+   "raw_octal": "37777",
+   "label": "",
+   "op": "DEC",
+   "operand": ".99999",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 364,
+   "bank": "17",
+   "address": "2506",
+   "raw_octal": "60361",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.4852",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 365,
+   "bank": "17",
+   "address": "2507",
+   "raw_octal": "00000",
+   "label": "",
+   "op": "DEC",
+   "operand": "0",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 366,
+   "bank": "17",
+   "address": "2510",
+   "raw_octal": "67304",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.2692",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 367,
+   "bank": "17",
+   "address": "2511",
+   "raw_octal": "00000",
+   "label": "",
+   "op": "DEC",
+   "operand": "0",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 369,
+   "bank": "17",
+   "address": "2512",
+   "raw_octal": "37777",
+   "label": "LBN10",
+   "op": "DEC",
+   "operand": "+.99999",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 370,
+   "bank": "17",
+   "address": "2513",
+   "raw_octal": "65371",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.3285",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 371,
+   "bank": "17",
+   "address": "2514",
+   "raw_octal": "65337",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.3301",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 372,
+   "bank": "17",
+   "address": "2515",
+   "raw_octal": "42700",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.9101",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 373,
+   "bank": "17",
+   "address": "2516",
+   "raw_octal": "33045",
+   "label": "",
+   "op": "DEC",
+   "operand": "+.8460",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 375,
+   "bank": "17",
+   "address": "2517",
+   "raw_octal": "01000",
+   "label": "",
+   "op": "DEC",
+   "operand": "+.03125",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 376,
+   "bank": "17",
+   "address": "2520",
+   "raw_octal": "00000",
+   "label": "",
+   "op": "DEC",
+   "operand": "0",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 377,
+   "bank": "17",
+   "address": "2521",
+   "raw_octal": "00000",
+   "label": "",
+   "op": "DEC",
+   "operand": "0",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 378,
+   "bank": "17",
+   "address": "2522",
+   "raw_octal": "42700",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.9101",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 379,
+   "bank": "17",
+   "address": "2523",
+   "raw_octal": "33045",
+   "label": "",
+   "op": "DEC",
+   "operand": "+.8460",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 381,
+   "bank": "17",
+   "address": "2524",
+   "raw_octal": "20000",
+   "label": "",
+   "op": "DEC",
+   "operand": "+.5000",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 382,
+   "bank": "17",
+   "address": "2525",
+   "raw_octal": "60730",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.47115",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 383,
+   "bank": "17",
+   "address": "2526",
+   "raw_octal": "17145",
+   "label": "",
+   "op": "DEC",
+   "operand": "+.4749",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 384,
+   "bank": "17",
+   "address": "2527",
+   "raw_octal": "41323",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.9558",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 385,
+   "bank": "17",
+   "address": "2530",
+   "raw_octal": "35773",
+   "label": "",
+   "op": "DEC",
+   "operand": "+.9372",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 387,
+   "bank": "17",
+   "address": "2531",
+   "raw_octal": "02500",
+   "label": "CSMCFADR",
+   "op": "GENADR",
+   "operand": "CSMN10",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 388,
+   "bank": "17",
+   "address": "2532",
+   "raw_octal": "01425",
+   "label": "HBCFADR",
+   "op": "GENADR",
+   "operand": "HBN10",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 390,
+   "bank": "17",
+   "address": "2533",
+   "raw_octal": "02512",
+   "label": "LBCFADR",
+   "op": "GENADR",
+   "operand": "LBN10",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 392,
+   "bank": "17",
+   "address": "2534",
+   "raw_octal": "00063",
+   "label": "NZERO",
+   "op": "DEC",
+   "operand": "51",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 393,
+   "bank": "17",
+   "address": "2535",
+   "raw_octal": "00027",
+   "label": "NZEROJR",
+   "op": "DEC",
+   "operand": "23",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 395,
+   "bank": "17",
+   "address": "2536",
+   "raw_octal": "00210",
+   "label": "ATTLIM",
+   "op": "DEC",
+   "operand": "0.00833",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 396,
+   "bank": "17",
+   "address": "2537",
+   "raw_octal": "00170",
+   "label": "1/ATTLIM",
+   "op": "DEC",
+   "operand": "0.007325",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 398,
+   "bank": "17",
+   "address": "2540",
+   "raw_octal": "00005",
+   "label": "TCORR",
+   "op": "OCT",
+   "operand": "00005",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 399,
+   "bank": "17",
+   "address": "2541",
+   "raw_octal": "00000",
+   "label": "+1",
+   "op": "OCT",
+   "operand": "00000",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 401,
+   "bank": "17",
+   "address": "2542",
+   "raw_octal": "00247",
+   "label": "FKPRIMDT",
+   "op": "DEC",
+   "operand": ".0102",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 402,
+   "bank": "17",
+   "address": "2543",
+   "raw_octal": "00232",
+   "label": "FREPFRAC",
+   "op": "DEC",
+   "operand": ".0375",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 405,
+   "bank": "17",
+   "address": "2544",
+   "raw_octal": "33074",
+   "label": "2PI/M",
+   "op": "DEC",
+   "operand": ".00331017",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 407,
+   "bank": "17",
+   "address": "2545",
+   "raw_octal": "03720",
+   "label": "ONETHOU",
+   "op": "DEC",
+   "operand": "1000",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 410,
+   "bank": "17",
+   "address": "2546",
+   "raw_octal": "03107 40066",
+   "label": "DAPINIT5",
+   "op": "2CADR",
+   "operand": "DAPINIT",
+   "native_label": "L2472"
+  },
+  {
+   "source_line": 413,
+   "bank": "17",
+   "address": "2550",
+   "raw_octal": "02171 36066",
+   "label": "INITLOC2",
+   "op": "2CADR",
+   "operand": "TVCINIT1",
+   "native_label": "L2472"
+  }
+ ]
+}

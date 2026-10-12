@@ -6,9 +6,19 @@
 #include "agc_word.h"
 /* Luminary LSPOS (=LUNPOS) and LUNVEL from the original interpretive entry
  * frontier (NEWOPS, LOC 03664 or 03775, bank 15) to the actual caller NEWOPS
- * frontier selected by QPRET. 0 unsupported (image unchanged), 1 returned,
- * 2 original UNIT SQRT abort frontier. */
+ * frontier selected by QPRET. 1 returned, 2 original UNIT SQRT abort
+ * frontier, 0 unsupported: an entry image outside the admitted domain is left
+ * unchanged, but a step that leaves the qualified primitive contracts after
+ * admission returns 0 with the image already changed (no sampled entry does).
+ *
+ * Admitted domain: Z at NEWOPS 06070 with FB/BANKSET bank 15, LOC at LSPOS or
+ * LUNVEL, EDOP, NEWJOB, INTBIT15 and MODE zero, an ordinary VAC area, ordinary
+ * 15-bit words, and a QPRET that is one of the actual callers' returns. The
+ * routine creates no job and the domain admits no interrupt during it, so
+ * NEWJOB stays zero throughout; the native steps do not test it again. */
 uint8_t lm_ephemeris(apollo_overlay_state *,p66_bias_io *);
+/* The entry admission lm_ephemeris applies (nonzero when admitted). */
+uint8_t lm_ephemeris_admitted(const apollo_overlay_state *,const p66_bias_io *);
 
 /* The same routine as a chain of steps between original NEWOPS frontiers, so
  * that each step can live in its own overlay module. lm_ephemeris admits the

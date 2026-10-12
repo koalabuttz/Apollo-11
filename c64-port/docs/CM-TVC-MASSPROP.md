@@ -74,6 +74,11 @@ other branch.
 Per-word map: `evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json`
 (`tools/cm_tvc_massprop_source.py`).
 
+Independent assembly comparison: `evidence/cm-tvc-massprop/cm-tvc-massprop-assembly-comparison.json`
+(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
+unchanged file against the original Comanche055 rope, without reading the
+native code.
+
 ## Evidence
 
 Hashes: `evidence/cm-tvc-massprop/SHA256.json`. Bulk files are assets of the

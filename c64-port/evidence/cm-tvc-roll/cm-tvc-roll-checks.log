@@ -1,0 +1,7 @@
+cm-tvc-roll: 128 frozen original TVCROLLDAP states, entry refusals: PASS
+PASS 65536 original TVCROLLDAP oracle states equal native 2053-word rows {'returned': 65536} 93c358bd7b602373803979b9aad7ef42f204f737c15ca452cc78c3daf46705ee
+PASS 278 original TVCROLLDAP words mapped; listing equals rope; 47 fixed constants, the 2CADR and LIMITS words equal native literals
+PASS 278 emitted TVCROLLDAP.agc words equal the original Comanche055 rope
+cm-tvc-roll: 128 frozen original TVCROLLDAP states, entry refusals: PASS
+PASS 65536 original TVCROLLDAP oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} 93c358bd7b602373803979b9aad7ef42f204f737c15ca452cc78c3daf46705ee
+PASS: VICE PAL cm-tvc-roll.prg: 128 checks, 0 failures
