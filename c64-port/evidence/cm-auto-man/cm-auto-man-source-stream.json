@@ -1,0 +1,10 @@
+{
+  "archive": "build/cm-auto-man-reference.deltas.xz",
+  "decoded_sha256": "c18bb36390606420397bc9e9876f2df389202bc253fa626fc6f404ceeba4d94a",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "returned": 65536
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/cm-flight-fixture/MAIN.agc.bin (byte-original Comanche055 rope 6e3150ae...)"
+}

@@ -1,0 +1,7 @@
+cm-jet-select: 128 frozen original JET_SELECTION_LOGIC states, entry refusals: PASS
+PASS 65536 original JET_SELECTION_LOGIC oracle states equal native 2054-word rows {'returned': 65536} d2db53ffb6891cc5ccb384f27b0e288e0010fea4d4b8e251fe8f2a4f645bfdbb
+PASS 629 original JET_SELECTION_LOGIC words mapped; listing equals rope; 97 fixed constants, 2CADR and INDEX tables equal native literals; REPLACER returns equal the native loop; no external TC
+PASS 629 emitted JET_SELECTION_LOGIC.agc words equal the original Comanche055 rope
+cm-jet-select: 128 frozen original JET_SELECTION_LOGIC states, entry refusals: PASS
+PASS 65536 original JET_SELECTION_LOGIC oracle states equal native 2054-word rows (ASan/UBSan) {'returned': 65536} d2db53ffb6891cc5ccb384f27b0e288e0010fea4d4b8e251fe8f2a4f645bfdbb
+PASS: VICE PAL cm-jet-select.prg: 128 checks, 0 failures

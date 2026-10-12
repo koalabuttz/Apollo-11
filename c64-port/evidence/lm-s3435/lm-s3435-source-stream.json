@@ -1,0 +1,10 @@
+{
+  "archive": "build/lm-s3435-reference.snapshots.bin.xz",
+  "decoded_sha256": "ebe6398ef2a768f6844551bd5c9b0fcd7ebc517b1133af565397588ed626cced",
+  "decoded_bytes": 67272704,
+  "cases": 16384,
+  "tag_counts": {
+    "1": 16384
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}
