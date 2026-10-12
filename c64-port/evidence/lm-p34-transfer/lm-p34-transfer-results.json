@@ -1,0 +1,39 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "lm-p34-transfer: 14336 cases, 64 refused stored returns, 148 admission guards; [256] [256] [256] [256] [128 128] [256] [256] [128 128] [256] [256] [256] [256] [256] [224] [256] [256] [256] [256] [224] [256]; 33903 checks, 0 failures",
+  "PASS 54 assembled P34-35 transfer words on 54 source lines map to 21 native routines",
+  "lm-p34-transfer: 14336 cases, 64 refused stored returns, 148 admission guards; [256] [256] [256] [256] [128 128] [256] [256] [128 128] [256] [256] [256] [256] [256] [224] [256] [256] [256] [256] [224] [256]; 33903 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-p34-transfer-1.prg: 320 checks, 0 failures",
+   "PASS: VICE PAL lm-p34-transfer-2.prg: 62 checks, 0 failures",
+   "PASS: VICE PAL lm-p34-transfer-3.prg: 12 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 19225,
+    "prg_sha256": "f5b5b6d9eb00aeba17226543ea890a072b092c6bf63cf16cd03720f56e8bad1b",
+    "image_end": "$5a20",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "every 16th basic case: 20 basic routines, native INTER-BANK routines, merged site table"
+   },
+   "2": {
+    "prg_bytes": 43245,
+    "prg_sha256": "e4e3b537f2dfb559e13a453a6ef114bc825f54988fc7bde7d746947f8d3f30f8",
+    "image_end": "$b0ec",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "sampled CLUPDATE, VN1645 and SELECTMU cases: VN1645, GET45, SELECTMU, CLUPDATE and GET45 +1"
+   },
+   "3": {
+    "prg_bytes": 45257,
+    "prg_sha256": "eda0c620a8a1fb0c7169489c9734a8b33772ca3f6e22d6463c04927dc264210e",
+    "image_end": "$b8c8",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "sampled GET.LVC cases: GET.LVC"
+   }
+  },
+  "not_on_c64": "GET+MGA through the trampoline (with its cases and GET45) does not fit below the $c000 mailbox; host only"
+ }
+}
