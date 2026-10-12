@@ -140,7 +140,7 @@ static const agc_site_operand *lm_trip_operands(uint16_t *count){static uint16_t
 static const agc_routine_table *mine(uint8_t cm){return cm?&cm_imu_compensation_routines:&lm_imu_compensation_routines;}
 static int external(const icp_case *c,agc_word z){const agc_word *e=icp_externals(c);for(;*e;++e)if(*e==z)return 1;return 0;}
 unsigned icp_run(apollo_overlay_state *s,uint16_t n,uint16_t *ie){icp_case c;agc_routine_table tables[3];
- agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};p66_bias_io lio;cm_native_io cio;void *io;enum exec_status st;uint16_t steps,stop;
+ agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};p66_bias_io lio;cm_native_io cio;void *io;enum exec_status st;uint16_t steps,stop;
  icp_input(s,&c,n);
  lio.superbank=0;lio.interrupt_enabled=c.interrupt_enabled;
  {unsigned i;uint16_t *p=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *p;++i)p[i]=0;}

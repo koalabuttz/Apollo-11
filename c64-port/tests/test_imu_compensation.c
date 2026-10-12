@@ -41,7 +41,7 @@ int main(void){apollo_overlay_state s,before;icp_case c;unsigned n,i,k;uint16_t 
   * also stop at NOVAC. Site 0 (GCOMPZER) never calls NOVAC. */
  for(k=0;k<ICP_SITES+ICP_LM_SITES;++k){check(returned[k]>0u,"round trip returned",k);if(k%ICP_SITES&&k!=ICP_SITES)check(ended[k]>0u,"round trip ended",k);}
  /* TEM1 other than +0 or BIT8 after IBNKCALL PIPASR +3: no producer. */
- for(n=7u;n<ICP_ENTRY_CASES;n+=ICP_ROUTINES){agc_native_program program={&lm_imu_compensation_routines,1,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};p66_bias_io io={0,1};agc_word sb=0;uint16_t steps;
+ for(n=7u;n<ICP_ENTRY_CASES;n+=ICP_ROUTINES){agc_native_program program={&lm_imu_compensation_routines,1,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};p66_bias_io io={0,1};agc_word sb=0;uint16_t steps;
   icp_input(&s,&c,(uint16_t)n);s.words[0141]=(agc_word)(n&1u?1u:077577u);before=s;
   check(agc_transfer_run(&program,&s,&io,&sb,0xfffeu,4,&steps)==EXEC_OUT_OF_SCOPE&&!memcmp(&s,&before,sizeof s)&&io.interrupt_enabled==1u,"TEM1 refused",n);}
  printf("imu-compensation: %u cases;",ICP_CASES);
