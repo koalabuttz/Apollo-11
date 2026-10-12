@@ -1361,8 +1361,47 @@
       "sha256": "e626c5273e96df95e3e0f243842bd32005537910554475e3dde3e2f48bdffbd4",
       "bytes": 21978,
       "lines": 920,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_jet_select.c"
+          ],
+          "scope": "All of bank 17 2552-3736: JETSLECT T5 task and T6START T6 task",
+          "verification": "docs/CM-JET-SELECT.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Canonical 2048-word image, FB bank 17, EB E6; JETSLECT with XTRANS -4..+4, T6START with BLAST+1, BLAST1+1, BLAST2+1 each 0, 4 or 11; channels 5, 6, 13, 31",
+          "frontiers": "RESUME 5333",
+          "data_validity": "Original constants and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "RESUME (T5/T6 interrupt return)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-jet-select/cm-jet-select-source-map.json",
+            "sha256": "846588e393a91b4012ffb059b96af5df67d42e21e83b3ba3ed904738866c32d0"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-jet-select/cm-jet-select-assembly-comparison.json",
+            "sha256": "e00595556969c2809fe607d320df3eb3d467c49244ca2ed9ad52850dc3ef5a80"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-jet-select/cm-jet-select-checks.log",
+            "sha256": "0eee5c6adf30d1589e52f1d349ca0c24eda2494334f6e801617b7bee3ae87289"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-jet-select/cm-jet-select-results.json",
+            "sha256": "f11d282ef5fe5649ad3eca4fa2efd5072735ed6681092ba40bff8fd18f8eca93"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/KALCMANU_STEERING.agc",
