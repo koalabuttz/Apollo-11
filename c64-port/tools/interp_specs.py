@@ -146,4 +146,24 @@ SPECS = {
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
         'freeze_stride': 64,
     },
+    'sband-antenna': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'S-BAND_ANTENNA_FOR_LM.agc', 'cm': 'S-BAND_ANTENNA_FOR_CM.agc'},
+        'base': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
+        'symbol': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
+        'entries': ['SBANDANT'],
+        'externals': {'BANKCALL': 'auto', 'PRIOCHNG': 'auto', 'BLANKET': 'auto', 'B5OFF': None,
+                      'ENDOFJOB': None, 'ENDEXT': None},
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/sband_antenna_target.c',
+        # V64 runs SBANDANT as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        # GOMARKFR's returns (terminate, proceed, recycle, immediate) land on
+        # words nothing in the file reaches.
+        'resume_orphans': True,
+        'freeze_stride': 32,
+    },
 }
