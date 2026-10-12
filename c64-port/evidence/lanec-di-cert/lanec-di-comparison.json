@@ -1,0 +1,54 @@
+{
+ "method": "tools/lanec/diff.py: every case run through the native routines and through the unchanged original program (pinned ropes) in Virtual AGC; complete results compared (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, interrupt state).",
+ "suites": {
+  "di-dsp": {
+   "suite": "di-dsp",
+   "cases": 3264,
+   "differing": 0,
+   "native_sha256": "b8c7b944eeac4888d965a09feaf59a7a3941b160e2246f15779ca8329fb597d8",
+   "oracle_sha256": "b8c7b944eeac4888d965a09feaf59a7a3941b160e2246f15779ca8329fb597d8",
+   "oracle_crc_sha256": "0179d1c946c8908222bc6449a5ee6c3f17a286a3d3f19c69368a92d1a802b3aa"
+  },
+  "di-mark": {
+   "suite": "di-mark",
+   "cases": 2944,
+   "differing": 0,
+   "native_sha256": "82a84af3126548737ab0b8ebdc308569fadddea08579ad7109464910f77e3740",
+   "oracle_sha256": "82a84af3126548737ab0b8ebdc308569fadddea08579ad7109464910f77e3740",
+   "oracle_crc_sha256": "a170f77d9e12d96609eb3fb12f1b633f9255087c3c8a22a821aa0741ea5288ac"
+  },
+  "di-play": {
+   "suite": "di-play",
+   "cases": 2208,
+   "differing": 0,
+   "native_sha256": "7e3d6da856c989cc4f82f9d745f0ddfcd1e3a36b28c16f1b24703d9c39fa73c0",
+   "oracle_sha256": "7e3d6da856c989cc4f82f9d745f0ddfcd1e3a36b28c16f1b24703d9c39fa73c0",
+   "oracle_crc_sha256": "f8e8e72203d6b1c3003448c507358f8d7e1cc16777d63404341b99c7e9f1d21d"
+  },
+  "di-sleep": {
+   "suite": "di-sleep",
+   "cases": 2176,
+   "differing": 0,
+   "native_sha256": "cd182485d82202f150e3f8bc398c7a7a23175aac5bec73ac1eb14c9792049783",
+   "oracle_sha256": "cd182485d82202f150e3f8bc398c7a7a23175aac5bec73ac1eb14c9792049783",
+   "oracle_crc_sha256": "a9f032758f5ddfe4e29b2d5da27ab37359ebe01a42340f3199091f9289b9ef60"
+  },
+  "di-idle": {
+   "suite": "di-idle",
+   "cases": 3840,
+   "differing": 0,
+   "native_sha256": "b5d919b75aee2a68433758704ca20ca54e4432d4a9591ef66510d5e00bdcad7e",
+   "oracle_sha256": "b5d919b75aee2a68433758704ca20ca54e4432d4a9591ef66510d5e00bdcad7e",
+   "oracle_crc_sha256": "bc0dedb0f9facabd9d7be28c5c2079cce556943ec938a86f8ddd832ef8cf25a9"
+  },
+  "di-nvdsp": {
+   "suite": "di-nvdsp",
+   "cases": 3200,
+   "differing": 0,
+   "native_sha256": "a8a23f3a202f6c7d0dc6d794d4e0ca70af99ea8ea553a01b599801f77789c65e",
+   "oracle_sha256": "a8a23f3a202f6c7d0dc6d794d4e0ca70af99ea8ea553a01b599801f77789c65e",
+   "oracle_crc_sha256": "83741ad9d60231caf4567fd4f8c7fdd07d3a49fc16425a6e0794ed5e3b7ef6fd"
+  }
+ },
+ "total_cases": 17632
+}

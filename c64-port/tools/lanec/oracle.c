@@ -23,6 +23,11 @@ static apollo_overlay_state s;
 static lanec_io io;
 static lanec_meta meta;
 
+/* LANEC_TRACE=FILE: also write every fixed-memory instruction address the
+ * original program started executing inside the suite's ranges, as
+ * "MISSION bank,address" (bank 0 for fixed-fixed), one per line, deduplicated. */
+static unsigned char traced[2][040][02000];
+
 static unsigned word(unsigned a) { return (unsigned)m.Erasable[a / 0400][a % 0400] & (a <= 2u ? 0177777u : 077777u); }
 
 static int outside(unsigned z)
@@ -37,6 +42,31 @@ static int outside(unsigned z)
             return 0;
     }
     return 1;
+}
+
+static void trace(unsigned z)
+{
+    unsigned fb = ((unsigned)m.Erasable[0][RegFB] >> 10) & 037u;
+    if (fb >= 030u && (m.OutputChannel7 & 0100)) fb += 010u;
+    unsigned char (*t)[02000] = traced[meta.mission == LANEC_CM];
+    if (z >= 04000u) t[0][(z - 04000u) % 02000u] |= (unsigned char)(1u << ((z - 04000u) / 02000u));
+    else if (z >= 02000u && fb >= 1u && fb < 040u) t[fb][z - 02000u] |= 1u;
+}
+
+static void write_trace(const char *path)
+{
+    FILE *f = fopen(path, "w");
+    unsigned b, a, k, n;
+    if (!f) return;
+    for (n = 0; n < 2u; ++n) {
+        for (k = 0; k < 2u; ++k)
+            for (a = 0; a < 02000u; ++a)
+                if (traced[n][0][a] & (1u << k)) fprintf(f, "%s 0,%04o\n", n ? "CM" : "LM", 04000u + k * 02000u + a);
+        for (b = 1; b < 040u; ++b)
+            for (a = 0; a < 02000u; ++a)
+                if (traced[n][b][a]) fprintf(f, "%s %o,%04o\n", n ? "CM" : "LM", b, 02000u + a);
+    }
+    fclose(f);
 }
 
 int main(int argc, char **argv)
@@ -60,6 +90,7 @@ int main(int argc, char **argv)
         m.AllowInterrupt = io.interrupt_enabled;
         for (steps = 0; steps < 4000u; ++steps) {
             if (steps && !m.PendFlag && !m.ExtraDelay && outside(word(RegZ))) break;
+            if (!m.PendFlag && !m.ExtraDelay) trace(word(RegZ));
             m.ScalerCounter = 0;
             if (agc_engine(&m)) return 2;
         }
@@ -70,5 +101,6 @@ int main(int argc, char **argv)
             printf(" %u", i == 1u || i == 2u || i == 7u ? 0u : (unsigned)m.InputChannel[i] & 077777u);
         printf(" %u %u 0\n", (unsigned)m.OutputChannel7 & 0160u, (unsigned)m.AllowInterrupt);
     }
+    if (getenv("LANEC_TRACE")) write_trace(getenv("LANEC_TRACE"));
     return 0;
 }
