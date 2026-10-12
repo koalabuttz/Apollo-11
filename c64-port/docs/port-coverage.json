@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -4144,6 +4144,13 @@
           ],
           "scope": "Complete STARTP66 entry-domain composition through RODCOMP, separately verified landing-cycle radial/acceleration/live CDU projection/force feedback/horizontal kernels. Live disk driver currently ends before UNIT; complete cycle/application integration and other landing programs remain pending.",
           "verification": "docs/P66_NATIVE_DRIVER.md"
+        },
+        {
+          "native_files": [
+            "src/lm_throttle.c"
+          ],
+          "verification": "docs/LM-THROTTLE.md",
+          "scope": "FASTCHNG (31,3740-3745) as an ABI routine: PHSNAME3 = caller return, TC A; composed with THROTTLE's DOPIF."
         }
       ]
     },
@@ -5393,8 +5400,47 @@
       "sha256": "68a812f18e678248d64ea62a56284e6a8a415925ea41ab8e35293f94a0c22efe",
       "bytes": 5906,
       "lines": 224,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_throttle.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-THROTTLE.md",
+          "scope": "Every path of the file (THROTTLE, THROTTLE+3/AFDUMP, the FC/FP/critical-band logic, DOPIF, DOIT with THRUST and channel 14, the FWEIGHT compensation, FLATOUT, WHATOUT, MASSMULT with DMP/TPAGREE compiled inline) as ABI routines to the caller's TC RTNHOLD return."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entry in bank 31 under EBANK7 (the callers' EBANK= PIF/E2DPS); returns are TC words into fixed memory; channel 14 thrust drive through lm_flight_io",
+        "external_continuations": [
+          "FASTCHNG (LUNAR_LANDING_GUIDANCE_EQUATIONS, routine registered here)",
+          "the caller's return"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-throttle/lm-throttle-source-map.json",
+            "sha256": "f131f9d19874f5e614fa581cc145218587046e23b0bb28709878f7944764328c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-throttle/lm-throttle-proof.json",
+            "sha256": "9be72a6072fcccd754b85e644412ea25fd0046d287a9cfdd370910e0b0b71f1a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-throttle/lm-throttle-host.log",
+            "sha256": "2b93acc61037ee44692f10934b473410ca28e257333a6e4fabb7b727d29297ad"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-throttle/lm-throttle-vice.log",
+            "sha256": "b3065df91b73d6a26e2aae9b917b5e4eaa948ad9f4b50f25f47eca55ad6548ee"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/TIME_OF_FREE_FALL.agc",

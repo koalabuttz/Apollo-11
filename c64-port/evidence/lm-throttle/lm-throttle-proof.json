@@ -1,0 +1,25 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 16384,
+ "snapshot_sha256": "327b8cd1710019b79e3599718a8a6851cae9edcffd32aa8ae7dec5d70266d5b8",
+ "outcomes": {
+  "FLATOUT:returned": 4096,
+  "THROTTLE+3:returned": 4096,
+  "THROTTLE:returned": 4096,
+  "WHATOUT:returned": 4096
+ },
+ "entries": [
+  "31,2216 THROTTLE",
+  "31,2221 THROTTLE+3",
+  "31,2224",
+  "31,2230",
+  "31,2303",
+  "31,2370 FLATOUT",
+  "31,2371 WHATOUT",
+  "31,2400 MASSMULT",
+  "31,3740 FASTCHNG"
+ ],
+ "boundary": "each entry from a random image (FB bank 31, EB 7, channel 14 bits 1-5, MODREG 66 in a quarter) to the caller's return in Q (SWRETURN, fixed-fixed 06000-06677 or bank 31); compared: outcome, channel 14 and all 2048 erasable words",
+ "full_physical_words": 2048
+}
