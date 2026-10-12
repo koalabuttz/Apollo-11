@@ -1,0 +1,936 @@
+{
+ "source_file": "Comanche055/TVCMASSPROP.agc",
+ "original_sha256": "21b48d0bb13356fe66517c4210f3d45cdabb0a5e67c88ef6327de4b3e4da4b47",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "emitted_words": 91,
+ "executable_words": 61,
+ "data_words": 30,
+ "entries": {
+  "MASSPROP": "05,3366",
+  "FIXCW": "05,3422"
+ },
+ "return": "ENDMASSP TC Q (05,3456): runs the TC word held in Q, leaving Q = 3",
+ "native_files": [
+  "src/cm_tvc_massprop.c",
+  "include/cm_tvc_massprop.h"
+ ],
+ "native_operand_table_words": 32,
+ "reachability": {
+  "TS overflow skips at 3367, 3423, 3424, 3434, 3457": "unreachable: A there is CAF 9/2/NEG2, a CCS result or +-1 from an earlier TS skip, never overflowed; translated anyway",
+  "CCS -0 at 3411 and 3446": "unreachable: PHI333/PSI333 are set only from CCS results or +-1",
+  "CCS negative/-0 at 3452": "unreachable: A is MASK BIT14 of DAPDATR1",
+  "non-returning loops": "TS VARST0 / TS IXX / TS WEIGHT/G overflow detours that revisit a loop head with the same loop state; native reports NO_EXIT where the oracle never reaches the caller return"
+ },
+ "words": [
+  {
+   "source_line": 137,
+   "bank": "05",
+   "address": "3366",
+   "raw_octal": "34334",
+   "label": "MASSPROP",
+   "op": "CAF",
+   "operand": "NINE",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 138,
+   "bank": "05",
+   "address": "3367",
+   "raw_octal": "55506",
+   "label": "",
+   "op": "TS",
+   "operand": "PHI333",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 140,
+   "bank": "05",
+   "address": "3370",
+   "raw_octal": "31466",
+   "label": "LEMTEST",
+   "op": "CAE",
+   "operand": "DAPDATR1",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 141,
+   "bank": "05",
+   "address": "3371",
+   "raw_octal": "75003",
+   "label": "",
+   "op": "MASK",
+   "operand": "BIT13",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 142,
+   "bank": "05",
+   "address": "3372",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 143,
+   "bank": "05",
+   "address": "3373",
+   "raw_octal": "13377",
+   "label": "",
+   "op": "BZF",
+   "operand": "LEMYES",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 145,
+   "bank": "05",
+   "address": "3374",
+   "raw_octal": "51506",
+   "label": "LEMNO",
+   "op": "INDEX",
+   "operand": "PHI333",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 146,
+   "bank": "05",
+   "address": "3375",
+   "raw_octal": "33463",
+   "label": "",
+   "op": "CAF",
+   "operand": "NOLEMVAL",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 147,
+   "bank": "05",
+   "address": "3376",
+   "raw_octal": "13407",
+   "label": "",
+   "op": "TCF",
+   "operand": "STOINST",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 149,
+   "bank": "05",
+   "address": "3377",
+   "raw_octal": "31473",
+   "label": "LEMYES",
+   "op": "CAE",
+   "operand": "LEMMASS",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 150,
+   "bank": "05",
+   "address": "3400",
+   "raw_octal": "60000",
+   "label": "",
+   "op": "DOUBLE",
+   "operand": "#",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 151,
+   "bank": "05",
+   "address": "3401",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 152,
+   "bank": "05",
+   "address": "3402",
+   "raw_octal": "51506",
+   "label": "",
+   "op": "INDEX",
+   "operand": "PHI333",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 153,
+   "bank": "05",
+   "address": "3403",
+   "raw_octal": "73505",
+   "label": "",
+   "op": "MP",
+   "operand": "SLOPEVAL",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 154,
+   "bank": "05",
+   "address": "3404",
+   "raw_octal": "20001",
+   "label": "",
+   "op": "DDOUBL",
+   "operand": "#",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 155,
+   "bank": "05",
+   "address": "3405",
+   "raw_octal": "51506",
+   "label": "",
+   "op": "INDEX",
+   "operand": "PHI333",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 156,
+   "bank": "05",
+   "address": "3406",
+   "raw_octal": "63473",
+   "label": "",
+   "op": "AD",
+   "operand": "INTVALUE",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 158,
+   "bank": "05",
+   "address": "3407",
+   "raw_octal": "51506",
+   "label": "STOINST",
+   "op": "INDEX",
+   "operand": "PHI333",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 159,
+   "bank": "05",
+   "address": "3410",
+   "raw_octal": "55511",
+   "label": "",
+   "op": "TS",
+   "operand": "VARST0",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 160,
+   "bank": "05",
+   "address": "3411",
+   "raw_octal": "11506",
+   "label": "",
+   "op": "CCS",
+   "operand": "PHI333",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 161,
+   "bank": "05",
+   "address": "3412",
+   "raw_octal": "13367",
+   "label": "",
+   "op": "TCF",
+   "operand": "MASSPROP",
+   "native": "MASSPROP ten-pass breakpoint load (L3366-L3412)"
+  },
+  {
+   "source_line": 163,
+   "bank": "05",
+   "address": "3413",
+   "raw_octal": "11466",
+   "label": "DXTEST",
+   "op": "CCS",
+   "operand": "DAPDATR1",
+   "native": "DXTEST descent-stage adjustment (L3413)"
+  },
+  {
+   "source_line": 164,
+   "bank": "05",
+   "address": "3414",
+   "raw_octal": "13422",
+   "label": "",
+   "op": "TCF",
+   "operand": "FIXCW",
+   "native": "DXTEST descent-stage adjustment (L3413)"
+  },
+  {
+   "source_line": 165,
+   "bank": "05",
+   "address": "3415",
+   "raw_octal": "13422",
+   "label": "",
+   "op": "TCF",
+   "operand": "FIXCW",
+   "native": "DXTEST descent-stage adjustment (L3413)"
+  },
+  {
+   "source_line": 166,
+   "bank": "05",
+   "address": "3416",
+   "raw_octal": "53522",
+   "label": "",
+   "op": "DXCH",
+   "operand": "VARST0",
+   "native": "DXTEST descent-stage adjustment (L3413)"
+  },
+  {
+   "source_line": 167,
+   "bank": "05",
+   "address": "3417",
+   "raw_octal": "21513",
+   "label": "",
+   "op": "DAS",
+   "operand": "VARST0",
+   "native": "DXTEST descent-stage adjustment (L3413)"
+  },
+  {
+   "source_line": 168,
+   "bank": "05",
+   "address": "3420",
+   "raw_octal": "33520",
+   "label": "",
+   "op": "CA",
+   "operand": "DXITFIX",
+   "native": "DXTEST descent-stage adjustment (L3413)"
+  },
+  {
+   "source_line": 169,
+   "bank": "05",
+   "address": "3421",
+   "raw_octal": "27520",
+   "label": "",
+   "op": "ADS",
+   "operand": "VARST0",
+   "native": "DXTEST descent-stage adjustment (L3413)"
+  },
+  {
+   "source_line": 171,
+   "bank": "05",
+   "address": "3422",
+   "raw_octal": "35016",
+   "label": "FIXCW",
+   "op": "CAF",
+   "operand": "BIT2",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 172,
+   "bank": "05",
+   "address": "3423",
+   "raw_octal": "55506",
+   "label": "",
+   "op": "TS",
+   "operand": "PHI333",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 173,
+   "bank": "05",
+   "address": "3424",
+   "raw_octal": "55507",
+   "label": "",
+   "op": "TS",
+   "operand": "PSI333",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 175,
+   "bank": "05",
+   "address": "3425",
+   "raw_octal": "31474",
+   "label": "",
+   "op": "CAE",
+   "operand": "CSMMASS",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 176,
+   "bank": "05",
+   "address": "3426",
+   "raw_octal": "63517",
+   "label": "",
+   "op": "AD",
+   "operand": "NEGBPW",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 177,
+   "bank": "05",
+   "address": "3427",
+   "raw_octal": "60000",
+   "label": "",
+   "op": "DOUBLE",
+   "operand": "#",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 178,
+   "bank": "05",
+   "address": "3430",
+   "raw_octal": "55510",
+   "label": "",
+   "op": "TS",
+   "operand": "TEMP333",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 180,
+   "bank": "05",
+   "address": "3431",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 181,
+   "bank": "05",
+   "address": "3432",
+   "raw_octal": "63435",
+   "label": "",
+   "op": "BZMF",
+   "operand": "PEGGY",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 182,
+   "bank": "05",
+   "address": "3433",
+   "raw_octal": "37715",
+   "label": "",
+   "op": "CAF",
+   "operand": "NEG2",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 183,
+   "bank": "05",
+   "address": "3434",
+   "raw_octal": "55506",
+   "label": "",
+   "op": "TS",
+   "operand": "PHI333",
+   "native": "FIXCW slope selection (L3422-L3433)"
+  },
+  {
+   "source_line": 185,
+   "bank": "05",
+   "address": "3435",
+   "raw_octal": "51506",
+   "label": "PEGGY",
+   "op": "INDEX",
+   "operand": "PHI333",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 186,
+   "bank": "05",
+   "address": "3436",
+   "raw_octal": "31516",
+   "label": "",
+   "op": "CAE",
+   "operand": "VARST5",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 187,
+   "bank": "05",
+   "address": "3437",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 188,
+   "bank": "05",
+   "address": "3440",
+   "raw_octal": "71510",
+   "label": "",
+   "op": "MP",
+   "operand": "TEMP333",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 189,
+   "bank": "05",
+   "address": "3441",
+   "raw_octal": "60000",
+   "label": "",
+   "op": "DOUBLE",
+   "operand": "#",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 190,
+   "bank": "05",
+   "address": "3442",
+   "raw_octal": "51507",
+   "label": "",
+   "op": "INDEX",
+   "operand": "PSI333",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 191,
+   "bank": "05",
+   "address": "3443",
+   "raw_octal": "61511",
+   "label": "",
+   "op": "AD",
+   "operand": "VARST0",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 192,
+   "bank": "05",
+   "address": "3444",
+   "raw_octal": "51507",
+   "label": "",
+   "op": "INDEX",
+   "operand": "PSI333",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 193,
+   "bank": "05",
+   "address": "3445",
+   "raw_octal": "55470",
+   "label": "",
+   "op": "TS",
+   "operand": "IXX",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 196,
+   "bank": "05",
+   "address": "3446",
+   "raw_octal": "11507",
+   "label": "",
+   "op": "CCS",
+   "operand": "PSI333",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 197,
+   "bank": "05",
+   "address": "3447",
+   "raw_octal": "13457",
+   "label": "",
+   "op": "TCF",
+   "operand": "BOKKEP2",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 199,
+   "bank": "05",
+   "address": "3450",
+   "raw_octal": "31466",
+   "label": "",
+   "op": "CAE",
+   "operand": "DAPDATR1",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 200,
+   "bank": "05",
+   "address": "3451",
+   "raw_octal": "75002",
+   "label": "",
+   "op": "MASK",
+   "operand": "BIT14",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 201,
+   "bank": "05",
+   "address": "3452",
+   "raw_octal": "10000",
+   "label": "",
+   "op": "CCS",
+   "operand": "A",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 202,
+   "bank": "05",
+   "address": "3453",
+   "raw_octal": "31473",
+   "label": "",
+   "op": "CA",
+   "operand": "LEMMASS",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 203,
+   "bank": "05",
+   "address": "3454",
+   "raw_octal": "61474",
+   "label": "",
+   "op": "AD",
+   "operand": "CSMMASS",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 204,
+   "bank": "05",
+   "address": "3455",
+   "raw_octal": "55475",
+   "label": "",
+   "op": "TS",
+   "operand": "WEIGHT/G",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 205,
+   "bank": "05",
+   "address": "3456",
+   "raw_octal": "00002",
+   "label": "ENDMASSP",
+   "op": "TC",
+   "operand": "Q",
+   "native": "PEGGY outputs IXX/IAVG/IAVG-TLX, WEIGHT/G, ENDMASSP TC Q (L3435-L3456)"
+  },
+  {
+   "source_line": 207,
+   "bank": "05",
+   "address": "3457",
+   "raw_octal": "55507",
+   "label": "BOKKEP2",
+   "op": "TS",
+   "operand": "PSI333",
+   "native": "BOKKEP2 (L3457)"
+  },
+  {
+   "source_line": 208,
+   "bank": "05",
+   "address": "3460",
+   "raw_octal": "00006",
+   "label": "",
+   "op": "EXTEND",
+   "operand": "#",
+   "native": "BOKKEP2 (L3457)"
+  },
+  {
+   "source_line": 209,
+   "bank": "05",
+   "address": "3461",
+   "raw_octal": "27506",
+   "label": "",
+   "op": "DIM",
+   "operand": "PHI333",
+   "native": "BOKKEP2 (L3457)"
+  },
+  {
+   "source_line": 210,
+   "bank": "05",
+   "address": "3462",
+   "raw_octal": "13435",
+   "label": "",
+   "op": "TCF",
+   "operand": "PEGGY",
+   "native": "BOKKEP2 (L3457)"
+  },
+  {
+   "source_line": 213,
+   "bank": "05",
+   "address": "3463",
+   "raw_octal": "00616",
+   "label": "NOLEMVAL",
+   "op": "DEC",
+   "operand": "25445",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 214,
+   "bank": "05",
+   "address": "3464",
+   "raw_octal": "02526",
+   "label": "",
+   "op": "DEC",
+   "operand": "87450",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 215,
+   "bank": "05",
+   "address": "3465",
+   "raw_octal": "02352",
+   "label": "",
+   "op": "DEC",
+   "operand": ".30715",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 216,
+   "bank": "05",
+   "address": "3466",
+   "raw_octal": "01471",
+   "label": "",
+   "op": "DEC",
+   "operand": "1.22877",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 217,
+   "bank": "05",
+   "address": "3467",
+   "raw_octal": "00634",
+   "label": "",
+   "op": "DEC",
+   "operand": "1.6096",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 218,
+   "bank": "05",
+   "address": "3470",
+   "raw_octal": "00612",
+   "label": "",
+   "op": "DEC",
+   "operand": "1.54",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 219,
+   "bank": "05",
+   "address": "3471",
+   "raw_octal": "03706",
+   "label": "",
+   "op": "DEC",
+   "operand": "7.77177",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 220,
+   "bank": "05",
+   "address": "3472",
+   "raw_octal": "04425",
+   "label": "",
+   "op": "DEC",
+   "operand": "3.46458",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 222,
+   "bank": "05",
+   "address": "3473",
+   "raw_octal": "00644",
+   "label": "INTVALUE",
+   "op": "DEC",
+   "operand": "26850",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 223,
+   "bank": "05",
+   "address": "3474",
+   "raw_octal": "03710",
+   "label": "",
+   "op": "DEC",
+   "operand": "127518",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 224,
+   "bank": "05",
+   "address": "3475",
+   "raw_octal": "04246",
+   "label": "",
+   "op": "DEC",
+   "operand": ".54059",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 225,
+   "bank": "05",
+   "address": "3476",
+   "raw_octal": "02011",
+   "label": "",
+   "op": "DEC",
+   "operand": ".153964",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 226,
+   "bank": "05",
+   "address": "3477",
+   "raw_octal": "77501",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.742923",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 227,
+   "bank": "05",
+   "address": "3500",
+   "raw_octal": "00612",
+   "label": "",
+   "op": "DEC",
+   "operand": "1.5398",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 228,
+   "bank": "05",
+   "address": "3501",
+   "raw_octal": "04656",
+   "label": "",
+   "op": "DEC",
+   "operand": "9.68",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 229,
+   "bank": "05",
+   "address": "3502",
+   "raw_octal": "10372",
+   "label": "",
+   "op": "DEC",
+   "operand": ".647625",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 230,
+   "bank": "05",
+   "address": "3503",
+   "raw_octal": "77126",
+   "label": "",
+   "op": "DEC",
+   "operand": "-27228",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 231,
+   "bank": "05",
+   "address": "3504",
+   "raw_octal": "76261",
+   "label": "",
+   "op": "DEC",
+   "operand": "-.206476",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 233,
+   "bank": "05",
+   "address": "3505",
+   "raw_octal": "00767",
+   "label": "SLOPEVAL",
+   "op": "DEC",
+   "operand": "1.96307",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 234,
+   "bank": "05",
+   "address": "3506",
+   "raw_octal": "15624",
+   "label": "",
+   "op": "DEC",
+   "operand": "27.5774",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 235,
+   "bank": "05",
+   "address": "3507",
+   "raw_octal": "03054",
+   "label": "",
+   "op": "DEC",
+   "operand": "2.3548",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 236,
+   "bank": "05",
+   "address": "3510",
+   "raw_octal": "04532",
+   "label": "",
+   "op": "DEC",
+   "operand": "2.1777",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 237,
+   "bank": "05",
+   "address": "3511",
+   "raw_octal": "10433",
+   "label": "",
+   "op": "DEC",
+   "operand": "1.044",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 238,
+   "bank": "05",
+   "address": "3512",
+   "raw_octal": "00000",
+   "label": "",
+   "op": "DEC",
+   "operand": "0",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 239,
+   "bank": "05",
+   "address": "3513",
+   "raw_octal": "22070",
+   "label": "",
+   "op": "DEC",
+   "operand": "2.21068",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 240,
+   "bank": "05",
+   "address": "3514",
+   "raw_octal": "03204",
+   "label": "",
+   "op": "DEC",
+   "operand": "1.5166",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 241,
+   "bank": "05",
+   "address": "3515",
+   "raw_octal": "77266",
+   "label": "",
+   "op": "DEC",
+   "operand": "-1.284",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 242,
+   "bank": "05",
+   "address": "3516",
+   "raw_octal": "02476",
+   "label": "",
+   "op": "DEC",
+   "operand": "2",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 244,
+   "bank": "05",
+   "address": "3517",
+   "raw_octal": "70364",
+   "label": "NEGBPW",
+   "op": "DEC",
+   "operand": "-15402.17",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  },
+  {
+   "source_line": 245,
+   "bank": "05",
+   "address": "3520",
+   "raw_octal": "75420",
+   "label": "DXITFIX",
+   "op": "DEC*",
+   "operand": "-1.88275",
+   "native": "operand table bank05[] / cm_tvc_massprop_fixed"
+  }
+ ]
+}
