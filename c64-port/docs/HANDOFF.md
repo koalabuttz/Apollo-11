@@ -1770,3 +1770,7 @@ Native C for the two Pinball paths no earlier milestone covered, in both Luminar
 ## Translate Luminary RESTARTS and run its restart table entries through the trampoline
 
 Luminary099 RESTARTS, GETPART2 and PHSPART2 select variable, table and X.1 display restarts natively from RESTART_TABLES words compiled from the source, and run as routines of the control-transfer ABI from RESTARTS to SWRETURN, handing each selected service its 2CADR. All 6,144 selection cases and 4,096 RESTARTS-to-SWRETURN compositions equal the original Luminary099 program in all 2,048 erasable words, covering all 40 table entries (12,703 strict and sanitizer checks), and every sixteenth case matches in VICE. See `docs/LM-RESTART-SELECT.md`.
+
+## Translate Luminary time of free fall (TFFCONIC/TFFCONMU, TFFRP/RA, CALCTPER, CALCTFF)
+
+Native C for all of Luminary099 TIME_OF_FREE_FALL (TFFCONIC/TFFCONMU, TFFRP/RA, CALCTPER and CALCTFF, 266 words) as a chain of 25 steps between original NEWOPS frontiers over the general Luminary interpretive bodies, with one new body (BPL/BMN). The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled call chains from the actual SR30.1 callers (strict and ASAN/UBSAN), 247 intermediate phase frontiers equal original NEWOPS images, 266 assembled words map to native literals after a fresh yaYUL assembly, and four C64 phase diagnostics pass 88 frozen steps in VICE. See `docs/LM-TIME-FREE-FALL.md`.
