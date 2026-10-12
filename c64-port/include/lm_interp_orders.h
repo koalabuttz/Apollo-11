@@ -57,6 +57,16 @@ void lmi_ddv(apollo_overlay_state *, const agc_word *k);
 void lmi_bddv(apollo_overlay_state *, const agc_word *k);
 /* SQRT, ABVAL/ABS and UNIT: 0 at DANZIG, 1 at POODOO1 (alarm 1302, Q 03404). */
 uint8_t lmi_sqrt(apollo_overlay_state *);
+/* SIN 00,3530 and COS 00,3517 (UNAJUMP entries) to DANZIG. */
+void lmi_sin(apollo_overlay_state *);
+void lmi_cos(apollo_overlay_state *);
+/* ARCSIN 00,3610 and ARCCOS 00,3612 (UNAJUMP entries): 0 at DANZIG; 1 at the
+ * alarm service with alarm 1301 (Luminary ALARM1 05732 with Q 03726,
+ * Comanche ALARM 05650 with Q 03723), after which lmi_acos_alarmed finishes
+ * the order (answer zero) to DANZIG; 2 at SQRTSUB's abort, as SQRT. */
+uint8_t lmi_acos(apollo_overlay_state *);
+uint8_t lmi_asin(apollo_overlay_state *);
+void lmi_acos_alarmed(apollo_overlay_state *);
 uint8_t lmi_abvalabs(apollo_overlay_state *);
 uint8_t lmi_unit(apollo_overlay_state *);
 void lmi_vxsc(apollo_overlay_state *, const agc_word *k);
@@ -87,6 +97,8 @@ void lmi_xad(apollo_overlay_state *);
 void lmi_xsu(apollo_overlay_state *);
 void lmi_lxa(apollo_overlay_state *);
 void lmi_sxa(apollo_overlay_state *);
+/* XCHX 01,2372: exchange the tagged index register with an erasable word. */
+void lmi_xchx(apollo_overlay_state *);
 /* ITA (STQ) 01,2507 with CYR negative: QPRET into the 15ADRERS address,
  * then DANZIG. */
 void lmi_ita(apollo_overlay_state *);

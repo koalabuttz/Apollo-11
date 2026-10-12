@@ -76,6 +76,13 @@ unsigned interp_body_run(apollo_overlay_state *s,const uint16_t in[16]){
  case 56:lmi_ita(s);break;
  case 57:(void)lmi_tix(s);break;
  case 58:lmi_tload(s);break;
+ case 61:lmi_axc(s);break;
+ case 62:lmi_xchx(s);break;
+ case 63:(void)lmi_acos(s);break;
+ case 64:(void)lmi_asin(s);break;
+ case 65:lmi_sin(s);break;
+ case 66:lmi_cos(s);break;
+ case 67:lmi_acos_alarmed(s);break;
  default:return 5u;
  }
  for(i=0;i<4u;++i)if(in[1+i]&&s->words[5]==in[1+i])return i;

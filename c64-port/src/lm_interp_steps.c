@@ -218,6 +218,10 @@ void lmi_axt(apollo_overlay_state *s){
   */
  tagsub(s);ca(s,0117);(void)ts(s,(unsigned)(W[0130]+046u));danzig_entry(s);
 }
+void lmi_axc(apollo_overlay_state *s){
+ /* AXC TC TAGSUB; CS POLISH; TC XSTORE (INDEX INDEXLOC, TS X1). */
+ tagsub(s);cs(s,0117);W[2]=IF_(02354,02401);(void)ts(s,(unsigned)(W[0130]+046u));danzig_entry(s);
+}
 void lmi_incr(apollo_overlay_state *s){
  /* INCR TC TAGSUB; CA POLISH; XAD2 INDEX INDEXLOC, ADS X1. */
  tagsub(s);ca(s,0117);ads(s,(unsigned)(W[0130]+046u));danzig_entry(s);

@@ -940,6 +940,128 @@ void lmi_poly(apollo_overlay_state *s,const agc_word *table){
  /* TC POLYRET: the TC held there, leaving Q = 0142. */
  W[5]=(agc_word)(W[rPOLYRET]&07777u);ai_tc(s,rPOLYRET+1u);
 }
+/* ---- SINE/COSINE (bank 0) ---------------------------------------------- */
+/* SN1's POLY table (DEC 3 and the five 2DEC coefficients at 00,3560). */
+static const agc_word sin_poly[11]={3,014441,037325,053250,060764,012146,021276,075466,071471,0236,032757};
+#define NEG1_2_AT IF_(04734u,05000u)
+/* SINE 00,3530 to DANZIG: (1/2)SIN(2 PI MPAC) by Hastings' polynomial. */
+static void sine(apollo_overlay_state *s){
+ unsigned i;
+ DXCH(rMPAC);DDOUBL();
+ if(ai_ovsk(s))ai_dcom(s);   /* lost or gained PI: SIN(X-PI) = SIN(-X) */
+ DXCH(rMPAC);CA(rMPAC);DOUBLE();
+ if(TS(rL)){
+  /* Over .5 in magnitude: PI - X, or -PI - X. */
+  CAF(fixed_indexed(NEG1_2_AT+1u,W[rA]));DOUBLE();ai_su(s,rMPAC);(void)TS(rMPAC);CS(rMPAC+1);(void)TS(rMPAC+1);
+ }
+ /* SN1 */
+ DCA(rMPAC);DXCH(rBUF2);TC(IF_(03557,03556));dsqsub(s);
+ TC(IF_(03560,03557));lmi_poly(s,sin_poly);
+ /* CAF LBUF2; TC DMPSUB -1; then shift left 2. */
+ CAF(rBUF2);TC(IF_(03575,03574));(void)TS(rADDRWD);dmpsub(s,0);
+ for(i=0;i<2u;++i){DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);ADS(rMPAC);}
+ danzig(s);
+}
+void lmi_sin(apollo_overlay_state *s){sine(s);}
+void lmi_cos(apollo_overlay_state *s){
+ /* COSINE 00,3517: COS(X) = SIN(PI/2 - ABS(X)). */
+ TC(IF_(03520,03517));
+ if(branch(s)==0u){DCS(rMPAC);DXCH(rMPAC);}
+ /* PRESINE CAF QUARTER; ADS MPAC. */
+ CAF(QUARTER);ADS(rMPAC);sine(s);
+}
+
+/* ---- ARCSIN/ARCCOS (bank 0) -------------------------------------------- */
+#define rESCAPE 0136u   /* ESCAPE = DOTINC, ESCAPE2 = DOTRET */
+#define rESCAPE2 0137u
+/* The TCF words LASINEX, LDANZIG and TCSUBTR that ARCSIN/ARCCOS store in
+ * ESCAPE and ESCAPE2, and ACOSSHR's TC VSHRRND return (ACOSABRT differs
+ * between the programs, so these are written per program rather than as
+ * checked IF_ address pairs). */
+#ifdef INTERP_COMANCHE
+#define W_LASINEX 013706u
+#define W_LDANZIG 016030u
+#define W_TCSUBTR 013701u
+#define ACOSSHR_RET 03717u
+#else
+#define W_LASINEX 013707u
+#define W_LDANZIG 016061u
+#define W_TCSUBTR 013702u
+#define ACOSSHR_RET 03720u
+#endif
+/* ACOS3's POLY table (DEC 6 and the eight 2DEC coefficients at 00,3656). */
+static const agc_word acos_poly[17]={6,013240,023630,074721,047775,02440,020237,075067,070742,
+ 03436,026756,074037,057640,03046,07143,076654,042244};
+/* ASINEX: PI/2 - ARCCOS(X); LDANZIG TCF DANZIG. */
+static void asinex(apollo_overlay_state *s){DCS(rMPAC);ADF(QUARTER);DXCH(rMPAC);danzig(s);}
+/* TC ESCAPE (`ret` the address after it): run the TCF this routine stored
+ * there. SUBTR's TC ESCAPE2 reaches ASINEX or DANZIG the same way. */
+static void escape(apollo_overlay_state *s,agc_word ret){
+ agc_word w=W[rESCAPE];
+ TC(ret);
+ if(w==W_TCSUBTR){
+  /* SUBTR: PI - ARCCOS(-X). */
+  DCS(rMPAC);ADF(HALF);DXCH(rMPAC);TC(IF_(03707,03706));w=W[rESCAPE2];
+ }
+ if(w==W_LASINEX)asinex(s);else danzig(s);
+}
+/* ACOS=0 (A = the answer's major part; `minor` 0 enters at ACOS=0 +1). */
+static void acos0(apollo_overlay_state *s,uint8_t minor){
+ if(minor)(void)TS(rMPAC+1);
+ (void)TS(rMPAC);escape(s,IF_(03642,03641));
+}
+/* ARCSIN 00,3610 / ARCCOS 00,3612 (UNAJUMP) to DANZIG (0), to the alarm
+ * service with alarm 1301 (1: Luminary TC ALARM1, Comanche TC ALARM, Q at
+ * the OCT 1301), or to SQRTSUB's abort (2, as SQRT). */
+static uint8_t arccos_body(apollo_overlay_state *s,uint8_t asin){
+ uint8_t c;
+ CAF(asin?W_LASINEX:W_LDANZIG);(void)TS(rESCAPE);
+ TC(IF_(03615,03614));c=branch(s);
+ if(c==1u){CAF(QUARTER);acos0(s,0);return 0;}       /* ACOSZERO */
+ if(c==2u){
+  /* Negative: ARCCOS(X) = PI - ARCCOS(-X). */
+  DCS(rMPAC);DXCH(rMPAC);CAF(W_TCSUBTR);XCH(rESCAPE);(void)TS(rESCAPE2);
+ }
+ /* ACOSST CS HALF; AD MPAC; CCS A. */
+ CSF(HALF);AD(rMPAC);c=CCS(rA);
+ if(c==0u){
+  /* ACOSOVF: one more than .5 is zero; else ACOSABRT. */
+  if(ai_bzf(s)){acos0(s,1);return 0;}
+#ifdef INTERP_COMANCHE
+  TC(03723);W[5]=05650;
+#else
+  DCA(rLOC);TC(03726);W[5]=05732;
+#endif
+  return 1;
+ }
+ if(c==1u){asinex(s);return 0;}                     /* LASINEX TCF ASINEX */
+ if(c==3u){
+  /* Major part .5: answer zero unless the minor part is negative. */
+  c=CCS(rMPAC+1);
+  if(c==0u)CAF(ZERO);
+  if(c!=2u){acos0(s,1);return 0;}
+ }
+ /* ACOSST2: SQRT(1-X)P(X) (Hastings). */
+ DCS(rMPAC);ADF(HALF);DXCH(rMPAC);DXCH(rBUF2);
+ TC(IF_(03650,03647));if(sqrtsub(s))return 2;
+ if(CCS(rMPTEMP)==0u){
+  /* ACOSSHR INDEX A; CAF BIT14; TS MPTEMP; TC VSHRRND. */
+  CAF(bit14_indexed(s,rA));(void)TS(rMPTEMP);TC(ACOSSHR_RET);vshrrnd(s);
+ }
+ /* ACOS3 (MPTEMP is never negative after SQRTSUB). */
+ DXCH(rMPAC);DXCH(rBUF2);DXCH(rMPAC);
+ TC(IF_(03656,03655));lmi_poly(s,acos_poly);
+ /* CAF LBUF2; TC DMPSUB -1 (TS ADDRWD); TC ESCAPE. */
+ CAF(rBUF2);TC(IF_(03701,03700));(void)TS(rADDRWD);dmpsub(s,0);
+ escape(s,IF_(03702,03701));return 0;
+}
+uint8_t lmi_acos(apollo_overlay_state *s){return arccos_body(s,0);}
+uint8_t lmi_asin(apollo_overlay_state *s){return arccos_body(s,1);}
+void lmi_acos_alarmed(apollo_overlay_state *s){
+ /* ACOSABRT after the alarm returns past its OCT 1301: CAF ZERO; TCF ACOS=0. */
+ CAF(ZERO);acos0(s,1);
+}
+
 /* ---- VAD/VSU, BVSU, TAD, ROUND, SSP --------------------------------------- */
 /* VSU 06747 / VAD 06751: ADS ADDRWD with BIT15 or PRIO30 turns the indexed
  * READs into DCS or DCA of the operand's +2, +4 and +0 words; ADDRWD keeps
@@ -1003,6 +1125,11 @@ void lmi_xad(apollo_overlay_state *s){TC(IF_(02401,02426));adrers15(s);CA(AT(W[r
 void lmi_xsu(apollo_overlay_state *s){TC(IF_(02412,02437));adrers15(s);CS(AT(W[rPOLISH]));xad2(s);}
 void lmi_lxa(apollo_overlay_state *s){TC(IF_(02355,02402));adrers15(s);CA(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig(s);}
 void lmi_sxa(apollo_overlay_state *s){TC(IF_(02365,02412));adrers15(s);CA(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig(s);}
+void lmi_xchx(apollo_overlay_state *s){
+ /* XCHX TC 15ADRERS; INDEX POLISH, CA 0; INDEX INDEXLOC, XCH X1;
+  * MSTORE1 INDEX POLISH, TS 0; TCF DANZIG. */
+ TC(IF_(02373,02420));adrers15(s);CA(AT(W[rPOLISH]));XCH(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig(s);
+}
 void lmi_ita(apollo_overlay_state *s){
  /* CALL/ITA CCS CYR (negative: ITA/STQ); TC 15ADRERS; INDEX FIXLOC,
   * CA QPRET; MSTORE1 INDEX POLISH, TS 0; TCF DANZIG. */
