@@ -10,6 +10,9 @@ comments kept out; the fixtures only repair indentation).
 
   python3 tools/lanec/symbols.py          # regenerate
   python3 tools/lanec/symbols.py --check  # fail if the header is stale
+
+symbols.txt rows: "M NAME..." (addresses), "M TABLE LABEL N" (TC/TCF
+transfer table), "M WORD NAME..." (assembled constant words).
 """
 import pathlib, re, sys
 
@@ -95,6 +98,17 @@ def transfer_table(fixture, table, label, count):
     sys.exit(f'FAIL: {label} table too short')
 
 
+def words(fixture):
+    """Assembled word at each labelled fixed-memory location (constants)."""
+    text = (ROOT / 'deps' / fixture / 'assembly.lst').read_text(errors='replace')
+    found = {}
+    for line in text.splitlines():
+        m = re.match(r'^\d+,\d+:\s+(?:[0-7]{2},)?[0-7]{4}\s+([0-7]{5})\s+(\S+)\s', line)
+        if m:
+            found.setdefault(m.group(2), int(m.group(1), 8))
+    return found
+
+
 def cname(name):
     return re.sub(r'[^A-Za-z0-9]', lambda m: {'/': '_S_', '+': '_P_', '-': '_M_', '.': '_D_'}.get(m.group(0), '_'), name)
 
@@ -109,6 +123,13 @@ def render():
         table = symbols(fixture)
         for entry in wanted:
             if not entry or entry[0] != mission:
+                continue
+            if entry[1] == 'WORD':
+                assembled = words(fixture)
+                for name in entry[2:]:
+                    if name not in assembled:
+                        sys.exit(f'FAIL: {mission} constant {name} not in listing')
+                    rows.append(f'#define LANEC_{mission}_{cname(name)}_WORD 0{assembled[name]:o}u /* {name} */')
                 continue
             if entry[1] == 'TABLE':
                 rows.append(f'/* {mission} {entry[2]}: source TC/TCF transfer targets */')
