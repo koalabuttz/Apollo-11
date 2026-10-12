@@ -6866,8 +6866,22 @@
       "sha256": "cf6d473c416217944c5868907c26bdb1fa970b8020a3198cb0cbc991c0c0926f",
       "bytes": 5012,
       "lines": 266,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_r31_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_vector.c",
+            "src/rtb_unit.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "All of R31 (40,3674-40,3712 and 37,3113-37,3407), 204 words, as eighteen basic routines keyed by Z and twenty-four interpretive routines keyed at their NEWOPS, of the control-transfer ABI: R31CALL (FINDVAC), DSPDELAY/FIXDELAY, NOVAC DISPN5X and TASKOVER in bank 40; DISPN5X (V16N54 GOMARKF, B5OFF returns), V83CALL and REV83 (AVEGFLAG, SURFFLAG branches), the LOADTIME/LEMPREC/CSMPREC base states, the INTSTALL/INTEGRVS integrations with MOONFLAG by MOONTHIS, COMPDISP (RTB NORMUNX1, RANGE, RRATE, UNIT PDVL UNITZ, CDU*NBSM, VXM REFSMMAT, VPROJ, BVSU, VXV, DOT, SIGN) up to ACOS, RTHETA with the BPL and DPPOSMAX, the EXTVBACT recycle (ENDEXT, ADS, REV83), GETRVN (PRIO22, RN/VN/V(CSM)/R(CSM)/PIPTIME, BOFF MUNFLAG, VXM rotations), GETRVN2, R31SURF, MUNG? and ONEBASE; V16N54 is checked as a native literal: from each entry through the trampoline to the first point outside them (FINDVAC, FIXDELAY, NOVAC, TASKOVER, BANKCALL, B5OFF, PRIOCHNG, ENDEXT, INTPRET, LOADTIME, ARCCOS, POODOO1, UNIT's 1302 exit, a NEWOPS outside the file's interpretive code, or the split points 37,3240, 3246 and 3355). ACOS itself (ARCCOS) is another file's, and ONEBASE's GOTO DOCMBASE runs only after LOADTIME.",
+          "verification": "docs/LM-R31.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/R60_62.agc",
