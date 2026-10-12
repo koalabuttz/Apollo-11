@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-v37",
+  "release": "evidence-lm-v37",
+  "files": {
+    "lm-v37-data.json": {
+      "sha256": "9267fd330db110aee8351beb343501cd7a3e0e6eac425c71f99e62c8903558fc",
+      "bytes": 10552,
+      "store": "release"
+    },
+    "lm-v37-host.log": {
+      "sha256": "8885339efce0d53a3da2dd22e6481335b89e85b6746295517abdb0c642f9da96",
+      "bytes": 1394,
+      "store": "release"
+    },
+    "lm-v37-proof.json": {
+      "sha256": "ac473481cca57be999718022a0d64e27297287b59a43658a9336520f0d7d8e56",
+      "bytes": 559,
+      "store": "tree"
+    },
+    "lm-v37-vice.log": {
+      "sha256": "0fd28c39591dad5dfc7365b72a4832704ed868b2b77614bbb3c85a87c761ebf4",
+      "bytes": 1011,
+      "store": "release"
+    }
+  }
+}
