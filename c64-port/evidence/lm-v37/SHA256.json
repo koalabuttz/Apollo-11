@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "lm-v37-vice.log": {
-      "sha256": "0fd28c39591dad5dfc7365b72a4832704ed868b2b77614bbb3c85a87c761ebf4",
-      "bytes": 1011,
+      "sha256": "f9a9689b441c1894ee948e0806c08214a619d897ab56f91a893d4e00da6d1499",
+      "bytes": 602,
       "store": "release"
     }
   }

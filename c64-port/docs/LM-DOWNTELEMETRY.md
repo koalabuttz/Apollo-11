@@ -35,4 +35,4 @@ Hashes: `evidence/lm-downtelemetry/SHA256.json`. Bulk files are assets of the `e
   - every control word of all six downlists is sent;
   - every dump case returns to DNPHASE2;
   - an unknown DNTMGOTO word, a DNLSTCOD with no downlist (6), a missing io and a bank other than 05 are refused.
-- C64 execution results: `make vice-lm-downtelemetry` (`evidence/lm-downtelemetry/lm-downtelemetry-vice.log`): every second sequence (24 sequences, 7,720 downrupts).
+- C64 execution results: `make vice-lm-downtelemetry` (`evidence/lm-downtelemetry/lm-downtelemetry-vice.log`): all 48 sequences, so every downlist and every dump case also runs on the C64.

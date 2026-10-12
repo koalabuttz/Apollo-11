@@ -650,7 +650,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
-            "sha256": "a38cb446d97c7b1c517e8e685cac071c6bda51ca420b6745183580c4ee7774fe"
+            "sha256": "f236436f632ef939ef59a1c210bd38d0dd7b3ff28945ce9e8bbc3111f381089f"
           },
           "independent_review": {
             "path": "docs/audits/downtelemetry.md",
@@ -1878,7 +1878,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-PHASE-TABLE.md",
-            "sha256": "d60ebc080dfba988040fd4cb37b953c9f3af9bdf2fcd68faefabf673af13e025"
+            "sha256": "1ec4216f3be487e7efeac725fd983affc63aecd76ac573b02c4c3f45e0e345c9"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-phase-table/cm-phase-table-proof.json",
@@ -2542,7 +2542,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
-            "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+            "sha256": "1ed4011476c6ae3567b28453ba4c8dc8322cd4729ac0f2d75c09371b1b4c82d2"
           },
           "independent_review": {
             "path": "docs/audits/cm-restart-routines.md",
@@ -2600,7 +2600,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-restart-routines/cm-restart-routines-vice.log",
-            "sha256": "02751360c354a51f35e8e28c94127ea4cf0969cf6168dae8c5656357124fd592"
+            "sha256": "1ed4011476c6ae3567b28453ba4c8dc8322cd4729ac0f2d75c09371b1b4c82d2"
           },
           "independent_review": {
             "path": "docs/audits/cm-restart-routines.md",
@@ -4106,7 +4106,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-DOWNTELEMETRY.md",
-            "sha256": "0c4c647488f054cfd03179ff422118c6a2b92f4622d707544d9d8d1b13a1785f"
+            "sha256": "e41b14ee11b46fbb4c29af438d37177d9f7d2ad1fe61ad4c0174234ef420d527"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-proof.json",
@@ -4118,7 +4118,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
-            "sha256": "07837c8b03a0e59e9dcb12dfff175942d3d4f0d5b0d29df8d3e1f465e8fc93a1"
+            "sha256": "326174bb8597740ce03b5e2ee9f361311d3aa877128b6f8bb236c6b12ba3c599"
           },
           "independent_review": {
             "path": "docs/audits/downtelemetry.md",
@@ -5640,7 +5640,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-PHASE-TABLE.md",
-            "sha256": "60516d158b5961b139ff35a141ae7364628382e2aecbafb80d3800d2a3c6333a"
+            "sha256": "218fe545e619e49e345b2394653386e29bdc41e926a912b0b1a8f220e1fe0588"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-phase-table/lm-phase-table-proof.json",
