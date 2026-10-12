@@ -6,7 +6,7 @@
 uint32_t cm_ibr_cases(void){return (uint32_t)CM_INTERBANK_SITES_COUNT*CM_IBR_CONTEXTS;}
 uint16_t cm_ibr_site(uint32_t n){return cm_interbank_sites[n%CM_INTERBANK_SITES_COUNT].physical;}
 enum cm_interbank_complete_entry cm_ibr_entry(agc_word callee){return callee==04662u?CM_IC_BANKCALL:callee==04740u?CM_IC_IBNKCALL:callee==04701u?CM_IC_POSTJUMP:CM_IC_USPRCADR;}
-const agc_native_program cm_ibr_program={&cm_interbank_routines,1,0,0,cm_interbank_sites,CM_INTERBANK_SITES_COUNT,AGC_TRANSFER_NONE,0164,0165,0,0};
+const agc_native_program cm_ibr_program={&cm_interbank_routines,1,0,0,cm_interbank_sites,CM_INTERBANK_SITES_COUNT,AGC_TRANSFER_NONE,0164,0165,0,0,0};
 agc_word cm_ibr_input(apollo_overlay_state *s,cm_native_io *io,uint32_t n){static const agc_word a[CM_IBR_CONTEXTS]={012345,0177777,040000,0100001};
  uint16_t site=(uint16_t)(n%CM_INTERBANK_SITES_COUNT),ctx=(uint16_t)(n/CM_INTERBANK_SITES_COUNT),p=cm_interbank_sites[site].physical,bank=(uint16_t)(p/1024u),offset=(uint16_t)(p%1024u),i;uint32_t x=(uint32_t)(0x9e3779b9ul*(n+1u));
  memset(s,0,sizeof *s);memset(io,0,sizeof *io);

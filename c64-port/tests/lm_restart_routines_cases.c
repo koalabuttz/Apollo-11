@@ -9,7 +9,7 @@ static enum exec_status service(const agc_native_program *p,apollo_overlay_state
 }
 static const agc_routine_entry services[4]={{FF(LM_RS_NOVAC),service},{FF(LM_RS_FINDVAC),service},{FF(LM_RS_WAITLIST),service},{FF(LM_RS_LONGCALL),service}};
 enum exec_status lm_rsr_run(apollo_overlay_state *s,uint16_t n,lm_rsr_log *log,uint16_t *steps){
- agc_routine_table tables[2];agc_native_program program={0,0,0,0,lm_restart_operands,2,AGC_TRANSFER_NONE,0,0,0,0};agc_word superbank=0;
+ agc_routine_table tables[2];agc_native_program program={0,0,0,0,lm_restart_operands,2,AGC_TRANSFER_NONE,0,0,0,0,0};agc_word superbank=0;
  tables[0]=lm_restart_routines;tables[1].entries=services;tables[1].count=4;program.basic=tables;program.basic_count=2;
  (void)lm_rsselect_input(s,lm_rsr_select_case(n));log->calls=0;
  return agc_transfer_run(&program,s,log,&superbank,FF(LM_RS_SWRETURN),32,steps);

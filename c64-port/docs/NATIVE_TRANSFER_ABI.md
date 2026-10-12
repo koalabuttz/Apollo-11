@@ -28,9 +28,15 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   then the routine at its continuation, until the point equals the caller's
   stop address, a routine refuses, or a continuation has no routine
   (`EXEC_UNMAPPED`, image left at that continuation). Each routine returns
-  before the next starts, so C stack depth is constant. Executive jobs and
-  Waitlist tasks keep using `exec_native`; this ABI covers transfers inside a
-  job or task.
+  before the next starts, so C stack depth is constant. Job switches are
+  transfers too: ENDOFJOB, JOBSLEEP, PRIOCHNG and CHANG1/CHANG2 end at the
+  selected job's entry (or NEWOPS, or the ADVAN idle loop), and TASKOVER and
+  the T3 vector end at the next task or the interrupted program.
+- **Hardware.** `program->hardware` (`agc_hardware`) carries the CPU state a
+  routine needs beyond the image and the mission's device record: output
+  channel 11 (the Executive's idle loop turns COMP ACTY off) and the
+  interrupt-in-progress flag (tasks run inside T3RUPT; TASKOVER's RESUME ends
+  it). A routine that needs it refuses when it is NULL.
 - **Erasable continuations.** A few files store a `TC` into erasable memory and
   run it later (RESTARTS writes the service call at GOLOC-1 and its own
   continuation at GOLOC+2). Such a point is keyed
@@ -82,6 +88,7 @@ transferring file.
 | Comanche055 INTER-BANK_COMMUNICATION | 13 entries in `cm_interbank_routines` | `cm_interbank_sites` (354 sites: BANKCALL, IBNKCALL, POSTJUMP, USPRCADR) | `cm-interbank-transfer` |
 | Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only, as in Luminary | `cm-standard-lead-transfer` |
 | Luminary099 EXECUTIVE (NOVAC, FINDVAC) and WAITLIST (WAITLIST, TWIDDLE, the LONGCALL chain) | 10 entries in `lm_exec_routines` | `lm_exec_sites` (146 sites, 268 words) | `lm-exec-services` |
+| Luminary099 EXECUTIVE (SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB), WAITLIST (FIXDELAY, VARDELAY, TASKOVER) and the INTERRUPT_LEAD_INS T3 vector | 8 entries in `lm_exec_job_routines`, 4 in `lm_exec_task_routines` | `lm_exec_sites` (adds the 16 FIXDELAY sites: 284 words) | `lm-exec-jobs` |
 | Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
 
 Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete
