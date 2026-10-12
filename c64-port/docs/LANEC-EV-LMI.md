@@ -34,10 +34,12 @@ the literal argument those paths take for the interpreter's bookkeeping.
 | NEWOPS with LOC at ATTACHIT +3 (the switch orders) | the basic word after EXIT, or NEWOPS at the BON target |
 | NEWOPS with LOC at TRMTRAK1 +9, ATTACHIT +9 or ATTACHIT +21 (the CALL returns) | the basic word after EXIT |
 | NEWOPS with LOC at ATTACHIT +18 | NEWOPS of SVDWN1 |
+| NEWOPS with LOC at the word after each DANZIG: RRLOSDSP +7, +9, +11, +12, +13, +15, +17, +19, +26, +28, +30, +32, +38 and ATTACHIT +7 (where a job that CHANG2 suspended resumes) | as the word's own sequence above |
+| any entry, when a DANZIG on the way finds NEWJOB set | CHANG2 (05126), after DANZIG's CA BANKSET, TS BBANK, CCS EDOP and CCS NEWJOB |
 | NEWOPS with LOC at TCPIN | PINBRNCH, through RTB (Q at SWRETURN) |
 
-Domain, the interpreter's own contract: NEWJOB is +0 (no job change
-pending), FIXLOC names a VAC area in unswitched erasable above the
+Domain, the interpreter's own contract: NEWJOB is not negative (+0, or
+a positive job change pending, which DANZIG hands to CHANG2), FIXLOC names a VAC area in unswitched erasable above the
 interpreter's work area (0200 up to 01400 less a VAC area), and at NEWOPS
 EDOP is +0, BANKSET names the current banks and INTBIT15 holds BANKSET's
 bit 15, as INTPRET leaves them. States outside it are out of
@@ -73,13 +75,14 @@ unaffected, and every earlier Lane C suite produces the same oracle CRCs.
 Harness: `tools/lanec/` (see `docs/LANEC-EV-FRONT.md`).
 Hashes: `evidence/lanec-ev-lmi/SHA256.json`.
 
-- Independent assembly comparison: `lanec-ev-lmi-diff.json` (960 cases:
-  all 15 entries, 64 variants each, lines of sight along Y for UNIT's alarm
+- Independent assembly comparison: `lanec-ev-lmi-diff.json` (1,856 cases:
+  all 29 entries, 64 variants each, a pending NEWJOB in every fourth, lines of sight along Y for UNIT's alarm
   and with only a low-order Z for its small-vector path, random erasable with the
   MOONTHIS/MOONOTH bits, a random VAC area in FIXLOC and random registers) and `lanec-ev-lmi-oracle.crc`. gcov: every line and every
   branch outcome of the compiled words is taken; the only untaken
   outcomes are the out-of-scope returns.
 - Host and sanitizer results: `make test-lanec-ev-lmi sanitize-lanec-ev-lmi`
   (`lanec-ev-lmi-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-lmi`, 138 frozen cases (every
-  entry) on a VICE PAL C64 (`lanec-ev-lmi-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-lmi`, 40 frozen cases on a
+  VICE PAL C64, picked by `tools/lanec/cover.py` so that together they take
+  every branch arc the 1,856 host cases take (`lanec-ev-lmi-vice.txt`).

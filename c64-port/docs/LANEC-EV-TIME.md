@@ -52,5 +52,6 @@ Hashes: `evidence/lanec-ev-time/SHA256.json`.
   branch outcome in the step functions is taken.
 - Host and sanitizer results: `make test-lanec-ev-time sanitize-lanec-ev-time`
   (`lanec-ev-time-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-time`, 231 frozen cases (every
-  entry) on a VICE PAL C64 (`lanec-ev-time-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-time`, 13 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 1,152 host cases take (`lanec-ev-time-vice.txt`).

@@ -20,3 +20,8 @@ build/agc_engine_hardware_dv.o: tools/prepare_hardware_dv.py | build
 build/lanec-oracle: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/oracle.c build/agc_engine_hardware_dv.o | build
 	$(CC) -O2 $(LANEC_FLAGS) -I$(LANEC_YAAGC) $(LANEC_CORE) $(sort $(LANEC_SUITE_SRC)) tools/lanec/oracle.c \
 	  build/agc_engine_hardware_dv.o $(LANEC_YAAGC)/agc_engine_init.o $(LANEC_YAAGC)/rfopen.o -o $@
+# The native runner with branch coverage, one case per run, for choosing the
+# C64 rows by branch outcome (tools/lanec/cover.py).
+build/lanec-cover/lanec-native: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/native.c | build
+	rm -rf build/lanec-cover && mkdir -p build/lanec-cover
+	$(CC) -O0 --coverage $(LANEC_FLAGS) $(LANEC_CORE) $(sort $(LANEC_SUITE_SRC)) tools/lanec/native.c -o $@

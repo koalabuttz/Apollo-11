@@ -1,21 +1,21 @@
 {
  "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
  "results": [
-  "PASS: VICE PAL lanec-di-dsp.prg: 218 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-mark.prg: 227 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-play.prg: 246 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-sleep.prg: 242 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-idle.prg: 264 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-nvdsp.prg: 277 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-dsp.prg: 37 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-mark.prg: 36 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-play.prg: 35 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-sleep.prg: 23 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-idle.prg: 38 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-nvdsp.prg: 32 checks, 0 failures",
   "PASS: VICE PAL lanec-di-transfer.prg: 68 checks, 0 failures"
  ],
  "prg_sha256": {
-  "lanec-di-dsp.prg": "9b908e352ae65e3b1f4c1069cd4ac00038416d3c3f0055e16eb0033b317053f8",
-  "lanec-di-mark.prg": "c2ff1f3c2e4ec598d4b31bc9396a51aba51f61b55dc760680d40abb132da7f71",
-  "lanec-di-play.prg": "80653d9f881f36369a24d84f672c870b947794aada22caa88867f154de9ae76d",
-  "lanec-di-sleep.prg": "edcba12567e9d330401843a0e8c8204fa3758304826285336e7bf2cffaf7b061",
-  "lanec-di-idle.prg": "481a2ee038f6d3c37b5a79f6f29538a4fbe91c4037b02960961058f40ba459de",
-  "lanec-di-nvdsp.prg": "6e58d066b662f4068b521d51646b06264f3bba3b1880cb3777d4304be5f1f732",
-  "lanec-di-transfer.prg": "95fda4e52464c8d70d281838f1f8b6d8df6b4d4fb9b2090a6b0b9fa979e5e796"
+  "lanec-di-dsp.prg": "b921c54fd851d5f6a6c53aa390a97773e6f58ed998453896fa706f4cd02c1578",
+  "lanec-di-mark.prg": "4f69d2af9f6b9ef5c8447f031d1bbe7f672c85c592cd78aa99badd0a9a400fcd",
+  "lanec-di-play.prg": "6de730a2e4c909b754cf3c7c080ba3cfdbf491d1747ac50670844e02974bf5ea",
+  "lanec-di-sleep.prg": "d703b8a0ce44c3c3b25521de15ac2f5f3bc23b47b9b2fdb00894287407d5a83d",
+  "lanec-di-idle.prg": "0c33b856405a73507569cd41b25bab147159b5aa2a55b2d9324c068518692938",
+  "lanec-di-nvdsp.prg": "12b6725246debe5de2a5acd702f09d1dcd9febd4c77429bb12418f798230f171",
+  "lanec-di-transfer.prg": "a8f89f64ce74ef684cde75303366ed6e8b4e549b3f1913ed3336d9f2fc39a53e"
  }
 }

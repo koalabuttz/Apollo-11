@@ -4,13 +4,13 @@
   "release": "evidence-lanec-di-cert",
   "files": {
     "lanec-di-c64-results.json": {
-      "sha256": "1503a12c528120f09de0f0437d5aa4bfcdb154b79acf0ee13e8d38bba4721735",
-      "bytes": 1213,
+      "sha256": "de6d5aafcd868b98c227dbeaa92ce5e28db84048003fe6b5dbb78f89fdd9408e",
+      "bytes": 1207,
       "store": "tree"
     },
     "lanec-di-checks.log": {
-      "sha256": "d45879a5febc1e3c572a6a34d368961f4eed9b857cacdd3a3dbc41527c5649d6",
-      "bytes": 4127,
+      "sha256": "d5dd5363ab32bee6b110e3993eca6c2239c910a9c6ef547c82f0b5a8a1421c9c",
+      "bytes": 4121,
       "store": "tree"
     },
     "lanec-di-cm-source-map.json": {

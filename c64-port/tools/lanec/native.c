@@ -8,11 +8,14 @@
  * word, which INTPRET makes LOC) is printed "LMI|CMI bank loc n": the
  * interpretive point keyed by LOC under BANKSET. --exits adds to each entry
  * line where the routine stopped, "fb z q", and the Q it started with (fb the
- * bank then selected).
+ * bank then selected). "native SUITE CASE" runs that one case (for
+ * branch-coverage traces, tools/lanec/cover.sh).
  * A refused case (LANEC_OUT_OF_SCOPE) must leave the image and I/O exactly as
  * they were; one that does not is printed with status 2, which no oracle row
  * matches. */
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "lanec_case.h"
 #include "lanec_suites.h"
@@ -22,14 +25,15 @@ int main(int argc, char **argv)
 {
     int exits = argc == 3 && !strcmp(argv[1], "--exits");
     int entries = (argc == 3 && !strcmp(argv[1], "--entries")) || exits;
-    const lanec_suite *suite = argc == 2 + entries ? lanec_find_suite(argv[1 + entries]) : 0;
+    const lanec_suite *suite = argc == 2 + entries || (!entries && argc == 3) ? lanec_find_suite(argv[1 + entries]) : 0;
+    uint32_t only = !entries && argc == 3 ? (uint32_t)strtoul(argv[2], 0, 10) : UINT32_MAX;   /* SUITE CASE: that case alone */
     lanec_io io, io_before;
     lanec_meta meta;
     enum lanec_status status;
     uint32_t n;
     unsigned i, bank, z, interp;
-    if (!suite) { fprintf(stderr, "usage: native [--entries|--exits] SUITE\n"); return 2; }
-    for (n = 0; n < suite->count; ++n) {
+    if (!suite) { fprintf(stderr, "usage: native [--entries|--exits] SUITE | native SUITE CASE\n"); return 2; }
+    for (n = only == UINT32_MAX ? 0 : only; n < suite->count && n <= only; ++n) {
         memset(&meta, 0, sizeof meta);
         suite->make(n, &s, &io, &meta);
         z = s.words[LANEC_Z] & 07777u;

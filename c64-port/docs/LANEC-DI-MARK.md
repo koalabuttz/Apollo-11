@@ -50,5 +50,6 @@ Hashes: `evidence/lanec-di-mark/SHA256.json`.
   and bank 10) and `lanec-di-mark-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-di-mark sanitize-lanec-di-mark`
   (`lanec-di-mark-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-mark`, 227 frozen cases
-  (every entry, both missions) on a VICE PAL C64 (`lanec-di-mark-vice.txt`).
+- C64 execution results: `make vice-lanec-di-mark`, 36 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 2,944 host cases take (`lanec-di-mark-vice.txt`).

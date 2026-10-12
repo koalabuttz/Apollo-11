@@ -74,8 +74,9 @@ Hashes: `evidence/lanec-di-cert/SHA256.json`.
 - Host and sanitizer results: `lanec-di-checks.log`. It has the strict
   and ASan/UBSan runs of all nine suites and the whole-file map run.
 - C64 execution results: `lanec-di-c64-results.json`. It has fresh VICE
-  PAL runs of the six frozen module subsets and the transfer round trip
-  (1,542 checks, 0 failures) with the PRG hashes.
+  PAL runs of the six frozen module subsets (each picked by
+  `tools/lanec/cover.py` to take every host branch arc) and the transfer round trip
+  (269 checks, 0 failures) with the PRG hashes.
 
 The supported domain and the external continuations are written into the
 certificate itself. The continuations are the EXECUTIVE (with the
