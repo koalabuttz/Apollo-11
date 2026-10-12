@@ -1,0 +1,9 @@
+PASS 14 frozen original VN1645 entries, 25 admission guards and 41 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 1aba483e1ea17bb1731069cd943f21602be12b73e1c60b55385f291e2831ab60
+PASS65536 original VN1645 entries strict native
+PASS 31 assembled VN1645 words on 31 source lines map to native literals in 3 functions
+PASS 14 frozen original VN1645 entries, 25 admission guards and 41 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 1aba483e1ea17bb1731069cd943f21602be12b73e1c60b55385f291e2831ab60
+PASS65536 original VN1645 entries full ASAN/UBSAN
+PASS: VICE PAL lm-vn1645-1.prg: 33 checks, 0 failures
+PASS: VICE PAL lm-vn1645-2.prg: 8 checks, 0 failures
