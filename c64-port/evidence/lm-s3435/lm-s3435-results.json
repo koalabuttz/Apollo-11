@@ -1,0 +1,31 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 16384 original S34/35 routine entries equal native trampoline runs ebe6398ef2a768f6844551bd5c9b0fcd7ebc517b1133af565397588ed626cced",
+  "lm-s3435: 16384 cases, 52 admission guards; stops [4096 4096 4096 4096]; 16442 checks, 0 failures",
+  "PASS 40 assembled S34/35 words on 40 source lines map to 4 native routines",
+  "lm-s3435: 16384 cases, 52 admission guards; stops [4096 4096 4096 4096]; 16442 checks, 0 failures"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-s3435-1.prg: 512 checks, 0 failures",
+   "PASS: VICE PAL lm-s3435-2.prg: 512 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 34922,
+    "prg_sha256": "2a6810becfd5067404c7c2788033ed860e542ba9d9f58c5dedfae9755f87ec76",
+    "image_end": "$906d",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "S34/35.1 and LOMAT: case k*32 + (0 or 3)"
+   },
+   "2": {
+    "prg_bytes": 46154,
+    "prg_sha256": "8635e8a4d5615510cd176c89a77fa4757f074393abd6fa5a065da237031813b1",
+    "image_end": "$bc4d",
+    "image": "$e000 under KERNAL ROM ($01=$35)",
+    "cases": "NOVRWRT and S34/35.4: case k*32 + (1 or 2)"
+   }
+  }
+ }
+}
