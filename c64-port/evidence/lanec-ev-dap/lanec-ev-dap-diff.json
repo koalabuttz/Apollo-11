@@ -1,0 +1,7 @@
+{
+  "suite": "ev-dap",
+  "cases": 2832,
+  "differing": 0,
+  "native_sha256": "b79c4091b170a038a4f986ad048d7722f7320475f44691daca9891fe353e0b30",
+  "oracle_sha256": "b79c4091b170a038a4f986ad048d7722f7320475f44691daca9891fe353e0b30"
+}

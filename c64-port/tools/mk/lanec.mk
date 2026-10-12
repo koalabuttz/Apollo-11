@@ -9,6 +9,11 @@ build/lanec-native: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/na
 	$(CC) -O2 $(LANEC_FLAGS) -Wconversion -pedantic $(LANEC_CORE) $(LANEC_SUITE_SRC) tools/lanec/native.c -o $@
 build/lanec-native-sanitize: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/native.c | build
 	$(CC) -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all $(LANEC_FLAGS) $(LANEC_CORE) $(LANEC_SUITE_SRC) tools/lanec/native.c -o $@
-build/lanec-oracle: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/oracle.c | build
+# The oracle runs every DV through the pinned engine's own hardware model
+# (tools/prepare_hardware_dv.py, docs/DIVIDE.md), like the other interpreter
+# oracles: the fast DV path mistakes a 16-bit L of -0 for a nonzero word.
+build/agc_engine_hardware_dv.o: tools/prepare_hardware_dv.py | build
+	python3 tools/prepare_hardware_dv.py
+build/lanec-oracle: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/oracle.c build/agc_engine_hardware_dv.o | build
 	$(CC) -O2 $(LANEC_FLAGS) -I$(LANEC_YAAGC) $(LANEC_CORE) $(LANEC_SUITE_SRC) tools/lanec/oracle.c \
-	  $(LANEC_YAAGC)/agc_engine.o $(LANEC_YAAGC)/agc_engine_init.o $(LANEC_YAAGC)/rfopen.o -o $@
+	  build/agc_engine_hardware_dv.o $(LANEC_YAAGC)/agc_engine_init.o $(LANEC_YAAGC)/rfopen.o -o $@

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-time",
+  "release": "evidence-lanec-ev-time",
+  "files": {
+    "lanec-ev-time-diff.json": {
+      "sha256": "4ade213fb3dfc7e1affca695f6e7ece4572b81b11e216cebac0f6ecd5aa6bebb",
+      "bytes": 234,
+      "store": "tree"
+    },
+    "lanec-ev-time-oracle.crc": {
+      "sha256": "a5abffd3ef651619ae9376f009f39b211055eed29e4784fda5b6e26018a14bb6",
+      "bytes": 15018,
+      "store": "tree"
+    },
+    "lanec-ev-time-sanitize.txt": {
+      "sha256": "01f4100325f552cc7c2ee0b6f6e4ab35bb394877c8304240893a9671e2a1a089",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-ev-time-vice.txt": {
+      "sha256": "4dc481898d5032375c762f9b990e8c6961e9c523791e70c17d799fb25ca07935",
+      "bytes": 57,
+      "store": "tree"
+    }
+  }
+}
