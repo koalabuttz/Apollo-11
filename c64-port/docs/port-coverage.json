@@ -4580,7 +4580,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART/DOFSTRT1, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, DORSTART, SETINFL, ENEMA, GOPROG2/GOPROG2A/GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB1/STARTSB2, DSPOFF and GOTOPOOH as control-transfer ABI routines (11 entries incl. the returns after MMDSPLAY, SWCALL and ALARM); CADRs and constants compiled from the source listing. STARTSIM (patch-only) untranslated; bank 04 is lm-v37; bank 13 STATEUP remains.",
+          "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART/DOFSTRT1, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, DORSTART, SETINFL, ENEMA, GOPROG2/GOPROG2A/GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB1/STARTSB2, DSPOFF and GOTOPOOH as control-transfer ABI routines (11 entries incl. the returns after MMDSPLAY, SWCALL and ALARM); CADRs and constants compiled from the source listing. STARTSIM (patch-only) untranslated; bank 04 is lm-v37; bank 13 is lm-stateup.",
           "verification": "docs/LM-FRESH-START.md"
         },
         {
@@ -4590,8 +4590,18 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 04: GOP00FIX, V37 with CANTROD/V37BAD, CHECKTAB/AGAINMM, ISSERVON, V37RET, CANV37, R00, POOH, SEUDOP00, GOMOD/GOGOPROG, RENDV00/RESET22/KILL2/P00FIZZ/RENDN00/STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC and SETUP70/71 as control-transfer ABI routines (32 entries incl. the return after every TC out of the bank); CADRs, constants and the PREMM1/FCADRMM1/DNLADMM1 tables compiled from the source listing. Bank 13 STATEUP (interpretive) remains.",
+          "scope": "Every instruction of bank 04: GOP00FIX, V37 with CANTROD/V37BAD, CHECKTAB/AGAINMM, ISSERVON, V37RET, CANV37, R00, POOH, SEUDOP00, GOMOD/GOGOPROG, RENDV00/RESET22/KILL2/P00FIZZ/RENDN00/STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC and SETUP70/71 as control-transfer ABI routines (32 entries incl. the return after every TC out of the bank); CADRs, constants and the PREMM1/FCADRMM1/DNLADMM1 tables compiled from the source listing. Bank 13 is lm-stateup.",
           "verification": "docs/LM-V37.md"
+        },
+        {
+          "native_files": [
+            "src/lm_stateup.c",
+            "src/lm_interp_steps.c",
+            "src/lm_interp_orders.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every order pair of bank 13: STATEUP, DOINT, NO-INT, DOINT2 and THISVINT as interpretive control-transfer ABI routines keyed by LOC at NEWOPS (11), through the compiled interpreter paths (SWITCHES, CALL, STCALL, DLOAD, RVQ). With lm-fresh-start and lm-v37 every instruction of the file is covered except STARTSIM, which runs only if the STARTSW word is patched.",
+          "verification": "docs/LM-STATEUP.md"
         }
       ]
     },
