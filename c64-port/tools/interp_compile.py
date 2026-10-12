@@ -34,7 +34,7 @@ ADDR = {
     'DSU': ('dsu', True), 'BDSU': ('bdsu', True), 'DAD': ('dad', True),
     'DMP1': ('dmp', True), 'TLOAD': ('tload', False), 'SLOAD': ('sload', False),
     'TSLC': ('tslc', False), 'GSHIFT': ('gshift', False), 'SETPD': ('setpd', False),
-    'SSP': (None, False), 'MXV': ('mxv', True), 'VXM': ('vxm', True),
+    'SSP': (None, False), 'MXV': ('mxv', True), 'VXM': ('vxm', True), 'VPROJ': ('vproj', True),
 }
 # Fixed operands longer than a vector (the words a K array holds).
 K_WORDS = {'MXV': 18, 'VXM': 18}
@@ -128,6 +128,8 @@ class Compiler:
             raise CompileError('no lines for %s' % spec['file'][mission])
         self.code = {l.phys: l for l in self.lines}
         self.words = set(l.phys + i for l in self.lines for i in range(len(l.words)))
+        self.superbank = any(l.phys >= 0o40 * 1024 for l in self.lines)
+        self.high_banks = any(l.phys >= 0o30 * 1024 for l in self.lines)
         self.lo = min(self.words)
         self.hi = max(self.words)
         # The file's fixed words as contiguous physical ranges.
@@ -182,8 +184,13 @@ class Compiler:
         return '%02o,%04o' % (phys // 1024, 0o2000 + phys % 1024)
 
     def cadr_phys(self, w):
-        """Physical address of a fixed CADR word (as GOTO forms it)."""
-        return ((w >> 10) & 0o37) * 1024 + (w & 0o1777)
+        """Physical address of a fixed CADR word (as GOTO forms it). A file
+        in banks 040-043 runs with superbank 4, under which FB 030-033 are
+        banks 040-043."""
+        b = (w >> 10) & 0o37
+        if self.superbank and b >= 0o30:
+            b += 8
+        return b * 1024 + (w & 0o1777)
 
     def in_file(self, phys):
         return phys in self.words
@@ -194,7 +201,12 @@ class Compiler:
         a = (w - 1) & 0o77777
         if a < 0o4000:
             return None
-        b = (a >> 10) | (0o20 if bank & 0o20 else 0)
+        # The half-memory bit is FB's; in banks 040-043 FB is the bank less
+        # 010, with superbank 4 (channel 7 bit 0100) adding it back.
+        fbb = bank - 8 if bank >= 0o40 else bank
+        b = (a >> 10) | (fbb & 0o20)
+        if bank >= 0o40 and b >= 0o30:
+            b += 8
         return b * 1024 + (a & 0o1777)
 
     def add_start(self, phys, kind, why):
@@ -868,8 +880,18 @@ class Compiler:
         c.append('}')
         c.append('/* An interpretive routine at NEWOPS of its bank (LOC was matched by the')
         c.append(' * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */')
+        # Only a file in banks 030-043 can depend on the superbank bit.
+        if self.high_banks:
+            c.append('/* Banks 040-043 are FB 030-033 with the superbank bit (channel 7 0100);')
+            c.append(' * FB 030-037 without it are banks 030-037. fb carries 1 in bit 0 for a')
+            c.append(' * superbank bank. */')
+            c.append('static MAYBE_UNUSED uint8_t sb_ok(const p66_bias_io *io,agc_word fb){')
+            c.append(' if((fb&060000u)!=060000u)return 1;')
+            c.append(' return (fb&1u)?(io->superbank&0100u)!=0:(io->superbank&0100u)==0;')
+            c.append('}')
         c.append('static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
-        c.append(' return W[5]==0%04ou&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % self.newops)
+        sb = 'W[4]==(fb&076000u)&&sb_ok(io,fb)' if self.high_banks else 'W[4]==fb'
+        c.append(' return W[5]==0%04ou&&%s&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % (self.newops, sb))
         c.append('}')
         c.append('/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction')
         c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
@@ -903,7 +925,7 @@ class Compiler:
         c.append(' W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;')
         c.append('}')
         c.append('static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
-        c.append(' return W[4]==fb&&sane(s,io);')
+        c.append(' return %s&&sane(s,io);' % sb)
         c.append('}')
         c.append('')
         routines = []
@@ -922,7 +944,9 @@ class Compiler:
             lab = self.name(phys)
             fn = 'r%o' % phys
             routines.append((phys, kind, fn, lab, why))
-            fb = (phys // 1024) << 10
+            bank = phys // 1024
+            # Banks 040-043: FB 030-033 under the superbank (bit 0 marks it).
+            fb = ((bank - 8) << 10) | 1 if bank >= 0o40 else bank << 10
             c.append(guard(i))
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
