@@ -1773,7 +1773,7 @@ Luminary099 RESTARTS, GETPART2 and PHSPART2 select variable, table and X.1 displ
 
 ## Translate Luminary time of free fall (TFFCONIC/TFFCONMU, TFFRP/RA, CALCTPER, CALCTFF)
 
-Native C for all of Luminary099 TIME_OF_FREE_FALL (TFFCONIC/TFFCONMU, TFFRP/RA, CALCTPER and CALCTFF, 266 words) as a chain of 25 steps between original NEWOPS frontiers over the general Luminary interpretive bodies, with one new body (BPL/BMN). The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled call chains from the actual SR30.1 callers (strict and ASAN/UBSAN), 247 intermediate phase frontiers equal original NEWOPS images, 266 assembled words map to native literals after a fresh yaYUL assembly, and four C64 phase diagnostics pass 88 frozen steps in VICE. See `docs/LM-TIME-FREE-FALL.md`.
+Native C for all of Luminary099 TIME_OF_FREE_FALL (TFFCONIC/TFFCONMU, TFFRP/RA, CALCTPER and CALCTFF, 266 words) as a chain of 25 steps between original NEWOPS frontiers over the general Luminary interpretive bodies, with one new body (BPL/BMN). The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled call chains from the actual SR30.1 callers (strict and ASAN/UBSAN), 297 intermediate phase frontiers equal original NEWOPS images, 266 assembled words map to native literals after a fresh yaYUL assembly, and four C64 phase diagnostics pass 63 frozen steps in VICE that take every branch outcome the host stream takes. See `docs/LM-TIME-FREE-FALL.md`.
 
 ## Run Luminary Executive and Waitlist service entries as native routines
 
@@ -1818,6 +1818,10 @@ All of Luminary099 DAP_INTERFACE_SUBROUTINES (bank 20, 67 words: RESTORDB, SETMA
 ## Translate the DISPLAY_INTERFACE mark displays
 
 Native C for the mark displays of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: BLANKET, ENDMARK, CLEARMRK, MARKEND, the GOMARK entries, MAKEMARK, MARKPLAY/GOGOMARK/MARKCOP and COPYTOGO/COPYPACS. 2,944 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 227 of them (every entry, both missions) match the oracle on a VICE PAL C64. The display-start paths of lanec-di-dsp are shared through `include/lanec_di_internal.h`, and `symbols.txt` WORD rows now also take equates and NAME+N. See `docs/LANEC-DI-MARK.md`.
+
+## Translate the Luminary apsides display subroutines (PERIAPO, SHIFTR1, MAXCHK)
+
+Native C for the shared apsides display subroutines of the Luminary099 targeting programs: RPAD, PERIAPO1, PERIAPO, SETRAD, LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT and SHIFTR1 from P34-35_P74-75 (bank 23) and MAXCHK/MAXNM from R30 (bank 22), 73 words, as ten steps between original NEWOPS frontiers that run the lm-conic-timerad milestone's APSIDES steps for PERIAPO. The final 2048-word image, IRQ and SUPER equal the pinned yaAGC oracle for all 65536 sampled entries from the routines' Luminary call returns (strict and ASAN/UBSAN), 118 intermediate phase frontiers equal original NEWOPS images, every assembled word maps to a native literal after a fresh yaYUL assembly, and four C64 phase diagnostics pass 63 frozen steps in VICE. See `docs/LM-PERIAPO.md`.
 
 ## Translate the DISPLAY_INTERFACE display job selection
 
