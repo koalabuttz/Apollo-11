@@ -3496,7 +3496,7 @@
       "sha256": "74236d3b94048b14efb776d7fff5ae66acac2f950e5bc03ca375d4b90b4484a8",
       "bytes": 5079,
       "lines": 251,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "ALARM1/BAILOUT1/POODOO1 recording, FLAGS and POODOO phase-4 pair write; display/SERVICER/live abort glue remains incomplete.",
@@ -3530,7 +3530,7 @@
           "scope": "Every instruction: ALARM/ALARM2/BORTENT/PRIOENT/LARMENT, CHKFAIL1/CHKFAIL2/FAIL3/PROGLARM/MULTEXIT/MULTFAIL, PRIOLARM, BAILOUT, WHIMPER, POODOO/ABORT2/GOPOODOO/STRTIDLE, CCSHOLE, CURTAINS, BAILOUT1/BOTHABRT/POODOO1, ALARM1/ALMNCADR, VARALARM and FLAGS as control-transfer ABI routines (26 entries incl. MULTEXIT/BANKCALL/SUPERSW return points and the ALMCADR erasable continuation); alarm codes of all 73 caller sites compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3541,7 +3541,6 @@
           "BANKCALL/POSTJUMP/SUPERSW (lm_interbank_routines) to ENEMA, V37KLEAN, MR.KLEAN, SERVIDLE",
           "SWRETURN after BANKCALL FLAGS (lm_interbank takes Q 0100-7775 only)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-ALARM.md",
@@ -3558,6 +3557,10 @@
           "c64_execution_results": {
             "path": "evidence/lm-alarm/lm-alarm-vice.log",
             "sha256": "3376f29fa5fc63df6161dabc84675b7267ac40e6b79cd5afd5a48970b2d85619"
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-alarm.md",
+            "sha256": "9c0caecc91e8e0a6f5384901c3b974a5a133190a1ce1dd2a3a1f38477fdc9d6a"
           }
         }
       }
