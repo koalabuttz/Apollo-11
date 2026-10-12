@@ -15,6 +15,11 @@ it (by label interval) or to the file's constant table, and requires:
     some case of the Lane C display suites (LANEC_TRACE of the oracle), whose
     complete results the native code matches (tools/lanec/diff.py);
   - every constant-table word the native code reads is a symbols.txt WORD row.
+Each instruction row names the C function that carries it (the static or
+exported function named after its label, else the module's dispatch) and,
+when the word is a transfer-ABI entry (src/lanec_di_routines.inc), the
+routine table and physical address it is registered at. EQUALS aliases of
+the file's code labels get alias rows naming the label they stand for.
 Writes OUTDIR/lanec-di-{lm,cm}-source-map.json.
 """
 import hashlib, json, os, pathlib, re, subprocess, sys
@@ -137,6 +142,45 @@ def read_addresses(mission, table, native):
     return found
 
 
+def abi_entries(mission):
+    """Physical address -> wrapper of every transfer-ABI routine registered for MISSION."""
+    text = (ROOT / 'src/lanec_di_routines.inc').read_text()
+    block = text[text.index(f'{mission.lower()}_entries['):]
+    block = block[:block.index('};')]
+    return {int(a): w for a, w in re.findall(r'\{ (\d+)u, (\w+) \}', block)}
+
+
+def physical(bank, addr):
+    return 2048 + addr - 0o4000 if bank is None else int(bank, 8) * 1024 + addr - 0o2000
+
+
+def c_function(module, label):
+    """The C function of MODULE named after LABEL, else the module's dispatch."""
+    text = (ROOT / module).read_text()
+    name = symbols.cname(label).lower()
+    for fn in (f'lanec_di_{name}', name):
+        if re.search(rf'^(?:static )?[a-z_ ]+\b{fn}\(', text, re.M):
+            return fn
+    return 'lanec_di_' + pathlib.Path(module).stem.split('_')[-1] + '_dispatch'
+
+
+def aliases(mission, table, line_map):
+    """EQUALS rows of the file whose target is one of its code labels."""
+    src = (ROOT.parent / ORIGINAL[mission] / FILE).read_text(errors='replace').splitlines()
+    by_address = {e['address']: e for e in line_map}
+    rows = []
+    for i, line in enumerate(src):
+        f = line.split('#', 1)[0].split()
+        if len(f) != 3 or f[1] != 'EQUALS' or f[2] not in table:
+            continue
+        _, bank, addr = table[f[2]]
+        e = by_address.get(f'{bank or "FF"},{addr:04o}')
+        if e and e['kind'] == 'instruction':
+            rows.append(dict(line=i + 1, alias=f[0], equals=f[2], address=e['address'], owner=e['owner'],
+                             native=e['native'], **({'abi_routine': e['abi_routine']} if 'abi_routine' in e else {})))
+    return rows
+
+
 def build(mission):
     table = symbols.symbols(FIXTURE[mission])
     rows = listing_words(mission)
@@ -153,6 +197,7 @@ def build(mission):
     _, tb, ta = table[TABLE]
     src = (ROOT.parent / ORIGINAL[mission] / FILE).read_text(errors='replace').splitlines()
     read = read_addresses(mission, table, native)
+    abi = abi_entries(mission)
     owners, line_map, label = {}, [], None
     for r in rows:
         key = (r['bank'], r['addr'])
@@ -170,7 +215,11 @@ def build(mission):
             if not op and not ran:
                 sys.exit(f'FAIL: {mission} instruction {r["bank"]},{r["addr"]:04o} "{r["text"].strip()}" never executed')
             entry = {'kind': 'instruction' if not op else 'inline data', 'owner': owner,
-                     'native': f'{MODULE[owner]} ({routine} block)', 'executed_by_oracle': ran}
+                     'native': f'{MODULE[owner]}: {c_function(MODULE[owner], label)} ({routine} block)',
+                     'executed_by_oracle': ran}
+            at = physical(r['bank'], r['addr'])
+            if not op and at in abi:
+                entry['abi_routine'] = f'lanec_di_{mission.lower()}_routines[{at}] -> {abi[at]}'
         elif r['bank'] == tb and r['addr'] >= ta:
             if not op:
                 sys.exit(f'FAIL: {mission} non-data word in the constant table: {r["text"]}')
@@ -200,6 +249,8 @@ def build(mission):
         'source_words': total,
         'source_lines_with_words': len(rows),
         'line_map': line_map,
+        'aliases': aliases(mission, table, line_map),
+        'abi_entries': len(abi),
         'covered_ranges': [f'{b or "FF"},{lo:04o}-{b or "FF"},{hi:04o} {owner}' for b, lo, hi, owner, _ in spans]
                           + [f'{tb},{ta:04o}-end constant table'],
         'whole_file': {'assembled_words': total, 'words_by_owner': dict(sorted(owners.items())),
@@ -212,7 +263,9 @@ def build(mission):
                  'LANEC_TRACE), and the native modules reproduce those cases\' complete results '
                  '(2048 erasable words, registers, channels, superbank, interrupt state). Inline data words '
                  '(ADRES/OCT/2CADR/GENADR after a call) are the arguments of the call before them, compiled '
-                 'into the native call. Words before CHKPRIO/after COPYPACS and the GOMARK family use the '
+                 'into the native call. Every labelled entry and every return into the file from a callee is a '
+                 'transfer-ABI routine (abi_routine; tools/lanec/di_routines.py checks this against the listing), '
+                 'and EQUALS aliases of code labels resolve to those rows. Words before CHKPRIO/after COPYPACS and the GOMARK family use the '
                  'display-start paths of lanec-di-dsp through include/lanec_di_internal.h.'),
     }
 

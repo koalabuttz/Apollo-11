@@ -9,6 +9,13 @@ Writes build/lanec-SUITE-{native,oracle}.txt (complete states, one case per
 line), build/lanec-SUITE-{native,oracle}.crc (per-case CRC-32, the compact
 evidence form, same hash as the C64 diagnostic) and build/lanec-SUITE-diff.json. The cases are deterministic,
 so the full streams are reproducible from the sources at any time.
+
+With --refusals, a case the native routine refuses (status 1, which the
+native runner prints only when the image and I/O are unchanged) is counted
+as a refusal instead of compared: those are the suite's out-of-domain cases.
+At least one case must still be accepted and match. With --refusals-only
+(a suite of out-of-domain inputs) the oracle is not run and every case must
+be refused with the state unchanged.
 """
 import argparse, hashlib, json, pathlib, subprocess, sys, zlib
 
@@ -22,16 +29,32 @@ p = argparse.ArgumentParser()
 p.add_argument('suite')
 p.add_argument('--native', default='build/lanec-native')
 p.add_argument('--oracle', default='build/lanec-oracle')
+p.add_argument('--refusals', action='store_true')
+p.add_argument('--refusals-only', action='store_true')
 a = p.parse_args()
 for path, digest in ROPES.values():
     if hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != digest:
         sys.exit(f'FAIL: {path} is not the pinned rope')
 subprocess.run([sys.executable, 'tools/lanec/symbols.py', '--check'], cwd=ROOT, check=True)
 native = subprocess.run([a.native, a.suite], cwd=ROOT, capture_output=True, check=True).stdout
+if a.refusals_only:
+    rows = native.splitlines()
+    accepted = [r.split()[0].decode() for r in rows if r.split()[-1] != b'1']
+    summary = dict(suite=a.suite, cases=len(rows), refused_unchanged=len(rows) - len(accepted),
+                   native_sha256=hashlib.sha256(native).hexdigest())
+    (ROOT / f'build/lanec-{a.suite}-native.txt').write_bytes(native)
+    (ROOT / f'build/lanec-{a.suite}-diff.json').write_text(json.dumps(summary, indent=2) + '\n')
+    print(json.dumps(summary))
+    if accepted or not rows:
+        sys.exit(f'FAIL: cases not refused with the state unchanged: {accepted[:10]}')
+    print(f'PASS: {len(rows)} out-of-domain cases refused with the image and I/O unchanged')
+    sys.exit(0)
 oracle = subprocess.run([a.oracle, a.suite, ROPES['lm'][0], ROPES['cm'][0]], cwd=ROOT,
                         capture_output=True, check=True).stdout
 rows_n, rows_o = native.splitlines(), oracle.splitlines()
-bad = [i for i, (x, y) in enumerate(zip(rows_n, rows_o)) if x != y]
+refused = [i for i, x in enumerate(rows_n) if a.refusals and x.split()[-1] == b'1']
+skip = set(refused)
+bad = [i for i, (x, y) in enumerate(zip(rows_n, rows_o)) if x != y and i not in skip]
 for i in bad[:10]:
     xs, ys = rows_n[i].split(), rows_o[i].split()
     print('DIFF case', xs[0], [(oct(k - 1) if k <= 2048 else f'io{k - 2049:o}', xs[k], ys[k])
@@ -43,10 +66,12 @@ for name, data in (('native' + tag, native), ('oracle', oracle)):
         f"{row.split()[0].decode()} {zlib.crc32(b''.join(int(x).to_bytes(2, 'little') for x in row.split()[1:])):08x}\n"
         for row in data.splitlines()))
 summary = dict(suite=a.suite, cases=len(rows_o), differing=len(bad) + abs(len(rows_n) - len(rows_o)),
+               **({'refused_unchanged': len(refused)} if a.refusals else {}),
                native_sha256=hashlib.sha256(native).hexdigest(), oracle_sha256=hashlib.sha256(oracle).hexdigest())
 (ROOT / f'build/lanec-{a.suite}-diff{tag}.json').write_text(json.dumps(summary, indent=2) + '\n')
 print(json.dumps(summary))
-if summary['differing'] or not rows_o:
+if summary['differing'] or len(refused) >= len(rows_o):
     sys.exit('FAIL: native and original results differ')
-print(f'PASS: {len(rows_o)} complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, '
-      'superbank, IRQ) identical to the original program in Virtual AGC')
+print(f'PASS: {len(rows_o) - len(refused)} complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, '
+      'superbank, IRQ) identical to the original program in Virtual AGC'
+      + (f'; {len(refused)} out-of-domain cases refused with the state unchanged' if refused else ''))

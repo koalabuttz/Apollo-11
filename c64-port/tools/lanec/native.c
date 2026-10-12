@@ -1,25 +1,41 @@
 /* SPDX-License-Identifier: MIT */
 /* Lane C native runner: same cases as tools/lanec/oracle.c, run through the
- * native routines, printed in the oracle's format. */
+ * native routines, printed in the oracle's format. With --entries it prints
+ * instead each case's entry point ("LM|CM bank z n", bank 0 for fixed-fixed)
+ * when the native routine accepted the case: the entry set a suite verifies,
+ * from which tools/lanec/di_routines.py builds the routine tables.
+ * A refused case (LANEC_OUT_OF_SCOPE) must leave the image and I/O exactly as
+ * they were; one that does not is printed with status 2, which no oracle row
+ * matches. */
 #include <stdio.h>
 #include <string.h>
 #include "lanec_case.h"
 #include "lanec_suites.h"
-static apollo_overlay_state s;
+static apollo_overlay_state s, before;
 
 int main(int argc, char **argv)
 {
-    const lanec_suite *suite = argc == 2 ? lanec_find_suite(argv[1]) : 0;
-    lanec_io io;
+    int entries = argc == 3 && !strcmp(argv[1], "--entries");
+    const lanec_suite *suite = argc == 2 + entries ? lanec_find_suite(argv[1 + entries]) : 0;
+    lanec_io io, io_before;
     lanec_meta meta;
     enum lanec_status status;
     uint32_t n;
-    unsigned i;
-    if (!suite) { fprintf(stderr, "usage: native SUITE\n"); return 2; }
+    unsigned i, bank, z;
+    if (!suite) { fprintf(stderr, "usage: native [--entries] SUITE\n"); return 2; }
     for (n = 0; n < suite->count; ++n) {
         memset(&meta, 0, sizeof meta);
         suite->make(n, &s, &io, &meta);
+        z = s.words[LANEC_Z] & 07777u;
+        bank = z >= 02000u && z < 04000u ? lanec_current_bank(&s, &io) : 0u;
+        before = s; io_before = io;
         status = suite->run(&s, &io, meta.mission);
+        if (status != LANEC_OK && (memcmp(&s, &before, sizeof s) || memcmp(&io, &io_before, sizeof io)))
+            status = (enum lanec_status)2;
+        if (entries) {
+            if (status == LANEC_OK) printf("%s %o %o %lu\n", meta.mission == LANEC_CM ? "CM" : "LM", bank, z, (unsigned long)n);
+            continue;
+        }
         printf("%lu", (unsigned long)n);
         for (i = 0; i < APOLLO_SHARED_WORDS; ++i) printf(" %u", (unsigned)s.words[i]);
         for (i = 0; i < LANEC_CHANNELS; ++i) printf(" %u", (unsigned)io.channel[i]);

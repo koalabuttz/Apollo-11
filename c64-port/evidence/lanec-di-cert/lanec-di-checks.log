@@ -6,9 +6,22 @@ di-play strict: PASS: 2208 complete states (2048 erasable words, A/L/Q/EB/FB/Z/B
 di-play sanitize: PASS: 2208 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 di-sleep strict: PASS: 2176 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 di-sleep sanitize: PASS: 2176 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-di-idle strict: PASS: 3840 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-di-idle sanitize: PASS: 3840 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+di-idle strict: PASS: 4358 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 122 out-of-domain cases refused with the state unchanged
+di-idle sanitize: PASS: 4358 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 122 out-of-domain cases refused with the state unchanged
 di-nvdsp strict: PASS: 3200 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 di-nvdsp sanitize: PASS: 3200 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+di-transfer strict: PASS: 996 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+di-transfer sanitize: PASS: 996 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+di-transfer-c64 strict: PASS: 336 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+di-transfer-c64 sanitize: PASS: 336 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+di-refuse strict: PASS: 384 out-of-domain cases refused with the image and I/O unchanged
+di-refuse sanitize: PASS: 384 out-of-domain cases refused with the image and I/O unchanged
 PASS LM Luminary099/DISPLAY_INTERFACE_ROUTINES.agc: 670 assembled words, 612/612 instruction words executed by the oracle; owners {'constant table': 39, 'lanec-di-dsp': 143, 'lanec-di-idle': 149, 'lanec-di-mark': 81, 'lanec-di-nvdsp': 93, 'lanec-di-play': 105, 'lanec-di-sleep': 60}
 PASS CM Comanche055/DISPLAY_INTERFACE_ROUTINES.agc: 667 assembled words, 609/609 instruction words executed by the oracle; owners {'constant table': 39, 'lanec-di-dsp': 140, 'lanec-di-idle': 149, 'lanec-di-mark': 81, 'lanec-di-nvdsp': 93, 'lanec-di-play': 105, 'lanec-di-sleep': 60}
+di-dsp C64: PASS: VICE PAL lanec-di-dsp.prg: 218 checks, 0 failures
+di-mark C64: PASS: VICE PAL lanec-di-mark.prg: 227 checks, 0 failures
+di-play C64: PASS: VICE PAL lanec-di-play.prg: 246 checks, 0 failures
+di-sleep C64: PASS: VICE PAL lanec-di-sleep.prg: 242 checks, 0 failures
+di-idle C64: PASS: VICE PAL lanec-di-idle.prg: 264 checks, 0 failures
+di-nvdsp C64: PASS: VICE PAL lanec-di-nvdsp.prg: 247 checks, 0 failures
+di-transfer-c64 C64: PASS: VICE PAL lanec-di-transfer.prg: 68 checks, 0 failures

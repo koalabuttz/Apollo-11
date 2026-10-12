@@ -90,6 +90,7 @@ transferring file.
 | Luminary099 EXECUTIVE (NOVAC, FINDVAC) and WAITLIST (WAITLIST, TWIDDLE, the LONGCALL chain) | 10 entries in `lm_exec_routines` | `lm_exec_sites` (146 sites, 268 words) | `lm-exec-services` |
 | Luminary099 EXECUTIVE (SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB), WAITLIST (FIXDELAY, VARDELAY, TASKOVER) and the INTERRUPT_LEAD_INS T3 vector | 8 entries in `lm_exec_job_routines`, 4 in `lm_exec_task_routines` | `lm_exec_sites` (adds the 16 FIXDELAY sites: 284 words) | `lm-exec-jobs` |
 | Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
+| Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES | 165 LM / 164 CM entries (every label and every callee return) in `lanec_di_lm_routines` / `lanec_di_cm_routines`, one table per module for subsets | through `lm_interbank_sites`, `cm_interbank_sites` and `lm_exec_sites`; CM NOVAC/FINDVAC operands wait for `cm_exec_sites` | `lanec-di-transfer` |
 
 Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete
 certificate for the auditor's review.
