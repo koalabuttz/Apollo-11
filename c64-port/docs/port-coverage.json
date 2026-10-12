@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -3444,7 +3444,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction: V70UPDAT-V73UPDAT/CKMDMORE/UPERROR (bank 43), UPPART2, OHWELL1/OHWELL2, UPVERIFY, CK4V32, UPSTORE, UPEND73, UPFNDVAC, UPJOB/UPWAKE basic code, TIMEDIDL/TIMEDIDR/DELTAOK, UPEND71/STORLP71, UPEND72/LDLOOP72, UPOUT, UPEND70, UPERROUT and UPACTOFF (bank 27) as control-transfer ABI routines (35 entries incl. the POSTJUMP targets, restart points and every return point after a TC outside the file); constants compiled from the source listing, BANKCALL/POSTJUMP CADRs from cm_interbank_site_table.",
+          "scope": "Every instruction: V70UPDAT-V73UPDAT/CKMDMORE/UPERROR (bank 43), UPPART2, OHWELL1/OHWELL2, UPVERIFY, CK4V32, UPSTORE, UPEND73, UPFNDVAC, UPJOB/UPWAKE basic code, TIMEDIDL/TIMEDIDR/DELTAOK, UPEND71/STORLP71, UPEND72/LDLOOP72, UPOUT, UPEND70, UPERROUT and UPACTOFF (bank 27) as control-transfer ABI routines (36 entries incl. UPACTOFF as FRESH_START's and P20-P25's BANKCALL reaches it, the POSTJUMP targets, restart points and every return point after a TC outside the file); constants compiled from the source listing, BANKCALL/POSTJUMP CADRs from cm_interbank_site_table.",
           "verification": "docs/CM-UPDATE.md"
         }
       ],
@@ -3453,31 +3453,32 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-update/cm-update-vice.log",
-            "sha256": "58e2b4cdddfae72891e1139d8722a40b539b39bc9018feeebc045775a46a33f5"
+            "sha256": "55224cc675d29d47560fd2f1397e0c00b25260e0a5c79672e10986b0f3febab2"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-update/cm-update-host.log",
-            "sha256": "f0d57b7dad9b6c975bf94feb24f33cc5d28b5b7f2bd19e1b6405fadbdc937077"
+            "sha256": "9a9b6c6450038747fb7371f29ab928e82649164a16874e020410fd84ff28f3b5"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-update/cm-update-proof.json",
-            "sha256": "48084f9e6469b3660816a057747e8aa43ca7f5554408cdd302a64d0c22801732"
+            "sha256": "4973f66d06915525f2d0d3c17cdd4fa00abe8b4ad648303cfd152b49e304d13b"
           },
           "source_to_native_map": {
             "path": "docs/CM-UPDATE.md",
-            "sha256": "76b15ada3c7130b8d8f7c2b1f65cbb94a858d52daa4bcbd97a4e1da1eb8e0ae5"
+            "sha256": "8a33278a48d504bc379355a1a34067c51381fc583dbb85792cb2de6a5dc8f221"
           }
         },
         "external_continuations": [
           "TESTXACT (PINBALL) and its return",
           "PHASCHNG, NEWMODEX, NEWMODEX+3, FALTON, FINDVAC, ENDOFJOB, UPFLAG, TPAGREE, INTWAKEU and ENDEXT",
           "BANKCALL GOXDSPF with its three returns, POSTJUMP UPPART2/UPERROUT+2",
-          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)"
+          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)",
+          "SWRETURN after UPACTOFF's TC Q from a BANKCALL (Q = 3; cm_interbank_complete refuses it, issue #94)"
         ],
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "entries as their callers reach them: UPVERB 0-3, MODREG and FLAGWRD5 as CKMDMORE reads them, COMPNUMB in each verb's accepted range (V70/V73 2, V71 3-20, V72 odd 3-19), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03534/03721), V71/V72 erasable addresses in EB 1-7 above the registers; cm_native_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, MODREG and FLAGWRD5 as CKMDMORE reads them, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03534/03721), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC and the update words 0300-0330), incl. one-word loads at a bank's first word and loads past a bank's end; UPACTOFF from FRESH_START's and P20-P25's BANKCALL; cm_native_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
       }
     },
     {
@@ -7356,19 +7357,19 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-update/lm-update-vice.log",
-            "sha256": "40f06a86102e05b296f52b5046dc9945d51582161061d84977a106340ad652d7"
+            "sha256": "5d84b1ed02aabc02dd13ce476e37c09dfd3a76309df3691a19d8139107285567"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-update/lm-update-host.log",
-            "sha256": "6c9b6ea802ecbf4f296166053ca1e4893f27c369b6e14b9e4adceedd6eeceb92"
+            "sha256": "56559ad933825f0e7c14460c8c6fbb61df0293a82e275f932d98594cba3b79be"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-update/lm-update-proof.json",
-            "sha256": "ec3bcf72a8e9ea14d22f74d117c08629eb5988b73a8321ae49877df27b079530"
+            "sha256": "feea17cabc9cfabcb3a2ecc8ec42449a21b12a43e3def02a55beaba4577f609a"
           },
           "source_to_native_map": {
             "path": "docs/LM-UPDATE.md",
-            "sha256": "b43dfe6d38de69b8f6b129e0c253b114066a21bba3d6dfe7653d2f0ab7f1656b"
+            "sha256": "0c09379cc2c08f82407e7fda0785dd88eb22f748b6599f4cf32c516744d64957"
           }
         },
         "external_continuations": [
@@ -7380,7 +7381,7 @@
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB in each verb's accepted range (V70/V73 2, V71 3-20, V72 odd 3-19), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in EB 1-7 above the registers; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC), incl. one-word loads at a bank's first word and loads past a bank's end; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
       }
     },
     {
