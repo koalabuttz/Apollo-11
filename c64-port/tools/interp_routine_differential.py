@@ -109,6 +109,7 @@ class Mission:
             # Each routine runs under the EBANK= the listing has in effect at
             # its first word (files that switch EBANK= between routines).
             self.ebank = self.listing_ebanks()
+        self.all_states = spec.get('all_states', {})
         self.states = {self.point_of(k): v for k, v in spec.get('states', {}).items()}
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
@@ -142,7 +143,6 @@ class Mission:
             if phys in self.points and eb is not None:
                 out.setdefault(phys, eb)
         return out
-        self.all_states = spec.get('all_states', {})
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
