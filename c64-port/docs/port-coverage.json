@@ -2866,8 +2866,17 @@
       "sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
       "bytes": 38224,
       "lines": 1467,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/t4rupt_core.c",
+            "include/t4rupt_core.h"
+          ],
+          "scope": "T4RUPT entry with the DSRUPTSW scan, T4JUMP dispatch, SETTIME4 (PROCEEDE), DSPOUTSB/NODSPOUT/HANG20/DSPOUT display relay output, QUIKDSP and the RESUME paths, as control-transfer ABI routines (cm_t4rupt_core_routines, bank 06 entries 2000, 2116, 2130) on the image through agc_image_ops, with channels 10 and 32 in agc_hardware. TABLNTH, 120MRUPT and OCT37737 are unreached data; IMUMON and the rest of the file remain unported.",
+          "verification": "docs/T4RUPT-CORE.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
@@ -6449,8 +6458,17 @@
       "sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
       "bytes": 37085,
       "lines": 1354,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/t4rupt_core.c",
+            "include/t4rupt_core.h"
+          ],
+          "scope": "T4RUPT entry with the DSRUPTSW scan, T4JUMP dispatch, SETTIME4 (PROCEEDE), DSPOUTSB/NODSPOUT/HANG20/DSPOUT display relay output, QUIKDSP and the SYNCT4 resume paths, as control-transfer ABI routines (lm_t4rupt_core_routines, bank 06 entries 2000, 2116, 2121, 2125) on the image through agc_image_ops, with channels 10 and 32 in agc_hardware. TABLNTH, 120MRUPT and OCT37737 are unreached data; IMUMON and the rest of the file remain unported.",
+          "verification": "docs/T4RUPT-CORE.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/T6-RUPT_PROGRAMS.agc",

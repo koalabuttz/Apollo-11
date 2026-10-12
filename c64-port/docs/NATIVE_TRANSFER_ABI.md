@@ -38,7 +38,9 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   interrupt-in-progress flag (tasks run inside T3RUPT; TASKOVER's RESUME ends
   it), and the LM RCS jet channels 5 and 6 and channel 13 (TIME6 enable) that
   the T6RUPT programs drive (`docs/LM-T6RUPT.md`), and input channel 15, the
-  DSKY key code KEYRUPT1 reads (`docs/KEYRUPT-UPRUPT.md`). Channel 13 holds only the
+  DSKY key code KEYRUPT1 reads (`docs/KEYRUPT-UPRUPT.md`), and output
+  channel 10 (the last DSKY relay word) and input channel 32 (the PRO key) that
+  T4RUPT uses (`docs/T4RUPT-CORE.md`). Channel 13 holds only the
   CPU-writable bits (043777). Initializers that name only the first two
   members leave the others zero. A routine that needs it refuses when it is
   NULL.
