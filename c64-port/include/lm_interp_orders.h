@@ -69,6 +69,8 @@ uint8_t lmi_asin(apollo_overlay_state *);
 void lmi_acos_alarmed(apollo_overlay_state *);
 uint8_t lmi_abvalabs(apollo_overlay_state *);
 uint8_t lmi_unit(apollo_overlay_state *);
+/* UNIT+1 03024, NORMUNIT's POSTJUMP target (after its own VECAGREE). */
+uint8_t lmi_unit1(apollo_overlay_state *);
 void lmi_vxsc(apollo_overlay_state *, const agc_word *k);
 void lmi_vxv(apollo_overlay_state *, const agc_word *k);
 /* MXV 07334 and VXM 07337: matrix (18 words at C(ADDRWD), or `k` when

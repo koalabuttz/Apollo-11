@@ -7,6 +7,7 @@
 #include <string.h>
 #include "interp_case.h"
 #include "cm_native_image.h"
+#include "lm_channel_io.h"
 const agc_native_program *irc_program(uint8_t cm);
 static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(stderr,"short case file\n");exit(2);}return (unsigned)a|(unsigned)b<<8;}
 static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned long)rd16(f)<<16;}
@@ -14,8 +15,11 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
  * differential can pick C64 cases that stay within one group of routines. */
 static uint16_t visit[256];static unsigned nvisit;
 static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps){
- p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
- lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
+ lm_channel_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
+ lio.control.superbank=c->superbank;lio.control.interrupt_enabled=c->interrupt_enabled;lio.chan30=037777u;lio.chan31=077777u;
+ for(i=0;i<c->nedits;++i)if(c->edits[i].addr&IRC_CHANNEL_EDIT){
+  if((c->edits[i].addr&0777u)==030u)lio.chan30=c->edits[i].word;
+  if((c->edits[i].addr&0777u)==031u)lio.chan31=c->edits[i].word;}
  {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
  cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;

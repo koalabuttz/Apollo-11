@@ -43,6 +43,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   machine=baseline[c.cm];
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;
+  for(i=0;i<c.nedits;++i)if(edits[i].addr&0x8000u)machine.InputChannel[edits[i].addr&0777u]=(int16_t)edits[i].word;
   for(cycles=0;cycles<400000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
     if(pc==t->newops){unsigned p=loc_physical();if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}

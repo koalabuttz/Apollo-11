@@ -4915,8 +4915,55 @@
       "sha256": "d749732ada1c3221d526fadcabf062a652dfb1d01e22bf6bab55bd02b8937d7f",
       "bytes": 18500,
       "lines": 743,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_findcduw.c",
+            "src/lm_findcduw_rtb.c",
+            "src/rtb_vector.c",
+            "src/lm_powered_quick.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (441 words, 30,3104-3774): INITCDUW, FINDCDUW and FINDCDUW -2, PAUTNO with RTB NORMUNIT and QUICTRIG, CDUWXFR, TCQCDUW, FLTRSUB, NB2CDUSP, DVBYCOSM, ARCTRGSP, SPARCSIN and SPARCSIN -1, LIMITSUB, ONESTO2S, NOATTCNT and ALARMMGA, as 45 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-FINDCDUW.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6, entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 30), FIXLOC a VAC area, any PUSHLOC within it, MODE (-1 where an RTB needs a vector), OVFIND +0, +1 or -1, NDXCDUW 0 or 1, channels 30 and 31 idle or with the PNGCS control (ch30 bit 10) or auto-mode (ch31 bit 14) bit active, TEM2/TEM4 and the filter indexes at the values the file's own callers leave, and any values of the guidance inputs (UNFC/2, UNWC/2, CDUs, DAPBOOLS, gimbal state).",
+        "external_continuations": [
+          "ALARM (NOATTCNT and ALARMMGA)",
+          "IBNKCALL with its inline CADR (NOATTCNT +2, no PNGCS auto)",
+          "RTB NORMUNIT (native: rtb_vector front + lmi_unit1) and QUICTRIG (native: lm_powered_quick)",
+          "The interpreter caller through QCDUWUSR (NEWOPS with LOC outside the file)",
+          "The basic caller through Q (SPARCSIN -1)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/findcduw/findcduw-source-map.json",
+            "sha256": "0d7630d8e8adcacf33126532076b5c790a4b10b1db136c882b26c6df021188bb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/findcduw/findcduw-proof.json",
+            "sha256": "c3581afa899f7810a406231728842080568dd677fd005ee3cb348abbdbded56b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/findcduw/findcduw-host.log",
+            "sha256": "5d0efb1ce92b98a6134ee132c8a4350a4579fa46fdc1000b3a8908f22447a7e7"
+          },
+          "c64_execution_results": {
+            "path": "evidence/findcduw/findcduw-vice.log",
+            "sha256": "ee7cb7106dc2b0d9de764f755b2172cc4de73a48abcc9a32d43047735147ac85"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",

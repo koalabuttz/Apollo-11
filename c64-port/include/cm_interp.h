@@ -73,6 +73,7 @@ uint8_t cmi_asin(apollo_overlay_state *);
 void cmi_acos_alarmed(apollo_overlay_state *);
 uint8_t cmi_abvalabs(apollo_overlay_state *);
 uint8_t cmi_unit(apollo_overlay_state *);
+uint8_t cmi_unit1(apollo_overlay_state *);
 void cmi_vxsc(apollo_overlay_state *, const agc_word *k);
 void cmi_vxv(apollo_overlay_state *, const agc_word *k);
 void cmi_mxv(apollo_overlay_state *, const agc_word *k);

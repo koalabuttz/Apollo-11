@@ -79,4 +79,42 @@ SPECS = {
         # switched names (KSPNDX, BRATE...) mean nothing under another EB.
         'ebank': 6,
     },
+    'findcduw': {
+        'missions': ('lm',),
+        'file': {'lm': 'FINDCDUW_-_GUIDAP_INTERFACE.agc'},
+        'base': {'lm': 'lm_findcduw'},
+        'symbol': {'lm': 'lm_findcduw'},
+        # Entries from other files: INITCDUW (STCALL/CALL from BURNBABY and
+        # P70/P71), FINDCDUW -2 (CALL, BPL from the guidance equations),
+        # SPARCSIN -1 (BANKCALL from LUNAR_LANDING_GUIDANCE_EQUATIONS).
+        'entries': {'lm': ['INITCDUW', 'FINDCDUW-2', 'SPARCSIN-1']},
+        'externals': {'ALARM': 1, 'IBNKCALL': 1},
+        'rtb': {'NORMUNIT': {'lm': 'lm_findcduw_normunit(s,io)'},
+                'QUICTRIG': {'lm': 'lm_findcduw_quictrig(s,io)'}},
+        # PAUTNO's tests: channel 30 bit 10 (PGNCS in control, 0 = yes) and
+        # channel 31 bit 14 (auto mode, 0 = yes).
+        'channels': {0o30: 'chan30', 0o31: 'chan31'},
+        'includes': ['lm_findcduw_rtb.h', 'lm_channel_io.h'],
+        'native_sources': ['src/lm_findcduw_rtb.c', 'src/rtb_vector.c', 'src/lm_powered_quick.c',
+                           'src/lm_single_trig.c', 'src/rtb_angles.c'],
+        'target': 'tests/findcduw_target.c',
+        # The GUIDAP loop's group only fits the C64 without inlining, and
+        # with one case per routine.
+        'c64_flags': ['-fno-inline'], 'c64_per_point': 1,
+        'ebank': 6,
+        'ovfind': [1, 0o77776],
+        # NDXCDUW (E6 1650) as FINDCDUW sets it: 0 docked, 1 not.
+        'all_states': {'3250': [0, 1]},
+        # Keys inside the file's loops and subroutines, with the counter or
+        # saved return their caller left: TEM2 the CDUWXFR index (2, 1, 0)
+        # or FLTRSUB's saved Q (its two calls), TEM4 ARCTRGSP's saved Q
+        # (its three calls).
+        # FINDCDUW runs in vector mode from FINDCDUW-2's VLOAD to PAUTNO's
+        # RTB NORMUNIT, which unitizes that vector (MODE -1).
+        'states': {'FINDCDUW': {'163': [0o77776]}, 'FINDCDUW+5': {'163': [0o77776]}, 'PAUTNO+1': {'163': [0o77776]},
+                   'CDUWXFR+6': {'142': [0, 1, 2]}, 'CDUWXFR+24': {'142': [0, 1, 2]},
+                   'FLTRSUB+11': {'142': [0o3207, 0o3213]}, 'FLTRSUB+15': {'142': [0o3207, 0o3213]},
+                   'ARCTRGSP+21': {'144': [0o3556, 0o3565, 0o3574]}, 'ARCTRGSP+22': {'144': [0o3556, 0o3565, 0o3574]},
+                   'ARCTRGSP+25': {'144': [0o3556, 0o3565, 0o3574]}, 'ARCTRGSP+28': {'144': [0o3556, 0o3565, 0o3574]}},
+    },
 }

@@ -823,8 +823,12 @@ static void unitdv(apollo_overlay_state *s){
 }
 /* UNIT 03023 to DANZIG (or DVOVF's TC DANZIG); 1 at POODOO1. */
 uint8_t lmi_unit(apollo_overlay_state *s){
+ TC(03024);vecagree(s);return lmi_unit1(s);
+}
+/* UNIT+1 03024 (where NORMUNIT's POSTJUMP lands), as UNIT. */
+uint8_t lmi_unit1(apollo_overlay_state *s){
  uint8_t c;
- TC(03024);vecagree(s);TC(03025);mpacvbuf(s);
+ TC(03025);mpacvbuf(s);
  CAF(ZERO);XCH(rOVFIND);(void)TS(rTEM1);TC(03031);vsqsub(s);CA(rTEM1);XCH(rOVFIND);
  if(!ai_bzf(s)){dvovf(s);return 0;}
  DCA(rMPAC);DXCH(AT(W[rFIXLOC]+tLVSQUARE));
