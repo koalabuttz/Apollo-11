@@ -92,6 +92,46 @@ def siblings(path):
     return found
 
 
+MAKE_VAR = re.compile(r'\$\(if \$\(([A-Z_]+)\),\$\(\1\),[^)]*\)|\$\(([A-Z_]+)\)')
+
+
+DERIVED = re.compile(r'^([A-Z_]+)\s*:?=\s*\$\(if \$\(filter ([^,]+),\$\(([A-Z_]+)\)\),([^,)]*),([^,)]*)\)\s*$', re.M)
+
+
+def submake_writes(line, path, text=''):
+    """The VAR=value assignments under which a recipe line writes `path`, or None.
+
+    Per-variant sub-makefile rules name outputs like
+    build/x$(if $(SELECTOR),$(SELECTOR),0).map; match those against the
+    missing file and pass the variant back as a make variable. A name built
+    from a derived variable (TREE = $(if $(filter 1,$(MISSION)),cm,lm), in
+    the makefile `text`) is passed back as the variable it derives from."""
+    for *_, out in re.findall(WRITES + r'"?(build/(?:\$\((?:[^()]|\([^()]*\))*\)|[^\s"$])+)', line):
+        pattern, names, last = '', [], 0
+        for var in MAKE_VAR.finditer(out):
+            name = var[1] or var[2]
+            pattern += re.escape(out[last:var.start()])
+            pattern += f'(?P={name})' if name in names else f'(?P<{name}>[A-Za-z0-9_]+)'
+            names.append(name)
+            last = var.end()
+        match = re.fullmatch(pattern + re.escape(out[last:]), path)
+        if match:
+            assigned = []
+            derived = {d[0]: d[1:] for d in DERIVED.findall(text)}
+            for name, value in match.groupdict().items():
+                if name in derived:
+                    when, source, then, other = derived[name]
+                    default = re.search(r'^' + source + r'\s*\?=\s*(\S+)', text, re.M)
+                    unless = default[1] if default and default[1] != when else '1' if when == '0' else '0'
+                    name, value = source, when if value == then else unless if value == other else None
+                    if value is None:
+                        break
+                assigned.append(f'{name}={value}')
+            else:
+                return assigned
+    return None
+
+
 def produce(path, target, log_dir, make_args, attempts, stack=()):
     """Recreate a build/ input that the old serial loop left behind.
 
@@ -121,14 +161,16 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
     for mk in sorted((ROOT / 'tools').glob('*.mk')):
         if mk.relative_to(ROOT).as_posix() in included:
             continue
-        rule = None
-        for line in mk.read_text(errors='replace').splitlines():
+        rule, text = None, mk.read_text(errors='replace')
+        for line in text.splitlines():
             head = re.match(r'([A-Za-z0-9_.-]+)\s*:(?!=)', line)
             if head:
                 rule = head[1]
-            elif rule and line.startswith('\t') and re.search(WRITES + re.escape(path) + r'(\s|$)', line):
-                candidates.append(('submake', (mk.relative_to(ROOT).as_posix(), rule)))
-                break
+            elif rule and line.startswith('\t'):
+                assigned = submake_writes(line, path, text)
+                if assigned is not None:
+                    candidates.append(('submake', (mk.relative_to(ROOT).as_posix(), rule, *assigned)))
+                    break
     # Build and freeze scripts that write the file under its literal name
     # (module manifests, frozen samples, PRGs linked with -Map).
     writers = [s for s in sorted((ROOT / 'tools').glob('*.py'))
@@ -158,8 +200,9 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
                 argv += tool_args(what, make_args)
                 cmd, log = [sys.executable, str(what), *argv], log_dir / (what.stem + '.log')
             else:
-                cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', what[0], what[1]]
-                log = log_dir / (pathlib.Path(what[0]).stem + '-' + what[1] + '.log')
+                cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', *what]
+                log = log_dir / '-'.join([pathlib.Path(what[0]).stem, *what[1:]]).replace('=', '')
+                log = log.with_name(log.name + '.log')
             ok = produce_with(cmd, log, label, log_dir, make_args, attempts, stack)
         if (ROOT / path).exists():
             if ok:

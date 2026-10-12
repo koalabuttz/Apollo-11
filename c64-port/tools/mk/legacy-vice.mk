@@ -1090,7 +1090,7 @@ vice-legacy-passive-storage: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
 	python3 tools/passive_storage_build.py --cc "$(MOS_CC)" --c1541 "$(C1541)" --mission lm
 	python3 tools/passive_storage_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --mission lm
-	python3 tools/passive_storage_build.py --cc "$(MOS_CC)" --c1541 "$(C1541)" --mission lm
+	python3 tools/passive_storage_build.py --cc "$(MOS_CC)" --c1541 "$(C1541)" --mission cm
 	python3 tools/passive_storage_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --mission cm
 vice-legacy-phase: build/phase.prg | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice

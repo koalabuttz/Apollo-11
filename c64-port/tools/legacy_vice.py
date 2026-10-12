@@ -44,8 +44,9 @@ def usage(script):
 def variants(script, only=None):
     """Argument lists to run: fixed tool paths plus sampled required selectors.
 
-    `only` limits the selectors to those names (a build script run before its
-    test takes the test's sampled values for the selectors both accept)."""
+    `only` maps selector names to the values to use (a build script run before
+    its test takes the test's values for the selectors both accept); selectors
+    it does not name are left out."""
     fixed, selectors = [], []
     for optional, name, value in USAGE_ARG.findall(usage(script)):
         if name == '--help':
@@ -54,7 +55,9 @@ def variants(script, only=None):
             fixed += [name, FIXED[name]]
         elif not optional and (only is None or name in only):
             choices = value[1:-1].split(',') if value.startswith('{') else None
-            if choices:
+            if only is not None:
+                picked = [only[name]]
+            elif choices:
                 picked = choices[:2] if name == '--mission' else choices[:1]
             else:
                 picked = ['0', '1'] if name == '--mission' else ['0']
@@ -65,8 +68,10 @@ def variants(script, only=None):
     return [fixed + c for c in combos]
 
 
-def selector_names(args):
-    return [a for a in args if a.startswith('--') and a not in FIXED]
+def selectors(args):
+    """The selector values in one argument list, by name."""
+    return {name: value for name, value in zip(args, args[1:])
+            if name.startswith('--') and name not in FIXED}
 
 
 def producers():
@@ -131,7 +136,7 @@ def render():
         lines += ['\t' + step for step in steps]
         for args in variants(script):
             if not needs and not steps and builder.is_file():
-                build_args = variants(builder, selector_names(args))[0]
+                build_args = variants(builder, selectors(args))[0]
                 lines.append(f'\tpython3 tools/{builder.name} ' + ' '.join(build_args))
             lines.append(f'\tpython3 tools/{script.name} ' + ' '.join(args))
     lines.insert(3, '.PHONY: ' + ' '.join(names))
