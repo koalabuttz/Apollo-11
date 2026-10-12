@@ -5,7 +5,7 @@
  * routines of the control-transfer ABI (docs/NATIVE_TRANSFER_ABI.md). Every
  * entry and every point where a callee returns into the file that a Lane C
  * suite verifies is registered at its physical address
- * (src/lanec_di_routines.inc, tools/lanec/di_routines.py) and runs that
+ * (src/lanec_di_routines.inc, tools/lanec/routines.py di) and runs that
  * module's lanec_di_*_dispatch; LANEC_OUT_OF_SCOPE is EXEC_OUT_OF_SCOPE.
  * The modules use the superbank, the interrupt-enable state and output
  * channel 11 (MAKEPLAY's KEY REL light): the LM routines take a p66_bias_io

@@ -61,7 +61,8 @@ def norm(text, mission):
     code = ' '.join(text.split('#', 1)[0].split())
     if mission == 'CM':
         code = code.replace('CAF EBANKSAV', 'CA EBANKSAV')
-    return code
+    # yaYUL lists a relative address +8 as +8D
+    return re.sub(r'(?<=\s)([+-]\d+)D(?=\s|$)', r'\1', code)
 
 
 def listing_words(mission):
@@ -142,10 +143,14 @@ def read_addresses(mission, table, native):
     return found
 
 
-def abi_entries(mission):
-    """Physical address -> wrapper of every transfer-ABI routine registered for MISSION."""
-    text = (ROOT / 'src/lanec_di_routines.inc').read_text()
-    block = text[text.index(f'{mission.lower()}_entries['):]
+def abi_entries(mission, family='di', interpretive=False):
+    """Physical address -> wrapper of every transfer-ABI routine registered for
+    MISSION (basic, or interpretive keyed by LOC) in src/lanec_<family>_routines.inc."""
+    text = (ROOT / f'src/lanec_{family}_routines.inc').read_text()
+    name = f'{mission.lower()}_{"interp_" if interpretive else ""}entries['
+    if name not in text:
+        return {}
+    block = text[text.index(name):]
     block = block[:block.index('};')]
     return {int(a): w for a, w in re.findall(r'\{ (\d+)u, (\w+) \}', block)}
 
@@ -157,11 +162,12 @@ def physical(bank, addr):
 def c_function(module, label):
     """The C function of MODULE named after LABEL, else the module's dispatch."""
     text = (ROOT / module).read_text()
+    stem = pathlib.Path(module).stem             # lanec_di_dsp
     name = symbols.cname(label).lower()
-    for fn in (f'lanec_di_{name}', name):
+    for fn in (f'{stem.rsplit("_", 1)[0]}_{name}', name):
         if re.search(rf'^(?:static )?[a-z_ ]+\b{fn}\(', text, re.M):
             return fn
-    return 'lanec_di_' + pathlib.Path(module).stem.split('_')[-1] + '_dispatch'
+    return f'{stem}_dispatch'
 
 
 def aliases(mission, table, line_map):
@@ -264,7 +270,7 @@ def build(mission):
                  '(2048 erasable words, registers, channels, superbank, interrupt state). Inline data words '
                  '(ADRES/OCT/2CADR/GENADR after a call) are the arguments of the call before them, compiled '
                  'into the native call. Every labelled entry and every return into the file from a callee is a '
-                 'transfer-ABI routine (abi_routine; tools/lanec/di_routines.py checks this against the listing), '
+                 'transfer-ABI routine (abi_routine; tools/lanec/routines.py di checks this against the listing), '
                  'and EQUALS aliases of code labels resolve to those rows. Words before CHKPRIO/after COPYPACS and the GOMARK family use the '
                  'display-start paths of lanec-di-dsp through include/lanec_di_internal.h.'),
     }

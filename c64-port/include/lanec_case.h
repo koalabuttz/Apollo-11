@@ -13,6 +13,8 @@ typedef struct {
     lanec_point stop[LANEC_MAX_STOPS];   /* labels inside those ranges owned elsewhere */
     const lanec_point *stop_list;        /* more such labels (NULL: none) */
     uint16_t stop_count;
+    const lanec_range *range_list;       /* more translated code (NULL: none) */
+    uint16_t range_count;
     /* Interpretive code: when newops is set, the oracle also stops at that
      * address (the interpreter's NEWOPS) once LOC, in the bank FB selects,
      * leaves the interpretive words listed in loc[]. */

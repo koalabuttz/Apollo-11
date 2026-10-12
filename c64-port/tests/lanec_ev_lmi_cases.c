@@ -19,16 +19,12 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     lanec_enter(s, io, bank, z);
     w[067] = 0;                                                     /* NEWJOB */
     w[0120] = (uint16_t)(0200u + lanec_rand(&r) % (01400u - 060u - 0200u)); /* FIXLOC */
-    if (z == 06037u) {
-        w[LANEC_Q] = *at;
-    } else {
-        w[0164] = *at; w[023] = 0; w[0165] = w[LANEC_BB];           /* LOC, EDOP, BANKSET */
-        w[0115] = w[0165] & 040000u;                                /* INTBIT15 */
-        /* RRLOSDSP lines of sight along Y (UNIT's alarm), and with only a
-         * low-order Z left (UNIT's small-vector path, a DV with L = -0) */
-        if (*at == LANEC_LM_RRLOSDSP + 6u && (n / count) % 4u == 0u) w[0154] = w[0155] = w[0161] = w[0162] = 0;
-        if (*at == LANEC_LM_RRLOSDSP + 6u && (n / count) % 4u == 1u) w[0154] = w[0155] = w[0160] = w[0161] = 0;
-    }
+    w[0164] = *at; w[023] = 0; w[0165] = w[LANEC_BB];               /* LOC, EDOP, BANKSET */
+    w[0115] = w[0165] & 040000u;                                    /* INTBIT15 */
+    /* RRLOSDSP lines of sight along Y (UNIT's alarm), and with only a
+     * low-order Z left (UNIT's small-vector path, a DV with L = -0) */
+    if (*at == LANEC_LM_RRLOSDSP + 6u && (n / count) % 4u == 0u) w[0154] = w[0155] = w[0161] = w[0162] = 0;
+    if (*at == LANEC_LM_RRLOSDSP + 6u && (n / count) % 4u == 1u) w[0154] = w[0155] = w[0160] = w[0161] = 0;
     /* the interpreter: fixed-fixed 06000-07777, banks 0 and 1, the TC in Q
      * and A (registers 0 and 2) and SWCALL for RTB */
     m->ranges = 5;

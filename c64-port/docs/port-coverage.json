@@ -578,8 +578,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
-          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_cm_routines (src/lanec_di_routines.inc, 164 entries, generated and checked against the listing by tools/lanec/di_routines.py; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
-          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 out-of-range COPINDEX/COPMPAC states).",
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_cm_routines (src/lanec_di_routines.inc, 164 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them).",
           "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -591,19 +591,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-di-cert/lanec-di-cm-source-map.json",
-            "sha256": "ca2d9ca3b7566e13b194217eb0382b8065ab7f39188ed9865dc565cf6501e78f"
+            "sha256": "6cd03228406cd62dc2aeb2a7d5411e0b0d4af12659c67061c822de0ba5f89494"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
-            "sha256": "0e45bea61846293a674d3e6b29263d323499f4a58627e0068e64f3235041e8a2"
+            "sha256": "3d49bd65242ffa122822af9b7fe4877f865993552916240f8ee50730f520ad44"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-di-cert/lanec-di-checks.log",
-            "sha256": "5af20df515e99ad252505ce88fff473d6d13a360aaf5e821ef9dc972848b7d69"
+            "sha256": "d45879a5febc1e3c572a6a34d368961f4eed9b857cacdd3a3dbc41527c5649d6"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
-            "sha256": "1f206c80455f38b9be1f5801d9917457e19ccd5b45dba6f81b44b8ae1506014c"
+            "sha256": "1503a12c528120f09de0f0437d5aa4bfcdb154b79acf0ee13e8d38bba4721735"
           }
         }
       }
@@ -4051,8 +4051,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
-          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_lm_routines (src/lanec_di_routines.inc, 165 entries, generated and checked against the listing by tools/lanec/di_routines.py; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
-          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 out-of-range COPINDEX/COPMPAC states).",
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_lm_routines (src/lanec_di_routines.inc, 165 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them).",
           "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -4064,19 +4064,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-di-cert/lanec-di-lm-source-map.json",
-            "sha256": "0f67a70f9172831f863160d406f68ea993b7492ca053ecdf35a1fe54806ba785"
+            "sha256": "b5e2a24a5d1c00269390a344a3a0e206795835ce4bb6fa0c45ef0f39bdd564c1"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
-            "sha256": "0e45bea61846293a674d3e6b29263d323499f4a58627e0068e64f3235041e8a2"
+            "sha256": "3d49bd65242ffa122822af9b7fe4877f865993552916240f8ee50730f520ad44"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-di-cert/lanec-di-checks.log",
-            "sha256": "5af20df515e99ad252505ce88fff473d6d13a360aaf5e821ef9dc972848b7d69"
+            "sha256": "d45879a5febc1e3c572a6a34d368961f4eed9b857cacdd3a3dbc41527c5649d6"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
-            "sha256": "1f206c80455f38b9be1f5801d9917457e19ccd5b45dba6f81b44b8ae1506014c"
+            "sha256": "1503a12c528120f09de0f0437d5aa4bfcdb154b79acf0ee13e8d38bba4721735"
           }
         }
       }
@@ -4373,33 +4373,33 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in banks 01, 20, 23, 40, 42 and 43.",
-          "entry_contracts": "Each entry named in the eight milestone documents (LANEC-EV-FRONT, -SHORT, -ALIGN, -RADAR, -DAP, -TIME, -TRACK, -LMI): every labelled entry, every compiled callee return address in the file and every basic block start; for the interpretive words, INTPRET with Q at the first word and NEWOPS with LOC at each word the interpreter resumes on.",
-          "index_domains": "Saved return words in 02000-07777 where TCQ/XACT0Q transfer through them; RRDESK2 +3 with the job's VAC address 0 or 062-0777; R04X -1 and R04C +4 with a non-overflowed A; ATTCK2 +1 with the axis index 0-2; TCPIN with FIXLOC + QPRET below 02000; interpretive entries with NEWJOB +0, FIXLOC 0200-01317, and at NEWOPS EDOP +0, BANKSET = BB and INTBIT15 its bit 15. Other inputs return LANEC_OUT_OF_SCOPE before any change.",
-          "hardware_side_effects": "Channel values are kept exactly (channel 12/14 CDU drive and RR/LR enable bits, channel 11 lights, WAND/WOR/WRITE results); the physical effect of the coarse-align CDU drive, radar power and lights is a device-adapter obligation, as for the other Lane C modules. The oracle holds Virtual AGC's simulated CDU drive still (docs/LANEC-EV-TIME.md)."
+          "entry_contracts": "Each entry named in the eight milestone documents (LANEC-EV-FRONT, -SHORT, -ALIGN, -RADAR, -DAP, -TIME, -TRACK, -LMI): every labelled entry, every compiled callee return address in the file and every basic block start; for the interpretive words, NEWOPS with LOC at each word the interpreter resumes on, the first word after each basic TC INTPRET included. Each is a transfer-ABI routine at its physical address: 313 basic routines in lanec_ev_lm_routines and 15 interpretive routines keyed by LOC under BANKSET in lanec_ev_lm_interpretive (src/lanec_ev_routines.inc, generated and checked against the listing by tools/lanec/routines.py ev), with INTPRET for the file's own TC INTPRET callers in lanec_ev_lm_intpret; LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. The routines take an lm_dntm_io device record (docs/LANEC-EV-TRANSFER.md).",
+          "index_domains": "Saved return words in 02000-07777 where TCQ/XACT0Q transfer through them; RRDESK2 +3 with the job's VAC address 0 or 062-0777; R04X -1 and R04C +4 with a non-overflowed A; ATTCK2 +1 with the axis index 0-2; TCPIN with FIXLOC + QPRET below 02000; interpretive entries with NEWJOB +0, FIXLOC 0200-01317, and at NEWOPS EDOP +0, BANKSET = BB and INTBIT15 its bit 15. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite ev-refuse: 512 corrupted entry states).",
+          "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on output channel 12 (IMUATTCK's error-counter enable, the RR/LR bits of R04 and TRMTRAK1), WOR on channel 14 (ATTCK2's CDU drive bits), RAND of channels 12, 30 and 33 and RXOR of channel 31 (IMU and radar status). Driving the CDUs, radars and meters from those bits is a device-adapter obligation, as for the other Lane C modules. The oracle holds Virtual AGC's simulated CDU drive still (docs/LANEC-EV-TIME.md)."
         },
         "external_continuations": [
           "EXECUTIVE and WAITLIST services (FINDVAC, PRIOCHNG, ENDOFJOB, DELAYJOB, JOBSLEEP, WAITLIST, TASKOVER) and INTER-BANK_COMMUNICATION (BANKCALL, IBNKCALL, POSTJUMP, BANKJUMP, MAKECADR)",
           "PINBALL_GAME_BUTTONS_AND_LIGHTS and DISPLAY_INTERFACE_ROUTINES services (ENDEXT, GOXDSPF/GOMARKF families, BLANKET, B5OFF, PINBRNCH, GOPIN, ALM/END support) and the astronaut responses that resume them",
           "SERVICE_ROUTINES, FRESH_START_AND_RESTART and PHASE_TABLE_MAINTENANCE (UPFLAG, DOWNFLAG, PHASCHNG, 2PHSCHNG, TPAGREE), ALARM_AND_ABORT (ALARM, POODOO)",
-          "The verbs' subsystem routines in other files (IMU and optics tests and alignment, RR/LR routines, DAP and R03 users, V82-V90 orbital displays, rendezvous navigation and the interpreter library entries RRNBMPAC, ARCTRIG, INTSTALL, PTOALEM, SVDWN1, CALLs to the interpretive routines' NEWOPS)",
+          "The verbs' subsystem routines in other files (IMU and optics tests and alignment, RR/LR routines, DAP and R03 users, V82-V90 orbital displays, rendezvous navigation and the interpreter (a general INTPRET routine, and the library entries RRNBMPAC, ARCTRIG, INTSTALL, PTOALEM, SVDWN1, CALLs to the interpretive routines' NEWOPS))",
           "User verb requests and the job and interrupt scheduling that interleave them; integrated C64 application acceptance"
         ],
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-ev-cert/lanec-ev-lm-source-map.json",
-            "sha256": "8d343e50353c3a92e6b1b263aaaa44fefe05360457d22034b3cd48178836d3b9"
+            "sha256": "a40f106dab938c364f96f4ebd8cde8788b81859263bab34c94ebaa25b2efbad3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-ev-cert/lanec-ev-comparison.json",
-            "sha256": "586c0221819483432987dabe9699c2449f3a28cd76cb6b8dbbee8ffa82d0c2d4"
+            "sha256": "be7e17f45d0b0409b7fea6cbe1bdfa0875221b1ba705a109e16d9b7110c19447"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-checks.log",
-            "sha256": "5530b052153c9dbc4242015976e4bd23488f2f9b7db933ab83710d001c075fba"
+            "sha256": "162ff34089d6995dd80379f664781c321f72a2f6ce5de11ed0f118e2dff71db9"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-results.json",
-            "sha256": "6052c677af01d5af204154d7b543b6ddda5b9f2381b16b24daeb1d7ab4b9f9d5"
+            "sha256": "b195571026b69bb8a2597f7ae1f864c906c45f33125192ee98c6cf477bb9a685"
           }
         }
       },

@@ -7,7 +7,7 @@
   "src/lanec_di_dsp.c": "08b8d418b0a0ccead7276ee3cfc31c89ae7141f77c63ff8998455d79995aaeaf",
   "src/lanec_di_idle.c": "71846a5d96ac396301dc814b9461e0eb1dfbc518970e002b1b55c22f9fbaf683",
   "src/lanec_di_mark.c": "708e1192ff14a5a4daa42e2771b32295a176665f3dcb07be24d724d8bdfacc10",
-  "src/lanec_di_nvdsp.c": "c6feeb6e474e152c77bba074c69bebea6f3a7b8b7d7b142e3a34e33e95e7a0cc",
+  "src/lanec_di_nvdsp.c": "a1b37915486894d4964bc42ecc7f91dea748ad18c4e6988c63d43df85bafbe50",
   "src/lanec_di_play.c": "c497b1d1441855b725862bd2ae51986b4cad82f8d12638e587511ef725a60e0c",
   "src/lanec_di_sleep.c": "70b3f1debe9440e14234adab2964f6b68159ff49f06c584f9128f181d3176b10"
  },
@@ -8290,5 +8290,5 @@
   "instruction_words": 612,
   "instruction_words_executed_by_oracle": 612
  },
- "note": "Every assembled word of the file is owned by one Lane C display milestone or by the constant table at its end. Every instruction word was started by the unchanged original program in Virtual AGC under at least one case of the six display suites (oracle LANEC_TRACE), and the native modules reproduce those cases' complete results (2048 erasable words, registers, channels, superbank, interrupt state). Inline data words (ADRES/OCT/2CADR/GENADR after a call) are the arguments of the call before them, compiled into the native call. Every labelled entry and every return into the file from a callee is a transfer-ABI routine (abi_routine; tools/lanec/di_routines.py checks this against the listing), and EQUALS aliases of code labels resolve to those rows. Words before CHKPRIO/after COPYPACS and the GOMARK family use the display-start paths of lanec-di-dsp through include/lanec_di_internal.h."
+ "note": "Every assembled word of the file is owned by one Lane C display milestone or by the constant table at its end. Every instruction word was started by the unchanged original program in Virtual AGC under at least one case of the six display suites (oracle LANEC_TRACE), and the native modules reproduce those cases' complete results (2048 erasable words, registers, channels, superbank, interrupt state). Inline data words (ADRES/OCT/2CADR/GENADR after a call) are the arguments of the call before them, compiled into the native call. Every labelled entry and every return into the file from a callee is a transfer-ABI routine (abi_routine; tools/lanec/routines.py di checks this against the listing), and EQUALS aliases of code labels resolve to those rows. Words before CHKPRIO/after COPYPACS and the GOMARK family use the display-start paths of lanec-di-dsp through include/lanec_di_internal.h."
 }

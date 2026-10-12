@@ -19,8 +19,8 @@ LANEC_SUITE_HDR += include/lanec_di_routines.h src/lanec_di_routines.inc tests/l
 .PHONY: test-lanec-di-transfer sanitize-lanec-di-transfer c64-lanec-di-transfer vice-lanec-di-transfer
 test: test-lanec-di-transfer
 sanitize: sanitize-lanec-di-transfer
-test-lanec-di-transfer: build/lanec-native build/lanec-oracle tools/lanec/diff.py tools/lanec/di_routines.py
-	python3 tools/lanec/di_routines.py --check
+test-lanec-di-transfer: build/lanec-native build/lanec-oracle tools/lanec/diff.py tools/lanec/routines.py
+	python3 tools/lanec/routines.py di --check
 	python3 tools/lanec/diff.py di-transfer
 	python3 tools/lanec/diff.py di-transfer-c64
 sanitize-lanec-di-transfer: build/lanec-native-sanitize build/lanec-oracle tools/lanec/diff.py

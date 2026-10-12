@@ -3,7 +3,10 @@
  * native routines, printed in the oracle's format. With --entries it prints
  * instead each case's entry point ("LM|CM bank z n", bank 0 for fixed-fixed)
  * when the native routine accepted the case: the entry set a suite verifies,
- * from which tools/lanec/di_routines.py builds the routine tables.
+ * from which tools/lanec/routines.py builds the routine tables. An entry at
+ * the interpreter (Z at NEWOPS, or at INTPRET with Q the first interpretive
+ * word, which INTPRET makes LOC) is printed "LMI|CMI bank loc n": the
+ * interpretive point keyed by LOC under BANKSET.
  * A refused case (LANEC_OUT_OF_SCOPE) must leave the image and I/O exactly as
  * they were; one that does not is printed with status 2, which no oracle row
  * matches. */
@@ -21,19 +24,24 @@ int main(int argc, char **argv)
     lanec_meta meta;
     enum lanec_status status;
     uint32_t n;
-    unsigned i, bank, z;
+    unsigned i, bank, z, interp;
     if (!suite) { fprintf(stderr, "usage: native [--entries] SUITE\n"); return 2; }
     for (n = 0; n < suite->count; ++n) {
         memset(&meta, 0, sizeof meta);
         suite->make(n, &s, &io, &meta);
         z = s.words[LANEC_Z] & 07777u;
         bank = z >= 02000u && z < 04000u ? lanec_current_bank(&s, &io) : 0u;
+        /* NEWOPS and INTPRET: LM 06070/06037, CM 06037/06006 */
+        interp = meta.mission == LANEC_CM ? (z == 06037u ? 0164u : z == 06006u ? LANEC_Q : 0u)
+                                          : (z == 06070u ? 0164u : z == 06037u ? LANEC_Q : 0u);
+        if (interp) { z = s.words[interp] & 07777u; bank = lanec_current_bank(&s, &io); }
         before = s; io_before = io;
         status = suite->run(&s, &io, meta.mission);
         if (status != LANEC_OK && (memcmp(&s, &before, sizeof s) || memcmp(&io, &io_before, sizeof io)))
             status = (enum lanec_status)2;
         if (entries) {
-            if (status == LANEC_OK) printf("%s %o %o %lu\n", meta.mission == LANEC_CM ? "CM" : "LM", bank, z, (unsigned long)n);
+            if (status == LANEC_OK)
+                printf("%s%s %o %o %lu\n", meta.mission == LANEC_CM ? "CM" : "LM", interp ? "I" : "", bank, z, (unsigned long)n);
             continue;
         }
         printf("%lu", (unsigned long)n);

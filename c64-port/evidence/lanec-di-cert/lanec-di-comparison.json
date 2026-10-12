@@ -64,23 +64,24 @@
   },
   "di-nvdsp": {
    "suite": "di-nvdsp",
-   "cases": 3200,
+   "cases": 3600,
    "differing": 0,
-   "native_sha256": "a8a23f3a202f6c7d0dc6d794d4e0ca70af99ea8ea553a01b599801f77789c65e",
-   "oracle_sha256": "a8a23f3a202f6c7d0dc6d794d4e0ca70af99ea8ea553a01b599801f77789c65e",
-   "oracle_crc_sha256": "83741ad9d60231caf4567fd4f8c7fdd07d3a49fc16425a6e0794ed5e3b7ef6fd",
+   "refused_unchanged": 114,
+   "native_sha256": "7a837a683a09623a6583328d8b60ee77ee2f06113165ae84d38836b9612e8dbd",
+   "oracle_sha256": "cec0a5cc3f90e80709a26e2dbb92b7fb0e03240406a0fa8e90ee32e8cc8ee0ee",
+   "oracle_crc_sha256": "7c22c4e789b0cfd22876a097f5c7078b6e212a45813acbc66082b81298e379b2",
    "accepted_cases_by_mission": {
-    "CM": 1600,
-    "LM": 1600
+    "CM": 1744,
+    "LM": 1742
    }
   },
   "di-transfer": {
    "suite": "di-transfer",
    "cases": 996,
    "differing": 0,
-   "native_sha256": "380fb0ec879b6a8a2529e0b33164c94491e1abdffe4d94b9a18322a3e903b1e9",
-   "oracle_sha256": "380fb0ec879b6a8a2529e0b33164c94491e1abdffe4d94b9a18322a3e903b1e9",
-   "oracle_crc_sha256": "9a72dde256a4f94faf0ecd2f7578c4b1c0f9c2c6c5c041e34147640f0166267e",
+   "native_sha256": "ed64a3968f77d0b6812363f8fc412d9aca4791eb79e2275fb9088e5a37767a27",
+   "oracle_sha256": "ed64a3968f77d0b6812363f8fc412d9aca4791eb79e2275fb9088e5a37767a27",
+   "oracle_crc_sha256": "18161b3c6294b83bb9981fcec83e7a0fa01f0f995d7616e1850ea2d7959e90c3",
    "accepted_cases_by_mission": {
     "CM": 500,
     "LM": 496
@@ -101,10 +102,10 @@
    "suite": "di-refuse",
    "cases": 384,
    "refused_unchanged": 384,
-   "native_sha256": "bbaf9ba282afc50a5b44c209cec8eefc2331bd656579e0bd843867c04e91ae52"
+   "native_sha256": "016149d4a1ca7be45eb2f9fe9799e73a1e33e5f6ffaf141be5c0c00aa7e47698"
   }
  },
- "total_cases": 19988,
+ "total_cases": 20388,
  "total_differing": 0,
- "total_refused_unchanged": 506
+ "total_refused_unchanged": 620
 }

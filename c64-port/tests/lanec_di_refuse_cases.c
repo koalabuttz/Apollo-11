@@ -6,7 +6,7 @@
  * module must return LANEC_OUT_OF_SCOPE with the image and I/O unchanged
  * (the native runner prints status 2 otherwise); diff.py --refusals-only.
  * Refusals inside a module's own domain checks are in di-idle (COPINDEX and
- * COPMPAC above 2). */
+ * COPMPAC above 2) and di-nvdsp (COPINDEX above 2). */
 #include "lanec_suites.h"
 #include "lanec_di_dsp.h"
 #include "lanec_di_mark.h"

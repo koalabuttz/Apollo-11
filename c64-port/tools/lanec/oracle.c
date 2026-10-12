@@ -49,6 +49,11 @@ static int outside(unsigned z)
         if (z >= meta.range[i].lo && z <= meta.range[i].hi && (bank == LANEC_ANY_BANK || (z >= 02000u && z < 04000u && bank == fb)))
             return 0;
     }
+    for (i = 0; i < meta.range_count; ++i) {
+        bank = meta.range_list[i].bank;
+        if (z >= meta.range_list[i].lo && z <= meta.range_list[i].hi && (bank == LANEC_ANY_BANK || (z >= 02000u && z < 04000u && bank == fb)))
+            return 0;
+    }
     return 1;
 }
 
