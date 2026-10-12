@@ -67,6 +67,8 @@ Hashes: `evidence/lm-exec-services/SHA256.json`. Bulk files are assets of the `e
   | 4,088 call-site runs | 3,014 | 1,074 | 0 |
   | 1,024 task runs | 849 | 137 | 38 |
 
+  A third of the NOVAC and FINDVAC call-site runs pass a dormant (sleeping) job in the core-set scan, which runs NOVAC3's negative-priority branch.
+
   Results: `evidence/lm-exec-services/lm-exec-services-proof.json`. `evidence/lm-exec-services/lm-exec-services-sites.json` lists each site word checked against the source text and the rope.
 - **Host and sanitizer results.** `make test-lm-exec-services sanitize-lm-exec-services` (`evidence/lm-exec-services/lm-exec-services-host.log`) checks:
   - the digests;

@@ -76,6 +76,8 @@ Hashes: `evidence/lm-exec-jobs/SHA256.json`. Bulk files are assets of the `evide
   | TASKOVER resume | 512 | 512 | | | |
   | T3 vector and TASKOVER +1 | 1,024 | 1,024 tasks | | | |
 
+  The JOBWAKE cases put the matching sleeping job in every core set 1-7, so WAKETEST's match path runs (exec-closure needs it).
+
   The alarms are 1201 (169), 1202 (94), 1203 (214) and 1204 (138). Results: `evidence/lm-exec-jobs/lm-exec-jobs-proof.json`.
 - **Host and sanitizer results.** `make test-lm-exec-jobs sanitize-lm-exec-jobs` (`evidence/lm-exec-jobs/lm-exec-jobs-host.log`) checks:
   - the digests;

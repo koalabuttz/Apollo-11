@@ -69,7 +69,13 @@ void lm_exj_input(apollo_overlay_state *m,p66_bias_io *io,lm_exj_case *c,uint16_
   if(j&1u)interpretive(m,j);
   jobs(c);break;
  case LM_EXJ_JOBWAKE:
-  lm_wake_input(m,io,(uint16_t)((j*16u)%8192u));stop(c,m->words[2]);
+  /* (j*9: every slot, so some sleeping job's LOC matches.) */
+  lm_wake_input(m,io,(uint16_t)((j*9u)%8192u));stop(c,m->words[2]);
+  /* Some wake the job asleep in the run position (core set 0): a task's
+   * JOBWAKE while the dummy job runs, the original's SPECTEST path. */
+  if(j%16u==8u){m->words[0164]=agc_correct(m->words[0]);m->words[0165]=(agc_word)((j/16u)%8u|(((j/16u)%8u)*020u));m->words[0167]=agc_negate((agc_word)(01110u+(j/16u)%31u*01000u));
+   /* (NEWJOB +0 says core set 0 is already awake.) */
+   if(m->words[067]==0)m->words[067]=AGC_NEG_ZERO;}
   break;
  case LM_EXJ_PRIOCHNG:
   lm_priority_input(m,io,(uint16_t)((j*8u+j/1024u)%8192u));
