@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p21",
+  "release": "evidence-lm-p21",
+  "files": {
+    "lm-p21-1.map": {
+      "sha256": "fe158c9f788970781037af7d797b8165c0f6a77eb6b72cacb40ee681712403f5",
+      "bytes": 25583,
+      "store": "release"
+    },
+    "lm-p21-1.prg": {
+      "sha256": "11b9890c62b2f31870180d5d120522eaee2fbca8543416c54273f8bca4c4e0e6",
+      "bytes": 45479,
+      "store": "release"
+    },
+    "lm-p21-2.map": {
+      "sha256": "5c74bc1a3c99d7a211b9f1ca0542ba0c032dce0b252209d86c9e12511fdec5fb",
+      "bytes": 22033,
+      "store": "release"
+    },
+    "lm-p21-2.prg": {
+      "sha256": "3161cd0d9d2d551454edb8378575c49d4c16f03b2767df5addea01e5ba371122",
+      "bytes": 31342,
+      "store": "release"
+    },
+    "lm-p21-checks.log": {
+      "sha256": "dbbace2e8e585ada2fbdf375bfcd97b70c5d31b0bea2a0d549bc6ad10636a739",
+      "bytes": 647,
+      "store": "tree"
+    },
+    "lm-p21-proof.json": {
+      "sha256": "7e8553efd681b39d0db3a68b618b0947d6a832ee2dfadf1802f24b9bf2501322",
+      "bytes": 1750,
+      "store": "tree"
+    },
+    "lm-p21-reference.snapshots.bin.xz": {
+      "sha256": "7296b8f37a0c3c03ea27c58dfbf7ad6f5beb54b9f0453f2e977acb3d54978578",
+      "bytes": 46891904,
+      "store": "release"
+    },
+    "lm-p21-results.json": {
+      "sha256": "a377036cb763219dd87063e57d7df86b6f5db88e141bc9a226ee6e515e26e2f3",
+      "bytes": 1369,
+      "store": "tree"
+    },
+    "lm-p21-source-map.json": {
+      "sha256": "e0a3f52283f2dfd52f875a666164b8566107ace84e4b618fcf2ec78135caa9d4",
+      "bytes": 24674,
+      "store": "tree"
+    },
+    "lm-p21-source-stream.json": {
+      "sha256": "f71d4194e58ac0339572460ac61c5c5524423941eff80b7a5d71535f9a996ed3",
+      "bytes": 338,
+      "store": "tree"
+    }
+  }
+}

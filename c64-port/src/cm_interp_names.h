@@ -59,6 +59,11 @@
 #define lmi_ddv cmi_ddv
 #define lmi_bddv cmi_bddv
 #define lmi_sqrt cmi_sqrt
+#define lmi_sin cmi_sin
+#define lmi_cos cmi_cos
+#define lmi_acos cmi_acos
+#define lmi_asin cmi_asin
+#define lmi_acos_alarmed cmi_acos_alarmed
 #define lmi_abvalabs cmi_abvalabs
 #define lmi_unit cmi_unit
 #define lmi_vxsc cmi_vxsc
@@ -87,6 +92,7 @@
 #define lmi_lxa cmi_lxa
 #define lmi_lxc cmi_lxc
 #define lmi_sxa cmi_sxa
+#define lmi_xchx cmi_xchx
 #define lmi_axc cmi_axc
 #define lmi_ita cmi_ita
 #define lmi_tix cmi_tix

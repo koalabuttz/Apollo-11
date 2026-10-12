@@ -79,6 +79,26 @@ CONSTANTS = {
                     'NEGONE': 'K_NEG1', 'PRIO21': 'K_PRIO21', 'PRIO31': 'K_PRIO31', 'LGCOMP': 'K_LGCOMP'},
 }
 
+# Erasable words the native code names: symbol -> (native name, address as
+# src/imu_compensation.c defines it). Shared #defines are read from the
+# source; the per-mission ones are icp_mission fields (LM / CM).
+ERASABLES = ['FLAGWRD2', 'FLAGWRD8', 'VBUF', 'BUF', 'TEM1', 'MPAC', 'MODE', 'NBDX', 'NBDY', 'NBDZ', 'ADIAX',
+             'ADIAY', 'ADIAZ', 'ADSRAX', 'ADSRAY', 'ADSRAZ', 'GCOMP', 'GCOMPSW', 'PIPABIAS', 'PIPASCF']
+MISSION_ERASABLES = {
+    'Luminary099': {'1/PIPADT': ('LM.pipadt', 0o1075), 'DELVX': ('LM.deltav', 0o324),
+                    'PIPTIME': ('LM.piptime_low - 1 (PIPTIME +1)', 0o1234)},
+    'Comanche055': {'1/PIPADT': ('CM.pipadt', 0o1074), 'DELVX': ('CM.deltav', 0o1162),
+                    'PIPTIME1': ('CM.piptime_low - 1 (PIPTIME1 +1)', 0o1245)},
+}
+
+
+def erasable(listing, name):
+    """The listing's address of an erasable symbol (the E-bank window address
+    for switched erasable, which is how the native code names it)."""
+    found = re.findall(r'E:\s+' + re.escape(name) + r'\s+(?:E[0-7],)?([0-7]{4})\b', listing)
+    assert found, name
+    return int(found[-1], 8)
+
 
 def words(listing):
     """(bank, address, word, source text) of each word the file emits."""
@@ -131,9 +151,17 @@ def main():
             value = rope_word(rope, symbol(listing, sym))
             assert value == literals[k], (mission, sym, oct(value), k)
             consts[sym] = {'literal': k, 'value': f'{value:05o}'}
-        result['missions'][mission] = {'words': len(rows), 'map': rows, 'constants': consts}
+        defines = {k: int(v, 8) for k, v in re.findall(r'#define ([A-Z][A-Z0-9]*) 0?([0-7]+)u', src)}
+        eras = {'TIME1': {'native': 'TIME1', 'address': '0025', 'note': 'hardware counter register'}}
+        for sym in ERASABLES:
+            assert erasable(listing, sym) == defines[sym], (mission, sym)
+            eras[sym] = {'native': sym, 'address': f'{defines[sym]:04o}'}
+        for sym, (native, addr) in MISSION_ERASABLES[mission].items():
+            assert erasable(listing, sym) == addr, (mission, sym)
+            eras[sym] = {'native': native, 'address': f'{addr:04o}'}
+        result['missions'][mission] = {'words': len(rows), 'map': rows, 'constants': consts, 'erasables': eras}
         print(f'{mission}: {len(rows)} words of {FILE} owned by {len(owners)} native ranges; '
-              f'{len(consts)} literals equal the rope')
+              f'{len(consts)} literals equal the rope; {len(eras)} erasable names equal the listing')
     (R / 'build/imu-compensation-source-map.json').write_text(json.dumps(result, indent=1) + '\n')
 
 

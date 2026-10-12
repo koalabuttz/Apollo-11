@@ -80,6 +80,12 @@ unsigned interp_body_run(apollo_overlay_state *s,const uint16_t in[16],const agc
  case 59:lmi_vproj(s,k);break;
  case 60:lmi_tload_fixed(s,k);break;
  case 61:lmi_axc(s);break;
+ case 62:lmi_xchx(s);break;
+ case 63:(void)lmi_acos(s);break;
+ case 64:(void)lmi_asin(s);break;
+ case 65:lmi_sin(s);break;
+ case 66:lmi_cos(s);break;
+ case 67:lmi_acos_alarmed(s);break;
  case 68:lmi_mxv(s,k);break;
  case 69:lmi_vxm(s,k);break;
  case 70:lmi_lxc(s);break;
