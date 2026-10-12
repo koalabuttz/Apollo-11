@@ -13,7 +13,7 @@
 unsigned lm_thr_paths[PATHS];
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s %u\n",what,n);}}
-static agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};
+static agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};
 #define POINTS 9u
 static const uint16_t points[POINTS]={P(02216u),P(02221u),P(02224u),P(02230u),P(02303u),P(02370u),P(02371u),P(02400u),P(03740u)};
 static unsigned reached[POINTS];

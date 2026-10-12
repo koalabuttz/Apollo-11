@@ -38,7 +38,7 @@ void lm_thr_input(apollo_overlay_state *m,lm_flight_io *io,lm_thr_case *c,uint16
 }
 static uint16_t stop_point(const lm_thr_case *c){return agc_fixed_physical(c->stop_z,c->stop_fb==ANY_FB?0u:c->stop_fb,c->superbank);}
 unsigned lm_thr_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
- agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0};lm_thr_case c;
+ agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};lm_thr_case c;
  program.basic=&lm_throttle_routines;program.basic_count=1;
  lm_thr_input(s,io,&c,n);
  return agc_transfer_run(&program,s,io,&c.superbank,stop_point(&c),24,steps)==EXEC_OK?0u:1u;
