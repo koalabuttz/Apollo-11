@@ -4614,7 +4614,7 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c"
           ],
-          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, VN1645, R36; INITVEL is the lm-initvel milestone's and MIDGIM and SELECTMU the lm-midgim milestone's) are not yet translated.",
+          "scope": "The apsides display subroutines, 64 words of bank 23 (RPAD, PERIAPO1, PERIAPO, SETRAD/SETRADX 02314-02357; LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1 02376-02431), with PERIAPO running the lm-conic-timerad APSIDES steps: from the NEWOPS entry frontier after each Luminary CALL of these routines to the caller's NEWOPS frontier at C(QPRET), the UNIT/SQRT abort frontier or ABTCONIC's POODOO frontier, as native steps between original NEWOPS frontiers. PRECSET (02360-02375) and the rest of the file (P34/P35 and P74/P75, VN1645's display, R36; INITVEL is the lm-initvel milestone's and MIDGIM and SELECTMU the lm-midgim milestone's and VN1645's computation head the lm-vn1645 milestone's) are not yet translated.",
           "verification": "docs/LM-PERIAPO.md"
         },
         {
@@ -4641,6 +4641,18 @@
           ],
           "scope": "MIDGIM (HALFREV, GET+MGA, SETMGA, GET.LVC; bank 06 03715-03752) and SELECTMU (bank 10 02000-02027), 54 words: from the NEWOPS entry frontier after each Luminary call of GET+MGA or GET.LVC, or SELECTMU's entry, to the caller's NEWOPS frontier at C(QPRET), the NEWOPS of VN1645 (35,3606, not ported) for SELECTMU, the UNIT abort frontier or ARCSIN's alarm 1301 frontier, as one native step per routine.",
           "verification": "docs/LM-MIDGIM.md"
+        },
+        {
+          "native_files": [
+            "src/lm_vn1645.c",
+            "src/lm_midgim.c",
+            "src/inverse_trig.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "VN1645's computation head (35,3606-35,3634), P3XORP7X (35,3704-35,3711) and DP-.01 (35,3741-35,3742), 31 words: from the NEWOPS frontier at VN1645 after its callers' GOTO, through the -.01/-.02 +MGA settings, the FINALFLG and REFSMFLG switches, P3XORP7X and, for P3X programs, GET+MGA of DELVSIN (the lm-midgim step), to the basic frontier at GET45 +1 (35,3635, TC COMPTGO, not ported), the UNIT abort frontier or ARCSIN's alarm 1301 frontier, as native steps between original NEWOPS frontiers.",
+          "verification": "docs/LM-VN1645.md"
         }
       ]
     },
