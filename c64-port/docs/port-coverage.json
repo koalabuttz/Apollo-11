@@ -3083,6 +3083,15 @@
           ],
           "scope": "Actual completed pair DANZIG NOIBNKSW positive NEWJOB through canonical CHANG2, no decoder or additional scheduler poll.",
           "verification": "docs/LM-DANZIG-CHANGE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_routines.c",
+            "include/lm_exec_routines.h",
+            "src/lm_exec_sites.inc"
+          ],
+          "scope": "NOVAC and FINDVAC as control-transfer ABI routines at their original addresses, with the inline 2CADR from the compiled site table (every genuine call site) or erasable; RESTARTS composes through them to SWRETURN. SPVAC, JOBSLEEP, JOBWAKE, PRIOCHNG, CHANG1/CHANG2, ENDOFJOB and BAILOUT1 bodies remain separate.",
+          "verification": "docs/LM-EXEC-SERVICES.md"
         }
       ]
     },
@@ -5259,6 +5268,15 @@
           ],
           "scope": "Actual source IRQ1 T3 dispatch, task admission and TASKOVER RESUME in P66 recurrence producer domain.",
           "verification": "docs/P66-APPLICATION-RECURRENCE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_routines.c",
+            "include/lm_exec_routines.h",
+            "src/lm_exec_sites.inc"
+          ],
+          "scope": "WAITLIST and TWIDDLE as control-transfer ABI routines, and the whole LONGCALL chain (LONGCALL, LNGCALL2 delta check and LONGPOOH, LONGCYCL/MUCHTIME/LASTTIME, LONGRTRN, GETCADR) through the trampoline, against the original program at every genuine call site and from RESTARTS. T3RUPT/TASKOVER dispatch, VARDELAY and FIXDELAY remain separate.",
+          "verification": "docs/LM-EXEC-SERVICES.md"
         }
       ]
     }
