@@ -2201,8 +2201,20 @@
       "sha256": "e758ec3710c3f82e7e243a85552f20b8ea25028d621b6f62276b88326869fc8d",
       "bytes": 12085,
       "lines": 611,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p30_p37.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (374 words in banks 02, 31, 32 and 35): P30, P31, their displays, S30.1, S31.1, DELRSPL, AUGEKUGL, AVFLAGA, AVFLAGP and P20FLGON, as 90 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/CM-P30-P37.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/P32-P33_P72-P73.agc",
@@ -2210,8 +2222,20 @@
       "sha256": "60a18e541426e952deea775bd0ae625d2345c284ac9726a2647032ee9ce4ccc3",
       "bytes": 26843,
       "lines": 1415,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p32_p33.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (882 words): P32/P72 (CSI), P33/P73 (CDH), the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C and INTINT3P, as 128 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/CM-P32-P33.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/P34-35_P74-75.agc",

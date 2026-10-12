@@ -233,4 +233,74 @@ SPECS = {
         'target': 'tests/cm_tpi_search_target.c',
         'freeze_stride': 128,
     },
+    'cm-p30-p37': {
+        'missions': ('cm',),
+        'file': {'cm': 'P30,P37.agc'},
+        'source_path': {'cm': 'P30-P37.agc'},
+        'base': {'cm': 'cm_p30_p37'},
+        'symbol': {'cm': 'cm_p30_p37'},
+        # P30 and P31 (the major modes), their displays, S30.1 and S31.1
+        # (called from P30, P31 and the targeting programs), DELRSPL (the
+        # splash error, from P37) and the flag subroutines.
+        'entries': ['P30', 'P31', 'DISPMGA', 'P30PHSI', 'COMPTGO', 'S30.1', 'S31.1', 'DELRSPL',
+                    'AUGEKUGL', 'AVFLAGA', 'AVFLAGP', 'P20FLGON'],
+        'externals': {'BANKCALL': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
+                      '2PHSCHNG': 'auto', 'WAITLIST': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        # K1K2LOOP's tables, indexed by X1 (AUGEKUGL's altitude band, 0-12).
+        'fixed_index': {lab: [-x for x in range(13)] for lab in ('V(32K)', 'YK1K2', 'CK1K2')},
+        # AVFLAGA, AVFLAGP and P20FLGON save Q in SUBEXIT (E4,1770) and
+        # return through it with EB 4 (EBANK= SUBEXIT).
+        'ebank': 4,
+        # RGEXIT (= SUBEXIT) holds a fixed return where END45's GOTO
+        # RGEXIT runs: a seeded caller return (03103) reads as an erasable
+        # CADR, and GOTO's erasable fetch can chain without end.
+        # P30/31RT (01664 under EB 4) holds a return where FLASHMGA's
+        # EXIT goes on to TC P30/31RT: GOTOPOOH or ENDOFJOB.
+        # K1K2LOOP's X1 is odd (the band index plus LOOPSET's INCR,1),
+        # LOOPSET's even; S1 is TIX's step of 2.
+        'states': {'DISP45+4': {'02370': [0o4100, 0o5000]}, 'END45+1': {'02370': [0o4100, 0o5000]},
+                   'FLASHMGA+2': {'02264': [0o4106, 0o5217]},
+                   'LOOPSET': {'vac+046': [0, 2, 4, 6, 8, 10], 'vac+050': [2]},
+                   'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
+                   'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
+        'target': 'tests/cm_p30_p37_target.c',
+        'freeze_stride': 128,
+    },
+    'cm-p32-p33': {
+        'missions': ('cm',),
+        'file': {'cm': 'P32-P33,_P72-P73.agc'},
+        'source_path': {'cm': 'P32-P33_P72-P73.agc'},
+        'base': {'cm': 'cm_p32_p33'},
+        'symbol': {'cm': 'cm_p32_p33'},
+        # P32/P72 (CSI) and P33/P73 (CDH), their displays and the CSI/CDH
+        # subroutines the other targeting programs call.
+        'entries': ['P32', 'P72', 'P33', 'P73', 'ALMXIT', 'ALMXITA', 'DISDVLVC', 'CSI/A', 'CDHMVR',
+                    'S32/33.1', 'S32/33.X', 'ROTATE', 'INTINT2C', 'INTINT3P'],
+        'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'VARALARM': 'auto', 'AVFLAGA': 'auto',
+                      'AVFLAGP': 'auto', 'P20FLGON': 'auto', 'VNPOOH': 'auto', 'UPFLAG': 'auto',
+                      'DOWNFLAG': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        # ALMXIT's alarm table, indexed by -CSIALRM (alarms 1-7).
+        # PMINE -2,1 with X1 = RTX1 (-2 earth, -10 moon) reads PMINE or
+        # PMINM, eight words on.
+        'fixed_index': {'ALARM/TB': list(range(1, 8)), 'PMINE': [2, 10]},
+        # CSIALRM (TITER) is E7,1664: EB 7, an alarm number 1-7, which
+        # ALMXITA takes from X2.
+        'ebank': 7,
+        'all_states': {'03664': list(range(1, 8)), '03745': [0o77775, 0o77765]},
+        'states': {'ALMXITA': {'vac+047': list(range(1, 8))},
+                   'CSINEXT4': {'vac+046': [0o77775, 0o77765]},
+                   # ROTATE and ADVANCE's returns push vectors: PUSHLOC low in the
+                   # VAC area, so the pushes don't run over X1-QPRET.
+                   'ROTATE': {'0166': ['vac+0', 'vac+6', 'vac+14']},
+                   'ADVANCE+5': {'0166': ['vac+0', 'vac+6', 'vac+14']},
+                   'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
+        # P32/P72F subtracts 60MIN until negative: hundreds of passes.
+        'self_loops': True,
+        'target': 'tests/cm_p32_p33_target.c',
+        'freeze_stride': 256,
+    },
 }

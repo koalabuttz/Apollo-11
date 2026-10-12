@@ -49,7 +49,7 @@ SWITCH_ALIAS = {'BOF': 'BOFF', 'BOFCLR': 'BOFFCLR', 'BOFSET': 'BOFFSET', 'BOFINV
 SWITCH_BRANCH = ('BON', 'BOFF', 'BOFFCLR', 'BOFFSET', 'BOFFINV', 'BONCLR', 'BOFCLR', 'BONSET', 'BOFSET', 'BONINV', 'BOFINV',
                  'SETGO', 'CLRGO', 'INVGO')
 SWITCH_PLAIN = ('SET', 'CLEAR', 'INVERT')
-UNARY = {'SQRT': 'SQRT', 'SIN': 'SINE', 'COS': 'COSINE', 'ASIN': 'ARCSIN', 'ACOS': 'ARCCOS', 'ARCSIN': 'ARCSIN', 'ARCCOS': 'ARCCOS',
+UNARY = {'SQRT': 'SQRT', 'SIN': 'SINE', 'COS': 'COSINE', 'SINE': 'SINE', 'COSINE': 'COSINE', 'ASIN': 'ARCSIN', 'ACOS': 'ARCCOS', 'ARCSIN': 'ARCSIN', 'ARCCOS': 'ARCCOS',
          'DSQ': 'DSQ', 'ROUND': 'ROUND', 'DCOMP': 'COMP', 'VCOMP': 'COMP', 'VDEF': 'VDEF',
          'UNIT': 'UNIT', 'ABVAL': 'ABVALABS', 'ABS': 'ABVALABS', 'VSQ': 'VSQ', 'STADR': 'STADR',
          'RVQ': 'RVQ', 'PUSH': 'PUSH'}
@@ -276,6 +276,7 @@ class Compiler:
         """C statements for the interpretive routine at start."""
         out = []
         p = start
+        self.cur_start = start
         bank = start // 1024
         first = True
         while True:
@@ -333,7 +334,9 @@ class Compiler:
         if starred:
             return '0'
         fp = self.fixed_operand(w, bank)
-        if fp is None:
+        if fp is None or what == 'GSHIFT':
+            # A shift's operand word is its count (SL 14D is 020217), not
+            # an address the order reads.
             return '0'
         if not takes_k or split_op(what)[0] in ('VXM', 'MXV'):
             raise CompileError('%s with fixed operand' % what)
@@ -371,7 +374,11 @@ class Compiler:
         """GOTO 06646 (after a taken branch or CALL) to the target."""
         P = self.p
         if w & 0o74000:
-            self.target(w, why)
+            t = self.target(w, why)
+            if self.spec.get('self_loops') and t == self.cur_start:
+                # A branch back to the routine's own start (P32/P72F's BPL)
+                # loops here rather than through the run loop's step limit.
+                return ['%sgoto(s);' % P, 'if(++loops<4096u)goto top;', 'return EXEC_OK;']
             return ['%sgoto(s);' % P, 'return EXEC_OK;']
         self.cadr_erasable.add(w)
         return ['%sgoto_any(s);' % P, 'return EXEC_OK;']
@@ -416,7 +423,18 @@ class Compiler:
             if star:
                 st = ['%sindexed(s,0%05o,0%05o);' % (P, nxt, T[name])]
                 k = '0'
-                fx = self.fixed_index(cur, takes_k, op)
+                fx = self.fixed_index(cur, takes_k or name == 'SLOAD', op)
+                if fx and name == 'SLOAD':
+                    # SLOAD* of a fixed table (ALARM/TB -1,1): the word at
+                    # the effective address, loaded as SLOAD's fixed path.
+                    st[-1] += self.superbank_guard(fx) + '{agc_word w;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
+                    st.extend('  case %du:w=K%o[0];break;' % (fp, fp) for fp in fx)
+                    st.append('  default:return EXEC_OUT_OF_SCOPE;}')
+                    st.append('W[1]=0;ai_caf(s,w);ai_dxch(s,0154);ai_caf(s,0);(void)ai_ts(s,0156);'
+                              '(void)ai_ts(s,0163);W[5]=0%o;}' % (0o6061 if self.m == 'lm' else 0o6030))
+                    for fp in fx:
+                        self.const_len[fp] = 1
+                    return st, cur + 1, False, False
                 if fx:
                     # An indexed fixed operand: the rope words at each
                     # address the spec's index values reach; any other
@@ -1082,7 +1100,12 @@ class Compiler:
                 c.append(' if(!sane(s,io))return EXEC_OUT_OF_SCOPE;')
             else:
                 chk = 'at_newops' if kind == 'i' else 'at_basic'
-                c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
+                if any('goto top;' in st for st in self.blocks[phys]):
+                    c.append(' uint16_t loops=0;')
+                    c.append(' top:')
+                    c.append(' if(!%s(s,io,0%05ou))return loops?EXEC_OK:EXEC_OUT_OF_SCOPE;' % (chk, fb))
+                else:
+                    c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
             for st in self.blocks[phys]:
                 c.append(' ' + st)
             c.append('}')
