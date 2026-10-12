@@ -3748,8 +3748,81 @@
       "sha256": "7ed744d09332db172eaad0ca8432c243479d6d293ed387ee83eb0dd67c77f041",
       "bytes": 22306,
       "lines": 1059,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_burn_baby.c",
+            "src/lm_burn_baby_sites.inc",
+            "src/lm_burn_baby_flag_sites.inc",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-BURN-BABY.md",
+          "scope": "All of the file: bank 36 02022-03146 (the ignition tables P12TABLE-ABRTABLE run through INDEX WHICH; TCF n, BURNBABY and B*RNB*B*, P40SPOT and P41SPOT with its interpretive set-up (DLOAD DSU, STCALL INITCDUW, BOFF CALL CSMPREC, MXV, STCALL MUNGRAV, CALRB MIDTOAV1) and MIDTOAV1's two returns, CALLT-35 and the ABVEL display, the countdown tasks TIG-35, P41BLANK, TIG-30.1, TIG-30A, TIG-30, ULLGNOT, REDO2.17, REDO4.2, ULLGTASK, TIG-5, P40SJUNK, DISPCHNG and COMMON, TIG-0, IGNYET?, IGNITION with RAND/WRITE DSALMOUT, P63IGN, P40IGN, P12IGN, ABRTIGN, P42IGN, DVMONCON, ULLAGOFF, WAITABIT, TIGTASK, COMFAIL and COMFAIL1-4, INVFLAG (RXOR LCHAN), NOULLAGE and ONULLAGE, STCLOK1-3, CLOKTASK, KILLCLOK, CLOKJOB and its display branches, STOPCLOK, NULLCLOK with TC P40/RET, ASTNRETN, *PROCEED, *ENTER, GOPOST, GOCUTOFF, IGNITE and IGNITE1, P40ALM and REP40ALM), bank 35 03747-03775 (P40AUTO, P40A/P with RAND CHAN30, TURNITON, GOBACK), bank 17 02000-02026 (TIGTASK1, P63ZOOM, P40ZOOM with WOR CHAN14, P40ZOOMA), bank 27 02200-02246 (KILLTSK2, ADRSCAN, LETITLIV, DEAD, TSTFBANK, KILLDEAD) and fixed-fixed 06027-06036 (KILLTASK, KILLBB), as 160 basic and 4 interpretive ABI routines."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "basic keys at Z under their bank's FB (KILLTASK under any FB with Q a TC KILLTASK caller's CADR word), interpretive keys at LOC with Z at NEWOPS and BANKSET bank 36, any EBANK, with the lm_bb_io record (channels 11, 14 and 30); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB, BANKSET not bank 36, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, INDEX WHICH with WHICH not one of the six tables or reaching a table data word, a negative PHASE5, PHASE6 or PHASE3 (or -0) at their CCS, CLOKJOB with DISPDEX -0 or a negative index selecting no display branch, TC P40/RET with a word other than NULLCLOK's three returns, TC Q or KILLTASK with Q not a TC word into fixed memory or a CADR outside lm_burn_baby_sites, a computed transfer onto a word that runs only after its EXTEND or INDEX, overflow at the TS of MAKECADR's CADR or KILLTSK2's TS ITEMP3, or no io record; 550 of 20,992 random cases. The tables' TCF TASKOVER words (no INDEX WHICH selects them), the negative CCS outcomes of MASK results and ABVAL's alarm are translated or refused but no sampled input reaches them",
+        "external_continuations": [
+          "PHASCHNG",
+          "2PHSCHNG",
+          "BANKCALL (P40AUTO, STCLOK2, CLEANDSP, REGODSP, G+N,AUTO, GOPERF1, STCLOK1, CLOCPLAY, REFLASH, GOFLASH)",
+          "IBNKCALL (ENGINOF3, ENGINOF4, ALLCOAST, FLATOUT)",
+          "POSTJUMP (PREREAD, TIGTASK1)",
+          "BANKJUMP (STCLOK3's and P40AUTO's return)",
+          "NOVAC",
+          "FINDVAC",
+          "WAITLIST",
+          "LONGCALL",
+          "TWIDDLE",
+          "FIXDELAY",
+          "TASKOVER",
+          "ENDOFJOB",
+          "CHECKMM",
+          "MAKECADR",
+          "TPAGREE",
+          "UPFLAG",
+          "DOWNFLAG",
+          "COMFLAG",
+          "DEBIT",
+          "ALARM",
+          "GOTOPOOH",
+          "TCF P42STAGE",
+          "TCF IMPLBURN",
+          "CALL/STCALL INITCDUW, CSMPREC, MUNGRAV, MIDTOAV1",
+          "CHANG2",
+          "the caller's return of NOULLAGE, ONULLAGE (TC Q) and KILLTASK (DTCB)"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-source-map.json",
+            "sha256": "3c82d5289c91e5a1fadd5f41f244d3d074073119951c0a1d0159e6dd51cdebb1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-proof.json",
+            "sha256": "7861b29aec152039024996392c8b57246fa508da6b187e0ccca703969245ec25"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-host.log",
+            "sha256": "70c5fb01e3c82562da640b26ee7c616a61a5ffe1b848cc1d2e41f4995cf33ddd"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-vice.log",
+            "sha256": "3f4b83bbc8ddd97c0088709ccc7fce061980cc4eacee835f85c7d9a0f073540c"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-burn-baby/lm-burn-baby-c64-cover.json",
+            "sha256": "cec9bda4f138d2dbcec1a4ad51f4c487c9bfc5aa5c803e4c7bcaa5179bbf920c"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/CONIC_SUBROUTINES.agc",
