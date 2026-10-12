@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-exec-jobs",
+  "release": "evidence-cm-exec-jobs",
+  "files": {
+    "cm-exec-jobs-differential.log": {
+      "sha256": "0efbe4283d3bc78a4c1604f8d8c7159d6d6876dc77d53dfea376e48d83cf2acd",
+      "bytes": 1079,
+      "store": "release"
+    },
+    "cm-exec-jobs-host.log": {
+      "sha256": "cca8bde652089c21cecc787c3d62144676124bca699d3553e967fa085937faa9",
+      "bytes": 1952,
+      "store": "release"
+    },
+    "cm-exec-jobs-proof.json": {
+      "sha256": "aaa14f677c9afcfd0d74ed907e3b7bdf51696580feeede3be84c37b32f858129",
+      "bytes": 1023,
+      "store": "tree"
+    },
+    "cm-exec-jobs-vice.log": {
+      "sha256": "9fcb0e43c10bdacbae2e49c7541261b808a7e995a02fab03bee1aa3482323217",
+      "bytes": 184,
+      "store": "release"
+    }
+  }
+}

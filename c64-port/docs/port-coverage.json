@@ -744,6 +744,14 @@
           ],
           "scope": "NOVAC and FINDVAC as control-transfer ABI routines at their original addresses, with the inline 2CADR from the compiled site table (every genuine call site) or erasable, through cm_admission_zero to the caller return or BAILOUT 1201/1202. SPVAC, CHANG1/CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB remain separate.",
           "verification": "docs/CM-EXEC-SERVICES.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_jobs.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB as control-transfer ABI routines (cm_exec_job_routines) composing the qualified admission, context change, sleep, wake, priority and finish bodies, through the caller, the selected basic or interpretive job, ADVAN, and JOBWAKE's TC 014 and CCSHOLE exits. With cm-exec-services every EXECUTIVE.agc service other code calls is a native routine; the idle loop (ADVAN, NUDIRECT), the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
+          "verification": "docs/CM-EXEC-JOBS.md"
         }
       ]
     },
