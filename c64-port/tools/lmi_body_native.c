@@ -75,6 +75,7 @@ int main(void){
   case 58:lmi_tload(&s);break;
   case 59:lmi_vproj(&s,k);break;
   case 60:lmi_tload_fixed(&s,k);break;
+  case 61:lmi_axc(&s);break;
   default:return 2;
   }
   out[0]=4;for(i=0;i<4u;++i)if(in[1+i]&&s.words[5]==in[1+i]){out[0]=(uint16_t)i;break;}

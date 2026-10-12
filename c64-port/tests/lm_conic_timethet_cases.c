@@ -19,6 +19,24 @@ void lm_conic_timethet_input(apollo_overlay_state *m,p66_bias_io *io,uint32_t n)
  uint32_t seed=UINT32_C(0x54544854)+(n/8u)*UINT32_C(0x9e3779b9);
  unsigned i,moon=(unsigned)((n/8u)&1u),mode=(unsigned)((n/256u)%8u);
  lm_conic_timethet_debris(m,io,n);
+ if((n&2047u)==1333u){
+  /* Hyperbolic exits (VVEC 3x circular, R1A = -h^2 exactly) with theta
+   * chosen so GETX leaves W = -h 2^-16 exactly: W^2 + R1A/16 is exactly
+   * zero, WLOOP keeps W, and POLYCOEF's BMN takes INFINITY. Found by search
+   * over the native translation, then confirmed by the oracle. */
+  static const agc_word hit[4][8]={
+   {067762,063310,016542,006206,076314,071463,016213,016650},
+   {014004,032045,013523,032154,003412,007534,011472,012174},
+   {065230,071665,023457,004545,076314,071463,016642,003056},
+   {006461,014636,025247,024462,076314,071463,014223,002506}};
+  const agc_word *h=hit[(n>>11)%4u];
+  W[RVEC]=001142;W[RVEC+1u]=013200;
+  for(i=2u;i<6u;++i)W[RVEC+i]=0;
+  for(i=0;i<4u;++i)W[VVEC+i]=h[i];
+  W[VVEC+4u]=0;W[VVEC+5u]=0;
+  W[SNTH]=h[4];W[SNTH+1u]=h[5];W[CSTH]=h[6];W[CSTH+1u]=h[7];
+  return;
+ }
  if((n/16u)%8u==7u){
   /* Raw edge words in the state vector and the angle. */
   for(i=0;i<6u;++i){W[RVEC+i]=edge[lm_conic_timethet_random(&seed)%8u];W[VVEC+i]=(agc_word)(lm_conic_timethet_random(&seed)&AGC_MASK);}

@@ -1,0 +1,40 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 9216,
+ "snapshot_sha256": "aabfacaa9e4ffdf9df74284d367d6dfdec3b18d9b166aa8f616b7866fb8e05a2",
+ "outcomes": {
+  "16,2042:qerrcalc": 485,
+  "16,2042:zatteror": 539,
+  "16,2050:resume": 1024,
+  "16,2161:calcperr": 1024,
+  "ALTDSPLY:qerrcalc": 511,
+  "ALTDSPLY:returned": 513,
+  "CHECKUP:qerrcalc": 534,
+  "CHECKUP:resume": 390,
+  "CHECKUP:zatteror": 100,
+  "CHEKBITS:qerrcalc": 440,
+  "CHEKBITS:resume": 389,
+  "CHEKBITS:returned": 195,
+  "CHEKMORE:qerrcalc": 513,
+  "CHEKMORE:returned": 511,
+  "DAPIDLER:alarm": 64,
+  "DAPIDLER:qerrcalc": 529,
+  "DAPIDLER:resume": 352,
+  "DAPIDLER:zatteror": 79,
+  "SHUTDOWN:resume": 1024
+ },
+ "entries": [
+  "16,2000 CHEKBITS",
+  "16,2016 CHEKMORE",
+  "16,2024 DAPIDLER",
+  "16,2041 CHECKUP",
+  "16,2042",
+  "16,2050",
+  "16,2161",
+  "16,2163 SHUTDOWN",
+  "20,2226 ALTDSPLY"
+ ],
+ "boundary": "each entry from a random image (FB bank 16 or 20, EB 6, random channels 5, 6, 12, 30, 31, channel 14 bits 1-5, canonical Executive) to TCF RESUME, IBNKCALL QERRCALC, CALCPERR or ZATTEROR, the 1202 alarm or CHEKBITS's return; compared: outcome, channels 5, 6, 12, 14 and all 2048 erasable words (CDU command counters as left at CAF 13,14,15)",
+ "full_physical_words": 2048
+}

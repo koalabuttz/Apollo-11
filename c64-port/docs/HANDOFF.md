@@ -1827,6 +1827,10 @@ Native C for the shared apsides display subroutines of the Luminary099 targeting
 
 Native C for all of Comanche055 TVCEXECUTIVE (bank 16 `2720`-`3137`, 144 words): the half-second TVCEXEC task, roll ladders and FDAI error, needles, variable gains and mass, one-shot and repetitive trim correction, and the TVCRESTARTS re-entries, from each of its 12 original continuation points to the next transfer out of the file (WAITLIST, IBNKCALL or TASKOVER). The final image and IRQ equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN (860 spin on the source's `TCF +0` for a negative VCNTR in both); all 144 words and 11 fixed constants are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-EXEC.md`.
 
+## Run Luminary and Comanche IMU mode switching as native routines
+
+Every word of IMU_MODE_SWITCHING_ROUTINES in both programs (660 Luminary099 words, 656 Comanche055 words, in fixed-fixed and banks 07, 04/07 and 37/26) is compiled native C on the control-transfer ABI. The 72 routines per mission cover ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, STRTGYRO, 8192AUG), the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, and every point where they resume after an outside call. Channels 11-14 and the interrupt-enable state are part of the comparison. All 63,488 cases equal the original programs in all 2,048 erasable words, the interrupt state and the channels. That is 55,296 runs from each routine to the point where control leaves the file, and 8,192 round trips from every genuine `TC BANKCALL`/`IBNKCALL` of these routines through the native INTER-BANK routines. The yaAGC oracle drops only the engine's gyro, CDU drive and optics device block. The 127,452 strict and sanitizer checks pass, and nine C64 diagnostics pass 1,504 frozen cases in VICE. Round trips stop at SWRETURN/ISWRETRN entered with Q 3 until the INTER-BANK context fix merges. A complete certificate for both files is drafted for the auditor. See `docs/IMU-MODE-SWITCHING.md`.
+
 ## Translate the DISPLAY_INTERFACE display job selection
 
 Native C for the display job selection of DISPLAY_INTERFACE_ROUTINES in both Luminary099 and Comanche055: MAKEPLAY, the PRIO/NORM/MARK selection, MAKEPRIO through KEEPPRIO, IFLEGAL through PRIOPLAY, LINUSCHR, WITCHONE and XCHTOEND/XCHNYLOC. 2,208 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 246 of them (every entry, both missions) match the oracle on a VICE PAL C64. MAKEMARK and COPIES2 are shared with lanec-di-mark and lanec-di-dsp. See `docs/LANEC-DI-PLAY.md`.
@@ -1850,3 +1854,15 @@ Native C for PINBRNCH through V50PASTE of DISPLAY_INTERFACE_ROUTINES in both Lum
 ## Draft the DISPLAY_INTERFACE_ROUTINES full-file certificates
 
 Pending complete-coverage certificates for Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES.agc, for the auditor's review. `tools/lanec/wholefile.py` assigns every assembled word (670 LM, 667 CM) to one of the six Lane C display milestones or to the file's constant table, and shows that every instruction word (612 LM, 609 CM) is executed by the unchanged original program in Virtual AGC under cases the native code matches. The evidence also covers 17,632 oracle cases (strict and ASan/UBSan) and fresh VICE runs of all six frozen subsets. See `docs/LANEC-DI-CERT.md`.
+
+## Translate the short EXTENDED_VERBS verb bodies
+
+Native C for the bank 43 verb bodies of EXTENDED_VERBS that set flags, start jobs and tasks, or check a condition and hand over (Luminary099 V47-V49, V55-V58, V61, V62, V64-V67, V74-V77, V80-V83, V85, V89-V93, V95 and V96; the matching Comanche055 bodies with its CHKPOOH, EXDAPOFF, STABLISH, GOTOR21/23 and V52 code), plus SHOWSUM, translated block by block. 6,368 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 245 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-SHORT.md`.
+
+## Translate the EXTENDED_VERBS alignment and radar-designate bodies
+
+Native C for the IMU zero, coarse and fine align, attitude error meter, rendezvous radar designate and zero, landing radar position and optics coarse-align verb bodies of EXTENDED_VERBS in Luminary099 (bank 43 and AURLOKON in bank 23) and Comanche055 (bank 43), with OP/INERT, RDRUSECK and CKLFTBTS, translated block by block. 5,056 complete states are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 241 of them (every entry, both missions) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-ALIGN.md`.
+
+## Translate the Luminary radar test verbs (R04, R77)
+
+Native C for R77 through R77END of Luminary099 EXTENDED_VERBS (V63 R04 radar sampling and display, V78 R77 LR spurious-return test, V79 R77END), translated block by block. 2,448 complete states are identical to the unchanged original program in Virtual AGC, in strict and ASan/UBSan builds, and 223 of them (every entry) match the oracle on a VICE PAL C64. See `docs/LANEC-EV-RADAR.md`.

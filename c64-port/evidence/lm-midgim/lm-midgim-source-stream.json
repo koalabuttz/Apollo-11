@@ -1,0 +1,11 @@
+{
+  "archive": "build/lm-midgim-reference.snapshots.bin.xz",
+  "decoded_sha256": "76e33e3da9245280a135a6503354c1f510666961826fe584287af1a0e281b9eb",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "1": 63691,
+    "3": 1845
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

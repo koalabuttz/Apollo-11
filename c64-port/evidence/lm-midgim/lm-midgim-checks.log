@@ -1,0 +1,10 @@
+PASS 18 frozen original MIDGIM and SELECTMU entries, 26 admission guards and 18 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 76e33e3da9245280a135a6503354c1f510666961826fe584287af1a0e281b9eb
+PASS65536 original MIDGIM entries strict native
+PASS 54 assembled MIDGIM and SELECTMU words on 53 source lines map to native literals in 3 functions
+PASS 18 frozen original MIDGIM and SELECTMU entries, 26 admission guards and 18 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 76e33e3da9245280a135a6503354c1f510666961826fe584287af1a0e281b9eb
+PASS65536 original MIDGIM entries full ASAN/UBSAN
+PASS: VICE PAL lm-midgim-1.prg: 5 checks, 0 failures
+PASS: VICE PAL lm-midgim-2.prg: 5 checks, 0 failures
+PASS: VICE PAL lm-midgim-3.prg: 8 checks, 0 failures

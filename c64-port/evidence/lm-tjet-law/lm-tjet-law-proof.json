@@ -1,0 +1,16 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 16384,
+ "snapshot_sha256": "6a09a38a3defffd89552d83bb0c32f57a0504eccd47c8a58b3bc8beed687e9ef",
+ "outcomes": {
+  "P:returned": 5462,
+  "U:returned": 5461,
+  "V:returned": 5461
+ },
+ "entries": [
+  "17,3252 TJETLAW"
+ ],
+ "boundary": "TJETLAW for each axis (AXISCTR -1, 0, +1) from a random image (FB bank 17, EB 6; fine-law cohorts for E, EDOT and the 1/ACCS parameters) to the caller's return in Q (SWRETURN, fixed-fixed 06000-06777 or bank 17); compared: outcome and all 2048 erasable words",
+ "full_physical_words": 2048
+}
