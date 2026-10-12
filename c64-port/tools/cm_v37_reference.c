@@ -4,6 +4,7 @@
 #undef main
 #include "cm_v37_cases.h"
 #include "case_trace.h"
+#include "cert_trace.h"
 static agc_t baseline;
 static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&!machine.SubstituteInstruction;}
 /* Points the native run owns: FRESH_START_AND_RESTART bank 04 (2000-2366),
@@ -39,7 +40,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0;
   machine.InputChannel[015]=(int16_t)io.control.main_keys;machine.InputChannel[016]=(int16_t)io.control.navigation_keys;machine.InputChannel[033]=(int16_t)io.channel33;
   machine.Trap31A=io.control.trap31a;machine.Trap31B=io.control.trap31b;machine.Trap32=io.control.trap32;
   for(cycles=0;cycles<20000u;++cycles){
-   if(quiet()){pc=get(RegZ);if(!owned(pc,get(4))){if(cycles)break;}else CASE_MARK();}
+   if(quiet()){pc=get(RegZ);if(!owned(pc,get(4))){if(cycles)break;}else{CASE_MARK();CERT_MARK();}}
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(cycles==20000u){fprintf(stderr,"CM V37 %u timeout %05o\n",n,pc);return 2;}
   CASE_END(n);

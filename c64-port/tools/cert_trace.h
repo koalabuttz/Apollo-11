@@ -4,7 +4,8 @@
  * instruction at (basic code) and every interpretive word it is at NEWOPS
  * with LOC on (interpretive order pairs), and writes them, one physical
  * fixed address (bank * 1024 + offset) per line, to path at exit. Without
- * CERT_TRACE nothing changes. */
+ * CERT_TRACE nothing changes. NEWOPS is Luminary099's (06070) unless
+ * CERT_NEWOPS names another mission's (Comanche055: 06037). */
 #ifndef CERT_TRACE_H
 #define CERT_TRACE_H
 #ifdef CERT_TRACE
@@ -12,6 +13,9 @@
 #include <stdlib.h>
 #define CERT_STR2(x) #x
 #define CERT_STR(x) CERT_STR2(x)
+#ifndef CERT_NEWOPS
+#define CERT_NEWOPS 06070u
+#endif
 static unsigned char cert_seen[44u*1024u];
 static unsigned cert_physical(unsigned z,unsigned fb,unsigned ch7){unsigned bank;
  if(z>=04000u)return (z>>10)*1024u+(z&01777u);
@@ -25,7 +29,7 @@ static void cert_write(void){FILE *f=fopen(CERT_STR(CERT_TRACE),"w");unsigned i;
 static void cert_mark(unsigned z,unsigned fb,unsigned ch7,unsigned loc,unsigned bankset){static int armed;
  if(!armed){armed=1;atexit(cert_write);}
  if(z>=02000u&&z<010000u)cert_seen[cert_physical(z,fb,ch7)]=1;
- if(z==06070u&&loc>=02000u&&loc<010000u)cert_seen[cert_physical(loc,bankset&076000u,ch7)]=1;
+ if(z==CERT_NEWOPS&&loc>=02000u&&loc<010000u)cert_seen[cert_physical(loc,bankset&076000u,ch7)]=1;
 }
 #define CERT_MARK() cert_mark((unsigned)get(RegZ)&07777u,(unsigned)get(4),(unsigned)machine.OutputChannel7,(unsigned)get(0164)&07777u,(unsigned)get(0165))
 #else
