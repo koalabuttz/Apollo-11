@@ -14,10 +14,10 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
  * differential can pick C64 cases that stay within one group of routines. */
 static uint16_t visit[256];static unsigned nvisit;
 static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps){
- p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank|irc_superbank;unsigned i;agc_routine call;
- lio.superbank=superbank;lio.interrupt_enabled=c->interrupt_enabled;
+ p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
+ lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
- cio.superbank=superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
  if(irc_ch_on)irc_cm_io(&cio,0);
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
@@ -48,7 +48,7 @@ int main(int argc,char **argv){unsigned n,i,m,count,dump,visits,covers;FILE *f;s
  for(m=0;m<2;++m){unsigned k,j;rd16(f);k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);for(j=0;j<2u;++j){k=rd16(f);for(i=0;i<k;++i)rd16(f);}}
  count=(unsigned)rd32(f);
  for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned kind;uint16_t ie=0;
-  c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=0;(void)rd16(f);c.nedits=(uint16_t)rd16(f);
+  c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);(void)rd16(f);c.nedits=(uint16_t)rd16(f);
   if(c.nedits>4096u)return 2;
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
   c.edits=edits;irc_build(&s,&c);

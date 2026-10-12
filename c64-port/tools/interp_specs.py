@@ -91,6 +91,7 @@ SPECS = {
     },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-servicer': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'SERVICER207.agc'},
@@ -139,6 +140,7 @@ SPECS = {
     },
     # Lane G: Comanche055 CM_BODY_ATTITUDE (bank 37), basic and interpretive.
     'cm-body-attitude': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'CM_BODY_ATTITUDE.agc'},
@@ -161,6 +163,7 @@ SPECS = {
     # Lane G: Comanche055 REENTRY_CONTROL (entry guidance), basic and
     # interpretive.
     'cm-reentry': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'REENTRY_CONTROL.agc'},
@@ -196,6 +199,7 @@ SPECS = {
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
     'cm-p40-p47': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'P40-P47.agc'},
@@ -241,6 +245,7 @@ SPECS = {
     },
     # Lane G: Comanche055 P61-P67 (entry programs), basic and interpretive.
     'cm-p61-p67': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'P61-P67.agc'},
@@ -272,6 +277,7 @@ SPECS = {
     # Lane G: Comanche055 TVCMASSPROP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-massprop': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCMASSPROP.agc'},
@@ -310,6 +316,7 @@ SPECS = {
     # Lane G: Comanche055 TVCEXECUTIVE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-exec': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCEXECUTIVE.agc'},
@@ -335,6 +342,7 @@ SPECS = {
     # Lane G: Comanche055 TVCRESTARTS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-restarts': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCRESTARTS.agc'},
@@ -364,6 +372,7 @@ SPECS = {
     # Lane G: Comanche055 TVCSTROKETEST, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-stroke': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCSTROKETEST.agc'},
@@ -396,6 +405,7 @@ SPECS = {
     # Lane G: Comanche055 TVCINITIALIZE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-init': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCINITIALIZE.agc'},
@@ -442,6 +452,7 @@ SPECS = {
     # Lane G: Comanche055 TVCROLLDAP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-roll': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCROLLDAP.agc'},
@@ -470,6 +481,7 @@ SPECS = {
     # Lane G: Comanche055 TVCDAPS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-daps': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCDAPS.agc'},
@@ -491,6 +503,7 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'RCS-CSM_DIGITAL_AUTOPILOT.agc'},
@@ -529,6 +542,7 @@ SPECS = {
     # Lane G: Comanche055 AUTOMATIC_MANEUVERS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-auto-man': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'AUTOMATIC_MANEUVERS.agc'},
@@ -557,6 +571,7 @@ SPECS = {
     # Lane G: Comanche055 JET_SELECTION_LOGIC, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-jet-select': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
@@ -592,6 +607,7 @@ SPECS = {
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-entry-dap': {
+        'rope_fallback': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'CM_ENTRY_DIGITAL_AUTOPILOT.agc'},
@@ -694,5 +710,25 @@ SPECS = {
                        'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
         'freeze_stride': 64,
+    },
+    'sband-antenna': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'S-BAND_ANTENNA_FOR_LM.agc', 'cm': 'S-BAND_ANTENNA_FOR_CM.agc'},
+        'base': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
+        'symbol': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
+        'entries': ['SBANDANT'],
+        'externals': {'BANKCALL': 'auto', 'PRIOCHNG': 'auto', 'BLANKET': 'auto', 'B5OFF': None,
+                      'ENDOFJOB': None, 'ENDEXT': None},
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/sband_antenna_target.c',
+        # V64 runs SBANDANT as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        # GOMARKFR's returns (terminate, proceed, recycle, immediate) land on
+        # words nothing in the file reaches.
+        'resume_orphans': True,
+        'freeze_stride': 32,
     },
 }

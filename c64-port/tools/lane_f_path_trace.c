@@ -5,6 +5,7 @@
  * from this. Built with TRACE_HDR (the module's cases header), TRACE_PATHS
  * (its counter array), TRACE_NPATHS, TRACE_CASES and TRACE_RUN(s,io,n,steps). */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include TRACE_HDR
@@ -24,9 +25,10 @@ void __sanitizer_cov_trace_pc(void){uintptr_t pc=(uintptr_t)__builtin_return_add
  if(!block_pc[h]){block_pc[h]=pc;++blocks;}
  block_hit[h]=1;}
 static unsigned block_id[BLOCKS],next_id;
-int main(void){static unsigned before[TRACE_NPATHS];apollo_overlay_state s;lm_flight_io io;uint16_t steps;unsigned n,i,kind;
- (void)io;
- for(n=0;n<TRACE_CASES;++n){memcpy(before,TRACE_PATHS,sizeof before);
+/* An argument runs that one case only (tools/c64_row_cover.py). */
+int main(int argc,char **argv){static unsigned before[TRACE_NPATHS];apollo_overlay_state s;lm_flight_io io;uint16_t steps;unsigned n,i,kind,last=TRACE_CASES;
+ (void)io;n=0;if(argc>1){n=(unsigned)atoi(argv[1]);last=n+1u;}
+ for(;n<last;++n){memcpy(before,TRACE_PATHS,sizeof before);
   kind=TRACE_RUN(&s,&io,(uint16_t)n,&steps);
   printf("%u %u",n,kind);
   for(i=0;i<TRACE_NPATHS;++i)if(TRACE_PATHS[i]!=before[i])printf(" %u",i);

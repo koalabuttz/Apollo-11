@@ -24,12 +24,6 @@ typedef struct {
  * editing registers and the counters: TIME1-TIME6, the CDUs, PIPAs and the
  * rest) from the seed, before its other edits; without one they stay 0. */
 #define IRC_COUNTERS 0x4000u
-/* Superbank edit (Lane G): an edit whose addr is IRC_SUPERBANK sets the
- * case's SUPERBNK (channel 7) to its word, for routines in banks 40-43
- * (FB 30-33 with SUPERBNK 0100); irc_build leaves it in irc_superbank and
- * the runs OR it into the case's superbank. */
-#define IRC_SUPERBANK 0x4001u
-extern agc_word irc_superbank;
 enum { IRC_NCH = 10 };
 extern const uint8_t irc_ch_num[IRC_NCH];
 extern agc_word irc_ch[IRC_NCH], irc_trap[3];

@@ -5,7 +5,6 @@ static uint32_t rnd(uint32_t *s){*s=*s*1664525u+1013904223u;return *s;}
 const uint8_t irc_ch_num[IRC_NCH]={05,06,011,012,013,014,030,031,032,033};
 agc_word irc_ch[IRC_NCH],irc_trap[3];
 uint8_t irc_ch_on;
-agc_word irc_superbank;
 #if !defined(IRC_BUILD_ONLY) && !defined(IRC_LM_ONLY)
 /* (cm_channels: src/cm_interp_orders.c, which LM-only C64 builds leave out.) */
 void irc_cm_io(void *cm_io,unsigned save){cm_native_io *io=(cm_native_io *)cm_io;
@@ -22,20 +21,19 @@ void irc_build(apollo_overlay_state *m,const irc_case *c){uint32_t seed=c->seed;
  m->words[0]=agc_extend(m->words[0]);m->words[1]=agc_extend(m->words[1]);
  m->words[7]=0;for(i=010;i<=061u;++i)m->words[i]=0;
  for(i=0;i<c->nedits;++i)if(c->edits[i].addr==IRC_COUNTERS)for(k=010;k<=061u;++k)m->words[k]=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
- irc_ch_on=0;irc_superbank=0;for(k=0;k<IRC_NCH;++k)irc_ch[k]=0;for(k=0;k<3u;++k)irc_trap[k]=0;
+ irc_ch_on=0;for(k=0;k<IRC_NCH;++k)irc_ch[k]=0;for(k=0;k<3u;++k)irc_trap[k]=0;
  for(i=0;i<c->nedits;++i){
   if(c->edits[i].addr&IRC_CHANNEL){
    for(k=0;k<IRC_NCH;++k)if(irc_ch_num[k]==(c->edits[i].addr&0777u)){irc_ch[k]=c->edits[i].word;irc_ch_on=1;}
-  }else if(c->edits[i].addr==IRC_SUPERBANK)irc_superbank=c->edits[i].word;
-  else if(c->edits[i].addr!=IRC_COUNTERS)m->words[c->edits[i].addr&03777u]=c->edits[i].word;
+  }else if(c->edits[i].addr!=IRC_COUNTERS)m->words[c->edits[i].addr&03777u]=c->edits[i].word;
  }
 }
 #ifndef IRC_BUILD_ONLY
 unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps,uint16_t *ie){
- p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank|irc_superbank;enum exec_status st;uint16_t steps;unsigned i;
- lio.superbank=superbank;lio.interrupt_enabled=c->interrupt_enabled;
+ p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;enum exec_status st;uint16_t steps;unsigned i;
+ lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
- cio.superbank=superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
 #ifndef IRC_LM_ONLY
  {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
  if(irc_ch_on)irc_cm_io(&cio,0);

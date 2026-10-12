@@ -93,10 +93,14 @@ class Listing:
     def file_lines(self, name):
         return [l for l in self.lines if l.src == name]
 
+    # Spec 'rope_fallback': words the listing does not show come from the
+    # rope image instead of 0.
+    rope_fallback = False
+
     def word(self, phys):
         if phys in self.rope:
             return self.rope[phys]
-        return self.image_word(phys)
+        return self.image_word(phys) if self.rope_fallback else 0
 
     def image_word(self, phys):
         """Rope word from MAIN.agc.bin beside the listing, for words the

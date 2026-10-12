@@ -35,7 +35,7 @@ ADDR = {
     'DSU': ('dsu', True), 'BDSU': ('bdsu', True), 'DAD': ('dad', True),
     'DMP1': ('dmp', True), 'TLOAD': ('tload', False), 'SLOAD': ('sload', False),
     'TSLC': ('tslc', False), 'GSHIFT': ('gshift', False), 'SETPD': ('setpd', False),
-    'SSP': (None, False), 'MXV': ('mxv', True), 'VXM': ('vxm', True), 'V/SC': ('vdsc', True),
+    'SSP': (None, False), 'MXV': ('mxv', True), 'VXM': ('vxm', True), 'V/SC': ('vdsc', True), 'VPROJ': ('vproj', True),
 }
 # Fixed operands longer than a vector (the words a K array holds).
 K_WORDS = {'MXV': 18, 'VXM': 18}
@@ -125,12 +125,22 @@ class Compiler:
         self.spec = spec
         self.m = mission
         self.L = IL.load(mission)
+        self.L.rope_fallback = spec.get('rope_fallback', False)
         self.p = 'lmi_' if mission == 'lm' else 'cmi_'
         self.lines = self.L.file_lines(spec['file'][mission])
         if not self.lines:
             raise CompileError('no lines for %s' % spec['file'][mission])
         self.code = {l.phys: l for l in self.lines}
         self.words = set(l.phys + i for l in self.lines for i in range(len(l.words)))
+        # (Only a file wholly in banks 040-043: a file with code in 030-033 as
+        # well, as P40-P47 with DAPFIG in 042, keeps FB 030-033 as banks 030-033.)
+        banked = [l.phys for l in self.lines if l.phys is not None and l.phys >= 4 * 1024]
+        self.superbank = bool(banked) and all(p >= 0o40 * 1024 for p in banked)
+        self.high_banks = any(l.phys >= 0o30 * 1024 for l in self.lines)
+        # resume_keys: every word after a DANZIG is a routine of its own, so
+        # a job whose DANZIG finds NEWJOB positive stops at CHANG2 and the
+        # Executive's resume (NEWOPS at LOC +1) has its key.
+        self.rk = bool(spec.get('resume_keys'))
         self.lo = min(self.words)
         self.hi = max(self.words)
         # The file's fixed words as contiguous physical ranges.
@@ -187,8 +197,13 @@ class Compiler:
         return '%02o,%04o' % (phys // 1024, 0o2000 + phys % 1024)
 
     def cadr_phys(self, w):
-        """Physical address of a fixed CADR word (as GOTO forms it)."""
-        return ((w >> 10) & 0o37) * 1024 + (w & 0o1777)
+        """Physical address of a fixed CADR word (as GOTO forms it). A file
+        in banks 040-043 runs with superbank 4, under which FB 030-033 are
+        banks 040-043."""
+        b = (w >> 10) & 0o37
+        if self.superbank and b >= 0o30:
+            b += 8
+        return b * 1024 + (w & 0o1777)
 
     def in_file(self, phys):
         return phys in self.words
@@ -199,7 +214,12 @@ class Compiler:
         a = (w - 1) & 0o77777
         if a < 0o4000:
             return None
-        b = (a >> 10) | (0o20 if bank & 0o20 else 0)
+        # The half-memory bit is FB's; in banks 040-043 FB is the bank less
+        # 010, with superbank 4 (channel 7 bit 0100) adding it back.
+        fbb = bank - 8 if bank >= 0o40 else bank
+        b = (a >> 10) | (fbb & 0o20)
+        if bank >= 0o40 and b >= 0o30:
+            b += 8
         return b * 1024 + (a & 0o1777)
 
     def add_start(self, phys, kind, why):
@@ -330,6 +350,10 @@ class Compiler:
             if ln is None or not is_interp_op(ln.op):
                 raise CompileError('interpretive flow runs into %s (%r)' % (self.where(p), ln))
             stmts, nxt, done = self.slot(p, bank)
+            if self.rk and not done and stmts and stmts[-1] in ('next(s);', 'setpd_next(s);'):
+                stmts[-1] = 'if(%s)return EXEC_OK;' % stmts[-1][:-1]
+                self.add_start(nxt, 'i', 'CHANG2 resume')
+                self.externals_any[self.L.labels['CHANG2']] = 'CHANG2'
             for q in range(p, nxt):
                 self.owner.setdefault(q, start)
             p = nxt
@@ -503,6 +527,9 @@ class Compiler:
             return st, cur, False, False
         if base in ('BPL', 'BMN', 'BZE', 'BHIZ'):
             fn = {'BPL': 'bplbmn', 'BMN': 'bplbmn', 'BZE': 'bzegoto', 'BHIZ': 'bhiz'}[base]
+            if base == 'BHIZ':
+                # RTB/BHIZ CCS CYR (negative) comes before BHIZ's CCS MPAC.
+                st[-1] += '(void)ai_ccs(s,020);'
             st.append('if(%s%s(s)){' % (P, fn))
             st.extend(['  ' + x for x in self.goto(w, base + ' target')])
             st.append('}')
@@ -762,7 +789,9 @@ class Compiler:
                     self.add_start(p + 1, 'i', 'after TC INTPRET')
                     return st, []
                 if self.in_file(tz):
-                    self.add_start(nxt, 'b', 'return from %s' % (lab or self.where(tz)))
+                    # (A TC followed by data, as TC SBANDANT +2, does not return.)
+                    if self.is_basic(nxt):
+                        self.add_start(nxt, 'b', 'return from %s' % (lab or self.where(tz)))
                     # The return, and the skips INCR Q makes, stay in this routine.
                     rets = [nxt] + ([nxt + 1, nxt + 2, nxt + 3] if self.incr_q else [])
                     rets = [q for q in rets if self.is_basic(q)]
@@ -1004,19 +1033,38 @@ class Compiler:
             c.append(' *k=t+(p-first);return 0;')
             c.append('}')
             c.append('')
-        c.append('static MAYBE_UNUSED void next(apollo_overlay_state *s){%sdanzig_next(s);}' % P)
+        if self.rk:
+            ch2 = self.L.labels['CHANG2']
+            assert ch2 // 1024 in (2, 3)
+            ch2 = self.logical_of(ch2)
+            c.append('/* DANZIG at the end of a pair: NEWJOB +0 goes on to NEWOPS; positive')
+            c.append(' * goes to CHANG2 (CA BANKSET; TS BBANK; CCS EDOP; CCS NEWJOB; TCF')
+            c.append(' * CHANG2) and the routine stops there. */')
+            c.append('static MAYBE_UNUSED uint8_t next(apollo_overlay_state *s){')
+            c.append(' if(!W[067]){%sdanzig_next(s);return 0;}' % P)
+            c.append(' ai_ca(s,0165);(void)ai_ts(s,6);(void)ai_ccs(s,023);(void)ai_ccs(s,067);W[5]=0%04ou;return 1;' % ch2)
+            c.append('}')
+        else:
+            c.append('static MAYBE_UNUSED void next(apollo_overlay_state *s){%sdanzig_next(s);}' % P)
         c.append('static MAYBE_UNUSED void right(apollo_overlay_state *s){%sdanzig_right(s);}' % P)
         c.append('/* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB')
         c.append(' * (+0); INCR LOC; NEWOPS. */')
-        c.append('static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=0%04o;}' % self.newops)
+        if self.rk:
+            c.append('static MAYBE_UNUSED uint8_t setpd_next(apollo_overlay_state *s){')
+            c.append(' (void)ai_ccs(s,023);if(!W[067]){(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=0%04o;return 0;}' % self.newops)
+            c.append(' (void)ai_ccs(s,067);W[5]=0%04ou;return 1;' % ch2)
+            c.append('}')
+        else:
+            c.append('static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=0%04o;}' % self.newops)
         c.append('static MAYBE_UNUSED void shorts(apollo_overlay_state *s){%sshort_dispatch(s);if(W[5]==0%04ou)%sshortt(s);else %sshortv(s);}' % (P, self.shortt, P, P))
         c.append('')
         c.append('/* The image as the routines need it: ordinary words (A, L and Q may')
-        c.append(' * hold 16 bits), coherent banks, NEWJOB +0, FIXLOC a VAC area and the')
+        c.append(' * hold 16 bits), coherent banks, NEWJOB %s, FIXLOC a VAC area and the' % ('+0 or positive' if self.rk else '+0'))
         c.append(' * latches in range. */')
         c.append('static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){')
         c.append(' unsigned i,vac=W[0120];')
-        c.append(' if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+        c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
+                 % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
         c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
         c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
@@ -1024,8 +1072,18 @@ class Compiler:
         c.append('}')
         c.append('/* An interpretive routine at NEWOPS of its bank (LOC was matched by the')
         c.append(' * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */')
+        # Only a file in banks 030-043 can depend on the superbank bit.
+        if self.high_banks:
+            c.append('/* Banks 040-043 are FB 030-033 with the superbank bit (channel 7 0100);')
+            c.append(' * FB 030-037 without it are banks 030-037. fb carries 1 in bit 0 for a')
+            c.append(' * superbank bank. */')
+            c.append('static MAYBE_UNUSED uint8_t sb_ok(const p66_bias_io *io,agc_word fb){')
+            c.append(' if((fb&060000u)!=060000u)return 1;')
+            c.append(' return (fb&1u)?(io->superbank&0100u)!=0:(io->superbank&0100u)==0;')
+            c.append('}')
         c.append('static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
-        c.append(' return W[5]==0%04ou&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % self.newops)
+        sb = 'W[4]==(fb&076000u)&&sb_ok(io,fb)' if self.high_banks else 'W[4]==fb'
+        c.append(' return W[5]==0%04ou&&%s&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % (self.newops, sb))
         c.append('}')
         c.append('/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction')
         c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
@@ -1059,7 +1117,7 @@ class Compiler:
         c.append(' W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;')
         c.append('}')
         c.append('static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
-        c.append(' return W[4]==fb&&sane(s,io);')
+        c.append(' return %s&&sane(s,io);' % sb)
         c.append('}')
         c.append('')
         if self.basic:
@@ -1100,15 +1158,16 @@ class Compiler:
             lab = self.name(phys)
             fn = 'r%o' % phys
             routines.append((phys, kind, fn, lab, why))
-            fb = (phys // 1024) << 10
-            if phys // 1024 >= 0o40:
-                # basic_sane's superbank form: FB 30-33, SUPERBNK 0100.
-                fb = (phys // 1024 - 0o10) << 10 | 0o100000
+            bank = phys // 1024
+            # Banks 040-043: FB 030-033 under the superbank (bit 0 marks it).
+            fb = ((bank - 8) << 10) | 1 if bank >= 0o40 else bank << 10
+            # basic_sane's superbank form: FB 30-33 with bit 15 for SUPERBNK 0100.
+            bfb = (bank - 0o10) << 10 | 0o100000 if bank >= 0o40 else bank << 10
             c.append(guard(i))
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
-                c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % fb)
+                c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % bfb)
                 c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024), phys))
                 c.append('}')
                 c.append('#endif')
