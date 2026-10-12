@@ -211,7 +211,7 @@ def case(g,body):
   img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
   return hdr,img
  if body==34:
-  setbanks(img,1);img[5]=0o2450;b=r.randrange(0o30);off=r.randrange(0o2000)
+  setbanks(img,1);img[5]=0o2450;b=r.randrange(0o30);off=r.choice([x for x in range(0o2000) if not 0o450<=x<=0o453])  # (RTB's own words)
   img[0o117]=b*0o2000+off;hdr[1]=0o2000+off;return hdr,img
  if body==35:
   setbanks(img,r.randrange(0o30));img[5]=0o4631;img[0o133]=0o2453;img[0o134]=0o2000;return hdr,img
