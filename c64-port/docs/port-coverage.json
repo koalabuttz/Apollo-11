@@ -2546,7 +2546,7 @@
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
           ],
-          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns), DSP2DEC through END2DEC (to 11DSPIN, DSPSIGN and DSPDCWD1, including the TS WDRET overflow skip), CHANLOAD (channel 7 skip, WRITE of channels 0-77) and the NVSUBB/LOADLV1 lead-ins, to their callee boundaries, register-exact against the original program.",
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns), DSP2DEC through END2DEC (to 11DSPIN, DSPSIGN and DSPDCWD1, including the TS WDRET overflow skip), CHANLOAD (channel 7 skip, WRITE of channels 0-77) and the NVSUBB/LOADLV1/GOALMCYC lead-ins, to their callee boundaries, register-exact against the original program.",
           "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]
@@ -7023,7 +7023,7 @@
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
           ],
-          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns), DSP2DEC through END2DEC (to 11DSPIN, DSPSIGN and DSPDCWD1, including the TS WDRET overflow skip), CHANLOAD (channel 7 skip, WRITE of channels 0-77) and the NVSUBB/LOADLV1 lead-ins, to their callee boundaries, register-exact against the original program.",
+          "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns), DSP2DEC through END2DEC (to 11DSPIN, DSPSIGN and DSPDCWD1, including the TS WDRET overflow skip), CHANLOAD (channel 7 skip, WRITE of channels 0-77) and the NVSUBB/LOADLV1/GOALMCYC lead-ins, to their callee boundaries, register-exact against the original program.",
           "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ]

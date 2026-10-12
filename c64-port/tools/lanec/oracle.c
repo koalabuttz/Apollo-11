@@ -28,6 +28,12 @@ static lanec_meta meta;
  * "MISSION bank,address" (bank 0 for fixed-fixed), one per line, deduplicated. */
 static unsigned char traced[2][044][02000];
 
+/* LANEC_WATCH="bank,address ..." (octal; bank 0 for fixed-fixed): report on
+ * stderr each case that starts an instruction at one of these words, to pick
+ * the inputs that reach a rare path. */
+static unsigned watch[16][2], watches;
+static uint32_t watch_case;
+
 static unsigned word(unsigned a) { return (unsigned)m.Erasable[a / 0400][a % 0400] & (a <= 2u ? 0177777u : 077777u); }
 
 static int outside(unsigned z)
@@ -84,6 +90,10 @@ static void trace(unsigned z)
     unsigned fb = ((unsigned)m.Erasable[0][RegFB] >> 10) & 037u;
     if (fb >= 030u && (m.OutputChannel7 & 0100)) fb += 010u;
     unsigned char (*t)[02000] = traced[meta.mission == LANEC_CM];
+    unsigned i;
+    for (i = 0; i < watches; ++i)
+        if (watch[i][1] == z && (z >= 04000u ? watch[i][0] == 0u : watch[i][0] == fb))
+            fprintf(stderr, "watch %lu %s %o,%04o\n", (unsigned long)watch_case, meta.mission == LANEC_CM ? "CM" : "LM", watch[i][0], z);
     if (z >= 04000u) t[0][(z - 04000u) % 02000u] |= (unsigned char)(1u << ((z - 04000u) / 02000u));
     else if (z >= 02000u && fb >= 1u && fb < 044u) t[fb][z - 02000u] |= 1u;
     /* the interpreter reading its program: INDEX LOC, then an instruction
@@ -124,9 +134,18 @@ int main(int argc, char **argv)
         return 2;
     }
     InhibitAlarms = 1;
+    if (getenv("LANEC_WATCH")) {
+        const char *w = getenv("LANEC_WATCH");
+        int used;
+        while (watches < 16u && sscanf(w, " %o,%o%n", &watch[watches][0], &watch[watches][1], &used) == 2) {
+            ++watches;
+            w += used;
+        }
+    }
     for (n = 0; n < suite->count; ++n) {
         memset(&meta, 0, sizeof meta);
         suite->make(n, &s, &io, &meta);
+        watch_case = n;
         m = rope[meta.mission];
         for (i = 0; i < APOLLO_SHARED_WORDS; ++i) m.Erasable[i / 0400][i % 0400] = (int16_t)s.words[i];
         for (i = 0; i < LANEC_CHANNELS; ++i)

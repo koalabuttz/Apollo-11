@@ -4,13 +4,13 @@
 #include "lanec_pin_gaps.h"
 #include "lanec_symbols.h"
 
-typedef struct { uint16_t dspdpdec, dspalarm, tpagree, dsp2dec, chanload, loadlv, dspin11, dspsign, dspdcwd1, nvsub1; } places;
+typedef struct { uint16_t dspdpdec, dspalarm, tpagree, dsp2dec, chanload, loadlv, dspin11, dspsign, dspdcwd1, nvsub1, almcycle; } places;
 static const places lm = { LANEC_LM_DSPDPDEC, LANEC_LM_DSPALARM, LANEC_LM_TPAGREE, LANEC_LM_DSP2DEC,
                            LANEC_LM_CHANLOAD, LANEC_LM_LOADLV, LANEC_LM_11DSPIN, LANEC_LM_DSPSIGN,
-                           LANEC_LM_DSPDCWD1, LANEC_LM_NVSUB1 };
+                           LANEC_LM_DSPDCWD1, LANEC_LM_NVSUB1, LANEC_LM_ALMCYCLE };
 static const places cm = { LANEC_CM_DSPDPDEC, LANEC_CM_DSPALARM, LANEC_CM_TPAGREE, LANEC_CM_DSP2DEC,
                            LANEC_CM_CHANLOAD, LANEC_CM_LOADLV, LANEC_CM_11DSPIN, LANEC_CM_DSPSIGN,
-                           LANEC_CM_DSPDCWD1, LANEC_CM_NVSUB1 };
+                           LANEC_CM_DSPDCWD1, LANEC_CM_NVSUB1, LANEC_CM_ALMCYCLE };
 typedef char same_erasable[(LANEC_LM_MIXBR == LANEC_CM_MIXBR && LANEC_LM_NOUNADD == LANEC_CM_NOUNADD &&
     LANEC_LM_NOUNCADR == LANEC_CM_NOUNCADR && LANEC_LM_DSPCOUNT == LANEC_CM_DSPCOUNT &&
     LANEC_LM_ENTEXIT == LANEC_CM_ENTEXIT && LANEC_LM_MPAC == LANEC_CM_MPAC &&
@@ -22,7 +22,8 @@ typedef char same_erasable[(LANEC_LM_MIXBR == LANEC_CM_MIXBR && LANEC_LM_NOUNADD
     LANEC_LM_DSP2DEC_BANK == 040u && LANEC_CM_DSP2DEC_BANK == 040u &&
     LANEC_LM_NVSUBB_BANK == 041u && LANEC_CM_NVSUBB_BANK == 041u &&
     LANEC_LM_LOADLV1 == LANEC_LM_NVSUBB + 1u && LANEC_CM_LOADLV1 == LANEC_CM_NVSUBB + 1u &&
-    LANEC_LM_NVSUBB == LANEC_CM_NVSUBB) ? 1 : -1];
+    LANEC_LM_NVSUBB == LANEC_CM_NVSUBB && LANEC_LM_GOALMCYC == LANEC_CM_GOALMCYC &&
+    LANEC_LM_GOALMCYC_BANK == 041u && LANEC_CM_GOALMCYC_BANK == 041u) ? 1 : -1];
 #define MIXBR LANEC_LM_MIXBR
 #define NOUNADD LANEC_LM_NOUNADD
 #define NOUNCADR LANEC_LM_NOUNCADR
@@ -32,6 +33,7 @@ typedef char same_erasable[(LANEC_LM_MIXBR == LANEC_CM_MIXBR && LANEC_LM_NOUNADD
 #define WDRET LANEC_LM_WDRET
 #define CODE LANEC_LM_CODE
 #define NVSUBB LANEC_LM_NVSUBB
+#define GOALMCYC LANEC_LM_GOALMCYC
 #define R2D1 011u
 #define R1D1 016u
 #define SEVEN 7u
@@ -119,14 +121,15 @@ enum lanec_status lanec_pin_dsp2dec(apollo_overlay_state *s, lanec_io *io, enum 
     }
 }
 
-/* NVSUBB TC NVSUB1 and LOADLV1 TC LOADLV, the bank-41 lead-ins (both missions). */
+/* NVSUBB TC NVSUB1, LOADLV1 TC LOADLV and GOALMCYC TC ALMCYCLE (the
+ * PUTDCSF2 table's octal-only entry), the bank-41 lead-ins (both missions). */
 enum lanec_status lanec_pin_leadin(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
     const places *p = at(m);
     uint16_t z = s->words[LANEC_Z];
-    if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 041u || (z != NVSUBB && z != NVSUBB + 1u))
+    if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 041u || (z != NVSUBB && z != NVSUBB + 1u && z != GOALMCYC))
         return LANEC_OUT_OF_SCOPE;
-    lanec_tc(s, z == NVSUBB ? p->nvsub1 : p->loadlv, (uint16_t)(z + 1u));
+    lanec_tc(s, z == NVSUBB ? p->nvsub1 : z == GOALMCYC ? p->almcycle : p->loadlv, (uint16_t)(z + 1u));
     return LANEC_OK;
 }
 
@@ -135,7 +138,7 @@ enum lanec_status lanec_pin_gaps_dispatch(apollo_overlay_state *s, lanec_io *io,
     const places *p = at(m);
     uint16_t z = s->words[LANEC_Z];
     if (z == p->chanload && lanec_current_bank(s, io) == 041u) return lanec_pin_chanload(s, io, m);
-    if ((z == NVSUBB || z == NVSUBB + 1u) && lanec_current_bank(s, io) == 041u) return lanec_pin_leadin(s, io, m);
+    if ((z == NVSUBB || z == NVSUBB + 1u || z == GOALMCYC) && lanec_current_bank(s, io) == 041u) return lanec_pin_leadin(s, io, m);
     if (z >= p->dsp2dec && z <= p->dsp2dec + 10u && lanec_current_bank(s, io) == 040u) return lanec_pin_dsp2dec(s, io, m);
     return lanec_pin_dspdpdec(s, io, m);
 }

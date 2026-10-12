@@ -1,7 +1,7 @@
 {
   "suite": "pin-gaps",
-  "cases": 8704,
+  "cases": 9216,
   "differing": 0,
-  "native_sha256": "d113cb88d1294036a195fe9ce9ab57acd4dc678fe257142e1116c209c873c88c",
-  "oracle_sha256": "d113cb88d1294036a195fe9ce9ab57acd4dc678fe257142e1116c209c873c88c"
+  "native_sha256": "8ee3e8b4ee5d76790bc71f5bd4795df720317d9a050491385a6b07ae37786b6f",
+  "oracle_sha256": "8ee3e8b4ee5d76790bc71f5bd4795df720317d9a050491385a6b07ae37786b6f"
 }

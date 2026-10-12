@@ -17,8 +17,12 @@ void lanec_pw_exit_stop(lanec_meta *, const apollo_overlay_state *, const lanec_
 /* A generator's image in the forms the oracle can hold (L sign-extended,
  * OPTY/OPTX and GYROCMD..OPTXCMD idle, as lanec_fill leaves them). */
 void lanec_pw_settle(apollo_overlay_state *);
-/* Generator number of case n of `cases` spread evenly over 0..domain-1. */
+/* Generator number of case n of `cases` spread evenly over 0..domain-1;
+ * n = cases + i gives domain + i, a suite's own targeted case i. */
 uint32_t lanec_pw_spread(uint32_t n, uint32_t cases, uint32_t domain);
+/* CHARIN image patches for DECTOBIN's fifth-digit carry (LM and CM). */
+#define LANEC_PW_FIFTH_CHAR 8u
+void lanec_pw_fifth_char(apollo_overlay_state *, unsigned);
 
 /* LANEC_PW_P66_RUN(name, lm, cm): a lanec_run around an LM p66_bias_io
  * routine and its CM cm_native_io twin (either may be 0 for one mission). */

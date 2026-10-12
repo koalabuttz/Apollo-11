@@ -9,7 +9,7 @@
 #include "lanec_pin_gaps.h"
 #include "lanec_symbols.h"
 
-#define ENTRIES 17u
+#define ENTRIES 18u
 
 static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
 {
@@ -56,8 +56,8 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
         range(m, 040u, w[LANEC_Z], (uint16_t)(d + last[entry - 10u]));
         break;
     }
-    case 15: case 16:                /* NVSUBB, LOADLV1 */
-        lanec_enter(s, io, 041u, (uint16_t)(LANEC_LM_NVSUBB + entry - 15u));
+    case 15: case 16: case 17:       /* NVSUBB, LOADLV1, GOALMCYC */
+        lanec_enter(s, io, 041u, entry == 17u ? LANEC_LM_GOALMCYC : (uint16_t)(LANEC_LM_NVSUBB + entry - 15u));
         range(m, 041u, w[LANEC_Z], w[LANEC_Z]);
         break;
     default:                         /* CHANLOAD: every channel, high NOUNCADR bits */
