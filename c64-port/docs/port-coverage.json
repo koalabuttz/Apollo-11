@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -5183,8 +5183,66 @@
       "sha256": "e49235d5d0b1de4082524112a7dd7ac1df1d99e5ba9ee86e9e607ad54b15fa67",
       "bytes": 23387,
       "lines": 721,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_time_free_fall.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c"
+          ],
+          "scope": "All 266 words: TFFCONIC/TFFCONMU, TFFRP/RA, CALCTPER and CALCTFF from the original entry frontier to every actual SR30.1 caller frontier (and the SQRT abort frontier), as 25 native steps between original NEWOPS frontiers. Every source path is translated; the complete certificate below awaits the auditor review.",
+          "verification": "docs/LM-TIME-FREE-FALL.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word image; coherent original entry banks (FBANK 27), BANKSET = BB, INTBIT15 040000, five VACs, ordinary 15-bit words.",
+          "caller_returns": {
+            "TFFCONMU": [
+              "045567"
+            ],
+            "TFFRP/RA": [
+              "045571"
+            ],
+            "CALCTPER": [
+              "045625"
+            ],
+            "CALCTFF": [
+              "045633"
+            ],
+            "TFFCONIC": [
+              "045567 from the EDOP +0 entry (no Luminary099 caller)"
+            ]
+          },
+          "data_validity": "Original conic formulas and scaling; no widened claim."
+        },
+        "external_continuations": [
+          "Caller entry/resume services and application scheduling",
+          "Overlay ABI 2 modules for the whole routine on the C64 (phases verified separately)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-map.json",
+            "sha256": "c47f364a9c42d8746ae76d430a871631265d4e8477a9312adcba593eea68d6c9"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-source-map.json",
+            "sha256": "c47f364a9c42d8746ae76d430a871631265d4e8477a9312adcba593eea68d6c9"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-checks.log",
+            "sha256": "50fd876b1bc0b50fb3608cb47b575151d8ad57c9dac8ce7163c163640f30ec9f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-time-free-fall/lm-time-free-fall-results.json",
+            "sha256": "945b2ff8b5d44a4ea4ff6e9e21d0882c18edf6b5320908b53b7c05a7ec0d9f26"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/TJET_LAW.agc",
