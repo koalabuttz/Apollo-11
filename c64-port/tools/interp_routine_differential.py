@@ -702,6 +702,9 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, covers=None, cha
                                 'counter at its wrap'}
                 if spec.get('counters') else {})}
     proof.update(cover)
+    if 'c64_gcov_branches' in proof:
+        # (tools/cert_precheck.py reads the C64 rows' gap from this key.)
+        proof['host_branches_missing_on_c64'] = proof['c64_gcov_branches']['missing']
     if chan:
         proof['waiting_for_io_channels'] = dict(collections.Counter(chan.values()))
     open(os.path.join(B, '%s-proof.json' % spec_id), 'w').write(json.dumps(proof, indent=1) + '\n')

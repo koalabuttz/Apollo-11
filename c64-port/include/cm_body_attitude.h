@@ -12,7 +12,7 @@ extern const agc_routine_table cm_body_attitude_interpretive,cm_body_attitude_ba
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_body_attitude_point;
-#define CM_BODY_ATTITUDE_POINTS 8u
+#define CM_BODY_ATTITUDE_POINTS 70u
 #define CM_BODY_ATTITUDE_CADR_WORDS 1u
 #define CM_BODY_ATTITUDE_EXTERNALS 1u
 #define CM_BODY_ATTITUDE_FIRST 32568u

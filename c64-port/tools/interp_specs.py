@@ -92,6 +92,9 @@ SPECS = {
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-servicer': {
         'rope_fallback': True,
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'SERVICER207.agc'},
@@ -123,6 +126,14 @@ SPECS = {
                    '37,3145': {'0166': ['vac+0', 'vac+2']}, '37,3146': {'0166': ['vac+0', 'vac+2']},
                    '37,3242': {'0166': ['vac+0', 'vac+2']}, '37,3244': {'0166': ['vac+0', 'vac+2']},
                    'CALCRVG': {'0166': ['vac+0', 'vac+2']}, 'CALCGRAV': {'0166': ['vac+0', 'vac+2']},
+                   # CHANG2 resume keys: the job resumes with the pushdown list
+                   # as above, and after CALCGRAV's LXC,1 with X1 = -RTX2.
+                   **{'37,%o' % a: {'0166': ['vac+0', 'vac+2']}
+                      for a in (0o3136, 0o3251, 0o3252, 0o3354, 0o3355, 0o3417, 0o3423, 0o3425, 0o3426,
+                                0o3427, 0o3431, 0o3434, 0o3437, 0o3442, 0o3444)},
+                   **{'37,%o' % a: {'vac+046': [0o77777, 0o77775], '0166': ['vac+0', 'vac+2']}
+                      for a in (0o3360, 0o3362, 0o3364, 0o3366, 0o3371, 0o3372, 0o3374, 0o3376, 0o3401,
+                                0o3403, 0o3405, 0o3412, 0o3415)},
                    # PREREAD1 is entered by IBNKCALL (P40's CADR PREREAD1):
                    # Q = ISWRETRN, which QXCH RUPTREG1 saves and TC RUPTREG1
                    # runs.
@@ -141,6 +152,9 @@ SPECS = {
     # Lane G: Comanche055 CM_BODY_ATTITUDE (bank 37), basic and interpretive.
     'cm-body-attitude': {
         'rope_fallback': True,
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'CM_BODY_ATTITUDE.agc'},
@@ -164,6 +178,9 @@ SPECS = {
     # interpretive.
     'cm-reentry': {
         'rope_fallback': True,
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'REENTRY_CONTROL.agc'},
@@ -200,6 +217,9 @@ SPECS = {
     # basic and interpretive.
     'cm-p40-p47': {
         'rope_fallback': True,
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'P40-P47.agc'},
@@ -246,6 +266,9 @@ SPECS = {
     # Lane G: Comanche055 P61-P67 (entry programs), basic and interpretive.
     'cm-p61-p67': {
         'rope_fallback': True,
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
         'counters': True,
         'missions': ('cm',),
         'file': {'cm': 'P61-P67.agc'},

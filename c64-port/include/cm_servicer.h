@@ -12,9 +12,9 @@ extern const agc_routine_table cm_servicer_interpretive,cm_servicer_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_servicer_point;
-#define CM_SERVICER_POINTS 52u
+#define CM_SERVICER_POINTS 80u
 #define CM_SERVICER_CADR_WORDS 1u
-#define CM_SERVICER_EXTERNALS 15u
+#define CM_SERVICER_EXTERNALS 16u
 #define CM_SERVICER_FIRST 32193u
 #define CM_SERVICER_LAST 32567u
 extern const cm_servicer_point cm_servicer_points[CM_SERVICER_POINTS];

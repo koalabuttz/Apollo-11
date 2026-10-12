@@ -569,6 +569,14 @@ class Compiler:
                     self.externals_any[target] = 'RTB ' + (lab or '')
                 if cur in self.code and is_interp_op(self.code[cur].op):
                     self.add_start(cur, 'i', 'after RTB %s' % lab)
+                elif self.rk:
+                    # RTB with an order on its right: DANZIG runs that order,
+                    # then NEWOPS at the word after its operands.
+                    q = cur
+                    while q in self.code and not is_interp_op(self.code[q].op):
+                        q += 1
+                    if q in self.code:
+                        self.add_start(q, 'i', 'after RTB %s' % lab)
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
                 return st, cur, True, False
             if lab not in self.rtb:
