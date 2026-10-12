@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -903,6 +903,39 @@
           ],
           "scope": "Alignment and radar-designate verb bodies: V40 zero, V41 coarse align (IMU, RR designate, CM optics), V42 fine align, V43 attitude error meters (CM ATTCK1 task), V44 RRDESEND, LM V60 LRPOS2K, OP/INERT, RDRUSECK and CKLFTBTS, every label and return point to its callee boundary, register-exact against the original program. LM ATTCK2 is not included.",
           "verification": "docs/LANEC-EV-ALIGN.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_dap.c",
+            "src/lanec.c",
+            "include/lanec_ev_dap.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V48 DAP data load: LM R03 (DAPDATA1, STIKLOAD through TRIMDONE) and CM DAPDISP with DAPDISP1, every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-DAP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_time.c",
+            "src/lanec.c",
+            "include/lanec_ev_time.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V55 clock update (ALINTIME: noun 24 load, V23 check, UPDATIME through TPAGREE into TIME2/TIME1), every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-TIME.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_track.c",
+            "src/lanec.c",
+            "include/lanec_ev_track.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Basic code of V69 and the tracking and state-vector verbs (TRACKTRM, CLEANOUT, SETVHFLG, RESETVHF, ATTACHIT, TACHEXIT, LMTOCMSV, LMTOCM) up to each TC INTPRET and from each interpretive EXIT, register-exact against the original program. The interpretive words are not included.",
+          "verification": "docs/LANEC-EV-TRACK.md"
         }
       ]
     },
@@ -976,6 +1009,16 @@
           ],
           "scope": "Actual ENEMA restart portion within continuous alarm lifecycle, retaining source MMDSPLAY PTBAD or DOFSTART frontier; broader restart program remains open.",
           "verification": "docs/COMANCHE_ABORT_LIFECYCLE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_fresh_start.c",
+            "src/cm_fresh_start_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, ELRSKIP, NOCOARSE, ENEMA (GOPROG2), GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB2, DSPOFF, T5IDLOC and GOTOPOOH as control-transfer ABI routines (17 entries incl. the return after every TC out of the file); constants and the T5IDLER table compiled from the source listing. STARTSIM (patch-only) untranslated; banks 04 (V37/POOH), 20 (VAC5STOR, legacy cm_vac5_store) and 13 remain.",
+          "verification": "docs/CM-FRESH-START.md"
         }
       ]
     },
@@ -1192,7 +1235,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
+            "sha256": "ba357d57a53f6ec8c2a1ae2a058307c9ca379312ce4a934c3f800ddabad40af5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
@@ -3487,8 +3530,62 @@
       "sha256": "658648f1bdac76929efdfe98fc23676e467d167645310c685bf1479c97da77fa",
       "bytes": 6146,
       "lines": 228,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_ags_init.c",
+            "src/lm_ags_init_sites.inc",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-AGS-INIT.md",
+          "scope": "All of the file (R47, bank 32 02005-02216): AGSINIT's REFSMFLG test and ALARM, the AGSK display and GOMARKF's three returns (V32 keystroke time, V25 keyed AGSK, AGSVCALC), the interpretive AGS vector set-up from RTB LOADTIME through LEMPREC/CSMPREC and SCALEVEC (VECSGNAG returns, RVQ) to the AGS clock and downlist, DELAYJOB, the IMUSE test and CKSTALL, IMUZERO/IMUSTALL returns, AGSEND (DOWNFLAG) and the V50N16 display with GOMARK3's returns, as fifteen basic and seven interpretive ABI routines."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 32 under any EBANK, with the p66_bias_io record; basic keys at Z, interpretive keys at LOC with Z at NEWOPS; DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB, NEWJOB negative, or no io record; 0 of 16,896 random cases",
+        "external_continuations": [
+          "ALARM",
+          "ENDEXT",
+          "BANKCALL (GOMARKF, EXDSPRET, DELAYJOB, IMUZERO, IMUSTALL, GOMARK3)",
+          "DOWNFLAG",
+          "RTB LOADTIME",
+          "RTB VECSGNAG",
+          "LEMPREC",
+          "CSMPREC",
+          "SCALEVEC's RVQ to a caller outside the file (QPRET)",
+          "CHANG2"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-ags-init/lm-ags-init-source-map.json",
+            "sha256": "9877313df882a3420d55d56970a6a1a52d26718ef7a78841156715c8a4f9e390"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-ags-init/lm-ags-init-proof.json",
+            "sha256": "cf1d1ee58bc3740da972acef02ca68353cffd534a1cf49311f042c4fa53f694e"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-ags-init/lm-ags-init-host.log",
+            "sha256": "06e7d21c0c72039629a80a22c49113bd223e811ac336a3912c6d07707751ea90"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-ags-init/lm-ags-init-vice.log",
+            "sha256": "eb9a4cdfd7a3243b9789c532cfb0330616f32a71a4cc270d64e75f022e7aa3c8"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-ags-init/lm-ags-init-c64-cover.json",
+            "sha256": "eb3d625d05e34c45db496bacadf1e01f0b52f3aeb0d71d06ccff0681b6ec6cd0"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ALARM_AND_ABORT.agc",
@@ -4340,6 +4437,42 @@
       "bytes": 37260,
       "lines": 1681,
       "status": "partial",
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in banks 01, 20, 23, 40, 42 and 43.",
+          "entry_contracts": "Each entry named in the eight milestone documents (LANEC-EV-FRONT, -SHORT, -ALIGN, -RADAR, -DAP, -TIME, -TRACK, -LMI): every labelled entry, every compiled callee return address in the file and every basic block start; for the interpretive words, INTPRET with Q at the first word and NEWOPS with LOC at each word the interpreter resumes on.",
+          "index_domains": "Saved return words in 02000-07777 where TCQ/XACT0Q transfer through them; RRDESK2 +3 with the job's VAC address 0 or 062-0777; R04X -1 and R04C +4 with a non-overflowed A; ATTCK2 +1 with the axis index 0-2; TCPIN with FIXLOC + QPRET below 02000; interpretive entries with NEWJOB +0, FIXLOC 0200-01317, and at NEWOPS EDOP +0, BANKSET = BB and INTBIT15 its bit 15. Other inputs return LANEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "Channel values are kept exactly (channel 12/14 CDU drive and RR/LR enable bits, channel 11 lights, WAND/WOR/WRITE results); the physical effect of the coarse-align CDU drive, radar power and lights is a device-adapter obligation, as for the other Lane C modules. The oracle holds Virtual AGC's simulated CDU drive still (docs/LANEC-EV-TIME.md)."
+        },
+        "external_continuations": [
+          "EXECUTIVE and WAITLIST services (FINDVAC, PRIOCHNG, ENDOFJOB, DELAYJOB, JOBSLEEP, WAITLIST, TASKOVER) and INTER-BANK_COMMUNICATION (BANKCALL, IBNKCALL, POSTJUMP, BANKJUMP, MAKECADR)",
+          "PINBALL_GAME_BUTTONS_AND_LIGHTS and DISPLAY_INTERFACE_ROUTINES services (ENDEXT, GOXDSPF/GOMARKF families, BLANKET, B5OFF, PINBRNCH, GOPIN, ALM/END support) and the astronaut responses that resume them",
+          "SERVICE_ROUTINES, FRESH_START_AND_RESTART and PHASE_TABLE_MAINTENANCE (UPFLAG, DOWNFLAG, PHASCHNG, 2PHSCHNG, TPAGREE), ALARM_AND_ABORT (ALARM, POODOO)",
+          "The verbs' subsystem routines in other files (IMU and optics tests and alignment, RR/LR routines, DAP and R03 users, V82-V90 orbital displays, rendezvous navigation and the interpreter library entries RRNBMPAC, ARCTRIG, INTSTALL, PTOALEM, SVDWN1, CALLs to the interpretive routines' NEWOPS)",
+          "User verb requests and the job and interrupt scheduling that interleave them; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lanec-ev-cert/lanec-ev-lm-source-map.json",
+            "sha256": "8d343e50353c3a92e6b1b263aaaa44fefe05360457d22034b3cd48178836d3b9"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lanec-ev-cert/lanec-ev-comparison.json",
+            "sha256": "586c0221819483432987dabe9699c2449f3a28cd76cb6b8dbbee8ffa82d0c2d4"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lanec-ev-cert/lanec-ev-checks.log",
+            "sha256": "5530b052153c9dbc4242015976e4bd23488f2f9b7db933ab83710d001c075fba"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lanec-ev-cert/lanec-ev-c64-results.json",
+            "sha256": "6052c677af01d5af204154d7b543b6ddda5b9f2381b16b24daeb1d7ab4b9f9d5"
+          }
+        }
+      },
       "native_coverage": [
         {
           "native_files": [
@@ -4383,6 +4516,51 @@
           ],
           "scope": "Radar test verbs R77 through R77END (V63 R04, V78 R77, V79 R77END), every label and return point to its callee boundary, register-exact against the original program.",
           "verification": "docs/LANEC-EV-RADAR.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_dap.c",
+            "src/lanec.c",
+            "include/lanec_ev_dap.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V48 DAP data load: LM R03 (DAPDATA1, STIKLOAD through TRIMDONE) and CM DAPDISP with DAPDISP1, every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-DAP.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_time.c",
+            "src/lanec.c",
+            "include/lanec_ev_time.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "V55 clock update (R33: noun 24 load, V23 check, UPDATIME through TPAGREE into TIME2/TIME1) and the V43 ATTCK2 task (THETAD into CDUXCMD..CDUZCMD, channel 14 drive bits), every label and return point to its callee boundary, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-TIME.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_track.c",
+            "src/lanec.c",
+            "include/lanec_ev_track.h",
+            "include/lanec_ev_internal.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Basic code of V69 and the tracking and state-vector verbs (TRMTRAK1, DSPRRLOS/RRLOSDSP, ATTACHIT with TACHEXIT and TCPIN set-up) up to each TC INTPRET and from each interpretive EXIT, register-exact against the original program. The interpretive words are not included.",
+          "verification": "docs/LANEC-EV-TRACK.md"
+        },
+        {
+          "native_files": [
+            "src/lanec_ev_lmi.c",
+            "src/lanec.c",
+            "src/lm_interp_steps.c",
+            "src/lm_interp_orders.c",
+            "include/lanec_ev_lmi.h",
+            "include/lanec_symbols.h"
+          ],
+          "scope": "Interpretive words of RRLOSDSP (CALL RRNBMPAC, the line-of-sight vector math to RR-ELEV and RR-AZ through UNIT, DOT, STCALL ARCTRIG and BPL/DAD, EXIT), TRMTRAK1 (CALL INTSTALL, EXIT), ATTACHIT (CALL INTSTALL, SET/BON/CLEAR MOONOTH, CALL PTOALEM, LXA,2 PBODY, CALL SVDWN1, EXIT) and TCPIN (RTB PINBRNCH), compiled onto the native interpreter paths, register-exact against the original program.",
+          "verification": "docs/LANEC-EV-LMI.md"
         }
       ]
     },
@@ -4532,7 +4710,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART/DOFSTRT1, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, DORSTART, SETINFL, ENEMA, GOPROG2/GOPROG2A/GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB1/STARTSB2, DSPOFF and GOTOPOOH as control-transfer ABI routines (11 entries incl. the returns after MMDSPLAY, SWCALL and ALARM); CADRs and constants compiled from the source listing. STARTSIM (patch-only) untranslated; bank 04 is lm-v37; bank 13 STATEUP remains.",
+          "scope": "Every instruction of bank 05 and fixed-fixed: SLAP1, SKIPSIM, DOFSTART/DOFSTRT1, ENDRSTRT, MR.KLEAN/P00KLEAN/V37KLEAN, GOPROG with BUTTONS and the ERESTORE repair, DORSTART, SETINFL, ENEMA, GOPROG2/GOPROG2A/GOPROG3, PCLOOP, NXTRST/PACTIVE/PINACT, PTBAD, LIGHTSET/NONAVKEY, STARTSUB/STARTSB1/STARTSB2, DSPOFF and GOTOPOOH as control-transfer ABI routines (11 entries incl. the returns after MMDSPLAY, SWCALL and ALARM); CADRs and constants compiled from the source listing. STARTSIM (patch-only) untranslated; bank 04 is lm-v37; bank 13 is lm-stateup.",
           "verification": "docs/LM-FRESH-START.md"
         },
         {
@@ -4542,8 +4720,18 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 04: GOP00FIX, V37 with CANTROD/V37BAD, CHECKTAB/AGAINMM, ISSERVON, V37RET, CANV37, R00, POOH, SEUDOP00, GOMOD/GOGOPROG, RENDV00/RESET22/KILL2/P00FIZZ/RENDN00/STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC and SETUP70/71 as control-transfer ABI routines (32 entries incl. the return after every TC out of the bank); CADRs, constants and the PREMM1/FCADRMM1/DNLADMM1 tables compiled from the source listing. Bank 13 STATEUP (interpretive) remains.",
+          "scope": "Every instruction of bank 04: GOP00FIX, V37 with CANTROD/V37BAD, CHECKTAB/AGAINMM, ISSERVON, V37RET, CANV37, R00, POOH, SEUDOP00, GOMOD/GOGOPROG, RENDV00/RESET22/KILL2/P00FIZZ/RENDN00/STATQUO, NOUVEAU, V37NONO, V37XEQ/V37XEQC and SETUP70/71 as control-transfer ABI routines (32 entries incl. the return after every TC out of the bank); CADRs, constants and the PREMM1/FCADRMM1/DNLADMM1 tables compiled from the source listing. Bank 13 is lm-stateup.",
           "verification": "docs/LM-V37.md"
+        },
+        {
+          "native_files": [
+            "src/lm_stateup.c",
+            "src/lm_interp_steps.c",
+            "src/lm_interp_orders.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every order pair of bank 13: STATEUP, DOINT, NO-INT, DOINT2 and THISVINT as interpretive control-transfer ABI routines keyed by LOC at NEWOPS (11), through the compiled interpreter paths (SWITCHES, CALL, STCALL, DLOAD, RVQ). With lm-fresh-start and lm-v37 every instruction of the file is covered except STARTSIM, which runs only if the STARTSW word is patched.",
+          "verification": "docs/LM-STATEUP.md"
         }
       ]
     },
@@ -4764,7 +4952,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "eba5477455fcab2c74cc39b5a7809f450ad064ec878fa913ec331ef1524a659e"
+            "sha256": "ba357d57a53f6ec8c2a1ae2a058307c9ca379312ce4a934c3f800ddabad40af5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
@@ -5260,8 +5448,54 @@
       "sha256": "c07d1ef6d1a83375b0aa0f7be87ef4d496d396621501298932aa46466d2db34c",
       "bytes": 11726,
       "lines": 533,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_landing_displays.c",
+            "src/lm_landing_displays_sites.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-LANDING-DISPLAYS.md",
+          "scope": "Every path of the file: LANDISP (TBASE2, DISPRSET/ABORTON, DISINDAT with the mode switch, DIDFLAG and the first-pass set-up to TC TWIDDLE, SPEEDRUN to TC VARDELAY), TWIDDLE's return and INTLZE, and VARDELAY's return (VHY/VHZ, GET22/32, LATFWDV, VMONITOR and the limit paths to ZEROLSTY, channel 14) with TC LADQSAVE continuing at ALTROUT +1 (ARCOMP) or ALTOUT +1 (OLDDATA, NEWDATA, ZERODATA) to DATAOUT, as four ABI routines in bank 21."
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries in bank 21 under EBANK7 (EBANK= UNIT/R/) with the lm_flight_io record (channels 12, 14 and 30); the word in LADQSAVE at TC LADQSAVE is run: ALTROUT +1 and ALTOUT +1 (the returns DISINDAT stores there) continue in the file, any other word ends the routine at LADQSAVE as in the original; channel 14 is compared without the CDU and gyro drive bits, which yaAGC drains as counter commands; refused with the image unchanged: another FB or EB, or no io record; 0 of 16,384 random cases",
+        "external_continuations": [
+          "TASKOVER",
+          "TWIDDLE (ADRES INTLZE)",
+          "VARDELAY",
+          "the word in LADQSAVE when it is not ALTROUT +1 or ALTOUT +1"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-source-map.json",
+            "sha256": "c8b4105ce81c0d4a677b40faa24dff24d4c8d7653416ea221dd8a702e1607e74"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-proof.json",
+            "sha256": "95a745301c809f90ff79c97f3782cf175498f935447ef0017dceef989eed62d6"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-host.log",
+            "sha256": "4ff362f3d7b0544196770840bc334f973a2352628213f20b93e3c20adbf664f1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-vice.log",
+            "sha256": "85119b95d52d6e3aa6785fb2c9a307656ba0418f1eac1822452ff10d72df195c"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-landing-displays/lm-landing-displays-c64-cover.json",
+            "sha256": "58242a72c57a7dfb5221665b4aa1f47e6276f4a522d317f45bb3d0c3baf1741f"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc",
@@ -5629,6 +5863,17 @@
           ],
           "scope": "S34/35.3 with its LOMAT and INTINT returns (35,3377-35,3423), GOINT and INTINT with INTINT's INTSTALL and INTEGRVS returns (35,3462-35,3521), 53 words, as seven interpretive routines of the control-transfer ABI keyed at their NEWOPS: NORMEX saved and LOMAT called, DELVLVC rotated through the local-vertical matrix (VXM of the work-area matrix) into DELVEET3, the integration arguments pushed (VACT3, RACT3, TIG, TPASS4, DPPOSMAX or ZEROVECS and NOMTPI) and INTINT called, RTARG stored on into NOVRWRT, and INTINT's RTRN save, INTSTALL call and integration setup (INTYPFLG, TDEC1, MOONFLAG, TET, RCV, VCV scaled by RTX2) to INTEGRVS and the GOTO RTRN after it: from each NEWOPS entry through the trampoline (with lm-s3435's LOMAT and NOVRWRT) to the first NEWOPS outside them (INTSTALL, INTEGRVS, or a caller's return).",
           "verification": "docs/LM-S3435B.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p35_routines.c",
+            "src/agc_transfer.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c"
+          ],
+          "scope": "P35/P75 (35,2725-35,2763), 31 words, as five basic routines keyed by Z and eight interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P35 and P75 with AVFLAGA/AVFLAGP, ATIGINC or PTIGINC into KT, P20FLGON and INTPRET, then CALL SELECTMU and the P35/P75B loop (RTB LOADTIME; TSTRT, TIG and INTIME from the time plus KT; STCALL TDEC1 PRECSET; CALL S34/35.1, S34/35.2, S34/35.5 and VN1645; GOTO P35/P75B): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, INTPRET, LOADTIME, or a NEWOPS outside 35,2737-35,2763).",
+          "verification": "docs/LM-P35.md"
         },
         {
           "native_files": [

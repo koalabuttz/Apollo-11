@@ -8,6 +8,10 @@ One page for lane threads and people. The verification bar is
 - `port/c64-native-c` is the integration branch. Nobody pushes to it directly.
 - Each lane works on `port/<lane>/<topic>` (for example `port/a/waitlist-restart`)
   and opens a PR into `port/c64-native-c`. A PR merges only with green `port-ci`.
+  If the base has moved since that green run, merge the base into your branch
+  and wait for CI again before merging: two PRs that are each green alone can
+  still break the base together (a shared struct gains a field, another lane's
+  new test still uses the old initializer).
 - `port/pipeline/*` is for shared tooling (the Pipeline thread, then the steward).
   Only those branches may change the shared files listed below.
 
@@ -91,8 +95,9 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
 - shared-ledger guard, milestone files render, and published evidence for the
   milestones a PR touches;
 - `tools/port_coverage.py` (the inventory and immutable-source audit);
-- host and sanitizer targets the change can affect (`tools/ci_affected.py`), or
-  the whole suite when shared plumbing changes;
+- host and sanitizer targets the change can affect (`tools/ci_affected.py`,
+  following `#include "..."` from each target's sources), or the whole suite
+  when shared plumbing changes;
 - LLVM-MOS builds and VICE `vice-<id>` runs for affected C64 targets, plus the
   base Executive VICE check.
 
