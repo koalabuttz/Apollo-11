@@ -22,11 +22,11 @@ sanitize-cm-interp-bodies: | build
 cm-interp-bodies-differential: | build
 	python3 tools/lmi_body_differential.py --mission cm --cases 3000 --proof build/cm-interp-bodies-proof.json --vectors build/cm_interp_vectors.h --vector-cases 4
 	cmp build/cm_interp_vectors.h tests/cm_interp_vectors.h
-# The C64 diagnostic is three programs, bodies 0-19, 20-39 and 40-58, so each
+# The C64 diagnostic is three programs, bodies 0-19, 20-39 and 40-61, so each
 # fits below the $c000 mailbox.
 CM_INTERP_PART_1 = -DINTERP_BODY_LO=0u -DINTERP_BODY_HI=20u
 CM_INTERP_PART_2 = -DINTERP_BODY_LO=20u -DINTERP_BODY_HI=40u
-CM_INTERP_PART_3 = -DINTERP_BODY_LO=40u -DINTERP_BODY_HI=59u
+CM_INTERP_PART_3 = -DINTERP_BODY_LO=40u -DINTERP_BODY_HI=62u
 c64-cm-interp-bodies: build/cm-interp-bodies-1.prg build/cm-interp-bodies-2.prg build/cm-interp-bodies-3.prg
 build/cm-interp-bodies-%.prg: $(CM_INTERP_SRC) tests/interp_body_run.c platform/c64/cm_interp_bodies_diagnostic.c $(CM_INTERP_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -Isrc -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections $(CM_INTERP_PART_$*) -Wl,-Map,build/cm-interp-bodies-$*.map $(CM_INTERP_SRC) $(CM_INTERP_RUN) platform/c64/cm_interp_bodies_diagnostic.c -o $@
