@@ -30,13 +30,15 @@ TABLES = {
     'lm-fresh-start': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_fresh_start_operands.inc', 'LM_FRESH'),
     'lm-v37': ('Luminary099', 'FRESH_START_AND_RESTART', (), 'src/lm_v37_operands.inc', 'LM_V37'),
     'cm-fresh-start': ('Comanche055', 'FRESH_START_AND_RESTART', (), 'src/cm_fresh_start_operands.inc', 'CM_FRESH'),
+    'cm-v37': ('Comanche055', 'FRESH_START_AND_RESTART', (), 'src/cm_v37_operands.inc', 'CM_V37'),
 }
 # Tables whose own interbank calls include IBNKCALL, and fixed tables the
 # file reads with INDEX (label, words), compiled as arrays.
 OWN_EXTRA = {'lm-v37': ('IBNKCALL',)}
-ARRAYS = {'lm-v37': (('PREMM1', 30), ('FCADRMM1', 30), ('DNLADMM1', 30)), 'cm-fresh-start': (('T5IDLER', 8),)}
+ARRAYS = {'lm-v37': (('PREMM1', 30), ('FCADRMM1', 30), ('DNLADMM1', 30)), 'cm-fresh-start': (('T5IDLER', 8),),
+          'cm-v37': (('PREMM1', 33), ('FCADRMM1', 33), ('DNLADMM1', 33), ('FLAGTABL', 12))}
 # Tables that also compile the constants the file reads with MP.
-MP_TABLES = ('cm-fresh-start',)
+MP_TABLES = ('cm-fresh-start', 'cm-v37')
 OWN = ('BANKCALL', 'POSTJUMP')
 ONE_WORD = ('CA', 'CAF', 'CS', 'AD', 'MASK')
 TWO_WORD = ('DCA', 'DCS')
@@ -92,7 +94,7 @@ def build(name):
         out.append(r)
     arrays = {}
     labels = {label: fixed_address(address) for path, line, address, words, label, op, opnd in rows
-              if path.startswith(program) and label and words}
+              if path.startswith(program) and label and (words or op == 'EQUALS' and not opnd)}
     for label, count in ARRAYS.get(name, ()):
         at = labels[label]
         arrays[label] = (at, [listed[at + k][0] for k in range(count)])
