@@ -18,6 +18,17 @@
 static agc_word *ic_image;
 #define W ic_image
 #endif
+/* INTERP_EXTENSION (flight build): the cold math bodies (XT) live in the
+ * interpreter extension, RAM under I/O at $D000-$DFFF, loaded once with
+ * the interpreter (docs/INTERPRETER-RUNTIME.md). They read no rope (the REU
+ * registers are I/O) and are reached only through the order tables, whose
+ * calls bank I/O out ($01 = $34) when the body lies there. */
+#if defined(__mos__) && AGC_FIXED_IMAGE && INTERP_EXTENSION
+#define XT __attribute__((section(".interp_ext")))
+#define XT_AT 0xd000u
+#else
+#define XT
+#endif
 static p66_bias_io *io;
 static NI const agc_word *kop(void);
 
@@ -1225,7 +1236,7 @@ static NI void enddot(void){
  ai_tc(rDOTRET+1u);
 }
 /* VSQSUB 03317 (QXCH DOTRET ... ENDDOT). */
-static NI void vsqsub(void){
+static NI XT void vsqsub(void){
  ai_qxch(rDOTRET);
  TC(03322);dsqsub();DXCH2(rMPAC+3,rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
  TC(03330);dsqsub();DXCH(rMPAC+1);DAS(rBUF+1);AD(rMPAC);AD(rBUF);
@@ -1234,7 +1245,7 @@ static NI void vsqsub(void){
 }
 /* DMODE CAF ZERO; TCF NEWMODE. */
 static NI void dmode(void){CAF(ZERO);newmode();}
-static NI uint8_t lmi_vsq(void){TC(03246);vsqsub();dmode();return 0;}
+static NI XT uint8_t lmi_vsq(void){TC(03246);vsqsub();dmode();return 0;}
 /* DOTSUB 07156 (DOTINC set) with the vector operand at C(ADDRWD) (fixed: kop()). */
 static NI void dotsub(void){
  ai_qxch(rDOTRET);
@@ -1245,7 +1256,7 @@ static NI void dotsub(void){
  DXCH2(rMPAC+5,rMPAC);CA(rDOTINC);ADS(rADDRWD);
  TC(IF_(07205,07154));dmpsub();enddot();
 }
-static NI void lmi_dot(void){
+static NI XT void lmi_dot(void){
  /* DOT TC PREDOT (CAF TWO; TS DOTINC; DOTSUB); DMODE. */
  TC(IF_(07332,07301));CAF(TWO);(void)TS(rDOTINC);dotsub();dmode();
 }
@@ -1303,7 +1314,7 @@ static NI void dvovf(void){
  CAF(POSMAX);(void)TS(rMPAC);TC(02410);finaldv3();CAF(ONE);(void)TS(rOVFIND);TC(02413);danzig();
 }
 /* DDV/BDDV 02353 (dividend MPAC, divisor BUF) to DANZIG. */
-static NI void ddv_bddv(void){
+static NI XT void ddv_bddv(void){
  uint8_t c;
  CSF(ONE);(void)TS(rDVSIGN);(void)TS(rDVNORMCT);(void)TS(rMAXDVSW);
  c=CCS(rBUF);
@@ -1369,9 +1380,9 @@ bufneg:
  CSF(HALF);goto bufpos6;
 }
 /* DDV/BDDV prologue tail BDDV +4: DXCH BUF; CAF ZERO; TS FBANK. */
-static NI void bddv4(void){DXCH(rBUF);CAF(ZERO);(void)TS(rFB);ddv_bddv();}
-static NI void lmi_ddv(void){dca_op(0);bddv4();}
-static NI void lmi_bddv(void){dca_op(0);DXCH(rMPAC);bddv4();}
+static NI XT void bddv4(void){DXCH(rBUF);CAF(ZERO);(void)TS(rFB);ddv_bddv();}
+static NI XT void lmi_ddv(void){dca_op(0);bddv4();}
+static NI XT void lmi_bddv(void){dca_op(0);DXCH(rMPAC);bddv4();}
 
 /* ---- Square root and length (bank 0) ---------------------------------- */
 #define SLOPEHI 022650u
@@ -1380,7 +1391,7 @@ static NI void lmi_bddv(void){dca_op(0);DXCH(rMPAC);bddv4();}
 #define BIASLO 04604u
 #define NEGHALF2 060001u
 /* SQRTSUB 03343 to TC Q; 1 when it ends at SQRTABRT's TC POODOO1 (1302). */
-static NI uint8_t sqrtsub(void){
+static NI XT uint8_t sqrtsub(void){
  uint8_t c;
  CAF(ZERO);(void)TS(rMPTEMP);
  c=CCS(rMPAC);
@@ -1455,7 +1466,7 @@ sqrtnorm:
  goto arglo;
 }
 /* SQRT 03207 to DANZIG, or 1 at POODOO1 (alarm 1302). */
-static NI uint8_t sqrt_body(void){
+static NI XT uint8_t sqrt_body(void){
  uint8_t c;
  TC(03210);if(sqrtsub())return 1;
  c=CCS(rMPTEMP);
@@ -1467,9 +1478,9 @@ static NI uint8_t sqrt_body(void){
  /* SQRTSHFT INDEX MPTEMP; CAF BIT15; TS MPTEMP; CAF ZERO; MPACSHR +3. */
  CAF(fixed_indexed(BIT15_AT,W[rMPTEMP]));(void)TS(rMPTEMP);CAF(ZERO);mpacshr3();return 0;
 }
-static NI uint8_t lmi_sqrt(void){return sqrt_body();}
+static NI XT uint8_t lmi_sqrt(void){return sqrt_body();}
 /* ABVALABS 03176: ABS on a scalar, ABVAL (length, LVSQUARE kept) on a vector. */
-static NI uint8_t lmi_abvalabs(void){
+static NI XT uint8_t lmi_abvalabs(void){
  if(CCS(rMODE)<2u){lmi_abs();return 0;}
  TC(03202);vsqsub();LXCH(rMODE);DCA(rMPAC);DXCH(AT(W[rFIXLOC]+tLVSQUARE));
  return sqrt_body();
@@ -1521,7 +1532,7 @@ static NI void mpacvbuf(void){
  DCA(rMPAC);DXCH(rVBUF);DCA(rMPAC+3);DXCH(rVBUF+2);DCA(rMPAC+5);DXCH(rVBUF+4);RETQ();
 }
 /* UNITDV 03151 (divisor in BUF, MPTEMP the pre-divide count) to TC Q. */
-static NI void unitdv(void){
+static NI XT void unitdv(void){
  uint8_t c=CCS(rMPAC);
  if(c==1u||c==3u){
   c=CCS(rMPAC+1);
@@ -1532,7 +1543,7 @@ static NI void unitdv(void){
  ddv_chain(chain_at(02564u,W[rMPTEMP]));
 }
 /* UNIT 03023 to DANZIG (or DVOVF's TC DANZIG); 1 at POODOO1. */
-static NI uint8_t lmi_unit(void){
+static NI XT uint8_t lmi_unit(void){
  uint8_t c;
  TC(03024);vecagree();TC(03025);mpacvbuf();
  CAF(ZERO);XCH(rOVFIND);(void)TS(rTEM1);TC(03031);vsqsub();CA(rTEM1);XCH(rOVFIND);
@@ -1577,13 +1588,13 @@ large2:
 
 /* ---- Vector times scalar and cross product (bank 3) ------------------- */
 /* DVXSC 07430 (Comanche 07377): scalar in MPAC, vector operand at C(ADDRWD), to DANZIG. */
-static NI void dvxsc(void){
+static NI XT void dvxsc(void){
  DCA(rMPAC);DXCH(rMPAC+3);TC(IF_(07434,07403));dmpsub();TC(IF_(07435,07404));roundsub(2);
  CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH2(rMPAC,rMPAC+5);TC(IF_(07444,07413));dmpsub();TC(IF_(07445,07414));roundsub(2);
  CAF(TWO);ADS(rADDRWD);DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);TC(IF_(07453,07422));dmpsub();TC(IF_(07454,07423));roundsub(2);
  DXCH2(rMPAC,rMPAC+5);DXCH(rMPAC);vmode();
 }
-static NI void lmi_vxsc(void){
+static NI XT void lmi_vxsc(void){
  uint8_t c=CCS(rMODE);
  if(c<2u){dvxsc();return;}
  /* VVXSC (-0 enters at its TC VROUND). */
@@ -1595,11 +1606,11 @@ static NI void lmi_vxsc(void){
 }
 /* VPROJ 07425 (Comanche 07374): TC PREDOT (DOTINC 2, DOTSUB); CS FOUR; ADS ADDRWD back to
  * the operand; DVXSC. */
-static NI void lmi_vproj(void){
+static NI XT void lmi_vproj(void){
  TC(IF_(07426,07375));CAF(TWO);(void)TS(rDOTINC);dotsub();CSF(FOUR);ADS(rADDRWD);dvxsc();
 }
 /* V/SC2 02654 (vector in MPAC, scalar in BUF) to DANZIG. */
-static NI void vsc2(void){
+static NI XT void vsc2(void){
  uint8_t c;
  CSF(ONE);(void)TS(rDVNORMCT);(void)TS(rVBUF+5);
  TC(02660);vecagree();
@@ -1635,7 +1646,7 @@ bufplus:
 }
 /* V/SC 07624: VV/SC (vector mode, scalar operand) or DV/SC (scalar mode,
  * vector operand; mode becomes vector), V/SC1 DXCH BUF; FBANK 0; V/SC2. */
-static NI void lmi_vsc(void){
+static NI XT void lmi_vsc(void){
  if(CCS(rMODE)<2u){
   dca_op(2);DXCH(rMPAC+3);dca_op(4);DXCH(rMPAC+5);
   CSF(ONE);(void)TS(rMODE);dca_op(0);DXCH(rMPAC);
@@ -1660,7 +1671,7 @@ static NI void lmi_vxv(void){
 /* VXM/MXV 07342 (Comanche 07311; DOTINC in A, MATINC set): three DOTSUBs of the MPAC vector
  * (saved in VBUF) with the rows (MXV) or columns (VXM) of the matrix at
  * C(ADDRWD) (18 words; fixed ones in kw, kop()), result in MPAC, to DANZIG. */
-static NI void vxmmxv(void){
+static NI XT void vxmmxv(void){
  (void)TS(rDOTINC);TC(IF_(07344,07313));mpacvbuf();
  TC(IF_(07345,07314));dotsub();
  DCA(rVBUF);DXCH2(rMPAC,rBUF2);DCA(rVBUF+2);DXCH(rMPAC+3);DCA(rVBUF+4);DXCH(rMPAC+5);
@@ -1672,9 +1683,9 @@ static NI void vxmmxv(void){
  DXCH2(rBUF2,rMPAC);DXCH2(rMPAC+5,rVBUF+2);DXCH(rMPAC+3);danzig();
 }
 /* MXV 07334 (Comanche 07303) CAF TWO; TS MATINC; TCF VXM/MXV. */
-static NI void lmi_mxv(void){CAF(TWO);(void)TS(rMATINC);vxmmxv();}
+static NI XT void lmi_mxv(void){CAF(TWO);(void)TS(rMATINC);vxmmxv();}
 /* VXM 07337 (Comanche 07306) CS TEN; TS MATINC; CAF SIX; VXM/MXV. */
-static NI void lmi_vxm(void){CSF(TEN);(void)TS(rMATINC);CAF(SIX);vxmmxv();}
+static NI XT void lmi_vxm(void){CSF(TEN);(void)TS(rMATINC);CAF(SIX);vxmmxv();}
 
 /* ---- BOV(B), RTB and POLY ----------------------------------------------- */
 /* BPL/BMN 01,2474: CCS CYR; positive TCF BPL (TC BRANCH; + or zero GOTO),
@@ -1707,7 +1718,7 @@ static NI void lmi_swreturn(void){
   * there, leaving Q = BUF2 +1, reaches RTB's TCF DANZIG). */
  XCH(rBUF2+1);XCH(rFB);XCH(rBUF2+1);ai_tc(rBUF2+1u);danzig();
 }
-static NI void lmi_poly(const agc_word *table){
+static NI XT void lmi_poly(const agc_word *table){
  agc_word q=(agc_word)(W[rQ]&077777u);
  CAF(table[0]);(void)TS(rPOLYCNT);DOUBLE();AD(rQ);(void)TS(rPOLISH);ADF(FIVE);(void)TS(rPOLYRET);
  CAF(LVBUF);(void)TS(rADDRWD);
@@ -1725,7 +1736,7 @@ static NI void lmi_poly(const agc_word *table){
 static const agc_word sin_poly[11]={3,014441,037325,053250,060764,012146,021276,075466,071471,0236,032757};
 #define NEG1_2_AT IF_(04734u,05000u)
 /* SINE 00,3530 to DANZIG: (1/2)SIN(2 PI MPAC) by Hastings' polynomial. */
-static NI void sine(void){
+static NI XT void sine(void){
  unsigned i;
  DXCH(rMPAC);DDOUBL();
  if(ai_ovsk())ai_dcom();   /* lost or gained PI: SIN(X-PI) = SIN(-X) */
@@ -1742,8 +1753,8 @@ static NI void sine(void){
  for(i=0;i<2u;++i){DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);ADS(rMPAC);}
  danzig();
 }
-static NI uint8_t lmi_sin(void){sine();return 0;}
-static NI uint8_t lmi_cos(void){
+static NI XT uint8_t lmi_sin(void){sine();return 0;}
+static NI XT uint8_t lmi_cos(void){
  /* COSINE 00,3517: COS(X) = SIN(PI/2 - ABS(X)). */
  TC(IF_(03520,03517));
  if(branch()==0u){DCS(rMPAC);DXCH(rMPAC);}
@@ -1794,7 +1805,7 @@ static NI void acos0(uint8_t minor){
 /* ARCSIN 00,3610 / ARCCOS 00,3612 (UNAJUMP) to DANZIG (0), to the alarm
  * service with alarm 1301 (1: Luminary TC ALARM1, Comanche TC ALARM, Q at
  * the OCT 1301), or to SQRTSUB's abort (2, as SQRT). */
-static NI uint8_t arccos_body(uint8_t asin){
+static NI XT uint8_t arccos_body(uint8_t asin){
  uint8_t c;
  CAF(asin?W_LASINEX:W_LDANZIG);(void)TS(rESCAPE);
  TC(IF_(03615,03614));c=branch();
@@ -1836,8 +1847,8 @@ static NI uint8_t arccos_body(uint8_t asin){
  CAF(rBUF2);TC(IF_(03701,03700));(void)TS(rADDRWD);dmpsub();
  escape(IF_(03702,03701));return 0;
 }
-static NI uint8_t lmi_acos(void){return arccos_body(0);}
-static NI uint8_t lmi_asin(void){return arccos_body(1);}
+static NI XT uint8_t lmi_acos(void){return arccos_body(0);}
+static NI XT uint8_t lmi_asin(void){return arccos_body(1);}
 /* ---- VAD/VSU, BVSU, TAD, ROUND, SSP --------------------------------------- */
 /* VSU 06747 / VAD 06751: ADS ADDRWD with BIT15 or PRIO30 turns the indexed
  * READs into DCS or DCA of the operand's +2, +4 and +0 words; ADDRWD keeps
@@ -2096,6 +2107,15 @@ static NI uint8_t addr_body(uint8_t idx)
         lmi_ssp(cw); return MORE;
     }
     if (!addr_orders[idx]) return REFUSE;
+#ifdef XT_AT
+    if ((uintptr_t)addr_orders[idx] >= XT_AT) {
+        uint8_t m = *(volatile uint8_t *)1;
+        *(volatile uint8_t *)1 = 0x34;
+        addr_orders[idx]();
+        *(volatile uint8_t *)1 = m;
+        return MORE;
+    }
+#endif
     addr_orders[idx]();
     return MORE;
 }
@@ -2168,6 +2188,15 @@ static NI uint8_t order(uint8_t c)
     }
     idx = (c >> 3) - 1u;
     lmi_unary(unajump[idx]);
+#ifdef XT_AT
+    if (idx < 014u && (uintptr_t)unary_orders[idx] >= XT_AT) {
+        uint8_t m = *(volatile uint8_t *)1, r;
+        *(volatile uint8_t *)1 = 0x34;
+        r = unary_orders[idx]();
+        *(volatile uint8_t *)1 = m;
+        return r ? DONE : MORE;
+    }
+#endif
     if (idx < 014u) return unary_orders[idx]() ? DONE : MORE;
     if (idx == 014u) {
         if (!code_word(1u)) return REFUSE;

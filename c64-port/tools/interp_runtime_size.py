@@ -35,12 +35,15 @@ CORE_SRC = ['platform/c64/interp_module.c', 'src/agc_word.c', 'src/agc_hardware_
 CORE = {'lm': ['src/lm_interp_core.c'] + CORE_SRC, 'cm': ['src/cm_interp_core.c'] + CORE_SRC}
 
 
-def link_core(cc, m, prg, sources, library):
+def link_core(cc, m, prg, sources, library, ext=False):
     """The compact interpreter as job-slot module $0A01 (link_module's flags
-    without its table wrapper)."""
-    cmd = [cc, *COMMON, *MISSION[m], '-DAGC_FIXED_IMAGE=1', '-DINTERP_K_OPS=1', '-mllvm', '-inline-threshold=-50',
+    without its table wrapper); with ext, its cold math bodies in the $D000
+    extension (platform/c64/interp_ext.ld)."""
+    xt = ['-DINTERP_EXTENSION=1'] if ext else []
+    xl = ['-T', 'platform/c64/interp_ext.ld'] if ext else []
+    cmd = [cc, *COMMON, *MISSION[m], '-DAGC_FIXED_IMAGE=1', '-DINTERP_K_OPS=1', *xt, '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{F.OUT}',
-           '-T', 'platform/c64/overlay_v2_slot_job.ld', '-T', 'platform/c64/overlay_v2_payload.ld',
+           '-T', 'platform/c64/overlay_v2_slot_job.ld', '-T', 'platform/c64/overlay_v2_payload.ld', *xl,
            f'-Wl,--gc-sections,--defsym=__ov2_slot=0,--defsym=__ov2_mission={1 if m == "lm" else 2},'
            f'--defsym=__ov2_id={0x0A01},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors=1,'
            f'-Map,{prg}.map', *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg]
@@ -48,13 +51,19 @@ def link_core(cc, m, prg, sources, library):
     if r.returncode:
         over = [int(v) for v in re.findall(r"overflowed by (\d+) bytes", r.stderr)]
         return dict(ok=False, overflow=max(over) if over else None,
-                    error=None if over else [l for l in r.stderr.splitlines() if 'error' in l][:4])
-    return dict(ok=True, bytes=(ROOT / prg).stat().st_size - 2)
+                    error=[l.split('error: ')[-1] for l in r.stderr.splitlines() if 'error' in l][:4])
+    out = dict(ok=True, bytes=(ROOT / prg).stat().st_size - 2)
+    if ext:
+        syms = dict((n, int(v, 16)) for v, n in re.findall(r'^\s*([0-9a-f]+)\s+\S+\s+\S+\s+\S+\s+(__interp_ext_\w+) = ',
+                                                           (ROOT / (str(prg) + '.map')).read_text(), re.M))
+        out['extension_bytes'] = syms['__interp_ext_end'] - syms['__interp_ext_start']
+    return out
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--runtime', action='store_true', help='the verification interpreter (lmi_ bodies) instead')
+    ap.add_argument('--ext', action='store_true', help='with the $D000 interpreter extension')
     ap.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
     a = ap.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
@@ -68,13 +77,14 @@ def main():
         if a.runtime:
             r = F.link_module(a.cc, m, prg, 0, 0x0A01, SOURCES[m], ['%s_interp_runtime_basic' % m], [], library)
         else:
-            r = link_core(a.cc, m, prg, CORE[m], library)
+            r = link_core(a.cc, m, prg, CORE[m], library, a.ext)
         out[m] = r
         if r['ok']:
-            print('%s: %d bytes of %d (job slot)' % (m.upper(), r['bytes'], F.SLOT_BYTES[0]))
+            print('%s: %d bytes of %d (job slot)%s' % (m.upper(), r['bytes'], F.SLOT_BYTES[0],
+                  ', extension %d of 4096' % r['extension_bytes'] if 'extension_bytes' in r else ''))
         else:
             print('%s: does not fit the job slot (over by %s bytes) %s' % (m.upper(), r.get('overflow'), r.get('error') or ''))
-    (ROOT / OUT / ('size-runtime.json' if a.runtime else 'size.json')).write_text(json.dumps(out, indent=1) + '\n')
+    (ROOT / OUT / ('size-runtime.json' if a.runtime else 'size-ext.json' if a.ext else 'size.json')).write_text(json.dumps(out, indent=1) + '\n')
     return 0
 
 
