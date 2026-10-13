@@ -4,17 +4,17 @@
   "release": "evidence-exec-closure",
   "files": {
     "exec-closure-c64-cover.json": {
-      "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff",
+      "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667",
       "bytes": 9235,
       "store": "tree"
     },
     "exec-closure-host.log": {
-      "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069",
+      "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c",
       "bytes": 17980,
       "store": "release"
     },
     "exec-closure-proof.json": {
-      "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d",
+      "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549",
       "bytes": 4149,
       "store": "tree"
     },
@@ -44,7 +44,7 @@
       "store": "release"
     },
     "exec-closure-vice.log": {
-      "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
+      "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
       "bytes": 9238,
       "store": "release"
     },

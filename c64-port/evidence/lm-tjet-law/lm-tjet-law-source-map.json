@@ -4,7 +4,7 @@
  },
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "native_path": "src/lm_tjet_law.c",
- "native_sha256": "f18f8ac22d548f625a4a17d7febd724a782920e73353ce5e836c7f3dcbfad6de",
+ "native_sha256": "fd2d5679b4558e27c1e357934d2f95ad6f4bf31c96e0e02c320cca58fd7b34c8",
  "source_words": 314,
  "source_lines": 313,
  "line_map": [
