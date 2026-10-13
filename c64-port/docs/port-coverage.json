@@ -7703,8 +7703,81 @@
               "sha256": "883113784f5174c7abcbf93c2360f99d6b0ea7756805593ecb4ee09015ae2837"
             }
           ]
+        },
+        {
+          "native_files": [
+            "src/lm_servicer.c",
+            "src/lm_servicer_flag_sites.inc",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/LM-SERVICER.md",
+          "scope": "All of the file: bank 37 03410-03654 (PREREAD, BIBIBIAS, GOREADAX, READACCS, PIPSDONE, REDO5.5, MAKEACCS, AVEGOUT, GNUTFAZ5, GNUFAZE5, PIPASR, REPIP1-REPIP4, DODELVZ, REREADAC, CHKTEMX), bank 33 02206-03776 (SERVICER, GETABVAL, MASSMON, MOONSPOT, AVERAGEG, COPYCYCL, DVMON, DVCNTSET, USEGTS, NODVMON1, NODVMON2, LOTHRUST, DECCNTR, USEJETS, SERVOUT, XNBPIPAD, NORMLIZ1, NORMLIZ2, COPYCYC, TMPTOSPT, HIGATASK, MUNRETRN, HITEST, POS2CHK, HIGATCHK, POS1CHK, LRPOSALM, CONTSERV, COPYCYC1, R29?, R29NODES, NOR29NOW, COPYCYC2, ALTCHK, XORCHK, 35KCHK, CALCGRAV, CALCGRV1, CALCRVG, RVBOTH, MUNRVG, MUNGRAV, UPDATCHK, POSUPDAT, NOREASON, RUPDATED, VMEASCHK, VELUPDAT, VUPDAT, USEVF, WSTOR, VUPDATED, VALTCHK, READV, GNURVST, QUIKFAZ5, HFAIL, VFAIL, LRVJOB, VBAD, VSTILBAD, HIGATJOB, POSGOOD, POSALARM, SETPOS1, SETPOS2, SETPOS), bank 22 03661-03710 (AVGEND, AVERTRN, OUTGOAVE), bank 27 03321-03357 (SERVIDLE, SVEXTADR), bank 32 03770-03772 (SERVEXIT), bank 23 02461-02510 (NORMLIZE, ASCSPOT), bank 21 02130-02153 (LRHTASK, GRP2OFF) and bank 34 03716-03774 (LRHJOB, HBAD, HSTILBAD, RDGIMS), as 164 basic and 24 interpretive ABI routines; the C64 build runs as seven segment groups, each checked against the oracle with the same segment ends."
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "basic keys at Z under their bank's FB, interpretive keys at LOC with Z at NEWOPS and BANKSET the key's bank, any EBANK, with the lm_sv_io record (channels 11, 12, 32 and 33); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB or BANKSET, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, a fixed operand outside the constants the orders name, an erasable operand running past erasable into fixed memory, an INDEX value no producer stores (ITEMP1 in COPYCYC, A at ALTCHK, FIXLOC at VELUPDAT, VSELECT*, BUF in GNURVST, Q in SETPOS), TC Q, TC A or TC LRADRET to a word that is not a TC into fixed memory, LOTHRUST with PHASE4 negative, a computed transfer, TS overflow skip or CCS outcome onto a word that runs only after its EXTEND or INDEX, or no io record or undo image; 1,032 of 24,064 random cases. ABVAL's, ABS's and UNIT's alarm, READACCS's CCS of +0, the negative and -0 CCS outcomes of MASK results, ITEMP1 and VSELECT are translated but no admitted input reaches them",
+        "external_continuations": [
+          "PHASCHNG",
+          "2PHSCHNG",
+          "BANKCALL",
+          "IBNKCALL",
+          "POSTJUMP",
+          "BANKJUMP",
+          "MAKECADR",
+          "NOVAC",
+          "FINDVAC",
+          "PRIOCHNG",
+          "WAITLIST",
+          "VARDELAY",
+          "TASKOVER",
+          "ENDOFJOB",
+          "UPFLAG",
+          "DOWNFLAG",
+          "ALARM",
+          "WHIMPER",
+          "GOTOPOOH",
+          "SHORTMP",
+          "SHORTMP2",
+          "ALSIGNAG",
+          "BRANCH (both returns)",
+          "SWRETURN",
+          "TCF R10,R11A",
+          "TCF R29",
+          "CALL/STCALL to another file (NEWOPS)",
+          "SGNAGREE through RTB",
+          "CHANG2",
+          "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)"
+        ],
+        "awaiting": "auditor review",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-servicer/lm-servicer-source-map.json",
+            "sha256": "76726f55562fc56282796feee90e3657c032610f6dd496b50a495fe4714e49b1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-servicer/lm-servicer-proof.json",
+            "sha256": "84f831baa77bbcffbe51881ef7797cb7ce7a108796f467c93a884550014f431f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-servicer/lm-servicer-host.log",
+            "sha256": "9d78bd66f641c95d345b3a74b87628750140ea29c59d76f8e2edef2ba32fc743"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-servicer/lm-servicer-vice.log",
+            "sha256": "cd76aab110edb843a30be21aaca03337b074aa24fda249af10c6c431950a4bc7"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-servicer/lm-servicer-c64-cover.json",
+            "sha256": "d536dac6f5bd8b342e6cbdee2522dff36a4051e31c58d75eb917a28be0e05baa"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/SERVICE_ROUTINES.agc",
