@@ -13,11 +13,24 @@
  * operands the module's sources compile ({physical, word} pairs, sorted):
  * the module's routines read their callers' operands from it, not from the
  * resident's Executive site table. FS_FIXED_DATA names the module's
- * fixed_data hook (the self-check module's rope image). Value: the step's
+ * fixed_data hook (the self-check module's rope image); FS_ROPE_DATA gives
+ * it every rope word from the REU image instead. Value: the step's
  * rk_module_env. */
 #include "resident_flight.h"
 #ifdef FS_FIXED_DATA
 #include "self_check.h"
+#endif
+#ifdef FS_ROPE_DATA
+#include "rope_image.h"
+static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *word){
+ (void)p;
+#if RK_LM
+ return apollo_rope_read(0u,physical,word);
+#else
+ return apollo_rope_read(1u,physical,word);
+#endif
+}
+#define FS_FIXED_DATA rope_data
 #endif
 #ifdef FS_SITES
 static const agc_site_operand sites[]={FS_SITES};
@@ -48,7 +61,9 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  uint8_t n=0;
  (void)selector;
 #ifdef FS_CHUNK
-#define FS_COPY_ENTRY(i) chunk[n++]=FS_CHUNK_TABLE.entries[i];
+/* Field by field: a whole-struct copy lowers to a memcpy from the entries
+ * array, which keeps every routine linked (Lane F). */
+#define FS_COPY_ENTRY(i) chunk[n].physical=FS_CHUNK_TABLE.entries[i].physical;chunk[n++].call=FS_CHUNK_TABLE.entries[i].call;
  FS_CHUNK(FS_COPY_ENTRY)
  basic[0].entries=chunk;basic[0].count=n;
 #else

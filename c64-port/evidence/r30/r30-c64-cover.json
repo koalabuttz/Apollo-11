@@ -17,7 +17,7 @@
   "tests/interp_case.c": "8929d9a08267aa85d2dff2635a3a78a54bb9fdc6544815fb301d66f8084ee613",
   "tests/r30_target.c": "98166aa767eb3e6cc12f771b1fd10113c5c70f83ce9e4d49f85f751bac11eb0d"
  },
- "host_cases": 14376,
+ "host_cases": 14504,
  "host_case_stride": 8,
  "c64_rows": [
   56,
@@ -48,12 +48,14 @@
   11792,
   12352,
   12872,
+  12907,
   13432,
   13536,
   13824,
   14560,
   14976,
   15360,
+  15651,
   16280,
   16416,
   17352,
@@ -128,7 +130,6 @@
   45576,
   46112,
   46640,
-  47235,
   47264,
   47680,
   48152,
@@ -183,10 +184,10 @@
   70154,
   70155,
   70656,
-  71400,
+  71616,
   71760,
-  72392,
-  72496,
+  72248,
+  72528,
   72720,
   73248,
   74064,
@@ -221,7 +222,7 @@
   85528,
   86064,
   86552,
-  87272,
+  87544,
   87560,
   88296,
   88688,
@@ -235,6 +236,7 @@
   91944,
   92160,
   92776,
+  92863,
   93344,
   93704,
   94392,
@@ -279,8 +281,8 @@
   111656,
   112160
  ],
- "host_branch_arcs": 1223,
- "c64_branch_arcs": 1223,
+ "host_branch_arcs": 1394,
+ "c64_branch_arcs": 1394,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    17,
@@ -295,8 +297,8 @@
    10
   ],
   "src/agc_transfer.c": [
-   43,
-   43
+   45,
+   45
   ],
   "src/agc_word.c": [
    3,
@@ -315,10 +317,26 @@
    296
   ],
   "src/lm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c@runner-cm_interp_orders": [
+   123,
+   123
+  ],
+  "src/lm_interp_orders.c@runner-lm_interp_orders": [
    124,
    124
   ],
   "src/lm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_steps.c@runner-cm_interp_steps": [
+   44,
+   44
+  ],
+  "src/lm_interp_steps.c@runner-lm_interp_steps": [
    44,
    44
   ],
@@ -331,8 +349,8 @@
    27
   ],
   "tests/interp_case.c": [
-   32,
-   32
+   34,
+   34
   ],
   "tests/r30_target.c": [
    2,
@@ -344,6 +362,6 @@
   ]
  },
  "host_branches_missing_on_c64": [],
- "all_cases_branch_arcs": 1223,
+ "all_cases_branch_arcs": 1394,
  "all_cases_branches_missing_on_c64": []
 }

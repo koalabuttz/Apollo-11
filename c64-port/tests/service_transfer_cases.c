@@ -7,9 +7,9 @@
 #include "../src/lm_service_sites.inc"
 #include "../src/cm_service_sites.inc"
 static uint32_t rnd(uint32_t *x){*x=*x*1103515245u+12345u;return *x>>8;}
-/* Site rows that are the first operand word after the TC (GENTRAN's second ADRES is not a call). */
+/* Site rows that are the first operand word after the TC (GENTRAN's and GENTRAN +1's second ADRES is not a call). */
 static uint16_t first_rows(const agc_site_operand *t,const agc_word *callee,uint16_t count,uint16_t *rows){uint16_t i,k=0;
- for(i=0;i<count;++i){if(i&&callee[i]==callee[i-1u]&&t[i].physical==t[i-1u].physical+1u&&(callee[i]==05544u||callee[i]==05606u))continue;if(rows)rows[k]=i;++k;}return k;}
+ for(i=0;i<count;++i){if(i&&callee[i]==callee[i-1u]&&t[i].physical==t[i-1u].physical+1u&&(callee[i]==05544u||callee[i]==05545u||callee[i]==05606u||callee[i]==05607u))continue;if(rows)rows[k]=i;++k;}return k;}
 static uint16_t lm_rows[LM_SERVICE_SITES_COUNT],cm_rows[CM_SERVICE_SITES_COUNT],lm_n,cm_n;
 static void init(void){if(lm_n)return;lm_n=first_rows(lm_service_sites,lm_service_sites_callee,LM_SERVICE_SITES_COUNT,lm_rows);cm_n=first_rows(cm_service_sites,cm_service_sites_callee,CM_SERVICE_SITES_COUNT,cm_rows);}
 uint16_t svt_cases(void){init();return (uint16_t)(2u*lm_n+2u*cm_n+2u*SVT_ENTRY_CASES);}
@@ -30,8 +30,8 @@ void svt_input(apollo_overlay_state *s,uint16_t *superbank,uint16_t *inhint,uint
   phys=t[row].physical;bank=(uint16_t)(phys/1024u);z=callee[row];
   if(bank==2u||bank==3u)q=(uint16_t)(04000u+(phys-2048u));
   else{q=(uint16_t)(02000u+phys%1024u);if(bank>=040u){fb=(uint16_t)(bank-8u);*superbank=0100u;}else{fb=bank;if(bank>=030u)*superbank=0060u;}}
-  /* GENTRAN: a short block (A = items - 1). */
-  if(z==05544u||z==05606u)s->words[0]=(agc_word)(rnd(&x)%8u);
+  /* GENTRAN and GENTRAN +1: a short block (A = items - 1). */
+  if(z==05544u||z==05545u||z==05606u||z==05607u)s->words[0]=(agc_word)(rnd(&x)%8u);
  }else{
   k=(uint16_t)((n-2u*(lm_n+cm_n))/2u%9u);
   z=kinds[m][k].z;if(kinds[m][k].bank!=0xffu)fb=kinds[m][k].bank;

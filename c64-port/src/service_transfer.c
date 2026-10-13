@@ -54,13 +54,14 @@ static enum exec_status lm_comflag(const agc_native_program *p,apollo_overlay_st
 /* DEBIT: AD ONE; INHINT; TS ITEMP3; CA LOW4; TS ITEMP1; INDEX ITEMP3; CA 0 -1
  * (the caller's ADRES at A); TS L; CA ZERO; EXTEND; DV ITEMP1; DXCH ITEMP1;
  * INDEX ITEMP1; CA FLAGWRD0; TS L; INDEX ITEMP2; CS BIT15; TC Q. */
-static enum exec_status lm_debit(const agc_native_program *p,apollo_overlay_state *s,void *v){p66_bias_io *io=v;agc_word *w,adr,descriptor,index,rem,old;agc_register a;uint16_t f,ph;
+static enum exec_status lm_debit(const agc_native_program *p,apollo_overlay_state *s,void *v){p66_bias_io *io=v;agc_word *w,adr,descriptor,index,rem,old;agc_register a;uint16_t f;
  if(!p||!s||!io||!lm_banks(s,io)||s->words[5]!=05522u)return EXEC_OUT_OF_SCOPE;
  w=s->words;if(w[2]<0100u||w[2]>07777u)return EXEC_OUT_OF_SCOPE;
  a=agc_add_register(w[0],agc_extend(1));if(agc_overflow(a))return EXEC_OUT_OF_SCOPE;
  adr=agc_correct(w[0]);if(agc_overflow(w[0])||adr>07777u)return EXEC_OUT_OF_SCOPE;
  if(adr<02000u){f=lm_erasable(s,adr);if(f<030u)return EXEC_OUT_OF_SCOPE;descriptor=f==061u?15u:f==063u?agc_correct(a):w[f];}
- else if(!agc_transfer_operand(p,s,io->superbank,adr,&descriptor)){ph=agc_fixed_physical(adr,w[4],io->superbank);if(!p->fixed_data||!p->fixed_data(p,ph,&descriptor))return EXEC_OUT_OF_SCOPE;}
+ /* A fixed ADRES is a compiled site operand (rule 3), never a rope read. */
+ else if(!agc_transfer_operand(p,s,io->superbank,adr,&descriptor))return EXEC_OUT_OF_SCOPE;
  if(descriptor>14459u)return EXEC_OUT_OF_SCOPE;
  index=(agc_word)(descriptor/15u);rem=(agc_word)(descriptor%15u);f=lm_erasable(s,(uint16_t)(074u+index));if(f<030u)return EXEC_OUT_OF_SCOPE;
  w[063]=agc_correct(a);w[061]=index;w[062]=rem;old=w[f];

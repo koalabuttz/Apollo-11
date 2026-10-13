@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-sxtmark",
+  "release": "evidence-cm-sxtmark",
+  "files": {
+    "cm-sxtmark-c64-outcomes.json": {
+      "sha256": "a9446d45cbf6bb9936523e83bc69cf4d66c029387982739a28e656562e2873d3",
+      "bytes": 593,
+      "store": "tree"
+    },
+    "cm-sxtmark-differential.log": {
+      "sha256": "43b6ea77484044e3d8711fb1f6d35d7f6ef2c373d0daef1ab50bc85cb809f46e",
+      "bytes": 1440,
+      "store": "release"
+    },
+    "cm-sxtmark-host.log": {
+      "sha256": "7b5e4014a87625b8aa68cb639f715b67f97b73d0ece0545d72d43a2a70a95475",
+      "bytes": 953,
+      "store": "release"
+    },
+    "cm-sxtmark-proof.json": {
+      "sha256": "62a32f9574f15b086c8665b65e82921dbb555f71ceb6bf1e4517b6463fb07a36",
+      "bytes": 5449,
+      "store": "tree"
+    },
+    "cm-sxtmark-source-map.json": {
+      "sha256": "4bd14f72ea6e24eeef61bdb48d3a1d1d706549bec349e597138a39216700d4e5",
+      "bytes": 45485,
+      "store": "tree"
+    },
+    "cm-sxtmark-vice.log": {
+      "sha256": "5ced31f8ffd72a0a88ca91f0c97dc7288450a5cd75e0295082375757d1886584",
+      "bytes": 936,
+      "store": "release"
+    }
+  }
+}

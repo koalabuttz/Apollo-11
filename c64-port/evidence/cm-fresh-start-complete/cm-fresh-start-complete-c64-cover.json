@@ -4,20 +4,20 @@
  "aggregates": {
   "cm-fresh-start": {
    "record": "evidence/cm-fresh-start/cm-fresh-start-c64-cover.json",
-   "sha256": "f86f728c32342abe99cbbd0f10b30d6f716c8818b40cb554270de74708ca7e57",
+   "sha256": "7fff5e2e49fd3053bf3a1dc73d92bc6a2449aae8f8da43b81be78d7d850e9aef",
    "host_cases": 4096,
    "c64_rows": 259,
-   "host_branch_arcs": 436,
-   "c64_branch_arcs": 436,
+   "host_branch_arcs": 428,
+   "c64_branch_arcs": 428,
    "host_branches_missing_on_c64": 0
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-c64-cover.json",
-   "sha256": "96196de48a6fe8697bb8345929707f7fb8835f846e7e35d9fb7286f320eb3f0d",
+   "sha256": "adf4273da7f6639b70ed76653675c5c3bc1754fce508c187051e128e6e4ad0f6",
    "host_cases": 4096,
    "c64_rows": 169,
-   "host_branch_arcs": 515,
-   "c64_branch_arcs": 515,
+   "host_branch_arcs": 510,
+   "c64_branch_arcs": 510,
    "host_branches_missing_on_c64": 0
   },
   "cm-stateup": {
@@ -36,7 +36,7 @@
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
-  "src/cm_fresh_start.c": "89dd532381c97d08d1d5528033cfedbf752b12a03302960c84cab945a2395bbe",
+  "src/cm_fresh_start.c": "61ddf3a89c0f6f5ff7e67fd8847abc0c4031969f9d9a686faa0ca81810c95127",
   "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
   "src/cm_interbank_routines.c": "1651221a53dfc174a55f6009bc8c903d19e32c3d55c6ee4b03f9022a2180a2f2",
   "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",

@@ -26,6 +26,7 @@ build/<id>-proof.json. A spec with 'c64_rows': 'cover' picks the C64 cases
 by branch outcome (tools/c64_row_cover.py) instead of per routine."""
 import argparse
 import collections
+import concurrent.futures
 import functools
 import hashlib
 import json
@@ -374,6 +375,30 @@ def edge_vector(rng, row):
     return [rng.choice(EDGE_SCALARS) for _ in range(3)]
 
 
+# Basic memory instructions and the bits of their word that hold the
+# address (10 for the quarter codes, 12 otherwise).
+BASIC_MEMORY = {'CCS': 0o1777, 'DAS': 0o1777, 'LXCH': 0o1777, 'INCR': 0o1777, 'ADS': 0o1777,
+                'INDEX': 0o1777, 'DXCH': 0o1777, 'TS': 0o1777, 'XCH': 0o1777, 'CA': 0o7777, 'CAE': 0o7777,
+                'CS': 0o7777, 'AD': 0o7777, 'MASK': 0o7777, 'DCA': 0o7777, 'DCS': 0o7777, 'MP': 0o7777,
+                'DV': 0o1777, 'SU': 0o1777, 'MSU': 0o1777, 'QXCH': 0o1777, 'AUG': 0o1777, 'DIM': 0o1777}
+_REFS = {}
+
+
+def basic_refs(cp):
+    """Erasable addresses (above the central registers) the file's basic
+    memory instructions name, from their assembled words (spec
+    'basic_edges', for files without 'basic': 'full')."""
+    if id(cp) not in _REFS:
+        refs = set()
+        for ln in cp.lines:
+            if ln.op in BASIC_MEMORY and ln.words:
+                a = ln.words[0] & BASIC_MEMORY[ln.op]
+                if 0o10 <= a < 0o2000:
+                    refs.add(a)
+        _REFS[id(cp)] = refs
+    return _REFS[id(cp)]
+
+
 def case(mi, point, n, rng):
     """(seed, edits, ie) for case n of routine point."""
     E = collections.OrderedDict()
@@ -484,12 +509,17 @@ def case(mi, point, n, rng):
             joint = joint[mi.m]
         for k, v in rng.choice(joint).items():
             E[state_address(mi, k, vac)] = v & 0o77777
-    if mi.cp.basic and mi.kinds[point] == 'b':
+    if mi.cp.novac(point) and rng.random() < 0.5:
+        # 'any_fixloc': a basic routine that never names FIXLOC runs from
+        # tasks and NOVAC jobs too, so half its cases leave the VAC areas.
+        E[0o120] = rng.randrange(0o4000)
+    if (mi.cp.basic or mi.cp.spec.get('basic_edges')) and mi.kinds[point] == 'b':
         # Compiled basic code: the words it names take zeros, small values
         # and saturating values often enough to reach every CCS exit, BZF and
         # BZMF branch and TS overflow (switched addresses through the case's
-        # EBANK).
-        for a in sorted(mi.cp.basic.erasable_refs):
+        # EBANK). (Spec 'basic_edges': interp_compile's own basic code too,
+        # the words its memory instructions name.)
+        for a in sorted(mi.cp.basic.erasable_refs if mi.cp.basic else basic_refs(mi.cp)):
             phys = (eb << 8) + (a - 0o1400) if a >= 0o1400 else a
             if phys in E:
                 continue    # the interpreter state set above (FIXLOC, ...)
@@ -1016,8 +1046,19 @@ def greedy_cover(cands, sets, covered=(), key=lambda i: i, accept=lambda i: True
     return picked, cov
 
 
+# A native or reference run that outlives this (seconds) is a hang, not a
+# slow spec: an interpreter loop with no step budget, say (#224).
+RUN_TIMEOUT = int(os.environ.get('IRC_RUN_TIMEOUT', '1200'))
+
+
 def run(cmd):
-    out = subprocess.run(cmd, cwd=R, check=True, capture_output=True, text=True).stdout
+    try:
+        out = subprocess.run(cmd, cwd=R, check=True, capture_output=True, text=True,
+                             timeout=RUN_TIMEOUT).stdout
+    except subprocess.TimeoutExpired:
+        sys.exit('FAIL: %s ran over %d s (IRC_RUN_TIMEOUT); a case hangs' % (' '.join(cmd), RUN_TIMEOUT))
+    except subprocess.CalledProcessError as e:
+        sys.exit('FAIL: %s exited %d\n%s' % (' '.join(cmd), e.returncode, e.stderr))
     return [l.split() for l in out.splitlines()]
 
 
@@ -1218,7 +1259,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                         '-o', os.path.join(w, 'run')], cwd=R, check=True)
         subprocess.run([os.path.join(w, 'run'), os.path.join(w, 'cases.bin')], cwd=R, check=True,
                        stdout=subprocess.DEVNULL)
-        taken = set()
+        taken, seen = set(), set()
         for o in objs:
             out = subprocess.run(['gcov', '-b', '-c', '-t', '-o', w, o[:-2] + '.gcda'], cwd=R, check=True,
                                  capture_output=True, text=True).stdout
@@ -1227,6 +1268,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                 m = re.match(r'\s*-:\s*0:Source:(.*)', l)
                 if m:
                     src = m.group(1)
+                    seen.add((os.path.basename(o)[:-2], src))
                     continue
                 m = re.match(r'\s*[^:]+:\s*(\d+):', l)
                 if m:
@@ -1234,12 +1276,12 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                     continue
                 m = re.match(r'branch\s+(\d+) taken (\d+)', l)
                 if m and int(m.group(2)):
-                    taken.add((src, line, int(m.group(1))))
-        res[tag] = taken
+                    taken.add((os.path.basename(o)[:-2], src, line, int(m.group(1))))
+        res[tag] = c64_row_cover.arc_keys(taken, seen)
         shutil.rmtree(w, ignore_errors=True)
-    miss = sorted(res['host'] - res['c64'])
+    miss = sorted(res['host'] - res['c64'], key=lambda a: [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', a)])
     return {'host_taken': len(res['host']), 'c64_taken': len(res['c64']), 'host_taken_not_c64': len(miss),
-            'missing': ['%s:%d branch %d' % x for x in miss[:50]],
+            'missing': miss[:50],
             'sources': srcs,
             'note': 'gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source '
                     'above: the branch outcomes all the differential cases take, and those the C64 cases take'}
@@ -1697,6 +1739,10 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
             break
     print('  C64 cuts: %d truncated rows (%d cuts the oracle does not stop at, %d differing), %d arcs left' % (
         made, refused, differ, len(want)))
+    if differ:
+        # The oracle and the native code stop at the same cut in the same
+        # state, or the native code is wrong there.
+        sys.exit('%s: %d C64 cuts differ from the original program' % (spec_id, differ))
 
 
 C64_PICKS = []       # each group's cases, for the outcome cover
@@ -1741,6 +1787,11 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             for i in sorted(mine, key=lambda i: len(cases[i]['edits'])):
                 by[visits[i]].append(i)
             limit = {}
+            # (The probes are independent compiles: the largest case of each
+            # set first, on every core.)
+            with concurrent.futures.ThreadPoolExecutor(os.cpu_count() or 1) as ex:
+                list(ex.map(lambda v: c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [by[v][-1]])], cases, rows)),
+                            list(by)))
             for v, ii in by.items():
                 def fit(i, v=v):
                     if (v, i) not in fits:
@@ -1894,8 +1945,14 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                 who = allw[:5]
                 sys.stderr.write('%s: cases %s chosen %s ok %s edits %s\n' % (
                     arc, who, [i in chosen for i in who], [i in okall for i in who], [len(cases[i]['edits']) for i in who]))
-        c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
-        extra = c64_row_cover.summary(arcs, picked)
+        if spec.get('c64_cover_partial'):
+            # (A partial file: the arcs only runs too long for one C64
+            # program take are listed in the proof instead.)
+            extra = c64_row_cover.summary(arcs, picked)
+            extra['c64_missed_arcs'] = c64_row_cover.missing(arcs, picked)
+        else:
+            c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
+            extra = c64_row_cover.summary(arcs, picked)
         write_cover_record(spec_id, spec, arcs, picked, full, [
             {'row': i, 'case': cases[i]['of'], 'cut': missions[cases[i]['cm']].cp.where(cases[i]['cut']),
              'routines_run': cases[i]['ran']} for i in sorted(picked) if cases[i].get('cut')])
@@ -2037,6 +2094,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, covers=None, c
             v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask)
                                          + GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
+    C64_PICKS[:] = [pick for m, mask, pick in groups]
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick), 'case_ids': list(pick)} for m, mask, pick in groups], {}
 
 

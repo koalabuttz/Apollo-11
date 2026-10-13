@@ -56,7 +56,7 @@ def main():
     sites = {m: sum(1 for l in (R / f'src/{m}_service_sites.inc').read_text().splitlines() if l.startswith(' {'))
              for m in ('lm', 'cm')}
     proof = {'cases': cases, 'reached_continuation': reached, 'native_equals_yaagc': True,
-             'operand_sites': sites, 'entry_cases_per_mission': 256, 'oracle': 'yaAGC agc_engine from the original ropes',
+             'operand_sites': sites, 'entry_cases_per_mission': 512, 'oracle': 'yaAGC agc_engine from the original ropes',
              'ropes': {r.parent.name: hashlib.sha256(r.read_bytes()).hexdigest() for r in ropes},
              'oracle_sha256': hashlib.sha256(oracle.encode()).hexdigest(),
              'dependencies': {f: hashlib.sha256((R / f).read_bytes()).hexdigest() for f in NATIVE + HEADERS},

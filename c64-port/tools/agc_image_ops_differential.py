@@ -63,4 +63,4 @@ def main():
    if bad[op]<=3:print('FAIL',op,'K=%o'%c[1],'A=%06o L=%06o Q=%06o'%(c[6],c[7],c[8]),[('%04o'%j,'%06o'%x[j],'%06o'%y[j]) for j in range(2048) if x[j]!=y[j]][:8])
  if bad:print('FAIL counts',bad);raise SystemExit(1)
  print('PASS',len(cases),'single-instruction images equal yaAGC across',len(OPS),'helpers')
-main()
+if __name__=='__main__':main()

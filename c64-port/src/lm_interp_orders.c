@@ -13,6 +13,10 @@
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "interp_mission.h"
+#ifndef __mos__
+#include <stdio.h>
+#include <stdlib.h>
+#endif
 #define W s->words
 
 /* Erasable assignments (Luminary099 ERASABLE_ASSIGNMENTS). */
@@ -1315,9 +1319,17 @@ void lmi_call(apollo_overlay_state *s){
 }
 void lmi_goto_any(apollo_overlay_state *s){
  /* GOTO CA POLISH; MASK HIGH4; BZF GOTOERS (an erasable CADR is fetched,
-  * through the work area or the EBANK it names, until a fixed one). */
+  * through the work area or the EBANK it names, until a fixed one). A cycle
+  * of erasable CADRs never ends (the AGC loops until the night watchman
+  * restarts it); host builds stop with a message rather than hang. */
+#ifndef __mos__
+ unsigned long n=0;
+#endif
  for(;;){
   uint8_t c;
+#ifndef __mos__
+  if(++n>0x10000ul){fprintf(stderr,"lmi_goto_any: erasable CADR cycle (POLISH %05o)\n",(unsigned)(W[rPOLISH]&077777u));exit(3);}
+#endif
   CA(rPOLISH);MASKF(074000u);
   if(!ai_bzf(s))break;
   CA(rPOLISH);ADF(ENDVAC_NEG);c=CCS(rA);
