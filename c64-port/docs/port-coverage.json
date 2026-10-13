@@ -4385,9 +4385,9 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "0c27ebd505a8a19362ec4eb023cf970e7465d207",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-tpi-search pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-tpi-search pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). One C64 row is truncated (c64_branch_outcomes truncated_rows): case 17287 run to its first NEWOPS with LOC at 35,3210, where the yaAGC run of the same case also stops, compared over the full state there.",
         "external_continuations": [
           "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
           "AVFLAGA, AVFLAGP, P20FLGON, BLANKET, VNPOOH, ENDOFJOB and TCF GOTOPOOH",
@@ -4404,7 +4404,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
-            "sha256": "5facde770588d7805a24b63597a0ba34201293fc290cf5c2af057a6fe1acf123"
+            "sha256": "25c53efb28a034d83f10b3a23bb5932d5614985416b4aa49283a6072d38514d5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
@@ -4412,14 +4412,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
-            "sha256": "287a2ab90c3c7530b9d6cd96aa540b3201920d7909ccb210ec5f14332cba7c3b",
+            "sha256": "ecf27bcfc4111e633256e4ab2513604b6309df5e3dc6e2be2302557d9ddb6a7f",
             "vice_targets": {
-              "vice-cm-tpi-search": 236
+              "vice-cm-tpi-search": 248
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
-            "sha256": "66c62349530ab20343dfaa9f92d4c4db61e073ea66a390c44388e0d1c9fd79b7"
+            "sha256": "54ece4ce97fd34c5ac74d89c0fff49bf73d04645065ee6ca15cdd43307d6fd22"
           }
         }
       }
