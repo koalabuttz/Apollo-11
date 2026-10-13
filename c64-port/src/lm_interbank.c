@@ -2,20 +2,20 @@
 #include "lm_interbank.h"
 static const agc_word pc[14]={04616,04622,04631,04635,04640,04645,04651,04674,04700,04707,04713,04727,04643,04644};
 bool lm_interbank_literal(uint16_t physical,agc_word *out){if(physical!=04644u||!out)return false;*out=LM_INTERBANK_PRIO12_WORD;return true;}
-static bool context(const apollo_overlay_state *s,const p66_bias_io *io){return s&&io&&s->words[7]==0&&s->words[2]<=07775u&&s->words[3]<=03400u&&(s->words[3]&0377u)==0&&(s->words[4]&~076000u)==0&&s->words[6]==(agc_word)(s->words[4]|(s->words[3]>>8))&&(io->superbank&~0160u)==0&&io->interrupt_enabled<=1u;}
+/* q: the entry reads or returns through Q. SWRETURN and ISWRETRN do not
+ * (a callee's TC Q reaches them with Q = 3), and BANKJUMP only XCHes it into
+ * A as debris (DISPLAY_INTERFACE's SAVELOCS reaches it by TC L, Q = 2). */
+static bool context(const apollo_overlay_state *s,const p66_bias_io *io,bool q){return s&&io&&s->words[7]==0&&(!q||(s->words[2]>=0100u&&s->words[2]<=07775u))&&s->words[3]<=03400u&&(s->words[3]&0377u)==0&&(s->words[4]&~076000u)==0&&s->words[6]==(agc_word)(s->words[4]|(s->words[3]>>8))&&(io->superbank&~0160u)==0&&io->interrupt_enabled<=1u;}
 static void fb(apollo_overlay_state *s,agc_word value){s->words[4]=(agc_word)(value&076000u);s->words[6]=(agc_word)(s->words[4]|(s->words[3]>>8));}
 static agc_word inline_word(const apollo_overlay_state *s,agc_word logical,agc_word fixed){if(logical<01400u)return s->words[logical];if(logical<02000u)return s->words[s->words[3]+(logical&0377u)];return fixed;}
 bool lm_interbank_data_address(const apollo_overlay_state *s,const p66_bias_io *io,uint16_t *out){agc_word cadr,bank;
- if(!context(s,io)||s->words[2]<0100u||!out||s->words[5]!=04651u)return false;
+ if(!context(s,io,true)||!out||s->words[5]!=04651u)return false;
  cadr=agc_correct(s->words[0]);bank=agc_overflow(s->words[0])?(agc_word)(s->words[4]>>10):(agc_word)(cadr>>10);if(bank>=030u&&(s->words[1]&0100u))bank=(agc_word)(bank+8u);
  *out=(uint16_t)(bank*1024u+(cadr&01777u));return true;
 }
 bool lm_interbank(apollo_overlay_state *s,p66_bias_io *io,enum lm_interbank_entry entry,agc_word literal,agc_word word){agc_word oldfb,cadr,q,base,relative,savedbank;agc_register olda,oldl;int overflow;
- if(!context(s,io)||(unsigned)entry>=14u||s->words[5]!=pc[entry])return false;
- /* Q is only debris for BANKJUMP (XCH Q puts it in A): DISPLAY_INTERFACE's
-  * SAVELOCS reaches it by TC L, with Q = 2. Every other entry reads or
-  * returns through Q. */
- if(entry!=LM_IB_BANKJUMP&&s->words[2]<0100u)return false;
+ if(!context(s,io,entry!=LM_IB_SWRETURN&&entry!=LM_IB_ISWRETRN&&entry!=LM_IB_BANKJUMP)||(unsigned)entry>=14u||s->words[5]!=pc[entry])return false;
+ if(entry==LM_IB_BANKJUMP&&s->words[2]>07775u)return false;
  q=s->words[2];oldfb=s->words[4];olda=s->words[0];oldl=s->words[1];overflow=agc_overflow(olda);base=(agc_word)(entry>=LM_IB_IBNKCALL&&entry<=LM_IB_ISWRETRN?072:0133);cadr=literal;
  if((entry==LM_IB_BANKCALL||entry==LM_IB_IBNKCALL||entry==LM_IB_POSTJUMP||entry==LM_IB_USPRCADR)&&literal>AGC_MASK)return false;
  if((entry==LM_IB_BANKCALL||entry==LM_IB_IBNKCALL||entry==LM_IB_POSTJUMP||entry==LM_IB_USPRCADR)&&q>=01400u&&q<02000u&&s->words[3]+(q&0377u)<0100u)return false;

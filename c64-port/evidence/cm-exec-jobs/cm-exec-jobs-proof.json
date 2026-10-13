@@ -1,0 +1,28 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "cases": 6144,
+ "snapshot_sha256": "22d4c9faaa1a64831de913272be8982400597f191083ca3d08aaad88d41d0baf",
+ "outcomes": {
+  "change:returned": 1024,
+  "endofjob:returned": 1024,
+  "jobsleep:returned": 1024,
+  "jobwake:returned": 1024,
+  "priochng:returned": 1024,
+  "spvac:alarm": 296,
+  "spvac:returned": 728
+ },
+ "entries": [
+  "05154 SPVACIN",
+  "05160 SPVAC",
+  "05164 CHANG1",
+  "05170 CHANG2",
+  "05175 JOBSLEEP",
+  "05201 JOBWAKE",
+  "05210 PRIOCHNG",
+  "05217 ENDOFJOB"
+ ],
+ "boundary": "one routine from its entry to the continuation it leaves in Z (the caller, the selected basic job, NEWOPS for an interpretive job, ADVAN when idle, TC 014 or CCSHOLE from JOBWAKE); the original runs to the first time it reaches that Z (and FB in banked memory); alarm: BAILOUT/POODOO entry",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, channel 11",
+ "full_physical_words": 2048
+}

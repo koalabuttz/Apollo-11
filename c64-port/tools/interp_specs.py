@@ -757,4 +757,316 @@ SPECS = {
         'resume_orphans': True,
         'freeze_stride': 32,
     },
+    'lm-p40-p47': {
+        'missions': ('lm',),
+        'file': {'lm': 'P40-P47.agc'},
+        'base': {'lm': 'lm_p40_p47'},
+        'symbol': {'lm': 'lm_p40_p47'},
+        'entries': ['P40LM', 'P41LM', 'P42LM', 'P47LM', 'POSTBURN', 'TIGNOW', 'REDO6.7', 'CALCN85',
+                    'P42STAGE', 'IMPLBURN', 'ENGOFTSK', 'ENGINOF1', 'ENGINOF2', 'ENGINOF3', 'ENGINOF4',
+                    'S40.8', 'S40.13', 'TRIMGIMB', 'S40.1', 'S40.2,3', 'S40.9', 'S41.1', 'UPDATEVG',
+                    # dead code after a GOTO, kept as its own routine
+                    'S40.133'],
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
+                      '2PHSCHNG': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto',
+                      'NOVAC': 'auto', 'WAITLIST': 'auto', 'TWIDDLE': 'auto', 'FIXDELAY': 'auto',
+                      'VARDELAY': 'auto', 'PRIOCHNG': 'auto', 'TPAGREE': 'auto', 'NOULLAGE': 'auto',
+                      'POSTJUMP': 1, 'TASKOVER': None, 'ENDOFJOB': None, 'GOTOPOOH': None,
+                      'P40ALM': None, 'REDO4.2': None, 'BURNBABY': None, 'B*RNB*B*': None, 'ISWRETRN': None},
+        # P40-P47 run as jobs: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        'noreturn': ['POSTJUMP'],
+        'resume_orphans': True,
+        # WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the
+        # output-channel model.
+        'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
+        # RTB routines without a native body: the run ends at them.
+        'rtb': {'NORMUNX1': None},
+        'target': 'tests/lm_p40_p47_target.c',
+        'freeze_stride': 640,
+    },
+    'cm-r31': {
+        'missions': ('cm',),
+        'file': {'cm': 'R31.agc'},
+        'base': {'cm': 'cm_r31'},
+        'symbol': {'cm': 'cm_r31'},
+        # V83 (the extended verb), R31CALL and V83CALL (the job FINDVAC
+        # starts) enter from outside the file.
+        'entries': ['V83', 'R31CALL', 'V83CALL'],
+        'externals': {'FINDVAC': 2, 'BANKCALL': 1, 'B5OFF': 0, 'ENDEXT': None},
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/cm_r31_target.c',
+        'freeze_stride': 32,
+    },
+    'r30': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'R30.agc', 'cm': 'R30.agc'},
+        'base': {'lm': 'lm_r30', 'cm': 'cm_r30'},
+        'symbol': {'lm': 'lm_r30', 'cm': 'cm_r30'},
+        # V82 (the extended verb) and the Executive/Waitlist targets the
+        # file names itself.
+        # CANDEL (CM): CHECKMM's in-mode return, past its DEC 11.
+        'entries': {'lm': ['V82CALL', 'V82GON', 'V82GOFF1', 'TICKTEST', 'V82GON1'],
+                    'cm': ['V82CALL', 'V82GON', 'V82GOFF1', 'TICKTEST', 'V82GON1', 'CANDEL']},
+        'externals': {'BANKCALL': 1, 'WAITLIST': 2, 'FINDVAC': 2, 'NOVAC': 2, 'B5OFF': 0, 'CHANG1': 0, 'CHECKMM': 1,
+                      'ENDEXT': None, 'ENDMARK': None, 'TASKOVER': None, 'ENDOFJOB': None},
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        # GOXDSPF returns to the first, second or third word after its CADR
+        # (terminate, proceed, data in or recycle).
+        'returns': {'GOXDSPF': 3},
+        # TICKTEST's INDEX A; TC +1 on V82FLAGS bits 1-2 (A = 0 to 3).
+        'tc_tables': {'DOTICK+7': 4},
+        # BOTHSHIP's DLOAD* 1/RTMUE,2 and MINPERE,2: X2 is 0 (Earth) or
+        # 2 (Moon, the pair's first word) as THISPREC/OTHPREC leave it.
+        'fixed_index': {'1/RTMUE': [0, -2], 'MINPERE': [0, -2]},
+        'states': {'BOTHSHIP': {'vac+047': [0, 2]}, 'THISSHIP+3': {'vac+047': [0, 2]}},
+        'target': 'tests/r30_target.c',
+        # Every 128th case keeps the vectors under the 1 MB fast-checkout limit.
+        'freeze_stride': 128,
+    },
+    'cm-tpi-search': {
+        'missions': ('cm',),
+        'file': {'cm': 'TPI_SEARCH.agc'},
+        'base': {'cm': 'cm_tpi_search'},
+        'symbol': {'cm': 'cm_tpi_search'},
+        # P17 and P77 (the major modes) and TRANSANG (called from P34).
+        'entries': ['P17', 'P77', 'TRANSANG'],
+        'externals': {'BANKCALL': 1, 'AVFLAGA': 0, 'AVFLAGP': 0, 'P20FLGON': 0, 'VNPOOH': 0,
+                      'BLANKET': 0, 'ALARM': 1, 'GOTOPOOH': None, 'ENDOFJOB': None},
+        # GOFLASH returns to the first, second or third word after its CADR
+        # (terminate, proceed, enter); GOFLASHR also to the fourth at once.
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        # MUTABLE,1 and MUTABLE +2,1 with X1 -2 or -10 (the conics' AXT,1).
+        'fixed_index': {'MUTABLE': [2, 10]},
+        # The search's EBANK= RACT3 (E7): XRS (X1, X2 as the conics leave
+        # them, saved by S17.1) at E7,1745.
+        'ebank': 7,
+        'all_states': {'03745': [0o77765, 0o77775], '03746': [0, 2]},
+        # VNCOMP17's TC QSAVED (01766 under E7): one of its callers' returns.
+        'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]}},
+        'target': 'tests/cm_tpi_search_target.c',
+        'freeze_stride': 128,
+    },
+    'cm-p30-p37': {
+        'missions': ('cm',),
+        'file': {'cm': 'P30,P37.agc'},
+        'source_path': {'cm': 'P30-P37.agc'},
+        'base': {'cm': 'cm_p30_p37'},
+        'symbol': {'cm': 'cm_p30_p37'},
+        # P30 and P31 (the major modes), their displays, S30.1 and S31.1
+        # (called from P30, P31 and the targeting programs), DELRSPL (the
+        # splash error, from P37) and the flag subroutines.
+        'entries': ['P30', 'P31', 'DISPMGA', 'P30PHSI', 'COMPTGO', 'S30.1', 'S31.1', 'DELRSPL',
+                    'AUGEKUGL', 'AVFLAGA', 'AVFLAGP', 'P20FLGON'],
+        'externals': {'BANKCALL': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
+                      '2PHSCHNG': 'auto', 'WAITLIST': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        # K1K2LOOP's tables, indexed by X1 (AUGEKUGL's altitude band, 0-12).
+        'fixed_index': {lab: [-x for x in range(13)] for lab in ('V(32K)', 'YK1K2', 'CK1K2')},
+        # AVFLAGA, AVFLAGP and P20FLGON save Q in SUBEXIT (E4,1770) and
+        # return through it with EB 4 (EBANK= SUBEXIT).
+        'ebank': 4,
+        # RGEXIT (= SUBEXIT) holds a fixed return where END45's GOTO
+        # RGEXIT runs: a seeded caller return (03103) reads as an erasable
+        # CADR, and GOTO's erasable fetch can chain without end.
+        # P30/31RT (01664 under EB 4) holds a return where FLASHMGA's
+        # EXIT goes on to TC P30/31RT: GOTOPOOH or ENDOFJOB.
+        # K1K2LOOP's X1 is odd (the band index plus LOOPSET's INCR,1),
+        # LOOPSET's even; S1 is TIX's step of 2.
+        'states': {'DISP45+4': {'02370': [0o4100, 0o5000]}, 'END45+1': {'02370': [0o4100, 0o5000]},
+                   'FLASHMGA+2': {'02264': [0o4106, 0o5217]},
+                   'LOOPSET': {'vac+046': [0, 2, 4, 6, 8, 10], 'vac+050': [2]},
+                   'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
+                   'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
+        'target': 'tests/cm_p30_p37_target.c',
+        'freeze_stride': 128,
+    },
+    'cm-p32-p33': {
+        'missions': ('cm',),
+        'file': {'cm': 'P32-P33,_P72-P73.agc'},
+        'source_path': {'cm': 'P32-P33_P72-P73.agc'},
+        'base': {'cm': 'cm_p32_p33'},
+        'symbol': {'cm': 'cm_p32_p33'},
+        # P32/P72 (CSI) and P33/P73 (CDH), their displays and the CSI/CDH
+        # subroutines the other targeting programs call.
+        'entries': ['P32', 'P72', 'P33', 'P73', 'ALMXIT', 'ALMXITA', 'DISDVLVC', 'CSI/A', 'CDHMVR',
+                    'S32/33.1', 'S32/33.X', 'ROTATE', 'INTINT2C', 'INTINT3P'],
+        'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'VARALARM': 'auto', 'AVFLAGA': 'auto',
+                      'AVFLAGP': 'auto', 'P20FLGON': 'auto', 'VNPOOH': 'auto', 'UPFLAG': 'auto',
+                      'DOWNFLAG': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        # ALMXIT's alarm table, indexed by -CSIALRM (alarms 1-7).
+        # PMINE -2,1 with X1 = RTX1 (-2 earth, -10 moon) reads PMINE or
+        # PMINM, eight words on.
+        'fixed_index': {'ALARM/TB': list(range(1, 8)), 'PMINE': [2, 10]},
+        # CSIALRM (TITER) is E7,1664: EB 7, an alarm number 1-7, which
+        # ALMXITA takes from X2.
+        'ebank': 7,
+        'all_states': {'03664': list(range(1, 8)), '03745': [0o77775, 0o77765]},
+        'states': {'ALMXITA': {'vac+047': list(range(1, 8))},
+                   'CSINEXT4': {'vac+046': [0o77775, 0o77765]},
+                   # ROTATE and ADVANCE's returns push vectors: PUSHLOC low in the
+                   # VAC area, so the pushes don't run over X1-QPRET.
+                   'ROTATE': {'0166': ['vac+0', 'vac+6']},
+                   'ADVANCE+5': {'0166': ['vac+0', 'vac+6']},
+                   'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
+        # P32/P72F subtracts 60MIN until negative: hundreds of passes.
+        'self_loops': True,
+        'target': 'tests/cm_p32_p33_target.c',
+        'freeze_stride': 256,
+    },
+    'cm-p34-p35': {
+        'missions': ('cm',),
+        'file': {'cm': 'P34-P35,_P74-P75.agc'},
+        'source_path': {'cm': 'P34-35_P74-75.agc'},
+        'base': {'cm': 'cm_p34_p35'},
+        'symbol': {'cm': 'cm_p34_p35'},
+        # P34/P74 (TPI) and P35/P75 (midcourse), the S33/34.1 and S34/35.x
+        # subroutines, VN1645 and its clock, INITVEL, MIDGIM, the conic
+        # setup routines (SELECTMU, PERIAPO, PRECSET...) and R36.
+        'entries': ['P34', 'P74', 'P35', 'P75', 'S33/34.1', 'S34/35.1', 'S34/35.2', 'S34/35.3',
+                    'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
+                    'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'MIDGIM', 'GET+MGA',
+                    'MIDGIM1', 'GET.LVC', 'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE',
+                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+        'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
+                      'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
+                      'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
+                      'ENDEXT': None, 'ENDMARK': None,
+                      'VNPOOH': 0},
+        # VNPOOH switches FBANK in basic code (XCH FBANK), which the compiled
+        # basic code does not model yet: its 15 words stay with the original.
+        'outside': {'VNPOOH': 15},
+        'noreturn': ['POSTJUMP'],
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'partial': {'cm': 'VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet'},
+        # SGNAGREE (RT8_OP_CODES' TPAGREE) has no native routine yet: the
+        # RTB ends the routine there. DPMODE is src/rtb_modes.c.
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}, 'SGNAGREE': None,
+                'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # SETMUER reads MUTABLE +4,1 and -2,1 with X1 -2 (earth) or -10
+        # (moon), as SELECTMU's AXC,1 sets it.
+        'fixed_index': {'MUTABLE': [2, 10]},
+        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        'target': 'tests/cm_p34_p35_target.c',
+        'freeze_stride': 512,
+    },
+    'cm-p37-p70': {
+        'missions': ('cm',),
+        'file': {'cm': 'P37,P70.agc'},
+        'source_path': {'cm': 'P37_P70.agc'},
+        'base': {'cm': 'cm_p37_p70'},
+        'symbol': {'cm': 'cm_p37_p70'},
+        # P37/P70 (return to earth): the program, its displays and the
+        # RTE subroutines (TMRAD, RTEDISP, INVC, PREC, RTENCK, V2T, GAMDV,
+        # DVCALC, XT1LIM).
+        'entries': ['P37', 'P370ALRM', 'TMRAD100', 'RTEDISP', 'INVC100', 'PREC100', 'RTENCK1',
+                    'RTENCK2', 'RTENCK3', 'V2T100', 'GAMDV10', 'DVCALC', 'XT1LIM'],
+        'externals': {'BANKCALL': 'auto', 'PHASCHNG': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None, 'POLY': 'auto', 'BLANKET': 'auto', 'VARALARM': 'auto', 'POODOO': None},
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'rtb': {'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}, 'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # GAMDV's iteration (GAMDV25 through GAMDV65, with DVCALC) runs up to
+        # 144 passes of about eight routines each, and V2T's own iteration
+        # calls it again on each of its passes.
+        'max_steps': 10000,
+        # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
+        'index_returns': True,
+        # EBANK= RTEDVD: the RTE temporaries are E7 words.
+        'ebank': 7,
+        # NN2 (E7,1731), GAMDV's pass count, from -144 up to 0: small
+        # negatives (and +0 high words), so a case runs a few passes.
+        # QPRET holds a CADR outside the file where a routine's STQ saves
+        # it (a random one can name the middle of a routine here).
+        'all_states': {'03731': [0o77777, 0], '03732': [0o77776, 0o77700, 0o77557],
+                       '0117': [0o4100, 0o5000],
+                       # PUSHLOC low: pushes stay below 20D and 31D-33D, the saved
+                       # returns of XT1LIM, GAMDV10, DVCALC and V2T100.
+                       '0166': ['vac+0', 'vac+6']},
+        # P370ALRM's GOTO SPRTEX takes it as a CADR (STQ saved it), where
+        # basic code's TC SPRTEX takes it as an address.
+        # GAMDV30 stores MPAC (NN2 +1) as the pass count: small too.
+        'states': {'P370ALRM+9': {'03762': [0o4100, 0o5000]}, 'P370ALRM+10': {'03762': [0o4100, 0o5000]},
+                   'GAMDV30': {'0154': [0o77777, 0], '0155': [0o77776, 0o77700, 0o77557]},
+                   # (CALL XT1LIM's return) pushes four scalars: in vector mode
+                   # they would run over XT1LIM's 20D.
+                   'V2T101+51': {'0163': [0, 1]}},
+        'target': 'tests/cm_p37_p70_target.c',
+        'freeze_stride': 256,
+    },
+    'lm-p34-p35': {
+        'missions': ('lm',),
+        'file': {'lm': 'P34-P35,_P74-P75.agc'},
+        'source_path': {'lm': 'P34-35_P74-75.agc'},
+        'base': {'lm': 'lm_p34_p35'},
+        'symbol': {'lm': 'lm_p34_p35'},
+        # Luminary's P34/P74 and P35/P75, as cm-p34-p35: S33/34.1,
+        # S34/35.x, VN1645, INITVEL, the MGA and conic setup routines, R36.
+        'entries': ['P34', 'P74', 'P35', 'P75', 'S33/34.1', 'S34/35.1', 'S34/35.2', 'S34/35.3',
+                    'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
+                    'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'GET+MGA', 'GET.LVC',
+                    'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE', 'CSMSTORE',
+                    'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+        'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
+                      'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
+                      'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
+                      'ENDEXT': None, 'ENDMARK': None, 'VNPOOH': 0},
+        'noreturn': ['POSTJUMP'],
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}, 'SGNAGREE': None,
+                'DPMODE': {'lm': 'rtb_dpmode(s,io,RTB_LM)'}, 'TPMODE': {'lm': 'rtb_tpmode(s,io,RTB_LM)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        'fixed_index': {'MUTABLE': [2, 10]},
+        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        # RTX1 and RTX2 (E5,1776-1777): -2 and 0 for the earth, -10 and 2
+        # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
+        'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},
+        'target': 'tests/lm_p34_p35_target.c',
+        'freeze_stride': 512,
+    },
+    'lm-p32-p35': {
+        'missions': ('lm',),
+        'file': {'lm': 'P32-P35,_P72-P75.agc'},
+        'source_path': {'lm': 'P32-P35_P72-P75.agc'},
+        'base': {'lm': 'lm_p32_p35'},
+        'symbol': {'lm': 'lm_p32_p35'},
+        # Luminary's P32/P72 (CSI) and P33/P73 (CDH) with their displays,
+        # the flag subroutines, the CSI search, S32/33.1, S32/33.X, CDHMVR,
+        # ROTATE, INTINT2C/3P and COMPTGO.
+        'entries': ['P32', 'P72', 'P33', 'P73', 'ALMXIT', 'ALMXITA', 'AVFLAGA', 'AVFLAGP',
+                    'P20FLGON', 'DISDVLVC', 'CSI/A', 'CDHMVR', 'S32/33.1', 'S32/33.X', 'ROTATE',
+                    'INTINT2C', 'INTINT3P', 'COMPTGO'],
+        'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'VARALARM': 'auto', 'VNPOOH': 'auto',
+                      'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'WAITLIST': 'auto', '2PHSCHNG': 'auto',
+                      'PHASCHNG': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        # ALMXIT's alarm table, indexed by -CSIALRM (alarms 1-7); PMINE
+        # -2,1 with X1 = RTX1 (-2 earth, -10 moon).
+        'fixed_index': {'ALARM/TB': list(range(1, 8)), 'PMINE': [2, 10]},
+        # SUBEXIT and CSIALRM (TITER) are E7 words (E7,1470 and 1613).
+        'ebank': 7,
+        'all_states': {'03613': list(range(1, 8)), '02776': [0o77775, 0o77765], '02777': [0, 2]},
+        'states': {'ALMXITA': {'vac+047': list(range(1, 8))},
+                   'ROTATE': {'0166': ['vac+0', 'vac+6']},
+                   'ADVANCE+5': {'0166': ['vac+0', 'vac+6']},
+                   'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
+        'self_loops': True,
+        'target': 'tests/lm_p32_p35_target.c',
+        'freeze_stride': 256,
+    },
 }

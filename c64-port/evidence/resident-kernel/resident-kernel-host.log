@@ -1,0 +1,6 @@
+PASS: src/lm_kernel_labels.inc matches the Luminary099 listing
+PASS: src/cm_kernel_labels.inc matches the Comanche055 listing
+PASS: resident-kernel lm: services 9170/9170 (38 refused by the certified routines) jobs 9216/9216 (0 refused by the certified routines) idle 4864/4864 (0 refused by the certified routines); 400 C64 rows; 46900 checks, 0 failures
+PASS: resident-kernel cm: services 7522/7522 (126 refused by the certified routines) jobs 6144/6144 (0 refused by the certified routines) idle 5120/5120 (0 refused by the certified routines); 329 C64 rows; 37901 checks, 0 failures
+PASS: resident-kernel lm: services 9170/9170 (38 refused by the certified routines) jobs 9216/9216 (0 refused by the certified routines) idle 4864/4864 (0 refused by the certified routines); 400 C64 rows; 46900 checks, 0 failures
+PASS: resident-kernel cm: services 7522/7522 (126 refused by the certified routines) jobs 6144/6144 (0 refused by the certified routines) idle 5120/5120 (0 refused by the certified routines); 329 C64 rows; 37901 checks, 0 failures

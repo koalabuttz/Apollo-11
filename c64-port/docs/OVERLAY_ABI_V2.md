@@ -96,10 +96,16 @@ The resident holds the Executive and WAITLIST kernel, SPSIN/SPCOS, the
 fixed-fixed constants, the ABI 2 runtime and REU store, IRQ entry and device
 adapters. INTER-BANK_COMMUNICATION and INTERRUPT_LEAD_INS turn into the
 trampoline/resolver and the native IRQ entry rather than translated bodies.
-PHASE_TABLE_MAINTENANCE moves to the task slot. At the mid estimate that is
-24.0 to 24.6 KB against 25.7 KB of capacity. The Executive is already about
-17 KB at today's translation density, so **Lane A must keep resident code to
-roughly 16 bytes per AGC word or move cold paths into modules**. The resident
+PHASE_TABLE_MAINTENANCE moves to the task slot. The disk loader and the REU
+store verify run at boot only and are not resident.
+
+**The resident Executive and WAITLIST is a thin kernel** (David, 2026-10-13).
+The certified exec-closure routines measure 54-56 KB per mission (92 bytes per
+AGC word), because of their gather/commit and scope-refusal layers; they stay
+as the kernel's test oracle, not as resident code. The thin kernel (the LM
+`executive.c` + `waitlist.c` measure 7.6 KB) runs at 12-19 bytes per word, so
+the resident projects to 20.5-21.0 KB at the mid estimate and at most 23.7 KB
+at the high one, against 25.7 KB (`tools/overlay_allocation.py`). The resident
 linker script enforces the ceiling (`overlay_v2_resident.ld`).
 
 ## Module store
@@ -263,7 +269,12 @@ Estimated modules per lane at the mid expansion (job + task slots):
 | G | — | 11 + 13 |
 
 These are budgets, not targets. A lane replaces its estimate with measured
-module sizes as modules land. The per-routine placement inside a file belongs to
+module sizes as modules land.
+
+The REU above `0x1c0000` is reserved for the two rope images
+(`include/rope_image.h`). The generator fails when either mission's high module
+store estimate crosses that limit (today about 1.25 MB of the 1.75 MB below
+it). The per-routine placement inside a file belongs to
 the lane, under one rule: anything entered at interrupt level is a task-slot
 body.
 

@@ -1,0 +1,6 @@
+python3 tools/keyrupt_uprupt_freeze.py
+PASS: 1536 LM and 1536 CM keyrupt-uprupt cases equal the original programs
+python3 tools/keyrupt_uprupt_source_map.py
+PASS: 68 assembled lines of Luminary099/KEYRUPT_UPRUPT.agc (69 words); every reachable instruction executed by the original program in the keyrupt-uprupt oracle run; native bank and targets equal the assembled words
+PASS: 67 assembled lines of Comanche055/KEYRUPT_UPRUPT.agc (68 words); every reachable instruction executed by the original program in the keyrupt-uprupt oracle run; native bank and targets equal the assembled words
+git diff --exit-code -- tests/keyrupt_uprupt_vectors.h tests/keyrupt_uprupt_c64_vectors.h

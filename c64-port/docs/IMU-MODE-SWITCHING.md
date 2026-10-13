@@ -68,11 +68,11 @@ Hashes: `evidence/imu-mode-switching/SHA256.json`. Bulk files are assets of the 
   | Cohort | Cases | Stops reached |
   |---|---|---|
   | Entry runs, 144 routines x 384 states | 55,296 | every external above, the subroutine return, the STRTGYR2 erasable targets 0100, 0202 and 0302 |
-  | Round trips: every genuine `TC BANKCALL`/`TC IBNKCALL` site whose CADR is one of these routines (Luminary 74, Comanche 54) x 64 | 8,192 | caller continuation 1,255; BAILOUT1, POODOO, ALARM, VARALARM, UPFLAG, WAITLIST, JOBSLEEP, JOBWAKE 5,913; SETISSW 96; INTER-BANK gap 928 |
+  | Round trips: every genuine `TC BANKCALL`/`TC IBNKCALL` site whose CADR is one of these routines (Luminary 74, Comanche 54) x 64 | 8,192 | caller continuation 2,183; BAILOUT1, POODOO, ALARM, VARALARM, UPFLAG, WAITLIST, JOBSLEEP, JOBWAKE 5,913; SETISSW 96 |
 
   States are drawn inside each routine's domain. They cover every CCS class of LGYRO, MODECADR and MPAC, odd and even STRTGYRO steps, small gyro and coarse-align commands, CDUs within a few bits of THETAD, SCALPREP's genuine retry returns, and every EB and superbank.
 
-  **INTER-BANK gap.** INTER-BANK_COMMUNICATION's native context refuses SWRETURN and ISWRETRN with Q outside 0100-07775. The original reaches them with Q 3 after `TC Q`, for example CAGETSTQ's `TCF SWRETURN`, and the IBNKCALL returns of SETCOARS and RNDREFDR. Until that fix merges (the CM flight lane has it), a round trip stops at SWRETURN or ISWRETRN entered with such a Q, in both programs (`ims_interbank_gap()`). The stop is compared like any other.
+  **SWRETURN after `TC Q`.** The original reaches SWRETURN and ISWRETRN with Q 3 after `TC Q`, for example CAGETSTQ's `TCF SWRETURN`, and the IBNKCALL returns of SETCOARS and RNDREFDR. INTER-BANK_COMMUNICATION's native SWRETURN and ISWRETRN do not read Q and accept it, so those 928 round trips run on to the caller continuation in both programs.
 
   Results: `evidence/imu-mode-switching/imu-mode-switching-proof.json`.
 - **Host and sanitizer results.** `make test-imu-mode-switching sanitize-imu-mode-switching` (`evidence/imu-mode-switching/imu-mode-switching-host.log`) checks:

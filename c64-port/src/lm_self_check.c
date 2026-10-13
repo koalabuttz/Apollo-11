@@ -2,6 +2,7 @@
 /* Luminary099 AGC_BLOCK_TWO_SELF-CHECK (43,3232-3723): src/self_check_body.inc
  * with Luminary099's addresses and constants. */
 #include "self_check.h"
+/* Defines the agc_routine_table lm_self_check_routines (src/self_check_body.inc). */
 #include "lm_self_check_operands.inc"
 #define SC_MISSION 0u
 #define SC_IO p66_bias_io

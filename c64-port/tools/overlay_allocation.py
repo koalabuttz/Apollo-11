@@ -24,18 +24,30 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 MISSIONS = ('Luminary099', 'Comanche055')
 
-# Native bytes per AGC word. Low comes from PHASCHNG (~131 words, 2,169
-# bytes in cm-clock-display-overlay-2.map); high from the resident Executive
-# (EXECUTIVE.agc ~366 words, ~15 KB of exec_* text in p66-resident-outlined.map).
+# Native bytes per AGC word for modules. Low comes from PHASCHNG (~131 words,
+# 2,169 bytes in cm-clock-display-overlay-2.map). High (40) was once read off
+# p66-resident-outlined.map, but about 80% of that "exec_*" text is the
+# trampoline and the IRQ queue; keep it as a module-store bound only.
 EXPANSION = dict(low=16, mid=25, high=40)
+# The resident is the thin kernel (David, 2026-10-13): the certified
+# exec-closure routines measure 92 B/word (54-56 KB per mission), too big for
+# the resident; the thin kernel (executive.c + waitlist.c, 7.6 KB for ~612
+# words) measures 12-19 B/word.
+RESIDENT_EXPANSION = dict(low=12, mid=16, high=20)
 DATA_BYTES_PER_WORD = 2.5
 SLOT_FILL = 0.75              # usable fraction of a slot after seams and helpers
 SLOT_BYTES = dict(job=0x4000, task=0x1FFA)
 # Resident code and data below the $6F00 service table.
 RESIDENT_BYTES = 0x6F00 - 0x0801
-# Disk loader (apollo_overlay_call, measured 2,630), ABI 2 runtime and REU
-# store (estimate), IRQ entry and device adapters (estimate).
-RESIDENT_PLATFORM = 2630 + 1600 + 3000
+# ABI 2 runtime and REU store (measured 6,110 without the boot-only
+# apollo_reu_store_verify), exported services (749), IRQ entry and device
+# adapters (estimate). The disk loader (2,630) and REU verify (1,965) run at
+# boot only and are not resident.
+RESIDENT_PLATFORM = 6110 + 749 + 3000
+# The 2 MB REU's top 256 KB holds both missions' rope images (Luminary099 at
+# 0x1c0000, Comanche055 at 0x1e0000; include/rope_image.h), so the module
+# store must end below it even at the high estimate.
+REU_STORE_LIMIT = 0x1c0000
 
 NOWORD = {'EQUALS', '=', 'ERASE', 'SETLOC', 'BANK', 'COUNT', 'COUNT*', 'BLOCK', 'EBANK=', 'SBANK=',
           'MEMORY', 'SUBRO', 'BNKSUM', '=MINUS', '=ECADR', 'CHECK=', 'EQUALS*'}
@@ -162,7 +174,8 @@ def native_bytes(words, placement):
         return {level: 0 for level in EXPANSION}
     if placement in ('data', 'resident-data'):
         return {level: round(words * DATA_BYTES_PER_WORD) for level in EXPANSION}
-    return {level: words * factor for level, factor in EXPANSION.items()}
+    factors = RESIDENT_EXPANSION if placement == 'resident' else EXPANSION
+    return {level: words * factor for level, factor in factors.items()}
 
 
 def plan():
@@ -205,8 +218,9 @@ def plan():
                              store_bytes=store, resident_bytes=resident,
                              resident_capacity=RESIDENT_BYTES, files=files))
     return dict(schema_version=1, abi=2,
-                expansion_bytes_per_word=EXPANSION, data_bytes_per_word=DATA_BYTES_PER_WORD,
-                slot_bytes=SLOT_BYTES, slot_fill=SLOT_FILL,
+                expansion_bytes_per_word=EXPANSION, resident_bytes_per_word=RESIDENT_EXPANSION,
+                data_bytes_per_word=DATA_BYTES_PER_WORD,
+                slot_bytes=SLOT_BYTES, slot_fill=SLOT_FILL, reu_store_limit=REU_STORE_LIMIT,
                 lane_module_id_high_byte=dict(A=1, B=2, C=3, D1=4, D2=5, E=6, F=7, G=8, H=9, proof=15),
                 missions=missions)
 
@@ -226,6 +240,10 @@ def main():
             print(f"  {placement:13s} {t['files']:3d} files {t['words']:6d} words  mid {t['bytes']['mid'] / 1024:7.1f} KB")
         for lane, l in sorted(m['lanes'].items()):
             print(f"  lane {lane:3s} {l['files']:3d} files {l['words']:6d} words  ~{int(l['job_modules_mid'])} job + {int(l['task_modules_mid'])} task modules (mid)")
+    over = [m['mission'] for m in result['missions'] if m['store_bytes']['high'] > REU_STORE_LIMIT]
+    if over:
+        raise SystemExit(f"{', '.join(over)}: high module store estimate crosses the "
+                         f"reserved rope images at REU {REU_STORE_LIMIT:#x}")
 
 
 if __name__ == '__main__':

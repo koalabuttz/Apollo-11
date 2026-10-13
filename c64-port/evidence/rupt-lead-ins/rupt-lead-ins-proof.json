@@ -1,0 +1,73 @@
+{
+ "lm": {
+  "mission": "Luminary099",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "cases": 1152,
+  "snapshot_sha256": "a71967a1d5c8baed2d8f4ab85f9ef062f5ee13d5c0a0b5b33fdca98470d04845",
+  "outcomes": {
+   "04000 GOPROG lead-in:returned": 128,
+   "04010 T5RUPT:returned": 128,
+   "04020 T4RUPT:returned": 128,
+   "04024 KEYRUPT1:returned": 128,
+   "04030 KEYRUPT2:returned": 128,
+   "04034 UPRUPT:returned": 128,
+   "04040 DOWNRUPT:returned": 128,
+   "04044 RADAR RUPT:returned": 128,
+   "04050 RUPT10:returned": 128
+  },
+  "entries": [
+   "04000 GOPROG lead-in",
+   "04010 T5RUPT",
+   "04020 T4RUPT",
+   "04024 KEYRUPT1",
+   "04030 KEYRUPT2",
+   "04034 UPRUPT",
+   "04040 DOWNRUPT",
+   "04044 RADAR RUPT",
+   "04050 RUPT10"
+  ]
+ },
+ "cm": {
+  "mission": "Comanche055",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "cases": 1920,
+  "snapshot_sha256": "93e4fd14e943db96d85d2e83a12a91f41ecb4df66157655f00ce9088a9e054e4",
+  "outcomes": {
+   "04000 GOPROG lead-in:returned": 128,
+   "04004 T6RUPT:returned": 128,
+   "04010 T5RUPT:returned": 128,
+   "04020 T4RUPT:returned": 128,
+   "04024 KEYRUPT1:returned": 128,
+   "04030 KEYRUPT2:returned": 128,
+   "04034 UPRUPT:returned": 128,
+   "04040 DOWNRUPT:returned": 128,
+   "04044 RADAR RUPT:returned": 128,
+   "04050 HAND CONTROL RUPT:returned": 128,
+   "04065 T5RUPT:returned": 128,
+   "05333 RESUME:returned": 128,
+   "05335 NOQRSM:returned": 128,
+   "05336 NOQRSM +1:returned": 128,
+   "05337 NOQBRSM:returned": 128
+  },
+  "entries": [
+   "04000 GOPROG lead-in",
+   "04004 T6RUPT",
+   "04010 T5RUPT",
+   "04020 T4RUPT",
+   "04024 KEYRUPT1",
+   "04030 KEYRUPT2",
+   "04034 UPRUPT",
+   "04040 DOWNRUPT",
+   "04044 RADAR RUPT",
+   "04050 HAND CONTROL RUPT",
+   "04065 T5RUPT",
+   "05333 RESUME",
+   "05335 NOQRSM",
+   "05336 NOQRSM +1",
+   "05337 NOQBRSM"
+  ]
+ },
+ "boundary": "one lead-in from its vector to the handler it leaves in Z (the GOPROG restart, the banked handler, the 2CADR target, or NOQBRSM); the original runs to the first time it reaches that Z (and FB in banked memory), or for the Comanche RESUME family until the interrupt ends",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr",
+ "full_physical_words": 2048
+}

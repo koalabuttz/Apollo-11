@@ -1,0 +1,6 @@
+python3 tools/vice_run.py build/t4rupt-core.prg --cycles 3000000000 --timeout 1200
+PASS: VICE PAL t4rupt-core.prg: 276 checks, 0 failures
+
+real	2m7.655s
+user	2m6.276s
+sys	0m0.092s

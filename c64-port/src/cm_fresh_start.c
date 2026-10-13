@@ -57,12 +57,13 @@ static agc_word *channel(cm_fresh_io *x,agc_word c){
 }
 /* yaAGC CpuWriteIO: channel 13 bits 12-14 arm the HANDRUPT traps and do not
  * stay in the channel; a write to channel 33 only resets its latched bits
- * 11-15 to 1. */
+ * 11-15 to 1, but the AGC warning latch (bit 14) sets again at once while
+ * the warning condition persists. */
 static int write_channel(cm_fresh_io *x,agc_word c,agc_word v){
  agc_word *ch=channel(x,c);
  if(!ch)return 0;
  if(c==013u){if(v&004000u)x->control.trap31a=1u;if(v&010000u)x->control.trap31b=1u;if(v&020000u)x->control.trap32=1u;v&=043777u;}
- if(c==033u)v=(agc_word)(*ch|076000u);
+ if(c==033u){v=(agc_word)(*ch|076000u);if(x->warning)v&=(agc_word)~020000u;}
  *ch=v;return 1;
 }
 /* EXTEND; WRITE/WOR/WAND/RAND/ROR/READ k. */

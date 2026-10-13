@@ -72,6 +72,8 @@ enum cm_wl_status cm_waitlist_extended(apollo_overlay_state *s,cm_native_io *io,
  a=add(a,delay);cls=reg_kind(a);a=dabs(a);
  if(cls==AGC_POSITIVE){a=add(a,w.interval[0]);
   for(slot=1;slot<CM_WL_TASK_COUNT;++slot){cls=reg_kind(a);a=dabs(a);if(cls==AGC_NEGATIVE||cls==AGC_MINUS_ZERO||slot==CM_WL_INTERVAL_COUNT)break;if(cls==AGC_POSITIVE)a=add(a,w.interval[slot]);}
+  /* The last WTLST5 CCS sees +0: the source executes the erasable word 01203 (TC 1203). */
+  if(slot==CM_WL_INTERVAL_COUNT&&cls==AGC_PLUS_ZERO)return CM_WL_SOURCE_OVERFLOW;
   if(slot==CM_WL_TASK_COUNT||(slot==CM_WL_INTERVAL_COUNT&&cls==AGC_POSITIVE)){s->words[061]=twiddle?agc_correct(add(caller,AGC_MASK-1u)):caller;s->words[062]=bank;s->words[063]=task.location;s->words[0]=a;s->words[1]=agc_extend(task.bank);s->words[2]=03376;s->words[3]=01400;s->words[4]=02000;s->words[6]=02003;s->words[5]=07755;io->interrupt_enabled=0;return CM_WL_FULL;}
   if(cls==AGC_NEGATIVE||cls==AGC_PLUS_ZERO)a=add(a,1);
   temp=agc_correct(a);
