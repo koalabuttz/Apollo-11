@@ -2572,7 +2572,47 @@
           "scope": "Every word of the file (882 words): P32/P72 (CSI), P33/P73 (CDH), the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C and INTINT3P, as 128 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P32-P33.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p32-p33 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
+          "AVFLAGA, AVFLAGP, P20FLGON, VNPOOH and TC GOTOPOOH",
+          "ALARM and VARALARM with their alarm codes",
+          "ACTIVE, INTINT, NORMEX, PASSIVE, PERIAPO, PRECSET, S33/34.1, SELECTMU, SHIFTR1, TIMETHET, VECSHIFT and VN1645 through CALL, STCALL or GOTO (interpretive), and SUBEXIT",
+          "The interpreter exits POODOO and ALARM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-source-map.json",
+            "sha256": "7a7f5ce7edf4be1c26e30093879203c37a01ea9b7fe2a805dd67e7722ea17f4c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-proof.json",
+            "sha256": "8116c22ece4ac3de32648e5fdb7c107b2c119100bc819e6c1d8a7a7fc670e128"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-host.log",
+            "sha256": "d10b1850ec53de4dc68d3d6a78f8ff913e483da7a3aa150323b3b1512558ce86"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-vice.log",
+            "sha256": "add9e826c159a2b666fb4a161270014da59eeedc941f575ce45d3b8461a6f6b8",
+            "vice_targets": {
+              "vice-cm-p32-p33": 477
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-c64-cover.json",
+            "sha256": "b085f0fd3795528963567d5778027f00f92003c326544a51e436941f27acc95f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P34-35_P74-75.agc",
