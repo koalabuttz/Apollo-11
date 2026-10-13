@@ -24,7 +24,7 @@ Lane F. Milestone `lm-burn-baby`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 
 Nothing is left in the file.
 
-`src/lm_burn_baby.c` registers 160 basic and 4 interpretive routines
+`src/lm_burn_baby.c` registers 160 basic and 14 interpretive routines
 (`lm_burn_baby_routines`, `lm_burn_baby_interpretive`). One step machine
 runs from each key (Z, or LOC at NEWOPS for an interpretive key) through the
 file's basic code, its interpretive code and the interpreter, until control
@@ -54,7 +54,10 @@ The keys are every label that is code and every return point of a call to
 another file. A call with several returns gets a key for each one: CHECKMM's
 two, GOFLASH's, CLOCPLAY's and REFLASH's three, and GOPERF1's. The
 interpretive keys are LOC `36,2157`, `2163` and `2175` (the returns of
-INITCDUW, CSMPREC and MUNGRAV) and GOMIDAV `36,2200`. MIDTOAV1's two returns
+INITCDUW, CSMPREC and MUNGRAV), GOMIDAV `36,2200`, the first pair after each `TC INTPRET` (`36,2152` and
+`2233`), and every word after a DANZIG, where the Executive resumes a job
+that CHANG2 suspended: `36,2155`, `2166`, `2167`, `2171`, `2173`, `2177`,
+`2235` and `2236`. MIDTOAV1's two returns
 are basic keys at `36,2202` and `2203`.
 
 The runs end at:
@@ -120,13 +123,18 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 - P40AUTO's and STCLOK3's `TS` of MAKECADR's result, and KILLTSK2's
   `TS ITEMP3`, with overflow in A. MAKECADR's CADR and KILLTASK's `CA 0`
   never overflow, and with overflow the TS would skip.
+- KILLTSK2's `INDEX L` (ADRSCAN, TSTFBANK, KILLDEAD) with L above 16. ZL
+  and LETITLIV keep L at 0-16; a larger L (DEAD's DTCB to a word of this
+  file with the caller's BBANK in L) would carry into the opcode in the
+  AGC, and an odd L would never reach LSTLIM (#147). It cannot happen in
+  flight, where ITEMP1 is the caller's return outside the file.
 - a CCS of a MASK result that is negative (P42IGN, IGNITE, P40A/P), which
   cannot happen;
 - a missing io record or undo image.
 
 ## Verification
 
-`tests/lm_burn_baby_cases.c` builds 20,992 cases, 128 for each of the 164
+`tests/lm_burn_baby_cases.c` builds 22,272 cases, 128 for each of the 174
 keys. Each case starts from a random image with FB the key's bank (KILLTASK:
 a caller's bank and Q its CADR in seven eighths of the states).
 
@@ -141,7 +149,8 @@ a caller's bank and Q its CADR in seven eighths of the states).
 - Q and ITEMP1 are transfer destinations in switched fixed or fixed-fixed
   below the interpreter.
 - The caller's BBANK at KILLTSK2 (L, or ITEMP2 past its entry) names a bank
-  2-37. L counts the waitlist pairs past ADRSCAN's entry.
+  2-37. L counts the waitlist pairs past ADRSCAN's entry, and is any word
+  in a sixteenth of the states (#147).
 - In half the KILLTASK and KILLTSK2 states the waitlist holds the CADR's
   task, so KILLDEAD runs.
 - At P40A/P's return from G+N,AUTO, A is +0, -0, positive or negative in
@@ -161,14 +170,16 @@ a caller's bank and Q its CADR in seven eighths of the states).
   `TC P40/RET` on their way. At NEWOPS, the boundary is the file's
   words.
 - The native snapshot must be byte-identical for every case the routines
-  accept: 20,442, with 550 refused. The comparison covers all 2,048
+  accept: 21,676, with 596 refused. The comparison covers all 2,048
   erasable words, channels 11, 14 and 30 and the interrupt-enable bit.
 - The digests are frozen into `tests/lm_burn_baby_vectors.h`.
 - `tools/lane_f_c64_rows.py` chooses the C64 rows
-  (`tests/lm_burn_baby_c64_vectors.h`, 224 cases). It first takes every key,
-  outcome, path and basic block of `src/lm_burn_baby.c` the host cases take
-  (221 cases), then a stride of 97. The header has each PRG's rows on its
-  own. The counts are in `evidence/lm-burn-baby/lm-burn-baby-c64-cover.json`.
+  (`tests/lm_burn_baby_c64_vectors.h`, 267 cases). For each PRG it takes,
+  from the cases that PRG runs as the whole file does, every key, outcome,
+  path and control-flow edge of every linked source (clang
+  `-fsanitize-coverage=edge,trace-pc-guard`) that those host cases take. The
+  header has each PRG's rows on its own. No case reaches the other PRG's
+  code. The counts are in `evidence/lm-burn-baby/lm-burn-baby-c64-cover.json`.
 - The proof (`evidence/lm-burn-baby/lm-burn-baby-proof.json`) counts where
   each key's cases leave the file, and the refusals per key.
 
@@ -181,8 +192,8 @@ taken, and the refusals.
 whole file does not fit C64 RAM:
 
 - group 2 (`LMBB_C64_GROUP=2`) registers the bank-17 and bank-35 routines
-  with their code (20 rows);
-- group 1 registers bank 36, KILLTSK2 and KILLTASK (204 rows).
+  with their code (21 rows);
+- group 1 registers bank 36, KILLTSK2 and KILLTASK (246 rows).
 
 Both are built without inlining, with the image and the undo image in the
 RAM under KERNAL ($E000, $F000; ROM banked out). The build fails if code or

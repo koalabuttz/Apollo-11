@@ -41,6 +41,8 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               migration), or when no manifest is available (#127).
   domain      no open item ("pending", "follow-up") in a certificate's text (#77
               #84), and every cited native file exists (#51).
+  revision    reviewed_all_source_paths and the pinned source_revision, the
+              rule tools/port_coverage.py applies to a complete certificate.
 
 Calls between files certified together (one source map or comparison record,
 IMU_PERFORMANCE_TEST_2/TESTS_4) are internal. On a certificate already flipped
@@ -78,6 +80,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 REPOSITORY = ROOT.parent
 INVENTORY = 'docs/port-coverage.json'
 FACTS = ROOT / 'tools/cert_precheck_facts.json'
+sys.path.insert(0, str(ROOT / 'tools'))
+from port_coverage import BASE  # noqa: E402
 MISSIONS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
 CATEGORIES = ('source_to_native_map', 'independent_assembly_comparison',
               'host_and_sanitizer_results', 'c64_execution_results')
@@ -284,7 +288,7 @@ def code_rows(path):
 
 
 def write_facts(check):
-    facts = {'source_revision': '911e5c0283c629c50cb97666f34065e8c07d71a5', 'missions': {}}
+    facts = {'source_revision': BASE, 'missions': {}}
     for mission in MISSIONS:
         base = ROOT / 'build/fixed-data' / mission
         listing = base / 'assembly.lst'
@@ -599,6 +603,13 @@ def check_text(report, label, certificate):
                        'a complete certificate cannot carry open work (#77, #84); finish it or keep the file partial')
 
 
+def check_revision(report, label, certificate):
+    if certificate.get('reviewed_all_source_paths') is not True or certificate.get('source_revision') != BASE:
+        report.add('FAIL', label, f'source_revision {certificate.get("source_revision")!r}, reviewed_all_source_paths '
+                   f'{certificate.get("reviewed_all_source_paths")!r}: tools/port_coverage.py fails the flip',
+                   f'review every source path at the pinned revision {BASE} and say so')
+
+
 def native_files(entry, certificate):
     """The certificate's native sources: those its source map names, else the entry's."""
     found = []
@@ -863,6 +874,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             documentation = (certificate or {}).get('qualification_kind') == 'documentation_preservation' or \
                 'review_scope' in (certificate or {})
             if certificate:
+                check_revision(report, label, certificate)
                 check_manifest(report, label, path, certificate, manifest)
             if certificate and not documentation:
                 check_evidence(report, label, certificate, fetch_missing)

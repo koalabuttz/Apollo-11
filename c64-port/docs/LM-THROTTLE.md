@@ -102,10 +102,12 @@ Hashes: `evidence/lm-throttle/SHA256.json`; all four files are kept in the tree.
 - **C64 execution results.** `make vice-lm-throttle`
   (`evidence/lm-throttle/lm-throttle-vice.log`, which records the PRG's
   SHA-256) runs the 256 C64 rows through the trampoline in VICE against the
-  frozen digests: every entry, outcome and branch the host cases take.
+  frozen digests: every entry, outcome, path and edge the host cases take.
   `tools/lane_f_c64_rows.py` chooses the C64 rows
   (`tests/lm_throttle_c64_vectors.h`, 256 cases). It runs every host case with
-  branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
-  until every entry, outcome and branch the host cases take is taken
-  (8 cases), then spreads the rest with a stride of 97. The per-branch
-  host and C64 counts are in `evidence/lm-throttle/lm-throttle-c64-cover.json`.
+  its path counters on and every linked source built with clang
+  `-fsanitize-coverage=edge,trace-pc-guard` (`tools/lane_f_path_trace.c`), and
+  takes, greedily, cases until every entry, outcome, counted path and
+  control-flow edge the host cases take is taken (8 cases), then spreads the
+  rest with a stride of 97. The per-path and per-edge host and C64 counts are
+  in `evidence/lm-throttle/lm-throttle-c64-cover.json`.

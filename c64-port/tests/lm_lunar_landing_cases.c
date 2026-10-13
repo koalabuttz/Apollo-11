@@ -16,8 +16,8 @@ static int in_code(uint16_t ph){
 int lld_leaves(agc_word z,agc_word fb,agc_word superbank,agc_word loc,agc_word bankset){
  uint16_t ph;
  /* A TC Q on its way, or the interpreter's erasable instructions (the
-  * BUF2 / ADDRWD transfers, and UNIT's TC A). */
- if(z<02000u)return !(z==0u||z==2u||z==0133u||z==0137u||z==0141u||z==0156u);
+  * BUF2 / ADDRWD transfers, UNIT's TC A and TPAGREE's TC L). */
+ if(z<02000u)return !(z==0u||z==1u||z==2u||z==0133u||z==0137u||z==0141u||z==0156u);
  if(z==NEWOPS)return !in_code(agc_fixed_physical(loc,bankset,superbank));
  if(z>=04621u&&z<=04630u)return 0;   /* SWCALL, after RTB */
  if(z>=06037u&&z<=07707u)return 0;   /* the interpreter */
@@ -60,6 +60,9 @@ void lld_input(apollo_overlay_state *m,lld_case *c,uint16_t n){
   W[03626u]=W[03627u]=W[03630u]=W[03631u]=0;
   if(v%3u==2u)for(i=0;i<6u;++i)W[03526u+i]=0;}
  if(ph==032u*1024u+01215u&&v%4u==1u)for(i=0;i<6u;++i)W[02630u+i]=0;
+ /* ABS DSU DDUMCRIT; BMN at 32,3141: |DDUM| exactly DDUMCRIT (2DEC +8 B-28),
+  * either sign, in DP mode in a twelfth of the states, for BMN's zero outcome. */
+ if(ph==032u*1024u+01141u&&v%12u==0u){int neg=below(&seed,2u)!=0;W[0154]=neg?077777u:0u;W[0155]=neg?077767u:010u;W[0156]=0u;}
  if(r<LLD_BASIC_ROUTINES){W[5]=(agc_word)(02000u+ph%1024u);return;}
  /* Interpretive keys: at NEWOPS with LOC there, BANKSET the key's bank. */
  W[5]=NEWOPS;W[LOC]=(agc_word)(02000u+ph%1024u);W[BANKSET]=W[6];W[0115]=040000u;W[023]=0;

@@ -14,7 +14,7 @@
  * at the interpretive keys); the rest exercise the refusals, which
  * tests/test_lm_servicer.c also checks. */
 #define LMSV_STATES 128u
-#define LMSV_CASES 24064u    /* LMSV_ROUTINES * LMSV_STATES */
+#define LMSV_CASES 40320u    /* LMSV_ROUTINES * LMSV_STATES */
 #define LMSV_STOPPED 0u
 #define LMSV_REFUSED 2u
 typedef struct {
