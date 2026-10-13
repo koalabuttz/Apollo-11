@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "imu-compensation-vice.log": {
-      "sha256": "929fcd3082f011c7d5cb14a7cacf56117532f6756dc36991fbfee1308005a937",
-      "bytes": 2138,
+      "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa",
+      "bytes": 817,
       "store": "release"
     }
   }

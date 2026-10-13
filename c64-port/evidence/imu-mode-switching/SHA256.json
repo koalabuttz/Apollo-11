@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "imu-mode-switching-vice.log": {
-      "sha256": "3a3311816cf6cd0de71309a48286bf236e2003d05322e5b0251395351b7555b1",
-      "bytes": 1590,
+      "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+      "bytes": 2562,
       "store": "release"
     }
   }

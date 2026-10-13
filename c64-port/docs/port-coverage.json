@@ -1624,7 +1624,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "929fcd3082f011c7d5cb14a7cacf56117532f6756dc36991fbfee1308005a937",
+            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa",
             "vice_targets": {
               "vice-imu-compensation": 381
             }
@@ -1731,7 +1731,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3a3311816cf6cd0de71309a48286bf236e2003d05322e5b0251395351b7555b1",
+            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
             "vice_targets": {
               "vice-imu-mode-switching": 1288
             }
@@ -6850,7 +6850,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
+            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa"
           },
           "independent_review": {
             "path": "docs/audits/lm-imu-compensation.md",
@@ -6954,7 +6954,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3a3311816cf6cd0de71309a48286bf236e2003d05322e5b0251395351b7555b1",
+            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
             "vice_targets": {
               "vice-imu-mode-switching": 1288
             }
