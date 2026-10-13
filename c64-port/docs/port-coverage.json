@@ -88,7 +88,7 @@
       "sha256": "f86f1a02856b29a2cd01186a1a807fe4455b576624f8c4cb5876408677c83868",
       "bytes": 13911,
       "lines": 513,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -104,12 +104,15 @@
           "verification": "docs/SELF-CHECK.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
             "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a"
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
@@ -1165,7 +1168,7 @@
       "sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
       "bytes": 32186,
       "lines": 1480,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1220,12 +1223,15 @@
           "verification": "docs/CM-STATEUP.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64.json",
             "sha256": "57dc80bb33c185d1fd1cb40f478ce41b914e5ce63c324cb150643463cd284ea6"
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-host.json",
@@ -4025,7 +4031,7 @@
       "sha256": "d41dbe2cafed15061ac3744bd6fabc0da30aee43d0210c7d2011a0f07f75fe6d",
       "bytes": 16798,
       "lines": 555,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4038,12 +4044,15 @@
           "verification": "docs/CM-UPDATE.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-update/cm-update-vice.log",
             "sha256": "b2aee743cf0a1f88eacb0d10d8087ef22f1c1202444b6edeb879c70e55f20f54"
+          },
+          "independent_review": {
+            "path": "docs/audits/update-program.md",
+            "sha256": "9dce412be6b8215fc0dfb24c6698f1b0f74a0d18ba17e1cef4041a800c83c89f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-update/cm-update-host.log",
@@ -4187,7 +4196,7 @@
       "sha256": "fce563bb8f9c943a3c90242491f002f2b2ebd0b7610d47105ecb669312fcaa9c",
       "bytes": 13695,
       "lines": 513,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4203,8 +4212,7 @@
           "verification": "docs/SELF-CHECK.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
@@ -4212,6 +4220,10 @@
             "vice_targets": {
               "vice-self-check": 84
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
@@ -5574,7 +5586,7 @@
       "sha256": "bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a",
       "bytes": 27861,
       "lines": 1242,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "STARTSB1 cleanup, phase agreement validation and MR.KLEAN/P00KLEAN/V37KLEAN; complete ENEMA/fresh-start/device initialization remain incomplete.",
@@ -5628,12 +5640,15 @@
           "verification": "docs/LM-STATEUP.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64.json",
             "sha256": "9126383948660bf4687b796b02f930d90734b507e8f5779b5f4778eb0a7f1947"
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-host.json",
@@ -8961,7 +8976,7 @@
       "sha256": "5f54e9c63cf0af039a8a435aa3ba86ad933e3b921366388ee115460da5c9f7f6",
       "bytes": 17802,
       "lines": 556,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -8974,12 +8989,15 @@
           "verification": "docs/LM-UPDATE.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-update/lm-update-vice.log",
             "sha256": "f843dee5162c02617fe0aa52d6ec94d4fbf7eb8139dfe6d031b749fcb69f2bc0"
+          },
+          "independent_review": {
+            "path": "docs/audits/update-program.md",
+            "sha256": "9dce412be6b8215fc0dfb24c6698f1b0f74a0d18ba17e1cef4041a800c83c89f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-update/lm-update-host.log",
