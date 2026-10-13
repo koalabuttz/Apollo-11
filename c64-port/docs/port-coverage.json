@@ -400,43 +400,53 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_auto_man.c"
+            "src/cm_auto_man.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 333 words from every original entry point (AHFNOROT, JETS, T6PROG, the STICKCHK and SMALLMP returns) to the first transfer out of the file: attitude hold and its biases, free and rate-damping control, the three-axis phase-plane jet timing (J6.-J24, JN/JP) and TAU limits, and the T6PROG hand-off to JETSLECT. ABI registration pending (see docs).",
+          "scope": "Every word of the file (333 words): The RCS automatic maneuver logic (the J-series phase-plane tests, jet on-times and DOJET) and its returns from STICKCHK. As 6 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at AHFNOROT, JETS, T6PROG and the continuations after outside calls.",
           "verification": "docs/CM-AUTO-MAN.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; FB 21, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 31/32; Z AHFNOROT 3250, JETS 3441, T6PROG 3757, STICKCHK return 3304 (RMANNDX/PMANNDX/YMANNDX 0..3) or SMALLMP return 3732/3734 (SPNDX 0..2).",
-          "frontiers": "RESUME 5333, REINIT 2534, T6PROGM 3067, STICKCHK 3130, SMALLMP 2042.",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and RMANNDX/PMANNDX/YMANNDX 0-3 as the RCS DAP leaves them; MINTAU (0-3), BIT13 (0-2) and OCT01400 (0-2) indexed by them.",
         "external_continuations": [
-          "Comanche RESUME (Lane A)",
-          "RCS-CSM_DIGITAL_AUTOPILOT REINIT, T6PROGM, STICKCHK (Lane G, cm-rcs-dap)",
-          "MYSUBS SMALLMP",
-          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "REINIT (outside basic routine)",
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "SMALLMP (outside basic routine)",
+          "STICKCHK (outside basic routine)",
+          "T6PROGM (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-auto-man/cm-auto-man-source-map.json",
-            "sha256": "e3eddc57d86e36c90efa113d15820ed2a3ff49c57ee28ca29b0980c5c1be26fc"
+            "sha256": "5aab2365427fe8959d2ae25f2f68c6f181c536024892d9da009da094b5f08cde"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-auto-man/cm-auto-man-assembly-comparison.json",
-            "sha256": "2f89f5a90ffec426931c3e2178607ac1d08d0074755baa86174e97236d9ba71c"
+            "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
+            "sha256": "91924d6d658efb76b8b0e76684ebe2d094dd1f93e1ca9aa7bc3d84ebf4589235"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-auto-man/cm-auto-man-checks.log",
-            "sha256": "6fc423b7167a7df2b9ba3efd3d0e32a7606020756876b30fd7261154994b98bf"
+            "path": "evidence/cm-auto-man/cm-auto-man-host.log",
+            "sha256": "1674d2317dfa8cdabcb3eb5ec0c9203bd8165b81f8eee24eada00ffe0fa1db38"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-auto-man/cm-auto-man-results.json",
-            "sha256": "97e2e9950b7016fa1b9f1d5b798156b7debd20f17eec82fdea18587a6ee5ef15"
+            "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
+            "sha256": "6fe16bf5d929616f9f5e3f3c9e6a6038aabdfa567af3af00091bf03520df1171",
+            "vice_targets": {
+              "vice-cm-auto-man": 24
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
+            "sha256": "91924d6d658efb76b8b0e76684ebe2d094dd1f93e1ca9aa7bc3d84ebf4589235"
           }
         }
       }
@@ -447,8 +457,59 @@
       "sha256": "187481b79cf3ff3c911b724c34084b0471ab62e06b52726fbde7d0d59786475c",
       "bytes": 6926,
       "lines": 301,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_body_attitude.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (195 words): CM/POSE (entry body attitude), CM/POSE2/3, CM/ATUP and REDOPOSE. As 70 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at CM/ATUP, CM/POSE, CM/POSE2, CM/POSE3, CM/TRIO, REDOPOSE.",
+          "verification": "docs/CM-BODY-ATTITUDE.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the attitude erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
+        "external_continuations": [
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-body-attitude/cm-body-attitude-source-map.json",
+            "sha256": "197cdf06e4487d509f9afb5f0ccd046765cad77186bde5c7b014de8992b99d97"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-body-attitude/cm-body-attitude-proof.json",
+            "sha256": "bfd9a9763c575c4ebdae07201a2b3d0817a718c4dbf76c25d9bd3b1de729a0f1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-body-attitude/cm-body-attitude-host.log",
+            "sha256": "c748fb3aa1392f79396653e5dfd9d70d74e207552d7a4305118eb6b968c4b8b9"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-body-attitude/cm-body-attitude-vice.log",
+            "sha256": "fdcc337974d22c8d50778383e0498fb9585ccf50b6ebb3b06016a6daf8db57c6",
+            "vice_targets": {
+              "vice-cm-body-attitude": 97
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-body-attitude/cm-body-attitude-proof.json",
+            "sha256": "bfd9a9763c575c4ebdae07201a2b3d0817a718c4dbf76c25d9bd3b1de729a0f1"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc",
@@ -460,43 +521,60 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_entry_dap.c"
+            "src/cm_entry_dap.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All of bank 15 2434-3754 and bank 20 3612-3737: READGYMB/BODYRATE, ATTRATES and dead zones, CM/RCS roll DAP and JETCALL, FDAI and telemetry dump, CM/DAPON/CM/DAPIC",
+          "scope": "Every word of the file (813 words): The entry autopilot: READGYMB and the body rates, the atmospheric and exo-atmospheric DAP modes, CM/RCS roll control, the FDAI needles and the CM/DUMPR telemetry file. As 28 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at ATTRATES, CM/DAPIC, CM/DAPON, EXDAP4, JETACTN, JETCALL, READGYMB, SETJTAG and the continuations after outside calls.",
           "verification": "docs/CM-ENTRY-DAP.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Canonical 2048-word image, EB E6, FB bank 15 or 20 per entry; JETAG -1..+1, CMDAPMOD -1..+1 or -0, SW/NDX -13..+13; channels 5, 6",
-          "frontiers": "TASKOVER 5324, WAITLIST 5245, PHASCHNG 5412, 2PHSCHNG 5372, FLUSHJET 6000, SPSIN 5075, SPCOS 5074, IBNKCALL 4740, RESUME 5333, DOWNFLAG 5560, BANKCALL 4662, POSTJUMP 4701, bank 20 2434",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CMDAPMOD +1, +0, -0 or -1 and SW/NDX alternating the needles (+1 to +13) with the telemetry index (-13 to -1) in steps of three. YJETCODE, P/RJCODE, LIMITS and HALFPR are read at -1 to +1. 2D/SDZ's TC Q with Q = 3 (after CCS JETAG -0) runs RELINT and then the word in EB as TC 3000, as the AGC does; this needs EB = E6.",
         "external_continuations": [
-          "Executive, waitlist and restart services",
-          "SPSIN/SPCOS (SINGLE_PRECISION_SUBROUTINES)",
-          "NEEDLER via IBNKCALL",
-          "P62 via POSTJUMP"
+          "2434 (outside basic routine)",
+          "2PHSCHNG (outside basic routine)",
+          "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "DOWNFLAG (outside basic routine)",
+          "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "PHASCHNG (outside basic routine)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "SPCOS (outside basic routine)",
+          "SPSIN (outside basic routine)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-source-map.json",
-            "sha256": "8504d728fc8eaa87771978a7364e172415bbb025307b47a292971537a885dd7e"
+            "sha256": "a8edce8bb4660f78a0f1da9477269c62e6c9edbae4036f502feb9a945c00e771"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-entry-dap/cm-entry-dap-assembly-comparison.json",
-            "sha256": "ca4c58f053cd6eacf2a4028681f801426c5a63300bcec67f5643eee4a5a447ec"
+            "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
+            "sha256": "80db1c38391157a70b9ea807d1d627bd6ee60a678900e4d3352fcd433fea7f5c"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-entry-dap/cm-entry-dap-checks.log",
-            "sha256": "2a0ba8c4fcf6b149e697c34969b21e45ecabc07f16f408dba454e42e056a5ad3"
+            "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
+            "sha256": "ac1b2d80eac99254975b4b13d88803c519ec2a6520b148255a338f9862ed32de"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-entry-dap/cm-entry-dap-results.json",
-            "sha256": "52d68037c81f3163aacdb896b28adb7d4c047e8ac7a81ca0eb1e30e9dc681536"
+            "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
+            "sha256": "fd6305391bc1cb33c6bf8cdf4ed930686e940a73b737bc27acabea6cc79f61b7",
+            "vice_targets": {
+              "vice-cm-entry-dap": 79
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
+            "sha256": "80db1c38391157a70b9ea807d1d627bd6ee60a678900e4d3352fcd433fea7f5c"
           }
         }
       }
@@ -1904,40 +1982,49 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_jet_select.c"
+            "src/cm_jet_select.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All of bank 17 2552-3736: JETSLECT T5 task and T6START T6 task",
+          "scope": "Every word of the file (629 words): JETSLECT (translation and rotation jet tables, jet on-times, the T6 sort) and the T6 program T6START with REPLACE/REPLACER. As 2 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at JETSLECT, T6START.",
           "verification": "docs/CM-JET-SELECT.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Canonical 2048-word image, FB bank 17, EB E6; JETSLECT with XTRANS -4..+4, T6START with BLAST+1, BLAST1+1, BLAST2+1 each 0, 4 or 11; channels 5, 6, 13, 31",
-          "frontiers": "RESUME 5333",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. XTRANS +0, +1 or -1 as P40 leaves it; BLAST, BLAST1, BLAST2 +1 holding T6SETUP's branch indices 0, 4, 11 (REPLACER, REPLACEP, REPLACEY), compiled as the three TC targets. Tables XLNNDX, XLN1NDX (0-3), PYTABLE, RTABLE (0-14), YZTABLE (0-8), NJET and DFTMAX (-4 to +4, negative counts after PTAUNEG/YTAUNEG).",
         "external_continuations": [
-          "RESUME (T5/T6 interrupt return)"
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-jet-select/cm-jet-select-source-map.json",
-            "sha256": "846588e393a91b4012ffb059b96af5df67d42e21e83b3ba3ed904738866c32d0"
+            "sha256": "6cac9bd71563334f098a770124e5e7ae490bde8aca9e3e6ef3ca3bc00ba4d9ed"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-jet-select/cm-jet-select-assembly-comparison.json",
-            "sha256": "e00595556969c2809fe607d320df3eb3d467c49244ca2ed9ad52850dc3ef5a80"
+            "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
+            "sha256": "b1b0a806cab37c9ec0260e7c609f4926ca189435976c0ba748a7f7bfb1220020"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-jet-select/cm-jet-select-checks.log",
-            "sha256": "0eee5c6adf30d1589e52f1d349ca0c24eda2494334f6e801617b7bee3ae87289"
+            "path": "evidence/cm-jet-select/cm-jet-select-host.log",
+            "sha256": "fd0ee0d2ba0af910ec33f8c12637a42043a0316ca03955f65d45141b1e5b68f5"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-jet-select/cm-jet-select-results.json",
-            "sha256": "f11d282ef5fe5649ad3eca4fa2efd5072735ed6681092ba40bff8fd18f8eca93"
+            "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
+            "sha256": "8d7b6d158307a197a4b0efdd3cdf8b1dc517e887d80e7974af8234b61236dea4",
+            "vice_targets": {
+              "vice-cm-jet-select": 28
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
+            "sha256": "b1b0a806cab37c9ec0260e7c609f4926ca189435976c0ba748a7f7bfb1220020"
           }
         }
       }
@@ -2415,43 +2502,77 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_clocktask.c"
+            "src/cm_p40_p47.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "Actual clock task and display admission source groups; complete powered-flight application remains pending.",
-          "verification": "docs/COMANCHE_CLOCKTASK.md"
-        },
-        {
-          "native_files": [
-            "src/cm_clockjob.c"
-          ],
-          "scope": "Actual CLOCKJOB BANKCALL, QUICTRIG return and display selection; other flight programs remain unported.",
-          "verification": "docs/COMANCHE-CLOCKJOB.md"
-        },
-        {
-          "native_files": [
-            "src/cm_dyndisp.c",
-            "src/cm_dyndisp_route.c",
-            "src/cm_dynamic_display.c"
-          ],
-          "scope": "Actual DYNDISP/P40CNV85/S41.1 numerical route composed through normal V06N85 display and allocated-VAC/core release. Remaining P40-P47 program paths and live resident scheduling are excluded.",
-          "verification": "docs/COMANCHE-DYNAMIC-DISPLAY.md"
-        },
-        {
-          "native_files": [
-            "src/cm_clock_display_mission.c",
-            "src/cm_clock_normal_display.c"
-          ],
-          "scope": "Actual timer/clock/display host mission and nine unchanged normal V06N40 contexts through true END-selected interpreter restoration; disk C64 clock/display-to-GOPLAY and separate linked normal consumer checks; no whole-chain C64 closure beyond retained proofs.",
-          "verification": "docs/COMANCHE-CLOCK-NORMAL-DISPLAY.md"
-        },
-        {
-          "native_files": [
-            "src/cm_clock_blocked_display.c"
-          ],
-          "scope": "Uninterrupted original T3 clock blocked display and actual JOBSLEEP suspended interpreter restoration; C64 proof checks final transition only.",
-          "verification": "docs/COMANCHE-CLOCK-BLOCKED-DISPLAY.md"
+          "scope": "Every word of the file (1667 words): The thrusting programs: P40 and P41 (SPS and RCS burns) with the TIG countdown tasks, the engine-on and engine-off sequences, the gimbal-drive test, S40.1 to S40.13 (steering, cross-product steering and the AVG ignition entries), DAPFIG and P47, basic and interpretive. As 496 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at +2, -2, AGAIN, BADVCTOR, CALCN83, CALCN85, CALCUT, CALL40.8, CKNVWRD1, CLOCKJOB, CLOKTASK, COPY40.9, DAPFIG, DOSPSOFF, DOSTRULL, DOTVCON, DOTVCRCS, DYNDISP, E7SETTER, ENDLAMB, ENDV97E, ENDV97P, ENDV97T, ENGINOFF, FIRSTTME, IGNITION, IMPLCONT, INCRSVG, LOTHRUST, MOONCASE, OMEGACLC, P40BLNKR, P40CLK, P40CNV85, P40CSM, P40MINDB, P40PVA, P40S/C, P40S/F, P40S/RS, P40S/SV, P40SXTY, P41CSM, P47/DSP, P47BOD, P47BODY, P47CSM, POSTBURN, PRE40.6, PRECHECK, QUICKIGN, R40ENABL, RATEZRO, RCSDAPON, RCSUP, REDO40.9, RSTRTST, S40.1, S40.13, S40.130, S40.131, S40.132, S40.133, S40.134, S40.14, S40.1B, S40.2,3, S40.2,3B, S40.6, S40.8, S40.81, S40.9, S41.1, S41.2, SETMAXDB, SETMINDB, SETTB6, SETUP.9, SPSOFF, SPSOFF97, STEERING, SURELY.9, TGOCALC, TIG-0, TIG-5, TIGAVEG, TIGBLNK, TIGNOW, TIGON, TRIMONLY, TSTRXUT, TTG/0, TVCZAP, UPDATEVG, V97E40.6, V97ETASK, V97PTASK, V97TRCS, V97TTASK, V99EJOB, V99FLASH, V99P/TIG, V99T, V99TJOB, XPRODUCT and the continuations after outside calls.",
+          "verification": "docs/CM-P40-P47.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Each routine runs under the EBANK= the listing has in effect at its first word. Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. DAPFIG (bank 42) runs under FB 32 with the superbank bit, as the flight rope addresses it. Under every EBANK (V97ETASK reaches E6 through E6SETTER), CNTR (E6,1447) holds +0, 1, -0 or -1, NBRCYCLS (E6,1742) is short of 037777 (its +1 never overflows into the OCT after TC PHASCHNG), and CSMMASS (E6,1474) stays within the CSM's mass, so V97TTASK's AD 3MDOT never overflows into the PHASCHNG operand. OUTPUT's return after FIXDELAY (TEMPR60) is one of GIMDTEST's three TC OUTPUT returns. P41/P40 returns to the call +1 or, after INCR Q, +2. With PHASE5 negative, PRECHECK's CCS runs the CADR PREREAD word as an instruction, on the AGC and in the port.",
+        "external_continuations": [
+          "2PHSCHNG (outside basic routine)",
+          "ALARM (outside basic routine)",
+          "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "DOWNFLAG (outside basic routine)",
+          "DPAGREE (outside basic routine)",
+          "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
+          "FINDVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "FIXDELAY (outside basic routine)",
+          "GENTRAN (outside basic routine)",
+          "GOTOPOOH (outside basic routine)",
+          "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "LONGCALL (outside basic routine)",
+          "NEWPHASE (outside basic routine)",
+          "NOVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "PHASCHNG (outside basic routine)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "PRIOCHNG (outside basic routine)",
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "TPAGREE (outside basic routine)",
+          "TWIDDLE (outside basic routine)",
+          "UPFLAG (outside basic routine)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p40-p47/cm-p40-p47-source-map.json",
+            "sha256": "f1eb5518e1d7514eb77e12c53b0fb539e57c28f55166ecf259cea19fc115277f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p40-p47/cm-p40-p47-proof.json",
+            "sha256": "175a159370d52cc1c54e5a993d89d57e5c8346f5b131b11b2da0b77b8084953c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p40-p47/cm-p40-p47-host.log",
+            "sha256": "c758e9c801458d92d4f5ab86da1b4cd7da70b226d5cb450d795c8ef75dbc8d00"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p40-p47/cm-p40-p47-vice.log",
+            "sha256": "4b354ba82cb6580c44318a3dbebcf3630dadeaad235488fc46dd90fd0dafd968",
+            "vice_targets": {
+              "vice-cm-p40-p47": 646
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p40-p47/cm-p40-p47-proof.json",
+            "sha256": "175a159370d52cc1c54e5a993d89d57e5c8346f5b131b11b2da0b77b8084953c"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P51-P53.agc",
@@ -2468,8 +2589,80 @@
       "sha256": "49cc72bb29fceae82c5a40ffd2e8d1dd62264e9a55f920e81c8f3ae8d5d20172",
       "bytes": 34115,
       "lines": 1225,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p61_p67.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (495 words): The entry programs: P61 and P62 (entry preparation, CM/SM separation, with the S61.1 IMU orientation check), P63 (entry initialisation), P64 to P67 (post-0.05 G, up control, ballistic and final phases) with their displays and restart points, basic and interpretive. As 188 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at CALLCON, DISPTARG, DUMPFISH, DUMPP61, DUMPTRIG, DUMPVGAM, FISHCALC, KILLGRP4, LUNENT, NEWRNVN, P61, P61.1, P62, P62.1, P62.2, P62.3, P63, P63.1, P64, P65, P65.1, P66, P67, P67.1, P67.2, P67.3, PREVGAM, RETRN1, RETRN2, RETRN3, S61.1A, S61.1B, S61.1C, S61.2, S62.3, TFF/TRIG, VGAMCALC, VRCALC, WAKEP62 and the continuations after outside calls.",
+          "verification": "docs/CM-P61-P67.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Each routine runs under the EBANK= the listing has in effect at its first word (E6 for the AOG code, E7 for the RTINIT/DVCNTR code). Under E6, 60GENRET (E6,1773) holds one of the two returns S61.1 saves there (TC 2224 from P61, TC 2321 from P62). Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. The repository copy has a stray SKIP line before page 794 that assembles to nothing; the words are those of the flight rope.",
+        "external_continuations": [
+          "2PHSCHNG (outside basic routine)",
+          "ALARM (outside basic routine)",
+          "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "BOVB ENDT(X) (outside basic routine)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "CLEARMRK (outside basic routine)",
+          "DANZIG (outside basic routine)",
+          "DOWNFLAG (outside basic routine)",
+          "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
+          "FINDVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "GOTOPOOH (outside basic routine)",
+          "NEWMODEX (outside basic routine)",
+          "NOVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "PHASCHNG (outside basic routine)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "RTB CM/DAPIC (outside basic routine)",
+          "RTB REFAZE10 (outside basic routine)",
+          "RTB SERVNOUT (outside basic routine)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "UPFLAG (outside basic routine)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
+          "Erasable continuation E6,1773 (this file): accepts only TC 02224, TC 02321"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-source-map.json",
+            "sha256": "4e357dbe2dba1f11cd858645692115ee21f54f559ab87aed99fe5e00f9e37b42"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
+            "sha256": "589f41c1abe3573101f224805b966aabecb2f404462accb99e14eec60b61aeb8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-host.log",
+            "sha256": "38ec31d3e05b5ffa80cd00071fa7ebadb5ffb8eefe5857b61fda9caa67994faa"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-vice.log",
+            "sha256": "c24d59f431d7cba8a74da590b7616490c1aa08f349c6bf4ce03bdc7588659a79",
+            "vice_targets": {
+              "vice-cm-p61-p67": 252
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
+            "sha256": "589f41c1abe3573101f224805b966aabecb2f404462accb99e14eec60b61aeb8"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P76.agc",
@@ -3219,44 +3412,57 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_rcs_dap.c"
+            "src/cm_rcs_dap.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 611 words from every original entry point (REDORCS, RCSATT, the SMALLMP/DPADD/NOVAC/IBNKCALL returns, REINIT, T6PROGM, and the NEEDLER, NEEDLE11, NEEDLES, ZEROJET, STICKCHK subroutines) to the first transfer out of the file: initialisation, rate filter and Kalman gains, CDU increments, FDAI needles and DAC limits, hand controller and manual rates, free drift, channel 12/13/14 writes. ABI registration pending (see docs).",
+          "scope": "Every word of the file (611 words): The CSM RCS autopilot: REDORCS, RCSATT with the rate filter loops (DRHOLOOP, ADOTLOOP, DELOOP), the needles (NEEDLER, NEEDLE11, NEEDLER2, NEEDLES), REINIT, ZEROJET, T6PROGM and STICKCHK. As 17 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at NEEDLE11, NEEDLER, NEEDLER2, NEEDLES, RCSATT, REDORCS, REINIT, STICKCHK, T6PROGM, ZEROJET and the continuations after outside calls.",
           "verification": "docs/CM-RCS-DAP.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; FB 21, EB E6, coherent BB; any raw A/L, erasable contents and channels 12/13/14/31; Z one of the 17 entries in docs/CM-RCS-DAP.md with the INDEX operands within the file's tables (ATTKALMN -1..11, RATEINDX 0..6, SPNDX 0..2 with DPNDX = 2 SPNDX at the MYSUBS returns) and, for the TC Q entries, Q a caller's return.",
-          "frontiers": "RESUME 5333, IBNKCALL 4740, NOVAC 5134, SMALLMP 2042, DPADD 2054, JETS 3441, T6PROG 3757, AHFNOROT 3250, caller's return (TC Q).",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and DPNDX 0, 2, 4 (the axis loops), ATTKALMN from -3 (JETSLECT's translation gains) to 11 (the Kalman initialisation count, CAF ELEVEN at 21,2571), and RMANNDX/PMANNDX/YMANNDX 0-3 as STICKCHK leaves them. GAIN1/GAIN2 are read at -3 to +11, DACLIMIT at -1 to +1, FREETAU at 0 to 3.",
         "external_continuations": [
-          "Comanche RESUME, NOVAC, IBNKCALL (Lane A)",
-          "MYSUBS SMALLMP and DPADD",
-          "AUTOMATIC_MANEUVERS JETS, T6PROG, AHFNOROT (Lane G)",
-          "T5 interrupt delivery via T5LOC",
-          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "AHFNOROT (outside basic routine)",
+          "BIT4 (outside basic routine)",
+          "DPADD (outside basic routine)",
+          "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "JETS (outside basic routine)",
+          "NOVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "SMALLMP (outside basic routine)",
+          "T6PROG (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-source-map.json",
-            "sha256": "9bccf46ce73fcb26d40a9f2d3ce1f9386f1b80906b8dc068c343997683eb06bb"
+            "sha256": "edbf36fd3df9c369024d2782e63203b7e3f84b4d534d9d27f1ade445d6f8dd8f"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-rcs-dap/cm-rcs-dap-assembly-comparison.json",
-            "sha256": "ce0e9594177ccdaa1387be832787d0ad72e3782033946e494f3ce014c2fe9835"
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
+            "sha256": "15d5e3f488b4905f16e2c2b3c750db285977bb92ffc6787b841de4e4990290cf"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-rcs-dap/cm-rcs-dap-checks.log",
-            "sha256": "b88305429761eb36f27b3c136e4e848575a77b13f8b2ef60d92f44a052f1f9ad"
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
+            "sha256": "71f85f6251a3c06d079e9ce5b6208ebb8992fca90479f39e72e1f35ae51b46f7"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-rcs-dap/cm-rcs-dap-results.json",
-            "sha256": "53125955c7e0932050d7dcd661c3f439d7fd0d9f64bd1cf3d70cd6c44b482c74"
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
+            "sha256": "b419ccca455c1853201942b4ee86f37221d9ead87401652bac50122b8831332d",
+            "vice_targets": {
+              "vice-cm-rcs-dap": 43
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
+            "sha256": "15d5e3f488b4905f16e2c2b3c750db285977bb92ffc6787b841de4e4990290cf"
           }
         }
       }
@@ -3276,8 +3482,21 @@
       "sha256": "47788f4f2139d31f9f87f63c33518b49b193ff762f9b3c1259d76f2074dcf408",
       "bytes": 31542,
       "lines": 1609,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_reentry.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All but 2 words of the file (1172 words): The entry guidance: STARTENT and the two-second steering loop (INITROLL, HUNTEST, UPCONTRL, KEP2/BALLISTIC, PREDICT3 with its reference-trajectory tables, the roll command and lift-vector logic, the G-limit and final-phase tests), with the entry displays and restart points, basic and interpretive. As 390 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at A0CALC, BECONSTD, CONSTD, CONSTD1, CONT1, CONT3, CONTINU2, D0EQ, DCONSTD, DHOOKYQ7, DOWNCNTL, DSTORE, ENDEXIT, FOREHUNT, GETANGLE, GETDHOOK, GETETA, GETLEWD, GETUNITV, GETVEL, GLIMITER, GOMAXL/D, GONEGLAD, GOPOSLAD, GOTOUPSY, HAVDNRNG, HUNTEST, HUNTEST1, HUNTEST3, INITRL1, INITROLL, INROLOUT, KATEST, KEP, KEP2, L350, L353, L355, L357, LEWDOVFL, LEWDPTR, LIMITL/D, LWDSTORE, NEGAMA, NEGTESTS, NEXT1, NO.05G, NODISKY, NOLDCALC, OVERNOUT, PRE-HUNT, PREDICT3, PREFINAL, RANGER, REFAZE10, SCALEPOP, SERVNOUT, SETMIND, SIDETRAK, STARTEN1, STARTENT, STEEROFF, STOREL/D, SUBETA, SUBETA2, TARGETNG, THETDONE, TINYTHET, UPCNTRL3, UPCONTRL, UPDATERT, V1LEAD, VLTEST and the continuations after outside calls. Untranslated (2 words): SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it runs from the interpreter's DANZIG/OPJUMP when P66 returns, a point the transfer ABI does not key yet (interpretive routines are keyed by LOC at NEWOPS).",
+          "verification": "docs/CM-REENTRY.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/RESTARTS_ROUTINE.agc",
@@ -3573,8 +3792,73 @@
       "sha256": "35ca5c1acce244eabdca91039a121c13b7207a24433f860c0cb14878e8366fb2",
       "bytes": 19665,
       "lines": 824,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_servicer.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (375 words): The average-G servicer: PREREAD, READACCS, PIPSDONE, SERVICER, CALCGRAV/CALCRVG, AVGEND, NORMLIZE and the restart points, basic and interpretive. As 80 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at AVGEND, CALCGRAV, CALCRVG, CHEKAVEG, DVTOTUP, ITISMOON, MAKESERV, NORMLIZE, PIPSDONE, PREREAD, PREREAD1, QUIKREAD, READACCS, REDO5.31, REDO5.5, REREADAC, SERVEXIT, SERVICER and the continuations after outside calls.",
+          "verification": "docs/CM-SERVICER.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the servicer erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
+        "external_continuations": [
+          "2PHSCHNG (outside basic routine)",
+          "ALARM (outside basic routine)",
+          "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "DOWNFLAG (outside basic routine)",
+          "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
+          "FINDVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "FIXDELAY (outside basic routine)",
+          "GENTRAN (outside basic routine)",
+          "NEWPHASE (outside basic routine)",
+          "NOVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "PHASCHNG (outside basic routine)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "UPFLAG (outside basic routine)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-servicer/cm-servicer-source-map.json",
+            "sha256": "732b300d992197ad635943065eeaef70b8772c810affdb33470a79102ecf2f22"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-servicer/cm-servicer-proof.json",
+            "sha256": "7118e013fb5c363934bc72292daf05be4fa8526e2c7029576ebb8b55e3e9652c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-servicer/cm-servicer-host.log",
+            "sha256": "b24cd534f6dee765422ed2a63947d478c5ecb8c6de2e1ed7e3eb84e83e74c9c0"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-servicer/cm-servicer-vice.log",
+            "sha256": "7fc62204212fb25345bec9e361bbed4197229e9b4be44b726f34e4084147e751",
+            "vice_targets": {
+              "vice-cm-servicer": 123
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-servicer/cm-servicer-proof.json",
+            "sha256": "7118e013fb5c363934bc72292daf05be4fa8526e2c7029576ebb8b55e3e9652c"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/SERVICE_ROUTINES.agc",
@@ -3941,43 +4225,51 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_tvc_daps.c"
+            "src/cm_tvc_daps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 489 words from every original entry point (PITCHDAP, YAWDAP and DAPINIT T5 tasks, the four HACK returns, PCOPY+1/YCOPY+1) to HACK/RESUME/NOQRSM or the caller's return: CDU rate limit, error limit, cascade filters, actuator limit, TVC commands and channel 14 drive bits, precompensation and copy cycles. ABI registration pending (see docs).",
+          "scope": "Every word of the file (489 words): The pitch and yaw TVC autopilots (PITCHDAP, YAWDAP with their HACK returns, the copycycles PCOPY +1 and YCOPY +1) and DAPINIT. As 9 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at DAPINIT, PCDUDOTS, PITCHDAP, YAWDAP, YINTEGRL and the continuations after outside calls.",
           "verification": "docs/CM-TVC-DAPS.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; Z PITCHDAP 2530, YAWDAP 2732, DAPINIT 3107, HACK return 2541/2543/2743/2745, or PCOPY+1 2675/YCOPY+1 3051 with Q a caller's return 4000-7777; FB 20, EB E6, coherent BB; any raw A/L, erasable contents and channel 14.",
-          "frontiers": "HACK 3533, RESUME 5333, NOQRSM 5335, caller's return (TC Q).",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. Any values of the DAP erasables; PITCHDAP and YAWDAP entered as the T5RUPT task their GENADR/BBCON pairs name.",
         "external_continuations": [
-          "Comanche RESUME and NOQRSM (Lane A)",
-          "TVCSTROKETEST HACK (Lane G, cm-tvc-stroke)",
-          "T5 interrupt delivery via T5LOC",
-          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "HACK (outside basic routine)",
+          "NOQRSM (outside basic routine)",
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-source-map.json",
-            "sha256": "1e01fb3ab9032b334224af2807528c9cb7d4a62e5a2dfdb42a1d8b517f13a514"
+            "sha256": "97ba3286d5b87f80b7f697c728bf521f12f20baa4935b3da46c67f4013968e69"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-daps/cm-tvc-daps-assembly-comparison.json",
-            "sha256": "17cf096848fce4175008dbcc7730534c7e4f89e4ba06dfe6e27d40ba335b24f7"
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-proof.json",
+            "sha256": "ce428da90296457df99b55daf22b4413628482a0f7b5a7b1ef274c8209b78ea0"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-tvc-daps/cm-tvc-daps-checks.log",
-            "sha256": "ab62c99184d1c801638d85a0e0140ffaf853b61436148ed6da08c019d3ab272a"
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-host.log",
+            "sha256": "d05017393f4478224e44566e67dcca3856a5a4599e8b1441ac36b684100dff06"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-tvc-daps/cm-tvc-daps-results.json",
-            "sha256": "363fd4b186bea4fa44dd00104a7928e3402aae33f2f53bfbb0af6bf818c68e6b"
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-vice.log",
+            "sha256": "d0bf5c28ac6629a2e40c3aae241a2bb028a087d8f82cfde95ad27938da857140",
+            "vice_targets": {
+              "vice-cm-tvc-daps": 18
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tvc-daps/cm-tvc-daps-proof.json",
+            "sha256": "ce428da90296457df99b55daf22b4413628482a0f7b5a7b1ef274c8209b78ea0"
           }
         }
       }
@@ -3992,42 +4284,51 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_tvc_exec.c"
+            "src/cm_tvc_exec.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 144 words from each of the 12 original continuation points (task entry, WAITLIST/IBNKCALL returns, TVCRESTARTS re-entries) to the next WAITLIST/IBNKCALL/TASKOVER transfer, every overflow detour and the TCF +0 spin. ABI registration and trampoline round trip pending (see docs).",
+          "scope": "Every word of the file (144 words): The half-second TVC executive task (TVCEXEC, ROLLPREP, NEEDLEUP, VARGAINS and the gain update), and the restart points EXECCOPY +1, 1SHOTCHK, TEMPSET, CORSETUP, CORCOPY +1 and CNTRCOPY that TVCRESTARTS reaches through its GENADR table. As 12 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at 1SHOTCHK, CNTRCOPY, CORSETUP, NEEDLEUP, ROLLPREP, TEMPSET, TVCEXEC, VARGAINS and the continuations after outside calls.",
           "verification": "docs/CM-TVC-EXEC.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; Z one of the 12 original continuation points, FB 16, EB E6, coherent BB; any raw A/L/Q and erasable contents; channel 11 from the device record.",
-          "frontiers": "WAITLIST 5245 (Q 2726/2744), IBNKCALL 4740 (Q 2747/2772/2774), TASKOVER 5324; VCNTR negative spins (NO_EXIT).",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. VCNTR (the variable-gain pass count) from +0 to 19 or -0, as TVCINITIALIZE and the executive leave it; a negative count reaches TCF +0, where the AGC spins until its TC trap restarts it. The port refuses that word (EXEC_INVALID_ACTION) instead of spinning.",
         "external_continuations": [
-          "Comanche WAITLIST/TASKOVER and INTER-BANK routines (Lane A) and their site operands",
-          "NEEDLER, FIXCW (cm-tvc-massprop), S40.15, ROLLDAP callees",
-          "ABI registration with trampoline round trip (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
-            "sha256": "43830fdf5d67dc20bd73d863d3c09c066eca90009bc15721b00f96362f99a42f"
+            "sha256": "07bb062ed1e5011d98121b96e94b081c511f527e2f4573765f1a4c80993de604"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-exec/cm-tvc-exec-assembly-comparison.json",
-            "sha256": "c82a77f47e6d3df4569bb1eede740c1e8415b9dd4f10dd9097470c0672d504d7"
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-proof.json",
+            "sha256": "a8808b6ce734773a8d5e941d1e4a0154624f8fe1d937a37815805ddd2a858631"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-tvc-exec/cm-tvc-exec-checks.log",
-            "sha256": "b2e6df7ca44b1872cdb1fa706b2c8b6348e2d84e1c3cac3d6a7b462190301e39"
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-host.log",
+            "sha256": "8ad61607b6b6d7cf683d4fc58b5f2028c23ff6b548dc54f859439788c2ca849b"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-tvc-exec/cm-tvc-exec-results.json",
-            "sha256": "452140fe1654ddc1d3ca2003c4a9cce6592a22caad0255c45e8dcde664b70389"
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-vice.log",
+            "sha256": "0d6839298d1447601a5ee913cbbea377b8b0ed8b4a93db1fd0c41247934639de",
+            "vice_targets": {
+              "vice-cm-tvc-exec": 25
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tvc-exec/cm-tvc-exec-proof.json",
+            "sha256": "a8808b6ce734773a8d5e941d1e4a0154624f8fe1d937a37815805ddd2a858631"
           }
         }
       }
@@ -4042,42 +4343,53 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_tvc_init.c"
+            "src/cm_tvc_init.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 259 words from each of the 9 original entry points (TVCDAPON, MRCLEAN, TVCINIT1, MASSPROP and NEEDLER returns, TVCINIT4, WAITLIST return, PRESWTCH, SWICHOVR +5, S40.15) to the next RESUME/IBNKCALL/WAITLIST/TC RTRNLOC/caller-return transfer, the CSMN10 data run on TS VARK overflow, channel 11 and INHINT. ABI registration pending (see docs).",
+          "scope": "Every word of the file (259 words): TVCDAPON, MRCLEAN, TVCINIT1 to TVCINIT4 with the filter coefficient load LOADCOEF, attitude-error initialisation, the CSM/LM V46 switch-over PRESWTCH/SWICHOVR and the gain computation S40.15. As 11 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at MRCLEAN, PRESWTCH, S40.15, TVCDAPON, TVCINIT1, TVCINIT4 and the continuations after outside calls.",
           "verification": "docs/CM-TVC-INIT.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; Z one of the 9 original entry points, FB 17, EB E6, coherent BB; any raw A/L/Q, erasable contents, channel 11 and interrupt enable; S40.15 with Q 4000-7777.",
-          "frontiers": "RESUME 5333, IBNKCALL 4740 (Q 2175/2323), WAITLIST 5245 (Q 2341), TC RTRNLOC 1613 (Q 2422), the S40.15 caller's return, TC 1703 (Q 2503) after TS VARK overflow.",
-          "data_validity": "Original constants, coefficients and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CSMMASS within the CSM mass and EMDOT (SPS flow rate) up to 01400 at B+3 kg/cs, so the 10-second mass decrement never overflows TS MASSTMP; the gains S40.15 multiplies (EKTLX/I, KTLX/I, IXX, IAVG, IAVG/TLX) within +-07777 as MASSPROP and the pad load leave them, so TS 1/CONACC and TS VARK never overflow into the coefficient tables. COEFFADR holds one of the three coefficient-table addresses the file stores (CSMN10, HBN10, LBN10). SWICHOVR +5 is entered only through IBNKCALL (Q = ISWRETRN, 4753).",
         "external_continuations": [
-          "Comanche RESUME, WAITLIST and INTER-BANK routines (Lane A) and their site operands",
-          "MASSPROP (cm-tvc-massprop), NEEDLER, TVCEXEC (cm-tvc-exec), DAPINIT (TVCDAPS), PINBRNCH",
-          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
+          "Erasable continuation E6,1613 (this file): accepts only TC 02352, TC 04753"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
-            "sha256": "bc7ab0f370a9483a078c9c36fef39ea7cf3ff19a335919dea1c77862b874373f"
+            "sha256": "c918f4a2777c879ba96ecff2b003f83139f433855e15a0c11dd506503946c626"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-init/cm-tvc-init-assembly-comparison.json",
-            "sha256": "648b6b9c851435ae1c321e01b5b24cadb07cecae5a3e463082b42d31304c414e"
+            "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
+            "sha256": "0b3a5cd64c85d10bf818b5263013f4e1eb1fe7d078e25c9a49ebf57e5c0d27b0"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-tvc-init/cm-tvc-init-checks.log",
-            "sha256": "e40aa4e0ad76d8ee8d9e4ea9d8e790473dac95a00a387a883330f391dcc6b0ec"
+            "path": "evidence/cm-tvc-init/cm-tvc-init-host.log",
+            "sha256": "14353f27bd9a7a8f0910ef77652df33d82b4d6c3e4371b875ef6394a1e2a2efa"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-tvc-init/cm-tvc-init-results.json",
-            "sha256": "85e852aef606fd24bcbf360581911c301d688411a4f14c17e2f6426a4c6c8338"
+            "path": "evidence/cm-tvc-init/cm-tvc-init-vice.log",
+            "sha256": "1b9a4421e8a31db74fcf7a89dfccc841319a58a659ccc72dc0b695ab217a07f0",
+            "vice_targets": {
+              "vice-cm-tvc-init": 14
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
+            "sha256": "0b3a5cd64c85d10bf818b5263013f4e1eb1fe7d078e25c9a49ebf57e5c0d27b0"
           }
         }
       }
@@ -4092,41 +4404,48 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_tvc_massprop.c"
+            "src/cm_tvc_massprop.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 91 words: MASSPROP and FIXCW from either entry to ENDMASSP TC Q, every overflow detour, and the source loops that never return. Every source path is translated; the complete certificate below awaits the auditor review.",
+          "scope": "Every word of the file (91 words): MASSPROP (the LEM-off and LEM-on breakpoints and slopes of the TVC gains) and FIXCW (the CSM-weight gains IXX, IAVG, IAVG/TLX and WEIGHT/G), ending at ENDMASSP TC Q. As 2 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at FIXCW, MASSPROP.",
           "verification": "docs/CM-TVC-MASSPROP.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; Z = MASSPROP 3366 or FIXCW 3422, FB 05, EB E6, coherent BB; any raw A/L/Q and erasable contents.",
-          "returns": "ENDMASSP TC Q: Z = caller return held in Q, Q = 3. Non-returning overflow loops reported as NO_EXIT.",
-          "data_validity": "Original breakpoint/slope constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. LEMMASS within the LM mass (0 to 15100 kg at B+16), CSMMASS within the CSM mass (0 to 30000 kg) either side of the NEGBPW breakpoint, and VARST0-VARST8 within +-07777 as MASSPROP leaves them. Outside that range the original overflows TS VARST0 or TS IXX and loops for ever (TCF MASSPROP +1, TCF BOKKEP2 with A = 1); those states are not admitted. MASSPROP indexes the constant tables NOLEMVAL, SLOPEVAL and INTVALUE by PHI333 (9 down to 0).",
         "external_continuations": [
-          "TVCEXECUTIVE / TVCINITIALIZE / P40 callers and their IBNKCALL/BANKCALL bank switching",
-          "Ownership of the TVC/RCS interrupt temporaries (PHI333..VARST0+9) during the call"
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
-            "sha256": "f1cd2e2a62b46da17a1498167ff315ae4dd89f4d5e45350d05e68e8e081b89ba"
+            "sha256": "942cd25fffff81762aef17da3b76074a3693b2df695e8672916f99966513d5b4"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-assembly-comparison.json",
-            "sha256": "488f34aeaf2ac07469195d47ee1cd127beccdbe254a3e11aa40c930cf5a62aef"
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-proof.json",
+            "sha256": "9e3b065b26ab2a86b0167211bb7a8ca4df1abd8bf5affa192b754e30a10124a3"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-checks.log",
-            "sha256": "6fdf3a95ef016cede798f90a045ec3529dda992f43132fe650f9f2ba2aae025b"
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-host.log",
+            "sha256": "0241c24e584979b644f2daff1c70e61882c550d5ddade69a4fb20cf2f3137c54"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-results.json",
-            "sha256": "27187541d5b0edd2519a17b38c69b6895edf4ffaede9be48c27d2bdf93a4fa1f"
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-vice.log",
+            "sha256": "68bfbdd80341c9a973abeda2761a43f79e36f32106ee39f3ea2e32f03f820448",
+            "vice_targets": {
+              "vice-cm-tvc-massprop": 6
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-proof.json",
+            "sha256": "9e3b065b26ab2a86b0167211bb7a8ca4df1abd8bf5affa192b754e30a10124a3"
           }
         }
       }
@@ -4141,42 +4460,54 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_tvc_restarts.c"
+            "src/cm_tvc_restarts.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 90 words from each of the 6 original entry points (REDOTVC, ENABL2, CMDSOUT T5 tasks, CHKSTRK and FINCOPY+3 returns, EXRSTRT task) to the next WAITLIST/RESUME/NOQRSM/POSTJUMP/IBNKCALL/ISWCALL or TVCEXECUTIVE restart-point transfer, with channel 12/14 writes. ABI registration pending (see docs).",
+          "scope": "Every word of the file (90 words): REDOTVC, the DAP restart (TVCDAPHS, ENABL1/ENABL2, CMDSOUT, FINCOPY, TRIM/CMD, CHKSTRK) and the TVCEXECUTIVE restart dispatch EXRSTRT, which indexes TVCEXADR by the executive phase and jumps through it (INDEX A, TCF 0). As 7 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at CHKSTRK, CMDSOUT, ENABL2, EXRSTRT, REDOTVC, TVCDAPHS and the continuations after outside calls.",
           "verification": "docs/CM-TVC-RESTARTS.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; Z one of the 6 original entry points, FB 16, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 12/14; EXRSTRT with TVCEXPHS 1..6; REDOTVC reaching FINCOPY with TVCPHASE <= 9.",
-          "frontiers": "WAITLIST 5245 (Q 3150), RESUME 5333, NOQRSM 5335, POSTJUMP 4701 (Q 3227/3237), IBNKCALL 4740 (Q 3231), ISWCALL 4744 (Q 3243), TVCEXECUTIVE 3003/3011/3040/3043/3121/3132.",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. TVCPHASE one of the DAP phases -2, -1, +0, 1, 2, 3 and TVCEXPHS one of the executive phases 1 to 6, as TVCINITIALIZE, the DAPs and TVCEXECUTIVE set them.",
         "external_continuations": [
-          "Comanche WAITLIST, RESUME/NOQRSM and INTER-BANK routines (Lane A) and their site operands",
-          "MRCLEAN, TVCINIT4, SWICHOVR (TVCINITIALIZE), PCOPY/YCOPY copycycles (TVCDAPS), TVCEXECUTIVE restart points (cm-tvc-exec)",
-          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "IBNKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "ISWCALL (outside basic routine)",
+          "NOQRSM (outside basic routine)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "RESUME (outside basic routine; Lane A Executive/Waitlist)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-source-map.json",
-            "sha256": "b0220cf1b6d9fc11f0f2b8e42cfaf234d8bcb52bf53c31733e28004fef8be766"
+            "sha256": "f897ad0098c28cb846bb52aefbfa7e0882713e7608ed6342c368ff425ee059b7"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-assembly-comparison.json",
-            "sha256": "0c6083357a4bf07061d551b67f186a3975305e31330a14cedda3d0fdb7503d02"
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-proof.json",
+            "sha256": "5b10035c33d1d19c703d88d5ff02a4380984becd110545d30411123629657a49"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-checks.log",
-            "sha256": "ad40e21811441954104092322ea64832ae2690886bf15788c84a7f185f020b72"
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-host.log",
+            "sha256": "2c91876d42872fbba05aaab66098676674d90b021467b6e01e076e53518df18c"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-results.json",
-            "sha256": "478c481176f3abc507e4821e3728ccaad4791ae765b189089cb43259fb324d97"
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-vice.log",
+            "sha256": "cdaeeb5820d8a127806a44cffc1ea8ecb9aab330138c6acdb942dee3d96ebeef",
+            "vice_targets": {
+              "vice-cm-tvc-restarts": 19
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-proof.json",
+            "sha256": "5b10035c33d1d19c703d88d5ff02a4380984becd110545d30411123629657a49"
           }
         }
       }
@@ -4191,42 +4522,50 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_tvc_roll.c"
+            "src/cm_tvc_roll.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 278 words from both original entry points (ROLLDAP waitlist task, NOROLL1 T6 task) to TASKOVER/NOQRSM, every phase-plane region, the firing-time division and limits, channel 6 and 13 writes. ABI registration pending (see docs).",
+          "scope": "Every word of the file (278 words): The TVC roll autopilot ROLLDAP (switching logic, jet timing and the OGA rate filter) and NOROLL1. As 2 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at NOROLL1, ROLLDAP.",
           "verification": "docs/CM-TVC-ROLL.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; Z ROLLDAP 3272 or NOROLL1 3676, FB 16, EB E6, coherent BB; any raw A/L/Q, erasable contents and channels 6/13.",
-          "frontiers": "TASKOVER 5324, NOQRSM 5335.",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. I (E6,1670) holds PRIO30 or BIT15, the CA and CS order codes the file stores there: each INDEX I, 0 X word is compiled as CA X and CS X. TS TEMREG overflow protection reads LIMITS -1 to +1.",
         "external_continuations": [
-          "Comanche TASKOVER and NOQRSM (Lane A)",
-          "T6 interrupt delivery to NOROLL1 via T6LOC",
-          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "NOQRSM (outside basic routine)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-source-map.json",
-            "sha256": "917b9f3793877b6b4e2326c3f6644539c8342f3df1ace11a46d3129d59f641ca"
+            "sha256": "a489bc54589895e680920c9380e9a707d973b66465f20ce6d5dc692799051828"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-roll/cm-tvc-roll-assembly-comparison.json",
-            "sha256": "7e0c69b36f21828504dda3891a40ef1a0e2d89a7eb4d68aaf20ebfe038d88f45"
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-proof.json",
+            "sha256": "a33718af41533629eebf23f033e7b9d433a0e899480c64231eb088f0e3efe554"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-tvc-roll/cm-tvc-roll-checks.log",
-            "sha256": "b8def3e600caaba1e4109a819f3a755fc35d6cd645d64a3550d59c58e74e92d7"
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-host.log",
+            "sha256": "2e80b3975d9d1bffe825eed78aeea92c86e55aaa4d94d01b8239493732933d73"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-tvc-roll/cm-tvc-roll-results.json",
-            "sha256": "613852b51c7dee79ac2498c86c48cc0c85d1450e45e148d12703a0c42bb601a2"
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-vice.log",
+            "sha256": "6ce334926eb0c1a3a9083110f40083a455180e99ade441feda59facbc089a560",
+            "vice_targets": {
+              "vice-cm-tvc-roll": 16
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tvc-roll/cm-tvc-roll-proof.json",
+            "sha256": "a33718af41533629eebf23f033e7b9d433a0e899480c64231eb088f0e3efe554"
           }
         }
       }
@@ -4241,42 +4580,51 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_tvc_stroke.c"
+            "src/cm_tvc_stroke.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "All 73 words from each of the 4 original entry points (STRKTSTI job, HACK from the DAPs, its WAITLIST return, HACKWLST task) to the next ENDOFJOB/WAITLIST/TC BUNKER transfer, with the channel 14 write and INHINT. ABI registration pending (see docs).",
+          "scope": "Every word of the file (73 words): The V68 stroke test: STRKTSTI, its waveform task and HACK, which the pitch and yaw DAPs call by TC HACK and which returns to them through BUNKER. As 5 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at HACK, HACKWLST, STRKTSTI and the continuations after outside calls.",
           "verification": "docs/CM-TVC-STROKE.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; Z one of the 4 original entry points, FB 20, EB E6, coherent BB; any raw A/L/Q, erasable contents, channel 14 and interrupt enable; HACK, its WAITLIST return and HACKWLST with CARD -4..-1.",
-          "frontiers": "ENDOFJOB 5217, WAITLIST 5245 (Q 3537), TC BUNKER 1657 (Q 3556/3575/3577/3612).",
-          "data_validity": "Original constants and scaling; no widened claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. HACK entered with Q one of the DAP returns 2541, 2543, 2743, 2745 (bank 20). BUNKER (E6,1657) holds what the file stores there: one of those returns or TCTSKOVR. CARD counts -4 to -1 between waveform sets (INDEX CARD reads FCARD +1 to +6).",
         "external_continuations": [
-          "Comanche Executive ENDOFJOB, WAITLIST and TASKOVER (Lane A)",
-          "TVC DAP return held in BUNKER (TVCDAPS)",
-          "ABI registration (Lane G follow-up, waits on Lane A ISWRETRN Q=3 fix)"
+          "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
+          "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
+          "Erasable continuation E6,1657 (this file): accepts only TC 02541, TC 02543, TC 02743, TC 02745, TC 05324"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-source-map.json",
-            "sha256": "4ad0114d20578bd970d34bf38bcf48fb34c84cbe15a01c27a1a499c3adaf1bc0"
+            "sha256": "9347b90536afa2523e61c75720457940021e84be1fdfbbb2ac1172d8a58fcaab"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-assembly-comparison.json",
-            "sha256": "1c0b9eb7fbb99248ee5feb9b04a46d23da3bdef9da6dcb5b677a50cd6ddb571f"
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-proof.json",
+            "sha256": "95045b1fd30a4ad7b9309a7b02b29a0f85fcb2e4ca3dff447225b4b287ce5e74"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-checks.log",
-            "sha256": "b76fd6b178e0d0625b3bb0e2ab1141632095b5b5404b7fda1f3ab946f84f9ee4"
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-host.log",
+            "sha256": "830e5eb9da6dad10988bfc307e24bdc5fbf5189d0b640e97c9b655de214d425f"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-results.json",
-            "sha256": "19355078f573167ad430f7a401d8f84fc141bcb10c70d0d827373285e8e4d7e4"
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-vice.log",
+            "sha256": "77a91c3c21802f097a006c805c0c16d679129137a1336e68726a7ff633abe449",
+            "vice_targets": {
+              "vice-cm-tvc-stroke": 12
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-proof.json",
+            "sha256": "95045b1fd30a4ad7b9309a7b02b29a0f85fcb2e4ca3dff447225b4b287ce5e74"
           }
         }
       }

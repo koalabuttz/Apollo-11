@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-reentry",
+  "release": "evidence-cm-reentry",
+  "files": {
+    "cm-reentry-differential.log": {
+      "sha256": "4d5e0812d363155ad53c0c464e59e2297df38a762deabc68ceaa5728d0d93675",
+      "bytes": 20831,
+      "store": "tree"
+    },
+    "cm-reentry-host.log": {
+      "sha256": "1fb9141cd6c2482a10643dc244088f8f18e893190f364f5be5e24469b606ab2d",
+      "bytes": 1022,
+      "store": "tree"
+    },
+    "cm-reentry-proof.json": {
+      "sha256": "52f8a2524c904d93b53c348a64de4d7c8514bc6191a1c9adad57f1d0e44e0dae",
+      "bytes": 47030,
+      "store": "tree"
+    },
+    "cm-reentry-source-map.json": {
+      "sha256": "177a1f6783fca1e6df0296034bc14a6a9827061a2eabe93f09a2dc9cf2e846d6",
+      "bytes": 157148,
+      "store": "tree"
+    },
+    "cm-reentry-vice.log": {
+      "sha256": "6a99b9e67d72e264a462cb1c7120923b85fbb0bf6e05ef641c61bcf8a4083d9d",
+      "bytes": 8169,
+      "store": "tree"
+    }
+  }
+}
