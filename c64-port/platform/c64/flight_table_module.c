@@ -48,7 +48,7 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  uint8_t n=0;
  (void)selector;
 #ifdef FS_CHUNK
-#define FS_COPY_ENTRY(i) chunk[n++]=FS_CHUNK_TABLE.entries[i];
+#define FS_COPY_ENTRY(i) chunk[n].physical=FS_CHUNK_TABLE.entries[i].physical;chunk[n++].call=FS_CHUNK_TABLE.entries[i].call;
  FS_CHUNK(FS_COPY_ENTRY)
  basic[0].entries=chunk;basic[0].count=n;
 #else
