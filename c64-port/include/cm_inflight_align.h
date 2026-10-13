@@ -12,9 +12,9 @@ extern const agc_routine_table cm_inflight_align_interpretive,cm_inflight_align_
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_inflight_align_point;
-#define CM_INFLIGHT_ALIGN_POINTS 21u
+#define CM_INFLIGHT_ALIGN_POINTS 90u
 #define CM_INFLIGHT_ALIGN_CADR_WORDS 1u
-#define CM_INFLIGHT_ALIGN_EXTERNALS 2u
+#define CM_INFLIGHT_ALIGN_EXTERNALS 3u
 #define CM_INFLIGHT_ALIGN_FIRST 20101u
 #define CM_INFLIGHT_ALIGN_LAST 20286u
 extern const cm_inflight_align_point cm_inflight_align_points[CM_INFLIGHT_ALIGN_POINTS];

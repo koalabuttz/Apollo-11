@@ -141,12 +141,12 @@ program would leave the file.
   - The digests are frozen into `tests/lm_q_r_axis_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
     (`tests/lm_q_r_axis_c64_vectors.h`, 128 cases). It runs every host case
-    with branch counting (`tools/lane_f_path_trace.c`) and takes, greedily,
-    cases until every entry slot, outcome, counted branch and basic block
-    (`-fsanitize-coverage=trace-pc`) the host cases take is taken (54
-    cases), then spreads the rest with a stride of 97. The
-    per-branch host and C64 counts are in
-    `evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json`.
+    with its path counters on and every linked source built with clang
+    `-fsanitize-coverage=edge,trace-pc-guard` (`tools/lane_f_path_trace.c`),
+    and takes, greedily, cases until every entry slot, outcome, counted path
+    and control-flow edge the host cases take is taken (56 cases), then
+    spreads the rest with a stride of 97. The per-path and per-edge host and
+    C64 counts are in `evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json`.
   - The proof (`evidence/lm-q-r-axis/lm-q-r-axis-proof.json`) counts where
     the cases leave the file: every exit above is taken except `TC 02002`,
     which no admitted input reaches.
@@ -156,7 +156,7 @@ program would leave the file.
   reachable branch to be taken. They also check the refusals, the IBNKCALL
   CADRs against the compiled interbank table, and `lm_q_r_axis_data`.
 - `make vice-lm-q-r-axis` runs the 128 C64 rows in VICE: every entry, every
-  outcome, branch and basic block the host cases take. The VICE log records the
+  outcome, path and edge the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches are documented in the host test:

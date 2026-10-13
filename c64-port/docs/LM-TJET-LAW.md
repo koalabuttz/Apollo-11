@@ -64,17 +64,18 @@ paths.
   digests are frozen into `tests/lm_tjet_law_vectors.h`.
 - `tools/lane_f_c64_rows.py` chooses the C64 rows
   (`tests/lm_tjet_law_c64_vectors.h`, 256 cases). It runs every host case with
-  branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
-  until every entry, outcome, counted branch and basic block
-  (`-fsanitize-coverage=trace-pc`) the host cases take is taken
-  (24 cases), then spreads the rest with a stride of 97. The per-branch
-  host and C64 counts are in `evidence/lm-tjet-law/lm-tjet-law-c64-cover.json`.
+  its path counters on and every linked source built with clang
+  `-fsanitize-coverage=edge,trace-pc-guard` (`tools/lane_f_path_trace.c`), and
+  takes, greedily, cases until every entry, outcome, counted path and
+  control-flow edge the host cases take is taken (27 cases), then spreads the
+  rest with a stride of 97. The per-path and per-edge host and C64 counts are
+  in `evidence/lm-tjet-law/lm-tjet-law-c64-cover.json`.
 - `make test-lm-tjet-law` and `make sanitize-lm-tjet-law` check every
   digest (strict and ASAN/UBSAN), require every case to reach the caller's
   return, require every reachable branch to be taken, and check the
   refusals.
 - `make vice-lm-tjet-law` runs the 256 C64 rows in VICE: every entry, every
-  outcome, branch and basic block the host cases take. The VICE log records the
+  outcome, path and edge the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches, documented in the host test:

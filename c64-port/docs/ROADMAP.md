@@ -1784,7 +1784,7 @@ Native C for all of Comanche055 TVCRESTARTS (bank 16 `3140`-`3271`, 90 words): t
 
 ## Translate Luminary and Comanche INFLIGHT_ALIGNMENT_ROUTINES
 
-Every word of INFLIGHT_ALIGNMENT_ROUTINES in both programs (184 Luminary099 words, 186 Comanche055 words, bank 23) is native C on the control-transfer ABI: CALCGTA, ARCTRIG, CALCGA with its gimbal-lock alarm and AXISGEN, as 21 routines per program. A new compiler (`tools/interp_compile.py`) emits them from the assembly listings as the compiled interpreter path of each order pair. All 21,504 cases equal the original programs in yaAGC in Z, all 2,048 erasable words and the interrupt-enable state, from each routine to the point where control leaves the file. The strict and sanitizer host tests pass 672 frozen cases, and eight C64 diagnostics pass 84 cases in VICE. Complete certificates for both files are drafted for the certificate reviewer. See `docs/INFLIGHT-ALIGN.md`.
+Every word of INFLIGHT_ALIGNMENT_ROUTINES in both programs (184 Luminary099 words, 186 Comanche055 words, bank 23) is native C on the control-transfer ABI: CALCGTA, ARCTRIG, CALCGA with its gimbal-lock alarm and AXISGEN, as 21 routines per program. A new compiler (`tools/interp_compile.py`) emits them from the assembly listings as the compiled interpreter path of each order pair. All 21,504 cases equal the original programs in yaAGC in Z, all 2,048 erasable words and the interrupt-enable state, from each routine to the point where control leaves the file. The strict and sanitizer host tests pass 686 frozen cases, and 13 C64 diagnostics pass 65 cases in VICE. The host vectors and C64 cases are chosen to reach every branch outcome that any case reaches; the cases include edge values (±0, 1/2, axis vectors, tiny vectors). Complete certificates for both files are drafted for the certificate reviewer. See `docs/INFLIGHT-ALIGN.md`.
 
 ## Translate Comanche PHASE_TABLE_MAINTENANCE as transfer-ABI routines
 
@@ -1840,7 +1840,7 @@ Native C for all of Comanche055 TVCINITIALIZE (bank 17 `2147`-`2551`, 259 words)
 
 ## Translate LEM_GEOMETRY and CSM_GEOMETRY
 
-All of Luminary099 LEM_GEOMETRY (113 words: the downlink state vectors, the rendezvous radar angles RRANGLES and RRNB) and 105 of the 253 Comanche055 CSM_GEOMETRY words (SVDWN1/2, LOG and EARROT) are native C on the control-transfer ABI, as 21 routines. `tools/interp_compile.py` now also compiles basic instructions (CCS, TCF, TC with returns, DXCH, DAS, TS skips, EXTEND/INDEX), and BOVB. All 10,752 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 336 frozen cases, and four C64 diagnostics pass 42 cases in VICE. The Luminary file has a complete certificate drafted for the certificate reviewer. The Comanche sextant routines wait for a Comanche MXV body and native TRANSP1/2. See `docs/GEOMETRY.md`.
+All of Luminary099 LEM_GEOMETRY (113 words: the downlink state vectors, the rendezvous radar angles RRANGLES and RRNB) and 105 of the 253 Comanche055 CSM_GEOMETRY words (SVDWN1/2, LOG and EARROT) are native C on the control-transfer ABI, as 21 routines. `tools/interp_compile.py` now also compiles basic instructions (CCS, TCF, TC with returns, DXCH, DAS, TS skips, EXTEND/INDEX), and BOVB. All 10,752 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 357 frozen cases, and seven C64 diagnostics pass 57 cases in VICE. The host vectors and C64 cases are chosen to reach every branch outcome that any case reaches; the cases include edge values (±0, 1/2, axis vectors, tiny vectors). The Luminary file has a complete certificate drafted for the certificate reviewer. The Comanche sextant routines wait for a Comanche MXV body and native TRANSP1/2. See `docs/GEOMETRY.md`.
 
 ## Translate Luminary UPDATE_PROGRAM as transfer-ABI routines
 
@@ -1886,7 +1886,7 @@ For the last two LM paths, `lm_basic_wake` now admits a job asleep in core set 0
 
 ## Translate KALCMANU_STEERING
 
-All of Luminary099 and Comanche055 KALCMANU_STEERING (159 and 179 words: NEWDELHI, NEWANGL, the CDU increment loop, TIMECHK, MANUSTAT with RATEBIAS, UPDTCALL, MANUSTOP and the Comanche loads) are native C on the control-transfer ABI, as 40 routines. `tools/interp_compile.py` now also compiles INDEX by the hardware's whole-word add, MSU, `TC Q` back into the routine (including TIMECHK's INCR Q returns), and calls that take inline words without returning (POSTJUMP). All 20,480 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 640 frozen cases, and two C64 diagnostics pass 80 cases in VICE. Both files have complete certificates drafted for the certificate reviewer. See `docs/KALCMANU-STEERING.md`.
+All of Luminary099 and Comanche055 KALCMANU_STEERING (159 and 179 words: NEWDELHI, NEWANGL, the CDU increment loop, TIMECHK, MANUSTAT with RATEBIAS, UPDTCALL, MANUSTOP and the Comanche loads) are native C on the control-transfer ABI, as 40 routines. `tools/interp_compile.py` now also compiles INDEX by the hardware's whole-word add, MSU, `TC Q` back into the routine (including TIMECHK's INCR Q returns), and calls that take inline words without returning (POSTJUMP). All 20,480 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 648 frozen cases, and two C64 diagnostics pass 65 cases in VICE. The host vectors and C64 cases are chosen to reach every branch outcome that any case reaches; the cases include edge values and joint TIME/TM states. Both files have complete certificates drafted for the certificate reviewer. See `docs/KALCMANU-STEERING.md`.
 
 ## Translate the DISPLAY_INTERFACE ENDIDLE handling and display returns
 
@@ -1914,7 +1914,7 @@ All of Luminary099 LANDING_ANALOG_DISPLAYS (bank 21, 467 words) runs as four nat
 
 ## Translate ATTITUDE_MANEUVER_ROUTINE and ANGLFIND
 
-All of Luminary099 ATTITUDE_MANEUVER_ROUTINE and Comanche055 ANGLFIND (480 and 479 words: KALCMAN3 and SECAD, gimbal lock avoidance, the maneuver axis methods, MXM3, TRANSPOS, CDUTODCM, DELCOMP, DCMTOCDU and VECOFANG) are native C on the control-transfer ABI, as 83 routines. MXV and VXM matrix operands and LXC now compile. All 42,496 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 664 frozen cases, and ten C64 diagnostics pass 80 cases in VICE; three routines on KALCMAN3's main path are too large for one diagnostic and are checked on the host only. Both files have complete certificates drafted for the certificate reviewer. See `docs/ATTITUDE-MANEUVER.md`.
+All of Luminary099 ATTITUDE_MANEUVER_ROUTINE and Comanche055 ANGLFIND (480 and 479 words: KALCMAN3 and SECAD, gimbal lock avoidance, the maneuver axis methods, MXM3, TRANSPOS, CDUTODCM, DELCOMP, DCMTOCDU and VECOFANG) are native C on the control-transfer ABI, as 83 routines. MXV and VXM matrix operands and LXC now compile. All 42,496 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 708 frozen cases, and 13 C64 diagnostics pass 145 cases in VICE, chosen by branch-outcome cover. With the image under the KERNAL ROM every routine runs on the C64; three outcomes in the shared interpreter bodies are reached only by whole-maneuver runs too large for C64 RAM. Both files have complete certificates drafted for the certificate reviewer. See `docs/ATTITUDE-MANEUVER.md`.
 
 ## Translate the DISPLAY_INTERFACE display start-up
 
@@ -1934,7 +1934,7 @@ All of Luminary099 TRIM_GIMBAL_CONTROL_SYSTEM (banks 21 and 16, 388 words) runs 
 
 ## Translate R60,R62
 
-Luminary099 and Comanche055 R60_62.agc (the attitude maneuver and crew-defined maneuver routines, VECPOINT and the FDAI ball angles) are native C on the control-transfer ABI as 116 routines, except the five words that read channels 30 and 31 (Luminary G+N,AUTO and ISITAUTO, Comanche TOBALLC), which wait for an I/O channel model. `tools/interp_compile.py` now also counts outside calls' inline words from the listing, starts routines at display and restart returns, refuses channel instructions, runs TC to erasable, and guards indexed writes at run time. All 59,392 cases equal the original programs in yaAGC except the 3,580 that reach a channel read, which are listed and not compared. The host and sanitizer tests pass 872 frozen cases, and eight C64 diagnostics pass 220 cases in VICE. Both files stay partial until the channel model exists. See `docs/R60-R62.md`.
+Luminary099 and Comanche055 R60_62.agc (the attitude maneuver and crew-defined maneuver routines, VECPOINT and the FDAI ball angles) are native C on the control-transfer ABI as 116 routines, except the five words that read channels 30 and 31 (Luminary G+N,AUTO and ISITAUTO, Comanche TOBALLC), which wait for an I/O channel model. `tools/interp_compile.py` now also counts outside calls' inline words from the listing, starts routines at display and restart returns, refuses channel instructions, runs TC to erasable, and guards indexed writes at run time. All 59,392 cases equal the original programs in yaAGC except the 3,584 that reach a channel read, which are listed and not compared. The host and sanitizer tests pass 896 frozen cases, and ten C64 diagnostics pass 158 cases in VICE, chosen by branch-outcome cover. Both files stay partial until the channel model exists. See `docs/R60-R62.md`.
 
 ## Translate Comanche FRESH_START_AND_RESTART (bank 05) as transfer-ABI routines
 
@@ -1967,6 +1967,14 @@ Every instruction of Comanche055 FRESH_START_AND_RESTART in bank 04 runs as rout
 ## Draft the DISPLAY_INTERFACE_ROUTINES full-file certificates
 
 Pending complete-coverage certificates for Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES.agc, for the auditor's review. `tools/lanec/wholefile.py` assigns every assembled word (670 LM, 667 CM) to one of the six Lane C display milestones or to the file's constant table, and shows that every instruction word (612 LM, 609 CM) is executed by the unchanged original program in Virtual AGC under cases the native code matches. Every entry is a transfer-ABI routine (`lanec-di-transfer`). The evidence also covers 19,768 oracle cases (strict and ASan/UBSan, including 996 round trips through `agc_transfer_run`), 620 refusals with the state unchanged, and fresh VICE runs of all seven frozen subsets. See `docs/LANEC-DI-CERT.md`.
+
+## Translate Luminary INTEGRATION_INITIALIZATION
+
+All of Luminary099 INTEGRATION_INITIALIZATION (623 words) is native C on the control-transfer ABI, as 217 routines compiled by `tools/interp_compile.py`. The state-vector moves behind RTB run as `lm_integration_move`. This covers every entry rendezvous navigation needs: INTSTALL, SETIFLGS, INTEGRV, INTWAKE/INTWAKE0, LEMCONIC/CSMCONIC and LEMPREC/CSMPREC. All 41,664 cases (a quarter with a job waiting at each DANZIG) equal the original program in yaAGC. The strict and sanitizer host tests pass 326 frozen cases, and 5 C64 diagnostics pass 434 cases in VICE. A complete certificate is drafted for the certificate reviewer. See `docs/INTEGRATION-INITIALIZATION.md`.
+
+## Translate Luminary ORBITAL_INTEGRATION
+
+All of Luminary099 ORBITAL_INTEGRATION (841 words: KEPPREP, the time step, oblateness and lunar/solar terms, rectification, the sphere-of-influence change and the W-matrix loop) is native C on the control-transfer ABI, as 353 routines compiled by `tools/interp_compile.py`. The compiler gained CGOTO, indexed fixed-constant operands and BOVB through RTB. All 45,184 cases (a quarter with a job waiting at each DANZIG) equal the original program in yaAGC. The strict and sanitizer host tests pass 353 frozen cases, and 9 C64 diagnostics pass 706 cases in VICE. A complete certificate is drafted for the certificate reviewer. See `docs/ORBITAL-INTEGRATION.md`.
 
 ## Translate AGC_BLOCK_TWO_SELF-CHECK (Luminary099 and Comanche055, bank 43) as transfer-ABI routines
 

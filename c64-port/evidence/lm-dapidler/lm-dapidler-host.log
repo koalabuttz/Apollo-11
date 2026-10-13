@@ -1,3 +1,4 @@
 lm-dapidler: 9216 cases stopped; routines 1024 3015 1024 1024 1312 1024 1024 1024 1991; branches 621 967 969 0 0 509 515 0 0 1508 1507 0 0 632 680 99 993 998 0 0 502 496 0 0 247 496 124 126 0 0 184 4 180 4 277 124 0 0; 9260 checks, 0 failures
 PASS 284 assembled words on 279 source lines map to 15 native owners
-lm-dapidler: 9216 cases stopped; routines 1024 3015 1024 1024 1312 1024 1024 1024 1991; branches 621 967 969 0 0 509 515 0 0 1508 1507 0 0 632 680 99 993 998 0 0 502 496 0 0 247 496 124 126 0 0 184 4 180 4 277 124 0 0; 9260 checks, 0 failures
+sanitize (ASAN/UBSAN): 9260 checks, 0 failures
+PASS: 9216 lm-dapidler cases equal the original program: {'16,2042:qerrcalc': 485, '16,2042:zatteror': 539, '16,2050:resume': 1024, '16,2161:calcperr': 1024, 'ALTDSPLY:qerrcalc': 511, 'ALTDSPLY:returned': 513, 'CHECKUP:qerrcalc': 534, 'CHECKUP:resume': 390, 'CHECKUP:zatteror': 100, 'CHEKBITS:qerrcalc': 440, 'CHEKBITS:resume': 389, 'CHEKBITS:returned': 195, 'CHEKMORE:qerrcalc': 513, 'CHEKMORE:returned': 511, 'DAPIDLER:alarm': 64, 'DAPIDLER:qerrcalc': 529, 'DAPIDLER:resume': 352, 'DAPIDLER:zatteror': 79, 'SHUTDOWN:resume': 1024}

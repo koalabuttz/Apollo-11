@@ -52,7 +52,7 @@ typedef struct {
 extern const agc_routine_table lm_ags_init_routines;
 extern const agc_routine_table lm_ags_init_interpretive;
 #define AGS_BASIC_ROUTINES 15u
-#define AGS_INTERPRETIVE_ROUTINES 7u
+#define AGS_INTERPRETIVE_ROUTINES 24u
 #define AGS_ROUTINES (AGS_BASIC_ROUTINES+AGS_INTERPRETIVE_ROUTINES)
 /* Physical keys, basic then interpretive, in table order. */
 extern const uint16_t ags_routine_keys[AGS_ROUTINES];
