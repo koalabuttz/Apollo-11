@@ -224,7 +224,7 @@ class Basic:
         return name
 
     # Outside routines that never come back to the word after the call.
-    NORETURN = ('POSTJUMP', 'ENDOFJOB', 'TASKOVER', 'RESUME')
+    NORETURN = ('POSTJUMP', 'ENDOFJOB', 'TASKOVER', 'RESUME', 'DANZIG')
 
     CONST_OPS = ('OCT', 'OCTAL', 'DEC', 'DEC*', '2DEC', '2DEC*', 'ADRES', 'CADR', 'FCADR', 'GENADR',
                  '2CADR', '2FCADR', 'BBCON', 'REMADR', '2OCT', '2BCADR', 'ECADR', 'MM', 'VN', 'NV', 'BBCON*')
@@ -695,6 +695,9 @@ class Basic:
                 if x.endswith(':') and ('goto %s;' % x[:-1]) not in body:
                     c[i] = x + ' __attribute__((unused));'
             c.append(' (void)p;')
+            at = max(i for i, x in enumerate(c) if 'enum exec_status basic_run(' in x)
+            if not any('io->' in x or 'io,' in x or 'io)' in x for x in c[at + 1:]):
+                c.append(' (void)io;')   # (a file without channel orders or calls that take io)
             c.append('}')
             return c
         c.append('dispatch:')

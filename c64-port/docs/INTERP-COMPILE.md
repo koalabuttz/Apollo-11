@@ -68,3 +68,11 @@ The states are random words, small magnitudes and unit vectors. A spec can pin E
 - `tests/<id>_c64_vectors.h` and `tools/mk/<id>.groups`: groups of routines that fit below $c000 with the shared interpreter bodies (found by linking each candidate), and the cases whose whole run stays in a group.
 - `build/<id>-proof.json`. Cases that stop at a channel instruction are listed as `waiting_for_io_channels` and not compared. Routines whose runs reach too much of the file to fit one diagnostic are listed as `c64_host_only`.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
+
+### Fitting the C64 groups (whole-file basic specs)
+
+Specs with `'basic': 'full'` choose their C64 cases by edge coverage (each case's clang trace-pc-guard/trace-cmp edges over every linked source) rather than a fixed count per routine. Some runs are too big to fit one diagnostic on their own, because they reach too many routines and banks. Such a case stays host-only and is listed in the proof's `c64_too_big_cases`. So are the other cases of its routine whose runs reach at least the same routines with at least as many edits, so one pass drops them all. The proof's `c64_gcov_branches` and `host_branches_missing_on_c64` show the C64 cases still take every branch outcome the host cases take.
+
+Group selection reruns after each drop. Every size probe (one llvm-mos link) is memoized on its group, case text and flags, so a rerun links only the groups that changed. P40-P47's 49 groups fit in minutes instead of hours.
+
+`'basic_split': True` emits one `basic_run_<bank>` per bank. Each group defines `-D<SYM>_BANKS` with the banks its kept routines and its cases' basic labels reach, so a diagnostic links only those banks. A transfer to a bank left out returns `EXEC_OUT_OF_SCOPE`.

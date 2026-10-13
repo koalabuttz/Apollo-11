@@ -1,0 +1,23 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+d5b7ebbecc2fff20836e6afa6a08e60ee543f9b3b213bba1262dd4afe3baced3  build/cm-time-free-fall-1.prg
+fdff946d527279b50f775d085c59b43a3fc67f90e378d2af4ba5d25767aa4c70  build/cm-time-free-fall-2.prg
+735af1cf52665f43583df185117c64fd41b5de767a35c18eb3a4bd278f28c889  build/cm-time-free-fall-3.prg
+c611adc19ee8737a1ce67ef5a6a21054e27012a7ff13e258bb7965d2e969f5f7  build/cm-time-free-fall-4.prg
+86f23acc6e724ccca1d9dc6a4b0880014869f280efb1035c350f56a34332dfce  build/cm-time-free-fall-5.prg
+52aba1570b500e4850aa3b11c8a49c5679ebc5e574a5f68a74b86bb23c5ad1f8  build/cm-time-free-fall-6.prg
+
+$ make vice-cm-time-free-fall
+for p in build/cm-time-free-fall-1.prg build/cm-time-free-fall-2.prg build/cm-time-free-fall-3.prg build/cm-time-free-fall-4.prg build/cm-time-free-fall-5.prg build/cm-time-free-fall-6.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-time-free-fall-1.prg: 21 checks, 0 failures
+PRG sha256: d5b7ebbecc2fff20836e6afa6a08e60ee543f9b3b213bba1262dd4afe3baced3 cm-time-free-fall-1.prg
+PASS: VICE PAL cm-time-free-fall-2.prg: 39 checks, 0 failures
+PRG sha256: fdff946d527279b50f775d085c59b43a3fc67f90e378d2af4ba5d25767aa4c70 cm-time-free-fall-2.prg
+PASS: VICE PAL cm-time-free-fall-3.prg: 24 checks, 0 failures
+PRG sha256: 735af1cf52665f43583df185117c64fd41b5de767a35c18eb3a4bd278f28c889 cm-time-free-fall-3.prg
+PASS: VICE PAL cm-time-free-fall-4.prg: 14 checks, 0 failures
+PRG sha256: c611adc19ee8737a1ce67ef5a6a21054e27012a7ff13e258bb7965d2e969f5f7 cm-time-free-fall-4.prg
+PASS: VICE PAL cm-time-free-fall-5.prg: 41 checks, 0 failures
+PRG sha256: 86f23acc6e724ccca1d9dc6a4b0880014869f280efb1035c350f56a34332dfce cm-time-free-fall-5.prg
+PASS: VICE PAL cm-time-free-fall-6.prg: 53 checks, 0 failures
+PRG sha256: 52aba1570b500e4850aa3b11c8a49c5679ebc5e574a5f68a74b86bb23c5ad1f8 cm-time-free-fall-6.prg
+exit 0

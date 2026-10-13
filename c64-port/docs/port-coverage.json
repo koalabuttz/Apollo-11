@@ -3987,8 +3987,61 @@
       "sha256": "f33bb7ec69f9d83aa2af7dadefc8e474632e73315d91133e5d4ac8f7825f9ff5",
       "bytes": 23513,
       "lines": 683,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_time_free_fall.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (268 words): The conic time-of-free-fall routines: CALCTPER and CALCTFF (time to the perigee or a radius), TFFCONIC (the conic parameters), with their helpers TFFRP/RA, TFFQ1, TFFX and the DUMPTFF exits, all interpretive. As 121 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at CALCTFF, CALCTPER, DUMPCNIC, DUMPRPRA, DUMPTFF1, DUMPTFF2, ENDT(X), ENDTFF, INBOUND, MAXRA, MAXTFF, MAXTFF1, NEGTFF, SAVEDEN, T(X), TFFCONIC, TFFCONMU, TFFEL1, TFFELL, TFFRP/RA, TFFXTEST.",
+          "verification": "docs/CM-TIME-FREE-FALL.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the conic erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
+        "external_continuations": [
+          "BOVB SIGNMPAC (outside basic routine)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "DANZIG (outside basic routine)",
+          "POLY (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-source-map.json",
+            "sha256": "ef8cdd9209a40bd1e5f46c9dd0919474c5c3d1ef7cee21dfc933b966610cf403"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
+            "sha256": "41cdf2201b316e4fab7f3ee07247385a94cdb63c8ee232a38318a9184df09fdb"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-host.log",
+            "sha256": "be8b5156e2a2329db99105eda02a343671b43e0a1865c128f68b6586bd428b7f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-vice.log",
+            "sha256": "72f3c36a43b3365a9fe7ca82b395226f957651abe2944e52186935631b16e743",
+            "vice_targets": {
+              "vice-cm-time-free-fall": 192
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
+            "sha256": "41cdf2201b316e4fab7f3ee07247385a94cdb63c8ee232a38318a9184df09fdb"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TPI_SEARCH.agc",

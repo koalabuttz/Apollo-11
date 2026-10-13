@@ -673,18 +673,21 @@ class Compiler:
                     self.add_start(target, 'b', 'RTB target')
                 else:
                     self.externals_any[target] = 'RTB ' + (lab or '')
+                end = cur
                 if cur in self.code and is_interp_op(self.code[cur].op):
                     self.add_start(cur, 'i', 'after RTB %s' % lab)
                 elif self.rk:
                     # RTB with an order on its right: DANZIG runs that order,
-                    # then NEWOPS at the word after its operands.
+                    # then NEWOPS at the word after its operands (words of
+                    # this routine's pair, for the source map).
                     q = cur
                     while q in self.code and not is_interp_op(self.code[q].op):
                         q += 1
                     if q in self.code:
                         self.add_start(q, 'i', 'after RTB %s' % lab)
+                        end = q
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
-                return st, cur, True, False
+                return st, end, True, False
             if lab not in self.rtb:
                 raise CompileError('RTB %s has no native routine in the spec' % lab)
             st[-1] += '(void)ai_ccs(s,020);%srtb(s);' % P

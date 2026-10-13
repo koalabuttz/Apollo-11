@@ -215,6 +215,70 @@ SPECS = {
     },
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
+    # Lane G: Comanche055 TIME_OF_FREE_FALL, the whole file as routines at
+    # its original addresses (Lane B's LM form is lm-time-free-fall).
+    'cm-time-free-fall': {
+        'rope_fallback': True,
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'TIME_OF_FREE_FALL.agc'},
+        'base': {'cm': 'cm_time_free_fall'},
+        'symbol': {'cm': 'cm_time_free_fall'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'target': 'tests/cm_time_free_fall_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
+    # Lane G: Comanche055 CONIC_SUBROUTINES, the whole file as routines at
+    # its original addresses.
+    'cm-conics': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'CONIC_SUBROUTINES.agc'},
+        'base': {'cm': 'cm_conics'},
+        'symbol': {'cm': 'cm_conics'},
+        'basic': 'full',
+        'entries': ['@external'],
+        # MUTABLE,1 (and +-n,1) with X1 -2 (Earth) or -10D (Moon), the
+        # callers' AXT,1; the file never sets X1 itself.
+        'fixed_index': {'MUTABLE': [2, 10]},
+        'all_states': {'vac+046': [0o77775, 0o77765]},
+        # KEPLER's and the time-theta iterations run hundreds of orders.
+        'max_steps': 2000,
+        # KEPLERN to PERIODCH (12,2045-12,2142): the pushdown list as
+        # SETPD 0 leaves it (vac+2 between the two PDDLs and after
+        # PERIODCH's), a positive period (MPAC at PERIODCH, 0D after it) and
+        # a small TAU. (E4,1711), so PERIODCH's subtraction loop ends as
+        # the flight code's does; MODE as the orders before leave it
+        # (vector after VLOAD*, UNIT, VSQ's operand load, DP otherwise).
+        # 04,3650 (GEOM's return) is in DP mode.
+        'states': {
+            **{'12,%o' % a: {'0166': ['vac+2' if a in (0o2122, 0o2124) or a >= 0o2133 else 'vac+0'],
+                             '02311': [0, 0o77777], '02312': [1, 0o40, 0o77, 0o77700, 0o77776],
+                             '0163': [0o77776 if a in (0o2047, 0o2051, 0o2054, 0o2060, 0o2066) else 0],
+                             **({'0154': [0o100, 0o1000, 0o10000]} if a == 0o2131 else {}),
+                             **({'vac+0': [0o100, 0o1000, 0o10000]} if a >= 0o2133 else {})}
+               for a in range(0o2045, 0o2143)},
+            '04,3650': {'0163': [0]},
+            # STOREs into E7's last words (EPSILONL, COGA) after a DP
+            # order: a vector store there would run past erasable.
+            '12,3241': {'0163': [0]}, '12,3506': {'0163': [0]},
+            # APSIDES, TIMETHET and TIMERAD after their SETPD 0: PDVL's
+            # push stays below X1.
+            '12,3706': {'0166': ['vac+0']}, '12,3710': {'0166': ['vac+0']}, '12,3713': {'0166': ['vac+6']},
+            '12,2747': {'0166': ['vac+0']}, '12,2751': {'0166': ['vac+0']}, '12,2754': {'0166': ['vac+6']},
+            '12,3561': {'0166': ['vac+0']}, '12,3563': {'0166': ['vac+0']}, '12,3566': {'0166': ['vac+6']},
+        },
+        'target': 'tests/cm_conics_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
     'cm-p40-p47': {
         # GOPERF1/GOFLASH returns and other words only the display or a
         # restart enters (terminate, proceed, enter after a BANKCALL).

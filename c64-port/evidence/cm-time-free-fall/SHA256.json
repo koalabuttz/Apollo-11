@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-time-free-fall",
+  "release": "evidence-cm-time-free-fall",
+  "files": {
+    "cm-time-free-fall-differential.log": {
+      "sha256": "670f48bc7c93a7e7c76fad281516164e46157f05edd42109f0fde655301389bc",
+      "bytes": 5580,
+      "store": "tree"
+    },
+    "cm-time-free-fall-host.log": {
+      "sha256": "be8b5156e2a2329db99105eda02a343671b43e0a1865c128f68b6586bd428b7f",
+      "bytes": 674,
+      "store": "tree"
+    },
+    "cm-time-free-fall-proof.json": {
+      "sha256": "41cdf2201b316e4fab7f3ee07247385a94cdb63c8ee232a38318a9184df09fdb",
+      "bytes": 13470,
+      "store": "tree"
+    },
+    "cm-time-free-fall-source-map.json": {
+      "sha256": "ef8cdd9209a40bd1e5f46c9dd0919474c5c3d1ef7cee21dfc933b966610cf403",
+      "bytes": 37079,
+      "store": "tree"
+    },
+    "cm-time-free-fall-vice.log": {
+      "sha256": "72f3c36a43b3365a9fe7ca82b395226f957651abe2944e52186935631b16e743",
+      "bytes": 1977,
+      "store": "tree"
+    }
+  }
+}

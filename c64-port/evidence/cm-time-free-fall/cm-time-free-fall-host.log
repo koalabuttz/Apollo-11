@@ -1,0 +1,7 @@
+$ make test-cm-time-free-fall sanitize-cm-time-free-fall
+./build/test-cm-time-free-fall
+cm-time-free-fall: 968 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_time_free_fall.c tests/cm_time_free_fall_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_time_free_fall.c -o build/test-cm-time-free-fall-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-time-free-fall-sanitize
+cm-time-free-fall: 968 checks, 0 failures
+exit 0
