@@ -1016,8 +1016,19 @@ def greedy_cover(cands, sets, covered=(), key=lambda i: i, accept=lambda i: True
     return picked, cov
 
 
+# A native or reference run that outlives this (seconds) is a hang, not a
+# slow spec: an interpreter loop with no step budget, say (#224).
+RUN_TIMEOUT = int(os.environ.get('IRC_RUN_TIMEOUT', '1200'))
+
+
 def run(cmd):
-    out = subprocess.run(cmd, cwd=R, check=True, capture_output=True, text=True).stdout
+    try:
+        out = subprocess.run(cmd, cwd=R, check=True, capture_output=True, text=True,
+                             timeout=RUN_TIMEOUT).stdout
+    except subprocess.TimeoutExpired:
+        sys.exit('FAIL: %s ran over %d s (IRC_RUN_TIMEOUT); a case hangs' % (' '.join(cmd), RUN_TIMEOUT))
+    except subprocess.CalledProcessError as e:
+        sys.exit('FAIL: %s exited %d\n%s' % (' '.join(cmd), e.returncode, e.stderr))
     return [l.split() for l in out.splitlines()]
 
 
