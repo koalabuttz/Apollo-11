@@ -216,6 +216,9 @@ SPECS = {
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
     'cm-p40-p47': {
+        # GOPERF1/GOFLASH returns and other words only the display or a
+        # restart enters (terminate, proceed, enter after a BANKCALL).
+        'resume_orphans': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.

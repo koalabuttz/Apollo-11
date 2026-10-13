@@ -261,8 +261,8 @@ class Compiler:
             if kind == 'b' and self.basic:
                 self.basic.enter(phys)
                 self.blocks[phys] = None
-                continue
-            self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
+            else:
+                self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
             if not self.work and self.spec.get('resume_orphans'):
                 # Basic words nothing in the file reaches are entered from
                 # outside (display and restart returns): routines of their own.
@@ -270,7 +270,8 @@ class Compiler:
                     prev = self.code.get(q - 1)
                     if prev is not None and prev.op in ('EXTEND', 'INDEX', 'NDX'):
                         continue    # (a prefixed word is its prefix's)
-                    if self.is_basic(q) and q not in self.owner and q not in self.starts:
+                    if self.is_basic(q) and q not in self.owner and q not in self.starts and not (
+                            self.basic and (q in self.basic.words or q in self.basic.operands)):
                         self.add_start(q, 'b', 'resumed from outside')
                         break
         # Second pass: a block stops where another starts.

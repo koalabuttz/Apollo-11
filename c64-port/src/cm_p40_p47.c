@@ -509,20 +509,34 @@ dispatch:
  case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
  case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
  case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20589u:return CM_P40_P47_RUN_24(s,io,20589u);
+ case 20590u:return CM_P40_P47_RUN_24(s,io,20590u);
+ case 20598u:return CM_P40_P47_RUN_24(s,io,20598u);
+ case 20604u:return CM_P40_P47_RUN_24(s,io,20604u);
+ case 20607u:return CM_P40_P47_RUN_24(s,io,20607u);
  case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
  case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
  case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
  case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20621u:return CM_P40_P47_RUN_24(s,io,20621u);
+ case 20622u:return CM_P40_P47_RUN_24(s,io,20622u);
  case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
  case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
  case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
  case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
  case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
  case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20650u:return CM_P40_P47_RUN_24(s,io,20650u);
+ case 20651u:return CM_P40_P47_RUN_24(s,io,20651u);
+ case 20658u:return CM_P40_P47_RUN_24(s,io,20658u);
+ case 20659u:return CM_P40_P47_RUN_24(s,io,20659u);
  case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
  case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
  case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20667u:return CM_P40_P47_RUN_24(s,io,20667u);
+ case 20668u:return CM_P40_P47_RUN_24(s,io,20668u);
  case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20687u:return CM_P40_P47_RUN_24(s,io,20687u);
  case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
  case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
  case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
@@ -612,11 +626,18 @@ dispatch:
  case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
  case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
  case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21227u:return CM_P40_P47_RUN_24(s,io,21227u);
+ case 21228u:return CM_P40_P47_RUN_24(s,io,21228u);
  case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21233u:return CM_P40_P47_RUN_24(s,io,21233u);
+ case 21234u:return CM_P40_P47_RUN_24(s,io,21234u);
  case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21248u:return CM_P40_P47_RUN_24(s,io,21248u);
+ case 21249u:return CM_P40_P47_RUN_24(s,io,21249u);
  case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
  case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
  case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21271u:return CM_P40_P47_RUN_24(s,io,21271u);
  case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
  case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
  case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
@@ -626,6 +647,8 @@ dispatch:
  case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
  case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
  case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21303u:return CM_P40_P47_RUN_24(s,io,21303u);
+ case 21306u:return CM_P40_P47_RUN_24(s,io,21306u);
  case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
  case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
  case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
@@ -633,6 +656,8 @@ dispatch:
  case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
  case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
  case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21326u:return CM_P40_P47_RUN_24(s,io,21326u);
+ case 21330u:return CM_P40_P47_RUN_24(s,io,21330u);
  case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
  case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
  case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
@@ -1683,20 +1708,34 @@ dispatch:
  case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
  case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
  case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20589u:return CM_P40_P47_RUN_24(s,io,20589u);
+ case 20590u:return CM_P40_P47_RUN_24(s,io,20590u);
+ case 20598u:return CM_P40_P47_RUN_24(s,io,20598u);
+ case 20604u:return CM_P40_P47_RUN_24(s,io,20604u);
+ case 20607u:return CM_P40_P47_RUN_24(s,io,20607u);
  case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
  case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
  case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
  case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20621u:return CM_P40_P47_RUN_24(s,io,20621u);
+ case 20622u:return CM_P40_P47_RUN_24(s,io,20622u);
  case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
  case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
  case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
  case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
  case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
  case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20650u:return CM_P40_P47_RUN_24(s,io,20650u);
+ case 20651u:return CM_P40_P47_RUN_24(s,io,20651u);
+ case 20658u:return CM_P40_P47_RUN_24(s,io,20658u);
+ case 20659u:return CM_P40_P47_RUN_24(s,io,20659u);
  case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
  case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
  case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20667u:return CM_P40_P47_RUN_24(s,io,20667u);
+ case 20668u:return CM_P40_P47_RUN_24(s,io,20668u);
  case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20687u:return CM_P40_P47_RUN_24(s,io,20687u);
  case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
  case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
  case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
@@ -1786,11 +1825,18 @@ dispatch:
  case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
  case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
  case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21227u:return CM_P40_P47_RUN_24(s,io,21227u);
+ case 21228u:return CM_P40_P47_RUN_24(s,io,21228u);
  case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21233u:return CM_P40_P47_RUN_24(s,io,21233u);
+ case 21234u:return CM_P40_P47_RUN_24(s,io,21234u);
  case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21248u:return CM_P40_P47_RUN_24(s,io,21248u);
+ case 21249u:return CM_P40_P47_RUN_24(s,io,21249u);
  case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
  case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
  case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21271u:return CM_P40_P47_RUN_24(s,io,21271u);
  case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
  case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
  case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
@@ -1800,6 +1846,8 @@ dispatch:
  case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
  case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
  case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21303u:return CM_P40_P47_RUN_24(s,io,21303u);
+ case 21306u:return CM_P40_P47_RUN_24(s,io,21306u);
  case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
  case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
  case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
@@ -1807,6 +1855,8 @@ dispatch:
  case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
  case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
  case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21326u:return CM_P40_P47_RUN_24(s,io,21326u);
+ case 21330u:return CM_P40_P47_RUN_24(s,io,21330u);
  case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
  case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
  case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
@@ -2001,20 +2051,34 @@ dispatch:
  case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
  case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
  case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20589u:return CM_P40_P47_RUN_24(s,io,20589u);
+ case 20590u:return CM_P40_P47_RUN_24(s,io,20590u);
+ case 20598u:return CM_P40_P47_RUN_24(s,io,20598u);
+ case 20604u:return CM_P40_P47_RUN_24(s,io,20604u);
+ case 20607u:return CM_P40_P47_RUN_24(s,io,20607u);
  case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
  case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
  case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
  case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20621u:return CM_P40_P47_RUN_24(s,io,20621u);
+ case 20622u:return CM_P40_P47_RUN_24(s,io,20622u);
  case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
  case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
  case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
  case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
  case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
  case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20650u:return CM_P40_P47_RUN_24(s,io,20650u);
+ case 20651u:return CM_P40_P47_RUN_24(s,io,20651u);
+ case 20658u:return CM_P40_P47_RUN_24(s,io,20658u);
+ case 20659u:return CM_P40_P47_RUN_24(s,io,20659u);
  case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
  case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
  case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20667u:return CM_P40_P47_RUN_24(s,io,20667u);
+ case 20668u:return CM_P40_P47_RUN_24(s,io,20668u);
  case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20687u:return CM_P40_P47_RUN_24(s,io,20687u);
  case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
  case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
  case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
@@ -2104,11 +2168,18 @@ dispatch:
  case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
  case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
  case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21227u:return CM_P40_P47_RUN_24(s,io,21227u);
+ case 21228u:return CM_P40_P47_RUN_24(s,io,21228u);
  case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21233u:return CM_P40_P47_RUN_24(s,io,21233u);
+ case 21234u:return CM_P40_P47_RUN_24(s,io,21234u);
  case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21248u:return CM_P40_P47_RUN_24(s,io,21248u);
+ case 21249u:return CM_P40_P47_RUN_24(s,io,21249u);
  case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
  case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
  case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21271u:return CM_P40_P47_RUN_24(s,io,21271u);
  case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
  case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
  case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
@@ -2118,6 +2189,8 @@ dispatch:
  case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
  case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
  case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21303u:return CM_P40_P47_RUN_24(s,io,21303u);
+ case 21306u:return CM_P40_P47_RUN_24(s,io,21306u);
  case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
  case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
  case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
@@ -2125,6 +2198,8 @@ dispatch:
  case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
  case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
  case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21326u:return CM_P40_P47_RUN_24(s,io,21326u);
+ case 21330u:return CM_P40_P47_RUN_24(s,io,21330u);
  case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
  case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
  case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
@@ -2170,20 +2245,34 @@ static enum exec_status basic_run_24(apollo_overlay_state *s,cm_native_io *io,ui
  case 20573u:goto B50135;
  case 20582u:goto B50146;
  case 20588u:goto B50154;
+ case 20589u:goto B50155;
+ case 20590u:goto B50156;
+ case 20598u:goto B50166;
+ case 20604u:goto B50174;
+ case 20607u:goto B50177;
  case 20611u:goto B50203;
  case 20612u:goto B50204;
  case 20613u:goto B50205;
  case 20620u:goto B50214;
+ case 20621u:goto B50215;
+ case 20622u:goto B50216;
  case 20633u:goto B50231;
  case 20635u:goto B50233;
  case 20636u:goto B50234;
  case 20638u:goto B50236;
  case 20646u:goto B50246;
  case 20649u:goto B50251;
+ case 20650u:goto B50252;
+ case 20651u:goto B50253;
+ case 20658u:goto B50262;
+ case 20659u:goto B50263;
  case 20660u:goto B50264;
  case 20663u:goto B50267;
  case 20666u:goto B50272;
+ case 20667u:goto B50273;
+ case 20668u:goto B50274;
  case 20676u:goto B50304;
+ case 20687u:goto B50317;
  case 20688u:goto B50320;
  case 20700u:goto B50334;
  case 20704u:goto B50340;
@@ -2273,11 +2362,18 @@ static enum exec_status basic_run_24(apollo_overlay_state *s,cm_native_io *io,ui
  case 21210u:goto B51332;
  case 21218u:goto B51342;
  case 21226u:goto B51352;
+ case 21227u:goto B51353;
+ case 21228u:goto B51354;
  case 21232u:goto B51360;
+ case 21233u:goto B51361;
+ case 21234u:goto B51362;
  case 21238u:goto B51366;
+ case 21248u:goto B51400;
+ case 21249u:goto B51401;
  case 21250u:goto B51402;
  case 21254u:goto B51406;
  case 21255u:goto B51407;
+ case 21271u:goto B51427;
  case 21277u:goto B51435;
  case 21280u:goto B51440;
  case 21281u:goto B51441;
@@ -2287,6 +2383,8 @@ static enum exec_status basic_run_24(apollo_overlay_state *s,cm_native_io *io,ui
  case 21294u:goto B51456;
  case 21296u:goto B51460;
  case 21300u:goto B51464;
+ case 21303u:goto B51467;
+ case 21306u:goto B51472;
  case 21307u:goto B51473;
  case 21313u:goto B51501;
  case 21315u:goto B51503;
@@ -2294,6 +2392,8 @@ static enum exec_status basic_run_24(apollo_overlay_state *s,cm_native_io *io,ui
  case 21319u:goto B51507;
  case 21321u:goto B51511;
  case 21323u:goto B51513;
+ case 21326u:goto B51516;
+ case 21330u:goto B51522;
  case 21331u:goto B51523;
  case 21336u:goto B51530;
  case 21341u:goto B51535;
@@ -2408,585 +2508,754 @@ B50154:
  IRC_COVER(268u);
  /* 24,2154 TCF POST41 */
  goto B50275;
-B50177:
+B50155:
  IRC_COVER(269u);
+ /* 24,2155 TCF TST,TRIM */
+ goto B50435;
+B50156:
+ IRC_COVER(270u);
+ /* 24,2156 TRIMONLY CS BIT1 */
+ ai_csf(s,000001u); /* BIT1 */
+ goto B50157c;
+B50157c:
+ IRC_COVER(271u);
+ /* 24,2157 +1 TS MRKRTMP */
+ (void)ai_ts(s,(unsigned)01445);
+ goto B50160c;
+B50160c:
+ IRC_COVER(272u);
+ /* 24,2160 CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B50161c;
+B50161c:
+ IRC_COVER(273u);
+ /* 24,2161 TS CNTR */
+ (void)ai_ts(s,(unsigned)01447);
+ goto B50162c;
+B50162c:
+ IRC_COVER(274u);
+ /* 24,2162 CAF ONE */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B50163c;
+B50163c:
+ IRC_COVER(275u);
+ /* 24,2163 TC WAITLIST */
+ ai_tc(s,002164u);
+ W[5]=05245u;return EXEC_OK; /* WAITLIST */
+B50166:
+ IRC_COVER(276u);
+ /* 24,2166 CCS MRKRTMP */
+ switch(ai_ccs(s,01445)){
+  case 0:goto B50167c;
+  case 1:goto B50170c;
+  case 2:goto B50171c;
+  case 3:goto B50172c;
+ }
+ return EXEC_INVALID_ACTION;
+B50167c:
+ IRC_COVER(277u);
+ /* 24,2167 CAF 18SEC */
+ ai_caf(s,003410u); /* 18SEC */
+ goto B50170c;
+B50170c:
+ IRC_COVER(278u);
+ /* 24,2170 TCF +2 */
+ goto B50172c;
+B50171c:
+ IRC_COVER(279u);
+ /* 24,2171 CAF 5SEC */
+ ai_caf(s,000764u); /* 5SEC */
+ goto B50172c;
+B50172c:
+ IRC_COVER(280u);
+ /* 24,2172 TC BANKCALL */
+ ai_tc(s,002173u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B50174:
+ IRC_COVER(281u);
+ /* 24,2174 TC 2PHSCHNG */
+ ai_tc(s,002175u);
+ W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
+B50177:
+ IRC_COVER(282u);
  /* 24,2177 P40S/RS CAF ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B50200c;
 B50200c:
- IRC_COVER(270u);
+ IRC_COVER(283u);
  /* 24,2200 TC WAITLIST */
  ai_tc(s,002201u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B50203:
- IRC_COVER(271u);
+ IRC_COVER(284u);
  /* 24,2203 RELINT */
  io->interrupt_enabled=1;
  goto B50204;
 B50204:
- IRC_COVER(272u);
+ IRC_COVER(285u);
  /* 24,2204 P40S/SV TCR E7SETTER */
  ai_tc(s,002205u);
  goto B51366;
 B50205:
- IRC_COVER(273u);
+ IRC_COVER(286u);
  /* 24,2205 TC INTPRET */
  ai_tc(s,002206u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B50214:
- IRC_COVER(274u);
+ IRC_COVER(287u);
  /* 24,2214 TCF +2 */
  goto B50216;
+B50215:
+ IRC_COVER(288u);
+ /* 24,2215 TC P40SNEWM */
+ ai_tc(s,002216u);
+ goto B50237;
 B50216:
- IRC_COVER(275u);
+ IRC_COVER(289u);
  /* 24,2216 P40SET EXTEND */
  goto X50217;
 X50217:
- IRC_COVER(276u);
+ IRC_COVER(290u);
  /* 24,2217 EXTENDED DCA MPAC */
  ai_dca(s,0154);
  goto B50220c;
 B50220c:
- IRC_COVER(277u);
+ IRC_COVER(291u);
  /* 24,2220 DXCH P40TMP */
  ai_dxch(s,01672);
  goto B50221c;
 B50221c:
- IRC_COVER(278u);
+ IRC_COVER(292u);
  /* 24,2221 EXTEND */
  goto X50222c;
 X50222c:
- IRC_COVER(279u);
+ IRC_COVER(293u);
  /* 24,2222 EXTENDED DCS 5SECDP */
  {static const agc_word k[2]={000000u,000764u};ai_dcsf(s,k);} /* 5SECDP */
  goto B50223c;
 B50223c:
- IRC_COVER(280u);
+ IRC_COVER(294u);
  /* 24,2223 DAS P40TMP */
  ai_das(s,01672);
  goto B50224;
 B50224:
- IRC_COVER(281u);
+ IRC_COVER(295u);
  /* 24,2224 EXTEND */
  goto X50225;
 X50225:
- IRC_COVER(282u);
+ IRC_COVER(296u);
  /* 24,2225 EXTENDED DCA P40TMP */
  ai_dca(s,01672);
  goto B50226c;
 B50226c:
- IRC_COVER(283u);
+ IRC_COVER(297u);
  /* 24,2226 TC LONGCALL */
  ai_tc(s,002227u);
  W[5]=05342u;return EXEC_OK; /* LONGCALL */
 B50231:
- IRC_COVER(284u);
+ IRC_COVER(298u);
  /* 24,2231 TC PHASCHNG */
  ai_tc(s,002232u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B50233:
- IRC_COVER(285u);
+ IRC_COVER(299u);
  /* 24,2233 TCF ENDOFJOB */
  W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B50234:
- IRC_COVER(286u);
+ IRC_COVER(300u);
  /* 24,2234 P40BLNKR TC BANKCALL */
  ai_tc(s,002235u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B50236:
- IRC_COVER(287u);
+ IRC_COVER(301u);
  /* 24,2236 TCF ENDOFJOB */
  W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
+B50237:
+ IRC_COVER(302u);
+ /* 24,2237 P40SNEWM EXTEND */
+ goto X50240;
+X50240:
+ IRC_COVER(303u);
+ /* 24,2240 EXTENDED DCA PIPTIME1 */
+ ai_dca(s,01245);
+ goto B50241c;
+B50241c:
+ IRC_COVER(304u);
+ /* 24,2241 DXCH TIG */
+ ai_dxch(s,01412);
+ goto B50242c;
+B50242c:
+ IRC_COVER(305u);
+ /* 24,2242 EXTEND */
+ goto X50243c;
+X50243c:
+ IRC_COVER(306u);
+ /* 24,2243 EXTENDED DCA SEC29.96 */
+ {static const agc_word k[2]={000000u,005664u};ai_dcaf(s,k);} /* SEC29.96 */
+ goto B50244c;
+B50244c:
+ IRC_COVER(307u);
+ /* 24,2244 DAS TIG */
+ ai_das(s,01412);
+ goto B50245;
+B50245:
+ IRC_COVER(308u);
+ /* 24,2245 TCF P40SET */
+ goto B50216;
 B50246:
- IRC_COVER(288u);
+ IRC_COVER(309u);
  /* 24,2246 POSTBURN CAF V16N40 */
  ai_caf(s,004050u); /* V16N40 */
  goto B50247c;
 B50247c:
- IRC_COVER(289u);
+ IRC_COVER(310u);
  /* 24,2247 TC BANKCALL */
  ai_tc(s,002250u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B50251:
- IRC_COVER(290u);
+ IRC_COVER(311u);
  /* 24,2251 TCF POST41 */
  goto B50275;
+B50252:
+ IRC_COVER(312u);
+ /* 24,2252 TCF P40RCS */
+ goto B50254;
+B50253:
+ IRC_COVER(313u);
+ /* 24,2253 TCF POSTBURN */
+ goto B50246;
+B50254:
+ IRC_COVER(314u);
+ /* 24,2254 P40RCS EXTEND */
+ goto X50255;
+X50255:
+ IRC_COVER(315u);
+ /* 24,2255 EXTENDED DCA ACADN85 */
+ {static const agc_word k[2]={002401u,050066u};ai_dcaf(s,k);} /* ACADN85 */
+ goto B50256c;
+B50256c:
+ IRC_COVER(316u);
+ /* 24,2256 DXCH AVEGEXIT */
+ ai_dxch(s,01222);
+ goto B50257c;
+B50257c:
+ IRC_COVER(317u);
+ /* 24,2257 CAF 2SECS */
+ ai_caf(s,000310u); /* 2SECS */
+ goto B50260c;
+B50260c:
+ IRC_COVER(318u);
+ /* 24,2260 TC BANKCALL */
+ ai_tc(s,002261u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B50262:
+ IRC_COVER(319u);
+ /* 24,2262 P40MINDB TCR SETMINDB   -1 */
+ ai_tc(s,002263u);
+ goto B50303;
+B50263:
+ IRC_COVER(320u);
+ /* 24,2263 RELINT */
+ io->interrupt_enabled=1;
+ goto B50264;
 B50264:
- IRC_COVER(291u);
+ IRC_COVER(321u);
  /* 24,2264 TIGNOW TC PHASCHNG */
  ai_tc(s,002265u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B50267:
- IRC_COVER(292u);
+ IRC_COVER(322u);
  /* 24,2267 CAF V16N85B */
  ai_caf(s,004125u); /* V16N85B */
  goto B50270c;
 B50270c:
- IRC_COVER(293u);
+ IRC_COVER(323u);
  /* 24,2270 TC BANKCALL */
  ai_tc(s,002271u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B50272:
- IRC_COVER(294u);
+ IRC_COVER(324u);
  /* 24,2272 TCF POST41 */
  goto B50275;
+B50273:
+ IRC_COVER(325u);
+ /* 24,2273 TCF POST41 */
+ goto B50275;
+B50274:
+ IRC_COVER(326u);
+ /* 24,2274 TCF TIGNOW */
+ goto B50264;
 B50275:
- IRC_COVER(295u);
+ IRC_COVER(327u);
  /* 24,2275 POST41 EXTEND */
  goto X50276;
 X50276:
- IRC_COVER(296u);
+ IRC_COVER(328u);
  /* 24,2276 EXTENDED DCA SERVCADR */
  {static const agc_word k[2]={003227u,076067u};ai_dcaf(s,k);} /* SERVCADR */
  goto B50277c;
 B50277c:
- IRC_COVER(297u);
+ IRC_COVER(329u);
  /* 24,2277 DXCH AVEGEXIT */
  ai_dxch(s,01222);
  goto B50300c;
 B50300c:
- IRC_COVER(298u);
+ IRC_COVER(330u);
  /* 24,2300 TCF GOTOPOOH */
  W[5]=04106u;return EXEC_OK; /* GOTOPOOH */
 B50303:
- IRC_COVER(299u);
+ IRC_COVER(331u);
  /* 24,2303 -1 INHINT */
  io->interrupt_enabled=0;
  goto B50304;
 B50304:
- IRC_COVER(300u);
+ IRC_COVER(332u);
  /* 24,2304 SETMINDB CA CDUX */
  ai_ca(s,032);
  goto B50305c;
 B50305c:
- IRC_COVER(301u);
+ IRC_COVER(333u);
  /* 24,2305 TS THETADX */
  (void)ai_ts(s,(unsigned)01572);
  goto B50306c;
 B50306c:
- IRC_COVER(302u);
+ IRC_COVER(334u);
  /* 24,2306 EXTEND */
  goto X50307c;
 X50307c:
- IRC_COVER(303u);
+ IRC_COVER(335u);
  /* 24,2307 EXTENDED DCA CDUY */
  ai_dca(s,033);
  goto B50310c;
 B50310c:
- IRC_COVER(304u);
+ IRC_COVER(336u);
  /* 24,2310 DXCH THETADY */
  ai_dxch(s,01573);
  goto B50311c;
 B50311c:
- IRC_COVER(305u);
+ IRC_COVER(337u);
  /* 24,2311 CA MINDB */
  ai_caf(s,000056u); /* MINDB */
  goto B50312c;
 B50312c:
- IRC_COVER(306u);
+ IRC_COVER(338u);
  /* 24,2312 TS ADB */
  (void)ai_ts(s,(unsigned)01655);
  goto B50313c;
 B50313c:
- IRC_COVER(307u);
+ IRC_COVER(339u);
  /* 24,2313 CS BIT4 */
  ai_csf(s,000010u); /* BIT4 */
  goto B50314c;
 B50314c:
- IRC_COVER(308u);
+ IRC_COVER(340u);
  /* 24,2314 MASK DAPDATR1 */
  ai_mask(s,01466);
  goto B50315c;
 B50315c:
- IRC_COVER(309u);
+ IRC_COVER(341u);
  /* 24,2315 TS DAPDATR1 */
  (void)ai_ts(s,(unsigned)01466);
  goto B50316c;
 B50316c:
- IRC_COVER(310u);
+ IRC_COVER(342u);
  /* 24,2316 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B50317:
+ IRC_COVER(343u);
+ /* 24,2317 -1 INHINT */
+ io->interrupt_enabled=0;
+ goto B50320;
 B50320:
- IRC_COVER(311u);
+ IRC_COVER(344u);
  /* 24,2320 SETMAXDB CA MAXDB */
  ai_caf(s,000707u); /* MAXDB */
  goto B50321c;
 B50321c:
- IRC_COVER(312u);
+ IRC_COVER(345u);
  /* 24,2321 TS ADB */
  (void)ai_ts(s,(unsigned)01655);
  goto B50322c;
 B50322c:
- IRC_COVER(313u);
+ IRC_COVER(346u);
  /* 24,2322 CS DAPDATR1 */
  ai_cs(s,01466);
  goto B50323c;
 B50323c:
- IRC_COVER(314u);
+ IRC_COVER(347u);
  /* 24,2323 MASK BIT4 */
  ai_maskf(s,000010u); /* BIT4 */
  goto B50324c;
 B50324c:
- IRC_COVER(315u);
+ IRC_COVER(348u);
  /* 24,2324 ADS DAPDATR1 */
  ai_ads(s,01466);
  goto B50325;
 B50325:
- IRC_COVER(316u);
+ IRC_COVER(349u);
  /* 24,2325 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B50326:
- IRC_COVER(317u);
+ IRC_COVER(350u);
  /* 24,2326 P41/P40 CS MODREG */
  ai_cs(s,01011);
  goto B50327c;
 B50327c:
- IRC_COVER(318u);
+ IRC_COVER(351u);
  /* 24,2327 MASK ONE */
  ai_maskf(s,000001u); /* BIT1 */
  goto B50330c;
 B50330c:
- IRC_COVER(319u);
+ IRC_COVER(352u);
  /* 24,2330 EXTEND */
  goto X50331c;
 X50331c:
- IRC_COVER(320u);
+ IRC_COVER(353u);
  /* 24,2331 EXTENDED BZF +2 */
  if(ai_bzf(s)){
    goto B50333c;
  }
  goto B50332c;
 B50332c:
- IRC_COVER(321u);
+ IRC_COVER(354u);
  /* 24,2332 INCR Q */
  ai_incr(s,02);
  goto B50333c;
 B50333c:
- IRC_COVER(322u);
+ IRC_COVER(355u);
  /* 24,2333 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B50334:
- IRC_COVER(323u);
+ IRC_COVER(356u);
  /* 24,2334 TTG/0 CAF PRIO20 */
  ai_caf(s,020000u); /* BIT14 */
  goto B50335c;
 B50335c:
- IRC_COVER(324u);
+ IRC_COVER(357u);
  /* 24,2335 TC NOVAC */
  ai_tc(s,002336u);
  W[5]=05134u;return EXEC_OK; /* NOVAC */
 B50340:
- IRC_COVER(325u);
+ IRC_COVER(358u);
  /* 24,2340 P40CLK TC DOWNFLAG */
  ai_tc(s,002341u);
  W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
 B50342:
- IRC_COVER(326u);
+ IRC_COVER(359u);
  /* 24,2342 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B50343:
- IRC_COVER(327u);
+ IRC_COVER(360u);
  /* 24,2343 P41/DSP CAF V06N85B */
  ai_caf(s,001525u); /* V06N85B */
  goto B50344c;
 B50344c:
- IRC_COVER(328u);
+ IRC_COVER(361u);
  /* 24,2344 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B50345c;
 B50345c:
- IRC_COVER(329u);
+ IRC_COVER(362u);
  /* 24,2345 TC INTPRET */
  ai_tc(s,002346u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B50351:
- IRC_COVER(330u);
+ IRC_COVER(363u);
  /* 24,2351 EXTEND */
  goto X50352;
 X50352:
- IRC_COVER(331u);
+ IRC_COVER(364u);
  /* 24,2352 EXTENDED DCA ACADN85 */
  {static const agc_word k[2]={002401u,050066u};ai_dcaf(s,k);} /* ACADN85 */
  goto B50353c;
 B50353c:
- IRC_COVER(332u);
+ IRC_COVER(365u);
  /* 24,2353 DXCH AVEGEXIT */
  ai_dxch(s,01222);
  goto B50354c;
 B50354c:
- IRC_COVER(333u);
+ IRC_COVER(366u);
  /* 24,2354 TC 2PHSCHNG */
  ai_tc(s,002355u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B50357:
- IRC_COVER(334u);
+ IRC_COVER(367u);
  /* 24,2357 TCF P40S/RS */
  goto B50177;
 B50360:
- IRC_COVER(335u);
+ IRC_COVER(368u);
  /* 24,2360 P41REDSP CAF V16N85B */
  ai_caf(s,004125u); /* V16N85B */
  goto B50361c;
 B50361c:
- IRC_COVER(336u);
+ IRC_COVER(369u);
  /* 24,2361 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B50362c;
 B50362c:
- IRC_COVER(337u);
+ IRC_COVER(370u);
  /* 24,2362 CAF SEC29.96   +1 */
  ai_caf(s,005664u); /*  */
  goto B50363c;
 B50363c:
- IRC_COVER(338u);
+ IRC_COVER(371u);
  /* 24,2363 TC WAITLIST */
  ai_tc(s,002364u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B50366:
- IRC_COVER(339u);
+ IRC_COVER(372u);
  /* 24,2366 CS BIT3 */
  ai_csf(s,000004u); /* BIT3 */
  goto B50367c;
 B50367c:
- IRC_COVER(340u);
+ IRC_COVER(373u);
  /* 24,2367 TCF TTGPHS */
  goto B50566c;
 B50401:
- IRC_COVER(341u);
+ IRC_COVER(374u);
  /* 24,2401 CALCN85 TC INTPRET */
  ai_tc(s,002402u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B50407:
- IRC_COVER(342u);
+ IRC_COVER(375u);
  /* 24,2407 TC SERVXT */
  ai_tc(s,002410u);
  goto B51215;
 B50410:
- IRC_COVER(343u);
+ IRC_COVER(376u);
  /* 24,2410 FENG 2DEC 9.1188544  B-7: data, never executed */
  return EXEC_INVALID_ACTION;
+B50435:
+ IRC_COVER(377u);
+ /* 24,2435 TST,TRIM CAF BIT1 */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B50436c;
+B50436c:
+ IRC_COVER(378u);
+ /* 24,2436 TCF TRIMONLY   +1 */
+ goto B50157c;
 B50437:
- IRC_COVER(344u);
+ IRC_COVER(379u);
  /* 24,2437 TIGBLNK CAF 5SEC */
  ai_caf(s,000764u); /* 5SEC */
  goto B50440c;
 B50440c:
- IRC_COVER(345u);
+ IRC_COVER(380u);
  /* 24,2440 TC WAITLIST */
  ai_tc(s,002441u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B50443:
- IRC_COVER(346u);
+ IRC_COVER(381u);
  /* 24,2443 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B50444c;
 B50444c:
- IRC_COVER(347u);
+ IRC_COVER(382u);
  /* 24,2444 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B50445c;
 B50445c:
- IRC_COVER(348u);
+ IRC_COVER(383u);
  /* 24,2445 CAF PRIO14 */
  ai_caf(s,014000u); /* PRIO14 */
  goto B50446c;
 B50446c:
- IRC_COVER(349u);
+ IRC_COVER(384u);
  /* 24,2446 TC NOVAC */
  ai_tc(s,002447u);
  W[5]=05134u;return EXEC_OK; /* NOVAC */
 B50451:
- IRC_COVER(350u);
+ IRC_COVER(385u);
  /* 24,2451 CS OCT37 */
  ai_csf(s,000037u); /* LOW5 */
  goto B50452c;
 B50452c:
- IRC_COVER(351u);
+ IRC_COVER(386u);
  /* 24,2452 P40TSK TC NEWPHASE */
  ai_tc(s,002453u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B50454:
- IRC_COVER(352u);
+ IRC_COVER(387u);
  /* 24,2454 TC TASKOVER */
  ai_tc(s,002455u);
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B50463:
- IRC_COVER(353u);
+ IRC_COVER(388u);
  /* 24,2463 P47CSM TC BANKCALL */
  ai_tc(s,002464u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B50465:
- IRC_COVER(354u);
+ IRC_COVER(389u);
  /* 24,2465 TC INTPRET */
  ai_tc(s,002466u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B50470:
- IRC_COVER(355u);
+ IRC_COVER(390u);
  /* 24,2470 CA MPAC       +1 */
  ai_ca(s,0155);
  goto B50471c;
 B50471c:
- IRC_COVER(356u);
+ IRC_COVER(391u);
  /* 24,2471 TS P40TMP */
  (void)ai_ts(s,(unsigned)01672);
  goto B50472c;
 B50472c:
- IRC_COVER(357u);
+ IRC_COVER(392u);
  /* 24,2472 TC WAITLIST */
  ai_tc(s,002473u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B50475:
- IRC_COVER(358u);
+ IRC_COVER(393u);
  /* 24,2475 TC PHASCHNG */
  ai_tc(s,002476u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B50477:
- IRC_COVER(359u);
+ IRC_COVER(394u);
  /* 24,2477 TCF ENDOFJOB */
  W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B50500:
- IRC_COVER(360u);
+ IRC_COVER(395u);
  /* 24,2500 TIGON EXTEND */
  goto X50501;
 X50501:
- IRC_COVER(361u);
+ IRC_COVER(396u);
  /* 24,2501 EXTENDED DCA ACADN83 */
  {static const agc_word k[2]={002511u,050067u};ai_dcaf(s,k);} /* ACADN83 */
  goto B50502c;
 B50502c:
- IRC_COVER(362u);
+ IRC_COVER(397u);
  /* 24,2502 DXCH AVEGEXIT */
  ai_dxch(s,01222);
  goto B50503c;
 B50503c:
- IRC_COVER(363u);
+ IRC_COVER(398u);
  /* 24,2503 CAF PRIO30 */
  ai_caf(s,030000u); /* CHRPRIO */
  goto B50504c;
 B50504c:
- IRC_COVER(364u);
+ IRC_COVER(399u);
  /* 24,2504 TC NOVAC */
  ai_tc(s,002505u);
  W[5]=05134u;return EXEC_OK; /* NOVAC */
 B50507:
- IRC_COVER(365u);
+ IRC_COVER(400u);
  /* 24,2507 CS BIT2 */
  ai_csf(s,000002u); /* BIT2 */
  goto B50510c;
 B50510c:
- IRC_COVER(366u);
+ IRC_COVER(401u);
  /* 24,2510 TCF TTGPHS */
  goto B50566c;
 B50511:
- IRC_COVER(367u);
+ IRC_COVER(402u);
  /* 24,2511 CALCN83 TC INTPRET */
  ai_tc(s,002512u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B50525:
- IRC_COVER(368u);
+ IRC_COVER(403u);
  /* 24,2525 TC PHASCHNG */
  ai_tc(s,002526u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B50527:
- IRC_COVER(369u);
+ IRC_COVER(404u);
  /* 24,2527 CAF FIVE */
  ai_caf(s,000005u); /* FIVE */
  goto B50530c;
 B50530c:
- IRC_COVER(370u);
+ IRC_COVER(405u);
  /* 24,2530 TC GENTRAN */
  ai_tc(s,002531u);
  W[5]=05606u;return EXEC_OK; /* GENTRAN */
 B50533:
- IRC_COVER(371u);
+ IRC_COVER(406u);
  /* 24,2533 TC SERVXT */
  ai_tc(s,002534u);
  goto B51215;
 B50534:
- IRC_COVER(372u);
+ IRC_COVER(407u);
  /* 24,2534 P47BODY TC INTPRET */
  ai_tc(s,002535u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B50542:
- IRC_COVER(373u);
+ IRC_COVER(408u);
  /* 24,2542 P47BOD CAF PRIO15 */
  ai_caf(s,015000u); /* PRIO15 */
  goto B50543c;
 B50543c:
- IRC_COVER(374u);
+ IRC_COVER(409u);
  /* 24,2543 TC PRIOCHNG */
  ai_tc(s,002544u);
  W[5]=05210u;return EXEC_OK; /* PRIOCHNG */
 B50544:
- IRC_COVER(375u);
+ IRC_COVER(410u);
  /* 24,2544 TC PHASCHNG */
  ai_tc(s,002545u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B50547:
- IRC_COVER(376u);
+ IRC_COVER(411u);
  /* 24,2547 P47/DSP CAF V1683 */
  ai_caf(s,004123u); /* V1683 */
  goto B50550c;
 B50550c:
- IRC_COVER(377u);
+ IRC_COVER(412u);
  /* 24,2550 TC BANKCALL */
  ai_tc(s,002551u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B50552:
- IRC_COVER(378u);
+ IRC_COVER(413u);
  /* 24,2552 TC GOTOPOOH */
  ai_tc(s,002553u);
  W[5]=04106u;return EXEC_OK; /* GOTOPOOH */
 B50553:
- IRC_COVER(379u);
+ IRC_COVER(414u);
  /* 24,2553 TC GOTOPOOH */
  ai_tc(s,002554u);
  W[5]=04106u;return EXEC_OK; /* GOTOPOOH */
 B50554:
- IRC_COVER(380u);
+ IRC_COVER(415u);
  /* 24,2554 TCF P47BODY */
  goto B50534;
 B50555:
- IRC_COVER(381u);
+ IRC_COVER(416u);
  /* 24,2555 TIGAVEG TC P41/P40 */
  ai_tc(s,002556u);
  goto B50326;
 B50556:
- IRC_COVER(382u);
+ IRC_COVER(417u);
  /* 24,2556 TCF P41REDSP */
  goto B50360;
 B50557:
- IRC_COVER(383u);
+ IRC_COVER(418u);
  /* 24,2557 CAF V06N40 */
  ai_caf(s,001450u); /* V06N40 */
  goto B50560c;
 B50560c:
- IRC_COVER(384u);
+ IRC_COVER(419u);
  /* 24,2560 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B50561c;
 B50561c:
- IRC_COVER(385u);
+ IRC_COVER(420u);
  /* 24,2561 CAF SEC24.96 */
  ai_caf(s,004700u); /* SEC24.96 */
  goto B50562c;
 B50562c:
- IRC_COVER(386u);
+ IRC_COVER(421u);
  /* 24,2562 TC WAITLIST */
  ai_tc(s,002563u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B50565:
- IRC_COVER(387u);
+ IRC_COVER(422u);
  /* 24,2565 CS SIX */
  ai_csf(s,000006u); /* REVCNT */
  goto B50566c;
 B50566c:
- IRC_COVER(388u);
+ IRC_COVER(423u);
  /* 24,2566 TTGPHS TC NEWPHASE */
  ai_tc(s,002567u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B50570:
- IRC_COVER(389u);
+ IRC_COVER(424u);
  /* 24,2570 PRECHECK CCS PHASE5 */
  switch(ai_ccs(s,0763)){
   case 0:goto B50571c;
@@ -2996,177 +3265,177 @@ B50570:
  }
  return EXEC_INVALID_ACTION;
 B50571c:
- IRC_COVER(390u);
+ IRC_COVER(425u);
  /* 24,2571 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B50572c:
- IRC_COVER(391u);
+ IRC_COVER(426u);
  /* 24,2572 TC POSTJUMP */
  ai_tc(s,002573u);
  W[5]=04701u;return EXEC_OK; /* POSTJUMP */
 B50573c:
- IRC_COVER(392u);
+ IRC_COVER(427u);
  /* 24,2573 CADR PREREAD */
  ai_maskf(s,016710u); /*  */
  goto B50574c;
 B50574:
- IRC_COVER(393u);
+ IRC_COVER(428u);
  /* 24,2574 TIG-5 CAF 5SEC */
  ai_caf(s,000764u); /* 5SEC */
  goto B50575c;
 B50574c:
- IRC_COVER(394u);
+ IRC_COVER(429u);
  goto B50574;
 B50575c:
- IRC_COVER(395u);
+ IRC_COVER(430u);
  /* 24,2575 TC WAITLIST */
  ai_tc(s,002576u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B50600:
- IRC_COVER(396u);
+ IRC_COVER(431u);
  /* 24,2600 CS BIT9 */
  ai_csf(s,000400u); /* BIT9 */
  goto B50601c;
 B50601c:
- IRC_COVER(397u);
+ IRC_COVER(432u);
  /* 24,2601 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B50602c;
 B50602c:
- IRC_COVER(398u);
+ IRC_COVER(433u);
  /* 24,2602 TC 2PHSCHNG */
  ai_tc(s,002603u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B50605:
- IRC_COVER(399u);
+ IRC_COVER(434u);
  /* 24,2605 CAF PRIO20 */
  ai_caf(s,020000u); /* BIT14 */
  goto B50606c;
 B50606c:
- IRC_COVER(400u);
+ IRC_COVER(435u);
  /* 24,2606 TC FINDVAC */
  ai_tc(s,002607u);
  W[5]=05147u;return EXEC_OK; /* FINDVAC */
 B50611:
- IRC_COVER(401u);
+ IRC_COVER(436u);
  /* 24,2611 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B50612:
- IRC_COVER(402u);
+ IRC_COVER(437u);
  /* 24,2612 TIG-0 CS FLAGWRD7 */
  ai_cs(s,0103);
  goto B50613c;
 B50613c:
- IRC_COVER(403u);
+ IRC_COVER(438u);
  /* 24,2613 MASK BIT13 */
  ai_maskf(s,010000u); /* BIT13 */
  goto B50614c;
 B50614c:
- IRC_COVER(404u);
+ IRC_COVER(439u);
  /* 24,2614 ADS FLAGWRD7 */
  ai_ads(s,0103);
  goto B50615;
 B50615:
- IRC_COVER(405u);
+ IRC_COVER(440u);
  /* 24,2615 CAE FLAGWRD7 */
  ai_ca(s,0103);
  goto B50616c;
 B50616c:
- IRC_COVER(406u);
+ IRC_COVER(441u);
  /* 24,2616 MASK BIT12 */
  ai_maskf(s,004000u); /* BIT12 */
  goto B50617c;
 B50617c:
- IRC_COVER(407u);
+ IRC_COVER(442u);
  /* 24,2617 EXTEND */
  goto X50620c;
 X50620c:
- IRC_COVER(408u);
+ IRC_COVER(443u);
  /* 24,2620 EXTENDED BZF TASKOVER */
  if(ai_bzf(s)){
    W[5]=05324u;return EXEC_OK; /* TASKOVER */
  }
  goto B50621c;
 B50621c:
- IRC_COVER(409u);
+ IRC_COVER(444u);
  /* 24,2621 CAF V06N40 */
  ai_caf(s,001450u); /* V06N40 */
  goto B50622c;
 B50622c:
- IRC_COVER(410u);
+ IRC_COVER(445u);
  /* 24,2622 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B50623c;
 B50623c:
- IRC_COVER(411u);
+ IRC_COVER(446u);
  /* 24,2623 TC PHASCHNG */
  ai_tc(s,002624u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B50625:
- IRC_COVER(412u);
+ IRC_COVER(447u);
  /* 24,2625 IGNITION CAE CDUX */
  ai_ca(s,032);
  goto B50626c;
 B50626c:
- IRC_COVER(413u);
+ IRC_COVER(448u);
  /* 24,2626 TS OGAD */
  (void)ai_ts(s,(unsigned)01450);
  goto B50627c;
 B50627c:
- IRC_COVER(414u);
+ IRC_COVER(449u);
  /* 24,2627 EXTEND */
  goto X50630c;
 X50630c:
- IRC_COVER(415u);
+ IRC_COVER(450u);
  /* 24,2630 EXTENDED DCA TIME2 */
  ai_dca(s,024);
  goto B50631c;
 B50631c:
- IRC_COVER(416u);
+ IRC_COVER(451u);
  /* 24,2631 DXCH TEVENT */
  ai_dxch(s,01336);
  goto B50632c;
 B50632c:
- IRC_COVER(417u);
+ IRC_COVER(452u);
  /* 24,2632 CS FLAGWRD5 */
  ai_cs(s,0101);
  goto B50633c;
 B50633c:
- IRC_COVER(418u);
+ IRC_COVER(453u);
  /* 24,2633 MASK BIT7 */
  ai_maskf(s,000100u); /* BIT7 */
  goto B50634c;
 B50634c:
- IRC_COVER(419u);
+ IRC_COVER(454u);
  /* 24,2634 ADS FLAGWRD5 */
  ai_ads(s,0101);
  goto B50635;
 B50635:
- IRC_COVER(420u);
+ IRC_COVER(455u);
  /* 24,2635 SPSON CAF BIT13 */
  ai_caf(s,010000u); /* BIT13 */
  goto B50636c;
 B50636c:
- IRC_COVER(421u);
+ IRC_COVER(456u);
  /* 24,2636 EXTEND */
  goto X50637c;
 X50637c:
- IRC_COVER(422u);
+ IRC_COVER(457u);
  /* 24,2637 EXTENDED WOR DSALMOUT */
  ch_wor(s,io,011);
  goto B50640c;
 B50640c:
- IRC_COVER(423u);
+ IRC_COVER(458u);
  /* 24,2640 IMPULCHK CAF BIT9 */
  ai_caf(s,000400u); /* BIT9 */
  goto B50641c;
 B50641c:
- IRC_COVER(424u);
+ IRC_COVER(459u);
  /* 24,2641 MASK FLAGWRD2 */
  ai_mask(s,076);
  goto B50642c;
 B50642c:
- IRC_COVER(425u);
+ IRC_COVER(460u);
  /* 24,2642 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B50643c;
@@ -3176,196 +3445,196 @@ B50642c:
  }
  return EXEC_INVALID_ACTION;
 B50643c:
- IRC_COVER(426u);
+ IRC_COVER(461u);
  /* 24,2643 TCF IMPLBURN */
  goto B50733c;
 B50644c:
- IRC_COVER(427u);
+ IRC_COVER(462u);
  /* 24,2644 CS FLAGWRD6 */
  ai_cs(s,0102);
  goto B50645c;
 B50645c:
- IRC_COVER(428u);
+ IRC_COVER(463u);
  /* 24,2645 MASK BIT13 */
  ai_maskf(s,010000u); /* BIT13 */
  goto B50646c;
 B50646c:
- IRC_COVER(429u);
+ IRC_COVER(464u);
  /* 24,2646 ADS FLAGWRD6 */
  ai_ads(s,0102);
  goto B50647;
 B50647:
- IRC_COVER(430u);
+ IRC_COVER(465u);
  /* 24,2647 PREPTVC CS OCT60000 */
  ai_csf(s,060000u); /* RELTAB11 */
  goto B50650c;
 B50647c:
- IRC_COVER(431u);
+ IRC_COVER(466u);
  goto B50647;
 B50650c:
- IRC_COVER(432u);
+ IRC_COVER(467u);
  /* 24,2650 MASK FLAGWRD6 */
  ai_mask(s,0102);
  goto B50651c;
 B50651c:
- IRC_COVER(433u);
+ IRC_COVER(468u);
  /* 24,2651 TS FLAGWRD6 */
  (void)ai_ts(s,(unsigned)0102);
  goto B50652c;
 B50652c:
- IRC_COVER(434u);
+ IRC_COVER(469u);
  /* 24,2652 EXTEND */
  goto X50653c;
 X50653c:
- IRC_COVER(435u);
+ IRC_COVER(470u);
  /* 24,2653 EXTENDED DCA T5IDL24 */
  {static const agc_word k[2]={003153u,012066u};ai_dcaf(s,k);} /* T5IDL24 */
  goto B50654c;
 B50654c:
- IRC_COVER(436u);
+ IRC_COVER(471u);
  /* 24,2654 DXCH T5LOC */
  ai_dxch(s,01312);
  goto B50655c;
 B50655c:
- IRC_COVER(437u);
+ IRC_COVER(472u);
  /* 24,2655 CS THREE */
  ai_csf(s,000003u); /* OCTAL3 */
  goto B50656c;
 B50656c:
- IRC_COVER(438u);
+ IRC_COVER(473u);
  /* 24,2656 TC NEWPHASE */
  ai_tc(s,002657u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B50660:
- IRC_COVER(439u);
+ IRC_COVER(474u);
  /* 24,2660 TC FIXDELAY */
  ai_tc(s,002661u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B50662:
- IRC_COVER(440u);
+ IRC_COVER(475u);
  /* 24,2662 DOTVCON CS BIT1 */
  ai_csf(s,000001u); /* BIT1 */
  goto B50663c;
 B50663c:
- IRC_COVER(441u);
+ IRC_COVER(476u);
  /* 24,2663 TS TVCPHASE */
  (void)ai_ts(s,(unsigned)01644);
  goto B50664c;
 B50664c:
- IRC_COVER(442u);
+ IRC_COVER(477u);
  /* 24,2664 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B50665c;
 B50665c:
- IRC_COVER(443u);
+ IRC_COVER(478u);
  /* 24,2665 TS TVCEXPHS */
  (void)ai_ts(s,(unsigned)01651);
  goto B50666c;
 B50666c:
- IRC_COVER(444u);
+ IRC_COVER(479u);
  /* 24,2666 CS OCT60000 */
  ai_csf(s,060000u); /* RELTAB11 */
  goto B50667c;
 B50667c:
- IRC_COVER(445u);
+ IRC_COVER(480u);
  /* 24,2667 MASK FLAGWRD6 */
  ai_mask(s,0102);
  goto B50670c;
 B50670c:
- IRC_COVER(446u);
+ IRC_COVER(481u);
  /* 24,2670 AD BIT15 */
  ai_adf(s,040000u); /* BIT15 */
  goto B50671;
 B50671:
- IRC_COVER(447u);
+ IRC_COVER(482u);
  /* 24,2671 TS FLAGWRD6 */
  if(ai_ts(s,(unsigned)0102))goto B50673c;
  goto B50672c;
 B50672c:
- IRC_COVER(448u);
+ IRC_COVER(483u);
  /* 24,2672 CAF THREE */
  ai_caf(s,000003u); /* OCTAL3 */
  goto B50673c;
 B50673c:
- IRC_COVER(449u);
+ IRC_COVER(484u);
  /* 24,2673 TS L */
  (void)ai_ts(s,(unsigned)01);
  goto B50674c;
 B50674c:
- IRC_COVER(450u);
+ IRC_COVER(485u);
  /* 24,2674 COM */
  ai_cs(s,00);
  goto B50675;
 B50675:
- IRC_COVER(451u);
+ IRC_COVER(486u);
  /* 24,2675 DXCH -PHASE6 */
  ai_dxch(s,0764);
  goto B50676c;
 B50676c:
- IRC_COVER(452u);
+ IRC_COVER(487u);
  /* 24,2676 EXTEND */
  goto X50677c;
 X50677c:
- IRC_COVER(453u);
+ IRC_COVER(488u);
  /* 24,2677 EXTENDED DCS ERRORY */
  ai_dcs(s,01570);
  goto B50700c;
 B50700c:
- IRC_COVER(454u);
+ IRC_COVER(489u);
  /* 24,2700 DXCH ERRBTMP */
  ai_dxch(s,01702);
  goto B50701c;
 B50701c:
- IRC_COVER(455u);
+ IRC_COVER(490u);
  /* 24,2701 CS FIVE */
  ai_csf(s,000005u); /* FIVE */
  goto B50702c;
 B50702c:
- IRC_COVER(456u);
+ IRC_COVER(491u);
  /* 24,2702 TC NEWPHASE */
  ai_tc(s,002703u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B50704:
- IRC_COVER(457u);
+ IRC_COVER(492u);
  /* 24,2704 CAF POSMAX */
  ai_caf(s,037777u); /* POSMAX */
  goto B50705c;
 B50705c:
- IRC_COVER(458u);
+ IRC_COVER(493u);
  /* 24,2705 TS TIME5 */
  (void)ai_ts(s,(unsigned)030);
  goto B50706c;
 B50706c:
- IRC_COVER(459u);
+ IRC_COVER(494u);
  /* 24,2706 EXTEND */
  goto X50707c;
 X50707c:
- IRC_COVER(460u);
+ IRC_COVER(495u);
  /* 24,2707 EXTENDED DCA TVCON2C */
  {static const agc_word k[2]={002147u,036066u};ai_dcaf(s,k);} /* TVCON2C */
  goto B50710c;
 B50710c:
- IRC_COVER(461u);
+ IRC_COVER(496u);
  /* 24,2710 DXCH T5LOC */
  ai_dxch(s,01312);
  goto B50711c;
 B50711c:
- IRC_COVER(462u);
+ IRC_COVER(497u);
  /* 24,2711 TC FIXDELAY */
  ai_tc(s,002712u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B50713:
- IRC_COVER(463u);
+ IRC_COVER(498u);
  /* 24,2713 DOSTRULL CAF BIT13 */
  ai_caf(s,010000u); /* BIT13 */
  goto B50714c;
 B50714c:
- IRC_COVER(464u);
+ IRC_COVER(499u);
  /* 24,2714 MASK FLAGWRD6 */
  ai_mask(s,0102);
  goto B50715c;
 B50715c:
- IRC_COVER(465u);
+ IRC_COVER(500u);
  /* 24,2715 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B50716c;
@@ -3375,563 +3644,563 @@ B50715c:
  }
  return EXEC_INVALID_ACTION;
 B50716c:
- IRC_COVER(466u);
+ IRC_COVER(501u);
  /* 24,2716 TCR STEERULL */
  ai_tc(s,002717u);
  goto B50724c;
 B50717:
- IRC_COVER(467u);
+ IRC_COVER(502u);
  /* 24,2717 TCR ULAGEOFF */
  ai_tc(s,002720u);
  goto B50727;
 B50717c:
- IRC_COVER(468u);
+ IRC_COVER(503u);
  /* 24,2717 TCR ULAGEOFF */
  ai_tc(s,002720u);
  goto B50727c;
 B50720:
- IRC_COVER(469u);
+ IRC_COVER(504u);
  /* 24,2720 EXTEND */
  goto X50721;
 B50720c:
- IRC_COVER(470u);
+ IRC_COVER(505u);
  /* 24,2720 EXTEND */
  goto X50721c;
 B50721c:
- IRC_COVER(471u);
+ IRC_COVER(506u);
  /* 24,2721 DCA NEG0 */
  ai_caf(s,000000u); /* ZERO */
  goto B50722c;
 X50721:
- IRC_COVER(472u);
+ IRC_COVER(507u);
  /* 24,2721 EXTENDED DCA NEG0 */
  {static const agc_word k[2]={077777u,000000u};ai_dcaf(s,k);} /* NEG0 */
  goto B50722c;
 X50721c:
- IRC_COVER(473u);
+ IRC_COVER(508u);
  goto X50721;
 B50722c:
- IRC_COVER(474u);
+ IRC_COVER(509u);
  /* 24,2722 DXCH -PHASE4 */
  ai_dxch(s,0760);
  goto B50723c;
 B50723c:
- IRC_COVER(475u);
+ IRC_COVER(510u);
  /* 24,2723 ENDIGN TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B50724c:
- IRC_COVER(476u);
+ IRC_COVER(511u);
  /* 24,2724 STEERULL CS FLAGWRD2 */
  ai_cs(s,076);
  goto B50725c;
 B50725c:
- IRC_COVER(477u);
+ IRC_COVER(512u);
  /* 24,2725 MASK BIT11 */
  ai_maskf(s,002000u); /* BIT11 */
  goto B50726c;
 B50726c:
- IRC_COVER(478u);
+ IRC_COVER(513u);
  /* 24,2726 ADS FLAGWRD2 */
  ai_ads(s,076);
  goto B50727;
 B50727:
- IRC_COVER(479u);
+ IRC_COVER(514u);
  /* 24,2727 ULAGEOFF CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B50730c;
 B50727c:
- IRC_COVER(480u);
+ IRC_COVER(515u);
  goto B50727;
 B50730c:
- IRC_COVER(481u);
+ IRC_COVER(516u);
  /* 24,2730 EXTEND */
  goto X50731c;
 X50731c:
- IRC_COVER(482u);
+ IRC_COVER(517u);
  /* 24,2731 EXTENDED WRITE CHAN5 */
  ch_write(s,io,05);
  goto B50732c;
 B50732c:
- IRC_COVER(483u);
+ IRC_COVER(518u);
  /* 24,2732 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B50733c:
- IRC_COVER(484u);
+ IRC_COVER(519u);
  /* 24,2733 IMPLBURN CS BIT13 */
  ai_csf(s,010000u); /* BIT13 */
  goto B50734c;
 B50734c:
- IRC_COVER(485u);
+ IRC_COVER(520u);
  /* 24,2734 MASK FLAGWRD6 */
  ai_mask(s,0102);
  goto B50735c;
 B50735c:
- IRC_COVER(486u);
+ IRC_COVER(521u);
  /* 24,2735 TS FLAGWRD6 */
  (void)ai_ts(s,(unsigned)0102);
  goto B50736c;
 B50736c:
- IRC_COVER(487u);
+ IRC_COVER(522u);
  /* 24,2736 TCR E7SETTER */
  ai_tc(s,002737u);
  goto B51366c;
 B50737:
- IRC_COVER(488u);
+ IRC_COVER(523u);
  /* 24,2737 EXTEND */
  goto X50740;
 X50740:
- IRC_COVER(489u);
+ IRC_COVER(524u);
  /* 24,2740 EXTENDED DCA TGO */
  ai_dca(s,01427);
  goto B50741c;
 B50741c:
- IRC_COVER(490u);
+ IRC_COVER(525u);
  /* 24,2741 DXCH TIG */
  ai_dxch(s,01412);
  goto B50742c;
 B50742c:
- IRC_COVER(491u);
+ IRC_COVER(526u);
  /* 24,2742 EXTEND */
  goto X50743c;
 X50743c:
- IRC_COVER(492u);
+ IRC_COVER(527u);
  /* 24,2743 EXTENDED DCA TIME2 */
  ai_dca(s,024);
  goto B50744c;
 B50744c:
- IRC_COVER(493u);
+ IRC_COVER(528u);
  /* 24,2744 DAS TIG */
  ai_das(s,01412);
  goto B50745;
 B50745:
- IRC_COVER(494u);
+ IRC_COVER(529u);
  /* 24,2745 TC 2PHSCHNG */
  ai_tc(s,002746u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B50753:
- IRC_COVER(495u);
+ IRC_COVER(530u);
  /* 24,2753 CAE TGO        +1 */
  ai_ca(s,01430);
  goto B50754c;
 B50754c:
- IRC_COVER(496u);
+ IRC_COVER(531u);
  /* 24,2754 TC WAITLIST */
  ai_tc(s,002755u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B50757:
- IRC_COVER(497u);
+ IRC_COVER(532u);
  /* 24,2757 IMPLCONT CS BIT9 */
  ai_csf(s,000400u); /* BIT9 */
  goto B50760c;
 B50760c:
- IRC_COVER(498u);
+ IRC_COVER(533u);
  /* 24,2760 MASK FLAGWRD2 */
  ai_mask(s,076);
  goto B50761c;
 B50761c:
- IRC_COVER(499u);
+ IRC_COVER(534u);
  /* 24,2761 TS FLAGWRD2 */
  (void)ai_ts(s,(unsigned)076);
  goto B50762c;
 B50762c:
- IRC_COVER(500u);
+ IRC_COVER(535u);
  /* 24,2762 TCR E6SETTER */
  ai_tc(s,002763u);
  goto B51371c;
 B50763:
- IRC_COVER(501u);
+ IRC_COVER(536u);
  /* 24,2763 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B50764c;
 B50764c:
- IRC_COVER(502u);
+ IRC_COVER(537u);
  /* 24,2764 TS V97VCNTR */
  (void)ai_ts(s,(unsigned)01444);
  goto B50765c;
 B50765c:
- IRC_COVER(503u);
+ IRC_COVER(538u);
  /* 24,2765 TCF PREPTVC */
  goto B50647c;
 B50766:
- IRC_COVER(504u);
+ IRC_COVER(539u);
  /* 24,2766 ENGINOFF TCR E6SETTER */
  ai_tc(s,002767u);
  goto B51371;
 B50767:
- IRC_COVER(505u);
+ IRC_COVER(540u);
  /* 24,2767 CAE CSMMASS */
  ai_ca(s,01474);
  goto B50770c;
 B50770c:
- IRC_COVER(506u);
+ IRC_COVER(541u);
  /* 24,2770 TS MASSTMP */
  (void)ai_ts(s,(unsigned)01652);
  goto B50771c;
 B50771c:
- IRC_COVER(507u);
+ IRC_COVER(542u);
  /* 24,2771 TC 2PHSCHNG */
  ai_tc(s,002772u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B50774:
- IRC_COVER(508u);
+ IRC_COVER(543u);
  /* 24,2774 DOSPSOFF TCR SPSOFF */
  ai_tc(s,002775u);
  goto B51017;
 B50775:
- IRC_COVER(509u);
+ IRC_COVER(544u);
  /* 24,2775 CS OCT27/24 */
  ai_csf(s,000027u); /* OCT27/24 */
  goto B50776c;
 B50776c:
- IRC_COVER(510u);
+ IRC_COVER(545u);
  /* 24,2776 TC NEWPHASE */
  ai_tc(s,002777u);
  W[5]=04114u;return EXEC_OK; /* NEWPHASE */
 B51000:
- IRC_COVER(511u);
+ IRC_COVER(546u);
  /* 24,3000 TC FIXDELAY */
  ai_tc(s,003001u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B51002:
- IRC_COVER(512u);
+ IRC_COVER(547u);
  /* 24,3002 DOTVCRCS TCR SETMAXDB */
  ai_tc(s,003003u);
  goto B50320;
 B51003:
- IRC_COVER(513u);
+ IRC_COVER(548u);
  /* 24,3003 TC IBNKCALL */
  ai_tc(s,003004u);
  W[5]=04740u;return EXEC_OK; /* IBNKCALL */
 B51005:
- IRC_COVER(514u);
+ IRC_COVER(549u);
  /* 24,3005 TC IBNKCALL */
  ai_tc(s,003006u);
  W[5]=04740u;return EXEC_OK; /* IBNKCALL */
 B51007:
- IRC_COVER(515u);
+ IRC_COVER(550u);
  /* 24,3007 TCR TVCZAP */
  ai_tc(s,003010u);
  goto B51071;
 B51010:
- IRC_COVER(516u);
+ IRC_COVER(551u);
  /* 24,3010 TC PHASCHNG */
  ai_tc(s,003011u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51012:
- IRC_COVER(517u);
+ IRC_COVER(552u);
  /* 24,3012 CAF PRIO12 */
  ai_caf(s,012000u); /* PRIO12 */
  goto B51013c;
 B51013c:
- IRC_COVER(518u);
+ IRC_COVER(553u);
  /* 24,3013 TC NOVAC */
  ai_tc(s,003014u);
  W[5]=05134u;return EXEC_OK; /* NOVAC */
 B51016:
- IRC_COVER(519u);
+ IRC_COVER(554u);
  /* 24,3016 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B51017:
- IRC_COVER(520u);
+ IRC_COVER(555u);
  /* 24,3017 SPSOFF EXTEND */
  goto X51020;
 X51020:
- IRC_COVER(521u);
+ IRC_COVER(556u);
  /* 24,3020 EXTENDED DCA TIME2 */
  ai_dca(s,024);
  goto B51021c;
 B51021c:
- IRC_COVER(522u);
+ IRC_COVER(557u);
  /* 24,3021 DXCH TEVENT */
  ai_dxch(s,01336);
  goto B51022c;
 B51022c:
- IRC_COVER(523u);
+ IRC_COVER(558u);
  /* 24,3022 CS BIT7 */
  ai_csf(s,000100u); /* BIT7 */
  goto B51023c;
 B51023c:
- IRC_COVER(524u);
+ IRC_COVER(559u);
  /* 24,3023 MASK FLAGWRD5 */
  ai_mask(s,0101);
  goto B51024c;
 B51024c:
- IRC_COVER(525u);
+ IRC_COVER(560u);
  /* 24,3024 TS FLAGWRD5 */
  (void)ai_ts(s,(unsigned)0101);
  goto B51025c;
 B51025c:
- IRC_COVER(526u);
+ IRC_COVER(561u);
  /* 24,3025 CS BIT13 */
  ai_csf(s,010000u); /* BIT13 */
  goto B51026c;
 B51026c:
- IRC_COVER(527u);
+ IRC_COVER(562u);
  /* 24,3026 EXTEND */
  goto X51027c;
 X51027c:
- IRC_COVER(528u);
+ IRC_COVER(563u);
  /* 24,3027 EXTENDED WAND DSALMOUT */
  ch_wand(s,io,011);
  goto B51030c;
 B51030c:
- IRC_COVER(529u);
+ IRC_COVER(564u);
  /* 24,3030 CAF BIT14 */
  ai_caf(s,020000u); /* BIT14 */
  goto B51031c;
 B51031c:
- IRC_COVER(530u);
+ IRC_COVER(565u);
  /* 24,3031 EXTEND */
  goto X51032c;
 X51032c:
- IRC_COVER(531u);
+ IRC_COVER(566u);
  /* 24,3032 EXTENDED WOR CHAN12 */
  ch_wor(s,io,012);
  goto B51033c;
 B51033c:
- IRC_COVER(532u);
+ IRC_COVER(567u);
  /* 24,3033 MASSBACK CAE V97VCNTR */
  ai_ca(s,01444);
  goto B51034c;
 B51034c:
- IRC_COVER(533u);
+ IRC_COVER(568u);
  /* 24,3034 EXTEND */
  goto X51035c;
 X51035c:
- IRC_COVER(534u);
+ IRC_COVER(569u);
  /* 24,3035 EXTENDED MP EMDOT */
  ai_mp(s,0110);
  goto B51036c;
 B51036c:
- IRC_COVER(535u);
+ IRC_COVER(570u);
  /* 24,3036 LXCH A */
  ai_lxch(s,00);
  goto B51037c;
 B51037c:
- IRC_COVER(536u);
+ IRC_COVER(571u);
  /* 24,3037 EXTEND */
  goto X51040c;
 X51040c:
- IRC_COVER(537u);
+ IRC_COVER(572u);
  /* 24,3040 EXTENDED MP 1SEC */
  ai_mpf(s,000144u); /* 1SEC */
  goto B51041c;
 B51041c:
- IRC_COVER(538u);
+ IRC_COVER(573u);
  /* 24,3041 AD MASSTMP */
  ai_ad(s,01652);
  goto B51042;
 B51042:
- IRC_COVER(539u);
+ IRC_COVER(574u);
  /* 24,3042 TS CSMMASS */
  if(ai_ts(s,(unsigned)01474))goto B51044c;
  goto B51043c;
 B51043c:
- IRC_COVER(540u);
+ IRC_COVER(575u);
  /* 24,3043 CA TVCPHASE */
  ai_ca(s,01644);
  goto B51044c;
 B51044c:
- IRC_COVER(541u);
+ IRC_COVER(576u);
  /* 24,3044 AD ONE */
  ai_adf(s,000001u); /* BIT1 */
  goto B51045;
 B51045:
- IRC_COVER(542u);
+ IRC_COVER(577u);
  /* 24,3045 EXTEND */
  goto X51046;
 X51046:
- IRC_COVER(543u);
+ IRC_COVER(578u);
  /* 24,3046 EXTENDED BZF BTRIMR */
  if(ai_bzf(s)){
    goto B51057;
  }
  goto B51047;
 B51047:
- IRC_COVER(544u);
+ IRC_COVER(579u);
  /* 24,3047 CS FLAGWRD6 */
  ai_cs(s,0102);
  goto B51050c;
 B51050c:
- IRC_COVER(545u);
+ IRC_COVER(580u);
  /* 24,3050 MASK OCT60000 */
  ai_maskf(s,060000u); /* RELTAB11 */
  goto B51051c;
 B51051c:
- IRC_COVER(546u);
+ IRC_COVER(581u);
  /* 24,3051 EXTEND */
  goto X51052c;
 X51052c:
- IRC_COVER(547u);
+ IRC_COVER(582u);
  /* 24,3052 EXTENDED BZMF BTRIMR */
  if(ai_bzmf(s)){
    goto B51057c;
  }
  goto B51053c;
 B51053c:
- IRC_COVER(548u);
+ IRC_COVER(583u);
  /* 24,3053 BESTTRIM CAE DELPBAR */
  ai_ca(s,01601);
  goto B51054c;
 B51054c:
- IRC_COVER(549u);
+ IRC_COVER(584u);
  /* 24,3054 TS PACTOFF */
  (void)ai_ts(s,(unsigned)01423);
  goto B51055c;
 B51055c:
- IRC_COVER(550u);
+ IRC_COVER(585u);
  /* 24,3055 CAE DELYBAR */
  ai_ca(s,01603);
  goto B51056c;
 B51056c:
- IRC_COVER(551u);
+ IRC_COVER(586u);
  /* 24,3056 TS YACTOFF */
  (void)ai_ts(s,(unsigned)01424);
  goto B51057c;
 B51057:
- IRC_COVER(552u);
+ IRC_COVER(587u);
  /* 24,3057 BTRIMR TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B51057c:
- IRC_COVER(553u);
+ IRC_COVER(588u);
  goto B51057;
 B51070:
- IRC_COVER(554u);
+ IRC_COVER(589u);
  /* 24,3070 -1 INHINT */
  io->interrupt_enabled=0;
  goto B51071;
 B51071:
- IRC_COVER(555u);
+ IRC_COVER(590u);
  /* 24,3071 TVCZAP CS OCT02202 */
  ai_csf(s,002202u); /* OCT02202 */
  goto B51072c;
 B51072c:
- IRC_COVER(556u);
+ IRC_COVER(591u);
  /* 24,3072 EXTEND */
  goto X51073c;
 X51073c:
- IRC_COVER(557u);
+ IRC_COVER(592u);
  /* 24,3073 EXTENDED WAND CHAN12 */
  ch_wand(s,io,012);
  goto B51074c;
 B51074c:
- IRC_COVER(558u);
+ IRC_COVER(593u);
  /* 24,3074 CS BIT1 */
  ai_csf(s,000001u); /* BIT1 */
  goto B51075c;
 B51075c:
- IRC_COVER(559u);
+ IRC_COVER(594u);
  /* 24,3075 TS OPTIND */
  (void)ai_ts(s,(unsigned)01303);
  goto B51076c;
 B51076c:
- IRC_COVER(560u);
+ IRC_COVER(595u);
  /* 24,3076 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B51077c;
 B51077c:
- IRC_COVER(561u);
+ IRC_COVER(596u);
  /* 24,3077 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B51100c;
 B51100c:
- IRC_COVER(562u);
+ IRC_COVER(597u);
  /* 24,3100 CS BIT11 */
  ai_csf(s,002000u); /* BIT11 */
  goto B51101c;
 B51101c:
- IRC_COVER(563u);
+ IRC_COVER(598u);
  /* 24,3101 MASK FLAGWRD7 */
  ai_mask(s,0103);
  goto B51102c;
 B51102c:
- IRC_COVER(564u);
+ IRC_COVER(599u);
  /* 24,3102 TS FLAGWRD7 */
  (void)ai_ts(s,(unsigned)0103);
  goto B51103c;
 B51103c:
- IRC_COVER(565u);
+ IRC_COVER(600u);
  /* 24,3103 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B51120:
- IRC_COVER(566u);
+ IRC_COVER(601u);
  /* 24,3120 CA ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B51121c;
 B51121c:
- IRC_COVER(567u);
+ IRC_COVER(602u);
  /* 24,3121 AD NBRCYCLS */
  ai_ad(s,01742);
  goto B51122;
 B51122:
- IRC_COVER(568u);
+ IRC_COVER(603u);
  /* 24,3122 TS NBRCYCLP */
  if(ai_ts(s,(unsigned)01743))goto B51124c;
  goto B51123c;
 B51123c:
- IRC_COVER(569u);
+ IRC_COVER(604u);
  /* 24,3123 TC PHASCHNG */
  ai_tc(s,003124u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51124c:
- IRC_COVER(570u);
+ IRC_COVER(605u);
  /* 24,3124 OCT 10035: data, never executed */
  return EXEC_INVALID_ACTION;
 B51125:
- IRC_COVER(571u);
+ IRC_COVER(606u);
  /* 24,3125 CA NBRCYCLP */
  ai_ca(s,01743);
  goto B51126c;
 B51126c:
- IRC_COVER(572u);
+ IRC_COVER(607u);
  /* 24,3126 TS NBRCYCLS */
  (void)ai_ts(s,(unsigned)01742);
  goto B51127c;
 B51127c:
- IRC_COVER(573u);
+ IRC_COVER(608u);
  /* 24,3127 TC INTPRET */
  ai_tc(s,003130u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B51155:
- IRC_COVER(574u);
+ IRC_COVER(609u);
  /* 24,3155 CAF PRIO10 */
  ai_caf(s,010000u); /* BIT13 */
  goto B51156c;
 B51156c:
- IRC_COVER(575u);
+ IRC_COVER(610u);
  /* 24,3156 TC FINDVAC */
  ai_tc(s,003157u);
  W[5]=05147u;return EXEC_OK; /* FINDVAC */
 B51161:
- IRC_COVER(576u);
+ IRC_COVER(611u);
  /* 24,3161 TC 2PHSCHNG */
  ai_tc(s,003162u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B51164:
- IRC_COVER(577u);
+ IRC_COVER(612u);
  /* 24,3164 TC INTPRET */
  ai_tc(s,003165u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B51205:
- IRC_COVER(578u);
+ IRC_COVER(613u);
  /* 24,3205 STEERING TC INTPRET */
  ai_tc(s,003206u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B51211:
- IRC_COVER(579u);
+ IRC_COVER(614u);
  /* 24,3211 CAF BIT9 */
  ai_caf(s,000400u); /* BIT9 */
  goto B51212c;
 B51212c:
- IRC_COVER(580u);
+ IRC_COVER(615u);
  /* 24,3212 MASK FLAGWRD2 */
  ai_mask(s,076);
  goto B51213c;
 B51213c:
- IRC_COVER(581u);
+ IRC_COVER(616u);
  /* 24,3213 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B51214c;
@@ -3941,96 +4210,96 @@ B51213c:
  }
  return EXEC_INVALID_ACTION;
 B51214c:
- IRC_COVER(582u);
+ IRC_COVER(617u);
  /* 24,3214 TCF +3 */
  goto B51217c;
 B51215:
- IRC_COVER(583u);
+ IRC_COVER(618u);
  /* 24,3215 SERVXT TC POSTJUMP */
  ai_tc(s,003216u);
  W[5]=04701u;return EXEC_OK; /* POSTJUMP */
 B51215c:
- IRC_COVER(584u);
+ IRC_COVER(619u);
  goto B51215;
 B51216c:
- IRC_COVER(585u);
+ IRC_COVER(620u);
  /* 24,3216 CADR SERVEXIT: data, never executed */
  return EXEC_INVALID_ACTION;
 B51217c:
- IRC_COVER(586u);
+ IRC_COVER(621u);
  /* 24,3217 CAF BIT13 */
  ai_caf(s,010000u); /* BIT13 */
  goto B51220c;
 B51220c:
- IRC_COVER(587u);
+ IRC_COVER(622u);
  /* 24,3220 EXTEND */
  goto X51221c;
 X51221c:
- IRC_COVER(588u);
+ IRC_COVER(623u);
  /* 24,3221 EXTENDED RAND DSALMOUT */
  ch_rand(s,io,011);
  goto B51222c;
 B51222c:
- IRC_COVER(589u);
+ IRC_COVER(624u);
  /* 24,3222 EXTEND */
  goto X51223c;
 X51223c:
- IRC_COVER(590u);
+ IRC_COVER(625u);
  /* 24,3223 EXTENDED BZF SERVXT */
  if(ai_bzf(s)){
    goto B51215c;
  }
  goto B51224c;
 B51224c:
- IRC_COVER(591u);
+ IRC_COVER(626u);
  /* 24,3224 TCR E7SETTER */
  ai_tc(s,003225u);
  goto B51366c;
 B51225:
- IRC_COVER(592u);
+ IRC_COVER(627u);
  /* 24,3225 INHINT */
  io->interrupt_enabled=0;
  goto B51226;
 B51226:
- IRC_COVER(593u);
+ IRC_COVER(628u);
  /* 24,3226 EXTEND */
  goto X51227;
 X51227:
- IRC_COVER(594u);
+ IRC_COVER(629u);
  /* 24,3227 EXTENDED DCA TIG */
  ai_dca(s,01412);
  goto B51230c;
 B51230c:
- IRC_COVER(595u);
+ IRC_COVER(630u);
  /* 24,3230 DXCH MPAC */
  ai_dxch(s,0154);
  goto B51231c;
 B51231c:
- IRC_COVER(596u);
+ IRC_COVER(631u);
  /* 24,3231 EXTEND */
  goto X51232c;
 X51232c:
- IRC_COVER(597u);
+ IRC_COVER(632u);
  /* 24,3232 EXTENDED DCS TIME2 */
  ai_dcs(s,024);
  goto B51233c;
 B51233c:
- IRC_COVER(598u);
+ IRC_COVER(633u);
  /* 24,3233 DAS MPAC */
  ai_das(s,0154);
  goto B51234;
 B51234:
- IRC_COVER(599u);
+ IRC_COVER(634u);
  /* 24,3234 TCR DPAGREE */
  ai_tc(s,003235u);
  W[5]=07224u;return EXEC_OK; /* DPAGREE */
 B51235:
- IRC_COVER(600u);
+ IRC_COVER(635u);
  /* 24,3235 CAE MPAC       +1 */
  ai_ca(s,0155);
  goto B51236c;
 B51236c:
- IRC_COVER(601u);
+ IRC_COVER(636u);
  /* 24,3236 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B51237c;
@@ -4040,74 +4309,74 @@ B51236c:
  }
  return EXEC_INVALID_ACTION;
 B51237c:
- IRC_COVER(602u);
+ IRC_COVER(637u);
  /* 24,3237 TCF +3 */
  goto B51242c;
 B51240c:
- IRC_COVER(603u);
+ IRC_COVER(638u);
  /* 24,3240 TCF +2 */
  goto B51242c;
 B51241c:
- IRC_COVER(604u);
+ IRC_COVER(639u);
  /* 24,3241 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B51242c;
 B51242c:
- IRC_COVER(605u);
+ IRC_COVER(640u);
  /* 24,3242 AD ONE */
  ai_adf(s,000001u); /* BIT1 */
  goto B51243;
 B51243:
- IRC_COVER(606u);
+ IRC_COVER(641u);
  /* 24,3243 XCH L */
  ai_xch(s,01);
  goto B51244c;
 B51244c:
- IRC_COVER(607u);
+ IRC_COVER(642u);
  /* 24,3244 CA ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B51245c;
 B51245c:
- IRC_COVER(608u);
+ IRC_COVER(643u);
  /* 24,3245 DXCH TGO */
  ai_dxch(s,01427);
  goto B51246c;
 B51246c:
- IRC_COVER(609u);
+ IRC_COVER(644u);
  /* 24,3246 CA TGO        +1 */
  ai_ca(s,01430);
  goto B51247c;
 B51247c:
- IRC_COVER(610u);
+ IRC_COVER(645u);
  /* 24,3247 TC WAITLIST */
  ai_tc(s,003250u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B51252:
- IRC_COVER(611u);
+ IRC_COVER(646u);
  /* 24,3252 TC 2PHSCHNG */
  ai_tc(s,003253u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B51255:
- IRC_COVER(612u);
+ IRC_COVER(647u);
  /* 24,3255 TC DOWNFLAG */
  ai_tc(s,003256u);
  W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
 B51257:
- IRC_COVER(613u);
+ IRC_COVER(648u);
  /* 24,3257 TCF SERVXT */
  goto B51215;
 B51260:
- IRC_COVER(614u);
+ IRC_COVER(649u);
  /* 24,3260 CLOKTASK CAF BIT11 */
  ai_caf(s,002000u); /* BIT11 */
  goto B51261c;
 B51261c:
- IRC_COVER(615u);
+ IRC_COVER(650u);
  /* 24,3261 MASK FLAGWRD7 */
  ai_mask(s,0103);
  goto B51262c;
 B51262c:
- IRC_COVER(616u);
+ IRC_COVER(651u);
  /* 24,3262 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B51263c;
@@ -4117,66 +4386,66 @@ B51262c:
  }
  return EXEC_INVALID_ACTION;
 B51263c:
- IRC_COVER(617u);
+ IRC_COVER(652u);
  /* 24,3263 TCF CLOCKON */
  goto B51267c;
 B51264c:
- IRC_COVER(618u);
+ IRC_COVER(653u);
  /* 24,3264 TC PHASCHNG */
  ai_tc(s,003265u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51265c:
- IRC_COVER(619u);
+ IRC_COVER(654u);
  /* 24,3265 OCT 00006: data, never executed */
  return EXEC_INVALID_ACTION;
 B51266:
- IRC_COVER(620u);
+ IRC_COVER(655u);
  /* 24,3266 TC TASKOVER */
  ai_tc(s,003267u);
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B51266c:
- IRC_COVER(621u);
+ IRC_COVER(656u);
  goto B51266;
 B51267c:
- IRC_COVER(622u);
+ IRC_COVER(657u);
  /* 24,3267 CLOCKON EXTEND */
  goto X51270c;
 X51270c:
- IRC_COVER(623u);
+ IRC_COVER(658u);
  /* 24,3270 EXTENDED DCA TIME2 */
  ai_dca(s,024);
  goto B51271c;
 B51271c:
- IRC_COVER(624u);
+ IRC_COVER(659u);
  /* 24,3271 DXCH TTOGO */
  ai_dxch(s,01660);
  goto B51272c;
 B51272c:
- IRC_COVER(625u);
+ IRC_COVER(660u);
  /* 24,3272 EXTEND */
  goto X51273c;
 X51273c:
- IRC_COVER(626u);
+ IRC_COVER(661u);
  /* 24,3273 EXTENDED DCS TIG */
  ai_dcs(s,01412);
  goto B51274c;
 B51274c:
- IRC_COVER(627u);
+ IRC_COVER(662u);
  /* 24,3274 DAS TTOGO */
  ai_das(s,01660);
  goto B51275;
 B51275:
- IRC_COVER(628u);
+ IRC_COVER(663u);
  /* 24,3275 SETCLOCK CAF 1SEC */
  ai_caf(s,000144u); /* 1SEC */
  goto B51276c;
 B51276c:
- IRC_COVER(629u);
+ IRC_COVER(664u);
  /* 24,3276 TC WAITLIST */
  ai_tc(s,003277u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B51301:
- IRC_COVER(630u);
+ IRC_COVER(665u);
  /* 24,3301 CCS NVWORD1 */
  switch(ai_ccs(s,01145)){
   case 0:goto B51302c;
@@ -4186,129 +4455,129 @@ B51301:
  }
  return EXEC_INVALID_ACTION;
 B51302c:
- IRC_COVER(631u);
+ IRC_COVER(666u);
  /* 24,3302 TCF +3 */
  goto B51305c;
 B51303c:
- IRC_COVER(632u);
+ IRC_COVER(667u);
  /* 24,3303 TCF SETTB6 */
  goto B51315c;
 B51304c:
- IRC_COVER(633u);
+ IRC_COVER(668u);
  /* 24,3304 TCF +1 */
  goto B51305c;
 B51305c:
- IRC_COVER(634u);
+ IRC_COVER(669u);
  /* 24,3305 CS V06N85B */
  ai_csf(s,001525u); /* V06N85B */
  goto B51306c;
 B51306c:
- IRC_COVER(635u);
+ IRC_COVER(670u);
  /* 24,3306 AD NVWORD1 */
  ai_ad(s,01145);
  goto B51307;
 B51307:
- IRC_COVER(636u);
+ IRC_COVER(671u);
  /* 24,3307 EXTEND */
  goto X51310;
 X51310:
- IRC_COVER(637u);
+ IRC_COVER(672u);
  /* 24,3310 EXTENDED BZF SETUPDYN */
  if(ai_bzf(s)){
    goto B51320;
  }
  goto B51311;
 B51311:
- IRC_COVER(638u);
+ IRC_COVER(673u);
  /* 24,3311 CAF PRIO27 */
  ai_caf(s,027000u); /* PRIO27 */
  goto B51312c;
 B51312c:
- IRC_COVER(639u);
+ IRC_COVER(674u);
  /* 24,3312 TC NOVAC */
  ai_tc(s,003313u);
  W[5]=05134u;return EXEC_OK; /* NOVAC */
 B51315:
- IRC_COVER(640u);
+ IRC_COVER(675u);
  /* 24,3315 SETTB6 CS TIME1 */
  ai_cs(s,025);
  goto B51316c;
 B51315c:
- IRC_COVER(641u);
+ IRC_COVER(676u);
  goto B51315;
 B51316c:
- IRC_COVER(642u);
+ IRC_COVER(677u);
  /* 24,3316 TS TBASE6 */
  (void)ai_ts(s,(unsigned)01065);
  goto B51317c;
 B51317c:
- IRC_COVER(643u);
+ IRC_COVER(678u);
  /* 24,3317 TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 B51320:
- IRC_COVER(644u);
+ IRC_COVER(679u);
  /* 24,3320 SETUPDYN CAF PRIO27 */
  ai_caf(s,027000u); /* PRIO27 */
  goto B51321c;
 B51321c:
- IRC_COVER(645u);
+ IRC_COVER(680u);
  /* 24,3321 TC FINDVAC */
  ai_tc(s,003322u);
  W[5]=05147u;return EXEC_OK; /* FINDVAC */
 B51324:
- IRC_COVER(646u);
+ IRC_COVER(681u);
  /* 24,3324 TCF SETTB6 */
  goto B51315;
 B51325:
- IRC_COVER(647u);
+ IRC_COVER(682u);
  /* 24,3325 DYNDISP TC INTPRET */
  ai_tc(s,003326u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 B51331:
- IRC_COVER(648u);
+ IRC_COVER(683u);
  /* 24,3331 TCF CKNVWRD1 */
  goto B51342;
 B51332:
- IRC_COVER(649u);
+ IRC_COVER(684u);
  /* 24,3332 CLOCKJOB CA CDUX */
  ai_ca(s,032);
  goto B51333c;
 B51333c:
- IRC_COVER(650u);
+ IRC_COVER(685u);
  /* 24,3333 TS CDUSPOTX */
  (void)ai_ts(s,(unsigned)0772);
  goto B51334c;
 B51334c:
- IRC_COVER(651u);
+ IRC_COVER(686u);
  /* 24,3334 CA CDUY */
  ai_ca(s,033);
  goto B51335c;
 B51335c:
- IRC_COVER(652u);
+ IRC_COVER(687u);
  /* 24,3335 TS CDUSPOTY */
  (void)ai_ts(s,(unsigned)0766);
  goto B51336c;
 B51336c:
- IRC_COVER(653u);
+ IRC_COVER(688u);
  /* 24,3336 CA CDUZ */
  ai_ca(s,034);
  goto B51337c;
 B51337c:
- IRC_COVER(654u);
+ IRC_COVER(689u);
  /* 24,3337 TS CDUSPOTZ */
  (void)ai_ts(s,(unsigned)0770);
  goto B51340c;
 B51340c:
- IRC_COVER(655u);
+ IRC_COVER(690u);
  /* 24,3340 TC BANKCALL */
  ai_tc(s,003341u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B51342:
- IRC_COVER(656u);
+ IRC_COVER(691u);
  /* 24,3342 CKNVWRD1 INHINT */
  io->interrupt_enabled=0;
  goto B51343;
 B51343:
- IRC_COVER(657u);
+ IRC_COVER(692u);
  /* 24,3343 CCS NVWORD1 */
  switch(ai_ccs(s,01145)){
   case 0:goto B51344c;
@@ -4318,388 +4587,546 @@ B51343:
  }
  return EXEC_INVALID_ACTION;
 B51344c:
- IRC_COVER(658u);
+ IRC_COVER(693u);
  /* 24,3344 TCF NOFLASH */
  goto B51363c;
 B51345c:
- IRC_COVER(659u);
+ IRC_COVER(694u);
  /* 24,3345 TCF ENDOFJOB */
  W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B51346c:
- IRC_COVER(660u);
+ IRC_COVER(695u);
  /* 24,3346 TCF ENGREQST */
  goto B51355c;
 B51347c:
- IRC_COVER(661u);
+ IRC_COVER(696u);
  /* 24,3347 FAILDSP CAF V06N40 */
  ai_caf(s,001450u); /* V06N40 */
  goto B51350c;
 B51350c:
- IRC_COVER(662u);
+ IRC_COVER(697u);
  /* 24,3350 TC BANKCALL */
  ai_tc(s,003351u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B51352:
- IRC_COVER(663u);
+ IRC_COVER(698u);
  /* 24,3352 TCF V97T */
  goto B51432;
+B51353:
+ IRC_COVER(699u);
+ /* 24,3353 TCF V97P */
+ goto B51465;
+B51354:
+ IRC_COVER(700u);
+ /* 24,3354 TCF V97E */
+ goto B51514;
 B51355c:
- IRC_COVER(664u);
+ IRC_COVER(701u);
  /* 24,3355 ENGREQST CAF V06N40 */
  ai_caf(s,001450u); /* V06N40 */
  goto B51356c;
 B51356c:
- IRC_COVER(665u);
+ IRC_COVER(702u);
  /* 24,3356 TC BANKCALL */
  ai_tc(s,003357u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B51360:
- IRC_COVER(666u);
+ IRC_COVER(703u);
  /* 24,3360 TCF V99T */
  goto B51402;
+B51361:
+ IRC_COVER(704u);
+ /* 24,3361 TCF V99P */
+ goto B51410;
+B51362:
+ IRC_COVER(705u);
+ /* 24,3362 TCF V99E */
+ goto B51374;
 B51363c:
- IRC_COVER(667u);
+ IRC_COVER(706u);
  /* 24,3363 NOFLASH CAE NVWORD1 */
  ai_ca(s,01145);
  goto B51364c;
 B51364c:
- IRC_COVER(668u);
+ IRC_COVER(707u);
  /* 24,3364 TC BANKCALL */
  ai_tc(s,003365u);
  W[5]=04662u;return EXEC_OK; /* BANKCALL */
 B51366:
- IRC_COVER(669u);
+ IRC_COVER(708u);
  /* 24,3366 E7SETTER CAF EBANK7 */
  ai_caf(s,003400u); /* EBANK7 */
  goto B51367c;
 B51366c:
- IRC_COVER(670u);
+ IRC_COVER(709u);
  goto B51366;
 B51367c:
- IRC_COVER(671u);
+ IRC_COVER(710u);
  /* 24,3367 TS EBANK */
  (void)ai_ts(s,(unsigned)03);
  goto B51370c;
 B51370c:
- IRC_COVER(672u);
+ IRC_COVER(711u);
  /* 24,3370 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B51371:
- IRC_COVER(673u);
+ IRC_COVER(712u);
  /* 24,3371 E6SETTER CAF EBANK6 */
  ai_caf(s,003000u); /* PRIO3 */
  goto B51372c;
 B51371c:
- IRC_COVER(674u);
+ IRC_COVER(713u);
  goto B51371;
 B51372c:
- IRC_COVER(675u);
+ IRC_COVER(714u);
  /* 24,3372 TS EBANK */
  (void)ai_ts(s,(unsigned)03);
  goto B51373c;
 B51373c:
- IRC_COVER(676u);
+ IRC_COVER(715u);
  /* 24,3373 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B51374:
+ IRC_COVER(716u);
+ /* 24,3374 V99E TC 2PHSCHNG */
+ ai_tc(s,003375u);
+ W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
+B51400:
+ IRC_COVER(717u);
+ /* 24,3400 V99EJOB TCR TVCZAP     -1 */
+ ai_tc(s,003401u);
+ goto B51070;
+B51401:
+ IRC_COVER(718u);
+ /* 24,3401 TCF P40RCS */
+ goto B50254;
 B51402:
- IRC_COVER(677u);
+ IRC_COVER(719u);
  /* 24,3402 V99T TC 2PHSCHNG */
  ai_tc(s,003403u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B51406:
- IRC_COVER(678u);
+ IRC_COVER(720u);
  /* 24,3406 V99TJOB TCR TVCZAP     -1 */
  ai_tc(s,003407u);
  goto B51070;
 B51407:
- IRC_COVER(679u);
+ IRC_COVER(721u);
  /* 24,3407 TCF POST41 */
  goto B50275;
+B51410:
+ IRC_COVER(722u);
+ /* 24,3410 V99P INHINT */
+ io->interrupt_enabled=0;
+ goto B51411;
+B51411:
+ IRC_COVER(723u);
+ /* 24,3411 CAE FLAGWRD7 */
+ ai_ca(s,0103);
+ goto B51412c;
+B51412c:
+ IRC_COVER(724u);
+ /* 24,3412 MASK BIT12 */
+ ai_maskf(s,004000u); /* BIT12 */
+ goto B51413c;
+B51413c:
+ IRC_COVER(725u);
+ /* 24,3413 CCS A */
+ switch(ai_ccs(s,00)){
+  case 0:goto B51414c;
+  case 1:goto B51415c;
+  case 2:goto B51416c;
+  case 3:goto B51417c;
+ }
+ return EXEC_INVALID_ACTION;
+B51414c:
+ IRC_COVER(726u);
+ /* 24,3414 TCF V99P/TIG */
+ goto B51427c;
+B51415c:
+ IRC_COVER(727u);
+ /* 24,3415 ASTNV99P CAF BIT12 */
+ ai_caf(s,004000u); /* BIT12 */
+ goto B51416c;
+B51416c:
+ IRC_COVER(728u);
+ /* 24,3416 ADS FLAGWRD7 */
+ ai_ads(s,0103);
+ goto B51417;
+B51417:
+ IRC_COVER(729u);
+ /* 24,3417 CAE FLAGWRD7 */
+ ai_ca(s,0103);
+ goto B51420c;
+B51417c:
+ IRC_COVER(730u);
+ goto B51417;
+B51420c:
+ IRC_COVER(731u);
+ /* 24,3420 MASK BIT13 */
+ ai_maskf(s,010000u); /* BIT13 */
+ goto B51421c;
+B51421c:
+ IRC_COVER(732u);
+ /* 24,3421 EXTEND */
+ goto X51422c;
+X51422c:
+ IRC_COVER(733u);
+ /* 24,3422 EXTENDED BZF V99P/TIG */
+ if(ai_bzf(s)){
+   goto B51427c;
+ }
+ goto B51423c;
+B51423c:
+ IRC_COVER(734u);
+ /* 24,3423 ENDV99PI CAF BIT1 */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B51424c;
+B51424c:
+ IRC_COVER(735u);
+ /* 24,3424 TC WAITLIST */
+ ai_tc(s,003425u);
+ W[5]=05245u;return EXEC_OK; /* WAITLIST */
+B51427:
+ IRC_COVER(736u);
+ /* 24,3427 V99P/TIG CAF V06N40 */
+ ai_caf(s,001450u); /* V06N40 */
+ goto B51430c;
+B51427c:
+ IRC_COVER(737u);
+ goto B51427;
+B51430c:
+ IRC_COVER(738u);
+ /* 24,3430 TS NVWORD1 */
+ (void)ai_ts(s,(unsigned)01145);
+ goto B51431c;
+B51431c:
+ IRC_COVER(739u);
+ /* 24,3431 ENDV99P TCF ENDOFJOB */
+ W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B51432:
- IRC_COVER(680u);
+ IRC_COVER(740u);
  /* 24,3432 V97T TC 2PHSCHNG */
  ai_tc(s,003433u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B51435:
- IRC_COVER(681u);
+ IRC_COVER(741u);
  /* 24,3435 CAF BIT1 */
  ai_caf(s,000001u); /* BIT1 */
  goto B51436c;
 B51436c:
- IRC_COVER(682u);
+ IRC_COVER(742u);
  /* 24,3436 TC TWIDDLE */
  ai_tc(s,003437u);
  W[5]=05235u;return EXEC_OK; /* TWIDDLE */
 B51440:
- IRC_COVER(683u);
+ IRC_COVER(743u);
  /* 24,3440 TCF ENDOFJOB */
  W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B51441:
- IRC_COVER(684u);
+ IRC_COVER(744u);
  /* 24,3441 V97TTASK CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B51442c;
 B51442c:
- IRC_COVER(685u);
+ IRC_COVER(745u);
  /* 24,3442 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B51443c;
 B51443c:
- IRC_COVER(686u);
+ IRC_COVER(746u);
  /* 24,3443 CAF 3MDOT */
  ai_caf(s,000026u); /* 3MDOT */
  goto B51444c;
 B51444c:
- IRC_COVER(687u);
+ IRC_COVER(747u);
  /* 24,3444 AD CSMMASS */
  ai_ad(s,01474);
  goto B51445;
 B51445:
- IRC_COVER(688u);
+ IRC_COVER(748u);
  /* 24,3445 TS MASSTMP */
  if(ai_ts(s,(unsigned)01652))goto B51447c;
  goto B51446c;
 B51446c:
- IRC_COVER(689u);
+ IRC_COVER(749u);
  /* 24,3446 TC PHASCHNG */
  ai_tc(s,003447u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51447c:
- IRC_COVER(690u);
+ IRC_COVER(750u);
  /* 24,3447 OCT 05014: data, never executed */
  return EXEC_INVALID_ACTION;
 B51451:
- IRC_COVER(691u);
+ IRC_COVER(751u);
  /* 24,3451 TCR SPSOFF */
  ai_tc(s,003452u);
  goto B51017;
 B51452:
- IRC_COVER(692u);
+ IRC_COVER(752u);
  /* 24,3452 TC PHASCHNG */
  ai_tc(s,003453u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51454:
- IRC_COVER(693u);
+ IRC_COVER(753u);
  /* 24,3454 TC FIXDELAY */
  ai_tc(s,003455u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B51456:
- IRC_COVER(694u);
+ IRC_COVER(754u);
  /* 24,3456 V97TRCS TC IBNKCALL */
  ai_tc(s,003457u);
  W[5]=04740u;return EXEC_OK; /* IBNKCALL */
 B51460:
- IRC_COVER(695u);
+ IRC_COVER(755u);
  /* 24,3460 CAF PRIO27 */
  ai_caf(s,027000u); /* PRIO27 */
  goto B51461c;
 B51461c:
- IRC_COVER(696u);
+ IRC_COVER(756u);
  /* 24,3461 TC NOVAC */
  ai_tc(s,003462u);
  W[5]=05134u;return EXEC_OK; /* NOVAC */
 B51464:
- IRC_COVER(697u);
+ IRC_COVER(757u);
  /* 24,3464 ENDV97T TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
+B51465:
+ IRC_COVER(758u);
+ /* 24,3465 V97P TC PHASCHNG */
+ ai_tc(s,003466u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B51467:
+ IRC_COVER(759u);
+ /* 24,3467 CAF BIT1 */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B51470c;
+B51470c:
+ IRC_COVER(760u);
+ /* 24,3470 TC TWIDDLE */
+ ai_tc(s,003471u);
+ W[5]=05235u;return EXEC_OK; /* TWIDDLE */
+B51472:
+ IRC_COVER(761u);
+ /* 24,3472 TCF ENDOFJOB */
+ W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B51473:
- IRC_COVER(698u);
+ IRC_COVER(762u);
  /* 24,3473 V97PTASK CAE V97VCNTR */
  ai_ca(s,01444);
  goto B51474c;
 B51474c:
- IRC_COVER(699u);
+ IRC_COVER(763u);
  /* 24,3474 TS VCNTR */
  (void)ai_ts(s,(unsigned)01643);
  goto B51475c;
 B51475c:
- IRC_COVER(700u);
+ IRC_COVER(764u);
  /* 24,3475 CAF V06N40 */
  ai_caf(s,001450u); /* V06N40 */
  goto B51476c;
 B51476c:
- IRC_COVER(701u);
+ IRC_COVER(765u);
  /* 24,3476 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B51477c;
 B51477c:
- IRC_COVER(702u);
+ IRC_COVER(766u);
  /* 24,3477 TC UPFLAG */
  ai_tc(s,003500u);
  W[5]=05546u;return EXEC_OK; /* UPFLAG */
 B51501:
- IRC_COVER(703u);
+ IRC_COVER(767u);
  /* 24,3501 TC UPFLAG */
  ai_tc(s,003502u);
  W[5]=05546u;return EXEC_OK; /* UPFLAG */
 B51503:
- IRC_COVER(704u);
+ IRC_COVER(768u);
  /* 24,3503 TC PHASCHNG */
  ai_tc(s,003504u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51505:
- IRC_COVER(705u);
+ IRC_COVER(769u);
  /* 24,3505 TC FIXDELAY */
  ai_tc(s,003506u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B51507:
- IRC_COVER(706u);
+ IRC_COVER(770u);
  /* 24,3507 R40ENABL TC DOWNFLAG */
  ai_tc(s,003510u);
  W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
 B51511:
- IRC_COVER(707u);
+ IRC_COVER(771u);
  /* 24,3511 TC PHASCHNG */
  ai_tc(s,003512u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51513:
- IRC_COVER(708u);
+ IRC_COVER(772u);
  /* 24,3513 ENDV97P TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
+B51514:
+ IRC_COVER(773u);
+ /* 24,3514 V97E TC PHASCHNG */
+ ai_tc(s,003515u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B51516:
+ IRC_COVER(774u);
+ /* 24,3516 CAF BIT1 */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B51517c;
+B51517c:
+ IRC_COVER(775u);
+ /* 24,3517 TC WAITLIST */
+ ai_tc(s,003520u);
+ W[5]=05245u;return EXEC_OK; /* WAITLIST */
+B51522:
+ IRC_COVER(776u);
+ /* 24,3522 TCF ENDOFJOB */
+ W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
 B51523:
- IRC_COVER(709u);
+ IRC_COVER(777u);
  /* 24,3523 V97ETASK CS OCT24 */
  ai_csf(s,000024u); /* OCT24 */
  goto B51524c;
 B51524c:
- IRC_COVER(710u);
+ IRC_COVER(778u);
  /* 24,3524 TS TIG */
  (void)ai_ts(s,(unsigned)01412);
  goto B51525c;
 B51525c:
- IRC_COVER(711u);
+ IRC_COVER(779u);
  /* 24,3525 CAF V06N40 */
  ai_caf(s,001450u); /* V06N40 */
  goto B51526c;
 B51526c:
- IRC_COVER(712u);
+ IRC_COVER(780u);
  /* 24,3526 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B51527c;
 B51527c:
- IRC_COVER(713u);
+ IRC_COVER(781u);
  /* 24,3527 TCR E6SETTER */
  ai_tc(s,003530u);
  goto B51371c;
 B51530:
- IRC_COVER(714u);
+ IRC_COVER(782u);
  /* 24,3530 CAF 3MDOT */
  ai_caf(s,000026u); /* 3MDOT */
  goto B51531c;
 B51531c:
- IRC_COVER(715u);
+ IRC_COVER(783u);
  /* 24,3531 AD CSMMASS */
  ai_ad(s,01474);
  goto B51532;
 B51532:
- IRC_COVER(716u);
+ IRC_COVER(784u);
  /* 24,3532 TS MASSTMP */
  if(ai_ts(s,(unsigned)01652))goto B51534c;
  goto B51533c;
 B51533c:
- IRC_COVER(717u);
+ IRC_COVER(785u);
  /* 24,3533 TC PHASCHNG */
  ai_tc(s,003534u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51534c:
- IRC_COVER(718u);
+ IRC_COVER(786u);
  /* 24,3534 OCT 00754: data, never executed */
  return EXEC_INVALID_ACTION;
 B51535:
- IRC_COVER(719u);
+ IRC_COVER(787u);
  /* 24,3535 SPSOFF97 TCR SPSOFF */
  ai_tc(s,003536u);
  goto B51017;
 B51536:
- IRC_COVER(720u);
+ IRC_COVER(788u);
  /* 24,3536 TC PHASCHNG */
  ai_tc(s,003537u);
  W[5]=05412u;return EXEC_OK; /* PHASCHNG */
 B51540:
- IRC_COVER(721u);
+ IRC_COVER(789u);
  /* 24,3540 TC FIXDELAY */
  ai_tc(s,003541u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B51542:
- IRC_COVER(722u);
+ IRC_COVER(790u);
  /* 24,3542 V97E40.6 CAF BIT1 */
  ai_caf(s,000001u); /* BIT1 */
  goto B51543c;
 B51543c:
- IRC_COVER(723u);
+ IRC_COVER(791u);
  /* 24,3543 TC WAITLIST */
  ai_tc(s,003544u);
  W[5]=05245u;return EXEC_OK; /* WAITLIST */
 B51546:
- IRC_COVER(724u);
+ IRC_COVER(792u);
  /* 24,3546 TC IBNKCALL */
  ai_tc(s,003547u);
  W[5]=04740u;return EXEC_OK; /* IBNKCALL */
 B51550:
- IRC_COVER(725u);
+ IRC_COVER(793u);
  /* 24,3550 TC 2PHSCHNG */
  ai_tc(s,003551u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B51554:
- IRC_COVER(726u);
+ IRC_COVER(794u);
  /* 24,3554 QUICKIGN CS PRIO14 */
  ai_csf(s,014000u); /* PRIO14 */
  goto B51555c;
 B51555c:
- IRC_COVER(727u);
+ IRC_COVER(795u);
  /* 24,3555 MASK FLAGWRD7 */
  ai_mask(s,0103);
  goto B51556c;
 B51556c:
- IRC_COVER(728u);
+ IRC_COVER(796u);
  /* 24,3556 AD BIT13 */
  ai_adf(s,010000u); /* BIT13 */
  goto B51557;
 B51557:
- IRC_COVER(729u);
+ IRC_COVER(797u);
  /* 24,3557 TS FLAGWRD7 */
  if(ai_ts(s,(unsigned)0103))goto B51561c;
  goto B51560c;
 B51560c:
- IRC_COVER(730u);
+ IRC_COVER(798u);
  /* 24,3560 TC FIXDELAY */
  ai_tc(s,003561u);
  W[5]=05267u;return EXEC_OK; /* FIXDELAY */
 B51561c:
- IRC_COVER(731u);
+ IRC_COVER(799u);
  /* 24,3561 DEC 30         B-14: data, never executed */
  return EXEC_INVALID_ACTION;
 B51562:
- IRC_COVER(732u);
+ IRC_COVER(800u);
  /* 24,3562 V99FLASH CS BIT9 */
  ai_csf(s,000400u); /* BIT9 */
  goto B51563c;
 B51563c:
- IRC_COVER(733u);
+ IRC_COVER(801u);
  /* 24,3563 TS NVWORD1 */
  (void)ai_ts(s,(unsigned)01145);
  goto B51564c;
 B51564c:
- IRC_COVER(734u);
+ IRC_COVER(802u);
  /* 24,3564 TC 2PHSCHNG */
  ai_tc(s,003565u);
  W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
 B51567:
- IRC_COVER(735u);
+ IRC_COVER(803u);
  /* 24,3567 CAF PRIO20 */
  ai_caf(s,020000u); /* BIT14 */
  goto B51570c;
 B51570c:
- IRC_COVER(736u);
+ IRC_COVER(804u);
  /* 24,3570 TC FINDVAC */
  ai_tc(s,003571u);
  W[5]=05147u;return EXEC_OK; /* FINDVAC */
 B51573:
- IRC_COVER(737u);
+ IRC_COVER(805u);
  /* 24,3573 ENDV97E TCF TASKOVER */
  W[5]=05324u;return EXEC_OK; /* TASKOVER */
 dispatch:
@@ -4755,20 +5182,34 @@ dispatch:
  case 20573u:goto B50135;
  case 20582u:goto B50146;
  case 20588u:goto B50154;
+ case 20589u:goto B50155;
+ case 20590u:goto B50156;
+ case 20598u:goto B50166;
+ case 20604u:goto B50174;
+ case 20607u:goto B50177;
  case 20611u:goto B50203;
  case 20612u:goto B50204;
  case 20613u:goto B50205;
  case 20620u:goto B50214;
+ case 20621u:goto B50215;
+ case 20622u:goto B50216;
  case 20633u:goto B50231;
  case 20635u:goto B50233;
  case 20636u:goto B50234;
  case 20638u:goto B50236;
  case 20646u:goto B50246;
  case 20649u:goto B50251;
+ case 20650u:goto B50252;
+ case 20651u:goto B50253;
+ case 20658u:goto B50262;
+ case 20659u:goto B50263;
  case 20660u:goto B50264;
  case 20663u:goto B50267;
  case 20666u:goto B50272;
+ case 20667u:goto B50273;
+ case 20668u:goto B50274;
  case 20676u:goto B50304;
+ case 20687u:goto B50317;
  case 20688u:goto B50320;
  case 20700u:goto B50334;
  case 20704u:goto B50340;
@@ -4858,11 +5299,18 @@ dispatch:
  case 21210u:goto B51332;
  case 21218u:goto B51342;
  case 21226u:goto B51352;
+ case 21227u:goto B51353;
+ case 21228u:goto B51354;
  case 21232u:goto B51360;
+ case 21233u:goto B51361;
+ case 21234u:goto B51362;
  case 21238u:goto B51366;
+ case 21248u:goto B51400;
+ case 21249u:goto B51401;
  case 21250u:goto B51402;
  case 21254u:goto B51406;
  case 21255u:goto B51407;
+ case 21271u:goto B51427;
  case 21277u:goto B51435;
  case 21280u:goto B51440;
  case 21281u:goto B51441;
@@ -4872,6 +5320,8 @@ dispatch:
  case 21294u:goto B51456;
  case 21296u:goto B51460;
  case 21300u:goto B51464;
+ case 21303u:goto B51467;
+ case 21306u:goto B51472;
  case 21307u:goto B51473;
  case 21313u:goto B51501;
  case 21315u:goto B51503;
@@ -4879,6 +5329,8 @@ dispatch:
  case 21319u:goto B51507;
  case 21321u:goto B51511;
  case 21323u:goto B51513;
+ case 21326u:goto B51516;
+ case 21330u:goto B51522;
  case 21331u:goto B51523;
  case 21336u:goto B51530;
  case 21341u:goto B51535;
@@ -4917,12 +5369,12 @@ static enum exec_status basic_run_27(apollo_overlay_state *s,cm_native_io *io,ui
  default:return EXEC_OUT_OF_SCOPE;
  }
 B56614:
- IRC_COVER(738u);
+ IRC_COVER(806u);
  /* 27,2614 P41CSM TC UPFLAG */
  ai_tc(s,002615u);
  W[5]=05546u;return EXEC_OK; /* UPFLAG */
 B56616:
- IRC_COVER(739u);
+ IRC_COVER(807u);
  /* 27,2616 TC INTPRET */
  ai_tc(s,002617u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
 }
@@ -4945,137 +5397,137 @@ static enum exec_status basic_run_42(apollo_overlay_state *s,cm_native_io *io,ui
  default:return EXEC_OUT_OF_SCOPE;
  }
 B105606:
- IRC_COVER(740u);
+ IRC_COVER(808u);
  /* 42,3606 DAPFIG CS BIT9 */
  ai_csf(s,000400u); /* BIT9 */
  goto B105607c;
 B105607c:
- IRC_COVER(741u);
+ IRC_COVER(809u);
  /* 42,3607 EXTEND */
  goto X105610c;
 X105610c:
- IRC_COVER(742u);
+ IRC_COVER(810u);
  /* 42,3610 EXTENDED WAND CHAN12 */
  ch_wand(s,io,012);
  goto B105611c;
 B105611c:
- IRC_COVER(743u);
+ IRC_COVER(811u);
  /* 42,3611 CAE DAPDATR1 */
  ai_ca(s,01466);
  goto B105612c;
 B105612c:
- IRC_COVER(744u);
+ IRC_COVER(812u);
  /* 42,3612 EXTEND */
  goto X105613c;
 X105613c:
- IRC_COVER(745u);
+ IRC_COVER(813u);
  /* 42,3613 EXTENDED MP BIT3 */
  ai_mpf(s,000004u); /* BIT3 */
  goto B105614c;
 B105614c:
- IRC_COVER(746u);
+ IRC_COVER(814u);
  /* 42,3614 MASK THREE */
  ai_maskf(s,000003u); /* OCTAL3 */
  goto B105615c;
 B105615c:
- IRC_COVER(747u);
+ IRC_COVER(815u);
  /* 42,3615 INDEX A */
  ix=areg(s);
  /* 42,3616 (indexed) TCF +1 */
  e=(long)03617+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
  W[5]=(agc_word)e;goto dispatch;
 B105617:
- IRC_COVER(748u);
+ IRC_COVER(816u);
  /* 42,3617 TCF NODAPUP */
  goto B105631;
 B105620:
- IRC_COVER(749u);
+ IRC_COVER(817u);
  /* 42,3620 TCF RCSDAPUP */
  goto B105624;
 B105621:
- IRC_COVER(750u);
+ IRC_COVER(818u);
  /* 42,3621 TCF RCSDAPUP */
  goto B105624;
 B105622:
- IRC_COVER(751u);
+ IRC_COVER(819u);
  /* 42,3622 TC POSTJUMP */
  ai_tc(s,003623u);
  W[5]=04701u;return EXEC_OK; /* POSTJUMP */
 B105624:
- IRC_COVER(752u);
+ IRC_COVER(820u);
  /* 42,3624 RCSDAPUP INHINT */
  io->interrupt_enabled=0;
  goto B105625;
 B105625:
- IRC_COVER(753u);
+ IRC_COVER(821u);
  /* 42,3625 TCR IBNKCALL */
  ai_tc(s,003626u);
  W[5]=04740u;return EXEC_OK; /* IBNKCALL */
 B105627:
- IRC_COVER(754u);
+ IRC_COVER(822u);
  /* 42,3627 RELINT */
  io->interrupt_enabled=1;
  goto B105630;
 B105630:
- IRC_COVER(755u);
+ IRC_COVER(823u);
  /* 42,3630 TCF ENDFIG */
  goto B105646;
 B105631:
- IRC_COVER(756u);
+ IRC_COVER(824u);
  /* 42,3631 NODAPUP EXTEND */
  goto X105632;
 X105632:
- IRC_COVER(757u);
+ IRC_COVER(825u);
  /* 42,3632 EXTENDED DCA T5IDLDAP */
  {static const agc_word k[2]={003153u,012106u};ai_dcaf(s,k);} /* T5IDLDAP */
  goto B105633c;
 B105633c:
- IRC_COVER(758u);
+ IRC_COVER(826u);
  /* 42,3633 DXCH T5LOC */
  ai_dxch(s,01312);
  goto B105634c;
 B105634c:
- IRC_COVER(759u);
+ IRC_COVER(827u);
  /* 42,3634 TC DOWNFLAG */
  ai_tc(s,003635u);
  W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
 B105636:
- IRC_COVER(760u);
+ IRC_COVER(828u);
  /* 42,3636 TC DOWNFLAG */
  ai_tc(s,003637u);
  W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
 B105640:
- IRC_COVER(761u);
+ IRC_COVER(829u);
  /* 42,3640 INHINT */
  io->interrupt_enabled=0;
  goto B105641;
 B105641:
- IRC_COVER(762u);
+ IRC_COVER(830u);
  /* 42,3641 TC IBNKCALL */
  ai_tc(s,003642u);
  W[5]=04740u;return EXEC_OK; /* IBNKCALL */
 B105643:
- IRC_COVER(763u);
+ IRC_COVER(831u);
  /* 42,3643 RELINT */
  io->interrupt_enabled=1;
  goto B105644;
 B105644:
- IRC_COVER(764u);
+ IRC_COVER(832u);
  /* 42,3644 CAF BIT1 */
  ai_caf(s,000001u); /* BIT1 */
  goto B105645c;
 B105645c:
- IRC_COVER(765u);
+ IRC_COVER(833u);
  /* 42,3645 TS HOLDFLAG */
  (void)ai_ts(s,(unsigned)01332);
  goto B105646c;
 B105646:
- IRC_COVER(766u);
+ IRC_COVER(834u);
  /* 42,3646 ENDFIG TC POSTJUMP */
  ai_tc(s,003647u);
  W[5]=04701u;return EXEC_OK; /* POSTJUMP */
 B105646c:
- IRC_COVER(767u);
+ IRC_COVER(835u);
  goto B105646;
 dispatch:
  p=agc_fixed_physical(W[5],W[4],io->superbank);
@@ -5130,20 +5582,34 @@ dispatch:
  case 20573u:return CM_P40_P47_RUN_24(s,io,20573u);
  case 20582u:return CM_P40_P47_RUN_24(s,io,20582u);
  case 20588u:return CM_P40_P47_RUN_24(s,io,20588u);
+ case 20589u:return CM_P40_P47_RUN_24(s,io,20589u);
+ case 20590u:return CM_P40_P47_RUN_24(s,io,20590u);
+ case 20598u:return CM_P40_P47_RUN_24(s,io,20598u);
+ case 20604u:return CM_P40_P47_RUN_24(s,io,20604u);
+ case 20607u:return CM_P40_P47_RUN_24(s,io,20607u);
  case 20611u:return CM_P40_P47_RUN_24(s,io,20611u);
  case 20612u:return CM_P40_P47_RUN_24(s,io,20612u);
  case 20613u:return CM_P40_P47_RUN_24(s,io,20613u);
  case 20620u:return CM_P40_P47_RUN_24(s,io,20620u);
+ case 20621u:return CM_P40_P47_RUN_24(s,io,20621u);
+ case 20622u:return CM_P40_P47_RUN_24(s,io,20622u);
  case 20633u:return CM_P40_P47_RUN_24(s,io,20633u);
  case 20635u:return CM_P40_P47_RUN_24(s,io,20635u);
  case 20636u:return CM_P40_P47_RUN_24(s,io,20636u);
  case 20638u:return CM_P40_P47_RUN_24(s,io,20638u);
  case 20646u:return CM_P40_P47_RUN_24(s,io,20646u);
  case 20649u:return CM_P40_P47_RUN_24(s,io,20649u);
+ case 20650u:return CM_P40_P47_RUN_24(s,io,20650u);
+ case 20651u:return CM_P40_P47_RUN_24(s,io,20651u);
+ case 20658u:return CM_P40_P47_RUN_24(s,io,20658u);
+ case 20659u:return CM_P40_P47_RUN_24(s,io,20659u);
  case 20660u:return CM_P40_P47_RUN_24(s,io,20660u);
  case 20663u:return CM_P40_P47_RUN_24(s,io,20663u);
  case 20666u:return CM_P40_P47_RUN_24(s,io,20666u);
+ case 20667u:return CM_P40_P47_RUN_24(s,io,20667u);
+ case 20668u:return CM_P40_P47_RUN_24(s,io,20668u);
  case 20676u:return CM_P40_P47_RUN_24(s,io,20676u);
+ case 20687u:return CM_P40_P47_RUN_24(s,io,20687u);
  case 20688u:return CM_P40_P47_RUN_24(s,io,20688u);
  case 20700u:return CM_P40_P47_RUN_24(s,io,20700u);
  case 20704u:return CM_P40_P47_RUN_24(s,io,20704u);
@@ -5233,11 +5699,18 @@ dispatch:
  case 21210u:return CM_P40_P47_RUN_24(s,io,21210u);
  case 21218u:return CM_P40_P47_RUN_24(s,io,21218u);
  case 21226u:return CM_P40_P47_RUN_24(s,io,21226u);
+ case 21227u:return CM_P40_P47_RUN_24(s,io,21227u);
+ case 21228u:return CM_P40_P47_RUN_24(s,io,21228u);
  case 21232u:return CM_P40_P47_RUN_24(s,io,21232u);
+ case 21233u:return CM_P40_P47_RUN_24(s,io,21233u);
+ case 21234u:return CM_P40_P47_RUN_24(s,io,21234u);
  case 21238u:return CM_P40_P47_RUN_24(s,io,21238u);
+ case 21248u:return CM_P40_P47_RUN_24(s,io,21248u);
+ case 21249u:return CM_P40_P47_RUN_24(s,io,21249u);
  case 21250u:return CM_P40_P47_RUN_24(s,io,21250u);
  case 21254u:return CM_P40_P47_RUN_24(s,io,21254u);
  case 21255u:return CM_P40_P47_RUN_24(s,io,21255u);
+ case 21271u:return CM_P40_P47_RUN_24(s,io,21271u);
  case 21277u:return CM_P40_P47_RUN_24(s,io,21277u);
  case 21280u:return CM_P40_P47_RUN_24(s,io,21280u);
  case 21281u:return CM_P40_P47_RUN_24(s,io,21281u);
@@ -5247,6 +5720,8 @@ dispatch:
  case 21294u:return CM_P40_P47_RUN_24(s,io,21294u);
  case 21296u:return CM_P40_P47_RUN_24(s,io,21296u);
  case 21300u:return CM_P40_P47_RUN_24(s,io,21300u);
+ case 21303u:return CM_P40_P47_RUN_24(s,io,21303u);
+ case 21306u:return CM_P40_P47_RUN_24(s,io,21306u);
  case 21307u:return CM_P40_P47_RUN_24(s,io,21307u);
  case 21313u:return CM_P40_P47_RUN_24(s,io,21313u);
  case 21315u:return CM_P40_P47_RUN_24(s,io,21315u);
@@ -5254,6 +5729,8 @@ dispatch:
  case 21319u:return CM_P40_P47_RUN_24(s,io,21319u);
  case 21321u:return CM_P40_P47_RUN_24(s,io,21321u);
  case 21323u:return CM_P40_P47_RUN_24(s,io,21323u);
+ case 21326u:return CM_P40_P47_RUN_24(s,io,21326u);
+ case 21330u:return CM_P40_P47_RUN_24(s,io,21330u);
  case 21331u:return CM_P40_P47_RUN_24(s,io,21331u);
  case 21336u:return CM_P40_P47_RUN_24(s,io,21336u);
  case 21341u:return CM_P40_P47_RUN_24(s,io,21341u);
@@ -5318,6 +5795,9 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #endif
 #ifndef CM_P40_P47_KEEP7
 #define CM_P40_P47_KEEP7 0xfffffffffffffff
+#endif
+#ifndef CM_P40_P47_KEEP8
+#define CM_P40_P47_KEEP8 0xfffffffffffffff
 #endif
 #if (CM_P40_P47_KEEP0 >> 0) & 1
 /* 16,2020 S40.1 (CALL target) */
@@ -7677,20 +8157,55 @@ static enum exec_status r50154_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (CM_P40_P47_KEEP3 >> 22) & 1
+/* 24,2155  (resumed from outside) */
+static enum exec_status r50155_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20589u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 23) & 1
+/* 24,2156 TRIMONLY (resumed from outside) */
+static enum exec_status r50156_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20590u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 24) & 1
+/* 24,2166  (return from WAITLIST) */
+static enum exec_status r50166_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20598u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 25) & 1
+/* 24,2174  (return from BANKCALL) */
+static enum exec_status r50174_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20604u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 26) & 1
+/* 24,2177 P40S/RS (return from 2PHSCHNG) */
+static enum exec_status r50177_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20607u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 27) & 1
 /* 24,2203  (return from WAITLIST) */
 static enum exec_status r50203_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20611u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 23) & 1
+#if (CM_P40_P47_KEEP3 >> 28) & 1
 /* 24,2204 P40S/SV (entry P40S/SV (RESTART_TABLES.agc 2CADR P40S/SV)) */
 static enum exec_status r50204_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20612u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 24) & 1
+#if (CM_P40_P47_KEEP3 >> 29) & 1
 /* 24,2206  (after TC INTPRET) */
 static enum exec_status r50206(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7704,7 +8219,7 @@ static enum exec_status r50206(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2211 */
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 25) & 1
+#if (CM_P40_P47_KEEP3 >> 30) & 1
 /* 24,2211  (CHANG2 resume) */
 static enum exec_status r50211(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7715,7 +8230,7 @@ static enum exec_status r50211(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2212 */
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 26) & 1
+#if (CM_P40_P47_KEEP3 >> 31) & 1
 /* 24,2212  (CHANG2 resume) */
 static enum exec_status r50212(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7727,112 +8242,161 @@ static enum exec_status r50212(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 27) & 1
+#if (CM_P40_P47_KEEP3 >> 32) & 1
 /* 24,2214  (CALRB return) */
 static enum exec_status r50214_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20620u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 28) & 1
+#if (CM_P40_P47_KEEP3 >> 33) & 1
+/* 24,2215  (resumed from outside) */
+static enum exec_status r50215_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20621u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 34) & 1
 /* 24,2231  (return from LONGCALL) */
 static enum exec_status r50231_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20633u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 29) & 1
+#if (CM_P40_P47_KEEP3 >> 35) & 1
 /* 24,2233  (return from PHASCHNG) */
 static enum exec_status r50233_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20635u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 30) & 1
+#if (CM_P40_P47_KEEP3 >> 36) & 1
 /* 24,2234 P40BLNKR (2CADR P40BLNKR) */
 static enum exec_status r50234_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20636u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 31) & 1
+#if (CM_P40_P47_KEEP3 >> 37) & 1
 /* 24,2236  (return from BANKCALL) */
 static enum exec_status r50236_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20638u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 32) & 1
+#if (CM_P40_P47_KEEP3 >> 38) & 1
 /* 24,2246 POSTBURN (entry POSTBURN (RESTART_TABLES.agc 2CADR POSTBURN)) */
 static enum exec_status r50246_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20646u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 33) & 1
+#if (CM_P40_P47_KEEP3 >> 39) & 1
 /* 24,2251  (return from BANKCALL) */
 static enum exec_status r50251_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20649u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 34) & 1
+#if (CM_P40_P47_KEEP3 >> 40) & 1
+/* 24,2252  (resumed from outside) */
+static enum exec_status r50252_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20650u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 41) & 1
+/* 24,2253  (resumed from outside) */
+static enum exec_status r50253_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20651u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 42) & 1
+/* 24,2262 P40MINDB (return from BANKCALL) */
+static enum exec_status r50262_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20658u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 43) & 1
 /* 24,2264 TIGNOW (2CADR TIGNOW) */
 static enum exec_status r50264_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20660u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 35) & 1
+#if (CM_P40_P47_KEEP3 >> 44) & 1
 /* 24,2267  (return from PHASCHNG) */
 static enum exec_status r50267_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20663u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 36) & 1
+#if (CM_P40_P47_KEEP3 >> 45) & 1
 /* 24,2272  (return from BANKCALL) */
 static enum exec_status r50272_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20666u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 37) & 1
+#if (CM_P40_P47_KEEP3 >> 46) & 1
+/* 24,2273  (resumed from outside) */
+static enum exec_status r50273_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20667u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 47) & 1
+/* 24,2274  (resumed from outside) */
+static enum exec_status r50274_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20668u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 48) & 1
 /* 24,2304 SETMINDB (entry SETMINDB (FRESH_START_AND_RESTART.agc CADR SETMINDB)) */
 static enum exec_status r50304_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20676u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 38) & 1
+#if (CM_P40_P47_KEEP3 >> 49) & 1
+/* 24,2317  (resumed from outside) */
+static enum exec_status r50317_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,20687u);
+}
+#endif
+#if (CM_P40_P47_KEEP3 >> 50) & 1
 /* 24,2320 SETMAXDB (entry SETMAXDB (FRESH_START_AND_RESTART.agc CADR SETMAXDB)) */
 static enum exec_status r50320_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20688u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 39) & 1
+#if (CM_P40_P47_KEEP3 >> 51) & 1
 /* 24,2334 TTG/0 (entry TTG/0 (RESTART_TABLES.agc -2CADR TTG/0)) */
 static enum exec_status r50334_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20700u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 40) & 1
+#if (CM_P40_P47_KEEP3 >> 52) & 1
 /* 24,2340 P40CLK (return from NOVAC) */
 static enum exec_status r50340_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20704u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 41) & 1
+#if (CM_P40_P47_KEEP3 >> 53) & 1
 /* 24,2342  (return from DOWNFLAG) */
 static enum exec_status r50342_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20706u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 42) & 1
+#if (CM_P40_P47_KEEP3 >> 54) & 1
 /* 24,2346  (after TC INTPRET) */
 static enum exec_status r50346(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7844,7 +8408,7 @@ static enum exec_status r50346(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 43) & 1
+#if (CM_P40_P47_KEEP3 >> 55) & 1
 /* 24,2350  (CALL return) */
 static enum exec_status r50350(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7854,28 +8418,28 @@ static enum exec_status r50350(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 44) & 1
+#if (CM_P40_P47_KEEP3 >> 56) & 1
 /* 24,2351  (after EXIT) */
 static enum exec_status r50351_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20713u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 45) & 1
+#if (CM_P40_P47_KEEP3 >> 57) & 1
 /* 24,2357  (return from 2PHSCHNG) */
 static enum exec_status r50357_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20719u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 46) & 1
+#if (CM_P40_P47_KEEP3 >> 58) & 1
 /* 24,2366  (return from WAITLIST) */
 static enum exec_status r50366_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20726u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 47) & 1
+#if (CM_P40_P47_KEEP3 >> 59) & 1
 /* 24,2370 P40CNV85 (CALL target) */
 static enum exec_status r50370(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7889,7 +8453,7 @@ static enum exec_status r50370(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2373 */
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 48) & 1
+#if (CM_P40_P47_KEEP4 >> 0) & 1
 /* 24,2373  (CHANG2 resume) */
 static enum exec_status r50373(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7903,7 +8467,7 @@ static enum exec_status r50373(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2375 */
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 49) & 1
+#if (CM_P40_P47_KEEP4 >> 1) & 1
 /* 24,2375  (CHANG2 resume) */
 static enum exec_status r50375(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7915,7 +8479,7 @@ static enum exec_status r50375(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 50) & 1
+#if (CM_P40_P47_KEEP4 >> 2) & 1
 /* 24,2377  (CALL return) */
 static enum exec_status r50377(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7927,14 +8491,14 @@ static enum exec_status r50377(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 51) & 1
+#if (CM_P40_P47_KEEP4 >> 3) & 1
 /* 24,2401 CALCN85 (2CADR CALCN85) */
 static enum exec_status r50401_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20737u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 52) & 1
+#if (CM_P40_P47_KEEP4 >> 4) & 1
 /* 24,2402  (after TC INTPRET) */
 static enum exec_status r50402(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7946,7 +8510,7 @@ static enum exec_status r50402(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 53) & 1
+#if (CM_P40_P47_KEEP4 >> 5) & 1
 /* 24,2404  (CALL return) */
 static enum exec_status r50404(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7958,7 +8522,7 @@ static enum exec_status r50404(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 54) & 1
+#if (CM_P40_P47_KEEP4 >> 6) & 1
 /* 24,2406  (CALL return) */
 static enum exec_status r50406(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -7968,56 +8532,56 @@ static enum exec_status r50406(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 55) & 1
+#if (CM_P40_P47_KEEP4 >> 7) & 1
 /* 24,2407  (after EXIT) */
 static enum exec_status r50407_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20743u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 56) & 1
+#if (CM_P40_P47_KEEP4 >> 8) & 1
 /* 24,2437 TIGBLNK (entry TIGBLNK (RESTART_TABLES.agc -GENADR TIGBLNK)) */
 static enum exec_status r50437_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20767u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 57) & 1
+#if (CM_P40_P47_KEEP4 >> 9) & 1
 /* 24,2443  (return from WAITLIST) */
 static enum exec_status r50443_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20771u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 58) & 1
+#if (CM_P40_P47_KEEP4 >> 10) & 1
 /* 24,2451  (return from NOVAC) */
 static enum exec_status r50451_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20777u);
 }
 #endif
-#if (CM_P40_P47_KEEP3 >> 59) & 1
+#if (CM_P40_P47_KEEP4 >> 11) & 1
 /* 24,2454  (return from NEWPHASE) */
 static enum exec_status r50454_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20780u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 0) & 1
+#if (CM_P40_P47_KEEP4 >> 12) & 1
 /* 24,2463 P47CSM (entry P47CSM (FRESH_START_AND_RESTART.agc FCADR P47CSM)) */
 static enum exec_status r50463_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20787u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 1) & 1
+#if (CM_P40_P47_KEEP4 >> 13) & 1
 /* 24,2465  (return from BANKCALL) */
 static enum exec_status r50465_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20789u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 2) & 1
+#if (CM_P40_P47_KEEP4 >> 14) & 1
 /* 24,2466  (after TC INTPRET) */
 static enum exec_status r50466(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8029,49 +8593,49 @@ static enum exec_status r50466(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 3) & 1
+#if (CM_P40_P47_KEEP4 >> 15) & 1
 /* 24,2470  (CALRB return) */
 static enum exec_status r50470_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20792u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 4) & 1
+#if (CM_P40_P47_KEEP4 >> 16) & 1
 /* 24,2475  (return from WAITLIST) */
 static enum exec_status r50475_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20797u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 5) & 1
+#if (CM_P40_P47_KEEP4 >> 17) & 1
 /* 24,2477  (return from PHASCHNG) */
 static enum exec_status r50477_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20799u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 6) & 1
+#if (CM_P40_P47_KEEP4 >> 18) & 1
 /* 24,2500 TIGON (entry TIGON (RESTART_TABLES.agc -2CADR TIGON)) */
 static enum exec_status r50500_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20800u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 7) & 1
+#if (CM_P40_P47_KEEP4 >> 19) & 1
 /* 24,2507  (return from NOVAC) */
 static enum exec_status r50507_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20807u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 8) & 1
+#if (CM_P40_P47_KEEP4 >> 20) & 1
 /* 24,2511 CALCN83 (2CADR CALCN83) */
 static enum exec_status r50511_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20809u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 9) & 1
+#if (CM_P40_P47_KEEP4 >> 21) & 1
 /* 24,2512  (after TC INTPRET) */
 static enum exec_status r50512(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8083,7 +8647,7 @@ static enum exec_status r50512(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2514 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 10) & 1
+#if (CM_P40_P47_KEEP4 >> 22) & 1
 /* 24,2514  (CHANG2 resume) */
 static enum exec_status r50514(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8097,7 +8661,7 @@ static enum exec_status r50514(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2517 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 11) & 1
+#if (CM_P40_P47_KEEP4 >> 23) & 1
 /* 24,2517  (CHANG2 resume) */
 static enum exec_status r50517(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8108,7 +8672,7 @@ static enum exec_status r50517(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2520 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 12) & 1
+#if (CM_P40_P47_KEEP4 >> 24) & 1
 /* 24,2520  (CHANG2 resume) */
 static enum exec_status r50520(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8122,7 +8686,7 @@ static enum exec_status r50520(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 13) & 1
+#if (CM_P40_P47_KEEP4 >> 25) & 1
 /* 24,2522  (CALL return) */
 static enum exec_status r50522(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8134,7 +8698,7 @@ static enum exec_status r50522(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 14) & 1
+#if (CM_P40_P47_KEEP4 >> 26) & 1
 /* 24,2524  (STCALL return) */
 static enum exec_status r50524(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8144,35 +8708,35 @@ static enum exec_status r50524(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 15) & 1
+#if (CM_P40_P47_KEEP4 >> 27) & 1
 /* 24,2525  (after EXIT) */
 static enum exec_status r50525_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20821u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 16) & 1
+#if (CM_P40_P47_KEEP4 >> 28) & 1
 /* 24,2527  (return from PHASCHNG) */
 static enum exec_status r50527_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20823u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 17) & 1
+#if (CM_P40_P47_KEEP4 >> 29) & 1
 /* 24,2533  (return from GENTRAN) */
 static enum exec_status r50533_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20827u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 18) & 1
+#if (CM_P40_P47_KEEP4 >> 30) & 1
 /* 24,2534 P47BODY (entry P47BODY (RESTART_TABLES.agc 2CADR P47BODY)) */
 static enum exec_status r50534_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20828u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 19) & 1
+#if (CM_P40_P47_KEEP4 >> 31) & 1
 /* 24,2535  (after TC INTPRET) */
 static enum exec_status r50535(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8184,7 +8748,7 @@ static enum exec_status r50535(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2537 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 20) & 1
+#if (CM_P40_P47_KEEP4 >> 32) & 1
 /* 24,2537  (CHANG2 resume) */
 static enum exec_status r50537(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8195,7 +8759,7 @@ static enum exec_status r50537(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2540 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 21) & 1
+#if (CM_P40_P47_KEEP4 >> 33) & 1
 /* 24,2540  (CHANG2 resume) */
 static enum exec_status r50540(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8206,7 +8770,7 @@ static enum exec_status r50540(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,2541 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 22) & 1
+#if (CM_P40_P47_KEEP4 >> 34) & 1
 /* 24,2541  (CHANG2 resume) */
 static enum exec_status r50541(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8216,224 +8780,224 @@ static enum exec_status r50541(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 23) & 1
+#if (CM_P40_P47_KEEP4 >> 35) & 1
 /* 24,2542 P47BOD (after EXIT) */
 static enum exec_status r50542_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20834u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 24) & 1
+#if (CM_P40_P47_KEEP4 >> 36) & 1
 /* 24,2544  (return from PRIOCHNG) */
 static enum exec_status r50544_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20836u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 25) & 1
+#if (CM_P40_P47_KEEP4 >> 37) & 1
 /* 24,2547 P47/DSP (return from PHASCHNG) */
 static enum exec_status r50547_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20839u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 26) & 1
+#if (CM_P40_P47_KEEP4 >> 38) & 1
 /* 24,2552  (return from BANKCALL) */
 static enum exec_status r50552_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20842u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 27) & 1
+#if (CM_P40_P47_KEEP4 >> 39) & 1
 /* 24,2553  (return from GOTOPOOH) */
 static enum exec_status r50553_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20843u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 28) & 1
+#if (CM_P40_P47_KEEP4 >> 40) & 1
 /* 24,2554  (return from GOTOPOOH) */
 static enum exec_status r50554_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20844u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 29) & 1
+#if (CM_P40_P47_KEEP4 >> 41) & 1
 /* 24,2555 TIGAVEG (entry TIGAVEG (RESTART_TABLES.agc -2CADR TIGAVEG)) */
 static enum exec_status r50555_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20845u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 30) & 1
+#if (CM_P40_P47_KEEP4 >> 42) & 1
 /* 24,2565  (return from WAITLIST) */
 static enum exec_status r50565_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20853u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 31) & 1
+#if (CM_P40_P47_KEEP4 >> 43) & 1
 /* 24,2570 PRECHECK (entry PRECHECK (RESTART_TABLES.agc -2CADR PRECHECK)) */
 static enum exec_status r50570_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20856u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 32) & 1
+#if (CM_P40_P47_KEEP4 >> 44) & 1
 /* 24,2574 TIG-5 (entry TIG-5 (RESTART_TABLES.agc -2CADR TIG-5)) */
 static enum exec_status r50574_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20860u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 33) & 1
+#if (CM_P40_P47_KEEP4 >> 45) & 1
 /* 24,2600  (return from WAITLIST) */
 static enum exec_status r50600_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20864u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 34) & 1
+#if (CM_P40_P47_KEEP4 >> 46) & 1
 /* 24,2605  (return from 2PHSCHNG) */
 static enum exec_status r50605_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20869u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 35) & 1
+#if (CM_P40_P47_KEEP4 >> 47) & 1
 /* 24,2611  (return from FINDVAC) */
 static enum exec_status r50611_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20873u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 36) & 1
+#if (CM_P40_P47_KEEP4 >> 48) & 1
 /* 24,2612 TIG-0 (entry TIG-0 (RESTART_TABLES.agc -2CADR TIG-0)) */
 static enum exec_status r50612_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20874u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 37) & 1
+#if (CM_P40_P47_KEEP4 >> 49) & 1
 /* 24,2625 IGNITION (entry IGNITION (RESTART_TABLES.agc -2CADR IGNITION)) */
 static enum exec_status r50625_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20885u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 38) & 1
+#if (CM_P40_P47_KEEP4 >> 50) & 1
 /* 24,2660  (return from NEWPHASE) */
 static enum exec_status r50660_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20912u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 39) & 1
+#if (CM_P40_P47_KEEP4 >> 51) & 1
 /* 24,2662 DOTVCON (entry DOTVCON (RESTART_TABLES.agc -2CADR DOTVCON)) */
 static enum exec_status r50662_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20914u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 40) & 1
+#if (CM_P40_P47_KEEP4 >> 52) & 1
 /* 24,2704  (return from NEWPHASE) */
 static enum exec_status r50704_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20932u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 41) & 1
+#if (CM_P40_P47_KEEP4 >> 53) & 1
 /* 24,2713 DOSTRULL (entry DOSTRULL (RESTART_TABLES.agc -2CADR DOSTRULL)) */
 static enum exec_status r50713_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20939u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 42) & 1
+#if (CM_P40_P47_KEEP4 >> 54) & 1
 /* 24,2753  (return from 2PHSCHNG) */
 static enum exec_status r50753_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20971u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 43) & 1
+#if (CM_P40_P47_KEEP4 >> 55) & 1
 /* 24,2757 IMPLCONT (2CADR IMPLCONT) */
 static enum exec_status r50757_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20975u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 44) & 1
+#if (CM_P40_P47_KEEP4 >> 56) & 1
 /* 24,2766 ENGINOFF (entry ENGINOFF (RESTART_TABLES.agc -2CADR ENGINOFF)) */
 static enum exec_status r50766_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20982u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 45) & 1
+#if (CM_P40_P47_KEEP4 >> 57) & 1
 /* 24,2774 DOSPSOFF (entry DOSPSOFF (RESTART_TABLES.agc -2CADR DOSPSOFF)) */
 static enum exec_status r50774_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20988u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 46) & 1
+#if (CM_P40_P47_KEEP4 >> 58) & 1
 /* 24,3000  (return from NEWPHASE) */
 static enum exec_status r51000_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20992u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 47) & 1
+#if (CM_P40_P47_KEEP4 >> 59) & 1
 /* 24,3002 DOTVCRCS (entry DOTVCRCS (RESTART_TABLES.agc -2CADR DOTVCRCS)) */
 static enum exec_status r51002_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20994u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 48) & 1
+#if (CM_P40_P47_KEEP5 >> 0) & 1
 /* 24,3005  (return from IBNKCALL) */
 static enum exec_status r51005_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20997u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 49) & 1
+#if (CM_P40_P47_KEEP5 >> 1) & 1
 /* 24,3007  (return from IBNKCALL) */
 static enum exec_status r51007_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,20999u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 50) & 1
+#if (CM_P40_P47_KEEP5 >> 2) & 1
 /* 24,3012  (return from PHASCHNG) */
 static enum exec_status r51012_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21002u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 51) & 1
+#if (CM_P40_P47_KEEP5 >> 3) & 1
 /* 24,3016  (return from NOVAC) */
 static enum exec_status r51016_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21006u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 52) & 1
+#if (CM_P40_P47_KEEP5 >> 4) & 1
 /* 24,3017 SPSOFF (entry SPSOFF (FRESH_START_AND_RESTART.agc CADR SPSOFF)) */
 static enum exec_status r51017_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21007u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 53) & 1
+#if (CM_P40_P47_KEEP5 >> 5) & 1
 /* 24,3071 TVCZAP (entry TVCZAP (FRESH_START_AND_RESTART.agc CADR TVCZAP)) */
 static enum exec_status r51071_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21049u);
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 54) & 1
+#if (CM_P40_P47_KEEP5 >> 6) & 1
 /* 24,3104 UPDATEVG (CALL target) */
 static enum exec_status r51104(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8449,7 +9013,7 @@ static enum exec_status r51104(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3110 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 55) & 1
+#if (CM_P40_P47_KEEP5 >> 7) & 1
 /* 24,3110  (CHANG2 resume) */
 static enum exec_status r51110(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8467,7 +9031,7 @@ static enum exec_status r51110(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3113 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 56) & 1
+#if (CM_P40_P47_KEEP5 >> 8) & 1
 /* 24,3113  (CHANG2 resume) */
 static enum exec_status r51113(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8481,7 +9045,7 @@ static enum exec_status r51113(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3116 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 57) & 1
+#if (CM_P40_P47_KEEP5 >> 9) & 1
 /* 24,3116  (CHANG2 resume) */
 static enum exec_status r51116(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8492,7 +9056,7 @@ static enum exec_status r51116(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3117 */
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 58) & 1
+#if (CM_P40_P47_KEEP5 >> 10) & 1
 /* 24,3117  (CHANG2 resume) */
 static enum exec_status r51117(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8502,21 +9066,21 @@ static enum exec_status r51117(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP4 >> 59) & 1
+#if (CM_P40_P47_KEEP5 >> 11) & 1
 /* 24,3120  (after EXIT) */
 static enum exec_status r51120_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21072u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 0) & 1
+#if (CM_P40_P47_KEEP5 >> 12) & 1
 /* 24,3125  (return from PHASCHNG) */
 static enum exec_status r51125_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21077u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 1) & 1
+#if (CM_P40_P47_KEEP5 >> 13) & 1
 /* 24,3130  (after TC INTPRET) */
 static enum exec_status r51130(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8528,7 +9092,7 @@ static enum exec_status r51130(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3132 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 2) & 1
+#if (CM_P40_P47_KEEP5 >> 14) & 1
 /* 24,3132  (CHANG2 resume) */
 static enum exec_status r51132(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8539,7 +9103,7 @@ static enum exec_status r51132(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3133 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 3) & 1
+#if (CM_P40_P47_KEEP5 >> 15) & 1
 /* 24,3133 CALL40.8 (switch branch target) */
 static enum exec_status r51133(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8551,7 +9115,7 @@ static enum exec_status r51133(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 4) & 1
+#if (CM_P40_P47_KEEP5 >> 16) & 1
 /* 24,3135  (CALL return) */
 static enum exec_status r51135(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8561,7 +9125,7 @@ static enum exec_status r51135(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,003730,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 5) & 1
+#if (CM_P40_P47_KEEP5 >> 17) & 1
 /* 24,3137 SETUP.9 (BMN target) */
 static enum exec_status r51137(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8577,7 +9141,7 @@ static enum exec_status r51137(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3143 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 6) & 1
+#if (CM_P40_P47_KEEP5 >> 18) & 1
 /* 24,3143  (CHANG2 resume) */
 static enum exec_status r51143(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8591,7 +9155,7 @@ static enum exec_status r51143(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3146 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 7) & 1
+#if (CM_P40_P47_KEEP5 >> 19) & 1
 /* 24,3146  (CHANG2 resume) */
 static enum exec_status r51146(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8605,7 +9169,7 @@ static enum exec_status r51146(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3151 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 8) & 1
+#if (CM_P40_P47_KEEP5 >> 20) & 1
 /* 24,3151  (CHANG2 resume) */
 static enum exec_status r51151(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8617,7 +9181,7 @@ static enum exec_status r51151(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3153 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 9) & 1
+#if (CM_P40_P47_KEEP5 >> 21) & 1
 /* 24,3153  (CHANG2 resume) */
 static enum exec_status r51153(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8628,7 +9192,7 @@ static enum exec_status r51153(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3154 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 10) & 1
+#if (CM_P40_P47_KEEP5 >> 22) & 1
 /* 24,3154 SURELY.9 (switch branch target) */
 static enum exec_status r51154(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8638,28 +9202,28 @@ static enum exec_status r51154(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 11) & 1
+#if (CM_P40_P47_KEEP5 >> 23) & 1
 /* 24,3155  (after EXIT) */
 static enum exec_status r51155_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21101u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 12) & 1
+#if (CM_P40_P47_KEEP5 >> 24) & 1
 /* 24,3161  (return from FINDVAC) */
 static enum exec_status r51161_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21105u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 13) & 1
+#if (CM_P40_P47_KEEP5 >> 25) & 1
 /* 24,3164  (return from 2PHSCHNG) */
 static enum exec_status r51164_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21108u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 14) & 1
+#if (CM_P40_P47_KEEP5 >> 26) & 1
 /* 24,3165  (after TC INTPRET) */
 static enum exec_status r51165(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8671,7 +9235,7 @@ static enum exec_status r51165(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3167 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 15) & 1
+#if (CM_P40_P47_KEEP5 >> 27) & 1
 /* 24,3167  (CHANG2 resume) */
 static enum exec_status r51167(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8683,7 +9247,7 @@ static enum exec_status r51167(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3171 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 16) & 1
+#if (CM_P40_P47_KEEP5 >> 28) & 1
 /* 24,3171  (CHANG2 resume) */
 static enum exec_status r51171(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8695,7 +9259,7 @@ static enum exec_status r51171(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3173 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 17) & 1
+#if (CM_P40_P47_KEEP5 >> 29) & 1
 /* 24,3173  (CHANG2 resume) */
 static enum exec_status r51173(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8706,7 +9270,7 @@ static enum exec_status r51173(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3174 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 18) & 1
+#if (CM_P40_P47_KEEP5 >> 30) & 1
 /* 24,3174  (CHANG2 resume) */
 static enum exec_status r51174(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8718,7 +9282,7 @@ static enum exec_status r51174(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3176 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 19) & 1
+#if (CM_P40_P47_KEEP5 >> 31) & 1
 /* 24,3176  (CHANG2 resume) */
 static enum exec_status r51176(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8730,7 +9294,7 @@ static enum exec_status r51176(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3200 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 20) & 1
+#if (CM_P40_P47_KEEP5 >> 32) & 1
 /* 24,3200  (CHANG2 resume) */
 static enum exec_status r51200(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8742,7 +9306,7 @@ static enum exec_status r51200(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3202 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 21) & 1
+#if (CM_P40_P47_KEEP5 >> 33) & 1
 /* 24,3202  (CHANG2 resume) */
 static enum exec_status r51202(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8753,7 +9317,7 @@ static enum exec_status r51202(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3203 */
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 22) & 1
+#if (CM_P40_P47_KEEP5 >> 34) & 1
 /* 24,3203  (CHANG2 resume) */
 static enum exec_status r51203(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8763,14 +9327,14 @@ static enum exec_status r51203(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,051133,002514);cmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 23) & 1
+#if (CM_P40_P47_KEEP5 >> 35) & 1
 /* 24,3205 STEERING (2CADR STEERING) */
 static enum exec_status r51205_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21125u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 24) & 1
+#if (CM_P40_P47_KEEP5 >> 36) & 1
 /* 24,3206  (after TC INTPRET) */
 static enum exec_status r51206(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8782,7 +9346,7 @@ static enum exec_status r51206(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 25) & 1
+#if (CM_P40_P47_KEEP5 >> 37) & 1
 /* 24,3210  (CALL return) */
 static enum exec_status r51210(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8792,84 +9356,84 @@ static enum exec_status r51210(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 26) & 1
+#if (CM_P40_P47_KEEP5 >> 38) & 1
 /* 24,3211  (after EXIT) */
 static enum exec_status r51211_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21129u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 27) & 1
+#if (CM_P40_P47_KEEP5 >> 39) & 1
 /* 24,3235  (return from DPAGREE) */
 static enum exec_status r51235_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21149u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 28) & 1
+#if (CM_P40_P47_KEEP5 >> 40) & 1
 /* 24,3252  (return from WAITLIST) */
 static enum exec_status r51252_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21162u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 29) & 1
+#if (CM_P40_P47_KEEP5 >> 41) & 1
 /* 24,3255  (return from 2PHSCHNG) */
 static enum exec_status r51255_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21165u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 30) & 1
+#if (CM_P40_P47_KEEP5 >> 42) & 1
 /* 24,3257  (return from DOWNFLAG) */
 static enum exec_status r51257_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21167u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 31) & 1
+#if (CM_P40_P47_KEEP5 >> 43) & 1
 /* 24,3260 CLOKTASK (entry CLOKTASK (RESTART_TABLES.agc -2CADR CLOKTASK)) */
 static enum exec_status r51260_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21168u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 32) & 1
+#if (CM_P40_P47_KEEP5 >> 44) & 1
 /* 24,3266  (return from PHASCHNG) */
 static enum exec_status r51266_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21174u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 33) & 1
+#if (CM_P40_P47_KEEP5 >> 45) & 1
 /* 24,3301  (return from WAITLIST) */
 static enum exec_status r51301_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21185u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 34) & 1
+#if (CM_P40_P47_KEEP5 >> 46) & 1
 /* 24,3315 SETTB6 (return from NOVAC) */
 static enum exec_status r51315_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21197u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 35) & 1
+#if (CM_P40_P47_KEEP5 >> 47) & 1
 /* 24,3324  (return from FINDVAC) */
 static enum exec_status r51324_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21204u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 36) & 1
+#if (CM_P40_P47_KEEP5 >> 48) & 1
 /* 24,3325 DYNDISP (2CADR DYNDISP) */
 static enum exec_status r51325_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21205u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 37) & 1
+#if (CM_P40_P47_KEEP5 >> 49) & 1
 /* 24,3326  (after TC INTPRET) */
 static enum exec_status r51326(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8881,7 +9445,7 @@ static enum exec_status r51326(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 38) & 1
+#if (CM_P40_P47_KEEP5 >> 50) & 1
 /* 24,3330  (CALL return) */
 static enum exec_status r51330(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -8891,238 +9455,308 @@ static enum exec_status r51330(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 39) & 1
+#if (CM_P40_P47_KEEP5 >> 51) & 1
 /* 24,3331  (after EXIT) */
 static enum exec_status r51331_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21209u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 40) & 1
+#if (CM_P40_P47_KEEP5 >> 52) & 1
 /* 24,3332 CLOCKJOB (2CADR CLOCKJOB) */
 static enum exec_status r51332_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21210u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 41) & 1
+#if (CM_P40_P47_KEEP5 >> 53) & 1
 /* 24,3342 CKNVWRD1 (return from BANKCALL) */
 static enum exec_status r51342_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21218u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 42) & 1
+#if (CM_P40_P47_KEEP5 >> 54) & 1
 /* 24,3352  (return from BANKCALL) */
 static enum exec_status r51352_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21226u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 43) & 1
+#if (CM_P40_P47_KEEP5 >> 55) & 1
+/* 24,3353  (resumed from outside) */
+static enum exec_status r51353_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21227u);
+}
+#endif
+#if (CM_P40_P47_KEEP5 >> 56) & 1
+/* 24,3354  (resumed from outside) */
+static enum exec_status r51354_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21228u);
+}
+#endif
+#if (CM_P40_P47_KEEP5 >> 57) & 1
 /* 24,3360  (return from BANKCALL) */
 static enum exec_status r51360_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21232u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 44) & 1
+#if (CM_P40_P47_KEEP5 >> 58) & 1
+/* 24,3361  (resumed from outside) */
+static enum exec_status r51361_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21233u);
+}
+#endif
+#if (CM_P40_P47_KEEP5 >> 59) & 1
+/* 24,3362  (resumed from outside) */
+static enum exec_status r51362_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21234u);
+}
+#endif
+#if (CM_P40_P47_KEEP6 >> 0) & 1
 /* 24,3366 E7SETTER (return from BANKCALL) */
 static enum exec_status r51366_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21238u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 45) & 1
+#if (CM_P40_P47_KEEP6 >> 1) & 1
+/* 24,3400 V99EJOB (return from 2PHSCHNG) */
+static enum exec_status r51400_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21248u);
+}
+#endif
+#if (CM_P40_P47_KEEP6 >> 2) & 1
 /* 24,3402 V99T (2CADR V99T) */
 static enum exec_status r51402_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21250u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 46) & 1
+#if (CM_P40_P47_KEEP6 >> 3) & 1
 /* 24,3406 V99TJOB (return from 2PHSCHNG) */
 static enum exec_status r51406_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21254u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 47) & 1
+#if (CM_P40_P47_KEEP6 >> 4) & 1
+/* 24,3427 V99P/TIG (return from WAITLIST) */
+static enum exec_status r51427_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21271u);
+}
+#endif
+#if (CM_P40_P47_KEEP6 >> 5) & 1
 /* 24,3435  (return from 2PHSCHNG) */
 static enum exec_status r51435_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21277u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 48) & 1
+#if (CM_P40_P47_KEEP6 >> 6) & 1
 /* 24,3440  (return from TWIDDLE) */
 static enum exec_status r51440_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21280u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 49) & 1
+#if (CM_P40_P47_KEEP6 >> 7) & 1
 /* 24,3441 V97TTASK (entry V97TTASK (RESTART_TABLES.agc -2CADR V97TTASK)) */
 static enum exec_status r51441_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21281u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 50) & 1
+#if (CM_P40_P47_KEEP6 >> 8) & 1
 /* 24,3451  (return from PHASCHNG) */
 static enum exec_status r51451_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21289u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 51) & 1
+#if (CM_P40_P47_KEEP6 >> 9) & 1
 /* 24,3454  (return from PHASCHNG) */
 static enum exec_status r51454_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21292u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 52) & 1
+#if (CM_P40_P47_KEEP6 >> 10) & 1
 /* 24,3456 V97TRCS (entry V97TRCS (RESTART_TABLES.agc -2CADR V97TRCS)) */
 static enum exec_status r51456_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21294u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 53) & 1
+#if (CM_P40_P47_KEEP6 >> 11) & 1
 /* 24,3460  (return from IBNKCALL) */
 static enum exec_status r51460_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21296u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 54) & 1
+#if (CM_P40_P47_KEEP6 >> 12) & 1
 /* 24,3464 ENDV97T (return from NOVAC) */
 static enum exec_status r51464_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21300u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 55) & 1
+#if (CM_P40_P47_KEEP6 >> 13) & 1
+/* 24,3467  (return from PHASCHNG) */
+static enum exec_status r51467_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21303u);
+}
+#endif
+#if (CM_P40_P47_KEEP6 >> 14) & 1
+/* 24,3472  (return from TWIDDLE) */
+static enum exec_status r51472_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21306u);
+}
+#endif
+#if (CM_P40_P47_KEEP6 >> 15) & 1
 /* 24,3473 V97PTASK (entry V97PTASK (RESTART_TABLES.agc -2CADR V97PTASK)) */
 static enum exec_status r51473_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21307u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 56) & 1
+#if (CM_P40_P47_KEEP6 >> 16) & 1
 /* 24,3501  (return from UPFLAG) */
 static enum exec_status r51501_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21313u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 57) & 1
+#if (CM_P40_P47_KEEP6 >> 17) & 1
 /* 24,3503  (return from UPFLAG) */
 static enum exec_status r51503_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21315u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 58) & 1
+#if (CM_P40_P47_KEEP6 >> 18) & 1
 /* 24,3505  (return from PHASCHNG) */
 static enum exec_status r51505_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21317u);
 }
 #endif
-#if (CM_P40_P47_KEEP5 >> 59) & 1
+#if (CM_P40_P47_KEEP6 >> 19) & 1
 /* 24,3507 R40ENABL (entry R40ENABL (RESTART_TABLES.agc -2CADR R40ENABL)) */
 static enum exec_status r51507_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21319u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 0) & 1
+#if (CM_P40_P47_KEEP6 >> 20) & 1
 /* 24,3511  (return from DOWNFLAG) */
 static enum exec_status r51511_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21321u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 1) & 1
+#if (CM_P40_P47_KEEP6 >> 21) & 1
 /* 24,3513 ENDV97P (return from PHASCHNG) */
 static enum exec_status r51513_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21323u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 2) & 1
+#if (CM_P40_P47_KEEP6 >> 22) & 1
+/* 24,3516  (return from PHASCHNG) */
+static enum exec_status r51516_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21326u);
+}
+#endif
+#if (CM_P40_P47_KEEP6 >> 23) & 1
+/* 24,3522  (return from WAITLIST) */
+static enum exec_status r51522_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
+ return basic_run_24(s,(cm_native_io *)v,21330u);
+}
+#endif
+#if (CM_P40_P47_KEEP6 >> 24) & 1
 /* 24,3523 V97ETASK (entry V97ETASK (RESTART_TABLES.agc -2CADR V97ETASK)) */
 static enum exec_status r51523_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21331u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 3) & 1
+#if (CM_P40_P47_KEEP6 >> 25) & 1
 /* 24,3535 SPSOFF97 (entry SPSOFF97 (RESTART_TABLES.agc -2CADR SPSOFF97)) */
 static enum exec_status r51535_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21341u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 4) & 1
+#if (CM_P40_P47_KEEP6 >> 26) & 1
 /* 24,3540  (return from PHASCHNG) */
 static enum exec_status r51540_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21344u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 5) & 1
+#if (CM_P40_P47_KEEP6 >> 27) & 1
 /* 24,3542 V97E40.6 (entry V97E40.6 (RESTART_TABLES.agc -2CADR V97E40.6)) */
 static enum exec_status r51542_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21346u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 6) & 1
+#if (CM_P40_P47_KEEP6 >> 28) & 1
 /* 24,3546  (return from WAITLIST) */
 static enum exec_status r51546_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21350u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 7) & 1
+#if (CM_P40_P47_KEEP6 >> 29) & 1
 /* 24,3550  (return from IBNKCALL) */
 static enum exec_status r51550_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21352u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 8) & 1
+#if (CM_P40_P47_KEEP6 >> 30) & 1
 /* 24,3554 QUICKIGN (return from 2PHSCHNG) */
 static enum exec_status r51554_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21356u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 9) & 1
+#if (CM_P40_P47_KEEP6 >> 31) & 1
 /* 24,3562 V99FLASH (return from FIXDELAY) */
 static enum exec_status r51562_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21362u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 10) & 1
+#if (CM_P40_P47_KEEP6 >> 32) & 1
 /* 24,3567  (return from 2PHSCHNG) */
 static enum exec_status r51567_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21367u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 11) & 1
+#if (CM_P40_P47_KEEP6 >> 33) & 1
 /* 24,3573 ENDV97E (return from FINDVAC) */
 static enum exec_status r51573_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,050000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_24(s,(cm_native_io *)v,21371u);
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 12) & 1
+#if (CM_P40_P47_KEEP6 >> 34) & 1
 /* 24,3574 S40.2,3 (CALL target) */
 static enum exec_status r51574(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9136,7 +9770,7 @@ static enum exec_status r51574(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3577 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 13) & 1
+#if (CM_P40_P47_KEEP6 >> 35) & 1
 /* 24,3577  (CHANG2 resume) */
 static enum exec_status r51577(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9150,7 +9784,7 @@ static enum exec_status r51577(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3601 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 14) & 1
+#if (CM_P40_P47_KEEP6 >> 36) & 1
 /* 24,3601  (CHANG2 resume) */
 static enum exec_status r51601(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9161,7 +9795,7 @@ static enum exec_status r51601(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3602 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 15) & 1
+#if (CM_P40_P47_KEEP6 >> 37) & 1
 /* 24,3602  (CHANG2 resume) */
 static enum exec_status r51602(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9177,7 +9811,7 @@ static enum exec_status r51602(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3606 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 16) & 1
+#if (CM_P40_P47_KEEP6 >> 38) & 1
 /* 24,3606  (CHANG2 resume) */
 static enum exec_status r51606(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9189,7 +9823,7 @@ static enum exec_status r51606(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3610 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 17) & 1
+#if (CM_P40_P47_KEEP6 >> 39) & 1
 /* 24,3610  (CHANG2 resume) */
 static enum exec_status r51610(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9203,7 +9837,7 @@ static enum exec_status r51610(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3612 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 18) & 1
+#if (CM_P40_P47_KEEP6 >> 40) & 1
 /* 24,3612  (CHANG2 resume) */
 static enum exec_status r51612(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9217,7 +9851,7 @@ static enum exec_status r51612(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3614 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 19) & 1
+#if (CM_P40_P47_KEEP6 >> 41) & 1
 /* 24,3614  (CHANG2 resume) */
 static enum exec_status r51614(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9231,7 +9865,7 @@ static enum exec_status r51614(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3616 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 20) & 1
+#if (CM_P40_P47_KEEP6 >> 42) & 1
 /* 24,3616  (CHANG2 resume) */
 static enum exec_status r51616(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9245,7 +9879,7 @@ static enum exec_status r51616(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3617 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 21) & 1
+#if (CM_P40_P47_KEEP6 >> 43) & 1
 /* 24,3617  (CHANG2 resume) */
 static enum exec_status r51617(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9259,7 +9893,7 @@ static enum exec_status r51617(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3620 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 22) & 1
+#if (CM_P40_P47_KEEP6 >> 44) & 1
 /* 24,3620  (CHANG2 resume) */
 static enum exec_status r51620(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9271,7 +9905,7 @@ static enum exec_status r51620(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3622 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 23) & 1
+#if (CM_P40_P47_KEEP6 >> 45) & 1
 /* 24,3622  (CHANG2 resume) */
 static enum exec_status r51622(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9285,7 +9919,7 @@ static enum exec_status r51622(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3624 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 24) & 1
+#if (CM_P40_P47_KEEP6 >> 46) & 1
 /* 24,3624  (CHANG2 resume) */
 static enum exec_status r51624(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9299,7 +9933,7 @@ static enum exec_status r51624(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3626 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 25) & 1
+#if (CM_P40_P47_KEEP6 >> 47) & 1
 /* 24,3626  (CHANG2 resume) */
 static enum exec_status r51626(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9313,7 +9947,7 @@ static enum exec_status r51626(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3627 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 26) & 1
+#if (CM_P40_P47_KEEP6 >> 48) & 1
 /* 24,3627  (CHANG2 resume) */
 static enum exec_status r51627(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9327,7 +9961,7 @@ static enum exec_status r51627(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3630 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 27) & 1
+#if (CM_P40_P47_KEEP6 >> 49) & 1
 /* 24,3630  (CHANG2 resume) */
 static enum exec_status r51630(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9339,7 +9973,7 @@ static enum exec_status r51630(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3632 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 28) & 1
+#if (CM_P40_P47_KEEP6 >> 50) & 1
 /* 24,3632  (CHANG2 resume) */
 static enum exec_status r51632(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9353,7 +9987,7 @@ static enum exec_status r51632(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3634 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 29) & 1
+#if (CM_P40_P47_KEEP6 >> 51) & 1
 /* 24,3634  (CHANG2 resume) */
 static enum exec_status r51634(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9367,7 +10001,7 @@ static enum exec_status r51634(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3636 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 30) & 1
+#if (CM_P40_P47_KEEP6 >> 52) & 1
 /* 24,3636  (CHANG2 resume) */
 static enum exec_status r51636(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9381,7 +10015,7 @@ static enum exec_status r51636(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3640 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 31) & 1
+#if (CM_P40_P47_KEEP6 >> 53) & 1
 /* 24,3640  (CHANG2 resume) */
 static enum exec_status r51640(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9393,7 +10027,7 @@ static enum exec_status r51640(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3641 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 32) & 1
+#if (CM_P40_P47_KEEP6 >> 54) & 1
 /* 24,3641  (CHANG2 resume) */
 static enum exec_status r51641(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9405,7 +10039,7 @@ static enum exec_status r51641(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3643 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 33) & 1
+#if (CM_P40_P47_KEEP6 >> 55) & 1
 /* 24,3643  (CHANG2 resume) */
 static enum exec_status r51643(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9419,7 +10053,7 @@ static enum exec_status r51643(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3645 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 34) & 1
+#if (CM_P40_P47_KEEP6 >> 56) & 1
 /* 24,3645  (CHANG2 resume) */
 static enum exec_status r51645(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9433,7 +10067,7 @@ static enum exec_status r51645(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3650 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 35) & 1
+#if (CM_P40_P47_KEEP6 >> 57) & 1
 /* 24,3650  (CHANG2 resume) */
 static enum exec_status r51650(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9447,7 +10081,7 @@ static enum exec_status r51650(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3651 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 36) & 1
+#if (CM_P40_P47_KEEP6 >> 58) & 1
 /* 24,3651  (CHANG2 resume) */
 static enum exec_status r51651(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9459,7 +10093,7 @@ static enum exec_status r51651(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3652 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 37) & 1
+#if (CM_P40_P47_KEEP6 >> 59) & 1
 /* 24,3652  (CHANG2 resume) */
 static enum exec_status r51652(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9471,7 +10105,7 @@ static enum exec_status r51652(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3653 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 38) & 1
+#if (CM_P40_P47_KEEP7 >> 0) & 1
 /* 24,3653  (CHANG2 resume) */
 static enum exec_status r51653(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9483,7 +10117,7 @@ static enum exec_status r51653(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3654 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 39) & 1
+#if (CM_P40_P47_KEEP7 >> 1) & 1
 /* 24,3654  (CHANG2 resume) */
 static enum exec_status r51654(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9495,7 +10129,7 @@ static enum exec_status r51654(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3656 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 40) & 1
+#if (CM_P40_P47_KEEP7 >> 2) & 1
 /* 24,3656  (CHANG2 resume) */
 static enum exec_status r51656(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9509,7 +10143,7 @@ static enum exec_status r51656(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3661 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 41) & 1
+#if (CM_P40_P47_KEEP7 >> 3) & 1
 /* 24,3661  (CHANG2 resume) */
 static enum exec_status r51661(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9521,7 +10155,7 @@ static enum exec_status r51661(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3662 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 42) & 1
+#if (CM_P40_P47_KEEP7 >> 4) & 1
 /* 24,3662  (CHANG2 resume) */
 static enum exec_status r51662(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9533,7 +10167,7 @@ static enum exec_status r51662(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3664 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 43) & 1
+#if (CM_P40_P47_KEEP7 >> 5) & 1
 /* 24,3664  (CHANG2 resume) */
 static enum exec_status r51664(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9547,7 +10181,7 @@ static enum exec_status r51664(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3666 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 44) & 1
+#if (CM_P40_P47_KEEP7 >> 6) & 1
 /* 24,3666  (CHANG2 resume) */
 static enum exec_status r51666(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9561,7 +10195,7 @@ static enum exec_status r51666(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3670 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 45) & 1
+#if (CM_P40_P47_KEEP7 >> 7) & 1
 /* 24,3670  (CHANG2 resume) */
 static enum exec_status r51670(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9575,7 +10209,7 @@ static enum exec_status r51670(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3671 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 46) & 1
+#if (CM_P40_P47_KEEP7 >> 8) & 1
 /* 24,3671  (CHANG2 resume) */
 static enum exec_status r51671(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9587,7 +10221,7 @@ static enum exec_status r51671(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 47) & 1
+#if (CM_P40_P47_KEEP7 >> 9) & 1
 /* 24,3673  (CALL return) */
 static enum exec_status r51673(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9601,7 +10235,7 @@ static enum exec_status r51673(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3675 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 48) & 1
+#if (CM_P40_P47_KEEP7 >> 10) & 1
 /* 24,3675  (CHANG2 resume) */
 static enum exec_status r51675(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9615,7 +10249,7 @@ static enum exec_status r51675(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3677 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 49) & 1
+#if (CM_P40_P47_KEEP7 >> 11) & 1
 /* 24,3677  (CHANG2 resume) */
 static enum exec_status r51677(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9629,7 +10263,7 @@ static enum exec_status r51677(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3701 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 50) & 1
+#if (CM_P40_P47_KEEP7 >> 12) & 1
 /* 24,3701  (CHANG2 resume) */
 static enum exec_status r51701(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9641,7 +10275,7 @@ static enum exec_status r51701(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3703 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 51) & 1
+#if (CM_P40_P47_KEEP7 >> 13) & 1
 /* 24,3703  (CHANG2 resume) */
 static enum exec_status r51703(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9655,7 +10289,7 @@ static enum exec_status r51703(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3705 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 52) & 1
+#if (CM_P40_P47_KEEP7 >> 14) & 1
 /* 24,3705  (CHANG2 resume) */
 static enum exec_status r51705(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9667,7 +10301,7 @@ static enum exec_status r51705(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3707 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 53) & 1
+#if (CM_P40_P47_KEEP7 >> 15) & 1
 /* 24,3707  (CHANG2 resume) */
 static enum exec_status r51707(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9681,7 +10315,7 @@ static enum exec_status r51707(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3711 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 54) & 1
+#if (CM_P40_P47_KEEP7 >> 16) & 1
 /* 24,3711  (CHANG2 resume) */
 static enum exec_status r51711(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9692,7 +10326,7 @@ static enum exec_status r51711(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3712 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 55) & 1
+#if (CM_P40_P47_KEEP7 >> 17) & 1
 /* 24,3712  (CHANG2 resume) */
 static enum exec_status r51712(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9704,7 +10338,7 @@ static enum exec_status r51712(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,003657,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 56) & 1
+#if (CM_P40_P47_KEEP7 >> 18) & 1
 /* 24,3715 S40.2,3B (switch branch target) */
 static enum exec_status r51715(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9716,7 +10350,7 @@ static enum exec_status r51715(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3717 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 57) & 1
+#if (CM_P40_P47_KEEP7 >> 19) & 1
 /* 24,3717  (CHANG2 resume) */
 static enum exec_status r51717(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9728,7 +10362,7 @@ static enum exec_status r51717(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3721 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 58) & 1
+#if (CM_P40_P47_KEEP7 >> 20) & 1
 /* 24,3721  (CHANG2 resume) */
 static enum exec_status r51721(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9739,7 +10373,7 @@ static enum exec_status r51721(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3722 */
 }
 #endif
-#if (CM_P40_P47_KEEP6 >> 59) & 1
+#if (CM_P40_P47_KEEP7 >> 21) & 1
 /* 24,3722  (CHANG2 resume) */
 static enum exec_status r51722(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9753,7 +10387,7 @@ static enum exec_status r51722(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3724 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 0) & 1
+#if (CM_P40_P47_KEEP7 >> 22) & 1
 /* 24,3724  (CHANG2 resume) */
 static enum exec_status r51724(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9765,7 +10399,7 @@ static enum exec_status r51724(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 1) & 1
+#if (CM_P40_P47_KEEP7 >> 23) & 1
 /* 24,3726  (STCALL return) */
 static enum exec_status r51726(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9776,7 +10410,7 @@ static enum exec_status r51726(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3727 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 2) & 1
+#if (CM_P40_P47_KEEP7 >> 24) & 1
 /* 24,3727  (CHANG2 resume) */
 static enum exec_status r51727(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9790,7 +10424,7 @@ static enum exec_status r51727(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3731 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 3) & 1
+#if (CM_P40_P47_KEEP7 >> 25) & 1
 /* 24,3731  (CHANG2 resume) */
 static enum exec_status r51731(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9802,7 +10436,7 @@ static enum exec_status r51731(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3732 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 4) & 1
+#if (CM_P40_P47_KEEP7 >> 26) & 1
 /* 24,3732  (CHANG2 resume) */
 static enum exec_status r51732(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9814,7 +10448,7 @@ static enum exec_status r51732(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 5) & 1
+#if (CM_P40_P47_KEEP7 >> 27) & 1
 /* 24,3734 TSTRXUT (CALL target) */
 static enum exec_status r51734(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9832,7 +10466,7 @@ static enum exec_status r51734(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3737 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 6) & 1
+#if (CM_P40_P47_KEEP7 >> 28) & 1
 /* 24,3737  (CHANG2 resume) */
 static enum exec_status r51737(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9844,7 +10478,7 @@ static enum exec_status r51737(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 7) & 1
+#if (CM_P40_P47_KEEP7 >> 29) & 1
 /* 24,3741 BADVCTOR (BHIZ target) */
 static enum exec_status r51741(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9858,7 +10492,7 @@ static enum exec_status r51741(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3743 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 8) & 1
+#if (CM_P40_P47_KEEP7 >> 30) & 1
 /* 24,3743  (CHANG2 resume) */
 static enum exec_status r51743(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9872,7 +10506,7 @@ static enum exec_status r51743(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3745 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 9) & 1
+#if (CM_P40_P47_KEEP7 >> 31) & 1
 /* 24,3745  (CHANG2 resume) */
 static enum exec_status r51745(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9886,7 +10520,7 @@ static enum exec_status r51745(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3746 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 10) & 1
+#if (CM_P40_P47_KEEP7 >> 32) & 1
 /* 24,3746  (CHANG2 resume) */
 static enum exec_status r51746(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9900,7 +10534,7 @@ static enum exec_status r51746(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3750 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 11) & 1
+#if (CM_P40_P47_KEEP7 >> 33) & 1
 /* 24,3750  (CHANG2 resume) */
 static enum exec_status r51750(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9912,7 +10546,7 @@ static enum exec_status r51750(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3751 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 12) & 1
+#if (CM_P40_P47_KEEP7 >> 34) & 1
 /* 24,3751  (CHANG2 resume) */
 static enum exec_status r51751(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9923,7 +10557,7 @@ static enum exec_status r51751(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 24,3752 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 13) & 1
+#if (CM_P40_P47_KEEP7 >> 35) & 1
 /* 24,3752  (CHANG2 resume) */
 static enum exec_status r51752(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,050000u))return EXEC_OUT_OF_SCOPE;
@@ -9933,21 +10567,21 @@ static enum exec_status r51752(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 14) & 1
+#if (CM_P40_P47_KEEP7 >> 36) & 1
 /* 27,2614 P41CSM (entry P41CSM (FRESH_START_AND_RESTART.agc FCADR P41CSM)) */
 static enum exec_status r56614_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,056000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_27(s,(cm_native_io *)v,23948u);
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 15) & 1
+#if (CM_P40_P47_KEEP7 >> 37) & 1
 /* 27,2616  (return from UPFLAG) */
 static enum exec_status r56616_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,056000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_27(s,(cm_native_io *)v,23950u);
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 16) & 1
+#if (CM_P40_P47_KEEP7 >> 38) & 1
 /* 27,2617  (after TC INTPRET) */
 static enum exec_status r56617(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,056000u))return EXEC_OUT_OF_SCOPE;
@@ -9959,7 +10593,7 @@ static enum exec_status r56617(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 27,2621 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 17) & 1
+#if (CM_P40_P47_KEEP7 >> 39) & 1
 /* 27,2621  (CHANG2 resume) */
 static enum exec_status r56621(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,056000u))return EXEC_OUT_OF_SCOPE;
@@ -9970,7 +10604,7 @@ static enum exec_status r56621(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 27,2622 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 18) & 1
+#if (CM_P40_P47_KEEP7 >> 40) & 1
 /* 27,2622  (CHANG2 resume) */
 static enum exec_status r56622(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,056000u))return EXEC_OUT_OF_SCOPE;
@@ -9986,7 +10620,7 @@ static enum exec_status r56622(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 27,2626 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 19) & 1
+#if (CM_P40_P47_KEEP7 >> 41) & 1
 /* 27,2626  (CHANG2 resume) */
 static enum exec_status r56626(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,056000u))return EXEC_OUT_OF_SCOPE;
@@ -9998,7 +10632,7 @@ static enum exec_status r56626(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,050106,002514);cmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 20) & 1
+#if (CM_P40_P47_KEEP7 >> 42) & 1
 /* 30,3651 AGAIN (entry AGAIN (P30,P37.agc  AGAIN)) */
 static enum exec_status r61651(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10012,7 +10646,7 @@ static enum exec_status r61651(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 21) & 1
+#if (CM_P40_P47_KEEP7 >> 43) & 1
 /* 30,3654  (CALL return) */
 static enum exec_status r61654(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10026,7 +10660,7 @@ static enum exec_status r61654(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3657 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 22) & 1
+#if (CM_P40_P47_KEEP7 >> 44) & 1
 /* 30,3657  (CHANG2 resume) */
 static enum exec_status r61657(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10038,7 +10672,7 @@ static enum exec_status r61657(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3661 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 23) & 1
+#if (CM_P40_P47_KEEP7 >> 45) & 1
 /* 30,3661  (CHANG2 resume) */
 static enum exec_status r61661(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10049,7 +10683,7 @@ static enum exec_status r61661(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3662 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 24) & 1
+#if (CM_P40_P47_KEEP7 >> 46) & 1
 /* 30,3662  (CHANG2 resume) */
 static enum exec_status r61662(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10061,7 +10695,7 @@ static enum exec_status r61662(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3664 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 25) & 1
+#if (CM_P40_P47_KEEP7 >> 47) & 1
 /* 30,3664  (CHANG2 resume) */
 static enum exec_status r61664(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10072,7 +10706,7 @@ static enum exec_status r61664(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3665 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 26) & 1
+#if (CM_P40_P47_KEEP7 >> 48) & 1
 /* 30,3665  (CHANG2 resume) */
 static enum exec_status r61665(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10083,7 +10717,7 @@ static enum exec_status r61665(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3666 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 27) & 1
+#if (CM_P40_P47_KEEP7 >> 49) & 1
 /* 30,3666  (CHANG2 resume) */
 static enum exec_status r61666(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10097,7 +10731,7 @@ static enum exec_status r61666(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3671 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 28) & 1
+#if (CM_P40_P47_KEEP7 >> 50) & 1
 /* 30,3671  (CHANG2 resume) */
 static enum exec_status r61671(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10113,7 +10747,7 @@ static enum exec_status r61671(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3675 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 29) & 1
+#if (CM_P40_P47_KEEP7 >> 51) & 1
 /* 30,3675  (CHANG2 resume) */
 static enum exec_status r61675(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10125,7 +10759,7 @@ static enum exec_status r61675(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3677 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 30) & 1
+#if (CM_P40_P47_KEEP7 >> 52) & 1
 /* 30,3677  (switch branch target) */
 static enum exec_status r61677(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10139,7 +10773,7 @@ static enum exec_status r61677(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 31) & 1
+#if (CM_P40_P47_KEEP7 >> 53) & 1
 /* 30,3701  (CALL return) */
 static enum exec_status r61701(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10151,7 +10785,7 @@ static enum exec_status r61701(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,003730,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 32) & 1
+#if (CM_P40_P47_KEEP7 >> 54) & 1
 /* 30,3704 CALCUT (GOTO target) */
 static enum exec_status r61704(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10165,7 +10799,7 @@ static enum exec_status r61704(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 33) & 1
+#if (CM_P40_P47_KEEP7 >> 55) & 1
 /* 30,3707  (CALL return) */
 static enum exec_status r61707(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10179,7 +10813,7 @@ static enum exec_status r61707(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3711 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 34) & 1
+#if (CM_P40_P47_KEEP7 >> 56) & 1
 /* 30,3711  (CHANG2 resume) */
 static enum exec_status r61711(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10193,7 +10827,7 @@ static enum exec_status r61711(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3714 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 35) & 1
+#if (CM_P40_P47_KEEP7 >> 57) & 1
 /* 30,3714  (CHANG2 resume) */
 static enum exec_status r61714(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10207,7 +10841,7 @@ static enum exec_status r61714(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3716 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 36) & 1
+#if (CM_P40_P47_KEEP7 >> 58) & 1
 /* 30,3716  (CHANG2 resume) */
 static enum exec_status r61716(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10221,7 +10855,7 @@ static enum exec_status r61716(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3720 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 37) & 1
+#if (CM_P40_P47_KEEP7 >> 59) & 1
 /* 30,3720  (CHANG2 resume) */
 static enum exec_status r61720(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10233,7 +10867,7 @@ static enum exec_status r61720(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3722 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 38) & 1
+#if (CM_P40_P47_KEEP8 >> 0) & 1
 /* 30,3722  (CHANG2 resume) */
 static enum exec_status r61722(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10247,7 +10881,7 @@ static enum exec_status r61722(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3723 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 39) & 1
+#if (CM_P40_P47_KEEP8 >> 1) & 1
 /* 30,3723  (CHANG2 resume) */
 static enum exec_status r61723(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10261,7 +10895,7 @@ static enum exec_status r61723(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3726 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 40) & 1
+#if (CM_P40_P47_KEEP8 >> 2) & 1
 /* 30,3726  (CHANG2 resume) */
 static enum exec_status r61726(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10275,7 +10909,7 @@ static enum exec_status r61726(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3730 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 41) & 1
+#if (CM_P40_P47_KEEP8 >> 3) & 1
 /* 30,3730  (CHANG2 resume) */
 static enum exec_status r61730(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10287,7 +10921,7 @@ static enum exec_status r61730(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3732 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 42) & 1
+#if (CM_P40_P47_KEEP8 >> 4) & 1
 /* 30,3732  (CHANG2 resume) */
 static enum exec_status r61732(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10301,7 +10935,7 @@ static enum exec_status r61732(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3735 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 43) & 1
+#if (CM_P40_P47_KEEP8 >> 5) & 1
 /* 30,3735  (CHANG2 resume) */
 static enum exec_status r61735(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10315,7 +10949,7 @@ static enum exec_status r61735(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3737 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 44) & 1
+#if (CM_P40_P47_KEEP8 >> 6) & 1
 /* 30,3737  (CHANG2 resume) */
 static enum exec_status r61737(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10327,7 +10961,7 @@ static enum exec_status r61737(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3740 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 45) & 1
+#if (CM_P40_P47_KEEP8 >> 7) & 1
 /* 30,3740  (CHANG2 resume) */
 static enum exec_status r61740(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10341,7 +10975,7 @@ static enum exec_status r61740(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3741 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 46) & 1
+#if (CM_P40_P47_KEEP8 >> 8) & 1
 /* 30,3741  (CHANG2 resume) */
 static enum exec_status r61741(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10355,7 +10989,7 @@ static enum exec_status r61741(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3742 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 47) & 1
+#if (CM_P40_P47_KEEP8 >> 9) & 1
 /* 30,3742  (CHANG2 resume) */
 static enum exec_status r61742(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10369,7 +11003,7 @@ static enum exec_status r61742(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 30,3744 */
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 48) & 1
+#if (CM_P40_P47_KEEP8 >> 10) & 1
 /* 30,3744  (CHANG2 resume) */
 static enum exec_status r61744(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,060000u))return EXEC_OUT_OF_SCOPE;
@@ -10381,35 +11015,35 @@ static enum exec_status r61744(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 49) & 1
+#if (CM_P40_P47_KEEP8 >> 11) & 1
 /* 42,3606 DAPFIG (entry DAPFIG (EXTENDED_VERBS.agc CADR DAPFIG)) */
 static enum exec_status r105606_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_42(s,(cm_native_io *)v,35718u);
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 50) & 1
+#if (CM_P40_P47_KEEP8 >> 12) & 1
 /* 42,3627  (return from IBNKCALL) */
 static enum exec_status r105627_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_42(s,(cm_native_io *)v,35735u);
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 51) & 1
+#if (CM_P40_P47_KEEP8 >> 13) & 1
 /* 42,3636  (return from DOWNFLAG) */
 static enum exec_status r105636_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_42(s,(cm_native_io *)v,35742u);
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 52) & 1
+#if (CM_P40_P47_KEEP8 >> 14) & 1
 /* 42,3640  (return from DOWNFLAG) */
 static enum exec_status r105640_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run_42(s,(cm_native_io *)v,35744u);
 }
 #endif
-#if (CM_P40_P47_KEEP7 >> 53) & 1
+#if (CM_P40_P47_KEEP8 >> 15) & 1
 /* 42,3643  (return from IBNKCALL) */
 static enum exec_status r105643_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
@@ -10906,442 +11540,442 @@ WRAP(r50144)
 #if (CM_P40_P47_KEEP3 >> 19) & 1
 WRAP(r50145)
 #endif
-#if (CM_P40_P47_KEEP3 >> 24) & 1
+#if (CM_P40_P47_KEEP3 >> 29) & 1
 WRAP(r50206)
 #endif
-#if (CM_P40_P47_KEEP3 >> 25) & 1
+#if (CM_P40_P47_KEEP3 >> 30) & 1
 WRAP(r50211)
 #endif
-#if (CM_P40_P47_KEEP3 >> 26) & 1
+#if (CM_P40_P47_KEEP3 >> 31) & 1
 WRAP(r50212)
 #endif
-#if (CM_P40_P47_KEEP3 >> 42) & 1
+#if (CM_P40_P47_KEEP3 >> 54) & 1
 WRAP(r50346)
 #endif
-#if (CM_P40_P47_KEEP3 >> 43) & 1
+#if (CM_P40_P47_KEEP3 >> 55) & 1
 WRAP(r50350)
 #endif
-#if (CM_P40_P47_KEEP3 >> 47) & 1
+#if (CM_P40_P47_KEEP3 >> 59) & 1
 WRAP(r50370)
 #endif
-#if (CM_P40_P47_KEEP3 >> 48) & 1
+#if (CM_P40_P47_KEEP4 >> 0) & 1
 WRAP(r50373)
 #endif
-#if (CM_P40_P47_KEEP3 >> 49) & 1
+#if (CM_P40_P47_KEEP4 >> 1) & 1
 WRAP(r50375)
 #endif
-#if (CM_P40_P47_KEEP3 >> 50) & 1
+#if (CM_P40_P47_KEEP4 >> 2) & 1
 WRAP(r50377)
 #endif
-#if (CM_P40_P47_KEEP3 >> 52) & 1
+#if (CM_P40_P47_KEEP4 >> 4) & 1
 WRAP(r50402)
 #endif
-#if (CM_P40_P47_KEEP3 >> 53) & 1
+#if (CM_P40_P47_KEEP4 >> 5) & 1
 WRAP(r50404)
 #endif
-#if (CM_P40_P47_KEEP3 >> 54) & 1
+#if (CM_P40_P47_KEEP4 >> 6) & 1
 WRAP(r50406)
 #endif
-#if (CM_P40_P47_KEEP4 >> 2) & 1
+#if (CM_P40_P47_KEEP4 >> 14) & 1
 WRAP(r50466)
 #endif
-#if (CM_P40_P47_KEEP4 >> 9) & 1
+#if (CM_P40_P47_KEEP4 >> 21) & 1
 WRAP(r50512)
 #endif
-#if (CM_P40_P47_KEEP4 >> 10) & 1
+#if (CM_P40_P47_KEEP4 >> 22) & 1
 WRAP(r50514)
 #endif
-#if (CM_P40_P47_KEEP4 >> 11) & 1
+#if (CM_P40_P47_KEEP4 >> 23) & 1
 WRAP(r50517)
 #endif
-#if (CM_P40_P47_KEEP4 >> 12) & 1
+#if (CM_P40_P47_KEEP4 >> 24) & 1
 WRAP(r50520)
 #endif
-#if (CM_P40_P47_KEEP4 >> 13) & 1
+#if (CM_P40_P47_KEEP4 >> 25) & 1
 WRAP(r50522)
 #endif
-#if (CM_P40_P47_KEEP4 >> 14) & 1
+#if (CM_P40_P47_KEEP4 >> 26) & 1
 WRAP(r50524)
 #endif
-#if (CM_P40_P47_KEEP4 >> 19) & 1
+#if (CM_P40_P47_KEEP4 >> 31) & 1
 WRAP(r50535)
 #endif
-#if (CM_P40_P47_KEEP4 >> 20) & 1
+#if (CM_P40_P47_KEEP4 >> 32) & 1
 WRAP(r50537)
 #endif
-#if (CM_P40_P47_KEEP4 >> 21) & 1
+#if (CM_P40_P47_KEEP4 >> 33) & 1
 WRAP(r50540)
 #endif
-#if (CM_P40_P47_KEEP4 >> 22) & 1
+#if (CM_P40_P47_KEEP4 >> 34) & 1
 WRAP(r50541)
 #endif
-#if (CM_P40_P47_KEEP4 >> 54) & 1
+#if (CM_P40_P47_KEEP5 >> 6) & 1
 WRAP(r51104)
 #endif
-#if (CM_P40_P47_KEEP4 >> 55) & 1
+#if (CM_P40_P47_KEEP5 >> 7) & 1
 WRAP(r51110)
 #endif
-#if (CM_P40_P47_KEEP4 >> 56) & 1
+#if (CM_P40_P47_KEEP5 >> 8) & 1
 WRAP(r51113)
 #endif
-#if (CM_P40_P47_KEEP4 >> 57) & 1
+#if (CM_P40_P47_KEEP5 >> 9) & 1
 WRAP(r51116)
 #endif
-#if (CM_P40_P47_KEEP4 >> 58) & 1
+#if (CM_P40_P47_KEEP5 >> 10) & 1
 WRAP(r51117)
 #endif
-#if (CM_P40_P47_KEEP5 >> 1) & 1
+#if (CM_P40_P47_KEEP5 >> 13) & 1
 WRAP(r51130)
 #endif
-#if (CM_P40_P47_KEEP5 >> 2) & 1
+#if (CM_P40_P47_KEEP5 >> 14) & 1
 WRAP(r51132)
 #endif
-#if (CM_P40_P47_KEEP5 >> 3) & 1
+#if (CM_P40_P47_KEEP5 >> 15) & 1
 WRAP(r51133)
 #endif
-#if (CM_P40_P47_KEEP5 >> 4) & 1
+#if (CM_P40_P47_KEEP5 >> 16) & 1
 WRAP(r51135)
 #endif
-#if (CM_P40_P47_KEEP5 >> 5) & 1
+#if (CM_P40_P47_KEEP5 >> 17) & 1
 WRAP(r51137)
 #endif
-#if (CM_P40_P47_KEEP5 >> 6) & 1
+#if (CM_P40_P47_KEEP5 >> 18) & 1
 WRAP(r51143)
 #endif
-#if (CM_P40_P47_KEEP5 >> 7) & 1
+#if (CM_P40_P47_KEEP5 >> 19) & 1
 WRAP(r51146)
 #endif
-#if (CM_P40_P47_KEEP5 >> 8) & 1
+#if (CM_P40_P47_KEEP5 >> 20) & 1
 WRAP(r51151)
 #endif
-#if (CM_P40_P47_KEEP5 >> 9) & 1
+#if (CM_P40_P47_KEEP5 >> 21) & 1
 WRAP(r51153)
 #endif
-#if (CM_P40_P47_KEEP5 >> 10) & 1
+#if (CM_P40_P47_KEEP5 >> 22) & 1
 WRAP(r51154)
 #endif
-#if (CM_P40_P47_KEEP5 >> 14) & 1
+#if (CM_P40_P47_KEEP5 >> 26) & 1
 WRAP(r51165)
 #endif
-#if (CM_P40_P47_KEEP5 >> 15) & 1
+#if (CM_P40_P47_KEEP5 >> 27) & 1
 WRAP(r51167)
 #endif
-#if (CM_P40_P47_KEEP5 >> 16) & 1
+#if (CM_P40_P47_KEEP5 >> 28) & 1
 WRAP(r51171)
 #endif
-#if (CM_P40_P47_KEEP5 >> 17) & 1
+#if (CM_P40_P47_KEEP5 >> 29) & 1
 WRAP(r51173)
 #endif
-#if (CM_P40_P47_KEEP5 >> 18) & 1
+#if (CM_P40_P47_KEEP5 >> 30) & 1
 WRAP(r51174)
 #endif
-#if (CM_P40_P47_KEEP5 >> 19) & 1
+#if (CM_P40_P47_KEEP5 >> 31) & 1
 WRAP(r51176)
 #endif
-#if (CM_P40_P47_KEEP5 >> 20) & 1
+#if (CM_P40_P47_KEEP5 >> 32) & 1
 WRAP(r51200)
 #endif
-#if (CM_P40_P47_KEEP5 >> 21) & 1
+#if (CM_P40_P47_KEEP5 >> 33) & 1
 WRAP(r51202)
 #endif
-#if (CM_P40_P47_KEEP5 >> 22) & 1
+#if (CM_P40_P47_KEEP5 >> 34) & 1
 WRAP(r51203)
 #endif
-#if (CM_P40_P47_KEEP5 >> 24) & 1
+#if (CM_P40_P47_KEEP5 >> 36) & 1
 WRAP(r51206)
 #endif
-#if (CM_P40_P47_KEEP5 >> 25) & 1
+#if (CM_P40_P47_KEEP5 >> 37) & 1
 WRAP(r51210)
 #endif
-#if (CM_P40_P47_KEEP5 >> 37) & 1
+#if (CM_P40_P47_KEEP5 >> 49) & 1
 WRAP(r51326)
 #endif
-#if (CM_P40_P47_KEEP5 >> 38) & 1
+#if (CM_P40_P47_KEEP5 >> 50) & 1
 WRAP(r51330)
 #endif
-#if (CM_P40_P47_KEEP6 >> 12) & 1
+#if (CM_P40_P47_KEEP6 >> 34) & 1
 WRAP(r51574)
 #endif
-#if (CM_P40_P47_KEEP6 >> 13) & 1
+#if (CM_P40_P47_KEEP6 >> 35) & 1
 WRAP(r51577)
 #endif
-#if (CM_P40_P47_KEEP6 >> 14) & 1
+#if (CM_P40_P47_KEEP6 >> 36) & 1
 WRAP(r51601)
 #endif
-#if (CM_P40_P47_KEEP6 >> 15) & 1
+#if (CM_P40_P47_KEEP6 >> 37) & 1
 WRAP(r51602)
 #endif
-#if (CM_P40_P47_KEEP6 >> 16) & 1
+#if (CM_P40_P47_KEEP6 >> 38) & 1
 WRAP(r51606)
 #endif
-#if (CM_P40_P47_KEEP6 >> 17) & 1
+#if (CM_P40_P47_KEEP6 >> 39) & 1
 WRAP(r51610)
 #endif
-#if (CM_P40_P47_KEEP6 >> 18) & 1
+#if (CM_P40_P47_KEEP6 >> 40) & 1
 WRAP(r51612)
 #endif
-#if (CM_P40_P47_KEEP6 >> 19) & 1
+#if (CM_P40_P47_KEEP6 >> 41) & 1
 WRAP(r51614)
 #endif
-#if (CM_P40_P47_KEEP6 >> 20) & 1
+#if (CM_P40_P47_KEEP6 >> 42) & 1
 WRAP(r51616)
 #endif
-#if (CM_P40_P47_KEEP6 >> 21) & 1
+#if (CM_P40_P47_KEEP6 >> 43) & 1
 WRAP(r51617)
 #endif
-#if (CM_P40_P47_KEEP6 >> 22) & 1
+#if (CM_P40_P47_KEEP6 >> 44) & 1
 WRAP(r51620)
 #endif
-#if (CM_P40_P47_KEEP6 >> 23) & 1
+#if (CM_P40_P47_KEEP6 >> 45) & 1
 WRAP(r51622)
 #endif
-#if (CM_P40_P47_KEEP6 >> 24) & 1
+#if (CM_P40_P47_KEEP6 >> 46) & 1
 WRAP(r51624)
 #endif
-#if (CM_P40_P47_KEEP6 >> 25) & 1
+#if (CM_P40_P47_KEEP6 >> 47) & 1
 WRAP(r51626)
 #endif
-#if (CM_P40_P47_KEEP6 >> 26) & 1
+#if (CM_P40_P47_KEEP6 >> 48) & 1
 WRAP(r51627)
 #endif
-#if (CM_P40_P47_KEEP6 >> 27) & 1
+#if (CM_P40_P47_KEEP6 >> 49) & 1
 WRAP(r51630)
 #endif
-#if (CM_P40_P47_KEEP6 >> 28) & 1
+#if (CM_P40_P47_KEEP6 >> 50) & 1
 WRAP(r51632)
 #endif
-#if (CM_P40_P47_KEEP6 >> 29) & 1
+#if (CM_P40_P47_KEEP6 >> 51) & 1
 WRAP(r51634)
 #endif
-#if (CM_P40_P47_KEEP6 >> 30) & 1
+#if (CM_P40_P47_KEEP6 >> 52) & 1
 WRAP(r51636)
 #endif
-#if (CM_P40_P47_KEEP6 >> 31) & 1
+#if (CM_P40_P47_KEEP6 >> 53) & 1
 WRAP(r51640)
 #endif
-#if (CM_P40_P47_KEEP6 >> 32) & 1
+#if (CM_P40_P47_KEEP6 >> 54) & 1
 WRAP(r51641)
 #endif
-#if (CM_P40_P47_KEEP6 >> 33) & 1
+#if (CM_P40_P47_KEEP6 >> 55) & 1
 WRAP(r51643)
 #endif
-#if (CM_P40_P47_KEEP6 >> 34) & 1
+#if (CM_P40_P47_KEEP6 >> 56) & 1
 WRAP(r51645)
 #endif
-#if (CM_P40_P47_KEEP6 >> 35) & 1
+#if (CM_P40_P47_KEEP6 >> 57) & 1
 WRAP(r51650)
 #endif
-#if (CM_P40_P47_KEEP6 >> 36) & 1
+#if (CM_P40_P47_KEEP6 >> 58) & 1
 WRAP(r51651)
 #endif
-#if (CM_P40_P47_KEEP6 >> 37) & 1
+#if (CM_P40_P47_KEEP6 >> 59) & 1
 WRAP(r51652)
 #endif
-#if (CM_P40_P47_KEEP6 >> 38) & 1
+#if (CM_P40_P47_KEEP7 >> 0) & 1
 WRAP(r51653)
 #endif
-#if (CM_P40_P47_KEEP6 >> 39) & 1
+#if (CM_P40_P47_KEEP7 >> 1) & 1
 WRAP(r51654)
 #endif
-#if (CM_P40_P47_KEEP6 >> 40) & 1
+#if (CM_P40_P47_KEEP7 >> 2) & 1
 WRAP(r51656)
 #endif
-#if (CM_P40_P47_KEEP6 >> 41) & 1
+#if (CM_P40_P47_KEEP7 >> 3) & 1
 WRAP(r51661)
 #endif
-#if (CM_P40_P47_KEEP6 >> 42) & 1
+#if (CM_P40_P47_KEEP7 >> 4) & 1
 WRAP(r51662)
 #endif
-#if (CM_P40_P47_KEEP6 >> 43) & 1
+#if (CM_P40_P47_KEEP7 >> 5) & 1
 WRAP(r51664)
 #endif
-#if (CM_P40_P47_KEEP6 >> 44) & 1
+#if (CM_P40_P47_KEEP7 >> 6) & 1
 WRAP(r51666)
 #endif
-#if (CM_P40_P47_KEEP6 >> 45) & 1
+#if (CM_P40_P47_KEEP7 >> 7) & 1
 WRAP(r51670)
 #endif
-#if (CM_P40_P47_KEEP6 >> 46) & 1
+#if (CM_P40_P47_KEEP7 >> 8) & 1
 WRAP(r51671)
 #endif
-#if (CM_P40_P47_KEEP6 >> 47) & 1
+#if (CM_P40_P47_KEEP7 >> 9) & 1
 WRAP(r51673)
 #endif
-#if (CM_P40_P47_KEEP6 >> 48) & 1
+#if (CM_P40_P47_KEEP7 >> 10) & 1
 WRAP(r51675)
 #endif
-#if (CM_P40_P47_KEEP6 >> 49) & 1
+#if (CM_P40_P47_KEEP7 >> 11) & 1
 WRAP(r51677)
 #endif
-#if (CM_P40_P47_KEEP6 >> 50) & 1
+#if (CM_P40_P47_KEEP7 >> 12) & 1
 WRAP(r51701)
 #endif
-#if (CM_P40_P47_KEEP6 >> 51) & 1
+#if (CM_P40_P47_KEEP7 >> 13) & 1
 WRAP(r51703)
 #endif
-#if (CM_P40_P47_KEEP6 >> 52) & 1
+#if (CM_P40_P47_KEEP7 >> 14) & 1
 WRAP(r51705)
 #endif
-#if (CM_P40_P47_KEEP6 >> 53) & 1
+#if (CM_P40_P47_KEEP7 >> 15) & 1
 WRAP(r51707)
 #endif
-#if (CM_P40_P47_KEEP6 >> 54) & 1
+#if (CM_P40_P47_KEEP7 >> 16) & 1
 WRAP(r51711)
 #endif
-#if (CM_P40_P47_KEEP6 >> 55) & 1
+#if (CM_P40_P47_KEEP7 >> 17) & 1
 WRAP(r51712)
 #endif
-#if (CM_P40_P47_KEEP6 >> 56) & 1
+#if (CM_P40_P47_KEEP7 >> 18) & 1
 WRAP(r51715)
 #endif
-#if (CM_P40_P47_KEEP6 >> 57) & 1
+#if (CM_P40_P47_KEEP7 >> 19) & 1
 WRAP(r51717)
 #endif
-#if (CM_P40_P47_KEEP6 >> 58) & 1
+#if (CM_P40_P47_KEEP7 >> 20) & 1
 WRAP(r51721)
 #endif
-#if (CM_P40_P47_KEEP6 >> 59) & 1
+#if (CM_P40_P47_KEEP7 >> 21) & 1
 WRAP(r51722)
 #endif
-#if (CM_P40_P47_KEEP7 >> 0) & 1
+#if (CM_P40_P47_KEEP7 >> 22) & 1
 WRAP(r51724)
 #endif
-#if (CM_P40_P47_KEEP7 >> 1) & 1
+#if (CM_P40_P47_KEEP7 >> 23) & 1
 WRAP(r51726)
 #endif
-#if (CM_P40_P47_KEEP7 >> 2) & 1
+#if (CM_P40_P47_KEEP7 >> 24) & 1
 WRAP(r51727)
 #endif
-#if (CM_P40_P47_KEEP7 >> 3) & 1
+#if (CM_P40_P47_KEEP7 >> 25) & 1
 WRAP(r51731)
 #endif
-#if (CM_P40_P47_KEEP7 >> 4) & 1
+#if (CM_P40_P47_KEEP7 >> 26) & 1
 WRAP(r51732)
 #endif
-#if (CM_P40_P47_KEEP7 >> 5) & 1
+#if (CM_P40_P47_KEEP7 >> 27) & 1
 WRAP(r51734)
 #endif
-#if (CM_P40_P47_KEEP7 >> 6) & 1
+#if (CM_P40_P47_KEEP7 >> 28) & 1
 WRAP(r51737)
 #endif
-#if (CM_P40_P47_KEEP7 >> 7) & 1
+#if (CM_P40_P47_KEEP7 >> 29) & 1
 WRAP(r51741)
 #endif
-#if (CM_P40_P47_KEEP7 >> 8) & 1
+#if (CM_P40_P47_KEEP7 >> 30) & 1
 WRAP(r51743)
 #endif
-#if (CM_P40_P47_KEEP7 >> 9) & 1
+#if (CM_P40_P47_KEEP7 >> 31) & 1
 WRAP(r51745)
 #endif
-#if (CM_P40_P47_KEEP7 >> 10) & 1
+#if (CM_P40_P47_KEEP7 >> 32) & 1
 WRAP(r51746)
 #endif
-#if (CM_P40_P47_KEEP7 >> 11) & 1
+#if (CM_P40_P47_KEEP7 >> 33) & 1
 WRAP(r51750)
 #endif
-#if (CM_P40_P47_KEEP7 >> 12) & 1
+#if (CM_P40_P47_KEEP7 >> 34) & 1
 WRAP(r51751)
 #endif
-#if (CM_P40_P47_KEEP7 >> 13) & 1
+#if (CM_P40_P47_KEEP7 >> 35) & 1
 WRAP(r51752)
 #endif
-#if (CM_P40_P47_KEEP7 >> 16) & 1
+#if (CM_P40_P47_KEEP7 >> 38) & 1
 WRAP(r56617)
 #endif
-#if (CM_P40_P47_KEEP7 >> 17) & 1
+#if (CM_P40_P47_KEEP7 >> 39) & 1
 WRAP(r56621)
 #endif
-#if (CM_P40_P47_KEEP7 >> 18) & 1
+#if (CM_P40_P47_KEEP7 >> 40) & 1
 WRAP(r56622)
 #endif
-#if (CM_P40_P47_KEEP7 >> 19) & 1
+#if (CM_P40_P47_KEEP7 >> 41) & 1
 WRAP(r56626)
 #endif
-#if (CM_P40_P47_KEEP7 >> 20) & 1
+#if (CM_P40_P47_KEEP7 >> 42) & 1
 WRAP(r61651)
 #endif
-#if (CM_P40_P47_KEEP7 >> 21) & 1
+#if (CM_P40_P47_KEEP7 >> 43) & 1
 WRAP(r61654)
 #endif
-#if (CM_P40_P47_KEEP7 >> 22) & 1
+#if (CM_P40_P47_KEEP7 >> 44) & 1
 WRAP(r61657)
 #endif
-#if (CM_P40_P47_KEEP7 >> 23) & 1
+#if (CM_P40_P47_KEEP7 >> 45) & 1
 WRAP(r61661)
 #endif
-#if (CM_P40_P47_KEEP7 >> 24) & 1
+#if (CM_P40_P47_KEEP7 >> 46) & 1
 WRAP(r61662)
 #endif
-#if (CM_P40_P47_KEEP7 >> 25) & 1
+#if (CM_P40_P47_KEEP7 >> 47) & 1
 WRAP(r61664)
 #endif
-#if (CM_P40_P47_KEEP7 >> 26) & 1
+#if (CM_P40_P47_KEEP7 >> 48) & 1
 WRAP(r61665)
 #endif
-#if (CM_P40_P47_KEEP7 >> 27) & 1
+#if (CM_P40_P47_KEEP7 >> 49) & 1
 WRAP(r61666)
 #endif
-#if (CM_P40_P47_KEEP7 >> 28) & 1
+#if (CM_P40_P47_KEEP7 >> 50) & 1
 WRAP(r61671)
 #endif
-#if (CM_P40_P47_KEEP7 >> 29) & 1
+#if (CM_P40_P47_KEEP7 >> 51) & 1
 WRAP(r61675)
 #endif
-#if (CM_P40_P47_KEEP7 >> 30) & 1
+#if (CM_P40_P47_KEEP7 >> 52) & 1
 WRAP(r61677)
 #endif
-#if (CM_P40_P47_KEEP7 >> 31) & 1
+#if (CM_P40_P47_KEEP7 >> 53) & 1
 WRAP(r61701)
 #endif
-#if (CM_P40_P47_KEEP7 >> 32) & 1
+#if (CM_P40_P47_KEEP7 >> 54) & 1
 WRAP(r61704)
 #endif
-#if (CM_P40_P47_KEEP7 >> 33) & 1
+#if (CM_P40_P47_KEEP7 >> 55) & 1
 WRAP(r61707)
 #endif
-#if (CM_P40_P47_KEEP7 >> 34) & 1
+#if (CM_P40_P47_KEEP7 >> 56) & 1
 WRAP(r61711)
 #endif
-#if (CM_P40_P47_KEEP7 >> 35) & 1
+#if (CM_P40_P47_KEEP7 >> 57) & 1
 WRAP(r61714)
 #endif
-#if (CM_P40_P47_KEEP7 >> 36) & 1
+#if (CM_P40_P47_KEEP7 >> 58) & 1
 WRAP(r61716)
 #endif
-#if (CM_P40_P47_KEEP7 >> 37) & 1
+#if (CM_P40_P47_KEEP7 >> 59) & 1
 WRAP(r61720)
 #endif
-#if (CM_P40_P47_KEEP7 >> 38) & 1
+#if (CM_P40_P47_KEEP8 >> 0) & 1
 WRAP(r61722)
 #endif
-#if (CM_P40_P47_KEEP7 >> 39) & 1
+#if (CM_P40_P47_KEEP8 >> 1) & 1
 WRAP(r61723)
 #endif
-#if (CM_P40_P47_KEEP7 >> 40) & 1
+#if (CM_P40_P47_KEEP8 >> 2) & 1
 WRAP(r61726)
 #endif
-#if (CM_P40_P47_KEEP7 >> 41) & 1
+#if (CM_P40_P47_KEEP8 >> 3) & 1
 WRAP(r61730)
 #endif
-#if (CM_P40_P47_KEEP7 >> 42) & 1
+#if (CM_P40_P47_KEEP8 >> 4) & 1
 WRAP(r61732)
 #endif
-#if (CM_P40_P47_KEEP7 >> 43) & 1
+#if (CM_P40_P47_KEEP8 >> 5) & 1
 WRAP(r61735)
 #endif
-#if (CM_P40_P47_KEEP7 >> 44) & 1
+#if (CM_P40_P47_KEEP8 >> 6) & 1
 WRAP(r61737)
 #endif
-#if (CM_P40_P47_KEEP7 >> 45) & 1
+#if (CM_P40_P47_KEEP8 >> 7) & 1
 WRAP(r61740)
 #endif
-#if (CM_P40_P47_KEEP7 >> 46) & 1
+#if (CM_P40_P47_KEEP8 >> 8) & 1
 WRAP(r61741)
 #endif
-#if (CM_P40_P47_KEEP7 >> 47) & 1
+#if (CM_P40_P47_KEEP8 >> 9) & 1
 WRAP(r61742)
 #endif
-#if (CM_P40_P47_KEEP7 >> 48) & 1
+#if (CM_P40_P47_KEEP8 >> 10) & 1
 WRAP(r61744)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
@@ -11826,442 +12460,442 @@ static const agc_routine_entry interpretive_entries[]={
 #if (CM_P40_P47_KEEP3 >> 19) & 1
  {20581,r50145_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 24) & 1
+#if (CM_P40_P47_KEEP3 >> 29) & 1
  {20614,r50206_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 25) & 1
+#if (CM_P40_P47_KEEP3 >> 30) & 1
  {20617,r50211_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 26) & 1
+#if (CM_P40_P47_KEEP3 >> 31) & 1
  {20618,r50212_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 42) & 1
+#if (CM_P40_P47_KEEP3 >> 54) & 1
  {20710,r50346_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 43) & 1
+#if (CM_P40_P47_KEEP3 >> 55) & 1
  {20712,r50350_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 47) & 1
+#if (CM_P40_P47_KEEP3 >> 59) & 1
  {20728,r50370_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 48) & 1
+#if (CM_P40_P47_KEEP4 >> 0) & 1
  {20731,r50373_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 49) & 1
+#if (CM_P40_P47_KEEP4 >> 1) & 1
  {20733,r50375_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 50) & 1
+#if (CM_P40_P47_KEEP4 >> 2) & 1
  {20735,r50377_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 52) & 1
+#if (CM_P40_P47_KEEP4 >> 4) & 1
  {20738,r50402_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 53) & 1
+#if (CM_P40_P47_KEEP4 >> 5) & 1
  {20740,r50404_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 54) & 1
+#if (CM_P40_P47_KEEP4 >> 6) & 1
  {20742,r50406_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 2) & 1
+#if (CM_P40_P47_KEEP4 >> 14) & 1
  {20790,r50466_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 9) & 1
+#if (CM_P40_P47_KEEP4 >> 21) & 1
  {20810,r50512_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 10) & 1
+#if (CM_P40_P47_KEEP4 >> 22) & 1
  {20812,r50514_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 11) & 1
+#if (CM_P40_P47_KEEP4 >> 23) & 1
  {20815,r50517_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 12) & 1
+#if (CM_P40_P47_KEEP4 >> 24) & 1
  {20816,r50520_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 13) & 1
+#if (CM_P40_P47_KEEP4 >> 25) & 1
  {20818,r50522_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 14) & 1
+#if (CM_P40_P47_KEEP4 >> 26) & 1
  {20820,r50524_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 19) & 1
+#if (CM_P40_P47_KEEP4 >> 31) & 1
  {20829,r50535_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 20) & 1
+#if (CM_P40_P47_KEEP4 >> 32) & 1
  {20831,r50537_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 21) & 1
+#if (CM_P40_P47_KEEP4 >> 33) & 1
  {20832,r50540_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 22) & 1
+#if (CM_P40_P47_KEEP4 >> 34) & 1
  {20833,r50541_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 54) & 1
+#if (CM_P40_P47_KEEP5 >> 6) & 1
  {21060,r51104_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 55) & 1
+#if (CM_P40_P47_KEEP5 >> 7) & 1
  {21064,r51110_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 56) & 1
+#if (CM_P40_P47_KEEP5 >> 8) & 1
  {21067,r51113_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 57) & 1
+#if (CM_P40_P47_KEEP5 >> 9) & 1
  {21070,r51116_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 58) & 1
+#if (CM_P40_P47_KEEP5 >> 10) & 1
  {21071,r51117_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 1) & 1
+#if (CM_P40_P47_KEEP5 >> 13) & 1
  {21080,r51130_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 2) & 1
+#if (CM_P40_P47_KEEP5 >> 14) & 1
  {21082,r51132_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 3) & 1
+#if (CM_P40_P47_KEEP5 >> 15) & 1
  {21083,r51133_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 4) & 1
+#if (CM_P40_P47_KEEP5 >> 16) & 1
  {21085,r51135_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 5) & 1
+#if (CM_P40_P47_KEEP5 >> 17) & 1
  {21087,r51137_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 6) & 1
+#if (CM_P40_P47_KEEP5 >> 18) & 1
  {21091,r51143_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 7) & 1
+#if (CM_P40_P47_KEEP5 >> 19) & 1
  {21094,r51146_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 8) & 1
+#if (CM_P40_P47_KEEP5 >> 20) & 1
  {21097,r51151_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 9) & 1
+#if (CM_P40_P47_KEEP5 >> 21) & 1
  {21099,r51153_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 10) & 1
+#if (CM_P40_P47_KEEP5 >> 22) & 1
  {21100,r51154_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 14) & 1
+#if (CM_P40_P47_KEEP5 >> 26) & 1
  {21109,r51165_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 15) & 1
+#if (CM_P40_P47_KEEP5 >> 27) & 1
  {21111,r51167_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 16) & 1
+#if (CM_P40_P47_KEEP5 >> 28) & 1
  {21113,r51171_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 17) & 1
+#if (CM_P40_P47_KEEP5 >> 29) & 1
  {21115,r51173_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 18) & 1
+#if (CM_P40_P47_KEEP5 >> 30) & 1
  {21116,r51174_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 19) & 1
+#if (CM_P40_P47_KEEP5 >> 31) & 1
  {21118,r51176_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 20) & 1
+#if (CM_P40_P47_KEEP5 >> 32) & 1
  {21120,r51200_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 21) & 1
+#if (CM_P40_P47_KEEP5 >> 33) & 1
  {21122,r51202_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 22) & 1
+#if (CM_P40_P47_KEEP5 >> 34) & 1
  {21123,r51203_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 24) & 1
+#if (CM_P40_P47_KEEP5 >> 36) & 1
  {21126,r51206_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 25) & 1
+#if (CM_P40_P47_KEEP5 >> 37) & 1
  {21128,r51210_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 37) & 1
+#if (CM_P40_P47_KEEP5 >> 49) & 1
  {21206,r51326_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 38) & 1
+#if (CM_P40_P47_KEEP5 >> 50) & 1
  {21208,r51330_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 12) & 1
+#if (CM_P40_P47_KEEP6 >> 34) & 1
  {21372,r51574_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 13) & 1
+#if (CM_P40_P47_KEEP6 >> 35) & 1
  {21375,r51577_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 14) & 1
+#if (CM_P40_P47_KEEP6 >> 36) & 1
  {21377,r51601_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 15) & 1
+#if (CM_P40_P47_KEEP6 >> 37) & 1
  {21378,r51602_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 16) & 1
+#if (CM_P40_P47_KEEP6 >> 38) & 1
  {21382,r51606_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 17) & 1
+#if (CM_P40_P47_KEEP6 >> 39) & 1
  {21384,r51610_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 18) & 1
+#if (CM_P40_P47_KEEP6 >> 40) & 1
  {21386,r51612_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 19) & 1
+#if (CM_P40_P47_KEEP6 >> 41) & 1
  {21388,r51614_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 20) & 1
+#if (CM_P40_P47_KEEP6 >> 42) & 1
  {21390,r51616_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 21) & 1
+#if (CM_P40_P47_KEEP6 >> 43) & 1
  {21391,r51617_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 22) & 1
+#if (CM_P40_P47_KEEP6 >> 44) & 1
  {21392,r51620_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 23) & 1
+#if (CM_P40_P47_KEEP6 >> 45) & 1
  {21394,r51622_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 24) & 1
+#if (CM_P40_P47_KEEP6 >> 46) & 1
  {21396,r51624_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 25) & 1
+#if (CM_P40_P47_KEEP6 >> 47) & 1
  {21398,r51626_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 26) & 1
+#if (CM_P40_P47_KEEP6 >> 48) & 1
  {21399,r51627_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 27) & 1
+#if (CM_P40_P47_KEEP6 >> 49) & 1
  {21400,r51630_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 28) & 1
+#if (CM_P40_P47_KEEP6 >> 50) & 1
  {21402,r51632_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 29) & 1
+#if (CM_P40_P47_KEEP6 >> 51) & 1
  {21404,r51634_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 30) & 1
+#if (CM_P40_P47_KEEP6 >> 52) & 1
  {21406,r51636_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 31) & 1
+#if (CM_P40_P47_KEEP6 >> 53) & 1
  {21408,r51640_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 32) & 1
+#if (CM_P40_P47_KEEP6 >> 54) & 1
  {21409,r51641_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 33) & 1
+#if (CM_P40_P47_KEEP6 >> 55) & 1
  {21411,r51643_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 34) & 1
+#if (CM_P40_P47_KEEP6 >> 56) & 1
  {21413,r51645_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 35) & 1
+#if (CM_P40_P47_KEEP6 >> 57) & 1
  {21416,r51650_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 36) & 1
+#if (CM_P40_P47_KEEP6 >> 58) & 1
  {21417,r51651_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 37) & 1
+#if (CM_P40_P47_KEEP6 >> 59) & 1
  {21418,r51652_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 38) & 1
+#if (CM_P40_P47_KEEP7 >> 0) & 1
  {21419,r51653_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 39) & 1
+#if (CM_P40_P47_KEEP7 >> 1) & 1
  {21420,r51654_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 40) & 1
+#if (CM_P40_P47_KEEP7 >> 2) & 1
  {21422,r51656_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 41) & 1
+#if (CM_P40_P47_KEEP7 >> 3) & 1
  {21425,r51661_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 42) & 1
+#if (CM_P40_P47_KEEP7 >> 4) & 1
  {21426,r51662_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 43) & 1
+#if (CM_P40_P47_KEEP7 >> 5) & 1
  {21428,r51664_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 44) & 1
+#if (CM_P40_P47_KEEP7 >> 6) & 1
  {21430,r51666_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 45) & 1
+#if (CM_P40_P47_KEEP7 >> 7) & 1
  {21432,r51670_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 46) & 1
+#if (CM_P40_P47_KEEP7 >> 8) & 1
  {21433,r51671_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 47) & 1
+#if (CM_P40_P47_KEEP7 >> 9) & 1
  {21435,r51673_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 48) & 1
+#if (CM_P40_P47_KEEP7 >> 10) & 1
  {21437,r51675_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 49) & 1
+#if (CM_P40_P47_KEEP7 >> 11) & 1
  {21439,r51677_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 50) & 1
+#if (CM_P40_P47_KEEP7 >> 12) & 1
  {21441,r51701_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 51) & 1
+#if (CM_P40_P47_KEEP7 >> 13) & 1
  {21443,r51703_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 52) & 1
+#if (CM_P40_P47_KEEP7 >> 14) & 1
  {21445,r51705_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 53) & 1
+#if (CM_P40_P47_KEEP7 >> 15) & 1
  {21447,r51707_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 54) & 1
+#if (CM_P40_P47_KEEP7 >> 16) & 1
  {21449,r51711_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 55) & 1
+#if (CM_P40_P47_KEEP7 >> 17) & 1
  {21450,r51712_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 56) & 1
+#if (CM_P40_P47_KEEP7 >> 18) & 1
  {21453,r51715_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 57) & 1
+#if (CM_P40_P47_KEEP7 >> 19) & 1
  {21455,r51717_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 58) & 1
+#if (CM_P40_P47_KEEP7 >> 20) & 1
  {21457,r51721_abi},
 #endif
-#if (CM_P40_P47_KEEP6 >> 59) & 1
+#if (CM_P40_P47_KEEP7 >> 21) & 1
  {21458,r51722_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 0) & 1
+#if (CM_P40_P47_KEEP7 >> 22) & 1
  {21460,r51724_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 1) & 1
+#if (CM_P40_P47_KEEP7 >> 23) & 1
  {21462,r51726_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 2) & 1
+#if (CM_P40_P47_KEEP7 >> 24) & 1
  {21463,r51727_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 3) & 1
+#if (CM_P40_P47_KEEP7 >> 25) & 1
  {21465,r51731_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 4) & 1
+#if (CM_P40_P47_KEEP7 >> 26) & 1
  {21466,r51732_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 5) & 1
+#if (CM_P40_P47_KEEP7 >> 27) & 1
  {21468,r51734_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 6) & 1
+#if (CM_P40_P47_KEEP7 >> 28) & 1
  {21471,r51737_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 7) & 1
+#if (CM_P40_P47_KEEP7 >> 29) & 1
  {21473,r51741_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 8) & 1
+#if (CM_P40_P47_KEEP7 >> 30) & 1
  {21475,r51743_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 9) & 1
+#if (CM_P40_P47_KEEP7 >> 31) & 1
  {21477,r51745_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 10) & 1
+#if (CM_P40_P47_KEEP7 >> 32) & 1
  {21478,r51746_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 11) & 1
+#if (CM_P40_P47_KEEP7 >> 33) & 1
  {21480,r51750_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 12) & 1
+#if (CM_P40_P47_KEEP7 >> 34) & 1
  {21481,r51751_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 13) & 1
+#if (CM_P40_P47_KEEP7 >> 35) & 1
  {21482,r51752_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 16) & 1
+#if (CM_P40_P47_KEEP7 >> 38) & 1
  {23951,r56617_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 17) & 1
+#if (CM_P40_P47_KEEP7 >> 39) & 1
  {23953,r56621_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 18) & 1
+#if (CM_P40_P47_KEEP7 >> 40) & 1
  {23954,r56622_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 19) & 1
+#if (CM_P40_P47_KEEP7 >> 41) & 1
  {23958,r56626_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 20) & 1
+#if (CM_P40_P47_KEEP7 >> 42) & 1
  {25513,r61651_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 21) & 1
+#if (CM_P40_P47_KEEP7 >> 43) & 1
  {25516,r61654_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 22) & 1
+#if (CM_P40_P47_KEEP7 >> 44) & 1
  {25519,r61657_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 23) & 1
+#if (CM_P40_P47_KEEP7 >> 45) & 1
  {25521,r61661_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 24) & 1
+#if (CM_P40_P47_KEEP7 >> 46) & 1
  {25522,r61662_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 25) & 1
+#if (CM_P40_P47_KEEP7 >> 47) & 1
  {25524,r61664_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 26) & 1
+#if (CM_P40_P47_KEEP7 >> 48) & 1
  {25525,r61665_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 27) & 1
+#if (CM_P40_P47_KEEP7 >> 49) & 1
  {25526,r61666_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 28) & 1
+#if (CM_P40_P47_KEEP7 >> 50) & 1
  {25529,r61671_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 29) & 1
+#if (CM_P40_P47_KEEP7 >> 51) & 1
  {25533,r61675_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 30) & 1
+#if (CM_P40_P47_KEEP7 >> 52) & 1
  {25535,r61677_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 31) & 1
+#if (CM_P40_P47_KEEP7 >> 53) & 1
  {25537,r61701_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 32) & 1
+#if (CM_P40_P47_KEEP7 >> 54) & 1
  {25540,r61704_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 33) & 1
+#if (CM_P40_P47_KEEP7 >> 55) & 1
  {25543,r61707_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 34) & 1
+#if (CM_P40_P47_KEEP7 >> 56) & 1
  {25545,r61711_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 35) & 1
+#if (CM_P40_P47_KEEP7 >> 57) & 1
  {25548,r61714_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 36) & 1
+#if (CM_P40_P47_KEEP7 >> 58) & 1
  {25550,r61716_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 37) & 1
+#if (CM_P40_P47_KEEP7 >> 59) & 1
  {25552,r61720_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 38) & 1
+#if (CM_P40_P47_KEEP8 >> 0) & 1
  {25554,r61722_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 39) & 1
+#if (CM_P40_P47_KEEP8 >> 1) & 1
  {25555,r61723_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 40) & 1
+#if (CM_P40_P47_KEEP8 >> 2) & 1
  {25558,r61726_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 41) & 1
+#if (CM_P40_P47_KEEP8 >> 3) & 1
  {25560,r61730_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 42) & 1
+#if (CM_P40_P47_KEEP8 >> 4) & 1
  {25562,r61732_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 43) & 1
+#if (CM_P40_P47_KEEP8 >> 5) & 1
  {25565,r61735_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 44) & 1
+#if (CM_P40_P47_KEEP8 >> 6) & 1
  {25567,r61737_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 45) & 1
+#if (CM_P40_P47_KEEP8 >> 7) & 1
  {25568,r61740_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 46) & 1
+#if (CM_P40_P47_KEEP8 >> 8) & 1
  {25569,r61741_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 47) & 1
+#if (CM_P40_P47_KEEP8 >> 9) & 1
  {25570,r61742_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 48) & 1
+#if (CM_P40_P47_KEEP8 >> 10) & 1
  {25572,r61744_abi},
 #endif
  {0xffffu,0}
@@ -12395,381 +13029,447 @@ static const agc_routine_entry basic_entries[]={
  {20588,r50154_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 22) & 1
- {20611,r50203_abi},
+ {20589,r50155_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 23) & 1
- {20612,r50204_abi},
+ {20590,r50156_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 24) & 1
+ {20598,r50166_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 25) & 1
+ {20604,r50174_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 26) & 1
+ {20607,r50177_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 27) & 1
- {20620,r50214_abi},
+ {20611,r50203_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 28) & 1
- {20633,r50231_abi},
-#endif
-#if (CM_P40_P47_KEEP3 >> 29) & 1
- {20635,r50233_abi},
-#endif
-#if (CM_P40_P47_KEEP3 >> 30) & 1
- {20636,r50234_abi},
-#endif
-#if (CM_P40_P47_KEEP3 >> 31) & 1
- {20638,r50236_abi},
+ {20612,r50204_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 32) & 1
- {20646,r50246_abi},
+ {20620,r50214_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 33) & 1
- {20649,r50251_abi},
+ {20621,r50215_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 34) & 1
- {20660,r50264_abi},
+ {20633,r50231_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 35) & 1
- {20663,r50267_abi},
+ {20635,r50233_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 36) & 1
- {20666,r50272_abi},
+ {20636,r50234_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 37) & 1
- {20676,r50304_abi},
+ {20638,r50236_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 38) & 1
- {20688,r50320_abi},
+ {20646,r50246_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 39) & 1
- {20700,r50334_abi},
+ {20649,r50251_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 40) & 1
- {20704,r50340_abi},
+ {20650,r50252_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 41) & 1
- {20706,r50342_abi},
+ {20651,r50253_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 42) & 1
+ {20658,r50262_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 43) & 1
+ {20660,r50264_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 44) & 1
- {20713,r50351_abi},
+ {20663,r50267_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 45) & 1
- {20719,r50357_abi},
+ {20666,r50272_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 46) & 1
- {20726,r50366_abi},
+ {20667,r50273_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 47) & 1
+ {20668,r50274_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 48) & 1
+ {20676,r50304_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 49) & 1
+ {20687,r50317_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 50) & 1
+ {20688,r50320_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 51) & 1
- {20737,r50401_abi},
+ {20700,r50334_abi},
 #endif
-#if (CM_P40_P47_KEEP3 >> 55) & 1
- {20743,r50407_abi},
+#if (CM_P40_P47_KEEP3 >> 52) & 1
+ {20704,r50340_abi},
+#endif
+#if (CM_P40_P47_KEEP3 >> 53) & 1
+ {20706,r50342_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 56) & 1
- {20767,r50437_abi},
+ {20713,r50351_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 57) & 1
- {20771,r50443_abi},
+ {20719,r50357_abi},
 #endif
 #if (CM_P40_P47_KEEP3 >> 58) & 1
- {20777,r50451_abi},
-#endif
-#if (CM_P40_P47_KEEP3 >> 59) & 1
- {20780,r50454_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 0) & 1
- {20787,r50463_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 1) & 1
- {20789,r50465_abi},
+ {20726,r50366_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 3) & 1
- {20792,r50470_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 4) & 1
- {20797,r50475_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 5) & 1
- {20799,r50477_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 6) & 1
- {20800,r50500_abi},
+ {20737,r50401_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 7) & 1
- {20807,r50507_abi},
+ {20743,r50407_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 8) & 1
- {20809,r50511_abi},
+ {20767,r50437_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 9) & 1
+ {20771,r50443_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 10) & 1
+ {20777,r50451_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 11) & 1
+ {20780,r50454_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 12) & 1
+ {20787,r50463_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 13) & 1
+ {20789,r50465_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 15) & 1
- {20821,r50525_abi},
+ {20792,r50470_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 16) & 1
- {20823,r50527_abi},
+ {20797,r50475_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 17) & 1
- {20827,r50533_abi},
+ {20799,r50477_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 18) & 1
- {20828,r50534_abi},
+ {20800,r50500_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 23) & 1
- {20834,r50542_abi},
+#if (CM_P40_P47_KEEP4 >> 19) & 1
+ {20807,r50507_abi},
 #endif
-#if (CM_P40_P47_KEEP4 >> 24) & 1
- {20836,r50544_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 25) & 1
- {20839,r50547_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 26) & 1
- {20842,r50552_abi},
+#if (CM_P40_P47_KEEP4 >> 20) & 1
+ {20809,r50511_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 27) & 1
- {20843,r50553_abi},
+ {20821,r50525_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 28) & 1
- {20844,r50554_abi},
+ {20823,r50527_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 29) & 1
- {20845,r50555_abi},
+ {20827,r50533_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 30) & 1
- {20853,r50565_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 31) & 1
- {20856,r50570_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 32) & 1
- {20860,r50574_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 33) & 1
- {20864,r50600_abi},
-#endif
-#if (CM_P40_P47_KEEP4 >> 34) & 1
- {20869,r50605_abi},
+ {20828,r50534_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 35) & 1
- {20873,r50611_abi},
+ {20834,r50542_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 36) & 1
- {20874,r50612_abi},
+ {20836,r50544_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 37) & 1
- {20885,r50625_abi},
+ {20839,r50547_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 38) & 1
- {20912,r50660_abi},
+ {20842,r50552_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 39) & 1
- {20914,r50662_abi},
+ {20843,r50553_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 40) & 1
- {20932,r50704_abi},
+ {20844,r50554_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 41) & 1
- {20939,r50713_abi},
+ {20845,r50555_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 42) & 1
- {20971,r50753_abi},
+ {20853,r50565_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 43) & 1
- {20975,r50757_abi},
+ {20856,r50570_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 44) & 1
- {20982,r50766_abi},
+ {20860,r50574_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 45) & 1
- {20988,r50774_abi},
+ {20864,r50600_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 46) & 1
- {20992,r51000_abi},
+ {20869,r50605_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 47) & 1
- {20994,r51002_abi},
+ {20873,r50611_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 48) & 1
- {20997,r51005_abi},
+ {20874,r50612_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 49) & 1
- {20999,r51007_abi},
+ {20885,r50625_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 50) & 1
- {21002,r51012_abi},
+ {20912,r50660_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 51) & 1
- {21006,r51016_abi},
+ {20914,r50662_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 52) & 1
- {21007,r51017_abi},
+ {20932,r50704_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 53) & 1
- {21049,r51071_abi},
+ {20939,r50713_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 54) & 1
+ {20971,r50753_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 55) & 1
+ {20975,r50757_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 56) & 1
+ {20982,r50766_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 57) & 1
+ {20988,r50774_abi},
+#endif
+#if (CM_P40_P47_KEEP4 >> 58) & 1
+ {20992,r51000_abi},
 #endif
 #if (CM_P40_P47_KEEP4 >> 59) & 1
- {21072,r51120_abi},
+ {20994,r51002_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 0) & 1
- {21077,r51125_abi},
+ {20997,r51005_abi},
+#endif
+#if (CM_P40_P47_KEEP5 >> 1) & 1
+ {20999,r51007_abi},
+#endif
+#if (CM_P40_P47_KEEP5 >> 2) & 1
+ {21002,r51012_abi},
+#endif
+#if (CM_P40_P47_KEEP5 >> 3) & 1
+ {21006,r51016_abi},
+#endif
+#if (CM_P40_P47_KEEP5 >> 4) & 1
+ {21007,r51017_abi},
+#endif
+#if (CM_P40_P47_KEEP5 >> 5) & 1
+ {21049,r51071_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 11) & 1
- {21101,r51155_abi},
+ {21072,r51120_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 12) & 1
- {21105,r51161_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 13) & 1
- {21108,r51164_abi},
+ {21077,r51125_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 23) & 1
- {21125,r51205_abi},
+ {21101,r51155_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 26) & 1
- {21129,r51211_abi},
+#if (CM_P40_P47_KEEP5 >> 24) & 1
+ {21105,r51161_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 27) & 1
- {21149,r51235_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 28) & 1
- {21162,r51252_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 29) & 1
- {21165,r51255_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 30) & 1
- {21167,r51257_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 31) & 1
- {21168,r51260_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 32) & 1
- {21174,r51266_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 33) & 1
- {21185,r51301_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 34) & 1
- {21197,r51315_abi},
+#if (CM_P40_P47_KEEP5 >> 25) & 1
+ {21108,r51164_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 35) & 1
- {21204,r51324_abi},
+ {21125,r51205_abi},
 #endif
-#if (CM_P40_P47_KEEP5 >> 36) & 1
- {21205,r51325_abi},
+#if (CM_P40_P47_KEEP5 >> 38) & 1
+ {21129,r51211_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 39) & 1
- {21209,r51331_abi},
+ {21149,r51235_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 40) & 1
- {21210,r51332_abi},
+ {21162,r51252_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 41) & 1
- {21218,r51342_abi},
+ {21165,r51255_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 42) & 1
- {21226,r51352_abi},
+ {21167,r51257_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 43) & 1
- {21232,r51360_abi},
+ {21168,r51260_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 44) & 1
- {21238,r51366_abi},
+ {21174,r51266_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 45) & 1
- {21250,r51402_abi},
+ {21185,r51301_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 46) & 1
- {21254,r51406_abi},
+ {21197,r51315_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 47) & 1
- {21277,r51435_abi},
+ {21204,r51324_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 48) & 1
- {21280,r51440_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 49) & 1
- {21281,r51441_abi},
-#endif
-#if (CM_P40_P47_KEEP5 >> 50) & 1
- {21289,r51451_abi},
+ {21205,r51325_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 51) & 1
- {21292,r51454_abi},
+ {21209,r51331_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 52) & 1
- {21294,r51456_abi},
+ {21210,r51332_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 53) & 1
- {21296,r51460_abi},
+ {21218,r51342_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 54) & 1
- {21300,r51464_abi},
+ {21226,r51352_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 55) & 1
- {21307,r51473_abi},
+ {21227,r51353_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 56) & 1
- {21313,r51501_abi},
+ {21228,r51354_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 57) & 1
- {21315,r51503_abi},
+ {21232,r51360_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 58) & 1
- {21317,r51505_abi},
+ {21233,r51361_abi},
 #endif
 #if (CM_P40_P47_KEEP5 >> 59) & 1
- {21319,r51507_abi},
+ {21234,r51362_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 0) & 1
- {21321,r51511_abi},
+ {21238,r51366_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 1) & 1
- {21323,r51513_abi},
+ {21248,r51400_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 2) & 1
- {21331,r51523_abi},
+ {21250,r51402_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 3) & 1
- {21341,r51535_abi},
+ {21254,r51406_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 4) & 1
- {21344,r51540_abi},
+ {21271,r51427_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 5) & 1
- {21346,r51542_abi},
+ {21277,r51435_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 6) & 1
- {21350,r51546_abi},
+ {21280,r51440_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 7) & 1
- {21352,r51550_abi},
+ {21281,r51441_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 8) & 1
- {21356,r51554_abi},
+ {21289,r51451_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 9) & 1
- {21362,r51562_abi},
+ {21292,r51454_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 10) & 1
- {21367,r51567_abi},
+ {21294,r51456_abi},
 #endif
 #if (CM_P40_P47_KEEP6 >> 11) & 1
+ {21296,r51460_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 12) & 1
+ {21300,r51464_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 13) & 1
+ {21303,r51467_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 14) & 1
+ {21306,r51472_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 15) & 1
+ {21307,r51473_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 16) & 1
+ {21313,r51501_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 17) & 1
+ {21315,r51503_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 18) & 1
+ {21317,r51505_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 19) & 1
+ {21319,r51507_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 20) & 1
+ {21321,r51511_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 21) & 1
+ {21323,r51513_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 22) & 1
+ {21326,r51516_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 23) & 1
+ {21330,r51522_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 24) & 1
+ {21331,r51523_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 25) & 1
+ {21341,r51535_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 26) & 1
+ {21344,r51540_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 27) & 1
+ {21346,r51542_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 28) & 1
+ {21350,r51546_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 29) & 1
+ {21352,r51550_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 30) & 1
+ {21356,r51554_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 31) & 1
+ {21362,r51562_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 32) & 1
+ {21367,r51567_abi},
+#endif
+#if (CM_P40_P47_KEEP6 >> 33) & 1
  {21371,r51573_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 14) & 1
+#if (CM_P40_P47_KEEP7 >> 36) & 1
  {23948,r56614_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 15) & 1
+#if (CM_P40_P47_KEEP7 >> 37) & 1
  {23950,r56616_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 49) & 1
+#if (CM_P40_P47_KEEP8 >> 11) & 1
  {35718,r105606_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 50) & 1
+#if (CM_P40_P47_KEEP8 >> 12) & 1
  {35735,r105627_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 51) & 1
+#if (CM_P40_P47_KEEP8 >> 13) & 1
  {35742,r105636_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 52) & 1
+#if (CM_P40_P47_KEEP8 >> 14) & 1
  {35744,r105640_abi},
 #endif
-#if (CM_P40_P47_KEEP7 >> 53) & 1
+#if (CM_P40_P47_KEEP8 >> 15) & 1
  {35747,r105643_abi},
 #endif
  {0xffffu,0}
@@ -12978,22 +13678,34 @@ const cm_p40_p47_point cm_p40_p47_points[CM_P40_P47_POINTS]={
  {20581,1},
  {20582,0},
  {20588,0},
+ {20589,0},
+ {20590,0},
+ {20598,0},
+ {20604,0},
+ {20607,0},
  {20611,0},
  {20612,0},
  {20614,1},
  {20617,1},
  {20618,1},
  {20620,0},
+ {20621,0},
  {20633,0},
  {20635,0},
  {20636,0},
  {20638,0},
  {20646,0},
  {20649,0},
+ {20650,0},
+ {20651,0},
+ {20658,0},
  {20660,0},
  {20663,0},
  {20666,0},
+ {20667,0},
+ {20668,0},
  {20676,0},
+ {20687,0},
  {20688,0},
  {20700,0},
  {20704,0},
@@ -13119,10 +13831,16 @@ const cm_p40_p47_point cm_p40_p47_points[CM_P40_P47_POINTS]={
  {21210,0},
  {21218,0},
  {21226,0},
+ {21227,0},
+ {21228,0},
  {21232,0},
+ {21233,0},
+ {21234,0},
  {21238,0},
+ {21248,0},
  {21250,0},
  {21254,0},
+ {21271,0},
  {21277,0},
  {21280,0},
  {21281,0},
@@ -13131,6 +13849,8 @@ const cm_p40_p47_point cm_p40_p47_points[CM_P40_P47_POINTS]={
  {21294,0},
  {21296,0},
  {21300,0},
+ {21303,0},
+ {21306,0},
  {21307,0},
  {21313,0},
  {21315,0},
@@ -13138,6 +13858,8 @@ const cm_p40_p47_point cm_p40_p47_points[CM_P40_P47_POINTS]={
  {21319,0},
  {21321,0},
  {21323,0},
+ {21326,0},
+ {21330,0},
  {21331,0},
  {21341,0},
  {21344,0},
