@@ -1,0 +1,206 @@
+{
+ "milestone": "self-check-cm",
+ "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
+ "linked_sources": {
+  "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
+  "src/cm_interbank_routines.c": "8fe6a2afcd1ed84209f40d762c4ec05abf9ac1f5059b649cb4a08962843bba2d",
+  "src/cm_interbank_complete.c": "66c67957ac373fdb164ef68e25c64ec1d34d00c3d78504049fb9f97a11dff797",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/self_check_cases.c": "73d9db768c6b16eed4712a86a6661b67b7a4a335299918af488a5ec10a2088f9",
+  "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625"
+ },
+ "included_sources": {},
+ "compiler_flags": [
+  "-std=c99",
+  "-Iinclude",
+  "-Itests",
+  "-Isrc",
+  "-DSELF_CHECK_CM_ONLY"
+ ],
+ "host_cases": 4096,
+ "c64_rows": [
+  0,
+  10,
+  12,
+  21,
+  30,
+  32,
+  33,
+  64,
+  67,
+  128,
+  168,
+  192,
+  256,
+  320,
+  384,
+  448,
+  462,
+  512,
+  576,
+  640,
+  704,
+  768,
+  832,
+  872,
+  896,
+  960,
+  1024,
+  1088,
+  1152,
+  1216,
+  1280,
+  1344,
+  1353,
+  1402,
+  1408,
+  1472,
+  1482,
+  1536,
+  1600,
+  1664,
+  1728,
+  1792,
+  1856,
+  1920,
+  1984,
+  2048,
+  2112,
+  2176,
+  2240,
+  2304,
+  2368,
+  2432,
+  2496,
+  2560,
+  2624,
+  2688,
+  2752,
+  2816,
+  2880,
+  2944,
+  3008,
+  3072,
+  3102,
+  3136,
+  3200,
+  3264,
+  3328,
+  3392,
+  3456,
+  3520,
+  3584,
+  3648,
+  3712,
+  3776,
+  3840,
+  3904,
+  3968,
+  4032
+ ],
+ "c64_row_seed_stride": 64,
+ "host_branch_arcs": 426,
+ "c64_branch_arcs": 426,
+ "arcs_by_source_host_c64": {
+  "build/self-check-cm-cover/runner.c": [
+   2,
+   2
+  ],
+  "src/agc_hardware_divide.c": [
+   0,
+   0
+  ],
+  "src/agc_image_ops.c": [
+   81,
+   81
+  ],
+  "src/agc_multiword.c": [
+   0,
+   0
+  ],
+  "src/agc_transfer.c": [
+   34,
+   34
+  ],
+  "src/agc_word.c": [
+   0,
+   0
+  ],
+  "src/cm_interbank_complete.c": [
+   0,
+   0
+  ],
+  "src/cm_interbank_routines.c": [
+   0,
+   0
+  ],
+  "src/cm_self_check.c": [
+   0,
+   0
+  ],
+  "src/rope_image_host.c": [
+   15,
+   15
+  ],
+  "src/self_check_body.inc": [
+   190,
+   190
+  ],
+  "tests/self_check_cases.c": [
+   104,
+   104
+  ]
+ },
+ "host_branches_missing_on_c64": [],
+ "entry_slots": "case n enters entry slot n % 11",
+ "entry_slots_host_c64": [
+  [
+   373,
+   10
+  ],
+  [
+   373,
+   8
+  ],
+  [
+   373,
+   5
+  ],
+  [
+   373,
+   8
+  ],
+  [
+   372,
+   5
+  ],
+  [
+   372,
+   7
+  ],
+  [
+   372,
+   6
+  ],
+  [
+   372,
+   6
+  ],
+  [
+   372,
+   8
+  ],
+  [
+   372,
+   6
+  ],
+  [
+   372,
+   9
+  ]
+ ]
+}
