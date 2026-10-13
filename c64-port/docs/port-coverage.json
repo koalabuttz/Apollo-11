@@ -10518,7 +10518,7 @@
       "sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
       "bytes": 37085,
       "lines": 1354,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10557,7 +10557,7 @@
           "verification": "docs/LM-T4RUPT-CHAIN.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10595,6 +10595,10 @@
               "vice-lm-t4rupt-rr": 216,
               "vice-lm-t4rupt-chain": 266
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-t4rupt.md",
+            "sha256": "6932614d3a71bcdac35ab355fc0a24396b47c7782604df712c791409a8cce70c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-chain-c64-cover.json",
