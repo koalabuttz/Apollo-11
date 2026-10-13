@@ -5,7 +5,7 @@
 CM_P40_P47_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 CM_P40_P47_SRC = src/cm_p40_p47.c tests/cm_p40_p47_target.c $(CM_P40_P47_COMMON)
 CM_P40_P47_HDR = include/cm_p40_p47.h tests/interp_case.h tests/cm_p40_p47_vectors.h tests/cm_p40_p47_c64_vectors.h
-CM_P40_P47_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
+CM_P40_P47_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
 .PHONY: test-cm-p40-p47 sanitize-cm-p40-p47 c64-cm-p40-p47 vice-cm-p40-p47 cm-p40-p47-differential
 all: build/test-cm-p40-p47
 test: test-cm-p40-p47

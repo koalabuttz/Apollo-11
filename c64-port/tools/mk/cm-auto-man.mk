@@ -5,7 +5,7 @@
 CM_AUTO_MAN_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_AUTO_MAN_SRC = src/cm_auto_man.c tests/cm_auto_man_target.c $(CM_AUTO_MAN_COMMON)
 CM_AUTO_MAN_HDR = include/cm_auto_man.h tests/interp_case.h tests/cm_auto_man_vectors.h tests/cm_auto_man_c64_vectors.h
-CM_AUTO_MAN_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
+CM_AUTO_MAN_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
 .PHONY: test-cm-auto-man sanitize-cm-auto-man c64-cm-auto-man vice-cm-auto-man cm-auto-man-differential
 all: build/test-cm-auto-man
 test: test-cm-auto-man

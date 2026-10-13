@@ -807,7 +807,9 @@ def c64_probe(spec, sym, m, mask, text, pick=()):
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
-    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
+    # (Channel and counter edits need their case code on the C64 too.)
+    io = ['-DIRC_CHANNELS'] if spec.get('counters') or spec.get('channels') else []
+    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *io, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
