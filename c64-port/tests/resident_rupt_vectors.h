@@ -4,7 +4,8 @@
 #define RESIDENT_RUPT_VECTORS_H
 #include <stdint.h>
 #include "resident_rupt_cases.h"
-typedef struct { uint32_t entry[RR_ENTRY_CASES / RR_BLOCK], t3[RR_T3_CASES / RR_BLOCK], timer[RR_TIMER_CASES / RR_BLOCK]; } rr_vectors;
+#include "resident_vector_cases.h"
+typedef struct { uint32_t entry[RR_ENTRY_CASES / RR_BLOCK], t3[RR_T3_CASES / RR_BLOCK], timer[RR_TIMER_CASES / RR_BLOCK], vector[RR_VECTOR_CASES / RR_BLOCK]; } rr_vectors;
 /* lm: rope SHA256 1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e */
 static const rr_vectors rr_lm_vectors = {
  {
@@ -112,6 +113,11 @@ static const rr_vectors rr_lm_vectors = {
   0x0e62a8e3u, 0x653ad90du, 0xd9f5987cu, 0x5a809383u, 0x4338dc8bu, 0xc3fa5031u, 0x50f7e256u, 0x225df98au,
   0x554ee822u, 0x95803a52u, 0x6d4a4a22u, 0x22541673u, 0x213e65f3u, 0xda12fc89u, 0xf83b3f96u, 0x1684f607u,
   0xfff0fe9cu, 0x2bd69c46u, 0x9012b74au, 0x85774f04u, 0x53b9677eu, 0x5d287576u, 0x4442b1abu, 0x4d29e9f5u,
+ },
+ {
+  0x91f0f205u, 0x63f2be93u, 0xc263e1d9u, 0x0c5f0116u, 0x2e4a1e35u, 0x9847833du, 0xcbaa9f43u, 0x5ffa818au,
+  0x68eb0307u, 0x67c4410eu, 0x00aa9986u, 0xa35b80c4u, 0x6c0ab55cu, 0x9ca02427u, 0x9e4cb5e6u, 0x7be9b86cu,
+  0xb94bb169u, 0x775f8538u,
  }
 };
 /* cm: rope SHA256 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061 */
@@ -221,6 +227,11 @@ static const rr_vectors rr_cm_vectors = {
   0x0e62a8e3u, 0x653ad90du, 0xd9f5987cu, 0x5a809383u, 0x4338dc8bu, 0xc3fa5031u, 0x50f7e256u, 0x225df98au,
   0x554ee822u, 0x95803a52u, 0x6d4a4a22u, 0x22541673u, 0x213e65f3u, 0xda12fc89u, 0xf83b3f96u, 0x1684f607u,
   0xfff0fe9cu, 0x2bd69c46u, 0x9012b74au, 0x85774f04u, 0x53b9677eu, 0x5d287576u, 0x4442b1abu, 0x4d29e9f5u,
+ },
+ {
+  0xb7793331u, 0x20bb19f5u, 0x4390069fu, 0xef02b2d4u, 0xc4950efbu, 0xfcb9dc8bu, 0x9ed4151au, 0x5b01e8e4u,
+  0x20bfd862u, 0xb6e3c987u, 0x795d5eacu, 0xc79bdc30u, 0x46d38bf4u, 0xd841709cu, 0xe718cf72u, 0xea7b43b5u,
+  0x35652030u, 0x1e165f00u,
  }
 };
 #endif

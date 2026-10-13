@@ -24,7 +24,7 @@ cm-tpi-search-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/cm-tpi-search.groups
 CTPI_C64_PRGS = $(foreach g,$(CM_TPI_SEARCH_GROUPS),build/cm-tpi-search-$(g).prg)
-CTPI_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_tpi_search_target.c
+CTPI_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/interp_cut.c tests/cm_tpi_search_target.c
 CTPI_C64_cm = src/cm_tpi_search.c src/cm_interp_orders.c src/cm_interp_steps.c
 c64-cm-tpi-search: $(CTPI_C64_PRGS)
 build/cm-tpi-search-%.prg: $(CTPI_SRC) platform/c64/cm_tpi_search_diagnostic.c tools/mk/cm-tpi-search.groups $(CTPI_HDR) | build

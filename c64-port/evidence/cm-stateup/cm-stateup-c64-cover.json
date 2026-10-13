@@ -2,18 +2,18 @@
  "milestone": "cm-stateup",
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/cm_stateup.c": "3d048c6b9584ac6b89d454eca71b5e13a33f090398b183e4fcf331bf16a22794",
-  "src/cm_interp_orders.c": "5b9d263cca1508d4c2bd83559865b6c2adf6a129cba3b2c79c2c23462f053f8a",
+  "src/cm_stateup.c": "21486fc0c1adca8de86f4f60203866e8af4da4717f0a08ba71c885d863d47603",
+  "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/cm_stateup_cases.c": "6b60a5272cc4f0b022bb08fbe51cc81aa0fc1f3b03667bc7c3d39d8e2b8f5a08"
+  "tests/cm_stateup_cases.c": "a9d1388a331c292c38df9ccfa295b706cc52c34b78ab9925201c6a167d62ae4b"
  },
  "included_sources": {
-  "src/lm_interp_orders.c": "ca13888ecf72f5ac0f8b291cf07896c07e21fe32af015dbbdf9da717002bfe05",
+  "src/lm_interp_orders.c": "3e01539e4314e13e98f4407a24e23782f7b4acdaf484a48bf607375a6fa3fcdd",
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56"
  },
  "compiler_flags": [
@@ -268,8 +268,8 @@
   4080
  ],
  "c64_row_seed_stride": 17,
- "host_branch_arcs": 211,
- "c64_branch_arcs": 211,
+ "host_branch_arcs": 219,
+ "c64_branch_arcs": 219,
  "arcs_by_source_host_c64": {
   "build/cm-stateup-cover/runner.c": [
    1,
@@ -288,8 +288,8 @@
    5
   ],
   "src/agc_transfer.c": [
-   42,
-   42
+   46,
+   46
   ],
   "src/agc_word.c": [
    2,
@@ -304,8 +304,8 @@
    0
   ],
   "src/cm_stateup.c": [
-   46,
-   46
+   48,
+   48
   ],
   "src/lm_interp_orders.c": [
    9,
@@ -316,8 +316,8 @@
    38
   ],
   "tests/cm_stateup_cases.c": [
-   19,
-   19
+   21,
+   21
   ]
  },
  "host_branches_missing_on_c64": [],

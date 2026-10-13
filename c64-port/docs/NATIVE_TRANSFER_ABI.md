@@ -40,10 +40,28 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   the T6RUPT programs drive (`docs/LM-T6RUPT.md`), and input channel 15, the
   DSKY key code KEYRUPT1 reads (`docs/KEYRUPT-UPRUPT.md`), and output
   channel 10 (the last DSKY relay word) and input channel 32 (the PRO key) that
-  T4RUPT uses (`docs/T4RUPT-CORE.md`). Channel 13 holds only the
-  CPU-writable bits (043777). Initializers that name only the first two
-  members leave the others zero. A routine that needs it refuses when it is
-  NULL.
+  T4RUPT uses (`docs/T4RUPT-CORE.md`). It also holds output channels 12 and
+  14, input channels 30, 31 and 33, and the scaler channels 3 and 4, for the
+  IMU monitor, the DAP and compiled READ/RXOR orders. Input channels hold
+  what READ returns, output channels the last word written, and channel 13
+  only the CPU-writable bits (043777). This is the one channel record for
+  every lane; new channels are appended by Lane A, not kept in mission I/O
+  records. Zero-initialize it with `agc_hardware hw = {0};`, because a
+  partial positional list fails `-Wmissing-field-initializers` whenever a
+  field is added. A routine that needs it refuses when it is NULL.
+- **RESUME.** The AGC's RESUME runs the instruction in BRUPT and continues at
+  ZRUPT. A native RESUME (TASKOVER's, the RESUME/NOQRSM/NOQBRSM family of
+  both missions) continues at Z = ZRUPT-1 instead, which is the same thing
+  only when BRUPT is the word at ZRUPT-1 under the banks the interrupted
+  program gets back. The interrupt hardware always saves exactly that word.
+  Code that writes BRUPT itself (Luminary ENDJASK, ALARM_AND_ABORT, P70) may
+  not, so every native RESUME checks with `agc_resume_exact` and refuses
+  (`EXEC_OUT_OF_SCOPE`, image unchanged) when the word can be read (erasable,
+  or fixed through the program's `fixed_data`) and differs (#144). A program
+  that resumes interrupts of fixed code it built itself supplies `fixed_data`.
+  Q and QRUPT are registers, not addresses: T3RUPT and TASKOVER exchange them
+  as QXCH does (overflow-corrected into QRUPT, sign-extended into Q), whatever
+  they hold (#143; TPAGREE leaves POSMAX in Q with interrupts enabled).
 - **Erasable continuations.** A few files store a `TC` into erasable memory and
   run it later (RESTARTS writes the service call at GOLOC-1 and its own
   continuation at GOLOC+2). Such a point is keyed
@@ -51,6 +69,15 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   (`agc_erasable_point`). The file that stores those words registers a routine
   there that accepts exactly the words it stores and refuses any other with
   `EXEC_OUT_OF_SCOPE`. Nothing decodes an arbitrary erasable word.
+- **Pending right-hand orders.** An RTB in the left half of an order pair
+  returns through DANZIG with the right order still in EDOP. With the
+  mission's marker table (`agc_lm_danzig_marker`, `agc_cm_danzig_marker`) in
+  a program's interpretive tables, Z at DANZIG with EDOP positive is an
+  interpretive point keyed by LOC under BANKSET, the RTB's operand word. The
+  file owning the pair registers a routine there that accepts exactly its
+  pair's EDOP code. See `docs/DANZIG-PENDING.md`. The RTB itself enters
+  INTER-BANK at `SWCALL -1` (BANKCALL's `INCR Q`), which both missions'
+  interbank tables register (`docs/INTERBANK-Q.md`).
 - **Inline operands.** The word a caller places after its `TC` (alarm codes,
   BANKCALL/POSTJUMP CADRs) is the caller's compiled constant. A
   `agc_site_operand` table holds it for every genuine call site, keyed by the
@@ -99,7 +126,8 @@ transferring file.
 | Luminary099 and Comanche055 IMU_COMPENSATION_PACKAGE | 11 Luminary and 9 Comanche entries in `lm_`/`cm_imu_compensation_routines` (1/PIPA, the NOVAC and BANKCALL returns, NBDONLY, GCOMPZER...) | BANKCALL/IBNKCALL CADRs in `lm_interbank_sites`/`cm_interbank_sites`; Luminary 1/GYRO 2CADR in `lm_exec_sites` | `imu-compensation` |
 | Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
 | Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES | 165 LM / 164 CM entries (every label and every callee return) in `lanec_di_lm_routines` / `lanec_di_cm_routines`, one table per module for subsets | through `lm_interbank_sites`, `cm_interbank_sites` and `lm_exec_sites`; CM NOVAC/FINDVAC operands wait for `cm_exec_sites` | `lanec-di-transfer` |
-| Luminary099 and Comanche055 EXTENDED_VERBS | 313 LM / 241 CM basic entries in `lanec_ev_lm_routines` / `lanec_ev_cm_routines`, 15 LM interpretive entries (keyed by LOC) in `lanec_ev_lm_interpretive`, INTPRET for the file's own callers in `lanec_ev_lm_intpret`; io is `lm_dntm_io` / `cm_dntm_io` (channels 12, 14, 30-33) | `lm_interbank_sites`, `cm_interbank_sites`, `lm_exec_sites`; CM interpretive words not yet translated | `lanec-ev-transfer` |
+| Luminary099 and Comanche055 EXTENDED_VERBS | 313 LM / 241 CM basic entries in `lanec_ev_lm_routines` / `lanec_ev_cm_routines`, 29 LM interpretive entries (keyed by LOC) in `lanec_ev_lm_interpretive`, INTPRET for the file's own callers in `lanec_ev_lm_intpret`; io is `lm_dntm_io` / `cm_dntm_io` (channels 12, 14, 30-33) | `lm_interbank_sites`, `cm_interbank_sites`, `lm_exec_sites`; CM interpretive words not yet translated | `lanec-ev-transfer` |
+| Luminary099 and Comanche055 PINBALL_GAME_BUTTONS_AND_LIGHTS | 267 LM / 262 CM entries in `lanec_pin_lm_routines` / `lanec_pin_cm_routines` (every point a Pinball module is entered at, every label but internal subroutines, every external-callee return, the BANKCALL return points through SWRETURN); a routine ending at a return cell holding a TC or TCF (TC WDRET, TC DSEXIT, TC Q, ...) takes that one instruction; io is `lm_dntm_io` / `cm_dntm_io` | `lm_interbank_sites`, `cm_interbank_sites`, `lm_exec_sites` | `lanec-pin-transfer` |
 
 Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete
 certificate for the auditor's review.

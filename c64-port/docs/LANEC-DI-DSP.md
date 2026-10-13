@@ -55,5 +55,6 @@ assembled words read from the pinned listings by label (`symbols.txt`
   with and without a priority display) and `lanec-di-dsp-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-di-dsp sanitize-lanec-di-dsp`
   (`lanec-di-dsp-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-dsp`, 218 frozen cases
-  (every entry, both missions) on a VICE PAL C64 (`lanec-di-dsp-vice.txt`).
+- C64 execution results: `make vice-lanec-di-dsp`, 37 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 3,264 host cases take (`lanec-di-dsp-vice.txt`).

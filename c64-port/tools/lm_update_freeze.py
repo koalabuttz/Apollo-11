@@ -80,13 +80,13 @@ def main():
                                               frozenset().union(*cases.values()))
     if missed:
         raise SystemExit(f'instructions of the file no case executes: {missed}')
-    chosen, cover = a2_c64_rows.select('lm-update', SRC, ['lm_update_cases.h'], 'lm_up_digest(&s,(uint16_t)n,&st);', len(values), slots=37)
+    chosen, cover = a2_c64_rows.select('lm-update', SRC, ['lm_update_cases.h'], 'lm_up_digest(&s,(uint16_t)n,&st);', len(values), slots=37, call_sites=['src/lm_update.c'])
     (R / 'tests/lm_update_c64_vectors.h').write_text(a2_c64_rows.header('lm_update_freeze.py', 'lm_up', values, chosen))
     host = frozenset().union(*cases.values())
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
-             'entries': 'V70UPDAT-V73UPDAT, UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35 basic), and UPJOB\'s interpretive words CALL INTSTALL and UPWAKE EXIT at NEWOPS (2 interpretive, the CHANG2 resume LOCs)',
+             'entries': 'V70UPDAT-V73UPDAT, UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35 basic), and UPJOB\'s interpretive words CALL INTSTALL and UPWAKE EXIT at NEWOPS (2 interpretive, NEWOPS points)',
              'boundary': 'entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT, NEWOPS with LOC at INTSTALL); an interpretive case also owns the interpreter',
              'full_physical_words': 2048, 'host_words_executed': len(host),
              'owned_words_never_executed': [c64_rows.name(w) for w in sorted(set(OWNED) - host)], **cover}

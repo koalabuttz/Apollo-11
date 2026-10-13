@@ -98,10 +98,20 @@ def groups():
     return of, slots
 
 
+def case_slots(n_keys):
+    """Each case's key slot: n % n_keys, a continuation's from
+    tests/lm_servicer_chains.h (tools/lm_servicer_chains.py)."""
+    text = (R / 'tests/lm_servicer_chains.h').read_text()
+    base = int(re.search(r'#define LMSV_BASE_CASES (\d+)u', (R / 'tests/lm_servicer_cases.h').read_text()).group(1))
+    extra = [int(x) for x in re.findall(r'(\d+)u,', re.search(r'lmsv_chain_slot\[[^]]*\]=\{(.*?)\};', text).group(1))]
+    return lambda n: n % n_keys if n < base else extra[n - base]
+
+
 def segments(n_keys):
     """Checks every C64 group's segment runs against the oracle and writes
     their digests (build/lm-servicer-g<n>-digests.txt)."""
     of, slots = groups()
+    slot = case_slots(n_keys)
     out = {}
     for g in sorted(set(slots.values())):
         exe = B / f'lm-servicer-native-g{g}'
@@ -114,11 +124,11 @@ def segments(n_keys):
         ref = subprocess.run(['./build/lm-servicer-reference', str(ROPE), str(seg)], cwd=R,
                              check=True, capture_output=True).stdout.decode().splitlines()
         nat = subprocess.run([str(exe)], cwd=R, check=True, capture_output=True).stdout.decode().splitlines()
-        assert len(ref) == len(nat) == len(mine) * (len(nat) // max(len(mine), 1))
+        assert len(ref) == len(nat)
         bad, refused, lines = [], 0, []
         for a, b in zip(nat, ref):
             r = list(map(int, a.split()))
-            assert r[0] == int(b.split()[0]) and slots[r[0] % n_keys] == g
+            assert r[0] == int(b.split()[0]) and slots[slot(r[0])] == g
             if r[1] == REFUSED:
                 refused += 1
             elif a != b:
@@ -143,13 +153,14 @@ def main():
     nat = subprocess.run(['./build/lm-servicer-native'], cwd=R, check=True,
                          capture_output=True).stdout.decode().splitlines()
     names = keys()
-    assert len(ref) == len(nat) and len(ref) % len(names) == 0
+    assert len(ref) == len(nat)
+    slot = case_slots(len(names))
     bad = []
     rows, refused, stops = [], collections.Counter(), collections.defaultdict(collections.Counter)
     for i, (a, b) in enumerate(zip(nat, ref)):
         r = list(map(int, a.split()))
         assert r[0] == i
-        key = names[i % len(names)]
+        key = names[slot(i)]
         if r[1] == REFUSED:
             refused[key] += 1
         else:
@@ -174,6 +185,9 @@ def main():
     (R / 'tests/lm_servicer_vectors.h').write_text('\n'.join(out) + '\n')
     seg = segments(len(names))
     subprocess.run([sys.executable, 'tools/lane_f_c64_rows.py', 'lm-servicer'], cwd=R, check=True)
+    # Every branch outcome and line the whole-file host cases take, by gcov, is
+    # taken by some group's C64 rows (#167).
+    subprocess.run([sys.executable, 'tools/lane_f_c64_gcov.py', 'lm-servicer'], cwd=R, check=True)
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle_engine': 'yaAGC with the hardware divide (build/agc_engine_hardware_dv.o); scalers frozen',
              'cases': len(rows), 'compared': len(rows) - sum(refused.values()),

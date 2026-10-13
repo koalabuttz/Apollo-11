@@ -3,12 +3,12 @@
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
   "src/cm_v37.c": "ed769e6ce9e192f8f555e754815eb1ccc5919da8f4abcc2f68e539c831ce4a0f",
-  "src/cm_fresh_start.c": "18258098abf99b5da9219babfb9a91f4e48a1881b2e5eeda91e8278c04904ce3",
+  "src/cm_fresh_start.c": "89dd532381c97d08d1d5528033cfedbf752b12a03302960c84cab945a2395bbe",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/cm_interbank_routines.c": "8fe6a2afcd1ed84209f40d762c4ec05abf9ac1f5059b649cb4a08962843bba2d",
-  "src/cm_interbank_complete.c": "66c67957ac373fdb164ef68e25c64ec1d34d00c3d78504049fb9f97a11dff797",
-  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/cm_interbank_routines.c": "1651221a53dfc174a55f6009bc8c903d19e32c3d55c6ee4b03f9022a2180a2f2",
+  "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/cm_v37_cases.c": "ce00d88b13d59614f203ff231db857f356178eec403cd9bca2d6ddeda42a7157"
@@ -74,9 +74,9 @@
   512,
   544,
   576,
-  599,
   608,
   617,
+  634,
   640,
   672,
   674,
@@ -89,6 +89,7 @@
   864,
   896,
   928,
+  959,
   960,
   992,
   1024,
@@ -159,6 +160,7 @@
   3072,
   3104,
   3136,
+  3154,
   3168,
   3200,
   3232,
@@ -179,7 +181,6 @@
   3712,
   3744,
   3776,
-  3802,
   3808,
   3840,
   3872,
@@ -192,8 +193,8 @@
   4064
  ],
  "c64_row_seed_stride": 32,
- "host_branch_arcs": 574,
- "c64_branch_arcs": 574,
+ "host_branch_arcs": 515,
+ "c64_branch_arcs": 515,
  "arcs_by_source_host_c64": {
   "build/cm-v37-cover/runner.c": [
    1,
@@ -212,20 +213,20 @@
    7
   ],
   "src/agc_transfer.c": [
-   47,
-   47
+   50,
+   50
   ],
   "src/agc_word.c": [
    2,
    2
   ],
   "src/cm_fresh_start.c": [
-   175,
-   175
+   111,
+   111
   ],
   "src/cm_interbank_complete.c": [
-   61,
-   61
+   63,
+   63
   ],
   "src/cm_interbank_routines.c": [
    13,
@@ -333,7 +334,7 @@
   ],
   [
    114,
-   5
+   6
   ],
   [
    114,

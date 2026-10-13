@@ -2,15 +2,15 @@
  "milestone": "lm-stateup",
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_stateup.c": "7a89ed271fd491fffe04e000c904d7a4ac1e8e66388407e8441e309abe11fe95",
-  "src/lm_interp_orders.c": "ca13888ecf72f5ac0f8b291cf07896c07e21fe32af015dbbdf9da717002bfe05",
+  "src/lm_stateup.c": "088fd45e8d5b453323039493f7708917c8e5aaaf089a0a135b40df15eb8eceb8",
+  "src/lm_interp_orders.c": "3e01539e4314e13e98f4407a24e23782f7b4acdaf484a48bf607375a6fa3fcdd",
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/lm_stateup_cases.c": "323341af6591da5d279c358a421957e7d80786a671d8b62ed5bd0d7c70881fb2"
+  "tests/lm_stateup_cases.c": "37b5b7ef693fb0f4faebcfe72286f00ac2ea420161021f69d1e8949c3c8ac9d4"
  },
  "included_sources": {},
  "compiler_flags": [
@@ -279,8 +279,8 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 214,
- "c64_branch_arcs": 214,
+ "host_branch_arcs": 222,
+ "c64_branch_arcs": 222,
  "arcs_by_source_host_c64": {
   "build/lm-stateup-cover/runner.c": [
    1,
@@ -299,8 +299,8 @@
    5
   ],
   "src/agc_transfer.c": [
-   42,
-   42
+   46,
+   46
   ],
   "src/agc_word.c": [
    2,
@@ -315,12 +315,12 @@
    38
   ],
   "src/lm_stateup.c": [
-   49,
-   49
+   51,
+   51
   ],
   "tests/lm_stateup_cases.c": [
-   19,
-   19
+   21,
+   21
   ]
  },
  "host_branches_missing_on_c64": [],

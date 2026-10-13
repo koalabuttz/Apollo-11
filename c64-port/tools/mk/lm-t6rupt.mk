@@ -24,7 +24,7 @@ lm-t6rupt-differential: build/lm-t6rupt-native
 	python3 tools/lm_t6rupt_source_map.py
 	git diff --exit-code -- tests/lm_t6rupt_vectors.h tests/lm_t6rupt_c64_vectors.h
 c64-lm-t6rupt: build/lm-t6rupt.prg
-build/lm-t6rupt.prg: $(LM_T6_SRC) platform/c64/lm_t6rupt_diagnostic.c tests/lm_t6rupt_c64_vectors.h $(LM_T6_HDR) | build
+build/lm-t6rupt.prg: $(LM_T6_SRC) platform/c64/lm_t6rupt_diagnostic.c tests/lm_t6rupt_c64_vectors.h tests/lm_t6rupt_c64_rows.h $(LM_T6_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(LM_T6_FLAGS) -Wl,-Map,build/lm-t6rupt.map $(LM_T6_SRC) platform/c64/lm_t6rupt_diagnostic.c -o $@
 vice-lm-t6rupt: build/lm-t6rupt.prg
 	python3 tools/vice_run.py build/lm-t6rupt.prg --cycles 3000000000 --timeout 1200

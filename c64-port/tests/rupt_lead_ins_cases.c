@@ -23,6 +23,11 @@ void rli_input(unsigned mission,apollo_overlay_state *m,rli_io *io,uint16_t n){u
  sb=mission?&io->cm.superbank:&io->lm.superbank;irq=mission?&io->cm.interrupt_enabled:&io->lm.interrupt_enabled;
  *sb=(agc_word)((rnd(&r)%8u)*020u);*irq=(agc_word)(rnd(&r)&1u);
  io->hw.in_interrupt=(uint16_t)(z!=04000u);
+ /* The interrupt saved the instruction at ZRUPT-1 in BRUPT (#144); in
+  * erasable, under the EB the RESUME family restores (BANKRUPT's, A's at
+  * 05336, else the current one). */
+ {agc_word at=(agc_word)(m->words[015]-1u),eb=z==05333u||z==05335u?(agc_word)(m->words[016]&7u):z==05336u?(agc_word)(agc_correct(m->words[0])&7u):(agc_word)(m->words[3]>>8);
+  if(at<01400u)m->words[017]=m->words[at];else if(at<02000u)m->words[017]=m->words[eb*0400u+(at-01400u)];}
 }
 unsigned rli_run(unsigned mission,apollo_overlay_state *s,rli_io *io,uint16_t n){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;void *v;

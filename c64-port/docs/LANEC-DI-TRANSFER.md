@@ -57,10 +57,29 @@ LM cases carry a coherent Executive state (free core sets and VAC areas,
 core 0 priority 020000, NEWJOB 0). CM chains stop at the Executive until
 Lane A adds Comanche exec routines and `cm_exec_sites`.
 
-The whole round trip does not fit a C64 program, so `di-transfer-c64` (336
-LM cases: the dsp entries through INTER-BANK, dsp and play) is frozen at
-stride 5 into `tests/lanec_di_transfer_c64_c64.h`; `make vice-lanec-di-transfer`
-runs its 68 cases on a VICE PAL C64.
+The whole round trip does not fit a C64 program, so `di-transfer-c64` runs
+the part that does, with only the INTER-BANK, display-start (`lanec_di_*_dsp`)
+and MAKEPLAY (`lanec_di_*_play`) routines registered, in both missions
+(1,164 cases):
+
+- every caller of a display-start or MAKEPLAY entry (688 cases);
+- every display-start and MAKEPLAY point from its own entry, with up to four
+  accepted cases of its module (476 cases), so that chains go on past the
+  module's exit: BOTHJOBS through SAVELOCR and `TCF BANKJUMP` to the user's
+  CADR +4, the MAKEPLAY returns, and on into the fixed-fixed half of the file.
+
+The oracle stops at every point of the other four modules, where this program
+has no routine. A chain that ends where the original goes on (inside
+INTER-BANK or the file at a point no routine of this program claims, reached
+through a module case's random return address) is refused with the state
+restored: 1,136 cases are identical and 28 refused. `tools/lanec/cover.py`
+picks the 63 cases that together take every branch arc the 1,164 host cases
+take into `tests/lanec_di_transfer_c64_c64.h`; they include BANKJUMP, the
+SAVELOCS return, fixed-fixed resolution and Comanche055 round trips. The C64
+build carries those rows only, one program per mission
+(`build/lanec-di-transfer.prg` for Luminary099, `-cm.prg` with
+`LANEC_DI_C64_CM`): `make vice-lanec-di-transfer` runs both on a VICE PAL C64
+(54 and 9 checks).
 
 ## Refusals
 
@@ -84,10 +103,10 @@ refused with the image and I/O unchanged (`diff.py --refusals-only`).
 Hashes: `evidence/lanec-di-transfer/SHA256.json`.
 
 - Independent assembly comparison: `lanec-di-transfer-diff.json`,
-  `lanec-di-transfer-c64-diff.json` and their oracle CRCs (996 and 336
-  cases, zero differing) and `lanec-di-refuse-diff.json` (384 cases, all
+  `lanec-di-transfer-c64-diff.json` and their oracle CRCs (996 and 1,164
+  cases, zero differing; 28 of the C64 cases refused unchanged) and `lanec-di-refuse-diff.json` (384 cases, all
   refused unchanged).
 - Host and sanitizer results: `make test-lanec-di-transfer
   sanitize-lanec-di-transfer` (`lanec-di-transfer-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-transfer`, 68 checks, 0
-  failures (`lanec-di-transfer-vice.txt`).
+- C64 execution results: `make vice-lanec-di-transfer`, 63 checks (54
+  Luminary099, 9 Comanche055), 0 failures (`lanec-di-transfer-vice.txt`).

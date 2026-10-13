@@ -107,7 +107,7 @@ OWNERS = [
     (4, 0o3253, 'r_r02both (DEC51 is its VARALARM operand)'),
     (4, 0o3254, 'r_r02both (R02BOTH)'),
     (4, 0o3267, 'r_c3267 (after VARALARM)'),
-    (4, 0o3270, 'r_r02both (R02ZERO)'),
+    (4, 0o3270, 'r_r02zero (R02ZERO)'),
     (4, 0o3272, 'r_c3272 (after UPFLAG)'),
     (4, 0o3273, 'K_OCT220 (OCT220)'),
     (0o37, 0o3655, 'r_p06 (P06)'),

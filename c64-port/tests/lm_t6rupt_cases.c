@@ -19,8 +19,11 @@ void lm_t6_input(apollo_overlay_state *m,p66_bias_io *io,agc_hardware *hw,uint16
  m->words[3]=03000;m->words[4]=fb;m->words[6]=(agc_word)(fb|6u);
  m->words[E6(LM_T6NEXT)]=time6(&r);m->words[E6(LM_T6NEXT)+1u]=index6(&r);
  m->words[E6(LM_T6FURTHA)]=time6(&r);m->words[E6(LM_T6FURTHA)+1u]=index6(&r);m->words[E6(LM_NXT6ADR)]=index6(&r);
- /* TIME6: mostly -0 (a T6RUPT is due), else counting (+) or +0. */
- {uint32_t x=rnd(&r)%8u;m->words[LM_TIME6]=(agc_word)(x<5u?077777u:x<7u?1u+rnd(&r)%037776u:0u);}
+ /* TIME6: mostly -0 (a T6RUPT is due), else counting (+: one to three
+  * counts from its end, or full scale, or anywhere) or +0. */
+ {uint32_t x=rnd(&r)%8u,y;agc_word t;
+  if(x==5u){y=rnd(&r)%4u;t=(agc_word)(y<3u?1u+y:037777u);}else t=(agc_word)(x<5u?077777u:x<7u?1u+rnd(&r)%037776u:0u);
+  m->words[LM_TIME6]=t;}
  io->superbank=(agc_word)((rnd(&r)%8u)*020u);io->interrupt_enabled=(agc_word)(rnd(&r)&1u);
  hw->channel11=0;hw->channel5=(agc_word)(rnd(&r)&AGC_MASK);hw->channel6=(agc_word)(rnd(&r)&AGC_MASK);hw->channel13=(agc_word)(rnd(&r)&043777u);
  hw->in_interrupt=1;
@@ -31,7 +34,12 @@ void lm_t6_input(apollo_overlay_state *m,p66_bias_io *io,agc_hardware *hw,uint16
  case LM_T6_WRITE:{static const agc_word z[6]={LM_WRITEP-1u,LM_WRITEP,LM_WRITEU-1u,LM_WRITEU,LM_WRITEV-1u,LM_WRITEV};
   m->words[5]=z[j%6u];m->words[2]=ret(&r);m->words[0]=(agc_word)(rnd(&r)&0377u);hw->in_interrupt=(uint16_t)((j/6u)&1u);break;}
  default:{static const agc_word z[3]={LM_RESUME,LM_NOQRSM,LM_NOQBRSM};
-  m->words[5]=z[j%3u];m->words[015]=(agc_word)(1u+rnd(&r)%010000u);m->words[016]=(agc_word)(bank(&r)|((rnd(&r)%8u)*020u)|(rnd(&r)&7u));break;}
+  m->words[5]=z[j%3u];m->words[015]=(agc_word)(1u+rnd(&r)%010000u);m->words[016]=(agc_word)(bank(&r)|((rnd(&r)%8u)*020u)|(rnd(&r)&7u));
+  /* The interrupt saved the instruction at ZRUPT-1 in BRUPT (#144); in
+   * erasable, under the EB that RESUME family restores. */
+  {agc_word at=(agc_word)(m->words[015]-1u),eb=m->words[5]==LM_NOQBRSM?(agc_word)(m->words[3]>>8):(agc_word)(m->words[016]&7u);
+   if(at<01400u)m->words[017]=m->words[at];else if(at<02000u)m->words[017]=m->words[eb*0400u+(at-01400u)];}
+  break;}
  }
 }
 unsigned lm_t6_run(apollo_overlay_state *s,p66_bias_io *io,agc_hardware *hw,uint16_t n){

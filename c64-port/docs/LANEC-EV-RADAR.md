@@ -38,5 +38,6 @@ Hashes: `evidence/lanec-ev-radar/SHA256.json`.
   branch outcome in `step` is taken.
 - Host and sanitizer results: `make test-lanec-ev-radar sanitize-lanec-ev-radar`
   (`lanec-ev-radar-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-radar`, 223 frozen cases
-  (every entry) on a VICE PAL C64 (`lanec-ev-radar-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-radar`, 31 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 2,448 host cases take (`lanec-ev-radar-vice.txt`).

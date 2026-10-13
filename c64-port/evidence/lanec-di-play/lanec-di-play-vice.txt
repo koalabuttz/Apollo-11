@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-di-play.prg: 246 checks, 0 failures
+PASS: VICE PAL lanec-di-play.prg: 35 checks, 0 failures
