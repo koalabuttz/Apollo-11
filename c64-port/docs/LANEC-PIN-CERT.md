@@ -81,10 +81,10 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
   `lanec-pin-cm-source-map.json`. They give every word's original line,
   address, assembled word, owner, native module, transfer-ABI routine and
   how the oracle covered it.
-- Independent assembly comparison: `lanec-pin-comparison.json`. @COMPARISON@
+- Independent assembly comparison: `lanec-pin-comparison.json`.
 - Host and sanitizer results: `lanec-pin-checks.log`. It has the strict and
   ASan/UBSan runs of every suite and the whole-file map run.
-- C64 execution results: `lanec-pin-c64-results.json`. @C64@
+- C64 execution results: `lanec-pin-c64-results.json`.
 - C64 branch outcomes: `lanec-pin-c64-cover.json` (`tools/lanec/cover.py
   record`): for each suite, the host cases' branch arcs over every linked
   source and the frozen C64 rows, which take every one of them.

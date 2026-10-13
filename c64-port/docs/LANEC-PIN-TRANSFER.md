@@ -103,8 +103,9 @@ one program per group. 108 programs (560 rows) fit below the mailbox page
 and pass on a VICE PAL C64 (`make vice-lanec-pin-transfer`). The 22 that do
 not (`LANEC_PIN_C64_TOO_BIG`: eleven modules whose code and state, with
 INTER-BANK and the harness, pass $C000) leave 152 rows to the host; the
-Pinball certificate's C64 branch record shows that the other C64 programs
-take every host arc of those rows.
+Pinball certificate's C64 branch record (`tools/lanec/cover.py record
+--not-run`) counts those rows' host arcs only where another C64 program
+takes them.
 
 ## Harness changes
 
