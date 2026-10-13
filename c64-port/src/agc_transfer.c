@@ -49,7 +49,7 @@ static bool interpreting(const agc_native_program *p,const apollo_overlay_state 
  edop=s->words[AGC_EDOP];
  return !(edop&040000u)&&(edop&037777u);}
 #else
- return false;
+ (void)s;return false;
 #endif
 }
 uint16_t agc_erasable_point(agc_word logical,agc_word eb){
