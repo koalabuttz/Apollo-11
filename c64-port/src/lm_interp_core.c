@@ -241,8 +241,21 @@ static NI agc_register reg(unsigned a){return W[a];}
 #if !INTERP_K_OPS
 static NI void setreg(unsigned a,agc_register v){W[a]=v;}
 #endif
+#if INTERP_K_OPS
+uint8_t k_ts(unsigned);
+#endif
 static NI void ai_put(unsigned a,agc_word v){
- v&=077777u;a=ai_ea(a);
+ v&=077777u;
+#if INTERP_K_OPS
+ /* The edited and bank-coupled registers 3-023 through the resident's TS
+  * (A holding v cannot overflow; A as it was, and L, which every
+  * instruction leaves as TS's ending makes it). */
+ {static agc_word pv;static agc_register pa;unsigned e;
+  pv=v;e=ai_ea(a);
+  if(e<3u||e>=024u){W[e]=pv;return;}
+  pa=W[0];W[0]=sx(pv);(void)k_ts(e);W[0]=pa;}
+#else
+ a=ai_ea(a);
  if(a>=024u){W[a]=v;return;}
  switch(a){
  case 0:case 1:W[a]=v;return;
@@ -257,6 +270,7 @@ static NI void ai_put(unsigned a,agc_word v){
  case 023:W[023]=(agc_word)((v>>7)&0177u);return;
  default:W[a]=v;return;
  }
+#endif
 }
 /* Memory operand read with the editing write-back of reading orders (by
  * physical location; DCA/DCS re-edit only when named as 020-023). */
