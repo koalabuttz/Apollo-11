@@ -10,7 +10,9 @@
 /* Functions stay out of line: on llvm-mos inlining grows this unit by a
  * third (larger frames and zero-page spills). */
 #define NI __attribute__((noinline))
-#ifdef __mos__
+/* The flight build (AGC_FIXED_IMAGE) addresses the one canonical image at
+ * $7000 directly; elsewhere the image is the one passed in. */
+#if defined(__mos__) && AGC_FIXED_IMAGE
 #define W ((agc_word *)APOLLO_SHARED_ADDRESS)
 #else
 static agc_word *ic_image;
@@ -2136,11 +2138,11 @@ static NI uint8_t sane(void)
     return 1;
 }
 
-/* The image is always the canonical one at $7000 on the C64 (fixed
- * addressing is what keeps the bodies small); the host runs any image. */
+/* The flight image is always the canonical one at $7000 (fixed addressing
+ * is what keeps the bodies small); other builds run any image. */
 static NI uint8_t bind(apollo_overlay_state *s)
 {
-#ifdef __mos__
+#if defined(__mos__) && AGC_FIXED_IMAGE
     return s == (apollo_overlay_state *)APOLLO_SHARED_ADDRESS;
 #else
     ic_image = s ? s->words : 0;

@@ -226,6 +226,14 @@ static int interpreter_point(const apollo_overlay_state *s, unsigned m)
  * divisor word, as the AGC would too): such a case is abandoned. */
 static sigjmp_buf hang;
 static void on_alarm(int sig) { (void)sig; siglongjmp(hang, 1); }
+/* The verification interpreter's host build stops an erasable-CADR GOTO
+ * cycle with exit(); built with -Dexit=interp_core_fuzz_exit (make target),
+ * such a case is abandoned like a hang. */
+void interp_core_fuzz_exit(int status)
+{
+    (void)status;
+    siglongjmp(hang, 1);
+}
 static void arm(unsigned ms)
 {
     struct itimerval t;

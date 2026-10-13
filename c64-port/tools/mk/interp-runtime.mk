@@ -31,7 +31,7 @@ interp-core-differential: interp-runtime-check build/agc_engine_hardware_dv.o | 
 interp-runtime-size: interp-runtime-check | build
 	python3 tools/interp_runtime_size.py
 build/interp-core-fuzz: $(INTERP_CORE_FUZZ_SRC) | build
-	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests $(INTERP_CORE_FUZZ_SRC) -o $@
+	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests -Dexit=interp_core_fuzz_exit $(INTERP_CORE_FUZZ_SRC) -o $@
 interp-core-fuzz: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
 	build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin $(INTERP_CORE_FUZZ) 11
 interp-core-cycles: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin

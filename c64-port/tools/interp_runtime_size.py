@@ -38,7 +38,7 @@ CORE = {'lm': ['src/lm_interp_core.c'] + CORE_SRC, 'cm': ['src/cm_interp_core.c'
 def link_core(cc, m, prg, sources, library):
     """The compact interpreter as job-slot module $0A01 (link_module's flags
     without its table wrapper)."""
-    cmd = [cc, *COMMON, *MISSION[m], '-mllvm', '-inline-threshold=-50',
+    cmd = [cc, *COMMON, *MISSION[m], '-DAGC_FIXED_IMAGE=1', '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{F.OUT}',
            '-T', 'platform/c64/overlay_v2_slot_job.ld', '-T', 'platform/c64/overlay_v2_payload.ld',
            f'-Wl,--gc-sections,--defsym=__ov2_slot=0,--defsym=__ov2_mission={1 if m == "lm" else 2},'

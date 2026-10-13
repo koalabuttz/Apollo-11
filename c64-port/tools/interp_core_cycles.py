@@ -27,7 +27,7 @@ OUT = os.path.join(B, 'interp-cycles')
 CC = os.environ.get('MOS_SIM_CC', os.path.join(R, 'deps/llvm-mos/bin/mos-sim-clang'))
 SIM = os.path.join(os.path.dirname(CC), 'mos-sim')
 # The flight store's flags (tools/resident_flight_build.py COMMON).
-FLAGS = ['-Oz', '-fno-static-stack', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', '-Iplatform/c64']
+FLAGS = ['-Oz', '-fno-static-stack', '-DAGC_FIXED_IMAGE=1', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', '-Iplatform/c64']
 ROPES = [os.path.join(B, 'fixed-data/Luminary099/MAIN.agc.bin'), os.path.join(B, 'fixed-data/Comanche055/MAIN.agc.bin')]
 ADDR = ['VLOAD', 'TAD', 'SIGN', 'VXSC', 'CGOTO', 'TLOAD', 'DLOAD', 'V/SC', 'SLOAD', 'SSP', 'PDDL', 'MXV', 'PDVL',
         'CCALL', 'VXM', 'TSLC', 'DMPR', 'DDV', 'BDDV', 'GSHIFT', 'VAD', 'VSU', 'BVSU', 'DOT', 'VXV', 'VPROJ', 'DSU',
