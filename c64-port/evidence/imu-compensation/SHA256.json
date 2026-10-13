@@ -3,14 +3,19 @@
   "milestone": "imu-compensation",
   "release": "evidence-imu-compensation",
   "files": {
+    "imu-compensation-c64-cover.json": {
+      "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
+      "bytes": 424273,
+      "store": "release"
+    },
     "imu-compensation-host.log": {
-      "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f",
-      "bytes": 667,
+      "sha256": "47c6e15e0fc8c887cc59de350a7760b732bea1a7c6aad4e6104b58900622497e",
+      "bytes": 2270,
       "store": "release"
     },
     "imu-compensation-proof.json": {
-      "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5",
-      "bytes": 2609,
+      "sha256": "68468e4a7cffa85fab27bd4e682e10fec75a1ac81f454944e3d7a88314e8cd83",
+      "bytes": 2803,
       "store": "tree"
     },
     "imu-compensation-source-map.json": {
@@ -19,8 +24,8 @@
       "store": "tree"
     },
     "imu-compensation-vice.log": {
-      "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b",
-      "bytes": 511,
+      "sha256": "929fcd3082f011c7d5cb14a7cacf56117532f6756dc36991fbfee1308005a937",
+      "bytes": 2138,
       "store": "release"
     }
   }

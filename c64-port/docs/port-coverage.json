@@ -1351,7 +1351,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK and SWRETURN (Comanche NOVAC has no native routine yet).",
+          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK, native NOVAC (cm_exec_routines) and SWRETURN.",
           "verification": "docs/IMU-COMPENSATION.md"
         }
       ],
@@ -1361,7 +1361,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL return leave it; any EB (1/PIPA sets EBANK to GCOMP's and restores the caller's); any GCOMPSW, FLAGWRD2, TIME1, PIPA, coefficient and GCOMP values, including NBD2 elapsed times of -0 and +0; each routine runs to its exit with no interrupt in between.",
         "external_continuations": [
-          "NOVAC admitting 1/GYRO (EXECUTIVE, no native Comanche routine yet)",
+          "NOVAC admitting 1/GYRO (native, cm_exec_routines; the round trips run it with a canonical Executive and stop at its BAILOUT alarm)",
           "SWRETURN and BANKCALL (native, cm_interbank_routines)",
           "IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES)",
           "PIPUSE (SERVICER207)",
@@ -1375,15 +1375,23 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
+            "sha256": "68468e4a7cffa85fab27bd4e682e10fec75a1ac81f454944e3d7a88314e8cd83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
+            "sha256": "47c6e15e0fc8c887cc59de350a7760b732bea1a7c6aad4e6104b58900622497e"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
+            "sha256": "929fcd3082f011c7d5cb14a7cacf56117532f6756dc36991fbfee1308005a937",
+            "vice_targets": {
+              "vice-imu-compensation": 381
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-compensation/imu-compensation-c64-cover.json",
+            "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
+            "check": "python3 tools/imu_compensation_cover.py"
           }
         }
       }
