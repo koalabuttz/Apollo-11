@@ -2027,3 +2027,31 @@ Native C for all of Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT (bank 15 `2434`-`3754
 ## Translate Luminary SERVICER as transfer-ABI routines
 
 All of Luminary099 SERVICER (the average-G navigation, 1,203 words in banks 37, 33, 22, 27, 32, 23, 21 and 34) runs as 188 native routines of the control-transfer ABI, 164 basic and 24 interpretive: READACCS and PIPASR, SERVICER, AVERAGEG and COPYCYCL, the DV monitor and LOTHRUST, AVGEND, SERVIDLE and SERVEXIT, NORMLIZE, the R29 and altitude block, CALCGRAV, CALCRVG, RVBOTH, MUNRVG and MUNGRAV, and the landing radar position and velocity updates, radar jobs and SETPOS. All 23,032 accepted cases (of 24,064; 1,032 refused) equal the original program (on yaAGC with the hardware divide) in all 2,048 erasable words, channels 11, 12, 32 and 33 and the interrupt-enable bit (strict and ASAN/UBSAN). Every key, instruction, order pair and reachable decision outcome is taken, every word is owned and its operand checked against the listing and rope. The C64 build is split into seven segment groups, each checked against the oracle with the same segment ends, and 261 C64 rows chosen by outcome pass in VICE in seven PRGs. See `docs/LM-SERVICER.md`.
+
+## Translate Comanche055 R31
+
+All of Comanche055 R31 (218 words: V83, the rendezvous range and range-rate display) is native C on the control-transfer ABI, as 44 routines compiled by `tools/interp_compile.py`. All 22,528 cases equal the original program in yaAGC; the host tests pass 704 frozen cases and seven C64 diagnostics pass 88 cases in VICE. See `docs/CM-R31.md`.
+
+## Translate Comanche055 TPI_SEARCH
+
+All of Comanche055 TPI_SEARCH (443 words: P17 and P77, the TPI search) is native C on the control-transfer ABI, as 65 routines compiled by `tools/interp_compile.py`. All 33,280 cases equal the original program in yaAGC; the host tests pass 260 frozen cases and eight C64 diagnostics pass 114 cases in VICE (seven routines host only). See `docs/CM-TPI-SEARCH.md`.
+
+## Translate Luminary099 and Comanche055 R30
+
+All of Luminary099 and Comanche055 R30 (261 and 283 words: V82, the orbit parameter display) are native C on the control-transfer ABI, as 140 routines compiled by `tools/interp_compile.py`. All 71,680 cases equal the original programs in yaAGC; the host tests pass 560 frozen cases and six C64 diagnostics pass in VICE. See `docs/R30.md`.
+
+## Translate Comanche055 P30-P37
+
+All of Comanche055 P30-P37 (374 words: P30 and P31 with their displays, S30.1, S31.1, DELRSPL and the flag subroutines) is native C on the control-transfer ABI, as 90 routines compiled by `tools/interp_compile.py`. All 46,080 cases equal the original program in yaAGC; the host tests pass 360 frozen cases and six C64 diagnostics pass 180 cases in VICE. See `docs/CM-P30-P37.md`.
+
+## Translate Comanche055 P32-P33_P72-P73
+
+All of Comanche055 P32-P33_P72-P73 (882 words: CSI and CDH with the CSI search) is native C on the control-transfer ABI, as 128 routines compiled by `tools/interp_compile.py`. All 65,536 cases equal the original program in yaAGC; the host tests pass 256 frozen cases and sixteen C64 diagnostics pass 224 cases in VICE (sixteen routines host only). See `docs/CM-P32-P33.md`.
+
+## Translate Comanche055 P34-35_P74-75
+
+1,051 of the 1,065 words of Comanche055 P34-35_P74-75 (P34/P74 TPI, P35/P75 TPM and their subroutines) are native C on the control-transfer ABI, as 185 routines compiled by `tools/interp_compile.py`; VNPOOH, which switches FBANK itself, is left out. All 94,720 cases equal the original program in yaAGC; the host tests pass 185 frozen cases and 22 C64 diagnostics pass 358 cases in VICE (six routines host only). See `docs/CM-P34-P35.md`.
+
+## Translate Comanche055 P37_P70
+
+All of Comanche055 P37_P70 (1,368 words: P37/P70 return to earth and the RTE subroutines) is native C on the control-transfer ABI, as 194 routines compiled by `tools/interp_compile.py`. All 99,328 cases equal the original program in yaAGC; the host tests pass 388 frozen cases and 40 C64 diagnostics pass 354 cases in VICE (seventeen routines host only). See `docs/CM-P37-P70.md`.
