@@ -1,6 +1,3 @@
+# make vice-t4rupt-core at d3ac6e65e97f4677126712fd6c5acb4bf0ae7e0b
 python3 tools/vice_run.py build/t4rupt-core.prg --cycles 3000000000 --timeout 1200
-PASS: VICE PAL t4rupt-core.prg: 276 checks, 0 failures
-
-real	2m7.655s
-user	2m6.276s
-sys	0m0.092s
+PASS: VICE PAL t4rupt-core.prg: 279 checks, 0 failures

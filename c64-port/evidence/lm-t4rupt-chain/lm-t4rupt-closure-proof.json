@@ -3,17 +3,17 @@
  "milestones": {
   "t4rupt-core": {
    "proof": "evidence/t4rupt-core/t4rupt-core-proof.json",
-   "sha256": "c2a352743f88b081bce48a7f705881c2e8ad28aa2405765863814b8ad3b9e520",
+   "sha256": "79dbbe8d627afb8e15ca021237dc87341c123419274ccce7598c98e1c9d05fb9",
    "cases": 2240,
    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
-   "snapshot_sha256": "bb75d23e96498b29822d0069fbf459623a229c461bb9932d6e2abaa0176a5fd0"
+   "snapshot_sha256": "9d0a60bf45eba3cf0dd1d58d5e2caba15ff19d5e70b12d61bc5986557a0667f3"
   },
   "lm-t4rupt-imu": {
    "proof": "evidence/lm-t4rupt-imu/lm-t4rupt-imu-proof.json",
-   "sha256": "80dbb071756f48a27c602c9fcc03d39e90705f20ebe40e6c1abfae7e495f6e8b",
+   "sha256": "1b151f84d9e2dbab7f9416bdac488c358f78f33eeea64a968421c6e526dc1c15",
    "cases": 4736,
    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
-   "snapshot_sha256": "ef657aa9a3701bba8e66081b5f3343eaeb4b3bfc3c574138edd837f04285e953"
+   "snapshot_sha256": "2d152c74d648da6ce79b528c6f63b637017b562bde584ccbe9fcd505ed47ee0d"
   },
   "lm-t4rupt-rr": {
    "proof": "evidence/lm-t4rupt-rr/lm-t4rupt-rr-proof.json",

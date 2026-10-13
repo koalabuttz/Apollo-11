@@ -41,6 +41,8 @@ void lti_input(apollo_overlay_state *m,lti_io *io,uint16_t n){uint32_t r=0x06217
  if(rnd(&r)%2u)io->hw.channel33=(agc_word)(m->words[01303]^(rnd(&r)&rnd(&r)&AGC_MASK));
  /* TLIM with the updated IMODES30 +0: only 30RDMSK bits, temperature bit 15 dropping. */
  if(z==02172u&&n%16u==13u){m->words[01302]=(agc_word)((rnd(&r)&076400u)|040000u);io->hw.channel30&=(agc_word)~076400u;}
+ /* TLIM with the updated IMODES30 -0: every other bit set, temperature bit 15 rising. */
+ if(z==02172u&&n%16u==14u){m->words[01302]=037777u;io->hw.channel30=077777u;}
 }
 unsigned lti_run(apollo_overlay_state *s,lti_io *io,uint16_t n){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;

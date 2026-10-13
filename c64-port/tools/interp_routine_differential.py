@@ -526,6 +526,10 @@ def case(mi, point, n, rng):
         # 'any_fixloc': a basic routine that never names FIXLOC runs from
         # tasks and NOVAC jobs too, so half its cases leave the VAC areas.
         E[0o120] = rng.randrange(0o4000)
+    if mi.cp.any_newjob and mi.cp.novac(point) and rng.random() < 0.25:
+        # 'any_newjob': such a routine also runs while DUMMYJOB idles with
+        # NEWJOB -0.
+        E[0o67] = 0o77777
     if (mi.cp.basic or mi.cp.spec.get('basic_edges')) and mi.kinds[point] == 'b':
         # Compiled basic code: the words it names take zeros, small values
         # and saturating values often enough to reach every CCS exit, BZF and

@@ -49,6 +49,8 @@ M = {
                       '(uint16_t)(n-RLI_LM_CASES))', 'RLI_SRC', '$(RLI_FLAGS)', 'rli', 'RLI'),
     'keyrupt-uprupt': ('keyrupt_uprupt_cases.h', 'n<KU_CASES?ku_digest(0,&image,n):ku_digest(1,&image,'
                        '(uint16_t)(n-KU_CASES))', 'KU_SRC', '$(KU_FLAGS)', 'ku', 'KU'),
+    't4rupt-core': ('t4rupt_core_cases.h', 'n<T4_LM_CASES?t4_digest(0,&image,n):t4_digest(1,&image,'
+                    '(uint16_t)(n-T4_LM_CASES))', 'T4C_SRC', '$(T4C_FLAGS)', 't4', 'T4'),
     # Whole T4RUPT interrupts: the diagnostic runs a picked case list (lch_c64_case), not a stride.
     'lm-t4rupt-chain': ('lm_t4rupt_chain_cases.h', 'lch_digest(&image,n)', 'LCH_SRC', '$(LCH_FLAGS)', 'lch', 'LCH'),
     # Five programs, one per kind: each runs every fourth case of its kind and the kind's first two.
@@ -56,7 +58,8 @@ M = {
     'cm-alarm': ('cm_alarm_cases.h', 'cm_al_digest(&image,n,&(enum exec_status){EXEC_OK})', 'CM_AL_SRC', '', 'cm_al',
                  'CM_AL'),
 }
-TWO = {'rupt-lead-ins': ('RLI_LM_CASES', 'RLI_CM_CASES'), 'keyrupt-uprupt': ('KU_CASES', 'KU_CASES')}
+TWO = {'rupt-lead-ins': ('RLI_LM_CASES', 'RLI_CM_CASES'), 'keyrupt-uprupt': ('KU_CASES', 'KU_CASES'),
+       't4rupt-core': ('T4_LM_CASES', 'T4_CM_CASES')}
 
 
 def make_var(expr):
