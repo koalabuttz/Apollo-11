@@ -1,0 +1,793 @@
+{
+ "milestone": "standard-lead-oracle",
+ "oracle": "yaAGC agc_engine from the original ropes, tools/standard_lead_oracle_reference.c",
+ "missions": {
+  "Luminary099": {
+   "source_path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+   "source_sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
+   "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+   "registered_entries": 11,
+   "source_words": 32,
+   "source_lines_with_words": 32,
+   "instructions": 32,
+   "instructions_executed_by_oracle": 32,
+   "instructions_not_executed_without_reason": [],
+   "line_map": [
+    {
+     "line": 59,
+     "address": "04,2576",
+     "source": "E/BKCALL DXCH BUF2",
+     "words": [
+      "52134"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 60,
+     "address": "04,2577",
+     "source": "DXCH EBUF2",
+     "words": [
+      "53170"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 61,
+     "address": "04,2600",
+     "source": "INCR EBUF2",
+     "words": [
+      "25167"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 62,
+     "address": "04,2601",
+     "source": "CA BBANK",
+     "words": [
+      "30006"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 63,
+     "address": "04,2602",
+     "source": "MASK LOW10",
+     "words": [
+      "75012"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 64,
+     "address": "04,2603",
+     "source": "ADS EBUF2 +1",
+     "words": [
+      "27170"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 65,
+     "address": "04,2604",
+     "source": "NDX EBUF2",
+     "words": [
+      "51167"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 66,
+     "address": "04,2605",
+     "source": "CA 0 -1",
+     "words": [
+      "27777"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 67,
+     "address": "04,2606",
+     "source": "TC SWCALL",
+     "words": [
+      "04622"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 69,
+     "address": "04,2607",
+     "source": "TC +4",
+     "words": [
+      "02613"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (return0)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 70,
+     "address": "04,2610",
+     "source": "TC +2",
+     "words": [
+      "02612"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (return1)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 71,
+     "address": "04,2611",
+     "source": "INCR EBUF2",
+     "words": [
+      "25167"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 72,
+     "address": "04,2612",
+     "source": "INCR EBUF2",
+     "words": [
+      "25167"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 73,
+     "address": "04,2613",
+     "source": "E/SWITCH DXCH EBUF2",
+     "words": [
+      "53170"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 74,
+     "address": "04,2614",
+     "source": "DTCB",
+     "words": [
+      "52006"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 86,
+     "address": "04,2615",
+     "source": "E/CALL LXCH LOC",
+     "words": [
+      "22164"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 87,
+     "address": "04,2616",
+     "source": "INDEX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 88,
+     "address": "04,2617",
+     "source": "CA L",
+     "words": [
+      "30001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 89,
+     "address": "04,2620",
+     "source": "INCR L",
+     "words": [
+      "24001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 90,
+     "address": "04,2621",
+     "source": "INCR L",
+     "words": [
+      "24001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 91,
+     "address": "04,2622",
+     "source": "DXCH EBUF2",
+     "words": [
+      "53170"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 92,
+     "address": "04,2623",
+     "source": "TC INTPRET",
+     "words": [
+      "06037"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 93,
+     "address": "04,2624",
+     "source": "CALL",
+     "words": [
+      "77624"
+     ],
+     "kind": "interpretive order",
+     "native": "src/standard_lead_routines.c (call_order)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 94,
+     "address": "04,2625",
+     "source": "EBUF2",
+     "words": [
+      "01167"
+     ],
+     "kind": "interpretive operand",
+     "native": "src/standard_lead_routines.c (call_order)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 95,
+     "address": "04,2626",
+     "source": "EXIT",
+     "words": [
+      "77776"
+     ],
+     "kind": "interpretive order",
+     "native": "src/standard_lead_routines.c (exit_op)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 96,
+     "address": "04,2627",
+     "source": "LXCH EBUF2 +1",
+     "words": [
+      "23170"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (resume)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 97,
+     "address": "04,2630",
+     "source": "TCF INTPRET +2",
+     "words": [
+      "16041"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (resume)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 120,
+     "address": "04,2631",
+     "source": "E/JOBWAK TC JOBWAKE",
+     "words": [
+      "05137"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 121,
+     "address": "04,2632",
+     "source": "CS BIT11",
+     "words": [
+      "44741"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 122,
+     "address": "04,2633",
+     "source": "NDX LOCCTR",
+     "words": [
+      "50064"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 123,
+     "address": "04,2634",
+     "source": "ADS LOC",
+     "words": [
+      "26164"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 124,
+     "address": "04,2635",
+     "source": "TC RUPTREG3",
+     "words": [
+      "00072"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (jobwak)",
+     "executed_by_oracle": true
+    }
+   ]
+  },
+  "Comanche055": {
+   "source_path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+   "source_sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "registered_entries": 14,
+   "source_words": 36,
+   "source_lines_with_words": 36,
+   "instructions": 36,
+   "instructions_executed_by_oracle": 32,
+   "instructions_not_executed_without_reason": [],
+   "line_map": [
+    {
+     "line": 61,
+     "address": "13,2036",
+     "source": "E/BKCALL DXCH BUF2",
+     "words": [
+      "52134"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 62,
+     "address": "13,2037",
+     "source": "DXCH EBUF2",
+     "words": [
+      "52365"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 63,
+     "address": "13,2040",
+     "source": "INCR EBUF2",
+     "words": [
+      "24364"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 64,
+     "address": "13,2041",
+     "source": "CA BBANK",
+     "words": [
+      "30006"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 65,
+     "address": "13,2042",
+     "source": "MASK LOW10",
+     "words": [
+      "75054"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 66,
+     "address": "13,2043",
+     "source": "ADS EBUF2 +1",
+     "words": [
+      "26365"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 67,
+     "address": "13,2044",
+     "source": "NDX EBUF2",
+     "words": [
+      "50364"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 68,
+     "address": "13,2045",
+     "source": "CA 0 -1",
+     "words": [
+      "27777"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 69,
+     "address": "13,2046",
+     "source": "TC SWCALL",
+     "words": [
+      "04666"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_bkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 71,
+     "address": "13,2047",
+     "source": "TC +4",
+     "words": [
+      "02053"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_return0)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 72,
+     "address": "13,2050",
+     "source": "TC +2",
+     "words": [
+      "02052"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_return1)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 73,
+     "address": "13,2051",
+     "source": "INCR EBUF2",
+     "words": [
+      "24364"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 74,
+     "address": "13,2052",
+     "source": "INCR EBUF2",
+     "words": [
+      "24364"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 75,
+     "address": "13,2053",
+     "source": "E/SWITCH DXCH EBUF2",
+     "words": [
+      "52365"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 76,
+     "address": "13,2054",
+     "source": "DTCB",
+     "words": [
+      "52006"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_return2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 88,
+     "address": "13,2055",
+     "source": "E/CALL LXCH LOC",
+     "words": [
+      "22164"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 89,
+     "address": "13,2056",
+     "source": "INDEX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 90,
+     "address": "13,2057",
+     "source": "CA L",
+     "words": [
+      "30001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 91,
+     "address": "13,2060",
+     "source": "INCR L",
+     "words": [
+      "24001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 92,
+     "address": "13,2061",
+     "source": "INCR L",
+     "words": [
+      "24001"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 93,
+     "address": "13,2062",
+     "source": "DXCH EBUF2",
+     "words": [
+      "52365"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 94,
+     "address": "13,2063",
+     "source": "TC INTPRET",
+     "words": [
+      "06006"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_ecall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 95,
+     "address": "13,2064",
+     "source": "CALL",
+     "words": [
+      "77624"
+     ],
+     "kind": "interpretive order",
+     "native": "src/standard_lead_routines.c (cm_call_order)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 96,
+     "address": "13,2065",
+     "source": "EBUF2",
+     "words": [
+      "00364"
+     ],
+     "kind": "interpretive operand",
+     "native": "src/standard_lead_routines.c (cm_call_order)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 97,
+     "address": "13,2066",
+     "source": "EXIT",
+     "words": [
+      "77776"
+     ],
+     "kind": "interpretive order",
+     "native": "src/standard_lead_routines.c (cm_exit_op)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 98,
+     "address": "13,2067",
+     "source": "LXCH EBUF2 +1",
+     "words": [
+      "22365"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_resume)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 99,
+     "address": "13,2070",
+     "source": "TCF INTPRET +2",
+     "words": [
+      "16010"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_resume)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 125,
+     "address": "04,2606",
+     "source": "E/JOBWAK TC JOBWAKE",
+     "words": [
+      "05201"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 126,
+     "address": "04,2607",
+     "source": "CS BIT11",
+     "words": [
+      "45005"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 127,
+     "address": "04,2610",
+     "source": "NDX LOCCTR",
+     "words": [
+      "50064"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 128,
+     "address": "04,2611",
+     "source": "ADS LOC",
+     "words": [
+      "26164"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 129,
+     "address": "04,2612",
+     "source": "TC RUPTREG3",
+     "words": [
+      "00072"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_jobwak)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 144,
+     "address": "33,2000",
+     "source": "COMPVER TC GCOMPVER",
+     "words": [
+      "03436"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_compver)",
+     "executed_by_oracle": false,
+     "not_executed": "executed in milestone cm-lead-tests: its yaAGC oracle runs the entry words COMPVER, GTSCPSS1 and REDO at 33,2000-2002 (384 cases, evidence/cm-lead-tests)"
+    },
+    {
+     "line": 146,
+     "address": "33,2001",
+     "source": "GTSCPSS1 TC GTSCPSS",
+     "words": [
+      "03131"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_gtscpss1)",
+     "executed_by_oracle": false,
+     "not_executed": "executed in milestone cm-lead-tests: its yaAGC oracle runs the entry words COMPVER, GTSCPSS1 and REDO at 33,2000-2002 (384 cases, evidence/cm-lead-tests)"
+    },
+    {
+     "line": 148,
+     "address": "33,2002",
+     "source": "REDO TC NEWMODEX",
+     "words": [
+      "05354"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_redo)",
+     "executed_by_oracle": false,
+     "not_executed": "executed in milestone cm-lead-tests: its yaAGC oracle runs the entry words COMPVER, GTSCPSS1 and REDO at 33,2000-2002 (384 cases, evidence/cm-lead-tests)"
+    },
+    {
+     "line": 149,
+     "address": "33,2003",
+     "source": "MM 07",
+     "words": [
+      "00007"
+     ],
+     "kind": "instruction",
+     "native": "src/standard_lead_routines.c (cm_redo)",
+     "executed_by_oracle": false,
+     "not_executed": "REDO's MM 07 operand: data that NEWMODEX reads through Q, not an instruction (milestone cm-lead-tests leaves Q at it)"
+    }
+   ]
+  }
+ },
+ "native": {
+  "src/standard_lead_routines.c": "1522f52f41048a33842789d91fdc2d7e5612c3fc1c072c06c634df83583251f6",
+  "src/standard_lead.c": "9c6424c15aaaf69aba30c8686dda587a5fc178584504c42fb2b9a9d21a7856a7",
+  "src/standard_lead_interp.c": "9671471fadc749c6c0adb722d46442b4457595042e32e6c4ce40e7bade2c2af2",
+  "src/standard_lead_wake.c": "2e50af7784d5a2f223f04a4c80dfd31e2c1591e376ce4f8bec1bab2c6a725377",
+  "src/standard_lead_cm.c": "ab20c3d77f1dfd4a25458281da2492e8e637a6b8a835f5de100fffb7dd567ddf",
+  "include/standard_lead_routines.h": "994c5c16578eb55477c48a73ac1f98aa6966c0810f10e4b5ae3f967589a0d008",
+  "include/standard_lead.h": "66611061ce674707bde3dfecb9fc633413891b9d21de760873a4445b46df46f6"
+ }
+}
