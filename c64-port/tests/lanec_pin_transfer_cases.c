@@ -266,6 +266,35 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
 
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m) { make_case(&cases[n], s, io, m); cur_meta = m; }
 const lanec_suite lanec_suite_pin_transfer = { "pin-transfer", LANEC_PIN_TRANSFER_CASES, make, run };
+
+/* pin-refuse: entry states outside the routines' domain. Each case takes a
+ * routine's own-entry case of pin-transfer (every routine in turn, both
+ * missions; 510 routines) and breaks the register contract every Pinball routine checks
+ * first (lanec_registers_valid): BB not FB|EB>>8, the ZERO register nonzero,
+ * or FB selecting bank 7, where the file has no code (no routine is
+ * registered there). The chain must be refused with the image and I/O
+ * unchanged; diff.py --refusals-only. */
+static uint16_t own[LANEC_PIN_TRANSFER_CASES], owns;
+static void make_refuse(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
+{
+    uint32_t i = n / 3u;
+    uint16_t *w = s->words, z, k;
+    if (!owns)
+        for (k = 0; k < LANEC_PIN_TRANSFER_CASES; ++k)
+            if (cases[k].module & 0200u) own[owns++] = k;
+    make_case(&cases[own[(i * 4u + n % 3u) % owns]], s, io, m);   /* 4 cases per routine */
+    cur_meta = m;
+    z = w[LANEC_Z];
+    switch (n % 3u) {
+    case 0: w[LANEC_BB] ^= 1u; break;                              /* BB disagrees with EB */
+    case 1: w[7] = (uint16_t)(1u + i % 077776u); break;            /* ZERO nonzero */
+    default:
+        if (z >= 02000u && z < 04000u) lanec_enter(s, io, 07u, z);   /* bank 7 */
+        else w[LANEC_BB] ^= 1u;
+        break;
+    }
+}
+const lanec_suite lanec_suite_pin_refuse = { "pin-refuse", 3u * 510u, make_refuse, run };
 #endif
 
 /* pin-transfer-c64: the round trips as the C64 runs them. Every module

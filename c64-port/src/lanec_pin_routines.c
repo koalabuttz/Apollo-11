@@ -53,7 +53,7 @@ static int unrepresented(uint16_t last)
 static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s, void *v, const dispatch *f)
 {
     lm_dntm_io *x = v;
-    if (!p || !s || !x || !p->hardware) return EXEC_OUT_OF_SCOPE;
+    if (!p || !s || !x || !p->hardware || !lanec_registers_valid(s)) return EXEC_OUT_OF_SCOPE;
     LANEC_PIN_SAVE(s);
     for (; *f; ++f) {
         memset(&io, 0, sizeof io);
@@ -78,7 +78,7 @@ static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s,
 static enum exec_status cm(const agc_native_program *p, apollo_overlay_state *s, void *v, const dispatch *f)
 {
     cm_dntm_io *x = v;
-    if (!p || !s || !x) return EXEC_OUT_OF_SCOPE;
+    if (!p || !s || !x || !lanec_registers_valid(s)) return EXEC_OUT_OF_SCOPE;
     LANEC_PIN_SAVE(s);
     for (; *f; ++f) {
         memset(&io, 0, sizeof io);
