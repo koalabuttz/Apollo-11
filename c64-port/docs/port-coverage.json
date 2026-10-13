@@ -1755,7 +1755,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613 (which includes JOBWAKE's not-found -0, at 07,3702), GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, 8192AUG with LGYRO under EBANK 0 indexing FB, Z or BB (index 4-6), GYROAGRE's indexed DXCH under EBANK 0 landing on MPAC +3 or ITEMP1, SCALPREP return MPAC +2 outside 010-07776. Entries T4RUPT reaches by TC (NOATTOFF, and SETISSW's IBNKCALL returns) assume the state T4RUPT leaves: inside the interrupt, with the interrupted program's bank and return saved by T4RUPT; these routines neither read nor change the in-interrupt flag and none ends with RESUME, so the cases run them with the flag clear and either interrupt-enable value. Device adapter obligation: the routines only set the channel 12 and 14 bits and the GYROCMD/CDU counters as the AGC does; driving the gyros, the IMU CDUs and the optics from them is the device adapter's job (the oracle's yaAGC drops that device block).",
         "external_continuations": [
           "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
           "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
@@ -1773,17 +1773,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
+            "sha256": "4d15bb6da3a037c0bfa4e1aedfd84f9acef935805a691dd706ccd4f8d0d08ddb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
+            "sha256": "658981da8665a21e3f7c7253d11e2628e85334db17a934ed1c7eaf86133e8712"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1288
+              "vice-imu-mode-switching": 1290
             }
           },
           "independent_review": {
@@ -1792,7 +1792,8 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
-            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
+            "sha256": "fa2cd8d6f806b5de402ff195f49c9aa5907d96a7ad645b14b6dbf8d58a4917ac",
+            "check": "python3 tools/imu_mode_switching_cover.py"
           }
         }
       },
@@ -7342,7 +7343,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613 (which includes JOBWAKE's not-found -0, at 07,3702), GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, 8192AUG with LGYRO under EBANK 0 indexing FB, Z or BB (index 4-6), GYROAGRE's indexed DXCH under EBANK 0 landing on MPAC +3 or ITEMP1, SCALPREP return MPAC +2 outside 010-07776. Entries T4RUPT reaches by TC (NOATTOFF, and SETISSW's IBNKCALL returns) assume the state T4RUPT leaves: inside the interrupt, with the interrupted program's bank and return saved by T4RUPT; these routines neither read nor change the in-interrupt flag and none ends with RESUME, so the cases run them with the flag clear and either interrupt-enable value. Device adapter obligation: the routines only set the channel 12 and 14 bits and the GYROCMD/CDU counters as the AGC does; driving the gyros, the IMU CDUs and the optics from them is the device adapter's job (the oracle's yaAGC drops that device block).",
         "external_continuations": [
           "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
           "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
@@ -7361,17 +7362,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
+            "sha256": "4d15bb6da3a037c0bfa4e1aedfd84f9acef935805a691dd706ccd4f8d0d08ddb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
+            "sha256": "658981da8665a21e3f7c7253d11e2628e85334db17a934ed1c7eaf86133e8712"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1288
+              "vice-imu-mode-switching": 1290
             }
           },
           "independent_review": {
@@ -7380,7 +7381,8 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
-            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
+            "sha256": "fa2cd8d6f806b5de402ff195f49c9aa5907d96a7ad645b14b6dbf8d58a4917ac",
+            "check": "python3 tools/imu_mode_switching_cover.py"
           }
         }
       },

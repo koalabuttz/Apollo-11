@@ -13,7 +13,7 @@ the freeze: the cases the C64 diagnostics run) with gcc gcov at -O0: for each
 mission, every branch outcome of src/imu_mode_switching.c the host stream
 takes in that mission must be taken by the mission's C64 rows. Writes
 build/imu-mode-switching-c64-cover.json."""
-import json, pathlib, re, shutil, subprocess, sys
+import hashlib, json, pathlib, re, shutil, subprocess, sys
 
 R = pathlib.Path(__file__).resolve().parents[1]
 MAIN = 'src/imu_mode_switching.c'
@@ -83,7 +83,9 @@ def taken(name, mission, arg):
 def main():
     rows = R / 'build/imu-mode-switching-c64-rows.txt'
     count = lambda t: sum(len(v) for v in t.values())
-    result = dict(sources=MEASURED, measure='gcc gcov -O0 branch outcomes per mission over every linked native source, host build',
+    result = dict(sources=MEASURED,
+                  source_sha256={s: hashlib.sha256((R / s).read_bytes()).hexdigest() for s in MEASURED + UNMEASURED},
+                  measure='gcc gcov -O0 branch outcomes per mission over every linked native source, host build',
                   c64_rows=len(rows.read_text().split()), missions={})
     fails = []
     for cm, name in enumerate(MISSIONS):
