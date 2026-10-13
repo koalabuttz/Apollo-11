@@ -838,8 +838,9 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
                 continue
             trial = mask | want
             tp = pick + part
-            if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
-                if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
+            if c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
+                # (With mask 0 the trial is the routine's own run.)
+                if not mask or c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
                     # The routine's whole run (with every routine it reaches)
                     # does not fit one diagnostic: its cases stay host-only.
                     if '%s %s' % (mi.m, mi.cp.where(p)) not in C64_HOST_ONLY:

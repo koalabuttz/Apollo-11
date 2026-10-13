@@ -432,6 +432,34 @@ SPECS = {
         'resume_orphans': True,
         'freeze_stride': 32,
     },
+    'lm-p40-p47': {
+        'missions': ('lm',),
+        'file': {'lm': 'P40-P47.agc'},
+        'base': {'lm': 'lm_p40_p47'},
+        'symbol': {'lm': 'lm_p40_p47'},
+        'entries': ['P40LM', 'P41LM', 'P42LM', 'P47LM', 'POSTBURN', 'TIGNOW', 'REDO6.7', 'CALCN85',
+                    'P42STAGE', 'IMPLBURN', 'ENGOFTSK', 'ENGINOF1', 'ENGINOF2', 'ENGINOF3', 'ENGINOF4',
+                    'S40.8', 'S40.13', 'TRIMGIMB', 'S40.1', 'S40.2,3', 'S40.9', 'S41.1', 'UPDATEVG',
+                    # dead code after a GOTO, kept as its own routine
+                    'S40.133'],
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
+                      '2PHSCHNG': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto',
+                      'NOVAC': 'auto', 'WAITLIST': 'auto', 'TWIDDLE': 'auto', 'FIXDELAY': 'auto',
+                      'VARDELAY': 'auto', 'PRIOCHNG': 'auto', 'TPAGREE': 'auto', 'NOULLAGE': 'auto',
+                      'POSTJUMP': 1, 'TASKOVER': None, 'ENDOFJOB': None, 'GOTOPOOH': None,
+                      'P40ALM': None, 'REDO4.2': None, 'BURNBABY': None, 'B*RNB*B*': None, 'ISWRETRN': None},
+        # P40-P47 run as jobs: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        'noreturn': ['POSTJUMP'],
+        'resume_orphans': True,
+        # WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the
+        # output-channel model.
+        'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
+        # RTB routines without a native body: the run ends at them.
+        'rtb': {'NORMUNX1': None},
+        'target': 'tests/lm_p40_p47_target.c',
+        'freeze_stride': 640,
+    },
     'cm-r31': {
         'missions': ('cm',),
         'file': {'cm': 'R31.agc'},
