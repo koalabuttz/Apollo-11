@@ -2282,7 +2282,48 @@
           "scope": "Every word of the file (374 words in banks 02, 31, 32 and 35): P30, P31, their displays, S30.1, S31.1, DELRSPL, AUGEKUGL, AVFLAGA, AVFLAGP and P20FLGON, as 90 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P30-P37.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 4, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p30-p37 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (CLOKTASK, GOFLASH, GOFLASHR)",
+          "WAITLIST with its inline 2CADR, PHASCHNG and 2PHSCHNG with their inline phase words (restart groups)",
+          "UPFLAG and DOWNFLAG with their inline flag words",
+          "ENDOFJOB and TCF GOTOPOOH",
+          "AGAIN, GET+MGA, INTWAKE0, LALOTORV, LOMAT, MAXCHK, MIDGIM, PERIAPO1, SHIFTR1, SPLRET and VGAMCALC through CALL, STCALL or GOTO (interpretive)",
+          "The interpreter exits POODOO and ALARM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-source-map.json",
+            "sha256": "ee49323558c2b74f2e8d208bffc04796e0950bacd0c5d77af2b54ee374880a21"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
+            "sha256": "272d62a64184318b4133aa54f76fc3799788dd3a7afd3060f074f12a0f85758f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
+            "sha256": "8133cedb40bb835a77afcdc857d86c3a84dbf15b002d92681c735066af670d79"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
+            "sha256": "5f726691ca6eda2d6dcacdbc283d33d451e90a35a2a59143de97a58dbe040749",
+            "vice_targets": {
+              "vice-cm-p30-p37": 169
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
+            "sha256": "f48fabba2f8e332b9f3ae272eb5f4cbaef6b7e63a23f58648963a9acdad2c53c"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P32-P33_P72-P73.agc",
@@ -2976,7 +3017,47 @@
           "scope": "Every word of the file (283 words in bank 23): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, CANDEL, SPLRET, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 74 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/R30.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "external_continuations": [
+          "FINDVAC and NOVAC with their inline 2CADRs, WAITLIST with its inline 2CADR (Executive and Waitlist)",
+          "BANKCALL with its inline CADR (DELAYJOB)",
+          "B5OFF, CHANG1, CHECKMM, ENDOFJOB and TASKOVER",
+          "CALCTFF, CALCTPER, DELRSPL, INTSTALL, TFFCONMU and TFFRP/RA through CALL (interpretive)",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/r30/r30-source-map.json",
+            "sha256": "9d2dbcbf6f8c6f235271bafef662ebc44aa522a877ffc38565d7ba591f26febc"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/r30/r30-proof.json",
+            "sha256": "dd5a4899b321ba39c1cab15ffd6c7264eda4c4ff17ac5ed8950addae8cdfec06"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/r30/r30-host.log",
+            "sha256": "2a4e677c82e13449c7838519a9d6bf5d784ef02d29451201e1aa1785a2387e84"
+          },
+          "c64_execution_results": {
+            "path": "evidence/r30/r30-vice.log",
+            "sha256": "db4cc8a51ba09e2fdf4e2555a356db14355b17860c1d7e59a846858cfe5f73d9",
+            "vice_targets": {
+              "vice-r30": 252
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/r30/r30-c64-cover.json",
+            "sha256": "d2e26fecca031b724e07acecdde627469ed62dff741604b65f2951f85ecdab49"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/R31.agc",
@@ -2998,7 +3079,47 @@
           "scope": "Every word of the file (218 words in bank 31): R31CALL, DSPDELAY, DISPN5X, V83, V83CALL, COMPDISP, R34ANG, STATEXTP, HAVEBASE, OTHINT, GETRVN5, GETRVN6, GETRVN and R34LOS, as 44 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-R31.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-r31 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "external_continuations": [
+          "FINDVAC with its inline 2CADR (Executive)",
+          "BANKCALL with its inline CADR (DELAYJOB, GOMARKF)",
+          "B5OFF and ENDEXT",
+          "CDUTRIG, *NBSM*, SXTNB, LEMPREC, CSMPREC, INTSTALL and INTEGRVS through CALL (interpretive)",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-r31/cm-r31-source-map.json",
+            "sha256": "e60905fac0c78ec2be655fd1d6afca44e3f1817163ec2a9d9916b4369c4f9829"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-r31/cm-r31-proof.json",
+            "sha256": "6fda45b2532d86c9bafa4bace9f081b6fdd55216ff0b90430e7457209f74b58f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-r31/cm-r31-host.log",
+            "sha256": "66f3ab38280d41e6e3069eb737cc401c3b9c2b8dff1ea5fc3f5aac6d65818bb2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-r31/cm-r31-vice.log",
+            "sha256": "4f333ac25f13449d9cc5a1c82216a27e54e9a772143c7f1518039c1422ced40b",
+            "vice_targets": {
+              "vice-cm-r31": 118
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-r31/cm-r31-c64-cover.json",
+            "sha256": "3863afe4e20cdc83969915cf3b846c133c714edd65a8815b5a71a89855e680ce"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/R60_62.agc",
@@ -3751,7 +3872,47 @@
           "scope": "Every word of the file (443 words in banks 35, 36 and 07): P17, P77, VNCOMP17, ALARUMS, the search (P17S, BIS, CONCAUL, ADVCSM, JUNCT1-3, INTERP, HALFSAFE, LRGRDVO, RNGETEST, ENDEN, USEKAY, NEXUS) and TRANSANG, as 65 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-TPI-SEARCH.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "0c27ebd505a8a19362ec4eb023cf970e7465d207",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-tpi-search pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
+          "AVFLAGA, AVFLAGP, P20FLGON, BLANKET, VNPOOH, ENDOFJOB and TCF GOTOPOOH",
+          "ALARM with its inline alarm code",
+          "ARCTRIG, CSMCONIC, CSMSTORE, D1/32, DCOMP, INITVEL, LEMCONIC, LEMSTORE, PERIAPO and TIMETHET through CALL, STCALL or GOTO (interpretive)",
+          "The interpreter exits POODOO and ALARM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-tpi-search/cm-tpi-search-source-map.json",
+            "sha256": "9cd9a2af4ed5944e9ee7f31d658e00efb4ebc3217f2fb028c6d63e3c22bd1dfa"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
+            "sha256": "5facde770588d7805a24b63597a0ba34201293fc290cf5c2af057a6fe1acf123"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
+            "sha256": "07701059d4b8f410b39d705f2e7ba70a0600832bb5a7034357571d159b61799e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
+            "sha256": "287a2ab90c3c7530b9d6cd96aa540b3201920d7909ccb210ec5f14332cba7c3b",
+            "vice_targets": {
+              "vice-cm-tpi-search": 236
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
+            "sha256": "66c62349530ab20343dfaa9f92d4c4db61e073ea66a390c44388e0d1c9fd79b7"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TVCDAPS.agc",
@@ -8070,7 +8231,47 @@
           "scope": "Every word of the file (261 words in bank 22): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 66 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/R30.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "external_continuations": [
+          "FINDVAC and NOVAC with their inline 2CADRs, WAITLIST with its inline 2CADR (Executive and Waitlist)",
+          "BANKCALL with its inline CADR (DELAYJOB)",
+          "B5OFF, CHANG1, ENDOFJOB and TASKOVER",
+          "CALCTFF, CALCTPER, TFFCONMU and TFFRP/RA through CALL (interpretive)",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/r30/r30-source-map.json",
+            "sha256": "9d2dbcbf6f8c6f235271bafef662ebc44aa522a877ffc38565d7ba591f26febc"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/r30/r30-proof.json",
+            "sha256": "dd5a4899b321ba39c1cab15ffd6c7264eda4c4ff17ac5ed8950addae8cdfec06"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/r30/r30-host.log",
+            "sha256": "2a4e677c82e13449c7838519a9d6bf5d784ef02d29451201e1aa1785a2387e84"
+          },
+          "c64_execution_results": {
+            "path": "evidence/r30/r30-vice.log",
+            "sha256": "db4cc8a51ba09e2fdf4e2555a356db14355b17860c1d7e59a846858cfe5f73d9",
+            "vice_targets": {
+              "vice-r30": 252
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/r30/r30-c64-cover.json",
+            "sha256": "d2e26fecca031b724e07acecdde627469ed62dff741604b65f2951f85ecdab49"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/R31.agc",

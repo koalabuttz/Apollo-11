@@ -23,6 +23,23 @@
 #define RK_JOBS_CASES CM_EXJ_CASES
 #define RK_IDLE_CASES CM_EXI_CASES
 #endif
+/* One case's inputs besides the image: the device record and the
+ * module's case record. The C64 flight check (platform/c64/
+ * resident_flight_check.c) gets it from a case module in the job slot and
+ * runs the kernel half in the resident. */
+typedef struct {
+ uint16_t n;
+#if RK_LM
+ p66_bias_io io;
+ union { lm_exs_case services; lm_exj_case jobs; agc_hardware idle; } k;
+ /* The services programs' second table (RESTARTS' routines), set by the
+  * caller: on the C64 the flight check's restart module provides it. */
+ const agc_routine_table *restart;
+#else
+ cm_native_io io;
+ cm_exs_case services;
+#endif
+} rk_case;
 /* The digest of a refused run (the kind word alone). */
 #define RK_REFUSED_DIGEST 0x00020002ul
 /* The entry Z of the last case run (for diagnostics). */
@@ -31,4 +48,12 @@ extern agc_word rk_entry;
 uint32_t rk_services_digest(apollo_overlay_state *s,uint16_t n);
 uint32_t rk_jobs_digest(apollo_overlay_state *s,uint16_t n);
 uint32_t rk_idle_digest(apollo_overlay_state *s,uint16_t n);
+/* The two halves of each: the input writes image s and *c for case c->n
+ * (the module's generator); the run is the kernel's part and the digest. */
+void rk_services_input(apollo_overlay_state *s,rk_case *c);
+void rk_jobs_input(apollo_overlay_state *s,rk_case *c);
+void rk_idle_input(apollo_overlay_state *s,rk_case *c);
+uint32_t rk_services_run(apollo_overlay_state *s,rk_case *c);
+uint32_t rk_jobs_run(apollo_overlay_state *s,rk_case *c);
+uint32_t rk_idle_run(apollo_overlay_state *s,rk_case *c);
 #endif
