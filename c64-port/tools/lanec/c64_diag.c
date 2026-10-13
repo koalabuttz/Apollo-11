@@ -12,6 +12,9 @@
 #include LANEC_FROZEN
 
 static apollo_overlay_state s;
+#ifdef LANEC_C64_SKIP   /* a program that carries only some frozen rows: nonzero after make for the others */
+int LANEC_C64_SKIP(void);
+#endif
 
 int main(void)
 {
@@ -23,6 +26,9 @@ int main(void)
     for (i = 0; i < sizeof lanec_frozen / sizeof lanec_frozen[0]; ++i) {
         memset(&meta, 0, sizeof meta);
         LANEC_SUITE.make(lanec_frozen[i].n, &s, &io, &meta);
+#ifdef LANEC_C64_SKIP
+        if (LANEC_C64_SKIP()) continue;
+#endif
         status = LANEC_SUITE.run(&s, &io, meta.mission);
         ++checks;
         if (lanec_hash(&s, &io, status) != lanec_frozen[i].hash) ++failures;

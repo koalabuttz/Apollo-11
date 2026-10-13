@@ -41,7 +41,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 CASES_PER_SITE = 4
 FAMILIES = {
     'di': dict(file='DISPLAY_INTERFACE_ROUTINES.agc', title='DISPLAY_INTERFACE_ROUTINES',
-               modules=('dsp', 'mark', 'play', 'sleep', 'idle', 'nvdsp'), c64='dsp', data=wholefile.DATA),
+               modules=('dsp', 'mark', 'play', 'sleep', 'idle', 'nvdsp'), c64='dsp', data=wholefile.DATA,
+               # the C64 round trips: callers of the display-start and MAKEPLAY entries, both missions
+               c64_modules=('dsp', 'play'), c64_missions=('LM', 'CM')),
     'ev': dict(file='EXTENDED_VERBS.agc', title='EXTENDED_VERBS',
                modules=('front', 'short', 'align', 'radar', 'dap', 'time', 'track', 'lmi'), c64='front',
                data=wholefile.DATA | {'REMADR', 'MM'}, fans=('LST2FAN',),
@@ -367,6 +369,27 @@ def interbank_sites(mission, callees=False):
     return (sites, callee) if callees else sites
 
 
+def c64_frozen(fam, c64):
+    """For a family whose C64 program has no room for every C64 case: the
+    frozen rows only (tests/lanec_<fam>_transfer_c64_c64.h), with their case
+    numbers, for the C64 build."""
+    frozen = ROOT / f'tests/lanec_{fam}_transfer_c64_c64.h'
+    if fam != 'di' or not frozen.exists():
+        return []
+    ns = [int(n) for n in re.findall(r'\{(\d+)u, 0x', frozen.read_text())]
+    up = fam.upper()
+    row = {n: f'    {{ {n}u, {c64[n].strip().split("/*")[0].strip().rstrip(",")} }},' for n in ns}
+    lm = [row[n] for n in ns if 'LANEC_LM' in row[n]]
+    cm = [row[n] for n in ns if 'LANEC_CM' in row[n]]
+    return ([f'#ifdef LANEC_{up}_TRANSFER_C64',
+             f'/* the frozen rows only (tests/lanec_{fam}_transfer_c64_c64.h), one mission per program',
+             ' * (LANEC_DI_C64_CM: Comanche055): case number, case */',
+             '#ifndef LANEC_DI_C64_CM',
+             f'static const struct {{ uint16_t n; transfer_case c; }} c64_frozen[{len(lm)}] = {{'] + lm
+            + ['};', '#else', f'static const struct {{ uint16_t n; transfer_case c; }} c64_frozen[{len(cm)}] = {{'] + cm
+            + ['};', '#endif', '#endif'])
+
+
 def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=None):
     rows = []
     for mission in ('LM', 'CM'):
@@ -403,7 +426,28 @@ def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=
                     rows.append(f'    {{ {key}u, 0u, {n}u, {cfg["modules"].index(mod) | 0o200}u, LANEC_{mission} }},'
                                 f'   /* {where} {mod} */')
     c64i = cfg['modules'].index(cfg['c64'])
-    c64 = [r for r in rows if r.split(', ')[3] in (f'{c64i}u', f'{c64i | 0o200}u') and 'LANEC_LM' in r]
+    c64m = {f'{cfg["modules"].index(m) | f}u' for m in cfg.get('c64_modules', (cfg['c64'],)) for f in (0, 0o200)}
+    c64 = [r for r in rows if r.split(', ')[3] in c64m
+           and any(f'LANEC_{x} ' in r for x in cfg.get('c64_missions', ('LM',)))]
+    stops = {}
+    if 'c64_modules' in cfg and not first:
+        # the other modules' points, where the oracle stops (the C64 program has no routine there)
+        for mission in cfg['c64_missions']:
+            stops[mission] = [('LANEC_ANY_BANK' if z >= 0o4000 else f'0{bank:o}u', f'0{z:o}u')
+                              for key, (mod, bank, z) in sorted(points[mission].items())
+                              if isinstance(mod, str) and mod in cfg['modules'] and mod not in cfg['c64_modules']]
+        # di: also every C64 module's point from its own entry (index | 0200),
+        # so that chains go on past the module's exit (BOTHJOBS to BANKJUMP)
+        per = cfg.get('cases_per_entry', 4)
+        for mission in cfg['c64_missions']:
+            for key, (mod, bank, z) in sorted(points[mission].items()):
+                if mod not in cfg['c64_modules'] or key not in accepted[mission]:
+                    continue
+                ns = accepted[mission][key]
+                where = f'{bank:02o},{z:04o}' if z < 0o4000 else f'FF,{z:04o}'
+                for n in sorted({ns[i * len(ns) // per] for i in range(min(per, len(ns)))}):
+                    c64.append(f'    {{ {key}u, 0u, {n}u, {cfg["modules"].index(mod) | 0o200}u, LANEC_{mission} }},'
+                               f'   /* {where} {mod} */')
     if first:
         # pin: the c64 module's own entries, more cases each (the chains that
         # need another module's routine are refused there)
@@ -416,6 +460,8 @@ def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=
             for n in sorted({ns[i * len(ns) // per] for i in range(min(per, len(ns)))}):
                 c64.append(f'    {{ {key}u, 0u, {n}u, {c64i | 0o200}u, LANEC_LM }},   /* {bank:02o},{z:04o} {cfg["c64"]} */')
     up = fam.upper()
+    who = ' and '.join({'LM': 'Luminary099', 'CM': 'Comanche055'}[x] for x in cfg.get('c64_missions', ('LM',)))
+    tabs = '/'.join(f'{x.lower()}_{m}' for x in cfg.get('c64_missions', ('LM',)) for m in cfg.get('c64_modules', (cfg['c64'],)))
     spans = []
     if cfg.get('file_ranges'):
         # the file's words per mission, as oracle ranges (bank, lo, hi)
@@ -463,10 +509,15 @@ def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=
                       f'#define LANEC_{up}_TRANSFER_CASES {len(rows)}u',
                       f'#ifndef LANEC_{up}_TRANSFER_C64',
                       f'static const transfer_case cases[LANEC_{up}_TRANSFER_CASES] = {{'] + rows + ['};', '#endif',
-                      f'/* {fam}-transfer-c64: the Luminary099 cases whose destination is a',
-                      f' * lanec_{fam}_lm_{cfg["c64"]} entry{" (its entry chains)" if first else ""}. */',
-                      f'#define LANEC_{up}_TRANSFER_C64_CASES {len(c64)}u',
-                      f'static const transfer_case c64_cases[LANEC_{up}_TRANSFER_C64_CASES] = {{'] + c64 + ['};']
+                      f'/* {fam}-transfer-c64: the {who} cases whose destination is a',
+                      f' * lanec_{fam}_{tabs} entry{" (its entry chains)" if first else ""}. */',
+                      f'#define LANEC_{up}_TRANSFER_C64_CASES {len(c64)}u']
+                     + ([f'#ifndef LANEC_{up}_TRANSFER_C64'] if c64_frozen(fam, c64) else [])
+                     + [f'static const transfer_case c64_cases[LANEC_{up}_TRANSFER_C64_CASES] = {{'] + c64 + ['};']
+                     + (['#endif'] if c64_frozen(fam, c64) else []) + c64_frozen(fam, c64)
+                     + [f'/* the other modules\' {m} points (the oracle stops there) */\n'
+                        f'static const lanec_point c64_stops_{m.lower()}[{len(v)}] = {{ '
+                        + ', '.join(f'{{ {b}, {a} }}' for b, a in v) + ' };' for m, v in stops.items()]
                      + ([f'/* the words of {cfg["file"]} (oracle ranges) */'] + spans if spans else [])
                      + (['/* the suites the cases come from, in module order */', f'#ifndef LANEC_{up}_TRANSFER_C64',
                          f'static const lanec_suite *const modules[{len(cfg["modules"])}] = {{ '

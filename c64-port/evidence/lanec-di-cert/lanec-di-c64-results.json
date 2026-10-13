@@ -7,7 +7,8 @@
   "PASS: VICE PAL lanec-di-sleep.prg: 23 checks, 0 failures",
   "PASS: VICE PAL lanec-di-idle.prg: 38 checks, 0 failures",
   "PASS: VICE PAL lanec-di-nvdsp.prg: 32 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-transfer.prg: 68 checks, 0 failures"
+  "PASS: VICE PAL lanec-di-transfer.prg: 54 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-transfer-cm.prg: 9 checks, 0 failures"
  ],
  "prg_sha256": {
   "lanec-di-dsp.prg": "b921c54fd851d5f6a6c53aa390a97773e6f58ed998453896fa706f4cd02c1578",
@@ -16,6 +17,7 @@
   "lanec-di-sleep.prg": "d703b8a0ce44c3c3b25521de15ac2f5f3bc23b47b9b2fdb00894287407d5a83d",
   "lanec-di-idle.prg": "0c33b856405a73507569cd41b25bab147159b5aa2a55b2d9324c068518692938",
   "lanec-di-nvdsp.prg": "12b6725246debe5de2a5acd702f09d1dcd9febd4c77429bb12418f798230f171",
-  "lanec-di-transfer.prg": "a8f89f64ce74ef684cde75303366ed6e8b4e549b3f1913ed3336d9f2fc39a53e"
+  "lanec-di-transfer.prg": "ca5746a213c4f492af8652fcd257143f7fa049cd393f97eee341565364677085",
+  "lanec-di-transfer-cm.prg": "b9d4b86fdd2553e5c702c9003b4487859869142072abb3bc65c2272640253ae6"
  }
 }
