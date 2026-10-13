@@ -10,6 +10,7 @@
 #include "agc_engine.h"
 #include "lanec_case.h"
 #include "lanec_suites.h"
+#include "dsky_fixed_display.h"
 void BacktraceAdd(agc_t *s, int cause) { (void)s; (void)cause; }
 int ChannelInput(agc_t *s) { (void)s; return 0; }
 void ChannelOutput(agc_t *s, int c, int v) { if (c == 7) s->InputChannel[7] = s->OutputChannel7 = v & 0160; }
@@ -25,6 +26,13 @@ void UnblockSocket(int n) { (void)n; }
 
 static agc_t rope[2], m;
 static apollo_overlay_state s;
+
+/* The rope for native code the case makers run (pw-fixed-display advances
+ * through its stages natively), as in tools/lanec/native.c. */
+static bool fixed(enum lanec_mission mission, uint16_t physical, agc_word *word)
+{
+    return dsky_fixed_display_data(mission == LANEC_LM ? DSKY_NV_LM : DSKY_NV_CM, physical, word, 0);
+}
 static lanec_io io;
 static lanec_meta meta;
 
@@ -146,6 +154,7 @@ int main(int argc, char **argv)
     const lanec_suite *suite = argc == 4 ? lanec_find_suite(argv[1]) : 0;
     uint32_t n;
     unsigned i, steps, drive;
+    lanec_fixed_read = fixed;
     if (!suite || agc_load_binfile(&rope[0], argv[2]) || agc_load_binfile(&rope[1], argv[3])) {
         fprintf(stderr, "usage: oracle SUITE LM.bin CM.bin\n");
         return 2;

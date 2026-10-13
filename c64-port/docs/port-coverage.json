@@ -1428,7 +1428,7 @@
       "sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
       "bytes": 2157,
       "lines": 98,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1496,7 +1496,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1507,7 +1507,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
         "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
@@ -1527,6 +1526,10 @@
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
@@ -1562,7 +1565,7 @@
       "sha256": "0f912428b5bde06a8bae27432f9c56679cfe5cfc2d1ee5eeadf80a37cf98185c",
       "bytes": 23871,
       "lines": 1406,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1578,7 +1581,7 @@
           "verification": "docs/IMU-CALIBRATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1592,7 +1595,6 @@
           "Idle points CHECKG1 and FINETIME +1, waiting for PIPAX or LOSCALAR to move",
           "Interpreter LOADTIME, 1STO2S and CDULOGIC through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
@@ -1612,6 +1614,10 @@
             "vice_targets": {
               "vice-cm-imu-calibration": 507
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
@@ -3457,6 +3463,7 @@
         {
           "native_files": [
             "src/lanec_pin_gaps.c",
+            "src/lanec_pin_routines.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
@@ -3698,7 +3705,7 @@
       "sha256": "412fbc54a7f99ea193e85c3ea739319eaf8ab489558ba5165a6482d6c51c6d9b",
       "bytes": 15336,
       "lines": 485,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3713,7 +3720,7 @@
           "verification": "docs/R30.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3726,7 +3733,6 @@
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/r30/r30-source-map.json",
@@ -3750,6 +3756,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
             "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-235.md",
+            "sha256": "91ca944a8ff814a230305e728493de182ffb0dd05462cf8228eb3fa0eae4afd9"
           }
         }
       }
@@ -4223,7 +4233,7 @@
       "sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
       "bytes": 3698,
       "lines": 128,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4266,7 +4276,7 @@
           "verification": "docs/SBAND-ANTENNA.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4278,7 +4288,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/sband-antenna/sband-antenna-source-map.json",
@@ -4298,6 +4307,10 @@
             "vice_targets": {
               "vice-sband-antenna": 224
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
@@ -6127,8 +6140,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-151.md",
-            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
+            "path": "docs/audits/lane-f-236.md",
+            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-dapidler/lm-dapidler-c64-cover.json",
@@ -7109,7 +7122,7 @@
       "sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
       "bytes": 2293,
       "lines": 76,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7177,7 +7190,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7188,7 +7201,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
         "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
@@ -7208,6 +7220,10 @@
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
@@ -9425,6 +9441,7 @@
         {
           "native_files": [
             "src/lanec_pin_gaps.c",
+            "src/lanec_pin_routines.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
@@ -9709,8 +9726,8 @@
             "sha256": "43f6e6df9cf03c99d323239e08d5872d6455e57ae3e2585a33dc951c86807aea"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-211.md",
-            "sha256": "a5b3b526595ff2404c78eaf07a5f8e4df11e6e95eb5c243cde813d7ba15900c9"
+            "path": "docs/audits/lane-f-236.md",
+            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
           }
         }
       }
@@ -9721,7 +9738,7 @@
       "sha256": "76b904d389476022d9c6dcef6788737385a4603cff81d1c9af1fd17d82dc76bd",
       "bytes": 14653,
       "lines": 464,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9745,7 +9762,7 @@
           "verification": "docs/R30.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9758,7 +9775,6 @@
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/r30/r30-source-map.json",
@@ -9782,6 +9798,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
             "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-235.md",
+            "sha256": "91ca944a8ff814a230305e728493de182ffb0dd05462cf8228eb3fa0eae4afd9"
           }
         }
       }
@@ -10217,7 +10237,7 @@
       "sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
       "bytes": 4670,
       "lines": 200,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10260,7 +10280,7 @@
           "verification": "docs/SBAND-ANTENNA.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10272,7 +10292,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/sband-antenna/sband-antenna-source-map.json",
@@ -10292,6 +10311,10 @@
             "vice_targets": {
               "vice-sband-antenna": 224
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
@@ -10415,7 +10438,7 @@
       "sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
       "bytes": 5418,
       "lines": 221,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10444,7 +10467,7 @@
           "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10461,7 +10484,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/service-transfer/service-transfer-source-map.json",
@@ -10481,6 +10503,10 @@
             "vice_targets": {
               "vice-service-transfer": 569
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-221.md",
+            "sha256": "906106f2ac22dc25e0bd8f38bd139f0e17a428a687458d30771d7895610262a0"
           },
           "c64_branch_outcomes": {
             "path": "evidence/service-transfer/service-transfer-c64-cover.json",
@@ -11144,8 +11170,8 @@
             "sha256": "e176cad7e26e8392c894ff8739688e26fbdd9a8296421968c719ca3b24b91439"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-151.md",
-            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
+            "path": "docs/audits/lane-f-236.md",
+            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
           }
         }
       }

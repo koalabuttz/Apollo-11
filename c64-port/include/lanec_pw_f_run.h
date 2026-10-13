@@ -29,7 +29,7 @@ static inline void lanec_pw_f_to_cm(cm_native_io *c, const lanec_io *io)
  * that is nonzero when the native routine reached its boundary. */
 #define LANEC_PW_F_CM_RUN(name, call)                                                              \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         cm_native_io c;                                                                            \
         if (mission != LANEC_CM) return LANEC_OUT_OF_SCOPE;                                        \
         lanec_pw_f_to_cm(&c, io);                                                                  \
@@ -42,7 +42,7 @@ static inline void lanec_pw_f_to_cm(cm_native_io *c, const lanec_io *io)
  * that reaches its boundary is kept. */
 #define LANEC_PW_F_CM_STEPS(name, step, count)                                                     \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)      \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         static apollo_overlay_state t;                                                             \
         cm_native_io c;                                                                            \
         uint8_t r;                                                                                 \
