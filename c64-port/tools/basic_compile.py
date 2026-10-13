@@ -1024,7 +1024,7 @@ class Basic:
         c.append('static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend(chan(io,k));}')
         c.append('/* A write reaches the output channels; the inputs keep what READ returns. */')
         c.append('static MAYBE_UNUSED void ch_out(p66_bias_io *io,unsigned k,agc_word v){')
-        c.append(' (void)io;if(k==013u)v&=043777u;')
+        c.append(' (void)io;(void)v;if(k==013u)v&=043777u;')
         c.append(' switch(k){%s default:break;}' % ''.join(
             'case 0%o:%s=(agc_word)(v&077777u);break;' % (k, v) for k, v in outs.items()))
         c.append('}')

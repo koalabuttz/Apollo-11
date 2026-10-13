@@ -2714,7 +2714,9 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline'],
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
     },
     # Lane D2: Luminary099 KALMAN_FILTER (RATELOOP: the jet torque and
     # rate the DAP's 100 ms cycle feeds its filter), basic routines at
@@ -2738,7 +2740,9 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline'],
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
     },
     # Lane D2: Luminary099 RADAR_LEADIN_ROUTINES (RADSAMP, the radar
     # sampling task, DORSAMP its job, and VARADAR's radar read dispatch),
@@ -2773,7 +2777,9 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline'],
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
     },
     # Lane A2: Luminary099 FINDCDUW--GUIDAP_INTERFACE (bank 30), basic and
     # interpretive.

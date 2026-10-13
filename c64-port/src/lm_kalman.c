@@ -100,7 +100,7 @@ static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|
 static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend(chan(io,k));}
 /* A write reaches the output channels; the inputs keep what READ returns. */
 static MAYBE_UNUSED void ch_out(p66_bias_io *io,unsigned k,agc_word v){
- (void)io;if(k==013u)v&=043777u;
+ (void)io;(void)v;if(k==013u)v&=043777u;
  switch(k){ default:break;}
 }
 static MAYBE_UNUSED void ch_write(apollo_overlay_state *s,p66_bias_io *io,unsigned k){ch_out(io,k,(agc_word)(oc16(W[0])&077777u));}
