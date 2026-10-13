@@ -57,8 +57,14 @@ resident-kernel-size: | build
 # each mission's flight resident with its per-component sizes, and per part a
 # check program (the same resident) that runs the C64 rows from case modules
 # in an REU store.
-RF_SRC = src/sp_routines.c include/sp_routines.h src/resident_rupt.c include/resident_rupt.h tests/resident_rupt_cases.c tests/resident_rupt_cases.h tests/resident_rupt_c64_rows.h platform/c64/resident_flight_rupt_cases.c platform/c64/resident_flight.c platform/c64/resident_flight.h platform/c64/resident_flight.ld platform/c64/resident_flight_main.c platform/c64/resident_flight_check.c platform/c64/resident_flight_check.h platform/c64/resident_flight_cases.c platform/c64/resident_flight_data.c platform/c64/overlay_v2_irq.S platform/c64/overlay_v2_entry.S platform/c64/overlay_reu_platform.c src/overlay_v2.c src/overlay_reu.c src/overlay_runtime.c src/lm_single_trig.c src/cm_quictrig.c src/cm_single_return.c src/lm_restart_routines.c src/lm_restart_select.c docs/overlay-v2-services.json tests/lm_kernel_c64_rows.h tests/cm_kernel_c64_rows.h tests/resident_kernel_cases.c
+RF_SRC = platform/c64/resident_boundary_module.c platform/c64/resident_boundary_words_lm.h platform/c64/resident_boundary_words_cm.h src/sp_routines.c include/sp_routines.h src/resident_rupt.c include/resident_rupt.h tests/resident_rupt_cases.c tests/resident_rupt_cases.h tests/resident_rupt_c64_rows.h platform/c64/resident_flight_rupt_cases.c platform/c64/resident_flight.c platform/c64/resident_flight.h platform/c64/resident_flight.ld platform/c64/resident_flight_main.c platform/c64/resident_flight_check.c platform/c64/resident_flight_check.h platform/c64/resident_flight_cases.c platform/c64/resident_flight_data.c platform/c64/overlay_v2_irq.S platform/c64/overlay_v2_entry.S platform/c64/overlay_reu_platform.c src/overlay_v2.c src/overlay_reu.c src/overlay_runtime.c src/lm_single_trig.c src/cm_quictrig.c src/cm_single_return.c src/lm_restart_routines.c src/lm_restart_select.c docs/overlay-v2-services.json tests/lm_kernel_c64_rows.h tests/cm_kernel_c64_rows.h tests/resident_kernel_cases.c
 RF_CHECKS = $(foreach m,lm cm,$(foreach p,1 2 3 4,build/resident-flight/$(m)-check-$(p).prg))
+# The boundary-word tables (platform/c64/resident_boundary_words_<m>.h) must
+# match the routine tables, the rope and, when built, the listings.
+.PHONY: resident-boundary-words
+test: resident-boundary-words
+resident-boundary-words: | build
+	python3 tools/resident_boundary_words.py --cc $(CC) --check
 .PHONY: c64-resident-flight vice-resident-flight resident-flight-size
 c64-resident-flight: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
 	python3 tools/resident_flight_build.py --cc $(MOS_CC)

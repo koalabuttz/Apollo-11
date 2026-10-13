@@ -31,7 +31,7 @@ static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&0
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;
  if(argc<4)return 2;
  dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
@@ -58,7 +58,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
     if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap){printf("%u S",n);
      for(i=0;i<2048u;++i){unsigned w=(unsigned)*memory(i)&(i<2u?0177777u:077777u);if(w!=init[i])printf(" %u %u",i,w);}
      printf("\n");snapped=stopped=1;break;}
-    if(pc==t->newops){unsigned p=loc_physical();if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}
+    if(pc==t->newops){unsigned p=loc_physical();if(flow){unsigned v=get(0120);fprintf(stderr,"F %u %u %u %u %u %u %u %u\n",n,p,(get(0166)-v)&077777u,get(0163),get(v+046),get(v+047),get(v+050),get(v+051));}if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}
     if(trace==n&&getenv("IRC_ZTRACE"))fprintf(stderr,"Z %05o FB %05o A %06o L %06o Q %05o MPAC %05o %05o %05o BUF %05o %05o %05o BUF2 %05o %05o MPTEMP %05o IE %d\n",pc,get(4),(unsigned)*memory(0)&0177777u,(unsigned)*memory(1)&0177777u,get(2),get(0154),get(0155),get(0156),get(0130),get(0131),get(0132),get(0134),get(0135),get(0136),machine.AllowInterrupt);
     zp=z_physical(pc);
     /* The file's own transfers out (and the case's return) stop only when

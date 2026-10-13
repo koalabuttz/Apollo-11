@@ -23,6 +23,11 @@
 #include "resident_rupt.h"
 #include "resident_rupt_c64_rows.h"
 #if RK_LM
+#include "resident_boundary_words_lm.h"
+#else
+#include "resident_boundary_words_cm.h"
+#endif
+#if RK_LM
 #define JOB_PARTS 3u
 #define RUPT_ROWS rr_lm_c64_rows
 #else
@@ -90,6 +95,27 @@ static void clock_check(apollo_overlay_state *image){uint16_t t,irq;
  expect((uint16_t)(rk_ticks-t)>=5u&&image->words[025]==(uint16_t)(rk_ticks-t),11);
  expect(*(volatile uint8_t *)0xdc05<=(uint8_t)(RK_CIA_LATCH>>8),12);
 }
+/* The boundary-word table from the REU store: every key gives its word
+ * and the next key that is not in the table gives none; at a fixed-fixed
+ * boundary the entry stores that word in BRUPT, and at a fixed point
+ * missing from the table it takes nothing and the request stays pending. */
+static void boundary_check(apollo_overlay_state *image){uint16_t i,k;agc_word w;uint8_t ok=1,taken=0;
+ for(i=0;i<RK_BOUNDARY_WORDS;++i){k=rk_boundary_words[i].physical;
+  if(!rk_fixed_word(&rk_program,k,&w)||w!=rk_boundary_words[i].word)ok=0;
+  if((i+1u==RK_BOUNDARY_WORDS||rk_boundary_words[i+1u].physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
+ expect(ok,13);
+ image->words[0]=0;image->words[4]=RK_PROBE_FB;rk_device.superbank=0;rk_hardware.in_interrupt=0;
+ for(i=0;i<RK_BOUNDARY_WORDS;++i){k=rk_boundary_words[i].physical;w=rk_boundary_words[i].word;
+  if(k<04000u||k>=010000u||w==3u||w==4u||w==6u)continue;   /* fixed-fixed: Z is the key */
+  image->words[5]=(agc_word)k;rk_pending=RK_RUPT_BIT(RK_RUPT_T3);rk_hardware.in_interrupt=0;
+  taken=(uint8_t)(rk_rupt_take(&rk_program,image,0,1,&rk_pending)==RK_RUPT_T3&&image->words[017]==w&&
+   image->words[015]==(agc_word)(k+1u)&&image->words[5]==04014u&&!rk_pending);
+  break;}
+ expect(taken,14);
+ image->words[5]=RK_PROBE_FF_LOC+1u;rk_pending=RK_RUPT_BIT(RK_RUPT_T3);rk_hardware.in_interrupt=0;
+ expect(!rk_rupt_take(&rk_program,image,0,1,&rk_pending)&&rk_pending==RK_RUPT_BIT(RK_RUPT_T3)&&!rk_hardware.in_interrupt,14);
+ rk_pending=0;
+}
 #endif
 int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)APOLLO_SHARED_ADDRESS;
  uint16_t i,n,irq;uint32_t d;
@@ -137,11 +163,19 @@ int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)AP
 #if PART(4)
  rupt_rows(image);
  clock_check(image);
+ boundary_check(image);
 #endif
  /* The dispatcher: no kernel routine at the probe point, so the step
-  * resolves it through the store and runs the probe. */
+  * resolves it through the store and runs the probe (no interrupt is
+  * taken: the probe is a boundary in the table). */
+ rk_device.interrupt_enabled=0;rk_pending=0;
  image->words[4]=RK_PROBE_FB;image->words[5]=RK_PROBE_LOC;rk_device.superbank=0;rk_hardware.in_interrupt=0;
  expect(rk_resident_step(AGC_TRANSFER_NONE)==EXEC_OK&&image->words[5]==RK_PROBE_Z,6);
+ /* At fixed-fixed the resolver key is the canonical bank, whatever FB and
+  * the superbank hold. */
+ image->words[4]=036000u;image->words[5]=RK_PROBE_FF_LOC;rk_device.superbank=0160u;
+ expect(rk_resident_step(AGC_TRANSFER_NONE)==EXEC_OK&&image->words[5]==RK_PROBE_Z,15);
+ rk_device.superbank=0;
  /* SPSIN through the resident's table: sin 0 is 0, and Z returns to Q. */
  image->words[0]=0;image->words[1]=0;image->words[2]=RK_SP_RETURN;image->words[4]=RK_PROBE_FB;image->words[5]=RK_SPSIN;image->words[7]=0;
  expect(rk_resident_step(agc_fixed_physical(RK_SP_RETURN,RK_PROBE_FB,0))==EXEC_OK&&image->words[5]==RK_SP_RETURN&&image->words[0]==0u&&image->words[2]==3u,9);

@@ -4624,7 +4624,7 @@
       "sha256": "658648f1bdac76929efdfe98fc23676e467d167645310c685bf1479c97da77fa",
       "bytes": 6146,
       "lines": 228,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4642,7 +4642,7 @@
           "scope": "All of the file (R47, bank 32 02005-02216): AGSINIT's REFSMFLG test and ALARM, the AGSK display and GOMARKF's three returns (V32 keystroke time, V25 keyed AGSK, AGSVCALC), the interpretive AGS vector set-up from RTB LOADTIME through LEMPREC/CSMPREC and SCALEVEC (VECSGNAG returns, RVQ) to the AGS clock and downlist, DELAYJOB, the IMUSE test and CKSTALL, IMUZERO/IMUSTALL returns, AGSEND (DOWNFLAG) and the V50N16 display with GOMARK3's returns, as fifteen basic and seven interpretive ABI routines."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4659,7 +4659,6 @@
           "SCALEVEC's RVQ to a caller outside the file (QPRET)",
           "CHANG2"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-ags-init/lm-ags-init-source-map.json",
@@ -4683,6 +4682,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-ags-init/lm-ags-init-c64-cover.json",
             "sha256": "d3f01f31f7f36310b2bd86a80eb5f5315f56fee8520d24d06fd8af42ebd92de2"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           }
         }
       }
@@ -4888,7 +4891,7 @@
       "sha256": "7ed744d09332db172eaad0ca8432c243479d6d293ed387ee83eb0dd67c77f041",
       "bytes": 22306,
       "lines": 1059,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4907,7 +4910,7 @@
           "scope": "All of the file: bank 36 02022-03146 (the ignition tables P12TABLE-ABRTABLE run through INDEX WHICH; TCF n, BURNBABY and B*RNB*B*, P40SPOT and P41SPOT with its interpretive set-up (DLOAD DSU, STCALL INITCDUW, BOFF CALL CSMPREC, MXV, STCALL MUNGRAV, CALRB MIDTOAV1) and MIDTOAV1's two returns, CALLT-35 and the ABVEL display, the countdown tasks TIG-35, P41BLANK, TIG-30.1, TIG-30A, TIG-30, ULLGNOT, REDO2.17, REDO4.2, ULLGTASK, TIG-5, P40SJUNK, DISPCHNG and COMMON, TIG-0, IGNYET?, IGNITION with RAND/WRITE DSALMOUT, P63IGN, P40IGN, P12IGN, ABRTIGN, P42IGN, DVMONCON, ULLAGOFF, WAITABIT, TIGTASK, COMFAIL and COMFAIL1-4, INVFLAG (RXOR LCHAN), NOULLAGE and ONULLAGE, STCLOK1-3, CLOKTASK, KILLCLOK, CLOKJOB and its display branches, STOPCLOK, NULLCLOK with TC P40/RET, ASTNRETN, *PROCEED, *ENTER, GOPOST, GOCUTOFF, IGNITE and IGNITE1, P40ALM and REP40ALM), bank 35 03747-03775 (P40AUTO, P40A/P with RAND CHAN30, TURNITON, GOBACK), bank 17 02000-02026 (TIGTASK1, P63ZOOM, P40ZOOM with WOR CHAN14, P40ZOOMA), bank 27 02200-02246 (KILLTSK2, ADRSCAN, LETITLIV, DEAD, TSTFBANK, KILLDEAD) and fixed-fixed 06027-06036 (KILLTASK, KILLBB), as 160 basic and 14 interpretive ABI routines (the first pair after each TC INTPRET and every word after a DANZIG are interpretive keys)."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4942,7 +4945,6 @@
           "CHANG2",
           "the caller's return of NOULLAGE, ONULLAGE (TC Q) and KILLTASK (DTCB)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-burn-baby/lm-burn-baby-source-map.json",
@@ -4966,6 +4968,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-burn-baby/lm-burn-baby-c64-cover.json",
             "sha256": "ad08de7a8f0758ee7a232d3239b5d1b50f6216a6446b95433c93e140215c1e1d"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           }
         }
       }
@@ -4980,104 +4986,48 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/lm_conic_kepler.c",
+            "src/lm_conic_compiled.c",
+            "src/lm_conic_checkctr.c",
             "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "The Kepler subroutine, 338 words of bank 12 (KEPLERN 02023 through DELTIME 02535, CHECKCTR 02644-02652): from KEPPREP's GOTO KEPLERN entry frontier to the NEWOPS frontier of each of KEPPREP's three callers, as 23 native steps between original NEWOPS frontiers. ITERATOR, TIMERAD, APSIDES, LAMBERT and the bank-4 constants are not yet translated (TIMETHET is the next entry).",
-          "verification": "docs/LM-CONIC-KEPLER.md"
-        },
-        {
-          "native_files": [
-            "src/lm_conic_timethet.c",
-            "src/lm_conic_kepler.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "The time-theta subroutine, 290 words: NEWSTATE/LAMENTER, TIMETHET, COMMNOUT, COGAOVFL, GETX with its WLOOP iteration, POLY series, INVRSEQN, 1/WLOOP and TRUE360X paths, XCOMMON and INFINITY (bank 12 02653-03211), ABTCONIC (12,3742-3744) and PARAM/GEOM (bank 4 03064-03163), reusing the Kepler entry's DELTIME: from the NEWOPS entry frontier after each of TIMETHET's six callers' CALL to the caller's NEWOPS frontier at C(RTNTT) or ABTCONIC's POODOO frontier, as 27 native steps between original NEWOPS frontiers. HAVENORM is compiled but unreachable from TIMETHET (PARAM clears NORMSW).",
-          "verification": "docs/LM-CONIC-TIMETHET.md"
-        },
-        {
-          "native_files": [
-            "src/lm_conic_timerad.c",
-            "src/lm_conic_timethet.c",
-            "src/lm_conic_kepler.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "The time-radius and apsides subroutines, 123 words of bank 12 (TIMERAD, TERMNVEC, CIRCULAR, BADR2 03547-03673; APSIDES, GETECC, INFINAPO 03674-03741), reusing the time-theta entry's PARAM/GEOM, GETX, COMMNOUT and DELTIME steps: from the NEWOPS entry frontier after P32/P72 CSI's STCALL TIMERAD or PERIAPO's STCALL APSIDES to the caller's NEWOPS frontier, ABTCONIC's POODOO frontier or the UNIT/SQRT abort frontier, as 9 native steps between original NEWOPS frontiers.",
-          "verification": "docs/LM-CONIC-TIMERAD.md"
-        },
-        {
-          "native_files": [
-            "src/lm_conic_lambert.c",
-            "src/lm_conic_timethet.c",
-            "src/lm_conic_kepler.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "The Lambert subroutine, 316 words of bank 12 (LAMBERT through TARGETV 03212-03546, ITERATOR 02536-02643, LAMENTER 02701-02731 compiled again for TARGETV), reusing the time-theta entry's GEOM (HAVENORM reached here with NORMSW set), GETX and DELTIME steps and the Kepler entry's CHECKCTR words inline: from the NEWOPS entry frontier after INITVEL's CALL SETITCTR to the caller's NEWOPS frontier at C(RTNLAMB) or the UNIT/SQRT abort frontier, as 30 native steps between original NEWOPS frontiers. With it every assembled word of the file has a native owner; the complete certificate below awaits the auditor review.",
-          "verification": "docs/LM-CONIC-LAMBERT.md"
+          "scope": "Every word of the file (1,072 words in banks 12 and 04): KEPLERN, TIMETHET, LAMBERT, TIMERAD, APSIDES, DELTIME, ITERATOR, LAMENTER, PARAM, GEOM, GETX, INITV and TARGETV with everything they reach (PERIODCH, KEPLOOP, WLOOP, POLYCOEF, INVRSEQN, COMMNOUT, INFINITY, LAMBLOOP, COGUPLIM/UPLIM, NEGP, TERMNVEC, GETECC, INFINAPO, ABTCONIC and the rest), as 455 routines of the control-transfer ABI compiled by tools/interp_compile.py (with a routine at the word after every DANZIG, where a job switched out at CHANG2 resumes); the basic CHECKCTR behind RTB as lm_conic_checkctr; 29 constants read by fixed operands. Supersedes the per-caller steps of src/lm_conic_kepler.c, lm_conic_timethet.c, lm_conic_timerad.c and lm_conic_lambert.c.",
+          "verification": "docs/LM-CONIC-COMPILED.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; coherent original entry banks (FBANK 12 at each routine NEWOPS), BANKSET = BB, INTBIT15 040000, EDOP +0, five VACs, ordinary 15-bit words, X1 -2 or -10 (RTX1).",
-          "caller_returns": {
-            "KEPLERN": [
-              "027252",
-              "022516",
-              "023012 (KEPPREP GOTO KEPLERN)"
-            ],
-            "TIMETHET": [
-              "064320",
-              "070250",
-              "070363",
-              "071171",
-              "072664",
-              "071600"
-            ],
-            "TIMERAD": [
-              "072106 (P32/P72 CSI, RVSW set)"
-            ],
-            "APSIDES": [
-              "046333 (PERIAPO)"
-            ],
-            "LAMBERT": [
-              "022145 (INITVEL via SETITCTR, ITERCTR 20 or 5)"
-            ]
-          },
-          "data_validity": "Original conic formulas and scaling; no widened claim.",
-          "rare_source_paths": "Driven by dedicated case buckets and compared by the oracle streams: POLYCOEF BMN INFINITY (AGC 1242-1243, timethet cases (n&2047)==1333, reachable only when W^2+R1A/16 is exactly zero), DSU BMN COGUPLIM fall-through to UPLIM (AGC 1411-1414, lambert cases (n&2047)==1717) and LAMBLOOP BZE NEGP (AGC 1449-1451, lambert cases (n&2047)==717, CSTH one lsb above .5, so the stored 1-CSTH is -0 while ROUND leaves MPAC nonzero). See docs/LM-CONIC-TIMETHET.md and docs/LM-CONIC-LAMBERT.md."
-        },
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), CHECKCTR entered from its RTB, FIXLOC a VAC area, PUSHLOC on its pushdown list, MODE, OVFIND, X1 0 or -8 (MUTABLE,1 Earth or Moon), X2 0 to 3 and S2 1 (GETX/INVRSEQN), the registers each mid-file routine is reached with on the file's own runs, QPRET and the RTNxx return words outside the file, and any values of the conic erasables (a TAU. that PERIODCH reduces within a bounded number of periods).",
         "external_continuations": [
-          "Caller entry/resume services and application scheduling",
-          "POODOO alarm 607 (ABTCONIC) and 1302 (UNIT/SQRT) abort handling beyond the abort frontier",
-          "Overlay ABI 2 modules for the whole routines on the C64 (phases verified separately)"
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "The callers' returns at NEWOPS (QPRET, RTNLAMB, RTNTT, RTNTR, RTNAPSE, RTNPRM and the other saved returns)",
+          "POLY (interpreter basic routine) and POODOO alarm 607 (ABTCONIC) and 1302 (UNIT/SQRT) through the interpreter",
+          "The interpreter exits POODOO1 and ALARM1"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/lm-conic-lambert/lm-conic-lambert-source-map.json",
-            "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-source-map.json",
+            "sha256": "ff323ab48be51189b09086d36d6447ae5a4a3cbb8e47c7735917977441e339c4"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-record.json",
-            "sha256": "2233141e70c923d647bce4a6538a366430b539b3ebf510bfbc7ae18ea1b8d8fa"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-proof.json",
+            "sha256": "88113e5b0826b179df4f61547698ee9655f6f3d3bee2471431c8e7cddab5fe5c"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-checks.log",
-            "sha256": "75874aaf2e85d4baf0755a1d6b2d74a6f68a61174e72d90a7510a5b40b239ea3"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-host.log",
+            "sha256": "ce90fae719cfcbe06f90265054449d881b360678ce31bd4a70a602ab2f6d2b25"
           },
           "c64_execution_results": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-record.json",
-            "sha256": "2233141e70c923d647bce4a6538a366430b539b3ebf510bfbc7ae18ea1b8d8fa"
-          },
-          "independent_review": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-independent-review.txt",
-            "sha256": "246fc0d93b5517b303b9c31e77bdaf0d43df31eeccf6b51a5feeb533066d25de"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-vice.log",
+            "sha256": "57806f8ceab965e221b47fb2e0d5ce621c26723b3357872022d3a2a245d56ff6",
+            "vice_targets": {
+              "vice-lm-conic-compiled": 910
+            }
           }
         }
       }
@@ -5174,8 +5124,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-dap.md",
-            "sha256": "f79c06959102731f279caabdc94fbb0287fd28b92713ab63a668c818a140c5a0"
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-dapidler/lm-dapidler-c64-cover.json",
@@ -7192,8 +7142,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lm-landing-displays.md",
-            "sha256": "bd2947f91bddb23ad60d7cae1525d85e5df9fa14880dea9456aa3a69b44af513"
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-landing-displays/lm-landing-displays-c64-cover.json",
@@ -7502,7 +7452,7 @@
       "sha256": "6aa46513dcd7f1b77b41cbf847ce98dcdaec5a95bf4327d0a7c2df8adf937775",
       "bytes": 21026,
       "lines": 1056,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7518,7 +7468,7 @@
           "scope": "Every path of the file: the PAXIS T5 lead-in and CHEKBITS's two returns, the CDU desired update and PAXFILT to ACDT+C12, the KALMAN filter set up as an interrupted job and SUPERJOB, BACKP (SUBDIVDE, OVERSUB, trap filters, AOS terms, gimbal timers, CHKVISFZ/TRYUORV/ALTERYZ translation, manual, detent and rate command, PURGENCY/PEGI and PJETSLEC/SELECTP jet selection) to each call that leaves the file and its eight returns, and CALCPERR, as fifteen ABI routines in bank 16."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7536,7 +7486,6 @@
           "CALLQERR (Q_R-AXIS_RCS_AUTOPILOT)",
           "the caller's return"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p-axis/lm-p-axis-source-map.json",
@@ -7560,6 +7509,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
             "sha256": "a86699db07c631a532fcc970c8fa2162c41c617f6f40214621407285fb189864"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           }
         }
       }
@@ -8362,7 +8315,7 @@
       "sha256": "c79584213ddacc0bdf6ceebb0b9bfe84c85eac69c124e28c5554a5585e5cdf3f",
       "bytes": 17289,
       "lines": 860,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -8378,7 +8331,7 @@
           "scope": "Every path of the file: CALLQERR (QERRCALC, the GTS/TRYGTS/RCS choice, SENSEGET X-translation, minimum impulse, CHEKSTIK/RHCACTIV rate command and ENTERUV direct rate, ATTSTEER/TJLAW, AFTERTJ/DOROTAT/DOSKIP/NOTMIN/FEEDBACK/LOOPER jet selection with SELCTSUB and FAILOOP, XTRANS) to each call that leaves the file and its twelve returns, CLOSEOUT with MAKERUPT's EDRUPT and ENDJASK to TCF NOQRSM, and QERRCALC, JTLST and ROT-TOUV as subroutine entries, as seventeen ABI routines in bank 17 (MAKERUPT in fixed-fixed)."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -8394,7 +8347,6 @@
           "NOQRSM",
           "the caller's return"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-source-map.json",
@@ -8418,6 +8370,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
             "sha256": "7c61b05191e14e8ad248d9d5692227808e7446a65ef3726b5adebe04dccf30a8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           }
         }
       }
@@ -9369,7 +9325,7 @@
       "sha256": "8c5c8b125bad79fdce8838bea3871481942d9b75694dc538bd032d54e63e952f",
       "bytes": 7460,
       "lines": 335,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9386,7 +9342,7 @@
           "scope": "All of the file: P63 (bank 32 02776-03262: P63LM's PHASCHNG and R02BOTH, the P63 set-up with WAND CHAN12 and the FLAGORGY flags, IGNALG and IGNALOOP through RP-TO-R, GUIDINIT, LEMPREC, MUNGRAV and ?GUIDSUB, DDUMCALC's DDUM iteration with its pushdown arithmetic to BMN DDUMGOOD or CALL INTSTALL, INTEGRVS's GOTO IGNALOOP, DDUMGOOD's TIG and OUTOFPLN, IGNALGRT and ASTNCLOK, ASTNRET's SSP QMAJ and RTB R51P63, P63SPOT2 through PFLITEDB and R60LEM, P63SPOT3's LR antenna test (RAND CHAN33) to GOPERF1 or SETPOS1 and POSTJUMP BURNBABY) and P68's LANDJUNK (bank 31 02144-02215: ZATTEROR, SETMAXDB, LAT-LONG, R-TO-RP, the V06N43 display and REFMF), as twenty-one basic and ten interpretive ABI routines."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9403,7 +9359,6 @@
           "POODOO1 (alarm 1302)",
           "CHANG2"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-lunar-landing/lm-lunar-landing-source-map.json",
@@ -9427,6 +9382,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-lunar-landing/lm-lunar-landing-c64-cover.json",
             "sha256": "50b668ac8d84c3fbff544eca896f424685dd669f7066e20342af619921133bb6"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           }
         }
       }
@@ -9479,8 +9438,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-dap.md",
-            "sha256": "f79c06959102731f279caabdc94fbb0287fd28b92713ab63a668c818a140c5a0"
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-throttle/lm-throttle-c64-cover.json",
@@ -9582,7 +9541,7 @@
       "sha256": "10c99519ea474da9b969dd64652ea6a2a6f739be0cc3fdb6a30e3bb619b80e2c",
       "bytes": 17211,
       "lines": 519,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9597,7 +9556,7 @@
           "scope": "Every path of the file (TJETLAW for the P, U and V axes: NEGEDOT, SCALEE/SCALEDOT, ERRTEST, SENSTEST/MAXJETS/TJCALC, zones 1-5 with FORMULA1-3 and CHKMINTJ, the rough laws RUFLAW1/2/3 and SMALRATE, Z123COMP and RUFSETUP compiled at their call sites) as one ABI routine to the caller's TC HOLDQ return."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9606,7 +9565,6 @@
           "CCSHOLE (ALARM_AND_ABORT, unreachable from admitted inputs)",
           "the caller's return"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-source-map.json",
@@ -9630,6 +9588,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-c64-cover.json",
             "sha256": "a7e38b2b521fae7de01f3fe101911d75a90e46357e4b5fae49c9af2061759557"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           }
         }
       }
@@ -9684,8 +9646,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-dap.md",
-            "sha256": "f79c06959102731f279caabdc94fbb0287fd28b92713ab63a668c818a140c5a0"
+            "path": "docs/audits/lane-f-151.md",
+            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-c64-cover.json",

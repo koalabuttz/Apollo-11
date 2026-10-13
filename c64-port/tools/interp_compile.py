@@ -738,7 +738,13 @@ class Compiler:
                 st.append('  default:return EXEC_OUT_OF_SCOPE;}')
                 st.append('%s%s(s,k);}' % (P, fn))
                 return st + ['next(s);'], cur + 1, False
-            st = ['ai_caf(s,0%05o);(void)ai_ts(s,020);%sindexed(s,0%05o,0%05o);%s%s(s,0);' % (star, P, w, T[load], P, fn)]
+            k = self.indexed_k(w, bank, True, sop)
+            st = ['ai_caf(s,0%05o);(void)ai_ts(s,020);%sindexed(s,0%05o,0%05o);' % (star, P, w, T[load])]
+            if k != '0':
+                # (a starred load from a fixed table: STOVL* COGA MUTABLE,1)
+                st[-1] += '{const agc_word *k;if(!kix(s,%s,&k))return EXEC_OUT_OF_SCOPE;%s%s(s,k);}' % (k, P, fn)
+            else:
+                st[-1] += '%s%s(s,0);' % (P, fn)
             return st + ['next(s);'], cur + 1, False
         pre = '%sdodload(s);' % P if load == 'DLOAD' else '%sdovload(s);' % P
         if w & 0o40000:
