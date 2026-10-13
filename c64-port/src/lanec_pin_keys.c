@@ -37,11 +37,6 @@ typedef char same_layout[(LANEC_LM_CHARIN2 == LANEC_LM_CHARIN + 11u && LANEC_CM_
 
 static const places *at(enum lanec_mission m) { return m == LANEC_LM ? &lm : &cm; }
 
-uint16_t lanec_pin_keys_label(enum lanec_mission m, uint16_t key)
-{
-    return at(m)->label[group[key & 037u]];
-}
-
 /* CHARIN +0 CAF ONE, +1 XCH DSPLOCK, +2 TS 21/22REG, +3 CCS CADRSTOR, +4 TC +2,
  * +5 TC CHARIN2, +6 CS ELRCODE1, +7 AD MPAC, +8 EXTEND, +9 BZF CHARIN2,
  * +10 TC RELDSPON (CAF BIT5, EXTEND, WOR DSALMOUT, TC Q); CHARIN2 XCH MPAC,
@@ -84,63 +79,100 @@ static uint16_t charin_mpac(uint16_t cadrstor, uint16_t key)
     return 0177777u;
 }
 
-static enum lanec_status run(const key_run *f, apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+static uint8_t label_of(const places *p, uint16_t z)
 {
-    for (; *f; ++f)
-        if ((*f)(s, io, m) == LANEC_OK) return LANEC_OK;
-    return LANEC_OUT_OF_SCOPE;
-}
-
-enum lanec_status lanec_pin_keys_handler(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
-{
-    static const key_run own_alrm[] = { lanec_pw_source_alarm_run, 0 }, own_rel[] = { lanec_pw_operator_release_run, 0 },
-                           own_nv[] = { lanec_pw_nv_key_run, 0 }, none[] = { 0 };
-    static const key_run lm_num[] = { lanec_pw_charin_number_run, 0 }, cm_num[] = { lanec_pw_cm_charin_number_run, 0 },
-                           lm_nv[] = { lanec_pw_charin_nv_run, 0 }, cm_nv[] = { lanec_pw_cm_charin_nv_run, 0 },
-                           alrm[] = { lanec_pw_charin_alarm_run, 0 }, reset[] = { lanec_pw_charin_reset_run, 0 },
-                           rel[] = { lanec_pw_charin_release_run, 0 }, sign[] = { lanec_pw_charin_sign_run, 0 },
-                           enter[] = { lanec_pw_enter_run, 0 }, clear[] = { lanec_pw_charin_clear_run, 0 };
-    const places *p;
-    const key_run *own, *from;
-    uint16_t *w = s->words, key = w[CHAR], z = w[LANEC_Z], expect, saved[3];
     uint8_t g;
-    LANEC_ONE_MISSION(m);
-    p = at(m);
-    if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 040u) return LANEC_OUT_OF_SCOPE;
     for (g = 0; g < LABELS && p->label[g] != z; ++g)
         ;
-    switch (g) {
-    case ALRM: own = own_alrm; from = alrm; break;
-    case NUM: case T89: case NUM0: own = none; from = m == LANEC_LM ? lm_num : cm_num; break;
-    case VERB: case NOUN: own = own_nv; from = m == LANEC_LM ? lm_nv : cm_nv; break;
-    case ERROR: own = none; from = reset; break;
-    case REL: own = own_rel; from = rel; break;
-    case POS: case NEG: own = none; from = sign; break;
-    case ENTJ: own = none; from = enter; break;
-    case CLEAR: own = none; from = clear; break;
-    default: return LANEC_OUT_OF_SCOPE;
-    }
-    /* A label's own module takes any state it covers. */
-    if (run(own, s, io, m) == LANEC_OK) return LANEC_OK;
-    /* Otherwise CHARIN's dispatch: CHAR a key of this label, A the key, Q
-     * past its table word, the lock set, MPAC and KEY REL as CHARIN leaves them. */
+    return g;
+}
+
+/* At label g, a state CHARIN's dispatch leaves (CHAR a key of the label, A
+ * the key, Q past its table word, the lock set, MPAC and KEY REL as CHARIN
+ * sets them from CADRSTOR): rebuild the state CHARIN started from and run
+ * the earlier key module f, which runs CHARIN whole again (the same lock and
+ * MPAC; KEY REL is already on). */
+static enum lanec_status from_charin(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m, uint8_t g, key_run f)
+{
+    const places *p = at(m);
+    uint16_t *w = s->words, key = w[CHAR], expect, saved[3];
     if (key > 037u || group[key] != g || w[LANEC_A] != key || w[LANEC_Q] != TABLE(p) + key + 1u || w[DSPLOCK] != 1u)
         return LANEC_OUT_OF_SCOPE;
     expect = charin_mpac(w[CADRSTOR], key);
     if (expect == 0177777u ? (io->channel[DSALMOUT] & BIT5) == 0u || w[MPAC] != io->channel[DSALMOUT] || io->channel[DSALMOUT] > 077777u
                            : w[MPAC] != expect)
         return LANEC_OUT_OF_SCOPE;
-    /* The state CHARIN started from: the earlier modules run CHARIN whole,
-     * relighting KEY REL (already on) and rewriting the lock and MPAC. */
-    saved[0] = z; saved[1] = w[DSPLOCK]; saved[2] = w[MPAC];
+    saved[0] = w[LANEC_Z]; saved[1] = w[DSPLOCK]; saved[2] = w[MPAC];
     w[LANEC_Z] = p->charin; w[DSPLOCK] = w[REG2122]; w[MPAC] = key;
-    if (run(from, s, io, m) == LANEC_OK) return LANEC_OK;
+    if (f(s, io, m) == LANEC_OK) return LANEC_OK;
     w[LANEC_Z] = saved[0]; w[DSPLOCK] = saved[1]; w[MPAC] = saved[2];
     return LANEC_OUT_OF_SCOPE;
 }
 
-enum lanec_status lanec_pin_keys_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+enum lanec_status lanec_pin_keys_num(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    uint8_t g;
+    LANEC_ONE_MISSION(m);
+    if (s->words[LANEC_Z] == at(m)->charin) return lanec_pin_keys_charin(s, io, m);
+    if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 040u) return LANEC_OUT_OF_SCOPE;
+    g = label_of(at(m), s->words[LANEC_Z]);
+    if (g != NUM && g != T89 && g != NUM0) return LANEC_OUT_OF_SCOPE;
+    return from_charin(s, io, m, g, m == LANEC_LM ? lanec_pw_charin_number_run : lanec_pw_cm_charin_number_run);
+}
+
+static uint8_t at_label(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 040u) return LABELS;
+    return label_of(at(m), s->words[LANEC_Z]);
+}
+
+/* VERB and NOUN, and CHARALRM, which other paths also enter: the label's own
+ * module first, on any state it covers. */
+enum lanec_status lanec_pin_keys_cmd(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    uint8_t g;
+    LANEC_ONE_MISSION(m);
+    switch (g = at_label(s, io, m)) {
+    case ALRM:
+        if (lanec_pw_source_alarm_run(s, io, m) == LANEC_OK) return LANEC_OK;
+        return from_charin(s, io, m, g, lanec_pw_charin_alarm_run);
+    case VERB: case NOUN:
+        if (lanec_pw_nv_key_run(s, io, m) == LANEC_OK) return LANEC_OK;
+        return from_charin(s, io, m, g, m == LANEC_LM ? lanec_pw_charin_nv_run : lanec_pw_cm_charin_nv_run);
+    case ENTJ: return from_charin(s, io, m, g, lanec_pw_enter_run);
+    default: return LANEC_OUT_OF_SCOPE;
+    }
+}
+
+/* VBRELDSP, which only CHARIN's dispatch reaches. */
+enum lanec_status lanec_pin_keys_release(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
     LANEC_ONE_MISSION(m);
-    return s->words[LANEC_Z] == at(m)->charin ? lanec_pin_keys_charin(s, io, m) : lanec_pin_keys_handler(s, io, m);
+    return at_label(s, io, m) == REL ? from_charin(s, io, m, REL, lanec_pw_charin_release_run) : LANEC_OUT_OF_SCOPE;
+}
+
+/* POSGN, NEGSGN and ERROR (RSET). */
+enum lanec_status lanec_pin_keys_sign(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    uint8_t g;
+    LANEC_ONE_MISSION(m);
+    switch (g = at_label(s, io, m)) {
+    case POS: case NEG: return from_charin(s, io, m, g, lanec_pw_charin_sign_run);
+    case ERROR: return from_charin(s, io, m, g, lanec_pw_charin_reset_run);
+    default: return LANEC_OUT_OF_SCOPE;
+    }
+}
+
+enum lanec_status lanec_pin_keys_clear(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    LANEC_ONE_MISSION(m);
+    return at_label(s, io, m) == CLEAR ? from_charin(s, io, m, CLEAR, lanec_pw_charin_clear_run) : LANEC_OUT_OF_SCOPE;
+}
+
+enum lanec_status lanec_pin_keys_dispatch(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
+{
+    if (lanec_pin_keys_num(s, io, m) == LANEC_OK || lanec_pin_keys_cmd(s, io, m) == LANEC_OK ||
+        lanec_pin_keys_release(s, io, m) == LANEC_OK || lanec_pin_keys_sign(s, io, m) == LANEC_OK)
+        return LANEC_OK;
+    return lanec_pin_keys_clear(s, io, m);
 }

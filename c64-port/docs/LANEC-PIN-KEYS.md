@@ -17,10 +17,12 @@ module (21 KB LM, 16 KB CM): more than the 16 KB job slot.
   key's table word. It stops at CHARALRM, NUM, 89TEST, NUM -2, VERB, ERROR,
   VBRELDSP, POSGN, NEGSGN, ENTERJMP, CLEAR or NOUN with Q past that table
   word. Any key code 0-037 is in its domain.
-- `lanec_pin_keys_handler` runs from each of those labels. VERB and NOUN
-  (`lanec_pw_nv_key_run`), VBRELDSP (`lanec_pw_operator_release_run`) and
-  CHARALRM (`lanec_pw_source_alarm_run`) already have modules entered at
-  the label, and they are tried first on any state. Otherwise the state must
+- The label entries run from each of those labels. VERB and NOUN
+  (`lanec_pw_nv_key_run`) and CHARALRM (`lanec_pw_source_alarm_run`, which
+  other Pinball paths also reach) already have modules entered at the label,
+  and they are tried first on any state. VBRELDSP is reached only through
+  CHARIN, and `lanec_pw_charin_release_run` covers every state CHARIN leaves
+  there. Otherwise the state must
   be one CHARIN's dispatch leaves for a key of that label (CHAR, A, Q,
   DSPLOCK = 1, MPAC and channel 11 as CHARIN sets them from CADRSTOR); the
   routine rebuilds the state CHARIN started from (Z = CHARIN, DSPLOCK =
@@ -45,14 +47,19 @@ modules' domains.
 
 `tools/lanec/routines.py pin` gives CHARIN and the key labels to the two
 suites alone (no other module is tried there) and writes their routines in
-two generated files, each one flight module:
+five generated files, each one flight module of at most 12 KB that runs
+its own entry (`lanec_pin_keys_num`, `_release`, `_sign`, `_clear`, `_cmd`):
 
 - `src/lanec_pin_keys_num_routines.c`: number entry, i.e. CHARIN, NUM, NUM -2
-  and 89TEST (`lanec_pin_keys_num_{lm,cm}_routines`);
-- `src/lanec_pin_keys_cmd_routines.c`: the other keys' labels
-  (`lanec_pin_keys_cmd_{lm,cm}_routines`).
+  and 89TEST;
+- `src/lanec_pin_keys_release_routines.c`: VBRELDSP;
+- `src/lanec_pin_keys_sign_routines.c`: POSGN, NEGSGN and ERROR;
+- `src/lanec_pin_keys_clear_routines.c`: CLEAR;
+- `src/lanec_pin_keys_cmd_routines.c`: VERB, NOUN, ENTERJMP and CHARALRM.
 
-Both run through the shared trampoline `src/lanec_pin_trampoline.c` (moved
+A digit takes one module; any other key takes the number-entry module for
+CHARIN and then its own. All five run through the shared
+trampoline `src/lanec_pin_trampoline.c` (moved
 out of `src/lanec_pin_routines.c`, unchanged), so their links carry neither
 the rest of Pinball nor its tables. In the whole-file source maps
 (`tools/lanec/wholefile_pin.py`), pin-keys owns the words its own code runs

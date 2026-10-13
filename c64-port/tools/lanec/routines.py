@@ -52,9 +52,12 @@ FAMILIES = {
     'pin': dict(file='PINBALL_GAME_BUTTONS_AND_LIGHTS.agc', title='PINBALL_GAME_BUTTONS_AND_LIGHTS',
                 modules=None, c64='decimal', data=wholefile.DATA, multi=True, file_ranges=True, first=('keys', 'key_labels'),
                 # keypress groups: their points' routines go in their own tables and source files
-                # (src/lanec_pin_<group>_routines.c), one flight module each; the rest of
-                # pin-keys' points are the other keys' group
-                groups={'keys_num': ('CHARIN', 'NUM', '89TEST', 'NUM-2'), 'keys_cmd': None},
+                # (src/lanec_pin_<group>_routines.c), one flight module each, and run the group's
+                # own entry; labels None: the rest of pin-keys' points
+                groups={'keys_num': (('CHARIN', 'NUM', '89TEST', 'NUM-2'), 'lanec_pin_keys_num'),
+                        'keys_release': (('VBRELDSP',), 'lanec_pin_keys_release'),
+                        'keys_sign': (('POSGN', 'NEGSGN', 'ERROR'), 'lanec_pin_keys_sign'),
+                        'keys_clear': (('CLEAR',), 'lanec_pin_keys_clear'), 'keys_cmd': (None, 'lanec_pin_keys_cmd')},
                 # instruction words other code reads as constants (CAF/CS/AD/CA), never runs here
                 constants={'ENDINST': 1, 'TCNOVAC': 1, 'TCWAIT': 1, 'TCTSKOVR': 1, 'TCFINDVC': 1, 'NVSBENDL': 1,
                            'MIXAD': 1, 'DISPLACE': 3},
@@ -255,7 +258,7 @@ def groups(cfg, mission, first):
     fixture = dict((m, f) for m, _, f in symbols.MISSIONS)[mission]
     table = symbols.symbols(fixture)
     named, rest = {}, None
-    for g, labels in cfg['groups'].items():
+    for g, (labels, _) in cfg['groups'].items():
         if labels is None:
             rest = g
             continue
@@ -287,8 +290,9 @@ def group_text(fam, cfg, g, points, grouped, lists, run_of):
     names = sorted({v[0] for m in rows for _, v in rows[m]}, key=lambda n: int(n[3:]))
     for name in names:
         mods = lists[int(name[3:])]
+        # the group's points are pin-keys' alone: they run the group's own entry
         text.append(f'static const lanec_pin_dispatch {name}[{len(mods) + 1}] = {{ '
-                    + ', '.join(run_of[x] for x in mods) + ', 0 };')
+                    + ', '.join(cfg['groups'][g][1] if x in cfg['first'] else run_of[x] for x in mods) + ', 0 };')
         for m in ('LM', 'CM'):
             if any(v[0] == name for _, v in rows[m]):
                 ml = m.lower()

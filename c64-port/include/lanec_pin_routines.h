@@ -37,9 +37,13 @@ extern const uint16_t lanec_pin_cells[LANEC_PIN_CELLS];
 extern const agc_routine_table lanec_pin_lm_routines, lanec_pin_cm_routines;
 /* The keypress groups' routines (CHARIN and its key labels, src/lanec_pin_keys.c),
  * in their own tables and files so the flight store links each group as one
- * small module: number entry, and the other keys. */
+ * small module: number entry, VBRELDSP, the signs and RSET, CLEAR, and the
+ * other keys. */
 extern const agc_routine_table lanec_pin_keys_num_lm_routines, lanec_pin_keys_num_cm_routines;
 extern const agc_routine_table lanec_pin_keys_cmd_lm_routines, lanec_pin_keys_cmd_cm_routines;
+extern const agc_routine_table lanec_pin_keys_release_lm_routines, lanec_pin_keys_release_cm_routines;
+extern const agc_routine_table lanec_pin_keys_clear_lm_routines, lanec_pin_keys_clear_cm_routines;
+extern const agc_routine_table lanec_pin_keys_sign_lm_routines, lanec_pin_keys_sign_cm_routines;
 /* The C64 round trips. Every module does not fit one C64 program, so each
  * program registers one module's points (those it claims first, from
  * lanec_pin_c64_points) and runs that module alone. lanec_pin_c64_select
