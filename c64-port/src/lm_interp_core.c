@@ -653,6 +653,9 @@ enum {tX1=046,tX2=047,tS1=050,tLVSQUARE=042,tLV=044,tQPRET=052};
 #define DCA(a) ai_dca((a))
 #define DCS(a) ai_dcs((a))
 #define DXCH(a) ai_dxch((a))
+/* Two DXCHs of constant registers in one call. */
+static NI void dxch2_b(uint8_t a,uint8_t b){ai_dxch_b(a);ai_dxch_b(b);}
+#define DXCH2(a,b) (B8(a)&&B8(b)?dxch2_b((uint8_t)(a),(uint8_t)(b)):(DXCH(a),DXCH(b)))
 #define MP(a) ai_mp((a))
 #define MPF(k) ai_mpf((k))
 #define CCS(a) ai_ccs((a))
@@ -933,13 +936,13 @@ static NI void mpacsrnd(void){
 static NI void vshrrnd(void){CA(rMPTEMP);MP(rMPAC+1);(void)TS(rMPAC+1);XCH(rL);vshr2();}
 /* RIGHTR TC MPACSRND; TCF NEWMODE (C(A) = 0). */
 static NI void rightr(void){TC(02032);mpacsrnd();newmode();}
-static NI void vrotatex(void){DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC+3);DXCH(rMPAC);danzig();}
+static NI void vrotatex(void){DXCH2(rMPAC,rMPAC+5);DXCH2(rMPAC+3,rMPAC);danzig();}
 /* VSSR (MPTEMP = count - 1); `indexed` 0 enters at VSSR +1, past the
  * INDEX MPTEMP (CCS -0 of CYR in SHORTV lands there). */
 static NI void vssr(uint8_t indexed){
  CAF(indexed?bit14_indexed(rMPTEMP):BIT14);(void)TS(rMPTEMP);
- TC(02133);vshrrnd();DXCH(rMPAC);DXCH(rMPAC+3);DXCH(rMPAC);
- TC(02137);vshrrnd();DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC);
+ TC(02133);vshrrnd();DXCH2(rMPAC,rMPAC+3);DXCH(rMPAC);
+ TC(02137);vshrrnd();DXCH2(rMPAC,rMPAC+5);DXCH(rMPAC);
  TC(02143);vshrrnd();vrotatex();
 }
 /* TSSL +2 loop (MPTEMP = count - 1), then the CYR round test. */
@@ -1118,10 +1121,10 @@ static NI void enddot(void){
 /* VSQSUB 03317 (QXCH DOTRET ... ENDDOT). */
 static NI void vsqsub(void){
  ai_qxch(rDOTRET);
- TC(03322);dsqsub();DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
+ TC(03322);dsqsub();DXCH2(rMPAC+3,rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
  TC(03330);dsqsub();DXCH(rMPAC+1);DAS(rBUF+1);AD(rMPAC);AD(rBUF);
  if(TS(rBUF))(void)TS(rOVFIND);
- DXCH(rMPAC+5);DXCH(rMPAC);TC(03342);dsqsub();enddot();
+ DXCH2(rMPAC+5,rMPAC);TC(03342);dsqsub();enddot();
 }
 /* DMODE CAF ZERO; TCF NEWMODE. */
 static NI void dmode(void){CAF(ZERO);newmode();}
@@ -1130,11 +1133,11 @@ static NI uint8_t lmi_vsq(void){TC(03246);vsqsub();dmode();return 0;}
 static NI void dotsub(const agc_word *k){
  unsigned base=W[rADDRWD];
  ai_qxch(rDOTRET);
- TC(IF_(07161,07130));dmpsub(k);DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
+ TC(IF_(07161,07130));dmpsub(k);DXCH2(rMPAC+3,rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
  CA(rDOTINC);ADS(rADDRWD);
  TC(IF_(07171,07140));dmpsub(k?k+(W[rADDRWD]-base):0);DXCH(rMPAC+1);DAS(rBUF+1);AD(rMPAC);AD(rBUF);
  if(TS(rBUF))(void)TS(rOVFIND);
- DXCH(rMPAC+5);DXCH(rMPAC);CA(rDOTINC);ADS(rADDRWD);
+ DXCH2(rMPAC+5,rMPAC);CA(rDOTINC);ADS(rADDRWD);
  TC(IF_(07205,07154));dmpsub(k?k+(W[rADDRWD]-base):0);enddot();
 }
 static NI void lmi_dot(const agc_word *k){
@@ -1461,9 +1464,9 @@ small2:
  (void)TS(rL);CAF(ZERO);
 large2:
  DXCH(AT(W[rFIXLOC]+tLV));CSF(ONE);(void)TS(rMAXDVSW);
- DXCH(rVBUF);DXCH(rMPAC);DXCH(rBUF);TC(03122);unitdv();
- DXCH(rVBUF+2);DXCH(rMPAC);DXCH(rMPAC+3);TC(03126);unitdv();
- DXCH(rVBUF+4);DXCH(rMPAC);DXCH(rMPAC+5);TC(03132);unitdv();
+ DXCH2(rVBUF,rMPAC);DXCH(rBUF);TC(03122);unitdv();
+ DXCH2(rVBUF+2,rMPAC);DXCH(rMPAC+3);TC(03126);unitdv();
+ DXCH2(rVBUF+4,rMPAC);DXCH(rMPAC+5);TC(03132);unitdv();
  vrotatex();return 0;
 }
 
@@ -1472,9 +1475,9 @@ static const agc_word *kat(const agc_word *k,unsigned i){return k?k+i:0;}
 /* DVXSC 07430 (Comanche 07377): scalar in MPAC, vector operand at C(ADDRWD), to DANZIG. */
 static NI void dvxsc(const agc_word *k){
  DCA(rMPAC);DXCH(rMPAC+3);TC(IF_(07434,07403));dmpsub(k);TC(IF_(07435,07404));roundsub(2);
- CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+5);TC(IF_(07444,07413));dmpsub(kat(k,2));TC(IF_(07445,07414));roundsub(2);
- CAF(TWO);ADS(rADDRWD);DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);TC(IF_(07453,07422));dmpsub(kat(k,4));TC(IF_(07454,07423));roundsub(2);
- DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rMPAC);vmode();
+ CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH2(rMPAC,rMPAC+5);TC(IF_(07444,07413));dmpsub(kat(k,2));TC(IF_(07445,07414));roundsub(2);
+ CAF(TWO);ADS(rADDRWD);DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);TC(IF_(07453,07422));dmpsub(kat(k,4));TC(IF_(07454,07423));roundsub(2);
+ DXCH2(rMPAC,rMPAC+5);DXCH(rMPAC);vmode();
 }
 static NI void lmi_vxsc(const agc_word *k){
  uint8_t c=CCS(rMODE);
@@ -1482,8 +1485,8 @@ static NI void lmi_vxsc(const agc_word *k){
  /* VVXSC (-0 enters at its TC VROUND). */
  if(c==2u){TC(IF_(07405,07354));dmpsub(k);}
  TC(IF_(07406,07355));roundsub(2);
- DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);TC(IF_(07412,07361));dmpsub(k);TC(IF_(07413,07362));roundsub(2);
- DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);TC(IF_(07417,07366));dmpsub(k);TC(IF_(07420,07367));roundsub(2);
+ DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);TC(IF_(07412,07361));dmpsub(k);TC(IF_(07413,07362));roundsub(2);
+ DXCH2(rMPAC+5,rMPAC);DXCH(rMPAC+5);TC(IF_(07417,07366));dmpsub(k);TC(IF_(07420,07367));roundsub(2);
  vrotatex();
 }
 /* VPROJ 07425 (Comanche 07374): TC PREDOT (DOTINC 2, DOTSUB); CS FOUR; ADS ADDRWD back to
@@ -1520,9 +1523,9 @@ bufplus:
   ai_aug(rDVNORMCT);DCA(rBUF);DAS(rBUF);
  }
  TC(02737);if(vscdv())return;
- DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);
+ DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);
  TC(02743);if(vscdv())return;
- DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);
+ DXCH2(rMPAC+5,rMPAC);DXCH(rMPAC+5);
  TC(02747);if(vscdv())return;
  vrotatex();
 }
@@ -1536,16 +1539,16 @@ static NI void lmi_vsc(const agc_word *k){
  DXCH(rBUF);CAF(ZERO);(void)TS(rFB);vsc2();
 }
 static NI void lmi_vxv(const agc_word *k){
- DCA(rMPAC+5);DXCH(rMPAC);DXCH(rVBUF);TC(IF_(07465,07434));dmpsub(k);
- DCS(rMPAC+3);DXCH(rMPAC);DXCH(rVBUF+2);TC(IF_(07472,07441));dmpsub(k);
+ DCA(rMPAC+5);DXCH2(rMPAC,rVBUF);TC(IF_(07465,07434));dmpsub(k);
+ DCS(rMPAC+3);DXCH2(rMPAC,rVBUF+2);TC(IF_(07472,07441));dmpsub(k);
  CAF(TWO);ADS(rADDRWD);
- DCS(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);TC(IF_(07501,07450));dmpsub(kat(k,2));
- DCA(rVBUF);DXCH(rMPAC);DXCH(rVBUF+4);TC(IF_(07506,07455));dmpsub(kat(k,2));
+ DCS(rMPAC+5);DXCH2(rMPAC,rMPAC+5);TC(IF_(07501,07450));dmpsub(kat(k,2));
+ DCA(rVBUF);DXCH2(rMPAC,rVBUF+4);TC(IF_(07506,07455));dmpsub(kat(k,2));
  CAF(TWO);ADS(rADDRWD);
  DCS(rVBUF);DXCH(rMPAC);DAS(rMPAC+5);
  if(!ai_bzf()){TC(IF_(07517,07466));overflwz();}
  TC(IF_(07520,07467));dmpsub(kat(k,4));
- DXCH(rVBUF+2);DXCH(rMPAC+3);DXCH(rMPAC);DAS(rMPAC+3);
+ DXCH2(rVBUF+2,rMPAC+3);DXCH(rMPAC);DAS(rMPAC+3);
  if(!ai_bzf()){TC(IF_(07527,07476));overflwy();}
  TC(IF_(07530,07477));dmpsub(kat(k,4));DXCH(rVBUF+4);endvxv();
 }
@@ -1557,13 +1560,13 @@ static NI void vxmmxv(const agc_word *k){
  unsigned base=W[rADDRWD];
  (void)TS(rDOTINC);TC(IF_(07344,07313));mpacvbuf();
  TC(IF_(07345,07314));dotsub(k);
- DCA(rVBUF);DXCH(rMPAC);DXCH(rBUF2);DCA(rVBUF+2);DXCH(rMPAC+3);DCA(rVBUF+4);DXCH(rMPAC+5);
+ DCA(rVBUF);DXCH2(rMPAC,rBUF2);DCA(rVBUF+2);DXCH(rMPAC+3);DCA(rVBUF+4);DXCH(rMPAC+5);
  CA(rMATINC);ADS(rADDRWD);
  TC(IF_(07362,07331));dotsub(kat(k,(unsigned)(W[rADDRWD]-base)));
- DXCH(rVBUF);DXCH(rMPAC);DXCH(rVBUF+2);DXCH(rMPAC+3);DXCH(rVBUF+4);DXCH(rMPAC+5);
+ DXCH2(rVBUF,rMPAC);DXCH2(rVBUF+2,rMPAC+3);DXCH2(rVBUF+4,rMPAC+5);
  CA(rMATINC);ADS(rADDRWD);
  TC(IF_(07373,07342));dotsub(kat(k,(unsigned)(W[rADDRWD]-base)));
- DXCH(rBUF2);DXCH(rMPAC);DXCH(rMPAC+5);DXCH(rVBUF+2);DXCH(rMPAC+3);danzig();
+ DXCH2(rBUF2,rMPAC);DXCH2(rMPAC+5,rVBUF+2);DXCH(rMPAC+3);danzig();
 }
 /* MXV 07334 (Comanche 07303) CAF TWO; TS MATINC; TCF VXM/MXV. */
 static NI void lmi_mxv(const agc_word *k){CAF(TWO);(void)TS(rMATINC);vxmmxv(k);}
@@ -1605,7 +1608,7 @@ static NI void lmi_poly(const agc_word *table){
  agc_word q=(agc_word)(W[rQ]&077777u);
  CAF(table[0]);(void)TS(rPOLYCNT);DOUBLE();AD(rQ);(void)TS(rPOLISH);ADF(FIVE);(void)TS(rPOLYRET);
  CAF(LVBUF);(void)TS(rADDRWD);
- ai_dcaf(table+(W[rPOLISH]-q)+3u);DXCH(rMPAC);DXCH(rVBUF);
+ ai_dcaf(table+(W[rPOLISH]-q)+3u);DXCH2(rMPAC,rVBUF);
  for(;;){
   TC(IF_(07246,07215));dmpsub(0);ai_dcaf(table+(W[rPOLISH]-q)+1u);DAS(rMPAC);
   if(CCS(rPOLYCNT)!=0u)break;
@@ -1717,14 +1720,14 @@ static NI uint8_t arccos_body(uint8_t asin){
   if(c!=2u){acos0(1);return 0;}
  }
  /* ACOSST2: SQRT(1-X)P(X) (Hastings). */
- DCS(rMPAC);ADF(HALF);DXCH(rMPAC);DXCH(rBUF2);
+ DCS(rMPAC);ADF(HALF);DXCH2(rMPAC,rBUF2);
  TC(IF_(03650,03647));if(sqrtsub())return 2;
  if(CCS(rMPTEMP)==0u){
   /* ACOSSHR INDEX A; CAF BIT14; TS MPTEMP; TC VSHRRND. */
   CAF(bit14_indexed(rA));(void)TS(rMPTEMP);TC(ACOSSHR_RET);vshrrnd();
  }
  /* ACOS3 (MPTEMP is never negative after SQRTSUB). */
- DXCH(rMPAC);DXCH(rBUF2);DXCH(rMPAC);
+ DXCH2(rMPAC,rBUF2);DXCH(rMPAC);
  TC(IF_(03656,03655));lmi_poly(acos_poly);
  /* CAF LBUF2; TC DMPSUB -1 (TS ADDRWD); TC ESCAPE. */
  CAF(rBUF2);TC(IF_(03701,03700));(void)TS(rADDRWD);dmpsub(0);
