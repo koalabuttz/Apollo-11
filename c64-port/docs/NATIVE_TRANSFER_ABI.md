@@ -53,11 +53,13 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   ZRUPT. A native RESUME (TASKOVER's, the RESUME/NOQRSM/NOQBRSM family of
   both missions) continues at Z = ZRUPT-1 instead, which is the same thing
   only when BRUPT is the word at ZRUPT-1 under the banks the interrupted
-  program gets back. The interrupt hardware always saves exactly that word.
-  Code that writes BRUPT itself (Luminary ENDJASK, ALARM_AND_ABORT, P70) may
-  not, so every native RESUME checks with `agc_resume_exact` and refuses
-  (`EXEC_OUT_OF_SCOPE`, image unchanged) when the word can be read (erasable,
-  or fixed through the program's `fixed_data`) and differs (#144). A program
+  program gets back. The interrupt hardware usually saves that word, but
+  after an unextended INDEX it saves the indexed instruction (word plus the
+  index), and code that writes BRUPT itself (Luminary ENDJASK,
+  ALARM_AND_ABORT, P70) may save anything. So every native RESUME checks
+  with `agc_resume_exact` and refuses (`EXEC_OUT_OF_SCOPE`, image
+  unchanged) when the word can be read (erasable, or fixed through the
+  program's `fixed_data`) and differs (#144). A program
   that resumes interrupts of fixed code it built itself supplies `fixed_data`.
   Q and QRUPT are registers, not addresses: T3RUPT and TASKOVER exchange them
   as QXCH does (overflow-corrected into QRUPT, sign-extended into Q), whatever

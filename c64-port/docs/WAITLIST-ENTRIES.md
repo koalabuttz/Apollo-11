@@ -37,16 +37,22 @@ inputs, run with the service and Executive tables together, so the run goes
 DELAYJOB, DLY2 -1, WAIT2, TCGETCAD to JOBSLEEP or BAILOUT. Each DELAYJOB input
 runs twice: on its own random image, where WAIT2 almost always finds a broken
 list and aborts, and (base `| WLE_SANE`) with a sane waitlist: a free DELAYLOC,
-a positive delay, TIME3 on both sides of its overflow test, and 0-8 queued
-tasks (one case in sixteen a full list of 9). Of those, 45 LM and 52 CM cases
-insert the task and reach JOBSLEEP, 4 LM and 5 CM overflow the list and abort,
-and one LM case ends at JOBWAKE. The remaining DLY2 -1 cases are inputs the
+a positive delay, TIME3 on both sides of its overflow test or exactly 0200
+(where WAIT2's -TIME3 + 0200 is -0), and 0-8 queued tasks (one case in
+sixteen a full list of 9). Of those, 43 LM and 53 CM cases insert the task
+and reach JOBSLEEP, 6 LM and 4 CM overflow the list and abort, and one LM
+case ends at JOBWAKE. The remaining DLY2 -1 cases are inputs the
 native DELAYJOB refuses (most with a delay near 1.0, whose WAIT2 sum would
 overflow); they are compared as refusals. Each LM input runs a third time
 (base `| WLE_SANE | WLE_EDGE`): a sane list of 1-8 tasks with the new task
 due exactly 1 cs before queued task j, so WAIT2's list search ends on
 `CCS` -0 at j (`lm_delay_image.c` line 25, the -0 break) and the task is
-inserted there. All 57 reach the continuation.
+inserted there. All 57 reach the continuation (56 JOBSLEEP, one JOBWAKE).
+Two +0 outcomes in `lm_delay_image.c` are never taken, because they cannot
+be: the `CCS` after -TIME3 + 0200 (line 22) and the one that ends the search
+(line 27) would need a +0 sum, and a ones'-complement add gives +0 only from
++0 + +0. -TIME3 + 0200 is never +0 (TIME3 = 0200 gives -0), and the search
+adds a queued task's negative delta T to a positive remainder.
 yaAGC stops at the native Z (and FB when banked) or when it leaves the
 interrupt. All 2048 erasable words, the superbank and the inhibit and
 interrupt flags are identical. The proof
