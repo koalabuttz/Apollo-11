@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Milestone interbank-oracle (lane A): INTER-BANK_COMMUNICATION of both
 # missions through the control-transfer ABI, checked against yaAGC.
-IBO_SRC = tests/interbank_oracle_cases.c tests/interbank_oracle_check.c src/agc_transfer.c src/lm_interbank_routines.c \
-	src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_word.c
+IBO_SRC = tests/interbank_oracle_cases.c tests/interbank_oracle_check.c src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank_idle.c \
+	src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c src/agc_word.c
 IBO_HDR = include/agc_transfer.h include/lm_interbank_routines.h include/lm_interbank.h include/cm_interbank_routines.h \
 	include/cm_interbank_complete.h src/lm_interbank_sites.inc src/cm_interbank_sites.inc tests/interbank_oracle_cases.h \
 	tests/interbank_oracle_check.h tests/interbank_oracle_data.h tests/interbank_oracle_vectors.h

@@ -182,7 +182,7 @@
   {
    "mission": "lm",
    "keep": "0x37ff0000000000000",
-   "cases": 31,
+   "cases": 30,
    "case_ids": [
     13312,
     13588,
@@ -213,15 +213,15 @@
     15570,
     15624,
     16012,
-    16059,
-    16035
+    16059
    ]
   },
   {
    "mission": "lm",
    "keep": "0x7ffe400800000000000",
-   "cases": 33,
+   "cases": 34,
    "case_ids": [
+    16035,
     15895,
     16080,
     16020,
@@ -259,8 +259,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 1948,
-  "c64_taken": 1948,
+  "host_taken": 1949,
+  "c64_taken": 1949,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -848,8 +848,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 19200,
- "host_branch_arcs": 1974,
+ "host_branch_arcs": 1975,
  "c64_rows": 146,
- "c64_branch_arcs": 1974,
+ "c64_branch_arcs": 1975,
  "host_branches_missing_on_c64": []
 }

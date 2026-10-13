@@ -38,11 +38,11 @@ MISSIONS = [(0, 'Luminary099', 'lm_self_check', 2), (1, 'Comanche055', 'cm_self_
 # host rope image for the REU one, for the row cover.
 C64_COMMON = ['src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c', 'src/agc_word.c',
               'src/agc_multiword.c', 'tests/self_check_cases.c', 'src/rope_image_host.c']
-C64_SRC = [['src/lm_self_check.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', *C64_COMMON],
-           ['src/cm_self_check.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', *C64_COMMON]]
-CORE = ['tests/self_check_cases.c', 'src/lm_self_check.c', 'src/cm_self_check.c', 'src/agc_image_ops.c',
+C64_SRC = [['src/lm_self_check.c', 'src/lm_self_check_idle.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', *C64_COMMON],
+           ['src/cm_self_check.c', 'src/cm_self_check_idle.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', *C64_COMMON]]
+CORE = ['tests/self_check_cases.c', 'src/lm_self_check.c', 'src/cm_self_check.c', 'src/lm_self_check_idle.c', 'src/cm_self_check_idle.c', 'src/agc_image_ops.c',
         'src/agc_hardware_divide.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c',
-        'src/rope_image_host.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
+        'src/rope_image_host.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c',
         'src/cm_interbank_complete.c',
         'tests/cm_executive_cases.c', str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-alarm (lane A2): Luminary099 ALARM_AND_ABORT (ALARM ... VARALARM,
 # PRIOLARM, FLAGS, GOPOODOO) as native routines of the control-transfer ABI.
-LM_AL_SRC = src/lm_alarm.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_alarm_cases.c
+LM_AL_SRC = src/lm_alarm.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_alarm_cases.c
 LM_AL_HDR = include/lm_alarm.h include/lm_interbank_routines.h include/agc_transfer.h include/agc_image_ops.h src/lm_alarm_sites.inc tests/lm_alarm_cases.h
 .PHONY: test-lm-alarm sanitize-lm-alarm c64-lm-alarm vice-lm-alarm lm-alarm-differential
 all: build/test-lm-alarm

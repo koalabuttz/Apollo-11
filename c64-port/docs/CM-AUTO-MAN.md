@@ -8,16 +8,51 @@ This replaces the earlier hand translation, which the certificate reviewer rejec
 
 ## Scope
 
-6 routines, keyed by physical address in `cm_auto_man_basic`:
+39 routines, keyed by physical address in `cm_auto_man_basic`:
 
 | Entry | Kind | Why it is a routine |
 |---|---|---|
 | 21,3250 AHFNOROT | basic | entry AHFNOROT (RCS-CSM_DIGITAL_AUTOPILOT.agc BZMF AHFNOROT) |
 | 21,3304  | basic | return from STICKCHK |
+| 21,3322 ATTHOLD | basic | part key |
+| 21,3363  | basic | part key |
+| 21,3364  | basic | part key |
+| 21,3372 HOLDFUNC | basic | part key |
+| 21,3376 GRABANG | basic | part key |
 | 21,3441 JETS | basic | entry JETS (RCS-CSM_DIGITAL_AUTOPILOT.agc TCF JETS) |
+| 21,3445 JLOOP | basic | part key |
+| 21,3463 INHOLD | basic | part key |
+| 21,3472 SIGNCK1 | basic | part key |
+| 21,3477 POSVEL | basic | part key |
+| 21,3507 NEGVEL | basic | part key |
+| 21,3571  | basic | part key |
+| 21,3613  | basic | part key |
+| 21,3614 SIGNCK3 | basic | part key |
+| 21,3630 J18 | basic | part key |
+| 21,3634 J20 | basic | part key |
+| 21,3645 J21 | basic | part key |
+| 21,3655 JN | basic | part key |
+| 21,3664 JP | basic | part key |
+| 21,3673 J22 | basic | part key |
+| 21,3674  | basic | part key |
+| 21,3675  | basic | part key |
+| 21,3676  | basic | part key |
+| 21,3677 SIGNCK5 | basic | part key |
+| 21,3700  | basic | part key |
+| 21,3701  | basic | part key |
+| 21,3702  | basic | part key |
+| 21,3703  | basic | part key |
+| 21,3704 J23 | basic | part key |
+| 21,3716 J24 | basic | part key |
+| 21,3723  | basic | part key |
+| 21,3727 JTIME | basic | part key |
 | 21,3732  | basic | return from SMALLMP |
 | 21,3734  | basic | return from SMALLMP |
+| 21,3750  | basic | part key |
 | 21,3757 T6PROG | basic | entry T6PROG (RCS-CSM_DIGITAL_AUTOPILOT.agc TCF T6PROG) |
+| 21,3761  | basic | part key |
+
+The step machine is split into part functions (spec `basic_parts`) so each routine's link closure fits its flight-store slot. A transfer across a part hands Z to the target word, whose routine is a part key, and the transfer runner runs it as the next step. Part keys are not entries: their runs come from the 6 entry routines, which draw all the cases, so the case set and the host vectors are the same as before the split.
 
 Destinations outside the file: REINIT, RESUME, SMALLMP, STICKCHK, T6PROGM. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
@@ -30,6 +65,6 @@ Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the
 Hashes: `evidence/cm-auto-man/SHA256.json`; all files are in the tree.
 
 - **Source map.** `cm-auto-man-source-map.json` lists all 333 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
-- **Independent assembly comparison.** `make cm-auto-man-differential` runs 256 states per routine (1,536 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 31, 32 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-auto-man-proof.json` (`cm-auto-man-differential.log` is the run). One case in 32 is frozen in `tests/cm_auto_man_vectors.h`.
+- **Independent assembly comparison.** `make cm-auto-man-differential` runs 256 states per entry routine (1,536 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 31, 32 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-auto-man-proof.json` (`cm-auto-man-differential.log` is the run). One case in 32 is frozen in `tests/cm_auto_man_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-auto-man sanitize-cm-auto-man` runs the 48 frozen cases (`cm-auto-man-host.log`).
-- **C64 execution results.** `make vice-cm-auto-man` runs 1 diagnostic program with 24 cases (`cm-auto-man-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 1,536 differential cases take: 642 of 642 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 293 of 293 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 367 of the 367 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
+- **C64 execution results.** `make vice-cm-auto-man` runs 1 diagnostic program with 24 cases (`cm-auto-man-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 1,536 differential cases take: 737 of 737 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 301 of 301 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 455 of the 455 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

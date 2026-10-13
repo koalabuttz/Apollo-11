@@ -23,7 +23,7 @@ B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 ROPES = [B / 'fixed-data/Luminary099/MAIN.agc.bin', B / 'fixed-data/Comanche055/MAIN.agc.bin']
 NATIVE = ['src/imu_compensation.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-          'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
+          'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c',
           'src/cm_interbank_complete.c', 'src/lm_exec_routines.c', 'src/lm_admission_image.c',
           'src/lm_waitlist_image.c', 'src/waitlist.c', 'src/executive.c', 'src/p66_native.c',
           'src/cm_exec_routines.c', 'src/cm_admission_zero.c', 'src/cm_waitlist_extended.c', 'src/cm_waitlist_internal.c', 'src/cm_task_transfer.c', 'src/cm_native_image.c', 'src/cm_executive.c', 'src/cm_waitlist.c',

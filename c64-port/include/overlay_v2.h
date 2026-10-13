@@ -141,12 +141,15 @@ void apollo_ov2_seam_release(apollo_ov2_runtime *,uint8_t context);
  * latch. The canonical image is untouched; restart logic rebuilds from it. */
 void apollo_ov2_restart(apollo_ov2_runtime *);
 
-/* Header field offsets (little-endian two-byte fields). */
+/* Header field offsets (little-endian two-byte fields). TABLES is 0, or
+ * the address in the loaded image of the module's routine-table list (a
+ * flight module's rk_module_tables, platform/c64/resident_flight.h), which
+ * the resident reads in place to call a loaded module's routines directly. */
 enum {
     APOLLO_OV2_H_MAGIC=0, APOLLO_OV2_H_ABI=4, APOLLO_OV2_H_SIZE=5, APOLLO_OV2_H_SLOT=6,
     APOLLO_OV2_H_MISSION=7, APOLLO_OV2_H_ID=8, APOLLO_OV2_H_ENTRY=10, APOLLO_OV2_H_BSS=12,
     APOLLO_OV2_H_BSS_BYTES=14, APOLLO_OV2_H_LOAD_BYTES=16, APOLLO_OV2_H_SERVICES=18,
-    APOLLO_OV2_H_SELECTORS=20, APOLLO_OV2_H_RESERVED=22
+    APOLLO_OV2_H_SELECTORS=20, APOLLO_OV2_H_TABLES=22
 };
 uint16_t apollo_ov2_slot_address(uint8_t slot);
 /* Service table versions are major<<8|minor. The table is append-only within
