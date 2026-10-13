@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -8503,6 +8503,7 @@
           "native_files": [
             "src/lm_p_axis.c",
             "src/lm_p_axis_sites.inc",
+            "src/agc_fast_ops.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "src/agc_hardware_divide.c",
@@ -8534,7 +8535,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p-axis/lm-p-axis-source-map.json",
-            "sha256": "695ea43769d25e1116a478064aa9ba5622ae463ec54150a89743c521cfadc28f"
+            "sha256": "e7c5433a0749036ec7f19885e5954c19fd59bc2d0ddf149049b4fa7f96cfc2e4"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p-axis/lm-p-axis-proof.json",
@@ -8546,14 +8547,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-p-axis/lm-p-axis-vice.log",
-            "sha256": "136ed810f51f31b8d94d35017664a91c5333a94a95cd3cac0e389a0d45a73312",
+            "sha256": "3caac587333046134f9dacdded2732a78eb4ed5a91740071ae1cbc7e63d1a6a0",
             "vice_targets": {
               "vice-lm-p-axis": 128
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
-            "sha256": "faa0bc1c77cd72f881f936f4e6fbed8d3e9866e2593f13fcdd7c9b153de90e77"
+            "sha256": "2991e772fc04a5d956d08e97c8d816585fcf1fdf8b8c9c532826f8c90d76252f"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-151.md",
