@@ -4,13 +4,13 @@
   "release": "evidence-cm-p30-p37",
   "files": {
     "cm-p30-p37-c64-cover.json": {
-      "sha256": "a1bcf4523b935da9f2f06d6cbc649f947ae7e995962876fbb435cbda3902d37a",
-      "bytes": 3880,
+      "sha256": "3ae0f95121ee7d6b70bbcdedbf65d084f40c12114d359f711e3f67573df71a6c",
+      "bytes": 3941,
       "store": "tree"
     },
     "cm-p30-p37-differential.log": {
-      "sha256": "a62c55083263801f8b823d885dcc882439953189c7b5fc5220cf32be9669c767",
-      "bytes": 32433,
+      "sha256": "313e63dc02b41ea9cb04974266cc7cf343442db1a71554348eb4b598e5de1486",
+      "bytes": 32432,
       "store": "release"
     },
     "cm-p30-p37-host.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "cm-p30-p37-proof.json": {
-      "sha256": "1f81b3a0579b105392bd56565ff797cc61f2136e01e31d033d346172893c5d47",
-      "bytes": 49911,
+      "sha256": "c17bbe0814a3f0a22de4d26798340f4dc29454f567c66b79da34298f74fd7b85",
+      "bytes": 49837,
       "store": "tree"
     },
     "cm-p30-p37-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-p30-p37-vice.log": {
-      "sha256": "f40172af5f680e34c04dbca248b7bda15af280ce54ef610c30cdbf618ec06290",
-      "bytes": 5221,
+      "sha256": "8b50023829e981f0c7c131a4379c06108b0020f257d6bb44e328bc38d537a8c3",
+      "bytes": 4491,
       "store": "release"
     }
   }
