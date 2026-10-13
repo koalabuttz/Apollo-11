@@ -1,1 +1,2 @@
-PASS: VICE PAL lanec-di-transfer.prg: 68 checks, 0 failures
+PASS: VICE PAL lanec-di-transfer-cm.prg: 9 checks, 0 failures
+PASS: VICE PAL lanec-di-transfer.prg: 54 checks, 0 failures

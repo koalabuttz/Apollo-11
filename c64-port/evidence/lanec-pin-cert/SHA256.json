@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-pin-cert",
+  "release": "evidence-lanec-pin-cert",
+  "files": {
+    "lanec-pin-c64-cover.json": {
+      "sha256": "afbaa370cc4984d8cef92a102cb366d6936b84c1d13d41abd639586c6b2a5a62",
+      "bytes": 252656,
+      "store": "tree"
+    },
+    "lanec-pin-c64-results.json": {
+      "sha256": "9b189cb059d49e7e60e9f496c75a0196b379b911a9d44ea2d9aa894d8dc047a6",
+      "bytes": 21123,
+      "store": "tree"
+    },
+    "lanec-pin-checks.log": {
+      "sha256": "cba0cd163e3ba92bdf23ee52dbdd862a47d1a6c246fc131d2b6635936ff67208",
+      "bytes": 34130,
+      "store": "tree"
+    },
+    "lanec-pin-cm-source-map.json": {
+      "sha256": "fcaf42de7e59781d204bb5c7074ff6ce87015a23c1aed30a322690c768e8196e",
+      "bytes": 600415,
+      "store": "release"
+    },
+    "lanec-pin-comparison.json": {
+      "sha256": "015968053548dc9f074f3a49588307234d015d90ccae309646ffdb9a8da03115",
+      "bytes": 44059,
+      "store": "tree"
+    },
+    "lanec-pin-lm-source-map.json": {
+      "sha256": "b3c25763f28aea1ec542b01125079ac243cb48eea4c54657a9adbba9bf548f56",
+      "bytes": 599114,
+      "store": "release"
+    }
+  }
+}

@@ -42,11 +42,12 @@ Hashes: `evidence/lanec-ev-dap/SHA256.json`.
 
 - Independent assembly comparison: `lanec-ev-dap-diff.json` (2,832 cases:
   all 59 entries, 48 variants each, random DAPBOOLS, DAPDATR1, FLGWRD10 and
-  FLAGWRD6 bits, masses above and below their minimums and sums that
+  FLAGWRD6 bits, masses above, exactly at and below their minimums (the -0 differences) and sums that
   overflow into MASS, random EB) and `lanec-ev-dap-oracle.crc`. gcov: every
   reachable branch outcome is taken; the untaken ones are CCS classes a
   positive mask cannot produce.
 - Host and sanitizer results: `make test-lanec-ev-dap sanitize-lanec-ev-dap`
   (`lanec-ev-dap-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-dap`, 258 frozen cases (every
-  entry) on a VICE PAL C64 (`lanec-ev-dap-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-dap`, 43 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 2,832 host cases take (`lanec-ev-dap-vice.txt`).

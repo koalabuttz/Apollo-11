@@ -318,18 +318,32 @@ static const agc_routine_entry lm_entries[LANEC_EV_LM_ROUTINES] = {
     { 36503u, short_lm },   /* 43,3227 */
     { 36504u, short_lm },   /* 43,3230 */
 };
-#define LANEC_EV_LM_INTERP_ROUTINES 15u
+#define LANEC_EV_LM_INTERP_ROUTINES 29u
 static const agc_routine_entry lm_interp_entries[LANEC_EV_LM_INTERP_ROUTINES] = {
     { 32787u, lmi_lm },   /* 40,2023 LOC */
     { 32789u, lmi_lm },   /* 40,2025 LOC */
+    { 32790u, lmi_lm },   /* 40,2026 LOC */
+    { 32792u, lmi_lm },   /* 40,2030 LOC */
+    { 32794u, lmi_lm },   /* 40,2032 LOC */
+    { 32795u, lmi_lm },   /* 40,2033 LOC */
+    { 32796u, lmi_lm },   /* 40,2034 LOC */
+    { 32798u, lmi_lm },   /* 40,2036 LOC */
+    { 32800u, lmi_lm },   /* 40,2040 LOC */
+    { 32802u, lmi_lm },   /* 40,2042 LOC */
     { 32804u, lmi_lm },   /* 40,2044 LOC */
     { 32807u, lmi_lm },   /* 40,2047 LOC */
+    { 32809u, lmi_lm },   /* 40,2051 LOC */
+    { 32811u, lmi_lm },   /* 40,2053 LOC */
+    { 32813u, lmi_lm },   /* 40,2055 LOC */
+    { 32815u, lmi_lm },   /* 40,2057 LOC */
     { 32817u, lmi_lm },   /* 40,2061 LOC */
     { 32820u, lmi_lm },   /* 40,2064 LOC */
+    { 32821u, lmi_lm },   /* 40,2065 LOC */
     { 34867u, lmi_lm },   /* 42,2063 LOC */
     { 34869u, lmi_lm },   /* 42,2065 LOC */
     { 36456u, lmi_lm },   /* 43,3150 LOC */
     { 36458u, lmi_lm },   /* 43,3152 LOC */
+    { 36462u, lmi_lm },   /* 43,3156 LOC */
     { 36464u, lmi_lm },   /* 43,3160 LOC */
     { 36471u, lmi_lm },   /* 43,3167 LOC */
     { 36473u, lmi_lm },   /* 43,3171 LOC */

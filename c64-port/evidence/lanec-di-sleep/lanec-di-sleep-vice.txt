@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-di-sleep.prg: 242 checks, 0 failures
+PASS: VICE PAL lanec-di-sleep.prg: 23 checks, 0 failures

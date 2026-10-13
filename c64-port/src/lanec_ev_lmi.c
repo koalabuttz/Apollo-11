@@ -6,12 +6,13 @@
  * the literal argument those paths take for the interpreter's bookkeeping.
  * Entries are the interpreter's own states: NEWOPS with LOC at a word the
  * interpreter resumes on: the first word after a basic TC INTPRET (INTPRET,
- * the interpreter's code, leaves LOC there), a CALL's return or a branch
- * target. Each is an interpretive point of the transfer ABI, keyed by LOC
- * under BANKSET.
+ * the interpreter's code, leaves LOC there), a CALL's return, a branch
+ * target, or the word after each DANZIG (where a job that CHANG2 suspended
+ * for a higher-priority NEWJOB resumes). Each is an interpretive point of
+ * the transfer ABI, keyed by LOC under BANKSET.
  * Each run ends where the interpreter leaves these words: at NEWOPS of a
- * called routine, at the basic word after EXIT, at the RTB routine, or at
- * UNIT's alarm. See
+ * called routine, at the basic word after EXIT, at the RTB routine, at
+ * UNIT's alarm, or at CHANG2 when a DANZIG finds NEWJOB set. See
  * docs/LANEC-EV-LMI.md. */
 #include "lanec_ev_lmi.h"
 #include "lanec_symbols.h"
@@ -22,6 +23,7 @@
 #define L(X) LANEC_LM_##X
 #define W s->words
 #define NEWOPS 06070u
+#define CHANG2 05126u
 
 /* MISCJUMP body entries (Luminary099 INTERPRETER). */
 enum { CALLITA = 02507, RTBBHIZ = 02447, SWITCH = 02516, LXA = 02354, BPLBMN = 02474 };
@@ -36,6 +38,11 @@ typedef struct { uint16_t bank, z, at; } point;   /* at: LOC at NEWOPS */
 static const point entries[] = {
     { 040u, NEWOPS, RR(4u) }, { 040u, NEWOPS, RR(6u) }, { 040u, NEWOPS, RR(025u) }, { 040u, NEWOPS, RR(030u) },
     { 040u, NEWOPS, RR(042u) }, { 040u, NEWOPS, RR(045u) },
+    /* the words after each DANZIG */
+    { 040u, NEWOPS, RR(7u) }, { 040u, NEWOPS, RR(011u) }, { 040u, NEWOPS, RR(013u) }, { 040u, NEWOPS, RR(014u) },
+    { 040u, NEWOPS, RR(015u) }, { 040u, NEWOPS, RR(017u) }, { 040u, NEWOPS, RR(021u) }, { 040u, NEWOPS, RR(023u) },
+    { 040u, NEWOPS, RR(032u) }, { 040u, NEWOPS, RR(034u) }, { 040u, NEWOPS, RR(036u) }, { 040u, NEWOPS, RR(040u) },
+    { 040u, NEWOPS, RR(046u) }, { 043u, NEWOPS, L(ATTACHIT) + 7u },
     { 042u, NEWOPS, L(TRMTRAK1) + 7u }, { 042u, NEWOPS, L(TRMTRAK1) + 9u },
     { 043u, NEWOPS, L(ATTACHIT) + 1u }, { 043u, NEWOPS, L(ATTACHIT) + 3u }, { 043u, NEWOPS, L(ATTACHIT) + 9u },
     { 043u, NEWOPS, L(ATTACHIT) + 16u }, { 043u, NEWOPS, L(ATTACHIT) + 18u }, { 043u, NEWOPS, L(ATTACHIT) + 21u },
@@ -47,13 +54,30 @@ static const point entries[] = {
 static void call(apollo_overlay_state *s, agc_word word) { lmi_misc(s, word, CALLITA); lmi_call(s); lmi_goto(s); }
 static uint8_t sw(apollo_overlay_state *s, p66_bias_io *io, agc_word word)
 {
+    uint8_t r;
     lmi_misc(s, word, SWITCH);
-    return lmi_switch(s, io);
+    r = lmi_switch(s, io);
+    /* TS Q stored the flag word sign-extended (16 bits); the shared step
+     * keeps Q's 15 */
+    W[LANEC_Q] = (uint16_t)(W[LANEC_Q] | ((W[LANEC_Q] & 040000u) << 1));
+    return r;
 }
 /* EXIT (a single order) to the basic word after it. */
 static void exit_order(apollo_overlay_state *s) { lmi_newops(s, 077776); lmi_exit(s); }
 
-static void next(apollo_overlay_state *s) { lmi_danzig_next(s); }
+/* DANZIG to the next word's NEWOPS; with NEWJOB set (a job a T3RUPT or
+ * another job readied) CCS NEWJOB takes TCF CHANG2 instead, and the run
+ * ends there: every order after it is skipped. */
+static uint8_t parked;
+static void next(apollo_overlay_state *s)
+{
+    if (parked) return;
+    if (W[067] == 0) { lmi_danzig_next(s); return; }
+    /* DANZIG CA BANKSET, TS BBANK; NOIBNKSW CCS EDOP (+0); CCS NEWJOB; TCF CHANG2 */
+    ai_ca(s, 0165u); (void)ai_ts(s, 6u); (void)ai_ccs(s, 023u); (void)ai_ccs(s, 067u);
+    W[LANEC_Z] = CHANG2;
+    parked = 1;
+}
 /* STORE: the store from NEWOPS, then DANZIG to the next word's NEWOPS. */
 static void store(apollo_overlay_state *s, agc_word code) { lmi_store_code(s, code); next(s); }
 /* STODL/STOVL: the store, then the load of `word` (`k` its fixed data, or
@@ -88,42 +112,59 @@ static void bpl_dad(apollo_overlay_state *s, agc_word word)
 /* RRLOSDSP: elevation and azimuth of the RR line of sight. */
 static void rrlosdsp(apollo_overlay_state *s, uint16_t at)
 {
+#define PARKED() do { if (parked) return; } while (0)
     switch (at) {
     case RR(6u):
         /* STORE 0D; STODL 6D HI6ZEROS; STOVL 8D 6D; UNIT; STORE 6D */
-        store(s, 000001);
-        stodl(s, 014007, 06522, K + 6);
-        stovl(s, 024011, 000007, 0);
+        store(s, 000001); PARKED();
+        /* fall through */
+    case RR(7u): stodl(s, 014007, 06522, K + 6); PARKED();
+        /* fall through */
+    case RR(011u): stovl(s, 024011, 000007, 0); PARKED();
+        /* fall through */
+    case RR(013u):
         lmi_newops(s, 077656); lmi_unary(s, UNIT);
         if (lmi_unit(s)) return;
-        next(s);
-        store(s, 000007);
-        /* DOT UNITZ; STOVL COSTH UNITX; DOT 6D; STCALL SINTH ARCTRIG */
-        dot(s, 06514, K);
-        stovl(s, 024021, 06520, K + 4);
-        dot(s, 000007, 0);
-        stcall_arctrig(s, 034023);
+        next(s); PARKED();
+        /* fall through */
+    case RR(014u): store(s, 000007); PARKED();
+        /* fall through */
+    /* DOT UNITZ; STOVL COSTH UNITX; DOT 6D; STCALL SINTH ARCTRIG */
+    case RR(015u): dot(s, 06514, K); PARKED();
+        /* fall through */
+    case RR(017u): stovl(s, 024021, 06520, K + 4); PARKED();
+        /* fall through */
+    case RR(021u): dot(s, 000007, 0); PARKED();
+        /* fall through */
+    case RR(023u): stcall_arctrig(s, 034023);
         return;
     case RR(025u):
-        bpl_dad(s, 060047);
+        bpl_dad(s, 060047); PARKED();
         /* fall through */
     case RR(030u):
         /* STOVL RR-ELEV 0D; DOT UNITY; STOVL SINTH 0D; DOT 6D; STCALL COSTH ARCTRIG */
-        stovl(s, 026203, 000001, 0);
-        dot(s, 06516, K + 2);
-        stovl(s, 024023, 000001, 0);
-        dot(s, 000007, 0);
-        stcall_arctrig(s, 034021);
+        stovl(s, 026203, 000001, 0); PARKED();
+        /* fall through */
+    case RR(032u): dot(s, 06516, K + 2); PARKED();
+        /* fall through */
+    case RR(034u): stovl(s, 024023, 000001, 0); PARKED();
+        /* fall through */
+    case RR(036u): dot(s, 000007, 0); PARKED();
+        /* fall through */
+    case RR(040u): stcall_arctrig(s, 034021);
         return;
     case RR(042u):
-        bpl_dad(s, 060064);
+        bpl_dad(s, 060064); PARKED();
+        /* fall through */
+    case RR(045u):
+        /* STORE RR-AZ; EXIT */
+        store(s, 002201); PARKED();
         /* fall through */
     default:
-        /* STORE RR-AZ; EXIT */
-        store(s, 002201);
         exit_order(s);
         return;
     }
+#undef PARKED
 }
 
 static void run(apollo_overlay_state *s, p66_bias_io *io, const point *p)
@@ -135,6 +176,7 @@ static void run(apollo_overlay_state *s, p66_bias_io *io, const point *p)
         call(s, p->bank == 040u ? 046065 : p->at == L(ATTACHIT) + 16u ? 026760 : 027414);
         return;
     }
+    parked = 0;
     if (p->bank == 040u) {
         rrlosdsp(s, p->at);
         return;
@@ -150,12 +192,17 @@ static void run(apollo_overlay_state *s, p66_bias_io *io, const point *p)
         lmi_danzig_right(s);
         if (sw(s, io, 004304)) {
             lmi_swbranch(s, 067160);
-        } else {
-            lmi_danzig_next(s);
-            lmi_newops(s, 077614);
-            (void)sw(s, io, 004263);
-            lmi_danzig_next(s);
+            exit_order(s);
+            return;
         }
+        next(s);
+        if (parked) return;
+        /* fall through */
+    case L(ATTACHIT) + 7u:
+        lmi_newops(s, 077614);
+        (void)sw(s, io, 004263);
+        next(s);
+        if (parked) return;
         exit_order(s);
         return;
     case L(ATTACHIT) + 18u:
@@ -191,11 +238,12 @@ enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *s, lanec_io *io, e
         if (entries[i].bank == bank && entries[i].z == W[LANEC_Z] && entries[i].at == W[0164]) break;
     }
     if (i == COUNT) return LANEC_OUT_OF_SCOPE;
-    /* the interpreter's contract: no job change pending (NEWJOB +0), the job's
+    /* the interpreter's contract: NEWJOB +0 or a job's core set (positive;
+     * the next DANZIG then changes jobs), the job's
      * VAC area (FIXLOC) in unswitched erasable above the interpreter's work
      * area, and at NEWOPS EDOP +0 with
      * BANKSET naming the current banks and INTBIT15 its bit 15 */
-    if (W[067] != 0 || W[0120] < 0200u || W[0120] >= 01400u - 060u) return LANEC_OUT_OF_SCOPE;
+    if ((W[067] & 040000u) || W[0120] < 0200u || W[0120] >= 01400u - 060u) return LANEC_OUT_OF_SCOPE;
     if (W[023] != 0 || W[0165] != W[LANEC_BB] || W[0115] != (W[0165] & 040000u))
         return LANEC_OUT_OF_SCOPE;
     pio.superbank = io->superbank; pio.interrupt_enabled = io->interrupt_enabled;

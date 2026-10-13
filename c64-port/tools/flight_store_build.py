@@ -79,9 +79,10 @@ IO_KIND = {
            'lm_trim_gimbal': 'LM_FLIGHT', 'lm_landing_displays': 'LM_FLIGHT', 'lm_p_axis': 'LM_FLIGHT',
            'lm_throttle': 'LM_FLIGHT', 'lm_servicer': 'LM_SV', 'lm_lunar_landing': 'LM_LLD',
            'lm_imu_performance': 'LM_IPT', 'lm_burn_baby': 'LM_BB', 'lm_ags_init': 'LM_AGS',
-           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM'},
+           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM',
+           'lanec_pin_routines': 'LM_DNTM'},
     'cm': {'cm_fresh_start': 'CM_FRESH', 'cm_v37': 'CM_FRESH', 'cm_downtelemetry': 'CM_DNTM',
-           'lanec_ev_routines': 'CM_DNTM', 'cm_p21_routines': 'P66', 'cm_p76_routines': 'P66', 'cm_stateup': 'P66'},
+           'lanec_ev_routines': 'CM_DNTM', 'lanec_pin_routines': 'CM_DNTM', 'cm_p21_routines': 'P66', 'cm_p76_routines': 'P66', 'cm_stateup': 'P66'},
 }
 BASE_IO = {'lm': 'P66', 'cm': 'CM_NATIVE'}
 TABLE_DEF = re.compile(r'^const agc_routine_table\s+([A-Za-z0-9_]+)\s*=', re.M)
@@ -269,7 +270,10 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         f'#define FS_INTERP(X) {" ".join(f"X({t})" for t in interp)}\n'
         + (f'#define FS_HAS_INTERP 1\n#define FS_DANZIG agc_{m}_danzig_marker\n' if interp else '')
         + '#include "../../../platform/c64/flight_table_module.c"\n')
-    cmd = [cc, *COMMON, *MISSION[m], '-mllvm', '-inline-threshold=-50',
+    # Interpretive groups register the mission's DANZIG marker, which
+    # agc_transfer.c defines on the C64 only when asked to.
+    cmd = [cc, *COMMON, *MISSION[m], *(['-DAGC_TRANSFER_DANZIG_MARKER'] if interp else []),
+           '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{OUT}',
            '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
            '-T', 'platform/c64/overlay_v2_payload.ld',

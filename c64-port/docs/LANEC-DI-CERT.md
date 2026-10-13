@@ -67,15 +67,18 @@ Hashes: `evidence/lanec-di-cert/SHA256.json`.
   `lanec-di-cm-source-map.json`.
 - Independent assembly comparison: `lanec-di-comparison.json`. It holds
   the `diff.py` summaries of the six module suites, the `di-transfer` and
-  `di-transfer-c64` round trips and the `di-refuse` refusals: 20,388 cases,
-  19,768 compared with zero differing and 620 refused with the state
-  unchanged (122 di-idle and 114 di-nvdsp index cases, 384 di-refuse), with accepted cases
+  `di-transfer-c64` round trips and the `di-refuse` refusals: 21,216 cases,
+  20,568 compared with zero differing and 648 refused with the state
+  unchanged (122 di-idle and 114 di-nvdsp index cases, 28 di-transfer-c64
+  chains that end where only an unregistered routine could go on, 384
+  di-refuse), with accepted cases
   counted per mission (`tools/lanec/cert_evidence.py`).
 - Host and sanitizer results: `lanec-di-checks.log`. It has the strict
   and ASan/UBSan runs of all nine suites and the whole-file map run.
 - C64 execution results: `lanec-di-c64-results.json`. It has fresh VICE
-  PAL runs of the six frozen module subsets and the transfer round trip
-  (1,542 checks, 0 failures) with the PRG hashes.
+  PAL runs of the six frozen module subsets (each picked by
+  `tools/lanec/cover.py` to take every host branch arc) and the transfer round trips (one program per mission)
+  (264 checks, 0 failures) with the PRG hashes.
 
 The supported domain and the external continuations are written into the
 certificate itself. The continuations are the EXECUTIVE (with the
@@ -86,8 +89,8 @@ writes are WITCHONE's WAND on channel 011; ROR SUPERBNK only reads channel 07.
 Regenerate the evidence with:
 
     python3 tools/lanec/cert_evidence.py lanec-di build/di-cert-new di-dsp di-mark di-play \
-      di-sleep di-idle di-nvdsp di-transfer di-transfer-c64 --refusals di-idle di-nvdsp \
+      di-sleep di-idle di-nvdsp di-transfer di-transfer-c64 --refusals di-idle di-nvdsp di-transfer-c64 \
       --refusals-only di-refuse --wholefile tools/lanec/wholefile.py \
       --c64 di-dsp=lanec-di-dsp di-mark=lanec-di-mark di-play=lanec-di-play \
       di-sleep=lanec-di-sleep di-idle=lanec-di-idle di-nvdsp=lanec-di-nvdsp \
-      di-transfer-c64=lanec-di-transfer
+      di-transfer-c64=lanec-di-transfer di-transfer-c64=lanec-di-transfer-cm
