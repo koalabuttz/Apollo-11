@@ -3,24 +3,29 @@
   "milestone": "imu-mode-switching",
   "release": "evidence-imu-mode-switching",
   "files": {
+    "imu-mode-switching-c64-cover.json": {
+      "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343",
+      "bytes": 129700,
+      "store": "tree"
+    },
     "imu-mode-switching-host.log": {
-      "sha256": "4abdf9b00c4704e916f097a7622936113a6a8bd9b9d21b4d94fd5f47e35c4003",
-      "bytes": 280,
+      "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c",
+      "bytes": 251,
       "store": "release"
     },
     "imu-mode-switching-proof.json": {
-      "sha256": "4f6cd4b71d536b60c50de72d77114dd9533b7597b3a58059178c5697ec0ec26b",
-      "bytes": 17574,
+      "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e",
+      "bytes": 17681,
       "store": "tree"
     },
     "imu-mode-switching-source-map.json": {
-      "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589",
+      "sha256": "7745c8c046821e108e9e2a60b8441ba0b7dd52c8495a97f55f5dad0fb3231303",
       "bytes": 189810,
       "store": "tree"
     },
     "imu-mode-switching-vice.log": {
-      "sha256": "e56e607f80483bd335b0cf99b73609f754710cad55ee2b1ea58f0e37a7a017ac",
-      "bytes": 698,
+      "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+      "bytes": 2562,
       "store": "release"
     }
   }

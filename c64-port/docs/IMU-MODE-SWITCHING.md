@@ -14,8 +14,10 @@ The file spans four banks. Comanche addresses follow from the shared layout (`im
 |---|---|---|---|
 | ZEROICDU | fixed-fixed 5457 | fixed-fixed 5521 | 1 |
 | Mode switching, coarse and fine align, PIPA use, gyro torquing, mode ends, stalls, GOMANUR | 07,2714-3772 | 07,2577-3651 | 48 |
-| R02BOTH | 04,3253-3273 | 07,3652-3672 | 3 |
+| R02BOTH, R02ZERO | 04,3253-3273 | 07,3652-3672 | 4 |
 | P06/P05 (standby) | 37,3655-3773 | 26,3660-3776 | 20 |
+
+R02ZERO (TC UPFLAG, ADRES IMUSE, TCF SWRETURN) is a routine of its own: R02BOTH reaches it with TC, and P51-P53 with `TC BANKCALL` (CADR R02ZERO).
 
 Each routine ends where control leaves the file:
 - a TC or TCF to another file: WAITLIST, VARDELAY, FIXDELAY, TASKOVER, ALARM, POODOO, BAILOUT1 (Luminary MODABORT), IBNKCALL, BANKCALL, SWRETURN, JOBSLEEP, JOBWAKE, MAKECADR, POSTJUMP, TPAGREE, SHORTMP, FINETIME +1, UPFLAG, DOWNFLAG, PHASCHNG, VARALARM or GOTOPOOH;
@@ -67,10 +69,10 @@ Hashes: `evidence/imu-mode-switching/SHA256.json`. Bulk files are assets of the 
 
   | Cohort | Cases | Stops reached |
   |---|---|---|
-  | Entry runs, 144 routines x 384 states | 55,296 | every external above, the subroutine return, the STRTGYR2 erasable targets 0100, 0202 and 0302 |
-  | Round trips: every genuine `TC BANKCALL`/`TC IBNKCALL` site whose CADR is one of these routines (Luminary 74, Comanche 54) x 64 | 8,192 | caller continuation 2,183; BAILOUT1, POODOO, ALARM, VARALARM, UPFLAG, WAITLIST, JOBSLEEP, JOBWAKE 5,913; SETISSW 96 |
+  | Entry runs, 146 routines x 384 states | 56,064 | every external above, the subroutine return, the STRTGYR2 erasable targets 0100, 0202 and 0302 |
+  | Round trips: every genuine `TC BANKCALL`/`TC IBNKCALL` site whose CADR is one of these routines (Luminary 74, Comanche 54) x 64 | 8,192 | caller continuation 2,182; BAILOUT1, POODOO, ALARM, VARALARM, UPFLAG, WAITLIST, JOBSLEEP, JOBWAKE 5,917; SETISSW 93 |
 
-  States are drawn inside each routine's domain. They cover every CCS class of LGYRO, MODECADR and MPAC, odd and even STRTGYRO steps, small gyro and coarse-align commands, CDUs within a few bits of THETAD, SCALPREP's genuine retry returns, and every EB and superbank.
+  States are drawn inside each routine's domain. They cover every CCS class of LGYRO, MODECADR and MPAC, odd and even STRTGYRO steps, small gyro and coarse-align commands, gyro pairs at GSELECT's skip (major ±0, minor ±0 or under GYROMIN pulses, at 0177 and 0200 too) for every step STRTGYRO reads, in a quarter of its states, CDUs within a few bits of THETAD, SCALPREP's genuine retry returns, and every EB and superbank.
 
   **SWRETURN after `TC Q`.** The original reaches SWRETURN and ISWRETRN with Q 3 after `TC Q`, for example CAGETSTQ's `TCF SWRETURN`, and the IBNKCALL returns of SETCOARS and RNDREFDR. INTER-BANK_COMMUNICATION's native SWRETURN and ISWRETRN do not read Q and accept it, so those 928 round trips run on to the caller continuation in both programs.
 
@@ -78,10 +80,7 @@ Hashes: `evidence/imu-mode-switching/SHA256.json`. Bulk files are assets of the 
 - **Host and sanitizer results.** `make test-imu-mode-switching sanitize-imu-mode-switching` (`evidence/imu-mode-switching/imu-mode-switching-host.log`) checks:
   - the digests;
   - that every case stops;
-  - that both tables are sorted with 72 routines;
+  - that both tables are sorted with 73 routines;
   - the Comanche address map;
-  - each refusal above in both missions, with image, io and channels unchanged (127,452 checks).
-- **C64 execution results.** `make vice-imu-mode-switching` (`evidence/imu-mode-switching/imu-mode-switching-vice.log`) runs nine diagnostics. Each third of the routines (`IMS_C64_PART`) gets its own program, because all of them do not fit beside the test image. Each part runs:
-  - every 73rd entry case (758 across the parts);
-  - every 11th Luminary round trip (431);
-  - every 11th Comanche round trip (315).
+  - each refusal above in both missions, with image, io and channels unchanged (128,990 checks).
+- **C64 execution results.** `make vice-imu-mode-switching` (`evidence/imu-mode-switching/imu-mode-switching-vice.log`, with each PRG's sha256) runs nine diagnostics. Each third of the routines (`IMS_C64_PART`) gets its own program, because all of them do not fit beside the test image, with its entry cases, Luminary round trips and Comanche round trips. The rows are chosen by outcome, per mission (`tools/imu_mode_switching_cover.py`): the fewest cases that take every edge the host stream takes in every linked native source (`src/imu_mode_switching.c`, the INTER-BANK routines, the image ops, the transfer trampoline and the word, multiword and divide helpers; by gcc trace-pc and clang edge coverage, since each misses some), every routine, every call site and every stop kind. That is 683 entry cases, 350 Luminary and 255 Comanche round trips: 1,288 rows. The script checks them under gcov at -O0 over the same sources. They take every branch outcome the host stream takes in each mission (Luminary 473 of 1,033, Comanche 477 of 1,033; the rest are refusal guards, the other mission's paths and helper paths these routines never use). Result: `evidence/imu-mode-switching/imu-mode-switching-c64-cover.json`.
