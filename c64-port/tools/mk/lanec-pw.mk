@@ -29,7 +29,12 @@ LANEC_PW_C64_SRC = src/agc_word.c src/lanec.c tests/lanec_case.c tests/lanec_pw.
   src/p66_% src/lanec_pin_gaps% src/lm_admission% src/lm_interbank.c src/lm_waitlist% src/lm_fixed% src/lm_pinball% src/gimbal% \
   src/matrix% src/waitlist% tests/dsky_% tests/p66_% tests/cm_%_cases.c tests/lm_busy_cases.c tests/matrix_cases.c \
   tests/throttle_bridge_cases.c tests/lanec_p66_dispatch.c,$(LANEC_SUITE_SRC)))
-LANEC_PW_PRGS = $(foreach s,$(LANEC_PW_SUITES),build/lanec-$(s).prg)
+# These modules do not fit one program with the harness; each runs on the C64
+# in its own milestone's program (tools/mk/legacy-vice.mk), named in the
+# Pinball certificates' vice_targets.
+LANEC_PW_C64_TOO_BIG = pw-cm-dynamic-display pw-cm-normal-display pw-cm-nv85 pw-decimal-time-consumer pw-fixed-display \
+  pw-lamp-lifecycle pw-monitor-consumer
+LANEC_PW_PRGS = $(foreach s,$(filter-out $(LANEC_PW_C64_TOO_BIG),$(LANEC_PW_SUITES)),build/lanec-$(s).prg)
 define LANEC_PW_C64_RULE
 build/lanec-$(1).prg: $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c tests/lanec_$(subst -,_,$(1))_c64.h $$(LANEC_HDR) | build
 	$$(MOS_CC) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Iinclude -Itests \
@@ -37,7 +42,7 @@ build/lanec-$(1).prg: $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c
 	  $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c -Wl,-Map,$$@.map -o $$@
 	python3 -c "import re,sys;m=open('$$@.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else '$$@: code and BSS reach the mailbox page: '+hex(e))" || { rm -f $$@; exit 1; }
 endef
-$(foreach s,$(LANEC_PW_SUITES),$(eval $(call LANEC_PW_C64_RULE,$(s))))
+$(foreach s,$(filter-out $(LANEC_PW_C64_TOO_BIG),$(LANEC_PW_SUITES)),$(eval $(call LANEC_PW_C64_RULE,$(s))))
 .PHONY: c64-lanec-pw vice-lanec-pw
 c64-lanec-pw: $(LANEC_PW_PRGS)
 vice-lanec-pw: $(LANEC_PW_PRGS)

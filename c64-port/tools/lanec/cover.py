@@ -29,6 +29,10 @@ p.add_argument('args', nargs='+')
 p.add_argument('--budget', type=int)
 p.add_argument('--not-run', action='append', default=[], metavar='SUITE=N,N,...',
                help='record: frozen rows no C64 program runs (they do not fit one); their arcs do not count')
+p.add_argument('--legacy', action='append', default=[], metavar='SUITE=TARGET',
+               help='record: a suite whose module does not fit a C64 program with the harness; its module runs '
+                    'on the C64 in its own milestone\'s program (vice TARGET), and the host arcs only its cases take '
+                    'are listed apart')
 p.add_argument('--pool', action='store_true',
                help='record: a host arc counts as taken on the C64 when any suite\'s C64 rows take it')
 a = p.parse_args()
@@ -81,15 +85,25 @@ else:
         rows = frozen(suite)
         run = [n for n in (rows if rows is not None else t) if n not in skip.get(suite, ())]
         seen[suite] = (t, rows, run, frozenset().union(*t.values()), frozenset().union(*(t[n] for n in run)))
+    legacy = dict(item.split('=') for item in a.legacy)
+    for suite in legacy:
+        t, rows, _, host, _ = seen[suite]
+        seen[suite] = (t, rows, [], host, frozenset())
     pool = frozenset().union(*(s[4] for s in seen.values())) if a.pool else None
+    legacy_arcs = frozenset().union(*(seen[s][3] for s in legacy)) - (pool or frozenset())
+    elsewhere = []
     for suite, (t, rows, run, host, on_c64) in seen.items():
         missing = sorted(host - (pool if a.pool else on_c64))
-        missing_all += [f'{suite}: {m}' for m in missing]
+        elsewhere += [f'{suite}: {m}' for m in missing if m in legacy_arcs]
+        missing_all += [f'{suite}: {m}' for m in missing if m not in legacy_arcs]
         record['suites'][suite] = {'host_cases': len(t), 'c64_rows': rows if rows is not None else 'all',
                                    'host_branch_arcs': len(host), 'c64_branch_arcs': len(on_c64 & host),
                                    'sources_measured': sorted({x.split(':')[0] for x in host})}
         if suite in skip:
             record['suites'][suite]['c64_rows_not_run'] = sorted(skip[suite])
+        if suite in legacy:
+            record['suites'][suite]['c64_rows'] = []
+            record['suites'][suite]['c64_program'] = legacy[suite]
         if a.pool:
             record['suites'][suite]['c64_branch_arcs_with_other_suites'] = len(pool & host)
         print(f'{suite}: {len(run)} C64 rows take {len(on_c64 & host)} of {len(host)} host branch arcs'
@@ -97,6 +111,12 @@ else:
     if a.pool:
         record['method'] += ('; with --pool, a host arc of one suite counts as taken on the C64 when the C64 rows '
                              'of any suite in the record take it (the same source line and branch in the same build)')
+    if legacy:
+        record['legacy_c64_programs'] = (
+            'the modules of these suites do not fit one C64 program with the Lane C harness; each runs on the C64 '
+            'in its own milestone\'s program (the vice target named), checked there against its own Virtual AGC '
+            'vectors, and the host arcs below are taken on the C64 only there')
+        record['host_branches_on_c64_only_in_legacy_programs'] = elsewhere
     record['host_branches_missing_on_c64'] = missing_all
     out.write_text(json.dumps(record, indent=1) + '\n')
     if missing_all:

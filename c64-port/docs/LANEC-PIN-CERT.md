@@ -19,7 +19,11 @@ checked against the listings by `tools/lanec/routines.py pin`. The
 internal subroutines it lists are reached only by a TC inside the file and
 are compiled into their callers. Each routine runs the earlier Pinball
 modules that claim its point. See `docs/LANEC-PIN-TRANSFER.md` (milestone
-`lanec-pin-transfer`): @TRANSFER@
+`lanec-pin-transfer`): 2,048 round trips from the genuine external callers
+and from every routine's own entry give 1,212 complete states identical to
+the original and 836 chains refused unchanged; `pin-refuse` refuses all
+1,530 entry states with a broken register contract unchanged; and on the C64
+one program per module and mission runs the round trips in VICE.
 
 ## What it claims
 
@@ -90,4 +94,10 @@ certificates themselves.
 
 Regenerate the evidence with:
 
-    @COMMAND@
+    python3 tools/lanec/cert_evidence.py lanec-pin evidence/lanec-pin-cert \
+      pin-gaps $(sed -n 's/.*"\(pw-[a-z0-9-]*\)".*/\1/p' tests/lanec_pw_*_cases.c | sort -u) \
+      pin-transfer pin-transfer-c64 --refusals <the same suites> --refusals-only pin-refuse \
+      --wholefile tools/lanec/wholefile_pin.py \
+      --c64 pin-gaps=lanec-pin-gaps pw=lanec-pw pin-transfer-c64=lanec-pin-transfer
+    python3 tools/lanec/cover.py record evidence/lanec-pin-cert/lanec-pin-c64-cover.json <the same suites but pin-transfer> \
+      --pool --not-run pin-transfer-c64=<its rows no program runs> --legacy pw-fixed-display=vice-legacy-dsky-fixed-display ...

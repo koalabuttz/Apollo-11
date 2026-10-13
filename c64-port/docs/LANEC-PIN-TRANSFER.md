@@ -75,6 +75,13 @@ leave the modules' domains after the first routine. 1,212 cases are
 identical to the original and 836 are refused unchanged, in strict and
 ASan/UBSan builds.
 
+Every routine first checks the register contract (`lanec_registers_valid`:
+EB, FB and BB coherent, Z in memory, ZERO = 0). `pin-refuse` takes 1,530
+of the routines' own-entry cases (every routine, three each) and breaks it:
+BB not FB|EB>>8, ZERO nonzero, or FB at bank 7, where no routine is
+registered. Every case is refused with the image and I/O unchanged
+(`diff.py pin-refuse --refusals-only`).
+
 `pin-transfer-c64` runs the round trips as the C64 does. Every module does
 not fit one C64 program, so each program registers one mission's INTER-BANK
 routines and one module's points (those it claims first,
@@ -117,6 +124,7 @@ Hashes: `evidence/lanec-pin-transfer/SHA256.json`.
   `lanec-pin-transfer-c64-diff.json` with their oracle CRCs (2,048 and
   2,040 cases, zero differing).
 - Host and sanitizer results: `make test-lanec-pin-transfer
-  sanitize-lanec-pin-transfer` (`lanec-pin-transfer-sanitize.txt`).
+  sanitize-lanec-pin-transfer` (`lanec-pin-transfer-sanitize.txt`),
+  `pin-refuse` included (`lanec-pin-refuse-diff.json`).
 - C64 execution results: `make vice-lanec-pin-transfer`, 108 programs and
   560 checks (`lanec-pin-transfer-vice.txt`).
