@@ -1877,4 +1877,26 @@ SPECS = {
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
     },
+    # Lane D2: Luminary099 KALMAN_FILTER (RATELOOP: the jet torque and
+    # rate the DAP's 100 ms cycle feeds its filter), basic routines at
+    # its original addresses.
+    'lm-kalman': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'KALMAN_FILTER.agc'},
+        'base': {'lm': 'lm_kalman'},
+        'symbol': {'lm': 'lm_kalman'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= NO.UJETS (E6).
+        'ebank': 6,
+        'target': 'tests/lm_kalman_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
 }
