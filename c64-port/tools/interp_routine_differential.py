@@ -878,18 +878,22 @@ def cover_check(spec_id, spec, missions, cases, path, record):
         print(json.dumps({'milestone': spec_id, 'verified': False, 'reason': 'no committed cover record'}))
         return 1
     rec = json.load(open(os.path.join(R, record)))
-    if 'c64_rows' in rec:
+    # (The proof next to a cover record pins the frozen cases, and lists the
+    # C64 rows when the record only counts them.)
+    proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (spec_id, spec_id))
+    if isinstance(rec.get('c64_rows'), list):
         rows = rec['c64_rows']
     else:
-        rows = [i for g in rec.get('c64_vectors', []) for i in g['case_ids']]
+        src = rec if 'c64_vectors' in rec or not os.path.exists(proof) else json.load(open(proof))
+        groups = src.get('c64_vectors', [])
+        rows = [i for g in groups for i in g['case_ids']] if all('case_ids' in g for g in groups) else []
     out = {'milestone': spec_id, 'record': record, 'cases': len(cases), 'c64_rows': len(rows)}
-    # (The proof next to a cover record pins the frozen cases.)
-    proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (spec_id, spec_id))
     sha = rec.get('cases_sha256') or (json.load(open(proof)).get('cases_sha256') if os.path.exists(proof) else None)
     out['cases_match'] = hashlib.sha256(open(path, 'rb').read()).hexdigest() == sha if sha else None
     beyond = [i for i in rows if i >= len(cases)]
     if out.get('cases_match') is False or beyond or not rows:
-        out.update(verified=False, reason='the regenerated cases are not the frozen ones' if rows else 'no C64 rows')
+        out.update(verified=False, reason='the regenerated cases are not the frozen ones' if rows else
+                   'the record does not list its C64 rows (refreeze to record them)')
         print(json.dumps(out))
         return 1
     if spec.get('cover'):
