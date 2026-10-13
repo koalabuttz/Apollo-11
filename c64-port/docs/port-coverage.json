@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -338,7 +338,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
-            "sha256": "7b4ff8adb5f4ea8e6dc0105e005d7de8ee32e8f5e70f4965c93acf44404286e2"
+            "sha256": "b4cd4eddda9da2892e4c79cbbd85ccda0092b873deddebecde602458770d594e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
@@ -346,16 +346,20 @@
           },
           "c64_execution_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
-            "sha256": "8f5f5ec509b0e03f5cebc4605d1bbdd65359eb57c5a846d645b0784204a25486",
+            "sha256": "1338ec615c95f28ea0d3c767d76113fda5b1f9ef0de2959105e964cc3cc0158c",
             "vice_targets": {
-              "vice-attitude-maneuver": 550
+              "vice-attitude-maneuver": 556
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-c64-outcomes.json",
+            "sha256": "8b2e90bb51d8246901fa756ecc20fec50af9eca45478427d64ba5a936fd31805"
           }
         },
         "precheck_notes": [
-          "cert_precheck \"refuses NEWJOB != +0\" matches next() (positive NEWJOB takes CHANG2, the routine stops there as the original does; the NEWJOB-set cases are compared) and sane(), which refuses only NEWJOB above 037777: the Executive never writes a negative NEWJOB.",
-          "No c64_branch_outcomes record is cited: evidence/attitude-maneuver/attitude-maneuver-c64-outcomes.json lists the 7 host edges the C64 rows miss (src/agc_transfer.c:50, src/cm_attitude_maneuver.c:140, src/cm_attitude_maneuver.c:154, src/cm_attitude_maneuver.c:180, src/lm_attitude_maneuver.c:174, src/lm_attitude_maneuver.c:188, src/lm_attitude_maneuver.c:214). They lie on the runs from KALCMAN3's first resume points, whose closure (most of the file plus the interpreter bodies) does not fit one C64 diagnostic; every routine those runs reach has C64 rows of its own."
-        ]
+          "cert_precheck \"refuses NEWJOB != +0\" matches next() (positive NEWJOB takes CHANG2, the routine stops there as the original does; the NEWJOB-set cases are compared) and sane(), which refuses only NEWJOB above 037777: the Executive never writes a negative NEWJOB."
+        ],
+        "c64_note": "Six C64 rows are segments (c64_segments in the proof): the NEWJOB +0 arm of the first CHANG2 resume points of KALCMAN3 (LM 22,2012, 22,2015 and 22,2022; CM 22,2003, 22,2004 and 22,2011) runs on into the whole maneuver setup, more than one diagnostic holds, so those rows run from the resume routine to the next resume LOC (left out of the KEEP mask) against yaAGC stopped at NEWOPS with LOC there; each equals the oracle on the host first."
       }
     },
     {
@@ -994,7 +998,7 @@
       "sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
       "bytes": 11541,
       "lines": 496,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1122,7 +1126,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1162,6 +1166,10 @@
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 193
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
@@ -1817,7 +1825,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "9be25e50f523bde7ad4291f68541b1db8990bf7c2c92b938e3192e2aca8e5af2",
+            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
             "vice_targets": {
               "vice-inflight-align": 224
             }
@@ -2257,7 +2265,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "0b1bee4f2b96a60cc7a35cee5866ccc70b62accb04b52dc8ef976d55a762bf0a",
+            "sha256": "71c5e237f8cbe8613f87b02570ee50be7f56b16da908b34e69e768789b7ef042",
             "vice_targets": {
               "vice-kalcmanu-steering": 78
             }
@@ -2282,7 +2290,7 @@
       "sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
       "bytes": 3853,
       "lines": 136,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2301,7 +2309,7 @@
           "verification": "docs/KEYRUPT-UPRUPT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2336,6 +2344,10 @@
             "vice_targets": {
               "vice-keyrupt-uprupt": 192
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
@@ -2590,7 +2602,7 @@
       "sha256": "6e4354e10fb62c7db74c60293ae3442136d6886fd6301c24966b974846985a99",
       "bytes": 21763,
       "lines": 928,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2606,7 +2618,7 @@
           "verification": "docs/CM-P11.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2619,7 +2631,6 @@
           "The interpreter bodies' POODOO/ALARM exits",
           "The caller's return through Q (TC Q runs the TC word held in Q)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p11/cm-p11-source-map.json",
@@ -2639,6 +2650,10 @@
             "vice_targets": {
               "vice-cm-p11": 202
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-p11.md",
+            "sha256": "99c11805f514b217f6470c35c4dd7ff85fd776b154021539dfa632714611d06b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p11/cm-p11-proof.json",
@@ -5584,7 +5599,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-proof.json",
-            "sha256": "7b4ff8adb5f4ea8e6dc0105e005d7de8ee32e8f5e70f4965c93acf44404286e2"
+            "sha256": "b4cd4eddda9da2892e4c79cbbd85ccda0092b873deddebecde602458770d594e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-host.log",
@@ -5592,16 +5607,20 @@
           },
           "c64_execution_results": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-vice.log",
-            "sha256": "8f5f5ec509b0e03f5cebc4605d1bbdd65359eb57c5a846d645b0784204a25486",
+            "sha256": "1338ec615c95f28ea0d3c767d76113fda5b1f9ef0de2959105e964cc3cc0158c",
             "vice_targets": {
-              "vice-attitude-maneuver": 550
+              "vice-attitude-maneuver": 556
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/attitude-maneuver/attitude-maneuver-c64-outcomes.json",
+            "sha256": "8b2e90bb51d8246901fa756ecc20fec50af9eca45478427d64ba5a936fd31805"
           }
         },
         "precheck_notes": [
-          "cert_precheck \"refuses NEWJOB != +0\" matches next() (positive NEWJOB takes CHANG2, the routine stops there as the original does; the NEWJOB-set cases are compared) and sane(), which refuses only NEWJOB above 037777: the Executive never writes a negative NEWJOB.",
-          "No c64_branch_outcomes record is cited: evidence/attitude-maneuver/attitude-maneuver-c64-outcomes.json lists the 7 host edges the C64 rows miss (src/agc_transfer.c:50, src/cm_attitude_maneuver.c:140, src/cm_attitude_maneuver.c:154, src/cm_attitude_maneuver.c:180, src/lm_attitude_maneuver.c:174, src/lm_attitude_maneuver.c:188, src/lm_attitude_maneuver.c:214). They lie on the runs from KALCMAN3's first resume points, whose closure (most of the file plus the interpreter bodies) does not fit one C64 diagnostic; every routine those runs reach has C64 rows of its own."
-        ]
+          "cert_precheck \"refuses NEWJOB != +0\" matches next() (positive NEWJOB takes CHANG2, the routine stops there as the original does; the NEWJOB-set cases are compared) and sane(), which refuses only NEWJOB above 037777: the Executive never writes a negative NEWJOB."
+        ],
+        "c64_note": "Six C64 rows are segments (c64_segments in the proof): the NEWJOB +0 arm of the first CHANG2 resume points of KALCMAN3 (LM 22,2012, 22,2015 and 22,2022; CM 22,2003, 22,2004 and 22,2011) runs on into the whole maneuver setup, more than one diagnostic holds, so those rows run from the resume routine to the next resume LOC (left out of the KEEP mask) against yaAGC stopped at NEWOPS with LOC there; each equals the oracle on the host first."
       }
     },
     {
@@ -6220,7 +6239,7 @@
       "sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
       "bytes": 11697,
       "lines": 503,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Bounded admission, selection, basic dispatch/lifecycle, SPVAC/CHANG2; interpreter continuation and full live scheduling remain incomplete.",
@@ -6364,7 +6383,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6404,6 +6423,10 @@
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 193
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
@@ -7277,7 +7300,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "9be25e50f523bde7ad4291f68541b1db8990bf7c2c92b938e3192e2aca8e5af2",
+            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
             "vice_targets": {
               "vice-inflight-align": 224
             }
@@ -7395,7 +7418,7 @@
       "sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
       "bytes": 5886,
       "lines": 177,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7431,7 +7454,7 @@
           "verification": "docs/INTERBANK-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7447,7 +7470,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
@@ -7467,6 +7489,10 @@
             "vice_targets": {
               "vice-interbank-oracle": 723
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
@@ -7621,7 +7647,7 @@
       "sha256": "ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3",
       "bytes": 2343,
       "lines": 117,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "T3 lead-in and explicit native pending/IRQ delivery only; remaining hardware interrupt services remain untranslated.",
@@ -7666,7 +7692,7 @@
           "verification": "docs/RUPT-LEAD-INS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7701,6 +7727,10 @@
             "vice_targets": {
               "vice-rupt-lead-ins": 193
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
@@ -7758,7 +7788,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "0b1bee4f2b96a60cc7a35cee5866ccc70b62accb04b52dc8ef976d55a762bf0a",
+            "sha256": "71c5e237f8cbe8613f87b02570ee50be7f56b16da908b34e69e768789b7ef042",
             "vice_targets": {
               "vice-kalcmanu-steering": 78
             }
@@ -7824,7 +7854,7 @@
       "sha256": "e7e1633ff1305e689451634bf6cba496219b63a4a12f3ae028c74e3b65d840c1",
       "bytes": 3833,
       "lines": 130,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7844,7 +7874,7 @@
           "verification": "docs/KEYRUPT-UPRUPT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7879,6 +7909,10 @@
             "vice_targets": {
               "vice-keyrupt-uprupt": 192
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
@@ -8058,7 +8092,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "652f38e6c6a93f123af2b5e5ea4ad3c81dbe821afbb416b3290469aca60b542d",
+            "sha256": "de9af30fcf513cb4f028a00b89e302ec94596d87dc09b4acbef03ea7e96fe5cc",
             "vice_targets": {
               "vice-geometry": 136
             }

@@ -19,7 +19,10 @@
  * A case flagged in its interrupt-enable byte (0x80) carries a cut, a
  * physical LOC, after its edit count ('c64_cuts'): the run stops at the
  * first NEWOPS with LOC there, and prints kind 8 when it stops anywhere
- * else first (tests/interp_cut.h). */
+ * else first (tests/interp_cut.h).
+ * With IRC_SNAP and IRC_SNAPROW set, the run stops at NEWOPS with LOC at the
+ * case's stop word and prints the case's usual line there (the C64 segment
+ * rows of 'c64_segments'). */
 static agc_t baseline[2];
 static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(stderr,"short case file\n");exit(2);}return (unsigned)a|(unsigned)b<<8;}
 static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned long)rd16(f)<<16;}
@@ -41,7 +44,7 @@ static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&0
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;
  if(argc<4)return 2;
  dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
@@ -70,6 +73,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
   for(cycles=0;cycles<4000000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
+    if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap&&snaprow){snapped=stopped=1;break;}
     if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap){printf("%u S",n);
      for(i=0;i<2048u;++i){unsigned w=(unsigned)*memory(i)&(i<2u?0177777u:077777u);if(w!=init[i])printf(" %u %u",i,w);}
      printf("\n");snapped=stopped=1;break;}
@@ -89,7 +93,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
     if(stopped)break;
    }
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
-  if(snapmode){if(!snapped)printf("%u N\n",n);continue;}}
+  if(snapmode&&(!snaprow||!snapped)){if(!snapped)printf("%u N\n",n);continue;}}
   if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0\n",n,pc);continue;}
   if(cut&&!atcut){printf("%u 8 %u 0\n",n,pc);continue;}
   {agc_word keep[8];for(i=0;i<t->nd;++i)keep[i]=s.words[t->device[i]];
