@@ -2655,3 +2655,7 @@ All of Comanche055 CONIC_SUBROUTINES (1079 words) is native C on the control-tra
 ## Translate Luminary RCS_FAILURE_MONITOR on the transfer ABI
 
 Luminary099 RCS_FAILURE_MONITOR.agc (RCSMON, the T4RUPT channel-32 jet-failure check) is native C on the control-transfer ABI as 2 routines compiled by `tools/interp_compile.py`, every word of the file, so the whole-program flight run reaches it. All 1,024 cases equal the original program in yaAGC; the host and sanitizer tests pass 71 frozen cases, and 1 C64 diagnostic passes 18 cases in VICE that take all 219 branch arcs the host cases take. The certificate is drafted for review. See `docs/LM-RCSMON.md`.
+
+## Translate Comanche ALARM_AND_ABORT as transfer-ABI routines
+
+Every instruction of Comanche055 ALARM_AND_ABORT runs as routines of the control-transfer ABI: ALARM through VARALARM and BAILOUT/WHIMPER in fixed-fixed memory, PRIOLARM in bank 10, the points control comes back to (MULTEXIT targets, BANKCALL and DOWNFLAG returns) and the erasable ALMCADR continuation. The flight image reached ALARM 02,3650 with no routine table before. The alarm codes after all 62 genuine caller TCs, the file's own BANKCALL/POSTJUMP CADRs and its constants are compiled from the source listing. 4,096 cases from every caller site and entry, with each FAILREG state, equal the original Comanche055 program in the interrupt-enable, SUPERBNK and in-interrupt states and all 2,048 erasable words (all 21 entries reached), and every 16th case, which takes every host branch arc, matches in VICE. See `docs/CM-ALARM.md`.
