@@ -45,6 +45,7 @@ jobs:
       host: ${{ steps.plan.outputs.host }}
       c64: ${{ steps.plan.outputs.c64 }}
       full: ${{ steps.plan.outputs.full }}
+      c64_shards: ${{ steps.plan.outputs.c64_shards }}
     steps:
       - &checkout
         name: Lean checkout
@@ -83,6 +84,8 @@ jobs:
           echo "host=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["test"] or a["sanitize"])))')" >> "$GITHUB_OUTPUT"
           echo "c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')" >> "$GITHUB_OUTPUT"
           echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
+          # A full c64 run is over two hours of builds and VICE: split it.
+          echo "c64_shards=$(echo "$affected" | python3 -c 'import json,sys;print(json.dumps(list(range(4 if json.load(sys.stdin)["full"] else 1))))')" >> "$GITHUB_OUTPUT"
 
   ledgers-and-coverage:
     needs: plan
@@ -143,7 +146,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.job }}-logs
+          name: ${{ github.job }}${{ matrix.shard }}-logs
           path: |
             c64-port/build/ci-logs
             c64-port/build/ci-summary.json
@@ -153,15 +156,21 @@ jobs:
     needs: plan
     if: needs.plan.outputs.c64 == '1'
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.c64_shards) }}
     steps:
       - *checkout
       - *deps
       - *setup
-      - name: Build C64 PRGs and run VICE checks
+      - name: Build C64 PRGs and run VICE checks (shard ${{ matrix.shard }})
         working-directory: c64-port
         env:
           AFFECTED: ${{ needs.plan.outputs.affected }}
+          SHARD: ${{ matrix.shard }}
+          SHARDS: ${{ needs.plan.outputs.full == '1' && 4 || 1 }}
         run: |
           source deps/env.sh
           if echo "$AFFECTED" | grep -q '"full": true'; then
@@ -169,8 +178,11 @@ jobs:
           else
             targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))')
           fi
+          targets=$(echo $targets | tr ' ' '\n' | awk -v k="$SHARD" -v n="$SHARDS" 'NF && (NR - 1) % n == k')
           python3 tools/ci_run.py --make-arg "MOS_CC=$MOS_CC" $targets --summary build/ci-summary.json
-          make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
+          if [ "$SHARD" = 0 ]; then
+            make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
+          fi
       - *logs
       - &piece
         name: Vice manifest piece
@@ -180,7 +192,7 @@ jobs:
           PIECE: ${{ github.job }}${{ matrix.shard }}
         run: |
           python3 tools/vice_manifest.py piece --name "$PIECE" --out "build/vice-manifest-$PIECE.json" \
-            ${{ github.job == 'c64' && '--certificates' || '' }}
+            ${{ github.job == 'c64' && matrix.shard == 0 && '--certificates' || '' }}
       - &upload-piece
         if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
         uses: actions/upload-artifact@v4
@@ -248,7 +260,7 @@ jobs:
           MANIFEST_REF: ${{ inputs.ref || github.ref_name }}
         run: |
           shopt -s nullglob
-          python3 tools/vice_manifest.py merge build/vice-pieces/*.json --expect 9 \
+          python3 tools/vice_manifest.py merge build/vice-pieces/*.json --expect 12 \
             --job "c64=${{ needs.c64.result }}" --job "c64-legacy=${{ needs.c64-legacy.result }}" \
             --out build/vice-manifest.json
       - uses: actions/upload-artifact@v4
