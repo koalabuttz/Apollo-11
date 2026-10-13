@@ -2703,7 +2703,7 @@
       "sha256": "e758ec3710c3f82e7e243a85552f20b8ea25028d621b6f62276b88326869fc8d",
       "bytes": 12085,
       "lines": 611,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2717,7 +2717,7 @@
           "verification": "docs/CM-P30-P37.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2731,7 +2731,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-source-map.json",
@@ -2755,6 +2754,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
             "sha256": "3ae0f95121ee7d6b70bbcdedbf65d084f40c12114d359f711e3f67573df71a6c"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
@@ -2765,7 +2768,7 @@
       "sha256": "60a18e541426e952deea775bd0ae625d2345c284ac9726a2647032ee9ce4ccc3",
       "bytes": 26843,
       "lines": 1415,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2779,7 +2782,7 @@
           "verification": "docs/CM-P32-P33.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2792,7 +2795,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-source-map.json",
@@ -2816,6 +2818,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-c64-cover.json",
             "sha256": "b085f0fd3795528963567d5778027f00f92003c326544a51e436941f27acc95f"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
@@ -4709,7 +4715,7 @@
       "sha256": "7e07913f963e312eb5145dfa71832012a2f9ab2d699ada4ddd397bde518e5ec2",
       "bytes": 10653,
       "lines": 552,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4723,7 +4729,7 @@
           "verification": "docs/CM-TPI-SEARCH.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4736,7 +4742,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-source-map.json",
@@ -4760,6 +4765,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
             "sha256": "54ece4ce97fd34c5ac74d89c0fff49bf73d04645065ee6ca15cdd43307d6fd22"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
@@ -8673,7 +8682,7 @@
       "sha256": "0fc78a6c5bcfd461bf1e9e7ffd11e5e4f93950595daf275bb2df2a9a08f149ec",
       "bytes": 25575,
       "lines": 1394,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -8687,7 +8696,7 @@
           "verification": "docs/LM-P32-P35.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -8702,7 +8711,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p32-p35/lm-p32-p35-source-map.json",
@@ -8726,6 +8734,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p32-p35/lm-p32-p35-c64-cover.json",
             "sha256": "599b3ff810b38d825c6b3e2a4901c4f6654fd8340615bf1801aa4d3a1ddf8fb6"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
