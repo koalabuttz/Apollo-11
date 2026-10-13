@@ -2100,6 +2100,10 @@ All of Luminary099 P34-35_P74-75 (1,056 words: P34/P74 TPI, P35/P75 TPM, VN1645,
 
 All of Luminary099 P32-P35_P72-P75 (923 words: CSI and CDH with the CSI search, the flag subroutines and COMPTGO) is native C on the control-transfer ABI, as 135 routines compiled by `tools/interp_compile.py`. All 69,120 cases equal the original program in yaAGC; the host tests pass 270 frozen cases and 17 C64 diagnostics pass 242 cases in VICE (fourteen routines host only). See `docs/LM-P32-P35.md`.
 
+## Compile Luminary CONIC_SUBROUTINES into transfer routines
+
+All of Luminary099 CONIC_SUBROUTINES (1,072 words) is native C on the control-transfer ABI, as 455 routines compiled by `tools/interp_compile.py`, with CHECKCTR as `lm_conic_checkctr`. Every entry (KEPLERN, TIMETHET, LAMBERT, TIMERAD, APSIDES and the rest) and every point a job resumes at after CHANG2 is a routine. All 29,120 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 228 frozen cases, and 13 C64 diagnostics pass 910 cases in VICE. A complete certificate is drafted for the certificate reviewer. See `docs/LM-CONIC-COMPILED.md`.
+
 ## Thin resident Executive and Waitlist on the canonical image
 
 One thin resident Executive and Waitlist for both missions (`src/resident_kernel_body.inc`, `src/lm_kernel.c`, `src/cm_kernel.c`) translates EXECUTIVE.agc and WAITLIST.agc instruction by instruction onto the canonical image, with no gather/commit view and no domain refusals, as drop-in routine tables for the certified ones (`include/resident_kernel.h`). On every case of the six certified service milestones, 23,250 Luminary099 and 18,786 Comanche055 cases, each run equals the original program in yaAGC in all 2,048 erasable words and the device words, and equals the certified routines' final image word for word. The strict and sanitizer builds pass, and 400 LM and 329 CM rows, which take every kernel branch arc the host cases take, pass in VICE with the kernel on the image at $7000. The kernel links in 10.3 KB (LM) and 10.0 KB (CM) at -Oz, against 54-56 KB for the certified routines. See `docs/RESIDENT-KERNEL.md`.
