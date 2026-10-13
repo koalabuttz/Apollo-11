@@ -16,7 +16,7 @@ void cm_v37_input(apollo_overlay_state *s,cm_fresh_io *io,uint16_t n){
  for(i=0;i<2048u;++i)s->words[i]=word(&seed);
  s->words[7]=0;for(i=010;i<=023;++i)s->words[i]=0;for(i=026;i<=060;++i)s->words[i]=0;
  s->words[0]=agc_extend(s->words[0]);s->words[1]=agc_extend(s->words[1]);
- {cm_fresh_io zero={{0},0,0,0};*io=zero;}
+ {cm_fresh_io zero={{0},0,0,0,0};*io=zero;}
  io->control.interrupt_enabled=(agc_word)upto(&seed,2);io->control.channel11=word(&seed);
  io->channel5=word(&seed);io->channel6=word(&seed);io->control.channel12=word(&seed);
  io->control.channel13=(agc_word)(word(&seed)&02767u);io->control.channel14=(agc_word)(word(&seed)&0777u);

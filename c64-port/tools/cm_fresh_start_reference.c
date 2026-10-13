@@ -33,6 +33,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0;
   machine.InputChannel[011]=(int16_t)io.control.channel11;machine.InputChannel[05]=(int16_t)io.channel5;machine.InputChannel[06]=(int16_t)io.channel6;
   machine.InputChannel[012]=(int16_t)io.control.channel12;machine.InputChannel[013]=(int16_t)io.control.channel13;machine.InputChannel[014]=(int16_t)io.control.channel14;
   machine.InputChannel[015]=(int16_t)io.control.main_keys;machine.InputChannel[016]=(int16_t)io.control.navigation_keys;machine.InputChannel[033]=(int16_t)io.channel33;
+  machine.WarningFilter=io.warning?140000u:0u; /* over WARNING_FILTER_THRESHOLD: CpuWriteIO keeps channel 33 bit 14 0 */
   machine.Trap31A=io.control.trap31a;machine.Trap31B=io.control.trap31b;machine.Trap32=io.control.trap32;
   for(cycles=0;cycles<20000u;++cycles){
    if(cycles&&quiet()){pc=get(RegZ);if(!owned(pc,get(4)))break;}

@@ -1,0 +1,752 @@
+{
+ "source_path": "Comanche055/KEYRUPT_UPRUPT.agc",
+ "source_sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "native": {
+  "src/keyrupt_uprupt.c": "1661599d7c28e1fb9076b487ea1e7837fc7fdafb78401131d63cdae520f51f08",
+  "include/keyrupt_uprupt.h": "d5704e341fc279b0f235d71dc9165409b237b38c404a436a8dce1964e71a0059"
+ },
+ "source_words": 68,
+ "source_lines_with_words": 67,
+ "instructions_executed_by_oracle": 64,
+ "line_map": [
+  {
+   "line": 40,
+   "address": "07,3673",
+   "source": "KEYRUPT1 TS BANKRUPT",
+   "words": [
+    "54016"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 41,
+   "address": "07,3674",
+   "source": "XCH Q",
+   "words": [
+    "56002"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 42,
+   "address": "07,3675",
+   "source": "TS QRUPT",
+   "words": [
+    "54012"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 43,
+   "address": "07,3676",
+   "source": "TC LODSAMPT",
+   "words": [
+    "04414"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 44,
+   "address": "07,3677",
+   "source": "CAF LOW5",
+   "words": [
+    "34362"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 45,
+   "address": "07,3700",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 46,
+   "address": "07,3701",
+   "source": "RAND MNKEYIN",
+   "words": [
+    "02015"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 47,
+   "address": "07,3702",
+   "source": "KEYCOM TS RUPTREG4",
+   "words": [
+    "54073"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 48,
+   "address": "07,3703",
+   "source": "CS FLAGWRD5",
+   "words": [
+    "40101"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 49,
+   "address": "07,3704",
+   "source": "MASK BIT15",
+   "words": [
+    "75001"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 50,
+   "address": "07,3705",
+   "source": "ADS FLAGWRD5",
+   "words": [
+    "26101"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 52,
+   "address": "07,3706",
+   "source": "ACCEPTUP CAF CHRPRIO",
+   "words": [
+    "34371"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 53,
+   "address": "07,3707",
+   "source": "TC NOVAC",
+   "words": [
+    "05134"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 55,
+   "address": "07,3710",
+   "source": "2CADR CHARIN",
+   "words": [
+    "02000",
+    "60101"
+   ],
+   "kind": "constant",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 57,
+   "address": "07,3712",
+   "source": "CA RUPTREG4",
+   "words": [
+    "30073"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 58,
+   "address": "07,3713",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 59,
+   "address": "07,3714",
+   "source": "TS MPAC",
+   "words": [
+    "54154"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 60,
+   "address": "07,3715",
+   "source": "TC RESUME",
+   "words": [
+    "05333"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 65,
+   "address": "07,3716",
+   "source": "UPRUPT TS BANKRUPT",
+   "words": [
+    "54016"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 66,
+   "address": "07,3717",
+   "source": "XCH Q",
+   "words": [
+    "56002"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 67,
+   "address": "07,3720",
+   "source": "TS QRUPT",
+   "words": [
+    "54012"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 68,
+   "address": "07,3721",
+   "source": "TC LODSAMPT",
+   "words": [
+    "04414"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 69,
+   "address": "07,3722",
+   "source": "CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 70,
+   "address": "07,3723",
+   "source": "XCH INLINK",
+   "words": [
+    "56045"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 71,
+   "address": "07,3724",
+   "source": "TS KEYTEMP1",
+   "words": [
+    "54073"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 72,
+   "address": "07,3725",
+   "source": "CAF BIT3",
+   "words": [
+    "35015"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 73,
+   "address": "07,3726",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 74,
+   "address": "07,3727",
+   "source": "WOR DSALMOUT",
+   "words": [
+    "05011"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 75,
+   "address": "07,3730",
+   "source": "UPRPT1 CAF LOW5",
+   "words": [
+    "34362"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 76,
+   "address": "07,3731",
+   "source": "MASK KEYTEMP1",
+   "words": [
+    "70073"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 77,
+   "address": "07,3732",
+   "source": "XCH KEYTEMP1",
+   "words": [
+    "56073"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 78,
+   "address": "07,3733",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 79,
+   "address": "07,3734",
+   "source": "MP BIT10",
+   "words": [
+    "75006"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 80,
+   "address": "07,3735",
+   "source": "TS KEYTEMP2",
+   "words": [
+    "54734"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 81,
+   "address": "07,3736",
+   "source": "MASK LOW5",
+   "words": [
+    "74362"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 82,
+   "address": "07,3737",
+   "source": "AD HI10",
+   "words": [
+    "63773"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 83,
+   "address": "07,3740",
+   "source": "TC UPTEST",
+   "words": [
+    "03770"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 84,
+   "address": "07,3741",
+   "source": "CAF BIT10",
+   "words": [
+    "35006"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 85,
+   "address": "07,3742",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 86,
+   "address": "07,3743",
+   "source": "MP KEYTEMP2",
+   "words": [
+    "70734"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 87,
+   "address": "07,3744",
+   "source": "MASK LOW5",
+   "words": [
+    "74362"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 88,
+   "address": "07,3745",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 89,
+   "address": "07,3746",
+   "source": "TC UPTEST",
+   "words": [
+    "03770"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 91,
+   "address": "07,3747",
+   "source": "UPOK CS ELRCODE",
+   "words": [
+    "43776"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 92,
+   "address": "07,3750",
+   "source": "AD KEYTEMP1",
+   "words": [
+    "60073"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 93,
+   "address": "07,3751",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 94,
+   "address": "07,3752",
+   "source": "BZF CLUPLOCK",
+   "words": [
+    "13760"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 96,
+   "address": "07,3753",
+   "source": "CAF BIT4",
+   "words": [
+    "35014"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 97,
+   "address": "07,3754",
+   "source": "MASK FLAGWRD7",
+   "words": [
+    "70103"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 98,
+   "address": "07,3755",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 99,
+   "address": "07,3756",
+   "source": "TC RESUME",
+   "words": [
+    "05333"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 100,
+   "address": "07,3757",
+   "source": "TC ACCEPTUP",
+   "words": [
+    "03706"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 102,
+   "address": "07,3760",
+   "source": "CLUPLOCK CS BIT4",
+   "words": [
+    "45014"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 103,
+   "address": "07,3761",
+   "source": "MASK FLAGWRD7",
+   "words": [
+    "70103"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 104,
+   "address": "07,3762",
+   "source": "TS FLAGWRD7",
+   "words": [
+    "54103"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 105,
+   "address": "07,3763",
+   "source": "TC ACCEPTUP",
+   "words": [
+    "03706"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 108,
+   "address": "07,3764",
+   "source": "TMFAIL2 CS FLAGWRD7",
+   "words": [
+    "40103"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 109,
+   "address": "07,3765",
+   "source": "MASK BIT4",
+   "words": [
+    "75014"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 110,
+   "address": "07,3766",
+   "source": "ADS FLAGWRD7",
+   "words": [
+    "26103"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 111,
+   "address": "07,3767",
+   "source": "TC RESUME",
+   "words": [
+    "05333"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 112,
+   "address": "07,3770",
+   "source": "UPTEST AD KEYTEMP1",
+   "words": [
+    "60073"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 114,
+   "address": "07,3771",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 115,
+   "address": "07,3772",
+   "source": "TC TMFAIL2",
+   "words": [
+    "03764"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 116,
+   "address": "07,3773",
+   "source": "HI10 OCT 77740",
+   "words": [
+    "77740"
+   ],
+   "kind": "constant",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 117,
+   "address": "07,3774",
+   "source": "TC TMFAIL2",
+   "words": [
+    "03764"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 118,
+   "address": "07,3775",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 120,
+   "address": "07,3776",
+   "source": "ELRCODE OCT 22",
+   "words": [
+    "00022"
+   ],
+   "kind": "constant",
+   "native": "src/keyrupt_uprupt.c",
+   "executed_by_oracle": false
+  }
+ ]
+}

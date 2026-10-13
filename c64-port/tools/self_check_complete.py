@@ -17,7 +17,11 @@ milestone records it rests on with their sha256:
       instruction must be executed by those runs but the two words no state
       reaches (tools/self_check_freeze.py UNREACHABLE)
   <id>-host.json         the host and sanitizer log
-  <id>-c64.json          the VICE log
+  <id>-c64.json          the VICE log, with the PRG sha256s it names
+  <id>-c64-cover.json    the mission's c64_branch_outcomes records (random-state
+      and whole-rope, evidence/self-check/self-check-<m>[-rope]-c64-cover.json,
+      tools/a2_c64_rows.py): no host branch arc the C64 rows miss, every
+      entry slot run on the C64, every linked source unchanged since the cover
 
 It fails on any hash mismatch, untranslated word, snapshot difference,
 unexecuted instruction or failed check.
@@ -37,11 +41,14 @@ import sys
 R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R / 'tools'))
 from agc_sites_generate import listing_lines  # noqa: E402
+import a2_c64_rows  # noqa: E402
 
 MILESTONE = 'self-check'
 # mission index, name, source file, certificate id, words below Comanche055's
+# (the listing's file name; the Luminary099 tree spells it SELF_CHECK, REPO_SOURCE)
 MISSIONS = [(0, 'Luminary099', 'AGC_BLOCK_TWO_SELF-CHECK.agc', 'lm-self-check-complete', 2),
             (1, 'Comanche055', 'AGC_BLOCK_TWO_SELF-CHECK.agc', 'cm-self-check-complete', 0)]
+REPO_SOURCE = {0: 'AGC_BLOCK_TWO_SELF_CHECK.agc', 1: 'AGC_BLOCK_TWO_SELF-CHECK.agc'}
 DATA_OPS = {'OCT', 'DEC', '2DEC', 'CADR', '2CADR', 'GENADR', 'ADRES', 'ECADR', 'FCADR', '2FCADR', 'BBCON', 'BBCON*',
             'VN', 'MM', 'OCTAL', '2OCT', 'REMADR', 'NV'}
 BODY = 'src/self_check_body.inc'
@@ -82,6 +89,10 @@ def log_record(name, kind, errors):
     ok = bool(found or passes) and not any(int(f) for _, f in found)
     record = {'record': log, 'sha256': sha(log), 'pass_lines': passes,
               'checks': [int(c) for c, _ in found], 'failures': sum(int(f) for _, f in found), 'result': 'PASS' if ok else 'FAIL'}
+    if kind == 'vice':
+        record['prg_sha256'] = a2_c64_rows.prg_hashes(text)
+        if not record['prg_sha256']:
+            errors.append(f'{log}: names no PRG sha256')
     if json.loads((R / f'evidence/{name}/SHA256.json').read_text())['files'][f'{name}-{kind}.log']['sha256'] != record['sha256']:
         errors.append(f'{log}: sha256 differs from evidence/{name}/SHA256.json')
     if not ok:
@@ -150,9 +161,9 @@ def main():
         sourcefile = R / 'deps/virtualagc' / name / source
         instructions = sum(1 for e in line_map if e['kind'] == 'instruction')
         outputs[cert] = {
-            f'{cert}-line-map.json': {'source_path': f'{name}/{source}', 'rope_sha256': rope_sha, 'line_map': line_map},
+            f'{cert}-line-map.json': {'source_path': f'{name}/{REPO_SOURCE[mission]}', 'rope_sha256': rope_sha, 'line_map': line_map},
             f'{cert}-source-map.json': {
-                'category': 'source_to_native_map', 'source_path': f'{name}/{source}',
+                'category': 'source_to_native_map', 'source_path': f'{name}/{REPO_SOURCE[mission]}',
                 'source_sha256': hashlib.sha256(sourcefile.read_bytes()).hexdigest(), 'rope_sha256': rope_sha,
                 'aggregates': {MILESTONE: {'record': 'docs/SELF-CHECK.md', 'sha256': sha('docs/SELF-CHECK.md'),
                                            'native': [NATIVE[mission], BODY, OPERANDS[mission], 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c'],
@@ -165,7 +176,7 @@ def main():
                                     'result': 'PASS' if not unexecuted else 'FAIL'},
                 'line_map': {'record': f'evidence/{cert}/{cert}-line-map.json'}},
             f'{cert}-comparison.json': {
-                'category': 'independent_assembly_comparison', 'source_path': f'{name}/{source}', 'rope_sha256': rope_sha,
+                'category': 'independent_assembly_comparison', 'source_path': f'{name}/{REPO_SOURCE[mission]}', 'rope_sha256': rope_sha,
                 'method': 'the milestone\'s random-state and whole-rope cases through the native routines and through the '
                           'unmodified rope in yaAGC (host only); tools/self_check_freeze.py checked the outputs byte-identical '
                           'and froze the snapshots; this tool reran the oracle with the coverage trace and compared',
@@ -174,7 +185,10 @@ def main():
                                            'result': 'PASS' if shas == frozen else 'FAIL'}},
                 'result': 'PASS' if shas == frozen else 'FAIL'},
             f'{cert}-host.json': {'category': 'host_and_sanitizer_results', 'aggregates': {MILESTONE: host}, 'result': host['result']},
-            f'{cert}-c64.json': {'category': 'c64_execution_results', 'aggregates': {MILESTONE: c64}, 'result': c64['result']}}
+            f'{cert}-c64.json': {'category': 'c64_execution_results', 'aggregates': {MILESTONE: c64}, 'result': c64['result']},
+            f'{cert}-c64-cover.json': a2_c64_rows.cover_aggregate(
+                {f'{MILESTONE}-{cert[:2]}{tag}': f'evidence/{MILESTONE}/{MILESTONE}-{cert[:2]}{tag}-c64-cover.json'
+                 for tag in ('', '-rope')}, errors)}
         summary.append(f'{name}: {total} words translated, {instructions} instructions, all executed but '
                        f'{len(freeze.UNREACHABLE)} unreachable; {record["cases"]} + {record["cases_rope"]} oracle cases equal the snapshots')
     if errors:
