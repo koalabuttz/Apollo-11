@@ -105,6 +105,8 @@
 #define lmi_bzegoto cmi_bzegoto
 #define lmi_tload cmi_tload
 #define lmi_tload_fixed cmi_tload_fixed
+#define lmi_sload_fixed cmi_sload_fixed
+#define lmi_vdsc cmi_vdsc
 #define lmi_exit cmi_exit
 #define lmi_intpret cmi_intpret
 #define lmi_tpmode cmi_tpmode

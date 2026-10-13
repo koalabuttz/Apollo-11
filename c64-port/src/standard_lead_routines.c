@@ -52,9 +52,22 @@ static enum exec_status cm_intpret(const agc_native_program *p,apollo_overlay_st
 static enum exec_status cm_intpret2(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;return cm_control(s,io,STANDARD_LEAD_FINISH);}
 static enum exec_status cm_exit_op(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;return cm_control(s,io,STANDARD_LEAD_EXIT);}
 enum exec_status cm_interpreter_rvq(apollo_overlay_state *s,cm_native_io *io){return cm_control(s,io,STANDARD_LEAD_RVQ);}
+/* The fixed system-test entry words at 33,2000-2002 (COMPVER, GTSCPSS1, REDO),
+ * which RESTART_TABLES, FRESH_START_AND_RESTART and EXTENDED_VERBS reach by
+ * 2CADR/FCADR: each is one TC, leaving Q at the next word (REDO's MM 07
+ * operand, which NEWMODEX reads) and Z at GCOMPVER 33,3436, GTSCPSS 33,3131
+ * or NEWMODEX 5354. */
+static enum exec_status cm_tc(apollo_overlay_state *s,agc_word target){
+ if(!s||s->words[7]!=0)return EXEC_OUT_OF_SCOPE;
+ s->words[2]=(agc_word)(s->words[5]+1u);s->words[5]=target;return EXEC_OK;}
+static enum exec_status cm_compver(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;(void)io;return cm_tc(s,03436u);}
+static enum exec_status cm_gtscpss1(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;(void)io;return cm_tc(s,03131u);}
+static enum exec_status cm_redo(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;(void)io;return cm_tc(s,05354u);}
 #define B13(z) (uint16_t)(013u*1024u+((z)-02000u))
-static const agc_routine_entry cm_basic[7]={{B4(02606),cm_jobwak},{B13(02036),cm_bkcall},{B13(02047),cm_return0},{B13(02050),cm_return1},{B13(02051),cm_return2},{B13(02055),cm_ecall},{B13(02067),cm_resume}};
-const agc_routine_table cm_standard_lead_routines={cm_basic,7};
+#define B33(z) (uint16_t)(033u*1024u+((z)-02000u))
+static const agc_routine_entry cm_basic[10]={{B4(02606),cm_jobwak},{B13(02036),cm_bkcall},{B13(02047),cm_return0},{B13(02050),cm_return1},{B13(02051),cm_return2},{B13(02055),cm_ecall},{B13(02067),cm_resume},
+ {B33(02000),cm_compver},{B33(02001),cm_gtscpss1},{B33(02002),cm_redo}};
+const agc_routine_table cm_standard_lead_routines={cm_basic,10};
 static const agc_routine_entry cm_interpreter[2]={{FF(06006),cm_intpret},{FF(06010),cm_intpret2}};
 const agc_routine_table cm_interpreter_routines={cm_interpreter,2};
 static const agc_routine_entry cm_interpretive[1]={{B13(02066),cm_exit_op}};

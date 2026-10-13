@@ -65,6 +65,9 @@
  *                      the drift-flag end task: TASKOVER, NOVAC NBDONLY, or
  *                      FIXDELAY 500 */
 extern const agc_routine_table cm_exec_routines;
+#if defined(CM_EXEC_DLY2_ONLY)
+extern const agc_routine_table cm_exec_dly2_routines; /* DLY2 -1 alone */
+#endif
 extern const agc_routine_table cm_exec_job_routines;
 extern const agc_routine_table cm_exec_idle_routines;
 /* Every genuine NOVAC/FINDVAC/WAITLIST/LONGCALL/TWIDDLE/FIXDELAY inline

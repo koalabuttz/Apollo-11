@@ -1,0 +1,103 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+c7d6c0d09b2f626c3638a86b9791932cc8470f4c4d6d52bfb0f4aafd82cd061e  build/cm-p40-p47-1.prg
+028d8a26ea4e753cab03845bd25cad196d691fb204ed0c124ff27e6646a81035  build/cm-p40-p47-10.prg
+1a171812a2f5ecb10e00070628631ed498b5d5012a9519912121bd0de320d729  build/cm-p40-p47-11.prg
+186e6d63c7b6adeefa2c669ef05fadec05d3efa0092a722d515dbbb356e2c26e  build/cm-p40-p47-12.prg
+c518b8f8b03c2aad32b349fba61adf9066c1e41c8a1b54b71cc6a8c61440485b  build/cm-p40-p47-13.prg
+3be3543092571df4d6ffbd2b099bfa7b7974f26f4d855a1b6b887b34b544b045  build/cm-p40-p47-14.prg
+d3f82bc37c92c7a3dc49d0b68f56eb43688a1ca7cb4cc6f2722890b9dc14325e  build/cm-p40-p47-15.prg
+10cb0446566bcd7afe69a19a71a24b5658e1a7b182bf9c2113dbd682a0209c63  build/cm-p40-p47-16.prg
+6c1336634354f33e96032e3a20a3648051d56c2a6af0b0e149f95b0dc3e33eae  build/cm-p40-p47-17.prg
+b277a4854784a9a05ce3a872a55d753596553ea906ddc26cfc12809b340b1f9f  build/cm-p40-p47-18.prg
+fdd11bc7d18b107ba3eb7284103b734afacfdc56c7b5ba2116a1aa9071a2d75c  build/cm-p40-p47-19.prg
+b6cd1f50d4bc4edc36bdde6c22c3eb0e2fdaeaa9146c2104e5fe39b59f393c66  build/cm-p40-p47-2.prg
+07590404356a28615c573b09052dc2fc8916b281d8cc1b9058cc1953aca96d82  build/cm-p40-p47-20.prg
+dd71111b4a54f61ae956ec8b0b935dae8701962f80f977d9b6bc68b821bc3c82  build/cm-p40-p47-21.prg
+7c5df030871f01b5cd65873692dc48b665384dddd03ea66be28ab06f3ec8113e  build/cm-p40-p47-22.prg
+34ec9d858ea50d9c02ec39c924fc701f3beb64edbac72934b0c8bc43af780568  build/cm-p40-p47-23.prg
+481a84c76ea3e1472abb53f77e504e583153956e0861e7dc279c0493705f4f4c  build/cm-p40-p47-24.prg
+9869e1db65ef78a68236ca92cb01fd4df352b9930abee1cdc8865f93d10ccf37  build/cm-p40-p47-25.prg
+3bf08f4daea60166b4e3cb519eeb6e309d9e79ab95b553542367abe655f1f685  build/cm-p40-p47-26.prg
+a61ab2da29c9e2c0e06c96f386dddf9e29aba4dfe72c8f6cb24a0d51b7412be4  build/cm-p40-p47-27.prg
+ff901183a036350a42b1e8a4fbfa8df0a6996bc58475d8e9de9a29a8983ff1b3  build/cm-p40-p47-28.prg
+a173bf2114a11a41eef1058ed1c255250c589f9c1b2d74cc0d12e1ccd227d918  build/cm-p40-p47-29.prg
+1f98095cf2fced657fea1d72c620b04bc55f432f76c3715ee7fd25a5f279a7e6  build/cm-p40-p47-3.prg
+939d644c0ecacc34a5af0fbe219dc9c9bc83e5bbb580df6d4299dfd825e10188  build/cm-p40-p47-30.prg
+7b1839475c7398e86ea509f414afe5891ebbe6889adc38b7a08998a824cc505f  build/cm-p40-p47-31.prg
+ea6f6daea13bc62cc79a0fd8a344225fe07f2493c094b78586d6d68627409b59  build/cm-p40-p47-32.prg
+ebd0b1630ae99a20384da32bc8bc3acc1863345f97cafe8f7e5f1a4c850a034e  build/cm-p40-p47-33.prg
+0fa72c3b5d7334a80625352ab5730d046dc856e0f9cfaea4c2ee2f0e168867b8  build/cm-p40-p47-34.prg
+c58732c7d38eb80da19d718f5039fbe19883627c91006879a0d69c16ae07c7e8  build/cm-p40-p47-35.prg
+1a8854924764a1fce5ec0d0e9f84d6282bbcbf37bf99164db029b0632b1a9ab2  build/cm-p40-p47-36.prg
+0221f66f2d905d6ce2ef947c944acb6b698911a672a3e2cdb249081c326aadb6  build/cm-p40-p47-37.prg
+857eb09f0fba75c292cd33cda5d778f7144b3cfed31509d7936524f74730c733  build/cm-p40-p47-38.prg
+22a30d87d0e0ea1585835b60a7213116e3fce6e8ccbf3e23e87f1613c69bc962  build/cm-p40-p47-39.prg
+3b5d7fe890d6132268655afbb70ef3a648ce70c40551a53443743da52e70dfab  build/cm-p40-p47-4.prg
+35690f326a2270292b71e0e007287c4444f4347e0374ead92ed3884b63545e63  build/cm-p40-p47-40.prg
+0203d0a17eea80ade5b819e4035c48786a631d92973e9f0079b6f75f883af630  build/cm-p40-p47-41.prg
+2235a5b3c06a0a5a07ffe107ac3f1518bec2c1fcdbcf2674bf7e6e0d387d4ab5  build/cm-p40-p47-42.prg
+5f408099857fb332274924de66aefe2980b93409c4e61c53e388e7b1c785476c  build/cm-p40-p47-43.prg
+dabcdbe1a8f67451a59ff63806eddc53bc29d6cc091dcd6ea98ed92459cda6fc  build/cm-p40-p47-44.prg
+1787ead709236c18d0d4a1f4fed9fbec43e2738def283d66b6774817dee3c6b4  build/cm-p40-p47-45.prg
+d01f9d148a6460acfdd5453e0be0ab3bb467e999b00f2d6fa20cc68a00c26d14  build/cm-p40-p47-46.prg
+bda6e00d61ea29dcdded763f5ea18bc6657ec57e17e63c80ae5b48df7bda107d  build/cm-p40-p47-47.prg
+9d869b93a4206a3dd959b4b60635c241f954403ad780179fb9aed8e319aa836b  build/cm-p40-p47-48.prg
+e26aeb5909bb988c5f4a3dfb0400ae3913f79bdefbce3d743332179401150e37  build/cm-p40-p47-49.prg
+8f51aa36912deb698cbed4d79180445c5303c621c157d0f4d4d1b0d616912cb1  build/cm-p40-p47-5.prg
+a7d4f0da41d8e2c3bfc016fd66cf3d290d2d12275457001b218677496b10cb75  build/cm-p40-p47-6.prg
+ac14cb7281351a628ebf47b1338b44a407cba6706a5979c903f7435a7c4d9cb6  build/cm-p40-p47-7.prg
+3bcbf9a65009818c0e5086c4721154c52cabb702835f640bd7737cc0eecd0142  build/cm-p40-p47-8.prg
+51152014c70d3dd5062ffa4b8b4c673e278292c86a7d43afb40de3a0629d6307  build/cm-p40-p47-9.prg
+
+$ make vice-cm-p40-p47
+for p in build/cm-p40-p47-1.prg build/cm-p40-p47-2.prg build/cm-p40-p47-3.prg build/cm-p40-p47-4.prg build/cm-p40-p47-5.prg build/cm-p40-p47-6.prg build/cm-p40-p47-7.prg build/cm-p40-p47-8.prg build/cm-p40-p47-9.prg build/cm-p40-p47-10.prg build/cm-p40-p47-11.prg build/cm-p40-p47-12.prg build/cm-p40-p47-13.prg build/cm-p40-p47-14.prg build/cm-p40-p47-15.prg build/cm-p40-p47-16.prg build/cm-p40-p47-17.prg build/cm-p40-p47-18.prg build/cm-p40-p47-19.prg build/cm-p40-p47-20.prg build/cm-p40-p47-21.prg build/cm-p40-p47-22.prg build/cm-p40-p47-23.prg build/cm-p40-p47-24.prg build/cm-p40-p47-25.prg build/cm-p40-p47-26.prg build/cm-p40-p47-27.prg build/cm-p40-p47-28.prg build/cm-p40-p47-29.prg build/cm-p40-p47-30.prg build/cm-p40-p47-31.prg build/cm-p40-p47-32.prg build/cm-p40-p47-33.prg build/cm-p40-p47-34.prg build/cm-p40-p47-35.prg build/cm-p40-p47-36.prg build/cm-p40-p47-37.prg build/cm-p40-p47-38.prg build/cm-p40-p47-39.prg build/cm-p40-p47-40.prg build/cm-p40-p47-41.prg build/cm-p40-p47-42.prg build/cm-p40-p47-43.prg build/cm-p40-p47-44.prg build/cm-p40-p47-45.prg build/cm-p40-p47-46.prg build/cm-p40-p47-47.prg build/cm-p40-p47-48.prg build/cm-p40-p47-49.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-p40-p47-1.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-2.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-3.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-4.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-5.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-6.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-7.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-8.prg: 4 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-9.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-10.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-11.prg: 6 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-12.prg: 7 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-13.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-14.prg: 26 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-15.prg: 26 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-16.prg: 4 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-17.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-18.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-19.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-20.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-21.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-22.prg: 8 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-23.prg: 3 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-24.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-25.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-26.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-27.prg: 9 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-28.prg: 24 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-29.prg: 15 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-30.prg: 26 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-31.prg: 9 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-32.prg: 26 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-33.prg: 24 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-34.prg: 22 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-35.prg: 17 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-36.prg: 17 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-37.prg: 33 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-38.prg: 23 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-39.prg: 32 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-40.prg: 30 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-41.prg: 32 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-42.prg: 39 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-43.prg: 31 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-44.prg: 4 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-45.prg: 33 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-46.prg: 36 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-47.prg: 15 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-48.prg: 14 checks, 0 failures
+PASS: VICE PAL cm-p40-p47-49.prg: 16 checks, 0 failures
+exit 0

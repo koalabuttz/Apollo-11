@@ -82,7 +82,8 @@ def main():
                               'or RESUME, all in fixed-fixed memory); the original runs to the first time it '
                               'reaches that Z',
                   'compared': 'outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr, channel 11',
-                  'full_physical_words': 2048})
+                  'full_physical_words': 2048,
+                  'oracle': 'yaAGC (agc_engine) running the original rope of each mission'})
     (B / 'keyrupt-uprupt-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
     print(f"PASS: {proof['lm']['cases']} LM and {proof['cm']['cases']} CM keyrupt-uprupt cases equal the original programs")
 
