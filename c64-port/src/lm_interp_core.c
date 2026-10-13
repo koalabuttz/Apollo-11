@@ -2071,44 +2071,55 @@ static NI uint8_t order(uint8_t c)
 
 /* From the image's Z through the dispatch paths and bodies to the end of
  * the slot. */
+static const agc_word points[] = {
+    IRT_NEWOPS, IRT_DANZIG, IRT_NOIBNKSW, IRT_DODLOAD, IRT_DOVLOAD, IRT_DIRADRES, IRT_DODLOADX, IRT_DOVLOADX,
+    IRT_B15BITADR, IRT_GOTO, IRT_SWRETURN, IRT_INTPRET
+};
+enum { P_NEWOPS, P_DANZIG, P_NOIBNKSW, P_DODLOAD, P_DOVLOAD, P_DIRADRES, P_DODLOADX, P_DOVLOADX, P_B15BITADR,
+       P_GOTO, P_SWRETURN, P_INTPRET, P_OUTSIDE };
+static NI uint8_t point(void)
+{
+    uint8_t k;
+    for (k = 0; k < P_OUTSIDE && points[k] != W[5]; ++k) {}
+    return k;
+}
 static NI enum exec_status run(void)
 {
-    uint8_t r = MORE, load = 0;
-    unsigned guard;
+    uint8_t r = MORE, load = 0, guard;
     for (guard = 0; guard < 16u && r == MORE; ++guard) {
-        switch (W[5]) {
-        case IRT_NEWOPS:
+        switch (point()) {
+        case P_NEWOPS:
             if (!code_word(0u)) return EXEC_OUT_OF_SCOPE;
             if (!(cw & 040000u)) { lmi_store_code(cw); break; }
             lmi_newops(cw);
             r = order((uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u)); break;
-        case IRT_DANZIG:
+        case P_DANZIG:
             if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); lmi_danzig_right(); r = order(c); break; }
             if (W[rNEWJOB]) { chang2(1); return EXEC_OK; }
             lmi_danzig_next(); return EXEC_OK;
-        case IRT_NOIBNKSW:
+        case P_NOIBNKSW:
             if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); lmi_noibnksw_right(); r = order(c); break; }
             if (W[rNEWJOB]) { chang2(0); return EXEC_OK; }
             (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB); ai_incr(rLOC); W[5] = IRT_NEWOPS; return EXEC_OK;
-        case IRT_DODLOAD: lmi_dodload(); load = 0; break;
-        case IRT_DOVLOAD: lmi_dovload(); load = 1; break;
-        case IRT_DIRADRES:
+        case P_DODLOAD: lmi_dodload(); load = 0; break;
+        case P_DOVLOAD: lmi_dovload(); load = 1; break;
+        case P_DIRADRES:
             if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
             if (cw & 040000u) lmi_diradres_pushup(cw, t_indjump[load ? 000 : 006]);
             else lmi_diradres(cw, t_indjump[load ? 000 : 006]);
             r = addr_body(load ? 000 : 006); break;
-        case IRT_DODLOADX: case IRT_DOVLOADX:
+        case P_DODLOADX: case P_DOVLOADX:
             load = W[5] == IRT_DOVLOADX;
             if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
             ai_caf(load ? 040001u : IRT_DLOADX_WORD); (void)ai_ts(rCYR);
             lmi_indexed(cw, t_indjump[load ? 000 : 006]);
             r = addr_body(load ? 000 : 006); break;
-        case IRT_B15BITADR:
+        case P_B15BITADR:
             if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
             lmi_15bitadr(cw, miscjump[015]); lmi_call(); lmi_goto_any(); return EXEC_OK;
-        case IRT_GOTO: lmi_goto_any(); return EXEC_OK;
-        case IRT_SWRETURN: lmi_swreturn(); break;
-        case IRT_INTPRET: lmi_intpret(); return EXEC_OK;
+        case P_GOTO: lmi_goto_any(); return EXEC_OK;
+        case P_SWRETURN: lmi_swreturn(); break;
+        case P_INTPRET: lmi_intpret(); return EXEC_OK;
         default: return guard ? EXEC_OK : EXEC_UNMAPPED;   /* outside the interpreter */
         }
     }
