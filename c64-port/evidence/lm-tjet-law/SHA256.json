@@ -4,8 +4,8 @@
   "release": "evidence-lm-tjet-law",
   "files": {
     "lm-tjet-law-c64-cover.json": {
-      "sha256": "a7e38b2b521fae7de01f3fe101911d75a90e46357e4b5fae49c9af2061759557",
-      "bytes": 15518,
+      "sha256": "c682c508ea2c5c68e32bbaf6eaad31526b29d4dab2d0499613acab7c6116ccf4",
+      "bytes": 19352,
       "store": "tree"
     },
     "lm-tjet-law-host.log": {
@@ -19,12 +19,12 @@
       "store": "tree"
     },
     "lm-tjet-law-source-map.json": {
-      "sha256": "5fb0a84131006a38e5562c42f425ab4a3f0e4cc76933ceb63dfd2efb1c8f8f13",
+      "sha256": "829b713e714fba142759a9f71ec1ac122efeece4ee1cbbcc7919b5f20977a23c",
       "bytes": 54270,
       "store": "tree"
     },
     "lm-tjet-law-vice.log": {
-      "sha256": "b9eed6bca7422611d99fe96c73627753007c9f97e035d0fb59bc3167e2b10426",
+      "sha256": "10562ac0b716dda60b24a969890c66742a087b159f12446b4daa243a5ad28944",
       "bytes": 296,
       "store": "tree"
     }

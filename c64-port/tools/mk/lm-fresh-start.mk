@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-fresh-start (lane A2): Luminary099 FRESH_START_AND_RESTART bank 05 and GOTOPOOH (fresh start,
 # restart, ENEMA) as native routines of the control-transfer ABI.
-LM_FS_SRC = src/lm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_fresh_start_cases.c
+LM_FS_SRC = src/lm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_fresh_start_cases.c
 LM_FS_HDR = include/lm_fresh_start.h include/lm_interbank_routines.h include/agc_transfer.h include/agc_image_ops.h src/lm_fresh_start_operands.inc tests/lm_fresh_start_cases.h
 .PHONY: test-lm-fresh-start sanitize-lm-fresh-start c64-lm-fresh-start vice-lm-fresh-start lm-fresh-start-differential
 all: build/test-lm-fresh-start

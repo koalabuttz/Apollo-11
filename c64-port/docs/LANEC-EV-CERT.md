@@ -88,7 +88,10 @@ Hashes: `evidence/lanec-ev-cert/SHA256.json`.
 - C64 execution results: `lanec-ev-c64-results.json`. It has fresh VICE
   PAL runs of the eight frozen module subsets (each picked by
   `tools/lanec/cover.py` to take every host branch arc) and the transfer round trip
-  (457 checks, 0 failures) with the PRG hashes.
+  (481 checks, 0 failures) with the PRG hashes. The rows are picked so that
+  every call of a shared helper (`lanec_ccs`, `lanec_ts`, `lanec_ev_zero`,
+  `lanec_ev_mp` and the rest) takes each of its host outcomes at that call
+  site, not just somewhere in the file (`LANEC_COVER_SITES`).
 
 The supported domain and the external continuations are written into the
 certificate itself.

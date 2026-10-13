@@ -10,7 +10,7 @@ from lm_basic_source import check  # noqa: E402
 
 OWNERS = [(0o3252, 0o3525, 'tjetlaw'), (0o3526, 0o3541, 'z123comp'), (0o3542, 0o3711, 'tjetlaw'),
           (0o3712, 0o3720, 'rufsetup'), (0o3721, 0o3743, 'tjetlaw')]
-HELPERS = {'tjetlaw': ['z123comp', 'rufsetup', 'at', 'ix', 'transfer'], 'z123comp': ['at', 'ix'], 'at': ['ix']}
+HELPERS = {'tjetlaw': ['z123comp', 'rufsetup', 'xcell', 'ix', 'transfer'], 'z123comp': ['xcell']}
 # TJETLAW is one routine: every branch inside the file is a C label or
 # condition there (the TC Z123COMP and TC RUFSETUP / RUFSETUP +2 calls are
 # the helpers z123comp and rufsetup), and Z123COMP's BZMF +2 (RETURN) and

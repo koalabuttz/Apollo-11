@@ -48,6 +48,7 @@ jobs:
       c64_shards: ${{ steps.plan.outputs.c64_shards }}
       host_shards: ${{ steps.plan.outputs.host_shards }}
       c64_full: ${{ steps.plan.outputs.c64_full }}
+      sha: ${{ steps.sha.outputs.sha }}
     steps:
       - &checkout
         name: Lean checkout
@@ -58,6 +59,11 @@ jobs:
             "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
           git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
           git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      # A nightly calls this workflow with a branch name as ref: every later
+      # job checks out the commit plan resolved, not the branch tip at its own
+      # start (shards built different commits, and the manifest mixed them).
+      - id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - id: plan
         working-directory: c64-port
         env:
@@ -96,6 +102,8 @@ jobs:
 
   ledgers-and-coverage:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     runs-on: ubuntu-24.04
     steps:
       - *checkout
@@ -116,8 +124,41 @@ jobs:
           python3 tools/evidence.py fetch --coverage
           python3 tools/port_coverage.py
 
+  # Reports C lines a PR changed but left unformatted (tools/format_changed.py,
+  # .clang-format). Advisory while lanes install the hook (`make hooks`): it
+  # warns and passes.
+  format:
+    needs: plan
+    if: github.event_name == 'pull_request'
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    runs-on: ubuntu-24.04
+    steps:
+      - *checkout
+      - name: Toolchain cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - name: Changed C lines are formatted
+        working-directory: c64-port
+        run: |
+          if [ ! -x deps/llvm-mos/bin/clang-format ]; then
+            echo "::warning::format check skipped: toolchain cache missed"; exit 0
+          fi
+          if ! python3 tools/format_changed.py --check --base "${{ needs.plan.outputs.base }}" > build-format.diff; then
+            cat build-format.diff
+            echo "::warning::changed C lines are not formatted; run 'make format' (installs the pre-commit hook)"
+          fi
+
   host:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.host == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
@@ -166,6 +207,8 @@ jobs:
 
   c64:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.c64 == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
@@ -225,6 +268,8 @@ jobs:
   # maps in the c64 job instead.
   c64-maps:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: github.event_name == 'push' && needs.plan.outputs.c64_full != '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
@@ -245,7 +290,11 @@ jobs:
           targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(build\/[A-Za-z0-9_.-]*\.prg\):.*/\1/p' | sort -u \
             | awk -v k="$SHARD" 'NF && (NR - 1) % 2 == k')
           echo "$(echo "$targets" | wc -w) PRGs"
-          make -k -j"$(nproc)" MOS_CC="$MOS_CC" $targets > build/c64-maps.log 2>&1 || echo "some PRGs did not link (see build/c64-maps.log); their own targets report that"
+          # A PRG that fails to link fails this job: on a push nothing else links it.
+          if ! make -k -j"$(nproc)" MOS_CC="$MOS_CC" $targets > build/c64-maps.log 2>&1; then
+            grep -E '^make: \*\*\*|error:' build/c64-maps.log | head -40
+            echo "FAIL: some PRGs did not link (build/c64-maps.log)"; exit 1
+          fi
       - *map-check
 
   # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
@@ -255,6 +304,8 @@ jobs:
   # don't take every runner for hours; the nightly catches legacy breaks.
   c64-legacy:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -275,6 +326,7 @@ jobs:
           python3 tools/ci_run.py -j 4 --make-arg "MOS_CC=$MOS_CC" --make-arg "VICE=$VICE" \
             --make-arg "VICE_ROM_DIR=$VICE_ROM_DIR" --make-arg "VICE_DATA_DIR=$VICE_DATA_DIR" \
             --make-arg "C1541=$C1541" $targets --summary build/ci-summary.json
+      - *map-check
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -288,10 +340,13 @@ jobs:
 
   # Requested full runs only: re-derive every C64 branch cover a certificate
   # cites on the current sources (tools/cover_check.py, host only), as
-  # manifest pieces carrying c64_cover. It reports and does not fail: the
-  # manifest records the gaps and tools/cert_precheck.py judges them.
+  # manifest pieces carrying c64_cover. It fails on a cover that misses host
+  # branches or cannot be re-derived; tools/cert_precheck.py also reads
+  # c64_cover for the certificates a change touches.
   cover-check:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
@@ -322,6 +377,8 @@ jobs:
   # against.
   vice-manifest:
     needs: [plan, c64, c64-legacy, cover-check]
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     steps:

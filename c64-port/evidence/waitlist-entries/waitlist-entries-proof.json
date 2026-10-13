@@ -1,6 +1,6 @@
 {
- "cases": 1266,
- "reached": 1240,
+ "cases": 1437,
+ "reached": 1404,
  "native_equals_yaagc": true,
  "by_kind": {
   "LM T3RUPT 01,3407": {
@@ -12,12 +12,12 @@
    "reached": 512
   },
   "LM DLY2 -1 05211": {
-   "cases": 57,
-   "reached": 45
+   "cases": 171,
+   "reached": 152
   },
   "CM DLY2 -1 05255": {
-   "cases": 57,
-   "reached": 43
+   "cases": 114,
+   "reached": 100
   },
   "LM NOQBRSM +1 05275": {
    "cases": 128,
@@ -29,10 +29,10 @@
   "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  },
  "oracle": "yaAGC (agc_engine) running the original rope of each mission",
- "oracle_sha256": "5179b684f0e89a4324b58868c4523b97e28e502ae06306172c60be3111807340",
+ "oracle_sha256": "69e1b9d1240a6daf32f183427bd161253691ecc6631d67895aad77e2bcb50b7f",
  "dependencies": {
   "src/lm_exec_jobs.c": "51b394b672f7c55ecad20507af07ad56b733dea18582ea5a63d7a46b22769f72",
-  "src/lm_exec_tasks.c": "9431dd3093665915fa39dc11b57b395b1692b6f91e4de79ef65158072e72a803",
+  "src/lm_exec_tasks.c": "11eb9b821d82bef55a54db08f61443a7257fbbac0450e0ffa16e61bcafca2d42",
   "src/lm_exec_routines.c": "d981332eda55f7028c37430780fff87ae004ce52e41eb09a546f5c551fb30ee8",
   "src/lm_waitlist_image.c": "cb71a02a022487ab647188310765da3f7ca75def5e563918d02f07da6c286fbf",
   "src/lm_admission_image.c": "79952101a1b19a7c90bb6c94b706d4a89f74347c820902da00267692a004deab",
@@ -65,7 +65,7 @@
   "tests/lm_waitlist_dispatch_cases.c": "1bf94f67b23e3530554f8170661f8f70c955a2538b2438c4d89e0887002e2cd8",
   "tests/throttle_bridge_cases.c": "ff017285d26479485fd3896ea4d21b2d7692eafa0b4f187a603c1d7fe8396e14",
   "tests/lm_exec_jobs_cases.c": "e53f23081b164121ecd5b8ca0972cc85a5e66b64ef7a6632f79d0b7255ce1359",
-  "src/cm_exec_routines.c": "f1b68b16f9ace5614806459798b220ae53fada5c2c0884778377be741ee79c44",
+  "src/cm_exec_routines.c": "da74375fb5a3077980e814dd7aa50ff0d9996eb4474c92c941f87d733847f70a",
   "src/cm_admission_zero.c": "e865643cd9d8f54fb87f7e5456e2c4cd45b9d016a3f212246cf99ec27ddef253",
   "src/cm_waitlist_extended.c": "c4909d471846944e7018dfc70cca8606062cb5604906ec857363d9bb61829e87",
   "src/cm_waitlist_internal.c": "58eaaf498a2a8497be5377e07ed1f395cf294efb78478da56f3910e04dfac9c5",
@@ -79,15 +79,15 @@
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
   "tests/lm_t6rupt_cases.c": "f11003fca11baba2234eba036ffbfcd6df198905084a76f97bd4dbfcd9e18bca",
   "tests/service_transfer_cases.c": "84f83fc9017dc5878644f0bd604fd69bd381be7f7e5a2708fc12adc21ca49d36",
-  "src/service_transfer.c": "ef45d86d6014c24e5d2094268613fa9f201fe88534f6492fca4593a6f17be92b",
+  "src/service_transfer.c": "693f695f966efbe5ba1bbc0e570423bd6fe0e84be35c6f1a021152f8c3a1b12b",
   "src/service_routines.c": "f9af3a8180484a7e23f863ecedabe6a416b31420ac9095a66d6c405a78ff0bfb",
-  "tests/waitlist_entries_cases.c": "c05f65934d53dd7fd8751ba66e1dac93200f445c16bf55a05ee6364d492d6fab",
+  "tests/waitlist_entries_cases.c": "20126e92e7da3a1c0271d7e9962d74e08f06a7f3e56a5549d7e9bea9622d2d4e",
   "include/agc_transfer.h": "2b268250f6b0a454f8ae8a3083d65eb915b292233fa144633c31405416bd646f",
   "include/lm_exec_routines.h": "5eb5020b4cc645164f0e75f6740432402efc2cd641d75ca381b0fc05aa4de4a8",
   "include/cm_exec_routines.h": "3109fec2df17ef77ceaf34bea0c734803835e5a341b5c86738c377e14851c5df",
   "include/lm_t6rupt_routines.h": "62f628d317b76956b8dfc83904de9a4f9a9bb52a03b6460f366de67fbc5cdb07",
-  "include/service_transfer.h": "d96b2a1b23f7c092ee0adb2554598e8e7f473e77a39a0c81535212a172117d7f",
-  "tests/waitlist_entries_cases.h": "8824872797ff53c87ebeaaebc6df202b1ef9d6740e30c21f938b4344d2412a71"
+  "include/service_transfer.h": "1b5f86b679c41780cffb3b99380d1c5946c787693fa91ddd91b2ac2eb524d90e",
+  "tests/waitlist_entries_cases.h": "411f131b8530992bdec2d3275ff676ac836320568c162b725fe69a82206b4a0e"
  },
  "boundary": "T3RUPT: from the T3RUPT word after the vector's DXCH ARUPT; CAF T3RPTBB; XCH BBANK to the dispatched task; DLY2 -1: from DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP or BAILOUT; NOQBRSM +1: to the end of the interrupt. yaAGC stops at the native Z (and FB when banked) or when InIsr clears"
 }

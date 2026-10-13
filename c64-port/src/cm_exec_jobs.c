@@ -6,7 +6,7 @@
 #include "cm_wake_complete.h"
 #include "cm_priority_complete.h"
 #include "cm_basic_finish.h"
-#define W s->words
+#include "agc_image_w.h"
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 
 /* Executive job services. Each composes the qualified image body of its

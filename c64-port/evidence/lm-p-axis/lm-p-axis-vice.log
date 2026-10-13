@@ -1,3 +1,3 @@
-lm-p-axis.prg sha256 2b90530fb7c3d25994a837342899ff313d630b82cb9d87de411ae46c7259b641 heap_start $bb9d
-lm-p-axis: 128 C64 rows (53 cover every entry, outcome, the 108 counted paths and the 409 edges of every linked source the host takes)
+lm-p-axis.prg sha256 54e3369df947c81e290f0127510b3755b95ef117a0e23b91083016a71b8abb9b heap_start $9881
+lm-p-axis: 128 C64 rows (56 cover every entry, outcome, the 108 counted paths and the 437 edges of every linked source the host takes)
 PASS: VICE PAL lm-p-axis.prg: 128 checks, 0 failures

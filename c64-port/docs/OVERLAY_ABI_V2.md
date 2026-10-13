@@ -77,12 +77,14 @@ module's 7.8 KB.
 | `$0200..$03FF` | Resident DMA buffers (store record, module header), IRQ queues | 512 |
 | `$0400..$07E7` | Screen RAM: DSKY rendering and diagnostics | 1,000 |
 | `$0801..$6EFF` | Resident code and initialized data | 26,367 |
-| `$6F00..$6FFF` | Resident service jump table (85 entries max) | 256 |
+| `$6F00..$6FDB` | Resident service jump table (73 entries max; the resident linker script asserts it ends at or below `$6FDC`) | 220 |
+| `$6FDC..$6FF3` | Flight: `rk_flight`, the resident's record of the flight_io fields neither `rk_io` nor `agc_hardware` holds (channels 16/34/35, traps, alarms, warning); modules link it with `--defsym`. Both missions | 24 |
+| `$6FF4..$6FFF` | CM flight: the one `cm_channels` (channels 5, 6, 30-33), owned by the resident; CM modules link `--defsym=cm_channels=0x6FF4`, and the store build fails on a private copy. Goes when the channel model moves these into `agc_hardware` | 12 |
 | `$7000..$7FFF` | Canonical 2,048-word AGC erasable image (unchanged from ABI 1) | 4,096 |
 | `$8000..$BFFF` | Job slot | 16,384 |
 | `$C000..$C7FF` | Transient views; overflow space for resident BSS if Lane A needs it | 2,048 |
 | `$C800..$CFFF` | LLVM-MOS software stack (measured peak so far 773 bytes) | 2,048 |
-| `$D000..$DFFF` | I/O; REU controller at `$DF00` | 4,096 |
+| `$D000..$DFFF` | I/O; REU controller at `$DF00`. The RAM under it holds the interpreter extension (slot class 2), reached with I/O banked out; every IRQ entry saves `$01`, sets `$35` and restores it (#267) | 4,096 |
 | `$E000..$FFF9` | Task slot | 8,186 |
 | `$FFFA..$FFFF` | RAM NMI/RESET/IRQ vectors, resident-owned | 6 |
 
@@ -128,7 +130,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 0 | 4 | `NATV` |
 | 4 | 1 | ABI version, 2 |
 | 5 | 1 | Header size, 24 |
-| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`) |
+| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`), 2 fixed extension (`$D000..$DFFF`, RAM under I/O: boot loads it once with a `$FF00`-triggered DMA and verifies it; no resolver records, never loaded per job; #267) |
 | 7 | 1 | Mission: 1 LM, 2 CM |
 | 8 | 2 | Module identity (lane << 8 \| number) |
 | 10 | 2 | Entry address, slot base + 24 |
@@ -137,7 +139,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 16 | 2 | Loaded bytes, header included |
 | 18 | 2 | Service-table version the module was linked against |
 | 20 | 2 | Selector count; valid selectors are 0..count-1 |
-| 22 | 2 | Reserved, zero |
+| 22 | 2 | `TABLES`: in-slot address of the module's `rk_module_tables`, or 0. The flight packer checks it lies inside the slot; the loader never reads it (resident direct calls do, #256) |
 
 The fields are little-endian. `overlay_v2_payload.ld` emits the header from
 link-time symbols (`__ov2_slot`, `__ov2_mission`, `__ov2_id`, `__ov2_services`,
@@ -153,6 +155,7 @@ and zero private zero page.
 | C DSKY and verbs | `$03` | G CM flight, entry, TVC | `$08` |
 | D1 IMU and alignment | `$04` | H integration | `$09` |
 | D2 rendezvous navigation | `$05` | proof and test data | `$0F` |
+| I runtime interpreter | `$0A` | | |
 
 Ids `$0100..$0FFF` are valid, so each lane gets 255 per mission. The LM and CM
 stores are separate, so the same id can name different modules in each.
@@ -166,7 +169,7 @@ stores are separate, so the same id can name different modules in each.
 | Page 0 | `NREU`, format 1, mission, service version, module count, index page, resolver page, resolver count, total pages |
 | Pages 1..256 | Direct index: 4,096 records of 16 bytes, at `id * 16`: id, page, bytes, CRC16, selectors, slot, flags |
 | Resolver | Records of 8 bytes, sorted by (bank, location): historical bank word, location, module, selector |
-| Modules | Each image starts on a page boundary |
+| Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx), so the packer starts a module that would cross on the next bank |
 
 Lookup is one 16-byte DMA. A historical-continuation lookup is a binary search
 of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present

@@ -18,18 +18,20 @@
 #include "lm_self_check_c64_vectors.h"
 #include "cm_self_check_vectors.h"
 #include "cm_self_check_c64_vectors.h"
+#include "lm_interbank_routines.h"
+#include "cm_interbank_routines.h"
 #define ENDS 7u
 #define K(z) ((agc_word)((z)-(mission?0u:2u)))
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s case %u\n",what,n);}}
-static unsigned mission,reached[SELF_CHECK_ROUTINES];
+static unsigned mission,reached[SELF_CHECK_TABLES][SELF_CHECK_MAIN_ROUTINES];
 static enum exec_status count(const agc_native_program *p,apollo_overlay_state *s,void *io){
- const agc_routine_table *t=self_check_table(mission);unsigned i;uint16_t at=agc_transfer_point(p,s,*self_check_superbank(mission,io));
- for(i=0;i<SELF_CHECK_ROUTINES;++i)if(t->entries[i].physical==at){++reached[i];return t->entries[i].call(p,s,io);}
+ const agc_routine_table *t=self_check_table(mission);unsigned i,j;uint16_t at=agc_transfer_point(p,s,*self_check_superbank(mission,io));
+ for(j=0;j<SELF_CHECK_TABLES;++j)for(i=0;i<t[j].count;++i)if(t[j].entries[i].physical==at){++reached[j][i];return t[j].entries[i].call(p,s,io);}
  return EXEC_OUT_OF_SCOPE;
 }
 static enum exec_status once(apollo_overlay_state *s,self_check_io *io){
- agc_native_program p={0,1,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;
+ agc_native_program p={0,SELF_CHECK_TABLES,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;
  p.basic=self_check_table(mission);call=agc_transfer_resolve(&p,s,io?*self_check_superbank(mission,io):0100u);
  return call?call(&p,s,io):EXEC_UNMAPPED;
 }
@@ -56,13 +58,29 @@ int main(int argc,char **argv){apollo_overlay_state s;self_check_io io;enum exec
  /* The C64 rows (chosen by outcome in the freeze) are host cases with their digests. */
  for(n=0;n<LM_SELF_CHECK_C64_COUNT;++n)check(lm_self_check_c64_case[n]<SELF_CHECK_CASES&&(n==0u||lm_self_check_c64_case[n-1u]<lm_self_check_c64_case[n])&&lm_self_check_c64[n]==lm_self_check_expected[lm_self_check_c64_case[n]],"LM C64 row",n);
  for(n=0;n<CM_SELF_CHECK_C64_COUNT;++n)check(cm_self_check_c64_case[n]<SELF_CHECK_CASES&&(n==0u||cm_self_check_c64_case[n-1u]<cm_self_check_c64_case[n])&&cm_self_check_c64[n]==cm_self_check_expected[cm_self_check_c64_case[n]],"CM C64 row",n);
- for(mission=0;mission<2u;++mission){agc_routine_entry wrapped[SELF_CHECK_ROUTINES];agc_routine_table table;
-  agc_native_program p={0,1,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};uint16_t steps;
-  for(i=0;i<SELF_CHECK_ROUTINES;++i)check(self_check_table(mission)->entries[i].physical==043u*1024u+self_check_entry_list(mission)[i]-02000u&&(i==0u||self_check_table(mission)->entries[i-1u].physical<self_check_table(mission)->entries[i].physical),"routines sorted",i);
+ for(mission=0;mission<2u;++mission){agc_routine_entry wrapped[SELF_CHECK_TABLES][SELF_CHECK_MAIN_ROUTINES];agc_routine_table table[SELF_CHECK_TABLES];
+  agc_native_program p={0,SELF_CHECK_TABLES,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};uint16_t steps;unsigned j,k,found;const agc_routine_table *t=self_check_table(mission);
+  check(t[0].count==SELF_CHECK_IDLE_ROUTINES&&t[1].count==SELF_CHECK_MAIN_ROUTINES,"table sizes",0);
+  /* The interbank chunk the flight store packs beside the idle table is the
+   * interbank table's first five entries (BANKCALL through POSTJUMP). */
+  {const agc_routine_table *ib=mission?&cm_interbank_routines:&lm_interbank_routines,*chunk=mission?&cm_interbank_idle_chunk:&lm_interbank_idle_chunk;
+   check(chunk->count==5u,"interbank chunk size",mission);
+   for(i=0;i<chunk->count;++i)check(chunk->entries[i].physical==ib->entries[i].physical&&chunk->entries[i].call==ib->entries[i].call,"interbank chunk entry",i);}
+  {const agc_site_operand *idle=mission?cm_self_check_idle_sites:lm_self_check_idle_sites;uint16_t count=0;agc_word word=0;const agc_site_operand *ops=self_check_site_table(mission,&count);
+   check(agc_site_lookup(ops,count,idle[0].physical,&word)&&word==idle[0].word&&idle[0].physical==043u*1024u+K(03337u)-02000u,"idle operand",mission);}
+  for(j=0;j<SELF_CHECK_TABLES;++j)for(i=1;i<t[j].count;++i)check(t[j].entries[i-1u].physical<t[j].entries[i].physical,"routines sorted",i);
+  /* Every entry as callers reach it is registered; the others are 3307, 3311 and 3312. */
+  for(i=0;i<SELF_CHECK_ROUTINES;++i){found=0;
+   for(j=0;j<SELF_CHECK_TABLES;++j)for(k=0;k<t[j].count;++k)found+=t[j].entries[k].physical==043u*1024u+self_check_entry_list(mission)[i]-02000u;
+   check(found==1u&&(i==0u||self_check_entry_list(mission)[i-1u]<self_check_entry_list(mission)[i]),"entry registered once",i);}
+  for(k=0;k<3u;++k){static const agc_word smode[3]={03307u,03311u,03312u};
+   check(t[1].entries[1u+k].physical==043u*1024u+K(smode[k])-02000u,"CCS SMODE continuation registered",k);}
   for(n=0;n<SELF_CHECK_CASES;++n)check(self_check_digest(mission,&s,(uint16_t)n,&st)==expected[mission][n]&&st==EXEC_OK,"oracle",n);
-  for(i=0;i<SELF_CHECK_ROUTINES;++i){wrapped[i].physical=self_check_table(mission)->entries[i].physical;wrapped[i].call=count;reached[i]=0;}
+  for(j=0;j<SELF_CHECK_TABLES;++j){
+   for(i=0;i<t[j].count;++i){wrapped[j][i].physical=t[j].entries[i].physical;wrapped[j][i].call=count;reached[j][i]=0;}
+   table[j].entries=wrapped[j];table[j].count=t[j].count;}
   for(i=0;i<ENDS;++i)ended[i]=0;
-  table.entries=wrapped;table.count=SELF_CHECK_ROUTINES;p.basic=&table;
+  p.basic=table;
   for(n=0;n<SELF_CHECK_CASES;++n){agc_word z;
    self_check_input(mission,&s,&io,(uint16_t)n);
    st=agc_transfer_run(&p,&s,&io,self_check_superbank(mission,&io),AGC_TRANSFER_NONE,64,&steps);
@@ -71,7 +89,7 @@ int main(int argc,char **argv){apollo_overlay_state s;self_check_io io;enum exec
    for(i=0;i<ENDS;++i)if(z==ends[i].z[mission])break;
    if(i<ENDS){++ended[i];check(!ends[i].q||s.words[2]==K(ends[i].q),"Q at the return point",n);}
    else{check(z>=04000u||(z>=02000u&&z<K(03234u)),"end point",n);++outside;}}
-  for(i=0;i<SELF_CHECK_ROUTINES;++i)check(reached[i]>0u,"entry reached",i);
+  for(j=0;j<SELF_CHECK_TABLES;++j)for(i=0;i<t[j].count;++i)check(reached[j][i]>0u,"entry reached",j*100u+i);
   for(i=0;i<ENDS;++i)check(ended[i]>0u,"end reached",i);
   /* Whole-rope cases: ROPECHK (0) and SHOWSUM's last display (42) pass every
    * bank's sum (BNKCHK's -1CHK, else ERRORS) and end at ENDSUMS after the

@@ -22,8 +22,19 @@
  * missions share src/self_check_body.inc; Luminary099's words sit two lower
  * than Comanche055's. */
 #define SELF_CHECK_ROUTINES 11u
+/* Two routine tables per mission: the idle loop (SELFCHK and the return
+ * through SELFRET, src/{lm,cm}_self_check_idle.c), which the flight store
+ * loads alone, and the rest of the file, with the three words the idle loop
+ * continues at after CCS SMODE (3307, 3311 and 3312, Comanche055 numbering)
+ * as entries. A program registers both. */
+#define SELF_CHECK_IDLE_ROUTINES 2u
+#define SELF_CHECK_MAIN_ROUTINES 12u
 extern const agc_routine_table lm_self_check_routines, cm_self_check_routines;
-/* Entry addresses (bank 43), in the order of the routine tables. */
+extern const agc_routine_table lm_self_check_idle_routines, cm_self_check_idle_routines;
+/* The idle table's one inline operand (CHECKNJ's CADR ADVAN). */
+extern const agc_site_operand lm_self_check_idle_sites[1], cm_self_check_idle_sites[1];
+/* The file's entry addresses (bank 43) as callers reach them, both tables'
+ * entries but 3307, 3311 and 3312, ascending. */
 extern const uint16_t lm_self_check_entries[SELF_CHECK_ROUTINES], cm_self_check_entries[SELF_CHECK_ROUTINES];
 const agc_site_operand *lm_self_check_site_table(uint16_t *count);
 const agc_site_operand *cm_self_check_site_table(uint16_t *count);

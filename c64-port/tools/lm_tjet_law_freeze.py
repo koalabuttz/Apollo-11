@@ -22,7 +22,7 @@ R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
-NATIVE = ['src/lm_tjet_law.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c',
+NATIVE = ['src/lm_tjet_law.c', 'src/agc_fast_ops.c', 'src/agc_fast_window.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c',
           'src/agc_multiword.c', 'tests/lm_tjet_law_cases.c', 'src/lm_exec_routines.c', 'src/lm_admission_image.c',
           'src/lm_waitlist_image.c', 'src/waitlist.c', 'src/executive.c', 'src/p66_native.c']
 CORE = NATIVE + ['src/agc_word.c', 'tests/cm_executive_cases.c',

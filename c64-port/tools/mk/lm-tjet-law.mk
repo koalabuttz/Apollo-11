@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-tjet-law (lane F): Luminary099 TJET_LAW as a native routine of
 # the control-transfer ABI.
-LM_TJ_SRC = src/lm_tjet_law.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_tjet_law_cases.c
-LM_TJ_HDR = include/lm_tjet_law.h include/agc_image_ops.h include/agc_transfer.h tests/lm_tjet_law_cases.h
+LM_TJ_SRC = src/lm_tjet_law.c src/agc_fast_ops.c src/agc_fast_window.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_tjet_law_cases.c
+LM_TJ_HDR = include/lm_tjet_law.h include/agc_image_ops.h include/agc_fast_ops.h include/agc_fast_window.h include/agc_image_thin.h include/agc_fast_redirect.h include/agc_transfer.h tests/lm_tjet_law_cases.h
 .PHONY: test-lm-tjet-law sanitize-lm-tjet-law c64-lm-tjet-law vice-lm-tjet-law lm-tjet-law-differential
 all: build/test-lm-tjet-law
 test: test-lm-tjet-law

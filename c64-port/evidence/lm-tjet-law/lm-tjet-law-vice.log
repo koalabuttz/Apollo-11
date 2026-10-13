@@ -1,3 +1,3 @@
-lm-tjet-law.prg sha256 8d16810cfd9571b7d1958af2a64b957bab5b6a5f98464edc2adc9fbf4a5478a5 heap_start $748b
-lm-tjet-law: 256 C64 rows (27 cover every entry, outcome, the 53 counted paths and the 217 edges of every linked source the host takes)
+lm-tjet-law.prg sha256 af8ee3eadc02b6a4ff3cf8e168b0894ea1d6f4d6aafb7c17ee62f540930c5fe3 heap_start $5acc
+lm-tjet-law: 256 C64 rows (26 cover every entry, outcome, the 53 counted paths and the 240 edges of every linked source the host takes)
 PASS: VICE PAL lm-tjet-law.prg: 256 checks, 0 failures

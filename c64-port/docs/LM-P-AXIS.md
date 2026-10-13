@@ -16,6 +16,25 @@ erasable address or the source's fixed constant. MSU, DTCB and the channel
 orders (READ, RAND, WAND, WOR, RXOR on L) are small helpers with yaAGC's
 effect.
 
+The calls are routed at compile time: an operand that is a plain erasable
+cell under EBANK6 goes to the `agc_fast_ops` helper of the same name
+(`include/agc_fast_ops.h`: the cell resolved at compile time, A and L kept
+as image words 0 and 1, 6502 assembly cores for MP and DV), and any other
+operand to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`), and every
+check below runs this form; `-DLM_PA_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
+P-AXIS takes about 71K 6502 cycles instead of 150K (mos-sim, `-Oz`).
+
+A cell in the EBANK6 window (01400-01776) goes to the one-byte `afw_*` form of
+the fast helper by its offset in the window (`include/agc_fast_window.h`,
+checked against `agc_image_ops` by `make test-agc-fast-ops`). With the cell's
+address at every call site, the compiler kept the twenty-odd addresses live
+across the calls and spilled them; the DAP's hold-cycle set (P-AXIS, Q_R-AXIS,
+TJET_LAW, DAPIDLER) links in about 31.0 KB instead of 36.2 KB. A hold cycle of
+P-AXIS takes about 75K cycles in that form (70K before).
+
 | Entry | Body |
 |---|---|
 | PAXIS `16,2213` | the T5 lead-in: TIME5, BANKRUPT and QRUPT; `TC BAILOUT` when DAPZRUPT shows the last pass still running; otherwise `TC CHEKBITS` (DAPIDLER_PROGRAM) |

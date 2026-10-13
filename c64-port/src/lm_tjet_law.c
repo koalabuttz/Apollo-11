@@ -9,7 +9,17 @@
  * word to run as a basic order, which is composed here with its rope word. */
 #include "lm_tjet_law.h"
 #include "agc_image_ops.h"
-#define W s->words
+/* Every instruction runs on the one canonical image through
+ * include/agc_fast_redirect.h: a plain-cell operand under this file's
+ * EBANK 6 goes to the fast helper (include/agc_fast_ops.h), any other
+ * operand to a one-argument wrapper of the agc_image_ops helper; both have
+ * its effects. -DLM_TJ_GENERIC builds the same source on agc_image_ops alone. */
+#ifdef LM_TJ_GENERIC
+#define AFR_GENERIC
+#endif
+#define AFR_EBN (LM_TJ_EB>>8)
+#include "agc_fast_redirect.h"
+#define W AFR_S(s)->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_TJ_COUNT_PATHS
 extern unsigned lm_tj_paths[];
@@ -90,15 +100,32 @@ extern unsigned lm_tj_paths[];
 static int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
 /* The signed value of an indexer (ones' complement; -0 adds nothing). */
 static int ix(const agc_image *s,unsigned a){agc_word v=ai_word(s,a);return v&040000u?-(int)(~v&037777u):(int)v;}
-static unsigned at(const agc_image *s,unsigned k,unsigned a){return (unsigned)((int)k+ix(s,a));}
 static enum exec_status transfer(agc_image *s,agc_word ret,agc_word z){ai_tc(s,ret);W[5]=z;return EXEC_OK;}
+/* INDEX X; OP B (B in the EB window), and MP of A or L. The fast build
+ * reaches the indexed cell directly (the indexers stay within a few words
+ * of each base: AXISCTR is checked at entry, ADRSDIF1/2 are AXISDIFF plus
+ * at most 3) and multiplies a register by value, as ai_mp does, on the
+ * fast multiplier. */
+#ifdef LM_TJ_GENERIC
+static unsigned at(const agc_image *s,unsigned k,unsigned a){return (unsigned)((int)k+ix(s,a));}
+#define XOP(n,b,x) ai_##n(s,at(s,b,x))
+#define MPR(r) ai_mp(s,r)
+#else
+#define TJ_CELL(o) (&AFO_S->words[AFR_EBN*0400u+(o)])
+static __attribute__((noinline)) afo_cell *xcell(uint8_t b,uint8_t x){
+ agc_word v=(agc_word)(*TJ_CELL(x)&077777u);
+ return TJ_CELL((uint8_t)(b+(v&040000u?(unsigned)-(int)(~v&037777u):(unsigned)v)));
+}
+#define XOP(n,b,x) afo_##n(xcell(AFW_OFF(b),AFW_OFF(x)))
+#define MPR(r) afo_mpf((agc_word)((W[r]&037777u)|((W[r]>>1)&040000u)))
+#endif
 
 /* Z123COMP: CS ROTSENSE; TS ROTSENSE; CAE EDOT; EXTEND; INDEX ADRSDIF2;
  * MP 1/ANET1; TS TTOAXIS; AD -TJMAX; EXTEND; BZMF +2 (RETURN); TCF FULLTIME.
  * Entered by TC with return ret; 1 = returned, 0 = went to FULLTIME. */
 static uint8_t z123comp(agc_image *s,agc_word ret){
  ai_tc(s,ret);ai_cs(s,ROTSENSE);(void)ai_ts(s,ROTSENSE);
- ai_ca(s,EDOT);ai_mp(s,at(s,ANET1,ADRSDIF2));(void)ai_ts(s,TTOAXIS);ai_adf(s,MTJMAX);
+ ai_ca(s,EDOT);XOP(mp,ANET1,ADRSDIF2);(void)ai_ts(s,TTOAXIS);ai_adf(s,MTJMAX);
  if(ai_bzmf(s)){LM_TJ_PATH(0);ai_tc(s,QREG+1u);return 1u;} /* RETURN: TC Q, Q = 3 */
  LM_TJ_PATH(1);return 0u;
 }
@@ -114,6 +141,7 @@ static void rufsetup(agc_image *s,agc_word ret,uint8_t full){
 static enum exec_status tjetlaw(const agc_native_program *p,agc_image *s,void *io){agc_word a;uint8_t c;(void)p;(void)io;
  static const agc_word axisdiff[3]={077757u,0u,020u}; /* AXISDIFF -1, 0, +1: DEC -16, +0, 16 B-14 */
  static const agc_word p00375a8[2]={00007u,025605u};  /* .00375A8: 2DEC .00375 B-3 */
+ AFR_BIND(s);
  if(!s||(W[4]&076000u)!=LM_TJ_FB||W[3]!=LM_TJ_EB||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  a=ai_word(s,AXISCTR);if(a!=NEGONE&&a!=0u&&a!=ONE)return EXEC_OUT_OF_SCOPE;
  /* EXTEND; QXCH HOLDQ; INDEX AXISCTR; CAF AXISDIFF; TS ADRSDIF1; CAE EDOT;
@@ -133,16 +161,16 @@ static enum exec_status tjetlaw(const agc_native_program *p,agc_image *s,void *i
  if(c==2u)goto ruflaw1;
  /* SCALEE: CAF BIT13; EXTEND; MP L; TS E; CAE EDOT; EXTEND; MP BIT4;
   * EXTEND; BZF SCALEDOT; TCF RUFLAW3. */
- ai_caf(s,BIT13);ai_mp(s,1u);(void)ai_ts(s,E);ai_ca(s,EDOT);ai_mpf(s,BIT4);
+ ai_caf(s,BIT13);MPR(1u);(void)ai_ts(s,E);ai_ca(s,EDOT);ai_mpf(s,BIT4);
  if(!ai_bzf(s)){LM_TJ_PATH(9);goto ruflaw3;}
  /* SCALEDOT: LXCH EDOT; CAE EDOT; EXTEND; SQUARE; EXTEND; MP BIT13;
   * TS EDOTSQ. */
- ai_lxch(s,EDOT);ai_ca(s,EDOT);ai_square(s);ai_mpf(s,BIT13);(void)ai_ts(s,EDOTSQ);
+ ai_lxch(s,EDOT);ai_ca(s,EDOT);MPR(0u);ai_mpf(s,BIT13);(void)ai_ts(s,EDOTSQ);
  /* ERRTEST: CCS E; AD -3DEG; TCF +2; AD -3DEG; EXTEND; INDEX ADRSDIF1;
   * SU FIREDB; EXTEND; BZMF SENSTEST. */
  c=ai_ccs(s,E);LM_TJ_PATH(10u+c);
  if(c==0u||c==2u)ai_adf(s,M3DEG);
- ai_su(s,at(s,FIREDB,ADRSDIF1));
+ XOP(su,FIREDB,ADRSDIF1);
  if(ai_bzmf(s)){
   /* SENSTEST: CCS SENSETYP; TCF TJCALC; TCF MAXJETS; (TJCALC). */
   c=ai_ccs(s,SENSETYP);LM_TJ_PATH(14u+c);
@@ -156,16 +184,16 @@ tjcalc: /* TS NUMBERT */
  (void)ai_ts(s,NUMBERT);
 tjcalc1: /* CS EDOTSQ; EXTEND; INDEX ADRSDIF2; MP 1/ANET1; INDEX ADRSDIF1;
   * AD FIREDB; EXTEND; SU E; TS FIREFCT; EXTEND; BZMF ZON1,2,3. */
- ai_cs(s,EDOTSQ);ai_mp(s,at(s,ANET1,ADRSDIF2));ai_ad(s,at(s,FIREDB,ADRSDIF1));ai_su(s,E);
+ ai_cs(s,EDOTSQ);XOP(mp,ANET1,ADRSDIF2);XOP(ad,FIREDB,ADRSDIF1);ai_su(s,E);
  if(ai_ts(s,FIREFCT)){LM_TJ_PATH(19);ai_adf(s,ZON123_WORD);} /* skips the EXTEND: AD 03542 */
  else if(ai_bzmf(s))goto zon123;
  /* ZONE4,5: INDEX ADRSDIF1; CAE 1/ACOAST; EXTEND; MP EDOTSQ; AD E;
   * INDEX ADRSDIF1; AD COASTDB; EXTEND; BZMF ZONE5. */
- ai_ca(s,at(s,ACOAST,ADRSDIF1));ai_mp(s,EDOTSQ);ai_ad(s,E);ai_ad(s,at(s,COASTDB,ADRSDIF1));
+ XOP(ca,ACOAST,ADRSDIF1);ai_mp(s,EDOTSQ);ai_ad(s,E);XOP(ad,COASTDB,ADRSDIF1);
  if(ai_bzmf(s))goto zone5;
  /* ZONE4: INDEX AXISCTR; CS TJETU; EXTEND; MP ROTSENSE; EXTEND;
   * BZMF COASTTJ. */
- ai_cs(s,at(s,TJETU,AXISCTR));ai_mp(s,ROTSENSE);
+ XOP(cs,TJETU,AXISCTR);ai_mp(s,ROTSENSE);
  if(ai_bzmf(s)){LM_TJ_PATH(20);goto coasttj;}
  /* JETSON: CCS FLAT; TCF DRIFT/ON; CS FIREFCT; INDEX ADRSDIF1;
   * AD AXISDIST; EXTEND; BZMF COASTTJ. */
@@ -173,13 +201,13 @@ tjcalc1: /* CS EDOTSQ; EXTEND; INDEX ADRSDIF2; MP 1/ANET1; INDEX ADRSDIF1;
  if(c==0u){
   /* DRIFT/ON: INDEX ADRSDIF1; CS FIREDB; DOUBLE; AD FIREFCT; EXTEND;
    * BZMF +3; COASTTJ ...; +3 TC Z123COMP; TCF ZONE2,3. */
-  ai_cs(s,at(s,FIREDB,ADRSDIF1));ai_double(s);ai_ad(s,FIREFCT);
+  XOP(cs,FIREDB,ADRSDIF1);ai_double(s);ai_ad(s,FIREFCT);
   if(!ai_bzmf(s)){LM_TJ_PATH(25);goto coasttj;}
   if(!z123comp(s,03425u))goto fulltime;
   goto zone23;
  }
  if(c==1u)ai_cs(s,FIREFCT);
- if(c!=3u)ai_ad(s,at(s,AXISDIST,ADRSDIF1));
+ if(c!=3u)XOP(ad,AXISDIST,ADRSDIF1);
  else ai_ad(s,AXISDIST); /* -0 lands past the INDEX: AD AXISDIST unindexed */
  if(ai_bzmf(s)){LM_TJ_PATH(26);goto coasttj;}
  /* TC Z123COMP; CAE FIREFCT; TCF ZONE1. */
@@ -197,8 +225,8 @@ zone5: /* TS L; CCS ROTSENSE; TCF +4; TC CCSHOLE; CS TWO; ADS ADRSDIF2 */
  /* +4: CAE L; EXTEND; INDEX ADRSDIF2; MP ACCFCTZ5; DDOUBL; DDOUBL;
   * DXCH HH; INDEX ADRSDIF2; CAE 1/ANET2; EXTEND; MP EDOT; TS TTOAXIS;
   * EXTEND; MP -.05AT2; AD HH; AD NEG2; EXTEND; BZMF FORMULA1. */
- ai_ca(s,1u);ai_mp(s,at(s,ACCFCTZ5,ADRSDIF2));ai_ddoubl(s);ai_ddoubl(s);ai_dxch(s,HH);
- ai_ca(s,at(s,ANET2,ADRSDIF2));ai_mp(s,EDOT);(void)ai_ts(s,TTOAXIS);
+ ai_ca(s,1u);XOP(mp,ACCFCTZ5,ADRSDIF2);ai_ddoubl(s);ai_ddoubl(s);ai_dxch(s,HH);
+ XOP(ca,ANET2,ADRSDIF2);ai_mp(s,EDOT);(void)ai_ts(s,TTOAXIS);
  ai_mpf(s,M05AT2);ai_ad(s,HH);ai_adf(s,NEG2);
  if(ai_bzmf(s)){
   /* FORMULA1: CS -.025AT4; AD TTOAXIS; DXCH HH; EXTEND; DV HH; EXTEND;
@@ -221,7 +249,7 @@ fulltime: /* CAF BIT11 */
 returntj: /* EXTEND; MP ROTSENSE; INDEX AXISCTR; TS TJETU; EXTEND;
   * INDEX AXISCTR; MP ACCSWU; CAE L; EXTEND; BZMF +3; CAF FOUR;
   * TS NUMBERT; TC HOLDQ. */
- ai_mp(s,ROTSENSE);(void)ai_ts(s,at(s,TJETU,AXISCTR));ai_mp(s,at(s,ACCSWU,AXISCTR));ai_ca(s,1u);
+ ai_mp(s,ROTSENSE);(void)XOP(ts,TJETU,AXISCTR);XOP(mp,ACCSWU,AXISCTR);ai_ca(s,1u);
  if(!ai_bzmf(s)){LM_TJ_PATH(35);ai_caf(s,FOUR);(void)ai_ts(s,NUMBERT);}else LM_TJ_PATH(36);
  /* TC HOLDQ: Z = the return word, Q = HOLDQ +1 */
  W[5]=ai_word(s,HOLDQ);ai_tc(s,01746u);return EXEC_OK;
@@ -240,8 +268,8 @@ zone23: /* CS ZONE3LIM; AD TTOAXIS; EXTEND; BZMF ZONE3 */
 zone1: /* EXTEND; INDEX ADRSDIF1; SU AXISDIST; EXTEND; INDEX ADRSDIF2;
   * MP ACCFCTZ1; DDOUBL; DDOUBL; DXCH HH; CAE TTOAXIS; AD -TJMAX; EXTEND;
   * SQUARE; EXTEND; SU HH; EXTEND; BZMF FULLTIME. */
- ai_su(s,at(s,AXISDIST,ADRSDIF1));ai_mp(s,at(s,ACCFCTZ1,ADRSDIF2));ai_ddoubl(s);ai_ddoubl(s);ai_dxch(s,HH);
- ai_ca(s,TTOAXIS);ai_adf(s,MTJMAX);ai_square(s);ai_su(s,HH);
+ XOP(su,AXISDIST,ADRSDIF1);XOP(mp,ACCFCTZ1,ADRSDIF2);ai_ddoubl(s);ai_ddoubl(s);ai_dxch(s,HH);
+ ai_ca(s,TTOAXIS);ai_adf(s,MTJMAX);MPR(0u);ai_su(s,HH);
  if(ai_bzmf(s)){LM_TJ_PATH(43);goto fulltime;}
  /* CAE HH; AD NEG2; EXTEND; BZMF FORMULA3. */
  ai_ca(s,HH);ai_adf(s,NEG2);
@@ -273,7 +301,7 @@ ruflaw1: /* CS RUFRATE; ADS EDOT; EXTEND; BZMF SMALRATE; TC RUFSETUP;
 ruflaw12: /* EXTEND; INDEX ADRSDIF2; MP 1/ANET1 +2; AD -1/8; EXTEND;
   * BZMF +2; TCF FULLTIME; EXTEND; BZF FULLTIME; AD BIT12; DAS A (three
   * times); TCF CHKMINTJ. */
- ai_mp(s,at(s,ANET1_2,ADRSDIF2));ai_adf(s,NEG1_8);
+ XOP(mp,ANET1_2,ADRSDIF2);ai_adf(s,NEG1_8);
  if(!ai_bzmf(s)){LM_TJ_PATH(53);goto fulltime;}
  if(ai_bzf(s)){LM_TJ_PATH(54);goto fulltime;}
  LM_TJ_PATH(55);ai_adf(s,BIT12);ai_das(s,0u);ai_das(s,0u);ai_das(s,0u);goto chkmintj;
@@ -285,8 +313,8 @@ ruflaw2: /* TC RUFSETUP; CAF RUFRATE; AD EDOT; TS A; TCF RUFLAW12;
 ruflaw3: /* TC RUFSETUP; INDEX ADRSDIF1; CS FIREDB; AD E; EXTEND; MP BIT11;
   * XCH EDOT; EXTEND; SQUARE; EXTEND; INDEX ADRSDIF1; MP 1/ANET1 +2;
   * AD EDOT; EXTEND; BZMF COASTTJ; TCF FULLTIME. */
- rufsetup(s,03673u,1u);ai_cs(s,at(s,FIREDB,ADRSDIF1));ai_ad(s,E);ai_mpf(s,BIT11);ai_xch(s,EDOT);
- ai_square(s);ai_mp(s,at(s,ANET1_2,ADRSDIF1));ai_ad(s,EDOT);
+ rufsetup(s,03673u,1u);XOP(cs,FIREDB,ADRSDIF1);ai_ad(s,E);ai_mpf(s,BIT11);ai_xch(s,EDOT);
+ MPR(0u);XOP(mp,ANET1_2,ADRSDIF1);ai_ad(s,EDOT);
  if(ai_bzmf(s)){LM_TJ_PATH(58);goto coasttj;}
  LM_TJ_PATH(59);goto fulltime;
 }

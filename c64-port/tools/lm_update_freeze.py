@@ -28,10 +28,10 @@ OWNED = [0o43 * 1024 + w - 0o2000 for w in range(0o3724, 0o3752)] + [0o4 * 1024 
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 # The milestone's linked sources (tools/mk/lm-update.mk LM_UP_SRC), for the row cover.
-SRC = ['src/lm_update.c', 'src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/lm_update_cases.c']
+SRC = ['src/lm_update.c', 'src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/lm_update_cases.c']
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
 CORE = ['tests/lm_update_cases.c', 'src/lm_update.c', 'src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-        'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c',
+        'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 

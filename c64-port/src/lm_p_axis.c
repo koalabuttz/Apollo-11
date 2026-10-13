@@ -8,7 +8,56 @@
  * exits that enter the next instruction past its EXTEND. */
 #include "lm_p_axis.h"
 #include "agc_image_ops.h"
+#ifndef LM_PA_GENERIC
+/* Every instruction runs on the one canonical image (fixed in the flight
+ * store, bound at each entry elsewhere): a plain-cell operand under this
+ * file's EBANK 6 goes to the fast helper (include/agc_fast_ops.h; a cell
+ * in the EB window by its one-byte offset, include/agc_fast_window.h), any
+ * other operand to a one-argument wrapper (include/agc_image_thin.h); both
+ * have the effects of the agc_image_ops helper. -DLM_PA_GENERIC builds the
+ * same source on agc_image_ops alone. */
+#include "agc_fast_ops.h"
+#include "agc_fast_window.h"
+#include "agc_image_thin.h"
+#define PA_EBN (LM_PA_EB>>8)
+#define PA_OP(n,s,a) ((void)(s),AFW_IN(PA_EBN,a)?afw_##n(AFW_OFF(a)):\
+ AFO_PLAIN(PA_EBN,a)?afo_##n(AFO_CELL(PA_EBN,a)):AIT_ARG(n,a))
+#define PA_OP2(n,s,a) ((void)(s),AFW_IN(PA_EBN,a)?afw_##n(AFW_OFF(a)):\
+ AFO_PLAIN2(PA_EBN,a)?afo_##n(AFO_CELL(PA_EBN,a)):AIT_ARG(n,a))
+#define PA_F(n,s,k) ((void)(s),afo_##n(k))
+#define ai_ca(s,a) PA_OP(ca,s,a)
+#define ai_cs(s,a) PA_OP(cs,s,a)
+#define ai_ad(s,a) PA_OP(ad,s,a)
+#define ai_su(s,a) PA_OP(su,s,a)
+#define ai_mask(s,a) PA_OP(mask,s,a)
+#define ai_xch(s,a) PA_OP(xch,s,a)
+#define ai_lxch(s,a) PA_OP(lxch,s,a)
+#define ai_qxch(s,a) PA_OP(qxch,s,a)
+#define ai_ads(s,a) PA_OP(ads,s,a)
+#define ai_incr(s,a) PA_OP(incr,s,a)
+#define ai_dim(s,a) PA_OP(dim,s,a)
+#define ai_das(s,a) PA_OP2(das,s,a)
+#define ai_dca(s,a) PA_OP2(dca,s,a)
+#define ai_dxch(s,a) PA_OP2(dxch,s,a)
+#define ai_mp(s,a) PA_OP(mp,s,a)
+#define ai_dv(s,a) PA_OP(dv,s,a)
+#define ai_ts(s,a) PA_OP(ts,s,a)
+#define ai_ccs(s,a) PA_OP(ccs,s,a)
+#define ai_caf(s,k) PA_F(caf,s,k)
+#define ai_csf(s,k) PA_F(csf,s,k)
+#define ai_adf(s,k) PA_F(adf,s,k)
+#define ai_maskf(s,k) PA_F(maskf,s,k)
+#define ai_mpf(s,k) PA_F(mpf,s,k)
+#define ai_tc(s,k) PA_F(tc,s,k)
+#define ai_dcaf(s,k) PA_F(dcaf,s,k)
+#define ai_bzf(s) ((void)(s),afo_bzf())
+#define ai_bzmf(s) ((void)(s),afo_bzmf())
+#define W ((void)s,AFO_S)->words
+#define PA_BIND(s) (AIT_BIND(s),AFO_BIND(s))
+#else
 #define W s->words
+#define PA_BIND(s) ((void)0)
+#endif
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_PA_COUNT_PATHS
 extern unsigned lm_pa_paths[];
@@ -196,7 +245,7 @@ extern unsigned lm_pa_paths[];
 #define SUPERADR 02667u      /* GENADR SUPERJOB +1 */
 
 static int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
-static int entry(const agc_image *s,const void *io){return s&&io&&(W[4]&076000u)==LM_PA_FB16&&W[3]==LM_PA_EB;}
+static int entry(const agc_image *s,const void *io){PA_BIND(s);return s&&io&&(W[4]&076000u)==LM_PA_FB16&&W[3]==LM_PA_EB;}
 static agc_word oc(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 /* The signed value of an erasable word, and of the 16-bit A. */
 static int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}

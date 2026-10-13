@@ -158,6 +158,35 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
     fb&=076000u;
     return (uint16_t)(fb>=060000u && (superbank&0100u) ? fb|0100u : fb);
 }
+/* A point some loaded flight module holds: its routines run straight from
+ * its slot, through its table list (rk_module_tables, the header's TABLES
+ * word), with no ABI 2 run and no module main. A module whose list is not
+ * built yet (its first run after a load builds it) is left to the resolver.
+ * Where two packed tables hold a key, the loaded one runs it. */
+#ifndef RK_NO_DIRECT
+static agc_native_program module_program;   /* static: absolute addressing is smaller than the soft stack */
+__attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
+    uint8_t i;
+    for(i=0;i<APOLLO_OV2_SLOTS;++i) {
+        const uint8_t *h=rk_runtime.slot[i];
+        const rk_module_tables *t;
+        uint16_t steps;
+        if(!rk_runtime.loaded[i]) continue;
+        t=(const rk_module_tables *)(uintptr_t)(h[APOLLO_OV2_H_TABLES]|(uint16_t)h[APOLLO_OV2_H_TABLES+1]<<8);
+        /* The loader does not read TABLES; the packer checked it lies in the
+         * slot, and it is checked again here before it is followed. */
+        if((uint16_t)((uintptr_t)t-(uintptr_t)h-APOLLO_OV2_HEADER_BYTES)>=
+           (uint16_t)(apollo_ov2_slot_bytes(i)-APOLLO_OV2_HEADER_BYTES) || !t->ready) continue;
+        enum exec_status status;
+        memcpy(&module_program,&rk_program,sizeof module_program);
+        rk_module_program(&module_program,t);
+        status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
+        if(status==EXEC_UNMAPPED && !steps) continue;   /* not this module's point */
+        return rk_module_status(status,steps,RK_MODULE_STEPS);
+    }
+    return EXEC_UNMAPPED;
+}
+#endif
 __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical) {
     apollo_overlay_state *s=IMAGE;
     apollo_ov2_cont at;
@@ -166,6 +195,10 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     rk_rupts();
     status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) return status;
+#ifndef RK_NO_DIRECT
+    status=rk_direct(stop_physical);
+    if(status!=EXEC_UNMAPPED) return status;
+#endif
     loc=(uint16_t)(s->words[5]&07777u);
     if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;

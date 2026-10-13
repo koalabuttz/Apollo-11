@@ -37,7 +37,11 @@ host table index also writes `build/flight-store/<m>-sites.inc` (one array
 per source) for the harness. A module's `fixed_data` is the resident's
 (boundary words in the REU) unless `FIXED_DATA` names another:
 `<m>_self_check` reads the rope image through its own hook while ROPECHK
-runs.
+runs, and `lm_trim_gimbal` (GTS reads an indexed CA through `fixed_data`)
+reads every rope word from the mission rope image the store carries
+(`FS_ROPE_DATA`, `platform/c64/rope_image_reu.c`). The builder writes that
+image into `<m>.reu` at the rope base (`tools/rope_image_pack.py` `BASES`:
+LM 0x1c0000, CM 0x1e0000) and pads the store to 2 MB.
 
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
@@ -72,14 +76,80 @@ Interpretive modules wait on the interpreter decision
 (`/mnt/project-files/steward/interpreter-proposal.md`).
 
 A basic-only module over its slot is split into chunks of consecutive
-routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied by
-constant index, so LTO links only the chunk's routines), halving until each
-chunk fits. The builder keeps a split only when every chunk fits and stops
-early when halving leaves the overflow nearly unchanged; the report marks
-such a module `routines share one body`. On 4e5cdfbb that is every oversized
-basic module (9 LM, 10 CM): each file's routines run one file-wide step
-machine (LM P-AXIS `flow` alone is 9.4 KB), so a one-routine chunk still
-overflows. Those files fit only once their lane splits the step machine.
+routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied
+field by field by constant index, so LTO links only the chunk's routines),
+halving until each chunk fits. A chunk holds only its own file's sources
+and operand sites; a table co-located into another module is never
+chunked. Chunks that fit are kept even when others do not; a single
+routine still over its slot is reported as a failed entry
+(`one routine over its slot`, with its `routine_key`), and a file of more
+than 64 KB is `too big to split`. Before #211-era step-machine splits and
+Lane F's fix to the entry copy (a whole-struct copy kept every routine
+linked), chunking gained nothing; now it does.
+
+### Fit with chunking (this branch, after #209)
+
+| | Tables | Modules | Linked | Failed | Store image |
+|---|---|---|---|---|---|
+| LM | 103 | 146 | 89 | 57 (25 one routine over its slot, 32 whole files: interpretive, every routine over, or too big to split) | 1,067,264 bytes |
+| CM | 90 | 207 | 146 | 61 (34 one routine over its slot, 27 whole files) | 1,473,536 bytes |
+
+The over-slot routines and files, by lane, are in
+`/mnt/project-files/resident-kernel/over-slot-2026-10-13.md`.
+
+### Runtime sharing
+
+A module no longer links its own copy of the transfer ABI and the common
+image ops. The resident exports them as ABI 2 services (table 0x0203,
+docs/overlay-v2-services.json): `agc_transfer_run`, `agc_transfer_point`,
+`agc_fixed_physical`, `memcpy` and the kernel's `k_<op>` for 17 image ops
+(CA, CAF, CS, CSF, AD, ADF, MASKF, TS, XCH, LXCH, ADS, DXCH, CCS, TC, DCAF,
+BZF, BZMF). `tools/flight_store_build.py` links each module with
+`-Wl,--wrap=ai_<op>` and `platform/c64/flight_image_op_services.c`, whose
+`__wrap_ai_<op>` calls `k_<op>` (the frame's image is always the canonical
+one at `APOLLO_SHARED_ADDRESS`). Ops whose export would cost the resident
+too much (DAS, INCR, QXCH, MASK, DCSF, `ai_put`, `ai_word`;
+docs/RESIDENT-FLIGHT.md, Size) and ops the kernel does not wrap stay in
+each module. On def640e3d, against the same tree without sharing:
+
+| | Modules (linked, failed) | Resolver records | Mean module | Store image |
+|---|---|---|---|---|
+| LM before | 129 (72, 57) | 596 | 11,040 bytes | 936,192 bytes |
+| LM after | 113 (66, 47) | 606 | 9,022 bytes | 721,920 bytes |
+| CM before | 248 (183, 65) | 791 | 8,181 bytes | 1,636,608 bytes |
+| CM after | 183 (133, 50) | 806 | 7,353 bytes | 1,106,944 bytes |
+
+Fewer modules link because more files fit whole and need no chunks; the
+resolver records (keys the store can run) go up on both missions.
+
+`PIN` names task-slot tables that must link as one module (the steward's
+DAP rule: the LM T6 hot path pinned in one task-slot module). The LM set
+(DAPIDLER, P-axis, Q/R-axis, TJET law) measures 47,075 bytes against the
+8,186-byte task slot, so it is reported (`report.json` `pinned`) and not
+packed yet.
+
+### Direct calls into a loaded module
+
+Header word 22 (reserved before) is `TABLES`: the address, inside the
+slot, of the module's table list (`rk_module_tables`,
+`platform/c64/resident_flight.h`), or 0. `overlay_v2_payload.ld` fills it
+from a module's `.ov2_tables` word, so only flight modules carry one. A
+module builds the list on its first run after a load (the load clears its
+BSS, so a fresh copy is never trusted). `tools/overlay_v2_pack.py` checks
+the word lies inside the slot; the loader does not read it.
+
+After the trampoline and before the resolver, the resident's step calls
+`rk_direct`: for each loaded slot with a ready list, it runs
+`agc_transfer_run` on the resident's program with the module's tables, at
+most 256 steps. `EXEC_UNMAPPED` with no step means the point is not that
+module's; the resolver and an ABI 2 run follow only when no loaded module
+holds the point. A module's main does the same through its own list, so
+both paths run the same tables.
+
+A module never crosses a 512 KB REU bank (`tools/overlay_v2_pack.py`
+starts it on the next bank instead): one DMA loads a module, and the REU's
+address counter wraps inside the bank, so a crossing module loaded the
+store's first bytes into the slot's tail.
 
 The resident and every module are compiled with
 `-DAGC_TRANSFER_DANZIG_MARKER` (`tools/resident_flight_build.py` COMMON):
@@ -108,6 +178,24 @@ over a cached call, fitted over the 32 modules (5.7 to 16.2 KB, largest
 residual 880 cycles):
 
     load = 7,459 + 1.103 cycles per byte   (PAL: 985,248 cycles a second)
+
+With chunking (this branch) both missions pass with every linked module:
+LM 740 checks (89 modules, load and call 18,367-48,231 cycles), CM 1,067
+(146 modules, 18,187-60,798). Over 235 modules the fit is 10,645 + 1.227
+cycles per byte with a largest residual of 22,476: some modules' first run
+does more work than their cached run, so the 32-module fit above is the
+cleaner transfer cost. For bisecting a crash, `flight_load_check.c` takes
+`-DFL_FIRST`/`-DFL_LIMIT` (a module range) and `-DFL_NO_PROFILE`.
+
+The check then runs one resolver record per module both ways: through the
+module's main (an ABI 2 run) and through `rk_direct`, from the same image,
+slot contents and channels (snapshotted in the REU's last 32 KB), with only
+that module loaded. Status, image and channels must match. On def640e3d
+plus this change both missions pass (LM 903 checks, 44 modules compared;
+CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
+module main: the ABI 2 run and the copy of the program record. Most of
+what is left is the step itself: the transfer point (about 1,100 cycles)
+and the table search, which is the next thing to cut.
 
 A cached call (no load) costs 7,000 to 9,400 cycles on its own: the ABI 2
 run, the module copying its program record and tables, and one resolve. So a
@@ -160,6 +248,13 @@ port) runs one mission:
 7. **Module loads.** One module per slot (job, task); a routine whose
    module is not in its slot loads it. Each scenario reports loads per
    second and the points that cause them.
+8. **Set-up knobs** (environment, both sides alike): `FLIGHT_CH30` and
+   `FLIGHT_CH31` set input channels 30 and 31 at start (octal; e.g.
+   `036377` and `057777` for IMU operate, PGNCS control and AUTO, so
+   DAPIDLER starts the DAP); `FLIGHT_POKE=CS:ADDR=VALUE,...` sets erasable
+   words at the first sample point at or after CS centiseconds (e.g.
+   `5000:035=02000` moves CDUY). The reference keeps up to 8,191
+   centiseconds.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.
@@ -175,6 +270,15 @@ unregistered or refused point from the listing and the allocation.
 | LM V37E12E, 3000 cs | 3000 / 3000 | 14 / 14 | 0 | 43.1 |
 | CM V37E06E, 3000 cs | 2998 / 3000 | 06 / 06 | 1 | 3.1 |
 | LM V37E63E, 3000 cs | 3000 / 3000 | 77 / 77 | 0 | 43.1 |
+
+On 0ce769c6 with this branch's store, the CM rows are unchanged; LM P00
+idle stays 4000/4000, and the three LM V37 scenarios are 2900/3000 with
+52.8-56.3 module loads a second. The 100 samples (4.01 to 5.00 s) differ only
+in LOC (0164, 20002 native, 20042 yaAGC) after the DSKY key at 4.00 s: yaAGC
+passes interpretive point 33490 after Pinball's 32831, natively the
+`lanec_pin_lm` routine runs past it. The same tables give the same result
+with the runner from 0ce769c6, so this is drift in the base's tables since
+8564ca79, not the store builder.
 
 Findings:
 

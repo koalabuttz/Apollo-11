@@ -1,0 +1,226 @@
+{
+ "milestone": "cm-ephemeris",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 8192,
+ "cases_sha256": "dc2240d0d6f0a5ece7f3475070078a5ebd82ab5aad5612d96564c16259e14dc6",
+ "oracle_sha256": "b906ccaef65ee7396c5dd9dc42ac82b34fda422c26af86c93d9b5ff7462ea116",
+ "frozen_vectors": 256,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0xffffffff",
+   "cases": 16,
+   "case_ids": [
+    108,
+    233,
+    420,
+    563,
+    870,
+    1183,
+    1180,
+    1379,
+    1530,
+    1616,
+    1801,
+    2106,
+    2310,
+    2668,
+    2836,
+    3096
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffff000",
+   "cases": 22,
+   "case_ids": [
+    3123,
+    3379,
+    3794,
+    3980,
+    4245,
+    4432,
+    4723,
+    4870,
+    5002,
+    5243,
+    5442,
+    5656,
+    5906,
+    6282,
+    6153,
+    6502,
+    6671,
+    6939,
+    7403,
+    7543,
+    7713,
+    8023
+   ]
+  }
+ ],
+ "c64_gcov_branches": {
+  "host_taken": 558,
+  "c64_taken": 558,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_ephemeris.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_ephemeris_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "stops": {
+  "CM 26,2110 LSPOS": {
+   "06037": 196,
+   "05170": 60
+  },
+  "CM 26,2112 ": {
+   "06037": 188,
+   "05170": 68
+  },
+  "CM 26,2115 LUNPOS": {
+   "06037": 198,
+   "05170": 58
+  },
+  "CM 26,2120 LUNVEL": {
+   "06037": 204,
+   "05170": 52
+  },
+  "CM 26,2123 SOLPOS": {
+   "06037": 192,
+   "05170": 64
+  },
+  "CM 26,2126 LSTIME": {
+   "06037": 199,
+   "05170": 57
+  },
+  "CM 26,2131 ": {
+   "06037": 195,
+   "05170": 61
+  },
+  "CM 26,2133 ": {
+   "05170": 70,
+   "06037": 186
+  },
+  "CM 26,2135 ": {
+   "05170": 69,
+   "06037": 187
+  },
+  "CM 26,2141 ": {
+   "06037": 184,
+   "05170": 72
+  },
+  "CM 26,2143 RES": {
+   "06037": 197,
+   "05170": 59
+  },
+  "CM 26,2145 ": {
+   "06037": 183,
+   "05170": 73
+  },
+  "CM 26,2146 ": {
+   "06037": 198,
+   "05170": 58
+  },
+  "CM 26,2150 ": {
+   "06037": 204,
+   "05170": 52
+  },
+  "CM 26,2152 ": {
+   "05170": 72,
+   "06037": 184
+  },
+  "CM 26,2153 ": {
+   "05170": 60,
+   "06037": 196
+  },
+  "CM 26,2155 ": {
+   "06037": 188,
+   "05170": 68
+  },
+  "CM 26,2156 ": {
+   "05170": 45,
+   "06037": 211
+  },
+  "CM 26,2157 ": {
+   "06037": 256
+  },
+  "CM 26,2161 RESA": {
+   "06037": 195,
+   "05170": 61
+  },
+  "CM 26,2162 REM": {
+   "06037": 181,
+   "05170": 75
+  },
+  "CM 26,2165 REMA": {
+   "06037": 190,
+   "05170": 66
+  },
+  "CM 26,2170 ": {
+   "06037": 196,
+   "05170": 60
+  },
+  "CM 26,2172 ": {
+   "06037": 256
+  },
+  "CM 26,2173 VEM": {
+   "05170": 67,
+   "06037": 189
+  },
+  "CM 26,2176 ": {
+   "06037": 193,
+   "05170": 63
+  },
+  "CM 26,2200 VEMA": {
+   "05170": 65,
+   "06037": 191
+  },
+  "CM 26,2202 ": {
+   "06037": 183,
+   "05170": 73
+  },
+  "CM 26,2203 ": {
+   "06037": 201,
+   "05170": 55
+  },
+  "CM 26,2205 ": {
+   "06037": 201,
+   "05170": 55
+  },
+  "CM 26,2210 ": {
+   "06037": 190,
+   "05170": 66
+  },
+  "CM 26,2212 ": {
+   "06037": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: CHANG2)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 8192,
+ "host_branch_arcs": 584,
+ "c64_rows": 38,
+ "c64_branch_arcs": 584,
+ "host_branches_missing_on_c64": []
+}
