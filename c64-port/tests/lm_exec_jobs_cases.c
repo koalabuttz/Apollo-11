@@ -35,6 +35,11 @@ static void stop(lm_exj_case *c,agc_word z){if(c->stops<LM_EXJ_MAX_STOPS)c->stop
 static void target(const apollo_overlay_state *m,lm_exj_case *c){agc_word loc=m->words[0164u+m->words[067]];stop(c,(loc&AGC_SIGN)?LM_EXEC_NEWOPS:loc);}
 #endif
 #if LM_EXJ_SWITCHES
+/* Equal priorities: every busy core set 1-7 takes the first one's priority
+ * word, so the Executive's scans meet ties. */
+static void ties(apollo_overlay_state *m){uint8_t i;agc_word p=0;
+ for(i=1;i<8u;++i){agc_word w=m->words[0167u+12u*i];if(w&AGC_SIGN)continue;if(!p)p=w;else m->words[0167u+12u*i]=p;}
+}
 static void jobs(lm_exj_case *c){agc_word z;stop(c,LM_EXEC_ADVAN);stop(c,LM_EXEC_NEWOPS);for(z=02001;z<=02007u;++z)stop(c,z);}
 /* Odd or even core sets 1-7 hold interpretive jobs (negative LOC). */
 static void interpretive(apollo_overlay_state *m,uint16_t j){uint8_t i;
@@ -67,6 +72,7 @@ void lm_exj_input(apollo_overlay_state *m,p66_bias_io *io,lm_exj_case *c,uint16_
  case LM_EXJ_JOBSLEEP:
   lm_sleep_input(m,io,&c->hw.channel11,(uint16_t)((j*13u+5u)%8192u));
   if(j&1u)interpretive(m,j);
+  if(j%5u==3u)ties(m);
   jobs(c);break;
  case LM_EXJ_JOBWAKE:
   /* (j*9: every slot, so some sleeping job's LOC matches.) */
@@ -80,9 +86,12 @@ void lm_exj_input(apollo_overlay_state *m,p66_bias_io *io,lm_exj_case *c,uint16_
  case LM_EXJ_PRIOCHNG:
   lm_priority_input(m,io,(uint16_t)((j*8u+j/1024u)%8192u));
   if(j&1u)interpretive(m,j);
+  if(j%5u==3u)ties(m);
   stop(c,m->words[2]);jobs(c);break;
  case LM_EXJ_ENDOFJOB:
-  lm_finish_input(m,io,&c->hw.channel11,(uint16_t)((j*13u)%8192u+(j&1u)*8192u));jobs(c);break;
+  lm_finish_input(m,io,&c->hw.channel11,(uint16_t)((j*13u)%8192u+(j&1u)*8192u));
+  if(j%5u==3u)ties(m);
+  jobs(c);break;
 #endif
 #if LM_EXJ_TASKS
  case LM_EXJ_DELAY:
