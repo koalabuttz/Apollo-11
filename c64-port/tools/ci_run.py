@@ -381,8 +381,13 @@ def main():
     parser.add_argument('--attempts', type=int, default=30)
     parser.add_argument('--make-arg', action='append', default=[])
     parser.add_argument('--summary', type=pathlib.Path)
+    parser.add_argument('--shard', metavar='K/N',
+                        help='run only every Nth target, starting at the Kth (0-based)')
     args = parser.parse_args()
     targets = list(dict.fromkeys(args.targets + [t for g in args.group for t in group_targets(g)]))
+    if args.shard:
+        k, n = (int(x) for x in args.shard.split('/'))
+        targets = targets[k::n]
     if not targets:
         print('nothing to run')
         return 0
