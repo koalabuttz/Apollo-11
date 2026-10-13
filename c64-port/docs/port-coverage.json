@@ -2437,7 +2437,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
+            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -2445,7 +2445,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
+            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
             "vice_targets": {
               "vice-lat-long": 197
             }
@@ -2456,7 +2456,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
+            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
           }
         }
       }
@@ -3660,7 +3660,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
+            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -3668,7 +3668,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
+            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
             "vice_targets": {
               "vice-planetary": 204
             }
@@ -3679,7 +3679,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
+            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
           }
         }
       }
@@ -6992,7 +6992,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/findcduw/findcduw-host.log",
@@ -7000,7 +7000,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/findcduw/findcduw-vice.log",
-            "sha256": "e0da1b989a2ff87a582ec8d0110ffdb27f2662155a313d60745bbc631a25bd12",
+            "sha256": "5c6ea8c558395edc4247d9334835823ad89f2f757fcc38258db99cdd0bd50dc3",
             "vice_targets": {
               "vice-findcduw": 146
             }
@@ -7011,7 +7011,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
           }
         }
       }
@@ -8470,7 +8470,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
+            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -8478,7 +8478,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
+            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
             "vice_targets": {
               "vice-lat-long": 197
             }
@@ -8489,7 +8489,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
+            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
           }
         }
       }
@@ -9765,7 +9765,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
+            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -9773,7 +9773,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
+            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
             "vice_targets": {
               "vice-planetary": 204
             }
@@ -9784,7 +9784,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
+            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
           }
         }
       }
