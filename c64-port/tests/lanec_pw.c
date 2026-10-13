@@ -3,6 +3,9 @@
 
 void lanec_pw_exit_stop(lanec_meta *m, const apollo_overlay_state *s, const lanec_io *io, lanec_run run)
 {
+#ifdef __mos__  /* the stop is for the oracle; the C64 compares frozen hashes */
+    (void)m; (void)s; (void)io; (void)run;
+#else
     static apollo_overlay_state t;
     lanec_io u = *io;
     uint16_t z;
@@ -16,6 +19,7 @@ void lanec_pw_exit_stop(lanec_meta *m, const apollo_overlay_state *s, const lane
     m->stop[0].bank = z >= 02000u && z < 04000u ? lanec_current_bank(&t, &u) : LANEC_ANY_BANK;
     m->stop_q = 1u;   /* the program may pass the exit address earlier with another Q */
     m->stop_q_value = t.words[LANEC_Q];
+#endif
 }
 
 void lanec_pw_settle(apollo_overlay_state *s)

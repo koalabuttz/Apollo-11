@@ -30,8 +30,18 @@
  * same addresses in both missions */
 extern const uint16_t lanec_pin_cells[LANEC_PIN_CELLS];
 extern const agc_routine_table lanec_pin_lm_routines, lanec_pin_cm_routines;
-/* The C64 round-trip program's table (it cannot hold every module; built
- * with LANEC_PIN_C64 it has only this one): the Luminary099 points of the
- * decimal display module (pw-decimal, DSPDECWD), running that module alone. */
-extern const agc_routine_table lanec_pin_lm_c64;
+/* The C64 round trips. Every module does not fit one C64 program, so each
+ * program registers one module's points (those it claims first, from
+ * lanec_pin_c64_points) and runs that module alone. lanec_pin_c64_select
+ * builds lanec_pin_c64 for a module index (the pw-* suites in name order, then
+ * pin-gaps) and mission (cm 0: Luminary099, 1: Comanche055); a program built
+ * with LANEC_PIN_C64 runs LANEC_PIN_C64_RUN, its module's lanec_run, for it.
+ * lanec_pin_c64_points gives every point of the mission with the index of the
+ * module that claims it first (LANEC_PIN_SWRETURN: a BANKCALL return point,
+ * entered through SWRETURN). */
+typedef struct { uint16_t physical; uint8_t module; } lanec_pin_point;
+#define LANEC_PIN_SWRETURN 0377u
+extern agc_routine_table lanec_pin_c64;
+void lanec_pin_c64_select(uint8_t module, int cm);
+const lanec_pin_point *lanec_pin_c64_points(int cm, uint16_t *count);
 #endif

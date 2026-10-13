@@ -8,7 +8,15 @@
 
 typedef enum lanec_status (*dispatch)(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 static lanec_io io;                 /* the trampoline runs one routine at a time */
+#ifndef LANEC_PIN_C64
 static apollo_overlay_state entry;  /* the state each claiming module starts from */
+#define LANEC_PIN_SAVE(s) (entry = *(s))
+#define LANEC_PIN_RESTORE(s) (*(s) = entry)
+#else   /* one module, which leaves a refused state unchanged; a result the record
+         * cannot carry is refused changed, and the caller makes the case again */
+#define LANEC_PIN_SAVE(s) ((void)0)
+#define LANEC_PIN_RESTORE(s) ((void)0)
+#endif
 
 const uint16_t lanec_pin_cells[LANEC_PIN_CELLS] = { 072u, 0114u, 0115u, 0116u, 0117u, 0124u, 0125u, 0136u, 0144u, 0154u, 0156u,
                                                      0162u, 01013u };
@@ -45,7 +53,7 @@ static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s,
 {
     lm_dntm_io *x = v;
     if (!p || !s || !x || !p->hardware) return EXEC_OUT_OF_SCOPE;
-    entry = *s;
+    LANEC_PIN_SAVE(s);
     for (; *f; ++f) {
         memset(&io, 0, sizeof io);
         io.superbank = x->control.superbank; io.interrupt_enabled = x->control.interrupt_enabled;
@@ -58,17 +66,16 @@ static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s,
             cell_return(s);
             return EXEC_OK;
         }
-        *s = entry;
+        LANEC_PIN_RESTORE(s);
     }
     return EXEC_OUT_OF_SCOPE;
 }
 
-#ifndef LANEC_PIN_C64
 static enum exec_status cm(const agc_native_program *p, apollo_overlay_state *s, void *v, const dispatch *f)
 {
     cm_dntm_io *x = v;
     if (!p || !s || !x) return EXEC_OUT_OF_SCOPE;
-    entry = *s;
+    LANEC_PIN_SAVE(s);
     for (; *f; ++f) {
         memset(&io, 0, sizeof io);
         io.superbank = x->io.superbank; io.interrupt_enabled = x->io.interrupt_enabled;
@@ -83,11 +90,10 @@ static enum exec_status cm(const agc_native_program *p, apollo_overlay_state *s,
             cell_return(s);
             return EXEC_OK;
         }
-        *s = entry;
+        LANEC_PIN_RESTORE(s);
     }
     return EXEC_OUT_OF_SCOPE;
 }
-#endif
 
 #ifndef LANEC_PIN_C64
 /* The return point after one of the file's BANKCALLs, as INTER-BANK's
@@ -119,4 +125,34 @@ static enum exec_status swreturn(const agc_native_program *p, apollo_overlay_sta
 const agc_routine_table lanec_pin_lm_routines = { lm_entries, LANEC_PIN_LM_ROUTINES };
 const agc_routine_table lanec_pin_cm_routines = { cm_entries, LANEC_PIN_CM_ROUTINES };
 #endif
-const agc_routine_table lanec_pin_lm_c64 = { lm_c64_entries, LANEC_PIN_LM_C64_ROUTINES };
+
+/* The C64 round trips: one module's points, running it alone. */
+static dispatch c64_run[2];
+static enum exec_status c64_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, c64_run); }
+static enum exec_status c64_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, c64_run); }
+#define LANEC_PIN_C64_MAX (LANEC_PIN_LM_C64_POINTS > LANEC_PIN_CM_C64_POINTS ? LANEC_PIN_LM_C64_POINTS : LANEC_PIN_CM_C64_POINTS)
+static agc_routine_entry c64_entries[LANEC_PIN_C64_MAX];
+agc_routine_table lanec_pin_c64 = { c64_entries, 0 };
+
+const lanec_pin_point *lanec_pin_c64_points(int cm, uint16_t *count)
+{
+    *count = cm ? LANEC_PIN_CM_C64_POINTS : LANEC_PIN_LM_C64_POINTS;
+    return cm ? c64_cm_points : c64_lm_points;
+}
+
+void lanec_pin_c64_select(uint8_t module, int cm)
+{
+    uint16_t i, n, k = 0;
+    const lanec_pin_point *p = lanec_pin_c64_points(cm, &n);
+#ifdef LANEC_PIN_C64
+    c64_run[0] = LANEC_PIN_C64_RUN;
+#else
+    c64_run[0] = c64_runs[module];
+#endif
+    for (i = 0; i < n; ++i)
+        if (p[i].module == module) {
+            c64_entries[k].physical = p[i].physical;
+            c64_entries[k++].call = cm ? c64_cm : c64_lm;
+        }
+    lanec_pin_c64.count = k;
+}

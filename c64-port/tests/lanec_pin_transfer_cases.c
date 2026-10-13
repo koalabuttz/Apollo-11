@@ -38,8 +38,8 @@ typedef struct { uint16_t site, callee; uint16_t n; uint8_t module; uint8_t miss
 #include "lanec_pin_transfer_cases.inc"
 #ifndef LANEC_PIN_TRANSFER_C64
 #define MODULE(i) modules[i]
-#else   /* the C64 program's cases all start from pw-decimal cases */
-#define MODULE(i) (&lanec_suite_pw_decimal)
+#else   /* a C64 program runs the cases of one module's suite */
+#define MODULE(i) (&LANEC_PIN_C64_SUITE)
 #endif
 
 static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
@@ -253,17 +253,42 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
 const lanec_suite lanec_suite_pin_transfer = { "pin-transfer", LANEC_PIN_TRANSFER_CASES, make, run };
 #endif
 
-/* pin-transfer-c64: the part of the round trip that fits one C64 program.
- * The Luminary099 entry chains of the decimal display (DSPDECWD, DSPDECNR)
- * with only the INTER-BANK routines and lanec_pin_lm_c64 registered, against
- * the oracle with the host cases' boundaries (without the Executive's and
- * Waitlist's services: the C64 program has no Executive). A chain that needs
- * a routine the C64 program lacks ends where the original goes on, and is
- * refused, as in pin-transfer. */
+/* pin-transfer-c64: the round trips as the C64 runs them. Every module
+ * does not fit one C64 program, so each program registers INTER-BANK and one
+ * module's points (those it claims first, lanec_pin_c64_select) and runs that
+ * module alone, both missions. The cases are every routine from its own
+ * entry with cases of that module. The oracle has the host cases' ranges and
+ * stops at every service that hands control away (the program has no
+ * Executive). A chain that ends where the original goes on (at another
+ * module's point, the display interface or the Executive, which the program
+ * lacks) is refused, as in pin-transfer; the host suite compares those. The
+ * other modules' points are not stops: a module runs through some of them
+ * inline. */
+static const transfer_case *c64_case;
+#ifdef LANEC_PIN_TRANSFER_C64
+static uint8_t c64_skip;
+int lanec_pin_c64_skip(void) { return c64_skip; }
+#endif
+
 static void make_c64(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
-    make_case(&c64_cases[n], s, io, m);
-    m->stop_count = 0;
+    const transfer_case *c;
+    uint8_t module;
+#ifdef LANEC_PIN_TRANSFER_C64
+    uint16_t i;
+    for (i = 0; i < LANEC_PIN_COUNT(c64_frozen) && c64_frozen[i].n != n; ++i) {}
+    c64_skip = i == LANEC_PIN_COUNT(c64_frozen);   /* the program has its module's rows only */
+    if (c64_skip) return;
+    c = &c64_frozen[i].c;
+#else
+    c = &c64_cases[n];
+#endif
+    module = (uint8_t)(c->module & 0177u);
+    c64_case = c;
+    make_case(c, s, io, m);
+    lanec_pin_c64_select(module, m->mission == LANEC_CM);
+    m->stop_list = m->mission == LANEC_LM ? lm_external_exits : cm_external_exits;
+    m->stop_count = m->mission == LANEC_LM ? LANEC_PIN_COUNT(lm_external_exits) : LANEC_PIN_COUNT(cm_external_exits);
     cur_meta = m;
 }
 
@@ -272,30 +297,51 @@ static enum lanec_status run_c64(apollo_overlay_state *s, lanec_io *io, enum lan
     static agc_routine_table tables[2];
     static agc_native_program program;
     static agc_hardware hardware;
-    static lm_dntm_io lm;
-    static apollo_overlay_state entry;
-    static lanec_io entry_io;
+    static lanec_meta again;
     enum exec_status status;
     uint16_t steps = 0, count;
-    if (mission != LANEC_LM) return LANEC_OUT_OF_SCOPE;
-    entry = *s; entry_io = *io;
     memset(&program, 0, sizeof program);
     memset(&hardware, 0, sizeof hardware);
-    memset(&lm, 0, sizeof lm);
-    tables[0] = lm_interbank_routines; tables[1] = lanec_pin_lm_c64;
+    tables[1] = lanec_pin_c64;
     program.basic = tables; program.basic_count = 2u;
     program.interpreter_fetch = AGC_TRANSFER_NONE; program.loc = 0164u; program.bankset = 0165u;
     program.hardware = &hardware;
-    program.operands = lm_interbank_site_table(&count); program.operand_count = count;
     hardware.channel11 = io->channel[011];
-    lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
-    lm.channel12 = io->channel[012]; lm.channel13 = io->channel[013]; lm.channel14 = io->channel[014];
-    status = agc_transfer_run(&program, s, &lm, &lm.control.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
-    io->superbank = lm.control.superbank; io->interrupt_enabled = lm.control.interrupt_enabled;
-    io->channel[011] = hardware.channel11;
-    io->channel[012] = lm.channel12; io->channel[013] = lm.channel13; io->channel[014] = lm.channel14;
+#ifndef LANEC_PIN_C64_CM   /* a C64 program runs one mission */
+    if (mission == LANEC_LM) {
+        static lm_dntm_io lm;
+        tables[0] = lm_interbank_routines;
+        program.operands = lm_interbank_site_table(&count); program.operand_count = count;
+        memset(&lm, 0, sizeof lm);
+        lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
+        lm.channel12 = io->channel[012]; lm.channel13 = io->channel[013]; lm.channel14 = io->channel[014];
+        status = agc_transfer_run(&program, s, &lm, &lm.control.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
+        io->superbank = lm.control.superbank; io->interrupt_enabled = lm.control.interrupt_enabled;
+        io->channel[011] = hardware.channel11;
+        io->channel[012] = lm.channel12; io->channel[013] = lm.channel13; io->channel[014] = lm.channel14;
+    } else
+#endif
+#if !defined(LANEC_PIN_C64) || defined(LANEC_PIN_C64_CM)
+    if (mission == LANEC_CM) {
+        static cm_dntm_io cm;
+        tables[0] = cm_interbank_routines;
+        program.operands = cm_interbank_site_table(&count); program.operand_count = count;
+        memset(&cm, 0, sizeof cm);
+        cm.io.superbank = io->superbank; cm.io.interrupt_enabled = io->interrupt_enabled;
+        cm.io.channel11 = io->channel[011]; cm.io.channel12 = io->channel[012];
+        cm.io.channel13 = io->channel[013]; cm.io.channel14 = io->channel[014];
+        cm.io.main_keys = io->channel[015]; cm.io.navigation_keys = io->channel[016];
+        status = agc_transfer_run(&program, s, &cm, &cm.io.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
+        io->superbank = cm.io.superbank; io->interrupt_enabled = cm.io.interrupt_enabled;
+        io->channel[011] = cm.io.channel11; io->channel[012] = cm.io.channel12;
+        io->channel[013] = cm.io.channel13; io->channel[014] = cm.io.channel14;
+        io->channel[015] = cm.io.main_keys; io->channel[016] = cm.io.navigation_keys;
+    } else
+#endif
+        status = EXEC_OUT_OF_SCOPE;
     if (status == EXEC_UNMAPPED && steps >= min_steps && !unregistered_call(s, io)) return LANEC_OK;
-    *s = entry; *io = entry_io;
+    memset(&again, 0, sizeof again);   /* refused: the case's entry state again */
+    make_case(c64_case, s, io, &again);
     return LANEC_OUT_OF_SCOPE;
 }
 const lanec_suite lanec_suite_pin_transfer_c64 = { "pin-transfer-c64", LANEC_PIN_TRANSFER_C64_CASES, make_c64, run_c64 };
