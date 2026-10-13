@@ -9,7 +9,7 @@ of tests/service_transfer_cases.c, and freezes one digest per case (the reach fl
 then the interrupt inhibit and the 2048 erasable words, Fletcher as svt_digest) into
 tests/service_transfer_vectors.h. Writes build/service-transfer-proof.json.
 """
-import hashlib, json, pathlib, subprocess
+import hashlib, json, os, pathlib, subprocess
 
 R = pathlib.Path(__file__).resolve().parents[1]
 E = R / 'deps/virtualagc/yaAGC'
@@ -39,7 +39,8 @@ def main():
     ropes = [R / 'build/fixed-data' / m / 'MAIN.agc.bin' for m in ('Luminary099', 'Comanche055')]
     native = subprocess.run(['./build/service-transfer-snapshot'], cwd=R, check=True, capture_output=True,
                             text=True).stdout
-    oracle = subprocess.run(['./build/service-transfer-reference'] + [str(r) for r in ropes], cwd=R, check=True,
+    oracle = subprocess.run(['./build/service-transfer-reference'] + [str(r) for r in ropes], cwd=R,
+                            env={**os.environ, 'LANE_A_EXECUTED': 'build/service-transfer-executed.txt'}, check=True,
                             capture_output=True, text=True).stdout
     nl, ol = native.splitlines(), oracle.splitlines()
     assert len(nl) == len(ol), (len(nl), len(ol))

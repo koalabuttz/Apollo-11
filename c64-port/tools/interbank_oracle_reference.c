@@ -2,6 +2,7 @@
 #define main admission_reference_main
 #include "cm_executive_reference.c"
 #undef main
+#include "lane_a_executed.h"
 #include "interbank_oracle_cases.h"
 /* argv: Luminary rope, Comanche rope [, --data]. With --data, prints the rope
  * words of the SUPDACAL data slots (tests/interbank_oracle_data.h). Otherwise,
@@ -23,9 +24,10 @@ int main(int argc,char **argv){static agc_t rope[2];static apollo_overlay_state 
   machine=rope[ibo_mission(n)];ibo_input(&s,&superbank,&inhint,n);for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)superbank;machine.AllowInterrupt=!inhint;
   for(cycles=0;cycles<20000u;++cycles){
+   lane_a_mark(ibo_mission(n));
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&get(5)==native.words[5]&&get(4)==native.words[4])break;
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(cycles==20000u){fprintf(stderr,"interbank-oracle case %u timeout\n",(unsigned)n);return 2;}
   printf("%u 1 %u %u",(unsigned)n,(unsigned)!machine.AllowInterrupt,(unsigned)machine.OutputChannel7&0160u);for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<3u?0177777u:077777u));printf("\n");
  }
- return 0;}
+ return lane_a_write_executed();}

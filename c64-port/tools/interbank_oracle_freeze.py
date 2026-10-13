@@ -11,7 +11,7 @@ reach flag, then the interrupt inhibit, SUPERBNK and the 2048 erasable words,
 Fletcher as ibo_digest) into tests/interbank_oracle_vectors.h and every third
 into tests/interbank_oracle_c64_vectors.h. Writes build/interbank-oracle-proof.json.
 """
-import collections, hashlib, json, pathlib, subprocess
+import collections, hashlib, json, os, pathlib, subprocess
 
 R = pathlib.Path(__file__).resolve().parents[1]
 E = R / 'deps/virtualagc/yaAGC'
@@ -65,6 +65,7 @@ def main():
     native = subprocess.run(['./build/interbank-oracle-snapshot'], cwd=R, check=True, capture_output=True,
                             text=True).stdout
     oracle = subprocess.run(['./build/interbank-oracle-reference'] + [str(r) for r in ropes], cwd=R,
+                            env={**os.environ, 'LANE_A_EXECUTED': 'build/interbank-oracle-executed.txt'},
                             check=True, capture_output=True, text=True).stdout
     nl, ol = native.splitlines(), oracle.splitlines()
     assert len(nl) == len(ol), (len(nl), len(ol))
