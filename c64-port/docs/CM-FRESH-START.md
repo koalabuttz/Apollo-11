@@ -29,7 +29,7 @@ FRESH_START_AND_RESTART is what the CM AGC runs after a V36 fresh start, a hardw
   - Outputs 5, 6, 11 (DSALMOUT), 12, 13 and 14, inputs 15 (MNKEYIN), 16 (NAVKEYIN) and 33, and the three HANDRUPT trap latches.
   - As in yaAGC, writing channel 13 bits 12-14 arms the traps, and those bits do not stay in the channel; GOPROG's `WAND CHAN33` only resets the channel's latched bits 11-15 to 1 (yaAGC CpuWriteIO), except that the AGC warning latch (bit 14) sets again at once while the warning condition persists (`cm_fresh_io.warning`; yaAGC keeps the bit 0 while its WarningFilter is over the threshold, which the oracle driver sets for those cases). WOR/WAND/RAND/ROR/READ follow yaAGC's OverflowCorrected/SignExtend.
   - INHINT acts on the interrupt-enable state.
-- SWRETURN: `cm_interbank_complete` refuses a context with Q = 3, which is what a BANKCALL'd KLEAN entry's `TC Q` leaves, so the runs stop at SWRETURN (as `lm-fresh-start` does with Lane A's `lm_interbank`).
+- SWRETURN: a BANKCALL'd KLEAN entry's `TC Q` leaves Q = 3 there, and the runs stop at SWRETURN, as `lm-fresh-start` does (Lane A refused that context until PR #90; it accepts it now, and the run still stops there: what follows is INTER-BANK_COMMUNICATION's return to the caller, outside these files).
 
 Paths with no producer: a TS that overflows refuses (no input in the domain overflows). The CCSs after `CS DSPTAB +11D; MASK BITS4&6` and `CS FLAGWRD5; MASK ENGONBIT` are never negative; their negative branches refuse. PCLOOP's and DSPOFF's counters count down from constants inside the same run, so their negative CCS branches refuse.
 

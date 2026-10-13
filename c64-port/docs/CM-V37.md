@@ -28,7 +28,7 @@ Bank 04 holds verb 37, which changes the major mode. It checks the IMU and the R
 - Devices: io is a `cm_fresh_io`.
   - V37's `RAND DSALMOUT` reads channel 11. CANV37's `WAND` acts on channels 11, 12 and 13, and as in yaAGC, channel 13 bits 12-14 arm the HANDRUPT traps and do not stay in the channel. R00TOP00's `WRITE` acts on channels 5 and 6.
   - INHINT/RELINT act on the interrupt-enable state.
-- Runs reach bank 05 through IBNKCALL V37KLEAN/P00KLEAN and POSTJUMP GOPROG2, so they also take `cm_fresh_start_routines`. An IBNKCALL'd KLEAN entry's `TC Q` returns to ISWRETRN with Q = 3, which `cm_interbank_complete` refuses (issue #94), so the run leaves ISWRETRN out of the interbank table and ends there. VAC5STOR's `TC SWRETURN` ends the run at SWRETURN.
+- Runs reach bank 05 through IBNKCALL V37KLEAN/P00KLEAN and POSTJUMP GOPROG2, so they also take `cm_fresh_start_routines`. An IBNKCALL'd KLEAN entry's `TC Q` returns to ISWRETRN with Q = 3; the run leaves ISWRETRN out of the interbank table and ends there (Lane A refused that context until PR #90; it accepts it now, and the run still stops there: what follows is INTER-BANK_COMMUNICATION's return to the caller, outside these files). VAC5STOR's `TC SWRETURN` ends the run at SWRETURN.
 
 Paths with no producer: a TS that overflows refuses (no input in the domain overflows). The CCSs after a one-bit MASK are never negative, and MMNUMBER (CCS at 2157 and 2207) is pinball's mode, never negative; their negative branches refuse. RAKE's counter is never negative.
 
