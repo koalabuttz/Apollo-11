@@ -287,7 +287,14 @@ SPECS = {
                           for a in range(lo, hi)},
                        # Past MARKRUPT's CCS MARKSTAT, marks are being accepted.
                        **{'07,%04o' % a: {'MARKSTAT': AOT_MARKSTAT[1:]} for a in range(0o2365, 0o2430)}),
+        # Basic routines that never name FIXLOC run under any FIXLOC: CHANGEVB
+        # is a NOVAC job (FIXLOC 0110) that MARKRUPT and MKRELEAS interrupt.
+        'any_fixloc': True,
         'joint_states': {
+                         # AOTMARK's entry with no marks in progress (MARKSTAT
+                         # +0) in half the cases: the VAC area search and
+                         # BAILOUT1 when none is free.
+                         'AOTMARK': [{'MARKSTAT': 0}, {}],
                          # 15,2041 VSL1 VAD from the state the original reaches it
                          # in after AVEIT and SURFSTAR (the oracle's, at that NEWOPS):
                          # VAD's overflow there carries into a word that does not
@@ -326,11 +333,17 @@ SPECS = {
         # site); TIME1/TIME2 and the CDUs vary; a quarter of the cases put
         # edge values in MPAC and the operands.
         'c64_rows': 'cover',
-        'cover_stride': 8,
+        # Two DDV arcs (V/SC with the high words equal) only runs too long
+        # for one diagnostic take: truncated rows (tests/interp_cut.h).
+        'c64_cuts': True,
+        'cover_stride': 4,
         'site_edges': True,
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     # Lane D1: Comanche055 SXTMARK, the whole file (basic code) as routines
@@ -379,6 +392,9 @@ SPECS = {
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     'inflight-align': {
