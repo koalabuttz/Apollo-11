@@ -303,7 +303,7 @@
       "sha256": "827f457bf6dd722ed1432991623dcb6165e4ddc74dcf2c8ce531f5c2d21c5487",
       "bytes": 11682,
       "lines": 626,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -318,7 +318,7 @@
           "verification": "docs/ATTITUDE-MANEUVER.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -330,7 +330,6 @@
           "ENDOFJOB, GOTOPOOH, BANKJUMP and TASKOVER",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-source-map.json",
@@ -354,6 +353,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-c64-outcomes.json",
             "sha256": "8b2e90bb51d8246901fa756ecc20fec50af9eca45478427d64ba5a936fd31805"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-195.md",
+            "sha256": "13c1998017cefac0a92dd5dbf51173660d926d18cbfa8721a809dadfd091865b"
           }
         },
         "precheck_notes": [
@@ -5564,7 +5567,7 @@
       "sha256": "ce059a77e621dc2b0df032410206e3da672d88d065114b533fa3e74a997f0443",
       "bytes": 27087,
       "lines": 1027,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5579,7 +5582,7 @@
           "verification": "docs/ATTITUDE-MANEUVER.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5591,7 +5594,6 @@
           "ENDOFJOB, GOTOPOOH, BANKJUMP and TASKOVER",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-source-map.json",
@@ -5615,6 +5617,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/attitude-maneuver/attitude-maneuver-c64-outcomes.json",
             "sha256": "8b2e90bb51d8246901fa756ecc20fec50af9eca45478427d64ba5a936fd31805"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-195.md",
+            "sha256": "13c1998017cefac0a92dd5dbf51173660d926d18cbfa8721a809dadfd091865b"
           }
         },
         "precheck_notes": [
