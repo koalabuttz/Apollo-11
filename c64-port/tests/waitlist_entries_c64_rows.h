@@ -6,5 +6,5 @@
 static const uint16_t wle_c64_row[10]={
 1033u,1037u,1039u,1067u,1069u,1155u,1165u,1199u,1230u,1278u};
 static const uint32_t wle_c64_row_digest[10]={
-0x00000000ul,0x8875146bul,0xcc88c76aul,0x680ad0cful,0x3e5cd642ul,0xa30a93e8ul,
-0x28bfcfe5ul,0x88023331ul,0x82c38d29ul,0x5236c6e8ul};
+0x00000000ul,0x5f54428aul,0xd767e510ul,0x852bc701ul,0xa2ada62bul,0x6ad56d7bul,
+0x0a579a1cul,0x753e6d54ul,0x82c38d29ul,0x5236c6e8ul};

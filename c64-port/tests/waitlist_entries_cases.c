@@ -84,8 +84,10 @@ static void sane_waitlist(apollo_overlay_state *s,uint8_t cm,uint16_t base){uint
  i=(uint16_t)(rnd(&x)%4u);s->words[026]=(agc_word)(i==0u?rnd(&x)%0200u:i==1u?037600u+rnd(&x)%0200u:rnd(&x)%040000u);
  c=(uint16_t)(rnd(&x)%16u==0u?9u:rnd(&x)%9u);
  for(i=0;i<8u;++i)s->words[01400u+i]=(agc_word)(i<c?077777u-rnd(&x)%(i==0u?040u:02000u):057777u);
- for(i=0;i<9u;++i){s->words[01410u+2u*i]=(agc_word)(i<c?02000u+rnd(&x)%01776u:end);
-  s->words[01411u+2u*i]=(agc_word)(i<c?(rnd(&x)%040u)<<10|(rnd(&x)&1u?0100u:0060u)|rnd(&x)%8u:04063u);}}
+ /* One rnd() per statement: gcc and clang order calls within an expression differently. */
+ for(i=0;i<9u;++i){uint16_t fb=(uint16_t)(rnd(&x)%040u),sb=(rnd(&x)&1u)?0100u:0060u,eb=(uint16_t)(rnd(&x)%8u);
+  s->words[01410u+2u*i]=(agc_word)(i<c?02000u+rnd(&x)%01776u:end);
+  s->words[01411u+2u*i]=(agc_word)(i<c?(uint16_t)(fb<<10|sb|eb):04063u);}}
 #endif
 void wle_io(const void *io,uint8_t kind,uint16_t *superbank,uint16_t *enabled){
  if(kind==1u||kind==3u){const cm_native_io *c=io;*superbank=(uint16_t)c->superbank;*enabled=(uint16_t)c->interrupt_enabled;}
