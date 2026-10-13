@@ -23,12 +23,14 @@ static agc_routine find(const agc_routine_table *tables,uint8_t count,uint16_t p
 static enum exec_status danzig_marker(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;(void)s;(void)io;return EXEC_OUT_OF_SCOPE;}
 static const agc_routine_entry lm_danzig[1]={{AGC_LM_DANZIG,danzig_marker}},cm_danzig[1]={{AGC_CM_DANZIG,danzig_marker}};
 const agc_routine_table agc_lm_danzig_marker={lm_danzig,1},agc_cm_danzig_marker={cm_danzig,1};
-static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t z;agc_word edop;const agc_routine_entry *m;
+static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t z;agc_word edop;
  if(p->loc>=APOLLO_SHARED_WORDS||p->bankset>=APOLLO_SHARED_WORDS)return false;
  z=agc_fixed_physical(s->words[5],s->words[4],superbank);
  if(p->interpreter_fetch!=AGC_TRANSFER_NONE&&z==p->interpreter_fetch)return true;
- /* The marker is the first interpretive table, keyed at the mission's DANZIG. */
- if(!p->interpretive_count||(m=p->interpretive[0].entries)->call!=danzig_marker||m->physical!=z)return false;
+ /* The marker is the first interpretive table, keyed at the mission's DANZIG.
+  * Compared by identity, so an empty first table (NULL entries) is never read. */
+ if(!p->interpretive_count||p->interpretive[0].entries!=(z==AGC_LM_DANZIG?lm_danzig:cm_danzig)||
+    (z!=AGC_LM_DANZIG&&z!=AGC_CM_DANZIG))return false;
  edop=(agc_word)(s->words[AGC_EDOP]&077777u);
  return edop!=0u&&edop<040000u;
 }
