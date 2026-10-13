@@ -60,6 +60,14 @@ def lanes():
     return out
 
 
+def label(words, point):
+    """'LABEL+n' for a 'BB,OOOO' point."""
+    bank, offset = point.split(',')
+    key = (int(bank, 8), int(offset, 8))
+    _, lab = words.get(key, ('?', None))
+    return f'{lab[0]}+{key[1] - lab[1]:o}' if lab and key[1] != lab[1] else (lab[0] if lab else '?')
+
+
 def describe(h, words, owners, m):
     """A HOLE match as a dict naming the file, label and owning lane."""
     kind, bank, offset, arrivals, instructions, refused = h.groups()
