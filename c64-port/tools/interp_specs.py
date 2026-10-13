@@ -2823,7 +2823,11 @@ SPECS = {
         # Returns a case starts with only as their producers leave them:
         # G+N,AUTO's A (0 in AUTO, else positive) and LRS22.1's MPAC (0 good
         # data, 1 or 2 for its two bad-data returns).
-        'states': {'R61LEM1+21': {'0000': [0, 1, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
+        # (LITIT +3, TRKFLON's return: QXCH ITEMP6 takes back the caller's
+        # Q that LITIT saved there, a basic return outside the file:
+        # LODSAMPT's address stands in for it, the case's Q and stop too.)
+        'states': {'LITIT+3': {'ITEMP6': [0o4400], '2': [0o4400]},
+                   'R61LEM1+21': {'0000': [0, 1, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
                    # (X1 an index, as the STORE,1 that TC INTPRET at
                    # R21LEM7 +1 is to the interpreter assumes)
                    'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775]},
