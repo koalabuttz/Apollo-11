@@ -3,18 +3,23 @@
   "milestone": "cm-fresh-start",
   "release": "evidence-cm-fresh-start",
   "files": {
+    "cm-fresh-start-c64-cover.json": {
+      "sha256": "05fcc83c2feaeebe192de89e630f2cfc646f354657961e4010cb472c3a3cb4bc",
+      "bytes": 4493,
+      "store": "tree"
+    },
     "cm-fresh-start-host.log": {
-      "sha256": "ad24e447d3e015847dc1bc92fafcd333811816082d667ec0de6df7bb75d5dc3d",
+      "sha256": "705dda5305846d1a3c4892a81979ee1b8fbcae2211d4e579ae4ef5b936cddf68",
       "bytes": 1875,
       "store": "release"
     },
     "cm-fresh-start-proof.json": {
-      "sha256": "4f9c7f18fe791ebcc506f3dc60af85acc85401cfacbf55538b611b31700dbe0f",
+      "sha256": "088e6b53a469929985d32262579e5cc08dae41439280c8c2e1a250e34c445c07",
       "bytes": 2220,
       "store": "tree"
     },
     "cm-fresh-start-vice.log": {
-      "sha256": "acde2fae7c3ec743acc78a202e353cf1879208946a9908e8b755085c1ebdee82",
+      "sha256": "c83b2118d5408dd984916e5ae32edb8cb79f2bef9452092b3d36b0939a9df36b",
       "bytes": 620,
       "store": "release"
     }

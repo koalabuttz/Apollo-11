@@ -70,7 +70,7 @@ def main():
            f'#define LM_FS_VECTORS {len(values)}u']
     table(out, 'lm_fs_expected', values)
     (R / 'tests/lm_fresh_start_vectors.h').write_text('\n'.join(out) + '\n')
-    chosen, cover = a2_c64_rows.select('lm-fresh-start', SRC, ['lm_fresh_start_cases.h'], 'lm_fs_digest(&s,(uint16_t)n,&st);', len(values))
+    chosen, cover = a2_c64_rows.select('lm-fresh-start', SRC, ['lm_fresh_start_cases.h'], 'lm_fs_digest(&s,(uint16_t)n,&st);', len(values), slots=11)
     (R / 'tests/lm_fresh_start_c64_vectors.h').write_text(a2_c64_rows.header('lm_fresh_start_freeze.py', 'lm_fs', values, chosen))
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),

@@ -71,7 +71,7 @@ def main():
     table(out, 'cm_stateup_expected', values)
     (R / 'tests/cm_stateup_vectors.h').write_text('\n'.join(out) + '\n')
     chosen, cover = a2_c64_rows.select('cm-stateup', SRC, ['cm_stateup_cases.h'], 'cm_stateup_digest(&s,(uint16_t)n,&st);', len(values),
-                                       stride=17)
+                                       stride=17, slots=12)
     (R / 'tests/cm_stateup_c64_vectors.h').write_text(a2_c64_rows.header('cm_stateup_freeze.py', 'cm_stateup', values, chosen, 17))
     proof = {'mission': 'Comanche055', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),

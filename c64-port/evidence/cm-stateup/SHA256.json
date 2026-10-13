@@ -3,8 +3,13 @@
   "milestone": "cm-stateup",
   "release": "evidence-cm-stateup",
   "files": {
+    "cm-stateup-c64-cover.json": {
+      "sha256": "ab6176375fe63d8857f72cdde08a7e356a7694ee4e671d00ef1f9fae5efbecd0",
+      "bytes": 4482,
+      "store": "tree"
+    },
     "cm-stateup-host.log": {
-      "sha256": "87b2a45d01a75853f26fdc35615dcfd4b2b0b197a936c6aec549811d10e1fd90",
+      "sha256": "3497434c1c87fa42ecadaa64b5ced2c9339add0f64eb8169e4f7c574d0e85fc2",
       "bytes": 1578,
       "store": "release"
     },
@@ -14,7 +19,7 @@
       "store": "tree"
     },
     "cm-stateup-vice.log": {
-      "sha256": "a8f6fc462c5bedc2386f8ed833637e5dbee535ea8cdb8ee869a66e022fe10291",
+      "sha256": "c3989f4770d7df0aa4ff10ff9181a7217a5248c0e4c0da511a18e9468492f587",
       "bytes": 608,
       "store": "release"
     }

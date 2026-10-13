@@ -6,7 +6,7 @@
  "aggregates": {
   "lm-fresh-start": {
    "record": "docs/LM-FRESH-START.md",
-   "sha256": "7b97916bfb618052cfb5c88d582553eb625b3f363edfc72904050c640912fcc7",
+   "sha256": "a3bd956bc680d0e7571fe8d776454f97665e222359e6ad9e9316772a6f865b29",
    "native": "src/lm_fresh_start.c",
    "native_sha256": "1e6b3f9930610d97fac770ffc1ec2da25a15dd38e7108fd69815a466184d0aca",
    "owns": [
@@ -17,7 +17,7 @@
   },
   "lm-v37": {
    "record": "docs/LM-V37.md",
-   "sha256": "67c9b477a881c914c6acf451eb84b8301f95e12534731f5d1987fe52a7d09df5",
+   "sha256": "529ffd46ce11d434651a5b212fd047aabf5a81f858a16ba3692e484e678afc29",
    "native": "src/lm_v37.c",
    "native_sha256": "a5fc62a858df898bd6767ef438dbaa1141bd933483b5b4be9976b39bc8d3a6e4",
    "owns": [
@@ -29,7 +29,7 @@
    "record": "docs/LM-STATEUP.md",
    "sha256": "213241d2aef64ba44ecf5d0b61d6332acdf4066f077792d19a1d70da2ead3271",
    "native": "src/lm_stateup.c",
-   "native_sha256": "039a2fa38e94ccb23c3acae85b7aa036b9bc90f22a6bc64ee6344bc5e0affaff",
+   "native_sha256": "7a89ed271fd491fffe04e000c904d7a4ac1e8e66388407e8441e309abe11fe95",
    "owns": [
     "13,2026-2067",
     "04,2144-2146"

@@ -3,23 +3,28 @@
   "milestone": "lm-update",
   "release": "evidence-lm-update",
   "files": {
+    "lm-update-c64-cover.json": {
+      "sha256": "63c9c6e823249a9a2dcf7db6ddfabdd526a00921a3c6bd6bd74d7f9e7906d7f2",
+      "bytes": 5168,
+      "store": "tree"
+    },
     "lm-update-data.json": {
       "sha256": "5b7a20f720c9a4cf188228a9ffee7951146bc2887b2de2a0d6e6a9af2137c35f",
       "bytes": 2587,
       "store": "release"
     },
     "lm-update-host.log": {
-      "sha256": "dea7b9092deb3240ba3486c5c472282cdee67f8cfff0a264e942609f5e6fd13e",
-      "bytes": 1733,
+      "sha256": "3b51496ef7f4bb13853d81bb03de1702c7ac7ce8ccf78abab1b6e508a2caa9ca",
+      "bytes": 1908,
       "store": "release"
     },
     "lm-update-proof.json": {
-      "sha256": "2ba3bd6ff1e69fff9310da2bbe633d5970c5fcca5895b7c6c2a7453c1f6e8ff9",
-      "bytes": 1651,
+      "sha256": "4c729735f960f770b4960b439147af17c3710e6315991b259e608524dc8374b9",
+      "bytes": 1873,
       "store": "tree"
     },
     "lm-update-vice.log": {
-      "sha256": "bcde85a5c071c7f236d1a8a398e4a9daf0a14eb825528b994dd31672c3d7ee43",
+      "sha256": "f843dee5162c02617fe0aa52d6ec94d4fbf7eb8139dfe6d031b749fcb69f2bc0",
       "bytes": 605,
       "store": "release"
     }

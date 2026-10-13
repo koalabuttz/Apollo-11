@@ -1,0 +1,49 @@
+{
+ "lm": {
+  "mission": "Luminary099",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "cases": 1536,
+  "snapshot_sha256": "31fafdf020db39fd8f54cfe308aee9ecb7a7393a1b236c68844af22729ca32e4",
+  "outcomes": {
+   "04,3274 KEYRUPT1:returned": 256,
+   "04,3300 KEYRUPT1 +4 (LODSAMPT return):returned": 256,
+   "04,3303 KEYCOM:returned": 256,
+   "04,3313 ACCEPTUP +4 (NOVAC return):returned": 256,
+   "04,3317 UPRUPT:returned": 256,
+   "04,3323 UPRUPT +4 (LODSAMPT return):returned": 256
+  },
+  "entries": [
+   "04,3274 KEYRUPT1",
+   "04,3300 KEYRUPT1 +4 (LODSAMPT return)",
+   "04,3303 KEYCOM",
+   "04,3313 ACCEPTUP +4 (NOVAC return)",
+   "04,3317 UPRUPT",
+   "04,3323 UPRUPT +4 (LODSAMPT return)"
+  ]
+ },
+ "cm": {
+  "mission": "Comanche055",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "cases": 1536,
+  "snapshot_sha256": "b15fb59f5ca61a28a7d51ef893880eb5748320e179cd4e859f08b2796538dbd5",
+  "outcomes": {
+   "07,3673 KEYRUPT1:returned": 256,
+   "07,3677 KEYRUPT1 +4 (LODSAMPT return):returned": 256,
+   "07,3702 KEYCOM:returned": 256,
+   "07,3712 ACCEPTUP +4 (NOVAC return):returned": 256,
+   "07,3716 UPRUPT:returned": 256,
+   "07,3722 UPRUPT +4 (LODSAMPT return):returned": 256
+  },
+  "entries": [
+   "07,3673 KEYRUPT1",
+   "07,3677 KEYRUPT1 +4 (LODSAMPT return)",
+   "07,3702 KEYCOM",
+   "07,3712 ACCEPTUP +4 (NOVAC return)",
+   "07,3716 UPRUPT",
+   "07,3722 UPRUPT +4 (LODSAMPT return)"
+  ]
+ },
+ "boundary": "one routine from its entry to the continuation it leaves in Z (LODSAMPT, NOVAC or RESUME, all in fixed-fixed memory); the original runs to the first time it reaches that Z",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr, channel 11",
+ "full_physical_words": 2048
+}

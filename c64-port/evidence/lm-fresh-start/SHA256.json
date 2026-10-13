@@ -3,23 +3,28 @@
   "milestone": "lm-fresh-start",
   "release": "evidence-lm-fresh-start",
   "files": {
+    "lm-fresh-start-c64-cover.json": {
+      "sha256": "8ba602877cafe219dd20c02b06a3a27ed4b8e9e50e10f13ba7c851bb324fd486",
+      "bytes": 4341,
+      "store": "tree"
+    },
     "lm-fresh-start-data.json": {
       "sha256": "bde074c3f193b7b09dff8fb2dea25fefc557be152e51522d619db5b628cf2784",
       "bytes": 8778,
       "store": "release"
     },
     "lm-fresh-start-host.log": {
-      "sha256": "0bc727621ff12586a19e05edcf8bdda861d2b0300d9dbb919b14eca252cec436",
+      "sha256": "21eeee5144d4380149386a478cd16f6549630ef1f9dcedf492743adcd8b4e5d1",
       "bytes": 1808,
       "store": "release"
     },
     "lm-fresh-start-proof.json": {
-      "sha256": "b293a0127ac0a15fc97159477b2aa08a09e22268a98554ff7a62c1caa0b05dfc",
+      "sha256": "3ff06cc3ed95e8de2b4b085deb6dbd65b7186a310435eb5fca6c448a84b380c1",
       "bytes": 960,
       "store": "tree"
     },
     "lm-fresh-start-vice.log": {
-      "sha256": "3b14fcd33f1140b43e4559c180dddb402f1f0cdc61bf4f9aaa6d3e7df840ba43",
+      "sha256": "f12a4407c69866db5b975ed9566e1b18ebc5f8e5ae7206c4806c02fc4008102a",
       "bytes": 620,
       "store": "release"
     }

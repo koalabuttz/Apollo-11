@@ -1,0 +1,1482 @@
+{
+ "source_path": "Luminary099/T4RUPT_PROGRAM.agc",
+ "scope": "T4RUPT through SYNCT4/QUIKOFF and RELTAB",
+ "source_sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native": {
+  "src/t4rupt_core.c": "b73e65eb4f8c329d3d63805ae083539f4d0fc9e2591f5528b797686c9a0c897a",
+  "include/t4rupt_core.h": "99cedfc1b2d288ecd563eecdb2e573ca40ec6fb225d9c30a01ee793fcd3d7142"
+ },
+ "source_words": 134,
+ "source_lines_with_words": 133,
+ "instructions_executed_by_oracle": 116,
+ "line_map": [
+  {
+   "line": 35,
+   "address": "06,2000",
+   "source": "T4RUPT TS BANKRUPT",
+   "words": [
+    "54016"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 37,
+   "address": "06,2001",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 38,
+   "address": "06,2002",
+   "source": "QXCH QRUPT",
+   "words": [
+    "22012"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 40,
+   "address": "06,2003",
+   "source": "CCS DSRUPTSW",
+   "words": [
+    "11313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 41,
+   "address": "06,2004",
+   "source": "TCF NORMT4 +1",
+   "words": [
+    "12010"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 42,
+   "address": "06,2005",
+   "source": "TCF NORMT4",
+   "words": [
+    "12007"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 44,
+   "address": "06,2006",
+   "source": "TCF QUIKDSP",
+   "words": [
+    "12134"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 46,
+   "address": "06,2007",
+   "source": "NORMT4 CAF SEVEN",
+   "words": [
+    "34757"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 47,
+   "address": "06,2010",
+   "source": "TS RUPTREG1",
+   "words": [
+    "54070"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 48,
+   "address": "06,2011",
+   "source": "TS DSRUPTSW",
+   "words": [
+    "55313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 59,
+   "address": "FF,4066",
+   "source": "RELTAB OCT 04025",
+   "words": [
+    "04025"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 60,
+   "address": "FF,4067",
+   "source": "OCT 10003",
+   "words": [
+    "10003"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 61,
+   "address": "FF,4070",
+   "source": "OCT 14031",
+   "words": [
+    "14031"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 62,
+   "address": "FF,4071",
+   "source": "OCT 20033",
+   "words": [
+    "20033"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 63,
+   "address": "FF,4072",
+   "source": "OCT 24017",
+   "words": [
+    "24017"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 64,
+   "address": "FF,4073",
+   "source": "OCT 30036",
+   "words": [
+    "30036"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 65,
+   "address": "FF,4074",
+   "source": "OCT 34034",
+   "words": [
+    "34034"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 66,
+   "address": "FF,4075",
+   "source": "OCT 40023",
+   "words": [
+    "40023"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 67,
+   "address": "FF,4076",
+   "source": "OCT 44035",
+   "words": [
+    "44035"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 68,
+   "address": "FF,4077",
+   "source": "OCT 50037",
+   "words": [
+    "50037"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 69,
+   "address": "FF,4100",
+   "source": "OCT 54000",
+   "words": [
+    "54000"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 70,
+   "address": "FF,4101",
+   "source": "RELTAB11 OCT 60000",
+   "words": [
+    "60000"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 80,
+   "address": "06,2012",
+   "source": "CDRVE CCS DSPTAB +11D",
+   "words": [
+    "11036"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 81,
+   "address": "06,2013",
+   "source": "TC DSPOUT",
+   "words": [
+    "02063"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 82,
+   "address": "06,2014",
+   "source": "TC DSPOUT",
+   "words": [
+    "02063"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 84,
+   "address": "06,2015",
+   "source": "XCH DSPTAB +11D",
+   "words": [
+    "57036"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 85,
+   "address": "06,2016",
+   "source": "MASK LOW11",
+   "words": [
+    "74356"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 86,
+   "address": "06,2017",
+   "source": "TS DSPTAB +11D",
+   "words": [
+    "55036"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 87,
+   "address": "06,2020",
+   "source": "AD RELTAB11",
+   "words": [
+    "64101"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 88,
+   "address": "06,2021",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 89,
+   "address": "06,2022",
+   "source": "WRITE OUT0",
+   "words": [
+    "01010"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 90,
+   "address": "06,2023",
+   "source": "TC HANG20",
+   "words": [
+    "02071"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 95,
+   "address": "06,2024",
+   "source": "DSPOUTSB TS NOUT",
+   "words": [
+    "55016"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 96,
+   "address": "06,2025",
+   "source": "CS ZERO",
+   "words": [
+    "44755"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 97,
+   "address": "06,2026",
+   "source": "TS DSRUPTEM",
+   "words": [
+    "54073"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 98,
+   "address": "06,2027",
+   "source": "XCH DSPCNT",
+   "words": [
+    "56776"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 99,
+   "address": "06,2030",
+   "source": "AD NEG0",
+   "words": [
+    "64754"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 100,
+   "address": "06,2031",
+   "source": "TS DSPCNT",
+   "words": [
+    "54776"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 101,
+   "address": "06,2032",
+   "source": "DSPSCAN INDEX DSPCNT",
+   "words": [
+    "50776"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 102,
+   "address": "06,2033",
+   "source": "CCS DSPTAB",
+   "words": [
+    "11023"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 103,
+   "address": "06,2034",
+   "source": "CCS DSPCNT",
+   "words": [
+    "10776"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 104,
+   "address": "06,2035",
+   "source": "TCF DSPSCAN -2",
+   "words": [
+    "12030"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 105,
+   "address": "06,2036",
+   "source": "TCF DSPLAY",
+   "words": [
+    "12047"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 106,
+   "address": "06,2037",
+   "source": "TABLNTH OCT 12",
+   "words": [
+    "00012"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false,
+   "unreached": "TABLNTH (OCT 12) runs as TC 012 only for a -0 display word or a negative DSPCNT, which nothing stores (fresh start writes -BIT12, DSPIN complemented codes)"
+  },
+  {
+   "line": 107,
+   "address": "06,2040",
+   "source": "CCS DSRUPTEM",
+   "words": [
+    "10073"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 108,
+   "address": "06,2041",
+   "source": "120MRUPT DEC 16372",
+   "words": [
+    "37764"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false,
+   "unreached": "120MRUPT (DEC 16372) runs as CA 7764 only when DSPSCAN finds DSRUPTEM positive; DSPOUTSB sets it to -0 and the scan only stores +0 there"
+  },
+  {
+   "line": 109,
+   "address": "06,2042",
+   "source": "TS NOUT",
+   "words": [
+    "55016"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 110,
+   "address": "06,2043",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 111,
+   "address": "06,2044",
+   "source": "TS DSRUPTEM",
+   "words": [
+    "54073"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 112,
+   "address": "06,2045",
+   "source": "CAF TABLNTH",
+   "words": [
+    "32037"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 113,
+   "address": "06,2046",
+   "source": "TCF DSPSCAN -1",
+   "words": [
+    "12031"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 115,
+   "address": "06,2047",
+   "source": "DSPLAY AD ONE",
+   "words": [
+    "64753"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 116,
+   "address": "06,2050",
+   "source": "INDEX DSPCNT",
+   "words": [
+    "50776"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 117,
+   "address": "06,2051",
+   "source": "TS DSPTAB",
+   "words": [
+    "55023"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 118,
+   "address": "06,2052",
+   "source": "MASK LOW11",
+   "words": [
+    "74356"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 119,
+   "address": "06,2053",
+   "source": "TS DSRUPTEM",
+   "words": [
+    "54073"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 120,
+   "address": "06,2054",
+   "source": "CAF HI5",
+   "words": [
+    "34350"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 121,
+   "address": "06,2055",
+   "source": "INDEX DSPCNT",
+   "words": [
+    "50776"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 122,
+   "address": "06,2056",
+   "source": "MASK RELTAB",
+   "words": [
+    "74066"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 123,
+   "address": "06,2057",
+   "source": "AD DSRUPTEM",
+   "words": [
+    "60073"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 124,
+   "address": "06,2060",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 125,
+   "address": "06,2061",
+   "source": "WRITE OUT0",
+   "words": [
+    "01010"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 127,
+   "address": "06,2062",
+   "source": "TCF Q+1",
+   "words": [
+    "16737"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 129,
+   "address": "06,2063",
+   "source": "DSPOUT CCS FLAGWRD5",
+   "words": [
+    "10101"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 130,
+   "address": "06,2064",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 131,
+   "address": "06,2065",
+   "source": "TCF NODSPOUT",
+   "words": [
+    "12130"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 132,
+   "address": "06,2066",
+   "source": "CCS NOUT",
+   "words": [
+    "11016"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 133,
+   "address": "06,2067",
+   "source": "TC DSPOUTSB",
+   "words": [
+    "02024"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 134,
+   "address": "06,2070",
+   "source": "TCF NODSPOUT",
+   "words": [
+    "12130"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 136,
+   "address": "06,2071",
+   "source": "HANG20 CS 14,11,9",
+   "words": [
+    "42171"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 137,
+   "address": "06,2072",
+   "source": "ADS DSRUPTSW",
+   "words": [
+    "27313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 139,
+   "address": "06,2073",
+   "source": "CAF 20MRUPT",
+   "words": [
+    "37731"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 141,
+   "address": "06,2074",
+   "source": "SETTIME4 TS TIME4",
+   "words": [
+    "54027"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 152,
+   "address": "06,2075",
+   "source": "PROCEEDE CA IMODES33",
+   "words": [
+    "31303"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 153,
+   "address": "06,2076",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 154,
+   "address": "06,2077",
+   "source": "RXOR CHAN32",
+   "words": [
+    "06032"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 155,
+   "address": "06,2100",
+   "source": "MASK BIT14",
+   "words": [
+    "74736"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 156,
+   "address": "06,2101",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 157,
+   "address": "06,2102",
+   "source": "BZF T4JUMP",
+   "words": [
+    "12116"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 159,
+   "address": "06,2103",
+   "source": "LXCH IMODES33",
+   "words": [
+    "23303"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 160,
+   "address": "06,2104",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 161,
+   "address": "06,2105",
+   "source": "RXOR LCHAN",
+   "words": [
+    "06001"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 162,
+   "address": "06,2106",
+   "source": "TS IMODES33",
+   "words": [
+    "55303"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 163,
+   "address": "06,2107",
+   "source": "MASK BIT14",
+   "words": [
+    "74736"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 164,
+   "address": "06,2110",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 165,
+   "address": "06,2111",
+   "source": "TCF T4JUMP",
+   "words": [
+    "12116"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 167,
+   "address": "06,2112",
+   "source": "CAF CHRPRIO",
+   "words": [
+    "34355"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 168,
+   "address": "06,2113",
+   "source": "TC NOVAC",
+   "words": [
+    "05072"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 170,
+   "address": "06,2114",
+   "source": "2CADR PROCKEY",
+   "words": [
+    "03452",
+    "60101"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 175,
+   "address": "06,2116",
+   "source": "T4JUMP INDEX RUPTREG1",
+   "words": [
+    "50070"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 176,
+   "address": "06,2117",
+   "source": "TCF +1",
+   "words": [
+    "12120"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 178,
+   "address": "06,2120",
+   "source": "TC RCSMONIT",
+   "words": [
+    "03156"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 179,
+   "address": "06,2121",
+   "source": "TCF RRAUTCHK",
+   "words": [
+    "13006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 180,
+   "address": "06,2122",
+   "source": "TCF IMUMON",
+   "words": [
+    "12172"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 181,
+   "address": "06,2123",
+   "source": "TCF DAPT4S",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 182,
+   "address": "06,2124",
+   "source": "TC RCSMONIT",
+   "words": [
+    "03156"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 183,
+   "address": "06,2125",
+   "source": "TCF RRAUTCHK",
+   "words": [
+    "13006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 184,
+   "address": "06,2126",
+   "source": "TCF IMUMON",
+   "words": [
+    "12172"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 185,
+   "address": "06,2127",
+   "source": "TCF DAPT4S",
+   "words": [
+    "13132"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 192,
+   "address": "06,2130",
+   "source": "NODSPOUT EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 193,
+   "address": "06,2131",
+   "source": "WRITE OUT0",
+   "words": [
+    "01010"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 195,
+   "address": "06,2132",
+   "source": "CAF 120MRUPT",
+   "words": [
+    "32041"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 196,
+   "address": "06,2133",
+   "source": "TCF SETTIME4",
+   "words": [
+    "12074"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 198,
+   "address": "06,2134",
+   "source": "QUIKDSP CAF BIT14",
+   "words": [
+    "34736"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 199,
+   "address": "06,2135",
+   "source": "MASK DSRUPTSW",
+   "words": [
+    "71313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 200,
+   "address": "06,2136",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 201,
+   "address": "06,2137",
+   "source": "BZF QUIKOFF",
+   "words": [
+    "12165"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 203,
+   "address": "06,2140",
+   "source": "CCS NOUT",
+   "words": [
+    "11016"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 204,
+   "address": "06,2141",
+   "source": "TC DSPOUTSB",
+   "words": [
+    "02024"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 205,
+   "address": "06,2142",
+   "source": "TCF NODSPY",
+   "words": [
+    "12152"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 206,
+   "address": "06,2143",
+   "source": "CS BIT14",
+   "words": [
+    "44736"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 207,
+   "address": "06,2144",
+   "source": "QUIKRUPT ADS DSRUPTSW",
+   "words": [
+    "27313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 209,
+   "address": "06,2145",
+   "source": "CAF 20MRUPT",
+   "words": [
+    "37731"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 210,
+   "address": "06,2146",
+   "source": "TS TIME4",
+   "words": [
+    "54027"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 212,
+   "address": "06,2147",
+   "source": "CAF BIT9",
+   "words": [
+    "34743"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 213,
+   "address": "06,2150",
+   "source": "ADS DSRUPTSW",
+   "words": [
+    "27313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 215,
+   "address": "06,2151",
+   "source": "TC RESUME",
+   "words": [
+    "05270"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 217,
+   "address": "06,2152",
+   "source": "NODSPY EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 218,
+   "address": "06,2153",
+   "source": "WRITE OUT0",
+   "words": [
+    "01010"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 220,
+   "address": "06,2154",
+   "source": "SYNCT4 CAF 20MRUPT",
+   "words": [
+    "37731"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 221,
+   "address": "06,2155",
+   "source": "ADS TIME4",
+   "words": [
+    "26027"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 223,
+   "address": "06,2156",
+   "source": "CAF BIT9",
+   "words": [
+    "34743"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 224,
+   "address": "06,2157",
+   "source": "ADS DSRUPTSW",
+   "words": [
+    "27313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 226,
+   "address": "06,2160",
+   "source": "CCS DSRUPTSW",
+   "words": [
+    "11313"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 227,
+   "address": "06,2161",
+   "source": "TC RESUME",
+   "words": [
+    "05270"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 228,
+   "address": "06,2162",
+   "source": "OCT37737 OCT 37737",
+   "words": [
+    "37737"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false,
+   "unreached": "OCT37737 runs as CA 7737 only when SYNCT4 finds DSRUPTSW +0, which adding BIT9 to a negative DSRUPTSW never yields (it reaches -0 or a positive count)"
+  },
+  {
+   "line": 229,
+   "address": "06,2163",
+   "source": "TC SYNCT4",
+   "words": [
+    "02154"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 230,
+   "address": "06,2164",
+   "source": "TC RESUME",
+   "words": [
+    "05270"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 232,
+   "address": "06,2165",
+   "source": "QUIKOFF EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 233,
+   "address": "06,2166",
+   "source": "WRITE OUT0",
+   "words": [
+    "01010"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 234,
+   "address": "06,2167",
+   "source": "CAF BIT14",
+   "words": [
+    "34736"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 235,
+   "address": "06,2170",
+   "source": "TCF QUIKRUPT",
+   "words": [
+    "12144"
+   ],
+   "kind": "instruction",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 237,
+   "address": "06,2171",
+   "source": "14,11,9 OCT 22400",
+   "words": [
+    "22400"
+   ],
+   "kind": "constant",
+   "native": "src/t4rupt_core.c",
+   "executed_by_oracle": false
+  }
+ ]
+}

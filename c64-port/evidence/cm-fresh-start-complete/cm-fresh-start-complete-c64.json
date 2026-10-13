@@ -3,7 +3,7 @@
  "aggregates": {
   "cm-fresh-start": {
    "record": "evidence/cm-fresh-start/cm-fresh-start-vice.log",
-   "sha256": "acde2fae7c3ec743acc78a202e353cf1879208946a9908e8b755085c1ebdee82",
+   "sha256": "c83b2118d5408dd984916e5ae32edb8cb79f2bef9452092b3d36b0939a9df36b",
    "pass_lines": [
     "PASS: VICE PAL cm-fresh-start.prg: 259 checks, 0 failures"
    ],
@@ -11,23 +11,35 @@
     259
    ],
    "failures": 0,
-   "result": "PASS"
+   "result": "PASS",
+   "prg_sha256": [
+    {
+     "prg": null,
+     "sha256": "db905773fd0a1069c531674b0db16922302036a901f160254eb5b1287761c9ca"
+    }
+   ]
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-vice.log",
-   "sha256": "80dd8ff64a284f8addbb5e0fb79552386f4ef477f890632d662b2356bc772cd8",
+   "sha256": "4e165ea4e150313fb19d27d3ac02e001dfd00708fd895a736c93d3f8248f5182",
    "pass_lines": [
-    "PASS: VICE PAL cm-v37.prg: 165 checks, 0 failures"
+    "PASS: VICE PAL cm-v37.prg: 168 checks, 0 failures"
    ],
    "checks": [
-    165
+    168
    ],
    "failures": 0,
-   "result": "PASS"
+   "result": "PASS",
+   "prg_sha256": [
+    {
+     "prg": null,
+     "sha256": "11152ce16494e5390a455cec45c33f8f361d8adad444e652bd8d4611823da08c"
+    }
+   ]
   },
   "cm-stateup": {
    "record": "evidence/cm-stateup/cm-stateup-vice.log",
-   "sha256": "a8f6fc462c5bedc2386f8ed833637e5dbee535ea8cdb8ee869a66e022fe10291",
+   "sha256": "c3989f4770d7df0aa4ff10ff9181a7217a5248c0e4c0da511a18e9468492f587",
    "pass_lines": [
     "PASS: VICE PAL cm-stateup.prg: 242 checks, 0 failures"
    ],
@@ -35,7 +47,13 @@
     242
    ],
    "failures": 0,
-   "result": "PASS"
+   "result": "PASS",
+   "prg_sha256": [
+    {
+     "prg": null,
+     "sha256": "094330a3509438f2877764b36eeb6d5655d2ef397a51eb5e81a2ea91b3f4bc37"
+    }
+   ]
   }
  },
  "result": "PASS"

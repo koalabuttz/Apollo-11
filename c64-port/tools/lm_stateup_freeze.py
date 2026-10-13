@@ -71,7 +71,7 @@ def main():
     table(out, 'lm_stateup_expected', values)
     (R / 'tests/lm_stateup_vectors.h').write_text('\n'.join(out) + '\n')
     chosen, cover = a2_c64_rows.select('lm-stateup', SRC, ['lm_stateup_cases.h'], 'lm_stateup_digest(&s,(uint16_t)n,&st);', len(values),
-                                       stride=16)
+                                       stride=16, slots=13)
     (R / 'tests/lm_stateup_c64_vectors.h').write_text(a2_c64_rows.header('lm_stateup_freeze.py', 'lm_stateup', values, chosen, 16))
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
