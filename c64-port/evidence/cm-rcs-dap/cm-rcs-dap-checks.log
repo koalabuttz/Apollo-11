@@ -1,7 +1,0 @@
-cm-rcs-dap: 128 frozen original RCS-CSM_DIGITAL_AUTOPILOT states, entry refusals: PASS
-PASS 65536 original RCS-CSM_DIGITAL_AUTOPILOT oracle states equal native 2054-word rows {'returned': 65536} ef7314266de8d7162bf7cb99d85ce397e3469463985e0aa58aa5533e155a851e
-PASS 611 original RCS-CSM_DIGITAL_AUTOPILOT words mapped; listing equals rope; 87 fixed constants, 2CADR and INDEX tables equal native literals; TC Q dispatch and frontier returns equal the listing
-PASS 611 emitted RCS-CSM_DIGITAL_AUTOPILOT.agc words equal the original Comanche055 rope
-cm-rcs-dap: 128 frozen original RCS-CSM_DIGITAL_AUTOPILOT states, entry refusals: PASS
-PASS 65536 original RCS-CSM_DIGITAL_AUTOPILOT oracle states equal native 2054-word rows (ASan/UBSan) {'returned': 65536} ef7314266de8d7162bf7cb99d85ce397e3469463985e0aa58aa5533e155a851e
-PASS: VICE PAL cm-rcs-dap.prg: 128 checks, 0 failures

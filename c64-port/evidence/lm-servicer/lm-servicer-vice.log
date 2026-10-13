@@ -1,15 +1,15 @@
-lm-servicer-1.prg sha256 01030600357e75991f3e61302328d957b895773c2980d875cde35d6eab06ea79 heap_start $8d62
-lm-servicer-2.prg sha256 94887f1d83f7e1352b29a4e7cab6e1e04d60799728c95ef24a2bb015a2077fae heap_start $b930
-lm-servicer-3.prg sha256 6d8ba063cf4a11ebdc10d3e53f3e824e9f63aef14f043fe376f0046728a8ed29 heap_start $b736
-lm-servicer-4.prg sha256 e9f0f5860bef0a61a0876491784e5110f7f5a4c63046c5eb21206629bceeb48b heap_start $b89c
-lm-servicer-5.prg sha256 6a576640e3ea5213d5b1d1fab950f1ed4b13ec237971e8c4c51b304cc3d58989 heap_start $b92a
-lm-servicer-6.prg sha256 96b862bf7637e9082ae1f576ea0c65bde67a07490706c0d4b6cdbb6e36b35657 heap_start $b83b
-lm-servicer-7.prg sha256 09d5db154ca699d23979602d5d9d477d4a93ac6ad88ad6f256362ead0ee5e94b heap_start $b954
-lm-servicer: 459 C64 rows in 7 segment groups (each takes every entry, outcome, branch and edge of every linked source its group's host cases take; together the 1132 branches of the whole file)
-PASS: VICE PAL lm-servicer-1.prg: 259 checks, 0 failures
-PASS: VICE PAL lm-servicer-2.prg: 28 checks, 0 failures
-PASS: VICE PAL lm-servicer-3.prg: 27 checks, 0 failures
+lm-servicer-1.prg sha256 38350c0d464781c5565bc86444bae80683f9e629ad00658f818032d251e75bd4 heap_start $8c02
+lm-servicer-2.prg sha256 81843028d9d1f6124a19474949538e79ed4d979f126bfea64c222a521f9bf908 heap_start $bdfd
+lm-servicer-3.prg sha256 668a11570b2004545d6c8d389470c1867d8ddbc8d282b549b03f6e2736f0f43a heap_start $bdfb
+lm-servicer-4.prg sha256 a7b01a46eef2800f6d69dce1332f3c837bb6a49b8ea5beecf8f7ccf36f0a1522 heap_start $b746
+lm-servicer-5.prg sha256 65b3f90169268b9ba61cad82a615e4dd132bb93c71a70012023a21923f64e30b heap_start $b7ed
+lm-servicer-6.prg sha256 e6814c940ad481c48f7c53733b0e4722218c5f028cac9d4ff6d9c0a574e704bb heap_start $b6e8
+lm-servicer-7.prg sha256 a73c9e685647f4c5b5911393946aaad4e844e450cb4280cec183f3a468a21397 heap_start $bf51
+lm-servicer: 464 C64 rows in 7 segment groups (each takes every entry, outcome, branch and edge of every linked source its group's host cases take; together the 1132 branches of the whole file)
+PASS: VICE PAL lm-servicer-1.prg: 258 checks, 0 failures
+PASS: VICE PAL lm-servicer-2.prg: 29 checks, 0 failures
+PASS: VICE PAL lm-servicer-3.prg: 30 checks, 0 failures
 PASS: VICE PAL lm-servicer-4.prg: 32 checks, 0 failures
 PASS: VICE PAL lm-servicer-5.prg: 29 checks, 0 failures
-PASS: VICE PAL lm-servicer-6.prg: 28 checks, 0 failures
-PASS: VICE PAL lm-servicer-7.prg: 56 checks, 0 failures
+PASS: VICE PAL lm-servicer-6.prg: 29 checks, 0 failures
+PASS: VICE PAL lm-servicer-7.prg: 57 checks, 0 failures

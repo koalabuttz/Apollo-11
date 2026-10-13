@@ -119,15 +119,23 @@ static enum exec_status vardelay(const agc_native_program *p,apollo_overlay_stat
  * XCH BBANK; TCF T3RUPT; EXTEND; ROR SUPERBNK; TS BANKRUPT; EXTEND;
  * QXCH QRUPT; then T3RUPT2 shifts the lists and DTCBs to the next task. */
 static const uint8_t leadin[10]={0,1,2,3,4,6,010,011,012,016};
-static enum exec_status t3rupt(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *io=v;agc_word saved[10],old_bb,q;uint8_t i;
+/* body: entered at T3RUPT 01,3416 itself (the vector's TCF T3RUPT), with
+ * BB = T3RPTBB and A the interrupted BB. */
+static enum exec_status t3(const agc_native_program *p,apollo_overlay_state *s,cm_native_io *io,bool body){agc_word saved[10],old_bb,q;uint8_t i;
  if(!p||!p->hardware||!s||!io||p->hardware->in_interrupt!=1u||agc_overflow(W[0])||W[012]>07777u)return EXEC_OUT_OF_SCOPE;
+ if(body&&(W[7]||W[6]!=BB_LST1||(agc_correct(W[0])&(agc_word)~076007u)||W[2]>07777u))return EXEC_OUT_OF_SCOPE;
  for(i=0;i<10u;++i)saved[i]=W[leadin[i]];
- dxch(s,010);old_bb=W[6];banks(s,BB_LST1);
+ if(body)old_bb=agc_correct(W[0]);else{dxch(s,010);old_bb=W[6];banks(s,BB_LST1);}
  W[0]=(agc_word)(old_bb|io->superbank);W[016]=W[0];q=W[2];W[2]=W[012];W[012]=q;
  /* A refused T3RUPT2 writes nothing itself. */
  if(cm_task_transfer(s,io,CM_TASK_DISPATCH)!=CM_TASK_SELECTED){for(i=0;i<10u;++i)W[leadin[i]]=saved[i];return EXEC_OUT_OF_SCOPE;}
  return EXEC_OK;
 }
+static enum exec_status t3rupt(const agc_native_program *p,apollo_overlay_state *s,void *v){return t3(p,s,v,false);}
+static enum exec_status t3rupt_body(const agc_native_program *p,apollo_overlay_state *s,void *v){return t3(p,s,v,true);}
+/* DLY2 -1 05255, from DELAYJOB's TCF DLY2 -1: TS WAITADR, WAIT2's insertion,
+ * back to WAITEXIT +2 (TCGETCAD) or BAILOUT. */
+static enum exec_status dly2_m1(const agc_native_program *p,apollo_overlay_state *s,void *v){return delay(p,s,v,CM_WL_DLY2_MINUS1);}
 /* 05324 TASKOVER: RUPTAGN +1 dispatches the next task that fell due; -0
  * resumes the interrupted program (RESUME: Z = ZRUPT-1, the instruction
  * saved in BRUPT next, and the interrupt ends). */
@@ -141,10 +149,16 @@ static enum exec_status taskover(const agc_native_program *p,apollo_overlay_stat
  W[5]=(agc_word)(W[015]-1u);W[7]=0;p->hardware->in_interrupt=0;
  return EXEC_OK;
 }
-static const agc_routine_entry entries[14]={
- {B1(CM_EXEC_LNGCALL2),lngcall2},{B1(CM_EXEC_LONGCYCL),longcycl},{B1(CM_EXEC_LONGRTRN),longrtrn},
+static const agc_routine_entry entries[16]={
+ {B1(03416u),t3rupt_body},{B1(CM_EXEC_LNGCALL2),lngcall2},{B1(CM_EXEC_LONGCYCL),longcycl},{B1(CM_EXEC_LONGRTRN),longrtrn},
  {B1(CM_EXEC_MUCHRTRN),longrtrn},{B1(CM_EXEC_GETCADR),getcadr},
  {FF(CM_EXEC_T3RUPT_VECTOR),t3rupt},{FF(CM_EXEC_NOVAC),novac},{FF(CM_EXEC_FINDVAC),findvac},{FF(CM_EXEC_TWIDDLE),twiddle},
- {FF(CM_EXEC_WAITLIST),waitlist_call},{FF(CM_EXEC_FIXDELAY),fixdelay},{FF(CM_EXEC_VARDELAY),vardelay},
+ {FF(CM_EXEC_WAITLIST),waitlist_call},{FF(05255u),dly2_m1},{FF(CM_EXEC_FIXDELAY),fixdelay},{FF(CM_EXEC_VARDELAY),vardelay},
  {FF(CM_EXEC_TASKOVER),taskover},{FF(CM_EXEC_LONGCALL),longcall}};
-const agc_routine_table cm_exec_routines={entries,14};
+const agc_routine_table cm_exec_routines={entries,16};
+#if defined(CM_EXEC_DLY2_ONLY)
+/* For a C64 program that only enters DLY2 -1 (waitlist-entries kind 3): the
+ * same entry alone, so the rest of the table is not linked. */
+static const agc_routine_entry dly2_only[1]={{FF(05255u),dly2_m1}};
+const agc_routine_table cm_exec_dly2_routines={dly2_only,1};
+#endif

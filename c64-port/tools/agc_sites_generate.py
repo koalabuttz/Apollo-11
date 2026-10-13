@@ -44,9 +44,13 @@ TABLES = {
                 'src/lm_exec_sites.inc', 'lm_exec_sites'),
     'cm-exec': ('Comanche055', ('NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'TWIDDLE', 'FIXDELAY'),
                 'src/cm_exec_sites.inc', 'cm_exec_sites'),
+    # SERVICE_ROUTINES: the flag descriptor (ADRES or a named-flag constant)
+    # after UPFLAG and DOWNFLAG, the source and destination ADRES after GENTRAN.
+    'lm-service': ('Luminary099', ('UPFLAG', 'DOWNFLAG', 'GENTRAN'), 'src/lm_service_sites.inc', 'lm_service_sites'),
+    'cm-service': ('Comanche055', ('UPFLAG', 'DOWNFLAG', 'GENTRAN'), 'src/cm_service_sites.inc', 'cm_service_sites'),
 }
 # Callees whose operand is two words (2CADR, or an OCT pair).
-TWO_WORD = {'NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL'}
+TWO_WORD = {'NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'GENTRAN'}
 # `TC <service>` words that are data, not calls: PINBALL keeps them as
 # constants to store into erasable (TCNOVAC, TCWAIT, TCFINDVC).
 CONSTANT_WORDS = {'TCNOVAC', 'TCWAIT', 'TCFINDVC'}
@@ -143,6 +147,11 @@ def sites(mission, callees):
             if n_op == '2CADR':
                 assert len(n_words) == 2, (n_path, n_line)
                 pair = [(n_words[0], f'2CADR {n_operands}'), (n_words[1], f'2CADR {n_operands} +1')]
+            elif callee == 'GENTRAN':
+                second = next(following)
+                assert len(n_words) == 1 and len(second[3]) == 1, (n_path, n_line)
+                assert fixed_address(second[2]) == operand_physical + 1, (n_path, n_line)
+                pair = [(n_words[0], f'{n_op} {n_operands}'.strip()), (second[3][0], f'{second[5]} {second[6]}'.strip())]
             else:
                 second = next(following)
                 assert n_op == 'OCT' and second[5] == 'OCT' and len(n_words) == 1, (n_path, n_line)

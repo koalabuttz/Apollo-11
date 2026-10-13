@@ -45,5 +45,6 @@
  },
  "boundary": "one routine from its entry to the continuation it leaves in Z (LODSAMPT, NOVAC or RESUME, all in fixed-fixed memory); the original runs to the first time it reaches that Z",
  "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr, channel 11",
- "full_physical_words": 2048
+ "full_physical_words": 2048,
+ "oracle": "yaAGC (agc_engine) running the original rope of each mission"
 }

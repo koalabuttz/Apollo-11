@@ -1,0 +1,23 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+adcd64391a8fff2e6e3dcc756c842c0854f4e75620a9a96c4b5d3e4cfe63a827  build/cm-servicer-1.prg
+6911564f29b6a78b158b2e6678a16f647e9a25293dab15b4e651dc2366845522  build/cm-servicer-2.prg
+6b3f3ae464cf2cc393824f3439ae3b9eb3d39567e3055d4ec52a6fc4f15d5e9f  build/cm-servicer-3.prg
+d74a783dc5839753fd191f0ba20c62e082884a8d522a820489eb6df3a359ce7f  build/cm-servicer-4.prg
+5bceee86116c2fe221a514a116cc619ce1f056097f5b4034bdd47cbb3dc3d2f1  build/cm-servicer-5.prg
+0690d7eaf43a199e9fc6e12c472ee7646f29c56862ec511e2833b9831ff74510  build/cm-servicer-6.prg
+21162e400a4bd1f5b8c222e91de55d528020a63b698458944f70438290ef3d0f  build/cm-servicer-7.prg
+acaf70196e58dfcffa307510d4b9303fcacd07f96e7acbadb46e275f69768a3d  build/cm-servicer-8.prg
+6ee6d4b829565cd2aff9edc1fa5378832f241d9044db30b16a08bdc666e3fd24  build/cm-servicer-9.prg
+
+$ make vice-cm-servicer
+for p in build/cm-servicer-1.prg build/cm-servicer-2.prg build/cm-servicer-3.prg build/cm-servicer-4.prg build/cm-servicer-5.prg build/cm-servicer-6.prg build/cm-servicer-7.prg build/cm-servicer-8.prg build/cm-servicer-9.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-servicer-1.prg: 37 checks, 0 failures
+PASS: VICE PAL cm-servicer-2.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-servicer-3.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-servicer-4.prg: 19 checks, 0 failures
+PASS: VICE PAL cm-servicer-5.prg: 7 checks, 0 failures
+PASS: VICE PAL cm-servicer-6.prg: 11 checks, 0 failures
+PASS: VICE PAL cm-servicer-7.prg: 30 checks, 0 failures
+PASS: VICE PAL cm-servicer-8.prg: 10 checks, 0 failures
+PASS: VICE PAL cm-servicer-9.prg: 3 checks, 0 failures
+exit 0

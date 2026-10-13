@@ -1,7 +1,0 @@
-cm-entry-dap: 136 frozen original CM_ENTRY_DIGITAL_AUTOPILOT states, entry refusals: PASS
-PASS 65536 original CM_ENTRY_DIGITAL_AUTOPILOT oracle states equal native 2053-word rows {'returned': 65536} 2f5b283a1b946b57d0794e8a5c2426c6cd9b119cb67605ea4b350ad1f1f8fd7b
-PASS 807 original CM_ENTRY_DIGITAL_AUTOPILOT words mapped; listing equals rope; 108 fixed constants, 2CADR and INDEX tables equal native literals; TC Q dispatch and frontier returns equal the listing
-PASS 807 emitted CM_ENTRY_DIGITAL_AUTOPILOT.agc words equal the original Comanche055 rope
-cm-entry-dap: 136 frozen original CM_ENTRY_DIGITAL_AUTOPILOT states, entry refusals: PASS
-PASS 65536 original CM_ENTRY_DIGITAL_AUTOPILOT oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} 2f5b283a1b946b57d0794e8a5c2426c6cd9b119cb67605ea4b350ad1f1f8fd7b
-PASS: VICE PAL cm-entry-dap.prg: 136 checks, 0 failures
