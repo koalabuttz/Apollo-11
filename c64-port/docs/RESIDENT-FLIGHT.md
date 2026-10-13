@@ -18,7 +18,16 @@ loads every class-2 module there once (`apollo_reu_store_fixed`,
 `rk_hidden_dma`): the REU registers are set with I/O in, the command is armed
 without execute-now, and a write to $FF00 starts the DMA with $01=$34. Its
 code runs with I/O banked out, so the IRQ entry saves $01, sets $35 to
-acknowledge CIA1 and restores it. One mission's resident is:
+acknowledge CIA1 and restores it.
+
+The top of the service-table page holds the device records flight modules
+reach by absolute address (`--defsym` at link, `RK_HARDWARE`,
+`RK_FLIGHT_IO`, `RK_CM_CHANNELS` in `resident_flight.h`): `rk_hardware`
+(`agc_hardware`) at $6FBE, `rk_flight` (the `flight_io` fields neither
+`rk_io` nor `agc_hardware` holds) at $6FDC, and on the CM the one
+`cm_channels` record (channels 5, 6, 30-33) at $6FF4, with inputs at the
+values yaAGC starts with. The service table must end at or below $6FBE (63
+entries); the linker script asserts it. One mission's resident is:
 
 | Component | Sources |
 |---|---|

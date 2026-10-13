@@ -59,8 +59,11 @@ def run(m, a):
     count = struct.unpack_from('<H', data, 0x3fe)[0]
     differ = set(struct.unpack_from('<8H', data, 0x3e0)[:data[0x3df]])
     modules = []
+    # Module ids and sizes in check order, from the check's data header.
+    listed = re.findall(r'\{0x([0-9a-f]+)u,(\d+)u,', (OUT / f'{m}-load-check.h').read_text().split('fl_modules', 1)[1])
     for i in range(count):
-        ident, size, load, cached, direct, main = struct.unpack_from('<HHIHHH', data, 0x400 + 14 * i)
+        ident, size = int(listed[i][0], 16), int(listed[i][1])
+        load, cached, direct, main = struct.unpack_from('<IHHH', data, 0x400 + 10 * i)
         load, cached = load - overhead, cached - overhead
         modules.append(dict(id=f'0x{ident:04x}', bytes=size, load_cycles=load, cached_cycles=cached,
                             direct_cycles=direct - overhead if direct else None,
