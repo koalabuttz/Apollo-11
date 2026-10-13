@@ -21,7 +21,7 @@ LANEC_PW_LAMP_RUN(lanec_pw_input_store_run, dsky_input_store, cm_input_store, en
 LANEC_PW_LAMP_RUN(lanec_pw_input_time_run, dsky_input_time, cm_input_time, enum dsky_input_time_route, DSKY_INPUT_TIME_LOADED)
 
 enum lanec_status lanec_pw_jam_control_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     uint16_t wrote_super = 0;
     if (mission == LANEC_LM) {
         dsky_charin_io p; lanec_pw_charin_in(io, &p);
@@ -42,7 +42,7 @@ LANEC_PW_LAMP_RUN(lanec_pw_lamp_release_run, dsky_lamp_release, cm_lamp_release,
 LANEC_PW_LAMP_RUN(lanec_pw_lamp_test_run, dsky_lamp_test, cm_lamp_test, enum dsky_lamp_route, DSKY_LAMP_WAIT)
 
 enum lanec_status lanec_pw_load_complete_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     if (mission == LANEC_LM) {
         dsky_lamp_io p; lanec_pw_lamp_in(io, &p);
         if (dsky_load_complete(s, &p) != P66_BIAS_OK) return LANEC_OUT_OF_SCOPE;
@@ -56,7 +56,7 @@ enum lanec_status lanec_pw_load_complete_run(apollo_overlay_state *s, lanec_io *
 }
 
 enum lanec_status lanec_pw_load_control_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     if (mission == LANEC_LM) {
         dsky_charin_io p; lanec_pw_charin_in(io, &p);
         if (dsky_load_control(s, &p) != P66_BIAS_OK) return LANEC_OUT_OF_SCOPE;
@@ -76,7 +76,7 @@ LANEC_PW_LAMP_RUN(lanec_pw_load_store_run, dsky_load_store, cm_load_store, enum 
 LANEC_PW_ROUTE_RUN(lanec_pw_machine_cadr_run, dsky_machine_cadr, cm_machine_cadr, enum dsky_machine_route, DSKY_MACHINE_VERB_FAN)
 
 enum lanec_status lanec_pw_major_request_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     enum dsky_major_request_route r = DSKY_MAJOR_REQUEST_END;
     if (mission == LANEC_LM) {
         dsky_charin_io p; lanec_pw_charin_in(io, &p);

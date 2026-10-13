@@ -17,6 +17,7 @@ Usage: interp_compile.py <spec> [--check]
   writes src/<base>.c and include/<base>.h (or compares them with --check)
   for each mission of the spec in tools/interp_specs.py."""
 import os
+import re
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import interp_listing as IL
@@ -41,7 +42,7 @@ ADDR = {
 # Fixed operands longer than a vector (the words a K array holds).
 K_WORDS = {'MXV': 18, 'VXM': 18}
 # Input channels a 'channel_inputs' spec reads from the caller's latches.
-INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
+INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
 ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
               'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
 MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'LXC': 'LXC', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
@@ -154,6 +155,9 @@ class Compiler:
         # a job whose DANZIG finds NEWJOB positive stops at CHANG2 and the
         # Executive's resume (NEWOPS at LOC +1) has its key.
         self.rk = bool(spec.get('resume_keys'))
+        # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
+        # (tasks and NOVAC jobs call them too), not only a VAC area.
+        self.any_fixloc = bool(spec.get('any_fixloc'))
         self.sload_k = False
         self.uses_channels = False
         self.kx = {}           # index_guard fixed tables: window start -> (words, base)
@@ -954,7 +958,7 @@ class Compiler:
             head = st[0]
             self._st_tail = st[1:]
             st = [head, '{agc_word iw=ixw(s,0%05o,0%ou);if((iw^0%05ou)&0%05ou)return EXEC_OUT_OF_SCOPE;' % (
-                w, k, w, 0o77777 & ~mask)]
+                self._ix_base if self._ix_base is not None else w, k, w, 0o77777 & ~mask)]
             if mask == 0o7777 and self.spec.get('index_guard'):
                 # A 12-bit erasable operand: the sum must stay erasable (an
                 # INDEX POSITON far past the table would read the rope).
@@ -993,6 +997,16 @@ class Compiler:
                 w = self.L.word(p)
                 continue
             break
+        self._ix_base = None
+        carry = self.spec.get('index_carry', {}).get(self.where(p))
+        if carry is not None and index is not None:
+            # INDEX K; TS 0 -1 (AOTMARK's MKVACFND): the index carries the
+            # word into another quarter code. Compile the instruction the
+            # sum becomes (carry: its opcode and quarter code, address
+            # from the sum); any other sum refuses.
+            self._ix_base = w
+            w = carry
+            op, qc, k12, k10 = (w >> 12) & 7, (w >> 10) & 3, w & 0o7777, w & 0o1777
         nxt = p + 1
         self.unit_words = range(start, p + 1)
         ln = self.code.get(p)
@@ -1188,6 +1202,14 @@ class Compiler:
         else:
             w = ln.words[0] if ln.words else 0
             io_op, chan = (w >> 9) & 7, w & 0o777
+            if op == 0 and index is None and chan in (1, 2):
+                # Channels 1 and 2 are L and Q: whole 16-bit register
+                # operations, as yaAGC does them.
+                r = 'W[%d]' % chan
+                return st + [{0: 'W[0]=%s;' % r, 1: '%s=W[0];' % r,
+                              2: 'W[0]=(agc_word)(W[0]&%s);' % r, 3: 'W[0]=%s=(agc_word)(W[0]&%s);' % (r, r),
+                              4: 'W[0]=(agc_word)(W[0]|%s);' % r, 5: 'W[0]=%s=(agc_word)(W[0]|%s);' % (r, r),
+                              6: 'W[0]=(agc_word)(W[0]^%s);' % r}[io_op]], [nxt]
             if op == 0 and self.spec.get('channel_inputs') and index is None and io_op in (0, 2, 4, 6) \
                     and chan in INPUT_CHANNELS:
                 # READ, RAND, ROR, RXOR of an input channel the caller latches
@@ -1259,6 +1281,12 @@ class Compiler:
     def is_basic(self, q):
         ln = self.code.get(q)
         return (ln is not None and ln.op and (ln.op == 'INCR' or not is_interp_op(ln.op)) and ln.op not in DATA_OPS)
+
+    def novac(self, phys):
+        """Under 'any_fixloc', a basic routine that never names FIXLOC (0120)
+        and does not enter the interpreter (TC INTPRET)."""
+        return (self.any_fixloc and self.starts[phys][0] == 'b'
+                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys]))
 
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
@@ -1507,6 +1535,16 @@ class Compiler:
         c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
         c.append(' return 1;')
         c.append('}')
+        if self.any_fixloc:
+            c.append('/* The same for a basic routine that never names FIXLOC: any FIXLOC. */')
+            c.append('static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){')
+            c.append(' unsigned i;')
+            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
+                     % ('W[067]>037777u' if self.rk else 'W[067]'))
+            c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+            c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
+            c.append(' return 1;')
+            c.append('}')
         c.append('/* An interpretive routine at NEWOPS of its bank (LOC was matched by the')
         c.append(' * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */')
         # Only a file in banks 030-043 can depend on the superbank bit.
@@ -1557,6 +1595,10 @@ class Compiler:
         c.append('static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
         c.append(' return %s&&sane(s,io);' % sb)
         c.append('}')
+        if self.any_fixloc:
+            c.append('static MAYBE_UNUSED uint8_t at_basic_nv(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+            c.append(' return %s&&sane_nv(s,io);' % sb)
+            c.append('}')
         c.append('')
         if self.basic:
             c.extend(self.basic.emit(sym))
@@ -1611,10 +1653,11 @@ class Compiler:
                 c.append('#endif')
                 continue
             c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
+            nv = '_nv' if self.novac(phys) else ''
             if kind == 'b' and phys // 1024 in (2, 3):
-                c.append(' if(!sane(s,io))return EXEC_OUT_OF_SCOPE;')
+                c.append(' if(!sane%s(s,io))return EXEC_OUT_OF_SCOPE;' % nv)
             else:
-                chk = 'at_newops' if kind == 'i' else 'at_basic'
+                chk = 'at_newops' if kind == 'i' else 'at_basic' + nv
                 if any('goto top;' in st for st in self.blocks[phys]):
                     c.append(' uint16_t loops=0;')
                     c.append(' top:')

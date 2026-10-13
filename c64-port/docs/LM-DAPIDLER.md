@@ -42,6 +42,16 @@ producer:
 - a missing io record;
 - a CHEKBITS or CHEKMORE return in Q that is not a TC into fixed memory.
 
+The calls are routed at compile time through `include/agc_fast_redirect.h`:
+an operand that is a plain erasable cell under EBANK6 goes to the
+`agc_fast_ops` helper of the same name (`include/agc_fast_ops.h`), any other
+operand to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`), and every
+check below runs this form; `-DLM_DI_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
+DAPIDLER takes about 16K 6502 cycles instead of 25K (mos-sim, `-Oz`).
+
 ## Verification
 
 `tests/lm_dapidler_cases.c` builds 9,216 cases, 1,024 per entry. Each starts

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-q-r-axis (lane F): Luminary099 Q_R-AXIS_RCS_AUTOPILOT as native
 # routines of the control-transfer ABI.
-LM_QR_SRC = src/lm_q_r_axis.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_q_r_axis_cases.c
-LM_QR_HDR = include/lm_q_r_axis.h include/lm_flight_io.h include/agc_image_ops.h include/agc_transfer.h src/lm_q_r_axis_sites.inc tests/lm_q_r_axis_cases.h
+LM_QR_SRC = src/lm_q_r_axis.c src/agc_fast_ops.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_q_r_axis_cases.c
+LM_QR_HDR = include/lm_q_r_axis.h include/lm_flight_io.h include/agc_image_ops.h include/agc_fast_ops.h include/agc_image_thin.h include/agc_fast_redirect.h include/agc_transfer.h src/lm_q_r_axis_sites.inc tests/lm_q_r_axis_cases.h
 LM_QR_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections
 .PHONY: test-lm-q-r-axis sanitize-lm-q-r-axis c64-lm-q-r-axis vice-lm-q-r-axis lm-q-r-axis-differential
 all: build/test-lm-q-r-axis

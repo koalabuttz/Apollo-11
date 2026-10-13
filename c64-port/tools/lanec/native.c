@@ -19,7 +19,15 @@
 #include <string.h>
 #include "lanec_case.h"
 #include "lanec_suites.h"
+#include "dsky_fixed_display.h"
 static apollo_overlay_state s, before;
+
+/* The rope for modules that read it as data (lanec_fixed_read): the
+ * missions' fixed-memory images the earlier display modules use. */
+static bool fixed(enum lanec_mission mission, uint16_t physical, agc_word *word)
+{
+    return dsky_fixed_display_data(mission == LANEC_LM ? DSKY_NV_LM : DSKY_NV_CM, physical, word, 0);
+}
 
 int main(int argc, char **argv)
 {
@@ -32,6 +40,7 @@ int main(int argc, char **argv)
     enum lanec_status status;
     uint32_t n;
     unsigned i, bank, z, interp;
+    lanec_fixed_read = fixed;
     if (!suite) { fprintf(stderr, "usage: native [--entries|--exits] SUITE | native SUITE CASE\n"); return 2; }
     for (n = only == UINT32_MAX ? 0 : only; n < suite->count && n <= only; ++n) {
         memset(&meta, 0, sizeof meta);

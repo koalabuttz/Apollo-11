@@ -13,16 +13,16 @@ static void cm_out(const cm_native_io *c,flight_io *io,agc_hardware *hw){
  hw->channel15=c->main_keys;io->channel16=c->navigation_keys;io->superbank=c->superbank;io->interrupt_enabled=c->interrupt_enabled;
  io->trap31a=(uint16_t)c->trap31a;io->trap31b=(uint16_t)c->trap31b;io->trap32=(uint16_t)c->trap32;
  io->executive_alarm=c->executive_alarm;io->waitlist_alarm=c->waitlist_alarm;}
-static void inputs(agc_input_channels *in,const agc_hardware *hw){
+static void inputs(agc_input_channels *in,const flight_io *io,const agc_hardware *hw){
  in->channel3=hw->channel3;in->channel4=hw->channel4;in->channel30=hw->channel30;in->channel31=hw->channel31;
- in->channel32=hw->channel32;in->channel33=hw->channel33;}
+ in->channel32=hw->channel32;in->channel33=hw->channel33;in->channel16=io->channel16;}
 void *flight_io_enter(enum flight_io_kind kind,const flight_io *io,const agc_hardware *hw,flight_io_buffer *b){
  memset(b,0,sizeof *b);
  switch(kind){
  case FLIGHT_IO_P66:p66_in(&b->p66,io);break;
  case FLIGHT_IO_CM_NATIVE:cm_in(&b->cm,io,hw);break;
- case FLIGHT_IO_LM_CHANNEL:p66_in(&b->lm_channel.io,io);inputs(&b->lm_channel.in,hw);break;
- case FLIGHT_IO_CM_CHANNEL:cm_in(&b->cm_channel.io,io,hw);inputs(&b->cm_channel.in,hw);break;
+ case FLIGHT_IO_LM_CHANNEL:p66_in(&b->lm_channel.io,io);inputs(&b->lm_channel.in,io,hw);break;
+ case FLIGHT_IO_CM_CHANNEL:cm_in(&b->cm_channel.io,io,hw);inputs(&b->cm_channel.in,io,hw);break;
  case FLIGHT_IO_LM_FRESH:{lm_fresh_io *x=&b->lm_fresh;p66_in(&x->control,io);
   x->channel5=hw->channel5;x->channel6=hw->channel6;x->channel12=hw->channel12;x->channel13=hw->channel13;x->channel14=hw->channel14;
   x->channel15=hw->channel15;x->channel16=io->channel16;x->channel33=hw->channel33;
