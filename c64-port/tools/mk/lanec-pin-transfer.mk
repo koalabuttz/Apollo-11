@@ -4,7 +4,7 @@
 # Pinball modules that claim it, through their pw-* lanec_run adapters), with
 # round trips from every genuine BANKCALL/POSTJUMP caller through
 # INTER-BANK_COMMUNICATION, the display interface and the LM Executive.
-LANEC_PIN_TRANSFER_SRC = src/lanec_pin_routines.c tests/lanec_pin_transfer_cases.c
+LANEC_PIN_TRANSFER_SRC = src/lanec_pin_routines.c src/lanec_pin_trampoline.c src/lanec_pin_keys_num_routines.c src/lanec_pin_keys_cmd_routines.c tests/lanec_pin_transfer_cases.c
 LANEC_SUITE_SRC += $(LANEC_PIN_TRANSFER_SRC)
 LANEC_SUITE_HDR += include/lanec_pin_routines.h src/lanec_pin_routines.inc tests/lanec_pin_transfer_cases.inc
 .PHONY: test-lanec-pin-transfer sanitize-lanec-pin-transfer

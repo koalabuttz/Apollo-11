@@ -24,12 +24,22 @@
  * that one instruction (Z = its operand; for a TC, Q = the word's address
  * + 1), so the next routine starts where the original program goes. */
 #include "agc_transfer.h"
+#include "lanec.h"
+/* The trampoline (src/lanec_pin_trampoline.c): run the claiming modules f
+ * (0-terminated) in turn on the mission's device record v; the first that
+ * accepts gives the routine's result. */
+typedef enum lanec_status (*lanec_pin_dispatch)(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 #define LANEC_PIN_CELLS 13u
 /* RUPTREG3, DSEXIT/EXITEM, WDRET/DECRET, 0116, UPDATRET, SFTEMP2, MIXTEMP,
  * ENTEXIT/ENTRET, DSPWDRET/RELRET/..., MPAC, MPAC+2, MPAC+6, REQRET: the
  * same addresses in both missions */
 extern const uint16_t lanec_pin_cells[LANEC_PIN_CELLS];
 extern const agc_routine_table lanec_pin_lm_routines, lanec_pin_cm_routines;
+/* The keypress groups' routines (CHARIN and its key labels, src/lanec_pin_keys.c),
+ * in their own tables and files so the flight store links each group as one
+ * small module: number entry, and the other keys. */
+extern const agc_routine_table lanec_pin_keys_num_lm_routines, lanec_pin_keys_num_cm_routines;
+extern const agc_routine_table lanec_pin_keys_cmd_lm_routines, lanec_pin_keys_cmd_cm_routines;
 /* The C64 round trips. Every module does not fit one C64 program, so each
  * program registers one module's points (those it claims first, from
  * lanec_pin_c64_points) and runs that module alone. lanec_pin_c64_select
@@ -49,6 +59,12 @@ typedef struct { uint16_t physical; uint8_t module; } lanec_pin_point;
 #define LANEC_PIN_HAS_CM 1
 #endif
 #define LANEC_PIN_SWRETURN 0377u
+#ifdef LANEC_PIN_HAS_LM
+enum exec_status lanec_pin_run_lm(const agc_native_program *, apollo_overlay_state *, void *, const lanec_pin_dispatch *);
+#endif
+#ifdef LANEC_PIN_HAS_CM
+enum exec_status lanec_pin_run_cm(const agc_native_program *, apollo_overlay_state *, void *, const lanec_pin_dispatch *);
+#endif
 extern agc_routine_table lanec_pin_c64;
 void lanec_pin_c64_select(uint8_t module, int cm);
 const lanec_pin_point *lanec_pin_c64_points(int cm, uint16_t *count);

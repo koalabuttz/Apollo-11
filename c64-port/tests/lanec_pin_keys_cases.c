@@ -2,8 +2,8 @@
 /* Cases for CHARIN and its key labels (src/lanec_pin_keys.c), drawn from the
  * CHARIN states of the earlier key suites (pw-charin-*, pw-cm-charin-*,
  * pw-enter), so every key code, both missions and the generators' domains
- * are covered. Odd cases start at the key's label, where CHARIN's dispatch
- * leaves the state; even cases start at CHARIN. Every fourth pair replaces
+ * are covered. pin-keys starts at CHARIN; pin-key-labels starts at the key's
+ * label, where CHARIN's dispatch leaves the same states. Every fourth pair replaces
  * CADRSTOR with +0, -0 or another full value, so all four CCS branches and
  * the KEY REL light run for every key. */
 #include <string.h>
@@ -19,7 +19,7 @@ static const lanec_suite *const source[SOURCES] = {
     &lanec_suite_pw_charin_sign, &lanec_suite_pw_cm_charin_number, &lanec_suite_pw_cm_charin_nv,
     &lanec_suite_pw_enter, &lanec_suite_pw_charin_alarm };
 
-static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
+static void make_case(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
     const lanec_suite *from = source[(n / 2u) % SOURCES];
     uint32_t pair = n / 2u / SOURCES, k = pair * (from->count / PER), r = n * 2654435761u + 3u;
@@ -41,6 +41,11 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     }
     if (n & 1u) (void)lanec_pin_keys_charin(s, io, m->mission);
     lanec_pw_exit_stop(m, s, io, lanec_pin_keys_dispatch);
+    if (m->stops == 0u) m->ranges = 0u;   /* refused: the oracle stops at once */
 }
 
-const lanec_suite lanec_suite_pin_keys = { "pin-keys", 2u * SOURCES * PER, make, lanec_pin_keys_dispatch };
+static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m) { make_case(2u * n, s, io, m); }
+static void make_labels(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m) { make_case(2u * n + 1u, s, io, m); }
+
+const lanec_suite lanec_suite_pin_keys = { "pin-keys", SOURCES * PER, make, lanec_pin_keys_dispatch };
+const lanec_suite lanec_suite_pin_key_labels = { "pin-key-labels", SOURCES * PER, make_labels, lanec_pin_keys_dispatch };
