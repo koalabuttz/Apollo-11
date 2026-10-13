@@ -31,6 +31,7 @@ def build(cc, m):
     obj = OUT / f'flight_host_run_{m}.o'
     subprocess.run([cc, '-std=c99', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{YAAGC}',
                     f'-DRK_{m.upper()}=1', f'-DFLIGHT_HOST_TABLES="../build/flight-store/{m}-host.inc"',
+                    f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
                     '-c', 'tools/flight_host_run.c', '-o', str(obj)], cwd=ROOT, check=True)
     objs = sorted(str(p) for p in (OUT / 'host').glob('*.o'))
     subprocess.run([cc, str(obj), *objs, 'build/agc_engine_hardware_dv.o', str(YAAGC / 'agc_engine_init.o'),

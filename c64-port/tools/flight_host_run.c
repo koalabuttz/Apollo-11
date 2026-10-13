@@ -10,7 +10,9 @@
  * Native side: each point resolves to the first table that holds it; the
  * table's routine runs with its own io record (include/flight_io.h), and
  * rk_rupt_take vectors a pending interrupt at a routine boundary, as the
- * flight resident does. Every routine is checked in lockstep: yaAGC runs
+ * flight resident does. Inline operands come from one site table, every
+ * src/<m>_*sites.inc merged (build/flight-store/<m>-sites.inc), and no
+ * routine reads the rope as data. Every routine is checked in lockstep: yaAGC runs
  * from the state the routine started in until it reaches the routine's
  * continuation with the same erasable memory; the routine took that long
  * (the clock counters, the scaler and the interrupt requests come from
@@ -27,7 +29,8 @@
  * 1..CS and their erasable memory compared, without the central registers
  * (0-017), the clock counters (024-031) and RUPTREG1-4 (070-073). DSKY keys (KEYS, e.g. V37E12E)
  * are pressed on both sides from 2 s, one every half second.
- *   flight-host-run ROPE.bin [CS [EVERY [KEYS]]]   (build with -DRK_LM=1 or -DRK_CM=1) */
+ *   flight-host-run ROPE.bin [CS [KEYS]]   (build with -DRK_LM=1 or -DRK_CM=1,
+ *   FLIGHT_HOST_TABLES and FLIGHT_HOST_SITES naming the generated files) */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,6 +38,7 @@
 #include "flight_io.h"
 #include "resident_rupt.h"
 #include "rope_image.h"
+#include "self_check.h"
 #include "standard_lead_routines.h"
 #if RK_LM
 #define MISSION 0u
@@ -96,10 +100,12 @@ static void cold(void){unsigned i;m=loaded;memset(m.Erasable,0,sizeof m.Erasable
  m.InputChannel[030]=037777;m.InputChannel[031]=m.InputChannel[032]=m.InputChannel[033]=077777;
  m.Erasable[0][5]=04000;m.AllowInterrupt=1;}
 
-static agc_site_operand operands[APOLLO_ROPE_WORDS];
 /* The word at fixed address z under FB and the superbank. */
-static agc_word rope_word(agc_word z,agc_word fb,agc_word sb){agc_word w=0;apollo_rope_read(MISSION,agc_fixed_physical(z,fb,sb),&w);return w;}
-static bool fixed(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return apollo_rope_read(MISSION,physical,word);}
+static const agc_site_operand sites[]={
+#include FLIGHT_HOST_SITES
+};
+/* Reference side only: the rope word yaAGC holds (KEYRUPT1's BRUPT). */
+static agc_word rope_word(agc_word z,agc_word fb,agc_word sb){uint16_t p=agc_fixed_physical(z,fb,sb);return p==AGC_TRANSFER_NONE?0u:(agc_word)loaded.Fixed[p/1024u][p%1024u];}
 static agc_routine find(const agc_routine_table *t,uint16_t key){uint16_t lo=0,hi=t->count,mid;
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t->entries[mid].physical==key)return t->entries[mid].call;
   if(t->entries[mid].physical<key)lo=(uint16_t)(mid+1u);else hi=mid;}
@@ -279,12 +285,19 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(refs<cs)printf("reference: only %lu of %lu centiseconds reached an idle boundary\n",refs,cs);
  /* Native. */
  cold();
- for(i=0;i<APOLLO_ROPE_WORDS;++i){operands[i].physical=(uint16_t)i;apollo_rope_read(MISSION,(uint16_t)i,&operands[i].word);}
  memset(&s,0,sizeof s);memset(&io,0,sizeof io);memset(&hw,0,sizeof hw);memset(&p,0,sizeof p);
  io.undo=&undo;s.words[5]=04000u;io.interrupt_enabled=1;
  hw.channel30=037777u;hw.channel31=hw.channel32=hw.channel33=077777u;
- p.operands=operands;p.operand_count=APOLLO_ROPE_WORDS;p.interpreter_fetch=FETCH;p.loc=0164u;p.bankset=0165u;
- p.fixed_data=fixed;p.hardware=&hw;
+ /* Every inline operand the lanes compiled (src/<m>_*sites.inc), merged by
+  * tools/flight_store_build.py: the flight image's whole-program site table. */
+ p.operands=sites;p.operand_count=(uint16_t)(sizeof sites/sizeof sites[0]); /* AGC_BLOCK_TWO_SELF-CHECK reads the rope image (in the REU on the C64),
+  * and gives SUPDACAL the same image while ROPECHK runs. */
+#if RK_LM
+ p.fixed_data=lm_self_check_rope_data;
+#else
+ p.fixed_data=cm_self_check_rope_data;
+#endif
+ p.hardware=&hw;
  /* The program a routine sees holds every table (DANZIG's marker first among
   * the interpretive ones), for routines that resolve a continuation
   * themselves. */

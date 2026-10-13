@@ -26,7 +26,20 @@ the certified Executive tables the thin kernel replaces are not packed. A
 key two packed tables both hold is a collision: the resolver sends it to the
 table of the file `docs/port-coverage.json` lists first, and the report
 lists every collision for its lanes. `--host-only` writes only the host
-table index (`build/flight-store/<m>-host.inc`) for the differential.
+table index (`build/flight-store/<m>-host.inc`) and the whole-program site
+table (`build/flight-store/<m>-sites.inc`) for the differential.
+
+The site table merges the `agc_site_operand` entries of every
+`src/<m>_*sites.inc` (LM 1180 sites, CM 1062) and fails on two files giving
+one site different words. It is what the flight program's
+`agc_native_program.operands` must hold: the interbank, alarm, service and
+phase routines read their caller's inline operand through it, and with only
+the Executive's site table (what `platform/c64/resident_flight.c` holds
+today) POSTJUMP, BANKCALL, IBNKCALL, GENTRAN and ALARM refuse. At four bytes
+a site it does not fit the resident (about 4.7 KB free), so phase 2 moves
+the lookup to the REU. The self-check module also reads the rope image (in
+the REU on the C64) and is the program's `fixed_data` hook while ROPECHK
+runs; the harness wires both the same way.
 
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
@@ -60,7 +73,8 @@ port) runs one mission:
    no DOWNRUPT). Both missions take PTBAD (FAILREG 01107) and then
    DOFSTART, natively and in yaAGC alike.
 2. **Native run.** The thin kernel and every packed table, resolved by the
-   canonical key, run through `rk_rupt_take` and the trampoline.
+   canonical key, run through `rk_rupt_take` and the trampoline, with the
+   whole-program site table and no other rope access than self-check's.
 3. **Lockstep timing.** A native routine has no clock, so each call is
    checked by running yaAGC from the same before-state until it reaches the
    routine's continuation with equal erasable memory (024-031 and Z
@@ -118,13 +132,13 @@ where the point is periodic.
 
 | Lane | Mission | Points |
 |---|---|---|
-| A | LM | T4RUPT_PROGRAM: GPMATRIX 06,3132 (84), IMUMON 06,2172 (84), RRAUTCHK 06,3006 (83). INTERPRETER: INTPRET 03,2037 refused by `lanec_ev_lm_intpret`, Q+1 03,2737. FRESH_START_AND_RESTART: R00+1 04,2144 and DUMMYAD 04,2146 refused by `lm_stateup_interpretive` |
+| A | LM | T4RUPT_PROGRAM: GPMATRIX 06,3132 (84), IMUMON 06,2172 (84), RRAUTCHK 06,3006 (83). SERVICE_ROUTINES: GENTRAN+1 02,3545 refused by `lm_service_routines`, because `tools/agc_sites_generate.py` takes `TC GENTRAN` sites but not the two `TC GENTRAN +1` sites in AOSTASK_AND_AOSJOB (20,3574 and 20,3615; no other `TC <callee> +n` site exists in either mission). INTERPRETER: INTPRET 03,2037 refused by `lanec_ev_lm_intpret`, Q+1 03,2737. FRESH_START_AND_RESTART: R00+1 04,2144 and DUMMYAD 04,2146 refused by `lm_stateup_interpretive` |
 | A | CM | T4RUPT_PROGRAM: IMUMON 06,2174 (84), OPTMON 06,2765 (83), OPTDRIVE 10,2000 (83). ALARM_AND_ABORT: ALARM 02,3650 (native code, no routine table). INTERPRETER: INTPRET 03,2006, Q+1 03,2706, and in V37E00E NOIBNKSW, SWSTORE, VLOAD+3, NEG4+1, TSSL+5, OPJUMP+2, VSHR2+11, VPDVL+3, NEWOPS+1, DSQSUB+15. FRESH_START_AND_RESTART: ROC+1 04,2131 and DUMMYAD 04,2133 refused by `cm_stateup_interpretive` |
 | B | LM | INTEGRATION_INITIALIZATION: INTSTALL 13,3414/3415 and GOBAC+1 13,3464 refused by `lm_integration_init_*` |
 | B | CM | INTEGRATION_INITIALIZATION (V37E00E): STATINT1, INTEGRV, MOVEPCSM, MOVEACSM, ATOPCSM+6, MOVEPLEM, ATOPLEM+6, MOVEALEM, ANDOUT+5/+7, GRP2PC+4, INTWAKE+11, WAKE1+4, INTSTALL, SETIFLGS, ENDINT, ENDINT+4/+11 |
 | C | both | PINBALL_GAME_BUTTONS_AND_LIGHTS: CHARIN, LODSAMPT, ENTER, MMCHANG, MMCHANG+15, REQMM+10, 2BLANK, RELDSP, DSPMMJB, NVMONOPT, GOVNUPDT, UPDAT1+2, FLASHON, FLASHOFF, BLANKSUB, ENDIDLE; CM also DSPA, DSPOCTIN, OCTBACK, DSLV+1 |
 | D1 | CM | KALCMANU_STEERING: STOPRATE 02,2526 refused by `cm_kalcmanu_steering_basic` |
-| D2 | LM | AOSTASK_AND_AOSJOB: 1/ACCSET 20,2447, 1/ACCS+2, 1/ACCS+3, 1/ACCJOB+2, GETAOSUV+6, DBFUN+21, DOACCFUN+4, STORV+6. P20-P25: CLRADMOD 03,2011 |
+| D2 | LM | AOSTASK_AND_AOSJOB: 1/ACCSET 20,2447, 1/ACCS+2, 1/ACCS+3, 1/ACCJOB+2, GETAOSUV+6, DOACCFUN+4. P20-P25: CLRADMOD 03,2011 |
 | F | LM | RCS_FAILURE_MONITOR: RCSMON 06,3156 (83). P40-P47: ENGINOF1, ENGINOF3 (+4 to +21), ENGINOF4 refused by `lm_p40_p47_basic` |
 | unallocated | CM | RTB_OP_CODES: LOADTIME 22,3510, SGNAGREE 22,3544 |
 
@@ -132,5 +146,7 @@ where the point is periodic.
 
 - Fit the store (steward decision above), then the same scenarios in VICE
   from the REU store.
+- Give the flight resident the whole-program site table (REU lookup) and the
+  self-check `fixed_data` hook.
 - Rerun after each lane fills a point in; the target prints the remaining
   list.
