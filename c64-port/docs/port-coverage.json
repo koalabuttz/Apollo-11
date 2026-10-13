@@ -6485,7 +6485,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "baa761f1f405ff3e9e4e3f273e14710884baef682bef6c933e931e1a74d29c15"
+            "sha256": "baa761f1f405ff3e9e4e3f273e14710884baef682bef6c933e931e1a74d29c15",
+            "vice_targets": {
+              "vice-lm-integration-init": 434
+            }
           }
         }
       }
@@ -7283,7 +7286,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "40825c89bff7b99ba69e2ce4b288c214e00b1ab5aadd3bb797ba068b88933559"
+            "sha256": "40825c89bff7b99ba69e2ce4b288c214e00b1ab5aadd3bb797ba068b88933559",
+            "vice_targets": {
+              "vice-lm-orbital-integration": 706
+            }
           }
         }
       }
