@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Milestone self-check (lane A2): Luminary099 and Comanche055 AGC_BLOCK_TWO_SELF-CHECK (bank 43)
 # as routines of the control-transfer ABI.
-SELF_CHECK_CORE = src/lm_self_check.c src/cm_self_check.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/lm_interbank_routines.c src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_complete.c tests/self_check_cases.c
+SELF_CHECK_CORE = src/lm_self_check.c src/cm_self_check.c src/lm_self_check_idle.c src/cm_self_check_idle.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c tests/self_check_cases.c
 SELF_CHECK_SRC = $(SELF_CHECK_CORE) src/rope_image_host.c
 SELF_CHECK_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/self_check_cases.c src/overlay_reu.c platform/c64/overlay_reu_platform.c platform/c64/rope_image_reu.c platform/c64/self_check_diagnostic.c
-SELF_CHECK_C64_LM = src/lm_self_check.c src/lm_interbank_routines.c src/lm_interbank.c $(SELF_CHECK_C64_COMMON)
-SELF_CHECK_C64_CM = src/cm_self_check.c src/cm_interbank_routines.c src/cm_interbank_complete.c $(SELF_CHECK_C64_COMMON)
+SELF_CHECK_C64_LM = src/lm_self_check.c src/lm_self_check_idle.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c $(SELF_CHECK_C64_COMMON)
+SELF_CHECK_C64_CM = src/cm_self_check.c src/cm_self_check_idle.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c $(SELF_CHECK_C64_COMMON)
 SELF_CHECK_ROPES = build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
 SELF_CHECK_HDR = include/self_check.h include/rope_image.h src/self_check_body.inc src/lm_self_check_operands.inc src/cm_self_check_operands.inc include/agc_transfer.h include/agc_image_ops.h tests/self_check_cases.h
 .PHONY: test-self-check sanitize-self-check c64-self-check vice-self-check self-check-differential

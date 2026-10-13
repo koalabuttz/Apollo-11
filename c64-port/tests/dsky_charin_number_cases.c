@@ -11,9 +11,9 @@ void dsky_charin_number_prepare(apollo_overlay_state *s,uint16_t n){
  if(n>=4096u){uint16_t number=(uint16_t)(n-4096u),count=(uint16_t)(number%19u),reg;
   if(count>=15u){++count;}s->words[0777]=count;s->words[01000]=(uint16_t)((number/19u)%3u);
   if((s->words[01000]&3u)==0 && n%10u>=8u)s->words[0154]=7;
-  for(reg=01001;reg<=01005;++reg)s->words[reg]=(uint16_t)((number*71u+reg)%((reg<01003)?100u:10000u));
-  if((s->words[01000]&3u)==0)for(reg=01001;reg<=01005;++reg)s->words[reg]=(uint16_t)((number*151u+reg)&077777u);
-  if(n>=7680u)s->words[0777]=(uint16_t)(040000u+(number*73u)%040000u);
+  for(reg=01001;reg<=01005;++reg)s->words[reg]=(uint16_t)(((uint32_t)number*71u+reg)%((reg<01003)?100u:10000u));
+  if((s->words[01000]&3u)==0)for(reg=01001;reg<=01005;++reg)s->words[reg]=(uint16_t)(((uint32_t)number*151u+reg)&077777u);
+  if(n>=7680u)s->words[0777]=(uint16_t)(040000u+((uint32_t)number*73u)%040000u);
  }
  s->words[1]=(uint16_t)((n%4u)==0 ? 0100000 : (n%4u)==1 ? 040000 : (n%4u)==2 ? 0177777 : 0);
 }

@@ -1,0 +1,87 @@
+{
+ "milestone": "lm-rcsmon",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 1024,
+ "cases_sha256": "1bddd55ecd612af05f6a409b137c68a1ccba993e7e29f4674295be50d2195523",
+ "oracle_sha256": "8a5067f8643d9a48b19fd188d6ff880266f036d41d56398dbc90e88a477a428a",
+ "frozen_vectors": 71,
+ "c64_vectors": [
+  {
+   "mission": "lm",
+   "keep": "0x3",
+   "cases": 18,
+   "case_ids": [
+    12,
+    18,
+    36,
+    39,
+    132,
+    168,
+    198,
+    357,
+    381,
+    459,
+    507,
+    45,
+    129,
+    366,
+    214,
+    32,
+    440,
+    527
+   ]
+  }
+ ],
+ "c64_gcov_branches": {
+  "host_taken": 193,
+  "c64_taken": 193,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_rcsmon.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/lm_rcsmon_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 148,
+  "edges_host_vectors": 148,
+  "edges_c64": 148,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "LM 06,3156 RCSMON": {
+   "05072": 509,
+   "05270": 3
+  },
+  "LM 06,3242 ": {
+   "05270": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: NOVAC, TCF RCSMONEX)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 1024,
+ "host_branch_arcs": 219,
+ "c64_rows": 18,
+ "c64_branch_arcs": 219,
+ "host_branches_missing_on_c64": []
+}

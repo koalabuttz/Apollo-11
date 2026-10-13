@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-ephemeris",
+  "release": "evidence-cm-ephemeris",
+  "files": {
+    "cm-ephemeris-differential.log": {
+      "sha256": "58cc1d3699922547f8f8a32c0334c4ba4b22e04ac7cf2883d4827307bc334458",
+      "bytes": 1462,
+      "store": "tree"
+    },
+    "cm-ephemeris-host.log": {
+      "sha256": "6b0056da4012486302053f984d655d8549c2e86801a7a0dde72e3df8b38bb3c7",
+      "bytes": 1016,
+      "store": "tree"
+    },
+    "cm-ephemeris-proof.json": {
+      "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba",
+      "bytes": 4526,
+      "store": "tree"
+    },
+    "cm-ephemeris-source-map.json": {
+      "sha256": "47d9a7c5217ca8a094b9b7a936dc63b0c821448553dac8fbf3e33df8226d5a1a",
+      "bytes": 9727,
+      "store": "tree"
+    },
+    "cm-ephemeris-vice.log": {
+      "sha256": "05c8feb90931795a4ad6ad55f2689a88c97d753808376bb2b0f1d29a8cd8231b",
+      "bytes": 776,
+      "store": "tree"
+    }
+  }
+}

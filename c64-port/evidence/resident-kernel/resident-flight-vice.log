@@ -1,12 +1,20 @@
-PASS: VICE PAL lm-check-1.prg: 311 checks, 0 failures
-PRG sha256: 7da8cafc2720a68a1d7a7b08311203b7bee7b6cd8ef0f485ddaa13ccadf5ed0d lm-check-1.prg
-PASS: VICE PAL lm-check-2.prg: 327 checks, 0 failures
-PRG sha256: 689209cf91e6f134ae154f7fda2ff9a6bd0073dbbd1eea5e9bd6a765c534856c lm-check-2.prg
-PASS: VICE PAL lm-check-3.prg: 177 checks, 0 failures
-PRG sha256: 4c828d29450089837eb5ce60af476c38a306fa065a881b315cdaf2f32ba234c4 lm-check-3.prg
-PASS: VICE PAL cm-check-1.prg: 263 checks, 0 failures
-PRG sha256: e2e20f130c0f24f7b984aa35298b7764b92eb2cd730bb64ad133ccba53522cfb cm-check-1.prg
-PASS: VICE PAL cm-check-2.prg: 225 checks, 0 failures
-PRG sha256: 9aeda51f930333b590c9f6d8b856df11c6d142eb5811aef2c22f79b9334d0e3c cm-check-2.prg
-PASS: VICE PAL cm-check-3.prg: 185 checks, 0 failures
-PRG sha256: cc77249e55558c708fa45c37011cf4793c96da00fc4c19db6a52aa5316959874 cm-check-3.prg
+PASS: VICE PAL lm-check-1.prg: 314 checks, 0 failures
+PRG sha256: aca81f9602f01f8c451e103b735bd3e4c22cedf105c363fc17226db149dfec9f lm-check-1.prg
+PASS: VICE PAL lm-check-2.prg: 328 checks, 0 failures
+PRG sha256: f259762da7df21de4bdf4695ae78efc0c3c748750b9f701855ca630eefd9f98e lm-check-2.prg
+PASS: VICE PAL lm-check-3.prg: 178 checks, 0 failures
+PRG sha256: 55af679a4668666a61fe615088320d68ee4c36063eeff5101eed3b2d90d70d1a lm-check-3.prg
+PASS: VICE PAL lm-check-4.prg: 72 checks, 0 failures
+PRG sha256: 779d1975fa41a87f7b13befa77ffe3fa2e98d5d2c8f59c3143f582d06bcff591 lm-check-4.prg
+PASS: VICE PAL lm-check-5.prg: 81 checks, 0 failures
+PRG sha256: b5248a42e6e39cb09d46ac6a3181593e89d0394ec4882575df0e5b5a0420ab1d lm-check-5.prg
+PASS: VICE PAL cm-check-1.prg: 264 checks, 0 failures
+PRG sha256: cc4c3d538b9e2efe1763c5038994ec4af3261de998d4b8da2c6e2cf81a19383a cm-check-1.prg
+PASS: VICE PAL cm-check-2.prg: 226 checks, 0 failures
+PRG sha256: f169d8dbf9a77dffb41c13a1fc4cdfe4317b2ee826dfa2d79ecf7d7c51cc178f cm-check-2.prg
+PASS: VICE PAL cm-check-3.prg: 186 checks, 0 failures
+PRG sha256: 88e9342f0098f1f43d0ee903daab16d722727c766c7cb01f381ba403f0f68f6e cm-check-3.prg
+PASS: VICE PAL cm-check-4.prg: 72 checks, 0 failures
+PRG sha256: 59e3ed8955db978c1480e486864645815fd6c8270df904ec2f5e3b9efbd8a22c cm-check-4.prg
+PASS: VICE PAL cm-check-5.prg: 81 checks, 0 failures
+PRG sha256: 532636134548e5a2e2996539a9b67d9f8e19003cae8ca9b5242e08e0d8a5e7aa cm-check-5.prg

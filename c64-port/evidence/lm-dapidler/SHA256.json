@@ -4,13 +4,13 @@
   "release": "evidence-lm-dapidler",
   "files": {
     "lm-dapidler-c64-cover.json": {
-      "sha256": "0e48bf5b94fd6d696078669b5c68169e59cfc0d982286d01e9420495672ae439",
-      "bytes": 3185,
+      "sha256": "ff4220c3393fc909a6f849b3aed9b9fc9306a6044828a4162f68fdcf2f2d5e6b",
+      "bytes": 41534,
       "store": "tree"
     },
     "lm-dapidler-host.log": {
-      "sha256": "fe64f85af74458cf4941228c9d8c51965866c5195f28224f7f239f518210daca",
-      "bytes": 555,
+      "sha256": "92ebe8f75359f997fdd7d085896ab40ec2c3bf4665f0c3cd1b2521c579f57be5",
+      "bytes": 892,
       "store": "tree"
     },
     "lm-dapidler-proof.json": {
@@ -19,13 +19,13 @@
       "store": "tree"
     },
     "lm-dapidler-source-map.json": {
-      "sha256": "5edb1cf7854a456d5d61feb354b60568d86823a487cce5fc34972b0d60b25130",
+      "sha256": "a935c6a807fbb1a826ccd0bace59e87b1dc6b911cb0d2ae3587ee2a218768313",
       "bytes": 51141,
       "store": "tree"
     },
     "lm-dapidler-vice.log": {
-      "sha256": "d1b1b7ec424778a244ce6beedaecda411e87acbdbbb75de61652e3aec707d123",
-      "bytes": 191,
+      "sha256": "e500c4a4cd5a3ba03da15903fd802863ae501bdd25e556699f8a4cf7cf65d2f8",
+      "bytes": 296,
       "store": "tree"
     }
   }

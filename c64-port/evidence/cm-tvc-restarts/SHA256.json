@@ -3,45 +3,30 @@
   "milestone": "cm-tvc-restarts",
   "release": "evidence-cm-tvc-restarts",
   "files": {
-    "cm-tvc-restarts-assembly-comparison.json": {
-      "sha256": "0c6083357a4bf07061d551b67f186a3975305e31330a14cedda3d0fdb7503d02",
-      "bytes": 10608,
+    "cm-tvc-restarts-differential.log": {
+      "sha256": "b2c0ba724d4d60d308cd4dc6f6dd58a87eef95f150eba54ee60a66ca7a718b8d",
+      "bytes": 426,
       "store": "tree"
     },
-    "cm-tvc-restarts-checks.log": {
-      "sha256": "ad40e21811441954104092322ea64832ae2690886bf15788c84a7f185f020b72",
-      "bytes": 673,
+    "cm-tvc-restarts-host.log": {
+      "sha256": "2c91876d42872fbba05aaab66098676674d90b021467b6e01e076e53518df18c",
+      "bytes": 1056,
       "store": "tree"
     },
-    "cm-tvc-restarts-reference.deltas.xz": {
-      "sha256": "537cc04cbacce25cba74246166ffa5e2326145328ebcb882a1ba4860ed28b485",
-      "bytes": 749832,
-      "store": "release"
-    },
-    "cm-tvc-restarts-results.json": {
-      "sha256": "478c481176f3abc507e4821e3728ccaad4791ae765b189089cb43259fb324d97",
-      "bytes": 1263,
+    "cm-tvc-restarts-proof.json": {
+      "sha256": "09bc161007c116a0019f5df741c5bad1ee8ee857b41ce4adfd88c59ac6ea1950",
+      "bytes": 3562,
       "store": "tree"
     },
     "cm-tvc-restarts-source-map.json": {
-      "sha256": "b0220cf1b6d9fc11f0f2b8e42cfaf234d8bcb52bf53c31733e28004fef8be766",
-      "bytes": 17821,
+      "sha256": "f897ad0098c28cb846bb52aefbfa7e0882713e7608ed6342c368ff425ee059b7",
+      "bytes": 13118,
       "store": "tree"
     },
-    "cm-tvc-restarts-source-stream.json": {
-      "sha256": "6a9dd73aaf0abf6a5c9219732b6216a32c189663305bdd92fefaac4e324ce30f",
-      "bytes": 376,
+    "cm-tvc-restarts-vice.log": {
+      "sha256": "719c37a83247508f98cbd517ee41f6f6f093fa833becd45c714958e00c922121",
+      "bytes": 522,
       "store": "tree"
-    },
-    "cm-tvc-restarts.map": {
-      "sha256": "5bca9142a197084a8eeffa9ab030efc8d270de44885a2fe68740509a30adbd8b",
-      "bytes": 10468,
-      "store": "release"
-    },
-    "cm-tvc-restarts.prg": {
-      "sha256": "a91669656dbe083b7f5db29027b3770bcbd2d627643ddef8326aae8c762fa72b",
-      "bytes": 12762,
-      "store": "release"
     }
   }
 }

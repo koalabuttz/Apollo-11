@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-ev-radar.prg: 223 checks, 0 failures
+PASS: VICE PAL lanec-ev-radar.prg: 31 checks, 0 failures

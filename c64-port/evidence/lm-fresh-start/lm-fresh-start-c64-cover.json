@@ -2,12 +2,12 @@
  "milestone": "lm-fresh-start",
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_fresh_start.c": "1e6b3f9930610d97fac770ffc1ec2da25a15dd38e7108fd69815a466184d0aca",
+  "src/lm_fresh_start.c": "2598955fddec1f7cfc4354049fd924943d3552bf9a89520a559f9b568103b433",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/lm_interbank_routines.c": "963d791ffaedf1eb3ae523d9a8fe776eefb28c72ee22a124f15477f6b6c02384",
+  "src/lm_interbank_routines.c": "1ce4bc11a80c244b0e4d35440f9da513df49235d625e3c25b38cecd1f401026d",
   "src/lm_interbank.c": "9c649677bfe8bdb4724ea5c88a185701cfae8b44203384f623c3c17433371a2e",
-  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/lm_fresh_start_cases.c": "1c3aa10776d879aeb09281d4f1be129098db95cae62ec21db0affdd29088b89b"
@@ -282,8 +282,8 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 497,
- "c64_branch_arcs": 497,
+ "host_branch_arcs": 389,
+ "c64_branch_arcs": 389,
  "arcs_by_source_host_c64": {
   "build/lm-fresh-start-cover/runner.c": [
    1,
@@ -302,16 +302,16 @@
    0
   ],
   "src/agc_transfer.c": [
-   47,
-   47
+   50,
+   50
   ],
   "src/agc_word.c": [
    2,
    2
   ],
   "src/lm_fresh_start.c": [
-   275,
-   275
+   164,
+   164
   ],
   "src/lm_interbank.c": [
    60,

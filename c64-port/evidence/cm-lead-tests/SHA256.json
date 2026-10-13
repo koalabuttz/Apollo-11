@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-lead-tests",
+  "release": "evidence-cm-lead-tests",
+  "files": {
+    "cm-lead-tests-host.log": {
+      "sha256": "9eedd498cba74b98b19e5e09f835b00a585f77a530d5211968c1b8c1301196ae",
+      "bytes": 418,
+      "store": "release"
+    },
+    "cm-lead-tests-proof.json": {
+      "sha256": "5ec5e37bb11517d579961cf99a0c879471f9eb273b90c2e0486cfb5a1dec31c1",
+      "bytes": 2128,
+      "store": "tree"
+    },
+    "cm-lead-tests-vice.log": {
+      "sha256": "9135ed796dc145edf04140054c4c4ae78edf7dd78c59e6f416acaf31554c46d4",
+      "bytes": 218,
+      "store": "release"
+    }
+  }
+}

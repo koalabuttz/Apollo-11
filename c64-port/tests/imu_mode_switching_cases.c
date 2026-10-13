@@ -61,6 +61,28 @@ static agc_word ccs_class(uint32_t *seed,unsigned k){agc_word v=(agc_word)((rnd(
 }
 /* A small signed word (|x| < n) or a zero of either sign. */
 static agc_word small(uint32_t *seed,unsigned n){agc_word v=(agc_word)((rnd(seed)>>17)%n);return (rnd(seed)>>16)&1u?(agc_word)(~v&077777u):v;}
+/* GSELECT's skip (major +-0, minor +-0 or under GYROMIN pulses: CCS
+ * leaves |x|-1, AD -GYROMIN, BZMF) for the pair each step from LGYRO g
+ * reads: X and Y add 2, Z subtracts 4 and adds 0, each with BIT13, as
+ * strtgyro_domain walks it. Every pair skips when all is set, else three
+ * in four do; the minor is +-0, |x| 1..0177, or 0177/0200 at the edge. */
+static void shape_skips(uint16_t *w,agc_word g,agc_word lgyro,int all,uint32_t *seed){unsigned a,ad;agc_word l=g,mn;
+ for(;;){a=l>>11;
+  if((a&1u)||a>=6u)return;
+  if(a==4u)l=(agc_word)(l-4u);
+  l=(agc_word)(l+(a==4u?0u:2u)+010000u);
+  ad=((l>>8)&7u)*0400u+(l&0377u);
+  if(ad<010u||ad==lgyro||ad+1u==lgyro||(!all&&(rnd(seed)>>17)%4u==0u))continue;
+  switch((rnd(seed)>>17)%4u){
+   case 0u:mn=0u;break;
+   case 1u:mn=(agc_word)(1u+(rnd(seed)>>17)%0177u);break;
+   case 2u:mn=0177u;break;
+   default:mn=0200u;break;
+  }
+  if((rnd(seed)>>16)&1u)mn=(agc_word)(~mn&077777u);
+  w[ad]=(rnd(seed)>>16)&1u?077777u:0u;w[ad+1u]=mn;
+ }
+}
 #define IS(b,a) (ph==key(c->cm,(b),(a)))
 #define CDUX_OF(i) (032u+(i))
 #ifdef IMS_ENTRY_CASES_BUILT
@@ -80,15 +102,17 @@ static void shape_entry(apollo_overlay_state *m,ims_case *c,uint16_t ph,unsigned
  }
  /* LGYRO for STRTGYRO: step count 0..3 in bits 13-14, an odd step in a
   * quarter of the states, EBANK bits, a LOW8 index 020..0355; the six
-  * gyro command words small in a third of the states. */
+  * gyro command words small in a quarter of the states, and in another
+  * quarter the pairs the steps read set to GSELECT's skip. */
  if(IS(07,IMS_STRTGYRO)){agc_word g=(agc_word)(((v%4u)<<12)|(((v/4u)%4u)==3u?04000u:0u)|(r15(seed)&03400u)|(020u+(rnd(seed)>>17)%0337u));
   w[lgyro]=g;
-  if((v/16u)%3u==1u){unsigned base=((g>>8)&7u)*0400u+(g&0377u);
+  if((v/16u)%4u==3u)shape_skips(w,g,lgyro,(v%4u)==0u&&(v/64u)%2u==0u,seed);
+  if((v/16u)%4u==1u){unsigned base=((g>>8)&7u)*0400u+(g&0377u);
    for(i=0;i<8u;++i)if(base+i!=lgyro)w[base+i]=i%2u?small(seed,0400u):small(seed,4u);}
-  /* A third of the states: gyro pairs of zero commands (both words +-0)
+  /* A quarter of the states: gyro pairs of zero commands (both words +-0)
    * or with a high word of 0100-0177, which GMERGE's AD MINUS1 leaves at
    * -0 (the CAF BIT14; ADS ITEMP2 fix before LASTSEG). */
-  if((v/16u)%3u==2u){unsigned base=((g>>8)&7u)*0400u+(g&0377u);
+  if((v/16u)%4u==2u){unsigned base=((g>>8)&7u)*0400u+(g&0377u);
    for(i=0;i<8u;i+=2u)if(base+i!=lgyro&&base+i+1u!=lgyro){
     if((rnd(seed)>>17)&1u){w[base+i]=(rnd(seed)>>17)&1u?077777u:0u;w[base+i+1u]=(rnd(seed)>>17)&1u?077777u:0u;}
     else{w[base+i]=(agc_word)(0100u+(rnd(seed)>>17)%0100u);w[base+i+1u]=small(seed,0400u);}}}
@@ -150,7 +174,11 @@ uint16_t ims_target(uint16_t n,uint8_t *cm){
   return (uint16_t)((cadr>>10)*1024u+(cadr&01777u));}
 #endif
 }
-void ims_input(apollo_overlay_state *m,ims_case *c,uint16_t n){uint32_t seed=0x1d1aul+(uint32_t)n*11u;unsigned i,v;agc_word z,fb;
+/* (The auditor's fresh-seed reruns build with another base.) */
+#ifndef IMS_SEED_BASE
+#define IMS_SEED_BASE 0x1d1aul
+#endif
+void ims_input(apollo_overlay_state *m,ims_case *c,uint16_t n){uint32_t seed=IMS_SEED_BASE+(uint32_t)n*11u;unsigned i,v;agc_word z,fb;
  for(i=0;i<2048u;++i)m->words[i]=r15(&seed);
  m->words[7]=0;
  m->words[025]=(agc_word)(r15(&seed)&037777u);m->words[024]=(agc_word)(r15(&seed)&037777u);
@@ -224,6 +252,8 @@ unsigned ims_run(apollo_overlay_state *s,uint16_t n,uint16_t *ie,agc_word channe
   channel[2]=c.cm?cio.channel13:lio.channel13;channel[3]=c.cm?cio.channel14:lio.channel14;}
  if(st==EXEC_OK)return IMS_STOPPED;
  if(st==EXEC_UNMAPPED&&external(&c,s))return IMS_STOPPED;
+ /* A round trip's success return (MODEGOOD's INCR BUF2: Q +2). */
+ if(st==EXEC_UNMAPPED&&c.stop_z&&s->words[5]==c.stop_z+1u&&(s->words[4]&076000u)==c.stop_fb)return IMS_STOPPED;
  if(st==EXEC_OUT_OF_SCOPE)return IMS_REFUSED;
  return 3u;
 }

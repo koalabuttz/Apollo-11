@@ -416,12 +416,10 @@
    ],
    "kind": "instruction",
    "executed_by": [
-    "exec-services",
-    "rupt-lead-ins"
+    "exec-services"
    ],
    "native": [
-    "src/cm_exec_routines.c",
-    "src/rupt_lead_ins.c"
+    "src/cm_exec_routines.c"
    ]
   },
   {
@@ -844,12 +842,8 @@
     "14063"
    ],
    "kind": "constant",
-   "executed_by": [
-    "rupt-lead-ins"
-   ],
-   "native": [
-    "src/rupt_lead_ins.c"
-   ]
+   "executed_by": [],
+   "native": []
   },
   {
    "line": 206,

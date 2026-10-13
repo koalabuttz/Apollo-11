@@ -38,9 +38,18 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               manifest (tools/vice_manifest.py), which is under MANIFEST_DAYS
               old; WARN instead when the manifest predates those vice_targets,
               when a certificate names none and claims no c64_exempt (#127
-              migration), or when no manifest is available (#127).
+              migration), or when no manifest is available (#127). WARN
+              when that manifest's c64_cover (tools/cover_check.py) shows
+              the cited branch cover stale or missing host branches (#234).
   domain      no open item ("pending", "follow-up") in a certificate's text (#77
               #84), and every cited native file exists (#51).
+  revision    reviewed_all_source_paths and the pinned source_revision, the
+              rule tools/port_coverage.py applies to a complete certificate.
+  spec keys   WARN (never FAIL), once per certificate, when the interp spec
+              (tools/interp_specs.py, found by the evidence/<id>/ the
+              certificate cites, or by its file) lacks a key of
+              REFREEZE_SPEC_KEYS ('index_carry16': the generated INDEX keeps
+              its end-around carry on the C64); set it at the next refreeze.
 
 Calls between files certified together (one source map or comparison record,
 IMU_PERFORMANCE_TEST_2/TESTS_4) are internal. On a certificate already flipped
@@ -78,6 +87,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 REPOSITORY = ROOT.parent
 INVENTORY = 'docs/port-coverage.json'
 FACTS = ROOT / 'tools/cert_precheck_facts.json'
+sys.path.insert(0, str(ROOT / 'tools'))
+from port_coverage import BASE  # noqa: E402
 MISSIONS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
 CATEGORIES = ('source_to_native_map', 'independent_assembly_comparison',
               'host_and_sanitizer_results', 'c64_execution_results')
@@ -284,7 +295,7 @@ def code_rows(path):
 
 
 def write_facts(check):
-    facts = {'source_revision': '911e5c0283c629c50cb97666f34065e8c07d71a5', 'missions': {}}
+    facts = {'source_revision': BASE, 'missions': {}}
     for mission in MISSIONS:
         base = ROOT / 'build/fixed-data' / mission
         listing = base / 'assembly.lst'
@@ -599,6 +610,13 @@ def check_text(report, label, certificate):
                        'a complete certificate cannot carry open work (#77, #84); finish it or keep the file partial')
 
 
+def check_revision(report, label, certificate):
+    if certificate.get('reviewed_all_source_paths') is not True or certificate.get('source_revision') != BASE:
+        report.add('FAIL', label, f'source_revision {certificate.get("source_revision")!r}, reviewed_all_source_paths '
+                   f'{certificate.get("reviewed_all_source_paths")!r}: tools/port_coverage.py fails the flip',
+                   f'review every source path at the pinned revision {BASE} and say so')
+
+
 def native_files(entry, certificate):
     """The certificate's native sources: those its source map names, else the entry's."""
     found = []
@@ -751,6 +769,57 @@ def check_c64(report, label, certificate):
                    ' (#108, #109, #115)', 'measure branch outcomes over every linked source')
 
 
+# Spec keys of tools/interp_specs.py that change generated C a lane's frozen
+# evidence pins. The steward keeps them off the specs that do not ask for them
+# (regenerating every spec would stale the pinned sources), so a certificate
+# whose spec lacks one gets a WARN, never a FAIL, until its next refreeze.
+# 'image_w' (steward PR #260) joins this list when it lands.
+REFREEZE_SPEC_KEYS = ('index_carry16',)
+
+
+def interp_specs():
+    """tools/interp_specs.py's SPECS, or {} when it cannot be read."""
+    try:
+        import interp_specs  # noqa: E402
+    except Exception:  # noqa: BLE001 -- a broken spec file is not this check's FAIL
+        return {}
+    return getattr(interp_specs, 'SPECS', {})
+
+
+def specs_for(path, certificate, specs):
+    """The interp specs a certificate rests on: the evidence ids it cites that
+    are spec keys (evidence/<id>/ is the spec's milestone), and the specs whose
+    'file' is this AGC file."""
+    mission, name = path.split('/', 1)
+    out = set()
+    for record in ((certificate or {}).get('evidence') or {}).values():
+        parts = pathlib.PurePosixPath(record.get('path', '') if isinstance(record, dict) else '').parts
+        if len(parts) >= 2 and parts[0] == 'evidence' and parts[1] in specs:
+            out.add(parts[1])
+    for key, spec in specs.items():
+        short = MISSIONS.get(mission)
+        files = (spec.get('file') or {}).get(short) if short in (spec.get('missions') or ()) else None
+        if name in ([files] if isinstance(files, str) else files or []):
+            out.add(key)
+    return sorted(out)
+
+
+def check_spec_keys(report, label, path, certificate, specs):
+    """One WARN per certificate whose interp spec lacks a REFREEZE_SPEC_KEYS key."""
+    missing = {}
+    for key in specs_for(path, certificate, specs):
+        for flag in REFREEZE_SPEC_KEYS:
+            if not specs[key].get(flag):
+                missing.setdefault(flag, []).append(key)
+    if missing:
+        flags = sorted(missing)
+        keys = sorted({k for v in missing.values() for k in v})
+        report.add('WARN', label, f'interp spec {", ".join(keys)} lacks {", ".join(repr(f) for f in flags)}: '
+                   'the generated INDEX (ixw) drops its end-around carry on the C64 (16-bit unsigned) '
+                   'for a negative index value (docs/INTERP-COMPILE.md)',
+                   f'set {", ".join(repr(f) for f in flags)} in tools/interp_specs.py at the lane\'s next refreeze')
+
+
 MANIFEST_DAYS = 3
 
 
@@ -783,6 +852,7 @@ def check_manifest(report, label, path, certificate, manifest, now=None):
     if age > datetime.timedelta(days=MANIFEST_DAYS):
         report.add('FAIL', label, f'{run} is over {MANIFEST_DAYS} days old, so it does not prove the tip',
                    'run port-ci with full from the Actions tab, or fix the nightly')
+    check_cover(report, label, certificate, manifest, run)
     covered = targets in (manifest.get('certificates') or {}).get(path, {}).values()
     level, note = ('FAIL', '') if covered else (
         'WARN', '; the manifest predates these vice_targets, so the next nightly decides')
@@ -796,6 +866,28 @@ def check_manifest(report, label, path, certificate, manifest, now=None):
         elif (row.get('checks') or 0) < checks:
             report.add(level, label, f'{target} ran {row.get("checks")} checks in {run}, fewer than the '
                        f'{checks} certified{note}', 'restore the C64 rows or certify what runs')
+
+
+def check_cover(report, label, certificate, manifest, run):
+    """The cited C64 branch cover as the nightly re-derived it (cover_check.py, #234).
+    WARN while records are refrozen with their cases and rows."""
+    record = (certificate.get('evidence') or {}).get('c64_branch_outcomes') or {}
+    path = record.get('path') if isinstance(record, dict) else None
+    if not path or not path.startswith('evidence/'):
+        return
+    milestone = pathlib.PurePosixPath(path).parts[1]
+    row = (manifest.get('c64_cover') or {}).get(milestone)
+    if row is None or row.get('reason') == 'no re-derivation for this record yet':
+        return
+    if row.get('record') != path:
+        report.add('WARN', label, f'{run} re-derived {row.get("record")}, not the cited {path}; '
+                   'the next nightly decides')
+    elif not row.get('verified'):
+        report.add('WARN', label, f'C64 branch cover {path} is not re-derivable in {run}: {row.get("reason")}',
+                   'refreeze the record with its cases_sha256 and C64 rows')
+    elif row.get('missing') or row.get('missing_count'):
+        report.add('WARN', label, f'C64 branch cover {path} misses {row.get("missing_count")} host branches '
+                   f'in {run}', 'add C64 rows that take them, or show they are host-only')
 
 
 # ---------------------------------------------------------------- driver
@@ -841,6 +933,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
         if manifest is None:
             report.add('WARN', 'vice-manifest', f'{why}; vice_targets not checked')
     facts = json.loads(FACTS.read_text())
+    specs = interp_specs()
     if keys is None:
         try:
             keys, errors = routine_keys()
@@ -863,6 +956,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             documentation = (certificate or {}).get('qualification_kind') == 'documentation_preservation' or \
                 'review_scope' in (certificate or {})
             if certificate:
+                check_revision(report, label, certificate)
                 check_manifest(report, label, path, certificate, manifest)
             if certificate and not documentation:
                 check_evidence(report, label, certificate, fetch_missing)
@@ -876,6 +970,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             check_refusals(report, label, entry, certificate, notes)
             if certificate:
                 check_c64(report, label, certificate)
+                check_spec_keys(report, label, path, certificate, specs)
     return report
 
 

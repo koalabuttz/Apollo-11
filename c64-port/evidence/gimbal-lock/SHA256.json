@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "gimbal-lock",
+  "release": "evidence-gimbal-lock",
+  "files": {
+    "gimbal-lock-c64-cover.json": {
+      "sha256": "d6b2162189557527a5e7af94cea45240b9fd4b61dd9c6a9136e46e5d2eb25aa6",
+      "bytes": 2781,
+      "store": "tree"
+    },
+    "gimbal-lock-c64-outcomes.json": {
+      "sha256": "4b9a9ed3d2c3fe5e9e1c59365a880a4fe8d33d4f4dbee9270d24ddf09cf3ab6f",
+      "bytes": 624,
+      "store": "tree"
+    },
+    "gimbal-lock-differential.log": {
+      "sha256": "c38372fac93d1e370314074c7348332143e654b37c9c1a3841732b4c6150bc7b",
+      "bytes": 918,
+      "store": "release"
+    },
+    "gimbal-lock-host.log": {
+      "sha256": "f7928d40588f92530ab0b594dfd9cae62a9348ea1d2f305a26b5412373fd2edc",
+      "bytes": 1013,
+      "store": "release"
+    },
+    "gimbal-lock-proof.json": {
+      "sha256": "cacf0ba6d84ff55f5c5d23f3f538c66a9ecfeb661a738f293f19fb2cf1cad394",
+      "bytes": 3255,
+      "store": "tree"
+    },
+    "gimbal-lock-source-map.json": {
+      "sha256": "fa0ee121d8359f5ee0fa4996f6f5b31952318f86d0b1903e61f94d48bfde55f6",
+      "bytes": 11739,
+      "store": "tree"
+    },
+    "gimbal-lock-vice.log": {
+      "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
+      "bytes": 1663,
+      "store": "release"
+    }
+  }
+}

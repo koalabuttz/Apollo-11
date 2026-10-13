@@ -489,6 +489,9 @@ static enum exec_status r_c3357(const ims_mission *m,apollo_overlay_state *s,voi
  if(W[MPAC+4u]>0376u)return EXEC_OUT_OF_SCOPE;
  if(n>=1u&&n<=037777u&&(W[ITEMP1]>0376u||2ul*(n-1u)+W[ITEMP1]>0376u))return EXEC_OUT_OF_SCOPE;
  if(e0_registers(W[3],W[MPAC+4u])||(n>=1u&&n<=037777u&&e0_registers(W[3],W[ITEMP1])))return EXEC_OUT_OF_SCOPE;
+ /* (Under EBANK 0 the DXCH can land on MPAC +3 or ITEMP1, which the checks
+  * above read first: GYROAGRE's TS MPAC +4 could then overflow.) */
+ if(((W[3]>>8)&7u)==0u&&(W[MPAC+4u]+1u==MPAC+3u||W[MPAC+4u]==MPAC+3u||W[MPAC+4u]+1u==ITEMP1||W[MPAC+4u]==ITEMP1))return EXEC_OUT_OF_SCOPE;
  ai_dxch(s,MPAC);ai_dxch(s,EB1400+ix(s,MPAC+4u));
  c=ai_ccs(s,MPAC+3u);
  if(c==0u)return gyroagre(m,s);
@@ -603,6 +606,9 @@ static enum exec_status r_gyroexit(const ims_mission *m,apollo_overlay_state *s,
  * CCS 1400: AUG2 (INDEX ITEMP1 TS 1400; CAF BIT14; ADS GYROCMD; AUG3) /
  * CAF BIT14 / ADS GYROCMD / TCF LASTSEG +1. */
 static enum exec_status r_8192aug(const ims_mission *m,apollo_overlay_state *s,void *io){uint8_t c;
+ /* (LGYRO's EBANK 0 with an index of 4-6: CCS finds FB, Z or BB positive
+  * and the TS writes it, so the AGC fetches from elsewhere.) */
+ if(((W[m->lgyro]>>8)&7u)==0u&&(W[m->lgyro]&K_LOW8)>=4u&&(W[m->lgyro]&K_LOW8)<=6u)return EXEC_OUT_OF_SCOPE;
  if(!cagetest(m,s,z7(m,03560u)))return imubad(m,s);
  ai_caf(s,K_BIT4);ch_rand(m,s,io,012);
  if(ai_ccs(s,0)==0u)return imubad(m,s);
@@ -688,6 +694,9 @@ static enum exec_status r_r02both(const ims_mission *m,apollo_overlay_state *s,v
 }
 /* 3267 after VARALARM: TC GOTOPOOH. 3272 after UPFLAG: TCF SWRETURN. */
 static enum exec_status r_c3267(const ims_mission *m,apollo_overlay_state *s,void *io){(void)io;return call(s,z4(m,03270u),m->gotopooh);}
+/* 3270 R02ZERO (TC R02ZERO from R02BOTH, and TC BANKCALL CADR R02ZERO in
+ * P51-P53): TC UPFLAG (ADRES IMUSE). */
+static enum exec_status r_r02zero(const ims_mission *m,apollo_overlay_state *s,void *io){(void)io;return call(s,z4(m,03271u),m->upflag);}
 static enum exec_status r_c3272(const ims_mission *m,apollo_overlay_state *s,void *io){(void)io;return jump(s,m->swreturn);}
 
 /* ---- P06 / P05 (Luminary bank 37, Comanche bank 26) ---- */
@@ -785,7 +794,7 @@ static enum exec_status r_c3773(const ims_mission *m,apollo_overlay_state *s,voi
  X(imubad,07,IMS_IMUBAD) X(badend,07,IMS_BADEND) X(goodend,07,IMS_GOODEND) X(c3702,07,03702u) \
  X(aotstall,07,IMS_AOTSTALL) X(radstall,07,IMS_RADSTALL) X(imustall,07,IMS_IMUSTALL) X(c3736,07,03736u) \
  X(gomanur,07,IMS_GOMANUR)
-#define R02_ROUTINES(X) X(r02both,04,IMS_R02BOTH) X(c3267,04,03267u) X(c3272,04,03272u)
+#define R02_ROUTINES(X) X(r02both,04,IMS_R02BOTH) X(c3267,04,03267u) X(r02zero,04,IMS_R02ZERO) X(c3272,04,03272u)
 #define P06_ROUTINES(X) \
  X(p06,037,IMS_P06) X(prestand,037,IMS_PRESTAND) X(c3664,037,03664u) X(c3665,037,03665u) \
  X(c3672,037,03672u) X(c3674,037,03674u) X(c3676,037,03676u) X(c3706,037,03706u) \

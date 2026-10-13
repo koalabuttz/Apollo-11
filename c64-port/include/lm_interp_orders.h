@@ -20,6 +20,7 @@ void lmi_address_pushup(apollo_overlay_state *, agc_word next, agc_word target);
  * word: the store, then Z at its continuation (DANZIG, DODLOAD 06460,
  * DODLOAD* 06144, DOVLOAD 06463, DOVLOAD* 06466, or 15BITADR for STOTC). */
 void lmi_store_code(apollo_overlay_state *, agc_word code);
+uint8_t lmi_store_spills(const apollo_overlay_state *, agc_word code);
 void lmi_stadr(apollo_overlay_state *, agc_word word);
 /* DODLOAD/DOVLOAD: load code into CYR, ending at DIRADRES 06106. */
 void lmi_dodload(apollo_overlay_state *);
@@ -137,6 +138,8 @@ void lmi_tload(apollo_overlay_state *);
 /* TLOAD whose ADDRWD names the fixed TP words k[0..2] (INDEX ADDRWD reads
  * the FBANK). */
 void lmi_tload_fixed(apollo_overlay_state *, const agc_word *k);
+void lmi_sload_fixed(apollo_overlay_state *, const agc_word *k);
+void lmi_vdsc(apollo_overlay_state *, const agc_word *k);
 /* EXIT to the basic word after the order (Z = LOC+1, Q 06747); TC INTPRET
  * from basic code (Q = the next word) to NEWOPS; TPMODE (RTB routine). */
 void lmi_exit(apollo_overlay_state *);

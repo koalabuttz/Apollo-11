@@ -118,4 +118,17 @@ static inline void lanec_ev_das(apollo_overlay_state *s, uint16_t k)
     s->words[k + 1u] = lanec_ev_corrected(lsw);
     s->words[k] = lanec_ev_corrected(msw);
 }
+#ifdef LANEC_COVER_SITES
+/* Per call site outcomes for the coverage runner (see lanec.h). */
+#define lanec_ev_zero(s) __extension__({ int lanec_c_ = LANEC_COVER_A(s); \
+    lanec_c_ == 0 ? (lanec_ev_zero)(s) : lanec_c_ == 1 ? (lanec_ev_zero)(s) : (lanec_ev_zero)(s); })
+#define lanec_ev_nonpositive(s) __extension__({ int lanec_c_ = LANEC_COVER_A(s); \
+    lanec_c_ == 0 ? (lanec_ev_nonpositive)(s) : lanec_c_ == 1 ? (lanec_ev_nonpositive)(s) : \
+    lanec_c_ == 2 ? (lanec_ev_nonpositive)(s) : (lanec_ev_nonpositive)(s); })
+#define lanec_ev_mp(s, w) __extension__({ uint16_t lanec_w_ = (uint16_t)((w) & 077777u); \
+    uint16_t lanec_m_ = lanec_ev_corrected((s)->words[LANEC_A]); \
+    if (lanec_w_ == 0) (lanec_ev_mp)(s, lanec_w_); else if (lanec_w_ == 077777u) (lanec_ev_mp)(s, lanec_w_); \
+    else if (lanec_m_ == 0) (lanec_ev_mp)(s, lanec_w_); else if (lanec_m_ == 077777u) (lanec_ev_mp)(s, lanec_w_); \
+    else (lanec_ev_mp)(s, lanec_w_); })
+#endif
 #endif

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Generate (or, with --check, verify) src/lm_trim_gimbal_ca_table.inc.
+"""Generate (or, with --check, verify) tests/lm_trim_gimbal_ca_table.inc.
 
 After GTSQRT's zero root, DOSHIFT's INDEX SHFTFLAG indexes CA BIT15
 (21,3546, word 34735) by ACENTRAL/2, because ININDEX and ACENTRAL are one
@@ -18,7 +18,7 @@ R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R / 'tools'))
 from fixed_data_generate import rope_word  # noqa: E402
 
-OUT = R / 'src/lm_trim_gimbal_ca_table.inc'
+OUT = R / 'tests/lm_trim_gimbal_ca_table.inc'
 
 
 def render():
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     text = render()
     if '--check' in sys.argv:
         if OUT.read_text() != text:
-            raise SystemExit('FAIL src/lm_trim_gimbal_ca_table.inc differs from the certified rope')
-        print('PASS src/lm_trim_gimbal_ca_table.inc equals the certified rope (3072 words)')
+            raise SystemExit('FAIL tests/lm_trim_gimbal_ca_table.inc differs from the certified rope')
+        print('PASS tests/lm_trim_gimbal_ca_table.inc equals the certified rope (3072 words)')
     else:
         OUT.write_text(text)

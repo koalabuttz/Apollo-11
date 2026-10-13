@@ -10,10 +10,6 @@ static enum exec_status run(const agc_native_program *p,apollo_overlay_state *s,
  return lm_interbank(s,io,entry,literal,word)?EXEC_OK:EXEC_OUT_OF_SCOPE;
 }
 #define ROUTINE(name,entry) static enum exec_status name(const agc_native_program *p,apollo_overlay_state *s,void *io){return run(p,s,io,entry);}
-ROUTINE(bankcall,LM_IB_BANKCALL)
-ROUTINE(swcall,LM_IB_SWCALL)
-ROUTINE(swreturn,LM_IB_SWRETURN)
-ROUTINE(postjump,LM_IB_POSTJUMP)
 ROUTINE(bankjump,LM_IB_BANKJUMP)
 ROUTINE(qjump,LM_IB_QJUMP)
 ROUTINE(makecadr,LM_IB_MAKECADR)
@@ -25,8 +21,8 @@ ROUTINE(usprcadr,LM_IB_USPRCADR)
 ROUTINE(supersw,LM_IB_SUPERSW)
 /* Fixed-fixed bank 2: physical 2048+(Z-04000). PRIO12 (04644) is a constant. */
 #define AT(z) (uint16_t)(2048u+((z)-04000u))
-static const agc_routine_entry entries[13]={
- {AT(04616),bankcall},{AT(04622),swcall},{AT(04631),swreturn},{AT(04635),postjump},{AT(04640),bankjump},
+static const agc_routine_entry entries[14]={
+ {AT(04616),lm_ib_bankcall},{AT(04621),lm_ib_swcall_m1},{AT(04622),lm_ib_swcall},{AT(04631),lm_ib_swreturn},{AT(04635),lm_ib_postjump},{AT(04640),bankjump},
  {AT(04643),qjump},{AT(04645),makecadr},{AT(04651),supdacal},{AT(04674),ibnkcall},{AT(04700),iswcalll},
  {AT(04707),iswretrn},{AT(04713),usprcadr},{AT(04727),supersw}};
-const agc_routine_table lm_interbank_routines={entries,13};
+const agc_routine_table lm_interbank_routines={entries,14};

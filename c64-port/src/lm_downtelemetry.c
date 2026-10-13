@@ -14,7 +14,7 @@
 #include "agc_image_ops.h"
 #include "lm_downtelemetry_data.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define B5(z) (uint16_t)(LM_DNTM_BANK*1024u+((z)-02000u))
 #define FB05 (LM_DNTM_BANK<<10)
 #define L 1u

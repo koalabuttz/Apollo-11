@@ -42,6 +42,16 @@ producer:
 - a missing io record;
 - a CHEKBITS or CHEKMORE return in Q that is not a TC into fixed memory.
 
+The calls are routed at compile time through `include/agc_fast_redirect.h`:
+an operand that is a plain erasable cell under EBANK6 goes to the
+`agc_fast_ops` helper of the same name (`include/agc_fast_ops.h`), any other
+operand to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`), and every
+check below runs this form; `-DLM_DI_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
+DAPIDLER takes about 16K 6502 cycles instead of 25K (mos-sim, `-Oz`).
+
 ## Verification
 
 `tests/lm_dapidler_cases.c` builds 9,216 cases, 1,024 per entry. Each starts
@@ -79,16 +89,18 @@ the C64 diagnostic.
     `CAF 13,14,15` (`20,2425`), just before `WOR CHAN14`.
   - The digests are frozen into `tests/lm_dapidler_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
-    (`tests/lm_dapidler_c64_vectors.h`, 192 cases). It runs every host case with
-    branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
-    until every entry, outcome and branch the host cases take is taken
-    (16 cases), then spreads the rest with a stride of 97. The per-branch
-    host and C64 counts are in `evidence/lm-dapidler/lm-dapidler-c64-cover.json`.
+    (`tests/lm_dapidler_c64_vectors.h`, 192 cases). It runs every host case
+    with its path counters on and every linked source built with clang
+    `-fsanitize-coverage=edge,trace-pc-guard` (`tools/lane_f_path_trace.c`),
+    and takes, greedily, cases until every entry, outcome, counted path and
+    control-flow edge the host cases take is taken (16 cases), then spreads
+    the rest with a stride of 97. The per-path and per-edge host and C64
+    counts are in `evidence/lm-dapidler/lm-dapidler-c64-cover.json`.
 - `make test-lm-dapidler` and `make sanitize-lm-dapidler` check every digest
   (strict and ASAN/UBSAN), require every case to reach its stop, require every
   routine and every reachable branch to be taken, and check the refusals.
 - `make vice-lm-dapidler` runs the 192 C64 rows in VICE: every entry, every
-  outcome and every branch the host cases take. The VICE log records the
+  outcome, path and edge the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches, documented in the host test: the negative

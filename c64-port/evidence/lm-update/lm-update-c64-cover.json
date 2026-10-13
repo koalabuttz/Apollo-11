@@ -3,7 +3,7 @@
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
   "src/lm_update.c": "7861da55038b24f61658dbfb60fb176453a7f77061b01890680557d0ad037be6",
-  "src/lm_interp_orders.c": "ca13888ecf72f5ac0f8b291cf07896c07e21fe32af015dbbdf9da717002bfe05",
+  "src/lm_interp_orders.c": "0460aa4b381f0961373048f779b50b1e4a13e2132a3e8647ee41c03e4f04676f",
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
@@ -28,11 +28,13 @@
   32,
   48,
   55,
+  62,
   64,
   80,
   96,
   112,
   128,
+  136,
   144,
   160,
   176,
@@ -130,6 +132,7 @@
   1600,
   1616,
   1632,
+  1647,
   1648,
   1664,
   1680,
@@ -161,6 +164,7 @@
   2096,
   2112,
   2128,
+  2130,
   2144,
   2160,
   2176,
@@ -170,6 +174,7 @@
   2240,
   2256,
   2272,
+  2282,
   2288,
   2304,
   2320,
@@ -177,8 +182,10 @@
   2352,
   2368,
   2384,
+  2387,
   2400,
   2416,
+  2424,
   2432,
   2448,
   2464,
@@ -286,9 +293,13 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 450,
- "c64_branch_arcs": 450,
+ "host_branch_arcs": 518,
+ "c64_branch_arcs": 518,
  "arcs_by_source_host_c64": {
+  "build/lm-update-cover/../../tools/a2_call_sites.h": [
+   8,
+   8
+  ],
   "build/lm-update-cover/runner.c": [
    1,
    1
@@ -330,8 +341,8 @@
    19
   ],
   "src/lm_update.c": [
-   161,
-   161
+   221,
+   221
   ],
   "tests/lm_update_cases.c": [
    63,
@@ -339,6 +350,15 @@
   ]
  },
  "host_branches_missing_on_c64": [],
+ "call_site_outcomes": {
+  "sources": [
+   "src/lm_update.c"
+  ],
+  "header": {
+   "tools/a2_call_sites.h": "fe9f788bc554d40534aaeae24249d050576c7f34edd4cabdcb757263d38fb082"
+  },
+  "method": "each DAS/DDOUBL, ADS and BZF call site in these sources also branches on the helper's outcome (DAS: low-word carry, borrow or neither, and overflow +1, -1 or none; ADS: overflow +1, -1 or none; BZF: A = +0, -0 or nonzero) on its own line, so those outcomes are host arcs the rows must take"
+ },
  "entry_slots": "case n enters entry slot n % 37",
  "entry_slots_host_c64": [
   [
@@ -419,15 +439,7 @@
   ],
   [
    111,
-   7
-  ],
-  [
-   111,
-   7
-  ],
-  [
-   111,
-   6
+   10
   ],
   [
    111,
@@ -444,6 +456,14 @@
   [
    111,
    7
+  ],
+  [
+   111,
+   7
+  ],
+  [
+   111,
+   10
   ],
   [
    110,

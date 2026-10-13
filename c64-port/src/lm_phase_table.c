@@ -10,7 +10,7 @@
 #include "p66_bias.h"
 #include "lm_phase_sites.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B10(z) (uint16_t)(010u*1024u+((z)-02000u))
 #define FB10 020000u

@@ -86,6 +86,7 @@ const agc_site_operand *lm_exec_site_table(uint16_t *count);
 #define LM_EXEC_ENDOFJOB 05155u
 #define LM_EXEC_TWIDDLE 05173u
 #define LM_EXEC_WAITLIST 05203u
+#define LM_EXEC_DLY2_M1 05211u
 #define LM_EXEC_FIXDELAY 05221u
 #define LM_EXEC_VARDELAY 05224u
 #define LM_EXEC_TASKOVER 05261u

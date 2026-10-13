@@ -1,0 +1,10 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "0c47576760c86ee80a69cc30a43439bfdefc1baf0057df03cab282989808a3f1",
+ "entries": "every genuine TC ALARM/ALARM2/BAILOUT/POODOO site; CCSHOLE, CURTAINS, VARALARM, PRIOLARM; MULTEXIT, BANKCALL and DOWNFLAG return points; ALMCADR",
+ "boundary": "entry state to the first point neither ALARM_AND_ABORT nor INTER-BANK_COMMUNICATION owns (caller return, PRIODSPR, DOWNFLAG, VAC5STOR, MR.KLEAN, ENEMA)",
+ "full_physical_words": 2048
+}

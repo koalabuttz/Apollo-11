@@ -50,5 +50,6 @@ Hashes: `evidence/lanec-di-sleep/SHA256.json`.
   `src/lanec_di_sleep.c` (gcov; the other is the unknown-entry return).
 - Host and sanitizer results: `make test-lanec-di-sleep sanitize-lanec-di-sleep`
   (`lanec-di-sleep-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-sleep`, 242 frozen cases
-  (every entry, both missions) on a VICE PAL C64 (`lanec-di-sleep-vice.txt`).
+- C64 execution results: `make vice-lanec-di-sleep`, 23 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 2,176 host cases take (`lanec-di-sleep-vice.txt`).

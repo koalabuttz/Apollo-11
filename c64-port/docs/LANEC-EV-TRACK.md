@@ -46,5 +46,6 @@ Hashes: `evidence/lanec-ev-track/SHA256.json`.
   and FIXLOC) and `lanec-ev-track-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-ev-track sanitize-lanec-ev-track`
   (`lanec-ev-track-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-track`, 210 frozen cases
-  (every entry) on a VICE PAL C64 (`lanec-ev-track-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-track`, 38 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 2,304 host cases take (`lanec-ev-track-vice.txt`).

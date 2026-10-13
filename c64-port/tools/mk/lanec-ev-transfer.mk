@@ -4,7 +4,7 @@
 # BANKCALL/POSTJUMP caller (Pinball's POSTJUMP GOEXTVB among them) through
 # INTER-BANK_COMMUNICATION, the display interface, the LM Executive and the
 # LM interpreter's INTPRET.
-LANEC_EV_ABI = src/lanec_ev_routines.c src/standard_lead_routines.c src/standard_lead.c src/standard_lead_interp.c \
+LANEC_EV_ABI = src/lanec_ev_routines.c src/standard_lead_routines.c src/interp_entry.c src/standard_lead.c src/standard_lead_interp.c \
   src/standard_lead_wake.c src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c
 LANEC_EV_TRANSFER_SRC = $(LANEC_EV_ABI) tests/lanec_ev_transfer_cases.c
 LANEC_SUITE_SRC += $(LANEC_EV_TRANSFER_SRC)
@@ -22,7 +22,7 @@ sanitize-lanec-ev-transfer: build/lanec-native-sanitize build/lanec-oracle tools
 # The C64 runs ev-transfer-c64 (the whole round trip does not fit one program):
 # INTER-BANK and the front routines only; the other modules are linked for
 # the routine table and dropped by link-time optimization.
-LANEC_EV_C64_SRC = src/lanec_ev_routines.c src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank.c \
+LANEC_EV_C64_SRC = src/lanec_ev_routines.c src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c \
   src/lanec_ev_front.c tests/lanec_ev_front_cases.c src/lanec_ev_short.c src/lanec_ev_align.c src/lanec_ev_radar.c \
   src/lanec_ev_dap.c src/lanec_ev_time.c src/lanec_ev_track.c src/lanec_ev_lmi.c $(LANEC_LMI_DEPS) \
   tests/lanec_ev_transfer_cases.c

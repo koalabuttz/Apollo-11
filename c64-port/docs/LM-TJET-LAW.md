@@ -45,6 +45,16 @@ Refused (`EXEC_OUT_OF_SCOPE`, image unchanged), with no original producer:
   TJETU);
 - a return in Q that is not a TC into fixed memory.
 
+The calls are routed at compile time through `include/agc_fast_redirect.h`:
+an operand that is a plain erasable cell under EBANK6 goes to the
+`agc_fast_ops` helper of the same name (`include/agc_fast_ops.h`), any other
+operand to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`), and every
+check below runs this form; `-DLM_TJ_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
+TJET_LAW takes about 41K 6502 cycles instead of 73K (mos-sim, `-Oz`).
+
 ## Verification
 
 `tests/lm_tjet_law_cases.c` builds 16,384 cases, one axis per case
@@ -64,17 +74,18 @@ paths.
   digests are frozen into `tests/lm_tjet_law_vectors.h`.
 - `tools/lane_f_c64_rows.py` chooses the C64 rows
   (`tests/lm_tjet_law_c64_vectors.h`, 256 cases). It runs every host case with
-  branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
-  until every entry, outcome, counted branch and basic block
-  (`-fsanitize-coverage=trace-pc`) the host cases take is taken
-  (24 cases), then spreads the rest with a stride of 97. The per-branch
-  host and C64 counts are in `evidence/lm-tjet-law/lm-tjet-law-c64-cover.json`.
+  its path counters on and every linked source built with clang
+  `-fsanitize-coverage=edge,trace-pc-guard` (`tools/lane_f_path_trace.c`), and
+  takes, greedily, cases until every entry, outcome, counted path and
+  control-flow edge the host cases take is taken (27 cases), then spreads the
+  rest with a stride of 97. The per-path and per-edge host and C64 counts are
+  in `evidence/lm-tjet-law/lm-tjet-law-c64-cover.json`.
 - `make test-lm-tjet-law` and `make sanitize-lm-tjet-law` check every
   digest (strict and ASAN/UBSAN), require every case to reach the caller's
   return, require every reachable branch to be taken, and check the
   refusals.
 - `make vice-lm-tjet-law` runs the 256 C64 rows in VICE: every entry, every
-  outcome, branch and basic block the host cases take. The VICE log records the
+  outcome, path and edge the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches, documented in the host test:

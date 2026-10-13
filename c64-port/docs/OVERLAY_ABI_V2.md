@@ -137,7 +137,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 16 | 2 | Loaded bytes, header included |
 | 18 | 2 | Service-table version the module was linked against |
 | 20 | 2 | Selector count; valid selectors are 0..count-1 |
-| 22 | 2 | Reserved, zero |
+| 22 | 2 | `TABLES`: in-slot address of the module's `rk_module_tables`, or 0. The flight packer checks it lies inside the slot; the loader never reads it (resident direct calls do, #256) |
 
 The fields are little-endian. `overlay_v2_payload.ld` emits the header from
 link-time symbols (`__ov2_slot`, `__ov2_mission`, `__ov2_id`, `__ov2_services`,
@@ -153,6 +153,7 @@ and zero private zero page.
 | C DSKY and verbs | `$03` | G CM flight, entry, TVC | `$08` |
 | D1 IMU and alignment | `$04` | H integration | `$09` |
 | D2 rendezvous navigation | `$05` | proof and test data | `$0F` |
+| I runtime interpreter | `$0A` | | |
 
 Ids `$0100..$0FFF` are valid, so each lane gets 255 per mission. The LM and CM
 stores are separate, so the same id can name different modules in each.
@@ -166,7 +167,7 @@ stores are separate, so the same id can name different modules in each.
 | Page 0 | `NREU`, format 1, mission, service version, module count, index page, resolver page, resolver count, total pages |
 | Pages 1..256 | Direct index: 4,096 records of 16 bytes, at `id * 16`: id, page, bytes, CRC16, selectors, slot, flags |
 | Resolver | Records of 8 bytes, sorted by (bank, location): historical bank word, location, module, selector |
-| Modules | Each image starts on a page boundary |
+| Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx), so the packer starts a module that would cross on the next bank |
 
 Lookup is one 16-byte DMA. A historical-continuation lookup is a binary search
 of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present
@@ -211,7 +212,9 @@ Resolver keys are canonical, so a caller and the store builder always agree.
 `hist_loc` is the 12-bit address. For 04000-07777 (fixed-fixed), `hist_bank` is
 the physical bank in FB form, `02 << 10` or `03 << 10`, whatever FB and the
 superbank bit hold; this is the bank `agc_fixed_physical` gives. Banked
-addresses (02000-03777) carry FB with the superbank bit, as BBCON does.
+addresses (02000-03777) are keyed by physical bank too: banks 00-037 as
+`bank << 10` with no superbank bits, banks 040-047 as `(bank - 8) << 10 | 0100`.
+Superbank 0 and 060 therefore give the same key for FB 030-037.
 
 Loads only happen inside `apollo_ov2_run`, between bodies, while no module
 frame is live. A nested run is refused with `BUSY`. Any failure latches a fault

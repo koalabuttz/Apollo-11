@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-conic-compiled",
+  "release": "evidence-lm-conic-compiled",
+  "files": {
+    "lm-conic-compiled-differential.log": {
+      "sha256": "0136a536fc123f13f3d80c55a50747b8e3b1c3d3c7d9b71243c9be4959fefef1",
+      "bytes": 20241,
+      "store": "release"
+    },
+    "lm-conic-compiled-host.log": {
+      "sha256": "ce90fae719cfcbe06f90265054449d881b360678ce31bd4a70a602ab2f6d2b25",
+      "bytes": 1070,
+      "store": "release"
+    },
+    "lm-conic-compiled-proof.json": {
+      "sha256": "88113e5b0826b179df4f61547698ee9655f6f3d3bee2471431c8e7cddab5fe5c",
+      "bytes": 32689,
+      "store": "tree"
+    },
+    "lm-conic-compiled-source-map.json": {
+      "sha256": "ff323ab48be51189b09086d36d6447ae5a4a3cbb8e47c7735917977441e339c4",
+      "bytes": 145175,
+      "store": "tree"
+    },
+    "lm-conic-compiled-vice.log": {
+      "sha256": "57806f8ceab965e221b47fb2e0d5ce621c26723b3357872022d3a2a245d56ff6",
+      "bytes": 2114,
+      "store": "release"
+    }
+  }
+}

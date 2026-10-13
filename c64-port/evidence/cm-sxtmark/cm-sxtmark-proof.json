@@ -1,0 +1,274 @@
+{
+ "milestone": "cm-sxtmark",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 21504,
+ "cases_sha256": "fce65ffb03478ed186c3bc59cf0000aa49492e30b143b92b1f0f6a6c798b3d3a",
+ "oracle_sha256": "71a9c3d176b62561b93aa76a727eeb8d421a048127707af30d83c38aa76a5b09",
+ "frozen_vectors": 682,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x3ffffffffff",
+   "cases": 71,
+   "case_ids": [
+    394,
+    137,
+    148,
+    220,
+    248,
+    472,
+    508,
+    568,
+    1116,
+    1836,
+    2084,
+    3052,
+    3512,
+    3340,
+    3484,
+    3276,
+    3648,
+    4280,
+    4612,
+    4729,
+    5508,
+    5952,
+    5880,
+    5632,
+    5764,
+    5844,
+    5820,
+    6120,
+    6136,
+    5720,
+    6140,
+    5928,
+    5884,
+    6412,
+    6956,
+    7047,
+    6736,
+    6992,
+    7052,
+    7656,
+    8132,
+    8512,
+    8716,
+    9368,
+    9876,
+    10372,
+    10800,
+    11616,
+    11956,
+    12624,
+    12968,
+    13368,
+    13940,
+    14720,
+    14828,
+    14868,
+    15112,
+    15468,
+    15984,
+    16512,
+    16960,
+    17604,
+    18208,
+    18684,
+    18956,
+    19604,
+    20184,
+    20108,
+    20092,
+    20764,
+    21492
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 279,
+  "c64_labels": 279,
+  "host_edges": 676,
+  "c64_edges": 676,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 470,
+  "c64_taken": 470,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_sxtmark.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_sxtmark_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 333,
+  "edges_host_vectors": 333,
+  "edges_c64": 333,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "CM 07,2002 SXTMARK": {
+   "07755": 365,
+   "05364": 147
+  },
+  "CM 07,2004 ": {
+   "07755": 369,
+   "05364": 143
+  },
+  "CM 07,2015 MARKOK": {
+   "05364": 500,
+   "07755": 12
+  },
+  "CM 07,2031 MKVACFND": {
+   "05364": 512
+  },
+  "CM 07,2042 ": {
+   "05364": 512
+  },
+  "CM 07,2043 ": {
+   "04675": 512
+  },
+  "CM 07,2046 ": {
+   "05134": 512
+  },
+  "CM 07,2047 ": {
+   "04675": 512
+  },
+  "CM 07,2061 ": {
+   "04675": 512
+  },
+  "CM 07,2063 MKRELEAS": {
+   "04675": 512
+  },
+  "CM 07,2071 MKRLEES": {
+   "04675": 512
+  },
+  "CM 07,2104 MARKRUPT": {
+   "05245": 251,
+   "05650": 29,
+   "05333": 85,
+   "04701": 142,
+   "05134": 5
+  },
+  "CM 07,2152 ": {
+   "05333": 512
+  },
+  "CM 07,2153 MARKCONT": {
+   "05324": 180,
+   "05606": 265,
+   "05650": 34,
+   "05134": 33
+  },
+  "CM 07,2163 ": {
+   "05606": 512
+  },
+  "CM 07,2167 ": {
+   "05324": 512
+  },
+  "CM 07,2206 ": {
+   "05606": 512
+  },
+  "CM 07,2212 ": {
+   "05606": 512
+  },
+  "CM 07,2216 ": {
+   "05324": 512
+  },
+  "CM 07,2221 ": {
+   "05324": 512
+  },
+  "CM 07,2224 ": {
+   "05324": 512
+  },
+  "CM 07,2300 ": {
+   "05324": 512
+  },
+  "CM 07,2314 ": {
+   "05333": 512
+  },
+  "CM 07,2325 ": {
+   "05333": 512
+  },
+  "CM 07,2346 ": {
+   "05333": 512
+  },
+  "CM 07,2347 MKVB51": {
+   "04662": 512
+  },
+  "CM 07,2351 ": {
+   "04662": 512
+  },
+  "CM 07,2354 ": {
+   "05536": 512
+  },
+  "CM 07,2355 ": {
+   "05245": 512
+  },
+  "CM 07,2356 ": {
+   "04662": 512
+  },
+  "CM 07,2360 ": {
+   "05364": 512
+  },
+  "CM 07,2362 ": {
+   "04701": 512
+  },
+  "CM 07,2363 ": {
+   "05546": 512
+  },
+  "CM 07,2370 ENTANSWR": {
+   "05245": 512
+  },
+  "CM 07,2412 ": {
+   "05534": 512
+  },
+  "CM 07,2413 ENDMARKS": {
+   "04740": 512
+  },
+  "CM 07,2416 MKVB5X": {
+   "04662": 512
+  },
+  "CM 07,2422 MKVB50": {
+   "04662": 512
+  },
+  "CM 07,2440 ": {
+   "05333": 512
+  },
+  "CM 10,2203 MARKDIF": {
+   "04740": 344,
+   "05650": 168
+  },
+  "CM 10,2220 DIFCHK": {
+   "05650": 512
+  },
+  "CM 10,2236 ": {
+   "05324": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: ALARM, BAILOUT, BANKCALL, CHECKMM, CLEARMRK, ENDMARK, GENTRAN, IBNKCALL, NOVAC, POSTJUMP, RESUME, SWRETURN, TASKOVER, UPFLAG, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 12 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "host_branches_missing_on_c64": []
+}

@@ -1,7 +1,7 @@
 ---
 id: cm-rcs-dap
-title: Translate Comanche RCS-CSM_DIGITAL_AUTOPILOT (CM RCS DAP T5 cycle, needles, hand controller)
-date: 2026-10-12T19:30Z
+title: Translate Comanche RCS-CSM DIGITAL AUTOPILOT
+date: 2026-10-13
 lane: G
 ---
-Native C for all of Comanche055 RCS-CSM_DIGITAL_AUTOPILOT (bank 21 `2105`-`3247`, 611 words). This covers the RCSATT T5 cycle and its REDORCS restart, from initialisation through the hand controller, manual rates and free drift. It also covers the subroutines other files call: NEEDLER, NEEDLE11, NEEDLES, ZEROJET and STICKCHK. Every entry runs to RESUME, IBNKCALL, NOVAC, the MYSUBS calls, the AUTOMATIC_MANEUVERS transfers or the caller's return. The final image and channels 12/13/14 equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN. All 611 words, 87 fixed constants, the 2CADRs, the INDEX tables, the TC Q dispatch and the frontier returns are checked against the listing and the rope. A C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-RCS-DAP.md`.
+All of Comanche055 RCS-CSM_DIGITAL_AUTOPILOT (611 words) is native C on the control-transfer ABI, as 71 routines compiled whole-file by `tools/basic_compile.py`. All 4,352 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 136 frozen cases, and 2 C64 diagnostics pass 43 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-RCS-DAP.md`.

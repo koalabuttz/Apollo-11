@@ -3,29 +3,34 @@
   "milestone": "kalcmanu-steering",
   "release": "evidence-kalcmanu-steering",
   "files": {
+    "kalcmanu-steering-c64-outcomes.json": {
+      "sha256": "796759a8ca413c957a07b7f600a3ae2677df6950e1a9ed34a3543c351ba1c33a",
+      "bytes": 688,
+      "store": "tree"
+    },
     "kalcmanu-steering-differential.log": {
-      "sha256": "4dac397c7ec9418cf1989531e51642f81715eb8cc329d329014d7b6be82a5864",
-      "bytes": 17161,
+      "sha256": "6f25fd71e4003b5c4c41e8c6e805775663e169657d29cc1c64e9c169012d5090",
+      "bytes": 17907,
       "store": "release"
     },
     "kalcmanu-steering-host.log": {
-      "sha256": "8ebf4916b891a8169486d28700e04f2bb9f0a25042579ffa782f5c680a8b918e",
-      "bytes": 84,
+      "sha256": "c77ef5ed3fedd74da1ae25fbe937a675030780f9a4e41ba3ecadb379960d8d49",
+      "bytes": 197,
       "store": "release"
     },
     "kalcmanu-steering-proof.json": {
-      "sha256": "2db77ae9e525037f1ae9cac984aab939c8aaa2f56effb057b772ba8a48b371f6",
-      "bytes": 26594,
+      "sha256": "818951eed038fefaa740978af2c23b6ae6f1a68c35fed20f09cda16c86f01f0d",
+      "bytes": 28863,
       "store": "tree"
     },
     "kalcmanu-steering-source-map.json": {
-      "sha256": "18f7100a7cf9b3eba62d2cfcf5a88bc4ad1ef1aa810f104938d81225c591df82",
+      "sha256": "a1b685611b46e6c316fa9bb9cee5c2b5f9abdec38a21d81bf5c93b0c96759b11",
       "bytes": 46936,
       "store": "tree"
     },
     "kalcmanu-steering-vice.log": {
-      "sha256": "5100c78b3f0a786419ab149f391b4b59694e2e7bc0048c4dd782b3308bb73cfe",
-      "bytes": 124,
+      "sha256": "2455a2f7797ac277c455c603dc6e4851db9f50129ac4f42ae2af9f8bb614fc4e",
+      "bytes": 324,
       "store": "release"
     }
   }

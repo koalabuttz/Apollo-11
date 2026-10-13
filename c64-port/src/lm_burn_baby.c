@@ -15,7 +15,7 @@
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
-#define W s->words
+#include "agc_image_w.h"
 #if !defined(LMBB_C64_GROUP)
 #define BB_G1 1
 #define BB_G2 1
@@ -1011,7 +1011,12 @@ static int basic(apollo_overlay_state *s,lm_bb_io *io,uint16_t ph){
  AT(27,02211);ai_mask(s,ITEMP3);
  AT(27,02212);(void)ai_ts(s,ITEMP3);
  AT(27,02213);ai_zl(s);
- AT(27,02214);ai_cs(s,LST2+(W[1]&077777u));
+ /* INDEX L reads the list only for L 0 .. 16, as KILLTSK2's ZL and
+  * LETITLIV leave it. A larger L (DEAD's DTCB to a word of this file with
+  * the caller's BBANK still in L) would carry into the opcode, so it is
+  * refused at each INDEX L (#147). */
+ AT(27,02214);if(W[1]>16u)return REFUSE;
+ ai_cs(s,LST2+W[1]);
  AT(27,02216);ai_ad(s,ITEMP4);
  AT(27,02217);
  AT(27,02220);if(ai_bzf(s)){BR(52);GOTO(27,02232);}
@@ -1027,7 +1032,8 @@ static int basic(apollo_overlay_state *s,lm_bb_io *io,uint16_t ph){
  AT(27,02230);ai_dxch(s,ITEMP1);
  AT(27,02231);dtcb(s,02231u);return GO;
  AT(27,02232);ai_csf(s,K_LOW10);
- AT(27,02234);ai_mask(s,LST21+(W[1]&077777u));
+ AT(27,02234);if(W[1]>16u)return REFUSE;
+ ai_mask(s,LST21+W[1]);
  AT(27,02235);
  AT(27,02236);ai_su(s,ITEMP3);
  AT(27,02237);
@@ -1035,7 +1041,8 @@ static int basic(apollo_overlay_state *s,lm_bb_io *io,uint16_t ph){
  BR(57);
  AT(27,02241);GOTO(27,02221);
  AT(27,02242);ai_caf(s,K_TCTSKOVR);
- AT(27,02244);(void)ai_ts(s,LST2+(W[1]&077777u));
+ AT(27,02244);if(W[1]>16u)return REFUSE;
+ (void)ai_ts(s,LST2+W[1]);
  AT(27,02245);GOTO(27,02230);
 #endif
  default:return REFUSE;
@@ -1150,7 +1157,8 @@ static const agc_routine_entry basic_entries[]={
 };
 static const agc_routine_entry interp_entries[]={
 #if BB_G1
- R36(02157),R36(02163),R36(02175),R36(02200),
+ R36(02152),R36(02155),R36(02157),R36(02163),R36(02166),R36(02167),R36(02171),R36(02173),R36(02175),
+ R36(02177),R36(02200),R36(02233),R36(02235),R36(02236),
 #endif
 };
 #define COUNT(t) (uint16_t)(sizeof t/sizeof t[0])
@@ -1184,4 +1192,5 @@ const uint16_t lmbb_routine_keys[LMBB_ROUTINES]={
  K36(03030),K36(03032),K36(03040),K36(03041),K36(03043),K36(03044),K36(03047),K36(03053),
  K36(03056),K36(03061),K36(03062),K36(03066),K36(03070),K36(03073),K36(03101),K36(03102),
  K36(03112),K36(03116),K36(03121),K36(03123),K36(03126),K36(03127),K36(03130),KFF(06027),
- K36(02157),K36(02163),K36(02175),K36(02200)};
+ K36(02152),K36(02155),K36(02157),K36(02163),K36(02166),K36(02167),K36(02171),K36(02173),K36(02175),
+ K36(02177),K36(02200),K36(02233),K36(02235),K36(02236)};

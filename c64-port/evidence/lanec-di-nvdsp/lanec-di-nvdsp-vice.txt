@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-di-nvdsp.prg: 277 checks, 0 failures
+PASS: VICE PAL lanec-di-nvdsp.prg: 32 checks, 0 failures

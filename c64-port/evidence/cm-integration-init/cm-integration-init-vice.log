@@ -1,0 +1,32 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+cef2d1c0c559649b256ae3726caed95185fc323c0993b310ef14fab3beefefac  build/cm-integration-init-1.prg
+0e1c8ec63272d885197ae7c79ce0d8dafc1f3052e658a64c809c01513212c25a  build/cm-integration-init-2.prg
+eb8f595197f4f85363a02aaae798b936acdc37d99d2a7bff342e07604120b685  build/cm-integration-init-3.prg
+42126f5c61f9554cc9ba2d2bf0f90764b27bd928ad2b93d755abdbb5de19610b  build/cm-integration-init-4.prg
+d561583f993d03baf2874a46b655fb5eeb24aff2d40e7e850ed415a12c6f4167  build/cm-integration-init-5.prg
+663678cc20a1483839b3ae336127da18b239c8543b2f7485608fa488ecfc4fc0  build/cm-integration-init-6.prg
+38ce59122be112ca198073c9c6ae6e52fcdbfc3cfb199b85d36b69750ddad64b  build/cm-integration-init-7.prg
+12f5699c0f1a4895435dcbf176905bd2a28b3a9785dec3916be337fc0cb25a26  build/cm-integration-init-8.prg
+07d0c8dbc1beb82b5aad17e3a56f3ea4608f48f0437e0fa99b2ebf3867d69572  build/cm-integration-init-9.prg
+
+$ make vice-cm-integration-init
+for p in build/cm-integration-init-1.prg build/cm-integration-init-2.prg build/cm-integration-init-3.prg build/cm-integration-init-4.prg build/cm-integration-init-5.prg build/cm-integration-init-6.prg build/cm-integration-init-7.prg build/cm-integration-init-8.prg build/cm-integration-init-9.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-integration-init-1.prg: 16 checks, 0 failures
+PRG sha256: cef2d1c0c559649b256ae3726caed95185fc323c0993b310ef14fab3beefefac cm-integration-init-1.prg
+PASS: VICE PAL cm-integration-init-2.prg: 65 checks, 0 failures
+PRG sha256: 0e1c8ec63272d885197ae7c79ce0d8dafc1f3052e658a64c809c01513212c25a cm-integration-init-2.prg
+PASS: VICE PAL cm-integration-init-3.prg: 22 checks, 0 failures
+PRG sha256: eb8f595197f4f85363a02aaae798b936acdc37d99d2a7bff342e07604120b685 cm-integration-init-3.prg
+PASS: VICE PAL cm-integration-init-4.prg: 19 checks, 0 failures
+PRG sha256: 42126f5c61f9554cc9ba2d2bf0f90764b27bd928ad2b93d755abdbb5de19610b cm-integration-init-4.prg
+PASS: VICE PAL cm-integration-init-5.prg: 22 checks, 0 failures
+PRG sha256: d561583f993d03baf2874a46b655fb5eeb24aff2d40e7e850ed415a12c6f4167 cm-integration-init-5.prg
+PASS: VICE PAL cm-integration-init-6.prg: 36 checks, 0 failures
+PRG sha256: 663678cc20a1483839b3ae336127da18b239c8543b2f7485608fa488ecfc4fc0 cm-integration-init-6.prg
+PASS: VICE PAL cm-integration-init-7.prg: 60 checks, 0 failures
+PRG sha256: 38ce59122be112ca198073c9c6ae6e52fcdbfc3cfb199b85d36b69750ddad64b cm-integration-init-7.prg
+PASS: VICE PAL cm-integration-init-8.prg: 52 checks, 0 failures
+PRG sha256: 12f5699c0f1a4895435dcbf176905bd2a28b3a9785dec3916be337fc0cb25a26 cm-integration-init-8.prg
+PASS: VICE PAL cm-integration-init-9.prg: 30 checks, 0 failures
+PRG sha256: 07d0c8dbc1beb82b5aad17e3a56f3ea4608f48f0437e0fa99b2ebf3867d69572 cm-integration-init-9.prg
+exit 0

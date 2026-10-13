@@ -46,5 +46,6 @@ Hashes: `evidence/lanec-ev-short/SHA256.json`.
   guard and the unreachable `default` cases).
 - Host and sanitizer results: `make test-lanec-ev-short sanitize-lanec-ev-short`
   (`lanec-ev-short-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-short`, 245 frozen cases
-  (every entry, both missions) on a VICE PAL C64 (`lanec-ev-short-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-short`, 110 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 6,368 host cases take (`lanec-ev-short-vice.txt`).

@@ -4,23 +4,23 @@
   "release": "evidence-cm-v37",
   "files": {
     "cm-v37-c64-cover.json": {
-      "sha256": "3bdd6aa5dd81831f511bb98fe17ca728564576c018fe8b89d5009ccf0998932d",
-      "bytes": 4237,
+      "sha256": "adf4273da7f6639b70ed76653675c5c3bc1754fce508c187051e128e6e4ad0f6",
+      "bytes": 4244,
       "store": "tree"
     },
     "cm-v37-host.log": {
-      "sha256": "a7e6e943c3bd7453ee03134c7c2f5415a43214c68b5e5e3866848276f17abba3",
-      "bytes": 2004,
+      "sha256": "8cf586eb5cb02eefc5ede7564d076f288a27daa6ae6aeb115df29a6916789b94",
+      "bytes": 2034,
       "store": "release"
     },
     "cm-v37-proof.json": {
-      "sha256": "752a4ab8d232379cda7fde06b362ae9be596387101c32287ce83eed0a15fccb3",
+      "sha256": "1350bc725e33299690ae98aee3ac02d306c565f5253b96e80f17f88dccf48205",
       "bytes": 1566,
       "store": "tree"
     },
     "cm-v37-vice.log": {
-      "sha256": "4e165ea4e150313fb19d27d3ac02e001dfd00708fd895a736c93d3f8248f5182",
-      "bytes": 596,
+      "sha256": "c78d156cb0a2c337af0865d8f92f15cb97c861b3b18c1d22f794e1529c94c856",
+      "bytes": 194,
       "store": "release"
     }
   }

@@ -3,45 +3,30 @@
   "milestone": "cm-auto-man",
   "release": "evidence-cm-auto-man",
   "files": {
-    "cm-auto-man-assembly-comparison.json": {
-      "sha256": "2f89f5a90ffec426931c3e2178607ac1d08d0074755baa86174e97236d9ba71c",
-      "bytes": 38034,
+    "cm-auto-man-differential.log": {
+      "sha256": "c2179ed39267a2240c0eb2c91d569a18be1ef1b1a2c83ed287e81ba262b732df",
+      "bytes": 351,
       "store": "tree"
     },
-    "cm-auto-man-checks.log": {
-      "sha256": "6fc423b7167a7df2b9ba3efd3d0e32a7606020756876b30fd7261154994b98bf",
-      "bytes": 830,
+    "cm-auto-man-host.log": {
+      "sha256": "1674d2317dfa8cdabcb3eb5ec0c9203bd8165b81f8eee24eada00ffe0fa1db38",
+      "bytes": 1000,
       "store": "tree"
     },
-    "cm-auto-man-reference.deltas.xz": {
-      "sha256": "b74a32b5860357cf8400fe5473d6ea582da3555c141108d628d4eca38895c945",
-      "bytes": 963148,
-      "store": "release"
-    },
-    "cm-auto-man-results.json": {
-      "sha256": "97e2e9950b7016fa1b9f1d5b798156b7debd20f17eec82fdea18587a6ee5ef15",
-      "bytes": 1391,
+    "cm-auto-man-proof.json": {
+      "sha256": "ff279e4173c88ba7684c263ee2cc3690d2cb6bc50add88375166e664a1173884",
+      "bytes": 3497,
       "store": "tree"
     },
     "cm-auto-man-source-map.json": {
-      "sha256": "e3eddc57d86e36c90efa113d15820ed2a3ff49c57ee28ca29b0980c5c1be26fc",
-      "bytes": 60468,
+      "sha256": "b07d19db7cd2fbd8dd5d428fdebdb6b709787cb1eeca6d70af42b6c3730a3eff",
+      "bytes": 48699,
       "store": "tree"
     },
-    "cm-auto-man-source-stream.json": {
-      "sha256": "30fa2a5cdf150f5601736c1f41b2b1668d28c08b7c8e86d9ac56b1533afa6cd9",
-      "bytes": 372,
+    "cm-auto-man-vice.log": {
+      "sha256": "cc0bfbccf53aa9df2289a41cf0ab589bb21de1e2e2c3e72ad788f11a324edb45",
+      "bytes": 502,
       "store": "tree"
-    },
-    "cm-auto-man.map": {
-      "sha256": "db9799cc0aae684cb3954c8c21e19b16bf0e6464d4e59d926a55af0f1ce812fa",
-      "bytes": 11555,
-      "store": "release"
-    },
-    "cm-auto-man.prg": {
-      "sha256": "ccab0315dcb9235f0aadffa66515196ebe56ee0499a5c8e87eecd9bc66544da4",
-      "bytes": 20033,
-      "store": "release"
     }
   }
 }

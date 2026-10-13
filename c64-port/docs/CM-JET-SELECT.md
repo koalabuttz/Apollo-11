@@ -1,93 +1,107 @@
-# Translate Comanche JET_SELECTION_LOGIC (CM RCS jet selection)
+# Translate Comanche JET_SELECTION_LOGIC
 
-Lane G. Milestone `cm-jet-select`.
+Lane G (CM flight). Milestone `cm-jet-select`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/JET_SELECTION_LOGIC.agc` (`src/cm_jet_select.c`) is native C in full: JETSLECT (translation and rotation jet tables, jet on-times, the T6 sort) and the T6 program T6START with REPLACE/REPLACER. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #84: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/JET_SELECTION_LOGIC.agc`, all of it: bank 17 `2552`-`3736`,
-629 assembled words. That includes the XLNNDX, PYTABLE, XLN1NDX, RTABLE,
-YZTABLE, NJET and DFTMAX tables, the RCS2CADR 2CADR, and the DELTATT3,
-DELATT20, XLNMASK, PJETS, YJETS, ACRJETS, BDZJETS, BDRJETS, ACYJETS, =14MS,
-=+.1SEC and =-.1SEC constants. Nothing is left in the file.
+76 routines, keyed by physical address in `cm_jet_select_basic`:
 
-`cm_jet_select(image, io)` runs one entry to its exit. `io` holds channels
-5 and 6 (WRITE and RAND of the pitch/yaw and roll jet words), 13 (WOR of
-BIT15, the T6 enable) and 31 (read only: the translation hand-controller
-bits `07700`).
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 17,2552 JETSLECT | basic | entry JETSLECT (AUTOMATIC_MANEUVERS.agc 2CADR JETSLECT) |
+| 17,2671  | basic | part key |
+| 17,3000  | basic | part key |
+| 17,3013  | basic | part key |
+| 17,3015  | basic | part key |
+| 17,3040 NOBDZ | basic | part key |
+| 17,3046 BDROLL | basic | part key |
+| 17,3102  | basic | part key |
+| 17,3106  | basic | part key |
+| 17,3112 BDRACZ | basic | part key |
+| 17,3114  | basic | part key |
+| 17,3115 TAUCHCK | basic | part key |
+| 17,3122 NOACY | basic | part key |
+| 17,3164 PITCHTIM | basic | part key |
+| 17,3230 YAWTIME | basic | part key |
+| 17,3231  | basic | part key |
+| 17,3232  | basic | part key |
+| 17,3233  | basic | part key |
+| 17,3234  | basic | part key |
+| 17,3240 YTAUPOS | basic | part key |
+| 17,3250  | basic | part key |
+| 17,3260 AD14MSY | basic | part key |
+| 17,3274 ROLLTIME | basic | part key |
+| 17,3331  | basic | part key |
+| 17,3334 AD14MSR | basic | part key |
+| 17,3342 RBLASTOK | basic | part key |
+| 17,3357 ASMBLWP | basic | part key |
+| 17,3366 FPX2 | basic | part key |
+| 17,3367  | basic | part key |
+| 17,3372 PBYPASS | basic | part key |
+| 17,3377 ASMBLWR | basic | part key |
+| 17,3402  | basic | part key |
+| 17,3403  | basic | part key |
+| 17,3405 NO2Z | basic | part key |
+| 17,3406  | basic | part key |
+| 17,3422  | basic | part key |
+| 17,3424  | basic | part key |
+| 17,3426 AC2Y | basic | part key |
+| 17,3432  | basic | part key |
+| 17,3436  | basic | part key |
+| 17,3453 ACBD2Z | basic | part key |
+| 17,3463  | basic | part key |
+| 17,3501  | basic | part key |
+| 17,3504 BDF2Z | basic | part key |
+| 17,3510  | basic | part key |
+| 17,3516 RBYPASS | basic | part key |
+| 17,3520  | basic | part key |
+| 17,3523 ASMBLWY | basic | part key |
+| 17,3527  | basic | part key |
+| 17,3532 FYX2 | basic | part key |
+| 17,3536 YBYPASS | basic | part key |
+| 17,3554 CHECKT23 | basic | part key |
+| 17,3560 CALCDT6 | basic | part key |
+| 17,3561  | basic | part key |
+| 17,3563  | basic | part key |
+| 17,3577 DXCHT12 | basic | part key |
+| 17,3600  | basic | part key |
+| 17,3603 DXCHT23 | basic | part key |
+| 17,3617 T6START | basic | entry T6START (RCS-CSM_DIGITAL_AUTOPILOT.agc 2CADR T6START) |
+| 17,3620  | basic | part key |
+| 17,3637  | basic | part key |
+| 17,3642 T6RUPTOR | basic | part key |
+| 17,3654 T6L2 | basic | part key |
+| 17,3663  | basic | part key |
+| 17,3666 REPLACE1 | basic | part key |
+| 17,3670  | basic | part key |
+| 17,3673 REPLACE2 | basic | part key |
+| 17,3675  | basic | part key |
+| 17,3700 REPLACER | basic | part key |
+| 17,3704 REPLACEP | basic | part key |
+| 17,3712  | basic | part key |
+| 17,3713 REPLACEY | basic | part key |
+| 17,3722 ZBLAST | basic | part key |
+| 17,3723  | basic | part key |
+| 17,3725 ZBLAST1 | basic | part key |
+| 17,3730 ZBLAST2 | basic | part key |
 
-| Entry | Reached from |
-|---|---|
-| `2552` JETSLECT | T5RUPT via T5LOC (set by RCS-CSM_DIGITAL_AUTOPILOT) |
-| `3617` T6START | T6RUPT via T6ADDR |
+The step machine is split into part functions (spec `basic_parts`) so each routine's link closure fits its flight-store slot. A transfer across a part hands Z to the target word, whose routine is a part key, and the transfer runner runs it as the next step. Part keys are not entries: their runs come from the 2 entry routines, which draw all the cases, so the case set and the host vectors are the same as before the split.
 
-Admitted state: FB bank 17 (`036000`), EB E6, BB `036006`, any raw A/L/Q,
-erasable contents and channels, and:
+Destinations outside the file: RESUME. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-- at JETSLECT, XTRANS -4..+4 (not -0). CCS XTRANS stores the translation
-  index the XLNNDX table reads.
-- at T6START, BLAST+1, BLAST1+1 and BLAST2+1 each 0, 4 or 11: the
-  REPLACER/REPLACEP/REPLACEY offsets T6SETUP stores and `INDEX BLASTn +1;
-  TC REPLACER` adds.
+## Domain
 
-`CM_JET_SELECT_OK` leaves `Z` at RESUME, the only exit of both tasks.
-Anything else is `CM_JET_SELECT_OUT_OF_SCOPE`, image and io unchanged.
-`CM_JET_SELECT_FAULT` (an INDEX outside the file's tables) cannot occur
-from an admitted entry.
-
-### How it is translated
-
-As in `cm-rcs-dap`: one qualified `agc_image_ops` primitive per original
-word, under C labels named for the original branch targets. RAND, WRITE,
-WOR and RXOR are written from the yaAGC definitions.
-
-- INDEX words add the 2-bit translation indices (channel 31 fields or CCS
-  XTRANS, 0..3), the 0..2 rate indices on the 0/3/6/9/12 bases, or the jet
-  counts NRJETS/NPJETS/NYJETS (-3..+3) to the next word. INDEX reads of
-  fixed memory come from native tables equal to the rope.
-- T6START's three `INDEX BLASTn +1; TC REPLACER` words are one loop over
-  the three blasts. Each sets Q to its return (`3663`, `3670`, `3675`) and
-  runs REPLACER, REPLACEP or REPLACEY, which end in TC Q.
-- `TS TIME5` at `2555` overflows with a large T5TIME. The skip runs
-  `CAF DELATT20`. The other TS words cannot overflow: they store masks, MP
-  results, table words, CCS results, small jet counts or times.
-
-## Source map
-
-`evidence/cm-jet-select/cm-jet-select-source-map.json` (`tools/cm_jet_select_source.py`)
-records every word with its source line, rope check and native label. It
-also matches against the rope:
-
-- the 97 fixed-constant reads, to the native literals;
-- RCS2CADR and the seven INDEX tables;
-- the internal TC returns, to the native REPLACER loop. The file makes no
-  external TC.
-
-Independent assembly comparison: `evidence/cm-jet-select/cm-jet-select-assembly-comparison.json`
-(`tools/cm_flight_assembly_comparison.py`).
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. XTRANS +0, +1 or -1 as P40 leaves it; BLAST, BLAST1, BLAST2 +1 holding T6SETUP's branch indices 0, 4, 11 (REPLACER, REPLACEP, REPLACEY), compiled as the three TC targets. Tables XLNNDX, XLN1NDX (0-3), PYTABLE, RTABLE (0-14), YZTABLE (0-8), NJET and DFTMAX (-4 to +4, negative counts after PTAUNEG/YTAUNEG).
 
 ## Evidence
 
-Hashes: `evidence/cm-jet-select/SHA256.json`; bulk files in release
-`evidence-cm-jet-select`.
+Hashes: `evidence/cm-jet-select/SHA256.json`; all files are in the tree.
 
-- Oracle: `deps/cm-flight-fixture` (original CM rope `6e3150ae...`).
-  - The runner stops at RESUME.
-  - Channel 13 starts with its trap and device-only bits clear.
-  - The scaler is held, so TIME5/TIME6 do not count.
-- Host and sanitizer results: `make test-cm-jet-select sanitize-cm-jet-select`.
-  - 65536 cases (`tests/cm_jet_select_cases.c`): JETSLECT in three of four,
-    T6START in the fourth. TAU, TAU1, TAU2 cover the 14 ms and 0.1 s blast
-    limits; RACFAIL, RBDFAIL and ACORBD each take all four CCS ways; a
-    quarter of the cases have no translation command.
-  - Every case reaches RESUME, and the two sides agree on all of them.
-  - Native branch coverage is complete apart from the entry refusals
-    (checked by the host test) and the unreachable fault.
-  - Stream identity `cm-jet-select-source-stream.json`, deltas
-    `cm-jet-select-reference.deltas.xz`, log `cm-jet-select-checks.log`.
-- C64 execution results: `make vice-cm-jet-select`, 128 frozen rows.
-  `cm-jet-select-results.json`.
-
-## Open
-
-ABI registration of the entries follows in the Lane G routine-table step,
-after Lane A's ISWRETRN fix.
+- **Source map.** `cm-jet-select-source-map.json` lists all 629 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-jet-select-differential` runs 256 states per entry routine (512 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 05, 06, 13, 31 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-jet-select-proof.json` (`cm-jet-select-differential.log` is the run). One case in 32 is frozen in `tests/cm_jet_select_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-jet-select sanitize-cm-jet-select` runs the 16 frozen cases (`cm-jet-select-host.log`).
+- **C64 execution results.** `make vice-cm-jet-select` runs 1 diagnostic program with 27 cases (`cm-jet-select-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 512 differential cases take: 986 of 986 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 555 of 555 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 703 of the 703 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

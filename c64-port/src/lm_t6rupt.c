@@ -83,19 +83,25 @@ static enum exec_status writex(const agc_native_program *p,apollo_overlay_state 
  write5(s,h,z==LM_WRITEV);return EXEC_OK;
 }
 /* RESUME 05270 (QXCH QRUPT), NOQRSM 05272 (CA BANKRUPT; XCH BBANK), NOQBRSM
- * 05274 (DXCH ARUPT; RELINT; RESUME). */
+ * 05274 (DXCH ARUPT; RELINT; RESUME), and NOQBRSM +1 05275 (RELINT; RESUME),
+ * which the P-axis autopilot's TCF NOQBRSM +1 enters to resume at SUPERJOB. */
 static enum exec_status resume(const agc_native_program *p,apollo_overlay_state *s,void *v){agc_hardware *h=hw(p);p66_bias_io *io=v;agc_word z,bank;
  if(!h||!io||!s||h->in_interrupt!=1u||W[015]==0u||W[015]>010000u)return EXEC_OUT_OF_SCOPE;
  z=W[5];bank=W[016];
- if(z!=LM_NOQBRSM&&(bank&(agc_word)~076167u))return EXEC_OUT_OF_SCOPE;
+ if(z!=LM_NOQBRSM&&z!=LM_NOQBRSM+1u&&(bank&(agc_word)~076167u))return EXEC_OUT_OF_SCOPE;
+ /* BRUPT must be the word at ZRUPT-1 under the banks restored (#144). */
+ {bool noq=z==LM_NOQBRSM||z==LM_NOQBRSM+1u;
+  if(!agc_resume_exact(p,s,noq?W[4]:(agc_word)(bank&076000u),noq?W[3]:(agc_word)((bank&7u)<<8),io->superbank))
+   return EXEC_OUT_OF_SCOPE;}
  if(z==LM_RESUME)ai_qxch(s,012u);
- if(z!=LM_NOQBRSM){ai_ca(s,016u);ai_xch(s,6u);}
- ai_dxch(s,010u);io->interrupt_enabled=1;
+ if(z!=LM_NOQBRSM&&z!=LM_NOQBRSM+1u){ai_ca(s,016u);ai_xch(s,6u);}
+ if(z!=LM_NOQBRSM+1u)ai_dxch(s,010u);
+ io->interrupt_enabled=1;
  W[5]=(agc_word)(W[015]-1u);W[7]=0;h->in_interrupt=0;return EXEC_OK;
 }
-static const agc_routine_entry entries[12]={
- {FF(LM_T6RUPT_VECTOR),vector},{FF(LM_RESUME),resume},{FF(LM_NOQRSM),resume},{FF(LM_NOQBRSM),resume},
+static const agc_routine_entry entries[13]={
+ {FF(LM_T6RUPT_VECTOR),vector},{FF(LM_RESUME),resume},{FF(LM_NOQRSM),resume},{FF(LM_NOQBRSM),resume},{FF(LM_NOQBRSM+1u),resume},
  {FF(LM_WRITEP-1u),writex},{FF(LM_WRITEP),writex},{FF(LM_WRITEU-1u),writex},{FF(LM_WRITEU),writex},
  {FF(LM_WRITEV-1u),writex},{FF(LM_WRITEV),writex},
  {B17(LM_T6JOBCHK),t6jobchk_entry},{B17(LM_DOT6RUPT),dot6rupt}};
-const agc_routine_table lm_t6rupt_routines={entries,12};
+const agc_routine_table lm_t6rupt_routines={entries,13};

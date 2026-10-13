@@ -48,14 +48,15 @@ static enum exec_status branch(apollo_overlay_state *s,agc_word word){lmi_swbran
 static enum exec_status call(apollo_overlay_state *s,agc_word word){lmi_misc(s,word,CALLITA);lmi_call(s);lmi_goto(s);return EXEC_OK;}
 
 /* The interpreter's own state at NEWOPS: EDOP +0, a work area (one of the
- * five VAC areas, PUSHLOC inside it) and BBANK under BANKSET in the pair's
- * bank (13, or 04 for R00). */
+ * five VAC areas, or FAKEPRET 0110 for a NOVAC job such as the V37 job that
+ * runs R00, whose QPRET is MPAC +6; PUSHLOC inside it) and BBANK under
+ * BANKSET in the pair's bank (13, or 04 for R00). */
 static p66_bias_io *ctx(const apollo_overlay_state *s,void *io){
  p66_bias_io *x=io;agc_word f;
  if(s==0||x==0||x->interrupt_enabled>1u||(x->superbank&~0160u)||W[7]!=0)return 0;
  if(W[5]!=LM_STATEUP_NEWOPS||(W[4]&076000u)!=(W[LOC]>=02144u?B04:B13)||((W[BANKSET]^W[4])&076000u)||W[EDOP])return 0;
  f=W[FIXLOC];
- if(f!=0401u&&f!=0455u&&f!=0531u&&f!=0605u&&f!=0661u)return 0;
+ if(f!=0110u&&f!=0401u&&f!=0455u&&f!=0531u&&f!=0605u&&f!=0661u)return 0;
  if(W[PUSHLOC]<f||W[PUSHLOC]>f+042u)return 0;
  return x;
 }

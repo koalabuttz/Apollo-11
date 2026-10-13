@@ -1,7 +1,8 @@
 {
   "suite": "di-transfer-c64",
-  "cases": 336,
+  "cases": 1164,
   "differing": 0,
-  "native_sha256": "cb94126f69360304186bbdce7373d26f95112372e0fa26c27a8e304a417c20e6",
-  "oracle_sha256": "cb94126f69360304186bbdce7373d26f95112372e0fa26c27a8e304a417c20e6"
+  "refused_unchanged": 28,
+  "native_sha256": "0aabddfabfd648a8bee941874442de5c249680e633f496486b6da932fd484f82",
+  "oracle_sha256": "d2c2cc066bb30a03fbdc519c770023f9488f65fec9c501adf33598248a783516"
 }

@@ -38,11 +38,11 @@ Hashes: `evidence/lm-t6rupt/SHA256.json`.
   - DOT6RUPT, 1,536;
   - T6JOBCHK called directly, 512;
   - the six jet writer entries, 768;
-  - RESUME, NOQRSM and NOQBRSM, 768.
+  - RESUME, NOQRSM and NOQBRSM, 768. A quarter of these return into rope banks 030-033 and 040-043 under SUPERBNK 060 or 0100, with BRUPT the rope word at the return address (one time in eight it differs, which the routine refuses), so the superbank RESUME uses is checked.
 
   TIME6 is mostly -0, and the schedule times sit below, at and above the PRIO37 overflow (01000) and at POSMAX. The native routine runs once. The original then runs from the same entry until it first reaches the continuation the native run left in Z (and FB in banked memory), or until the interrupt ends after a RESUME. Every case equals the original in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, InIsr and channels 5, 6 and 13. Per-case digests are frozen into `tests/lm_t6rupt_vectors.h`; see `evidence/lm-t6rupt/lm-t6rupt-proof.json`.
 - **Host and sanitizer results.** `make test-lm-t6rupt sanitize-lm-t6rupt` (`evidence/lm-t6rupt/lm-t6rupt-host.log`) checks:
   - the digests;
   - that all twelve entries are reached, and every path: return, CCSHOLE, clock left stopped, restarted, next time dropped, and P, U and V jets;
-  - five refusals with the image unchanged.
-- **C64 execution results.** `make vice-lm-t6rupt` (`evidence/lm-t6rupt/lm-t6rupt-vice.log`) runs every sixteenth case (240).
+  - five refusals with the image unchanged, and that only the rope-return RESUME cases whose BRUPT differs from the rope word are refused (26).
+- **C64 execution results.** `make vice-lm-t6rupt` (`evidence/lm-t6rupt/lm-t6rupt-vice.log`) runs every sixteenth case (240) plus 4 cover rows.

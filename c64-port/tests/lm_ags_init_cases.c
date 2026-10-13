@@ -60,9 +60,24 @@ void ags_input(apollo_overlay_state *m,ags_case *c,uint16_t n){
  W[0163]=(agc_word)(v%3u==0u?0u:v%3u==1u?1u:077776u);
  if(r<AGS_BASIC_ROUTINES){W[5]=(agc_word)(02000u+ph%1024u);return;}
  /* Interpretive keys: at NEWOPS with LOC there, BANKSET bank 32; inside
-  * SCALEVEC a genuine QPRET, or a CADR elsewhere in a quarter. */
+  * SCALEVEC (32,2132-2166) a genuine QPRET, or a CADR elsewhere in a quarter. */
  W[5]=NEWOPS;W[LOC]=(agc_word)(02000u+ph%1024u);W[BANKSET]=W[6];W[0115]=040000u;W[023]=0;
- if(KEY(02144)||KEY(02156)){agc_word q=(v>>7)%2u?AGS_QPRET_2061:AGS_QPRET_2053;
+ /* TAT - AGSK (DSU DDV AGSK TSCALE at 32,2065): AGSK sampled near TAT, as
+  * at a V32 ENTER followed soon by LOADTIME (|delta| < 2^14 cs either sign,
+  * or 0), or an old AGSK with delta at TSCALE's major part (equal majors;
+  * exactly TSCALE: an exact division), in DP mode in a sixth of the states.
+  * TAT is 12D in the work area, AGSK in E4. */
+ if(v%6u==3u&&eb==02000u){unsigned long a=((unsigned long)below(&seed,0x8000u)<<13)|below(&seed,0x2000u),t,d;unsigned k=below(&seed,6u);
+  d=k==0u?0ul:k<3u?1ul+below(&seed,037777u):k==3u?03100ul<<14:(03100ul<<14)|below(&seed,040000u);
+  t=k==2u||k==5u?a-(d<a?d:a):a+d;
+  W[02020]=(agc_word)(a>>14);W[02021]=(agc_word)(a&037777u);W[vac+014u]=(agc_word)(t>>14);W[vac+015u]=(agc_word)(t&037777u);
+  if(KEY(02065)){W[0154]=W[vac+014u];W[0155]=W[vac+015u];W[0156]=0;}}
+ /* VAD AGSRND1 (low 060000) after VSL8 at 32,2151 and VAD AGSRND2 (low
+  * 037777) at 32,2153 (and the same pair at 32,2137): a component (MPAC,
+  * +3 or +5) whose sum carries into a high word of 037777, in vector mode in a sixth. */
+ if(v%6u==5u&&(KEY(02137)||KEY(02151)||KEY(02153))){static const unsigned char at[3]={0u,3u,5u};unsigned c=at[below(&seed,3u)];
+  W[0154u+c]=KEY(02151)?077u:037777u;W[0155u+c]=KEY(02151)?037740u:(agc_word)(KEY(02137)?020000u+below(&seed,020000u):1u+below(&seed,037777u));}
+ if(ph>=032u*1024u+0132u&&ph<=032u*1024u+0166u){agc_word q=(v>>7)%2u?AGS_QPRET_2061:AGS_QPRET_2053;
   if((v>>8)%4u==3u)q=(agc_word)(04000u|r15(&seed));
   W[vac+052u]=q;}
 }
