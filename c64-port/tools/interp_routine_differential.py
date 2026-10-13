@@ -702,7 +702,8 @@ def build_edges(spec_id, spec):
                         '-fsanitize-coverage=trace-pc-guard', '-c', src, '-o', o], cwd=R, check=True)
         objs.append(o)
     nat = os.path.join(d, 'native')
-    subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES', *objs,
+    subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES',
+                    '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *objs,
                     'tests/interp_case.c', spec['target'], 'tools/interp_routine_native.c', 'tools/irc_edges.c',
                     '-o', nat], cwd=R, check=True)
     return nat
@@ -758,6 +759,9 @@ def main():
     ap.add_argument('--freeze', action='store_true')
     ap.add_argument('--show', type=int, default=3)
     ap.add_argument('--only', default='')
+    ap.add_argument('--cover-check', metavar='RECORD', nargs='?', const='',
+                    help='re-derive the committed C64 branch cover (default record: '
+                         'evidence/<id>/<id>-c64-cover.json, else -proof.json) and print it as JSON')
     a = ap.parse_args()
     spec = interp_specs.SPECS[a.spec]
     if IC.main(['', a.spec, '--check']):
@@ -766,6 +770,11 @@ def main():
     if spec.get('flow_states'):
         flow_states(a.spec, spec, missions)
     rng = random.Random('interp-routine:' + a.spec)
+    proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (a.spec, a.spec))
+    if a.cover_check is not None and os.path.exists(proof):
+        # (The freeze's cases per routine, from the case count it froze.)
+        n = sum(len(mi.points) for mi in missions if mi.m in spec['missions'])
+        a.cases = max(1, json.load(open(proof)).get('cases', a.cases * n) // n)
     cases = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -780,6 +789,8 @@ def main():
     if spec.get('resume_flow'):
         flow_seed(missions, cases, rng, ref, path)
     write_cases(path, missions, cases)
+    if a.cover_check is not None:
+        sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
@@ -851,6 +862,43 @@ def main():
         if spec.get('cover'):
             edges = edge_sets(build_edges(a.spec, spec), path)
         freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan=chan, edges=edges, covers=covers)
+
+
+def cover_check(spec_id, spec, missions, cases, path, record):
+    """--cover-check: the committed record's C64 rows against the host
+    cases, both re-run now (gcov_branches, host only, no oracle). The cases
+    are the frozen ones when their bytes hash to the record's cases_sha256
+    (a -proof.json); a -c64-cover.json pins none. Prints JSON; returns 1
+    when the rows miss a branch the host cases take, or the cases differ."""
+    if not record:
+        record = next((p for p in ('evidence/%s/%s-c64-cover.json' % (spec_id, spec_id),
+                                   'evidence/%s/%s-proof.json' % (spec_id, spec_id))
+                       if os.path.exists(os.path.join(R, p))), None)
+    if not record:
+        print(json.dumps({'milestone': spec_id, 'verified': False, 'reason': 'no committed cover record'}))
+        return 1
+    rec = json.load(open(os.path.join(R, record)))
+    if 'c64_rows' in rec:
+        rows = rec['c64_rows']
+    else:
+        rows = [i for g in rec.get('c64_vectors', []) for i in g['case_ids']]
+    out = {'milestone': spec_id, 'record': record, 'cases': len(cases), 'c64_rows': len(rows)}
+    # (The proof next to a cover record pins the frozen cases.)
+    proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (spec_id, spec_id))
+    sha = rec.get('cases_sha256') or (json.load(open(proof)).get('cases_sha256') if os.path.exists(proof) else None)
+    out['cases_match'] = hashlib.sha256(open(path, 'rb').read()).hexdigest() == sha if sha else None
+    beyond = [i for i in rows if i >= len(cases)]
+    if out.get('cases_match') is False or beyond or not rows:
+        out.update(verified=False, reason='the regenerated cases are not the frozen ones' if rows else 'no C64 rows')
+        print(json.dumps(out))
+        return 1
+    if spec.get('cover'):
+        build_edges(spec_id, spec)      # (a freeze links it: catch a broken link here)
+    g = gcov_branches(spec_id, spec, missions, cases, rows)
+    out.update(verified=True, host_taken=g['host_taken'], c64_taken=g['c64_taken'],
+               missing=g['missing'], missing_count=g['host_taken_not_c64'])
+    print(json.dumps(out))
+    return 1 if g['host_taken_not_c64'] else 0
 
 
 def cover_counts(covers, c64_ids):
