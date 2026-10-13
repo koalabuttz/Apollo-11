@@ -53,6 +53,8 @@ M = {
     'lm-t4rupt-chain': ('lm_t4rupt_chain_cases.h', 'lch_digest(&image,n)', 'LCH_SRC', '$(LCH_FLAGS)', 'lch', 'LCH'),
     # Five programs, one per kind: each runs every fourth case of its kind and the kind's first two.
     'waitlist-entries': ('waitlist_entries_cases.h', 'wle_digest(&image,n)', 'WLE_SRC', '$(WLE_FLAGS)', 'wle', 'WLE'),
+    'cm-alarm': ('cm_alarm_cases.h', 'cm_al_digest(&image,n,&(enum exec_status){EXEC_OK})', 'CM_AL_SRC', '', 'cm_al',
+                 'CM_AL'),
 }
 TWO = {'rupt-lead-ins': ('RLI_LM_CASES', 'RLI_CM_CASES'), 'keyrupt-uprupt': ('KU_CASES', 'KU_CASES')}
 
