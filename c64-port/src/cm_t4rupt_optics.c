@@ -125,19 +125,78 @@ void irc_cover(unsigned n);
 #else
 #define IRC_COVER(n) ((void)0)
 #endif
-/* Every basic word of the file. */
-static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+#ifndef CM_T4RUPT_OPTICS_BANKS
+#define CM_T4RUPT_OPTICS_BANKS 0xffffffffffffffffull
+#endif
+#define CM_T4RUPT_OPTICS_HAS(b) ((CM_T4RUPT_OPTICS_BANKS >> (b)) & 1u)
+#if CM_T4RUPT_OPTICS_HAS(06)
+static enum exec_status basic_run_6(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_T4RUPT_OPTICS_HAS(010)
+static enum exec_status basic_run_10(apollo_overlay_state *s,cm_native_io *io,uint16_t at);
+#endif
+#if CM_T4RUPT_OPTICS_HAS(06)
+#define CM_T4RUPT_OPTICS_RUN_6 basic_run_6
+#else
+#define CM_T4RUPT_OPTICS_RUN_6(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_T4RUPT_OPTICS_HAS(010)
+#define CM_T4RUPT_OPTICS_RUN_10 basic_run_10
+#else
+#define CM_T4RUPT_OPTICS_RUN_10(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)
+#endif
+#if CM_T4RUPT_OPTICS_HAS(06)
+/* The basic words of bank 06. */
+static enum exec_status basic_run_6(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
  long ix=0,e=0;uint16_t p;
- (void)ix;(void)e;
+ (void)ix;(void)e;(void)p;
  switch(at){
  case 6645u:goto B14765;
+ case 6652u:goto B14774;
+ case 6673u:goto B15021;
+ case 6677u:goto B15025;
+ case 6678u:goto B15026;
+ case 6679u:goto B15027;
+ case 6681u:goto B15031;
+ case 6682u:goto B15032;
+ case 6683u:goto B15033;
+ case 6684u:goto B15034;
+ case 6686u:goto B15036;
+ case 6687u:goto B15037;
+ case 6688u:goto B15040;
+ case 6689u:goto B15041;
  case 6691u:goto B15043;
+ case 6694u:goto B15046;
+ case 6695u:goto B15047;
+ case 6696u:goto B15050;
+ case 6697u:goto B15051;
  case 6699u:goto B15053;
+ case 6700u:goto B15054;
+ case 6701u:goto B15055;
+ case 6721u:goto B15101;
+ case 6722u:goto B15102;
+ case 6724u:goto B15104;
+ case 6725u:goto B15105;
+ case 6726u:goto B15106;
+ case 6727u:goto B15107;
+ case 6730u:goto B15112;
+ case 6734u:goto B15116;
+ case 6735u:goto B15117;
+ case 6741u:goto B15125;
+ case 6743u:goto B15127;
+ case 6744u:goto B15130;
+ case 6747u:goto B15133;
+ case 6749u:goto B15135;
+ case 6750u:goto B15136;
+ case 6751u:goto B15137;
+ case 6752u:goto B15140;
+ case 6761u:goto B15151;
+ case 6762u:goto B15152;
  case 6774u:goto B15166;
  case 6778u:goto B15172;
+ case 6779u:goto B15173;
  case 6784u:goto B15200;
- case 8192u:goto B20000;
- case 8222u:goto B20036;
+ case 6791u:goto B15207;
  default:return EXEC_OUT_OF_SCOPE;
  }
 B14765:
@@ -1286,6 +1345,93 @@ B15260c:
  IRC_COVER(221u);
  /* 06,3260 TCF SETOFF */
  goto B15240c;
+dispatch:
+ p=agc_fixed_physical(W[5],W[4],io->superbank);
+ switch(p){
+ case 6645u:goto B14765;
+ case 6652u:goto B14774;
+ case 6673u:goto B15021;
+ case 6677u:goto B15025;
+ case 6678u:goto B15026;
+ case 6679u:goto B15027;
+ case 6681u:goto B15031;
+ case 6682u:goto B15032;
+ case 6683u:goto B15033;
+ case 6684u:goto B15034;
+ case 6686u:goto B15036;
+ case 6687u:goto B15037;
+ case 6688u:goto B15040;
+ case 6689u:goto B15041;
+ case 6691u:goto B15043;
+ case 6694u:goto B15046;
+ case 6695u:goto B15047;
+ case 6696u:goto B15050;
+ case 6697u:goto B15051;
+ case 6699u:goto B15053;
+ case 6700u:goto B15054;
+ case 6701u:goto B15055;
+ case 6721u:goto B15101;
+ case 6722u:goto B15102;
+ case 6724u:goto B15104;
+ case 6725u:goto B15105;
+ case 6726u:goto B15106;
+ case 6727u:goto B15107;
+ case 6730u:goto B15112;
+ case 6734u:goto B15116;
+ case 6735u:goto B15117;
+ case 6741u:goto B15125;
+ case 6743u:goto B15127;
+ case 6744u:goto B15130;
+ case 6747u:goto B15133;
+ case 6749u:goto B15135;
+ case 6750u:goto B15136;
+ case 6751u:goto B15137;
+ case 6752u:goto B15140;
+ case 6761u:goto B15151;
+ case 6762u:goto B15152;
+ case 6774u:goto B15166;
+ case 6778u:goto B15172;
+ case 6779u:goto B15173;
+ case 6784u:goto B15200;
+ case 6791u:goto B15207;
+ case 8192u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8192u);
+ case 8210u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8210u);
+ case 8211u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8211u);
+ case 8220u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8220u);
+ case 8222u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8222u);
+ case 8279u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8279u);
+ case 8280u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8280u);
+ case 8281u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8281u);
+ case 8282u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8282u);
+ case 8286u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8286u);
+ case 8289u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8289u);
+ case 8292u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8292u);
+ case 8302u:return CM_T4RUPT_OPTICS_RUN_10(s,io,8302u);
+ default:return EXEC_OK;
+ }
+}
+#endif
+#if CM_T4RUPT_OPTICS_HAS(010)
+/* The basic words of bank 10. */
+static enum exec_status basic_run_10(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;
+ switch(at){
+ case 8192u:goto B20000;
+ case 8210u:goto B20022;
+ case 8211u:goto B20023;
+ case 8220u:goto B20034;
+ case 8222u:goto B20036;
+ case 8279u:goto B20127;
+ case 8280u:goto B20130;
+ case 8281u:goto B20131;
+ case 8282u:goto B20132;
+ case 8286u:goto B20136;
+ case 8289u:goto B20141;
+ case 8292u:goto B20144;
+ case 8302u:goto B20156;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
 B20000:
  IRC_COVER(222u);
  /* 10,2000 OPTDRIVE CA CDUS */
@@ -2118,52 +2264,52 @@ B20200c:
 dispatch:
  p=agc_fixed_physical(W[5],W[4],io->superbank);
  switch(p){
- case 6645u:goto B14765;
- case 6652u:goto B14774;
- case 6673u:goto B15021;
- case 6677u:goto B15025;
- case 6678u:goto B15026;
- case 6679u:goto B15027;
- case 6681u:goto B15031;
- case 6682u:goto B15032;
- case 6683u:goto B15033;
- case 6684u:goto B15034;
- case 6686u:goto B15036;
- case 6687u:goto B15037;
- case 6688u:goto B15040;
- case 6689u:goto B15041;
- case 6691u:goto B15043;
- case 6694u:goto B15046;
- case 6695u:goto B15047;
- case 6696u:goto B15050;
- case 6697u:goto B15051;
- case 6699u:goto B15053;
- case 6700u:goto B15054;
- case 6701u:goto B15055;
- case 6721u:goto B15101;
- case 6722u:goto B15102;
- case 6724u:goto B15104;
- case 6725u:goto B15105;
- case 6726u:goto B15106;
- case 6727u:goto B15107;
- case 6730u:goto B15112;
- case 6734u:goto B15116;
- case 6735u:goto B15117;
- case 6741u:goto B15125;
- case 6743u:goto B15127;
- case 6744u:goto B15130;
- case 6747u:goto B15133;
- case 6749u:goto B15135;
- case 6750u:goto B15136;
- case 6751u:goto B15137;
- case 6752u:goto B15140;
- case 6761u:goto B15151;
- case 6762u:goto B15152;
- case 6774u:goto B15166;
- case 6778u:goto B15172;
- case 6779u:goto B15173;
- case 6784u:goto B15200;
- case 6791u:goto B15207;
+ case 6645u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6645u);
+ case 6652u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6652u);
+ case 6673u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6673u);
+ case 6677u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6677u);
+ case 6678u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6678u);
+ case 6679u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6679u);
+ case 6681u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6681u);
+ case 6682u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6682u);
+ case 6683u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6683u);
+ case 6684u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6684u);
+ case 6686u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6686u);
+ case 6687u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6687u);
+ case 6688u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6688u);
+ case 6689u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6689u);
+ case 6691u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6691u);
+ case 6694u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6694u);
+ case 6695u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6695u);
+ case 6696u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6696u);
+ case 6697u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6697u);
+ case 6699u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6699u);
+ case 6700u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6700u);
+ case 6701u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6701u);
+ case 6721u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6721u);
+ case 6722u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6722u);
+ case 6724u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6724u);
+ case 6725u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6725u);
+ case 6726u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6726u);
+ case 6727u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6727u);
+ case 6730u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6730u);
+ case 6734u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6734u);
+ case 6735u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6735u);
+ case 6741u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6741u);
+ case 6743u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6743u);
+ case 6744u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6744u);
+ case 6747u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6747u);
+ case 6749u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6749u);
+ case 6750u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6750u);
+ case 6751u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6751u);
+ case 6752u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6752u);
+ case 6761u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6761u);
+ case 6762u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6762u);
+ case 6774u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6774u);
+ case 6778u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6778u);
+ case 6779u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6779u);
+ case 6784u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6784u);
+ case 6791u:return CM_T4RUPT_OPTICS_RUN_6(s,io,6791u);
  case 8192u:goto B20000;
  case 8210u:goto B20022;
  case 8211u:goto B20023;
@@ -2180,6 +2326,7 @@ dispatch:
  default:return EXEC_OK;
  }
 }
+#endif
 /* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent
  * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */
 static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){
@@ -2199,56 +2346,56 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 /* 06,2765 OPTMON (entry OPTMON) */
 static enum exec_status r14765_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,014000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,6645u);
+ return basic_run_6(s,(cm_native_io *)v,6645u);
 }
 #endif
 #if (CM_T4RUPT_OPTICS_KEEP0 >> 1) & 1
 /* 06,3043  (return from ALARM) */
 static enum exec_status r15043_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,014000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,6691u);
+ return basic_run_6(s,(cm_native_io *)v,6691u);
 }
 #endif
 #if (CM_T4RUPT_OPTICS_KEEP0 >> 2) & 1
 /* 06,3053  (return from ALARM) */
 static enum exec_status r15053_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,014000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,6699u);
+ return basic_run_6(s,(cm_native_io *)v,6699u);
 }
 #endif
 #if (CM_T4RUPT_OPTICS_KEEP0 >> 3) & 1
 /* 06,3166  (return from WAITLIST) */
 static enum exec_status r15166_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,014000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,6774u);
+ return basic_run_6(s,(cm_native_io *)v,6774u);
 }
 #endif
 #if (CM_T4RUPT_OPTICS_KEEP0 >> 4) & 1
 /* 06,3172 ENDZOPT (entry ENDZOPT) */
 static enum exec_status r15172_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,014000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,6778u);
+ return basic_run_6(s,(cm_native_io *)v,6778u);
 }
 #endif
 #if (CM_T4RUPT_OPTICS_KEEP0 >> 5) & 1
 /* 06,3200  (return from VARDELAY) */
 static enum exec_status r15200_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,014000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,6784u);
+ return basic_run_6(s,(cm_native_io *)v,6784u);
 }
 #endif
 #if (CM_T4RUPT_OPTICS_KEEP0 >> 6) & 1
 /* 10,2000 OPTDRIVE (entry OPTDRIVE) */
 static enum exec_status r20000_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,020000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,8192u);
+ return basic_run_10(s,(cm_native_io *)v,8192u);
 }
 #endif
 #if (CM_T4RUPT_OPTICS_KEEP0 >> 7) & 1
 /* 10,2036  (return from ALARM) */
 static enum exec_status r20036_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,020000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,8222u);
+ return basic_run_10(s,(cm_native_io *)v,8222u);
 }
 #endif
 

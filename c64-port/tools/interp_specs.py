@@ -266,6 +266,9 @@ SPECS = {
         # SETOFF's BZF TCQ (no lamp change) returns from OCDUFTST through
         # the interpreter's TC Q word (TCQ = Q+2 +1, 06711).
         'tcq_words': (0o6711,),
+        # One body per bank, so OPTMON (06) and OPTDRIVE (10) are separate
+        # flight-store modules.
+        'basic_split': True,
         'cover': True,
         'channels': 'all',
         'io_channels': 'auto',
