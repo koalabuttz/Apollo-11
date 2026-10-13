@@ -194,10 +194,18 @@ that module loaded. Status, image and channels must match. On def640e3d
 plus this change both missions pass (LM 903 checks, 44 modules compared;
 CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of
-what is left is the step itself: the transfer point (about 1,100 cycles)
-and the table search, which is the next thing to cut.
+what is left is the step itself: the transfer point and the table search.
 
-A cached call (no load) costs 7,000 to 9,400 cycles on its own: the ABI 2
+The step now computes the transfer point once (it was computed again to
+pick the table set), which cut it from about 1,100 to 880 cycles, and the
+search skips a table whose key range cannot hold the point.
+`flight_store_build.py` refuses a table whose keys do not strictly ascend,
+since both the binary search and the range skip rely on it. With this,
+cached calls are 6,081 to 8,158 cycles (from 7,287 to 11,407), and the
+check passes on both missions (LM 907 checks, CM 1,398). The resident
+resolve is still 4,200 to 4,900 cycles of each step.
+
+A cached call (no load) costs 6,100 to 8,200 cycles on its own: the ABI 2
 run, the module copying its program record and tables, and one resolve. So a
 swap to a 12 KB module costs about 21,000 cycles plus the call, about 30,000
 in all (3% of a second), and a full 16 KB slot about 35 ms. At the LM's 40

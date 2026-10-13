@@ -17,9 +17,12 @@ bool agc_site_lookup(const agc_site_operand *t,uint16_t count,uint16_t physical,
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t[mid].physical==physical){*word=t[mid].word;return true;}if(t[mid].physical<physical)lo=(uint16_t)(mid+1u);else hi=mid;}
  return false;
 }
-static agc_routine find(const agc_routine_table *tables,uint8_t count,uint16_t physical){uint8_t i;uint16_t lo,hi,mid;
+/* Entries are sorted by physical, so a table whose first..last range misses
+ * the point is skipped without a search (most tables, for most points). */
+static agc_routine find(const agc_routine_table *tables,uint8_t count,uint16_t physical){uint16_t lo,hi,mid;
  if(!tables||physical==AGC_TRANSFER_NONE)return 0;
- for(i=0;i<count;++i){const agc_routine_entry *e=tables[i].entries;lo=0;hi=tables[i].count;
+ for(;count;--count,++tables){const agc_routine_entry *e=tables->entries;lo=0;hi=tables->count;
+  if(!hi||physical<e[0].physical||physical>e[hi-1u].physical)continue;
   while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(e[mid].physical==physical)return e[mid].call;if(e[mid].physical<physical)lo=(uint16_t)(mid+1u);else hi=mid;}
  }
  return 0;
@@ -64,7 +67,7 @@ static uint16_t transfer_point(const agc_native_program *p,const apollo_overlay_
  return z;
 }
 static agc_routine resolve_at(const agc_native_program *p,uint16_t point,bool in){
- return in?find(p->interpretive,p->interpretive_count,point):find(p->basic,p->basic_count,point);
+ return find(in?p->interpretive:p->basic,in?p->interpretive_count:p->basic_count,point);
 }
 uint16_t agc_transfer_point(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){bool in;
  if(!p||!s)return AGC_TRANSFER_NONE;

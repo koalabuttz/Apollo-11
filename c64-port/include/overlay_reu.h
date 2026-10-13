@@ -57,6 +57,11 @@ uint8_t apollo_reu_store_open(apollo_reu_store *,uint32_t base,uint8_t mission,
 /* Boot-time integrity pass: every present module's header and CRC, and the
  * resolver's ordering. buffer is 256 bytes of C64 RAM (scratch). */
 enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *,uint8_t *buffer);
+/* Boot-time: load(user, REU address, entry) for every slot-class-2 module
+ * (fixed extension, APOLLO_OV2_SLOT_FIXED), in id order; 0 if a load fails.
+ * The store is verified first, so each entry and image is already checked. */
+uint8_t apollo_reu_store_fixed(apollo_reu_store *,
+    uint8_t (*load)(void *,uint32_t,const apollo_ov2_dirent *),void *user);
 apollo_ov2_store apollo_reu_store_backend(apollo_reu_store *,
     uint16_t (*invoke)(void *,uint8_t *,apollo_ov2_frame *,uint16_t),void *invoke_user);
 #endif
