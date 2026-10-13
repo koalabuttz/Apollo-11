@@ -213,7 +213,7 @@ static const agc_site_operand *lm_operands(void)
 
 static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
 {
-    static agc_routine_table tables[5];
+    static agc_routine_table tables[10];
     static agc_native_program program;
     static agc_hardware hardware;
     static lm_dntm_io lm;
@@ -231,7 +231,10 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
     hardware.channel11 = io->channel[011];
     if (mission == LANEC_LM) {
         tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_routines; tables[2] = lanec_pin_lm_routines;
-        tables[3] = lm_exec_routines; tables[4] = lm_exec_job_routines; program.basic_count = 5u;
+        tables[3] = lm_exec_routines; tables[4] = lm_exec_job_routines;
+        tables[5] = lanec_pin_keys_num_lm_routines; tables[6] = lanec_pin_keys_cmd_lm_routines;
+        tables[7] = lanec_pin_keys_release_lm_routines; tables[8] = lanec_pin_keys_clear_lm_routines;
+        tables[9] = lanec_pin_keys_sign_lm_routines; program.basic_count = 10u;
         program.operands = lm_operands(); program.operand_count = lm_operand_count;
         memset(&lm, 0, sizeof lm);
         lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
@@ -242,7 +245,9 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
         io->channel[012] = lm.channel12; io->channel[013] = lm.channel13; io->channel[014] = lm.channel14;
     } else {
         tables[0] = cm_interbank_routines; tables[1] = lanec_di_cm_routines; tables[2] = lanec_pin_cm_routines;
-        program.basic_count = 3u;
+        tables[3] = lanec_pin_keys_num_cm_routines; tables[4] = lanec_pin_keys_cmd_cm_routines;
+        tables[5] = lanec_pin_keys_release_cm_routines; tables[6] = lanec_pin_keys_clear_cm_routines;
+        tables[7] = lanec_pin_keys_sign_cm_routines; program.basic_count = 8u;
         program.operands = cm_interbank_site_table(&count); program.operand_count = count;
         memset(&cm, 0, sizeof cm);
         cm.io.superbank = io->superbank; cm.io.interrupt_enabled = io->interrupt_enabled;
