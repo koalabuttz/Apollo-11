@@ -24,6 +24,7 @@ SLOTS = {0: (0x8000, 0x4000), 1: (0xE000, 0x1FFA)}
 INDEX_ENTRIES = 4096
 INDEX_RECORD = 16
 RESOLVER_RECORD = 8
+BANK_PAGES = 512 * 1024 // 256  # the REU's DMA address wraps inside 512 KB
 REU_SIZES_KB = (128, 256, 512, 1024, 2048, 4096, 8192, 16384)
 D81_BLOCKS = 3160            # free data blocks on a formatted 1581 image
 D81_DIR_ENTRIES = 296
@@ -92,8 +93,13 @@ def build_image(modules, resolver, mission, services):
     page = resolver_page + resolver_pages
     placed = []
     for m in sorted(modules, key=lambda m: m['id']):
+        size = -(-m['bytes'] // 256)
+        # One DMA loads a module, and the REU's address counter wraps inside
+        # a 512 KB bank (17xx REC; VICE too): never let a module cross one.
+        if page // BANK_PAGES != (page + size - 1) // BANK_PAGES:
+            page = (page // BANK_PAGES + 1) * BANK_PAGES
         placed.append(dict(m, page=page))
-        page += -(-m['bytes'] // 256)
+        page += size
     pages = page
     image = bytearray(pages * 256)
     struct.pack_into('<4sBBHHHHHH', image, 0, b'NREU', 1, mission, services, len(modules),

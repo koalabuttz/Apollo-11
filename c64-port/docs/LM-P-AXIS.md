@@ -16,6 +16,17 @@ erasable address or the source's fixed constant. MSU, DTCB and the channel
 orders (READ, RAND, WAND, WOR, RXOR on L) are small helpers with yaAGC's
 effect.
 
+The calls are routed at compile time: an operand that is a plain erasable
+cell under EBANK6 goes to the `agc_fast_ops` helper of the same name
+(`include/agc_fast_ops.h`: the cell resolved at compile time, A and L kept
+as image words 0 and 1, 6502 assembly cores for MP and DV), and any other
+operand to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`), and every
+check below runs this form; `-DLM_PA_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
+P-AXIS takes about 71K 6502 cycles instead of 150K (mos-sim, `-Oz`).
+
 | Entry | Body |
 |---|---|
 | PAXIS `16,2213` | the T5 lead-in: TIME5, BANKRUPT and QRUPT; `TC BAILOUT` when DAPZRUPT shows the last pass still running; otherwise `TC CHEKBITS` (DAPIDLER_PROGRAM) |

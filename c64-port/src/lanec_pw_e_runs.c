@@ -13,7 +13,7 @@
 #include "dsky_source_alarm.h"
 
 enum lanec_status lanec_pw_octal_verb_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     enum dsky_octal_verb_route route;
     enum dsky_nv_mission nv = mission == LANEC_CM ? DSKY_NV_CM : DSKY_NV_LM;
     enum p66_bias_status st;
@@ -57,7 +57,7 @@ LANEC_PW_CHARIN_RUN(lanec_pw_operator_schedule_run, dsky_operator_schedule(s, &p
  * 04313-04316, CM 04327-04332): the addresses the oracle traced for this
  * suite (LANEC_TRACE). */
 enum lanec_status lanec_pw_read_pair_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     uint16_t q = s->words[LANEC_Q], entry = mission == LANEC_CM ? 02655u : 02747u;
     uint16_t sete = mission == LANEC_CM ? 04327u : 04313u, sete_end = mission == LANEC_CM ? 04332u : 04316u;
     p66_bias_io p; p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
@@ -82,7 +82,7 @@ static const uint16_t sign_output_path[2][4][2] = {
     {{02324, 02327}, {02413, 02442}, {03347, 03377}, {03404, 03411}},
     {{02225, 02230}, {02314, 02343}, {03254, 03304}, {03311, 03316}}};
 enum lanec_status lanec_pw_sign_output_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     enum dsky_sign_output_route route;
     uint16_t base = mission == LANEC_CM ? 02314u : 02413u, z = s->words[LANEC_Z], q = s->words[LANEC_Q];
     unsigned i;

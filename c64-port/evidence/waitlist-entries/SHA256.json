@@ -4,17 +4,17 @@
   "release": "evidence-waitlist-entries",
   "files": {
     "waitlist-entries-host.log": {
-      "sha256": "d672d7f5b30954ee54cf9fddcc6ae9a09624e705f18546e17f964b2275302fcd",
+      "sha256": "a772bf0365f529e7b4dd0e4776e12b7f3e4f2abcc3dd2cfeb0c8ea65ecdd41d5",
       "bytes": 3320,
       "store": "release"
     },
     "waitlist-entries-proof.json": {
-      "sha256": "7d34824e8deacf9374172b5169395de955bf4529ff555b427c27a59e87ce42ea",
+      "sha256": "ae2af5ea796a026c99bed0d02bf11dead48c0066a31385e5c339d83c49ce2380",
       "bytes": 6657,
       "store": "tree"
     },
     "waitlist-entries-vice.log": {
-      "sha256": "0282214f2c3e4d96ad09e1e0503f36457ecf7e99c227f0d2b97b156fc2bbfc5b",
+      "sha256": "98e5ad3d4ea35e860d20127556bc0f5267bea1d03831100c5bb792dd957f388a",
       "bytes": 3089,
       "store": "release"
     }
