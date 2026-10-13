@@ -8155,29 +8155,6 @@
           ],
           "scope": "Every word of the file (923 words in banks 34 and 35): P32/P72 (CSI) and P33/P73 (CDH) with their displays, ALMXIT, AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC, the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C, INTINT3P and COMPTGO, as 135 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
           "verification": "docs/LM-P32-P35.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p32_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P32/P72, ALMXITA and ALMXIT (35,2027-35,2215), 119 words, as twenty-one basic routines keyed by Z and nineteen interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P32 and P72 through AVFLAGA/AVFLAGP, P32STRT (CENTANG from P30ZERO), P32/P72A (P20FLGON, NN +1 and TCSI zeroed, the V06N11 display and INTPRET); the TCSI check (DCOMP, BMN VN0655, PRECSET, RVEC/VVEC by VSR* 0,2, RVSW, TIMERAD to DPPOSMAX, TCSI = TDEC2 + time) and VN0655 (V06N55 GOFLASH and its returns, the V06N37 display); TCSI into TIG and SELECTMU; P32/P72B (ADVANCE, INTINT from VPASS1, RPASS1, TCSI, TTPI and TWOPI, PASSIVE, CSI/A); P32/P72C-F (UPDATFLG by FINALFLG, the 60MIN loops on T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, DELVEET1/RACT1, DISDVLVC, VN1645 and GOTO P32/P72B; and ALMXITA/ALMXIT (SXA,2 and LXC,1 CSIALRM, SLOAD* ALARM/TB -1,1, VARALARM and the V05N09 GOFLASH returns): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, VNPOOH, VARALARM, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2036-2043, 2063-2111, 2113, 2125-2172 and 2176-2215).",
-          "verification": "docs/LM-P32.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p33_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/lm_work_matrix.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P33/P73, AVFLAGA, AVFLAGP, P20FLGON and DISDVLVC (35,2216-35,2407), 122 words, as twenty-three basic routines keyed by Z and twenty interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P33 and P73 through AVFLAGA/AVFLAGP, P20FLGON, the V06N13 display and INTPRET; TTPI0, TCDH and SELECTMU; P33/P73B's ADVANCE, CDHMVR, the INTINT3P/ACTIVE and INTINT3P/PASSIVE integrations, ITSWICH, NOMTPI and S33/34.1 with the 611 alarm and its V05N09 GOFLASH returns; P33/P73C-F (UPDATFLG by FINALFLG, TTPI + NOMTPI, the 60MIN loops into T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, VN1645 and GOTO P33/P73B; AVFLAGA, AVFLAGP and P20FLGON (QXCH SUBEXIT, UPFLAG/DOWNFLAG, TC SUBEXIT); and DISDVLVC (STQ NORMEX, S32/33.X, MXV, VSL1, SXA,1 VERBNOUN, the VERBNOUN display and GOTO NORMEX): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, E 1470, POODOO1, or a NEWOPS outside 35,2225-2265, 2277-2346, 2370-2402 and 2406-2407).",
-          "verification": "docs/LM-P33.md"
         }
       ]
     },
@@ -8253,20 +8230,6 @@
         },
         {
           "native_files": [
-            "src/lm_p34_routines.c",
-            "src/lm_vn1645.c",
-            "src/lm_midgim.c",
-            "src/lm_interbank_routines.c",
-            "src/agc_transfer.c",
-            "src/agc_image_ops.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "GET45 +1 through VNPOOH (35,3635-35,3722), 54 words: GET45 +1's TC COMPTGO, the DELAYJOB wait, the V16N45 flash and its terminate, proceed and recycle responses, KILCLOCK, N45PROC, CLUPDATE with its interpretive CLEAR GOTO UPDATFLG QSAVED, DISPLAYE, P3XORP7X and VNPOOH, as 20 basic and 7 interpretive routines of the control-transfer ABI (with the lm-vn1645 and lm-midgim steps registered as interpretive routines): from each entry through the trampoline and the native INTER-BANK routines to the first point outside the file (COMPTGO, DELAYJOB, GOFLASH, PHASCHNG, UPFLAG, GOTOPOOH, CLUPDATE's TC INTPRET, a NEWOPS outside the file, the UNIT or ARCSIN alarm frontier, or the caller's return).",
-          "verification": "docs/LM-P34-TRANSFER.md"
-        },
-        {
-          "native_files": [
             "src/lm_s3435_routines.c",
             "src/agc_transfer.c",
             "src/lm_interp_orders.c",
@@ -8287,45 +8250,6 @@
           ],
           "scope": "S34/35.3 with its LOMAT and INTINT returns (35,3377-35,3423), GOINT and INTINT with INTINT's INTSTALL and INTEGRVS returns (35,3462-35,3521), 53 words, as seven interpretive routines of the control-transfer ABI keyed at their NEWOPS: NORMEX saved and LOMAT called, DELVLVC rotated through the local-vertical matrix (VXM of the work-area matrix) into DELVEET3, the integration arguments pushed (VACT3, RACT3, TIG, TPASS4, DPPOSMAX or ZEROVECS and NOMTPI) and INTINT called, RTARG stored on into NOVRWRT, and INTINT's RTRN save, INTSTALL call and integration setup (INTYPFLG, TDEC1, MOONFLAG, TET, RCV, VCV scaled by RTX2) to INTEGRVS and the GOTO RTRN after it: from each NEWOPS entry through the trampoline (with lm-s3435's LOMAT and NOVRWRT) to the first NEWOPS outside them (INTSTALL, INTEGRVS, or a caller's return).",
           "verification": "docs/LM-S3435B.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p34p74_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/sband_trig.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P34/P74 (35,2545-35,2724), 112 words, as eighteen basic routines keyed by Z and sixteen interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P34 and P74 with AVFLAGA/AVFLAGP, P20FLGON, the V06N37 display, 130DEG and NN zero, DISPLAYE and INTPRET; the TPI time (ETPIFLAG by ELEV) and SELECTMU; the search loop (NOMTPI, ITSWICH, INTLOOP's PRECSET to TTPI, S33/34.1, SWCHCLR) with the 611 alarm and its V05N09 GOFLASH returns; the displays; the transfer (TIMETHET setup with COS/SIN of CENTANG, INTIME and TPASS4, S34/35.2, DELVTPI and DELVTPF, PERIAPO1, SHIFTR1, POSTTPI and TIG, V06N58); and S34/35.5, VN1645 and the GOTO P34/P74C: from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, DISPLAYE, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2562-35,2724).",
-          "verification": "docs/LM-P34P74.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p35_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P35/P75 (35,2725-35,2763), 31 words, as five basic routines keyed by Z and eight interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P35 and P75 with AVFLAGA/AVFLAGP, ATIGINC or PTIGINC into KT, P20FLGON and INTPRET, then CALL SELECTMU and the P35/P75B loop (RTB LOADTIME; TSTRT, TIG and INTIME from the time plus KT; STCALL TDEC1 PRECSET; CALL S34/35.1, S34/35.2, S34/35.5 and VN1645; GOTO P35/P75B): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, INTPRET, LOADTIME, or a NEWOPS outside 35,2737-35,2763).",
-          "verification": "docs/LM-P35.md"
-        },
-        {
-          "native_files": [
-            "src/lm_s3435c_routines.c",
-            "src/lm_work_matrix.c",
-            "src/lm_s3435b_routines.c",
-            "src/lm_s3435_routines.c",
-            "src/lm_p34_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/matrix_native.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "S34/35.2's integration head (35,3306-35,3326) and LOMAT tail (35,3367-35,3376), and S34/35.5 (35,3522-35,3605), 77 words, as ten interpretive routines keyed at their NEWOPS and eight basic routines keyed by Z, of the control-transfer ABI: SUBEXIT saved, the TPI integration arguments pushed (VPASS3, RPASS3, INTIME, TPASS4, TWOPI, or with NN nonzero ZEROVECS in its place) and INTINT called, LOMAT called and DELVEET3 rotated through the work-area matrix (MXV) into DELVLVC on to SUBEXIT; S34/35.5's FINALFLG branch and UPDATFLG set, FLAGON's GDT/2 save and V06N81 GOFLASH with its terminate, proceed and recycle returns, the EBANK7 new-target check with UPFLAG and INTPRET, the NTARGFLG branch to S34/35.3 or NOCHG (XDELVFLG cleared, DELVEET3 into DELVSIN), FLAGOFF's S34/35.4 call and V06N59 VNPOOH, and the GOTO SUBEXIT: from each entry through the trampoline (with lm-s3435b's, lm-s3435's and lm-p34's routines and the native INTER-BANK routines) to the first point outside them (INITVEL, INTSTALL, a caller's return, GOFLASH, UPFLAG, GOTOPOOH or INTPRET).",
-          "verification": "docs/LM-S3435C.md"
         }
       ]
     },

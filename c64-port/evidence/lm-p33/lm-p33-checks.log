@@ -1,6 +1,0 @@
-PASS 22016 original P33 entries equal native trampoline runs 91a56553cdb510f0e0d7d12fadac70bb5a26107e9118e75f96e3e9d01ccf8fd5
-lm-p33: 22016 cases, 441 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22546 checks, 0 failures
-PASS 122 assembled P32-P35_P72-P75 words (35,2216-2407) on 122 source lines map to 43 native routines
-lm-p33: 22016 cases, 441 admission guards; stops 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512 512; 22546 checks, 0 failures
-PASS: VICE PAL lm-p33-1.prg: 128 checks, 0 failures
-PASS: VICE PAL lm-p33-2.prg: 504 checks, 0 failures
