@@ -4,7 +4,7 @@
  "aggregates": {
   "self-check-cm": {
    "record": "evidence/self-check/self-check-cm-c64-cover.json",
-   "sha256": "41840e30cbc5d0e1e416039e62ebf8294685a80105f8faa21bcea4422d7f149e",
+   "sha256": "63696eb0caab89a73b987670a2d6bdfa63f75645c569d663b8299764f6f4cb06",
    "host_cases": 4096,
    "c64_rows": 78,
    "host_branch_arcs": 436,
@@ -13,11 +13,11 @@
   },
   "self-check-cm-rope": {
    "record": "evidence/self-check/self-check-cm-rope-c64-cover.json",
-   "sha256": "b5913fe0cba1b8aec3696d7676094a366a69e361adfd490d75096819ee8ae012",
+   "sha256": "9acfaf7045bb69cad5d9dee1be5241309c004668e927b091f3ec4c7160a18937",
    "host_cases": 43,
    "c64_rows": 7,
-   "host_branch_arcs": 381,
-   "c64_branch_arcs": 381,
+   "host_branch_arcs": 400,
+   "c64_branch_arcs": 400,
    "host_branches_missing_on_c64": 0
   }
  },
@@ -27,8 +27,8 @@
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
-  "src/cm_interbank_complete.c": "a424840d6af7dac51d595bb79236f12a8e51bc1f36f8568c8af5a62b2ad37d1d",
-  "src/cm_interbank_idle.c": "7952d5e501aa8647293b411da09f7bf98e4df1d3f8a6a217409f5a80cc9f3930",
+  "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
+  "src/cm_interbank_idle.c": "9f4b1b11e5e37356ceb7cbe384f6fd0e6f1f511a1f5a8249efada9991b0f221c",
   "src/cm_interbank_routines.c": "4d32b047e9bd683285c39b02e51331579aa55991cee3672f23fd1258900ec218",
   "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
   "src/cm_self_check_idle.c": "e48f12f322bc8e55e495e103bac062bc47b462b759d4cee842f139b3e992c6da",
