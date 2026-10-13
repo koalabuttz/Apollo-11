@@ -39,11 +39,11 @@ Hashes: `evidence/t4rupt-core/SHA256.json`.
 - **Independent assembly comparison.** `make t4rupt-core-differential` runs the unmodified ropes in yaAGC (host-only, `tools/t4rupt_core_reference.c`). It uses 2,048 cases at T4RUPT and 64 at each return entry: 2,240 LM and 2,176 CM.
   - DSRUPTSW is a phase count, +0, or a quick-display value, some of which SYNCT4 carries to -0.
   - DSPCNT is 0-012 or -0. The display words are mostly settled (positive) and some are waiting (negative). The lamps word is sometimes +0.
-  - NOUT, FLAGWRD5, IMODES33 and channels 10 and 32 are random.
+  - NOUT, FLAGWRD5, IMODES33 and channels 10 and 32 are random, except that from case 128 on, one case in sixteen sets FLAGWRD5 to -0 so DSPOUT's `CCS FLAGWRD5` takes its -0 branch. (Cases 0-127 stay as they were, because the resident interrupt vectors reuse them.)
 
   The native routine runs once. The original then runs from the same entry until it first reaches the continuation the native run left in Z, and FB in banked memory. Every case equals the original in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, InIsr and channel 10. Per-case digests are frozen into `tests/t4rupt_core_vectors.h`; see `evidence/t4rupt-core/t4rupt-core-proof.json`.
 - **Host and sanitizer results.** `make test-t4rupt-core sanitize-t4rupt-core` (`evidence/t4rupt-core/t4rupt-core-host.log`) checks:
   - the digests;
   - that every continuation of both missions is reached, along with the HANG20, NODSPOUT, QUIKOFF and quick-display paths;
   - six refusals with the image unchanged.
-- **C64 execution results.** `make vice-t4rupt-core` (`evidence/t4rupt-core/t4rupt-core-vice.log`) runs every sixteenth case of both missions.
+- **C64 execution results.** `make vice-t4rupt-core` (`evidence/t4rupt-core/t4rupt-core-vice.log`) runs every sixteenth case of both missions, plus the cover rows in `tests/t4rupt_core_c64_rows.h`. `tools/lane_a_c64_cover.py t4rupt-core` picks those rows so that the C64 cases take every branch arc (`gcov -b`, all linked sources) that the 4,416 host cases take. The arc counts are in `evidence/t4rupt-core/t4rupt-core-c64-cover.json`.
