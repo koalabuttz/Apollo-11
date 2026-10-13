@@ -6843,8 +6843,8 @@
       "sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
       "bytes": 37260,
       "lines": 1681,
-      "status": "partial",
-      "pending_complete_certificate": {
+      "status": "complete",
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6888,6 +6888,10 @@
               "vice-lanec-ev-lmi": 40,
               "vice-lanec-ev-transfer": 64
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-c-240.md",
+            "sha256": "1c7134f8afbfcc57b1826b2058f7e1990c7e1030652f44ec30d081cdb3c6d37c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-cover.json",
