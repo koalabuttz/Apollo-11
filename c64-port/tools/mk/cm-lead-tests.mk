@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-lead-tests (lane A): Comanche055's system-test entry words
 # COMPVER, GTSCPSS1 and REDO in the transfer ABI, checked against yaAGC.
-CLT_SRC = tests/cm_lead_tests_cases.c tests/cm_lead_tests_check.c src/agc_transfer.c src/standard_lead_routines.c \
+CLT_SRC = tests/cm_lead_tests_cases.c tests/cm_lead_tests_check.c src/agc_transfer.c src/standard_lead_routines.c src/interp_entry.c \
 	src/standard_lead.c src/standard_lead_interp.c src/standard_lead_wake.c src/lm_basic_wake.c src/executive.c \
 	src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c src/agc_word.c
 CLT_HDR = include/agc_transfer.h include/standard_lead_routines.h tests/cm_lead_tests_cases.h \

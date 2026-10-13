@@ -2059,6 +2059,15 @@
           ],
           "scope": "The 59 compiled interpretive order bodies and dispatch steps (address formation, load/store/push, DP and vector arithmetic, shifts, DDV/BDDV, SQRT/UNIT/ABVAL, BOV/RTB/SWRETURN, branches, index orders, CALL/GOTO/EXIT/INTPRET) built with Comanche055 fixed addresses; POLY is built but not exercised. Callers, the remaining orders (trig, ACOS/ASIN alarm paths), and whole-interpreter dispatch stay open.",
           "verification": "docs/CM-INTERP-BODIES.md"
+        },
+        {
+          "native_files": [
+            "src/interp_entry.c",
+            "include/interp_entry.h",
+            "src/standard_lead_routines.c"
+          ],
+          "scope": "The dispatcher entry for any caller (INTPRET 6006, INTPRET +2 6010, INTRSM 6017 to NEWOPS 6037) and INTPRET +3, as routines of the interpreter table, against the original program in all erasable words and the 16-bit registers. E/CALL's INTPRET keeps the standard lead-in composite; INTPRET +2 takes an in-bank LOC. NEWOPS and the rest of the dispatcher stay open.",
+          "verification": "docs/INTERP-ENTRY.md"
         }
       ]
     },
@@ -4632,6 +4641,14 @@
           ],
           "scope": "T4RUPT entry with the DSRUPTSW scan, T4JUMP dispatch, SETTIME4 (PROCEEDE), DSPOUTSB/NODSPOUT/HANG20/DSPOUT display relay output, QUIKDSP and the RESUME paths, as control-transfer ABI routines (cm_t4rupt_core_routines, bank 06 entries 2000, 2116, 2130) on the image through agc_image_ops, with channels 10 and 32 in agc_hardware. TABLNTH, 120MRUPT and OCT37737 are unreached data; IMUMON and the rest of the file remain unported.",
           "verification": "docs/T4RUPT-CORE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_t4rupt_imu.c",
+            "include/cm_t4rupt_imu.h"
+          ],
+          "scope": "IMUMON through 90SECS (bank 06,2174-2764) and ZOPFIN3 (06,3065-3067, shared with the optics code): the channel 30 and channel 33 IMU monitors with their bit-change handlers (TLIM, ITURNON, ENDTNON, UNZ2, ISSUP, SETISSW, IMUCAGE, IMUOP, PIPFAIL, DNTMFAST, UPTMFAST), the gimbal lock check, CAGESUB and LAMPTEST, as control-transfer ABI routines (cm_t4rupt_imu_routines, 22 bank 06 entries) on the image through agc_image_ops, with channels 11, 12, 14, 30 and 33 in agc_hardware. Every instruction word of the range was executed by the original in the comparison; OPTMON and the rest of the optics code remain unported.",
+          "verification": "docs/CM-T4RUPT-IMU.md"
         }
       ]
     },
@@ -7729,6 +7746,15 @@
           ],
           "scope": "Canonical original vector-left shift through true DANZIG with actual overflow and all source scratch; other interpreter bodies remain open.",
           "verification": "docs/NATIVE-SBAND-VECTOR-SHIFT.md"
+        },
+        {
+          "native_files": [
+            "src/interp_entry.c",
+            "include/interp_entry.h",
+            "src/standard_lead_routines.c"
+          ],
+          "scope": "The dispatcher entry for any caller (INTPRET 6037, INTPRET +2 6041, INTRSM 6050 to NEWOPS 6070) and INTPRET +3, as routines of the interpreter table, against the original program in all erasable words and the 16-bit registers. E/CALL's INTPRET keeps the standard lead-in composite; INTPRET +2 takes an in-bank LOC. NEWOPS and the rest of the dispatcher stay open.",
+          "verification": "docs/INTERP-ENTRY.md"
         }
       ]
     },
@@ -10487,8 +10513,81 @@
           ],
           "scope": "T4RUPT entry with the DSRUPTSW scan, T4JUMP dispatch, SETTIME4 (PROCEEDE), DSPOUTSB/NODSPOUT/HANG20/DSPOUT display relay output, QUIKDSP and the SYNCT4 resume paths, as control-transfer ABI routines (lm_t4rupt_core_routines, bank 06 entries 2000, 2116, 2121, 2125) on the image through agc_image_ops, with channels 10 and 32 in agc_hardware. TABLNTH, 120MRUPT and OCT37737 are unreached data; IMUMON and the rest of the file remain unported.",
           "verification": "docs/T4RUPT-CORE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t4rupt_imu.c",
+            "include/lm_t4rupt_imu.h"
+          ],
+          "scope": "IMUMON through 90SECS (bank 06,2172-3005): the channel 30 and channel 33 IMU monitors with their bit-change handlers (TLIM, ITURNON, ENDTNON, IMUBAD, UNZ2, ISSUP, SETISSW, IMUCAGE, IMUOP, PIPFAIL, DNTMFAST, UPTMFAST), the gimbal lock check, CAGESUB and LAMPTEST, as control-transfer ABI routines (lm_t4rupt_imu_routines, 22 bank 06 entries) on the image through agc_image_ops, with channels 12, 14, 30 and 33 in agc_hardware. Every instruction word of the range was executed by the original in the comparison.",
+          "verification": "docs/LM-T4RUPT-IMU.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t4rupt_rr.c",
+            "include/lm_t4rupt_rr.h"
+          ],
+          "scope": "RRAUTCHK to the end of the file (bank 06,3006-3155): the rendezvous radar monitor (RRAUTCHK, RRCDUCHK, TRKFLCDU, RRGIMON, MONREPOS) and GPMATRIX (DAPT4S), as control-transfer ABI routines (lm_t4rupt_rr_routines, 12 bank 06 entries) on the image through agc_image_ops, with channels 12, 30 and 33 in agc_hardware. Every instruction word of the range was executed by the original in the comparison.",
+          "verification": "docs/LM-T4RUPT-RR.md"
+        },
+        {
+          "native_files": [
+            "src/t4rupt_core.c",
+            "src/lm_t4rupt_imu.c",
+            "src/lm_t4rupt_rr.c",
+            "include/t4rupt_core.h",
+            "include/lm_t4rupt_imu.h",
+            "include/lm_t4rupt_rr.h"
+          ],
+          "scope": "Whole-file map and whole-interrupt composition: every assembled word of Luminary099/T4RUPT_PROGRAM.agc listed with the native routine milestones whose yaAGC comparison executed it (t4rupt-core, lm-t4rupt-imu, lm-t4rupt-rr, lm-t4rupt-chain); every instruction word is executed. Whole T4RUPT interrupts run through agc_transfer_run over lm_t4rupt_core_routines, lm_t4rupt_imu_routines and lm_t4rupt_rr_routines and equal the original from T4RUPT to the first exit from the file.",
+          "verification": "docs/LM-T4RUPT-CHAIN.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the native I/O record; InIsr and channels 10, 11, 12, 14, 30, 32 and 33 in agc_hardware.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_t4rupt_core_routines (4), lm_t4rupt_imu_routines (22) or lm_t4rupt_rr_routines (12) at its original address: T4RUPT, the T4JUMP targets, the IMU tasks, SETISSW, and the continuation after each call that leaves the file. Each runs inside T4RUPT with FB 06; the domains in docs/T4RUPT-CORE.md, docs/LM-T4RUPT-IMU.md and docs/LM-T4RUPT-RR.md apply, and inputs outside them return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "No instruction word is unreached. Three constants (TABLNTH, 120MRUPT, OCT37737) would run as instructions only on paths no producer reaches (docs/T4RUPT-CORE.md).",
+          "data_validity": "Original constants and scaling; RELTAB, the IFAILJMP/C33JMP tables and the 2CADR/CADR/ADRES operands are read as data or followed as the original transfers. yaAGC's peripheral model empties the CDU and gyro command counters when channel 14's drive bits are set; the comparisons start with those counters +0 and no drive in progress, as IMUCAGE leaves it."
+        },
+        "external_continuations": [
+          "RESUME and the interrupted program (rupt-lead-ins); NOVAC for PROCKEY (lm-exec-services)",
+          "RCSMONIT (next file), the IBNKCALL/POSTJUMP targets (NOATTOFF, RNDREFDR, SETCOARS, IMUBAD), ZEROICDU, SETTRKF, RRLIMCHK, SPSIN, SPCOS",
+          "ALARM and VARALARM (ALARM_AND_ABORT), WAITLIST, VARDELAY and TASKOVER (lm-exec-services, lm-exec-jobs), and the tasks they start",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-source-map.json",
+            "sha256": "3bba8d46a6e10c7c098b635ad8ba589685eac67f09e5d7c1e611c7eaebab0c00"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-proof.json",
+            "sha256": "7dd0598bc77c4cc0deae5955bae980441b90252239eb60b1670d1e19bd5188b1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-host.log",
+            "sha256": "2eb875e188f5e9542058bad90b8adf5bce5149bd4e3974eb68ecda2b59005461"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-vice.log",
+            "sha256": "6f56c1a3e9614d11090aac01b930a8cf62109db4007037ea056f6b6b5a163523",
+            "vice_targets": {
+              "vice-t4rupt-core": 276,
+              "vice-lm-t4rupt-imu": 300,
+              "vice-lm-t4rupt-rr": 216,
+              "vice-lm-t4rupt-chain": 266
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-t4rupt-chain/lm-t4rupt-chain-c64-cover.json",
+            "sha256": "d033949ebbdea350a8e7dc2131e46e0fa79ee9649721ee81a87ab89120c288d5"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/T6-RUPT_PROGRAMS.agc",

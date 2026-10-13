@@ -14,7 +14,7 @@ import collections, hashlib, json, os, pathlib, subprocess
 
 R = pathlib.Path(__file__).resolve().parents[1]
 E = R / 'deps/virtualagc/yaAGC'
-NATIVE = ['tests/standard_lead_oracle_cases.c', 'src/agc_transfer.c', 'src/standard_lead_routines.c',
+NATIVE = ['tests/standard_lead_oracle_cases.c', 'src/agc_transfer.c', 'src/standard_lead_routines.c', 'src/interp_entry.c',
           'src/standard_lead.c', 'src/standard_lead_interp.c', 'src/standard_lead_wake.c', 'src/lm_basic_wake.c',
           'src/executive.c', 'src/cm_basic_wake.c', 'src/cm_native_image.c', 'src/cm_dispatch.c',
           'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
