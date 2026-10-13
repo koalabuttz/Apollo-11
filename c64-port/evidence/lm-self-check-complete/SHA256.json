@@ -14,7 +14,7 @@
       "store": "tree"
     },
     "lm-self-check-complete-comparison.json": {
-      "sha256": "19eb899b673f28b954e82ec38c0c33d80aef855887cc3ddc2972d6fd98fa6b4b",
+      "sha256": "bea2c13939fa9fff4aa5efc27167297c1502d34fd67f24338df5f5915909765f",
       "bytes": 1104,
       "store": "tree"
     },
@@ -24,12 +24,12 @@
       "store": "tree"
     },
     "lm-self-check-complete-line-map.json": {
-      "sha256": "bb53739d9817acd8a844fe03dc995516dd895d4f049028b5c00f8ffaeb380497",
+      "sha256": "3b865e4ee819f4bde70b2f6cc92244d48cfd1532d135567353a47c1ffb60b7d1",
       "bytes": 74785,
       "store": "tree"
     },
     "lm-self-check-complete-source-map.json": {
-      "sha256": "96c00d9888e20fa8e2f52519d7117bf432a03cbfb46de418cd29e3aeae3060ad",
+      "sha256": "c1bad20bc3065ebd07154b3f6c7d81e2f32227562cece8f606ad34a15dd77b2c",
       "bytes": 1369,
       "store": "tree"
     }

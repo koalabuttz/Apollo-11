@@ -1,6 +1,6 @@
 {
  "category": "independent_assembly_comparison",
- "source_path": "Luminary099/AGC_BLOCK_TWO_SELF-CHECK.agc",
+ "source_path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "method": "the milestone's random-state and whole-rope cases through the native routines and through the unmodified rope in yaAGC (host only); tools/self_check_freeze.py checked the outputs byte-identical and froze the snapshots; this tool reran the oracle with the coverage trace and compared",
  "aggregates": {
