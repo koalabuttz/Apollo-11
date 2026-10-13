@@ -97,6 +97,8 @@ void wle_input(apollo_overlay_state *s,void *io,agc_hardware *hw,uint8_t kind,ui
   s->words[0]=(agc_word)(rnd(&x)&0177777u);s->words[1]=agc_extend((agc_word)(rnd(&x)&077777u));s->words[2]=(agc_word)(rnd(&x)&0177777u);
   s->words[3]=(agc_word)(eb<<8);s->words[4]=(agc_word)(fb<<10);s->words[6]=(agc_word)((fb<<10)|eb);s->words[5]=05275u;s->words[7]=0;
   s->words[015]=(agc_word)(1u+rnd(&x)%010000u);
+  /* The interrupt saved the instruction at ZRUPT-1 in BRUPT (#144). */
+  {agc_word at=(agc_word)(s->words[015]-1u);if(at<01400u)s->words[017]=s->words[at];else if(at<02000u)s->words[017]=s->words[eb*0400u+(at-01400u)];}
   l->superbank=(rnd(&x)&1u)?0100u:0060u;l->interrupt_enabled=0;hw->in_interrupt=1;}
 #endif
 }

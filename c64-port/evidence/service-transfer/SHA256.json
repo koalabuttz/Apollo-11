@@ -3,19 +3,34 @@
   "milestone": "service-transfer",
   "release": "evidence-service-transfer",
   "files": {
+    "service-transfer-c64-cover.json": {
+      "sha256": "979e69a8ac163ae0d98938ee9b8b8ae21514068bec22438c6f63fd5814a36ad1",
+      "bytes": 885,
+      "store": "tree"
+    },
+    "service-transfer-differential.log": {
+      "sha256": "6e57f53b8d5a3dce67830d60b6d80c084d55412d1059d248bb29f7fc4ad929d6",
+      "bytes": 538,
+      "store": "tree"
+    },
     "service-transfer-host.log": {
-      "sha256": "f3fc9af824c33820c9d1b1e9e04505caff2034b66ee82aba17b4a784deeef23a",
-      "bytes": 635,
+      "sha256": "8709c074658d26ac3019a7ce4ef321fde5da4a6f3c7717cc2cba93b84c471280",
+      "bytes": 977,
       "store": "release"
     },
     "service-transfer-proof.json": {
-      "sha256": "472d8741d786c2fd30a7170eb8efc6cec8a954e738b5892bb922d4a0fcc22475",
-      "bytes": 2204,
+      "sha256": "40dbbb3adecedeb3ee779424142ae97a854bbdd058a036965607d691887570d5",
+      "bytes": 2259,
+      "store": "tree"
+    },
+    "service-transfer-source-map.json": {
+      "sha256": "36a3202f55c96b43acd7cb0629f227ac72f620c01e6019d2cd566db509455d25",
+      "bytes": 54086,
       "store": "tree"
     },
     "service-transfer-vice.log": {
-      "sha256": "31e7918cc27fe0f0e19a4a79e8c98e4a9cb780ebed4fdeaf31d0d2e71caae984",
-      "bytes": 224,
+      "sha256": "327614e9ea4bbe203be6adb8d55524d78547a85774c1233f351f48f58c0f2bff",
+      "bytes": 158,
       "store": "release"
     }
   }

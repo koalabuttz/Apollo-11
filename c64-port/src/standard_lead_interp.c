@@ -9,6 +9,13 @@ bool standard_lead_interp_call(apollo_overlay_state *s,enum standard_lead_missio
  bb=w[6];oldloc=w[0164];w[2]=agc_extend(oldloc);w[w[0120]+052u]=(agc_word)(fb+loc+2u-02000u);w[0117]=callee;
  bank(s,(agc_word)((callee&076000u)|(bb&7u)));w[0165]=w[6];w[0164]=(agc_word)(02000u+(callee&01777u));w[0115]=(agc_word)(callee&040000u);w[0]=agc_extend(w[0115]);w[1]=agc_extend(agc_correct(w[1]));w[020]=050006;w[023]=0;w[5]=mission==STANDARD_LEAD_LM?06070:06037;return true;
 }
+bool standard_lead_interp_call_order(apollo_overlay_state *s,enum standard_lead_mission mission){agc_word *w,ebuf,loc,callee,fb,bb;
+ if(!context(s,mission))return false;
+ w=s->words;ebuf=mission==STANDARD_LEAD_LM?01167:0364;loc=mission==STANDARD_LEAD_LM?02624:02064;fb=mission==STANDARD_LEAD_LM?010000:026000;
+ callee=w[ebuf];if(w[5]!=(mission==STANDARD_LEAD_LM?06070u:06037u)||w[0164]!=loc||(w[0165]&076000u)!=fb||w[6]!=(agc_word)(w[0165]&076007u)||callee<004000u||callee>AGC_MASK)return false;
+ bb=w[0165];w[w[0120]+052u]=(agc_word)(fb+loc+2u-02000u);w[0117]=callee;
+ bank(s,(agc_word)((callee&076000u)|(bb&7u)));w[0165]=w[6];w[0164]=(agc_word)(02000u+(callee&01777u));w[0115]=(agc_word)(callee&040000u);w[0]=agc_extend(w[0115]);w[1]=agc_extend(agc_correct(w[1]));w[020]=050006;w[023]=0;return true;
+}
 bool standard_lead_interp_rvq(apollo_overlay_state *s,enum standard_lead_mission mission){agc_word *w,ret;
  if(!context(s,mission))return false;
  w=s->words;ret=w[w[0120]+052u];
@@ -18,7 +25,7 @@ bool standard_lead_interp_rvq(apollo_overlay_state *s,enum standard_lead_mission
 bool standard_lead_interp_exit(apollo_overlay_state *s,enum standard_lead_mission mission){agc_word *w,loc;
  if(!context(s,mission))return false;
  w=s->words;loc=mission==STANDARD_LEAD_LM?02626:02066;
- if(w[5]!=(mission==STANDARD_LEAD_LM?06070u:06037u)||w[0164]!=loc||(w[0165]&076000u)!=(mission==STANDARD_LEAD_LM?010000u:026000u))return false;
+ if(w[5]!=(mission==STANDARD_LEAD_LM?06070u:06037u)||w[0164]!=loc||(w[0165]&076000u)!=(mission==STANDARD_LEAD_LM?010000u:026000u)||w[6]!=(agc_word)(w[0165]&076007u))return false;
  bank(s,w[0165]);w[0]=agc_extend(w[0165]);w[1]=agc_extend(agc_correct(w[1]));w[020]=0;w[023]=0;w[2]=mission==STANDARD_LEAD_LM?06747:06716;w[5]=(agc_word)(loc+1u);return true;
 }
 bool standard_lead_interp_finish(apollo_overlay_state *s,enum standard_lead_mission mission){agc_word *w,oldloc;
@@ -27,11 +34,12 @@ bool standard_lead_interp_finish(apollo_overlay_state *s,enum standard_lead_miss
  oldloc=w[0164];w[0164]=agc_correct(w[1]);w[1]=agc_extend(oldloc);w[0165]=w[6];w[0115]=(agc_word)(w[6]&040000u);w[0]=agc_extend(w[0115]);w[023]=0;w[5]=mission==STANDARD_LEAD_LM?06070:06037;return true;
 }
 bool standard_lead_interp_control(apollo_overlay_state *s,p66_bias_io *io,enum standard_lead_mission mission,enum standard_lead_interp_boundary boundary){bool ok;
- if(!io||(io->superbank&~0160u)||io->interrupt_enabled>1u||(unsigned)boundary>3u)return false;
+ if(!io||(io->superbank&~0160u)||io->interrupt_enabled>1u||(unsigned)boundary>4u)return false;
  if(boundary==STANDARD_LEAD_CALL)ok=standard_lead_interp_call(s,mission);
  else if(boundary==STANDARD_LEAD_RVQ)ok=standard_lead_interp_rvq(s,mission);
  else if(boundary==STANDARD_LEAD_EXIT)ok=standard_lead_interp_exit(s,mission);
- else ok=standard_lead_interp_finish(s,mission);
+ else if(boundary==STANDARD_LEAD_FINISH)ok=standard_lead_interp_finish(s,mission);
+ else ok=standard_lead_interp_call_order(s,mission);
  if(ok&&boundary==STANDARD_LEAD_CALL)io->interrupt_enabled=1;
  return ok;
 }

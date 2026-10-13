@@ -26,7 +26,7 @@ Routines (`include/imu_compensation.h`):
 - Each instruction is one `agc_image_ops` register effect, in source order. INDEX is an explicit address offset. The loops index 4, 2 and then the -0 that `1 + NEG1` leaves, which indexes as 0 and makes CCS take the -0 branch out of the loop.
 - INHINT and RELINT set the mission io's `interrupt_enabled`.
 - The Luminary IRIGX/Y/Z acceleration terms on the surface (TEM1 = SURFFBIT) run inside NBD3 as in the source.
-- Destinations outside the file stop the trampoline with `EXEC_UNMAPPED` until their files have routines: IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES, this lane), PIPASR and PIPUSE1/PIPUSE (SERVICER), ENDOFJOB, and Comanche NOVAC.
+- Destinations outside the file stop the trampoline with `EXEC_UNMAPPED` until their files have routines: IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES, this lane), PIPASR and PIPUSE1/PIPUSE (SERVICER), and ENDOFJOB.
 
 Refused input (`EXEC_OUT_OF_SCOPE`, image unchanged), with no original producer:
 - The Luminary continuation after `IBNKCALL PIPASR +3` with TEM1 other than +0 or BIT8. NBDONLY stores TEM1 from `FLAGWRD8 & BIT8` just before the call.
@@ -55,10 +55,10 @@ Hashes: `evidence/imu-compensation/SHA256.json`. Bulk files are assets of the `e
   | Cohort | Cases | Stops reached |
   |---|---|---|
   | Entry runs, 20 routines x 512 states | 10,240 | SWRETURN, NOVAC, BANKCALL, IBNKCALL, ENDOFJOB as the table above lists |
-  | Round trips through the Executive: 4 LM sites, 2 CM sites x 512 | 3,072 | caller's Q+1 2,189; LM BAILOUT1 (a NOVAC alarm) 126; CM NOVAC 757 |
-  | Plain LM round trips, 4 sites x 128, stopping at NOVAC | 512 | caller's Q+1 232; NOVAC 280 |
+  | Round trips through the Executive: 4 LM sites, 2 CM sites x 512 | 3,072 | caller's Q+1 2,861; LM BAILOUT1 (a NOVAC alarm) 126; CM BAILOUT (a NOVAC alarm) 85 |
+  | Plain round trips, 4 LM sites, 2 CM sites x 128, stopping at NOVAC | 768 | caller's Q+1 296 (LM 227, CM 69); NOVAC 472 (LM 285, CM 187) |
 
-  The round trips start at BANKCALL with Q at the genuine CADR word (SERVICER, P51-P53 and IMU_PERFORMANCE_TESTS_4 in Luminary; SERVICER207 and IMU_CALIBRATION_AND_ALIGNMENT in Comanche). They run BANKCALL, this file, NOVAC (Luminary, `lm_exec_routines` with a canonical Executive), the return at 06,3352 and SWRETURN, back to the caller. States include a negative GCOMPSW (bypass), small coefficients (commands of two pulses or less, no NOVAC), every EB, and surface and free-fall TEM1. A quarter of the Comanche NBDONLY and PIPUSE-return states each give NBD2 an elapsed time of -0 (the new time equal to the old 1/PIPADT: CCS takes TCF ENDOFJOB) and another quarter +0 (new time +0, old 1/PIPADT -0: TCF NBD3), the two outcomes no other state produces (issue #47). Each case runs to its stop with no interrupt in between: the oracle zeroes ScalerCounter at every step, and the native routines take no interrupt. The 757 Comanche round trips that stop at NOVAC stop where native code ends (Comanche NOVAC has no routine yet), as the control-transfer ABI allows.
+  The round trips start at BANKCALL with Q at the genuine CADR word (SERVICER, P51-P53 and IMU_PERFORMANCE_TESTS_4 in Luminary; SERVICER207 and IMU_CALIBRATION_AND_ALIGNMENT in Comanche). They run BANKCALL, this file, NOVAC (`lm_exec_routines` or `cm_exec_routines` with a canonical Executive: free core sets and VAC areas, NEWJOB +0), the return at 06,3352 and SWRETURN, back to the caller. States include a negative GCOMPSW (bypass), small coefficients (commands of two pulses or less, no NOVAC), every EB, and surface and free-fall TEM1. A quarter of the Comanche NBDONLY and PIPUSE-return states each give NBD2 an elapsed time of -0 (the new time equal to the old 1/PIPADT: CCS takes TCF ENDOFJOB) and another quarter +0 (new time +0, old 1/PIPADT -0: TCF NBD3), the two outcomes no other state produces (issue #47). Each case runs to its stop with no interrupt in between: the oracle zeroes ScalerCounter at every step, and the native routines take no interrupt. The plain round trips run the same paths with NOVAC as a stop, so the cases that reach it check the 2CADR and Q handed to it.
 
   Results: `evidence/imu-compensation/imu-compensation-proof.json`.
 - **Host and sanitizer results.** `make test-imu-compensation sanitize-imu-compensation` (`evidence/imu-compensation/imu-compensation-host.log`) checks:
@@ -68,6 +68,8 @@ Hashes: `evidence/imu-compensation/SHA256.json`. Bulk files are assets of the `e
   - that every round trip returns to its caller;
   - the TEM1 refusal.
 - **C64 execution results.** `make vice-imu-compensation` (`evidence/imu-compensation/imu-compensation-vice.log`) runs three diagnostics, because the round trips' INTER-BANK code does not fit beside both missions:
-  - every 37th entry case (277);
-  - every 16th Comanche round trip (64);
-  - every 16th plain Luminary round trip (32).
+  - every 37th entry case (277) and 7 more entry cases;
+  - every 4th plain Comanche round trip (64);
+  - every 16th plain Luminary round trip (32) and 1 more.
+
+  The 8 extra rows (`EXTRA_ROWS` in `tools/imu_compensation_cover.py`) take branch outcomes the strides miss. `python3 tools/imu_compensation_cover.py` (`evidence/imu-compensation/imu-compensation-c64-cover.json`) builds every linked native source with gcc `--coverage` and checks, per mission, that the C64 rows take every branch outcome that the host's entry cases and plain round trips take. The outcomes that only the round trips through the Executive take (86 Luminary, 102 Comanche: NOVAC, its alarms and the transfers into them) are listed in the record but not run on the C64, because those round trips do not fit there.

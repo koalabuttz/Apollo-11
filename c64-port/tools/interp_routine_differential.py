@@ -115,7 +115,9 @@ class Mission:
             if any(a in named for a in dev):
                 raise SystemExit('device cells %s are named by the file' % dev)
             self.externals += list(dev)
-        self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)))
+        # (An erasable program's address a call reaches is 0xC000 | Z.)
+        self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)
+                                     + [0xC000 | k for k in self.cp.erasable_calls]))
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
@@ -136,6 +138,10 @@ class Mission:
         self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
         self.states = {self.point_of(k): v for k, v in spec.get('states', {}).items()}
+        # range_states: (FROM, TO, states) applies states to every point
+        # from label FROM up to (not including) label TO, after all_states.
+        self.range_states = [(self.cp.label_phys(a), self.cp.label_phys(b), st)
+                             for a, b, st in spec.get('range_states', ())]
         self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
         self.flow = {}   # ('flow_states') point -> states its entries' runs reach it in
         # Erasable cells every case of the milestone holds in range (physical
@@ -371,14 +377,17 @@ def case(mi, point, n, rng):
         if shape == 3:
             counter_edges(E, rng)
     held = pinned = set()
-    for k, choices in (list(mi.all_states.items()) + list(mi.flow.get(point, {}).items())
+    ranged = [kv for lo, hi, st in mi.range_states if lo <= point < hi for kv in st.items()]
+    for k, choices in (list(mi.all_states.items()) + ranged + list(mi.flow.get(point, {}).items())
                        + list(mi.states.get(point, {}).items())):
         a = state_address(mi, k, vac)
         pinned.add(a)
         if isinstance(choices, dict):
             choices = choices[mi.m]
         v = rng.choice(choices)
-        if isinstance(v, str) and v.startswith('vac+'):
+        if v == 'outside':
+            v = mi.outside(rng)
+        elif isinstance(v, str) and v.startswith('vac+'):
             v = vac + int(v[4:], 8)
         elif isinstance(v, str):
             lab, off = v.split('+')
@@ -718,7 +727,8 @@ def build_edges(spec_id, spec):
                         '-fsanitize-coverage=trace-pc-guard', '-c', src, '-o', o], cwd=R, check=True)
         objs.append(o)
     nat = os.path.join(d, 'native')
-    subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES', *objs,
+    subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES',
+                    '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *objs,
                     'tests/interp_case.c', spec['target'], 'tools/interp_routine_native.c', 'tools/irc_edges.c',
                     '-o', nat], cwd=R, check=True)
     return nat
@@ -774,14 +784,24 @@ def main():
     ap.add_argument('--freeze', action='store_true')
     ap.add_argument('--show', type=int, default=3)
     ap.add_argument('--only', default='')
+    ap.add_argument('--cover-check', metavar='RECORD', nargs='?', const='',
+                    help='re-derive the committed C64 branch cover (default record: '
+                         'evidence/<id>/<id>-c64-cover.json, else -proof.json) and print it as JSON')
     a = ap.parse_args()
     spec = interp_specs.SPECS[a.spec]
+    if spec.get('channel_inputs'):
+        os.environ['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
     missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
     if spec.get('flow_states'):
         flow_states(a.spec, spec, missions)
     rng = random.Random('interp-routine:' + a.spec)
+    proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (a.spec, a.spec))
+    if a.cover_check is not None and os.path.exists(proof):
+        # (The freeze's cases per routine, from the case count it froze.)
+        n = sum(len(mi.points) for mi in missions if mi.m in spec['missions'])
+        a.cases = max(1, json.load(open(proof)).get('cases', a.cases * n) // n)
     cases = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -797,6 +817,8 @@ def main():
     if spec.get('resume_flow'):
         flow_seed(missions, cases, rng, ref, path)
     write_cases(path, missions, cases)
+    if a.cover_check is not None:
+        sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
@@ -868,6 +890,47 @@ def main():
         if spec.get('cover'):
             edges = edge_sets(build_edges(a.spec, spec), path)
         freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan=chan, edges=edges, covers=covers)
+
+
+def cover_check(spec_id, spec, missions, cases, path, record):
+    """--cover-check: the committed record's C64 rows against the host
+    cases, both re-run now (gcov_branches, host only, no oracle). The cases
+    are the frozen ones when their bytes hash to the record's cases_sha256
+    (a -proof.json); a -c64-cover.json pins none. Prints JSON; returns 1
+    when the rows miss a branch the host cases take, or the cases differ."""
+    if not record:
+        record = next((p for p in ('evidence/%s/%s-c64-cover.json' % (spec_id, spec_id),
+                                   'evidence/%s/%s-proof.json' % (spec_id, spec_id))
+                       if os.path.exists(os.path.join(R, p))), None)
+    if not record:
+        print(json.dumps({'milestone': spec_id, 'verified': False, 'reason': 'no committed cover record'}))
+        return 1
+    rec = json.load(open(os.path.join(R, record)))
+    # (The proof next to a cover record pins the frozen cases, and lists the
+    # C64 rows when the record only counts them.)
+    proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (spec_id, spec_id))
+    if isinstance(rec.get('c64_rows'), list):
+        rows = rec['c64_rows']
+    else:
+        src = rec if 'c64_vectors' in rec or not os.path.exists(proof) else json.load(open(proof))
+        groups = src.get('c64_vectors', [])
+        rows = [i for g in groups for i in g['case_ids']] if all('case_ids' in g for g in groups) else []
+    out = {'milestone': spec_id, 'record': record, 'cases': len(cases), 'c64_rows': len(rows)}
+    sha = rec.get('cases_sha256') or (json.load(open(proof)).get('cases_sha256') if os.path.exists(proof) else None)
+    out['cases_match'] = hashlib.sha256(open(path, 'rb').read()).hexdigest() == sha if sha else None
+    beyond = [i for i in rows if i >= len(cases)]
+    if out.get('cases_match') is False or beyond or not rows:
+        out.update(verified=False, reason='the regenerated cases are not the frozen ones' if rows else
+                   'the record does not list its C64 rows (refreeze to record them)')
+        print(json.dumps(out))
+        return 1
+    if spec.get('cover'):
+        build_edges(spec_id, spec)      # (a freeze links it: catch a broken link here)
+    g = gcov_branches(spec_id, spec, missions, cases, rows)
+    out.update(verified=True, host_taken=g['host_taken'], c64_taken=g['c64_taken'],
+               missing=g['missing'], missing_count=g['host_taken_not_c64'])
+    print(json.dumps(out))
+    return 1 if g['host_taken_not_c64'] else 0
 
 
 def cover_counts(covers, c64_ids):
@@ -1121,6 +1184,7 @@ def c64_probe(spec, sym, m, mask, text, pick=()):
     prg = os.path.join(d, 'probe.prg')
     # (Channel and counter edits need their case code on the C64 too.)
     io = ['-DIRC_CHANNELS'] if spec.get('seed_counters') or spec.get('channels') else []
+    io += ['-DIRC_INPUTS'] if spec.get('channel_inputs') else []
     r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *io, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick),
@@ -1385,7 +1449,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
         if mi.m not in spec['missions']:
             continue
         # (every KEEP word is defined, so a group drops the routines past 60 too)
-        KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
+        if mi.m in spec['missions']:
+            KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
     cover = spec.get('c64_rows') == 'cover'
     full, fits = None, {}
 

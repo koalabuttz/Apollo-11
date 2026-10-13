@@ -26,6 +26,18 @@
  * AGC_TRANSFER_NONE for an erasable address. */
 uint16_t agc_fixed_physical(agc_word logical, agc_word fb, agc_word superbank);
 
+struct agc_native_program;
+/* RESUME runs the instruction BRUPT holds, then continues at ZRUPT. A native
+ * RESUME continues at Z = ZRUPT-1, which is the same thing only when BRUPT is
+ * the word at ZRUPT-1 under the banks the interrupted program gets back (fb,
+ * eb, superbank). The interrupt hardware always saves that word; code that
+ * writes BRUPT itself (ENDJASK, ALARM_AND_ABORT, P70) may not. False when the
+ * word can be read (erasable, or fixed through the program's fixed_data) and
+ * differs, so the routine refuses rather than resume at the wrong point.
+ * p and s must not be NULL. */
+bool agc_resume_exact(const struct agc_native_program *p, const apollo_overlay_state *s, agc_word fb, agc_word eb,
+                      agc_word superbank);
+
 /* Key of an erasable continuation (Z below 02000; 01400-01777 under EB):
  * AGC_TRANSFER_ERASABLE_BASE + the physical erasable address. A file that
  * stores a TC into erasable for later execution (RESTARTS' GOLOC words)
@@ -92,11 +104,20 @@ typedef struct agc_native_program {
  * the EDOP code its pair leaves, performs DANZIG's BBANK load and the right
  * order, and refuses anything else with EXEC_OUT_OF_SCOPE. An RTB operand
  * word is never an order-pair word, so these keys never meet NEWOPS keys.
- * Programs without the marker resolve DANZIG by Z as before. */
+ * Programs without the marker resolve DANZIG by Z as before.
+ * On the C64 the check costs about 150 bytes in every program linking this
+ * file, so it is compiled (and the marker tables defined) only with
+ * -DAGC_TRANSFER_DANZIG_MARKER; a C64 program registering a marker without
+ * it does not compile. Host builds always have it. */
+#if !defined(__mos__) && !defined(AGC_TRANSFER_DANZIG_MARKER)
+#define AGC_TRANSFER_DANZIG_MARKER 1
+#endif
 #define AGC_LM_DANZIG UINT16_C(3121)  /* physical 06061 */
 #define AGC_CM_DANZIG UINT16_C(3096)  /* physical 06030 */
 #define AGC_EDOP 023u
+#ifdef AGC_TRANSFER_DANZIG_MARKER
 extern const agc_routine_table agc_lm_danzig_marker, agc_cm_danzig_marker;
+#endif
 
 /* Native routine for the current Z (or LOC at the fetch point, or at a
  * pending DANZIG), or NULL. */

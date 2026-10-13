@@ -3470,13 +3470,13 @@
      "address": "04,3270",
      "word": "05504",
      "source": "R02ZERO TC UPFLAG",
-     "native": "r_r02both (R02ZERO)"
+     "native": "r_r02zero (R02ZERO)"
     },
     {
      "address": "04,3271",
      "word": "00007",
      "source": "ADRES IMUSE",
-     "native": "r_r02both (R02ZERO)"
+     "native": "r_r02zero (R02ZERO)"
     },
     {
      "address": "04,3272",
@@ -7561,13 +7561,13 @@
      "address": "07,3667",
      "word": "05546",
      "source": "R02ZERO TC UPFLAG",
-     "native": "r_r02both (R02ZERO)"
+     "native": "r_r02zero (R02ZERO)"
     },
     {
      "address": "07,3670",
      "word": "00007",
      "source": "ADRES IMUSE",
-     "native": "r_r02both (R02ZERO)"
+     "native": "r_r02zero (R02ZERO)"
     },
     {
      "address": "07,3671",

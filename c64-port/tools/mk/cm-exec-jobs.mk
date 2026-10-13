@@ -23,7 +23,7 @@ cm-exec-jobs-differential: build/cm-exec-jobs-native
 	python3 tools/cm_exec_jobs_freeze.py
 	git diff --exit-code -- tests/cm_exec_jobs_vectors.h tests/cm_exec_jobs_c64_vectors.h
 c64-cm-exec-jobs: build/cm-exec-jobs.prg
-build/cm-exec-jobs.prg: $(CM_EXJ_SRC) platform/c64/cm_exec_jobs_diagnostic.c tests/cm_exec_jobs_c64_vectors.h $(CM_EXJ_HDR) | build
+build/cm-exec-jobs.prg: $(CM_EXJ_SRC) platform/c64/cm_exec_jobs_diagnostic.c tests/cm_exec_jobs_c64_vectors.h tests/cm_exec_jobs_c64_rows.h $(CM_EXJ_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(CM_EXJ_FLAGS) -Wl,-Map,build/cm-exec-jobs.map $(CM_EXJ_SRC) platform/c64/cm_exec_jobs_diagnostic.c -o $@
 vice-cm-exec-jobs: build/cm-exec-jobs.prg
 	python3 tools/vice_run.py build/cm-exec-jobs.prg --cycles 3000000000 --timeout 1200
