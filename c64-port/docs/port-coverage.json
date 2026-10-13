@@ -1144,7 +1144,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -1738,8 +1738,16 @@
             "src/cm_interbank_sites.inc",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 354 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "scope": "All 13 entries and SWCALL -1 registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 354 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
           "verification": "docs/CM-INTERBANK-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interbank_routines.c",
+            "src/cm_interbank_complete.c"
+          ],
+          "scope": "Entries reached with an unusual Q: SWCALL -1 (every RTB; INCR Q, then SWCALL) registered as the 14th routine; BANKJUMP with Q 0..07775 (SAVELOCS TC L, TC SUPERSW then TCF BANKJUMP); SWRETURN/ISWRETRN with any Q. 512 cases of this mission equal yaAGC on all 2048 erasable words at the callee.",
+          "verification": "docs/INTERBANK-Q.md"
         }
       ],
       "withdrawn_certificate": {
@@ -1968,7 +1976,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
@@ -2158,7 +2166,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
-            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+            "sha256": "a96b33a818a376839fd7d7ff626392e7e73cf70ed14ed7409505a04a62f2b318"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
@@ -4057,6 +4065,16 @@
           ],
           "scope": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff; every original emitted word and control body, passive constants and directives reviewed",
           "verification": "docs/NATIVE-SERVICE-ROUTINES.md"
+        },
+        {
+          "native_files": [
+            "src/service_transfer.c",
+            "src/cm_service_sites.inc",
+            "src/service_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (152 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
       "withdrawn_certificate": {
@@ -4231,6 +4249,14 @@
           ],
           "scope": "E/BKCALL, its returns, E/CALL, resume, E/JOBWAK, EXIT and the INTPRET forms registered as native routines; E/BKCALL and E/CALL round trips run through the trampoline into a native callee and back.",
           "verification": "docs/CM-STANDARD-LEAD-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "COMPVER, GTSCPSS1 and REDO (33,2000-2002) registered in cm_standard_lead_routines: one TC each to GCOMPVER, GTSCPSS or NEWMODEX with Q at the next word; 384 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/cm-lead-tests.md"
         }
       ],
       "withdrawn_certificate": {
@@ -4969,6 +4995,15 @@
         },
         {
           "native_files": [
+            "src/cm_exec_routines.c",
+            "src/cm_waitlist_internal.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "T3RUPT body (01,3416) and DLY2 -1 (05255) registered in cm_exec_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/waitlist-entries.md"
+        },
+        {
+          "native_files": [
             "src/resident_kernel_body.inc",
             "src/cm_kernel.c",
             "src/cm_kernel_labels.inc",
@@ -5000,7 +5035,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -6127,7 +6162,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -7061,8 +7096,16 @@
             "src/lm_interbank_sites.inc",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 448 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
+          "scope": "All 13 entries and SWCALL -1 registered as native routines at their original addresses; transfers end in the agc_transfer_run trampoline; inline CADRs of all 448 genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR sites compiled. Destinations in untranslated files resolve to EXEC_UNMAPPED.",
           "verification": "docs/LM-INTERBANK-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/lm_interbank_routines.c",
+            "src/lm_interbank.c"
+          ],
+          "scope": "Entries reached with an unusual Q: SWCALL -1 (every RTB; INCR Q, then SWCALL) registered as the 14th routine; BANKJUMP with Q 0..07775 (SAVELOCS TC L, TC SUPERSW then TCF BANKJUMP); SWRETURN/ISWRETRN with any Q. 512 cases of this mission equal yaAGC on all 2048 erasable words at the callee.",
+          "verification": "docs/INTERBANK-Q.md"
         }
       ],
       "withdrawn_certificate": {
@@ -7323,7 +7366,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
@@ -7494,7 +7537,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
-            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+            "sha256": "a96b33a818a376839fd7d7ff626392e7e73cf70ed14ed7409505a04a62f2b318"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
@@ -9662,6 +9705,16 @@
           ],
           "scope": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff; every original emitted word and control body, passive constants and directives reviewed",
           "verification": "docs/NATIVE-SERVICE-ROUTINES.md"
+        },
+        {
+          "native_files": [
+            "src/service_transfer.c",
+            "src/lm_service_sites.inc",
+            "src/service_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "All 11 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (171 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
       "withdrawn_certificate": {
@@ -10479,6 +10532,24 @@
         },
         {
           "native_files": [
+            "src/lm_exec_tasks.c",
+            "src/lm_waitlist_dispatch.c",
+            "src/lm_delay_image.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "T3RUPT body (01,3407) and DLY2 -1 (05211) registered in lm_exec_task_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/waitlist-entries.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "NOQBRSM +1 (05275) registered in lm_t6rupt_routines: RELINT and RESUME without NOQBRSM's DXCH ARUPT, as the P-axis autopilot's TCF NOQBRSM +1 enters it. 128 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/waitlist-entries.md"
+        },
+        {
+          "native_files": [
             "src/resident_kernel_body.inc",
             "src/lm_kernel.c",
             "src/lm_kernel_labels.inc",
@@ -10510,7 +10581,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",

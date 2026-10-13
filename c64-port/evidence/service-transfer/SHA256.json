@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "service-transfer",
+  "release": "evidence-service-transfer",
+  "files": {
+    "service-transfer-host.log": {
+      "sha256": "f3fc9af824c33820c9d1b1e9e04505caff2034b66ee82aba17b4a784deeef23a",
+      "bytes": 635,
+      "store": "release"
+    },
+    "service-transfer-proof.json": {
+      "sha256": "472d8741d786c2fd30a7170eb8efc6cec8a954e738b5892bb922d4a0fcc22475",
+      "bytes": 2204,
+      "store": "tree"
+    },
+    "service-transfer-vice.log": {
+      "sha256": "31e7918cc27fe0f0e19a4a79e8c98e4a9cb780ebed4fdeaf31d0d2e71caae984",
+      "bytes": 224,
+      "store": "release"
+    }
+  }
+}

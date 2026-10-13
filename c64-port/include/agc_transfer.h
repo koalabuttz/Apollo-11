@@ -44,10 +44,15 @@ bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
  * channels 5 and 6 and channel 13 (bit 15 enables the TIME6 counter) that
  * the LM T6RUPT programs drive, input channel 15 (the DSKY key code
  * KEYRUPT1 reads), output channel 10 (the last DSKY relay word T4RUPT
- * wrote) and input channel 32 (the PRO key T4RUPT samples). Channel 13 holds what the CPU can write (043777: the
- * trap-reset bits never stay set). Initializers that name only the first
- * members leave the later channels zero. */
-typedef struct { agc_word channel11; uint16_t in_interrupt; agc_word channel5, channel6, channel13, channel15, channel10, channel32; } agc_hardware;
+ * wrote) and input channel 32 (the PRO key T4RUPT samples), output channels
+ * 12 and 14 (IMU control, CDU and gyro drive), input channels 30, 31 and 33
+ * (IMU, hand controller, temperature and PIPA status) and the scaler
+ * channels 3 and 4 (HISCALAR, LOSCALAR). Input channels hold what READ
+ * returns, output channels the last word written; channel 13 holds what the
+ * CPU can write (043777: the trap-reset bits never stay set). One layout for
+ * every lane: new channels are appended here by the ABI owner. Zero-initialize
+ * with `agc_hardware hw = {0};`, never a partial positional list. */
+typedef struct { agc_word channel11; uint16_t in_interrupt; agc_word channel5, channel6, channel13, channel15, channel10, channel32, channel12, channel14, channel30, channel33, channel31, channel3, channel4; } agc_hardware;
 
 /* A native routine entered at its original address. It runs with the flight
  * image in its entry state, performs its translated body, and leaves Z (and FB,
@@ -77,7 +82,24 @@ typedef struct agc_native_program {
     agc_hardware *hardware;
 } agc_native_program;
 
-/* Native routine for the current Z (or LOC at the fetch point), or NULL. */
+/* Pending right-hand order. A pair whose left order is RTB returns through
+ * DANZIG (LM 06061, CM 06030) with the right order's code still in EDOP
+ * (CCS EDOP positive: TCF OPJUMP) and LOC at the RTB's operand word, the
+ * pair word +1. That point is interpretive too: when Z is DANZIG, EDOP is
+ * positive and the program's first interpretive table is the mission's
+ * marker table, the point is LOC under BANKSET. The file owning the pair
+ * registers a routine there, in its interpretive table, that accepts exactly
+ * the EDOP code its pair leaves, performs DANZIG's BBANK load and the right
+ * order, and refuses anything else with EXEC_OUT_OF_SCOPE. An RTB operand
+ * word is never an order-pair word, so these keys never meet NEWOPS keys.
+ * Programs without the marker resolve DANZIG by Z as before. */
+#define AGC_LM_DANZIG UINT16_C(3121)  /* physical 06061 */
+#define AGC_CM_DANZIG UINT16_C(3096)  /* physical 06030 */
+#define AGC_EDOP 023u
+extern const agc_routine_table agc_lm_danzig_marker, agc_cm_danzig_marker;
+
+/* Native routine for the current Z (or LOC at the fetch point, or at a
+ * pending DANZIG), or NULL. */
 agc_routine agc_transfer_resolve(const agc_native_program *, const apollo_overlay_state *,
                                  agc_word superbank);
 /* The inline operand at logical address q (the word after the caller's TC),
@@ -86,7 +108,7 @@ bool agc_transfer_operand(const agc_native_program *, const apollo_overlay_state
                           agc_word superbank, agc_word q, agc_word *word);
 /* Point the trampoline compares against stop: the physical fixed address of
  * Z, its erasable key when Z is erasable, or LOC under BANKSET when Z is the
- * interpreter fetch point. */
+ * interpreter fetch point or a pending DANZIG. */
 uint16_t agc_transfer_point(const agc_native_program *, const apollo_overlay_state *, agc_word superbank);
 /* Trampoline: call the routine at the current point, then the routine at its
  * continuation, and so on, until the point equals stop (the caller's own
