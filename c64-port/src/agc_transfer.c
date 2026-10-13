@@ -31,9 +31,9 @@ static enum exec_status danzig_marker(const agc_native_program *p,apollo_overlay
 static const agc_routine_entry lm_danzig[1]={{AGC_LM_DANZIG,danzig_marker}},cm_danzig[1]={{AGC_CM_DANZIG,danzig_marker}};
 const agc_routine_table agc_lm_danzig_marker={lm_danzig,1},agc_cm_danzig_marker={cm_danzig,1};
 #endif
-static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t z;
+/* z: the fixed point at Z (agc_fixed_physical of Z, FB). */
+static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,uint16_t z){
  if(p->loc>=APOLLO_SHARED_WORDS||p->bankset>=APOLLO_SHARED_WORDS)return false;
- z=agc_fixed_physical(s->words[5],s->words[4],superbank);
  if(p->interpreter_fetch!=AGC_TRANSFER_NONE&&z==p->interpreter_fetch)return true;
 #ifdef AGC_TRANSFER_DANZIG_MARKER
  /* The marker is the first interpretive table (by identity, so an empty {0,0}
@@ -54,10 +54,17 @@ uint16_t agc_erasable_point(agc_word logical,agc_word eb){
  if(logical>=01400u)logical=(agc_word)((eb&03400u)+(logical&0377u));
  return (uint16_t)(AGC_TRANSFER_ERASABLE_BASE+logical);
 }
-static uint16_t transfer_point(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank,bool *in){
- if((*in=interpreting(p,s,superbank)))return agc_fixed_physical(s->words[p->loc],s->words[p->bankset],superbank);
+/* Z in erasable is never the interpreter's fetch or DANZIG (both fixed), so
+ * the fixed point at Z is computed once and is the answer unless it is. */
+static uint16_t transfer_point(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank,bool *in){uint16_t z;
+ *in=false;
  if((s->words[5]&07777u)<02000u)return agc_erasable_point(s->words[5],s->words[3]);
- return agc_fixed_physical(s->words[5],s->words[4],superbank);
+ z=agc_fixed_physical(s->words[5],s->words[4],superbank);
+ if((*in=interpreting(p,s,z)))return agc_fixed_physical(s->words[p->loc],s->words[p->bankset],superbank);
+ return z;
+}
+static agc_routine resolve_at(const agc_native_program *p,uint16_t point,bool in){
+ return in?find(p->interpretive,p->interpretive_count,point):find(p->basic,p->basic_count,point);
 }
 uint16_t agc_transfer_point(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){bool in;
  if(!p||!s)return AGC_TRANSFER_NONE;
@@ -66,7 +73,7 @@ uint16_t agc_transfer_point(const agc_native_program *p,const apollo_overlay_sta
 agc_routine agc_transfer_resolve(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t point;bool in;
  if(!p||!s)return 0;
  point=transfer_point(p,s,superbank,&in);
- return in?find(p->interpretive,p->interpretive_count,point):find(p->basic,p->basic_count,point);
+ return resolve_at(p,point,in);
 }
 bool agc_transfer_operand(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank,agc_word q,agc_word *word){uint16_t physical;
  if(!p||!s||!word||q>07777u)return false;
@@ -74,11 +81,12 @@ bool agc_transfer_operand(const agc_native_program *p,const apollo_overlay_state
  if(q<02000u){physical=(uint16_t)(s->words[3]+(q&0377u));if(physical<0100u||physical>=APOLLO_SHARED_WORDS)return false;*word=s->words[physical];return true;}
  return agc_site_lookup(p->operands,p->operand_count,agc_fixed_physical(q,s->words[4],superbank),word);
 }
-enum exec_status agc_transfer_run(const agc_native_program *p,apollo_overlay_state *s,void *io,const agc_word *superbank,uint16_t stop,uint16_t max_steps,uint16_t *steps){uint16_t n=0;enum exec_status status=EXEC_OK;agc_routine call;
+/* One transfer point per step: the stop check and the routine lookup share it. */
+enum exec_status agc_transfer_run(const agc_native_program *p,apollo_overlay_state *s,void *io,const agc_word *superbank,uint16_t stop,uint16_t max_steps,uint16_t *steps){uint16_t n=0,point;enum exec_status status=EXEC_OK;agc_routine call;bool in;
  if(!p||!s||!superbank)return EXEC_OUT_OF_SCOPE;
- while(agc_transfer_point(p,s,*superbank)!=stop){
+ while((point=transfer_point(p,s,*superbank,&in))!=stop){
   if(n==max_steps){status=EXEC_OUT_OF_SCOPE;break;}
-  call=agc_transfer_resolve(p,s,*superbank);
+  call=resolve_at(p,point,in);
   if(!call){status=EXEC_UNMAPPED;break;}
   ++n;status=call(p,s,io);
   if(status!=EXEC_OK)break;
