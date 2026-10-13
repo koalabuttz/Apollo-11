@@ -101,7 +101,9 @@ static void dca_op(apollo_overlay_state *s,const agc_word *k,unsigned off){
 /* NO.WDS/REVCNT region 06241-06247 as INDEX MODE/A select it. */
 static agc_word nowds(int index){
  static const agc_word t[7]={2,6,6,2,3,6,010020};
- return t[index+3];
+ /* (MODE is -1, +0 or +1 in every real program; a wild one reads the
+  * table's first word rather than past it.) */
+ return t[index>=-3&&index<=3?index+3:0];
 }
 static int signed_word(agc_word v){return (v&040000u)?-(int)(~v&037777u):(int)v;}
 

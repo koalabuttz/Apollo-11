@@ -25,10 +25,15 @@ COMMON_SRC = ['src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_
               'src/agc_multiword.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c', 'platform/c64/rope_image_reu.c']
 SOURCES = {'lm': ['src/lm_interp_runtime.c'] + COMMON_SRC,
            'cm': ['src/cm_interp_runtime.c', 'src/cm_interp_orders.c', 'src/cm_interp_steps.c'] + COMMON_SRC[2:]}
+# The compact interpreter, the flight build's (one unit; the image at $7000).
+CORE_SRC = ['src/agc_word.c', 'src/agc_multiword.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c',
+            'platform/c64/rope_image_reu.c']
+CORE = {'lm': ['src/lm_interp_core.c'] + CORE_SRC, 'cm': ['src/cm_interp_core.c'] + CORE_SRC}
 
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--runtime', action='store_true', help='the verification interpreter (lmi_ bodies) instead')
     ap.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
     a = ap.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
@@ -39,13 +44,16 @@ def main():
     for m in ('lm', 'cm'):
         (ROOT / OUT / m).mkdir(exist_ok=True)
         prg = OUT / m / 'interp.prg'
-        r = F.link_module(a.cc, m, prg, 0, 0x0A01, SOURCES[m], ['%s_interp_runtime_basic' % m], [], library)
+        if a.runtime:
+            r = F.link_module(a.cc, m, prg, 0, 0x0A01, SOURCES[m], ['%s_interp_runtime_basic' % m], [], library)
+        else:
+            r = F.link_module(a.cc, m, prg, 0, 0x0A01, CORE[m], ['%s_interp_core_basic' % m], [], library)
         out[m] = r
         if r['ok']:
             print('%s: %d bytes of %d (job slot)' % (m.upper(), r['bytes'], F.SLOT_BYTES[0]))
         else:
             print('%s: does not fit the job slot (over by %s bytes) %s' % (m.upper(), r.get('overflow'), r.get('error') or ''))
-    (ROOT / OUT / 'size.json').write_text(json.dumps(out, indent=1) + '\n')
+    (ROOT / OUT / ('size-runtime.json' if a.runtime else 'size.json')).write_text(json.dumps(out, indent=1) + '\n')
     return 0
 
 
