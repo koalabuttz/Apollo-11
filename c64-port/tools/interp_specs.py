@@ -284,6 +284,50 @@ SPECS = {
         'edge_values': True,
         'freeze_stride': 32,
     },
+    # Lane D1: Comanche055 SXTMARK, the whole file (basic code) as routines
+    # at its original addresses.
+    'cm-sxtmark': {
+        'missions': ('cm',),
+        'file': {'cm': 'SXTMARK.agc'},
+        'base': {'cm': 'cm_sxtmark'},
+        'symbol': {'cm': 'cm_sxtmark'},
+        'basic': 'full',
+        # And the returns the outside calls can make past their first:
+        # CHECKMM's in-mode return (+2 past its MM), GOMARK4's verb 33 and
+        # enter returns (+1, +2 past the CADR).
+        'entries': ['@external', 'MKVACFND+10', 'MKVACFND+14', 'TERMSXT-2', 'TERMSXT-1', 'TERMP03-3'],
+        'externals': {'BAILOUT': 'auto', 'CHECKMM': 'auto', 'SWRETURN': 'auto', 'NOVAC': 'auto', 'GENTRAN': 'auto', 'TASKOVER': 'auto', 'ALARM': 'auto', 'POSTJUMP': 'auto', 'RESUME': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'UPFLAG': 'auto', 'WAITLIST': 'auto', 'ENDMARK': 'auto', 'CLEARMRK': 'auto'},
+        # Channel 12 (WAND CHAN12 in MKRLEES) in the io record; NAVKEYIN
+        # (channel 16) is a latched input ('channel_inputs').
+        'channels': {0o12: 'channel12'},
+        'io_channels': 'auto',
+        # MKVACFND's INDEX MARKSTAT; TS 0 -1 assembles as DXCH 1777 and
+        # becomes TS VACnUSE once MARKSTAT (a VAC area) is added.
+        'index_words': {'07,2037': [0o401, 0o455, 0o531, 0o605, 0o661]},
+        'ebank': 7,
+        'all_states': {'VAC1USE': [0, 0o400], 'VAC2USE': [0, 0o454], 'VAC3USE': [0, 0o530],
+                       'VAC4USE': [0, 0o604], 'VAC5USE': [0, 0o660],
+                       # MARKSTAT: the VAC area's address in the low 9 bits,
+                       # marks wanted in bits 12-14 and the reject enable in
+                       # bit 10 (or zero: no marks).
+                       'MARKSTAT': AOT_MARKSTAT,
+                       # QPRET (each area's word 42D): the next mark slot,
+                       # the area plus 7 words a mark taken.
+                       **{'%04o' % (a + 0o52): [a + 7 * n for n in range(6)]
+                          for a in (0o401, 0o455, 0o531, 0o605, 0o661)}},
+        # DIFCHK is entered with MKNDX -1, 0 or 1 (it indexes CDUX-CDUZ).
+        'states': {'DIFCHK': {'MKNDX': [0o77776, 0, 1]},
+                   'MKVACFND': {'0': [0o377, 0o453, 0o527, 0o603, 0o657]}},
+        'channel_inputs': True,
+        'c64_flags': ['-fno-inline', '-DIRC_INPUTS', '-DIRC_CHANNELS'],
+        'target': 'tests/cm_sxtmark_target.c',
+        'c64_rows': 'cover',
+        'cover_stride': 8,
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'freeze_stride': 32,
+    },
     'inflight-align': {
         'missions': ('lm', 'cm'),
         'file': {'lm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc', 'cm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc'},

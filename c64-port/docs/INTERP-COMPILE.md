@@ -47,6 +47,7 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
   - A basic instruction that reads Z (`CA Z`) sees the address after it.
   - The oracle also stops up to four words past the case's return (outside the file), so a skip return (`INCR Q`, `RETURN`) or an indexed return ends like a plain return.
   - `index_carry` (`{'bank,addr': word}`): an indexed instruction whose index carries it into another quarter code compiles as the instruction it becomes (the opcode and quarter code given), its address taken from the sum; any other sum refuses. AOTMARK's `INDEX MARKSTAT; TS 0 -1` assembles as DXCH 1777 and runs as TS VACnUSE.
+  - With `'basic': 'full'`, `channel_inputs` reads the latched input channels (3, 4, 016, 030-033) as above, and an indexed MSU runs on the summed address when it stays an ordinary erasable word (SXTMARK's DIFCHK).
   - `index_returns`: `INDEX K; TCF 0 +n` with K a saved Q (P37's SPRTEX, RTENCKEX) computes the TCF and lets the run loop go on from its address.
   - `max_steps`: raises the run loop's 200-routine limit for loops that span routines (P37's GAMDV and V2T iterations); the host runner takes it as `IRC_MAX_STEPS`, and the milestone's test and C64 diagnostic pass the same number to `irc_run`.
 - An INDEX-modified write that could reach a bank or Z register checks the address at run time and refuses if it would.
