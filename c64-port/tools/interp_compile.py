@@ -42,7 +42,7 @@ ADDR = {
 # Fixed operands longer than a vector (the words a K array holds).
 K_WORDS = {'MXV': 18, 'VXM': 18}
 # Input channels a 'channel_inputs' spec reads from the caller's latches.
-INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
+INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
 ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
               'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
 MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'LXC': 'LXC', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
@@ -963,7 +963,7 @@ class Compiler:
             head = st[0]
             self._st_tail = st[1:]
             st = [head, '{agc_word iw=ixw(s,0%05o,0%ou);if((iw^0%05ou)&0%05ou)return EXEC_OUT_OF_SCOPE;' % (
-                w, k, w, 0o77777 & ~mask)]
+                self._ix_base if self._ix_base is not None else w, k, w, 0o77777 & ~mask)]
             if mask == 0o7777 and self.spec.get('index_guard'):
                 # A 12-bit erasable operand: the sum must stay erasable (an
                 # INDEX POSITON far past the table would read the rope).
@@ -1002,6 +1002,16 @@ class Compiler:
                 w = self.L.word(p)
                 continue
             break
+        self._ix_base = None
+        carry = self.spec.get('index_carry', {}).get(self.where(p))
+        if carry is not None and index is not None:
+            # INDEX K; TS 0 -1 (AOTMARK's MKVACFND): the index carries the
+            # word into another quarter code. Compile the instruction the
+            # sum becomes (carry: its opcode and quarter code, address
+            # from the sum); any other sum refuses.
+            self._ix_base = w
+            w = carry
+            op, qc, k12, k10 = (w >> 12) & 7, (w >> 10) & 3, w & 0o7777, w & 0o1777
         nxt = p + 1
         self.unit_words = range(start, p + 1)
         ln = self.code.get(p)
@@ -1205,6 +1215,14 @@ class Compiler:
         else:
             w = ln.words[0] if ln.words else 0
             io_op, chan = (w >> 9) & 7, w & 0o777
+            if op == 0 and index is None and chan in (1, 2):
+                # Channels 1 and 2 are L and Q: whole 16-bit register
+                # operations, as yaAGC does them.
+                r = 'W[%d]' % chan
+                return st + [{0: 'W[0]=%s;' % r, 1: '%s=W[0];' % r,
+                              2: 'W[0]=(agc_word)(W[0]&%s);' % r, 3: 'W[0]=%s=(agc_word)(W[0]&%s);' % (r, r),
+                              4: 'W[0]=(agc_word)(W[0]|%s);' % r, 5: 'W[0]=%s=(agc_word)(W[0]|%s);' % (r, r),
+                              6: 'W[0]=(agc_word)(W[0]^%s);' % r}[io_op]], [nxt]
             if op == 0 and self.spec.get('channel_inputs') and index is None and io_op in (0, 2, 4, 6) \
                     and chan in INPUT_CHANNELS:
                 # READ, RAND, ROR, RXOR of an input channel the caller latches
@@ -1651,6 +1669,8 @@ class Compiler:
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
                 c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % bfb)
+                if self.uses_channels:
+                    c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
                 c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024), phys))
                 c.append('}')
                 c.append('#endif')

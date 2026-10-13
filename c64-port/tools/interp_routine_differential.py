@@ -2057,6 +2057,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, covers=None, c
             v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask)
                                          + GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
+    C64_PICKS[:] = [pick for m, mask, pick in groups]
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick), 'case_ids': list(pick)} for m, mask, pick in groups], {}
 
 
