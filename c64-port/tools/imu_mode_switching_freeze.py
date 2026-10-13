@@ -30,7 +30,7 @@ CORE = NATIVE + ['tests/cm_executive_cases.c', str(B / 'agc_engine_no_imu_device
                  str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 FLAGS = ['-std=c99', '-O2', '-DP66_NATIVE_DISPATCH_ONLY', '-ffunction-sections', '-fdata-sections',
          '-Wl,--gc-sections', '-Iinclude', '-Itests', '-Isrc', '-I' + str(E)]
-ROUTINES, LM_ROUTINES, ENTRY_CASES, LM_SITES, SITES = 144, 72, 55296, 74, 128
+ROUTINES, LM_ROUTINES, ENTRY_CASES, LM_SITES, SITES = 146, 73, 56064, 74, 128
 STRIDE, TRIP_STRIDE = 131, 17
 STOPS = {
     0: {0o5567: 'ALARM', 0o5203: 'WAITLIST', 0o5224: 'VARDELAY', 0o5221: 'FIXDELAY', 0o5261: 'TASKOVER',

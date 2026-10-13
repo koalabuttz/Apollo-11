@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* C64 row selection for imu-mode-switching (tools/imu_mode_switching_cover.py).
  *
- * select: built with -fsanitize-coverage=trace-pc on src/imu_mode_switching.c.
+ * select: built with -fsanitize-coverage=trace-pc on every linked native source.
  *   Runs every case; a row's signature is its mission, the basic-block edges
  *   it takes in that mission, the routine (entry case) or call site (round
  *   trip) it starts at, and its outcome kind in that mission. Greedily picks
@@ -15,12 +15,12 @@
 #include <string.h>
 #include "imu_mode_switching_cases.h"
 
-#define EDGES 65536u
+#define EDGES 262144u
 #define ITEMS (2u*EDGES+IMS_ROUTINES+IMS_SITES+8u)
 static uintptr_t edge_a[EDGES],edge_b[EDGES];static uint8_t edge_used[EDGES];
 static uintptr_t prev_pc;static int tracing;
-static uint32_t hits[8192];static unsigned nhits;static uint8_t seen[EDGES];
-static unsigned edge_id(uintptr_t a,uintptr_t b){unsigned h=(unsigned)((a*0x9e3779b97f4a7c15ull^b*0xc2b2ae3d27d4eb4full)>>48)%EDGES;
+static uint32_t hits[32768];static unsigned nhits;static uint8_t seen[EDGES];
+static unsigned edge_id(uintptr_t a,uintptr_t b){unsigned h=(unsigned)((a*0x9e3779b97f4a7c15ull^b*0xc2b2ae3d27d4eb4full)>>40)%EDGES;
  while(edge_used[h]&&(edge_a[h]!=a||edge_b[h]!=b))h=(h+1u)%EDGES;
  if(!edge_used[h]){edge_used[h]=1;edge_a[h]=a;edge_b[h]=b;}
  return h;
@@ -29,7 +29,7 @@ void __sanitizer_cov_trace_pc(void);
 void __sanitizer_cov_trace_pc(void){uintptr_t pc=(uintptr_t)__builtin_return_address(0);unsigned id;
  if(!tracing)return;
  id=edge_id(prev_pc,pc);prev_pc=pc;
- if(!seen[id]&&nhits<8000u){seen[id]=1;hits[nhits++]=id;}
+ if(!seen[id]&&nhits<32000u){seen[id]=1;hits[nhits++]=id;}
 }
 /* Runs case n; returns its mission, or 2 for a case with no site. */
 static unsigned run(uint16_t n,unsigned *kind){apollo_overlay_state s;uint16_t ie;agc_word ch[4];unsigned i;uint8_t cm;

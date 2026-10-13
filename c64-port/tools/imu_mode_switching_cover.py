@@ -20,6 +20,9 @@ MAIN = 'src/imu_mode_switching.c'
 REST = ['src/agc_image_ops.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
         'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c',
         'src/agc_hardware_divide.c', 'tests/imu_mode_switching_cases.c', 'tools/imu_mode_switching_cover.c']
+# Every linked native source is measured, not only the file's own.
+MEASURED = [MAIN] + [x for x in REST if x.startswith('src/')]
+UNMEASURED = [x for x in REST if not x.startswith('src/')]
 FLAGS = ['-std=c99', '-Iinclude', '-Itests', '-DP66_NATIVE_DISPATCH_ONLY']
 SRC = (R / MAIN).read_text().splitlines()
 MISSIONS = ('Luminary099', 'Comanche055')
@@ -32,9 +35,12 @@ def select_rows():
     rows = set()
     for cc, cov in (('gcc', 'trace-pc'), ('clang', 'edge,trace-pc')):
         exe = R / f'build/imu-mode-switching-select-{cc}'
-        subprocess.run([cc, *FLAGS, '-O0', f'-fsanitize-coverage={cov}', '-c', MAIN, '-o', f'build/ims-select-{cc}.o'],
-                       cwd=R, check=True)
-        subprocess.run(['gcc', *FLAGS, '-O2', f'build/ims-select-{cc}.o', *REST, '-o', str(exe)], cwd=R, check=True)
+        objs = []
+        for src in MEASURED:
+            o = f'build/ims-select-{cc}-{pathlib.Path(src).stem}.o'
+            subprocess.run([cc, *FLAGS, '-O0', f'-fsanitize-coverage={cov}', '-c', src, '-o', o], cwd=R, check=True)
+            objs.append(o)
+        subprocess.run(['gcc', *FLAGS, '-O2', *objs, *UNMEASURED, '-o', str(exe)], cwd=R, check=True)
         p = subprocess.run([str(exe), 'select'], cwd=R, check=True, capture_output=True, text=True)
         assert p.stderr.strip().splitlines()[-1].endswith(' 0 items left'), p.stderr
         rows |= {int(x) for x in p.stdout.split()}
@@ -46,32 +52,38 @@ def taken(name, mission, arg):
     if d.exists():
         shutil.rmtree(d)
     d.mkdir(parents=True)
-    subprocess.run(['gcc', *FLAGS, '-O0', '--coverage', '-c', str(R / MAIN), '-o', str(d / 'imu_mode_switching.o')],
-                   cwd=R, check=True)
-    subprocess.run(['gcc', *FLAGS, '-O2', str(d / 'imu_mode_switching.o'), *REST, '--coverage', '-o', str(d / 'run')],
+    objs = []
+    for src in MEASURED:
+        o = str(d / (pathlib.Path(src).stem + '.o'))
+        subprocess.run(['gcc', *FLAGS, '-O0', '--coverage', '-c', str(R / src), '-o', o], cwd=R, check=True)
+        objs.append(o)
+    subprocess.run(['gcc', *FLAGS, '-O2', *objs, *UNMEASURED, '--coverage', '-o', str(d / 'run')],
                    cwd=R, check=True)
     subprocess.run([str(d / 'run'), 'replay', str(mission), arg], cwd=R, check=True)
-    subprocess.run(['gcov', '-b', '-c', '-o', str(d), str(R / MAIN)], cwd=d, check=True, stdout=subprocess.DEVNULL)
-    out, total, line, never = {}, 0, None, []
-    for l in (d / 'imu_mode_switching.c.gcov').read_text().splitlines():
-        m = re.match(r'\s*(?:[-#=0-9*]+):\s*(\d+):', l)
-        if m:
-            line = int(m.group(1))
-            continue
-        m = re.match(r'branch\s+(\d+)\s+(taken (\d+)|never executed)', l)
-        if m:
-            total += 1
-            if m.group(3) and int(m.group(3)) > 0:
-                out.setdefault(line, set()).add(int(m.group(1)))
-            else:
-                never.append(f'{line}:{m.group(1)} {SRC[line - 1].strip()[:100]}')
+    out, total, never = {}, 0, []
+    for src in MEASURED:
+        subprocess.run(['gcov', '-b', '-c', '-o', str(d), str(R / src)], cwd=d, check=True, stdout=subprocess.DEVNULL)
+        text = (R / src).read_text().splitlines()
+        line = None
+        for l in (d / (pathlib.Path(src).name + '.gcov')).read_text().splitlines():
+            m = re.match(r'\s*(?:[-#=0-9*]+):\s*(\d+):', l)
+            if m:
+                line = int(m.group(1))
+                continue
+            m = re.match(r'branch\s+(\d+)\s+(taken (\d+)|never executed)', l)
+            if m:
+                total += 1
+                if m.group(3) and int(m.group(3)) > 0:
+                    out.setdefault((src, line), set()).add(int(m.group(1)))
+                else:
+                    never.append(f'{src}:{line}:{m.group(1)} {text[line - 1].strip()[:100]}')
     return out, total, never
 
 
 def main():
     rows = R / 'build/imu-mode-switching-c64-rows.txt'
     count = lambda t: sum(len(v) for v in t.values())
-    result = dict(source=MAIN, measure='gcc gcov -O0 branch outcomes per mission, host build',
+    result = dict(sources=MEASURED, measure='gcc gcov -O0 branch outcomes per mission over every linked native source, host build',
                   c64_rows=len(rows.read_text().split()), missions={})
     fails = []
     for cm, name in enumerate(MISSIONS):
@@ -79,7 +91,7 @@ def main():
         c64, _, _ = taken(f'ims-c64-{cm}', cm, str(rows))
         missing = sorted((l, b) for l, v in host.items() for b in v if b not in c64.get(l, ()))
         result['missions'][name] = dict(outcomes=total, host_stream_taken=count(host), c64_rows_taken=count(c64),
-                                        host_only=[f'{l}:{b}' for l, b in missing], never_taken_on_host=never)
+                                        host_only=[f'{l[0]}:{l[1]}:{b}' for l, b in missing], never_taken_on_host=never)
         if missing:
             fails.append(f'{name}: {len(missing)} ({result["missions"][name]["host_only"]})')
     (R / 'build/imu-mode-switching-c64-cover.json').write_text(json.dumps(result, indent=1) + '\n')
