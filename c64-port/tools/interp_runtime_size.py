@@ -30,7 +30,7 @@ COMMON_SRC = ['src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_
 SOURCES = {'lm': ['src/lm_interp_runtime.c'] + COMMON_SRC,
            'cm': ['src/cm_interp_runtime.c', 'src/cm_interp_orders.c', 'src/cm_interp_steps.c'] + COMMON_SRC[2:]}
 # The compact interpreter, the flight build's (one unit; the image at $7000).
-CORE_SRC = ['platform/c64/interp_module.c', 'src/agc_word.c', 'src/agc_multiword.c', 'src/agc_hardware_divide.c',
+CORE_SRC = ['platform/c64/interp_module.c', 'src/agc_word.c', 'src/agc_hardware_divide.c',
             'platform/c64/rope_image_reu.c']
 CORE = {'lm': ['src/lm_interp_core.c'] + CORE_SRC, 'cm': ['src/cm_interp_core.c'] + CORE_SRC}
 
