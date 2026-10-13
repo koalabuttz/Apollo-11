@@ -263,7 +263,12 @@ Estimated modules per lane at the mid expansion (job + task slots):
 | G | — | 11 + 13 |
 
 These are budgets, not targets. A lane replaces its estimate with measured
-module sizes as modules land. The per-routine placement inside a file belongs to
+module sizes as modules land.
+
+The REU above `0x1c0000` is reserved for the two rope images
+(`include/rope_image.h`). The generator fails when either mission's high module
+store estimate crosses that limit (today about 1.25 MB of the 1.75 MB below
+it). The per-routine placement inside a file belongs to
 the lane, under one rule: anything entered at interrupt level is a task-slot
 body.
 

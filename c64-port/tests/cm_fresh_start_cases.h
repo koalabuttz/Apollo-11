@@ -13,7 +13,8 @@
  * address ERASCHK was testing (061-01776, SKEEP7 equal to it) or a corrupt
  * value, a KLEAN caller's Q SWRETURN (BUF2 a bank 04 return) or another
  * fixed-fixed word; FB/EB, SUPERBNK, the input channels (15, 16 with the
- * ELR key sometimes held, 33), the output channels (5, 6, 11, 12, 13 and
+ * ELR key sometimes held, 33; in a quarter of the cases the AGC warning
+ * persisting, channel 33 bit 14 0 and set again after each reset), the output channels (5, 6, 11, 12, 13 and
  * 14 without the bits yaAGC acts on as a peripheral), the trap latches and
  * the interrupt-enable state pseudo-random.
  * tools/cm_fresh_start_reference.c does the same in the original program. */

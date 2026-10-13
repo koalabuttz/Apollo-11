@@ -6,15 +6,15 @@
  "aggregates": {
   "cm-fresh-start": {
    "record": "evidence/cm-fresh-start/cm-fresh-start-proof.json",
-   "sha256": "6e619dd7ccdf321b56abf3e8a22f933fc033f9a22984c7186b690147d1aeb81a",
+   "sha256": "088e6b53a469929985d32262579e5cc08dae41439280c8c2e1a250e34c445c07",
    "cases": 4096,
-   "snapshot_sha256": "40ab9c282cd50aae246248015d591e91731ccf388b89fc88b120e3525bb9cc03",
-   "rerun_snapshot_sha256": "40ab9c282cd50aae246248015d591e91731ccf388b89fc88b120e3525bb9cc03",
+   "snapshot_sha256": "f3e3a6b6126d5e4d9b82e25dd15d5746af87ab97063cbcb33d3368e9bfab346d",
+   "rerun_snapshot_sha256": "f3e3a6b6126d5e4d9b82e25dd15d5746af87ab97063cbcb33d3368e9bfab346d",
    "result": "PASS"
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-proof.json",
-   "sha256": "69f8deb005918d7c5ab3637b0c5d1b229593b3f49dad90ff3530e11f16fb4c32",
+   "sha256": "752a4ab8d232379cda7fde06b362ae9be596387101c32287ce83eed0a15fccb3",
    "cases": 4096,
    "snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",
    "rerun_snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",
@@ -22,7 +22,7 @@
   },
   "cm-stateup": {
    "record": "evidence/cm-stateup/cm-stateup-proof.json",
-   "sha256": "86a13e2afa058d403fc7ed00c2866394951c096c5ccbf1a43d25dccc5e312997",
+   "sha256": "2c619bb9765edfa8738b39dcc0046ca24e2ab55120c5259b50dc7d4afcdfcbf3",
    "cases": 4096,
    "snapshot_sha256": "b28b31dcc39256cef5ae1b6bc2b197f76a403053119f5dea5fc04d1dabf9f783",
    "rerun_snapshot_sha256": "b28b31dcc39256cef5ae1b6bc2b197f76a403053119f5dea5fc04d1dabf9f783",

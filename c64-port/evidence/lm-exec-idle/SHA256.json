@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-exec-idle",
+  "release": "evidence-lm-exec-idle",
+  "files": {
+    "lm-exec-idle-differential.log": {
+      "sha256": "b37cf4c1eb0ece05891ee86e83376fd1c68a9a513dc1a5cd274c3e6ff5036be6",
+      "bytes": 982,
+      "store": "release"
+    },
+    "lm-exec-idle-host.log": {
+      "sha256": "23574ed9709066bf96ff2eadef47c30c6dc90ee1aa0e4902e3462091f2394fd5",
+      "bytes": 1846,
+      "store": "release"
+    },
+    "lm-exec-idle-proof.json": {
+      "sha256": "eed0a97f5dc2df00cc20bbbdf80da4df408a5a250e02af1db1f1b1ea5c7ec8f2",
+      "bytes": 1069,
+      "store": "tree"
+    },
+    "lm-exec-idle-vice.log": {
+      "sha256": "8acd516b3ec93df30deed10035aa310a8228e87f727a578f3ef68264268a2e14",
+      "bytes": 100,
+      "store": "release"
+    }
+  }
+}
