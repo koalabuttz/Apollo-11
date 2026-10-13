@@ -6975,6 +6975,17 @@
       "native_coverage": [
         {
           "native_files": [
+            "src/lm_p32_p35.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (923 words in banks 34 and 35): P32/P72 (CSI) and P33/P73 (CDH) with their displays, ALMXIT, AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC, the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C, INTINT3P and COMPTGO, as 135 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
+          "verification": "docs/LM-P32-P35.md"
+        },
+        {
+          "native_files": [
             "src/lm_p32_routines.c",
             "src/agc_transfer.c",
             "src/lm_interp_orders.c",
@@ -7006,6 +7017,19 @@
       "lines": 1764,
       "status": "partial",
       "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p34_p35.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/rtb_angles.c",
+            "src/rtb_modes.c"
+          ],
+          "scope": "Every word of the file (1,056 words in banks 04, 06, 10, 11, 23 and 35): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, VNPOOH, INITVEL, the MGA routines, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 178 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
+          "verification": "docs/LM-P34-P35.md"
+        },
         {
           "native_files": [
             "src/lm_periapo.c",
