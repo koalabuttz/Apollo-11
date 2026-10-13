@@ -57,11 +57,25 @@ the builder picks them for any file that uses `<m>_channel_io` (CM
 All but one failure per mission is a module bigger than its 16 KB slot
 (median overflow about 34 KB, largest 136 KB LM and 170 KB CM; only 1 LM
 and 3 CM are within 4 KB of fitting). The other is `<m>_self_check`, which
-reads the rope and does not link outside the self-check build. The store
-itself is far below the 2 MB REU. So the VICE whole-program run waits on the
-modules fitting: per-file modules carry their whole link closure and their
-compiled interpretive step machines, and that needs a steward decision
-(chunking modules by routine, a shared runtime interpreter, or both).
+needs the resident's `apollo_reu_transfer` through the service table
+(services 0x0202). The store itself is far below the 2 MB REU. So the VICE
+whole-program run waits on the modules fitting. Interpretive modules wait on
+the interpreter decision (`/mnt/project-files/steward/interpreter-proposal.md`).
+
+A basic-only module over its slot is split into chunks of consecutive
+routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied by
+constant index, so LTO links only the chunk's routines), halving until each
+chunk fits. The builder keeps a split only when every chunk fits and stops
+early when halving leaves the overflow nearly unchanged; the report marks
+such a module `routines share one body`. On 4e5cdfbb that is every oversized
+basic module (9 LM, 10 CM): each file's routines run one file-wide step
+machine (LM P-AXIS `flow` alone is 9.4 KB), so a one-routine chunk still
+overflows. Those files fit only once their lane splits the step machine.
+
+The resident and every module are compiled with
+`-DAGC_TRANSFER_DANZIG_MARKER` (`tools/resident_flight_build.py` COMMON):
+the pending-DANZIG marker is opt-in on the C64 since #184, and the resident
+resolves pending RTB right-hand orders through it.
 
 ## Host differential method
 

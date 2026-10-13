@@ -7,7 +7,7 @@
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "23f2c239593f6b552a276000d86a85c6e0dcad2bd43240808426de84eb4e4377",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/cm_stateup_cases.c": "a9d1388a331c292c38df9ccfa295b706cc52c34b78ab9925201c6a167d62ae4b"
@@ -268,8 +268,8 @@
   4080
  ],
  "c64_row_seed_stride": 17,
- "host_branch_arcs": 217,
- "c64_branch_arcs": 217,
+ "host_branch_arcs": 219,
+ "c64_branch_arcs": 219,
  "arcs_by_source_host_c64": {
   "build/cm-stateup-cover/runner.c": [
    1,
@@ -288,8 +288,8 @@
    5
   ],
   "src/agc_transfer.c": [
-   44,
-   44
+   46,
+   46
   ],
   "src/agc_word.c": [
    2,

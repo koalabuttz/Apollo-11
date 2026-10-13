@@ -44,6 +44,15 @@ static agc_word indexed(agc_word word,agc_register idx){
  return (agc_word)(agc_correct(agc_add_register(agc_extend((agc_word)(agc_correct(idx)&077777u)),agc_extend(word)))&077777u);
 }
 #define TS(a) do{if(ai_ts(s,(a)))return EXEC_OUT_OF_SCOPE;}while(0)
+/* TS after a load from memory or a channel (CA, CS, DCA, DXCH, XCH, CH_*),
+ * then only MASKs and other such TSs: A holds no overflow, so TS never skips. */
+#define TSU(a) (void)ai_ts(s,(a))
+/* CAF k; TS a (a TSU: CAF loads a constant). */
+static void cafts(apollo_overlay_state *s,agc_word k,unsigned a){ai_caf(s,k);(void)ai_ts(s,a);}
+#define CAFTS(k,a) cafts(s,(k),(a))
+/* DCA NEG0; DXCH -PHASEn. */
+static void neg0x(apollo_overlay_state *s,unsigned a){ai_dcaf(s,neg0);ai_dxch(s,a);}
+#define NEG0(a) neg0x(s,(a))
 /* TC to an entry outside the file: Q = the word after the TC. */
 #define OUT(ret,target) do{ai_tc(s,(ret));W[5]=(target);return EXEC_OK;}while(0)
 /* The channels this bank reads or writes. */
@@ -107,15 +116,15 @@ L2342: /* SLAP1 */
  ai_tc(s,02344u);goto L2776;                                /* 2343 TC STARTSUB */
 L2351: /* STARTSW TCF SKIPSIM; STARTSIM 2345-2350 runs only if this word is patched */
  ai_ca(s,01036u); ai_maskf(s,CM_FRESH_K_BITS4_6); ai_adf(s,CM_FRESH_K_BIT15);/* 2351-2353 */
- TS(01036u); ai_caf(s,CM_FRESH_K_ZERO); TS(01365u); TS(0375u);/* 2354-2357 */
- TS(0376u); TS(0377u); TS(01154u); ai_csf(s,CM_FRESH_K_PRIO12);/* 2360-2363 */
- TS(01302u);                                               /* 2364 */
+ TS(01036u); CAFTS(CM_FRESH_K_ZERO,01365u); TSU(0375u);/* 2354-2357 */
+ TSU(0376u); TSU(0377u); TSU(01154u); ai_csf(s,CM_FRESH_K_PRIO12);/* 2360-2363 */
+ TSU(01302u);                                               /* 2364 */
 L2365: /* DOFSTART */
- ai_caf(s,CM_FRESH_K_ZERO); TS(01360u); TS(01362u); TS(01501u);/* 2365-2370 */
+ CAFTS(CM_FRESH_K_ZERO,01360u); TSU(01362u); TSU(01501u);/* 2365-2370 */
  CH_WRITE(05u); CH_WRITE(06u); CH_WRITE(011u); CH_WRITE(012u);/* 2371-2400 */
- CH_WRITE(013u); CH_WRITE(014u); TS(01316u); TS(0332u);     /* 2401-2406 */
- TS(0371u); TS(01071u); TS(01130u); TS(01126u); TS(01125u); /* 2407-2413 */
- TS(01044u); ai_cs(s,01036u); ai_maskf(s,CM_FRESH_K_BITS4_6);/* 2414-2416 */
+ CH_WRITE(013u); CH_WRITE(014u); TSU(01316u); TSU(0332u);     /* 2401-2406 */
+ TSU(0371u); TSU(01071u); TSU(01130u); TSU(01126u); TSU(01125u); /* 2407-2413 */
+ TSU(01044u); ai_cs(s,01036u); ai_maskf(s,CM_FRESH_K_BITS4_6);/* 2414-2416 */
  c=ai_ccs(s,A);                                             /* 2417 */
  if(c==0u){ai_tc(s,02421u);goto L2424;}                     /* 2420 TC +4 */
  if(c!=1u)return EXEC_OUT_OF_SCOPE;                         /* a masked word is never negative */
@@ -123,31 +132,31 @@ L2365: /* DOFSTART */
 L2424:
  ai_tc(s,02425u);goto L2501;                                /* TC MR.KLEAN */
 L2425:
- ai_csf(s,CM_FRESH_K_ZERO); TS(01011u); ai_caf(s,CM_FRESH_K_PRIO30);/* 2425-2427 */
- TS(0366u); ai_caf(s,CM_FRESH_K_IM30INIF); TS(01320u);      /* 2430-2432 */
- ai_caf(s,CM_FRESH_K_NEGONE); TS(01303u); ai_caf(s,CM_FRESH_K_OPTINITF);/* 2433-2435 */
- TS(01331u); ai_caf(s,CM_FRESH_K_IM33INIT); TS(01321u);     /* 2436-2440 */
+ ai_csf(s,CM_FRESH_K_ZERO); TSU(01011u); ai_caf(s,CM_FRESH_K_PRIO30);/* 2425-2427 */
+ TSU(0366u); CAFTS(CM_FRESH_K_IM30INIF,01320u);      /* 2430-2432 */
+ CAFTS(CM_FRESH_K_NEGONE,01303u); ai_caf(s,CM_FRESH_K_OPTINITF);/* 2433-2435 */
+ TSU(01331u); CAFTS(CM_FRESH_K_IM33INIT,01321u);     /* 2436-2440 */
  ai_dcaf(s,k_t5idler); ai_dxch(s,01312u);                   /* 2441-2443 DCA T5IDLER; DXCH T5LOC */
- ai_caf(s,CM_FRESH_K_SWINIT); TS(074u); ai_ca(s,075u);      /* 2444-2446 */
+ CAFTS(CM_FRESH_K_SWINIT,074u); ai_ca(s,075u);      /* 2444-2446 */
  ai_maskf(s,CM_FRESH_K_NOP01BIT); ai_adf(s,CM_FRESH_K_SWINIT_P1); TS(075u);/* 2447-2451 */
- ai_caf(s,CM_FRESH_K_SWINIT_P2); TS(076u); ai_ca(s,077u);   /* 2452-2454 */
+ CAFTS(CM_FRESH_K_SWINIT_P2,076u); ai_ca(s,077u);   /* 2452-2454 */
  ai_maskf(s,CM_FRESH_K_BIT13); ai_adf(s,CM_FRESH_K_SWINIT_P3); TS(077u);/* 2455-2457 */
  ai_dcaf(s,k_swinit_p4); ai_dxch(s,0100u);                  /* 2460-2462 */
  ai_dcaf(s,k_swinit_p6); ai_dxch(s,0102u);                  /* 2463-2465 */
  ai_ca(s,0104u); ai_maskf(s,CM_FRESH_K_OCT6200); ai_adf(s,CM_FRESH_K_SWINIT_P8);/* 2466-2470 */
- TS(0104u); ai_caf(s,CM_FRESH_K_SWINIT_P9); TS(0105u);      /* 2471-2473 */
+ TS(0104u); CAFTS(CM_FRESH_K_SWINIT_P9,0105u);      /* 2471-2473 */
  ai_dcaf(s,k_swinit_p10); ai_dxch(s,0106u);                 /* 2474-2476 */
 L2477: /* ENDRSTRT */
  OUT(02500u,POSTJUMP);                                      /* CADR DUMMYJOB +2 */
 L2501: /* MR.KLEAN */
- x->control.interrupt_enabled=0u;ai_dcaf(s,neg0);ai_dxch(s,0754u);      /* 2501-2504 -PHASE2 */
+ x->control.interrupt_enabled=0u;NEG0(0754u);      /* 2501-2504 -PHASE2 */
 L2505: /* P00KLEAN */
- ai_dcaf(s,neg0);ai_dxch(s,0760u);                          /* 2505-2507 -PHASE4 */
- ai_dcaf(s,neg0);ai_dxch(s,0752u);                          /* 2510-2512 -PHASE1 */
+ NEG0(0760u);                          /* 2505-2507 -PHASE4 */
+ NEG0(0752u);                          /* 2510-2512 -PHASE1 */
 L2513: /* V37KLEAN */
- ai_dcaf(s,neg0);ai_dxch(s,0756u);                          /* 2513-2515 -PHASE3 */
- ai_dcaf(s,neg0);ai_dxch(s,0762u);                          /* 2516-2520 -PHASE5 */
- ai_dcaf(s,neg0);ai_dxch(s,0764u);                          /* 2521-2523 -PHASE6 */
+ NEG0(0756u);                          /* 2513-2515 -PHASE3 */
+ NEG0(0762u);                          /* 2516-2520 -PHASE5 */
+ NEG0(0764u);                          /* 2521-2523 -PHASE6 */
  goto retq;                                                 /* 2524 TC Q */
 L2526: /* GOPROG */
  ai_incr(s,01154u); ai_lxch(s,02u); CH_ROR(07u); ai_dxch(s,01432u);/* 2526-2532 */
@@ -166,12 +175,12 @@ L2550:
  if(ai_bzf(s))goto L2574;                                   /* 2556-2557 BZF ELRSKIP -1 */
  ai_ad(s,01377u);                                           /* 2560 */
  if(!ai_bzf(s))goto L2774;                                  /* 2561-2563 BZF +2; TCF NONAVKEY +1 */
- ai_ca(s,01374u); TS(03u); ai_dca(s,01375u);                /* 2564-2567 */
+ ai_ca(s,01374u); TSU(03u); ai_dca(s,01375u);                /* 2564-2567 */
  /* 2570-2571 INDEX SKEEP7; DXCH 0000: restore the two words ERASCHK was testing. */
  ins=indexed(052001u,agc_extend(ai_word(s,01377u)));
  if((ins&076000u)!=052000u||(ins&01777u)<062u)return EXEC_OUT_OF_SCOPE;
  ai_dxch(s,(ins&01777u)-1u);
- ai_caf(s,CM_FRESH_K_ZERO); TS(01360u);                     /* 2572-2573 */
+ CAFTS(CM_FRESH_K_ZERO,01360u);                     /* 2572-2573 */
 L2574:
  ai_tc(s,02575u);goto L2776;                                /* TC STARTSUB */
 L2575: /* ELRSKIP */
@@ -179,7 +188,7 @@ L2575: /* ELRSKIP */
  idx=(unsigned)(agc_correct(W[A])&077777u);                 /* 2601-2603 EXTEND; INDEX A; DCA T5IDLER */
  if(idx>6u)return EXEC_OUT_OF_SCOPE;
  ai_dcaf(s,&cm_fresh_t5idler[idx]); ai_dxch(s,01312u);      /* 2604 DXCH T5LOC */
- ai_csf(s,CM_FRESH_K_INTFLBIT); ai_mask(s,0106u); TS(0106u);/* 2605-2607 */
+ ai_csf(s,CM_FRESH_K_INTFLBIT); ai_mask(s,0106u); TSU(0106u);/* 2605-2607 */
  ai_ca(s,01331u); ai_maskf(s,CM_FRESH_K_OPTINITR); ai_adf(s,CM_FRESH_K_BIT7);/* 2610-2612 */
  TS(01331u); ai_caf(s,CM_FRESH_K_BIT6); ai_mask(s,01321u);  /* 2613-2615 */
  ai_adf(s,CM_FRESH_K_IM33INIT); TS(01321u); ai_caf(s,CM_FRESH_K_9_6_4);/* 2616-2620 */
@@ -204,7 +213,7 @@ L2651: /* ENEMA (GOPROG2) */
 L2653:
  ai_tc(s,02654u);goto L3006;                                /* TC STARTSB2 */
 L2654:
- ai_csf(s,CM_FRESH_K_INTMASK); ai_mask(s,0106u); TS(0106u); /* 2654-2656 */
+ ai_csf(s,CM_FRESH_K_INTMASK); ai_mask(s,0106u); TSU(0106u); /* 2654-2656 */
  ai_cs(s,0102u); ai_maskf(s,CM_FRESH_K_OCT60000);           /* 2657-2660 */
  if(ai_bzmf(s))goto L2667;                                  /* 2661-2662 BZMF GOPROG3 */
  ai_caf(s,CM_FRESH_K__5SEC);
@@ -226,10 +235,10 @@ L2670: /* PCLOOP: each restart group's phase and its complement must agree */
 L2707:
  x->control.interrupt_enabled=0u; ai_ca(s,0102u); ai_maskf(s,CM_FRESH_K_OCT60000);/* 2707-2711 */
  if(ai_bzmf(s))goto L2721;                                  /* 2712-2713 BZMF NXTRST -1 */
- ai_caf(s,CM_FRESH_K_EBANK6); TS(03u);                      /* 2714-2715 */
+ CAFTS(CM_FRESH_K_EBANK6,03u);                      /* 2714-2715 */
  OUT(02717u,STOPRATE);                                      /* 2716 */
 L2717:
- ai_caf(s,CM_FRESH_K_EBANK3); TS(03u);                      /* 2717-2720 */
+ CAFTS(CM_FRESH_K_EBANK3,03u);                      /* 2717-2720 */
 L2721:
  ai_caf(s,CM_FRESH_K_NUMGRPS);
 L2722: /* NXTRST */
@@ -272,23 +281,23 @@ L2753: /* LIGHTSET */
 L2774: /* NONAVKEY +1 */
  ai_tc(s,02775u);goto L2776;                                /* TC STARTSUB; 2775 TCF DOFSTART */
 L2776: /* STARTSUB */
- ai_caf(s,CM_FRESH_K_LDNPHAS1); TS(0335u); ai_caf(s,CM_FRESH_K_POSMAX);/* 2776-3000 */
- TS(026u); ai_adf(s,CM_FRESH_K_MINUS2); TS(027u); ai_adf(s,CM_FRESH_K_NEGONE);/* 3001-3004 */
+ CAFTS(CM_FRESH_K_LDNPHAS1,0335u); ai_caf(s,CM_FRESH_K_POSMAX);/* 2776-3000 */
+ TSU(026u); ai_adf(s,CM_FRESH_K_MINUS2); TS(027u); ai_adf(s,CM_FRESH_K_NEGONE);/* 3001-3004 */
  TS(030u);                                                  /* 3005 */
 L3006: /* STARTSB2 */
  ai_caf(s,CM_FRESH_K_OCT77603); CH_WAND(011u); ai_caf(s,CM_FRESH_K_OCT74777);/* 3006-3011 */
  CH_WAND(013u); ai_csf(s,CM_FRESH_K_PRIO25); ai_mask(s,076u);/* 3012-3015 */
  ai_adf(s,CM_FRESH_K_SKIPVBIT); TS(076u); ai_caf(s,CM_FRESH_K_STARTEB);/* 3016-3020 */
- TS(03u); ai_caf(s,CM_FRESH_K_NEG1_2);                      /* 3021-3022 */
- TS(01407u); TS(01406u); TS(01405u); TS(01404u); TS(01403u);/* 3023-3027 */
- TS(01402u); TS(01401u); TS(01400u); ai_csf(s,CM_FRESH_K_ENDTASK);/* 3030-3033 */
- TS(01410u); TS(01412u); TS(01414u); TS(01416u); TS(01420u);/* 3034-3040 */
- TS(01422u); TS(01424u); TS(01426u); TS(01430u); ai_csf(s,CM_FRESH_K_ENDTASK_P1);/* 3041-3045 */
- TS(01411u); TS(01413u); TS(01415u); TS(01417u); TS(01421u);/* 3046-3052 */
- TS(01423u); TS(01425u); TS(01427u); TS(01431u); ai_csf(s,CM_FRESH_K_ZERO);/* 3053-3057 */
- TS(0167u); TS(0203u); TS(0217u); TS(0233u); TS(0247u); TS(0263u);/* 3060-3065 */
- TS(0277u); TS(01302u); TS(067u); ai_caf(s,CM_FRESH_K_VAC1ADRC);/* 3066-3071 */
- TS(0400u); ai_adf(s,CM_FRESH_K_LTHVACA); TS(0454u); ai_adf(s,CM_FRESH_K_LTHVACA);/* 3072-3075 */
+ TSU(03u); ai_caf(s,CM_FRESH_K_NEG1_2);                      /* 3021-3022 */
+ TSU(01407u); TSU(01406u); TSU(01405u); TSU(01404u); TSU(01403u);/* 3023-3027 */
+ TSU(01402u); TSU(01401u); TSU(01400u); ai_csf(s,CM_FRESH_K_ENDTASK);/* 3030-3033 */
+ TSU(01410u); TSU(01412u); TSU(01414u); TSU(01416u); TSU(01420u);/* 3034-3040 */
+ TSU(01422u); TSU(01424u); TSU(01426u); TSU(01430u); ai_csf(s,CM_FRESH_K_ENDTASK_P1);/* 3041-3045 */
+ TSU(01411u); TSU(01413u); TSU(01415u); TSU(01417u); TSU(01421u);/* 3046-3052 */
+ TSU(01423u); TSU(01425u); TSU(01427u); TSU(01431u); ai_csf(s,CM_FRESH_K_ZERO);/* 3053-3057 */
+ TSU(0167u); TSU(0203u); TSU(0217u); TSU(0233u); TSU(0247u); TSU(0263u);/* 3060-3065 */
+ TSU(0277u); TSU(01302u); TSU(067u); ai_caf(s,CM_FRESH_K_VAC1ADRC);/* 3066-3071 */
+ TSU(0400u); ai_adf(s,CM_FRESH_K_LTHVACA); TS(0454u); ai_adf(s,CM_FRESH_K_LTHVACA);/* 3072-3075 */
  TS(0530u); ai_adf(s,CM_FRESH_K_LTHVACA); TS(0604u); ai_adf(s,CM_FRESH_K_LTHVACA);/* 3076-3101 */
  TS(0660u); ai_caf(s,CM_FRESH_K_TEN);                       /* 3102-3103 */
 L3104: /* DSPOFF */
@@ -304,9 +313,9 @@ L3104: /* DSPOFF */
  TS(01012u); TS(01020u); TS(01021u); TS(01001u); TS(01002u);/* 3124-3130 */
  TS(01043u); TS(01330u); TS(01322u); TS(01323u); TS(01324u);/* 3131-3135 */
  TS(01325u); TS(01304u); TS(0100u); ai_caf(s,CM_FRESH_K_NOUTCON);/* 3136-3141 */
- TS(01016u); ai_caf(s,CM_FRESH_K_BIT14); ai_mask(s,01044u); TS(01044u);/* 3142-3145 */
- ai_caf(s,CM_FRESH_K_LESCHK); TS(01361u); ai_csf(s,CM_FRESH_K_VD1);/* 3146-3150 */
- TS(0777u);                                                 /* 3151 */
+ TSU(01016u); ai_caf(s,CM_FRESH_K_BIT14); ai_mask(s,01044u); TSU(01044u);/* 3142-3145 */
+ CAFTS(CM_FRESH_K_LESCHK,01361u); ai_csf(s,CM_FRESH_K_VD1);/* 3146-3150 */
+ TSU(0777u);                                                 /* 3151 */
  goto retq;                                                 /* 3152 TC Q */
 L3153: /* T5IDLOC: T5RUPT comes here when nothing uses TIME5 */
  ai_ca(s,L);W[5]=NOQRSM_P1;return EXEC_OK;                  /* 3153-3154 TCF NOQRSM +1 */
