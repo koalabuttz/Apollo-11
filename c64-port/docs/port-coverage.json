@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -2308,8 +2308,8 @@
             "sha256": "796759a8ca413c957a07b7f600a3ae2677df6950e1a9ed34a3543c351ba1c33a"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-128.md",
-            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
+            "path": "docs/audits/lane-d1b-231.md",
+            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
           }
         },
         "precheck_notes": [
@@ -4113,7 +4113,7 @@
       "sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
       "bytes": 7768,
       "lines": 358,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4167,12 +4167,7 @@
           "verification": "docs/RTB-OP-CODES.md"
         }
       ],
-      "demoted": {
-        "from": "complete",
-        "date": "2026-10-11",
-        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
-      },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4186,7 +4181,6 @@
           "CDUINC's caller's return through Q"
         ],
         "replaces": "pending_complete_certificate citing the source map for host and C64 results (issue #57)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-source-map.json",
@@ -4210,8 +4204,17 @@
           "c64_branch_outcomes": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
             "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-231.md",
+            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
           }
         }
+      },
+      "demoted": {
+        "from": "complete",
+        "date": "2026-10-11",
+        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
@@ -8000,8 +8003,8 @@
             "sha256": "796759a8ca413c957a07b7f600a3ae2677df6950e1a9ed34a3543c351ba1c33a"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-128.md",
-            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
+            "path": "docs/audits/lane-d1b-231.md",
+            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
           }
         },
         "precheck_notes": [
@@ -8304,8 +8307,8 @@
             "sha256": "a6ef59cb32834c30a94ba865359db8e5afb379eb2bb09369c03ea8ac3c1aa820"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-128.md",
-            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
+            "path": "docs/audits/lane-d1b-231.md",
+            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
           }
         },
         "precheck_notes": [
@@ -10007,7 +10010,7 @@
       "sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
       "bytes": 5660,
       "lines": 236,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10060,12 +10063,7 @@
           "verification": "docs/RTB-OP-CODES.md"
         }
       ],
-      "demoted": {
-        "from": "complete",
-        "date": "2026-10-11",
-        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
-      },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10078,7 +10076,6 @@
           "CDUINC's caller's return through Q"
         ],
         "replaces": "pending_complete_certificate citing the source map for host and C64 results (issue #57)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-source-map.json",
@@ -10102,8 +10099,17 @@
           "c64_branch_outcomes": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
             "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-231.md",
+            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
           }
         }
+      },
+      "demoted": {
+        "from": "complete",
+        "date": "2026-10-11",
+        "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
       }
     },
     {
