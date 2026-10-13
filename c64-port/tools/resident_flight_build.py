@@ -7,9 +7,10 @@ gc-sections, on platform/c64/resident_flight.ld:
 
   build/resident-flight/<m>-resident.prg  the flight resident (resident_flight_main.c)
   build/resident-flight/<m>-check-<p>.prg the same resident with the flight check
-                                          (resident_flight_check.c, RK_PART p) as main
-  build/resident-flight/<m>-module-*.prg  the check's modules (case generators in the
-                                          job slot; LM RESTARTS in the task slot)
+                                          (resident_flight_check.c, RK_PART p 1-4) as main
+  build/resident-flight/<m>-module-*.prg  the resident's boundary-word module and the check's
+                                          modules (case generators in the job slot; rows and
+                                          LM RESTARTS in the task slot)
   build/resident-flight/<m>.reu           the check's REU store (modules + probe resolver)
 
 and writes build/resident-flight/sizes.json: the flight resident's bytes in
@@ -34,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/resident-flight')
 SERVICES = 0x0201
 COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0',
-          '-DRK_FIXED_IMAGE=1', '-Wall', '-Wextra', '-Werror']
+          '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror']
 MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
 
 # The resident's sources, by component (the size report's classes).
@@ -44,9 +45,10 @@ COMPONENTS = {
         ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/lm_exec_routines.c']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
-        ('single-precision subroutines', ['src/lm_single_trig.c']),
+        ('single-precision subroutines', ['src/sp_routines.c', 'src/lm_single_trig.c']),
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
+        ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
         ('resident state and step', ['platform/c64/resident_flight.c']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
@@ -55,24 +57,37 @@ COMPONENTS = {
         ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/cm_exec_routines.c']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
-        ('single-precision subroutines', ['src/cm_quictrig.c', 'src/cm_single_return.c']),
+        ('single-precision subroutines', ['src/sp_routines.c', 'src/cm_quictrig.c', 'src/cm_single_return.c']),
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
+        ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
         ('resident state and step', ['platform/c64/resident_flight.c']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
 }
 # The check's modules: (part, LM_EXJ_PART, module id, selectors). Case
 # modules (job slot) link the resident-kernel milestone's case sources; part
-# None is the LM RESTARTS module (task slot; resident_flight_restart.c).
+# None is the check's data module (task slot; resident_flight_data.c).
 MODULES = {
     'lm': [(1, None, 0x01F1, 2), (2, 1, 0x01F2, 1), (2, 2, 0x01F3, 1), (2, 3, 0x01F4, 1), (3, None, 0x01F5, 1),
-           (None, None, 0x01F6, 1)],
-    'cm': [(1, None, 0x01F1, 2), (2, None, 0x01F2, 1), (3, None, 0x01F5, 1)],
+           (None, None, 0x01F6, 1), (4, None, 0x01F7, 1)],
+    'cm': [(1, None, 0x01F1, 2), (2, None, 0x01F2, 1), (3, None, 0x01F5, 1), (None, None, 0x01F6, 1),
+           (4, None, 0x01F7, 1)],
 }
-RESTART_SOURCES = ['platform/c64/resident_flight_restart.c', 'src/lm_restart_routines.c', 'src/lm_restart_select.c',
-                   'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c']
-PROBE = dict(bank=0o24000, loc=0o2000, module=0x01F1, selector=1)
+# Part 4's case module: the T3RUPT cases (tests/resident_rupt_cases.c).
+RUPT_SOURCES = ['platform/c64/resident_flight_rupt_cases.c', 'tests/resident_rupt_cases.c', 'src/agc_word.c',
+                'src/agc_transfer.c']
+DATA_SOURCES = {'lm': ['platform/c64/resident_flight_data.c', 'src/lm_restart_routines.c', 'src/lm_restart_select.c',
+                       'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c'],
+                'cm': ['platform/c64/resident_flight_data.c']}
+# The check's resolver records: the probe (bank 012) and the same probe at
+# fixed-fixed 07753 under its canonical bank 06000, which the step must find
+# whatever FB holds. tools/resident_boundary_words.py adds their keys.
+PROBES = [dict(bank=0o24000, loc=0o2000, module=0x01F1, selector=1),
+          dict(bank=0o6000, loc=0o7753, module=0x01F1, selector=1)]
+# The resident's own modules, in every store it runs on: (module id, slot,
+# sources). 0x01E0 is the boundary-word table (tools/resident_boundary_words.py).
+RESIDENT_MODULES = [(0x01E0, 1, ['platform/c64/resident_boundary_module.c'])]
 
 
 def run(cmd):
@@ -84,9 +99,10 @@ def resident_sources(m):
 
 
 # The flight check: one program per RK_PART (each part's test code must fit
-# beside the resident).
-CHECK_PARTS = (1, 2, 3)
-CHECK_SOURCES = ['platform/c64/resident_flight_check.c', 'tests/resident_kernel_cases.c']
+# beside the resident); part 4 is the AGC clock and T3RUPT.
+CHECK_PARTS = (1, 2, 3, 4)
+CHECK_SOURCES = {1: ['tests/resident_kernel_cases.c'], 2: ['tests/resident_kernel_cases.c'],
+                 3: ['tests/resident_kernel_cases.c'], 4: ['tests/resident_rupt_cases.c']}
 
 
 def link_resident(cc, m, name, sources, defines=()):
@@ -139,10 +155,12 @@ def measure(cc, m, prg):
                 names |= defined_symbols(cc, m, f)
         owners.append((comp, names))
     owners.append(('IRQ entry', {'ov2_irq', 'ov2_irq_entry', 'ov2_nmi_entry', 'ov2_irq_count'}))
-    # resident_flight.c keeps the trampoline and the module runner out of
-    # line under these names; count each with its component.
+    # resident_flight.c keeps the trampoline, the module runner and the
+    # clock and interrupt entry out of line under these names; count each
+    # with its component.
     owners.insert(0, ('transfer ABI trampoline and Executive call sites', {'rk_trampoline'}))
     owners.insert(0, ('ABI 2 runtime and REU store', {'rk_run_module'}))
+    owners.insert(0, ('AGC timers and interrupt entry', {'rk_rupts'}))
     text = Path(f'{prg}.map').read_text()
     end = int(re.search(r'([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__rk_resident_end = \.', text).group(1), 16)
     boot0 = int(re.search(r'([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__rk_boot_start = \.', text).group(1), 16)
@@ -166,26 +184,35 @@ def measure(cc, m, prg):
                 library_symbols=dict(sorted(unclassified.items(), key=lambda kv: -kv[1])))
 
 
+def link_module(cc, m, prg, slot, ident, selectors, sources, extra, library):
+    run([cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections',
+         '-nostdlib', '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
+         '-T', 'platform/c64/overlay_v2_payload.ld',
+         f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
+         f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors={selectors},'
+         f'-Map,{prg}.map',
+         *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg])
+
+
 def build_modules(cc, m, cases, library):
     prgs = []
+    for ident, slot, sources in RESIDENT_MODULES:
+        prg = OUT / f'{m}-module-{ident:04x}.prg'
+        link_module(cc, m, prg, slot, ident, 1, sources, [], library)
+        prgs.append(prg)
     for part, exj, ident, selectors in MODULES[m]:
         prg = OUT / f'{m}-module-{ident:04x}.prg'
-        if part:
+        if part == 4:
+            extra, sources = [], RUPT_SOURCES
+        elif part:
             extra = [f'-DRK_PART={part}', '-DRK_INPUTS_ONLY'] + ([f'-DLM_EXJ_PART={exj}'] if exj else [])
             sources = ['platform/c64/resident_flight_cases.c', 'tests/resident_kernel_cases.c', *cases]
         else:
-            extra, sources = [], RESTART_SOURCES
-        slot = 0 if part else 1
-        run([cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections',
-             '-nostdlib', '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
-             '-T', 'platform/c64/overlay_v2_payload.ld',
-             f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
-             f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors={selectors},'
-             f'-Map,{prg}.map',
-             *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg])
+            extra, sources = [], DATA_SOURCES[m]
+        link_module(cc, m, prg, 0 if part else 1, ident, selectors, sources, extra, library)
         prgs.append(prg)
     resolver = OUT / f'{m}-resolver.json'
-    resolver.write_text(json.dumps([PROBE], indent=1) + '\n')
+    resolver.write_text(json.dumps(PROBES, indent=1) + '\n')
     run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(SERVICES),
          '--resolver', resolver, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
     return prgs
@@ -210,7 +237,8 @@ def main():
     for m in a.missions.split(','):
         build_modules(a.cc, m, make_cases(m), library)
         for part in CHECK_PARTS:
-            link_resident(a.cc, m, f'check-{part}', CHECK_SOURCES, ['-DRK_RUNS_ONLY', f'-DRK_PART={part}'])
+            link_resident(a.cc, m, f'check-{part}', ['platform/c64/resident_flight_check.c', *CHECK_SOURCES[part]],
+                          ['-DRK_RUNS_ONLY', f'-DRK_PART={part}'])
         report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', ['platform/c64/resident_flight_main.c']))
     (ROOT / OUT / 'sizes.json').write_text(json.dumps(report, indent=1) + '\n')
     if a.json:

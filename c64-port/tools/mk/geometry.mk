@@ -32,4 +32,4 @@ c64-geometry: $(GEO_C64_PRGS)
 build/geometry-%.prg: $(GEO_SRC) platform/c64/geometry_diagnostic.c tools/mk/geometry.groups $(GEO_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(GEO_MOS_FLAGS) $(GEOMETRY_GROUP_FLAGS_$*) -Wl,-Map,build/geometry-$*.map $(GEO_C64_$(GEOMETRY_GROUP_MISSION_$*)) $(GEO_C64_COMMON) platform/c64/geometry_diagnostic.c -o $@
 vice-geometry: $(GEO_C64_PRGS)
-	for p in $(GEO_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(GEO_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

@@ -1,12 +1,16 @@
-PASS: VICE PAL lm-check-1.prg: 310 checks, 0 failures
-PRG sha256: f3a3daa0eafc0203b47c6c7b87bb471c159df4ecb52f02630bb649bc2eeea046 lm-check-1.prg
-PASS: VICE PAL lm-check-2.prg: 325 checks, 0 failures
-PRG sha256: 1acf89e0992c2f81502fc439cd912433e53eb824ba62112c38a75f366ac73398 lm-check-2.prg
-PASS: VICE PAL lm-check-3.prg: 175 checks, 0 failures
-PRG sha256: ae4553a0eb53f799ac423b81b6387df5d506c146b7ceacea9e23a4d52f195c47 lm-check-3.prg
-PASS: VICE PAL cm-check-1.prg: 261 checks, 0 failures
-PRG sha256: 9681bf6b01479cbc464863f65640636f1fb28eb975e83d5a699d0f961891a655 cm-check-1.prg
-PASS: VICE PAL cm-check-2.prg: 223 checks, 0 failures
-PRG sha256: 75e1da60ad26478bb57bbdf2ef64d19ce939840048ed181bcf5da17917ac7c6d cm-check-2.prg
-PASS: VICE PAL cm-check-3.prg: 183 checks, 0 failures
-PRG sha256: d71acdaf992244df0a6b196cbaa3431be751a1c857abfdce6c641240e5eca56b cm-check-3.prg
+PASS: VICE PAL lm-check-1.prg: 312 checks, 0 failures
+PRG sha256: f2789ed0bb30a8b770ce1ef953aa49381d44f96ed68b6d5c8380e32c662766a1 lm-check-1.prg
+PASS: VICE PAL lm-check-2.prg: 328 checks, 0 failures
+PRG sha256: 3a39668978afef7988a6ca3ab88d5aa7c2165b0a35797bf4b2cbdd9a7fdf73f6 lm-check-2.prg
+PASS: VICE PAL lm-check-3.prg: 178 checks, 0 failures
+PRG sha256: 45173ffdace691ccffb039df5e41c476754d791e11fac68345fea6d40beac145 lm-check-3.prg
+PASS: VICE PAL lm-check-4.prg: 75 checks, 0 failures
+PRG sha256: 12e1314d7ba89fc4f9649b08e62373749c642c1bfb6bc5e0097226bbfd3f2f11 lm-check-4.prg
+PASS: VICE PAL cm-check-1.prg: 264 checks, 0 failures
+PRG sha256: 98ebedc67330fae4e45753acc8f9a3b58429740392902d0c6de07ddb7b32f706 cm-check-1.prg
+PASS: VICE PAL cm-check-2.prg: 226 checks, 0 failures
+PRG sha256: 26c7e420d62ffa08343426ac4c0f27eaf6d3bf00d1aa141b1f0dbbeef03a974e cm-check-2.prg
+PASS: VICE PAL cm-check-3.prg: 186 checks, 0 failures
+PRG sha256: f81d318aa38112a106d1b2c97478aaa8a15457a353304d2789101ab75ee6f00e cm-check-3.prg
+PASS: VICE PAL cm-check-4.prg: 75 checks, 0 failures
+PRG sha256: 062171b5491fe4f86708e817d21d9dc2320c6a1da9935e156c2af9e0269fb38f cm-check-4.prg

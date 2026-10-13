@@ -4,28 +4,38 @@
   "release": "evidence-resident-kernel",
   "files": {
     "resident-flight-sizes.json": {
-      "sha256": "4f7010d771948e8611fe56cc98385d9cfa8f9fb1b6bf60e8c644dae31885d7c7",
-      "bytes": 1531,
+      "sha256": "1ce0bd6e94d2408c2652b248dccd845f132692af6800526a2e216e5beb7def24",
+      "bytes": 1705,
       "store": "tree"
     },
     "resident-flight-vice.log": {
-      "sha256": "338f9042bba2dcb7ec3133c7b7480bfd57db625ee70ec93d4231622dc31988f2",
-      "bytes": 876,
+      "sha256": "9f6136ce8c7837d3682c705aa51d0533c3c9f4530c5bf4d8f2563fddf75d6576",
+      "bytes": 1166,
       "store": "tree"
     },
     "resident-kernel-host.log": {
-      "sha256": "fc7601fe92b44e5a1cc241f5fef64ac7e9acaa2b17dfac05b62acf8584cb8231",
-      "bytes": 1048,
+      "sha256": "41829aea002c097c14ace27f9b2c5db30a2980255e8783cd6f6457ec24a87040",
+      "bytes": 1272,
       "store": "tree"
     },
     "resident-kernel-proof.json": {
-      "sha256": "e83328f514b1eef5e7035d95bb1afc2784d28fd8ba25b1ec9d916b5d2bf1b3a4",
-      "bytes": 8914,
+      "sha256": "a76f299e2ed0cc1e3b31d90affe7da2974bd85e85306e05273015d8102f2089c",
+      "bytes": 15403,
       "store": "tree"
     },
     "resident-kernel-vice.log": {
       "sha256": "d61ffd17a62ddc687ad81cd06860ad283c5656936a8c1930ce6041c39683047a",
       "bytes": 1335,
+      "store": "tree"
+    },
+    "resident-rupt-host.log": {
+      "sha256": "2677c7b638287e67cb2ae3460739778c096849c16a49b0df21d8b60041913954",
+      "bytes": 1272,
+      "store": "tree"
+    },
+    "sp-routines-host.log": {
+      "sha256": "32e9701533583ede83c250d145ca0ba36aa5c52d17cdc0db450a9fae51413aa6",
+      "bytes": 336,
       "store": "tree"
     }
   }

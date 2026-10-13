@@ -37,6 +37,11 @@ static unsigned certified_idle(apollo_overlay_state *c,uint16_t n){cm_native_io 
 #define EXPECTED_IDLE cm_exi_expected
 #endif
 static unsigned checks,failures,shown;
+/* The kernel's seam reports (built with RK_SEAMS, as the flight resident
+ * is): every CHANJOB exchange names a core set 1-7 (NEWJOB = 12 x set). */
+static unsigned exchanges,bad_exchanges,releases;
+void rk_seams_exchange(agc_word newjob){++exchanges;if(newjob%12u||newjob<12u||newjob>84u)++bad_exchanges;}
+void rk_seams_release(void){++releases;}
 static void diff(const char *what,unsigned n,agc_word entry,const apollo_overlay_state *a,const apollo_overlay_state *b){unsigned i,k=0;
  {const char *f=getenv("RK_SHOW");if(f&&strtoul(f,0,8)!=entry)return;}
  if(shown>=12u)return;
@@ -70,8 +75,9 @@ int main(void){tally t[3];unsigned i;static const char *names[3]={"services","jo
   else if((n=(uint16_t)(n-RK_SERVICES_CASES))<RK_JOBS_CASES)d=rk_jobs_digest(&s,n);
   else d=rk_idle_digest(&s,(uint16_t)(n-RK_JOBS_CASES));
   ++checks;if(d!=rk_c64_digest[i])++failures;}
+ checks+=2u;if(bad_exchanges||!exchanges)++failures;if(!releases)++failures;
  printf("%s: resident-kernel %s:",failures||!checks?"FAIL":"PASS",MISSION);
  for(i=0;i<3u;++i)printf(" %s %u/%u (%u refused by the certified routines)",names[i],t[i].same,t[i].cases-t[i].refused,t[i].refused);
- printf("; %u C64 rows; %u checks, %u failures\n",(unsigned)RK_C64_ROWS,checks,failures);
+ printf("; %u C64 rows; seams %u exchanges (%u not a core set), %u releases; %u checks, %u failures\n",(unsigned)RK_C64_ROWS,exchanges,bad_exchanges,releases,checks,failures);
  return failures!=0u||checks==0u;
 }

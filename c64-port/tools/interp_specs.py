@@ -12,6 +12,99 @@ VARST = [0, 1, 0o77776, 0o17, 0o77760, 0o400, 0o77377, 0o1234, 0o76543,
 # side of TVCMASSPROP's 33956 lb breakpoint (NEGBPW).
 CSMMASS = [0, 0o2000, 0o7000, 0o7412, 0o7413, 0o7414, 0o10000, 0o13000, 0o16514]
 
+def ones(x):
+    """x as a ones'-complement word."""
+    return x if x >= 0 else ~(-x) & 0o77777
+
+
+def kalcmanu_joint(cm):
+    """KALCMANU steering states that only mean something together:
+    TIMECHK's TM - TIME (TTEMP) small, of both signs and exactly 0, around
+    ONESEK (100); CONTMANU's NEXTIME at, near and wrapped past TIME1;
+    INCRDCDU's BCDU - NCDU small enough that MP DT/TAU leaves +-0; RATEBIAS's
+    BRATE +-0; and (Comanche) HOLDFLAG +-0 and each RATEINDX."""
+    out = []
+    for t2 in (0, 0o1234, 0o37777):
+        for t1 in (0o200, 0o37000):
+            for dh in (0, 1):
+                for d in (-101, -100, -99, -1, 0, 1, 99, 100, 101):
+                    out.append({'0024': t2, '0025': t1, 'TM': t2 + dh, 'TM+1': t1 + d})
+    for t1 in (0o200, 0o37770, 0o37777):
+        for d in (-1, 0, 1, 50, 100):
+            out.append({'0025': t1, 'NEXTIME': (t1 + d) % 0o40000})
+    for e in (-12, -5, -1, 0, 1, 5, 12):
+        st = {}
+        for i in range(3):
+            st['BCDU+%d' % i] = ones(0o100 + e * (i - 1))
+            st['NCDU+%d' % i] = 0o100
+        out.append(st)
+    for hi in (0, 0o77777, 3, 0o77774):
+        out.append({'BRATE+0': hi, 'BRATE+1': 0, 'BRATE+2': 0o77777 ^ hi, 'BRATE+3': 0, 'BRATE+4': hi, 'BRATE+5': 0})
+    if cm:
+        for v in (0, 0o77777, 1, 0o77776):
+            out.append({'HOLDFLAG': v})
+        for v in (0, 2, 4, 5, 6, 7):
+            out.append({'RATEINDX': v})
+    return out
+
+
+def anglfind_joint():
+    """MFI at identity and axis rotations (AM = ARCCOS(1), the ACOSST .5
+    edge), and COF with each ordering of its components, ties included
+    (COFMAXGO's BMN arms)."""
+    out = []
+    for one in (0o10000, 0o20000):
+        for signs in ((1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1)):
+            st = {'MFI+%d' % k: 0 for k in range(18)}
+            for i, sg in enumerate(signs):
+                st['MFI+%d' % (8 * i)] = one if sg > 0 else ones(-one)
+                st['MFI+%d' % (8 * i + 1)] = 0 if sg > 0 else 0o77777
+            out.append(st)
+    for a, b, c in ((1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1),
+                    (2, 2, 1), (1, 2, 2), (2, 1, 2), (1, 1, 1)):
+        out.append({'COF': a * 0o2000, 'COF+1': 0, 'COF+2': b * 0o2000, 'COF+3': 0,
+                    'COF+4': c * 0o2000, 'COF+5': 0})
+    return out
+
+
+def axisgen_states():
+    """AXISGEN's loops entered at their heads or at any resume point in them
+    (AXISGEN+1..AXISGEN1+28 with AXISGEN1's, the AXISGEN2 and AXISGEN3
+    loops with theirs): the index registers and steps as the loops hold
+    them."""
+    one = {'vac+046': ['AXISGEN+1', 0o14], 'vac+050': ['AXISGEN+3'], '0166': ['vac+0']}
+    two = {'vac+046': [0o22, 0o14, 0o6], 'vac+050': [0o6], 'vac+047': [0o6, 0o4, 0o2],
+           'vac+051': [0o2], 'vac+036': [0o77771], '0166': ['vac+0']}
+    # Past AXISGEN1's loop SXA,1 has put -6 in 30D. Between the AXISGEN2
+    # loop's two XCHX,1 30D, X1 holds -6 and 30D the loop count.
+    after = dict(one, **{'vac+036': [0o77771]})
+    inside = dict(two, **{'vac+046': [0o77771], 'vac+036': [0o22, 0o14, 0o6]})
+    out = {'AXISGEN+%d' % n: one for n in range(4, 6)}
+    out.update({'AXISGEN1+%d' % n: one for n in range(0, 0o14)})
+    out.update({'AXISGEN1+%d' % n: after for n in range(0o14, 0o27)})
+    out['AXISGEN2'] = two
+    out.update({'AXISGEN2+%d' % n: inside for n in range(1, 0o17)})
+    out.update({'AXISGEN2+%d' % n: two for n in range(0o17, 0o23)})
+    out.update({'AXISGEN3+%d' % n: two for n in range(0, 0o20)})
+    return out
+
+
+def cdutodcm_states():
+    """CDUTODCM's LOOPSIN loop: X1 3, 2 or 1 with S1 1 and the pushdown list
+    at 0D at the loop head; at its resume points (CDUTODCM+4 on, inside the
+    loop) the pushdown list anywhere the pushes take it. SUHALFA and CALCPHI
+    run with PSI and THETA pushed (4D)."""
+    head = {'vac+046': [3, 2, 1], 'vac+050': [1], '0166': ['vac+0']}
+    body = dict(head, **{'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12', 'vac+14']})
+    out = {'CDUTODCM+%d' % n: dict(head, **{'vac+046': [3]}) for n in (4, 5)}
+    out['LOOPSIN'] = head
+    out.update({'LOOPSIN+%d' % n: body for n in range(1, 0o12)})
+    out.update({'SUHALFA': {'0166': ['vac+4']}, 'CALCPHI': {'0166': ['vac+4']}})
+    # DCMTOCDU's SL1 and STORE S1 run on the double-precision sine of
+    # PSI: in another mode the STORE would reach QPRET (S1 +2).
+    out.update({'DCMTOCDU+%d' % n: {'0163': [0]} for n in (3, 5)})
+    return out
+
 
 SPECS = {
     'inflight-align': {
@@ -26,20 +119,28 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/inflight_align_target.c',
-        # Every 32nd case keeps the vectors under the 1 MB fast-checkout limit.
-        'freeze_stride': 32,
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
+        # Every 128th case (with the cover) keeps the vectors under the 1 MB fast-checkout limit.
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 128,
         # AXISGEN's loops entered directly: index registers and steps as
         # the loops hold them (X1 and S1 at VAC+046/050, X2 and S2 at
         # VAC+047/051, the saved X1 in 30D at VAC+036). 'LABEL+n' is the
         # word at that address (AXT,1 STARAD +6 and SSP S1 STARAD -6);
         # 'vac+n' the VAC address (PUSHLOC 0166 at 0D, AXISGEN's SETPD).
-        'states': {
-            'AXISGEN1': {'vac+046': ['AXISGEN+1', 0o14], 'vac+050': ['AXISGEN+3'], '0166': ['vac+0']},
-            'AXISGEN2': {'vac+046': [0o22, 0o14, 0o6], 'vac+050': [0o6], 'vac+047': [0o6, 0o4, 0o2],
-                         'vac+051': [0o2], 'vac+036': [0o77771], '0166': ['vac+0']},
-            'AXISGEN3': {'vac+046': [0o22, 0o14, 0o6], 'vac+050': [0o6], 'vac+047': [0o6, 0o4, 0o2],
-                         'vac+051': [0o2], 'vac+036': [0o77771], '0166': ['vac+0']},
-        },
+        # The job's resume points inside the loops (resume_keys) take the
+        # states of the loop they are in.
+        'states': axisgen_states(),
     },
     'geometry': {
         'missions': ('lm', 'cm'),
@@ -58,9 +159,21 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/geometry_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
         # Words no routine compiles yet, and why (the source map records them).
         'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2'},
-        'freeze_stride': 32,
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 128,
     },
     'kalcmanu-steering': {
         'missions': ('lm', 'cm'),
@@ -81,10 +194,24 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/kalcmanu_steering_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
         'freeze_stride': 32,
-        # ISITAUTO leaves +0 or +1 in A; CCS A's negative arms are the
-        # interpretive words that follow.
-        'states': {'NEWDELHI+2': {'0': [0, 1]}},
+        # ISITAUTO leaves CHAN31 & BIT14 in A: +0 or 020000.
+        'states': {'NEWDELHI+2': {'0': [0, 0o20000]}},
+        # The joint states reach TIMECHK's end of maneuver, CONTMANU's wrap
+        # and the +-0 arms.
+        'joint_states': {'*': {'lm': kalcmanu_joint(False), 'cm': kalcmanu_joint(True)}},
         # The file's EBANK= TTEMP (E6, as its 2CADR BBCONs carry): its
         # switched names (KSPNDX, BRATE...) mean nothing under another EB.
         'ebank': 6,
@@ -95,7 +222,7 @@ SPECS = {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
         'resume_keys': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'SERVICER207.agc'},
         'base': {'cm': 'cm_servicer'},
@@ -155,7 +282,7 @@ SPECS = {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
         'resume_keys': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'CM_BODY_ATTITUDE.agc'},
         'base': {'cm': 'cm_body_attitude'},
@@ -181,7 +308,7 @@ SPECS = {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
         'resume_keys': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'REENTRY_CONTROL.agc'},
         'base': {'cm': 'cm_reentry'},
@@ -223,7 +350,7 @@ SPECS = {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
         'resume_keys': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'P40-P47.agc'},
         'base': {'cm': 'cm_p40_p47'},
@@ -272,7 +399,7 @@ SPECS = {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
         'resume_keys': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'P61-P67.agc'},
         'base': {'cm': 'cm_p61_p67'},
@@ -304,7 +431,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-tvc-massprop': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCMASSPROP.agc'},
         'base': {'cm': 'cm_tvc_massprop'},
@@ -343,7 +470,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-tvc-exec': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCEXECUTIVE.agc'},
         'base': {'cm': 'cm_tvc_exec'},
@@ -369,7 +496,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-tvc-restarts': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCRESTARTS.agc'},
         'base': {'cm': 'cm_tvc_restarts'},
@@ -399,7 +526,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-tvc-stroke': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCSTROKETEST.agc'},
         'base': {'cm': 'cm_tvc_stroke'},
@@ -432,7 +559,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-tvc-init': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCINITIALIZE.agc'},
         'base': {'cm': 'cm_tvc_init'},
@@ -479,7 +606,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-tvc-roll': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCROLLDAP.agc'},
         'base': {'cm': 'cm_tvc_roll'},
@@ -508,7 +635,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-tvc-daps': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'TVCDAPS.agc'},
         'base': {'cm': 'cm_tvc_daps'},
@@ -530,7 +657,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-rcs-dap': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'RCS-CSM_DIGITAL_AUTOPILOT.agc'},
         'base': {'cm': 'cm_rcs_dap'},
@@ -569,7 +696,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-auto-man': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'AUTOMATIC_MANEUVERS.agc'},
         'base': {'cm': 'cm_auto_man'},
@@ -598,7 +725,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-jet-select': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
@@ -634,7 +761,7 @@ SPECS = {
     # as routines at its original addresses.
     'cm-entry-dap': {
         'rope_fallback': True,
-        'counters': True,
+        'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'CM_ENTRY_DIGITAL_AUTOPILOT.agc'},
         'base': {'cm': 'cm_entry_dap'},
@@ -693,20 +820,34 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/r60_r62_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
         # BUF2 holds the last display's return (a fixed address), as
         # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
         'partial': {'lm': 'G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model',
                     'cm': 'TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model'},
-        'freeze_stride': 64,
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 128,
     },
     'attitude-maneuver': {
         'missions': ('lm', 'cm'),
         'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
         'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
         'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
-        'entries': ['KALCMAN3', 'MXM3', 'TRANSPOS', 'READCDUK', 'CDUTODCM', 'DELCOMP', 'DCMTOCDU',
-                    'VECOFANG', 'NOGO'],
+        # Comanche's KALCMANU ends with BZMF NOGO -2 (NOGOM2's TC BANKCALL,
+        # after its INHINT).
+        'entries': {m: ['KALCMAN3', 'MXM3', 'TRANSPOS', 'READCDUK', 'CDUTODCM', 'DELCOMP', 'DCMTOCDU',
+                        'VECOFANG', 'NOGO'] + (['NOGO-2'] if m == 'cm' else []) for m in ('lm', 'cm')},
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
                       'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'MAKECADR': 'auto', 'CURTAINS': 'auto',
                       'WAITLIST': 'auto', 'STOPRATE': 'auto', 'LOADCDUD': 'auto', 'POSTJUMP': 1,
@@ -720,6 +861,16 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/attitude_maneuver_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
         # One C64 case per routine: KALCMAN3's run reaches most of the file.
         'c64_per_point': 1,
         # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
@@ -729,13 +880,125 @@ SPECS = {
         # pushdown list at 0D (its SETPD 0), as the loop's pushes assume.
         # SUHALFA and CALCPHI (DCMTOCDU's THETA quadrant fix) run with PSI
         # and THETA pushed (pushdown at 4D).
-        'states': {'LOOPSIN': {'vac+046': [3, 2, 1], 'vac+050': [1], '0166': ['vac+0']},
-                   'SUHALFA': {'0166': ['vac+4']}, 'CALCPHI': {'0166': ['vac+4']}},
-        'all_states': {'vac+046': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
+        # The job's resume points in CDUTODCM before and inside the loop
+        # take the same index registers, with the pushdown list where the
+        # loop's pushes leave it (four words an iteration).
+        'states': cdutodcm_states(),
+        # PUSHLOC low enough that the pushes a resumed MXM3 or DCMTOCDU
+        # still makes stay below X1 and X2 (VAC+046).
+        'all_states': {'0166': ['vac+%o' % n for n in range(0, 0o24, 2)],
+                       'vac+046': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
                        'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
-        'freeze_stride': 64,
+        # Half the cases start from one MFI or COF set (anglfind_joint).
+        'joint_states': {'*': anglfind_joint()},
+        # -fno-inline keeps KALCMAN3's whole path in one diagnostic.
+        'c64_flags': ['-fno-inline'],
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 256,
+    },
+    'lm-orbital-integration': {
+        'missions': ('lm',),
+        'file': {'lm': 'ORBITAL_INTEGRATION.agc'},
+        'base': {'lm': 'lm_orbital_integration'},
+        'symbol': {'lm': 'lm_orbital_integration'},
+        # Entered from INTEGRATION_INITIALIZATION (RVCON's CALL KEPPREP,
+        # RECTIFY, MINIRECT, POOHCHK's GOTO TIMESTEP) and INITVEL (SETITCTR).
+        'entries': ['KEPPREP', 'RECTIFY', 'MINIRECT', 'TIMESTEP', 'SETITCTR', 'AMOVED'],
+        'noreturn': ['POODOO'],
+        'externals': {'POODOO': 1, 'PHASCHNG': 1, 'UPFLAG': 1, 'ALARM': 1},
+        'cgoto': {'DIFEQTAB': 3},
+        # Indexed operands into bank 13's constants: the index is the body
+        # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
+        'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
+                          '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        # CHANG2 resumes mid-sequence keep the sequence's own invariants:
+        # between ACCOMP's XCHX,2 DIFEQCNT pairs X2 is the DIFEQ stage and
+        # DIFEQCNT holds PBODY; between GAMCOMP's XCHX,2 S1 pairs S1 holds it;
+        # NBRANCH's DMP CGOTO has DIFEQCNT SLOADed (DP; stage 0 here, NBRANCH
+        # itself runs every stage); TIMESTEP's W
+        # stores index by COLREG (1117), after a VLOAD.
+        'states': {**{'ACCOMP+%d' % n: {'1500': [0, 2], 'vac+047': [0, 0o77763, 0o77747]} for n in (15, 16, 64, 65, 66)},
+                   **{'GAMCOMP+%d' % n: {'vac+050': [0, 2]} for n in (24, 27)},
+                   'NBRANCH+3': {'1500': [0], '0154': [0], '0155': [0], '0163': [0], 'vac+046': [0]},
+                   **{'TIMESTEP+%d' % n: {'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
+                                          '0163': [0o77776]} for n in (178, 179, 180, 182, 184)}},
+        'all_states': {'2030': [0, 2], '1117': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
+                       'vac+051': [0, 2, 4, 6], 'vac+052': [0, 2, 4, 6],
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # BOVB TCDANZIG: TCDANZIG is ENDT(X) in TIME_OF_FREE_FALL, TC DANZIG.
+        'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/lm_integration_moves.c'],
+        'target': 'tests/lm_orbital_integration_target.c',
+        # (with resume keys every pair is a routine: a DIFEQ step runs hundreds)
+        'max_steps': 1000,
+        # Integration runs as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (bank checksums the listing omits, such as OCT27's DSU second word)
+        'rope_bin': True,
+    },
+    'lm-integration-init': {
+        'missions': ('lm',),
+        'file': {'lm': 'INTEGRATION_INITIALIZATION.agc'},
+        'base': {'lm': 'lm_integration_init'},
+        'symbol': {'lm': 'lm_integration_init'},
+        'entries': ['INTEGRV', 'INTEGRVS', 'LEMPREC', 'CSMPREC', 'LEMCONIC', 'CSMCONIC', 'INTSTALL',
+                    'SETIFLGS', 'INTWAKE', 'INTWAKE0', 'INTWAKE1', 'TESTLOOP', 'INTEGRV2', 'ATOPCSM',
+                    'ATOPLEM', 'CLRMOON', 'SETMOON', 'CKMID2', 'GRP2PC', 'A-PCHK',
+                    'STATEINT', 'STATINT1', 'AVETOMID', 'MIDTOAV1', 'MIDTOAV2', 'INTWAKEU',
+                    'ENDINT', 'PHEXIT'],
+        # The MOVE* routines and their SETBANK (with FORTYONE, the A it
+        # returns, and INTBANK) run as lm_integration_move behind RTB.
+        'native_ranges': {'MOVEACSM': (9, 'lm_integration_move'), 'MOVEPCSM': (9, 'lm_integration_move'),
+                          'MOVEALEM': (9, 'lm_integration_move'), 'MOVEPLEM': (9, 'lm_integration_move'),
+                          'SETBANK': (5, 'lm_integration_move'), 'FORTYONE': (1, 'lm_integration_move')},
+        # MEASUREMENT_INCORPORATION's RTBs reach the MOVE* routines directly.
+        'native_entries': {'MOVEACSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ACSM)'},
+                           'MOVEPCSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PCSM)'},
+                           'MOVEALEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ALEM)'},
+                           'MOVEPLEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PLEM)'}},
+        # Their DANZIG resumes the RTB that called them as its pair's right
+        # order: LOC its address word (this file's own RTBs; MOVEPCSM's are
+        # left orders, so a word of bank 14), BANKSET its bank, INTBIT15 0.
+        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0]}
+                   for lab, loc, bank in (('MOVEACSM', 0o2663, 0o26000), ('MOVEPCSM', 0o2500, 0o30000),
+                                          ('MOVEALEM', 0o2736, 0o26000), ('MOVEPLEM', 0o2763, 0o26000))},
+        'noreturn': ['BANKJUMP', 'ENDOFJOB', 'TASKOVER', 'JOBSLEEP'],
+        'externals': {'PHASCHNG': 1, 'FINDVAC': 2, 'TASKOVER': 0, 'LONGCALL': 2, 'ENDOFJOB': 0,
+                      'DOWNFLAG': 1, 'UPFLAG': 1, 'JOBSLEEP': 0, 'JOBWAKE': 0, 'TPAGREE': 0,
+                      'BANKJUMP': 0, 'ALARM': 1},
+        # Indexed operands into bank 13's constants: the index is the body
+        # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
+        'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
+                          '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        'all_states': {'1167': [0o5155], '2030': [0, 2], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # TBASE2 holds INTWAKE's saved QPRET, which RVQ at GOBAC returns to.
+        'return_words': ['1055'],
+        'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'},
+                'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'SGNAGREE': {'lm': 'rtb_agreement(s,io,RTB_LM,RTB_SGN_AGREE)'},
+                'SIGNMPAC': {'lm': 'rtb_agreement(s,io,RTB_LM,RTB_SIGN_MPAC)'},
+                'MOVEACSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ACSM)'},
+                'MOVEALEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ALEM)'},
+                'MOVEPCSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PCSM)'},
+                'MOVEPLEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PLEM)'}},
+        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/lm_integration_moves.c'],
+        'target': 'tests/lm_integration_init_target.c',
+        # (with resume keys every pair is a routine: a DIFEQ step runs hundreds)
+        'max_steps': 1000,
+        # Integration runs as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (bank checksums the listing omits, such as OCT27's DSU second word)
+        'rope_bin': True,
     },
     'sband-antenna': {
         'missions': ('lm', 'cm'),
@@ -794,11 +1057,17 @@ SPECS = {
         # starts) enter from outside the file.
         'entries': ['V83', 'R31CALL', 'V83CALL'],
         'externals': {'FINDVAC': 2, 'BANKCALL': 1, 'B5OFF': 0, 'ENDEXT': None},
+        # V83's job: a DANZIG that finds a job waiting stops at CHANG2, and
+        # the word after it is where the job resumes.
+        'edge_cases': True,
+        'resume_keys': True,
+        # C64 rows picked by branch outcome (tools/c64_row_cover.py).
+        'c64_rows': 'cover',
         'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/cm_r31_target.c',
-        'freeze_stride': 32,
+        'freeze_stride': 128,
     },
     'r30': {
         'missions': ('lm', 'cm'),
@@ -824,9 +1093,18 @@ SPECS = {
         # BOTHSHIP's DLOAD* 1/RTMUE,2 and MINPERE,2: X2 is 0 (Earth) or
         # 2 (Moon, the pair's first word) as THISPREC/OTHPREC leave it.
         'fixed_index': {'1/RTMUE': [0, -2], 'MINPERE': [0, -2]},
-        'states': {'BOTHSHIP': {'vac+047': [0, 2]}, 'THISSHIP+3': {'vac+047': [0, 2]}},
+        # The resume LOCs after BOTHSHIP's VLOAD run the same DLOAD*s with X2
+        # as BOTHSHIP left it.
+        # STORHAPO's DSU and STORE MPAC +4 run in DP mode (MODE +0) after its STODL.
+        'states': {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
+                                                       'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
+                   'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]}},
         'target': 'tests/r30_target.c',
         # Every 128th case keeps the vectors under the 1 MB fast-checkout limit.
+        'edge_cases': True,
+        'resume_keys': True,
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
@@ -848,8 +1126,17 @@ SPECS = {
         'ebank': 7,
         'all_states': {'03745': [0o77765, 0o77775], '03746': [0, 2]},
         # VNCOMP17's TC QSAVED (01766 under E7): one of its callers' returns.
-        'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]}},
+        'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]},
+                   # TRANSANG's resume LOCs after LXA,1 LXA,2 (the XRS above), with
+                   # the push list at 00D (02D after its first PDVL) from SETPD 0.
+                   **{'TRANSANG+%d' % n: {'vac+046': [0o77765, 0o77775], 'vac+047': [0, 2],
+                                          '0166': ['vac+%o' % pd]}
+                      for n, pd in ((6, 0), (9, 0), (11, 0), (14, 2))}},
         'target': 'tests/cm_tpi_search_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-p30-p37': {
@@ -885,6 +1172,11 @@ SPECS = {
                    'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
                    'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
         'target': 'tests/cm_p30_p37_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-p32-p33': {
@@ -1068,5 +1360,43 @@ SPECS = {
         'self_loops': True,
         'target': 'tests/lm_p32_p35_target.c',
         'freeze_stride': 256,
+    },
+    'lm-conic-compiled': {
+        'missions': ('lm',),
+        'file': {'lm': 'CONIC_SUBROUTINES.agc'},
+        'base': {'lm': 'lm_conic_compiled'},
+        'symbol': {'lm': 'lm_conic_compiled'},
+        'entries': ['KEPLERN', 'TIMETHET', 'LAMBERT', 'TIMERAD', 'APSIDES', 'DELTIME', 'ITERATOR',
+                    'LAMENTER', 'PARAM', 'GEOM', 'GETX', 'INITV', 'TARGETV'],
+        'externals': {'POLY': 'auto', 'POODOO': 'auto'},
+        'noreturn': ['POODOO'],
+        # MUTABLE,1: X1 is 0 (Earth) or -8 (Moon).
+        'indexed_fixed': {'MUTABLE': (0, 8)},
+        # X1 the body (MUTABLE,1: 0 Earth, -8 Moon); X2 and S2 the GETX and
+        # INVRSEQN loop count (AXT,2 3, SSP S2 1).
+        'all_states': {'vac+046': [0, 0o77767], 'vac+047': [0, 1, 2, 3], 'vac+051': [1]},
+        # PERIODCH subtracts the period (0D) from TAU. (2073) until less than
+        # one is left. A random TAU. over a random period loops for millions
+        # of passes, so resumes before it take TAU. +0 (its own entries keep
+        # any TAU.) and resumes in the loop a period of at least 10000 octal
+        # against a TAU. of a few. The period is in MPAC at PERIODCH and its
+        # GOTO (PUSHLOC 0D), pushed at 0D in between (PUSHLOC 2D).
+        'states': {**{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
+                   **{'PERIODCH+%d' % n: {'2073': [0, 1, 0o77776], 'vac+0': [0o10000, 0o20000, 0o30000],
+                                         **({'0154': [0o10000, 0o20000, 0o30000], '0166': ['vac+0']}
+                                            if n in (0, 0o10) else {'0166': ['vac+2']})}
+                      for n in range(0, 0o11)}},
+        'rtb': {'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'}, 'CHECKCTR': {'lm': 'lm_conic_checkctr(s)'}},
+        'native_ranges': {'CHECKCTR': (7, 'lm_conic_checkctr')},
+        'includes': ['rtb_angles.h', 'lm_conic_checkctr.h'],
+        'native_sources': ['src/lm_conic_checkctr.c'],
+        'target': 'tests/lm_conic_compiled_target.c',
+        'flow_states': True,
+        'resume_keys': True,
+        # (a LAMBERT iteration runs about 100 pairs, up to 20 of them)
+        'max_steps': 5000,
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'rope_bin': True,
     },
 }

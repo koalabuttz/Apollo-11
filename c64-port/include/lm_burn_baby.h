@@ -65,7 +65,7 @@ extern const agc_site_operand lm_burn_baby_sites[LMBB_SITES];
 #define LMBB_FLAG_SITES 14u
 extern const agc_site_operand lm_burn_baby_flag_sites[LMBB_FLAG_SITES];
 #define LMBB_BASIC_ROUTINES 160u
-#define LMBB_INTERPRETIVE_ROUTINES 4u
+#define LMBB_INTERPRETIVE_ROUTINES 14u
 #define LMBB_ROUTINES (LMBB_BASIC_ROUTINES+LMBB_INTERPRETIVE_ROUTINES)
 /* Every key (physical), basic then interpretive. */
 extern const uint16_t lmbb_routine_keys[LMBB_ROUTINES];
