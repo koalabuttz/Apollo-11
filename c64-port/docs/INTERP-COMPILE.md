@@ -20,7 +20,7 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - An outside call's inline words can be counted from the listing (`'auto'` in `externals`): the data words after the TC.
 - Words nothing in the file reaches, such as the returns of a display or restart (GOPERF +1/+2), become routines of their own with `resume_orphans`. Words after an EXTEND or INDEX prefix are not. With `resume_orphans: 'all'`, so is an order word nothing reaches (the EXIT after LITTLSUB's GOTO QPLAC), entered at NEWOPS.
 - I/O channel instructions (extended opcode 0: READ, WRITE, RAND, WAND, ROR, WOR, RXOR) refuse with `EXEC_OUT_OF_SCOPE` until the ABI has a channel model. The source map records those words as untranslated, with the spec's `partial` reason.
-- With `channel_inputs`, READ, RAND, ROR and RXOR of input channels 3, 4 (the scalers) and 030-033 compile. They read the inputs the caller latches for the run through `AGC_CHANNEL(n)` (`include/agc_input_channels.h`: the mission's io record, then the inputs), as yaAGC does: A overflow-corrected, combined, sign-extended. A scaler does not move during a run. Writes to channels still refuse. This is interim: `AGC_CHANNEL` moves to `agc_hardware` when the Kernel lane adds the channel fields there.
+- With `channel_inputs`, READ, RAND, ROR and RXOR of input channels 3, 4 (the scalers) and 030-033 compile. They read the inputs the caller latches for the run through `AGC_CHANNEL(n)` (`include/agc_input_channels.h`: the mission's io record, then the inputs), as yaAGC does: A overflow-corrected, combined, sign-extended. A scaler does not move during a run. Channel 016 (NAVKEYIN, the mark buttons) is latched the same way. Channels 1 and 2 are L and Q: READ, WRITE, RAND, WAND, ROR, WOR and RXOR of them compile as 16-bit register operations, as in yaAGC. Writes to other channels still refuse. This is interim: `AGC_CHANNEL` moves to `agc_hardware` when the Kernel lane adds the channel fields there.
 - `idle` names spin points that wait for hardware to move an input (CHECKG1, FINETIME +1). Reaching one ends the run there with `EXEC_IDLE`, and the point is a routine that runs the wait once more.
 - `erasable_calls` names erasable addresses the file transfers to (TC LAT(SPL), the erasable program of the IMU performance test). The run ends there.
 - `index_guard` refuses an indexed erasable operand that leaves erasable memory. A starred operand with a fixed base reads the rope words its index can reach (a `KX` window). One with an erasable base that indexes into fixed memory is refused.
@@ -39,12 +39,15 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
   - A spec may name one mission only (`'missions': ('cm',)`).
   - A shift's operand word is its count, never a fixed operand. SINE and COSINE compile as SIN and COS.
   - `fixed_index` also covers `SLOAD*` of a fixed table (ALMXIT's `ALARM/TB -1,1`).
+  - Offsets count from the operand as written (`XUNIT -6,2` with X2 -6, -4 or -2 is `{'XUNIT': [2, 4, 6]}`). An `SLOAD*` into fixed memory without an entry is a compile error: its indexed path reads erasable.
   - `any_fixloc`: a basic routine that never names FIXLOC and never enters the interpreter checks the image without the VAC-area test on FIXLOC (`sane_nv`), and half of its differential cases put FIXLOC anywhere in erasable. For routines that tasks and NOVAC jobs call (STOPRATE, the RTB bodies).
   - `self_loops`: a branch back to the routine's own start loops inside the routine, up to 4,096 passes, instead of going through the run loop's 200-step limit.
   - `outside`: `{label: words}` leaves code the compiler can't model (VNPOOH's own FBANK switch) out of the routines; the source map marks it untranslated.
   - A CADR maps to superbank 40+ only when the routine using it is in bank 40 or above, so a file mixing bank 35 and bank 42 code keeps each bank's CADRs.
   - A basic instruction that reads Z (`CA Z`) sees the address after it.
   - The oracle also stops up to four words past the case's return (outside the file), so a skip return (`INCR Q`, `RETURN`) or an indexed return ends like a plain return.
+  - `index_carry` (`{'bank,addr': word}`): an indexed instruction whose index carries it into another quarter code compiles as the instruction it becomes (the opcode and quarter code given), its address taken from the sum; any other sum refuses. AOTMARK's `INDEX MARKSTAT; TS 0 -1` assembles as DXCH 1777 and runs as TS VACnUSE.
+  - With `'basic': 'full'`, `channel_inputs` reads the latched input channels (3, 4, 016, 030-033) as above, and an indexed MSU runs on the summed address when it stays an ordinary erasable word (SXTMARK's DIFCHK).
   - `index_returns`: `INDEX K; TCF 0 +n` with K a saved Q (P37's SPRTEX, RTENCKEX) computes the TCF and lets the run loop go on from its address.
   - `max_steps`: raises the run loop's 200-routine limit for loops that span routines (P37's GAMDV and V2T iterations); the host runner takes it as `IRC_MAX_STEPS`, and the milestone's test and C64 diagnostic pass the same number to `irc_run`.
 - An INDEX-modified write that could reach a bank or Z register checks the address at run time and refuses if it would.
@@ -83,6 +86,14 @@ With `resume_flow` (and `resume_keys`), a resume LOC's cases start from the stat
 - `'c64_cuts': True` (with `'c64_rows': 'cover'`): for arcs that only runs too long for one C64 diagnostic take, the freeze adds truncated rows. A truncated row is one such case run to a cut, the first NEWOPS with LOC at an interpretive routine the run enters. The cut is the earliest one whose prefix takes the arc, and the prefix must fit one diagnostic. The yaAGC oracle runs the same case to the same cut and prints kind 8 when it stops anywhere else first. Such a cut is refused, as is one where the native state differs. The row's digest is the oracle's full state at the cut. The cover record lists each truncated row (`truncated_rows`: row, source case, cut LOC, routines run). The spec links `tests/interp_cut.c` (`irc_run_cut`) and builds its runners with `-DIRC_CUTS`. A group with truncated rows defines `IRC_C64_CUTS` and `irc_c64_cut[]` in its vectors header, and the diagnostic calls `irc_run_cut` under `#ifdef IRC_C64_CUTS`. Specs without `c64_cuts` build and freeze exactly as before.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
 
+### Fitting the C64 groups (whole-file basic specs)
+
+Specs with `'basic': 'full'` choose their C64 cases by edge coverage (each case's clang trace-pc-guard/trace-cmp edges over every linked source) rather than a fixed count per routine. Some runs are too big to fit one diagnostic on their own, because they reach too many routines and banks. Such a case stays host-only and is listed in the proof's `c64_too_big_cases`. So are the other cases of its routine whose runs reach at least the same routines with at least as many edits, so one pass drops them all. The proof's `c64_gcov_branches` and `host_branches_missing_on_c64` show the C64 cases still take every branch outcome the host cases take.
+
+Group selection reruns after each drop. Every size probe (one llvm-mos link) is memoized on its group, case text and flags, so a rerun links only the groups that changed. P40-P47's 49 groups fit in minutes instead of hours.
+
+`'basic_split': True` emits one `basic_run_<bank>` per bank. Each group defines `-D<SYM>_BANKS` with the banks its kept routines and its cases' basic labels reach, so a diagnostic links only those banks. A transfer to a bank left out returns `EXEC_OUT_OF_SCOPE`.
+
 ## Additions from the orbital lane (ORBITAL_INTEGRATION, INTEGRATION_INITIALIZATION)
 
 Spec keys:
@@ -92,6 +103,7 @@ Spec keys:
 - `rtb` also serves BOVB to a basic label (BOVB TCDANZIG).
 - `return_words`: erasable words that hold a saved interpretive return (TBASE2), seeded like QPRET with a return outside the file.
 - `native_ranges`: basic routines implemented by hand behind RTB (the MOVE* state-vector moves), mapped in the source map to that function.
+- `native_calls`: a basic `TC` to a label outside the file whose body is a hand-written C function (CSM_GEOMETRY's SHORTMP: `geometry_shortmp`). The TC compiles to that call, refusing the case when the function does, and the routine continues at the next word. The label is not an external, so the oracle runs through the same instructions.
 - `native_entries`: those hand-written routines as registered transfer routines too, for files that reach them directly (MEASUREMENT_INCORPORATION's RTB MOVEACSM). Each runs its function and then its TC DANZIG as a pair's end; a left-hand RTB (EDOP holding the pair's right order) is refused.
 - `max_steps`: the routines one case may run (default 200). With `resume_keys` every pair is a routine, and one DIFEQ step runs several hundred.
 - `c64_flags`: extra flags for the C64 probe and the milestone's PRGs. The large integration files use `-fno-inline -fstatic-stack -mlto-zp=110`, with the image under KERNAL at $e000.
@@ -110,3 +122,40 @@ A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are 
 
 - `flow_states`: before the cases are drawn, the oracle runs each entry's cases with `IRC_FLOW=1`, and the reference prints PUSHLOC, MODE, X1, X2, S1 and S2 at every NEWOPS. Each other routine then draws those registers from the values the file's own runs reach it with. `states` still wins, and a routine no entry reaches keeps random ones. A PUSHLOC off the pushdown list (an entry case's own random one) is not collected. Without this, a resume inside PARAM or GETX starts with a pushdown pointer or loop count the file never has there.
 - A starred store tail (`STOVL* COGA / MUTABLE,1`) that reads a fixed table now goes through the same `KX` check as a starred load (`indexed_fixed`). Before, the load half of the tail read zeros.
+
+## Additions from LUNAR_LANDING_GUIDANCE_EQUATIONS (Lane F, `lm-llge`)
+
+- `index_tcf`: `INDEX K; TCF T` and `INDEX K; BZMF T` into a table of the file (`INDEX WCHPHASE; TCF WHATGUID`), with the offsets C(K) can hold. Each offset is a `case` of a switch; any other value refuses.
+- `basic_fixed_index` also covers `EXTEND; INDEX K; INDEX T` with T a fixed table (CGCALC's `INDEX WCHPHASE; INDEX TARGTDEX; DCA TCGFBRAK`). The second INDEX adds the rope word T + C(K) for the listed offsets.
+- `index_erasable`: an `INDEX` whose sum leaves erasable memory refuses (`INDEX MPAC +3; CA 5` reads a power table).
+- `intpret_via`: subroutines the file `TC`s to that end in `TCF INTPRET` (INTPRETX). The interpretive code starts at the caller's Q, as after `TC INTPRET`.
+- `in_file_returns`: returns a callee makes past its caller's `TC` (ROOTPSRS's `INDEX RETROOT; TCF 2`). Each is a key of its own.
+- `returns` 0: a callee that never returns (`BANKCALL DISPEXIT +3` ends the job). Only its inline CADR belongs to the call.
+- `rtb` with `(call, 'stops')`: the call returns `RTB_OK` to go on and 2 when the run ends outside the file (`lm_normunit` at the 1302 alarm).
+- `TC A` (FASTCHNG's return) runs the word in A as an erasable program. `INCR BBANK` (TDISPSET's EBANK 5 to 7) is EB + 1, and past EB 7 it refuses.
+- `c64_cover_partial`: C64 rows take every arc they can. The arcs only runs too big for one diagnostic take are listed in the proof (`c64_missed_arcs`) instead of failing the freeze. Only for files that stay partial.
+- The freeze's C64 size probes run in parallel (one compile per core).
+- LLGE uses `index_carry16` (below) for `INDEX WCHPHASE` with WCHPHASE -1.
+
+## Additions from FINDCDUW (lane A2)
+
+- `basic_fixed_index` also covers `INDEX K; MP T`.
+- BOVB to the file's own basic code (FINDCDUW's `BOVB UNIT NOATTCNT`) works without `'basic': 'full'`.
+- `refuse_unextended`: a CCS arm on the word after an EXTEND is refused instead of compiled unextended.
+- `basic_edges` (differential): the erasable words interp_compile's own basic code names get the same ±0, small and saturating values as `'basic': 'full'` files' words.
+- `index_carry16`: the generated `ixw` (INDEX's ones'-complement add) takes the end-around carry without a 17-bit sum. Without it, a C64 build (16-bit `unsigned`) drops the carry of an INDEX by a negative value (A = -1 on SPARCSIN's `INDEX A; CS LIMITS`) and refuses; other specs' generated files keep the old form.
+
+## Additions from the CM flight lane (Comanche conics, integration, P38-P39)
+
+Spec keys (all opt-in, so other specs compile byte-identically):
+
+- `seed_counters`: whole-file basic specs seed the counter cells and input channels a case reads (`counters` on other specs means TIME1/TIME2 and the CDU states). The milestone's mk files define `-DIRC_CHANNELS`, which turns on the channel and counter case code in `tests/interp_case.h`.
+- `rope_fallback`: a word the listing doesn't show (bank fillers such as V/SC's 200CS read) comes from the `MAIN.agc.bin` beside the listing.
+- `fixed_tables`: `{'LABEL' or 'bank addr': (lo, hi)}`, the index range of a basic indexed read from a fixed table (INTBITAB, WAKESTAL).
+- `fixed_index_erasable`: a starred operand listed in `fixed_index` whose effective address falls below 02000 reads erasable with no `K` table. INTEGRATION_INITIALIZATION's `DLOAD* MUEARTH,2` reads either a constant or an erasable copy depending on X2.
+- `interp_not_basic`: a CCS or skip whose landing word is an interpretive order (or a blank word) treats that word as data, so basic code is not decoded from it. Opcode names that are also basic instructions (INCR, AD, ...) still decode as basic.
+- `noreturn` also applies to a TC whose target is inside the file (P38-P39's TC DSPLY81, which ends in a TCF ENDOFJOB).
+
+The yaAGC reference now decides whether a case's first instruction is in the file before it runs, so a case that starts by running an erasable word (TC INTWAKUQ) still stops at the first fixed address outside the file.
+
+A spec's `max_steps` must match the `irc_run` limit in its `tests/test_<sym>.c` and `platform/c64/<sym>_diagnostic.c`; a lower limit fails long cases as kind 2.

@@ -4,20 +4,20 @@
  "aggregates": {
   "self-check-cm": {
    "record": "evidence/self-check/self-check-cm-c64-cover.json",
-   "sha256": "63f4490724d8ef6e739ccf00d9ec21b58b68c8c79da1350b6f55d7f89eba3f29",
+   "sha256": "63696eb0caab89a73b987670a2d6bdfa63f75645c569d663b8299764f6f4cb06",
    "host_cases": 4096,
    "c64_rows": 78,
-   "host_branch_arcs": 426,
-   "c64_branch_arcs": 426,
+   "host_branch_arcs": 436,
+   "c64_branch_arcs": 436,
    "host_branches_missing_on_c64": 0
   },
   "self-check-cm-rope": {
    "record": "evidence/self-check/self-check-cm-rope-c64-cover.json",
-   "sha256": "02ecaae3c0e8bb7e6e5b5c8aeeaa4bd1acc089aedc4cdb1c3fb197dbc9a26614",
+   "sha256": "9acfaf7045bb69cad5d9dee1be5241309c004668e927b091f3ec4c7160a18937",
    "host_cases": 43,
    "c64_rows": 7,
-   "host_branch_arcs": 388,
-   "c64_branch_arcs": 388,
+   "host_branch_arcs": 400,
+   "c64_branch_arcs": 400,
    "host_branches_missing_on_c64": 0
   }
  },
@@ -25,13 +25,15 @@
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
-  "src/cm_interbank_complete.c": "66c67957ac373fdb164ef68e25c64ec1d34d00c3d78504049fb9f97a11dff797",
-  "src/cm_interbank_routines.c": "8fe6a2afcd1ed84209f40d762c4ec05abf9ac1f5059b649cb4a08962843bba2d",
+  "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
+  "src/cm_interbank_idle.c": "9f4b1b11e5e37356ceb7cbe384f6fd0e6f1f511a1f5a8249efada9991b0f221c",
+  "src/cm_interbank_routines.c": "4d32b047e9bd683285c39b02e51331579aa55991cee3672f23fd1258900ec218",
   "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
+  "src/cm_self_check_idle.c": "e48f12f322bc8e55e495e103bac062bc47b462b759d4cee842f139b3e992c6da",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625",
-  "tests/self_check_cases.c": "73d9db768c6b16eed4712a86a6661b67b7a4a335299918af488a5ec10a2088f9"
+  "tests/self_check_cases.c": "3921b03723a9220e34957458c785a283f8d3b1a59a074334f7d84d2fb2966426"
  },
  "host_branches_missing_on_c64": [],
  "entry_slots_host_c64": [

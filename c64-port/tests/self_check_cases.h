@@ -21,6 +21,8 @@
 typedef union { p66_bias_io lm; cm_native_io cm; } self_check_io;
 agc_word *self_check_superbank(unsigned mission,self_check_io *);
 agc_word *self_check_interrupts(unsigned mission,self_check_io *);
+/* The mission's SELF_CHECK_TABLES routine tables: the idle loop, then the rest. */
+#define SELF_CHECK_TABLES 2u
 const agc_routine_table *self_check_table(unsigned mission);
 const uint16_t *self_check_entry_list(unsigned mission);
 const agc_site_operand *self_check_site_table(unsigned mission,uint16_t *count);

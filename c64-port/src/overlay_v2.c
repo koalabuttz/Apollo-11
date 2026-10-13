@@ -38,7 +38,6 @@ static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
        le16(h+APOLLO_OV2_H_LOAD_BYTES)!=d->bytes ||
        !apollo_ov2_services_compatible(le16(h+APOLLO_OV2_H_SERVICES),r->services) ||
        le16(h+APOLLO_OV2_H_SELECTORS)!=d->selectors || d->selectors==0 ||
-       le16(h+APOLLO_OV2_H_RESERVED)!=0 ||
        (uint32_t)bss<(uint32_t)base+d->bytes || (uint32_t)bss>end ||
        (uint32_t)bss_bytes>end-bss)
         return APOLLO_OV2_BAD_HEADER;

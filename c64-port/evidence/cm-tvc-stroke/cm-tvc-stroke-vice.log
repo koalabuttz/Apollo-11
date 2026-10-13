@@ -1,7 +1,8 @@
 PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-f5819ebf65bf2de7583ae191c1c2d30e53623c30bc4f42e213d598e1f52d6c58  build/cm-tvc-stroke-1.prg
+553e09c25044406f41dfb1b8ff6ff23d3fb0768d6d7345c63446b1b787e6cd12  build/cm-tvc-stroke-1.prg
 
 $ make vice-cm-tvc-stroke
 for p in build/cm-tvc-stroke-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-tvc-stroke-1.prg: 12 checks, 0 failures
+PASS: VICE PAL cm-tvc-stroke-1.prg: 13 checks, 0 failures
+PRG sha256: 553e09c25044406f41dfb1b8ff6ff23d3fb0768d6d7345c63446b1b787e6cd12 cm-tvc-stroke-1.prg
 exit 0

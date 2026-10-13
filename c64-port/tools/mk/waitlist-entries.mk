@@ -54,7 +54,7 @@ WLE_SRC = src/lm_exec_jobs.c \
 	tests/waitlist_entries_cases.c \
 	tests/waitlist_entries_check.c
 WLE_HDR = include/agc_transfer.h include/lm_exec_routines.h include/cm_exec_routines.h include/lm_t6rupt_routines.h \
-	include/service_transfer.h tests/waitlist_entries_cases.h tests/waitlist_entries_check.h tests/waitlist_entries_vectors.h
+	include/service_transfer.h tests/waitlist_entries_cases.h tests/waitlist_entries_check.h tests/waitlist_entries_vectors.h tests/waitlist_entries_c64_rows.h
 WLE_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections
 .PHONY: test-waitlist-entries sanitize-waitlist-entries c64-waitlist-entries vice-waitlist-entries waitlist-entries-differential
 all: build/test-waitlist-entries

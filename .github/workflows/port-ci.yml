@@ -259,7 +259,11 @@ jobs:
           targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(build\/[A-Za-z0-9_.-]*\.prg\):.*/\1/p' | sort -u \
             | awk -v k="$SHARD" 'NF && (NR - 1) % 2 == k')
           echo "$(echo "$targets" | wc -w) PRGs"
-          make -k -j"$(nproc)" MOS_CC="$MOS_CC" $targets > build/c64-maps.log 2>&1 || echo "some PRGs did not link (see build/c64-maps.log); their own targets report that"
+          # A PRG that fails to link fails this job: on a push nothing else links it.
+          if ! make -k -j"$(nproc)" MOS_CC="$MOS_CC" $targets > build/c64-maps.log 2>&1; then
+            grep -E '^make: \*\*\*|error:' build/c64-maps.log | head -40
+            echo "FAIL: some PRGs did not link (build/c64-maps.log)"; exit 1
+          fi
       - *map-check
 
   # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
@@ -291,6 +295,7 @@ jobs:
           python3 tools/ci_run.py -j 4 --make-arg "MOS_CC=$MOS_CC" --make-arg "VICE=$VICE" \
             --make-arg "VICE_ROM_DIR=$VICE_ROM_DIR" --make-arg "VICE_DATA_DIR=$VICE_DATA_DIR" \
             --make-arg "C1541=$C1541" $targets --summary build/ci-summary.json
+      - *map-check
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -304,8 +309,9 @@ jobs:
 
   # Requested full runs only: re-derive every C64 branch cover a certificate
   # cites on the current sources (tools/cover_check.py, host only), as
-  # manifest pieces carrying c64_cover. It reports and does not fail: the
-  # manifest records the gaps and tools/cert_precheck.py judges them.
+  # manifest pieces carrying c64_cover. It fails on a cover that misses host
+  # branches or cannot be re-derived; tools/cert_precheck.py also reads
+  # c64_cover for the certificates a change touches.
   cover-check:
     needs: plan
     env:

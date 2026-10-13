@@ -19,7 +19,7 @@ B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
 CORE = ['tests/lm_alarm_cases.c', 'src/lm_alarm.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-        'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c',
+        'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 
