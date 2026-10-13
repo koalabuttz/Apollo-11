@@ -1,5 +1,10 @@
-$ make vice-rupt-lead-ins
-/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,-Map,build/rupt-lead-ins.map src/rupt_lead_ins.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/rupt_lead_ins_cases.c platform/c64/rupt_lead_ins_diagnostic.c -o build/rupt-lead-ins.prg
-python3 tools/vice_run.py build/rupt-lead-ins.prg --cycles 3000000000 --timeout 1200
-PASS: VICE PAL rupt-lead-ins.prg: 193 checks, 0 failures
-PRG sha256: 4951496486aa92ad837e4804bb3283d6229ead68500733787f9d8c62037a4850 rupt-lead-ins.prg
+PASS: VICE PAL rupt-lead-ins.prg: 195 checks, 0 failures
+PRG sha256: 1c21ef54545ae602c786e0586ae5b32b24a1244abf1f563aba90c8b379b43cb3 rupt-lead-ins.prg
+exit 0
+# build/vice-rupt-lead-ins/monitor.log
+Loading /tmp/x/r198/c64-port/build/rupt-lead-ins.prg from 0801 to 315C (295C bytes)
+WATCH: 1  C:$c000  (Stop on store)
+#1 (Stop on store c000)   18/$012,  28/$1c
+.C:2af0  8E 00 C0    STX $C000      - A:0C X:A5 Y:1B SP:f1 N.-....C  852010138
+>C:c000  a5 00 00 c3  00                                      .....
+Saving file `/tmp/x/r198/c64-port/build/vice-rupt-lead-ins/mailbox.bin' from $c000 to $c004
