@@ -3,29 +3,34 @@
   "milestone": "geometry",
   "release": "evidence-geometry",
   "files": {
+    "geometry-c64-outcomes.json": {
+      "sha256": "5fbb39e6e6b166665ba065a6b8636daed2d916fc4e4a7e2b6c970bd68592e5ca",
+      "bytes": 641,
+      "store": "tree"
+    },
     "geometry-differential.log": {
-      "sha256": "ad449557cb63e492c6363170547152824f3ba7924dea0e2a7bdaf81d2bd0f087",
-      "bytes": 794,
+      "sha256": "19c7a6d4f7ecc54fe5d24147525ecdaa3bda78ebc5b2fef7fdff1405541cf193",
+      "bytes": 3924,
       "store": "release"
     },
     "geometry-host.log": {
-      "sha256": "1b3e3e383d3cec88d61316e47050b4b87734b0d6a0c2f8466e5d81f0d230e90f",
-      "bytes": 66,
+      "sha256": "c24c299a4c4404525b10cfc20ed57ae6626aa9214edab9ea8af7c69e481041fc",
+      "bytes": 161,
       "store": "release"
     },
     "geometry-proof.json": {
-      "sha256": "37ec781f97a9f9de87456650bbe51549f0e8d9a32347f03c2e2f3a816ec530e7",
-      "bytes": 2552,
+      "sha256": "6e58da8c229d6859f30582cfa636e31665adc77dece566a96fc1490e435af61a",
+      "bytes": 7366,
       "store": "tree"
     },
     "geometry-source-map.json": {
-      "sha256": "4a1cc86aa443cf7904296aa58efe4f6c772cd70ab535b1753a34c46105b48113",
+      "sha256": "c6e97c778526d1e5ca6c824bb328369c80a54a60a117042a177cfd5340e6815c",
       "bytes": 54954,
       "store": "tree"
     },
     "geometry-vice.log": {
-      "sha256": "e40f78aff9706a804b858a526d2ef45783a763f30449871a5ea4b0695afda976",
-      "bytes": 1003,
+      "sha256": "652f38e6c6a93f123af2b5e5ea4ad3c81dbe821afbb416b3290469aca60b542d",
+      "bytes": 1149,
       "store": "release"
     }
   }

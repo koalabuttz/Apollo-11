@@ -3,29 +3,34 @@
   "milestone": "attitude-maneuver",
   "release": "evidence-attitude-maneuver",
   "files": {
+    "attitude-maneuver-c64-outcomes.json": {
+      "sha256": "5fed1db3801dfd2cd7a92e91cafcae1d5221ac46ba42e4c3db3ad5a26cac6eb4",
+      "bytes": 912,
+      "store": "tree"
+    },
     "attitude-maneuver-differential.log": {
-      "sha256": "16d458bb75cae755103ad8ece2a48b9e092f5a76ed55e3ce64836324ad9a47e2",
-      "bytes": 3255,
+      "sha256": "317bc36622cab2a1ca7411ef91020cc03ccef2b98b36cb1c6f81139d7dcb0b1c",
+      "bytes": 21401,
       "store": "release"
     },
     "attitude-maneuver-host.log": {
-      "sha256": "8000b12456bf54921f852160e8aea6cc6e2aa1bff3237197d95627c27e7c9039",
-      "bytes": 84,
+      "sha256": "f4322e3575825416f756fe9dc4611ab0a3b3b8cead8bb2ba36ad8b5d74d8e389",
+      "bytes": 199,
       "store": "release"
     },
     "attitude-maneuver-proof.json": {
-      "sha256": "05774243909105baa21c1ac8e85f10a889df64ac63131f06c8479916bc8787f1",
-      "bytes": 6746,
+      "sha256": "7b4ff8adb5f4ea8e6dc0105e005d7de8ee32e8f5e70f4965c93acf44404286e2",
+      "bytes": 34702,
       "store": "tree"
     },
     "attitude-maneuver-source-map.json": {
-      "sha256": "de2b1d9a51ee84faf61cb23b05c9ab41c817e92203e437df2304f51151b20a46",
-      "bytes": 131041,
+      "sha256": "1c5bf3988ac878aa45adce34e9c0b4bff66c09e5b5dc7d0542a5ec607237117a",
+      "bytes": 131043,
       "store": "tree"
     },
     "attitude-maneuver-vice.log": {
-      "sha256": "047fef345c1807088a0b5c37950bf9d8d443adb99cd03e0ccf59e49c5ff80876",
-      "bytes": 2107,
+      "sha256": "8f5f5ec509b0e03f5cebc4605d1bbdd65359eb57c5a846d645b0784204a25486",
+      "bytes": 2605,
       "store": "release"
     }
   }
