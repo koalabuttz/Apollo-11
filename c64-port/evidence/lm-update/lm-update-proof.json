@@ -62,9 +62,9 @@
  ],
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 4096,
- "host_branch_arcs": 446,
+ "host_branch_arcs": 450,
  "c64_rows": 261,
- "c64_branch_arcs": 446,
+ "c64_branch_arcs": 450,
  "c64_row_seed_stride": 16,
  "c64_missing_branch_arcs": []
 }

@@ -6,12 +6,13 @@
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
   "src/lm_interbank_routines.c": "963d791ffaedf1eb3ae523d9a8fe776eefb28c72ee22a124f15477f6b6c02384",
-  "src/lm_interbank.c": "7aa62bd3977f0d662d8f0dae668531bc45dade58340d3682840cd65b63209db8",
+  "src/lm_interbank.c": "9c649677bfe8bdb4724ea5c88a185701cfae8b44203384f623c3c17433371a2e",
   "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/lm_fresh_start_cases.c": "a1fcdb926e3c48dc875b82d1a21a4dccc332bc1b7c1dcca3e716850a8a5fd19c"
+  "tests/lm_fresh_start_cases.c": "1c3aa10776d879aeb09281d4f1be129098db95cae62ec21db0affdd29088b89b"
  },
+ "included_sources": {},
  "compiler_flags": [
   "-std=c99",
   "-Iinclude",
@@ -281,16 +282,24 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 493,
- "c64_branch_arcs": 493,
+ "host_branch_arcs": 497,
+ "c64_branch_arcs": 497,
  "arcs_by_source_host_c64": {
   "build/lm-fresh-start-cover/runner.c": [
    1,
    1
   ],
+  "src/agc_hardware_divide.c": [
+   0,
+   0
+  ],
   "src/agc_image_ops.c": [
    55,
    55
+  ],
+  "src/agc_multiword.c": [
+   0,
+   0
   ],
   "src/agc_transfer.c": [
    47,
@@ -305,8 +314,8 @@
    275
   ],
   "src/lm_interbank.c": [
-   56,
-   56
+   60,
+   60
   ],
   "src/lm_interbank_routines.c": [
    12,

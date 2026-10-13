@@ -80,6 +80,13 @@ def select(name, sources, includes, call, cases, budget=None, stride=16, flags=(
     host = frozenset().union(*trace.values())
     taken = frozenset().union(*(trace[n] for n in rows))
     per = collections.defaultdict(lambda: [0, 0])
+    # Every linked source, and every source file one of them #includes (the
+    # Comanche interpreter builds of src/lm_interp_*.c), gets a row, [0, 0]
+    # where no case takes one of its branches.
+    included = sorted({str((R / s).parent.joinpath(m).relative_to(R)) for s in sources
+                       for m in re.findall(r'^#include "([\w./-]+\.c)"', (R / s).read_text(), re.M)} - set(sources))
+    for s in (*sources, *included):
+        per[s]
     for arc in host:
         per[arc.split(':', 1)[0]][0] += 1
     for arc in taken:
@@ -90,6 +97,7 @@ def select(name, sources, includes, call, cases, budget=None, stride=16, flags=(
                         'the rows are the C64 vector header\'s case list, each run on VICE against its frozen '
                         'digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)',
               'linked_sources': {s: hashlib.sha256((R / s).read_bytes()).hexdigest() for s in sources},
+              'included_sources': {s: hashlib.sha256((R / s).read_bytes()).hexdigest() for s in included},
               'compiler_flags': [*FLAGS, *flags], 'host_cases': cases, 'c64_rows': rows,
               'c64_row_seed_stride': stride,
               'host_branch_arcs': len(host), 'c64_branch_arcs': len(taken),
@@ -146,12 +154,13 @@ def cover_aggregate(records, errors):
         manifest = json.loads((R / f'evidence/{milestone}/SHA256.json').read_text())['files']
         if manifest.get(file.name, {}).get('sha256') != digest:
             errors.append(f'{path}: sha256 differs from evidence/{milestone}/SHA256.json')
-        stale = [s for s, h in data['linked_sources'].items() if hashlib.sha256((R / s).read_bytes()).hexdigest() != h]
+        stale = [s for s, h in {**data['linked_sources'], **data.get('included_sources', {})}.items() if hashlib.sha256((R / s).read_bytes()).hexdigest() != h]
         if stale:
             errors.append(f'{path}: linked sources changed since the cover was taken: {stale}')
         missing += [f'{label}: {arc}' for arc in data['host_branches_missing_on_c64']]
         slots += data.get('entry_slots_host_c64') or []
         linked.update(data['linked_sources'])
+        linked.update(data.get('included_sources', {}))
         agg[label] = {'record': path, 'sha256': digest, 'host_cases': data['host_cases'], 'c64_rows': len(data['c64_rows']),
                       'host_branch_arcs': data['host_branch_arcs'], 'c64_branch_arcs': data['c64_branch_arcs'],
                       'host_branches_missing_on_c64': len(data['host_branches_missing_on_c64'])}

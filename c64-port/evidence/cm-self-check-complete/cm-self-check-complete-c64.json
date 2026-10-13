@@ -3,7 +3,7 @@
  "aggregates": {
   "self-check": {
    "record": "evidence/self-check/self-check-vice.log",
-   "sha256": "dbdbb607f86a36dd3fdc6b514ffde15cfb97a738f0283337a7d9aa12aa9b0dd7",
+   "sha256": "9fbb46431dd727d8ad24322d9eac6c4a8d8e76a395457b3d8803356e39c670bd",
    "pass_lines": [
     "PASS: VICE PAL self-check-lm.prg: 84 checks, 0 failures",
     "PASS: VICE PAL self-check-cm.prg: 85 checks, 0 failures"
@@ -17,11 +17,11 @@
    "prg_sha256": [
     {
      "prg": "self-check-lm.prg",
-     "sha256": "e63fcf50545d95482aaa3223d7174fc9b36c3cc95bf4b3469524e0e8204fb9f8"
+     "sha256": "043b6c7cec8757fe6fcd0a819d20bf3436a3a4c996ac7f8c8d0efcd1a50c51b4"
     },
     {
      "prg": "self-check-cm.prg",
-     "sha256": "21cb583c6a2790387017e7348e45bae98ae528e07ef578cd8994b80827a25951"
+     "sha256": "fb6d2aa01cc07de75fae5fc781871a01d0ceb5cea115e36e799d069dad9e4b11"
     }
    ]
   }

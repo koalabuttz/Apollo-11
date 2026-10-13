@@ -6,7 +6,7 @@
  "aggregates": {
   "lm-fresh-start": {
    "record": "evidence/lm-fresh-start/lm-fresh-start-proof.json",
-   "sha256": "b293a0127ac0a15fc97159477b2aa08a09e22268a98554ff7a62c1caa0b05dfc",
+   "sha256": "3ff06cc3ed95e8de2b4b085deb6dbd65b7186a310435eb5fca6c448a84b380c1",
    "cases": 4096,
    "snapshot_sha256": "25f7b29f4858195f5769fa20a1ea63b71d78c3ac71b91e88d9e46a64ed183f15",
    "rerun_snapshot_sha256": "25f7b29f4858195f5769fa20a1ea63b71d78c3ac71b91e88d9e46a64ed183f15",
@@ -14,7 +14,7 @@
   },
   "lm-v37": {
    "record": "evidence/lm-v37/lm-v37-proof.json",
-   "sha256": "8f94c4bdc7eedf4b3dad7ea6d1d18d1d2e167b52f983fa133e5dbfb18da2f79d",
+   "sha256": "0d4c0f5ffc422be6fcbc6e7369f04762e83d7a930c0ee4f466ba5d1129fafffe",
    "cases": 4096,
    "snapshot_sha256": "37af90fe7d60b92ead0e583e334fb09a79333d001b8458e6888de4fa4a79750d",
    "rerun_snapshot_sha256": "37af90fe7d60b92ead0e583e334fb09a79333d001b8458e6888de4fa4a79750d",

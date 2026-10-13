@@ -6,7 +6,7 @@
  "aggregates": {
   "lm-fresh-start": {
    "record": "docs/LM-FRESH-START.md",
-   "sha256": "7b97916bfb618052cfb5c88d582553eb625b3f363edfc72904050c640912fcc7",
+   "sha256": "a3bd956bc680d0e7571fe8d776454f97665e222359e6ad9e9316772a6f865b29",
    "native": "src/lm_fresh_start.c",
    "native_sha256": "1e6b3f9930610d97fac770ffc1ec2da25a15dd38e7108fd69815a466184d0aca",
    "owns": [
@@ -17,7 +17,7 @@
   },
   "lm-v37": {
    "record": "docs/LM-V37.md",
-   "sha256": "2ff8827b114a71101d1dfe26b2631d64612ba8e570e97bbf19a1df1996c0eb5c",
+   "sha256": "529ffd46ce11d434651a5b212fd047aabf5a81f858a16ba3692e484e678afc29",
    "native": "src/lm_v37.c",
    "native_sha256": "a5fc62a858df898bd6767ef438dbaa1141bd933483b5b4be9976b39bc8d3a6e4",
    "owns": [

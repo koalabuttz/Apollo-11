@@ -8,11 +8,15 @@
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
   "src/cm_interbank_routines.c": "8fe6a2afcd1ed84209f40d762c4ec05abf9ac1f5059b649cb4a08962843bba2d",
-  "src/cm_interbank_complete.c": "d047ccfc84150c478b34efb35c028542116f607864db384808ca344bc381ce3d",
+  "src/cm_interbank_complete.c": "66c67957ac373fdb164ef68e25c64ec1d34d00c3d78504049fb9f97a11dff797",
   "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/cm_update_cases.c": "b883d100487df15676c2767cd3432c27850ac8cbb52707aca71d53b5696aecfa"
+ },
+ "included_sources": {
+  "src/lm_interp_orders.c": "ca13888ecf72f5ac0f8b291cf07896c07e21fe32af015dbbdf9da717002bfe05",
+  "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56"
  },
  "compiler_flags": [
   "-std=c99",
@@ -309,16 +313,24 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 476,
- "c64_branch_arcs": 476,
+ "host_branch_arcs": 479,
+ "c64_branch_arcs": 479,
  "arcs_by_source_host_c64": {
   "build/cm-update-cover/runner.c": [
    1,
    1
   ],
+  "src/agc_hardware_divide.c": [
+   0,
+   0
+  ],
   "src/agc_image_ops.c": [
    85,
    85
+  ],
+  "src/agc_multiword.c": [
+   0,
+   0
   ],
   "src/agc_transfer.c": [
    56,
@@ -329,16 +341,28 @@
    2
   ],
   "src/cm_interbank_complete.c": [
-   49,
-   49
+   52,
+   52
   ],
   "src/cm_interbank_routines.c": [
    12,
    12
   ],
+  "src/cm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/cm_interp_steps.c": [
+   0,
+   0
+  ],
   "src/cm_update.c": [
    174,
    174
+  ],
+  "src/lm_interp_orders.c": [
+   0,
+   0
   ],
   "src/lm_interp_steps.c": [
    19,

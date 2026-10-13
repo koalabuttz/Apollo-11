@@ -4,7 +4,7 @@
  "aggregates": {
   "self-check-cm": {
    "record": "evidence/self-check/self-check-cm-c64-cover.json",
-   "sha256": "3ba971ab71fe10eda20b217c6e98abdd1ec2d9239bb52642b6c487f11592aca7",
+   "sha256": "63f4490724d8ef6e739ccf00d9ec21b58b68c8c79da1350b6f55d7f89eba3f29",
    "host_cases": 4096,
    "c64_rows": 78,
    "host_branch_arcs": 426,
@@ -13,11 +13,11 @@
   },
   "self-check-cm-rope": {
    "record": "evidence/self-check/self-check-cm-rope-c64-cover.json",
-   "sha256": "faa6235836ebce15efd9284c1f90bc3249e6063b505f96797ae7153bba025652",
+   "sha256": "02ecaae3c0e8bb7e6e5b5c8aeeaa4bd1acc089aedc4cdb1c3fb197dbc9a26614",
    "host_cases": 43,
    "c64_rows": 7,
-   "host_branch_arcs": 385,
-   "c64_branch_arcs": 385,
+   "host_branch_arcs": 388,
+   "c64_branch_arcs": 388,
    "host_branches_missing_on_c64": 0
   }
  },
@@ -27,7 +27,7 @@
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
-  "src/cm_interbank_complete.c": "d047ccfc84150c478b34efb35c028542116f607864db384808ca344bc381ce3d",
+  "src/cm_interbank_complete.c": "66c67957ac373fdb164ef68e25c64ec1d34d00c3d78504049fb9f97a11dff797",
   "src/cm_interbank_routines.c": "8fe6a2afcd1ed84209f40d762c4ec05abf9ac1f5059b649cb4a08962843bba2d",
   "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625",

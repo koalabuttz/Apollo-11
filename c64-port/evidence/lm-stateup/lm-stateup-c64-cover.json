@@ -12,6 +12,7 @@
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/lm_stateup_cases.c": "323341af6591da5d279c358a421957e7d80786a671d8b62ed5bd0d7c70881fb2"
  },
+ "included_sources": {},
  "compiler_flags": [
   "-std=c99",
   "-Iinclude",
@@ -284,6 +285,10 @@
   "build/lm-stateup-cover/runner.c": [
    1,
    1
+  ],
+  "src/agc_hardware_divide.c": [
+   0,
+   0
   ],
   "src/agc_image_ops.c": [
    49,

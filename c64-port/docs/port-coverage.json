@@ -109,19 +109,23 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
-            "sha256": "1024a5f7af76fc0f357419f1982ac191a0646e1df4c1386eb54334e34ec02455"
+            "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
-            "sha256": "53f502fc1f5b5188cfca13567c9cbbfda920d243479a90fb30be2fc61dd5387f"
+            "sha256": "aa4915ed825fcf945b482b32f3ab5c8b927661a3eb50ec7acab21f525076e6b7"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-comparison.json",
-            "sha256": "676b1a217a3e6d50c70079f845d97bf6ef87102bac24ba45a691f0c638b23404"
+            "sha256": "69012cf6a828dddc78308947152f11f1c43cb037b12fc1d3597fcebffbd9e25c"
           },
           "source_to_native_map": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
-            "sha256": "05d08955a2d1299121688906e5ee81d94c31720e33c9b57b2ff6797c96be6f5e"
+            "sha256": "e194f987bfc8f0323a18fd7e448f020ba7e59ae84b0c875855990762304dd964"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64-cover.json",
+            "sha256": "3aa087a1519d33efa8a186e211c4e05e61a43133d4a18fb71a8b6cdffe293b9b"
           }
         },
         "external_continuations": [
@@ -1221,23 +1225,27 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64.json",
-            "sha256": "1d6cb8c154c6bb7f0754ef613de2044e3a73162c51746b1064d57dba86674bc1"
+            "sha256": "57dc80bb33c185d1fd1cb40f478ce41b914e5ce63c324cb150643463cd284ea6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-host.json",
-            "sha256": "8e3de269be7ca076652bc8717d0a5730433c8f042100d72d6eeba5eb28604257"
+            "sha256": "7752e4f67093acb691aef82b327799955aa188d8c979ec2317dee1a2643b0e78"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-comparison.json",
-            "sha256": "453cd26f9acc89de1f295053c25ba579431e3914c04d1e78266edc68468bcec5"
+            "sha256": "ef5d1c417e297e2f323440124cb003edd1a8bd0be3d24461316553f8a55c0f2e"
           },
           "source_to_native_map": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-source-map.json",
-            "sha256": "a9745e62b7585337ed104b6815d7c8948942518b1a702ac5f92239231e68bc60"
+            "sha256": "bb15228832451eab4054f95b6b8ae50fd9f8e2662a7dd341c63cebbf24a2e9cb"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64-cover.json",
+            "sha256": "3892ed822021467a2116a01327ac3f7a1fee5b5599d3fac17dea1cdee849bb6d"
           }
         },
         "external_continuations": [
-          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, which refuse Q = 3 (issue #94))",
+          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, the comparison boundary; Lane A accepts Q = 3 there since PR #90)",
           "RESTARTS (through SWCALL), DUMMYJOB +2, MMDSPLAY, WAITLIST, ALARM, PHASCHNG, NEWMODEA, SPVAC, ENDOFJOB, CHANG2, STOPRATE, SETCOARS",
           "DOWNFLAG, UPFLAG, CLEARMRK, GOFLASH and its three returns, RELDSP, FALTON, GENTRAN, DELAYJOB, SPSOFF, MASSPROP, RCSDAPON, TVCZAP, UPACTOFF, SETMINDB/SETMAXDB",
           "Interpretive callees INTEGRV, INTSTALL, SETIFLGS, ENDINT and THISVINT's caller",
@@ -1246,7 +1254,7 @@
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "every word of the file but STARTSIM (05,2345-2350), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or disagree (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX an index of the 33-word tables; RAKE's return word 2001 or 2146; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; channel 33 with the AGC warning condition persisting or not (cm_fresh_io.warning; yaAGC WarningFilter); cm_fresh_io / p66_bias_io. Refused before any change: a TS overflow, an ERESTORE repair into a counter, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, a TC MPAC +1 word INITSUB never stores, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io record."
+        "supported_domain": "every word of the file but STARTSIM (05,2345-2350), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or disagree (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX an index of the 33-word tables; RAKE's return word 2001 or 2146; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; channel 33 with the AGC warning condition persisting or not (cm_fresh_io.warning; yaAGC WarningFilter); cm_fresh_io / p66_bias_io. Refused before any change: a TS overflow, an ERESTORE repair into a counter, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, a TC MPAC +1 word INITSUB never stores, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io record. Refusal sites (cert_precheck NOTE), none reachable: each routine's io check (a missing record, or an interrupt state, SUPERBNK or ZERO register no AGC holds) and dispatch default (only registered entries call in); CCS on a masked bit or word, a major mode, or a loop counter counting down from NUMGRPS, TEN or 11 (never negative); indexed words whose index is a restart group (PCLOOP/NXTRST, 1-NUMGRPS), MPAC 0-10 (DSPOFF), SKEEP7 (ERASCHK writes it, 061 up, and ERESTORE must match it) or MINDEX (only CHECKTAB writes it, an index of the tables), or ELRSKIP's T5IDLER index (MASK SIX: 0-6); a TC MPAC +1 word INITSUB never stores (RAKE's callers leave 2001 or 2146), so each keeps its order and stays above the registers; NO-INT's CLRGO, which always branches; THISVINT's RVQ, reached only by CALL, which leaves a fixed QPRET; and DANZIG's NEWJOB -0 or negative: EXECUTIVE stores only +0, positive core-set addresses and DUMMYJOB's idle -0, under which only the basic self-check runs (ADVAN dispatches a job through CHANJOB, which sets +0, or with NEWJOB already +0), so no interpretive job reaches DANZIG with it. Positive NEWJOB (a job switch) is not refused: DANZIG takes CHANG2 and a fifth of the STATEUP cases compare it with yaAGC."
       }
     },
     {
@@ -3946,32 +3954,36 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-update/cm-update-vice.log",
-            "sha256": "55224cc675d29d47560fd2f1397e0c00b25260e0a5c79672e10986b0f3febab2"
+            "sha256": "b2aee743cf0a1f88eacb0d10d8087ef22f1c1202444b6edeb879c70e55f20f54"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-update/cm-update-host.log",
-            "sha256": "9a9b6c6450038747fb7371f29ab928e82649164a16874e020410fd84ff28f3b5"
+            "sha256": "dbe907f257f5053aca0f5fa55c33482742a4aed0e74835fb6409188553d8dce1"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-update/cm-update-proof.json",
-            "sha256": "4973f66d06915525f2d0d3c17cdd4fa00abe8b4ad648303cfd152b49e304d13b"
+            "sha256": "c5e031ebc4414a03988dcf99c64e7fb7350350a4e3488cab33b4411b7fb63f98"
           },
           "source_to_native_map": {
             "path": "docs/CM-UPDATE.md",
-            "sha256": "8a33278a48d504bc379355a1a34067c51381fc583dbb85792cb2de6a5dc8f221"
+            "sha256": "034190ae8bd8331ef184ebbb53730fd7f74cb021abff5f21a153141232a78d27"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-update/cm-update-c64-cover.json",
+            "sha256": "9483510bc03c14b2e1c9237aa883bb7022f76063036580ba3d33f19b1892544a"
           }
         },
         "external_continuations": [
           "TESTXACT (PINBALL) and its return",
           "PHASCHNG, NEWMODEX, NEWMODEX+3, FALTON, FINDVAC, ENDOFJOB, UPFLAG, TPAGREE, INTWAKEU and ENDEXT",
           "BANKCALL GOXDSPF with its three returns, POSTJUMP UPPART2/UPERROUT+2",
-          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)",
-          "SWRETURN after UPACTOFF's TC Q from a BANKCALL (Q = 3; cm_interbank_complete refuses it, issue #94)"
+          "INTPRET (UPJOB's TC INTPRET; the interpreter is Lane A's) and INTSTALL (CALL INTSTALL's callee); a job comes back at NEWOPS to the registered resume LOCs",
+          "SWRETURN after UPACTOFF's TC Q from a BANKCALL (Q = 3; the runs stop there and INTER-BANK_COMMUNICATION returns to the caller; Lane A accepts Q = 3 since PR #90)"
         ],
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "entries as their callers reach them: UPVERB 0-3, MODREG and FLAGWRD5 as CKMDMORE reads them, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03534/03721), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC and the update words 0300-0330), incl. one-word loads at a bank's first word and loads past a bank's end; UPACTOFF from FRESH_START's and P20-P25's BANKCALL; cm_native_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, MODREG and FLAGWRD5 as CKMDMORE reads them, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03534/03721), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC and the update words 0300-0330), incl. one-word loads at a bank's first word and loads past a bank's end; UPACTOFF from FRESH_START's and P20-P25's BANKCALL; cm_native_io plus agc_hardware for UPACTOFF's WAND DSALMOUT; UPJOB's CALL INTSTALL and UPWAKE EXIT (27,3544/3546) at NEWOPS, the CHANG2 resume LOCs, with EDOP +0, a VAC work area, BBANK 27 under BANKSET and NEWJOB +0 or positive (not read by these single orders; compared with yaAGC) (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse). Refusal sites (cert_precheck NOTE), none reachable: the io and hardware checks and dispatch defaults (only registered entries call in; a program running UPACTOFF declares agc_hardware); INDEX UPVERB outside 0-3 (UPVERB is set only from UPVERBSV, which V70-V73 load with 0-3); CK4V32's CCS on a masked bit; INDEX Q; TC 0 -6 out of the file (Q is a TC CK4V32 return inside it); TC UPTEMP and INDEX UPTEMP; TC 1 with a word TIMEDIDL's QXCH never stores (TIMEDIDR's restart keeps UPTEMP); STORLP71's negative MPAC (V71 COMPNUMB of 3 or more leaves MPAC +0 or above, or -0 after BZF STORLP71); indexed CA UPBUFF +n that would change order (n stays below 22); CKMDMORE's CCS on a masked bit, its -0 (CS TWO; MASK MODREG never yields -0) and its TC Q with Q other than 3743 (TC CKMDMORE just set it); UPJOB's interpretive words with a state the interpreter does not run in at NEWOPS; and agc_transfer's step limit (every case ends in under 24 steps). Not unreachable but a declared domain limit: a V71/V72 address in EB0 below 061 (a register or counter) is refused."
       }
     },
     {
@@ -5525,23 +5537,27 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64.json",
-            "sha256": "38c197141900009d3b6d95d530f8b99fda62acfef517d7ce01d27321551bc8c0"
+            "sha256": "9126383948660bf4687b796b02f930d90734b507e8f5779b5f4778eb0a7f1947"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-host.json",
-            "sha256": "22a2fecafa62e25d1023e30b9b33a24d9ef5c38a400f42e04d8e5a3377bfb404"
+            "sha256": "aab0e80092ee6b1ff97509d0551fcf8df33747e94c37f1b13137e6bee5962ce2"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-comparison.json",
-            "sha256": "cebf9766ad0fda7e27cb530860f5f1273094359e5605461a10246894549aa08c"
+            "sha256": "68657da70a243351b6ceed8ba6a601d1e5745643f1535546ddeab12e369ee2f0"
           },
           "source_to_native_map": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-source-map.json",
-            "sha256": "d073de2fb5a90cd956ccc2c168e97d4a2102d343da5f6e5a05beb268f960ea8c"
+            "sha256": "71d19167911a95188a0e662099ce528e5c525e13071559837d311f5f0f7fdeac"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64-cover.json",
+            "sha256": "910a20fc9f43e0be4361ec799b336ffc05da8758320f86874e081988b6c38572"
           }
         },
         "external_continuations": [
-          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, which refuse Q = 3 (issue #94))",
+          "INTER-BANK_COMMUNICATION (BANKCALL, POSTJUMP, IBNKCALL, SWCALL; runs stop at SWRETURN/ISWRETRN, the comparison boundary; Lane A accepts Q = 3 there since PR #90)",
           "RESTARTS (through SWCALL), DUMMYJOB +2, MMDSPLAY, ALARM, PHASCHNG, PHSCHNGA, NEWMODEA, SPVAC, ENDOFJOB, CHANG2",
           "DOWNFLAG, CLEARMRK, GOFLASH and its three returns, RELDSP, CLRADMOD, FALTON, ENGINOF1, ALLCOAST, PINBRNCH, P70/P71 (SETUP70/71 DTCB)",
           "Interpretive callees INTEGRV, INTSTALL, SETIFLGS, ENDINT and THISVINT's caller",
@@ -5550,7 +5566,7 @@
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "every word of the file but STARTSIM (05,2452-2455), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or are corrupt (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX set by CHECKTAB; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; lm_fresh_io / p66_bias_io plus agc_hardware for channel 11. Refused before any change: a TS overflow, an ERESTORE repair below 061, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io or hardware record."
+        "supported_domain": "every word of the file but STARTSIM (05,2452-2455), which is patch-only and excluded: it runs only if STARTSW is patched to TCF STARTSIM, and the rope has TCF SKIPSIM. Entries as their callers reach them (the three milestone documents): restart-group phase pairs that agree or are corrupt (a flipped bit or -PHASEn equal to PHASEn); MPAC +5/+6 as the group scan leaves them; ERESTORE +0, -0, an address ERASCHK tests (061-01776) or corrupt; V37 requests any mode 0-0177 with MINDEX set by CHECKTAB; the interpreter at NEWOPS with EDOP +0, a VAC work area and BBANK under BANKSET; lm_fresh_io / p66_bias_io plus agc_hardware for channel 11. Refused before any change: a TS overflow, an ERESTORE repair below 061, a TC Q to no return point, a table index outside PREMM1/FCADRMM1/DNLADMM1, a negative MMNUMBER, an erasable QPRET at THISVINT's RVQ, a state the interpreter does not run in, and a missing io or hardware record. Refusal sites (cert_precheck NOTE), none reachable: each routine's io check (a missing record, or an interrupt state, SUPERBNK or ZERO register no AGC holds) and dispatch default (only registered entries call in); CCS on a masked bit or word, a major mode, or a loop counter counting down from NUMGRPS, TEN or 11 (never negative); indexed words whose index is a restart group (PCLOOP/NXTRST, 1-NUMGRPS), MPAC 0-10 (DSPOFF), SKEEP7 (ERASCHK writes it, 061 up, and ERESTORE must match it) or MINDEX (only CHECKTAB writes it, an index of the tables), so each keeps its order and stays above the registers; NO-INT's CLRGO, which always branches; THISVINT's RVQ, reached only by CALL, which leaves a fixed QPRET; and DANZIG's NEWJOB -0 or negative: EXECUTIVE stores only +0, positive core-set addresses and DUMMYJOB's idle -0, under which only the basic self-check runs (ADVAN dispatches a job through CHANJOB, which sets +0, or with NEWJOB already +0), so no interpretive job reaches DANZIG with it. Positive NEWJOB (a job switch) is not refused: DANZIG takes CHANG2 and a fifth of the STATEUP cases compare it with yaAGC."
       }
     },
     {
@@ -8831,31 +8847,35 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-update/lm-update-vice.log",
-            "sha256": "5d84b1ed02aabc02dd13ce476e37c09dfd3a76309df3691a19d8139107285567"
+            "sha256": "f843dee5162c02617fe0aa52d6ec94d4fbf7eb8139dfe6d031b749fcb69f2bc0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-update/lm-update-host.log",
-            "sha256": "56559ad933825f0e7c14460c8c6fbb61df0293a82e275f932d98594cba3b79be"
+            "sha256": "3b51496ef7f4bb13853d81bb03de1702c7ac7ce8ccf78abab1b6e508a2caa9ca"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-update/lm-update-proof.json",
-            "sha256": "feea17cabc9cfabcb3a2ecc8ec42449a21b12a43e3def02a55beaba4577f609a"
+            "sha256": "4c729735f960f770b4960b439147af17c3710e6315991b259e608524dc8374b9"
           },
           "source_to_native_map": {
             "path": "docs/LM-UPDATE.md",
-            "sha256": "0c09379cc2c08f82407e7fda0785dd88eb22f748b6599f4cf32c516744d64957"
+            "sha256": "9e2fc9cf429131b16d926faf1dd5ccc449b19c49af57c31d3c003fa85c2dace6"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-update/lm-update-c64-cover.json",
+            "sha256": "63c9c6e823249a9a2dcf7db6ddfabdd526a00921a3c6bd6bd74d7f9e7906d7f2"
           }
         },
         "external_continuations": [
           "TESTXACT (PINBALL) and its return",
           "PHASCHNG, NEWMODEX, NEWMODEX+3, FALTON, FINDVAC, ENDOFJOB, UPFLAG, TPAGREE, INTWAKEU and ENDEXT",
           "BANKCALL GOXDSPF with its three returns, POSTJUMP UPPART2/UPERROUT+2",
-          "INTPRET for UPJOB's CALL INTSTALL (the EXIT after it is native)"
+          "INTPRET (UPJOB's TC INTPRET; the interpreter is Lane A's) and INTSTALL (CALL INTSTALL's callee); a job comes back at NEWOPS to the registered resume LOCs"
         ],
         "qualification_kind": "native_translation",
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC), incl. one-word loads at a bank's first word and loads past a bank's end; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse)"
+        "supported_domain": "entries as their callers reach them: UPVERB 0-3, COMPNUMB as OHWELL1 accepts it (V70/V73 2, V71 and V72 3-20; UPEND72 rejects even counts), UPCOUNT 1..COMPNUMB, UPTEMP a small index or the TIMEDIDL return word (03542/03727), V71/V72 erasable addresses in any EB (EB0 from 061, clear of MPAC), incl. one-word loads at a bank's first word and loads past a bank's end; p66_bias_io plus agc_hardware for UPACTOFF's WAND DSALMOUT; UPJOB's CALL INTSTALL and UPWAKE EXIT (04,3552/3554) at NEWOPS, the CHANG2 resume LOCs, with EDOP +0, a VAC work area, BBANK 04 under BANKSET and NEWJOB +0 or positive (not read by these single orders; compared with yaAGC) (a TS overflow, an UPVERB outside the tables, an UPTEMP return word TIMEDIDL never stores, an indexed CA/LXCH that changes order or names a register, and an ADRES reached as TC refuse). Refusal sites (cert_precheck NOTE), none reachable: the io and hardware checks and dispatch defaults (only registered entries call in; a program running UPACTOFF declares agc_hardware); INDEX UPVERB outside 0-3 (UPVERB is set only from UPVERBSV, which V70-V73 load with 0-3); CK4V32's CCS on a masked bit; INDEX Q; TC 0 -6 out of the file (Q is a TC CK4V32 return inside it); TC UPTEMP and INDEX UPTEMP; TC 1 with a word TIMEDIDL's QXCH never stores (TIMEDIDR's restart keeps UPTEMP); STORLP71's negative MPAC (V71 COMPNUMB of 3 or more leaves MPAC +0 or above, or -0 after BZF STORLP71); indexed CA UPBUFF +n that would change order (n stays below 22); UPJOB's interpretive words with a state the interpreter does not run in at NEWOPS; and agc_transfer's step limit (every case ends in under 24 steps). Not unreachable but a declared domain limit: a V71/V72 address in EB0 below 061 (a register or counter) is refused."
       }
     },
     {
