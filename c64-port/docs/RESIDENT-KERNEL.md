@@ -97,7 +97,7 @@ EXTEND, so a +0 priority word goes on to NEXTCORE through BZF.
 
 ## Evidence
 
-Hashes: `evidence/resident-kernel/SHA256.json` (all three records are in git).
+Hashes: `evidence/resident-kernel/SHA256.json` (all records are in git).
 
 - Independent assembly comparison and host results
   (`resident-kernel-host.log`, `resident-kernel-proof.json`):
@@ -150,6 +150,6 @@ code per instruction.
 
 - The kernel is compared only where the certified milestones have yaAGC
   results; the refused services cases above are run but not compared.
-- It is a drop-in for the certified tables, not yet wired into the flight
-  resident: the overlay resident build and the allocation plan
-  (`tools/overlay_allocation.py`) adopt it separately.
+- docs/RESIDENT-FLIGHT.md links it into the ABI 2 flight resident and
+  measures that resident; the allocation plan (`tools/overlay_allocation.py`)
+  takes the numbers separately.

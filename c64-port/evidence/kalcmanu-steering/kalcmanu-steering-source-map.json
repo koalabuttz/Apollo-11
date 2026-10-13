@@ -3,7 +3,7 @@
   "native_file": "src/lm_kalcmanu_steering.c",
   "words": 159,
   "untranslated_words": 0,
-  "routines": 17,
+  "routines": 23,
   "map": [
    {
     "address": "22,3003",
@@ -65,15 +65,15 @@
     "address": "22,3013",
     "word": "77624",
     "source": " CALL ",
-    "routine": "22,3010",
-    "function": "r45010"
+    "routine": "22,3013",
+    "function": "r45013"
    },
    {
     "address": "22,3014",
     "word": "44312",
     "source": "  MXM3",
-    "routine": "22,3010",
-    "function": "r45010"
+    "routine": "22,3013",
+    "function": "r45013"
    },
    {
     "address": "22,3015",
@@ -93,50 +93,50 @@
     "address": "22,3017",
     "word": "77626",
     "source": " STADR ",
-    "routine": "22,3015",
-    "function": "r45015"
+    "routine": "22,3017",
+    "function": "r45017"
    },
    {
     "address": "22,3020",
     "word": "50522",
     "source": " STOVL MIS        +6D",
-    "routine": "22,3015",
-    "function": "r45015"
+    "routine": "22,3017",
+    "function": "r45017"
    },
    {
     "address": "22,3021",
     "word": "77626",
     "source": " STADR ",
-    "routine": "22,3015",
-    "function": "r45015"
+    "routine": "22,3021",
+    "function": "r45021"
    },
    {
     "address": "22,3022",
     "word": "74530",
     "source": " STORE MIS",
-    "routine": "22,3015",
-    "function": "r45015"
+    "routine": "22,3021",
+    "function": "r45021"
    },
    {
     "address": "22,3023",
     "word": "45160",
     "source": " AXC,1 CALL",
-    "routine": "22,3015",
-    "function": "r45015"
+    "routine": "22,3023",
+    "function": "r45023"
    },
    {
     "address": "22,3024",
     "word": "03246",
     "source": "  MIS",
-    "routine": "22,3015",
-    "function": "r45015"
+    "routine": "22,3023",
+    "function": "r45023"
    },
    {
     "address": "22,3025",
     "word": "44654",
     "source": "  DCMTOCDU",
-    "routine": "22,3015",
-    "function": "r45015"
+    "routine": "22,3023",
+    "function": "r45023"
    },
    {
     "address": "22,3026",
@@ -156,29 +156,29 @@
     "address": "22,3030",
     "word": "03304",
     "source": " STORE NCDU",
-    "routine": "22,3026",
-    "function": "r45026"
+    "routine": "22,3030",
+    "function": "r45030"
    },
    {
     "address": "22,3031",
     "word": "77414",
     "source": " BONCLR EXIT",
-    "routine": "22,3026",
-    "function": "r45026"
+    "routine": "22,3031",
+    "function": "r45031"
    },
    {
     "address": "22,3032",
     "word": "01215",
     "source": "  CALCMAN2",
-    "routine": "22,3026",
-    "function": "r45026"
+    "routine": "22,3031",
+    "function": "r45031"
    },
    {
     "address": "22,3033",
     "word": "45122",
     "source": "  MANUSTAT",
-    "routine": "22,3026",
-    "function": "r45026"
+    "routine": "22,3031",
+    "function": "r45031"
    },
    {
     "address": "22,3034",
@@ -1120,7 +1120,7 @@
   "native_file": "src/cm_kalcmanu_steering.c",
   "words": 179,
   "untranslated_words": 0,
-  "routines": 23,
+  "routines": 29,
   "map": [
    {
     "address": "22,3026",
@@ -1175,15 +1175,15 @@
     "address": "22,3035",
     "word": "77624",
     "source": " CALL ",
-    "routine": "22,3032",
-    "function": "r45032"
+    "routine": "22,3035",
+    "function": "r45035"
    },
    {
     "address": "22,3036",
     "word": "44304",
     "source": "  MXM3",
-    "routine": "22,3032",
-    "function": "r45032"
+    "routine": "22,3035",
+    "function": "r45035"
    },
    {
     "address": "22,3037",
@@ -1203,50 +1203,50 @@
     "address": "22,3041",
     "word": "77626",
     "source": " STADR ",
-    "routine": "22,3037",
-    "function": "r45037"
+    "routine": "22,3041",
+    "function": "r45041"
    },
    {
     "address": "22,3042",
     "word": "50450",
     "source": " STOVL MIS        +6D",
-    "routine": "22,3037",
-    "function": "r45037"
+    "routine": "22,3041",
+    "function": "r45041"
    },
    {
     "address": "22,3043",
     "word": "77626",
     "source": " STADR ",
-    "routine": "22,3037",
-    "function": "r45037"
+    "routine": "22,3043",
+    "function": "r45043"
    },
    {
     "address": "22,3044",
     "word": "74456",
     "source": " STORE MIS",
-    "routine": "22,3037",
-    "function": "r45037"
+    "routine": "22,3043",
+    "function": "r45043"
    },
    {
     "address": "22,3045",
     "word": "45160",
     "source": " AXC,1 CALL",
-    "routine": "22,3037",
-    "function": "r45037"
+    "routine": "22,3045",
+    "function": "r45045"
    },
    {
     "address": "22,3046",
     "word": "03320",
     "source": "  MIS",
-    "routine": "22,3037",
-    "function": "r45037"
+    "routine": "22,3045",
+    "function": "r45045"
    },
    {
     "address": "22,3047",
     "word": "44655",
     "source": "  DCMTOCDU",
-    "routine": "22,3037",
-    "function": "r45037"
+    "routine": "22,3045",
+    "function": "r45045"
    },
    {
     "address": "22,3050",
@@ -1266,29 +1266,29 @@
     "address": "22,3052",
     "word": "03267",
     "source": " STORE NCDU",
-    "routine": "22,3050",
-    "function": "r45050"
+    "routine": "22,3052",
+    "function": "r45052"
    },
    {
     "address": "22,3053",
     "word": "77414",
     "source": " BONCLR EXIT",
-    "routine": "22,3050",
-    "function": "r45050"
+    "routine": "22,3053",
+    "function": "r45053"
    },
    {
     "address": "22,3054",
     "word": "01215",
     "source": "  CALCMAN2",
-    "routine": "22,3050",
-    "function": "r45050"
+    "routine": "22,3053",
+    "function": "r45053"
    },
    {
     "address": "22,3055",
     "word": "40065",
     "source": "  MANUSTAT",
-    "routine": "22,3050",
-    "function": "r45050"
+    "routine": "22,3053",
+    "function": "r45053"
    },
    {
     "address": "22,3056",

@@ -92,6 +92,25 @@ def rope_image_includes(errors):
             errors.append(f'{path}: includes rope_image.h, which only AGC_BLOCK_TWO_SELF-CHECK may use (read constants through fixed_data.h)')
 
 
+# Comanche055 symbols whose value in the byte-original declaration rope
+# (6e3150ae..., include/fixed_data_symbols.h) comes from an upstream
+# transcription error (docs/FIXED_DATA.md, "Upstream errata"). Native code
+# must use the flown value, which Virtual AGC's pinned rope (the oracle) has.
+ERRATA_SYMBOLS = {
+    'APOLLO_CM_ERASABLE_WORD_ALTVAR': 'ALTVAR is 01356 in the flown rope; 01357 comes from a stray -16 at ERASABLE_ASSIGNMENTS.agc:2094',
+    'APOLLO_CM_FIXED_WORD_R53FLBIT': 'R53FLBIT is BIT6 in the flown rope; BIT8 is an upstream transcription error',
+}
+
+
+def errata_symbols(errors):
+    """Native sources that use a symbol whose generated value is an upstream erratum."""
+    for symbol, why in ERRATA_SYMBOLS.items():
+        listed = subprocess.run(['git', 'grep', '-l', '-w', symbol, '--', 'src', 'platform'],
+                                cwd=ROOT, capture_output=True, text=True).stdout.split()
+        for path in listed:
+            errors.append(f'{path}: uses {symbol}; {why} (docs/FIXED_DATA.md, "Upstream errata")')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -123,6 +142,7 @@ def main():
                 errors.append(f'evidence/{milestone}/{path.name}: committed but not a tree-stored manifest entry')
     changed_certificates(args.base, errors, args.remote)
     rope_image_includes(errors)
+    errata_symbols(errors)
     try:
         ledgers.load()
     except ValueError as error:

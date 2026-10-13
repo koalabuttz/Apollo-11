@@ -4,13 +4,13 @@
   "release": "evidence-lm-throttle",
   "files": {
     "lm-throttle-c64-cover.json": {
-      "sha256": "6636f0f6a8c4fd2c2be39cf2a184ed1aeeefddb7e7cdb7db211277d36a2e1af3",
-      "bytes": 3222,
+      "sha256": "31686f61961e18c0e5b8f68ed15a08cca0952fe83d284942405fbed9d1d42a27",
+      "bytes": 15020,
       "store": "tree"
     },
     "lm-throttle-host.log": {
-      "sha256": "ebf9d2a48640a78bcce4377d5ca15211a6cdf917037bec11299704908cfe57e0",
-      "bytes": 539,
+      "sha256": "cb79f221a736baf4b0856cfb35d38c8ed661d8f51a0fb06d80a664b1b0a62017",
+      "bytes": 519,
       "store": "tree"
     },
     "lm-throttle-proof.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "lm-throttle-vice.log": {
-      "sha256": "4d675e3ae4e92929b006905a481e7d12bd478ba32b977cd4cd824daaf7c4a8c7",
-      "bytes": 191,
+      "sha256": "3211bef060b6881870f4604f4334a36d693cf19187be9cd4028cb7cbf85cf3c2",
+      "bytes": 295,
       "store": "tree"
     }
   }

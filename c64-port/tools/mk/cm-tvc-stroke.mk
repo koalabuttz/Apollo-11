@@ -5,7 +5,7 @@
 CM_TVC_STROKE_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_TVC_STROKE_SRC = src/cm_tvc_stroke.c tests/cm_tvc_stroke_target.c $(CM_TVC_STROKE_COMMON)
 CM_TVC_STROKE_HDR = include/cm_tvc_stroke.h tests/interp_case.h tests/cm_tvc_stroke_vectors.h tests/cm_tvc_stroke_c64_vectors.h
-CM_TVC_STROKE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
+CM_TVC_STROKE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
 .PHONY: test-cm-tvc-stroke sanitize-cm-tvc-stroke c64-cm-tvc-stroke vice-cm-tvc-stroke cm-tvc-stroke-differential
 all: build/test-cm-tvc-stroke
 test: test-cm-tvc-stroke

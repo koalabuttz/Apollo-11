@@ -60,13 +60,16 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - a transfer from the file to an outside basic routine;
 - the case's own caller return.
 
-The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`) or at every routine (`all_states`, per mission if it is a dict). At a basic routine, every erasable word a TC runs holds the case's return. A routine in banks 040-043 runs with the superbank bit set. With `resume_keys`, NEWJOB is positive in a quarter of the cases, and CHANG2 is a stop. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file.
+The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`) or at every routine (`all_states`, per mission if it is a dict). State keys are `vac+n`, an octal address or an erasable symbol from the listing (`TM+1`). `joint_states` gives sets of values that only mean something together (TM a little past TIME2/TIME1): one set per case, at a routine or, under `'*'`, in half of every routine's cases. With `counters`, TIME2, TIME1 (across its range, at 0 and just below its 037777 wrap) and CDUX-Z vary; otherwise `irc_build` leaves 010-061 at 0. With `edge_values`, a quarter of the cases put edge values into MPAC, the top of the pushdown list and every operand: ±0, one LSB, 1/2, 1/4, just below 1, half-unit axis vectors (a matrix's rows as a signed permutation), unit vectors in a coordinate plane and tiny vectors, with the CDUs at 0, 45, 90, 180 or 270°. These keys are all off unless a spec sets them, so other milestones' cases are unchanged. At a basic routine, every erasable word a TC runs holds the case's return. A routine in banks 040-043 runs with the superbank bit set. With `resume_keys`, NEWJOB is positive in a quarter of the cases, and CHANG2 is a stop. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file.
+
+With `resume_flow` (and `resume_keys`), a resume LOC's cases start from the state the original program is in when it gets there, not random words: each case of the routine before it runs on the oracle (`IRC_SNAP`) to NEWOPS with LOC at the resume LOC, along a run of resume LOCs in turn, and NEWJOB is then set in a quarter of them. A resume LOC random states would reach with a MODE, index register or PUSHLOC the program never leaves there needs no pins this way. The differential prints how many resume LOCs it seeded; one no case reaches keeps random states.
 
 `--freeze` writes:
 
-- `tests/<id>_vectors.h`: every Nth case with its oracle digest, for the host and sanitizer tests.
-- `tests/<id>_c64_vectors.h` and `tools/mk/<id>.groups`: groups of routines that fit below $c000 with the shared interpreter bodies (found by linking each candidate), and the cases whose whole run stays in a group.
-- `build/<id>-proof.json`. Cases that stop at a channel instruction are listed as `waiting_for_io_channels` and not compared. Routines whose runs reach too much of the file to fit one diagnostic are listed as `c64_host_only`.
+- `tests/<id>_vectors.h`: every Nth case with its oracle digest, for the host and sanitizer tests. With `cover`, also the fewest cases (greedy) that reach every edge any case reaches: the native runner is rebuilt with `clang -fsanitize-coverage=trace-pc-guard` over every linked source but the test harness (`tools/irc_edges.c`), so each branch outcome is an edge, and each case reports the edges it reached.
+- `tests/<id>_c64_vectors.h` and `tools/mk/<id>.groups`: with `cover`, the cases a greedy cover picks to reach every edge, among those whose run fits one diagnostic, plus the fewest-visit case of any routine it leaves out, packed case by case into groups of routines that fit below $c000 with the shared interpreter bodies (found by linking each candidate), and the cases whose whole run stays in a group.
+- `build/<id>-proof.json`. Cases that stop at a channel instruction are listed as `waiting_for_io_channels` and not compared. Routines whose runs reach too much of the file to fit one diagnostic are listed as `c64_host_only`. With `cover`, `outcome_cover` gives the edges all cases, the host vectors and the C64 cases reach, and the source lines of any edge no C64 case reaches.
+- `build/<id>-c64-cover.json` (with `'c64_rows': 'cover'`): the `c64_branch_outcomes` record a certificate cites. The C64 rows are the fewest cases that take every gcov branch arc the traced host cases take over every linked source; `cover_stride` traces every Nth case (a divisor of `freeze_stride`, so every frozen host vector is traced) to keep large files fast.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
 
 ### Fitting the C64 groups (whole-file basic specs)
@@ -76,3 +79,31 @@ Specs with `'basic': 'full'` choose their C64 cases by edge coverage (each case'
 Group selection reruns after each drop. Every size probe (one llvm-mos link) is memoized on its group, case text and flags, so a rerun links only the groups that changed. P40-P47's 49 groups fit in minutes instead of hours.
 
 `'basic_split': True` emits one `basic_run_<bank>` per bank. Each group defines `-D<SYM>_BANKS` with the banks its kept routines and its cases' basic labels reach, so a diagnostic links only those banks. A transfer to a bank left out returns `EXEC_OUT_OF_SCOPE`.
+
+## Additions from the orbital lane (ORBITAL_INTEGRATION, INTEGRATION_INITIALIZATION)
+
+Spec keys:
+
+- `cgoto`: the CADR list a CGOTO reads, with its length. The list's words are `cadr_list` rows in the source map.
+- `indexed_fixed`: a starred operand into fixed memory, with the range its index register can take. It emits a `KX` table and checks the index at run time, refusing anything outside the table.
+- `rtb` also serves BOVB to a basic label (BOVB TCDANZIG).
+- `return_words`: erasable words that hold a saved interpretive return (TBASE2), seeded like QPRET with a return outside the file.
+- `native_ranges`: basic routines implemented by hand behind RTB (the MOVE* state-vector moves), mapped in the source map to that function.
+- `native_entries`: those hand-written routines as registered transfer routines too, for files that reach them directly (MEASUREMENT_INCORPORATION's RTB MOVEACSM). Each runs its function and then its TC DANZIG as a pair's end; a left-hand RTB (EDOP holding the pair's right order) is refused.
+- `max_steps`: the routines one case may run (default 200). With `resume_keys` every pair is a routine, and one DIFEQ step runs several hundred.
+- `c64_flags`: extra flags for the C64 probe and the milestone's PRGs. The large integration files use `-fno-inline -fstatic-stack -mlto-zp=110`, with the image under KERNAL at $e000.
+
+`all_states` sets the legal values of index registers, PBODY, DIFEQCNT, COLREG and PUSHLOC for every case.
+
+A target of `SSP QPRET <label>` (PHEXIT, AMOVED) is a return point and must be listed in `entries`.
+
+`rope_bin` reads rope words from the `MAIN.agc.bin` beside the listing, so bank checksums and fillers that the listing omits are read correctly.
+
+Both files run with `resume_keys`. `states` restores each mid-sequence invariant a CHANG2 resume point would otherwise lose: between ACCOMP's `XCHX,2 DIFEQCNT` pairs, X2 holds the DIFEQ stage and DIFEQCNT holds PBODY; S1 holds PBODY inside GAMCOMP; COLREG indexes TIMESTEP's W stores after a VLOAD.
+
+A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are randomized. Before, an operand block next to NEWJOB could leave it negative.
+
+## Additions from CONIC_SUBROUTINES
+
+- `flow_states`: before the cases are drawn, the oracle runs each entry's cases with `IRC_FLOW=1`, and the reference prints PUSHLOC, MODE, X1, X2, S1 and S2 at every NEWOPS. Each other routine then draws those registers from the values the file's own runs reach it with. `states` still wins, and a routine no entry reaches keeps random ones. A PUSHLOC off the pushdown list (an entry case's own random one) is not collected. Without this, a resume inside PARAM or GETX starts with a pushdown pointer or loop count the file never has there.
+- A starred store tail (`STOVL* COGA / MUTABLE,1`) that reads a fixed table now goes through the same `KX` check as a starred load (`indexed_fixed`). Before, the load half of the tail read zeros.

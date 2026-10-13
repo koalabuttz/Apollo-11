@@ -110,17 +110,19 @@ is checked from its own entry.
     is of the unchanged input image, which the host test checks.
   - The digests are frozen into `tests/lm_trim_gimbal_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
-    (`tests/lm_trim_gimbal_c64_vectors.h`, 256 cases). It runs every host case with
-    branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
-    until every entry, outcome and branch the host cases take is taken
-    (14 cases), then spreads the rest with a stride of 97. The per-branch
-    host and C64 counts are in `evidence/lm-trim-gimbal/lm-trim-gimbal-c64-cover.json`.
+    (`tests/lm_trim_gimbal_c64_vectors.h`, 256 cases). It runs every host case
+    with its path counters on and every linked source built with clang
+    `-fsanitize-coverage=edge,trace-pc-guard` (`tools/lane_f_path_trace.c`),
+    and takes, greedily, cases until every entry, outcome, counted path and
+    control-flow edge the host cases take is taken (16 cases), then spreads
+    the rest with a stride of 97. The per-path and per-edge host and C64
+    counts are in `evidence/lm-trim-gimbal/lm-trim-gimbal-c64-cover.json`.
 - `make test-lm-trim-gimbal` and `make sanitize-lm-trim-gimbal` check every
   digest (strict and ASAN/UBSAN). They require every case to reach its stop or
   be refused with the image unchanged, require every routine and every
   reachable branch to be taken, and check the refusals.
 - `make vice-lm-trim-gimbal` runs the 256 C64 rows in VICE: every entry, every
-  outcome and every branch the host cases take. The VICE log records the
+  outcome, path and edge the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches are documented in the host test:

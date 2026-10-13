@@ -11,9 +11,9 @@ extern const agc_routine_table lm_geometry_interpretive,lm_geometry_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_geometry_point;
-#define LM_GEOMETRY_POINTS 10u
+#define LM_GEOMETRY_POINTS 58u
 #define LM_GEOMETRY_CADR_WORDS 1u
-#define LM_GEOMETRY_EXTERNALS 1u
+#define LM_GEOMETRY_EXTERNALS 2u
 #define LM_GEOMETRY_FIRST 11320u
 #define LM_GEOMETRY_LAST 19522u
 extern const lm_geometry_point lm_geometry_points[LM_GEOMETRY_POINTS];

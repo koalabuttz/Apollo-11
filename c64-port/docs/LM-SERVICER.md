@@ -30,8 +30,10 @@ Lane F. Milestone `lm-servicer`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 
 Nothing is left in the file.
 
-`src/lm_servicer.c` registers 164 basic and 24 interpretive routines
-(`lm_servicer_routines`, `lm_servicer_interpretive`). One step machine runs
+`src/lm_servicer.c` registers 165 basic and 150 interpretive routines
+(`lm_servicer_routines`, `lm_servicer_interpretive`). Every interpretive
+label is a key, and so is every word after a DANZIG, where the Executive
+resumes a job that CHANG2 suspended. One step machine runs
 from each key (Z, or LOC at NEWOPS for an interpretive key) through the
 file's basic code, its interpretive code and the interpreter, until control
 leaves the file:
@@ -60,7 +62,9 @@ The keys are every label that is code and every return point of a call:
 - within the file: TC QUIKFAZ5, GNURVST, COPYCYC, SETPOS and the rest, and
   the interpretive CALLs and STCALLs of CALCGRAV, CALCRVG, MUNGRAV and
   AVETOMID. These 25 keys exist so that each C64 segment group (below) can
-  be entered at every word its own code returns to.
+  be entered at every word its own code returns to;
+- and the entries other files call that are not labels: `PIPASR +3`
+  (`37,3544`, BIBIBIAS's call and IMU_COMPENSATION_PACKAGE's BANKCALL).
 
 The runs end at:
 
@@ -103,7 +107,8 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 - a fixed operand outside the constants the file's orders name;
 - an erasable operand whose words run past the end of erasable into fixed
   memory: an indexed address such as `DMP* VZSCAL,2` with an index no
-  producer stores;
+  producer stores, or a vector or TP store whose last word would pass
+  01777 (the original then wraps it onto A and L; `lmi_store_spills`);
 - an INDEX whose value is not one the file's producers store: ITEMP1 in
   COPYCYC (an even count up to 22), A at ALTCHK (0, 2, 4 or 6), FIXLOC at
   VELUPDAT (a VAC area), VSELECT\* (0, 1 or 2), BUF in GNURVST (0 or 6), Q
@@ -119,7 +124,7 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 
 ## Verification
 
-`tests/lm_servicer_cases.c` builds 24,064 cases, 128 for each of the 188
+`tests/lm_servicer_cases.c` builds 40,320 cases, 128 for each of the 315
 keys. Each case starts from a random image with FB the key's bank.
 
 - EB is the key's (E7, or E4 at RDGIMS and VELUPDAT's interpretive part,
@@ -164,7 +169,10 @@ keys. Each case starts from a random image with FB the key's bank.
   after an RTB, and its erasable words including `TC Q` and `TC A` on their
   way. At NEWOPS, the boundary is the file's words.
 - The native snapshot must be byte-identical for every case the routines
-  accept: 23,032, with 1,032 refused. The comparison covers all 2,048
+  accept: 35,112, with 5,208 refused. Most refusals are keys entered
+  inside a passage with a random work area: a pushdown read that takes
+  PUSHLOC below FIXLOC (2,732), or an indexed fixed operand outside the
+  constants the orders name (1,525 at `33,2770`'s `BDDV*`). The comparison covers all 2,048
   erasable words, channels 11, 12, 32 and 33 and the interrupt-enable bit.
 - The digests are frozen into `tests/lm_servicer_vectors.h`.
 - The proof (`evidence/lm-servicer/lm-servicer-proof.json`) counts where
@@ -182,6 +190,9 @@ Paths no admitted input reaches are listed in the host test:
   squares;
 - READACCS's CCS of +0, since TIME5 - 037771 is never +0 in ones'
   complement;
+- REREADAC's CCS PIPAGE negative: the file stores only 4, 1 and +0 there
+  (W.IND, which shares the word, is P20's). Such a state runs its random
+  magnitude as a `TC Q` return and is refused;
 - the negative and -0 outcomes of a CCS of a MASK result, of ITEMP1 and of
   VSELECT, counts the file stores as 0 to 20 and 0 to 2;
 - LOTHRUST's negative PHASE4 and the -0 of STILBADV and STILBADH, which are
@@ -197,7 +208,7 @@ The whole file does not fit C64 RAM. `make c64-lm-servicer` builds seven
 PRGs, one per segment group (`LMSV_C64_GROUP`, `SV_G(g)` in
 `src/lm_servicer.c`):
 
-- group 1 holds the basic code outside the interpretive passages (149
+- group 1 holds the basic code outside the interpretive passages (150
   keys);
 - groups 2-7 hold the interpretive passages with the basic code between
   them. Each was packed by trial builds to leave at least 1 KB free:
@@ -228,19 +239,20 @@ own terms:
 
 | Group | Keys | Cases | Equal | Refused |
 |---|---|---|---|---|
-| 1 | 149 | 19,072 | 18,646 | 426 |
-| 2 | 3 | 384 | 377 | 7 |
-| 3 | 2 | 256 | 207 | 49 |
-| 4 | 7 | 896 | 854 | 42 |
-| 5 | 7 | 896 | 881 | 15 |
-| 6 | 5 | 640 | 586 | 54 |
-| 7 | 15 | 1,920 | 1,759 | 161 |
+| 1 | 150 | 19,200 | 18,754 | 446 |
+| 2 | 20 | 2,560 | 2,223 | 337 |
+| 3 | 18 | 2,304 | 1,582 | 722 |
+| 4 | 31 | 3,968 | 3,758 | 210 |
+| 5 | 26 | 3,328 | 3,159 | 169 |
+| 6 | 21 | 2,688 | 2,502 | 186 |
+| 7 | 49 | 6,272 | 5,949 | 323 |
 
 - `tools/lane_f_c64_rows.py` chooses the C64 rows
-  (`tests/lm_servicer_c64_vectors.h`, 261 rows in per-group blocks). For
-  each group it takes every entry, outcome, branch and basic block that
-  group's host cases take. Together they cover the 1,132 branches of the
-  whole file. The counts are in
+  (`tests/lm_servicer_c64_vectors.h`, 459 rows in per-group blocks). For
+  each group it takes every entry, outcome, path and control-flow edge of
+  every linked source (clang `-fsanitize-coverage=edge,trace-pc-guard`)
+  that group's host cases take. Together they cover the 1,132 counted
+  paths of the whole file. The counts are in
   `evidence/lm-servicer/lm-servicer-c64-cover.json`.
 
 All seven PRGs are built without inlining and with llvm-mos's static stack,

@@ -61,8 +61,8 @@ extern const agc_routine_table lm_servicer_interpretive;
  * flag routines' operand lookup. */
 #define LMSV_FLAG_SITES 13u
 extern const agc_site_operand lm_servicer_flag_sites[LMSV_FLAG_SITES];
-#define LMSV_BASIC_ROUTINES 164u
-#define LMSV_INTERPRETIVE_ROUTINES 24u
+#define LMSV_BASIC_ROUTINES 165u
+#define LMSV_INTERPRETIVE_ROUTINES 150u
 #define LMSV_ROUTINES (LMSV_BASIC_ROUTINES+LMSV_INTERPRETIVE_ROUTINES)
 /* Every key (physical), basic then interpretive. */
 extern const uint16_t lmsv_routine_keys[LMSV_ROUTINES];

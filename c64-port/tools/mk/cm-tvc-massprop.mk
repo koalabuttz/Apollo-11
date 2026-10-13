@@ -5,7 +5,7 @@
 CM_TVC_MASSPROP_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_TVC_MASSPROP_SRC = src/cm_tvc_massprop.c tests/cm_tvc_massprop_target.c $(CM_TVC_MASSPROP_COMMON)
 CM_TVC_MASSPROP_HDR = include/cm_tvc_massprop.h tests/interp_case.h tests/cm_tvc_massprop_vectors.h tests/cm_tvc_massprop_c64_vectors.h
-CM_TVC_MASSPROP_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
+CM_TVC_MASSPROP_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
 .PHONY: test-cm-tvc-massprop sanitize-cm-tvc-massprop c64-cm-tvc-massprop vice-cm-tvc-massprop cm-tvc-massprop-differential
 all: build/test-cm-tvc-massprop
 test: test-cm-tvc-massprop

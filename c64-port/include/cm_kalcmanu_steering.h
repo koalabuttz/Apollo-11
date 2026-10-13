@@ -12,9 +12,9 @@ extern const agc_routine_table cm_kalcmanu_steering_interpretive,cm_kalcmanu_ste
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_kalcmanu_steering_point;
-#define CM_KALCMANU_STEERING_POINTS 23u
+#define CM_KALCMANU_STEERING_POINTS 29u
 #define CM_KALCMANU_STEERING_CADR_WORDS 1u
-#define CM_KALCMANU_STEERING_EXTERNALS 8u
+#define CM_KALCMANU_STEERING_EXTERNALS 9u
 #define CM_KALCMANU_STEERING_FIRST 2390u
 #define CM_KALCMANU_STEERING_LAST 19048u
 extern const cm_kalcmanu_steering_point cm_kalcmanu_steering_points[CM_KALCMANU_STEERING_POINTS];
