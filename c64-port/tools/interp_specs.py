@@ -962,6 +962,9 @@ SPECS = {
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # Rows by gcov arc as well (the ?: outcomes clang folds).
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'cover': True,
         'counters': True,
         'edge_values': True,
@@ -1096,6 +1099,12 @@ SPECS = {
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # Rows by gcov arc (the ?: outcomes clang folds) and per call site:
+        # each UNIT/ASIN/ACOS/BPL site takes its own outcomes of the shared
+        # bodies (tools/irc_edges.c IRC_SITES).
+        'c64_rows': 'cover',
+        'cover_stride': 8,
+        'site_edges': True,
         'cover': True,
         'counters': True,
         'edge_values': True,
@@ -1184,12 +1193,24 @@ SPECS = {
             ('LITTLSUB', 'AZMTHCG1', {'02424': [0o67562, 0o67575]})],
         # STOVL S1 stores INTVAL's 4 and 2; TARGDRVE's callers pass 0 or 6.
         'states': {'NORMLOP+3': {'00154': [4], '00155': [2]}, 'TARGDRVE': {'00000': [0, 6]}},
+        # CHECKG1's spin: PIPAX has not moved since TS ZERONDX, so C(PIPAX +
+        # PIPINDEX) + ZERONDX is +-0 and BZF CHECKG1 is taken (the idle
+        # point). Half the sets hold that (with the +0/-0 pairs), half miss
+        # by one; points before TS ZERONDX overwrite it.
+        'joint_states': {('CHECKG1+%d' % k if k else 'CHECKG1'): [
+            {'02422': i, '%05o' % (0o37 + i): v, '02655': (~v - miss) & 0o77777}
+            for i in (0, 1, 2) for v in (0, 0o77777, 1, 0o77776, 0o1234, 0o54321) for miss in (0, 1)]
+            for k in range(15)},
         # One case per routine: the cases carry many edits, and the header
         # must stay under 1 MB.
         # Host vectors and C64 cases chosen to reach every branch outcome;
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # Rows by gcov arc as well (the ?: outcomes clang folds, as DIM's
+        # negative operand in ai_dim).
+        'c64_rows': 'cover',
+        'cover_stride': 64,
         'cover': True,
         'counters': True,
         'edge_values': True,

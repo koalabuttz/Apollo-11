@@ -721,6 +721,8 @@ def build_edges(spec_id, spec):
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + \
         [x for x in COMMON if not x.startswith('tests/')]
     objs = []
+    sites = spec.get('site_edges')
+    mine = {'src/%s.c' % spec['base'][m] for m in spec['missions']}
     for src in srcs:
         o = os.path.join(d, os.path.basename(src) + '.o')
         subprocess.run(['clang', '-std=c99', '-O0', '-g', '-fno-pie', '-Iinclude', '-Itests',
@@ -728,16 +730,58 @@ def build_edges(spec_id, spec):
         objs.append(o)
     nat = os.path.join(d, 'native')
     subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES',
+                    *(['-DIRC_SITES', '-Wl,-Map,%s.map' % nat] if sites else []),
                     '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *objs,
                     'tests/interp_case.c', spec['target'], 'tools/interp_routine_native.c', 'tools/irc_edges.c',
                     '-o', nat], cwd=R, check=True)
+    if sites:
+        # 'site_edges' (tools/irc_edges.c): the code address ranges, from
+        # the link map's input sections, of the milestone's routines
+        # (.text.r<key>: kind 1), the trampoline (2) and the milestone's
+        # own helpers (3, counted per call site like the shared code).
+        kind = {os.path.basename(src) + '.o': 1 for src in mine}
+        kind['agc_transfer.c.o'] = 2
+        out, text, name = [], False, None
+        for line in open(nat + '.map'):
+            if re.match(r'^[.\w]', line):
+                # An output section starts at column 0.
+                text, name = line.startswith('.text'), None
+                continue
+            m = re.match(r'^ (\.\S+)(?:\s+0x([0-9a-f]+)\s+0x([0-9a-f]+)\s+(\S+))?\s*$', line)
+            if m:
+                name = m.group(1)
+                if not m.group(2):
+                    continue
+                start, size, obj = m.group(2), m.group(3), m.group(4)
+            else:
+                m = re.match(r'^\s+0x([0-9a-f]+)\s+0x([0-9a-f]+)\s+(\S+\.o)\s*$', line)
+                if not m or name is None:
+                    continue
+                start, size, obj = m.groups()
+            k = kind.get(os.path.basename(obj))
+            if text and k and int(size, 16):
+                if k == 1 and not re.fullmatch(r'\.text\.r\d+', name):
+                    k = 3
+                out.append((int(start, 16), int(start, 16) + int(size, 16), k))
+        assert {1, 2} <= {k for _, _, k in out}, 'site_edges: no milestone routines or trampoline in the link map'
+        with open(nat + '.sites', 'w') as f:
+            f.writelines('%x %x %d\n' % r for r in sorted(out))
     return nat
 
 
 def edge_sets(nat, path):
     """Per case, the guards it reached; and each guard's source line."""
-    r = subprocess.run([nat, path, 'edges'], cwd=R, check=True, capture_output=True, text=True)
-    sets = [frozenset(int(t[1:]) for t in l.split()[4:] if t[0] == 'e') for l in r.stdout.splitlines()]
+    env = dict(os.environ, IRC_SITE_RANGES=nat + '.sites') if os.path.exists(nat + '.sites') else None
+    r = subprocess.run([nat, path, 'edges'], cwd=R, check=True, capture_output=True, text=True, env=env)
+    # ('site_edges': "s<site>.<guard>", a shared guard under the call site's
+    # block, numbered from 1 << 32 so they never meet a guard.)
+    pairs = {}
+
+    def edge(t):
+        if t[0] == 'e':
+            return int(t[1:])
+        return pairs.setdefault(t[1:], (1 << 32) + len(pairs))
+    sets = [frozenset(edge(t) for t in l.split()[4:] if t[0] in 'es') for l in r.stdout.splitlines()]
     pcs = [l.split()[1:] for l in r.stderr.splitlines() if l.startswith('pc ')]
     sym = subprocess.run(['llvm-symbolizer', '--obj=' + nat],
                          input='\n'.join(a for _, a in pcs) + '\n', cwd=R, capture_output=True, text=True).stdout
@@ -746,6 +790,9 @@ def edge_sets(nat, path):
     for (g, _), ln in zip(pcs, lines):
         f, _, rest = ln.partition(':')
         where[int(g)] = '%s:%s' % (os.path.relpath(f, R) if f.startswith('/') else f, rest.split(':')[0])
+    for k, n in pairs.items():
+        a, b = (int(x) for x in k.split('.'))
+        where[n] = '%s from %s' % (where.get(b, '?'), where.get(a, '?'))
     return sets, where
 
 
@@ -1046,7 +1093,10 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
         more, _ = greedy_cover(live, sets, base, key=lambda i: (len(cases[i]['edits']), i))
         pick = sorted(set(pick) | set(more))
         cover = {'method': 'clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every '
-                           'linked source but the test harness, per case (tools/irc_edges.c)',
+                           'linked source but the test harness, per case (tools/irc_edges.c)' + (
+                               '; with site_edges, every edge of the shared code and the milestone\'s own helpers '
+                               'counts once per call site (the routine block that made the call)'
+                               if spec.get('site_edges') else ''),
                  'edges_all_cases': len(target), 'edges_host_vectors': len(set().union(*(sets[i] for i in pick)))}
     sym = spec_id.replace('-', '_')
     out = ['/* SPDX-License-Identifier: MIT; generated by tools/interp_routine_differential.py',
@@ -1080,10 +1130,11 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
              'cases': len(cases), 'cases_sha256': hashlib.sha256(blob).hexdigest(),
              'oracle_sha256': hashlib.sha256('\n'.join(' '.join(r) for r in rows).encode()).hexdigest(),
              'frozen_vectors': len(pick), 'c64_vectors': c64,
-             **({'c64_coverage': cover_counts(covers, [i for g in c64 for i in g['case_ids']]),
-                 'c64_gcov_branches': gcov_branches(spec_id, spec, missions, cases,
-                                                    [i for g in c64 for i in g['case_ids']])}
-                if covers else {}),
+             **({'c64_coverage': cover_counts(covers, [i for g in c64 for i in g['case_ids']])} if covers else {}),
+             **({'c64_gcov_branches': gcov_branches(spec_id, spec, missions, cases,
+                                                    [i for g in c64 for i in g['case_ids']] if covers else
+                                                    [i for g in C64_PICKS for i in g])}
+                if covers or spec.get('c64_rows') == 'cover' else {}),
              **({'c64_host_only': C64_HOST_ONLY} if C64_HOST_ONLY else {}),
              **({'c64_too_big_cases': [{'case': i, 'point': cases[i]['point']} for i in C64_TOO_BIG]} if C64_TOO_BIG else {}),
              **({'outcome_cover': cover} if cover is not None else {}),
@@ -1319,6 +1370,18 @@ def wider_arcs(spec_id, missions, cases, arcs):
     return full, more
 
 
+def trace_cases(spec_id, missions, cases, ii):
+    """{case: arcs} of the given cases, one at a time, with host_arcs' runner."""
+    d = os.path.join(B, '%s-cover' % spec_id)
+    exe, one = os.path.join(d, 'runner'), os.path.join(d, 'cases')
+
+    def argv(i):
+        p = os.path.join(one, 'late-%d.bin' % i)
+        write_cases(p, missions, [cases[i]])
+        return [exe, p]
+    return c64_row_cover.trace(d, ii, argv)
+
+
 C64_HOST_ONLY = []   # routines whose runs do not fit one C64 diagnostic
 GROUP_EXTRA = {}     # symbol -> (mask, pick) -> extra C64 group flags
 C64_TOO_BIG = []     # cases whose run alone does not fit one C64 diagnostic
@@ -1513,7 +1576,10 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             if cover:
                 # (With cover_stride, from the traced cases.)
                 mine = [i for i in mine if i in arcs] or mine
-            need[p] = (mine[:1] if edges is not None else
+            # (With both 'cover' and c64_rows 'cover', the edge cover starts
+            # from the rows that take every gcov arc: gcov counts the ?:
+            # outcomes clang folds to selects.)
+            need[p] = ((mine[:1] + [i for i in mine[1:] if cover and i in chosen]) if edges is not None else
                        ([i for i in mine if i in chosen] or mine[:1]) if cover else mine[:per])
         if edges is not None:
             sets = edges[0]
@@ -1594,6 +1660,12 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
         # Cases that wait for an I/O channel are listed, not compared, on
         # the host too: their arcs are no C64 row's to take.
         arcs = {i: a for i, a in arcs.items() if i not in chan}
+        # Rows the edge cover chose outside the cover_stride sample: trace
+        # their arcs too, so the record counts what they take.
+        late = [i for i in picked if i not in arcs and i not in chan]
+        if late:
+            arcs.update(trace_cases(spec_id, missions, cases, late))
+        picked = [i for i in picked if i not in chan]
         if os.environ.get('IRC_C64_DEBUG'):
             for arc in sorted(c64_row_cover.missing(arcs, picked))[:3]:
                 allw = [i for i in arcs if arc in arcs[i]]

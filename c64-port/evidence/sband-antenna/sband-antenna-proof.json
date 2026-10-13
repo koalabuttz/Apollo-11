@@ -11,77 +11,52 @@
  "cases": 49664,
  "cases_sha256": "10e2a316582299531a32ebaed2ab36f995b96d59b244c2a81f721edec8b10a15",
  "oracle_sha256": "cb6c332057ba3c3a9d91907d06600f574f252b006a874999ebb253bb4c0c84e6",
- "frozen_vectors": 1564,
+ "frozen_vectors": 1599,
  "c64_vectors": [
   {
    "mission": "lm",
    "keep": "0xfffff",
-   "cases": 26
+   "cases": 42
   },
   {
    "mission": "lm",
-   "keep": "0x600001ff80000",
-   "cases": 4
+   "keep": "0x7fffffff80000",
+   "cases": 9
   },
   {
    "mission": "lm",
-   "keep": "0xff9fffc00000",
-   "cases": 1
+   "keep": "0x7ffffffe00000",
+   "cases": 11
   },
   {
    "mission": "lm",
-   "keep": "0x3800000",
-   "cases": 3
-  },
-  {
-   "mission": "lm",
-   "keep": "0x7ff9ffe000000",
-   "cases": 1
-  },
-  {
-   "mission": "lm",
-   "keep": "0x4000000",
-   "cases": 1
-  },
-  {
-   "mission": "lm",
-   "keep": "0x7ff9ffc000000",
-   "cases": 1
-  },
-  {
-   "mission": "lm",
-   "keep": "0x7ff9ffc000000",
-   "cases": 1
-  },
-  {
-   "mission": "lm",
-   "keep": "0x7f8000000",
-   "cases": 3
+   "keep": "0x7ffffff000000",
+   "cases": 12
   },
   {
    "mission": "lm",
    "keep": "0x7fffff0000000",
+   "cases": 21
+  },
+  {
+   "mission": "lm",
+   "keep": "0x3fffff000000004",
+   "cases": 40
+  },
+  {
+   "mission": "lm",
+   "keep": "0x200000000000004",
    "cases": 1
   },
   {
-   "mission": "lm",
-   "keep": "0x1fffffe0000000",
-   "cases": 30
-  },
-  {
-   "mission": "lm",
-   "keep": "0x3e0000000000004",
-   "cases": 5
-  },
-  {
    "mission": "cm",
-   "keep": "0xffff",
-   "cases": 24
+   "keep": "0xcffffff",
+   "cases": 34
   },
   {
    "mission": "cm",
    "keep": "0x3fffff8000",
-   "cases": 30
+   "cases": 53
   },
   {
    "mission": "cm",
@@ -89,11 +64,34 @@
    "cases": 1
   }
  ],
+ "c64_gcov_branches": {
+  "host_taken": 1002,
+  "c64_taken": 1002,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_sband_antenna.c",
+   "src/cm_sband_antenna.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/sband_antenna_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
  "outcome_cover": {
-  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 1325,
-  "edges_host_vectors": 1325,
-  "edges_c64": 1325,
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c); with site_edges, every edge of the shared code and the milestone's own helpers counts once per call site (the routine block that made the call)",
+  "edges_all_cases": 13320,
+  "edges_host_vectors": 13320,
+  "edges_c64": 13320,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -552,5 +550,11 @@
   }
  },
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: B5OFF, BANKCALL, BLANKET, BZF, CHANG2, ENDOFJOB, PRIOCHNG; cm: B5OFF, BANKCALL, BLANKET, BZF, CHANG2, ENDOFJOB)",
- "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state"
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 6498,
+ "host_branch_arcs": 1028,
+ "c64_rows": 224,
+ "c64_branch_arcs": 1028,
+ "host_branches_missing_on_c64": []
 }
