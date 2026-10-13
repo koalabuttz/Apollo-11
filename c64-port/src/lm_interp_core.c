@@ -22,32 +22,81 @@ typedef apollo_overlay_state agc_image;
 static NI unsigned ai_ea(unsigned address);
 static NI agc_word ai_word(unsigned address);
 static NI void ai_put(unsigned address, agc_word);
-static NI void ai_ca(unsigned);
-static NI void ai_caf(agc_word);
-static NI void ai_cs(unsigned);
-static NI void ai_csf(agc_word);
-static NI void ai_ad(unsigned);
-static NI void ai_adf(agc_word);
-static NI void ai_su(unsigned);
-static NI void ai_mask(unsigned);
-static NI void ai_maskf(agc_word);
-static NI uint8_t ai_ts(unsigned);
+static NI void ai_ca_w(unsigned);
+static NI void ai_caf_w(agc_word);
+static NI void ai_caf_b(uint8_t);
+static NI void ai_cs_w(unsigned);
+static NI void ai_csf_w(agc_word);
+static NI void ai_csf_b(uint8_t);
+static NI void ai_ad_w(unsigned);
+static NI void ai_adf_w(agc_word);
+static NI void ai_adf_b(uint8_t);
+static NI void ai_su_w(unsigned);
+static NI void ai_mask_w(unsigned);
+static NI void ai_maskf_w(agc_word);
+static NI void ai_maskf_b(uint8_t);
+static NI uint8_t ai_ts_w(unsigned);
 static NI uint8_t ai_ovsk(void);
-static NI void ai_ads(unsigned);
-static NI void ai_incr(unsigned);
-static NI void ai_aug(unsigned);
-static NI void ai_dim(unsigned);
-static NI void ai_das(unsigned);
-static NI void ai_dca(unsigned);
+static NI void ai_ads_w(unsigned);
+static NI void ai_incr_w(unsigned);
+static NI void ai_aug_w(unsigned);
+static NI void ai_dim_w(unsigned);
+static NI void ai_das_w(unsigned);
+static NI void ai_dca_w(unsigned);
 static NI void ai_dcaf(const agc_word[2]);
-static NI void ai_dcs(unsigned);
+static NI void ai_dcs_w(unsigned);
 static NI void ai_dcsf(const agc_word[2]);
-static NI void ai_dxch(unsigned);
-static NI void ai_mp(unsigned);
-static NI void ai_mpf(agc_word);
-static NI void ai_dv(unsigned);
-static NI uint8_t ai_ccs(unsigned);
-static NI uint8_t ai_ccsf(agc_word);
+static NI void ai_dxch_w(unsigned);
+static NI void ai_mp_w(unsigned);
+static NI void ai_mpf_w(agc_word);
+static NI void ai_mpf_b(uint8_t);
+static NI void ai_dv_w(unsigned);
+static NI uint8_t ai_ccs_w(unsigned);
+static NI void ai_ca_b(uint8_t);
+static NI void ai_cs_b(uint8_t);
+static NI void ai_ad_b(uint8_t);
+static NI void ai_su_b(uint8_t);
+static NI void ai_mask_b(uint8_t);
+static NI uint8_t ai_ts_b(uint8_t);
+static NI void ai_ads_b(uint8_t);
+static NI void ai_incr_b(uint8_t);
+static NI void ai_aug_b(uint8_t);
+static NI void ai_dim_b(uint8_t);
+static NI void ai_das_b(uint8_t);
+static NI void ai_dca_b(uint8_t);
+static NI void ai_dcs_b(uint8_t);
+static NI void ai_dxch_b(uint8_t);
+static NI void ai_mp_b(uint8_t);
+static NI void ai_dv_b(uint8_t);
+static NI uint8_t ai_ccs_b(uint8_t);
+/* Constant register addresses (all below 0400) and small constants pass in
+ * one byte: each helper has a byte entry, picked at compile time. */
+#define B8(a) (__builtin_constant_p(a)&&(unsigned)(a)<0400u)
+#define ai_caf(k) (B8(k)?ai_caf_b((uint8_t)(k)):ai_caf_w(k))
+#define ai_csf(k) (B8(k)?ai_csf_b((uint8_t)(k)):ai_csf_w(k))
+#define ai_adf(k) (B8(k)?ai_adf_b((uint8_t)(k)):ai_adf_w(k))
+#define ai_maskf(k) (B8(k)?ai_maskf_b((uint8_t)(k)):ai_maskf_w(k))
+#define ai_mpf(k) (B8(k)?ai_mpf_b((uint8_t)(k)):ai_mpf_w(k))
+#define ai_ccsf(k) (B8(k)?ai_ccsf_b((uint8_t)(k)):ai_ccsf_w(k))
+#define ai_ca(a) (B8(a)?ai_ca_b((uint8_t)(a)):ai_ca_w(a))
+#define ai_cs(a) (B8(a)?ai_cs_b((uint8_t)(a)):ai_cs_w(a))
+#define ai_ad(a) (B8(a)?ai_ad_b((uint8_t)(a)):ai_ad_w(a))
+#define ai_su(a) (B8(a)?ai_su_b((uint8_t)(a)):ai_su_w(a))
+#define ai_mask(a) (B8(a)?ai_mask_b((uint8_t)(a)):ai_mask_w(a))
+#define ai_ts(a) (B8(a)?ai_ts_b((uint8_t)(a)):ai_ts_w(a))
+#define ai_ads(a) (B8(a)?ai_ads_b((uint8_t)(a)):ai_ads_w(a))
+#define ai_incr(a) (B8(a)?ai_incr_b((uint8_t)(a)):ai_incr_w(a))
+#define ai_aug(a) (B8(a)?ai_aug_b((uint8_t)(a)):ai_aug_w(a))
+#define ai_dim(a) (B8(a)?ai_dim_b((uint8_t)(a)):ai_dim_w(a))
+#define ai_das(a) (B8(a)?ai_das_b((uint8_t)(a)):ai_das_w(a))
+#define ai_dca(a) (B8(a)?ai_dca_b((uint8_t)(a)):ai_dca_w(a))
+#define ai_dcs(a) (B8(a)?ai_dcs_b((uint8_t)(a)):ai_dcs_w(a))
+#define ai_dxch(a) (B8(a)?ai_dxch_b((uint8_t)(a)):ai_dxch_w(a))
+#define ai_mp(a) (B8(a)?ai_mp_b((uint8_t)(a)):ai_mp_w(a))
+#define ai_dv(a) (B8(a)?ai_dv_b((uint8_t)(a)):ai_dv_w(a))
+#define ai_ccs(a) (B8(a)?ai_ccs_b((uint8_t)(a)):ai_ccs_w(a))
+static NI uint8_t ai_ccsf_w(agc_word);
+static NI uint8_t ai_ccsf_b(uint8_t);
 static NI uint8_t ai_bzf(void);
 static NI uint8_t ai_bzmf(void);
 static NI void ai_tc(agc_word return_address);
@@ -212,55 +261,70 @@ static NI agc_word rd(unsigned a){
  return v;
 }
 
-static NI void ai_ca(unsigned a){if(a>=3u)W[0]=sx(rd(a));else if(a)W[0]=reg(a);endi();}
-static NI void ai_caf(agc_word k){W[0]=sx(k);endi();}
-static NI void ai_cs(unsigned a){
+static NI void ai_ca_w(unsigned a){if(a>=3u)W[0]=sx(rd(a));else if(a)W[0]=reg(a);endi();}
+static NI void ai_ca_b(uint8_t a){ai_ca_w(a);}
+static NI void ai_caf_w(agc_word k){W[0]=sx(k);endi();}
+static NI void ai_caf_b(uint8_t k){ai_caf_w(k);}
+static NI void ai_cs_w(unsigned a){
  if(a>=3u)W[0]=sx((agc_word)(~rd(a)&077777u));
  else W[0]=(agc_register)(~reg(a)&M16);
  endi();
 }
-static NI void ai_csf(agc_word k){W[0]=sx((agc_word)(~k&077777u));endi();}
-static NI void ai_ad(unsigned a){W[0]=add16(W[0],a>=3u?sx(rd(a)):reg(a));endi();}
-static NI void ai_adf(agc_word k){W[0]=add16(W[0],sx(k));endi();}
-static NI void ai_su(unsigned a){
+static NI void ai_cs_b(uint8_t a){ai_cs_w(a);}
+static NI void ai_csf_w(agc_word k){W[0]=sx((agc_word)(~k&077777u));endi();}
+static NI void ai_csf_b(uint8_t k){ai_csf_w(k);}
+static NI void ai_ad_w(unsigned a){W[0]=add16(W[0],a>=3u?sx(rd(a)):reg(a));endi();}
+static NI void ai_ad_b(uint8_t a){ai_ad_w(a);}
+static NI void ai_adf_w(agc_word k){W[0]=add16(W[0],sx(k));endi();}
+static NI void ai_adf_b(uint8_t k){ai_adf_w(k);}
+static NI void ai_su_w(unsigned a){
  if(a==0u)W[0]=M16;
  else W[0]=add16(W[0],a>=3u?sx((agc_word)(~rd(a)&077777u)):(agc_register)(~reg(a)&M16));
  endi();
 }
-static NI void ai_mask(unsigned a){
+static NI void ai_su_b(uint8_t a){ai_su_w(a);}
+static NI void ai_mask_w(unsigned a){
  if(a<3u)W[0]=(agc_register)(W[0]&reg(a));else W[0]=sx((agc_word)(oc(W[0])&ai_word(a)));
  endi();
 }
-static NI void ai_maskf(agc_word k){W[0]=sx((agc_word)(oc(W[0])&k));endi();}
+static NI void ai_mask_b(uint8_t a){ai_mask_w(a);}
+static NI void ai_maskf_w(agc_word k){W[0]=sx((agc_word)(oc(W[0])&k));endi();}
+static NI void ai_maskf_b(uint8_t k){ai_maskf_w(k);}
 static NI uint8_t ai_ovsk(void){return ovf(W[0])!=0u;}
-static NI uint8_t ai_ts(unsigned a){
+static NI uint8_t ai_ts_w(unsigned a){
  agc_register acc=W[0],o=ovf(acc);
  if(a==0u){endi();return o!=0u;}
  if(a<3u)setreg(a,acc);else ai_put(a,oc(acc));
  if(o)W[0]=o;
  endi();return o!=0u;
 }
+static NI uint8_t ai_ts_b(uint8_t a){return ai_ts_w(a);}
 /* Register-or-memory operand of the exchanging and modifying instructions
  * (memory read without the editing write-back, written back edited). */
 static NI agc_register get16(unsigned a){return a<3u?W[a]:sx(ai_word(a));}
 static NI void set16(unsigned a,agc_register v){if(a<3u)W[a]=v;else ai_put(a,oc(v));}
 static NI void xchr(unsigned r,unsigned a){agc_register v=get16(a);set16(a,W[r]);W[r]=v;endi();}
-#define ai_xch(a) xchr(0u,(a))
-#define ai_lxch(a) xchr(1u,(a))
-#define ai_qxch(a) xchr(2u,(a))
-static NI void ai_ads(unsigned a){W[0]=add16(W[0],get16(a));set16(a,W[0]);endi();}
-static NI void ai_incr(unsigned a){set16(a,add16(1u,get16(a)));endi();}
-static NI void ai_aug(unsigned a){
+static NI void xchr_b(uint8_t r,uint8_t a){xchr(r,a);}
+#define ai_xch(a) (B8(a)?xchr_b(0u,(uint8_t)(a)):xchr(0u,(a)))
+#define ai_lxch(a) (B8(a)?xchr_b(1u,(uint8_t)(a)):xchr(1u,(a)))
+#define ai_qxch(a) (B8(a)?xchr_b(2u,(uint8_t)(a)):xchr(2u,(a)))
+static NI void ai_ads_w(unsigned a){W[0]=add16(W[0],get16(a));set16(a,W[0]);endi();}
+static NI void ai_ads_b(uint8_t a){ai_ads_w(a);}
+static NI void ai_incr_w(unsigned a){set16(a,add16(1u,get16(a)));endi();}
+static NI void ai_incr_b(uint8_t a){ai_incr_w(a);}
+static NI void ai_aug_w(unsigned a){
  agc_register v=get16(a);
  set16(a,add16((v&0100000u)?M16-1u:1u,v));endi();
 }
-static NI void ai_dim(unsigned a){
+static NI void ai_aug_b(uint8_t a){ai_aug_w(a);}
+static NI void ai_dim_w(unsigned a){
  agc_register v=get16(a);
  if(v!=0u&&v!=M16)set16(a,add16((v&0100000u)?1u:M16-1u,v));
  endi();
 }
+static NI void ai_dim_b(uint8_t a){ai_dim_w(a);}
 /* DAS (DDOUBL for A). */
-static NI void ai_das(unsigned k){
+static NI void ai_das_w(unsigned k){
  agc_register lsw,msw;unsigned lo=k+1u;
  lsw=add16(W[1],get16(lo));msw=add16(W[0],get16(k));
  if((lsw&0140000u)==040000u)msw=add16(msw,1u);else if((lsw&0140000u)==0100000u)msw=add16(msw,M16-1u);
@@ -268,42 +332,49 @@ static NI void ai_das(unsigned k){
  set16(lo,sx(oc(lsw)));set16(k,msw);
  endi();
 }
+static NI void ai_das_b(uint8_t a){ai_das_w(a);}
 static NI void reedit(unsigned a){if(a>=020u&&a<=023u)ai_put(a,ai_word(a));}
-static NI void ai_dca(unsigned k){
+static NI void ai_dca_w(unsigned k){
  unsigned lo=k+1u;
  W[1]=sx(oc(get16(lo)));W[0]=get16(k);reedit(lo);reedit(k);endi();
 }
+static NI void ai_dca_b(uint8_t a){ai_dca_w(a);}
 static NI void ai_dcaf(const agc_word k[2]){W[1]=sx(k[1]);W[0]=sx(k[0]);endi();}
-static NI void ai_dcs(unsigned k){
+static NI void ai_dcs_w(unsigned k){
  unsigned lo=k+1u;
  W[1]=sx(oc((agc_register)(~get16(lo)&M16)));W[0]=(agc_register)(~get16(k)&M16);reedit(lo);reedit(k);endi();
 }
+static NI void ai_dcs_b(uint8_t a){ai_dcs_w(a);}
 static NI void ai_dcsf(const agc_word k[2]){
  W[1]=sx((agc_word)(~k[1]&077777u));W[0]=sx((agc_word)(~k[0]&077777u));endi();
 }
-static NI void ai_dxch(unsigned k){
+static NI void ai_dxch_w(unsigned k){
  agc_register op=get16(k+1u);
  set16(k+1u,W[1]);W[1]=sx(oc(op));
  op=get16(k);set16(k,W[0]);W[0]=op;
  endi();
 }
-static NI void ai_mpf(agc_word k){
+static NI void ai_dxch_b(uint8_t a){ai_dxch_w(a);}
+static NI void ai_mpf_w(agc_word k){
  agc_register_pair p=agc_multiply(W[0],k);
  W[0]=p.a;W[1]=p.l;endi();
 }
-static NI void ai_mp(unsigned a){ai_mpf(a<3u?oc(reg(a)):ai_word(a));}
+static NI void ai_mpf_b(uint8_t k){ai_mpf_w(k);}
+static NI void ai_mp_w(unsigned a){ai_mpf(a<3u?oc(reg(a)):ai_word(a));}
+static NI void ai_mp_b(uint8_t a){ai_mp_w(a);}
 static NI void dv16(agc_register d){
  agc_register_pair p;p.a=W[0];p.l=W[1];
  p=agc_hardware_divide(p,d);W[0]=p.a;W[1]=p.l;endi();
 }
-static NI void ai_dv(unsigned a){dv16(a>=3u?sx(ai_word(a)):W[2]);}
+static NI void ai_dv_w(unsigned a){dv16(a>=3u?sx(ai_word(a)):W[2]);}
+static NI void ai_dv_b(uint8_t a){ai_dv_w(a);}
 static NI uint8_t ccs15(agc_word v){
  if(v==0u){W[0]=0;return 1;}
  if(v==077777u){W[0]=0;return 3;}
  if(v&040000u){agc_word m=(agc_word)(~v&037777u);W[0]=(agc_register)(m>1u?m-1u:0u);return 2;}
  W[0]=(agc_register)(v>1u?v-1u:0u);return 0;
 }
-static NI uint8_t ai_ccs(unsigned a){
+static NI uint8_t ai_ccs_w(unsigned a){
  uint8_t c;
  if(a<3u){
   agc_register v=reg(a),m=(v&0100000u)?(agc_register)(~v&M16):v;agc_word o=oc(v);
@@ -315,7 +386,9 @@ static NI uint8_t ai_ccs(unsigned a){
  if(edited(a))ai_put(a,ai_word(a));
  endi();return c;
 }
-static NI uint8_t ai_ccsf(agc_word k){uint8_t c=ccs15((agc_word)(k&077777u));endi();return c;}
+static NI uint8_t ai_ccs_b(uint8_t a){return ai_ccs_w(a);}
+static NI uint8_t ai_ccsf_w(agc_word k){uint8_t c=ccs15((agc_word)(k&077777u));endi();return c;}
+static NI uint8_t ai_ccsf_b(uint8_t k){return ai_ccsf_w(k);}
 static NI uint8_t ai_bzf(void){return W[0]==0u||W[0]==M16;}
 static NI uint8_t ai_bzmf(void){return W[0]==0u||(W[0]&0100000u)!=0u;}
 static NI void ai_tc(agc_word r){W[2]=(agc_word)(r&077777u);endi();}
