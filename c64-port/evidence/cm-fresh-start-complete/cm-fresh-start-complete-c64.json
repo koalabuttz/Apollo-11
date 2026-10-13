@@ -3,7 +3,7 @@
  "aggregates": {
   "cm-fresh-start": {
    "record": "evidence/cm-fresh-start/cm-fresh-start-vice.log",
-   "sha256": "202f38da678bf27f4c4ab95d4e00c76c772fbf842be4bc160bb4e7f4d7b09afd",
+   "sha256": "a213d1f8b712f497cf9f6ea806af960a30047ef4cd6a4e565047994cb5ddd00b",
    "pass_lines": [
     "PASS: VICE PAL cm-fresh-start.prg: 259 checks, 0 failures"
    ],
@@ -15,13 +15,13 @@
    "prg_sha256": [
     {
      "prg": null,
-     "sha256": "1dfd18cf28dcd464da27e0161f4a258bc65378b0f1680c5929c624ca942ac123"
+     "sha256": "0c860e5eabeee4b895e2fe44c4cae8a059140905d2410b169f1c7bf51574834b"
     }
    ]
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-vice.log",
-   "sha256": "68f558b2c4e0f1886922bd34bb2a3a6507d1805c1ecb2961eefac4004a268fca",
+   "sha256": "c78d156cb0a2c337af0865d8f92f15cb97c861b3b18c1d22f794e1529c94c856",
    "pass_lines": [
     "PASS: VICE PAL cm-v37.prg: 169 checks, 0 failures"
    ],
@@ -33,7 +33,7 @@
    "prg_sha256": [
     {
      "prg": null,
-     "sha256": "ebe4317711fb9e32d509f2fd7d94baaaa2e846fb28785f109903c42a681e5bf5"
+     "sha256": "11ea3625da68dd659e78b2ebec4956acb8a91ba997dfce2f399d5169bf740885"
     }
    ]
   },

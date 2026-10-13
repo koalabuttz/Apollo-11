@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -1381,7 +1381,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64.json",
-            "sha256": "a82ffc45e4bff11c530872f834b3da57ab0702e8408b2735d5927b36b4d81845",
+            "sha256": "6218790c90da44e8fd44d223d33c9d8d14529f1998e921ad86dfc71d3f8aad2d",
             "vice_targets": {
               "vice-cm-fresh-start": 259,
               "vice-cm-v37": 169,
@@ -1394,19 +1394,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-host.json",
-            "sha256": "7a2b9e2f31d73a754eadff27c42ea495be1b369746090c8a368b5a195c6442a7"
+            "sha256": "5c78fd6c8ec1f76bb8de50637630c20c373b2e3b785c9ad277d7ba8073451eca"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-comparison.json",
-            "sha256": "ff8bbb74d46f2665398060dfcf90c55ddfb0dc0f7f370b42e7c56814cebe4ed6"
+            "sha256": "07638878316911d8fba6fb17546c59100cda393e99aabd28703649bcf121716f"
           },
           "source_to_native_map": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-source-map.json",
-            "sha256": "ba64ce8e7a9e6c927b2d48fd60f5a033bc55bd302eaefd6c5106a7942210eeea"
+            "sha256": "ca701c42744aa362983fa3456f377c8dfd44256d69001451f7f3af6095e30421"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64-cover.json",
-            "sha256": "a23c460eeec87fca6cdf4d2cf82605f46303d983bfec2d811089f2f98d2941a4"
+            "sha256": "d0d6ebdd90589e1359c8f9424baf177b17d71f4e235894286a2009cbcc5fbb3c"
           }
         },
         "external_continuations": [
@@ -1428,7 +1428,7 @@
       "sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
       "bytes": 2157,
       "lines": 98,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1496,7 +1496,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1507,7 +1507,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
         "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
@@ -1523,10 +1522,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
+            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
@@ -1562,7 +1565,7 @@
       "sha256": "0f912428b5bde06a8bae27432f9c56679cfe5cfc2d1ee5eeadf80a37cf98185c",
       "bytes": 23871,
       "lines": 1406,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1578,7 +1581,7 @@
           "verification": "docs/IMU-CALIBRATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1592,7 +1595,6 @@
           "Idle points CHECKG1 and FINETIME +1, waiting for PIPAX or LOSCALAR to move",
           "Interpreter LOADTIME, 1STO2S and CDULOGIC through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
@@ -1608,10 +1610,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "43efc541e01751eaa338607e1b31b1c031dab73694199fe51cb1aca537feea8f",
+            "sha256": "06134e8d2f00b4f4f4ee3c1b0739d3046ebf10c7e877f9d346ee5d962d48684d",
             "vice_targets": {
               "vice-cm-imu-calibration": 507
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
@@ -1749,7 +1755,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613 (which includes JOBWAKE's not-found -0, at 07,3702), GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, 8192AUG with LGYRO under EBANK 0 indexing FB, Z or BB (index 4-6), GYROAGRE's indexed DXCH under EBANK 0 landing on MPAC +3 or ITEMP1, SCALPREP return MPAC +2 outside 010-07776. Entries T4RUPT reaches by TC (NOATTOFF, and SETISSW's IBNKCALL returns) assume the state T4RUPT leaves: inside the interrupt, with the interrupted program's bank and return saved by T4RUPT; these routines neither read nor change the in-interrupt flag and none ends with RESUME, so the cases run them with the flag clear and either interrupt-enable value. Device adapter obligation: the routines only set the channel 12 and 14 bits and the GYROCMD/CDU counters as the AGC does; driving the gyros, the IMU CDUs and the optics from them is the device adapter's job (the oracle's yaAGC drops that device block).",
         "external_continuations": [
           "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
           "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
@@ -1767,17 +1773,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
+            "sha256": "4d15bb6da3a037c0bfa4e1aedfd84f9acef935805a691dd706ccd4f8d0d08ddb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
+            "sha256": "658981da8665a21e3f7c7253d11e2628e85334db17a934ed1c7eaf86133e8712"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1288
+              "vice-imu-mode-switching": 1290
             }
           },
           "independent_review": {
@@ -1786,7 +1792,8 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
-            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
+            "sha256": "fa2cd8d6f806b5de402ff195f49c9aa5907d96a7ad645b14b6dbf8d58a4917ac",
+            "check": "python3 tools/imu_mode_switching_cover.py"
           }
         }
       },
@@ -2395,7 +2402,7 @@
       "sha256": "4536be1087aa877bffde066a745cdd139e7a7edb5433647cff8a143923c143b2",
       "bytes": 7119,
       "lines": 317,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2412,7 +2419,7 @@
           "verification": "docs/LAT-LONG.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2423,7 +2430,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lat-long/lat-long-source-map.json",
@@ -2443,6 +2449,10 @@
             "vice_targets": {
               "vice-lat-long": 197
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
@@ -2969,8 +2979,63 @@
       "sha256": "8ca37189556a5030fe1d42037a2c97a8e6b4163b185f8e1d663cad61ca234120",
       "bytes": 40894,
       "lines": 2213,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p51_p53.c",
+            "src/p51_p53_rtb.c",
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (1,416 words: banks 11, 13, 14, 15, 16, 17 and 26): P51, P52, P53, P54, R51, R52, R53, R55, R56, S50 (LOCSAM), ADVORB, the star-pair search PICAPAR and the option tables, as 585 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/P51-P53.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= settings), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states) and pinned with S1 and S2 inside the PICAPAR pair loop and the mid-sequence resume points, MARKSTAT any mark-VAC address, BESTI and BESTJ any of the 37 catalog stars or the planet codes, TIME1, TIME2 and the CDUs any values, and any values of the other erasables the file reads. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 10,000 routines.",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, BLANKET, PHASCHNG, PRIOCHNG, UPFLAG, DOWNFLAG, MAKECADR, FINDVAC, LINUS, CHECKMM, TWIDDLE, CLEARMRK, FALTON and CURTAINS with their inline words",
+          "SWCALL and SWRETURN (no return)",
+          "ENDOFJOB, GOTOPOOH, GOTOV56, BANKJUMP and TASKOVER",
+          "RTB V1STO2S, 1STO2S, LOADTIME (src/rtb_angles.c), SGNAGREE (src/rtb_agreement.c), RDCDUS and SET1/PDT (src/p51_p53_rtb.c), native",
+          "Display interface, Executive and other alignment-file destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/p51-p53/p51-p53-source-map.json",
+            "sha256": "bf2edfa868252b3406524b12bd7f6649e7980417ff64b87c33c8bb0951f8f0c1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/p51-p53/p51-p53-proof.json",
+            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/p51-p53/p51-p53-host.log",
+            "sha256": "1cfca8d1c6561943734dbbc3bc0f53ded1c9130756e7dd7ef08a2ca778267f7f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/p51-p53/p51-p53-vice.log",
+            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "vice_targets": {
+              "vice-p51-p53": 1522
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
+            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P61-P67.agc",
@@ -3457,6 +3522,7 @@
         {
           "native_files": [
             "src/lanec_pin_gaps.c",
+            "src/lanec_pin_routines.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
@@ -3560,7 +3626,7 @@
       "sha256": "cea7b46a08c28f155428fbdfbc22a378fecdabed1390b053fa883d145cdcfef7",
       "bytes": 9496,
       "lines": 386,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3577,7 +3643,7 @@
           "verification": "docs/PLANETARY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3587,7 +3653,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/planetary/planetary-source-map.json",
@@ -3607,6 +3672,10 @@
             "vice_targets": {
               "vice-planetary": 204
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
@@ -3698,7 +3767,7 @@
       "sha256": "412fbc54a7f99ea193e85c3ea739319eaf8ab489558ba5165a6482d6c51c6d9b",
       "bytes": 15336,
       "lines": 485,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3713,7 +3782,7 @@
           "verification": "docs/R30.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3726,7 +3795,6 @@
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/r30/r30-source-map.json",
@@ -3750,6 +3818,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
             "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-235.md",
+            "sha256": "91ca944a8ff814a230305e728493de182ffb0dd05462cf8228eb3fa0eae4afd9"
           }
         }
       }
@@ -4223,7 +4295,7 @@
       "sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
       "bytes": 3698,
       "lines": 128,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4266,7 +4338,7 @@
           "verification": "docs/SBAND-ANTENNA.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4278,7 +4350,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/sband-antenna/sband-antenna-source-map.json",
@@ -4294,10 +4365,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
+            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
@@ -4564,8 +4639,54 @@
       "sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
       "bytes": 15461,
       "lines": 659,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_sxtmark.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (SXTMARKE bank 07 and SXTMARK1 bank 10: 315 words) as 42 registered basic routines of the control-transfer ABI compiled whole by tools/basic_compile.py: every word another file names, the file's own CADRs, and CHECKMM's and GOMARK4's further returns.",
+          "verification": "docs/CM-SXTMARK.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 42 routines with the FB, EB 7 and superbank its callers leave, Q a return address at subroutine entries (DIFCHK). The erasables the file indexes hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area in the low 9 bits under flag bits 10-14; each area's QPRET (word 42D) the area plus 7 words per mark taken (0-5); MKNDX -1, 0 or 1 at DIFCHK; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (EXTVBACT, STATE, CDUCHKWD, the CDUs, optics, TIME1/TIME2) and of channels 12 and 016. Refused (image, io unchanged): an indexed operand whose sum leaves the erasable words the source addresses, MKVACFND's indexed TS with MARKSTAT not a VAC area.",
+        "external_continuations": [
+          "Basic: ALARM, BAILOUT, BANKCALL (KLEENEX, GOMARK4), CHECKMM, CLEARMRK, ENDMARK, GENTRAN, IBNKCALL (GOODEND, MARKCONT), NOVAC, POSTJUMP (KEYCOM, TERM52), RESUME, SWRETURN, TASKOVER, UPFLAG and WAITLIST, with their inline words"
+        ],
+        "hardware_side_effects": "Channel 016 (NAVKEYIN: mark, mark reject and key code bits) is read as a latched input; MKRLEES's WAND CHAN12 clears bit 2 (the optics error counter enable) in the io record. Raising MARKRUPT from the mark buttons and driving the optics from channel 12 are device-adapter obligations.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-source-map.json",
+            "sha256": "4bd14f72ea6e24eeef61bdb48d3a1d1d706549bec349e597138a39216700d4e5"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-proof.json",
+            "sha256": "62a32f9574f15b086c8665b65e82921dbb555f71ceb6bf1e4517b6463fb07a36"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-host.log",
+            "sha256": "7b5e4014a87625b8aa68cb639f715b67f97b73d0ece0545d72d43a2a70a95475"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-vice.log",
+            "sha256": "5ced31f8ffd72a0a88ca91f0c97dc7288450a5cd75e0295082375757d1886584",
+            "vice_targets": {
+              "vice-cm-sxtmark": 71
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-c64-outcomes.json",
+            "sha256": "a9446d45cbf6bb9936523e83bc69cf4d66c029387982739a28e656562e2873d3"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
@@ -5678,8 +5799,59 @@
       "sha256": "2feea8e6e449cd1eb814a482dcdb75f4b0ff4364058095f28efd7ce1df5db25a",
       "bytes": 16963,
       "lines": 695,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_aotmark.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (AOTMARK1 bank 07, AOTMARK2 OANB bank 04, P50S SURFSTAR bank 15: 511 words) as 122 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry, every return from a BANKCALL display or POSTJUMP, and every interpretive word after a DANZIG.",
+          "verification": "docs/LM-AOTMARK.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 122 routines with the FB, EB 7 and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it, NEWJOB +0 or positive. The erasables the file indexes or dispatches on hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area +1 in the low 9 bits under flag bits 10-14, nonzero past MARKRUPT's busy check; MARKCNTR 0-5; AOTCODE a detent 0-7 in bits 7-9; MKDEX the mark verb index 0-3 in flight or a mark slot (area +1 +6n) on the surface (FLAGWRD8 bit 8); in the star-vector code X1 minus a slot, XYMARK a VAC area and PUSHLOC shallow; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (MPAC, the pushdown list, CDUs, TIME1/TIME2, channels 016, 030-033). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "external_continuations": [
+          "Basic: ALARM, BAILOUT1, BANKCALL (GOMARKF, GOMARK4 and the other display CADRs), ENDMARK, FINDVAC, GOTOPOOH, IBNKCALL, NOVAC, POODOO, POSTJUMP (DESCBITS), RESUME and WAITLIST, with their inline words",
+          "Interpretive CALL and STCALL to TRG*NBSM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "hardware_side_effects": "Channel 016 (NAVKEYIN, the mark and reject buttons) is read as a latched input; channels 1 and 2 are the L and Q registers. Raising MARKRUPT from the mark buttons is a device-adapter obligation.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-aotmark/lm-aotmark-source-map.json",
+            "sha256": "ece79a0622dbc0be892441bc830a5221092b8efa47ee9a34e494bc42a612c43b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-aotmark/lm-aotmark-proof.json",
+            "sha256": "39225e6c6b5859afcb604fb844c2d9af636c594205e5af9b84d1da9da78c5eea"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-aotmark/lm-aotmark-host.log",
+            "sha256": "268eb56f254dbcd04339d16e45dadb232fb5d7fb87afa455727c46d3a37df398"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-aotmark/lm-aotmark-vice.log",
+            "sha256": "0e804e65ae6357a8d5412a16e58818c232bfadb6d9ebcbbbf952fa8560fbafea",
+            "vice_targets": {
+              "vice-lm-aotmark": 293
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-aotmark/lm-aotmark-c64-cover.json",
+            "sha256": "7858e6023de821e1454ae38b0ff718988cdbb76f78f6f58c7cb074b7c7f0be72"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ASCENT_GUIDANCE.agc",
@@ -6030,8 +6202,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-151.md",
-            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
+            "path": "docs/audits/lane-f-236.md",
+            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-dapidler/lm-dapidler-c64-cover.json",
@@ -6776,8 +6948,73 @@
       "sha256": "d749732ada1c3221d526fadcabf062a652dfb1d01e22bf6bab55bd02b8937d7f",
       "bytes": 18500,
       "lines": 743,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_findcduw.c",
+            "src/lm_findcduw_rtb.c",
+            "src/rtb_vector.c",
+            "src/rtb_unit.c",
+            "src/guidance_unit_phased.c",
+            "src/guidance_length_phased.c",
+            "src/guidance_norm.c",
+            "src/lm_powered_quick.c",
+            "src/lm_single_trig.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (441 words in bank 30, 30,3104-3774): INITCDUW, FINDCDUW with its PNGCS-auto branch PAUTNO (RTB NORMUNIT, RTB QUICTRIG, RAND CHAN30/CHAN31), the CDU-window filter FLTRSUB, CDUWXFR and TCQCDUW, NB2CDUSP with DVBYCOSM, ARCTRGSP, SPARCSIN, LIMITSUB, ONESTO2S, 1TO2&TCQ and the alarm exits NOATTCNT and ALARMMGA, basic and interpretive. As 75 routines of the control-transfer ABI compiled whole-file by tools/interp_compile.py (spec findcduw, resume_keys), entered at INITCDUW, FINDCDUW -2, SPARCSIN -1, the continuations after outside calls and every word that can follow a DANZIG. RTB NORMUNIT runs rtb_vector's NORMUNIT front and rtb_unit's UNIT+1 phases (src/lm_findcduw_rtb.c); RTB QUICTRIG runs lm_powered_quick and lmi_swreturn.",
+          "verification": "docs/LM-FINDCDUW.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random except 010-061: with counters, TIME2, TIME1 (across its range, at 0 and just below its 037777 wrap) and CDUX-Z (032-034) are seeded, the rest of 010-061 is +0; a quarter of the cases put edge values (+-0, one LSB, 1/2, 1/4, just below 1, axis, plane and tiny vectors, CDUs at 0, 45, 90, 180 or 270 degrees) into MPAC, the pushdown top and every operand, and the erasable words the basic code names take +-0, small and saturating values) under EBANK 6, entered with Z at any of the file's basic routines (FB 30) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables; input channels 030-033 latched from the case seed (PNGCS control, channel 30 bit 10, and auto mode, channel 31 bit 14, set or clear), held for the run as yaAGC holds its input channels, LOSCALAR 37777 in a quarter of the cases; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). NDXCDUW (E6,1650) is 0 or 1 (FLTRSUB's INDEX NDXCDUW into GAINFLTR, DAZMAX, DAY/2MAX and DAXMAX); OVFIND is +0, +1 or -1; MODE is -1 (vector) at FINDCDUW, FINDCDUW +3, +5, PAUTNO +1 and +5, where the RTBs need a vector; TEM2 holds 0, 1 or 2 at CDUWXFR +6 and +24 and the FLTRSUB return (3207 or 3213) at FLTRSUB +11 and +15; TEM4 holds an ARCTRGSP return (3556, 3565 or 3574) at ARCTRGSP +21 to +28, as their callers leave them; SPARCSIN's INDEX A into LIMITS sees A = +-1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. RTB NORMUNIT of a zero vector (UNIT's alarm 1302) is outside the domain and refused; a DVOVF in UNIT ends at DANZIG as the AGC does. The -0 arm of the CCS A after each RAND is the word after the next EXTEND and is refused rather than run unextended (no latched channel value reaches it). Indexed instructions whose index would change the opcode or reach a central register, and TS overflow skips onto words the program never reaches with overflow, refuse; none is reached by the 19,200 cases.",
+        "external_continuations": [
+          "ALARM and IBNKCALL (outside basic routines)",
+          "DANZIG to CHANG2 with NEWJOB positive (Lane A Executive; the CHANG2 resume keys re-enter the file)",
+          "RTB NORMUNIT (native: rtb_vector's NORMUNIT front, rtb_unit's UNIT+1 phases, src/lm_findcduw_rtb.c) and RTB QUICTRIG (native: lm_powered_quick, lmi_swreturn)",
+          "NEWOPS with LOC outside the file (RVQ and interpretive returns to the callers in P40-P47, BURN_BABY_BURN, P70-P71 and LUNAR_LANDING_GUIDANCE_EQUATIONS)",
+          "The interpreter bodies' POODOO/ALARM exits",
+          "The caller's return through Q (TC Q runs the TC word held in Q)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/findcduw/findcduw-source-map.json",
+            "sha256": "8d80af33960f31d9bd56dc65daf9b1d1e10e03212815f2909050a8d305e7f4a8"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/findcduw/findcduw-proof.json",
+            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/findcduw/findcduw-host.log",
+            "sha256": "271a1ebbbd27e06b6c80358657c7eb040f6eaa9c3515a21a4864b50a614f94fa"
+          },
+          "c64_execution_results": {
+            "path": "evidence/findcduw/findcduw-vice.log",
+            "sha256": "e0da1b989a2ff87a582ec8d0110ffdb27f2662155a313d60745bbc631a25bd12",
+            "vice_targets": {
+              "vice-findcduw": 146
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-248.md",
+            "sha256": "41de9a267cb01d5482b0bc63d8f92f79ac295e65f3be397346fa00cbd9ff26f2"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/findcduw/findcduw-proof.json",
+            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",
@@ -6944,7 +7181,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64.json",
-            "sha256": "9b7e1dd86ee1c976e20b3f273b990c384acb374c9ab81be5abcdc463454c2298",
+            "sha256": "a98c72ca3146af8fc0b70e33f3ff9aa56614b3e94a1bcf4c4d744c2989edb8fc",
             "vice_targets": {
               "vice-lm-fresh-start": 259,
               "vice-lm-v37": 136,
@@ -6957,19 +7194,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-host.json",
-            "sha256": "115b2356c58baa95575249a30c69cc8114e05288e19172a7890f79fc00d049ed"
+            "sha256": "bf29dc68eaee3c417fbc2f63e1bf1c90f3feafb43b796196c7a91bc9d4d920aa"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-comparison.json",
-            "sha256": "615f7baadb5531ee576b6ab1a7dbe505af42241330c99258225283ad8373ef4c"
+            "sha256": "fe861437f1873798efdd35da62e48b35775bdf4f90bd007433bbc545f869743f"
           },
           "source_to_native_map": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-source-map.json",
-            "sha256": "c516850c5c678041a02449f60eed6adb8ba3eba3c09e823cd85ae51a281f64b4"
+            "sha256": "b0f057da0058e856f56da6c5776c724738b0739895f3b29ced7a9c2068cc0526"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64-cover.json",
-            "sha256": "a9310df51bd9eaf766699216dd7f44aa2e4490e4173620fe68dac8072ba5d552"
+            "sha256": "b93c388c122e1d85ef463e01f3e11a56f05b847edff25579fe36f1bf7cff01cf"
           }
         },
         "external_continuations": [
@@ -7012,7 +7249,7 @@
       "sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
       "bytes": 2293,
       "lines": 76,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7080,7 +7317,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7091,7 +7328,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
         "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
@@ -7107,10 +7343,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
+            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
@@ -7269,7 +7509,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613, GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, SCALPREP return MPAC +2 outside 010-07776.",
+        "supported_domain": "Canonical 2048-word image entered at each routine, run to its exit with no interrupt in between, with the bank, EB and superbank its callers leave (FB of the routine; any FB for ZEROICDU); channels 11-14 as hardware holds them (channel 13 bits 12-14 clear at the channel-13 writers); the program's agc_hardware supplying channel 11 for ENDIMU paths; refused (image, io and channels unchanged): subroutine entries with Q outside 010-07777, BADEND/GOODEND A above 2, MAKECADR return RUPTREG2 above 2, JOBWAKE return LOCCTR above 01613 (which includes JOBWAKE's not-found -0, at 07,3702), GYROAGRE/GSELECT indices leaving 1400-1776 or touching the central registers under EBANK 0, STRTGYRO LGYRO negative or 040000 and above, 8192AUG with LGYRO under EBANK 0 indexing FB, Z or BB (index 4-6), GYROAGRE's indexed DXCH under EBANK 0 landing on MPAC +3 or ITEMP1, SCALPREP return MPAC +2 outside 010-07776. Entries T4RUPT reaches by TC (NOATTOFF, and SETISSW's IBNKCALL returns) assume the state T4RUPT leaves: inside the interrupt, with the interrupted program's bank and return saved by T4RUPT; these routines neither read nor change the in-interrupt flag and none ends with RESUME, so the cases run them with the flag clear and either interrupt-enable value. Device adapter obligation: the routines only set the channel 12 and 14 bits and the GYROCMD/CDU counters as the AGC does; driving the gyros, the IMU CDUs and the optics from them is the device adapter's job (the oracle's yaAGC drops that device block).",
         "external_continuations": [
           "ALARM, POODOO, VARALARM and GOTOPOOH (ALARM_AND_ABORT, FRESH_START)",
           "WAITLIST, VARDELAY, FIXDELAY, TASKOVER (WAITLIST)",
@@ -7288,17 +7528,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
+            "sha256": "4d15bb6da3a037c0bfa4e1aedfd84f9acef935805a691dd706ccd4f8d0d08ddb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
+            "sha256": "658981da8665a21e3f7c7253d11e2628e85334db17a934ed1c7eaf86133e8712"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1288
+              "vice-imu-mode-switching": 1290
             }
           },
           "independent_review": {
@@ -7307,7 +7547,8 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
-            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
+            "sha256": "fa2cd8d6f806b5de402ff195f49c9aa5907d96a7ad645b14b6dbf8d58a4917ac",
+            "check": "python3 tools/imu_mode_switching_cover.py"
           }
         }
       },
@@ -8194,7 +8435,7 @@
       "sha256": "5781f21292603392fc38aec45edbf8905ac7471c17c51c6dfe77593ba695bd46",
       "bytes": 7080,
       "lines": 306,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -8211,7 +8452,7 @@
           "verification": "docs/LAT-LONG.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -8222,7 +8463,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lat-long/lat-long-source-map.json",
@@ -8242,6 +8482,10 @@
             "vice_targets": {
               "vice-lat-long": 197
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
@@ -8924,8 +9168,63 @@
       "sha256": "becc16af5767c23bc14bcce9f89456f3f93fe7c81a0e00455cd5ca757ca4b0c2",
       "bytes": 43690,
       "lines": 2341,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p51_p53.c",
+            "src/p51_p53_rtb.c",
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (1,646 words: banks 04, 14 and 15): P51, P52, P53, P57, R51, R52, R55, R59, S50 (LOCSAM), the star-pair search PICAPAR and the option tables, as 696 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/P51-P53.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= settings), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states) and pinned with S1 and S2 inside the PICAPAR pair loop and the mid-sequence resume points, STARCODE and POSCODE any of their codes, BESTI and BESTJ any of the 37 catalog stars or the planet codes, TIME1, TIME2 and the CDUs any values, and any values of the other erasables the file reads. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 10,000 routines.",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, BLANKET, PHASCHNG, PRIOCHNG, UPFLAG, DOWNFLAG, MAKECADR, FINDVAC, LINUS, CHECKMM, TWIDDLE, CLEARMRK, FALTON and CURTAINS with their inline words",
+          "SWCALL and SWRETURN (no return)",
+          "ENDOFJOB, GOTOPOOH, GOTOV56, BANKJUMP and TASKOVER",
+          "RTB V1STO2S, 1STO2S, LOADTIME (src/rtb_angles.c), SGNAGREE (src/rtb_agreement.c), RDCDUS and SET1/PDT (src/p51_p53_rtb.c), native",
+          "Display interface, Executive and other alignment-file destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/p51-p53/p51-p53-source-map.json",
+            "sha256": "bf2edfa868252b3406524b12bd7f6649e7980417ff64b87c33c8bb0951f8f0c1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/p51-p53/p51-p53-proof.json",
+            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/p51-p53/p51-p53-host.log",
+            "sha256": "1cfca8d1c6561943734dbbc3bc0f53ded1c9130756e7dd7ef08a2ca778267f7f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/p51-p53/p51-p53-vice.log",
+            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "vice_targets": {
+              "vice-p51-p53": 1522
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
+            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P70-P71.agc",
@@ -9346,6 +9645,7 @@
         {
           "native_files": [
             "src/lanec_pin_gaps.c",
+            "src/lanec_pin_routines.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
@@ -9449,7 +9749,7 @@
       "sha256": "a107b96fddaa1ea7fbbee375705d071ab1800f40e02803aeda39b89e895a1128",
       "bytes": 9233,
       "lines": 385,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9466,7 +9766,7 @@
           "verification": "docs/PLANETARY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9476,7 +9776,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/planetary/planetary-source-map.json",
@@ -9496,6 +9795,10 @@
             "vice_targets": {
               "vice-planetary": 204
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
@@ -9630,8 +9933,8 @@
             "sha256": "43f6e6df9cf03c99d323239e08d5872d6455e57ae3e2585a33dc951c86807aea"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-211.md",
-            "sha256": "a5b3b526595ff2404c78eaf07a5f8e4df11e6e95eb5c243cde813d7ba15900c9"
+            "path": "docs/audits/lane-f-236.md",
+            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
           }
         }
       }
@@ -9642,7 +9945,7 @@
       "sha256": "76b904d389476022d9c6dcef6788737385a4603cff81d1c9af1fd17d82dc76bd",
       "bytes": 14653,
       "lines": 464,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9666,7 +9969,7 @@
           "verification": "docs/R30.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9679,7 +9982,6 @@
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/r30/r30-source-map.json",
@@ -9703,6 +10005,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
             "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-235.md",
+            "sha256": "91ca944a8ff814a230305e728493de182ffb0dd05462cf8228eb3fa0eae4afd9"
           }
         }
       }
@@ -10138,7 +10444,7 @@
       "sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
       "bytes": 4670,
       "lines": 200,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10181,7 +10487,7 @@
           "verification": "docs/SBAND-ANTENNA.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10193,7 +10499,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/sband-antenna/sband-antenna-source-map.json",
@@ -10209,10 +10514,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
+            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-208.md",
+            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
@@ -10336,7 +10645,7 @@
       "sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
       "bytes": 5418,
       "lines": 221,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10365,7 +10674,7 @@
           "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10382,7 +10691,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/service-transfer/service-transfer-source-map.json",
@@ -10402,6 +10710,10 @@
             "vice_targets": {
               "vice-service-transfer": 569
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-221.md",
+            "sha256": "906106f2ac22dc25e0bd8f38bd139f0e17a428a687458d30771d7895610262a0"
           },
           "c64_branch_outcomes": {
             "path": "evidence/service-transfer/service-transfer-c64-cover.json",
@@ -11065,8 +11377,8 @@
             "sha256": "e176cad7e26e8392c894ff8739688e26fbdd9a8296421968c719ca3b24b91439"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-151.md",
-            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
+            "path": "docs/audits/lane-f-236.md",
+            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
           }
         }
       }
