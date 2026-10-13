@@ -7684,8 +7684,24 @@
       "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
       "bytes": 7797,
       "lines": 439,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p70_p71.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c",
+            "src/rtb_angles.c"
+          ],
+          "scope": "290 of the 298 words (21,2006-2127, 05,3402-3501 and 32,3540-3767): R10,R11, P70, P71, LEGAL?, CONTABRT, ABRTJASK, GOABORT, P70INIT, INJTARG, BOTHPOLY, UPRATE, UPTHROT, P71RET, TGOCOMP and THROTUP, as 88 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 8 channel-instruction words (READ CHAN30, RAND/WRITE DSALMOUT, WOR CHAN14), which wait for the channel model.",
+          "verification": "docs/LM-P70-P71.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P76.agc",

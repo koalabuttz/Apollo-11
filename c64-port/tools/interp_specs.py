@@ -502,6 +502,37 @@ SPECS = {
         'target': 'tests/lm_p12_target.c',
         'freeze_stride': 32,
     },
+    'lm-p70-p71': {
+        'missions': ('lm',),
+        'file': {'lm': 'P70-P71.agc'},
+        'base': {'lm': 'lm_p70_p71'},
+        'symbol': {'lm': 'lm_p70_p71'},
+        # R10,R11 (the Waitlist task), P70 and P71 (the major modes),
+        # GOABORT (4.3SPOT's restart point), P70INIT, P71RET, and TGOCOMP,
+        # THROTUP and LEGAL? (subroutines other files call).
+        'entries': ['R10,R11', 'P70', 'P71', 'P70A', 'P71A', 'CONTABRT', 'ABRTJASK', 'GOABORT', 'P70INIT',
+                    'P71RET', 'INJTARG', 'TGOCOMP', 'THROTUP', 'LEGAL?'],
+        'externals': {'TASKOVER': None, 'LRHTASK': None, 'TWIDDLE': 'auto', 'FLIP': 'auto', 'LANDISP': None,
+                      'CLRADMOD': 'auto', 'POSTJUMP': 1, 'CHECKMM': 1, 'DOWNFLAG': 'auto', 'UPFLAG': 'auto',
+                      'PHASCHNG': 'auto', 'BANKCALL': 'auto', 'ENDOFJOB': None, 'FALTON': 'auto',
+                      'RELDSP': 'auto'},
+        'noreturn': ['POSTJUMP'],
+        'resume_keys': True,
+        'resume_orphans': True,
+        # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
+        'basic_fixed_index': {'MODE70': [0, 2]},
+        # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
+        # 8D): the DPS or the APS coefficients, eight words on.
+        'states': {lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
+        'partial': {'lm': 'READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'target': 'tests/lm_p70_p71_target.c',
+        'freeze_stride': 32,
+    },
     'cm-r31': {
         'missions': ('cm',),
         'file': {'cm': 'R31.agc'},
