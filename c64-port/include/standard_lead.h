@@ -20,7 +20,13 @@ bool standard_lead_interp_call(apollo_overlay_state *,enum standard_lead_mission
 bool standard_lead_interp_rvq(apollo_overlay_state *,enum standard_lead_mission);
 bool standard_lead_interp_exit(apollo_overlay_state *,enum standard_lead_mission);
 bool standard_lead_interp_finish(apollo_overlay_state *,enum standard_lead_mission);
-enum standard_lead_interp_boundary {STANDARD_LEAD_CALL,STANDARD_LEAD_RVQ,STANDARD_LEAD_EXIT,STANDARD_LEAD_FINISH};
+/* E/CALL's CALL EBUF2 order word (LM 04,2624, CM 13,2064) at the fetch point,
+ * as a job resumed there by CHANG2 reaches it: the same CALL without
+ * INTPRET's entry (Q and the interrupt latch untouched). At the fetch point
+ * the interpreter has already loaded BBANK from BANKSET, so CALL and EXIT
+ * there require the banks to equal BANKSET's. */
+bool standard_lead_interp_call_order(apollo_overlay_state *,enum standard_lead_mission);
+enum standard_lead_interp_boundary {STANDARD_LEAD_CALL,STANDARD_LEAD_RVQ,STANDARD_LEAD_EXIT,STANDARD_LEAD_FINISH,STANDARD_LEAD_CALL_ORDER};
 /* External latch-aware interpreter controls: actual INTPRET enables interrupts.
  * E/CALL's TCF INTPRET+2 skips EXTEND/RELINT; FINISH, RVQ and EXIT retain the
  * caller's latch. Each control

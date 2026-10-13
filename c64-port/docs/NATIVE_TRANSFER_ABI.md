@@ -49,6 +49,19 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   records. Zero-initialize it with `agc_hardware hw = {0};`, because a
   partial positional list fails `-Wmissing-field-initializers` whenever a
   field is added. A routine that needs it refuses when it is NULL.
+- **RESUME.** The AGC's RESUME runs the instruction in BRUPT and continues at
+  ZRUPT. A native RESUME (TASKOVER's, the RESUME/NOQRSM/NOQBRSM family of
+  both missions) continues at Z = ZRUPT-1 instead, which is the same thing
+  only when BRUPT is the word at ZRUPT-1 under the banks the interrupted
+  program gets back. The interrupt hardware always saves exactly that word.
+  Code that writes BRUPT itself (Luminary ENDJASK, ALARM_AND_ABORT, P70) may
+  not, so every native RESUME checks with `agc_resume_exact` and refuses
+  (`EXEC_OUT_OF_SCOPE`, image unchanged) when the word can be read (erasable,
+  or fixed through the program's `fixed_data`) and differs (#144). A program
+  that resumes interrupts of fixed code it built itself supplies `fixed_data`.
+  Q and QRUPT are registers, not addresses: T3RUPT and TASKOVER exchange them
+  as QXCH does (overflow-corrected into QRUPT, sign-extended into Q), whatever
+  they hold (#143; TPAGREE leaves POSMAX in Q with interrupts enabled).
 - **Erasable continuations.** A few files store a `TC` into erasable memory and
   run it later (RESTARTS writes the service call at GOLOC-1 and its own
   continuation at GOLOC+2). Such a point is keyed

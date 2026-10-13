@@ -1162,11 +1162,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }
@@ -1598,7 +1615,7 @@
       "sha256": "fe2e800173b6c7e607d03c0b06a58b517b4faae2f8400e74b98b36b54e10cf19",
       "bytes": 9277,
       "lines": 368,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1606,23 +1623,22 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK and SWRETURN (Comanche NOVAC has no native routine yet).",
+          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK, native NOVAC (cm_exec_routines) and SWRETURN.",
           "verification": "docs/IMU-COMPENSATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL return leave it; any EB (1/PIPA sets EBANK to GCOMP's and restores the caller's); any GCOMPSW, FLAGWRD2, TIME1, PIPA, coefficient and GCOMP values, including NBD2 elapsed times of -0 and +0; each routine runs to its exit with no interrupt in between.",
         "external_continuations": [
-          "NOVAC admitting 1/GYRO (EXECUTIVE, no native Comanche routine yet)",
+          "NOVAC admitting 1/GYRO (native, cm_exec_routines; the round trips run it with a canonical Executive and stop at its BAILOUT alarm)",
           "SWRETURN and BANKCALL (native, cm_interbank_routines)",
           "IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES)",
           "PIPUSE (SERVICER207)",
           "ENDOFJOB (EXECUTIVE)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-compensation/imu-compensation-source-map.json",
@@ -1630,15 +1646,27 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
+            "sha256": "68468e4a7cffa85fab27bd4e682e10fec75a1ac81f454944e3d7a88314e8cd83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
+            "sha256": "47c6e15e0fc8c887cc59de350a7760b732bea1a7c6aad4e6104b58900622497e"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
+            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa",
+            "vice_targets": {
+              "vice-imu-compensation": 381
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-compensation/imu-compensation-c64-cover.json",
+            "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
+            "check": "python3 tools/imu_compensation_cover.py"
           }
         }
       }
@@ -1649,7 +1677,7 @@
       "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
       "bytes": 23181,
       "lines": 1066,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1657,7 +1685,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (656 words, fixed-fixed 5521, 07,2577-3651, 07,3652-3672 (R02BOTH), 26,3660-3776): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 54 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "scope": "Every word of the file (656 words, fixed-fixed 5521, 07,2577-3651, 07,3652-3672 (R02BOTH), 26,3660-3776): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH, R02ZERO and P06/P05, as 73 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 54 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
           "verification": "docs/IMU-MODE-SWITCHING.md"
         },
         {
@@ -1706,7 +1734,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1721,23 +1749,33 @@
           "UPFLAG, DOWNFLAG (FLAG routines)",
           "PHASCHNG (RESTART_CONTROL)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
-            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
+            "sha256": "7745c8c046821e108e9e2a60b8441ba0b7dd52c8495a97f55f5dad0fb3231303"
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "4f6cd4b71d536b60c50de72d77114dd9533b7597b3a58059178c5697ec0ec26b"
+            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "4abdf9b00c4704e916f097a7622936113a6a8bd9b9d21b4d94fd5f47e35c4003"
+            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "e56e607f80483bd335b0cf99b73609f754710cad55ee2b1ea58f0e37a7a017ac"
+            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "vice_targets": {
+              "vice-imu-mode-switching": 1288
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
+            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
           }
         }
       },
@@ -1866,48 +1904,57 @@
           ],
           "scope": "Entries reached with an unusual Q: SWCALL -1 (every RTB; INCR Q, then SWCALL) registered as the 14th routine; BANKJUMP with Q 0..07775 (SAVELOCS TC L, TC SUPERSW then TCF BANKJUMP); SWRETURN/ISWRETRN with any Q. 512 cases of this mission equal yaAGC on all 2048 erasable words at the callee.",
           "verification": "docs/INTERBANK-Q.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interbank_routines.c",
+            "src/cm_interbank_complete.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every assembled word of the file in the transfer ABI, compared with the original program in yaAGC through agc_transfer_run (milestone interbank-oracle); the source map shows every instruction executed by the oracle.",
+          "verification": "docs/INTERBANK-ORACLE.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "supported_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
-          "external_continuations": [
-            "caller-owned compiled sourcecallee/caller",
-            "interpretedcoding nativecontinuation",
-            "PC2/Q-1 invalidregisterfaultfrontier beforeexternalwordfetch"
-          ],
-          "evidence": {
-            "source_to_native_map": {
-              "path": "docs/COMANCHE-INTERBANK.md",
-              "sha256": "bf32e1683113acc5fb92e892c2bbccbde315a6eb3d55002d01e536a20a9900c3"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/cm-interbank-complete-source-audit.json",
-              "sha256": "fbcdcafd7ed3e2b2b19b6dd23451c14221c97898974fcb25e05c8f88a552d938"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/cm-interbank-complete-proof.json",
-              "sha256": "569a7a6ea91ca69c4ad5d92d335c45ab38090285891fd901a7365d831b8510d9"
-            },
-            "c64_execution_results": {
-              "path": "evidence/cm-interbank-complete-vice-results.json",
-              "sha256": "0bb21f230f28c757ec6c8c82173dcb8da9435dc8353cfed60f1238a3952cb688"
-            },
-            "independent_review": {
-              "path": "evidence/cm-interbank-complete-independent-review.txt",
-              "sha256": "3b6c886d45aa667874a445b290c59ebd13fe2083be4efb5a2a2a7cf313938421"
-            },
-            "native_transfer_round_trip": {
-              "path": "evidence/cm-interbank-transfer/cm-interbank-transfer-proof.json",
-              "sha256": "14dfcb95ab08b75cf44ceb690fc961448d9d8b9a6ef517a58b451a26298d2a3b"
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
+          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (448 LM, 354 CM sites).",
+          "index_domains": "Q, L and the CADRs as each routine reads them: A sign-extended 16-bit; return addresses and CADRs that address fixed or erasable memory as the original does; SUPDACAL reads the rope through the program's fixed-data reader. Inputs outside a routine's domain return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "None beyond FB/BB/SUPERBNK, which the routines set exactly as the original."
+        },
+        "external_continuations": [
+          "The callee each CADR names (any file) and its return to the caller through Q, L or BUF2",
+          "Destinations in files without native routines end the run as EXEC_UNMAPPED",
+          "Integrated C64 application acceptance"
+        ],
+        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
+            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
+            "sha256": "901cffc73bd3f2dbf86bea39673ec3ac1ef403261fa2de91da9a0700b22d6f20"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/interbank-oracle/interbank-oracle-host.log",
+            "sha256": "4c40e19865373e1fcc044ea9a90eda66ac3dc515dc89bbb14d988a4fae26fadf"
+          },
+          "c64_execution_results": {
+            "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
+            "sha256": "011a50919f6b42a6556f0f7513e9536f8e6ac6f8b7035092fd749c94fe1fae18",
+            "vice_targets": {
+              "vice-interbank-oracle": 723
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
+            "sha256": "c2809c6fb619615d1e6ebe0d891f39e1f4fc54953ce6305daec16fdcae8dba03"
           }
         }
       }
@@ -2090,19 +2137,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-cm.json",
-            "sha256": "1eace387ca147bd24beff6f1f63a6f337e8fcd78867a1b37c1fec5915553abfb"
+            "sha256": "b6eca388d62d1a108948652cda84fd3b808d6dae333fef8c3e402bf379c1872b"
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
+            "sha256": "ed757d7fe589eacc28da8ad5961e3a83d05af70b7cff9bcf198ebb01fe6c33f0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
-            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+            "sha256": "a41140588a97a4d1726080d3604d782c2f1f2522eb5beefd3e0d5b1a875b71cb"
           },
           "c64_execution_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
-            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+            "sha256": "f462356d63bb922fe4206d6150430954d6bd6e79f41e6cf258a31e5261e23bdd",
+            "vice_targets": {
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
+            "sha256": "1f5e09ae9b65933bbdcc24ec7db22eed66e363badbd4fe9ef85e3d08bedd8c8e"
           }
         }
       }
@@ -2288,11 +2342,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
-            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+            "sha256": "f082a4ca7d349d0520da54962920549b9433e2fc48be9a337d4a24914b3db102"
           },
           "c64_execution_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
-            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+            "sha256": "7e797ddd38364bb945da7078ab73d8180fd7b9e7b5e9e39cd57ddfef0aa4aa92",
+            "vice_targets": {
+              "vice-keyrupt-uprupt": 192
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
+            "sha256": "85decb40c1bd9ef1f141055a79981863910dadd02fa1dad6a8c703da548099ea"
           }
         }
       }
@@ -2563,7 +2624,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included) under the EBANK= in effect at each routine (listing), entered with Z at any of the file's basic routines (FB of the routine's bank, superbank 4 for bank 43) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2 as STICKCHK leaves them; SATSW (E6,1725) holds +1, +0 or -1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. CCS SATSW's -0 exit onto STEERSAT's TLOAD (34,2453) is outside the domain: no SATSW value takes it, and the routine refuses (EXEC_INVALID_ACTION) if it were reached. RESCALES returning with overflow skips into SATOUT's CADR NEEDLER, run as the AGC runs it (CS 2420).",
+        "supported_domain": "Canonical 2048-word image (every word random except 010-061: TIME2 and TIME1 (024/025) and CDUX-Z (032-034) are seeded, the rest of 010-061 is +0; TIME2 is +0 in half of every routine's cases, as for the first 163.84 s after liftoff, with TIME1 at 0, 1, 100, 199, 200 (2SECS), 201, 3000 or 037777) under the EBANK= in effect at each routine (listing), entered with Z at any of the file's basic routines (FB of the routine's bank, superbank 4 for bank 43) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2 as STICKCHK leaves them; SATSW (E6,1725) holds +1, +0 or -1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. CCS SATSW's -0 exit onto STEERSAT's TLOAD (34,2453) is outside the domain: no SATSW value takes it, and the routine refuses (EXEC_INVALID_ACTION) if it were reached. RESCALES returning with overflow skips into SATOUT's CADR NEEDLER, run as the AGC runs it (CS 2420).",
         "external_continuations": [
           "2PHSCHNG, PHASCHNG, NEWMODEX, UPFLAG, POWRSERS, GOPIN and RESUME (outside basic routines)",
           "BANKCALL, IBNKCALL, POSTJUMP, FINDVAC, WAITLIST, ENDOFJOB, TASKOVER, DANZIG and CHANG2 (outside basic routines; Lane A Executive/Waitlist)",
@@ -2580,7 +2641,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p11/cm-p11-proof.json",
-            "sha256": "1c411967ea6ad2702aa5fbe6d672c87fbb114f051a685bf5eca496b37f73aeae"
+            "sha256": "684377c88e7a26602f0b69370f9765373afacdbb47bc463bbb7dcf52fca87e33"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p11/cm-p11-host.log",
@@ -2588,14 +2649,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p11/cm-p11-vice.log",
-            "sha256": "f65fc1cf5177bd91b674aa422c7f33790ec96be22883bc9d72c7577b2a20845c",
+            "sha256": "dd94a1628caf3cfb0072657b56d20143cd3ca303de13f568ea47751973ff7511",
             "vice_targets": {
-              "vice-cm-p11": 203
+              "vice-cm-p11": 202
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p11/cm-p11-proof.json",
-            "sha256": "1c411967ea6ad2702aa5fbe6d672c87fbb114f051a685bf5eca496b37f73aeae"
+            "sha256": "684377c88e7a26602f0b69370f9765373afacdbb47bc463bbb7dcf52fca87e33"
           }
         }
       }
@@ -4244,49 +4305,58 @@
           ],
           "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (152 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/service_transfer.c",
+            "src/service_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every assembled word of the file in the transfer ABI, compared with the original program in yaAGC through agc_transfer_run (milestone service-transfer); the source map shows every instruction executed by the oracle.",
+          "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "supported_domain": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff",
-          "external_continuations": [
-            "DLY2-1WAITLIST",
-            "JOBSLEEP",
-            "JOBWAKE",
-            "TASKOVER",
-            "BAILOUT1/BAILOUT",
-            "ENDOFJOB",
-            "negativeoverflowCMdelayPC01104beforeexternalcalleeexec",
-            "originalcallers"
-          ],
-          "evidence": {
-            "source_to_native_map": {
-              "path": "docs/NATIVE-SERVICE-ROUTINES.md",
-              "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/service-routines-source-audit.json",
-              "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/service-routines-proof.json",
-              "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2"
-            },
-            "c64_execution_results": {
-              "path": "evidence/service-routines-vice-results.json",
-              "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4"
-            },
-            "independent_review": {
-              "path": "evidence/service-routines-independent-review.txt",
-              "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb"
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
+          "entry_contracts": "UPENT2 07722 and DOWNENT2 07740; DELAYJOB 00,3732, TCGETCAD 00,3755, WAKER 00,3761 and its finish 00,3765 with FB 0; UPFLAG 05546, DOWNFLAG 05560, GENTRAN 05606 and GENTRAN +1, B5OFF 05625, TRFAILOF 05631, TRFAILON 05643 from any bank; the flag and block-transfer operands of every genuine call site compiled.",
+          "index_domains": "Flag descriptors 0..14459; GENTRAN N-1 nonnegative; return addresses (Q) 0100..07777; DELAYJOB with an allocated delay slot or none (BAILOUT1); WAKER BB 0..7. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "INHINT/RELINT as the interrupt-enable bit; no channels."
+        },
+        "external_continuations": [
+          "DLY2 -1 (WAITLIST) and JOBSLEEP (EXECUTIVE) for DELAYJOB; BAILOUT1 (ALARM_AND_ABORT) when no delay slot is free",
+          "JOBWAKE and TASKOVER for WAKER",
+          "The caller's return through Q or Q+2",
+          "Integrated C64 application acceptance"
+        ],
+        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/service-transfer/service-transfer-source-map.json",
+            "sha256": "36a3202f55c96b43acd7cb0629f227ac72f620c01e6019d2cd566db509455d25"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/service-transfer/service-transfer-proof.json",
+            "sha256": "40dbbb3adecedeb3ee779424142ae97a854bbdd058a036965607d691887570d5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/service-transfer/service-transfer-host.log",
+            "sha256": "8709c074658d26ac3019a7ce4ef321fde5da4a6f3c7717cc2cba93b84c471280"
+          },
+          "c64_execution_results": {
+            "path": "evidence/service-transfer/service-transfer-vice.log",
+            "sha256": "327614e9ea4bbe203be6adb8d55524d78547a85774c1233f351f48f58c0f2bff",
+            "vice_targets": {
+              "vice-service-transfer": 575
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/service-transfer/service-transfer-c64-cover.json",
+            "sha256": "979e69a8ac163ae0d98938ee9b8b8ae21514068bec22438c6f63fd5814a36ad1"
           }
         }
       }
@@ -4426,39 +4496,65 @@
           ],
           "scope": "COMPVER, GTSCPSS1 and REDO (33,2000-2002) registered in cm_standard_lead_routines: one TC each to GCOMPVER, GTSCPSS or NEWMODEX with Q at the next word; 384 cases equal yaAGC through agc_transfer_run.",
           "verification": "docs/milestones/cm-lead-tests.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/standard_lead.c",
+            "src/standard_lead_interp.c",
+            "src/standard_lead_wake.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every assembled word of the file in the transfer ABI, compared with the original program in yaAGC through agc_transfer_run (milestone standard-lead-oracle); the source map shows every instruction executed by the oracle.",
+          "verification": "docs/STANDARD-LEAD-ORACLE.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
-          "evidence": {
-            "source_to_native_map": {
-              "path": "docs/SYSTEM_TEST_LEAD_INS.md",
-              "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/standard-lead-source-audit.json",
-              "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/standard-lead-host.log",
-              "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
-            },
-            "c64_execution_results": {
-              "path": "evidence/standard-lead-proof.json",
-              "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
-            },
-            "native_transfer_round_trip": {
-              "path": "evidence/cm-standard-lead-transfer/cm-standard-lead-transfer-proof.json",
-              "sha256": "a784add92f43a1763ce30c103b46f931a9ac612c356fb4b0eb30085a9f373c66"
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
+          "entry_contracts": "E/BKCALL, RETURN0/1/2, E/CALL, E/CALL resume (the word after EXIT) and E/JOBWAK registered at their original addresses; the CALL and EXIT words registered as interpretive keys (LOC under BANKSET at the fetch point); COMPVER, GTSCPSS1 and REDO at 33,2000-2002 (milestone cm-lead-tests).",
+          "index_domains": "CADRs in EBUF2/BUF2 and LOC/BANKSET as the original stores them; FB/EB equal to BANKSET at the interpretive words; E/JOBWAK with the interrupt inhibited, valid priorities and NEWJOB in the Executive's form. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "INHINT/RELINT as the interrupt-enable bit; no channels."
+        },
+        "external_continuations": [
+          "BANKCALL and SWRETURN (INTER-BANK_COMMUNICATION)",
+          "INTPRET and the interpreter; the routine CALL reaches through EBUF2, which leaves by RVQ",
+          "JOBWAKE (EXECUTIVE) and the return through RUPTREG3",
+          "GCOMPVER, GTSCPSS and NEWMODEX (with the MM 07 operand)",
+          "Integrated C64 application acceptance"
+        ],
+        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
+            "sha256": "9064230a8a5fa897d614a4957178606bf107793c4a062b741a01283366bcb942"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
+            "sha256": "5b6712daf784e69aa7ce445bffb1bbe123f0287d5370943a0d173a961b8f7c14"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
+            "sha256": "f9c69200965dba280e3abf68a059ea556a788a92b95840a147a66e2aec01768c"
+          },
+          "c64_execution_results": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
+            "sha256": "dd65ddea1219f211dc0df3b5d196c9c364cef5980d19ee6b1b09dfaa96a6943c",
+            "vice_targets": {
+              "vice-standard-lead-oracle": 475
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
+            "sha256": "7640fab3f8b17c5de83a32f37db54507e2c0bb98c9a575436658412f896abd54"
+          },
+          "entry_words_comparison": {
+            "path": "evidence/cm-lead-tests/cm-lead-tests-proof.json",
+            "sha256": "5ec5e37bb11517d579961cf99a0c879471f9eb273b90c2e0486cfb5a1dec31c1"
           }
         }
       }
@@ -5208,11 +5304,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }
@@ -6349,11 +6462,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }
@@ -6914,19 +7044,27 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
+            "sha256": "68468e4a7cffa85fab27bd4e682e10fec75a1ac81f454944e3d7a88314e8cd83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
+            "sha256": "47c6e15e0fc8c887cc59de350a7760b732bea1a7c6aad4e6104b58900622497e"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
+            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa",
+            "vice_targets": {
+              "vice-imu-compensation": 381
+            }
           },
           "independent_review": {
             "path": "docs/audits/lm-imu-compensation.md",
             "sha256": "7f29be1369ef661682c548085bc8eacf3b3c90e9e15438f109c5806107a0611e"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-compensation/imu-compensation-c64-cover.json",
+            "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
+            "check": "python3 tools/imu_compensation_cover.py"
           }
         }
       }
@@ -6937,7 +7075,7 @@
       "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
       "bytes": 23400,
       "lines": 1067,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6945,7 +7083,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (660 words, fixed-fixed 5457, 07,2714-3772, 04,3253-3273, 37,3655-3773): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 74 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "scope": "Every word of the file (660 words, fixed-fixed 5457, 07,2714-3772, 04,3253-3273, 37,3655-3773): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH, R02ZERO and P06/P05, as 73 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 74 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
           "verification": "docs/IMU-MODE-SWITCHING.md"
         },
         {
@@ -6994,7 +7132,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7010,23 +7148,33 @@
           "PHASCHNG (RESTART_CONTROL)",
           "BAILOUT1 (ALARM_AND_ABORT, Luminary MODABORT)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
-            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
+            "sha256": "7745c8c046821e108e9e2a60b8441ba0b7dd52c8495a97f55f5dad0fb3231303"
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "4f6cd4b71d536b60c50de72d77114dd9533b7597b3a58059178c5697ec0ec26b"
+            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "4abdf9b00c4704e916f097a7622936113a6a8bd9b9d21b4d94fd5f47e35c4003"
+            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "e56e607f80483bd335b0cf99b73609f754710cad55ee2b1ea58f0e37a7a017ac"
+            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "vice_targets": {
+              "vice-imu-mode-switching": 1288
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
+            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
           }
         }
       },
@@ -7359,48 +7507,57 @@
           ],
           "scope": "Entries reached with an unusual Q: SWCALL -1 (every RTB; INCR Q, then SWCALL) registered as the 14th routine; BANKJUMP with Q 0..07775 (SAVELOCS TC L, TC SUPERSW then TCF BANKJUMP); SWRETURN/ISWRETRN with any Q. 512 cases of this mission equal yaAGC on all 2048 erasable words at the callee.",
           "verification": "docs/INTERBANK-Q.md"
+        },
+        {
+          "native_files": [
+            "src/lm_interbank_routines.c",
+            "src/lm_interbank.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every assembled word of the file in the transfer ABI, compared with the original program in yaAGC through agc_transfer_run (milestone interbank-oracle); the source map shows every instruction executed by the oracle.",
+          "verification": "docs/INTERBANK-ORACLE.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "supported_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
-          "external_continuations": [
-            "caller-owned compiled sourcecallee/caller",
-            "interpretedcoding nativecontinuation",
-            "PC2/Q-1 invalidregisterfaultfrontier beforeexternalwordfetch"
-          ],
-          "evidence": {
-            "source_to_native_map": {
-              "path": "docs/LUMINARY-INTERBANK.md",
-              "sha256": "4eb31aab156d3528b3136f78a8754dd2e3b4d7853096f1a11609f705b6b39e14"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/lm-interbank-source-audit.json",
-              "sha256": "927a763f86480d66a87fd9a3d7d46d5eeae22ea2cbdd0243080cf300d1d636d0"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/lm-interbank-proof.json",
-              "sha256": "7f1b219224219268585226f1e1b0e8a19e72935ab4ef69f31e2e5219a243a960"
-            },
-            "c64_execution_results": {
-              "path": "evidence/lm-interbank-vice-results.json",
-              "sha256": "55309196c9c0a962727b9a55fc61eb4c06671e64b18d72acf860ac8d6a165a18"
-            },
-            "independent_review": {
-              "path": "evidence/lm-interbank-independent-review.txt",
-              "sha256": "3056dd280e3361436d2626a1149a0876f860f8402c250c46f1fff2bbcbf47a2d"
-            },
-            "native_transfer_round_trip": {
-              "path": "evidence/lm-interbank-transfer/lm-interbank-transfer-proof.json",
-              "sha256": "b235d6f6f38ca482201f7ba7b8f245d6b9f37ded04cdb6671fad07bd4a50df3d"
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
+          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (448 LM, 354 CM sites).",
+          "index_domains": "Q, L and the CADRs as each routine reads them: A sign-extended 16-bit; return addresses and CADRs that address fixed or erasable memory as the original does; SUPDACAL reads the rope through the program's fixed-data reader. Inputs outside a routine's domain return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "None beyond FB/BB/SUPERBNK, which the routines set exactly as the original."
+        },
+        "external_continuations": [
+          "The callee each CADR names (any file) and its return to the caller through Q, L or BUF2",
+          "Destinations in files without native routines end the run as EXEC_UNMAPPED",
+          "Integrated C64 application acceptance"
+        ],
+        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
+            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
+            "sha256": "901cffc73bd3f2dbf86bea39673ec3ac1ef403261fa2de91da9a0700b22d6f20"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/interbank-oracle/interbank-oracle-host.log",
+            "sha256": "4c40e19865373e1fcc044ea9a90eda66ac3dc515dc89bbb14d988a4fae26fadf"
+          },
+          "c64_execution_results": {
+            "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
+            "sha256": "011a50919f6b42a6556f0f7513e9536f8e6ac6f8b7035092fd749c94fe1fae18",
+            "vice_targets": {
+              "vice-interbank-oracle": 723
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
+            "sha256": "c2809c6fb619615d1e6ebe0d891f39e1f4fc54953ce6305daec16fdcae8dba03"
           }
         }
       }
@@ -7615,19 +7772,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-lm.json",
-            "sha256": "4daf90775981605a53212aa6824f026f18e42b1abc882b1fafbd44d1d3795250"
+            "sha256": "50d27e76bfbd793f040a8688acd1e46aea66faeeddfd0ecb94fcda35ca4854c9"
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
+            "sha256": "ed757d7fe589eacc28da8ad5961e3a83d05af70b7cff9bcf198ebb01fe6c33f0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
-            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+            "sha256": "a41140588a97a4d1726080d3604d782c2f1f2522eb5beefd3e0d5b1a875b71cb"
           },
           "c64_execution_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
-            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+            "sha256": "f462356d63bb922fe4206d6150430954d6bd6e79f41e6cf258a31e5261e23bdd",
+            "vice_targets": {
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
+            "sha256": "1f5e09ae9b65933bbdcc24ec7db22eed66e363badbd4fe9ef85e3d08bedd8c8e"
           }
         }
       }
@@ -7794,11 +7958,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
-            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+            "sha256": "f082a4ca7d349d0520da54962920549b9433e2fc48be9a337d4a24914b3db102"
           },
           "c64_execution_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
-            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+            "sha256": "7e797ddd38364bb945da7078ab73d8180fd7b9e7b5e9e39cd57ddfef0aa4aa92",
+            "vice_targets": {
+              "vice-keyrupt-uprupt": 192
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
+            "sha256": "85decb40c1bd9ef1f141055a79981863910dadd02fa1dad6a8c703da548099ea"
           }
         }
       }
@@ -10019,49 +10190,58 @@
           ],
           "scope": "All 11 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (171 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/service_transfer.c",
+            "src/service_routines.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every assembled word of the file in the transfer ABI, compared with the original program in yaAGC through agc_transfer_run (milestone service-transfer); the source map shows every instruction executed by the oracle.",
+          "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "supported_domain": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff",
-          "external_continuations": [
-            "DLY2-1WAITLIST",
-            "JOBSLEEP",
-            "JOBWAKE",
-            "TASKOVER",
-            "BAILOUT1/BAILOUT",
-            "ENDOFJOB",
-            "negativeoverflowCMdelayPC01104beforeexternalcalleeexec",
-            "originalcallers"
-          ],
-          "evidence": {
-            "source_to_native_map": {
-              "path": "docs/NATIVE-SERVICE-ROUTINES.md",
-              "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/service-routines-source-audit.json",
-              "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/service-routines-proof.json",
-              "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2"
-            },
-            "c64_execution_results": {
-              "path": "evidence/service-routines-vice-results.json",
-              "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4"
-            },
-            "independent_review": {
-              "path": "evidence/service-routines-independent-review.txt",
-              "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb"
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
+          "entry_contracts": "UPENT2/DOWNENT2 10,3544/10,3554 with FB 10; DELAYJOB 00,3735, TCGETCAD 00,3761, WAKER 00,3765 and its finish 00,3771 with FB 0; UPFLAG 05504, COMFLAG 05511, DOWNFLAG 05516, DEBIT 05522, GENTRAN 05544 and GENTRAN +1, B5OFF 05563 from any bank; the flag and block-transfer operands of every genuine call site compiled.",
+          "index_domains": "Flag descriptors 0..14459; COMFLAG flag-word index (ITEMP1) at most 01703 and its return (L or ITEMP3) an ordinary address 0100..07777; DEBIT return (Q) 0100..07777 and A+1 without overflow; GENTRAN N-1 nonnegative; DELAYJOB with an allocated delay slot or none (BAILOUT1); WAKER BB 0..7. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "INHINT/RELINT as the interrupt-enable bit; no channels."
+        },
+        "external_continuations": [
+          "DLY2 -1 (WAITLIST) and JOBSLEEP (EXECUTIVE) for DELAYJOB; BAILOUT1 (ALARM_AND_ABORT) when no delay slot is free",
+          "JOBWAKE and TASKOVER for WAKER",
+          "The caller's return through Q, Q+2 or L (DEBIT's TC Q, COMFLAG's TC L, GENTRAN's TCF Q+2)",
+          "Integrated C64 application acceptance"
+        ],
+        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/service-transfer/service-transfer-source-map.json",
+            "sha256": "36a3202f55c96b43acd7cb0629f227ac72f620c01e6019d2cd566db509455d25"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/service-transfer/service-transfer-proof.json",
+            "sha256": "40dbbb3adecedeb3ee779424142ae97a854bbdd058a036965607d691887570d5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/service-transfer/service-transfer-host.log",
+            "sha256": "8709c074658d26ac3019a7ce4ef321fde5da4a6f3c7717cc2cba93b84c471280"
+          },
+          "c64_execution_results": {
+            "path": "evidence/service-transfer/service-transfer-vice.log",
+            "sha256": "327614e9ea4bbe203be6adb8d55524d78547a85774c1233f351f48f58c0f2bff",
+            "vice_targets": {
+              "vice-service-transfer": 575
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/service-transfer/service-transfer-c64-cover.json",
+            "sha256": "979e69a8ac163ae0d98938ee9b8b8ae21514068bec22438c6f63fd5814a36ad1"
           }
         }
       }
@@ -10188,39 +10368,60 @@
           ],
           "scope": "E/BKCALL, its returns, E/CALL, resume, E/JOBWAK, EXIT and the INTPRET forms registered as native routines; E/BKCALL and E/CALL round trips run through the trampoline into a native callee and back.",
           "verification": "docs/LM-STANDARD-LEAD-TRANSFER.md"
+        },
+        {
+          "native_files": [
+            "src/standard_lead_routines.c",
+            "src/standard_lead.c",
+            "src/standard_lead_interp.c",
+            "src/standard_lead_wake.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every assembled word of the file in the transfer ABI, compared with the original program in yaAGC through agc_transfer_run (milestone standard-lead-oracle); the source map shows every instruction executed by the oracle.",
+          "verification": "docs/STANDARD-LEAD-ORACLE.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
-          "evidence": {
-            "source_to_native_map": {
-              "path": "docs/SYSTEM_TEST_LEAD_INS.md",
-              "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/standard-lead-source-audit.json",
-              "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/standard-lead-host.log",
-              "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
-            },
-            "c64_execution_results": {
-              "path": "evidence/standard-lead-proof.json",
-              "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
-            },
-            "native_transfer_round_trip": {
-              "path": "evidence/lm-standard-lead-transfer/lm-standard-lead-transfer-proof.json",
-              "sha256": "b409f3f3d3175ebca780db93644e398390315f64e6fb2ea0bcc9ddcf3b9ce8bf"
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
+          "entry_contracts": "E/BKCALL, RETURN0/1/2, E/CALL, E/CALL resume (the word after EXIT) and E/JOBWAK registered at their original addresses; the CALL and EXIT words registered as interpretive keys (LOC under BANKSET at the fetch point).",
+          "index_domains": "CADRs in EBUF2/BUF2 and LOC/BANKSET as the original stores them; FB/EB equal to BANKSET at the interpretive words; E/JOBWAK with the interrupt inhibited, valid priorities and NEWJOB in the Executive's form. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "INHINT/RELINT as the interrupt-enable bit; no channels."
+        },
+        "external_continuations": [
+          "BANKCALL and SWRETURN (INTER-BANK_COMMUNICATION)",
+          "INTPRET and the interpreter; the routine CALL reaches through EBUF2, which leaves by RVQ",
+          "JOBWAKE (EXECUTIVE) and the return through RUPTREG3",
+          "Integrated C64 application acceptance"
+        ],
+        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
+            "sha256": "9064230a8a5fa897d614a4957178606bf107793c4a062b741a01283366bcb942"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
+            "sha256": "5b6712daf784e69aa7ce445bffb1bbe123f0287d5370943a0d173a961b8f7c14"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
+            "sha256": "f9c69200965dba280e3abf68a059ea556a788a92b95840a147a66e2aec01768c"
+          },
+          "c64_execution_results": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
+            "sha256": "dd65ddea1219f211dc0df3b5d196c9c364cef5980d19ee6b1b09dfaa96a6943c",
+            "vice_targets": {
+              "vice-standard-lead-oracle": 475
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
+            "sha256": "7640fab3f8b17c5de83a32f37db54507e2c0bb98c9a575436658412f896abd54"
           }
         }
       }
@@ -10278,19 +10479,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-source-map.json",
-            "sha256": "f995477a70d125d42074e091d382da59be7d35b433f25251766fb2d3536a5227"
+            "sha256": "24de8d6efaf1da650a5cd57f174c3456c2343076c434da48b08da58dd9e7388f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-proof.json",
-            "sha256": "7fdf6c1508e008433c0ad5de6fc0f22c2f1f22596506a15c292206893fb8e30b"
+            "sha256": "621d52b27b6aa118fbc09e8931037822b476ba0c6e2c64e2eac08dd8e401843e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-host.log",
-            "sha256": "9718634faa0fa9b0a8625c0a62ba5f7abe7eb59994cefc361b1777b94247fb68"
+            "sha256": "0cb38501d950f3992f71647158f98dc1141035b1c0b3270572e0240f62a56b8b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-vice.log",
-            "sha256": "e15fabede24f731f0efd54c3ed2745bb638dbe1ca8cc2a1f76779cda5953f4ff"
+            "sha256": "de3fc32e76827049baa6e73763fba99d1c9c435f54af16aa2b0c12008b9e9ff7",
+            "vice_targets": {
+              "vice-lm-t6rupt": 242
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-c64-cover.json",
+            "sha256": "da8211a96d82d216d85dff3de2930b600649d0908c14f8371526e765ec2a24a9"
           }
         }
       }
@@ -10889,11 +11097,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }

@@ -78,9 +78,11 @@ def changed_certificates(base, errors, remote=False):
 
 # include/rope_image.h reads any word of the rope; only AGC_BLOCK_TWO_SELF-CHECK
 # (ROPECHK, STSHOSUM) may use it. Everything else reads constants through
-# fixed_data.h's certified spans.
+# fixed_data.h's certified spans. tools/flight_host_run.c (host only, beside
+# yaAGC) loads the image for the self-check module of the whole program.
 ROPE_IMAGE_USERS = {'src/self_check_body.inc', 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c',
-                    'tests/self_check_cases.c', 'tests/test_self_check.c', 'platform/host/self_check_snapshot.c'}
+                    'tests/self_check_cases.c', 'tests/test_self_check.c', 'platform/host/self_check_snapshot.c',
+                    'tools/flight_host_run.c'}
 
 
 def rope_image_includes(errors):
