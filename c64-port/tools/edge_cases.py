@@ -64,5 +64,7 @@ def edits(n, rng, addrs):
     fam = FAMILIES[n % len(FAMILIES)]
     out = counters(rng)
     for a in addrs:
-        out += [(x & 0o3777, w) for x, w in fam(a, rng)]
+        # (A family running past 03777, from an operand at the top of E7,
+        # stops there rather than wrapping into A and L.)
+        out += [(x, w) for x, w in fam(a, rng) if x <= 0o3777]
     return out

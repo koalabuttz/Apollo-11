@@ -28,6 +28,12 @@
  * cm_exec_site_table). A routine refuses (EXEC_OUT_OF_SCOPE, nothing
  * written) only for a call site with no compiled operand or a missing
  * program->hardware. */
+/* Built with RK_SEAMS, the kernel calls these (the resident defines them,
+ * platform/c64/resident_flight.c) so overlay ABI 2 seams follow their job:
+ * at CHANJOB4 with NEWJOB (12 times the core set exchanged with set 0),
+ * and at ENDOFJOB, whose job in set 0 ends. */
+void rk_seams_exchange(agc_word newjob);
+void rk_seams_release(void);
 extern const agc_routine_table lm_kernel_routines,lm_kernel_job_routines,lm_kernel_task_routines,lm_kernel_idle_routines;
 extern const agc_routine_table cm_kernel_routines,cm_kernel_job_routines,cm_kernel_idle_routines;
 #endif

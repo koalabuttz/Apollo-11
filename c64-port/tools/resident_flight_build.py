@@ -9,7 +9,7 @@ gc-sections, on platform/c64/resident_flight.ld:
   build/resident-flight/<m>-check-<p>.prg the same resident with the flight check
                                           (resident_flight_check.c, RK_PART p) as main
   build/resident-flight/<m>-module-*.prg  the check's modules (case generators in the
-                                          job slot; LM RESTARTS in the task slot)
+                                          job slot; rows and LM RESTARTS in the task slot)
   build/resident-flight/<m>.reu           the check's REU store (modules + probe resolver)
 
 and writes build/resident-flight/sizes.json: the flight resident's bytes in
@@ -34,7 +34,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/resident-flight')
 SERVICES = 0x0201
 COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0',
-          '-DRK_FIXED_IMAGE=1', '-Wall', '-Wextra', '-Werror']
+          '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror']
 MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
 
 # The resident's sources, by component (the size report's classes).
@@ -44,7 +44,7 @@ COMPONENTS = {
         ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/lm_exec_routines.c']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
-        ('single-precision subroutines', ['src/lm_single_trig.c']),
+        ('single-precision subroutines', ['src/sp_routines.c', 'src/lm_single_trig.c']),
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
         ('resident state and step', ['platform/c64/resident_flight.c']),
@@ -55,7 +55,7 @@ COMPONENTS = {
         ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/cm_exec_routines.c']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
-        ('single-precision subroutines', ['src/cm_quictrig.c', 'src/cm_single_return.c']),
+        ('single-precision subroutines', ['src/sp_routines.c', 'src/cm_quictrig.c', 'src/cm_single_return.c']),
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
         ('resident state and step', ['platform/c64/resident_flight.c']),
@@ -64,14 +64,15 @@ COMPONENTS = {
 }
 # The check's modules: (part, LM_EXJ_PART, module id, selectors). Case
 # modules (job slot) link the resident-kernel milestone's case sources; part
-# None is the LM RESTARTS module (task slot; resident_flight_restart.c).
+# None is the check's data module (task slot; resident_flight_data.c).
 MODULES = {
     'lm': [(1, None, 0x01F1, 2), (2, 1, 0x01F2, 1), (2, 2, 0x01F3, 1), (2, 3, 0x01F4, 1), (3, None, 0x01F5, 1),
            (None, None, 0x01F6, 1)],
-    'cm': [(1, None, 0x01F1, 2), (2, None, 0x01F2, 1), (3, None, 0x01F5, 1)],
+    'cm': [(1, None, 0x01F1, 2), (2, None, 0x01F2, 1), (3, None, 0x01F5, 1), (None, None, 0x01F6, 1)],
 }
-RESTART_SOURCES = ['platform/c64/resident_flight_restart.c', 'src/lm_restart_routines.c', 'src/lm_restart_select.c',
-                   'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c']
+DATA_SOURCES = {'lm': ['platform/c64/resident_flight_data.c', 'src/lm_restart_routines.c', 'src/lm_restart_select.c',
+                       'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c'],
+                'cm': ['platform/c64/resident_flight_data.c']}
 PROBE = dict(bank=0o24000, loc=0o2000, module=0x01F1, selector=1)
 
 
@@ -174,7 +175,7 @@ def build_modules(cc, m, cases, library):
             extra = [f'-DRK_PART={part}', '-DRK_INPUTS_ONLY'] + ([f'-DLM_EXJ_PART={exj}'] if exj else [])
             sources = ['platform/c64/resident_flight_cases.c', 'tests/resident_kernel_cases.c', *cases]
         else:
-            extra, sources = [], RESTART_SOURCES
+            extra, sources = [], DATA_SOURCES[m]
         slot = 0 if part else 1
         run([cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections',
              '-nostdlib', '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
