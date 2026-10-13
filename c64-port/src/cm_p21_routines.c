@@ -13,7 +13,7 @@
 #include "cm_p21_routines.h"
 #include "cm_interp.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* The routines a C64 build registers (C64 RAM): group 1 TDEC1 through
  * P21VSAVE (INTEGRV, DDV, ASIN), group 2 the rest. Host builds register
  * all. Unregistered routines go unused there. */

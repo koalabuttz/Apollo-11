@@ -4,7 +4,7 @@
  * from its entry to the next transfer and leaves Z, Q and the banks where
  * the original continues. Fixed constants are the source's own literals. */
 #include "lm_dap_interface.h"
-#define W s->words
+#include "agc_image_w.h"
 #define P(z) (uint16_t)(020u*1024u+((z)-02000u))
 /* Fixed constants (fixed-fixed): DBSELECT 04750, DRIFTBIT 04744, PRIO27
  * 07715, EBANK6 05015, ZERO 04755; bank 20: NARROWDB 02150, WIDEDB 02151,

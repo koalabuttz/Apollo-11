@@ -1548,7 +1548,7 @@ class Compiler:
             c.append('#include "agc_input_channels.h"')
         for inc in s.get('includes', []):
             c.append('#include "%s"' % inc)
-        c.append('#define W s->words')
+        c.append('#include "agc_image_w.h"')
         c.append('/* A group build (KEEP masks below) leaves some helpers and operands unused. */')
         c.append('#ifdef __GNUC__')
         c.append('#define MAYBE_UNUSED __attribute__((unused))')

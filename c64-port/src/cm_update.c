@@ -17,7 +17,7 @@
 #include "cm_update_operands.inc"
 #include "cm_interp.h"
 
-#define W s->words
+#include "agc_image_w.h"
 #define B27(z) (uint16_t)(027u*1024u+((z)-02000u))
 #define B43(z) (uint16_t)(043u*1024u+((z)-02000u))
 #define A 0u

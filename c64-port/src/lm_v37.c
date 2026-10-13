@@ -12,7 +12,7 @@
 #include "agc_image_ops.h"
 #include "lm_v37_operands.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define B04(z) (uint16_t)(04u*1024u+((z)-02000u))
 #define A 0u
 #define L 1u

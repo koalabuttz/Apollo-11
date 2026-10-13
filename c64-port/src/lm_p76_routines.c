@@ -13,7 +13,7 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "lm_work_matrix.h"
-#define W s->words
+#include "agc_image_w.h"
 /* The routines a C64 build registers (C64 RAM): group 1 COMPMAT (UNIT, VXV,
  * VXM), group 2 the rest. Host builds register all. */
 #ifndef LM_P76_C64_GROUP

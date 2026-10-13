@@ -7,7 +7,7 @@
  * use; they are called only from the compiled sequences in this file. */
 #include "lm_interp_steps.h"
 #include "interp_mission.h"
-#define W s->words
+#include "agc_image_w.h"
 
 /* Erasable address in the canonical image: 01400-01777 through EBANK. */
 static unsigned ea(const apollo_overlay_state *s,unsigned a){return (a>=01400u&&a<02000u)?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;}

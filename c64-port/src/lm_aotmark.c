@@ -10,7 +10,7 @@
 #include "agc_image_ops.h"
 #include "agc_input_channels.h"
 #include "rtb_angles.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))

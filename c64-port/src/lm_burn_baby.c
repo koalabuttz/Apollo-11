@@ -15,7 +15,7 @@
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
-#define W s->words
+#include "agc_image_w.h"
 #if !defined(LMBB_C64_GROUP)
 #define BB_G1 1
 #define BB_G2 1

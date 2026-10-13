@@ -17,7 +17,7 @@ void lm_vn1645_trace(const apollo_overlay_state *);
 #else
 #define TRACE(s) ((void)0)
 #endif
-#define W s->words
+#include "agc_image_w.h"
 
 /* INDJUMP/MISCJUMP/UNAJUMP body entries. */
 enum {VLOAD=06505,DLOAD=06052,DAD=06775,PUSH=03247,EXIT=06743,CALLITA=02507,SWITCH=02516};

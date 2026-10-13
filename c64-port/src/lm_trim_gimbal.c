@@ -8,7 +8,7 @@
  * original's do, including the ones no admitted input reaches. */
 #include "lm_trim_gimbal.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_TG_COUNT_PATHS
 extern unsigned lm_tg_paths[];

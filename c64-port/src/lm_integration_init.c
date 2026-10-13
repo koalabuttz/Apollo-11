@@ -11,7 +11,7 @@
 #include "rtb_angles.h"
 #include "rtb_agreement.h"
 #include "lm_integration_moves.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))

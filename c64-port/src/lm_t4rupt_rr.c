@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include "lm_t4rupt_rr.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* Erasable (M11-M32 in the EB window: EBANK= M11, E6 when T4RUPT runs). */
 #define CDUX 032u
 #define CDUZ 034u

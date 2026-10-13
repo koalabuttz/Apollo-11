@@ -6,7 +6,7 @@
  * the pinned yaAGC reference by tools/agc_image_ops_differential.py. */
 #include "agc_image_ops.h"
 #include "agc_hardware_divide.h"
-#define W s->words
+#include "agc_image_w.h"
 #define M16 0177777u
 
 static agc_register add16(agc_register a, agc_register b){

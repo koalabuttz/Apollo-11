@@ -51,7 +51,7 @@
 #define W ((void)s,AFO_S)->words
 #define PA_BIND(s) (AIT_BIND(s),AFO_BIND(s))
 #else
-#define W s->words
+#include "agc_image_w.h"
 #define PA_BIND(s) ((void)0)
 #endif
 /* Branch coverage hook for the host test (empty in flight builds). */

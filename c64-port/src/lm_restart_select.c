@@ -8,7 +8,7 @@
 #include "agc_word.h"
 #include "lm_restart_table_data.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define TEMPPHS 0154u
 #define TEMP2G 0155u
 #define POINTER 0156u

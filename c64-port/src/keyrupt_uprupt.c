@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include "keyrupt_uprupt.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 #define BANKRUPT 016u
 #define QRUPT 012u
 #define INLINK 045u

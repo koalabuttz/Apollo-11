@@ -15,7 +15,7 @@
 #include "lm_interp_orders.h"
 #include "rtb_unit.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* The routines a C64 build registers (C64 RAM), each group closed under the
  * routines its runs reach (runs stop at the split points 3240, 3246 and
  * 3355, tests/lm_r31_cases.c): group 1 COMPDISP (NORMUNX1), group 2 RANGE

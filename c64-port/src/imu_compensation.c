@@ -9,7 +9,7 @@
 #include "agc_image_ops.h"
 #include "p66_bias.h"
 #include "cm_native_image.h"
-#define W s->words
+#include "agc_image_w.h"
 /* Erasable (EB-window addresses are the source's; EB selects the bank). */
 #define TIME1 025u
 #define FLAGWRD2 076u

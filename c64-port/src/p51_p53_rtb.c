@@ -4,7 +4,7 @@
 #include "p51_p53_rtb.h"
 #include "agc_image_ops.h"
 #include "rtb_angles.h"
-#define W s->words
+#include "agc_image_w.h"
 uint8_t p51_p53_rtb(apollo_overlay_state *s,p66_bias_io *io,enum p51_p53_rtb_kind kind){
  static const agc_word at[3]={03413,02324,03275},fb[3]={030000u,032000u,030000u},danzig[3]={06061,06030,06030};
  unsigned k=(unsigned)kind,i,fl;

@@ -4,7 +4,7 @@
 #include "cm_idle_recheck.h"
 #include "cm_super_dispatch.h"
 #include "cm_svct3.h"
-#define W s->words
+#include "agc_image_w.h"
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B1(z) (uint16_t)(1024u+((z)-02000u))
 

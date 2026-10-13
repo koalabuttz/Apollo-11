@@ -23,7 +23,7 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "rope_image.h"
-#define W s->words
+#include "agc_image_w.h"
 #define MISSION IF_(0u,1u)
 enum { rEDOP = 023, rCYR = 020, rNEWJOB = 067, rADDRWD = 0116, rPOLISH = 0117, rFIXLOC = 0120, rLOC = 0164, rBANKSET = 0165 };
 enum { DONE = 0, MORE = 1, REFUSE = 2 };

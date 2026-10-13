@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include "t4rupt_core.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 #define BANKRUPT 016u
 #define QRUPT 012u
 #define DSPTAB 01023u

@@ -9,7 +9,7 @@
 #include "imu_mode_switching.h"
 #include "agc_image_ops.h"
 #include "cm_native_image.h"
-#define W s->words
+#include "agc_image_w.h"
 /* Erasable (EB-window addresses are the source's; EB selects the bank). */
 #define TIME2 024u
 #define CDUX 032u

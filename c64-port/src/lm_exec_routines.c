@@ -4,7 +4,7 @@
 #include "lm_waitlist_image.h"
 #include "agc_multiword.h"
 #include "lm_exec_sites.inc"
-#define W s->words
+#include "agc_image_w.h"
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B1(z) (uint16_t)(1024u+((z)-02000u))
 #define LONGCADR LM_EXEC_LONGCADR

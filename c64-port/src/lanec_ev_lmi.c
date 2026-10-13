@@ -21,7 +21,7 @@
 #include "agc_image_ops.h"
 
 #define L(X) LANEC_LM_##X
-#define W s->words
+#include "agc_image_w.h"
 #define NEWOPS 06070u
 #define CHANG2 05126u
 

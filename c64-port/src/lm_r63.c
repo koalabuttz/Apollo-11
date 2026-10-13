@@ -9,7 +9,7 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "rtb_angles.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))

@@ -11,7 +11,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 
-#define W s->words
+#include "agc_image_w.h"
 #define NEWJOB 067u
 #define EDOP 023u
 #define FIXLOC 0120u
