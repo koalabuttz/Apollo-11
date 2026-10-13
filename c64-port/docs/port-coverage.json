@@ -998,7 +998,7 @@
       "sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
       "bytes": 11541,
       "lines": 496,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1126,7 +1126,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1166,6 +1166,10 @@
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 193
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
@@ -2286,7 +2290,7 @@
       "sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
       "bytes": 3853,
       "lines": 136,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2305,7 +2309,7 @@
           "verification": "docs/KEYRUPT-UPRUPT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2340,6 +2344,10 @@
             "vice_targets": {
               "vice-keyrupt-uprupt": 192
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
@@ -6231,7 +6239,7 @@
       "sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
       "bytes": 11697,
       "lines": 503,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Bounded admission, selection, basic dispatch/lifecycle, SPVAC/CHANG2; interpreter continuation and full live scheduling remain incomplete.",
@@ -6375,7 +6383,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6415,6 +6423,10 @@
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 193
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
@@ -7406,7 +7418,7 @@
       "sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
       "bytes": 5886,
       "lines": 177,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7442,7 +7454,7 @@
           "verification": "docs/INTERBANK-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7458,7 +7470,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
@@ -7478,6 +7489,10 @@
             "vice_targets": {
               "vice-interbank-oracle": 723
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
@@ -7632,7 +7647,7 @@
       "sha256": "ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3",
       "bytes": 2343,
       "lines": 117,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "T3 lead-in and explicit native pending/IRQ delivery only; remaining hardware interrupt services remain untranslated.",
@@ -7677,7 +7692,7 @@
           "verification": "docs/RUPT-LEAD-INS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7712,6 +7727,10 @@
             "vice_targets": {
               "vice-rupt-lead-ins": 193
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
@@ -7835,7 +7854,7 @@
       "sha256": "e7e1633ff1305e689451634bf6cba496219b63a4a12f3ae028c74e3b65d840c1",
       "bytes": 3833,
       "lines": 130,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7855,7 +7874,7 @@
           "verification": "docs/KEYRUPT-UPRUPT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7890,6 +7909,10 @@
             "vice_targets": {
               "vice-keyrupt-uprupt": 192
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-184.md",
+            "sha256": "063000f1f91703bae0ca85669ba2b982dbad712534eff952c0bd3eb91be72da6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
