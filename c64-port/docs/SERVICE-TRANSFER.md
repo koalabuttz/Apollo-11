@@ -49,7 +49,7 @@ continuation.
 
 ## Proof
 
-`tools/service_transfer_freeze.py` runs the 1,642 cases of
+`tools/service_transfer_freeze.py` runs the 1,646 cases of
 `tests/service_transfer_cases.c` through `agc_transfer_run` and in yaAGC from
 the original ropes. There are two cases per genuine UPFLAG, DOWNFLAG and
 GENTRAN site of each mission, entered at the callee with Q at the operand word
@@ -58,7 +58,7 @@ cases per mission over the other entries, half of the Q-free ones with Q below
 0100 and with free and busy delay slots; a random Q inside the file's
 fixed-fixed code moves to 04400-04777, since the oracle stops at the first Z
 equal to the native one and would stop mid-routine. yaAGC stops where Z and FB
-first equal the native continuation. 1,635 cases reach it; the others are
+first equal the native continuation. 1,639 cases reach it; the others are
 refusals (GENTRAN blocks whose operands the step refuses, DEBIT and COMFLAG
 outside their domain). The inhibit flag and all 2048 erasable
 words are identical. The proof
@@ -67,7 +67,7 @@ every native source it depends on.
 
 `tests/test_service_transfer.c` checks the frozen digests, the refusals (UPFLAG
 and DOWNFLAG at Q 077 and at a fixed Q that is no site) and the table order:
-1,654 checks. The C64 diagnostic runs every third case (frozen into
+1,658 checks. The C64 diagnostic runs every third case (frozen into
 `tests/service_transfer_c64_vectors.h`) and the cover rows
 `tools/lane_a_c64_cover.py service-transfer` picks
 (`tests/service_transfer_c64_rows.h`), so its rows take every gcov branch arc

@@ -16,7 +16,7 @@ and compared with the original program in yaAGC.
   IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW and SWCALL -1), with a
   random image, A sign-extended (a 15-bit CADR of bank 020 and up would
   otherwise read as overflow), and Q, L and the banks in each routine's
-  domain. SUPDACAL reads 32 rope words (`tests/interbank_oracle_data.h`,
+  domain. SUPDACAL reads 32 rope words, every fourth in banks 040-043 (`tests/interbank_oracle_data.h`,
   written by the oracle with `--data` in a first pass).
 
 A random Q inside the file's own code (04600-04777) moves up by 01000, since
@@ -34,10 +34,10 @@ freezes one digest per case in `tests/interbank_oracle_vectors.h`.
 `make test-interbank-oracle` and `make sanitize-interbank-oracle` pass 2,150
 checks.
 
-The C64 diagnostic runs every third case plus 5 cover rows, taking all 482
+The C64 diagnostic runs every third case plus 4 cover rows, taking all 481
 branch arcs the host corpus takes
 (`evidence/interbank-oracle/interbank-oracle-c64-cover.json`);
-`make vice-interbank-oracle` passes 723 checks in VICE.
+`make vice-interbank-oracle` passes 722 checks in VICE.
 
 ## Source map
 

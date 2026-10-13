@@ -16,12 +16,12 @@ kinds in each mission (case `n`: mission `n % 2`, kind `(n / 2) % 11`).
 | RETURN0, RETURN1, RETURN2 | basic entries | 64 / 64 each |
 | E/CALL | basic entry, into the interpreter | 62 / 62 |
 | E/CALL resume | the word after EXIT (LXCH EBUF2 +1) | 64 / 64 |
-| E/JOBWAK | basic entry, through JOBWAKE | 45 / 23 |
+| E/JOBWAK | basic entry, through JOBWAKE | 64 / 33 |
 | INTPRET, INTPRET +2 | the interpreter entries E/CALL reaches | 64 / 64 each |
 | CALL word | interpretive, LOC at the CALL under BANKSET | 64 / 64 |
 | EXIT word | interpretive, LOC at the EXIT under BANKSET | 64 / 64 |
 
-1,344 cases reach a continuation outside the file; the other 64 are native
+1,373 cases reach a continuation outside the file; the other 35 are native
 refusals (out of the supported domain, left unchanged), printed as such by
 both sides. A case reaches when the run ends with `EXEC_OK` or with
 `EXEC_NOT_FOUND` at an address no routine owns (E/JOBWAK continuing into a
@@ -48,10 +48,10 @@ and freezes one Fletcher digest per case in
 `tests/standard_lead_oracle_vectors.h`. `make test-standard-lead-oracle` and
 `make sanitize-standard-lead-oracle` check every digest (1,414 checks).
 
-The C64 diagnostic runs every third case plus the 2 cover rows that
-`tools/lane_a_c64_cover.py` adds so that the C64 rows take all 601 branch
+The C64 diagnostic runs every third case plus the 4 cover rows that
+`tools/lane_a_c64_cover.py` adds so that the C64 rows take all 651 branch
 arcs the host corpus takes (`evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json`);
-`make vice-standard-lead-oracle` passes 475 checks in VICE.
+`make vice-standard-lead-oracle` passes 477 checks in VICE.
 
 ## Source map
 
