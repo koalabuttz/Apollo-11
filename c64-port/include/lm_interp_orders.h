@@ -20,6 +20,7 @@ void lmi_address_pushup(apollo_overlay_state *, agc_word next, agc_word target);
  * word: the store, then Z at its continuation (DANZIG, DODLOAD 06460,
  * DODLOAD* 06144, DOVLOAD 06463, DOVLOAD* 06466, or 15BITADR for STOTC). */
 void lmi_store_code(apollo_overlay_state *, agc_word code);
+uint8_t lmi_store_spills(const apollo_overlay_state *, agc_word code);
 void lmi_stadr(apollo_overlay_state *, agc_word word);
 /* DODLOAD/DOVLOAD: load code into CYR, ending at DIRADRES 06106. */
 void lmi_dodload(apollo_overlay_state *);
@@ -77,6 +78,9 @@ void lmi_mxv(apollo_overlay_state *, const agc_word *k);
 void lmi_vxm(apollo_overlay_state *, const agc_word *k);
 /* VPROJ 07425 ((MPAC.X)X: DOT through PREDOT, then DVXSC) to DANZIG. */
 void lmi_vproj(apollo_overlay_state *, const agc_word *k);
+/* V/SC 07624 (vector divided by scalar; either side may be the operand)
+ * through V/SC2 and V/SCDV in bank 0 to DANZIG or DVOVF. */
+void lmi_vsc(apollo_overlay_state *, const agc_word *k);
 /* BOV(B) (bank 1): DANZIG, GOTO 06646 (then lmi_goto) or RTB 02450. */
 enum {LMI_BOV_NONE,LMI_BOV_GOTO,LMI_BOV_RTB,LMI_BOV_OUT_OF_SCOPE};
 /* BPL/BMN order: 1 = take GOTO (W[5]=06646), 0 = DANZIG. */
@@ -122,6 +126,8 @@ void lmi_call(apollo_overlay_state *);
 /* GOTO from 06646, through GOTOERS while POLISH names erasable (fetching
  * the CADR through the work area or its EBANK), to the target's NEWOPS. */
 void lmi_goto_any(apollo_overlay_state *);
+/* CGOTO 06703 to the selected target's NEWOPS; 0 outside the CADR list. */
+uint8_t lmi_cgoto(apollo_overlay_state *, agc_word list, const agc_word *cadrs, uint16_t n);
 /* 15BITADR (STCALL's entry) to the MISCJUMP body `target`. */
 void lmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
 /* BZE/GOTO without the transfer: 1 at GOTO 06646 (BZE zero, or GOTO),

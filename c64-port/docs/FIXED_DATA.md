@@ -118,3 +118,26 @@ when build-time fixtures are absent. Their complete SHA256 values must match
 the original assembly audit before any word comparison. Fresh generated ropes
 remain preferred when present. `make all test` therefore needs only the host C
 compiler; reassembling the original audit remains a separate documented check.
+
+## Upstream errata
+
+The CM byte-original declaration rope (`6e3150ae...`, built from the upstream
+`Comanche055/ERASABLE_ASSIGNMENTS.agc`) carries two upstream transcription
+errors. The flown values come from the Comanche 055 listing scans, which
+Virtual AGC's pinned rope (`2ba31de9...`, the yaAGC oracle) follows:
+
+| Symbol | In this rope and `fixed_data_symbols.h` | Flown | Cause |
+|---|---|---|---|
+| `ALTVAR` | 01357 | 01356 | a stray uncommented `-16` (the exponent of the comment above) at ERASABLE_ASSIGNMENTS.agc:2094 allocates a word |
+| `R53FLBIT` | `BIT8` | `BIT6` | upstream transcription; Virtual AGC corrected it from the scans |
+
+The only rope word that differs is P20-P25's REND15 operand at 34,3215, plus
+the bank 34 checksum. The rope is kept as is, because about 450 evidence
+records, certificates and dependency hashes cite it or the header, and no
+native code reads either symbol. `tools/ci_guard.py` fails any `src/` or
+`platform/` file that uses `APOLLO_CM_ERASABLE_WORD_ALTVAR` or
+`APOLLO_CM_FIXED_WORD_R53FLBIT`. A port of CM P20-P25 (or any other reader)
+takes ALTVAR = 01356 and R53FLBIT = BIT6, and bank 34 words from the pinned
+rope. See /mnt/project-files/notes/upstream-transcription-check.md for the
+full upstream comparison (`tests/test_layout.c` still checks the header's
+generated values).

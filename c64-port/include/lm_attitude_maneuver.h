@@ -11,9 +11,9 @@ extern const agc_routine_table lm_attitude_maneuver_interpretive,lm_attitude_man
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_attitude_maneuver_point;
-#define LM_ATTITUDE_MANEUVER_POINTS 44u
+#define LM_ATTITUDE_MANEUVER_POINTS 224u
 #define LM_ATTITUDE_MANEUVER_CADR_WORDS 1u
-#define LM_ATTITUDE_MANEUVER_EXTERNALS 6u
+#define LM_ATTITUDE_MANEUVER_EXTERNALS 7u
 #define LM_ATTITUDE_MANEUVER_FIRST 18436u
 #define LM_ATTITUDE_MANEUVER_LAST 18915u
 extern const lm_attitude_maneuver_point lm_attitude_maneuver_points[LM_ATTITUDE_MANEUVER_POINTS];

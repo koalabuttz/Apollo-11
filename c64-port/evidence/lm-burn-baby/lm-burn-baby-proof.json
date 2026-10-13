@@ -2,44 +2,44 @@
  "mission": "Luminary099",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "oracle_engine": "yaAGC with the hardware divide (build/agc_engine_hardware_dv.o); scalers frozen",
- "cases": 20992,
- "compared": 20442,
+ "cases": 22272,
+ "compared": 21676,
  "refused": {
   "27,2200": 16,
-  "27,2214": 1,
-  "27,2221": 1,
-  "27,2230": 1,
-  "27,2232": 1,
+  "27,2214": 8,
+  "27,2221": 8,
+  "27,2232": 10,
+  "27,2242": 9,
   "35,3750": 16,
-  "36,2143": 15,
+  "36,2143": 14,
   "36,2245": 15,
-  "36,2301": 19,
-  "36,2312": 28,
-  "36,2322": 25,
+  "36,2301": 20,
+  "36,2312": 25,
+  "36,2322": 27,
   "36,2325": 26,
-  "36,2337": 9,
-  "36,2342": 15,
-  "36,2364": 19,
+  "36,2337": 13,
+  "36,2342": 11,
+  "36,2364": 21,
   "36,2366": 16,
   "36,2410": 25,
-  "36,2421": 21,
-  "36,2426": 36,
-  "36,2575": 11,
-  "36,2610": 15,
-  "36,2653": 11,
+  "36,2421": 26,
+  "36,2426": 32,
+  "36,2575": 12,
+  "36,2610": 14,
+  "36,2653": 21,
   "36,2657": 13,
   "36,2666": 16,
-  "36,2737": 22,
-  "36,2763": 15,
-  "36,2773": 15,
+  "36,2737": 27,
+  "36,2763": 14,
+  "36,2773": 16,
   "36,2777": 15,
-  "36,3007": 15,
+  "36,3007": 16,
   "36,3025": 8,
   "36,3044": 16,
-  "36,3127": 57,
+  "36,3127": 54,
   "FF,6027": 16
  },
- "snapshot_sha256": "7caa1e1077a80127bf92de4a322205ab996c9064aa69f7184607697cbe526ee5",
+ "snapshot_sha256": "c4aed3c99896ae21fdd6e13539386201d7e32ee3ce859d911a775896895804cb",
  "stops": {
   "17,2000": {
    "NOVAC": 128
@@ -66,33 +66,35 @@
    "TASKOVER": 128
   },
   "27,2200": {
-   "LONGCALL": 1,
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 111
+   "MAKECADR": 1,
+   "TWIDDLE": 1,
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 110
   },
   "27,2214": {
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 127
+   "TWIDDLE": 1,
+   "WAITLIST": 1,
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 118
   },
   "27,2221": {
-   "CHANG2": 1,
-   "DOWNFLAG": 1,
-   "PHASCHNG": 2,
-   "TASKOVER": 2,
-   "TCF IMPLBURN (P40-P47)": 1,
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 120
+   "WAITLIST": 1,
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 119
   },
   "27,2230": {
-   "COMFLAG": 1,
-   "DOWNFLAG": 1,
-   "WAITLIST": 1,
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 124
+   "2PHSCHNG": 1,
+   "PHASCHNG": 1,
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 126
   },
   "27,2232": {
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 127
+   "BANKCALL": 1,
+   "CHECKMM": 1,
+   "IBNKCALL": 1,
+   "TWIDDLE": 1,
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 114
   },
   "27,2242": {
-   "BANKJUMP": 1,
    "ENDOFJOB": 1,
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 126
+   "NOVAC": 1,
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 117
   },
   "35,3747": {
    "MAKECADR": 128
@@ -104,8 +106,8 @@
    "BANKCALL": 128
   },
   "35,3753": {
-   "BANKCALL": 56,
-   "BANKJUMP": 72
+   "BANKCALL": 67,
+   "BANKJUMP": 61
   },
   "35,3766": {
    "BANKCALL": 128
@@ -133,10 +135,10 @@
    "IBNKCALL": 128
   },
   "36,2143": {
-   "BANKCALL": 50,
+   "BANKCALL": 62,
    "CHANG2": 3,
-   "NEWOPS outside the file (a CALL or STCALL)": 36,
-   "PHASCHNG": 24
+   "NEWOPS outside the file (a CALL or STCALL)": 30,
+   "PHASCHNG": 19
   },
   "36,2146": {
    "BANKCALL": 128
@@ -145,6 +147,13 @@
    "CHANG2": 16,
    "NEWOPS outside the file (a CALL or STCALL)": 112
   },
+  "36,2152": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL or STCALL)": 112
+  },
+  "36,2155": {
+   "NEWOPS outside the file (a CALL or STCALL)": 128
+  },
   "36,2157": {
    "NEWOPS outside the file (a CALL or STCALL)": 128
   },
@@ -152,7 +161,26 @@
    "CHANG2": 16,
    "NEWOPS outside the file (a CALL or STCALL)": 112
   },
+  "36,2166": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL or STCALL)": 112
+  },
+  "36,2167": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL or STCALL)": 112
+  },
+  "36,2171": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL or STCALL)": 112
+  },
+  "36,2173": {
+   "NEWOPS outside the file (a CALL or STCALL)": 128
+  },
   "36,2175": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL or STCALL)": 112
+  },
+  "36,2177": {
    "CHANG2": 16,
    "NEWOPS outside the file (a CALL or STCALL)": 112
   },
@@ -181,6 +209,17 @@
    "CHANG2": 16,
    "ENDOFJOB": 112
   },
+  "36,2233": {
+   "CHANG2": 16,
+   "ENDOFJOB": 112
+  },
+  "36,2235": {
+   "CHANG2": 16,
+   "ENDOFJOB": 112
+  },
+  "36,2236": {
+   "ENDOFJOB": 128
+  },
   "36,2240": {
    "TWIDDLE": 128
   },
@@ -188,8 +227,8 @@
    "PHASCHNG": 128
   },
   "36,2245": {
-   "TASKOVER": 94,
-   "TWIDDLE": 19
+   "TASKOVER": 91,
+   "TWIDDLE": 22
   },
   "36,2256": {
    "NOVAC": 128
@@ -216,36 +255,36 @@
    "TWIDDLE": 128
   },
   "36,2301": {
-   "PHASCHNG": 3,
-   "POSTJUMP": 22,
-   "TASKOVER": 13,
-   "TWIDDLE": 71
+   "PHASCHNG": 2,
+   "POSTJUMP": 16,
+   "TASKOVER": 16,
+   "TWIDDLE": 74
   },
   "36,2312": {
-   "FINDVAC": 9,
-   "PHASCHNG": 7,
-   "POSTJUMP": 45,
+   "FINDVAC": 5,
+   "PHASCHNG": 9,
+   "POSTJUMP": 50,
    "TASKOVER": 39
   },
   "36,2322": {
-   "PHASCHNG": 6,
-   "POSTJUMP": 49,
-   "TASKOVER": 48
+   "PHASCHNG": 3,
+   "POSTJUMP": 51,
+   "TASKOVER": 47
   },
   "36,2325": {
-   "PHASCHNG": 5,
-   "POSTJUMP": 45,
-   "TASKOVER": 52
+   "PHASCHNG": 6,
+   "POSTJUMP": 43,
+   "TASKOVER": 53
   },
   "36,2337": {
-   "PHASCHNG": 7,
-   "POSTJUMP": 48,
-   "TASKOVER": 64
+   "PHASCHNG": 3,
+   "POSTJUMP": 53,
+   "TASKOVER": 59
   },
   "36,2342": {
-   "PHASCHNG": 1,
-   "POSTJUMP": 62,
-   "TASKOVER": 50
+   "PHASCHNG": 5,
+   "POSTJUMP": 59,
+   "TASKOVER": 53
   },
   "36,2346": {
    "PHASCHNG": 128
@@ -263,12 +302,12 @@
    "DOWNFLAG": 128
   },
   "36,2364": {
-   "FINDVAC": 11,
-   "PHASCHNG": 98
+   "FINDVAC": 21,
+   "PHASCHNG": 86
   },
   "36,2366": {
-   "FINDVAC": 57,
-   "PHASCHNG": 55
+   "FINDVAC": 53,
+   "PHASCHNG": 59
   },
   "36,2374": {
    "PHASCHNG": 128
@@ -286,11 +325,11 @@
    "CHECKMM": 128
   },
   "36,2410": {
-   "DOWNFLAG": 22,
-   "POSTJUMP": 5,
-   "TASKOVER": 55,
-   "TCF IMPLBURN (P40-P47)": 20,
-   "WAITLIST": 1
+   "DOWNFLAG": 23,
+   "POSTJUMP": 7,
+   "TASKOVER": 46,
+   "TCF IMPLBURN (P40-P47)": 24,
+   "WAITLIST": 3
   },
   "36,2411": {
    "WAITLIST": 128
@@ -299,44 +338,44 @@
    "2PHSCHNG": 128
   },
   "36,2421": {
-   "DOWNFLAG": 19,
-   "POSTJUMP": 8,
-   "TASKOVER": 50,
-   "TCF IMPLBURN (P40-P47)": 27,
+   "DOWNFLAG": 17,
+   "POSTJUMP": 15,
+   "TASKOVER": 44,
+   "TCF IMPLBURN (P40-P47)": 23,
    "WAITLIST": 3
   },
   "36,2426": {
-   "DOWNFLAG": 37,
-   "TCF IMPLBURN (P40-P47)": 49,
-   "WAITLIST": 6
+   "DOWNFLAG": 44,
+   "TCF IMPLBURN (P40-P47)": 42,
+   "WAITLIST": 10
   },
   "36,2455": {
-   "DOWNFLAG": 66,
-   "TCF IMPLBURN (P40-P47)": 62
+   "DOWNFLAG": 65,
+   "TCF IMPLBURN (P40-P47)": 63
   },
   "36,2504": {
-   "DOWNFLAG": 32,
-   "TCF IMPLBURN (P40-P47)": 32,
-   "WAITLIST": 64
+   "DOWNFLAG": 33,
+   "TCF IMPLBURN (P40-P47)": 30,
+   "WAITLIST": 65
   },
   "36,2514": {
    "2PHSCHNG": 128
   },
   "36,2520": {
-   "DOWNFLAG": 58,
-   "TCF IMPLBURN (P40-P47)": 70
+   "DOWNFLAG": 62,
+   "TCF IMPLBURN (P40-P47)": 66
   },
   "36,2521": {
-   "DOWNFLAG": 57,
-   "TCF IMPLBURN (P40-P47)": 71
+   "DOWNFLAG": 62,
+   "TCF IMPLBURN (P40-P47)": 66
   },
   "36,2531": {
    "DOWNFLAG": 65,
    "TCF IMPLBURN (P40-P47)": 63
   },
   "36,2541": {
-   "DOWNFLAG": 72,
-   "TCF IMPLBURN (P40-P47)": 56
+   "DOWNFLAG": 67,
+   "TCF IMPLBURN (P40-P47)": 61
   },
   "36,2550": {
    "DOWNFLAG": 128
@@ -369,8 +408,8 @@
    "UPFLAG": 128
   },
   "36,2575": {
-   "BANKCALL": 50,
-   "PHASCHNG": 67
+   "BANKCALL": 57,
+   "PHASCHNG": 59
   },
   "36,2603": {
    "PHASCHNG": 128
@@ -380,7 +419,7 @@
   },
   "36,2610": {
    "DOWNFLAG": 95,
-   "TASKOVER": 18
+   "TASKOVER": 19
   },
   "36,2612": {
    "DOWNFLAG": 128
@@ -423,38 +462,33 @@
   },
   "36,2653": {
    "BANKCALL": 3,
-   "BANKJUMP": 1,
-   "CHECKMM": 1,
-   "DOWNFLAG": 3,
-   "ENDOFJOB": 1,
+   "DOWNFLAG": 4,
    "FINDVAC": 2,
-   "FIXDELAY": 1,
-   "IBNKCALL": 2,
-   "LONGCALL": 1,
-   "PHASCHNG": 3,
-   "TASKOVER": 1,
+   "GOTOPOOH": 1,
+   "IBNKCALL": 1,
+   "PHASCHNG": 4,
+   "POSTJUMP": 3,
+   "TASKOVER": 4,
    "TCF IMPLBURN (P40-P47)": 2,
-   "TCF P42STAGE (P40-P47)": 1,
-   "TPAGREE": 1,
-   "TWIDDLE": 4,
+   "TWIDDLE": 2,
    "UPFLAG": 1,
-   "WAITLIST": 1,
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 88
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 80
   },
   "36,2657": {
-   "BANKCALL": 5,
-   "CHECKMM": 1,
-   "DEBIT": 1,
-   "DOWNFLAG": 3,
-   "ENDOFJOB": 1,
-   "NOVAC": 1,
-   "PHASCHNG": 4,
+   "BANKCALL": 1,
+   "BANKJUMP": 1,
+   "DOWNFLAG": 2,
+   "IBNKCALL": 2,
+   "LONGCALL": 1,
+   "MAKECADR": 1,
+   "NOVAC": 3,
+   "PHASCHNG": 1,
    "POSTJUMP": 1,
-   "TASKOVER": 1,
-   "TCF IMPLBURN (P40-P47)": 2,
+   "TASKOVER": 3,
+   "TCF IMPLBURN (P40-P47)": 1,
+   "TPAGREE": 1,
    "TWIDDLE": 3,
-   "UPFLAG": 1,
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 91
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 94
   },
   "36,2663": {
    "MAKECADR": 128
@@ -486,15 +520,15 @@
    "FIXDELAY": 128
   },
   "36,2732": {
-   "NOVAC": 110,
-   "TASKOVER": 18
+   "NOVAC": 104,
+   "TASKOVER": 24
   },
   "36,2733": {
    "TASKOVER": 128
   },
   "36,2737": {
-   "BANKCALL": 74,
-   "ENDOFJOB": 32
+   "BANKCALL": 66,
+   "ENDOFJOB": 35
   },
   "36,2755": {
    "BANKCALL": 128
@@ -503,7 +537,7 @@
    "PHASCHNG": 128
   },
   "36,2763": {
-   "DOWNFLAG": 93,
+   "DOWNFLAG": 94,
    "TASKOVER": 20
   },
   "36,2764": {
@@ -522,7 +556,7 @@
    "PHASCHNG": 128
   },
   "36,2773": {
-   "BANKCALL": 113
+   "BANKCALL": 112
   },
   "36,2777": {
    "BANKCALL": 113
@@ -535,10 +569,10 @@
   },
   "36,3007": {
    "BANKCALL": 16,
-   "DOWNFLAG": 4,
+   "DOWNFLAG": 3,
    "FINDVAC": 79,
-   "TCF IMPLBURN (P40-P47)": 5,
-   "WAITLIST": 9
+   "TCF IMPLBURN (P40-P47)": 6,
+   "WAITLIST": 8
   },
   "36,3010": {
    "BANKCALL": 128
@@ -553,8 +587,8 @@
    "PHASCHNG": 128
   },
   "36,3025": {
-   "GOTOPOOH": 39,
-   "PHASCHNG": 81
+   "GOTOPOOH": 29,
+   "PHASCHNG": 91
   },
   "36,3030": {
    "PHASCHNG": 128
@@ -569,15 +603,15 @@
    "UPFLAG": 128
   },
   "36,3043": {
-   "ENDOFJOB": 65,
-   "TWIDDLE": 63
+   "ENDOFJOB": 64,
+   "TWIDDLE": 64
   },
   "36,3044": {
-   "BANKCALL": 22,
-   "DOWNFLAG": 5,
-   "FINDVAC": 71,
-   "TCF IMPLBURN (P40-P47)": 3,
-   "WAITLIST": 11
+   "BANKCALL": 20,
+   "DOWNFLAG": 6,
+   "FINDVAC": 73,
+   "TCF IMPLBURN (P40-P47)": 5,
+   "WAITLIST": 8
   },
   "36,3047": {
    "FINDVAC": 128
@@ -607,8 +641,8 @@
    "ENDOFJOB": 128
   },
   "36,3102": {
-   "ENDOFJOB": 62,
-   "TWIDDLE": 66
+   "ENDOFJOB": 64,
+   "TWIDDLE": 64
   },
   "36,3112": {
    "ENDOFJOB": 128
@@ -626,19 +660,19 @@
    "GOTOPOOH": 128
   },
   "36,3127": {
-   "BANKCALL": 16,
-   "PHASCHNG": 15,
-   "POSTJUMP": 10,
-   "TASKOVER": 8,
-   "TCF P42STAGE (P40-P47)": 22
+   "BANKCALL": 14,
+   "PHASCHNG": 19,
+   "POSTJUMP": 11,
+   "TASKOVER": 11,
+   "TCF P42STAGE (P40-P47)": 19
   },
   "36,3130": {
    "BANKCALL": 128
   },
   "FF,6027": {
-   "IBNKCALL": 10,
-   "PHASCHNG": 10,
-   "the caller's return (TC Q, or KILLTASK's DTCB)": 92
+   "IBNKCALL": 7,
+   "PHASCHNG": 5,
+   "the caller's return (TC Q, or KILLTASK's DTCB)": 100
   }
  },
  "boundary": "from each routine key to the first instruction outside BURN_BABY_BURN, KILLTASK and the interpreter (lmbb_leaves)",
