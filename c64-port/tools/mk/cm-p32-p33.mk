@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-p32-p33 (lane E): Comanche055 P32-P33_P72-P73 compiled by
 # tools/interp_compile.py into native routines of the control-transfer ABI.
-CP32_COMMON = src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
+CP32_COMMON = src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CP32_SRC = src/cm_p32_p33.c tests/cm_p32_p33_target.c $(CP32_COMMON)
 CP32_HDR = include/cm_p32_p33.h tests/interp_case.h tests/cm_p32_p33_vectors.h tests/cm_p32_p33_c64_vectors.h
 CP32_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
@@ -24,7 +24,7 @@ cm-p32-p33-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/cm-p32-p33.groups
 CP32_C64_PRGS = $(foreach g,$(CM_P32_P33_GROUPS),build/cm-p32-p33-$(g).prg)
-CP32_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/cm_p32_p33_target.c
+CP32_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_p32_p33_target.c
 CP32_C64_cm = src/cm_p32_p33.c src/cm_interp_orders.c src/cm_interp_steps.c
 c64-cm-p32-p33: $(CP32_C64_PRGS)
 build/cm-p32-p33-%.prg: $(CP32_SRC) platform/c64/cm_p32_p33_diagnostic.c tools/mk/cm-p32-p33.groups $(CP32_HDR) | build
