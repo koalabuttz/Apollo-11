@@ -3039,7 +3039,7 @@
       "sha256": "94af1db0793427cefee250133313bb00cdbf92274d01e67dafa7ae8b82d14118",
       "bytes": 5840,
       "lines": 290,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3054,9 +3054,9 @@
           "verification": "docs/CM-R31.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-r31 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -3067,7 +3067,6 @@
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-r31/cm-r31-source-map.json",
@@ -3087,6 +3086,10 @@
             "vice_targets": {
               "vice-cm-r31": 118
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-r31.md",
+            "sha256": "53e35c85003dc778c6d11b01e28152c70dbfc7b855fc34912497f8827192e851"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-r31/cm-r31-c64-cover.json",
