@@ -5735,7 +5735,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-proof.json",
-            "sha256": "88113e5b0826b179df4f61547698ee9655f6f3d3bee2471431c8e7cddab5fe5c"
+            "sha256": "9299013c5621e6cff243e35ff940bec465cccb964dcfb849242674ae73376c0a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-host.log",
@@ -5743,10 +5743,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-vice.log",
-            "sha256": "57806f8ceab965e221b47fb2e0d5ce621c26723b3357872022d3a2a245d56ff6",
+            "sha256": "1a0e86d5ef42ea7a938a3a1ba92745ca94cd39c410809992e8c79c94e95a34e6",
             "vice_targets": {
-              "vice-lm-conic-compiled": 910
+              "vice-lm-conic-compiled": 522
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-c64-cover.json",
+            "sha256": "6adecc0b3212baa2729b882c82ec69abd813dfdaff933a0f04ca2e16c2405c0b"
           }
         }
       }
