@@ -952,6 +952,9 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
     cases and one on the C64 cases; gcov -b's taken branch outcomes of each."""
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
     srcs = list(dict.fromkeys(srcs + [spec['target']]))
+    # The same step limit as the freeze (host_arcs), or a case that runs
+    # past 200 routines reports FAILED instead of STOPPED.
+    defs = ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)]
     res = {}
     for tag, sel in (('host', range(len(cases))), ('c64', sorted(set(c64_ids)))):
         w = os.path.join(B, '%s-gcov-%s' % (spec_id, tag))
@@ -961,10 +964,10 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
         objs = []
         for s in srcs:
             o = os.path.join(w, os.path.basename(s)[:-2] + '.o')
-            subprocess.run(['gcc', '-std=c99', '-O0', '--coverage', '-Iinclude', '-Itests', '-c', s, '-o', o],
+            subprocess.run(['gcc', '-std=c99', '-O0', '--coverage', '-Iinclude', '-Itests', *defs, '-c', s, '-o', o],
                            cwd=R, check=True)
             objs.append(o)
-        subprocess.run(['gcc', '-O0', '--coverage', '-Iinclude', '-Itests', *objs, 'tools/interp_routine_native.c',
+        subprocess.run(['gcc', '-O0', '--coverage', '-Iinclude', '-Itests', *defs, *objs, 'tools/interp_routine_native.c',
                         '-o', os.path.join(w, 'run')], cwd=R, check=True)
         subprocess.run([os.path.join(w, 'run'), os.path.join(w, 'cases.bin')], cwd=R, check=True,
                        stdout=subprocess.DEVNULL)
