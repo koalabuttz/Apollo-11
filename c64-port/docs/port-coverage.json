@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -2266,7 +2266,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, any FB for STOPRATE in fixed-fixed), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the steering erasables (HOLDFLAG, RATEINDX, BCDU, NCDU, TM, NEXTIME, BRATE, TIME1/TIME2). NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, any FB for STOPRATE in fixed-fixed), FIXLOC a VAC area (any FIXLOC for the basic routines that never name FIXLOC or enter the interpreter, such as STOPRATE, which tasks and NOVAC jobs call: spec any_fixloc, half their cases), any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the steering erasables (HOLDFLAG, RATEINDX, BCDU, NCDU, TM, NEXTIME, BRATE, TIME1/TIME2). NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
         "external_continuations": [
           "BANKCALL and IBNKCALL (basic, their inline CADR)",
           "POSTJUMP with its inline CADR (no return)",
@@ -2283,22 +2283,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
-            "sha256": "e42e8280f15aa13af484d4869e436017adace3c0a4ca72271a37c7c19731118a"
+            "sha256": "818951eed038fefaa740978af2c23b6ae6f1a68c35fed20f09cda16c86f01f0d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
-            "sha256": "90b05977c7c4646cf4394b6cd36baa0702ab8942d7fb73d26e5267af4073231b"
+            "sha256": "c77ef5ed3fedd74da1ae25fbe937a675030780f9a4e41ba3ecadb379960d8d49"
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "71c5e237f8cbe8613f87b02570ee50be7f56b16da908b34e69e768789b7ef042",
+            "sha256": "2455a2f7797ac277c455c603dc6e4851db9f50129ac4f42ae2af9f8bb614fc4e",
             "vice_targets": {
-              "vice-kalcmanu-steering": 78
+              "vice-kalcmanu-steering": 77
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-c64-outcomes.json",
-            "sha256": "79c135966efecd66d07262524499c8fd03882fc1f323b4cec2af4071e06c7cc8"
+            "sha256": "796759a8ca413c957a07b7f600a3ae2677df6950e1a9ed34a3543c351ba1c33a"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -4147,45 +4147,64 @@
           ],
           "scope": "Every206 original local emitted word with ordinary canonical RAM/rawA,L, coherent source banks, legal VAC and explicit fixed return/producer contracts. Actual UNIT numerical helper is composed; external DANZIG bank07 IMUPULSE and ORBITAL_INTEGRATION continuations stay explicit. No whole application or physical device acceptance.",
           "verification": "docs/CM-RT8-WHOLE-SOURCE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_rtb_op_codes.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (206 words: bank 22 (22,3510-3777) and QUALITY1/QUALITY2 (MODCHG3, MODCHG2)) as 44 registered routines of the control-transfer ABI compiled by tools/interp_compile.py, keyed at every entry the source uses: LOADTIME, CDULOGIC, READPIPS, VECMODE, SGNAGREE, 1STO2S, V1STO2S, TPMODE, 2V1STO2S, INCRCDUS, CDUINC, PULSEIMU, TRANSP1, TRANSP2, SIGNMPAC, DPMODE, NORMUNX1, NORMUNIT, VECSGNAG and QUALITY1.",
+          "verification": "docs/RTB-OP-CODES.md"
         }
       ],
-      "pending_complete_certificate": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "Every206 original local emitted word with ordinary canonical RAM/rawA,L, coherent source banks, legal VAC and explicit fixed return/producer contracts. Actual UNIT numerical helper is composed; external DANZIG bank07 IMUPULSE and ORBITAL_INTEGRATION continuations stay explicit. No whole application or physical device acceptance.",
-        "external_continuations": [
-          "DANZIG",
-          "IMUPULSE",
-          "ORBITAL_INTEGRATION"
-        ],
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/cm-rtb-whole-source-map.json",
-            "sha256": "16ee52cbd29a68a6bbeaf7e1d7966f4d2656d491deb73d71156173a4015f9c99"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/cm-rtb-root-independent-review.json",
-            "sha256": "766b6a8f4b387aa97620990649a995eeca9327ec17c7a5c2b9fce16f3e2a7a13"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/cm-rtb-whole-source-map.json",
-            "sha256": "16ee52cbd29a68a6bbeaf7e1d7966f4d2656d491deb73d71156173a4015f9c99"
-          },
-          "c64_execution_results": {
-            "path": "evidence/cm-rtb-whole-source-map.json",
-            "sha256": "16ee52cbd29a68a6bbeaf7e1d7966f4d2656d491deb73d71156173a4015f9c99"
-          },
-          "independent_review": {
-            "path": "evidence/cm-rtb-whole-source-review.txt",
-            "sha256": "6e8723dd150b29125b0858fe33805e79b49f4a3c98998d9725efae4517468688"
-          }
-        }
-      },
       "demoted": {
         "from": "complete",
         "date": "2026-10-11",
         "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB (the cases take EB 0-7; TRANSP1 and TRANSP2 set their own), entered with Z at any of the file's basic routines (the RTB order's transfer, FB of the routine's bank) or at NEWOPS with LOC at QUALITY1 (Comanche), FIXLOC a VAC area or, for the routines that never name FIXLOC, any FIXLOC (RTB runs in NOVAC jobs too: spec any_fixloc, half their cases), MODE, OVFIND, MPAC and the operands any values with a quarter of the cases at edge values, BUF THETAD, +1 or +2 for CDUINC, MPAC +2 FIXLOC or FIXLOC +1 after NORMUNIT's VECAGREE, TIME1/TIME2 and the CDUs any values. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine (resume_keys).",
+        "external_continuations": [
+          "DANZIG, SLOAD2, SLOAD2 +2, NEWMODE and VMODE in the interpreter (where the RTB order continues)",
+          "TPAGREE (INTERPRETER), returning",
+          "BANKCALL IMUPULSE and BANKCALL VECAGREE with their CADRs",
+          "POSTJUMP UNIT +1 (no return)",
+          "QUALITY1/QUALITY2's interpretive branches and RVQ to the caller",
+          "CDUINC's caller's return through Q"
+        ],
+        "replaces": "pending_complete_certificate citing the source map for host and C64 results (issue #57)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-source-map.json",
+            "sha256": "169418c30ca2aa806ef4bf9f8db7ee46b4c7ca73c532a64a93616d54812ffa87"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
+            "sha256": "66a72d11652181f3e93581201a52afda09d8e1654e0df8a47a83257f2e6bef25"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
+            "sha256": "233fbf17480b565df512f40b2487a161a66cdb692808a72260fd4d352444f646"
+          },
+          "c64_execution_results": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
+            "sha256": "01af11acd383ac3232ca2f700db5a2ba31de259d21cc6911f97eb9aebb78a8d2",
+            "vice_targets": {
+              "vice-rtb-op-codes": 144
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
+            "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+          }
+        }
       }
     },
     {
@@ -5710,7 +5729,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI, as the routine leaves it), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables (BCDU, CPHI, MIS, MFS, MFI, TMIS, TMFI, SCAXIS, POINTVSM). On the C64 every branch outcome is run except the three on lm_interp_orders.c:277 (DP add overflow propagated to OVFIND) and :1136 (ACOS of a major part of exactly .5 with a negative minor part), which only whole-maneuver runs from KALCMAN3 reach and which do not fit C64 RAM; those outcomes are compared on the host only. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, PUSHLOC within it (0D at LOOPSIN, 4D at SUHALFA and CALCPHI, as the routine leaves it), X1 and X2 complemented matrix addresses as the callers' AXC orders load them (LOOPSIN: X1 3, 2 or 1, S1 1), MODE, OVFIND, Q a caller return, and any values of the maneuver erasables (BCDU, CPHI, MIS, MFS, MFI, TMIS, TMFI, SCAXIS, POINTVSM). NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
         "external_continuations": [
           "ALARM, BANKCALL, IBNKCALL, PHASCHNG, UPFLAG, DOWNFLAG, MAKECADR, CURTAINS, WAITLIST, STOPRATE and LOADCDUD with their inline words",
           "POSTJUMP with its inline CADR (no return)",
@@ -7932,7 +7951,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= TTEMP), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or 020000 (CHAN31 & BIT14) at NEWDELHI's ISITAUTO return, and any values of the steering erasables (BCDU, NCDU, DELDCDU, CDUXD, TM, NEXTIME, OMEGAPD, DELPEROR, TIME1/TIME2). NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= TTEMP), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area (any FIXLOC for the basic routines that never name FIXLOC or enter the interpreter, such as STOPRATE, which tasks and NOVAC jobs call: spec any_fixloc, half their cases), any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or 020000 (CHAN31 & BIT14) at NEWDELHI's ISITAUTO return, and any values of the steering erasables (BCDU, NCDU, DELDCDU, CDUXD, TM, NEXTIME, OMEGAPD, DELPEROR, TIME1/TIME2). NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
         "external_continuations": [
           "BANKCALL ISITAUTO and IBNKCALL (basic, their inline CADR)",
           "MXM3 and DCMTOCDU through CALL (interpretive)",
@@ -7948,22 +7967,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
-            "sha256": "e42e8280f15aa13af484d4869e436017adace3c0a4ca72271a37c7c19731118a"
+            "sha256": "818951eed038fefaa740978af2c23b6ae6f1a68c35fed20f09cda16c86f01f0d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
-            "sha256": "90b05977c7c4646cf4394b6cd36baa0702ab8942d7fb73d26e5267af4073231b"
+            "sha256": "c77ef5ed3fedd74da1ae25fbe937a675030780f9a4e41ba3ecadb379960d8d49"
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "71c5e237f8cbe8613f87b02570ee50be7f56b16da908b34e69e768789b7ef042",
+            "sha256": "2455a2f7797ac277c455c603dc6e4851db9f50129ac4f42ae2af9f8bb614fc4e",
             "vice_targets": {
-              "vice-kalcmanu-steering": 78
+              "vice-kalcmanu-steering": 77
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-c64-outcomes.json",
-            "sha256": "79c135966efecd66d07262524499c8fd03882fc1f323b4cec2af4071e06c7cc8"
+            "sha256": "796759a8ca413c957a07b7f600a3ae2677df6950e1a9ed34a3543c351ba1c33a"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -8252,7 +8271,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "6e58da8c229d6859f30582cfa636e31665adc77dece566a96fc1490e435af61a"
+            "sha256": "b497ed998209551114d582daf552c55b973fd0765466b34d493743c66a7ad87d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
@@ -8260,14 +8279,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "de9af30fcf513cb4f028a00b89e302ec94596d87dc09b4acbef03ea7e96fe5cc",
+            "sha256": "48e0d88e6b4eb26729aa42aa3818aeb8231d6a24e77497034cf4962a80bc3e94",
             "vice_targets": {
               "vice-geometry": 136
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "5fbb39e6e6b166665ba065a6b8636daed2d916fc4e4a7e2b6c970bd68592e5ca"
+            "sha256": "a6ef59cb32834c30a94ba865359db8e5afb379eb2bb09369c03ea8ac3c1aa820"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -10012,44 +10031,63 @@
           ],
           "scope": "Every130 original local emitted instruction and inline-data word; ordinary canonical RAM/rawA,L, coherent banks, source-return/VAC and quiesced producer contracts stated by frozen groups. Actual external DANZIG and IMUPULSE continuations are explicit source handoffs; no whole application or physical gyro acceptance.",
           "verification": "docs/LM-RTB-WHOLE-SOURCE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_rtb_op_codes.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (130 words, bank 10 (10,3573-3777)) as 24 registered routines of the control-transfer ABI compiled by tools/interp_compile.py, keyed at every entry the source uses: LOADTIME, CDULOGIC, SGNAGREE, 1STO2S, V1STO2S, TPMODE, 2V1STO2S, CDUINC, PULSEIMU, SIGNMPAC, DPMODE, NORMUNX1, NORMUNIT and VECSGNAG.",
+          "verification": "docs/RTB-OP-CODES.md"
         }
       ],
-      "pending_complete_certificate": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "Every130 original local emitted instruction and inline-data word; ordinary canonical RAM/rawA,L, coherent banks, source-return/VAC and quiesced producer contracts stated by frozen groups. Actual external DANZIG and IMUPULSE continuations are explicit source handoffs; no whole application or physical gyro acceptance.",
-        "external_continuations": [
-          "DANZIG",
-          "IMUPULSE"
-        ],
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/lm-rtb-whole-source-map.json",
-            "sha256": "560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/lm-rtb-root-independent-review-v2.json",
-            "sha256": "d2600a6c0e9f1560b0ff4ef55e6eb210e3af30e5855da519c2af7631506a627e"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/lm-rtb-whole-source-map.json",
-            "sha256": "560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228"
-          },
-          "c64_execution_results": {
-            "path": "evidence/lm-rtb-whole-source-map.json",
-            "sha256": "560c413f32cf9de97e9285473ef3f24ab3ff323f962621afd1dfa1442c3df228"
-          },
-          "independent_review": {
-            "path": "evidence/lm-rtb-whole-source-review.txt",
-            "sha256": "a4ba7c9aa1a83f412b7e9e9545601aee7d9cc2e1a2a361873e1b71fec7e002ea"
-          }
-        }
-      },
       "demoted": {
         "from": "complete",
         "date": "2026-10-11",
         "reason": "host_and_sanitizer_results and c64_execution_results point at the source-to-native map, not test runs (auditor 2026-10-11 finding 3). Restore complete with real host/sanitizer and C64 run evidence."
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB (the cases take EB 0-7; TRANSP1 and TRANSP2 set their own), entered with Z at any of the file's basic routines (the RTB order's transfer, FB of the routine's bank) or at NEWOPS with LOC at QUALITY1 (Comanche), FIXLOC a VAC area or, for the routines that never name FIXLOC, any FIXLOC (RTB runs in NOVAC jobs too: spec any_fixloc, half their cases), MODE, OVFIND, MPAC and the operands any values with a quarter of the cases at edge values, BUF THETAD, +1 or +2 for CDUINC, MPAC +2 FIXLOC or FIXLOC +1 after NORMUNIT's VECAGREE, TIME1/TIME2 and the CDUs any values. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine (resume_keys).",
+        "external_continuations": [
+          "DANZIG, SLOAD2, SLOAD2 +2 and NEWMODE in the interpreter (where the RTB order continues)",
+          "TPAGREE (INTERPRETER), returning",
+          "BANKCALL IMUPULSE and BANKCALL VECAGREE with their CADRs",
+          "POSTJUMP UNIT +1 (no return)",
+          "CDUINC's caller's return through Q"
+        ],
+        "replaces": "pending_complete_certificate citing the source map for host and C64 results (issue #57)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-source-map.json",
+            "sha256": "169418c30ca2aa806ef4bf9f8db7ee46b4c7ca73c532a64a93616d54812ffa87"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
+            "sha256": "66a72d11652181f3e93581201a52afda09d8e1654e0df8a47a83257f2e6bef25"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
+            "sha256": "233fbf17480b565df512f40b2487a161a66cdb692808a72260fd4d352444f646"
+          },
+          "c64_execution_results": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
+            "sha256": "01af11acd383ac3232ca2f700db5a2ba31de259d21cc6911f97eb9aebb78a8d2",
+            "vice_targets": {
+              "vice-rtb-op-codes": 144
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
+            "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+          }
+        }
       }
     },
     {
