@@ -2740,6 +2740,41 @@ SPECS = {
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
     },
+    # Lane D2: Luminary099 RADAR_LEADIN_ROUTINES (RADSAMP, the radar
+    # sampling task, DORSAMP its job, and VARADAR's radar read dispatch),
+    # basic routines at their original addresses. (src/lm_radar_leadin.c is
+    # the earlier hand-written partial translation.)
+    'lm-radar-leadin-routines': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'RADAR_LEADIN_ROUTINES.agc'},
+        'base': {'lm': 'lm_radar_leadin_routines'},
+        'symbol': {'lm': 'lm_radar_leadin_routines'},
+        'basic': 'full',
+        'entries': ['RADSAMP', 'DORSAMP', 'DORSAMP2', 'VARADAR'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= RSTACK (E4).
+        'ebank': 4,
+        # VARADAR's INDEX RTSTDEX; CAF RDRLOCS: the six radar read CADRs.
+        'fixed_tables': {'RDRLOCS': (0, 5)},
+        # The sampling words as P20-P25 and R77 set them (E4): RSTACK holds
+        # four DP samples, so RTSTLOC and RTSTMAX step 0-6 by two, RTSTBASE
+        # is 0 (RR) or 2 (LR) and RTSTDEX names one of RDRLOCS' six radar
+        # reads. RSAMPDT is the sample period or +0 (stop); -0 would run
+        # RADSAMP's 2CADR as an instruction.
+        'range_states': [('RADSAMP', 'RDRLOCS', {'2351': list(range(6)), '2352': [0, 2, 4, 6],
+                                                  '2353': [0, 2], '2354': [0, 2, 4, 6],
+                                                  '2355': [0, 1, 0o144, 0o37777, 0o40000, 0o77776]})],
+        'target': 'tests/lm_radar_leadin_routines_target.c',
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
     # Lane A2: Luminary099 FINDCDUW--GUIDAP_INTERFACE (bank 30), basic and
     # interpretive.
     'findcduw': {
