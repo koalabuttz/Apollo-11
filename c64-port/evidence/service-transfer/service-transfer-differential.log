@@ -1,0 +1,6 @@
+$ python3 tools/service_transfer_freeze.py
+PASS: 1642 service-transfer cases identical to yaAGC, 1635 reach a continuation
+$ python3 tools/lane_a_source_map.py service-transfer --check
+service-transfer Luminary099: 96 assembled lines, 93/93 instructions executed by the oracle; not executed without a reason: []
+service-transfer Comanche055: 123 assembled lines, 120/120 instructions executed by the oracle; not executed without a reason: []
+PASS: every instruction of SERVICE_ROUTINES.agc executed by the oracle or refused with a reason
