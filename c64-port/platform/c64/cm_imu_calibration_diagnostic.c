@@ -8,12 +8,15 @@
 #include "interp_case.h"
 #include "cm_imu_calibration_c64_vectors.h"
 const agc_native_program *irc_program(uint8_t cm);
-static apollo_overlay_state s;
+/* The image lives in the RAM under KERNAL ($01=$35, interrupts off). */
+#define s (*(apollo_overlay_state *)0xe000u)
 
 /* Mailbox contract (tools/vice_run.py): write $c001-$c004 first, then $a5 to $c000 last. */
 int main(void) {
     volatile uint8_t *mail = (volatile uint8_t *)0xc000;
     unsigned failures = 0, checks = 0, i;
+    __asm__("sei");
+    *(volatile uint8_t *)1u = 0x35u;
     for (i = 0; i < IRC_C64_VECTORS; ++i) {
         uint16_t ie = 0;
         unsigned kind;

@@ -1386,7 +1386,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "a6008e138752d8b919242630265d6e5fa2399dcaaa15749c699770e7214cb45a",
+            "sha256": "7e96f19232a4f13d01346fb9716bac7bac6c114e65a479486bc176a0ee5676ba",
             "vice_targets": {
               "vice-gimbal-lock": 31
             }
@@ -1471,7 +1471,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "e9216c10ff7dcd204876d474ba830a4bff7ab20e27c8555bb3e637ea293811d2",
+            "sha256": "75d89cabaab0183e292512cf5edbcbc8e646363829a58f194910eb15d9073d05",
             "vice_targets": {
               "vice-cm-imu-calibration": 475
             }
@@ -3652,7 +3652,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "680e8439def0d12f881ac391b83a5264b0736328589752eebc2429bc45e925b6",
+            "sha256": "d1f0be284652c7d63a2e5826941e51d320f57c60694285b65047d945acf456cb",
             "vice_targets": {
               "vice-sband-antenna": 132
             }
@@ -6196,7 +6196,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "a6008e138752d8b919242630265d6e5fa2399dcaaa15749c699770e7214cb45a",
+            "sha256": "7e96f19232a4f13d01346fb9716bac7bac6c114e65a479486bc176a0ee5676ba",
             "vice_targets": {
               "vice-gimbal-lock": 31
             }
@@ -8913,7 +8913,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "680e8439def0d12f881ac391b83a5264b0736328589752eebc2429bc45e925b6",
+            "sha256": "d1f0be284652c7d63a2e5826941e51d320f57c60694285b65047d945acf456cb",
             "vice_targets": {
               "vice-sband-antenna": 132
             }

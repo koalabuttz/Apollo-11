@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "cm-imu-calibration-vice.log": {
-      "sha256": "e9216c10ff7dcd204876d474ba830a4bff7ab20e27c8555bb3e637ea293811d2",
+      "sha256": "75d89cabaab0183e292512cf5edbcbc8e646363829a58f194910eb15d9073d05",
       "bytes": 19779,
       "store": "release"
     }

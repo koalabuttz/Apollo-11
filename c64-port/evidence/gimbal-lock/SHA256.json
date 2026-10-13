@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "gimbal-lock-vice.log": {
-      "sha256": "a6008e138752d8b919242630265d6e5fa2399dcaaa15749c699770e7214cb45a",
+      "sha256": "7e96f19232a4f13d01346fb9716bac7bac6c114e65a479486bc176a0ee5676ba",
       "bytes": 1622,
       "store": "release"
     }
