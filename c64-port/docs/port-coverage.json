@@ -4931,7 +4931,7 @@
       "sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
       "bytes": 15461,
       "lines": 659,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4943,7 +4943,7 @@
           "verification": "docs/CM-SXTMARK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4952,7 +4952,6 @@
           "Basic: ALARM, BAILOUT, BANKCALL (KLEENEX, GOMARK4), CHECKMM, CLEARMRK, ENDMARK, GENTRAN, IBNKCALL (GOODEND, MARKCONT), NOVAC, POSTJUMP (KEYCOM, TERM52), RESUME, SWRETURN, TASKOVER, UPFLAG and WAITLIST, with their inline words"
         ],
         "hardware_side_effects": "Channel 016 (NAVKEYIN: mark, mark reject and key code bits) is read as a latched input; MKRLEES's WAND CHAN12 clears bit 2 (the optics error counter enable) in the io record. Raising MARKRUPT from the mark buttons and driving the optics from channel 12 are device-adapter obligations.",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-source-map.json",
@@ -4972,6 +4971,10 @@
             "vice_targets": {
               "vice-cm-sxtmark": 73
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-282-sxtmark.md",
+            "sha256": "2d99c7052b1b4925f1bde743d64190672f520237667946e89bcde2816257af5c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-c64-outcomes.json",
