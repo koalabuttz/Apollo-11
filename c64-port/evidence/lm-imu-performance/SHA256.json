@@ -4,18 +4,18 @@
   "release": "evidence-lm-imu-performance",
   "files": {
     "lm-imu-performance-c64-cover.json": {
-      "sha256": "4c1bc7f2e8e14e98989f6d4e632048b9b923a3988fe2d61f8a7a695143e9d613",
-      "bytes": 79789,
+      "sha256": "3f67c2dfe2d386651d288a543bc9acee55e4ea52a70a1bf804ea41699dab8ff2",
+      "bytes": 84496,
       "store": "tree"
     },
     "lm-imu-performance-host.log": {
-      "sha256": "4664f286341830bdd389546221f2580dfd15bc52644728ee90964d879d525c76",
-      "bytes": 1874,
+      "sha256": "581cc7d2dba7cf6c0c2240ca86910f194f6ee129207594786466395f5c25ca08",
+      "bytes": 1889,
       "store": "release"
     },
     "lm-imu-performance-proof.json": {
-      "sha256": "0e2cd709d0a3d8614ab9a5cc74e0b87f0f9adca0417109281fe0b45f8b74b0c8",
-      "bytes": 13527,
+      "sha256": "ce73dd802c1b4f4a4ef1c6dd5db0aff6496040fbbb516401cd2368a9548ea744",
+      "bytes": 13618,
       "store": "tree"
     },
     "lm-imu-performance-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "lm-imu-performance-vice.log": {
-      "sha256": "6fb7780b343f78ddf824553f5b8f2d5bb09db40c62ad86b0e42be848a5988b4c",
-      "bytes": 8230,
+      "sha256": "b1dce881091c2f4a1e96ea49a058b3b1bbf62da4860616eeed775820a6d9c98a",
+      "bytes": 2129,
       "store": "release"
     }
   }

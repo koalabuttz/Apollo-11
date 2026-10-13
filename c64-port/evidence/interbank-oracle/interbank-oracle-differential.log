@@ -1,0 +1,6 @@
+$ python3 tools/interbank_oracle_freeze.py
+PASS: 2146 interbank-oracle cases identical to yaAGC, 2145 reach a continuation
+$ python3 tools/lane_a_source_map.py interbank-oracle --check
+interbank-oracle Luminary099: 76 assembled lines, 76/76 instructions executed by the oracle; not executed without a reason: []
+interbank-oracle Comanche055: 76 assembled lines, 76/76 instructions executed by the oracle; not executed without a reason: []
+PASS: every instruction of INTER-BANK_COMMUNICATION.agc executed by the oracle or refused with a reason

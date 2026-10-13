@@ -16,7 +16,7 @@ REST = ['src/sband_trig.c', 'src/guidance_trig.c', 'src/guidance_product.c', 'sr
 # Rows (part, case) picked by bisection for branch outcomes in the shared
 # sources (the divide, image ops, trig and interpreter bodies) that the
 # edge-cover rows miss; the freeze adds them to the C64 rows.
-EXTRA_ROWS = [(3, 18039), (7, 829), (7, 13750), (7, 10549), (3, 1917), (3, 70), (5, 586)]
+EXTRA_ROWS = [(3, 18039), (8, 829), (8, 13750), (7, 10549), (3, 1917), (3, 70), (5, 586)]
 MEASURED = ['src/lm_imu_performance.c'] + [x for x in REST if x.startswith('src/')]
 UNMEASURED = [x for x in REST if not x.startswith('src/')]
 FLAGS = ['-std=c99', '-Iinclude', '-Itests', '-DP66_NATIVE_DISPATCH_ONLY', '-DIPT_C64_PART=0']

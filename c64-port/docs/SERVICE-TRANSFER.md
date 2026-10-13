@@ -17,8 +17,9 @@ routine.
 | GENTRAN, GENTRAN +1 | 05544, 05545 | 05606, 05607 | `TC GENTRAN` then two `ADRES` words; the back edge |
 | B5OFF | 05563 | 05625 | `TC B5OFF` from extended verbs |
 | TRFAILOF, TRFAILON | | 05631, 05643 | `TC` with Q a return address |
+| COMFLAG, DEBIT | 05511, 05522 | | BURN_BABY_BURN's INVFLAG: `CA Q`, `TC DEBIT`, ..., `TCF COMFLAG` |
 
-`src/service_transfer.c` holds `lm_service_routines` (11 entries) and
+`src/service_transfer.c` holds `lm_service_routines` (13 entries) and
 `cm_service_routines` (13). The `ADRES` words after every genuine fixed
 `TC UPFLAG`, `TC DOWNFLAG` and `TC GENTRAN` are compiled constants
 (`src/lm_service_sites.inc`, 171 words; `src/cm_service_sites.inc`, 152;
@@ -32,6 +33,20 @@ TCGETCAD, WAKER, its finish after JOBWAKE and B5OFF never read Q (their first
 job reaches them with Q left by the executive (yaAGC runs WAKER and B5OFF at
 Q = 3). The other entries keep the compiled-caller range 0100..07775.
 
+COMFLAG and DEBIT (LM only; Comanche's INVFLAG callers do not exist) are the
+inner points of UPFLAG and DOWNFLAG. DEBIT takes A at the caller's `ADRES`
+word (erasable, with ITEMP1 and ITEMP3 read as DEBIT has just set them, or
+fixed through the site table or the program's constant reader), splits the
+flag number by `DV` into ITEMP1 and ITEMP2, loads the flag word into L and
+the complemented bit into A, and returns by `TC Q` (Z = Q, Q = 3, interrupts
+off). COMFLAG stores A in the flag word; `TS` with an overflowing A leaves
+A at +1 or -1 and skips `LXCH ITEMP3`; then `RELINT` and `TC L` (Z = L,
+Q = 2). Both refuse a return register that is not a plain TC to 0100..07777,
+an A that overflows on DEBIT's `AD ONE`, and flag numbers past 14459 or flag
+words outside ordinary erasable. LM entry kinds 7 and 8 (formerly repeats of
+B5OFF) are DEBIT and COMFLAG cases: 57 and 56, 107 of 113 reaching the
+continuation.
+
 ## Proof
 
 `tools/service_transfer_freeze.py` runs the 1,642 cases of
@@ -40,13 +55,21 @@ the original ropes. There are two cases per genuine UPFLAG, DOWNFLAG and
 GENTRAN site of each mission, entered at the callee with Q at the operand word
 and random erasable, banks and interrupt inhibit. There are also 256 entry
 cases per mission over the other entries, half of the Q-free ones with Q below
-0100 and with free and busy delay slots. yaAGC stops where Z and FB first equal
-the native continuation. 1,640 cases reach it; the other two are GENTRAN
-blocks whose operands the step refuses. The inhibit flag and all 2048 erasable
+0100 and with free and busy delay slots; a random Q inside the file's
+fixed-fixed code moves to 04400-04777, since the oracle stops at the first Z
+equal to the native one and would stop mid-routine. yaAGC stops where Z and FB
+first equal the native continuation. 1,635 cases reach it; the others are
+refusals (GENTRAN blocks whose operands the step refuses, DEBIT and COMFLAG
+outside their domain). The inhibit flag and all 2048 erasable
 words are identical. The proof
 (`evidence/service-transfer/service-transfer-proof.json`) lists the hashes of
 every native source it depends on.
 
 `tests/test_service_transfer.c` checks the frozen digests, the refusals (UPFLAG
 and DOWNFLAG at Q 077 and at a fixed Q that is no site) and the table order:
-1,654 checks. The C64 diagnostic runs every fifth case and the refusals.
+1,654 checks. The C64 diagnostic runs every third case (frozen into
+`tests/service_transfer_c64_vectors.h`) and the cover rows
+`tools/lane_a_c64_cover.py service-transfer` picks
+(`tests/service_transfer_c64_rows.h`), so its rows take every gcov branch arc
+the host cases take in every linked source, plus the refusals; the image sits
+at $e000 under the KERNAL.

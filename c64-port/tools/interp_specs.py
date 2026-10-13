@@ -327,6 +327,12 @@ SPECS = {
         # RESCALES can return with overflow in A: TS AK2 then skips into
         # SATOUT's CADR NEEDLER, which the AGC runs as CS 2420 (on to
         # ATERSET), and so does the port.
+        # TIME2/TIME1 (024/025, counters) as P11 finds them: half of every routine's
+        # cases hold TIME2 at +0, as it is for the first 163.84 s after
+        # liftoff (P11's DXCH TIME2 zeroes it), with TIME1 at 0, small, at
+        # 2SECS (200: REP11A's CS TIME1, AD 2SECS gives -0), past it, or
+        # just below its wrap.
+        'joint_states': {'*': [{'24': 0, '25': t} for t in (0, 1, 100, 199, 200, 201, 3000, 0o37777)]},
         'execute_data': ('34,2472',),
         # CA SATSW; CCS A: the -0 exit lands on STEERSAT's TLOAD TAD (an
         # interpretive word), which no SATSW value takes; as basic code its
@@ -936,8 +942,10 @@ SPECS = {
         # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
-        # One C64 case per routine: KALCMAN3's run reaches most of the file.
-        'c64_per_point': 1,
+        # KALCMAN3's run reaches most of the file, more than one C64
+        # diagnostic holds: the outcomes only it takes before a CHANG2
+        # resume get segment rows.
+        'c64_segments': True,
         # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
         # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
         'ebank': 6,

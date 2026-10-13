@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-/* lm-imu-performance on the C64, one part at a time (-DIPT_C64_PART=1..5,
+/* lm-imu-performance on the C64, one part at a time (-DIPT_C64_PART=1..8,
  * tests/lm_imu_performance_cases.h): the sampled cases this part runs,
  * against the digests frozen from the original program
  * (tools/lm_imu_performance_freeze.py, which also lists the sampled cases
