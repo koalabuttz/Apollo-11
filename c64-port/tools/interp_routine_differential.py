@@ -129,15 +129,27 @@ class Mission:
         self.rk = bool(spec.get('resume_keys'))
         self.index_returns = bool(spec.get('index_returns'))
         self.all_states = spec.get('all_states', {})
+        if self.all_states and set(self.all_states) <= {'lm', 'cm'}:
+            self.all_states = self.all_states.get(m, {})
         self.counters = spec.get('counters', False)
         # (Lane G) 010-061 from the case seed (IRC_COUNTERS) plus relate().
         self.seed_counters = spec.get('seed_counters', False)
         self.edges = spec.get('edge_values', False)
         js = spec.get('joint_states', {})
         self.joint_any = js.get('*', [])
+        if js and set(js) <= {'lm', 'cm'}:
+            js = js.get(m, {})
+            self.joint_any = js.get('*', [])
         self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
-        self.states = {self.point_of(k): v for k, v in spec.get('states', {}).items()}
+        # 'states' may name each mission's own ({'lm': {...}, 'cm': {...}}).
+        st = spec.get('states', {})
+        if st and set(st) <= {'lm', 'cm'}:
+            st = st.get(m, {})
+        self.states = {self.point_of(k): v for k, v in st.items()}
+        if spec.get('index_states'):
+            for p, v in self.index_states(spec).items():
+                self.states[p] = dict(v, **self.states.get(p, {}))
         # range_states: (FROM, TO, states) applies states to every point
         # from label FROM up to (not including) label TO, after all_states.
         self.range_states = [(self.cp.label_phys(a), self.cp.label_phys(b), st)
@@ -174,6 +186,74 @@ class Mission:
             phys = int(m.group(1), 8) * 1024 + int(m.group(2), 8) - 0o2000
             if phys in self.points and eb is not None:
                 out.setdefault(phys, eb)
+        return out
+
+    def index_states(self, spec):
+        """'index_states': X1 and X2 at each point where the next indexed
+        operand reading them (in listing order, before an instruction sets
+        them) names erasable: X = base - target, for targets across the
+        switched erasable bank (with room for a matrix past them), so the
+        operand lands in erasable as the program's AXC/AXT settings do.
+        Explicit 'states' for the point win."""
+        IX = re.compile(r'^(AXT|AXC|LXA|LXC|SXA|XCHX|TIX|INCR|XAD|XSU),([12])$')
+        lines = sorted(self.L.file_lines(spec['file'][self.m]), key=lambda ln: ln.phys)
+        targets = list(range(0o1400, 0o1740, 0o24))
+        enc = lambda x: x & 0o77777 if x >= 0 else ~(-x) & 0o77777
+
+        def base(text):
+            m = re.match(r'^([^\s,+-]*)\s*([+-]\s*\d+D?)?$', text.strip())
+            if not m:
+                return None
+            name, off = m.group(1), (m.group(2) or '').replace(' ', '')
+            n = (int(off[:-1]) if off.endswith('D') else int(off, 8)) if off else 0
+            if re.fullmatch(r'\d+D', name):
+                return int(name[:-1]) + n
+            if re.fullmatch(r'[0-7]+', name):
+                return int(name, 8) + n
+            if name in self.esyms:
+                ph = self.esyms[name]
+                return (ph if ph < 0o1400 else 0o1400 + ph % 256) + n
+            return None     # fixed memory (the spec's indexed_fixed and fixed_index)
+
+        events = []     # (phys, 'set'|'use', index, base)
+        for ln in lines:
+            toks = [t for t in (ln.op, ln.operand) if t]
+            ops = [t for t in toks if IX.match(t.replace(' ', ''))]
+            for t in ops:
+                op, x = IX.match(t.replace(' ', '')).groups()
+                if op not in ('SXA', 'TIX', 'INCR'):
+                    events.append((ln.phys, 'set', x, None))
+            text = ln.operand or ''
+            m = re.match(r'^(.*),([12])$', text.replace(' ', '')) if not ops else None
+            if m and not ln.op:
+                events.append((ln.phys, 'use', m.group(2), base(ln.operand.rsplit(',', 1)[0])))
+            elif m and ln.op:
+                events.append((ln.phys, 'use', m.group(2), base(ln.operand.rsplit(',', 1)[0])))
+        # A CALL or GOTO (either order of the word) to a label of the file
+        # continues there: its operand is the first label among the next
+        # operand words.
+        jumps = {}
+        for i, ln in enumerate(lines):
+            if 'CALL' in (ln.op, ln.operand) or 'GOTO' in (ln.op, ln.operand):
+                for nxt in lines[i + 1:i + 3]:
+                    if nxt.op:
+                        break
+                    if nxt.operand in self.L.labels:
+                        jumps[ln.phys] = self.L.labels[nxt.operand]
+                        break
+        out = {}
+        for p in self.points:
+            for x, key in (('1', 'vac+046'), ('2', 'vac+047')):
+                q0, seen = p, 0
+                while seen < 3:
+                    ev = [e for e in events if q0 <= e[0] <= q0 + 0o60 and e[2] == x]
+                    jp = [q for q in jumps if q0 <= q <= q0 + 0o60 and (not ev or q < ev[0][0])]
+                    if jp:
+                        q0, seen = jumps[min(jp)], seen + 1
+                        continue
+                    if ev and ev[0][1] == 'use' and ev[0][3] is not None:
+                        out.setdefault(p, {})[key] = [enc(ev[0][3] - t) for t in targets]
+                    break
         return out
 
     def caller_returns(self, spec):
@@ -550,6 +630,22 @@ class Absent:
         self.externals = []
 
 
+class Edits:
+    """A case's (address, word) edits, packed (a whole milestone's cases
+    would not fit in memory as tuples)."""
+    __slots__ = ('w',)
+
+    def __init__(self, pairs):
+        import array
+        self.w = array.array('I', [a << 16 | v for a, v in pairs])
+
+    def __len__(self):
+        return len(self.w)
+
+    def __iter__(self):
+        return ((x >> 16, x & 0xffff) for x in self.w)
+
+
 def write_cases(path, missions, cases):
     with open(path, 'wb') as f:
         f.write(struct.pack('<I', 0x32435249))
@@ -634,7 +730,7 @@ def cut_flags(spec):
     return ['-DIRC_CUTS'] if spec.get('c64_cuts') else []
 
 
-def build(spec_id, spec):
+def build(spec_id, spec, extra=(), tag=''):
     # The pinned engine with DV always through its hardware model
     # (tools/prepare_hardware_dv.py: the fast path mishandles a
     # sign-extended -0 in L), as the native divide follows. Spec 'engine':
@@ -658,9 +754,9 @@ def build(spec_id, spec):
                         'tests/cm_executive_cases.c',
                         hw, os.path.join(E, 'agc_engine_init.o'),
                         os.path.join(E, 'rfopen.o'), '-o', ref], cwd=R, check=True)
-    nat = os.path.join(B, '%s-native' % spec_id)
+    nat = os.path.join(B, '%s-native%s' % (spec_id, tag))
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec)
-    subprocess.run(['cc', *FLAGS, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *cut_flags(spec), *srcs, spec['target'],
+    subprocess.run(['cc', *FLAGS, *extra, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *cut_flags(spec), *srcs, spec['target'],
                     'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
@@ -712,18 +808,18 @@ def flow_states(spec_id, spec, missions, per_entry=64):
     print('flow states: %d routines reached from %d entry cases' % (len(seen), len(cases)))
 
 
-def build_edges(spec_id, spec):
+def build_edges(spec_id, spec, extra=(), tag=''):
     """The native runner with every linked source (the milestone's routines,
     the interpreter bodies, the image ops and native RTBs; not the test
     harness) instrumented per edge, so each branch outcome is a guard."""
-    d = os.path.join(B, '%s-edges' % spec_id)
+    d = os.path.join(B, '%s-edges%s' % (spec_id, tag))
     os.makedirs(d, exist_ok=True)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + \
         [x for x in COMMON if not x.startswith('tests/')]
     objs = []
     for src in srcs:
         o = os.path.join(d, os.path.basename(src) + '.o')
-        subprocess.run(['clang', '-std=c99', '-O0', '-g', '-fno-pie', '-Iinclude', '-Itests',
+        subprocess.run(['clang', '-std=c99', '-O0', '-g', '-fno-pie', '-Iinclude', '-Itests', *extra,
                         '-fsanitize-coverage=trace-pc-guard', '-c', src, '-o', o], cwd=R, check=True)
         objs.append(o)
     nat = os.path.join(d, 'native')
@@ -736,17 +832,118 @@ def build_edges(spec_id, spec):
 
 def edge_sets(nat, path):
     """Per case, the guards it reached; and each guard's source line."""
-    r = subprocess.run([nat, path, 'edges'], cwd=R, check=True, capture_output=True, text=True)
-    sets = [frozenset(int(t[1:]) for t in l.split()[4:] if t[0] == 'e') for l in r.stdout.splitlines()]
-    pcs = [l.split()[1:] for l in r.stderr.splitlines() if l.startswith('pc ')]
+    # (Streamed, with equal sets shared: most cases reach the same edges.)
+    seen = {}
+    with subprocess.Popen([nat, path, 'edges'], cwd=R, stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, text=True) as pr:
+        import threading
+        err = []
+        th = threading.Thread(target=lambda: err.append(pr.stderr.read()))
+        th.start()
+        sets = []
+        for l in pr.stdout:
+            e = frozenset(int(t[1:]) for t in l.split()[4:] if t[0] == 'e')
+            sets.append(seen.setdefault(e, e))
+        th.join()
+    if pr.returncode:
+        raise subprocess.CalledProcessError(pr.returncode, nat)
+    pcs = [l.split()[1:] for l in err[0].splitlines() if l.startswith('pc ')]
     sym = subprocess.run(['llvm-symbolizer', '--obj=' + nat],
                          input='\n'.join(a for _, a in pcs) + '\n', cwd=R, capture_output=True, text=True).stdout
     lines = [b.split('\n')[1] for b in sym.strip().split('\n\n')]
-    where = {}
+    where = Where()
     for (g, _), ln in zip(pcs, lines):
         f, _, rest = ln.partition(':')
-        where[int(g)] = '%s:%s' % (os.path.relpath(f, R) if f.startswith('/') else f, rest.split(':')[0])
+        f = os.path.relpath(f, R) if f.startswith('/') else f
+        where[int(g)] = '%s:%s' % (f, rest.split(':')[0])
+        where.col[int(g)] = '%s:%s' % (f, rest)
     return sets, where
+
+
+class Where(dict):
+    """Each guard's source line; .col its line and column, which name the
+    same outcome across builds (a segment runner's KEEP mask renumbers the
+    guards)."""
+    def __init__(self):
+        super().__init__()
+        self.col = {}
+
+
+
+def segment_rows(spec_id, spec, vsym, missions, mi, cases, rows, visits, live, edges, got):
+    """'c64_segments': C64 rows for the branch outcomes that only runs too
+    long for one diagnostic take, where they lie before a CHANG2 resume. The
+    row runs its case from its routine to the resume LOC after it (that
+    routine left out of the group's KEEP mask, so the run stops there),
+    against the oracle stopped at NEWOPS with LOC there (IRC_SNAPROW). Each
+    segment runs on the host with the same KEEP mask first and must equal
+    the oracle. Appends the rows' cases, oracle rows, visits and edge sets
+    (in the full build's guards); returns {point: [case]}."""
+    sets, where = edges
+    k_of = {p: k for k, p in enumerate(mi.points)}
+    nxt = {p: mi.points[k + 1] for k, p in enumerate(mi.points[:-1])
+           if mi.cp.starts[mi.points[k + 1]] == ('i', 'CHANG2 resume')}
+    target = set().union(*(sets[i] for i in live)) - got
+    cand = collections.defaultdict(list)
+    for i in sorted(live, key=lambda i: (len(cases[i]['edits']), i)):
+        p = cases[i]['point']
+        if p in nxt and sets[i] & target and len(cand[p]) < 64:
+            cand[p].append(i)
+    fullcol = collections.defaultdict(list)
+    for g, c in where.col.items():
+        fullcol[c].append(g)
+    out = {}
+    sym = spec['symbol'][mi.m]
+    for p, ii in sorted(cand.items()):
+        if not target:
+            break
+        k = k_of[p]
+        mask = 1 << k
+        flags = keep_flags(sym, mask)
+        tag = '-seg-%s-%x' % (mi.m, k)
+        seg = [dict(cases[i], stop=nxt[p], src=i) for i in ii]
+        path = os.path.join(B, '%s%s.bin' % (spec_id, tag))
+        write_cases(path, missions, seg)
+        ref, nat = build(spec_id, spec, flags, tag)
+        rr = [l.split() for l in subprocess.run([ref, *ROPES, path], cwd=R, check=True, capture_output=True, text=True,
+                                                env=dict(os.environ, IRC_SNAP='1', IRC_SNAPROW='1')).stdout.splitlines()]
+        nn = run([nat, path])
+        ok = []
+        for j, (x, y) in enumerate(zip(rr, nn)):
+            if x[1] == 'N':
+                continue
+            if x != y:
+                sys.exit('%s segment %s to %s, case %d: oracle %s, native %s' % (
+                    mi.m, mi.cp.where(p), mi.cp.where(nxt[p]), ii[j], ' '.join(x[1:]), ' '.join(y[1:])))
+            ok.append(j)
+        es, ew = edge_sets(build_edges(spec_id, spec, flags, tag), path)
+        segcol = collections.defaultdict(list)
+        for g, c in ew.col.items():
+            segcol[c].append(g)
+        tr = {}
+        for c, gs in segcol.items():
+            tr.update(zip(sorted(gs), sorted(fullcol.get(c, []))))
+        got_s = {j: frozenset(tr[g] for g in es[j] if g in tr) for j in ok}
+        while target:
+            j = max(ok, key=lambda j: (len(got_s[j] & target), -j), default=None)
+            if j is None or not got_s[j] & target:
+                break
+            ok.remove(j)
+            idx = len(cases)
+            cases.append(seg[j])
+            rows.append(rr[j])
+            visits.append(mask)
+            if c64_size(spec, vsym, mi.m, mask, group_text(vsym, [(mi.m, mask, [idx])], cases, rows)) is None:
+                cases.pop(); rows.pop(); visits.pop()
+                continue
+            sets.append(got_s[j])
+            target -= got_s[j]
+            out.setdefault(p, []).append(idx)
+            SEGMENTS.append({'mission': mi.m, 'from': mi.cp.where(p), 'to': mi.cp.where(nxt[p]), 'case': ii[j]})
+    return out
+
+
+SEGMENTS = []   # the C64 segment rows (proof field c64_segments)
 
 
 def greedy_cover(cands, sets, covered=(), key=lambda i: i, accept=lambda i: True):
@@ -809,7 +1006,7 @@ def main():
         for p in mi.points:
             for n in range(a.cases):
                 seed, edits, ie, stop, sb = case(mi, p, n, rng)
-                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop, 'sb': sb})
+                cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': Edits(edits), 'ie': ie, 'stop': stop, 'sb': sb})
     os.makedirs(B, exist_ok=True)
     path = os.path.join(B, '%s-cases.bin' % a.spec)
     ref, nat = build(a.spec, spec)
@@ -874,15 +1071,18 @@ def main():
     for k in sorted(stops):
         print('  %s: %s' % (k, ', '.join('%s x%d' % (z, n) for z, n in sorted(stops[k].items()))))
     if a.freeze:
-        vis = run([nat, path, 'visits'])
+        idxs = [{p: k for k, p in enumerate(mi.points)} for mi in missions]
         visits = []
-        for c, r in zip(cases, vis):
-            idx = {p: k for k, p in enumerate(missions[c['cm']].points)}
-            v = 0
-            for t in r[4:]:
-                if int(t[1:]) in idx:   # (erasable continuations are always kept)
-                    v |= 1 << idx[int(t[1:])]
-            visits.append(v)
+        with subprocess.Popen([nat, path, 'visits'], cwd=R, stdout=subprocess.PIPE, text=True) as pr:
+            for c, l in zip(cases, pr.stdout):
+                idx = idxs[c['cm']]
+                v = 0
+                for t in l.split()[4:]:
+                    if int(t[1:]) in idx:   # (erasable continuations are always kept)
+                        v |= 1 << idx[int(t[1:])]
+                visits.append(v)
+        if pr.returncode:
+            raise subprocess.CalledProcessError(pr.returncode, nat)
         covers = None
         if spec.get('basic') == 'full':
             covers = edge_covers(spec, nat, path)
@@ -952,6 +1152,9 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
     cases and one on the C64 cases; gcov -b's taken branch outcomes of each."""
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
     srcs = list(dict.fromkeys(srcs + [spec['target']]))
+    # The same step limit as the freeze (host_arcs), or a case that runs
+    # past 200 routines reports FAILED instead of STOPPED.
+    defs = ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)]
     res = {}
     for tag, sel in (('host', range(len(cases))), ('c64', sorted(set(c64_ids)))):
         w = os.path.join(B, '%s-gcov-%s' % (spec_id, tag))
@@ -961,10 +1164,10 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
         objs = []
         for s in srcs:
             o = os.path.join(w, os.path.basename(s)[:-2] + '.o')
-            subprocess.run(['gcc', '-std=c99', '-O0', '--coverage', '-Iinclude', '-Itests', '-c', s, '-o', o],
+            subprocess.run(['gcc', '-std=c99', '-O0', '--coverage', '-Iinclude', '-Itests', *defs, '-c', s, '-o', o],
                            cwd=R, check=True)
             objs.append(o)
-        subprocess.run(['gcc', '-O0', '--coverage', '-Iinclude', '-Itests', *objs, 'tools/interp_routine_native.c',
+        subprocess.run(['gcc', '-O0', '--coverage', '-Iinclude', '-Itests', *defs, *objs, 'tools/interp_routine_native.c',
                         '-o', os.path.join(w, 'run')], cwd=R, check=True)
         subprocess.run([os.path.join(w, 'run'), os.path.join(w, 'cases.bin')], cwd=R, check=True,
                        stdout=subprocess.DEVNULL)
@@ -1089,6 +1292,10 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
                                                     [i for g in c64 for i in g['case_ids']])}
                 if covers else {}),
              **({'c64_host_only': C64_HOST_ONLY} if C64_HOST_ONLY else {}),
+             **({'c64_segments': {'method': 'from the case\'s routine to the CHANG2 resume LOC after it (that routine '
+                                            'outside the KEEP mask), against yaAGC stopped at NEWOPS with LOC there '
+                                            '(IRC_SNAPROW); each equal to the oracle on the host with the same mask',
+                                  'rows': SEGMENTS}} if SEGMENTS else {}),
              **({'c64_too_big_cases': [{'case': i, 'point': cases[i]['point']} for i in C64_TOO_BIG]} if C64_TOO_BIG else {}),
              **({'outcome_cover': cover} if cover is not None else {}),
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
@@ -1445,6 +1652,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
     out. Writes tests/<id>_c64_vectors.h and tools/mk/<id>.groups; returns
     the groups and the row cover's proof fields."""
     per = spec.get('c64_per_point', 2)
+    # (Segment rows append cases of their own: these lists are the C64's.)
+    cases, rows, visits = list(cases), list(rows), list(visits)
     for mi in missions:
         if mi.m not in spec['missions']:
             continue
@@ -1533,6 +1742,10 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             more, _ = greedy_cover(live, sets, base, key=fewest, accept=alone)
             for i in more:
                 need[cases[i]['point']].append(i)
+            segs = {}
+            if spec.get('c64_segments'):
+                segs = segment_rows(spec_id, spec, sym, missions, mi, cases, rows, visits, live, edges,
+                                    base.union(*(sets[i] for i in more)))
         if edges is not None:
             mask, pick = 0, []
             # Case by case (the cover's cases already fit alone): a new
@@ -1551,6 +1764,9 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                         mask, pick = trial, tp
             if pick:
                 groups.append((mi.m, mask, pick))
+            # (one group per segment routine: the routine after it stays out)
+            for p, ii in sorted(segs.items()):
+                groups.append((mi.m, 1 << mi.points.index(p), ii))
             continue
         mask, pick = 0, []
         for p, part in (((p, [i]) for p in mi.points for i in need[p]) if cover else ((p, need[p]) for p in mi.points)):
@@ -1621,7 +1837,9 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
         mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
             v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
-    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups], extra
+    # (case_ids: the differential's case of each row, a segment row's too)
+    return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick),
+             'case_ids': [cases[i].get('src', i) for i in pick]} for m, mask, pick in groups], extra
 
 
 
