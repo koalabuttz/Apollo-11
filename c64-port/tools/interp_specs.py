@@ -520,6 +520,7 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'TPI_SEARCH.agc'},
         'base': {'cm': 'cm_tpi_search'},
@@ -592,6 +593,7 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-p32-p33': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P32-P33,_P72-P73.agc'},
         'source_path': {'cm': 'P32-P33_P72-P73.agc'},
@@ -627,6 +629,7 @@ SPECS = {
         'freeze_stride': 256,
     },
     'cm-p34-p35': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'cm': 'P34-35_P74-75.agc'},
@@ -666,6 +669,7 @@ SPECS = {
         'freeze_stride': 512,
     },
     'cm-p37-p70': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P37,P70.agc'},
         'source_path': {'cm': 'P37_P70.agc'},
@@ -711,6 +715,7 @@ SPECS = {
         'freeze_stride': 256,
     },
     'lm-p34-p35': {
+        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'lm': 'P34-35_P74-75.agc'},
@@ -743,6 +748,7 @@ SPECS = {
         'freeze_stride': 512,
     },
     'lm-p32-p35': {
+        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P32-P35,_P72-P75.agc'},
         'source_path': {'lm': 'P32-P35_P72-P75.agc'},

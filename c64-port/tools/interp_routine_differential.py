@@ -906,34 +906,12 @@ def host_arcs(spec_id, spec, missions, cases):
     os.makedirs(one)
 
     def argv(i):
-        lo, hi = (i, i + 1) if isinstance(i, int) else i
-        p = os.path.join(one, '%d-%d.bin' % (lo, hi))
-        write_cases(p, missions, cases[lo:hi])
+        p = os.path.join(one, '%d.bin' % i)
+        write_cases(p, missions, [cases[i]])
         return [str(exe), p]
     # 'cover_stride': every Nth case (a divisor of freeze_stride, so every
-    # frozen host vector is among them), then every case that takes an arc
-    # none of those take: runs of 256 cases at a time find them, and each
-    # run with such an arc is traced case by case.
-    stride = spec.get('cover_stride', 1)
-    got = c64_row_cover.trace(d, range(0, len(cases), stride), argv)
-    if stride > 1:
-        miss = set().union(*got.values())
-        blocks = c64_row_cover.trace(d, [(lo, min(lo + 256, len(cases))) for lo in range(0, len(cases), 256)], argv)
-        # (The runner's own loop over a file's cases is not the routines'.)
-        miss = {a for a in set().union(*blocks.values()) - miss if not a.startswith('tools/interp_routine_native.c')}
-        added = 0
-        for (lo, hi), a in sorted(blocks.items()):
-            if not a & miss:
-                continue
-            one_by_one = c64_row_cover.trace(d, [i for i in range(lo, hi) if i not in got], argv)
-            for i, b in one_by_one.items():
-                if b & miss:
-                    got[i] = b
-                    added += 1
-            miss -= set().union(*one_by_one.values())
-        print('cover: %d cases traced (every %dth, and %d more for arcs those miss)' % (len(got), stride, added))
-        assert not miss, miss
-    return got
+    # frozen host vector is among them).
+    return c64_row_cover.trace(d, range(0, len(cases), spec.get('cover_stride', 1)), argv)
 
 
 def wider_arcs(spec_id, missions, cases, arcs):
