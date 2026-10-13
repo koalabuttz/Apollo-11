@@ -60,7 +60,10 @@ A lane hooks a target into `module-test` (`tools/mk/module-test.mk`). Lane
 C's `module-test-lanec-pin-keys` (`tools/mk/lanec-pin-keys.mk`) runs every
 case of the `pin-keys` and `pin-key-labels` suites, in both missions,
 through the five keypress modules (docs/LANEC-PIN-KEYS.md), one routine per
-case.
+case. Every case matches the host: 1408 per suite and mission, 5632 in
+all. The keypress routines run through the Pinball trampoline, which takes a
+TC it ends at in a register or return cell; `--tc-cells` names those cells
+so the host row is advanced the same way.
 
 A suite whose modules take another io kind needs that device record added
 to `tools/module_test.c`, mapping the case's channels in and out.
