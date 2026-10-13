@@ -11,15 +11,19 @@
 #ifndef LM_PA_GENERIC
 /* Every instruction runs on the one canonical image (fixed in the flight
  * store, bound at each entry elsewhere): a plain-cell operand under this
- * file's EBANK 6 goes to the fast helper (include/agc_fast_ops.h), any
+ * file's EBANK 6 goes to the fast helper (include/agc_fast_ops.h; a cell
+ * in the EB window by its one-byte offset, include/agc_fast_window.h), any
  * other operand to a one-argument wrapper (include/agc_image_thin.h); both
  * have the effects of the agc_image_ops helper. -DLM_PA_GENERIC builds the
  * same source on agc_image_ops alone. */
 #include "agc_fast_ops.h"
+#include "agc_fast_window.h"
 #include "agc_image_thin.h"
 #define PA_EBN (LM_PA_EB>>8)
-#define PA_OP(n,s,a) ((void)(s),AFO_PLAIN(PA_EBN,a)?afo_##n(AFO_CELL(PA_EBN,a)):AIT_ARG(n,a))
-#define PA_OP2(n,s,a) ((void)(s),AFO_PLAIN2(PA_EBN,a)?afo_##n(AFO_CELL(PA_EBN,a)):AIT_ARG(n,a))
+#define PA_OP(n,s,a) ((void)(s),AFW_IN(PA_EBN,a)?afw_##n(AFW_OFF(a)):\
+ AFO_PLAIN(PA_EBN,a)?afo_##n(AFO_CELL(PA_EBN,a)):AIT_ARG(n,a))
+#define PA_OP2(n,s,a) ((void)(s),AFW_IN(PA_EBN,a)?afw_##n(AFW_OFF(a)):\
+ AFO_PLAIN2(PA_EBN,a)?afo_##n(AFO_CELL(PA_EBN,a)):AIT_ARG(n,a))
 #define PA_F(n,s,k) ((void)(s),afo_##n(k))
 #define ai_ca(s,a) PA_OP(ca,s,a)
 #define ai_cs(s,a) PA_OP(cs,s,a)

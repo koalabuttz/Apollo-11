@@ -702,11 +702,14 @@ SPECS = {
         # a CHANG2 resume from the state the routine before it reaches.
         'flow_states': True,
         'resume_flow': True,
-        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
-        # the GOTO X1 into RES, REM or VEM (S1 = 0 would loop forever).
         # The pushdown list stays low in the VAC area (LSTIME's SETPD 0D;
         # RES pushes to 16D): a push near X1 would overwrite the index.
-        'all_states': {'vac+050': [6], '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        'all_states': {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
+        # the GOTO X1 (26,2141) into RES, REM or VEM (S1 = 0 would loop
+        # forever). Up to the SSP, S1 is any value (P20-P25 leave 108, 18
+        # or 54), so the SSP's write is compared.
+        'range_states': [('LSTIME+11', 'NINEB4', {'vac+050': [6]})],
         # C64 rows: the cases that take every branch outcome the host cases take.
         'c64_rows': 'cover',
         # (INDEX's end-around carry kept within 16 bits for the C64)
@@ -1728,6 +1731,7 @@ SPECS = {
         # (INDEX LIMITS -2/-1 sums carry end-around on the C64's 16-bit
         # unsigned too)
         'index_carry16': True,
+        'image_w': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
