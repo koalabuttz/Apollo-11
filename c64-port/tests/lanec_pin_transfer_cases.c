@@ -28,6 +28,7 @@
 #include "lanec_symbols.h"
 #include "lanec_di_routines.h"
 #include "lanec_pin_routines.h"
+#include "lanec_pw_runs.h"
 #include "lm_interbank_routines.h"
 #include "lm_exec_routines.h"
 #include "cm_interbank_routines.h"
@@ -271,6 +272,38 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
 
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m) { make_case(&cases[n], s, io, m); cur_meta = m; }
 const lanec_suite lanec_suite_pin_transfer = { "pin-transfer", LANEC_PIN_TRANSFER_CASES, make, run };
+
+#ifdef LANEC_PIN_HAS_CM
+/* pin-decdsp3: Comanche DECDSP3 (41,2575) enters bank 40 through SFOUTABR
+ * and BANKJUMP: SF routine 4 goes to DP1OUTSF (40,2614), 5 and 10 to DP2OUTSF
+ * (40,2621). Each case is a pw-cm-scale case run natively to DSPDCEND
+ * (41,2566), the end of every SF routine, with one more component to display
+ * (DECOUNT 1 or 2) whose normal noun (MIXBR 1) names that SF routine in
+ * NNTYPTEM bits 10-6 and an SF constant in bits 5-1, and DSPCOUNT as
+ * DSPDCPUT sets it (R1D1 indexed by DECOUNT). The chain from DSPDCEND
+ * displays the component, runs DSPDCPUT and DECDSP3, crosses into bank 40 and comes back to DSPDCEND. */
+#define DECDSP3_CASES 768u
+static void make_decdsp3(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
+{
+    static const uint16_t routine[3] = { 4u, 5u, 10u };
+    transfer_case c = { 0u, 0u, 0u, 0u, LANEC_CM };
+    uint16_t i, k;
+    for (i = 0; MODULE(i) != &lanec_suite_pw_cm_scale; ++i) {}
+    c.module = (uint8_t)(i | 0200u);
+    for (k = (uint16_t)(n * 5u); ; ++k) {   /* a case the module runs to DSPDCEND */
+        c.n = (uint16_t)(k % lanec_suite_pw_cm_scale.count);
+        make_case(&c, s, io, m);
+        if (lanec_pw_cm_scale_run(s, io, LANEC_CM) == LANEC_OK && s->words[LANEC_Z] == LANEC_CM_DSPDCEND) break;
+    }
+    s->words[LANEC_CM_DECOUNT] = (uint16_t)(1u + n / 3u % 2u);
+    s->words[LANEC_CM_DSPCOUNT] = (uint16_t)(n / 3u % 2u ? 04u : 011u);   /* DSPDCPUT: R1D1 indexed by DECOUNT */
+    s->words[LANEC_CM_MIXBR] = 1u;
+    /* MID5: the SF routine; LOW5: an SF constant within SFOUTAB's 21 */
+    s->words[LANEC_CM_NNTYPTEM] = (uint16_t)((s->words[LANEC_CM_NNTYPTEM] & ~01777u) | routine[n % 3u] << 5 | n / 6u % 21u);
+    cur_meta = m;
+}
+const lanec_suite lanec_suite_pin_decdsp3 = { "pin-decdsp3", DECDSP3_CASES, make_decdsp3, run };
+#endif
 
 /* pin-refuse: entry states outside the routines' domain. Each case takes a
  * routine's own-entry case of pin-transfer (every routine in turn, both

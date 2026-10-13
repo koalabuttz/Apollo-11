@@ -5,6 +5,7 @@
 extern const lanec_suite lanec_suite_ev_front;
 extern const lanec_suite lanec_suite_pin_gaps;
 extern const lanec_suite lanec_suite_pin_keys;
+extern const lanec_suite lanec_suite_pin_decdsp3;
 extern const lanec_suite lanec_suite_pin_key_labels;
 extern const lanec_suite lanec_suite_pw_blanksub;
 extern const lanec_suite lanec_suite_pw_decimal_time_consumer;
@@ -85,6 +86,7 @@ extern const lanec_suite lanec_suite_pw_cm_charin_number;
 extern const lanec_suite lanec_suite_pw_cm_charin_nv;
 extern const lanec_suite lanec_suite_pw_cm_formatter;
 extern const lanec_suite lanec_suite_pw_cm_decimal_pair;
+extern const lanec_suite lanec_suite_pw_cm_scale;
 extern const lanec_suite lanec_suite_pw_cm_minutes_seconds;
 extern const lanec_suite lanec_suite_pw_cm_nv85;
 extern const lanec_suite lanec_suite_pw_cm_dynamic_display;

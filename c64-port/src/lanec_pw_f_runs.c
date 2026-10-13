@@ -63,3 +63,8 @@ enum lanec_status lanec_pw_cm_pinball_run(apollo_overlay_state *s, lanec_io *io,
     lanec_pw_f_from_cm(io, &c);
     return LANEC_OK;
 }
+
+/* DP1OUTSF, DP2OUTSF or DP3OUTSF, by Z (src/cm_scale.c checks it). */
+#include "cm_scale.h"
+LANEC_PW_F_CM_RUN(lanec_pw_cm_scale_run, cm_scale_output(s, &c, s->words[LANEC_Z] == 02614u ? DSKY_DP1OUT
+                  : s->words[LANEC_Z] == 02621u ? DSKY_DP2OUT : DSKY_DP3OUT) == EXEC_OK)

@@ -343,6 +343,16 @@ def check_listing(cfg, mission, points, exits=None):
                 fan.add(j)
                 j += 1
     internal, returns, missing = [], 0, []
+    # an in-file CADR or 2CADR naming a label in another bank: a BANKJUMP or
+    # BANKCALL through that table word enters there from another bank
+    # (CM DECDSP3's SFOUTABR), so the label must be registered
+    at_label = {fs[0]: i for i, (r, fs) in enumerate(zip(rows, fields))
+                if fs and not src[r['line'] - 1][:1].isspace()}
+    for i, (r, fs) in enumerate(zip(rows, fields)):
+        if len(fs) >= 2 and fs[-2] in ('CADR', '2CADR') and fs[-1] in at_label:
+            j = at_label[fs[-1]]
+            if rows[j]['bank'] != r['bank'] and not data[j] and where[j] not in registered:
+                missing.append(f'label {fs[-1]} is a CADR target from bank {r["bank"]} but not registered')
     for i, (r, fs) in enumerate(zip(rows, fields)):
         if data[i] or not fs:
             continue
