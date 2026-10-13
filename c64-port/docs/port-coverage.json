@@ -7377,7 +7377,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "7fe570e4d8841b229c161354e8930572192b0e0c",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under EB of the file's EBANK= DVCNTR, entered at NEWOPS with LOC at any of the file's interpretive routines (BANKSET bank 30 or 23) or with Z at any of its basic ones (FB 30 or 23): P12LM, P12LMB, P12RET, P12INIT, COMMINIT, GUIDINIT, the BANKCALL, PHASCHNG and GOFLASH returns (terminate, proceed, data in) and every word after a DANZIG; FIXLOC a VAC area with PUSHLOC within it, MODE, OVFIND, NEWJOB +0 or positive (CHANG2), Q, QPRET, S1, S2 and TEMPR60 caller returns outside the file, the flag words, and any values of the ascent erasables; 0 of 46,592 random cases refused.",
         "external_continuations": [
@@ -8432,7 +8432,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "7fe570e4d8841b229c161354e8930572192b0e0c",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under EB of the file's EBANK= RONE, entered at NEWOPS with LOC at any of the file's interpretive routines (BANKSET bank 26) or with Z at any of its basic ones (FB 26): V89CALL, V89RECL, the BANKCALL and GOFLASH returns (terminate, proceed, data in) and every word after a DANZIG; FIXLOC a VAC area with PUSHLOC within it, MODE, OVFIND, NEWJOB +0 or positive (CHANG2), Q, QPRET, S1 and S2 caller returns outside the file, and any values of the R63 erasables (OPTIONX, TSTART82, TDEC1, RONE, RATT, POINTVSM, SCAXIS, CPHI); 0 of 15,360 random cases refused.",
         "external_continuations": [
