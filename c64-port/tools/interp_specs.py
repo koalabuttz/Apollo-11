@@ -646,4 +646,33 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'rope_bin': True,
     },
+    'lm-stable-orbit': {
+        'missions': ('lm',),
+        'file': {'lm': 'STABLE_ORBIT_-_P38-P39.agc'},
+        'source_path': {'lm': 'STABLE_ORBIT.agc'},
+        'base': {'lm': 'lm_stable_orbit'},
+        'symbol': {'lm': 'lm_stable_orbit'},
+        # P38/P78 (stable orbit rendezvous) and P39/P79 (its midcourse), the
+        # major modes FRESH_START_AND_RESTART's tables start.
+        'entries': ['P38', 'P78', 'P39', 'P79'],
+        'externals': {'BANKCALL': 'auto', 'BLANKET': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        # GOFLASH returns to the first, second or third word after its CADR
+        # (terminate, proceed, recycle); GOFLASHR also to the fourth at once.
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'resume_keys': True,
+        # EBANK= SUBEXIT: the P38/P39 temporaries are E7 words.
+        'ebank': 7,
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/lm_stable_orbit_target.c',
+        'edge_cases': True,
+        # The C64 rows are the fewest cases that take every branch arc of
+        # every traced host case (every case: 101 routines are cheap).
+        'c64_rows': 'cover',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'rope_bin': True,
+    },
 }
