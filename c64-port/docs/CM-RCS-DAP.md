@@ -1,113 +1,46 @@
-# Translate Comanche RCS-CSM_DIGITAL_AUTOPILOT (CM RCS DAP)
+# Translate Comanche RCS-CSM DIGITAL AUTOPILOT
 
-Lane G. Milestone `cm-rcs-dap`.
+Lane G (CM flight). Milestone `cm-rcs-dap`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc` (`src/cm_rcs_dap.c`) is native C in full: The CSM RCS autopilot: REDORCS, RCSATT with the rate filter loops (DRHOLOOP, ADOTLOOP, DELOOP), the needles (NEEDLER, NEEDLE11, NEEDLER2, NEEDLES), REINIT, ZEROJET, T6PROGM and STICKCHK. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #84: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc`, all of it: bank 21
-`2105`-`3247`, 611 assembled words. That includes the RCSLOC and T6ADDR
-2CADRs, the two AMBGUPDT 2CADRs after TC NOVAC, the IBNKCALL CADRs, and
-the DELTATT, ONESEK, DELAY200, DACLIMIT, NO.T5VAR, =.24, RCSINIT(B),
-T5WAIT60, OCT0xxxx, MANROT, MANTABLE, =+14MS, FREETAU and GAIN1/GAIN2
-constants. Nothing is left in the file.
+17 routines, keyed by physical address in `cm_rcs_dap_basic`:
 
-`cm_rcs_dap(image, io)` runs one entry to its exit. `io` holds channels 12
-(RAND, WAND, WOR of the needles and error-counter bits), 13 (WOR of BIT15,
-the T6 enable), 14 (WOR of 13,14,15, the IMU CDU drive) and 31 (read only:
-DAP enable, attitude-hold and hand-controller bits).
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 21,2105 REDORCS | basic | entry REDORCS (FRESH_START_AND_RESTART.agc 2CADR REDORCS) |
+| 21,2122 RCSATT | basic | entry RCSATT (FRESH_START_AND_RESTART.agc 2CADR RCSATT) |
+| 21,2236  | basic | return from SMALLMP |
+| 21,2360  | basic | return from NOVAC |
+| 21,2401  | basic | return from DPADD |
+| 21,2420 NEEDLER | basic | entry NEEDLER (P11.agc CADR NEEDLER) |
+| 21,2443 NEEDLE11 | basic | entry NEEDLE11 (EXTENDED_VERBS.agc CADR NEEDLE11) |
+| 21,2462 NEEDLER2 | basic | entry NEEDLER2 (EXTENDED_VERBS.agc CADR NEEDLER2) |
+| 21,2476 NEEDLES | basic | entry NEEDLES (EXTENDED_VERBS.agc CADR NEEDLES) |
+| 21,2533  | basic | return from BIT4 |
+| 21,2534 REINIT | basic | entry REINIT (AUTOMATIC_MANEUVERS.agc TCF REINIT) |
+| 21,2550  | basic | return from IBNKCALL |
+| 21,2552  | basic | return from IBNKCALL |
+| 21,2616  | basic | return from NOVAC |
+| 21,2632 ZEROJET | basic | entry ZEROJET (P11.agc CADR ZEROJET) |
+| 21,3067 T6PROGM | basic | entry T6PROGM (AUTOMATIC_MANEUVERS.agc TCF T6PROGM) |
+| 21,3130 STICKCHK | basic | entry STICKCHK (P11.agc CADR STICKCHK) |
 
-| Entry | Reached from |
-|---|---|
-| `2105` REDORCS | restart (FRESH_START_AND_RESTART 2CADR) |
-| `2122` RCSATT | T5RUPT via T5LOC (RCSLOC, RCSADDR, RCS2CADR) |
-| `2236`, `2401` | returns from SMALLMP, DPADD (MYSUBS) |
-| `2360`, `2616` | returns from NOVAC |
-| `2550`, `2552` | returns from IBNKCALL S41.2, S40.14 |
-| `2534` REINIT, `3067` T6PROGM | TCF from AUTOMATIC_MANEUVERS |
-| `2420` NEEDLER, `2443` NEEDLE11, `2476` NEEDLES, `2632` ZEROJET, `3130` STICKCHK | IBNKCALL or TC; end in TC Q |
+Destinations outside the file: AHFNOROT, BIT4, DPADD, IBNKCALL, JETS, NOVAC, RESUME, SMALLMP, T6PROG. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-Admitted state: FB bank 21 (`042000`), EB E6, BB `042006`, any raw A/L,
-erasable contents and channels, and the INDEX operands within the tables
-the file indexes:
+## Domain
 
-- ATTKALMN -1..11 and RATEINDX 0..6 at REDORCS/RCSATT. These index GAIN1,
-  GAIN2 and MANTABLE. The file itself only stores 11 down to -1 in
-  ATTKALMN, and RATEINDX holds 0, 2, 4 or 6.
-- SPNDX 0..2 and DPNDX = 2 SPNDX at the SMALLMP and DPADD returns (the loop
-  state of DRHOLOOP and DELOOP), plus ATTKALMN -1..11 at the SMALLMP return.
-- For the five TC Q entries, Q a caller's return in `3250`-`3764` or
-  `4000`-`7777`.
-
-`CM_RCS_DAP_OK` leaves `Z` at RESUME, IBNKCALL, NOVAC, SMALLMP or DPADD
-(with Q the TC's return), at JETS, T6PROG or AHFNOROT (AUTOMATIC_MANEUVERS),
-or at the caller's return with `Q = 3`. Anything else is
-`CM_RCS_DAP_OUT_OF_SCOPE`, image and io unchanged.
-
-### How it is translated
-
-As in `cm-tvc-daps`: one qualified `agc_image_ops` primitive per original
-word, under C labels named for the original addresses. TC/TCR to a label in
-the file sets Q and jumps; every TC Q goes through one dispatch on the
-return address. TC to another file is a frontier. READ, RAND, WAND, WOR,
-RXOR LCHAN (L as channel 1) and MSU are written from the yaAGC definitions.
-
-- INDEX words add SPNDX/DPNDX (the file's own loop counters), ATTKALMN,
-  STICKCHK's 0..3 manual-rate indices or RATEINDX to the next word. INDEX
-  reads of fixed memory come from native tables equal to the rope: GAIN1-3
-  through GAIN2+11, MANTABLE-1 through =+14MS, FREETAU, DACLIMIT±1.
-- `TS T5TEMP` at `2512` overflows when a needle command passes the DAC
-  limit. The skip runs `INDEX A; CAF DACLIMIT` with A = ±1.
-- `TS TIME5` at `3151` overflows with a large T5TIME. The skip runs
-  `CAF DELTATT2`.
-- `TS T5TEMP` at `3130` overflows when a caller enters STICKCHK with an
-  overflowed A. The skip runs `TS PMANNDX` with A = ±1.
-- The other TS words cannot overflow: they store loads, constants, masks,
-  MP or MSU results, or small indices.
-- `CCS A` after a MASK sees +0 or a positive value, so only two slots occur.
-  `CCS SPNDX` sees the loop counter.
-
-## Source map
-
-`evidence/cm-rcs-dap/cm-rcs-dap-source-map.json` (`tools/cm_rcs_dap_source.py`)
-records every word with its source line, rope check and native label. It
-also matches against the rope:
-
-- the 87 fixed-constant reads, to the native literals;
-- the 2CADRs and the four INDEX tables;
-- the TC Q dispatch, to the listing's internal TC/TCR returns;
-- the frontier TCs, to their returns.
-
-Independent assembly comparison: `evidence/cm-rcs-dap/cm-rcs-dap-assembly-comparison.json`
-(`tools/cm_flight_assembly_comparison.py`).
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. SPNDX 0-2 and DPNDX 0, 2, 4 (the axis loops), ATTKALMN from -3 (JETSLECT's translation gains) to 11 (the Kalman initialisation count, CAF ELEVEN at 21,2571), and RMANNDX/PMANNDX/YMANNDX 0-3 as STICKCHK leaves them. GAIN1/GAIN2 are read at -3 to +11, DACLIMIT at -1 to +1, FREETAU at 0 to 3.
 
 ## Evidence
 
-Hashes: `evidence/cm-rcs-dap/SHA256.json`; bulk files in release
-`evidence-cm-rcs-dap`.
+Hashes: `evidence/cm-rcs-dap/SHA256.json`; all files are in the tree.
 
-- Oracle: `deps/cm-flight-fixture` (original CM rope `6e3150ae...`).
-  - The runner stops at the frontiers above or at the caller's return.
-  - Channel 13 starts with its trap and device-only bits clear. Channel 14
-    starts with the gyro, optics and IMU CDU drive bits (`01000`-`070000`)
-    clear.
-  - Once NEEDLES sets the CDU drive bits, yaAGC's coarse-align model
-    empties CDUXCMD-CDUZCMD (`050`-`052`) on the next step. That is the
-    simulator standing in for the CDU hardware, so the runner keeps those
-    words as the program left them.
-  - The scaler is held, so TIME5/TIME6 do not count.
-- Host and sanitizer results: `make test-cm-rcs-dap sanitize-cm-rcs-dap`.
-  - 65536 cases (`tests/cm_rcs_dap_cases.c`), covering every entry. A
-    quarter of the RCSATT cases each are steered into T5PHASE2 (hand
-    controller, manual rate, free drift) and into the rate filter.
-  - Every case reaches an exit, and the two sides agree on all of them.
-  - Native line coverage is complete apart from the refusal default.
-  - Stream identity `cm-rcs-dap-source-stream.json`, deltas
-    `cm-rcs-dap-reference.deltas.xz`, log `cm-rcs-dap-checks.log`.
-- C64 execution results: `make vice-cm-rcs-dap`, 128 frozen rows.
-  `cm-rcs-dap-results.json`.
-
-## Open
-
-ABI registration of the entries follows in the Lane G routine-table step,
-after Lane A's ISWRETRN fix. AUTOMATIC_MANEUVERS (JETS, T6PROG, AHFNOROT)
-is the next Lane G file in this bank.
+- **Source map.** `cm-rcs-dap-source-map.json` lists all 611 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-rcs-dap-differential` runs 256 states per routine (4,352 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 12, 13, 14, 31 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-rcs-dap-proof.json` (`cm-rcs-dap-differential.log` is the run). One case in 32 is frozen in `tests/cm_rcs_dap_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-rcs-dap sanitize-cm-rcs-dap` runs the 136 frozen cases (`cm-rcs-dap-host.log`).
+- **C64 execution results.** `make vice-cm-rcs-dap` runs 2 diagnostic programs with 43 cases (`cm-rcs-dap-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 4,352 differential cases take: 866 of 866 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 516 of 516 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 554 of the 554 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

@@ -27,7 +27,9 @@ enum exec_status lm_interpreter_rvq(apollo_overlay_state *, p66_bias_io *);
 
 /* Comanche055: the same with io a cm_native_io. E/BKCALL 13,2036, landing
  * points 13,2047/2050/2051, E/CALL 13,2055, resume 13,2067, E/JOBWAK 04,2606;
- * INTPRET 6006 and INTPRET+2 6010; EXIT at LOC 13,2066; fetch point 6037. */
+ * INTPRET 6006 and INTPRET+2 6010; EXIT at LOC 13,2066; fetch point 6037.
+ * Also the system-test entry words COMPVER, GTSCPSS1 and REDO at 33,2000-2002
+ * (one TC each, to GCOMPVER, GTSCPSS and NEWMODEX). */
 #define CM_INTERPRETER_FETCH ((uint16_t)(2048u + (06037u - 04000u)))
 extern const agc_routine_table cm_standard_lead_routines;
 extern const agc_routine_table cm_interpreter_routines;

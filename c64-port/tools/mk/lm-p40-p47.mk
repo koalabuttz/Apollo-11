@@ -30,4 +30,4 @@ c64-lm-p40-p47: $(P40_C64_PRGS)
 build/lm-p40-p47-%.prg: $(P40_SRC) platform/c64/lm_p40_p47_diagnostic.c tools/mk/lm-p40-p47.groups $(P40_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(P40_MOS_FLAGS) $(LM_P40_P47_GROUP_FLAGS_$*) -Wl,-Map,build/lm-p40-p47-$*.map $(P40_C64_SRC) platform/c64/lm_p40_p47_diagnostic.c -o $@
 vice-lm-p40-p47: $(P40_C64_PRGS)
-	for p in $(P40_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(P40_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

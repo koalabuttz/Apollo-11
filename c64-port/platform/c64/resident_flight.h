@@ -28,6 +28,18 @@ typedef cm_native_io rk_io;
 #define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* task slot, data */
 /* What the boundary-word module (resident_boundary_module.c) hands boot. */
 typedef struct { const agc_site_operand *words; uint16_t count; } rk_boundary_table;
+/* What the step hands every module in frame value: the resident program
+ * (tables, hardware, fixed_data, site operands) and io. A module that
+ * runs AGC routines (the interrupt-body wrappers) reports a routine's
+ * failure in status, which the step returns; the step resets it to
+ * EXEC_OK before each run. */
+typedef struct { const agc_native_program *program; void *io; enum exec_status status; } rk_module_env;
+extern rk_module_env rk_env;
+/* The interrupt-body wrappers (platform/c64/resident_rupt_module.c). */
+#define RK_MODULE_LEAD_INS APOLLO_OV2_ID(APOLLO_LANE_A,0xe1)   /* task slot */
+#define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
+#define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
+#define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
 /* 256 bytes of boot scratch for apollo_reu_store_verify. */
 #define RK_BOOT_SCRATCH 0xc100u
 
@@ -55,14 +67,15 @@ uint8_t rk_boot(void);
  * point with no kernel routine the store's resolver maps the canonical bank
  * (rk_resolver_bank) and Z to a module continuation, and the runtime runs
  * it in context 0 (the running job is always core set 0) or 8 (inside an
- * interrupt). A module leaves Z where
- * the program continues. Returns EXEC_OK at stop or after a routine or
- * module ran, otherwise the routine's status or EXEC_UNMAPPED for a point
- * no module resolves. */
+ * interrupt), with rk_env as its value. A module leaves Z where the
+ * program continues. Returns EXEC_OK at stop or after a routine or module
+ * ran, otherwise the routine's status, the module's rk_env.status, or
+ * EXEC_UNMAPPED for a point no module resolves. */
 enum exec_status rk_resident_step(uint16_t stop_physical);
 
-/* The canonical resolver bank for 12-bit address loc: 04000 or 06000 for
- * fixed-fixed, otherwise FB (bits 14-10) with the superbank bits (0160). */
+/* The canonical resolver bank for 12-bit address loc, the physical bank in
+ * FB form: 04000 or 06000 for fixed-fixed, otherwise FB (bits 14-10), plus
+ * 0100 where FB is 030-037 and the superbank bit 0100 is set (banks 040-043). */
 uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc);
 
 /* rk_program.fixed_data: the word at a fixed point from the boundary-word

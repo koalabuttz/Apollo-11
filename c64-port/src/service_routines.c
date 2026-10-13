@@ -12,10 +12,14 @@ static agc_register load(const apollo_overlay_state *s,uint16_t a){uint16_t p=ph
 static bool ordinary_address(const apollo_overlay_state *s,uint16_t a){return a<02000u&&physical(s,a)>=030u;}
 static void b5off(apollo_overlay_state *s,const service_routines_bindings *b,bool mask_only){if(!mask_only)s->words[0]=agc_extend(077757);s->words[0]=agc_extend((agc_word)(agc_correct(s->words[0])&s->words[01044]));s->words[01044]=agc_correct(s->words[0]);s->words[2]=(agc_word)(b->b5off+4u);s->words[5]=b->endofjob;}
 bool service_routines_step(apollo_overlay_state *s,p66_bias_io *io,enum service_routines_mission mission,enum service_routines_entry entry,agc_word fixed0,agc_word fixed1,agc_word fixedword){
- const service_routines_bindings *b;agc_word *w,q,pc,n,descriptor,index,bits,old,source,dest,operand;agc_register a,l;enum agc_ccs_class cl;unsigned i;int ov;
+ const service_routines_bindings *b;agc_word *w,q,pc,n,descriptor,index,bits,old,source,dest,operand;agc_register a,l;enum agc_ccs_class cl;unsigned i;int ov;bool qfree;
  if(!s||!io||(unsigned)mission>1u||(unsigned)entry>12u||fixed0>AGC_MASK||fixed1>AGC_MASK||fixedword>AGC_MASK)return false;
  b=&service_routines_source[mission];w=s->words;q=w[2];
- if(w[7]!=0||q<0100u||q>07775u||w[3]>03400u||(w[3]&0377u)||(w[4]&~076000u)||w[6]!=(agc_word)(w[4]|(w[3]>>8))||(io->superbank&~0160u)||io->interrupt_enabled>1u)return false;
+ /* TCGETCAD, WAKER (and its finish after JOBWAKE) and B5OFF never read Q: their
+  * first TC overwrites it, or they end in ENDOFJOB/TASKOVER. A task or a woken job
+  * enters them with any Q (yaAGC runs WAKER and B5OFF at Q = 3). */
+ qfree=entry==SERVICE_TCGETCAD||entry==SERVICE_WAKER||entry==SERVICE_WAKER_FINISH||entry==SERVICE_B5OFF;
+ if(w[7]!=0||(!qfree&&(q<0100u||q>07775u))||w[3]>03400u||(w[3]&0377u)||(w[4]&~076000u)||w[6]!=(agc_word)(w[4]|(w[3]>>8))||(io->superbank&~0160u)||io->interrupt_enabled>1u)return false;
  switch(entry){case SERVICE_UPENT2:pc=b->upent2;break;case SERVICE_DOWNENT2:pc=b->downent2;break;case SERVICE_UPFLAG:pc=b->upflag;break;case SERVICE_DOWNFLAG:pc=b->downflag;break;case SERVICE_DELAYJOB:pc=b->delayjob;break;case SERVICE_TCGETCAD:pc=b->tcgetcad;break;case SERVICE_WAKER:pc=b->waker;break;case SERVICE_WAKER_FINISH:pc=(agc_word)(b->waker+4u);break;case SERVICE_GENTRAN:pc=b->gentran;break;case SERVICE_GENTRAN_LOOP:pc=(agc_word)(b->gentran+1u);break;case SERVICE_B5OFF:pc=b->b5off;break;case SERVICE_TRFAILOF:pc=b->trfailof;break;default:pc=b->trfailon;break;}
  if(!pc||w[5]!=pc)return false;
  if((entry==SERVICE_UPENT2||entry==SERVICE_DOWNENT2)&&mission==SERVICE_ROUTINES_LM&&w[4]!=020000u)return false;

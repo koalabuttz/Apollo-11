@@ -8,11 +8,15 @@
 #include "interp_case.h"
 #include "lm_p34_p35_c64_vectors.h"
 const agc_native_program *irc_program(uint8_t cm);
-static apollo_overlay_state s;
+/* The image lives in RAM under the KERNAL ($e000-$efff, interrupts off and
+ * $01=$35) so the program's own data and BSS stay below the $c000 mailbox. */
+#define s (*(apollo_overlay_state *)0xe000u)
 
 /* Mailbox contract (tools/vice_run.py): write $c001-$c004 first, then $a5 to $c000 last. */
 int main(void) {
     volatile uint8_t *mail = (volatile uint8_t *)0xc000;
+    __asm__("sei");
+    *(volatile uint8_t *)1u = 0x35u;
     unsigned failures = 0, checks = 0, i;
     for (i = 0; i < IRC_C64_VECTORS; ++i) {
         uint16_t ie = 0;

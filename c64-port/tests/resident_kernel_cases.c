@@ -98,8 +98,8 @@ uint32_t rk_services_run(apollo_overlay_state *s,rk_case *c){uint16_t steps,i;cm
 #endif
 #if (RK_JOBS||RK_IDLE)&&RK_RUN
 static uint32_t one(apollo_overlay_state *s,cm_native_io *io,const agc_routine_table *table){
- agc_hardware hw={0,1,0,0,0,0,0,0};agc_native_program p=program();agc_routine call;unsigned kind=3u;uint16_t dev[3];
- p.basic=table;p.basic_count=1;p.hardware=&hw;
+ agc_hardware hw={0};agc_native_program p=program();agc_routine call;unsigned kind=3u;uint16_t dev[3];
+ hw.in_interrupt=1;p.basic=table;p.basic_count=1;p.hardware=&hw;
  call=agc_transfer_resolve(&p,s,io->superbank);
  if(call)kind=call(&p,s,io)!=EXEC_OK?2u:s->words[5]==CM_EXEC_BAILOUT||s->words[5]==CM_EXEC_POODOO?1u:0u;
  dev[0]=io->superbank;dev[1]=io->interrupt_enabled;dev[2]=io->channel11;

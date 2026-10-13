@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lat-long",
+  "release": "evidence-lat-long",
+  "files": {
+    "lat-long-c64-cover.json": {
+      "sha256": "e409ced75bf563d2514226a00acf9520d7d449d2af4e70046eb888e8ac4b4e00",
+      "bytes": 3968,
+      "store": "tree"
+    },
+    "lat-long-differential.log": {
+      "sha256": "21bfbde3368bb2425c9cbe66185bc471eff6184b9c71f145ae0c839a3a40e68c",
+      "bytes": 5798,
+      "store": "release"
+    },
+    "lat-long-host.log": {
+      "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e",
+      "bytes": 967,
+      "store": "release"
+    },
+    "lat-long-proof.json": {
+      "sha256": "186e54c0ce47429190398f549226fbf9560f7e4169c506c374d5da4344821f3b",
+      "bytes": 10144,
+      "store": "tree"
+    },
+    "lat-long-source-map.json": {
+      "sha256": "c8e5411c31954786bb524994e06af477e3049df8f1a00f0f3696dfd27091b8a7",
+      "bytes": 42896,
+      "store": "tree"
+    },
+    "lat-long-vice.log": {
+      "sha256": "76e3c44e98b0d8366f6fa32c684195d967ceb27da5ae436e9fa08d177300ab27",
+      "bytes": 6003,
+      "store": "release"
+    }
+  }
+}

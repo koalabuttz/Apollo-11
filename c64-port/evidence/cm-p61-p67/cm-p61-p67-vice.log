@@ -1,0 +1,27 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+8d3275762ec2743f528aaf4131066630447994700f0aeea3cbfdbe93abff756b  build/cm-p61-p67-1.prg
+ca974c849387aa914b9213bfb06097e251343f3dd8b85772dcf2568d2910b362  build/cm-p61-p67-10.prg
+362afba75bc19da4fc83cb7a0b54b97699f31918897dff4357449d604d637983  build/cm-p61-p67-11.prg
+f9d684862776597d18f20ae773ae655231bed6d90218c894da2059a6ce3a78a6  build/cm-p61-p67-2.prg
+1486b68f6af46ea7e870b03a0f85f3a489b8df5485a6ae2f0a71191eec169d12  build/cm-p61-p67-3.prg
+8b42d69b690c7fa36a0cbc83849d229d5c6ad26c1d11c1c6d95116625f8412f2  build/cm-p61-p67-4.prg
+0bcf8729f59ceba4a5f3d59432e0d1b93301969fbbef8c02ff483d9b72cb2aff  build/cm-p61-p67-5.prg
+c9782582408a94a53078fab2fb932fc8e71cbbd366cd34098d1856a9a7010847  build/cm-p61-p67-6.prg
+96a1436ae9574f56fbbcc66710312a2ec05f68a95901a8113df60973da65df28  build/cm-p61-p67-7.prg
+89b7c266b13d0ca5ab3b97580b7df8a2bfa02c6ec49bcef85c1052df25945972  build/cm-p61-p67-8.prg
+7f0d7e88fa255216df58f7ac778b2cd83516f0048c72a11ce7e286a0f5629596  build/cm-p61-p67-9.prg
+
+$ make vice-cm-p61-p67
+for p in build/cm-p61-p67-1.prg build/cm-p61-p67-2.prg build/cm-p61-p67-3.prg build/cm-p61-p67-4.prg build/cm-p61-p67-5.prg build/cm-p61-p67-6.prg build/cm-p61-p67-7.prg build/cm-p61-p67-8.prg build/cm-p61-p67-9.prg build/cm-p61-p67-10.prg build/cm-p61-p67-11.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-p61-p67-1.prg: 38 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-2.prg: 43 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-3.prg: 32 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-4.prg: 34 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-5.prg: 15 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-6.prg: 6 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-7.prg: 13 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-8.prg: 21 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-9.prg: 9 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-10.prg: 23 checks, 0 failures
+PASS: VICE PAL cm-p61-p67-11.prg: 18 checks, 0 failures
+exit 0

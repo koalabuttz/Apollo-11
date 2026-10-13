@@ -124,8 +124,9 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 
 ## Verification
 
-`tests/lm_servicer_cases.c` builds 40,320 cases, 128 for each of the 315
-keys. Each case starts from a random image with FB the key's bank.
+`tests/lm_servicer_cases.c` builds 40,336 cases: 128 for each of the 315
+keys (40,320), then 16 continuations (below, C64 segment groups). Each of
+the first 40,320 starts from a random image with FB the key's bank.
 
 - EB is the key's (E7, or E4 at RDGIMS and VELUPDAT's interpretive part,
   E5 at USEVF and WSTOR), another bank in a sixteenth of the states. The
@@ -169,7 +170,7 @@ keys. Each case starts from a random image with FB the key's bank.
   after an RTB, and its erasable words including `TC Q` and `TC A` on their
   way. At NEWOPS, the boundary is the file's words.
 - The native snapshot must be byte-identical for every case the routines
-  accept: 35,112, with 5,208 refused. Most refusals are keys entered
+  accept: 35,113, with 5,223 refused (15 of them continuations). Most refusals are keys entered
   inside a passage with a random work area: a pushdown read that takes
   PUSHLOC below FIXLOC (2,732), or an indexed fixed operand outside the
   constants the orders name (1,525 at `33,2770`'s `BDDV*`). The comparison covers all 2,048
@@ -240,20 +241,40 @@ own terms:
 | Group | Keys | Cases | Equal | Refused |
 |---|---|---|---|---|
 | 1 | 150 | 19,200 | 18,754 | 446 |
-| 2 | 20 | 2,560 | 2,223 | 337 |
-| 3 | 18 | 2,304 | 1,582 | 722 |
+| 2 | 20 | 2,564 | 2,226 | 338 |
+| 3 | 18 | 2,311 | 1,586 | 725 |
 | 4 | 31 | 3,968 | 3,758 | 210 |
 | 5 | 26 | 3,328 | 3,159 | 169 |
 | 6 | 21 | 2,688 | 2,502 | 186 |
-| 7 | 49 | 6,272 | 5,949 | 323 |
+| 7 | 49 | 6,277 | 5,950 | 327 |
 
 - `tools/lane_f_c64_rows.py` chooses the C64 rows
-  (`tests/lm_servicer_c64_vectors.h`, 459 rows in per-group blocks). For
+  (`tests/lm_servicer_c64_vectors.h`, 464 rows in per-group blocks). For
   each group it takes every entry, outcome, path and control-flow edge of
   every linked source (clang `-fsanitize-coverage=edge,trace-pc-guard`)
   that group's host cases take. Together they cover the 1,132 counted
   paths of the whole file. The counts are in
   `evidence/lm-servicer/lm-servicer-c64-cover.json`.
+- `tools/lane_f_c64_gcov.py` then checks the whole file the other way
+  round, with gcc `--coverage` and `gcov -b` over every linked `src/` file:
+  every branch outcome and line that the 40,336 cases take in the
+  whole-file build is taken by some group's rows in that group's build
+  (1,532 outcomes, 2,088 lines; `lm-servicer-c64-gcov.json`). The freeze
+  fails otherwise.
+
+Continuations. A whole-file case runs on where its group's build stops,
+so the code it runs after crossing a segment end is reached by no group's
+own cases when only that crossing state leads there (#167: a TS overflow
+return, CCS +0 in GENSCR, a zero dividend, PUSHLOC past the work area).
+`tools/lm_servicer_chains.py` follows the cases of its `BASES` list (one
+whole-file case per such outcome) across every segment end: the image,
+channels and interrupt state the group's run leaves become a new case at
+the key there (`tests/lm_servicer_chains.h`, as edits to the base case's
+image; each group's build holds only its own). These 16 cases are
+checked against the oracle like the rest, in the whole-file build and in
+their group's. Value-returning `&&`/`||` helpers (`in_code`, `work_area`,
+`tc_word`, `vac`, `seg_end`, `inner`) are written as separate `if`s so
+that each outcome is its own clang edge for the row choice.
 
 All seven PRGs are built without inlining and with llvm-mos's static stack,
 which saves about 1.7 KB. The image and the undo image sit in the RAM under

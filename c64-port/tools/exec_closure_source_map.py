@@ -143,7 +143,11 @@ def main():
     manifests = {f'{m}-{ms}' if ms != 'rupt-lead-ins' else ms: None for m in MISSIONS for ms in MILESTONES}
     for e in manifests:
         path = R / f'evidence/{e}/SHA256.json'
-        manifests[e] = {'manifest': str(path.relative_to(R)), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+        run = json.loads((R / f'evidence/{e}/{e}-proof.json').read_text())
+        manifests[e] = {'manifest': str(path.relative_to(R)), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                        'oracle_cases': {k: {'mission': v['mission'], 'rope_sha256': v['rope_sha256'], 'cases': v['cases']}
+                                         for k, v in ([('run', run)] if 'cases' in run else run.items())
+                                         if isinstance(v, dict) and 'cases' in v}}
     proof = {'files': summary, 'milestone_evidence': manifests,
              'method': 'each milestone differential rerun with tools/oracle_trace linked into its yaAGC reference; '
                        'a word is executed when the original program ran it in that comparison (each run ends where '
