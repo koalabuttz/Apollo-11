@@ -5990,6 +5990,7 @@
         {
           "native_files": [
             "src/lm_dapidler.c",
+            "src/agc_fast_ops.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
@@ -6011,7 +6012,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-dapidler/lm-dapidler-source-map.json",
-            "sha256": "5edb1cf7854a456d5d61feb354b60568d86823a487cce5fc34972b0d60b25130"
+            "sha256": "a935c6a807fbb1a826ccd0bace59e87b1dc6b911cb0d2ae3587ee2a218768313"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-dapidler/lm-dapidler-proof.json",
@@ -6023,7 +6024,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-dapidler/lm-dapidler-vice.log",
-            "sha256": "c85c1e32d8a09da5f0b9bfcee1417a0a976874a28f808ffa4d5a97369afaf46e",
+            "sha256": "e500c4a4cd5a3ba03da15903fd802863ae501bdd25e556699f8a4cf7cf65d2f8",
             "vice_targets": {
               "vice-lm-dapidler": 192
             }
@@ -6034,7 +6035,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-dapidler/lm-dapidler-c64-cover.json",
-            "sha256": "e6df1024c067984946a07bd8925f0334b4e3f008b50a3e2ef6aa7ad35ce4cf43"
+            "sha256": "ff4220c3393fc909a6f849b3aed9b9fc9306a6044828a4162f68fdcf2f2d5e6b"
           }
         }
       }
@@ -9559,6 +9560,7 @@
           "native_files": [
             "src/lm_q_r_axis.c",
             "src/lm_q_r_axis_sites.inc",
+            "src/agc_fast_ops.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "src/agc_hardware_divide.c",
@@ -9588,7 +9590,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-source-map.json",
-            "sha256": "d24823c0e6bc55ee4b62bb674a9bb085c1666bffceca78740d881666fee58710"
+            "sha256": "2fcfd7e427a4ce90571481efff34a2eb8c283406a70529e8e948786059e83487"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-proof.json",
@@ -9600,14 +9602,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-vice.log",
-            "sha256": "014776cf169bae22dc489c7f22b6fde487f4f3cc9d47d1fb56a64adf341fa45d",
+            "sha256": "9e7b5868e50537027d39c16055361f3748200329587322b90089c68270510112",
             "vice_targets": {
               "vice-lm-q-r-axis": 128
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
-            "sha256": "0280968f0f74bb30f8cd43d58be2bc7ccd6232a714d96c2226c90d848c6c9096"
+            "sha256": "43f6e6df9cf03c99d323239e08d5872d6455e57ae3e2585a33dc951c86807aea"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-211.md",
@@ -11000,6 +11002,7 @@
         {
           "native_files": [
             "src/lm_tjet_law.c",
+            "src/agc_fast_ops.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "src/agc_hardware_divide.c",
@@ -11022,7 +11025,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-source-map.json",
-            "sha256": "5fb0a84131006a38e5562c42f425ab4a3f0e4cc76933ceb63dfd2efb1c8f8f13"
+            "sha256": "5c1903ab0b5b92e7438360f5898fad5078cc0804e9c8b79dc089286abdd1a6f7"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-proof.json",
@@ -11034,14 +11037,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-vice.log",
-            "sha256": "b9eed6bca7422611d99fe96c73627753007c9f97e035d0fb59bc3167e2b10426",
+            "sha256": "44a6ec0c8bed7f8b4db4726855853788d694f5d63c836ed865437a08437cd97d",
             "vice_targets": {
               "vice-lm-tjet-law": 256
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-c64-cover.json",
-            "sha256": "a7e38b2b521fae7de01f3fe101911d75a90e46357e4b5fae49c9af2061759557"
+            "sha256": "e176cad7e26e8392c894ff8739688e26fbdd9a8296421968c719ca3b24b91439"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-151.md",
