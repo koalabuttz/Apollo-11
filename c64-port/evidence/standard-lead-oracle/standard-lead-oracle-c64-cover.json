@@ -12,6 +12,7 @@
     "src/cm_interbank_routines.c",
     "src/cm_native_image.c",
     "src/executive.c",
+    "src/interp_entry.c",
     "src/lm_basic_wake.c",
     "src/lm_interbank.c",
     "src/lm_interbank_routines.c",
@@ -25,7 +26,7 @@
   ],
   "defines": [],
   "host_cases": 1408,
-  "host_branch_arcs": 651,
+  "host_branch_arcs": 670,
   "c64_rows": 474,
   "stride_rows": 470,
   "cover_rows": 4,
@@ -35,6 +36,6 @@
     650,
     892
   ],
-  "c64_branch_arcs": 651,
+  "c64_branch_arcs": 670,
   "host_branches_missing_on_c64": []
 }

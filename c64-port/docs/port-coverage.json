@@ -4598,7 +4598,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
-            "sha256": "9064230a8a5fa897d614a4957178606bf107793c4a062b741a01283366bcb942"
+            "sha256": "fc796b2b7610f76723203d7ea1f3e5a23851958527a0c8f49744a1fd1323f571"
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
@@ -4606,11 +4606,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "cffc2554c905ec34ea9349a0d8ee984656936ff63b2b5ef55fa844b6209ae2b0"
+            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "0d036922f3ab3131f8abddc23a71d3713ce8a4cf8b4c5d1b8af87ccce6d99899",
+            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
             "vice_targets": {
               "vice-standard-lead-oracle": 477,
               "vice-cm-lead-tests": 390
@@ -4618,7 +4618,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "7108eac55e932698c988d273c10861b2e071560013db517425dde43f6a7a6dea"
+            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
           },
           "entry_words_comparison": {
             "path": "evidence/cm-lead-tests/cm-lead-tests-proof.json",
@@ -10476,7 +10476,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
-            "sha256": "9064230a8a5fa897d614a4957178606bf107793c4a062b741a01283366bcb942"
+            "sha256": "fc796b2b7610f76723203d7ea1f3e5a23851958527a0c8f49744a1fd1323f571"
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
@@ -10484,18 +10484,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "cffc2554c905ec34ea9349a0d8ee984656936ff63b2b5ef55fa844b6209ae2b0"
+            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "0d036922f3ab3131f8abddc23a71d3713ce8a4cf8b4c5d1b8af87ccce6d99899",
+            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
             "vice_targets": {
               "vice-standard-lead-oracle": 477
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "7108eac55e932698c988d273c10861b2e071560013db517425dde43f6a7a6dea"
+            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
           }
         }
       }

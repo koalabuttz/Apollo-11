@@ -6,7 +6,7 @@
    "source_path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
    "source_sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
-   "registered_entries": 11,
+   "registered_entries": 12,
    "source_words": 32,
    "source_lines_with_words": 32,
    "instructions": 32,
@@ -371,7 +371,7 @@
    "source_path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
    "source_sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
-   "registered_entries": 14,
+   "registered_entries": 15,
    "source_words": 36,
    "source_lines_with_words": 36,
    "instructions": 36,
@@ -782,7 +782,8 @@
   }
  },
  "native": {
-  "src/standard_lead_routines.c": "1522f52f41048a33842789d91fdc2d7e5612c3fc1c072c06c634df83583251f6",
+  "src/standard_lead_routines.c": "9ed6595468ff67b0dde44029b3e54c07cf2d94126b349f6237e6c0a1ac7feda7",
+  "src/interp_entry.c": "66571c3c34a4e15151aef563df31de87dd9250015ffd0a8553b5c7a477e30c1a",
   "src/standard_lead.c": "9c6424c15aaaf69aba30c8686dda587a5fc178584504c42fb2b9a9d21a7856a7",
   "src/standard_lead_interp.c": "9671471fadc749c6c0adb722d46442b4457595042e32e6c4ce40e7bade2c2af2",
   "src/standard_lead_wake.c": "2e50af7784d5a2f223f04a4c80dfd31e2c1591e376ce4f8bec1bab2c6a725377",
