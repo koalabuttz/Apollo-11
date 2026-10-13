@@ -17,7 +17,7 @@ void lm_v37_input(apollo_overlay_state *s,lm_fresh_io *io,agc_hardware *hw,uint1
  s->words[7]=0;for(i=010;i<=023;++i)s->words[i]=0;for(i=026;i<=060;++i)s->words[i]=0;
  s->words[0]=agc_extend(s->words[0]);s->words[1]=agc_extend(s->words[1]);
  {lm_fresh_io zero={{0,0},0,0,0,0,0,0,0,0,0,0,0};*io=zero;}
- {agc_hardware zero={0,0};*hw=zero;}
+ {agc_hardware zero={0};*hw=zero;}
  io->control.interrupt_enabled=(uint16_t)upto(&seed,2);hw->channel11=word(&seed);
  io->channel5=word(&seed);io->channel6=word(&seed);io->channel12=word(&seed);
  io->channel13=(agc_word)(word(&seed)&02767u);io->channel14=(agc_word)(word(&seed)&0777u);
@@ -45,6 +45,11 @@ void lm_v37_input(apollo_overlay_state *s,lm_fresh_io *io,agc_hardware *hw,uint1
   if(m<2u)s->words[01011]=near[upto(&seed,6)];else if(m==2u)s->words[01011]=mode(&seed);}
  eb=upto(&seed,8);io->control.superbank=(agc_word)(upto(&seed,4)<<4);
  s->words[4]=(agc_word)(04u<<10);s->words[3]=(agc_word)(eb<<8);s->words[6]=(agc_word)(s->words[4]|eb);s->words[5]=z;
+ /* A third of the P20 or P25 requests find P20 already in MODREG: RENDN00's
+  * BZF KILL2 (P20 or P25 on top of P20). Drawn last, so the other cases keep
+  * their images. */
+ {agc_word req=z==02040u?s->words[0]:s->words[LM_V37_MMNUMBER];
+  if((req==024u||req==031u)&&upto(&seed,3)==0u)s->words[01011]=024u;}
 }
 /* lm_interbank_routines but ISWRETRN: a KLEAN entry under IBNKCALL returns
  * there with Q = 3, which lm_interbank does not take, so the run ends. */

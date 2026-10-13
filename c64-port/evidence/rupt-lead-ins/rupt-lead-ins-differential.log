@@ -1,0 +1,6 @@
+python3 tools/rupt_lead_ins_freeze.py
+PASS: 1152 LM and 1920 CM rupt-lead-ins cases equal the original programs
+python3 tools/rupt_lead_ins_source_map.py
+PASS: 53 assembled lines of Luminary099/INTERRUPT_LEAD_INS.agc (54 words); every instruction executed by the original program in the rupt-lead-ins oracle run; native BBCONs and handlers equal the assembled words
+PASS: 58 assembled lines of Comanche055/INTERRUPT_LEAD_INS.agc (58 words); every instruction executed by the original program in the rupt-lead-ins oracle run; native BBCONs and handlers equal the assembled words
+git diff --exit-code -- tests/rupt_lead_ins_vectors.h tests/rupt_lead_ins_c64_vectors.h

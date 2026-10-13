@@ -26,7 +26,24 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - `index_guard` refuses an indexed erasable operand that leaves erasable memory. A starred operand with a fixed base reads the rope words its index can reach (a `KX` window). One with an erasable base that indexes into fixed memory is refused.
 - A SLOAD of a fixed word, a TC to switched erasable, and an indexed TC into a table of up to eight TCs (INDEX NDXCTR, TC +1) compile. A channel instruction reached without its EXTEND (a TS overflow skip) is refused.
 - A spec can name one mission (`missions: ('cm',)`).
-- A TC to an erasable address (TC MPAC +2, TC TBASE2) runs the word there with Q set to its return, as the hardware does.
+- A TC to an erasable address (TC MPAC +2, TC TBASE2, TC QSAVED) runs the word there with Q set to its return, as the hardware does. Switched erasable (01400-01777) is read through EB. The differential seeds the word with a caller return unless the spec pins it.
+- Lane E keys (`r30`, `cm-r31`, `cm-tpi-search`, `cm-p30-p37`, `cm-p32-p33`, `cm-p34-p35`, `cm-p37-p70`, `lm-p32-p35`, `lm-p34-p35`):
+  - `tc_tables`: an INDEX into a TC table (`DOTICK +7`), with the table's length. It becomes a C `switch` on the indexed word.
+  - `fixed_index`: an indexed fixed operand (`DLOAD* 1/RTMUE,2`, `STODL* MUTABLE +2,1`), with the offsets the index register can take. Each reachable address is a `K` array, and any other effective address is refused. Banks 30-37 also refuse when the superbank bits are set.
+  - `returns`: an outside call that returns to more than one word after its CADR (GOFLASH 3, GOFLASHR 4). Each of those words becomes a return point.
+  - SLOAD of a fixed constant (DECTWO) runs the interpreter's inline load.
+  - VPROJ is an address order.
+  - A CALL or TC whose return lies past the end of the file, or on interpretive or data words, has no return point.
+  - A spec may name one mission only (`'missions': ('cm',)`).
+  - A shift's operand word is its count, never a fixed operand. SINE and COSINE compile as SIN and COS.
+  - `fixed_index` also covers `SLOAD*` of a fixed table (ALMXIT's `ALARM/TB -1,1`).
+  - `self_loops`: a branch back to the routine's own start loops inside the routine, up to 4,096 passes, instead of going through the run loop's 200-step limit.
+  - `outside`: `{label: words}` leaves code the compiler can't model (VNPOOH's own FBANK switch) out of the routines; the source map marks it untranslated.
+  - A CADR maps to superbank 40+ only when the routine using it is in bank 40 or above, so a file mixing bank 35 and bank 42 code keeps each bank's CADRs.
+  - A basic instruction that reads Z (`CA Z`) sees the address after it.
+  - The oracle also stops up to four words past the case's return (outside the file), so a skip return (`INCR Q`, `RETURN`) or an indexed return ends like a plain return.
+  - `index_returns`: `INDEX K; TCF 0 +n` with K a saved Q (P37's SPRTEX, RTENCKEX) computes the TCF and lets the run loop go on from its address.
+  - `max_steps`: raises the run loop's 200-routine limit for loops that span routines (P37's GAMDV and V2T iterations); the host runner takes it as `IRC_MAX_STEPS`, and the milestone's test and C64 diagnostic pass the same number to `irc_run`.
 - An INDEX-modified write that could reach a bank or Z register checks the address at run time and refuses if it would.
 - MXV and VXM read their 18-word matrix operand as a `K` array. LXC is an indexed misc order.
 - VPROJ is an address order. BHIZ runs RTB/BHIZ's `CCS CYR` before its own test, as the original does.
@@ -65,12 +82,16 @@ Spec keys:
 - `rtb` also serves BOVB to a basic label (BOVB TCDANZIG).
 - `return_words`: erasable words that hold a saved interpretive return (TBASE2), seeded like QPRET with a return outside the file.
 - `native_ranges`: basic routines implemented by hand behind RTB (the MOVE* state-vector moves), mapped in the source map to that function.
+- `native_entries`: those hand-written routines as registered transfer routines too, for files that reach them directly (MEASUREMENT_INCORPORATION's RTB MOVEACSM). Each runs its function and then its TC DANZIG as a pair's end; a left-hand RTB (EDOP holding the pair's right order) is refused.
+- `max_steps`: the routines one case may run (default 200). With `resume_keys` every pair is a routine, and one DIFEQ step runs several hundred.
 - `c64_flags`: extra flags for the C64 probe and the milestone's PRGs. The large integration files use `-fno-inline -fstatic-stack -mlto-zp=110`, with the image under KERNAL at $e000.
 
 `all_states` sets the legal values of index registers, PBODY, DIFEQCNT, COLREG and PUSHLOC for every case.
 
 A target of `SSP QPRET <label>` (PHEXIT, AMOVED) is a return point and must be listed in `entries`.
 
-Rope words come from the `MAIN.agc.bin` beside the listing, so bank checksums and fillers that the listing omits are read correctly.
+`rope_bin` reads rope words from the `MAIN.agc.bin` beside the listing, so bank checksums and fillers that the listing omits are read correctly.
 
-The freeze halves a routine's C64 cases when their closure does not fit one program.
+Both files run with `resume_keys`. `states` restores each mid-sequence invariant a CHANG2 resume point would otherwise lose: between ACCOMP's `XCHX,2 DIFEQCNT` pairs, X2 holds the DIFEQ stage and DIFEQCNT holds PBODY; S1 holds PBODY inside GAMCOMP; COLREG indexes TIMESTEP's W stores after a VLOAD.
+
+A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are randomized. Before, an operand block next to NEWJOB could leave it negative.

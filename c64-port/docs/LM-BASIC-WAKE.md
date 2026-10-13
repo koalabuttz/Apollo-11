@@ -27,3 +27,5 @@ runner allows180 seconds because concurrent VICE diagnostics share CPU.
 Standalone recipes are in `tools/lm_wake.mk`. Native code contains no AGC
 instruction decoder or emulated CPU. This milestone covers waking from an
 active basic caller; sleeping and idle-current-core wrappers are separate.
+
+**Core set 0 (exec-closure).** The domain now also admits core set 0 asleep or free (-0). That is the state a task's JOBWAKE meets while the dummy job runs. A sleeping job matched there takes WAKETEST's `TCF SPECTEST`, then SPECTEST's `TCF SETLOC` or its NEWJOB -0 path, as in the original. `lm-exec-jobs` compares those cases with yaAGC, and the strict test's core-0 -0 boundary is replaced by a +0 core set 3 priority.

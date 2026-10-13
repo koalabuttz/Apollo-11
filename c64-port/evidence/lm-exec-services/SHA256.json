@@ -4,23 +4,23 @@
   "release": "evidence-lm-exec-services",
   "files": {
     "lm-exec-services-host.log": {
-      "sha256": "5bce36faa71363d25d6af3b5b7a9b29a3125b56b08bc705a709fafd06c528048",
-      "bytes": 621,
+      "sha256": "cfd17c3a22083f3273b08b5725759f3b7120b395453fd92164915cf63cf48a07",
+      "bytes": 714,
       "store": "release"
     },
     "lm-exec-services-proof.json": {
-      "sha256": "436b195e5371f62752d9427fc7549b04523d49079ad7aafab2b15f303280a018",
+      "sha256": "d55bebd6208d5f7514cdabc882d4c4c870d1c61dc318ca557109757691573fd2",
       "bytes": 914,
       "store": "tree"
     },
     "lm-exec-services-sites.json": {
-      "sha256": "464d1d1cd3c7c8a73cd6280c22e2c174008e67d197d4368e2da108d0d0ba04af",
-      "bytes": 46603,
+      "sha256": "9236811f4d1f52915b52990fd540fb3fc5209a496a5f5ef3f38935bfc4ac785f",
+      "bytes": 49221,
       "store": "tree"
     },
     "lm-exec-services-vice.log": {
-      "sha256": "eb93103cbb8bc7b4756ac0d1bd593b6e4f5f6f709a35092b8701f856be2811f8",
-      "bytes": 192,
+      "sha256": "af9363ad63abcbb1afbeab2dc39bc2bde4f65affe5f5698a15ff0916ce0f1ce7",
+      "bytes": 60,
       "store": "release"
     }
   }

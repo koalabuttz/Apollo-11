@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "cm_stateup_cases.h"
 #include "cm_stateup_vectors.h"
+#include "cm_stateup_c64_vectors.h"
 static unsigned checks,failures;
 static void check(int ok,const char *what,unsigned n){++checks;if(!ok){++failures;if(failures<20u)fprintf(stderr,"FAIL %s case %u\n",what,n);}}
 static unsigned reached[CM_STATEUP_ROUTINES];
@@ -41,6 +42,7 @@ static const struct { uint16_t z,loc; const char *name; } ends[]={
 int main(void){apollo_overlay_state s;p66_bias_io io;enum exec_status st;unsigned n,i,ended[ENDS];
  for(i=0;i<ENDS;++i)ended[i]=0;
  check(CM_STATEUP_VECTORS==CM_STATEUP_CASES,"vector count",0);
+ for(n=0;n<CM_STATEUP_C64_COUNT;++n)check(cm_stateup_c64_case[n]<CM_STATEUP_CASES&&(n==0u||cm_stateup_c64_case[n-1u]<cm_stateup_c64_case[n])&&cm_stateup_c64[n]==cm_stateup_expected[cm_stateup_c64_case[n]],"C64 row",n);
  for(n=1;n<CM_STATEUP_ROUTINES;++n)check(cm_stateup_interpretive.entries[n-1u].physical<cm_stateup_interpretive.entries[n].physical,"routines sorted",n);
  for(n=0;n<CM_STATEUP_CASES;++n)check(cm_stateup_digest(&s,(uint16_t)n,&st)==cm_stateup_expected[n]&&st==EXEC_OK,"oracle",n);
  {agc_routine_entry wrapped[CM_STATEUP_ROUTINES];agc_routine_table t;agc_native_program p;uint16_t steps;

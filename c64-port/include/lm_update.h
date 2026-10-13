@@ -23,6 +23,15 @@
 #define LM_UP_COMPNUMB 01170u
 #define LM_UP_UPBUFF 01174u
 extern const agc_routine_table lm_update_routines;
+/* UPJOB's interpretive words (CALL INTSTALL, UPWAKE EXIT) as interpretive
+ * routines keyed by LOC under BANKSET at the interpreter fetch point NEWOPS
+ * (lm_interp_steps / lm_interp_orders paths): the CHANG2 resume LOCs. */
+#define LM_UP_INTERPRETIVE 2u
+#define LM_UP_NEWOPS 06070u
+#define LM_UP_LOC 0164u
+#define LM_UP_BANKSET 0165u
+extern const agc_routine_table lm_update_interpretive;
+extern const uint16_t lm_up_interp_entries[LM_UP_INTERPRETIVE];
 /* Entry addresses, for tests: bank (043 or 04) and Z. */
 typedef struct { uint8_t bank; uint16_t z; } lm_up_entry;
 extern const lm_up_entry lm_up_entries[LM_UP_ROUTINES];

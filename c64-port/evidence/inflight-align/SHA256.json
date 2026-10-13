@@ -3,29 +3,34 @@
   "milestone": "inflight-align",
   "release": "evidence-inflight-align",
   "files": {
+    "inflight-align-c64-outcomes.json": {
+      "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974",
+      "bytes": 659,
+      "store": "tree"
+    },
     "inflight-align-differential.log": {
-      "sha256": "aaae6939b6983e9e287cb8594da6e42d75b87a4c435e39b16df6ca02ca1fa32c",
-      "bytes": 1656,
+      "sha256": "3ffdc8b0e33232516a69ad9430b4f076f14484946e75179afa3b907e43785329",
+      "bytes": 8145,
       "store": "release"
     },
     "inflight-align-host.log": {
-      "sha256": "0381d5d1619fa347273a25f9cdc9d2914a56792803b3a43f1b458c1e98980ae8",
-      "bytes": 78,
+      "sha256": "9bdb188331dd172486eebd504c3d8f7a72eeff8e201cb95246d41a7ed171cf88",
+      "bytes": 185,
       "store": "release"
     },
     "inflight-align-proof.json": {
-      "sha256": "56585bb63a39ea716d6a64622947f13617f6c5650adf7d3e51deef88571910cd",
-      "bytes": 4175,
+      "sha256": "0aeb3bca2af43b4b643035a73aaccb37ab3142d87be21603d2bb1b9cb807975a",
+      "bytes": 14705,
       "store": "tree"
     },
     "inflight-align-source-map.json": {
-      "sha256": "7573261127c6cb76ad92fea6970665f05d224c2106a074d7d2c041dd8d71af6a",
+      "sha256": "2ab9e3ce72b514560dd8e85eafd976b778e4f9326679f683d850696525dc1e01",
       "bytes": 50625,
       "store": "tree"
     },
     "inflight-align-vice.log": {
-      "sha256": "2acf593f94c73627569c196ab2b0042d9108e5c811086a644821d623cd6bec55",
-      "bytes": 2025,
+      "sha256": "9be25e50f523bde7ad4291f68541b1db8990bf7c2c92b938e3192e2aca8e5af2",
+      "bytes": 3601,
       "store": "release"
     }
   }

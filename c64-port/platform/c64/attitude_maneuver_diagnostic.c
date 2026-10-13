@@ -23,7 +23,7 @@ int main(void) {
         uint16_t ie = 0;
         unsigned kind;
         irc_build(sp, &irc_c64_cases[i]);
-        kind = irc_run(irc_program(irc_c64_cases[i].cm), sp, &irc_c64_cases[i], 200, &ie);
+        kind = irc_run(irc_program(irc_c64_cases[i].cm), sp, &irc_c64_cases[i], 1000, &ie);  /* (the spec's max_steps) */
         ++checks;
         if (kind != IRC_STOPPED || irc_digest(kind, sp, ie) != irc_c64_expected[i]) ++failures;
     }
