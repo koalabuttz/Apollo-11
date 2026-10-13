@@ -1,6 +1,8 @@
+# make t4rupt-core-differential at d3ac6e65e97f4677126712fd6c5acb4bf0ae7e0b
 python3 tools/t4rupt_core_freeze.py
 PASS: 2240 LM and 2176 CM t4rupt-core cases equal the original programs
 python3 tools/t4rupt_core_source_map.py
 PASS: 133 assembled lines of the Luminary099/T4RUPT_PROGRAM.agc core (134 words); every instruction but the unreached ones executed by the original program in the t4rupt-core oracle run; native constants and targets equal the assembled words
 PASS: 135 assembled lines of the Comanche055/T4RUPT_PROGRAM.agc core (136 words); every instruction but the unreached ones executed by the original program in the t4rupt-core oracle run; native constants and targets equal the assembled words
 git diff --exit-code -- tests/t4rupt_core_vectors.h tests/t4rupt_core_c64_vectors.h
+exit 0
