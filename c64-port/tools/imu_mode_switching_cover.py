@@ -17,7 +17,7 @@ import hashlib, json, pathlib, re, shutil, subprocess, sys
 
 R = pathlib.Path(__file__).resolve().parents[1]
 MAIN = 'src/imu_mode_switching.c'
-REST = ['src/agc_image_ops.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
+REST = ['src/agc_image_ops.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c',
         'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c',
         'src/agc_hardware_divide.c', 'tests/imu_mode_switching_cases.c', 'tools/imu_mode_switching_cover.c']
 # Every linked native source is measured, not only the file's own.

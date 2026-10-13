@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-fresh-start (lane A2): Comanche055 FRESH_START_AND_RESTART bank 05 and GOTOPOOH (fresh start,
 # restart, ENEMA) as native routines of the control-transfer ABI.
-CM_FS_SRC = src/cm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_fresh_start_cases.c
+CM_FS_SRC = src/cm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_fresh_start_cases.c
 CM_FS_HDR = include/cm_fresh_start.h include/cm_interbank_routines.h include/cm_interbank_complete.h include/agc_transfer.h include/agc_image_ops.h src/cm_fresh_start_operands.inc tests/cm_fresh_start_cases.h
 .PHONY: test-cm-fresh-start sanitize-cm-fresh-start c64-cm-fresh-start vice-cm-fresh-start cm-fresh-start-differential
 all: build/test-cm-fresh-start

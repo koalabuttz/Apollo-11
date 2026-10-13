@@ -86,6 +86,14 @@ With `resume_flow` (and `resume_keys`), a resume LOC's cases start from the stat
 - `'c64_cuts': True` (with `'c64_rows': 'cover'`): for arcs that only runs too long for one C64 diagnostic take, the freeze adds truncated rows. A truncated row is one such case run to a cut, the first NEWOPS with LOC at an interpretive routine the run enters. The cut is the earliest one whose prefix takes the arc, and the prefix must fit one diagnostic. The yaAGC oracle runs the same case to the same cut and prints kind 8 when it stops anywhere else first. Such a cut is refused, as is one where the native state differs. The row's digest is the oracle's full state at the cut. The cover record lists each truncated row (`truncated_rows`: row, source case, cut LOC, routines run). The spec links `tests/interp_cut.c` (`irc_run_cut`) and builds its runners with `-DIRC_CUTS`. A group with truncated rows defines `IRC_C64_CUTS` and `irc_c64_cut[]` in its vectors header, and the diagnostic calls `irc_run_cut` under `#ifdef IRC_C64_CUTS`. Specs without `c64_cuts` build and freeze exactly as before.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
 
+### Fitting the C64 groups (whole-file basic specs)
+
+Specs with `'basic': 'full'` choose their C64 cases by edge coverage (each case's clang trace-pc-guard/trace-cmp edges over every linked source) rather than a fixed count per routine. Some runs are too big to fit one diagnostic on their own, because they reach too many routines and banks. Such a case stays host-only and is listed in the proof's `c64_too_big_cases`. So are the other cases of its routine whose runs reach at least the same routines with at least as many edits, so one pass drops them all. The proof's `c64_gcov_branches` and `host_branches_missing_on_c64` show the C64 cases still take every branch outcome the host cases take.
+
+Group selection reruns after each drop. Every size probe (one llvm-mos link) is memoized on its group, case text and flags, so a rerun links only the groups that changed. P40-P47's 49 groups fit in minutes instead of hours.
+
+`'basic_split': True` emits one `basic_run_<bank>` per bank. Each group defines `-D<SYM>_BANKS` with the banks its kept routines and its cases' basic labels reach, so a diagnostic links only those banks. A transfer to a bank left out returns `EXEC_OUT_OF_SCOPE`.
+
 ## Additions from the orbital lane (ORBITAL_INTEGRATION, INTEGRATION_INITIALIZATION)
 
 Spec keys:
@@ -136,3 +144,20 @@ A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are 
 - `refuse_unextended`: a CCS arm on the word after an EXTEND is refused instead of compiled unextended.
 - `basic_edges` (differential): the erasable words interp_compile's own basic code names get the same ±0, small and saturating values as `'basic': 'full'` files' words.
 - `index_carry16`: the generated `ixw` (INDEX's ones'-complement add) takes the end-around carry without a 17-bit sum. Without it, a C64 build (16-bit `unsigned`) drops the carry of an INDEX by a negative value (A = -1 on SPARCSIN's `INDEX A; CS LIMITS`) and refuses; other specs' generated files keep the old form.
+
+## Additions from the CM flight lane (Comanche conics, integration, P38-P39)
+
+Spec keys (all opt-in, so other specs compile byte-identically):
+
+- `seed_counters`: whole-file basic specs seed the counter cells and input channels a case reads (`counters` on other specs means TIME1/TIME2 and the CDU states). The milestone's mk files define `-DIRC_CHANNELS`, which turns on the channel and counter case code in `tests/interp_case.h`.
+- `rope_fallback`: a word the listing doesn't show (bank fillers such as V/SC's 200CS read) comes from the `MAIN.agc.bin` beside the listing.
+- `fixed_tables`: `{'LABEL' or 'bank addr': (lo, hi)}`, the index range of a basic indexed read from a fixed table (INTBITAB, WAKESTAL).
+- `fixed_index_erasable`: a starred operand listed in `fixed_index` whose effective address falls below 02000 reads erasable with no `K` table. INTEGRATION_INITIALIZATION's `DLOAD* MUEARTH,2` reads either a constant or an erasable copy depending on X2.
+- `interp_not_basic`: a CCS or skip whose landing word is an interpretive order (or a blank word) treats that word as data, so basic code is not decoded from it. Opcode names that are also basic instructions (INCR, AD, ...) still decode as basic.
+- `noreturn` also applies to a TC whose target is inside the file (P38-P39's TC DSPLY81, which ends in a TCF ENDOFJOB).
+
+The yaAGC reference now decides whether a case's first instruction is in the file before it runs, so a case that starts by running an erasable word (TC INTWAKUQ) still stops at the first fixed address outside the file.
+
+A spec's `max_steps` must match the `irc_run` limit in its `tests/test_<sym>.c` and `platform/c64/<sym>_diagnostic.c`; a lower limit fails long cases as kind 2.
+
+`basic_parts` (`{'budget': n}`) splits a whole-file basic step machine into part functions of about `n` bytes of C text each, so every routine's link closure fits its flight-store slot (CM RCS DAP, jet selection, entry DAP, TVC initialize, automatic maneuvers). A goto that crosses a part becomes a hand-off: Z is set to the target word and the routine returns, so the transfer runner calls the target's routine as the next step. Each target is a new routine key (a part key), and so is every computed-transfer target once there is more than one part. A cut never falls before a word reached under EXTEND. A part key in fixed-fixed memory runs under the FB its caller left. Part keys draw no differential cases of their own: their runs come from the routines that reach them, so a split leaves the case set and the host vectors byte-identical (`--cover-check` reports `cases_match`). Only the C64 groups change. A pass now takes more steps, so these specs raise `max_steps` to 2000.

@@ -12,7 +12,7 @@ extern const agc_routine_table cm_rcs_dap_interpretive,cm_rcs_dap_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_rcs_dap_point;
-#define CM_RCS_DAP_POINTS 17u
+#define CM_RCS_DAP_POINTS 71u
 #define CM_RCS_DAP_CADR_WORDS 1u
 #define CM_RCS_DAP_EXTERNALS 9u
 #define CM_RCS_DAP_FIRST 17477u

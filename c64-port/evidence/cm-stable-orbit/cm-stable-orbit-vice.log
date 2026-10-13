@@ -1,0 +1,14 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+da4f9d2400340c4c6541e9c0b4f3b767f8d8132db43f298d0a68ad5ebe8002a9  build/cm-stable-orbit-1.prg
+dda378e4aff62e95a17956b5cbdf1cafd08f936ecf833dc314f3e7bdfd3d43c0  build/cm-stable-orbit-2.prg
+7e565680945b1b3d2fefc6175beecd01e4b005ea06aabb53d63128ed06fc6be4  build/cm-stable-orbit-3.prg
+
+$ make vice-cm-stable-orbit
+for p in build/cm-stable-orbit-1.prg build/cm-stable-orbit-2.prg build/cm-stable-orbit-3.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-stable-orbit-1.prg: 48 checks, 0 failures
+PRG sha256: da4f9d2400340c4c6541e9c0b4f3b767f8d8132db43f298d0a68ad5ebe8002a9 cm-stable-orbit-1.prg
+PASS: VICE PAL cm-stable-orbit-2.prg: 55 checks, 0 failures
+PRG sha256: dda378e4aff62e95a17956b5cbdf1cafd08f936ecf833dc314f3e7bdfd3d43c0 cm-stable-orbit-2.prg
+PASS: VICE PAL cm-stable-orbit-3.prg: 36 checks, 0 failures
+PRG sha256: 7e565680945b1b3d2fefc6175beecd01e4b005ea06aabb53d63128ed06fc6be4 cm-stable-orbit-3.prg
+exit 0

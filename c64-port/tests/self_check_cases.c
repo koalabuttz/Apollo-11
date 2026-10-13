@@ -18,7 +18,9 @@ static unsigned upto(uint32_t *seed,unsigned n){return (unsigned)((rnd(seed)>>16
 /* A Comanche055 address of the file in the case's mission (Luminary099 is two lower). */
 #define K(z) ((agc_word)((z)-(mission?0u:2u)))
 
-const agc_routine_table *self_check_table(unsigned mission){return PICK(mission,&lm_self_check_routines,&cm_self_check_routines);}
+const agc_routine_table *self_check_table(unsigned mission){static agc_routine_table t[SELF_CHECK_TABLES];
+ t[0]=*PICK(mission,&lm_self_check_idle_routines,&cm_self_check_idle_routines);t[1]=*PICK(mission,&lm_self_check_routines,&cm_self_check_routines);
+ return t;}
 const agc_site_operand *self_check_site_table(unsigned mission,uint16_t *count){return PICK(mission,lm_self_check_site_table(count),cm_self_check_site_table(count));}
 const uint16_t *self_check_entry_list(unsigned mission){return PICK(mission,lm_self_check_entries,cm_self_check_entries);}
 
@@ -105,7 +107,7 @@ void self_check_input(unsigned mission,apollo_overlay_state *s,self_check_io *io
 
 enum exec_status self_check_run(unsigned mission,apollo_overlay_state *s,self_check_io *io,uint16_t n,uint16_t *steps){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st;
- program.basic=self_check_table(mission);program.basic_count=1;
+ program.basic=self_check_table(mission);program.basic_count=SELF_CHECK_TABLES;
  self_check_input(mission,s,io,n);
  st=agc_transfer_run(&program,s,io,self_check_superbank(mission,io),AGC_TRANSFER_NONE,64,steps);
  return st==EXEC_UNMAPPED?EXEC_OK:st==EXEC_OK?EXEC_OUT_OF_SCOPE:st;
@@ -174,8 +176,9 @@ void self_check_showsum_proceed(unsigned mission,apollo_overlay_state *s){agc_wo
  W[2]=(agc_word)(self_check_rope_ends(mission,0)[1]+9u);W[5]=RK(03635u);
 }
 enum exec_status self_check_rope_run(unsigned mission,apollo_overlay_state *s,self_check_io *io,uint16_t n,uint32_t *steps){
- agc_routine_table tables[3];agc_native_program p={0,3,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;enum exec_status st;uint32_t k;unsigned proceeds=self_check_rope_proceeds(n);
- tables[0]=*self_check_table(mission);tables[1]=PICK(mission,lm_interbank_routines,cm_interbank_routines);tables[2]=stand_tables[mission!=0u];
+ agc_routine_table tables[SELF_CHECK_TABLES+2u];agc_native_program p={0,SELF_CHECK_TABLES+2u,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;enum exec_status st;uint32_t k;unsigned proceeds=self_check_rope_proceeds(n);
+ tables[0]=self_check_table(mission)[0];tables[1]=self_check_table(mission)[1];
+ tables[2]=PICK(mission,lm_interbank_routines,cm_interbank_routines);tables[3]=stand_tables[mission!=0u];
  p.basic=tables;p.operands=self_check_site_table(mission,&p.operand_count);p.fixed_data=PICK(mission,lm_self_check_rope_data,cm_self_check_rope_data);
  self_check_rope_input(mission,s,io,n);
  for(k=0;;++k){
