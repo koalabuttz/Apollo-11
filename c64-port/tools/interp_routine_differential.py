@@ -270,6 +270,64 @@ def write_cases(path, missions, cases):
                 f.write(struct.pack('<HH', a, w))
 
 
+def flow_seed(missions, cases, rng, ref, path):
+    """'resume_flow': a CHANG2 resume LOC's cases start from the state the
+    original program is in when it gets there. Each case of the routine
+    before it runs on the oracle to NEWOPS with LOC at the resume LOC (and
+    so on along a run of resume LOCs); the state there, with NEWJOB
+    positive in a quarter of the cases, is the case. A case that never gets
+    there takes another case's state; a LOC no case reaches keeps random
+    states."""
+    at = collections.defaultdict(list)
+    for i, c in enumerate(cases):
+        at[c['cm'], c['point']].append(i)
+    pred, level = {}, {}
+    for cm, mi in enumerate(missions):
+        if mi.m == 'absent' or not mi.points or not getattr(mi, 'rk', False):
+            continue
+        for k, p in enumerate(mi.points):
+            if k and mi.cp.starts[p] == ('i', 'CHANG2 resume'):
+                q = mi.points[k - 1]
+                pred[cm, p] = (cm, q)
+                level[cm, p] = level.get((cm, q), 0) + 1
+    sub = path + '.flow'
+    flowed = set()
+    for lv in range(1, max(level.values(), default=0) + 1):
+        batch = [(r, j) for r in sorted(level) if level[r] == lv for j in at[r]]
+        runs = []
+        for r, j in batch:
+            k = at[r].index(j)
+            c = dict(cases[at[pred[r]][k]])
+            c['stop'] = r[1]
+            runs.append(c)
+        write_cases(sub, missions, runs)
+        out = subprocess.run([ref, *ROPES, sub], cwd=R, check=True, capture_output=True, text=True,
+                             env=dict(os.environ, IRC_SNAP='1')).stdout.splitlines()
+        snaps = collections.defaultdict(list)
+        got = {}
+        for (r, j), c, line in zip(batch, runs, out):
+            f = line.split()
+            if f[1] == 'S':
+                E = collections.OrderedDict(c['edits'])
+                E.update((int(f[k]), int(f[k + 1])) for k in range(2, len(f), 2))
+                got[j] = (c, E)
+                snaps[r].append(j)
+        for r, j in batch:
+            if not snaps[r]:
+                continue
+            c, E = got[j] if j in got else got[snaps[r][at[r].index(j) % len(snaps[r])]]
+            E = collections.OrderedDict(E)
+            E[0o67] = rng.randrange(1, 0o40000) if rng.random() < 0.25 else 0
+            cases[j] = dict(cases[j], seed=c['seed'], ie=c['ie'], sb=c['sb'], stop=0xffff, edits=list(E.items()))
+            flowed.add(r)
+    if os.path.exists(sub):
+        os.remove(sub)
+    print('resume_flow: %d of %d resume LOCs start from the original program\'s state there%s' % (
+        len(flowed), len(level), (' (random states: %s)' % ', '.join(
+            '%s %s' % (missions[r[0]].m, missions[r[0]].cp.where(r[1])) for r in sorted(set(level) - flowed)))
+        if set(level) - flowed else ''))
+
+
 def build(spec_id, spec):
     ref = os.path.join(B, 'interp-routine-reference')
     # The pinned engine with DV always through its hardware model
@@ -320,8 +378,10 @@ def main():
                 cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop, 'sb': sb})
     os.makedirs(B, exist_ok=True)
     path = os.path.join(B, '%s-cases.bin' % a.spec)
-    write_cases(path, missions, cases)
     ref, nat = build(a.spec, spec)
+    if spec.get('resume_flow'):
+        flow_seed(missions, cases, rng, ref, path)
+    write_cases(path, missions, cases)
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
@@ -513,12 +573,43 @@ def group_text(sym, groups, cases, rows):
     return '\n'.join(out) + '\n'
 
 
+def cover_sources(spec):
+    """The sources the cover runner links (host_arcs)."""
+    return (['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON +
+            [spec['target']])
+
+
+def write_cover_record(spec_id, spec, arcs, rows):
+    """build/<id>-c64-cover.json, the c64_branch_outcomes record a
+    certificate cites (evidence/<id>/<id>-c64-cover.json)."""
+    host = frozenset().union(*arcs.values())
+    taken = frozenset().union(*(arcs[n] for n in rows))
+    sources = cover_sources(spec)
+    per = {s: [0, 0] for s in sources}
+    for arc in host:
+        per.setdefault(arc.split(':', 1)[0], [0, 0])[0] += 1
+    for arc in taken:
+        per.setdefault(arc.split(':', 1)[0], [0, 0])[1] += 1
+    record = {'milestone': spec_id,
+              'method': 'gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage '
+                        'over every linked source, one host case at a time; the rows are the C64 vector '
+                        'header\'s case list, each run on VICE against its frozen digest '
+                        '(tools/interp_routine_differential.py, tools/c64_row_cover.py)',
+              'linked_sources': {s: hashlib.sha256(open(os.path.join(R, s), 'rb').read()).hexdigest()
+                                 for s in sources},
+              'host_cases': len(arcs), 'host_case_stride': spec.get('cover_stride', 1), 'c64_rows': sorted(rows),
+              'host_branch_arcs': len(host), 'c64_branch_arcs': len(taken),
+              'arcs_by_source_host_c64': {s: per[s] for s in sorted(per)},
+              'host_branches_missing_on_c64': sorted(host - taken)}
+    open(os.path.join(B, '%s-c64-cover.json' % spec_id), 'w').write(json.dumps(record, indent=1) + '\n')
+
+
 def host_arcs(spec_id, spec, missions, cases):
     """{case: branch arcs} of the native runner, one case at a time
     (tools/c64_row_cover.py)."""
+    assert spec.get('freeze_stride', 16) % spec.get('cover_stride', 1) == 0
     d = os.path.join(B, '%s-cover' % spec_id)
-    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
-    exe = c64_row_cover.build(d, [*srcs, spec['target'], 'tools/interp_routine_native.c'],
+    exe = c64_row_cover.build(d, [*cover_sources(spec), 'tools/interp_routine_native.c'],
                               [f for f in FLAGS if f != '-O2'] + ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)])
     one = os.path.join(d, 'cases')
     os.makedirs(one)
@@ -527,7 +618,9 @@ def host_arcs(spec_id, spec, missions, cases):
         p = os.path.join(one, '%d.bin' % i)
         write_cases(p, missions, [cases[i]])
         return [str(exe), p]
-    return c64_row_cover.trace(d, range(len(cases)), argv)
+    # 'cover_stride': every Nth case (a divisor of freeze_stride, so every
+    # frozen host vector is among them).
+    return c64_row_cover.trace(d, range(0, len(cases), spec.get('cover_stride', 1)), argv)
 
 
 C64_HOST_ONLY = []   # routines whose runs do not fit one C64 diagnostic
@@ -551,6 +644,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
         for cm, mi in enumerate(missions):
             if mi.m not in spec['missions']:
                 continue
+            KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
             mine = [i for i in arcs if cases[i]['cm'] == cm and i not in chan]
             # Each routine set the cases visit, probed with its largest case.
             big = {visits[i]: i for i in sorted(mine, key=lambda i: len(cases[i]['edits']))}
@@ -611,6 +705,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
         picked = [i for m, mask, pick in groups for i in pick]
         c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
         extra = c64_row_cover.summary(arcs, picked)
+        write_cover_record(spec_id, spec, arcs, picked)
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]

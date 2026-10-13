@@ -2932,7 +2932,47 @@
           "scope": "Every word of the file (218 words in bank 31): R31CALL, DSPDELAY, DISPN5X, V83, V83CALL, COMPDISP, R34ANG, STATEXTP, HAVEBASE, OTHINT, GETRVN5, GETRVN6, GETRVN and R34LOS, as 44 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-R31.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones (FB 31), NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the R31 erasables.",
+        "external_continuations": [
+          "FINDVAC with its inline 2CADR (Executive)",
+          "BANKCALL with its inline CADR (DELAYJOB, GOMARKF)",
+          "B5OFF and ENDEXT",
+          "CDUTRIG, *NBSM*, SXTNB, LEMPREC, CSMPREC, INTSTALL and INTEGRVS through CALL (interpretive)",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-r31/cm-r31-source-map.json",
+            "sha256": "e60905fac0c78ec2be655fd1d6afca44e3f1817163ec2a9d9916b4369c4f9829"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-r31/cm-r31-proof.json",
+            "sha256": "785936eeb247ee90c7b532af116685d7c3c8f2a392cecd200d98c81ad295aa7f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-r31/cm-r31-host.log",
+            "sha256": "66f3ab38280d41e6e3069eb737cc401c3b9c2b8dff1ea5fc3f5aac6d65818bb2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-r31/cm-r31-vice.log",
+            "sha256": "9810fe43491b17285d306ea180c0b4e017b01643e50d917b6b572d36b1071599",
+            "vice_targets": {
+              "vice-cm-r31": 120
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-r31/cm-r31-c64-cover.json",
+            "sha256": "ee2f30bc3fda02714afbc506fd06aa81fdef2625bf893695cee027a2dae57667"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/R60_62.agc",
