@@ -484,6 +484,10 @@ def case(mi, point, n, rng):
             joint = joint[mi.m]
         for k, v in rng.choice(joint).items():
             E[state_address(mi, k, vac)] = v & 0o77777
+    if mi.cp.novac(point) and rng.random() < 0.5:
+        # 'any_fixloc': a basic routine that never names FIXLOC runs from
+        # tasks and NOVAC jobs too, so half its cases leave the VAC areas.
+        E[0o120] = rng.randrange(0o4000)
     if mi.cp.basic and mi.kinds[point] == 'b':
         # Compiled basic code: the words it names take zeros, small values
         # and saturating values often enough to reach every CCS exit, BZF and
