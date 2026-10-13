@@ -24,6 +24,8 @@ typedef struct { rr_case c; uint16_t n; } rk_rupt_row;
 #define RK_PROBE_LOC 02000u
 #define RK_PROBE_Z 02001u
 #define RK_PROBE_VALUE 0x5aa5u
+/* The same probe at fixed-fixed 07753, under its canonical bank 06000. */
+#define RK_PROBE_FF_LOC 07753u
 /* SPSIN's address (Luminary099 05033, Comanche055 05075) and a return. */
 #if RK_LM
 #define RK_SPSIN 05033u

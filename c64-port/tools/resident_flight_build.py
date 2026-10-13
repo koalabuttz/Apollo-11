@@ -8,8 +8,9 @@ gc-sections, on platform/c64/resident_flight.ld:
   build/resident-flight/<m>-resident.prg  the flight resident (resident_flight_main.c)
   build/resident-flight/<m>-check-<p>.prg the same resident with the flight check
                                           (resident_flight_check.c, RK_PART p 1-4) as main
-  build/resident-flight/<m>-module-*.prg  the check's modules (case generators in the
-                                          job slot; rows and LM RESTARTS in the task slot)
+  build/resident-flight/<m>-module-*.prg  the resident's boundary-word module and the check's
+                                          modules (case generators in the job slot; rows and
+                                          LM RESTARTS in the task slot)
   build/resident-flight/<m>.reu           the check's REU store (modules + probe resolver)
 
 and writes build/resident-flight/sizes.json: the flight resident's bytes in
@@ -79,7 +80,14 @@ RUPT_SOURCES = ['platform/c64/resident_flight_rupt_cases.c', 'tests/resident_rup
 DATA_SOURCES = {'lm': ['platform/c64/resident_flight_data.c', 'src/lm_restart_routines.c', 'src/lm_restart_select.c',
                        'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c'],
                 'cm': ['platform/c64/resident_flight_data.c']}
-PROBE = dict(bank=0o24000, loc=0o2000, module=0x01F1, selector=1)
+# The check's resolver records: the probe (bank 012) and the same probe at
+# fixed-fixed 07753 under its canonical bank 06000, which the step must find
+# whatever FB holds. tools/resident_boundary_words.py adds their keys.
+PROBES = [dict(bank=0o24000, loc=0o2000, module=0x01F1, selector=1),
+          dict(bank=0o6000, loc=0o7753, module=0x01F1, selector=1)]
+# The resident's own modules, in every store it runs on: (module id, slot,
+# sources). 0x01E0 is the boundary-word table (tools/resident_boundary_words.py).
+RESIDENT_MODULES = [(0x01E0, 1, ['platform/c64/resident_boundary_module.c'])]
 
 
 def run(cmd):
@@ -176,8 +184,22 @@ def measure(cc, m, prg):
                 library_symbols=dict(sorted(unclassified.items(), key=lambda kv: -kv[1])))
 
 
+def link_module(cc, m, prg, slot, ident, selectors, sources, extra, library):
+    run([cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections',
+         '-nostdlib', '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
+         '-T', 'platform/c64/overlay_v2_payload.ld',
+         f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
+         f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors={selectors},'
+         f'-Map,{prg}.map',
+         *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg])
+
+
 def build_modules(cc, m, cases, library):
     prgs = []
+    for ident, slot, sources in RESIDENT_MODULES:
+        prg = OUT / f'{m}-module-{ident:04x}.prg'
+        link_module(cc, m, prg, slot, ident, 1, sources, [], library)
+        prgs.append(prg)
     for part, exj, ident, selectors in MODULES[m]:
         prg = OUT / f'{m}-module-{ident:04x}.prg'
         if part == 4:
@@ -187,17 +209,10 @@ def build_modules(cc, m, cases, library):
             sources = ['platform/c64/resident_flight_cases.c', 'tests/resident_kernel_cases.c', *cases]
         else:
             extra, sources = [], DATA_SOURCES[m]
-        slot = 0 if part else 1
-        run([cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections',
-             '-nostdlib', '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
-             '-T', 'platform/c64/overlay_v2_payload.ld',
-             f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
-             f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors={selectors},'
-             f'-Map,{prg}.map',
-             *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg])
+        link_module(cc, m, prg, 0 if part else 1, ident, selectors, sources, extra, library)
         prgs.append(prg)
     resolver = OUT / f'{m}-resolver.json'
-    resolver.write_text(json.dumps([PROBE], indent=1) + '\n')
+    resolver.write_text(json.dumps(PROBES, indent=1) + '\n')
     run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(SERVICES),
          '--resolver', resolver, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
     return prgs
