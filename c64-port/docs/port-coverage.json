@@ -4670,6 +4670,14 @@
           ],
           "scope": "IMUMON through 90SECS (bank 06,2174-2764) and ZOPFIN3 (06,3065-3067, shared with the optics code): the channel 30 and channel 33 IMU monitors with their bit-change handlers (TLIM, ITURNON, ENDTNON, UNZ2, ISSUP, SETISSW, IMUCAGE, IMUOP, PIPFAIL, DNTMFAST, UPTMFAST), the gimbal lock check, CAGESUB and LAMPTEST, as control-transfer ABI routines (cm_t4rupt_imu_routines, 22 bank 06 entries) on the image through agc_image_ops, with channels 11, 12, 14, 30 and 33 in agc_hardware. Every instruction word of the range was executed by the original in the comparison; OPTMON and the rest of the optics code remain unported.",
           "verification": "docs/CM-T4RUPT-IMU.md"
+        },
+        {
+          "native_files": [
+            "src/cm_t4rupt_optics.c",
+            "include/cm_t4rupt_optics.h"
+          ],
+          "scope": "OPTMON through the end of bank 06 (06,2765-3262: the optics monitor, the zero-optics sequence SETZOEND/ENDZOPT/ZEROPCDU, the switch-change handlers and OCDUFTST) and OPTDRIVE (10,2000-2202: the optics CDU drive), compiled whole-file by tools/basic_compile.py as cm_t4rupt_optics_basic (8 routines: OPTMON, OPTDRIVE, ENDZOPT and the ALARM, WAITLIST and VARDELAY continuations). With t4rupt_core and cm_t4rupt_imu every word of the file is native.",
+          "verification": "docs/CM-T4RUPT-OPTICS.md"
         }
       ]
     },

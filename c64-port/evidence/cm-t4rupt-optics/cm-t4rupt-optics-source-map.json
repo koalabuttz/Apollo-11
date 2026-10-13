@@ -1,0 +1,5327 @@
+{
+ "Comanche055/T4RUPT_PROGRAM.agc": {
+  "native_file": "src/cm_t4rupt_optics.c",
+  "words": 833,
+  "untranslated_words": 461,
+  "routines": 8,
+  "map": [
+   {
+    "address": "06,2000",
+    "word": "54016",
+    "source": "T4RUPT TS BANKRUPT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2001",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2002",
+    "word": "22012",
+    "source": " QXCH QRUPT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2003",
+    "word": "11302",
+    "source": " CCS DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2004",
+    "word": "12010",
+    "source": " TCF NORMT4     +1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2005",
+    "word": "12007",
+    "source": " TCF NORMT4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2006",
+    "word": "12136",
+    "source": " TCF QUIKDSP",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2007",
+    "word": "35023",
+    "source": "NORMT4 CAF SEVEN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2010",
+    "word": "54070",
+    "source": " TS RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2011",
+    "word": "55302",
+    "source": " TS DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "02,2072",
+    "word": "04025",
+    "source": "RELTAB OCT 04025",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2073",
+    "word": "10003",
+    "source": " OCT 10003",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2074",
+    "word": "14031",
+    "source": " OCT 14031",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2075",
+    "word": "20033",
+    "source": " OCT 20033",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2076",
+    "word": "24017",
+    "source": " OCT 24017",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2077",
+    "word": "30036",
+    "source": " OCT 30036",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2100",
+    "word": "34034",
+    "source": " OCT 34034",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2101",
+    "word": "40023",
+    "source": " OCT 40023",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2102",
+    "word": "44035",
+    "source": " OCT 44035",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2103",
+    "word": "50037",
+    "source": " OCT 50037",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2104",
+    "word": "54000",
+    "source": " OCT 54000",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "02,2105",
+    "word": "60000",
+    "source": "RELTAB11 OCT 60000",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2012",
+    "word": "11036",
+    "source": "CDRVE CCS DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2013",
+    "word": "02063",
+    "source": " TC DSPOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2014",
+    "word": "02063",
+    "source": " TC DSPOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2015",
+    "word": "57036",
+    "source": " XCH DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2016",
+    "word": "74372",
+    "source": " MASK LOW11",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2017",
+    "word": "55036",
+    "source": " TS DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2020",
+    "word": "64105",
+    "source": " AD RELTAB11",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2021",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2022",
+    "word": "01010",
+    "source": " WRITE OUT0",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2023",
+    "word": "02071",
+    "source": " TC HANG20",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2024",
+    "word": "55016",
+    "source": "DSPOUTSB TS NOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2025",
+    "word": "45021",
+    "source": " CS ZERO",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2026",
+    "word": "54073",
+    "source": " TS DSRUPTEM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2027",
+    "word": "56776",
+    "source": " XCH DSPCNT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2030",
+    "word": "65020",
+    "source": " AD NEG0",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2031",
+    "word": "54776",
+    "source": " TS DSPCNT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2032",
+    "word": "50776",
+    "source": "DSPSCAN INDEX DSPCNT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2033",
+    "word": "11023",
+    "source": " CCS DSPTAB",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2034",
+    "word": "10776",
+    "source": " CCS DSPCNT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2035",
+    "word": "12030",
+    "source": " TCF DSPSCAN    -2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2036",
+    "word": "12047",
+    "source": " TCF DSPLAY",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2037",
+    "word": "00012",
+    "source": "TABLNTH OCT 12",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2040",
+    "word": "10073",
+    "source": " CCS DSRUPTEM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2041",
+    "word": "37764",
+    "source": "120MRUPT DEC 16372      B-14",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2042",
+    "word": "55016",
+    "source": " TS NOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2043",
+    "word": "00002",
+    "source": " TC Q",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2044",
+    "word": "54073",
+    "source": " TS DSRUPTEM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2045",
+    "word": "32037",
+    "source": " CAF TABLNTH",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2046",
+    "word": "12031",
+    "source": " TCF DSPSCAN    -1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2047",
+    "word": "65017",
+    "source": "DSPLAY AD ONE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2050",
+    "word": "50776",
+    "source": " INDEX DSPCNT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2051",
+    "word": "55023",
+    "source": " TS DSPTAB",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2052",
+    "word": "74372",
+    "source": " MASK LOW11",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2053",
+    "word": "54073",
+    "source": " TS DSRUPTEM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2054",
+    "word": "34364",
+    "source": " CAF HI5",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2055",
+    "word": "50776",
+    "source": " INDEX DSPCNT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2056",
+    "word": "74072",
+    "source": " MASK RELTAB",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2057",
+    "word": "60073",
+    "source": " AD DSRUPTEM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2060",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2061",
+    "word": "01010",
+    "source": " WRITE OUT0",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2062",
+    "word": "16706",
+    "source": " TCF Q+1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2063",
+    "word": "10101",
+    "source": "DSPOUT CCS FLAGWRD5",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2064",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2065",
+    "word": "12132",
+    "source": " TCF NODSPOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2066",
+    "word": "11016",
+    "source": " CCS NOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2067",
+    "word": "02024",
+    "source": " TC DSPOUTSB",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2070",
+    "word": "12132",
+    "source": " TCF NODSPOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2071",
+    "word": "42173",
+    "source": "HANG20 CS 11,14,9",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2072",
+    "word": "27302",
+    "source": " ADS DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2073",
+    "word": "37700",
+    "source": " CAF 20MRUPT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2074",
+    "word": "54027",
+    "source": "SETTIME4 TS TIME4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2075",
+    "word": "31321",
+    "source": "PROCEEDE CA IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2076",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2077",
+    "word": "06032",
+    "source": " RXOR CHAN32",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2100",
+    "word": "75002",
+    "source": " MASK BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2101",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2102",
+    "word": "12116",
+    "source": " BZF T4JUMP",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2103",
+    "word": "23321",
+    "source": " LXCH IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2104",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2105",
+    "word": "06001",
+    "source": " RXOR LCHAN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2106",
+    "word": "55321",
+    "source": " TS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2107",
+    "word": "75002",
+    "source": " MASK BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2110",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2111",
+    "word": "12116",
+    "source": " TCF T4JUMP",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2112",
+    "word": "34371",
+    "source": " CAF CHRPRIO",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2113",
+    "word": "05134",
+    "source": " TC NOVAC",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2114",
+    "word": "03357",
+    "source": " 2CADR PROCKEY",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2115",
+    "word": "60101",
+    "source": "(+1)",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2116",
+    "word": "50070",
+    "source": "T4JUMP INDEX RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2117",
+    "word": "12120",
+    "source": " TCF +1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2120",
+    "word": "12130",
+    "source": " TCF OPTTEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2121",
+    "word": "12765",
+    "source": " TCF OPTMON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2122",
+    "word": "12174",
+    "source": " TCF IMUMON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2123",
+    "word": "15333",
+    "source": " TCF RESUME",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2124",
+    "word": "12130",
+    "source": " TCF OPTTEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2125",
+    "word": "12765",
+    "source": " TCF OPTMON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2126",
+    "word": "12174",
+    "source": " TCF IMUMON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2127",
+    "word": "15333",
+    "source": " TCF RESUME",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2130",
+    "word": "04740",
+    "source": "OPTTEST TC IBNKCALL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2131",
+    "word": "20000",
+    "source": " CADR OPTDRIVE",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2132",
+    "word": "00006",
+    "source": "NODSPOUT EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2133",
+    "word": "01010",
+    "source": " WRITE OUT0",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2134",
+    "word": "32041",
+    "source": " CAF 120MRUPT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2135",
+    "word": "12074",
+    "source": " TCF SETTIME4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2136",
+    "word": "35002",
+    "source": "QUIKDSP CAF BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2137",
+    "word": "71302",
+    "source": " MASK DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2140",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2141",
+    "word": "12167",
+    "source": " BZF QUIKOFF",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2142",
+    "word": "11016",
+    "source": " CCS NOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2143",
+    "word": "02024",
+    "source": " TC DSPOUTSB",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2144",
+    "word": "12154",
+    "source": " TCF NODSPY",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2145",
+    "word": "45002",
+    "source": " CS BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2146",
+    "word": "27302",
+    "source": "QUIKRUPT ADS DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2147",
+    "word": "37700",
+    "source": " CAF 20MRUPT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2150",
+    "word": "54027",
+    "source": " TS TIME4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2151",
+    "word": "35007",
+    "source": " CAF BIT9",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2152",
+    "word": "27302",
+    "source": " ADS DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2153",
+    "word": "05333",
+    "source": " TC RESUME",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2154",
+    "word": "00006",
+    "source": "NODSPY EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2155",
+    "word": "01010",
+    "source": " WRITE OUT0",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2156",
+    "word": "37700",
+    "source": "SYNCT4 CAF 20MRUPT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2157",
+    "word": "26027",
+    "source": " ADS TIME4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2160",
+    "word": "35007",
+    "source": " CAF BIT9",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2161",
+    "word": "27302",
+    "source": " ADS DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2162",
+    "word": "11302",
+    "source": " CCS DSRUPTSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2163",
+    "word": "05333",
+    "source": " TC RESUME",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2164",
+    "word": "37737",
+    "source": "OCT37737 OCT 37737",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2165",
+    "word": "02156",
+    "source": " TC SYNCT4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2166",
+    "word": "05333",
+    "source": " TC RESUME",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2167",
+    "word": "00006",
+    "source": "QUIKOFF EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2170",
+    "word": "01010",
+    "source": " WRITE OUT0",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2171",
+    "word": "35002",
+    "source": " CAF BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2172",
+    "word": "12146",
+    "source": " TCF QUIKRUPT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2173",
+    "word": "22400",
+    "source": "11,14,9 OCT 22400",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2174",
+    "word": "31320",
+    "source": "IMUMON CA IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2175",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2176",
+    "word": "06030",
+    "source": " RXOR CHAN30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2177",
+    "word": "72743",
+    "source": " MASK 30RDMSK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2200",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2201",
+    "word": "12231",
+    "source": " BZF TNONTEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2202",
+    "word": "54070",
+    "source": " TS RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2203",
+    "word": "23320",
+    "source": " LXCH IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2204",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2205",
+    "word": "06001",
+    "source": " RXOR LCHAN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2206",
+    "word": "55320",
+    "source": " TS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2207",
+    "word": "45017",
+    "source": " CS ONE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2210",
+    "word": "56070",
+    "source": " XCH RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2211",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2212",
+    "word": "62507",
+    "source": " BZMF TLIM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2213",
+    "word": "12215",
+    "source": " TCF NXTIFBIT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2214",
+    "word": "65017",
+    "source": "-1 AD ONE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2215",
+    "word": "24070",
+    "source": "NXTIFBIT INCR RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2216",
+    "word": "60000",
+    "source": "+1 DOUBLE ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2217",
+    "word": "54000",
+    "source": " TS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2220",
+    "word": "12215",
+    "source": " TCF NXTIFBIT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2221",
+    "word": "56071",
+    "source": " XCH RUPTREG2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2222",
+    "word": "50070",
+    "source": " INDEX RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2223",
+    "word": "35002",
+    "source": " CAF BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2224",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2225",
+    "word": "50070",
+    "source": " INDEX RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2226",
+    "word": "02737",
+    "source": " TC IFAILJMP",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2227",
+    "word": "10071",
+    "source": "NXTIFAIL CCS RUPTREG2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2230",
+    "word": "12214",
+    "source": " TCF NXTIFBIT   -1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2231",
+    "word": "41320",
+    "source": "TNONTEST CS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2232",
+    "word": "75011",
+    "source": " MASK BIT7",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2233",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2234",
+    "word": "12367",
+    "source": " TCF C33TEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2235",
+    "word": "35010",
+    "source": " CAF BIT8",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2236",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2237",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2240",
+    "word": "12244",
+    "source": " TCF PROCTNON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2241",
+    "word": "35010",
+    "source": " CAF BIT8",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2242",
+    "word": "27320",
+    "source": " ADS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2243",
+    "word": "12367",
+    "source": " TCF C33TEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2244",
+    "word": "42757",
+    "source": "PROCTNON CS BITS7&8",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2245",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2246",
+    "word": "55320",
+    "source": " TS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2247",
+    "word": "75002",
+    "source": " MASK BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2250",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2251",
+    "word": "12342",
+    "source": " TCF OPONLY",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2252",
+    "word": "41320",
+    "source": " CS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2253",
+    "word": "75007",
+    "source": " MASK BIT9",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2254",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2255",
+    "word": "12260",
+    "source": " TCF +3",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2256",
+    "word": "05650",
+    "source": " TC ALARM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2257",
+    "word": "00213",
+    "source": " OCT 213",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2260",
+    "word": "02717",
+    "source": "+3 TC CAGESUB",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2261",
+    "word": "32764",
+    "source": " CAF 90SECS",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2262",
+    "word": "05245",
+    "source": " TC WAITLIST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2263",
+    "word": "02270",
+    "source": " 2CADR ENDTNON",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2264",
+    "word": "14063",
+    "source": "(+1)",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2265",
+    "word": "12367",
+    "source": " TCF C33TEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2266",
+    "word": "32764",
+    "source": "RETNON CAF 90SECS",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2267",
+    "word": "05272",
+    "source": " TC VARDELAY",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2270",
+    "word": "45016",
+    "source": "ENDTNON CS BIT2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2271",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2272",
+    "word": "57320",
+    "source": " XCH IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2273",
+    "word": "75016",
+    "source": " MASK BIT2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2274",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2275",
+    "word": "12310",
+    "source": " BZF ENDTNON2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2276",
+    "word": "35002",
+    "source": " CAF BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2277",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2300",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2301",
+    "word": "12266",
+    "source": " BZF RETNON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2302",
+    "word": "40074",
+    "source": " CS STATE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2303",
+    "word": "75010",
+    "source": " MASK IMUSEFLG",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2304",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2305",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2306",
+    "word": "04701",
+    "source": " TC POSTJUMP",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2307",
+    "word": "17522",
+    "source": " CADR IMUBAD",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2310",
+    "word": "35001",
+    "source": "ENDTNON2 CAF BIT15",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2311",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2312",
+    "word": "05012",
+    "source": " WOR CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2313",
+    "word": "04740",
+    "source": " TC IBNKCALL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2314",
+    "word": "17151",
+    "source": " CADR NOATTOFF",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2315",
+    "word": "05521",
+    "source": "UNZ2 TC ZEROICDU",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2316",
+    "word": "45027",
+    "source": " CS BITS4&5",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2317",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2320",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2321",
+    "word": "35005",
+    "source": " CAF BIT11",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2322",
+    "word": "05272",
+    "source": " TC VARDELAY",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2323",
+    "word": "42754",
+    "source": "ISSUP CS OCT54",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2324",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2325",
+    "word": "55320",
+    "source": " TS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2326",
+    "word": "45012",
+    "source": " CS BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2327",
+    "word": "71321",
+    "source": " MASK IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2330",
+    "word": "55321",
+    "source": " TS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2331",
+    "word": "02665",
+    "source": " TC SETISSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2332",
+    "word": "45001",
+    "source": " CS BIT15",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2333",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2334",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2335",
+    "word": "35045",
+    "source": " CAF 4SECS",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2336",
+    "word": "05245",
+    "source": " TC WAITLIST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2337",
+    "word": "03137",
+    "source": " 2CADR PFAILOK",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2340",
+    "word": "16063",
+    "source": "(+1)",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2341",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2342",
+    "word": "35014",
+    "source": "OPONLY CAF BIT4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2343",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2344",
+    "word": "02012",
+    "source": " RAND CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2345",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2346",
+    "word": "12367",
+    "source": " TCF C33TEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2347",
+    "word": "35010",
+    "source": " CAF IMUSEFLG",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2350",
+    "word": "70074",
+    "source": " MASK STATE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2351",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2352",
+    "word": "12367",
+    "source": " TCF C33TEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2353",
+    "word": "02730",
+    "source": " TC CAGESUB2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2354",
+    "word": "04740",
+    "source": "ISSZERO TC IBNKCALL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2355",
+    "word": "17151",
+    "source": " CADR NOATTOFF",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2356",
+    "word": "35013",
+    "source": " CAF BIT5",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2357",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2360",
+    "word": "05012",
+    "source": " WOR CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2361",
+    "word": "05521",
+    "source": " TC ZEROICDU",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2362",
+    "word": "35012",
+    "source": " CAF BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2363",
+    "word": "05245",
+    "source": " TC WAITLIST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2364",
+    "word": "02315",
+    "source": " 2CADR UNZ2",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2365",
+    "word": "14062",
+    "source": "(+1)",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2366",
+    "word": "12367",
+    "source": " TCF C33TEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2367",
+    "word": "31321",
+    "source": "C33TEST CA IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2370",
+    "word": "75070",
+    "source": " MASK 33RDMSK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2371",
+    "word": "54001",
+    "source": " TS L",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2372",
+    "word": "35070",
+    "source": " CAF 33RDMSK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2373",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2374",
+    "word": "03033",
+    "source": " WAND CHAN33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2375",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2376",
+    "word": "06001",
+    "source": " RXOR LCHAN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2377",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2400",
+    "word": "12427",
+    "source": " BZF GLOCKMON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2401",
+    "word": "54070",
+    "source": " TS RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2402",
+    "word": "23321",
+    "source": " LXCH IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2403",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2404",
+    "word": "06001",
+    "source": " RXOR LCHAN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2405",
+    "word": "55321",
+    "source": " TS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2406",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2407",
+    "word": "56070",
+    "source": " XCH RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2410",
+    "word": "60000",
+    "source": " DOUBLE ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2411",
+    "word": "12414",
+    "source": " TCF NXTIBT     +1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2412",
+    "word": "65017",
+    "source": "-1 AD ONE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2413",
+    "word": "24070",
+    "source": "NXTIBT INCR RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2414",
+    "word": "60000",
+    "source": "+1 DOUBLE ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2415",
+    "word": "54000",
+    "source": " TS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2416",
+    "word": "12413",
+    "source": " TCF NXTIBT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2417",
+    "word": "56071",
+    "source": " XCH RUPTREG2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2420",
+    "word": "50070",
+    "source": " INDEX RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2421",
+    "word": "35003",
+    "source": " CAF BIT13",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2422",
+    "word": "71321",
+    "source": " MASK IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2423",
+    "word": "50070",
+    "source": " INDEX RUPTREG1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2424",
+    "word": "02745",
+    "source": " TC C33JMP",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2425",
+    "word": "10071",
+    "source": "NXTFL33 CCS RUPTREG2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2426",
+    "word": "12412",
+    "source": " TCF NXTIBT     -1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2427",
+    "word": "10034",
+    "source": "GLOCKMON CCS CDUZ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2430",
+    "word": "12434",
+    "source": " TCF GLOCKCHK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2431",
+    "word": "12460",
+    "source": " TCF SETGLOCK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2432",
+    "word": "12434",
+    "source": " TCF GLOCKCHK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2433",
+    "word": "12460",
+    "source": " TCF SETGLOCK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2434",
+    "word": "62505",
+    "source": "GLOCKCHK AD -70DEGS",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2435",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2436",
+    "word": "62457",
+    "source": " BZMF SETGLOCK   -1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2437",
+    "word": "62506",
+    "source": " AD -15DEGS",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2440",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2441",
+    "word": "62455",
+    "source": " BZMF NOGIMRUN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2442",
+    "word": "35014",
+    "source": " CAF BIT4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2443",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2444",
+    "word": "02012",
+    "source": " RAND CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2445",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2446",
+    "word": "12455",
+    "source": " TCF NOGIMRUN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2447",
+    "word": "04740",
+    "source": " TC IBNKCALL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2450",
+    "word": "17027",
+    "source": " CADR SETCOARS",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2451",
+    "word": "36211",
+    "source": " CAF SIX",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2452",
+    "word": "05245",
+    "source": " TC WAITLIST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2453",
+    "word": "03023",
+    "source": " 2CADR CA+ECE",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2454",
+    "word": "16063",
+    "source": "(+1)",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2455",
+    "word": "35012",
+    "source": "NOGIMRUN CAF BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2456",
+    "word": "12460",
+    "source": " TCF SETGLOCK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2457",
+    "word": "35021",
+    "source": "-1 CAF ZERO",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2460",
+    "word": "61036",
+    "source": "SETGLOCK AD DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2461",
+    "word": "75012",
+    "source": " MASK BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2462",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2463",
+    "word": "15333",
+    "source": " BZF GLOCKOK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2464",
+    "word": "71036",
+    "source": " MASK DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2465",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2466",
+    "word": "12502",
+    "source": " TCF GLAMPTST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2467",
+    "word": "35012",
+    "source": " CAF BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2470",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2471",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2472",
+    "word": "15333",
+    "source": " TCF GLOCKOK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2473",
+    "word": "41036",
+    "source": "GLINVERT CS DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2474",
+    "word": "75012",
+    "source": " MASK BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2475",
+    "word": "65001",
+    "source": " AD BIT15",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2476",
+    "word": "57036",
+    "source": " XCH DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2477",
+    "word": "72164",
+    "source": " MASK OCT37737",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2500",
+    "word": "27036",
+    "source": " ADS DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2501",
+    "word": "15333",
+    "source": " TCF GLOCKOK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2502",
+    "word": "02750",
+    "source": "GLAMPTST TC LAMPTEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2503",
+    "word": "15333",
+    "source": " TCF GLOCKOK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2504",
+    "word": "12473",
+    "source": " TCF GLINVERT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2505",
+    "word": "63434",
+    "source": "-70DEGS DEC -.38888",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2506",
+    "word": "75252",
+    "source": "-15DEGS DEC -.08333",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2507",
+    "word": "74777",
+    "source": "TLIM MASK POSMAX",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2510",
+    "word": "54071",
+    "source": " TS RUPTREG2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2511",
+    "word": "11320",
+    "source": " CCS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2512",
+    "word": "12520",
+    "source": " TCF TEMPOK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2513",
+    "word": "12520",
+    "source": " TCF TEMPOK",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2514",
+    "word": "35014",
+    "source": " CAF BIT4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2515",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2516",
+    "word": "05011",
+    "source": " WOR DSALMOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2517",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2520",
+    "word": "02750",
+    "source": "TEMPOK TC LAMPTEST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2521",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2522",
+    "word": "45014",
+    "source": " CS BIT4",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2523",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2524",
+    "word": "03011",
+    "source": " WAND DSALMOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2525",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2526",
+    "word": "35016",
+    "source": "ITURNON CAF BIT2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2527",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2530",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2531",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2532",
+    "word": "35002",
+    "source": " CAF BIT14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2533",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2534",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2535",
+    "word": "12551",
+    "source": " BZF ITURNON2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2536",
+    "word": "35001",
+    "source": " CAF BIT15",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2537",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2540",
+    "word": "02012",
+    "source": " RAND CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2541",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2542",
+    "word": "12544",
+    "source": " BZF +2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2543",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2544",
+    "word": "35016",
+    "source": " CAF BIT2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2545",
+    "word": "27320",
+    "source": " ADS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2546",
+    "word": "05650",
+    "source": " TC ALARM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2547",
+    "word": "00207",
+    "source": " OCT 207",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2550",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2551",
+    "word": "41320",
+    "source": "ITURNON2 CS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2552",
+    "word": "75011",
+    "source": " MASK BIT7",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2553",
+    "word": "27320",
+    "source": " ADS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2554",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2555",
+    "word": "10000",
+    "source": "IMUCAGE CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2556",
+    "word": "12354",
+    "source": " TCF ISSZERO",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2557",
+    "word": "42762",
+    "source": " CS OCT77000",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2560",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2561",
+    "word": "03014",
+    "source": " WAND CHAN14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2562",
+    "word": "42756",
+    "source": " CS OCT272",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2563",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2564",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2565",
+    "word": "45003",
+    "source": " CS BIT13",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2566",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2567",
+    "word": "03011",
+    "source": " WAND DSALMOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2570",
+    "word": "02725",
+    "source": " TC CAGESUB1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2571",
+    "word": "04740",
+    "source": " TC IBNKCALL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2572",
+    "word": "17060",
+    "source": " CADR RNDREFDR",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2573",
+    "word": "45021",
+    "source": " CS ZERO",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2574",
+    "word": "54050",
+    "source": " TS CDUXCMD",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2575",
+    "word": "54051",
+    "source": " TS CDUYCMD",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2576",
+    "word": "54052",
+    "source": " TS CDUZCMD",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2577",
+    "word": "54047",
+    "source": " TS GYROCMD",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2600",
+    "word": "42761",
+    "source": " CS OCT740",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2601",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2602",
+    "word": "03014",
+    "source": " WAND CHAN14",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2603",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2604",
+    "word": "00006",
+    "source": "IMUOP EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2605",
+    "word": "12625",
+    "source": " BZF IMUOP2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2606",
+    "word": "41321",
+    "source": " CS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2607",
+    "word": "75012",
+    "source": " MASK BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2610",
+    "word": "27321",
+    "source": " ADS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2611",
+    "word": "04740",
+    "source": " TC IBNKCALL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2612",
+    "word": "17060",
+    "source": " CADR RNDREFDR",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2613",
+    "word": "42757",
+    "source": " CS BITS7&8",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2614",
+    "word": "70074",
+    "source": " MASK STATE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2615",
+    "word": "56074",
+    "source": " XCH STATE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2616",
+    "word": "40000",
+    "source": " COM ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2617",
+    "word": "75010",
+    "source": " MASK IMUSEFLG",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2620",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2621",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2622",
+    "word": "05650",
+    "source": " TC ALARM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2623",
+    "word": "00214",
+    "source": " OCT 214",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2624",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2625",
+    "word": "35016",
+    "source": "IMUOP2 CAF BIT2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2626",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2627",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2630",
+    "word": "12227",
+    "source": " TCF NXTIFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2631",
+    "word": "12551",
+    "source": " TCF ITURNON2",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2632",
+    "word": "10000",
+    "source": "PIPFAIL CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2633",
+    "word": "35006",
+    "source": " CAF BIT10",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2634",
+    "word": "57320",
+    "source": " XCH IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2635",
+    "word": "72763",
+    "source": " MASK -BIT10",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2636",
+    "word": "27320",
+    "source": " ADS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2637",
+    "word": "02665",
+    "source": " TC SETISSW",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2640",
+    "word": "41320",
+    "source": " CS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2641",
+    "word": "75017",
+    "source": " MASK BIT1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2642",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2643",
+    "word": "12425",
+    "source": " TCF NXTFL33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2644",
+    "word": "31320",
+    "source": " CA IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2645",
+    "word": "72760",
+    "source": " MASK OCT1720",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2646",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2647",
+    "word": "12425",
+    "source": " TCF NXTFL33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2650",
+    "word": "05650",
+    "source": " TC ALARM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2651",
+    "word": "00212",
+    "source": " OCT 212",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2652",
+    "word": "12425",
+    "source": " TCF NXTFL33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2653",
+    "word": "10000",
+    "source": "DNTMFAST CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2654",
+    "word": "12425",
+    "source": " TCF NXTFL33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2655",
+    "word": "05650",
+    "source": " TC ALARM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2656",
+    "word": "01105",
+    "source": " OCT 1105",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2657",
+    "word": "12425",
+    "source": " TCF NXTFL33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2660",
+    "word": "10000",
+    "source": "UPTMFAST CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2661",
+    "word": "12425",
+    "source": " TCF NXTFL33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2662",
+    "word": "05650",
+    "source": " TC ALARM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2663",
+    "word": "01106",
+    "source": " OCT 1106",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2664",
+    "word": "12425",
+    "source": " TCF NXTFL33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2665",
+    "word": "35025",
+    "source": "SETISSW CAF OCT15",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2666",
+    "word": "71320",
+    "source": " MASK IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2667",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2670",
+    "word": "75006",
+    "source": " MP BIT10",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2671",
+    "word": "31320",
+    "source": " CA IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2672",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2673",
+    "word": "04001",
+    "source": " ROR LCHAN",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2674",
+    "word": "40000",
+    "source": " COM ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2675",
+    "word": "75067",
+    "source": " MASK OCT15000",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2676",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2677",
+    "word": "12710",
+    "source": " TCF ISSWON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2700",
+    "word": "35017",
+    "source": "ISSWOFF CAF BIT1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2701",
+    "word": "71321",
+    "source": " MASK IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2702",
+    "word": "10000",
+    "source": " CCS A",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2703",
+    "word": "00002",
+    "source": " TC Q",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2704",
+    "word": "45017",
+    "source": " CS BIT1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2705",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2706",
+    "word": "03011",
+    "source": " WAND DSALMOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2707",
+    "word": "00002",
+    "source": " TC Q",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2710",
+    "word": "00006",
+    "source": "ISSWON EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2711",
+    "word": "22066",
+    "source": " QXCH ITEMP6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2712",
+    "word": "05764",
+    "source": " TC VARALARM",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2713",
+    "word": "35017",
+    "source": " CAF BIT1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2714",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2715",
+    "word": "05011",
+    "source": " WOR DSALMOUT",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2716",
+    "word": "00066",
+    "source": " TC ITEMP6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2717",
+    "word": "47703",
+    "source": "CAGESUB CS BIT15+6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2720",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2721",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2722",
+    "word": "35027",
+    "source": " CAF BITS4&5",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2723",
+    "word": "00006",
+    "source": " EXTEND ",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2724",
+    "word": "05012",
+    "source": " WOR CHAN12",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2725",
+    "word": "41036",
+    "source": "CAGESUB1 CS DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2726",
+    "word": "72753",
+    "source": " MASK OC40010",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2727",
+    "word": "27036",
+    "source": " ADS DSPTAB     +11D",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2730",
+    "word": "41320",
+    "source": "CAGESUB2 CS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2731",
+    "word": "72755",
+    "source": " MASK OCT75",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2732",
+    "word": "27320",
+    "source": " ADS IMODES30",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2733",
+    "word": "41321",
+    "source": " CS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2734",
+    "word": "75012",
+    "source": " MASK BIT6",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2735",
+    "word": "27321",
+    "source": " ADS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2736",
+    "word": "00002",
+    "source": " TC Q",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2737",
+    "word": "12526",
+    "source": "IFAILJMP TCF ITURNON",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2740",
+    "word": "12665",
+    "source": " TCF IMUFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2741",
+    "word": "12665",
+    "source": " TCF ICDUFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2742",
+    "word": "12555",
+    "source": " TCF IMUCAGE",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2743",
+    "word": "76400",
+    "source": "30RDMSK OCT 76400",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2744",
+    "word": "12604",
+    "source": " TCF IMUOP",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2745",
+    "word": "12632",
+    "source": "C33JMP TCF PIPFAIL",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2746",
+    "word": "12653",
+    "source": " TCF DNTMFAST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2747",
+    "word": "12660",
+    "source": " TCF UPTMFAST",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2750",
+    "word": "41321",
+    "source": "LAMPTEST CS IMODES33",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2751",
+    "word": "75017",
+    "source": " MASK BIT1",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2752",
+    "word": "13065",
+    "source": " TCF ZOPFIN3",
+    "untranslated": "native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)"
+   },
+   {
+    "address": "06,2753",
+    "word": "40010",
+    "source": "OC40010 OCT 40010",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2754",
+    "word": "00054",
+    "source": "OCT54 OCT 54",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2755",
+    "word": "00075",
+    "source": "OCT75 OCT 75",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2756",
+    "word": "00272",
+    "source": "OCT272 OCT 00272",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2757",
+    "word": "00300",
+    "source": "BITS7&8 OCT 300",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2760",
+    "word": "01720",
+    "source": "OCT1720 OCT 1720",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2761",
+    "word": "00740",
+    "source": "OCT740 OCT 00740",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2762",
+    "word": "77000",
+    "source": "OCT77000 OCT 77000",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2763",
+    "word": "76777",
+    "source": "-BIT10 OCT -1000",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2764",
+    "word": "21450",
+    "source": "90SECS DEC 9000       B-14",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "06,2765",
+    "word": "31331",
+    "source": "OPTMON CA OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2766",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2767",
+    "word": "06030",
+    "source": " RXOR CHAN30",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2770",
+    "word": "75011",
+    "source": " MASK BIT7",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2771",
+    "word": "54070",
+    "source": " TS RUPTREG1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2772",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2773",
+    "word": "03224",
+    "source": " TC OCDUFTST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2774",
+    "word": "11303",
+    "source": "33OPTMON CCS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2775",
+    "word": "13001",
+    "source": " TCF +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2776",
+    "word": "13001",
+    "source": " TCF +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,2777",
+    "word": "13001",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3000",
+    "word": "15333",
+    "source": " TCF RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3001",
+    "word": "31331",
+    "source": " CA OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3002",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3003",
+    "word": "06033",
+    "source": " RXOR CHAN33",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3004",
+    "word": "75027",
+    "source": " MASK OCTHIRTY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3005",
+    "word": "26070",
+    "source": " ADS RUPTREG1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3006",
+    "word": "23331",
+    "source": " LXCH OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3007",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3010",
+    "word": "06001",
+    "source": " RXOR LCHAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3011",
+    "word": "55331",
+    "source": " TS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3012",
+    "word": "40000",
+    "source": " COM ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3013",
+    "word": "75027",
+    "source": " MASK OCTHIRTY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3014",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3015",
+    "word": "13022",
+    "source": " BZF SETSAMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3016",
+    "word": "75013",
+    "source": " MASK BIT5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3017",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3020",
+    "word": "03022",
+    "source": " TC +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3021",
+    "word": "37716",
+    "source": " CAF NEGONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3022",
+    "word": "55314",
+    "source": "SETSAMP TS SWSAMPLE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3023",
+    "word": "11315",
+    "source": "PROCESSW CCS DESOPMOD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3024",
+    "word": "03125",
+    "source": " TC CSCDES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3025",
+    "word": "03077",
+    "source": " TC MANUDES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3026",
+    "word": "03027",
+    "source": " TC ZOPTDES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3027",
+    "word": "11314",
+    "source": "ZOPTDES CCS SWSAMPLE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3030",
+    "word": "03047",
+    "source": " TC ZTOCSC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3031",
+    "word": "03037",
+    "source": " TC ZTOMAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3032",
+    "word": "03057",
+    "source": " TC ZOPFINI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3033",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3034",
+    "word": "11317",
+    "source": " CCS ZOPTCNT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3035",
+    "word": "03153",
+    "source": " TC SETCNT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3036",
+    "word": "03157",
+    "source": " TC SETZOEND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3037",
+    "word": "03057",
+    "source": "ZTOMAN TC ZOPFINI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3040",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3041",
+    "word": "05650",
+    "source": "ZOPALARM TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3042",
+    "word": "00116",
+    "source": " OCT 00116",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3043",
+    "word": "35024",
+    "source": " CAF OCT13",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3044",
+    "word": "55316",
+    "source": " TS WTOPTION",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3045",
+    "word": "03070",
+    "source": " TC CANZOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3046",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3047",
+    "word": "03057",
+    "source": "ZTOCSC TC ZOPFINI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3050",
+    "word": "03115",
+    "source": " TC MANTOCSC   +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3051",
+    "word": "05650",
+    "source": " TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3052",
+    "word": "00116",
+    "source": " OCT 00116",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3053",
+    "word": "03070",
+    "source": " TC CANZOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3054",
+    "word": "03112",
+    "source": " TC MANTOCSC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3055",
+    "word": "35007",
+    "source": "COARSLOK CAF BIT9",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3056",
+    "word": "13064",
+    "source": " TCF ZOPFIN2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3057",
+    "word": "35017",
+    "source": "ZOPFINI CAF BIT1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3060",
+    "word": "71331",
+    "source": " MASK OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3061",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3062",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3063",
+    "word": "35015",
+    "source": " CAF BIT3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3064",
+    "word": "71331",
+    "source": "ZOPFIN2 MASK OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3065",
+    "word": "10000",
+    "source": "ZOPFIN3 CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3066",
+    "word": "24002",
+    "source": " INCR Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3067",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3070",
+    "word": "46211",
+    "source": "CANZOPT CS SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3071",
+    "word": "71331",
+    "source": " MASK OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3072",
+    "word": "55331",
+    "source": " TS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3073",
+    "word": "45017",
+    "source": " CS BIT1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3074",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3075",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3076",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3077",
+    "word": "11314",
+    "source": "MANUDES CCS SWSAMPLE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3100",
+    "word": "03112",
+    "source": " TC MANTOCSC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3101",
+    "word": "03107",
+    "source": " TC MANTOMAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3102",
+    "word": "11316",
+    "source": " CCS WTOPTION",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3103",
+    "word": "03105",
+    "source": " TC +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3104",
+    "word": "03151",
+    "source": " TC OPTZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3105",
+    "word": "03216",
+    "source": " TC INITZOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3106",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3107",
+    "word": "11316",
+    "source": "MANTOMAN CCS WTOPTION",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3110",
+    "word": "55316",
+    "source": " TS WTOPTION",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3111",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3112",
+    "word": "35021",
+    "source": "MANTOCSC CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3113",
+    "word": "55316",
+    "source": " TS WTOPTION",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3114",
+    "word": "55317",
+    "source": " TS ZOPTCNT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3115",
+    "word": "03055",
+    "source": " TC COARSLOK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3116",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3117",
+    "word": "35017",
+    "source": " CAF ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3120",
+    "word": "55303",
+    "source": " TS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3121",
+    "word": "35016",
+    "source": " CAF BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3122",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3123",
+    "word": "05012",
+    "source": " WOR CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3124",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3125",
+    "word": "11314",
+    "source": "CSCDES CCS SWSAMPLE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3126",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3127",
+    "word": "03133",
+    "source": " TC CSCTOMAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3130",
+    "word": "35012",
+    "source": "CSCTOZOP CAF OCT40",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3131",
+    "word": "55317",
+    "source": " TS ZOPTCNT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3132",
+    "word": "03216",
+    "source": " TC INITZOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3133",
+    "word": "11303",
+    "source": "CSCTOMAN CCS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3134",
+    "word": "03140",
+    "source": " TC CANCOARS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3135",
+    "word": "03140",
+    "source": " TC CANCOARS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3136",
+    "word": "03137",
+    "source": " TC +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3137",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3140",
+    "word": "37716",
+    "source": "CANCOARS CA NEGONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3141",
+    "word": "55303",
+    "source": " TS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3142",
+    "word": "45016",
+    "source": " CS BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3143",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3144",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3145",
+    "word": "41331",
+    "source": " CS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3146",
+    "word": "75007",
+    "source": " MASK BIT9",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3147",
+    "word": "27331",
+    "source": " ADS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3150",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3151",
+    "word": "03216",
+    "source": "OPTZERO TC INITZOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3152",
+    "word": "35012",
+    "source": " CA OCT40",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3153",
+    "word": "55317",
+    "source": "SETCNT TS ZOPTCNT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3154",
+    "word": "31314",
+    "source": "SETDESMD CA SWSAMPLE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3155",
+    "word": "55315",
+    "source": " TS DESOPMOD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3156",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3157",
+    "word": "35017",
+    "source": "SETZOEND CAF BIT1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3160",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3161",
+    "word": "05012",
+    "source": " WOR CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3162",
+    "word": "34112",
+    "source": " CA 200MS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3163",
+    "word": "05245",
+    "source": " TC WAITLIST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3164",
+    "word": "03172",
+    "source": " 2CADR ENDZOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3165",
+    "word": "14062",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3166",
+    "word": "41331",
+    "source": " CS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3167",
+    "word": "75017",
+    "source": " MASK BIT1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3170",
+    "word": "27331",
+    "source": " ADS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3171",
+    "word": "03154",
+    "source": " TC SETDESMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3172",
+    "word": "03210",
+    "source": "ENDZOPT TC ZEROPCDU",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3173",
+    "word": "45017",
+    "source": " CS BIT1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3174",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3175",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3176",
+    "word": "34112",
+    "source": " CAF 200MS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3177",
+    "word": "05272",
+    "source": " TC VARDELAY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3200",
+    "word": "41331",
+    "source": " CS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3201",
+    "word": "75006",
+    "source": " MASK BIT10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3202",
+    "word": "27331",
+    "source": " ADS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3203",
+    "word": "45023",
+    "source": " CS SEVEN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3204",
+    "word": "71331",
+    "source": " MASK OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3205",
+    "word": "55331",
+    "source": " TS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3206",
+    "word": "03224",
+    "source": " TC OCDUFTST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3207",
+    "word": "05324",
+    "source": " TC TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3210",
+    "word": "35021",
+    "source": "ZEROPCDU CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3211",
+    "word": "54036",
+    "source": " TS CDUS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3212",
+    "word": "55307",
+    "source": " TS ZONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3213",
+    "word": "43261",
+    "source": " CS 20DEGS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3214",
+    "word": "54035",
+    "source": " TS CDUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3215",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3216",
+    "word": "35021",
+    "source": "INITZOPT CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3217",
+    "word": "55316",
+    "source": " TS WTOPTION",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3220",
+    "word": "41331",
+    "source": " CS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3221",
+    "word": "76211",
+    "source": " MASK SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3222",
+    "word": "27331",
+    "source": " ADS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3223",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3224",
+    "word": "35011",
+    "source": "OCDUFTST CAF BIT7",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3225",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3226",
+    "word": "02030",
+    "source": " RAND CHAN30",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3227",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3230",
+    "word": "13252",
+    "source": " TCF OPFAILOF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3231",
+    "word": "35016",
+    "source": " CAF BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3232",
+    "word": "71331",
+    "source": " MASK OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3233",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3234",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3235",
+    "word": "35010",
+    "source": "OPFAILON CAF BIT8",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3236",
+    "word": "61036",
+    "source": " AD DSPTAB     +11D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3237",
+    "word": "75010",
+    "source": " MASK BIT8",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3240",
+    "word": "00006",
+    "source": "SETOFF EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3241",
+    "word": "16711",
+    "source": " BZF TCQ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3242",
+    "word": "54001",
+    "source": " TS L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3243",
+    "word": "31036",
+    "source": " CA DSPTAB     +11D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3244",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3245",
+    "word": "06001",
+    "source": " RXOR LCHAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3246",
+    "word": "74777",
+    "source": " MASK POSMAX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3247",
+    "word": "65001",
+    "source": " AD BIT15",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3250",
+    "word": "55036",
+    "source": " TS DSPTAB     +11D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3251",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3252",
+    "word": "35017",
+    "source": "OPFAILOF CAF BIT1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3253",
+    "word": "71321",
+    "source": " MASK IMODES33",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3254",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3255",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3256",
+    "word": "35010",
+    "source": " CAF BIT8",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3257",
+    "word": "71036",
+    "source": " MASK DSPTAB     +11D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3260",
+    "word": "13240",
+    "source": " TCF SETOFF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "06,3261",
+    "word": "16037",
+    "source": "20DEGS DEC 7199       B-14",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "10,2000",
+    "word": "30036",
+    "source": "OPTDRIVE CA CDUS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2001",
+    "word": "54001",
+    "source": " TS L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2002",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2003",
+    "word": "67707",
+    "source": " AD 13,14,15",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2004",
+    "word": "12006",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2005",
+    "word": "12003",
+    "source": " TCF -2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2006",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2007",
+    "word": "62016",
+    "source": " BZMF OZONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2010",
+    "word": "31307",
+    "source": " CA ZONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2011",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2012",
+    "word": "12014",
+    "source": " BZF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2013",
+    "word": "12020",
+    "source": " TCF CONTDRVE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2014",
+    "word": "56001",
+    "source": " XCH L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2015",
+    "word": "12017",
+    "source": " TCF OZONE      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2016",
+    "word": "35021",
+    "source": "OZONE CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2017",
+    "word": "55307",
+    "source": " TS ZONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2020",
+    "word": "11303",
+    "source": "CONTDRVE CCS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2021",
+    "word": "02025",
+    "source": " TC +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2022",
+    "word": "02025",
+    "source": " TC +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2023",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2024",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2025",
+    "word": "31314",
+    "source": " CA SWSAMPLE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2026",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2027",
+    "word": "65333",
+    "source": " BZMF RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2030",
+    "word": "35006",
+    "source": " CAF BIT10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2031",
+    "word": "71331",
+    "source": " MASK OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2032",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2033",
+    "word": "02036",
+    "source": " TC +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2034",
+    "word": "05650",
+    "source": " TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2035",
+    "word": "00120",
+    "source": " OCT 00120",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2036",
+    "word": "35016",
+    "source": " CA BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2037",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2040",
+    "word": "02012",
+    "source": " RAND CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2041",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2042",
+    "word": "12175",
+    "source": " BZF SETBIT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2043",
+    "word": "35017",
+    "source": " CAF ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2044",
+    "word": "55303",
+    "source": "OPT2 TS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2045",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2046",
+    "word": "12132",
+    "source": " BZF TRUNCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2047",
+    "word": "51303",
+    "source": "GETOPCMD INDEX OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2050",
+    "word": "31160",
+    "source": " CA DESOPTT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2051",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2052",
+    "word": "51303",
+    "source": " INDEX OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2053",
+    "word": "20035",
+    "source": " MSU CDUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2054",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2055",
+    "word": "75003",
+    "source": " MP BIT13",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2056",
+    "word": "56001",
+    "source": " XCH L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2057",
+    "word": "60000",
+    "source": " DOUBLE ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2060",
+    "word": "54061",
+    "source": " TS ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2061",
+    "word": "12063",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2062",
+    "word": "26001",
+    "source": " ADS L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2063",
+    "word": "51303",
+    "source": "STORCMD INDEX OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2064",
+    "word": "23305",
+    "source": " LXCH COMMANDO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2065",
+    "word": "11303",
+    "source": " CCS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2066",
+    "word": "12044",
+    "source": " TCF OPT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2067",
+    "word": "54061",
+    "source": " TS ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2070",
+    "word": "10036",
+    "source": " CCS CDUS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2071",
+    "word": "65000",
+    "source": " AD NEG1/2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2072",
+    "word": "12074",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2073",
+    "word": "12071",
+    "source": " TCF -2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2074",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2075",
+    "word": "62122",
+    "source": " BZMF CMDSETUP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2076",
+    "word": "31307",
+    "source": " CA ZONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2077",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2100",
+    "word": "12122",
+    "source": " BZF CMDSETUP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2101",
+    "word": "75001",
+    "source": " MASK BIT15",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2102",
+    "word": "54001",
+    "source": " TS L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2103",
+    "word": "31306",
+    "source": " CA COMMANDO   +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2104",
+    "word": "75001",
+    "source": " MASK BIT15",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2105",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2106",
+    "word": "06001",
+    "source": " RXOR LCHAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2107",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2110",
+    "word": "12122",
+    "source": " TCF CMDSETUP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2111",
+    "word": "11161",
+    "source": " CCS DESOPTS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2112",
+    "word": "65000",
+    "source": " AD NEG1/2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2113",
+    "word": "12115",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2114",
+    "word": "12112",
+    "source": " TCF -2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2115",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2116",
+    "word": "62120",
+    "source": " BZMF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2117",
+    "word": "12122",
+    "source": " TCF CMDSETUP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2120",
+    "word": "41306",
+    "source": " CS COMMANDO   +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2121",
+    "word": "55306",
+    "source": " TS COMMANDO   +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2122",
+    "word": "35017",
+    "source": "CMDSETUP CAF ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2123",
+    "word": "55303",
+    "source": " TS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2124",
+    "word": "50000",
+    "source": " INDEX A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2125",
+    "word": "11305",
+    "source": " CCS COMMANDO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2126",
+    "word": "02144",
+    "source": " TC POSOPCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2127",
+    "word": "02151",
+    "source": " TC NEXTOPT    +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2130",
+    "word": "02161",
+    "source": " TC NEGOPCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2131",
+    "word": "02151",
+    "source": " TC NEXTOPT    +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2132",
+    "word": "40035",
+    "source": "TRUNCMD CS CDUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2133",
+    "word": "61160",
+    "source": " AD DESOPTT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2134",
+    "word": "54002",
+    "source": " TS Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2135",
+    "word": "02047",
+    "source": " TC GETOPCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2136",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2137",
+    "word": "34777",
+    "source": " CA POSMAX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2140",
+    "word": "02142",
+    "source": " TC +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2141",
+    "word": "44777",
+    "source": " CS POSMAX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2142",
+    "word": "54001",
+    "source": " TS L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2143",
+    "word": "02063",
+    "source": " TC STORCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2144",
+    "word": "62202",
+    "source": "POSOPCMD AD MAXPLS1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2145",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2146",
+    "word": "62166",
+    "source": " BZMF DELOPCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2147",
+    "word": "42201",
+    "source": " CS MAXPLS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2150",
+    "word": "24061",
+    "source": "NEXTOPT INCR ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2151",
+    "word": "65020",
+    "source": " AD NEG0",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2152",
+    "word": "51303",
+    "source": " INDEX OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2153",
+    "word": "54053",
+    "source": " TS CDUTCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2154",
+    "word": "11303",
+    "source": " CCS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2155",
+    "word": "02123",
+    "source": " TC CMDSETUP   +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2156",
+    "word": "10061",
+    "source": " CCS ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2157",
+    "word": "12171",
+    "source": " TCF SENDOCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2160",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2161",
+    "word": "62202",
+    "source": "NEGOPCMD AD MAXPLS1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2162",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2163",
+    "word": "62166",
+    "source": " BZMF DELOPCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2164",
+    "word": "32201",
+    "source": " CA MAXPLS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2165",
+    "word": "12150",
+    "source": " TCF NEXTOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2166",
+    "word": "51303",
+    "source": "DELOPCMD INDEX OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2167",
+    "word": "57305",
+    "source": " XCH COMMANDO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2170",
+    "word": "12150",
+    "source": " TCF NEXTOPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2171",
+    "word": "35062",
+    "source": "SENDOCMD CAF 11,12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2172",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2173",
+    "word": "05014",
+    "source": " WOR CHAN14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2174",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2175",
+    "word": "35016",
+    "source": "SETBIT CAF BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2176",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2177",
+    "word": "05012",
+    "source": " WOR CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2200",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2201",
+    "word": "77532",
+    "source": "MAXPLS DEC -165       B-14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2202",
+    "word": "77533",
+    "source": "MAXPLS1 DEC -164       B-14",
+    "routine": "basic code",
+    "function": "basic_run"
+   }
+  ]
+ }
+}
