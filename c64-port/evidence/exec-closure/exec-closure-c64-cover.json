@@ -30,11 +30,11 @@
   },
   "lm-exec-jobs": {
    "host_cases": 9216,
-   "host_branch_arcs": 1110,
+   "host_branch_arcs": 1106,
    "stride_rows": 576,
    "cover_rows": 20,
    "c64_rows": 596,
-   "c64_branch_arcs": 1110,
+   "c64_branch_arcs": 1106,
    "host_branches_missing_on_c64": [],
    "linked_sources": [
     "src/agc_multiword.c",
@@ -105,11 +105,11 @@
   },
   "cm-exec-services": {
    "host_cases": 7648,
-   "host_branch_arcs": 662,
+   "host_branch_arcs": 658,
    "stride_rows": 478,
    "cover_rows": 9,
    "c64_rows": 487,
-   "c64_branch_arcs": 662,
+   "c64_branch_arcs": 658,
    "host_branches_missing_on_c64": [],
    "linked_sources": [
     "src/agc_multiword.c",

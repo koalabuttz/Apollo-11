@@ -42,7 +42,7 @@
     "-DP66_NATIVE_DISPATCH_ONLY"
   ],
   "host_cases": 9216,
-  "host_branch_arcs": 1110,
+  "host_branch_arcs": 1106,
   "c64_rows": 596,
   "stride_rows": 576,
   "cover_rows": 20,
@@ -68,6 +68,6 @@
     8195,
     8203
   ],
-  "c64_branch_arcs": 1110,
+  "c64_branch_arcs": 1106,
   "host_branches_missing_on_c64": []
 }
