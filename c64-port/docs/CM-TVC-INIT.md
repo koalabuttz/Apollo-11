@@ -8,7 +8,7 @@ This replaces the earlier hand translation, which the certificate reviewer rejec
 
 ## Scope
 
-11 routines, keyed by physical address in `cm_tvc_init_basic`:
+22 routines, keyed by physical address in `cm_tvc_init_basic`:
 
 | Entry | Kind | Why it is a routine |
 |---|---|---|
@@ -16,12 +16,25 @@ This replaces the earlier hand translation, which the certificate reviewer rejec
 | 17,2152 MRCLEAN | basic | entry MRCLEAN (TVCRESTARTS.agc CADR MRCLEAN) |
 | 17,2171 TVCINIT1 | basic | 2CADR TVCINIT1 |
 | 17,2176  | basic | return from IBNKCALL |
+| 17,2216  | basic | part key |
+| 17,2222 TVCINIT2 | basic | part key |
+| 17,2243  | basic | part key |
 | 17,2324 TVCINIT4 | basic | entry TVCINIT4 (TVCRESTARTS.agc CADR TVCINIT4) |
 | 17,2343  | basic | return from WAITLIST |
+| 17,2345  | basic | part key |
 | 17,2351 PRESWTCH | basic | entry PRESWTCH (EXTENDED_VERBS.agc CADR PRESWTCH) |
 | 17,2352  | basic | TC 02352 stored in E6,1613 |
 | 17,2361  | basic | entry 17,2361 (TVCRESTARTS.agc CADR SWICHOVR   +5) |
+| 17,2402  | basic | part key |
+| 17,2417  | basic | part key |
+| 17,2422 LOADCOEF | basic | part key |
+| 17,2436  | basic | part key |
+| 17,2441  | basic | part key |
+| 17,2445  | basic | part key |
 | 17,2462 S40.15 | basic | entry S40.15 (TVCEXECUTIVE.agc CADR S40.15) |
+| 17,2471 +7 | basic | part key |
+
+The step machine is split into part functions (spec `basic_parts`) so each routine's link closure fits its flight-store slot. A transfer across a part hands Z to the target word, whose routine is a part key, and the transfer runner runs it as the next step. Part keys are not entries: their runs come from the 10 entry routines, which draw all the cases, so the case set and the host vectors are the same as before the split.
 | E6,1613 (erasable) | continuation | the TC words the file stores there: 02352, 04753 |
 
 TC RTRNLOC is the erasable continuation E6,1613: it accepts the two Q values SWICHOVR +5 saves there, the return into PRESWTCH (TC 2352, a routine of this file) and IBNKCALL's ISWRETRN (TC 4753), and refuses any other.
@@ -37,6 +50,6 @@ Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the
 Hashes: `evidence/cm-tvc-init/SHA256.json`; all files are in the tree.
 
 - **Source map.** `cm-tvc-init-source-map.json` lists all 259 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
-- **Independent assembly comparison.** `make cm-tvc-init-differential` runs 256 states per routine (2,560 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 11 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-tvc-init-proof.json` (`cm-tvc-init-differential.log` is the run). One case in 32 is frozen in `tests/cm_tvc_init_vectors.h`.
+- **Independent assembly comparison.** `make cm-tvc-init-differential` runs 256 states per entry routine (2,560 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 11 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-tvc-init-proof.json` (`cm-tvc-init-differential.log` is the run). One case in 32 is frozen in `tests/cm_tvc_init_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-tvc-init sanitize-cm-tvc-init` runs the 80 frozen cases (`cm-tvc-init-host.log`).
-- **C64 execution results.** `make vice-cm-tvc-init` runs 1 diagnostic program with 14 cases (`cm-tvc-init-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 2,560 differential cases take: 622 of 622 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 198 of 198 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 378 of the 378 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
+- **C64 execution results.** `make vice-cm-tvc-init` runs 1 diagnostic program with 14 cases (`cm-tvc-init-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 2,560 differential cases take: 653 of 653 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 202 of 202 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 410 of the 410 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

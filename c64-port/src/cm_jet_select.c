@@ -140,13 +140,12 @@ void irc_cover(unsigned n);
 #else
 #define IRC_COVER(n) ((void)0)
 #endif
-/* Every basic word of the file. */
-static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+/* Basic words, part 1 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_0(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
  long ix=0,e=0;uint16_t p;
- (void)ix;(void)e;
+ (void)ix;(void)e;(void)p;(void)io;
  switch(at){
  case 15722u:goto B36552;
- case 16271u:goto B37617;
  default:return EXEC_OUT_OF_SCOPE;
  }
 B36552:
@@ -508,33 +507,46 @@ B36667:
  if(e==5)return EXEC_INVALID_ACTION;
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
- goto B36671c;
-B36671c:
+ {W[5]=02671;return EXEC_OK;} /* part key 17,2671 */
+}
+/* Basic words, part 2 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_1(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 15801u:goto B36671;
+ case 15872u:goto B37000;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B36671:
  IRC_COVER(70u);
  /* 17,2671 MASK PJETS */
  ai_maskf(s,001417u); /* PJETS */
  goto B36672c;
-B36672c:
+B36671c: __attribute__((unused));
  IRC_COVER(71u);
+ goto B36671;
+B36672c:
+ IRC_COVER(72u);
  /* 17,2672 TS PWORD1 */
  (void)ai_ts(s,(unsigned)01453);
  goto B36673c;
 B36673c:
- IRC_COVER(72u);
+ IRC_COVER(73u);
  /* 17,2673 EXTEND */
  goto X36674c;
 X36674c:
- IRC_COVER(73u);
+ IRC_COVER(74u);
  /* 17,2674 EXTENDED MP BIT7 */
  ai_mpf(s,000100u); /* BIT7 */
  goto B36675c;
 B36675c:
- IRC_COVER(74u);
+ IRC_COVER(75u);
  /* 17,2675 TS NPJETS */
  (void)ai_ts(s,(unsigned)01523);
  goto B36676c;
 B36676c:
- IRC_COVER(75u);
+ IRC_COVER(76u);
  /* 17,2676 YWORD CCS TAU2 */
  switch(ai_ccs(s,01563)){
   case 0:goto B36677c;
@@ -544,26 +556,26 @@ B36676c:
  }
  return EXEC_INVALID_ACTION;
 B36677c:
- IRC_COVER(76u);
+ IRC_COVER(77u);
  /* 17,2677 CAF ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B36700c;
 B36700c:
- IRC_COVER(77u);
+ IRC_COVER(78u);
  /* 17,2700 TCF +2 */
  goto B36702c;
 B36701c:
- IRC_COVER(78u);
+ IRC_COVER(79u);
  /* 17,2701 CAF TWO */
  ai_caf(s,000002u); /* BIT2 */
  goto B36702c;
 B36702c:
- IRC_COVER(79u);
+ IRC_COVER(80u);
  /* 17,2702 TS YINDEX */
  (void)ai_ts(s,(unsigned)01521);
  goto B36703c;
 B36703c:
- IRC_COVER(80u);
+ IRC_COVER(81u);
  /* 17,2703 CCS RBDFAIL */
  switch(ai_ccs(s,01627)){
   case 0:goto B36704c;
@@ -573,41 +585,41 @@ B36703c:
  }
  return EXEC_INVALID_ACTION;
 B36704c:
- IRC_COVER(81u);
+ IRC_COVER(82u);
  /* 17,2704 TCF BFAILY */
  goto B36710c;
 B36705c:
- IRC_COVER(82u);
+ IRC_COVER(83u);
  /* 17,2705 TCF TABYCOM */
  goto B36735c;
 B36706c:
- IRC_COVER(83u);
+ IRC_COVER(84u);
  /* 17,2706 TCF DFAILY */
  goto B36712c;
 B36707c:
- IRC_COVER(84u);
+ IRC_COVER(85u);
  /* 17,2707 TCF TABYCOM */
  goto B36735c;
 B36710c:
- IRC_COVER(85u);
+ IRC_COVER(86u);
  /* 17,2710 BFAILY CAF NINE */
  ai_caf(s,000011u); /* R2D1 */
  goto B36711c;
 B36711c:
- IRC_COVER(86u);
+ IRC_COVER(87u);
  /* 17,2711 TCF TABYCOM    +2 */
  goto B36737c;
 B36712c:
- IRC_COVER(87u);
+ IRC_COVER(88u);
  /* 17,2712 DFAILY CAF TWELVE */
  ai_caf(s,000014u); /* OCT14 */
  goto B36713c;
 B36713c:
- IRC_COVER(88u);
+ IRC_COVER(89u);
  /* 17,2713 TCF TABYCOM    +2 */
  goto B36737c;
 B36735c:
- IRC_COVER(89u);
+ IRC_COVER(90u);
  /* 17,2735 TABYCOM INDEX XNDX2 */
  ix=agc_to_int(ai_word(s,01514));
  /* 17,2736 (indexed) CA XLNNDX */
@@ -617,12 +629,12 @@ B36735c:
  else ai_ca(s,(unsigned)e);
  goto B36737c;
 B36737c:
- IRC_COVER(90u);
+ IRC_COVER(91u);
  /* 17,2737 AD YINDEX */
  ai_ad(s,01521);
  goto B36740;
 B36740:
- IRC_COVER(91u);
+ IRC_COVER(92u);
  /* 17,2740 INDEX A */
  ix=areg(s);
  /* 17,2741 (indexed) CA PYTABLE */
@@ -632,31 +644,31 @@ B36740:
  else ai_ca(s,(unsigned)e);
  goto B36742c;
 B36742c:
- IRC_COVER(92u);
+ IRC_COVER(93u);
  /* 17,2742 MASK YJETS */
  ai_maskf(s,006360u); /* YJETS */
  goto B36743c;
 B36743c:
- IRC_COVER(93u);
+ IRC_COVER(94u);
  /* 17,2743 TS YWORD1 */
  (void)ai_ts(s,(unsigned)01455);
  goto B36744c;
 B36744c:
- IRC_COVER(94u);
+ IRC_COVER(95u);
  /* 17,2744 EXTEND */
  goto X36745c;
 X36745c:
- IRC_COVER(95u);
+ IRC_COVER(96u);
  /* 17,2745 EXTENDED MP BIT5 */
  ai_mpf(s,000020u); /* BIT5 */
  goto B36746c;
 B36746c:
- IRC_COVER(96u);
+ IRC_COVER(97u);
  /* 17,2746 TS NYJETS */
  (void)ai_ts(s,(unsigned)01524);
  goto B36747c;
 B36747c:
- IRC_COVER(97u);
+ IRC_COVER(98u);
  /* 17,2747 RWORD CCS TAU */
  switch(ai_ccs(s,01561)){
   case 0:goto B36750c;
@@ -666,26 +678,26 @@ B36747c:
  }
  return EXEC_INVALID_ACTION;
 B36750c:
- IRC_COVER(98u);
+ IRC_COVER(99u);
  /* 17,2750 CAF ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B36751c;
 B36751c:
- IRC_COVER(99u);
+ IRC_COVER(100u);
  /* 17,2751 TCF +2 */
  goto B36753c;
 B36752c:
- IRC_COVER(100u);
+ IRC_COVER(101u);
  /* 17,2752 CAF TWO */
  ai_caf(s,000002u); /* BIT2 */
  goto B36753c;
 B36753c:
- IRC_COVER(101u);
+ IRC_COVER(102u);
  /* 17,2753 TS RINDEX */
  (void)ai_ts(s,(unsigned)01517);
  goto B36754c;
 B36754c:
- IRC_COVER(102u);
+ IRC_COVER(103u);
  /* 17,2754 CCS ACORBD */
  switch(ai_ccs(s,01630)){
   case 0:goto B36755c;
@@ -695,19 +707,19 @@ B36754c:
  }
  return EXEC_INVALID_ACTION;
 B36755c:
- IRC_COVER(103u);
- /* 17,2755 TCF BDROLL */
- goto B37046c;
-B36756c:
  IRC_COVER(104u);
- /* 17,2756 TCF BDROLL */
- goto B37046c;
-B36757c:
+ /* 17,2755 TCF BDROLL */
+ {W[5]=03046;return EXEC_OK;} /* part key 17,3046 */
+B36756c:
  IRC_COVER(105u);
+ /* 17,2756 TCF BDROLL */
+ {W[5]=03046;return EXEC_OK;} /* part key 17,3046 */
+B36757c:
+ IRC_COVER(106u);
  /* 17,2757 TCF +1 */
  goto B36760c;
 B36760c:
- IRC_COVER(106u);
+ IRC_COVER(107u);
  /* 17,2760 ACROLL CCS RACFAIL */
  switch(ai_ccs(s,01626)){
   case 0:goto B36761c;
@@ -717,41 +729,41 @@ B36760c:
  }
  return EXEC_INVALID_ACTION;
 B36761c:
- IRC_COVER(107u);
+ IRC_COVER(108u);
  /* 17,2761 TCF RAFAIL */
  goto B36765c;
 B36762c:
- IRC_COVER(108u);
+ IRC_COVER(109u);
  /* 17,2762 TCF RXLNS */
  goto B36775c;
 B36763c:
- IRC_COVER(109u);
+ IRC_COVER(110u);
  /* 17,2763 TCF RCFAIL */
  goto B36767c;
 B36764c:
- IRC_COVER(110u);
+ IRC_COVER(111u);
  /* 17,2764 TCF RXLNS */
  goto B36775c;
 B36765c:
- IRC_COVER(111u);
+ IRC_COVER(112u);
  /* 17,2765 RAFAIL CAF NINE */
  ai_caf(s,000011u); /* R2D1 */
  goto B36766c;
 B36766c:
- IRC_COVER(112u);
+ IRC_COVER(113u);
  /* 17,2766 TCF TABRCOM */
  goto B36777c;
 B36767c:
- IRC_COVER(113u);
+ IRC_COVER(114u);
  /* 17,2767 RCFAIL CAF TWELVE */
  ai_caf(s,000014u); /* OCT14 */
  goto B36770c;
 B36770c:
- IRC_COVER(114u);
+ IRC_COVER(115u);
  /* 17,2770 TCF TABRCOM */
  goto B36777c;
 B36775c:
- IRC_COVER(115u);
+ IRC_COVER(116u);
  /* 17,2775 RXLNS INDEX YNDX */
  ix=agc_to_int(ai_word(s,01515));
  /* 17,2776 (indexed) CA XLNNDX */
@@ -761,12 +773,12 @@ B36775c:
  else ai_ca(s,(unsigned)e);
  goto B36777c;
 B36777c:
- IRC_COVER(116u);
+ IRC_COVER(117u);
  /* 17,2777 TABRCOM AD RINDEX */
  ai_ad(s,01517);
  goto B37000;
 B37000:
- IRC_COVER(117u);
+ IRC_COVER(118u);
  /* 17,3000 INDEX A */
  ix=areg(s);
  /* 17,3001 (indexed) CA RTABLE */
@@ -776,57 +788,69 @@ B37000:
  else ai_ca(s,(unsigned)e);
  goto B37002c;
 B37002c:
- IRC_COVER(118u);
+ IRC_COVER(119u);
  /* 17,3002 MASK ACRJETS */
  ai_maskf(s,003760u); /* ACRJETS */
  goto B37003c;
 B37003c:
- IRC_COVER(119u);
+ IRC_COVER(120u);
  /* 17,3003 TS RWORD1 */
  (void)ai_ts(s,(unsigned)01451);
  goto B37004c;
 B37004c:
- IRC_COVER(120u);
+ IRC_COVER(121u);
  /* 17,3004 BDZCHECK CA ZNDX */
  ai_ca(s,01516);
  goto B37005c;
 B37005c:
- IRC_COVER(121u);
+ IRC_COVER(122u);
  /* 17,3005 EXTEND */
  goto X37006c;
 X37006c:
- IRC_COVER(122u);
+ IRC_COVER(123u);
  /* 17,3006 EXTENDED BZMF NOBDZ */
  if(ai_bzmf(s)){
-   goto B37040c;
+   {W[5]=03040;return EXEC_OK;} /* part key 17,3040 */
  }
  goto B37007c;
 B37007c:
- IRC_COVER(123u);
+ IRC_COVER(124u);
  /* 17,3007 CCS RBDFAIL */
  switch(ai_ccs(s,01627)){
   case 0:goto B37010c;
   case 1:goto B37011c;
   case 2:goto B37012c;
-  case 3:goto B37013c;
+  case 3:{W[5]=03013;return EXEC_OK;} /* part key 17,3013 */
  }
  return EXEC_INVALID_ACTION;
 B37010c:
- IRC_COVER(124u);
+ IRC_COVER(125u);
  /* 17,3010 CAF THREE */
  ai_caf(s,000003u); /* OCTAL3 */
  goto B37011c;
 B37011c:
- IRC_COVER(125u);
- /* 17,3011 TCF +2 */
- goto B37013c;
-B37012c:
  IRC_COVER(126u);
+ /* 17,3011 TCF +2 */
+ {W[5]=03013;return EXEC_OK;} /* part key 17,3013 */
+B37012c:
+ IRC_COVER(127u);
  /* 17,3012 CAF SIX */
  ai_caf(s,000006u); /* REVCNT */
- goto B37013c;
-B37013c:
- IRC_COVER(127u);
+ {W[5]=03013;return EXEC_OK;} /* part key 17,3013 */
+}
+/* Basic words, part 3 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_2(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 15883u:goto B37013;
+ case 15885u:goto B37015;
+ case 15904u:goto B37040;
+ case 15910u:goto B37046;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B37013:
+ IRC_COVER(128u);
  /* 17,3013 INDEX ZNDX */
  ix=agc_to_int(ai_word(s,01516));
  /* 17,3014 (indexed) AD XLN1NDX */
@@ -835,8 +859,11 @@ B37013c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_adf(s,k);}
  else ai_ad(s,(unsigned)e);
  goto B37015;
+B37013c: __attribute__((unused));
+ IRC_COVER(129u);
+ goto B37013;
 B37015:
- IRC_COVER(128u);
+ IRC_COVER(130u);
  /* 17,3015 INDEX A */
  ix=areg(s);
  /* 17,3016 (indexed) CA YZTABLE */
@@ -846,75 +873,75 @@ B37015:
  else ai_ca(s,(unsigned)e);
  goto B37017c;
 B37017c:
- IRC_COVER(129u);
+ IRC_COVER(131u);
  /* 17,3017 MASK BDZJETS */
  ai_maskf(s,003417u); /* BDZJETS */
  goto B37020c;
 B37020c:
- IRC_COVER(130u);
+ IRC_COVER(132u);
  /* 17,3020 AD RWORD1 */
  ai_ad(s,01451);
  goto B37021;
 B37021:
- IRC_COVER(131u);
+ IRC_COVER(133u);
  /* 17,3021 TS T5TEMP */
  if(ai_ts(s,(unsigned)01502))goto B37023c;
  goto B37022c;
 B37022c:
- IRC_COVER(132u);
+ IRC_COVER(134u);
  /* 17,3022 EXTEND */
  goto X37023c;
 B37023c:
- IRC_COVER(133u);
+ IRC_COVER(135u);
  /* 17,3023 MP BIT7 */
  ai_maskf(s,000100u); /* BIT7 */
  goto B37024c;
 X37023c:
- IRC_COVER(134u);
+ IRC_COVER(136u);
  /* 17,3023 EXTENDED MP BIT7 */
  ai_mpf(s,000100u); /* BIT7 */
  goto B37024c;
 B37024c:
- IRC_COVER(135u);
+ IRC_COVER(137u);
  /* 17,3024 AD =-4 */
  ai_adf(s,077773u); /* NEG4 */
  goto B37025;
 B37025:
- IRC_COVER(136u);
+ IRC_COVER(138u);
  /* 17,3025 TS NRJETS */
  if(ai_ts(s,(unsigned)01522))goto B37027c;
  goto B37026c;
 B37026c:
- IRC_COVER(137u);
+ IRC_COVER(139u);
  /* 17,3026 EXTEND */
  goto X37027c;
 B37027c:
- IRC_COVER(138u);
+ IRC_COVER(140u);
  /* 17,3027 BZF TAUCHECK */
  goto B37033c;
 X37027c:
- IRC_COVER(139u);
+ IRC_COVER(141u);
  /* 17,3027 EXTENDED BZF TAUCHECK */
  if(ai_bzf(s)){
    goto B37033c;
  }
  goto B37030c;
 B37030c:
- IRC_COVER(140u);
+ IRC_COVER(142u);
  /* 17,3030 ACRBDZ CA T5TEMP */
  ai_ca(s,01502);
  goto B37031c;
 B37031c:
- IRC_COVER(141u);
+ IRC_COVER(143u);
  /* 17,3031 TS RWORD1 */
  (void)ai_ts(s,(unsigned)01451);
  goto B37032c;
 B37032c:
- IRC_COVER(142u);
+ IRC_COVER(144u);
  /* 17,3032 TCF ROLLTIME */
- goto B37274c;
+ {W[5]=03274;return EXEC_OK;} /* part key 17,3274 */
 B37033c:
- IRC_COVER(143u);
+ IRC_COVER(145u);
  /* 17,3033 TAUCHECK CCS TAU */
  switch(ai_ccs(s,01561)){
   case 0:goto B37034c;
@@ -924,51 +951,54 @@ B37033c:
  }
  return EXEC_INVALID_ACTION;
 B37034c:
- IRC_COVER(144u);
+ IRC_COVER(146u);
  /* 17,3034 TCF NOBDZ */
  goto B37040c;
 B37035c:
- IRC_COVER(145u);
+ IRC_COVER(147u);
  /* 17,3035 TCF ACRBDZ */
  goto B37030c;
 B37036c:
- IRC_COVER(146u);
+ IRC_COVER(148u);
  /* 17,3036 TCF NOBDZ */
  goto B37040c;
 B37037c:
- IRC_COVER(147u);
+ IRC_COVER(149u);
  /* 17,3037 TCF ACRBDZ */
  goto B37030c;
-B37040c:
- IRC_COVER(148u);
+B37040:
+ IRC_COVER(150u);
  /* 17,3040 NOBDZ CA RWORD1 */
  ai_ca(s,01451);
  goto B37041c;
+B37040c:
+ IRC_COVER(151u);
+ goto B37040;
 B37041c:
- IRC_COVER(149u);
+ IRC_COVER(152u);
  /* 17,3041 EXTEND */
  goto X37042c;
 X37042c:
- IRC_COVER(150u);
+ IRC_COVER(153u);
  /* 17,3042 EXTENDED MP BIT7 */
  ai_mpf(s,000100u); /* BIT7 */
  goto B37043c;
 B37043c:
- IRC_COVER(151u);
+ IRC_COVER(154u);
  /* 17,3043 AD =-2 */
  ai_adf(s,077775u); /* NEG2 */
  goto B37044;
 B37044:
- IRC_COVER(152u);
+ IRC_COVER(155u);
  /* 17,3044 TS NRJETS */
  if(ai_ts(s,(unsigned)01522))goto B37046c;
  goto B37045c;
 B37045c:
- IRC_COVER(153u);
+ IRC_COVER(156u);
  /* 17,3045 TCF ROLLTIME */
- goto B37274c;
-B37046c:
- IRC_COVER(154u);
+ {W[5]=03274;return EXEC_OK;} /* part key 17,3274 */
+B37046:
+ IRC_COVER(157u);
  /* 17,3046 BDROLL CCS RBDFAIL */
  switch(ai_ccs(s,01627)){
   case 0:goto B37047c;
@@ -977,42 +1007,45 @@ B37046c:
   case 3:goto B37052c;
  }
  return EXEC_INVALID_ACTION;
+B37046c:
+ IRC_COVER(158u);
+ goto B37046;
 B37047c:
- IRC_COVER(155u);
+ IRC_COVER(159u);
  /* 17,3047 TCF RBFAIL */
  goto B37053c;
 B37050c:
- IRC_COVER(156u);
+ IRC_COVER(160u);
  /* 17,3050 TCF RZXLNS */
  goto B37057c;
 B37051c:
- IRC_COVER(157u);
+ IRC_COVER(161u);
  /* 17,3051 TCF RDFAIL */
  goto B37055c;
 B37052c:
- IRC_COVER(158u);
+ IRC_COVER(162u);
  /* 17,3052 TCF RZXLNS */
  goto B37057c;
 B37053c:
- IRC_COVER(159u);
+ IRC_COVER(163u);
  /* 17,3053 RBFAIL CAF NINE */
  ai_caf(s,000011u); /* R2D1 */
  goto B37054c;
 B37054c:
- IRC_COVER(160u);
+ IRC_COVER(164u);
  /* 17,3054 TCF TABRZCMD */
  goto B37061c;
 B37055c:
- IRC_COVER(161u);
+ IRC_COVER(165u);
  /* 17,3055 RDFAIL CAF TWELVE */
  ai_caf(s,000014u); /* OCT14 */
  goto B37056c;
 B37056c:
- IRC_COVER(162u);
+ IRC_COVER(166u);
  /* 17,3056 TCF TABRZCMD */
  goto B37061c;
 B37057c:
- IRC_COVER(163u);
+ IRC_COVER(167u);
  /* 17,3057 RZXLNS INDEX ZNDX */
  ix=agc_to_int(ai_word(s,01516));
  /* 17,3060 (indexed) CA XLNNDX */
@@ -1022,12 +1055,12 @@ B37057c:
  else ai_ca(s,(unsigned)e);
  goto B37061c;
 B37061c:
- IRC_COVER(164u);
+ IRC_COVER(168u);
  /* 17,3061 TABRZCMD AD RINDEX */
  ai_ad(s,01517);
  goto B37062;
 B37062:
- IRC_COVER(165u);
+ IRC_COVER(169u);
  /* 17,3062 INDEX A */
  ix=areg(s);
  /* 17,3063 (indexed) CA RTABLE */
@@ -1037,33 +1070,33 @@ B37062:
  else ai_ca(s,(unsigned)e);
  goto B37064c;
 B37064c:
- IRC_COVER(166u);
+ IRC_COVER(170u);
  /* 17,3064 MASK BDRJETS */
  ai_maskf(s,034017u); /* BDRJETS */
  goto B37065c;
 B37065c:
- IRC_COVER(167u);
+ IRC_COVER(171u);
  /* 17,3065 TS RWORD1 */
  (void)ai_ts(s,(unsigned)01451);
  goto B37066c;
 B37066c:
- IRC_COVER(168u);
+ IRC_COVER(172u);
  /* 17,3066 ACYCHECK CA YNDX */
  ai_ca(s,01515);
  goto B37067c;
 B37067c:
- IRC_COVER(169u);
+ IRC_COVER(173u);
  /* 17,3067 EXTEND */
  goto X37070c;
 X37070c:
- IRC_COVER(170u);
+ IRC_COVER(174u);
  /* 17,3070 EXTENDED BZF NOACY */
  if(ai_bzf(s)){
-   goto B37122c;
+   {W[5]=03122;return EXEC_OK;} /* part key 17,3122 */
  }
  goto B37071c;
 B37071c:
- IRC_COVER(171u);
+ IRC_COVER(175u);
  /* 17,3071 CCS RACFAIL */
  switch(ai_ccs(s,01626)){
   case 0:goto B37072c;
@@ -1073,21 +1106,21 @@ B37071c:
  }
  return EXEC_INVALID_ACTION;
 B37072c:
- IRC_COVER(172u);
+ IRC_COVER(176u);
  /* 17,3072 CAF THREE */
  ai_caf(s,000003u); /* OCTAL3 */
  goto B37073c;
 B37073c:
- IRC_COVER(173u);
+ IRC_COVER(177u);
  /* 17,3073 TCF +2 */
  goto B37075c;
 B37074c:
- IRC_COVER(174u);
+ IRC_COVER(178u);
  /* 17,3074 CAF SIX */
  ai_caf(s,000006u); /* REVCNT */
  goto B37075c;
 B37075c:
- IRC_COVER(175u);
+ IRC_COVER(179u);
  /* 17,3075 INDEX YNDX */
  ix=agc_to_int(ai_word(s,01515));
  /* 17,3076 (indexed) AD XLN1NDX */
@@ -1097,7 +1130,7 @@ B37075c:
  else ai_ad(s,(unsigned)e);
  goto B37077;
 B37077:
- IRC_COVER(176u);
+ IRC_COVER(180u);
  /* 17,3077 INDEX A */
  ix=areg(s);
  /* 17,3100 (indexed) CA YZTABLE */
@@ -1107,75 +1140,103 @@ B37077:
  else ai_ca(s,(unsigned)e);
  goto B37101c;
 B37101c:
- IRC_COVER(177u);
+ IRC_COVER(181u);
  /* 17,3101 MASK ACYJETS */
  ai_maskf(s,034360u); /* ACYJETS */
- goto B37102c;
-B37102c:
- IRC_COVER(178u);
+ {W[5]=03102;return EXEC_OK;} /* part key 17,3102 */
+}
+/* Basic words, part 4 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_3(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 15938u:goto B37102;
+ case 15942u:goto B37106;
+ case 15946u:goto B37112;
+ case 15948u:goto B37114;
+ case 15949u:goto B37115;
+ case 15954u:goto B37122;
+ case 15988u:goto B37164;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B37102:
+ IRC_COVER(182u);
  /* 17,3102 AD RWORD1 */
  ai_ad(s,01451);
  goto B37103;
+B37102c: __attribute__((unused));
+ IRC_COVER(183u);
+ goto B37102;
 B37103:
- IRC_COVER(179u);
+ IRC_COVER(184u);
  /* 17,3103 TS T5TEMP */
  if(ai_ts(s,(unsigned)01502))goto B37105c;
  goto B37104c;
 B37104c:
- IRC_COVER(180u);
+ IRC_COVER(185u);
  /* 17,3104 EXTEND */
  goto X37105c;
 B37105c:
- IRC_COVER(181u);
+ IRC_COVER(186u);
  /* 17,3105 MP BIT4 */
  ai_maskf(s,000010u); /* BIT4 */
  goto B37106c;
 X37105c:
- IRC_COVER(182u);
+ IRC_COVER(187u);
  /* 17,3105 EXTENDED MP BIT4 */
  ai_mpf(s,000010u); /* BIT4 */
  goto B37106c;
-B37106c:
- IRC_COVER(183u);
+B37106:
+ IRC_COVER(188u);
  /* 17,3106 AD =-4 */
  ai_adf(s,077773u); /* NEG4 */
  goto B37107;
+B37106c:
+ IRC_COVER(189u);
+ goto B37106;
 B37107:
- IRC_COVER(184u);
+ IRC_COVER(190u);
  /* 17,3107 TS NRJETS */
  if(ai_ts(s,(unsigned)01522))goto B37111c;
  goto B37110c;
 B37110c:
- IRC_COVER(185u);
+ IRC_COVER(191u);
  /* 17,3110 EXTEND */
  goto X37111c;
 B37111c:
- IRC_COVER(186u);
+ IRC_COVER(192u);
  /* 17,3111 BZF TAUCHCK */
  goto B37115c;
 X37111c:
- IRC_COVER(187u);
+ IRC_COVER(193u);
  /* 17,3111 EXTENDED BZF TAUCHCK */
  if(ai_bzf(s)){
    goto B37115c;
  }
  goto B37112c;
-B37112c:
- IRC_COVER(188u);
+B37112:
+ IRC_COVER(194u);
  /* 17,3112 BDRACZ CA T5TEMP */
  ai_ca(s,01502);
  goto B37113c;
+B37112c:
+ IRC_COVER(195u);
+ goto B37112;
 B37113c:
- IRC_COVER(189u);
+ IRC_COVER(196u);
  /* 17,3113 TS RWORD1 */
  (void)ai_ts(s,(unsigned)01451);
  goto B37114c;
-B37114c:
- IRC_COVER(190u);
+B37114:
+ IRC_COVER(197u);
  /* 17,3114 TCF ROLLTIME */
- goto B37274c;
-B37115c:
- IRC_COVER(191u);
+ {W[5]=03274;return EXEC_OK;} /* part key 17,3274 */
+B37114c:
+ IRC_COVER(198u);
+ /* 17,3114 TCF ROLLTIME */
+ {W[5]=03274;return EXEC_OK;} /* part key 17,3274 */
+B37115:
+ IRC_COVER(199u);
  /* 17,3115 TAUCHCK CCS TAU */
  switch(ai_ccs(s,01561)){
   case 0:goto B37116c;
@@ -1184,56 +1245,62 @@ B37115c:
   case 3:goto B37121c;
  }
  return EXEC_INVALID_ACTION;
+B37115c:
+ IRC_COVER(200u);
+ goto B37115;
 B37116c:
- IRC_COVER(192u);
+ IRC_COVER(201u);
  /* 17,3116 TCF NOACY */
  goto B37122c;
 B37117c:
- IRC_COVER(193u);
+ IRC_COVER(202u);
  /* 17,3117 TCF BDRACZ */
  goto B37112c;
 B37120c:
- IRC_COVER(194u);
+ IRC_COVER(203u);
  /* 17,3120 TCF NOACY */
  goto B37122c;
 B37121c:
- IRC_COVER(195u);
+ IRC_COVER(204u);
  /* 17,3121 TCF BDRACZ */
  goto B37112c;
-B37122c:
- IRC_COVER(196u);
+B37122:
+ IRC_COVER(205u);
  /* 17,3122 NOACY CA RWORD1 */
  ai_ca(s,01451);
  goto B37123c;
+B37122c:
+ IRC_COVER(206u);
+ goto B37122;
 B37123c:
- IRC_COVER(197u);
+ IRC_COVER(207u);
  /* 17,3123 EXTEND */
  goto X37124c;
 X37124c:
- IRC_COVER(198u);
+ IRC_COVER(208u);
  /* 17,3124 EXTENDED MP BIT4 */
  ai_mpf(s,000010u); /* BIT4 */
  goto B37125c;
 B37125c:
- IRC_COVER(199u);
+ IRC_COVER(209u);
  /* 17,3125 AD =-2 */
  ai_adf(s,077775u); /* NEG2 */
  goto B37126;
 B37126:
- IRC_COVER(200u);
+ IRC_COVER(210u);
  /* 17,3126 TS NRJETS */
  if(ai_ts(s,(unsigned)01522))goto B37130c;
  goto B37127c;
 B37127c:
- IRC_COVER(201u);
+ IRC_COVER(211u);
  /* 17,3127 TCF ROLLTIME */
- goto B37274c;
+ {W[5]=03274;return EXEC_OK;} /* part key 17,3274 */
 B37130c:
- IRC_COVER(202u);
+ IRC_COVER(212u);
  /* 17,3130 RTABLE OCT 11000: data, never executed */
  return EXEC_INVALID_ACTION;
 B37164:
- IRC_COVER(203u);
+ IRC_COVER(213u);
  /* 17,3164 PITCHTIM CCS TAU1 */
  switch(ai_ccs(s,01562)){
   case 0:goto B37165c;
@@ -1242,51 +1309,51 @@ B37164:
   case 3:goto B37170c;
  }
  return EXEC_INVALID_ACTION;
-B37164c:
- IRC_COVER(204u);
+B37164c: __attribute__((unused));
+ IRC_COVER(214u);
  goto B37164;
 B37165c:
- IRC_COVER(205u);
+ IRC_COVER(215u);
  /* 17,3165 TCF PTAUPOS */
  goto B37174c;
 B37166c:
- IRC_COVER(206u);
+ IRC_COVER(216u);
  /* 17,3166 TCF +2 */
  goto B37170c;
 B37167c:
- IRC_COVER(207u);
+ IRC_COVER(217u);
  /* 17,3167 TCF PTAUNEG */
  goto B37172c;
 B37170c:
- IRC_COVER(208u);
+ IRC_COVER(218u);
  /* 17,3170 TS DFT1 */
  (void)ai_ts(s,(unsigned)01550);
  goto B37171c;
 B37171c:
- IRC_COVER(209u);
+ IRC_COVER(219u);
  /* 17,3171 TCF PBYPASS */
- goto B37372c;
+ {W[5]=03372;return EXEC_OK;} /* part key 17,3372 */
 B37172c:
- IRC_COVER(210u);
+ IRC_COVER(220u);
  /* 17,3172 PTAUNEG CS NPJETS */
  ai_cs(s,01523);
  goto B37173c;
 B37173c:
- IRC_COVER(211u);
+ IRC_COVER(221u);
  /* 17,3173 TS NPJETS */
  (void)ai_ts(s,(unsigned)01523);
  goto B37174c;
 B37174c:
- IRC_COVER(212u);
+ IRC_COVER(222u);
  /* 17,3174 PTAUPOS CA TAU1 */
  ai_ca(s,01562);
  goto B37175c;
 B37175c:
- IRC_COVER(213u);
+ IRC_COVER(223u);
  /* 17,3175 EXTEND */
  goto X37176c;
 X37176c:
- IRC_COVER(214u);
+ IRC_COVER(224u);
  /* 17,3176 EXTENDED INDEX NPJETS */
  ix=agc_to_int(ai_word(s,01523));
  /* 17,3177 EXTENDED (indexed) MP NJET */
@@ -1296,28 +1363,28 @@ X37176c:
  else ai_mp(s,(unsigned)e);
  goto B37200c;
 B37200c:
- IRC_COVER(215u);
+ IRC_COVER(225u);
  /* 17,3200 TS BLAST1 */
  (void)ai_ts(s,(unsigned)01461);
  goto B37201c;
 B37201c:
- IRC_COVER(216u);
+ IRC_COVER(226u);
  /* 17,3201 AD =-.1SEC */
  ai_adf(s,077537u); /* =-.1SEC */
  goto B37202;
 B37202:
- IRC_COVER(217u);
+ IRC_COVER(227u);
  /* 17,3202 EXTEND */
  goto X37203;
 X37203:
- IRC_COVER(218u);
+ IRC_COVER(228u);
  /* 17,3203 EXTENDED BZMF AD14MSP */
  if(ai_bzmf(s)){
    goto B37214;
  }
  goto B37204;
 B37204:
- IRC_COVER(219u);
+ IRC_COVER(229u);
  /* 17,3204 INDEX NPJETS */
  ix=agc_to_int(ai_word(s,01523));
  /* 17,3205 (indexed) CA DFTMAX */
@@ -1327,98 +1394,115 @@ B37204:
  else ai_ca(s,(unsigned)e);
  goto B37206c;
 B37206c:
- IRC_COVER(220u);
+ IRC_COVER(230u);
  /* 17,3206 TS DFT1 */
  (void)ai_ts(s,(unsigned)01550);
  goto B37207c;
 B37207c:
- IRC_COVER(221u);
+ IRC_COVER(231u);
  /* 17,3207 COM */
  ai_cs(s,00);
  goto B37210;
 B37210:
- IRC_COVER(222u);
+ IRC_COVER(232u);
  /* 17,3210 ADS TAU1 */
  ai_ads(s,01562);
  goto B37211;
 B37211:
- IRC_COVER(223u);
+ IRC_COVER(233u);
  /* 17,3211 CAF =+.1SEC */
  ai_caf(s,000240u); /* =+.1SEC */
  goto B37212c;
 B37212c:
- IRC_COVER(224u);
+ IRC_COVER(234u);
  /* 17,3212 TS BLAST1 */
  (void)ai_ts(s,(unsigned)01461);
  goto B37213c;
 B37213c:
- IRC_COVER(225u);
+ IRC_COVER(235u);
  /* 17,3213 TCF ASMBLWP */
- goto B37357c;
+ {W[5]=03357;return EXEC_OK;} /* part key 17,3357 */
 B37214:
- IRC_COVER(226u);
+ IRC_COVER(236u);
  /* 17,3214 AD14MSP CS BLAST1 */
  ai_cs(s,01461);
  goto B37215c;
 B37215c:
- IRC_COVER(227u);
+ IRC_COVER(237u);
  /* 17,3215 AD =14MS */
  ai_adf(s,000027u); /* =14MS */
  goto B37216;
 B37216:
- IRC_COVER(228u);
+ IRC_COVER(238u);
  /* 17,3216 EXTEND */
  goto X37217;
 X37217:
- IRC_COVER(229u);
+ IRC_COVER(239u);
  /* 17,3217 EXTENDED BZMF PBLASTOK */
  if(ai_bzmf(s)){
    goto B37222;
  }
  goto B37220;
 B37220:
- IRC_COVER(230u);
+ IRC_COVER(240u);
  /* 17,3220 CAF =14MS */
  ai_caf(s,000027u); /* =14MS */
  goto B37221c;
 B37221c:
- IRC_COVER(231u);
+ IRC_COVER(241u);
  /* 17,3221 TS BLAST1 */
  (void)ai_ts(s,(unsigned)01461);
  goto B37222c;
 B37222:
- IRC_COVER(232u);
+ IRC_COVER(242u);
  /* 17,3222 PBLASTOK CA BLAST1 */
  ai_ca(s,01461);
  goto B37223c;
 B37222c:
- IRC_COVER(233u);
+ IRC_COVER(243u);
  goto B37222;
 B37223c:
- IRC_COVER(234u);
+ IRC_COVER(244u);
  /* 17,3223 EXTEND */
  goto X37224c;
 X37224c:
- IRC_COVER(235u);
+ IRC_COVER(245u);
  /* 17,3224 EXTENDED MP NPJETS */
  ai_mp(s,01523);
  goto B37225c;
 B37225c:
- IRC_COVER(236u);
+ IRC_COVER(246u);
  /* 17,3225 LXCH DFT1 */
  ai_lxch(s,01550);
  goto B37226c;
 B37226c:
- IRC_COVER(237u);
+ IRC_COVER(247u);
  /* 17,3226 TS TAU1 */
  (void)ai_ts(s,(unsigned)01562);
  goto B37227c;
 B37227c:
- IRC_COVER(238u);
+ IRC_COVER(248u);
  /* 17,3227 TCF ASMBLWP */
- goto B37357c;
-B37230c:
- IRC_COVER(239u);
+ {W[5]=03357;return EXEC_OK;} /* part key 17,3357 */
+}
+/* Basic words, part 5 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_4(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 16024u:goto B37230;
+ case 16025u:goto B37231;
+ case 16026u:goto B37232;
+ case 16027u:goto B37233;
+ case 16028u:goto B37234;
+ case 16032u:goto B37240;
+ case 16040u:goto B37250;
+ case 16048u:goto B37260;
+ case 16060u:goto B37274;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B37230:
+ IRC_COVER(249u);
  /* 17,3230 YAWTIME CCS TAU2 */
  switch(ai_ccs(s,01563)){
   case 0:goto B37231c;
@@ -1427,48 +1511,74 @@ B37230c:
   case 3:goto B37234c;
  }
  return EXEC_INVALID_ACTION;
+B37230c: __attribute__((unused));
+ IRC_COVER(250u);
+ goto B37230;
+B37231:
+ IRC_COVER(251u);
+ /* 17,3231 TCF YTAUPOS */
+ goto B37240;
 B37231c:
- IRC_COVER(240u);
+ IRC_COVER(252u);
  /* 17,3231 TCF YTAUPOS */
  goto B37240c;
+B37232:
+ IRC_COVER(253u);
+ /* 17,3232 TCF +2 */
+ goto B37234;
 B37232c:
- IRC_COVER(241u);
+ IRC_COVER(254u);
  /* 17,3232 TCF +2 */
  goto B37234c;
+B37233:
+ IRC_COVER(255u);
+ /* 17,3233 TCF YTAUNEG */
+ goto B37236;
 B37233c:
- IRC_COVER(242u);
+ IRC_COVER(256u);
  /* 17,3233 TCF YTAUNEG */
  goto B37236c;
+B37234:
+ IRC_COVER(257u);
+ /* 17,3234 TS DFT2 */
+ if(ai_ts(s,(unsigned)01551))goto B37236c;
+ goto B37235c;
 B37234c:
- IRC_COVER(243u);
+ IRC_COVER(258u);
  /* 17,3234 TS DFT2 */
  (void)ai_ts(s,(unsigned)01551);
  goto B37235c;
 B37235c:
- IRC_COVER(244u);
+ IRC_COVER(259u);
  /* 17,3235 TCF YBYPASS */
- goto B37536c;
-B37236c:
- IRC_COVER(245u);
+ {W[5]=03536;return EXEC_OK;} /* part key 17,3536 */
+B37236:
+ IRC_COVER(260u);
  /* 17,3236 YTAUNEG CS NYJETS */
  ai_cs(s,01524);
  goto B37237c;
+B37236c:
+ IRC_COVER(261u);
+ goto B37236;
 B37237c:
- IRC_COVER(246u);
+ IRC_COVER(262u);
  /* 17,3237 TS NYJETS */
  (void)ai_ts(s,(unsigned)01524);
  goto B37240c;
-B37240c:
- IRC_COVER(247u);
+B37240:
+ IRC_COVER(263u);
  /* 17,3240 YTAUPOS CA TAU2 */
  ai_ca(s,01563);
  goto B37241c;
+B37240c:
+ IRC_COVER(264u);
+ goto B37240;
 B37241c:
- IRC_COVER(248u);
+ IRC_COVER(265u);
  /* 17,3241 EXTEND */
  goto X37242c;
 X37242c:
- IRC_COVER(249u);
+ IRC_COVER(266u);
  /* 17,3242 EXTENDED INDEX NYJETS */
  ix=agc_to_int(ai_word(s,01524));
  /* 17,3243 EXTENDED (indexed) MP NJET */
@@ -1478,28 +1588,28 @@ X37242c:
  else ai_mp(s,(unsigned)e);
  goto B37244c;
 B37244c:
- IRC_COVER(250u);
+ IRC_COVER(267u);
  /* 17,3244 TS BLAST2 */
  (void)ai_ts(s,(unsigned)01463);
  goto B37245c;
 B37245c:
- IRC_COVER(251u);
+ IRC_COVER(268u);
  /* 17,3245 AD =-.1SEC */
  ai_adf(s,077537u); /* =-.1SEC */
  goto B37246;
 B37246:
- IRC_COVER(252u);
+ IRC_COVER(269u);
  /* 17,3246 EXTEND */
  goto X37247;
 X37247:
- IRC_COVER(253u);
+ IRC_COVER(270u);
  /* 17,3247 EXTENDED BZMF AD14MSY */
  if(ai_bzmf(s)){
    goto B37260;
  }
  goto B37250;
 B37250:
- IRC_COVER(254u);
+ IRC_COVER(271u);
  /* 17,3250 INDEX NYJETS */
  ix=agc_to_int(ai_word(s,01524));
  /* 17,3251 (indexed) CA DFTMAX */
@@ -1509,98 +1619,98 @@ B37250:
  else ai_ca(s,(unsigned)e);
  goto B37252c;
 B37252c:
- IRC_COVER(255u);
+ IRC_COVER(272u);
  /* 17,3252 TS DFT2 */
  (void)ai_ts(s,(unsigned)01551);
  goto B37253c;
 B37253c:
- IRC_COVER(256u);
+ IRC_COVER(273u);
  /* 17,3253 COM */
  ai_cs(s,00);
  goto B37254;
 B37254:
- IRC_COVER(257u);
+ IRC_COVER(274u);
  /* 17,3254 ADS TAU2 */
  ai_ads(s,01563);
  goto B37255;
 B37255:
- IRC_COVER(258u);
+ IRC_COVER(275u);
  /* 17,3255 CAF =+.1SEC */
  ai_caf(s,000240u); /* =+.1SEC */
  goto B37256c;
 B37256c:
- IRC_COVER(259u);
+ IRC_COVER(276u);
  /* 17,3256 TS BLAST2 */
  (void)ai_ts(s,(unsigned)01463);
  goto B37257c;
 B37257c:
- IRC_COVER(260u);
+ IRC_COVER(277u);
  /* 17,3257 TCF ASMBLWY */
- goto B37523c;
+ {W[5]=03523;return EXEC_OK;} /* part key 17,3523 */
 B37260:
- IRC_COVER(261u);
+ IRC_COVER(278u);
  /* 17,3260 AD14MSY CS BLAST2 */
  ai_cs(s,01463);
  goto B37261c;
 B37261c:
- IRC_COVER(262u);
+ IRC_COVER(279u);
  /* 17,3261 AD =14MS */
  ai_adf(s,000027u); /* =14MS */
  goto B37262;
 B37262:
- IRC_COVER(263u);
+ IRC_COVER(280u);
  /* 17,3262 EXTEND */
  goto X37263;
 X37263:
- IRC_COVER(264u);
+ IRC_COVER(281u);
  /* 17,3263 EXTENDED BZMF YBLASTOK */
  if(ai_bzmf(s)){
    goto B37266;
  }
  goto B37264;
 B37264:
- IRC_COVER(265u);
+ IRC_COVER(282u);
  /* 17,3264 CAF =14MS */
  ai_caf(s,000027u); /* =14MS */
  goto B37265c;
 B37265c:
- IRC_COVER(266u);
+ IRC_COVER(283u);
  /* 17,3265 TS BLAST2 */
  (void)ai_ts(s,(unsigned)01463);
  goto B37266c;
 B37266:
- IRC_COVER(267u);
+ IRC_COVER(284u);
  /* 17,3266 YBLASTOK CA BLAST2 */
  ai_ca(s,01463);
  goto B37267c;
 B37266c:
- IRC_COVER(268u);
+ IRC_COVER(285u);
  goto B37266;
 B37267c:
- IRC_COVER(269u);
+ IRC_COVER(286u);
  /* 17,3267 EXTEND */
  goto X37270c;
 X37270c:
- IRC_COVER(270u);
+ IRC_COVER(287u);
  /* 17,3270 EXTENDED MP NYJETS */
  ai_mp(s,01524);
  goto B37271c;
 B37271c:
- IRC_COVER(271u);
+ IRC_COVER(288u);
  /* 17,3271 LXCH DFT2 */
  ai_lxch(s,01551);
  goto B37272c;
 B37272c:
- IRC_COVER(272u);
+ IRC_COVER(289u);
  /* 17,3272 TS TAU2 */
  (void)ai_ts(s,(unsigned)01563);
  goto B37273c;
 B37273c:
- IRC_COVER(273u);
+ IRC_COVER(290u);
  /* 17,3273 TCF ASMBLWY */
- goto B37523c;
-B37274c:
- IRC_COVER(274u);
+ {W[5]=03523;return EXEC_OK;} /* part key 17,3523 */
+B37274:
+ IRC_COVER(291u);
  /* 17,3274 ROLLTIME CCS TAU */
  switch(ai_ccs(s,01561)){
   case 0:goto B37275c;
@@ -1609,20 +1719,23 @@ B37274c:
   case 3:goto B37300c;
  }
  return EXEC_INVALID_ACTION;
+B37274c: __attribute__((unused));
+ IRC_COVER(292u);
+ goto B37274;
 B37275c:
- IRC_COVER(275u);
+ IRC_COVER(293u);
  /* 17,3275 TCF RBLAST */
  goto B37314c;
 B37276c:
- IRC_COVER(276u);
+ IRC_COVER(294u);
  /* 17,3276 TCF +2 */
  goto B37300c;
 B37277c:
- IRC_COVER(277u);
+ IRC_COVER(295u);
  /* 17,3277 TCF RBLAST */
  goto B37314c;
 B37300c:
- IRC_COVER(278u);
+ IRC_COVER(296u);
  /* 17,3300 INDEX NRJETS */
  ix=agc_to_int(ai_word(s,01522));
  /* 17,3301 (indexed) CA DFTMAX */
@@ -1632,25 +1745,25 @@ B37300c:
  else ai_ca(s,(unsigned)e);
  goto B37302c;
 B37302c:
- IRC_COVER(279u);
+ IRC_COVER(297u);
  /* 17,3302 TS DFT */
  (void)ai_ts(s,(unsigned)01547);
  goto B37303c;
 B37303c:
- IRC_COVER(280u);
+ IRC_COVER(298u);
  /* 17,3303 TCF RBYPASS */
- goto B37516c;
+ {W[5]=03516;return EXEC_OK;} /* part key 17,3516 */
 B37314c:
- IRC_COVER(281u);
+ IRC_COVER(299u);
  /* 17,3314 RBLAST CA TAU */
  ai_ca(s,01561);
  goto B37315c;
 B37315c:
- IRC_COVER(282u);
+ IRC_COVER(300u);
  /* 17,3315 EXTEND */
  goto X37316c;
 X37316c:
- IRC_COVER(283u);
+ IRC_COVER(301u);
  /* 17,3316 EXTENDED INDEX NRJETS */
  ix=agc_to_int(ai_word(s,01522));
  /* 17,3317 EXTENDED (indexed) MP NJET */
@@ -1660,28 +1773,28 @@ X37316c:
  else ai_mp(s,(unsigned)e);
  goto B37320c;
 B37320c:
- IRC_COVER(284u);
+ IRC_COVER(302u);
  /* 17,3320 TS BLAST */
  (void)ai_ts(s,(unsigned)01457);
  goto B37321c;
 B37321c:
- IRC_COVER(285u);
+ IRC_COVER(303u);
  /* 17,3321 AD =-.1SEC */
  ai_adf(s,077537u); /* =-.1SEC */
  goto B37322;
 B37322:
- IRC_COVER(286u);
+ IRC_COVER(304u);
  /* 17,3322 EXTEND */
  goto X37323;
 X37323:
- IRC_COVER(287u);
+ IRC_COVER(305u);
  /* 17,3323 EXTENDED BZMF AD14MSR */
  if(ai_bzmf(s)){
-   goto B37334;
+   {W[5]=03334;return EXEC_OK;} /* part key 17,3334 */
  }
  goto B37324;
 B37324:
- IRC_COVER(288u);
+ IRC_COVER(306u);
  /* 17,3324 INDEX NRJETS */
  ix=agc_to_int(ai_word(s,01522));
  /* 17,3325 (indexed) CA DFTMAX */
@@ -1691,98 +1804,118 @@ B37324:
  else ai_ca(s,(unsigned)e);
  goto B37326c;
 B37326c:
- IRC_COVER(289u);
+ IRC_COVER(307u);
  /* 17,3326 TS DFT */
  (void)ai_ts(s,(unsigned)01547);
  goto B37327c;
 B37327c:
- IRC_COVER(290u);
+ IRC_COVER(308u);
  /* 17,3327 COM */
  ai_cs(s,00);
  goto B37330;
 B37330:
- IRC_COVER(291u);
+ IRC_COVER(309u);
  /* 17,3330 ADS TAU */
  ai_ads(s,01561);
- goto B37331;
+ {W[5]=03331;return EXEC_OK;} /* part key 17,3331 */
+}
+/* Basic words, part 6 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_5(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 16089u:goto B37331;
+ case 16092u:goto B37334;
+ case 16098u:goto B37342;
+ case 16111u:goto B37357;
+ case 16118u:goto B37366;
+ case 16119u:goto B37367;
+ case 16122u:goto B37372;
+ case 16127u:goto B37377;
+ case 16130u:goto B37402;
+ case 16131u:goto B37403;
+ case 16133u:goto B37405;
+ case 16134u:goto B37406;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
 B37331:
- IRC_COVER(292u);
+ IRC_COVER(310u);
  /* 17,3331 CAF =+.1SEC */
  ai_caf(s,000240u); /* =+.1SEC */
  goto B37332c;
 B37332c:
- IRC_COVER(293u);
+ IRC_COVER(311u);
  /* 17,3332 TS BLAST */
  (void)ai_ts(s,(unsigned)01457);
  goto B37333c;
 B37333c:
- IRC_COVER(294u);
+ IRC_COVER(312u);
  /* 17,3333 TCF ASMBLWR */
  goto B37377c;
 B37334:
- IRC_COVER(295u);
+ IRC_COVER(313u);
  /* 17,3334 AD14MSR CS BLAST */
  ai_cs(s,01457);
  goto B37335c;
 B37335c:
- IRC_COVER(296u);
+ IRC_COVER(314u);
  /* 17,3335 AD =14MS */
  ai_adf(s,000027u); /* =14MS */
  goto B37336;
 B37336:
- IRC_COVER(297u);
+ IRC_COVER(315u);
  /* 17,3336 EXTEND */
  goto X37337;
 X37337:
- IRC_COVER(298u);
+ IRC_COVER(316u);
  /* 17,3337 EXTENDED BZMF RBLASTOK */
  if(ai_bzmf(s)){
    goto B37342;
  }
  goto B37340;
 B37340:
- IRC_COVER(299u);
+ IRC_COVER(317u);
  /* 17,3340 CAF =14MS */
  ai_caf(s,000027u); /* =14MS */
  goto B37341c;
 B37341c:
- IRC_COVER(300u);
+ IRC_COVER(318u);
  /* 17,3341 TS BLAST */
  (void)ai_ts(s,(unsigned)01457);
  goto B37342c;
 B37342:
- IRC_COVER(301u);
+ IRC_COVER(319u);
  /* 17,3342 RBLASTOK CA BLAST */
  ai_ca(s,01457);
  goto B37343c;
 B37342c:
- IRC_COVER(302u);
+ IRC_COVER(320u);
  goto B37342;
 B37343c:
- IRC_COVER(303u);
+ IRC_COVER(321u);
  /* 17,3343 EXTEND */
  goto X37344c;
 X37344c:
- IRC_COVER(304u);
+ IRC_COVER(322u);
  /* 17,3344 EXTENDED MP NRJETS */
  ai_mp(s,01522);
  goto B37345c;
 B37345c:
- IRC_COVER(305u);
+ IRC_COVER(323u);
  /* 17,3345 LXCH DFT */
  ai_lxch(s,01547);
  goto B37346c;
 B37346c:
- IRC_COVER(306u);
+ IRC_COVER(324u);
  /* 17,3346 TS TAU */
  (void)ai_ts(s,(unsigned)01561);
  goto B37347c;
 B37347c:
- IRC_COVER(307u);
+ IRC_COVER(325u);
  /* 17,3347 TCF ASMBLWR */
  goto B37377c;
-B37357c:
- IRC_COVER(308u);
+B37357:
+ IRC_COVER(326u);
  /* 17,3357 ASMBLWP CCS RACFAIL */
  switch(ai_ccs(s,01626)){
   case 0:goto B37360c;
@@ -1791,20 +1924,23 @@ B37357c:
   case 3:goto B37363c;
  }
  return EXEC_INVALID_ACTION;
+B37357c: __attribute__((unused));
+ IRC_COVER(327u);
+ goto B37357;
 B37360c:
- IRC_COVER(309u);
+ IRC_COVER(328u);
  /* 17,3360 TCF FPX2 */
  goto B37366c;
 B37361c:
- IRC_COVER(310u);
+ IRC_COVER(329u);
  /* 17,3361 TCF +2 */
  goto B37363c;
 B37362c:
- IRC_COVER(311u);
+ IRC_COVER(330u);
  /* 17,3362 TCF FPX2 */
  goto B37366c;
 B37363c:
- IRC_COVER(312u);
+ IRC_COVER(331u);
  /* 17,3363 INDEX XNDX1 */
  ix=agc_to_int(ai_word(s,01513));
  /* 17,3364 (indexed) CA XLNNDX */
@@ -1814,7 +1950,7 @@ B37363c:
  else ai_ca(s,(unsigned)e);
  goto B37365c;
 B37365c:
- IRC_COVER(313u);
+ IRC_COVER(332u);
  /* 17,3365 INDEX A */
  ix=areg(s);
  /* 17,3366 (indexed) FPX2 CA PYTABLE */
@@ -1823,51 +1959,60 @@ B37365c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
  goto B37367c;
-B37366c:
- IRC_COVER(314u);
+B37366:
+ IRC_COVER(333u);
  /* 17,3366 FPX2 CA PYTABLE */
  ai_caf(s,000000u); /* PYTABLE */
  goto B37367c;
-B37367c:
- IRC_COVER(315u);
+B37366c:
+ IRC_COVER(334u);
+ goto B37366;
+B37367:
+ IRC_COVER(335u);
  /* 17,3367 MASK PJETS */
  ai_maskf(s,001417u); /* PJETS */
  goto B37370c;
+B37367c:
+ IRC_COVER(336u);
+ goto B37367;
 B37370c:
- IRC_COVER(316u);
+ IRC_COVER(337u);
  /* 17,3370 TS PWORD2 */
  (void)ai_ts(s,(unsigned)01454);
  goto B37371c;
 B37371c:
- IRC_COVER(317u);
+ IRC_COVER(338u);
  /* 17,3371 TCF YAWTIME */
- goto B37230c;
-B37372c:
- IRC_COVER(318u);
+ {W[5]=03230;return EXEC_OK;} /* part key 17,3230 */
+B37372:
+ IRC_COVER(339u);
  /* 17,3372 PBYPASS CA PWORD1 */
  ai_ca(s,01453);
  goto B37373c;
+B37372c: __attribute__((unused));
+ IRC_COVER(340u);
+ goto B37372;
 B37373c:
- IRC_COVER(319u);
+ IRC_COVER(341u);
  /* 17,3373 TS PWORD2 */
  (void)ai_ts(s,(unsigned)01454);
  goto B37374c;
 B37374c:
- IRC_COVER(320u);
+ IRC_COVER(342u);
  /* 17,3374 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37375c;
 B37375c:
- IRC_COVER(321u);
+ IRC_COVER(343u);
  /* 17,3375 TS BLAST1 */
  (void)ai_ts(s,(unsigned)01461);
  goto B37376c;
 B37376c:
- IRC_COVER(322u);
+ IRC_COVER(344u);
  /* 17,3376 TCF YAWTIME */
- goto B37230c;
-B37377c:
- IRC_COVER(323u);
+ {W[5]=03230;return EXEC_OK;} /* part key 17,3230 */
+B37377:
+ IRC_COVER(345u);
  /* 17,3377 ASMBLWR CCS YNDX */
  switch(ai_ccs(s,01515)){
   case 0:goto B37400c;
@@ -1876,22 +2021,30 @@ B37377c:
   case 3:goto B37403c;
  }
  return EXEC_INVALID_ACTION;
+B37377c:
+ IRC_COVER(346u);
+ goto B37377;
 B37400c:
- IRC_COVER(324u);
+ IRC_COVER(347u);
  /* 17,3400 TCF ACBD2Y */
  goto B37410c;
 B37401c:
- IRC_COVER(325u);
+ IRC_COVER(348u);
  /* 17,3401 NO2Y CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37402c;
+B37402:
+ IRC_COVER(349u);
+ /* 17,3402 TS RWORD2 */
+ if(ai_ts(s,(unsigned)01452))goto B37404c;
+ goto B37403c;
 B37402c:
- IRC_COVER(326u);
+ IRC_COVER(350u);
  /* 17,3402 TS RWORD2 */
  (void)ai_ts(s,(unsigned)01452);
  goto B37403c;
 B37403:
- IRC_COVER(327u);
+ IRC_COVER(351u);
  /* 17,3403 CCS ZNDX */
  switch(ai_ccs(s,01516)){
   case 0:goto B37404c;
@@ -1901,32 +2054,38 @@ B37403:
  }
  return EXEC_INVALID_ACTION;
 B37403c:
- IRC_COVER(328u);
+ IRC_COVER(352u);
  goto B37403;
 B37404c:
- IRC_COVER(329u);
+ IRC_COVER(353u);
  /* 17,3404 TCF ACBD2Z */
- goto B37453c;
-B37405c:
- IRC_COVER(330u);
+ {W[5]=03453;return EXEC_OK;} /* part key 17,3453 */
+B37405:
+ IRC_COVER(354u);
  /* 17,3405 NO2Z CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37406c;
-B37406c:
- IRC_COVER(331u);
+B37405c:
+ IRC_COVER(355u);
+ goto B37405;
+B37406:
+ IRC_COVER(356u);
  /* 17,3406 ADS RWORD2 */
  ai_ads(s,01452);
  goto B37407;
+B37406c:
+ IRC_COVER(357u);
+ goto B37406;
 B37407:
- IRC_COVER(332u);
+ IRC_COVER(358u);
  /* 17,3407 TCF PITCHTIM */
- goto B37164;
+ {W[5]=03164;return EXEC_OK;} /* part key 17,3164 */
 B37407c:
- IRC_COVER(333u);
+ IRC_COVER(359u);
  /* 17,3407 TCF PITCHTIM */
- goto B37164c;
+ {W[5]=03164;return EXEC_OK;} /* part key 17,3164 */
 B37410c:
- IRC_COVER(334u);
+ IRC_COVER(360u);
  /* 17,3410 ACBD2Y CCS ACORBD */
  switch(ai_ccs(s,01630)){
   case 0:goto B37411c;
@@ -1936,19 +2095,19 @@ B37410c:
  }
  return EXEC_INVALID_ACTION;
 B37411c:
- IRC_COVER(335u);
+ IRC_COVER(361u);
  /* 17,3411 TCF AC2Y */
- goto B37426c;
+ {W[5]=03426;return EXEC_OK;} /* part key 17,3426 */
 B37412c:
- IRC_COVER(336u);
+ IRC_COVER(362u);
  /* 17,3412 TCF AC2Y */
- goto B37426c;
+ {W[5]=03426;return EXEC_OK;} /* part key 17,3426 */
 B37413c:
- IRC_COVER(337u);
+ IRC_COVER(363u);
  /* 17,3413 TCF +1 */
  goto B37414c;
 B37414c:
- IRC_COVER(338u);
+ IRC_COVER(364u);
  /* 17,3414 CCS RACFAIL */
  switch(ai_ccs(s,01626)){
   case 0:goto B37415c;
@@ -1958,19 +2117,19 @@ B37414c:
  }
  return EXEC_INVALID_ACTION;
 B37415c:
- IRC_COVER(339u);
+ IRC_COVER(365u);
  /* 17,3415 TCF NO2Y */
  goto B37401c;
 B37416c:
- IRC_COVER(340u);
+ IRC_COVER(366u);
  /* 17,3416 TCF +2 */
  goto B37420c;
 B37417c:
- IRC_COVER(341u);
+ IRC_COVER(367u);
  /* 17,3417 TCF NO2Y */
  goto B37401c;
 B37420c:
- IRC_COVER(342u);
+ IRC_COVER(368u);
  /* 17,3420 INDEX YNDX */
  ix=agc_to_int(ai_word(s,01515));
  /* 17,3421 (indexed) CA XLNNDX */
@@ -1978,9 +2137,24 @@ B37420c:
  if(e==5)return EXEC_INVALID_ACTION;
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
- goto B37422c;
-B37422c:
- IRC_COVER(343u);
+ {W[5]=03422;return EXEC_OK;} /* part key 17,3422 */
+}
+/* Basic words, part 7 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_6(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 16146u:goto B37422;
+ case 16148u:goto B37424;
+ case 16150u:goto B37426;
+ case 16154u:goto B37432;
+ case 16158u:goto B37436;
+ case 16171u:goto B37453;
+ case 16179u:goto B37463;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B37422:
+ IRC_COVER(369u);
  /* 17,3422 INDEX A */
  ix=areg(s);
  /* 17,3423 (indexed) CA RTABLE */
@@ -1989,17 +2163,23 @@ B37422c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
  goto B37424c;
-B37424c:
- IRC_COVER(344u);
+B37422c: __attribute__((unused));
+ IRC_COVER(370u);
+ goto B37422;
+B37424:
+ IRC_COVER(371u);
  /* 17,3424 MASK ACRJETS */
  ai_maskf(s,003760u); /* ACRJETS */
  goto B37425c;
+B37424c:
+ IRC_COVER(372u);
+ goto B37424;
 B37425c:
- IRC_COVER(345u);
+ IRC_COVER(373u);
  /* 17,3425 TCF NO2Y       +1 */
- goto B37402c;
-B37426c:
- IRC_COVER(346u);
+ {W[5]=03402;return EXEC_OK;} /* part key 17,3402 */
+B37426:
+ IRC_COVER(374u);
  /* 17,3426 AC2Y CCS RACFAIL */
  switch(ai_ccs(s,01626)){
   case 0:goto B37427c;
@@ -2008,22 +2188,25 @@ B37426c:
   case 3:goto B37432c;
  }
  return EXEC_INVALID_ACTION;
+B37426c: __attribute__((unused));
+ IRC_COVER(375u);
+ goto B37426;
 B37427c:
- IRC_COVER(347u);
+ IRC_COVER(376u);
  /* 17,3427 CAF THREE */
  ai_caf(s,000003u); /* OCTAL3 */
  goto B37430c;
 B37430c:
- IRC_COVER(348u);
+ IRC_COVER(377u);
  /* 17,3430 TCF +2 */
  goto B37432c;
 B37431c:
- IRC_COVER(349u);
+ IRC_COVER(378u);
  /* 17,3431 CAF SIX */
  ai_caf(s,000006u); /* REVCNT */
  goto B37432c;
-B37432c:
- IRC_COVER(350u);
+B37432:
+ IRC_COVER(379u);
  /* 17,3432 INDEX YNDX */
  ix=agc_to_int(ai_word(s,01515));
  /* 17,3433 (indexed) AD XLN1NDX */
@@ -2032,8 +2215,11 @@ B37432c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_adf(s,k);}
  else ai_ad(s,(unsigned)e);
  goto B37434;
+B37432c:
+ IRC_COVER(380u);
+ goto B37432;
 B37434:
- IRC_COVER(351u);
+ IRC_COVER(381u);
  /* 17,3434 INDEX A */
  ix=areg(s);
  /* 17,3435 (indexed) CA YZTABLE */
@@ -2042,70 +2228,73 @@ B37434:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
  goto B37436c;
-B37436c:
- IRC_COVER(352u);
+B37436:
+ IRC_COVER(382u);
  /* 17,3436 MASK ACYJETS */
  ai_maskf(s,034360u); /* ACYJETS */
  goto B37437c;
+B37436c:
+ IRC_COVER(383u);
+ goto B37436;
 B37437c:
- IRC_COVER(353u);
+ IRC_COVER(384u);
  /* 17,3437 TS RWORD2 */
  (void)ai_ts(s,(unsigned)01452);
  goto B37440c;
 B37440c:
- IRC_COVER(354u);
+ IRC_COVER(385u);
  /* 17,3440 EXTEND */
  goto X37441c;
 X37441c:
- IRC_COVER(355u);
+ IRC_COVER(386u);
  /* 17,3441 EXTENDED MP BIT4 */
  ai_mpf(s,000010u); /* BIT4 */
  goto B37442c;
 B37442c:
- IRC_COVER(356u);
+ IRC_COVER(387u);
  /* 17,3442 AD =-2 */
  ai_adf(s,077775u); /* NEG2 */
  goto B37443;
 B37443:
- IRC_COVER(357u);
+ IRC_COVER(388u);
  /* 17,3443 TS NRJETS */
  if(ai_ts(s,(unsigned)01522))goto B37445c;
  goto B37444c;
 B37444c:
- IRC_COVER(358u);
+ IRC_COVER(389u);
  /* 17,3444 CS BLAST */
  ai_cs(s,01457);
  goto B37445c;
 B37445c:
- IRC_COVER(359u);
+ IRC_COVER(390u);
  /* 17,3445 AD =+.1SEC */
  ai_adf(s,000240u); /* =+.1SEC */
  goto B37446;
 B37446:
- IRC_COVER(360u);
+ IRC_COVER(391u);
  /* 17,3446 EXTEND */
  goto X37447;
 X37447:
- IRC_COVER(361u);
+ IRC_COVER(392u);
  /* 17,3447 EXTENDED MP NRJETS */
  ai_mp(s,01522);
  goto B37450c;
 B37450c:
- IRC_COVER(362u);
+ IRC_COVER(393u);
  /* 17,3450 CA L */
  ai_ca(s,01);
  goto B37451c;
 B37451c:
- IRC_COVER(363u);
+ IRC_COVER(394u);
  /* 17,3451 ADS DFT */
  ai_ads(s,01547);
  goto B37452;
 B37452:
- IRC_COVER(364u);
+ IRC_COVER(395u);
  /* 17,3452 TCF NO2Y       +2 */
- goto B37403;
-B37453c:
- IRC_COVER(365u);
+ {W[5]=03403;return EXEC_OK;} /* part key 17,3403 */
+B37453:
+ IRC_COVER(396u);
  /* 17,3453 ACBD2Z CCS ACORBD */
  switch(ai_ccs(s,01630)){
   case 0:goto B37454c;
@@ -2114,20 +2303,23 @@ B37453c:
   case 3:goto B37457c;
  }
  return EXEC_INVALID_ACTION;
+B37453c: __attribute__((unused));
+ IRC_COVER(397u);
+ goto B37453;
 B37454c:
- IRC_COVER(366u);
+ IRC_COVER(398u);
  /* 17,3454 TCF BDF2Z */
- goto B37504c;
+ {W[5]=03504;return EXEC_OK;} /* part key 17,3504 */
 B37455c:
- IRC_COVER(367u);
+ IRC_COVER(399u);
  /* 17,3455 TCF BDF2Z */
- goto B37504c;
+ {W[5]=03504;return EXEC_OK;} /* part key 17,3504 */
 B37456c:
- IRC_COVER(368u);
+ IRC_COVER(400u);
  /* 17,3456 TCF +1 */
  goto B37457c;
 B37457c:
- IRC_COVER(369u);
+ IRC_COVER(401u);
  /* 17,3457 CCS RBDFAIL */
  switch(ai_ccs(s,01627)){
   case 0:goto B37460c;
@@ -2137,21 +2329,21 @@ B37457c:
  }
  return EXEC_INVALID_ACTION;
 B37460c:
- IRC_COVER(370u);
+ IRC_COVER(402u);
  /* 17,3460 CAF THREE */
  ai_caf(s,000003u); /* OCTAL3 */
  goto B37461c;
 B37461c:
- IRC_COVER(371u);
+ IRC_COVER(403u);
  /* 17,3461 TCF +2 */
  goto B37463c;
 B37462c:
- IRC_COVER(372u);
+ IRC_COVER(404u);
  /* 17,3462 CAF SIX */
  ai_caf(s,000006u); /* REVCNT */
  goto B37463c;
-B37463c:
- IRC_COVER(373u);
+B37463:
+ IRC_COVER(405u);
  /* 17,3463 INDEX ZNDX */
  ix=agc_to_int(ai_word(s,01516));
  /* 17,3464 (indexed) AD XLN1NDX */
@@ -2160,8 +2352,11 @@ B37463c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_adf(s,k);}
  else ai_ad(s,(unsigned)e);
  goto B37465;
+B37463c:
+ IRC_COVER(406u);
+ goto B37463;
 B37465:
- IRC_COVER(374u);
+ IRC_COVER(407u);
  /* 17,3465 INDEX A */
  ix=areg(s);
  /* 17,3466 (indexed) CA YZTABLE */
@@ -2171,69 +2366,91 @@ B37465:
  else ai_ca(s,(unsigned)e);
  goto B37467c;
 B37467c:
- IRC_COVER(375u);
+ IRC_COVER(408u);
  /* 17,3467 MASK BDZJETS */
  ai_maskf(s,003417u); /* BDZJETS */
  goto B37470c;
 B37470c:
- IRC_COVER(376u);
+ IRC_COVER(409u);
  /* 17,3470 ADS RWORD2 */
  ai_ads(s,01452);
  goto B37471;
 B37471:
- IRC_COVER(377u);
+ IRC_COVER(410u);
  /* 17,3471 EXTEND */
  goto X37472;
 X37472:
- IRC_COVER(378u);
+ IRC_COVER(411u);
  /* 17,3472 EXTENDED MP BIT7 */
  ai_mpf(s,000100u); /* BIT7 */
  goto B37473c;
 B37473c:
- IRC_COVER(379u);
+ IRC_COVER(412u);
  /* 17,3473 AD =-2 */
  ai_adf(s,077775u); /* NEG2 */
  goto B37474;
 B37474:
- IRC_COVER(380u);
+ IRC_COVER(413u);
  /* 17,3474 TS NRJETS */
  if(ai_ts(s,(unsigned)01522))goto B37476c;
  goto B37475c;
 B37475c:
- IRC_COVER(381u);
+ IRC_COVER(414u);
  /* 17,3475 CS BLAST */
  ai_cs(s,01457);
  goto B37476c;
 B37476c:
- IRC_COVER(382u);
+ IRC_COVER(415u);
  /* 17,3476 AD =+.1SEC */
  ai_adf(s,000240u); /* =+.1SEC */
  goto B37477;
 B37477:
- IRC_COVER(383u);
+ IRC_COVER(416u);
  /* 17,3477 EXTEND */
  goto X37500;
 X37500:
- IRC_COVER(384u);
+ IRC_COVER(417u);
  /* 17,3500 EXTENDED MP NRJETS */
  ai_mp(s,01522);
- goto B37501c;
-B37501c:
- IRC_COVER(385u);
+ {W[5]=03501;return EXEC_OK;} /* part key 17,3501 */
+}
+/* Basic words, part 8 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_7(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 16193u:goto B37501;
+ case 16196u:goto B37504;
+ case 16200u:goto B37510;
+ case 16206u:goto B37516;
+ case 16208u:goto B37520;
+ case 16211u:goto B37523;
+ case 16215u:goto B37527;
+ case 16218u:goto B37532;
+ case 16222u:goto B37536;
+ case 16236u:goto B37554;
+ case 16240u:goto B37560;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B37501:
+ IRC_COVER(418u);
  /* 17,3501 CA L */
  ai_ca(s,01);
  goto B37502c;
+B37501c: __attribute__((unused));
+ IRC_COVER(419u);
+ goto B37501;
 B37502c:
- IRC_COVER(386u);
+ IRC_COVER(420u);
  /* 17,3502 ADS DFT */
  ai_ads(s,01547);
  goto B37503;
 B37503:
- IRC_COVER(387u);
+ IRC_COVER(421u);
  /* 17,3503 TCF PITCHTIM */
- goto B37164;
-B37504c:
- IRC_COVER(388u);
+ {W[5]=03164;return EXEC_OK;} /* part key 17,3164 */
+B37504:
+ IRC_COVER(422u);
  /* 17,3504 BDF2Z CCS RBDFAIL */
  switch(ai_ccs(s,01627)){
   case 0:goto B37505c;
@@ -2242,20 +2459,23 @@ B37504c:
   case 3:goto B37510c;
  }
  return EXEC_INVALID_ACTION;
+B37504c: __attribute__((unused));
+ IRC_COVER(423u);
+ goto B37504;
 B37505c:
- IRC_COVER(389u);
+ IRC_COVER(424u);
  /* 17,3505 TCF NO2Z */
- goto B37405c;
+ {W[5]=03405;return EXEC_OK;} /* part key 17,3405 */
 B37506c:
- IRC_COVER(390u);
+ IRC_COVER(425u);
  /* 17,3506 TCF +2 */
  goto B37510c;
 B37507c:
- IRC_COVER(391u);
+ IRC_COVER(426u);
  /* 17,3507 TCF NO2Z */
- goto B37405c;
-B37510c:
- IRC_COVER(392u);
+ {W[5]=03405;return EXEC_OK;} /* part key 17,3405 */
+B37510:
+ IRC_COVER(427u);
  /* 17,3510 INDEX ZNDX */
  ix=agc_to_int(ai_word(s,01516));
  /* 17,3511 (indexed) CA XLNNDX */
@@ -2264,8 +2484,11 @@ B37510c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
  goto B37512c;
+B37510c:
+ IRC_COVER(428u);
+ goto B37510;
 B37512c:
- IRC_COVER(393u);
+ IRC_COVER(429u);
  /* 17,3512 INDEX A */
  ix=areg(s);
  /* 17,3513 (indexed) CA RTABLE */
@@ -2275,40 +2498,46 @@ B37512c:
  else ai_ca(s,(unsigned)e);
  goto B37514c;
 B37514c:
- IRC_COVER(394u);
+ IRC_COVER(430u);
  /* 17,3514 MASK BDRJETS */
  ai_maskf(s,034017u); /* BDRJETS */
  goto B37515c;
 B37515c:
- IRC_COVER(395u);
+ IRC_COVER(431u);
  /* 17,3515 TCF NO2Z       +1 */
- goto B37406c;
-B37516c:
- IRC_COVER(396u);
+ {W[5]=03406;return EXEC_OK;} /* part key 17,3406 */
+B37516:
+ IRC_COVER(432u);
  /* 17,3516 RBYPASS CA RWORD1 */
  ai_ca(s,01451);
  goto B37517c;
+B37516c: __attribute__((unused));
+ IRC_COVER(433u);
+ goto B37516;
 B37517c:
- IRC_COVER(397u);
+ IRC_COVER(434u);
  /* 17,3517 TS RWORD2 */
  (void)ai_ts(s,(unsigned)01452);
  goto B37520c;
-B37520c:
- IRC_COVER(398u);
+B37520:
+ IRC_COVER(435u);
  /* 17,3520 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37521c;
+B37520c:
+ IRC_COVER(436u);
+ goto B37520;
 B37521c:
- IRC_COVER(399u);
+ IRC_COVER(437u);
  /* 17,3521 TS BLAST */
  (void)ai_ts(s,(unsigned)01457);
  goto B37522c;
 B37522c:
- IRC_COVER(400u);
+ IRC_COVER(438u);
  /* 17,3522 TCF PITCHTIM */
- goto B37164c;
-B37523c:
- IRC_COVER(401u);
+ {W[5]=03164;return EXEC_OK;} /* part key 17,3164 */
+B37523:
+ IRC_COVER(439u);
  /* 17,3523 ASMBLWY CCS RBDFAIL */
  switch(ai_ccs(s,01627)){
   case 0:goto B37524c;
@@ -2317,20 +2546,23 @@ B37523c:
   case 3:goto B37527c;
  }
  return EXEC_INVALID_ACTION;
+B37523c: __attribute__((unused));
+ IRC_COVER(440u);
+ goto B37523;
 B37524c:
- IRC_COVER(402u);
+ IRC_COVER(441u);
  /* 17,3524 TCF FYX2 */
  goto B37532c;
 B37525c:
- IRC_COVER(403u);
+ IRC_COVER(442u);
  /* 17,3525 TCF +2 */
  goto B37527c;
 B37526c:
- IRC_COVER(404u);
+ IRC_COVER(443u);
  /* 17,3526 TCF FYX2 */
  goto B37532c;
-B37527c:
- IRC_COVER(405u);
+B37527:
+ IRC_COVER(444u);
  /* 17,3527 INDEX XNDX2 */
  ix=agc_to_int(ai_word(s,01514));
  /* 17,3530 (indexed) CA XLNNDX */
@@ -2339,8 +2571,11 @@ B37527c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
  goto B37531c;
+B37527c:
+ IRC_COVER(445u);
+ goto B37527;
 B37531c:
- IRC_COVER(406u);
+ IRC_COVER(446u);
  /* 17,3531 INDEX A */
  ix=areg(s);
  /* 17,3532 (indexed) FYX2 CA PYTABLE */
@@ -2349,280 +2584,314 @@ B37531c:
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
  else ai_ca(s,(unsigned)e);
  goto B37533c;
-B37532c:
- IRC_COVER(407u);
+B37532:
+ IRC_COVER(447u);
  /* 17,3532 FYX2 CA PYTABLE */
  ai_caf(s,000000u); /* PYTABLE */
  goto B37533c;
+B37532c:
+ IRC_COVER(448u);
+ goto B37532;
 B37533c:
- IRC_COVER(408u);
+ IRC_COVER(449u);
  /* 17,3533 MASK YJETS */
  ai_maskf(s,006360u); /* YJETS */
  goto B37534c;
 B37534c:
- IRC_COVER(409u);
+ IRC_COVER(450u);
  /* 17,3534 TS YWORD2 */
  (void)ai_ts(s,(unsigned)01456);
  goto B37535c;
 B37535c:
- IRC_COVER(410u);
+ IRC_COVER(451u);
  /* 17,3535 TCF T6SETUP */
  goto B37542c;
-B37536c:
- IRC_COVER(411u);
+B37536:
+ IRC_COVER(452u);
  /* 17,3536 YBYPASS CA YWORD1 */
  ai_ca(s,01455);
  goto B37537c;
+B37536c: __attribute__((unused));
+ IRC_COVER(453u);
+ goto B37536;
 B37537c:
- IRC_COVER(412u);
+ IRC_COVER(454u);
  /* 17,3537 TS YWORD2 */
  (void)ai_ts(s,(unsigned)01456);
  goto B37540c;
 B37540c:
- IRC_COVER(413u);
+ IRC_COVER(455u);
  /* 17,3540 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37541c;
 B37541c:
- IRC_COVER(414u);
+ IRC_COVER(456u);
  /* 17,3541 TS BLAST2 */
  (void)ai_ts(s,(unsigned)01463);
  goto B37542c;
 B37542c:
- IRC_COVER(415u);
+ IRC_COVER(457u);
  /* 17,3542 T6SETUP CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37543c;
 B37543c:
- IRC_COVER(416u);
+ IRC_COVER(458u);
  /* 17,3543 TS BLAST      +1 */
  (void)ai_ts(s,(unsigned)01460);
  goto B37544c;
 B37544c:
- IRC_COVER(417u);
+ IRC_COVER(459u);
  /* 17,3544 CAF FOUR */
  ai_caf(s,000004u); /* BIT3 */
  goto B37545c;
 B37545c:
- IRC_COVER(418u);
+ IRC_COVER(460u);
  /* 17,3545 TS BLAST1     +1 */
  (void)ai_ts(s,(unsigned)01462);
  goto B37546c;
 B37546c:
- IRC_COVER(419u);
+ IRC_COVER(461u);
  /* 17,3546 CAF ELEVEN */
  ai_caf(s,000013u); /* ELEVEN */
  goto B37547c;
 B37547c:
- IRC_COVER(420u);
+ IRC_COVER(462u);
  /* 17,3547 TS BLAST2     +1 */
  (void)ai_ts(s,(unsigned)01464);
  goto B37550c;
 B37550c:
- IRC_COVER(421u);
+ IRC_COVER(463u);
  /* 17,3550 CS BLAST */
  ai_cs(s,01457);
  goto B37551c;
 B37551c:
- IRC_COVER(422u);
+ IRC_COVER(464u);
  /* 17,3551 AD BLAST1 */
  ai_ad(s,01461);
  goto B37552;
 B37552:
- IRC_COVER(423u);
+ IRC_COVER(465u);
  /* 17,3552 EXTEND */
  goto X37553;
 X37553:
- IRC_COVER(424u);
+ IRC_COVER(466u);
  /* 17,3553 EXTENDED BZMF DXCHT12 */
  if(ai_bzmf(s)){
-   goto B37577;
+   {W[5]=03577;return EXEC_OK;} /* part key 17,3577 */
  }
  goto B37554;
 B37554:
- IRC_COVER(425u);
+ IRC_COVER(467u);
  /* 17,3554 CHECKT23 CS BLAST1 */
  ai_cs(s,01461);
  goto B37555c;
-B37554c:
- IRC_COVER(426u);
+B37554c: __attribute__((unused));
+ IRC_COVER(468u);
  goto B37554;
 B37555c:
- IRC_COVER(427u);
+ IRC_COVER(469u);
  /* 17,3555 AD BLAST2 */
  ai_ad(s,01463);
  goto B37556;
 B37556:
- IRC_COVER(428u);
+ IRC_COVER(470u);
  /* 17,3556 EXTEND */
  goto X37557;
 X37557:
- IRC_COVER(429u);
+ IRC_COVER(471u);
  /* 17,3557 EXTENDED BZMF DXCHT23 */
  if(ai_bzmf(s)){
-   goto B37603;
+   {W[5]=03603;return EXEC_OK;} /* part key 17,3603 */
  }
  goto B37560;
 B37560:
- IRC_COVER(430u);
+ IRC_COVER(472u);
  /* 17,3560 CALCDT6 CS BLAST1 */
  ai_cs(s,01461);
- goto B37561c;
-B37560c:
- IRC_COVER(431u);
+ {W[5]=03561;return EXEC_OK;} /* part key 17,3561 */
+B37560c: __attribute__((unused));
+ IRC_COVER(473u);
  goto B37560;
-B37561c:
- IRC_COVER(432u);
+}
+/* Basic words, part 9 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_8(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 16241u:goto B37561;
+ case 16243u:goto B37563;
+ case 16255u:goto B37577;
+ case 16256u:goto B37600;
+ case 16259u:goto B37603;
+ case 16271u:goto B37617;
+ case 16272u:goto B37620;
+ case 16287u:goto B37637;
+ case 16290u:goto B37642;
+ case 16300u:goto B37654;
+ case 16307u:goto B37663;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B37561:
+ IRC_COVER(474u);
  /* 17,3561 ADS BLAST2 */
  ai_ads(s,01463);
  goto B37562;
+B37561c: __attribute__((unused));
+ IRC_COVER(475u);
+ goto B37561;
 B37562:
- IRC_COVER(433u);
+ IRC_COVER(476u);
  /* 17,3562 CS BLAST */
  ai_cs(s,01457);
  goto B37563c;
-B37563c:
- IRC_COVER(434u);
+B37563:
+ IRC_COVER(477u);
  /* 17,3563 ADS BLAST1 */
  ai_ads(s,01461);
  goto B37564;
+B37563c:
+ IRC_COVER(478u);
+ goto B37563;
 B37564:
- IRC_COVER(435u);
+ IRC_COVER(479u);
  /* 17,3564 EXTEND */
  goto X37565;
 X37565:
- IRC_COVER(436u);
+ IRC_COVER(480u);
  /* 17,3565 EXTENDED DCA RCS2CADR */
  {static const agc_word k[2]={002122u,042066u};ai_dcaf(s,k);} /* RCS2CADR */
  goto B37566c;
 B37566c:
- IRC_COVER(437u);
+ IRC_COVER(481u);
  /* 17,3566 DXCH T5LOC */
  ai_dxch(s,01312);
  goto B37567c;
 B37567c:
- IRC_COVER(438u);
+ IRC_COVER(482u);
  /* 17,3567 ENDJETS CS BIT1 */
  ai_csf(s,000001u); /* BIT1 */
  goto B37570c;
 B37570c:
- IRC_COVER(439u);
+ IRC_COVER(483u);
  /* 17,3570 MASK RCSFLAGS */
  ai_mask(s,01501);
  goto B37571c;
 B37571c:
- IRC_COVER(440u);
+ IRC_COVER(484u);
  /* 17,3571 TS RCSFLAGS */
  (void)ai_ts(s,(unsigned)01501);
  goto B37572c;
 B37572c:
- IRC_COVER(441u);
+ IRC_COVER(485u);
  /* 17,3572 CS ZERO */
  ai_csf(s,000000u); /* ZERO */
  goto B37573c;
 B37573c:
- IRC_COVER(442u);
+ IRC_COVER(486u);
  /* 17,3573 TS T5PHASE */
  (void)ai_ts(s,(unsigned)01465);
  goto B37574c;
 B37574c:
- IRC_COVER(443u);
+ IRC_COVER(487u);
  /* 17,3574 TCF RESUME */
  W[5]=05333u;return EXEC_OK; /* RESUME */
 B37577:
- IRC_COVER(444u);
+ IRC_COVER(488u);
  /* 17,3577 DXCHT12 DXCH BLAST */
  ai_dxch(s,01457);
  goto B37600c;
-B37600c:
- IRC_COVER(445u);
+B37600:
+ IRC_COVER(489u);
  /* 17,3600 DXCH BLAST1 */
  ai_dxch(s,01461);
  goto B37601c;
+B37600c:
+ IRC_COVER(490u);
+ goto B37600;
 B37601c:
- IRC_COVER(446u);
+ IRC_COVER(491u);
  /* 17,3601 DXCH BLAST */
  ai_dxch(s,01457);
  goto B37602c;
 B37602c:
- IRC_COVER(447u);
+ IRC_COVER(492u);
  /* 17,3602 TCF CHECKT23 */
- goto B37554c;
+ {W[5]=03554;return EXEC_OK;} /* part key 17,3554 */
 B37603:
- IRC_COVER(448u);
+ IRC_COVER(493u);
  /* 17,3603 DXCHT23 DXCH BLAST1 */
  ai_dxch(s,01461);
  goto B37604c;
 B37604c:
- IRC_COVER(449u);
+ IRC_COVER(494u);
  /* 17,3604 DXCH BLAST2 */
  ai_dxch(s,01463);
  goto B37605c;
 B37605c:
- IRC_COVER(450u);
+ IRC_COVER(495u);
  /* 17,3605 DXCH BLAST1 */
  ai_dxch(s,01461);
  goto B37606c;
 B37606c:
- IRC_COVER(451u);
+ IRC_COVER(496u);
  /* 17,3606 CS BLAST */
  ai_cs(s,01457);
  goto B37607c;
 B37607c:
- IRC_COVER(452u);
+ IRC_COVER(497u);
  /* 17,3607 AD BLAST1 */
  ai_ad(s,01461);
  goto B37610;
 B37610:
- IRC_COVER(453u);
+ IRC_COVER(498u);
  /* 17,3610 EXTEND */
  goto X37611;
 X37611:
- IRC_COVER(454u);
+ IRC_COVER(499u);
  /* 17,3611 EXTENDED BZMF +2 */
  if(ai_bzmf(s)){
    goto B37613;
  }
  goto B37612;
 B37612:
- IRC_COVER(455u);
+ IRC_COVER(500u);
  /* 17,3612 TCF CALCDT6 */
- goto B37560;
+ {W[5]=03560;return EXEC_OK;} /* part key 17,3560 */
 B37613:
- IRC_COVER(456u);
+ IRC_COVER(501u);
  /* 17,3613 DXCH BLAST */
  ai_dxch(s,01457);
  goto B37614c;
 B37614c:
- IRC_COVER(457u);
+ IRC_COVER(502u);
  /* 17,3614 DXCH BLAST1 */
  ai_dxch(s,01461);
  goto B37615c;
 B37615c:
- IRC_COVER(458u);
+ IRC_COVER(503u);
  /* 17,3615 DXCH BLAST */
  ai_dxch(s,01457);
  goto B37616c;
 B37616c:
- IRC_COVER(459u);
+ IRC_COVER(504u);
  /* 17,3616 TCF CALCDT6 */
- goto B37560c;
+ {W[5]=03560;return EXEC_OK;} /* part key 17,3560 */
 B37617:
- IRC_COVER(460u);
+ IRC_COVER(505u);
  /* 17,3617 T6START LXCH BANKRUPT */
  ai_lxch(s,016);
  goto B37620;
 B37620:
- IRC_COVER(461u);
+ IRC_COVER(506u);
  /* 17,3620 EXTEND */
  goto X37621;
 X37621:
- IRC_COVER(462u);
+ IRC_COVER(507u);
  /* 17,3621 EXTENDED QXCH QRUPT */
  ai_qxch(s,012);
  goto B37622;
 B37622:
- IRC_COVER(463u);
+ IRC_COVER(508u);
  /* 17,3622 CCS TIME6 */
  switch(ai_ccs(s,031)){
   case 0:goto B37623c;
@@ -2632,78 +2901,81 @@ B37622:
  }
  return EXEC_INVALID_ACTION;
 B37623c:
- IRC_COVER(464u);
+ IRC_COVER(509u);
  /* 17,3623 TCF RESUME */
  W[5]=05333u;return EXEC_OK; /* RESUME */
 B37624c:
- IRC_COVER(465u);
+ IRC_COVER(510u);
  /* 17,3624 TCF +2 */
  goto B37626c;
 B37625c:
- IRC_COVER(466u);
+ IRC_COVER(511u);
  /* 17,3625 TCF RESUME */
  W[5]=05333u;return EXEC_OK; /* RESUME */
 B37626c:
- IRC_COVER(467u);
+ IRC_COVER(512u);
  /* 17,3626 CS RCSFLAGS */
  ai_cs(s,01501);
  goto B37627c;
 B37627c:
- IRC_COVER(468u);
+ IRC_COVER(513u);
  /* 17,3627 MASK BIT1 */
  ai_maskf(s,000001u); /* BIT1 */
  goto B37630c;
 B37630c:
- IRC_COVER(469u);
+ IRC_COVER(514u);
  /* 17,3630 EXTEND */
  goto X37631c;
 X37631c:
- IRC_COVER(470u);
+ IRC_COVER(515u);
  /* 17,3631 EXTENDED BZF T6RUPTOR */
  if(ai_bzf(s)){
    goto B37642c;
  }
  goto B37632c;
 B37632c:
- IRC_COVER(471u);
+ IRC_COVER(516u);
  /* 17,3632 ADS RCSFLAGS */
  ai_ads(s,01501);
  goto B37633;
 B37633:
- IRC_COVER(472u);
+ IRC_COVER(517u);
  /* 17,3633 CA RWORD1 */
  ai_ca(s,01451);
  goto B37634c;
 B37634c:
- IRC_COVER(473u);
+ IRC_COVER(518u);
  /* 17,3634 EXTEND */
  goto X37635c;
 X37635c:
- IRC_COVER(474u);
+ IRC_COVER(519u);
  /* 17,3635 EXTENDED WRITE CHAN6 */
  ch_write(s,io,06);
  goto B37636c;
 B37636c:
- IRC_COVER(475u);
+ IRC_COVER(520u);
  /* 17,3636 CA PWORD1 */
  ai_ca(s,01453);
  goto B37637c;
-B37637c:
- IRC_COVER(476u);
+B37637:
+ IRC_COVER(521u);
  /* 17,3637 AD YWORD1 */
  ai_ad(s,01455);
  goto B37640;
+B37637c:
+ IRC_COVER(522u);
+ goto B37637;
 B37640:
- IRC_COVER(477u);
+ IRC_COVER(523u);
  /* 17,3640 EXTEND */
  goto X37641;
 X37641:
- IRC_COVER(478u);
+ IRC_COVER(524u);
  /* 17,3641 EXTENDED WRITE CHAN5 */
  ch_write(s,io,05);
  goto B37642;
 B37642:
- IRC_COVER(479u);
+ IRC_COVER(525u);
  /* 17,3642 T6RUPTOR CCS BLAST */
  switch(ai_ccs(s,01457)){
   case 0:goto B37643c;
@@ -2713,26 +2985,26 @@ B37642:
  }
  return EXEC_INVALID_ACTION;
 B37642c:
- IRC_COVER(480u);
+ IRC_COVER(526u);
  goto B37642;
 B37643c:
- IRC_COVER(481u);
+ IRC_COVER(527u);
  /* 17,3643 TCF ZBLAST */
- goto B37722c;
+ {W[5]=03722;return EXEC_OK;} /* part key 17,3722 */
 B37644c:
- IRC_COVER(482u);
+ IRC_COVER(528u);
  /* 17,3644 TCF REPLACE */
  goto B37661c;
 B37645c:
- IRC_COVER(483u);
+ IRC_COVER(529u);
  /* 17,3645 TCF +2 */
  goto B37647c;
 B37646c:
- IRC_COVER(484u);
+ IRC_COVER(530u);
  /* 17,3646 TCF REPLACE */
  goto B37661c;
 B37647c:
- IRC_COVER(485u);
+ IRC_COVER(531u);
  /* 17,3647 T6L1 CCS BLAST1 */
  switch(ai_ccs(s,01461)){
   case 0:goto B37650c;
@@ -2742,23 +3014,23 @@ B37647c:
  }
  return EXEC_INVALID_ACTION;
 B37650c:
- IRC_COVER(486u);
+ IRC_COVER(532u);
  /* 17,3650 TCF ZBLAST1 */
- goto B37725c;
+ {W[5]=03725;return EXEC_OK;} /* part key 17,3725 */
 B37651c:
- IRC_COVER(487u);
+ IRC_COVER(533u);
  /* 17,3651 TCF REPLACE1 */
- goto B37666c;
+ {W[5]=03666;return EXEC_OK;} /* part key 17,3666 */
 B37652c:
- IRC_COVER(488u);
+ IRC_COVER(534u);
  /* 17,3652 TCF +2 */
  goto B37654c;
 B37653c:
- IRC_COVER(489u);
+ IRC_COVER(535u);
  /* 17,3653 TCF REPLACE1 */
- goto B37666c;
-B37654c:
- IRC_COVER(490u);
+ {W[5]=03666;return EXEC_OK;} /* part key 17,3666 */
+B37654:
+ IRC_COVER(536u);
  /* 17,3654 T6L2 CCS BLAST2 */
  switch(ai_ccs(s,01463)){
   case 0:goto B37655c;
@@ -2767,54 +3039,93 @@ B37654c:
   case 3:goto B37660c;
  }
  return EXEC_INVALID_ACTION;
+B37654c:
+ IRC_COVER(537u);
+ goto B37654;
 B37655c:
- IRC_COVER(491u);
+ IRC_COVER(538u);
  /* 17,3655 TCF ZBLAST2 */
- goto B37730c;
+ {W[5]=03730;return EXEC_OK;} /* part key 17,3730 */
 B37656c:
- IRC_COVER(492u);
+ IRC_COVER(539u);
  /* 17,3656 TCF REPLACE2 */
- goto B37673c;
+ {W[5]=03673;return EXEC_OK;} /* part key 17,3673 */
 B37657c:
- IRC_COVER(493u);
+ IRC_COVER(540u);
  /* 17,3657 TCF RESUME */
  W[5]=05333u;return EXEC_OK; /* RESUME */
 B37660c:
- IRC_COVER(494u);
+ IRC_COVER(541u);
  /* 17,3660 TCF REPLACE2 */
- goto B37673c;
+ {W[5]=03673;return EXEC_OK;} /* part key 17,3673 */
 B37661c:
- IRC_COVER(495u);
+ IRC_COVER(542u);
  /* 17,3661 REPLACE INDEX BLAST      +1 */
  /* 17,3662 (indexed by 00000, 00004, 00013) TC REPLACER */
  switch(ai_word(s,01460)){
   case 000000u: /* TC 3700 */
    ai_tc(s,003663u);
-   goto B37700c;
+   {W[5]=03700;return EXEC_OK;} /* part key 17,3700 */
   case 000004u: /* TC 3704 */
    ai_tc(s,003663u);
-   goto B37704c;
+   {W[5]=03704;return EXEC_OK;} /* part key 17,3704 */
   case 000013u: /* TC 3713 */
    ai_tc(s,003663u);
-   goto B37713c;
+   {W[5]=03713;return EXEC_OK;} /* part key 17,3713 */
  }
  return EXEC_INVALID_ACTION;
 B37663:
- IRC_COVER(496u);
+ IRC_COVER(543u);
  /* 17,3663 CS ONE */
  ai_csf(s,000001u); /* BIT1 */
  goto B37664c;
 B37664c:
- IRC_COVER(497u);
+ IRC_COVER(544u);
  /* 17,3664 TS BLAST */
  (void)ai_ts(s,(unsigned)01457);
  goto B37665c;
 B37665c:
- IRC_COVER(498u);
+ IRC_COVER(545u);
  /* 17,3665 TCF T6L1 */
  goto B37647c;
-B37666c:
- IRC_COVER(499u);
+}
+/* Basic words, part 10 of 10. */
+static MAYBE_UNUSED enum exec_status basic_part_9(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;(void)p;(void)io;
+ switch(at){
+ case 16310u:goto B37666;
+ case 16312u:goto B37670;
+ case 16315u:goto B37673;
+ case 16317u:goto B37675;
+ case 16320u:goto B37700;
+ case 16324u:goto B37704;
+ case 16330u:goto B37712;
+ case 16331u:goto B37713;
+ case 16338u:goto B37722;
+ case 16339u:goto B37723;
+ case 16341u:goto B37725;
+ case 16344u:goto B37730;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B37666:
+ IRC_COVER(546u);
+ /* 17,3666 REPLACE1 INDEX BLAST1     +1 */
+ /* 17,3667 (indexed by 00000, 00004, 00013) TC REPLACER */
+ switch(ai_word(s,01462)){
+  case 000000u: /* TC 3700 */
+   ai_tc(s,003670u);
+   goto B37700;
+  case 000004u: /* TC 3704 */
+   ai_tc(s,003670u);
+   goto B37704;
+  case 000013u: /* TC 3713 */
+   ai_tc(s,003670u);
+   goto B37713;
+ }
+ return EXEC_INVALID_ACTION;
+B37666c: __attribute__((unused));
+ IRC_COVER(547u);
  /* 17,3666 REPLACE1 INDEX BLAST1     +1 */
  /* 17,3667 (indexed by 00000, 00004, 00013) TC REPLACER */
  switch(ai_word(s,01462)){
@@ -2830,21 +3141,37 @@ B37666c:
  }
  return EXEC_INVALID_ACTION;
 B37670:
- IRC_COVER(500u);
+ IRC_COVER(548u);
  /* 17,3670 CS ONE */
  ai_csf(s,000001u); /* BIT1 */
  goto B37671c;
 B37671c:
- IRC_COVER(501u);
+ IRC_COVER(549u);
  /* 17,3671 TS BLAST1 */
  (void)ai_ts(s,(unsigned)01461);
  goto B37672c;
 B37672c:
- IRC_COVER(502u);
+ IRC_COVER(550u);
  /* 17,3672 TCF T6L2 */
- goto B37654c;
-B37673c:
- IRC_COVER(503u);
+ {W[5]=03654;return EXEC_OK;} /* part key 17,3654 */
+B37673:
+ IRC_COVER(551u);
+ /* 17,3673 REPLACE2 INDEX BLAST2     +1 */
+ /* 17,3674 (indexed by 00000, 00004, 00013) TC REPLACER */
+ switch(ai_word(s,01464)){
+  case 000000u: /* TC 3700 */
+   ai_tc(s,003675u);
+   goto B37700;
+  case 000004u: /* TC 3704 */
+   ai_tc(s,003675u);
+   goto B37704;
+  case 000013u: /* TC 3713 */
+   ai_tc(s,003675u);
+   goto B37713;
+ }
+ return EXEC_INVALID_ACTION;
+B37673c: __attribute__((unused));
+ IRC_COVER(552u);
  /* 17,3673 REPLACE2 INDEX BLAST2     +1 */
  /* 17,3674 (indexed by 00000, 00004, 00013) TC REPLACER */
  switch(ai_word(s,01464)){
@@ -2860,180 +3187,207 @@ B37673c:
  }
  return EXEC_INVALID_ACTION;
 B37675:
- IRC_COVER(504u);
+ IRC_COVER(553u);
  /* 17,3675 CS ONE */
  ai_csf(s,000001u); /* BIT1 */
  goto B37676c;
 B37676c:
- IRC_COVER(505u);
+ IRC_COVER(554u);
  /* 17,3676 TS BLAST2 */
  (void)ai_ts(s,(unsigned)01463);
  goto B37677c;
 B37677c:
- IRC_COVER(506u);
+ IRC_COVER(555u);
  /* 17,3677 TCF RESUME */
  W[5]=05333u;return EXEC_OK; /* RESUME */
-B37700c:
- IRC_COVER(507u);
+B37700:
+ IRC_COVER(556u);
  /* 17,3700 REPLACER CA RWORD2 */
  ai_ca(s,01452);
  goto B37701c;
+B37700c:
+ IRC_COVER(557u);
+ goto B37700;
 B37701c:
- IRC_COVER(508u);
+ IRC_COVER(558u);
  /* 17,3701 EXTEND */
  goto X37702c;
 X37702c:
- IRC_COVER(509u);
+ IRC_COVER(559u);
  /* 17,3702 EXTENDED WRITE CHAN6 */
  ch_write(s,io,06);
  goto B37703c;
 B37703c:
- IRC_COVER(510u);
+ IRC_COVER(560u);
  /* 17,3703 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
-B37704c:
- IRC_COVER(511u);
+B37704:
+ IRC_COVER(561u);
  /* 17,3704 REPLACEP CA YJETS */
  ai_caf(s,006360u); /* YJETS */
  goto B37705c;
+B37704c:
+ IRC_COVER(562u);
+ goto B37704;
 B37705c:
- IRC_COVER(512u);
+ IRC_COVER(563u);
  /* 17,3705 EXTEND */
  goto X37706c;
 X37706c:
- IRC_COVER(513u);
+ IRC_COVER(564u);
  /* 17,3706 EXTENDED RAND CHAN5 */
  ch_rand(s,io,05);
  goto B37707c;
 B37707c:
- IRC_COVER(514u);
+ IRC_COVER(565u);
  /* 17,3707 AD PWORD2 */
  ai_ad(s,01454);
  goto B37710;
 B37710:
- IRC_COVER(515u);
+ IRC_COVER(566u);
  /* 17,3710 EXTEND */
  goto X37711;
 X37711:
- IRC_COVER(516u);
+ IRC_COVER(567u);
  /* 17,3711 EXTENDED WRITE CHAN5 */
  ch_write(s,io,05);
  goto B37712;
 B37712:
- IRC_COVER(517u);
+ IRC_COVER(568u);
  /* 17,3712 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
-B37713c:
- IRC_COVER(518u);
+B37713:
+ IRC_COVER(569u);
  /* 17,3713 REPLACEY CA PJETS */
  ai_caf(s,001417u); /* PJETS */
  goto B37714c;
+B37713c:
+ IRC_COVER(570u);
+ goto B37713;
 B37714c:
- IRC_COVER(519u);
+ IRC_COVER(571u);
  /* 17,3714 EXTEND */
  goto X37715c;
 X37715c:
- IRC_COVER(520u);
+ IRC_COVER(572u);
  /* 17,3715 EXTENDED RAND CHAN5 */
  ch_rand(s,io,05);
  goto B37716c;
 B37716c:
- IRC_COVER(521u);
+ IRC_COVER(573u);
  /* 17,3716 AD YWORD2 */
  ai_ad(s,01456);
  goto B37717;
 B37717:
- IRC_COVER(522u);
+ IRC_COVER(574u);
  /* 17,3717 EXTEND */
  goto X37720;
 X37720:
- IRC_COVER(523u);
+ IRC_COVER(575u);
  /* 17,3720 EXTENDED WRITE CHAN5 */
  ch_write(s,io,05);
  goto B37721;
 B37721:
- IRC_COVER(524u);
+ IRC_COVER(576u);
  /* 17,3721 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
-B37722c:
- IRC_COVER(525u);
+B37722:
+ IRC_COVER(577u);
  /* 17,3722 ZBLAST CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37723c;
-B37723c:
- IRC_COVER(526u);
+B37722c: __attribute__((unused));
+ IRC_COVER(578u);
+ goto B37722;
+B37723:
+ IRC_COVER(579u);
  /* 17,3723 XCH BLAST */
  ai_xch(s,01457);
  goto B37724c;
+B37723c:
+ IRC_COVER(580u);
+ goto B37723;
 B37724c:
- IRC_COVER(527u);
+ IRC_COVER(581u);
  /* 17,3724 TCF ENABT6 */
  goto B37732c;
-B37725c:
- IRC_COVER(528u);
+B37725:
+ IRC_COVER(582u);
  /* 17,3725 ZBLAST1 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37726c;
+B37725c: __attribute__((unused));
+ IRC_COVER(583u);
+ goto B37725;
 B37726c:
- IRC_COVER(529u);
+ IRC_COVER(584u);
  /* 17,3726 XCH BLAST1 */
  ai_xch(s,01461);
  goto B37727c;
 B37727c:
- IRC_COVER(530u);
+ IRC_COVER(585u);
  /* 17,3727 TCF ENABT6 */
  goto B37732c;
-B37730c:
- IRC_COVER(531u);
+B37730:
+ IRC_COVER(586u);
  /* 17,3730 ZBLAST2 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B37731c;
+B37730c: __attribute__((unused));
+ IRC_COVER(587u);
+ goto B37730;
 B37731c:
- IRC_COVER(532u);
+ IRC_COVER(588u);
  /* 17,3731 XCH BLAST2 */
  ai_xch(s,01463);
  goto B37732c;
 B37732c:
- IRC_COVER(533u);
+ IRC_COVER(589u);
  /* 17,3732 ENABT6 TS TIME6 */
  (void)ai_ts(s,(unsigned)031);
  goto B37733c;
 B37733c:
- IRC_COVER(534u);
+ IRC_COVER(590u);
  /* 17,3733 CAF NEGMAX */
  ai_caf(s,040000u); /* BIT15 */
  goto B37734c;
 B37734c:
- IRC_COVER(535u);
+ IRC_COVER(591u);
  /* 17,3734 EXTEND */
  goto X37735c;
 X37735c:
- IRC_COVER(536u);
+ IRC_COVER(592u);
  /* 17,3735 EXTENDED WOR CHAN13 */
  ch_wor(s,io,013);
  goto B37736c;
 B37736c:
- IRC_COVER(537u);
+ IRC_COVER(593u);
  /* 17,3736 TCF RESUME */
  W[5]=05333u;return EXEC_OK; /* RESUME */
 dispatch:
  p=agc_fixed_physical(W[5],W[4],io->superbank);
  switch(p){
- case 15722u:goto B36552;
- case 15872u:goto B37000;
- case 16271u:goto B37617;
- case 16307u:goto B37663;
+ case 16310u:goto B37666;
  case 16312u:goto B37670;
+ case 16315u:goto B37673;
  case 16317u:goto B37675;
+ case 16320u:goto B37700;
+ case 16324u:goto B37704;
+ case 16330u:goto B37712;
+ case 16331u:goto B37713;
+ case 16338u:goto B37722;
+ case 16339u:goto B37723;
+ case 16341u:goto B37725;
+ case 16344u:goto B37730;
  default:return EXEC_OK;
  }
 }
@@ -3052,18 +3406,539 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #ifndef CM_JET_SELECT_KEEP0
 #define CM_JET_SELECT_KEEP0 0xfffffffffffffff
 #endif
+#ifndef CM_JET_SELECT_KEEP1
+#define CM_JET_SELECT_KEEP1 0xfffffffffffffff
+#endif
 #if (CM_JET_SELECT_KEEP0 >> 0) & 1
 /* 17,2552 JETSLECT (entry JETSLECT (AUTOMATIC_MANEUVERS.agc 2CADR JETSLECT)) */
 static enum exec_status r36552_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,15722u);
+ return basic_part_0(s,(cm_native_io *)v,15722u);
 }
 #endif
 #if (CM_JET_SELECT_KEEP0 >> 1) & 1
+/* 17,2671  (part key) */
+static enum exec_status r36671_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_1(s,(cm_native_io *)v,15801u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 2) & 1
+/* 17,3000  (part key) */
+static enum exec_status r37000_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_1(s,(cm_native_io *)v,15872u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 3) & 1
+/* 17,3013  (part key) */
+static enum exec_status r37013_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_2(s,(cm_native_io *)v,15883u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 4) & 1
+/* 17,3015  (part key) */
+static enum exec_status r37015_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_2(s,(cm_native_io *)v,15885u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 5) & 1
+/* 17,3040 NOBDZ (part key) */
+static enum exec_status r37040_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_2(s,(cm_native_io *)v,15904u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 6) & 1
+/* 17,3046 BDROLL (part key) */
+static enum exec_status r37046_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_2(s,(cm_native_io *)v,15910u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 7) & 1
+/* 17,3102  (part key) */
+static enum exec_status r37102_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_3(s,(cm_native_io *)v,15938u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 8) & 1
+/* 17,3106  (part key) */
+static enum exec_status r37106_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_3(s,(cm_native_io *)v,15942u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 9) & 1
+/* 17,3112 BDRACZ (part key) */
+static enum exec_status r37112_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_3(s,(cm_native_io *)v,15946u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 10) & 1
+/* 17,3114  (part key) */
+static enum exec_status r37114_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_3(s,(cm_native_io *)v,15948u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 11) & 1
+/* 17,3115 TAUCHCK (part key) */
+static enum exec_status r37115_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_3(s,(cm_native_io *)v,15949u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 12) & 1
+/* 17,3122 NOACY (part key) */
+static enum exec_status r37122_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_3(s,(cm_native_io *)v,15954u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 13) & 1
+/* 17,3164 PITCHTIM (part key) */
+static enum exec_status r37164_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_3(s,(cm_native_io *)v,15988u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 14) & 1
+/* 17,3230 YAWTIME (part key) */
+static enum exec_status r37230_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16024u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 15) & 1
+/* 17,3231  (part key) */
+static enum exec_status r37231_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16025u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 16) & 1
+/* 17,3232  (part key) */
+static enum exec_status r37232_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16026u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 17) & 1
+/* 17,3233  (part key) */
+static enum exec_status r37233_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16027u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 18) & 1
+/* 17,3234  (part key) */
+static enum exec_status r37234_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16028u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 19) & 1
+/* 17,3240 YTAUPOS (part key) */
+static enum exec_status r37240_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16032u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 20) & 1
+/* 17,3250  (part key) */
+static enum exec_status r37250_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16040u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 21) & 1
+/* 17,3260 AD14MSY (part key) */
+static enum exec_status r37260_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16048u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 22) & 1
+/* 17,3274 ROLLTIME (part key) */
+static enum exec_status r37274_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_4(s,(cm_native_io *)v,16060u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 23) & 1
+/* 17,3331  (part key) */
+static enum exec_status r37331_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16089u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 24) & 1
+/* 17,3334 AD14MSR (part key) */
+static enum exec_status r37334_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16092u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 25) & 1
+/* 17,3342 RBLASTOK (part key) */
+static enum exec_status r37342_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16098u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 26) & 1
+/* 17,3357 ASMBLWP (part key) */
+static enum exec_status r37357_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16111u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 27) & 1
+/* 17,3366 FPX2 (part key) */
+static enum exec_status r37366_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16118u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 28) & 1
+/* 17,3367  (part key) */
+static enum exec_status r37367_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16119u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 29) & 1
+/* 17,3372 PBYPASS (part key) */
+static enum exec_status r37372_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16122u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 30) & 1
+/* 17,3377 ASMBLWR (part key) */
+static enum exec_status r37377_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16127u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 31) & 1
+/* 17,3402  (part key) */
+static enum exec_status r37402_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16130u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 32) & 1
+/* 17,3403  (part key) */
+static enum exec_status r37403_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16131u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 33) & 1
+/* 17,3405 NO2Z (part key) */
+static enum exec_status r37405_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16133u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 34) & 1
+/* 17,3406  (part key) */
+static enum exec_status r37406_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_5(s,(cm_native_io *)v,16134u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 35) & 1
+/* 17,3422  (part key) */
+static enum exec_status r37422_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_6(s,(cm_native_io *)v,16146u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 36) & 1
+/* 17,3424  (part key) */
+static enum exec_status r37424_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_6(s,(cm_native_io *)v,16148u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 37) & 1
+/* 17,3426 AC2Y (part key) */
+static enum exec_status r37426_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_6(s,(cm_native_io *)v,16150u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 38) & 1
+/* 17,3432  (part key) */
+static enum exec_status r37432_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_6(s,(cm_native_io *)v,16154u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 39) & 1
+/* 17,3436  (part key) */
+static enum exec_status r37436_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_6(s,(cm_native_io *)v,16158u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 40) & 1
+/* 17,3453 ACBD2Z (part key) */
+static enum exec_status r37453_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_6(s,(cm_native_io *)v,16171u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 41) & 1
+/* 17,3463  (part key) */
+static enum exec_status r37463_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_6(s,(cm_native_io *)v,16179u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 42) & 1
+/* 17,3501  (part key) */
+static enum exec_status r37501_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16193u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 43) & 1
+/* 17,3504 BDF2Z (part key) */
+static enum exec_status r37504_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16196u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 44) & 1
+/* 17,3510  (part key) */
+static enum exec_status r37510_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16200u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 45) & 1
+/* 17,3516 RBYPASS (part key) */
+static enum exec_status r37516_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16206u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 46) & 1
+/* 17,3520  (part key) */
+static enum exec_status r37520_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16208u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 47) & 1
+/* 17,3523 ASMBLWY (part key) */
+static enum exec_status r37523_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16211u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 48) & 1
+/* 17,3527  (part key) */
+static enum exec_status r37527_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16215u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 49) & 1
+/* 17,3532 FYX2 (part key) */
+static enum exec_status r37532_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16218u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 50) & 1
+/* 17,3536 YBYPASS (part key) */
+static enum exec_status r37536_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16222u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 51) & 1
+/* 17,3554 CHECKT23 (part key) */
+static enum exec_status r37554_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16236u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 52) & 1
+/* 17,3560 CALCDT6 (part key) */
+static enum exec_status r37560_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_7(s,(cm_native_io *)v,16240u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 53) & 1
+/* 17,3561  (part key) */
+static enum exec_status r37561_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16241u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 54) & 1
+/* 17,3563  (part key) */
+static enum exec_status r37563_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16243u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 55) & 1
+/* 17,3577 DXCHT12 (part key) */
+static enum exec_status r37577_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16255u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 56) & 1
+/* 17,3600  (part key) */
+static enum exec_status r37600_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16256u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 57) & 1
+/* 17,3603 DXCHT23 (part key) */
+static enum exec_status r37603_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16259u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 58) & 1
 /* 17,3617 T6START (entry T6START (RCS-CSM_DIGITAL_AUTOPILOT.agc 2CADR T6START)) */
 static enum exec_status r37617_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
- return basic_run(s,(cm_native_io *)v,16271u);
+ return basic_part_8(s,(cm_native_io *)v,16271u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 59) & 1
+/* 17,3620  (part key) */
+static enum exec_status r37620_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16272u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 0) & 1
+/* 17,3637  (part key) */
+static enum exec_status r37637_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16287u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 1) & 1
+/* 17,3642 T6RUPTOR (part key) */
+static enum exec_status r37642_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16290u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 2) & 1
+/* 17,3654 T6L2 (part key) */
+static enum exec_status r37654_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16300u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 3) & 1
+/* 17,3663  (part key) */
+static enum exec_status r37663_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_8(s,(cm_native_io *)v,16307u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 4) & 1
+/* 17,3666 REPLACE1 (part key) */
+static enum exec_status r37666_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16310u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 5) & 1
+/* 17,3670  (part key) */
+static enum exec_status r37670_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16312u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 6) & 1
+/* 17,3673 REPLACE2 (part key) */
+static enum exec_status r37673_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16315u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 7) & 1
+/* 17,3675  (part key) */
+static enum exec_status r37675_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16317u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 8) & 1
+/* 17,3700 REPLACER (part key) */
+static enum exec_status r37700_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16320u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 9) & 1
+/* 17,3704 REPLACEP (part key) */
+static enum exec_status r37704_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16324u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 10) & 1
+/* 17,3712  (part key) */
+static enum exec_status r37712_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16330u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 11) & 1
+/* 17,3713 REPLACEY (part key) */
+static enum exec_status r37713_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16331u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 12) & 1
+/* 17,3722 ZBLAST (part key) */
+static enum exec_status r37722_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16338u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 13) & 1
+/* 17,3723  (part key) */
+static enum exec_status r37723_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16339u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 14) & 1
+/* 17,3725 ZBLAST1 (part key) */
+static enum exec_status r37725_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16341u);
+}
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 15) & 1
+/* 17,3730 ZBLAST2 (part key) */
+static enum exec_status r37730_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,036000u))return EXEC_OUT_OF_SCOPE;
+ return basic_part_9(s,(cm_native_io *)v,16344u);
 }
 #endif
 
@@ -3083,14 +3958,310 @@ static const agc_routine_entry basic_entries[]={
  {15722,r36552_abi},
 #endif
 #if (CM_JET_SELECT_KEEP0 >> 1) & 1
+ {15801,r36671_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 2) & 1
+ {15872,r37000_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 3) & 1
+ {15883,r37013_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 4) & 1
+ {15885,r37015_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 5) & 1
+ {15904,r37040_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 6) & 1
+ {15910,r37046_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 7) & 1
+ {15938,r37102_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 8) & 1
+ {15942,r37106_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 9) & 1
+ {15946,r37112_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 10) & 1
+ {15948,r37114_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 11) & 1
+ {15949,r37115_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 12) & 1
+ {15954,r37122_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 13) & 1
+ {15988,r37164_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 14) & 1
+ {16024,r37230_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 15) & 1
+ {16025,r37231_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 16) & 1
+ {16026,r37232_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 17) & 1
+ {16027,r37233_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 18) & 1
+ {16028,r37234_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 19) & 1
+ {16032,r37240_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 20) & 1
+ {16040,r37250_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 21) & 1
+ {16048,r37260_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 22) & 1
+ {16060,r37274_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 23) & 1
+ {16089,r37331_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 24) & 1
+ {16092,r37334_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 25) & 1
+ {16098,r37342_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 26) & 1
+ {16111,r37357_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 27) & 1
+ {16118,r37366_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 28) & 1
+ {16119,r37367_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 29) & 1
+ {16122,r37372_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 30) & 1
+ {16127,r37377_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 31) & 1
+ {16130,r37402_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 32) & 1
+ {16131,r37403_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 33) & 1
+ {16133,r37405_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 34) & 1
+ {16134,r37406_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 35) & 1
+ {16146,r37422_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 36) & 1
+ {16148,r37424_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 37) & 1
+ {16150,r37426_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 38) & 1
+ {16154,r37432_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 39) & 1
+ {16158,r37436_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 40) & 1
+ {16171,r37453_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 41) & 1
+ {16179,r37463_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 42) & 1
+ {16193,r37501_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 43) & 1
+ {16196,r37504_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 44) & 1
+ {16200,r37510_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 45) & 1
+ {16206,r37516_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 46) & 1
+ {16208,r37520_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 47) & 1
+ {16211,r37523_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 48) & 1
+ {16215,r37527_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 49) & 1
+ {16218,r37532_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 50) & 1
+ {16222,r37536_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 51) & 1
+ {16236,r37554_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 52) & 1
+ {16240,r37560_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 53) & 1
+ {16241,r37561_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 54) & 1
+ {16243,r37563_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 55) & 1
+ {16255,r37577_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 56) & 1
+ {16256,r37600_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 57) & 1
+ {16259,r37603_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 58) & 1
  {16271,r37617_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 59) & 1
+ {16272,r37620_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 0) & 1
+ {16287,r37637_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 1) & 1
+ {16290,r37642_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 2) & 1
+ {16300,r37654_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 3) & 1
+ {16307,r37663_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 4) & 1
+ {16310,r37666_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 5) & 1
+ {16312,r37670_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 6) & 1
+ {16315,r37673_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 7) & 1
+ {16317,r37675_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 8) & 1
+ {16320,r37700_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 9) & 1
+ {16324,r37704_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 10) & 1
+ {16330,r37712_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 11) & 1
+ {16331,r37713_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 12) & 1
+ {16338,r37722_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 13) & 1
+ {16339,r37723_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 14) & 1
+ {16341,r37725_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 15) & 1
+ {16344,r37730_abi},
 #endif
  {0xffffu,0}
 };
 const agc_routine_table cm_jet_select_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
 const cm_jet_select_point cm_jet_select_points[CM_JET_SELECT_POINTS]={
  {15722,0},
- {16271,0}
+ {15801,0},
+ {15872,0},
+ {15883,0},
+ {15885,0},
+ {15904,0},
+ {15910,0},
+ {15938,0},
+ {15942,0},
+ {15946,0},
+ {15948,0},
+ {15949,0},
+ {15954,0},
+ {15988,0},
+ {16024,0},
+ {16025,0},
+ {16026,0},
+ {16027,0},
+ {16028,0},
+ {16032,0},
+ {16040,0},
+ {16048,0},
+ {16060,0},
+ {16089,0},
+ {16092,0},
+ {16098,0},
+ {16111,0},
+ {16118,0},
+ {16119,0},
+ {16122,0},
+ {16127,0},
+ {16130,0},
+ {16131,0},
+ {16133,0},
+ {16134,0},
+ {16146,0},
+ {16148,0},
+ {16150,0},
+ {16154,0},
+ {16158,0},
+ {16171,0},
+ {16179,0},
+ {16193,0},
+ {16196,0},
+ {16200,0},
+ {16206,0},
+ {16208,0},
+ {16211,0},
+ {16215,0},
+ {16218,0},
+ {16222,0},
+ {16236,0},
+ {16240,0},
+ {16241,0},
+ {16243,0},
+ {16255,0},
+ {16256,0},
+ {16259,0},
+ {16271,0},
+ {16272,0},
+ {16287,0},
+ {16290,0},
+ {16300,0},
+ {16307,0},
+ {16310,0},
+ {16312,0},
+ {16315,0},
+ {16317,0},
+ {16320,0},
+ {16324,0},
+ {16330,0},
+ {16331,0},
+ {16338,0},
+ {16339,0},
+ {16341,0},
+ {16344,0}
 };
 const agc_word cm_jet_select_cadr_words[CM_JET_SELECT_CADR_WORDS]={0};
 const agc_word cm_jet_select_externals[CM_JET_SELECT_EXTERNALS]={05333};

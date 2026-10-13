@@ -22,6 +22,7 @@ address outside the order's field (which would change the order) is
 EXEC_INVALID_ACTION, as is a fixed read outside the spec's 'fixed_tables'.
 """
 
+import collections
 import re
 
 QUARTER = {1: 'CCS', 2: ('DAS', 'LXCH', 'INCR', 'ADS'), 5: ('INDEX', 'DXCH', 'TS', 'XCH')}
@@ -692,7 +693,7 @@ class Basic:
         c.append(' * tables above: 0 outside them. */')
         c.append('static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){')
         c.append(' unsigned p;(void)s;')
-        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % self.bank(min(self.entries) if self.entries else self.cp.lo))
+        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % self.bank(getattr(self, 'fx_entry', None) or (min(self.entries) if self.entries else self.cp.lo)))
         for lo, hi, lab, off in self.fixed_tables:
             c.append(' if(p>=%uu&&p<=%uu){*k=T%o[p-%uu];return 1;}' % (lo, hi, lo, lo))
         c.append(' (void)p;(void)k;return 0;')
@@ -711,6 +712,8 @@ class Basic:
         self.node_banks = [k[0] // 1024 for k in order]
         if self.spec.get('basic_split'):
             return c + self.emit_split(sym, order)
+        if self.spec.get('basic_parts'):
+            return c + self.emit_parts(sym, order)
         c.append('/* Every basic word of the file. */')
         c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){')
         c.append(' long ix=0,e=0;uint16_t p;')
@@ -755,8 +758,104 @@ class Basic:
         c.append('}')
         return c
 
-    def run_name(self, bank):
+    def run_name(self, bank, phys=None):
+        if self.spec.get('basic_parts') and phys is not None:
+            return 'basic_part_%d' % self.part_of(phys)
         return 'basic_run_%o' % bank if self.spec.get('basic_split') else 'basic_run'
+
+    # ---- parts (spec 'basic_parts') ---------------------------------------
+    # The flight store links each routine with its closure; one basic_run
+    # holding the whole file puts every routine over its slot. With
+    # 'basic_parts': {'budget': n}, the basic words are cut, in address
+    # order, into part functions of about n characters of C each. A transfer
+    # into another part's word sets Z to it and returns EXEC_OK, so the
+    # transfer runner goes on in that word's routine (a part key): the run,
+    # and every case's outcome, is the same.
+    def part_of(self, phys):
+        import bisect
+        return bisect.bisect_right(getattr(self, 'cuts', []), phys)
+
+    def partition(self):
+        """Choose the cuts; return the words another part enters (the part
+        keys: targets of gotos across a cut, and every computed-transfer
+        target when there is more than one part)."""
+        budget = self.spec['basic_parts']['budget']
+        # (fx's bank comes from the file's own starts, not part keys.)
+        if self.entries and not hasattr(self, 'fx_entry'):
+            self.fx_entry = min(self.entries)
+        size = collections.Counter()
+        ext_at = set()
+        for k, body in self.nodes.items():
+            size[k[0]] += sum(len(x) for x in (body or ())) + 16
+            if k[1]:
+                ext_at.add(k[0])
+        cuts, acc = [], 0
+        for a in sorted(size):
+            # (Never cut before a word reached under EXTEND: the extend
+            # state does not cross a hand-off.)
+            if acc and acc + size[a] > budget and a not in ext_at:
+                cuts.append(a)
+                acc = 0
+            acc += size[a]
+        self.cuts = cuts
+        keys = set()
+        lab = {self.label(*k): k for k in self.nodes}
+        for k, body in self.nodes.items():
+            for x in body or ():
+                for m in re.finditer(r'goto ([BX][0-7]+c?);', x):
+                    t = lab.get(m.group(1))
+                    if t is not None and self.part_of(t[0]) != self.part_of(k[0]):
+                        if t[1]:
+                            raise BasicError('extended word %s across a part cut' % self.where(t[0]))
+                        keys.add(t[0])
+        if cuts:
+            keys |= {p for p in self.dispatch if (p, False, False) in self.nodes}
+        return keys
+
+    def emit_parts(self, sym, order):
+        """The part functions (see partition())."""
+        lab = {self.label(*k): k for k in order}
+        nparts = len(getattr(self, 'cuts', [])) + 1
+        c = []
+        for j in range(nparts):
+            mine = [(n, k) for n, k in enumerate(order) if self.part_of(k[0]) == j]
+            body = []
+            for n, k in mine:
+                body.append('%s:' % self.label(*k))
+                body.append(' IRC_COVER(%du);' % n)
+                twin = (k[0], k[1], False)
+                if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in self.nodes[k]]:
+                    body.append(' goto %s;' % self.label(*twin))
+                    continue
+                for x in self.nodes[k]:
+                    body.append(' ' + x)
+
+            def cross(m):
+                k = lab.get(m.group(1))
+                if k is None or self.part_of(k[0]) == j:
+                    return m.group(0)
+                # Hand Z to the word's routine (a part key).
+                return '{W[5]=0%o;return EXEC_OK;} /* part key %s */' % (self.logical(k[0]), self.where(k[0]))
+            body = [re.sub(r'goto ([BX][0-7]+c?);', cross, x) for x in body]
+            into = sorted(p for p in self.entries if self.part_of(p) == j and (p, False, False) in self.nodes)
+            fn = ['/* Basic words, part %d of %d. */' % (j + 1, nparts),
+                  'static MAYBE_UNUSED enum exec_status basic_part_%d(apollo_overlay_state *s,cm_native_io *io,uint16_t at){' % j,
+                  ' long ix=0,e=0;uint16_t p;', ' (void)ix;(void)e;(void)p;(void)io;', ' switch(at){']
+            fn += [' case %uu:goto %s;' % (q, self.label(q)) for q in into]
+            fn += [' default:return EXEC_OUT_OF_SCOPE;', ' }']
+            fn += body
+            if any('goto dispatch' in x for x in body):
+                fn += ['dispatch:', ' p=agc_fixed_physical(W[5],W[4],io->superbank);', ' switch(p){']
+                fn += [' case %uu:goto %s;' % (q, self.label(q)) for q in sorted(self.dispatch)
+                       if (q, False, False) in self.nodes and self.part_of(q) == j]
+                # (A word of another part: Z already names it, a part key.)
+                fn += [' default:return EXEC_OK;', ' }']
+            used = set(re.findall(r'goto ([A-Za-z][A-Za-z0-9]*);', '\n'.join(fn)))
+            fn = [x + ' __attribute__((unused));' if x.endswith(':') and not x.startswith(' ') and x[:-1] not in used else x
+                  for x in fn]
+            c += fn
+            c.append('}')
+        return c
 
     def emit_split(self, sym, order):
         """Spec 'basic_split': one function per bank (basic_run_<bank>),
