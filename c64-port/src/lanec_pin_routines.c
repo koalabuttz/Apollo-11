@@ -76,7 +76,7 @@ static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s,
         io.channel[012] = x->channel12; io.channel[013] = x->channel13; io.channel[014] = x->channel14;
         if ((*f)(s, &io, LANEC_LM) == LANEC_OK && !unrepresented(014u)) {
             x->control.superbank = io.superbank; x->control.interrupt_enabled = io.interrupt_enabled;
-            p->hardware->channel11 = io.channel[011];
+            p->hardware->channel11 = x->channel11 = io.channel[011];
             x->channel12 = io.channel[012]; x->channel13 = io.channel[013]; x->channel14 = io.channel[014];
             cell_return(s);
             return EXEC_OK;

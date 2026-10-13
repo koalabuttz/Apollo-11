@@ -31,7 +31,7 @@ static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s,
     CHANNELS(IN, x->)
     if (f(s, &io, LANEC_LM) != LANEC_OK) return EXEC_OUT_OF_SCOPE;
     x->control.superbank = io.superbank; x->control.interrupt_enabled = io.interrupt_enabled;
-    p->hardware->channel11 = io.channel[011];
+    p->hardware->channel11 = x->channel11 = io.channel[011];
     CHANNELS(OUT, x->)
     return EXEC_OK;
 }
