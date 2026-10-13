@@ -26,7 +26,9 @@ LANEC_PW_C64_SRC = src/agc_word.c src/lanec.c tests/lanec_case.c tests/lanec_pw.
   src/lanec_pw_a_runs.c src/lanec_pw_b_runs.c src/lanec_pw_c_runs.c src/lanec_pw_e_runs.c src/lanec_pw_f_runs.c \
   src/lanec_pw_g_runs.c tools/lanec/c64_diag.c \
   $(sort $(filter src/dsky_% src/cm_% src/agc_% src/fixed_% src/noun_% src/guidance_% src/executive% src/lm_basic_% \
-  src/p66_% src/lanec_pin_gaps% tests/dsky_% tests/p66_%,$(LANEC_SUITE_SRC)))
+  src/p66_% src/lanec_pin_gaps% src/lm_admission% src/lm_waitlist% src/lm_fixed% src/lm_pinball% src/gimbal% \
+  src/matrix% src/waitlist% tests/dsky_% tests/p66_% tests/cm_%_cases.c tests/lm_busy_cases.c tests/matrix_cases.c \
+  tests/throttle_bridge_cases.c tests/lanec_p66_dispatch.c,$(LANEC_SUITE_SRC)))
 LANEC_PW_PRGS = $(foreach s,$(LANEC_PW_SUITES),build/lanec-$(s).prg)
 define LANEC_PW_C64_RULE
 build/lanec-$(1).prg: $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c tests/lanec_$(subst -,_,$(1))_c64.h $$(LANEC_HDR) | build

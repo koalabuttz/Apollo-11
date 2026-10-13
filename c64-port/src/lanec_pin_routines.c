@@ -49,6 +49,7 @@ static int unrepresented(uint16_t last)
     return 0;
 }
 
+#ifdef LANEC_PIN_HAS_LM
 static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s, void *v, const dispatch *f)
 {
     lm_dntm_io *x = v;
@@ -71,6 +72,9 @@ static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s,
     return EXEC_OUT_OF_SCOPE;
 }
 
+#endif
+
+#ifdef LANEC_PIN_HAS_CM
 static enum exec_status cm(const agc_native_program *p, apollo_overlay_state *s, void *v, const dispatch *f)
 {
     cm_dntm_io *x = v;
@@ -94,6 +98,7 @@ static enum exec_status cm(const agc_native_program *p, apollo_overlay_state *s,
     }
     return EXEC_OUT_OF_SCOPE;
 }
+#endif
 
 #ifndef LANEC_PIN_C64
 /* The return point after one of the file's BANKCALLs, as INTER-BANK's
@@ -128,10 +133,13 @@ const agc_routine_table lanec_pin_cm_routines = { cm_entries, LANEC_PIN_CM_ROUTI
 
 /* The C64 round trips: one module's points, running it alone. */
 static dispatch c64_run[2];
+#ifdef LANEC_PIN_HAS_LM
 static enum exec_status c64_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, c64_run); }
+#endif
+#ifdef LANEC_PIN_HAS_CM
 static enum exec_status c64_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, c64_run); }
-#define LANEC_PIN_C64_MAX (LANEC_PIN_LM_C64_POINTS > LANEC_PIN_CM_C64_POINTS ? LANEC_PIN_LM_C64_POINTS : LANEC_PIN_CM_C64_POINTS)
-static agc_routine_entry c64_entries[LANEC_PIN_C64_MAX];
+#endif
+static agc_routine_entry c64_entries[LANEC_PIN_C64_MAX];   /* the most points one module claims first */
 agc_routine_table lanec_pin_c64 = { c64_entries, 0 };
 
 const lanec_pin_point *lanec_pin_c64_points(int cm, uint16_t *count)
@@ -152,7 +160,13 @@ void lanec_pin_c64_select(uint8_t module, int cm)
     for (i = 0; i < n; ++i)
         if (p[i].module == module) {
             c64_entries[k].physical = p[i].physical;
+#if defined(LANEC_PIN_HAS_LM) && defined(LANEC_PIN_HAS_CM)
             c64_entries[k++].call = cm ? c64_cm : c64_lm;
+#elif defined(LANEC_PIN_HAS_CM)
+            c64_entries[k++].call = c64_cm;
+#else
+            c64_entries[k++].call = c64_lm;
+#endif
         }
     lanec_pin_c64.count = k;
 }

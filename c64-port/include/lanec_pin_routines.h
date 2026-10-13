@@ -40,6 +40,14 @@ extern const agc_routine_table lanec_pin_lm_routines, lanec_pin_cm_routines;
  * module that claims it first (LANEC_PIN_SWRETURN: a BANKCALL return point,
  * entered through SWRETURN). */
 typedef struct { uint16_t physical; uint8_t module; } lanec_pin_point;
+/* A C64 program runs one mission (LANEC_PIN_C64_CM: Comanche055) and leaves
+ * the other's code out. */
+#if !defined(LANEC_PIN_C64) || !defined(LANEC_PIN_C64_CM)
+#define LANEC_PIN_HAS_LM 1
+#endif
+#if !defined(LANEC_PIN_C64) || defined(LANEC_PIN_C64_CM)
+#define LANEC_PIN_HAS_CM 1
+#endif
 #define LANEC_PIN_SWRETURN 0377u
 extern agc_routine_table lanec_pin_c64;
 void lanec_pin_c64_select(uint8_t module, int cm);

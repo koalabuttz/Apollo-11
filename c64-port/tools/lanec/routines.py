@@ -212,7 +212,8 @@ def main():
             text.append(f'#define LANEC_{up}_{mission}_C64_POINTS {len(rows)}u')
             text.append(f'static const lanec_pin_point c64_{ml}_points[LANEC_{up}_{mission}_C64_POINTS] = {{ '
                         + ', '.join(f'{{ {k}u, {i}u }}' for (k, _), i in zip(rows, idx)) + ' };')
-        text += ['#ifndef LANEC_PIN_C64',
+        most = max(sum(1 for k in points[m][''] if first[m][k] == g) for m in ('LM', 'CM') for g in cfg['modules'])
+        text += [f'#define LANEC_{up}_C64_MAX {most}u', '#ifndef LANEC_PIN_C64',
                  f'static const dispatch c64_runs[{len(cfg["modules"])}] = {{ '
                  + ', '.join(run_of[m] for m in cfg['modules']) + ' };', '#endif']
     text = '\n'.join(text) + '\n'

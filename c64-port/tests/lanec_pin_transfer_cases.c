@@ -54,7 +54,12 @@ static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
 #define LANEC_PIN_COUNT(a) (sizeof a / sizeof a[0])
 #define LANEC_PIN_LM_RANGES (LANEC_PIN_COUNT(lm_file_ranges) + LANEC_PIN_COUNT(lm_external_ranges) + LANEC_PIN_CELLS + 1u)
 #define LANEC_PIN_CM_RANGES (LANEC_PIN_COUNT(cm_file_ranges) + LANEC_PIN_COUNT(cm_external_ranges) + LANEC_PIN_CELLS + 1u)
-static lanec_range lm_ranges[LANEC_PIN_LM_RANGES], cm_ranges[LANEC_PIN_CM_RANGES];
+#ifdef LANEC_PIN_HAS_LM
+static lanec_range lm_ranges[LANEC_PIN_LM_RANGES];
+#endif
+#ifdef LANEC_PIN_HAS_CM
+static lanec_range cm_ranges[LANEC_PIN_CM_RANGES];
+#endif
 static void ranges_of(lanec_meta *m, lanec_range *out, const lanec_range *file, uint16_t files,
                       const lanec_range *external, uint16_t externals)
 {
@@ -71,7 +76,12 @@ static void ranges_of(lanec_meta *m, lanec_range *out, const lanec_range *file, 
 /* The oracle stops where a module hands control to another file's code
  * (external_exits: ENDOFJOB, JOBSLEEP, ...) unless the program registers a
  * routine there (the Executive's, INTER-BANK's, ...). */
-static lanec_point lm_stops[LANEC_PIN_COUNT(lm_external_exits)], cm_stops[LANEC_PIN_COUNT(cm_external_exits)];
+#ifdef LANEC_PIN_HAS_LM
+static lanec_point lm_stops[LANEC_PIN_COUNT(lm_external_exits)];
+#endif
+#ifdef LANEC_PIN_HAS_CM
+static lanec_point cm_stops[LANEC_PIN_COUNT(cm_external_exits)];
+#endif
 #ifndef LANEC_PIN_TRANSFER_C64
 static int registered(const agc_routine_table *const *tables, uint16_t physical)
 {
@@ -156,6 +166,7 @@ static void make_case(const transfer_case *c, apollo_overlay_state *s, lanec_io 
         s->words[LANEC_Q] = (uint16_t)(02000u + offset);
     }
     range(m, LANEC_TC_CELL, 0u, 7u);                 /* TC Q, TC L: a return held in a register */
+#ifdef LANEC_PIN_HAS_LM
     if (m->mission == LANEC_LM) {
         /* the Executive as in di-transfer: the caller alone in core set 0 */
         s->words[0167] = 020000u;
@@ -172,13 +183,17 @@ static void make_case(const transfer_case *c, apollo_overlay_state *s, lanec_io 
         m->stop[0].bank = 01u; m->stop[0].address = LM_EXEC_ADVAN; m->stops = 1u;
         ranges_of(m, lm_ranges, lm_file_ranges, LANEC_PIN_COUNT(lm_file_ranges), lm_external_ranges, LANEC_PIN_COUNT(lm_external_ranges));
         stops_of(m, lm_stops, lm_external_exits, LANEC_PIN_COUNT(lm_external_exits));
-    } else {
+    }
+#endif
+#ifdef LANEC_PIN_HAS_CM
+    if (m->mission == LANEC_CM) {
         range(m, LANEC_ANY_BANK, 04662u, 04775u);
         range(m, LANEC_ANY_BANK, 05526u, 05545u);
         range(m, 010u, 02553u, 03765u);
         ranges_of(m, cm_ranges, cm_file_ranges, LANEC_PIN_COUNT(cm_file_ranges), cm_external_ranges, LANEC_PIN_COUNT(cm_external_ranges));
         stops_of(m, cm_stops, cm_external_exits, LANEC_PIN_COUNT(cm_external_exits));
     }
+#endif
 }
 
 #ifndef LANEC_PIN_TRANSFER_C64
