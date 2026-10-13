@@ -19,8 +19,11 @@ void lm_t6_input(apollo_overlay_state *m,p66_bias_io *io,agc_hardware *hw,uint16
  m->words[3]=03000;m->words[4]=fb;m->words[6]=(agc_word)(fb|6u);
  m->words[E6(LM_T6NEXT)]=time6(&r);m->words[E6(LM_T6NEXT)+1u]=index6(&r);
  m->words[E6(LM_T6FURTHA)]=time6(&r);m->words[E6(LM_T6FURTHA)+1u]=index6(&r);m->words[E6(LM_NXT6ADR)]=index6(&r);
- /* TIME6: mostly -0 (a T6RUPT is due), else counting (+) or +0. */
- {uint32_t x=rnd(&r)%8u;m->words[LM_TIME6]=(agc_word)(x<5u?077777u:x<7u?1u+rnd(&r)%037776u:0u);}
+ /* TIME6: mostly -0 (a T6RUPT is due), else counting (+: one to three
+  * counts from its end, or full scale, or anywhere) or +0. */
+ {uint32_t x=rnd(&r)%8u,y;agc_word t;
+  if(x==5u){y=rnd(&r)%4u;t=(agc_word)(y<3u?1u+y:037777u);}else t=(agc_word)(x<5u?077777u:x<7u?1u+rnd(&r)%037776u:0u);
+  m->words[LM_TIME6]=t;}
  io->superbank=(agc_word)((rnd(&r)%8u)*020u);io->interrupt_enabled=(agc_word)(rnd(&r)&1u);
  hw->channel11=0;hw->channel5=(agc_word)(rnd(&r)&AGC_MASK);hw->channel6=(agc_word)(rnd(&r)&AGC_MASK);hw->channel13=(agc_word)(rnd(&r)&043777u);
  hw->in_interrupt=1;

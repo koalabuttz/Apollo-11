@@ -27,6 +27,22 @@ static void canon(apollo_overlay_state *m,uint8_t cores,uint8_t vacs,uint8_t cou
  for(i=0;i<8u;++i)m->words[01400u+i]=(agc_word)(077777u-(rnd(seed)>>16)%6000u);
  for(i=0;i<9u;++i){m->words[01410u+2u*i]=i<count?(agc_word)(02000u+i):WL_END_LOCATION;m->words[01411u+2u*i]=i<count?(agc_word)(060007u|(i%8u)*020u):WL_END_BANK;}
 }
+/* Flight-typical edges over a canonical state, by case (n/13)%8: TIME3 one
+ * to four centiseconds before its overflow (0), every later task due 1 cs
+ * after the one before (1), equal priorities in the busy core sets (2),
+ * NEWJOB -0 (3), TIME3 just overflowed with the first task due next (4),
+ * every later task due together with the one before (5).
+ * They leave the seeded draws as they were. */
+static void edges(apollo_overlay_state *m,uint16_t n){unsigned i;
+ switch((n/13u)%8u){
+ case 0:m->words[026]=(agc_word)(037777u-n%4u);break;
+ case 1:m->words[01400]=(agc_word)(077777u-1u-n%3u);for(i=1;i<8u;++i)m->words[01400u+i]=077776u;break;
+ case 2:for(i=1;i<8u;++i)if(!(m->words[0167u+12u*i]&AGC_SIGN))m->words[0167u+12u*i]=011110u;break;
+ case 3:m->words[067]=AGC_NEG_ZERO;break;
+ case 4:m->words[026]=0;m->words[01400]=077776u;break;
+ case 5:m->words[026]=(agc_word)(037740u+n%040u);for(i=1;i<8u;++i)m->words[01400u+i]=0;break;
+ default:break;}
+}
 static void random_image(apollo_overlay_state *m,uint32_t *seed){unsigned i;
  for(i=0;i<2048u;++i)m->words[i]=(agc_word)((rnd(seed)>>12)&AGC_MASK);
  m->words[7]=0;for(i=010;i<=061u;++i)m->words[i]=0;
@@ -63,14 +79,14 @@ void lm_exs_input(apollo_overlay_state *m,p66_bias_io *io,lm_exs_case *c,uint16_
   g=m->words[0161];phase=m->words[0154];
   if(m->words[5]==LM_RS_RESTARTS&&g<6u&&(phase&01400u)&&((phase&01000u)||(phase&7u)==2u))
    m->words[01054u+g*2u]=(agc_word)(((m->words[01054u+g*2u]>>9)%31u+1u)*01000u);
-  canon(m,(uint8_t)(1u+(n/7u)%8u),(uint8_t)((n/5u)%6u),(uint8_t)((n/3u)%10u),&seed);
+  canon(m,(uint8_t)(1u+(n/7u)%8u),(uint8_t)((n/5u)%6u),(uint8_t)((n/3u)%10u),&seed);edges(m,n);
   c->stop_z=LM_RS_SWRETURN;c->stop_fb=ANY_FB;return;
  }
  if(n<LM_EXS_TASK_FIRST){
   uint16_t k=(uint16_t)((n-LM_EXS_SITE_FIRST)%LM_EXS_SITES),v=(uint16_t)((n-LM_EXS_SITE_FIRST)/LM_EXS_SITES),e=site_entry(k);
   uint16_t ph=lm_exec_sites[e].physical,bank=(uint16_t)(ph/1024u),off=(uint16_t)(ph%1024u);agc_word callee=lm_exec_sites_callee[e],q,fb,a,l;
   random_image(m,&seed);
-  canon(m,(uint8_t)(1u+v%8u),(uint8_t)((v/2u)%6u),(uint8_t)((v*3u)%10u),&seed);
+  canon(m,(uint8_t)(1u+v%8u),(uint8_t)((v/2u)%6u),(uint8_t)((v*3u)%10u),&seed);edges(m,n);
   if(bank==2u||bank==3u){q=(agc_word)(bank*02000u+off);fb=(agc_word)(((v*5u)%32u)*02000u);c->superbank=(agc_word)((v%4u)*020u);}
   else if(bank>=040u){q=(agc_word)(02000u+off);fb=(agc_word)((bank-8u)*02000u);c->superbank=0100;}
   else{q=(agc_word)(02000u+off);fb=(agc_word)(bank*02000u);c->superbank=(agc_word)((v%4u)*020u);}
@@ -91,7 +107,7 @@ void lm_exs_input(apollo_overlay_state *m,p66_bias_io *io,lm_exs_case *c,uint16_
  }
  {uint16_t t=(uint16_t)(n-LM_EXS_TASK_FIRST);agc_word high,low;
   random_image(m,&seed);
-  canon(m,1,0,(uint8_t)(t%10u),&seed);
+  canon(m,1,0,(uint8_t)(t%10u),&seed);edges(m,n);
   set_banks(m,02000u,01400u);m->words[2]=(agc_word)((rnd(&seed)>>17)&07777u);
   if(t%4u){
    /* LONGCYCL: remaining time positive with either low-word sign, or an

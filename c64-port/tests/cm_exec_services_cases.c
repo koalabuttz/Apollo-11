@@ -26,6 +26,20 @@ static void canon(apollo_overlay_state *m,uint8_t cores,uint8_t vacs,uint8_t cou
  for(i=0;i<8u;++i)m->words[01400u+i]=(agc_word)(077777u-r17(seed)%6000u);
  for(i=0;i<9u;++i){m->words[01410u+2u*i]=i<count?(agc_word)(02000u+i):CM_WL_END_LOCATION;m->words[01411u+2u*i]=i<count?(agc_word)(060007u|(i%8u)*020u):CM_WL_END_BANK;}
 }
+/* Flight-typical edges over a canonical state, by case (n/13)%8: TIME3 one
+ * to four centiseconds before its overflow (0), every later task due 1 cs
+ * after the one before (1), equal priorities in the busy core sets (2),
+ * NEWJOB -0 (3), TIME3 just overflowed with the first task due next (4).
+ * They leave the seeded draws as they were. */
+static void edges(apollo_overlay_state *m,uint16_t n){unsigned i;
+ switch((n/13u)%8u){
+ case 0:m->words[026]=(agc_word)(037777u-n%4u);break;
+ case 1:m->words[01400]=(agc_word)(077777u-1u-n%3u);for(i=1;i<8u;++i)m->words[01400u+i]=077776u;break;
+ case 2:for(i=1;i<8u;++i)if(!(m->words[0167u+12u*i]&AGC_SIGN))m->words[0167u+12u*i]=011110u;break;
+ case 3:m->words[067]=AGC_NEG_ZERO;break;
+ case 4:m->words[026]=0;m->words[01400]=077776u;break;
+ default:break;}
+}
 /* Tasks due together: LST1+1..+7 hold +0 (a later task due at the same
  * time as the one before it), the state that takes WTLST5's last CCS to +0,
  * with TIME3 close to its next overflow and the first task due soon. */
@@ -55,7 +69,7 @@ void cm_exs_input(apollo_overlay_state *m,cm_native_io *io,cm_exs_case *c,uint16
  switch(k){
  case CM_EXS_SITE:{
   uint16_t s=(uint16_t)(j%CM_EXS_SITES),v=(uint16_t)(j/CM_EXS_SITES),e=site_entry(s,0);agc_word callee=cm_exec_sites_callee[e],fb,a,l;
-  canon(m,(uint8_t)(1u+v%7u),(uint8_t)((v/2u)%6u),(uint8_t)((v*3u)%10u),&seed);
+  canon(m,(uint8_t)(1u+v%7u),(uint8_t)((v/2u)%6u),(uint8_t)((v*3u)%10u),&seed);edges(m,n);
   if(v%8u==5u)together(m,&seed);
   fb=place(m,io,cm_exec_sites[e].physical,v);m->words[5]=callee;a=m->words[0];l=m->words[1];
   io->interrupt_enabled=(agc_word)(v/16u);
@@ -69,7 +83,7 @@ void cm_exs_input(apollo_overlay_state *m,cm_native_io *io,cm_exs_case *c,uint16
   m->words[0]=agc_extend(a);m->words[1]=agc_extend(l);
   stop(c,(agc_word)(m->words[2]+(callee==CM_EXEC_TWIDDLE?1u:2u)),fb);break;}
  case CM_EXS_LONGTASK:{agc_word high,low;
-  canon(m,1,0,(uint8_t)(j%10u),&seed);
+  canon(m,1,0,(uint8_t)(j%10u),&seed);edges(m,n);
   set_banks(m,02000u,01400u);m->words[2]=(agc_word)(r17(&seed)&07777u);
   if(j%4u){
    /* LONGCYCL: remaining time positive with either low-word sign, or an
@@ -95,12 +109,12 @@ void cm_exs_input(apollo_overlay_state *m,cm_native_io *io,cm_exs_case *c,uint16
   else{v=(uint16_t)(j%32u);set_banks(m,(agc_word)(((j*7u)%32u)*02000u),(agc_word)((j%8u)*0400u));
    m->words[2]=(agc_word)(0100u+r17(&seed)%07677u);io->superbank=(agc_word)((j%4u)*020u);
    m->words[0]=(agc_word)(v%8u==0u?r17(&seed)%037777u+1u:v%8u==1u?r17(&seed)%16u+1u:r17(&seed)%16250u+1u);m->words[5]=CM_EXEC_VARDELAY;}
-  canon(m,1,0,(uint8_t)((v*3u+j)%10u),&seed);
+  canon(m,1,0,(uint8_t)((v*3u+j)%10u),&seed);edges(m,n);
   if(v%4u==3u){together(m,&seed);if(k==CM_EXS_VARDELAY)m->words[0]=(agc_word)(r17(&seed)%48u+1u);}
   c->hw.in_interrupt=1;stop(c,CM_EXEC_TASKOVER,0);break;}
  case CM_EXS_RESUME:{agc_word z;
   /* The interrupted program: ZRUPT, BANKRUPT (with SUPERBNK), ARUPT, LRUPT, QRUPT. */
-  canon(m,1,0,(uint8_t)(j%10u),&seed);
+  canon(m,1,0,(uint8_t)(j%10u),&seed);edges(m,n);
   set_banks(m,(agc_word)((r17(&seed)%32u)*02000u),(agc_word)((j%8u)*0400u));
   m->words[0734]=AGC_NEG_ZERO;z=(agc_word)(02001u+r17(&seed)%06000u);m->words[015]=z;
   m->words[016]=(agc_word)(((r17(&seed)%32u)*02000u)|(j%8u)|((j/8u)%4u)*020u);
@@ -111,7 +125,7 @@ void cm_exs_input(apollo_overlay_state *m,cm_native_io *io,cm_exs_case *c,uint16
  case CM_EXS_DISPATCH:{uint8_t i;
   /* The T3 vector (the interrupted program's A, L, Q and BB) or TASKOVER
    * with RUPTAGN +1 (bank 01); either interrupt-enable state. */
-  canon(m,1,0,(uint8_t)(j%10u),&seed);
+  canon(m,1,0,(uint8_t)(j%10u),&seed);edges(m,n);
   io->interrupt_enabled=(agc_word)((j/2u)%2u);io->superbank=(agc_word)(((j/4u)%4u)*020u);
   m->words[2]=(agc_word)(r17(&seed)&07777u);m->words[012]=(agc_word)(r17(&seed)&07777u);
   if(j%4u<2u){set_banks(m,(agc_word)((r17(&seed)%32u)*02000u),(agc_word)((j%8u)*0400u));m->words[5]=CM_EXEC_T3RUPT_VECTOR;
