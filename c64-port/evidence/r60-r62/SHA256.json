@@ -9,8 +9,8 @@
       "store": "tree"
     },
     "r60-r62-differential.log": {
-      "sha256": "7609d4cf512642ef10d691968b023bacedce5a26713ea44b8fbdc303a567f01b",
-      "bytes": 24826,
+      "sha256": "14751d47cc601e65b61072a543951fc6ff65167c6de06a2491e3d656a20fbe15",
+      "bytes": 35199,
       "store": "release"
     },
     "r60-r62-host.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "r60-r62-proof.json": {
-      "sha256": "5e0f4098411a1d7b944cbfb268bfe21fcc41bb9cd496ac8d7296f5a0cb275701",
-      "bytes": 39163,
+      "sha256": "a4d852beb4f59f69276762107e186dd17cbed20b7f5d2db3c2b6780452789fb3",
+      "bytes": 54580,
       "store": "tree"
     },
     "r60-r62-source-map.json": {
