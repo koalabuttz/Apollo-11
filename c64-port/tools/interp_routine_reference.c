@@ -8,7 +8,7 @@
  * from its image to its stop: NEWOPS with LOC outside the file's ranges,
  * an exit of the interpreter's own bodies, or (reached from the file) one
  * of its outside basic addresses or the case's own stop (a caller's
- * return), all as physical fixed addresses. Prints the case, the kind (0), Z, the
+ * return, or its skip return one past: INCR Q, RETURN), all as physical fixed addresses. Prints the case, the kind (0), Z, the
  * digest and, with argv[4] = "dump", the 2048 words. */
 static agc_t baseline[2];
 static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(stderr,"short case file\n");exit(2);}return (unsigned)a|(unsigned)b<<8;}
@@ -50,7 +50,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
     zp=z_physical(pc);
     /* The file's own transfers out (and the case's return) stop only when
      * the file made them; the interpreter's exits stop from anywhere. */
-    if(prev_in){if(zp==stop){stopped=1;break;}for(i=0;i<t->nf;++i)if(zp==t->from_file[i]){stopped=1;break;}}
+    if(prev_in){if(zp==stop||(stop!=0xffffu&&zp==stop+1u)){stopped=1;break;}for(i=0;i<t->nf;++i)if(zp==t->from_file[i]){stopped=1;break;}}
     for(i=0;i<t->n;++i)if(zp==t->ext[i]){stopped=1;break;}
     if(zp!=0xfffeu)prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
     if(stopped)break;

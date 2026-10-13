@@ -303,4 +303,43 @@ SPECS = {
         'target': 'tests/cm_p32_p33_target.c',
         'freeze_stride': 256,
     },
+    'cm-p34-p35': {
+        'missions': ('cm',),
+        'file': {'cm': 'P34-P35,_P74-P75.agc'},
+        'source_path': {'cm': 'P34-35_P74-75.agc'},
+        'base': {'cm': 'cm_p34_p35'},
+        'symbol': {'cm': 'cm_p34_p35'},
+        # P34/P74 (TPI) and P35/P75 (midcourse), the S33/34.1 and S34/35.x
+        # subroutines, VN1645 and its clock, INITVEL, MIDGIM, the conic
+        # setup routines (SELECTMU, PERIAPO, PRECSET...) and R36.
+        'entries': ['P34', 'P74', 'P35', 'P75', 'S33/34.1', 'S34/35.1', 'S34/35.2', 'S34/35.3',
+                    'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
+                    'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'MIDGIM', 'GET+MGA',
+                    'MIDGIM1', 'GET.LVC', 'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE',
+                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+        'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
+                      'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
+                      'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
+                      'ENDEXT': None, 'ENDMARK': None,
+                      'VNPOOH': 0},
+        # VNPOOH switches FBANK in basic code (XCH FBANK), which the compiled
+        # basic code does not model yet: its 15 words stay with the original.
+        'outside': {'VNPOOH': 15},
+        'noreturn': ['POSTJUMP'],
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'partial': {'cm': 'VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet'},
+        # SGNAGREE (RT8_OP_CODES' TPAGREE) has no native routine yet: the
+        # RTB ends the routine there. DPMODE is src/rtb_modes.c.
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}, 'SGNAGREE': None,
+                'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # SETMUER reads MUTABLE +4,1 and -2,1 with X1 -2 (earth) or -10
+        # (moon), as SELECTMU's AXC,1 sets it.
+        'fixed_index': {'MUTABLE': [2, 10]},
+        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        'target': 'tests/cm_p34_p35_target.c',
+        'freeze_stride': 512,
+    },
 }
