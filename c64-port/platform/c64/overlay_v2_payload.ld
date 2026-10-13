@@ -20,7 +20,10 @@ SECTIONS {
         SHORT(__ov2_id) SHORT(ORIGIN(slot)+24)
         SHORT(__ov2_bss_start) SHORT(__ov2_bss_end-__ov2_bss_start)
         SHORT(__ov2_load_end-ORIGIN(slot)) SHORT(__ov2_services)
-        SHORT(__ov2_selectors) SHORT(0)
+        SHORT(__ov2_selectors)
+        /* TABLES: a flight module's pointer to its table list (.ov2_tables,
+         * platform/c64/flight_table_module.c), else 0. */
+        __ov2_tables = .; KEEP(*(.ov2_tables)) . = __ov2_tables + 2;
     } > slot
     .overlay_entry : { KEEP(*(.overlay_entry)) } > slot
     .text : { INCLUDE text-sections.ld } > slot

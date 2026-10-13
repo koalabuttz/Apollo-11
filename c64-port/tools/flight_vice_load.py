@@ -57,11 +57,15 @@ def run(m, a):
     ok = data[0] == 0xa5 and not failures and checks > 0
     overhead = struct.unpack_from('<I', data, 0x3f8)[0]
     count = struct.unpack_from('<H', data, 0x3fe)[0]
+    differ = set(struct.unpack_from('<8H', data, 0x3e0)[:data[0x3df]])
     modules = []
     for i in range(count):
-        ident, size, load, cached = struct.unpack_from('<HHIH', data, 0x400 + 10 * i)
+        ident, size, load, cached, direct, main = struct.unpack_from('<HHIHHH', data, 0x400 + 14 * i)
         load, cached = load - overhead, cached - overhead
         modules.append(dict(id=f'0x{ident:04x}', bytes=size, load_cycles=load, cached_cycles=cached,
+                            direct_cycles=direct - overhead if direct else None,
+                            main_cycles=main - overhead if direct else None,
+                            direct_differs=i in differ,
                             transfer_cycles=load - cached, cycles_per_byte=round((load - cached) / size, 2)))
     run_only, point, resolve = (v - overhead for v in struct.unpack_from('<3H', data, 0x3f0))
     return dict(mission=m, ok=ok, failures=failures, checks=checks, first_failing_step=data[5],
@@ -108,7 +112,10 @@ def main():
               f"{len(mods)} modules, load and call {min(x['load_cycles'] for x in mods)}-"
               f"{max(x['load_cycles'] for x in mods)} cycles "
               f"({max(x['load_cycles'] for x in mods) * 1000 / PAL_HZ:.1f} ms max), cached call "
-              f"{min(x['cached_cycles'] for x in mods)}-{max(x['cached_cycles'] for x in mods)}")
+              f"{min(x['cached_cycles'] for x in mods)}-{max(x['cached_cycles'] for x in mods)}"
+              + (f", direct call saves {min(d)}-{max(d)} cycles over the module main ({len(d)} modules match)"
+                 if (d := [x['main_cycles'] - x['direct_cycles'] for x in mods
+                           if x.get('direct_cycles') is not None]) else ''))
     return 1 if failed else 0
 
 

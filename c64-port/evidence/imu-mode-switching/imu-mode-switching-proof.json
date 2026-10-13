@@ -8,6 +8,19 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "oracle_engine": "pinned yaAGC agc_engine.c without its gyro, IMU CDU drive and optics block (build/no-imu-device.patch)",
+ "source_sha256": {
+  "src/imu_mode_switching.c": "e58b66ab891a2e4517f383c6eecb6ad715e13a146a16cc59405373b990e4da5b",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/lm_interbank_routines.c": "1ce4bc11a80c244b0e4d35440f9da513df49235d625e3c25b38cecd1f401026d",
+  "src/lm_interbank.c": "9c649677bfe8bdb4724ea5c88a185701cfae8b44203384f623c3c17433371a2e",
+  "src/cm_interbank_routines.c": "1651221a53dfc174a55f6009bc8c903d19e32c3d55c6ee4b03f9022a2180a2f2",
+  "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "tests/imu_mode_switching_cases.c": "be011360d8b1f3d810b233d60c90fa8f09ef72a0430b8cbdcebd13136ea546c2"
+ },
  "cases": 64256,
  "snapshot_sha256": "170db7cda0ed03768e1be886e08331fbb0f34b89e6faec15ddebf921de1026db",
  "stops": {

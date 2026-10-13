@@ -1,0 +1,2213 @@
+{
+ "Comanche055/SXTMARK.agc": {
+  "native_file": "src/cm_sxtmark.c",
+  "words": 315,
+  "untranslated_words": 0,
+  "routines": 42,
+  "map": [
+   {
+    "address": "07,2002",
+    "word": "00004",
+    "source": "SXTMARK INHINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2003",
+    "word": "54070",
+    "source": " TS RUPTREG1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2004",
+    "word": "36211",
+    "source": " CAF SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2005",
+    "word": "71044",
+    "source": " MASK EXTVBACT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2006",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2007",
+    "word": "02013",
+    "source": " TC MKABORT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2010",
+    "word": "35016",
+    "source": " CAF BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2011",
+    "word": "27044",
+    "source": " ADS EXTVBACT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2012",
+    "word": "02015",
+    "source": " TC MARKOK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2013",
+    "word": "07755",
+    "source": "MKABORT TC BAILOUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2014",
+    "word": "01211",
+    "source": " OCT 01211",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2015",
+    "word": "10400",
+    "source": "MARKOK CCS VAC1USE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2016",
+    "word": "02031",
+    "source": " TC MKVACFND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2017",
+    "word": "10454",
+    "source": " CCS VAC2USE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2020",
+    "word": "02031",
+    "source": " TC MKVACFND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2021",
+    "word": "10530",
+    "source": " CCS VAC3USE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2022",
+    "word": "02031",
+    "source": " TC MKVACFND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2023",
+    "word": "10604",
+    "source": " CCS VAC4USE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2024",
+    "word": "02031",
+    "source": " TC MKVACFND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2025",
+    "word": "10660",
+    "source": " CCS VAC5USE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2026",
+    "word": "02031",
+    "source": " TC MKVACFND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2027",
+    "word": "07755",
+    "source": " TC BAILOUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2030",
+    "word": "01207",
+    "source": " OCT 01207",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2031",
+    "word": "65016",
+    "source": "MKVACFND AD TWO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2032",
+    "word": "55330",
+    "source": " TS MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2033",
+    "word": "50000",
+    "source": " INDEX A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2034",
+    "word": "54052",
+    "source": " TS QPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2035",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2036",
+    "word": "51330",
+    "source": " INDEX MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2037",
+    "word": "53777",
+    "source": " TS 0          -1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2040",
+    "word": "05364",
+    "source": " TC CHECKMM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2041",
+    "word": "00065",
+    "source": " MM 53         B-14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2042",
+    "word": "12044",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2043",
+    "word": "14675",
+    "source": " TCF SWRETURN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2044",
+    "word": "05364",
+    "source": " TC CHECKMM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2045",
+    "word": "00066",
+    "source": " MM 54         B-14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2046",
+    "word": "12050",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2047",
+    "word": "14675",
+    "source": " TCF SWRETURN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2050",
+    "word": "35004",
+    "source": " CAF BIT12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2051",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2052",
+    "word": "70070",
+    "source": " MP RUPTREG1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2053",
+    "word": "56001",
+    "source": " XCH L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2054",
+    "word": "27330",
+    "source": " ADS MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2055",
+    "word": "37667",
+    "source": " CAF PRIO32",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2056",
+    "word": "05134",
+    "source": " TC NOVAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2057",
+    "word": "02347",
+    "source": " 2CADR MKVB51",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2060",
+    "word": "16062",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2061",
+    "word": "00003",
+    "source": " RELINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2062",
+    "word": "14675",
+    "source": " TCF SWRETURN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2063",
+    "word": "35021",
+    "source": "MKRELEAS CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2064",
+    "word": "57330",
+    "source": " XCH MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2065",
+    "word": "75046",
+    "source": " MASK LOW9",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2066",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2067",
+    "word": "50000",
+    "source": " INDEX A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2070",
+    "word": "54000",
+    "source": " TS 0",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2071",
+    "word": "00004",
+    "source": "MKRLEES INHINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2072",
+    "word": "45007",
+    "source": " CS BIT9",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2073",
+    "word": "71331",
+    "source": " MASK OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2074",
+    "word": "55331",
+    "source": " TS OPTMODES",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2075",
+    "word": "37716",
+    "source": " CA NEGONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2076",
+    "word": "55303",
+    "source": " TS OPTIND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2077",
+    "word": "45016",
+    "source": " CS BIT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2100",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2101",
+    "word": "03012",
+    "source": " WAND CHAN12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2102",
+    "word": "00003",
+    "source": " RELINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2103",
+    "word": "04675",
+    "source": " TC SWRETURN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2104",
+    "word": "54016",
+    "source": "MARKRUPT TS BANKRUPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2105",
+    "word": "30035",
+    "source": " CA CDUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2106",
+    "word": "54362",
+    "source": " TS MKCDUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2107",
+    "word": "30036",
+    "source": " CA CDUS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2110",
+    "word": "54360",
+    "source": " TS MKCDUS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2111",
+    "word": "30033",
+    "source": " CA CDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2112",
+    "word": "54357",
+    "source": " TS MKCDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2113",
+    "word": "30034",
+    "source": " CA CDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2114",
+    "word": "54361",
+    "source": " TS MKCDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2115",
+    "word": "30032",
+    "source": " CA CDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2116",
+    "word": "54363",
+    "source": " TS MKCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2117",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2120",
+    "word": "30025",
+    "source": " DCA TIME2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2121",
+    "word": "52356",
+    "source": " DXCH MKT2T1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2122",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2123",
+    "word": "30356",
+    "source": " DCA MKT2T1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2124",
+    "word": "52014",
+    "source": " DXCH SAMPTIME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2125",
+    "word": "56002",
+    "source": " XCH Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2126",
+    "word": "54012",
+    "source": " TS QRUPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2127",
+    "word": "35012",
+    "source": " CAF BIT6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2130",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2131",
+    "word": "02016",
+    "source": " RAND NAVKEYIN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2132",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2133",
+    "word": "02430",
+    "source": " TC MARKIT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2134",
+    "word": "35011",
+    "source": " CAF BIT7",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2135",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2136",
+    "word": "02016",
+    "source": " RAND NAVKEYIN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2137",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2140",
+    "word": "02301",
+    "source": " TC MKREJECT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2141",
+    "word": "34362",
+    "source": "KEYCALL CAF OCT37",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2142",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2143",
+    "word": "02016",
+    "source": " RAND NAVKEYIN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2144",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2145",
+    "word": "12150",
+    "source": " BZF +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2146",
+    "word": "04701",
+    "source": " TC POSTJUMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2147",
+    "word": "17702",
+    "source": " CADR KEYCOM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2150",
+    "word": "05650",
+    "source": "+3 TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2151",
+    "word": "00113",
+    "source": " OCT 113",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2152",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2153",
+    "word": "35002",
+    "source": "MARKCONT CAF BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2154",
+    "word": "70076",
+    "source": " MASK STATE      +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2155",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2156",
+    "word": "12170",
+    "source": " BZF MARKET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2157",
+    "word": "36211",
+    "source": "MARKIT1 CAF SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2160",
+    "word": "05606",
+    "source": " TC GENTRAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2161",
+    "word": "01725",
+    "source": " ADRES MRKBUF1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2162",
+    "word": "01734",
+    "source": " ADRES MRKBUF2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2163",
+    "word": "36211",
+    "source": " CAF SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2164",
+    "word": "05606",
+    "source": " TC GENTRAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2165",
+    "word": "00355",
+    "source": " ADRES MKT2T1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2166",
+    "word": "01725",
+    "source": " ADRES MRKBUF1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2167",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2170",
+    "word": "11330",
+    "source": "MARKET CCS MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2171",
+    "word": "02225",
+    "source": " TC MARK2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2172",
+    "word": "35016",
+    "source": " CAF TWO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2173",
+    "word": "71044",
+    "source": " MASK EXTVBACT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2174",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2175",
+    "word": "12217",
+    "source": " BZF MARKET3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2176",
+    "word": "35004",
+    "source": " CAF BIT12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2177",
+    "word": "70101",
+    "source": " MASK STATE      +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2200",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2201",
+    "word": "12217",
+    "source": " BZF MARKET3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2202",
+    "word": "35061",
+    "source": " CAF PRIO5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2203",
+    "word": "05134",
+    "source": " TC NOVAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2204",
+    "word": "02426",
+    "source": " 2CADR MARKDISP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2205",
+    "word": "76067",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2206",
+    "word": "36211",
+    "source": " CAF SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2207",
+    "word": "05606",
+    "source": " TC GENTRAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2210",
+    "word": "00355",
+    "source": " ADRES MKT2T1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2211",
+    "word": "01674",
+    "source": " ADRES MARKDOWN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2212",
+    "word": "36211",
+    "source": " CAF SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2213",
+    "word": "05606",
+    "source": " TC GENTRAN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2214",
+    "word": "00355",
+    "source": " ADRES MKT2T1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2215",
+    "word": "01725",
+    "source": " ADRES MRKBUF1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2216",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2217",
+    "word": "05650",
+    "source": "MARKET3 TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2220",
+    "word": "00122",
+    "source": " OCT 122",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2221",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2222",
+    "word": "05650",
+    "source": "114ALM TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2223",
+    "word": "00114",
+    "source": " OCT 114",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2224",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2225",
+    "word": "67711",
+    "source": "MARK2 AD 74K",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2226",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2227",
+    "word": "62222",
+    "source": " BZMF 114ALM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2230",
+    "word": "55330",
+    "source": " TS MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2231",
+    "word": "40000",
+    "source": " COM ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2232",
+    "word": "75006",
+    "source": " MASK BIT10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2233",
+    "word": "27330",
+    "source": " ADS MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2234",
+    "word": "75046",
+    "source": " MASK LOW9",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2235",
+    "word": "54061",
+    "source": " TS ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2236",
+    "word": "50000",
+    "source": " INDEX A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2237",
+    "word": "56052",
+    "source": " XCH QPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2240",
+    "word": "54062",
+    "source": " TS ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2241",
+    "word": "65023",
+    "source": " AD SEVEN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2242",
+    "word": "50061",
+    "source": " INDEX ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2243",
+    "word": "54052",
+    "source": " TS QPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2244",
+    "word": "00006",
+    "source": "VACSTOR EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2245",
+    "word": "30356",
+    "source": " DCA MKT2T1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2246",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2247",
+    "word": "52001",
+    "source": " DXCH 0",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2250",
+    "word": "30357",
+    "source": " CA MKCDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2251",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2252",
+    "word": "54002",
+    "source": " TS 2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2253",
+    "word": "30360",
+    "source": " CA MKCDUS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2254",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2255",
+    "word": "54003",
+    "source": " TS 3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2256",
+    "word": "30361",
+    "source": " CA MKCDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2257",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2260",
+    "word": "54004",
+    "source": " TS 4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2261",
+    "word": "30362",
+    "source": " CA MKCDUT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2262",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2263",
+    "word": "54005",
+    "source": " TS 5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2264",
+    "word": "30363",
+    "source": " CA MKCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2265",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2266",
+    "word": "54006",
+    "source": " TS 6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2267",
+    "word": "37671",
+    "source": " CAF PRIO34",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2270",
+    "word": "71330",
+    "source": " MASK MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2271",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2272",
+    "word": "12274",
+    "source": " BZF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2273",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2274",
+    "word": "37667",
+    "source": " CAF PRIO32",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2275",
+    "word": "05134",
+    "source": " TC NOVAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2276",
+    "word": "02422",
+    "source": " 2CADR MKVB50",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2277",
+    "word": "16062",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2300",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2301",
+    "word": "35002",
+    "source": "MKREJECT CAF BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2302",
+    "word": "70076",
+    "source": " MASK STATE      +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2303",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2304",
+    "word": "12310",
+    "source": " BZF MRKREJCT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2305",
+    "word": "37716",
+    "source": " CA NEGONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2306",
+    "word": "55725",
+    "source": " TS MRKBUF1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2307",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2310",
+    "word": "11330",
+    "source": "MRKREJCT CCS MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2311",
+    "word": "02315",
+    "source": " TC REJECT2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2312",
+    "word": "05650",
+    "source": " TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2313",
+    "word": "00112",
+    "source": " OCT 112",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2314",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2315",
+    "word": "45006",
+    "source": "REJECT2 CS BIT10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2316",
+    "word": "71330",
+    "source": " MASK MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2317",
+    "word": "57330",
+    "source": " XCH MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2320",
+    "word": "75006",
+    "source": " MASK BIT10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2321",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2322",
+    "word": "02326",
+    "source": " TC REJECT3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2323",
+    "word": "05650",
+    "source": " TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2324",
+    "word": "00110",
+    "source": " OCT 110",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2325",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2326",
+    "word": "35046",
+    "source": "REJECT3 CAF LOW9",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2327",
+    "word": "71330",
+    "source": " MASK MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2330",
+    "word": "54061",
+    "source": " TS ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2331",
+    "word": "45023",
+    "source": " CS SEVEN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2332",
+    "word": "50061",
+    "source": " INDEX ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2333",
+    "word": "26052",
+    "source": " ADS QPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2334",
+    "word": "35004",
+    "source": " CAF BIT12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2335",
+    "word": "61330",
+    "source": " AD MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2336",
+    "word": "57330",
+    "source": " XCH MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2337",
+    "word": "77671",
+    "source": " MASK PRIO34",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2340",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2341",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2342",
+    "word": "37667",
+    "source": " CAF PRIO32",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2343",
+    "word": "05134",
+    "source": " TC NOVAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2344",
+    "word": "02347",
+    "source": " 2CADR MKVB51",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2345",
+    "word": "16062",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2346",
+    "word": "05333",
+    "source": " TC RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2347",
+    "word": "04662",
+    "source": "MKVB51 TC BANKCALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2350",
+    "word": "20560",
+    "source": " CADR KLEENEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2351",
+    "word": "32427",
+    "source": " CAF VB51",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2352",
+    "word": "04662",
+    "source": " TC BANKCALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2353",
+    "word": "20572",
+    "source": " CADR GOMARK4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2354",
+    "word": "12357",
+    "source": " TCF TERMSXT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2355",
+    "word": "12370",
+    "source": " TCF ENTANSWR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2356",
+    "word": "12416",
+    "source": " TCF MKVB5X",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2357",
+    "word": "05536",
+    "source": "TERMSXT TC CLEARMRK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2360",
+    "word": "05364",
+    "source": " TC CHECKMM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2361",
+    "word": "00003",
+    "source": " MM 03         B-14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2362",
+    "word": "12364",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2363",
+    "word": "02366",
+    "source": " TC TERMP03",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2364",
+    "word": "04701",
+    "source": " TC POSTJUMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2365",
+    "word": "30205",
+    "source": " CADR TERM52",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2366",
+    "word": "05546",
+    "source": "TERMP03 TC UPFLAG",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2367",
+    "word": "00032",
+    "source": " ADRES TRM03FLG",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2370",
+    "word": "35046",
+    "source": "ENTANSWR CAF LOW9",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2371",
+    "word": "71330",
+    "source": " MASK MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2372",
+    "word": "55330",
+    "source": " TS MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2373",
+    "word": "40000",
+    "source": " COM ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2374",
+    "word": "51330",
+    "source": " INDEX MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2375",
+    "word": "60052",
+    "source": " AD QPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2376",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2377",
+    "word": "62403",
+    "source": " BZMF JAMIT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2400",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2401",
+    "word": "75004",
+    "source": " MP BIT12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2402",
+    "word": "65017",
+    "source": " AD ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2403",
+    "word": "51330",
+    "source": "JAMIT INDEX MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2404",
+    "word": "54052",
+    "source": " TS QPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2405",
+    "word": "00004",
+    "source": " INHINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2406",
+    "word": "35022",
+    "source": " CAF FIVE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2407",
+    "word": "05245",
+    "source": " TC WAITLIST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2410",
+    "word": "02413",
+    "source": " 2CADR ENDMARKS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2411",
+    "word": "16062",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2412",
+    "word": "05534",
+    "source": " TC ENDMARK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2413",
+    "word": "35017",
+    "source": "ENDMARKS CAF ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2414",
+    "word": "04740",
+    "source": " TC IBNKCALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2415",
+    "word": "17550",
+    "source": " CADR GOODEND",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2416",
+    "word": "37671",
+    "source": "MKVB5X CAF PRIO34",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2417",
+    "word": "71330",
+    "source": " MASK MARKSTAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2420",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2421",
+    "word": "12347",
+    "source": " TCF MKVB51",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2422",
+    "word": "34333",
+    "source": "MKVB50 CAF R1D1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2423",
+    "word": "55045",
+    "source": " TS DSPTEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2424",
+    "word": "32426",
+    "source": " CAF V50N25",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2425",
+    "word": "12352",
+    "source": " TCF MKVB51     +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2426",
+    "word": "14431",
+    "source": "V50N25 VN 5025",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "07,2427",
+    "word": "14600",
+    "source": "VB51 VN 5100",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "07,2430",
+    "word": "11341",
+    "source": "MARKIT CCS CDUCHKWD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2431",
+    "word": "12434",
+    "source": " TCF +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2432",
+    "word": "12434",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2433",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2434",
+    "word": "65017",
+    "source": " AD ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2435",
+    "word": "05245",
+    "source": " TC WAITLIST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2436",
+    "word": "02203",
+    "source": " 2CADR MARKDIF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2437",
+    "word": "20067",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "07,2440",
+    "word": "15333",
+    "source": " TCF RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2203",
+    "word": "31341",
+    "source": "MARKDIF CA CDUCHKWD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2204",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2205",
+    "word": "62216",
+    "source": " BZMF MKACPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2206",
+    "word": "45017",
+    "source": " CS BIT1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2207",
+    "word": "54354",
+    "source": " TS MKNDX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2210",
+    "word": "30363",
+    "source": " CA MKCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2211",
+    "word": "02220",
+    "source": " TC DIFCHK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2212",
+    "word": "30357",
+    "source": " CA MKCDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2213",
+    "word": "02220",
+    "source": " TC DIFCHK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2214",
+    "word": "30361",
+    "source": " CA MKCDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2215",
+    "word": "02220",
+    "source": " TC DIFCHK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2216",
+    "word": "04740",
+    "source": "MKACPT TC IBNKCALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2217",
+    "word": "16153",
+    "source": " CADR MARKCONT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2220",
+    "word": "24354",
+    "source": "DIFCHK INCR MKNDX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2221",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2222",
+    "word": "50354",
+    "source": " INDEX MKNDX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2223",
+    "word": "20032",
+    "source": " MSU CDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2224",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2225",
+    "word": "12231",
+    "source": " TCF +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2226",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2227",
+    "word": "12231",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2230",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2231",
+    "word": "67715",
+    "source": " AD NEG2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2232",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2233",
+    "word": "62230",
+    "source": " BZMF -3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2234",
+    "word": "05650",
+    "source": " TC ALARM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2235",
+    "word": "00121",
+    "source": " OCT 00121",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2236",
+    "word": "15324",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   }
+  ]
+ }
+}

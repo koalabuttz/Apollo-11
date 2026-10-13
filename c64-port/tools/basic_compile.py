@@ -37,6 +37,11 @@ class BasicError(Exception):
     pass
 
 
+# Input channels a 'channel_inputs' spec reads from the caller's latches
+# (as tools/interp_compile.py's INPUT_CHANNELS).
+INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
+
+
 def decode(w, ext):
     """(op, address field, field limit) of word w (EXTEND state ext)."""
     code = (w >> 12) & 7
@@ -204,10 +209,24 @@ class Basic:
                 continue
             self.nodes[k] = self.compile(*k)
 
+    BASIC_NAMES = ('TC', 'TCF', 'CCS', 'DAS', 'LXCH', 'INCR', 'ADS', 'CA', 'CAF', 'CAE', 'CS', 'INDEX', 'DXCH',
+                   'TS', 'XCH', 'AD', 'MASK', 'READ', 'WRITE', 'RAND', 'WAND', 'ROR', 'WOR', 'RXOR', 'EDRUPT',
+                   'DV', 'BZF', 'MSU', 'QXCH', 'AUG', 'DIM', 'DCA', 'DCS', 'SU', 'BZMF', 'MP', 'EXTEND',
+                   'RELINT', 'INHINT', 'NOOP', 'RETURN', 'COM', 'DOUBLE', 'ZL', 'ZQ', 'DDOUBL', 'DCOM',
+                   'SQUARE', 'OVSK', 'TCAA', 'RESUME', 'XLQ', 'XXALQ', 'DTCB', 'DTCF')
+
     def is_data(self, phys):
         ln = self.L.by_phys.get(phys)
         if ln is None:
             return True     # second word of a two-word constant
+        if self.spec.get('interp_not_basic'):
+            # Spec 'interp_not_basic': an interpretive order or operand word
+            # that a CCS exit or skip lands on is never run as basic code
+            # (CCS DIFEQCNT's negative exits after the MOVE* loops).
+            import interp_compile
+            op = ln.op.split(',')[0]
+            if ln.op == '' or (interp_compile.is_interp_op(ln.op) and op not in self.BASIC_NAMES):
+                return True
         return ln.op in self.CONST_OPS
 
     def outside_tc(self, phys, target_logical):
@@ -247,6 +266,10 @@ class Basic:
             return ['return EXEC_INVALID_ACTION; /* TCF +0 (TC trap) */']
         if tp is not None and self.in_file(tp):
             st.append('goto %s;' % self.add(tp, False, clean))
+            if call and self.L.label_at(tp) in self.spec.get('noreturn', ()):
+                # (an in-file routine the spec says never returns: DSPLY81
+                # goes on in interpretive code)
+                return st
             if call:
                 self.dispatch.add(here + 1)
                 self.add(here + 1)
@@ -525,6 +548,16 @@ class Basic:
                        'RXOR': 'W[0]^=W[%o];'}[op].replace('%o', '%o' % a))
             st.append(cont())
             return st
+        if op in ('READ', 'RAND', 'ROR', 'RXOR') and self.spec.get('channel_inputs') and a in INPUT_CHANNELS:
+            # An input channel the caller latches (spec 'channel_inputs',
+            # include/agc_input_channels.h), as tools/interp_compile.py reads it.
+            v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[a]
+            st.append({'READ': 'W[0]=agc_extend(%s);', 'RAND': 'W[0]=agc_extend((agc_word)(oc16(W[0])&%s));',
+                       'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
+                       'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)
+            self.cp.uses_channels = True
+            st.append(cont())
+            return st
         if op in CHANNEL_OPS:
             if a not in self.channels:
                 raise BasicError('channel %o at %s' % (a, self.where(here)))
@@ -541,6 +574,14 @@ class Basic:
         if op == 'DXCH' and not dyn and a == 5:
             # DTCF: DXCH FB (FB and Z with A and L).
             st.append('dtcf(s,0%05ou);goto dispatch;' % self.logical(here))
+            return st
+        if op == 'MSU' and dyn and 0o20 <= a < 0o2000:
+            # Indexed (INDEX MKNDX; MSU CDUX): the sum must stay an ordinary
+            # erasable word.
+            self.uses_msu = True
+            st.append('if(e<020||e>=02000)return EXEC_INVALID_ACTION;')
+            st.append('msu(s,(unsigned)e);')
+            st.append(cont())
             return st
         if op == 'MSU':
             # On an ordinary erasable word, as yaAGC takes it. INDEXed
@@ -714,6 +755,9 @@ class Basic:
                 if x.endswith(':') and ('goto %s;' % x[:-1]) not in body:
                     c[i] = x + ' __attribute__((unused));'
             c.append(' (void)p;')
+            at = max(i for i, x in enumerate(c) if 'enum exec_status basic_run(' in x)
+            if not any('io->' in x or 'io,' in x or 'io)' in x for x in c[at + 1:]):
+                c.append(' (void)io;')   # (a file without channel orders or calls that take io)
             c.append('}')
             return c
         c.append('dispatch:')

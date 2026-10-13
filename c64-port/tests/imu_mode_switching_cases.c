@@ -174,7 +174,11 @@ uint16_t ims_target(uint16_t n,uint8_t *cm){
   return (uint16_t)((cadr>>10)*1024u+(cadr&01777u));}
 #endif
 }
-void ims_input(apollo_overlay_state *m,ims_case *c,uint16_t n){uint32_t seed=0x1d1aul+(uint32_t)n*11u;unsigned i,v;agc_word z,fb;
+/* (The auditor's fresh-seed reruns build with another base.) */
+#ifndef IMS_SEED_BASE
+#define IMS_SEED_BASE 0x1d1aul
+#endif
+void ims_input(apollo_overlay_state *m,ims_case *c,uint16_t n){uint32_t seed=IMS_SEED_BASE+(uint32_t)n*11u;unsigned i,v;agc_word z,fb;
  for(i=0;i<2048u;++i)m->words[i]=r15(&seed);
  m->words[7]=0;
  m->words[025]=(agc_word)(r15(&seed)&037777u);m->words[024]=(agc_word)(r15(&seed)&037777u);
@@ -248,6 +252,8 @@ unsigned ims_run(apollo_overlay_state *s,uint16_t n,uint16_t *ie,agc_word channe
   channel[2]=c.cm?cio.channel13:lio.channel13;channel[3]=c.cm?cio.channel14:lio.channel14;}
  if(st==EXEC_OK)return IMS_STOPPED;
  if(st==EXEC_UNMAPPED&&external(&c,s))return IMS_STOPPED;
+ /* A round trip's success return (MODEGOOD's INCR BUF2: Q +2). */
+ if(st==EXEC_UNMAPPED&&c.stop_z&&s->words[5]==c.stop_z+1u&&(s->words[4]&076000u)==c.stop_fb)return IMS_STOPPED;
  if(st==EXEC_OUT_OF_SCOPE)return IMS_REFUSED;
  return 3u;
 }
