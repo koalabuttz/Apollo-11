@@ -78,6 +78,8 @@ def entries(spec, m):
 def split_op(op):
     """(base mnemonic, starred, index tag) of an order column entry."""
     tag = 0
+    if op == 'CALRB':
+        op = 'CALL'     # CALRB assembles as CALL
     if op.endswith(',1') or op.endswith(',2'):
         tag = int(op[-1])
         op = op[:-2]
@@ -297,8 +299,14 @@ class Compiler:
         """A CALL's return point is a routine start, unless no code
         follows it in the file: a call that never returns (R31's STCALL
         12D R34ANG) ends the file."""
-        if self.in_file(p):
-            self.add_start(p, 'i', why)
+        if not self.in_file(p):
+            return
+        ln = self.code.get(p)
+        if ln is not None and not is_interp_op(ln.op):
+            # Basic code follows: the CALL is a transfer that never returns
+            # there (STCALL DELLT4 with QTEMP1, a saved QPRET, as its target).
+            return
+        self.add_start(p, 'i', why)
 
     def interp_block(self, start):
         """C statements for the interpretive routine at start."""

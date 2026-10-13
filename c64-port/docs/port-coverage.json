@@ -7340,8 +7340,23 @@
       "sha256": "a030d323c75c05e3492e81522ab2a5c2ac493f7bc25c44686e6cb1c492c4540b",
       "bytes": 30910,
       "lines": 1471,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p40_p47.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "914 of the 931 words (27,2246-3272 and 36,3147-3764): P40, P41, P42 and P47, S40.1, S40.2,3, S40.8, S40.9, S40.13, S41.1, TRIMGIMB, POSTBURN, TIGNOW, ENGOFTSK, ENGINOF1-4, REDO6.7, CALCN85, IMPLBURN and UPDATEVG, as 403 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 17 output-channel words (WAND/WOR CHAN12, RAND/WRITE DSALMOUT, WOR CHAN14), which wait for an output-channel model.",
+          "verification": "docs/LM-P40-P47.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P51-P53.agc",

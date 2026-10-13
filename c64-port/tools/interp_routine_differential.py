@@ -143,6 +143,20 @@ class Mission:
                 return cadr(phys)
 
 
+class Absent:
+    """A mission the spec does not compile (a Luminary-only milestone): no
+    ranges, stops or routines, so its cases never exist."""
+    class _cp:
+        ranges = []
+    def __init__(self, m):
+        self.m = m
+        self.cp = self._cp()
+        self.newops = 0
+        self.points = []
+        self.body_exits = []
+        self.externals = []
+
+
 def case(mi, point, n, rng):
     """(seed, edits, ie) for case n of routine point."""
     E = collections.OrderedDict()
@@ -345,6 +359,9 @@ def main():
     if chan:
         print('waiting for an I/O channel model: %d cases (%s)' % (len(chan), ', '.join(
             '%s x%d' % kv for kv in sorted(collections.Counter(chan.values()).items()))))
+        # Where the oracle went from each refused case: the refused domain.
+        for k, v in sorted(chan_outcomes(chan, rows_r).items()):
+            print('  refused at %s, oracle: %s' % (k, ', '.join('%s x%d' % kv for kv in sorted(v.items()))))
     stops = collections.defaultdict(collections.Counter)
     for i, (c, r) in enumerate(zip(cases, rows_r)):
         mi = missions[c['cm']]
@@ -392,6 +409,14 @@ def main():
         freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan)
 
 
+def chan_outcomes(chan, rows):
+    """{channel block: {oracle stop Z (or 'timeout'): cases}} of the refused cases."""
+    out = collections.defaultdict(collections.Counter)
+    for i, k in chan.items():
+        out[k]['%05o' % int(rows[i][2]) if rows[i][1] == '0' else 'timeout'] += 1
+    return out
+
+
 def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
     stride = spec.get('freeze_stride', 16)
     pick = [i for i in range(0, len(cases), stride) if i not in chan]
@@ -431,6 +456,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
     proof.update(cover)
     if chan:
         proof['waiting_for_io_channels'] = dict(collections.Counter(chan.values()))
+        proof['io_channel_refused_oracle_outcomes'] = {k: dict(sorted(v.items())) for k, v in sorted(chan_outcomes(chan, rows).items())}
     open(os.path.join(B, '%s-proof.json' % spec_id), 'w').write(json.dumps(proof, indent=1) + '\n')
     smap = {}
     for mi in missions:
@@ -591,8 +617,9 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
                 continue
             trial = mask | want
             tp = pick + part
-            if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
-                if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
+            if c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
+                # (With mask 0 the trial is the routine's own run.)
+                if not mask or c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
                     # The routine's whole run (with every routine it reaches)
                     # does not fit one diagnostic: its cases stay host-only.
                     if '%s %s' % (mi.m, mi.cp.where(p)) not in C64_HOST_ONLY:
