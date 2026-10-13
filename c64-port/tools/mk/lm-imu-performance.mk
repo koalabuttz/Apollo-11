@@ -29,11 +29,13 @@ lm-imu-performance-differential: build/lm-imu-performance-native
 	python3 tools/lm_imu_performance_freeze.py
 	git diff --exit-code -- tests/lm_imu_performance_vectors.h tests/lm_imu_performance_c64_vectors.h
 # C64: seven parts (IPT_C64_PART, tests/lm_imu_performance_cases.h), each
-# linking the code its cases run; images under KERNAL ROM.
-IPT_MOS_FLAGS = -std=c99 -Oz -DAPOLLO_FIXED_LM_ONLY -DP66_NATIVE_DISPATCH_ONLY -DIPT_UNDO_ADDRESS=0xf000u -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+# linking the code its cases run; images under KERNAL ROM. Inlining is off:
+# with it LTO grows main and the dispatch past the mailbox page at $C000 (#145).
+IPT_MOS_FLAGS = -std=c99 -Oz -DAPOLLO_FIXED_LM_ONLY -DP66_NATIVE_DISPATCH_ONLY -DIPT_UNDO_ADDRESS=0xf000u -fno-static-stack -mlto-zp=0 -fno-inline-functions -Wall -Wextra -Werror
 IPT_C64_PRGS = $(foreach p,1 2 3 4 5 6 7,build/lm-imu-performance-$(p).prg)
 c64-lm-imu-performance: $(IPT_C64_PRGS)
 build/lm-imu-performance-%.prg: $(IPT_SRC) platform/c64/lm_imu_performance_diagnostic.c tests/lm_imu_performance_c64_vectors.h $(IPT_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(IPT_MOS_FLAGS) -DIPT_C64_PART=$* -Wl,-Map,build/lm-imu-performance-$*.map $(IPT_SRC) platform/c64/lm_imu_performance_diagnostic.c -o $@
+	python3 -c "import re,sys;m=open('build/lm-imu-performance-$*.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else 'code and BSS reach the mailbox page: '+hex(e))"
 vice-lm-imu-performance: $(IPT_C64_PRGS)
-	for prg in $(IPT_C64_PRGS); do python3 tools/vice_run.py $$prg --cycles 3000000000 --timeout 1500 || exit 1; done
+	for prg in $(IPT_C64_PRGS); do echo "PRG $$(basename $$prg) sha256 $$(sha256sum $$prg | cut -c1-64)"; python3 tools/vice_run.py $$prg --cycles 3000000000 --timeout 1500 || exit 1; done

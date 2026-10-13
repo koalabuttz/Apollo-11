@@ -7,6 +7,12 @@
 #include <string.h>
 #include "interp_case.h"
 #include "cm_native_image.h"
+#ifdef IRC_CUTS
+/* 'c64_cuts' specs: a case flagged in its interrupt-enable byte (0x80)
+ * carries a cut after its edit count (tests/interp_cut.h). */
+#include "interp_cut.h"
+static uint16_t cut;
+#endif
 const agc_native_program *irc_program(uint8_t cm);
 #ifdef IRC_EDGES
 void irc_edges_reset(void);void irc_edges_print(void);void irc_edges_map(void);
@@ -22,17 +28,22 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
  * differential can pick C64 cases that stay within one group of routines. */
 static uint16_t visit[IRC_MAX_STEPS];static unsigned nvisit;
 static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps){
- p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
- lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
- {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
- cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ /* (the io records and input latches irc_run gives the routines) */
+ lm_channel_io lio;cm_channel_io cio;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
+ lio.io.superbank=c->superbank;lio.io.interrupt_enabled=c->interrupt_enabled;
+ {uint16_t *w=(uint16_t *)&cio.io;for(i=0;i<sizeof cio.io/sizeof *w;++i)w[i]=0;}
+ cio.io.superbank=c->superbank;cio.io.interrupt_enabled=c->interrupt_enabled;
+ irc_inputs(c,&lio.in);cio.in=lio.in;
  {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
- if(irc_ch_on)irc_cm_io(&cio,0);
+ if(irc_ch_on)irc_cm_io(&cio.io,0);
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
  while(nvisit<max_steps&&nvisit<IRC_MAX_STEPS){
   uint16_t pt=agc_transfer_point(p,s,superbank);
   call=agc_transfer_resolve(p,s,superbank);
   if(!call)break;
+#ifdef IRC_CUTS
+  if(cut&&pt==cut)break;
+#endif
   visit[nvisit++]=pt;
   if(call(p,s,io)!=EXEC_OK)break;
  }
@@ -59,6 +70,9 @@ int main(int argc,char **argv){unsigned n,i,m,count,dump,visits,covers,edges;FIL
  for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned kind;uint16_t ie=0;
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);(void)rd16(f);c.nedits=(uint16_t)rd16(f);
   if(c.nedits>4096u)return 2;
+#ifdef IRC_CUTS
+  cut=0;if(c.interrupt_enabled&0x80u){c.interrupt_enabled&=0x7fu;cut=(uint16_t)rd16(f);}
+#endif
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
   c.edits=edits;irc_build(&s,&c);
   if(visits){irc_build(&s,&c);irc_visits(irc_program(c.cm),&s,&c,IRC_MAX_STEPS);irc_build(&s,&c);}
@@ -69,7 +83,11 @@ int main(int argc,char **argv){unsigned n,i,m,count,dump,visits,covers,edges;FIL
 #ifdef IRC_EDGES
   if(edges)irc_edges_reset();
 #endif
+#ifdef IRC_CUTS
+  kind=irc_run_cut(irc_program(c.cm),&s,&c,cut,IRC_MAX_STEPS,&ie);
+#else
   kind=irc_run(irc_program(c.cm),&s,&c,IRC_MAX_STEPS,&ie);
+#endif
   printf("%u %u %u %lu",n,kind,(unsigned)(s.words[5]&077777u),(unsigned long)irc_digest(0,&s,ie));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)(s.words[i]&(i<2u?0177777u:077777u)));printf(" %u",(unsigned)ie);}
   if(visits)for(i=0;i<nvisit;++i)printf(" v%u",(unsigned)visit[i]);
