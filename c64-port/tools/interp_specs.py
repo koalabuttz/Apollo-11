@@ -114,6 +114,17 @@ def integration_joint():
     return out
 
 
+def n49_wait():
+    """R22LEM96's wait for the N49 display (SLOAD N49FLAG, BZE -3): a zero
+    flag loops until another job is waiting (NEWJOB positive)."""
+    return [{'N49FLAG': 0, '0067': 1}, {'N49FLAG': 1}, {'N49FLAG': 0o77776}, {'N49FLAG': 2}]
+
+
+def v67_loop():
+    """V67's W-matrix loop state: X1 a pass (6 to 54), S1 6."""
+    return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
+
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -885,6 +896,60 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # A CHANG2 resume starts from the state the program reaches it in.
         'resume_flow': True,
+        'rope_bin': True,
+    },
+    'lm-p20-p25': {
+        'missions': ('lm',),
+        'file': {'lm': 'P20-P25.agc'},
+        'base': {'lm': 'lm_p20_p25'},
+        'symbol': {'lm': 'lm_p20_p25'},
+        'entries': ['PROG20', 'PROG25', 'R21LEM', 'R22LEM'],
+        'externals': {'SPSIN': 'auto', 'SPCOS': 'auto', 'MPACVBUF': 'auto', 'USPRCADR': 'auto', 'RESUME': 'auto', 'CHANG1': 'auto', 'BANKJUMP': 'auto', 'LONGCALL': 'auto', 'FALTON': 'auto', 'MAKECADR': 'auto', 'KILLTASK': 'auto', 'TWIDDLE': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto',
+                      'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'NOVAC': 'auto',
+                      'WAITLIST': 'auto', 'FIXDELAY': 'auto', 'VARDELAY': 'auto', 'BLANKET': 'auto',
+                      'ALARM': 'auto', 'PRIOCHNG': 'auto', 'JOBWAKE': 'auto', 'JOBSLEEP': None,
+                      'TASKOVER': None, 'ENDOFJOB': None, 'GOTOPOOH': None, 'POSTJUMP': 1},
+        'noreturn': ['POSTJUMP'],
+        # Returns a case starts with only as their producers leave them:
+        # G+N,AUTO's A (0 in AUTO, else positive) and LRS22.1's MPAC (0 good
+        # data, 1 or 2 for its two bad-data returns).
+        'states': {'R61LEM1+21': {'0000': [0, 1, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
+                   # (X1 an index, as the STORE,1 that TC INTPRET at
+                   # R21LEM7 +1 is to the interpreter assumes)
+                   'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   'R21LEM12+18': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   'R21LEM12+15': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   # (S1 6 from V67WW's SSP S1 on)
+                   'V67WW+10': {'vac+50': [6]}, 'V67WW+11': {'vac+50': [6]},
+                   'V67WW+12': {'vac+50': [6]}, 'V67WW+13': {'vac+50': [6]},
+                   # (R29's pass flag: 1 on the first pass, then 0)
+                   'TESTCOS+6': {'TANG': [0, 1]},
+                   # (RR1AXIS's axis index, 0 or 1, through RR1AX2)
+                   **{'RR1AX2+%d' % n: {'RRINDEX': [0, 1]} for n in range(30)}},
+        # V67's W-matrix loop (NXPOSVEL ... ADDPOS ... TIX,1 NXPOSVEL): X1
+        # steps from 54 by S1 = 6.
+        'joint_states': dict([('ADDPOS+%d' % n, v67_loop()) for n in range(20)]
+                             + [('NXPOSVEL+%d' % n, v67_loop()) for n in range(4)]
+                             + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]),
+        'resume_flow': True,
+        'edge_cases': True,
+        'counters': True,
+        'c64_rows': 'cover',
+        'cover_stride': 4,
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'resume_keys': True,
+        'resume_orphans': True,
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'},
+                'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'},
+                'NORMUNX1': None, 'READCDUD': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        # INDEX MPAC; TC +1 after LPS20.2: within or beyond 400 n.m.
+        'tc_tables': {'P20LEM1+13': 2, 'R22LEM12+20': 3, 'R22LEM2+11': 2, 'LRVEL+3': 5},
+        'basic_fixed_index': {'ONLITES+1': [0, -1], 'HLIGHT+13': [0, -1]},
+        'target': 'tests/lm_p20_p25_target.c',
         'rope_bin': True,
     },
 }

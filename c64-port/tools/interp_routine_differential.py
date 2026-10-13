@@ -352,6 +352,17 @@ def case(mi, point, n, rng):
             elif not mi.cp.in_file(q):
                 break
         E[2] = logical(q)
+        sites = sorted(getattr(mi.cp, 'inline_sites', {}).get(point, ()), key=lambda x: (x[0], x[1] or 0))
+        if sites:
+            # A routine that reads its inline arguments at C(Q) (MAGSUB,
+            # RRLIMCHK): Q a return to one of the file's calls, under that
+            # call's FB.
+            ret, cfb = rng.choice(sites)
+            E[2] = ret
+            if cfb is not None:
+                E[4] = cfb
+                E[6] = cfb | eb
+            q = mi.cp.phys_of(ret, (cfb or 0) >> 10)
         # Saved returns a TC to erasable runs (TC MPAC +2, TC TBASE2): the same.
         # A state the spec pins there (a caller's return in the file) stays.
         for k in mi.cp.tc_erasable:
@@ -894,6 +905,43 @@ C64_HOST_ONLY = []   # routines whose runs do not fit one C64 diagnostic
 C64_PICKS = []       # each group's cases, for the outcome cover
 
 
+C64_LAZY_SETS = 400  # distinct routine sets past which the row cover probes lazily
+
+
+def lazy_fit_cover(mine, arcs, cost, fits, size):
+    """{case: arcs} of a greedy cover of the arcs of the cases that fit one
+    C64 diagnostic, probing only the case the cover picks next. size(i) is
+    (routine set, edit count): a case of a set with no more edits than one
+    that fits fits too, one with as many as one that does not, does not."""
+    import heapq
+    known = {}
+    def fit(i):
+        v, e = size(i)
+        lo, hi = known.get(v, (-1, float('inf')))
+        if e <= lo:
+            return True
+        if e >= hi:
+            return False
+        r = fits(i)
+        known[v] = (max(lo, e), hi) if r else (lo, min(hi, e))
+        return r
+    have, out = set(), {}
+    heap = [(-len(arcs[i]), cost(i), i) for i in mine]
+    heapq.heapify(heap)
+    while heap:
+        g, c, i = heapq.heappop(heap)
+        gain = len(arcs[i] - have)
+        if not gain:
+            continue
+        if -g != gain:
+            heapq.heappush(heap, (-gain, c, i))
+            continue
+        if fit(i):
+            out[i] = arcs[i]
+            have |= arcs[i]
+    return out
+
+
 def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges=None):
     """Groups of routines whose diagnostic fits below $c000, each with the
     spec's c64_per_point cases (default 2) per routine whose run stays in
@@ -928,6 +976,18 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
             by = collections.defaultdict(list)
             for i in sorted(mine, key=lambda i: len(cases[i]['edits'])):
                 by[visits[i]].append(i)
+            if len(by) > C64_LAZY_SETS:
+                # Cases visiting many distinct routine sets (orbital
+                # integration's DIFEQ runs): probing each set would take
+                # days, so the greedy cover probes only the case it picks
+                # next, and drops it when it does not fit (a lazy greedy:
+                # a case's gain only shrinks as the cover grows).
+                ok = lazy_fit_cover(mine, arcs, cost, lambda i: c64_size(
+                    spec, sym, mi.m, visits[i], group_text(sym, [(mi.m, visits[i], [i])], cases, rows)) is not None,
+                    lambda i: (visits[i], len(cases[i]['edits'])))
+                chosen |= set(ok)
+                okall.update(ok)
+                continue
             limit = {}
             for v, ii in by.items():
                 fit = lambda i: c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None
