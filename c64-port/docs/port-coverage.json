@@ -1876,7 +1876,7 @@
       "sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
       "bytes": 5747,
       "lines": 183,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1926,7 +1926,7 @@
           "verification": "docs/INTERBANK-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1942,7 +1942,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
@@ -1962,6 +1961,10 @@
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
@@ -2119,7 +2122,7 @@
       "sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
       "bytes": 2247,
       "lines": 122,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2138,7 +2141,7 @@
           "verification": "docs/RUPT-LEAD-INS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2173,6 +2176,10 @@
             "vice_targets": {
               "vice-rupt-lead-ins": 195
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
@@ -4360,7 +4367,7 @@
       "sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
       "bytes": 6410,
       "lines": 279,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4389,7 +4396,7 @@
           "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4406,7 +4413,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/service-transfer/service-transfer-source-map.json",
@@ -4426,6 +4432,10 @@
             "vice_targets": {
               "vice-service-transfer": 569
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/service-transfer/service-transfer-c64-cover.json",
@@ -4541,7 +4551,7 @@
       "sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
       "bytes": 3827,
       "lines": 150,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4582,7 +4592,7 @@
           "verification": "docs/STANDARD-LEAD-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4600,7 +4610,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
@@ -4621,6 +4630,10 @@
               "vice-standard-lead-oracle": 477,
               "vice-cm-lead-tests": 390
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
@@ -10434,7 +10447,7 @@
       "sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
       "bytes": 3636,
       "lines": 125,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10467,7 +10480,7 @@
           "verification": "docs/STANDARD-LEAD-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10484,7 +10497,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
@@ -10504,6 +10516,10 @@
             "vice_targets": {
               "vice-standard-lead-oracle": 477
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
@@ -10613,7 +10629,7 @@
       "sha256": "76f234ba5ac0e8e3516f935e674761cb4bba455b07543cd10e16c9d1f5caaa87",
       "bytes": 4500,
       "lines": 163,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10624,7 +10640,7 @@
           "verification": "docs/LM-T6RUPT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10658,6 +10674,10 @@
             "vice_targets": {
               "vice-lm-t6rupt": 244
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-c64-cover.json",
