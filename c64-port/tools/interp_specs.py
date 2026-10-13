@@ -1884,8 +1884,9 @@ SPECS = {
         'max_steps': 5000,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
-        # A CHANG2 resume starts from the state the program reaches it in.
-        'resume_flow': True,
+        # (No resume_flow: the CHANG2 resumes in PERIODCH's loop keep the
+        # TAU. and period pins above; a snapshot from a random TAU. loops
+        # for millions of passes.)
         'edge_cases': True,
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',

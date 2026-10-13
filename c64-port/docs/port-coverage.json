@@ -7355,7 +7355,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), the MOVE* routines entered from an RTB (EDOP +0, or a left-hand RTB's right order, where the run ends at their TC DANZIG), TIME2/TIME1 and the CDUs, flight edge values (TDEC = TET, UPSVFLAG, MODREG, small ALPHAV), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), the MOVE* routines entered from an RTB (EDOP +0, or a left-hand RTB's right order, where the run ends at their TC DANZIG), TIME2/TIME1 and the CDUs, flight edge values (TDEC = TET, UPSVFLAG, MODREG, small ALPHAV), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area (or, at INTSTALL, INTSTALL +1 and GOBAC +1, which STATEINT runs under a NOVAC job, 0110: LOC(MPAC +6) - LOC(QPRET)), PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "DANZIG with EDOP holding a left-hand RTB's right order (MEASUREMENT_INCORPORATION's RTB GOTO MOVEPCSM and RTB CALL MOVEACSM), where the interpreter takes the order at OPJUMP",
@@ -7374,7 +7374,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
-            "sha256": "3813e22e2b4ee1332212312ee88938ee1eecc93e2775fd270ec18b9223809262"
+            "sha256": "36a0785439675190f5a0729e4f3bb3547ed91427bc3fe06d907286edc54d4361"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-host.log",
@@ -7382,14 +7382,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "ea50ba5af73d240eb603572267519eb447452f7a25d2739f2ac0527ee4be8fb0",
+            "sha256": "cebd9d217ba92922ba53289d7e30e84758fd743d7784e35410f5c93f891aec9b",
             "vice_targets": {
-              "vice-lm-integration-init": 258
+              "vice-lm-integration-init": 259
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
-            "sha256": "abb827b9091effdbb85c96ff304f1cbecac37438e8d884e6af529ce1e6b2e789"
+            "sha256": "77afcd6c7879535f3cdbaf544ec5ce2a3902e4410a7d0deb4465d7cf1ff455d7"
           }
         }
       }
