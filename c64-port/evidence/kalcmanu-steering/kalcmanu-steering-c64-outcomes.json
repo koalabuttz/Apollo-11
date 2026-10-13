@@ -15,9 +15,10 @@
   "src/lm_kalcmanu_steering.c",
   "src/rtb_angles.c"
  ],
- "host_edges": 733,
- "host_vector_edges": 733,
- "c64_edges": 733,
+ "host_edges": 746,
+ "host_vector_edges": 746,
+ "c64_edges": 746,
  "host_branches_missing_on_c64": [],
- "c64_rows": 78
+ "c64_rows": 77,
+ "c64_segment_rows": 0
 }

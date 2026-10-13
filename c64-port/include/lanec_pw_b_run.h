@@ -13,7 +13,7 @@
  * cm_native_io twin. */
 #define LANEC_PW_ROUTE_RUN(name, lm, cm, route_type)                                               \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         int ok = 0; route_type r;                                                                  \
         if (mission == LANEC_LM) {                                                                 \
             p66_bias_io p; p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled; \
@@ -32,7 +32,7 @@
  * through; the restart light (not a channel the oracle holds) starts off. */
 #define LANEC_PW_LAMP_RUN(name, lm, cm, route_type)                                                \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         int ok = 0; route_type r;                                                                  \
         if (mission == LANEC_LM) {                                                                 \
             dsky_lamp_io p = {{0, 0}, 0, 0, 0, 0, 0};                                              \

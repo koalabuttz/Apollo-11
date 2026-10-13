@@ -50,6 +50,14 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
  return 1;
 }
+/* The same for a basic routine that never names FIXLOC: any FIXLOC. */
+static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){
+ unsigned i;
+ if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
+ for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+ return 1;
+}
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
  * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */
 static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
@@ -89,6 +97,9 @@ static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }
+static MAYBE_UNUSED uint8_t at_basic_nv(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
+ return W[4]==fb&&sane_nv(s,io);
+}
 
 /* LM_KALCMANU_STEERING_KEEP<n> bit i (i = 60n+bit, the order of lm_kalcmanu_steering_points) keeps routine i;
  * a build that defines them keeps only a group (the C64 diagnostics). */
@@ -98,7 +109,7 @@ static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bia
 #if (LM_KALCMANU_STEERING_KEEP0 >> 0) & 1
 /* 22,3003 NEWDELHI (entry NEWDELHI) */
 static enum exec_status r45003(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3003 TC BANKCALL */
  ai_tc(s,03004);
  W[5]=04616;return EXEC_OK; /* BANKCALL */
@@ -249,7 +260,7 @@ static enum exec_status r45031(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 12) & 1
 /* 22,3034  (after EXIT) */
 static enum exec_status r45034(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3034 CAF TWO */
  ai_caf(s,000002);
  L45035:;
@@ -407,7 +418,7 @@ static enum exec_status r45034(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 13) & 1
 /* 22,3065  (return from TIMECHK) */
 static enum exec_status r45065(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3065 TCF CONTMANU */
  goto L45170;
  L45170:;
@@ -440,7 +451,7 @@ static enum exec_status r45065(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 14) & 1
 /* 22,3073  (return from WAITLIST) */
 static enum exec_status r45073(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3073 RELINT  */
  io->interrupt_enabled=1u;
  /* 22,3074 TCF ENDOFJOB */
@@ -460,7 +471,7 @@ static enum exec_status r45122(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 16) & 1
 /* 22,3123  (after EXIT) */
 static enum exec_status r45123(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3124 DCA TIME2 */
  ai_dca(s,00024u);
  goto L45125;
@@ -698,7 +709,7 @@ static enum exec_status r45123(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 17) & 1
 /* 22,3203  (return from WAITLIST) */
 static enum exec_status r45203(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3203 CAF ONESEK     +1 */
  ai_caf(s,000144);
  /* 22,3204 ADS NEXTIME */
@@ -710,7 +721,7 @@ static enum exec_status r45203(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 18) & 1
 /* 22,3206 UPDTCALL (entry UPDTCALL) */
 static enum exec_status r45206(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3206 CAF PRIO26 */
  ai_caf(s,026000);
  /* 22,3207 TC FINDVAC */
@@ -721,7 +732,7 @@ static enum exec_status r45206(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 19) & 1
 /* 22,3212  (return from FINDVAC) */
 static enum exec_status r45212(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3212 TC TASKOVER */
  ai_tc(s,03213);
  W[5]=05261;return EXEC_OK; /* TASKOVER */
@@ -730,7 +741,7 @@ static enum exec_status r45212(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 20) & 1
 /* 22,3213 MANUSTOP (entry MANUSTOP) */
 static enum exec_status r45213(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3213 CAF ZERO */
  ai_caf(s,000000);
  /* 22,3214 TS DELDCDU2 */
@@ -794,7 +805,7 @@ static enum exec_status r45213(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 21) & 1
 /* 22,3234 GOODMANU (entry GOODMANU) */
 static enum exec_status r45234(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3234 CA ATTPRIO */
  ai_ca(s,01311u);
  /* 22,3235 TS NEWPRIO */
@@ -812,7 +823,7 @@ static enum exec_status r45234(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_KALCMANU_STEERING_KEEP0 >> 22) & 1
 /* 22,3241  (return from SPVAC) */
 static enum exec_status r45241(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3241 TC TASKOVER */
  ai_tc(s,03242);
  W[5]=05261;return EXEC_OK; /* TASKOVER */

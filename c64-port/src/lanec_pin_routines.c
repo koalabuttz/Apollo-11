@@ -49,11 +49,25 @@ static int unrepresented(uint16_t last)
     return 0;
 }
 
+/* The program's fixed memory for the modules that read the rope as data
+ * (lanec_fixed_read); a program without fixed_data keeps the harness's. */
+static const agc_native_program *program;
+static bool program_fixed(enum lanec_mission mission, uint16_t physical, agc_word *word)
+{
+    (void)mission;
+    return program->fixed_data(program, physical, word);
+}
+static void use_program(const agc_native_program *p)
+{
+    if (p->fixed_data) { program = p; lanec_fixed_read = program_fixed; }
+}
+
 #ifdef LANEC_PIN_HAS_LM
 static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s, void *v, const dispatch *f)
 {
     lm_dntm_io *x = v;
-    if (!p || !s || !x || !p->hardware || !lanec_registers_valid(s)) return EXEC_OUT_OF_SCOPE;
+    if (!LANEC_MISSION_LINKED(LANEC_LM) || !p || !s || !x || !p->hardware || !lanec_registers_valid(s)) return EXEC_OUT_OF_SCOPE;
+    use_program(p);
     LANEC_PIN_SAVE(s);
     for (; *f; ++f) {
         memset(&io, 0, sizeof io);
@@ -78,7 +92,8 @@ static enum exec_status lm(const agc_native_program *p, apollo_overlay_state *s,
 static enum exec_status cm(const agc_native_program *p, apollo_overlay_state *s, void *v, const dispatch *f)
 {
     cm_dntm_io *x = v;
-    if (!p || !s || !x || !lanec_registers_valid(s)) return EXEC_OUT_OF_SCOPE;
+    if (!LANEC_MISSION_LINKED(LANEC_CM) || !p || !s || !x || !lanec_registers_valid(s)) return EXEC_OUT_OF_SCOPE;
+    use_program(p);
     LANEC_PIN_SAVE(s);
     for (; *f; ++f) {
         memset(&io, 0, sizeof io);

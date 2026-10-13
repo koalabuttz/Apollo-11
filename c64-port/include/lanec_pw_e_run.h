@@ -9,7 +9,7 @@
 
 #define LANEC_PW_LAMP_RUN(name, LM_CALL, CM_CALL)                                                  \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         int ok;                                                                                    \
         if (mission == LANEC_LM) {                                                                 \
             dsky_lamp_io p;                                                                        \
@@ -36,7 +36,7 @@
 
 #define LANEC_PW_CHARIN_RUN(name, LM_CALL, CM_CALL)                                                \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         int ok;                                                                                    \
         if (mission == LANEC_LM) {                                                                 \
             dsky_charin_io p;                                                                      \
