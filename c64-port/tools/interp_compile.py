@@ -45,11 +45,11 @@ MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'LXC': 'LXC', 'SXA': 'SXA', 'X
         'BPL': 'BPL/BMN', 'BMN': 'BPL/BMN', 'RTB': 'RTB/BHIZ', 'BHIZ': 'RTB/BHIZ',
         'CALL': 'CALL/ITA', 'ITA': 'CALL/ITA', 'STQ': 'CALL/ITA', 'BOV': 'BOV(B)', 'BOVB': 'BOV(B)'}
 INDEXED_MISC = ('AXT', 'AXC', 'LXA', 'LXC', 'SXA', 'XCHX', 'INCR', 'TIX', 'XAD', 'XSU')
-SWITCH_ALIAS = {'BOF': 'BOFF', 'BOFCLR': 'BOFFCLR', 'BOFSET': 'BOFFSET', 'BOFINV': 'BOFFINV'}
+SWITCH_ALIAS = {'CLR': 'CLEAR', 'BOF': 'BOFF', 'BOFCLR': 'BOFFCLR', 'BOFSET': 'BOFFSET', 'BOFINV': 'BOFFINV'}
 SWITCH_BRANCH = ('BON', 'BOFF', 'BOFFCLR', 'BOFFSET', 'BOFFINV', 'BONCLR', 'BOFCLR', 'BONSET', 'BOFSET', 'BONINV', 'BOFINV',
                  'SETGO', 'CLRGO', 'INVGO')
 SWITCH_PLAIN = ('SET', 'CLEAR', 'INVERT')
-UNARY = {'SQRT': 'SQRT', 'SIN': 'SINE', 'COS': 'COSINE', 'ASIN': 'ARCSIN', 'ACOS': 'ARCCOS', 'ARCSIN': 'ARCSIN', 'ARCCOS': 'ARCCOS',
+UNARY = {'SQRT': 'SQRT', 'SIN': 'SINE', 'COS': 'COSINE', 'SINE': 'SINE', 'COSINE': 'COSINE', 'ASIN': 'ARCSIN', 'ACOS': 'ARCCOS', 'ARCSIN': 'ARCSIN', 'ARCCOS': 'ARCCOS',
          'DSQ': 'DSQ', 'ROUND': 'ROUND', 'DCOMP': 'COMP', 'VCOMP': 'COMP', 'VDEF': 'VDEF',
          'UNIT': 'UNIT', 'ABVAL': 'ABVALABS', 'ABS': 'ABVALABS', 'VSQ': 'VSQ', 'STADR': 'STADR',
          'RVQ': 'RVQ', 'PUSH': 'PUSH'}
@@ -128,6 +128,12 @@ class Compiler:
             raise CompileError('no lines for %s' % spec['file'][mission])
         self.code = {l.phys: l for l in self.lines}
         self.words = set(l.phys + i for l in self.lines for i in range(len(l.words)))
+        # 'outside': {'LABEL': words} leaves code the compiler can't model
+        # yet (VNPOOH's XCH FBANK) to the original: a transfer there leaves
+        # the file, and its words are untranslated (the spec's 'partial').
+        for lab_, n_ in spec.get('outside', {}).items():
+            p_ = self.L.labels[lab_]
+            self.words -= set(range(p_, p_ + n_))
         self.superbank = any(l.phys >= 0o40 * 1024 for l in self.lines)
         self.high_banks = any(l.phys >= 0o30 * 1024 for l in self.lines)
         # resume_keys: every word after a DANZIG is a routine of its own, so
@@ -192,7 +198,11 @@ class Compiler:
         in banks 040-043 runs with superbank 4, under which FB 030-033 are
         banks 040-043."""
         b = (w >> 10) & 0o37
-        if self.superbank and b >= 0o30:
+        # (In a file with code both in 030-037 and 040-043, the bank of the
+        # routine being compiled decides: FB 30-37 is a superbank bank only
+        # from code that runs with the superbank bit.)
+        ctx = getattr(self, 'cur_start', None)
+        if b >= 0o30 and (self.superbank if ctx is None else ctx // 1024 >= 0o40):
             b += 8
         return b * 1024 + (w & 0o1777)
 
@@ -243,7 +253,7 @@ class Compiler:
                     prev = self.code.get(q - 1)
                     if prev is not None and prev.op in ('EXTEND', 'INDEX', 'NDX'):
                         continue    # (a prefixed word is its prefix's)
-                    if self.is_basic(q) and q not in self.owner and q not in self.starts:
+                    if self.is_basic(q) and self.in_file(q) and q not in self.owner and q not in self.starts:
                         self.add_start(q, 'b', 'resumed from outside')
                         break
         # Second pass: a block stops where another starts.
@@ -276,6 +286,7 @@ class Compiler:
         """C statements for the interpretive routine at start."""
         out = []
         p = start
+        self.cur_start = start
         bank = start // 1024
         first = True
         while True:
@@ -333,7 +344,9 @@ class Compiler:
         if starred:
             return '0'
         fp = self.fixed_operand(w, bank)
-        if fp is None:
+        if fp is None or what == 'GSHIFT':
+            # A shift's operand word is its count (SL 14D is 020217), not
+            # an address the order reads.
             return '0'
         if not takes_k or split_op(what)[0] in ('VXM', 'MXV'):
             raise CompileError('%s with fixed operand' % what)
@@ -371,7 +384,11 @@ class Compiler:
         """GOTO 06646 (after a taken branch or CALL) to the target."""
         P = self.p
         if w & 0o74000:
-            self.target(w, why)
+            t = self.target(w, why)
+            if self.spec.get('self_loops') and t == self.cur_start:
+                # A branch back to the routine's own start (P32/P72F's BPL)
+                # loops here rather than through the run loop's step limit.
+                return ['%sgoto(s);' % P, 'if(++loops<4096u)goto top;', 'return EXEC_OK;']
             return ['%sgoto(s);' % P, 'return EXEC_OK;']
         self.cadr_erasable.add(w)
         return ['%sgoto_any(s);' % P, 'return EXEC_OK;']
@@ -416,7 +433,18 @@ class Compiler:
             if star:
                 st = ['%sindexed(s,0%05o,0%05o);' % (P, nxt, T[name])]
                 k = '0'
-                fx = self.fixed_index(cur, takes_k, op)
+                fx = self.fixed_index(cur, takes_k or name == 'SLOAD', op)
+                if fx and name == 'SLOAD':
+                    # SLOAD* of a fixed table (ALARM/TB -1,1): the word at
+                    # the effective address, loaded as SLOAD's fixed path.
+                    st[-1] += self.superbank_guard(fx) + '{agc_word w;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
+                    st.extend('  case %du:w=K%o[0];break;' % (fp, fp) for fp in fx)
+                    st.append('  default:return EXEC_OUT_OF_SCOPE;}')
+                    st.append('W[1]=0;ai_caf(s,w);ai_dxch(s,0154);ai_caf(s,0);(void)ai_ts(s,0156);'
+                              '(void)ai_ts(s,0163);W[5]=0%o;}' % (0o6061 if self.m == 'lm' else 0o6030))
+                    for fp in fx:
+                        self.const_len[fp] = 1
+                    return st, cur + 1, False, False
                 if fx:
                     # An indexed fixed operand: the rope words at each
                     # address the spec's index values reach; any other
@@ -434,6 +462,14 @@ class Compiler:
                 k = '0'
             else:
                 st = ['%sdirect(s,0%05o,0%05o);' % (P, nxt, T[name])]
+                if name == 'TLOAD' and self.fixed_operand(nxt, bank) is not None:
+                    # TLOAD of a fixed triple (the interpreter's own path,
+                    # with the three rope words).
+                    fp = self.fixed_operand(nxt, bank)
+                    self.consts[fp] = self.name(fp)
+                    self.const_len[fp] = max(self.const_len.get(fp, 3), 3)
+                    st[-1] += '%stload_fixed(s,K%o);' % (P, fp)
+                    return st, cur + 1, False, False
                 if name == 'SLOAD' and self.fixed_operand(nxt, bank) is not None:
                     # SLOAD of a fixed constant (DECTWO): ZL; CAF K; DXCH
                     # MPAC; CAF ZERO; TS MPAC+2; TS MODE; on to DANZIG.
@@ -647,9 +683,22 @@ class Compiler:
         if ln is None or p not in self.words:
             raise CompileError('basic flow runs into %s' % self.where(p))
         here = '/* %s %s %s */' % (self.where(p), ln.op, ln.operand)
+        if index is None and op != 0 and (w & 0o7777) == 5:
+            # An instruction that reads Z (VNPOOH's... CA Z) sees the
+            # address after it, as the hardware's Z holds.
+            here += 'W[5]=0%04o;' % (ln.loc + 1)
 
         self._ix = None
         self._ix_write = None
+        if (index is not None and not extended and op == 1 and qc == 0 and k10 < 0o10
+                and self.spec.get('index_returns')):
+            # INDEX K; TCF 0 +n with K a saved Q (P37's INDEX SPRTEX, TCF 0
+            # +1): a return n words past the caller's. The sum is a TCF
+            # when it carries into the address's top bits; the run loop
+            # takes Z from there.
+            return [here, '{agc_word iw=ixw(s,0%05o,0%ou);' % (w, index) +
+                    'if((iw&070000u)!=010000u||(iw&07777u)<02000u)return EXEC_OUT_OF_SCOPE;' +
+                    'W[5]=(agc_word)(iw&07777u);return EXEC_OK;}'], []
 
         def ea(k):
             if index is None:
@@ -852,6 +901,7 @@ class Compiler:
         reachable from it without leaving the file, in address order, with
         labels where control jumps."""
         bank = start // 1024
+        self.cur_start = start
         units = {}
         self.returns_seen = set()
         work = [start]
@@ -1082,7 +1132,12 @@ class Compiler:
                 c.append(' if(!sane(s,io))return EXEC_OUT_OF_SCOPE;')
             else:
                 chk = 'at_newops' if kind == 'i' else 'at_basic'
-                c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
+                if any('goto top;' in st for st in self.blocks[phys]):
+                    c.append(' uint16_t loops=0;')
+                    c.append(' top:')
+                    c.append(' if(!%s(s,io,0%05ou))return loops?EXEC_OK:EXEC_OUT_OF_SCOPE;' % (chk, fb))
+                else:
+                    c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
             for st in self.blocks[phys]:
                 c.append(' ' + st)
             c.append('}')

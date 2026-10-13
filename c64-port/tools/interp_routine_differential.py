@@ -96,6 +96,7 @@ class Mission:
         self.ebank = spec.get('ebank')
         self.edge = spec.get('edge_cases', False)
         self.rk = bool(spec.get('resume_keys'))
+        self.index_returns = bool(spec.get('index_returns'))
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
 
@@ -170,15 +171,20 @@ def case(mi, point, n, rng):
         if shape == 1:
             for k in range(6):
                 w = rng.randrange(0o4000)
-                E[(phys + k) & 0o3777] = w if rng.random() < 0.5 else (~w) & 0o77777
+                w = w if rng.random() < 0.5 else (~w) & 0o77777
+                # (An operand at the top of erasable, as P37's E7 03774,
+                # does not run on into A and L.)
+                if phys + k <= 0o3777:
+                    E[phys + k] = w
         elif shape == 2:
             z = rng.uniform(-1, 1)
             t = rng.uniform(0, 2 * math.pi)
             r = math.sqrt(max(0.0, 1 - z * z))
             for k, x in enumerate((r * math.cos(t) / 2, r * math.sin(t) / 2, z / 2)):
                 hi, lo = dp(x)
-                E[(phys + 2 * k) & 0o3777] = hi
-                E[(phys + 2 * k + 1) & 0o3777] = lo
+                for j, v in ((2 * k, hi), (2 * k + 1, lo)):
+                    if phys + j <= 0o3777:
+                        E[phys + j] = v
     if shape == 3:
         E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
     for off in (0o50, 0o51, 0o52):
@@ -215,7 +221,13 @@ def case(mi, point, n, rng):
         # Q: a return in the caller's bank outside the file, the case's stop.
         while True:
             q = bank * 1024 + rng.randrange(0o1776)
-            if not mi.cp.in_file(q):
+            if mi.index_returns:
+                # (Returns up to four words past it, INDEX SPRTEX; TCF 0 +4,
+                # stay in the bank and outside the file.)
+                q = min(q, bank * 1024 + 0o1773)
+                if not any(mi.cp.in_file(q + i) for i in range(5)):
+                    break
+            elif not mi.cp.in_file(q):
                 break
         E[2] = logical(q)
         # Saved returns a TC to erasable runs (TC MPAC +2, TC TBASE2): the same.
@@ -274,7 +286,8 @@ def build(spec_id, spec):
                         os.path.join(E, 'rfopen.o'), '-o', ref], cwd=R, check=True)
     nat = os.path.join(B, '%s-native' % spec_id)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
-    subprocess.run(['cc', *FLAGS, *srcs, spec['target'], 'tools/interp_routine_native.c', '-o', nat],
+    subprocess.run(['cc', *FLAGS, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *srcs, spec['target'],
+                    'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
 
@@ -506,7 +519,7 @@ def host_arcs(spec_id, spec, missions, cases):
     d = os.path.join(B, '%s-cover' % spec_id)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
     exe = c64_row_cover.build(d, [*srcs, spec['target'], 'tools/interp_routine_native.c'],
-                              [f for f in FLAGS if f != '-O2'])
+                              [f for f in FLAGS if f != '-O2'] + ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)])
     one = os.path.join(d, 'cases')
     os.makedirs(one)
 

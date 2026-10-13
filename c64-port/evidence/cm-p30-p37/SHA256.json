@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p30-p37",
+  "release": "evidence-cm-p30-p37",
+  "files": {
+    "cm-p30-p37-differential.log": {
+      "sha256": "b5c835d75fd9a7ee7eff3a8ecf9f7e9e302070a32048ad14de725c5c8c9af354",
+      "bytes": 30476,
+      "store": "release"
+    },
+    "cm-p30-p37-host.log": {
+      "sha256": "e66a5d5580016991252be3515f5dc4327a49e872fe413a2317cc23cc0f0a0daa",
+      "bytes": 70,
+      "store": "release"
+    },
+    "cm-p30-p37-proof.json": {
+      "sha256": "a362bfaf1f760fa801064359556457e0678c98312489966edaf72b8644abc721",
+      "bytes": 46850,
+      "store": "tree"
+    },
+    "cm-p30-p37-source-map.json": {
+      "sha256": "66fc55fcd0f9c976fe0ec40cad83dea94220eed7f1593c90e39d0f94c847e68f",
+      "bytes": 50372,
+      "store": "tree"
+    },
+    "cm-p30-p37-vice.log": {
+      "sha256": "1f5fd2e23c005e0ea489b4886eeb978c13d3c7858558d50352680cb12c8b0a41",
+      "bytes": 328,
+      "store": "release"
+    }
+  }
+}
