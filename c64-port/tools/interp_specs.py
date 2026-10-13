@@ -1690,6 +1690,9 @@ SPECS = {
         'target': 'tests/rtb_op_codes_target.c',
         # RTB runs in NOVAC jobs too: the routines that never name FIXLOC
         # take any FIXLOC.
+        # (INDEX LIMITS -2/-1 sums carry end-around on the C64's 16-bit
+        # unsigned too)
+        'index_carry16': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
