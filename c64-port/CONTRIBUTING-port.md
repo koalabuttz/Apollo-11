@@ -180,3 +180,18 @@ uncompared, whether domain claims hold, C64 cover without a runner): argue
 them in the certificate. A clean precheck does not mean the auditor will
 accept it. If you change how routines are reached, regenerate its listing facts
 after `tools/setup_cloud.sh` with `python3 tools/cert_precheck.py --write-facts`.
+
+A certificate names the VICE targets that prove its C64 run, in
+`evidence.c64_execution_results.vice_targets`, as `{"vice-<m>": <checks>}`
+(the check count it certifies; a plain list of names certifies a pass), or
+says why none applies in a certificate-level `"c64_exempt": "<reason>"`
+(documentation-only files). Each full `port-ci` run (nightly, dispatch)
+uploads a `vice-manifest` artifact (`tools/vice_manifest.py`): for every
+`vice-*` target, its result, check count, failures and PRG sha256 at that
+commit. `cert_precheck.py` (with `--fetch`, or `--manifest PATH`) fails when a
+named target is missing, failed or ran fewer checks in the newest complete
+manifest, or when that manifest is over three days old; it only warns while
+the manifest predates the certificate's `vice_targets`, when no manifest can be
+fetched, and, during migration, for certificates that name no targets. The
+manifest is what proves the C64 run at the tip, so after a shared-file change
+you need not refresh the PRG hashes in older run records.
