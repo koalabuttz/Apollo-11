@@ -161,9 +161,9 @@ static NI void lmi_intpret(void);
 #define M16 0177777u
 
 static NI agc_register add16(agc_register a, agc_register b){
- uint32_t t=(uint32_t)a+(uint32_t)b;
- if(t&0200000u)t=(t+1u)&M16;
- return (agc_register)t;
+ agc_register t=(agc_register)(a+b);
+ if(t<a)++t;   /* end-around carry */
+ return t;
 }
 static NI agc_register sx(agc_word v){return (agc_register)((v&077777u)|(((unsigned)v<<1)&0100000u));}
 static NI agc_word oc(agc_register v){return (agc_word)((v&037777u)|((v>>1)&040000u));}
@@ -171,11 +171,13 @@ static NI agc_word oc(agc_register v){return (agc_word)((v&037777u)|((v>>1)&0400
 static NI agc_register ovf(agc_register v){
  switch(v&0140000u){case 040000u:return 1u;case 0100000u:return 0177776u;default:return 0u;}
 }
-static NI void endi(void){W[1]=sx(oc(W[1]));}
+/* L overflow-corrected and sign-extended, as after every instruction. */
+static NI void endi(void){agc_register l=W[1];W[1]=(agc_register)((l&0137777u)|((l>>1)&040000u));}
 
 static NI unsigned ai_ea(unsigned a){
  a&=01777u; /* the erasable address field; never outside the image */
- return a>=01400u?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;
+ if(a<01400u)return a;
+ return (unsigned)((W[3]&03400u)+(a-01400u));
 }
 static NI agc_word ai_word(unsigned a){return (agc_word)(W[ai_ea(a)]&077777u);}
 /* A, L and Q are 16-bit registers. Between original instructions Q keeps
@@ -185,6 +187,7 @@ static NI agc_register reg(unsigned a){return W[a];}
 static NI void setreg(unsigned a,agc_register v){W[a]=v;}
 static NI void ai_put(unsigned a,agc_word v){
  v&=077777u;a=ai_ea(a);
+ if(a>=024u){W[a]=v;return;}
  switch(a){
  case 0:case 1:W[a]=v;return;
  case 2:W[2]=v;return;
@@ -202,7 +205,12 @@ static NI void ai_put(unsigned a,agc_word v){
 /* Memory operand read with the editing write-back of reading orders (by
  * physical location; DCA/DCS re-edit only when named as 020-023). */
 static NI uint8_t edited(unsigned a){a=ai_ea(a);return a>=020u&&a<=023u;}
-static NI agc_word rd(unsigned a){agc_word v=ai_word(a);if(edited(a))ai_put(a,v);return v;}
+static NI agc_word rd(unsigned a){
+ agc_word v;
+ a=ai_ea(a);v=(agc_word)(W[a]&077777u);
+ if(a>=020u&&a<=023u)ai_put(a,v);
+ return v;
+}
 
 static NI void ai_ca(unsigned a){if(a>=3u)W[0]=sx(rd(a));else if(a)W[0]=reg(a);endi();}
 static NI void ai_caf(agc_word k){W[0]=sx(k);endi();}
