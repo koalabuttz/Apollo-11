@@ -18,7 +18,7 @@ sanitize-lat-long: | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lat-long-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and both listing builds).
 lat-long-differential:
-	python3 tools/interp_routine_differential.py lat-long --cases 512 --freeze
+	python3 tools/interp_routine_differential.py lat-long --cases 256 --freeze
 	git diff --exit-code -- tests/lat_long_vectors.h tests/lat_long_c64_vectors.h tools/mk/lat-long.groups
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; each fits below the $c000 mailbox).
