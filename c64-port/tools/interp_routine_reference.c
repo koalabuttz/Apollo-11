@@ -31,7 +31,7 @@ static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&0
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0,through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0,through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
  dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
@@ -45,7 +45,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);stop=rd16(f);c.nedits=(uint16_t)rd16(f);
   if(c.nedits>4096u)return 2;
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
-  {unsigned j=0;ret=0xffffu;for(i=0;i<c.nedits;++i){if(through&&edits[i].addr==0xffffu)ret=edits[i].word;else edits[j++]=edits[i];}c.nedits=(uint16_t)j;}
+  {unsigned j=0;ret=0xffffu;retloc=0;for(i=0;i<c.nedits;++i){if(through&&edits[i].addr>=0xfffeu){ret=edits[i].word;retloc=edits[i].addr==0xfffeu;}else edits[j++]=edits[i];}c.nedits=(uint16_t)j;}
   c.edits=edits;irc_build(&s,&c);t=&st[c.cm];
   {unsigned snap=0xffffu,snapped=0;if(snapmode){snap=stop;stop=0xffffu;for(i=0;i<2048u;++i)init[i]=s.words[i];}
   machine=baseline[c.cm];
@@ -58,7 +58,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
      printf("\n");snapped=stopped=1;break;}
     /* (A snapshot run through outside code ends at its entry's caller
      * return: Z there, or the interpreter's LOC for an interpretive one.) */
-    if(through&&ret!=0xffffu&&(z_physical(pc)==ret||(pc==t->newops&&get(0120)==init[0120]&&loc_physical()==ret))){stopped=1;break;}
+    if(through&&ret!=0xffffu&&((!retloc&&z_physical(pc)==ret)||(retloc&&pc==t->newops&&get(0120)==init[0120]&&loc_physical()==ret))){stopped=1;break;}
     /* (IRC_SNAP_THROUGH: a snapshot run goes on through outside code, and
      * takes LOC only as a word of fixed memory, in the job it began in: FIXLOC
      * unchanged.) */

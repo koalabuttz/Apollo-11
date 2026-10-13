@@ -342,16 +342,20 @@ def flow_seed(missions, cases, rng, ref, path, spec=None):
                 # (an interpretive entry returns through QPRET, FIXLOC +42D,
                 # which its STQ saves: a word of its bank outside the file,
                 # where the run ends, not wherever a random QPRET leads)
+                ra = 0xffff
                 if ret == 0xffff and missions[q[0]].kinds[q[1]] == 'i':
+                    ra = 0xfffe
                     mq, bank = missions[q[0]], q[1] // 1024
                     while True:
                         ret = bank * 1024 + rng.randrange(0o1776)
                         if not mq.cp.in_file(ret):
                             break
-                    E[E[0o120] + 0o52] = logical(ret)
+                    # (QPRET is the fixed CADR GOTO takes: FBANK bits, then
+                    # the word in the bank)
+                    E[E[0o120] + 0o52] = (bank << 10) | (ret % 1024)
                 # (the entry's caller return, which ends the run there: a
                 # pseudo-edit at 0xffff the reference takes out)
-                c['edits'] = list(E.items()) + ([(0xffff, ret)] if ret != 0xffff else [])
+                c['edits'] = list(E.items()) + ([(ra, ret)] if ret != 0xffff else [])
             runs.append(c)
         write_cases(sub, missions, runs)
         out = subprocess.run([ref, *ROPES, sub], cwd=R, check=True, capture_output=True, text=True,
@@ -362,7 +366,7 @@ def flow_seed(missions, cases, rng, ref, path, spec=None):
         for (r, j), c, line in zip(batch, runs, out):
             f = line.split()
             if f[1] == 'S':
-                E = collections.OrderedDict((x, w) for x, w in c['edits'] if x != 0xffff)
+                E = collections.OrderedDict((x, w) for x, w in c['edits'] if x < 0xfffe)
                 E.update((int(f[k]), int(f[k + 1])) for k in range(2, len(f), 2))
                 # (through outside code, Z can reach an interpretive point's
                 # word as an instruction: only NEWOPS takes an interpretive one)
