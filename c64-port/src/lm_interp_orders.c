@@ -889,6 +889,71 @@ void lmi_vxsc(apollo_overlay_state *s,const agc_word *k){
 void lmi_vproj(apollo_overlay_state *s,const agc_word *k){
  TC(IF_(07426,07375));CAF(TWO);(void)TS(rDOTINC);dotsub(s,k);CSF(FOUR);ADS(rADDRWD);dvxsc(s,k);
 }
+/* V/SCDV 02750 (Q = return): one component in MPAC,+1 divided by the
+ * normalized divisor in BUF, to TC Q; 1 when it ends at DVOVF (DANZIG). */
+static uint8_t vscdv(apollo_overlay_state *s){
+ uint8_t c;
+ CA(rVBUF+5);(void)TS(rDVSIGN);
+ c=CCS(rMPAC);
+ if(c==1u||c==3u){
+  c=CCS(rMPAC+1);
+  if(c==1u||c==3u){RETQ();return 0;}   /* zero component */
+ }
+ if(c==2u){DCS(rMPAC);DXCH(rMPAC);INCR(rDVSIGN);}
+ /* /MPAC+ near-one test against the unnormalized divisor in BUF2. */
+ CSF(ONE);(void)TS(rMAXDVSW);CS(rMPAC);AD(rBUF2);c=CCS(rA);
+ if(c==2u){dvovf(s);return 1;}
+ if(c!=0u){
+  (void)TS(rMAXDVSW);CS(rMPAC+1);AD(rBUF2+1);
+  if(ai_bzmf(s)){dvovf(s);return 1;}
+ }
+ /* DDVCALL DXCH MPAC; INDEX DVNORMCT; TCF MAXTEST (Q still the caller's). */
+ DXCH(rMPAC);ddv_chain(s,chain_at(02565u,W[rDVNORMCT]));return 0;
+}
+/* V/SC2 02654 (vector in MPAC, scalar in BUF) to DANZIG. */
+static void vsc2(apollo_overlay_state *s){
+ uint8_t c;
+ CSF(ONE);(void)TS(rDVNORMCT);(void)TS(rVBUF+5);
+ TC(02660);vecagree(s);
+ DXCH(rBUF);TC(02662);alsignag(s);DXCH(rBUF);
+ c=CCS(rBUF);
+ if(c==0u)goto bufplus;
+ if(c==2u)goto bufminus;
+ /* Major part zero: shift vector and scalar left 14, DVOVF on overflow. */
+ XCH(rBUF+1);XCH(rBUF);XCH(rMPAC+1);XCH(rMPAC);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ XCH(rMPAC+4);XCH(rMPAC+3);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ XCH(rMPAC+6);XCH(rMPAC+5);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ c=CCS(rBUF);
+ if(c==0u)goto bufplus;
+ if(c!=2u){dvovf(s);return;}   /* zero divisor */
+bufminus:
+ DCS(rBUF);DXCH(rBUF);INCR(rVBUF+5);
+bufplus:
+ DCA(rBUF);DXCH(rBUF2);
+ for(;;){
+  CA(rBUF);DOUBLE();
+  if(ai_ovsk(s))break;
+  ai_aug(s,rDVNORMCT);DCA(rBUF);DAS(rBUF);
+ }
+ TC(02737);if(vscdv(s))return;
+ DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);
+ TC(02743);if(vscdv(s))return;
+ DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);
+ TC(02747);if(vscdv(s))return;
+ vrotatex(s);
+}
+/* V/SC 07624: VV/SC (vector mode, scalar operand) or DV/SC (scalar mode,
+ * vector operand; mode becomes vector), V/SC1 DXCH BUF; FBANK 0; V/SC2. */
+void lmi_vsc(apollo_overlay_state *s,const agc_word *k){
+ if(CCS(rMODE)<2u){
+  dca_op(s,k,2);DXCH(rMPAC+3);dca_op(s,k,4);DXCH(rMPAC+5);
+  CSF(ONE);(void)TS(rMODE);dca_op(s,k,0);DXCH(rMPAC);
+ }else dca_op(s,k,0);
+ DXCH(rBUF);CAF(ZERO);(void)TS(rFB);vsc2(s);
+}
 void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
  DCA(rMPAC+5);DXCH(rMPAC);DXCH(rVBUF);TC(IF_(07465,07434));dmpsub(s,k);
  DCS(rMPAC+3);DXCH(rMPAC);DXCH(rVBUF+2);TC(IF_(07472,07441));dmpsub(s,k);
@@ -1209,6 +1274,17 @@ void lmi_goto_any(apollo_overlay_state *s){
   (void)TS(rPOLISH);
  }
  lmi_goto(s);
+}
+/* CGOTO 06703 (ADDRWD names the modifier; `list` is the CADR-list word after
+ * the operand and cadrs its n words): INDEX LOC, CA 1; INDEX ADDRWD, AD 0;
+ * TS FBANK; MASK LOW10; INDEX A, CA 10000; TS POLISH; TCF GOTO +1, to the
+ * target's NEWOPS. 0, with the image unchanged, when the modifier selects
+ * a word outside the list. */
+uint8_t lmi_cgoto(apollo_overlay_state *s,agc_word list,const agc_word *cadrs,uint16_t n){
+ int i=signed_word(ai_word(s,AT(W[rADDRWD])));
+ if(i<0||i>=(int)n||(list&LOW10)+(unsigned)i>LOW10)return 0;
+ CAF(list);AD(AT(W[rADDRWD]));(void)TS(rFB);MASKF(LOW10);CAF(cadrs[i]);(void)TS(rPOLISH);lmi_goto(s);
+ return 1;
 }
 void lmi_15bitadr(apollo_overlay_state *s,agc_word word,agc_word target){
  /* 15BITADR 06252 (from STCALL's STOTC): INCR LOC; INDEX LOC, CA 0;

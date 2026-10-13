@@ -71,3 +71,26 @@ With `resume_flow` (and `resume_keys`), a resume LOC's cases start from the stat
 - `build/<id>-proof.json`. Cases that stop at a channel instruction are listed as `waiting_for_io_channels` and not compared. Routines whose runs reach too much of the file to fit one diagnostic are listed as `c64_host_only`.
 - `build/<id>-c64-cover.json` (with `'c64_rows': 'cover'`): the `c64_branch_outcomes` record a certificate cites. The C64 rows are the fewest cases that take every gcov branch arc the traced host cases take over every linked source; `cover_stride` traces every Nth case (a divisor of `freeze_stride`, so every frozen host vector is traced) to keep large files fast.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
+
+## Additions from the orbital lane (ORBITAL_INTEGRATION, INTEGRATION_INITIALIZATION)
+
+Spec keys:
+
+- `cgoto`: the CADR list a CGOTO reads, with its length. The list's words are `cadr_list` rows in the source map.
+- `indexed_fixed`: a starred operand into fixed memory, with the range its index register can take. It emits a `KX` table and checks the index at run time, refusing anything outside the table.
+- `rtb` also serves BOVB to a basic label (BOVB TCDANZIG).
+- `return_words`: erasable words that hold a saved interpretive return (TBASE2), seeded like QPRET with a return outside the file.
+- `native_ranges`: basic routines implemented by hand behind RTB (the MOVE* state-vector moves), mapped in the source map to that function.
+- `native_entries`: those hand-written routines as registered transfer routines too, for files that reach them directly (MEASUREMENT_INCORPORATION's RTB MOVEACSM). Each runs its function and then its TC DANZIG as a pair's end; a left-hand RTB (EDOP holding the pair's right order) is refused.
+- `max_steps`: the routines one case may run (default 200). With `resume_keys` every pair is a routine, and one DIFEQ step runs several hundred.
+- `c64_flags`: extra flags for the C64 probe and the milestone's PRGs. The large integration files use `-fno-inline -fstatic-stack -mlto-zp=110`, with the image under KERNAL at $e000.
+
+`all_states` sets the legal values of index registers, PBODY, DIFEQCNT, COLREG and PUSHLOC for every case.
+
+A target of `SSP QPRET <label>` (PHEXIT, AMOVED) is a return point and must be listed in `entries`.
+
+`rope_bin` reads rope words from the `MAIN.agc.bin` beside the listing, so bank checksums and fillers that the listing omits are read correctly.
+
+Both files run with `resume_keys`. `states` restores each mid-sequence invariant a CHANG2 resume point would otherwise lose: between ACCOMP's `XCHX,2 DIFEQCNT` pairs, X2 holds the DIFEQ stage and DIFEQCNT holds PBODY; S1 holds PBODY inside GAMCOMP; COLREG indexes TIMESTEP's W stores after a VLOAD.
+
+A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are randomized. Before, an operand block next to NEWJOB could leave it negative.

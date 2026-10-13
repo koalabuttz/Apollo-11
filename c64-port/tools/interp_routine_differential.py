@@ -99,6 +99,9 @@ class Mission:
         self.index_returns = bool(spec.get('index_returns'))
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
+        # (states every routine starts from: an index register's legal values)
+        self.all_states = spec.get('all_states', {})
+        self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
@@ -171,7 +174,7 @@ def case(mi, point, n, rng):
     E[6] = fb | eb
     # NEWJOB +0, or (resume_keys) positive in a quarter of the cases: a job
     # waiting, so the next DANZIG goes to CHANG2.
-    E[0o67] = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
+    E[0o67] = newjob = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
     # 'edge_cases' specs add a fourth shape (tools/edge_cases.py).
@@ -201,10 +204,14 @@ def case(mi, point, n, rng):
                         E[phys + j] = v
     if shape == 3:
         E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
+    E[0o67] = newjob   # (NEWJOB, which an operand's randomizing may have hit)
     for off in (0o50, 0o51, 0o52):
         E[vac + off] = mi.outside(rng)
     for w in mi.cp.cadr_erasable:
         E[(vac + w) if w < 45 else w] = mi.outside(rng)
+    # Words the spec names as saved returns (INTWAKE parks QPRET in TBASE2).
+    for a in mi.return_words:
+        E[a] = mi.outside(rng)
     # The interpreter's own state: PUSHLOC in the VAC area, MODE a mode.
     E[0o166] = vac + rng.randrange(0o42)
     E[0o163] = rng.choice([0o77776, 0, 1])
@@ -516,7 +523,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=()):
         if mi.m not in spec['missions']:
             continue
         rows_m = mi.cp.source_map()
-        loose = [r for r in rows_m if 'routine' not in r and 'constant' not in r]
+        loose = [r for r in rows_m if 'routine' not in r and 'constant' not in r and 'cadr_list' not in r]
         if loose and mi.m not in spec.get('partial', {}):
             sys.exit('%s words no routine compiles: %s' % (mi.m, ', '.join(r['address'] for r in loose)))
         for r in loose:
@@ -557,7 +564,7 @@ def c64_size(spec, sym, m, mask, text):
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
-    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, '-DIRC_GROUP=1',
+    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
