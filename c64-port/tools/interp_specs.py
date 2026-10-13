@@ -243,16 +243,31 @@ SPECS = {
         'base': {'lm': 'lm_geometry', 'cm': 'cm_geometry'},
         'symbol': {'lm': 'lm_geometry', 'cm': 'cm_geometry'},
         'entries': {'lm': ['SVDWN2', 'SVDWN1', 'RRANGLES', 'RRNB', 'RRNBMPAC'],
-                    'cm': ['SVDWN1', 'SVDWN2', 'LOG', 'EARROT1', 'EARROT2']},
-        'externals': {'POLY': 9, 'SHORTMP': 0},
+                    'cm': ['SVDWN1', 'SVDWN2', 'LOG', 'EARROT1', 'EARROT2', 'SXTNB', 'CALCSXA', 'SXTANG']},
+        'externals': {'POLY': 9},
+        # SXTNB's RTB SXTLOGIC runs natively (src/geometry_rtb.c), and
+        # Comanche's TC SHORTMP (LOG, SXTLOGIC) runs natively in place.
+        'native_ranges': {'SXTLOGIC': [5, 'geometry_rtb']},
+        'native_calls': {'SHORTMP': {'cm': 'geometry_shortmp(s)'}},
+        # CALCSXA and SXTANG keep their caller's return CADR in 28D (ITA 28D)
+        # and leave through GOTO 28D: a CADR outside the file. X1 and X2
+        # name what the next indexed operand reads (SXTNB's 5,1 and 3,1).
+        'all_states': {'lm': {}, 'cm': {'vac+034': ['outside']}},
+        # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
+        # and SXTLOGIC's RTB run in DP mode.
+        'states': {'cm': {lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')}},
+        'index_states': True,
         'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
                 '2V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_TWO_VECTOR_ONE_TO_TWO)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_TWO_VECTOR_ONE_TO_TWO)'},
                 '1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_ONE_TO_TWO)',
-                           'cm': 'rtb_angles(s,io,RTB_CM,RTB_ONE_TO_TWO)'}},
-        'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+                           'cm': 'rtb_angles(s,io,RTB_CM,RTB_ONE_TO_TWO)'},
+                'SXTLOGIC': {'cm': 'geometry_rtb(s,io)'},
+                'TRANSP1': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE1)'},
+                'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'}},
+        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c'],
         'target': 'tests/geometry_target.c',
         # Host vectors and C64 cases chosen to reach every branch outcome;
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
@@ -264,8 +279,6 @@ SPECS = {
         # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
-        # Words no routine compiles yet, and why (the source map records them).
-        'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2'},
         # KALCMANU's matrix loops run past 200 routines from some resume points.
         'max_steps': 1000,
         'freeze_stride': 128,

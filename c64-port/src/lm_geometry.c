@@ -9,6 +9,8 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "rtb_angles.h"
+#include "rtb_agreement.h"
+#include "geometry_rtb.h"
 #define W s->words
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
