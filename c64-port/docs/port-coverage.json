@@ -5882,11 +5882,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",
-            "sha256": "f44c1c591c74f2b53aa1abb071b016cc990e1cfa4127f8027055640b50c54e36"
+            "sha256": "342fbd34b394da65e2ea480fb370755ea64aa3a846e9032822c6c32cd8b6126d"
           },
           "c64_execution_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
-            "sha256": "ad174e6336a085f83cc885ca47dc21f36f899e33a9795d42e6dd7e0cc42b6df7",
+            "sha256": "031a8d468bb1880a0afa4aa07f9f06080e36dad63be4f5d894ae8d9e79e32abb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5895,7 +5895,7 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 379
+              "vice-waitlist-entries": 381
             }
           },
           "independent_review": {
@@ -5904,7 +5904,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
-            "sha256": "d4b1c008f1a1f2fbbc1efbb8abe291543a6e990fb011d301fa85073e65f55902"
+            "sha256": "2d2041df58c1dac318610fb8cd23c2629c2757440641cc2d9e7868fc8d871f82"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -12050,11 +12050,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",
-            "sha256": "f44c1c591c74f2b53aa1abb071b016cc990e1cfa4127f8027055640b50c54e36"
+            "sha256": "342fbd34b394da65e2ea480fb370755ea64aa3a846e9032822c6c32cd8b6126d"
           },
           "c64_execution_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
-            "sha256": "ad174e6336a085f83cc885ca47dc21f36f899e33a9795d42e6dd7e0cc42b6df7",
+            "sha256": "031a8d468bb1880a0afa4aa07f9f06080e36dad63be4f5d894ae8d9e79e32abb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -12063,7 +12063,7 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 379,
+              "vice-waitlist-entries": 381,
               "vice-lm-t6rupt": 244
             }
           },
@@ -12073,7 +12073,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
-            "sha256": "d4b1c008f1a1f2fbbc1efbb8abe291543a6e990fb011d301fa85073e65f55902"
+            "sha256": "2d2041df58c1dac318610fb8cd23c2629c2757440641cc2d9e7868fc8d871f82"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
