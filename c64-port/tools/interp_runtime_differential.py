@@ -46,6 +46,10 @@ def rtb_table(spec_id, spec, missions):
                 expr = x.get(m) if isinstance(x, dict) else None
                 if not expr or lab not in mi.L.labels:
                     continue
+                if isinstance(expr, tuple):
+                    # (call, 'stops'): 2 is a run that ends outside the file
+                    # (an alarm), as RTB_OK a stop at the image it leaves.
+                    expr = '({int r_=(int)(%s);r_!=2&&r_!=RTB_OK;})' % expr[0]
                 f = 'rtb_%s_%d' % (m, len(ents))
                 if cm:
                     out.append('static enum exec_status %s(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *c=v;'
