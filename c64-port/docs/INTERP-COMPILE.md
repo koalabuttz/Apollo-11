@@ -39,6 +39,7 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
   - A spec may name one mission only (`'missions': ('cm',)`).
   - A shift's operand word is its count, never a fixed operand. SINE and COSINE compile as SIN and COS.
   - `fixed_index` also covers `SLOAD*` of a fixed table (ALMXIT's `ALARM/TB -1,1`).
+  - Offsets count from the operand as written (`XUNIT -6,2` with X2 -6, -4 or -2 is `{'XUNIT': [2, 4, 6]}`). An `SLOAD*` into fixed memory without an entry is a compile error: its indexed path reads erasable.
   - `self_loops`: a branch back to the routine's own start loops inside the routine, up to 4,096 passes, instead of going through the run loop's 200-step limit.
   - `outside`: `{label: words}` leaves code the compiler can't model (VNPOOH's own FBANK switch) out of the routines; the source map marks it untranslated.
   - A CADR maps to superbank 40+ only when the routine using it is in bank 40 or above, so a file mixing bank 35 and bank 42 code keeps each bank's CADRs.

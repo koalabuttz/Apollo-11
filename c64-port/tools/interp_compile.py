@@ -300,7 +300,12 @@ class Compiler:
             if not self.work and self.spec.get('resume_orphans'):
                 # Basic words nothing in the file reaches are entered from
                 # outside (display and restart returns): routines of their own.
+                # (The words of the spec's native_ranges run natively.)
+                native = set(self.label_phys(lab) + i for lab, (n, _) in self.spec.get('native_ranges', {}).items()
+                             if self.label_phys(lab) is not None for i in range(n))
                 for q in sorted(self.code):
+                    if q in native:
+                        continue
                     prev = self.code.get(q - 1)
                     if prev is not None and prev.op in ('EXTEND', 'INDEX', 'NDX'):
                         continue    # (a prefixed word is its prefix's)
@@ -674,6 +679,10 @@ class Compiler:
                     k = self.guarded_k(nxt, bank, takes_k, name, st) if name != 'GSHIFT' else '0'
                 else:
                     k = self.indexed_k(nxt, bank, takes_k, op)
+                    if name == 'SLOAD' and ((~nxt & 0o77777) if nxt & 0o40000 else nxt) - 1 >= 0o4000:
+                        # (SLOAD*'s indexed path reads erasable: a fixed table
+                        # needs the spec's fixed_index)
+                        raise CompileError('SLOAD* at %s indexes fixed memory without a fixed_index entry' % self.where(cur - 1))
                     if k != '0':
                         st[-1] += '{const agc_word *k;if(!kix(s,%s,&k))return EXEC_OUT_OF_SCOPE;%s%s(s,k);}' % (k, P, fn)
                         return st, cur, False, name == 'SETPD'
@@ -1110,7 +1119,9 @@ class Compiler:
                 if n is not None:
                     # The inline words (the call's operands) belong to this TC.
                     self.unit_words = range(start, nxt + n)
-                    if lab not in self.spec.get('noreturn', ()):
+                    # (Data after the inline words: the call does not return
+                    # there, as BANKCALL; CADR R53C1 jumping into a routine.)
+                    if lab not in self.spec.get('noreturn', ()) and self.is_basic(nxt + n):
                         self.add_start(nxt + n, 'b', 'return from ' + lab)
                         # A display (GOXDSPF, GOMARKF...) called through its
                         # inline CADR returns to one of several words.
@@ -1133,7 +1144,7 @@ class Compiler:
                 return st, succ
             if op == 1:
                 if index is not None:
-                    raise CompileError('indexed TCF at %s' % self.where(p))
+                    return self.indexed_tc(p, w, index, ln, nxt, bank, tcf=True)
                 more, succ = leave(self.phys_of(k12, bank), 'TCF %s' % ln.operand)
                 return st + more, succ
             if op == 2:
@@ -1228,16 +1239,22 @@ class Compiler:
                 return st + ['ai_mp(s,%s);' % eras(k12, 'mp')], [nxt]
         raise CompileError('unsupported basic instruction %05o (%s %s) at %s' % (w, ln.op, ln.operand, self.where(p)))
 
-    def indexed_tc(self, p, w, index, ln, nxt, bank):
-        """INDEX K; TC T: a jump table the spec's tc_tables bounds ('LABEL+n':
-        entries), each entry T+i a basic word of the file. Any other C(K)
-        is refused."""
+    def indexed_tc(self, p, w, index, ln, nxt, bank, tcf=False):
+        """INDEX K; TC T (or TCF T): a jump table the spec's tc_tables bounds
+        ('LABEL+n': entries), each entry T+i a basic word of the file. Any
+        other C(K) is refused. TC leaves Q the return; TCF leaves Q alone."""
         tables = {self.label_phys(k): n for k, n in self.spec.get('tc_tables', {}).items()}
+        if p not in tables and not tcf and index == 2 and (w & 0o7777) < 0o10:
+            # INDEX Q; TC n: a return n words past the caller's (the
+            # caller's spec 'returns' registers those words).
+            return ['/* %s %s %s */' % (self.where(p), ln.op, ln.operand),
+                    '{agc_word iw=ixw(s,0%05o,2u);if((iw&070000u)||(iw&07777u)<010u)return EXEC_OUT_OF_SCOPE;'
+                    'ai_tc(s,0%04o);W[5]=(agc_word)(iw&07777u);return EXEC_OK;}' % (w, ln.loc + 1)], []
         if p not in tables:
-            raise CompileError('indexed TC at %s' % self.where(p))
+            raise CompileError('indexed %s at %s' % ('TCF' if tcf else 'TC', self.where(p)))
         tz = self.phys_of(w & 0o7777, bank)
         st = ['/* %s %s %s */' % (self.where(p), ln.op, ln.operand),
-              '{agc_word iw=ixw(s,0%05o,0%ou);ai_tc(s,0%04o);switch(iw){' % (w, index, ln.loc + 1)]
+              '{agc_word iw=ixw(s,0%05o,0%ou);%sswitch(iw){' % (w, index, '' if tcf else 'ai_tc(s,0%04o);' % (ln.loc + 1))]
         succ = []
         for i in range(tables[p]):
             t = tz + i
@@ -1246,7 +1263,7 @@ class Compiler:
             st.append('  case 0%05ou:goto L%o;' % (w + i, t))
             succ.append(t)
         st.append('  default:return EXEC_OUT_OF_SCOPE;}}')
-        if self.is_basic(nxt):
+        if not tcf and self.is_basic(nxt):
             self.add_start(nxt, 'b', 'return from the %s table' % self.where(p))
             self.returns_seen.add(nxt)
             succ.append(nxt)
@@ -1335,6 +1352,8 @@ class Compiler:
         # 'native_ranges' {first label: (word count, C function)}.
         native = {}
         for lab, (n, fn) in self.spec.get('native_ranges', {}).items():
+            if self.label_phys(lab) is None:
+                continue   # (a label only the other mission has)
             for i in range(n):
                 native[self.label_phys(lab) + i] = fn
         rows = []
