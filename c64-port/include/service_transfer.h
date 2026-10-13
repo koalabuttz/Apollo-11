@@ -13,6 +13,9 @@
  * CM io a cm_native_io. */
 #include "agc_transfer.h"
 extern const agc_routine_table lm_service_routines, cm_service_routines;
+#if defined(CM_SERVICE_DELAYJOB_ONLY)
+extern const agc_routine_table cm_service_delayjob_routines; /* CM DELAYJOB alone */
+#endif
 const agc_site_operand *lm_service_site_table(uint16_t *count);
 const agc_site_operand *cm_service_site_table(uint16_t *count);
 #endif

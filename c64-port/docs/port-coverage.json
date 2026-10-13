@@ -1985,7 +1985,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
-            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+            "sha256": "a96b33a818a376839fd7d7ff626392e7e73cf70ed14ed7409505a04a62f2b318"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
@@ -4069,6 +4069,15 @@
           ],
           "scope": "Whole-file map: every assembled word of Comanche055/WAITLIST.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the NOOP marked CAN'T GET HERE in LONGCYCL (+0 class of LONGTIME +1).",
           "verification": "docs/EXEC-CLOSURE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "src/cm_waitlist_internal.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "T3RUPT body (01,3416) and DLY2 -1 (05255) registered in cm_exec_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/waitlist-entries.md"
         }
       ],
       "pending_complete_certificate": {
@@ -6502,7 +6511,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
-            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+            "sha256": "a96b33a818a376839fd7d7ff626392e7e73cf70ed14ed7409505a04a62f2b318"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
@@ -8925,6 +8934,24 @@
           ],
           "scope": "Whole-file map: every assembled word of Luminary099/WAITLIST.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1).",
           "verification": "docs/EXEC-CLOSURE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_tasks.c",
+            "src/lm_waitlist_dispatch.c",
+            "src/lm_delay_image.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "T3RUPT body (01,3407) and DLY2 -1 (05211) registered in lm_exec_task_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/waitlist-entries.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "NOQBRSM +1 (05275) registered in lm_t6rupt_routines: RELINT and RESUME without NOQBRSM's DXCH ARUPT, as the P-axis autopilot's TCF NOQBRSM +1 enters it. 128 cases equal yaAGC through agc_transfer_run.",
+          "verification": "docs/milestones/waitlist-entries.md"
         }
       ],
       "pending_complete_certificate": {

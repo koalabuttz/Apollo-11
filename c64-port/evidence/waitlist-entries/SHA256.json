@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "waitlist-entries",
+  "release": "evidence-waitlist-entries",
+  "files": {
+    "waitlist-entries-host.log": {
+      "sha256": "4378e07827b1a886dc0d09eb64a469d07e00aca190ea841dff9e8675da7373a6",
+      "bytes": 313,
+      "store": "release"
+    },
+    "waitlist-entries-proof.json": {
+      "sha256": "37956a04585da9ac8927cec5b4e475d545d30a709bfe6039fbd494aaf7b5aa1d",
+      "bytes": 6657,
+      "store": "tree"
+    },
+    "waitlist-entries-vice.log": {
+      "sha256": "c4719e1a7018047781f3ff609f731a44e0c1a4676442c8d0883ee271a9cfd5e1",
+      "bytes": 849,
+      "store": "release"
+    }
+  }
+}

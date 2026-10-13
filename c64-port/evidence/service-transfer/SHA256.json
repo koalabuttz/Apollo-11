@@ -9,7 +9,7 @@
       "store": "release"
     },
     "service-transfer-proof.json": {
-      "sha256": "3eb3d38354009d4fefdda107cd62f37bb58dd7b1bf201a6d4d92abff249136cd",
+      "sha256": "472d8741d786c2fd30a7170eb8efc6cec8a954e738b5892bb922d4a0fcc22475",
       "bytes": 2204,
       "store": "tree"
     },

@@ -46,3 +46,9 @@ static const agc_routine_entry cm_entries[13]={
  {FF(05546),cm_upflag},{FF(05560),cm_downflag},{FF(05606),cm_gentran},{FF(05607),cm_gentran_loop},{FF(05625),cm_b5off},
  {FF(05631),cm_trfailof},{FF(05643),cm_trfailon},{FF(07722),cm_upent2},{FF(07740),cm_downent2}};
 const agc_routine_table lm_service_routines={lm_entries,11},cm_service_routines={cm_entries,13};
+#if defined(CM_SERVICE_DELAYJOB_ONLY)
+/* For a C64 program that only enters the CM DELAYJOB (waitlist-entries kind
+ * 3): that entry alone, so the rest of the table is not linked. */
+static const agc_routine_entry cm_delayjob_only[1]={{B(0u,03732),cm_delayjob}};
+const agc_routine_table cm_service_delayjob_routines={cm_delayjob_only,1};
+#endif
