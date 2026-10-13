@@ -29,4 +29,4 @@ c64-lm-p12: $(P12_C64_PRGS)
 build/lm-p12-%.prg: $(P12_SRC) platform/c64/lm_p12_diagnostic.c tools/mk/lm-p12.groups $(P12_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(P12_MOS_FLAGS) $(LM_P12_GROUP_FLAGS_$*) -Wl,-Map,build/lm-p12-$*.map $(P12_C64_SRC) platform/c64/lm_p12_diagnostic.c -o $@
 vice-lm-p12: $(P12_C64_PRGS)
-	for p in $(P12_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(P12_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

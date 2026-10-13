@@ -29,4 +29,4 @@ c64-lm-r63: $(R63_C64_PRGS)
 build/lm-r63-%.prg: $(R63_SRC) platform/c64/lm_r63_diagnostic.c tools/mk/lm-r63.groups $(R63_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(R63_MOS_FLAGS) $(LM_R63_GROUP_FLAGS_$*) -Wl,-Map,build/lm-r63-$*.map $(R63_C64_SRC) platform/c64/lm_r63_diagnostic.c -o $@
 vice-lm-r63: $(R63_C64_PRGS)
-	for p in $(R63_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(R63_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
