@@ -35,24 +35,30 @@ boundary.
 | LOADITIS | OKTOENT or PINBRNCH |
 | ERASER, ERASER +2, +3 | NVSUB, ENDOFJOB |
 
-Domain: COPINDEX and COPMPAC 0-2 (they index the three-word NVCADR and
-BIT3 tables and the CADRFLSH and NVWORD cells). Anything else is out of
-scope.
+Domain: COPINDEX and COPMPAC 0-2 where a block indexes with them (the
+three-word NVCADR and BIT3 tables and the CADRFLSH and NVWORD cells:
+RESTSLEP +4, FLASHSUB +1, UNSETR1, IMMEDRET, ENDRET +4, LOADITIS). Each
+of those blocks checks its own index, so blocks that pass through with an
+out-of-range index (MARKOVER, ERASER, CLEANEND) still run as the original
+does. A refused step restores A, Q, Z, OUTHERE, COPMPAC, FLAGWRD4, the
+R1 save and the interrupt state and returns `LANEC_OUT_OF_SCOPE`.
 
 ## Evidence
 
 Harness: `tools/lanec/` (see `docs/LANEC-EV-FRONT.md`).
 Hashes: `evidence/lanec-di-idle/SHA256.json`.
 
-- Independent assembly comparison: `lanec-di-idle-diff.json` (3,840 cases:
+- Independent assembly comparison: `lanec-di-idle-diff.json` (4,480 cases:
   all 40 block entries, both missions, every COPINDEX and COPMPAC,
   CADRSTOR and OUTHERE of each sign including -0, verbs either side of
   V21-V23, loads of the same and another noun, PRIO times equal, exactly
-  two seconds and random, A with and without overflow) and
+  two seconds and random, A with and without overflow, and 640 cases with
+  COPINDEX or COPMPAC above 2: 4,358 match the oracle and 122 are refused
+  with the state unchanged, `diff.py --refusals`) and
   `lanec-di-idle-oracle.crc`. The cases take 108 of the 116 branch
   outcomes in `src/lanec_di_idle.c` (gcov); the others are the
   out-of-scope guards and the unreachable `default` cases.
 - Host and sanitizer results: `make test-lanec-di-idle sanitize-lanec-di-idle`
   (`lanec-di-idle-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-idle`, 226 frozen cases
+- C64 execution results: `make vice-lanec-di-idle`, 264 frozen cases
   (every entry, both missions) on a VICE PAL C64 (`lanec-di-idle-vice.txt`).

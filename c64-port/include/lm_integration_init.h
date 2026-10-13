@@ -11,9 +11,9 @@ extern const agc_routine_table lm_integration_init_interpretive,lm_integration_i
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_integration_init_point;
-#define LM_INTEGRATION_INIT_POINTS 120u
+#define LM_INTEGRATION_INIT_POINTS 217u
 #define LM_INTEGRATION_INIT_CADR_WORDS 2u
-#define LM_INTEGRATION_INIT_EXTERNALS 12u
+#define LM_INTEGRATION_INIT_EXTERNALS 13u
 #define LM_INTEGRATION_INIT_FIRST 4725u
 #define LM_INTEGRATION_INIT_LAST 12220u
 extern const lm_integration_init_point lm_integration_init_points[LM_INTEGRATION_INIT_POINTS];

@@ -47,7 +47,7 @@ Hashes: `evidence/lm-fresh-start/SHA256.json`. Bulk files are assets of the `evi
 
 - Independent assembly comparison: `evidence/lm-fresh-start/lm-fresh-start-proof.json`. `make lm-fresh-start-differential` runs the unmodified Luminary099 rope in yaAGC (host-only), 4,096 cases.
   - Case n enters entry n % 11, with the image pseudo-random within the program's domain:
-    - Restart-group phase pairs agree (inactive, active or negative), with one pair corrupted in an eighth of the cases.
+    - Restart-group phase pairs agree (inactive, active or negative), with one pair corrupted in an eighth of the cases (a flipped bit, or -PHASEn equal to PHASEn, which PCLOOP's RXOR makes +0).
     - MPAC +5/+6 are the group scan's counters for the PINACT return.
     - ERESTORE is +0, -0, the address ERASCHK was testing (061-01776, with SKEEP7 equal to it) or a corrupt value.
     - A KLEAN caller's Q is SWRETURN or another fixed-fixed word.

@@ -2,10 +2,10 @@
 #ifndef LM_STATEUP_CASES_H
 #define LM_STATEUP_CASES_H
 #include "lm_stateup.h"
-/* Each case enters one order pair (case n: pair n % 11) at NEWOPS with LOC
- * there and BANKSET = BBANK (FB 13), and runs through the trampoline until
- * a point the table does not own: NEWOPS with LOC outside the file, or
- * CHANG2. The image is pseudo-random within the program's domain: the flag
+/* Each case enters one order pair (case n: pair n % 13) at NEWOPS with LOC
+ * there and BANKSET = BBANK (FB 13, or 04 for R00), and runs through the
+ * trampoline until a point the table does not own: NEWOPS with LOC outside
+ * the file, R00's EXIT to basic code, or CHANG2. The image is pseudo-random within the program's domain: the flag
  * words (so each switch order goes both ways), EB, SUPERBNK, the
  * interrupt-enable state and MODE; EDOP +0; a work area of one of the five
  * VAC areas with PUSHLOC inside it; NEWJOB +0, or positive in a fifth of

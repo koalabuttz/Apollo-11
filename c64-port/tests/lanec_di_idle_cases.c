@@ -3,7 +3,10 @@
  * every COPINDEX and COPMPAC, CADRSTOR and OUTHERE of each sign, repeat
  * and return requests set and clear, verbs either side of V21-V23, loads
  * of the same and another noun, PRIO times either side of two seconds,
- * A with and without overflow, and the flag combinations each test reads. */
+ * A with and without overflow, and the flag combinations each test reads.
+ * Variants 48-55 give COPINDEX or COPMPAC a value above 2: blocks that do not
+ * index with it must run as before, and a block that does is refused with the
+ * state unchanged (diff.py --refusals). */
 #include "lanec_suites.h"
 #include "lanec_di_idle.h"
 #include "lanec_symbols.h"
@@ -49,6 +52,10 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
         w[m->mission == LANEC_LM ? LANEC_LM_PRIOTIME : LANEC_CM_PRIOTIME] =
             (uint16_t)((w[LANEC_LM_TIME1] + 077777u - x) % 077777u);
     }
+    if (v >= 48u) {                            /* an index outside the three-word tables */
+        x = (uint16_t)(3u + lanec_rand(&r) % (v & 1u ? 4u : 077774u));
+        if (v & 2u) w[LANEC_LM_LOC] = x; else w[mpac + 3u] = x;
+    }
     if ((v / 8u) % 3u == 0) w[LANEC_LM_NVSAVE] = 0;
     if ((v / 9u) % 3u == 0) w[m->mission == LANEC_LM ? LANEC_LM_EBANKTEM : LANEC_CM_EBANKTEM] &= (uint16_t)~050u;
     w[LANEC_LM_FLAGWRD4] &= (uint16_t)~(lanec_rand(&r) & lanec_rand(&r));
@@ -63,4 +70,4 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     range(m, 010u, pr, (uint16_t)(er + 3u));
 }
 
-const lanec_suite lanec_suite_di_idle = { "di-idle", ENTRIES * 2u * 48u, make, lanec_di_idle_dispatch };
+const lanec_suite lanec_suite_di_idle = { "di-idle", ENTRIES * 2u * 56u, make, lanec_di_idle_dispatch };

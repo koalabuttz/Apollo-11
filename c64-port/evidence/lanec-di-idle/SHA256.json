@@ -4,22 +4,22 @@
   "release": "evidence-lanec-di-idle",
   "files": {
     "lanec-di-idle-diff.json": {
-      "sha256": "98a4f6758acbaae92fae4505bd7f130253dc1bb0eb3b93c90a309c35fd5f4689",
-      "bytes": 234,
+      "sha256": "2bdae7346682ee4d6ddcd933b69cfc5cda622d9be8757842344d7267cb27b427",
+      "bytes": 262,
       "store": "tree"
     },
     "lanec-di-idle-oracle.crc": {
-      "sha256": "bc0dedb0f9facabd9d7be28c5c2079cce556943ec938a86f8ddd832ef8cf25a9",
-      "bytes": 52650,
+      "sha256": "7b3da75ef7878fd65935e79f23cad4e2ff5625fbcc352be999f354f0d7ca14d2",
+      "bytes": 61610,
       "store": "tree"
     },
     "lanec-di-idle-sanitize.txt": {
-      "sha256": "d85d856cc4e57ec353bdaf12c60e6fcfa0ec1c32872c49e4eee410ab4ca70c3e",
-      "bytes": 147,
+      "sha256": "2408721e18cc7283a9d0b38f4f32af19b076e2aed91d0282be0866f20cc78837",
+      "bytes": 205,
       "store": "tree"
     },
     "lanec-di-idle-vice.txt": {
-      "sha256": "98aac266ead534485be0c564b73b1f4854e64c62118008cc395f3b6a6c265d2c",
+      "sha256": "ebbc02b03fc2e8c795a25594c088f5cfaedc08cf6773cde77ca0c9386a167e22",
       "bytes": 57,
       "store": "tree"
     }

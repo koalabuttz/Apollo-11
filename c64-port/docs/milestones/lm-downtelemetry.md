@@ -1,6 +1,6 @@
 ---
 id: lm-downtelemetry
-title: Translate Luminary DOWN-TELEMETRY_PROGRAM as transfer-ABI routines
+title: Translate Luminary DOWN_TELEMETRY_PROGRAM as transfer-ABI routines
 date: 2026-10-12T17:50Z
 lane: A
 ---

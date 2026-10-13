@@ -5,8 +5,9 @@
   python3 tools/ci_guard.py --base <commit> [--remote]
 
 Fails when a change edits a generated index, a frozen ledger, the frozen
-Makefile or legacy evidence, or adds evidence outside its own milestone
-manifest. Pipeline and steward branches (port/pipeline/*) own those files and
+Makefile or legacy evidence, adds evidence outside its own milestone
+manifest, or adds or edits a coverage certificate that tools/cert_precheck.py
+FAILs. Pipeline and steward branches (port/pipeline/*) own those files and
 pass --allow-shared. With --remote it also checks that every changed
 milestone's release-stored evidence is published.
 """
@@ -19,6 +20,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
+import cert_precheck  # noqa: E402
 import evidence  # noqa: E402
 import ledgers  # noqa: E402
 import port_coverage  # noqa: E402
@@ -47,16 +49,47 @@ def certificates(text):
             for key in ('pending_complete_certificate', 'complete_native_coverage') if entry.get(key)}
 
 
-def changed_certificates(base, errors):
+def changed_certificates(base, errors, remote=False):
     """A certificate a change adds or edits must cite separate comparison and
-    run records, drafted or complete, so lanes find out here, not at review."""
+    run records, drafted or complete, and pass tools/cert_precheck.py, so lanes
+    find out here, not at review."""
     inventory = 'docs/port-coverage.json'
-    before = subprocess.run(['git', 'show', f'{base}:c64-port/{inventory}'], cwd=ROOT,
+    # Compare with the merge base, as changes() does, so a branch behind the
+    # base is not charged with certificates the base changed since.
+    fork = subprocess.run(['git', 'merge-base', base, 'HEAD'], cwd=ROOT,
+                          capture_output=True, text=True).stdout.strip() or base
+    before = subprocess.run(['git', 'show', f'{fork}:c64-port/{inventory}'], cwd=ROOT,
                             capture_output=True, text=True).stdout
     old = certificates(before)
+    changed = []
     for key, certificate in certificates((ROOT / inventory).read_text()).items():
         if old.get(key) != certificate:
             port_coverage.runs_distinct(certificate.get('evidence'), errors, f'{key[0]} ({key[1]})')
+            changed.append(key[0])
+    if changed:
+        report = cert_precheck.precheck(list(dict.fromkeys(changed)), cert_precheck.Report(),
+                                        notes=False, fetch_missing=remote)
+        for line in report.lines:
+            if line.startswith('FAIL: ') and 'points at the source-to-native map' not in line:
+                errors.append('cert_precheck: ' + line[len('FAIL: '):])
+            elif line.startswith('WARN: '):
+                print(line)
+
+
+# include/rope_image.h reads any word of the rope; only AGC_BLOCK_TWO_SELF-CHECK
+# (ROPECHK, STSHOSUM) may use it. Everything else reads constants through
+# fixed_data.h's certified spans.
+ROPE_IMAGE_USERS = {'src/self_check_body.inc', 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c',
+                    'tests/self_check_cases.c', 'tests/test_self_check.c', 'platform/host/self_check_snapshot.c'}
+
+
+def rope_image_includes(errors):
+    """Any source outside ROPE_IMAGE_USERS that includes rope_image.h."""
+    listed = subprocess.run(['git', 'grep', '-l', '-E', r'#\s*include\s*[<"]rope_image\.h[">]', '--', '*.c', '*.h', '*.inc'],
+                            cwd=ROOT, capture_output=True, text=True).stdout.split()
+    for path in listed:
+        if path not in ROPE_IMAGE_USERS:
+            errors.append(f'{path}: includes rope_image.h, which only AGC_BLOCK_TWO_SELF-CHECK may use (read constants through fixed_data.h)')
 
 
 def main():
@@ -88,7 +121,8 @@ def main():
             if tracked and path.name not in (evidence.MANIFEST, '.gitignore') and \
                     records.get(path.name, {}).get('store') != 'tree':
                 errors.append(f'evidence/{milestone}/{path.name}: committed but not a tree-stored manifest entry')
-    changed_certificates(args.base, errors)
+    changed_certificates(args.base, errors, args.remote)
+    rope_image_includes(errors)
     try:
         ledgers.load()
     except ValueError as error:

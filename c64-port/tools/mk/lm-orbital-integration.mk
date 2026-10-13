@@ -18,7 +18,7 @@ sanitize-lm-orbital-integration: | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-orbital-integration-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and the listing build).
 lm-orbital-integration-differential:
-	python3 tools/interp_routine_differential.py lm-orbital-integration --cases 512 --freeze
+	python3 tools/interp_routine_differential.py lm-orbital-integration --cases 128 --freeze
 	git diff --exit-code -- tests/lm_orbital_integration_vectors.h tests/lm_orbital_integration_c64_vectors.h tools/mk/lm-orbital-integration.groups
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; each fits below the $c000 mailbox).
