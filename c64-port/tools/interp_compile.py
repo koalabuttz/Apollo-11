@@ -379,7 +379,7 @@ class Compiler:
                 return '0'   # (a shift count, not an address)
             raise CompileError('%s with fixed operand' % what)
         self.consts[fp] = self.name(fp)
-        self.const_len[fp] = max(self.const_len.get(fp, 6), K_WORDS.get(what, 6))
+        self.const_len[fp] = max(self.const_len.get(fp, 6), K_WORDS.get(split_op(what)[0], 6))
         return 'K%o' % fp
 
     def indexed_k(self, w, bank, takes_k, what):
@@ -551,7 +551,7 @@ class Compiler:
                     st[-1] += ('W[1]=0;ai_caf(s,K%o[0]);ai_dxch(s,0154);ai_caf(s,0);(void)ai_ts(s,0156);'
                                '(void)ai_ts(s,0163);W[5]=0%o;' % (fp, 0o6061 if self.m == 'lm' else 0o6030))
                     return st, cur + 1, False, False
-                k = self.operand_k(nxt, bank, takes_k, False, name)
+                k = self.operand_k(nxt, bank, takes_k, False, op)
                 cur += 1
             if takes_k:
                 st[-1] += '%s%s(s,%s);' % (P, fn, k)
@@ -835,9 +835,7 @@ class Compiler:
                     self.tc_erasable.add(k12)
                     return st + ['return tc_e(s,0%04ou);' % k12], []
                 if k12 < 0o2000:
-                    # TC to an erasable word that holds a TC: TC C(k), Q = k+1.
-                    return st + ['if(ai_word(s,0%04ou)&070000u)return EXEC_OUT_OF_SCOPE;' % k12,
-                                 'W[5]=ai_word(s,0%04ou);ai_tc(s,0%04ou);return EXEC_OK; /* TC %s */' % (k12, k12 + 1, ln.operand)], []
+                    raise CompileError('TC to erasable %04o at %s' % (k12, self.where(p)))
                 tz = self.phys_of(k12, bank)
                 lab = self.L.label_at(tz) or ''
                 st.append('ai_tc(s,0%04o);' % (ln.loc + 1))
