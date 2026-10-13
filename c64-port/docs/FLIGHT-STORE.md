@@ -29,17 +29,20 @@ lists every collision for its lanes. `--host-only` writes only the host
 table index (`build/flight-store/<m>-host.inc`) and the whole-program site
 table (`build/flight-store/<m>-sites.inc`) for the differential.
 
-The site table merges the `agc_site_operand` entries of every
-`src/<m>_*sites.inc` (LM 1180 sites, CM 1062) and fails on two files giving
-one site different words. It is what the flight program's
-`agc_native_program.operands` must hold: the interbank, alarm, service and
-phase routines read their caller's inline operand through it, and with only
-the Executive's site table (what `platform/c64/resident_flight.c` holds
-today) POSTJUMP, BANKCALL, IBNKCALL, GENTRAN and ALARM refuse. At four bytes
-a site it does not fit the resident (about 4.7 KB free), so phase 2 moves
-the lookup to the REU. The self-check module also reads the rope image (in
-the REU on the C64) and is the program's `fixed_data` hook while ROPECHK
-runs; the harness wires both the same way.
+Each module carries its own operand table (`FS_SITES`): the
+`agc_site_operand` arrays its sources compile to for the mission (read from
+`cc -E` of each source), so no whole-program site table is needed. The
+builder fails unless every `src/*sites.inc` has exactly one includer. The
+host table index also writes `build/flight-store/<m>-sites.inc` (one array
+per source) for the harness. A module's `fixed_data` is the resident's
+(boundary words in the REU) unless `FIXED_DATA` names another:
+`<m>_self_check` reads the rope image through its own hook while ROPECHK
+runs.
+
+`CO_LOCATE` packs a table into a second module as well, when two modules
+would otherwise swap all the time: the interbank routines (POSTJUMP,
+BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
+cut module loads from about 4,200 a second to the rates below.
 
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
@@ -47,18 +50,20 @@ mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
 the builder picks them for any file that uses `<m>_channel_io` (CM
 `FINETIME` in IMU_CALIBRATION needs it).
 
-### Fit on port/c64-native-c a2aabc1f
+### Fit on facddf23
 
 | | Tables | Modules | Linked | Failed | Resolver records | Colliding keys | Store |
 |---|---|---|---|---|---|---|---|
-| LM | 112 | 62 | 17 | 45 | 223 | 650 (25 table pairs) | 277,504 bytes |
-| CM | 88 | 51 | 15 | 36 | 184 | 405 (12 table pairs) | 251,904 bytes |
+| LM | 128 | 62 | 16 | 46 | 213 | 650 (25 table pairs) | 270,592 bytes |
+| CM | 113 | 51 | 15 | 36 | 185 | 405 (12 table pairs) | 257,536 bytes |
 
 All but one failure per mission is a module bigger than its 16 KB slot
-(median overflow about 34 KB, largest 136 KB LM and 170 KB CM; only 1 LM
-and 3 CM are within 4 KB of fitting). The other is `<m>_self_check`, which
-needs the resident's `apollo_reu_transfer` through the service table
-(services 0x0202). The store itself is far below the 2 MB REU. So the VICE
+(median overflow about 34 KB, largest 136 KB LM and 170 KB CM; only 2 LM
+and 3 CM are within 4 KB of fitting). LM `service_transfer` misses by 65
+bytes since it carries its own 171 operand sites (684 bytes). The other
+failure is `<m>_self_check`, which needs the resident's
+`apollo_reu_transfer` through the service table (services 0x0202, Kernel
+lane). The store itself is far below the 2 MB REU. So the VICE
 whole-program run waits on the modules fitting. Interpretive modules wait on
 the interpreter decision (`/mnt/project-files/steward/interpreter-proposal.md`).
 
@@ -87,8 +92,15 @@ port) runs one mission:
    no DOWNRUPT). Both missions take PTBAD (FAILREG 01107) and then
    DOFSTART, natively and in yaAGC alike.
 2. **Native run.** The thin kernel and every packed table, resolved by the
-   canonical key, run through `rk_rupt_take` and the trampoline, with the
-   whole-program site table and no other rope access than self-check's.
+   canonical key, run through `rk_rupt_take` and the trampoline. Each call
+   sees the operands and `fixed_data` its module would hold on the C64: its
+   own site table, and the boundary words (the rope word at every table key,
+   the interpreter fetch point and DANZIG) or self-check's rope hook.
+   Interrupts take the word at Z, and at an interpretive routine Z is the
+   fetch point or DANZIG rather than the key, so without those two words an
+   interrupt there stays pending (LM V37E00E: 500 of 3000 samples equal).
+   The resident's boundary table needs the fetch point too once it
+   resolves interpretive orders.
 3. **Lockstep timing.** A native routine has no clock, so each call is
    checked by running yaAGC from the same before-state until it reaches the
    routine's continuation with equal erasable memory (024-031 and Z
@@ -109,22 +121,31 @@ port) runs one mission:
    KEYRUPT1 at the same instruction as `rk_rupt_take` does (ZRUPT =
    ADVAN+1, BRUPT = the rope word at ADVAN under the current FB and
    superbank).
+7. **Module loads.** One module per slot (job, task); a routine whose
+   module is not in its slot loads it. Each scenario reports loads per
+   second and the points that cause them.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.
 
-## Results on a2aabc1f
+## Results on facddf23
 
-| Scenario | Samples equal | Major mode native / yaAGC | Routines yaAGC did not match |
-|---|---|---|---|
-| LM P00 idle, 4000 cs | 4000 / 4000 | -0 / -0 | 0 |
-| CM P00 idle, 4000 cs | 3998 / 4000 | -0 / -0 | 0 |
-| LM V37E00E, 3000 cs | 3000 / 3000 | 00 / 00 | 0 |
-| CM V37E00E, 3000 cs | 2998 / 3000 | 00 / 00 | 0 |
-| LM V37E12E, 3000 cs | 3000 / 3000 | 14 / 14 | 0 |
-| CM V37E06E, 3000 cs | 2998 / 3000 | 06 / 06 | 1 |
+| Scenario | Samples equal | Major mode native / yaAGC | Routines yaAGC did not match | Module loads per second |
+|---|---|---|---|---|
+| LM P00 idle, 4000 cs | 4000 / 4000 | -0 / -0 | 0 | 40.3 |
+| CM P00 idle, 4000 cs | 3998 / 4000 | -0 / -0 | 0 | 0.3 |
+| LM V37E00E, 3000 cs | 3000 / 3000 | 00 / 00 | 0 | 43.2 |
+| CM V37E00E, 3000 cs | 2998 / 3000 | 00 / 00 | 0 | 2.2 |
+| LM V37E12E, 3000 cs | 3000 / 3000 | 14 / 14 | 0 | 43.1 |
+| CM V37E06E, 3000 cs | 2998 / 3000 | 06 / 06 | 1 | 3.1 |
+| LM V37E63E, 3000 cs | 3000 / 3000 | 77 / 77 | 0 | 43.1 |
 
 Findings:
+
+- **LM module loads.** About 40 a second, all in the task slot: the DAP
+  chain `lm_dapidler` (MOREIDLE+2, SHUTDOWN), `lm_q_r_axis` (QERRCALC) and
+  `lm_p_axis` (CALCPERR) each load once per DAP pass. They fit together only
+  once Lane F splits the step machines.
 
 - **CM samples at 1 and 2 cs.** Native interrupt latency: the CM fresh-start
   routine at 05608 runs about a centisecond as one native call, so a T3RUPT
@@ -160,7 +181,7 @@ where the point is periodic.
 
 - Fit the store (steward decision above), then the same scenarios in VICE
   from the REU store.
-- Give the flight resident the whole-program site table (REU lookup) and the
-  self-check `fixed_data` hook.
+- Give the flight resident the interpreter fetch point's boundary word when
+  it resolves interpretive orders.
 - Rerun after each lane fills a point in; the target prints the remaining
   list.

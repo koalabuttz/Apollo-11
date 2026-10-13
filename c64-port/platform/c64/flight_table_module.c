@@ -9,9 +9,19 @@
  * defines FS_CHUNK_TABLE and FS_CHUNK, an X-macro list of the entry indices
  * the chunk holds (consecutive, so still sorted by key), and an empty
  * FS_BASIC: the entries are copied by constant index, so LTO folds the
- * loads and links only the chunk's routines. Value: the step's
+ * loads and links only the chunk's routines. FS_SITES lists the inline
+ * operands the module's sources compile ({physical, word} pairs, sorted):
+ * the module's routines read their callers' operands from it, not from the
+ * resident's Executive site table. FS_FIXED_DATA names the module's
+ * fixed_data hook (the self-check module's rope image). Value: the step's
  * rk_module_env. */
 #include "resident_flight.h"
+#ifdef FS_FIXED_DATA
+#include "self_check.h"
+#endif
+#ifdef FS_SITES
+static const agc_site_operand sites[]={FS_SITES};
+#endif
 #define FS_DECLARE(t) extern const agc_routine_table t;
 FS_BASIC(FS_DECLARE)
 FS_INTERP(FS_DECLARE)
@@ -49,6 +59,12 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  n=0;interpretive[n++]=FS_DANZIG;
 #define FS_COPY_INTERP(t) interpretive[n++]=t;
  FS_INTERP(FS_COPY_INTERP)
+#endif
+#ifdef FS_SITES
+ p.operands=sites;p.operand_count=(uint16_t)(sizeof sites/sizeof sites[0]);
+#endif
+#ifdef FS_FIXED_DATA
+ p.fixed_data=FS_FIXED_DATA;
 #endif
  p.basic=basic;p.basic_count=(uint8_t)(sizeof basic/sizeof basic[0]);
 #ifdef FS_HAS_INTERP
