@@ -15,7 +15,7 @@
     "platform/c64/rope_image_reu.c"
    ],
    "native_sha256": {
-    "src/lm_self_check.c": "021d428c1b9881d4ffe7cce662064da8c6f62cc1ff1acf07b662e2aa0c8605c8",
+    "src/lm_self_check.c": "1e29362b21bc705d67154e751b2d2f1a7757b68987c299946b891e0a892fc399",
     "src/self_check_body.inc": "34274613da05498dbde5a98e3fef9be1743db7ab2eaa422ffd8aba1ef3d29ab4",
     "src/lm_self_check_operands.inc": "943f15eb851913c52ed4bb66e4e425c4021a4eab8a7040913cd93f75b41273e1"
    },

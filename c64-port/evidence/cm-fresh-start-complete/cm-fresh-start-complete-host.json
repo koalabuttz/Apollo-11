@@ -17,22 +17,22 @@
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-host.log",
-   "sha256": "f4787bab3bc60d123e04033a628f9ecc89ff7c4e77bb31afc4d42f419a83f6e6",
+   "sha256": "02492223168583b18ee37a35c1df61f149413b8e174caa68744fcf0c89f842e4",
    "pass_lines": [
-    "PASS: 4096 cases equal the original program; 165 C64 rows take all 571 host branch arcs",
+    "PASS: 4096 cases equal the original program; 168 C64 rows take all 571 host branch arcs",
     "PASS: src/cm_v37_operands.inc matches 0 Comanche055 sites, 101 words",
     "PASS: src/cm_fresh_start_operands.inc matches 0 Comanche055 sites, 101 words"
    ],
    "checks": [
-    12962,
-    12962
+    12965,
+    12965
    ],
    "failures": 0,
    "result": "PASS"
   },
   "cm-stateup": {
    "record": "evidence/cm-stateup/cm-stateup-host.log",
-   "sha256": "87b2a45d01a75853f26fdc35615dcfd4b2b0b197a936c6aec549811d10e1fd90",
+   "sha256": "3ece2a2fe21caa3f2650073318a512bc4e5fddf191b4c06653a0848f63059932",
    "pass_lines": [
     "PASS: 4096 cases equal the original program; 242 C64 rows take all 211 host branch arcs"
    ],

@@ -17,7 +17,7 @@
   },
   "cm-v37": {
    "record": "docs/CM-V37.md",
-   "sha256": "d669b7dc220a2bb73ef334a0abfb7bcf4a69bb0a50de3f193eba4006792a1bbd",
+   "sha256": "921d35432b1f59e5b1d2c9576e0467b5e2a9d5d86f14be21f9402289acd9c808",
    "native": "src/cm_v37.c",
    "native_sha256": "ed769e6ce9e192f8f555e754815eb1ccc5919da8f4abcc2f68e539c831ce4a0f",
    "owns": [
@@ -30,7 +30,7 @@
    "record": "docs/CM-STATEUP.md",
    "sha256": "c5d77b19a72ecb4750a6f1d3b039453e4a6e1c0d966e8e17da996d9b402674f9",
    "native": "src/cm_stateup.c",
-   "native_sha256": "caafe3f2e2975eb4ee4ade06962ea1aa9afb14a65c6387077fb1f8ef7512aac5",
+   "native_sha256": "3d048c6b9584ac6b89d454eca71b5e13a33f090398b183e4fcf331bf16a22794",
    "owns": [
     "13,2000-2035",
     "04,2131-2133"

@@ -1,0 +1,75 @@
+{
+ "milestone": "self-check-cm-rope",
+ "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
+ "linked_sources": {
+  "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
+  "src/cm_interbank_routines.c": "8fe6a2afcd1ed84209f40d762c4ec05abf9ac1f5059b649cb4a08962843bba2d",
+  "src/cm_interbank_complete.c": "d047ccfc84150c478b34efb35c028542116f607864db384808ca344bc381ce3d",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/self_check_cases.c": "73d9db768c6b16eed4712a86a6661b67b7a4a335299918af488a5ec10a2088f9",
+  "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625"
+ },
+ "compiler_flags": [
+  "-std=c99",
+  "-Iinclude",
+  "-Itests",
+  "-Isrc",
+  "-DSELF_CHECK_CM_ONLY"
+ ],
+ "host_cases": 43,
+ "c64_rows": [
+  0,
+  1,
+  2,
+  4,
+  6,
+  18,
+  25
+ ],
+ "c64_row_seed_stride": 64,
+ "host_branch_arcs": 385,
+ "c64_branch_arcs": 385,
+ "arcs_by_source_host_c64": {
+  "build/self-check-cm-rope-cover/runner.c": [
+   2,
+   2
+  ],
+  "src/agc_image_ops.c": [
+   58,
+   58
+  ],
+  "src/agc_transfer.c": [
+   39,
+   39
+  ],
+  "src/agc_word.c": [
+   2,
+   2
+  ],
+  "src/cm_interbank_complete.c": [
+   63,
+   63
+  ],
+  "src/cm_interbank_routines.c": [
+   16,
+   16
+  ],
+  "src/rope_image_host.c": [
+   15,
+   15
+  ],
+  "src/self_check_body.inc": [
+   95,
+   95
+  ],
+  "tests/self_check_cases.c": [
+   95,
+   95
+  ]
+ },
+ "host_branches_missing_on_c64": []
+}

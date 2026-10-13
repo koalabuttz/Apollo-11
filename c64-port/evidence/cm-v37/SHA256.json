@@ -3,18 +3,23 @@
   "milestone": "cm-v37",
   "release": "evidence-cm-v37",
   "files": {
+    "cm-v37-c64-cover.json": {
+      "sha256": "769759ce5f865ccc370af46ae196cc2d50d480f5654c10ec49df5e77f3873d88",
+      "bytes": 4163,
+      "store": "tree"
+    },
     "cm-v37-host.log": {
-      "sha256": "f4787bab3bc60d123e04033a628f9ecc89ff7c4e77bb31afc4d42f419a83f6e6",
+      "sha256": "02492223168583b18ee37a35c1df61f149413b8e174caa68744fcf0c89f842e4",
       "bytes": 2004,
       "store": "release"
     },
     "cm-v37-proof.json": {
-      "sha256": "d2a18972f712749ba836a021d583bb7b7ba8858610f524daf9c4a497a4e20745",
+      "sha256": "6394a4314db66d2a762867628555ca8e4d3f830932c300ece20be1f3ca8cdd6f",
       "bytes": 1566,
       "store": "tree"
     },
     "cm-v37-vice.log": {
-      "sha256": "80dd8ff64a284f8addbb5e0fb79552386f4ef477f890632d662b2356bc772cd8",
+      "sha256": "958b56f389bb7b3ccfb47288c6f9f3cca56c46783512858696088651815beab3",
       "bytes": 596,
       "store": "release"
     }

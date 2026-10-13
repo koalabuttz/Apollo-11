@@ -14,7 +14,7 @@
   },
   "lm-v37": {
    "record": "evidence/lm-v37/lm-v37-proof.json",
-   "sha256": "cfb7262c6dc393b8ec99c83a9ff5ce237dc27c6d9a7c59d1a422c71f03efef12",
+   "sha256": "8f94c4bdc7eedf4b3dad7ea6d1d18d1d2e167b52f983fa133e5dbfb18da2f79d",
    "cases": 4096,
    "snapshot_sha256": "37af90fe7d60b92ead0e583e334fb09a79333d001b8458e6888de4fa4a79750d",
    "rerun_snapshot_sha256": "37af90fe7d60b92ead0e583e334fb09a79333d001b8458e6888de4fa4a79750d",

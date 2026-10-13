@@ -14,7 +14,7 @@
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-proof.json",
-   "sha256": "d2a18972f712749ba836a021d583bb7b7ba8858610f524daf9c4a497a4e20745",
+   "sha256": "6394a4314db66d2a762867628555ca8e4d3f830932c300ece20be1f3ca8cdd6f",
    "cases": 4096,
    "snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",
    "rerun_snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",

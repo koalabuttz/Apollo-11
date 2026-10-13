@@ -3,6 +3,11 @@
   "milestone": "cm-fresh-start",
   "release": "evidence-cm-fresh-start",
   "files": {
+    "cm-fresh-start-c64-cover.json": {
+      "sha256": "4ae433b14af4c5f21824ed47637e5c7a5d372e5e4b99055e45be2919dac00617",
+      "bytes": 4419,
+      "store": "tree"
+    },
     "cm-fresh-start-host.log": {
       "sha256": "ad24e447d3e015847dc1bc92fafcd333811816082d667ec0de6df7bb75d5dc3d",
       "bytes": 1875,

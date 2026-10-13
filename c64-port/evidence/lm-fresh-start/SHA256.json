@@ -3,6 +3,11 @@
   "milestone": "lm-fresh-start",
   "release": "evidence-lm-fresh-start",
   "files": {
+    "lm-fresh-start-c64-cover.json": {
+      "sha256": "f14dc2a635d6bb064b721d5fd3ce22437cdf84dbd8e51d78f904aa3854917667",
+      "bytes": 4224,
+      "store": "tree"
+    },
     "lm-fresh-start-data.json": {
       "sha256": "bde074c3f193b7b09dff8fb2dea25fefc557be152e51522d619db5b628cf2784",
       "bytes": 8778,

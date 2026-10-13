@@ -17,21 +17,21 @@
   },
   "lm-v37": {
    "record": "evidence/lm-v37/lm-v37-host.log",
-   "sha256": "36a22b9b8f64561833722a1d4189c7e4b110853896e85845f9788c2a8c79524a",
+   "sha256": "bec7e6eeabad0d6fd1bf3dcd7c1cb92facf49e85f54611044963f4aa70190cfe",
    "pass_lines": [
-    "PASS: 4096 cases equal the original program; 177 C64 rows take all 570 host branch arcs",
+    "PASS: 4096 cases equal the original program; 179 C64 rows take all 570 host branch arcs",
     "PASS: src/lm_v37_operands.inc matches 0 Luminary099 sites, 106 words"
    ],
    "checks": [
-    8674,
-    8674
+    8676,
+    8676
    ],
    "failures": 0,
    "result": "PASS"
   },
   "lm-stateup": {
    "record": "evidence/lm-stateup/lm-stateup-host.log",
-   "sha256": "8bf9fc8c17324e2dea943fe997f7bc60b278c5603784170644283736b04cac97",
+   "sha256": "cf0d428d706622a01ca14c74c658843207d03528799400bc88c7cf822bda4d79",
    "pass_lines": [
     "PASS: 4096 cases equal the original program; 256 C64 rows take all 214 host branch arcs"
    ],
