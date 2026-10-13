@@ -41,6 +41,14 @@ class BasicError(Exception):
 # Input channels a 'channel_inputs' spec reads from the caller's latches
 # (as tools/interp_compile.py's INPUT_CHANNELS).
 INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
+# The channels a Luminary 'channels': 'all' file's orders reach, by order
+# (bits 10-12: READ, WRITE, RAND, WAND, ROR, WOR, RXOR, EDRUPT), as
+# include/agc_channel_ops.h models them: the outputs in the program's
+# agc_hardware, the latched inputs and SUPERBNK (7).
+LM_OUTPUTS = {0o5, 0o6, 0o11, 0o12, 0o13, 0o14}
+LM_READS = LM_OUTPUTS | {0o3, 0o4, 0o7, 0o16, 0o30, 0o31, 0o32, 0o33}
+LM_WRITES = LM_OUTPUTS | {0o7, 0o30, 0o31, 0o32, 0o33}
+LM_CHANNELS = (LM_READS, LM_WRITES, LM_READS, LM_WRITES, LM_READS, LM_WRITES, LM_READS, set())
 
 
 def decode(w, ext):
@@ -84,6 +92,9 @@ def decode(w, ext):
 class Basic:
     def __init__(self, cp):
         self.cp = cp
+        # The mission's io record: Luminary routines take p66_bias_io, Comanche
+        # ones cm_native_io.
+        self.io = 'p66_bias_io' if cp.m == 'lm' else 'cm_native_io'
         self.L = cp.L
         self.spec = cp.spec
         self.nodes = {}          # (phys, ext) -> list of C statements (or None while walking)
@@ -118,7 +129,11 @@ class Basic:
             self.fixed_tables.append((b + lo, b + hi, lab, lo))
             self.cp.basic_fixed.update(range(b + lo, b + hi + 1))
         self.channels = self.spec.get('channels', {})
-        if self.channels == 'all':
+        # Luminary 'all': include/agc_channel_ops.h (no per-file helpers).
+        self.lm_channels = self.channels == 'all' and self.io == 'p66_bias_io'
+        if self.lm_channels:
+            self.channels = {}
+        elif self.channels == 'all':
             # Every channel of the CM io record (include/cm_native_image.h).
             # (5, 6 and 30-33 in cm_channels, beside it.)
             self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
@@ -486,6 +501,11 @@ class Basic:
                         if t is not None and self.in_file(t) and not self.is_data(t):
                             self.dispatch.add(t)
                             self.add(t)
+                if self.spec.get('tcf_words'):
+                    # Spec 'tcf_words': the stored word may be a TCF (a
+                    # stored instruction such as CA ACCHERE's TCF ACCTHERE),
+                    # which from there transfers as the TC does (Q K+1 kept).
+                    st.append('if(e>=012000&&e<=017777)e&=07777;')
                 st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
                 st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
                 return st
@@ -557,6 +577,15 @@ class Basic:
                        'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
                        'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)
             self.cp.uses_channels = True
+            st.append(cont())
+            return st
+        if op in CHANNEL_OPS and self.lm_channels:
+            k = CHANNEL_OPS.index(op)
+            if a not in LM_CHANNELS[k]:
+                raise BasicError('channel %o at %s' % (a, self.where(here)))
+            self.channels_used.add(a)
+            self.cp.uses_channels = self.cp.uses_hw = True
+            st.append('if(!agc_ch_op(s,agc_channels_hw,agc_channels_in,&io->superbank,%d,0%o))return EXEC_OUT_OF_SCOPE;' % (k, a))
             st.append(cont())
             return st
         if op in CHANNEL_OPS:
@@ -654,7 +683,7 @@ class Basic:
             fn = 'e%o' % phys
             c.append('/* %s: the TC words the file stores there (%s). */' % (k, ', '.join('%05o' % w for w in words)))
             c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
-            c.append(' cm_native_io *io=(cm_native_io *)v;agc_word w;(void)p;')
+            c.append(' %s *io=(%s *)v;agc_word w;(void)p;' % (self.io, self.io))
             c.append(' if(!s||!v||!basic_sane(s,io,W[4])||agc_erasable_point(W[5],W[3])!=%uu)return EXEC_OUT_OF_SCOPE;' % key)
             c.append(' w=W[0%o];' % phys)
             c.append(' switch(w){%s break;default:return EXEC_OUT_OF_SCOPE;}' % ''.join('case 0%05ou:' % x for x in words))
@@ -694,9 +723,12 @@ class Basic:
         c.append('static MAYBE_UNUSED void dtcf(apollo_overlay_state *s,agc_word at){agc_word fb=agc_correct(W[0]),z=agc_correct(W[1]);')
         c.append(' W[0]=agc_extend(W[4]);W[1]=(agc_word)(at+1u);W[5]=(agc_word)(z&07777u);ai_put(s,4,fb);}')
         c.append('/* TC INTPRET: the interpreter entry with the latches the bodies use. */')
-        c.append('static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_bias_io l;')
-        c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;cmi_intpret(s,&l);')
-        c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}')
+        if self.io == 'p66_bias_io':
+            c.append('static MAYBE_UNUSED void intpret(apollo_overlay_state *s,p66_bias_io *io){lmi_intpret(s,io);}')
+        else:
+            c.append('static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_bias_io l;')
+            c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;cmi_intpret(s,&l);')
+            c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}')
         if self.channels:
             c.extend(self.channel_helpers())
         if self.fixed_tables:
@@ -731,7 +763,7 @@ class Basic:
         if self.spec.get('basic_parts'):
             return c + self.emit_parts(sym, order)
         c.append('/* Every basic word of the file. */')
-        c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){')
+        c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,%s *io,uint16_t at){' % self.io)
         c.append(' long ix=0,e=0;uint16_t p;')
         c.append(' (void)ix;(void)e;')
         c.append(' switch(at){')
@@ -855,7 +887,7 @@ class Basic:
             body = [re.sub(r'goto ([BX][0-7]+c?);', cross, x) for x in body]
             into = sorted(p for p in self.entries if self.part_of(p) == j and (p, False, False) in self.nodes)
             fn = ['/* Basic words, part %d of %d. */' % (j + 1, nparts),
-                  'static MAYBE_UNUSED enum exec_status basic_part_%d(apollo_overlay_state *s,cm_native_io *io,uint16_t at){' % j,
+                  'static MAYBE_UNUSED enum exec_status basic_part_%d(apollo_overlay_state *s,%s *io,uint16_t at){' % (j, self.io),
                   ' long ix=0,e=0;uint16_t p;', ' (void)ix;(void)e;(void)p;(void)io;', ' switch(at){']
             fn += [' case %uu:goto %s;' % (q, self.label(q)) for q in into]
             fn += [' default:return EXEC_OUT_OF_SCOPE;', ' }']
@@ -894,7 +926,7 @@ class Basic:
                 into[p // 1024].add(p)
         for b in banks:
             c.append('#if %s_HAS(0%o)' % (S, b))
-            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,cm_native_io *io,uint16_t at);' % b)
+            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,%s *io,uint16_t at);' % (b, self.io))
             c.append('#endif')
         c += self.callee_defs(sym)
         for b in banks:
@@ -921,7 +953,7 @@ class Basic:
             body = [re.sub(r'goto ([A-Z][0-7]+c?);', cross, x) for x in body]
             c.append('#if %s_HAS(0%o)' % (S, b))
             c.append('/* The basic words of bank %02o. */' % b)
-            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,cm_native_io *io,uint16_t at){' % b)
+            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,%s *io,uint16_t at){' % (b, self.io))
             c.append(' long ix=0,e=0;uint16_t p;')
             c.append(' (void)ix;(void)e;(void)p;')
             c.append(' switch(at){')

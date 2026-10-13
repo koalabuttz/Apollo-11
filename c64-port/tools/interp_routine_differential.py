@@ -164,8 +164,17 @@ class Mission:
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
         self.cells = spec.get('cells', {})
-        self.io_channels = spec.get('io_channels', {})
-        if self.io_channels == 'auto':
+        # (Luminary 'channels': 'all' compares its channels unless told otherwise.)
+        self.io_channels = spec.get('io_channels', 'auto' if self.cp.lm_channels else {})
+        if self.io_channels == 'auto' and self.cp.lm_channels:
+            # Luminary (include/agc_channel_ops.h): every compared channel
+            # (tests/interp_case.c irc_ch_num) the file's orders name, any
+            # value, but channel 13 as it reads back (no trap bits) and
+            # channel 14's drive bits as below.
+            used = self.cp.channels_used | (self.cp.basic.channels_used if self.cp.basic else set())
+            self.io_channels = {k: {0o13: 0o43777, 0o14: 0o6777}.get(k, 0o77777)
+                                for k in sorted(used & {0o5, 0o6, 0o11, 0o12, 0o13, 0o14, 0o30, 0o31, 0o32, 0o33})}
+        elif self.io_channels == 'auto':
             # Every channel the file's channel orders name, any value, but
             # channel 14's IMU CDU and gyro drive bits (yaAGC's device
             # models act on them at once; tests/interp_case.h).
