@@ -79,9 +79,10 @@ IO_KIND = {
            'lm_trim_gimbal': 'LM_FLIGHT', 'lm_landing_displays': 'LM_FLIGHT', 'lm_p_axis': 'LM_FLIGHT',
            'lm_throttle': 'LM_FLIGHT', 'lm_servicer': 'LM_SV', 'lm_lunar_landing': 'LM_LLD',
            'lm_imu_performance': 'LM_IPT', 'lm_burn_baby': 'LM_BB', 'lm_ags_init': 'LM_AGS',
-           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM'},
+           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM',
+           'lanec_pin_routines': 'LM_DNTM'},
     'cm': {'cm_fresh_start': 'CM_FRESH', 'cm_v37': 'CM_FRESH', 'cm_downtelemetry': 'CM_DNTM',
-           'lanec_ev_routines': 'CM_DNTM', 'cm_p21_routines': 'P66', 'cm_p76_routines': 'P66', 'cm_stateup': 'P66'},
+           'lanec_ev_routines': 'CM_DNTM', 'lanec_pin_routines': 'CM_DNTM', 'cm_p21_routines': 'P66', 'cm_p76_routines': 'P66', 'cm_stateup': 'P66'},
 }
 BASE_IO = {'lm': 'P66', 'cm': 'CM_NATIVE'}
 TABLE_DEF = re.compile(r'^const agc_routine_table\s+([A-Za-z0-9_]+)\s*=', re.M)
@@ -258,14 +259,25 @@ def lane_slot(stem, mission, owners, place):
     return lane, 1 if placement == 'task' else 0, path
 
 
-def link_module(cc, m, prg, slot, ident, sources, basic, interp, library):
+def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None):
+    """chunk: (table, first, last) links only entries first..last-1 of one
+    basic table (platform/c64/flight_table_module.c FS_CHUNK)."""
     wrapper = prg.with_suffix('.c')
+    head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
+            + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
+    if sites:
+        head += '#define FS_SITES ' + ','.join(f'{{{k}u,0{w:o}u}}' for k, w in sorted(sites.items())) + '\n'
+    if fixed_data:
+        head += f'#define FS_FIXED_DATA {fixed_data}\n'
     wrapper.write_text(
-        f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
+        head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
         f'#define FS_INTERP(X) {" ".join(f"X({t})" for t in interp)}\n'
         + (f'#define FS_HAS_INTERP 1\n#define FS_DANZIG agc_{m}_danzig_marker\n' if interp else '')
         + '#include "../../../platform/c64/flight_table_module.c"\n')
-    cmd = [cc, *COMMON, *MISSION[m], '-mllvm', '-inline-threshold=-50',
+    # Interpretive groups register the mission's DANZIG marker, which
+    # agc_transfer.c defines on the C64 only when asked to.
+    cmd = [cc, *COMMON, *MISSION[m], *(['-DAGC_TRANSFER_DANZIG_MARKER'] if interp else []),
+           '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{OUT}',
            '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
            '-T', 'platform/c64/overlay_v2_payload.ld',
@@ -283,21 +295,60 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library):
 
 
 
-def flight_sites(m):
-    """{physical: word} over every src/<m>_*sites.inc: its agc_site_operand
-    arrays, or the whole file when it is a bare initializer list the
-    including .c file wraps; and the keys two files give different words."""
-    sites, conflicts = {}, []
-    literal = lambda x: int(x, 8) if len(x) > 1 and x.startswith('0') else int(x)
-    for path in sorted((ROOT / 'src').glob(f'{m}_*sites.inc')):
-        text = re.sub(r'/\*.*?\*/', '', path.read_text(), flags=re.S)
-        if re.search(r'\]\s*=\s*\{', text):
-            text = ''.join(re.findall(r'agc_site_operand\s+\w+\s*\[[^]]*\]\s*=\s*\{(.*?)\};', text, re.S))
-        for k, w in re.findall(r'\{\s*(\d+)u?\s*,\s*(\d+)u?\s*\}', text):
-            k, w = literal(k), literal(w)
+# Tables also packed into another module, so the routines they hold run there
+# without a module swap (docs/FLIGHT-STORE.md). The background self-check loop
+# leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it.
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
+             'cm': {'cm_self_check': ['cm_interbank_routines']}}
+# The self-check module's fixed_data hook (include/self_check.h).
+FIXED_DATA = {'lm_self_check': 'lm_self_check_rope_data', 'cm_self_check': 'cm_self_check_rope_data'}
+# Where the resident's own tables read their inline operands: the thin
+# kernel's program holds the Executive's site table.
+RESIDENT_SITES = {'lm': 'lm_exec_routines', 'cm': 'cm_exec_routines'}
+
+
+def c_value(text):
+    """A preprocessed C integer constant expression."""
+    text = re.sub(r'\(\s*(?:u?int\d+_t|unsigned|agc_word)\s*\)', '', text)
+    text = re.sub(r'\b0([0-7]+)[uU]?\b', r'0o\1', text)
+    text = re.sub(r'\b(\d+)[uU]\b', r'\1', text)
+    if not re.fullmatch(r'[0-9a-fA-Fxo+\-*/()<>|&^~ \t\n]*', text):
+        raise SystemExit(f'site operand {text!r} is not a constant expression')
+    return int(eval(text, {'__builtins__': {}}))  # noqa: S307 - digits and operators only
+
+
+@functools.lru_cache(maxsize=None)
+def file_sites(cc, m, stem):
+    """{physical: word}: the agc_site_operand arrays src/<stem>.c defines for
+    mission m (arrays named for the other mission skipped), preprocessed."""
+    out = subprocess.run([cc, '-E', '-P', '-Iinclude', '-Itests', f'-DRK_{m.upper()}=1', f'src/{stem}.c'],
+                         cwd=ROOT, capture_output=True, text=True, check=True).stdout
+    sites = {}
+    for name, body in re.findall(r'agc_site_operand\s+(\w+)\s*\[[^]]*\]\s*=\s*\{(.*?)\}\s*;', out, re.S):
+        tokens = name.split('_')
+        if ('lm' in tokens or 'cm' in tokens) and m not in tokens:
+            continue
+        for entry in re.findall(r'\{([^{}]*)\}', body):
+            k, w = (c_value(x) for x in entry.split(','))
             if sites.setdefault(k, w) != w:
-                conflicts.append(k)
-    return sites, conflicts
+                raise SystemExit(f'src/{stem}.c: two operands for {k // 1024:02o},{k % 1024 + 0o2000:04o}')
+    return sites
+
+
+def check_site_includers():
+    """Each operand file (an .inc defining or listing agc_site_operand
+    entries) has exactly one including source, whose module carries it."""
+    users = collections.defaultdict(list)
+    for c in sorted((ROOT / 'src').glob('*.c')):
+        for inc in re.findall(r'#\s*include\s+"([^"]+\.inc)"', c.read_text(errors='replace')):
+            users[inc].append(c.name)
+    for inc in sorted((ROOT / 'src').glob('*.inc')):
+        text = inc.read_text(errors='replace')
+        if re.search(r'agc_site_operand\s+\w+\s*\[', text) or re.search(r'_(sites|operands)\.inc$', inc.name):
+            if len(users[inc.name]) != 1:
+                raise SystemExit(f'src/{inc.name}: operand file included by {users[inc.name] or "nothing"}, '
+                                 'not exactly one source')
+
 
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
@@ -335,18 +386,31 @@ def main():
         shadowed = sum(1 for k in holders if k in resident_keys)
         order = list(dict.fromkeys(RESIDENT[m] + sorted(
             packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t))))
+        check_site_includers()
+        also = collections.defaultdict(list)
+        for host, ts in CO_LOCATE[m].items():
+            for t in ts:
+                also[t].append(host)
+
+        def site_stem(t):
+            return RESIDENT_SITES[m] if t in RESIDENT[m] else tables[t]
+        stems = sorted({site_stem(t) for t in order if t in tables})
+        (ROOT / OUT / f'{m}-sites.inc').write_text(
+            f'/* Generated by tools/flight_store_build.py: the inline operands each {m.upper()} source '
+            'compiles (its agc_site_operand arrays), sorted; a module carries its sources\' sets. */\n'
+            + ''.join(f'static const agc_site_operand sites_{st}[]={{' + ','.join(
+                f'{{{k}u,0{w:o}u}}' for k, w in sorted(file_sites(a.host_cc, m, st).items()))
+                      + (f'}};\n' if file_sites(a.host_cc, m, st) else '{AGC_TRANSFER_NONE,0u}};\n') for st in stems))
         (ROOT / OUT / f'{m}-host.inc').write_text(
             f'/* Generated by tools/flight_store_build.py: the {m.upper()} flight program\'s tables, '
-            'resident first, in resolution order. */\n'
+            'resident first, in resolution order: table, interpretive, io kind, module (empty when '
+            'resident), slot (0 job, 1 task), operand set, its size, other modules holding the table. */\n'
             + ''.join(f'FLIGHT_TABLE({t}, {int("interpret" in t or t.endswith("_marker"))}, '
-                      f'FLIGHT_IO_{io_kind(m, tables[t])})\n' for t in order if t in tables))
-        sites, conflicts = flight_sites(m)
-        (ROOT / OUT / f'{m}-sites.inc').write_text(
-            f'/* Generated by tools/flight_store_build.py: every inline operand the {m.upper()} '
-            f'lanes compiled (src/{m}_*sites.inc), merged and sorted: {len(sites)} sites. */\n'
-            + ''.join(f'{{{k}u,0{w:o}u}},\n' for k, w in sorted(sites.items())))
-        if conflicts:
-            raise SystemExit(f'{m}: site tables disagree at ' + ', '.join(f'{k // 1024:02o},{k % 1024 + 0o2000:04o}' for k in conflicts))
+                      f'FLIGHT_IO_{io_kind(m, tables[t])}, "{packed.get(t, "") if t not in RESIDENT[m] else ""}", '
+                      f'{lane_slot(packed[t], m, owners, place)[1] if t in packed and t not in RESIDENT[m] else 0}, '
+                      f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
+                      f'"{" ".join(also[t])}")\n'
+                      for t in order if t in tables))
         if a.host_only:
             continue
         by_stem = collections.defaultdict(list)
@@ -360,32 +424,96 @@ def main():
                 raise SystemExit(f'{m}: lane {lane} has more than {LANE_LIMIT.get(lane, 0xFF)} modules')
             ident = LANE_BYTE[lane] << 8 | seq[lane]
             ts = sorted(by_stem[stem])
+            extra = [t for t in CO_LOCATE[m].get(stem, []) if t in packed]
+            sources = list(dict.fromkeys([stem] + [packed[t] for t in extra]))
+            sites = {}
+            for st in sources:
+                sites.update(file_sites(a.host_cc, m, st))
             modules.append(dict(stem=stem, agc=agc, lane=lane, slot=slot, id=ident,
-                                basic=[t for t in ts if 'interpret' not in t],
-                                interp=[t for t in ts if 'interpret' in t],
-                                sources=c64_sources(index, stem, 'agc_transfer')))
+                                basic=[t for t in ts if 'interpret' not in t] + [t for t in extra if 'interpret' not in t],
+                                interp=[t for t in ts if 'interpret' in t] + [t for t in extra if 'interpret' in t],
+                                also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem),
+                                sources=c64_sources(index, *sources, 'agc_transfer')))
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
         def link(mod):
-            prg = OUT / m / f'module-{mod["id"]:04x}.prg'
+            prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
-                              library)
+                              library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
-                res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library)
+                res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
+                                   mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'))
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
             return mod, prg, res
         with ThreadPoolExecutor(a.jobs) as pool:
             linked = list(pool.map(link, modules))
+        # A basic-only module over its slot is split into chunks of
+        # consecutive routines, halving until each chunk fits. Splitting stops
+        # (the module stays whole and failed) when a chunk of one routine
+        # does not fit, or when halving leaves the overflow nearly unchanged:
+        # the routines share one body (a file-wide step machine) that every
+        # chunk links. Trial links use a scratch id; kept chunks are relinked
+        # with their own. Interpretive modules wait on the interpreter
+        # decision.
+        chunks = []
+
+        def trial(c, mod):
+            return link(dict(mod, id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
+                             prg_name=f'trial-{c[0]}-{c[1]}'))[2]
+
+        def split(mod):
+            todo, kept = [((t, 0, len(keys[t])), None) for t in mod['basic']], []
+            while todo:
+                with ThreadPoolExecutor(a.jobs) as pool:
+                    results = list(pool.map(lambda x: trial(x[0], mod), todo))
+                nxt = []
+                for (c, parent), r in zip(todo, results):
+                    if r['ok']:
+                        kept.append(c)
+                    elif not r.get('overflow') or c[2] - c[1] == 1 or (
+                            parent and r['overflow'] > 0.75 * parent):
+                        return None
+                    else:
+                        half = (c[1] + c[2]) // 2
+                        nxt += [((c[0], c[1], half), r['overflow']), ((c[0], half, c[2]), r['overflow'])]
+                todo = nxt
+            return kept
+        for mod, prg, res in linked:
+            if res['ok'] or not res.get('overflow') or mod['interp']:
+                continue
+            kept = split(mod)
+            if not kept or seq[mod['lane']] + len(kept) - 1 > LANE_LIMIT.get(mod['lane'], 0xFF):
+                mod['chunking'] = 'routines share one body' if kept is None else 'no module ids left'
+                continue
+            subs = []
+            for i, c in enumerate(sorted(kept)):
+                if i:
+                    seq[mod['lane']] += 1
+                ident = mod['id'] if i == 0 else LANE_BYTE[mod['lane']] << 8 | seq[mod['lane']]
+                subs.append(dict(mod, id=ident, basic=[], chunk=c, chunk_of=mod['id']))
+            with ThreadPoolExecutor(a.jobs) as pool:
+                chunks += list(pool.map(link, subs))
+            mod['chunked'] = True
+        linked = [x for x in linked if not x[0].get('chunked')] + sorted(chunks, key=lambda x: x[0]['id'])
+        modules = [mod for mod, _, _ in linked]
         module_of = {}
         for mod, prg, res in linked:
             mod.update(res)
             mod['prg'] = str(prg)
             if res['ok']:
+                if mod.get('chunk'):
+                    t, first, last = mod['chunk']
+                    for k in keys[t][first:last]:
+                        module_of[(t, k)] = mod['id']
+                    continue
                 for t in mod['basic'] + mod['interp']:
-                    module_of[t] = mod['id']
+                    if t in mod.get('also', []):
+                        continue  # resolved to the table's own module
+                    for k in keys[t]:
+                        module_of[(t, k)] = mod['id']
         records, erasable, unplaced = [], 0, 0
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
@@ -393,7 +521,7 @@ def main():
             if k >= ERASABLE_BASE:
                 erasable += 1
                 continue
-            owner = next((module_of[t] for t in ts if t in module_of), None)
+            owner = next((module_of[(t, k)] for t in ts if (t, k) in module_of), None)
             if owner is None:
                 unplaced += 1
                 continue
@@ -419,7 +547,8 @@ def main():
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
         failed = [dict(stem=mod['stem'], id=f'0x{mod["id"]:04x}', slot=mod['slot'], overflow=mod.get('overflow'),
-                       error=mod.get('error')) for mod in modules if not mod['ok']]
+                       error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'))
+                  for mod in modules if not mod['ok']]
         report[m] = dict(
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
@@ -429,7 +558,9 @@ def main():
             modules=len(modules), modules_linked=len(good), failed=failed,
             store_bytes=store.get('store_bytes') or store.get('image_bytes'), pack=pack.stdout.strip(),
             module_list=[{k: mod.get(k) for k in ('stem', 'agc', 'lane', 'slot', 'id', 'bytes', 'basic', 'interp',
-                                                    'moved_to_job_slot', 'task_overflow')} for mod in modules])
+                                                    'chunk', 'chunk_of', 'also', 'fixed_data', 'moved_to_job_slot',
+                                                    'task_overflow')} | dict(sites=len(mod.get('sites') or {}))
+                         for mod in modules])
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")

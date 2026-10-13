@@ -35,7 +35,10 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/resident-flight')
 SERVICES = 0x0202
 COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0',
-          '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror']
+          '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror',
+          # The resident and every flight module resolve a pending DANZIG
+          # (RTB right-hand order) through the mission's marker table.
+          '-DAGC_TRANSFER_DANZIG_MARKER']
 MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
 
 # The resident's sources, by component (the size report's classes).

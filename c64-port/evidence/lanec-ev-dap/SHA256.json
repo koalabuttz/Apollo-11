@@ -4,12 +4,12 @@
   "release": "evidence-lanec-ev-dap",
   "files": {
     "lanec-ev-dap-diff.json": {
-      "sha256": "ca746245565f96bdd30bc94630b5be077ea8b10e1a52841fffdf006063e21941",
+      "sha256": "8560ee87478c47bcef46fa370ecad7bd17e467ee14562904e2426a21a7c57e4b",
       "bytes": 233,
       "store": "tree"
     },
     "lanec-ev-dap-oracle.crc": {
-      "sha256": "f383c9013776143dd887098d74019fb76e1def3f7ed3382d3b82875b6e860301",
+      "sha256": "42ea99319e5148007056ff19df76bc415512b149bbc1e11bb4590d496efd6c29",
       "bytes": 38538,
       "store": "tree"
     },
@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "lanec-ev-dap-vice.txt": {
-      "sha256": "16f8031b975ac684ae39ee22887aa7aeda5acd5c3cf68790d5a545aa392de679",
-      "bytes": 56,
+      "sha256": "f993a191d743e5ad12ffcd7effa255ccf331da031c3cbf5f954870bec71c0075",
+      "bytes": 55,
       "store": "tree"
     }
   }

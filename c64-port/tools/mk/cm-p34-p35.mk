@@ -24,7 +24,7 @@ cm-p34-p35-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/cm-p34-p35.groups
 CP34_C64_PRGS = $(foreach g,$(CM_P34_P35_GROUPS),build/cm-p34-p35-$(g).prg)
-CP34_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c tests/interp_case.c tests/cm_p34_p35_target.c
+CP34_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c tests/interp_case.c tests/interp_cut.c tests/cm_p34_p35_target.c
 CP34_C64_cm = src/cm_p34_p35.c src/cm_interp_orders.c src/cm_interp_steps.c
 c64-cm-p34-p35: $(CP34_C64_PRGS)
 build/cm-p34-p35-%.prg: $(CP34_SRC) platform/c64/cm_p34_p35_diagnostic.c tools/mk/cm-p34-p35.groups $(CP34_HDR) | build

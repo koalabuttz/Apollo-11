@@ -7,7 +7,7 @@
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "23f2c239593f6b552a276000d86a85c6e0dcad2bd43240808426de84eb4e4377",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/lm_stateup_cases.c": "37b5b7ef693fb0f4faebcfe72286f00ac2ea420161021f69d1e8949c3c8ac9d4"
@@ -279,8 +279,8 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 220,
- "c64_branch_arcs": 220,
+ "host_branch_arcs": 222,
+ "c64_branch_arcs": 222,
  "arcs_by_source_host_c64": {
   "build/lm-stateup-cover/runner.c": [
    1,
@@ -299,8 +299,8 @@
    5
   ],
   "src/agc_transfer.c": [
-   44,
-   44
+   46,
+   46
   ],
   "src/agc_word.c": [
    2,

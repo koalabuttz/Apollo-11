@@ -51,5 +51,6 @@ Hashes: `evidence/lanec-di-nvdsp/SHA256.json`.
   unreachable `default` cases).
 - Host and sanitizer results: `make test-lanec-di-nvdsp sanitize-lanec-di-nvdsp`
   (`lanec-di-nvdsp-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-nvdsp`, 277 frozen cases
-  (every entry, both missions) on a VICE PAL C64 (`lanec-di-nvdsp-vice.txt`).
+- C64 execution results: `make vice-lanec-di-nvdsp`, 32 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 3,600 host cases take (`lanec-di-nvdsp-vice.txt`).
