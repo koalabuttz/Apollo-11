@@ -23,6 +23,12 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 MISSIONS = ('Luminary099', 'Comanche055')
+# The linked flight resident (Resident kernel lane, resident_flight.ld): measured
+# bytes per mission. The projection above budgets the files placed resident;
+# this is what the linker actually produced. A PR that changes it reruns this
+# script so docs/overlay-allocation.json stays current.
+RESIDENT_MEASURED = ROOT / 'evidence/resident-kernel/resident-flight-sizes.json'
+MEASURED_KEY = dict(Luminary099='lm', Comanche055='cm')
 
 # Native bytes per AGC word for modules. Low comes from PHASCHNG (~131 words,
 # 2,169 bytes in cm-clock-display-overlay-2.map). High (40) was once read off
@@ -213,10 +219,17 @@ def plan():
         resident = {level: sum(totals.get(p, {'bytes': {level: 0}})['bytes'][level]
                                for p in ('resident', 'resident-data')) + RESIDENT_PLATFORM
                     for level in EXPANSION}
+        measured = None
+        if RESIDENT_MEASURED.exists():
+            m = json.loads(RESIDENT_MEASURED.read_text()).get(MEASURED_KEY[mission])
+            if m:
+                measured = dict(source=str(RESIDENT_MEASURED.relative_to(ROOT)),
+                                resident_bytes=m['resident_bytes'], free_bytes=m['free_bytes'],
+                                boot_only_bytes=m.get('boot_only_bytes'), components=m.get('components', {}))
         missions.append(dict(mission=mission, total_words=sum(f['estimated_words'] for f in files),
                              placements=totals, lanes=lanes,
                              store_bytes=store, resident_bytes=resident,
-                             resident_capacity=RESIDENT_BYTES, files=files))
+                             resident_capacity=RESIDENT_BYTES, resident_measured=measured, files=files))
     return dict(schema_version=1, abi=2,
                 expansion_bytes_per_word=EXPANSION, resident_bytes_per_word=RESIDENT_EXPANSION,
                 data_bytes_per_word=DATA_BYTES_PER_WORD,
@@ -236,6 +249,9 @@ def main():
         rk = {l: round(v / 1024, 1) for l, v in m['resident_bytes'].items()}
         print(f"{m['mission']}: {m['total_words']} words; module store {kb} KB; "
               f"resident {rk} KB of {m['resident_capacity'] / 1024:.1f} KB")
+        if m['resident_measured']:
+            r = m['resident_measured']
+            print(f"  linked resident {r['resident_bytes']} B, {r['free_bytes']} B free ({r['source']})")
         for placement, t in sorted(m['placements'].items()):
             print(f"  {placement:13s} {t['files']:3d} files {t['words']:6d} words  mid {t['bytes']['mid'] / 1024:7.1f} KB")
         for lane, l in sorted(m['lanes'].items()):
