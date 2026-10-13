@@ -6850,11 +6850,19 @@
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa"
+            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa",
+            "vice_targets": {
+              "vice-imu-compensation": 381
+            }
           },
           "independent_review": {
             "path": "docs/audits/lm-imu-compensation.md",
             "sha256": "7f29be1369ef661682c548085bc8eacf3b3c90e9e15438f109c5806107a0611e"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-compensation/imu-compensation-c64-cover.json",
+            "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
+            "check": "python3 tools/imu_compensation_cover.py"
           }
         }
       }
