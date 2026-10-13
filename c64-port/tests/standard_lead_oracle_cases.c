@@ -26,8 +26,13 @@ void slo_input(apollo_overlay_state *s,uint16_t *superbank,uint16_t *inhint,uint
  if(kind==4u||kind==5u)s->words[0120]=(agc_word)(0401u+054u*(j%5u));
  /* E/JOBWAK: called inhibited, returning through RUPTREG3. */
  if(kind==6u){uint16_t i;s->words[5]=cm?02606u:02631u;*inhint=1;s->words[072]=(agc_word)(02000u+rnd(&x)%06000u);
-  /* Core sets in use (nonzero priority), half of them sleeping; A names one of their LOCs or none. */
-  for(i=0;i<8u;++i){s->words[0167u+12u*i]=(agc_word)((rnd(&x)&1u)?040000u|(1u+rnd(&x)%037777u):1u+rnd(&x)%037777u);s->words[0164u+12u*i]=(agc_word)(rnd(&x)%077777u);}
+  /* A return inside JOBWAKE (bank-0 Executive code, 05000-05777) would stop the oracle mid-routine (it
+   * stops at the first Z equal to the native one): such returns move to 04000-04777. */
+  if(s->words[072]>=05000u&&s->words[072]<06000u)s->words[072]=(agc_word)(s->words[072]-01000u);
+  /* Core sets in use (nonzero priority), half of them sleeping; A names one of their LOCs or none.
+   * BANKSET a plain EB with the superbank bits, so a found job can be woken (#198). */
+  for(i=0;i<8u;++i){s->words[0167u+12u*i]=(agc_word)((rnd(&x)&1u)?040000u|(1u+rnd(&x)%037777u):1u+rnd(&x)%037777u);s->words[0164u+12u*i]=(agc_word)(rnd(&x)%077777u);
+   s->words[0165u+12u*i]=(agc_word)((rnd(&x)&7u)|*superbank);}
   s->words[067]=(agc_word)(rnd(&x)%4u?(rnd(&x)%(cm?7u:8u))*12u:AGC_NEG_ZERO);
   s->words[0]=agc_extend((agc_word)(rnd(&x)%4u?s->words[0164u+12u*(rnd(&x)%8u)]:rnd(&x)%077777u));}
  if(kind>=7u){
