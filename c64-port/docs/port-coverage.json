@@ -507,8 +507,8 @@
             "sha256": "ff279e4173c88ba7684c263ee2cc3690d2cb6bc50add88375166e664a1173884"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -641,8 +641,8 @@
             "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -653,7 +653,7 @@
       "sha256": "b71ca76c2835831676ed58e7708132fe30a239fedffaf8a17decea177569d6af",
       "bytes": 47233,
       "lines": 1922,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -668,7 +668,7 @@
           "verification": "docs/CM-CONICS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -682,7 +682,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-conics/cm-conics-source-map.json",
@@ -706,6 +705,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
             "sha256": "8eefc643ca5d491641f73e4a89353898aa4b06de7c1906e346dc0dd5312934b4"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -2027,7 +2030,7 @@
       "sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
       "bytes": 26531,
       "lines": 1174,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2042,7 +2045,7 @@
           "verification": "docs/CM-INTEGRATION-INIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2068,7 +2071,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-integration-init/cm-integration-init-source-map.json",
@@ -2092,6 +2094,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
             "sha256": "15c3be4e4679dcfe6bcee094e82b15ea8f0c657f97fb0cb864d673c24f0f46bc"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -2460,7 +2466,7 @@
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
             "sha256": "cf7c471a70af860b424086115664f349acefe95b9f707c9bd4745951ddf7ddb2",
             "vice_targets": {
-              "vice-cm-jet-select": 28
+              "vice-cm-jet-select": 27
             }
           },
           "c64_branch_outcomes": {
@@ -2468,8 +2474,8 @@
             "sha256": "754b86579dccd72e0c2084eb0b222beebb581d4f5ff0d63e2cf258bd775c1334"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -4257,8 +4263,8 @@
             "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -4821,7 +4827,7 @@
       "sha256": "ced73fe04353aa9e58b875714fc8f4769e75b776622f7d6994e929b68374fc55",
       "bytes": 9172,
       "lines": 422,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4836,7 +4842,7 @@
           "verification": "docs/CM-STABLE-ORBIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4855,7 +4861,6 @@
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
           "Erasable continuation E4,1767 (this file): accepts only TC 02750, TC 03041, TC 03152, TC 03154"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-source-map.json",
@@ -4879,6 +4884,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
             "sha256": "d340184cccb8e5a47c1bbd784d35ef7544db4ab06d37bd9ef7b50164596efa10"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5166,7 +5175,7 @@
       "sha256": "f33bb7ec69f9d83aa2af7dadefc8e474632e73315d91133e5d4ac8f7825f9ff5",
       "bytes": 23513,
       "lines": 683,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5181,7 +5190,7 @@
           "verification": "docs/CM-TIME-FREE-FALL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5194,7 +5203,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-source-map.json",
@@ -5218,6 +5226,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
             "sha256": "8536b1f259ccfe511c60a8a7c7f0a19327d9577cd5077d43f9f617dad92898d5"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5342,8 +5354,8 @@
             "sha256": "e4f1644129f16efc04df033f88f95e145182519f0fc01a1b3e7f0853f154e806"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5404,8 +5416,8 @@
             "sha256": "8cb18f95f71abfda0949a068458e5cfc210b39d3fb71dd6f4f8006de96a69682"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5468,8 +5480,8 @@
             "sha256": "6cb27961e78dc0b9a1eb7370222d0b7d78247701c1679da1673a97af8e97f3a4"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5519,7 +5531,7 @@
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-vice.log",
             "sha256": "d199abd0f331ad4506688ab778b907df73559077139dc59cb8cc13737a6cdecc",
             "vice_targets": {
-              "vice-cm-tvc-massprop": 6
+              "vice-cm-tvc-massprop": 7
             }
           },
           "c64_branch_outcomes": {
@@ -5527,8 +5539,8 @@
             "sha256": "d00b58d2ab8c214f83d83c157831a4a98b8b0fb568269de3ec4be135877d7b6e"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5592,8 +5604,8 @@
             "sha256": "09bc161007c116a0019f5df741c5bad1ee8ee857b41ce4adfd88c59ac6ea1950"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5653,8 +5665,8 @@
             "sha256": "43bc683be6cf8a2a70e556bdbdda68cff547a4dbd5340d8eca93154e21eb9338"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5665,7 +5677,7 @@
       "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
       "bytes": 8776,
       "lines": 260,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5678,7 +5690,7 @@
           "verification": "docs/CM-TVC-STROKE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5707,7 +5719,7 @@
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-vice.log",
             "sha256": "dbab541ebe590f753f399348964282869322eebfb862c331233fe1fadd43c1af",
             "vice_targets": {
-              "vice-cm-tvc-stroke": 12
+              "vice-cm-tvc-stroke": 13
             }
           },
           "c64_branch_outcomes": {
@@ -5715,11 +5727,10 @@
             "sha256": "ccfe884f7ecc07276773eb252c70147405fd7232d2aa787fd96a7160f91fd624"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
-        },
-        "awaiting": "certificate reviewer"
+        }
       }
     },
     {
