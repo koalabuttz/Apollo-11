@@ -6948,8 +6948,73 @@
       "sha256": "d749732ada1c3221d526fadcabf062a652dfb1d01e22bf6bab55bd02b8937d7f",
       "bytes": 18500,
       "lines": 743,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_findcduw.c",
+            "src/lm_findcduw_rtb.c",
+            "src/rtb_vector.c",
+            "src/rtb_unit.c",
+            "src/guidance_unit_phased.c",
+            "src/guidance_length_phased.c",
+            "src/guidance_norm.c",
+            "src/lm_powered_quick.c",
+            "src/lm_single_trig.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (441 words in bank 30, 30,3104-3774): INITCDUW, FINDCDUW with its PNGCS-auto branch PAUTNO (RTB NORMUNIT, RTB QUICTRIG, RAND CHAN30/CHAN31), the CDU-window filter FLTRSUB, CDUWXFR and TCQCDUW, NB2CDUSP with DVBYCOSM, ARCTRGSP, SPARCSIN, LIMITSUB, ONESTO2S, 1TO2&TCQ and the alarm exits NOATTCNT and ALARMMGA, basic and interpretive. As 75 routines of the control-transfer ABI compiled whole-file by tools/interp_compile.py (spec findcduw, resume_keys), entered at INITCDUW, FINDCDUW -2, SPARCSIN -1, the continuations after outside calls and every word that can follow a DANZIG. RTB NORMUNIT runs rtb_vector's NORMUNIT front and rtb_unit's UNIT+1 phases (src/lm_findcduw_rtb.c); RTB QUICTRIG runs lm_powered_quick and lmi_swreturn.",
+          "verification": "docs/LM-FINDCDUW.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random except 010-061: with counters, TIME2, TIME1 (across its range, at 0 and just below its 037777 wrap) and CDUX-Z (032-034) are seeded, the rest of 010-061 is +0; a quarter of the cases put edge values (+-0, one LSB, 1/2, 1/4, just below 1, axis, plane and tiny vectors, CDUs at 0, 45, 90, 180 or 270 degrees) into MPAC, the pushdown top and every operand, and the erasable words the basic code names take +-0, small and saturating values) under EBANK 6, entered with Z at any of the file's basic routines (FB 30) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables; input channels 030-033 latched from the case seed (PNGCS control, channel 30 bit 10, and auto mode, channel 31 bit 14, set or clear), held for the run as yaAGC holds its input channels, LOSCALAR 37777 in a quarter of the cases; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). NDXCDUW (E6,1650) is 0 or 1 (FLTRSUB's INDEX NDXCDUW into GAINFLTR, DAZMAX, DAY/2MAX and DAXMAX); OVFIND is +0, +1 or -1; MODE is -1 (vector) at FINDCDUW, FINDCDUW +3, +5, PAUTNO +1 and +5, where the RTBs need a vector; TEM2 holds 0, 1 or 2 at CDUWXFR +6 and +24 and the FLTRSUB return (3207 or 3213) at FLTRSUB +11 and +15; TEM4 holds an ARCTRGSP return (3556, 3565 or 3574) at ARCTRGSP +21 to +28, as their callers leave them; SPARCSIN's INDEX A into LIMITS sees A = +-1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. RTB NORMUNIT of a zero vector (UNIT's alarm 1302) is outside the domain and refused; a DVOVF in UNIT ends at DANZIG as the AGC does. The -0 arm of the CCS A after each RAND is the word after the next EXTEND and is refused rather than run unextended (no latched channel value reaches it). Indexed instructions whose index would change the opcode or reach a central register, and TS overflow skips onto words the program never reaches with overflow, refuse; none is reached by the 19,200 cases.",
+        "external_continuations": [
+          "ALARM and IBNKCALL (outside basic routines)",
+          "DANZIG to CHANG2 with NEWJOB positive (Lane A Executive; the CHANG2 resume keys re-enter the file)",
+          "RTB NORMUNIT (native: rtb_vector's NORMUNIT front, rtb_unit's UNIT+1 phases, src/lm_findcduw_rtb.c) and RTB QUICTRIG (native: lm_powered_quick, lmi_swreturn)",
+          "NEWOPS with LOC outside the file (RVQ and interpretive returns to the callers in P40-P47, BURN_BABY_BURN, P70-P71 and LUNAR_LANDING_GUIDANCE_EQUATIONS)",
+          "The interpreter bodies' POODOO/ALARM exits",
+          "The caller's return through Q (TC Q runs the TC word held in Q)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/findcduw/findcduw-source-map.json",
+            "sha256": "8d80af33960f31d9bd56dc65daf9b1d1e10e03212815f2909050a8d305e7f4a8"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/findcduw/findcduw-proof.json",
+            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/findcduw/findcduw-host.log",
+            "sha256": "271a1ebbbd27e06b6c80358657c7eb040f6eaa9c3515a21a4864b50a614f94fa"
+          },
+          "c64_execution_results": {
+            "path": "evidence/findcduw/findcduw-vice.log",
+            "sha256": "e0da1b989a2ff87a582ec8d0110ffdb27f2662155a313d60745bbc631a25bd12",
+            "vice_targets": {
+              "vice-findcduw": 146
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/findcduw.md",
+            "sha256": "ef71c681ddd6b56529c1fa11b2b51162c2f3ed369aa4f31888c5c9b630d0a464"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/findcduw/findcduw-proof.json",
+            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",

@@ -113,3 +113,11 @@ A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are 
 
 - `flow_states`: before the cases are drawn, the oracle runs each entry's cases with `IRC_FLOW=1`, and the reference prints PUSHLOC, MODE, X1, X2, S1 and S2 at every NEWOPS. Each other routine then draws those registers from the values the file's own runs reach it with. `states` still wins, and a routine no entry reaches keeps random ones. A PUSHLOC off the pushdown list (an entry case's own random one) is not collected. Without this, a resume inside PARAM or GETX starts with a pushdown pointer or loop count the file never has there.
 - A starred store tail (`STOVL* COGA / MUTABLE,1`) that reads a fixed table now goes through the same `KX` check as a starred load (`indexed_fixed`). Before, the load half of the tail read zeros.
+
+## Additions from FINDCDUW (lane A2)
+
+- `basic_fixed_index` also covers `INDEX K; MP T`.
+- BOVB to the file's own basic code (FINDCDUW's `BOVB UNIT NOATTCNT`) works without `'basic': 'full'`.
+- `refuse_unextended`: a CCS arm on the word after an EXTEND is refused instead of compiled unextended.
+- `basic_edges` (differential): the erasable words interp_compile's own basic code names get the same ±0, small and saturating values as `'basic': 'full'` files' words.
+- `index_carry16`: the generated `ixw` (INDEX's ones'-complement add) takes the end-around carry without a 17-bit sum. Without it, a C64 build (16-bit `unsigned`) drops the carry of an INDEX by a negative value (A = -1 on SPARCSIN's `INDEX A; CS LIMITS`) and refuses; other specs' generated files keep the old form.
