@@ -4,16 +4,21 @@
 #include "agc_image_ops.h"
 /* Routes a translation's agc_image_ops calls to the fast forms. Define
  * AFR_EBN (the EB the whole file runs under; see agc_fast_ops.h for the
- * rule) and include this after agc_image_ops.h. A plain-cell operand goes
- * to the afo_* helper, any other operand to the one-argument wrapper of
- * the ai_* helper (agc_image_thin.h), fixed operands by value to afo_*.
+ * rule) and include this after agc_image_ops.h. A cell in the EBANK 6
+ * window goes to the one-byte afw_* helper (agc_fast_window.h), any other
+ * plain-cell operand to the afo_* helper, any other operand to the
+ * one-argument wrapper of the ai_* helper (agc_image_thin.h), fixed
+ * operands by value to afo_*.
  * Every entry binds the image with AFR_BIND(s); AFR_S(s) is the image the
  * ops run on. With AFR_GENERIC the calls stay on agc_image_ops. */
 #ifndef AFR_GENERIC
 #include "agc_fast_ops.h"
+#include "agc_fast_window.h"
 #include "agc_image_thin.h"
-#define AFR_OP(n,s,a) ((void)(s),AFO_PLAIN(AFR_EBN,a)?afo_##n(AFO_CELL(AFR_EBN,a)):AIT_ARG(n,a))
-#define AFR_OP2(n,s,a) ((void)(s),AFO_PLAIN2(AFR_EBN,a)?afo_##n(AFO_CELL(AFR_EBN,a)):AIT_ARG(n,a))
+#define AFR_OP(n,s,a) ((void)(s),AFW_IN(AFR_EBN,a)?afw_##n(AFW_OFF(a)):\
+ AFO_PLAIN(AFR_EBN,a)?afo_##n(AFO_CELL(AFR_EBN,a)):AIT_ARG(n,a))
+#define AFR_OP2(n,s,a) ((void)(s),AFW_IN(AFR_EBN,a)?afw_##n(AFW_OFF(a)):\
+ AFO_PLAIN2(AFR_EBN,a)?afo_##n(AFO_CELL(AFR_EBN,a)):AIT_ARG(n,a))
 #define AFR_F(n,s,k) ((void)(s),afo_##n(k))
 #define ai_ca(s,a) AFR_OP(ca,s,a)
 #define ai_cs(s,a) AFR_OP(cs,s,a)

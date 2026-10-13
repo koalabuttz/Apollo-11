@@ -55,6 +55,21 @@ mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
 the builder picks them for any file that uses `<m>_channel_io` (CM
 `FINETIME` in IMU_CALIBRATION needs it).
 
+On the C64 the resident hands every module its base record (`rk_io`:
+`p66_bias_io` or `cm_native_io`). A module whose tables take another kind
+(`module_io`; `FS_IO_KIND` in `platform/c64/flight_table_module.c`) builds
+that record with `flight_io_enter` from `rk_hardware`, `rk_flight` and
+`rk_device` before its run and writes it back with `flight_io_leave` after;
+on the CM it also copies `cm_channels` to and from `rk_hardware`'s channels
+5, 6 and 30-33. Its tables are marked `RK_TABLES_NOT_DIRECT`, so `rk_direct`
+leaves them to the module main. A module may mix the base kind only with a
+kind whose record starts with the base record (LM_*, CM_*), and the builder
+refuses a kind with no `flight_io_enter`/`flight_io_leave` case. The
+conversion adds about 330 bytes to the module main (1,076 bytes in the
+pinned LM DAP set, against about 750 for a base-kind module); the set
+measures 39,341 bytes. Every CM module links the resident's
+`cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
+
 ### Fit on 6b6ed2dc
 
 | | Tables | Modules | Linked | Failed | Resolver records | Colliding keys | Store |
@@ -194,10 +209,18 @@ that module loaded. Status, image and channels must match. On def640e3d
 plus this change both missions pass (LM 903 checks, 44 modules compared;
 CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of
-what is left is the step itself: the transfer point (about 1,100 cycles)
-and the table search, which is the next thing to cut.
+what is left is the step itself: the transfer point and the table search.
 
-A cached call (no load) costs 7,000 to 9,400 cycles on its own: the ABI 2
+The step now computes the transfer point once (it was computed again to
+pick the table set), which cut it from about 1,100 to 880 cycles, and the
+search skips a table whose key range cannot hold the point.
+`flight_store_build.py` refuses a table whose keys do not strictly ascend,
+since both the binary search and the range skip rely on it. With this,
+cached calls are 6,081 to 8,158 cycles (from 7,287 to 11,407), and the
+check passes on both missions (LM 907 checks, CM 1,398). The resident
+resolve is still 4,200 to 4,900 cycles of each step.
+
+A cached call (no load) costs 6,100 to 8,200 cycles on its own: the ABI 2
 run, the module copying its program record and tables, and one resolve. So a
 swap to a 12 KB module costs about 21,000 cycles plus the call, about 30,000
 in all (3% of a second), and a full 16 KB slot about 35 ms. At the LM's 40

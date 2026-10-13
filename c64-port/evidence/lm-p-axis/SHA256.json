@@ -4,8 +4,8 @@
   "release": "evidence-lm-p-axis",
   "files": {
     "lm-p-axis-c64-cover.json": {
-      "sha256": "2991e772fc04a5d956d08e97c8d816585fcf1fdf8b8c9c532826f8c90d76252f",
-      "bytes": 25412,
+      "sha256": "fe0f9f97eba973a2b817a2663c29050aa949f9cb0dafcc70eeb8e324666e57d2",
+      "bytes": 26016,
       "store": "tree"
     },
     "lm-p-axis-host.log": {
@@ -19,12 +19,12 @@
       "store": "tree"
     },
     "lm-p-axis-source-map.json": {
-      "sha256": "e7c5433a0749036ec7f19885e5954c19fd59bc2d0ddf149049b4fa7f96cfc2e4",
+      "sha256": "ffd6a8a957939649729a0b8447972369fa58512f733e7ad386b5c1424e7ae6f6",
       "bytes": 145850,
       "store": "tree"
     },
     "lm-p-axis-vice.log": {
-      "sha256": "3caac587333046134f9dacdded2732a78eb4ed5a91740071ae1cbc7e63d1a6a0",
+      "sha256": "5031246e80d70a4ab8118d450059fffa8bd04c4745db010586cf5e26eccb1c77",
       "bytes": 291,
       "store": "tree"
     }

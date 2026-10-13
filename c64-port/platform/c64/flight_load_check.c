@@ -25,7 +25,7 @@
  * run, for a VICE monitor watch that profiles it. Mailbox (tools/flight_vice_load.py): $c001-2 failures, $c003-4 checks,
  * $a5 at $c000; $c005 the first failing step; $c3f8 the timer's own cost
  * (4 bytes), $c3f0-5 the call profile (profile()), $c3fe the module count, $c400 one fl_timing per module (up to
- * $cbff, FL_MODULES at most 146), $c3e0 the indices of up to 8 modules whose
+ * $cbff, FL_MODULES at most 204), $c3e0 the indices of up to 8 modules whose
  * direct call differs from their main ($c3df their count). */
 #include <stdint.h>
 #include "resident_flight.h"
@@ -33,7 +33,9 @@
 #define BOOT __attribute__((noinline,section(".boot.text.fl_check")))
 typedef struct { uint16_t bank, loc, module; } fl_record;
 typedef struct { uint16_t id, bytes, bank, loc; } fl_module;   /* loc 0: no record to call */
-typedef struct { uint16_t id, bytes; uint32_t load; uint16_t cached, direct, main; } fl_timing;
+/* In fl_modules order (tools/flight_vice_load.py reads ids and sizes from
+ * the FL_DATA header). */
+typedef struct { uint32_t load; uint16_t cached, direct, main; } fl_timing;
 #include FL_DATA
 #ifndef FL_FIRST
 #define FL_FIRST 0u
@@ -41,10 +43,17 @@ typedef struct { uint16_t id, bytes; uint32_t load; uint16_t cached, direct, mai
 #ifndef FL_LIMIT
 #define FL_LIMIT FL_MODULES
 #endif
-_Static_assert(FL_MODULES<=146u,"timings would reach the stack");
+/* The timings at $C400 leave the soft stack (below $D000) 1 KB. */
+_Static_assert(0xc400ul+FL_MODULES*sizeof(fl_timing)<=0xcc00ul,"timings would reach the stack");
 #define FL_IMAGE_BYTES 4096ul
 _Static_assert(sizeof(apollo_overlay_state)<=FL_IMAGE_BYTES,"the image snapshot overruns its scratch");
 _Static_assert(FL_IMAGE_BYTES+16384u<=FL_SCRATCH_BYTES,"a slot snapshot overruns the REU scratch");
+/* fl_modules is boot data (the first module load overwrites it): boot
+ * stashes it in the REU scratch after the slot snapshot, and the loop
+ * fetches one entry at a time into module. */
+#define FL_MODULE_TABLE (FL_SCRATCH+FL_IMAGE_BYTES+16384ul)
+_Static_assert(FL_IMAGE_BYTES+16384ul+sizeof fl_modules<=FL_SCRATCH_BYTES-256u,"the module table overruns the REU scratch");
+static fl_module module;
 #define IMAGE ((apollo_overlay_state *)APOLLO_SHARED_ADDRESS)
 static volatile uint8_t *const mail=(volatile uint8_t *)0xc000;
 static fl_timing *const timing=(fl_timing *)0xc400;
@@ -55,6 +64,29 @@ static void BOOT resolve_records(void){uint16_t i;apollo_ov2_cont at;
  for(i=0;i<FL_RECORDS;++i)
   expect(rk_runtime.store.resolve(rk_runtime.store.user,fl_records[i].bank,fl_records[i].loc,&at)&&
          at.module==fl_records[i].module&&at.selector==0u,2);}
+
+/* The $D000 extension path (slot class 2): a pattern stashed in the REU
+ * scratch, fetched to $D000 and verified with I/O banked out (rk_hidden_dma),
+ * read back with I/O out, then CIA1 interrupts left on with I/O out: the IRQ
+ * entry must restore I/O to acknowledge them, or the CPU never returns. */
+extern volatile uint16_t ov2_irq_count;
+static uint16_t BOOT irq_count(void){uint16_t n;do n=ov2_irq_count;while(n!=ov2_irq_count);return n;}
+static void BOOT fixed_extension(void){uint8_t *b=(uint8_t *)RK_BOOT_SCRATCH;uint16_t i,bad=0,t;
+ for(i=0;i<256u;++i)b[i]=(uint8_t)(i^0x5au);
+ apollo_reu_transfer(APOLLO_REU_STASH,b,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u);
+ expect(rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
+ expect(rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
+ __asm__ volatile("sei");
+ *(volatile uint8_t *)1=0x34;
+ for(i=0;i<256u;++i)bad|=(uint8_t)(((volatile uint8_t *)APOLLO_OV2_FIXED_ADDRESS)[i]^(uint8_t)(i^0x5au));
+ t=irq_count();
+ __asm__ volatile("cli");
+ for(i=0;i<60000u&&(uint16_t)(irq_count()-t)<3u;++i){}
+ __asm__ volatile("sei");
+ *(volatile uint8_t *)1=0x35;
+ __asm__ volatile("cli");
+ expect(!bad,8);
+ expect((uint16_t)(irq_count()-t)>=3u,9);}
 
 /* CIA2 timer A counts cycles from $FFFF, timer B its underflows. */
 #define CIA2 ((volatile uint8_t *)0xdd00)
@@ -95,13 +127,23 @@ static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint1
 static uint16_t sum_bytes(uint16_t h,const void *p,uint16_t n){const uint8_t *b=p;
  while(n--)h=(uint16_t)((h<<1|h>>15)+*b++);
  return h;}
+#if RK_CM
+#define CHANNELS_SUM(h) sum_bytes(h,&cm_channels,sizeof cm_channels)
+static cm_native_channels channels;
+#define CHANNELS_SAVE() (channels=cm_channels)
+#define CHANNELS_LOAD() (cm_channels=channels)
+#else
+#define CHANNELS_SUM(h) (h)
+#define CHANNELS_SAVE() ((void)0)
+#define CHANNELS_LOAD() ((void)0)
+#endif
 static uint16_t image_sum(void){
- return sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware);}
+ return CHANNELS_SUM(sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware));}
 static rk_io device;
 static agc_hardware hardware;
 static void direct_state(const fl_module *m){
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
- rk_device=device;rk_hardware=hardware;
+ rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
  IMAGE->words[4]=(agc_word)(m->bank&076000u);IMAGE->words[5]=m->loc;
  rk_device.superbank=(agc_word)(m->bank&0100u);}
 static uint8_t differ;
@@ -119,13 +161,19 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
  timer_start();ok=apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK;*main_cycles=(uint16_t)timer_stop();
  expect(ok,5);
  a=rk_env.status;sum=image_sum();
+ /* Tables on another io record run only through the main (no direct call
+  * to compare). */
+ {const rk_module_tables *tb=(const rk_module_tables *)(uintptr_t)(slot[APOLLO_OV2_H_TABLES]|(uint16_t)slot[APOLLO_OV2_H_TABLES+1]<<8);
+  if(tb&&tb->ready==RK_TABLES_NOT_DIRECT){
+   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
+   return 0;}}
  for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]!=m->id)rk_runtime.loaded[i]=0;
  direct_state(m);
  apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
  timer_start();b=rk_direct(AGC_TRANSFER_NONE);t=(uint16_t)timer_stop();
  ok=a==b&&image_sum()==sum;expect(ok,6);
  if(!ok&&differ<8u){((volatile uint16_t *)0xc3e0)[differ++]=k;mail[0x3df]=differ;}
- apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
  return t;}
 
 int main(void){uint16_t i;
@@ -134,24 +182,27 @@ int main(void){uint16_t i;
  mail[5]=0;
  expect(rk_boot()==0,1);
  if(!failures){
+  apollo_reu_transfer(APOLLO_REU_STASH,(void *)fl_modules,FL_MODULE_TABLE,sizeof fl_modules);
   resolve_records();
+  fixed_extension();
   __asm__ volatile("sei");
-  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;
+  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;CHANNELS_SAVE();
   timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();
 #ifndef FL_NO_PROFILE
   profile();
 #endif
   for(i=FL_FIRST;i<FL_LIMIT;++i){
-   *(volatile uint16_t *)0xc006=i;timing[i].id=fl_modules[i].id;timing[i].bytes=fl_modules[i].bytes;
-   timing[i].load=run(fl_modules[i].id,3);
+   *(volatile uint16_t *)0xc006=i;
+   apollo_reu_transfer(APOLLO_REU_FETCH,&module,FL_MODULE_TABLE+i*sizeof module,sizeof module);
+   timing[i].load=run(module.id,3);
 #ifdef FL_PROFILE_MARKS
    mail[7]=1;   /* a monitor watch here can start VICE's profiler */
 #endif
-   timing[i].cached=(uint16_t)run(fl_modules[i].id,4);
+   timing[i].cached=(uint16_t)run(module.id,4);
 #ifdef FL_PROFILE_MARKS
    mail[8]=1;
 #endif
-   timing[i].direct=fl_modules[i].loc?direct(i,&fl_modules[i],&timing[i].main):0u;
+   timing[i].direct=module.loc?direct(i,&module,&timing[i].main):0u;
   }
   *(volatile uint16_t *)0xc3fe=FL_LIMIT;
   __asm__ volatile("cli");}

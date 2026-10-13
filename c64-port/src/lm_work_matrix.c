@@ -3,7 +3,7 @@
 #include "lm_work_matrix.h"
 #include "lm_interp_steps.h"
 #include "matrix_native.h"
-#define W s->words
+#include "agc_image_w.h"
 enum {MXV=07334};
 uint8_t lm_work_matrix(apollo_overlay_state *s,agc_word word,uint8_t column){
  agc_word k[18];unsigned i;

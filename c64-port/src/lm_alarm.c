@@ -9,7 +9,7 @@
 #include "agc_image_ops.h"
 #include "lm_alarm_sites.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B10(z) (uint16_t)(010u*1024u+((z)-02000u))
 #define B13(z) (uint16_t)(013u*1024u+((z)-02000u))

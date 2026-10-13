@@ -45,6 +45,11 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               #84), and every cited native file exists (#51).
   revision    reviewed_all_source_paths and the pinned source_revision, the
               rule tools/port_coverage.py applies to a complete certificate.
+  spec keys   WARN (never FAIL), once per certificate, when the interp spec
+              (tools/interp_specs.py, found by the evidence/<id>/ the
+              certificate cites, or by its file) lacks a key of
+              REFREEZE_SPEC_KEYS ('index_carry16': the generated INDEX keeps
+              its end-around carry on the C64); set it at the next refreeze.
 
 Calls between files certified together (one source map or comparison record,
 IMU_PERFORMANCE_TEST_2/TESTS_4) are internal. On a certificate already flipped
@@ -764,6 +769,57 @@ def check_c64(report, label, certificate):
                    ' (#108, #109, #115)', 'measure branch outcomes over every linked source')
 
 
+# Spec keys of tools/interp_specs.py that change generated C a lane's frozen
+# evidence pins. The steward keeps them off the specs that do not ask for them
+# (regenerating every spec would stale the pinned sources), so a certificate
+# whose spec lacks one gets a WARN, never a FAIL, until its next refreeze.
+# 'image_w' (steward PR #260) joins this list when it lands.
+REFREEZE_SPEC_KEYS = ('index_carry16',)
+
+
+def interp_specs():
+    """tools/interp_specs.py's SPECS, or {} when it cannot be read."""
+    try:
+        import interp_specs  # noqa: E402
+    except Exception:  # noqa: BLE001 -- a broken spec file is not this check's FAIL
+        return {}
+    return getattr(interp_specs, 'SPECS', {})
+
+
+def specs_for(path, certificate, specs):
+    """The interp specs a certificate rests on: the evidence ids it cites that
+    are spec keys (evidence/<id>/ is the spec's milestone), and the specs whose
+    'file' is this AGC file."""
+    mission, name = path.split('/', 1)
+    out = set()
+    for record in ((certificate or {}).get('evidence') or {}).values():
+        parts = pathlib.PurePosixPath(record.get('path', '') if isinstance(record, dict) else '').parts
+        if len(parts) >= 2 and parts[0] == 'evidence' and parts[1] in specs:
+            out.add(parts[1])
+    for key, spec in specs.items():
+        short = MISSIONS.get(mission)
+        files = (spec.get('file') or {}).get(short) if short in (spec.get('missions') or ()) else None
+        if name in ([files] if isinstance(files, str) else files or []):
+            out.add(key)
+    return sorted(out)
+
+
+def check_spec_keys(report, label, path, certificate, specs):
+    """One WARN per certificate whose interp spec lacks a REFREEZE_SPEC_KEYS key."""
+    missing = {}
+    for key in specs_for(path, certificate, specs):
+        for flag in REFREEZE_SPEC_KEYS:
+            if not specs[key].get(flag):
+                missing.setdefault(flag, []).append(key)
+    if missing:
+        flags = sorted(missing)
+        keys = sorted({k for v in missing.values() for k in v})
+        report.add('WARN', label, f'interp spec {", ".join(keys)} lacks {", ".join(repr(f) for f in flags)}: '
+                   'the generated INDEX (ixw) drops its end-around carry on the C64 (16-bit unsigned) '
+                   'for a negative index value (docs/INTERP-COMPILE.md)',
+                   f'set {", ".join(repr(f) for f in flags)} in tools/interp_specs.py at the lane\'s next refreeze')
+
+
 MANIFEST_DAYS = 3
 
 
@@ -877,6 +933,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
         if manifest is None:
             report.add('WARN', 'vice-manifest', f'{why}; vice_targets not checked')
     facts = json.loads(FACTS.read_text())
+    specs = interp_specs()
     if keys is None:
         try:
             keys, errors = routine_keys()
@@ -901,6 +958,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             if certificate:
                 check_revision(report, label, certificate)
                 check_manifest(report, label, path, certificate, manifest)
+                check_review(report, label, key, certificate)
             if certificate and not documentation:
                 check_evidence(report, label, certificate, fetch_missing)
                 check_text(report, label, certificate)
@@ -913,7 +971,25 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             check_refusals(report, label, entry, certificate, notes)
             if certificate:
                 check_c64(report, label, certificate)
+                check_spec_keys(report, label, path, certificate, specs)
     return report
+
+
+def check_review(report, label, key, certificate):
+    """A complete certificate's independent review is a reviewer's record.
+
+    Reviewers write theirs under docs/audits/ (#249 for FINDCDUW). #248
+    merged FINDCDUW complete citing the lane's own pending-review notes;
+    a lane cannot review itself, so that FAILs."""
+    if key != 'complete_native_coverage':
+        return
+    review = (certificate.get('evidence') or {}).get('independent_review')
+    if not review:
+        return
+    where = review.get('path', '') if isinstance(review, dict) else str(review)
+    if not where.startswith('docs/audits/'):
+        report.add('FAIL', label, f'independent_review {where or "(no path)"} is not a reviewer record',
+                   'keep the certificate pending; the reviewer accepts it with a docs/audits/ record')
 
 
 def main():

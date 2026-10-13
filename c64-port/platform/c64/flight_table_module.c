@@ -14,9 +14,17 @@
  * the module's routines read their callers' operands from it, not from the
  * resident's Executive site table. FS_FIXED_DATA names the module's
  * fixed_data hook (the self-check module's rope image); FS_ROPE_DATA gives
- * it every rope word from the REU image instead. Value: the step's
+ * it every rope word from the REU image instead. FS_IO_KIND names the io
+ * record the group's tables take (include/flight_io.h) where it is not the
+ * mission's base record (rk_io), and FS_IO_CM is 1 when that record starts
+ * with cm_native_io: the module then runs them on that record, written from
+ * the resident's (rk_device, rk_hardware, rk_flight and, CM, cm_channels)
+ * and written back after, and is never called directly. Value: the step's
  * rk_module_env. */
 #include "resident_flight.h"
+#ifdef FS_IO_KIND
+#include "flight_io.h"
+#endif
 #ifdef FS_FIXED_DATA
 #include "self_check.h"
 #endif
@@ -95,10 +103,51 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   t->fixed_data=p.fixed_data;
 #endif
   t->basic=basic;t->basic_count=(uint8_t)(sizeof basic/sizeof basic[0]);
-  t->ready=1;
+#ifdef FS_IO_KIND
+  t->ready=RK_TABLES_NOT_DIRECT;
+#else
+  t->ready=RK_TABLES_DIRECT;
+#endif
  }
  rk_module_program(&p,t);
+#ifdef FS_IO_KIND
+ {
+  static flight_io_buffer b;   /* static: absolute addressing is smaller than the soft stack */
+  agc_hardware *const hw=&rk_hardware;
+  void *x;
+#if RK_CM
+  hw->channel5=cm_channels.channel05;hw->channel6=cm_channels.channel06;hw->channel30=cm_channels.channel30;
+  hw->channel31=cm_channels.channel31;hw->channel32=cm_channels.channel32;hw->channel33=cm_channels.channel33;
+#endif
+  /* An LM_* or CM_* record opens with rk_io, which is copied in whole, so
+   * its base fields stay rk_device's; CM tables on p66_bias_io take the
+   * superbank and interrupt latch. One call each, so LTO folds the kind's
+   * case. */
+  x=flight_io_enter(FS_IO_KIND,&rk_flight,hw,&b);
+#if FS_IO_CM==RK_CM
+  memcpy(&b,io,sizeof *io);
+#else   /* CM tables on p66_bias_io */
+  b.p66.superbank=io->superbank;b.p66.interrupt_enabled=io->interrupt_enabled;
+#endif
+#if FS_IO_CM
+  status=agc_transfer_run(&p,f->state,x,&((cm_native_io *)x)->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+#else
+  status=agc_transfer_run(&p,f->state,x,&((p66_bias_io *)x)->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+#endif
+  flight_io_leave(FS_IO_KIND,&rk_flight,hw,&b);
+#if FS_IO_CM==RK_CM
+  memcpy(io,&b,sizeof *io);
+#else
+  io->superbank=b.p66.superbank;io->interrupt_enabled=b.p66.interrupt_enabled;
+#endif
+#if RK_CM
+  cm_channels.channel05=hw->channel5;cm_channels.channel06=hw->channel6;cm_channels.channel30=hw->channel30;
+  cm_channels.channel31=hw->channel31;cm_channels.channel32=hw->channel32;cm_channels.channel33=hw->channel33;
+#endif
+ }
+#else
  status=agc_transfer_run(&p,f->state,io,&io->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+#endif
  e->status=rk_module_status(status,steps,RK_MODULE_STEPS);
  return APOLLO_OV2_DONE;
 }

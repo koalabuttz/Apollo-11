@@ -104,6 +104,10 @@ class Mission:
         self.newops = self.cp.newops
         self.points = sorted(self.cp.blocks)
         self.kinds = {p: self.cp.starts[p][0] for p in self.points}
+        # A part key ('basic_parts') is a step boundary inside a routine,
+        # not an entry: its runs come from the routines that reach it, so
+        # it draws no cases of its own.
+        self.case_points = [p for p in self.points if self.cp.starts[p] != ('b', 'part key')]
         self.externals = sorted(set(self.cp.externals))
         if self.cp.basic:
             # Whole-file basic code (tools/basic_compile.py): any transfer
@@ -160,8 +164,17 @@ class Mission:
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
         self.cells = spec.get('cells', {})
-        self.io_channels = spec.get('io_channels', {})
-        if self.io_channels == 'auto':
+        # (Luminary 'channels': 'all' compares its channels unless told otherwise.)
+        self.io_channels = spec.get('io_channels', 'auto' if self.cp.lm_channels else {})
+        if self.io_channels == 'auto' and self.cp.lm_channels:
+            # Luminary (include/agc_channel_ops.h): every compared channel
+            # (tests/interp_case.c irc_ch_num) the file's orders name, any
+            # value, but channel 13 as it reads back (no trap bits) and
+            # channel 14's drive bits as below.
+            used = self.cp.channels_used | (self.cp.basic.channels_used if self.cp.basic else set())
+            self.io_channels = {k: {0o13: 0o43777, 0o14: 0o6777}.get(k, 0o77777)
+                                for k in sorted(used & {0o5, 0o6, 0o11, 0o12, 0o13, 0o14, 0o30, 0o31, 0o32, 0o33})}
+        elif self.io_channels == 'auto':
             # Every channel the file's channel orders name, any value, but
             # channel 14's IMU CDU and gyro drive bits (yaAGC's device
             # models act on them at once; tests/interp_case.h).
@@ -513,6 +526,10 @@ def case(mi, point, n, rng):
         # 'any_fixloc': a basic routine that never names FIXLOC runs from
         # tasks and NOVAC jobs too, so half its cases leave the VAC areas.
         E[0o120] = rng.randrange(0o4000)
+    if mi.cp.any_newjob and mi.cp.novac(point) and rng.random() < 0.25:
+        # 'any_newjob': such a routine also runs while DUMMYJOB idles with
+        # NEWJOB -0.
+        E[0o67] = 0o77777
     if (mi.cp.basic or mi.cp.spec.get('basic_edges')) and mi.kinds[point] == 'b':
         # Compiled basic code: the words it names take zeros, small values
         # and saturating values often enough to reach every CCS exit, BZF and
@@ -655,7 +672,7 @@ class Absent:
         self.m = m
         self.newops = 0
         self.cp = types.SimpleNamespace(ranges=[], where=lambda p: '%05o' % p)
-        self.points = []
+        self.points = self.case_points = []
         self.body_exits = []
         self.externals = []
 
@@ -1085,13 +1102,13 @@ def main():
     proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (a.spec, a.spec))
     if a.cover_check is not None and os.path.exists(proof):
         # (The freeze's cases per routine, from the case count it froze.)
-        n = sum(len(mi.points) for mi in missions if mi.m in spec['missions'])
+        n = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
         a.cases = max(1, json.load(open(proof)).get('cases', a.cases * n) // n)
     cases = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
             continue
-        for p in mi.points:
+        for p in mi.case_points:
             for n in range(a.cases):
                 seed, edits, ie, stop, sb = case(mi, p, n, rng)
                 cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': Edits(edits), 'ie': ie, 'stop': stop, 'sb': sb})
@@ -1853,7 +1870,7 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
         bit = {p: 1 << k for k, p in enumerate(mi.points)}
         need = {}
         fewest = lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i)
-        for p in mi.points:
+        for p in mi.case_points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan
                            and (not c.get('cut') or i in chosen)), key=fewest)
             if cover:
@@ -1865,7 +1882,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             need[p] = ((mine[:1] + [i for i in mine[1:] if cover and i in chosen]) if edges is not None else
                        ([i for i in mine if i in chosen] or mine[:1]) if cover else mine[:per])
         if edges is not None:
-            sets = edges[0]
+            # ('c64_cuts' rows come after the traced cases: no site edges.)
+            sets = list(edges[0]) + [frozenset()] * (len(cases) - len(edges[0]))
             fits = {}
 
             def alone(i):
@@ -1874,7 +1892,7 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                     fits[v] = c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None
                 return fits[v]
             live = [i for i, c in enumerate(cases) if c['cm'] == cm and i not in chan]
-            base = set().union(*(sets[i] for p in mi.points for i in need[p] if alone(i)))
+            base = set().union(*(sets[i] for p in mi.case_points for i in need[p] if alone(i)))
             more, _ = greedy_cover(live, sets, base, key=fewest, accept=alone)
             for i in more:
                 need[cases[i]['point']].append(i)
@@ -1886,7 +1904,7 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             mask, pick = 0, []
             # Case by case (the cover's cases already fit alone): a new
             # group when the next case's routines do not fit with the last.
-            for p in mi.points:
+            for p in mi.case_points:
                 if not any(alone(i) for i in need[p]):
                     C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
                 for i in need[p]:
@@ -1905,7 +1923,7 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                 groups.append((mi.m, 1 << mi.points.index(p), ii))
             continue
         mask, pick = 0, []
-        for p, part in (((p, [i]) for p in mi.points for i in need[p]) if cover else ((p, need[p]) for p in mi.points)):
+        for p, part in (((p, [i]) for p in mi.case_points for i in need[p]) if cover else ((p, need[p]) for p in mi.case_points)):
             want = 0
             for i in part:
                 want |= visits[i]
@@ -1943,7 +1961,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             mi = [x for x in missions if x.m == m][0]
             sys.exit('a single routine group of %s does not fit the C64: %s' % (
                 m, ', '.join(mi.cp.where(p) for k, p in enumerate(mi.points) if mask >> k & 1)))
-    C64_PICKS[:] = [pick for m, mask, pick in groups]
+    # (A 'c64_cuts' row counts as the differential's case it was cut from.)
+    C64_PICKS[:] = [[cases[i].get('of', cases[i].get('src', i)) for i in pick] for m, mask, pick in groups]
     extra = {}
     if cover:
         picked = [i for m, mask, pick in groups for i in pick]
@@ -1987,7 +2006,7 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
     # (case_ids: the differential's case of each row, a segment row's too)
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick),
-             'case_ids': [cases[i].get('src', i) for i in pick]} for m, mask, pick in groups], extra
+             'case_ids': [cases[i].get('of', cases[i].get('src', i)) for i in pick]} for m, mask, pick in groups], extra
 
 
 
@@ -2017,7 +2036,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, covers=None, c
                 GROUP_EXTRA[sym] = bf
             need = {}
             got = 0
-            for p in mi.points:
+            for p in mi.case_points:
                 mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan
                                and i not in excluded),
                               key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
@@ -2039,7 +2058,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, covers=None, c
             # Pack the routines' cases into groups in routine order, a routine's
             # cases together while they fit, else case by case.
             mask, pick = 0, []
-            for p in mi.points:
+            for p in mi.case_points:
                 units = [need[p]]
                 want = 0
                 for i in need[p]:

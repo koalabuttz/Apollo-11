@@ -14,7 +14,7 @@
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
-#define W s->words
+#include "agc_image_w.h"
 /* C64 segment groups (LMSV_C64_GROUP, docs/LM-SERVICER.md): a group build
  * holds only its group's code and keys and ends a run, as a stop, before
  * the first instruction or order pair of the file outside it (SV_END and
