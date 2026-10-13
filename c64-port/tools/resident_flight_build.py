@@ -7,7 +7,7 @@ gc-sections, on platform/c64/resident_flight.ld:
 
   build/resident-flight/<m>-resident.prg  the flight resident (resident_flight_main.c)
   build/resident-flight/<m>-check-<p>.prg the same resident with the flight check
-                                          (resident_flight_check.c, RK_PART p) as main
+                                          (resident_flight_check.c, RK_PART p 1-4) as main
   build/resident-flight/<m>-module-*.prg  the check's modules (case generators in the
                                           job slot; rows and LM RESTARTS in the task slot)
   build/resident-flight/<m>.reu           the check's REU store (modules + probe resolver)
@@ -47,6 +47,7 @@ COMPONENTS = {
         ('single-precision subroutines', ['src/sp_routines.c', 'src/lm_single_trig.c']),
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
+        ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
         ('resident state and step', ['platform/c64/resident_flight.c']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
@@ -58,6 +59,7 @@ COMPONENTS = {
         ('single-precision subroutines', ['src/sp_routines.c', 'src/cm_quictrig.c', 'src/cm_single_return.c']),
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
+        ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
         ('resident state and step', ['platform/c64/resident_flight.c']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
@@ -67,9 +69,13 @@ COMPONENTS = {
 # None is the check's data module (task slot; resident_flight_data.c).
 MODULES = {
     'lm': [(1, None, 0x01F1, 2), (2, 1, 0x01F2, 1), (2, 2, 0x01F3, 1), (2, 3, 0x01F4, 1), (3, None, 0x01F5, 1),
-           (None, None, 0x01F6, 1)],
-    'cm': [(1, None, 0x01F1, 2), (2, None, 0x01F2, 1), (3, None, 0x01F5, 1), (None, None, 0x01F6, 1)],
+           (None, None, 0x01F6, 1), (4, None, 0x01F7, 1)],
+    'cm': [(1, None, 0x01F1, 2), (2, None, 0x01F2, 1), (3, None, 0x01F5, 1), (None, None, 0x01F6, 1),
+           (4, None, 0x01F7, 1)],
 }
+# Part 4's case module: the T3RUPT cases (tests/resident_rupt_cases.c).
+RUPT_SOURCES = ['platform/c64/resident_flight_rupt_cases.c', 'tests/resident_rupt_cases.c', 'src/agc_word.c',
+                'src/agc_transfer.c']
 DATA_SOURCES = {'lm': ['platform/c64/resident_flight_data.c', 'src/lm_restart_routines.c', 'src/lm_restart_select.c',
                        'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c'],
                 'cm': ['platform/c64/resident_flight_data.c']}
@@ -85,9 +91,10 @@ def resident_sources(m):
 
 
 # The flight check: one program per RK_PART (each part's test code must fit
-# beside the resident).
-CHECK_PARTS = (1, 2, 3)
-CHECK_SOURCES = ['platform/c64/resident_flight_check.c', 'tests/resident_kernel_cases.c']
+# beside the resident); part 4 is the AGC clock and T3RUPT.
+CHECK_PARTS = (1, 2, 3, 4)
+CHECK_SOURCES = {1: ['tests/resident_kernel_cases.c'], 2: ['tests/resident_kernel_cases.c'],
+                 3: ['tests/resident_kernel_cases.c'], 4: ['tests/resident_rupt_cases.c']}
 
 
 def link_resident(cc, m, name, sources, defines=()):
@@ -140,10 +147,12 @@ def measure(cc, m, prg):
                 names |= defined_symbols(cc, m, f)
         owners.append((comp, names))
     owners.append(('IRQ entry', {'ov2_irq', 'ov2_irq_entry', 'ov2_nmi_entry', 'ov2_irq_count'}))
-    # resident_flight.c keeps the trampoline and the module runner out of
-    # line under these names; count each with its component.
+    # resident_flight.c keeps the trampoline, the module runner and the
+    # clock and interrupt entry out of line under these names; count each
+    # with its component.
     owners.insert(0, ('transfer ABI trampoline and Executive call sites', {'rk_trampoline'}))
     owners.insert(0, ('ABI 2 runtime and REU store', {'rk_run_module'}))
+    owners.insert(0, ('AGC timers and interrupt entry', {'rk_rupts'}))
     text = Path(f'{prg}.map').read_text()
     end = int(re.search(r'([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__rk_resident_end = \.', text).group(1), 16)
     boot0 = int(re.search(r'([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__rk_boot_start = \.', text).group(1), 16)
@@ -171,7 +180,9 @@ def build_modules(cc, m, cases, library):
     prgs = []
     for part, exj, ident, selectors in MODULES[m]:
         prg = OUT / f'{m}-module-{ident:04x}.prg'
-        if part:
+        if part == 4:
+            extra, sources = [], RUPT_SOURCES
+        elif part:
             extra = [f'-DRK_PART={part}', '-DRK_INPUTS_ONLY'] + ([f'-DLM_EXJ_PART={exj}'] if exj else [])
             sources = ['platform/c64/resident_flight_cases.c', 'tests/resident_kernel_cases.c', *cases]
         else:
@@ -211,7 +222,8 @@ def main():
     for m in a.missions.split(','):
         build_modules(a.cc, m, make_cases(m), library)
         for part in CHECK_PARTS:
-            link_resident(a.cc, m, f'check-{part}', CHECK_SOURCES, ['-DRK_RUNS_ONLY', f'-DRK_PART={part}'])
+            link_resident(a.cc, m, f'check-{part}', ['platform/c64/resident_flight_check.c', *CHECK_SOURCES[part]],
+                          ['-DRK_RUNS_ONLY', f'-DRK_PART={part}'])
         report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', ['platform/c64/resident_flight_main.c']))
     (ROOT / OUT / 'sizes.json').write_text(json.dumps(report, indent=1) + '\n')
     if a.json:

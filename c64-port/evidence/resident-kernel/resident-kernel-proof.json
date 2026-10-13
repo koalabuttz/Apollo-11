@@ -73,21 +73,57 @@
  },
  "flight_resident": {
   "doc": "docs/RESIDENT-FLIGHT.md",
+  "interrupts": {
+   "c64_t3rupt_rows": 64,
+   "cases_per_mission": {
+    "entry": 8192,
+    "t3rupt_to_resume": 2048,
+    "timer_periods": 40960
+   },
+   "doc": "docs/RESIDENT-FLIGHT.md#the-agc-clock-and-interrupts",
+   "log": "resident-rupt-host.log",
+   "log_lines": [
+    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5664 checks, 0 failures",
+    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5650 checks, 0 failures",
+    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5664 checks, 0 failures",
+    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5650 checks, 0 failures"
+   ],
+   "mutations": {
+    "BRUPT off by one": "160 failing checks",
+    "TIME3 overflow raising T4RUPT": "115 failing checks"
+   },
+   "oracle": "yaAGC agc_engine (deps/virtualagc/yaAGC) linked by tools/resident_rupt_reference.c, frozen by tools/resident_rupt_vectors.py",
+   "ropes": {
+    "cm": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "lm": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+   },
+   "test": "make test-resident-rupt sanitize-resident-rupt"
+  },
   "native": {
+   "include/resident_rupt.h": "0096770181db3d3098e04b3f467406d37a33cba96ec47c37e50a1afd15f1c12a",
    "include/sp_routines.h": "4fd5c6cadf7110083b170a322376a258abb2892b5f55a77dcfa59617407eda14",
-   "platform/c64/resident_flight.c": "e0e064c4020032b2e7276cf20a0b04d648ac90f77f85a7ef9ceae1a16cdd2fb7",
-   "platform/c64/resident_flight.h": "61139f8828be62bd94770a06c7c0090d255d4594a081694d7e5320bb71394ff3",
+   "platform/c64/resident_flight.c": "c02024c5059acac472cb9895703f513dc7feb2fcdcfeab1c3f8a41a8b0fe0090",
+   "platform/c64/resident_flight.h": "2773e7eeaaf296eadff89cf4e35630e9c27f42b2793ec7f11928813bf0a473e5",
    "platform/c64/resident_flight.ld": "b2a93ac566bd7770210aac7b4cacb6ad6f3aa7d4113575e9dc2b579147636996",
    "platform/c64/resident_flight_cases.c": "71dd486a2015da8a64876981c0fc7827cd93027e76945475703bb0a83a4f1ed9",
-   "platform/c64/resident_flight_check.c": "ce103f545088b296a5b03950550933e96418b7a0c8e47fe18938e96f3d4d32e2",
-   "platform/c64/resident_flight_check.h": "ea53396056b3cbf4190c2430caadcde59f139423739a78afeb95986719cdc4a8",
+   "platform/c64/resident_flight_check.c": "c75d4354ba09e5f3f52dda07e06242fba37f8d4e18640987ad7f1f99ba60b254",
+   "platform/c64/resident_flight_check.h": "d6f680836bd8e3554a9a4cee6e9b76e47a9e558e0152b4edcb7f5a285491865a",
    "platform/c64/resident_flight_data.c": "cc21a603ec7438b86c14b13671548a2965fcf6939935b8897e06677ff88e55cb",
    "platform/c64/resident_flight_main.c": "1f5bc735d979663378dee37b8e5fa081339992a2b9fdbbdebd584c617d098cdf",
+   "platform/c64/resident_flight_rupt_cases.c": "c24181e71ae03f3020dcfdb72733e39ca5a6b117efecfb0b965781062d085e3f",
+   "src/resident_rupt.c": "e6ff48d8ef9ef9e3ed946a6ad31f8b3b9295271d6b6312d4127300b56d1f9ef1",
    "src/sp_routines.c": "4a1a8329f83ca4e44a2c27f20023927108e53dede8d4dfef95ee3c34f4d432dd",
    "tests/resident_kernel_cases.c": "d43f5cb96f181046ea787f1e9bff072ef599cbc20c02768cdcf68ddb6f9b7b93",
+   "tests/resident_rupt_c64_rows.h": "6379e39c8afbcdb349e295265cc6604bf86518ad3cdb6ed8ba2c8678517727d6",
+   "tests/resident_rupt_cases.c": "702117fe73f399ffbc5c5f667931e22b5ed3e0dbb0dc4bb18b6b2a3c61980a75",
+   "tests/resident_rupt_cases.h": "f1f379b106003d96457455eeaeb0ae70ab28bbac49e4c7e2878a595034fe1302",
+   "tests/resident_rupt_vectors.h": "973655ce913d0291fd899c74a602521e33992d78db123e360a654cffbf99c0bd",
+   "tests/test_resident_rupt.c": "0b68e7851caa4dbb7cff53f916744f0ad3de6d3912a322a33b1c7467049c4ae9",
    "tests/test_sp_routines.c": "1ef3aadb265e7b167b398209878e8dba237ff17bb38ce362728098e894b3b684",
-   "tools/mk/resident-kernel.mk": "7c58e959f0d7fc704865608613447eb366bea3436b8fc32f87fe9d2013360359",
-   "tools/resident_flight_build.py": "673a13583f21a8417eb62f889c467c8085d804a35b9a925e940179f5b64926e0"
+   "tools/mk/resident-kernel.mk": "0f87f459d730fc8853d8960e9ab1b9b29aee62ab577a67e64b9770ad50a1db3b",
+   "tools/resident_flight_build.py": "2f65c161e040297871c65c3ba45cb843c85e5b722bfa65232c66f28e9e283a96",
+   "tools/resident_rupt_reference.c": "2af70c25650028ed3609a96b17eb6ff86e93dbef7bf1c441417c960b8b1c5747",
+   "tools/resident_rupt_vectors.py": "eb089a6b17785929cb52f1da1802fbeb66779adab70bbfac978fa579c082cafe"
   },
   "seams": {
    "cm": {
@@ -105,38 +141,40 @@
   },
   "sizes": {
    "cm": {
-    "boot_only_bytes": 2786,
+    "boot_only_bytes": 2821,
     "components": {
      "ABI 2 runtime and REU store": 5176,
+     "AGC timers and interrupt entry": 1092,
      "BASIC header and alignment": 0,
-     "C runtime and library": 461,
+     "C runtime and library": 480,
      "IRQ entry": 16,
      "kernel": 10232,
-     "resident state and step": 556,
+     "resident state and step": 563,
      "service table exports": 637,
      "single-precision subroutines": 1299,
-     "transfer ABI trampoline and Executive call sites": 2549
+     "transfer ABI trampoline and Executive call sites": 2612
     },
-    "free_bytes": 5441,
-    "resident_bytes": 20926,
+    "free_bytes": 4260,
+    "resident_bytes": 22107,
     "resident_capacity": 26367,
     "service_table_bytes": 6
    },
    "lm": {
-    "boot_only_bytes": 2818,
+    "boot_only_bytes": 2837,
     "components": {
      "ABI 2 runtime and REU store": 5176,
+     "AGC timers and interrupt entry": 1092,
      "BASIC header and alignment": 0,
-     "C runtime and library": 461,
+     "C runtime and library": 480,
      "IRQ entry": 16,
      "kernel": 10475,
-     "resident state and step": 538,
+     "resident state and step": 545,
      "service table exports": 637,
      "single-precision subroutines": 1299,
-     "transfer ABI trampoline and Executive call sites": 2617
+     "transfer ABI trampoline and Executive call sites": 2680
     },
-    "free_bytes": 5148,
-    "resident_bytes": 21219,
+    "free_bytes": 3967,
+    "resident_bytes": 22400,
     "resident_capacity": 26367,
     "service_table_bytes": 6
    }
@@ -155,17 +193,21 @@
   },
   "vice_log": [
    "PASS: VICE PAL lm-check-1.prg: 311 checks, 0 failures",
-   "PRG sha256: 7da8cafc2720a68a1d7a7b08311203b7bee7b6cd8ef0f485ddaa13ccadf5ed0d lm-check-1.prg",
+   "PRG sha256: 16984c18c7a1d5e3b3fa6808575e3fee73e7189b5eb87b1ad22408cca6122b9d lm-check-1.prg",
    "PASS: VICE PAL lm-check-2.prg: 327 checks, 0 failures",
-   "PRG sha256: 689209cf91e6f134ae154f7fda2ff9a6bd0073dbbd1eea5e9bd6a765c534856c lm-check-2.prg",
+   "PRG sha256: e9c57e6a9119cbf0645a8506ba16077ae40fd056f5cf2aa2cb747895a40e9886 lm-check-2.prg",
    "PASS: VICE PAL lm-check-3.prg: 177 checks, 0 failures",
-   "PRG sha256: 4c828d29450089837eb5ce60af476c38a306fa065a881b315cdaf2f32ba234c4 lm-check-3.prg",
+   "PRG sha256: 017b0687c692a7dba78cc16ed37c81fb867aaa43ffce77b3e789ee3401979f89 lm-check-3.prg",
+   "PASS: VICE PAL lm-check-4.prg: 71 checks, 0 failures",
+   "PRG sha256: ef6c00af5e48eb0b0f2af69df78fabebc24e2f7cac294215db229a35c1df8092 lm-check-4.prg",
    "PASS: VICE PAL cm-check-1.prg: 263 checks, 0 failures",
-   "PRG sha256: e2e20f130c0f24f7b984aa35298b7764b92eb2cd730bb64ad133ccba53522cfb cm-check-1.prg",
+   "PRG sha256: ec6fb27bd7a54290669d246d35b762799a9bc8e8b0f98e9c7fa757cdcc63d3ab cm-check-1.prg",
    "PASS: VICE PAL cm-check-2.prg: 225 checks, 0 failures",
-   "PRG sha256: 9aeda51f930333b590c9f6d8b856df11c6d142eb5811aef2c22f79b9334d0e3c cm-check-2.prg",
+   "PRG sha256: 753970e58433f6d686067d60cb83149845bab57f0444364d706ee110397d3f2b cm-check-2.prg",
    "PASS: VICE PAL cm-check-3.prg: 185 checks, 0 failures",
-   "PRG sha256: cc77249e55558c708fa45c37011cf4793c96da00fc4c19db6a52aa5316959874 cm-check-3.prg"
+   "PRG sha256: 227745ba505d8bf0168e98fa1d321cdba93acd1864599fbf16d5bf1ee8756179 cm-check-3.prg",
+   "PASS: VICE PAL cm-check-4.prg: 71 checks, 0 failures",
+   "PRG sha256: 8d1d9c1d7684074ce263c5227e8eceee756189d1c91d0f3f63cd30eb76388284 cm-check-4.prg"
   ]
  },
  "host_log": [
