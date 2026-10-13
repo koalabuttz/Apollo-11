@@ -2136,3 +2136,11 @@ All of Comanche055 P32-P33_P72-P73 (882 words: CSI and CDH with the CSI search) 
 ## Translate Comanche055 P37_P70
 
 All of Comanche055 P37_P70 (1,368 words: P37/P70 return to earth and the RTE subroutines) is native C on the control-transfer ABI, as 194 routines compiled by `tools/interp_compile.py`. All 99,328 cases equal the original program in yaAGC; the host tests pass 388 frozen cases and 40 C64 diagnostics pass 354 cases in VICE (seventeen routines host only). See `docs/CM-P37-P70.md`.
+
+## Translate Luminary099 P34-35_P74-75
+
+All of Luminary099 P34-35_P74-75 (1,056 words: P34/P74 TPI, P35/P75 TPM, VN1645, INITVEL, the MGA and conic setup routines and R36) is native C on the control-transfer ABI, as 178 routines compiled by `tools/interp_compile.py`. All 91,136 cases equal the original program in yaAGC; the host tests pass 178 frozen cases and 24 C64 diagnostics pass 344 cases in VICE (six routines host only). See `docs/LM-P34-P35.md`.
+
+## Translate Luminary099 P32-P35_P72-P75
+
+All of Luminary099 P32-P35_P72-P75 (923 words: CSI and CDH with the CSI search, the flag subroutines and COMPTGO) is native C on the control-transfer ABI, as 135 routines compiled by `tools/interp_compile.py`. All 69,120 cases equal the original program in yaAGC; the host tests pass 270 frozen cases and 17 C64 diagnostics pass 242 cases in VICE (fourteen routines host only). See `docs/LM-P32-P35.md`.
