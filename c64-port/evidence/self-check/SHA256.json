@@ -4,38 +4,38 @@
   "release": "evidence-self-check",
   "files": {
     "self-check-cm-c64-cover.json": {
-      "sha256": "63f4490724d8ef6e739ccf00d9ec21b58b68c8c79da1350b6f55d7f89eba3f29",
-      "bytes": 3137,
+      "sha256": "41840e30cbc5d0e1e416039e62ebf8294685a80105f8faa21bcea4422d7f149e",
+      "bytes": 3427,
       "store": "tree"
     },
     "self-check-cm-rope-c64-cover.json": {
-      "sha256": "02ecaae3c0e8bb7e6e5b5c8aeeaa4bd1acc089aedc4cdb1c3fb197dbc9a26614",
-      "bytes": 2270,
+      "sha256": "b5913fe0cba1b8aec3696d7676094a366a69e361adfd490d75096819ee8ae012",
+      "bytes": 2562,
       "store": "tree"
     },
     "self-check-host.log": {
-      "sha256": "e9b53de4c165ed64bfd6c565df66368e7790a5f94406988e28e888654ab30e42",
-      "bytes": 2757,
+      "sha256": "7e44a347e4120e2d0088215e0d97185ce7934ecc976610dce597f934953c7482",
+      "bytes": 2481,
       "store": "release"
     },
     "self-check-lm-c64-cover.json": {
-      "sha256": "a4e18720efe030095eb068a6735ef151cd7f5319f69505908b1a35aa0a88e8e4",
-      "bytes": 3112,
+      "sha256": "4ad60bdae2d3b33372fcb9e835bedd06c623b6f9a4300603d773365c4da0eac8",
+      "bytes": 3402,
       "store": "tree"
     },
     "self-check-lm-rope-c64-cover.json": {
-      "sha256": "f5fa37047a5bb8f1c8fc5bda2bf3bb7374e587de52b0343efa39150cdcbeda35",
-      "bytes": 2252,
+      "sha256": "7ebac4b6695433b4abcff6c99e3f0fb5b3fa570f236cce6a5ff92b0f5cdf0613",
+      "bytes": 2542,
       "store": "tree"
     },
     "self-check-proof.json": {
-      "sha256": "b0c11e0216272b0c7aeab5ade5e7fae3ad9c533387484e6354cbcf4247393fab",
+      "sha256": "e9607e654cf9296c9b4c3d1d7859fdd039613ad3c220b3eb1ac9a00d958a480e",
       "bytes": 9716,
       "store": "tree"
     },
     "self-check-vice.log": {
-      "sha256": "9fbb46431dd727d8ad24322d9eac6c4a8d8e76a395457b3d8803356e39c670bd",
-      "bytes": 1458,
+      "sha256": "71a2e8a42a48adcac52797587c1ca48790cebbe65b0ccc7e8a54013f913e33fe",
+      "bytes": 1959,
       "store": "release"
     }
   }

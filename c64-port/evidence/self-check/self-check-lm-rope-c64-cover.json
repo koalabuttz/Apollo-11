@@ -3,14 +3,16 @@
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
   "src/lm_self_check.c": "1e29362b21bc705d67154e751b2d2f1a7757b68987c299946b891e0a892fc399",
-  "src/lm_interbank_routines.c": "963d791ffaedf1eb3ae523d9a8fe776eefb28c72ee22a124f15477f6b6c02384",
-  "src/lm_interbank.c": "9c649677bfe8bdb4724ea5c88a185701cfae8b44203384f623c3c17433371a2e",
+  "src/lm_self_check_idle.c": "67ca825deceef73e523a74cf15221da260324d3a1a3e931dbac6b56b9e4b8aed",
+  "src/lm_interbank_routines.c": "10ba9f22b3e445a958fe874d7cd96e74834def56ac7e4fb5b8ba27fd102d875b",
+  "src/lm_interbank_idle.c": "c8e5bebbb03449c52516c6f858252d774750cf8966535581ffc592ccc5d34ccf",
+  "src/lm_interbank.c": "3bfeff46188fa1ecfdf7784fdd9438274e6eb26d88bba409b5e41aa5b8d6ef11",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/self_check_cases.c": "73d9db768c6b16eed4712a86a6661b67b7a4a335299918af488a5ec10a2088f9",
+  "tests/self_check_cases.c": "3921b03723a9220e34957458c785a283f8d3b1a59a074334f7d84d2fb2966426",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625"
  },
  "included_sources": {},
@@ -32,8 +34,8 @@
   21
  ],
  "c64_row_seed_stride": 64,
- "host_branch_arcs": 392,
- "c64_branch_arcs": 392,
+ "host_branch_arcs": 383,
+ "c64_branch_arcs": 383,
  "arcs_by_source_host_c64": {
   "build/self-check-lm-rope-cover/runner.c": [
    2,
@@ -52,22 +54,30 @@
    0
   ],
   "src/agc_transfer.c": [
-   39,
-   39
+   40,
+   40
   ],
   "src/agc_word.c": [
    2,
    2
   ],
   "src/lm_interbank.c": [
-   68,
-   68
+   50,
+   50
+  ],
+  "src/lm_interbank_idle.c": [
+   8,
+   8
   ],
   "src/lm_interbank_routines.c": [
-   16,
-   16
+   11,
+   11
   ],
   "src/lm_self_check.c": [
+   0,
+   0
+  ],
+  "src/lm_self_check_idle.c": [
    0,
    0
   ],
@@ -76,8 +86,8 @@
    15
   ],
   "src/self_check_body.inc": [
-   94,
-   94
+   99,
+   99
   ],
   "tests/self_check_cases.c": [
    98,

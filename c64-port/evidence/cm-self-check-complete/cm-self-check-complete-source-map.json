@@ -6,9 +6,10 @@
  "aggregates": {
   "self-check": {
    "record": "docs/SELF-CHECK.md",
-   "sha256": "0a4750cd129672c8d971b83ca9601c69170db6d6b0126518d9420be1d5971d47",
+   "sha256": "921cc495445fd5724baf49e06d885fc6bbd342965bb59e45e9261a97ecc52e8c",
    "native": [
     "src/cm_self_check.c",
+    "src/cm_self_check_idle.c",
     "src/self_check_body.inc",
     "src/cm_self_check_operands.inc",
     "src/rope_image_host.c",
@@ -16,7 +17,8 @@
    ],
    "native_sha256": {
     "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
-    "src/self_check_body.inc": "34274613da05498dbde5a98e3fef9be1743db7ab2eaa422ffd8aba1ef3d29ab4",
+    "src/cm_self_check_idle.c": "e48f12f322bc8e55e495e103bac062bc47b462b759d4cee842f139b3e992c6da",
+    "src/self_check_body.inc": "30213a369f3089e76865fe518518d3f95a212118a83631c009d787f62372c590",
     "src/cm_self_check_operands.inc": "7917a615b905f81e975290c4b5df87ed8f7a045750700d06de4a6fa140d7a0d6"
    },
    "owns": [

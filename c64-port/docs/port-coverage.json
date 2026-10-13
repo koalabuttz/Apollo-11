@@ -109,7 +109,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
-            "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a",
+            "sha256": "b5612991fb60a478a82fc74cd10340594383ca1dc123f34a9e83eee757c4c767",
             "vice_targets": {
               "vice-self-check": 85
             }
@@ -120,19 +120,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
-            "sha256": "aa4915ed825fcf945b482b32f3ab5c8b927661a3eb50ec7acab21f525076e6b7"
+            "sha256": "a0f1b40e985fb72f392fa1997305af87c249ba2fba560563c92515587bbd795d"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-comparison.json",
-            "sha256": "69012cf6a828dddc78308947152f11f1c43cb037b12fc1d3597fcebffbd9e25c"
+            "sha256": "0b59456f2fa21a41f9d1b14ce36e54efb1cfd4151266e808803fa49948465d94"
           },
           "source_to_native_map": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
-            "sha256": "e194f987bfc8f0323a18fd7e448f020ba7e59ae84b0c875855990762304dd964"
+            "sha256": "848e960c1f7c34a8efb122a5cd44796be3f8ca1a9584d8c6e72faf2a2c3f022e"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64-cover.json",
-            "sha256": "3aa087a1519d33efa8a186e211c4e05e61a43133d4a18fb71a8b6cdffe293b9b"
+            "sha256": "4c4d2b7a340c45265c391f26e13bd0b472627349c5a4171023ad1efa09ea7f2d"
           }
         },
         "external_continuations": [
@@ -5416,7 +5416,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
-            "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a",
+            "sha256": "b5612991fb60a478a82fc74cd10340594383ca1dc123f34a9e83eee757c4c767",
             "vice_targets": {
               "vice-self-check": 84
             }
@@ -5427,19 +5427,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
-            "sha256": "aa4915ed825fcf945b482b32f3ab5c8b927661a3eb50ec7acab21f525076e6b7"
+            "sha256": "a0f1b40e985fb72f392fa1997305af87c249ba2fba560563c92515587bbd795d"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-comparison.json",
-            "sha256": "bea2c13939fa9fff4aa5efc27167297c1502d34fd67f24338df5f5915909765f"
+            "sha256": "72b378f24c745678e3882419ddcc35caafb31458e3475f1ef2b9e038daf85a42"
           },
           "source_to_native_map": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-source-map.json",
-            "sha256": "c1bad20bc3065ebd07154b3f6c7d81e2f32227562cece8f606ad34a15dd77b2c"
+            "sha256": "4dbb109abe1239a8a0206dbc2b9a8b63cba8dc9d4e7632954caa7771b439b21c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64-cover.json",
-            "sha256": "eda6da832371015d3535a62e199fcf058daa5137eaabd6b7b7fb4068a58f90b9"
+            "sha256": "04c24617d157f2528d327194f46a3b206b6443be643a0e575d2ed69a9fdcb77c"
           }
         },
         "external_continuations": [
