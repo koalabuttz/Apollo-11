@@ -4564,8 +4564,54 @@
       "sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
       "bytes": 15461,
       "lines": 659,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_sxtmark.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (SXTMARKE bank 07 and SXTMARK1 bank 10: 315 words) as 42 registered basic routines of the control-transfer ABI compiled whole by tools/basic_compile.py: every word another file names, the file's own CADRs, and CHECKMM's and GOMARK4's further returns.",
+          "verification": "docs/CM-SXTMARK.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 42 routines with the FB, EB 7 and superbank its callers leave, Q a return address at subroutine entries (DIFCHK). The erasables the file indexes hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area in the low 9 bits under flag bits 10-14; each area's QPRET (word 42D) the area plus 7 words per mark taken (0-5); MKNDX -1, 0 or 1 at DIFCHK; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (EXTVBACT, STATE, CDUCHKWD, the CDUs, optics, TIME1/TIME2) and of channels 12 and 016. Refused (image, io unchanged): an indexed operand whose sum leaves the erasable words the source addresses, MKVACFND's indexed TS with MARKSTAT not a VAC area.",
+        "external_continuations": [
+          "Basic: ALARM, BAILOUT, BANKCALL (KLEENEX, GOMARK4), CHECKMM, CLEARMRK, ENDMARK, GENTRAN, IBNKCALL (GOODEND, MARKCONT), NOVAC, POSTJUMP (KEYCOM, TERM52), RESUME, SWRETURN, TASKOVER, UPFLAG and WAITLIST, with their inline words"
+        ],
+        "hardware_side_effects": "Channel 016 (NAVKEYIN: mark, mark reject and key code bits) is read as a latched input; MKRLEES's WAND CHAN12 clears bit 2 (the optics error counter enable) in the io record. Raising MARKRUPT from the mark buttons and driving the optics from channel 12 are device-adapter obligations.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-source-map.json",
+            "sha256": "4bd14f72ea6e24eeef61bdb48d3a1d1d706549bec349e597138a39216700d4e5"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-proof.json",
+            "sha256": "62a32f9574f15b086c8665b65e82921dbb555f71ceb6bf1e4517b6463fb07a36"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-host.log",
+            "sha256": "7b5e4014a87625b8aa68cb639f715b67f97b73d0ece0545d72d43a2a70a95475"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-vice.log",
+            "sha256": "5ced31f8ffd72a0a88ca91f0c97dc7288450a5cd75e0295082375757d1886584",
+            "vice_targets": {
+              "vice-cm-sxtmark": 71
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-sxtmark/cm-sxtmark-c64-outcomes.json",
+            "sha256": "a9446d45cbf6bb9936523e83bc69cf4d66c029387982739a28e656562e2873d3"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",

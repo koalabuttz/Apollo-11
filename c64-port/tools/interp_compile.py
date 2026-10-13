@@ -1644,6 +1644,8 @@ class Compiler:
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
                 c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % bfb)
+                if self.uses_channels:
+                    c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
                 c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024), phys))
                 c.append('}')
                 c.append('#endif')
