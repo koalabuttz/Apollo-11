@@ -242,6 +242,9 @@ SPECS = {
         # The file's EBANK= TTEMP (E6, as its 2CADR BBCONs carry): its
         # switched names (KSPNDX, BRATE...) mean nothing under another EB.
         'ebank': 6,
+        # STOPRATE (and the other basic routines that never name FIXLOC) is
+        # called from tasks and NOVAC jobs (V37): any FIXLOC.
+        'any_fixloc': True,
     },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-servicer': {
@@ -1105,6 +1108,39 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
         'rope_bin': True,
+    },
+    'rtb-op-codes': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'RTB_OP_CODES.agc', 'cm': 'RTB_OP_CODES.agc'},
+        'base': {'lm': 'lm_rtb_op_codes', 'cm': 'cm_rtb_op_codes'},
+        'symbol': {'lm': 'lm_rtb_op_codes', 'cm': 'cm_rtb_op_codes'},
+        'entries': {'lm': ['LOADTIME', 'CDULOGIC', 'SGNAGREE', '1STO2S', 'V1STO2S', 'TPMODE',
+                           '2V1STO2S', 'CDUINC', 'PULSEIMU', 'SIGNMPAC', 'DPMODE',
+                           'NORMUNX1', 'NORMUNIT', 'VECSGNAG'],
+                    'cm': ['LOADTIME', 'CDULOGIC', 'READPIPS', 'VECMODE', 'SGNAGREE', '1STO2S',
+                           'V1STO2S', 'TPMODE', '2V1STO2S', 'INCRCDUS', 'CDUINC', 'PULSEIMU',
+                           'TRANSP1', 'TRANSP2', 'SIGNMPAC', 'DPMODE', 'NORMUNX1', 'NORMUNIT',
+                           'VECSGNAG', 'QUALITY1']},
+        'externals': {'BANKCALL': 'auto', 'POSTJUMP': 'auto', 'TPAGREE': 0, 'DANZIG': 0},
+        'noreturn': ['DANZIG', 'POSTJUMP'],
+        # 1TO2SUB's and CDUINC's INDEX A; CAF LIMITS after a TS overflow skip:
+        # A is +1 or -1.
+        'basic_fixed_index': {'LIMITS': [-2, -1, 1]},
+        'target': 'tests/rtb_op_codes_target.c',
+        # RTB runs in NOVAC jobs too: the routines that never name FIXLOC
+        # take any FIXLOC.
+        'any_fixloc': True,
+        # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
+        # steps BUF through them; nothing in Luminary calls CDUINC).
+        'all_states': {'BUF': {'lm': [0o321, 0o322, 0o323], 'cm': [0o1155, 0o1156, 0o1157]}},
+        # After VECAGREE, NORMUNIT's MPAC +2 is FIXLOC or FIXLOC +1 (NORMUNX1):
+        # INDEX MPAC +2; TS 37D stores the shift count in X1 or X2's word.
+        'states': {'NORMUNIT+5': {'0156': ['vac+0', 'vac+1']}},
+        'resume_keys': True,
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'freeze_stride': 32,
     },
     'sband-antenna': {
         'missions': ('lm', 'cm'),
