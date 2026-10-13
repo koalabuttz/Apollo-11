@@ -63,7 +63,11 @@ static agc_word safe(agc_word w)
     return w;
 }
 static agc_word operand0(void);
-static agc_word operand(void) { return safe(operand0()); }
+/* An address order's operand word is positive: a negative next word is
+ * the following order pair, and the operand then comes from the push-down
+ * list (PUSHUP), which the generator asks for with need_pair. */
+static uint8_t need_pair;
+static agc_word operand(void) { return (agc_word)(safe(operand0()) & 037777u); }
 /* Erasable operand word: VAC-relative, general, EB-window or fixed, sometimes
  * a push-up (bit 15) or random. */
 static agc_word operand0(void)
@@ -74,64 +78,92 @@ static agc_word operand0(void)
     case 5: case 6: return (agc_word)(01000u + rnd(0370u));
     case 7: return (agc_word)(01400u + rnd(0400u));
     case 8: return (agc_word)(02000u + rnd(02000u));
-    case 9: return (agc_word)(040000u | rnd(045));
+    case 9: return (agc_word)rnd(045);
     case 10: return (agc_word)(045u + rnd(01733u));
-    default: return rw();
+    default: return (agc_word)(rw() & 037777u);
     }
 }
-/* A fixed CADR inside the program (or, rarely, anywhere). */
-static agc_word target(void)
+/* Word starts of the generated program, and the words holding branch
+ * targets, patched to starts once the program is laid out. */
+static uint8_t start[CODE_WORDS];
+static unsigned tpos[CODE_WORDS], ntpos;
+static uint16_t *prog_at;
+/* A fixed CADR inside the program (patched), or an erasable one (GOTOERS). */
+static agc_word target_at(unsigned at)
 {
-    if (rnd(8) == 0) return safe(rw());
-    if (rnd(6) == 0) return (agc_word)(0100u + rnd(01300u));   /* erasable: GOTOERS */
-    return (agc_word)((CODE_BANK << 10) | rnd(CODE_WORDS));
+    if (rnd(6) == 0) return (agc_word)(0100u + rnd(01300u));
+    tpos[ntpos++] = at;
+    return 0;
 }
 /* A random order code, weighted by class. */
 static unsigned code(void)
 {
     unsigned r = rnd(100);
     if (r < 2) return 0;                                        /* EXIT */
-    if (r < 55) return (unsigned)(1u | (rnd(2) << 1) | (rnd(32) << 2));   /* address */
+    if (r < 55) {   /* address (SETPD only direct, as the assembler writes it) */
+        unsigned idx = rnd(32);
+        return (unsigned)(1u | (idx == 037u ? 0u : rnd(2) << 1) | (idx << 2));
+    }
     if (r < 75) return (unsigned)(2u | (rnd(2) << 2) | (rnd(16) << 3));   /* misc */
     if (r < 85) return (unsigned)(4u | (rnd(16) << 3));                    /* short shift */
     return (unsigned)(rnd(15) + 1u) << 3;                                  /* unary */
 }
-static unsigned emit_operands(uint16_t *p, unsigned at, unsigned c)
+static unsigned emit_operands(uint16_t *p, unsigned at, unsigned c, unsigned last)
 {
     if (c == 0) return at;
     if (c & 1u) {
-        p[at++] = operand();
-        if ((c >> 2) == 004u || (c >> 2) == 011u) p[at++] = rnd(2) ? target() : safe(rw());   /* CGOTO list / SSP word */
+        if (last && (c >> 2) != 004u && (c >> 2) != 011u && (c >> 2) != 037u && rnd(5) == 0) { need_pair = 1; return at; }
+        p[at++] = (c >> 2) == 037u ? (agc_word)rnd(045) : operand();   /* SETPD: in the VAC area */
+        if ((c >> 2) == 004u || (c >> 2) == 011u) { p[at] = rnd(2) ? target_at(at) : safe(rw()); ++at; }   /* CGOTO list / SSP word */
         return at;
     }
     if (c & 2u) {
         unsigned idx = c >> 3;
-        if (idx >= 010u && idx != 016u) p[at++] = target();
-        else if (idx == 016u) { p[at++] = safe(rw()); p[at++] = target(); }
+        if (idx >= 010u && idx != 016u) { p[at] = target_at(at); ++at; }
+        else if (idx == 016u) {   /* a positive switch word, and a branch word unless it is a plain set/clear */
+            agc_word sw = safe((agc_word)(rw() & 037777u));
+            p[at++] = sw;
+            if (((sw >> 2) & 014u) != 014u) { p[at] = target_at(at); ++at; }
+        }
         else p[at++] = rnd(2) ? (agc_word)rnd(0200) : safe(rw());
         return at;
     }
-    if (((c >> 3) - 1u) == 014u) p[at++] = safe(rw());   /* STADR's store word */
+    if (c & 4u) return at;   /* short shift */
+    if (((c >> 3) - 1u) == 014u) p[at++] = (agc_word)(~(rnd(3) << 11 | safe((agc_word)(operand() % 02000u))) & 077777u);   /* STADR: a complemented STORE */
     return at;
 }
 static void program(uint16_t *p)
 {
-    unsigned at = 0;
+    unsigned at = 0, i, n = 0;
+    static unsigned list[CODE_WORDS];
+    memset(start, 0, sizeof start);
+    ntpos = 0;
+    prog_at = p;
     while (at < CODE_WORDS - 8u) {
-        if (rnd(5) == 0) {
+        start[at] = 1;
+        list[n++] = at;
+        if (!need_pair && rnd(5) == 0) {
             unsigned kind = rnd(8);
-            p[at++] = (uint16_t)((kind << 11) | operand() % 04000u);
-            if (kind >= 3u) p[at++] = kind == 7u ? target() : operand();
+            p[at++] = (uint16_t)((kind << 11) | safe((agc_word)(operand() % 02000u)));   /* stores go to erasable */
+            if (kind >= 3u) { p[at] = kind == 7u ? target_at(at) : operand(); ++at; }
         } else {
             unsigned l = code(), r = rnd(6) ? code() : 0177u, v, w;
+            need_pair = 0;
             if (r == 0177u) v = l; else v = l | ((r + 1u) << 7);
             w = (~(v + 1u)) & 077777u;
             p[at++] = (uint16_t)w;
-            at = emit_operands(p, at, l);
-            if (r != 0177u) at = emit_operands(p, at, r);
+            at = emit_operands(p, at, l, r == 0177u || !(r & 1u) ? 0u : 0u);
+            if (r != 0177u) at = emit_operands(p, at, r, 1);
         }
     }
     while (at < CODE_WORDS) p[at++] = safe(rw());
+    for (i = 0; i < ntpos; ++i) p[tpos[i]] = (uint16_t)((CODE_BANK << 10) | list[rnd(n)]);
+}
+static unsigned first_start(void)
+{
+    unsigned at;
+    do at = rnd(CODE_WORDS - 8u); while (!start[at]);
+    return at;
 }
 
 static void image(apollo_overlay_state *s, unsigned m)
@@ -149,16 +181,25 @@ static void image(apollo_overlay_state *s, unsigned m)
     s->words[0120] = (agc_word)vac;
     s->words[0166] = (agc_word)(vac + rnd(040));
     s->words[0163] = rnd(3) == 0 ? 077776u : rnd(2) ? 0u : 1u;
-    s->words[0164] = (agc_word)(02000u + rnd(CODE_WORDS - 8u));
+    s->words[0164] = (agc_word)(02000u + first_start());
     s->words[0165] = (agc_word)((CODE_BANK << 10) | eb);
     s->words[0115] = 0;
     s->words[023] = 0;
     if (rnd(3) == 0) s->words[0121] = 0;
-    for (i = 0; i < 4; ++i) if (rnd(2)) s->words[vac + 046u + i] = (agc_word)rnd(010);   /* small X1 X2 S1 S2 */
+    for (i = 0; i < 4; ++i) s->words[vac + 046u + i] = (agc_word)(rnd(2) ? rnd(010) : 077777u - rnd(010));   /* small X1 X2 S1 S2 */
     if (rnd(2)) for (i = 0; i < 7; ++i) s->words[0154u + i] = (agc_word)(rnd(2) ? rnd(010000) : (077777u - rnd(010000)));
     s->words[5] = m ? 06037u : 06070u;
 }
 
+static int small(agc_word x) { return x < 01000u || x > 076777u; }
+static int wild(const apollo_overlay_state *s, const apollo_overlay_state *pre)
+{
+    unsigned v = s->words[0120];
+    if ((s->words[3] >> 8) < 3u || v != pre->words[0120] || (s->words[0164] & 076000u) != 02000u
+        || ((s->words[0165] >> 10) & 037u) != CODE_BANK) return 1;
+    if (!small(s->words[v + 046u]) || !small(s->words[v + 047u]) || !small(pre->words[v + 046u]) || !small(pre->words[v + 047u])) return 1;
+    return 0;
+}
 static int interpreter_point(const apollo_overlay_state *s, unsigned m)
 {
     agc_word z = s->words[5];
@@ -181,7 +222,8 @@ static void arm(unsigned ms)
 
 int main(int argc, char **argv)
 {
-    static unsigned hung, c, m, slots, refused, bad, shown;
+    static unsigned hung, c, m, slots, refused, bad, shown, unreal;
+    static apollo_overlay_state pre;
     unsigned cases = argc > 3 ? (unsigned)strtoul(argv[3], 0, 0) : 2000u, seed = argc > 4 ? (unsigned)strtoul(argv[4], 0, 0) : 1u;
     unsigned which = argc > 5 ? (unsigned)strtoul(argv[5], 0, 0) : 2u;
     /* Random words can send an index past the image (both interpreters read
@@ -202,6 +244,7 @@ int main(int argc, char **argv)
         program(&rope[m][CODE_BANK * 1024u]);
         if (sigsetjmp(hang, 1)) { ++hung; continue; }
         signal(SIGALRM, on_alarm);
+        signal(SIGSEGV, on_alarm);   /* (a wild index far past the padding) */
         arm(300);
         image(&a, m);
         b = a;
@@ -214,24 +257,36 @@ int main(int argc, char **argv)
             if (!interpreter_point(&a, m)) break;
             /* A real program keeps its push-down pointer in its VAC area. */
             if (a.words[0166] < a.words[0120] + 4u || a.words[0166] > a.words[0120] + 052u) break;
+            /* Only the generated code: the rest of the rope read as interpretive
+             * code is not interpretive code. */
+            if (((a.words[0165] >> 10) & 037u) != CODE_BANK) break;
+            /* (at a word the generator laid out as one: no operand read as code) */
+            if (a.words[5] == (m ? 06037u : 06070u) && ((a.words[0164] & 01777u) >= CODE_WORDS || !start[a.words[0164] & 01777u])) break;
             /* and MODE -1, +0 or +1 (both interpreters index tables by it). */
             if (a.words[0163] > 1u && a.words[0163] != 077776u) break;
             if (getenv("FUZZ_PROGRESS")) fprintf(stderr, "case %u slot %u\n", c, slot);
             if (getenv("FUZZ_CASE")) {
                 agc_word w = 0;
-                (void)apollo_rope_read(m, (uint16_t)(CODE_BANK * 1024u + (a.words[0164] & 01777u)), &w);
+                (void)apollo_rope_read(m, (uint16_t)(((a.words[0165] >> 10) & 037u) * 1024u + (a.words[0164] & 01777u)), &w);
                 fprintf(stderr, "slot %u Z %05o LOC %05o word %05o EDOP %03o MODE %05o\n", slot, a.words[5], a.words[0164], w, a.words[023], a.words[0163]);
             }
             memset(&ca, 0, sizeof ca); ca.interrupt_enabled = 1; cb = ca;
+            pre = a;
             if (m) { sa = cm_interp_runtime(0, &a, &ca); sb = cm_interp_core(0, &b, &cb); }
             else { sa = getenv("FUZZ_CORE2") ? lm_interp_core(0, &a, &la) : lm_interp_runtime(0, &a, &la); sb = getenv("FUZZ_SELF") ? lm_interp_runtime(0, &b, &lb) : lm_interp_core(0, &b, &lb); }
             if (sa == EXEC_OUT_OF_SCOPE) { ++refused; break; }
+            /* A slot that leaves the program's frame (an index register or
+             * a store run wild: EBANK 0-2, which lays the EB window over the
+             * registers, a store into EDOP or FIXLOC, X1/X2 far from their
+             * small indexing range) is outside what any program does; there
+             * the two interpreters' register-write orders may differ. */
+            if (wild(&a, &pre) || wild(&b, &pre)) { ++unreal; break; }
             ++slots;
             for (i = 0; i < 2048u; ++i) if (a.words[i] != b.words[i]) ++diff;
             if (memcmp(pa.pad, pb.pad, sizeof pa.pad)) { ++diff; memset(pa.pad, 0, sizeof pa.pad); memset(pb.pad, 0, sizeof pb.pad); }
             if (sa != sb || diff || memcmp(&la, &lb, sizeof la) || memcmp(&ca, &cb, sizeof ca)) {
                 ++bad;
-                if (shown++ < 12u) {
+                if (shown++ < (getenv("FUZZ_SHOW") ? (unsigned)atoi(getenv("FUZZ_SHOW")) : 12u)) {
                     fprintf(stderr, "case %u (%s) slot %u: status %d/%d, %u words differ:", c, m ? "cm" : "lm", slot, sa, sb, diff);
                     for (i = 0; i < 2048u && diff; ++i) if (a.words[i] != b.words[i]) { fprintf(stderr, " %04o=%06o/%06o", i, a.words[i], b.words[i]); --diff; }
                     fprintf(stderr, "\n");
@@ -243,6 +298,6 @@ int main(int argc, char **argv)
         }
     }
     arm(0);
-    printf("%u cases, %u slots compared, %u refused, %u abandoned, %u differ\n", cases, slots, refused, hung, bad);
+    printf("%u cases, %u slots compared, %u refused, %u abandoned, %u left the frame, %u differ\n", cases, slots, refused, hung, unreal, bad);
     return bad ? 1 : 0;
 }

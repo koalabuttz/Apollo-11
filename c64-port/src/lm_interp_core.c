@@ -371,61 +371,6 @@ static NI void ai_tc(agc_word r){W[2]=(agc_word)(r&077777u);endi();}
  * effects of the original basic instructions that these fixed sequences
  * use; they are called only from the compiled sequences in this file. */
 
-/* Erasable address in the canonical image: 01400-01777 through EBANK. */
-static NI unsigned ea(unsigned a){return (a>=01400u&&a<02000u)?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;}
-/* Erasable stores with the original editing and bank-register coupling. */
-static NI void put(unsigned a,agc_word v){
- v&=AGC_MASK;
- switch(a){
- case 3:W[3]=(agc_word)(v&03400u);W[6]=(agc_word)((W[4]&076000u)|(W[3]>>8));return;
- case 4:W[4]=(agc_word)(v&076000u);W[6]=(agc_word)((W[4]&076000u)|(W[3]>>8));return;
- case 6:W[4]=(agc_word)(v&076000u);W[3]=(agc_word)((v&7u)<<8);W[6]=(agc_word)(W[4]|(v&7u));return;
- case 7:return;
- case 020:W[020]=(agc_word)((v>>1)|((v&1u)<<14));return;
- case 021:W[021]=(agc_word)((v>>1)|(v&AGC_SIGN));return;
- case 022:W[022]=(agc_word)(((v<<1)|(v>>14))&AGC_MASK);return;
- case 023:W[023]=(agc_word)((v>>7)&0177u);return;
- default:W[ea(a)]=v;return;
- }
-}
-/* Memory-reading orders write the word back, re-editing 020-023. */
-static NI agc_word fetch(unsigned a){agc_word v=W[ea(a)];if(a>=020u&&a<=023u)put(a,v);return v;}
-static NI agc_register acc(void){return W[0];}
-static NI void set_a(agc_register v){W[0]=v;}
-static NI void ca(unsigned a){set_a(agc_extend(fetch(a)));}
-static NI void caf(agc_word k){set_a(agc_extend(k));}
-static NI void cs(unsigned a){set_a(agc_extend(agc_negate(fetch(a))));}
-static NI void csf(agc_word k){set_a(agc_extend(agc_negate(k)));}
-static NI void ad(unsigned a){set_a(agc_add_register(acc(),agc_extend(fetch(a))));}
-static NI void adf(agc_word k){set_a(agc_add_register(acc(),agc_extend(k)));}
-/* MASK reads its operand without the editing write-back. */
-static NI void maskf(agc_word k){set_a(agc_extend((agc_word)(agc_correct(acc())&k)));}
-static NI void mask(unsigned a){maskf(W[ea(a)]);}
-/* TS: returns 1 when an overflowing A skips the next instruction. */
-static NI uint8_t ts(unsigned a){int o=agc_overflow(acc());put(a,agc_correct(acc()));if(o){set_a(o>0?1u:0177776u);return 1;}return 0;}
-static NI void ads(unsigned a){set_a(agc_add_register(acc(),agc_extend(W[ea(a)])));put(a,agc_correct(acc()));}
-static NI void incr(unsigned a){put(a,agc_add_word(W[ea(a)],1));}
-static NI void xch(unsigned a){agc_word v=W[ea(a)];put(a,agc_correct(acc()));set_a(agc_extend(v));}
-/* CCS: diminished absolute value in A; returns 0 +,1 +0,2 -,3 -0. */
-static NI uint8_t ccs_value(agc_word v){
- if(v==0){set_a(0);return 1;}
- if(v==AGC_MASK){set_a(0);return 3;}
- if(v&AGC_SIGN){agc_word m=agc_negate(v);set_a((agc_register)(m>1u?m-1u:0u));return 2;}
- set_a((agc_register)(v>1u?v-1u:0u));return 0;
-}
-static NI uint8_t ccs(unsigned a){return ccs_value(fetch(a));}
-static NI uint8_t ccs_a(void){
- agc_register v=acc();
- if(v==0){return 1;}
- if(v==0177777u){set_a(0);return 3;}
- if(v&0100000u){agc_register m=(agc_register)(~v&0177777u);set_a((agc_register)(m>1u?m-1u:0u));return 2;}
- set_a((agc_register)(v>1u?v-1u:0u));return 0;
-}
-static NI void dca(unsigned a){W[1]=agc_extend(fetch(a+1u));set_a(agc_extend(fetch(a)));}
-static NI void dxch(unsigned a){agc_word hi=W[ea(a)],lo=W[ea(a+1u)];put(a,agc_correct(acc()));put(a+1u,agc_correct(W[1]));set_a(agc_extend(hi));W[1]=agc_extend(lo);}
-/* EXTEND MP: signed product of corrected A and K in A,L. */
-static NI void mpf(agc_word k){agc_register_pair p=agc_multiply(acc(),k);set_a(p.a);W[1]=p.l;}
-
 /* Fixed constants named in the source. */
 #define LOW7 0177u
 #define LOW8 0377u
@@ -446,20 +391,20 @@ static NI void mpf(agc_word k){agc_register_pair p=agc_multiply(acc(),k);set_a(p
 static NI void lmi_danzig_next(void){
  /* DANZIG CA BANKSET, TS BBANK; NOIBNKSW CCS EDOP (+0); CCS NEWJOB (+0);
   * INCR LOC; NEWOPS. */
- ca(0165);(void)ts(6);(void)ccs(023);(void)ccs(067);incr(0164);W[5]=IF_(06070,06037);
+ ai_ca(0165);(void)ai_ts(6);(void)ai_ccs(023);(void)ai_ccs(067);ai_incr(0164);W[5]=IF_(06070,06037);
 }
 static NI void opjump(void){
  /* OPJUMP TS CYR; CCS CYR. */
- (void)ts(020);(void)ccs(020);
+ (void)ai_ts(020);(void)ai_ccs(020);
 }
 static NI void lmi_newops(agc_word pair){
  /* NEWOPS INDEX LOC, CA 0; CCS A (negative pair); TS EDOP; MASK LOW7.
   * Every instruction ends with L overflow-corrected and sign-extended. */
- W[1]=agc_extend(agc_correct(W[1]));caf(pair);(void)ccs_a();(void)ts(023);maskf(LOW7);opjump();
+ W[1]=agc_extend(agc_correct(W[1]));ai_caf(pair);(void)ai_ccs(0);(void)ai_ts(023);ai_maskf(LOW7);opjump();
 }
 static NI void lmi_danzig_right(void){
  /* DANZIG CA BANKSET, TS BBANK; CCS EDOP (positive) TCF OPJUMP. */
- ca(0165);(void)ts(6);(void)ccs(023);opjump();
+ ai_ca(0165);(void)ai_ts(6);(void)ai_ccs(023);opjump();
 }
 static NI void indjump(agc_word target){
  /* ITRnn INDEX CYR; 7 (or 3) INDJUMP -1: the transfer reads CYR without
@@ -470,19 +415,19 @@ static NI void lmi_direct(agc_word operand,agc_word target){
  /* ADDRESS MASK BIT1; CCS A (+0); DIRADRES INDEX LOC, CS 1; CCS A
   * (negative, an address is given); INCR LOC; TS ADDRWD; AD -ENDVAC;
   * CCS A. */
- maskf(BIT1);(void)ccs_a();csf(operand);(void)ccs_a();incr(0164);(void)ts(0116);adf(ENDVAC_NEG);
- if(ccs_a()==2u){
+ ai_maskf(BIT1);(void)ai_ccs(0);ai_csf(operand);(void)ai_ccs(0);ai_incr(0164);(void)ai_ts(0116);ai_adf(ENDVAC_NEG);
+ if(ai_ccs(0)==2u){
   /* NETZERO CA FIXLOC; ADS ADDRWD. */
-  ca(0120);ads(0116);indjump(target);return;
+  ai_ca(0120);ai_ads(0116);indjump(target);return;
  }
  /* AD -ENDERAS; IERASTST EXTEND BZMF. */
- adf(ENDERAS_NEG);
- if(acc()==0||(acc()&0100000u)){
+ ai_adf(ENDERAS_NEG);
+ if(W[0]==0||(W[0]&0100000u)){
   /* GEADDR MASK LOW8; AD OCT1400; XCH ADDRWD; TS EBANK. */
-  maskf(LOW8);adf(OCT1400);xch(0116);(void)ts(3);indjump(target);return;
+  ai_maskf(LOW8);ai_adf(OCT1400);ai_xch(0116);(void)ai_ts(3);indjump(target);return;
  }
  /* MASK LOW10; AD LOW10; XCH ADDRWD; AD INTBIT15; TS FBANK. */
- maskf(LOW10);adf(LOW10);xch(0116);ad(0115);(void)ts(4);indjump(target);
+ ai_maskf(LOW10);ai_adf(LOW10);ai_xch(0116);ai_ad(0115);(void)ai_ts(4);indjump(target);
 }
 static NI void lmi_indexed(agc_word operand,agc_word target){
  /* ADDRESS MASK BIT1; CCS A (positive) TCF INDEX. INDEX CA FIXLOC;
@@ -490,25 +435,25 @@ static NI void lmi_indexed(agc_word operand,agc_word target){
   * TS ADDRWD; MASK HIGH4; BZF INDEX2; [CA INTBIT15; ADS ADDRWD;] INDEX2
   * INDEX INDEXLOC, CS X1; ADS ADDRWD; MASK HIGH9; BZF INDWORK; MASK
   * HIGH4; BZF INDERASE; fixed bank otherwise. */
- maskf(BIT1);(void)ccs_a();ca(0120);(void)ts(0130);incr(0164);csf(operand);
- if(ccs_a()==0u)incr(0130);
- (void)ts(0116);maskf(HIGH4);
- if(acc()){ca(0115);ads(0116);}
- cs((unsigned)(W[0130]+046u));ads(0116);maskf(HIGH9);
- if(!acc()){ca(0120);ads(0116);indjump(target);return;}
- maskf(HIGH4);
- if(!acc()){caf(OCT1400);xch(0116);(void)ts(3);maskf(LOW8);ads(0116);indjump(target);return;}
- ca(0116);(void)ts(4);maskf(LOW10);adf(TWO_K);(void)ts(0116);indjump(target);
+ ai_maskf(BIT1);(void)ai_ccs(0);ai_ca(0120);(void)ai_ts(0130);ai_incr(0164);ai_csf(operand);
+ if(ai_ccs(0)==0u)ai_incr(0130);
+ (void)ai_ts(0116);ai_maskf(HIGH4);
+ if(W[0]){ai_ca(0115);ai_ads(0116);}
+ ai_cs((unsigned)(W[0130]+046u));ai_ads(0116);ai_maskf(HIGH9);
+ if(!W[0]){ai_ca(0120);ai_ads(0116);indjump(target);return;}
+ ai_maskf(HIGH4);
+ if(!W[0]){ai_caf(OCT1400);ai_xch(0116);(void)ai_ts(3);ai_maskf(LOW8);ai_ads(0116);indjump(target);return;}
+ ai_ca(0116);(void)ai_ts(4);ai_maskf(LOW10);ai_adf(TWO_K);(void)ai_ts(0116);indjump(target);
 }
 static NI void lmi_misc(agc_word operand,agc_word target){
  /* OPJUMP2 CCS CYR (negative); 15BITADR INCR LOC; INDEX LOC, CA 0;
   * TS POLISH; CAF LOW7+2K; TS FBANK; MASK CYR; INDEX A; TCF MISCJUMP. */
- (void)ccs(020);incr(0164);caf(operand);(void)ts(0117);caf(02177u);(void)ts(4);mask(020);W[5]=target;
+ (void)ai_ccs(020);ai_incr(0164);ai_caf(operand);(void)ai_ts(0117);ai_caf(02177u);(void)ai_ts(4);ai_mask(020);W[5]=target;
 }
 static NI void lmi_unary(agc_word target){
  /* OPJUMP2 CCS CYR (positive); OPJUMP3 TS FBANK; CCS CYR (positive);
   * INDEX A; TCF UNAJUMP. */
- (void)ccs(020);(void)ts(4);(void)ccs(020);W[5]=target;
+ (void)ai_ccs(020);(void)ai_ts(4);(void)ai_ccs(020);W[5]=target;
 }
 static NI void danzig_entry(void){W[5]=IF_(06061,06030);}
 
@@ -517,47 +462,47 @@ static NI void danzig_entry(void){W[5]=IF_(06061,06030);}
  * EXTEND, DCA MPAC; INDEX ADDRWD, DXCH 0; CCS MODE; TSTORE/VSTORE; TC Q. */
 static NI void lmi_sload(void){
  /* SLOAD ZL; INDEX ADDRWD, CA 0; TCF SLOAD2. */
- W[1]=0;ca(W[0116]);dxch(0154);caf(0);(void)ts(0156);(void)ts(0163);danzig_entry();
+ W[1]=0;ai_ca(W[0116]);ai_dxch(0154);ai_caf(0);(void)ai_ts(0156);(void)ai_ts(0163);danzig_entry();
 }
 static NI void lmi_setpd(void){
  /* SETPD CA ADDRWD; TS PUSHLOC; TCF NOIBNKSW (DANZIG without BBANK). */
- ca(0116);(void)ts(0166);W[5]=IF_(06063,06032);
+ ai_ca(0116);(void)ai_ts(0166);W[5]=IF_(06063,06032);
 }
 static NI void lmi_vdef(void){
  /* VDEF CS FOUR; ADS PUSHLOC; EXTEND, INDEX A, DCA 2; DXCH MPAC +3;
   * EXTEND, INDEX PUSHLOC, DCA 0; DXCH MPAC +5; VMODE CS ONE; NEWMODE. */
  unsigned at;
- csf(4);ads(0166);at=(unsigned)agc_correct(acc());dca(at+2u);dxch(0157);dca(W[0166]);dxch(0161);csf(1);(void)ts(0163);danzig_entry();
+ ai_csf(4);ai_ads(0166);at=(unsigned)agc_correct(W[0]);ai_dca(at+2u);ai_dxch(0157);ai_dca(W[0166]);ai_dxch(0161);ai_csf(1);(void)ai_ts(0163);danzig_entry();
 }
 /* TAGSUB CA FIXLOC; TS INDEXLOC; CCS CYR; [INCR INDEXLOC]; TC Q. The
  * TC Q return executes the TC held in Q, leaving Q = 3. */
 static NI void tagsub(void){
- ca(0120);(void)ts(0130);if(ccs(020)==0u)incr(0130);W[2]=3;
+ ai_ca(0120);(void)ai_ts(0130);if(ai_ccs(020)==0u)ai_incr(0130);W[2]=3;
 }
 static NI void lmi_axt(void){
  /* AXT TC TAGSUB; CA POLISH; XSTORE INDEX INDEXLOC, TS X1. TAGSUB's
   */
- tagsub();ca(0117);(void)ts((unsigned)(W[0130]+046u));danzig_entry();
+ tagsub();ai_ca(0117);(void)ai_ts((unsigned)(W[0130]+046u));danzig_entry();
 }
 static NI void lmi_incr(void){
  /* INCR TC TAGSUB; CA POLISH; XAD2 INDEX INDEXLOC, ADS X1. */
- tagsub();ca(0117);ads((unsigned)(W[0130]+046u));danzig_entry();
+ tagsub();ai_ca(0117);ai_ads((unsigned)(W[0130]+046u));danzig_entry();
 }
 
 /* GOTO +4: CA BANKSET; TS BBANK; CA POLISH; TS FBANK; MASK LOW10; AD 2K;
  * TS LOC; TCF INTPRET +3 (CA BBANK; TS BANKSET; MASK BIT15; TS INTBIT15;
  * TS EDOP; TCF NEWOPS). Only fixed-bank targets are compiled here. */
 static NI void goto_fixed(void){
- ca(0165);(void)ts(6);ca(0117);(void)ts(4);maskf(LOW10);adf(TWO_K);(void)ts(0164);
- ca(6);(void)ts(0165);maskf(BIT15);(void)ts(0115);(void)ts(023);W[5]=IF_(06070,06037);
+ ai_ca(0165);(void)ai_ts(6);ai_ca(0117);(void)ai_ts(4);ai_maskf(LOW10);ai_adf(TWO_K);(void)ai_ts(0164);
+ ai_ca(6);(void)ai_ts(0165);ai_maskf(BIT15);(void)ai_ts(0115);(void)ai_ts(023);W[5]=IF_(06070,06037);
 }
 static NI void lmi_goto(void){
  /* GOTO CA POLISH; +1 MASK HIGH4; EXTEND BZF GOTOERS (fixed: nonzero). */
- ca(0117);maskf(HIGH4);goto_fixed();
+ ai_ca(0117);ai_maskf(HIGH4);goto_fixed();
 }
 static NI void lmi_rvq(void){
  /* RVQ INDEX FIXLOC, CA QPRET; TS POLISH; TCF GOTO +4. */
- ca((unsigned)(W[0120]+052u));(void)ts(0117);goto_fixed();
+ ai_ca((unsigned)(W[0120]+052u));(void)ai_ts(0117);goto_fixed();
 }
 /* BRANCH (06723): CCS MPAC, MPAC +1, MPAC +2 in turn. A positive register
  * returns through TC Q (Q = 3), all zero through INDEX Q, TC 1 (Q 06741)
@@ -569,28 +514,28 @@ static NI void lmi_rvq(void){
 static NI uint8_t lmi_switch(p66_bias_io *io){
  static const agc_word bits[16]={040000,020000,010000,04000,02000,01000,0400,0200,0100,040,020,010,4,2,1,0};
  unsigned op,word;agc_word old;
- caf(017);mask(0117);caf(bits[acc()&017u]);(void)ts(0131);caf(0100);mpf(W[0117]);(void)ts(0130);
- io->interrupt_enabled=0;word=(unsigned)acc();ca(074u+word);(void)ts(2);old=W[2];
- caf(02000);mpf(W[0117]);maskf(014);op=(unsigned)acc();
- if(op==0u){ca(0131);set_a((agc_register)(acc()|agc_extend(old)));(void)ts(074u+W[0130]);}
- else if(op==4u){ca(0131);set_a((agc_register)(acc()^agc_extend(old)));(void)ts(074u+W[0130]);}
- else if(op==010u){cs(0131);maskf(old);(void)ts(074u+W[0130]);}
- io->interrupt_enabled=1;caf(010000);mpf(W[0117]);maskf(014);op=(unsigned)acc();
+ ai_caf(017);ai_mask(0117);ai_caf(bits[W[0]&017u]);(void)ai_ts(0131);ai_caf(0100);ai_mpf(W[0117]);(void)ai_ts(0130);
+ io->interrupt_enabled=0;word=(unsigned)W[0];ai_ca(074u+word);W[2]=oc(W[0]);old=W[2];
+ ai_caf(02000);ai_mpf(W[0117]);ai_maskf(014);op=(unsigned)W[0];
+ if(op==0u){ai_ca(0131);W[0]=(agc_register)(W[0]|agc_extend(old));(void)ai_ts(074u+W[0130]);}
+ else if(op==4u){ai_ca(0131);W[0]=(agc_register)(W[0]^agc_extend(old));(void)ai_ts(074u+W[0130]);}
+ else if(op==010u){ai_cs(0131);ai_maskf(old);(void)ai_ts(074u+W[0130]);}
+ io->interrupt_enabled=1;ai_caf(010000);ai_mpf(W[0117]);ai_maskf(014);op=(unsigned)W[0];
  if(op==014u){danzig_entry();return 0;}
  if(op==4u)return 1; /* +5 TCF SWBRANCH */
- if(op==0u)cs(2);else ca(2);
+ W[0]=sx(op==0u?(agc_word)(~W[2]&077777u):W[2]);
  /* TEST MASK SWBIT; CCS A: positive skips, +0 branches. */
- mask(0131);
- if(ccs_a()==1u)return 1;
- incr(0164);danzig_entry();return 0;
+ ai_mask(0131);
+ if(ai_ccs(0)==1u)return 1;
+ ai_incr(0164);danzig_entry();return 0;
 }
 static NI void lmi_swbranch(agc_word target_word){
  /* SWBRANCH CA BANKSET; TS FBANK; INDEX LOC, CA 1; TS POLISH; TCF GOTO +1. */
- ca(0165);(void)ts(4);caf(target_word);(void)ts(0117);maskf(HIGH4);goto_fixed();
+ ai_ca(0165);(void)ai_ts(4);ai_caf(target_word);(void)ai_ts(0117);ai_maskf(HIGH4);goto_fixed();
 }
 static NI void lmi_noibnksw_right(void){
  /* NOIBNKSW CCS EDOP (positive) TCF OPJUMP (SETPD's return). */
- (void)ccs(023);opjump();
+ (void)ai_ccs(023);opjump();
 }
 /* ---- orders ---- */
 /* SPDX-License-Identifier: MIT */
