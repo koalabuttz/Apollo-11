@@ -4,12 +4,12 @@
   "release": "evidence-resident-kernel",
   "files": {
     "resident-flight-sizes.json": {
-      "sha256": "c72ccf916d10ab0b4e002c9b814e85aec8e1278ec723267314cfef337fa02e10",
+      "sha256": "1ce0bd6e94d2408c2652b248dccd845f132692af6800526a2e216e5beb7def24",
       "bytes": 1705,
       "store": "tree"
     },
     "resident-flight-vice.log": {
-      "sha256": "8ab68b0388b6291de009aa1de56e56256dc39262e9d668272f879b9411945459",
+      "sha256": "9f6136ce8c7837d3682c705aa51d0533c3c9f4530c5bf4d8f2563fddf75d6576",
       "bytes": 1166,
       "store": "tree"
     },
@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "resident-kernel-proof.json": {
-      "sha256": "31070b0855c47d174f5a9dda83e7361b4e464e276246d19200586bac5790b0e2",
-      "bytes": 13961,
+      "sha256": "a76f299e2ed0cc1e3b31d90affe7da2974bd85e85306e05273015d8102f2089c",
+      "bytes": 15403,
       "store": "tree"
     },
     "resident-kernel-vice.log": {
