@@ -5,7 +5,7 @@
 GLA_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 GLA_SRC = src/lm_gimbal_lock.c src/cm_gimbal_lock.c tests/gimbal_lock_target.c $(GLA_COMMON)
 GLA_HDR = include/lm_gimbal_lock.h include/cm_gimbal_lock.h tests/interp_case.h tests/gimbal_lock_vectors.h tests/gimbal_lock_c64_vectors.h
-GLA_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+GLA_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS
 .PHONY: test-gimbal-lock sanitize-gimbal-lock c64-gimbal-lock vice-gimbal-lock gimbal-lock-differential
 all: build/test-gimbal-lock
 test: test-gimbal-lock

@@ -1,6 +1,0 @@
-cm-tvc-exec: 128 frozen original TVCEXECUTIVE states, entry refusals: PASS
-PASS 65536 original TVCEXECUTIVE oracle states equal native 2052-word rows {'returned': 64676, 'no_exit': 860} 4bec4545ffa10983b6579152bba0e8984662c563a980c3fb848802cf5b027e4d
-PASS 144 original TVCEXECUTIVE words mapped; listing equals rope; 11 fixed constants equal native literals
-cm-tvc-exec: 128 frozen original TVCEXECUTIVE states, entry refusals: PASS
-PASS 65536 original TVCEXECUTIVE oracle states equal native 2052-word rows (ASan/UBSan) {'returned': 64676, 'no_exit': 860} 4bec4545ffa10983b6579152bba0e8984662c563a980c3fb848802cf5b027e4d
-PASS: VICE PAL cm-tvc-exec.prg: 128 checks, 0 failures

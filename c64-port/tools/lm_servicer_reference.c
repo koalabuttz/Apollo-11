@@ -27,7 +27,7 @@ int main(int argc,char **argv){unsigned n,i;unsigned long cycles;agc_t baseline;
   fclose(f);}
  memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1]))return 2;baseline=machine;
  for(n=0;n<LMSV_CASES;++n){apollo_overlay_state s;lmsv_case c;unsigned pc=0,stopped=0;
-  if(seg&&!slot_in[n%LMSV_ROUTINES])continue;
+  if(seg&&!slot_in[lmsv_slot((uint16_t)n)])continue;
   lmsv_input(&s,&c,(uint16_t)n);
   machine=baseline;
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];

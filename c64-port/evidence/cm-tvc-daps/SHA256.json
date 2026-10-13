@@ -3,45 +3,30 @@
   "milestone": "cm-tvc-daps",
   "release": "evidence-cm-tvc-daps",
   "files": {
-    "cm-tvc-daps-assembly-comparison.json": {
-      "sha256": "17cf096848fce4175008dbcc7730534c7e4f89e4ba06dfe6e27d40ba335b24f7",
-      "bytes": 55692,
+    "cm-tvc-daps-differential.log": {
+      "sha256": "26a617d9201968cf5bbd548d493e2ac71aea86fceeac87c4e2609ec63e115777",
+      "bytes": 4557,
       "store": "tree"
     },
-    "cm-tvc-daps-checks.log": {
-      "sha256": "ab62c99184d1c801638d85a0e0140ffaf853b61436148ed6da08c019d3ab272a",
-      "bytes": 741,
+    "cm-tvc-daps-host.log": {
+      "sha256": "d05017393f4478224e44566e67dcca3856a5a4599e8b1441ac36b684100dff06",
+      "bytes": 1000,
       "store": "tree"
     },
-    "cm-tvc-daps-reference.deltas.xz": {
-      "sha256": "3924630ebd3e8ebeb94f3da6033d6b98d2a619a1dcc21c1822109bc447e1542f",
-      "bytes": 4248920,
-      "store": "release"
-    },
-    "cm-tvc-daps-results.json": {
-      "sha256": "363fd4b186bea4fa44dd00104a7928e3402aae33f2f53bfbb0af6bf818c68e6b",
-      "bytes": 1317,
+    "cm-tvc-daps-proof.json": {
+      "sha256": "ce428da90296457df99b55daf22b4413628482a0f7b5a7b1ef274c8209b78ea0",
+      "bytes": 9724,
       "store": "tree"
     },
     "cm-tvc-daps-source-map.json": {
-      "sha256": "1e01fb3ab9032b334224af2807528c9cb7d4a62e5a2dfdb42a1d8b517f13a514",
-      "bytes": 89610,
+      "sha256": "97ba3286d5b87f80b7f697c728bf521f12f20baa4935b3da46c67f4013968e69",
+      "bytes": 70697,
       "store": "tree"
     },
-    "cm-tvc-daps-source-stream.json": {
-      "sha256": "6b085c37e3d6739d4886ef6d7f8205b9d8e3f66c24031df85377e9c8f66e9582",
-      "bytes": 372,
+    "cm-tvc-daps-vice.log": {
+      "sha256": "d0bf5c28ac6629a2e40c3aae241a2bb028a087d8f82cfde95ad27938da857140",
+      "bytes": 407,
       "store": "tree"
-    },
-    "cm-tvc-daps.map": {
-      "sha256": "856512569d90f4ab53c25671b2db64fb02bf77a6e607bf2b881974b5f1bb7b36",
-      "bytes": 10582,
-      "store": "release"
-    },
-    "cm-tvc-daps.prg": {
-      "sha256": "134cbbbc72db78ffa575eda230387add9436e11a2ada338245e32a022996826b",
-      "bytes": 32150,
-      "store": "release"
     }
   }
 }
