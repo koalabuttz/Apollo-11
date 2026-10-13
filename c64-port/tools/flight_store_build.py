@@ -42,6 +42,7 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 import collections
 import functools
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -51,7 +52,9 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from overlay_runtime_library import prepare  # noqa: E402
-from resident_flight_build import COMMON, MISSION, SERVICES, canonical_record  # noqa: E402
+from resident_flight_build import (COMMON, MISSION, RESIDENT_MODULES, SERVICES, canonical_record,  # noqa: E402
+                                   resident_sources, wrapper_records)
+from resident_boundary_words import header_text  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/flight-store')
@@ -72,6 +75,9 @@ RESIDENT = {
 REPLACED = {'lm': ['lm_exec_routines', 'lm_exec_job_routines', 'lm_exec_task_routines', 'lm_exec_idle_routines'],
             'cm': ['cm_exec_routines', 'cm_exec_job_routines', 'cm_exec_idle_routines']}
 ERASABLE_BASE = 40960
+# Modules over their slot by more than this are not split (a split needs
+# about two trial links per routine).
+SPLIT_LIMIT = 65536
 # The io record each source's tables take (include/flight_io.h), where it is
 # not the mission's base record (LM p66_bias_io, CM cm_native_io).
 IO_KIND = {
@@ -267,7 +273,10 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
     if sites:
         head += '#define FS_SITES ' + ','.join(f'{{{k}u,0{w:o}u}}' for k, w in sorted(sites.items())) + '\n'
-    if fixed_data:
+    if fixed_data == 'rope':
+        head += '#define FS_ROPE_DATA 1\n'
+        sources = [*sources, 'platform/c64/rope_image_reu.c']
+    elif fixed_data:
         head += f'#define FS_FIXED_DATA {fixed_data}\n'
     wrapper.write_text(
         head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
@@ -295,13 +304,88 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
 
 
 
+def resident_modules(cc, host_cc, m, resolver, library):
+    """Link the resident's modules (tools/resident_flight_build.py
+    RESIDENT_MODULES) for this store: the boundary-word module holds the word
+    at every key of the resident's tables and of these resolver records."""
+    text = header_text(host_cc, m, resolver)
+    if text is None:
+        raise SystemExit(f'{m}: boundary words disagree with the listing')
+    header = ROOT / OUT / f'{m}-boundary-words.h'
+    header.write_text(text)
+    prgs = []
+    for ident, slot, defines, sources in RESIDENT_MODULES:
+        if m not in sources:
+            continue
+        prg = OUT / m / f'resident-{ident:04x}.prg'
+        extra = list(defines) + ([f'-DRK_BOUNDARY_HEADER="{header}"'] if ident == 0x01E0 else [])
+        subprocess.run([str(c) for c in [
+            cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections', '-nostdlib',
+            '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
+            '-T', 'platform/c64/overlay_v2_payload.ld',
+            f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
+            f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors=1,'
+            f'-Map,{prg}.map', *sources[m], 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg]],
+            cwd=ROOT, check=True)
+        prgs.append(prg)
+    return prgs
+
+
+def add_rope(m):
+    """Put the mission's rope image where include/rope_image.h reads it on the
+    C64 (the top of a 2 MB REU, above the store), for the modules whose
+    fixed_data reads the rope (self-check, FIXED_DATA 'rope')."""
+    from rope_image_pack import BASES, physical_words
+    program = {'lm': 'Luminary099', 'cm': 'Comanche055'}[m]
+    reu = ROOT / OUT / f'{m}.reu'
+    image = bytearray(reu.read_bytes())
+    base = BASES[program]
+    if len(image) > base and any(image[base:]):
+        raise SystemExit(f'{m}: the store reaches the rope image at {base:#x}')
+    image += bytes(2 * 1024 * 1024 - len(image))
+    for k, w in enumerate(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin')):
+        image[base + 2 * k:base + 2 * k + 2] = w.to_bytes(2, 'little')
+    reu.write_bytes(image)
+    manifest = ROOT / OUT / f'{m}-manifest.json'
+    data = json.loads(manifest.read_text())
+    data.update(reu_size_kb=2048, image_sha256=hashlib.sha256(image).hexdigest(), rope_reu_base=hex(base))
+    manifest.write_text(json.dumps(data, indent=1) + '\n')
+
+
+def link_load_check(cc, m, resolver, modules, keys):
+    """build/flight-store/<m>-load-check.prg: the flight resident booting on
+    this store, which resolves every record and times each flight module's
+    load (platform/c64/flight_load_check.c, tools/flight_vice_load.py)."""
+    idle = next(z for z in range(0o7777, 0o4000, -1) if 3 * 1024 + (z & 0o1777) not in keys)
+    data = OUT / f'{m}-load-check.h'
+    (ROOT / data).write_text(
+        f'/* Generated by tools/flight_store_build.py: the {m.upper()} flight store\'s resolver records and '
+        'flight modules. */\n'
+        f'#define FL_RECORDS {len(resolver)}u\n#define FL_MODULES {len(modules)}u\n#define FL_IDLE_Z 0{idle:o}u\n'
+        'static const fl_record fl_records[FL_RECORDS] BOOT_DATA={'
+        + ','.join(f'{{0{r["bank"]:o}u,0{r["loc"]:o}u,0x{r["module"]:04x}u}}' for r in resolver) + '};\n'
+        'static const fl_module fl_modules[FL_MODULES]={'
+        + ','.join(f'{{0x{mod["id"]:04x}u,{mod["bytes"]}u}}' for mod in modules) + '};\n')
+    out = OUT / f'{m}-load-check.prg'
+    subprocess.run([str(c) for c in [
+        cc, *COMMON, *MISSION[m], f'-DFL_DATA="{ROOT / data}"', '-T', 'platform/c64/resident_flight.ld',
+        f'-Wl,-Map,{out}.map', 'platform/c64/flight_load_check.c', *resident_sources(m),
+        OUT / 'overlay_v2_services.S', '-o', out]], cwd=ROOT, check=True)
+    return out
+
+
 # Tables also packed into another module, so the routines they hold run there
 # without a module swap (docs/FLIGHT-STORE.md). The background self-check loop
 # leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it.
 CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines']}}
-# The self-check module's fixed_data hook (include/self_check.h).
-FIXED_DATA = {'lm_self_check': 'lm_self_check_rope_data', 'cm_self_check': 'cm_self_check_rope_data'}
+# Modules whose fixed_data is not the resident's boundary words: self-check's
+# own hook (include/self_check.h), or 'rope', every rope word from the REU
+# image (include/rope_image.h; LM TRIM_GIMBAL's GTS reads DOSHIFT's indexed
+# CA operands through it).
+FIXED_DATA = {'lm_self_check': 'lm_self_check_rope_data', 'cm_self_check': 'cm_self_check_rope_data',
+              'lm_trim_gimbal': 'rope'}
+FIXED_KIND = {None: 0, 'rope': 2}
 # Where the resident's own tables read their inline operands: the thin
 # kernel's program holds the Executive's site table.
 RESIDENT_SITES = {'lm': 'lm_exec_routines', 'cm': 'cm_exec_routines'}
@@ -404,12 +488,14 @@ def main():
         (ROOT / OUT / f'{m}-host.inc').write_text(
             f'/* Generated by tools/flight_store_build.py: the {m.upper()} flight program\'s tables, '
             'resident first, in resolution order: table, interpretive, io kind, module (empty when '
-            'resident), slot (0 job, 1 task), operand set, its size, other modules holding the table. */\n'
+            'resident), slot (0 job, 1 task), operand set, its size, other modules holding the table, '
+            'fixed_data (0 boundary words, 1 self-check, 2 rope). */\n'
             + ''.join(f'FLIGHT_TABLE({t}, {int("interpret" in t or t.endswith("_marker"))}, '
                       f'FLIGHT_IO_{io_kind(m, tables[t])}, "{packed.get(t, "") if t not in RESIDENT[m] else ""}", '
                       f'{lane_slot(packed[t], m, owners, place)[1] if t in packed and t not in RESIDENT[m] else 0}, '
                       f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
-                      f'"{" ".join(also[t])}")\n'
+                      f'"{" ".join(also[t])}", '
+                      f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(t)), 1) if t not in RESIDENT[m] else 0})\n'
                       for t in order if t in tables))
         if a.host_only:
             continue
@@ -453,49 +539,65 @@ def main():
         # A basic-only module over its slot is split into chunks of
         # consecutive routines, halving until each chunk fits. Splitting stops
         # (the module stays whole and failed) when a chunk of one routine
-        # does not fit, or when halving leaves the overflow nearly unchanged:
-        # the routines share one body (a file-wide step machine) that every
-        # chunk links. Trial links use a scratch id; kept chunks are relinked
-        # with their own. Interpretive modules wait on the interpreter
-        # decision.
+        # does not fit: its routines share one body (a file-wide step
+        # machine) that every chunk links. Modules over SPLIT_LIMIT are not
+        # tried. Trial links use a scratch id; kept chunks are relinked with
+        # their own. Interpretive modules wait on the interpreter decision.
         chunks = []
 
+        def own(mod):
+            """A chunk's module: its file alone, without co-located tables."""
+            return dict(mod, also=[], sources=c64_sources(index, mod['stem'], 'agc_transfer'),
+                        sites=file_sites(a.host_cc, m, mod['stem']))
+
         def trial(c, mod):
-            return link(dict(mod, id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
+            return link(dict(own(mod), id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
                              prg_name=f'trial-{c[0]}-{c[1]}'))[2]
 
         def split(mod):
-            todo, kept = [((t, 0, len(keys[t])), None) for t in mod['basic']], []
+            """(chunks that fit, [(one-routine chunk, overflow)] that do not), or None."""
+            # Co-located tables stay whole in their own module.
+            todo, kept, over = [(t, 0, len(keys[t])) for t in mod['basic'] if t not in mod['also']], [], []
             while todo:
                 with ThreadPoolExecutor(a.jobs) as pool:
-                    results = list(pool.map(lambda x: trial(x[0], mod), todo))
+                    results = list(pool.map(lambda c: trial(c, mod), todo))
                 nxt = []
-                for (c, parent), r in zip(todo, results):
+                for c, r in zip(todo, results):
                     if r['ok']:
                         kept.append(c)
-                    elif not r.get('overflow') or c[2] - c[1] == 1 or (
-                            parent and r['overflow'] > 0.75 * parent):
+                    elif not r.get('overflow'):
                         return None
+                    elif c[2] - c[1] == 1:
+                        over.append((c, r['overflow']))
                     else:
                         half = (c[1] + c[2]) // 2
-                        nxt += [((c[0], c[1], half), r['overflow']), ((c[0], half, c[2]), r['overflow'])]
+                        nxt += [(c[0], c[1], half), (c[0], half, c[2])]
                 todo = nxt
-            return kept
+            return (kept, over) if kept else None
         for mod, prg, res in linked:
             if res['ok'] or not res.get('overflow') or mod['interp']:
                 continue
-            kept = split(mod)
-            if not kept or seq[mod['lane']] + len(kept) - 1 > LANE_LIMIT.get(mod['lane'], 0xFF):
-                mod['chunking'] = 'routines share one body' if kept is None else 'no module ids left'
+            if res['overflow'] > SPLIT_LIMIT:
+                mod['chunking'] = 'too big to split'
                 continue
+            got = split(mod)
+            if not got or seq[mod['lane']] + len(got[0]) - 1 > LANE_LIMIT.get(mod['lane'], 0xFF):
+                mod['chunking'] = 'every routine over its slot' if got is None else 'no module ids left'
+                continue
+            kept, over = got
             subs = []
             for i, c in enumerate(sorted(kept)):
                 if i:
                     seq[mod['lane']] += 1
                 ident = mod['id'] if i == 0 else LANE_BYTE[mod['lane']] << 8 | seq[mod['lane']]
-                subs.append(dict(mod, id=ident, basic=[], chunk=c, chunk_of=mod['id']))
+                subs.append(dict(own(mod), id=ident, basic=[], chunk=c, chunk_of=mod['id']))
             with ThreadPoolExecutor(a.jobs) as pool:
                 chunks += list(pool.map(link, subs))
+            # A routine over its slot alone stays unplaced and is reported.
+            for c, overflow in over:
+                chunks.append((dict(own(mod), basic=[], chunk=c, chunk_of=mod['id'],
+                                    chunking='one routine over its slot'),
+                               None, dict(ok=False, overflow=overflow)))
             mod['chunked'] = True
         linked = [x for x in linked if not x[0].get('chunked')] + sorted(chunks, key=lambda x: x[0]['id'])
         modules = [mod for mod, _, _ in linked]
@@ -539,15 +641,26 @@ def main():
         resolver = [dict(bank=r['bank'], loc=r['loc'], module=r['module'], selector=0) for r in seen.values()]
         (ROOT / OUT / f'{m}-resolver.json').write_text(json.dumps(resolver) + '\n')
         good = [prg for mod, prg, res in linked if res['ok']]
-        pack = subprocess.run([sys.executable, 'tools/overlay_v2_pack.py', *good, '--mission', m.upper(),
-                    '--services', hex(SERVICES), '--resolver', OUT / f'{m}-resolver.json',
+        # The resident's own modules, so the store boots the flight resident:
+        # the interrupt-body wrappers and their resolver records, and the
+        # boundary words for every key the resident can stop at.
+        wrappers = wrapper_records(a.host_cc, m)
+        boot = resident_modules(a.cc, a.host_cc, m, resolver + wrappers, library)
+        (ROOT / OUT / f'{m}-boot-resolver.json').write_text(json.dumps(resolver + wrappers) + '\n')
+        pack = subprocess.run([sys.executable, 'tools/overlay_v2_pack.py', *good, *boot, '--mission', m.upper(),
+                    '--services', hex(SERVICES), '--resolver', OUT / f'{m}-boot-resolver.json',
                     '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'],
                    cwd=ROOT, capture_output=True, text=True)
         if pack.returncode:
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
+        add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
+        link_load_check(a.cc, m, resolver + wrappers, [mod for mod, _, res in linked if res['ok']],
+                        {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])})
         failed = [dict(stem=mod['stem'], id=f'0x{mod["id"]:04x}', slot=mod['slot'], overflow=mod.get('overflow'),
-                       error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'))
+                       error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'),
+                       routine_key=keys[mod['chunk'][0]][mod['chunk'][1]]
+                       if mod.get('chunk') and mod['chunk'][2] - mod['chunk'][1] == 1 else None)
                   for mod in modules if not mod['ok']]
         report[m] = dict(
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
@@ -555,7 +668,7 @@ def main():
             unplaced_keys=unplaced, resolver_records=len(resolver),
             basic_interpretive_same_address=len(clash),
             collisions=[dict(tables=list(k), keys=v) for k, v in collisions.most_common()],
-            modules=len(modules), modules_linked=len(good), failed=failed,
+            modules=len(modules), modules_linked=len(good), failed=failed, boot_modules=[p.name for p in boot],
             store_bytes=store.get('store_bytes') or store.get('image_bytes'), pack=pack.stdout.strip(),
             module_list=[{k: mod.get(k) for k in ('stem', 'agc', 'lane', 'slot', 'id', 'bytes', 'basic', 'interp',
                                                     'chunk', 'chunk_of', 'also', 'fixed_data', 'moved_to_job_slot',

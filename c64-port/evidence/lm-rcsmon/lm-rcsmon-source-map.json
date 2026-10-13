@@ -1,0 +1,477 @@
+{
+ "Luminary099/RCS_FAILURE_MONITOR.agc": {
+  "native_file": "src/lm_rcsmon.c",
+  "words": 69,
+  "untranslated_words": 0,
+  "routines": 2,
+  "map": [
+   {
+    "address": "06,3156",
+    "word": "44755",
+    "source": "RCSMON CS ZERO",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3157",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3160",
+    "word": "06032",
+    "source": " RXOR CHAN32",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3161",
+    "word": "74357",
+    "source": " MASK LOW8",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3162",
+    "word": "54002",
+    "source": " TS Q",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3163",
+    "word": "41276",
+    "source": " CS PVALVEST",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3164",
+    "word": "70002",
+    "source": " MASK Q",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3165",
+    "word": "54001",
+    "source": " TS L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3166",
+    "word": "40002",
+    "source": " CS Q",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3167",
+    "word": "71276",
+    "source": " MASK PVALVEST",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3170",
+    "word": "26001",
+    "source": " ADS L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3171",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3172",
+    "word": "15270",
+    "source": " BZF RCSMONEX",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3173",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3174",
+    "word": "74745",
+    "source": " MP BIT7",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3175",
+    "word": "56001",
+    "source": " XCH L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3176",
+    "word": "24001",
+    "source": "-3 INCR L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3177",
+    "word": "60000",
+    "source": " DOUBLE ",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3200",
+    "word": "54000",
+    "source": " OVSK ",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3201",
+    "word": "13176",
+    "source": " TCF -3",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3202",
+    "word": "50001",
+    "source": " INDEX L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3203",
+    "word": "34743",
+    "source": " CA BIT8       -1",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3204",
+    "word": "54002",
+    "source": " TS Q",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3205",
+    "word": "71276",
+    "source": " MASK PVALVEST",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3206",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3207",
+    "word": "13223",
+    "source": " TCF VOPENED",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3210",
+    "word": "41262",
+    "source": " CS CH5MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3211",
+    "word": "50001",
+    "source": " INDEX L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3212",
+    "word": "73242",
+    "source": " MASK 5FAILTAB",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3213",
+    "word": "27262",
+    "source": " ADS CH5MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3214",
+    "word": "41263",
+    "source": " CS CH6MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3215",
+    "word": "50001",
+    "source": " INDEX L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3216",
+    "word": "73252",
+    "source": " MASK 6FAILTAB",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3217",
+    "word": "27263",
+    "source": " ADS CH6MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3220",
+    "word": "30002",
+    "source": " CA Q",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3221",
+    "word": "27276",
+    "source": " ADS PVALVEST",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3222",
+    "word": "13236",
+    "source": " TCF 1/ACCFIX",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3223",
+    "word": "50001",
+    "source": "VOPENED INDEX L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3224",
+    "word": "43242",
+    "source": " CS 5FAILTAB",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3225",
+    "word": "71262",
+    "source": " MASK CH5MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3226",
+    "word": "55262",
+    "source": " TS CH5MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3227",
+    "word": "50001",
+    "source": " INDEX L",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3230",
+    "word": "43252",
+    "source": " CS 6FAILTAB",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3231",
+    "word": "71263",
+    "source": " MASK CH6MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3232",
+    "word": "55263",
+    "source": " TS CH6MASK",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3233",
+    "word": "40002",
+    "source": " CS Q",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3234",
+    "word": "71276",
+    "source": " MASK PVALVEST",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3235",
+    "word": "55276",
+    "source": " TS PVALVEST",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3236",
+    "word": "37715",
+    "source": "1/ACCFIX CAF PRIO27",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3237",
+    "word": "05072",
+    "source": " TC NOVAC",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3240",
+    "word": "02454",
+    "source": " 2CADR 1/ACCJOB",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3241",
+    "word": "40106",
+    "source": "(+1)",
+    "routine": "06,3156",
+    "function": "r15156"
+   },
+   {
+    "address": "06,3242",
+    "word": "15270",
+    "source": " TCF RCSMONEX",
+    "routine": "06,3242",
+    "function": "r15242"
+   },
+   {
+    "address": "06,3243",
+    "word": "00040",
+    "source": " OCT 00040",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3244",
+    "word": "00020",
+    "source": " OCT 00020",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3245",
+    "word": "00100",
+    "source": " OCT 00100",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3246",
+    "word": "00200",
+    "source": " OCT 00200",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3247",
+    "word": "00010",
+    "source": " OCT 00010",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3250",
+    "word": "00001",
+    "source": " OCT 00001",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3251",
+    "word": "00004",
+    "source": " OCT 00004",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3252",
+    "word": "00002",
+    "source": " OCT 00002",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3253",
+    "word": "00010",
+    "source": " OCT 00010",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3254",
+    "word": "00020",
+    "source": " OCT 00020",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3255",
+    "word": "00004",
+    "source": " OCT 00004",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3256",
+    "word": "00200",
+    "source": " OCT 00200",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3257",
+    "word": "00001",
+    "source": " OCT 00001",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3260",
+    "word": "00002",
+    "source": " OCT 00002",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3261",
+    "word": "00040",
+    "source": " OCT 00040",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "06,3262",
+    "word": "00100",
+    "source": " OCT 00100",
+    "constant": "basic operand (inline)"
+   }
+  ]
+ }
+}

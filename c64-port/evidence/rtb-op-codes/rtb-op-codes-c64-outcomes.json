@@ -1,0 +1,23 @@
+{
+ "milestone": "rtb-op-codes",
+ "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+ "sources_measured": [
+  "src/agc_hardware_divide.c",
+  "src/agc_image_ops.c",
+  "src/agc_multiword.c",
+  "src/agc_transfer.c",
+  "src/agc_word.c",
+  "src/cm_interp_orders.c",
+  "src/cm_interp_steps.c",
+  "src/cm_rtb_op_codes.c",
+  "src/lm_interp_orders.c",
+  "src/lm_interp_steps.c",
+  "src/lm_rtb_op_codes.c"
+ ],
+ "host_edges": 828,
+ "host_vector_edges": 828,
+ "c64_edges": 828,
+ "host_branches_missing_on_c64": [],
+ "c64_rows": 144,
+ "c64_segment_rows": 0
+}

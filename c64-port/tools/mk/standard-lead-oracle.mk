@@ -2,7 +2,7 @@
 # Milestone standard-lead-oracle (lane A): SYSTEM_TEST_STANDARD_LEAD_INS of
 # both missions through the control-transfer ABI, checked against yaAGC.
 SLO_SRC = tests/standard_lead_oracle_cases.c tests/standard_lead_oracle_check.c tests/standard_lead_cases.c \
-	src/agc_transfer.c src/standard_lead_routines.c src/standard_lead.c src/standard_lead_interp.c \
+	src/agc_transfer.c src/standard_lead_routines.c src/interp_entry.c src/standard_lead.c src/standard_lead_interp.c \
 	src/standard_lead_wake.c src/lm_basic_wake.c src/executive.c src/cm_basic_wake.c src/cm_native_image.c \
 	src/cm_dispatch.c src/cm_executive.c src/lm_interbank_routines.c src/lm_interbank.c src/cm_interbank_routines.c \
 	src/cm_interbank_complete.c src/agc_word.c

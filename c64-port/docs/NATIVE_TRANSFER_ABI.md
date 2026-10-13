@@ -42,7 +42,7 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   channel 10 (the last DSKY relay word) and input channel 32 (the PRO key) that
   T4RUPT uses (`docs/T4RUPT-CORE.md`). It also holds output channels 12 and
   14, input channels 30, 31 and 33, and the scaler channels 3 and 4, for the
-  IMU monitor, the DAP and compiled READ/RXOR orders. Input channels hold
+  IMU monitor (`docs/LM-T4RUPT-IMU.md`), the DAP and compiled READ/RXOR orders. Input channels hold
   what READ returns, output channels the last word written, and channel 13
   only the CPU-writable bits (043777). This is the one channel record for
   every lane; new channels are appended by Lane A, not kept in mission I/O

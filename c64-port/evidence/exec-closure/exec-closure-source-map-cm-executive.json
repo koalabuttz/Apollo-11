@@ -66,12 +66,10 @@
    ],
    "kind": "instruction",
    "executed_by": [
-    "exec-services",
-    "rupt-lead-ins"
+    "exec-services"
    ],
    "native": [
-    "src/cm_exec_routines.c",
-    "src/rupt_lead_ins.c"
+    "src/cm_exec_routines.c"
    ]
   },
   {
@@ -544,12 +542,10 @@
    ],
    "kind": "instruction",
    "executed_by": [
-    "exec-jobs",
-    "rupt-lead-ins"
+    "exec-jobs"
    ],
    "native": [
-    "src/cm_exec_jobs.c",
-    "src/rupt_lead_ins.c"
+    "src/cm_exec_jobs.c"
    ]
   },
   {
@@ -5542,12 +5538,10 @@
    ],
    "kind": "instruction",
    "executed_by": [
-    "exec-idle",
-    "rupt-lead-ins"
+    "exec-idle"
    ],
    "native": [
-    "src/cm_exec_idle.c",
-    "src/rupt_lead_ins.c"
+    "src/cm_exec_idle.c"
    ]
   },
   {

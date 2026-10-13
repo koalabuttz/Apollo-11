@@ -7,7 +7,6 @@
  * fixed constant. TS overflow skips and CCS exits land where the
  * original's do, including the ones no admitted input reaches. */
 #include "lm_trim_gimbal.h"
-#include "lm_trim_gimbal_ca_table.inc"
 #include "agc_image_ops.h"
 #define W s->words
 /* Branch coverage hook for the host test (empty in flight builds). */
@@ -186,7 +185,7 @@ static enum exec_status gts(const agc_native_program *p,agc_image *s,void *v){lm
  static const agc_word closeadr[2]={03236u,036106u}; /* 2CADR CLOSEOUT */
  static const agc_word limits[3]={037777u,057777u,040000u}; /* LIMITS -1, 0, +1 */
  static const agc_word gmblbita[4]={026501u,01400u,011276u,06000u}; /* GMBLBITA -1 (ROOTHALF), GMBLBITA, +1 (OCT11276), +2 (GMBLBITB) */
- agc_word saved[GTS_CELLS],chan12;unsigned i;(void)p;
+ agc_word saved[GTS_CELLS],chan12;unsigned i;
  if(!entry(s,io,LM_TG_FB21))return EXEC_OUT_OF_SCOPE;
  for(i=0;i<GTS_CELLS;++i)saved[i]=W[ai_ea(s,gts_cells[i])];
  chan12=io->chan12;
@@ -294,14 +293,19 @@ static enum exec_status gts(const agc_native_program *p,agc_image *s,void *v){lm
     * 04735 + k: erasable memory (CA Z reads 21,3547, the next address),
     * bank 21 or fixed-fixed, from the generated table. Beyond that the
     * word is another order, which is refused. */
-    int a=04735+k;
+    int a=04735+k;agc_word w=0;
     if(a<0||a>07777){
      LM_TG_PATH(64);
-     for(i=0;i<GTS_CELLS;++i)W[ai_ea(s,gts_cells[i])]=saved[i];
-     io->chan12=chan12;return EXEC_OUT_OF_SCOPE;
+     goto refuse;
     }
     if(a<02000){LM_TG_PATH(85);if(a==5)W[5]=03547u;ai_ca(s,(unsigned)a);}
-    else{LM_TG_PATH(86);ai_caf(s,gts_ca_fixed[a-02000]);}
+    else{
+     /* The fixed word, read through the program's passive fixed_data
+      * (the rope); refused without it. */
+     LM_TG_PATH(86);
+     if(!p->fixed_data||!p->fixed_data(p,agc_fixed_physical((agc_word)a,LM_TG_FB21,0u),&w))goto refuse;
+     ai_caf(s,w);
+    }
    }else{LM_TG_PATH(46);ai_caf(s,bit15(k));}
    ai_xch(s,K2CNTRAL);ai_mp(s,K2CNTRAL);ai_das(s,K2THETA);ai_xch(s,K2CNTRAL);
    ai_mp(s,K2CNTRAL1);ai_ads(s,K2THETA1);
@@ -336,6 +340,9 @@ posdrive1: /* TS L; INDEX QRCNTR; XCH NEGUQ; EXTEND; MP L; CCS L; TCF LOUPE;
  /* GOCLOSE: EXTEND; DCA CLOSEADR; DTCB. */
  ai_dcaf(s,closeadr);dtcb(s,03627u);
  return EXEC_OK;
+refuse:
+ for(i=0;i<GTS_CELLS;++i)W[ai_ea(s,gts_cells[i])]=saved[i];
+ io->chan12=chan12;return EXEC_OUT_OF_SCOPE;
 }
 /* ACDT+C12: CS NEGUQ; EXTEND; MP ACCDOTQ; LXCH QACCDOT; CS NEGUR; EXTEND;
  * MP ACCDOTR; LXCH RACCDOT; CCS NEGUQ; CAF BIT10; TCF +2; CAF BIT9;

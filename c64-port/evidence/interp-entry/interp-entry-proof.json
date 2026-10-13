@@ -1,0 +1,39 @@
+{
+ "lm": {
+  "mission": "Luminary099",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "cases": 1536,
+  "snapshot_sha256": "f89e9590625098a12a94585c872615fb1dcfb44bb096faadf64a2469caabd84c",
+  "outcomes": {
+   "06037 INTPRET:returned": 512,
+   "06041 INTPRET +2:refused": 117,
+   "06041 INTPRET +2:returned": 395,
+   "06050 INTRSM:returned": 512
+  },
+  "entries": [
+   "06037 INTPRET",
+   "06041 INTPRET +2",
+   "06050 INTRSM"
+  ]
+ },
+ "cm": {
+  "mission": "Comanche055",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "cases": 1536,
+  "snapshot_sha256": "4efaf2b13274f685622c68b6342f585c4473fb0a1b9d5b0212adcc538b4d8e99",
+  "outcomes": {
+   "06006 INTPRET:returned": 512,
+   "06010 INTPRET +2:refused": 121,
+   "06010 INTPRET +2:returned": 391,
+   "06017 INTRSM:returned": 512
+  },
+  "entries": [
+   "06006 INTPRET",
+   "06010 INTPRET +2",
+   "06017 INTRSM"
+  ]
+ },
+ "boundary": "one entry (INTPRET, INTPRET +2 or INTRSM) to NEWOPS; the original runs to the first time Z reaches NEWOPS",
+ "compared": "outcome kind; all 2048 erasable words (A, L, Q 16-bit), SUPERBNK, interrupt enable",
+ "full_physical_words": 2048
+}

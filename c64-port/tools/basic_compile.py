@@ -37,6 +37,11 @@ class BasicError(Exception):
     pass
 
 
+# Input channels a 'channel_inputs' spec reads from the caller's latches
+# (as tools/interp_compile.py's INPUT_CHANNELS).
+INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
+
+
 def decode(w, ext):
     """(op, address field, field limit) of word w (EXTEND state ext)."""
     code = (w >> 12) & 7
@@ -533,6 +538,16 @@ class Basic:
                        'RXOR': 'W[0]^=W[%o];'}[op].replace('%o', '%o' % a))
             st.append(cont())
             return st
+        if op in ('READ', 'RAND', 'ROR', 'RXOR') and self.spec.get('channel_inputs') and a in INPUT_CHANNELS:
+            # An input channel the caller latches (spec 'channel_inputs',
+            # include/agc_input_channels.h), as tools/interp_compile.py reads it.
+            v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[a]
+            st.append({'READ': 'W[0]=agc_extend(%s);', 'RAND': 'W[0]=agc_extend((agc_word)(oc16(W[0])&%s));',
+                       'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
+                       'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)
+            self.cp.uses_channels = True
+            st.append(cont())
+            return st
         if op in CHANNEL_OPS:
             if a not in self.channels:
                 raise BasicError('channel %o at %s' % (a, self.where(here)))
@@ -549,6 +564,14 @@ class Basic:
         if op == 'DXCH' and not dyn and a == 5:
             # DTCF: DXCH FB (FB and Z with A and L).
             st.append('dtcf(s,0%05ou);goto dispatch;' % self.logical(here))
+            return st
+        if op == 'MSU' and dyn and 0o20 <= a < 0o2000:
+            # Indexed (INDEX MKNDX; MSU CDUX): the sum must stay an ordinary
+            # erasable word.
+            self.uses_msu = True
+            st.append('if(e<020||e>=02000)return EXEC_INVALID_ACTION;')
+            st.append('msu(s,(unsigned)e);')
+            st.append(cont())
             return st
         if op == 'MSU':
             # On an ordinary erasable word, as yaAGC takes it.

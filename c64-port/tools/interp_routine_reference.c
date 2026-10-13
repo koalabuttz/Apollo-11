@@ -69,7 +69,8 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   /* (channel_inputs specs: the differential sets IRC_INPUTS) */
   if(inputs){agc_input_channels in;irc_inputs(&c,&in);machine.InputChannel[3]=(int16_t)in.channel3;machine.InputChannel[4]=(int16_t)in.channel4;
    machine.InputChannel[030]=(int16_t)in.channel30;machine.InputChannel[031]=(int16_t)in.channel31;
-   machine.InputChannel[032]=(int16_t)in.channel32;machine.InputChannel[033]=(int16_t)in.channel33;}
+   machine.InputChannel[032]=(int16_t)in.channel32;machine.InputChannel[033]=(int16_t)in.channel33;
+   machine.InputChannel[016]=(int16_t)in.channel16;}
   /* A basic start counts as in the file, so a first instruction that runs
    * an erasable word (TC INTWAKUQ) still stops at the fixed address it goes
    * to outside the file. */

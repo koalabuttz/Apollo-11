@@ -38,7 +38,9 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               manifest (tools/vice_manifest.py), which is under MANIFEST_DAYS
               old; WARN instead when the manifest predates those vice_targets,
               when a certificate names none and claims no c64_exempt (#127
-              migration), or when no manifest is available (#127).
+              migration), or when no manifest is available (#127). WARN
+              when that manifest's c64_cover (tools/cover_check.py) shows
+              the cited branch cover stale or missing host branches (#234).
   domain      no open item ("pending", "follow-up") in a certificate's text (#77
               #84), and every cited native file exists (#51).
   revision    reviewed_all_source_paths and the pinned source_revision, the
@@ -794,6 +796,7 @@ def check_manifest(report, label, path, certificate, manifest, now=None):
     if age > datetime.timedelta(days=MANIFEST_DAYS):
         report.add('FAIL', label, f'{run} is over {MANIFEST_DAYS} days old, so it does not prove the tip',
                    'run port-ci with full from the Actions tab, or fix the nightly')
+    check_cover(report, label, certificate, manifest, run)
     covered = targets in (manifest.get('certificates') or {}).get(path, {}).values()
     level, note = ('FAIL', '') if covered else (
         'WARN', '; the manifest predates these vice_targets, so the next nightly decides')
@@ -807,6 +810,28 @@ def check_manifest(report, label, path, certificate, manifest, now=None):
         elif (row.get('checks') or 0) < checks:
             report.add(level, label, f'{target} ran {row.get("checks")} checks in {run}, fewer than the '
                        f'{checks} certified{note}', 'restore the C64 rows or certify what runs')
+
+
+def check_cover(report, label, certificate, manifest, run):
+    """The cited C64 branch cover as the nightly re-derived it (cover_check.py, #234).
+    WARN while records are refrozen with their cases and rows."""
+    record = (certificate.get('evidence') or {}).get('c64_branch_outcomes') or {}
+    path = record.get('path') if isinstance(record, dict) else None
+    if not path or not path.startswith('evidence/'):
+        return
+    milestone = pathlib.PurePosixPath(path).parts[1]
+    row = (manifest.get('c64_cover') or {}).get(milestone)
+    if row is None or row.get('reason') == 'no re-derivation for this record yet':
+        return
+    if row.get('record') != path:
+        report.add('WARN', label, f'{run} re-derived {row.get("record")}, not the cited {path}; '
+                   'the next nightly decides')
+    elif not row.get('verified'):
+        report.add('WARN', label, f'C64 branch cover {path} is not re-derivable in {run}: {row.get("reason")}',
+                   'refreeze the record with its cases_sha256 and C64 rows')
+    elif row.get('missing') or row.get('missing_count'):
+        report.add('WARN', label, f'C64 branch cover {path} misses {row.get("missing_count")} host branches '
+                   f'in {run}', 'add C64 rows that take them, or show they are host-only')
 
 
 # ---------------------------------------------------------------- driver

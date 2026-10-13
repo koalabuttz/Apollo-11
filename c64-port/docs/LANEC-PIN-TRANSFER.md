@@ -22,6 +22,18 @@ reach Pinball through BANKCALL, POSTJUMP and plain TCs.
   channel 11 from `program->hardware`; `cm_dntm_io`). A module that writes a
   channel the record does not carry (CHANLOAD's `WRITE` to any channel) is
   refused.
+- Fixed memory read as data (verb 27's DSPFMEM, through `lanec_pw_fixed_display_run`)
+  goes through `lanec_fixed_read`. The routines point it at the program's
+  `fixed_data` (the REU rope image on the C64), and the harness points it at
+  `dsky_fixed_display_data`. With no reader, that read refuses. So no flight
+  module links a copy of either mission's rope, which saves about 147 K per
+  linked Pinball module.
+- A flight-store module is linked for one mission (`RK_LM` or `RK_CM`).
+  Every run then fixes its mission (`LANEC_ONE_MISSION`), the compiler drops
+  the other mission's code, and the other mission's routines refuse
+  (`LANEC_MISSION_LINKED`). The module comes out about 90 K smaller for LM
+  and 75 K smaller for CM. Host builds define neither macro and run both
+  missions as before.
 - Pinball returns through erasable words: `TC Q`, `TC L`, and the cells in
   `lanec_pin_cells` (RUPTREG3, DSEXIT, WDRET, UPDATRET, SFTEMP2, MIXTEMP,
   ENTRET, DSPWDRET, MPAC, MPAC +2, MPAC +6, REQRET and 0116). When a module

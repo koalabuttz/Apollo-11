@@ -3,7 +3,7 @@
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
   "src/cm_v37.c": "ed769e6ce9e192f8f555e754815eb1ccc5919da8f4abcc2f68e539c831ce4a0f",
-  "src/cm_fresh_start.c": "89dd532381c97d08d1d5528033cfedbf752b12a03302960c84cab945a2395bbe",
+  "src/cm_fresh_start.c": "61ddf3a89c0f6f5ff7e67fd8847abc0c4031969f9d9a686faa0ca81810c95127",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
   "src/cm_interbank_routines.c": "1651221a53dfc174a55f6009bc8c903d19e32c3d55c6ee4b03f9022a2180a2f2",
@@ -193,8 +193,8 @@
   4064
  ],
  "c64_row_seed_stride": 32,
- "host_branch_arcs": 515,
- "c64_branch_arcs": 515,
+ "host_branch_arcs": 510,
+ "c64_branch_arcs": 510,
  "arcs_by_source_host_c64": {
   "build/cm-v37-cover/runner.c": [
    1,
@@ -221,8 +221,8 @@
    2
   ],
   "src/cm_fresh_start.c": [
-   111,
-   111
+   106,
+   106
   ],
   "src/cm_interbank_complete.c": [
    63,

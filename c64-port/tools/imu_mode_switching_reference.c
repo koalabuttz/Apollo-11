@@ -22,7 +22,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,fb,stopped;if(argc!=3)re
   stopped=0;
   for(cycles=0;cycles<20000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);fb=(unsigned)get(4)&076000u;
-    if(c.stop_z&&pc==c.stop_z&&fb==c.stop_fb){stopped=1;break;}
+    if(c.stop_z&&(pc==c.stop_z||pc==c.stop_z+1u)&&fb==c.stop_fb){stopped=1;break;}
     if((pc<02000u&&!ims_executed_erasable((agc_word)pc))){stopped=1;break;}
     for(e=ims_externals(&c);e->z;++e)if(pc==e->z&&(e->fb==IMS_ANY_FB||e->fb==fb)){stopped=1;break;}
     if(stopped)break;

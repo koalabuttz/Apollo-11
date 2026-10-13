@@ -5,11 +5,15 @@
 # collisions). flight-host-differential: both missions from Fresh Start
 # against yaAGC on the host, every native routine in lockstep, erasable
 # memory compared each centisecond, logs and per-lane unregistered points in
-# build/flight-store/differential/. Neither gates `test`: they measure the whole
+# build/flight-store/differential/. flight-store-vice: the flight resident
+# boots on the store in VICE, resolves every record and times each module's
+# load (build/flight-store/vice-load.json). None gates `test`: they measure the whole
 # program while lanes are still filling it in. Need the listings
 # (build/fixed-data/<mission>/assembly.lst) and the yaAGC objects.
-.PHONY: flight-store flight-host-differential
+.PHONY: flight-store flight-host-differential flight-store-vice
 flight-store: | build
 	python3 tools/flight_store_build.py
 flight-host-differential: build/agc_engine_hardware_dv.o | build
 	python3 tools/flight_host_differential.py
+flight-store-vice: flight-store
+	python3 tools/flight_vice_load.py
