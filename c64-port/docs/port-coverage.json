@@ -2417,8 +2417,62 @@
       "sha256": "6e4354e10fb62c7db74c60293ae3442136d6886fd6301c24966b974846985a99",
       "bytes": 21763,
       "lines": 928,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p11.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (535 words in banks 23, 34, 37 and 43): P11, the Earth orbit insertion monitor (liftoff clock zero and TEPHEM, SERVICER start, MATRXJOB liftoff REFSMMAT and state vector), the attitude error display (ATERTASK, ATERJOB, ATTDISP with the pitch polynomial), the boost steering takeover (STEERSAT, SATSTKON, SATSTICK, REDOSAT, S11.1) and the restart points REP11A and REP11, basic and interpretive. As 148 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py (spec cm-p11, resume_keys), entered at P11, MATRXJOB, REP11A, REP11, ATERTASK, ATERJOB, REDOSAT, S11.1, SATSTKON, the continuations after outside calls and every word that can follow a DANZIG.",
+          "verification": "docs/CM-P11.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included) under the EBANK= in effect at each routine (listing), entered with Z at any of the file's basic routines (FB of the routine's bank, superbank 4 for bank 43) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2 as STICKCHK leaves them; SATSW (E6,1725) holds +1, +0 or -1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. CCS SATSW's -0 exit onto STEERSAT's TLOAD (34,2453) is outside the domain: no SATSW value takes it, and the routine refuses (EXEC_INVALID_ACTION) if it were reached. RESCALES returning with overflow skips into SATOUT's CADR NEEDLER, run as the AGC runs it (CS 2420).",
+        "external_continuations": [
+          "2PHSCHNG, PHASCHNG, NEWMODEX, UPFLAG, POWRSERS, GOPIN and RESUME (outside basic routines)",
+          "BANKCALL, IBNKCALL, POSTJUMP, FINDVAC, WAITLIST, ENDOFJOB, TASKOVER, DANZIG and CHANG2 (outside basic routines; Lane A Executive/Waitlist)",
+          "RTB V1STO2S (native, src/rtb_angles.c)",
+          "NEWOPS with LOC outside the file (interpretive calls to other files, e.g. LALOTORV +5 in LATITUDE_LONGITUDE_SUBROUTINES)",
+          "The interpreter bodies' POODOO/ALARM exits",
+          "The caller's return through Q (TC Q runs the TC word held in Q)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p11/cm-p11-source-map.json",
+            "sha256": "2b7f6183d05670c3e976f4aa56fca99d84a3db07d5eba58831286e8d827f1b1f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p11/cm-p11-proof.json",
+            "sha256": "1c411967ea6ad2702aa5fbe6d672c87fbb114f051a685bf5eca496b37f73aeae"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p11/cm-p11-host.log",
+            "sha256": "59f6bfdbd137fe736254bc5d84925e01c2287a139a087f325ca0bf638b589134"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p11/cm-p11-vice.log",
+            "sha256": "f65fc1cf5177bd91b674aa422c7f33790ec96be22883bc9d72c7577b2a20845c",
+            "vice_targets": {
+              "vice-cm-p11": 203
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p11/cm-p11-proof.json",
+            "sha256": "1c411967ea6ad2702aa5fbe6d672c87fbb114f051a685bf5eca496b37f73aeae"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P20-P25.agc",

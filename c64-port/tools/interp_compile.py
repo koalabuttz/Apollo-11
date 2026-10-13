@@ -819,6 +819,11 @@ class Compiler:
                 ln is None or not is_interp_op(ln.op)):
             # (Also a CALL used as a GOTO, with constants after it.)
             return
+        if self.in_file(cur) and ln is not None and self.is_basic(cur) and ln.op != 'INCR':
+            # Basic code follows, as in call_return (P11's GETDOWN: STCALL
+            # 8D LALOTORV +5, which leaves through the INCORPEX return
+            # GETDOWN saved): the call does not come back here.
+            return
         self.add_start(cur, 'i', why)
 
     def store_tail(self, sop, cur, bank):

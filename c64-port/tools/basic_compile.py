@@ -191,10 +191,13 @@ class Basic:
                 self.nodes[k] = ['/* %s: past the end of the file, never reached */' % self.where(k[0]),
                                  'return EXEC_INVALID_ACTION;']
                 continue
-            if self.is_data(k[0]) and self.where(k[0]) not in self.spec.get('execute_data', ()):
-                # Control reaching a constant: the file's flow never does
-                # (the paths here are CCS exits and TS skips no admitted
-                # state takes); the differential checks none is taken.
+            if (self.is_data(k[0]) or self.where(k[0]) in self.spec.get('interp_landings', ())) and \
+                    self.where(k[0]) not in self.spec.get('execute_data', ()):
+                # Control reaching a constant, or an interpretive word the
+                # spec's 'interp_landings' names (P11's CCS SATSW -0 exit
+                # into STEERSAT's TLOAD): the file's flow never does (the
+                # paths here are CCS exits and TS skips no admitted state
+                # takes); the differential checks none is taken.
                 self.data_landings.add(k[0])
                 self.nodes[k] = ['/* %s %s: data, never executed */' % (self.where(k[0]), self.text(k[0])),
                                  'return EXEC_INVALID_ACTION;']

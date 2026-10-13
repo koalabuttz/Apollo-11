@@ -276,6 +276,44 @@ SPECS = {
         # LTO keeps the bodies out of line.
         'c64_flags': ['-fno-inline'],
     },
+    # Lane A2: Comanche055 P11 (earth orbit insertion monitor), basic and
+    # interpretive.
+    'cm-p11': {
+        'missions': ('cm',),
+        'file': {'cm': 'P11.agc'},
+        'base': {'cm': 'cm_p11'},
+        'symbol': {'cm': 'cm_p11'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'counters': True,
+        'ebank': 'listing',
+        'resume_keys': True,
+        # STICKCHK's rate indexes (RMANNDX, PMANNDX, YMANNDX): 0 no
+        # rotation, 1 plus, 2 minus. SATSW (E6,1725), the boost-takeover
+        # switch the file keeps: +1 (display), +0 (needles initialized), -1
+        # (steer).
+        'cells': {'E6,1656': [0, 1, 2], 'E6,1657': [0, 1, 2], 'E6,1660': [0, 1, 2],
+                  'E6,1725': [1, 0, 0o77776]},
+        # RESCALES can return with overflow in A: TS AK2 then skips into
+        # SATOUT's CADR NEEDLER, which the AGC runs as CS 2420 (on to
+        # ATERSET), and so does the port.
+        'execute_data': ('34,2472',),
+        # CA SATSW; CCS A: the -0 exit lands on STEERSAT's TLOAD TAD (an
+        # interpretive word), which no SATSW value takes; as basic code its
+        # TC returns would shadow the interpretive STORE AK at 34,2456.
+        'interp_landings': ('34,2453',),
+        # NOPOLYM's RTB V1STO2S is the first order of its pair (RTB RTB): the
+        # native V1STO2S, so the second RTB (DELSTOR, in this file) runs on.
+        'rtb': {'V1STO2S': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/cm_p11_target.c',
+        'freeze_stride': 64,
+        'c64_flags': ['-fno-inline'],
+    },
     # Lane G: Comanche055 CM_BODY_ATTITUDE (bank 37), basic and interpretive.
     'cm-body-attitude': {
         'rope_fallback': True,
