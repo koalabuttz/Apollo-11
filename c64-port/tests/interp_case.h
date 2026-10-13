@@ -16,7 +16,8 @@ typedef struct {
 /* Channel edits (Lane G): an edit whose addr is IRC_CHANNEL|k sets I/O
  * channel k (one of irc_ch_num) instead of an image word. A case with any
  * channel edit runs with those channel values (the rest 0) in the CM io
- * record and in yaAGC's channels, and its digest also covers the channels
+ * record (an LM case: channels 30 and 31 in its lm_flight_io record) and
+ * in yaAGC's channels, and its digest also covers the channels
  * and the channel-13 traps after the run; a case without one is unchanged. */
 #define IRC_CHANNEL 0x8000u
 /* Counter edit (Lane G): a case holding an edit whose addr is IRC_COUNTERS

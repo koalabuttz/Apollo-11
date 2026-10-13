@@ -1472,4 +1472,75 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'rope_bin': True,
     },
+    # Lane A2: Luminary099 FINDCDUW--GUIDAP_INTERFACE (bank 30), basic and
+    # interpretive.
+    'findcduw': {
+        'missions': ('lm',),
+        'file': {'lm': 'FINDCDUW_-_GUIDAP_INTERFACE.agc'},
+        'base': {'lm': 'lm_findcduw'},
+        'symbol': {'lm': 'lm_findcduw'},
+        # Entries from other files: INITCDUW (STCALL/CALL from BURNBABY and
+        # P70/P71), FINDCDUW -2 (CALL, BPL from the guidance equations),
+        # SPARCSIN -1 (BANKCALL from LUNAR_LANDING_GUIDANCE_EQUATIONS).
+        'entries': {'lm': ['INITCDUW', 'FINDCDUW-2', 'SPARCSIN-1']},
+        'externals': {'ALARM': 1, 'IBNKCALL': 1},
+        'rtb': {'NORMUNIT': {'lm': 'lm_findcduw_normunit(s,io)'},
+                'QUICTRIG': {'lm': 'lm_findcduw_quictrig(s,io)'}},
+        # PAUTNO's tests: channel 30 bit 10 (PGNCS in control, 0 = yes) and
+        # channel 31 bit 14 (auto mode, 0 = yes), each case with the bit set
+        # or clear.
+        'channels': {0o30: 'chan30', 0o31: 'chan31'},
+        'io_channels': {0o30: 0o1000, 0o31: 0o20000},
+        # CCS A after each RAND: its -0 arm is the word after the next
+        # EXTEND, refused rather than run unextended.
+        'refuse_unextended': True,
+        # FINDCDUW runs in the guidance equations' job (SERVICER) and
+        # INITCDUW in BURNBABY's or P70/P71's: any DANZIG can find a job
+        # waiting.
+        'resume_keys': True,
+        # CDUX/CDUY/CDUZ, TIME1/TIME2 and the other counters seeded too, edge
+        # vectors at the operands, and the words the basic code names often
+        # at +-0, small or saturating values (every CCS, BZF and BZMF arm,
+        # TS overflow).
+        'counters': True,
+        'edge_values': True,
+        'basic_edges': True,
+        'includes': ['lm_findcduw_rtb.h', 'lm_flight_io.h'],
+        'native_sources': ['src/lm_findcduw_rtb.c', 'src/rtb_vector.c', 'src/rtb_unit.c',
+                           'src/guidance_unit_phased.c', 'src/guidance_length_phased.c', 'src/guidance_norm.c',
+                           'src/lm_powered_quick.c', 'src/lm_single_trig.c', 'src/rtb_angles.c'],
+        'target': 'tests/findcduw_target.c',
+        # The runs through PAUTNO's RTBs only fit one C64 program (below
+        # $c000, the image under KERNAL at $e000) as the large integration
+        # files build theirs.
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # INDEX's end-around carry also on the C64 (SPARCSIN's INDEX A with
+        # A = -1 carries out of 16 bits).
+        'index_carry16': True,
+        # SPARCSIN's INDEX A; CS LIMITS after TS SR overflowed: A is +-1.
+        # INDEX NDXCDUW (0 docked, 1 not) on the gain and limit pairs.
+        'basic_fixed_index': {'LIMITS': [-1, 1], 'GAINFLTR': [0, 1], 'DAZMAX': [0, 1], 'DAY/2MAX': [0, 1],
+                              'DAXMAX': [0, 1]},
+        'c64_rows': 'cover',
+        'ebank': 6,
+        # NDXCDUW (E6 1650) as FINDCDUW sets it: 0 docked, 1 not. OVFIND as
+        # the interpreter sets it (TS of an overflowed A: +-1), +0 in three
+        # cases of four: FINDCDUW's BOV FINDCDUW to itself counts any other
+        # word down for thousands of passes.
+        'all_states': {'3250': [0, 1], '121': [0, 0, 0, 0, 0, 0, 1, 0o77776]},
+        # Keys inside the file's loops and subroutines, with the counter or
+        # saved return their caller left: TEM2 the CDUWXFR index (2, 1, 0)
+        # or FLTRSUB's saved Q (its two calls), TEM4 ARCTRGSP's saved Q
+        # (its three calls). FINDCDUW runs in vector mode from FINDCDUW-2's
+        # VLOAD to PAUTNO's RTB NORMUNIT, which unitizes that vector (MODE -1),
+        # and again from STOVL UNWC/2 to the RTB NORMUNIT at PAUTNO +5; the
+        # CHANG2 resumes in between (FINDCDUW +3, PAUTNO +5) keep it.
+        'states': {'FINDCDUW': {'163': [0o77776]}, 'FINDCDUW+3': {'163': [0o77776]},
+                   'FINDCDUW+5': {'163': [0o77776]}, 'PAUTNO+1': {'163': [0o77776]},
+                   'PAUTNO+5': {'163': [0o77776]},
+                   'CDUWXFR+6': {'142': [0, 1, 2]}, 'CDUWXFR+24': {'142': [0, 1, 2]},
+                   'FLTRSUB+11': {'142': [0o3207, 0o3213]}, 'FLTRSUB+15': {'142': [0o3207, 0o3213]},
+                   'ARCTRGSP+21': {'144': [0o3556, 0o3565, 0o3574]}, 'ARCTRGSP+22': {'144': [0o3556, 0o3565, 0o3574]},
+                   'ARCTRGSP+25': {'144': [0o3556, 0o3565, 0o3574]}, 'ARCTRGSP+28': {'144': [0o3556, 0o3565, 0o3574]}},
+    },
 }

@@ -7,6 +7,7 @@
 #include <string.h>
 #include "interp_case.h"
 #include "cm_native_image.h"
+#include "lm_flight_io.h"
 const agc_native_program *irc_program(uint8_t cm);
 #ifdef IRC_EDGES
 void irc_edges_reset(void);void irc_edges_print(void);void irc_edges_map(void);
@@ -29,6 +30,10 @@ static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const
  {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
  if(irc_ch_on)irc_cm_io(&cio,0);
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
+ /* LM: the device record irc_run uses (tests/interp_case.c). */
+ lm_flight_io lf;
+ if(!c->cm){uint16_t *w=(uint16_t *)&lf;for(i=0;i<sizeof lf/sizeof *w;++i)w[i]=0;
+  lf.bias=lio;lf.chan30=(agc_word)(irc_ch_on?irc_ch[6]:037777u);lf.chan31=(agc_word)(irc_ch_on?irc_ch[7]:077777u);io=&lf;}
  while(nvisit<max_steps&&nvisit<IRC_MAX_STEPS){
   uint16_t pt=agc_transfer_point(p,s,superbank);
   call=agc_transfer_resolve(p,s,superbank);

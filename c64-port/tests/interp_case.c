@@ -35,6 +35,14 @@ void irc_build(apollo_overlay_state *m,const irc_case *c){uint32_t seed=c->seed;
 #endif
 }
 #ifndef IRC_BUILD_ONLY
+#if IRC_IO && !defined(IRC_CM_ONLY)
+/* LM cases run with the LM device record (lm_flight_io, its p66_bias_io
+ * first, so routines that read no channel see the same latches): input
+ * channels 30 and 31 from the case's channel edits, else yaAGC's idle
+ * values. (C64 builds carry it only with -DIRC_CHANNELS and LM routines.) */
+#include "lm_flight_io.h"
+#define IRC_LM_IO 1
+#endif
 unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps,uint16_t *ie){
  p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;enum exec_status st;uint16_t steps;unsigned i;
  lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
@@ -45,7 +53,15 @@ unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_c
  if(irc_ch_on)irc_cm_io(&cio,0);
 #endif
  io=c->cm?(void *)&cio:(void *)&lio;
+#if IRC_LM_IO
+ lm_flight_io lf;
+ if(!c->cm){uint16_t *w=(uint16_t *)&lf;for(i=0;i<sizeof lf/sizeof *w;++i)w[i]=0;
+  lf.bias=lio;lf.chan30=(agc_word)(irc_ch_on?irc_ch[6]:037777u);lf.chan31=(agc_word)(irc_ch_on?irc_ch[7]:077777u);io=&lf;}
+#endif
  st=agc_transfer_run(p,s,io,&superbank,0xfffeu,max_steps,&steps);
+#if IRC_LM_IO
+ if(!c->cm)lio=lf.bias;
+#endif
 #if IRC_IO && !defined(IRC_LM_ONLY)
  if(irc_ch_on)irc_cm_io(&cio,1);
 #endif

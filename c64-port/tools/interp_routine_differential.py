@@ -280,6 +280,30 @@ def edge_vector(rng, row):
     return [rng.choice(EDGE_SCALARS) for _ in range(3)]
 
 
+# Basic memory instructions and the bits of their word that hold the
+# address (10 for the quarter codes, 12 otherwise).
+BASIC_MEMORY = {'CCS': 0o1777, 'DAS': 0o1777, 'LXCH': 0o1777, 'INCR': 0o1777, 'ADS': 0o1777,
+                'INDEX': 0o1777, 'DXCH': 0o1777, 'TS': 0o1777, 'XCH': 0o1777, 'CA': 0o7777, 'CAE': 0o7777,
+                'CS': 0o7777, 'AD': 0o7777, 'MASK': 0o7777, 'DCA': 0o7777, 'DCS': 0o7777, 'MP': 0o7777,
+                'DV': 0o1777, 'SU': 0o1777, 'MSU': 0o1777, 'QXCH': 0o1777, 'AUG': 0o1777, 'DIM': 0o1777}
+_REFS = {}
+
+
+def basic_refs(cp):
+    """Erasable addresses (above the central registers) the file's basic
+    memory instructions name, from their assembled words (spec
+    'basic_edges', for files without 'basic': 'full')."""
+    if id(cp) not in _REFS:
+        refs = set()
+        for ln in cp.lines:
+            if ln.op in BASIC_MEMORY and ln.words:
+                a = ln.words[0] & BASIC_MEMORY[ln.op]
+                if 0o10 <= a < 0o2000:
+                    refs.add(a)
+        _REFS[id(cp)] = refs
+    return _REFS[id(cp)]
+
+
 def case(mi, point, n, rng):
     """(seed, edits, ie) for case n of routine point."""
     E = collections.OrderedDict()
@@ -387,12 +411,13 @@ def case(mi, point, n, rng):
             joint = joint[mi.m]
         for k, v in rng.choice(joint).items():
             E[state_address(mi, k, vac)] = v & 0o77777
-    if mi.cp.basic and mi.kinds[point] == 'b':
+    if (mi.cp.basic or mi.cp.spec.get('basic_edges')) and mi.kinds[point] == 'b':
         # Compiled basic code: the words it names take zeros, small values
         # and saturating values often enough to reach every CCS exit, BZF and
         # BZMF branch and TS overflow (switched addresses through the case's
-        # EBANK).
-        for a in sorted(mi.cp.basic.erasable_refs):
+        # EBANK). (Spec 'basic_edges': interp_compile's own basic code too,
+        # the words its memory instructions name.)
+        for a in sorted(mi.cp.basic.erasable_refs if mi.cp.basic else basic_refs(mi.cp)):
             phys = (eb << 8) + (a - 0o1400) if a >= 0o1400 else a
             if phys in E:
                 continue    # the interpreter state set above (FIXLOC, ...)
@@ -1279,8 +1304,10 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
     the groups and the row cover's proof fields."""
     per = spec.get('c64_per_point', 2)
     for mi in missions:
-        # (every KEEP word is defined, so a group drops the routines past 60 too)
-        KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
+        # (every KEEP word is defined, so a group drops the routines past 60
+        # too; a one-mission spec has no symbol for the other)
+        if mi.m in spec['missions']:
+            KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
     cover = spec.get('c64_rows') == 'cover'
     full, fits = None, {}
 

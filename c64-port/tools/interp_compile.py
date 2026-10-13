@@ -778,10 +778,11 @@ class Compiler:
         if base in ('BOV', 'BOVB'):
             st.append('switch(%sbov(s)){case %sBOV_NONE:break;case %sBOV_GOTO:' % (P, P.upper(), P.upper()))
             t = self.cadr_phys(w) if base == 'BOVB' else None
-            if t is not None and self.basic and self.in_file(t) and t in self.code \
+            if t is not None and self.in_file(t) and t in self.code \
                     and not is_interp_op(self.code[t].op) and self.L.label_at(t) not in self.rtb:
-                # BOVB to the file's own basic code (P61's BOVB RETRN1): a
-                # basic routine of the file; the body takes the RTB path.
+                # BOVB to the file's own basic code (P61's BOVB RETRN1,
+                # FINDCDUW's BOVB UNIT NOATTCNT): a basic routine of the
+                # file; the body takes the RTB path.
                 self.add_start(t, 'b', 'BOVB target')
                 st.append('  return EXEC_OUT_OF_SCOPE;')
                 st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
@@ -977,6 +978,22 @@ class Compiler:
             self.basic_fixed.add(fp)
             return fp
 
+        def fixed_indexed(fn):
+            # INDEX K; CAF T (ABRTJASK's INDEX Q; CAF MODE70) or MP T
+            # (FLTRSUB's INDEX NDXCDUW; MP GAINFLTR): the spec's
+            # basic_fixed_index lists the offsets K can hold; any other
+            # effective address is refused.
+            offs = self.spec.get('basic_fixed_index', {}).get(ln.operand.split()[0])
+            if offs is None:
+                raise CompileError('INDEX on a fixed operand at %s (no basic_fixed_index)' % self.where(p))
+            self._ix = (w, index, 0o7777)
+            cases = []
+            for off in offs:
+                fp = self.phys_of(k12 + off, bank)
+                self.basic_fixed.add(fp)
+                cases.append('case 0%04ou:ai_%sf(s,0%05o);break;' % (k12 + off, fn, self.L.word(fp)))
+            return 'switch(iw&07777u){%sdefault:return EXEC_OUT_OF_SCOPE;}' % ''.join(cases)
+
         def leave(z_phys, why, note=''):
             """Transfer to a basic address: in the file a goto, else the end."""
             if self.in_file(z_phys):
@@ -1050,7 +1067,11 @@ class Compiler:
                 # data or interpretive words) has no producer: refused.
                 arms, succ = [], []
                 for q in (nxt, nxt + 1, nxt + 2, nxt + 3):
-                    if self.is_basic(q):
+                    # (Spec 'refuse_unextended': an arm on the word after
+                    # an EXTEND would run it unextended, so it has no
+                    # producer and is refused like data.)
+                    if self.is_basic(q) and not (self.spec.get('refuse_unextended') and q - 1 > p
+                                                 and self.L.word(q - 1) == 0o6):
                         arms.append('goto L%o;' % q)
                         succ.append(q)
                     else:
@@ -1069,19 +1090,7 @@ class Compiler:
             if op in (3, 4, 6, 7):
                 fn = {3: 'ca', 4: 'cs', 6: 'ad', 7: 'mask'}[op]
                 if k12 >= 0o2000 and index is not None:
-                    # INDEX K; CAF T (ABRTJASK's INDEX Q; CAF MODE70): the
-                    # spec's basic_fixed_index lists the offsets K can hold;
-                    # any other effective address is refused.
-                    offs = self.spec.get('basic_fixed_index', {}).get(ln.operand.split()[0])
-                    if offs is None:
-                        raise CompileError('INDEX on a fixed operand at %s (no basic_fixed_index)' % self.where(p))
-                    self._ix = (w, index, 0o7777)
-                    cases = []
-                    for off in offs:
-                        fp = self.phys_of(k12 + off, bank)
-                        self.basic_fixed.add(fp)
-                        cases.append('case 0%04ou:ai_%sf(s,0%05o);break;' % (k12 + off, fn, self.L.word(fp)))
-                    return st + ['switch(iw&07777u){%sdefault:return EXEC_OUT_OF_SCOPE;}' % ''.join(cases)], [nxt]
+                    return st + [fixed_indexed(fn)], [nxt]
                 if k12 >= 0o2000:
                     fp = fixed(k12)
                     return st + ['ai_%sf(s,0%05o);' % (fn, self.L.word(fp))], [nxt]
@@ -1108,6 +1117,16 @@ class Compiler:
                     return st + ['if(ai_ts(s,%s))goto L%o;' % (eras(k10, 'ts'), nxt + 1)], [nxt, nxt + 1]
                 return st + ['ai_xch(s,%s);' % eras(k10, 'xch')], [nxt]
         else:
+            if op == 0 and (w >> 9) & 7 in (0, 2) and isinstance(self.spec.get('channels'), dict) \
+                    and self.m == 'lm' and (w & 0o777) in self.spec['channels']:
+                # READ / RAND of an LM input channel the spec maps to a field
+                # of the io record (include/lm_flight_io.h), as yaAGC: the
+                # channel (ANDed with the overflow-corrected A for RAND),
+                # sign-extended into A.
+                v = '((const lm_flight_io *)(const void *)io)->%s' % self.spec['channels'][w & 0o777]
+                if (w >> 9) & 7 == 2:
+                    v = '(agc_word)(((W[0]&037777u)|((W[0]>>1)&040000u))&%s)' % v
+                return st + ['W[0]=agc_extend((agc_word)(%s&0177777u));' % v], [nxt]
             if op == 0:
                 # I/O channels are not in the image: the instruction (and the
                 # routine from it) waits for a channel model, uncompiled.
@@ -1138,6 +1157,8 @@ class Compiler:
                 return st + ['ai_su(s,%s);' % eras(k10, 'su')], [nxt]
             if op == 7:
                 if k12 >= 0o2000:
+                    if index is not None:
+                        return st + [fixed_indexed('mp')], [nxt]
                     return st + ['ai_mpf(s,0%05o);' % self.L.word(fixed(k12))], [nxt]
                 return st + ['ai_mp(s,%s);' % eras(k12, 'mp')], [nxt]
         raise CompileError('unsupported basic instruction %05o (%s %s) at %s' % (w, ln.op, ln.operand, self.where(p)))
@@ -1402,8 +1423,14 @@ class Compiler:
         c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
         c.append('static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){')
         c.append(' unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;')
-        c.append(' a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;')
-        c.append(' if(sum&0200000u)sum=(sum+1u)&0177777u;')
+        if self.spec.get('index_carry16'):
+            # (Spec 'index_carry16': the end-around carry without a 17-bit
+            # sum, so a C64 build, where unsigned is 16 bits, keeps it.)
+            c.append(' a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;')
+            c.append(' if(sum<a)sum=(sum+1u)&0177777u;')
+        else:
+            c.append(' a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;')
+            c.append(' if(sum&0200000u)sum=(sum+1u)&0177777u;')
         c.append(' return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);')
         c.append('}')
         c.append('/* MSU K: two\'s-complement A - C(K) to ones\' complement (no agc_image_ops form). */')
