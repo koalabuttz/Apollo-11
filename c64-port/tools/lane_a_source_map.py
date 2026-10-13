@@ -39,8 +39,8 @@ M = {
         'tables': {'Luminary099': [('src/standard_lead_routines.c', LM)],
                    'Comanche055': [('src/standard_lead_routines.c', CM)]},
         'native': ['src/standard_lead_routines.c', 'src/standard_lead.c', 'src/standard_lead_interp.c',
-                   'src/standard_lead_wake.c', 'src/standard_lead_cm.c', 'include/standard_lead_routines.h',
-                   'include/standard_lead.h'],
+                   'src/standard_lead_wake.c', 'include/standard_lead_routines.h', 'include/standard_lead.h',
+                   'include/standard_lead_wake.h'],
         'reasons': {('Comanche055', n): 'executed in milestone cm-lead-tests: its yaAGC oracle runs the entry words '
                     'COMPVER, GTSCPSS1 and REDO at 33,2000-2002 (384 cases, evidence/cm-lead-tests)'
                     for n in (144, 146, 148)} | {
@@ -51,14 +51,15 @@ M = {
         'tables': {'Luminary099': [('src/lm_interbank_routines.c', lambda n: True)],
                    'Comanche055': [('src/cm_interbank_routines.c', lambda n: True)]},
         'native': ['src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
-                   'src/cm_interbank_complete.c', 'include/lm_interbank_routines.h',
-                   'include/cm_interbank_routines.h'],
+                   'src/cm_interbank_complete.c', 'src/lm_interbank_sites.inc', 'src/cm_interbank_sites.inc',
+                   'include/lm_interbank_routines.h', 'include/cm_interbank_routines.h'],
         'reasons': {}},
     'service-transfer': {
         'file': 'SERVICE_ROUTINES.agc',
         'tables': {'Luminary099': [('src/service_transfer.c', LM)],
                    'Comanche055': [('src/service_transfer.c', CM)]},
-        'native': ['src/service_transfer.c', 'include/service_transfer.h'],
+        'native': ['src/service_transfer.c', 'src/service_routines.c', 'src/lm_service_sites.inc',
+                   'src/cm_service_sites.inc', 'include/service_transfer.h', 'include/service_routines.h'],
         'reasons': {}},
 }
 

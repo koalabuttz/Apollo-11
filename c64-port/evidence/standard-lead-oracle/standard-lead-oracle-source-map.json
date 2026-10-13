@@ -786,8 +786,8 @@
   "src/standard_lead.c": "9c6424c15aaaf69aba30c8686dda587a5fc178584504c42fb2b9a9d21a7856a7",
   "src/standard_lead_interp.c": "9671471fadc749c6c0adb722d46442b4457595042e32e6c4ce40e7bade2c2af2",
   "src/standard_lead_wake.c": "2e50af7784d5a2f223f04a4c80dfd31e2c1591e376ce4f8bec1bab2c6a725377",
-  "src/standard_lead_cm.c": "ab20c3d77f1dfd4a25458281da2492e8e637a6b8a835f5de100fffb7dd567ddf",
   "include/standard_lead_routines.h": "994c5c16578eb55477c48a73ac1f98aa6966c0810f10e4b5ae3f967589a0d008",
-  "include/standard_lead.h": "66611061ce674707bde3dfecb9fc633413891b9d21de760873a4445b46df46f6"
+  "include/standard_lead.h": "66611061ce674707bde3dfecb9fc633413891b9d21de760873a4445b46df46f6",
+  "include/standard_lead_wake.h": "74b8191b6ad1eace1f79425a309eaeb2369027371250012b01ccbadf09d932e4"
  }
 }

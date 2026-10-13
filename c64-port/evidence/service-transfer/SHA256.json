@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "service-transfer-source-map.json": {
-      "sha256": "685253cfce553fe0a5a48864a7bec3922072a01ffd32ea0d330440223d344d41",
-      "bytes": 53694,
+      "sha256": "36a3202f55c96b43acd7cb0629f227ac72f620c01e6019d2cd566db509455d25",
+      "bytes": 54086,
       "store": "tree"
     },
     "service-transfer-vice.log": {
