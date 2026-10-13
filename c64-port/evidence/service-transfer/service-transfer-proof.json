@@ -1,32 +1,32 @@
 {
- "cases": 1642,
- "reached_continuation": 1635,
+ "cases": 1646,
+ "reached_continuation": 1639,
  "native_equals_yaagc": true,
  "operand_sites": {
-  "lm": 171,
+  "lm": 175,
   "cm": 152
  },
- "entry_cases_per_mission": 256,
+ "entry_cases_per_mission": 512,
  "oracle": "yaAGC agc_engine from the original ropes",
  "ropes": {
   "Luminary099": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  },
- "oracle_sha256": "51ede471bf1f36fb990dce40e4b6f79a22ec41f6fa448f5f2dbd0bc29a1414e9",
+ "oracle_sha256": "6c0c4d029862c4254d7ed9e10140f0f0f6aa5efc7b943a5017538a109daa0836",
  "dependencies": {
-  "tests/service_transfer_cases.c": "e5bd7ae4b7cdd4716df19d0ea597c31e4abc37d9ccf841491897f6658a549afa",
-  "src/service_transfer.c": "44679a891524b6f49781af9273647f9f93d85afe29cb7229b0b611eacf27dff0",
+  "tests/service_transfer_cases.c": "84f83fc9017dc5878644f0bd604fd69bd381be7f7e5a2708fc12adc21ca49d36",
+  "src/service_transfer.c": "ef45d86d6014c24e5d2094268613fa9f201fe88534f6492fca4593a6f17be92b",
   "src/service_routines.c": "f9af3a8180484a7e23f863ecedabe6a416b31420ac9095a66d6c405a78ff0bfb",
-  "src/agc_transfer.c": "6beca7f83f3223cba4030cc0c153107c2aeed860a77a57e605fb79f4f3fd1047",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "include/agc_transfer.h": "4d52d21471584b4c7426bac7d725721293cfad61c6588ed6ab0cafd56ca48e01",
+  "include/agc_transfer.h": "2b268250f6b0a454f8ae8a3083d65eb915b292233fa144633c31405416bd646f",
   "include/service_transfer.h": "d96b2a1b23f7c092ee0adb2554598e8e7f473e77a39a0c81535212a172117d7f",
   "include/service_routines.h": "deae63dcce21def6653dde748f2f053f17461fd0dfd023982423b5a09dc46175",
   "include/service_routines_source.h": "1505d2cc0fd9a321517c1a6824be429ab114e54f4accfa9543d3e5416fc824eb",
-  "src/lm_service_sites.inc": "904bcb337ff8280c22571b642831649ad70daddb658cdbd0b3e2fcdf44b20554",
+  "src/lm_service_sites.inc": "36b58abdedf9bbb35e5782fac161c922faed1923dd83524aaac025f7cb997d5b",
   "src/cm_service_sites.inc": "24de18f1a870fe2f53f0aea49806f7f0991d51dd2698478797954ae711af5ed3",
   "tests/service_transfer_cases.h": "0885a6364d5262f2a4e874b2bd8813528e6650732674cb9535dca48885b3d447"
  },

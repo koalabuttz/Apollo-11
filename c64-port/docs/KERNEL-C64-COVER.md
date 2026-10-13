@@ -34,8 +34,8 @@ Every C64 program now takes every host branch arc:
 
 | milestone | host cases | host branch arcs | stride rows | cover rows | VICE checks |
 |---|---|---|---|---|---|
-| `lm-t6rupt` | 3,840 | 198 | 240 | 2 | 242 |
-| `rupt-lead-ins` | 3,072 | 168 | 192 | 1 | 193 |
+| `lm-t6rupt` | 3,840 | 214 | 240 | 4 | 244 |
+| `rupt-lead-ins` | 3,072 | 184 | 192 | 3 | 195 |
 | `keyrupt-uprupt` | 3,072 | 137 | 192 | 0 | 192 |
 | `lm-exec-services` | 9,208 | 620 | 576 | 5 | 581 |
 | `lm-exec-jobs` | 9,216 | 1110 | 576 | 20 | 596 |
