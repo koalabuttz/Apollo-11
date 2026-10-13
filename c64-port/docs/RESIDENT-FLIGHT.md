@@ -57,7 +57,7 @@ transfer-ABI routine table (`lm_sp_routines`, `cm_sp_routines`; LM SPCOS
 routine and stops at the caller's return. Each refuses a return address
 outside fixed memory (Q not in 02000-07777) before it writes anything.
 `make test-sp-routines` runs the frozen yaAGC full-return states (LM
-lm-single-trig selectors 2-3, CM selectors 0-1) through the table, and the
+lm-single-trig selectors 2-3, CM cm-single-return selectors 0-1) through the table, and the
 refusal with the image unchanged: 128 checks per mission, plain and
 ASan/UBSan.
 
@@ -148,6 +148,15 @@ The host differential (`make test-resident-kernel`) is unchanged; its cases
 now run as an input half and a kernel half
 (`rk_*_input`, `rk_*_run`), which the C64 check splits across the module
 and the resident.
+
+## Evidence
+
+In `evidence/resident-kernel/` (hashes in `SHA256.json`): the six VICE
+results with their PRG hashes (`resident-flight-vice.log`), the size report
+(`resident-flight-sizes.json`), the host differential with the seam counts
+(`resident-kernel-host.log`), the SPSIN/SPCOS results
+(`sp-routines-host.log`), and the `flight_resident` section of
+`resident-kernel-proof.json` with the source hashes.
 
 ## Not yet in the resident
 
