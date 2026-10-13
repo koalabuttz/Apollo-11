@@ -2636,64 +2636,51 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_ephemeris_time.c",
-            "src/cm_ephemeris_moon_callers.c",
-            "src/cm_ephemeris_velocity.c",
-            "src/cm_ephemeris_solar.c",
-            "src/cm_ephemeris_positions.c"
+            "src/cm_ephemeris.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "Complete local71-word source union and all actual caller return frames under frozen compiled producer/canonical state contracts.",
-          "verification": "docs/CM-EPHEMERIS-COMPLETE.md"
+          "scope": "Every word of the file (71 words): The ephemeris routines LSPOS, LUNPOS, LUNVEL and SOLPOS (SOLPOS has no caller in Comanche055 and is a public entry), LSTIME (the time since the ephemeris epoch) and the evaluators RES/RESA (the Sun), REM/REMA (the Moon's position polynomial) and VEM/VEMA (its velocity), all interpretive. The legacy packets (src/cm_ephemeris_*.c) are superseded and no longer cited. As 32 routines of the control-transfer ABI compiled whole-file by tools/interp_compile.py, entered at LSPOS, LSTIME, LUNPOS, LUNVEL, REM, REMA, RES, RESA, SOLPOS, VEM, VEMA.",
+          "verification": "docs/CM-EPHEMERIS.md"
         }
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical2048-word image; ordinary live time/coefficient words, coherent original entry banks and five VACs.",
-          "producer_ownership": "Quiesced computational producers throughout explicit native source stages; source NEWJOB and BANK/IRQ controls retain frozen guards.",
-          "caller_returns": {
-            "LSPOS": [
-              "022557",
-              "030231"
-            ],
-            "LUNPOS": [
-              "065673",
-              "062742",
-              "023327"
-            ],
-            "LUNVEL": [
-              "023377"
-            ],
-            "SOLPOS": [
-              "023377 declared public entry; no original CALL sites"
-            ]
-          },
-          "data_validity": "Original prelaunch and15-day physical validity requirements; no widened validity claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. EBANK= as the listing has it (E7: VECOEM, TEPHEM, the Moon and Sun coefficients); S1 = 6 (LSTIME's SSP S1 6D, the TIX step) and PUSHLOC 0D to 10D of the VAC area (LSTIME's SETPD 0D), as the entries leave them. The yaAGC reference runs with interrupts inhibited.",
         "external_continuations": [
-          "Caller entry/resume services and application scheduling",
-          "Restart policy and physical timing",
-          "Prelaunch coefficients and original 15-day validity",
-          "Complete native C64 mission application and restart acceptance"
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-source-map.json",
+            "sha256": "47d9a7c5217ca8a094b9b7a936dc63b0c821448553dac8fbf3e33df8226d5a1a"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
+            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-host.log",
+            "sha256": "6b0056da4012486302053f984d655d8549c2e86801a7a0dde72e3df8b38bb3c7"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-vice.log",
+            "sha256": "05c8feb90931795a4ad6ad55f2689a88c97d753808376bb2b0f1d29a8cd8231b",
+            "vice_targets": {
+              "vice-cm-ephemeris": 39
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
+            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
           }
         }
       },
