@@ -4712,22 +4712,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-proof.json",
-            "sha256": "62a32f9574f15b086c8665b65e82921dbb555f71ceb6bf1e4517b6463fb07a36"
+            "sha256": "5648fd01c4d422e02862525bf4dd3c659fd387f2324fd1f2609dd87ce9db48f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-host.log",
-            "sha256": "7b5e4014a87625b8aa68cb639f715b67f97b73d0ece0545d72d43a2a70a95475"
+            "sha256": "99a63dbeae177c92ee88fdf8049a89029c50c9833de85e45c51674cdc1f8210a"
           },
           "c64_execution_results": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-vice.log",
-            "sha256": "5ced31f8ffd72a0a88ca91f0c97dc7288450a5cd75e0295082375757d1886584",
+            "sha256": "f0e17a03529ac636fbee27a46acf27b6051ee6f4ab46dddf3b94549f2da4e670",
             "vice_targets": {
-              "vice-cm-sxtmark": 71
+              "vice-cm-sxtmark": 73
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-c64-outcomes.json",
-            "sha256": "a9446d45cbf6bb9936523e83bc69cf4d66c029387982739a28e656562e2873d3"
+            "sha256": "ff0400312f9763a30ddef6979eff4306a3dab60224d60a3565a22826d029aca6"
           }
         }
       }
