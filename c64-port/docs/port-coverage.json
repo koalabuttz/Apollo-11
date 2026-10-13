@@ -158,6 +158,16 @@
       "native_coverage": [
         {
           "native_files": [
+            "src/cm_alarm.c",
+            "src/cm_alarm_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-ALARM.md",
+          "scope": "Every instruction: ALARM/ALARM2/BORTENT/PRIOENT/LARMENT, CHKFAIL1/CHKFAIL2/FAIL3/PROGLARM/MULTEXIT/MULTFAIL, PRIOLARM, BAILOUT (= ABORT), WHIMPER, POODOO/ABORT2, CCSHOLE, CURTAINS and VARALARM as control-transfer ABI routines (21 entries incl. MULTEXIT, BANKCALL and DOWNFLAG return points and the ALMCADR erasable continuation); alarm codes of all 62 caller sites compiled from the source listing."
+        },
+        {
+          "native_files": [
             "src/cm_alarm_record.c"
           ],
           "scope": "ALARM/VARALARM/CURTAINS/BORTENT source recording and genuine MULTFAIL negative-overflow POODOO handoff; actual recovery and other entries remain separate.",
@@ -294,6 +304,43 @@
               "path": "evidence/cm-alarm-sites/cm-alarm-sites-proof.json",
               "sha256": "138ef51a1d5bdc8ecbbd3c51ccc69ee50fa3eb16b8c42b54576f83f8f7011f8d"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 62 compiled TC sites (ALARM, ALARM2, BAILOUT = ABORT, POODOO), CCSHOLE/CURTAINS/VARALARM/PRIOLARM as their callers enter them with a positive alarm code in A where one is passed, the MULTEXIT, BANKCALL (VAC5STOR, MR.KLEAN) and DOWNFLAG return points (BAILOUT's and POODOO's VAC5STOR returns with ALMCADR at a compiled site), and ALMCADR holding a return address 2000-7777; cm_native_io plus agc_hardware for WHIMPER's RESUME (TS overflow, a negative CCS after MASK FLAGWRD7 and MULTEXIT words other than TC/TCF refuse)",
+        "external_continuations": [
+          "callers' returns",
+          "PRIODSPR (PINBALL)",
+          "DOWNFLAG (SERVICE_ROUTINES)",
+          "BANKCALL/POSTJUMP (cm_interbank_routines) to VAC5STOR, MR.KLEAN and ENEMA"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-ALARM.md",
+            "sha256": "d6a10b9acd40756961c6d77d1c5c46c3c505ed7d6e4a68e5bb5614450147d365"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-alarm/cm-alarm-proof.json",
+            "sha256": "c5bb9900b374240ce4785e69d8d385a483f93ed2be5676fdc0fea2e4ecf654e9"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-alarm/cm-alarm-host.log",
+            "sha256": "35af24c2c858ec09408d3c0f18a160de3ca45952c015cb205893295a1c6bd5d1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-alarm/cm-alarm-vice.log",
+            "sha256": "a44d7e93aecd19d7664c86d82ea2cefe516e402ada5ed8039892c95e92329ea8",
+            "vice_targets": {
+              "vice-cm-alarm": 256
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-alarm/cm-alarm-c64-cover.json",
+            "sha256": "d69facf40ed98e0685de5f5bf54e3dde19edfc775c31227eeddb958610b88bf2"
           }
         }
       }
