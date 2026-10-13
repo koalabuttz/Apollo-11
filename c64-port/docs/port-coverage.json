@@ -6974,7 +6974,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
+        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: eight parts run 657 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP and LOOSE), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
         "external_continuations": [
           "BANKCALL, SWCALL/RTB targets 1STO2S, CDULOGIC, SGNAGREE, LOADTIME, PULSEIMU (INTER-BANK_COMMUNICATION and other banks)",
           "TWIDDLE, LONGCALL, TASKOVER (WAITLIST)",
@@ -6992,15 +6992,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-proof.json",
-            "sha256": "0e2cd709d0a3d8614ab9a5cc74e0b87f0f9adca0417109281fe0b45f8b74b0c8"
+            "sha256": "ce73dd802c1b4f4a4ef1c6dd5db0aff6496040fbbb516401cd2368a9548ea744"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-host.log",
-            "sha256": "4664f286341830bdd389546221f2580dfd15bc52644728ee90964d879d525c76"
+            "sha256": "581cc7d2dba7cf6c0c2240ca86910f194f6ee129207594786466395f5c25ca08"
           },
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
-            "sha256": "6fb7780b343f78ddf824553f5b8f2d5bb09db40c62ad86b0e42be848a5988b4c",
+            "sha256": "b1dce881091c2f4a1e96ea49a058b3b1bbf62da4860616eeed775820a6d9c98a",
             "vice_targets": {
               "vice-lm-imu-performance": 657
             }
@@ -7011,7 +7011,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
-            "sha256": "4c1bc7f2e8e14e98989f6d4e632048b9b923a3988fe2d61f8a7a695143e9d613"
+            "sha256": "3f67c2dfe2d386651d288a543bc9acee55e4ea52a70a1bf804ea41699dab8ff2"
           }
         }
       }
@@ -7041,7 +7041,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
+        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: eight parts run 657 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP and LOOSE), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
         "external_continuations": [
           "BANKCALL, SWCALL/RTB targets 1STO2S, CDULOGIC, SGNAGREE, LOADTIME, PULSEIMU (INTER-BANK_COMMUNICATION and other banks)",
           "TWIDDLE, LONGCALL, TASKOVER (WAITLIST)",
@@ -7059,15 +7059,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-proof.json",
-            "sha256": "0e2cd709d0a3d8614ab9a5cc74e0b87f0f9adca0417109281fe0b45f8b74b0c8"
+            "sha256": "ce73dd802c1b4f4a4ef1c6dd5db0aff6496040fbbb516401cd2368a9548ea744"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-host.log",
-            "sha256": "4664f286341830bdd389546221f2580dfd15bc52644728ee90964d879d525c76"
+            "sha256": "581cc7d2dba7cf6c0c2240ca86910f194f6ee129207594786466395f5c25ca08"
           },
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
-            "sha256": "6fb7780b343f78ddf824553f5b8f2d5bb09db40c62ad86b0e42be848a5988b4c",
+            "sha256": "b1dce881091c2f4a1e96ea49a058b3b1bbf62da4860616eeed775820a6d9c98a",
             "vice_targets": {
               "vice-lm-imu-performance": 657
             }
@@ -7078,7 +7078,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
-            "sha256": "4c1bc7f2e8e14e98989f6d4e632048b9b923a3988fe2d61f8a7a695143e9d613"
+            "sha256": "3f67c2dfe2d386651d288a543bc9acee55e4ea52a70a1bf804ea41699dab8ff2"
           }
         }
       }
